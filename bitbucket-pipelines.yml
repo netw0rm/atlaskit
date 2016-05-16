@@ -6,5 +6,5 @@ pipelines:
           - npm --version
           - npm install
           - npm run release
-          - expect "Are you sure you want to publish the above changes?"
+          - expect "Are you sure you want to publish the above changes? (ynH)"
           - send "y"

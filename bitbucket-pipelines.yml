@@ -1,6 +1,6 @@
 image: node:5.11.0
 pipelines:
-  master:
+  default:
     - step:
         script:
           - npm --version

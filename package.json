@@ -12,7 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "cz-conventional-changelog": "^1.1.6",
-    "lerna": "jpnelson/lerna#83e8dec93"
+    "lerna": "jpnelson/lerna#8c0e5a44"
   },
   "private": true,
   "config": {

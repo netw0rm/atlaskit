@@ -5,4 +5,4 @@ pipelines:
         script:
           - npm --version
           - npm install
-          - npm test
+          - npm run release

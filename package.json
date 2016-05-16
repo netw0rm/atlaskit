@@ -6,18 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "./node_modules/.bin/lerna bootstrap",
-    "release": "./node_modules/.bin/lerna publish --canary"
+    "release": "./node_modules/.bin/lerna publish --canary --force-publish"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "cz-conventional-changelog": "^1.1.6",
-    "lerna": "2.0.0-beta.7"
+    "lerna": "2.0.0-beta.9"
   },
   "private": true,
-  "dependencies": {
-    "lerna": "2.0.0-beta.7"
-  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"

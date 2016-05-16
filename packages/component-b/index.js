@@ -1,1 +1,1 @@
-alert('b');
+alert('I am component B');

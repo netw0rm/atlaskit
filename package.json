@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0",
+    "test": "./node_modules/.bin/lerna run test",
     "postinstall": "./node_modules/.bin/lerna bootstrap",
     "release": "./node_modules/.bin/lerna publish --canary --confirm"
   },

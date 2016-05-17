@@ -13,8 +13,9 @@
   "devDependencies": {
     "cz-conventional-changelog": "^1.1.6",
     "lerna": "jpnelson/lerna#8c0e5a44",
-    "semantic-release": "^4.3.5"
+    "semantic-release": "6.2.2"
   },
+  "repository": "git@bitbucket.org:atlassian/atlaskit-spike.git",
   "private": true,
   "config": {
     "commitizen": {

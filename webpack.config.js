@@ -3,14 +3,16 @@ var camelCase = require('camelcase');
 var pkg = require(path.join(process.cwd(), 'package.json'));
 var webpack = require('webpack');
 
-module.exports = {
+var shouldMininimize = process.argv.indexOf('--min') !== -1;
+console.log('lll', shouldMininimize)
+
+var standardConfig = {
     entry: {
-        "bundle": "./index.js",
-        "bundle.min": "./index.js"
+        'bundle': './index.js'
     },
     output: {
-        path: "./dist",
-        filename: "[name].js",
+        path: './dist',
+        filename: '[name].js',
         libraryTarget: 'umd',
         library: camelCase(pkg.name)
     },
@@ -18,11 +20,11 @@ module.exports = {
         loaders: [
             { 
                 test: /\.css$/, 
-                loader: "style!css" 
+                loader: 'style!css'
             },
             {
                 test: /\.less$/,
-                loader: "style!css!less"
+                loader: 'style!css!less'
             },
             {
                 loader: 'babel-loader',
@@ -40,3 +42,11 @@ module.exports = {
         })
     ]
 };
+
+if(shouldMininimize) {
+    Object.assign(standardConfig.entry, {
+        'bundle.min': './index.js'
+    });
+} 
+
+module.exports = standardConfig;

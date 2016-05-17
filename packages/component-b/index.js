@@ -1,1 +1,1 @@
-alert('I am component B');
+console.log('I am component B');

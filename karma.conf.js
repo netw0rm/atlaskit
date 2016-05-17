@@ -1,10 +1,10 @@
 // Karma configuration
 // Generated on Tue May 17 2016 11:18:26 GMT+1000 (AEST)
-var webpackConfig = require('./webpack.config.js');
+const webpackConfig = require('./webpack.config.js');
 // We delete the entry from the normal config and let karma insert it for us
 delete webpackConfig.entry;
 
-module.exports = function(config) {
+module.exports = (config) => {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -20,7 +20,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     // all dependancies should be traced through here
     files: [
-      'tests/index.js'
+      'test/index.js',
     ],
 
 
@@ -33,7 +33,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     // webpack will trace and watch all dependancies
     preprocessors: {
-         'tests/index.js': ['webpack']
+      'test/index.js': ['webpack'],
     },
     // karma watches the test entry points
     // (you don't need to specify the entry option)
@@ -56,7 +56,7 @@ module.exports = function(config) {
 
 
     // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+    // possible values: LOG_DISABLE, LOG_ERROR, LOG_WARN, LOG_INFO, LOG_DEBUG
     logLevel: config.LOG_INFO,
 
 
@@ -75,6 +75,6 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
-  })
-}
+    concurrency: Infinity,
+  });
+};

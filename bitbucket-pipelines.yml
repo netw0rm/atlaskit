@@ -5,6 +5,7 @@ pipelines:
       - step:
           script:
             - npm install
+            - npm run lint
             - npm test
             - npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
             - npm run release

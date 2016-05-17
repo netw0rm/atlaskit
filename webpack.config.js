@@ -7,11 +7,11 @@ var shouldMininimize = process.argv.indexOf('--min') !== -1;
 
 var standardConfig = {
     entry: {
-        'bundle': './index.js'
+        'dist/bundle.js': './src/index.js'
     },
     output: {
-        path: './dist',
-        filename: '[name].js',
+        path: './',
+        filename: '[name]',
         libraryTarget: 'umd',
         library: camelCase(pkg.name)
     },
@@ -44,7 +44,7 @@ var standardConfig = {
 
 if(shouldMininimize) {
     Object.assign(standardConfig.entry, {
-        'bundle.min': './index.js'
+        'dist/bundle.min.js': './src/index.js'
     });
 } 
 

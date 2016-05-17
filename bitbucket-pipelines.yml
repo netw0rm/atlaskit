@@ -4,6 +4,7 @@ pipelines:
     master:
       - step:
           script:
+            - npm install
             - npm test
             - npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
             - npm run release

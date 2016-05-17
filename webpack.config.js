@@ -4,7 +4,6 @@ var pkg = require(path.join(process.cwd(), 'package.json'));
 var webpack = require('webpack');
 
 var shouldMininimize = process.argv.indexOf('--min') !== -1;
-console.log('lll', shouldMininimize)
 
 var standardConfig = {
     entry: {

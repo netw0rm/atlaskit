@@ -1,5 +1,5 @@
-import './src/less/style.less'; //import our css using es6 imports
-import seanButton, {subtract} from './src/js/sean-button.js';
+import './src/style.less'; //import our css using es6 imports
+import seanButton, {subtract} from './src/sean-button.js';
 
 export default function(){
 	var body = document.querySelector('body');

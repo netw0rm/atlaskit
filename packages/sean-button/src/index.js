@@ -1,13 +1,16 @@
 import './style.less'; //import our css using es6 imports
-import seanButton, {subtract} from './sean-button.js';
+import add from './add';
 
+//create a 'sean-button'
 export default function(){
-	var body = document.querySelector('body');
+	var theButton = document.createElement('span');
 
-	var button = seanButton();
-	body.appendChild(button);
+	theButton.classList.add('sean-button');
+	theButton.innerHTML = `1 + 4 = ${add(1, 4)}`;
 
-	body.innerHTML += ' <--This is a Sean-Button<br><br><span class="blue">This should be styled from less!</span>' + subtract(2, 1);
-};
+	return theButton;
+}
 
-export {subtract};
+export function subtract(a, b){
+	return a - b;
+}

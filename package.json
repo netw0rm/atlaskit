@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/lerna run test",
-    "postinstall": "./node_modules/.bin/lerna bootstrap",
-    "release": "./node_modules/.bin/lerna publish --canary --confirm"
+    "test": "lerna run test",
+    "postinstall": "lerna bootstrap",
+    "release": "lerna publish --canary --confirm"
   },
   "author": "",
   "license": "ISC",

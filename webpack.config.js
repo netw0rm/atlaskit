@@ -1,7 +1,7 @@
-var path = require('path');
 var camelCase = require('camelcase');
-var pkg = require(path.join(process.cwd(), 'package.json'));
+var path = require('path');
 var webpack = require('webpack');
+var pkg = require(path.join(process.cwd(), 'package.json'));
 
 var shouldMininimize = process.argv.indexOf('--min') !== -1;
 

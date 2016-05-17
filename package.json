@@ -1,18 +1,19 @@
 {
   "name": "atlaskit-spike",
-  "version": "0.0.0",
   "description": " ",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/lerna run test",
     "postinstall": "./node_modules/.bin/lerna bootstrap",
-    "release": "./node_modules/.bin/lerna publish --canary --confirm"
+    "release": "./node_modules/.bin/lerna publish --canary --confirm",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "cz-conventional-changelog": "^1.1.6",
-    "lerna": "jpnelson/lerna#8c0e5a44"
+    "lerna": "jpnelson/lerna#8c0e5a44",
+    "semantic-release": "^4.3.5"
   },
   "private": true,
   "config": {

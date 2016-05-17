@@ -5,18 +5,19 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: process.cwd(),
 
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha'],
+    frameworks: ['mocha', 'chai'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      '"./dist/bundle.js"',
-      '"./tests/**/*-Spec.js"'
+      './dist/bundle.js',
+      './tests/**/*-test.js',
+      './tests/*-test.js'
     ],
 
 
@@ -28,6 +29,17 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+        // add webpack as preprocessor
+        'tests/*-test.js': ['webpack'],
+        'tests/**/*-test.js': ['webpack']
+    },
+
+    webpack: {
+        // karma watches the test entry points
+        // (you don't need to specify the entry option)
+        // webpack watches dependencies
+
+        // webpack configuration
     },
 
 

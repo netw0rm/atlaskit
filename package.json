@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/lerna run test",
+    "postinstall": "./node_modules/.bin/lerna bootstrap",
+    "release": "./node_modules/.bin/lerna publish --canary --confirm"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +26,14 @@
     "less-loader": "^2.2.3",
     "mocha": "^2.4.5",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.0"
+    "webpack": "^1.13.0",
+    "cz-conventional-changelog": "^1.1.6",
+    "lerna": "jpnelson/lerna#8c0e5a44"
+  },
+  "private": true,
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

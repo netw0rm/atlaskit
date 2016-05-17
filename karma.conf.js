@@ -20,7 +20,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     // all dependancies should be traced through here
     files: [
-      'tests/unit-test.js'
+      'tests/index.js'
     ],
 
 
@@ -33,7 +33,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     // webpack will trace and watch all dependancies
     preprocessors: {
-         'tests/unit-test.js': ['webpack']
+         'tests/index.js': ['webpack']
     },
     // karma watches the test entry points
     // (you don't need to specify the entry option)

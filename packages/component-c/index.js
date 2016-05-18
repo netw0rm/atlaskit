@@ -1,1 +1,1 @@
-alert('Updated c');
+console.log('Updated c');

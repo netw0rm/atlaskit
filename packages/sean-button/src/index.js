@@ -6,7 +6,7 @@ export default (a, b) => {
   const theButton = document.createElement('span');
 
   theButton.classList.add('sean-button');
-  theButton.innerHTML = `v3.2 ${a} x ${b} = ${times(a, b)}`;
+  theButton.innerHTML = `v3 ${a} x ${b} = ${times(a, b)}`;
 
   return theButton;
 };

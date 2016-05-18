@@ -8,7 +8,7 @@ export default () => {
   const header = joschableHeader();
   const anotherButton = seanButtonNew(3, 2);
 
-  header.classList.add('joshable-content');
+  content.classList.add('joshable-content');
 
   content.innerHTML += "content v1.0.0";
   content.appendChild(header);

@@ -7,40 +7,40 @@ const shouldMininimize = process.argv.indexOf('--min') !== -1;
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': './src/index.js',
+    'dist/bundle.js': './src/index.js'
   },
   output: {
     path: './',
     filename: '[name]',
     libraryTarget: 'umd',
-    library: camelCase(pkg.name),
+    library: camelCase(pkg.name)
   },
   module: {
     loaders: [{
       test: /\.css$/,
-      loader: 'style!css',
+      loader: 'style!css'
     }, {
       test: /\.less$/,
-      loader: 'style!css!less',
+      loader: 'style!css!less'
     }, {
       loader: 'babel-loader',
       test: /\.js$/,
       query: {
-        presets: 'es2015',
-      },
-    }],
+        presets: 'es2015'
+      }
+    }]
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
       include: /\.min\.js$/,
-      minimize: true,
-    }),
-  ],
+      minimize: true
+    })
+  ]
 };
 
 if (shouldMininimize) {
   Object.assign(standardConfig.entry, {
-    'dist/bundle.min.js': './src/index.js',
+    'dist/bundle.min.js': './src/index.js'
   });
 }
 

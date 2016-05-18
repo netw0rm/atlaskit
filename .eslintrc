@@ -1,12 +1,25 @@
 {
-  "extends": "airbnb",
-  "root": true,
   "rules": {
-    "no-unused-expressions": 0,
+    "indent": [2, 2],
+    "linebreak-style": [2, "unix"],
     "mocha/no-exclusive-tests": 2,
-    "mocha/handle-done-callback": 2
+    "quotes": [2, "single"],
+    "semi": [2, "always"]
   },
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true
+  },
+  "extends": "eslint:recommended",
   "plugins": [
-    "eslint-plugin-mocha"
-  ]
+    "mocha"
+  ],
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  }
 }

@@ -9,7 +9,7 @@ export default () => {
 
   header.classList.add('joschable-header');
 
-
+  header.innerHTML += "header v1.0.0";
   header.appendChild(button1);
   header.appendChild(button2);
 

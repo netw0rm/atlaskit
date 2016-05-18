@@ -1,1 +1,1 @@
-alert('Updated b');
+console.log('I am component B');

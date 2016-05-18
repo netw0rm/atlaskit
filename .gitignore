@@ -1,3 +1,6 @@
-# Created by .ignore support plugin (hsz.mobi)
+**/dist
 lerna-debug.log
 node_modules
+npm-debug.log
+.jshintignore
+.jshintrc

@@ -144,26 +144,7 @@ Object.keys(sauceBrowsers).forEach(function (key) {
 });
 
 module.exports = function (config) {
-  if (process.argv.indexOf('--sauce') !== -1) {
-    config.set({
-      sauceLabs: {
-        testName: 'AtlasKit',
-        recordScreenshots: false,
-        connectOptions: {
-          verbose: true
-        }
-      },
-      customLaunchers: sauceBrowsers,
-      browsers: Object.keys(sauceBrowsers),
-      captureTimeout: 120000,
-      reporters: ['saucelabs', 'dots'],
-      autoWatch: false,
-      concurrency: 5,
-      client: {}
-    });
-  }
-
-  config.set({
+  config.set(Object.assign({
     // base path that will be used to resolve all patterns (eg. files, exclude)
     // setting to process.cwd will make all paths start in current component directory
     basePath: process.cwd(),
@@ -219,5 +200,20 @@ module.exports = function (config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
-  });
+  }, process.argv.indexOf('--sauce') === -1 ? {} : {
+      sauceLabs: {
+        testName: 'AtlasKit',
+        recordScreenshots: false,
+        connectOptions: {
+          verbose: true
+        }
+      },
+      customLaunchers: sauceBrowsers,
+      browsers: Object.keys(sauceBrowsers),
+      captureTimeout: 120000,
+      reporters: ['saucelabs', 'dots'],
+      autoWatch: false,
+      concurrency: 5,
+      client: {}
+    }));
 };

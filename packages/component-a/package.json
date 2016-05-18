@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "release": {
-    "analyzeCommits": "semantic-release-lerna-analyzer"
+    "analyzeCommits": "semantic-release-lerna-analyzer",
+    "verifyConditions": [],
+    "debug": false
   }
 }

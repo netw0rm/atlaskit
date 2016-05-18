@@ -201,19 +201,19 @@ module.exports = function (config) {
     // how many browser should be started simultaneous
     concurrency: Infinity
   }, process.argv.indexOf('--sauce') === -1 ? {} : {
-      sauceLabs: {
-        testName: 'AtlasKit',
-        recordScreenshots: false,
-        connectOptions: {
-          verbose: true
-        }
-      },
-      customLaunchers: sauceBrowsers,
-      browsers: Object.keys(sauceBrowsers),
-      captureTimeout: 120000,
-      reporters: ['saucelabs', 'dots'],
-      autoWatch: false,
-      concurrency: 5,
-      client: {}
-    }));
+    sauceLabs: {
+      testName: 'AtlasKit',
+      recordScreenshots: false,
+      connectOptions: {
+        verbose: true
+      }
+    },
+    customLaunchers: sauceBrowsers,
+    browsers: Object.keys(sauceBrowsers),
+    captureTimeout: 120000,
+    reporters: ['saucelabs', 'dots'],
+    autoWatch: false,
+    concurrency: 5,
+    client: {}
+  }));
 };

@@ -9,7 +9,7 @@ pipelines:
             - npm test
             - npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
             - npm run release
-            - ./build/bin/hipchat_message.sh "\u1F4E6 Released new AtlasKit canary"
+            - ./build/bin/hipchat_message.sh "📦Released new AtlasKit canary"
   default:
     - step:
         script:

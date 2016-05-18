@@ -41,7 +41,8 @@
     "semantic-release": "6.2.2",
     "style-loader": "^0.13.1",
     "validate-commit-message": "^3.0.1",
-    "webpack": "^1.13.0"
+    "webpack": "^1.13.0",
+    "webpack-dev-server": "^1.14.1"
   },
   "repository": "git@bitbucket.org:atlassian/atlaskit-spike.git",
   "private": true,

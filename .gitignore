@@ -2,3 +2,5 @@
 lerna-debug.log
 node_modules
 npm-debug.log
+.jshintignore
+.jshintrc

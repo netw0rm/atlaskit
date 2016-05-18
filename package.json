@@ -6,7 +6,7 @@
   "scripts": {
     "dist": "lerna run prepublish",
     "lint": "eslint .",
-    "postinstall": "lerna bootstrap",
+    "postinstall": "lerna bootstrap && validate-commit-msg",
     "release": "lerna publish --canary --confirm",
     "test": "lerna run test"
   },
@@ -35,7 +35,9 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "mocha": "^2.4.5",
+    "precommit-hook": "^3.0.0",
     "style-loader": "^0.13.1",
+    "validate-commit-message": "^3.0.1",
     "webpack": "^1.13.0"
   },
   "private": true,
@@ -46,5 +48,8 @@
   },
   "engines": {
     "node": ">=6.1"
-  }
+  },
+  "pre-commit": [
+    "lint"
+  ]
 }

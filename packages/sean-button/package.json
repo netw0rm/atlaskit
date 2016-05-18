@@ -1,8 +1,8 @@
 {
   "name": "sean-button",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run",
     "test/watch": "../../node_modules/.bin/karma start ../../karma.conf.js",

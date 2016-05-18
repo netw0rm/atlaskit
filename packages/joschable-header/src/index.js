@@ -1,16 +1,17 @@
 import './style.less'; // import our css using es6 imports
-import add from './add';
+import seanButton, {subtract} from 'sean-button';
 
-// create a 'sean-button'
-export default (a, b) => {
-  const theButton = document.createElement('span');
+// create a 'joschable-header'
+export default () => {
+  const header = document.createElement('div');
+  const button1 = seanButton(2, 3);
+  const button2 = seanButton(9000, 1);
 
-  theButton.classList.add('sean-button');
-  theButton.innerHTML = `${a} + ${b} = ${add(a, b)}`;
+  header.classList.add('joschable-header');
 
-  return theButton;
+
+  header.appendChild(button1);
+  header.appendChild(button2);
+
+  return header;
 };
-
-export function subtract(a, b) {
-  return a - b;
-}

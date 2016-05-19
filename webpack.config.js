@@ -24,7 +24,7 @@ const standardConfig = {
       loader: 'style!css!less'
     }, {
       loader: 'babel-loader',
-      test: /\.js$/,
+      test: /src\/[^\/]+?\.js$/, //only run on js files from the src directory
       query: {
         presets: 'es2015'
       }

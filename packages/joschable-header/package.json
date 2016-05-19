@@ -7,9 +7,13 @@
     "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run",
     "test/watch": "../../node_modules/.bin/karma start ../../karma.conf.js"
   },
+  "files": [
+    "src",
+    "dist"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "sean-button": "^2.0.0"
+    "sean-button": "^3.0.0"
   }
 }

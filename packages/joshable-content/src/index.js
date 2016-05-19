@@ -10,7 +10,7 @@ export default () => {
 
   content.classList.add('joshable-content');
 
-  content.innerHTML += "content v1.0.0";
+  content.innerHTML += 'content v1.0.0';
   content.appendChild(header);
   content.appendChild(anotherButton);
 

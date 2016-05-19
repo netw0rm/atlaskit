@@ -32,6 +32,7 @@
     "karma-chrome-launcher": "^1.0.1",
     "karma-firefox-launcher": "^1.0.0",
     "karma-mocha": "^1.0.1",
+    "karma-saucelabs-launcher": "0.0.0",
     "karma-webpack": "^1.7.0",
     "lerna": "jpnelson/lerna#8c0e5a44",
     "less": "^2.7.1",

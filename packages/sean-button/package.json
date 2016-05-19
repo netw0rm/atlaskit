@@ -6,10 +6,10 @@
   "scripts": {
     "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run --sauce",
     "test/watch": "../../node_modules/.bin/karma start ../../karma.conf.js",
+    "clean": "rm -rf node_modules",
     "prepublish": "../../node_modules/.bin/webpack"
   },
   "files": [
-    "src",
     "dist"
   ],
   "author": "",

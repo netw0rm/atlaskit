@@ -200,7 +200,7 @@ module.exports = function (config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
-  }, process.argv.indexOf('--sauce') === -1 ? {} : {
+  }, process.env.SAUCELABS ? {
     sauceLabs: {
       testName: 'AtlasKit',
       recordScreenshots: false,
@@ -215,5 +215,5 @@ module.exports = function (config) {
     autoWatch: false,
     concurrency: 5,
     client: {}
-  }));
+  } : {}));
 };

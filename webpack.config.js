@@ -1,4 +1,5 @@
 const camelCase = require('camelcase');
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const pkg = require(path.join(process.cwd(), 'package.json'));
@@ -16,7 +17,7 @@ const standardConfig = {
     libraryTarget: 'umd',
     library: camelCase(pkg.name) // This will be the name of the global in the UMD module
   },
-  externals: /^[^.]/, // Only bundle dependancies that start with '.'
+  externals: fs.readdirSync("node_modules"), // Only bundle dependancies that start with '.'
   module: {
     loaders: [{
       test: /\.css$/,

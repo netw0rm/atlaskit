@@ -2,7 +2,7 @@
   "name": "joshable-content",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/bundle.js",
   "scripts": {
     "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run",
     "test/watch": "../../node_modules/.bin/karma start ../../karma.conf.js"

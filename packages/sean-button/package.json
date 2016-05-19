@@ -1,13 +1,13 @@
 {
   "name": "sean-button",
-  "version": "3.1.0",
+  "version": "3.3.0",
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
     "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run --sauce",
     "test/watch": "../../node_modules/.bin/karma start ../../karma.conf.js",
     "clean": "rm -rf node_modules",
-    "prepublish": "../../node_modules/.bin/webpack"
+    "prepublish": "../../node_modules/.bin/webpack --min"
   },
   "files": [
     "dist"

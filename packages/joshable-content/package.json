@@ -7,7 +7,7 @@
     "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run",
     "test/watch": "../../node_modules/.bin/karma start ../../karma.conf.js",
     "clean": "rm -rf node_modules",
-    "prepublish": "../../node_modules/.bin/webpack"
+    "prepublish": "../../node_modules/.bin/webpack --min"
   },
   "files": [
     "src"

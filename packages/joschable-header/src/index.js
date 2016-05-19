@@ -1,5 +1,5 @@
 import './style.less'; // import our css using es6 imports
-import seanButton, {subtract} from 'sean-button';
+import seanButton from 'sean-button';
 
 // create a 'joschable-header'
 export default () => {
@@ -9,7 +9,7 @@ export default () => {
 
   header.classList.add('joschable-header');
 
-  header.innerHTML += "header v1.0.0";
+  header.innerHTML += 'header v1.0.0';
   header.appendChild(button1);
   header.appendChild(button2);
 

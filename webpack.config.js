@@ -15,6 +15,7 @@ const standardConfig = {
     libraryTarget: 'umd',
     library: camelCase(pkg.name)
   },
+  externals: /^[^.]/, //Only bundle dependancies that start with '.'
   module: {
     loaders: [{
       test: /\.css$/,

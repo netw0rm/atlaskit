@@ -19,7 +19,7 @@ const standardConfig = {
     // This will be the name of the global in the UMD module.
     library: camelCase(pkg.name)
   },
-  // Only bundle dependancies that start with '.'
+  // Only bundle dependancies that start with '.'.
   externals: fs.readdirSync('node_modules'),
   module: {
     loaders: [{
@@ -38,6 +38,13 @@ const standardConfig = {
     }]
   },
   plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      include: /\.js$/, // Minify any target that ends in .min.js
+      dead_code: true,
+      mangle: false,
+      beautify: true,
+      comments: true
+    }),
     new webpack.optimize.UglifyJsPlugin({
       // Minify any target that ends in .min.js.
       include: /\.min\.js$/,

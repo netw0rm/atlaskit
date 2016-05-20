@@ -1,18 +1,20 @@
 {
-  "name": "sean-button",
-  "version": "3.3.0",
+  "name": "joschable-header",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
     "clean": "rm -rf node_modules",
     "prepublish": "../../node_modules/.bin/webpack --config ../../webpack.config.js --min",
     "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run",
-    "test-watch": "../../node_modules/.bin/karma start ../../karma.conf.js",
-    "pre-release": "lerna-semantic-release pre"
+    "test-watch": "../../node_modules/.bin/karma start ../../karma.conf.js"
   },
   "files": [
-    "dist"
+    "src"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "sean-button": "^3.0.0"
+  }
 }

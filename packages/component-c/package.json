@@ -10,7 +10,6 @@
   "dependencies": {
     "lodash": "*"
   },
-  "repository": "git@bitbucket.org:atlassian/atlaskit-spike.git",
   "author": "",
   "license": "ISC",
   "release": {

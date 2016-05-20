@@ -7,7 +7,6 @@
     "test": "echo \"No tests specified\" && exit 0",
     "pre-release": "lerna-semantic-release pre"
   },
-  "repository": "git@bitbucket.org:atlassian/atlaskit-spike.git",
   "author": "",
   "license": "ISC",
   "release": {

@@ -1,6 +1,6 @@
 {
   "name": "joshable-content",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "joschable-header": "^1.0.0",
-    "sean-button": "^3.0.0"
+    "joschable-header": "^2.0.0",
+    "sean-button": "^4.0.0"
   }
 }

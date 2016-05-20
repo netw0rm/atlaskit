@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dist": "./node_modules/.bin/lerna run prepublish",
+    "dist": "lerna run prepublish",
     "lint": "eslint .",
-    "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
+    "postinstall": "lerna bootstrap && validate-commit-msg",
     "release": "lerna run pre-release && lerna-semantic-release perform",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "validate": "npm ls"
   },
   "author": "",
   "license": "ISC",
@@ -34,6 +35,7 @@
     "karma-saucelabs-launcher": "0.0.0",
     "karma-webpack": "^1.7.0",
     "lerna": "jpnelson/lerna#8c0e5a44",
+    "lerna-semantic-release": "0.1.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "mocha": "^2.4.5",

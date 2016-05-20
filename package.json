@@ -34,7 +34,7 @@
     "karma-mocha": "^1.0.1",
     "karma-saucelabs-launcher": "0.0.0",
     "karma-webpack": "^1.7.0",
-    "lerna": "jpnelson/lerna#8c0e5a44",
+    "lerna": "joscha/lerna#atlaskit",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "mocha": "^2.4.5",

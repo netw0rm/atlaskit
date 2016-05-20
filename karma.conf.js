@@ -203,7 +203,7 @@ module.exports = function (config) {
   });
 
   if (process.env.SAUCELABS) {
-    Object.assign(config, {
+    config = Object.assign(config, {
       sauceLabs: {
         testName: 'AtlasKit',
         recordScreenshots: false,
@@ -219,5 +219,6 @@ module.exports = function (config) {
       concurrency: 5,
       client: {}
     });
+    delete config.hostname;
   }
 };

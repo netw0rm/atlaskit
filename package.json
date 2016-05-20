@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
     "release": "./node_modules/.bin/lerna publish --canary --confirm",
-    "test": "lerna run test",
+    "test": "./node_modules/.bin/lerna run test",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "author": "",

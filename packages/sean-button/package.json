@@ -6,7 +6,8 @@
   "scripts": {
     "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run",
     "test/watch": "../../node_modules/.bin/karma start ../../karma.conf.js",
-    "prepublish": "../../node_modules/.bin/webpack"
+    "prepublish": "../../node_modules/.bin/webpack",
+    "release": "lerna-semantic-release"
   },
   "author": "",
   "license": "ISC"

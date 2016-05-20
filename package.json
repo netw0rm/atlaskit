@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
     "prepublish/single": "./build/bin/prepublish.single.sh",
-    "release": "./node_modules/.bin/lerna publish --canary --confirm",
+    "release": "lerna run pre-release && lerna-semantic-release perform",
     "test": "./build/bin/test.sh",
     "test/saucelabs": "./build/bin/test.saucelabs.sh",
     "test/single": "./build/bin/test.single.sh",
@@ -64,6 +64,5 @@
   },
   "pre-commit": [
     "lint"
-  ],
-  "dependencies": {}
+  ]
 }

@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single joshable-content"
+    "prepublish": "cd .. && npm run prepublish/single joshable-content",
+    "pre-release": "lerna-semantic-release pre"
   },
   "files": [
     "src"

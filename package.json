@@ -7,9 +7,8 @@
     "dist": "./node_modules/.bin/lerna run prepublish",
     "lint": "eslint .",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
-    "release": "lerna run release",
-    "test": "lerna run test",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "release": "lerna run pre-release && lerna-semantic-release perform",
+    "test": "lerna run test"
   },
   "author": "",
   "license": "ISC",

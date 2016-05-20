@@ -13,11 +13,14 @@ const standardConfig = {
   },
   output: {
     path: './',
-    filename: '[name]', // Comes from the key of entry.
+    // Comes from the key of entry.
+    filename: '[name]',
     libraryTarget: 'umd',
-    library: camelCase(pkg.name) // This will be the name of the global in the UMD module
+    // This will be the name of the global in the UMD module.
+    library: camelCase(pkg.name)
   },
-  externals: fs.readdirSync("node_modules"), // Only bundle dependancies that start with '.'
+  // Only bundle dependancies that start with '.'
+  externals: fs.readdirSync('node_modules'),
   module: {
     loaders: [{
       test: /\.css$/,
@@ -27,7 +30,8 @@ const standardConfig = {
       loader: 'style!css!less'
     }, {
       loader: 'babel-loader',
-      test: /src\/[^\/]+?\.js$/, // Only run on js files from the src directory
+      // Only run on js files from the src directory.
+      test: /(src|test)\/[^\/]+?\.js$/,
       query: {
         presets: 'es2015'
       }
@@ -35,13 +39,14 @@ const standardConfig = {
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
-      include: /\.min\.js$/, // Minify any target that ends in .min.js
+      // Minify any target that ends in .min.js.
+      include: /\.min\.js$/,
       minimize: true
     })
   ]
 };
 
-// Some overrides passed in by command line args
+// Some overrides passed in by command line args.
 if (shouldMininimize) {
   Object.assign(standardConfig.entry, {
     'dist/bundle.min.js': './src/index.js'

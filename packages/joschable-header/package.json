@@ -1,15 +1,11 @@
 {
   "name": "joschable-header",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
-    "clean": "rm -rf node_modules",
-    "dev-server": "webpack-dev-server --bundle-deps",
     "prepublish": "cd .. && npm run prepublish/single joschable-header",
-    "pre-release": "lerna-semantic-release pre",
-    "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run",
-    "test/watch": "../../node_modules/.bin/karma start ../../karma.conf.js"
+    "pre-release": "lerna-semantic-release pre"
   },
   "files": [
     "dist"

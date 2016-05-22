@@ -1,6 +1,5 @@
 {
   "name": "sean-button",
-
   "version": "3.7.0",
   "description": "",
   "main": "dist/bundle.js",

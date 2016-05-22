@@ -12,7 +12,7 @@
     "test/watch": "../../node_modules/.bin/karma start ../../karma.conf.js"
   },
   "files": [
-    "src"
+    "dist"
   ],
   "author": "",
   "license": "ISC",

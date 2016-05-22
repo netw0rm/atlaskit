@@ -9,7 +9,7 @@
     "prepublish": "cd .. && npm run prepublish/single sean-button",
     "pre-release": "lerna-semantic-release pre",
     "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run --sauce",
-    "test/watch": "../../node_modules/.bin/karma start ../../karma.conf.js",
+    "test/watch": "../../node_modules/.bin/karma start ../../karma.conf.js"
   },
   "files": [
     "dist"

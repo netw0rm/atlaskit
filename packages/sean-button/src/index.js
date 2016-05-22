@@ -1,12 +1,12 @@
-import './style.less'; // import our css using es6 imports
+import styles from './style.less'; // import our css using es6 imports
 import times from './add';
 
 // create a 'sean-button'
 export default (a, b) => {
   const theButton = document.createElement('span');
 
-  theButton.classList.add('sean-button');
-  theButton.innerHTML = `v3 ${a} x ${b} = ${times(a, b)}`;
+  theButton.classList.add(styles.seanButton);
+  theButton.innerHTML = `v3.7 ${a} x ${b} = ${times(a, b)}`;
 
   return theButton;
 };

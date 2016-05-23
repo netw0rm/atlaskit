@@ -1,13 +1,14 @@
 {
   "name": "joshable-content",
-  "version": "2.1.0",
+  "version": "3.1.0",
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
     "clean": "rm -rf node_modules",
     "prepublish": "../../node_modules/.bin/webpack --config ../../webpack.config.js --min",
     "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run",
-    "test-watch": "../../node_modules/.bin/karma start ../../karma.conf.js"
+    "test-watch": "../../node_modules/.bin/karma start ../../karma.conf.js",
+    "pre-release": "lerna-semantic-release pre"
   },
   "files": [
     "src"

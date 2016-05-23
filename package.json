@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules && rm -rf node_modules",
+    "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",
     "dist": "./node_modules/.bin/lerna run prepublish",
+    "dev-server/single": "./build/bin/dev.server.single.sh",
     "lint": "eslint .",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
     "prepublish/single": "./build/bin/prepublish.single.sh",

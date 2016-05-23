@@ -154,14 +154,14 @@ module.exports = function (config) {
     frameworks: ['mocha', 'chai', 'sinon-chai'],
 
     // list of files / patterns to load in the browser
-    // all dependancies should be traced through here
+    // all dependencies should be traced through here
     files: [
       'test/index.js'
     ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    // webpack will trace and watch all dependancies
+    // webpack will trace and watch all dependencies
     preprocessors: {
       'test/index.js': ['webpack']
     },

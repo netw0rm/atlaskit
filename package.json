@@ -17,7 +17,8 @@
     "test/single/watch": "./build/bin/test.single.watch.sh",
     "test/single/saucelabs": "./build/bin/test.single.saucelabs.sh",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "validate": "npm ls"
+    "validate": "npm ls",
+    "webpack/single": "./build/bin/webpack.single.sh"
   },
   "author": "",
   "license": "ISC",

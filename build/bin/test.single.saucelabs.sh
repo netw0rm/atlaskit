@@ -1,3 +1,7 @@
 #!/bin/sh
 BASEDIR=$(dirname $0)
-SAUCELABS=1 $BASEDIR/_scope_command.sh $1 "karma start ../../karma.conf.js --single-run"
+PKG="$1"
+shift
+#shift removes first command line arg (the package name)
+#so that we can pass $@ as the args to karma
+SAUCELABS=1 $BASEDIR/_scope_command.sh $PKG "karma start ../../karma.conf.js --single-run $@"

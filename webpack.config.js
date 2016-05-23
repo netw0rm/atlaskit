@@ -29,7 +29,7 @@ const standardConfig = {
       loader: 'style!css'
     }, {
       test: /\.less$/,
-      loader: 'style!css?modules&camelCase!less'
+      loader: 'css?modules&camelCase!less'
     }, {
       loader: 'babel-loader',
       // Only run on js files from the src directory.

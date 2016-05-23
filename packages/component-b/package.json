@@ -1,6 +1,6 @@
 {
-  "name": "atlaskit-component-b",
-  "version": "3.4.0",
+  "name": "tmp-atlaskit-component-b",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,5 @@
   "license": "ISC",
   "release": {
     "analyzeCommits": "semantic-release-lerna-analyzer"
-  },
-  "gitHead": "/Users/jonelson/Documents/Atlassian/Projects/atlaskit-spike\n"
+  }
 }

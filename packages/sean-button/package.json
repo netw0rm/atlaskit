@@ -1,6 +1,6 @@
 {
-  "name": "sean-button",
-  "version": "6.4.0",
+  "name": "tmp-sean-button",
+  "version": "0.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
@@ -14,6 +14,5 @@
     "dist"
   ],
   "author": "",
-  "license": "ISC",
-  "gitHead": "/Users/jonelson/Documents/Atlassian/Projects/atlaskit-spike\n"
+  "license": "ISC"
 }

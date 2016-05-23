@@ -1,6 +1,6 @@
 {
-  "name": "joschable-header",
-  "version": "4.3.0",
+  "name": "tmp-joschable-header",
+  "version": "0.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
@@ -16,7 +16,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "sean-button": "^4.0.0"
-  },
-  "gitHead": "/Users/jonelson/Documents/Atlassian/Projects/atlaskit-spike\n"
+    "tmp-sean-button": "^0.0.0"
+  }
 }

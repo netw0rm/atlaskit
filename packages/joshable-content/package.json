@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "",
   "main": "dist/bundle.js",
+  "webpack": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single joshable-content",
     "pre-release": "lerna-semantic-release pre"

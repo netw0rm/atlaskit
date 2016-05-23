@@ -1,18 +1,1 @@
-{
-  "name": "sean-button",
-  "version": "5.2.0",
-  "description": "",
-  "main": "dist/bundle.js",
-  "scripts": {
-    "clean": "rm -rf node_modules",
-    "prepublish": "../../node_modules/.bin/webpack --config ../../webpack.config.js --min",
-    "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run",
-    "test-watch": "../../node_modules/.bin/karma start ../../karma.conf.js",
-    "pre-release": "lerna-semantic-release pre"
-  },
-  "files": [
-    "dist"
-  ],
-  "author": "",
-  "license": "ISC"
-}
+{"name":"sean-button","version":"5.2.0","description":"","main":"dist/bundle.js","scripts":{"clean":"rm -rf node_modules","prepublish":"../../node_modules/.bin/webpack --config ../../webpack.config.js --min","test":"../../node_modules/.bin/karma start ../../karma.conf.js --single-run","test-watch":"../../node_modules/.bin/karma start ../../karma.conf.js","pre-release":"lerna-semantic-release pre"},"files":["dist"],"author":"","license":"ISC","gitHead":"/Users/jonelson/Documents/Atlassian/Projects/atlaskit-spike\n"}

@@ -1,6 +1,6 @@
 {
   "name": "joshable-content",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "",
   "main": "dist/bundle.js",
   "scripts": {
@@ -18,5 +18,6 @@
   "dependencies": {
     "joschable-header": "^2.0.0",
     "sean-button": "^4.0.0"
-  }
+  },
+  "gitHead": "/Users/jonelson/Documents/Atlassian/Projects/atlaskit-spike\n"
 }

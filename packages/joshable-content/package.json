@@ -1,6 +1,6 @@
 {
-  "name": "joshable-content",
-  "version": "1.2.0",
+  "name": "tmp-joshable-content",
+  "version": "0.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "joschable-header": "^1.0.0",
-    "sean-button": "^3.0.0"
+    "tmp-joschable-header": "^0.0.0",
+    "tmp-sean-button": "^0.0.0"
   }
 }

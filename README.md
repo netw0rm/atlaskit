@@ -15,12 +15,12 @@ Extra parameters can be passed to webpack by using an empty `--` argument to sep
 npm run webpack/single my-component -- --min --bundle-deps
 ```
 ### Run webpack-dev-server
-Bundles up all dependancies into one bundle.js file and runs the local `webpack-dev-server` for specified package:
+Bundles up all dependencies into one bundle.js file and runs the local `webpack-dev-server` for specified package:
 
 ```
 npm run dev-server/single my-component
 ```
-All dependancies will be watched and automatically swapped out as they change.
+All dependencies will be watched and automatically swapped out as they change.
 
 *Note: webpack-dev-server does not write to disk at any point, all files are stored in memory only.*
 ### Clean node_modules and dist directories

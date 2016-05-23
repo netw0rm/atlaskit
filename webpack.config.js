@@ -5,8 +5,9 @@ const webpack = require('webpack');
 const pkg = require(path.join(process.cwd(), 'package.json'));
 
 const shouldMininimize = process.argv.indexOf('--min') !== -1;
-const shouldBundleDependancies = process.argv.indexOf('--bundle-deps') !== -1;
 const shouldCreateDemoBundle = process.argv.indexOf('--demo') !== -1;
+const shouldBundleDependencies = process.argv.indexOf('--bundle-deps') !== -1;
+
 
 const standardConfig = {
   entry: {
@@ -20,7 +21,7 @@ const standardConfig = {
     // This will be the name of the global in the UMD module.
     library: camelCase(pkg.name)
   },
-  // Only bundle dependancies that start with '.'.
+  // Only bundle dependencies that start with '.'.
   externals: fs.readdirSync('node_modules'),
   module: {
     loaders: [{
@@ -71,7 +72,7 @@ if (shouldMininimize) {
   });
 }
 
-if (shouldBundleDependancies) {
+if (shouldBundleDependencies) {
   delete standardConfig.externals;
 }
 

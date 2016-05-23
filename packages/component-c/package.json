@@ -1,6 +1,6 @@
 {
-  "name": "atlaskit-component-c",
-  "version": "0.0.3",
+  "name": "tmp-atlaskit-component-c",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,6 @@
   "dependencies": {
     "lodash": "*"
   },
-  "repository": "git@bitbucket.org:atlassian/atlaskit-spike.git",
   "author": "",
   "license": "ISC",
   "release": {

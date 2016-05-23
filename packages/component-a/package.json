@@ -1,12 +1,11 @@
 {
-  "name": "atlaskit-component-a",
-  "version": "0.29.0",
+  "name": "tmp-atlaskit-component-a",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "pre-release": "lerna-semantic-release pre"
   },
-  "repository": "git@bitbucket.org:atlassian/atlaskit-spike.git",
   "author": "",
   "license": "ISC",
   "release": {

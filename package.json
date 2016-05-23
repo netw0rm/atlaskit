@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf node_modules && ./node_modules/.bin/lerna exec -- rm -rf node_modules",
+    "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules && rm -rf node_modules",
     "dist": "./node_modules/.bin/lerna run prepublish",
     "lint": "eslint .",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",

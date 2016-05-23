@@ -37,8 +37,8 @@ const standardConfig = {
         presets: 'es2015'
       }
     },{
-       test: /\.html$/,
-       loader: "raw-loader"
+      test: /\.html$/,
+      loader: 'raw-loader'
     }]
   },
   plugins: [

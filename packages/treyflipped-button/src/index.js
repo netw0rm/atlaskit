@@ -1,4 +1,4 @@
-import styles from './style.less'; // import our css modules using es6 imports
+import styles from './style.less'; // eslint-disable-line no-unused-vars
 import {skate, vdom} from 'skatejs';
 
 export default skate('x-hello', {
@@ -7,6 +7,5 @@ export default skate('x-hello', {
   },
   render (elem) {
     vdom.text(`BYE!!, ${elem.name}`);
-    console.log("rending")
   }
 });

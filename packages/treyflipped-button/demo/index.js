@@ -1,4 +1,4 @@
-import demoHTML from './index.html'; //eslint no-undef: 0
-import component from '../src/index.js'; //esling no-undef: 0
+import demoHTML from './index.html'; // eslint-disable-line no-unused-vars
+import component from '../src/index.js'; // eslint-disable-line no-unused-vars
 
 export default component;

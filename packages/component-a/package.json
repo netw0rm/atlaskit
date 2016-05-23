@@ -1,6 +1,6 @@
 {
   "name": "atlaskit-component-a",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,5 +13,6 @@
     "analyzeCommits": "semantic-release-lerna-analyzer",
     "verifyConditions": [],
     "debug": false
-  }
+  },
+  "gitHead": "/Users/jonelson/Documents/Atlassian/Projects/atlaskit-spike\n"
 }

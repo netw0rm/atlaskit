@@ -1,18 +1,1 @@
-{
-  "name": "atlaskit-component-c",
-  "version": "2.2.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"No tests specified\" && exit 0",
-    "pre-release": "lerna-semantic-release pre"
-  },
-  "dependencies": {
-    "lodash": "*"
-  },
-  "author": "",
-  "license": "ISC",
-  "release": {
-    "analyzeCommits": "semantic-release-lerna-analyzer"
-  }
-}
+{"name":"atlaskit-component-c","version":"2.2.0","description":"","main":"index.js","scripts":{"test":"echo \"No tests specified\" && exit 0","pre-release":"lerna-semantic-release pre"},"dependencies":{"lodash":"*"},"author":"","license":"ISC","release":{"analyzeCommits":"semantic-release-lerna-analyzer"},"gitHead":"/Users/jonelson/Documents/Atlassian/Projects/atlaskit-spike\n"}

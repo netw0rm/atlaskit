@@ -3,15 +3,13 @@
   "version": "0.0.0",
   "description": "",
   "main": "dist/bundle.js",
+  "webpack": "src/index.js",
   "scripts": {
-    "clean": "rm -rf node_modules",
-    "prepublish": "../../node_modules/.bin/webpack --config ../../webpack.config.js --min",
-    "test": "../../node_modules/.bin/karma start ../../karma.conf.js --single-run",
-    "test-watch": "../../node_modules/.bin/karma start ../../karma.conf.js",
+    "prepublish": "cd .. && npm run prepublish/single joshable-content",
     "pre-release": "lerna-semantic-release pre"
   },
   "files": [
-    "src"
+    "dist"
   ],
   "author": "",
   "license": "ISC",

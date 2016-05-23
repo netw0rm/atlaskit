@@ -5,7 +5,7 @@
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single sean-button",
+    "prepublish": "cd .. && npm run prepublish/single tmp-sean-button",
     "pre-release": "lerna-semantic-release pre"
   },
   "files": [

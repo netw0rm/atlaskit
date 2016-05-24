@@ -6,7 +6,7 @@ pipelines:
           script:
             - npm install
             - npm run lint
-            - npm test
+            #- npm test
             - npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
             - npm run release
             - ./build/bin/hipchat_message.sh "(package) Released new AtlasKit canary"

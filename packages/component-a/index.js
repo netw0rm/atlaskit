@@ -1,4 +1,4 @@
 alert('I am component A??????!!');
 //!!!!
-//Feature A: did a thing
+//Feature A: did a thing!!!
 //New feature

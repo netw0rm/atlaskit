@@ -5,7 +5,9 @@ const webpack = require('webpack');
 const pkg = require(path.join(process.cwd(), 'package.json'));
 
 const shouldMininimize = process.argv.indexOf('--min') !== -1;
-const shouldBundledependencies = process.argv.indexOf('--bundle-deps') !== -1;
+const shouldCreateDemoBundle = process.argv.indexOf('--demo') !== -1;
+const shouldBundleDependencies = process.argv.indexOf('--bundle-deps') !== -1;
+
 
 const standardConfig = {
   entry: {
@@ -27,19 +29,22 @@ const standardConfig = {
       loader: 'style!css'
     }, {
       test: /\.less$/,
-      loader: 'style!css?modules&camelCase!less'
+      loader: 'css?modules&camelCase!less'
     }, {
       loader: 'babel-loader',
       // Only run on js files from the src directory.
-      test: /(src|test)\/[^\/]+?\.js$/,
+      test: /(src|test|demo)\/[^\/]+?\.js$/,
       query: {
         presets: 'es2015'
       }
+    },{
+      test: /\.html$/,
+      loader: 'raw-loader'
     }]
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
-      include: /\.js$/, // Minify any target that ends in .min.js
+      include: /\.js$/, // Only remove dead code
       dead_code: true,
       mangle: false,
       beautify: true,
@@ -54,13 +59,20 @@ const standardConfig = {
 };
 
 // Some overrides passed in by command line args.
+if (shouldCreateDemoBundle) {
+  //completely override the entry and point to the demo instead (which points to the src)
+  standardConfig.entry = {
+    'demo/bundle.js': './demo/index.js'
+  };
+}
+
 if (shouldMininimize) {
   Object.assign(standardConfig.entry, {
     'dist/bundle.min.js': './src/index.js'
   });
 }
 
-if (shouldBundledependencies) {
+if (shouldBundleDependencies) {
   delete standardConfig.externals;
 }
 

@@ -68,5 +68,9 @@
   },
   "pre-commit": [
     "lint"
-  ]
+  ],
+  "dependencies": {
+    "jss": "^3.11.1",
+    "jss-nested": "^1.0.3"
+  }
 }

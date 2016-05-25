@@ -7,4 +7,4 @@ alert('I am component A??????!!');
 
 
 
-//mic check, testing, 123
+//mic check, testing, 123!

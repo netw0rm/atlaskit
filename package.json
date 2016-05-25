@@ -44,7 +44,7 @@
     "karma-mocha": "^1.0.1",
     "karma-sauce-launcher": "1.0.0",
     "karma-webpack": "^1.7.0",
-    "lerna": "jpnelson/lerna#config-concurrency",
+    "lerna": "jpnelson/lerna#config-concurrency-committed-lib",
     "lerna-semantic-release": "0.4.2",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",

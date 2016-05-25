@@ -1,6 +1,6 @@
 {
   "name": "tmp-sean-button",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

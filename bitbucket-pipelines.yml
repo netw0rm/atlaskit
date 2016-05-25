@@ -5,6 +5,7 @@ pipelines:
       - step:
           script:
             - bash -c "git remote set-url origin https://${BITBUCKET_USER}:${BITBUCKET_PASSWORD}@bitbucket.org//atlassian/atlaskit-spike.git/"
+            - bash -c "git fetch --tags"
             - npm install
             - npm run lint
             #- npm test

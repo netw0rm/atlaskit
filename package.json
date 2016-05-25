@@ -11,6 +11,7 @@
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
     "prepublish/single": "./build/bin/prepublish.single.sh",
     "release": "lerna run pre-release && lerna-semantic-release perform",
+    "release/announce": "[ -f .released-packages ] && cat .released-packages | sed 's/^/Released /' | ./build/bin/hipchat_message.sh || return 0",
     "test": "./build/bin/test.sh",
     "test/saucelabs": "./build/bin/test.saucelabs.sh",
     "test/single": "./build/bin/test.single.sh",

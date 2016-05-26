@@ -14,6 +14,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "skatejs": "skatejs/skatejs#85dfbcbf7a7bb53d709719639ca7414b37769861"
+    "dynamics.js": "^1.0.0",
+    "skatejs": "skatejs/skatejs#85dfbcbf7a7bb53d709719639ca7414b37769861",
+    "skatejs-named-slots": "^0.1.5"
   }
 }

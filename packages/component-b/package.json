@@ -7,8 +7,5 @@
     "pre-release": "lerna-semantic-release pre"
   },
   "author": "",
-  "license": "ISC",
-  "release": {
-    "analyzeCommits": "semantic-release-lerna-analyzer"
-  }
+  "license": "ISC"
 }

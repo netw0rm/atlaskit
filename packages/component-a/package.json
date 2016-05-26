@@ -1,14 +1,11 @@
 {
   "name": "tmp-atlaskit-component-a",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "pre-release": "lerna-semantic-release pre"
   },
   "author": "",
-  "license": "ISC",
-  "release": {
-    "analyzeCommits": "semantic-release-lerna-analyzer"
-  }
+  "license": "ISC"
 }

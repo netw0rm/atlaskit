@@ -5,6 +5,7 @@ pipelines:
       - step:
           script:
             - bash -c "git remote set-url origin https://"$BITBUCKET_USER":"\'$BITBUCKET_PASSWORD\'"@bitbucket.org/atlassian/atlaskit-spike.git/"
+            - bash -c "git branch --set-upstream-to origin/$BITBUCKET_BRANCH"
             - bash -c "git config --global user.email 'aui-team@atlassian.com'"
             - bash -c "git config --global user.name 'AUI team account'"
             - bash -c "git fetch --tags"

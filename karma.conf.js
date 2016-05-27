@@ -80,6 +80,5 @@ module.exports = function (config) {
       concurrency: 5,
       client: {}
     });
-    delete config.hostname;
   }
 };

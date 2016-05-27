@@ -4,12 +4,18 @@ pipelines:
     master:
       - step:
           script:
+            - bash -c "git remote set-url origin https://"$BITBUCKET_USER":"\'$BITBUCKET_PASSWORD\'"@bitbucket.org/atlassian/atlaskit-spike.git/"
+            - bash -c "git branch --set-upstream-to origin/$BITBUCKET_BRANCH"
+            - bash -c "git config --global user.email 'aui-team@atlassian.com'"
+            - bash -c "git config --global user.name 'AUI team account'"
+            - bash -c "git fetch --tags"
+            - bash -c "git tag --list" #debug
             - npm install
             - npm run lint
-            - npm test
+            #- npm test
             - npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
             - npm run release
-            - ./build/bin/hipchat_message.sh "(package) Released new AtlasKit canary"
+            - npm run release/announce
   default:
     - step:
         script:

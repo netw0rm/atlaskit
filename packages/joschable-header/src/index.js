@@ -1,5 +1,5 @@
 import styles from './style.less'; // import our css using es6 imports
-import seanButton from 'sean-button';
+import seanButton from 'tmp-sean-button';
 
 // create a 'joschable-header'
 export default () => {

@@ -1,11 +1,11 @@
 {
   "name": "tmp-joschable-header",
-  "version": "0.0.0",
+  "version": "10.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single joschable-header",
+    "prepublish": "cd .. && npm run prepublish/single tmp-joschable-header",
     "pre-release": "lerna-semantic-release pre"
   },
   "files": [
@@ -14,6 +14,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "tmp-sean-button": "^0.0.0"
+    "tmp-sean-button": "^9.0.0"
   }
 }

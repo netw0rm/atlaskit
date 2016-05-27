@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
     "prepublish/single": "./build/bin/prepublish.single.sh",
-    "release": "lerna run pre-release && lerna-semantic-release perform",
+    "release": "lerna run pre-release --concurrency 1 && lerna-semantic-release perform",
+    "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",
     "test": "./build/bin/test.sh",
     "test/saucelabs": "./build/bin/test.saucelabs.sh",
     "test/single": "./build/bin/test.single.sh",
@@ -29,7 +30,7 @@
     "camelcase": "^3.0.0",
     "css-loader": "^0.23.1",
     "cz-conventional-changelog": "^1.1.6",
-    "cz-lerna-changelog": "0.0.4",
+    "cz-lerna-changelog": "0.1.0",
     "eslint": "^2.10.2",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.8.0",
@@ -43,8 +44,8 @@
     "karma-mocha": "^1.0.1",
     "karma-sauce-launcher": "1.0.0",
     "karma-webpack": "^1.7.0",
-    "lerna": "joscha/lerna#atlaskit",
-    "lerna-semantic-release": "0.1.0",
+    "lerna": "jpnelson/lerna#config-concurrency-committed-lib-with-exec",
+    "lerna-semantic-release": "0.4.6",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "mocha": "^2.4.5",
@@ -68,9 +69,5 @@
   },
   "pre-commit": [
     "lint"
-  ],
-  "dependencies": {
-    "jss": "^3.11.1",
-    "jss-nested": "^1.0.3"
-  }
+  ]
 }

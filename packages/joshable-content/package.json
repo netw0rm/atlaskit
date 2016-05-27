@@ -6,7 +6,8 @@
   "webpack": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single tmp-joshable-content",
-    "pre-release": "lerna-semantic-release pre"
+    "pre-release": "lerna-semantic-release pre",
+    "post-release": "lerna-semantic-release post"
   },
   "files": [
     "dist"

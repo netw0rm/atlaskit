@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pre-release": "lerna-semantic-release pre"
+    "pre-release": "lerna-semantic-release pre",
+    "post-release": "lerna-semantic-release post"
   },
   "author": "",
   "license": "ISC",

@@ -1,4 +1,4 @@
-image: joscha/atlaskit:latest
+image: joscha/atlaskit:npm-v389
 pipelines:
   branches:
     master:
@@ -10,7 +10,6 @@ pipelines:
             - bash -c "git config --global user.name 'AUI team account'"
             - bash -c "git fetch --tags"
             - bash -c "git tag --list" #debug
-            - tree -L 3 #debug
             - npm install
             - npm run lint
             - npm run test/saucelabs/ci

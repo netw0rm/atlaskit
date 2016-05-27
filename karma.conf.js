@@ -68,6 +68,7 @@ module.exports = function (config) {
     config = Object.assign(config, {
       sauceLabs: {
         testName: 'AtlasKit',
+        startConnect: !process.env.SAUCELABS_HAS_TUNNEL,
         recordScreenshots: false,
         connectOptions: {
           verbose: true

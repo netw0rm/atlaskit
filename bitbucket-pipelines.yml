@@ -12,7 +12,7 @@ pipelines:
             - bash -c "git tag --list" #debug
             - npm install
             - npm run lint
-            #- npm test
+            - npm run test/saucelabs/ci
             - npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
             - npm run release
             - npm run release/announce

@@ -1,4 +1,4 @@
-image: joscha/atlaskit:latest
+image: joscha/atlaskit:npm-v389
 pipelines:
   branches:
     master:

@@ -11,11 +11,13 @@ pipelines:
             - bash -c "git config --global user.name 'AUI team account'"
             - bash -c "git fetch --tags"
             - bash -c "git tag --list" #debug
+            - tree -L 3 #debug
             - npm install
             - npm run lint
             - npm run test/saucelabs/ci
             - npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
             - npm run release
+            - npm run release/changelog
             - npm run release/announce
   default:
     - step:

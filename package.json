@@ -65,6 +65,7 @@
     }
   },
   "engines": {
+    "npm" : ">=3.8",
     "node": ">=6.1"
   },
   "pre-commit": [

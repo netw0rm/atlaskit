@@ -15,6 +15,7 @@
     "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",
     "test": "./build/bin/test.sh",
     "test/saucelabs": "./build/bin/test.saucelabs.sh",
+    "test/saucelabs/ci": "./build/bin/test.saucelabs.ci.sh",
     "test/single": "./build/bin/test.single.sh",
     "test/single/watch": "./build/bin/test.single.watch.sh",
     "test/single/saucelabs": "./build/bin/test.single.saucelabs.sh",

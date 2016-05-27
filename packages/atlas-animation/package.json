@@ -1,11 +1,11 @@
 {
-  "name": "treyflipped-button",
-  "version": "10.0.0",
+  "name": "atlas-animation",
+  "version": "0.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single treyflipped-button",
+    "prepublish": "cd .. && npm run prepublish/single atlas-animation",
     "pre-release": "lerna-semantic-release pre"
   },
   "files": [
@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "dynamics.js": "^1.0.0",
+    "es6-symbol": "^3.0.2",
     "skatejs": "skatejs/skatejs#85dfbcbf7a7bb53d709719639ca7414b37769861",
     "skatejs-named-slots": "^0.1.5"
   }

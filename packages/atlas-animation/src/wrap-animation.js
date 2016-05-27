@@ -9,13 +9,15 @@ export default function(animation) {
   const o = {};
   o[key] = animation;
 
-  // Animations can have an optional postProcess function to transform the changeData
-  // If one is not present, just return changeData (this is called on every update)
-  if(!animation.postProcess) {
-    animation.postProcess = function(changeData) {
-      return changeData;
-    };
-  }
+  animation.forEach(function(animationPart) {
+    // Animations can have an optional postProcess function to transform the changeData
+    // If one is not present, just return changeData (this is called on every update)
+    if(!animationPart.postProcess) {
+      animationPart.postProcess = function(changeData) {
+        return changeData;
+      };
+    }
+  });
 
   return o;
 }

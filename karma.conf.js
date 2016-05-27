@@ -3,6 +3,7 @@ const webpackConfig = require('./webpack.config.js');
 
 // We delete the entry from the normal config and let karma insert it for us
 delete webpackConfig.entry;
+delete webpackConfig.externals;
 
 module.exports = function (config) {
   Object.assign(config, {

@@ -68,6 +68,7 @@
     "npm" : ">=3.8",
     "node": ">=6.1"
   },
+  "os" : [ "!win32" ],
   "pre-commit": [
     "lint"
   ]

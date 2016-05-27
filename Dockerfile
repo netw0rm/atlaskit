@@ -1,4 +1,4 @@
-FROM joscha/node-chrome-firefox:latest
+FROM joscha/node-chrome-firefox:npm-v389
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app

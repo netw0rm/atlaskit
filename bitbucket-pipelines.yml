@@ -4,7 +4,6 @@ pipelines:
     master:
       - step:
           script:
-            - npm install -g npm@3.8.9 # npm 3.9.0 is broken https://github.com/npm/npm/issues/12647
             - bash -c "git remote set-url origin https://"$BITBUCKET_USER":"\'$BITBUCKET_PASSWORD\'"@bitbucket.org/atlassian/atlaskit-spike.git/"
             - bash -c "git branch --set-upstream-to origin/$BITBUCKET_BRANCH"
             - bash -c "git config --global user.email 'aui-team@atlassian.com'"

@@ -55,3 +55,8 @@ Run prepublish for a single component:
 ```
 npm run prepublish/single my-component
 ```
+
+## Dockerfile
+* `docker build -t atlaskit .`
+* `docker tag <IMAGE_ID> <YOUR-USER>/atlaskit:latest`
+* `docker push <YOUR-USER>/atlaskit`

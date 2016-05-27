@@ -11,7 +11,7 @@
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
     "prepublish/single": "./build/bin/prepublish.single.sh",
     "release": "lerna run pre-release --concurrency 1 && lerna-semantic-release perform",
-    "release/changelog": "[ -s .released-packages ] && lerna run semantic-release post && lerna exec git add CHANGELOG.md && git commit -anm\"docs(changelog): appending to changelog\" --allow-empty && git push origin",
+    "release/changelog": "[ -s .released-packages ] && lerna run post-release && ./build/bin/push-changelogs.sh",
     "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",
     "test": "./build/bin/test.sh",
     "test/saucelabs": "./build/bin/test.saucelabs.sh",

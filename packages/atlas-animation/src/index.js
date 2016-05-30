@@ -9,6 +9,8 @@ import { skate, prop, vdom } from 'skatejs';
 import objectAssign from 'object-assign';
 import key from './key';
 
+// Still not sure I like this solution as it is a bit convoluted, the way it used the completed
+// callback to trigger the next animation.
 function playAnimation(elem, animation) {
   // Need to pre-calculate the change and done function for each animation part
   const optsList = [];
@@ -28,6 +30,9 @@ function playAnimation(elem, animation) {
           objectAssign(elem.styles, animation[i+1].propsFrom);
           dynamics.animate(elem.styles, animation[i+1].propsTo, optsList[i+1]);
         }
+        else {
+          elem.animating = false;
+        }
       }
     });
     optsList.push(opts);
@@ -42,13 +47,45 @@ skate('atlas-animation', {
     animationOptions: {
       default () {
         return {};
+      },
+      set(elem, data) {
+        // if we are setting this for the first time and animating is already set, set it again
+        // to make sure we trigger the change handler
+        if(data.oldValue === undefined && elem.animating) {
+          elem.animating = false;
+          elem.animating = true;
+        }
       }
     },
     animation: {
       default() {
         return () => {}; //no-op
+      },
+      set(elem, data) {
+        // if we are setting this for the first time and animating is already set, set it again
+        // to make sure we trigger the change handler
+        if(data.oldValue === undefined && elem.animating) {
+          elem.animating = false;
+          elem.animating = true;
+        }
       }
     },
+    animating: prop.boolean({
+      attribute: true,
+      set (elem, data) {
+        if (data.newValue && (data.newValue !== data.oldValue)) {
+          // need to check that the other attributes have been set already, if not we can wait as they
+          // will trigger a new animation once they are
+          if(elem.animation && elem.animationOptions && elem.animation(elem.animationOptions)) {
+            const animation = elem.animation(elem.animationOptions)[key];
+            playAnimation(elem, animation);
+          }
+        }
+      }
+    }),
+    animateOn: prop.array({
+      attribute: true
+    }),
     styles: {
       default() {
         return {
@@ -61,16 +98,21 @@ skate('atlas-animation', {
       }
     }
   },
+  prototype: {
+    animate () {
+      this.animating = true;
+    }
+  },
   render (elem) {
-    vdom.style(css.toString());
-    vdom.div({
+    const divAttrs = {
       class: css.locals.testing,
-      onclick: () => {
-        const animation = elem.animation(elem.animationOptions)[key];
-        playAnimation(elem, animation);
-      },
       style: elem.styles
-    }, function () {
+    };
+
+    elem.animateOn.forEach(on => divAttrs[`on${on}`] = elem.animate.bind(elem) );
+
+    vdom.style(css.toString());
+    vdom.div( divAttrs, function () {
       vdom('slot');
     });
   }
@@ -82,16 +124,16 @@ export default skate('x-hello', {
     speed: prop.number()
   },
   render () {
-    vdom('atlas-animation', { animationOptions: {duration: 1000, amount: 100}, animation: atlasBounce}, function () {
+    vdom('atlas-animation', { animation: atlasBounce, animateOn: ['click'], animationOptions: {duration: 1000, amount: 100}}, function () {
       vdom.div('Bounce');
     });
-    vdom('atlas-animation', { animationOptions: {duration: 2000}, animation: atlasGrow}, function () {
+    vdom('atlas-animation', { animation: atlasGrow, animateOn: ['click', 'mouseover'], animationOptions: {duration: 2000}}, function () {
       vdom.div('Grow');
     });
-    vdom('atlas-animation', { animationOptions: {duration: 2000, bounceAmount: 200, growAmount: 1.3}, animation: atlasBounceGrow}, function () {
+    vdom('atlas-animation', { animation: atlasBounceGrow, animateOn: ['click'], animationOptions: {duration: 2000, bounceAmount: 200, growAmount: 1.3}}, function () {
       vdom.div('Bounce-Grow');
     });
-    vdom('atlas-animation', { animationOptions: {duration: 2000, amount: 200, color: '#ff0000', opacity: '0.3'}, animation: atlasPulse}, function () {
+    vdom('atlas-animation', { animation: atlasPulse, animating: true, animateOn: ['click'], animationOptions: {duration: 2000, amount: 200, color: '#ff0000', opacity: '0.3'}}, function () {
       vdom.div('Pulse');
     });
   }

@@ -31,7 +31,7 @@
     "camelcase": "^3.0.0",
     "css-loader": "^0.23.1",
     "cz-conventional-changelog": "^1.1.6",
-    "cz-lerna-changelog": "0.1.1",
+    "cz-lerna-changelog": "0.2.0",
     "eslint": "^2.10.2",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.8.0",

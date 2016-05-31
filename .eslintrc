@@ -1,9 +1,8 @@
 {
   "rules": {
     "indent": [2, 2],
-    "linebreak-style": [2, "unix"],
-    "mocha/no-exclusive-tests": 2,
     "quotes": [2, "single"],
+    "linebreak-style": [2, "unix"],
     "semi": [2, "always"]
   },
   "env": {
@@ -12,9 +11,14 @@
     "browser": true
   },
   "extends": "eslint:recommended",
-  "plugins": [
-    "mocha"
-  ],
+  "globals": {
+    "afterEach": true,
+    "assert": true,
+    "beforeEach": true,
+    "describe": true,
+    "expect": true,
+    "it": true
+  },
   "ecmaFeatures": {
     "modules": true
   },

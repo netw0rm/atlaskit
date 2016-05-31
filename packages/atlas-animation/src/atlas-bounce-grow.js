@@ -8,23 +8,23 @@ import wrapAnimation from './wrap-animation';
 // To add two animations, one after another we can simply import both
 // Create both sets of params and return them in an array
 
-export default function(opts) {
+export default function (opts) {
   const defaultOps = {
     duration: 1000,
     growAmount: 1.3,
-    bounceAmount: 100
+    bounceAmount: 100,
   };
 
-  opts = objectAssign(defaultOps, opts || {});
+  const myOpts = objectAssign(defaultOps, opts || {});
 
   const bounce = atlasBounce({
-    duration: opts.duration * 0.4,
-    amount: opts.bounceAmount
+    duration: myOpts.duration * 0.4,
+    amount: myOpts.bounceAmount,
   })[key];
 
   const grow = atlasGrow({
-    duration: opts.duration * 0.6,
-    amount: opts.growAmount
+    duration: myOpts.duration * 0.6,
+    amount: myOpts.growAmount,
   })[key];
 
   // This will return the list wrapped in an object with a Symbol() for the key

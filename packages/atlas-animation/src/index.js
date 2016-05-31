@@ -2,6 +2,7 @@ import atlasBounce from './atlas-bounce';
 import atlasGrow from './atlas-grow';
 import atlasBounceGrow from './atlas-bounce-grow';
 import atlasPulse from './atlas-pulse';
+import atlasFlyTo from './atlas-fly-to';
 
 import css from './index.less';
 import dynamics from 'dynamics.js';
@@ -76,8 +77,8 @@ skate('atlas-animation', {
         if (data.newValue && (data.newValue !== data.oldValue)) {
           // need to check that the other attributes have been set already, if not we can wait as they
           // will trigger a new animation once they are
-          if(elem.animation && elem.animationOptions && elem.animation(elem.animationOptions)) {
-            const animation = elem.animation(elem.animationOptions)[key];
+          if(elem.animation && elem.animationOptions && elem.animation(elem, elem.animationOptions)) {
+            const animation = elem.animation(elem, elem.animationOptions)[key];
             playAnimation(elem, animation);
           }
         }
@@ -105,7 +106,7 @@ skate('atlas-animation', {
   },
   render (elem) {
     const divAttrs = {
-      class: css.locals.testing,
+      class: css.locals.animation,
       style: elem.styles
     };
 
@@ -124,17 +125,33 @@ export default skate('x-hello', {
     speed: prop.number()
   },
   render () {
-    vdom('atlas-animation', { animation: atlasBounce, animateOn: ['click'], animationOptions: {duration: 1000, amount: 100}}, function () {
-      vdom.div('Bounce');
-    });
-    vdom('atlas-animation', { animation: atlasGrow, animateOn: ['click', 'mouseover'], animationOptions: {duration: 2000}}, function () {
-      vdom.div('Grow');
-    });
-    vdom('atlas-animation', { animation: atlasBounceGrow, animateOn: ['click'], animationOptions: {duration: 2000, bounceAmount: 200, growAmount: 1.3}}, function () {
-      vdom.div('Bounce-Grow');
-    });
-    vdom('atlas-animation', { animation: atlasPulse, animating: true, animateOn: ['click'], animationOptions: {duration: 2000, amount: 200, color: '#ff0000', opacity: '0.3'}}, function () {
-      vdom.div('Pulse');
+    vdom.style(css.toString());
+    vdom.div({class: css.locals.helloContainer}, function(){
+      vdom('atlas-animation', { style: 'color: red', animation: atlasBounce, animateOn: ['click'], animationOptions: {duration: 1000, amount: 100}}, function () {
+        vdom.div({class: css.locals.blackBox}, 'Bounce');
+      });
+      vdom('atlas-animation', { animation: atlasGrow, animateOn: ['click', 'mouseover'], animationOptions: {duration: 2000}}, function () {
+        vdom.div({class: css.locals.blackBox},'Grow');
+      });
+      vdom('atlas-animation', { animation: atlasBounceGrow, animateOn: ['click'], animationOptions: {duration: 2000, bounceAmount: 200, growAmount: 1.3}}, function () {
+        vdom.div({class: css.locals.blackBox},'Bounce->Grow');
+      });
+      vdom('atlas-animation', { animation: atlasPulse, animating: true, animateOn: ['click'], animationOptions: {duration: 2000, amount: 200, color: '#ff0000', opacity: '0.3'}}, function () {
+        vdom.div({class: css.locals.blackBox},'Pulse');
+      });
+      vdom('atlas-animation', { animation: atlasBounce, animateOn: ['click'], animationOptions: {duration: 1000, amount: 100}}, function () {
+        vdom('atlas-animation', { animation: atlasGrow, animateOn: ['click'], animationOptions: {duration: 2000}}, function () {
+          vdom.div({class: css.locals.blackBox},'Bounce+Grow');
+        });
+      });
+      vdom.div({class: css.locals.secondContainer}, function(){
+        vdom('atlas-animation', { animation: atlasFlyTo, animateOn: ['click'], animationOptions: {duration: 1000, travelTo: {x: 1230, y: 235}}}, function () {
+          vdom.div({class: css.locals.blackBox}, 'Start here');
+        });
+      });
+      vdom.div({class: `${css.locals.secondContainer} ${css.locals.alignRight}`}, function(){
+        vdom.div({class: css.locals.dottedBox, id: 'travelTo'}, 'End here');
+      });
     });
   }
 });

@@ -2,7 +2,7 @@ import dynamics from 'dynamics.js';
 import objectAssign from 'object-assign';
 import wrapAnimation from './wrap-animation';
 
-export default function(opts) {
+export default function(elem, opts) {
   const defaultOps = {
     duration: 1000,
     amount: 1.3

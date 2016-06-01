@@ -7,74 +7,74 @@ import objectAssign from 'object-assign';
 skate('motion-bounce', {
   properties: {
     amount: prop.number({
-      attribute: true
+      attribute: true,
     }),
     animating: prop.boolean({
       attribute: true,
-      set (elem, data) {
+      set(elem, data) {
         if (data.newValue) {
           elem.animate();
         }
-      }
+      },
     }),
     animateOn: prop.array({
-      attribute: true
+      attribute: true,
     }),
     duration: prop.number({
-      attribute: true
+      attribute: true,
     }),
     styles: {
       default() {
         return {
           cursor: 'pointer',
-          'transform': 'translateY(0px)',
-          zIndex: 0
+          transform: 'translateY(0px)',
+          zIndex: 0,
         };
       },
       render() {
         return true;
-      }
-    }
+      },
+    },
   },
   prototype: {
-    animate () {
+    animate() {
       dynamics.animate(this.styles, {
-        'transform': `translateY(-${this.amount}px)`
+        transform: `translateY(-${this.amount}px)`,
       }, {
         change: (changeData) => {
-          //use objectAssign to make sure we get a new reference each time
+          // use objectAssign to make sure we get a new reference each time
           this.styles = objectAssign({}, changeData);
         },
         duration: this.duration,
-        type: dynamics.bounce
+        type: dynamics.bounce,
       });
-    }
+    },
   },
-  render (elem) {
+  render(elem) {
     const divAttrs = {
       class: css.locals.testing,
-      style: elem.styles
+      style: elem.styles,
     };
 
-    elem.animateOn.forEach(on => divAttrs[`on${on}`] = elem.animate.bind(elem));
+    elem.animateOn.forEach(on => (divAttrs[`on${on}`] = elem.animate.bind(elem)));
     vdom.style(css.toString());
-    vdom.div(divAttrs, function () {
+    vdom.div(divAttrs, () => {
       vdom('slot');
     });
-  }
+  },
 });
 
 export default skate('x-hello', {
   properties: {
     name: { attribute: true },
-    speed: prop.number()
+    speed: prop.number(),
   },
-  render () {
-    vdom('motion-bounce', { animateOn: ['click'], amount: 100, duration: 1000 }, function () {
+  render() {
+    vdom('motion-bounce', { animateOn: ['click'], amount: 100, duration: 1000 }, () => {
       vdom.div('Test 1');
     });
-    vdom('motion-bounce', { amount: 50, animating: true, duration: 2000 }, function () {
+    vdom('motion-bounce', { amount: 50, animating: true, duration: 2000 }, () => {
       vdom.div('Test 2');
     });
-  }
+  },
 });

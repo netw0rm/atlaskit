@@ -1,4 +1,4 @@
-//import treyflippedButton from '../src/index.js';
+// import treyflippedButton from '../src/index.js';
 
 describe('treyflipped-button', () => {
   describe('passing test', () => {
@@ -6,6 +6,6 @@ describe('treyflipped-button', () => {
       expect(true).to.be.true;
     });
 
-    //it('should use treyflippedButton', () => expect(treyflippedButton).to.not.be.null);
+    // it('should use treyflippedButton', () => expect(treyflippedButton).to.not.be.null);
   });
 });

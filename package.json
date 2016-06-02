@@ -1,29 +1,13 @@
 {
   "name": "atlaskit-spike",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",
-    "dist": "./node_modules/.bin/lerna run prepublish",
-    "dev/single": "./build/bin/dev.single.sh",
-    "lint": "eslint .",
-    "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
-    "prepublish/single": "./build/bin/prepublish.single.sh",
-    "release": "lerna run pre-release --concurrency 1 && lerna-semantic-release perform",
-    "release/changelog": "if [ -s .released-packages ]; then lerna run post-release && ./build/bin/push-changelogs.sh; else return 0; fi",
-    "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",
-    "test": "./build/bin/test.sh",
-    "test/saucelabs": "./build/bin/test.saucelabs.sh",
-    "test/saucelabs/ci": "./build/bin/test.saucelabs.ci.sh",
-    "test/single": "./build/bin/test.single.sh",
-    "test/single/watch": "./build/bin/test.single.watch.sh",
-    "test/single/saucelabs": "./build/bin/test.single.saucelabs.sh",
-    "validate": "npm ls",
-    "webpack/single": "./build/bin/webpack.single.sh"
+  "author": "Atlassian Pty Ltd.",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-lerna-changelog"
+    }
   },
-  "author": "",
-  "license": "ISC",
+  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.9.0",
     "babel-loader": "^6.2.4",
@@ -58,19 +42,48 @@
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1"
   },
-  "repository": "git@bitbucket.org:atlassian/atlaskit-spike.git",
-  "private": true,
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-lerna-changelog"
-    }
-  },
   "engines": {
-    "npm" : ">=3.8",
+    "npm": ">=3.8",
     "node": ">=6.1"
   },
-  "os" : [ "!win32" ],
+  "homepage": "http://aui.atlassian.com",
+  "keywords": [
+    "atlassian",
+    "components",
+    "interface",
+    "ui",
+    "web"
+  ],
+  "license": "Proprietary",
+  "main": "index.js",
+  "os": [
+    "!win32"
+  ],
   "pre-commit": [
     "lint"
-  ]
+  ],
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:atlassian/atlaskit-spike.git"
+  },
+  "scripts": {
+    "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",
+    "dev/single": "./build/bin/dev.single.sh",
+    "dist": "./node_modules/.bin/lerna run prepublish",
+    "lint": "eslint .",
+    "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
+    "prepublish/single": "./build/bin/prepublish.single.sh",
+    "release": "lerna run pre-release --concurrency 1 && lerna-semantic-release perform",
+    "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",
+    "release/changelog": "if [ -s .released-packages ]; then lerna run post-release && ./build/bin/push-changelogs.sh; else return 0; fi",
+    "test": "./build/bin/test.sh",
+    "test/saucelabs": "./build/bin/test.saucelabs.sh",
+    "test/saucelabs/ci": "./build/bin/test.saucelabs.ci.sh",
+    "test/single": "./build/bin/test.single.sh",
+    "test/single/saucelabs": "./build/bin/test.single.saucelabs.sh",
+    "test/single/watch": "./build/bin/test.single.watch.sh",
+    "validate": "npm ls",
+    "webpack/single": "./build/bin/webpack.single.sh"
+  }
 }

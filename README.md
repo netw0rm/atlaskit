@@ -18,7 +18,7 @@ npm run webpack/single my-component -- --min --bundle-deps
 Bundles up all dependencies into one bundle.js file and runs the local `webpack-dev-server` for specified package:
 
 ```
-npm run dev-server/single my-component
+npm run dev/single my-component
 ```
 All dependencies will be watched and automatically swapped out as they change.
 

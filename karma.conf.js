@@ -5,7 +5,7 @@ const webpackConfig = require('./webpack.config.js');
 delete webpackConfig.entry;
 delete webpackConfig.externals;
 
-module.exports = function (config) {
+module.exports = (config) => {
   Object.assign(config, {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     // setting to process.cwd will make all paths start in current component directory
@@ -18,14 +18,14 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     // all dependencies should be traced through here
     files: [
-      'test/index.js'
+      'test/index.js',
     ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     // webpack will trace and watch all dependencies
     preprocessors: {
-      'test/index.js': ['webpack']
+      'test/index.js': ['webpack'],
     },
 
     // karma watches the test entry points
@@ -61,18 +61,18 @@ module.exports = function (config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: Infinity,
   });
 
   if (process.env.SAUCELABS) {
-    config = Object.assign(config, {
+    Object.assign(config, {
       sauceLabs: {
         testName: 'AtlasKit',
         startConnect: !process.env.SAUCELABS_HAS_TUNNEL,
         recordScreenshots: false,
         connectOptions: {
-          verbose: true
-        }
+          verbose: true,
+        },
       },
       customLaunchers: sauceBrowsers,
       browsers: Object.keys(sauceBrowsers),
@@ -80,7 +80,7 @@ module.exports = function (config) {
       reporters: ['saucelabs', 'dots'],
       autoWatch: false,
       concurrency: 5,
-      client: {}
+      client: {},
     });
   }
 };

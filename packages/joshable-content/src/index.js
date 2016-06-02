@@ -1,6 +1,6 @@
 import styles from './style.less'; // import our css using es6 imports
-import seanButtonNew from 'sean-button';
-import joschableHeader from 'joschable-header';
+import seanButtonNew from 'tmp-sean-button';
+import joschableHeader from 'tmp-joschable-header';
 
 // create a 'josshable-content'
 export default () => {

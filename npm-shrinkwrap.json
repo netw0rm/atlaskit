@@ -1,6 +1,6 @@
 {
   "name": "atlaskit-spike",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "dependencies": {
     "@bahmutov/parse-github-repo-url": {
       "version": "0.1.2",

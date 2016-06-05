@@ -1,6 +1,6 @@
 {
   "name": "atlas-animation2",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

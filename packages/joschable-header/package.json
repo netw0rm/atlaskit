@@ -1,6 +1,6 @@
 {
   "name": "tmp-joschable-header",
-  "version": "11.1.2",
+  "version": "11.2.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

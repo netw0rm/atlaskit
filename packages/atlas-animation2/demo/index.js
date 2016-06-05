@@ -1,5 +1,4 @@
-import demoHTML from './index.html'; // eslint-disable-line no-unused-vars
-import { atlasBounce, atlasPulse } from '../src/index.js'; // eslint-disable-line no-unused-vars
+import { atlasBounce, atlasPulse } from '../src/index.js';
 
 import { skate, prop, vdom } from 'skatejs';
 import css from './index.less';

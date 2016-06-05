@@ -3,10 +3,12 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const pkg = require(path.join(process.cwd(), 'package.json'));
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const shouldMininimize = process.argv.indexOf('--min') !== -1;
-const shouldCreateDemoBundle = process.argv.indexOf('--demo') !== -1;
-const shouldBundleDependencies = process.argv.indexOf('--bundle-deps') !== -1;
+const argv = require('minimist')(process.argv.slice(2));
+const shouldMininimize = !!argv.min;
+const shouldCreateDemoBundle = !!argv.demo;
+const shouldBundleDependencies = !!argv['bundle-deps'];
 
 
 const standardConfig = {
@@ -39,7 +41,7 @@ const standardConfig = {
       },
     }, {
       test: /\.html$/,
-      loader: 'raw-loader',
+      loader: 'html-loader',
     }],
   },
   plugins: [
@@ -61,12 +63,14 @@ const standardConfig = {
 // Some overrides passed in by command line args.
 if (shouldCreateDemoBundle) {
   // completely override the entry and point to the demo instead (which points to the src)
-  standardConfig.entry = {
-    'demo/bundle.js': './demo/index.js',
-  };
-}
-
-if (shouldMininimize) {
+  standardConfig.entry['demo.js'] = './demo/index.js';
+  standardConfig.plugins = [
+    new HtmlWebpackPlugin({
+      title: `${pkg.name} - Demo`,
+      template: './demo/index.ejs',
+    }),
+  ];
+} else if (shouldMininimize) {
   Object.assign(standardConfig.entry, {
     'dist/bundle.min.js': './src/index.js',
   });

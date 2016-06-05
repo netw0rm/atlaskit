@@ -1160,3 +1160,34 @@
 
 
 
+<a name="0.0.13"></a>
+## 0.0.13 (2016-06-05)
+
+
+### Bug Fixes
+
+* **c:** c ([f0527e8](https://bitbucket.org/atlassian/atlaskit-spike/commits/f0527e8))
+* **fix:** fix ([a5ed62c](https://bitbucket.org/atlassian/atlaskit-spike/commits/a5ed62c))
+* **fix:** fix ([8a950ac](https://bitbucket.org/atlassian/atlaskit-spike/commits/8a950ac))
+* **fix:** fix a,b,c ([b3cdfab](https://bitbucket.org/atlassian/atlaskit-spike/commits/b3cdfab))
+* **test:** test ([b958498](https://bitbucket.org/atlassian/atlaskit-spike/commits/b958498))
+* **test:** test ([fdafba1](https://bitbucket.org/atlassian/atlaskit-spike/commits/fdafba1))
+
+
+### Features
+
+* **all:** manual version bump for testing ([db2c805](https://bitbucket.org/atlassian/atlaskit-spike/commits/db2c805))
+* **code:** code ([44593c2](https://bitbucket.org/atlassian/atlaskit-spike/commits/44593c2))
+* **code:** This is a feature ([f53e5c5](https://bitbucket.org/atlassian/atlaskit-spike/commits/f53e5c5))
+* **feat:** feat ([8d359a4](https://bitbucket.org/atlassian/atlaskit-spike/commits/8d359a4))
+* **feat:** feature for a ([a698178](https://bitbucket.org/atlassian/atlaskit-spike/commits/a698178))
+* **test:** breaking change ([51f431d](https://bitbucket.org/atlassian/atlaskit-spike/commits/51f431d))
+* **test:** test ([5bea4ad](https://bitbucket.org/atlassian/atlaskit-spike/commits/5bea4ad))
+
+
+### BREAKING CHANGES
+
+* test: testing breaking changes
+
+
+

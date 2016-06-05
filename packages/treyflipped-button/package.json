@@ -5,9 +5,7 @@
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single treyflipped-button",
-    "pre-release": "lerna-semantic-release pre",
-    "post-release": "lerna-semantic-release post"
+    "prepublish": "cd .. && npm run prepublish/single treyflipped-button"
   },
   "files": [
     "dist"

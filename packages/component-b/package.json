@@ -3,10 +3,6 @@
   "version": "11.1.4",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "pre-release": "lerna-semantic-release pre",
-    "post-release": "lerna-semantic-release post"
-  },
   "author": "",
   "license": "ISC",
   "release": {

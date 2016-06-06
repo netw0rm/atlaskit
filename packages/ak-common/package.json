@@ -1,0 +1,20 @@
+{
+  "name": "ak-common",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single ak-common",
+    "pre-release": "lerna-semantic-release pre"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "skatejs": "skatejs/skatejs#c5663a348c0f1641ffb4cacc2e2cb4981a9bc441",
+    "skatejs-named-slots": "^0.2.0"
+  }
+}

@@ -1,15 +1,10 @@
-<a name="11.2.0"></a>
-# 11.2.0 (2016-06-06)
-
-
-### Bug Fixes
-
-* **all:** bump ([34dcdd5](https://bitbucket.org/atlassian/atlaskit-spike/commits/34dcdd5))
+<a name="12.0.0"></a>
+# 12.0.0 (2016-06-06)
 
 
 ### Features
 
-* **test:** breaking change ([51f431d](https://bitbucket.org/atlassian/atlaskit-spike/commits/51f431d))
+* **test:** breaking change ([51f431d](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/51f431d))
 
 
 ### BREAKING CHANGES

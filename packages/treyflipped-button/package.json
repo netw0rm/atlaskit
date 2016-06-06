@@ -1,13 +1,11 @@
 {
   "name": "treyflipped-button",
-  "version": "11.0.0",
+  "version": "11.2.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single treyflipped-button",
-    "pre-release": "lerna-semantic-release pre",
-    "post-release": "lerna-semantic-release post"
+    "prepublish": "cd .. && npm run prepublish/single treyflipped-button"
   },
   "files": [
     "dist"

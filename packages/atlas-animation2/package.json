@@ -1,12 +1,11 @@
 {
   "name": "atlas-animation2",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single atlas-animation2",
-    "pre-release": "lerna-semantic-release pre"
+    "prepublish": "cd .. && npm run prepublish/single atlas-animation2"
   },
   "files": [
     "dist"

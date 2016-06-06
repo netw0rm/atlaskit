@@ -1,13 +1,12 @@
 {
   "name": "atlaskit-spike",
-  "version": "0.0.0",
+  "version": "0.0.13",
   "author": "Atlassian Pty Ltd.",
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-lerna-changelog"
     }
   },
-  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.9.0",
     "babel-loader": "^6.2.4",
@@ -22,6 +21,8 @@
     "eslint-plugin-jsx-a11y": "^1.2.0",
     "eslint-plugin-mocha": "^2.2.0",
     "eslint-plugin-react": "^5.1.1",
+    "html-loader": "^0.4.3",
+    "html-webpack-plugin": "^2.19.0",
     "karma": "^0.13.22",
     "karma-chai-plugins": "^0.7.0",
     "karma-chrome-launcher": "^1.0.1",
@@ -30,9 +31,10 @@
     "karma-sauce-launcher": "1.0.0",
     "karma-webpack": "^1.7.0",
     "lerna": "jpnelson/lerna#config-concurrency-committed-lib-with-exec",
-    "lerna-semantic-release": "0.5.1",
+    "lerna-semantic-release": "1.0.5",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "minimist": "1.2.0",
     "mocha": "^2.4.5",
     "precommit-hook": "^3.0.0",
     "raw-loader": "^0.5.1",
@@ -74,9 +76,9 @@
     "lint": "eslint .",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
     "prepublish/single": "./build/bin/prepublish.single.sh",
-    "release": "lerna run pre-release --concurrency 1 && lerna-semantic-release perform",
+    "release": "lerna-semantic-release pre && lerna-semantic-release perform",
     "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",
-    "release/changelog": "if [ -s .released-packages ]; then lerna run post-release && ./build/bin/push-changelogs.sh; else return 0; fi",
+    "release/changelog": "if [ -s .released-packages ]; then lerna-semantic-release post; else return 0; fi",
     "test": "./build/bin/test.sh",
     "test/saucelabs": "./build/bin/test.saucelabs.sh",
     "test/saucelabs/ci": "./build/bin/test.saucelabs.ci.sh",

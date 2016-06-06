@@ -1,4 +1,3 @@
-import demoHTML from './index.html'; // eslint-disable-line no-unused-vars
 import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
 import React, { Component } from 'react';
 import { Animation } from 'react-web-animation';

@@ -1,0 +1,28 @@
+{
+  "name": "atlas-animation3",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single atlas-animation3",
+    "pre-release": "lerna-semantic-release pre"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "es6-symbol": "^3.0.2",
+    "skatejs": "skatejs/skatejs#85dfbcbf7a7bb53d709719639ca7414b37769861",
+    "skatejs-named-slots": "^0.1.5",
+    "web-animations-js": "^2.2.1"
+  },
+  "devDependencies": {
+    "immutable": "^3.8.1",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-web-animation": "0.0.12"
+  }
+}

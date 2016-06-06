@@ -7,8 +7,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const argv = require('minimist')(process.argv.slice(2));
 const shouldMininimize = !!argv.min;
-const shouldCreateDemoBundle = !!argv.demo;
+const isDemo = !!argv.demo;
 const shouldBundleDependencies = !!argv['bundle-deps'];
+const isMonkeyTest = !!argv.monkey;
 
 
 const standardConfig = {
@@ -35,7 +36,8 @@ const standardConfig = {
     }, {
       loader: 'babel-loader',
       // Only run on js files from the src directory.
-      test: /(src|test|demo)\/[^\/]+?\.js$/,
+      test: /\.jsx?$/,
+      exclude: /(node_modules|bower_components)/,
       query: {
         presets: 'es2015',
       },
@@ -61,9 +63,13 @@ const standardConfig = {
 };
 
 // Some overrides passed in by command line args.
-if (shouldCreateDemoBundle) {
+if (isDemo) {
   // completely override the entry and point to the demo instead (which points to the src)
+  standardConfig.entry['polyfills.js'] = path.join(__dirname, 'build', 'lib', 'polyfills.js');
   standardConfig.entry['demo.js'] = './demo/index.js';
+  if (isMonkeyTest) {
+    standardConfig.entry['monkey.js'] = path.join(__dirname, 'build', 'lib', 'monkey.js');
+  }
   standardConfig.plugins = [
     new HtmlWebpackPlugin({
       title: `${pkg.name} - Demo`,

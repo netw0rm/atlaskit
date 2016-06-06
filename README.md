@@ -49,6 +49,12 @@ Run the saucelabs tests for a single component:
 SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs sean-button
 ```
 
+Run the monkey test for a single component:
+
+```
+npm run test/single/monkey my-component
+```
+
 ### Publishing
 Run prepublish for a single component:
 

@@ -1,5 +1,7 @@
 const camelCase = require('camelcase');
 const fs = require('fs');
+const log = require('minilog')('webpack');
+
 const path = require('path');
 const webpack = require('webpack');
 const pkg = require(path.join(process.cwd(), 'package.json'));
@@ -10,7 +12,9 @@ const shouldMininimize = !!argv.min;
 const isDemo = !!argv.demo;
 const shouldBundleDependencies = !!argv['bundle-deps'];
 const isMonkeyTest = !!argv.monkey;
+const isIntegratonTest = !!argv.integration;
 
+require('minilog').enable();
 
 const standardConfig = {
   entry: {
@@ -62,10 +66,17 @@ const standardConfig = {
   ],
 };
 
-// Some overrides passed in by command line args.
-if (isDemo) {
-  // completely override the entry and point to the demo instead (which points to the src)
-  standardConfig.entry['polyfills.js'] = path.join(__dirname, 'build', 'lib', 'polyfills.js');
+if (isIntegratonTest) {
+  log.info('Integration testing');
+  standardConfig.entry['integration.js'] = './integration/index.js';
+  standardConfig.plugins = [
+    new HtmlWebpackPlugin({
+      title: `${pkg.name} - Integration Test`,
+      template: './integration/index.ejs',
+    }),
+  ];
+} else if (isDemo) {
+  log.info('Demo mode');
   standardConfig.entry['demo.js'] = './demo/index.js';
   if (isMonkeyTest) {
     standardConfig.entry['monkey.js'] = path.join(__dirname, 'build', 'lib', 'monkey.js');
@@ -76,14 +87,24 @@ if (isDemo) {
       template: './demo/index.ejs',
     }),
   ];
-} else if (shouldMininimize) {
+}
+
+if (shouldMininimize) {
+  log.info('minimizing');
   Object.assign(standardConfig.entry, {
     'dist/bundle.min.js': './src/index.js',
   });
 }
 
 if (shouldBundleDependencies) {
+  log.info('bundling dependencies');
   delete standardConfig.externals;
+}
+
+// Some overrides passed in by command line args.
+if (isIntegratonTest || isDemo) {
+  log.info('adding polyfills');
+  standardConfig.entry['polyfills.js'] = path.join(__dirname, 'build', 'lib', 'polyfills.js');
 }
 
 module.exports = standardConfig;

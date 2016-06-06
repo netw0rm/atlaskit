@@ -1,5 +1,5 @@
-<a name="11.5.2"></a>
-## 11.5.2 (2016-06-06)
+<a name="12.0.0"></a>
+# 12.0.0 (2016-06-06)
 
 
 ### Bug Fixes
@@ -14,6 +14,11 @@
 * **test:** test ([fdafba1](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/fdafba1))
 
 
+### Code Refactoring
+
+* **abc:** test breaking change for ABC ([fa67ae5](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/fa67ae5))
+
+
 ### Features
 
 * **b:** feature for b ([0440764](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/0440764))
@@ -22,11 +27,11 @@
 * **components:** feat for a, b, c ([f025f03](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/f025f03))
 * **components:** Feature for a, b and c ([40dafef](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/40dafef))
 * **test:** breaking change ([51f431d](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/51f431d))
-* **test:** test ([5bea4ad](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/5bea4ad))
 
 
 ### BREAKING CHANGES
 
+* abc: test breaking change for a,b,c
 * test: testing breaking changes
 
 

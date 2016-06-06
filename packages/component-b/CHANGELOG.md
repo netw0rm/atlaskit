@@ -1,14 +1,14 @@
-<a name="11.5.1"></a>
-## 11.5.1 (2016-06-06)
+<a name="11.5.2"></a>
+## 11.5.2 (2016-06-06)
 
 
 ### Bug Fixes
 
+* **b:** fix for b ([a08c887](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/a08c887))
 * **b:** fix for b ([9b26bd9](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/9b26bd9))
 * **b:** newline ([9834c82](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/9834c82))
 * **code:** fix for a and b ([34d5261](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/34d5261))
 * **fix:** fix ([a5ed62c](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/a5ed62c))
-* **fix:** fix ([6c49f04](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/6c49f04))
 * **fix:** fix a,b,c ([b3cdfab](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/b3cdfab))
 * **test:** test ([b958498](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/b958498))
 * **test:** test ([fdafba1](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/fdafba1))

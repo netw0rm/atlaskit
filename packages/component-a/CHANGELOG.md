@@ -5,10 +5,8 @@
 ### Bug Fixes
 
 * **code:** fix for a and b ([34d5261](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/34d5261))
-* **code:** fix for just a ([db4788f](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/db4788f))
 * **fix:** fix ([a5ed62c](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/a5ed62c))
 * **fix:** fix ([8a950ac](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/8a950ac))
-* **fix:** fix ([6c49f04](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/6c49f04))
 * **fix:** fix a,b,c ([b3cdfab](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/b3cdfab))
 * **test:** test ([b958498](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/b958498))
 

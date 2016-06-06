@@ -76,6 +76,12 @@ git cz
 ```
 Note: it is advised to run the [linting](#linting) *before* you commit, to prevent you having to answer all the questions twice.
 
+Run the monkey test for a single component:
+
+```
+npm run test/single/monkey my-component
+```
+
 ### Publishing
 Run prepublish for a single component:
 

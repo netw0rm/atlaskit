@@ -1,6 +1,6 @@
 {
   "name": "tmp-joshable-content",
-  "version": "11.2.0",
+  "version": "12.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

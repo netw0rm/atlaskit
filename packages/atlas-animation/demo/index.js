@@ -1,1 +1,1 @@
-// console.log('demo code');
+console.log('demo code'); // eslint-disable-line no-console

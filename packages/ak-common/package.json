@@ -8,6 +8,7 @@
     "prepublish": "cd .. && npm run prepublish/single ak-common",
     "pre-release": "lerna-semantic-release pre"
   },
+  "private": true,
   "files": [
     "dist"
   ],

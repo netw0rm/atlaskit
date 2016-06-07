@@ -32,7 +32,7 @@
     "karma-sauce-launcher": "1.0.0",
     "karma-webpack": "^1.7.0",
     "lerna": "jpnelson/lerna#config-concurrency-committed-lib-with-exec",
-    "lerna-semantic-release": "atlassian/lerna-semantic-release#0da0dabf",
+    "lerna-semantic-release": "atlassian/lerna-semantic-release#2f87cf3d",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "minimist": "1.2.0",

@@ -70,7 +70,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:atlassian/atlaskit-spike.git"
+    "url": "https://bitbucket.org/atlassian/atlaskit-spike"
   },
   "scripts": {
     "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",

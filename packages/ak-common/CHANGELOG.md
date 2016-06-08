@@ -1,5 +1,15 @@
 <a name="1.0.0"></a>
-# [1.0.0](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/compare/13.1.0-tmp-atlaskit-component-b...v1.0.0) (2016-06-08)
+# [1.0.0](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/compare/0.0.1-atlas-animation3...v1.0.0) (2016-06-08)
+
+
+
+<a name="0.0.1-atlas-animation3"></a>
+## [0.0.1-atlas-animation3](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/compare/1.1.6-atlas-animation...0.0.1-atlas-animation3) (2016-06-08)
+
+
+
+<a name="1.1.6-atlas-animation"></a>
+## [1.1.6-atlas-animation](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/compare/13.1.0-tmp-atlaskit-component-b...1.1.6-atlas-animation) (2016-06-08)
 
 
 
@@ -15,7 +25,6 @@
 ### Features
 
 * Add ak-common package ([f6e6197](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/f6e6197))
-* Added fly to animation ([5102346](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/5102346))
 
 
 

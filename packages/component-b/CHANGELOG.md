@@ -1,5 +1,5 @@
 <a name="12.0.0"></a>
-# [12.0.0](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/compare/12.0.1-tmp-atlaskit-component-c...v12.0.0) (2016-06-08)
+# [12.0.0](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/compare/12.2.1-tmp-atlaskit-component-a...v12.0.0) (2016-06-08)
 
 
 ### Bug Fixes
@@ -20,6 +20,7 @@
 
 ### Features
 
+* Added treyflipped-button to show a skate demo ([436f043](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/436f043))
 * **b:** feature for b ([0440764](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/0440764))
 * **components:** feat for a, b, c ([f025f03](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/f025f03))
 * **components:** Feature for a, b and c ([40dafef](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/40dafef))

@@ -1,11 +1,11 @@
 {
-  "name": "ak-common",
+  "name": "ak-avatar",
   "version": "0.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-common",
+    "prepublish": "cd .. && npm run prepublish/single ak-avatar",
     "pre-release": "lerna-semantic-release pre"
   },
   "private": true,
@@ -13,5 +13,10 @@
     "dist"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "ak-common": "0.0.0",
+    "ak-shared-styles": "0.0.0",
+    "ak-base-component": "*"
+  }
 }

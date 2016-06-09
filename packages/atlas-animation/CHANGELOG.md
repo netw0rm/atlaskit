@@ -1,5 +1,5 @@
-<a name="13.0.0"></a>
-# [13.0.0](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/compare/0.0.1-atlas-animation3...v13.0.0) (2016-06-08)
+<a name="1.1.6"></a>
+## [1.1.6](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/compare/0.0.1-atlas-animation3...v1.1.6) (2016-06-08)
 
 
 
@@ -24,24 +24,7 @@
 
 ### Bug Fixes
 
-* **ac:** fix for a, fix for c ([1e0f3f6](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/1e0f3f6))
-
-
-### Code Refactoring
-
-* **abc:** break for a,b,c ([82ce488](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/82ce488))
-* **abc:** test breaking change for ABC ([fa67ae5](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/fa67ae5))
-
-
-### Features
-
-* **components:** feat for a, b, c ([f025f03](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/f025f03))
-
-
-### BREAKING CHANGES
-
-* abc: break for a,b,c
-* abc: test breaking change for a,b,c
+* spike webanimations-js polyfill and react integration ([653f208](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit-spike.git/commits/653f208))
 
 
 

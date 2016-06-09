@@ -1,9 +1,3 @@
 {
-  "extends": "../../../.eslintrc",
-  "env": {
-    "mocha": true
-  },
-  "globals": {
-    "expect": false
-  }
+  "extends": "../../../build/lib/tests.eslintrc"
 }

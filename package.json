@@ -17,7 +17,7 @@
     "css-loader": "^0.23.1",
     "cucumber": "^1.0.0",
     "cz-conventional-changelog": "^1.1.6",
-    "cz-lerna-changelog": "0.2.0",
+    "cz-lerna-changelog": "0.2.1",
     "eslint": "^2.10.2",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.8.0",
@@ -36,7 +36,7 @@
     "karma-sauce-launcher": "1.0.0",
     "karma-webpack": "^1.7.0",
     "lerna": "atlassian/lerna#config-concurrency-committed-lib-with-exec",
-    "lerna-semantic-release": "^1.0.5",
+    "lerna-semantic-release": "^1.1.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "minilog": "^3.0.0",
@@ -78,7 +78,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:atlassian/atlaskit-spike.git"
+    "url": "https://bitbucket.org/atlassian/atlaskit-spike"
   },
   "scripts": {
     "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",

@@ -9,7 +9,7 @@ You will need to install [Commitizen](https://github.com/commitizen/cz-cli) glob
 
 ```
 npm install -g commitizen
-``` 
+```
 
 ### Run webpack
 Bundles the component and all non-named imports into `dist/bundle.js`
@@ -57,6 +57,15 @@ Run the saucelabs tests for a single component:
 ```
 SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs sean-button
 ```
+
+Run the integration (cucumber) tests for a single component:
+
+```
+npm run cucumber/single my-component
+```
+
+Hint: [docker-compose](https://docs.docker.com/compose/) is needed for this.
+
 ### Linting
 We are adhering to the [Airbnb](https://github.com/airbnb/javascript) javascript linting rules, which can be quite strict. Eslint will automatically be run when attempting to commit, but can also be run at any time using:
 

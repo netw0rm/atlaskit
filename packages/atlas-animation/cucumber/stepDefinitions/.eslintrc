@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "../../../../.eslintrc",
+    "plugin:protractor/recommended"
+  ],
+  "rules": {
+    "new-cap": ["error", { "capIsNewExceptions": ["When", "Then", "Given", "After"] }]
+  },
+  "env": {
+    "protractor": true,
+  },
+  "plugins": [
+    "protractor"
+  ]
+}

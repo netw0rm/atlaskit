@@ -6,12 +6,10 @@ services:
       - "4444:4444"
     logging:
       driver: none
-  #selenium-firefox:
-  #  image: selenium/node-firefox
-  #  links:
-  #    - selenium-hub:hub
   selenium-chrome:
-    image: selenium/node-chrome-debug
+    # Uncomment the next line for a VNC server you can attach to
+    # image: selenium/node-chrome-debug
+    image: selenium/node-chrome
     ports:
       - "5900:5900"
     depends_on:
@@ -30,8 +28,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      PACKAGE: "atlaskit-animation"
-    command: 'npm run dev/single/integration atlas-animation'
+      SCOPE:
+    command: 'npm run dev/single/integration "$SCOPE"'
   cucumber:
     image: joscha/atlaskit
     volumes:
@@ -42,6 +40,10 @@ services:
     links:
       - "dev-server:dev"
       - "selenium-hub:hub"
+    environment:
+      SELENIUM_ADDRESS: "http://hub:4444/wd/hub"
+      BASE_URL: "http://dev:8080"
+      SCOPE:
     command: 'bash -c
             "
               echo \"waiting for hub\"
@@ -49,5 +51,5 @@ services:
               && echo \"waiting for dev\"
               && `npm bin`/wait-on tcp:dev:8080
               && echo \"running tests\"
-              && npm run test/single/integration atlas-animation
+              && npm run test/single/integration \"$SCOPE\"
              "'

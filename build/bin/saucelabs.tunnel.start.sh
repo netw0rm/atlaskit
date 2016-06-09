@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 SAUCE_VERSION=4.3.15
 wget https://saucelabs.com/downloads/sc-$SAUCE_VERSION-linux.tar.gz -nv -O - | tar -xz
 PATH=./sc-$SAUCE_VERSION-linux/bin:$PATH

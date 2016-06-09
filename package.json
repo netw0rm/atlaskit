@@ -78,9 +78,10 @@
   "scripts": {
     "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",
     "dev/single": "./build/bin/dev.single.sh",
+    "dev/single/integration": "./build/bin/dev.single.integration.sh",
     "dist": "./node_modules/.bin/lerna run prepublish",
     "lint": "eslint .",
-    "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg && webdriver-manager update",
+    "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
     "prepublish/single": "./build/bin/prepublish.single.sh",
     "release": "lerna-semantic-release pre && lerna-semantic-release perform",
     "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",

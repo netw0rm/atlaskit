@@ -1,0 +1,6 @@
+{
+  "extends": "../../../../.eslintrc",
+  "rules": {
+    "new-cap": ["error", { "capIsNewExceptions": ["When", "Then", "Given", "After"] }]
+  }
+}

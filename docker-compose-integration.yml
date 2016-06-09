@@ -1,0 +1,53 @@
+version: '2'
+services:
+  selenium-hub:
+    image: selenium/hub
+    ports:
+      - "4444:4444"
+    logging:
+      driver: none
+  #selenium-firefox:
+  #  image: selenium/node-firefox
+  #  links:
+  #    - selenium-hub:hub
+  selenium-chrome:
+    image: selenium/node-chrome-debug
+    ports:
+      - "5900:5900"
+    depends_on:
+      - selenium-hub
+    links:
+      - "selenium-hub:hub"
+      - "dev-server:dev"
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+    logging:
+      driver: none
+  dev-server:
+    image: joscha/atlaskit
+    volumes:
+      - .:/usr/src/app/
+    ports:
+      - "8080:8080"
+    environment:
+      PACKAGE: "atlaskit-animation"
+    command: 'npm run dev/single/integration atlas-animation'
+  cucumber:
+    image: joscha/atlaskit
+    volumes:
+      - .:/usr/src/app/
+    depends_on:
+      - selenium-chrome
+      - dev-server
+    links:
+      - "dev-server:dev"
+      - "selenium-hub:hub"
+    command: 'bash -c
+            "
+              echo \"waiting for hub\"
+              && `npm bin`/wait-on tcp:hub:4444
+              && echo \"waiting for dev\"
+              && `npm bin`/wait-on tcp:dev:8080
+              && echo \"running tests\"
+              && npm run test/single/integration atlas-animation
+             "'

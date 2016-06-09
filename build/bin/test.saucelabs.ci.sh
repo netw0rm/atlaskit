@@ -1,6 +1,5 @@
 #!/bin/sh
 set -e
-set -o pipefail
 
 BASEDIR=$(dirname $0)
 $BASEDIR/saucelabs.tunnel.start.sh

@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-set -o pipefail
 
 BASEDIR=$(dirname $0)
 PKG="$1"

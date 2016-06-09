@@ -1,6 +1,5 @@
-#!/bin/bash
+#!/bin/sh
 set -e
-set -o pipefail
 
 if [[ $# -eq 0 || "$1" == "" ]]
   then

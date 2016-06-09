@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-set -o pipefail
 
 SAUCE_VERSION=4.3.15
 wget https://saucelabs.com/downloads/sc-$SAUCE_VERSION-linux.tar.gz -nv -O - | tar -xz

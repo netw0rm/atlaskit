@@ -73,7 +73,8 @@
     "!win32"
   ],
   "pre-commit": [
-    "lint"
+    "lint-changed",
+    "validate"
   ],
   "private": true,
   "repository": {
@@ -87,6 +88,7 @@
     "dev/single/integration": "./build/bin/dev.single.integration.sh",
     "dist": "./node_modules/.bin/lerna run prepublish",
     "lint": "eslint .",
+    "lint-changed": "./build/bin/lint-changed.sh",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
     "prepublish/single": "./build/bin/prepublish.single.sh",
     "release": "lerna-semantic-release pre && lerna-semantic-release perform",
@@ -100,7 +102,7 @@
     "test/single/monkey": "./build/bin/test.single.monkey.sh",
     "test/single/saucelabs": "./build/bin/test.single.saucelabs.sh",
     "test/single/watch": "./build/bin/test.single.watch.sh",
-    "validate": "npm ls",
+    "validate": "npm ls >/dev/null && ./node_modules/.bin/lerna exec -- npm ls >/dev/null",
     "webpack/single": "./build/bin/webpack.single.sh"
   }
 }

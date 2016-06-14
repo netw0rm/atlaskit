@@ -1,0 +1,13 @@
+version: '2'
+services:
+  aui-saucelabs-tests:
+    container_name: aui-saucelabs-tests
+    build:
+      context: .
+    volumes:
+      - .:/usr/src/app/
+    environment:
+      CHROME_BIN: '/usr/bin/xvfb-chrome'
+      SAUCE_ACCESS_KEY:
+      SAUCE_USERNAME:
+    command: './build/bin/test.saucelabs.ci.sh'

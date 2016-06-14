@@ -58,6 +58,12 @@ Run the saucelabs tests for a single component:
 SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs sean-button
 ```
 
+Run the saucelabs tests with Docker (as they are run in the CI):
+
+```
+SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... docker-compose -f docker-compose-saucelabs.yml up
+```
+
 Run the integration (cucumber) tests for a single component:
 
 ```

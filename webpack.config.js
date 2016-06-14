@@ -48,10 +48,10 @@ const standardConfig = {
           presets: 'es2015',
         },
       },
-      { // this is for the v1 CustomElement polyfill
+      { // this is for the v1 CustomElement polyfill and named-slots
         loader: 'babel-loader',
         test: /\.jsx?$/,
-        include: /(webcomponents\.js)/,
+        include: /(webcomponents\.js\/src|skatejs-named-slots\/src)/,
         query: {
           presets: 'es2015',
         },

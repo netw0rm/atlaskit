@@ -1,10 +1,10 @@
 import css from './index.less';
 import dynamics from 'dynamics.js';
-import { skate, prop, vdom } from 'skatejs';
+import { define, prop, vdom } from 'skatejs';
 import objectAssign from 'object-assign';
 
 
-skate('motion-bounce', {
+define('motion-bounce', {
   properties: {
     amount: prop.number({
       attribute: true,
@@ -64,7 +64,7 @@ skate('motion-bounce', {
   },
 });
 
-export default skate('x-hello', {
+export default define('x-hello', {
   properties: {
     name: { attribute: true },
     speed: prop.number(),

@@ -1,4 +1,6 @@
 #!/bin/sh
+set -e
+
 BASEDIR=$(dirname $0)
 $BASEDIR/saucelabs.tunnel.start.sh
 SAUCELABS_HAS_TUNNEL=1 $BASEDIR/test.saucelabs.sh

@@ -34,7 +34,7 @@ const sauceBrowsers = {
   // Safari
   safari_latest: {
     browserName: 'safari',
-    version: 'latest',
+    version: '9.0',
     platform: 'OS X 10.11',
   },
   // IE
@@ -63,6 +63,7 @@ const sauceBrowsers = {
   },
   // Android
   android: {
+    browserName: 'android',
     platform: 'Linux',
     version: '4.0',
     deviceName: 'Android Emulator',

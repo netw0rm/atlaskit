@@ -6,3 +6,4 @@ npm-debug.log.*
 .jshintignore
 .jshintrc
 .released-packages
+sc-*-linux

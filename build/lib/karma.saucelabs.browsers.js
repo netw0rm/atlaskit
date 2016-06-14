@@ -63,6 +63,7 @@ const sauceBrowsers = {
   },
   // Android
   android: {
+    browserName: 'android',
     platform: 'Linux',
     version: '4.0',
     deviceName: 'Android Emulator',

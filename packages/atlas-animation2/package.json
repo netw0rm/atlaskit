@@ -16,6 +16,6 @@
     "dynamics.js": "^1.0.0",
     "es6-symbol": "^3.0.2",
     "skatejs": "1.0.0-beta.0",
-    "skatejs-named-slots": "^0.2.3"
+    "skatejs-named-slots": "^0.2.4"
   }
 }

@@ -10,4 +10,4 @@ services:
       CHROME_BIN: '/usr/bin/xvfb-chrome'
       SAUCE_ACCESS_KEY:
       SAUCE_USERNAME:
-    command: './build/bin/test.saucelabs.ci.sh'
+    command: 'npm run test/saucelabs/ci'

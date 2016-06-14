@@ -31,24 +31,36 @@ const standardConfig = {
   // Only bundle dependencies that start with '.'.
   externals: fs.readdirSync('node_modules'),
   module: {
-    loaders: [{
-      test: /\.css$/,
-      loader: 'style!css',
-    }, {
-      test: /\.less$/,
-      loader: 'css?modules&camelCase!less',
-    }, {
-      loader: 'babel-loader',
-      // Only run on js files from the src directory.
-      test: /\.jsx?$/,
-      exclude: /(node_modules|bower_components)/,
-      query: {
-        presets: 'es2015',
+    loaders: [
+      {
+        test: /\.css$/,
+        loader: 'style!css',
       },
-    }, {
-      test: /\.html$/,
-      loader: 'html-loader',
-    }],
+      {
+        test: /\.less$/,
+        loader: 'css?modules&camelCase!less',
+      },
+      {
+        loader: 'babel-loader',
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        query: {
+          presets: 'es2015',
+        },
+      },
+      { // this is for the v1 CustomElement polyfill
+        loader: 'babel-loader',
+        test: /\.jsx?$/,
+        include: /(webcomponents\.js)/,
+        query: {
+          presets: 'es2015',
+        },
+      },
+      {
+        test: /\.html$/,
+        loader: 'html-loader',
+      },
+    ],
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({

@@ -7,7 +7,7 @@ import atlasFlyTo from './atlas-fly-to';
 
 import css from './index.less';
 import dynamics from 'dynamics.js';
-import { skate, prop, vdom } from 'skatejs';
+import { define, prop, vdom } from 'skatejs';
 import objectAssign from 'object-assign';
 import key from './key';
 
@@ -43,7 +43,7 @@ function playAnimation(elem, animation) {
   dynamics.animate(elem.styles, animation[0].propsTo, optsList[0]);
 }
 
-skate('atlas-animation', {
+define('atlas-animation', {
   properties: {
     animationOptions: {
       default() {
@@ -121,7 +121,7 @@ skate('atlas-animation', {
   },
 });
 
-export default skate('x-hello', {
+export default define('x-hello', {
   properties: {
     name: { attribute: true },
     speed: prop.number(),

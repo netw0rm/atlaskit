@@ -70,6 +70,8 @@ Run the integration (cucumber) tests for a single component:
 npm run cucumber/single my-component
 ```
 
+You can watch the cucumber tests by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
+
 Hint: [docker-compose](https://docs.docker.com/compose/) is needed for this.
 
 ### Linting

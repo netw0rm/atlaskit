@@ -44,7 +44,7 @@ function playAnimation(elem, animation) {
 }
 
 define('atlas-animation', {
-  properties: {
+  props: {
     animationOptions: {
       default() {
         return {};
@@ -122,7 +122,7 @@ define('atlas-animation', {
 });
 
 export default define('x-hello', {
-  properties: {
+  props: {
     name: { attribute: true },
     speed: prop.number(),
   },

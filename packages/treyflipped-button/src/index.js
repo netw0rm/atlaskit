@@ -5,7 +5,7 @@ import objectAssign from 'object-assign';
 
 
 define('motion-bounce', {
-  properties: {
+  props: {
     amount: prop.number({
       attribute: true,
     }),
@@ -65,7 +65,7 @@ define('motion-bounce', {
 });
 
 export default define('x-hello', {
-  properties: {
+  props: {
     name: { attribute: true },
     speed: prop.number(),
   },

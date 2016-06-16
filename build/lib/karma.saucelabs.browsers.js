@@ -38,11 +38,6 @@ const sauceBrowsers = {
     platform: 'OS X 10.11',
   },
   // IE
-  internet_explorer_10: {
-    browserName: 'internet explorer',
-    version: '10',
-    platform: 'Windows 8',
-  },
   internet_explorer_11: {
     browserName: 'internet explorer',
     version: '11',

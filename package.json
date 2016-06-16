@@ -80,7 +80,7 @@
     "dev/single": "./build/bin/dev.single.sh",
     "dist": "./node_modules/.bin/lerna run prepublish",
     "lint": "eslint .",
-    "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg",
+    "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg && cd packages/ak-shared-styles && npm link && cd ../.. && ./node_modules/.bin/lerna exec ../../build/bin/remove.lerna.links.sh",
     "prepublish/single": "./build/bin/prepublish.single.sh",
     "release": "lerna-semantic-release pre && lerna-semantic-release perform",
     "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",

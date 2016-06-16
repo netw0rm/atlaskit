@@ -5,7 +5,7 @@ import objectAssign from 'object-assign';
 
 
 define('motion-bounce', {
-  properties: {
+  props: {
     amount: prop.number({
       attribute: true,
     }),
@@ -59,21 +59,21 @@ define('motion-bounce', {
     elem.animateOn.forEach(on => (divAttrs[`on${on}`] = elem.animate.bind(elem)));
     vdom.style(css.toString());
     vdom.div(divAttrs, () => {
-      vdom('slot');
+      vdom.create('slot');
     });
   },
 });
 
 export default define('x-hello', {
-  properties: {
+  props: {
     name: { attribute: true },
     speed: prop.number(),
   },
   render() {
-    vdom('motion-bounce', { animateOn: ['click'], amount: 100, duration: 1000 }, () => {
+    vdom.create('motion-bounce', { animateOn: ['click'], amount: 100, duration: 1000 }, () => {
       vdom.div('Test 1');
     });
-    vdom('motion-bounce', { amount: 50, animating: true, duration: 2000 }, () => {
+    vdom.create('motion-bounce', { amount: 50, animating: true, duration: 2000 }, () => {
       vdom.div('Test 2');
     });
   },

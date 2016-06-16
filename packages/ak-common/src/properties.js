@@ -13,8 +13,8 @@ function prop(def) {
   This property extension can be used with skate.
   Usage:
   ```
-  properties: {
-      respondsTo: properties.enum({values: ['toggle', 'hover'],
+  props: {
+      respondsTo: props.enum({values: ['toggle', 'hover'],
       missingDefault: 'toggle',
       invalidDefault: 'toggle'})({
 

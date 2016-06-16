@@ -37,7 +37,7 @@ function animateRegularDomBox() {
 }
 
 define('bounce-box', {
-  properties: {
+  props: {
     amount: prop.number({
       attribute: true,
     }),
@@ -80,7 +80,7 @@ define('bounce-box', {
 });
 
 export default define('x-hello', {
-  properties: {
+  props: {
     name: { attribute: true },
     speed: prop.number(),
   },

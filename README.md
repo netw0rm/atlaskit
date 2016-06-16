@@ -1,5 +1,6 @@
 # AtlasKit
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+![build-status](https://pipelines-badges-service.internal.app.dev.atlassian.io/badge/atlassian/atlaskit-spike.svg)
 
 
 ## Development

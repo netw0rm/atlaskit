@@ -1,8 +1,21 @@
+/* eslint no-param-reassign: ["error", { "props": false }] */
 import css from './index.less';
 import dynamics from 'dynamics.js';
 import { define, prop, vdom } from 'skatejs';
 import objectAssign from 'object-assign';
 
+function startAnimating(elem) {
+  dynamics.animate(elem.styles, {
+    transform: `translateY(-${elem.amount}px)`,
+  }, {
+    change: (changeData) => {
+      // use objectAssign to make sure we get a new reference each time
+      elem.styles = objectAssign({}, changeData);
+    },
+    duration: this.duration,
+    type: dynamics.bounce,
+  });
+}
 
 define('motion-bounce', {
   props: {
@@ -38,16 +51,7 @@ define('motion-bounce', {
   },
   prototype: {
     animate() {
-      dynamics.animate(this.styles, {
-        transform: `translateY(-${this.amount}px)`,
-      }, {
-        change: (changeData) => {
-          // use objectAssign to make sure we get a new reference each time
-          this.styles = objectAssign({}, changeData);
-        },
-        duration: this.duration,
-        type: dynamics.bounce,
-      });
+      startAnimating(this);
     },
   },
   render(elem) {
@@ -56,7 +60,11 @@ define('motion-bounce', {
       style: elem.styles,
     };
 
-    elem.animateOn.forEach(on => (divAttrs[`on${on}`] = elem.animate.bind(elem)));
+    elem.animateOn.forEach(on => (
+      divAttrs[`on${on}`] = function startAnimatingOn() {
+        startAnimating(elem);
+      }
+    ));
     vdom.style(css.toString());
     vdom.div(divAttrs, () => {
       vdom.create('slot');

@@ -4,7 +4,7 @@
   "author": "Atlassian Pty Ltd.",
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-lerna-changelog"
+      "path": "./packages/ak-cz-atlaskit-changelog"
     }
   },
   "devDependencies": {

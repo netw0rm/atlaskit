@@ -43,6 +43,10 @@ function playAnimation(elem, animation) {
   dynamics.animate(elem.styles, animation[0].propsTo, optsList[0]);
 }
 
+function startAnimating(elem) {
+  elem.animating = true;
+}
+
 define('atlas-animation', {
   props: {
     animationOptions: {
@@ -103,7 +107,7 @@ define('atlas-animation', {
   },
   prototype: {
     animate() {
-      this.animating = true;
+      startAnimating(this);
     },
   },
   render(elem) {
@@ -112,7 +116,11 @@ define('atlas-animation', {
       style: elem.styles,
     };
 
-    elem.animateOn.forEach(on => { divAttrs[`on${on}`] = elem.animate.bind(elem); });
+    elem.animateOn.forEach(on => {
+      divAttrs[`on${on}`] = function startAnimatingOn() {
+        startAnimating(elem);
+      };
+    });
 
     vdom.style(css.toString());
     vdom.div(divAttrs, () => {

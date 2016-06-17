@@ -1,11 +1,24 @@
+/* eslint no-param-reassign: ["error", { "props": false }] */
 import css from './index.less';
 import dynamics from 'dynamics.js';
-import { skate, prop, vdom } from 'skatejs';
+import { define, prop, vdom } from 'skatejs';
 import objectAssign from 'object-assign';
 
+function startAnimating(elem) {
+  dynamics.animate(elem.styles, {
+    transform: `translateY(-${elem.amount}px)`,
+  }, {
+    change: (changeData) => {
+      // use objectAssign to make sure we get a new reference each time
+      elem.styles = objectAssign({}, changeData);
+    },
+    duration: this.duration,
+    type: dynamics.bounce,
+  });
+}
 
-skate('motion-bounce', {
-  properties: {
+define('motion-bounce', {
+  props: {
     amount: prop.number({
       attribute: true,
     }),
@@ -38,16 +51,7 @@ skate('motion-bounce', {
   },
   prototype: {
     animate() {
-      dynamics.animate(this.styles, {
-        transform: `translateY(-${this.amount}px)`,
-      }, {
-        change: (changeData) => {
-          // use objectAssign to make sure we get a new reference each time
-          this.styles = objectAssign({}, changeData);
-        },
-        duration: this.duration,
-        type: dynamics.bounce,
-      });
+      startAnimating(this);
     },
   },
   render(elem) {
@@ -56,24 +60,28 @@ skate('motion-bounce', {
       style: elem.styles,
     };
 
-    elem.animateOn.forEach(on => (divAttrs[`on${on}`] = elem.animate.bind(elem)));
+    elem.animateOn.forEach(on => (
+      divAttrs[`on${on}`] = function startAnimatingOn() {
+        startAnimating(elem);
+      }
+    ));
     vdom.style(css.toString());
     vdom.div(divAttrs, () => {
-      vdom('slot');
+      vdom.create('slot');
     });
   },
 });
 
-export default skate('x-hello', {
-  properties: {
+export default define('x-hello', {
+  props: {
     name: { attribute: true },
     speed: prop.number(),
   },
   render() {
-    vdom('motion-bounce', { animateOn: ['click'], amount: 100, duration: 1000 }, () => {
+    vdom.create('motion-bounce', { animateOn: ['click'], amount: 100, duration: 1000 }, () => {
       vdom.div('Test 1');
     });
-    vdom('motion-bounce', { amount: 50, animating: true, duration: 2000 }, () => {
+    vdom.create('motion-bounce', { amount: 50, animating: true, duration: 2000 }, () => {
       vdom.div('Test 2');
     });
   },

@@ -1,4 +1,5 @@
-// enabling named slots breaks in Chrome
-// import 'skatejs-named-slots';
-// disable webcomponents (also remove it from package.json) one named-slots is fixed
-import 'webcomponents.js';
+import 'es6-map/implement'; // for Android 4.0
+import 'webcomponents.js/src/WeakMap/WeakMap.js';  // for Android 4.0
+import 'webcomponents.js/src/MutationObserver/MutationObserver.js';  // for Android 4.0
+import 'skatejs-named-slots/src/index.js';
+import 'webcomponents.js/src/CustomElements/v1/CustomElements.js';

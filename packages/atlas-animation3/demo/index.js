@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Animation } from 'react-web-animation';
 import ReactDOM from 'react-dom';
 
-import { skate, prop, vdom, state } from 'skatejs';
+import { define, prop, vdom, state } from 'skatejs';
 import css from './index.less';
 
 /* I didn't bother spiking the actal consumption of the animations, because it should be almost
@@ -36,8 +36,8 @@ function animateRegularDomBox() {
   });
 }
 
-skate('bounce-box', {
-  properties: {
+define('bounce-box', {
+  props: {
     amount: prop.number({
       attribute: true,
     }),
@@ -79,8 +79,8 @@ skate('bounce-box', {
   },
 });
 
-export default skate('x-hello', {
-  properties: {
+export default define('x-hello', {
+  props: {
     name: { attribute: true },
     speed: prop.number(),
   },

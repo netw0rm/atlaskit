@@ -1,9 +1,11 @@
+const path = require('path');
 const sauceBrowsers = require('./build/lib/karma.saucelabs.browsers.js');
 const webpackConfig = require('./webpack.config.js');
 
 // We delete the entry from the normal config and let karma insert it for us
 delete webpackConfig.entry;
 delete webpackConfig.externals;
+webpackConfig.devtool = 'inline-source-map';
 
 module.exports = (config) => {
   Object.assign(config, {
@@ -25,7 +27,7 @@ module.exports = (config) => {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     // webpack will trace and watch all dependencies
     preprocessors: {
-      'test/index.js': ['webpack'],
+      'test/index.js': ['webpack', 'sourcemap'],
     },
 
     // karma watches the test entry points
@@ -63,6 +65,13 @@ module.exports = (config) => {
     // how many browser should be started simultaneous
     concurrency: Infinity,
   });
+
+  // add the polyfill file to the test run
+  const polyfills = path.join(__dirname, 'build', 'lib', 'polyfills.js');
+  config.files.unshift(polyfills);
+  const additionalPreprocessors = {};
+  additionalPreprocessors[polyfills] = ['webpack', 'sourcemap'];
+  Object.assign(config.preprocessors, additionalPreprocessors);
 
   if (process.env.SAUCELABS) {
     Object.assign(config, {

@@ -17,19 +17,19 @@ Will create a new templated component under `packages/my-component-name` with ev
 ```
 |-- packages/
    |-- my-component-name/
-	   |-- src/
-	      |-- host.less
-	      |-- shadow.less
-	      |-- index.js
-	      |-- shared-variables.less
-	  |-- test/
-	     |-- index.js
-	     |-- .eslint.rc
-	  |-- demo/
-	     |-- index.js
-	     |-- index.ejs
-	     |-- index.less
-	  |-- package.json
+     |-- src/
+        |-- host.less
+        |-- shadow.less
+        |-- index.js
+        |-- shared-variables.less
+    |-- test/
+       |-- index.js
+       |-- .eslint.rc
+    |-- demo/
+       |-- index.js
+       |-- index.ejs
+       |-- index.less
+    |-- package.json
   
 ```
 

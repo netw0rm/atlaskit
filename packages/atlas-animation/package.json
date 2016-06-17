@@ -1,6 +1,6 @@
 {
   "name": "atlas-animation",
-  "version": "1.1.5",
+  "version": "1.1.7",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -15,7 +15,7 @@
   "dependencies": {
     "dynamics.js": "^1.0.0",
     "es6-symbol": "^3.0.2",
-    "skatejs": "skatejs/skatejs#85dfbcbf7a7bb53d709719639ca7414b37769861",
-    "skatejs-named-slots": "^0.1.5"
+    "skatejs": "1.0.0-beta.1",
+    "skatejs-named-slots": "^0.2.5"
   }
 }

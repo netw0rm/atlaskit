@@ -1,6 +1,6 @@
 import { atlasBounce, atlasPulse } from '../src/index.js';
 
-import { skate, prop, vdom } from 'skatejs';
+import { define, prop, vdom } from 'skatejs';
 import css from './index.less';
 
 const animateBounce = atlasBounce({}); // create a atlasBounce function with the default options
@@ -13,8 +13,8 @@ function animateRegularDomBox() {
   });
 }
 
-skate('bounce-box', {
-  properties: {
+define('bounce-box', {
+  props: {
     amount: prop.number({
       attribute: true,
     }),
@@ -48,8 +48,8 @@ skate('bounce-box', {
   },
 });
 
-export default skate('x-hello', {
-  properties: {
+export default define('x-hello', {
+  props: {
     name: { attribute: true },
     speed: prop.number(),
   },

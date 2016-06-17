@@ -6,6 +6,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cz-lerna-changelog": "^0.2.1"
+    "cz-lerna-changelog": "^0.2.1",
+    "lerna": "*"
   }
 }

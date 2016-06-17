@@ -6,17 +6,28 @@ function log(data) {
   console.log(data.toString());
 }
 
+function check(script, shouldShowStderr, cb) {
+  const spawned = spawn('npm', ['run', script]);
+  spawned.stdout.on('data', log);
+  shouldShowStderr && spawned.stderr.on('data', log);
+  spawned.on('exit', code => {
+    if (code === 0) {
+      cb(code);
+    }
+  });
+}
+
 module.exports = {
   prompter(cz, commit) {
     console.log('Linting...');
-    const lint = spawn('npm', ['run', 'lint']);
-    lint.stdout.on('data', log);
 
-    lint.on('exit', code => {
-      if (code === 0) {
-        console.log('Linting ok!');
+    check('lint', false, () => {
+      console.log('✓ Linting ok');
+      console.log('Validating...');
+      check('validate', true, () => {
+        console.log('✓ Validating ok');
         czLernaChangelog.prompter(cz, commit);
-      }
+      });
     });
   },
 };

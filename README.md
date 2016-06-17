@@ -76,7 +76,7 @@ git cz
 ```
 Note: it is advised to run the [linting](#markdown-header-linting) *before* you commit, to prevent you having to answer all the questions twice.
 
-Run the [monkey](tools.md#gremlins) test for a single component:
+Run the [monkey](tools.md#markdown-header-gremlins) test for a single component:
 
 ```
 npm run test/single/monkey my-component

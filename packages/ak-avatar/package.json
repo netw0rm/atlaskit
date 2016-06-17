@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ak-common": "0.0.0",
+    "ak-common": "1.0.3",
     "ak-shared-styles": "0.0.0",
     "ak-base-component": "*"
   }

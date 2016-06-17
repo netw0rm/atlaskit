@@ -11,7 +11,6 @@ const SIZE_ATTRIBUTE_ENUM = {
 };
 const AUI_AVATAR_DEFAULT_TYPE = 'user';
 
-debugger;
 export default skate('ak-avatar', {
   render(elem) {
     vdom.style(styles.toString());

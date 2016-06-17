@@ -1,6 +1,6 @@
 {
   "name": "treyflipped-button",
-  "version": "12.0.0",
+  "version": "12.0.1",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

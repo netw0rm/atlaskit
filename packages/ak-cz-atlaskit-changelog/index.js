@@ -21,7 +21,7 @@ module.exports = {
   prompter(cz, commit) {
     console.log('Linting...');
 
-    check('lint', false, () => {
+    check('lint-changed', false, () => {
       console.log('✓ Linting ok');
       console.log('Validating...');
       check('validate', true, () => {

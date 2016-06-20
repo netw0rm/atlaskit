@@ -89,6 +89,7 @@
   },
   "scripts": {
     "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",
+    "create": "./build/bin/create.new.component.sh",
     "cucumber/single": "./build/bin/cucumber.single.sh",
     "dev/single": "./build/bin/dev.single.sh",
     "dev/single/integration": "./build/bin/dev.single.integration.sh",

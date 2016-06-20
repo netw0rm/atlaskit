@@ -30,7 +30,7 @@ Will create a new templated component under `packages/my-component-name` with ev
        |-- index.ejs
        |-- index.less
     |-- package.json
-  
+
 ```
 
 ##Demo a component
@@ -105,13 +105,13 @@ To continuously run tests for a single component:
 ```
 npm run test/single/watch my-component
 ```
-###Saucelabs tests
-Saucelabs is a tool that lets you run your unit tests in a larger set of browsers running different versions.
+###Browserstack tests
+Browserstack is a tool that lets you run your unit tests in a larger set of browsers running different versions.
 
-To run the Saucelabs tests for a single component:
+To run the Browserstack tests for a single component:
 
 ```
-SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs sean-button
+BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... npm run test/single/browserstack ak-common
 ```
 ###Monkey tests
 Monkey tests are a technique where the user tests the application or system by providing random inputs and checking the behavior, or seeing whether the application or system crashes. We do this using [Gremlins.js](tools.md#markdown-header-gremlins).
@@ -147,7 +147,7 @@ Note: it is advised to run the [linting](README.md#markdown-header-linting) *bef
 
 
 ##Merge into master
-All new feature code must be completed in a feature branch. 
+All new feature code must be completed in a feature branch.
 
 Once you are happy with your changes, you must push your branch to Bitbucket and create a pull request. All pull requests must have at least 2 reviewers from the Atlaskit team. Once the pull request has been approved it may be merged into master.
 
@@ -157,10 +157,10 @@ Once you are happy with your changes, you must push your branch to Bitbucket and
 Releasing components is completely automated. The process of releasing will begin:
 
 * Linting is run
-* Tests will be run in Saucelabs
+* Tests will be run in Browserstack
 * Component dist is built
 * Semantic Relase will bump the versions for any component that has changed
-* Change log is generated automatically from commit messages 
+* Change log is generated automatically from commit messages
 * Component will be published to npm
 
 ##Make a change to the default component template

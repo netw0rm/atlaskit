@@ -53,9 +53,8 @@ This is text about gremlins :evil:
 ##Gherkin
 [Link](https://github.com/cucumber/gherkin-javascript)
 
-##Saucelabs
-[Link](https://travis-ci.org/skatejs/)
-*Change this link once we have one?*
+##Browserstack
+[Link](https://browserstack.com)
 
 #Development Tools
 
@@ -83,4 +82,3 @@ This is text about gremlins :evil:
 
 ###Webanimations.js
 [Link](https://github.com/web-animations/web-animations-js)
-

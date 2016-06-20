@@ -1,5 +1,5 @@
 const path = require('path');
-const sauceBrowsers = require('./build/lib/karma.saucelabs.browsers.js');
+const browserStackBrowsers = require('./build/lib/karma.browserstack.browsers.js');
 const webpackConfig = require('./webpack.config.js');
 
 // We delete the entry from the normal config and let karma insert it for us
@@ -73,20 +73,18 @@ module.exports = (config) => {
   additionalPreprocessors[polyfills] = ['webpack', 'sourcemap'];
   Object.assign(config.preprocessors, additionalPreprocessors);
 
-  if (process.env.SAUCELABS) {
+  if (process.env.BROWSERSTACK) {
     Object.assign(config, {
-      sauceLabs: {
-        testName: 'AtlasKit',
-        startConnect: !process.env.SAUCELABS_HAS_TUNNEL,
-        recordScreenshots: false,
-        connectOptions: {
-          verbose: true,
-        },
+      browserStack: {
+        username: process.env.BROWSERSTACK_USERNAME,
+        accessKey: process.env.BROWSERSTACK_KEY,
+        startTunnel: !process.env.BROWSERSTACK_HAS_TUNNEL,
+        project: 'AtlasKit',
       },
-      customLaunchers: sauceBrowsers,
-      browsers: Object.keys(sauceBrowsers),
+      customLaunchers: browserStackBrowsers,
+      browsers: Object.keys(browserStackBrowsers),
       captureTimeout: 120000,
-      reporters: ['saucelabs', 'dots'],
+      reporters: ['labs', 'dots'],
       autoWatch: false,
       concurrency: 5,
       client: {},

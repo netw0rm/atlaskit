@@ -3,7 +3,7 @@
 describe('ak-avatar', () => {
   describe('passing test', () => {
     it('should pass', () => {
-      expect(true || true).to.be.true;
+      expect(true).to.be.true;
     });
   });
 });

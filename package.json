@@ -96,7 +96,7 @@
     "dev/single": "./build/bin/dev.single.sh",
     "dev/single/integration": "./build/bin/dev.single.integration.sh",
     "dist": "./node_modules/.bin/lerna run prepublish",
-    "jsdoc": "./node_modules/.bin/jsdoc --recurse --verbose -c ./jsdoc/conf.json",
+    "jsdoc": "./node_modules/.bin/jsdoc --recurse --verbose -c ./jsdoc/conf.json -t ./jsdoc/jsdoc-templ",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg && cd packages/ak-shared-styles && npm link && cd ../.. && ./node_modules/.bin/lerna exec ../../build/bin/remove.lerna.links.sh",
     "lint": "eslint --format 'node_modules/eslint-friendly-formatter' .",
     "lint-changed": "./build/bin/lint-changed.sh",

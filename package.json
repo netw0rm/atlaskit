@@ -8,6 +8,7 @@
     }
   },
   "devDependencies": {
+    "ak-util-polyfills": "file:./packages/ak-util-polyfills",
     "@kadira/storybook": "^1.32.1",
     "babel-core": "^6.9.1",
     "babel-loader": "^6.2.4",
@@ -19,7 +20,6 @@
     "cucumber": "^1.0.0",
     "cz-conventional-changelog": "^1.1.6",
     "cz-lerna-changelog": "0.2.1",
-    "es6-map": "^0.1.4",
     "eslint": "^2.12.0",
     "eslint-friendly-formatter": "^2.0.5",
     "eslint-config-ak-base": "file:./packages/ak-util-eslint-base",

@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "es6-symbol": "^3.0.2",
+    "es6-map": "^0.1.4",
     "skatejs-named-slots": "^0.2.5",
     "webcomponents.js": "skatejs/webcomponentsjs#skate-v1"
   }

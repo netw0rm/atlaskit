@@ -17,6 +17,8 @@
   "dependencies": {
     "ak-common": "1.1.0",
     "ak-shared-styles": "1.0.0",
-    "ak-base-component": "*"
+    "ak-base-component": "*",
+    "ak-layer": "*",
+    "skatejs": "1.0.0-beta.2"
   }
 }

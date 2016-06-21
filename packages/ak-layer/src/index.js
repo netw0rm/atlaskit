@@ -1,30 +1,26 @@
 import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
-import shadowStyles from './shadow.less';
 
-import { skate, vdom } from 'ak-base-component';
+import { define, vdom, prop } from 'skatejs';
 import Tether from 'tether';
 
-const layerable = {
-  alignment: prop.string({ attribute: true }),
-  alignTo: prop.string({ attribute: true })
-};
-
-export default skate('ak-layer', {
+export default define('ak-layer', {
   props: {
-    alignment: layerable.alignment,
-    alignTo: layerable.alignTo
+    attachment: prop.string({ attribute: true }),
+    targetAttachment: prop.string({ attribute: true }),
+    target: prop.string({ attribute: true }),
   },
-  attached (elem) {
-    elem.__tether = new Tether({
+  attached(elem) {
+    elem.__tether = new Tether({  // eslint-disable-line no-underscore-dangle, no-param-reassign
       element: elem,
-      target: elem.alignTo,
-      attachment: layerable.alignment
+      target: document.querySelector(elem.target),
+      attachment: elem.attachment,
+      targetAttachment: elem.targetAttachment,
     });
   },
-  detached (elem) {
-    elem.__tether.destroy();
+  detached(elem) {
+    elem.__tether.destroy();  // eslint-disable-line no-underscore-dangle, no-param-reassign
   },
-  render (elem) {
+  render() {
     vdom.slot();
-  }
+  },
 });

@@ -1,33 +1,34 @@
 import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
 
-import { enumeration } from 'ak-common';
-import { skate, vdom } from 'ak-base-component';
+import { define, vdom, prop } from 'skatejs';
+import Layer from 'ak-layer/src';
 
-const SIZE_ATTRIBUTE_ENUM = {
-  attribute: 'size',
-  values: ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', 'xxxlarge'],
-  missingDefault: 'medium',
-  invalidDefault: 'medium',
-};
 
-export default skate('ak-avatar', {
+export default define('ak-inline-dialog', {
   render(elem) {
     vdom.style(shadowStyles.toString());
-    vdom.img({
-      alt: elem.alt,
-      src: elem.src,
+    vdom.create(Layer, {
+      attachment: elem.attachment, targetAttachment: elem.targetAttachment, target: elem.target,
+    }, () => {
+      // vdom.create(Animation, {
+      //   animation: atlasPulse,
+      //   animateOn: ['click', 'mouseover'],
+      //   animationOptions: { duration: 2000 },
+      // }, () => {
+      //   vdom.slot();
+      // });
+      const divAttrs = {
+        class: shadowStyles.locals.inlineDialogContainer,
+      };
+      vdom.div(divAttrs, () => {
+        vdom.slot();
+      });
     });
   },
-  properties: {
-    size: enumeration(SIZE_ATTRIBUTE_ENUM)({
-      attribute: true,
-    }),
-    src: {
-      attribute: true,
-    },
-    alt: {
-      attribute: true,
-    },
+  props: {
+    attachment: prop.string({ attribute: true }),
+    targetAttachment: prop.string({ attribute: true }),
+    open: prop.boolean({ attribute: true }),
   },
 });

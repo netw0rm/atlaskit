@@ -1,3 +1,3 @@
-import { skate, vdom } from 'skatejs';
+import { skate, vdom, prop } from 'skatejs';
 
-export { skate, vdom };
+export { skate, vdom, prop };

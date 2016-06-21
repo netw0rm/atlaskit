@@ -5,16 +5,20 @@ import { enumeration } from 'ak-common';
 import { skate, vdom } from 'ak-base-component';
 
 /**
- * Size attribute
+ * Enum for size attribute
+ * @memberof Avatar
  * @readonly
- * @enum {string}
+ * @enum
  * @private
  */
 const SIZE_ATTRIBUTE_ENUM = {
+  /** @type {string} */
   attribute: 'size',
   /** @type {Array.string} */
   values: ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', 'xxxlarge'],
+  /** @type {string} */
   missingDefault: 'medium',
+  /** @type {string} */
   invalidDefault: 'medium',
 };
 
@@ -48,7 +52,7 @@ const Avatar = skate('ak-avatar', {
      * @example <ak-avatar src="/path/to/src">This avatar has a src.</ak-avatar>
      */
     src: {
-      attribute: true,
+      attribute: true
     },
     /**
      * @memberof Avatar
@@ -57,9 +61,9 @@ const Avatar = skate('ak-avatar', {
      * @example <ak-avatar alt="Alt text">This avatar has alt text.</ak-avatar>
      */
     alt: {
-      attribute: true,
-    },
-  },
+      attribute: true
+    }
+  }
 });
 
 export default Avatar;

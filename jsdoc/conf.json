@@ -6,12 +6,15 @@
     "include": ["packages/ak-avatar/src"],
     "includePattern": ".+\\.js(doc|x)?$"
   },
-  "plugins": [],
+  "plugins": [
+    "plugins/markdown"
+  ],
   "templates": {
     "cleverLinks": false,
     "monospaceLinks": false,
     "default": {
-      "outputSourceFiles": true
+      "outputSourceFiles": true,
+      "includeDate": false
     }
   }
 }

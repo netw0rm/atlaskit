@@ -7,6 +7,9 @@
     ?>
         <p class="code-caption"><?js= example.caption ?></p>x
     <?js } ?>
+    <div class="live-example">
+        <?js= example.code ?>
+    </div>
     <pre class="prettyprint"><code><?js= self.htmlsafe(example.code) ?></code></pre>
 <?js
     });

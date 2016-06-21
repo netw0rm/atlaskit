@@ -1,0 +1,11 @@
+{
+  "name": "eslint-config-ak-cucumber",
+  "version": "0.0.0",
+  "author": "",
+  "license": "ISC",
+  "main": ".eslintrc",
+  "dependencies": {
+    "eslint-config-ak-base": "*",
+    "eslint-plugin-protractor": "^1.9.0"
+  }
+}

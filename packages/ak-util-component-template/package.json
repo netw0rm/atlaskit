@@ -1,0 +1,18 @@
+{
+  "name": "ak-util-component-template",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single ak-util-component-template"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "skatejs": "1.0.0-beta.1"
+  },
+  "author": "",
+  "license": "ISC"
+}

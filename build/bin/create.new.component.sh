@@ -24,14 +24,13 @@ if [ -d "packages/$COMP_NAME" ]
 fi
 
 # Copy template files into packages directory
-cp -r "packages/_COMPONENT_TEMPLATE" "packages/$COMP_NAME"
+cp -r "packages/ak-util-component-template" "packages/$COMP_NAME"
 
 # `find` is getting all the files under the new directory
 # `xargs` is passing them to sed
 # `sed` is replacing instances of '<COMPONENT_NAME>' with the new compnent name
-find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' "s/_COMPONENT_TEMPLATE/$COMP_NAME/g" '{}'
+find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' "s/ak-util-component-template/$COMP_NAME/g" '{}'
 
 rm -rf "packages/$COMP_NAME/node_modules"
 
 echo "New component '$COMP_NAME' created (v0.0.0)"
-echo "It is set to 'private' by default. Change this in the package.json when you are ready"

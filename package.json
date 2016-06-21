@@ -1,13 +1,14 @@
 {
   "name": "atlaskit-spike",
-  "version": "0.0.13",
+  "version": "0.0.0",
   "author": "Atlassian Pty Ltd.",
   "config": {
     "commitizen": {
-      "path": "./packages/ak-cz-atlaskit-changelog"
+      "path": "./packages/ak-util-cz-atlaskit-changelog"
     }
   },
   "devDependencies": {
+    "ak-util-polyfills": "file:./packages/ak-util-polyfills",
     "@kadira/storybook": "^1.32.1",
     "babel-core": "^6.9.1",
     "babel-loader": "^6.2.4",
@@ -19,15 +20,11 @@
     "cucumber": "^1.0.0",
     "cz-conventional-changelog": "^1.1.6",
     "cz-lerna-changelog": "0.2.1",
-    "es6-map": "^0.1.4",
     "eslint": "^2.12.0",
-    "eslint-config-airbnb": "^9.0.1",
     "eslint-friendly-formatter": "^2.0.5",
-    "eslint-plugin-import": "^1.8.1",
-    "eslint-plugin-jsx-a11y": "^1.4.2",
-    "eslint-plugin-mocha": "^3.0.0",
-    "eslint-plugin-protractor": "^1.9.0",
-    "eslint-plugin-react": "^5.1.1",
+    "eslint-config-ak-base": "file:./packages/ak-util-eslint-base",
+    "eslint-config-ak-tests": "file:./packages/ak-util-eslint-tests",
+    "eslint-config-ak-cucumber": "file:./packages/ak-util-eslint-cucumber",
     "gremlins.js": "marmelab/gremlins.js#699af579a2f3e36cd3ba1d68c13893e80e40e674",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.21.0",
@@ -95,7 +92,7 @@
     "dev/single": "./build/bin/dev.single.sh",
     "dev/single/integration": "./build/bin/dev.single.integration.sh",
     "dist": "./node_modules/.bin/lerna run prepublish",
-    "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg && cd packages/ak-shared-styles && npm link && cd ../.. && ./node_modules/.bin/lerna exec ../../build/bin/remove.lerna.links.sh",
+    "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg && ./build/bin/no.js.npm.link.sh",
     "lint": "eslint --format 'node_modules/eslint-friendly-formatter' .",
     "lint-changed": "./build/bin/lint-changed.sh",
     "prepublish/single": "./build/bin/prepublish.single.sh",

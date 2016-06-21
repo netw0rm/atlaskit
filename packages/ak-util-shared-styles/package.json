@@ -1,0 +1,12 @@
+{
+  "name": "ak-util-shared-styles",
+  "version": "0.0.0",
+  "description": "",
+  "private": true,
+  "files": [
+    "dist",
+    "src"
+  ],
+  "author": "",
+  "license": "ISC"
+}

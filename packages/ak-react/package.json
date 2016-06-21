@@ -1,0 +1,13 @@
+{
+  "name": "ak-react",
+  "version": "0.0.0",
+  "main": "dist/bundle.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single ak-react"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "",
+  "license": "ISC"
+}

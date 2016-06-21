@@ -4,14 +4,26 @@ import shadowStyles from './shadow.less';
 import { enumeration } from 'ak-common';
 import { skate, vdom } from 'ak-base-component';
 
+/**
+ * Size attribute
+ * @readonly
+ * @enum {string}
+ * @private
+ */
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
+  /** @type {Array.string} */
   values: ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', 'xxxlarge'],
   missingDefault: 'medium',
   invalidDefault: 'medium',
 };
 
-export default skate('ak-avatar', {
+/**
+ * Skate ak-avatar.
+ * @constructs Avatar
+ * @example <ak-avatar>This is an avatar</ak-avatar>
+ */
+const Avatar = skate('ak-avatar', {
   render(elem) {
     vdom.style(shadowStyles.toString());
     vdom.img({
@@ -20,14 +32,34 @@ export default skate('ak-avatar', {
     });
   },
   properties: {
+    /**
+     * @memberof Avatar
+     * @type {enum}
+     * @instance
+     * @example <ak-avatar size="small">This avatar is small.</ak-avatar>
+     */
     size: enumeration(SIZE_ATTRIBUTE_ENUM)({
       attribute: true,
     }),
+    /**
+     * @memberof Avatar
+     * @type {string}
+     * @instance
+     * @example <ak-avatar src="/path/to/src">This avatar has a src.</ak-avatar>
+     */
     src: {
       attribute: true,
     },
+    /**
+     * @memberof Avatar
+     * @type {string}
+     * @instance
+     * @example <ak-avatar alt="Alt text">This avatar has alt text.</ak-avatar>
+     */
     alt: {
       attribute: true,
     },
   },
 });
+
+export default Avatar;

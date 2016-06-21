@@ -1,6 +1,6 @@
 {
   "name": "atlaskit-spike",
-  "version": "0.0.13",
+  "version": "0.0.0",
   "author": "Atlassian Pty Ltd.",
   "config": {
     "commitizen": {

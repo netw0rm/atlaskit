@@ -52,7 +52,7 @@ const Avatar = skate('ak-avatar', {
      * @example <ak-avatar src="/path/to/src">This avatar has a src.</ak-avatar>
      */
     src: {
-      attribute: true
+      attribute: true,
     },
     /**
      * @memberof Avatar
@@ -61,9 +61,9 @@ const Avatar = skate('ak-avatar', {
      * @example <ak-avatar alt="Alt text">This avatar has alt text.</ak-avatar>
      */
     alt: {
-      attribute: true
-    }
-  }
+      attribute: true,
+    },
+  },
 });
 
 export default Avatar;

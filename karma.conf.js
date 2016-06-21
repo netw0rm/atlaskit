@@ -84,7 +84,7 @@ module.exports = (config) => {
       customLaunchers: browserStackBrowsers,
       browsers: Object.keys(browserStackBrowsers),
       captureTimeout: 120000,
-      reporters: ['labs', 'dots'],
+      reporters: ['dots'],
       autoWatch: false,
       concurrency: 5,
       client: {},

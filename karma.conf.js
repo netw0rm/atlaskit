@@ -1,4 +1,3 @@
-const path = require('path');
 const sauceBrowsers = require('./build/lib/karma.saucelabs.browsers.js');
 const webpackConfig = require('./webpack.config.js');
 
@@ -67,7 +66,7 @@ module.exports = (config) => {
   });
 
   // add the polyfill file to the test run
-  const polyfills = path.join(__dirname, 'build', 'lib', 'polyfills.js');
+  const polyfills = require.resolve('ak-util-polyfills');
   config.files.unshift(polyfills);
   const additionalPreprocessors = {};
   additionalPreprocessors[polyfills] = ['webpack', 'sourcemap'];

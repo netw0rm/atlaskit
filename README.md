@@ -44,7 +44,7 @@ You can see your component running by staring a local dev-server
 ```
 npm run dev/single my-component-name
 ```
-This will create a bundle of all your component code and it's dependencies and all the code in your `demo/` directory. It will then start up a [webpack-dev-server]() on `localhost:8080` and serve these files. It will automatically watch for changes and [hot-reload](link to hotreloading) them on the fly.
+This will create a bundle of all your component code and it's dependencies and all the code in your `demo/` directory. It will then start up a [webpack-dev-server](tools.md#markdown-header-webpack-dev-server) on `localhost:8080` and serve these files. It will automatically watch for changes and [hot-reload](link to hotreloading) them on the fly.
 
 ###Demo page
 The entry point for your component demo will be `demo/index.ejs`. Your dependencies will automatically be injected by webpack. Any extra javascript you need to include on the page can be in `demo/index.js`.
@@ -167,7 +167,7 @@ To ensure that all commit messages are formatted correctly, we use Commitizen in
 ```
 git cz [-a]
 ```
-Note: it is advised to run the [linting](#markdown-header-linting) *before* you commit, to prevent you from having to answer all the questions twice.
+Note: it is advised to run the [linting](#markdown-header-follow-code-style-guidelines) *before* you commit, to prevent you from having to answer all the questions twice.
 
 
 ##Merge into master

@@ -3,7 +3,7 @@
     "allowUnknownTags": true
   },
   "source": {
-    "include": ["packages/ak-avatar/src"],
+    "include": ["packages/ak-avatar/src", "packages/ak-pony-button/src"],
     "includePattern": ".+\\.js(doc|x)?$"
   },
   "plugins": [

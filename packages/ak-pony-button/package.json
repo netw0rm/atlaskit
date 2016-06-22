@@ -1,0 +1,20 @@
+{
+  "name": "ak-pony-button",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single ak-pony-button"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "ak-util-shared-styles": "^0.0.0",
+    "ak-util-polyfills": "^0.0.0",
+    "skatejs": "1.0.0-beta.1"
+  },
+  "author": "",
+  "license": "ISC"
+}

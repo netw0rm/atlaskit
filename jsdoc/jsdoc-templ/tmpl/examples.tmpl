@@ -5,12 +5,10 @@
     data.forEach(function(example) {
         if (example.caption) {
     ?>
-        <p class="code-caption"><?js= example.caption ?></p>x
+        <p class="code-caption"><?js= example.caption ?></p>
     <?js } ?>
-    <div class="live-example">
-        <?js= example.code ?>
-    </div>
     <pre class="prettyprint"><code><?js= self.htmlsafe(example.code) ?></code></pre>
+    <?js= example.code ?>
 <?js
     });
 ?>

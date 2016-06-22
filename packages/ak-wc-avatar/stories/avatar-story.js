@@ -1,10 +1,19 @@
 import React from 'react';
-import { storiesOf, action } from '@kadira/storybook';
+import ReactDOM from 'react-dom';
 
-storiesOf('ak-wc-avatar', module)
-  .add('with text', () => (
+import { storiesOf, action } from '@kadira/storybook';
+import reactify from 'ak-util-react';
+import avatarWc from '../src/index';
+
+const Avatar = reactify(avatarWc, {
+  React,
+  ReactDOM,
+});
+
+storiesOf('ak-avatar', module)
+  .add('a button', () => (
     <button onClick={action('clicked')}>My First Button</button>
   ))
-  .add('with no text', () => (
-    <button></button>
+  .add('An actual avatar', () => (
+    <Avatar />
   ));

@@ -1,4 +1,4 @@
-const configure = require('@kadira/storybook').configure;
+import { configure } from '@kadira/storybook';
 
 const req = require.context('../packages/', true, /stories\/.*-story\.js$/);
 
@@ -7,4 +7,3 @@ function loadStories() {
 }
 
 configure(loadStories, module);
-

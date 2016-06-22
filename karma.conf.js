@@ -78,8 +78,10 @@ module.exports = (config) => {
       browserStack: {
         username: process.env.BROWSERSTACK_USERNAME,
         accessKey: process.env.BROWSERSTACK_KEY,
-        startTunnel: !process.env.BROWSERSTACK_HAS_TUNNEL,
+        startTunnel: !process.env.BROWSERSTACK_TUNNEL,
+        tunnelIdentifier: process.env.BROWSERSTACK_TUNNEL || 'ak_tunnel',
         project: 'AtlasKit',
+        name: path.basename(process.cwd())
       },
       customLaunchers: browserStackBrowsers,
       browsers: Object.keys(browserStackBrowsers),

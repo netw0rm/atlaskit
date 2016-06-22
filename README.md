@@ -111,7 +111,7 @@ Browserstack is a tool that lets you run your unit tests in a larger set of brow
 To run the Browserstack tests for a single component:
 
 ```
-BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... npm run test/single/browserstack ak-common
+BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... npm run test/single/browserstack ak-util-common
 ```
 ###Monkey tests
 Monkey tests are a technique where the user tests the application or system by providing random inputs and checking the behavior, or seeing whether the application or system crashes. We do this using [Gremlins.js](tools.md#markdown-header-gremlins).

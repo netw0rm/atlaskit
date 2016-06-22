@@ -1,17 +1,17 @@
 {
-  "name": "ak-util-component-template",
+  "name": "akutil-component-template",
   "version": "3.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-util-component-template"
+    "prepublish": "cd .. && npm run prepublish/single akutil-component-template"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "ak-util-shared-styles": "^0.0.0",
+    "akutil-shared-styles": "^0.0.0",
     "skatejs": "1.0.0-beta.1"
   },
   "author": "",

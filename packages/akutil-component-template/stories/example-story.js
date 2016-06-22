@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
-storiesOf('ak-util-component-template', module)
+storiesOf('akutil-component-template', module)
   .add('with text', () => (
     <button onClick={action('clicked')}>My First Button</button>
   ))

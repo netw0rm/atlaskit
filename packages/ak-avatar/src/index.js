@@ -1,7 +1,7 @@
 import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
 
-import { enumeration } from 'ak-util-common';
+import { enumeration } from 'akutil-common';
 import { define, vdom } from 'skatejs';
 
 const SIZE_ATTRIBUTE_ENUM = {

@@ -66,7 +66,7 @@ module.exports = (config) => {
   });
 
   // add the polyfill file to the test run
-  const polyfills = require.resolve('ak-util-polyfills');
+  const polyfills = require.resolve('akutil-polyfills');
   config.files.unshift(polyfills);
   const additionalPreprocessors = {};
   additionalPreprocessors[polyfills] = ['webpack', 'sourcemap'];

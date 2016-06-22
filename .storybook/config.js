@@ -1,6 +1,6 @@
 import path from 'path';
 import { configure } from '@kadira/storybook';
-import 'ak-util-polyfills';
+import 'akutil-polyfills';
 
 const req = require.context(`../packages/`, true, /stories\/.+-story\.js$/);
 

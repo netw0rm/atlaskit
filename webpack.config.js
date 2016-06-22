@@ -120,7 +120,7 @@ if (shouldBundleDependencies) {
 // Some overrides passed in by command line args.
 if (isIntegratonTest || isDemo) {
   log.info('adding polyfills');
-  standardConfig.entry['polyfills.js'] = require.resolve('ak-util-polyfills');
+  standardConfig.entry['polyfills.js'] = require.resolve('akutil-polyfills');
 }
 
 module.exports = standardConfig;

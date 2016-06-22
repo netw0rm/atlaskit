@@ -8,7 +8,9 @@
         <p class="code-caption"><?js= example.caption ?></p>
     <?js } ?>
     <pre class="prettyprint"><code><?js= self.htmlsafe(example.code) ?></code></pre>
-    <?js= example.code ?>
+    <div class="live-example">
+      <?js= example.code ?>
+    </div>
 <?js
     });
 ?>

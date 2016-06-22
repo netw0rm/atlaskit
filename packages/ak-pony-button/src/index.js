@@ -11,12 +11,12 @@ import { define, emit, vdom } from 'skatejs';
  * @example <ak-pony-button></ak-pony-button>
  */
 const PonyButton = define('ak-pony-button', {
-  render(elem) {
+  render() {
     vdom.style(shadowStyles.toString());
-    vdom.div(`I am a pony. My name is ${elem.name}`);
+    vdom.button('I am a pony. (pony)');
   },
   events: {
-    click() {
+    click(elem) {
       console.log('Neigh. I am a pony.'); // eslint-disable-line no-console
       /**
        * Neigh event.
@@ -25,7 +25,7 @@ const PonyButton = define('ak-pony-button', {
        * @type {object}
        * @description The pony button attempts to neigh.
        */
-      emit(this, 'ak-neigh');
+      emit(elem, 'ak-neigh');
     },
   },
   properties: {

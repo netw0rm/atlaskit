@@ -1,0 +1,19 @@
+{
+  "name": "akutil-react",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single akutil-react"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "react": "^0.14.0",
+    "skatejs-react-integration": "0.0.4"
+  },
+  "author": "",
+  "license": "ISC"
+}

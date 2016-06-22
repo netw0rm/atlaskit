@@ -1,11 +1,11 @@
 {
-  "name": "ak-avatar",
+  "name": "akutil-common",
   "version": "0.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-avatar"
+    "prepublish": "cd .. && npm run prepublish/single ak-util-common"
   },
   "files": [
     "dist"
@@ -13,8 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ak-util-common": "^0.0.0",
-    "ak-util-shared-styles": "^0.0.0",
-    "skatejs": "1.0.0-beta.1"
+    "skatejs": "1.0.0-beta.1",
+    "skatejs-named-slots": "^0.2.0"
   }
 }

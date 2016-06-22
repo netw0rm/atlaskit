@@ -97,6 +97,17 @@ npm run webpack/single my-component-name -- --min --bundle-deps
 
 ##Test my component
 
+###Storybook
+To run a story book for a single component:
+```
+npm run storybook/single my-component-name
+```
+
+To run the storybook for all components:
+```
+npm run storybook
+```
+
 ###Unit tests
 To run unit tests for a single component:
 
@@ -118,23 +129,23 @@ SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs my-compone
 ```
 
 You can also run all the saucelabs tests with Docker (as they are run in the CI):
- 
+
 ```
 SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... docker-compose -f docker-compose-saucelabs.yml up
 ```
- 
+
 ###Integration tests
 
 > Hint: [docker-compose](https://docs.docker.com/compose/) is needed for this.
 
 Run the integration ([cucumber](https://github.com/cucumber/cucumber-js)) tests for a single component:
- 
+
 ```
 npm run cucumber/single my-component
 ```
- 
+
 You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` in `docker-compose-saucelabs.yml` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
- 
+
 
 ###Monkey tests
 

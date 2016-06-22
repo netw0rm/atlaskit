@@ -10,6 +10,7 @@ pipelines:
             - bash -c "git config --global user.name 'AUI team account'"
             - bash -c "git fetch --tags"
             - bash -c "git tag --list" #debug
+            - npm install --no-scripts
             - npm install
             - npm run lint
             #- npm run test/saucelabs/ci #debug: commented out while tests were failing

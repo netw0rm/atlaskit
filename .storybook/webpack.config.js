@@ -10,11 +10,7 @@ module.exports = (storybookBaseConfig, configType) => {
       PACKAGE: JSON.stringify(process.env.PACKAGE),
   }));
 
-  console.log(JSON.stringify(storybookBaseConfig.module.loaders));
-
   storybookBaseConfig.module.loaders = webpackConfig.module.loaders;
-
-  console.log(JSON.stringify(storybookBaseConfig.module.loaders));
 
   // Return the altered config
   return storybookBaseConfig;

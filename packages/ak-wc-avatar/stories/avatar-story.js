@@ -15,5 +15,5 @@ storiesOf('ak-avatar', module)
     <button onClick={action('clicked')}>My First Button</button>
   ))
   .add('An actual avatar', () => (
-    <Avatar></Avatar>
+    <Avatar />
   ));

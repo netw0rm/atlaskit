@@ -47,9 +47,9 @@ const standardConfig = {
         query: {
           presets: [
             'es2015',
-            'react',
-            'stage-0'
-          ]
+            'react', // required by react-storybook
+            'stage-0',
+          ],
         },
       },
       { // this is for the v1 CustomElement polyfill and named-slots

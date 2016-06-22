@@ -11,6 +11,7 @@
     "dist"
   ],
   "dependencies": {
+    "ak-util-shared-styles": "^0.0.0",
     "skatejs": "1.0.0-beta.1"
   },
   "author": "",

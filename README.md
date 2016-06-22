@@ -97,6 +97,17 @@ npm run webpack/single my-component-name -- --min --bundle-deps
 
 ##Test my component
 
+###Storybook
+To run a story book for a single component:
+```
+npm run storybook/single my-component-name
+```
+
+To run the storybook for all components:
+```
+npm run storybook
+```
+
 ###Unit tests
 To run unit tests for a single component:
 

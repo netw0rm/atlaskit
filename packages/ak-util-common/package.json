@@ -5,7 +5,7 @@
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-common"
+    "prepublish": "cd .. && npm run prepublish/single ak-util-common"
   },
   "files": [
     "dist"

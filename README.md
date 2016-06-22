@@ -7,6 +7,9 @@ Atlaskit is the Design Platform's implementation of ADG3. It is a collection of 
 npm install @atlaskit/my-component-name
 ```
 
+### Before you get started
+You will need to install [Commitizen](https://github.com/commitizen/cz-cli) globally to be able to commit to this repo.
+
 #How do I... ...
 
 ##Generate a new component skeleton
@@ -30,7 +33,7 @@ Will create a new templated component under `packages/my-component-name` with ev
        |-- index.ejs
        |-- index.less
     |-- package.json
-  
+
 ```
 
 ##Demo a component
@@ -147,7 +150,7 @@ Note: it is advised to run the [linting](README.md#markdown-header-linting) *bef
 
 
 ##Merge into master
-All new feature code must be completed in a feature branch. 
+All new feature code must be completed in a feature branch.
 
 Once you are happy with your changes, you must push your branch to Bitbucket and create a pull request. All pull requests must have at least 2 reviewers from the Atlaskit team. Once the pull request has been approved it may be merged into master.
 
@@ -160,7 +163,7 @@ Releasing components is completely automated. The process of releasing will begi
 * Tests will be run in Saucelabs
 * Component dist is built
 * Semantic Relase will bump the versions for any component that has changed
-* Change log is generated automatically from commit messages 
+* Change log is generated automatically from commit messages
 * Component will be published to npm
 
 ##Make a change to the default component template

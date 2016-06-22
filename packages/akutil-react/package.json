@@ -12,7 +12,8 @@
   ],
   "dependencies": {
     "react": "^0.14.0",
-    "skatejs-react-integration": "0.0.4"
+    "skatejs-react-integration": "0.0.4",
+    "uid": "0.0.2"
   },
   "author": "",
   "license": "ISC"

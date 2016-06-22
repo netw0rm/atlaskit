@@ -16,10 +16,10 @@ export default define('ak-avatar', {
     vdom.style(shadowStyles.toString());
     vdom.img({
       alt: elem.alt,
-      src: elem.src,
+      src: elem.src || '',
     });
   },
-  properties: {
+  props: {
     size: enumeration(SIZE_ATTRIBUTE_ENUM)({
       attribute: true,
     }),

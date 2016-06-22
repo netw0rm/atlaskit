@@ -19,6 +19,7 @@
     "ak-shared-styles": "1.0.0",
     "ak-base-component": "*",
     "ak-layer": "*",
-    "skatejs": "1.0.0-beta.2"
+    "skatejs": "1.0.0-beta.2",
+    "web-animations-js": "^2.2.1"
   }
 }

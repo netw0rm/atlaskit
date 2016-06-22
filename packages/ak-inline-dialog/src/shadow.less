@@ -1,8 +1,11 @@
 @import 'shared-variables.less';
 
 .inlineDialogContainer {
-  background:#fff;
-  border:1px solid #f0f0f0;
-  border-radius:5px;
-  box-shadow: 0 0 10px 10px #ddd;
+  background: @ak-panel-bg-color;
+  border: 1px solid @ak-inline-dialog-border-color;
+  border-radius: @ak-inline-dialog-border-radius;
+  box-shadow: @ak-inline-dialog-box-shadow;
+  padding: @ak-inline-dialog-content-padding;
+
+  overflow: hidden;
 }

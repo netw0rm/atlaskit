@@ -5,18 +5,17 @@
       <title><%= htmlWebpackPlugin.options.title %></title>
     </head>
     <body>
-      <div style="width:300px; margin:50px auto; border:1px solid red; height:300px;" id="target">
+      <div style="width:300px; margin:100px auto; border:1px solid red; height:300px;" id="target">
         test
         <br>
         <button id="button">Super button</button>
         <br/>
-        <ak-inline-dialog>4565</ak-inline-dialog>
+        <ak-inline-dialog>test inline dialog</ak-inline-dialog>
 
         <script>
           var dialog = document.querySelector("ak-inline-dialog");
           dialog.target = '#target';
-          dialog.targetAttachment = 'top right';
-          dialog.attachment = 'top left';
+          //dialog.open = true;
 
           var button = document.querySelector('#button');
           button.addEventListener('click', function () {

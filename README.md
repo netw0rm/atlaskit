@@ -114,9 +114,30 @@ Saucelabs is a tool that lets you run your unit tests in a larger set of browser
 To run the Saucelabs tests for a single component:
 
 ```
-SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs sean-button
+SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs my-component
 ```
+
+You can also run all the saucelabs tests with Docker (as they are run in the CI):
+ 
+```
+SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... docker-compose -f docker-compose-saucelabs.yml up
+```
+ 
+###Integration tests
+
+> Hint: [docker-compose](https://docs.docker.com/compose/) is needed for this.
+
+Run the integration ([cucumber](https://github.com/cucumber/cucumber-js)) tests for a single component:
+ 
+```
+npm run cucumber/single my-component
+```
+ 
+You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` in `docker-compose-saucelabs.yml` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
+ 
+
 ###Monkey tests
+
 Monkey tests are a technique where the user tests the application or system by providing random inputs and checking the behavior, or seeing whether the application or system crashes. We do this using [Gremlins.js](tools.md#markdown-header-gremlins).
 
 To run monkey tests for a single component:

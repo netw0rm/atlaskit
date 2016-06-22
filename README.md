@@ -7,6 +7,9 @@ Atlaskit is the Design Platform's implementation of ADG3. It is a collection of 
 npm install @atlaskit/my-component-name
 ```
 
+### Before you get started
+You will need to install [Commitizen](https://github.com/commitizen/cz-cli) globally to be able to commit to this repo.
+
 #How do I... ...
 
 ##Generate a new component skeleton
@@ -30,7 +33,7 @@ Will create a new templated component under `packages/my-component-name` with ev
        |-- index.ejs
        |-- index.less
     |-- package.json
-  
+
 ```
 
 ##Demo a component
@@ -41,7 +44,7 @@ You can see your component running by staring a local dev-server
 ```
 npm run dev/single my-component-name
 ```
-This will create a bundle of all your component code and it's dependencies and all the code in your `demo/` directory. It will then start up a [webpack-dev-server]() on `localhost:8080` and serve these files. It will automatically watch for changes and [hot-reload](link to hotreloading) them on the fly.
+This will create a bundle of all your component code and it's dependencies and all the code in your `demo/` directory. It will then start up a [webpack-dev-server](tools.md#markdown-header-webpack-dev-server) on `localhost:8080` and serve these files. It will automatically watch for changes and [hot-reload](link to hotreloading) them on the fly.
 
 ###Demo page
 The entry point for your component demo will be `demo/index.ejs`. Your dependencies will automatically be injected by webpack. Any extra javascript you need to include on the page can be in `demo/index.js`.
@@ -111,9 +114,30 @@ Saucelabs is a tool that lets you run your unit tests in a larger set of browser
 To run the Saucelabs tests for a single component:
 
 ```
-SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs sean-button
+SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs my-component
 ```
+
+You can also run all the saucelabs tests with Docker (as they are run in the CI):
+ 
+```
+SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... docker-compose -f docker-compose-saucelabs.yml up
+```
+ 
+###Integration tests
+
+> Hint: [docker-compose](https://docs.docker.com/compose/) is needed for this.
+
+Run the integration ([cucumber](https://github.com/cucumber/cucumber-js)) tests for a single component:
+ 
+```
+npm run cucumber/single my-component
+```
+ 
+You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` in `docker-compose-saucelabs.yml` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
+ 
+
 ###Monkey tests
+
 Monkey tests are a technique where the user tests the application or system by providing random inputs and checking the behavior, or seeing whether the application or system crashes. We do this using [Gremlins.js](tools.md#markdown-header-gremlins).
 
 To run monkey tests for a single component:
@@ -138,16 +162,16 @@ npm run lint -- --fix
 ```
 
 ##Commit changes
-To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Firstly, make sure you have it installed globally (see [Getting Started](#before-you-get-started)). Now running commitizen should be as simple as running `git cz` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
+To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Firstly, make sure you have it installed globally (see [Getting Started](#markdown-header-before-you-get-started)). Now running commitizen should be as simple as running `git cz` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
 
 ```
 git cz [-a]
 ```
-Note: it is advised to run the [linting](README.md#markdown-header-linting) *before* you commit, to prevent you from having to answer all the questions twice.
+Note: it is advised to run the [linting](#markdown-header-follow-code-style-guidelines) *before* you commit, to prevent you from having to answer all the questions twice.
 
 
 ##Merge into master
-All new feature code must be completed in a feature branch. 
+All new feature code must be completed in a feature branch.
 
 Once you are happy with your changes, you must push your branch to Bitbucket and create a pull request. All pull requests must have at least 2 reviewers from the Atlaskit team. Once the pull request has been approved it may be merged into master.
 
@@ -160,7 +184,7 @@ Releasing components is completely automated. The process of releasing will begi
 * Tests will be run in Saucelabs
 * Component dist is built
 * Semantic Relase will bump the versions for any component that has changed
-* Change log is generated automatically from commit messages 
+* Change log is generated automatically from commit messages
 * Component will be published to npm
 
 ##Make a change to the default component template

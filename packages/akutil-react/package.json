@@ -15,6 +15,6 @@
     "skatejs-react-integration": "0.0.4",
     "uid": "0.0.2"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Atlassian Pty. Ltd",
+  "license": "Apache-2.0"
 }

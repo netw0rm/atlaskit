@@ -1,0 +1,23 @@
+{
+  "name": "ak-layer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single ak-layer",
+    "pre-release": "lerna-semantic-release pre"
+  },
+  "private": true,
+  "files": [
+    "dist"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "akutil-common": "^0.0.0",
+    "akutil-shared-styles": "^0.0.0",
+    "tether": "^1.3.2",
+    "skatejs": "1.0.0-beta.2"
+  }
+}

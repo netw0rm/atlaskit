@@ -24,13 +24,13 @@ if [ -d "packages/$COMP_NAME" ]
 fi
 
 # Copy template files into packages directory
-cp -r "packages/ak-util-component-template" "packages/$COMP_NAME"
+cp -r "packages/akutil-component-template" "packages/$COMP_NAME"
 
 # `find` is getting all the files under the new directory
 # `xargs` is passing them to sed
 # `sed` is replacing instances of '<COMPONENT_NAME>' with the new compnent name
 # LC_CTYPE and LANG=C: http://stackoverflow.com/questions/19242275/re-error-illegal-byte-sequence-on-mac-os-x
-LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' "s/ak-util-component-template/${COMP_NAME}/g" '{}'
+LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' "s/akutil-component-template/${COMP_NAME}/g" '{}'
 
 rm -rf "packages/$COMP_NAME/node_modules"
 

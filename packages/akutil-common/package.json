@@ -1,11 +1,11 @@
 {
-  "name": "ak-util-common",
+  "name": "akutil-common",
   "version": "0.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-common"
+    "prepublish": "cd .. && npm run prepublish/single akutil-common"
   },
   "files": [
     "dist"

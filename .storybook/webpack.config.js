@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const webpackConfig = require('../webpack.config.js');
 const lerna = require('lerna');
 const lernaPackageUtilities = require('lerna/lib/PackageUtilities');
 
@@ -27,6 +28,8 @@ module.exports = (storybookBaseConfig, configType) => {
   storybookBaseConfig.plugins.push(new webpack.DefinePlugin({
       PACKAGE_FOLDERS: JSON.stringify(getPackageRestrictions(process.env.PACKAGE)),
   }));
+
+  storybookBaseConfig.module.loaders = webpackConfig.module.loaders;
 
   // Return the altered config
   return storybookBaseConfig;

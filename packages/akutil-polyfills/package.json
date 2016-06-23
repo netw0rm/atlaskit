@@ -1,10 +1,7 @@
 {
-  "name": "ak-util-polyfills",
+  "name": "akutil-polyfills",
   "version": "0.0.0",
   "main": "dist/bundle.js",
-  "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-util-polyfills"
-  },
   "files": [
     "dist"
   ],

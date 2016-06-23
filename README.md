@@ -1,4 +1,4 @@
-# AtlasKit
+#AtlasKit
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 Atlaskit is the Design Platform's implementation of ADG3. It is a collection of reusable webcomponents that can be consumed independently (No more upgrade pains!). Each component is independently versioned and published to npm and can be installed through
@@ -6,7 +6,7 @@ Atlaskit is the Design Platform's implementation of ADG3. It is a collection of 
 ```
 npm install @atlaskit/my-component-name
 ```
-# Development
+#Development
 
 ### Before you get started
 You will need to install [Commitizen](https://github.com/commitizen/cz-cli) globally to be able to commit to this repo.
@@ -19,9 +19,9 @@ npm install
 ```
 You're now ready to start developing in Atlaskit!
 
-# How do I... ...
+#How do I... ...
 
-## Generate a new component skeleton
+##Generate a new component skeleton
 ```npm run create my-component-name```
 
 Will create a new templated component under `packages/my-component-name` with everything you need to get started.
@@ -43,7 +43,6 @@ Will create a new templated component under `packages/my-component-name` with ev
 
 ```
 
-<<<<<<< HEAD
 You'll then need to install it's dependencies and build by running
 
 ```
@@ -52,59 +51,52 @@ npm install
 
 
 ##Demo a component
-=======
-## Demo a component
->>>>>>> da0a6f2227a93a5762a1c63b564263d5b5c33257
 You can see your component running by staring a local dev-server
 
-### Starting a dev-server
+###Starting a dev-server
 
 ```
 npm run dev/single my-component-name
 ```
 This will create a bundle of all your component code and it's dependencies and all the code in your `demo/` directory. It will then start up a [webpack-dev-server](tools.md#markdown-header-webpack-dev-server) on `localhost:8080` and serve these files. It will automatically watch for changes and [hot-reload](link to hotreloading) them on the fly.
 
-<<<<<<< HEAD
 **This is almost completely deprecated. Use [Storybook](#markdown-header-storybook) instead**
 
 ###Demo page
-=======
-### Demo page
->>>>>>> da0a6f2227a93a5762a1c63b564263d5b5c33257
 The entry point for your component demo will be `demo/index.ejs`. Your dependencies will automatically be injected by webpack. Any extra javascript you need to include on the page can be in `demo/index.js`.
 
-### Adding more demo pages
+###Adding more demo pages
 You might choose to separate out your demo into multiple pages. Simply create a new `.ejs` file and link to it from the index page
 
-## Flesh-out a component
+##Flesh-out a component
 The functionality of your component will be contained in `src/index.js`. The template will contain a skate definition and styles will already be linked.
 
-## Style a component
+##Style a component
 Styles for Atlaskit components are written in Less and are separated into three main files by default (`host.less`, `shadow.less`, `shared.less`).
 
-### host.less
+###host.less
 Is where you write styles that affect the component itself.
 
 * These styles will be compiled and placed into the head of the page at runtime.
 * They cannot affect the shadow DOM of a component (use `shadow.less` for that).
 * This is where you would usually place rules that are based on attributes.
 
-### shadow.less
+###shadow.less
 Is where you write styles that affect the shadow DOM of your component
 
 * These are compiled and placed into the shadow DOM of each **instance** of a component
   `vdom.style(shadowStyles.toString());`
 * These do not have access to the root element.
 
-### shared.less
+###shared.less
 This is where you can write styles that need to be shared between `shadow.less` and `host.less`. (Note the `@import 'shared.less';` at the top). This should only be used for shared variables, not shared rules. By default, this will already include the shared colors from the `share-styles` package.
 
-## Add an animation to a component
+##Add an animation to a component
 
-## Add a dependency to a component
+##Add a dependency to a component
 Ensure that when running `npm install --save ...` you are in the components directory, **not in the root!**.
 
-## Verify a component bundle
+##Verify a component bundle
 If you want to check that webpack is correctly bundling your component, you can build it locally to confirm.
 
 ```
@@ -119,9 +111,9 @@ npm run webpack/single my-component-name -- --min --bundle-deps
 * `--min` will produce a `bundle.min.js` file as well
 * `--bundle-deps` will also bundle all the dependencies of the component
 
-## Test my component
+##Test my component
 
-### Storybook
+###Storybook
 To run a story book for a single component:
 ```
 npm run storybook/single my-component-name
@@ -132,7 +124,7 @@ To run the storybook for all components:
 npm run storybook
 ```
 
-### Unit tests
+###Unit tests
 To run unit tests for a single component:
 
 ```
@@ -143,22 +135,22 @@ To continuously run tests for a single component:
 ```
 npm run test/single/watch my-component
 ```
-### Browserstack tests
-Browserstack is a tool that lets you run your unit tests in a larger set of browsers running different versions. Thanks to Browserstack for supplying this project's open-source license!
+###Saucelabs tests
+Saucelabs is a tool that lets you run your unit tests in a larger set of browsers running different versions.
 
-To run the Browserstack tests for a single component:
-
-```
-BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... npm run test/single/browserstack ak-util-common
-```
-
-You can also run all the Browserstack tests with Docker (as they are run in the CI):
+To run the Saucelabs tests for a single component:
 
 ```
-BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... docker-compose -f docker-compose-browserstack.yml up
+SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs my-component
 ```
 
-### Integration tests
+You can also run all the saucelabs tests with Docker (as they are run in the CI):
+
+```
+SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... docker-compose -f docker-compose-saucelabs.yml up
+```
+
+###Integration tests
 
 > Hint: [docker-compose](https://docs.docker.com/compose/) is needed for this.
 
@@ -168,10 +160,10 @@ Run the integration ([cucumber](https://github.com/cucumber/cucumber-js)) tests 
 npm run cucumber/single my-component
 ```
 
-You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` in `docker-compose-browserstack.yml` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
+You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` in `docker-compose-saucelabs.yml` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
 
 
-### Monkey tests
+###Monkey tests
 
 Monkey tests are a technique where the user tests the application or system by providing random inputs and checking the behavior, or seeing whether the application or system crashes. We do this using [Gremlins.js](tools.md#markdown-header-gremlins).
 
@@ -184,7 +176,7 @@ This will open your browser to `localhost:8080` and show a bunch of red lines an
 
 This will run for X mins and report errors ...
 
-## Follow code style guidelines
+##Follow code style guidelines
 We are adhering to the [Airbnb](https://github.com/airbnb/javascript) javascript linting rules, which can be quite strict. Eslint will automatically run when attempting to commit, but can also run at any time using:
 
 ```
@@ -196,7 +188,7 @@ npm run lint
 npm run lint -- --fix
 ```
 
-## Commit changes
+##Commit changes
 To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Firstly, make sure you have it installed globally (see [Getting Started](#markdown-header-before-you-get-started)). Now running commitizen should be as simple as running `git cz` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
 
 ```
@@ -205,31 +197,31 @@ git cz [-a]
 Note: it is advised to run the [linting](#markdown-header-follow-code-style-guidelines) *before* you commit, to prevent you from having to answer all the questions twice.
 
 
-## Merge into master
+##Merge into master
 All new feature code must be completed in a feature branch.
 
 Once you are happy with your changes, you must push your branch to Bitbucket and create a pull request. All pull requests must have at least 2 reviewers from the Atlaskit team. Once the pull request has been approved it may be merged into master.
 
 **Attention! Achtung! Bнимaние! Atención! ध्यान! 注意!**: *Merging into master will automatically release a component. See below for more details*
 
-## Release a component
+##Release a component
 Releasing components is completely automated. The process of releasing will begin:
 
 * Linting is run
-* Tests will be run in Browserstack
+* Tests will be run in Saucelabs
 * Component dist is built
 * Semantic Relase will bump the versions for any component that has changed
 * Change log is generated automatically from commit messages
 * Component will be published to npm
 
-## Make a change to the default component template
+##Make a change to the default component template
 
-### Update the documentation (reminder)
+###Update the documentation (reminder)
 
-## Make changes to the Pipelines build
+##Make changes to the Pipelines build
 Atlaskit uses Bitbucket Pipelines for it's continuous integration. The build scripts are defined in `bitbucket-pipelines.yml`.
 
-### Atlaskit Docker image
+###Atlaskit Docker image
 Bitbucket pipelines works using a Docker image. This contains the initial setup required to run the build. If you need to make changes to `Dockerfile`, you will need to push them to Dockerhub:
 
 * Build the new Docker image: `docker build -t atlaskit .`

@@ -56,7 +56,7 @@ const browserStackBrowsers = {
   android: {
     os: 'android',
     os_version: '4.0',
-    device: 'Google Nexus',
+    device: 'Samsung Galaxy Note 10.1',
   },
 };
 

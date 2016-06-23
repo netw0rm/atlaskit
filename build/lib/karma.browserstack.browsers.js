@@ -48,8 +48,8 @@ const browserStackBrowsers = {
   // iOS
   iphone: {
     os: 'ios',
-    os_version: '8.3',
-    device: 'iPhone 6',
+    os_version: '9.1',
+    device: 'iPhone 6S',
   },
 
   // Android

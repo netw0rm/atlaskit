@@ -5,6 +5,9 @@
   "files": [
     "dist"
   ],
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single akutil-polyfills"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

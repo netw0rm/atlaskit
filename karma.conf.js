@@ -74,7 +74,7 @@ module.exports = (config) => {
   Object.assign(config.preprocessors, additionalPreprocessors);
 
   if (process.env.BROWSERSTACK) {
-    const pkgJsonPath = path.join(path.basename(process.cwd()), 'package.json');
+    const pkgJsonPath = path.join(process.cwd(), 'package.json');
     const packageName = require(pkgJsonPath).name; // eslint-disable-line global-require
     Object.assign(config, {
       browserStack: {

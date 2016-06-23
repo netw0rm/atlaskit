@@ -3,8 +3,14 @@
 # This runs Karma (for CI via Lerna) but pipes errors to a temporarily
 # file so that Lerna doesn't stop.
 
+COMPONENT_DIR=$(basename `pwd`)
+
 {
-    karma start ../../karma.conf.js --single-run
+    if [ -d "test" ]; then
+        karma start ../../karma.conf.js --single-run
+    else
+        echo "No 'test' dir for $COMPONENT_DIR; Skipping tests."
+    fi
 } || {
-    echo $(pwd) >> ../../$FAILED_CI_FILE
+    echo $COMPONENT_DIR >> ../../$FAILED_CI_FILE
 }

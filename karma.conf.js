@@ -20,14 +20,14 @@ module.exports = (config) => {
     // list of files / patterns to load in the browser
     // all dependencies should be traced through here
     files: [
-      'test/index.js',
+      'test/**/*.js',
     ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     // webpack will trace and watch all dependencies
     preprocessors: {
-      'test/index.js': ['webpack', 'sourcemap'],
+      'test/**/*.js': ['webpack', 'sourcemap'],
     },
 
     // karma watches the test entry points

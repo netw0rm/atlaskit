@@ -1,5 +1,4 @@
 #!/bin/sh
 set -e
 
-BASEDIR=$(dirname $0)
-BROWSERSTACK=1 $BASEDIR/test.sh
+BROWSERSTACK=1 lerna exec --concurrency 1 -- karma start ../../karma.conf.js --single-run

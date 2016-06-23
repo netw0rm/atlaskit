@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title><%= htmlWebpackPlugin.options.title %></title>
+    </head>
+    <body>
+      <div style="width:300px; margin:500px auto 0 auto; border:1px solid red; height:300px;" id="target">
+        test
+        <br>
+        <button id="button">Super button</button>
+        <br/>
+
+        <ak-inline-dialog>test inline dialog</ak-inline-dialog>
+
+        <script>
+          var dialog = document.querySelector("ak-inline-dialog");
+          dialog.target = '#target';
+          dialog.position = 'right top';
+          //dialog.open = true;
+
+          var button = document.querySelector('#button');
+          button.addEventListener('click', function () {
+            dialog.open = !dialog.open;
+          })
+        </script>
+      </div>
+    </body>
+</html>

@@ -5,6 +5,7 @@
   "files": [
     "dist"
   ],
+  "webpack": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single akutil-polyfills"
   },

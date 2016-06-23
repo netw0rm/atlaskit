@@ -10,8 +10,8 @@
   "files": [
     "dist"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Atlassian Pty. Ltd",
+  "license": "Apache-2.0",
   "dependencies": {
     "akutil-common": "^0.0.0",
     "akutil-shared-styles": "^0.0.0",

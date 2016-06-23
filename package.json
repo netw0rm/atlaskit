@@ -37,7 +37,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
     "lerna": "2.0.0-beta.20",
-    "lerna-semantic-release": "^1.1.6",
+    "lerna-semantic-release": "^1.0.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "minilog": "^3.0.0",

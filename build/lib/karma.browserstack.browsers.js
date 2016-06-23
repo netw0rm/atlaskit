@@ -55,8 +55,8 @@ const browserStackBrowsers = {
   // Android
   android: {
     os: 'android',
-    os_version: '4.4',
-    device: 'Samsung Galaxy S5',
+    os_version: '4.0',
+    device: 'Google Nexus',
   },
 };
 

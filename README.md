@@ -34,16 +34,21 @@ Will create a new templated component under `packages/my-component-name` with ev
         |-- shadow.less
         |-- index.js
         |-- shared-variables.less
+    |-- stories/
+       |-- example-story.js
     |-- test/
        |-- index.js
        |-- .eslint.rc
-    |-- demo/
-       |-- index.js
-       |-- index.ejs
-       |-- index.less
     |-- package.json
 
 ```
+
+You'll then need to install it's dependencies and build by running
+
+```
+npm install
+```
+
 
 ##Demo a component
 You can see your component running by staring a local dev-server

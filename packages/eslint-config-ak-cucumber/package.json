@@ -1,10 +1,11 @@
 {
   "name": "eslint-config-ak-cucumber",
   "version": "0.0.0",
-  "author": "",
-  "license": "ISC",
+  "author": "Atlassian Pty. Ltd",
+  "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {
+    "eslint": "*",
     "eslint-config-ak-base": "*",
     "eslint-plugin-protractor": "^1.9.0"
   }

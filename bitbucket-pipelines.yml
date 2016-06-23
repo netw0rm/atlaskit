@@ -21,6 +21,7 @@ pipelines:
   default:
     - step:
         script:
+          - npm install --ignore-scripts
           - npm install
           - npm run lint
           - npm run dist

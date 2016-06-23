@@ -1,11 +1,12 @@
-var JsDocPlugin = require('jsdoc-webpack-plugin');
+const JsDocPlugin = require('jsdoc-webpack-plugin');
 
 module.exports = {
   entry: "./jsdoc/src/index.js",
   output: {
-    path: './jsdoc/jsdoc-out',
+    path: './jsdoc/out/scripts',
     filename: "index.js"
   },
+  watch: true,
   module: {
     loaders: [
       {
@@ -41,7 +42,7 @@ module.exports = {
   plugins: [
     new JsDocPlugin({
       conf: './jsdoc/conf.json'
-    })
+    }),
   ]
 };
 

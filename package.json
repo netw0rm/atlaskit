@@ -93,7 +93,7 @@
     "dev/single": "./build/bin/dev.single.sh",
     "dev/single/integration": "./build/bin/dev.single.integration.sh",
     "dist": "./node_modules/.bin/lerna run prepublish",
-    "jsdoc": "./node_modules/.bin/webpack-dev-server --config ./jsdoc/webpack.config.js",
+    "jsdoc": "./node_modules/.bin/webpack --config ./jsdoc/webpack.config.js",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg && ./build/bin/no.js.npm.link.sh",
     "lint": "eslint --format 'node_modules/eslint-friendly-formatter' .",
     "lint-changed": "./build/bin/lint-changed.sh",

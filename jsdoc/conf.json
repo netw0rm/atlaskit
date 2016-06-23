@@ -18,6 +18,7 @@
     }
   },
   "opts": {
+    "destination": "./jsdoc/out",
     "template": "./jsdoc/jsdoc-templ",
     "recurse": true
   }

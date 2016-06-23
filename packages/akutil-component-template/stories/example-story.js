@@ -1,10 +1,20 @@
-import React from 'react';
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
+import reactify from 'akutil-react';
+import component from '../src/index';
+import { define } from 'skatejs';
+
+const React = window.React;
+const ReactDOM = window.ReactDOM;
+
+const Component = reactify(window.uniqueWebComponent(component, define), {
+  React,
+  ReactDOM,
+});
 
 storiesOf('akutil-component-template', module)
-  .add('with text', () => (
-    <button onClick={action('clicked')}>My First Button</button>
+  .add('an akutil-component-template', () => (
+    <Component />
   ))
-  .add('with no text', () => (
-    <button></button>
+  .add('another story', () => (
+    <Component id="myComponent" />
   ));

@@ -1,7 +1,7 @@
 {
   "name": "akutil-component-template",
   "version": "3.0.0",
-  "description": "",
+  "description": "akutil-component-template webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
@@ -11,10 +11,12 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-react": "^0.0.0",
     "akutil-shared-styles": "^0.0.0",
     "skatejs": "1.0.0-beta.1"
   },
   "author": "Atlassian Pty. Ltd",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "akutil-react": "^0.0.0"
+  }
 }

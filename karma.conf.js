@@ -1,4 +1,5 @@
-const sauceBrowsers = require('./build/lib/karma.saucelabs.browsers.js');
+const path = require('path');
+const browserStackBrowsers = require('./build/lib/karma.browserstack.browsers.js');
 const webpackConfig = require('./webpack.config.js');
 
 // We delete the entry from the normal config and let karma insert it for us
@@ -19,14 +20,14 @@ module.exports = (config) => {
     // list of files / patterns to load in the browser
     // all dependencies should be traced through here
     files: [
-      'test/index.js',
+      'test/**/*.js',
     ],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     // webpack will trace and watch all dependencies
     preprocessors: {
-      'test/index.js': ['webpack', 'sourcemap'],
+      'test/**/*.js': ['webpack', 'sourcemap'],
     },
 
     // karma watches the test entry points
@@ -66,26 +67,28 @@ module.exports = (config) => {
   });
 
   // add the polyfill file to the test run
-  const polyfills = require.resolve('akutil-polyfills');
+  const polyfills = path.join(__dirname, 'packages', 'akutil-polyfills', 'src', 'index.js');
   config.files.unshift(polyfills);
   const additionalPreprocessors = {};
   additionalPreprocessors[polyfills] = ['webpack', 'sourcemap'];
   Object.assign(config.preprocessors, additionalPreprocessors);
 
-  if (process.env.SAUCELABS) {
+  if (process.env.BROWSERSTACK) {
+    const pkgJsonPath = path.join(process.cwd(), 'package.json');
+    const packageName = require(pkgJsonPath).name; // eslint-disable-line global-require
     Object.assign(config, {
-      sauceLabs: {
-        testName: 'AtlasKit',
-        startConnect: !process.env.SAUCELABS_HAS_TUNNEL,
-        recordScreenshots: false,
-        connectOptions: {
-          verbose: true,
-        },
+      browserStack: {
+        username: process.env.BROWSERSTACK_USERNAME,
+        accessKey: process.env.BROWSERSTACK_KEY,
+        startTunnel: !process.env.BROWSERSTACK_TUNNEL,
+        tunnelIdentifier: process.env.BROWSERSTACK_TUNNEL || 'ak_tunnel',
+        project: 'AtlasKit',
+        name: packageName,
       },
-      customLaunchers: sauceBrowsers,
-      browsers: Object.keys(sauceBrowsers),
+      customLaunchers: browserStackBrowsers,
+      browsers: Object.keys(browserStackBrowsers),
       captureTimeout: 120000,
-      reporters: ['saucelabs', 'dots'],
+      reporters: ['dots'],
       autoWatch: false,
       concurrency: 5,
       client: {},

@@ -49,7 +49,15 @@ export default define('ak-inline-dialog', {
       });
     });
 
-    inlineDialogContainer.animate(Animations[getAnimationFromPosition(elem.position)], {
+    let anim = getAnimationFromPosition(elem.position);
+
+    if (anim === 'left' || anim === 'right') {
+      anim = Alignment.getAlignmentSnap(document.querySelector(elem.target)).horizontal;
+    } else {
+     // anim = Alignment.getAlignmentSnap(document.querySelector(elem.target)).vertical
+    }
+
+    inlineDialogContainer.animate(Animations[anim], {
       duration: elem.duration,
       iterations: 1,
     });

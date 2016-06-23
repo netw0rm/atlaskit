@@ -27,6 +27,29 @@ function getTargetsFromPosition(position, isReverse) {
   return `${vertical} ${horizontal}`;
 }
 
+function getAlignmentSnap(target, container) {
+  let snapHorizontal = 'right';
+
+  if (!container || container === window || container === document) {
+    container = document.documentElement; // eslint-disable-line no-param-reassign
+  }
+
+  if (container && container.nodeType && container.nodeType === Node.ELEMENT_NODE) {
+    const containerBounds = container.getBoundingClientRect();
+    const targetBounds = target.getBoundingClientRect();
+
+    if (targetBounds.left > containerBounds.right / 2) {
+      snapHorizontal = 'left';
+    }
+  }
+
+  return {
+    horizontal: snapHorizontal,
+  };
+}
+
+
 export default {
   getTarget: getTargetsFromPosition,
+  getAlignmentSnap,
 };

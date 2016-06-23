@@ -21,13 +21,22 @@ export default define('ak-layer', {
         target: document.querySelector(elem.target),
         attachment: elem.attachment,
         targetAttachment: elem.targetAttachment,
+        constraints: [
+          {
+            to: 'window',
+            attachment: 'together',
+          },
+        ],
+        optimizations: {
+          moveElement: false,
+        },
       });
 
       if (elem.open && elem.tether) {
         elem.tether.position();
       }
     }
-    vdom.slot({ name: 'layer' });
+    vdom.slot();
   },
 });
 

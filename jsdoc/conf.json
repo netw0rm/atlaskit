@@ -16,5 +16,9 @@
       "outputSourceFiles": true,
       "includeDate": false
     }
+  },
+  "opts": {
+    "template": "./jsdoc/jsdoc-templ",
+    "recurse": true
   }
 }

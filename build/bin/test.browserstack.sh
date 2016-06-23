@@ -1,4 +1,18 @@
 #!/bin/sh
-set -e
 
-BROWSERSTACK=1 lerna exec --concurrency 1 -- karma start ../../karma.conf.js --single-run
+FAILED_CI_FILE=.ci_failed
+
+# Clears the file each time we run
+rm -f $FAILED_CI_FILE
+
+# Run the BNrowserstack tests 1 component at a time, temporarily ignore failures
+FAILED_CI_FILE=$FAILED_CI_FILE BROWSERSTACK=1 lerna exec --concurrency 1 -- bash ../../build/bin/test.browserstack.karma.nofail.sh
+
+# Check if any components failed on Browserstack
+if [ -f $FAILED_CI_FILE ]; then
+    echo "The following components failed Browserstack tests:"
+    cat $FAILED_CI_FILE
+    exit 1
+fi
+
+echo "Yay! All Browserstack tests passed"

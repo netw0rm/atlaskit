@@ -8,3 +8,5 @@ npm-debug.log.*
 .released-packages
 .idea
 sc-*-linux
+.idea/
+.ci_failed

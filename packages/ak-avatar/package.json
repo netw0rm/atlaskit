@@ -1,22 +1,23 @@
 {
   "name": "ak-avatar",
-  "version": "1.1.0",
+  "version": "0.10.1",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-avatar",
-    "pre-release": "lerna-semantic-release pre"
+    "prepublish": "cd .. && npm run prepublish/single ak-avatar"
   },
-  "private": true,
   "files": [
     "dist"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Atlassian Pty. Ltd",
+  "license": "Apache-2.0",
   "dependencies": {
-    "ak-common": "1.0.3",
-    "ak-shared-styles": "1.0.0",
-    "ak-base-component": "*"
+    "akutil-common": "^0.0.0",
+    "akutil-shared-styles": "^0.0.0",
+    "skatejs": "1.0.0-beta.1"
+  },
+  "devDependencies": {
+    "akutil-react": "^0.0.0"
   }
 }

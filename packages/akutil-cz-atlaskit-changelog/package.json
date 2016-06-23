@@ -1,0 +1,12 @@
+{
+  "name": "akutil-cz-atlaskit-changelog",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Atlassian Pty. Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cz-lerna-changelog": "^0.2.1",
+    "lerna": "*"
+  }
+}

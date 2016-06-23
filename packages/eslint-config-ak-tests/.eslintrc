@@ -1,0 +1,16 @@
+/* This extends the default .eslintrc with some rules that should apply to all tests directories
+   .eslintrc files in those directories will need to extend this file and any extra rules they may
+   need.
+   Any new rules that apply to all tests should be placed here.                                   */
+
+{
+  "name": "ak-tests",
+  "extends": "ak-base",
+  "env": {
+    "mocha": true
+  },
+  "globals": {
+    "expect": false,  //will be defined globally, false prevents overriding them
+    "sinon": false
+  }
+}

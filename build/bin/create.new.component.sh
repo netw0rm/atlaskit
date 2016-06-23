@@ -4,17 +4,15 @@
 
 set -e
 
-# NAME_SPACE will be prepended to the component name
-NAME_SPACE="ak"
-
 if [[ $# -eq 0 || "$1" == "" ]]
   then
     echo "Usage: npm run create component_name"
     exit 1
 fi
 
-COMP_NAME="$NAME_SPACE-$1"
-# malformed names will give this script issues. May need to do some sanitizing later
+COMP_NAME="$1"
+# TODO: Should we check the name to see if it looks namespaced? Hard code acceptable name spaces or
+# base it on existing components?
 
 # Check that a component of the same name doesn't exist
 if [ -d "packages/$COMP_NAME" ]
@@ -24,14 +22,14 @@ if [ -d "packages/$COMP_NAME" ]
 fi
 
 # Copy template files into packages directory
-cp -r "packages/_COMPONENT_TEMPLATE" "packages/$COMP_NAME"
+cp -r "packages/akutil-component-template" "packages/$COMP_NAME"
 
 # `find` is getting all the files under the new directory
 # `xargs` is passing them to sed
-# `sed` is replacing instances of '<COMPONENT_NAME>' with the new compnent name
-find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' "s/_COMPONENT_TEMPLATE/$COMP_NAME/g" '{}'
+# `sed` is replacing instances of 'akutil-component-template' with the new compnent name
+# LC_CTYPE and LANG=C: http://stackoverflow.com/questions/19242275/re-error-illegal-byte-sequence-on-mac-os-x
+LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' "s/akutil-component-template/${COMP_NAME}/g" '{}'
 
 rm -rf "packages/$COMP_NAME/node_modules"
 
 echo "New component '$COMP_NAME' created (v0.0.0)"
-echo "It is set to 'private' by default. Change this in the package.json when you are ready"

@@ -45,7 +45,11 @@ const standardConfig = {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
         query: {
-          presets: 'es2015',
+          presets: [
+            'es2015',
+            'react', // required by react-storybook
+            'stage-0',
+          ],
         },
       },
       { // this is for the v1 CustomElement polyfill and named-slots
@@ -116,7 +120,7 @@ if (shouldBundleDependencies) {
 // Some overrides passed in by command line args.
 if (isIntegratonTest || isDemo) {
   log.info('adding polyfills');
-  standardConfig.entry['polyfills.js'] = path.join(__dirname, 'build', 'lib', 'polyfills.js');
+  standardConfig.entry['polyfills.js'] = require.resolve('akutil-polyfills');
 }
 
 module.exports = standardConfig;

@@ -74,6 +74,8 @@ module.exports = (config) => {
   Object.assign(config.preprocessors, additionalPreprocessors);
 
   if (process.env.BROWSERSTACK) {
+    const pkgJsonPath = path.join(path.basename(process.cwd()), 'package.json');
+    const packageName = require(pkgJsonPath).name; // eslint-disable-line global-require
     Object.assign(config, {
       browserStack: {
         username: process.env.BROWSERSTACK_USERNAME,
@@ -81,7 +83,7 @@ module.exports = (config) => {
         startTunnel: !process.env.BROWSERSTACK_TUNNEL,
         tunnelIdentifier: process.env.BROWSERSTACK_TUNNEL || 'ak_tunnel',
         project: 'AtlasKit',
-        name: path.basename(process.cwd()),
+        name: packageName
       },
       customLaunchers: browserStackBrowsers,
       browsers: Object.keys(browserStackBrowsers),

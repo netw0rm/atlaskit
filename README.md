@@ -6,9 +6,18 @@ Atlaskit is the Design Platform's implementation of ADG3. It is a collection of 
 ```
 npm install @atlaskit/my-component-name
 ```
+#Development
 
 ### Before you get started
 You will need to install [Commitizen](https://github.com/commitizen/cz-cli) globally to be able to commit to this repo.
+
+Next you'll need to clone the repo and install the dependencies
+
+```
+git clone git@bitbucket.org:atlassian/atlaskit-spike.git
+npm install
+```
+You're now ready to start developing in Atlaskit!
 
 #How do I... ...
 
@@ -45,6 +54,8 @@ You can see your component running by staring a local dev-server
 npm run dev/single my-component-name
 ```
 This will create a bundle of all your component code and it's dependencies and all the code in your `demo/` directory. It will then start up a [webpack-dev-server](tools.md#markdown-header-webpack-dev-server) on `localhost:8080` and serve these files. It will automatically watch for changes and [hot-reload](link to hotreloading) them on the fly.
+
+**This is almost completely deprecated. Use [Storybook](#markdown-header-storybook) instead**
 
 ###Demo page
 The entry point for your component demo will be `demo/index.ejs`. Your dependencies will automatically be injected by webpack. Any extra javascript you need to include on the page can be in `demo/index.js`.

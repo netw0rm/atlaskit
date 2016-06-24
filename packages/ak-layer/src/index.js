@@ -11,28 +11,30 @@ export default define('ak-layer', {
     open: prop.boolean(),
   },
   detached(elem) {
-    elem.tether.destroy();  // eslint-disable-line no-param-reassign
+    elem.tether && elem.tether.destroy();  // eslint-disable-line no-param-reassign
   },
   render(elem) {
     elem.tether && (elem.tether.position());
-    if (elem.attachment && elem.targetAttachment) {
-      elem.tether = new Tether({  // eslint-disable-line no-param-reassign
-        element: elem,
-        target: document.querySelector(elem.target),
-        attachment: elem.attachment,
-        targetAttachment: elem.targetAttachment,
-        constraints: [
-          {
-            to: 'window',
-            attachment: 'together',
-          },
-        ],
-        optimizations: {
-          moveElement: false,
-        },
-      });
 
-      if (elem.open && elem.tether) {
+    if (elem.open && elem.attachment && elem.targetAttachment) {
+
+      if (!elem.tether) {
+          elem.tether = new Tether({  // eslint-disable-line no-param-reassign
+          element: elem,
+          target: document.querySelector(elem.target),
+          attachment: elem.attachment,
+          targetAttachment: elem.targetAttachment,
+          constraints: [
+            {
+              to: 'window',
+              attachment: 'together',
+            },
+          ],
+          optimizations: {
+            moveElement: false,
+          },
+        });
+      } else {
         elem.tether.position();
       }
     }

@@ -9,8 +9,10 @@ COMPONENT_DIR=$(basename `pwd`)
     if [ -d "test" ]; then
         karma start ../../karma.conf.js --single-run
     else
-        echo "No 'test' dir for $COMPONENT_DIR; Skipping tests."
+        echo "No 'test' dir in packages/$COMPONENT_DIR; Skipping tests."
     fi
 } || {
-    echo $COMPONENT_DIR >> ../../$FAILED_CI_FILE
+    if [ -n $FAILED_CI_FILE ]; then
+        echo $COMPONENT_DIR >> ../../$FAILED_CI_FILE
+    fi
 }

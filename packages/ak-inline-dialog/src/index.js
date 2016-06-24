@@ -2,8 +2,8 @@ import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-var
 import shadowStyles from './shadow.less';
 
 import { define, vdom, prop } from 'skatejs';
-import Layer from 'ak-layer/src';
-import Alignment from 'ak-layer/src/Alignment';
+import Layer from 'ak-layer';
+import { Alignment } from 'akutil-common';
 
 import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
 

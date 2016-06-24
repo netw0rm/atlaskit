@@ -36,7 +36,7 @@ export default define('ak-layer', {
         elem.tether.position();
       }
     }
-    vdom.slot();
+    vdom.slot({name: 'layer'});
   },
 });
 

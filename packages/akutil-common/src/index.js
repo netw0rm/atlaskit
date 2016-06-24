@@ -1,3 +1,4 @@
- import { enumeration } from './properties';
+import { enumeration } from './properties';
+import Alignment from './Alignment';
 
- export { enumeration };
+export { enumeration, Alignment };

@@ -1,5 +1,10 @@
-<a name="2.0.0"></a>
-# [2.0.0](https://aui-team-bot/[object Object]/compare/1.0.0-semver-tag-for-ak-inline-dialog...v2.0.0) (2016-06-24)
+<a name="3.0.0"></a>
+# [3.0.0](https://aui-team-bot/[object Object]/compare/1.0.0-semver-tag-for-ak-inline-dialog...v3.0.0) (2016-06-24)
+
+
+### Bug Fixes
+
+* **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/[object Object]/commits/fb64e0e))
 
 
 

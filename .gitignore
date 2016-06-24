@@ -10,3 +10,4 @@ npm-debug.log.*
 sc-*-linux
 .idea/
 .ci_failed
+.DS_Store

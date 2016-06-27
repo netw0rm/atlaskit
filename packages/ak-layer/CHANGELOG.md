@@ -1,5 +1,5 @@
-<a name="10.0.0"></a>
-# [10.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-ak-layer...v10.0.0) (2016-06-27)
+<a name="11.0.0"></a>
+# [11.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-ak-layer...v11.0.0) (2016-06-27)
 
 
 ### Bug Fixes

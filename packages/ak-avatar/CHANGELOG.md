@@ -14,17 +14,12 @@
 
 
 <a name="0.10.3-semver-tag-for-ak-avatar"></a>
-## [0.10.3-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/0.10.2-semver-tag-for-ak-avatar...0.10.3-semver-tag-for-ak-avatar) (2016-06-24)
+## [0.10.3-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/fb64e0e...0.10.3-semver-tag-for-ak-avatar) (2016-06-24)
 
 
 ### Bug Fixes
 
 * **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/fb64e0e))
-
-
-
-<a name="0.10.2-semver-tag-for-ak-avatar"></a>
-## 0.10.2-semver-tag-for-ak-avatar (2016-06-24)
 
 
 

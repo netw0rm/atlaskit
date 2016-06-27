@@ -6,9 +6,18 @@ Atlaskit is the Design Platform's implementation of ADG3. It is a collection of 
 ```
 npm install @atlaskit/my-component-name
 ```
+#Development
 
-### Before you get started
-You will need to install [Commitizen](https://github.com/commitizen/cz-cli) globally to be able to commit to this repo.
+### Getting started
+Clone the repo and install the dependencies
+
+```
+git clone git@bitbucket.org:atlassian/atlaskit-spike.git
+npm install
+```
+You're now ready to start developing in Atlaskit!
+
+Once you made some changes, stage them and then commit them using `npm run commit` (This will use [Commitizen](https://github.com/commitizen/cz-cli) under the covers).
 
 #How do I... ...
 
@@ -25,16 +34,21 @@ Will create a new templated component under `packages/my-component-name` with ev
         |-- shadow.less
         |-- index.js
         |-- shared-variables.less
+    |-- stories/
+       |-- example-story.js
     |-- test/
        |-- index.js
        |-- .eslint.rc
-    |-- demo/
-       |-- index.js
-       |-- index.ejs
-       |-- index.less
     |-- package.json
 
 ```
+
+You'll then need to install it's dependencies and build by running
+
+```
+npm install
+```
+
 
 ##Demo a component
 You can see your component running by staring a local dev-server
@@ -45,6 +59,8 @@ You can see your component running by staring a local dev-server
 npm run dev/single my-component-name
 ```
 This will create a bundle of all your component code and it's dependencies and all the code in your `demo/` directory. It will then start up a [webpack-dev-server](tools.md#markdown-header-webpack-dev-server) on `localhost:8080` and serve these files. It will automatically watch for changes and [hot-reload](link to hotreloading) them on the fly.
+
+**This is almost completely deprecated. Use [Storybook](#markdown-header-storybook) instead**
 
 ###Demo page
 The entry point for your component demo will be `demo/index.ejs`. Your dependencies will automatically be injected by webpack. Any extra javascript you need to include on the page can be in `demo/index.js`.
@@ -97,6 +113,17 @@ npm run webpack/single my-component-name -- --min --bundle-deps
 
 ##Test my component
 
+###Storybook
+To run a story book for a single component:
+```
+npm run storybook/single my-component-name
+```
+
+To run the storybook for all components:
+```
+npm run storybook
+```
+
 ###Unit tests
 To run unit tests for a single component:
 
@@ -118,23 +145,23 @@ SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs my-compone
 ```
 
 You can also run all the saucelabs tests with Docker (as they are run in the CI):
- 
+
 ```
 SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... docker-compose -f docker-compose-saucelabs.yml up
 ```
- 
+
 ###Integration tests
 
 > Hint: [docker-compose](https://docs.docker.com/compose/) is needed for this.
 
 Run the integration ([cucumber](https://github.com/cucumber/cucumber-js)) tests for a single component:
- 
+
 ```
 npm run cucumber/single my-component
 ```
- 
+
 You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` in `docker-compose-saucelabs.yml` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
- 
+
 
 ###Monkey tests
 

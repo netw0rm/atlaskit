@@ -1,0 +1,12 @@
+{
+  "name": "akutil-shared-styles",
+  "version": "4.0.0",
+  "description": "",
+  "private": true,
+  "files": [
+    "dist",
+    "src"
+  ],
+  "author": "Atlassian Pty. Ltd",
+  "license": "Atlassian Design Guidelines License"
+}

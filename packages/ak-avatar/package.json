@@ -1,0 +1,23 @@
+{
+  "name": "ak-avatar",
+  "version": "0.10.4",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single ak-avatar"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty. Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "akutil-common": "^0.0.1",
+    "akutil-shared-styles": "*",
+    "skatejs": "1.0.0-beta.2"
+  },
+  "devDependencies": {
+    "akutil-react": "^0.0.1"
+  }
+}

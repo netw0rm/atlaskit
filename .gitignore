@@ -6,5 +6,8 @@ npm-debug.log.*
 .jshintignore
 .jshintrc
 .released-packages
+.idea
 sc-*-linux
 .idea/
+.ci_failed
+.DS_Store

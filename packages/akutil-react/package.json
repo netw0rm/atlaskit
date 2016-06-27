@@ -1,0 +1,20 @@
+{
+  "name": "akutil-react",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single akutil-react"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "react": "^0.14.0",
+    "skatejs-react-integration": "0.0.4",
+    "uid": "0.0.2"
+  },
+  "author": "Atlassian Pty. Ltd",
+  "license": "Apache-2.0"
+}

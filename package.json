@@ -17,15 +17,16 @@
     "camelcase": "^3.0.0",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
+    "commitizen": "^2.8.2",
     "css-loader": "^0.23.1",
     "cucumber": "^1.0.0",
     "cz-conventional-changelog": "^1.1.6",
     "cz-lerna-changelog": "0.2.1",
     "eslint": "^2.13.1",
-    "eslint-friendly-formatter": "^2.0.5",
     "eslint-config-ak-base": "file:./packages/eslint-config-ak-base",
-    "eslint-config-ak-tests": "file:./packages/eslint-config-ak-tests",
     "eslint-config-ak-cucumber": "file:./packages/eslint-config-ak-cucumber",
+    "eslint-config-ak-tests": "file:./packages/eslint-config-ak-tests",
+    "eslint-friendly-formatter": "^2.0.5",
     "gremlins.js": "marmelab/gremlins.js#699af579a2f3e36cd3ba1d68c13893e80e40e674",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.21.0",
@@ -37,7 +38,7 @@
     "karma-mocha": "^1.0.1",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
-    "lerna": "2.0.0-beta.20",
+    "lerna": "2.0.0-beta.22",
     "lerna-semantic-release": "^1.1.7",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
@@ -57,8 +58,7 @@
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "engines": {
     "npm": ">=3.8",
     "node": ">=6.1"
@@ -87,6 +87,7 @@
   },
   "scripts": {
     "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",
+    "commit": "git-cz -n",
     "create": "./build/bin/create.new.component.sh",
     "cucumber/single": "./build/bin/cucumber.single.sh",
     "dev/single": "./build/bin/dev.single.sh",

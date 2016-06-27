@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "akutil-common": "^0.0.0",
+    "akutil-common": "^0.0.1",
     "akutil-shared-styles": "*",
     "ak-layer": "*",
     "skatejs": "1.0.0-beta.2",

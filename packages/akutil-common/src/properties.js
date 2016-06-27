@@ -26,6 +26,8 @@ function enumeration(enumOptions) {
   return prop({
     coerce: value => computeEnumValue(enumOptions, value),
     default: enumOptions.missingDefault,
+    /* if the prop is an attribute, also add 'initial' with the default value so it get's set too*/
+    initial: enumOptions.attribute ? enumOptions.missingDefault : undefined,
     deserialize: value => (value === null ? undefined : value),
     serialize: value => (typeof value === 'undefined' ? value : String(value)),
   });

@@ -7,6 +7,7 @@ COMPONENT_DIR=$(basename `pwd`)
 
 {
     if [ -d "test" ]; then
+        echo "Running tests in packages/$COMPONENT_DIR."
         karma start ../../karma.conf.js --single-run
     else
         echo "No 'test' dir in packages/$COMPONENT_DIR; Skipping tests."

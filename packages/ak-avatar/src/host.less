@@ -1,6 +1,6 @@
 @import 'shared-variables.less';
 
-ak-avatar {
+.ak-avatar {
   display: inline-block;
 
   &[size="xsmall"] {
@@ -22,5 +22,9 @@ ak-avatar {
   &[size="xlarge"] {
     height: @ak-avatar-size-xlarge;
     width: @ak-avatar-size-xlarge;
+  }
+
+  &:not([defined]) {
+    display: none;
   }
 }

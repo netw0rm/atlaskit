@@ -41,6 +41,7 @@
 ### Bug Fixes
 
 * Added stories for ak-avatar ([9154cbd](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/9154cbd))
+* fix Alignment import ([7da854c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/7da854c))
 * Seperated out ak-avatar constructor and definition ([b86dfea](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/b86dfea))
 
 
@@ -58,13 +59,7 @@
 
 
 <a name="1.1.0-semver-tag-for-ak-avatar"></a>
-# [1.1.0-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/e0bfd32...1.1.0-semver-tag-for-ak-avatar) (2016-06-17)
-
-
-### Features
-
-* Bare functionality of ak-avatar ([e0bfd32](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/e0bfd32))
-* Rest of the bare functionality for ak-avatar ([bcd9b92](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/bcd9b92))
+# 1.1.0-semver-tag-for-ak-avatar (2016-06-17)
 
 
 

@@ -4,7 +4,12 @@
 
 
 <a name="0.0.2-semver-tag-for-akutil-polyfills"></a>
-## 0.0.2-semver-tag-for-akutil-polyfills (2016-06-24)
+## [0.0.2-semver-tag-for-akutil-polyfills](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/7da854c...0.0.2-semver-tag-for-akutil-polyfills) (2016-06-24)
+
+
+### Bug Fixes
+
+* fix Alignment import ([7da854c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/7da854c))
 
 
 

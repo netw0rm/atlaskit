@@ -33,6 +33,11 @@
 ## [3.0.2-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/3.0.1-semver-tag-for-akutil-component-template...3.0.2-semver-tag-for-akutil-component-template) (2016-06-24)
 
 
+### Bug Fixes
+
+* fix Alignment import ([7da854c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/7da854c))
+
+
 
 <a name="3.0.1-semver-tag-for-akutil-component-template"></a>
 ## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/15f31d3...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)

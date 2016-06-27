@@ -1,7 +1,7 @@
 import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
 
-import 'ak-util-polyfills';
+import 'akutil-polyfills';
 import { define, emit, vdom } from 'skatejs';
 
 /**

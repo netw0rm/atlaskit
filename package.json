@@ -31,6 +31,7 @@
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.21.0",
     "jsdoc": "^3.4.0",
+    "jsdoc-webpack-plugin": "^0.0.1",
     "karma": "^1.1.0",
     "karma-browserstack-launcher": "^1.0.1",
     "karma-chai-plugins": "^0.7.0",

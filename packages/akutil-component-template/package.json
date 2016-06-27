@@ -12,6 +12,7 @@
   ],
   "dependencies": {
     "akutil-shared-styles": "*",
+    "jsdoc": "^3.4.0",
     "skatejs": "1.0.0-beta.2"
   },
   "author": "Atlassian Pty. Ltd",

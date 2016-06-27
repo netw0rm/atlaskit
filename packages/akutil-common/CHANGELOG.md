@@ -4,13 +4,18 @@
 
 
 <a name="0.0.1-semver-tag-for-akutil-common"></a>
-## [0.0.1-semver-tag-for-akutil-common](https://aui-team-bot/[object Object]/compare/7da854c...0.0.1-semver-tag-for-akutil-common) (2016-06-24)
+## [0.0.1-semver-tag-for-akutil-common](https://aui-team-bot/[object Object]/compare/0c538a5...0.0.1-semver-tag-for-akutil-common) (2016-06-24)
 
 
 ### Bug Fixes
 
 * fix Alignment import ([7da854c](https://aui-team-bot/[object Object]/commits/7da854c))
 * fix inline dialog alignment ([e55c3d2](https://aui-team-bot/[object Object]/commits/e55c3d2))
+
+
+### Features
+
+* Created the _COMPONENT_TEMPLATE component and associated script ([0c538a5](https://aui-team-bot/[object Object]/commits/0c538a5))
 
 
 

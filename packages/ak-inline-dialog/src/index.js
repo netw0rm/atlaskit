@@ -35,7 +35,6 @@ const definition = {
   },
   render(elem) {
     // let inlineDialogContainer;
-
     vdom.style(shadowStyles.toString());
     vdom.create(Layer, {
       position: elem.position,
@@ -67,7 +66,7 @@ const definition = {
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
-    open: prop.boolean({ attribute: true, default: false }),
+    open: prop.boolean({ attribute: true, default: false, initial: false }),
     duration: prop.number({ attribute: true, default: 100 }),
     target: prop.string({ attribute: true }),
   },

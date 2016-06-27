@@ -4,17 +4,7 @@
 
 
 <a name="0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog"></a>
-## [0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/344f2d3...0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog) (2016-06-27)
-
-
-### Bug Fixes
-
-* **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/fb64e0e))
-
-
-### Features
-
-* add horizontal snapping for animation ([344f2d3](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/344f2d3))
+## 0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog (2016-06-27)
 
 
 

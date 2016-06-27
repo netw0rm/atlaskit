@@ -89,6 +89,18 @@ Alignment.prototype = {
     return this;
   },
 
+  update(elem) {
+    if (this.tether) {
+      this.tether.setOptions({
+        element: elem.movable ? elem.movable : elem,
+        target: document.querySelector(elem.target),
+        attachment: getTargetsFromPosition(elem.position, 'reverse'),
+        targetAttachment: getTargetsFromPosition(elem.position),
+      });
+    }
+    return this;
+  },
+
   reposition() {
     if (this.tether) {
       this.tether.position();

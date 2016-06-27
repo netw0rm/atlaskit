@@ -14,6 +14,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "skatejs": "1.0.0-beta.2",
-    "skatejs-named-slots": "^0.2.0"
+    "skatejs-named-slots": "^0.2.0",
+    "tether": "^1.3.2"
   }
 }

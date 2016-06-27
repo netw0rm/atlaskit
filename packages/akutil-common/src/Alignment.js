@@ -1,3 +1,5 @@
+import Tether from 'tether';
+
 function getReverseDirection(pos) { // eslint-disable-line consistent-return
   switch (pos) {  // eslint-disable-line default-case
     case 'left':
@@ -48,8 +50,53 @@ function getAlignmentSnap(target, container) {
   };
 }
 
+function Alignment(elem) {
+  this.tether = new Tether({
+    element: elem.movable ? elem.movable : elem,
+    target: document.querySelector(elem.target),
+    attachment: getTargetsFromPosition(elem.position, 'reverse'),
+    targetAttachment: getTargetsFromPosition(elem.position),
+    constraints: [
+      {
+        to: 'window',
+        attachment: 'together',
+      },
+    ],
+  });
 
-export default {
-  getTarget: getTargetsFromPosition,
+  return this;
+}
+
+Alignment.prototype = {
+  destroy() {
+    if (this.tether) {
+      this.tether.destroy();
+    }
+    return this;
+  },
+
+  disable() {
+    if (this.tether) {
+      this.tether.disable();
+    }
+    return this;
+  },
+
+  enable() {
+    if (this.tether) {
+      this.tether.enable();
+    }
+    return this;
+  },
+
+  reposition() {
+    if (this.tether) {
+      this.tether.position();
+    }
+    return this;
+  },
+
   getAlignmentSnap,
 };
+
+export default Alignment;

@@ -1,43 +1,24 @@
 import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
 
 import { define, vdom, prop } from 'skatejs';
-import Tether from 'tether';
+import { Alignment } from 'akutil-common';
 
 export default define('ak-layer', {
   props: {
-    attachment: prop.string(),
-    targetAttachment: prop.string(),
+    position: prop.string(),
     target: prop.string(),
-    open: prop.boolean(),
+  },
+  attached(elem) {
+    elem.alignment = new Alignment(elem); // eslint-disable-line no-param-reassign
   },
   detached(elem) {
-    elem.tether && elem.tether.destroy();  // eslint-disable-line no-param-reassign
+    elem.alignment.destroy();
   },
   render(elem) {
-    elem.tether && (elem.tether.position());
-
-    if (elem.open && elem.attachment && elem.targetAttachment) {
-
-      if (!elem.tether) {
-          elem.tether = new Tether({  // eslint-disable-line no-param-reassign
-          element: elem,
-          target: document.querySelector(elem.target),
-          attachment: elem.attachment,
-          targetAttachment: elem.targetAttachment,
-          constraints: [
-            {
-              to: 'window',
-              attachment: 'together',
-            },
-          ],
-          optimizations: {
-            moveElement: false,
-          },
-        });
-      } else {
-        elem.tether.position();
-      }
+    if (elem.alignment) {
+      elem.alignment.reposition();
     }
+
     vdom.slot({ name: 'layer' });
   },
 });

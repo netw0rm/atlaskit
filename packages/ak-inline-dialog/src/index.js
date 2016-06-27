@@ -3,7 +3,6 @@ import shadowStyles from './shadow.less';
 
 import { define, vdom, prop } from 'skatejs';
 import Layer from 'ak-layer';
-import { Alignment } from 'akutil-common';
 
 import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
 
@@ -32,17 +31,16 @@ const Animations = {
 
 export default define('ak-inline-dialog', {
   attached(elem) {
-    elem.className = headStyles.akInlineDialog;
+    elem.className = headStyles.akInlineDialog; // eslint-disable-line no-param-reassign
   },
   render(elem) {
     let inlineDialogContainer;
 
     vdom.style(shadowStyles.toString());
     vdom.create(Layer, {
-      open: elem.open,
-      attachment: Alignment.getTarget(elem.position, 'reverse'),
-      targetAttachment: Alignment.getTarget(elem.position),
+      position: elem.position,
       target: elem.target,
+      movable: elem,
     }, () => {
       const divAttrs = {
         class: shadowStyles.locals.inlineDialogContainer,
@@ -53,10 +51,10 @@ export default define('ak-inline-dialog', {
     });
 
     if (elem.open) {
-      let anim = getAnimationFromPosition(elem.position);
+      const anim = getAnimationFromPosition(elem.position);
 
       if (anim === 'left' || anim === 'right') {
-        anim = Alignment.getAlignmentSnap(document.querySelector(elem.target)).horizontal;
+       // anim = Alignment.getAlignmentSnap(document.querySelector(elem.target)).horizontal;
       } else {
        // anim = Alignment.getAlignmentSnap(document.querySelector(elem.target)).vertical
       }

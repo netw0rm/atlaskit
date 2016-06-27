@@ -101,12 +101,13 @@ section
 nav
 {
     display: block;
-    float: right;
+    float: left;
     margin-top: 28px;
-    width: 30%;
+    min-width: 100px;
+    width: 20%;
     box-sizing: border-box;
-    border-left: 1px solid #ccc;
-    padding-left: 16px;
+    border-right: 1px solid #ccc;
+    padding-right: 16px;
 }
 
 nav ul {

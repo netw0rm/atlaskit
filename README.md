@@ -8,16 +8,16 @@ npm install @atlaskit/my-component-name
 ```
 #Development
 
-### Before you get started
-You will need to install [Commitizen](https://github.com/commitizen/cz-cli) globally to be able to commit to this repo.
-
-Next you'll need to clone the repo and install the dependencies
+### Getting started
+Clone the repo and install the dependencies
 
 ```
 git clone git@bitbucket.org:atlassian/atlaskit-spike.git
 npm install
 ```
 You're now ready to start developing in Atlaskit!
+
+Once you made some changes, stage them and then commit them using `npm run commit` (This will use [Commitizen](https://github.com/commitizen/cz-cli) under the covers).
 
 #How do I... ...
 

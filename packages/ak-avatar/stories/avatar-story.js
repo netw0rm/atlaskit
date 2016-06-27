@@ -22,10 +22,13 @@ storiesOf('ak-avatar', module)
     <Avatar src="//docs.atlassian.com/aui/latest/docs/images/avatar-96.png" size="xxlarge" />
   ))
   .add('A row of avatars', () => {
-    /* Not the best way to do this. Will need to figure something out. */
     const avatarRowStyle = 'margin-left: 10px;';
     const avatarUrl = '//docs.atlassian.com/aui/latest/docs/images/avatar-96.png';
-    return (<div>
+    const divStyle = {
+      marginLeft: '5px',
+      marginTop: '17px',
+    };
+    return (<div style={divStyle}>
       <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="small" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} />
@@ -37,7 +40,11 @@ storiesOf('ak-avatar', module)
   .add('Avatars in a group', () => {
     const avatarRowStyle = 'margin-left: -10px; position: relative;';
     const avatarUrl = '//docs.atlassian.com/aui/latest/docs/images/avatar-96.png';
-    return (<div>
+    const divStyle = {
+      marginLeft: '5px',
+      marginTop: '14.3px',
+    };
+    return (<div style={divStyle}>
       <Avatar src={avatarUrl} size="large" />
       <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
@@ -45,4 +52,11 @@ storiesOf('ak-avatar', module)
       <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
     </div>);
-  });
+  })
+  .add('Avatars in a group - DESIGN', () => (
+    <img src="http://i.imgur.com/T6K0UrW.png" alt="Avatars in a group" />
+  ))
+  .add('A row of avatars - DESIGN', () => (
+    <img src="http://i.imgur.com/VIZxsbk.png" alt="A row of Avatars" />
+  ));
+

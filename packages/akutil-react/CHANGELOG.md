@@ -4,12 +4,12 @@
 
 
 <a name="0.0.2-semver-tag-for-akutil-react"></a>
-## [0.0.2-semver-tag-for-akutil-react](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/0.0.1-semver-tag-for-akutil-react...0.0.2-semver-tag-for-akutil-react) (2016-06-27)
+## [0.0.2-semver-tag-for-akutil-react](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/add6077...0.0.2-semver-tag-for-akutil-react) (2016-06-27)
 
 
+### Bug Fixes
 
-<a name="0.0.1-semver-tag-for-akutil-react"></a>
-## 0.0.1-semver-tag-for-akutil-react (2016-06-24)
+* Moved akutil-react to a dev-dependency for ak-avatar ([add6077](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/add6077))
 
 
 

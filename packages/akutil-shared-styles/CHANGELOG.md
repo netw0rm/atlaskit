@@ -1,10 +1,10 @@
-<a name="12.0.0"></a>
-# [12.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-akutil-shared-styles...v12.0.0) (2016-06-27)
+<a name="13.0.0"></a>
+# 13.0.0 (2016-06-27)
 
 
+### Bug Fixes
 
-<a name="1.0.0-semver-tag-for-akutil-shared-styles"></a>
-# 1.0.0-semver-tag-for-akutil-shared-styles (2016-06-24)
+* Moved akutil-react to a dev-dependency for ak-avatar ([add6077](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/add6077))
 
 
 

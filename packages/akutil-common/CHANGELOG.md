@@ -4,17 +4,13 @@
 
 
 <a name="0.0.2-semver-tag-for-akutil-common"></a>
-## [0.0.2-semver-tag-for-akutil-common](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/0.0.1-semver-tag-for-akutil-common...0.0.2-semver-tag-for-akutil-common) (2016-06-27)
+## [0.0.2-semver-tag-for-akutil-common](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/add6077...0.0.2-semver-tag-for-akutil-common) (2016-06-27)
 
 
 ### Bug Fixes
 
 * Added 'initial' to enumeration prop when it is being set on an attribute ([2d99a61](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/2d99a61))
-
-
-
-<a name="0.0.1-semver-tag-for-akutil-common"></a>
-## 0.0.1-semver-tag-for-akutil-common (2016-06-24)
+* Moved akutil-react to a dev-dependency for ak-avatar ([add6077](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/add6077))
 
 
 

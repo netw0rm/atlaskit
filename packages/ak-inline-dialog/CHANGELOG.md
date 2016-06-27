@@ -1,16 +1,12 @@
-<a name="16.0.0"></a>
-# [16.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-ak-inline-dialog...v16.0.0) (2016-06-27)
+<a name="17.0.0"></a>
+# 17.0.0 (2016-06-27)
 
 
 ### Bug Fixes
 
+* Moved akutil-react to a dev-dependency for ak-avatar ([add6077](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/add6077))
 * **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/fb64e0e))
 * **share styles:** use * until we are published ([a2792e5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/a2792e5))
-
-
-
-<a name="1.0.0-semver-tag-for-ak-inline-dialog"></a>
-# [1.0.0-semver-tag-for-ak-inline-dialog](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/bfbe44b...1.0.0-semver-tag-for-ak-inline-dialog) (2016-06-24)
 
 
 ### Features

@@ -29,13 +29,12 @@
 
 
 <a name="3.0.1-semver-tag-for-akutil-component-template"></a>
-## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/[object Object]/compare/1b0d703...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
+## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/[object Object]/compare/15f31d3...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
 
 
 ### Bug Fixes
 
 * Added akutil-react to template ([15f31d3](https://aui-team-bot/[object Object]/commits/15f31d3))
-* Fixed less imports in template. ([1b0d703](https://aui-team-bot/[object Object]/commits/1b0d703))
 * Updated template component with new skate and proper storybook ([5e24d93](https://aui-team-bot/[object Object]/commits/5e24d93))
 
 

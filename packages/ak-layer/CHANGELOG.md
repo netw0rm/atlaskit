@@ -1,5 +1,5 @@
-<a name="4.0.0"></a>
-# [4.0.0](https://aui-team-bot/[object Object]/compare/1.0.0-semver-tag-for-ak-layer...v4.0.0) (2016-06-27)
+<a name="5.0.0"></a>
+# [5.0.0](https://aui-team-bot/[object Object]/compare/1.0.0-semver-tag-for-ak-layer...v5.0.0) (2016-06-27)
 
 
 ### Bug Fixes
@@ -16,7 +16,6 @@
 ### Bug Fixes
 
 * fix Alignment import ([7da854c](https://aui-team-bot/[object Object]/commits/7da854c))
-* Fixed less imports in template. ([1b0d703](https://aui-team-bot/[object Object]/commits/1b0d703))
 * inline dialog text position ([91487bf](https://aui-team-bot/[object Object]/commits/91487bf))
 
 

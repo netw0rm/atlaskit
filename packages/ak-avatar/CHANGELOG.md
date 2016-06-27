@@ -34,7 +34,6 @@
 
 ### Bug Fixes
 
-* Fixed less imports in template. ([1b0d703](https://aui-team-bot/[object Object]/commits/1b0d703))
 * Moved akutil-react to a dev-dependency for ak-avatar ([add6077](https://aui-team-bot/[object Object]/commits/add6077))
 * Reverting previous test commit ([7190efc](https://aui-team-bot/[object Object]/commits/7190efc))
 * Test commit to test eslint fix ([a879b5f](https://aui-team-bot/[object Object]/commits/a879b5f))

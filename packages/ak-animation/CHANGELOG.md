@@ -10,7 +10,6 @@
 ### Bug Fixes
 
 * fixed .eslintrc file in test directory of each component ([a275bc2](https://aui-team-bot/[object Object]/commits/a275bc2))
-* Fixed less imports in template. ([1b0d703](https://aui-team-bot/[object Object]/commits/1b0d703))
 
 
 

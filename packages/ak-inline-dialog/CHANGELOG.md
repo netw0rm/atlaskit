@@ -1,5 +1,5 @@
-<a name="4.0.0"></a>
-# [4.0.0](https://aui-team-bot/[object Object]/compare/1.0.0-semver-tag-for-ak-inline-dialog...v4.0.0) (2016-06-27)
+<a name="5.0.0"></a>
+# [5.0.0](https://aui-team-bot/[object Object]/compare/1.0.0-semver-tag-for-ak-inline-dialog...v5.0.0) (2016-06-27)
 
 
 ### Bug Fixes
@@ -17,7 +17,6 @@
 
 * fix Alignment import ([7da854c](https://aui-team-bot/[object Object]/commits/7da854c))
 * fix inline dialog alignment ([e55c3d2](https://aui-team-bot/[object Object]/commits/e55c3d2))
-* Fixed less imports in template. ([1b0d703](https://aui-team-bot/[object Object]/commits/1b0d703))
 
 
 ### Features

@@ -58,23 +58,13 @@
 
 
 <a name="1.1.0-semver-tag-for-ak-avatar"></a>
-# [1.1.0-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-ak-avatar...1.1.0-semver-tag-for-ak-avatar) (2016-06-17)
+# [1.1.0-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/e0bfd32...1.1.0-semver-tag-for-ak-avatar) (2016-06-17)
 
 
 ### Features
 
 * Bare functionality of ak-avatar ([e0bfd32](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/e0bfd32))
 * Rest of the bare functionality for ak-avatar ([bcd9b92](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/bcd9b92))
-
-
-
-<a name="1.0.0-semver-tag-for-ak-avatar"></a>
-# [1.0.0-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/e66318d...1.0.0-semver-tag-for-ak-avatar) (2016-06-17)
-
-
-### Features
-
-* **code:** initial commit for ak-avatar ([e66318d](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/e66318d))
 
 
 

@@ -35,14 +35,18 @@
 
 
 <a name="3.0.1-semver-tag-for-akutil-component-template"></a>
-## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1730c90...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
+## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/e66318d...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
 
 
 ### Bug Fixes
 
-* **skate:** Upgrade broke property defintions ([1730c90](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/1730c90))
 * Added akutil-react to template ([15f31d3](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/15f31d3))
 * Updated template component with new skate and proper storybook ([5e24d93](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/5e24d93))
+
+
+### Features
+
+* **code:** initial commit for ak-avatar ([e66318d](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/e66318d))
 
 
 

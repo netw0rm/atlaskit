@@ -69,17 +69,11 @@
 
 
 <a name="1.0.0-semver-tag-for-ak-avatar"></a>
-# [1.0.0-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/868862c...1.0.0-semver-tag-for-ak-avatar) (2016-06-17)
-
-
-### Bug Fixes
-
-* **skate:** Upgrade broke property defintions ([1730c90](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/1730c90))
+# [1.0.0-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/e66318d...1.0.0-semver-tag-for-ak-avatar) (2016-06-17)
 
 
 ### Features
 
-* quick spike on avatars and shared resources ([868862c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/868862c))
 * **code:** initial commit for ak-avatar ([e66318d](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/e66318d))
 
 

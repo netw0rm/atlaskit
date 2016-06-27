@@ -6,7 +6,6 @@ module.exports = {
     path: './docs/out/scripts',
     filename: 'index.js',
   },
-  watch: true,
   module: {
     loaders: [
       {

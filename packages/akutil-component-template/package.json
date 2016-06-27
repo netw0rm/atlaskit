@@ -11,7 +11,7 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^1.0.0",
+    "akutil-shared-styles": "*",
     "skatejs": "1.0.0-beta.2"
   },
   "author": "Atlassian Pty. Ltd",

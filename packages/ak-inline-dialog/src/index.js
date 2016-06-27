@@ -40,6 +40,7 @@ const definition = {
       position: elem.position,
       target: elem.target,
       movable: elem,
+      open: elem.open,
     }, () => {
       const divAttrs = {
         class: shadowStyles.locals.inlineDialogContainer,
@@ -66,7 +67,7 @@ const definition = {
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
-    open: prop.boolean({ attribute: true, default: false, initial: false }),
+    open: prop.boolean({ attribute: true, default: false }),
     duration: prop.number({ attribute: true, default: 100 }),
     target: prop.string({ attribute: true }),
   },

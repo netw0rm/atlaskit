@@ -1,5 +1,5 @@
-<a name="11.0.0"></a>
-# [11.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-ak-layer...v11.0.0) (2016-06-27)
+<a name="12.0.0"></a>
+# [12.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-ak-layer...v12.0.0) (2016-06-27)
 
 
 ### Bug Fixes
@@ -10,7 +10,22 @@
 
 
 <a name="1.0.0-semver-tag-for-ak-layer"></a>
-# 1.0.0-semver-tag-for-ak-layer (2016-06-24)
+# [1.0.0-semver-tag-for-ak-layer](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1730c90...1.0.0-semver-tag-for-ak-layer) (2016-06-24)
+
+
+### Bug Fixes
+
+* **skate:** Upgrade broke property defintions ([1730c90](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/1730c90))
+* fix Alignment import ([7da854c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/7da854c))
+* inline dialog text position ([91487bf](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/91487bf))
+
+
+### Features
+
+* add horizontal snapping for animation ([344f2d3](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/344f2d3))
+* inline dialog almost styled and animated ([f134e37](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/f134e37))
+* inline dialog and layer backbone ([bfbe44b](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/bfbe44b))
+* inline dialog and layer backbone - added missing changes ([3f14e28](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/3f14e28))
 
 
 

@@ -1,10 +1,11 @@
-<a name="3.0.0"></a>
-# [3.0.0](https://aui-team-bot/[object Object]/compare/1.0.0-semver-tag-for-ak-layer...v3.0.0) (2016-06-24)
+<a name="4.0.0"></a>
+# [4.0.0](https://aui-team-bot/[object Object]/compare/1.0.0-semver-tag-for-ak-layer...v4.0.0) (2016-06-27)
 
 
 ### Bug Fixes
 
 * **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/[object Object]/commits/fb64e0e))
+* **share styles:** use * until we are published ([a2792e5](https://aui-team-bot/[object Object]/commits/a2792e5))
 
 
 
@@ -15,6 +16,7 @@
 ### Bug Fixes
 
 * fix Alignment import ([7da854c](https://aui-team-bot/[object Object]/commits/7da854c))
+* Fixed less imports in template. ([1b0d703](https://aui-team-bot/[object Object]/commits/1b0d703))
 * inline dialog text position ([91487bf](https://aui-team-bot/[object Object]/commits/91487bf))
 
 

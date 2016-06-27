@@ -1,10 +1,11 @@
-<a name="3.0.0"></a>
-# [3.0.0](https://aui-team-bot/[object Object]/compare/1.0.0-semver-tag-for-ak-inline-dialog...v3.0.0) (2016-06-24)
+<a name="4.0.0"></a>
+# [4.0.0](https://aui-team-bot/[object Object]/compare/1.0.0-semver-tag-for-ak-inline-dialog...v4.0.0) (2016-06-27)
 
 
 ### Bug Fixes
 
 * **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/[object Object]/commits/fb64e0e))
+* **share styles:** use * until we are published ([a2792e5](https://aui-team-bot/[object Object]/commits/a2792e5))
 
 
 
@@ -16,6 +17,7 @@
 
 * fix Alignment import ([7da854c](https://aui-team-bot/[object Object]/commits/7da854c))
 * fix inline dialog alignment ([e55c3d2](https://aui-team-bot/[object Object]/commits/e55c3d2))
+* Fixed less imports in template. ([1b0d703](https://aui-team-bot/[object Object]/commits/1b0d703))
 
 
 ### Features

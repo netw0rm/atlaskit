@@ -15,7 +15,7 @@
 
 
 <a name="3.0.3-semver-tag-for-akutil-component-template"></a>
-## [3.0.3-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/3.0.1-semver-tag-for-akutil-component-template...3.0.3-semver-tag-for-akutil-component-template) (2016-06-24)
+## [3.0.3-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/344f2d3...3.0.3-semver-tag-for-akutil-component-template) (2016-06-24)
 
 
 ### Bug Fixes
@@ -23,15 +23,9 @@
 * **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/fb64e0e))
 
 
+### Features
 
-<a name="3.0.1-semver-tag-for-akutil-component-template"></a>
-## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/add6077...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
-
-
-### Bug Fixes
-
-* Moved akutil-react to a dev-dependency for ak-avatar ([add6077](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/add6077))
-* Updated template component with new skate and proper storybook ([5e24d93](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/5e24d93))
+* add horizontal snapping for animation ([344f2d3](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/344f2d3))
 
 
 

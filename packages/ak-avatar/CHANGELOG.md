@@ -24,12 +24,12 @@
 
 
 <a name="0.10.2-semver-tag-for-ak-avatar"></a>
-## [0.10.2-semver-tag-for-ak-avatar](https://aui-team-bot/[object Object]/compare/f134e37...0.10.2-semver-tag-for-ak-avatar) (2016-06-24)
+## [0.10.2-semver-tag-for-ak-avatar](https://aui-team-bot/[object Object]/compare/7da854c...0.10.2-semver-tag-for-ak-avatar) (2016-06-24)
 
 
-### Features
+### Bug Fixes
 
-* inline dialog almost styled and animated ([f134e37](https://aui-team-bot/[object Object]/commits/f134e37))
+* fix Alignment import ([7da854c](https://aui-team-bot/[object Object]/commits/7da854c))
 
 
 

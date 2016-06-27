@@ -4,12 +4,12 @@
 
 
 <a name="0.0.1-semver-tag-for-akutil-react"></a>
-## [0.0.1-semver-tag-for-akutil-react](https://aui-team-bot/[object Object]/compare/a275bc2...0.0.1-semver-tag-for-akutil-react) (2016-06-24)
+## [0.0.1-semver-tag-for-akutil-react](https://aui-team-bot/[object Object]/compare/f134e37...0.0.1-semver-tag-for-akutil-react) (2016-06-24)
 
 
-### Bug Fixes
+### Features
 
-* fixed .eslintrc file in test directory of each component ([a275bc2](https://aui-team-bot/[object Object]/commits/a275bc2))
+* inline dialog almost styled and animated ([f134e37](https://aui-team-bot/[object Object]/commits/f134e37))
 
 
 

@@ -24,18 +24,12 @@
 
 
 <a name="0.10.2-semver-tag-for-ak-avatar"></a>
-## [0.10.2-semver-tag-for-ak-avatar](https://aui-team-bot/[object Object]/compare/0.10.1-semver-tag-for-ak-avatar...0.10.2-semver-tag-for-ak-avatar) (2016-06-24)
+## [0.10.2-semver-tag-for-ak-avatar](https://aui-team-bot/[object Object]/compare/f134e37...0.10.2-semver-tag-for-ak-avatar) (2016-06-24)
 
 
+### Features
 
-<a name="0.10.1-semver-tag-for-ak-avatar"></a>
-## [0.10.1-semver-tag-for-ak-avatar](https://aui-team-bot/[object Object]/compare/a275bc2...0.10.1-semver-tag-for-ak-avatar) (2016-06-23)
-
-
-### Bug Fixes
-
-* fixed .eslintrc file in test directory of each component ([a275bc2](https://aui-team-bot/[object Object]/commits/a275bc2))
-* Moved akutil-react to a dev-dependency for ak-avatar ([add6077](https://aui-team-bot/[object Object]/commits/add6077))
+* inline dialog almost styled and animated ([f134e37](https://aui-team-bot/[object Object]/commits/f134e37))
 
 
 

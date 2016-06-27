@@ -29,13 +29,12 @@
 
 
 <a name="3.0.1-semver-tag-for-akutil-component-template"></a>
-## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/[object Object]/compare/a275bc2...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
+## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/[object Object]/compare/f134e37...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
 
 
-### Bug Fixes
+### Features
 
-* fixed .eslintrc file in test directory of each component ([a275bc2](https://aui-team-bot/[object Object]/commits/a275bc2))
-* Updated template component with new skate and proper storybook ([5e24d93](https://aui-team-bot/[object Object]/commits/5e24d93))
+* inline dialog almost styled and animated ([f134e37](https://aui-team-bot/[object Object]/commits/f134e37))
 
 
 

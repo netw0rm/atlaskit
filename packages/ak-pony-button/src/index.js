@@ -21,8 +21,8 @@ const PonyButton = define('ak-pony-button', {
   events: {
     /**
      * Click handler. Fires when the button is clicked.
-     * @description The pony button will log output to the console and fire the
-     * {@link ak-neigh|ak-neigh} event when it is clicked.
+     * @description <strong>Event handler.</strong> The pony button will log output to the console
+     * and fire the {@link ak-neigh|ak-neigh} event when it is clicked.
      * @memberof PonyButton
      * @instance
      * @fires PonyButton#ak-neigh
@@ -48,7 +48,7 @@ const PonyButton = define('ak-pony-button', {
      * @default Bob
      * @instance
      * @type {string}
-     * @example <caption>Hi, my name is Randy. What's yours?</caption>
+     * @example
      * <html-example>
      * <ak-pony-button name="Randy"></ak-pony-button>
      * </html-example>
@@ -60,12 +60,15 @@ const PonyButton = define('ak-pony-button', {
   },
   prototype: {
     /**
-     * Causes this pony to canter, and not much else. Neigh.
-     *
+     * Causes this pony to canter, and not much else.
+     * @description This method will log output the the console and fire the
+     * {@link ak-neigh|ak-neigh} event.
      * @memberof PonyButton
      * @function
      * @instance
-     * @example <caption>Look at it go!</caption>
+     * @fires PonyButton#ak-neigh
+     * @return {PonyButton} The PonyButton element.
+     * @example
      * <js-example>
      * ponyButton.canter();
      * // Clop clop clop.
@@ -73,6 +76,8 @@ const PonyButton = define('ak-pony-button', {
      */
     canter() {
       console.log('Clop clop clop.'); // eslint-disable-line no-console
+      emit(this, 'ak-neigh');
+      return this;
     },
   },
 });

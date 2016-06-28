@@ -69,9 +69,12 @@ const PonyButton = define('ak-pony-button', {
      * @fires PonyButton#ak-neigh
      * @return {PonyButton} The PonyButton element.
      * @example
+     * <html-example>
+     * <ak-pony-button id="my-pony-button"></ak-pony-button>
+     * </html-example>
      * <js-example>
-     * ponyButton.canter();
-     * // Clop clop clop.
+     * var ponyButton = document.querySelector('my-pony-button');
+     * ponyButton.canter(); // Clop clop clop.
      * </js-example>
      */
     canter() {

@@ -4,13 +4,37 @@
 
     data.forEach(function(example) {
         if (example.caption) {
-    ?>
-        <p class="code-caption"><?js= example.caption ?></p>
-    <?js } ?>
-    <pre class="prettyprint"><code><?js= self.htmlsafe(example.code) ?></code></pre>
-    <div class="live-example">
-      <?js= example.code ?>
-    </div>
+?>
+            <p class="code-caption"><?js= example.caption ?></p>
+<?js
+    }
+?>
+
+<?js
+        if (example.html) {
+?>
+            <pre class="prettyprint"><code><?js= self.htmlsafe(example.html) ?></code></pre>
+<?js
+    }
+?>
+
+<?js
+        if (example.js) {
+?>
+            <pre class="prettyprint"><code><?js= example.js ?></code></pre>
+<?js
+    }
+?>
+
+<?js
+        if (example.html) {
+?>
+            <div class="live-example">
+              <?js= example.html ?>
+            </div>
+<?js
+    }
+?>
 <?js
     });
 ?>

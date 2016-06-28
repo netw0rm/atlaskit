@@ -420,17 +420,25 @@ exports.publish = function(taffyData, opts, tutorials) {
 
         if (doclet.examples) {
             doclet.examples = doclet.examples.map(function(example) {
-                var caption, code;
+                var out = {
+                  caption: '',
+                  html: '',
+                  js: ''
+                };
 
-                if (example.match(/^\s*<caption>([\s\S]+?)<\/caption>(\s*[\n\r])([\s\S]+)$/i)) {
-                    caption = RegExp.$1;
-                    code = RegExp.$3;
+                if (example.match(/<caption>([\s\S]+?)<\/caption>/i)) {
+                  out.caption = RegExp.$1.trim();
                 }
 
-                return {
-                    caption: caption || '',
-                    code: code || example
-                };
+                if (example.match(/<js-example>([\s\S]+?)<\/js-example>/i)) {
+                  out.js = RegExp.$1.trim();
+                }
+
+                if (example.match(/<html-example>([\s\S]+?)<\/html-example>/i)) {
+                  out.html = RegExp.$1.trim();
+                }
+
+                return out;
             });
         }
         if (doclet.see) {

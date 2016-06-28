@@ -8,7 +8,10 @@ import { define, emit, vdom } from 'skatejs';
  * Pony Button.
  * @constructs PonyButton
  * @description This button think it is a pony, but it is not.
- * @example <ak-pony-button></ak-pony-button>
+ * @example
+ * <html-example>
+ * <ak-pony-button></ak-pony-button>
+ * </html-example>
  */
 const PonyButton = define('ak-pony-button', {
   render() {
@@ -16,6 +19,15 @@ const PonyButton = define('ak-pony-button', {
     vdom.button('I am a pony. (pony)');
   },
   events: {
+    /**
+     * Click handler. Fires when the button is clicked.
+     * @description The pony button will log output to the console and fire the
+     * {@link ak-neigh|ak-neigh} event when it is clicked.
+     * @memberof PonyButton
+     * @instance
+     * @fires PonyButton#ak-neigh
+     * @listens click
+       */
     click(elem) {
       console.log('Neigh. I am a pony.'); // eslint-disable-line no-console
       /**
@@ -37,7 +49,9 @@ const PonyButton = define('ak-pony-button', {
      * @instance
      * @type {string}
      * @example <caption>Hi, my name is Randy. What's yours?</caption>
+     * <html-example>
      * <ak-pony-button name="Randy"></ak-pony-button>
+     * </html-example>
      */
     name: {
       attribute: true,
@@ -52,8 +66,10 @@ const PonyButton = define('ak-pony-button', {
      * @function
      * @instance
      * @example <caption>Look at it go!</caption>
+     * <js-example>
      * ponyButton.canter();
      * // Clop clop clop.
+     * </js-example>
      */
     canter() {
       console.log('Clop clop clop.'); // eslint-disable-line no-console

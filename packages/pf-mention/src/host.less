@@ -1,0 +1,24 @@
+/* pf-mention - Styles in here will be inserted into the
+   HEAD and are not able to pierce the shadow DOM boundary */
+@import 'shared-variables.less';
+
+// FIXME - this should probably come from atlaskit...
+body {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+}
+
+pf-mention-list,
+pf-mention-item,
+pf-resourced-mention-list,
+pf-scrollable {
+  display: block;
+}
+
+pf-scrollable {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  padding: 0;
+  margin: 0;
+}

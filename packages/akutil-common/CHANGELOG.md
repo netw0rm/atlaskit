@@ -4,12 +4,7 @@
 
 
 <a name="0.0.3-semver-tag-for-akutil-common"></a>
-## [0.0.3-semver-tag-for-akutil-common](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/bec42ab...0.0.3-semver-tag-for-akutil-common) (2016-06-29)
-
-
-### Bug Fixes
-
-* Added ![defined] rule for ak-avatar and vertical align to remove the extra gap from imgs ([bec42ab](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/bec42ab))
+## 0.0.3-semver-tag-for-akutil-common (2016-06-29)
 
 
 

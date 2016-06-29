@@ -129,7 +129,7 @@ define('atlas-animation', {
   },
 });
 
-export default define('x-hello', {
+const definition = {
   props: {
     name: { attribute: true },
     speed: prop.number(),
@@ -192,4 +192,9 @@ export default define('x-hello', {
       });
     });
   },
-});
+};
+
+/* The constructor for our component */
+export default () => define('x-hello', definition);
+
+export { definition };

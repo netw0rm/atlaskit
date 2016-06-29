@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-* Seperated out ak-avatar constructor and definition ([b86dfea](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/b86dfea))
+* Added some stories for ak-avatar demo ([545f2f0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/545f2f0))
 
 
 

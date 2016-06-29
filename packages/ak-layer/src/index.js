@@ -33,7 +33,27 @@ export default define('ak-layer', {
       elem.alignment.update(elem);
     }
 
-    vdom.slot({ name: 'layer' });
+    vdom.create('slot', { name: 'layer' });
   },
 });
 
+
+// const maps = {
+//   alignment: new WeakMap(),
+// };
+//
+// export default define('ak-layer', {
+//   props: {
+//     position: prop.string(),
+//     target: prop.string(),
+//   },
+//   attached(elem) {
+//     maps.alignment.set(elem, new Alignment(elem));
+//   },
+//   detached(elem) {
+//     maps.alignment.get(elem).destroy();
+//   },
+//   render() {
+//     vdom.element('slot');
+//   },
+// });

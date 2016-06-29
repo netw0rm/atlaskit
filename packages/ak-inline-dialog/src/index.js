@@ -2,7 +2,6 @@ import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-var
 import shadowStyles from './shadow.less';
 
 import { define, vdom, prop } from 'skatejs';
-import Layer from 'ak-layer';
 
 import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
 
@@ -57,8 +56,8 @@ const definition = {
   },
   render(elem) {
     if (elem.open) {
-      vdom.style(shadowStyles.toString());
-      vdom.create(Layer, {
+      vdom.create('style', shadowStyles.toString());
+      vdom.create('ak-layer', {
         position: elem.position,
         target: elem.target,
         movable: elem,
@@ -70,8 +69,8 @@ const definition = {
           const divAttrs = {
             class: shadowStyles.locals.inlineDialogContainer,
           };
-          vdom.div(divAttrs, () => {
-            vdom.slot();
+          vdom.create('div', divAttrs, () => {
+            vdom.create('slot');
           });
         });
       });
@@ -93,10 +92,10 @@ define('ak-animmytest', {
     vdom.create('div', {
       class: shadowStyles.locals.animateContainer,
     }, () => {
-      container = vdom.div({
+      container = vdom.create('div', {
         class: shadowStyles.locals.animateContainer2,
       }, () => {
-        vdom.slot();
+        vdom.create('slot');
       });
     });
 

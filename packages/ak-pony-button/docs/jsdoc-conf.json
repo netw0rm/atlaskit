@@ -19,7 +19,7 @@
   },
   "opts": {
     "destination": "docs/out",
-    "template": "../../jsdoc/jsdoc-templ",
-    "recurse": true
+    "recurse": true,
+    "tutorials": "docs/tutorials"
   }
 }

@@ -5,9 +5,10 @@ import { Alignment } from 'akutil-common';
 
 export default define('ak-layer', {
   props: {
-    position: prop.string(),
-    target: prop.string(),
+    position: prop.string({ attribute: true }),
+    target: prop.string({ attribute: true }),
     open: prop.boolean({
+      attribute: true,
       set(elem) {
         if (elem.alignment) {
           elem.alignment.reposition();
@@ -33,7 +34,7 @@ export default define('ak-layer', {
       elem.alignment.update(elem);
     }
 
-    vdom.create('slot', { name: 'layer' });
+    vdom.element('slot', { name: 'layer' });
   },
 });
 

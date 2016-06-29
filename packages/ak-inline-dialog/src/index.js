@@ -57,21 +57,21 @@ const definition = {
   },
   render(elem) {
     if (elem.open) {
-      vdom.create('style', shadowStyles.toString());
-      vdom.create('ak-layer', {
+      vdom.element('style', shadowStyles.toString());
+      vdom.element('ak-layer', {
         position: elem.position,
         target: elem.target,
         movable: elem,
         open: elem.open,
       }, () => {
-        vdom.create('ak-animmytest', {
+        vdom.element('ak-animmytest', {
           alignment: getAnimationFromPosition(elem.position, elem.fl),
         }, () => {
           const divAttrs = {
             class: shadowStyles.locals.inlineDialogContainer,
           };
-          vdom.create('div', divAttrs, () => {
-            vdom.create('slot');
+          vdom.element('div', divAttrs, () => {
+            vdom.element('slot');
           });
         });
       });
@@ -90,13 +90,13 @@ define('ak-animmytest', {
   render(elem) {
     let container;
 
-    vdom.create('div', {
+    vdom.element('div', {
       class: shadowStyles.locals.animateContainer,
     }, () => {
-      container = vdom.create('div', {
+      container = vdom.element('div', {
         class: shadowStyles.locals.animateContainer2,
       }, () => {
-        vdom.create('slot');
+        vdom.element('slot');
       });
     });
 

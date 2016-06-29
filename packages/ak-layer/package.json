@@ -17,6 +17,6 @@
   "dependencies": {
     "akutil-common": "*",
     "akutil-shared-styles": "*",
-    "skatejs": "1.0.0-beta.2"
+    "skatejs": "v1.0.0-beta.6"
   }
 }

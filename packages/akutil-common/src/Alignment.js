@@ -30,20 +30,9 @@ function getTargetsFromPosition(position, isReverse) {
 }
 
 function Alignment(elem) {
-  this.tether = new Tether({
-    element: elem.movable ? elem.movable : elem,
-    target: document.querySelector(elem.target),
-    attachment: getTargetsFromPosition(elem.position, 'reverse'),
-    targetAttachment: getTargetsFromPosition(elem.position),
-    constraints: [
-      {
-        to: 'window',
-        attachment: 'together',
-      },
-    ],
-  });
-
   this.disabled = false;
+
+  this.update(elem);
   return this;
 }
 
@@ -69,7 +58,7 @@ Alignment.prototype = {
       return this;
     }
 
-    const options = {
+    let opts = {
       element: elem.movable ? elem.movable : elem,
       target: document.querySelector(elem.target),
       attachment: getTargetsFromPosition(elem.position, 'reverse'),
@@ -82,11 +71,12 @@ Alignment.prototype = {
       ],
     };
 
-    if (this.tether) {
-      this.tether.setOptions(options);
+    if (!this.tether) {
+      this.tether = new Tether(opts);
     } else {
-      this.tether = new Tether(options);
+      this.tether.setOptions(opts);
     }
+
     this.tether.position();
 
     return this;

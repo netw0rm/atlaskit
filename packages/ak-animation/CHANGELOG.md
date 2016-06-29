@@ -4,7 +4,12 @@
 
 
 <a name="1.1.18-semver-tag-for-atlas-animation"></a>
-## 1.1.18-semver-tag-for-atlas-animation (2016-06-27)
+## [1.1.18-semver-tag-for-atlas-animation](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/bec42ab...1.1.18-semver-tag-for-atlas-animation) (2016-06-27)
+
+
+### Bug Fixes
+
+* Added ![defined] rule for ak-avatar and vertical align to remove the extra gap from imgs ([bec42ab](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/bec42ab))
 
 
 

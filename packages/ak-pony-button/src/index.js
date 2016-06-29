@@ -8,10 +8,7 @@ import { define, emit, vdom } from 'skatejs';
  * Pony Button.
  * @constructs PonyButton
  * @description This button think it is a pony, but its really just a button.
- * @example
- * <html-example>
- * <ak-pony-button></ak-pony-button>
- * </html-example>
+ * @example <ak-pony-button></ak-pony-button>
  */
 const PonyButton = define('ak-pony-button', {
   render(elem) {
@@ -47,10 +44,7 @@ const PonyButton = define('ak-pony-button', {
      * @default Bob
      * @instance
      * @type {string}
-     * @example
-     * <html-example>
-     * <ak-pony-button name="Randy"></ak-pony-button>
-     * </html-example>
+     * @example <ak-pony-button name="Randy"></ak-pony-button>
      */
     name: {
       attribute: true,
@@ -67,14 +61,7 @@ const PonyButton = define('ak-pony-button', {
      * @instance
      * @fires PonyButton#ak-neigh
      * @return {PonyButton} The PonyButton element.
-     * @example
-     * <html-example>
-     * <ak-pony-button id="my-pony-button"></ak-pony-button>
-     * </html-example>
-     * <js-example>
-     * var ponyButton = document.querySelector('my-pony-button');
-     * ponyButton.canter(); // Clop clop clop.
-     * </js-example>
+     * @example ponyButton.canter(); // Clop clop clop.
      */
     canter() {
       console.log('Clop clop clop.'); // eslint-disable-line no-console

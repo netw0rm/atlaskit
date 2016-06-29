@@ -12,7 +12,6 @@ const shouldMininimize = !!argv.min;
 const isDemo = !!argv.demo;
 const shouldBundleDependencies = !!argv['bundle-deps'];
 const isMonkeyTest = !!argv.monkey;
-const isIntegratonTest = !!argv.integration;
 
 require('minilog').enable();
 
@@ -82,18 +81,12 @@ const standardConfig = {
   ],
 };
 
-if (isIntegratonTest) {
-  log.info('Integration testing');
-  standardConfig.entry['integration.js'] = './integration/index.js';
-  standardConfig.plugins = [
-    new HtmlWebpackPlugin({
-      title: `${pkg.name} - Integration Test`,
-      template: './integration/index.ejs',
-    }),
-  ];
-} else if (isDemo) {
+if (isDemo) {
   log.info('Demo mode');
   standardConfig.entry['demo.js'] = './demo/index.js';
+  log.info('adding polyfills');
+  standardConfig.entry['polyfills.js'] = require.resolve('akutil-polyfills');
+
   if (isMonkeyTest) {
     standardConfig.entry['monkey.js'] = path.join(__dirname, 'build', 'lib', 'monkey.js');
   }
@@ -115,12 +108,6 @@ if (shouldMininimize) {
 if (shouldBundleDependencies) {
   log.info('bundling dependencies');
   delete standardConfig.externals;
-}
-
-// Some overrides passed in by command line args.
-if (isIntegratonTest || isDemo) {
-  log.info('adding polyfills');
-  standardConfig.entry['polyfills.js'] = require.resolve('akutil-polyfills');
 }
 
 module.exports = standardConfig;

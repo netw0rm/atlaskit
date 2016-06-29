@@ -12,7 +12,7 @@ const Component = reactify(uniqueWebComponent('x-hello', definition, define), {
   ReactDOM,
 });
 
-export default storiesOf('akutil-component-template', module)
-  .add('a simple akutil-component-template', () => (
+export default storiesOf('atlas-animation', module)
+  .add('a simple atlas-animation', () => (
     <Component name="Blah"><span>Hello, Blah!!</span></Component>
   ));

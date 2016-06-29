@@ -29,6 +29,8 @@ module.exports = (storybookBaseConfig, configType) => {
       PACKAGE_FOLDERS: JSON.stringify(getPackageRestrictions(process.env.PACKAGE)),
   }));
 
+  storybookBaseConfig.entry.polyfills = require.resolve('akutil-polyfills');
+
   storybookBaseConfig.module.loaders = webpackConfig.module.loaders;
 
   // Return the altered config

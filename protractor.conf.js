@@ -1,5 +1,10 @@
 const path = require('path');
 
+const rq = [
+  path.join(__dirname, 'packages', 'akutil-cucumber', 'src', '**', '*.js'),
+  path.join(process.cwd(), 'cucumber', 'stepDefinitions', '**', 'steps.js'),
+];
+
 exports.config = {
   seleniumAddress: process.env.SELENIUM_ADDRESS,
   baseUrl: process.env.BASE_URL,
@@ -10,7 +15,7 @@ exports.config = {
     browserName: 'chrome',
   },
   cucumberOpts: {
-    require: path.join(process.cwd(), 'cucumber', 'stepDefinitions', '**', 'steps.js'),
+    require: rq,
     format: undefined,
     profile: false,
     'no-source': true,

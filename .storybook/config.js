@@ -1,5 +1,5 @@
 import path from 'path';
-import { configure } from '@kadira/storybook';
+import { configure, setAddon } from '@kadira/storybook';
 import 'akutil-polyfills';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -22,5 +22,19 @@ function loadStories() {
   }
   stories.forEach(req);
 }
+
+setAddon({
+  addWithMonkeyTest(storyName, storyFn) {
+    this.monkeyTestStoryNames = this.monkeyTestStoryNames || [];
+    this.monkeyTestStoryNames.push(storyName);
+    this.add(storyName, storyFn);
+  },
+
+  addWithIntegrationTest(storyName, storyFn) {
+    this.integrationStoryNames = this.integrationStoryNames || [];
+    this.integrationStoryNames.push(storyName);
+    this.add(storyName, storyFn);
+  }
+});
 
 configure(loadStories, module);

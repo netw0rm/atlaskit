@@ -14,12 +14,7 @@
 
 
 <a name="1.0.0-semver-tag-for-eslint-config-ak-tests"></a>
-# [1.0.0-semver-tag-for-eslint-config-ak-tests](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/e55c3d2...1.0.0-semver-tag-for-eslint-config-ak-tests) (2016-06-24)
-
-
-### Bug Fixes
-
-* fix inline dialog alignment ([e55c3d2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/e55c3d2))
+# 1.0.0-semver-tag-for-eslint-config-ak-tests (2016-06-24)
 
 
 

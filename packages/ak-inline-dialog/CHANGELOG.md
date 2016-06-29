@@ -1,5 +1,5 @@
-<a name="22.0.0"></a>
-# [22.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-ak-inline-dialog...v22.0.0) (2016-06-29)
+<a name="23.0.0"></a>
+# [23.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-ak-inline-dialog...v23.0.0) (2016-06-29)
 
 
 ### Bug Fixes
@@ -11,11 +11,6 @@
 
 <a name="1.0.0-semver-tag-for-ak-inline-dialog"></a>
 # [1.0.0-semver-tag-for-ak-inline-dialog](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/bfbe44b...1.0.0-semver-tag-for-ak-inline-dialog) (2016-06-24)
-
-
-### Bug Fixes
-
-* fix inline dialog alignment ([e55c3d2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/e55c3d2))
 
 
 ### Features

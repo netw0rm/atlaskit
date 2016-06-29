@@ -33,7 +33,6 @@
 ### Bug Fixes
 
 * Added stories for ak-avatar ([9154cbd](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/9154cbd))
-* fix inline dialog alignment ([e55c3d2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/e55c3d2))
 * Seperated out ak-avatar constructor and definition ([b86dfea](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/b86dfea))
 
 

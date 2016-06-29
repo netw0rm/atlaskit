@@ -4,12 +4,7 @@
 
 
 <a name="3.0.6-semver-tag-for-akutil-component-template"></a>
-## [3.0.6-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/3.0.4-semver-tag-for-akutil-component-template...3.0.6-semver-tag-for-akutil-component-template) (2016-06-29)
-
-
-
-<a name="3.0.4-semver-tag-for-akutil-component-template"></a>
-## [3.0.4-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/3.0.3-semver-tag-for-akutil-component-template...3.0.4-semver-tag-for-akutil-component-template) (2016-06-27)
+## [3.0.6-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/3.0.3-semver-tag-for-akutil-component-template...3.0.6-semver-tag-for-akutil-component-template) (2016-06-29)
 
 
 ### Bug Fixes
@@ -31,11 +26,6 @@
 
 <a name="3.0.2-semver-tag-for-akutil-component-template"></a>
 ## [3.0.2-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/3.0.1-semver-tag-for-akutil-component-template...3.0.2-semver-tag-for-akutil-component-template) (2016-06-24)
-
-
-### Bug Fixes
-
-* fix inline dialog alignment ([e55c3d2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/e55c3d2))
 
 
 

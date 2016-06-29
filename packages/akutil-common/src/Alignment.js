@@ -29,27 +29,6 @@ function getTargetsFromPosition(position, isReverse) {
   return `${vertical} ${horizontal}`;
 }
 
-function getAlignmentSnap(target, container) {
-  let snapHorizontal = 'right';
-
-  if (!container || container === window || container === document) {
-    container = document.documentElement; // eslint-disable-line no-param-reassign
-  }
-
-  if (container && container.nodeType && container.nodeType === Node.ELEMENT_NODE) {
-    const containerBounds = container.getBoundingClientRect();
-    const targetBounds = target.getBoundingClientRect();
-
-    if (targetBounds.left > containerBounds.right / 2) {
-      snapHorizontal = 'left';
-    }
-  }
-
-  return {
-    horizontal: snapHorizontal,
-  };
-}
-
 function Alignment(elem) {
   this.tether = new Tether({
     element: elem.movable ? elem.movable : elem,
@@ -64,19 +43,14 @@ function Alignment(elem) {
     ],
   });
 
+  this.disabled = false;
   return this;
 }
 
 Alignment.prototype = {
-  destroy() {
-    if (this.tether) {
-      this.tether.destroy();
-    }
-    return this;
-  },
-
   disable() {
     if (this.tether) {
+      this.disabled = true;
       this.tether.disable();
     }
     return this;
@@ -84,20 +58,37 @@ Alignment.prototype = {
 
   enable() {
     if (this.tether) {
+      this.disabled = false;
       this.tether.enable();
     }
     return this;
   },
 
   update(elem) {
-    if (this.tether) {
-      this.tether.setOptions({
-        element: elem.movable ? elem.movable : elem,
-        target: document.querySelector(elem.target),
-        attachment: getTargetsFromPosition(elem.position, 'reverse'),
-        targetAttachment: getTargetsFromPosition(elem.position),
-      });
+    if (this.disabled || !elem.position || !elem.target) {
+      return this;
     }
+
+    const options = {
+      element: elem.movable ? elem.movable : elem,
+      target: document.querySelector(elem.target),
+      attachment: getTargetsFromPosition(elem.position, 'reverse'),
+      targetAttachment: getTargetsFromPosition(elem.position),
+      constraints: [
+        {
+          to: 'window',
+          attachment: 'together',
+        },
+      ],
+    };
+
+    if (this.tether) {
+      this.tether.setOptions(options);
+    } else {
+      this.tether = new Tether(options);
+    }
+    this.tether.position();
+
     return this;
   },
 
@@ -107,8 +98,6 @@ Alignment.prototype = {
     }
     return this;
   },
-
-  getAlignmentSnap,
 };
 
 export default Alignment;

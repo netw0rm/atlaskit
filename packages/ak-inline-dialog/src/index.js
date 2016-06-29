@@ -6,71 +6,112 @@ import Layer from 'ak-layer';
 
 import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
 
-// function getAnimationFromPosition(position) {
-//   return position.split(' ')[0];
-// }
+function getAnimationFromPosition(position, isFlipped) {
+  let res = position.split(' ')[0];
+  if (isFlipped) {
+    switch (res) {
+      case 'left':
+        res = 'right';
+        break;
+      case 'right':
+        res = 'left';
+        break;
+      case 'top':
+        res = 'bottom';
+        break;
+      case 'bottom':
+        res = 'top';
+        break;
+      default:
+    }
+  }
+  return res;
+}
 
-// const Animations = {
-//   left: [
-//     { transform: 'translate3d(100%, 0, 0)' },
-//     { transform: 'translate3d(0, 0, 0)' },
-//   ],
-//   bottom: [
-//     { transform: 'translate3d(0, -100%, 0)' },
-//     { transform: 'translate3d(0, 0, 0)' },
-//   ],
-//   right: [
-//     { transform: 'translate3d(-100%, 0, 0)' },
-//     { transform: 'translate3d(0, 0, 0)' },
-//   ],
-//   top: [
-//     { transform: 'translate3d(0, 100%, 0)' },
-//     { transform: 'translate3d(0, 0, 0)' },
-//   ],
-// };
+const Animations = {
+  left: [
+    { transform: 'translate3d(100%, 0, 0)', opacity: 1 },
+    { transform: 'translate3d(0, 0, 0)', opacity: 1 },
+  ],
+  bottom: [
+    { transform: 'translate3d(0, -100%, 0)', opacity: 1 },
+    { transform: 'translate3d(0, 0, 0)', opacity: 1 },
+  ],
+  right: [
+    { transform: 'translate3d(-100%, 0, 0)', opacity: 1 },
+    { transform: 'translate3d(0, 0, 0)', opacity: 1 },
+  ],
+  top: [
+    { transform: 'translate3d(0, 100%, 0)', opacity: 1 },
+    { transform: 'translate3d(0, 0, 0)', opacity: 1 },
+  ],
+};
 
 const definition = {
   attached(elem) {
     elem.className = headStyles.akInlineDialog; // eslint-disable-line no-param-reassign
   },
+  observedAttributes: ['flipped'],
+  attributeChanged(elem, data) {
+    elem.fl = data.newValue === 'true'; // eslint-disable-line no-param-reassign
+  },
   render(elem) {
-    // let inlineDialogContainer;
-    vdom.style(shadowStyles.toString());
-    vdom.create(Layer, {
-      position: elem.position,
-      target: elem.target,
-      movable: elem,
-      open: elem.open,
-    }, () => {
-      const divAttrs = {
-        class: shadowStyles.locals.inlineDialogContainer,
-      };
-      vdom.div(divAttrs, () => {
-        vdom.slot();
+    if (elem.open) {
+      vdom.style(shadowStyles.toString());
+      vdom.create(Layer, {
+        position: elem.position,
+        target: elem.target,
+        movable: elem,
+        open: elem.open,
+      }, () => {
+        vdom.create('ak-animmytest', {
+          alignment: getAnimationFromPosition(elem.position, elem.fl),
+        }, () => {
+          const divAttrs = {
+            class: shadowStyles.locals.inlineDialogContainer,
+          };
+          vdom.div(divAttrs, () => {
+            vdom.slot();
+          });
+        });
       });
-    });
-
-    // if (elem.open) {
-    //   const anim = getAnimationFromPosition(elem.position);
-    //
-    //   if (anim === 'left' || anim === 'right') {
-    //    // anim = Alignment.getAlignmentSnap(document.querySelector(elem.target)).horizontal;
-    //   } else {
-    //    // anim = Alignment.getAlignmentSnap(document.querySelector(elem.target)).vertical
-    //   }
-    //
-    //   inlineDialogContainer.animate(Animations[anim], {
-    //     duration: elem.duration,
-    //     iterations: 1,
-    //   });
-    // }
+    }
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
     open: prop.boolean({ attribute: true, default: false }),
     duration: prop.number({ attribute: true, default: 100 }),
     target: prop.string({ attribute: true }),
+    fl: prop.boolean(),
   },
 };
+
+define('ak-animmytest', {
+  render(elem) {
+    let container;
+
+    vdom.create('div', {
+      class: shadowStyles.locals.animateContainer,
+    }, () => {
+      container = vdom.div({
+        class: shadowStyles.locals.animateContainer2,
+      }, () => {
+        vdom.slot();
+      });
+    });
+
+    container.animate(Animations[elem.alignment], {
+      duration: 400,
+      iterations: 1,
+    });
+
+    setTimeout(() => {
+      container.className = '';
+    });
+  },
+  props: {
+    alignment: prop.string({ attribute: true }),
+  },
+});
 
 export default define('ak-inline-dialog', definition);

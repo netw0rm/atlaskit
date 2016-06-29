@@ -17,7 +17,7 @@ storiesOf('ak-dialog', module)
     let target = '#target';
     let position = 'right top';
     let open = true;
-    return (<div style={{ position: 'relative' }}>
+    return (<div style={{ position: 'relative', height: '500px' }}>
       <button id="target">test target div</button>
       <Dialog open={open} target={target} position={position}>Test text</Dialog>
     </div>);

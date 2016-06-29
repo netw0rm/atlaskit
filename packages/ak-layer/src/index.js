@@ -15,12 +15,22 @@ export default define('ak-layer', {
       },
     }),
   },
+  attached(elem) {
+    if (!elem.alignment) {
+      elem.alignment = new Alignment(elem);  // eslint-disable-line no-param-reassign
+    } else {
+      elem.alignment.enable();
+      elem.alignment.update(elem);
+    }
+  },
   detached(elem) {
-    elem.alignment && elem.alignment.destroy();
+    if (elem.alignment) {
+      elem.alignment.disable();
+    }
   },
   render(elem) {
-    if (!elem.alignment && elem.position && elem.target) {
-      elem.alignment = new Alignment(elem); // eslint-disable-line no-param-reassign
+    if (elem.alignment) {
+      elem.alignment.update(elem);
     }
 
     vdom.slot({ name: 'layer' });

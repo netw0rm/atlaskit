@@ -5,7 +5,7 @@
       <title><%= htmlWebpackPlugin.options.title %></title>
     </head>
     <body>
-      <div style="width:300px; margin:100px auto 0 auto; border:1px solid red; float:right;height:300px;" id="target">
+      <div style="width:300px; margin:0px auto 100px auto; border:1px solid red; position:relative;height:300px;" id="target">
         test
         <br>
         <button id="button">Super button</button>
@@ -14,13 +14,14 @@
           ak-inline-dialog {
             display:none;
           }
+
         </style>
         <ak-inline-dialog>test inline dialog2</ak-inline-dialog>
 
         <script>
           var dialog = document.querySelector("ak-inline-dialog");
           dialog.target = '#target';
-          dialog.position = 'right top';
+          dialog.position = 'left middle';
           //dialog.open = true;
 
           var button = document.querySelector('#button');

@@ -15,10 +15,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "akutil-common": "^0.0.0",
+    "akutil-common": "*",
     "akutil-shared-styles": "*",
     "ak-layer": "*",
-    "skatejs": "1.0.0-beta.2",
+    "skatejs": "1.0.0-beta.3",
     "web-animations-js": "^2.2.1",
     "tether": "^1.3.2"
   },

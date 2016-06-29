@@ -79,7 +79,7 @@ const definition = {
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
-    open: prop.boolean({ attribute: true, default: false }),
+    open: prop.boolean({ attribute: true }),
     duration: prop.number({ attribute: true, default: 100 }),
     target: prop.string({ attribute: true }),
     fl: prop.boolean(),

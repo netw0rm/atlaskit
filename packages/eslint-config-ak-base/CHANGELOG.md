@@ -4,17 +4,17 @@
 
 
 <a name="1.0.2-semver-tag-for-eslint-config-ak-base"></a>
-## [1.0.2-semver-tag-for-eslint-config-ak-base](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.1-semver-tag-for-eslint-config-ak-base...1.0.2-semver-tag-for-eslint-config-ak-base) (2016-06-29)
-
-
-
-<a name="1.0.1-semver-tag-for-eslint-config-ak-base"></a>
-## [1.0.1-semver-tag-for-eslint-config-ak-base](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-eslint-config-ak-base...1.0.1-semver-tag-for-eslint-config-ak-base) (2016-06-27)
+## [1.0.2-semver-tag-for-eslint-config-ak-base](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-eslint-config-ak-base...1.0.2-semver-tag-for-eslint-config-ak-base) (2016-06-29)
 
 
 
 <a name="1.0.0-semver-tag-for-eslint-config-ak-base"></a>
-# 1.0.0-semver-tag-for-eslint-config-ak-base (2016-06-24)
+# [1.0.0-semver-tag-for-eslint-config-ak-base](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/9d806d4...1.0.0-semver-tag-for-eslint-config-ak-base) (2016-06-24)
+
+
+### Bug Fixes
+
+* Added test directory to _component_template with fixed eslintrc file ([9d806d4](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/9d806d4))
 
 
 

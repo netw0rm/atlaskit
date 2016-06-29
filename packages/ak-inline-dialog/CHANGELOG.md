@@ -1,9 +1,10 @@
-<a name="24.0.0"></a>
-# 24.0.0 (2016-06-29)
+<a name="25.0.0"></a>
+# 25.0.0 (2016-06-29)
 
 
 ### Bug Fixes
 
+* Added test directory to _component_template with fixed eslintrc file ([9d806d4](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/9d806d4))
 * **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/fb64e0e))
 * **share styles:** use * until we are published ([a2792e5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/a2792e5))
 

@@ -29,14 +29,13 @@
 
 
 <a name="0.10.1-semver-tag-for-ak-avatar"></a>
-## [0.10.1-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/a879b5f...0.10.1-semver-tag-for-ak-avatar) (2016-06-23)
+## [0.10.1-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/9d806d4...0.10.1-semver-tag-for-ak-avatar) (2016-06-23)
 
 
 ### Bug Fixes
 
+* Added test directory to _component_template with fixed eslintrc file ([9d806d4](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/9d806d4))
 * Moved akutil-react to a dev-dependency for ak-avatar ([add6077](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/add6077))
-* Reverting previous test commit ([7190efc](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/7190efc))
-* Test commit to test eslint fix ([a879b5f](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/a879b5f))
 
 
 

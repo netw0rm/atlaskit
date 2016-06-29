@@ -15,7 +15,7 @@
 
 
 <a name="3.0.3-semver-tag-for-akutil-component-template"></a>
-## [3.0.3-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/3.0.2-semver-tag-for-akutil-component-template...3.0.3-semver-tag-for-akutil-component-template) (2016-06-24)
+## [3.0.3-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/3.0.1-semver-tag-for-akutil-component-template...3.0.3-semver-tag-for-akutil-component-template) (2016-06-24)
 
 
 ### Bug Fixes
@@ -24,18 +24,13 @@
 
 
 
-<a name="3.0.2-semver-tag-for-akutil-component-template"></a>
-## [3.0.2-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/3.0.1-semver-tag-for-akutil-component-template...3.0.2-semver-tag-for-akutil-component-template) (2016-06-24)
-
-
-
 <a name="3.0.1-semver-tag-for-akutil-component-template"></a>
-## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/15f31d3...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
+## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/9d806d4...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
 
 
 ### Bug Fixes
 
-* Added akutil-react to template ([15f31d3](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/15f31d3))
+* Added test directory to _component_template with fixed eslintrc file ([9d806d4](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/9d806d4))
 * Updated template component with new skate and proper storybook ([5e24d93](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/5e24d93))
 
 

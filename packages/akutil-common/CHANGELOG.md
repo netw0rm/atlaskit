@@ -4,13 +4,17 @@
 
 
 <a name="0.0.3-semver-tag-for-akutil-common"></a>
-## [0.0.3-semver-tag-for-akutil-common](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/9d806d4...0.0.3-semver-tag-for-akutil-common) (2016-06-29)
+## [0.0.3-semver-tag-for-akutil-common](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/3f14e28...0.0.3-semver-tag-for-akutil-common) (2016-06-29)
 
 
 ### Bug Fixes
 
 * Added 'initial' to enumeration prop when it is being set on an attribute ([2d99a61](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/2d99a61))
-* Added test directory to _component_template with fixed eslintrc file ([9d806d4](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/9d806d4))
+
+
+### Features
+
+* inline dialog and layer backbone - added missing changes ([3f14e28](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/3f14e28))
 
 
 

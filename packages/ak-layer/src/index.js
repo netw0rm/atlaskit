@@ -14,7 +14,9 @@ export default define('ak-layer', {
     elem.tether.destroy();  // eslint-disable-line no-param-reassign
   },
   render(elem) {
-    elem.tether && (elem.tether.position());
+    if (elem.tether) {
+      elem.tether.position();
+    }
     if (elem.attachment && elem.targetAttachment) {
       elem.tether = new Tether({  // eslint-disable-line no-param-reassign
         element: elem,
@@ -39,4 +41,3 @@ export default define('ak-layer', {
     vdom.slot({ name: 'layer' });
   },
 });
-

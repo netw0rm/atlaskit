@@ -189,12 +189,12 @@ npm run lint -- --fix
 ```
 
 ##Commit changes
-To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Firstly, make sure you have it installed globally (see [Getting Started](#markdown-header-before-you-get-started)). Now running commitizen should be as simple as running `git cz` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
+To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Running commitizen is as simple as running `npm run commut` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
 
 ```
-git cz [-a]
+npm run commit -- -a
 ```
-Note: it is advised to run the [linting](#markdown-header-follow-code-style-guidelines) *before* you commit, to prevent you from having to answer all the questions twice.
+Note: it automatically runs [linting](#markdown-header-follow-code-style-guidelines) and validation *before* you commit, to prevent you from having to answer all the questions twice.
 
 
 ##Merge into master

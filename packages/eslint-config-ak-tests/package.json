@@ -1,10 +1,11 @@
 {
   "name": "eslint-config-ak-tests",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Atlassian Pty. Ltd",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {
-    "eslint-config-ak-base": "*"
+    "eslint-config-ak-base": "*",
+    "eslint-plugin-mocha": "^3.0.0"
   }
 }

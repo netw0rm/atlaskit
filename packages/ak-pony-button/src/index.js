@@ -7,16 +7,16 @@ import { define, emit, vdom } from 'skatejs';
 /**
  * Pony Button.
  * @constructs PonyButton
- * @description This button think it is a pony, but it is not.
+ * @description This button think it is a pony, but its really just a button.
  * @example
  * <html-example>
  * <ak-pony-button></ak-pony-button>
  * </html-example>
  */
 const PonyButton = define('ak-pony-button', {
-  render() {
+  render(elem) {
     vdom.style(shadowStyles.toString());
-    vdom.button('I am a pony. (pony)');
+    vdom.button(`I am a pony. My name is ${elem.name}.`);
   },
   events: {
     /**
@@ -34,13 +34,12 @@ const PonyButton = define('ak-pony-button', {
        * Neigh event.
        *
        * @event PonyButton#ak-neigh
-       * @type {object}
-       * @description The pony button attempts to neigh.
+       * @description Description of the ak-neigh event goes here.
        */
       emit(elem, 'ak-neigh');
     },
   },
-  properties: {
+  props: {
     /**
      * The name of the pony button.
      *

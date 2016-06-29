@@ -4,7 +4,12 @@
 
 
 <a name="1.0.2-semver-tag-for-eslint-config-ak-cucumber"></a>
-## 1.0.2-semver-tag-for-eslint-config-ak-cucumber (2016-06-29)
+## [1.0.2-semver-tag-for-eslint-config-ak-cucumber](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/bec42ab...1.0.2-semver-tag-for-eslint-config-ak-cucumber) (2016-06-29)
+
+
+### Bug Fixes
+
+* Added ![defined] rule for ak-avatar and vertical align to remove the extra gap from imgs ([bec42ab](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/commits/bec42ab))
 
 
 

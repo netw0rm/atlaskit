@@ -12,5 +12,13 @@
   "globals": {
     "expect": false,  //will be defined globally, false prevents overriding them
     "sinon": false
-  }
+  },
+  "rules": {
+    "no-unused-expressions": 0,
+    "mocha/no-exclusive-tests": 2,
+    "mocha/handle-done-callback": 2
+  },
+  "plugins": [
+    "eslint-plugin-mocha"
+  ]
 }

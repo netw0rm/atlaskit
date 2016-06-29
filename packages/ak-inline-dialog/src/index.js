@@ -1,5 +1,6 @@
 import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
+import Layer from 'ak-layer'; // eslint-disable-line no-unused-vars
 
 import { define, vdom, prop } from 'skatejs';
 

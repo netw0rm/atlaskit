@@ -28,7 +28,6 @@
     "eslint-config-ak-cucumber": "file:./packages/eslint-config-ak-cucumber",
     "eslint-config-ak-tests": "file:./packages/eslint-config-ak-tests",
     "eslint-friendly-formatter": "^2.0.5",
-    "eslint-plugin-mocha": "^3.0.0",
     "gremlins.js": "marmelab/gremlins.js#699af579a2f3e36cd3ba1d68c13893e80e40e674",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.21.0",

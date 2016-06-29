@@ -1,5 +1,5 @@
-<a name="17.0.0"></a>
-# [17.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-akutil-shared-styles...v17.0.0) (2016-06-29)
+<a name="18.0.0"></a>
+# [18.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/1.0.0-semver-tag-for-akutil-shared-styles...v18.0.0) (2016-06-29)
 
 
 

@@ -3,7 +3,7 @@ const JsDocPlugin = require('jsdoc-webpack-plugin');
 module.exports = {
   entry: './docs/index.js',
   output: {
-    path: './docs/out/scripts',
+    path: './docs/.tmp',
     filename: 'index.js',
   },
   module: {

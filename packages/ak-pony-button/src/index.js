@@ -5,7 +5,6 @@ import 'akutil-polyfills';
 import { define, emit, vdom } from 'skatejs';
 
 /**
- * Pony Button.
  * @constructs PonyButton
  * @description This button think it is a pony, but its really just a button.
  * @example <ak-pony-button></ak-pony-button>
@@ -13,11 +12,15 @@ import { define, emit, vdom } from 'skatejs';
 const PonyButton = define('ak-pony-button', {
   render(elem) {
     vdom.style(shadowStyles.toString());
-    vdom.button(`I am a pony. My name is ${elem.name}.`);
+    vdom.button(() => {
+      vdom.span(`I am a pony. My name is ${elem.name}.`);
+      vdom.span(()=> {
+        vdom.slot();
+      });
+    });
   },
   events: {
     /**
-     * Click handler. Fires when the button is clicked.
      * @description <strong>Event handler.</strong> The pony button will log output to the console
      * and fire the {@link ak-neigh|ak-neigh} event when it is clicked.
      * @memberof PonyButton
@@ -28,8 +31,6 @@ const PonyButton = define('ak-pony-button', {
     click(elem) {
       console.log('Neigh. I am a pony.'); // eslint-disable-line no-console
       /**
-       * Neigh event.
-       *
        * @event PonyButton#ak-neigh
        * @description Description of the ak-neigh event goes here.
        */
@@ -38,10 +39,9 @@ const PonyButton = define('ak-pony-button', {
   },
   props: {
     /**
-     * The name of the pony button.
-     *
+     * @description The name of the pony button.
      * @memberof PonyButton
-     * @default Bob
+     * @defaultvalue Bob
      * @instance
      * @type {string}
      * @example <ak-pony-button name="Randy"></ak-pony-button>
@@ -53,9 +53,7 @@ const PonyButton = define('ak-pony-button', {
   },
   prototype: {
     /**
-     * Causes this pony to canter, and not much else.
-     * @description This method will log output the the console and fire the
-     * {@link ak-neigh|ak-neigh} event.
+     * @description This method will log output the the console and fire the ak-neigh event.
      * @memberof PonyButton
      * @function
      * @instance

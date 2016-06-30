@@ -13,8 +13,8 @@ const PonyButton = reactify(window.uniqueWebComponent(ponyButtonWc, define), {
 
 storiesOf('ak-pony-button', module)
   .add('with name', () => (
-    <PonyButton name="Randy" />
+    <PonyButton name="Randy">Hello world!</PonyButton>
   ))
   .add('with no name', () => (
-    <PonyButton />
+    <PonyButton>Hello world!</PonyButton>
   ));

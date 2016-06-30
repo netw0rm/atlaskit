@@ -14,7 +14,7 @@ const PonyButton = define('ak-pony-button', {
     vdom.style(shadowStyles.toString());
     vdom.button(() => {
       vdom.span(`I am a pony. My name is ${elem.name}.`);
-      vdom.span(()=> {
+      vdom.span(() => {
         vdom.slot();
       });
     });

@@ -21,20 +21,27 @@ const PonyButton = define('ak-pony-button', {
   },
   events: {
     /**
-     * @description <strong>Event handler.</strong> The pony button will log output to the console
-     * and fire the {@link #PonyButton+event_ak-neigh|ak-neigh} event when it is clicked.
+     * @description Event handler. The pony button will fire the ak-neigh event when it is clicked.
      * @memberof PonyButton
      * @instance
      * @fires PonyButton#ak-neigh
      * @listens click
        */
     click(elem) {
-      console.log('Neigh. I am a pony.'); // eslint-disable-line no-console
       /**
        * @event PonyButton#ak-neigh
+       * @memberof PonyButton
        * @description Description of the ak-neigh event goes here.
+       * @property {String} detail.name The name of the pony button.
+       * @example ponyButton.addEventListener('ak-neigh', function (event) {
+       *   console.log(event.detail.name + ' is hungry. Maybe your pony is hungry?');
+       * });
        */
-      emit(elem, 'ak-neigh');
+      emit(elem, 'ak-neigh', {
+        detail: {
+          name: elem.name,
+        },
+      });
     },
   },
   props: {

@@ -25,8 +25,7 @@ The name of the pony button.
 <ak-pony-button name="Randy">Button text</ak-pony-button>
 ```
 ### ponyButton.click()
-<strong>Event handler.</strong> The pony button will log output to the console
-and fire the [ak-neigh](#PonyButton+event_ak-neigh) event when it is clicked.
+Event handler. The pony button will fire the ak-neigh event when it is clicked.
 
 **Kind**: instance method of [PonyButton](#markdown-header-new-ponybutton)  
 **Emits**: [ak-neigh](#markdown-header-akneigh)  
@@ -44,3 +43,15 @@ ponyButton.neigh(); // Fires the ak-neigh event.
 Description of the ak-neigh event goes here.
 
 **Kind**: event emitted by [PonyButton](#markdown-header-new-ponybutton)  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| detail.name | String | The name of the pony button. |
+
+**Example**  
+```js
+ponyButton.addEventListener('ak-neigh', function (event) {
+  console.log(event.detail.name + ' is hungry. Maybe your pony is hungry?');
+});
+```

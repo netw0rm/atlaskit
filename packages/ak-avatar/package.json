@@ -18,6 +18,6 @@
     "skatejs": "1.0.0-beta.2"
   },
   "devDependencies": {
-    "akutil-react": "^0.0.1"
+    "akutil-react": "^0.0.3"
   }
 }

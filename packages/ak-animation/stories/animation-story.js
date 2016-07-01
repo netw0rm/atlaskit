@@ -3,9 +3,7 @@ import reactify from 'akutil-react';
 import { definition } from '../src/index';
 import { define } from 'skatejs';
 
-const React = window.React;
-const ReactDOM = window.ReactDOM;
-const uniqueWebComponent = window.uniqueWebComponent;
+const { React, ReactDOM, uniqueWebComponent } = window;
 
 const Component = reactify(uniqueWebComponent('x-hello', definition, define), {
   React,

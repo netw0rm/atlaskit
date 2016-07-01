@@ -1,22 +1,11 @@
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
-const expect = chai.expect;
+const expect = chai.expect; // eslint-disable-line no-unused-vars
 
 module.exports = function steps() {
-  this.Then(
-    /^I should see a "([^"]*)" component$/,
-    (name) => browser.isElementPresent(by.webComponentNamePrefix(name))
-  );
-
   this.When(
     /^I click the "([^"]*)" component$/,
     (name) => element(by.webComponentNamePrefix(name)).click()
   );
-
-  this.Then(/^I should not see the "([^"]*)" component$/, (name, next) => {
-    expect(browser.isElementPresent(by.webComponentNamePrefix(name)))
-      .to.eventually.equal(false)
-      .and.notify(next);
-  });
 };

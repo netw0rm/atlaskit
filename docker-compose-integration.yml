@@ -7,7 +7,7 @@ services:
     logging:
       driver: none
   selenium-chrome:
-    # Uncomment the next line for a VNC server you can attach to
+    # Uncomment the next line for a VNC server you can attach to (vnc://:secret@localhost:5900)
     # image: selenium/node-chrome-debug
     image: selenium/node-chrome
     ports:

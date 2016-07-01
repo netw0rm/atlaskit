@@ -2,10 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import { definition } from '../src/index';
 import { define } from 'skatejs';
-
-const React = window.React;
-const ReactDOM = window.ReactDOM;
-const uniqueWebComponent = window.uniqueWebComponent;
+const { React, ReactDOM, uniqueWebComponent } = window;
 
 const Component = reactify(uniqueWebComponent('akutil-component-template', definition, define), {
   React,
@@ -25,9 +22,6 @@ export default storiesOf('akutil-component-template', module)
   // use .addWithIntegrationTest
   // if you want to run an integration test against it
   .addWithIntegrationTest('an akutil-component-template that behaves like XY', () => {
-    const hideMe = (event) => {
-      console.log('A');
-      event.target.parentNode.removeChild(event.target)
-    };
-    return (<Component id="myComponent" onClick={hideMe} />);
+    const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
+    return (<Component id="myComponent" onClick={removeMe} />);
   });

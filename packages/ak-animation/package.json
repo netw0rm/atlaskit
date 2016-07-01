@@ -19,6 +19,6 @@
     "skatejs-named-slots": "^0.2.5"
   },
   "devDependencies": {
-    "akutil-react": "^0.0.1"
+    "akutil-react": "^0.0.3"
   }
 }

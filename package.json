@@ -22,6 +22,7 @@
     "cucumber": "^1.2.0",
     "cz-conventional-changelog": "^1.1.6",
     "cz-lerna-changelog": "0.2.1",
+    "dmd-bitbucket": "^0.1.9",
     "eslint": "^2.13.1",
     "eslint-config-ak-base": "file:./packages/eslint-config-ak-base",
     "eslint-config-ak-cucumber": "file:./packages/eslint-config-ak-cucumber",

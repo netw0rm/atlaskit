@@ -1,16 +1,12 @@
-<a name="PonyButton"></a>
-
 ## PonyButton
 **Kind**: global class  
 
-* [PonyButton](#PonyButton)
-    * [new PonyButton()](#new_PonyButton_new)
-    * [.name](#PonyButton+name) : <code>string</code>
-    * [.click()](#PonyButton+click)
-    * [.neigh()](#PonyButton+neigh) ⇒ <code>[PonyButton](#PonyButton)</code>
-    * ["ak-neigh"](#PonyButton+event_ak-neigh)
-
-<a name="new_PonyButton_new"></a>
+* [PonyButton](#markdown-header-ponybutton)
+    * [new PonyButton()](#markdown-header-new-ponybutton)
+    * [.name](#markdown-header-ponybuttonname-string) : string
+    * [.click()](#markdown-header-ponybuttonclick)
+    * [.neigh()](#markdown-header-ponybuttonneigh-ponybutton) ⇒ PonyButton
+    * ["ak-neigh"](#markdown-header-akneigh)
 
 ### new PonyButton()
 This button think it is a pony, but its really just a button.
@@ -19,40 +15,32 @@ This button think it is a pony, but its really just a button.
 ```js
 <ak-pony-button>Button text.</ak-pony-button>
 ```
-<a name="PonyButton+name"></a>
-
-### ponyButton.name : <code>string</code>
+### ponyButton.name : string
 The name of the pony button.
 
-**Kind**: instance property of <code>[PonyButton](#PonyButton)</code>  
-**Default**: <code>&quot;Bob&quot;</code>  
+**Kind**: instance property of [PonyButton](#markdown-header-new-ponybutton)  
+**Default**: `"Bob"`  
 **Example**  
 ```js
 <ak-pony-button name="Randy">Button text</ak-pony-button>
 ```
-<a name="PonyButton+click"></a>
-
 ### ponyButton.click()
 <strong>Event handler.</strong> The pony button will log output to the console
 and fire the [ak-neigh](#PonyButton+event_ak-neigh) event when it is clicked.
 
-**Kind**: instance method of <code>[PonyButton](#PonyButton)</code>  
-**Emits**: <code>[ak-neigh](#PonyButton+event_ak-neigh)</code>  
-<a name="PonyButton+neigh"></a>
-
-### ponyButton.neigh() ⇒ <code>[PonyButton](#PonyButton)</code>
+**Kind**: instance method of [PonyButton](#markdown-header-new-ponybutton)  
+**Emits**: [ak-neigh](#markdown-header-akneigh)  
+### ponyButton.neigh() ⇒ PonyButton
 This method will fire the ak-neigh event.
 
-**Kind**: instance method of <code>[PonyButton](#PonyButton)</code>  
-**Returns**: <code>[PonyButton](#PonyButton)</code> - The PonyButton element.  
-**Emits**: <code>[ak-neigh](#PonyButton+event_ak-neigh)</code>  
+**Kind**: instance method of [PonyButton](#markdown-header-new-ponybutton)  
+**Returns**: [PonyButton](#markdown-header-new-ponybutton) - The PonyButton element.  
+**Emits**: [ak-neigh](#markdown-header-akneigh)  
 **Example**  
 ```js
 ponyButton.neigh(); // Fires the ak-neigh event.
 ```
-<a name="PonyButton+event_ak-neigh"></a>
-
 ### "ak-neigh"
 Description of the ak-neigh event goes here.
 
-**Kind**: event emitted by <code>[PonyButton](#PonyButton)</code>  
+**Kind**: event emitted by [PonyButton](#markdown-header-new-ponybutton)  

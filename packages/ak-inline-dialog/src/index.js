@@ -106,6 +106,4 @@ define('ak-animmytest', {
   },
 });
 
-export default () => define('ak-inline-dialog', definition);
-
-export { definition };
+export default define('ak-inline-dialog', definition);

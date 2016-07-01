@@ -7,8 +7,7 @@ import { define, emit, vdom } from 'skatejs';
 /**
  * @constructs PonyButton
  * @description This button think it is a pony, but its really just a button.
- * See the {@tutorial usage} for examples and indepth guides.
- * @example <ak-pony-button></ak-pony-button>
+ * @example <ak-pony-button>Button text.</ak-pony-button>
  */
 const PonyButton = define('ak-pony-button', {
   render(elem) {
@@ -23,7 +22,7 @@ const PonyButton = define('ak-pony-button', {
   events: {
     /**
      * @description <strong>Event handler.</strong> The pony button will log output to the console
-     * and fire the {@link ak-neigh|ak-neigh} event when it is clicked.
+     * and fire the {@link #PonyButton+event_ak-neigh|ak-neigh} event when it is clicked.
      * @memberof PonyButton
      * @instance
      * @fires PonyButton#ak-neigh
@@ -45,7 +44,7 @@ const PonyButton = define('ak-pony-button', {
      * @defaultvalue Bob
      * @instance
      * @type {string}
-     * @example <ak-pony-button name="Randy"></ak-pony-button>
+     * @example <ak-pony-button name="Randy">Button text</ak-pony-button>
      */
     name: {
       attribute: true,

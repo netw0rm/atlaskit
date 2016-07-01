@@ -10,13 +10,21 @@
 
 ### new PonyButton()
 This button think it is a pony, but its really just a button.
+I can write some more information about my pony button here.
+
+This is a new paragraph. I'll write some more words here to pad it out.
+There is a new line before this line but it should be in the same paragraph.
+We can have some nicely formatted text here describing the component and giving some basic
+information about its usage.
+
+Here's some closing words in a third paragraph. Thanks for reading.
 
 **Example**  
 ```js
 <ak-pony-button>Button text.</ak-pony-button>
 ```
 ### ponyButton.name : string
-The name of the pony button.
+The name of the pony button. Defaults to "Bob" if not supplied.
 
 **Kind**: instance property of [PonyButton](#markdown-header-new-ponybutton)  
 **Default**: `"Bob"`  

@@ -106,7 +106,6 @@
     "release": "lerna-semantic-release pre && lerna-semantic-release perform",
     "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",
     "release/changelog": "if [ -s .released-packages ]; then lerna-semantic-release post; else return 0; fi",
-    "release/docs": "[ -s .released-packages ] && ./build/bin/release.docs.sh < .released-packages",
     "storybook": "start-storybook -p 9001",
     "storybook/single": "./build/bin/storybook.single.sh",
     "test": "./build/bin/test.sh",

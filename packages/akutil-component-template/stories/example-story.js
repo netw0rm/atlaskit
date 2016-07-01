@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import { definition } from '../src/index';
 import { define } from 'skatejs';
@@ -14,7 +14,7 @@ storiesOf('akutil-component-template', module)
     <Component />
   ))
   .add('an akutil-component-template that does X when I do Y', () => (
-    <Component id="myComponent" />
+    <Component id="myComponent" onClick={action('clicking the WebComponent')} />
   ))
   .add('an akutil-component-template that behaves like XY', () => {
     const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);

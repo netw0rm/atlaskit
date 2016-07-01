@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
+const log = require('minilog')('webpack');
+require('minilog').enable();
 
 const BrowserStackTunnel = require('browserstacktunnel-wrapper');
 const childProcess = require('child_process');
@@ -12,13 +13,13 @@ const browserStackTunnel = new BrowserStackTunnel({
 
 function handleError(error) {
   if (error) {
-    console.log(`Error: BrowserStack tunnel ${tunnelIdentifier}: '${error}'`);
+    log.info(`Error: BrowserStack tunnel ${tunnelIdentifier}: '${error}'`);
     process.exit(1);
   }
 }
 
 function tunnelStateChanged(state) {
-  console.log(`BrowserStack tunnel ${state}: '${tunnelIdentifier}'`);
+  log.info(`BrowserStack tunnel ${state}: '${tunnelIdentifier}'`);
 }
 
 browserStackTunnel.start((startError) => {

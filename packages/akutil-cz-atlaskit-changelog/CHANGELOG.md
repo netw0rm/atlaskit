@@ -1,10 +1,10 @@
-<a name="0.0.1"></a>
-## [0.0.1](https://aui-team-bot/[object Object]/compare/0.0.1-semver-tag-for-akutil-cz-atlaskit-changelog...v0.0.1) (2016-06-24)
+<a name="0.0.3"></a>
+## [0.0.3](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog...v0.0.3) (2016-06-30)
 
 
 
-<a name="0.0.1-semver-tag-for-akutil-cz-atlaskit-changelog"></a>
-## 0.0.1-semver-tag-for-akutil-cz-atlaskit-changelog (2016-06-24)
+<a name="0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog"></a>
+## 0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog (2016-06-27)
 
 
 

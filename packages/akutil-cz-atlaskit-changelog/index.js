@@ -9,7 +9,9 @@ function log(data) {
 function check(script, shouldShowStderr, cb) {
   const spawned = spawn('npm', ['run', script]);
   spawned.stdout.on('data', log);
-  shouldShowStderr && spawned.stderr.on('data', log);
+  if (shouldShowStderr) {
+    spawned.stderr.on('data', log);
+  }
   spawned.on('exit', code => {
     if (code === 0) {
       cb(code);

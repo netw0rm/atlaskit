@@ -25,10 +25,9 @@ export default storiesOf('akutil-component-template', module)
   // use .addWithIntegrationTest
   // if you want to run an integration test against it
   .addWithIntegrationTest('an akutil-component-template that behaves like XY', () => {
-    function hideMe(event) {
-      const target = event.target;
-      target.parentNode.removeChild(target);
-    }
-
+    const hideMe = (event) => {
+      console.log('A');
+      event.target.parentNode.removeChild(event.target)
+    };
     return (<Component id="myComponent" onClick={hideMe} />);
   });

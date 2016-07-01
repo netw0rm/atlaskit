@@ -1,5 +1,4 @@
-import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
-import hostStyles from './host.less';
+import hostStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved
 import shadowStyles from './shadow.less';
 
 import { define, vdom, state } from 'skatejs';
@@ -10,8 +9,6 @@ const definition = {
     vdom.div(`I am an <${elem.tagName}> element!`);
   },
   ready(elem) {
-    // console.log(hostStyles);
-    // console.log(hostStyles.akutilComponentTemplate);
     state(elem, {
       className: hostStyles['akutil-component-template'],
     });

@@ -19,14 +19,17 @@ function check(script, shouldShowStderr, cb) {
 
 module.exports = {
   prompter(cz, commit) {
-    console.log('Linting...');
-
-    check('lint-changed', false, () => {
-      console.log('✓ Linting ok');
-      console.log('Validating...');
-      check('validate', true, () => {
-        console.log('✓ Validating ok');
-        czLernaChangelog.prompter(cz, commit);
+    console.log('Building docs...');
+    check('docs', true, () => {
+      console.log('✓ Docs ok');
+      console.log('Linting...');
+      check('lint-changed', false, () => {
+        console.log('✓ Linting ok');
+        console.log('Validating...');
+        check('validate', true, () => {
+          console.log('✓ Validating ok');
+          czLernaChangelog.prompter(cz, commit);
+        });
       });
     });
   },

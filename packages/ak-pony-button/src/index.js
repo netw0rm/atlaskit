@@ -13,7 +13,7 @@ const PonyButton = define('ak-pony-button', {
   render(elem) {
     vdom.style(shadowStyles.toString());
     vdom.button(() => {
-      vdom.span(`I am a pony. My name is ${elem.name}.`);
+      vdom.span(`I am a pony. My name is ${elem.name}. `);
       vdom.span(() => {
         vdom.slot();
       });
@@ -53,16 +53,15 @@ const PonyButton = define('ak-pony-button', {
   },
   prototype: {
     /**
-     * @description This method will log output the the console and fire the ak-neigh event.
+     * @description This method will fire the ak-neigh event.
      * @memberof PonyButton
      * @function
      * @instance
      * @fires PonyButton#ak-neigh
      * @return {PonyButton} The PonyButton element.
-     * @example ponyButton.canter(); // Clop clop clop.
+     * @example ponyButton.neigh(); // Fires the ak-neigh event.
      */
-    canter() {
-      console.log('Clop clop clop.'); // eslint-disable-line no-console
+    neigh() {
       emit(this, 'ak-neigh');
       return this;
     },

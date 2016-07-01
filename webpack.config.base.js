@@ -22,7 +22,7 @@ const standardConfig = {
       },
       {
         test: /\.css$/,
-        loader: 'style!css',
+        loader: 'style!css?modules',
       },
       {
         test: /\.less$/,
@@ -57,6 +57,7 @@ const standardConfig = {
                 {
                   hoist: true,
                   prefix: 'vdom',
+                  components: true,
                 },
               ],
             ],

@@ -1,0 +1,29 @@
+@import 'shared-variables.less';
+
+editor-button {
+  color: @editor-inactive-foreground;
+  font-size: 17px;
+  height: 20px;
+  line-height: 20px;
+
+  path {
+    fill: @editor-inactive-foreground;
+  }
+
+  &:active:focus path {
+    fill: white;
+  }
+
+  &[active] {
+    color: @editor-active-foreground;
+
+    path,
+    &:not([disabled]):hover path {
+      fill: @editor-active-foreground;
+    }
+  }
+
+  &:not([disabled]):hover path {
+    fill: @editor-inactive-foreground;
+  }
+}

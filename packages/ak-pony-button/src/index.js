@@ -7,6 +7,7 @@ import { define, emit, vdom } from 'skatejs';
 /**
  * @constructs PonyButton
  * @description This button think it is a pony, but its really just a button.
+ * See the {@tutorial usage} for examples and indepth guides.
  * @example <ak-pony-button></ak-pony-button>
  */
 const PonyButton = define('ak-pony-button', {

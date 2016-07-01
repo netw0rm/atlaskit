@@ -18,6 +18,6 @@
     "akutil-common": "^0.0.3",
     "akutil-shared-styles": "*",
     "tether": "^1.3.2",
-    "skatejs": "1.0.0-beta.7"
+    "skatejs": "1.0.0-beta.2"
   }
 }

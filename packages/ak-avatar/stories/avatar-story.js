@@ -2,6 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import { definition } from '../src/index';
 import { define } from 'skatejs';
+import avatarStoryStyles from 'style!./stories.less'; // eslint-disable-line import/no-unresolved
 
 const React = window.React;
 const ReactDOM = window.ReactDOM;
@@ -24,11 +25,8 @@ storiesOf('ak-avatar', module)
   .add('A row of avatars', () => {
     const avatarRowStyle = 'margin-left: 10px;';
     const avatarUrl = '//docs.atlassian.com/aui/latest/docs/images/avatar-96.png';
-    const divStyle = {
-      marginLeft: '5px',
-      marginTop: '17px',
-    };
-    return (<div style={divStyle}>
+
+    return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
       <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="small" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} />

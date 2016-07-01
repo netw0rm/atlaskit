@@ -1,5 +1,5 @@
 <a name="0.0.4"></a>
-## [0.0.4](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/0.0.3-semver-tag-for-akutil-polyfills...v0.0.4) (2016-06-30)
+## [0.0.4](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit-spike/compare/0.0.3-semver-tag-for-akutil-polyfills...v0.0.4) (2016-07-01)
 
 
 

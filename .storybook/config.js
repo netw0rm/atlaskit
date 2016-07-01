@@ -3,9 +3,9 @@ import { configure } from '@kadira/storybook';
 import 'akutil-polyfills';
 import React from 'react';
 import ReactDOM from 'react-dom';
-const log = require('minilog')('storybook');
-
-require('minilog').enable();
+import minilog from 'minilog';
+minilog.enable();
+const log = minilog('storybook');
 
 
 // Utilities for stories
@@ -20,7 +20,7 @@ function loadStories() {
   let stories = req.keys();
   /* global PACKAGE_FOLDERS (this gets injected by the webpack config) */
   if (PACKAGE_FOLDERS.length) {
-    log.info(`Storybook: Only loading stories for: ${PACKAGE_FOLDERS}`);
+    log.info(`Only loading stories for: ${PACKAGE_FOLDERS}`);
     stories = stories.filter((p) => PACKAGE_FOLDERS.indexOf(p.split(path.sep)[1]) !== -1);
   }
   stories.forEach(req);

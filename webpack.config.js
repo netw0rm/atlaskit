@@ -6,12 +6,10 @@ const path = require('path');
 const webpack = require('webpack');
 const pkg = require(path.join(process.cwd(), 'package.json'));
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const JsDocPlugin = require('jsdoc-webpack-plugin');
 
 const argv = require('minimist')(process.argv.slice(2));
 const shouldMininimize = !!argv.min;
 const isDemo = !!argv.demo;
-const isDocs = !!argv.docs;
 const shouldBundleDependencies = !!argv['bundle-deps'];
 const isMonkeyTest = !!argv.monkey;
 const isIntegratonTest = !!argv.integration;
@@ -103,18 +101,6 @@ if (isIntegratonTest) {
     new HtmlWebpackPlugin({
       title: `${pkg.name} - Demo`,
       template: './demo/index.ejs',
-    }),
-  ];
-} else if (isDocs) {
-  log.info('Docs build');
-  standardConfig.entry = './src/index.js';
-  standardConfig.output = {
-    path: './docs/.tmp',
-    filename: 'index.js',
-  };
-  standardConfig.plugins = [
-    new JsDocPlugin({
-      conf: '../../jsdoc-conf.json',
     }),
   ];
 }

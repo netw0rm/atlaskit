@@ -16,7 +16,6 @@ pipelines:
             - npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
             - npm run release
             - npm run release/changelog
-            - npm run release/docs
             - npm run release/announce
   default:
     - step:

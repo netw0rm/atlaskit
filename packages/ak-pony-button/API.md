@@ -14,11 +14,10 @@
 
 ### new PonyButton()
 This button think it is a pony, but its really just a button.
-See the {@tutorial usage} for examples and indepth guides.
 
 **Example**  
 ```js
-<ak-pony-button></ak-pony-button>
+<ak-pony-button>Button text.</ak-pony-button>
 ```
 <a name="PonyButton+name"></a>
 
@@ -29,13 +28,13 @@ The name of the pony button.
 **Default**: <code>&quot;Bob&quot;</code>  
 **Example**  
 ```js
-<ak-pony-button name="Randy"></ak-pony-button>
+<ak-pony-button name="Randy">Button text</ak-pony-button>
 ```
 <a name="PonyButton+click"></a>
 
 ### ponyButton.click()
 <strong>Event handler.</strong> The pony button will log output to the console
-and fire the [ak-neigh](ak-neigh) event when it is clicked.
+and fire the [ak-neigh](#PonyButton+event_ak-neigh) event when it is clicked.
 
 **Kind**: instance method of <code>[PonyButton](#PonyButton)</code>  
 **Emits**: <code>[ak-neigh](#PonyButton+event_ak-neigh)</code>  

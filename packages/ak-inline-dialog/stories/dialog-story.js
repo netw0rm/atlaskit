@@ -13,12 +13,17 @@ Dialog = reactify(window.uniqueWebComponent(InlineDialog, define), {
 });
 
 class DialogWithButton extends Component {
-  getInitialState() {
-    return {
-      open: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      otherChecked: false,
     };
-  }
 
+    // Bind callback methods to make `this` the correct context.
+    this.handleClick = this.handleClick.bind(this);
+    this.handleMouseOver = this.handleMouseOver.bind(this);
+    this.handleMouseOut = this.handleMouseOut.bind(this);
+  }
   handleClick() {
     if (this.props.event === 'click') {
       this.setState({ open: !this.state.open });
@@ -64,7 +69,7 @@ class DialogWithButton extends Component {
 DialogWithButton.propTypes = {
   event: React.PropTypes.string,
   position: React.PropTypes.string,
-  style: React.PropTypes.string,
+  style: React.PropTypes.object,
   attachTo: React.PropTypes.string,
 };
 

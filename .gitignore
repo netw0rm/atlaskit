@@ -11,3 +11,4 @@ sc-*-linux
 .idea/
 .ci_failed
 .DS_Store
+atlaskit-spike.iml

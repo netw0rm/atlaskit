@@ -1,32 +1,11 @@
 import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
 import Layer from 'ak-layer'; // eslint-disable-line no-unused-vars
+import { attachmentMap, getPositionFromClasses } from 'akutil-common';
 
 import { define, vdom, prop } from 'skatejs';
 
 import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
-
-function getAnimationFromPosition(position, isFlipped) {
-  let res = position.split(' ')[0];
-  if (isFlipped) {
-    switch (res) {
-      case 'left':
-        res = 'right';
-        break;
-      case 'right':
-        res = 'left';
-        break;
-      case 'top':
-        res = 'bottom';
-        break;
-      case 'bottom':
-        res = 'top';
-        break;
-      default:
-    }
-  }
-  return res;
-}
 
 const Animations = {
   left: [
@@ -47,13 +26,24 @@ const Animations = {
   ],
 };
 
+function getAnimationPosition(elem) {
+  return elem.actualPosition && attachmentMap[elem.actualPosition]
+      ? attachmentMap[elem.actualPosition].animation
+      : attachmentMap[elem.position].animation;
+}
+
 const definition = {
   attached(elem) {
     elem.className = headStyles.akInlineDialog; // eslint-disable-line no-param-reassign
   },
-  observedAttributes: ['flipped'],
+  observedAttributes: ['class'],
   attributeChanged(elem, data) {
-    elem.fl = data.newValue === 'true'; // eslint-disable-line no-param-reassign
+    if (data.newValue) {
+      const newPosition = getPositionFromClasses(data.newValue);
+      if (newPosition && newPosition !== elem.actualPosition) {
+        elem.actualPosition = newPosition; // eslint-disable-line no-param-reassign
+      }
+    }
   },
   render(elem) {
     if (elem.open) {
@@ -63,9 +53,10 @@ const definition = {
         target: elem.target,
         movable: elem,
         open: elem.open,
+        attachment: elem.attachment,
       }, () => {
         vdom.element('ak-animmytest', {
-          alignment: getAnimationFromPosition(elem.position, elem.fl),
+          alignment: getAnimationPosition(elem),
         }, () => {
           const divAttrs = {
             class: shadowStyles.locals.inlineDialogContainer,
@@ -78,11 +69,11 @@ const definition = {
     }
   },
   props: {
-    position: prop.string({ attribute: true, default: 'right middle' }),
+    position: prop.string({ attribute: true }),
     open: prop.boolean({ attribute: true }),
-    duration: prop.number({ attribute: true, default: 100 }),
     target: prop.string({ attribute: true }),
-    fl: prop.boolean(),
+    actualPosition: prop.string({ attribute: true }),
+    attachment: prop.string({ attribute: true }),
   },
 };
 
@@ -99,15 +90,16 @@ define('ak-animmytest', {
         vdom.element('slot');
       });
     });
+    if (elem.alignment && Animations[elem.alignment]) {
+      container.animate(Animations[elem.alignment], {
+        duration: 200,
+        iterations: 1,
+      });
 
-    container.animate(Animations[elem.alignment], {
-      duration: 400,
-      iterations: 1,
-    });
-
-    setTimeout(() => {
-      container.className = '';
-    });
+      setTimeout(() => {
+        container.className = '';
+      });
+    }
   },
   props: {
     alignment: prop.string({ attribute: true }),

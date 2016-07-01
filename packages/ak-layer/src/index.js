@@ -5,7 +5,8 @@ import { Alignment } from 'akutil-common';
 
 export default define('ak-layer', {
   props: {
-    position: prop.string({ attribute: true }),
+    position: prop.string({ attribute: true, default: 'right middle' }),
+    attachment: prop.string({ attribute: true, default: 'window' }),
     target: prop.string({ attribute: true }),
     open: prop.boolean({
       attribute: true,

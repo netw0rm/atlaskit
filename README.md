@@ -12,7 +12,7 @@ npm install @atlaskit/my-component-name
 Clone the repo and install the dependencies
 
 ```
-git clone git@bitbucket.org:atlassian/atlaskit-spike.git
+git clone git@bitbucket.org:atlassian/atlaskit.git
 npm install
 ```
 You're now ready to start developing in Atlaskit!

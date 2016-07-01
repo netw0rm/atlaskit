@@ -1,5 +1,5 @@
 {
-  "name": "atlaskit-spike",
+  "name": "atlaskit",
   "version": "0.0.0",
   "author": "Atlassian Pty Ltd.",
   "config": {
@@ -85,7 +85,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/atlassian/atlaskit-spike"
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "scripts": {
     "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",

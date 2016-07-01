@@ -2,6 +2,6 @@
   "name": "ak-base",
   "extends": "airbnb",
   "rules": {
-    "no-param-reassign": 0
+    "no-param-reassign": ["error", { "props": false }]
   }
 }

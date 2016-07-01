@@ -4,13 +4,15 @@ chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 module.exports = function steps() {
-  this.Then(/^I should see a "([^"]*)" component$/, (name) => {
-    return browser.isElementPresent(by.webComponentNamePrefix(name));
-  });
+  this.Then(
+    /^I should see a "([^"]*)" component$/,
+    (name) => browser.isElementPresent(by.webComponentNamePrefix(name))
+  );
 
-  this.When(/^I click the "([^"]*)" component$/, (name) => {
-    return element(by.webComponentNamePrefix(name)).click();
-  });
+  this.When(
+    /^I click the "([^"]*)" component$/,
+    (name) => element(by.webComponentNamePrefix(name)).click()
+  );
 
   this.Then(/^I should not see the "([^"]*)" component$/, (name, next) => {
     expect(browser.isElementPresent(by.webComponentNamePrefix(name)))

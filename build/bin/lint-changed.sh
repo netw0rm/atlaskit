@@ -7,7 +7,7 @@ function lint () {
         exit 0
     fi
     echo "linting..."
-    eslint --format 'node_modules/eslint-friendly-formatter' $diff
+    eslint --format 'node_modules/eslint-friendly-formatter' --no-ignore $diff
     exit $?
 }
 lint

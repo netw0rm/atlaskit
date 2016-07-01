@@ -10,8 +10,8 @@ const definition = {
     vdom.div(`I am an <${elem.tagName}> element!`);
   },
   ready(elem) {
-    console.log(hostStyles);
-    console.log(hostStyles.akutilComponentTemplate);
+    // console.log(hostStyles);
+    // console.log(hostStyles.akutilComponentTemplate);
     state(elem, {
       className: hostStyles['akutil-component-template'],
     });

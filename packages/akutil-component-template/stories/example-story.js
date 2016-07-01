@@ -9,19 +9,14 @@ const Component = reactify(uniqueWebComponent('akutil-component-template', defin
   ReactDOM,
 });
 
-export default storiesOf('akutil-component-template', module)
-  // use .addWithMonkeyTest
-  // if you want to automatically run https://github.com/marmelab/gremlins.js against it
-  .addWithMonkeyTest('a simple akutil-component-template', () => (
+storiesOf('akutil-component-template', module)
+  .add('a simple akutil-component-template', () => (
     <Component />
   ))
-  // use .add for a normal story that is available in the storybook
   .add('an akutil-component-template that does X when I do Y', () => (
     <Component id="myComponent" />
   ))
-  // use .addWithIntegrationTest
-  // if you want to run an integration test against it
-  .addWithIntegrationTest('an akutil-component-template that behaves like XY', () => {
+  .add('an akutil-component-template that behaves like XY', () => {
     const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
     return (<Component id="myComponent" onClick={removeMe} />);
   });

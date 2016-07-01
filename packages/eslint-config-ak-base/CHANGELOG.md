@@ -4,12 +4,7 @@
 
 
 <a name="1.0.1-semver-tag-for-eslint-config-ak-base"></a>
-## [1.0.1-semver-tag-for-eslint-config-ak-base](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/bec42ab...1.0.1-semver-tag-for-eslint-config-ak-base) (2016-06-27)
-
-
-### Bug Fixes
-
-* Added ![defined] rule for ak-avatar and vertical align to remove the extra gap from imgs ([bec42ab](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/bec42ab))
+## 1.0.1-semver-tag-for-eslint-config-ak-base (2016-06-27)
 
 
 

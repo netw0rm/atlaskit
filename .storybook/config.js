@@ -16,6 +16,7 @@ const req = require.context(`../packages/`, true, /stories\/.+-story\.js$/);
 
 function loadStories() {
   let stories = req.keys();
+  /* global PACKAGE_FOLDERS (this gets injected by the webpack config) */
   if (PACKAGE_FOLDERS.length) {
     console.log(`Storybook: Only loading stories for: ${PACKAGE_FOLDERS}`);
     stories = stories.filter((p) => PACKAGE_FOLDERS.indexOf(p.split(path.sep)[1]) !== -1)

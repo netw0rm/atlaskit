@@ -1,13 +1,13 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import InlineDialog from '../src/index';
+import { definition } from '../src/index';
 import { define } from 'skatejs';
 
 const React = window.React;
 const ReactDOM = window.ReactDOM;
 const { Component } = React;
-let Dialog;
-Dialog = reactify(window.uniqueWebComponent(InlineDialog, define), {
+
+const Dialog = reactify(window.uniqueWebComponent('ak-inline-dialog', definition, define), {
   React,
   ReactDOM,
 });

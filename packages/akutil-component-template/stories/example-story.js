@@ -1,12 +1,13 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import component from '../src/index';
+import { definition } from '../src/index';
 import { define } from 'skatejs';
 
 const React = window.React;
 const ReactDOM = window.ReactDOM;
+const uniqueWebComponent = window.uniqueWebComponent;
 
-const Component = reactify(window.uniqueWebComponent(component, define), {
+const Component = reactify(uniqueWebComponent('akutil-component-template', definition, define), {
   React,
   ReactDOM,
 });

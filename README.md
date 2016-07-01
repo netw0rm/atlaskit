@@ -135,20 +135,22 @@ To continuously run tests for a single component:
 ```
 npm run test/single/watch my-component
 ```
-###Saucelabs tests
-Saucelabs is a tool that lets you run your unit tests in a larger set of browsers running different versions.
+###Browserstack tests
+Browserstack is a tool that lets you run your unit tests in a larger set of browsers running different versions.
 
-To run the Saucelabs tests for a single component:
-
-```
-SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... npm run test/single/saucelabs my-component
-```
-
-You can also run all the saucelabs tests with Docker (as they are run in the CI):
+To run the Browserstack tests for a single component:
 
 ```
-SAUCE_USERNAME=... SAUCE_ACCESS_KEY=... docker-compose -f docker-compose-saucelabs.yml up
+BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... npm run test/single/browserstack my-component
 ```
+
+You can also run all the Browserstack tests with Docker (as they are run in the CI):
+
+```
+BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... docker-compose -f docker-compose-browserstack.yml up
+```
+
+Thanks to Browserstack for providing AtlasKit with an open source license!
 
 ###Integration tests
 
@@ -160,7 +162,7 @@ Run the integration ([cucumber](https://github.com/cucumber/cucumber-js)) tests 
 npm run cucumber/single my-component
 ```
 
-You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` in `docker-compose-saucelabs.yml` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
+You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` in `docker-compose-browserstack.yml` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
 
 
 ###Monkey tests
@@ -189,12 +191,12 @@ npm run lint -- --fix
 ```
 
 ##Commit changes
-To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Firstly, make sure you have it installed globally (see [Getting Started](#markdown-header-before-you-get-started)). Now running commitizen should be as simple as running `git cz` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
+To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Running commitizen is as simple as running `npm run commut` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
 
 ```
-git cz [-a]
+npm run commit -- -a
 ```
-Note: it is advised to run the [linting](#markdown-header-follow-code-style-guidelines) *before* you commit, to prevent you from having to answer all the questions twice.
+Note: it automatically runs [linting](#markdown-header-follow-code-style-guidelines) and validation *before* you commit, to prevent you from having to answer all the questions twice.
 
 
 ##Merge into master
@@ -208,7 +210,7 @@ Once you are happy with your changes, you must push your branch to Bitbucket and
 Releasing components is completely automated. The process of releasing will begin:
 
 * Linting is run
-* Tests will be run in Saucelabs
+* Tests will be run in Browserstack
 * Component dist is built
 * Semantic Relase will bump the versions for any component that has changed
 * Change log is generated automatically from commit messages

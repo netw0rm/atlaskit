@@ -4,12 +4,7 @@
 
 
 <a name="0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog"></a>
-## [0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/bec42ab...0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog) (2016-06-27)
-
-
-### Bug Fixes
-
-* Added ![defined] rule for ak-avatar and vertical align to remove the extra gap from imgs ([bec42ab](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/bec42ab))
+## 0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog (2016-06-27)
 
 
 

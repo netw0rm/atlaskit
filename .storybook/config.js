@@ -12,6 +12,11 @@ window.uniqueWebComponent = function (prefix, definition, define) {
   return define(prefix + '-' + Math.random().toString(35).substr(2, 7), definition);
 };
 
+window.uniqueWebComponentOld = function (wc, define) {
+  const tagName = new wc().tagName;
+  return define(tagName + '-' + Math.random().toString(35).substr(2, 7), class extends wc {});
+};
+
 const req = require.context(`../packages/`, true, /stories\/.+-story\.js$/);
 
 function loadStories() {

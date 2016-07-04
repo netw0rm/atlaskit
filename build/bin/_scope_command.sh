@@ -15,4 +15,4 @@ fi
 package=$1
 command=$2
 
-lerna exec --scope $package -- $command
+node ./node_modules/lerna/bin/lerna.js exec --scope $package -- $command

@@ -1,20 +1,11 @@
 <a name="3.0.6"></a>
-## [3.0.6](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/3.0.3-semver-tag-for-akutil-component-template...v3.0.6) (2016-07-04)
+## 3.0.6 (2016-07-04)
 
 
 ### Bug Fixes
 
+* tethering destruction ([a321f83](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a321f83))
 * **share styles:** use * until we are published ([a2792e5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a2792e5))
-
-
-
-<a name="3.0.3-semver-tag-for-akutil-component-template"></a>
-## [3.0.3-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/91487bf...3.0.3-semver-tag-for-akutil-component-template) (2016-06-24)
-
-
-### Bug Fixes
-
-* inline dialog text position ([91487bf](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/91487bf))
 
 
 

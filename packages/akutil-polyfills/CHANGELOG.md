@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-* inline dialog text position ([91487bf](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/91487bf))
+* tethering destruction ([a321f83](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a321f83))
 
 
 

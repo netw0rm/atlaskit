@@ -1,5 +1,5 @@
-<a name="39.0.0"></a>
-# 39.0.0 (2016-07-04)
+<a name="40.0.0"></a>
+# 40.0.0 (2016-07-04)
 
 
 ### Bug Fixes
@@ -11,10 +11,10 @@
 * demo page ([2c2ddf6](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/2c2ddf6))
 * flashing content in demo ([cdb62d1](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/cdb62d1))
 * import layer properly ([6130b51](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/6130b51))
-* inline dialog text position ([91487bf](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/91487bf))
 * restore the old way of defining component ([f2acef4](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/f2acef4))
 * stories after merge from master ([d2ad0d9](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/d2ad0d9))
 * story constructor for inline-dialog ([5cba362](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/5cba362))
+* tethering destruction ([a321f83](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a321f83))
 
 
 ### Features

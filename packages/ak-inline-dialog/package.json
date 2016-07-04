@@ -1,6 +1,6 @@
 {
   "name": "ak-inline-dialog",
-  "version": "38.0.0",
+  "version": "39.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

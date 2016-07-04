@@ -9,23 +9,7 @@
 
 
 <a name="3.0.3-semver-tag-for-akutil-component-template"></a>
-## [3.0.3-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/3.0.1-semver-tag-for-akutil-component-template...3.0.3-semver-tag-for-akutil-component-template) (2016-06-24)
-
-
-### Bug Fixes
-
-* **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/fb64e0e))
-
-
-
-<a name="3.0.1-semver-tag-for-akutil-component-template"></a>
-## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/a275bc2...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
-
-
-### Bug Fixes
-
-* fixed .eslintrc file in test directory of each component ([a275bc2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a275bc2))
-* Updated template component with new skate and proper storybook ([5e24d93](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/5e24d93))
+## 3.0.3-semver-tag-for-akutil-component-template (2016-06-24)
 
 
 

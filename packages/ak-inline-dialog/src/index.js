@@ -1,7 +1,7 @@
 import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
 import Layer from 'ak-layer'; // eslint-disable-line no-unused-vars
-import { attachmentMap, getPositionFromClasses } from 'akutil-common';
+import { attachmentMap, getPositionFromClasses, Alignment } from 'akutil-common';
 
 import { define, vdom, prop } from 'skatejs';
 
@@ -35,6 +35,13 @@ function getAnimationPosition(elem) {
 const definition = {
   attached(elem) {
     elem.className = headStyles.akInlineDialog; // eslint-disable-line no-param-reassign
+
+    if (!elem.tether) {
+      elem.tether = new Alignment(elem);  // eslint-disable-line no-param-reassign
+    } else {
+      elem.tether.enable();
+      elem.tether.update(elem);
+    }
   },
   observedAttributes: ['class'],
   attributeChanged(elem, data) {
@@ -45,25 +52,28 @@ const definition = {
       }
     }
   },
+  detached(elem) {
+    if (elem.tether) {
+      elem.tether.disable();
+    }
+    // if (elem.parentNode && elem.parentNode == document.querySelector('body')) {
+    //   elem.parentNode.removeChild(elem);
+    // }
+  },
   render(elem) {
     if (elem.open) {
+      if (elem.tether) {
+        elem.tether.update(elem);
+      }
       vdom.element('style', shadowStyles.toString());
-      vdom.element('ak-layer', {
-        position: elem.position,
-        target: elem.target,
-        movable: elem,
-        open: elem.open,
-        attachment: elem.attachment,
+      vdom.element('ak-animmytest', {
+        alignment: getAnimationPosition(elem),
       }, () => {
-        vdom.element('ak-animmytest', {
-          alignment: getAnimationPosition(elem),
-        }, () => {
-          const divAttrs = {
-            class: shadowStyles.locals.inlineDialogContainer,
-          };
-          vdom.element('div', divAttrs, () => {
-            vdom.element('slot');
-          });
+        const divAttrs = {
+          class: shadowStyles.locals.inlineDialogContainer,
+        };
+        vdom.element('div', divAttrs, () => {
+          vdom.element('slot');
         });
       });
     }

@@ -52,7 +52,7 @@ Alignment.prototype = {
   disable() {
     if (this.tether) {
       this.disabled = true;
-      this.tether.disable();
+      this.tether.destroy();
     }
     return this;
   },

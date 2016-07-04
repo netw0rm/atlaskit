@@ -9,9 +9,8 @@ Avatars are used to add a human touch and instant clarity when understanding whi
 ```
 npm install fake-package-name-here
 ```
-
-## Component API
-
+## Avatar
+**Kind**: global class  
 
 * [Avatar](#markdown-header-avatar)
     * [new Avatar()](#markdown-header-new-avatar)

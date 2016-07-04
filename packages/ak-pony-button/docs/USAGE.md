@@ -1,4 +1,4 @@
-# ak-pony-button
+# PonyButton
 
 Have you ever felt like you were something that you're not? If so, `ak-pony-button` is the component
 for you.
@@ -30,7 +30,7 @@ for more information.
 Follow these fake instructions:
 
 ```
-npm install atlaskit-ak-pony-button
+npm install ak-pony-button
 ```
 
 ### ES6

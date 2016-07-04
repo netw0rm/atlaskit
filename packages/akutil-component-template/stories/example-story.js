@@ -19,4 +19,14 @@ storiesOf('akutil-component-template', module)
   .add('an akutil-component-template that behaves like XY', () => {
     const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
     return (<Component id="myComponent" onClick={removeMe} />);
+  })
+  .addMonitored('an akutil-component-template with monitored performance', () => (
+    <Component />
+  ), () => {
+    // This is where the actual work is done - anything in here will be monitored by the stats
+    // view and displayed, so this is where you want to do your animation work, etc.
+    const x = Math.random() * 1000000;
+    for (let i = 0; i < x; i++) {
+      Math.random(); // burn some CPU cycles
+    }
   });

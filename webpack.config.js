@@ -39,47 +39,49 @@ const standardConfig = {
         test: /\.less$/,
         loader: 'css?modules&camelCase!less',
       },
-      { // Support react/jsx in stories, react/ directory, or react-*.js files
-        loader: 'babel-loader',
-        test: /\.jsx?$/,
-        include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?$/,
-        query: {
-          presets: [
-            'es2015',
-            'react', // required by react-storybook
-            'stage-0',
-          ],
-        },
-      },
-      { // Support jsx to incremental dom in non-react locations (above).
-        // Make sure vdom is imported from skatejs where jsx is used
-        loader: 'babel-loader',
-        test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)|react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?$/, // eslint-disable-line max-len
-        query: {
-          presets: [
-            'es2015',
-            'stage-0',
-          ],
-          plugins: [
-            [
-              'incremental-dom',
-              {
-                hoist: true,
-                prefix: 'vdom.IncrementalDOM',
-              },
+      [ // exclusive configs for babel (first one that matches will be used)
+        { // Support react/jsx in stories, react/ directory, or react-*.js files
+          loader: 'babel-loader',
+          test: /\.jsx?$/,
+          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|\.storybook\/.+\.js$/,
+          query: {
+            presets: [
+              'es2015',
+              'react', // required by react-storybook
+              'stage-0',
             ],
-          ],
+          },
         },
-      },
-      { // this is for the v1 CustomElement polyfill and named-slots
-        loader: 'babel-loader',
-        test: /\.jsx?$/,
-        include: /(webcomponents\.js\/src|skatejs-named-slots\/src)/,
-        query: {
-          presets: 'es2015',
+        { // Support jsx to incremental dom in non-react locations (above).
+          // Make sure vdom is imported from skatejs where jsx is used
+          loader: 'babel-loader',
+          test: /\.jsx?$/,
+          exclude: /(node_modules|bower_components)|react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?$/, // eslint-disable-line max-len
+          query: {
+            presets: [
+              'es2015',
+              'stage-0',
+            ],
+            plugins: [
+              [
+                'incremental-dom',
+                {
+                  hoist: true,
+                  prefix: 'vdom.IncrementalDOM',
+                },
+              ],
+            ],
+          },
         },
-      },
+        { // this is for the v1 CustomElement polyfill and named-slots
+          loader: 'babel-loader',
+          test: /\.jsx?$/,
+          include: /(webcomponents\.js\/src|skatejs-named-slots\/src)/,
+          query: {
+            presets: 'es2015',
+          },
+        },
+      ],
       {
         test: /\.html$/,
         loader: 'html-loader',

@@ -1,7 +1,6 @@
 /** @jsx vdom */
 /* eslint react/no-unknown-property: 0 */
 
-import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 import { define, vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
 

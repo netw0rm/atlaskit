@@ -1,6 +1,8 @@
-import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+/** @jsx vdom */
+/* eslint react/no-unknown-property: 0 */
 
 import { define, vdom, prop } from 'skatejs';
+import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 import Tether from 'tether';
 
 export default define('ak-layer', {
@@ -38,6 +40,9 @@ export default define('ak-layer', {
         elem.tether.position();
       }
     }
-    vdom.slot({ name: 'layer' });
+
+    return (
+      <slot name="layer" />
+    );
   },
 });

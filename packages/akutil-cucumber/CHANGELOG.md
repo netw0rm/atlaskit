@@ -4,7 +4,7 @@
 
 ### Features
 
-* storybook for single components ([a097a03](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a097a03))
+* Created the _COMPONENT_TEMPLATE component and associated script ([0c538a5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/0c538a5))
 
 
 

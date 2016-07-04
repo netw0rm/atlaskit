@@ -9,7 +9,7 @@
 
 
 <a name="3.0.3-semver-tag-for-akutil-component-template"></a>
-## [3.0.3-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/3.0.2-semver-tag-for-akutil-component-template...3.0.3-semver-tag-for-akutil-component-template) (2016-06-24)
+## [3.0.3-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/3.0.1-semver-tag-for-akutil-component-template...3.0.3-semver-tag-for-akutil-component-template) (2016-06-24)
 
 
 ### Bug Fixes
@@ -18,13 +18,8 @@
 
 
 
-<a name="3.0.2-semver-tag-for-akutil-component-template"></a>
-## [3.0.2-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/3.0.1-semver-tag-for-akutil-component-template...3.0.2-semver-tag-for-akutil-component-template) (2016-06-24)
-
-
-
 <a name="3.0.1-semver-tag-for-akutil-component-template"></a>
-## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/a097a03...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
+## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/0c538a5...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
 
 
 ### Bug Fixes
@@ -35,7 +30,7 @@
 
 ### Features
 
-* storybook for single components ([a097a03](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a097a03))
+* Created the _COMPONENT_TEMPLATE component and associated script ([0c538a5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/0c538a5))
 
 
 

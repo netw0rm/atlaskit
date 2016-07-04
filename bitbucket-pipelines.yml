@@ -8,7 +8,7 @@ pipelines:
             - bash -c "git branch --set-upstream-to origin/$BITBUCKET_BRANCH"
             - bash -c "git config --global user.email 'aui-team@atlassian.com'"
             - bash -c "git config --global user.name 'AUI team account'"
-            - bach -c "git config --global push.default simple"
+            - bash -c "git config --global push.default simple"
             - bash -c "git fetch --tags"
             - bash -c "git tag --list" #debug
             - npm install

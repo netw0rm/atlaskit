@@ -1,6 +1,7 @@
 import path from 'path';
-import { configure } from '@kadira/storybook';
+import { configure, setAddon } from '@kadira/storybook';
 import 'akutil-polyfills';
+import MonitoredStory from './MonitoredStory.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import minilog from 'minilog';
@@ -30,5 +31,16 @@ function loadStories() {
   }
   stories.forEach(req);
 }
+
+
+setAddon({
+  addMonitored(storyName, storyFn, rafFn) {
+    this.add(storyName, (context) => (
+      <MonitoredStory rafFn={rafFn}>
+        {storyFn(context)}
+      </MonitoredStory>
+    ));
+  },
+});
 
 configure(loadStories, module);

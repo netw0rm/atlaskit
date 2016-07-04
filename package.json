@@ -57,6 +57,7 @@
     "raw-loader": "^0.5.1",
     "react": "^15.1.0",
     "semantic-release": "6.2.2",
+    "stats.js": "^0.16.0",
     "style-loader": "^0.13.1",
     "validate-commit-message": "^3.0.1",
     "wait-on": "^1.5.2",

@@ -1,10 +1,10 @@
 <a name="0.0.3"></a>
-## 0.0.3 (2016-07-04)
+## [0.0.3](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog...v0.0.3) (2016-07-04)
 
 
-### Bug Fixes
 
-* definition of the component ([92fbefd](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/92fbefd))
+<a name="0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog"></a>
+## 0.0.2-semver-tag-for-akutil-cz-atlaskit-changelog (2016-06-27)
 
 
 

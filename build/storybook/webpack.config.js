@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const webpackConfig = require('../webpack.config.js');
+const webpackConfig = require('../../webpack.config.js');
 const lerna = require('lerna');
 const lernaPackageUtilities = require('lerna/lib/PackageUtilities');
 
@@ -14,7 +14,7 @@ const lernaPackageUtilities = require('lerna/lib/PackageUtilities');
 */
 function getPackageRestrictions(packageGlob) {
   if (packageGlob) {
-    const packagesPath = lerna.getPackagesPath(path.join(__dirname, '..'));
+    const packagesPath = lerna.getPackagesPath(path.join(__dirname, '..', '..'));
     const packages = lernaPackageUtilities
       .filterPackages(lerna.getPackages(packagesPath), packageGlob);
     return packages.map((p) => path.basename(p.location));

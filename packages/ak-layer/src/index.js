@@ -2,43 +2,38 @@
 /* eslint react/no-unknown-property: 0 */
 
 import { define, vdom, prop } from 'skatejs';
-import 'style!./host.less'; // eslint-disable-line import/no-unresolved
-import Tether from 'tether';
+import { Alignment } from 'akutil-common';
 
 export default define('ak-layer', {
   props: {
-    attachment: prop.string(),
-    targetAttachment: prop.string(),
-    target: prop.string(),
-    open: prop.boolean(),
+    position: prop.string({ attribute: true, default: 'right middle' }),
+    attachment: prop.string({ attribute: true, default: 'window' }),
+    target: prop.string({ attribute: true }),
+    open: prop.boolean({
+      attribute: true,
+      set(elem) {
+        if (elem.alignment) {
+          elem.alignment.reposition();
+        }
+      },
+    }),
+  },
+  attached(elem) {
+    if (!elem.alignment) {
+      elem.alignment = new Alignment(elem);  // eslint-disable-line no-param-reassign
+    } else {
+      elem.alignment.enable();
+      elem.alignment.update(elem);
+    }
   },
   detached(elem) {
-    elem.tether.destroy();  // eslint-disable-line no-param-reassign
+    if (elem.alignment) {
+      elem.alignment.disable();
+    }
   },
   render(elem) {
-    if (elem.tether) {
-      elem.tether.position();
-    }
-    if (elem.attachment && elem.targetAttachment) {
-      elem.tether = new Tether({  // eslint-disable-line no-param-reassign
-        element: elem,
-        target: document.querySelector(elem.target),
-        attachment: elem.attachment,
-        targetAttachment: elem.targetAttachment,
-        constraints: [
-          {
-            to: 'window',
-            attachment: 'together',
-          },
-        ],
-        optimizations: {
-          moveElement: false,
-        },
-      });
-
-      if (elem.open && elem.tether) {
-        elem.tether.position();
-      }
+    if (elem.alignment) {
+      elem.alignment.update(elem);
     }
 
     return (
@@ -46,3 +41,24 @@ export default define('ak-layer', {
     );
   },
 });
+
+
+// const maps = {
+//   alignment: new WeakMap(),
+// };
+//
+// export default define('ak-layer', {
+//   props: {
+//     position: prop.string(),
+//     target: prop.string(),
+//   },
+//   attached(elem) {
+//     maps.alignment.set(elem, new Alignment(elem));
+//   },
+//   detached(elem) {
+//     maps.alignment.get(elem).destroy();
+//   },
+//   render() {
+//     vdom.element('slot');
+//   },
+// });

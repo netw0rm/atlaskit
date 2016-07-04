@@ -1,11 +1,8 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import { definition } from '../src/index';
 import { define } from 'skatejs';
-
-const React = window.React;
-const ReactDOM = window.ReactDOM;
-const uniqueWebComponent = window.uniqueWebComponent;
+const { React, ReactDOM, uniqueWebComponent } = window;
 
 const Component = reactify(uniqueWebComponent('akutil-component-template', definition, define), {
   React,
@@ -13,9 +10,13 @@ const Component = reactify(uniqueWebComponent('akutil-component-template', defin
 });
 
 storiesOf('akutil-component-template', module)
-  .add('an akutil-component-template', () => (
+  .add('a simple akutil-component-template', () => (
     <Component />
   ))
-  .add('another story', () => (
-    <Component id="myComponent" />
-  ));
+  .add('an akutil-component-template that does X when I do Y', () => (
+    <Component id="myComponent" onClick={action('clicking the WebComponent')} />
+  ))
+  .add('an akutil-component-template that behaves like XY', () => {
+    const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
+    return (<Component id="myComponent" onClick={removeMe} />);
+  });

@@ -12,7 +12,7 @@ npm install @atlaskit/my-component-name
 Clone the repo and install the dependencies
 
 ```
-git clone git@bitbucket.org:atlassian/atlaskit-spike.git
+git clone git@bitbucket.org:atlassian/atlaskit.git
 npm install
 ```
 You're now ready to start developing in Atlaskit!
@@ -164,6 +164,9 @@ npm run cucumber/single my-component
 
 You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` in `docker-compose-browserstack.yml` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
 
+> Hint: Whilst cucumber is running (or after a test failed), you can access the [Storybook](http://0.0.0.0:9001/) instance that the tests were run against.
+
+> Hint: If you have problems starting the cucumber setup locally, try re-generating the docker images via: `npm run cucumber/single my-component -- --force-recreate`
 
 ###Monkey tests
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
+const log = require('minilog')('BrowserStack');
+require('minilog').enable();
 
 const BrowserStackTunnel = require('browserstacktunnel-wrapper');
 const childProcess = require('child_process');
@@ -12,13 +13,13 @@ const browserStackTunnel = new BrowserStackTunnel({
 
 function handleError(error) {
   if (error) {
-    console.log(`Error: BrowserStack tunnel ${tunnelIdentifier}: '${error}'`);
+    log.error(`tunnel ${tunnelIdentifier}: '${error}'`);
     process.exit(1);
   }
 }
 
 function tunnelStateChanged(state) {
-  console.log(`BrowserStack tunnel ${state}: '${tunnelIdentifier}'`);
+  log.info(`tunnel ${tunnelIdentifier}: '${state}'`);
 }
 
 browserStackTunnel.start((startError) => {
@@ -28,8 +29,7 @@ browserStackTunnel.start((startError) => {
   // Execute BrowserStack tests via bash script
   try {
     childProcess.execFileSync(`${__dirname}/test.browserstack.sh`, {
-      stdio: [0, 1, 2],
-      env: process.env,
+      stdio: 'inherit',
     });
   } catch (execError) {
     handleError(execError);

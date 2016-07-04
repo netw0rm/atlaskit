@@ -7,7 +7,7 @@ services:
     logging:
       driver: none
   selenium-chrome:
-    # Uncomment the next line for a VNC server you can attach to
+    # Uncomment the next line for a VNC server you can attach to (vnc://:secret@localhost:5900)
     # image: selenium/node-chrome-debug
     image: selenium/node-chrome
     ports:
@@ -26,10 +26,14 @@ services:
     volumes:
       - .:/usr/src/app/
     ports:
-      - "8080:8080"
+      - "9001:9001"
     environment:
       SCOPE:
-    command: 'npm run dev/single/integration "$SCOPE"'
+    command: 'bash -c
+            "
+              npm install
+              && npm run storybook/single \"$SCOPE\"
+            "'
   cucumber:
     image: joscha/atlaskit
     volumes:
@@ -42,14 +46,14 @@ services:
       - "selenium-hub:hub"
     environment:
       SELENIUM_ADDRESS: "http://hub:4444/wd/hub"
-      BASE_URL: "http://dev:8080"
+      BASE_URL: "http://dev:9001"
       SCOPE:
     command: 'bash -c
             "
               echo \"waiting for hub\"
               && `npm bin`/wait-on tcp:hub:4444
               && echo \"waiting for dev\"
-              && `npm bin`/wait-on tcp:dev:8080
+              && `npm bin`/wait-on http://dev:9001/static/preview.bundle.js
               && echo \"running tests\"
               && npm run test/single/integration \"$SCOPE\"
              "'

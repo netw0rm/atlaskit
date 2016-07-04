@@ -4,10 +4,9 @@ import { definition } from '../src/index';
 import { define } from 'skatejs';
 import avatarStoryStyles from 'style!./stories.less'; // eslint-disable-line import/no-unresolved
 
-const React = window.React;
-const ReactDOM = window.ReactDOM;
+const { React, ReactDOM, uniqueWebComponent } = window;
 
-const Avatar = reactify(window.uniqueWebComponent('ak-avatar', definition, define), {
+const Avatar = reactify(uniqueWebComponent('ak-avatar', definition, define), {
   React,
   ReactDOM,
 });
@@ -57,4 +56,3 @@ storiesOf('ak-avatar', module)
   .add('A row of avatars - DESIGN', () => (
     <img src="http://i.imgur.com/VIZxsbk.png" alt="A row of Avatars" />
   ));
-

@@ -1,4 +1,4 @@
 #!/bin/sh
 set -e
 
-lerna exec -- ../../build/bin/test.karma.nofail.sh
+node ./node_modules/lerna/bin/lerna.js exec -- ../../build/bin/test.karma.nofail.sh

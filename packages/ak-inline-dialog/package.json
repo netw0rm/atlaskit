@@ -1,6 +1,6 @@
 {
   "name": "ak-inline-dialog",
-  "version": "29.0.0",
+  "version": "41.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -15,10 +15,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "akutil-common": "^0.0.1",
+    "akutil-common": "^0.0.3",
     "akutil-shared-styles": "*",
     "ak-layer": "*",
-    "skatejs": "1.0.0-beta.2",
-    "web-animations-js": "^2.2.1"
+    "skatejs": "v1.0.0-beta.6",
+    "web-animations-js": "^2.2.1",
+    "tether": "^1.3.2"
+  },
+  "devDependencies": {
+    "akutil-react": "^0.0.0"
   }
 }

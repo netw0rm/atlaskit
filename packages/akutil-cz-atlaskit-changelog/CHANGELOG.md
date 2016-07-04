@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-* tethering destruction ([a321f83](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a321f83))
+* definition of the component ([92fbefd](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/92fbefd))
 
 
 

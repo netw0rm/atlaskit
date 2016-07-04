@@ -4,8 +4,7 @@
 
 ### Bug Fixes
 
-* tethering destruction ([a321f83](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a321f83))
-* **share styles:** use * until we are published ([a2792e5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a2792e5))
+* definition of the component ([92fbefd](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/92fbefd))
 
 
 

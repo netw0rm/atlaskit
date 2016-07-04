@@ -17,14 +17,18 @@
 
 
 <a name="0.0.1-semver-tag-for-akutil-common"></a>
-## [0.0.1-semver-tag-for-akutil-common](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/1b0d703...0.0.1-semver-tag-for-akutil-common) (2016-06-24)
+## [0.0.1-semver-tag-for-akutil-common](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/a097a03...0.0.1-semver-tag-for-akutil-common) (2016-06-24)
 
 
 ### Bug Fixes
 
 * fix Alignment import ([7da854c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/7da854c))
 * fix inline dialog alignment ([e55c3d2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/e55c3d2))
-* Fixed less imports in template. ([1b0d703](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/1b0d703))
+
+
+### Features
+
+* storybook for single components ([a097a03](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a097a03))
 
 
 

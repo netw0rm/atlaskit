@@ -1,5 +1,5 @@
-<a name="31.0.0"></a>
-# [31.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/1.0.0-semver-tag-for-ak-layer...v31.0.0) (2016-07-04)
+<a name="32.0.0"></a>
+# [32.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/1.0.0-semver-tag-for-ak-layer...v32.0.0) (2016-07-04)
 
 
 ### Bug Fixes
@@ -27,7 +27,6 @@
 ### Bug Fixes
 
 * fix Alignment import ([7da854c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/7da854c))
-* Fixed less imports in template. ([1b0d703](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/1b0d703))
 * inline dialog text position ([91487bf](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/91487bf))
 * tethering destruction ([a321f83](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a321f83))
 
@@ -38,6 +37,7 @@
 * inline dialog almost styled and animated ([f134e37](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/f134e37))
 * inline dialog and layer backbone ([bfbe44b](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/bfbe44b))
 * inline dialog and layer backbone - added missing changes ([3f14e28](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/3f14e28))
+* storybook for single components ([a097a03](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a097a03))
 
 
 

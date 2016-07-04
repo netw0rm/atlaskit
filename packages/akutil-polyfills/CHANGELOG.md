@@ -1,10 +1,10 @@
 <a name="0.0.4"></a>
-## [0.0.4](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/0.0.3-semver-tag-for-akutil-polyfills...v0.0.4) (2016-07-01)
+## 0.0.4 (2016-07-04)
 
 
+### Bug Fixes
 
-<a name="0.0.3-semver-tag-for-akutil-polyfills"></a>
-## 0.0.3-semver-tag-for-akutil-polyfills (2016-06-27)
+* stories after merge from master ([d2ad0d9](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/d2ad0d9))
 
 
 

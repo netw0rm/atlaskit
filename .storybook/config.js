@@ -14,6 +14,11 @@ window.ReactDOM = ReactDOM;
 window.uniqueWebComponent = (prefix, definition, define) =>
   define(`${prefix}-${Math.random().toString(35).substr(2, 7)}`, definition);
 
+window.uniqueWebComponentOld = (Wc, define) => {
+  const tagName = new Wc().tagName;
+  return define(`${tagName}-${Math.random().toString(35).substr(2, 7)}`, class extends Wc {});
+};
+
 const req = require.context('../packages/', true, /stories\/.+-story\.js$/);
 
 function loadStories() {

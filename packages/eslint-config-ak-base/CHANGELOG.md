@@ -1,10 +1,10 @@
 <a name="1.0.2"></a>
-## [1.0.2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/1.0.1-semver-tag-for-eslint-config-ak-base...v1.0.2) (2016-07-01)
+## 1.0.2 (2016-07-04)
 
 
+### Bug Fixes
 
-<a name="1.0.1-semver-tag-for-eslint-config-ak-base"></a>
-## 1.0.1-semver-tag-for-eslint-config-ak-base (2016-06-27)
+* stories after merge from master ([d2ad0d9](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/d2ad0d9))
 
 
 

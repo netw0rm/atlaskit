@@ -1,5 +1,5 @@
-<a name="33.0.0"></a>
-# 33.0.0 (2016-07-04)
+<a name="34.0.0"></a>
+# 34.0.0 (2016-07-04)
 
 
 ### Bug Fixes
@@ -10,6 +10,7 @@
 * definition of the component ([92fbefd](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/92fbefd))
 * demo page ([2c2ddf6](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/2c2ddf6))
 * fix Alignment import ([7da854c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/7da854c))
+* fixed .eslintrc file in test directory of each component ([a275bc2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a275bc2))
 * inline dialog text position ([91487bf](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/91487bf))
 * tethering destruction ([a321f83](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a321f83))
 
@@ -18,7 +19,6 @@
 
 * add horizontal snapping for animation ([344f2d3](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/344f2d3))
 * animated and tethered properly ([bbb12b1](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/bbb12b1))
-* Created the _COMPONENT_TEMPLATE component and associated script ([0c538a5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/0c538a5))
 * inline dialog almost styled and animated ([f134e37](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/f134e37))
 * inline dialog and layer backbone ([bfbe44b](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/bfbe44b))
 * inline dialog and layer backbone - added missing changes ([3f14e28](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/3f14e28))

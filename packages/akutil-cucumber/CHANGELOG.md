@@ -2,9 +2,9 @@
 # 0.0.0 (2016-07-04)
 
 
-### Features
+### Bug Fixes
 
-* Created the _COMPONENT_TEMPLATE component and associated script ([0c538a5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/0c538a5))
+* fixed .eslintrc file in test directory of each component ([a275bc2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a275bc2))
 
 
 

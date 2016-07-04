@@ -1,5 +1,5 @@
-<a name="33.0.0"></a>
-# 33.0.0 (2016-07-04)
+<a name="34.0.0"></a>
+# 34.0.0 (2016-07-04)
 
 
 ### Bug Fixes
@@ -10,9 +10,10 @@
 * demo page ([2c2ddf6](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/2c2ddf6))
 * fix Alignment import ([7da854c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/7da854c))
 * fix inline dialog alignment ([e55c3d2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/e55c3d2))
+* fixed .eslintrc file in test directory of each component ([a275bc2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a275bc2))
+* flashing content in demo ([cdb62d1](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/cdb62d1))
 * **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/fb64e0e))
 * **share styles:** use * until we are published ([a2792e5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a2792e5))
-* flashing content in demo ([cdb62d1](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/cdb62d1))
 * import layer properly ([6130b51](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/6130b51))
 * restore the old way of defining component ([f2acef4](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/f2acef4))
 * stories after merge from master ([d2ad0d9](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/d2ad0d9))
@@ -24,7 +25,6 @@
 * add horizontal snapping for animation ([344f2d3](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/344f2d3))
 * add storybook ([5efb0c7](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/5efb0c7))
 * animated and tethered properly ([bbb12b1](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/bbb12b1))
-* Created the _COMPONENT_TEMPLATE component and associated script ([0c538a5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/0c538a5))
 * inline dialog almost styled and animated ([f134e37](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/f134e37))
 * inline dialog and layer backbone ([bfbe44b](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/bfbe44b))
 * inline dialog and layer backbone - added missing changes ([3f14e28](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/3f14e28))

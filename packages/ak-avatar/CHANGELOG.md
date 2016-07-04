@@ -29,19 +29,13 @@
 
 
 <a name="0.10.1-semver-tag-for-ak-avatar"></a>
-## [0.10.1-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/0c538a5...0.10.1-semver-tag-for-ak-avatar) (2016-06-23)
+## [0.10.1-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/a275bc2...0.10.1-semver-tag-for-ak-avatar) (2016-06-23)
 
 
 ### Bug Fixes
 
+* fixed .eslintrc file in test directory of each component ([a275bc2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a275bc2))
 * Moved akutil-react to a dev-dependency for ak-avatar ([add6077](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/add6077))
-* Reverting previous test commit ([7190efc](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/7190efc))
-* Test commit to test eslint fix ([a879b5f](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a879b5f))
-
-
-### Features
-
-* Created the _COMPONENT_TEMPLATE component and associated script ([0c538a5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/0c538a5))
 
 
 

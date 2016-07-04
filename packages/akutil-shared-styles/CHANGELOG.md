@@ -1,10 +1,15 @@
-<a name="25.0.0"></a>
-# 25.0.0 (2016-07-04)
+<a name="26.0.0"></a>
+# 26.0.0 (2016-07-04)
 
 
 ### Bug Fixes
 
-* fixed .eslintrc file in test directory of each component ([a275bc2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a275bc2))
+* **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/fb64e0e))
+
+
+### Features
+
+* inline dialog almost styled and animated ([f134e37](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/f134e37))
 
 
 

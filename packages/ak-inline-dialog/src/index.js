@@ -1,3 +1,6 @@
+/** @jsx vdom */
+/* eslint react/no-unknown-property: 0 */
+
 import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
 
@@ -32,35 +35,37 @@ const Animations = {
 
 export default define('ak-inline-dialog', {
   render(elem) {
-    let inlineDialogContainer;
-
-    vdom.style(shadowStyles.toString());
-    vdom.create(Layer, {
-      open: elem.open,
-      attachment: Alignment.getTarget(elem.position, 'reverse'),
-      targetAttachment: Alignment.getTarget(elem.position),
-      target: elem.target,
-    }, () => {
-      const divAttrs = {
-        class: shadowStyles.locals.inlineDialogContainer,
-      };
-      inlineDialogContainer = vdom.div(divAttrs, () => {
-        vdom.slot();
-      });
-    });
+    const inlineDialogContainer = (
+      <div class={shadowStyles.locals.inlineDialogContainer}>
+        <slot />
+      </div>
+    );
+    const layer = (
+      <Layer
+        attachment={Alignment.getTarget(elem.position, 'reverse')}
+        open={elem.open}
+        target={elem.target}
+        targetAttachment={Alignment.getTarget(elem.position)}
+      >
+        <style>{shadowStyles.toString()}</style>
+        {inlineDialogContainer}
+      </Layer>
+    );
 
     let anim = getAnimationFromPosition(elem.position);
 
     if (anim === 'left' || anim === 'right') {
       anim = Alignment.getAlignmentSnap(document.querySelector(elem.target)).horizontal;
     } else {
-     // anim = Alignment.getAlignmentSnap(document.querySelector(elem.target)).vertical
+      // anim = Alignment.getAlignmentSnap(document.querySelector(elem.target)).vertical
     }
 
     inlineDialogContainer.animate(Animations[anim], {
       duration: elem.duration,
       iterations: 1,
     });
+
+    return layer;
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),

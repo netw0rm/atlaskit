@@ -1,4 +1,4 @@
 import { enumeration } from './properties';
-import Alignment from './Alignment';
+import Alignment, { attachmentMap, getPositionFromClasses } from './Alignment';
 
-export { enumeration, Alignment };
+export { enumeration, Alignment, attachmentMap, getPositionFromClasses };

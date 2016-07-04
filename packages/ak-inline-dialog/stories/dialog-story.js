@@ -4,11 +4,10 @@ import InlineDialog from '../src/index';
 import { define } from 'skatejs';
 import { name } from '../package.json';
 
-const React = window.React;
-const ReactDOM = window.ReactDOM;
+const { React, ReactDOM, uniqueWebComponentOld } = window;
 const { Component } = React;
 
-const Dialog = reactify(window.uniqueWebComponentOld(InlineDialog, define), {
+const Dialog = reactify(uniqueWebComponentOld(InlineDialog, define), {
   React,
   ReactDOM,
 });

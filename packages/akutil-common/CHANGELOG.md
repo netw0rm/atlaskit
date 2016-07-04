@@ -2,11 +2,6 @@
 ## 0.0.3 (2016-07-04)
 
 
-### Bug Fixes
-
-* definition of the component ([92fbefd](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/92fbefd))
-
-
 ### Features
 
 * animated and tethered properly ([bbb12b1](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/bbb12b1))

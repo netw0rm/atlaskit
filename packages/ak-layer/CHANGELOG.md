@@ -1,12 +1,10 @@
-<a name="41.0.0"></a>
-# 41.0.0 (2016-07-04)
+<a name="42.0.0"></a>
+# 42.0.0 (2016-07-04)
 
 
 ### Bug Fixes
 
 * change skate version to the previous one ([f691364](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/f691364))
-* definition of the component ([92fbefd](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/92fbefd))
-* demo page ([2c2ddf6](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/2c2ddf6))
 
 
 ### Features

@@ -56,7 +56,6 @@
     "style-loader": "^0.13.1",
     "validate-commit-message": "^3.0.1",
     "wait-on": "^1.5.2",
-    "webcomponents.js": "skatejs/webcomponentsjs#skate-v1",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },

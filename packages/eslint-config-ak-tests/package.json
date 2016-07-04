@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {
-    "eslint": "*",
+    "eslint": "^2.0.0",
     "eslint-config-ak-base": "*",
     "eslint-plugin-mocha": "^3.0.0"
   }

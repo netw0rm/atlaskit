@@ -9,7 +9,12 @@
 
 
 <a name="3.0.3-semver-tag-for-akutil-component-template"></a>
-## 3.0.3-semver-tag-for-akutil-component-template (2016-06-24)
+## [3.0.3-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/91487bf...3.0.3-semver-tag-for-akutil-component-template) (2016-06-24)
+
+
+### Bug Fixes
+
+* inline dialog text position ([91487bf](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/91487bf))
 
 
 

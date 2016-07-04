@@ -19,17 +19,12 @@
 
 
 <a name="0.10.3-semver-tag-for-ak-avatar"></a>
-## [0.10.3-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/f134e37...0.10.3-semver-tag-for-ak-avatar) (2016-06-24)
+## [0.10.3-semver-tag-for-ak-avatar](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/7da854c...0.10.3-semver-tag-for-ak-avatar) (2016-06-24)
 
 
 ### Bug Fixes
 
-* **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/fb64e0e))
-
-
-### Features
-
-* inline dialog almost styled and animated ([f134e37](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/f134e37))
+* fix Alignment import ([7da854c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/7da854c))
 
 
 

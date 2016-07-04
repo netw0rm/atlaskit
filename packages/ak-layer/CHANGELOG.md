@@ -1,10 +1,9 @@
-<a name="35.0.0"></a>
-# 35.0.0 (2016-07-04)
+<a name="36.0.0"></a>
+# 36.0.0 (2016-07-04)
 
 
 ### Bug Fixes
 
-* **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/fb64e0e))
 * **share styles:** use * until we are published ([a2792e5](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a2792e5))
 * change skate version to the previous one ([f691364](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/f691364))
 * definition of the component ([92fbefd](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/92fbefd))
@@ -16,9 +15,7 @@
 
 ### Features
 
-* add horizontal snapping for animation ([344f2d3](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/344f2d3))
 * animated and tethered properly ([bbb12b1](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/bbb12b1))
-* inline dialog almost styled and animated ([f134e37](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/f134e37))
 * switch to the newest skate ([5e1e0b1](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/5e1e0b1))
 * Tether for layer ([bf82152](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/bf82152))
 * Three new stories for inline-dialog ([01c11fd](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/01c11fd))

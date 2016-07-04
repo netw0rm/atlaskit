@@ -4,12 +4,7 @@
 
 ### Bug Fixes
 
-* **akutil-shared-styles:** Depend on correct version of the shared styles ([fb64e0e](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/fb64e0e))
-
-
-### Features
-
-* inline dialog almost styled and animated ([f134e37](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/f134e37))
+* fix Alignment import ([7da854c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/7da854c))
 
 
 

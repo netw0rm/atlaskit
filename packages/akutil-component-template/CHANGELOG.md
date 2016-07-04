@@ -2,9 +2,9 @@
 ## 3.0.6 (2016-07-04)
 
 
-### Features
+### Bug Fixes
 
-* animated and tethered properly ([bbb12b1](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/bbb12b1))
+* import layer properly ([6130b51](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/6130b51))
 
 
 

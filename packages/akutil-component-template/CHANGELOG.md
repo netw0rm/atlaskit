@@ -24,13 +24,13 @@
 
 
 <a name="3.0.1-semver-tag-for-akutil-component-template"></a>
-## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/464774c...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
+## [3.0.1-semver-tag-for-akutil-component-template](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/1b0d703...3.0.1-semver-tag-for-akutil-component-template) (2016-06-23)
 
 
 ### Bug Fixes
 
 * Added akutil-react to template ([15f31d3](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/15f31d3))
-* Other half of the fix for linting .ejs files ([464774c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/464774c))
+* Fixed less imports in template. ([1b0d703](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/1b0d703))
 * Updated template component with new skate and proper storybook ([5e24d93](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/5e24d93))
 
 

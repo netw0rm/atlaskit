@@ -1,5 +1,5 @@
-<a name="30.0.0"></a>
-# [30.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/1.0.0-semver-tag-for-ak-layer...v30.0.0) (2016-07-04)
+<a name="31.0.0"></a>
+# [31.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/1.0.0-semver-tag-for-ak-layer...v31.0.0) (2016-07-04)
 
 
 ### Bug Fixes
@@ -21,14 +21,14 @@
 
 
 <a name="1.0.0-semver-tag-for-ak-layer"></a>
-# [1.0.0-semver-tag-for-ak-layer](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/464774c...1.0.0-semver-tag-for-ak-layer) (2016-06-24)
+# [1.0.0-semver-tag-for-ak-layer](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/bfbe44b...1.0.0-semver-tag-for-ak-layer) (2016-06-24)
 
 
 ### Bug Fixes
 
 * fix Alignment import ([7da854c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/7da854c))
+* Fixed less imports in template. ([1b0d703](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/1b0d703))
 * inline dialog text position ([91487bf](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/91487bf))
-* Other half of the fix for linting .ejs files ([464774c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/464774c))
 * tethering destruction ([a321f83](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/a321f83))
 
 

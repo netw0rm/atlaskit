@@ -22,6 +22,7 @@ function check(script, shouldShowStderr, cb) {
 module.exports = {
   prompter(cz, commit) {
     console.log('Linting...');
+
     check('lint-changed', false, () => {
       console.log('✓ Linting ok');
       console.log('Validating...');

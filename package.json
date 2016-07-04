@@ -96,7 +96,7 @@
     "dist": "./node_modules/.bin/lerna run prepublish",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg && npm run lerna/link",
     "lerna/link": "./build/bin/no.js.npm.link.sh",
-    "lint": "eslint --format 'node_modules/eslint-friendly-formatter' .",
+    "lint": "eslint --format 'node_modules/eslint-friendly-formatter' . --ext .js,.jsx",
     "lint-changed": "./build/bin/lint-changed.sh",
     "prepublish/single": "./build/bin/prepublish.single.sh",
     "release": "lerna-semantic-release pre && lerna-semantic-release perform",

@@ -11,7 +11,13 @@ const SIZE_ATTRIBUTE_ENUM = {
   invalidDefault: 'medium',
 };
 
-const definition = {
+/**
+ * @description The definition for the Avatar component.
+ * @constructs Avatar
+ * @example <ak-avatar src="my/avatar/src/image.png"></ak-avatar>
+ *
+ */
+const Avatar = {
   render(elem) {
     vdom.style(shadowStyles.toString());
     vdom.img({
@@ -20,12 +26,35 @@ const definition = {
     });
   },
   props: {
+    /**
+     * @description The size of the avatar
+     * @memberof Avatar
+     * @instance
+     * @default medium
+     * @type {string}
+     * @example <ak-avatar size="large"></ak-avatar>
+     * @example avatar.size = 'large';
+     */
     size: enumeration(SIZE_ATTRIBUTE_ENUM)({
       attribute: true,
     }),
+    /**
+     * @description The sauce
+     * @memberof Avatar
+     * @instance
+     * @type {string}
+     * @example <ak-avatar src="my/avatar/src.png"></ak-avatar>
+     */
     src: {
       attribute: true,
     },
+    /**
+     * @description The alt text for the Avatar.
+     * @memberof Avatar
+     * @instance
+     * @type {string}
+     * @example <ak-avatar alt="Avatar image" src="my/avatar/src.png"></ak-avatar>
+     */
     alt: {
       attribute: true,
     },
@@ -37,8 +66,6 @@ const definition = {
   },
 };
 
+export default () => define('ak-avatar', Avatar);
 
-/* The constructor for our component */
-export default () => define('ak-avatar', definition);
-
-export { definition };
+export { Avatar as definition };

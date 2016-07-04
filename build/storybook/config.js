@@ -20,7 +20,7 @@ window.uniqueWebComponentOld = (Wc, define) => {
   return define(`${tagName}-${Math.random().toString(35).substr(2, 7)}`, class extends Wc {});
 };
 
-const req = require.context('../packages/', true, /stories\/.+-story\.js$/);
+const req = require.context('../../packages/', true, /stories\/.+-story\.js$/);
 
 function loadStories() {
   let stories = req.keys();

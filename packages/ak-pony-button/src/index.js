@@ -42,7 +42,7 @@ const PonyButton = define('ak-pony-button', {
        * @description Fired when the pony neighs. This normally happens when it is hungry.
        * @property {String} detail.name The name of the pony button.
        * @example ponyButton.addEventListener('ak-neigh', function (event) {
-       *   console.log(event.detail.name + ' is hungry. Maybe your pony is hungry?');
+       *   console.log(event.detail.name + ' neighed. Maybe your pony is hungry?');
        * });
        */
       emit(elem, 'ak-neigh', {

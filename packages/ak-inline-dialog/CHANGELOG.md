@@ -1,5 +1,10 @@
-<a name="47.0.0"></a>
-# 47.0.0 (2016-07-05)
+<a name="48.0.0"></a>
+# 48.0.0 (2016-07-05)
+
+
+### Bug Fixes
+
+* **jsx:** pragma ([b9edb0c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/b9edb0c))
 
 
 

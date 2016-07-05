@@ -9,6 +9,7 @@ import { name } from '../package.json';
 const { React, ReactDOM, uniqueWebComponentOld } = window;
 const { Component } = React;
 
+// TODO Remove usage of uniqueWebComponentOld and replace with uniqueWebComponent
 const Dialog = reactify(uniqueWebComponentOld(InlineDialog, define), {
   React,
   ReactDOM,

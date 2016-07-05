@@ -4,6 +4,7 @@ pipelines:
     master:
       - step:
           script:
+            - ./build/bin/last_commit_has_changes.sh || exit 0
             - bash -c "git remote set-url origin https://"$BITBUCKET_USER":"\'$BITBUCKET_PASSWORD\'"@bitbucket.org/atlassian/atlaskit.git/"
             - bash -c "git branch --set-upstream-to origin/$BITBUCKET_BRANCH"
             - bash -c "git config --global user.email 'aui-team@atlassian.com'"

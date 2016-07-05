@@ -14,10 +14,10 @@ storiesOf(name, module)
   .add('a simple akutil-component-template', () => (
     <Component />
   ))
-  .add('an akutil-component-template that does X when I do Y', () => (
+  .add('an akutil-component-template that emits an action when it is clicked', () => (
     <Component id="myComponent" onClick={action('clicking the WebComponent')} />
   ))
-  .add('an akutil-component-template that behaves like XY', () => {
+  .add('an akutil-component-template that removes itself when being clicked', () => {
     const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
     return (<Component id="myComponent" onClick={removeMe} />);
   })

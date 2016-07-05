@@ -13,8 +13,10 @@ const SIZE_ATTRIBUTE_ENUM = {
 
 /**
  * @description The definition for the Avatar component.
- * @constructs Avatar
+ * @class Avatar
  * @example <ak-avatar src="my/avatar/src/image.png"></ak-avatar>
+ * @example import Avatar from 'ak-avatar';
+ * const myAvatar = new Avatar();
  *
  */
 const Avatar = {
@@ -27,7 +29,8 @@ const Avatar = {
   },
   props: {
     /**
-     * @description The size of the avatar
+     * @description The size of the avatar. One of:
+     * 'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', or 'xxxlarge'.
      * @memberof Avatar
      * @instance
      * @default medium
@@ -39,11 +42,12 @@ const Avatar = {
       attribute: true,
     }),
     /**
-     * @description The sauce
+     * @description The sauce.
      * @memberof Avatar
      * @instance
      * @type {string}
      * @example <ak-avatar src="my/avatar/src.png"></ak-avatar>
+     * @example avatar.src = 'my/avatar/src.png';
      */
     src: {
       attribute: true,
@@ -54,6 +58,7 @@ const Avatar = {
      * @instance
      * @type {string}
      * @example <ak-avatar alt="Avatar image" src="my/avatar/src.png"></ak-avatar>
+     * @example avatar.alt = 'Avatar image';
      */
     alt: {
       attribute: true,

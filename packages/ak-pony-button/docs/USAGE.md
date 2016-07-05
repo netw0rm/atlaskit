@@ -3,7 +3,7 @@
 Have you ever felt like you were something that you're not? If so, `ak-pony-button` is the component
 for you.
 
-`ak-pony-button` is a button that think it is a pony, hereafter referred to as a pony button.
+`ak-pony-button` is a button that thinks it is a pony, hereafter referred to as a pony button.
 
 This component was made as a test component for automatically generating documentation for AtlasKit
 components.

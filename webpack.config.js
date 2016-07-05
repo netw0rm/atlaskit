@@ -47,7 +47,7 @@ const standardConfig = {
         { // Support react/jsx in stories, react/ directory, or react-*.js files
           loader: 'babel-loader',
           test: /\.jsx?$/,
-          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.js$/, // eslint-disable-line max-len
+          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/, // eslint-disable-line max-len
           query: {
             presets: [
               'es2015',
@@ -60,7 +60,7 @@ const standardConfig = {
           // Make sure vdom is imported from skatejs where jsx is used
           loader: 'babel-loader',
           test: /\.jsx?$/,
-          exclude: /(node_modules|bower_components)|react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?$/, // eslint-disable-line max-len
+          exclude: /node_modules|bower_components/, // eslint-disable-line max-len
           query: {
             presets: [
               'es2015',

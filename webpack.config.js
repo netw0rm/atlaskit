@@ -8,7 +8,7 @@ const pkg = require(path.join(process.cwd(), 'package.json'));
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const argv = require('minimist')(process.argv.slice(2));
-const shouldMininimize = !!argv.min;
+const shouldMinimize = !!argv.min;
 const isDemo = !!argv.demo;
 const shouldBundleDependencies = !!argv['bundle-deps'];
 
@@ -120,7 +120,7 @@ if (isDemo) {
   ];
 }
 
-if (shouldMininimize) {
+if (shouldMinimize) {
   log.info('minimizing');
   Object.assign(standardConfig.entry, {
     'dist/bundle.min.js': './src/index.js',

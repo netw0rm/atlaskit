@@ -1,3 +1,5 @@
+/** @jsx React */
+
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import { definition } from '../src/index';

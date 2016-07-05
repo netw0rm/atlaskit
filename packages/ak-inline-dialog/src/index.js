@@ -54,17 +54,15 @@ const definition = {
   },
   detached(elem) {
     if (elem.tether) {
-      elem.tether.disable();
+      elem.tether.destroy();
     }
-    // if (elem.parentNode && elem.parentNode == document.querySelector('body')) {
-    //   elem.parentNode.removeChild(elem);
-    // }
   },
   render(elem) {
     if (elem.open) {
       if (elem.tether) {
         elem.tether.update(elem);
       }
+
       vdom.element('style', shadowStyles.toString());
       vdom.element('ak-animmytest', {
         alignment: getAnimationPosition(elem),
@@ -79,11 +77,12 @@ const definition = {
     }
   },
   props: {
-    position: prop.string({ attribute: true }),
+    position: prop.string({ attribute: true, default: 'right middle' }),
     open: prop.boolean({ attribute: true }),
     target: prop.string({ attribute: true }),
     actualPosition: prop.string({ attribute: true }),
-    attachment: prop.string({ attribute: true }),
+    attachment: prop.string({ attribute: true, default: 'window' }),
+    renderElementTo: prop.string({ attribute: true }),
   },
 };
 

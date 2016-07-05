@@ -41,6 +41,14 @@ function getPositionFromClasses(classes) {
   return position;
 }
 
+function getElement(node) {
+  if (typeof node === 'string') {
+    return document.querySelector(node);
+  }
+
+  return node || document.body;
+}
+
 function Alignment(elem) {
   this.disabled = false;
 
@@ -52,8 +60,22 @@ Alignment.prototype = {
   disable() {
     if (this.tether) {
       this.disabled = true;
-      this.tether.destroy();
+      this.tether.disable();
     }
+    return this;
+  },
+
+  destroy() {
+    if (this.tether) {
+      this.disabled = true;
+      this.tether.destroy();
+      if (this.renderElement && this.renderElement.parentNode) {
+        this.renderElement.parentNode.removeChild(this.renderElement);
+        delete this.renderElement;
+      }
+      this.renderNode = null;
+    }
+
     return this;
   },
 
@@ -69,9 +91,20 @@ Alignment.prototype = {
     if (this.disabled || !elem.position || !elem.target) {
       return this;
     }
+
+
+    if (!this.renderElement) {
+      this.renderElement = elem;
+    }
+
+    if (!this.renderNode) {
+      this.renderNode = getElement(elem.renderElementTo);
+      this.renderNode.appendChild(this.renderElement);
+    }
+
     const opts = {
-      element: elem.movable ? elem.movable : elem,
-      target: document.querySelector(elem.target),
+      element: this.renderElement,
+      target: getElement(elem.target),
       attachment: attachmentMap[elem.position].el,
       targetAttachment: attachmentMap[elem.position].target,
       constraints: [

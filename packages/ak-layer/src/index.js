@@ -8,6 +8,7 @@ export default define('ak-layer', {
     position: prop.string({ attribute: true, default: 'right middle' }),
     attachment: prop.string({ attribute: true, default: 'window' }),
     target: prop.string({ attribute: true }),
+    renderElementTo: prop.string({ attribute: true }),
     open: prop.boolean({
       attribute: true,
       set(elem) {
@@ -27,7 +28,7 @@ export default define('ak-layer', {
   },
   detached(elem) {
     if (elem.alignment) {
-      elem.alignment.disable();
+      elem.alignment.destroy();
     }
   },
   render(elem) {

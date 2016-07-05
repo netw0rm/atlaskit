@@ -100,7 +100,7 @@
     "lint-changed": "./build/bin/lint-changed.sh",
     "prepublish/single": "./build/bin/prepublish.single.sh",
     "prune": "./node_modules/.bin/lerna exec -- npm prune && npm prune",
-    "release": "lerna-semantic-release pre && lerna-semantic-release perform",
+    "release": "git diff --exit-code && lerna-semantic-release pre && lerna-semantic-release perform",
     "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",
     "release/changelog": "if [ -s .released-packages ]; then lerna-semantic-release post; else return 0; fi",
     "storybook": "start-storybook -p 9001 -c ./build/storybook",

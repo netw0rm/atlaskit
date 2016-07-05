@@ -7,7 +7,7 @@ import { define } from 'skatejs';
 const { React, ReactDOM, uniqueWebComponent } = window;
 import { name } from '../package.json';
 
-const Component = reactify(uniqueWebComponent('akutil-component-template', definition, define), {
+const Component = reactify(uniqueWebComponent(name, definition, define), {
   React,
   ReactDOM,
 });

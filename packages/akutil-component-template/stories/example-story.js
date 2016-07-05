@@ -1,15 +1,18 @@
+/** @jsx React */
+
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import { definition } from '../src/index';
 import { define } from 'skatejs';
 const { React, ReactDOM, uniqueWebComponent } = window;
+import { name } from '../package.json';
 
 const Component = reactify(uniqueWebComponent('akutil-component-template', definition, define), {
   React,
   ReactDOM,
 });
 
-storiesOf('akutil-component-template', module)
+storiesOf(name, module)
   .add('a simple akutil-component-template', () => (
     <Component />
   ))

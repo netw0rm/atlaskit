@@ -11,4 +11,5 @@ sc-*-linux
 .idea/
 .ci_failed
 .DS_Store
+TESTS-*.xml
 atlaskit-spike.iml

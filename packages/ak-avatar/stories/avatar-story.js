@@ -1,8 +1,11 @@
+/** @jsx React */
+
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import { definition } from '../src/index';
 import { define } from 'skatejs';
 import avatarStoryStyles from 'style!./stories.less'; // eslint-disable-line import/no-unresolved
+import { name } from '../package.json';
 
 const { React, ReactDOM, uniqueWebComponent } = window;
 
@@ -11,7 +14,7 @@ const Avatar = reactify(uniqueWebComponent('ak-avatar', definition, define), {
   ReactDOM,
 });
 
-storiesOf('ak-avatar', module)
+storiesOf(name, module)
   .add('A default avatar', () => (
     <Avatar src="//docs.atlassian.com/aui/latest/docs/images/avatar-96.png" />
   ))

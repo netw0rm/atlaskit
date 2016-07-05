@@ -32,6 +32,10 @@ const standardConfig = {
   module: {
     loaders: [
       {
+        test: /\.json/,
+        loader: 'json',
+      },
+      {
         test: /\.css$/,
         loader: 'style!css',
       },
@@ -43,7 +47,7 @@ const standardConfig = {
         { // Support react/jsx in stories, react/ directory, or react-*.js files
           loader: 'babel-loader',
           test: /\.jsx?$/,
-          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|\.storybook\/.+\.js$/,
+          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.js$/, // eslint-disable-line max-len
           query: {
             presets: [
               'es2015',
@@ -67,7 +71,7 @@ const standardConfig = {
                 'incremental-dom',
                 {
                   hoist: true,
-                  prefix: 'vdom.IncrementalDOM',
+                  prefix: 'vdom',
                 },
               ],
             ],

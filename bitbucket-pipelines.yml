@@ -4,17 +4,11 @@ pipelines:
     master:
       - step:
           script:
-            - bash -c "git remote set-url origin https://"$BITBUCKET_USER":"\'$BITBUCKET_PASSWORD\'"@bitbucket.org/atlassian/atlaskit.git/"
-            - bash -c "git branch --set-upstream-to origin/$BITBUCKET_BRANCH"
-            - bash -c "git config --global user.email 'aui-team@atlassian.com'"
-            - bash -c "git config --global user.name 'AUI team account'"
-            - bash -c "git config --global push.default simple"
-            - bash -c "git fetch --tags"
-            - bash -c "git tag --list" #debug
+            - ./build/bin/last_commit_has_changes.sh || exit 0
             - npm install
             - npm run lint
             - npm run test/browserstack/ci
-            - npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+            - ./build/bin/prep_for_release.sh
             - npm run release
             - npm run release/changelog
             - npm run release/announce

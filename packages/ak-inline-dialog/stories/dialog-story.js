@@ -1,13 +1,15 @@
+/** @jsx React */
+
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import InlineDialog from '../src/index';
 import { define } from 'skatejs';
+import { name } from '../package.json';
 
-const React = window.React;
-const ReactDOM = window.ReactDOM;
+const { React, ReactDOM, uniqueWebComponentOld } = window;
 const { Component } = React;
 
-const Dialog = reactify(window.uniqueWebComponentOld(InlineDialog, define), {
+const Dialog = reactify(uniqueWebComponentOld(InlineDialog, define), {
   React,
   ReactDOM,
 });
@@ -73,7 +75,7 @@ DialogWithButton.propTypes = {
   attachTo: React.PropTypes.string,
 };
 
-storiesOf('ak-dialog', module)
+storiesOf(name, module)
   .add('All dialogs together, open on click', () => (
     <div
       id="target"

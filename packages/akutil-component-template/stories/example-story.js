@@ -21,7 +21,7 @@ storiesOf(name, module)
     const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
     return (<Component id="myComponent" onClick={removeMe} />);
   })
-  .addGremlined('a akutil-component-template with monkey testing', () => (
+  .addMonkeyTest('a akutil-component-template with monkey testing', () => (
     // Use this to add a story that has fuzzy testing attached.
     <Component />
   ))

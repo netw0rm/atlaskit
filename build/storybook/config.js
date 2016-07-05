@@ -43,7 +43,7 @@ setAddon({
     ));
   },
 
-  addGremlined(storyName, storyFn) {
+  addMonkeyTest(storyName, storyFn) {
     this.add(storyName, (context) => (
       <MonkeyTestStory>
         {storyFn(context)}

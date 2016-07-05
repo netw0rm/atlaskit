@@ -1,5 +1,3 @@
-/** @jsx React.createElement */
-
 import path from 'path';
 import { configure, setAddon } from '@kadira/storybook';
 import 'akutil-polyfills';

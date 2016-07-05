@@ -1,5 +1,3 @@
-/** @jsx React.createElement */
-
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import InlineDialog from '../src/index';

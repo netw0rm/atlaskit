@@ -1,0 +1,12 @@
+{
+  "name": "ak-stories",
+  "extends": "ak-base",
+  "plugins": [
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "pragma": "React"
+    }
+  }
+}

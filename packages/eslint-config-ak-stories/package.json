@@ -1,0 +1,12 @@
+{
+  "name": "eslint-config-ak-stories",
+  "version": "1.0.0",
+  "author": "Atlassian Pty. Ltd",
+  "license": "Apache-2.0",
+  "main": ".eslintrc",
+  "dependencies": {
+    "eslint": "^2.0.0",
+    "eslint-config-ak-base": "*",
+    "eslint-plugin-react": "^5.1.1"
+  }
+}

@@ -1,4 +1,5 @@
-import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+/** @jsx vdom */
+/* eslint react/no-unknown-property: 0 */
 
 import { define, vdom, prop } from 'skatejs';
 import { Alignment } from 'akutil-common';
@@ -35,7 +36,9 @@ export default define('ak-layer', {
       elem.alignment.update(elem);
     }
 
-    vdom.element('slot', { name: 'layer' });
+    return (
+      <slot name="layer" />
+    );
   },
 });
 

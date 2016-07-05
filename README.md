@@ -193,6 +193,27 @@ npm run lint
 npm run lint -- --fix
 ```
 
+### Modifying ESLint rules
+
+In order to modify the ESLint rules, you can add the rules to the `.eslintrc` file in the `eslint-config-ak-base` package. In order for you to use your changes immediately without committing and re-running `npm install`, you'll need to manually link it. This is a two-step process:
+
+1. link `eslint-config-ak-base` so NPM knows where to find it
+2. link it from the root of the repo
+
+One-liner:
+
+```sh
+cd packages/eslint-config-ak-base && npm link && cd ../.. && npm link eslint-config-ak-base
+```
+
+*You'll need to re `npm install` to restore the links otherwise `npm run validate` will fail due to extraneous packages being installed.*
+
+Changes to the ESLint rules should be treated like any other package:
+
+- If you fix a rule, it should be considered a fix
+- If you add a rule, it should be considered a feature
+- If you change / remove a rule, it should be considered breaking
+
 ##Commit changes
 To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Running commitizen is as simple as running `npm run commut` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
 

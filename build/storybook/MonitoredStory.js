@@ -1,3 +1,4 @@
+/** @jsx React */
 import React from 'react';
 import Stats from 'stats.js';
 

@@ -1,4 +1,4 @@
-/** @jsx React */
+/** @jsx React.createElement */
 
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';

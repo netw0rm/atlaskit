@@ -22,9 +22,12 @@ storiesOf(name, module)
     return (<Component id="myComponent" onClick={removeMe} />);
   })
   .addGremlined('a akutil-component-template with monkey testing', () => (
+    // Use this to add a story that has fuzzy testing attached.
     <Component />
   ))
   .addMonitored('an akutil-component-template with monitored performance', () => (
+    // Use this to add a story that has a little fps/memory gauge that allows you
+    // to monitor performance whilst developing
     <Component />
   ), () => {
     // This is where the actual work is done - anything in here will be monitored by the stats

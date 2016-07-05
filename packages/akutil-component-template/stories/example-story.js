@@ -21,6 +21,9 @@ storiesOf(name, module)
     const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
     return (<Component id="myComponent" onClick={removeMe} />);
   })
+  .addMonkeyTest('a akutil-component-template with monkey testing', () => (
+    <Component />
+  ))
   .addMonitored('an akutil-component-template with monitored performance', () => (
     <Component />
   ), () => {

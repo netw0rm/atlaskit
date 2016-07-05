@@ -168,19 +168,6 @@ You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome`
 
 > Hint: If you have problems starting the cucumber setup locally, try re-generating the docker images via: `npm run cucumber/single my-component -- --force-recreate`
 
-###Monkey tests
-
-Monkey tests are a technique where the user tests the application or system by providing random inputs and checking the behavior, or seeing whether the application or system crashes. We do this using [Gremlins.js](tools.md#markdown-header-gremlins).
-
-To run monkey tests for a single component:
-
-```
-npm run test/single/monkey my-component
-```
-This will open your browser to `localhost:8080` and show a bunch of red lines and circles representing the random inputs to your page.
-
-This will run for X mins and report errors ...
-
 ##Follow code style guidelines
 We are adhering to the [Airbnb](https://github.com/airbnb/javascript) javascript linting rules, which can be quite strict. Eslint will automatically run when attempting to commit, but can also run at any time using:
 

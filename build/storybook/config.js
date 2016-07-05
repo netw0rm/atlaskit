@@ -2,6 +2,7 @@ import path from 'path';
 import { configure, setAddon } from '@kadira/storybook';
 import 'akutil-polyfills';
 import MonitoredStory from './MonitoredStory.js';
+import MonkeyTestStory from './MonkeyTestStory.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import minilog from 'minilog';
@@ -39,6 +40,14 @@ setAddon({
       <MonitoredStory rafFn={rafFn}>
         {storyFn(context)}
       </MonitoredStory>
+    ));
+  },
+
+  addMonkeyTest(storyName, storyFn) {
+    this.add(storyName, (context) => (
+      <MonkeyTestStory>
+        {storyFn(context)}
+      </MonkeyTestStory>
     ));
   },
 });

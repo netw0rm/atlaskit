@@ -11,7 +11,6 @@ const argv = require('minimist')(process.argv.slice(2));
 const shouldMininimize = !!argv.min;
 const isDemo = !!argv.demo;
 const shouldBundleDependencies = !!argv['bundle-deps'];
-const isMonkeyTest = !!argv.monkey;
 
 require('minilog').enable();
 
@@ -113,10 +112,6 @@ if (isDemo) {
   standardConfig.entry['demo.js'] = './demo/index.js';
   log.info('adding polyfills');
   standardConfig.entry['polyfills.js'] = require.resolve('akutil-polyfills');
-
-  if (isMonkeyTest) {
-    standardConfig.entry['monkey.js'] = path.join(__dirname, 'build', 'lib', 'monkey.js');
-  }
   standardConfig.plugins = [
     new HtmlWebpackPlugin({
       title: `${pkg.name} - Demo`,

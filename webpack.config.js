@@ -8,10 +8,9 @@ const pkg = require(path.join(process.cwd(), 'package.json'));
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const argv = require('minimist')(process.argv.slice(2));
-const shouldMininimize = !!argv.min;
+const shouldMinimize = !!argv.min;
 const isDemo = !!argv.demo;
 const shouldBundleDependencies = !!argv['bundle-deps'];
-const isMonkeyTest = !!argv.monkey;
 
 require('minilog').enable();
 
@@ -47,7 +46,7 @@ const standardConfig = {
         { // Support react/jsx in stories, react/ directory, or react-*.js files
           loader: 'babel-loader',
           test: /\.jsx?$/,
-          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.js$/, // eslint-disable-line max-len
+          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/, // eslint-disable-line max-len
           query: {
             presets: [
               'es2015',
@@ -60,7 +59,7 @@ const standardConfig = {
           // Make sure vdom is imported from skatejs where jsx is used
           loader: 'babel-loader',
           test: /\.jsx?$/,
-          exclude: /(node_modules|bower_components)|react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?$/, // eslint-disable-line max-len
+          exclude: /node_modules|bower_components/, // eslint-disable-line max-len
           query: {
             presets: [
               'es2015',
@@ -113,10 +112,6 @@ if (isDemo) {
   standardConfig.entry['demo.js'] = './demo/index.js';
   log.info('adding polyfills');
   standardConfig.entry['polyfills.js'] = require.resolve('akutil-polyfills');
-
-  if (isMonkeyTest) {
-    standardConfig.entry['monkey.js'] = path.join(__dirname, 'build', 'lib', 'monkey.js');
-  }
   standardConfig.plugins = [
     new HtmlWebpackPlugin({
       title: `${pkg.name} - Demo`,
@@ -125,7 +120,7 @@ if (isDemo) {
   ];
 }
 
-if (shouldMininimize) {
+if (shouldMinimize) {
   log.info('minimizing');
   Object.assign(standardConfig.entry, {
     'dist/bundle.min.js': './src/index.js',

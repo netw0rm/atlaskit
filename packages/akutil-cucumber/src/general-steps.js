@@ -1,3 +1,4 @@
+const constructStorybookUrl = require('./constructStorybookUrl.js');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -8,9 +9,7 @@ module.exports = function steps() {
     /^I am on the story page "([^"]*)" of "([^"]*)"$/,
     { timeout: 60 * 1000 },
     (storyName, kind) => {
-      const eKind = encodeURIComponent(kind);
-      const eStory = encodeURIComponent(storyName);
-      const url = `/iframe.html?selectedKind=${eKind}&selectedStory=${eStory}&dataId=x`;
+      const url = constructStorybookUrl(kind, storyName);
       browser.manage().timeouts().pageLoadTimeout(60 * 1000);
       return browser.get(url);
     });

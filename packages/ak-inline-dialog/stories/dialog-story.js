@@ -1,5 +1,3 @@
-/** @jsx React */
-
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import InlineDialog from '../src/index';
@@ -9,6 +7,7 @@ import { name } from '../package.json';
 const { React, ReactDOM, uniqueWebComponentOld } = window;
 const { Component } = React;
 
+// TODO Remove usage of uniqueWebComponentOld and replace with uniqueWebComponent
 const Dialog = reactify(uniqueWebComponentOld(InlineDialog, define), {
   React,
   ReactDOM,

@@ -1,5 +1,3 @@
-/** @jsx React */
-
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import { definition } from '../src/index';
@@ -9,7 +7,7 @@ import { name } from '../package.json';
 
 const { React, ReactDOM, uniqueWebComponent } = window;
 
-const Avatar = reactify(uniqueWebComponent('ak-avatar', definition, define), {
+const Avatar = reactify(uniqueWebComponent(name, definition, define), {
   React,
   ReactDOM,
 });

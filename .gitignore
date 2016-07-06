@@ -12,4 +12,4 @@ sc-*-linux
 .ci_failed
 .DS_Store
 TESTS-*.xml
-atlaskit-spike.iml
+atlaskit.iml

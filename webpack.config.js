@@ -16,7 +16,7 @@ require('minilog').enable();
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': './src/index.js',
+    'dist/bundle.js': './src/register.js',
   },
   output: {
     path: './',

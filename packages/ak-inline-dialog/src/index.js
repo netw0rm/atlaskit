@@ -2,7 +2,7 @@
 /* eslint react/no-unknown-property: 0 */
 
 import { attachmentMap, getPositionFromClasses, Alignment } from 'akutil-common';
-import { define, vdom, prop } from 'skatejs';
+import { vdom, prop } from 'skatejs';
 import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, max-len
 // import Layer from 'ak-layer'; // eslint-disable-line no-unused-vars
 import shadowStyles from './shadow.less';
@@ -116,9 +116,5 @@ const AnimmyTestDefinition = { // eslint-disable-line no-unused-vars
   },
 };
 
-const AnimmyTestWC = () => define('ak-animtest', AnimmyTestDefinition);
-export default () => define('ak-inline-dialog', definition);
-
-export { definition };
+export default definition;
 export { AnimmyTestDefinition };
-export { AnimmyTestWC };

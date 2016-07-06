@@ -11,7 +11,6 @@ module.exports = function runWithTunnel(tunnelId, runFn) {
 
     function handleError(errorMsg) {
       log.error(`tunnel ${tunnelId}: '${errorMsg}'`);
-      browserStackTunnel.stop();
       reject(errorMsg);
     }
 

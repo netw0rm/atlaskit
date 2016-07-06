@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import { definition as inlineDialog, AnimmyTest } from '../src/index';
+import { definition as inlineDialog } from '../src/index';
 import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import { name } from '../package.json';
 
@@ -8,11 +8,6 @@ const { React, ReactDOM, uniqueWebComponent } = window;
 const { Component } = React;
 
 const Dialog = reactify(uniqueWebComponent(name, inlineDialog, define), {
-  React,
-  ReactDOM,
-});
-
-const animmytest = reactify(uniqueWebComponent(name, AnimmyTest, define), { // eslint-disable-line no-unused-vars, max-len
   React,
   ReactDOM,
 });

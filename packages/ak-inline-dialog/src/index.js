@@ -8,7 +8,7 @@ import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unr
 import shadowStyles from './shadow.less';
 import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
 
-const Animations = {
+const Animations = { // eslint-disable-line no-unused-vars
   left: [
     { transform: 'translate3d(100%, 0, 0)', opacity: 1 },
     { transform: 'translate3d(0, 0, 0)', opacity: 1 },
@@ -62,13 +62,14 @@ const definition = {
     if (elem.tether) {
       elem.tether.update(elem);
     }
+
     return (
-      <AnimmyTest alignment={getAnimationPosition(elem)}>
+      <ak-animtest alignment={getAnimationPosition(elem)} open={elem.open}>
         <style>{shadowStyles.toString()}</style>
         <div class={shadowStyles.locals.inlineDialogContainer}>
           <slot />
         </div>
-      </AnimmyTest>
+      </ak-animtest>
     );
   },
   props: {
@@ -81,38 +82,43 @@ const definition = {
   },
 };
 
-const AnimmyTest = { // eslint-disable-line no-unused-vars
-  render(elem) {
-    let container;
-    vdom.element('div', {
-      class: shadowStyles.locals.animateContainer,
-    }, () => {
-      container = vdom.element('div', {
-        class: shadowStyles.locals.animateContainer2,
-      }, () => {
-        vdom.element('slot');
-      });
-    });
-    if (elem.alignment && Animations[elem.alignment]) {
-      container.animate(Animations[elem.alignment], {
-        duration: 200,
-        iterations: 1,
-      });
+const AnimmyTestDefinition = { // eslint-disable-line no-unused-vars
+  render() {
+    // const container = (<div class={shadowStyles.locals.animateContainer}>
+    //   <div class={shadowStyles.locals.animateContainer2}>
+    //     <slot />
+    //   </div>
+    // </div>);
 
-      setTimeout(() => {
-        container.className = '';
-      });
-    }
+    // if (elem.alignment && Animations[elem.alignment]) {
+    //   container.animate(Animations[elem.alignment], {
+    //     duration: 200,
+    //     iterations: 1,
+    //   });
+    //
+    //   setTimeout(() => {
+    //     container.className = '';
+    //   });
+    // }
+
+    return (<div class={shadowStyles.locals.animateContainer}>
+      <div class={shadowStyles.locals.animateContainer2}>
+        <slot />
+      </div>
+    </div>);
   },
   props: {
     alignment: prop.string({ attribute: true }),
+    open: prop.boolean({ attribute: true, set() {
+      // console.log('set open prop');
+    },
+    }),
   },
 };
 
-// define('ak-animmytest', AnimmyTest);
-
-/* The constructor for our component */
+const AnimmyTestWC = () => define('ak-animtest', AnimmyTestDefinition);
 export default () => define('ak-inline-dialog', definition);
 
 export { definition };
-export { AnimmyTest };
+export { AnimmyTestDefinition };
+export { AnimmyTestWC };

@@ -111,6 +111,7 @@
     "test/browserstack/ci": "./build/bin/test.browserstack.ci.sh",
     "test/single": "./build/bin/test.single.sh",
     "test/single/integration": "./build/bin/test.single.integration.sh",
+    "test/single/integration/browserstack": "node ./build/bin/test.single.integration.browserstack.js",
     "test/single/browserstack": "./build/bin/test.single.browserstack.sh",
     "test/single/watch": "./build/bin/test.single.watch.sh",
     "validate": "npm ls >/dev/null && ./node_modules/.bin/lerna exec -- npm ls >/dev/null",

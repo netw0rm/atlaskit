@@ -51,6 +51,7 @@ if (process.env.BROWSERSTACK) {
     capabilities: {
       browserName: 'Chrome',
       os: 'OS X',
+      os_version: 'El Capitan',
       resolution: '1024x768',
 
       build: `${process.env.PKG} Integration`,

@@ -4,7 +4,7 @@
 import { attachmentMap, getPositionFromClasses, Alignment } from 'akutil-common';
 import { define, vdom, prop } from 'skatejs';
 import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, max-len
-import Layer from 'ak-layer';
+import Layer from 'ak-layer'; // eslint-disable-line no-unused-vars
 import shadowStyles from './shadow.less';
 import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
 
@@ -59,33 +59,17 @@ const definition = {
     }
   },
   render(elem) {
-    // return (
-    //   <Layer>
-    //     <AnimmyTest alignment={getAnimationPosition(elem)}>
-    //       <style>{shadowStyles.toString()}</style>
-    //       <div class={shadowStyles.locals.inlineDialogContainer}>
-    //         <slot />
-    //       </div>
-    //     </AnimmyTest>
-    //   </Layer>
-    // );
-    if (elem.open) {
-      if (elem.tether) {
-        elem.tether.update(elem);
-      }
-
-      vdom.element('style', shadowStyles.toString());
-      vdom.element('ak-animmytest', {
-        alignment: getAnimationPosition(elem),
-      }, () => {
-        const divAttrs = {
-          class: shadowStyles.locals.inlineDialogContainer,
-        };
-        vdom.element('div', divAttrs, () => {
-          vdom.element('slot');
-        });
-      });
+    if (elem.tether) {
+      elem.tether.update(elem);
     }
+    return (
+      <AnimmyTest alignment={getAnimationPosition(elem)}>
+        <style>{shadowStyles.toString()}</style>
+        <div class={shadowStyles.locals.inlineDialogContainer}>
+          <slot />
+        </div>
+      </AnimmyTest>
+    );
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
@@ -97,7 +81,7 @@ const definition = {
   },
 };
 
-const AnimmyTest = define('ak-animmytest', {
+const AnimmyTest = define('ak-animmytest', { // eslint-disable-line no-unused-vars
   render(elem) {
     let container;
 

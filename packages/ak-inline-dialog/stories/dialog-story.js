@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import InlineDialog from '../src/index';
-import { define, vdom } from 'skatejs';
+import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import { name } from '../package.json';
 
 const { React, ReactDOM, uniqueWebComponentOld } = window;

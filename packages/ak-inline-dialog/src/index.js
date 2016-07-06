@@ -4,7 +4,7 @@
 import { attachmentMap, getPositionFromClasses, Alignment } from 'akutil-common';
 import { define, vdom, prop } from 'skatejs';
 import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, max-len
-import Layer from 'ak-layer'; // eslint-disable-line no-unused-vars
+// import Layer from 'ak-layer'; // eslint-disable-line no-unused-vars
 import shadowStyles from './shadow.less';
 import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
 
@@ -81,10 +81,9 @@ const definition = {
   },
 };
 
-const AnimmyTest = define('ak-animmytest', { // eslint-disable-line no-unused-vars
+const AnimmyTest = { // eslint-disable-line no-unused-vars
   render(elem) {
     let container;
-
     vdom.element('div', {
       class: shadowStyles.locals.animateContainer,
     }, () => {
@@ -108,6 +107,12 @@ const AnimmyTest = define('ak-animmytest', { // eslint-disable-line no-unused-va
   props: {
     alignment: prop.string({ attribute: true }),
   },
-});
+};
 
-export default define('ak-inline-dialog', definition);
+// define('ak-animmytest', AnimmyTest);
+
+/* The constructor for our component */
+export default () => define('ak-inline-dialog', definition);
+
+export { definition };
+export { AnimmyTest };

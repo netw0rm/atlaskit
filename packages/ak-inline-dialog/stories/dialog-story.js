@@ -1,14 +1,18 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import InlineDialog from '../src/index';
+import { definition as inlineDialog, AnimmyTest } from '../src/index';
 import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import { name } from '../package.json';
 
-const { React, ReactDOM, uniqueWebComponentOld } = window;
+const { React, ReactDOM, uniqueWebComponent } = window;
 const { Component } = React;
 
-// TODO Remove usage of uniqueWebComponentOld and replace with uniqueWebComponent
-const Dialog = reactify(uniqueWebComponentOld(InlineDialog, define), {
+const Dialog = reactify(uniqueWebComponent(name, inlineDialog, define), {
+  React,
+  ReactDOM,
+});
+
+const animmytest = reactify(uniqueWebComponent(name, AnimmyTest, define), { // eslint-disable-line no-unused-vars, max-len
   React,
   ReactDOM,
 });

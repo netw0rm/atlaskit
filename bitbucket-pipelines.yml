@@ -7,6 +7,8 @@ pipelines:
             - ./build/bin/last_commit_has_changes.sh || exit 0
             - npm install
             - npm run lint
+            - npm run storybook& # runs in background
+            - npm run test/integration/browserstack
             - npm run test/browserstack/ci
             - ./build/bin/prep_for_release.sh
             - npm run release

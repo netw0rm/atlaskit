@@ -9,7 +9,7 @@ if (process.argv.length < 3) {
   process.exit(1);
 }
 const pkgName = process.argv[2];
-const tunnelIdentifier = process.env.BROWSERSTACK_TUNNEL || 'protractor_tunnel';
+const tunnelIdentifier = process.env.BROWSERSTACK_TUNNEL || 'protractor_single_tunnel';
 
 // Execute BrowserStack tests via bash script
 const runTests = () => {

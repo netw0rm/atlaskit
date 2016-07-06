@@ -109,6 +109,7 @@
     "test": "./build/bin/test.sh",
     "test/browserstack": "./build/bin/test.browserstack.sh",
     "test/browserstack/ci": "./build/bin/test.browserstack.ci.sh",
+    "test/integration/browserstack": "node ./build/bin/test.integration.browserstack.js",
     "test/single": "./build/bin/test.single.sh",
     "test/single/integration": "./build/bin/test.single.integration.sh",
     "test/single/integration/browserstack": "node ./build/bin/test.single.integration.browserstack.js",

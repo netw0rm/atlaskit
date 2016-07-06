@@ -1,5 +1,5 @@
 <a name="2.0.0"></a>
-# [2.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/1.0.0-semver-tag-for-eslint-config-ak-stories...v2.0.0) (2016-07-05)
+# [2.0.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/1.0.0-semver-tag-for-eslint-config-ak-stories...v2.0.0) (2016-07-06)
 
 
 

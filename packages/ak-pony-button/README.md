@@ -95,6 +95,6 @@ Fired when the pony neighs. This normally happens when it is hungry.
 **Example**  
 ```js
 ponyButton.addEventListener('ak-neigh', function (event) {
-  console.log(event.detail.name + ' is hungry. Maybe your pony is hungry?');
+  console.log(event.detail.name + ' neighed. Maybe your pony is hungry?');
 });
 ```

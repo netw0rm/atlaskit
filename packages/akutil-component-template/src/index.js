@@ -1,17 +1,22 @@
-import hostStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved
+/** @jsx vdom */
+
+import { define, vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
 
-import { define, vdom, state } from 'skatejs';
 const definition = {
   render(elem) {
-    // REMOVING THIS LINE WILL PREVENT THE STYLE TAG BEING RENDERED IN THE SHADOW DOM
-    vdom.style(shadowStyles.toString());
-    vdom.div(`I am an <${elem.tagName}> element!`);
-  },
-  ready(elem) {
-    state(elem, {
-      className: hostStyles['akutil-component-template'],
-    });
+    return (
+      // JSX requires that there only be a single root element.
+      // Incremental DOM doesn't require this.
+      <div>
+        {/* This is required for elements in the shadow root to be styled.
+           This is wrapped in the <div /> because you can't have more than one
+           root element.
+        */}
+        <style>{shadowStyles.toString()}</style>
+        <p className={shadowStyles.locals.myClassName}>I am an {elem.tagName} element!</p>
+      </div>
+    );
   },
 };
 

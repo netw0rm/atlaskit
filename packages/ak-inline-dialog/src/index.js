@@ -1,10 +1,11 @@
-import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
-import shadowStyles from './shadow.less';
-import Layer from 'ak-layer'; // eslint-disable-line no-unused-vars
+/** @jsx vdom */
+/* eslint react/no-unknown-property: 0 */
+
 import { attachmentMap, getPositionFromClasses, Alignment } from 'akutil-common';
-
 import { define, vdom, prop } from 'skatejs';
-
+import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, max-len
+import Layer from 'ak-layer';
+import shadowStyles from './shadow.less';
 import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
 
 const Animations = {
@@ -58,6 +59,16 @@ const definition = {
     }
   },
   render(elem) {
+    // return (
+    //   <Layer>
+    //     <AnimmyTest alignment={getAnimationPosition(elem)}>
+    //       <style>{shadowStyles.toString()}</style>
+    //       <div class={shadowStyles.locals.inlineDialogContainer}>
+    //         <slot />
+    //       </div>
+    //     </AnimmyTest>
+    //   </Layer>
+    // );
     if (elem.open) {
       if (elem.tether) {
         elem.tether.update(elem);
@@ -86,7 +97,7 @@ const definition = {
   },
 };
 
-define('ak-animmytest', {
+const AnimmyTest = define('ak-animmytest', {
   render(elem) {
     let container;
 

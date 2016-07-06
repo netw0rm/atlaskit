@@ -1,6 +1,8 @@
 import path from 'path';
-import { configure } from '@kadira/storybook';
+import { configure, setAddon } from '@kadira/storybook';
 import 'akutil-polyfills';
+import MonitoredStory from './MonitoredStory.js';
+import MonkeyTestStory from './MonkeyTestStory.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import minilog from 'minilog';
@@ -19,7 +21,7 @@ window.uniqueWebComponentOld = (Wc, define) => {
   return define(`${tagName}-${Math.random().toString(35).substr(2, 7)}`, class extends Wc {});
 };
 
-const req = require.context('../packages/', true, /stories\/.+-story\.js$/);
+const req = require.context('../../packages/', true, /stories\/.+-story\.js$/);
 
 function loadStories() {
   let stories = req.keys();
@@ -30,5 +32,24 @@ function loadStories() {
   }
   stories.forEach(req);
 }
+
+
+setAddon({
+  addMonitored(storyName, storyFn, rafFn) {
+    this.add(storyName, (context) => (
+      <MonitoredStory rafFn={rafFn}>
+        {storyFn(context)}
+      </MonitoredStory>
+    ));
+  },
+
+  addMonkeyTest(storyName, storyFn) {
+    this.add(storyName, (context) => (
+      <MonkeyTestStory>
+        {storyFn(context)}
+      </MonkeyTestStory>
+    ));
+  },
+});
 
 configure(loadStories, module);

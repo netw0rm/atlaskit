@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
 
@@ -13,11 +15,12 @@ const SIZE_ATTRIBUTE_ENUM = {
 
 const definition = {
   render(elem) {
-    vdom.style(shadowStyles.toString());
-    vdom.img({
-      alt: elem.alt,
-      src: elem.src || '',
-    });
+    return (
+      <span>
+        <style>{shadowStyles.toString()}</style>
+        <img alt={elem.alt} src={elem.src} />
+      </span>
+    );
   },
   props: {
     size: enumeration(SIZE_ATTRIBUTE_ENUM)({

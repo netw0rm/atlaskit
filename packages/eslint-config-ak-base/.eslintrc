@@ -1,7 +1,15 @@
 {
   "name": "ak-base",
   "extends": "airbnb",
+  "plugins": [
+    "react"
+  ],
   "rules": {
     "no-param-reassign": ["error", { "props": false }]
+  },
+  "settings": {
+    "react": {
+      "pragma": "vdom"
+    }
   }
 }

@@ -8,10 +8,9 @@ const pkg = require(path.join(process.cwd(), 'package.json'));
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const argv = require('minimist')(process.argv.slice(2));
-const shouldMininimize = !!argv.min;
+const shouldMinimize = !!argv.min;
 const isDemo = !!argv.demo;
 const shouldBundleDependencies = !!argv['bundle-deps'];
-const isMonkeyTest = !!argv.monkey;
 
 require('minilog').enable();
 
@@ -32,6 +31,10 @@ const standardConfig = {
   module: {
     loaders: [
       {
+        test: /\.json/,
+        loader: 'json',
+      },
+      {
         test: /\.css$/,
         loader: 'style!css',
       },
@@ -39,47 +42,49 @@ const standardConfig = {
         test: /\.less$/,
         loader: 'css?modules&camelCase!less',
       },
-      { // Support react/jsx in stories, react/ directory, or react-*.js files
-        loader: 'babel-loader',
-        test: /\.jsx?$/,
-        include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?$/,
-        query: {
-          presets: [
-            'es2015',
-            'react', // required by react-storybook
-            'stage-0',
-          ],
-        },
-      },
-      { // Support jsx to incremental dom in non-react locations (above).
-        // Make sure vdom is imported from skatejs where jsx is used
-        loader: 'babel-loader',
-        test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)|react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?$/, // eslint-disable-line max-len
-        query: {
-          presets: [
-            'es2015',
-            'stage-0',
-          ],
-          plugins: [
-            [
-              'incremental-dom',
-              {
-                hoist: true,
-                prefix: 'vdom.IncrementalDOM',
-              },
+      [ // exclusive configs for babel (first one that matches will be used)
+        { // Support react/jsx in stories, react/ directory, or react-*.js files
+          loader: 'babel-loader',
+          test: /\.jsx?$/,
+          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/, // eslint-disable-line max-len
+          query: {
+            presets: [
+              'es2015',
+              'react', // required by react-storybook
+              'stage-0',
             ],
-          ],
+          },
         },
-      },
-      { // this is for the v1 CustomElement polyfill and named-slots
-        loader: 'babel-loader',
-        test: /\.jsx?$/,
-        include: /(webcomponents\.js\/src|skatejs-named-slots\/src)/,
-        query: {
-          presets: 'es2015',
+        { // Support jsx to incremental dom in non-react locations (above).
+          // Make sure vdom is imported from skatejs where jsx is used
+          loader: 'babel-loader',
+          test: /\.jsx?$/,
+          exclude: /node_modules|bower_components/, // eslint-disable-line max-len
+          query: {
+            presets: [
+              'es2015',
+              'stage-0',
+            ],
+            plugins: [
+              [
+                'incremental-dom',
+                {
+                  hoist: true,
+                  prefix: 'vdom',
+                },
+              ],
+            ],
+          },
         },
-      },
+        { // this is for the v1 CustomElement polyfill and named-slots
+          loader: 'babel-loader',
+          test: /\.jsx?$/,
+          include: /(webcomponents\.js\/src|skatejs-named-slots\/src)/,
+          query: {
+            presets: 'es2015',
+          },
+        },
+      ],
       {
         test: /\.html$/,
         loader: 'html-loader',
@@ -107,10 +112,6 @@ if (isDemo) {
   standardConfig.entry['demo.js'] = './demo/index.js';
   log.info('adding polyfills');
   standardConfig.entry['polyfills.js'] = require.resolve('akutil-polyfills');
-
-  if (isMonkeyTest) {
-    standardConfig.entry['monkey.js'] = path.join(__dirname, 'build', 'lib', 'monkey.js');
-  }
   standardConfig.plugins = [
     new HtmlWebpackPlugin({
       title: `${pkg.name} - Demo`,
@@ -119,7 +120,7 @@ if (isDemo) {
   ];
 }
 
-if (shouldMininimize) {
+if (shouldMinimize) {
   log.info('minimizing');
   Object.assign(standardConfig.entry, {
     'dist/bundle.min.js': './src/index.js',

@@ -1,7 +1,7 @@
 import { define } from 'skatejs';
 import definition, { AnimmyTestDefinition } from './index.js';
 
-/* The constructor for our component */
+// Expose the WebComponents
 define('ak-inline-dialog', definition);
 define('ak-animtest', AnimmyTestDefinition);
 

@@ -4,7 +4,7 @@ import definition from '../src/index';
 import { define } from 'skatejs';
 const { React, ReactDOM, uniqueWebComponent } = window;
 import { name } from '../package.json';
-import styles from 'style!./host.less'; // eslint-disable-line import/no-unresolved
+import styles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
 
 const Component = reactify(uniqueWebComponent(name, definition, define), {
   React,
@@ -20,7 +20,7 @@ storiesOf(name, module)
   ))
   .add('an akutil-component-template that removes itself when being clicked', () => {
     const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
-    const cls = styles.akutilComponentTemplate;
+    const cls = styles.akAvatar;
     return (<Component id="myComponent" className={cls} onClick={removeMe} />);
   })
   .addMonkeyTest('a akutil-component-template with monkey testing', () => (

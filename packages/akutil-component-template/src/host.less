@@ -8,13 +8,11 @@
 
 // we define a class here in order to re-use it in the storybook
 // (because in storybook the component name is randomly generated)
-.ak-avatar {
+.ak-avatar,
+ak-avatar {
   display: inline-block;
 
   &:not([defined]) {
     display: none;
   }
-}
-ak-avatar {
-  .ak-avatar;
 }

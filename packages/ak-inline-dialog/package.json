@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "akutil-common": "^0.0.3",
+    "akutil-common": "^0.1.0",
     "akutil-shared-styles": "*",
     "ak-layer": "*",
     "skatejs": "v1.0.0-beta.7",
@@ -23,6 +23,6 @@
     "web-animations-js": "^2.2.1"
   },
   "devDependencies": {
-    "akutil-react": "^0.0.0"
+    "akutil-react": "^0.0.3"
   }
 }

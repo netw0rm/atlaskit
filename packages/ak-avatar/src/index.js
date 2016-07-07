@@ -16,8 +16,8 @@ const SIZE_ATTRIBUTE_ENUM = {
 /**
  * @description The definition for the Avatar component.
  * @class Avatar
- * @example <ak-avatar src="my/avatar/src/image.png"></ak-avatar>
- * @example import Avatar from 'ak-avatar';
+ * @example @html <ak-avatar src="my/avatar/src/image.png"></ak-avatar>
+ * @example @js import Avatar from 'ak-avatar';
  * const myAvatar = new Avatar();
  *
  */
@@ -38,8 +38,8 @@ const Avatar = {
      * @instance
      * @default medium
      * @type {string}
-     * @example <ak-avatar size="large"></ak-avatar>
-     * @example avatar.size = 'large';
+     * @example @html <ak-avatar size="large"></ak-avatar>
+     * @example @js avatar.size = 'large';
      */
     size: enumeration(SIZE_ATTRIBUTE_ENUM)({
       attribute: true,
@@ -49,8 +49,8 @@ const Avatar = {
      * @memberof Avatar
      * @instance
      * @type {string}
-     * @example <ak-avatar src="my/avatar/src.png"></ak-avatar>
-     * @example avatar.src = 'my/avatar/src.png';
+     * @example @html <ak-avatar src="my/avatar/src.png"></ak-avatar>
+     * @example @js avatar.src = 'my/avatar/src.png';
      */
     src: {
       attribute: true,
@@ -60,8 +60,8 @@ const Avatar = {
      * @memberof Avatar
      * @instance
      * @type {string}
-     * @example <ak-avatar alt="Avatar image" src="my/avatar/src.png"></ak-avatar>
-     * @example avatar.alt = 'Avatar image';
+     * @example @html <ak-avatar alt="Avatar image" src="my/avatar/src.png"></ak-avatar>
+     * @example @js avatar.alt = 'Avatar image';
      */
     alt: {
       attribute: true,

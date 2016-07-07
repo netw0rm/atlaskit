@@ -15,7 +15,7 @@ import { define, emit, vdom } from 'skatejs';
  * information about its usage.
  *
  * Here's some closing words in a third paragraph. Thanks for reading.
- * @example <ak-pony-button>Button text.</ak-pony-button>
+ * @example @html <ak-pony-button>Button text.</ak-pony-button>
  */
 const PonyButton = define('ak-pony-button', {
   render(elem) {
@@ -41,7 +41,7 @@ const PonyButton = define('ak-pony-button', {
        * @memberof PonyButton
        * @description Fired when the pony neighs. This normally happens when it is hungry.
        * @property {String} detail.name The name of the pony button.
-       * @example ponyButton.addEventListener('ak-neigh', function (event) {
+       * @example @js ponyButton.addEventListener('ak-neigh', function (event) {
        *   console.log(event.detail.name + ' neighed. Maybe your pony is hungry?');
        * });
        */
@@ -59,7 +59,7 @@ const PonyButton = define('ak-pony-button', {
      * @defaultvalue Bob
      * @instance
      * @type {string}
-     * @example <ak-pony-button name="Randy">Button text</ak-pony-button>
+     * @example @html <ak-pony-button name="Randy">Button text</ak-pony-button>
      */
     name: {
       attribute: true,
@@ -74,7 +74,7 @@ const PonyButton = define('ak-pony-button', {
      * @instance
      * @fires PonyButton#ak-neigh
      * @return {PonyButton} The PonyButton element.
-     * @example ponyButton.neigh(); // Fires the ak-neigh event.
+     * @example @js ponyButton.neigh(); // Fires the ak-neigh event.
      */
     neigh() {
       emit(this, 'ak-neigh');

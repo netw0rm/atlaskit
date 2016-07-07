@@ -13,7 +13,7 @@ COMPONENT_DIR=$(basename `pwd`)
         echo -e "\033[0m"
     fi
 } || {
-    if [ -n $FAILED_CI_FILE ]; then
+    if [ -n "$FAILED_CI_FILE" ]; then
         echo $COMPONENT_DIR >> ../../$FAILED_CI_FILE
     fi
 }

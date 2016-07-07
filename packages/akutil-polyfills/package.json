@@ -1,6 +1,6 @@
 {
   "name": "akutil-polyfills",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "dist/bundle.js",
   "files": [
     "dist"
@@ -9,11 +9,11 @@
   "license": "Apache-2.0",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single akutil-polyfills"
+    "prepublish": "cd ../.. && npm run prepublish/single akutil-polyfills"
   },
   "dependencies": {
     "es6-map": "^0.1.4",
-    "skatejs-named-slots": "^0.2.7",
+    "skatejs-named-slots": "^0.2.9",
     "webcomponents.js": "webcomponents/webcomponentsjs#b77ca74"
   }
 }

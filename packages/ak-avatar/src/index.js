@@ -4,7 +4,7 @@ import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-var
 import shadowStyles from './shadow.less';
 
 import { enumeration } from 'akutil-common';
-import { define, vdom, state } from 'skatejs';
+import { vdom, state } from 'skatejs';
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
@@ -40,8 +40,4 @@ const definition = {
   },
 };
 
-
-/* The constructor for our component */
-export default () => define('ak-avatar', definition);
-
-export { definition };
+export default definition;

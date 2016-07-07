@@ -26,10 +26,18 @@ cp -r "packages/akutil-component-template" "packages/$COMP_NAME"
 
 # `find` is getting all the files under the new directory
 # `xargs` is passing them to sed
-# `sed` is replacing instances of 'akutil-component-template' with the new compnent name
+# `sed` is replacing instances of 'akutil-component-template' with the new component name
 # LC_CTYPE and LANG=C: http://stackoverflow.com/questions/19242275/re-error-illegal-byte-sequence-on-mac-os-x
 LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' "s/akutil-component-template/${COMP_NAME}/g" '{}'
 
-rm -rf "packages/$COMP_NAME/node_modules"
+pushd "packages/$COMP_NAME"
+
+# Make sure our version for the new package is 0.0.0
+sed -i '' 's/"version": "\([^"]*\)"/"version": "0.0.0"/' package.json
+
+popd
+
+# Install dependencies and link internal packages
+npm install
 
 echo "New component '$COMP_NAME' created (v0.0.0)"

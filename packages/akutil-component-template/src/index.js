@@ -1,6 +1,6 @@
 /** @jsx vdom */
 
-import { define, vdom } from 'skatejs';
+import { vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
 
 const definition = {
@@ -20,7 +20,4 @@ const definition = {
   },
 };
 
-/* The constructor for our component */
-export default () => define('akutil-component-template', definition);
-
-export { definition };
+export default definition;

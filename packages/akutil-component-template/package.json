@@ -1,11 +1,11 @@
 {
   "name": "akutil-component-template",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "akutil-component-template webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "src/index.register.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single akutil-component-template"
+    "prepublish": "cd ../.. && npm run prepublish/single akutil-component-template"
   },
   "files": [
     "dist"

@@ -5,6 +5,7 @@ const webpackConfig = require('./webpack.config.js');
 // We delete the entry from the normal config and let karma insert it for us
 delete webpackConfig.entry;
 delete webpackConfig.externals;
+delete webpackConfig.plugins;
 webpackConfig.devtool = 'inline-source-map';
 
 module.exports = (config) => {
@@ -38,7 +39,7 @@ module.exports = (config) => {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'junit'],
+    reporters: ['progress'],
 
     // web server port
     port: 9876,

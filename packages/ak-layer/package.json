@@ -1,11 +1,11 @@
 {
   "name": "ak-layer",
-  "version": "45.0.0",
+  "version": "46.0.0",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "src/index.register.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-layer",
+    "prepublish": "cd ../.. && npm run prepublish/single ak-layer",
     "pre-release": "lerna-semantic-release pre"
   },
   "private": true,

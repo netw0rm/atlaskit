@@ -8,6 +8,8 @@ pipelines:
             - npm install
             - npm run lint
             - npm run test/browserstack/ci
+            - npm run storybook& # runs in background
+            - npm run test/integration/browserstack
             - ./build/bin/prep_for_release.sh
             - npm run release
             - npm run release/changelog

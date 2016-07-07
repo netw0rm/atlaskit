@@ -130,6 +130,9 @@ To run unit tests for a single component:
 ```
 npm run test/single my-component-name
 ```
+
+> You can pass arguments to Karma like this: `npm run test/single my-component-name -- --browsers=Chrome`
+
 To continuously run tests for a single component:
 
 ```

@@ -1,5 +1,6 @@
 const camelCase = require('camelcase');
 const fs = require('fs');
+const glob = require('glob');
 const log = require('minilog')('webpack');
 
 const path = require('path');
@@ -14,9 +15,11 @@ const shouldBundleDependencies = !!argv['bundle-deps'];
 
 require('minilog').enable();
 
+const bundleFiles = glob.sync('./src/index*.js');
+
 const standardConfig = {
   entry: {
-    'dist/bundle.js': './src/register.js',
+    'dist/bundle.js': bundleFiles,
   },
   output: {
     path: './',
@@ -99,11 +102,6 @@ const standardConfig = {
       beautify: true,
       comments: true,
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      // Minify any target that ends in .min.js.
-      include: /\.min\.js$/,
-      minimize: true,
-    }),
   ],
 };
 
@@ -122,8 +120,13 @@ if (isDemo) {
 
 if (shouldMinimize) {
   log.info('minimizing');
+  standardConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    // Minify any target that ends in .min.js.
+    include: /\.min\.js$/,
+    minimize: true,
+  }));
   Object.assign(standardConfig.entry, {
-    'dist/bundle.min.js': './src/index.js',
+    'dist/bundle.min.js': bundleFiles,
   });
 }
 

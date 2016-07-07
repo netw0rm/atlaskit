@@ -22,7 +22,7 @@
     "cz-conventional-changelog": "^1.1.6",
     "cz-lerna-changelog": "0.2.1",
     "eslint": "^2.13.1",
-    "eslint-config-ak-base": "^1.0.3",
+    "eslint-config-ak-base": "^1.1.2",
     "eslint-config-ak-cucumber": "^1.0.2",
     "eslint-config-ak-stories": "^2.0.0",
     "eslint-config-ak-tests": "^1.0.2",

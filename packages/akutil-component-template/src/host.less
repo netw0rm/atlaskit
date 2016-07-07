@@ -1,0 +1,13 @@
+// Only do element selectors here (e.g. whatever is exposed in index.register.js)
+// Anything in here leaks to the rest of the page and nothing in here can affect things within
+// the shadow part of the component
+
+@import 'shared-variables.less';
+
+ak-avatar {
+  display: inline-block;
+
+  &:not([defined]) {
+    display: none;
+  }
+}

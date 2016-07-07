@@ -7,6 +7,4 @@ import reactify from 'skatejs-react-integration';
  *          - React: the instance of React to register with
  *          - ReactDOM: the instance of ReactDOM to register with
  */
-export default function (webComponent, options) {
-  return reactify(webComponent, options);
-}
+export default (webComponent, options) => reactify(webComponent, options);

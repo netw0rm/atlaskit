@@ -5,6 +5,7 @@ const webpackConfig = require('./webpack.config.js');
 // We delete the entry from the normal config and let karma insert it for us
 delete webpackConfig.entry;
 delete webpackConfig.externals;
+delete webpackConfig.plugins;
 webpackConfig.devtool = 'inline-source-map';
 
 module.exports = (config) => {

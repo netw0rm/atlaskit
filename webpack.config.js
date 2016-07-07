@@ -102,11 +102,6 @@ const standardConfig = {
       beautify: true,
       comments: true,
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      // Minify any target that ends in .min.js.
-      include: /\.min\.js$/,
-      minimize: true,
-    }),
   ],
 };
 
@@ -125,6 +120,11 @@ if (isDemo) {
 
 if (shouldMinimize) {
   log.info('minimizing');
+  standardConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    // Minify any target that ends in .min.js.
+    include: /\.min\.js$/,
+    minimize: true,
+  }));
   Object.assign(standardConfig.entry, {
     'dist/bundle.min.js': bundleFiles,
   });

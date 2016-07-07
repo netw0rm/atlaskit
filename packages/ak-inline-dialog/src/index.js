@@ -2,7 +2,7 @@
 /* eslint react/no-unknown-property: 0 */
 
 import { attachmentMap, getPositionFromClasses } from 'akutil-common';
-import { define, vdom, prop } from 'skatejs';
+import { vdom, prop } from 'skatejs';
 import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, max-len
 import Layer from 'ak-layer';
 import shadowStyles from './shadow.less';
@@ -49,12 +49,12 @@ const definition = {
   render(elem) {
     return (
       <Layer>
-        <AnimmyTest alignment={getAnimationPosition(elem)}>
+        <ak-animtest alignment={getAnimationPosition(elem)} open={elem.open}>
           <style>{shadowStyles.toString()}</style>
           <div class={shadowStyles.locals.inlineDialogContainer}>
             <slot />
           </div>
-        </AnimmyTest>
+        </ak-animtest>
       </Layer>
     );
   },
@@ -67,7 +67,7 @@ const definition = {
   },
 };
 
-const AnimmyTest = define('ak-animmytest', {
+const AnimmyTestDefinition = {
   render(elem) {
     let container;
 
@@ -94,6 +94,7 @@ const AnimmyTest = define('ak-animmytest', {
   props: {
     alignment: prop.string({ attribute: true }),
   },
-});
+};
 
-export default define('ak-inline-dialog', definition);
+export default definition;
+export { AnimmyTestDefinition };

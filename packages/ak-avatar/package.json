@@ -3,7 +3,7 @@
   "version": "0.12.0",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "src/index.register.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-avatar"
   },

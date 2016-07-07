@@ -3,7 +3,7 @@
   "version": "57.0.0",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "src/index.register.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-inline-dialog",
     "pre-release": "lerna-semantic-release pre"

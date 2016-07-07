@@ -1,10 +1,10 @@
 /** @jsx vdom */
 /* eslint react/no-unknown-property: 0 */
 
-import { define, vdom, prop } from 'skatejs';
+import { vdom, prop } from 'skatejs';
 import { Alignment } from 'akutil-common';
 
-export default define('ak-layer', {
+export default {
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
     attachment: prop.string({ attribute: true, default: 'window' }),
@@ -40,25 +40,4 @@ export default define('ak-layer', {
       <slot name="layer" />
     );
   },
-});
-
-
-// const maps = {
-//   alignment: new WeakMap(),
-// };
-//
-// export default define('ak-layer', {
-//   props: {
-//     position: prop.string(),
-//     target: prop.string(),
-//   },
-//   attached(elem) {
-//     maps.alignment.set(elem, new Alignment(elem));
-//   },
-//   detached(elem) {
-//     maps.alignment.get(elem).destroy();
-//   },
-//   render() {
-//     vdom.element('slot');
-//   },
-// });
+};

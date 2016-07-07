@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import { definition } from '../src/index';
+import definition from '../src/index';
 import { define } from 'skatejs';
 import avatarStoryStyles from 'style!./stories.less'; // eslint-disable-line import/no-unresolved
 import { name } from '../package.json';

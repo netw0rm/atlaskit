@@ -1,6 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import { definition } from '../src/index';
+import definition from '../src/index';
 import { define } from 'skatejs';
 const { React, ReactDOM, uniqueWebComponent } = window;
 import { name } from '../package.json';

@@ -4,7 +4,7 @@ require('minilog').enable();
 const tunnel = require('./browserstack-tunnel');
 const childProcess = require('child_process');
 
-const tunnelIdentifier = process.env.BROWSERSTACK_TUNNEL || 'protractor_all_tunnel';
+const tunnelIdentifier = `protractor_all_tunnel_${Date.now()}`;
 
 // Execute BrowserStack tests via bash script
 const runTests = () => {

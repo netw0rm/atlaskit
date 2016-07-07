@@ -11,7 +11,7 @@ module.exports = function runWithTunnel(tunnelId, runFn) {
 
     function handleError(errorMsg) {
       log.error(`tunnel ${tunnelId}: '${errorMsg}'`);
-      reject(errorMsg);
+      reject(errorMsg.toString());
     }
 
     function tunnelStateChanged(newTunnelState) {

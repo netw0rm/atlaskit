@@ -9,7 +9,7 @@
   "license": "Apache-2.0",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single akutil-polyfills"
+    "prepublish": "cd ../.. && npm run prepublish/single akutil-polyfills"
   },
   "dependencies": {
     "es6-map": "^0.1.4",

@@ -5,7 +5,7 @@
   "main": "dist/bundle.js",
   "webpack": "src/index.register.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single akutil-component-template"
+    "prepublish": "cd ../.. && npm run prepublish/single akutil-component-template"
   },
   "files": [
     "dist"

@@ -1,5 +1,6 @@
 const camelCase = require('camelcase');
 const fs = require('fs');
+const glob = require('glob');
 const log = require('minilog')('webpack');
 
 const path = require('path');
@@ -16,7 +17,7 @@ require('minilog').enable();
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': './src/register.js',
+    'dist/bundle.js': glob.sync('./src/index*.js'),
   },
   output: {
     path: './',

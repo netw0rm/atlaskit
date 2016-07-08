@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@kadira/storybook": "^1.36.0",
-    "akutil-polyfills": "^0.0.4",
+    "akutil-polyfills": "^0.0.9",
     "babel-core": "^6.10.4",
     "babel-loader": "^6.2.4",
     "babel-plugin-incremental-dom": "^3.4.0",

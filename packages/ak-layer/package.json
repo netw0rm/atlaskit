@@ -1,6 +1,6 @@
 {
   "name": "ak-layer",
-  "version": "52.0.0",
+  "version": "53.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.register.js",

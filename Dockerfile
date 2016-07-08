@@ -1,4 +1,13 @@
-FROM joscha/node-chrome-firefox:npm-v389
+FROM atlassianlabs/docker-node-jdk-chrome-firefox:latest
+
+# required until we switch atlaskit-registry from jekyll to metalsmith
+RUN set -x \
+    && apt-get update \
+    && apt-get install -y \
+        ruby-full \
+        ruby-dev \
+        build-essential
+RUN gem install bundler
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app

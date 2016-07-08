@@ -1,4 +1,4 @@
-image: atlassianlabs/docker-node-jdk-chrome-firefox
+image: atlassianlabs/atlaskit
 pipelines:
   branches:
     ben-registry-invalidate-test:

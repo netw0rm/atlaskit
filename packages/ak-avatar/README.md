@@ -33,9 +33,6 @@ define('x-avatar', definition);
     * [`avatar.src`](#Avatar+src) : string
     * [`avatar.alt`](#Avatar+alt) : string
 
-* Events
-
-
 ### `new Avatar()`
 The definition for the Avatar component.
 

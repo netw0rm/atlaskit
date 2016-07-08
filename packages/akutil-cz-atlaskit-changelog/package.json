@@ -8,5 +8,9 @@
   "dependencies": {
     "cz-lerna-changelog": "^0.2.1",
     "lerna": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

@@ -15,5 +15,9 @@
   "dependencies": {
     "skatejs": "v1.0.0-beta.7",
     "tether": "^1.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

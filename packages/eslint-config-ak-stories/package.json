@@ -8,5 +8,9 @@
     "eslint": "^2.0.0",
     "eslint-config-ak-base": "*",
     "eslint-plugin-react": "^5.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

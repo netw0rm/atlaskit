@@ -10,5 +10,9 @@
     "eslint-plugin-jsx-a11y": "^1.4.2",
     "eslint-plugin-react": "^5.1.1",
     "eslint-config-airbnb": "^9.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

@@ -5,17 +5,17 @@ import 'ak-layer';
 function handleSelected(elem, target) {
   const selectedFont = elem.querySelector(elem._selectedFont);
   state(selectedFont, {
-    active: false
+    open: false
   });
 
   elem._selectedFont = target.tagName.toLowerCase();
   elem._selectedReadableName = target.readableName;
   state(target, {
-    active: true
+    open: true
   });
 
   state(elem, {
-    active: false
+    open: false
   });
 }
 
@@ -26,9 +26,9 @@ export default define('editorkit-font-select', {
       elem._selectedReadableName = 'Paragraph'
     }
 
-    const { active } = state(elem);
+    const { open } = state(elem);
     const slotStyle = {
-      display: active ? 'block' : 'none'
+      display: open ? 'block' : 'none'
     };
 
     let className = styles.locals['font-select'];
@@ -39,7 +39,7 @@ export default define('editorkit-font-select', {
         <a className={className}
           onclick={_ => {
             state(elem, {
-              active: !elem.active
+              open: !elem.open
             });
           }}
           >{elem._selectedReadableName}</a>
@@ -55,6 +55,6 @@ export default define('editorkit-font-select', {
     }
   },
   props: {
-    active: prop.boolean({ attribute: true, default: false })
+    open: prop.boolean({ attribute: true })
   },
 });

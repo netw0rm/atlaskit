@@ -1,10 +1,6 @@
-{{#if (isEvent)}}
-{{hasEvents @root true~}}
-{{>index-indent}}
-{{else~}}
+{{#unless (isEvent)}}
 {{>index-indent}}* {{>sig-link-parent}}
-{{/if}}
-
+{{/unless}}
 {{#indexChildren ~}}
 {{>member-index-list~}}
 {{/indexChildren}}

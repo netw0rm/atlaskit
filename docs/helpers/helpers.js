@@ -10,9 +10,4 @@ function parseExample(text) {
   return text;
 }
 
-function hasEvents (identifier, value) {
-  identifier.hasEvents = value;
-}
-
 exports.parseExample = parseExample;
-exports.hasEvents = hasEvents;

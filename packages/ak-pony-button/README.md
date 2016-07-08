@@ -45,17 +45,10 @@ let myPonyButton = new PonyButton();
 
 
 * [PonyButton](#PonyButton)
-
     * [`new PonyButton()`](#new_PonyButton_new)
-
     * [`ponyButton.name`](#PonyButton+name) : string
-
     * [`ponyButton.click()`](#PonyButton+click)
-
     * [`ponyButton.neigh()`](#PonyButton+neigh) ⇒ PonyButton
-
-    
-
 
 * Events
 
@@ -76,7 +69,6 @@ Here's some closing words in a third paragraph. Thanks for reading.
 ```js
 <ak-pony-button>Button text.</ak-pony-button>
 ```
-
 ### `ponyButton.name` : string
 The name of the pony button. Defaults to "Bob" if not supplied.
 
@@ -86,13 +78,11 @@ The name of the pony button. Defaults to "Bob" if not supplied.
 ```js
 <ak-pony-button name="Randy">Button text</ak-pony-button>
 ```
-
 ### `ponyButton.click()`
 Event handler. The pony button will fire the ak-neigh event when it is clicked.
 
 **Kind**: instance method of PonyButton  
 **Emits**: ak-neigh  
-
 ### `ponyButton.neigh()` ⇒ PonyButton
 This method will fire the ak-neigh event.
 
@@ -103,7 +93,6 @@ This method will fire the ak-neigh event.
 ```js
 ponyButton.neigh(); // Fires the ak-neigh event.
 ```
-
 ### `"ak-neigh"`
 Fired when the pony neighs. This normally happens when it is hungry.
 
@@ -129,4 +118,3 @@ ponyButton.addEventListener('ak-neigh', function (event) {
   console.log(event.detail.name + ' neighed. Maybe your pony is hungry?');
 });
 ```
-

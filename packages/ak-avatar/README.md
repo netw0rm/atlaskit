@@ -29,11 +29,9 @@ define('x-avatar', definition);
 
 * [Avatar](#Avatar)
     * [`new Avatar()`](#new_Avatar_new)
-    * [`avatar.size`](#Avatar+size) : <code>string</code>
-    * [`avatar.src`](#Avatar+src) : <code>string</code>
-    * [`avatar.alt`](#Avatar+alt) : <code>string</code>
-
-<a name="new_Avatar_new"></a>
+    * [`avatar.size`](#Avatar+size) : string
+    * [`avatar.src`](#Avatar+src) : string
+    * [`avatar.alt`](#Avatar+alt) : string
 
 ### `new Avatar()`
 The definition for the Avatar component.
@@ -47,14 +45,12 @@ The definition for the Avatar component.
 import Avatar from 'ak-avatar';
 const myAvatar = new Avatar();
 ```
-<a name="Avatar+size"></a>
-
-### `avatar.size` : <code>string</code>
+### `avatar.size` : string
 The size of the avatar. One of:
 'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', or 'xxxlarge'.
 
-**Kind**: instance property of <code>[Avatar](#Avatar)</code>  
-**Default**: <code>&quot;medium&quot;</code>  
+**Kind**: instance property of Avatar  
+**Default**: `"medium"`  
 **HTML Example**
 ```js
 <ak-avatar size="large"></ak-avatar>
@@ -63,12 +59,10 @@ The size of the avatar. One of:
 ```js
 avatar.size = 'large';
 ```
-<a name="Avatar+src"></a>
-
-### `avatar.src` : <code>string</code>
+### `avatar.src` : string
 The sauce.
 
-**Kind**: instance property of <code>[Avatar](#Avatar)</code>  
+**Kind**: instance property of Avatar  
 **HTML Example**
 ```js
 <ak-avatar src="my/avatar/src.png"></ak-avatar>
@@ -77,12 +71,10 @@ The sauce.
 ```js
 avatar.src = 'my/avatar/src.png';
 ```
-<a name="Avatar+alt"></a>
-
-### `avatar.alt` : <code>string</code>
+### `avatar.alt` : string
 The alt text for the Avatar.
 
-**Kind**: instance property of <code>[Avatar](#Avatar)</code>  
+**Kind**: instance property of Avatar  
 **HTML Example**
 ```js
 <ak-avatar alt="Avatar image" src="my/avatar/src.png"></ak-avatar>

@@ -5,7 +5,7 @@
   "files": [
     "dist"
   ],
-  "author": "Atlassian Pty. Ltd",
+  "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "webpack": "src/index.js",
   "scripts": {

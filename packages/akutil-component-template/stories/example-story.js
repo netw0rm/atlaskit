@@ -20,7 +20,7 @@ storiesOf(name, module)
   ))
   .add('an akutil-component-template that removes itself when being clicked', () => {
     const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
-    const cls = styles.akAvatar;
+    const cls = styles.akutilComponentTemplate;
     return (<Component id="myComponent" className={cls} onClick={removeMe} />);
   })
   .addMonkeyTest('a akutil-component-template with monkey testing', () => (

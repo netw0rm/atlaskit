@@ -1,5 +1,4 @@
 /** @jsx vdom */
-/* eslint react/no-unknown-property: 0 */
 
 import { vdom, prop } from 'skatejs';
 import { Alignment } from 'akutil-common';

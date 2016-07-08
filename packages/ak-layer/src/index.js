@@ -9,7 +9,8 @@ export default {
     position: prop.string({ attribute: true, default: 'right middle' }),
     attachment: prop.string({ attribute: true, default: 'window' }),
     target: prop.string({ attribute: true }),
-    open: prop.boolean({
+    renderElementTo: prop.string({ attribute: true }),
+    open: prop.string({
       attribute: true,
       set(elem) {
         if (elem.alignment) {
@@ -28,7 +29,7 @@ export default {
   },
   detached(elem) {
     if (elem.alignment) {
-      elem.alignment.disable();
+      elem.alignment.destroy();
     }
   },
   render(elem) {

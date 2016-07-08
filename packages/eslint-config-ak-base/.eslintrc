@@ -5,7 +5,8 @@
     "react"
   ],
   "rules": {
-    "no-param-reassign": ["error", { "props": false }]
+    "no-param-reassign": ["error", { "props": false }],
+    "react/no-unknown-property": [0]
   },
   "settings": {
     "react": {

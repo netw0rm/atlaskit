@@ -1,10 +1,10 @@
-<a name="57.0.0"></a>
-# 57.0.0 (2016-07-06)
+<a name="63.0.0"></a>
+# 63.0.0 (2016-07-08)
 
 
-### Bug Fixes
+### Features
 
-* **jsx:** pragma ([b9edb0c](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/b9edb0c))
+* introducing register.js ([2ba8cf2](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/commits/2ba8cf2))
 
 
 

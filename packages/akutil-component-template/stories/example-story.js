@@ -4,7 +4,7 @@ import definition from '../src/index';
 import { define } from 'skatejs';
 const { React, ReactDOM, uniqueWebComponent } = window;
 import { name } from '../package.json';
-import styles from 'style!./host.less'; // eslint-disable-line import/no-unresolved
+import styles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
 
 const Component = reactify(uniqueWebComponent(name, definition, define), {
   React,

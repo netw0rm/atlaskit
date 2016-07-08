@@ -1,6 +1,6 @@
 {
   "name": "ak-inline-dialog",
-  "version": "58.0.0",
+  "version": "63.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.register.js",
@@ -22,6 +22,6 @@
     "web-animations-js": "^2.2.1"
   },
   "devDependencies": {
-    "akutil-react": "^0.0.0"
+    "akutil-react": "^0.0.3"
   }
 }

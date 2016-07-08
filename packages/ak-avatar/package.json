@@ -1,6 +1,6 @@
 {
   "name": "ak-avatar",
-  "version": "0.12.1",
+  "version": "0.12.5",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.register.js",
@@ -13,8 +13,9 @@
   "author": "Atlassian Pty. Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "akutil-common": "^0.0.3",
+    "akutil-common": "^0.1.0",
     "akutil-shared-styles": "*",
+    "classnames": "^2.2.5",
     "skatejs": "1.0.0-beta.7"
   },
   "devDependencies": {

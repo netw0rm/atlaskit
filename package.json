@@ -81,8 +81,7 @@
     "!win32"
   ],
   "pre-commit": [
-    "lint-changed",
-    "validate"
+    "validate/lint-changed"
   ],
   "private": true,
   "repository": {
@@ -99,7 +98,6 @@
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg && npm run lerna/link",
     "lerna/link": "./build/bin/no.js.npm.link.sh",
     "lint": "eslint --format 'node_modules/eslint-friendly-formatter' . --ext .js,.jsx",
-    "lint-changed": "./build/bin/lint-changed.sh",
     "prepublish/single": "./build/bin/prepublish.single.sh",
     "prune": "./node_modules/.bin/lerna exec -- npm prune && npm prune",
     "release": "git diff --exit-code && lerna-semantic-release pre && lerna-semantic-release perform",
@@ -116,7 +114,8 @@
     "test/single/integration/browserstack": "node ./build/bin/test.single.integration.browserstack.js",
     "test/single/browserstack": "./build/bin/test.single.browserstack.sh",
     "test/single/watch": "./build/bin/test.single.watch.sh",
-    "validate": "npm ls >/dev/null && ./node_modules/.bin/lerna exec -- npm ls >/dev/null",
+    "validate/lint-changed": "./build/bin/lint-changed.sh",
+    "validate/npm": "npm ls >/dev/null && ./node_modules/.bin/lerna exec -- npm ls >/dev/null",
     "webpack/single": "./build/bin/webpack.single.sh"
   }
 }

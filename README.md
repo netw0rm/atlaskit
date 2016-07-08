@@ -196,8 +196,6 @@ One-liner:
 cd packages/eslint-config-ak-base && npm link && cd ../.. && npm link eslint-config-ak-base
 ```
 
-*You'll need to re `npm install` to restore the links otherwise `npm run validate` will fail due to extraneous packages being installed.*
-
 Changes to the ESLint rules should be treated like any other package:
 
 - If you fix a rule, it should be considered a fix

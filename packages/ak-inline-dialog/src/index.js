@@ -1,12 +1,12 @@
 /** @jsx vdom */
 /* eslint react/no-unknown-property: 0 */
 
-import { attachmentMap, getPositionFromClasses, Alignment } from 'akutil-common';
+import { attachmentMap, getPositionFromClasses } from 'akutil-common';
 import { vdom, prop } from 'skatejs';
 import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, max-len
-// import Layer from 'ak-layer'; // eslint-disable-line no-unused-vars
 import shadowStyles from './shadow.less';
 import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
+import 'ak-layer';
 
 const Animations = { // eslint-disable-line no-unused-vars
   left: [
@@ -36,13 +36,6 @@ function getAnimationPosition(elem) {
 const definition = {
   attached(elem) {
     elem.className = headStyles.akInlineDialog; // eslint-disable-line no-param-reassign
-
-    if (!elem.tether) {
-      elem.tether = new Alignment(elem);  // eslint-disable-line no-param-reassign
-    } else {
-      elem.tether.enable();
-      elem.tether.update(elem);
-    }
   },
   observedAttributes: ['class'],
   attributeChanged(elem, data) {
@@ -53,28 +46,28 @@ const definition = {
       }
     }
   },
-  detached(elem) {
-    if (elem.tether) {
-      elem.tether.destroy();
-    }
-  },
   render(elem) {
-    if (elem.tether) {
-      elem.tether.update(elem);
-    }
-
     return (
-      <ak-animtest alignment={getAnimationPosition(elem)} open={elem.open}>
-        <style>{shadowStyles.toString()}</style>
-        <div class={shadowStyles.locals.inlineDialogContainer}>
-          <slot />
-        </div>
-      </ak-animtest>
+      <ak-layer
+        open={elem.open}
+        position={elem.position}
+        attachment={elem.attachment}
+        target={elem.target}
+        renderElementTo={elem.renderElementTo}
+        renderElement={elem}
+      >
+        <ak-animtest alignment={getAnimationPosition(elem)} open={elem.open}>
+          <style>{shadowStyles.toString()}</style>
+          <div class={shadowStyles.locals.inlineDialogContainer}>
+            <slot />
+          </div>
+        </ak-animtest>
+      </ak-layer>
     );
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
-    open: prop.boolean({ attribute: true }),
+    open: prop.string({ attribute: true, default: 'false' }),
     target: prop.string({ attribute: true }),
     actualPosition: prop.string({ attribute: true }),
     attachment: prop.string({ attribute: true, default: 'window' }),
@@ -83,36 +76,29 @@ const definition = {
 };
 
 const AnimmyTestDefinition = { // eslint-disable-line no-unused-vars
-  render() {
-    // const container = (<div class={shadowStyles.locals.animateContainer}>
-    //   <div class={shadowStyles.locals.animateContainer2}>
-    //     <slot />
-    //   </div>
-    // </div>);
+  render(elem) {
+    const container = vdom.element('div', {
+      class: shadowStyles.locals.animateContainer,
+    }, () => {
+      vdom.element('div', {}, () => {
+        vdom.element('slot');
+      });
+    });
+    if (elem.alignment && Animations[elem.alignment]) {
+      container.firstChild.className = shadowStyles.locals.animateContainerInner;
+      container.firstChild.animate(Animations[elem.alignment], {
+        duration: 200,
+        iterations: 1,
+      });
 
-    // if (elem.alignment && Animations[elem.alignment]) {
-    //   container.animate(Animations[elem.alignment], {
-    //     duration: 200,
-    //     iterations: 1,
-    //   });
-    //
-    //   setTimeout(() => {
-    //     container.className = '';
-    //   });
-    // }
-
-    return (<div class={shadowStyles.locals.animateContainer}>
-      <div class={shadowStyles.locals.animateContainer2}>
-        <slot />
-      </div>
-    </div>);
+      setTimeout(() => {
+        container.firstChild.className = '';
+      }, 200);
+    }
   },
   props: {
     alignment: prop.string({ attribute: true }),
-    open: prop.boolean({ attribute: true, set() {
-      // console.log('set open prop');
-    },
-    }),
+    open: prop.string({ attribute: true }),
   },
 };
 

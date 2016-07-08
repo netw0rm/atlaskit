@@ -92,9 +92,8 @@ Alignment.prototype = {
       return this;
     }
 
-
     if (!this.renderElement) {
-      this.renderElement = elem;
+      this.renderElement = elem.renderElement || elem;
     }
 
     if (!this.renderNode) {

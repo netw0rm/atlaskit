@@ -6,5 +6,5 @@ dialog.position = 'right top';
 // dialog.open = true;
 
 button.addEventListener('click', () => {
-  dialog.open = !dialog.open;
+  dialog.open = dialog.open === 'true' ? 'false' : 'true';
 });

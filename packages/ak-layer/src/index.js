@@ -10,7 +10,7 @@ export default {
     attachment: prop.string({ attribute: true, default: 'window' }),
     target: prop.string({ attribute: true }),
     renderElementTo: prop.string({ attribute: true }),
-    open: prop.boolean({
+    open: prop.string({
       attribute: true,
       set(elem) {
         if (elem.alignment) {

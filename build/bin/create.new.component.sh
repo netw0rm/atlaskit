@@ -35,6 +35,9 @@ pushd "packages/$COMP_NAME"
 # Make sure our version for the new package is 0.0.0
 sed -i '' 's/"version": "\([^"]*\)"/"version": "0.0.0"/' package.json
 
+# Empty changelog
+> CHANGELOG.md
+
 popd
 
 # Install dependencies and link internal packages

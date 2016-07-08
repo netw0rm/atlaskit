@@ -44,12 +44,22 @@ let myPonyButton = new PonyButton();
 ## Component API
 
 
-* [PonyButton](#markdown-header-ponybutton)
-    * [`new PonyButton()`](#markdown-header-new-ponybutton)
-    * [`.name`](#markdown-header-ponybuttonname-string) : string
-    * [`.click()`](#markdown-header-ponybuttonclick)
-    * [`.neigh()`](#markdown-header-ponybuttonneigh-ponybutton) ⇒ PonyButton
-    * [`"ak-neigh"`](#markdown-header-akneigh)
+* [PonyButton](#PonyButton)
+
+    * [`new PonyButton()`](#new_PonyButton_new)
+
+    * [`ponyButton.name`](#PonyButton+name) : string
+
+    * [`ponyButton.click()`](#PonyButton+click)
+
+    * [`ponyButton.neigh()`](#PonyButton+neigh) ⇒ PonyButton
+
+    
+
+
+* Events
+
+    *  [`"ak-neigh"`](#PonyButton+event_ak-neigh)
 
 ### `new PonyButton()`
 This button think it is a pony, but its really just a button.
@@ -66,39 +76,52 @@ Here's some closing words in a third paragraph. Thanks for reading.
 ```js
 <ak-pony-button>Button text.</ak-pony-button>
 ```
+
 ### `ponyButton.name` : string
 The name of the pony button. Defaults to "Bob" if not supplied.
 
-**Kind**: instance property of [PonyButton](#markdown-header-new-ponybutton)  
+**Kind**: instance property of PonyButton  
 **Default**: `"Bob"`  
 **HTML Example**
 ```js
 <ak-pony-button name="Randy">Button text</ak-pony-button>
 ```
+
 ### `ponyButton.click()`
 Event handler. The pony button will fire the ak-neigh event when it is clicked.
 
-**Kind**: instance method of [PonyButton](#markdown-header-new-ponybutton)  
-**Emits**: [ak-neigh](#markdown-header-akneigh)  
+**Kind**: instance method of PonyButton  
+**Emits**: ak-neigh  
+
 ### `ponyButton.neigh()` ⇒ PonyButton
 This method will fire the ak-neigh event.
 
-**Kind**: instance method of [PonyButton](#markdown-header-new-ponybutton)  
-**Returns**: [PonyButton](#markdown-header-new-ponybutton) - The PonyButton element.  
-**Emits**: [ak-neigh](#markdown-header-akneigh)  
+**Kind**: instance method of PonyButton  
+**Returns**: PonyButton - The PonyButton element.  
+**Emits**: ak-neigh  
 **JS Example**
 ```js
 ponyButton.neigh(); // Fires the ak-neigh event.
 ```
+
 ### `"ak-neigh"`
 Fired when the pony neighs. This normally happens when it is hungry.
 
-**Kind**: event emitted by [PonyButton](#markdown-header-new-ponybutton)  
+**Kind**: event emitted by PonyButton  
 **Properties**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| detail.name | String | The name of the pony button. |
+<table>
+  <thead>
+    <tr>
+      <th>Name</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr>
+    <td>detail.name</td><td>String</td><td><p>The name of the pony button.</p>
+</td>
+    </tr>  </tbody>
+</table>
 
 **JS Example**
 ```js
@@ -106,3 +129,4 @@ ponyButton.addEventListener('ak-neigh', function (event) {
   console.log(event.detail.name + ' neighed. Maybe your pony is hungry?');
 });
 ```
+

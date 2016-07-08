@@ -27,11 +27,17 @@ define('x-avatar', definition);
 ## Component API
 
 
-* [Avatar](#markdown-header-avatar)
-    * [`new Avatar()`](#markdown-header-new-avatar)
-    * [`.size`](#markdown-header-avatarsize-string) : string
-    * [`.src`](#markdown-header-avatarsrc-string) : string
-    * [`.alt`](#markdown-header-avataralt-string) : string
+* [Avatar](#Avatar)
+
+    * [`new Avatar()`](#new_Avatar_new)
+
+    * [`avatar.size`](#Avatar+size) : string
+
+    * [`avatar.src`](#Avatar+src) : string
+
+    * [`avatar.alt`](#Avatar+alt) : string
+
+
 
 ### `new Avatar()`
 The definition for the Avatar component.
@@ -45,11 +51,12 @@ The definition for the Avatar component.
 import Avatar from 'ak-avatar';
 const myAvatar = new Avatar();
 ```
+
 ### `avatar.size` : string
 The size of the avatar. One of:
 'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', or 'xxxlarge'.
 
-**Kind**: instance property of [Avatar](#markdown-header-new-avatar)  
+**Kind**: instance property of Avatar  
 **Default**: `"medium"`  
 **HTML Example**
 ```js
@@ -59,10 +66,11 @@ The size of the avatar. One of:
 ```js
 avatar.size = 'large';
 ```
+
 ### `avatar.src` : string
 The sauce.
 
-**Kind**: instance property of [Avatar](#markdown-header-new-avatar)  
+**Kind**: instance property of Avatar  
 **HTML Example**
 ```js
 <ak-avatar src="my/avatar/src.png"></ak-avatar>
@@ -71,10 +79,11 @@ The sauce.
 ```js
 avatar.src = 'my/avatar/src.png';
 ```
+
 ### `avatar.alt` : string
 The alt text for the Avatar.
 
-**Kind**: instance property of [Avatar](#markdown-header-new-avatar)  
+**Kind**: instance property of Avatar  
 **HTML Example**
 ```js
 <ak-avatar alt="Avatar image" src="my/avatar/src.png"></ak-avatar>
@@ -83,3 +92,4 @@ The alt text for the Avatar.
 ```js
 avatar.alt = 'Avatar image';
 ```
+

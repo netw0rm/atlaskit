@@ -28,15 +28,12 @@ define('x-avatar', definition);
 
 
 * [Avatar](#Avatar)
-
     * [`new Avatar()`](#new_Avatar_new)
-
     * [`avatar.size`](#Avatar+size) : string
-
     * [`avatar.src`](#Avatar+src) : string
-
     * [`avatar.alt`](#Avatar+alt) : string
 
+* Events
 
 
 ### `new Avatar()`
@@ -51,7 +48,6 @@ The definition for the Avatar component.
 import Avatar from 'ak-avatar';
 const myAvatar = new Avatar();
 ```
-
 ### `avatar.size` : string
 The size of the avatar. One of:
 'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', or 'xxxlarge'.
@@ -66,7 +62,6 @@ The size of the avatar. One of:
 ```js
 avatar.size = 'large';
 ```
-
 ### `avatar.src` : string
 The sauce.
 
@@ -79,7 +74,6 @@ The sauce.
 ```js
 avatar.src = 'my/avatar/src.png';
 ```
-
 ### `avatar.alt` : string
 The alt text for the Avatar.
 
@@ -92,4 +86,3 @@ The alt text for the Avatar.
 ```js
 avatar.alt = 'Avatar image';
 ```
-

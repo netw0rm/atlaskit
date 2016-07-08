@@ -15,6 +15,10 @@ pipelines:
             - npm run release
             - npm run release/changelog
             - npm run release/announce
+            # Rebuild go/ak registry
+            - cd ..
+            - git clone "https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/atlassian/atlaskit-registry.git"
+            - cd atlaskit-registry && bash ./build/cdn.sh
   default:
     - step:
         script:

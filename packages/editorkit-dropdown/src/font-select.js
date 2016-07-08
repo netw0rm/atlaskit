@@ -1,5 +1,6 @@
 import { vdom, define, state, prop } from 'skatejs';
 import styles from './font-select.less';
+import 'ak-layer';
 
 function handleSelected(elem, target) {
   const selectedFont = elem.querySelector(elem._selectedFont);
@@ -30,22 +31,23 @@ export default define('editorkit-font-select', {
       display: active ? 'block' : 'none'
     };
 
+    let className = styles.locals['font-select'];
+
     return (
-      <div style={{position: 'absolute'}}>
+      <div>
         <style>{styles.toString()}</style>
-        <a className={styles.locals['font-select']}>{elem._selectedReadableName}</a>
-        <slot style={slotStyle}></slot>
+        <a className={className}
+          onclick={_ => {
+            state(elem, {
+              active: !elem.active
+            });
+          }}
+          >{elem._selectedReadableName}</a>
+        <ak-layer target={`.${className}`} style={slotStyle}>
+          <slot></slot>
+        </ak-layer>
       </div>
     );
-  },
-  ready(elem) {
-    const button = elem.querySelector('a');
-    button.addEventListener('mouseup', _ => button.blur());
-    button.addEventListener('click', _ => {
-      state(elem, {
-        active: !elem.active
-      });
-    });
   },
   events: {
     selected(elem, event) {
@@ -53,6 +55,6 @@ export default define('editorkit-font-select', {
     }
   },
   props: {
-    active: prop.boolean({ attribute: true, default: false }),
+    active: prop.boolean({ attribute: true, default: false })
   },
 });

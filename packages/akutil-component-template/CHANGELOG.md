@@ -19,13 +19,11 @@
 
 
 <a name="3.0.7-semver-tag-for-akutil-component-template"></a>
-## [3.0.7-semver-tag-for-akutil-component-template](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/6130b51...3.0.7-semver-tag-for-akutil-component-template) (2016-07-07)
+## [3.0.7-semver-tag-for-akutil-component-template](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/b9edb0c...3.0.7-semver-tag-for-akutil-component-template) (2016-07-07)
 
 
 ### Bug Fixes
 
-* empty ([c7fc0fc](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/c7fc0fc))
-* import layer properly ([6130b51](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/6130b51))
 * **jsx:** Comment style ([ff01bb0](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/ff01bb0))
 * **jsx:** pragma ([b9edb0c](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/b9edb0c))
 * **style:** Fixed up shadow style example ([1f2f573](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/1f2f573))

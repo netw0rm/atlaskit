@@ -1,6 +1,13 @@
 image: joscha/atlaskit:npm-v389
 pipelines:
   branches:
+    ben-registry-invalidate-test:
+      - step:
+          script:
+            # Rebuild go/ak registry
+            - cd ..
+            - git clone "https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/atlassian/atlaskit-registry.git"
+            - cd atlaskit-registry && bash ./build/cdn.sh
     master:
       - step:
           script:

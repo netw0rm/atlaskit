@@ -4,7 +4,7 @@ import styles from './index.less';
 import './font-select';
 import './options';
 
-export default define('editorkit-dropdown', {
+export default {
   render() {
     return (
       <div className={styles.locals.root}>
@@ -20,5 +20,5 @@ export default define('editorkit-dropdown', {
         </editorkit-font-select>
       </div>
     );
-  },
-});
+  }
+}

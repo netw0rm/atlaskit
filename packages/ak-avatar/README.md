@@ -26,12 +26,14 @@ define('x-avatar', definition);
 
 ## Component API
 
-
 * [Avatar](#Avatar)
     * [`new Avatar()`](#new_Avatar_new)
-    * [`avatar.size`](#Avatar+size) : string
-    * [`avatar.src`](#Avatar+src) : string
-    * [`avatar.alt`](#Avatar+alt) : string
+
+* Properties
+
+    *  [`avatar.size`](#Avatar+size) : string
+    *  [`avatar.src`](#Avatar+src) : string
+    *  [`avatar.alt`](#Avatar+alt) : string
 
 ### `new Avatar()`
 The definition for the Avatar component.

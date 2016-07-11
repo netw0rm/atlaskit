@@ -43,12 +43,17 @@ let myPonyButton = new PonyButton();
 
 ## Component API
 
-
 * [PonyButton](#PonyButton)
     * [`new PonyButton()`](#new_PonyButton_new)
-    * [`ponyButton.name`](#PonyButton+name) : string
-    * [`ponyButton.click()`](#PonyButton+click)
-    * [`ponyButton.neigh()`](#PonyButton+neigh) ⇒ PonyButton
+
+* Properties
+
+    *  [`ponyButton.name`](#PonyButton+name) : string
+
+* Methods
+
+    *  [`ponyButton.click()`](#PonyButton+click)
+    *  [`ponyButton.neigh()`](#PonyButton+neigh) ⇒ PonyButton
 
 * Events
 

@@ -130,7 +130,7 @@ if (shouldMinimize) {
   });
 }
 
-if (shouldBundleDependencies) {
+if (shouldBundleDependencies || isDemo) {
   log.info('bundling dependencies');
   delete standardConfig.externals;
 }

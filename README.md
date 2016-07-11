@@ -100,16 +100,17 @@ Ensure that when running `npm install --save ...` you are in the components dire
 If you want to check that webpack is correctly bundling your component, you can build it locally to confirm.
 
 ```
-npm run webpack/single my-component-name
+npm run prepublish/single my-component-name
 ```
-This will build the component and place the generated bundle under `packages/my-component-name/dist/bundle.js`. You can also pass flags to webpack by separating them with an extra `--`
+This will build the component and place the generated bundle under `packages/my-component-name/dist/`.
+
+If you pass the `--bundle-deps` flag it will bundle all the dependencies of the component:
 
 ```
-npm run webpack/single my-component-name -- --min --bundle-deps
+npm run prepublish/single my-component-name -- --bundle-deps
 ```
 
-* `--min` will produce a `bundle.min.js` file as well
-* `--bundle-deps` will also bundle all the dependencies of the component
+This can be helpful for ad-hoc testing in JSFiddle for example.
 
 ##Test my component
 

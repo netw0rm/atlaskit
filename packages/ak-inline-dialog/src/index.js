@@ -69,7 +69,9 @@ const definition = {
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
     open: prop.string({ attribute: true, default: 'false' }),
-    target: prop.string({ attribute: true }),
+    target: {
+      attribute: true,
+    },
     actualPosition: prop.string({ attribute: true }),
     attachment: prop.string({ attribute: true, default: 'window' }),
     renderElementTo: prop.string({ attribute: true }),

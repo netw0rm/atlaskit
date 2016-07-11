@@ -8,7 +8,7 @@ export default {
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
     attachment: prop.string({ attribute: true, default: 'window' }),
-    target: prop.string({ attribute: true }),
+    target: { attribute: true },
     renderElementTo: prop.string({ attribute: true }),
     doNotMoveInDOM: prop.boolean({ attribute: true, default: false }),
     open: prop.string({

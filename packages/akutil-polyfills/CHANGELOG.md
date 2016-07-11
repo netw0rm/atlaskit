@@ -10,7 +10,6 @@
 ### Bug Fixes
 
 * bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/20604da))
-* Bump skatejs-named-slots to 0.2.8 ([b7f4571](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/b7f4571))
 * fixed troubles with switching between stories ([d0fe678](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/d0fe678))
 
 

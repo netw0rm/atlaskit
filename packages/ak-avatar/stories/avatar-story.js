@@ -12,50 +12,55 @@ const Avatar = reactify(uniqueWebComponent(name, definition, define), {
   ReactDOM,
 });
 
+const avatarUrl = 'https://design.atlassian.com/images/avatars/avatar-96.png';
+
 storiesOf(name, module)
   .add('A default avatar', () => (
-    <Avatar src="//docs.atlassian.com/aui/latest/docs/images/avatar-96.png" />
+    <Avatar src={avatarUrl} />
   ))
   .add('An avatar with an incorrectly defined size (falls back to default)', () => (
-    <Avatar src="//docs.atlassian.com/aui/latest/docs/images/avatar-96.png" size="megalarge" />
+    <Avatar src={avatarUrl} size="megalarge" />
   ))
   .add('A xsmall avatar', () => (
-    <Avatar src="//docs.atlassian.com/aui/latest/docs/images/avatar-96.png" size="xsmall" />
+    <Avatar src={avatarUrl} size="xsmall" />
   ))
-  .add('A xxlarge avatar', () => (
-    <Avatar src="//docs.atlassian.com/aui/latest/docs/images/avatar-96.png" size="xxlarge" />
+  .add('A xlarge avatar', () => (
+    <Avatar src={avatarUrl} size="xlarge" />
   ))
   .add('A row of avatars', () => {
     const avatarRowStyle = 'margin-left: 10px;';
-    const avatarUrl = '//docs.atlassian.com/aui/latest/docs/images/avatar-96.png';
-
     return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
       <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="small" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
-      <Avatar src={avatarUrl} size="xxlarge" style={avatarRowStyle} />
+      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} />
+    </div>);
+  })
+  .add('A row of avatars with border color', () => {
+    const avatarRowStyle = 'margin-left: 10px;';
+    const borderColor = 'red';
+    return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
+      <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="small" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} borderColor={borderColor} />
     </div>);
   })
   .add('Avatars in a group', () => {
     const avatarRowStyle = 'margin-left: -10px; position: relative;';
-    const avatarUrl = '//docs.atlassian.com/aui/latest/docs/images/avatar-96.png';
+    const borderColor = 'white';
     const divStyle = {
       marginLeft: '5px',
       marginTop: '14.3px',
     };
     return (<div style={divStyle}>
       <Avatar src={avatarUrl} size="large" />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
     </div>);
-  })
-  .add('Avatars in a group - DESIGN', () => (
-    <img src="http://i.imgur.com/T6K0UrW.png" alt="Avatars in a group" />
-  ))
-  .add('A row of avatars - DESIGN', () => (
-    <img src="http://i.imgur.com/VIZxsbk.png" alt="A row of Avatars" />
-  ));
+  });

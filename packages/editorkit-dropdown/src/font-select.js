@@ -31,19 +31,21 @@ export default define('editorkit-font-select', {
       display: open ? 'block' : 'none'
     };
 
-    let className = styles.locals['font-select'];
+    const className = styles.locals['font-select'];
+
+    const anchor = <a className={className}
+      onclick={_ => {
+        state(elem, {
+          open: !elem.open
+        });
+      }}
+      >{elem._selectedReadableName}</a>()
 
     return (
       <div>
         <style>{styles.toString()}</style>
-        <a className={className}
-          onclick={_ => {
-            state(elem, {
-              open: !elem.open
-            });
-          }}
-          >{elem._selectedReadableName}</a>
-        <ak-layer target={`.${className}`} style={slotStyle}>
+        <anchor />
+        <ak-layer target={anchor} position="right bottom">
           <slot></slot>
         </ak-layer>
       </div>

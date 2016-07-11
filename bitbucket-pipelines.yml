@@ -1,4 +1,4 @@
-image: joscha/atlaskit:npm-v389
+image: atlassianlabs/atlaskit
 pipelines:
   branches:
     master:
@@ -18,7 +18,7 @@ pipelines:
             # Rebuild go/ak registry
             - cd ..
             - git clone "https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/atlassian/atlaskit-registry.git"
-            - cd atlaskit-registry && bash ./build/cdn.sh
+            - cd atlaskit-registry && ./build/cdn.sh
   default:
     - step:
         script:

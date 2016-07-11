@@ -1,8 +1,7 @@
 {
   "name": "akutil-shared-styles",
   "version": "33.0.0",
-  "description": "",
-  "private": true,
+  "description": "Shared styles for AtlasKit components",
   "files": [
     "dist",
     "src"

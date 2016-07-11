@@ -2,6 +2,7 @@
 
 import { vdom, prop } from 'skatejs';
 import { Alignment } from 'akutil-common';
+import './ak-layer-impl';
 
 export default {
   props: {
@@ -19,11 +20,12 @@ export default {
     }),
   },
   attached(elem) {
+    elem.akLayerImpl = elem.getElementsByTagName('ak-layer-impl')[0];
     if (!elem.alignment) {
-      elem.alignment = new Alignment(elem);  // eslint-disable-line no-param-reassign
+      elem.alignment = new Alignment(elem.akLayerImpl);  // eslint-disable-line no-param-reassign
     } else {
       elem.alignment.enable();
-      elem.alignment.update(elem);
+      elem.alignment.update(elem.akLayerImpl);
     }
   },
   detached(elem) {
@@ -33,11 +35,15 @@ export default {
   },
   render(elem) {
     if (elem.alignment) {
-      elem.alignment.update(elem);
+      elem.alignment.update(elem.akLayerImpl);
     }
 
     return (
-      <slot name="layer" />
+      <div>
+        <ak-layer-impl {...elem}>
+          <slot name="layer" />
+        </ak-layer-impl>
+      </div>
     );
   },
 };

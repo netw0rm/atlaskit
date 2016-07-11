@@ -10,6 +10,7 @@ export default {
     attachment: prop.string({ attribute: true, default: 'window' }),
     target: prop.string({ attribute: true }),
     renderElementTo: prop.string({ attribute: true }),
+    doNotMoveInDOM: prop.boolean({ attribute: true, default: false }),
     open: prop.string({
       attribute: true,
       set(elem) {

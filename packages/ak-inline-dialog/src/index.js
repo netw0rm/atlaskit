@@ -55,6 +55,7 @@ const definition = {
         target={elem.target}
         renderElementTo={elem.renderElementTo}
         renderElement={elem}
+        doNotMoveInDOM={elem.doNotMoveInDOM}
       >
         <ak-animtest alignment={getAnimationPosition(elem)} open={elem.open}>
           <style>{shadowStyles.toString()}</style>
@@ -72,6 +73,7 @@ const definition = {
     actualPosition: prop.string({ attribute: true }),
     attachment: prop.string({ attribute: true, default: 'window' }),
     renderElementTo: prop.string({ attribute: true }),
+    doNotMoveInDOM: prop.boolean({ attribute: true, default: true }),
   },
 };
 

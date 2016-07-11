@@ -9,7 +9,7 @@ import { vdom } from 'skatejs';
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
-  values: ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', 'xxxlarge'],
+  values: ['xsmall', 'small', 'medium', 'large', 'xxlarge'],
   missingDefault: 'medium',
   invalidDefault: 'medium',
 };

@@ -16,6 +16,9 @@ storiesOf(name, module)
   .add('A default avatar', () => (
     <Avatar src="//docs.atlassian.com/aui/latest/docs/images/avatar-96.png" />
   ))
+  .add('An avatar with an incorrectly defined size (falls back to default)', () => (
+    <Avatar src="//docs.atlassian.com/aui/latest/docs/images/avatar-96.png" size="megalarge" />
+  ))
   .add('A xsmall avatar', () => (
     <Avatar src="//docs.atlassian.com/aui/latest/docs/images/avatar-96.png" size="xsmall" />
   ))
@@ -31,7 +34,6 @@ storiesOf(name, module)
       <Avatar src={avatarUrl} size="small" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
-      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="xxlarge" style={avatarRowStyle} />
     </div>);
   })

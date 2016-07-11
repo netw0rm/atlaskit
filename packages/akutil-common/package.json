@@ -1,19 +1,23 @@
 {
   "name": "akutil-common",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single akutil-common"
+    "prepublish": "cd ../.. && npm run prepublish/single akutil-common"
   },
   "files": [
     "dist"
   ],
-  "author": "Atlassian Pty. Ltd",
+  "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "skatejs": "v1.0.0-beta.6",
-    "tether": "nadiam84/tether#0a1aecb"
+    "skatejs": "v1.0.0-beta.7",
+    "tether": "^1.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

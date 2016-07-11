@@ -1,23 +1,11 @@
 const camelCase = require('camelcase');
-const fs = require('fs');
-const log = require('minilog')('webpack');
-
+const glob = require('glob');
 const path = require('path');
-const webpack = require('webpack');
 const pkg = require(path.join(process.cwd(), 'package.json'));
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-const argv = require('minimist')(process.argv.slice(2));
-const shouldMininimize = !!argv.min;
-const isDemo = !!argv.demo;
-const shouldBundleDependencies = !!argv['bundle-deps'];
-const isMonkeyTest = !!argv.monkey;
-
-require('minilog').enable();
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': './src/index.js',
+    'dist/bundle.js': glob.sync('./src/index*.js'),
   },
   output: {
     path: './',
@@ -27,8 +15,6 @@ const standardConfig = {
     // This will be the name of the global in the UMD module.
     library: camelCase(pkg.name),
   },
-  // Only bundle dependencies that start with '.'.
-  externals: fs.readdirSync('node_modules'),
   module: {
     loaders: [
       {
@@ -47,7 +33,7 @@ const standardConfig = {
         { // Support react/jsx in stories, react/ directory, or react-*.js files
           loader: 'babel-loader',
           test: /\.jsx?$/,
-          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.js$/, // eslint-disable-line max-len
+          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/, // eslint-disable-line max-len
           query: {
             presets: [
               'es2015',
@@ -60,7 +46,7 @@ const standardConfig = {
           // Make sure vdom is imported from skatejs where jsx is used
           loader: 'babel-loader',
           test: /\.jsx?$/,
-          exclude: /(node_modules|bower_components)|react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?$/, // eslint-disable-line max-len
+          exclude: /node_modules|bower_components/, // eslint-disable-line max-len
           query: {
             presets: [
               'es2015',
@@ -71,7 +57,7 @@ const standardConfig = {
                 'incremental-dom',
                 {
                   hoist: true,
-                  prefix: 'vdom.IncrementalDOM',
+                  prefix: 'vdom',
                 },
               ],
             ],
@@ -92,49 +78,7 @@ const standardConfig = {
       },
     ],
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      include: /\.js$/, // Only remove dead code
-      dead_code: true,
-      mangle: false,
-      beautify: true,
-      comments: true,
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      // Minify any target that ends in .min.js.
-      include: /\.min\.js$/,
-      minimize: true,
-    }),
-  ],
+  plugins: [],
 };
-
-if (isDemo) {
-  log.info('Demo mode');
-  standardConfig.entry['demo.js'] = './demo/index.js';
-  log.info('adding polyfills');
-  standardConfig.entry['polyfills.js'] = require.resolve('akutil-polyfills');
-
-  if (isMonkeyTest) {
-    standardConfig.entry['monkey.js'] = path.join(__dirname, 'build', 'lib', 'monkey.js');
-  }
-  standardConfig.plugins = [
-    new HtmlWebpackPlugin({
-      title: `${pkg.name} - Demo`,
-      template: './demo/index.ejs',
-    }),
-  ];
-}
-
-if (shouldMininimize) {
-  log.info('minimizing');
-  Object.assign(standardConfig.entry, {
-    'dist/bundle.min.js': './src/index.js',
-  });
-}
-
-if (shouldBundleDependencies) {
-  log.info('bundling dependencies');
-  delete standardConfig.externals;
-}
 
 module.exports = standardConfig;

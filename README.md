@@ -100,16 +100,17 @@ Ensure that when running `npm install --save ...` you are in the components dire
 If you want to check that webpack is correctly bundling your component, you can build it locally to confirm.
 
 ```
-npm run webpack/single my-component-name
+npm run prepublish/single my-component-name
 ```
-This will build the component and place the generated bundle under `packages/my-component-name/dist/bundle.js`. You can also pass flags to webpack by separating them with an extra `--`
+This will build the component and place the generated bundle under `packages/my-component-name/dist/`.
+
+If you pass the `--bundle-deps` flag it will bundle all the dependencies of the component:
 
 ```
-npm run webpack/single my-component-name -- --min --bundle-deps
+npm run prepublish/single my-component-name -- --bundle-deps
 ```
 
-* `--min` will produce a `bundle.min.js` file as well
-* `--bundle-deps` will also bundle all the dependencies of the component
+This can be helpful for ad-hoc testing in JSFiddle for example.
 
 ##Test my component
 
@@ -130,6 +131,9 @@ To run unit tests for a single component:
 ```
 npm run test/single my-component-name
 ```
+
+> You can pass arguments to Karma like this: `npm run test/single my-component-name -- --browsers=Chrome`
+
 To continuously run tests for a single component:
 
 ```
@@ -168,19 +172,6 @@ You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome`
 
 > Hint: If you have problems starting the cucumber setup locally, try re-generating the docker images via: `npm run cucumber/single my-component -- --force-recreate`
 
-###Monkey tests
-
-Monkey tests are a technique where the user tests the application or system by providing random inputs and checking the behavior, or seeing whether the application or system crashes. We do this using [Gremlins.js](tools.md#markdown-header-gremlins).
-
-To run monkey tests for a single component:
-
-```
-npm run test/single/monkey my-component
-```
-This will open your browser to `localhost:8080` and show a bunch of red lines and circles representing the random inputs to your page.
-
-This will run for X mins and report errors ...
-
 ##Follow code style guidelines
 We are adhering to the [Airbnb](https://github.com/airbnb/javascript) javascript linting rules, which can be quite strict. Eslint will automatically run when attempting to commit, but can also run at any time using:
 
@@ -192,6 +183,25 @@ npm run lint
 ```
 npm run lint -- --fix
 ```
+
+### Modifying ESLint rules
+
+In order to modify the ESLint rules, you can add the rules to the `.eslintrc` file in the `eslint-config-ak-base` package. In order for you to use your changes immediately without committing and re-running `npm install`, you'll need to manually link it. This is a two-step process:
+
+1. link `eslint-config-ak-base` so NPM knows where to find it
+2. link it from the root of the repo
+
+One-liner:
+
+```sh
+cd packages/eslint-config-ak-base && npm link && cd ../.. && npm link eslint-config-ak-base
+```
+
+Changes to the ESLint rules should be treated like any other package:
+
+- If you fix a rule, it should be considered a fix
+- If you add a rule, it should be considered a feature
+- If you change / remove a rule, it should be considered breaking
 
 ##Commit changes
 To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Running commitizen is as simple as running `npm run commut` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.

@@ -1,11 +1,6 @@
 const path = require('path');
 const browserStackBrowsers = require('./build/lib/karma.browserstack.browsers.js');
-const webpackConfig = require('./webpack.config.js');
-
-// We delete the entry from the normal config and let karma insert it for us
-delete webpackConfig.entry;
-delete webpackConfig.externals;
-webpackConfig.devtool = 'inline-source-map';
+const webpackConfig = require('./webpack.config.karma.js');
 
 module.exports = (config) => {
   Object.assign(config, {
@@ -38,7 +33,7 @@ module.exports = (config) => {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'junit'],
+    reporters: ['progress'],
 
     // web server port
     port: 9876,

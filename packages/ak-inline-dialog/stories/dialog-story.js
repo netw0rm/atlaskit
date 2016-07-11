@@ -1,77 +1,10 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import InlineDialog from '../src/index';
-import { define } from 'skatejs';
+import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import { name } from '../package.json';
+const { React } = window; // eslint-disable-line no-unused-vars
 
-const { React, ReactDOM, uniqueWebComponentOld } = window;
-const { Component } = React;
-
-const Dialog = reactify(uniqueWebComponentOld(InlineDialog, define), {
-  React,
-  ReactDOM,
-});
-
-class DialogWithButton extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      otherChecked: false,
-    };
-
-    // Bind callback methods to make `this` the correct context.
-    this.handleClick = this.handleClick.bind(this);
-    this.handleMouseOver = this.handleMouseOver.bind(this);
-    this.handleMouseOut = this.handleMouseOut.bind(this);
-  }
-  handleClick() {
-    if (this.props.event === 'click') {
-      this.setState({ open: !this.state.open });
-    }
-  }
-
-  handleMouseOver() {
-    if (this.props.event === 'hover') {
-      this.setState({ open: true });
-    }
-  }
-
-  handleMouseOut() {
-    if (this.props.event === 'hover') {
-      this.setState({ open: false });
-    }
-  }
-
-  render() {
-    return (
-      <div style={this.props.style}>
-        <button
-          onClick={this.handleClick}
-          onMouseOver={this.handleMouseOver}
-          onMouseOut={this.handleMouseOut}
-          style={{ border: 0, background: '#dfdfdf' }}
-        >
-          {this.props.position}
-        </button>
-        <Dialog
-          open={this.state.open}
-          target="#target"
-          attachment={this.props.attachTo}
-          position={this.props.position}
-        >
-            {this.props.position}
-        </Dialog>
-      </div>
-    );
-  }
-}
-
-DialogWithButton.propTypes = {
-  event: React.PropTypes.string,
-  position: React.PropTypes.string,
-  style: React.PropTypes.object,
-  attachTo: React.PropTypes.string,
-};
+import DialogWithInput from './DialogWithInput.js';
+import DialogWithButton from './DialogWithButton.js';
 
 storiesOf(name, module)
   .add('All dialogs together, open on click', () => (
@@ -221,7 +154,7 @@ storiesOf(name, module)
       />
     </div>
   ))
-  .add('Dialogs could be flipped', () => (
+  .add('Dialogs could be constrain to a parent', () => (
     <div
       style={{
         width: '60%',
@@ -248,4 +181,7 @@ storiesOf(name, module)
         <DialogWithButton event="click" position="top left" attachTo="scrollParent" />
       </div>
     </div>
+  ))
+  .add('Dialog is showing on input onchange', () => (
+    <DialogWithInput />
   ));

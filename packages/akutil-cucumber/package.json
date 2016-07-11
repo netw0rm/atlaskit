@@ -5,14 +5,17 @@
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single akutil-cucumber"
+    "prepublish": "cd ../.. && npm run prepublish/single akutil-cucumber"
   },
   "files": [
     "dist"
   ],
-  "author": "Atlassian Pty. Ltd",
+  "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "private": true,
-  "dependencies": {
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

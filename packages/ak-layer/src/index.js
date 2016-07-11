@@ -1,14 +1,15 @@
-import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+/** @jsx vdom */
 
-import { define, vdom, prop } from 'skatejs';
+import { vdom, prop } from 'skatejs';
 import { Alignment } from 'akutil-common';
 
-export default define('ak-layer', {
+export default {
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
     attachment: prop.string({ attribute: true, default: 'window' }),
     target: prop.string({ attribute: true }),
-    open: prop.boolean({
+    renderElementTo: prop.string({ attribute: true }),
+    open: prop.string({
       attribute: true,
       set(elem) {
         if (elem.alignment) {
@@ -27,7 +28,7 @@ export default define('ak-layer', {
   },
   detached(elem) {
     if (elem.alignment) {
-      elem.alignment.disable();
+      elem.alignment.destroy();
     }
   },
   render(elem) {
@@ -35,27 +36,8 @@ export default define('ak-layer', {
       elem.alignment.update(elem);
     }
 
-    vdom.element('slot', { name: 'layer' });
+    return (
+      <slot name="layer" />
+    );
   },
-});
-
-
-// const maps = {
-//   alignment: new WeakMap(),
-// };
-//
-// export default define('ak-layer', {
-//   props: {
-//     position: prop.string(),
-//     target: prop.string(),
-//   },
-//   attached(elem) {
-//     maps.alignment.set(elem, new Alignment(elem));
-//   },
-//   detached(elem) {
-//     maps.alignment.get(elem).destroy();
-//   },
-//   render() {
-//     vdom.element('slot');
-//   },
-// });
+};

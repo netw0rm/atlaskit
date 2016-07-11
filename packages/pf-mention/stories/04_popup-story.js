@@ -6,6 +6,8 @@ import { storiesOf, action } from '@kadira/storybook';
 // import { definition } from '../src/wc/pf-mention-list';
 // import { mentions } from './story-data';
 
+const { React } = window;
+
 const bottomStyle = {
   position: 'absolute',
   bottom: '30px',

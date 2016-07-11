@@ -6,10 +6,9 @@ import { definition } from '../src/wc/pf-mention-list';
 import { mentions } from './story-data';
 import { getWebComponent } from './util';
 
-const React = window.React;
-const ReactDOM = window.ReactDOM;
+const { React, ReactDOM, uniqueWebComponent } = window;
 
-const MentionList = reactify(window.uniqueWebComponent('pf-mention-list', definition, define), {
+const MentionList = reactify(uniqueWebComponent('pf-mention-list', definition, define), {
   React,
   ReactDOM,
 });

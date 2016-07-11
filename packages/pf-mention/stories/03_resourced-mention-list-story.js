@@ -7,10 +7,9 @@ import SearchTextInput from './demo-search-text-input';
 import { resourceProvider } from './story-data';
 import { getWebComponent } from './util';
 
-const React = window.React;
-const ReactDOM = window.ReactDOM;
+const { React, ReactDOM, uniqueWebComponent } = window;
 
-const ResourcedMentionList = reactify(window.uniqueWebComponent('pf-resourced-mention-list', definition, define), {
+const ResourcedMentionList = reactify(uniqueWebComponent('pf-resourced-mention-list', definition, define), {
   React,
   ReactDOM,
 });

@@ -3,10 +3,9 @@ import reactify from 'akutil-react';
 import { definition } from '../src/wc/pf-mention-item';
 import { define } from 'skatejs';
 
-const React = window.React;
-const ReactDOM = window.ReactDOM;
+const { React, ReactDOM, uniqueWebComponent } = window;
 
-const MentionItem = reactify(window.uniqueWebComponent('pf-mention-item', definition, define), {
+const MentionItem = reactify(uniqueWebComponent('pf-mention-item', definition, define), {
   React,
   ReactDOM,
 });

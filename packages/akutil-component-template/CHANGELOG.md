@@ -1,5 +1,5 @@
 <a name="3.1.1"></a>
-## [3.1.1](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/3.1.1-semver-tag-for-akutil-component-template...v3.1.1) (2016-07-08)
+## [3.1.1](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/3.1.1-semver-tag-for-akutil-component-template...v3.1.1) (2016-07-11)
 
 
 
@@ -24,14 +24,12 @@
 
 
 <a name="3.0.7-semver-tag-for-akutil-component-template"></a>
-## [3.0.7-semver-tag-for-akutil-component-template](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/b9edb0c...3.0.7-semver-tag-for-akutil-component-template) (2016-07-07)
+## [3.0.7-semver-tag-for-akutil-component-template](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/b7f4571...3.0.7-semver-tag-for-akutil-component-template) (2016-07-07)
 
 
 ### Bug Fixes
 
-* **jsx:** Comment style ([ff01bb0](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/ff01bb0))
-* **jsx:** pragma ([b9edb0c](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/b9edb0c))
-* **style:** Fixed up shadow style example ([1f2f573](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/1f2f573))
+* Bump skatejs-named-slots to 0.2.8 ([b7f4571](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/b7f4571))
 
 
 

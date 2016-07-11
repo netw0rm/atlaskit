@@ -1,5 +1,5 @@
 <a name="0.0.10"></a>
-## [0.0.10](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/0.0.10-semver-tag-for-akutil-polyfills...v0.0.10) (2016-07-08)
+## [0.0.10](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/0.0.10-semver-tag-for-akutil-polyfills...v0.0.10) (2016-07-11)
 
 
 

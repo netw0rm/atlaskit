@@ -11,8 +11,8 @@
     "dist"
   ],
   "dependencies": {
-    "ak-avatar": "^0.12.0",
-    "ak-layer": "^45.0.0",
+    "ak-avatar": "^0.13.0",
+    "ak-layer": "^56.0.0",
     "akutil-common": "^0.1.0",
     "akutil-shared-styles": "*",
     "skatejs": "1.0.0-beta.7"

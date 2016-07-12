@@ -5,7 +5,7 @@ pipelines:
       - step:
           script:
             - ./build/bin/last_commit_has_changes.sh || exit 0
-            - echo progress=false >> .npmrc
+            - npm config set progress false
             - ./build/bin/setup_hosts.sh
             - npm install
             - npm run lint
@@ -20,7 +20,7 @@ pipelines:
   default:
     - step:
         script:
-          - echo progress=false >> .npmrc
+          - npm config set progress false
           - npm install
           - npm run lint
           - npm run dist

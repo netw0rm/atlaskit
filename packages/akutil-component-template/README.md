@@ -21,7 +21,6 @@ import definition from 'ak-my-component';
 
 define('x-my-component', definition);
 ```
-
 ## Component API
 
 * [MyComponent](#MyComponent)

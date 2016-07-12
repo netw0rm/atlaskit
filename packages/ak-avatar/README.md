@@ -23,7 +23,6 @@ import { definition } from 'ak-avatar';
 
 define('x-avatar', definition);
 ```
-
 ## Component API
 
 * [Avatar](#Avatar)

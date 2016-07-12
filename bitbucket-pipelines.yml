@@ -1,15 +1,6 @@
 image: atlassianlabs/atlaskit
 pipelines:
   branches:
-    fix-bstack-integration-test-errors:
-      - step:
-          script:
-            - npm install
-            - npm run lint
-            - npm run storybook& # runs in background
-            - sleep 10
-            - npm run test/integration/browserstack
-            - npm run test/browserstack/ci
     master:
       - step:
           script:
@@ -19,7 +10,7 @@ pipelines:
             - npm run lint
             - npm run test/browserstack/ci
             - npm run storybook& # runs in background
-            - npm run test/integration/browserstack
+            - sleep 10 && npm run test/integration/browserstack
             - ./build/bin/prep_for_release.sh
             - npm run release
             - npm run release/changelog

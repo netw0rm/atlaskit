@@ -1,12 +1,12 @@
 {
   "name": "akutil-polyfills",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "main": "dist/bundle.js",
   "files": [
     "dist"
   ],
-  "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
+  "author": "Atlassian Pty Ltd",
   "webpack": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single akutil-polyfills"

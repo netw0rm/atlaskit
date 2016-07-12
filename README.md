@@ -1,5 +1,7 @@
 #AtlasKit
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
+[![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
 
 Atlaskit is the Design Platform's implementation of ADG3. It is a collection of reusable webcomponents that can be consumed independently (No more upgrade pains!). Each component is independently versioned and published to npm and can be installed through
 

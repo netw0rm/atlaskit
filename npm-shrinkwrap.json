@@ -4909,6 +4909,11 @@
       "from": "node-fetch@>=1.0.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/node-fetch/-/node-fetch-1.5.3.tgz"
     },
+    "node-getopt": {
+      "version": "0.2.3",
+      "from": "node-getopt@>=0.2.3 <0.3.0",
+      "resolved": "https://registry.npmjs.org/node-getopt/-/node-getopt-0.2.3.tgz"
+    },
     "node-libs-browser": {
       "version": "0.5.3",
       "from": "node-libs-browser@>=0.4.0 <=0.6.0",
@@ -5959,6 +5964,18 @@
       "version": "0.6.1",
       "from": "retry@>=0.6.1 <0.7.0",
       "resolved": "https://registry.npmjs.org/retry/-/retry-0.6.1.tgz"
+    },
+    "retry-cli": {
+      "version": "0.3.0",
+      "from": "retry-cli@latest",
+      "resolved": "https://registry.npmjs.org/retry-cli/-/retry-cli-0.3.0.tgz",
+      "dependencies": {
+        "retry": {
+          "version": "0.9.0",
+          "from": "retry@>=0.9.0 <0.10.0",
+          "resolved": "https://registry.npmjs.org/retry/-/retry-0.9.0.tgz"
+        }
+      }
     },
     "rewire": {
       "version": "2.5.1",

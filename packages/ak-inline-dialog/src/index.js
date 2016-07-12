@@ -47,9 +47,8 @@ const definition = {
     }
   },
   render(elem) {
-    return (
-      <ak-layer
-        open={elem.open}
+    if (elem.open === "true") {
+      return <ak-layer
         position={elem.position}
         attachment={elem.attachment}
         target={elem.target}
@@ -63,7 +62,9 @@ const definition = {
           </div>
         </ak-animtest>
       </ak-layer>
-    );
+    } else {
+      return null;
+    }
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),

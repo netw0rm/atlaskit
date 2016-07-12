@@ -1,0 +1,26 @@
+{
+  "name": "editorkit-dropdown",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.register.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single editorkit-dropdown",
+    "pre-release": "lerna-semantic-release pre"
+  },
+  "private": true,
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "ak-layer": "*",
+    "akutil-common": "*",
+    "akutil-react": "*",
+    "akutil-shared-styles": "*",
+    "classnames": "^2.2.5",
+    "skatejs": "1.0.0-beta.7",
+    "web-animations-js": "^2.2.1"
+  }
+}

@@ -1,0 +1,39 @@
+@foregroundColor: #505F79;
+@focusColor: #0091EA;
+@hoverColor: #DEE1E6;
+@activeBackgroundColor: #42526E;
+@activeForegroundColor: white;
+
+.font-select {
+  background: @foregroundColor;
+  color: @activeForegroundColor;
+  cursor: pointer;
+  padding: 5px 10px;
+  &.active {
+    background: darken(@activeBackgroundColor, 20%);
+    color: @focusColor;
+  }
+  &.hover {
+    color: @hoverColor;
+  }
+}
+
+.paragraph {
+  font-size: 1rem;
+}
+
+.heading1 {
+  font-size: 2.5rem;
+}
+
+.heading2 {
+  font-size: 2rem;
+}
+
+.heading3 {
+  font-size: 1.75rem;
+}
+
+.monospace {
+  font-family: monospace;
+}

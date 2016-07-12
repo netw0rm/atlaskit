@@ -11,7 +11,8 @@ pipelines:
             - npm run lint
             - npm run test/browserstack/ci
             - npm run storybook& # runs in background
-            - sleep 10 && npm run test/integration/browserstack
+            - PATH="`npm bin`:$PATH" wait-on http://0.0.0.0:9001/static/preview.bundle.js
+            - npm run test/integration/browserstack
             - ./build/bin/prep_for_release.sh
             - npm run release
             - npm run release/changelog

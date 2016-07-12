@@ -57,7 +57,6 @@ const definition = {
     if (elem.borderRadius) {
       styles.borderRadius = elem.borderRadius;
     }
-    debugger;
     return (
       <ak-layer
         open={elem.open}

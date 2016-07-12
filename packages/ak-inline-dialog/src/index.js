@@ -47,6 +47,16 @@ const definition = {
     }
   },
   render(elem) {
+    const styles = {};
+    if (elem.boxShadow) {
+      styles.boxShadow = elem.boxShadow;
+    }
+    if (elem.padding) {
+      styles.padding = elem.padding;
+    }
+    if (elem.borderRadius) {
+      styles.borderRadius = elem.borderRadius;
+    }
     return (
       <ak-layer
         open={elem.open}
@@ -58,7 +68,7 @@ const definition = {
       >
         <ak-animtest alignment={getAnimationPosition(elem)} open={elem.open}>
           <style>{shadowStyles.toString()}</style>
-          <div class={shadowStyles.locals.inlineDialogContainer}>
+          <div class={shadowStyles.locals.inlineDialogContainer} style={styles}>
             <slot />
           </div>
         </ak-animtest>
@@ -72,6 +82,9 @@ const definition = {
     actualPosition: prop.string({ attribute: true }),
     attachment: prop.string({ attribute: true, default: 'window' }),
     renderElementTo: prop.string({ attribute: true }),
+    boxShadow: prop.string({ attribute: true }),
+    borderRadius: prop.string({ attribute: true }),
+    padding: prop.string({ attribute: true }),
   },
 };
 

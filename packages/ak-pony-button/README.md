@@ -104,18 +104,9 @@ Fired when the pony neighs. This normally happens when it is hungry.
 **Kind**: event emitted by PonyButton  
 **Properties**
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th><th>Type</th><th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-<tr>
-    <td>detail.name</td><td>String</td><td><p>The name of the pony button.</p>
-</td>
-    </tr>  </tbody>
-</table>
+| Name | Type | Description |
+| --- | --- | --- |
+| detail.name | String | The name of the pony button. |
 
 **JS Example**
 ```js

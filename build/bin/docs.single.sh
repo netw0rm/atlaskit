@@ -15,7 +15,6 @@ $BASEDIR/_scope_command.sh "$PKG" "../../node_modules/.bin/jsdoc2md
 --helper ../../docs/overrides/helpers/*.js
 --partial ../../docs/overrides/partials/**/*.hbs
 --member-index-format list
---name-format
---no-gfm" | sed 1,3d >  "./packages/$PKG/docs/.tmp/README.md"
+--name-format" | sed 1,3d >  "./packages/$PKG/docs/.tmp/README.md"
 $BASEDIR/_scope_command.sh "$PKG" "cat ./docs/USAGE.md ./docs/.tmp/README.md" | sed 1,3d > "packages/$PKG/README.md"
 $BASEDIR/_scope_command.sh "$PKG" "rm -rf ./docs/.tmp"

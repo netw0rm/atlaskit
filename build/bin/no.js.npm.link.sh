@@ -31,7 +31,7 @@ ALL_PACKAGES=$($LERNA_LOC exec pwd\
 echo "Seting up source links..."
 
 # Set up the npm link for each of the packages with no js
-echo ${NO_JS_PACKAGES} | xargs npm link 1>/dev/null
+echo ${NO_JS_PACKAGES} | xargs npm link --progress=false 1>/dev/null
 
 echo "Setting up target links..."
 
@@ -44,13 +44,13 @@ for PKG in ${ALL_PACKAGES}; do
         NO_JS_PKG_NAME=$(node -e "console.log(require('$NO_JS_PKG/package.json').name)")
         # If this package tried to depend on a no-js package
         if [[ -f "node_modules/$NO_JS_PKG_NAME/index.js" || -L "node_modules/$NO_JS_PKG_NAME" ]]; then
-            npm link ${NO_JS_PKG_NAME} 1> /dev/null
+            npm link --progress=false ${NO_JS_PKG_NAME} 1> /dev/null
             echo "$PKG_NAME -> $NO_JS_PKG_NAME npm linked"
         fi
     done
     popd 1> /dev/null
 done
 
-npm prune # For some reason npm link in sub folders also links the root's node_modules directory.
+npm prune --progress=false # For some reason npm link in sub folders also links the root's node_modules directory.
 
 echo "Done linking"

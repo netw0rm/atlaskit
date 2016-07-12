@@ -45,7 +45,7 @@ export default define('editorkit-font-select', {
       <div>
         <style>{styles.toString()}</style>
         <anchor />
-        <ak-layer target={anchor} position="right bottom">
+        <ak-layer target={anchor} position="bottom center">
           <slot></slot>
         </ak-layer>
       </div>

@@ -1,19 +1,22 @@
-#!/bin/sh
-set -e
+#!/bin/bash
 
-FAILED_CI_FILE=.ci_failed
+# This runs Karma (for CI via Lerna) but pipes errors to a temporarily
+# file so that Lerna doesn't stop.
 
-# Clears the file each time we run
-rm -f $FAILED_CI_FILE
+COMPONENT_DIR=$(basename `pwd`)
 
-# Run the local unit tests, temporarily ignore failures
-FAILED_CI_FILE=$FAILED_CI_FILE node ./node_modules/lerna/bin/lerna.js exec -- ../../build/bin/test.karma.nofail.sh
-
-# Check if any components failed local unit tests
-if [ -f $FAILED_CI_FILE ]; then
-    echo "The following components failed local unit tests:"
-    cat $FAILED_CI_FILE
-    exit 1
-fi
-
-echo "Yay! All local unit tests passed"
+{
+    if [ -d "test" ]; then
+        karma start ../../karma.conf.js --single-run --reporters=dots,junit $@
+        exit $?
+    else
+        echo -e "\033[34m No 'test' dir in packages/$COMPONENT_DIR; Skipping tests."
+        echo -e "\033[0m"
+    fi
+} || {
+    if [ -n "$FAILED_CI_FILE" ]; then
+        echo $COMPONENT_DIR >> ../../$FAILED_CI_FILE
+    else
+      exit 1
+    fi
+}

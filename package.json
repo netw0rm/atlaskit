@@ -109,7 +109,7 @@
     "release/registry": "cd .. && git clone --quiet \"https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/atlassian/atlaskit-registry.git\" && cd atlaskit-registry && ./build/cdn.sh",
     "storybook": "start-storybook -p 9001 -c ./build/storybook",
     "storybook/single": "./build/bin/storybook.single.sh",
-    "test": "./build/bin/test.sh",
+    "test": "lerna exec -- ../../build/bin/test.sh --reporters=dots",
     "test/browserstack": "./build/bin/test.browserstack.sh",
     "test/browserstack/ci": "./build/bin/test.browserstack.ci.sh",
     "test/integration/browserstack": "node ./build/bin/test.integration.browserstack.js",

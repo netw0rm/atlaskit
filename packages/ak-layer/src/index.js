@@ -40,7 +40,7 @@ export default {
 
     return (
       <div>
-        <ak-layer-impl {...elem}>
+        <ak-layer-impl position={elem.position} attachment={elem.attachment} target={elem.target} renderElementTo={elem.renderElementTo}>
           <slot name="layer" />
         </ak-layer-impl>
       </div>

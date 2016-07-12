@@ -3,7 +3,7 @@ const http = require('http');
 function CheckStorybookRunning(logger) {
   return new Promise(resolve => {
     http.get({
-      hostname: 'localhost',
+      hostname: '127.0.0.1',
       port: 9001,
       path: '/',
     }, () => {

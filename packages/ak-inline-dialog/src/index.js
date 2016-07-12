@@ -1,37 +1,11 @@
 /** @jsx vdom */
 /* eslint react/no-unknown-property: 0 */
 
-import { attachmentMap, getPositionFromClasses } from 'akutil-common';
+import { getPositionFromClasses } from 'akutil-common';
 import { vdom, prop } from 'skatejs';
 import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
-import webanimation from 'web-animations-js/web-animations-next.min'; // eslint-disable-line no-unused-vars, max-len
 import 'ak-layer';
-
-const Animations = { // eslint-disable-line no-unused-vars
-  left: [
-    { transform: 'translate3d(100%, 0, 0)', opacity: 1 },
-    { transform: 'translate3d(0, 0, 0)', opacity: 1 },
-  ],
-  bottom: [
-    { transform: 'translate3d(0, -100%, 0)', opacity: 1 },
-    { transform: 'translate3d(0, 0, 0)', opacity: 1 },
-  ],
-  right: [
-    { transform: 'translate3d(-100%, 0, 0)', opacity: 1 },
-    { transform: 'translate3d(0, 0, 0)', opacity: 1 },
-  ],
-  top: [
-    { transform: 'translate3d(0, 100%, 0)', opacity: 1 },
-    { transform: 'translate3d(0, 0, 0)', opacity: 1 },
-  ],
-};
-
-function getAnimationPosition(elem) {
-  return elem.actualPosition && attachmentMap[elem.actualPosition]
-      ? attachmentMap[elem.actualPosition].animation
-      : attachmentMap[elem.position].animation;
-}
 
 const definition = {
   attached(elem) {
@@ -53,58 +27,22 @@ const definition = {
         position={elem.position}
         attachment={elem.attachment}
         target={elem.target}
-        renderElementTo={elem.renderElementTo}
-        renderElement={elem}
-        doNotMoveInDOM={elem.doNotMoveInDOM}
       >
-        <ak-animtest alignment={getAnimationPosition(elem)} open={elem.open}>
-          <style>{shadowStyles.toString()}</style>
-          <div class={shadowStyles.locals.inlineDialogContainer}>
-            <slot />
-          </div>
-        </ak-animtest>
+        <style>{shadowStyles.toString()}</style>
+        <div class={shadowStyles.locals.inlineDialogContainer}>
+          <slot />
+        </div>
       </ak-layer>
     );
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
     open: prop.string({ attribute: true, default: 'false' }),
-    target: {
-      attribute: true,
-    },
-    actualPosition: prop.string({ attribute: true }),
+    target: { attribute: true },
     attachment: prop.string({ attribute: true, default: 'window' }),
-    renderElementTo: prop.string({ attribute: true }),
+    renderElementTo: { attribute: true },
     doNotMoveInDOM: prop.boolean({ attribute: true, default: true }),
   },
 };
 
-const AnimmyTestDefinition = { // eslint-disable-line no-unused-vars
-  render(elem) {
-    const container = vdom.element('div', {
-      class: shadowStyles.locals.animateContainer,
-    }, () => {
-      vdom.element('div', {}, () => {
-        vdom.element('slot');
-      });
-    });
-    if (elem.alignment && Animations[elem.alignment]) {
-      container.firstChild.className = shadowStyles.locals.animateContainerInner;
-      container.firstChild.animate(Animations[elem.alignment], {
-        duration: 200,
-        iterations: 1,
-      });
-
-      setTimeout(() => {
-        container.firstChild.className = '';
-      }, 200);
-    }
-  },
-  props: {
-    alignment: prop.string({ attribute: true }),
-    open: prop.string({ attribute: true }),
-  },
-};
-
 export default definition;
-export { AnimmyTestDefinition };

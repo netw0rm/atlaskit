@@ -10,7 +10,7 @@ export default {
     attachment: prop.string({ attribute: true, default: 'window' }),
     target: { attribute: true },
     renderElementTo: prop.string({ attribute: true }),
-    doNotMoveInDOM: prop.boolean({ attribute: true, default: false }),
+    doNotMoveInDOM: prop.boolean({ attribute: true, default: true }),
     open: prop.string({
       attribute: true,
       set(elem) {
@@ -39,7 +39,7 @@ export default {
     }
 
     return (
-      <slot name="layer" />
+      <slot />
     );
   },
 };

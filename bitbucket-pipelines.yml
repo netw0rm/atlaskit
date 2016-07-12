@@ -7,6 +7,7 @@ pipelines:
             - npm install
             - npm run lint
             - npm run storybook& # runs in background
+            - sleep 10
             - npm run test/integration/browserstack
             - npm run test/browserstack/ci
     master:

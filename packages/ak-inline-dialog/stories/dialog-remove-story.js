@@ -26,13 +26,13 @@ class ToggleDemo extends Component {
   handleClick() {
     this.setState({
       show: !this.state.show,
-    })
+    });
   }
 
   render() {
     let dialog;
 
-    if(this.state.show) {
+    if (this.state.show) {
       dialog = (
         <Dialog
           open="true"
@@ -58,4 +58,4 @@ class ToggleDemo extends Component {
 }
 
 storiesOf(`${name} ToggleDemo`, module)
-  .add('Toggle add/remove from dom', () => (<ToggleDemo/>));
+  .add('Toggle add/remove from dom', () => (<ToggleDemo />));

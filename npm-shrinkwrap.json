@@ -908,9 +908,9 @@
       }
     },
     "caniuse-db": {
-      "version": "1.0.30000505",
+      "version": "1.0.30000506",
       "from": "caniuse-db@>=1.0.30000488 <2.0.0",
-      "resolved": "https://registry.npmjs.org/caniuse-db/-/caniuse-db-1.0.30000505.tgz"
+      "resolved": "https://registry.npmjs.org/caniuse-db/-/caniuse-db-1.0.30000506.tgz"
     },
     "caseless": {
       "version": "0.11.0",
@@ -4191,9 +4191,9 @@
       }
     },
     "lerna-semantic-release": {
-      "version": "2.2.0",
-      "from": "lerna-semantic-release@>=2.1.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/lerna-semantic-release/-/lerna-semantic-release-2.2.0.tgz"
+      "version": "4.0.2",
+      "from": "lerna-semantic-release@>=4.0.2 <5.0.0",
+      "resolved": "https://registry.npmjs.org/lerna-semantic-release/-/lerna-semantic-release-4.0.2.tgz"
     },
     "lerna-semantic-release-analyze-commits": {
       "version": "1.0.19",
@@ -4203,12 +4203,29 @@
     "lerna-semantic-release-get-last-release": {
       "version": "1.0.3",
       "from": "lerna-semantic-release-get-last-release@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/lerna-semantic-release-get-last-release/-/lerna-semantic-release-get-last-release-1.0.3.tgz"
+      "resolved": "https://registry.npmjs.org/lerna-semantic-release-get-last-release/-/lerna-semantic-release-get-last-release-1.0.3.tgz",
+      "dependencies": {
+        "interpret": {
+          "version": "1.0.1",
+          "from": "interpret@>=1.0.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/interpret/-/interpret-1.0.1.tgz"
+        },
+        "lerna-semantic-release-io": {
+          "version": "1.1.0",
+          "from": "lerna-semantic-release-io@>=1.0.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/lerna-semantic-release-io/-/lerna-semantic-release-io-1.1.0.tgz"
+        },
+        "shelljs": {
+          "version": "0.7.0",
+          "from": "shelljs@>=0.7.0 <0.8.0",
+          "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.0.tgz"
+        }
+      }
     },
     "lerna-semantic-release-io": {
-      "version": "1.1.0",
-      "from": "lerna-semantic-release-io@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/lerna-semantic-release-io/-/lerna-semantic-release-io-1.1.0.tgz",
+      "version": "2.0.2",
+      "from": "lerna-semantic-release-io@>=2.0.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/lerna-semantic-release-io/-/lerna-semantic-release-io-2.0.2.tgz",
       "dependencies": {
         "interpret": {
           "version": "1.0.1",
@@ -4223,14 +4240,31 @@
       }
     },
     "lerna-semantic-release-perform": {
-      "version": "1.1.1",
+      "version": "1.2.0",
       "from": "lerna-semantic-release-perform@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/lerna-semantic-release-perform/-/lerna-semantic-release-perform-1.1.1.tgz"
+      "resolved": "https://registry.npmjs.org/lerna-semantic-release-perform/-/lerna-semantic-release-perform-1.2.0.tgz",
+      "dependencies": {
+        "interpret": {
+          "version": "1.0.1",
+          "from": "interpret@>=1.0.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/interpret/-/interpret-1.0.1.tgz"
+        },
+        "lerna-semantic-release-io": {
+          "version": "1.1.0",
+          "from": "lerna-semantic-release-io@>=1.0.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/lerna-semantic-release-io/-/lerna-semantic-release-io-1.1.0.tgz"
+        },
+        "shelljs": {
+          "version": "0.7.0",
+          "from": "shelljs@>=0.7.0 <0.8.0",
+          "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.0.tgz"
+        }
+      }
     },
     "lerna-semantic-release-post": {
-      "version": "1.0.3",
+      "version": "1.1.0",
       "from": "lerna-semantic-release-post@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/lerna-semantic-release-post/-/lerna-semantic-release-post-1.0.3.tgz",
+      "resolved": "https://registry.npmjs.org/lerna-semantic-release-post/-/lerna-semantic-release-post-1.1.0.tgz",
       "dependencies": {
         "async": {
           "version": "0.5.0",
@@ -4241,13 +4275,28 @@
           "version": "1.1.0",
           "from": "conventional-changelog@>=1.1.0 <1.2.0",
           "resolved": "https://registry.npmjs.org/conventional-changelog/-/conventional-changelog-1.1.0.tgz"
+        },
+        "interpret": {
+          "version": "1.0.1",
+          "from": "interpret@>=1.0.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/interpret/-/interpret-1.0.1.tgz"
+        },
+        "lerna-semantic-release-io": {
+          "version": "1.1.0",
+          "from": "lerna-semantic-release-io@>=1.0.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/lerna-semantic-release-io/-/lerna-semantic-release-io-1.1.0.tgz"
+        },
+        "shelljs": {
+          "version": "0.7.0",
+          "from": "shelljs@>=0.7.0 <0.8.0",
+          "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.0.tgz"
         }
       }
     },
     "lerna-semantic-release-pre": {
-      "version": "1.0.4",
+      "version": "1.1.2",
       "from": "lerna-semantic-release-pre@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/lerna-semantic-release-pre/-/lerna-semantic-release-pre-1.0.4.tgz"
+      "resolved": "https://registry.npmjs.org/lerna-semantic-release-pre/-/lerna-semantic-release-pre-1.1.2.tgz"
     },
     "lerna-semantic-release-utils": {
       "version": "1.0.9",

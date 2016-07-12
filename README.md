@@ -1,5 +1,7 @@
 #AtlasKit
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
+[![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
 
 Atlaskit is the Design Platform's implementation of ADG3. It is a collection of reusable webcomponents that can be consumed independently (No more upgrade pains!). Each component is independently versioned and published to npm and can be installed through
 
@@ -100,16 +102,17 @@ Ensure that when running `npm install --save ...` you are in the components dire
 If you want to check that webpack is correctly bundling your component, you can build it locally to confirm.
 
 ```
-npm run webpack/single my-component-name
+npm run prepublish/single my-component-name
 ```
-This will build the component and place the generated bundle under `packages/my-component-name/dist/bundle.js`. You can also pass flags to webpack by separating them with an extra `--`
+This will build the component and place the generated bundle under `packages/my-component-name/dist/`.
+
+If you pass the `--bundle-deps` flag it will bundle all the dependencies of the component:
 
 ```
-npm run webpack/single my-component-name -- --min --bundle-deps
+npm run prepublish/single my-component-name -- --bundle-deps
 ```
 
-* `--min` will produce a `bundle.min.js` file as well
-* `--bundle-deps` will also bundle all the dependencies of the component
+This can be helpful for ad-hoc testing in JSFiddle for example.
 
 ##Test my component
 
@@ -130,6 +133,9 @@ To run unit tests for a single component:
 ```
 npm run test/single my-component-name
 ```
+
+> You can pass arguments to Karma like this: `npm run test/single my-component-name -- --browsers=Chrome`
+
 To continuously run tests for a single component:
 
 ```
@@ -192,8 +198,6 @@ One-liner:
 ```sh
 cd packages/eslint-config-ak-base && npm link && cd ../.. && npm link eslint-config-ak-base
 ```
-
-*You'll need to re `npm install` to restore the links otherwise `npm run validate` will fail due to extraneous packages being installed.*
 
 Changes to the ESLint rules should be treated like any other package:
 

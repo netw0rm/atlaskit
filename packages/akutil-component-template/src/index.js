@@ -1,6 +1,7 @@
 /** @jsx vdom */
+import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 
-import { define, vdom } from 'skatejs';
+import { vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
 
 const definition = {
@@ -20,7 +21,4 @@ const definition = {
   },
 };
 
-/* The constructor for our component */
-export default () => define('akutil-component-template', definition);
-
-export { definition };
+export default definition;

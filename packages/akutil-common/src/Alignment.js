@@ -41,6 +41,20 @@ function getPositionFromClasses(classes) {
   return position;
 }
 
+function getElement(node) {
+  if (typeof node === 'string') {
+    const elements = document.querySelectorAll(node);
+    if (process.env.NODE_ENV === 'development') {
+      if (elements.length > 1) {
+        console.warn('Found more than one node, using first.'); // eslint-disable-line no-console
+      }
+    }
+    return elements[0];
+  }
+
+  return node || document.body;
+}
+
 function Alignment(elem) {
   this.disabled = false;
 
@@ -57,6 +71,20 @@ Alignment.prototype = {
     return this;
   },
 
+  destroy() {
+    if (this.tether) {
+      this.disabled = true;
+      this.tether.destroy();
+      if (this.renderElement && this.renderElement.parentNode) {
+        this.renderElement.parentNode.removeChild(this.renderElement);
+        delete this.renderElement;
+      }
+      this.renderNode = null;
+    }
+
+    return this;
+  },
+
   enable() {
     if (this.tether) {
       this.disabled = false;
@@ -69,9 +97,19 @@ Alignment.prototype = {
     if (this.disabled || !elem.position || !elem.target) {
       return this;
     }
+
+    if (!this.renderElement) {
+      this.renderElement = elem.renderElement || elem;
+    }
+
+    if (!this.renderNode) {
+      this.renderNode = getElement(elem.renderElementTo);
+      this.renderNode.appendChild(this.renderElement);
+    }
+
     const opts = {
-      element: elem.movable ? elem.movable : elem,
-      target: document.querySelector(elem.target),
+      element: this.renderElement,
+      target: getElement(elem.target),
       attachment: attachmentMap[elem.position].el,
       targetAttachment: attachmentMap[elem.position].target,
       constraints: [

@@ -1,12 +1,16 @@
 {
   "name": "eslint-config-ak-cucumber",
   "version": "1.0.2",
-  "author": "Atlassian Pty. Ltd",
+  "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {
     "eslint": "^2.0.0",
     "eslint-config-ak-base": "*",
     "eslint-plugin-protractor": "^1.9.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

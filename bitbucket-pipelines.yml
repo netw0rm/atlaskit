@@ -1,19 +1,21 @@
-image: joscha/atlaskit:npm-v389
+image: atlassianlabs/atlaskit
 pipelines:
   branches:
     master:
       - step:
           script:
             - ./build/bin/last_commit_has_changes.sh || exit 0
+            - ./build/bin/setup_hosts.sh
             - npm install
             - npm run lint
-            - npm run storybook& # runs in background
-            - npm run test/integration/browserstack
             - npm run test/browserstack/ci
+            - npm run storybook& # runs in background
+            - sleep 10 && npm run test/integration/browserstack
             - ./build/bin/prep_for_release.sh
             - npm run release
             - npm run release/changelog
             - npm run release/announce
+            - npm run release/registry
   default:
     - step:
         script:

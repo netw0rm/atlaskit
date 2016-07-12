@@ -1,12 +1,15 @@
 {
   "name": "akutil-shared-styles",
-  "version": "28.0.0",
-  "description": "",
-  "private": true,
+  "version": "33.0.0",
+  "description": "Shared styles for AtlasKit components",
   "files": [
     "dist",
     "src"
   ],
-  "author": "Atlassian Pty. Ltd",
-  "license": "Atlassian Design Guidelines License"
+  "author": "Atlassian Pty Ltd",
+  "license": "Atlassian Design Guidelines License",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
 }

@@ -1,14 +1,15 @@
 @import 'shared-variables.less';
 
-.ak-inline-dialog {
+.ak-inline-dialog, // for testing
+ak-inline-dialog {
   display:none;
 
-  &[open] {
+  &[open=true] {
     display:block;
   }
 }
 
-ak-animmytest {
+ak-animtest {
   &[defined] {
     display: block;
   }

@@ -1,22 +1,25 @@
 {
   "name": "ak-layer",
-  "version": "45.0.0",
-  "description": "",
+  "version": "56.0.0",
+  "description": "A layer component",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "src/index.register.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-layer",
+    "prepublish": "cd ../.. && npm run prepublish/single ak-layer",
     "pre-release": "lerna-semantic-release pre"
   },
-  "private": true,
   "files": [
     "dist"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
   "dependencies": {
-    "akutil-common": "^0.0.3",
+    "akutil-common": "^0.1.0",
     "akutil-shared-styles": "*",
     "skatejs": "v1.0.0-beta.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

@@ -3,10 +3,14 @@
   "version": "0.0.3",
   "description": "",
   "main": "index.js",
-  "author": "Atlassian Pty. Ltd",
+  "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
     "cz-lerna-changelog": "^0.2.1",
     "lerna": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

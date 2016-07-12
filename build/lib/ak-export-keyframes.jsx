@@ -31,108 +31,173 @@
     }
   }
 
-*/
-(function getCubicbeziers() {
-  var curItem = app.project.activeItem;
-  var selectedProperties = app.project.activeItem.selectedProperties;
-  var selectedProperty;
-  var duration = curItem.duration;
-  var frameRate = curItem.frameRate;
-  var numFrames = duration / curItem.frameDuration;
-  var keyframes = [];
-  var avSpeed;
+  Entry point is the IIFE getCubicbeziers() at the bottom of this file.
 
+*/
+
+/* Returns an array containing an array of all the keyframes from the selectedProperty.
+   If the property contains two parts (an x and y part for example) the array will contain
+   two arrays, one for each part. */
+function getAEKeyFrames(selectedProperty) {
+  var keyframes = [[]];
+  var numKeyframes = selectedProperty.numKeys;
+  var valueIsArr = selectedProperty.keyValue(1).constructor === Array;
+  var i;
+  var j;
+
+  if (valueIsArr) {
+    keyframes.push([]); // second array to store our second set of keyframes
+  }
+  for (i = 1; i < numKeyframes + 1; i++) {
+    if (valueIsArr) {
+      for (j = 0; j < 2; j++) {
+        keyframes[j].push({
+          time: selectedProperty.keyTime(i),
+          value: selectedProperty.keyValue(i)[j],
+          outTemporalEaseInfluence: selectedProperty.keyOutTemporalEase(i)[0].influence / 100,
+          outTemporalEaseSpeed: selectedProperty.keyOutTemporalEase(i)[0].speed,
+          inTemporalEaseInfluence: selectedProperty.keyInTemporalEase(i)[0].influence / 100,
+          inTemporalEaseSpeed: selectedProperty.keyInTemporalEase(i)[0].speed,
+        });
+      }
+    } else {
+      keyframes[0].push({
+        time: selectedProperty.keyTime(i),
+        value: selectedProperty.keyValue(i),
+        outTemporalEaseInfluence: selectedProperty.keyOutTemporalEase(i)[0].influence / 100,
+        outTemporalEaseSpeed: selectedProperty.keyOutTemporalEase(i)[0].speed,
+        inTemporalEaseInfluence: selectedProperty.keyInTemporalEase(i)[0].influence / 100,
+        inTemporalEaseSpeed: selectedProperty.keyInTemporalEase(i)[0].speed,
+      });
+    }
+  }
+
+  return keyframes;
+}
+
+/* Returns the metadata about a set of keyframes
+   NOTE: a single set of keyframes, not an array of a set of keyframes (like
+    that returned from getAEKeyFrames) */
+function getMetadata(aeKeyFrames) {
+  var curItem = app.project.activeItem;
+  var numKeyFrames = aeKeyFrames.length;
+
+  var startingValue = aeKeyFrames[0].value;
+  var endingValue = aeKeyFrames[numKeyFrames - 1].value;
+  var deltaValue = endingValue - startingValue;
+
+  var startingTime = aeKeyFrames[0].time;
+  var endingTime = aeKeyFrames[numKeyFrames - 1].time;
+  var deltaTime = endingTime - startingTime;
+
+  var totalFrames = deltaTime / curItem.frameDuration;
+
+  var maxValue = aeKeyFrames.map(function getValue(keyframe) {
+    return keyframe.value;
+  }).reduce(function getMax(prev, cur) {
+    return Math.max(prev, cur);
+  });
+
+  var minValue = aeKeyFrames.map(function getValue(keyframe) {
+    return keyframe.value;
+  }).reduce(function getMin(prev, cur) {
+    return Math.min(prev, cur);
+  });
+
+  return {
+    startingValue: startingValue,
+    endingValue: endingValue,
+    deltaValue: deltaValue,
+    startingTime: startingTime,
+    endingTime: endingTime,
+    deltaTime: deltaTime,
+    totalFrames: totalFrames,
+    minValue: minValue,
+    maxValue: maxValue,
+  };
+}
+
+/* Takes a single set of afterEffects keyframes (only a single property part) and alerts a set of
+   keyframes that are more consumable in a js context. */
+function getJSKeyframes(aeKeyFrames, selectedProperty) {
+  var keyFrames = [];
   /* x1, x2, y1, y2 are used to track the control points for the bezier curves */
   var x1;
   var x2;
   var y1;
   var y2;
 
-  /* t1, t2, val1, val2 are used to track the place on animation curve */
+  /* t1, t2, val1, val2 are used to track the place (time and value) on animation curve */
   var t1;
   var t2;
   var val1;
   var val2;
 
-  /* startingValue, endingValue and totalDeltaValue track the total change in the property */
-  var startingValue;
-  var endingValue;
-  var totalDeltaValue;
-
-  /* tracks which keyframe we are looking at */
-  var i;
-  /* output and stringified are for outputing the final animation curves */
+  var avSpeed;
   var output;
   var stringified;
+  var i;
 
-  if (selectedProperties.length !== 1) {
-    alert('Please select a property to export (no more than one)');
-    return;
-  }
-  selectedProperty = selectedProperties[0];
-  if (selectedProperty.numKeys < 2) {
-    alert('Selected property does not have any keyframes');
-    return;
-  }
-  /* Get the starting and ending value of the property so we can normalize the values 0 -> 1*/
-  startingValue = selectedProperty.keyValue(1);
-  endingValue = selectedProperty.keyValue(selectedProperty.numKeys);
-  totalDeltaValue = endingValue - startingValue;
+  var metadata = getMetadata(aeKeyFrames);
+  var startingTime = metadata.startingTime;
+  var totalDuration = metadata.deltaTime;
+  var startingValue = metadata.startingValue;
+  var endingValue = metadata.endingValue;
+  var totalDeltaValue = metadata.deltaValue;
 
-  for (i = 1; i < selectedProperty.numKeys; i++) { // keyframes are 1-indexed
+  for (i = 0; i < selectedProperty.numKeys - 1; i++) {
     /* t1, t1 are the x values of the keyframes we are interpolating between */
-    t1 = selectedProperty.keyTime(i);
-    t2 = selectedProperty.keyTime(i + 1);
+    t1 = aeKeyFrames[i].time;
+    t2 = aeKeyFrames[i + 1].time;
     /* val1, val2 are the y values of the keyframes we are interpolating between */
-    val1 = selectedProperty.keyValue(i);
-    val2 = selectedProperty.keyValue(i + 1);
+    val1 = aeKeyFrames[i].value;
+    val2 = aeKeyFrames[i + 1].value;
 
     avSpeed = Math.abs(val2 - val1) / (t2 - t1);
 
     if (val1 < val2) {
-      x1 = selectedProperty.keyOutTemporalEase(i)[0].influence / 100;
-      y1 = x1 * selectedProperty.keyOutTemporalEase(i)[0].speed / avSpeed;
-
-      x2 = 1 - selectedProperty.keyInTemporalEase(i + 1)[0].influence / 100;
-      y2 = 1 - (1 - x2) * (selectedProperty.keyInTemporalEase(i + 1)[0].speed / avSpeed);
+      x1 = aeKeyFrames[i].outTemporalEaseInfluence;
+      y1 = x1 * aeKeyFrames[i].outTemporalEaseSpeed / avSpeed;
+      x2 = 1 - aeKeyFrames[i + 1].inTemporalEaseInfluence;
+      y2 = 1 - (1 - x2) * (aeKeyFrames[i + 1].inTemporalEaseSpeed / avSpeed);
     } else if (val2 < val1) {
-      x1 = selectedProperty.keyOutTemporalEase(i)[0].influence / 100;
-      y1 = (-x1) * selectedProperty.keyOutTemporalEase(i)[0].speed / avSpeed;
-      x2 = selectedProperty.keyInTemporalEase(i + 1)[0].influence / 100;
-      y2 = 1 + x2 * (selectedProperty.keyInTemporalEase(i + 1)[0].speed / avSpeed);
+      x1 = aeKeyFrames[i].outTemporalEaseInfluence;
+      y1 = (-x1) * aeKeyFrames[i].outTemporalEaseSpeed / avSpeed;
+      x2 = aeKeyFrames[i + 1].inTemporalEaseInfluence;
+      y2 = 1 + x2 * (aeKeyFrames[i + 1].inTemporalEaseSpeed / avSpeed);
       x2 = 1 - x2; // invert the x value
     } else {
-      x1 = selectedProperty.keyOutTemporalEase(i)[0].influence / 100;
-      y1 = (-x1) * selectedProperty.keyOutTemporalEase(i)[0].speed /
-        ((selectedProperty.maxValue - selectedProperty.minValue) / (t2 - t1));
-      x2 = selectedProperty.keyInTemporalEase(i + 1)[0].influence / 100;
-      y2 = 1 + x2 * (selectedProperty.keyInTemporalEase(i + 1)[0].speed /
-        ((selectedProperty.maxValue - selectedProperty.minValue) / (t2 - t1)));
+      x1 = aeKeyFrames[i].outTemporalEaseInfluence;
+      y1 = (-x1) * aeKeyFrames[i].keyOutTemporalEaseSpeed /
+        ((metadata.maxValue - metadata.minValue) / (t2 - t1));
+      x2 = aeKeyFrames[i + 1].inTemporalEaseInfluence;
+      y2 = 1 + x2 * (aeKeyFrames[i + 1].inTemporalEaseSpeed /
+        ((metadata.maxValue - metadata.minValue) / (t2 - t1)));
       x2 = 1 - x2; // invert the x value
     }
-    /* Push our calculated keyframe to the list
+     /* Push our calculated keyframe to the list
        p: [%time through animation, %through the total change in animation]
        cp: [x1, y1, x2, y2] - coords of the control points for the bezier curve */
-    keyframes.push({
-      p: [t1 * (frameRate / numFrames), (val1 - startingValue) / totalDeltaValue],
+    keyFrames.push({
+      p: [(t1 - startingTime) / totalDuration, (val1 - startingValue) / totalDeltaValue],
       cp: [x1, y1, x2, y2],
     });
 
-    if (i === selectedProperty.numKeys - 1) {
+    if (i === selectedProperty.numKeys - 2) {
       /* Push the final keyframe (no control points)
          Should always be [1, 1], will serve as a sanity test */
-      keyframes.push({
-        p: [t2 * (frameRate / numFrames), (val2 - startingValue) / totalDeltaValue],
+      keyFrames.push({
+        p: [(t2 - startingTime) / totalDuration, (val2 - startingValue) / totalDeltaValue],
       });
     }
   }
   output = {
-    keyframes: keyframes,
+    keyframes: keyFrames,
     info: {
       property: selectedProperty.name,
       'original values': [startingValue, endingValue],
-      'duration (ms)': duration * 1000,
-      frames: numFrames,
+      'duration (ms)': totalDuration * 1000,
+      frames: metadata.totalFrames,
     },
   };
   /* Make arrays show on one line by joining them and returning as a string */
@@ -146,5 +211,70 @@
     .replace(/'(\[.+\])'/g, '$1'); /* Remove the quotes around the arrays */
 
   alert(selectedProperty.name + '\n' + stringified);
-}());
+}
 
+/*eslint-disable*/
+/* AfterEffects doesn't have the Array.prototype.reduce method.
+   Adding it here so we can use it. */
+function addArrayReducePolyfill() {
+  // Production steps of ECMA-262, Edition 5, 15.4.4.21
+  // Reference: http://es5.github.io/#x15.4.4.21
+  if (!Array.prototype.reduce) {
+    Array.prototype.reduce = function (callback /* , initialValue*/) {
+      'use strict';
+      if (this == null) {
+        throw new TypeError('Array.prototype.reduce called on null or undefined');
+      }
+      if (typeof callback !== 'function') {
+        throw new TypeError(callback + ' is not a function');
+      }
+      var t = Object(this), len = t.length >>> 0, k = 0, value;
+      if (arguments.length == 2) {
+        value = arguments[1];
+      } else {
+        while (k < len && !(k in t)) {
+          k++;
+        }
+        if (k >= len) {
+          throw new TypeError('Reduce of empty array with no initial value');
+        }
+        value = t[k++];
+      }
+      for (; k < len; k++) {
+        if (k in t) {
+          value = callback(value, t[k], k, t);
+        }
+      }
+      return value;
+    };
+  }
+}
+/*eslint-enable*/
+
+(function getCubicbeziers() {
+  var selectedProperties = app.project.activeItem.selectedProperties;
+  var selectedProperty;
+  var aeFrames;
+
+  var i;
+
+  addArrayReducePolyfill();
+
+  if (selectedProperties.length !== 1) {
+    alert('Please select a property to export (no more than one)');
+    return;
+  }
+  selectedProperty = selectedProperties[0];
+  if (selectedProperty.numKeys < 2) {
+    alert('Selected property does not have any keyframes');
+    return;
+  }
+
+  /* Get all the keyframes for the selected property. Return two lists if the property has
+     two parts */
+  aeFrames = getAEKeyFrames(selectedProperty);
+  for (i = 0; i < aeFrames.length; i++) {
+    // Calculate the bezier curves and alert the keyyframes
+    getJSKeyframes(aeFrames[i], selectedProperty);
+  }
+}());

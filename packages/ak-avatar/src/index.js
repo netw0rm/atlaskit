@@ -1,14 +1,15 @@
 /** @jsx vdom */
+import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 
-import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 
 import { enumeration } from 'akutil-common';
-import { define, vdom, state } from 'skatejs';
+import { vdom } from 'skatejs';
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
-  values: ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', 'xxxlarge'],
+  values: ['xsmall', 'small', 'medium', 'large', 'xlarge'],
   missingDefault: 'medium',
   invalidDefault: 'medium',
 };
@@ -23,10 +24,16 @@ const SIZE_ATTRIBUTE_ENUM = {
  */
 const Avatar = {
   render(elem) {
+    const classes = classNames([shadowStyles.locals.img, shadowStyles.locals[elem.size]]);
+    const imgStyle = {};
+
+    if (elem.borderColor) {
+      imgStyle.borderColor = elem.borderColor;
+    }
     return (
       <span>
         <style>{shadowStyles.toString()}</style>
-        <img alt={elem.alt} src={elem.src} />
+        <img alt={elem.alt} src={elem.src} class={classes} style={imgStyle} />
       </span>
     );
   },
@@ -65,15 +72,12 @@ const Avatar = {
      */
     alt: {
       attribute: true,
+      default: '',
     },
-  },
-  ready(elem) {
-    state(elem, {
-      className: headStyles['ak-avatar'],
-    });
+    borderColor: {
+      attribute: true,
+    },
   },
 };
 
-export default () => define('ak-avatar', Avatar);
-
-export { Avatar as definition };
+export default Avatar;

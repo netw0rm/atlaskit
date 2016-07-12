@@ -1,15 +1,10 @@
-<a name="1.1.0"></a>
-# [1.1.0](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/1.1.0-semver-tag-for-eslint-config-ak-base...v1.1.0) (2016-07-06)
+<a name="1.1.2"></a>
+## 1.1.2 (2016-07-11)
 
 
+### Features
 
-<a name="1.1.0-semver-tag-for-eslint-config-ak-base"></a>
-# [1.1.0-semver-tag-for-eslint-config-ak-base](https://aui-team-bot/https://bitbucket.org/atlassian/atlaskit/compare/1.0.3-semver-tag-for-eslint-config-ak-base...1.1.0-semver-tag-for-eslint-config-ak-base) (2016-07-05)
-
-
-
-<a name="1.0.3-semver-tag-for-eslint-config-ak-base"></a>
-## 1.0.3-semver-tag-for-eslint-config-ak-base (2016-07-05)
+* new story ([30addc3](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/30addc3))
 
 
 

@@ -57,9 +57,10 @@ if (process.env.BROWSERSTACK) {
       build: `${process.env.PKG} Integration`,
       name: `${process.env.PKG} protractor tests`,
 
-      'browserstack.local': 'true',
       'browserstack.user': process.env.BROWSERSTACK_USERNAME,
       'browserstack.key': process.env.BROWSERSTACK_KEY,
+      'browserstack.debug': 'true',
+      'browserstack.local': 'true',
     },
   });
 }

@@ -1,28 +1,30 @@
 {
   "name": "ak-inline-dialog",
-  "version": "57.0.0",
-  "description": "",
+  "version": "69.0.0",
+  "description": "An inline dialog UI component",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "src/index.register.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-inline-dialog",
+    "prepublish": "cd ../.. && npm run prepublish/single ak-inline-dialog",
     "pre-release": "lerna-semantic-release pre"
   },
-  "private": true,
   "files": [
     "dist"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
   "dependencies": {
-    "akutil-common": "^0.0.3",
+    "akutil-common": "^0.1.0",
     "akutil-shared-styles": "*",
     "ak-layer": "*",
     "skatejs": "v1.0.0-beta.7",
-    "tether": "^1.3.2",
     "web-animations-js": "^2.2.1"
   },
   "devDependencies": {
-    "akutil-react": "^0.0.0"
+    "akutil-react": "^0.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

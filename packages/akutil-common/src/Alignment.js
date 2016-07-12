@@ -102,7 +102,7 @@ Alignment.prototype = {
       this.renderElement = elem.renderElement || elem;
     }
 
-    if (!this.renderNode) {
+    if (elem.renderElementTo && !this.renderNode) {
       this.renderNode = getElement(elem.renderElementTo);
       this.renderNode.appendChild(this.renderElement);
     }
@@ -119,6 +119,12 @@ Alignment.prototype = {
         },
       ],
     };
+
+    if (elem.doNotMoveInDOM !== undefined) {
+      opts.optimizations = {
+        doNotMoveInDOM: elem.doNotMoveInDOM,
+      };
+    }
 
     if (!this.tether) {
       this.tether = new Tether(opts);

@@ -2,4 +2,17 @@
 # 0.1.0 (2016-07-12)
 
 
+### Bug Fixes
+
+* **style:** Fixed up shadow style example ([1f2f573](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/1f2f573))
+* fixed troubles with switching between stories ([d0fe678](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/d0fe678))
+
+
+### Features
+
+* "doNotMoveInDOM" property (tether fork) ([6405bdc](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/6405bdc))
+* new story ([30addc3](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/30addc3))
+* return using layer into inline-dialog ([9a905d2](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/9a905d2))
+
+
 

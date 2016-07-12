@@ -24,7 +24,17 @@
 
 
 <a name="0.12.6-semver-tag-for-ak-avatar"></a>
-## 0.12.6-semver-tag-for-ak-avatar (2016-07-08)
+## [0.12.6-semver-tag-for-ak-avatar](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/0.12.1-semver-tag-for-ak-avatar...0.12.6-semver-tag-for-ak-avatar) (2016-07-08)
+
+
+
+<a name="0.12.1-semver-tag-for-ak-avatar"></a>
+## [0.12.1-semver-tag-for-ak-avatar](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/1f2f573...0.12.1-semver-tag-for-ak-avatar) (2016-07-07)
+
+
+### Bug Fixes
+
+* **style:** Fixed up shadow style example ([1f2f573](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/1f2f573))
 
 
 

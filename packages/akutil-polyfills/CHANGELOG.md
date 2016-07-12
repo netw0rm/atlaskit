@@ -14,7 +14,15 @@
 
 
 <a name="0.0.10-semver-tag-for-akutil-polyfills"></a>
-## 0.0.10-semver-tag-for-akutil-polyfills (2016-07-08)
+## [0.0.10-semver-tag-for-akutil-polyfills](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/1f2f573...0.0.10-semver-tag-for-akutil-polyfills) (2016-07-08)
+
+
+### Bug Fixes
+
+* **style:** Fixed up shadow style example ([1f2f573](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/1f2f573))
+* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/20604da))
+* Bump skatejs-named-slots to 0.2.8 ([b7f4571](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/b7f4571))
+* fixed troubles with switching between stories ([d0fe678](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/d0fe678))
 
 
 

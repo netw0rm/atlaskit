@@ -27,6 +27,17 @@ storiesOf(name, module)
   .add('A xlarge avatar', () => (
     <Avatar src={avatarUrl} size="xlarge" />
   ))
+  .add('A xlarge avatar on background', () => {
+    const divStyle = {
+      backgroundColor: 'blue',
+      padding: '10px',
+    };
+    return (
+      <div style={divStyle}>
+        <Avatar src={avatarUrl} size="xlarge" />
+      </div>
+    );
+  })
   .add('A row of avatars', () => {
     const avatarRowStyle = 'margin-left: 10px;';
     return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
@@ -52,8 +63,23 @@ storiesOf(name, module)
     const avatarRowStyle = 'margin-left: -10px; position: relative;';
     const borderColor = 'white';
     const divStyle = {
-      marginLeft: '5px',
-      marginTop: '14.3px',
+      padding: '10px',
+    };
+    return (<div style={divStyle}>
+      <Avatar src={avatarUrl} size="large" />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+    </div>);
+  })
+  .add('Avatars in a group with a background color', () => {
+    const avatarRowStyle = 'margin-left: -10px; position: relative;';
+    const borderColor = 'white';
+    const divStyle = {
+      padding: '10px',
+      backgroundColor: 'blue',
     };
     return (<div style={divStyle}>
       <Avatar src={avatarUrl} size="large" />

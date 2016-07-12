@@ -12,7 +12,7 @@ const runTests = () => {
   });
 };
 
-tunnel(process.env.BROWSERSTACK_TUNNEL, runTests).then(() => {
+tunnel({ runFn: runTests, tunnelId: process.env.BROWSERSTACK_TUNNEL }).then(() => {
   process.exit(0);
 }).catch(e => {
   log.error(e);

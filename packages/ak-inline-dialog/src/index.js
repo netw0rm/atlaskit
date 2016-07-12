@@ -21,6 +21,16 @@ const definition = {
     }
   },
   render(elem) {
+    const styles = {};
+    if (elem.boxShadow) {
+      styles.boxShadow = elem.boxShadow;
+    }
+    if (elem.padding) {
+      styles.padding = elem.padding;
+    }
+    if (elem.borderRadius) {
+      styles.borderRadius = elem.borderRadius;
+    }
     return (
       <ak-layer
         open={elem.open}
@@ -29,7 +39,7 @@ const definition = {
         target={elem.target}
       >
         <style>{shadowStyles.toString()}</style>
-        <div class={shadowStyles.locals.inlineDialogContainer}>
+        <div class={shadowStyles.locals.inlineDialogContainer} style={styles}>
           <slot />
         </div>
       </ak-layer>
@@ -41,7 +51,9 @@ const definition = {
     target: { attribute: true },
     attachment: prop.string({ attribute: true, default: 'window' }),
     renderElementTo: { attribute: true },
-    doNotMoveInDOM: prop.boolean({ attribute: true, default: true }),
+    boxShadow: prop.string({ attribute: true }),
+    borderRadius: prop.string({ attribute: true }),
+    padding: prop.string({ attribute: true }),
   },
 };
 

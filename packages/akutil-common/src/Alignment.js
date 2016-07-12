@@ -43,7 +43,13 @@ function getPositionFromClasses(classes) {
 
 function getElement(node) {
   if (typeof node === 'string') {
-    return document.querySelector(node);
+    const elements = document.querySelectorAll(node);
+    if (process.env.NODE_ENV === 'development') {
+      if (elements.length > 1) {
+        console.warn('Found more than one node, using first.'); // eslint-disable-line no-console
+      }
+    }
+    return elements[0];
   }
 
   return node || document.body;

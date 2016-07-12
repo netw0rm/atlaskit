@@ -9,7 +9,7 @@ import { vdom } from 'skatejs';
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
-  values: ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', 'xxxlarge'],
+  values: ['xsmall', 'small', 'medium', 'large', 'xlarge'],
   missingDefault: 'medium',
   invalidDefault: 'medium',
 };
@@ -17,11 +17,15 @@ const SIZE_ATTRIBUTE_ENUM = {
 const definition = {
   render(elem) {
     const classes = classNames([shadowStyles.locals.img, shadowStyles.locals[elem.size]]);
+    const imgStyle = {};
 
+    if (elem.borderColor) {
+      imgStyle.borderColor = elem.borderColor;
+    }
     return (
       <span>
         <style>{shadowStyles.toString()}</style>
-        <img alt={elem.alt} src={elem.src} class={classes} />
+        <img alt={elem.alt} src={elem.src} class={classes} style={imgStyle} />
       </span>
     );
   },
@@ -35,6 +39,9 @@ const definition = {
     alt: {
       attribute: true,
       default: '',
+    },
+    borderColor: {
+      attribute: true,
     },
   },
 };

@@ -1,12 +1,6 @@
 const path = require('path');
 const browserStackBrowsers = require('./build/lib/karma.browserstack.browsers.js');
-const webpackConfig = require('./webpack.config.js');
-
-// We delete the entry from the normal config and let karma insert it for us
-delete webpackConfig.entry;
-delete webpackConfig.externals;
-delete webpackConfig.plugins;
-webpackConfig.devtool = 'inline-source-map';
+const webpackConfig = require('./webpack.config.karma.js');
 
 module.exports = (config) => {
   Object.assign(config, {

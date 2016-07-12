@@ -1,29 +1,31 @@
 const log = require('minilog')('BrowserStack');
 require('minilog').enable();
-const BrowserStackTunnel = require('browserstacktunnel-wrapper');
+const browserstack = require('browserstack-local');
 
-module.exports = function runWithTunnel(tunnelId, runFn) {
+module.exports = function runWithTunnel(opts) {
   return new Promise((resolve, reject) => {
-    const browserStackTunnel = new BrowserStackTunnel({
-      key: process.env.BROWSERSTACK_KEY,
-      localIdentifier: tunnelId,
-    });
-
     function handleError(errorMsg) {
-      log.error(`tunnel ${tunnelId}: '${errorMsg}'`);
+      log.error(`BrowserStack tunnel: '${errorMsg}'`);
       reject(errorMsg.toString());
     }
 
     function tunnelStateChanged(newTunnelState) {
-      log.info(`tunnel ${tunnelId}: '${newTunnelState}'`);
+      log.info(`BrowserStack tunnel: '${newTunnelState}'`);
     }
 
-    browserStackTunnel.start(startError => {
+    const browserStackTunnel = new browserstack.Local();
+    const tunnelOptions = {
+      key: process.env.BROWSERSTACK_KEY,
+      forcelocal: true,
+      force: true,
+    };
+    if (opts.tunnelId) tunnelOptions.localIdentifier = opts.tunnelId;
+    browserStackTunnel.start(tunnelOptions, startError => {
       if (startError) handleError(startError);
       tunnelStateChanged('started');
 
       try {
-        runFn();
+        opts.runFn();
       } catch (execError) {
         handleError(execError);
       }

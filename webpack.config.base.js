@@ -1,25 +1,11 @@
 const camelCase = require('camelcase');
-const fs = require('fs');
 const glob = require('glob');
-const log = require('minilog')('webpack');
-
 const path = require('path');
-const webpack = require('webpack');
 const pkg = require(path.join(process.cwd(), 'package.json'));
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-const argv = require('minimist')(process.argv.slice(2));
-const shouldMinimize = !!argv.min;
-const isDemo = !!argv.demo;
-const shouldBundleDependencies = !!argv['bundle-deps'];
-
-require('minilog').enable();
-
-const bundleFiles = glob.sync('./src/index*.js');
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': bundleFiles,
+    'dist/bundle.js': glob.sync('./src/index*.js'),
   },
   output: {
     path: './',
@@ -29,8 +15,6 @@ const standardConfig = {
     // This will be the name of the global in the UMD module.
     library: camelCase(pkg.name),
   },
-  // Only bundle dependencies that start with '.'.
-  externals: fs.readdirSync('node_modules'),
   module: {
     loaders: [
       {
@@ -94,45 +78,7 @@ const standardConfig = {
       },
     ],
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      include: /\.js$/, // Only remove dead code
-      dead_code: true,
-      mangle: false,
-      beautify: true,
-      comments: true,
-    }),
-  ],
+  plugins: [],
 };
-
-if (isDemo) {
-  log.info('Demo mode');
-  standardConfig.entry['demo.js'] = './demo/index.js';
-  log.info('adding polyfills');
-  standardConfig.entry['polyfills.js'] = require.resolve('akutil-polyfills');
-  standardConfig.plugins = [
-    new HtmlWebpackPlugin({
-      title: `${pkg.name} - Demo`,
-      template: './demo/index.ejs',
-    }),
-  ];
-}
-
-if (shouldMinimize) {
-  log.info('minimizing');
-  standardConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    // Minify any target that ends in .min.js.
-    include: /\.min\.js$/,
-    minimize: true,
-  }));
-  Object.assign(standardConfig.entry, {
-    'dist/bundle.min.js': bundleFiles,
-  });
-}
-
-if (shouldBundleDependencies) {
-  log.info('bundling dependencies');
-  delete standardConfig.externals;
-}
 
 module.exports = standardConfig;

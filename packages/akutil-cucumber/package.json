@@ -1,7 +1,7 @@
 {
   "name": "akutil-cucumber",
   "version": "0.0.0",
-  "description": "",
+  "description": "Cucumber steps for AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
@@ -12,7 +12,6 @@
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
-  "private": true,
   "dependencies": {},
   "repository": {
     "type": "git",

@@ -11,3 +11,5 @@ npm-debug.log.*
 .ci_failed
 .DS_Store
 TESTS-*.xml
+
+local.log

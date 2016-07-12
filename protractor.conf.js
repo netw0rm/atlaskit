@@ -59,7 +59,8 @@ if (process.env.BROWSERSTACK) {
 
       'browserstack.user': process.env.BROWSERSTACK_USERNAME,
       'browserstack.key': process.env.BROWSERSTACK_KEY,
-      'browserstack.debug': true,
+      'browserstack.debug': 'true',
+      'browserstack.local': 'true',
     },
   });
 }

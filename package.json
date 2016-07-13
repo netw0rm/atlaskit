@@ -7,7 +7,7 @@
       "path": "./packages/akutil-cz-atlaskit-changelog"
     }
   },
-  "devDependencies": {
+  "dependencies": {
     "@kadira/storybook": "^1.38.0",
     "akutil-polyfills": "^0.0.11",
     "babel-core": "^6.10.4",
@@ -65,7 +65,6 @@
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },
-  "dependencies": {},
   "engines": {
     "npm": ">=3.8",
     "node": ">=6.1"

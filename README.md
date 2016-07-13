@@ -231,8 +231,8 @@ Releasing components is completely automated. The process of releasing will begi
 * Change log is generated automatically from commit messages
 * Component will be published to npm
 
-## Update a dependency of atlaskit
-* Install AK - if your installation is from before we had the shrinkwrap file, you should run `npm run clean`.
+## Update a dependency of AtlasKit
+* Install AtlasKit - if your installation is from before we had the shrinkwrap file, you should run `npm run clean`.
 * Install your new dependency: `npm install my-package --save-dev`.
 * Run `npm shrinkwrap --dev`
 * Create a PR

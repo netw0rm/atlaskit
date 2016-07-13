@@ -2,6 +2,7 @@ import { define } from 'skatejs';
 import definition from './index.js';
 
 // Expose the WebComponent
-define('ak-layer', definition);
+const LayerWC = define('ak-layer', definition);
 
+export { LayerWC };
 export default definition;

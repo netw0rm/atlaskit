@@ -3,7 +3,7 @@
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
 
-Atlaskit is the Design Platform's implementation of ADG3. It is a collection of reusable webcomponents that can be consumed independently (No more upgrade pains!). Each component is independently versioned and published to npm and can be installed through
+AtlasKit is the Design Platform's implementation of ADG3. It is a collection of reusable webcomponents that can be consumed independently (No more upgrade pains!). Each component is independently versioned and published to npm and can be installed through
 
 ```
 npm install @atlaskit/my-component-name
@@ -17,7 +17,7 @@ Clone the repo and install the dependencies
 git clone git@bitbucket.org:atlassian/atlaskit.git
 npm install
 ```
-You're now ready to start developing in Atlaskit!
+You're now ready to start developing in AtlasKit!
 
 Once you made some changes, stage them and then commit them using `npm run commit` (This will use [Commitizen](https://github.com/commitizen/cz-cli) under the covers).
 
@@ -55,7 +55,7 @@ npm install
 ## Demo a component
 You can see your component running by staring a local dev-server
 
-### Starting a dev-server
+### Start a dev-server
 
 ```
 npm run dev/single my-component-name
@@ -74,23 +74,23 @@ You might choose to separate out your demo into multiple pages. Simply create a 
 The functionality of your component will be contained in `src/index.js`. The template will contain a skate definition and styles will already be linked.
 
 ## Style a component
-Styles for Atlaskit components are written in Less and are separated into three main files by default (`host.less`, `shadow.less`, `shared.less`).
+Styles for AtlasKit components are written in Less and are separated into three main files by default (`host.less`, `shadow.less`, `shared.less`).
 
-### host.less
+### Style the host element using host.less
 Is where you write styles that affect the component itself.
 
 * These styles will be compiled and placed into the head of the page at runtime.
 * They cannot affect the shadow DOM of a component (use `shadow.less` for that).
 * This is where you would usually place rules that are based on attributes.
 
-### shadow.less
+### Style the elements within the Shadow DOM using shadow.less
 Is where you write styles that affect the shadow DOM of your component
 
 * These are compiled and placed into the shadow DOM of each **instance** of a component
   `vdom.style(shadowStyles.toString());`
 * These do not have access to the root element.
 
-### shared.less
+### Share less variables using shared.less
 This is where you can write styles that need to be shared between `shadow.less` and `host.less`. (Note the `@import 'shared.less';` at the top). This should only be used for shared variables, not shared rules. By default, this will already include the shared colors from the `share-styles` package.
 
 ## Add an animation to a component
@@ -114,7 +114,7 @@ npm run prepublish/single my-component-name -- --bundle-deps
 
 This can be helpful for ad-hoc testing in JSFiddle for example.
 
-## Test my component
+## Test a component
 
 ### Storybook
 To run a story book for a single component:
@@ -217,7 +217,7 @@ Note: it automatically runs [linting](#markdown-header-follow-code-style-guideli
 ## Merge into master
 All new feature code must be completed in a feature branch.
 
-Once you are happy with your changes, you must push your branch to Bitbucket and create a pull request. All pull requests must have at least 2 reviewers from the Atlaskit team. Once the pull request has been approved it may be merged into master.
+Once you are happy with your changes, you must push your branch to Bitbucket and create a pull request. All pull requests must have at least 2 reviewers from the AtlasKit team. Once the pull request has been approved it may be merged into master.
 
 **Attention! Achtung! Bнимaние! Atención! ध्यान! 注意!**: *Merging into master will automatically release a component. See below for more details*
 
@@ -240,9 +240,9 @@ Releasing components is completely automated. The process of releasing will begi
 ### Update the documentation (reminder)
 
 ## Make changes to the Pipelines build
-Atlaskit uses Bitbucket Pipelines for it's continuous integration. The build scripts are defined in `bitbucket-pipelines.yml`.
+AtlasKit uses Bitbucket Pipelines for it's continuous integration. The build scripts are defined in `bitbucket-pipelines.yml`.
 
-### Atlaskit Docker image
+### AtlasKit Docker image
 Bitbucket pipelines works using a Docker image. This contains the initial setup required to run the build. If you need to make changes to `Dockerfile`, you will need to push them to Dockerhub:
 
 * Build the new Docker image: `docker build -t atlaskit .`

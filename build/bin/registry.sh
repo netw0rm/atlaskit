@@ -8,15 +8,9 @@ git clone --quiet "https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/
 mkdir -p ../atlaskit-registry/_data ../atlaskit-registry/api ../atlaskit-registry/resources
 
 # Install panop (converts monorepo to single YAML summary file)
+# Note: when BB Pipelines can access internal npm, we can use normal npm:
 echo "Installing panop from Atlassian private npm"
 npm install --progress=false "git+https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/atlassian/panop.git"
-# When BB Pipelines can access internal npm, we can use normal npm:
-# if [ -n "$NPM_TOKEN" ]
-#   then
-#     npm set @atlassian:registry "https://npm-private.atlassian.io/"
-#     npm set //npm-private.atlassian.io/:_authToken=$NPM_TOKEN
-# fi
-# npm install --progress=false @atlassian/panop
 
 # Generate momnorep summary which will feed into jekyll
 echo "Generating summary files using panop"
@@ -31,6 +25,8 @@ bundle install --quiet --gemfile=../atlaskit-registry/Gemfile
 # Build website using jekyll
 echo "Building site using Jekyll"
 jekyll build --source ../atlaskit-registry --destination ../atlaskit-registry/resources/_site
+
+# Zip the built website so we can upload to CDN
 rm -f ../ak-registry-cdn.zip
 zip -0 -r -T ../ak-registry-cdn.zip ../atlaskit-registry/resources
 

@@ -4,7 +4,6 @@
 
 ### Bug Fixes
 
-* **style:** Fixed up shadow style example ([1f2f573](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/1f2f573))
 * fixed troubles with switching between stories ([d0fe678](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/d0fe678))
 
 

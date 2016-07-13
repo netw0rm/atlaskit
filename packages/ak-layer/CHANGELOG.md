@@ -4,12 +4,11 @@
 
 
 <a name="56.1.0-semver-tag-for-ak-layer"></a>
-# [56.1.0-semver-tag-for-ak-layer](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/1f2f573...56.1.0-semver-tag-for-ak-layer) (2016-07-12)
+# [56.1.0-semver-tag-for-ak-layer](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/compare/d0fe678...56.1.0-semver-tag-for-ak-layer) (2016-07-12)
 
 
 ### Bug Fixes
 
-* **style:** Fixed up shadow style example ([1f2f573](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/1f2f573))
 * fixed troubles with switching between stories ([d0fe678](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/d0fe678))
 * remove string attr from target ([26ed13d](https://bitbucket.org/atlassian/https://bitbucket.org/atlassian/atlaskit/commits/26ed13d))
 

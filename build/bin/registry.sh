@@ -24,7 +24,7 @@ bundle install --quiet --gemfile=../atlaskit-registry/Gemfile
 
 # Build website using jekyll
 echo "Building site using Jekyll"
-jekyll build --source ../atlaskit-registry --destination ../atlaskit-registry/resources/_site
+jekyll build --source ../atlaskit-registry --destination ../atlaskit-registry/resources
 
 # Zip the built website so we can upload to CDN
 rm -f ../ak-registry-cdn.zip

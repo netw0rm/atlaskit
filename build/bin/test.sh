@@ -7,8 +7,8 @@ COMPONENT_DIR=$(basename `pwd`)
 
 {
     if [ -d "test" ]; then
+        echo -e "Testing $COMPONENT_DIR"
         karma start ../../karma.conf.js --single-run --reporters=dots,junit $@
-        exit $?
     else
         echo -e "\033[34m No 'test' dir in packages/$COMPONENT_DIR; Skipping tests."
         echo -e "\033[0m"

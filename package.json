@@ -100,7 +100,6 @@
     "create": "./build/bin/create.new.component.sh",
     "cucumber/single": "./build/bin/cucumber.single.sh",
     "dev/single": "./build/bin/dev.single.sh",
-    "docs": "./build/bin/docs.all.sh",
     "docs/single": "./build/bin/docs.single.sh",
     "dist": "./node_modules/.bin/lerna run prepublish",
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg && npm run lerna/link",

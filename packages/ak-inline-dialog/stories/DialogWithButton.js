@@ -59,7 +59,6 @@ class DialogWithButton extends Component {
           target="#target"
           attachment={this.props.attachTo}
           position={this.props.position}
-          renderElementTo="#root"
         >
           <button
             onClick={this.handleClick}

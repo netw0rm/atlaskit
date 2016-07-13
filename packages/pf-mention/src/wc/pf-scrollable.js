@@ -1,0 +1,42 @@
+import headStyles from 'style!../host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import { localProp } from './skate-local-props';
+
+import { define, vdom, prop, emit, state } from 'skatejs'; // eslint-disable-line no-unused-vars
+
+const definition = {
+
+  prototype: {
+    reveal(child) {
+      if (child) {
+        // Not using Element.scrollIntoView as it scrolls even to top/bottom of view even if
+        // already visible
+        const scrollableRect = this.getBoundingClientRect();
+        const elementRect = child.getBoundingClientRect();
+        if (elementRect.top < scrollableRect.top) {
+          this.scrollTop += (elementRect.top - scrollableRect.top);
+        } else if (elementRect.bottom > scrollableRect.bottom) {
+          this.scrollTop += (elementRect.bottom - scrollableRect.bottom);
+        }
+      }
+    },
+  },
+
+  render() {
+    return (<slot />);
+  },
+
+  detached(elem) {
+    if (elem.ref) {
+      elem.ref(null);
+    }
+  },
+
+  props: {
+    ref: localProp.reference(),
+  },
+};
+
+/* The constructor for our component */
+export default define('pf-scrollable', definition);
+
+export { definition };

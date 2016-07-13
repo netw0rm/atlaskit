@@ -10,8 +10,9 @@ mkdir -p ../atlaskit-registry/_data ../atlaskit-registry/api ../atlaskit-registr
 # Install panop (converts monorepo to single YAML summary file)
 echo "Installing panop from Atlassian private npm"
 if [ -n "$NPM_TOKEN" ]
-  npm set @atlassian:registry "https://npm-private.atlassian.io/"
-  npm set //npm-private.atlassian.io/:_authToken=$NPM_TOKEN
+  then
+    npm set @atlassian:registry "https://npm-private.atlassian.io/"
+    npm set //npm-private.atlassian.io/:_authToken=$NPM_TOKEN
 fi
 npm install --progress=false @atlassian/panop
 
@@ -33,9 +34,10 @@ zip -0 -r -T ../ak-registry-cdn.zip ../atlaskit-registry/resources
 
 # Authenticate with Atlassian Maven (only required for BB pipelines)
 if [ -n "$MVN_USERNAME" ]
-  sed -i'back' "/<servers>/ a<server><id>atlassian-private</id><username>$MVN_USERNAME</username><password>$MVN_PASSWORD</password></server>" /usr/share/maven/conf/settings.xml
-  sed -i'bak' '/<profiles>/ a<profile><id>atlassian-private</id><activation><activeByDefault>true</activeByDefault></activation><repositories><repository><id>atlassian-private</id><name>Atlassian Private</name><url>https://maven.atlassian.com/content/repositories/atlassian-private/</url><layout>default</layout></repository></repositories><pluginRepositories><pluginRepository><id>atlassian-private</id><url>https://maven.atlassian.com/content/groups/internal</url></pluginRepository></pluginRepositories></profile>' /usr/share/maven/conf/settings.xml
-  sed -i'bak' '/<profiles>/ a<profile><id>atlassian-public</id><activation><activeByDefault>true</activeByDefault></activation><repositories><repository><id>atlassian-public</id><url>https://maven.atlassian.com/repository/public</url></repository></repositories></profile>' /usr/share/maven/conf/settings.xml
+  then
+    sed -i'back' "/<servers>/ a<server><id>atlassian-private</id><username>$MVN_USERNAME</username><password>$MVN_PASSWORD</password></server>" /usr/share/maven/conf/settings.xml
+    sed -i'bak' '/<profiles>/ a<profile><id>atlassian-private</id><activation><activeByDefault>true</activeByDefault></activation><repositories><repository><id>atlassian-private</id><name>Atlassian Private</name><url>https://maven.atlassian.com/content/repositories/atlassian-private/</url><layout>default</layout></repository></repositories><pluginRepositories><pluginRepository><id>atlassian-private</id><url>https://maven.atlassian.com/content/groups/internal</url></pluginRepository></pluginRepositories></profile>' /usr/share/maven/conf/settings.xml
+    sed -i'bak' '/<profiles>/ a<profile><id>atlassian-public</id><activation><activeByDefault>true</activeByDefault></activation><repositories><repository><id>atlassian-public</id><url>https://maven.atlassian.com/repository/public</url></repository></repositories></profile>' /usr/share/maven/conf/settings.xml
 fi
 
 # Install CDN upload tool from Maven

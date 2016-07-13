@@ -1,0 +1,89 @@
+@inactiveForegroundColor: #42526E;
+@focusColor: #0091EA;
+@hoverColor: #DEE1E6;
+@activeBackgroundColor: #42526E;
+@activeForegroundColor: white;
+@disabledInactiveForegroundColor: grey;
+@disabledActiveBackgroundColor: grey;
+@disabledActiveForegroundColor: lightgrey;
+
+:root {
+  display: inline-block;
+}
+
+button {
+  background: transparent;
+  border: 0 solid transparent;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: @inactiveForegroundColor;
+  font-size: 17px;
+  line-height: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  transition: box-shadow 0.2s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+  width: 20px;
+
+  path {
+    fill: @inactiveForegroundColor;
+  }
+
+  &:not([disabled]) {
+    cursor: pointer;
+  }
+
+  &:active:focus {
+    background: @activeBackgroundColor;
+    box-shadow: none;
+
+    & path {
+      fill: white;
+    }
+  }
+
+  .active & {
+    background: @activeBackgroundColor;
+    color: @activeForegroundColor;
+
+    &:not([disabled]):hover {
+      background: darken(@activeBackgroundColor, 10%);
+    }
+
+    path,
+    &:not([disabled]):hover path {
+      fill: @activeForegroundColor;
+    }
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px @focusColor;
+    //border-color: ;
+    outline: none;
+  }
+
+  &:not([disabled]):hover {
+    background: @hoverColor;
+
+    path {
+      fill: @inactiveForegroundColor;
+    }
+  }
+
+  &[disabled] {
+    color: @disabledInactiveForegroundColor;
+
+    path {
+      fill: @disabledInactiveForegroundColor;
+    }
+
+    .active & {
+      background: @disabledActiveBackgroundColor;
+      color: @disabledActiveForegroundColor;
+
+      path {
+        fill: @disabledActiveForegroundColor;
+      }
+    }
+  }
+}

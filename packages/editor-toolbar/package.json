@@ -1,0 +1,27 @@
+{
+  "name": "editor-toolbar",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single editor-toolbar",
+    "pre-release": "lerna-semantic-release pre"
+  },
+  "private": true,
+  "files": [
+    "dist"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "akutil-common": "0.1.0",
+    "classnames": "^2.2.5",
+    "editor-button": "*",
+    "editor-icons": "*",
+    "skatejs": "1.0.0-beta.7"
+  },
+  "devDependencies": {
+    "akutil-react": "0.0.3"
+  }
+}

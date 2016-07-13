@@ -1,13 +1,13 @@
 import { vdom, define, state, prop } from 'skatejs';
 import cx from 'classnames';
-import styles from './button.less';
+import styles from './shadow.less';
 
-export default define('editorkit-toolbar-button', {
+export default define('editor-toolbar-button', {
   render(elem) {
     return (
       <div className={cx(styles.locals.root, {[styles.locals.active]: elem.active})}>
         <style>{styles.toString()}</style>
-        <button><slot/></button>
+        <button disabled={elem.disabled}><slot/></button>
       </div>
     );
   },
@@ -18,5 +18,6 @@ export default define('editorkit-toolbar-button', {
   },
   props: {
     active: prop.boolean({ attribute: true, default: false }),
+    disabled: prop.boolean({ attribute: true, default: false }),
   },
 });

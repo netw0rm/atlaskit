@@ -1,10 +1,9 @@
 {
-  "name": "editorkit-icons",
+  "name": "editor-icons",
   "version": "0.0.1",
   "description": "",
-  "webpack": "dist",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single editorkit-icons",
+    "prepublish": "cd .. && npm run prepublish/single editor-icons",
     "pre-release": "lerna-semantic-release pre"
   },
   "private": true,
@@ -15,11 +14,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "skatejs": "1.0.0-beta.2"
+    "skatejs": "1.0.0-beta.7"
   },
   "devDependencies": {
     "idomizer": "^0.5.2",
     "loader-utils": "^0.2.15",
-    "lodash.camelcase": "^4.1.1"
+    "lodash.camelcase": "^4.1.1",
+    "akutil-react": "0.0.3"
   }
 }

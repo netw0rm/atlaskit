@@ -22,7 +22,7 @@
     "css-loader": "^0.23.1",
     "cucumber": "^1.2.1",
     "cz-conventional-changelog": "^1.1.6",
-    "cz-lerna-changelog": "0.2.1",
+    "cz-lerna-changelog": "0.2.2",
     "eslint": "^2.13.1",
     "eslint-config-ak-base": "^1.1.2",
     "eslint-config-ak-cucumber": "^1.0.2",

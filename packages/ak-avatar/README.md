@@ -14,19 +14,16 @@ npm install ak-avatar
 
 ## Using the definition
 
-The `ak-avatar` package also exports the [Skate](https://github.com/skatejs/skatejs) definition, 
-which allows you to define your own components using the Avatar definition, e.g.:
+The `ak-avatar` package exports the [Skate](https://github.com/skatejs/skatejs) definition for the 
+Avatar component, which allows you to define your own components, e.g.:
 
 ```
 import { define } from 'skatejs';
-import { definition } from 'ak-avatar';
+import definition from 'ak-avatar';
 
-define('x-avatar', definition);
+define('ak-avatar', definition);
 ```
 ## Component API
-
-* [Avatar](#Avatar)
-    * [`new Avatar()`](#new_Avatar_new)
 
 * Properties
 
@@ -34,7 +31,7 @@ define('x-avatar', definition);
     *  [`avatar.src`](#Avatar+src) : string
     *  [`avatar.alt`](#Avatar+alt) : string
 
-### `new Avatar()`
+### Constructor
 The definition for the Avatar component.
 
 **HTML Example**

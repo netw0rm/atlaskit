@@ -7,7 +7,7 @@ This is a template for AtlasKit components. Update this skeleton with Usage inst
 ## Setup and install
 
 ```
-npm install ak-my-component
+npm install my-component
 ```
 
 ## Using the definition
@@ -17,14 +17,12 @@ which allows you to define your own components using the Avatar definition, e.g.
 
 ```
 import { define } from 'skatejs';
-import definition from 'ak-my-component';
+import definition from 'my-component';
 
-define('x-my-component', definition);
+define('my-component', definition);
 ```
+/atlassian-home/src/repos/atlaskit/node_modules/ak-dmd-plugin/lib
 ## Component API
-
-* [MyComponent](#MyComponent)
-    * [`new MyComponent()`](#new_MyComponent_new)
 
 * Properties
 
@@ -38,17 +36,22 @@ define('x-my-component', definition);
 
     *  [`"my-event"`](#MyComponent+event_my-event)
 
-### `new MyComponent()`
-The definition for the component.
+### Constructor
+Define a component using the exported definition.
 
+You may then create instances of the component programatically, or using markup.
+
+**JS Example**
+```js
+import { define } from 'skatejs';
+import definition from 'ak-component-name';
+
+const MyComponent = define('my-component', definition);
+const myComponent = new MyComponent();
+```
 **HTML Example**
 ```js
 <my-component></my-component>
-```
-**JS Example**
-```js
-import MyComponent from 'ak-component-name';
-const myComponent = new MyComponent();
 ```
 ### `myComponent.myProperty` : string
 Description of myProperty

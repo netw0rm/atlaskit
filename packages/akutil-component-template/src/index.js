@@ -5,11 +5,16 @@ import { emit, vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
 
 /**
- * @description The definition for the component.
+ * @description Define a component using the exported definition.
+ *
+ * You may then create instances of the component programatically, or using markup.
  * @class MyComponent
- * @example @html <my-component></my-component>
- * @example @js import MyComponent from 'ak-component-name';
+ * @example @js import { define } from 'skatejs';
+ * import definition from 'ak-component-name';
+ *
+ * const MyComponent = define('my-component', definition);
  * const myComponent = new MyComponent();
+ * @example @html <my-component></my-component>
  */
 const definition = {
   render(elem) {

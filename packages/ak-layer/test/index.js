@@ -26,13 +26,14 @@ describe('ak-layer', () => {
     targetNode.style.width = '60px';
     targetNode.style.height = '60px';
     targetNode.style.margin = '100px';
+    targetNode.setAttribute('id', 'target');
     layerContainer.appendChild(targetNode);
     const rectTarget = targetNode.getBoundingClientRect();
 
     beforeEach(() => {
       component = new LayerWC();
       component.innerHTML = '<div style="width:10px; height:10px;"></div>';
-      component.target = targetNode;
+      component.target = '#target';
       layerContainer.appendChild(component);
     });
 

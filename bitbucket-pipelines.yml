@@ -1,6 +1,10 @@
 image: atlassianlabs/atlaskit
 pipelines:
   branches:
+    make-registry-build-clearer:
+      - step:
+          script:
+            - npm run release/registry
     master:
       - step:
           script:

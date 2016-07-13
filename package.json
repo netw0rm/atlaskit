@@ -78,7 +78,7 @@
     "ui",
     "web"
   ],
-  "license": "Proprietary",
+  "license": "Apache-2.0",
   "main": "index.js",
   "os": [
     "!win32"

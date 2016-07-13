@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "react": "^0.14.0",
-    "skatejs-react-integration": "^0.0.5",
+    "skatejs-react-integration": "^0.0.6",
     "uid": "^0.0.2"
   },
   "author": "Atlassian Pty Ltd",

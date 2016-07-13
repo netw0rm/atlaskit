@@ -62,7 +62,6 @@ class DialogWithInput extends Component {
           open={this.state.open}
           target="#target"
           position="top left"
-          renderElementTo="#root"
         >
           some text in inline-dialog
         </Dialog>

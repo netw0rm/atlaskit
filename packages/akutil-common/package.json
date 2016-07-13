@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "skatejs": "v1.0.0-beta.7",
-    "tether": "^1.3.2"
+    "tether": "nadiam84/tether"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,5 @@
+import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
+
 const buildUrl = (baseUrl, path, data) => {
   const searchParam = new URLSearchParams();
   for (const key in data) { // eslint-disable-line no-restricted-syntax

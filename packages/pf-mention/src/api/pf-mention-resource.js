@@ -8,7 +8,7 @@ const buildUrl = (baseUrl, path, data) => {
     }
   }
   let seperator = '';
-  if (!baseUrl.endsWith('/')) {
+  if (baseUrl.substr(-1) !== '/') {
     seperator = '/';
   }
   return `${baseUrl}${seperator}${path}?${searchParam.toString()}`;

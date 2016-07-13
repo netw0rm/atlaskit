@@ -9,12 +9,14 @@ mkdir -p ../atlaskit-registry/_data ../atlaskit-registry/api ../atlaskit-registr
 
 # Install panop (converts monorepo to single YAML summary file)
 echo "Installing panop from Atlassian private npm"
-if [ -n "$NPM_TOKEN" ]
-  then
-    npm set @atlassian:registry "https://npm-private.atlassian.io/"
-    npm set //npm-private.atlassian.io/:_authToken=$NPM_TOKEN
-fi
-npm install --progress=false @atlassian/panop
+npm install --progress=false "git+https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/atlassian/panop.git"
+# When BB Pipelines can access internal npm, we can use normal npm:
+# if [ -n "$NPM_TOKEN" ]
+#   then
+#     npm set @atlassian:registry "https://npm-private.atlassian.io/"
+#     npm set //npm-private.atlassian.io/:_authToken=$NPM_TOKEN
+# fi
+# npm install --progress=false @atlassian/panop
 
 # Generate momnorep summary which will feed into jekyll
 echo "Generating summary files using panop"

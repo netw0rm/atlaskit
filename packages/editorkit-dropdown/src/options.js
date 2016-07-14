@@ -1,4 +1,4 @@
-import { vdom, define, state, prop, emit } from 'skatejs';
+import { vdom, define, prop, emit } from 'skatejs';
 import classnames from 'classnames';
 import styles from './options.less';
 
@@ -8,10 +8,12 @@ export const optionsFactory = (name, font, readableName) => {
       return (
         <div>
           <style>{styles.toString()}</style>
-          <a className={classnames(
+          <a
+            onclick={ _ => emit(elem, 'selectFont') }
+            className={classnames(
             styles.locals[font],
             styles.locals.selectOptions, {
-              [styles.locals.active]: state(elem).active === true
+              [styles.locals.active]: elem.active === true
             }
           )}
           >{readableName}</a>
@@ -20,11 +22,6 @@ export const optionsFactory = (name, font, readableName) => {
     },
     ready(elem) {
       elem.readableName = readableName;
-      const button = elem.querySelector('a');
-      button.addEventListener('mouseup', _ => button.blur());
-      button.addEventListener('click', _ => {
-        emit(elem, 'selected');
-      });
     },
     props: {
       active: prop.boolean({

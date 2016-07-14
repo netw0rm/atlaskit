@@ -15,5 +15,7 @@ storiesOf(name, module)
     <Component style={{ position: 'absolute', left: 100 }} />
   ))
   .add('a editorkit-dropdown at the bottom', () => (
-    <Component style={{ position: 'absolute', left: 100, bottom: 0 }} />
+    <div style={{ marginLeft: 100, marginTop:700 }}>
+      <Component />
+    </div>
   ));

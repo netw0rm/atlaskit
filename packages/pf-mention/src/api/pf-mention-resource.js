@@ -1,4 +1,7 @@
 import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
+require('es6-promise').polyfill();
+import 'whatwg-fetch';
+
 
 const buildUrl = (baseUrl, path, data) => {
   const searchParam = new URLSearchParams();

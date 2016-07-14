@@ -1,20 +1,24 @@
-import { define, vdom, state } from 'skatejs';
+import { vdom, prop } from 'skatejs';
 import styles from './index.less';
 import './font-select';
 import './options';
-import './overlay'
+import './overlay';
+
+function toggle(elem) {
+  const overlay = elem.querySelector('editorkit-overlay');
+  overlay.open = !overlay.open;
+
+  const fontSelect = elem.querySelector('editorkit-font-select');
+  fontSelect.open = !fontSelect.open;
+}
 
 export default {
   render(elem) {
-    // console.log(elem)
-    //
-    // console.log(state(elem))
-
     return (
       <div className={styles.locals.root}>
         <style>{styles.toString()}</style>
         <editorkit-overlay />
-        <editorkit-font-select className={styles.locals.dropdown} selectedReadableName={state(elem).selectedReadableName}>
+        <editorkit-font-select className={styles.locals.dropdown} selectedReadableName={elem.selectedReadableName}>
           <editorkit-option-paragraph />
           <editorkit-option-heading1 />
           <editorkit-option-heading2 />
@@ -25,34 +29,26 @@ export default {
     );
   },
   ready(elem) {
-    // console.log('ready')
-
-    // console.log(elem)
-    state(elem, {
-      selectedReadableName: 'Paragraph'
-    });
-    // console.log(state(elem))
+    elem.selectedFont = 'editorkit-option-paragraph';
+    elem.selectedReadableName = 'Paragraph';
   },
   events: {
     selectFont(elem, { target }) {
-      console.log('select font')
+      elem.selectedReadableName = target.readableName;
 
-      state(elem, {
-        selectedReadableName: target.readableName
-      })
+      const selectedFont = elem.querySelector(elem.selectedFont);
+      selectedFont.active = false
+      elem.selectedFont = target.tagName.toLowerCase();
 
-      state(target, {
-        open: true
-      });
+      target.active = true;
 
-      // console.log(elem.querySelector('ak-layer'))
+      toggle(elem);
     },
-    toggleDropdown(elem, { target }) {
-      console.log('toggle dropdown')
-
-      state(target, {
-        open: !target.open
-      });
+    toggleDropdown(elem) {
+      toggle(elem);
     }
   },
+  props: {
+    selectedReadableName: prop.string()
+  }
 }

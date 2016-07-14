@@ -4,7 +4,7 @@ import 'ak-layer';
 
 export default define('editorkit-font-select', {
   render(elem) {
-    const slotStyle = {
+    const style = {
       display: elem.open ? 'block' : 'none'
     };
 
@@ -13,12 +13,12 @@ export default define('editorkit-font-select', {
     return (
       <div>
         <style>{styles.toString()}</style>
-        <a className={className}
-          onclick={ _ => {
-            emit(elem, 'toggleDropdown')
-          } }
-          >{elem.selectedReadableName}</a>
-        <ak-layer target={`.${className}`} position="bottom center" style={slotStyle} open={elem.open}>
+        <a
+          className={className}
+          onclick={_ => {
+            emit(elem, 'toggleDropdown');
+          }}>{elem.selectedReadableName}</a>
+        <ak-layer target={`.${className}`} position="bottom center" style={style} open={elem.open}>
           <slot></slot>
         </ak-layer>
       </div>
@@ -27,5 +27,5 @@ export default define('editorkit-font-select', {
   props: {
     open: prop.boolean({ attribute: true }),
     selectedReadableName: prop.string({ attribute: true })
-  },
+  }
 });

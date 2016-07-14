@@ -10,11 +10,11 @@ export default define('editorkit-overlay', {
     return (
       <div>
         <style>{styles.toString()}</style>
-        <div className={styles.locals.overlay} style={style} onclick={ _ => {
-
-          emit(elem.parentNode, 'toggleDropdown')
-        } }></div>
+        <div className={styles.locals.overlay} style={style} onclick={_ => emit(elem, 'toggleDropdown')}></div>
       </div>
     );
+  },
+  props: {
+    open: prop.boolean({ attribute: true })
   }
 });

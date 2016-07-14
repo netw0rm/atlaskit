@@ -1,4 +1,5 @@
 import headStyles from 'style!../host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import shadowStyles from './pf-resourced-mention-list-shadow.less';
 import mentionList from './pf-mention-list'; // eslint-disable-line no-unused-vars
 import { localProp } from './skate-local-props';
 
@@ -118,10 +119,13 @@ const definition = {
 
   render(elem) {
     return (
-      <pf-mention-list
-        mentions={elem.mentions}
-        ref={(ref) => { elem._mentionListRef = ref; }}
-      />
+      <div>
+        <style>{shadowStyles.toString()}</style>
+        <pf-mention-list
+          mentions={elem.mentions}
+          ref={(ref) => { elem._mentionListRef = ref; }}
+        />
+      </div>
     );
   },
 

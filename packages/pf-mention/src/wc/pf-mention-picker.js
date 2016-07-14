@@ -1,4 +1,5 @@
 import headStyles from 'style!../host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import shadowStyles from './pf-mention-picker-shadow.less';
 import pfResourcedMentionList from './pf-resourced-mention-list'; // eslint-disable-line no-unused-vars, max-len
 import { localProp } from './skate-local-props';
 
@@ -53,20 +54,23 @@ const definition = {
 
     if (target) {
       return (
-        <ak-inline-dialog
-          target={target}
-          open={elem.visible ? 'true' : 'false'}
-          position={position}
-          renderElementTo={renderElementTo}
-          padding="0"
-        >
-          <pf-resourced-mention-list
-            resourceProvider={resourceProvider}
-            presenceProvider={presenceProvider}
-            query={query}
-            ref={(ref) => { elem._mentionListRef = ref; }}
-          />
-        </ak-inline-dialog>
+        <div>
+          <style>{shadowStyles.toString()}</style>
+          <ak-inline-dialog
+            target={target}
+            open={elem.visible ? 'true' : 'false'}
+            position={position}
+            renderElementTo={renderElementTo}
+            padding="0"
+          >
+            <pf-resourced-mention-list
+              resourceProvider={resourceProvider}
+              presenceProvider={presenceProvider}
+              query={query}
+              ref={(ref) => { elem._mentionListRef = ref; }}
+            />
+          </ak-inline-dialog>
+        </div>
       );
     }
     return null;

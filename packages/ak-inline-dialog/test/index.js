@@ -4,7 +4,7 @@ import AkInlineDialog from '../src/index.register.js';
 
 chai.use(chaiAsPromised);
 chai.should();
-const expect = chai.expect; // eslint-disable-line no-unused-vars
+const expect = chai.expect;
 
 describe('ak-inline-dialog', () => {
   const inlineDialogContainer = document.createElement('div');
@@ -36,21 +36,21 @@ describe('ak-inline-dialog', () => {
       expect(component.offsetParent).to.equal(null);
     });
 
-    it('should be open when property \'open\' is set to true', () => {
+    it('should be open when property `open` is set to true', () => {
       component.open = 'true';
       expect(component.getBoundingClientRect().width > 0).to.equal(true);
       expect(component.getBoundingClientRect().height > 0).to.equal(true);
       expect(component.offsetParent).not.to.equal(null);
     });
 
-    it('should be open when attribute \'open\' is set to true', () => {
+    it('should be open when attribute `open` is set to true', () => {
       component.setAttribute('open', 'true');
       expect(component.getBoundingClientRect().width > 0).to.equal(true);
       expect(component.getBoundingClientRect().height > 0).to.equal(true);
       expect(component.offsetParent).not.to.equal(null);
     });
 
-    it('should be closed when property \'open\' is set to false', () => {
+    it('should be closed when property `open` is set to false', () => {
       // should be open first before attempts to close it
       component.open = 'true';
 
@@ -60,7 +60,7 @@ describe('ak-inline-dialog', () => {
       expect(component.offsetParent).to.equal(null);
     });
 
-    it('should be closed when attribute \'open\' is set to false', () => {
+    it('should be closed when attribute `open` is set to false', () => {
       // should be open first before attempts to close it
       component.open = 'true';
 
@@ -70,7 +70,7 @@ describe('ak-inline-dialog', () => {
       expect(component.offsetParent).to.equal(null);
     });
 
-    it('attribute \'open\' and property \'open\' should have the same value', () => {
+    it('attribute `open` and property `open` should have the same value', () => {
       component.open = 'true';
       expect(component.open).to.equal('true');
       expect(component.getAttribute('open')).to.equal('true');

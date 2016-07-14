@@ -2,9 +2,9 @@
 # 2.0.0 (2016-07-14)
 
 
-### Bug Fixes
+### Features
 
-* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
+* new story ([30addc3](https://bitbucket.org/atlassian/atlaskit/commits/30addc3))
 
 
 

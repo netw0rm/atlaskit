@@ -1,5 +1,15 @@
-<a name="1.0.1"></a>
-## 1.0.1 (2016-07-14)
+<a name="1.0.2"></a>
+## 1.0.2 (2016-07-14)
+
+
+
+<a name="pf-mention@1.0.2"></a>
+## pf-mention@1.0.2 (2016-07-14)
+
+
+### Bug Fixes
+
+* Fix bad export for MentionResource ([1502f73](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/1502f73))
 
 
 
@@ -19,9 +29,9 @@
 # pf-mention@1.0.0 (2016-07-12)
 
 
-### Bug Fixes
+### Features
 
-* bricked release 0.0.9 ([20604da](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/20604da))
+* new story ([30addc3](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/30addc3))
 
 
 

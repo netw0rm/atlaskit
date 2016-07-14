@@ -4,8 +4,12 @@
 
 ### Bug Fixes
 
-* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
 * style assignment on reactified WC ([7b7c2d6](https://bitbucket.org/atlassian/atlaskit/commits/7b7c2d6))
+
+
+### Features
+
+* new story ([30addc3](https://bitbucket.org/atlassian/atlaskit/commits/30addc3))
 
 
 

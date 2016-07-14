@@ -19,13 +19,14 @@
 
 ### Bug Fixes
 
-* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
+* fixed troubles with switching between stories ([d0fe678](https://bitbucket.org/atlassian/atlaskit/commits/d0fe678))
 * remove string attr from target ([26ed13d](https://bitbucket.org/atlassian/atlaskit/commits/26ed13d))
 
 
 ### Features
 
 * "doNotMoveInDOM" property (tether fork) ([6405bdc](https://bitbucket.org/atlassian/atlaskit/commits/6405bdc))
+* new story ([30addc3](https://bitbucket.org/atlassian/atlaskit/commits/30addc3))
 * return using layer into inline-dialog ([9a905d2](https://bitbucket.org/atlassian/atlaskit/commits/9a905d2))
 
 

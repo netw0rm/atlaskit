@@ -134,6 +134,9 @@ const definition = {
       set(elem, data) {
         unsubscribeUpdates(elem, data.oldValue);
         subscribeUpdates(elem, data.newValue);
+        if (typeof elem.query === 'string') {
+          elem._updateQuery(elem.query);
+        }
       },
     }),
     presenceProvider: localProp.object({

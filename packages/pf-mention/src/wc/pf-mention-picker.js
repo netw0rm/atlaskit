@@ -51,14 +51,16 @@ const definition = {
   render(elem) {
     const { target, position, renderElementTo } = elem;
     const { resourceProvider, presenceProvider, query } = elem;
+    const style = {
+      display: elem.visible ? 'block' : 'none',
+    };
 
     if (target) {
       return (
-        <div>
+        <div style={style}>
           <style>{shadowStyles.toString()}</style>
           <ak-inline-dialog
             target={target}
-            open={elem.visible ? 'true' : 'false'}
             position={position}
             renderElementTo={renderElementTo}
             padding="0"

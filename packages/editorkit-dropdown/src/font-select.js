@@ -1,4 +1,5 @@
 import { vdom, define, prop, emit } from 'skatejs';
+import classnames from 'classnames';
 import styles from './font-select.less';
 import 'ak-layer';
 
@@ -14,7 +15,9 @@ export default define('editorkit-font-select', {
       <div>
         <style>{styles.toString()}</style>
         <a
-          className={className}
+          className={classnames(className, {
+            [styles.locals.active]: elem.open
+          })}
           onclick={_ => {
             emit(elem, 'toggleDropdown');
           }}>{elem.selectedReadableName}</a>

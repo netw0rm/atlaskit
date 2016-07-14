@@ -1,6 +1,6 @@
 {
   "name": "pf-mention",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "pf-mention webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -15,14 +15,15 @@
     "ak-inline-dialog": "^69.2.0",
     "akutil-common": "^0.1.0",
     "akutil-shared-styles": "*",
+    "es6-promise": "^3.2.1",
     "skatejs": "1.0.0-beta.7",
-    "url-search-params": "^0.5.0"
+    "url-search-params": "^0.5.0",
+    "whatwg-fetch": "^1.0.0"
   },
   "author": "Atlassian Pty. Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
     "akutil-react": "^0.0.3",
-    "fetch-mock": "^4.6.0",
-    "isomorphic-fetch": "^2.2.1"
+    "fetch-mock": "^4.6.0"
   }
 }

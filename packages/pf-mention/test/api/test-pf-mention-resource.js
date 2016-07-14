@@ -2,7 +2,6 @@ import MentionResource from '../../src/api/pf-mention-resource';
 
 import { resultC, resultCraig } from '../../src/data';
 
-import 'isomorphic-fetch'; // for Safari & Mobile Chrome
 import fetchMock from 'fetch-mock';
 
 const baseUrl = 'https://bogus/';

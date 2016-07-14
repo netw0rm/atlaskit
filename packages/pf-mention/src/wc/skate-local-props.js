@@ -8,7 +8,6 @@ const object = prop.create({
 
 const reference = prop.create({
   set(elem, data) {
-    // console.log('event onref set', data);
     const ref = data.newValue;
     if (ref) {
       ref(elem);

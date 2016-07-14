@@ -110,7 +110,7 @@
     "storybook": "start-storybook -p 9001 -c ./build/storybook",
     "storybook/single": "./build/bin/storybook.single.sh",
     "test": "lerna exec -- ../../build/bin/test.sh --reporters=dots",
-    "test/pipelines-branch": "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD) node ./build/bin/test.pipelines.js",
+    "test/pipelines-branch": "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD) ./build/bin/test.pipelines.js",
     "test/browserstack": "./build/bin/test.browserstack.sh",
     "test/browserstack/ci": "./build/bin/test.browserstack.ci.sh",
     "test/integration/browserstack": "node ./build/bin/test.integration.browserstack.js",

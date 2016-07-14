@@ -12,8 +12,8 @@ const Component = reactify(uniqueWebComponent(name, definition, define), {
 
 storiesOf(name, module)
   .add('a simple editorkit-dropdown', () => (
-    <Component />
+    <Component style={{ position: 'absolute', left: 100 }} />
   ))
   .add('a editorkit-dropdown at the bottom', () => (
-    <Component style={{ position: 'absolute', bottom: 0 }} />
+    <Component style={{ position: 'absolute', left: 100, bottom: 0 }} />
   ));

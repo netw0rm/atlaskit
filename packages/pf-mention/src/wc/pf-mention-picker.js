@@ -86,11 +86,19 @@ const definition = {
     }),
     presenceProvider: localProp.object(),
     ref: localProp.reference(),
-    query: prop.string(),
+    query: prop.string({
+      attribute: true,
+    }),
     // ak-inline-dialog
-    target: prop.string(),
-    position: prop.string(),
-    renderElementTo: prop.string(),
+    target: prop.string({
+      attribute: true,
+    }),
+    position: prop.string({
+      attribute: true,
+    }),
+    renderElementTo: prop.string({
+      attribute: true,
+    }),
   },
 };
 

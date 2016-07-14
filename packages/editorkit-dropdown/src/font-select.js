@@ -8,7 +8,7 @@ export default define('editorkit-font-select', {
       display: elem.open ? 'block' : 'none'
     };
 
-    const className = styles.locals['font-select'];
+    const className = styles.locals.fontSelect;
 
     return (
       <div>

@@ -20,7 +20,6 @@
     "akutil-react": "*",
     "akutil-shared-styles": "*",
     "classnames": "^2.2.5",
-    "skatejs": "1.0.0-beta.7",
-    "web-animations-js": "^2.2.1"
+    "skatejs": "1.0.0-beta.7"
   }
 }

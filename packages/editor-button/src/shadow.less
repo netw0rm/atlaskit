@@ -3,9 +3,6 @@
 @hoverColor: #DEE1E6;
 @activeBackgroundColor: #42526E;
 @activeForegroundColor: white;
-@disabledInactiveForegroundColor: grey;
-@disabledActiveBackgroundColor: grey;
-@disabledActiveForegroundColor: lightgrey;
 
 :root {
   display: inline-block;
@@ -71,19 +68,6 @@ button {
   }
 
   &[disabled] {
-    color: @disabledInactiveForegroundColor;
-
-    path {
-      fill: @disabledInactiveForegroundColor;
-    }
-
-    .active & {
-      background: @disabledActiveBackgroundColor;
-      color: @disabledActiveForegroundColor;
-
-      path {
-        fill: @disabledActiveForegroundColor;
-      }
-    }
+    opacity: 0.5;
   }
 }

@@ -9,10 +9,12 @@ function prExistsForBranch(prList, wantedBranch) {
   return false;
 }
 
-https.get('https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pullrequests?state=OPEN', (res) => {
+https.get('https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pullrequests?state=OPEN&pagelen=50', (res) => {
   res.setEncoding('utf8');
-  res.on('data', (d) => {
-    const prData = JSON.parse(d);
+  const body = [];
+  res.on('data', chunk => body.push(chunk));
+  res.on('end', () => {
+    const prData = JSON.parse(body.join(''));
     const prExists = prExistsForBranch(prData.values, process.env.CURRENT_BRANCH);
     const testCmd = prExists ? 'npm run test/browserstack/ci' : 'npm test';
     childProcess.execSync(testCmd, {

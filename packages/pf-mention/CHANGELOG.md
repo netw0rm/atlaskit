@@ -21,7 +21,7 @@
 
 ### Bug Fixes
 
-* remove use of a uniqueWebComponentOld ([200899e](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/200899e))
+* bricked release 0.0.9 ([20604da](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/20604da))
 
 
 

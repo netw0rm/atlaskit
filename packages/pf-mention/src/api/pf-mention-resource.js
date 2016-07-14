@@ -1,4 +1,7 @@
 import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
+require('es6-promise').polyfill();
+import 'whatwg-fetch';
+
 
 const buildUrl = (baseUrl, path, data) => {
   const searchParam = new URLSearchParams();
@@ -8,7 +11,7 @@ const buildUrl = (baseUrl, path, data) => {
     }
   }
   let seperator = '';
-  if (!baseUrl.endsWith('/')) {
+  if (baseUrl.substr(-1) !== '/') {
     seperator = '/';
   }
   return `${baseUrl}${seperator}${path}?${searchParam.toString()}`;
@@ -62,7 +65,9 @@ class AbstractMentionResource {
         listener(mentions.mentions);
       } catch (e) {
         // ignore error from listener
-        console.log('error from listener, ignoring', e);
+        if (process.env.NODE_ENV === 'development') {
+          console.log('error from listener, ignoring', e); // eslint-disable-line no-console
+        }
       }
     });
   }
@@ -73,7 +78,9 @@ class AbstractMentionResource {
         listener(error);
       } catch (e) {
         // ignore error from listener
-        console.log('error from listener, ignoring', e);
+        if (process.env.NODE_ENV === 'development') {
+          console.log('error from listener, ignoring', e); // eslint-disable-line no-console
+        }
       }
     });
   }
@@ -131,8 +138,10 @@ class MentionResource extends AbstractMentionResource {
         this._lastReturnedSearch = searchTime;
         this._notifyListeners(mentions);
       } else {
-        console.log('Stale search result, skipping',
-          new Date(searchTime).toISOString().substr(17, 6), query);
+        if (process.env.NODE_ENV === 'development') {
+          const date = new Date(searchTime).toISOString().substr(17, 6);
+          console.log('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
+        }
       }
     };
 

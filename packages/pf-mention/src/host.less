@@ -2,17 +2,16 @@
    HEAD and are not able to pierce the shadow DOM boundary */
 @import 'shared-variables.less';
 
-// FIXME - this should probably come from atlaskit...
-body {
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 13px;
-}
-
 pf-mention-list,
 pf-mention-item,
 pf-resourced-mention-list,
-pf-scrollable {
+pf-scrollable,
+pf-mention-picker {
   display: block;
+
+  &:not([defined]) {
+    display: none;
+  }
 }
 
 pf-scrollable {
@@ -21,4 +20,10 @@ pf-scrollable {
 
   padding: 0;
   margin: 0;
+
+  display: block;
+
+  &:not([defined]) {
+    display: none;
+  }
 }

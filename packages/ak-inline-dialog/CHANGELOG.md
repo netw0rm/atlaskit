@@ -1,5 +1,5 @@
 <a name="69.2.1"></a>
-## 69.2.1 (2016-07-14)
+## 69.2.1 (2016-07-15)
 
 
 
@@ -24,14 +24,15 @@
 
 ### Bug Fixes
 
-* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
 * remove string attr from target ([26ed13d](https://bitbucket.org/atlassian/atlaskit/commits/26ed13d))
+* remove use of a uniqueWebComponentOld ([200899e](https://bitbucket.org/atlassian/atlaskit/commits/200899e))
 
 
 ### Features
 
 * "doNotMoveInDOM" property (tether fork) ([6405bdc](https://bitbucket.org/atlassian/atlaskit/commits/6405bdc))
 * css options for inline-dialog ([a63837b](https://bitbucket.org/atlassian/atlaskit/commits/a63837b))
+* introducing register.js ([bc60ec1](https://bitbucket.org/atlassian/atlaskit/commits/bc60ec1))
 * return using layer into inline-dialog ([9a905d2](https://bitbucket.org/atlassian/atlaskit/commits/9a905d2))
 
 

@@ -1,5 +1,5 @@
 <a name="56.1.1"></a>
-## 56.1.1 (2016-07-14)
+## 56.1.1 (2016-07-15)
 
 
 
@@ -19,7 +19,6 @@
 
 ### Bug Fixes
 
-* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
 * remove string attr from target ([26ed13d](https://bitbucket.org/atlassian/atlaskit/commits/26ed13d))
 
 

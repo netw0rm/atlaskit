@@ -1,5 +1,5 @@
 <a name="0.0.12"></a>
-## 0.0.12 (2016-07-14)
+## 0.0.12 (2016-07-15)
 
 
 
@@ -25,6 +25,11 @@
 ### Bug Fixes
 
 * bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
+
+
+
+<a name="akutil-polyfills@0.0.5"></a>
+## akutil-polyfills@0.0.5 (2016-07-07)
 
 
 

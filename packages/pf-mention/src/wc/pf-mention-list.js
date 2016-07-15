@@ -167,14 +167,12 @@ const definition = {
       <div>
         <style>{shadowStyles.toString()}</style>
         <div className={classes}>
-          <div className={styles.innerList}>
-            <pf-scrollable
-              className={styles.scrollable}
-              ref={(ref) => { elem._scrollable = ref; }}
-            >
-              {renderItems(elem)}
-            </pf-scrollable>
-          </div>
+          <pf-scrollable
+            className={styles.scrollable}
+            ref={(ref) => { elem._scrollable = ref; }}
+          >
+            {renderItems(elem)}
+          </pf-scrollable>
         </div>
       </div>
     );

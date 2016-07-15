@@ -1,0 +1,8 @@
+// FIXME: workaround host.less not in shadow dom
+pf-mention-list {
+  display: block;
+
+  &:not([defined]) {
+    display: none;
+  }
+}

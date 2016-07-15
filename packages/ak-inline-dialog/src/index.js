@@ -2,7 +2,7 @@
 /* eslint react/no-unknown-property: 0 */
 
 import { getPositionFromClasses } from 'akutil-common';
-import { vdom, prop } from 'skatejs';
+import { vdom, prop, define } from 'skatejs';
 import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
 import 'ak-layer';
@@ -57,4 +57,4 @@ const definition = {
   },
 };
 
-export default definition;
+export default define('ak-inline-dialog', definition);

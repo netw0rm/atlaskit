@@ -1,22 +1,24 @@
-@foregroundColor: #505F79;
-@focusColor: #0091EA;
-@hoverColor: #DEE1E6;
-@activeBackgroundColor: #42526E;
-@activeForegroundColor: white;
+@backgroundColor: #42526e;
+@fontColor: #fff;
+@hoverBackgroundColor: #DEE1E6;
+@hoverFontColor: #DEE1E6;
+@activeBackgroundColor: #091E42;
+@activeFontColor: white;
 
 .selectOptions {
-  background: @foregroundColor;
-  color: @activeForegroundColor;
+  background: @backgroundColor;
+  color: @fontColor;
   width: 100%;
   display: block;
   cursor: pointer;
   padding: 5px 20px;
   &.active {
-    background: darken(@activeBackgroundColor, 20%);
-    color: @focusColor;
+    background: @activeBackgroundColor;
+    color: @activeFontColor;
   }
-  &.hover {
-    color: @hoverColor;
+  &:hover {
+    background: @hoverBackgroundColor;
+    color: @hoverFontColor;
   }
 }
 

@@ -1,8 +1,7 @@
-@foregroundColor: #505F79;
-@focusColor: #0091EA;
-@hoverColor: #DEE1E6;
-@activeBackgroundColor: #42526E;
-@activeForegroundColor: white;
+@activeBackgroundColor: #42526e;
+@activeFontColor: #fff;
+@hoverBackgroundColor: #E7EAF0;
+@hoverFontColor: #42526E;
 
 .font-select {
   cursor: pointer;
@@ -10,11 +9,16 @@
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   &.active {
-    background: @foregroundColor;
-    color: @activeForegroundColor;
+    background: @activeBackgroundColor;
+    color: @activeFontColor;
+    &:hover {
+      background: @activeBackgroundColor;
+      color: @activeFontColor;
+    }
   }
-  &.hover {
-    color: @hoverColor;
+  &:hover {
+    background: @hoverBackgroundColor;
+    color: @hoverFontColor;
   }
 }
 

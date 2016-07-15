@@ -99,7 +99,6 @@ const definition = {
   },
 
   // attached(elem) {
-  //   console.log('attached', elem);
   //   emit(elem, 'attached', {
   //     bubbles: false,
   //   });
@@ -152,4 +151,3 @@ const definition = {
 export default define('pf-mention-item', definition);
 
 export { definition };
-

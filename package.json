@@ -7,7 +7,7 @@
       "path": "./packages/akutil-cz-atlaskit-changelog"
     }
   },
-  "devDependencies": {
+  "dependencies": {
     "@kadira/storybook": "^1.38.0",
     "ak-dmd-plugin": "0.0.7",
     "akutil-polyfills": "^0.0.11",
@@ -60,6 +60,7 @@
     "raw-loader": "^0.5.1",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
+    "retry-cli": "^0.3.0",
     "semantic-release": "~4.3.0",
     "stats.js": "^0.16.0",
     "style-loader": "^0.13.1",
@@ -68,7 +69,6 @@
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },
-  "dependencies": {},
   "engines": {
     "npm": ">=3.8",
     "node": ">=6.1"
@@ -81,7 +81,7 @@
     "ui",
     "web"
   ],
-  "license": "Proprietary",
+  "license": "Apache-2.0",
   "main": "index.js",
   "os": [
     "!win32"

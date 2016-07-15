@@ -16,7 +16,7 @@
     "akutil-common": "^0.1.0",
     "akutil-shared-styles": "*",
     "classnames": "^2.2.5",
-    "skatejs": "1.0.0-beta.8"
+    "skatejs": "1.0.0-beta.9"
   },
   "devDependencies": {
     "akutil-react": "^0.0.3"

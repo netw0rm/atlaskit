@@ -14,14 +14,12 @@ npm install ak-avatar
 
 ## Using the definition
 
-The `ak-avatar` package exports the [Skate](https://github.com/skatejs/skatejs) definition for the 
-Avatar component, which allows you to define your own components, e.g.:
+The `ak-avatar` package exports the Avatar [skate](https://github.com/skatejs/skatejs) component:
 
 ```
-import { define } from 'skatejs';
-import definition from 'ak-avatar';
+import Avatar from 'ak-avatar';
 
-define('ak-avatar', definition);
+const myAvatar = new Avatar();
 ```
 ## Component API
 
@@ -58,7 +56,7 @@ The size of the avatar. One of:
 avatar.size = 'large';
 ```
 ### `avatar.src` : string
-The sauce.
+The source URL.
 
 **Kind**: instance property of Avatar  
 **HTML Example**

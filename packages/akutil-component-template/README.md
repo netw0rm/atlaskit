@@ -12,16 +12,13 @@ npm install my-component
 
 ## Using the definition
 
-The `ak-my-component` package also exports the [Skate](https://github.com/skatejs/skatejs) definition, 
-which allows you to define your own components using the Avatar definition, e.g.:
+The `ak-my-component` package exports the MyComponent [Skate](https://github.com/skatejs/skatejs) component.
 
 ```
-import { define } from 'skatejs';
-import definition from 'my-component';
+import MyComponent from 'my-component';
 
-define('my-component', definition);
+const myComponent = new MyComponent();
 ```
-/atlassian-home/src/repos/atlaskit/node_modules/ak-dmd-plugin/lib
 ## Component API
 
 * Properties
@@ -43,15 +40,8 @@ You may then create instances of the component programatically, or using markup.
 
 **JS Example**
 ```js
-import { define } from 'skatejs';
-import definition from 'ak-component-name';
-
-const MyComponent = define('my-component', definition);
+import MyComponent from 'ak-my-component';
 const myComponent = new MyComponent();
-```
-**HTML Example**
-```js
-<my-component></my-component>
 ```
 ### `myComponent.myProperty` : string
 Description of myProperty

@@ -9,12 +9,8 @@ import shadowStyles from './shadow.less';
  *
  * You may then create instances of the component programatically, or using markup.
  * @class MyComponent
- * @example @js import { define } from 'skatejs';
- * import definition from 'ak-component-name';
- *
- * const MyComponent = define('my-component', definition);
+ * @example @js import MyComponent from 'ak-my-component';
  * const myComponent = new MyComponent();
- * @example @html <my-component></my-component>
  */
 const definition = {
   render(elem) {

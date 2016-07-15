@@ -12,12 +12,10 @@ npm install my-component
 
 ## Using the definition
 
-The `ak-my-component` package also exports the [Skate](https://github.com/skatejs/skatejs) definition, 
-which allows you to define your own components using the Avatar definition, e.g.:
+The `ak-my-component` package exports the MyComponent [Skate](https://github.com/skatejs/skatejs) component.
 
 ```
-import { define } from 'skatejs';
-import definition from 'my-component';
+import MyComponent from 'my-component';
 
-define('my-component', definition);
+const myComponent = new MyComponent();
 ```

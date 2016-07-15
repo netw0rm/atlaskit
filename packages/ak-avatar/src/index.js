@@ -52,7 +52,7 @@ const Avatar = {
       attribute: true,
     }),
     /**
-     * @description The sauce.
+     * @description The source URL.
      * @memberof Avatar
      * @instance
      * @type {string}

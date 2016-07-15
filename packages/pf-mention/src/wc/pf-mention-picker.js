@@ -62,6 +62,7 @@ const definition = {
           <ak-inline-dialog
             target={target}
             position={position}
+            open={elem.visible}
             renderElementTo={renderElementTo}
             padding="0"
           >

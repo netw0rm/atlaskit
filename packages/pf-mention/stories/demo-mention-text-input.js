@@ -116,7 +116,6 @@ const MentionTextInput = React.createClass({
       );
     }
 
-
     return (
       <div className="pf-mention-text-input">
         {searchInput}

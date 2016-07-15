@@ -1,5 +1,5 @@
 <a name="0.0.12"></a>
-## 0.0.12 (2016-07-14)
+## 0.0.12 (2016-07-15)
 
 
 
@@ -30,16 +30,6 @@
 
 <a name="akutil-polyfills@0.0.5"></a>
 ## akutil-polyfills@0.0.5 (2016-07-07)
-
-
-### Bug Fixes
-
-* fixed troubles with switching between stories ([d0fe678](https://bitbucket.org/atlassian/atlaskit/commits/d0fe678))
-
-
-### Features
-
-* new story ([30addc3](https://bitbucket.org/atlassian/atlaskit/commits/30addc3))
 
 
 

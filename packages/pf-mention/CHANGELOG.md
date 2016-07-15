@@ -1,5 +1,15 @@
-<a name="1.0.2"></a>
-## 1.0.2 (2016-07-14)
+<a name="1.0.3"></a>
+## 1.0.3 (2016-07-15)
+
+
+
+<a name="pf-mention@1.0.3"></a>
+## pf-mention@1.0.3 (2016-07-15)
+
+
+### Bug Fixes
+
+* Pass open down to ak-inline-dialog to ensure reposition occurs at right time. ([7ef43d1](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/7ef43d1))
 
 
 
@@ -27,11 +37,6 @@
 
 <a name="pf-mention@1.0.0"></a>
 # pf-mention@1.0.0 (2016-07-12)
-
-
-### Features
-
-* new story ([30addc3](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/30addc3))
 
 
 

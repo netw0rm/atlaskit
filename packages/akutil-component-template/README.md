@@ -66,4 +66,3 @@ Description of 'my-event'
 | Name | Type | Description |
 | --- | --- | --- |
 | detail.tag | String | The tagName of the component. |
-

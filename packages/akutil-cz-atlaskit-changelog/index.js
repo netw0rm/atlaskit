@@ -15,7 +15,14 @@ module.exports = {
   prompter(cz, commit) {
     check('validate/lint-changed', false, () => {
       console.log('✓ Linting ok');
-      czLernaChangelog.prompter(cz, commit);
+      czLernaChangelog.prompter(cz, {
+        questions: {
+          scope: {
+            message:
+              `Denote the scope of this change\ (build, bump, component, package, docs, etc.):\n`,
+          },
+        },
+      }, commit);
     });
   },
 };

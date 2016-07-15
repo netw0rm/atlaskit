@@ -1,5 +1,5 @@
 # AtlasKit
-[![master build](https://pipelines-badges-service.internal.app.dev.atlassian.io/badge/atlassian/atlaskit.svg)](https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home)
+[![master build](https://bitbucket-badges.useast.staging.atlassian.io/badge/atlassian/atlaskit.svg)](https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
@@ -234,8 +234,8 @@ Releasing components is completely automated. The process of releasing will begi
 
 ## Update a dependency of AtlasKit
 * Install AtlasKit - if your installation is from before we had the shrinkwrap file, you should run `npm run clean`.
-* Install your new dependency: `npm install my-package --save-dev`.
-* Run `npm shrinkwrap --dev`
+* Install your new dependency: `npm install my-package --save`.
+* Run `npm shrinkwrap`
 * Create a PR
 
 ### Update the documentation (reminder)

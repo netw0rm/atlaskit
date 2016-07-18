@@ -263,5 +263,10 @@ describe('ak-layer', () => {
       component.position = 'top    left';
       testPosition(component, targetNode, defaultPosition, done);
     });
+
+    it('incorrect position should results in default position - whitespace', (done) => {
+      component.position = 'top\n\tleft';
+      testPosition(component, targetNode, defaultPosition, done);
+    });
   });
 });

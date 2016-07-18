@@ -9,8 +9,16 @@ const expect = chai.expect; // eslint-disable-line no-unused-vars
 
 
 describe('ak-badge', () => {
-  it('should be possible to create a component', () => {
+  it('should be possible to define the component', () => {
     const component = new AkutilComponentTemplate();
-    component[symbols.shadowRoot].innerHTML.should.match(/I am an .+? element!/);
+
+    expect(component).to.be.defined;
+    expect(component.getAttribute('defined')).not.to.equal(null);
+  });
+
+  it('should display the value specified', () => {
+    const component = new AkutilComponentTemplate();
+    component.value = 5;
+    component[symbols.shadowRoot].innerHTML.should.match(/5/);
   });
 });

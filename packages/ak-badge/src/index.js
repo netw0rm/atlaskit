@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 
-import { vdom } from 'skatejs';
+import { prop, vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
 
 const definition = {
@@ -15,9 +15,12 @@ const definition = {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
-        <p className={shadowStyles.locals.myClassName}>I am an {elem.tagName} element!</p>
+        <span className={shadowStyles.locals.value}>{elem.value}</span>
       </div>
     );
+  },
+  props: {
+    value: prop.number(),
   },
 };
 

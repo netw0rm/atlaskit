@@ -5,12 +5,10 @@ import { emit, vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
 
 /**
- * @description Define a component using the exported definition.
- *
- * You may then create instances of the component programatically, or using markup.
- * @class MyComponent
- * @example @js import MyComponent from 'ak-my-component';
- * const myComponent = new MyComponent();
+ * @description Create instances of the component programmatically, or using markup.
+ * @class AkUtilComponentTemplate
+ * @example @js import AkUtilComponentTemplate from 'akutil-component-template';
+ * const component = new AkUtilComponentTemplate();
  */
 const definition = {
   render(elem) {
@@ -23,39 +21,42 @@ const definition = {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
-        <p className={shadowStyles.locals.myClassName}>I am an {elem.tagName} element!</p>
+        <p className={shadowStyles.locals.myClassName}>My name is {elem.name}!</p>
       </div>
     );
   },
   props: {
     /**
-     * @description Description of myProperty
-     * @memberof MyComponent
+     * @description The name of the AkUtilComponentTemplate element.
+     * @memberof AkUtilComponentTemplate
      * @instance
      * @type {string}
+     * @default AkUtilComponentTemplate
      */
-    myProperty: {},
+    name: {
+      default: 'AkUtilComponentTemplate',
+    },
   },
   prototype: {
     /**
-     * @description Description for myMethod method.
-     * @memberof MyComponent
+     * @description Fire an event containing the name of the element.
+     * @memberof AkUtilComponentTemplate
      * @function
      * @instance
-     * @fires MyComponent#my-event
-     * @return {MyComponent} The MyComponent element.
-     * @example @js myComponent.myMethod(); // Fires the my-event event.
+     * @fires AkUtilComponentTemplate#announce-name
+     * @return {AkUtilComponentTemplate} The AkUtilComponentTemplate element.
+     * @example @js component.announce(); // Fires the announce-name event.
      */
-    myMethod() {
+    announce() {
       /**
-       * @event MyComponent#my-event
-       * @memberof MyComponent
-       * @description Description of 'my-event'
-       * @property {String} detail.tag The tagName of the component.
+       * @event AkUtilComponentTemplate#announce-name
+       * @memberof AkUtilComponentTemplate
+       * @description Fired when the `announce` method is called.
+       * @property {String} detail.name The name of the component.
        */
-      emit(this, 'my-event', {
+      emit(this, 'announce-name', {
         detail: {
-          tag: this.tagName,
+          name: this.name,
         },
       });
       return this;

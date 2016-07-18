@@ -15,6 +15,9 @@ storiesOf(name, module)
   .add('a simple akutil-component-template', () => (
     <Component />
   ))
+  .add('a simple akutil-component-template with a name', () => (
+    <Component name="MyComponent" />
+  ))
   .add('an akutil-component-template that emits an action when it is clicked', () => (
     <Component id="myComponent" onClick={action('clicking the WebComponent')} />
   ))

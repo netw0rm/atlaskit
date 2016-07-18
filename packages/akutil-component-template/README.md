@@ -1,68 +1,97 @@
-# MyComponent
+# AkUtilComponentTemplate
 
 ## Synopsis
 
-This is a template for AtlasKit components. Update this skeleton with Usage instructions.
+This is a template for AtlasKit components. Update this file with usage instructions and examples.
 
 ## Setup and install
 
 ```
-npm install my-component
+npm install akutil-component-template
 ```
 
-## Using the definition
+## Using the component
 
-The `ak-my-component` package exports the MyComponent [Skate](https://github.com/skatejs/skatejs) component.
+### HTML
+
+The `akutil-component-template` package exports the AkUtilComponentTemplate [Skate](https://github.com/skatejs/skatejs) component.
+
+Import the component in your JS resource:
+ 
+#### bundle.js
 
 ```
-import MyComponent from 'my-component';
+import AkUtilComponentTemplate from 'akutil-component-template';
+```
 
-const myComponent = new MyComponent();
+Now we can use the defined tag in our HTML markup, e.g.:
+
+#### index.html
+
+```
+<html>
+<head>
+  <script src="bundle.js"></script>
+</head>
+<body>
+  <!-- ... -->
+  <akutil-component-template name="My Component"></akutil-component-template>
+</body>
+```
+
+### React
+
+```
+import AkUtilComponentTemplate from 'akutil-component-template';
+import reactify from 'skatejs-react-integration';
+
+const ReactComponent = reactify(AkUtilComponentTemplate, {});
+
+ReactDOM.render(<ReactComponent />, container);
 ```
 ## Component API
 
 * Properties
 
-    *  [`myComponent.myProperty`](#MyComponent+myProperty) : string
+    *  [`akUtilComponentTemplate.name`](#AkUtilComponentTemplate+name) : string
 
 * Methods
 
-    *  [`myComponent.myMethod()`](#MyComponent+myMethod) ⇒ MyComponent
+    *  [`akUtilComponentTemplate.announce()`](#AkUtilComponentTemplate+announce) ⇒ AkUtilComponentTemplate
 
 * Events
 
-    *  [`"my-event"`](#MyComponent+event_my-event)
+    *  [`"announce-name"`](#AkUtilComponentTemplate+event_announce-name)
 
 ### Constructor
-Define a component using the exported definition.
-
-You may then create instances of the component programatically, or using markup.
+Create instances of the component programmatically, or using markup.
 
 **JS Example**
 ```js
-import MyComponent from 'ak-my-component';
-const myComponent = new MyComponent();
+import AkUtilComponentTemplate from 'akutil-component-template';
+const component = new AkUtilComponentTemplate();
 ```
-### `myComponent.myProperty` : string
-Description of myProperty
+### `akUtilComponentTemplate.name` : string
+The name of the AkUtilComponentTemplate element.
 
-**Kind**: instance property of MyComponent  
-### `myComponent.myMethod()` ⇒ MyComponent
-Description for myMethod method.
+**Kind**: instance property of AkUtilComponentTemplate  
+**Default**: `"AkUtilComponentTemplate"`  
+### `akUtilComponentTemplate.announce()` ⇒ AkUtilComponentTemplate
+Fire an event containing the name of the element.
 
-**Kind**: instance method of MyComponent  
-**Returns**: MyComponent - The MyComponent element.  
-**Emits**: my-event  
+**Kind**: instance method of AkUtilComponentTemplate  
+**Returns**: AkUtilComponentTemplate - The AkUtilComponentTemplate element.  
+**Emits**: announce-name  
 **JS Example**
 ```js
-myComponent.myMethod(); // Fires the my-event event.
+component.announce(); // Fires the announce-name event.
 ```
-### `"my-event"`
-Description of 'my-event'
+### `"announce-name"`
+Fired when the `announce` method is called.
 
-**Kind**: event emitted by MyComponent  
+**Kind**: event emitted by AkUtilComponentTemplate  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| detail.tag | String | The tagName of the component. |
+| detail.name | String | The name of the component. |

@@ -9,9 +9,6 @@ const expect = chai.expect;
 const defaultPosition = 'right middle';
 
 describe('ak-inline-dialog', () => {
-  const inlineDialogContainer = document.createElement('div');
-  document.body.appendChild(inlineDialogContainer);
-
   it('should be possible to create a component', () => {
     let component;
     expect(() => {
@@ -32,6 +29,21 @@ describe('ak-inline-dialog', () => {
 
     component.innerHTML = htmlConent;
     expect(component.innerHTML).to.equal(htmlConent);
+  });
+
+  it('event handlers inside a component should work', () => {
+    const component = new AkInlineDialog();
+    const button = document.createElement('button');
+    let clicked = false;
+    const event = new CustomEvent('click', {});
+
+    button.addEventListener('click', () => {
+      clicked = true;
+    });
+
+    component.appendChild(button);
+    button.dispatchEvent(event);
+    expect(clicked).to.equal(true);
   });
 
   it('should have all the default properties after creation', () => {
@@ -79,14 +91,18 @@ describe('ak-inline-dialog', () => {
   });
 
   describe('visibility', () => {
+    let inlineDialogContainer;
     let component;
+
     beforeEach(() => {
+      inlineDialogContainer = document.createElement('div');
       component = new AkInlineDialog();
       inlineDialogContainer.appendChild(component);
+      document.body.appendChild(inlineDialogContainer);
     });
 
     afterEach(() => {
-      inlineDialogContainer.removeChild(component);
+      document.body.removeChild(inlineDialogContainer);
     });
 
     it('should be closed by default', () => {

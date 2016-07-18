@@ -71,37 +71,6 @@ const alignments = {
 };
 
 describe('ak-layer', () => {
-  function createComponent(idCounter) {
-    const node = new LayerWC();
-    node.innerHTML = '<div style="width:10px; height:10px;"></div>';
-    node.target = `#target${idCounter}`;
-    return node;
-  }
-
-  function createTarget(idCounter) {
-    const node = document.createElement('div');
-    node.style.width = '60px';
-    node.style.height = '60px';
-    node.setAttribute('id', `target${idCounter}`);
-    return node;
-  }
-  function testPosition(component, targetNode, key, done) {
-    let rectComponent;
-    let rectTarget;
-    setTimeout(() => {
-      rectComponent = component.getBoundingClientRect();
-      rectTarget = targetNode.getBoundingClientRect();
-      expect(alignments[key].top(rectComponent, rectTarget)).to.equal(0);
-      expect(alignments[key].left(rectComponent, rectTarget)).to.equal(0);
-      done();
-    }, 1);
-  }
-
-  let idCounter = 0;
-  function getTargetId() {
-    return ++idCounter;
-  }
-
   it('should be possible to create a component', () => {
     let component;
     expect(() => {
@@ -156,6 +125,37 @@ describe('ak-layer', () => {
     let component;
     let targetNode;
     let layerContainer;
+    let idCounter = 0;
+
+    function getTargetId() {
+      return ++idCounter;
+    }
+
+    function createComponent(id) {
+      const node = new LayerWC();
+      node.innerHTML = '<div style="width:10px; height:10px;"></div>';
+      node.target = `#target${id}`;
+      return node;
+    }
+
+    function createTarget(id) {
+      const node = document.createElement('div');
+      node.style.width = '60px';
+      node.style.height = '60px';
+      node.setAttribute('id', `target${id}`);
+      return node;
+    }
+    function testPosition(elem, target, key, done) {
+      let rectComponent;
+      let rectTarget;
+      setTimeout(() => {
+        rectComponent = elem.getBoundingClientRect();
+        rectTarget = target.getBoundingClientRect();
+        expect(alignments[key].top(rectComponent, rectTarget)).to.equal(0);
+        expect(alignments[key].left(rectComponent, rectTarget)).to.equal(0);
+        done();
+      }, 1);
+    }
 
     beforeEach(() => {
       const targetID = getTargetId();

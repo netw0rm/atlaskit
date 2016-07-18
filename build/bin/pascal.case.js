@@ -1,11 +1,8 @@
-const log = require('minilog')('');
 const pascalCase = require('pascal-case');
 const args = process.argv.slice(2);
 
-require('minilog').pipe(process.stdout);
-
 function logPascalCase(arg) {
-  log(pascalCase(arg));
+  console.log(pascalCase(arg)); // eslint-disable-line no-console
 }
 
 args.forEach(logPascalCase);

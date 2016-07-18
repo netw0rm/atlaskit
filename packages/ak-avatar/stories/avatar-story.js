@@ -1,12 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import akAvatar from '../src/index';
+import AkAvatar from '../src/index';
 import avatarStoryStyles from 'style!./stories.less'; // eslint-disable-line import/no-unresolved
 import { name } from '../package.json';
 
 const { React, ReactDOM } = window;
 
-const Avatar = reactify(akAvatar, {
+const Avatar = reactify(AkAvatar, {
   React,
   ReactDOM,
 });

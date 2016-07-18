@@ -1,31 +1,10 @@
-@backgroundColor: #F0F2F5;
-@fontColor: #42526E;
-@activeBackgroundColor: #42526e;
-@activeFontColor: #fff;
-@hoverBackgroundColor: #E7EAF0;
-@hoverFontColor: #42526E;
-
 .font-select {
   cursor: pointer;
-  background: @backgroundColor;
-  color: @fontColor;
-  border: none;
-  border-radius: 3px;
-  padding: 0 10px;
-  font-size: 14px;
-  transition: background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
-  &.active {
-    background: @activeBackgroundColor;
-    color: @activeFontColor;
-    &:hover {
-      background: @activeBackgroundColor;
-      color: @activeFontColor;
-    }
-  }
-  &:hover {
-    background: @hoverBackgroundColor;
-    color: @hoverFontColor;
-  }
+}
+
+.button-span {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 ak-layer {

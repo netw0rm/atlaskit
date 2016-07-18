@@ -2,7 +2,7 @@
 /* eslint react/no-unknown-property: 0 */
 
 import { getPositionFromClasses } from 'akutil-common';
-import { vdom, prop, define } from 'skatejs';
+import { vdom, prop, define, symbols } from 'skatejs';
 import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
 import 'ak-layer';
@@ -31,6 +31,11 @@ const definition = {
     if (elem.borderRadius) {
       styles.borderRadius = elem.borderRadius;
     }
+
+    if (elem[symbols.shadowRoot].firstChild) {
+      elem[symbols.shadowRoot].firstChild.alignment.reposition();
+    }
+
     return (
       <ak-layer
         open={elem.open}
@@ -47,7 +52,7 @@ const definition = {
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
-    open: prop.string({ attribute: true, default: 'false' }),
+    open: prop.boolean({ attribute: true, default: false }),
     target: { attribute: true },
     attachment: prop.string({ attribute: true, default: 'window' }),
     renderElementTo: { attribute: true },

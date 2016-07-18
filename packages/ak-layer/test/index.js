@@ -127,7 +127,6 @@ describe('ak-layer', () => {
   it('all the properties should be attributes', () => {
     const props = {
       position: { value: 'top left', attr: 'position' },
-      open: { value: 'true', attr: 'open' },
       target: { value: '#test', attr: 'target' },
       attachment: { value: 'scrollParent', attr: 'attachment' },
       renderElementTo: { value: 'body', attr: 'render-element-to' },

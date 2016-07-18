@@ -7,7 +7,7 @@
       "path": "./packages/akutil-cz-atlaskit-changelog"
     }
   },
-  "devDependencies": {
+  "dependencies": {
     "@kadira/storybook": "^1.38.0",
     "akutil-polyfills": "^0.0.11",
     "babel-core": "^6.10.4",
@@ -29,7 +29,6 @@
     "eslint-config-ak-stories": "^2.0.0",
     "eslint-config-ak-tests": "^1.0.2",
     "eslint-friendly-formatter": "^2.0.5",
-    "glob": "^7.0.5",
     "gremlins.js": "marmelab/gremlins.js#699af579a2f3e36cd3ba1d68c13893e80e40e674",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.22.0",
@@ -66,7 +65,6 @@
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },
-  "dependencies": {},
   "engines": {
     "npm": ">=3.8",
     "node": ">=6.1"

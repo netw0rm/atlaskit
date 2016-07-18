@@ -1,15 +1,14 @@
 import { PropTypes } from 'react';
-import { define } from 'skatejs';
 import reactify from 'akutil-react';
 import akInlineDialog from 'ak-inline-dialog';
 
-import { definition as mentionPickerDef } from '../src/wc/pf-mention-picker';
+import pfMentionPicker from '../src/wc/pf-mention-picker';
 import SearchTextInput from './demo-search-text-input';
 import { getWebComponent } from './util';
 
-const { React, ReactDOM, uniqueWebComponent } = window;
+const { React, ReactDOM } = window;
 
-const MentionPicker = reactify(uniqueWebComponent('pf-mention-picker', mentionPickerDef, define), {
+const MentionPicker = reactify(pfMentionPicker, {
   React,
   ReactDOM,
 });
@@ -33,7 +32,7 @@ const MentionTextInput = React.createClass({
 
   getInitialState() {
     return {
-      active: true,
+      active: false,
       visible: false,
     };
   },
@@ -115,7 +114,6 @@ const MentionTextInput = React.createClass({
         />
       );
     }
-
 
     return (
       <div className="pf-mention-text-input">

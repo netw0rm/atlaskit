@@ -1,13 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import definition from '../src/index';
-import { define } from 'skatejs';
+import akAvatar from '../src/index';
 import avatarStoryStyles from 'style!./stories.less'; // eslint-disable-line import/no-unresolved
 import { name } from '../package.json';
 
-const { React, ReactDOM, uniqueWebComponent } = window;
+const { React, ReactDOM } = window;
 
-const Avatar = reactify(uniqueWebComponent(name, definition, define), {
+const Avatar = reactify(akAvatar, {
   React,
   ReactDOM,
 });
@@ -39,7 +38,7 @@ storiesOf(name, module)
     );
   })
   .add('A row of avatars', () => {
-    const avatarRowStyle = 'margin-left: 10px;';
+    const avatarRowStyle = { 'margin-left': '10px' };
     return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
       <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} />
       <Avatar src={avatarUrl} size="small" style={avatarRowStyle} />
@@ -49,7 +48,7 @@ storiesOf(name, module)
     </div>);
   })
   .add('A row of avatars with border color', () => {
-    const avatarRowStyle = 'margin-left: 10px;';
+    const avatarRowStyle = { 'margin-left': '10px' };
     const borderColor = 'red';
     return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
       <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} borderColor={borderColor} />
@@ -60,7 +59,7 @@ storiesOf(name, module)
     </div>);
   })
   .add('Avatars in a group', () => {
-    const avatarRowStyle = 'margin-left: -10px; position: relative;';
+    const avatarRowStyle = { 'margin-left': '10px', position: 'relative' };
     const borderColor = 'white';
     const divStyle = {
       padding: '10px',
@@ -75,7 +74,7 @@ storiesOf(name, module)
     </div>);
   })
   .add('Avatars in a group with a background color', () => {
-    const avatarRowStyle = 'margin-left: -10px; position: relative;';
+    const avatarRowStyle = { 'margin-left': '10px', position: 'relative' };
     const borderColor = 'white';
     const divStyle = {
       padding: '10px',

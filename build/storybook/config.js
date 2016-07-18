@@ -12,8 +12,6 @@ const log = minilog('storybook');
 // Utilities for stories
 window.React = React;
 window.ReactDOM = ReactDOM;
-window.uniqueWebComponent = (prefix, definition, define) =>
-  define(`${prefix}-${Math.random().toString(35).substr(2, 7)}`, definition);
 
 const req = require.context('../../packages/', true, /stories\/.+-story\.js$/);
 

@@ -39,7 +39,6 @@ storiesOf('Mention List Picker', module)
       onSelection={action('mention selected')}
       resourceProvider={resourceProvider}
       presenceProvider={new MockPresenceProvider()}
-      relativePosition="above"
     />
   ))
   .add('Input field at bottom mention list. Real API. Mocked presence', () => (

@@ -2,16 +2,15 @@ import storyStyles from 'style!./stories.less'; // eslint-disable-line no-unused
 
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import { define } from 'skatejs';
 
-import { definition } from '../src/wc/pf-resourced-mention-list';
+import pfResourcedMentionList from '../src/wc/pf-resourced-mention-list';
 import SearchTextInput from './demo-search-text-input';
 import { resourceProvider } from './story-data';
 import { getWebComponent } from './util';
 
-const { React, ReactDOM, uniqueWebComponent } = window;
+const { React, ReactDOM } = window;
 
-const ResourcedMentionList = reactify(uniqueWebComponent('pf-resourced-mention-list', definition, define), {
+const ResourcedMentionList = reactify(pfResourcedMentionList, {
   React,
   ReactDOM,
 });

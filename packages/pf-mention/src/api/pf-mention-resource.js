@@ -164,16 +164,14 @@ class MentionResource extends AbstractMentionResource {
    * @returns Promise
    */
   _initialState() {
-    // FIXME: FAB-139
     const options = {
-      query: '',
       groupId: this._config.securityProvider(),
       application: this._config.application,
     };
     if (this._config.containerId) {
       options.containerId = this._config.containerId;
     }
-    return requestService(this._config.url, 'mentions/search', options);
+    return requestService(this._config.url, 'mentions/bootstrap', options);
   }
 
   _search(query) {

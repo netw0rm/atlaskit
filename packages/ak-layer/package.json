@@ -1,9 +1,9 @@
 {
   "name": "ak-layer",
-  "version": "56.1.0",
+  "version": "56.1.1",
   "description": "A layer component",
   "main": "dist/bundle.js",
-  "webpack": "src/index.register.js",
+  "webpack": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-layer",
     "pre-release": "lerna-semantic-release pre"
@@ -16,7 +16,7 @@
   "dependencies": {
     "akutil-common": "^0.1.0",
     "akutil-shared-styles": "*",
-    "skatejs": "v1.0.0-beta.7"
+    "skatejs": "v1.0.0-beta.10"
   },
   "repository": {
     "type": "git",

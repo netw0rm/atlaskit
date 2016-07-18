@@ -235,8 +235,7 @@ describe('ak-layer', () => {
       });
     });
 
-    it(`should be ${defaultPosition}`, (done) => {
-      component.position = defaultPosition;
+    it(`default position should be ${defaultPosition}`, (done) => {
       testPosition(component, targetNode, defaultPosition, done);
     });
 

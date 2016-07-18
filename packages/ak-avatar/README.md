@@ -28,6 +28,7 @@ const myAvatar = new Avatar();
     *  [`avatar.size`](#Avatar+size) : string
     *  [`avatar.src`](#Avatar+src) : string
     *  [`avatar.alt`](#Avatar+alt) : string
+    *  [`avatar.borderColor`](#Avatar+borderColor) : string
 
 ### Constructor
 The definition for the Avatar component.
@@ -79,3 +80,7 @@ The alt text for the Avatar.
 ```js
 avatar.alt = 'Avatar image';
 ```
+### `avatar.borderColor` : string
+The border color for the Avatar.
+
+**Kind**: instance property of Avatar  

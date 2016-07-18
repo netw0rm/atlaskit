@@ -74,6 +74,12 @@ const definition = {
       attribute: true,
       default: '',
     },
+    /**
+     * @description The border color for the Avatar.
+     * @memberof Avatar
+     * @instance
+     * @type {string}
+     */
     borderColor: {
       attribute: true,
     },

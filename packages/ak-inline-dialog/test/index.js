@@ -1,20 +1,71 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkInlineDialog from '../src/index.js';
+import { name } from '../package.json';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
+const defaultPosition = 'right middle';
 
 describe('ak-inline-dialog', () => {
   const inlineDialogContainer = document.createElement('div');
   document.body.appendChild(inlineDialogContainer);
 
   it('should be possible to create a component', () => {
+    let component;
+    expect(() => {
+      component = new AkInlineDialog();
+    }).not.to.throw(Error);
+    expect(component.getAttribute('defined')).not.to.equal(null);
+    expect(component.tagName.toLowerCase()).to.equal(name);
+  });
+
+  it('should be possible to set content to a component', () => {
+    const component = new AkInlineDialog();
+    const textContent = 'some text inside inline dialog';
+    const htmlConent = '<div><h1>title</h1><p>Some text</p></div>';
+
+    component.textContent = 'some text inside inline dialog';
+    expect(component.textContent).to.equal(textContent);
+    expect(component.innerHTML).to.equal(textContent);
+
+    component.innerHTML = htmlConent;
+    expect(component.innerHTML).to.equal(htmlConent);
+  });
+
+  it('should have all the default properties after creation', () => {
     const component = new AkInlineDialog();
 
-    expect(component).to.be.defined;
-    expect(component.getAttribute('defined')).not.to.equal(null);
+    expect(component.position).not.to.equal(null);
+    expect(component.position).to.equal(defaultPosition);
+
+    expect(component.attachment).not.to.equal(null);
+    expect(component.attachment).to.equal('window');
+
+    expect(component.open).not.to.equal(null);
+    expect(component.open).to.equal('false');
+  });
+
+  it('all the properties should be attributes', () => {
+    const props = {
+      position: { value: 'top left', attr: 'position' },
+      open: { value: 'true', attr: 'open' },
+      target: { value: '#test', attr: 'target' },
+      attachment: { value: 'scrollParent', attr: 'attachment' },
+      renderElementTo: { value: 'body', attr: 'render-element-to' },
+      boxShadow: { value: 'none', attr: 'box-shadow' },
+      borderRadius: { value: '2px', attr: 'border-radius' },
+      padding: { value: '2px', attr: 'padding' },
+    };
+    const component = new AkInlineDialog();
+
+    Object.keys(props).forEach((key) => {
+      component[key] = props[key].value;
+      expect(component[key]).not.to.equal(null);
+      expect(component[key]).to.equal(props[key].value);
+      expect(component.getAttribute(props[key].attr)).to.equal(props[key].value);
+    });
   });
 
   describe('visibility', () => {

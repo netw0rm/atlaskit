@@ -111,6 +111,48 @@ describe('ak-layer', () => {
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 
+  it('should have all the default properties after creation', () => {
+    const component = new LayerWC();
+
+    expect(component.position).not.to.equal(null);
+    expect(component.position).to.equal(defaultPosition);
+
+    expect(component.attachment).not.to.equal(null);
+    expect(component.attachment).to.equal('window');
+
+    expect(component.doNotMoveInDOM).not.to.equal(null);
+    expect(component.doNotMoveInDOM).to.equal(true);
+  });
+
+  it('all the properties should be attributes', () => {
+    const props = {
+      position: { value: 'top left', attr: 'position' },
+      open: { value: 'true', attr: 'open' },
+      target: { value: '#test', attr: 'target' },
+      attachment: { value: 'scrollParent', attr: 'attachment' },
+      renderElementTo: { value: 'body', attr: 'render-element-to' },
+      doNotMoveInDOM: { value: false, attr: 'do-not-move-in-d-o-m' },
+    };
+    const component = new LayerWC();
+
+    Object.keys(props).forEach((key) => {
+      component[key] = props[key].value;
+      expect(component[key]).not.to.equal(null);
+      expect(component[key]).to.equal(props[key].value);
+
+      const attr = component.getAttribute(props[key].attr);
+      if (typeof props[key].value === 'boolean') {
+        if (props[key].value === false) {
+          expect(attr).to.equal(null);
+        } else {
+          expect(attr).to.equal('');
+        }
+      } else {
+        expect(attr).to.equal(props[key].value);
+      }
+    });
+  });
+
   describe('alignments', () => {
     let component;
     let targetNode;

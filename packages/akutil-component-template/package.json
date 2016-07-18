@@ -3,7 +3,7 @@
   "version": "3.1.1",
   "description": "akutil-component-template webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.register.js",
+  "webpack": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single akutil-component-template"
   },

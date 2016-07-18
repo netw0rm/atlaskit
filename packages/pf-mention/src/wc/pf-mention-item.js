@@ -2,7 +2,7 @@ import headStyles from 'style!../host.less'; // eslint-disable-line no-unused-va
 import shadowStyles from './pf-mention-item-shadow.less';
 import { localProp } from './skate-local-props';
 
-import akAvatar from 'ak-avatar'; // eslint-disable-line no-unused-vars
+import 'ak-avatar';
 import { define, vdom, prop, emit, state } from 'skatejs'; // eslint-disable-line no-unused-vars
 
 

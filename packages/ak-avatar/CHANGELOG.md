@@ -1,5 +1,15 @@
-<a name="0.13.1"></a>
-## 0.13.1 (2016-07-15)
+<a name="0.13.2"></a>
+## 0.13.2 (2016-07-18)
+
+
+
+<a name="ak-avatar@0.13.2"></a>
+## ak-avatar@0.13.2 (2016-07-18)
+
+
+### Bug Fixes
+
+* **skate:** SkateJS update to beta.10 ([620034a](https://bitbucket.org/atlassian/atlaskit/commits/620034a))
 
 
 
@@ -25,6 +35,11 @@
 
 <a name="ak-avatar@0.12.6"></a>
 ## ak-avatar@0.12.6 (2016-07-08)
+
+
+### Bug Fixes
+
+* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
 
 
 

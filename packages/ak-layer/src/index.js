@@ -1,9 +1,9 @@
 /** @jsx vdom */
 
-import { vdom, prop } from 'skatejs';
+import { vdom, prop, define } from 'skatejs';
 import { Alignment } from 'akutil-common';
 
-export default {
+const definition = {
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),
     attachment: prop.string({ attribute: true, default: 'window' }),
@@ -42,3 +42,5 @@ export default {
     );
   },
 };
+
+export default define('ak-layer', definition);

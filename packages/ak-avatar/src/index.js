@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 
 import { enumeration } from 'akutil-common';
-import { vdom } from 'skatejs';
+import { vdom, define } from 'skatejs';
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
@@ -22,7 +22,7 @@ const SIZE_ATTRIBUTE_ENUM = {
  * const myAvatar = new Avatar();
  *
  */
-const Avatar = {
+const definition = {
   render(elem) {
     const classes = classNames([shadowStyles.locals.img, shadowStyles.locals[elem.size]]);
     const imgStyle = {};
@@ -80,4 +80,4 @@ const Avatar = {
   },
 };
 
-export default Avatar;
+export default define('ak-avatar', definition);

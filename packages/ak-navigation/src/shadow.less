@@ -1,0 +1,26 @@
+// These styles will be inserted into a style tag inside
+// the shadow dom of each instance of the component
+
+// Only do class selectors in here, anything else leaks to the rest of the page in
+// browsers that do not support shadow DOM
+@import 'shared-variables.less';
+
+// Hard coded for now as we don't have the full palette yet
+@ak-navigation-global-color: #004CAF;
+@ak-navigation-container-color: #EFF2F5;
+
+.navigation {
+  background-color: @ak-navigation-container-color;
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  display: flex;
+
+  .global {
+    width: 80px;
+    background-color: @ak-navigation-global-color;
+  }
+}
+

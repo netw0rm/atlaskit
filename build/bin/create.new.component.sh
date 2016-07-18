@@ -11,6 +11,8 @@ if [[ $# -eq 0 || "$1" == "" ]]
 fi
 
 COMP_NAME="$1"
+PASCAL_CASE_NAME=$(node ./build/bin/pascal.case "$COMP_NAME")
+
 # TODO: Should we check the name to see if it looks namespaced? Hard code acceptable name spaces or
 # base it on existing components?
 
@@ -26,9 +28,9 @@ cp -r "packages/akutil-component-template" "packages/$COMP_NAME"
 
 # `find` is getting all the files under the new directory
 # `xargs` is passing them to sed
-# `sed` is replacing instances of 'akutil-component-template' with the new component name
+# `sed` is replacing instances of 'akutil-component-template' and 'AkUtilComponentTemplate' with the new component name
 # LC_CTYPE and LANG=C: http://stackoverflow.com/questions/19242275/re-error-illegal-byte-sequence-on-mac-os-x
-LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' "s/akutil-component-template/${COMP_NAME}/g" '{}'
+LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' -e "s/akutil-component-template/${COMP_NAME}/g" -e "s/AkUtilComponentTemplate/${PASCAL_CASE_NAME}/g" '{}'
 
 pushd "packages/$COMP_NAME"
 
@@ -42,5 +44,7 @@ popd
 
 # Install dependencies and link internal packages
 npm install
+
+npm run docs/single "$COMP_NAME"
 
 echo "New component '$COMP_NAME' created (v0.0.0)"

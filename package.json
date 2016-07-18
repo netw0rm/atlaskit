@@ -53,6 +53,7 @@
     "minilog": "^3.0.1",
     "minimist": "1.2.0",
     "mocha": "^2.5.3",
+    "pascal-case": "^2.0.0",
     "precommit-hook": "^3.0.0",
     "protractor": "^3.3.0",
     "protractor-console": "^2.0.1",

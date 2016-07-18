@@ -6,6 +6,8 @@ import shadowStyles from './shadow.less';
 
 const definition = {
   render(elem) {
+    const displayValue = elem.max > 0 && elem.value > elem.max ? `${elem.max}+` : elem.value;
+
     return (
       // JSX requires that there only be a single root element.
       // Incremental DOM doesn't require this.
@@ -15,12 +17,19 @@ const definition = {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
-        <span className={shadowStyles.locals.value}>{elem.value}</span>
+        <span className={shadowStyles.locals.value}>{displayValue}</span>
       </div>
     );
   },
   props: {
-    value: prop.number(),
+    value: prop.number({
+      attribute: true,
+      default: 0,
+    }),
+    max: prop.number({
+      attribute: true,
+      default: -1,
+    }),
   },
 };
 

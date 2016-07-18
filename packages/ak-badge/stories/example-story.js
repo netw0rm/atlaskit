@@ -13,4 +13,13 @@ const Component = reactify(uniqueWebComponent(name, definition, define), {
 storiesOf(name, module)
   .add('with a value', () => (
     <Component id="myComponent" value="5" />
+  ))
+  .add('with a max value', () => (
+    <Component id="myComponent" value="500" max="99" />
+  ))
+  .add('with an inactive max value', () => (
+    <Component id="myComponent" value="50" max="99" />
+  ))
+  .add('with value === max value', () => (
+    <Component id="myComponent" value="99" max="99" />
   ));

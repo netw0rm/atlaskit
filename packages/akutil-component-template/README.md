@@ -35,7 +35,7 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </head>
 <body>
   <!-- ... -->
-  <akutil-component-template name="My Component"></akutil-component-template>
+  <akutil-component-template></akutil-component-template>
 </body>
 ```
 

@@ -1,7 +1,6 @@
 import { vdom, define, prop, emit } from 'skatejs';
 import classnames from 'classnames';
 import styles from './font-select.less';
-import 'ak-layer';
 import 'editor-button';
 
 export default define('editorkit-font-select', {
@@ -18,9 +17,7 @@ export default define('editorkit-font-select', {
         <editor-button onclick={() => emit(elem, 'toggleDropdown')} className={className}>
           <span className={styles.locals.buttonSpan}>{elem.selectedReadableName}</span>
         </editor-button>
-        <ak-layer target={`.${className}`} position="bottom left" style={style} open={elem.open}>
-          <slot></slot>
-        </ak-layer>
+        <slot style={style}></slot>
       </div>
     );
   },

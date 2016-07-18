@@ -1,12 +1,12 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { LayerWC } from '../src/index.register';
+import LayerWC from '../src/index';
 import { name } from '../package.json';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
-
+const defaultPosition = 'right middle';
 const alignments = {
   'top left': {
     top: (rectComponent, rectTarget) => (rectComponent.top + rectComponent.height - rectTarget.top),
@@ -69,6 +69,7 @@ const alignments = {
     opposite: 'right bottom',
   },
 };
+
 describe('ak-layer', () => {
   function createComponent(idCounter) {
     const node = new LayerWC();
@@ -95,52 +96,10 @@ describe('ak-layer', () => {
       done();
     }, 1);
   }
-  function testAlignmentsBunch(layerContainer, idCounter) {
-    const targetNode = createTarget(idCounter);
-    let component;
 
-    targetNode.style.margin = '100px';
-    layerContainer.appendChild(targetNode);
-
-    beforeEach(() => {
-      component = createComponent(idCounter);
-      layerContainer.appendChild(component);
-    });
-
-    afterEach(() => {
-      layerContainer.removeChild(component);
-    });
-
-    Object.keys(alignments).forEach((key) => {
-      it(`should support ${key} alignment`, (done) => {
-        component.position = key;
-        testPosition(component, targetNode, key, done);
-      });
-    });
-  }
-
-  function testFlippedBunch(layerContainer, idCounter, bunch) {
-    const targetNode = createTarget(idCounter);
-    let component;
-
-    layerContainer.appendChild(targetNode);
-
-    beforeEach(() => {
-      component = createComponent(idCounter);
-      layerContainer.appendChild(component);
-    });
-
-    afterEach(() => {
-      layerContainer.removeChild(component);
-    });
-
-    bunch.forEach((val) => {
-      const key = alignments[val].opposite;
-      it(`${val} should flip into ${key} position`, (done) => {
-        component.position = val;
-        testPosition(component, targetNode, key, done);
-      });
-    });
+  let idCounter = 0;
+  function getTargetId() {
+    return ++idCounter;
   }
 
   it('should be possible to create a component', () => {
@@ -153,64 +112,116 @@ describe('ak-layer', () => {
   });
 
   describe('alignments', () => {
-    describe('target and component inside a div without any special options', () => {
-      const layerContainer = document.createElement('div');
+    let component;
+    let targetNode;
+    let layerContainer;
+
+    beforeEach(() => {
+      const targetID = getTargetId();
+      targetNode = createTarget(targetID);
+      layerContainer = document.createElement('div');
+      targetNode.style.margin = '100px';
+
+      component = createComponent(targetID);
+      layerContainer.appendChild(component);
+      layerContainer.appendChild(targetNode);
       document.body.appendChild(layerContainer);
-      testAlignmentsBunch(layerContainer, 0);
     });
 
-    describe('target and component inside a container with `position: absolute`', () => {
-      // Tether is usually moving the element from the dom in this situation
-      // But the inline dialog has a flag 'do not move', so we have to check if it's working
-      const layerContainer = document.createElement('div');
-      const absoluteParent = document.createElement('div');
-      absoluteParent.style.width = '100px';
-      absoluteParent.style.height = '100px';
-      absoluteParent.style.position = 'absolute';
-      absoluteParent.style.top = '100px';
-      absoluteParent.style.left = '100px';
-      document.body.appendChild(absoluteParent);
-      absoluteParent.appendChild(layerContainer);
-      testAlignmentsBunch(layerContainer, 1);
+    afterEach(() => {
+      document.body.removeChild(layerContainer);
     });
 
-    describe('target and component inside a scrollable container with `overflow: auto`', () => {
-      const layerContainer = document.createElement('div');
-      const scrollableParent = document.createElement('div');
-      scrollableParent.style.width = '100px';
-      scrollableParent.style.height = '100px';
-      scrollableParent.style.margin = '100px';
-      scrollableParent.style.overflow = 'auto';
-      scrollableParent.appendChild(layerContainer);
-
-      // make the horizontal and vertical scroll inside the parent div
-      const scrollableParentInside = document.createElement('div');
-      scrollableParentInside.style.width = '300px';
-      scrollableParentInside.style.height = '300px';
-      scrollableParent.appendChild(scrollableParentInside);
-
-      document.body.appendChild(scrollableParent);
-      testAlignmentsBunch(layerContainer, 2);
+    Object.keys(alignments).forEach((key) => {
+      it(`should support ${key} alignment`, (done) => {
+        component.position = key;
+        testPosition(component, targetNode, key, done);
+      });
     });
 
-    describe('should support flipping: left top corner', () => {
-      const layerContainer = document.createElement('div');
-      layerContainer.style.position = 'absolute';
-      layerContainer.style.top = '0';
-      layerContainer.style.left = '0';
-      document.body.appendChild(layerContainer);
+    Object.keys(alignments).forEach((key) => {
+      it(`should support ${key} alignment inside a container with 'position: absolute'`, (done) => {
+        // Tether is usually moving the element from the dom in this situation
+        // But the layer has a flag 'do not move', so we have to check if it's working
+        layerContainer.style.width = '100px';
+        layerContainer.style.height = '100px';
+        layerContainer.style.position = 'absolute';
+        layerContainer.style.top = '100px';
+        layerContainer.style.left = '100px';
 
-      testFlippedBunch(layerContainer, 3, ['left top', 'left middle', 'left bottom', 'top left', 'top center', 'top right']); // eslint-disable-line max-len
+        component.position = key;
+        testPosition(component, targetNode, key, done);
+      });
     });
 
-    describe('should support flipping: right bottom corner', () => {
-      const layerContainer = document.createElement('div');
-      layerContainer.style.position = 'absolute';
-      layerContainer.style.bottom = '0';
-      layerContainer.style.right = '0';
-      document.body.appendChild(layerContainer);
+    Object.keys(alignments).forEach((key) => {
+      it(`should support ${key} alignment inside a scrollable container with 'overflow: auto'`, (done) => { // eslint-disable-line max-len
+        layerContainer.style.width = '100px';
+        layerContainer.style.height = '100px';
+        layerContainer.style.margin = '100px';
+        layerContainer.style.overflow = 'auto';
 
-      testFlippedBunch(layerContainer, 4, ['bottom left', 'bottom center', 'bottom right', 'right top', 'right middle', 'right bottom']); // eslint-disable-line max-len
+        // make the horizontal and vertical scroll inside the parent div
+        const divInsideScrollable = document.createElement('div');
+        divInsideScrollable.style.width = '300px';
+        divInsideScrollable.style.height = '300px';
+        layerContainer.appendChild(divInsideScrollable);
+
+        component.position = key;
+        testPosition(component, targetNode, key, done);
+      });
+    });
+
+    ['left top', 'left middle', 'left bottom', 'top left', 'top center', 'top right'].forEach((key) => { // eslint-disable-line max-len
+      it(`should flip ${key} alignment`, (done) => {
+        layerContainer.style.position = 'absolute';
+        layerContainer.style.top = '0';
+        layerContainer.style.left = '0';
+
+        component.position = key;
+        testPosition(component, targetNode, key, done);
+      });
+    });
+
+    ['bottom left', 'bottom center', 'bottom right', 'right top', 'right middle', 'right bottom'].forEach((key) => { // eslint-disable-line max-len
+      it(`should flip ${key} alignment`, (done) => {
+        layerContainer.style.position = 'absolute';
+        layerContainer.style.bottom = '0';
+        layerContainer.style.right = '0';
+
+        component.position = key;
+        testPosition(component, targetNode, key, done);
+      });
+    });
+
+    it(`should be ${defaultPosition}`, (done) => {
+      component.position = defaultPosition;
+      testPosition(component, targetNode, defaultPosition, done);
+    });
+
+    it('incorrect position should results in default position - edge', (done) => {
+      component.position = 'top wrong';
+      testPosition(component, targetNode, defaultPosition, done);
+    });
+
+    it('incorrect position should results in default position - position', (done) => {
+      component.position = 'wrong top';
+      testPosition(component, targetNode, defaultPosition, done);
+    });
+
+    it('incorrect position should results in default position - both', (done) => {
+      component.position = 'wrong wrong';
+      testPosition(component, targetNode, defaultPosition, done);
+    });
+
+    it('incorrect position should results in default position - one missing', (done) => {
+      component.position = 'wrong';
+      testPosition(component, targetNode, defaultPosition, done);
+    });
+
+    it('incorrect position should results in default position - lots of spaces', (done) => {
+      component.position = 'top    left';
+      testPosition(component, targetNode, defaultPosition, done);
     });
   });
 });

@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkInlineDialog from '../src/index.register.js';
+import AkInlineDialog from '../src/index.js';
 
 chai.use(chaiAsPromised);
 chai.should();

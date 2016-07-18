@@ -105,7 +105,7 @@
     "release": "git diff --exit-code && lerna-semantic-release pre && lerna-semantic-release perform",
     "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",
     "release/changelog": "if [ -s .released-packages ]; then lerna-semantic-release post; else return 0; fi",
-    "release/registry": "cd .. && git clone --quiet \"https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/atlassian/atlaskit-registry.git\" && cd atlaskit-registry && ./build/cdn.sh",
+    "release/registry": "./build/bin/registry.sh",
     "storybook": "start-storybook -p 9001 -c ./build/storybook",
     "storybook/single": "./build/bin/storybook.single.sh",
     "test": "lerna exec -- ../../build/bin/test.sh --reporters=dots",

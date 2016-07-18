@@ -1,5 +1,10 @@
 <a name="2.0.0"></a>
-# 2.0.0 (2016-07-15)
+# 2.0.0 (2016-07-18)
+
+
+### Bug Fixes
+
+* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
 
 
 

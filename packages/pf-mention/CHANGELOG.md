@@ -1,5 +1,15 @@
-<a name="1.0.3"></a>
-## 1.0.3 (2016-07-15)
+<a name="1.0.4"></a>
+## 1.0.4 (2016-07-18)
+
+
+
+<a name="pf-mention@1.0.4"></a>
+## pf-mention@1.0.4 (2016-07-18)
+
+
+### Bug Fixes
+
+* **skate:** SkateJS update to beta.10 ([620034a](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/620034a))
 
 
 
@@ -37,6 +47,11 @@
 
 <a name="pf-mention@1.0.0"></a>
 # pf-mention@1.0.0 (2016-07-12)
+
+
+### Bug Fixes
+
+* bricked release 0.0.9 ([20604da](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/20604da))
 
 
 

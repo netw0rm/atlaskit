@@ -1,4 +1,5 @@
 import headStyles from 'style!../host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import shadowStyles from './pf-mention-picker-shadow.less';
 import pfResourcedMentionList from './pf-resourced-mention-list'; // eslint-disable-line no-unused-vars, max-len
 import { localProp } from './skate-local-props';
 
@@ -50,23 +51,29 @@ const definition = {
   render(elem) {
     const { target, position, renderElementTo } = elem;
     const { resourceProvider, presenceProvider, query } = elem;
+    const style = {
+      display: elem.visible ? 'block' : 'none',
+    };
 
     if (target) {
       return (
-        <ak-inline-dialog
-          target={target}
-          open={elem.visible ? 'true' : 'false'}
-          position={position}
-          renderElementTo={renderElementTo}
-          padding="0"
-        >
-          <pf-resourced-mention-list
-            resourceProvider={resourceProvider}
-            presenceProvider={presenceProvider}
-            query={query}
-            ref={(ref) => { elem._mentionListRef = ref; }}
-          />
-        </ak-inline-dialog>
+        <div style={style}>
+          <style>{shadowStyles.toString()}</style>
+          <ak-inline-dialog
+            target={target}
+            position={position}
+            open={elem.visible}
+            renderElementTo={renderElementTo}
+            padding="0"
+          >
+            <pf-resourced-mention-list
+              resourceProvider={resourceProvider}
+              presenceProvider={presenceProvider}
+              query={query}
+              ref={(ref) => { elem._mentionListRef = ref; }}
+            />
+          </ak-inline-dialog>
+        </div>
       );
     }
     return null;
@@ -86,11 +93,19 @@ const definition = {
     }),
     presenceProvider: localProp.object(),
     ref: localProp.reference(),
-    query: prop.string(),
+    query: prop.string({
+      attribute: true,
+    }),
     // ak-inline-dialog
-    target: prop.string(),
-    position: prop.string(),
-    renderElementTo: prop.string(),
+    target: prop.string({
+      attribute: true,
+    }),
+    position: prop.string({
+      attribute: true,
+    }),
+    renderElementTo: prop.string({
+      attribute: true,
+    }),
   },
 };
 

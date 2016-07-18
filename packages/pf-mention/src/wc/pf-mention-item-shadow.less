@@ -67,3 +67,12 @@ ak-avatar {
   color: #747474;
   font-size: 12px;
 }
+
+// FIXME: workaround host.less not in shadow dom
+ak-avatar {
+  display: inline-block;
+
+  &:not([defined]) {
+    display: none;
+  }
+}

@@ -77,7 +77,7 @@ export const apiConfig = {
   securityProvider() {
     return 10804;
   },
-  // containerId: 2595975,
+  containerId: 2595975,
 };
 
 export const resourceProvider = new MentionResource(apiConfig);

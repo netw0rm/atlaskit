@@ -234,8 +234,8 @@ Releasing components is completely automated. The process of releasing will begi
 
 ## Update a dependency of AtlasKit
 * Install AtlasKit - if your installation is from before we had the shrinkwrap file, you should run `npm run clean`.
-* Install your new dependency: `npm install my-package --save-dev`.
-* Run `npm shrinkwrap --dev`
+* Install your new dependency: `npm install my-package --save`.
+* Run `npm shrinkwrap`
 * Create a PR
 
 ### Update the documentation (reminder)

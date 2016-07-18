@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { symbols } from 'skatejs';
-import AkButton from '../src/index.register.js';
+import { symbols, state } from 'skatejs';
+import AkButton from '../src/index.js';
 
 chai.use(chaiAsPromised);
 const expect = chai.expect;
@@ -25,13 +25,9 @@ describe('ak-button', () => {
     });
 
     describe('default', () => {
-      it('should be possible to specify a button label', (done) => {
-        component.label = 'test';
-
-        setTimeout(() => {
-          expect(getButtonElement(component).innerHTML).to.equal('test');
-          done();
-        }, 100);
+      it('should be possible to specify a button label', () => {
+        state(component, { label: 'test' });
+        expect(getButtonElement(component).innerHTML).to.equal('test');
       });
 
       it('should be possible to set an onclick event handler', (done) => {
@@ -41,6 +37,13 @@ describe('ak-button', () => {
 
         expect(onclickhandler.calledOnce).to.be.true;
         done();
+      });
+    });
+
+    describe('primary', () => {
+      it('should have attribute primary', () => {
+        state(component, { primary: true });
+        expect(component.primary).to.be.true;
       });
     });
   });

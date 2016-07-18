@@ -19,11 +19,13 @@ export default {
         <style>{styles.toString()}</style>
         <editorkit-overlay />
         <editorkit-font-select className={styles.locals.dropdown} selectedReadableName={elem.selectedReadableName}>
-          <editorkit-option-paragraph />
-          <editorkit-option-heading1 />
-          <editorkit-option-heading2 />
-          <editorkit-option-heading3 />
-          <editorkit-option-monospace />
+          <ul>
+            <li><editorkit-option-paragraph /></li>
+            <li><editorkit-option-heading1 /></li>
+            <li><editorkit-option-heading2 /></li>
+            <li><editorkit-option-heading3 /></li>
+            <li><editorkit-option-monospace /></li>
+          </ul>
         </editorkit-font-select>
       </div>
     );

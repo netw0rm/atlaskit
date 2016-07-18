@@ -6,7 +6,7 @@ import 'ak-layer';
 export default define('editorkit-font-select', {
   render(elem) {
     const style = {
-      display: elem.open ? 'block' : 'none'
+      display: elem.open ? 'block' : 'none',
     };
 
     const className = styles.locals.fontSelect;
@@ -14,13 +14,9 @@ export default define('editorkit-font-select', {
     return (
       <div>
         <style>{styles.toString()}</style>
-        <a
-          className={classnames(className, {
-            [styles.locals.active]: elem.open
-          })}
-          onclick={_ => {
-            emit(elem, 'toggleDropdown');
-          }}>{elem.selectedReadableName}</a>
+        <button className={classnames(className, {[styles.locals.active]: elem.open})} onclick={() => emit(elem, 'toggleDropdown')}>
+          {elem.selectedReadableName}
+        </button>
         <ak-layer target={`.${className}`} position="bottom center" style={style} open={elem.open}>
           <slot></slot>
         </ak-layer>

@@ -32,7 +32,7 @@ const definition = {
       styles.borderRadius = elem.borderRadius;
     }
 
-    if (elem[symbols.shadowRoot].firstChild) {
+    if (elem[symbols.shadowRoot] && elem[symbols.shadowRoot].firstChild && elem[symbols.shadowRoot].firstChild.alignment) { // eslint-disable-line max-len
       elem[symbols.shadowRoot].firstChild.alignment.reposition();
     }
 

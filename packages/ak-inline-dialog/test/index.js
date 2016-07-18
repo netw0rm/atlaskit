@@ -26,7 +26,7 @@ describe('ak-inline-dialog', () => {
     const textContent = 'some text inside inline dialog';
     const htmlConent = '<div><h1>title</h1><p>Some text</p></div>';
 
-    component.textContent = 'some text inside inline dialog';
+    component.textContent = textContent;
     expect(component.textContent).to.equal(textContent);
     expect(component.innerHTML).to.equal(textContent);
 

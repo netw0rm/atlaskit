@@ -10,6 +10,11 @@ function toggle(elem) {
 
   const fontSelect = elem.querySelector('editorkit-font-select');
   fontSelect.open = !fontSelect.open;
+
+  if (!fontSelect.open) {
+    const editorButton = elem.querySelector('editor-button');
+    editorButton.active = false
+  }
 }
 
 export default {

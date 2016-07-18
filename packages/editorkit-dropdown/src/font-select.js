@@ -18,7 +18,7 @@ export default define('editorkit-font-select', {
         <editor-button onclick={() => emit(elem, 'toggleDropdown')} className={className}>
           <span className={styles.locals.buttonSpan}>{elem.selectedReadableName}</span>
         </editor-button>
-        <ak-layer target={`.${className}`} position="bottom center" style={style} open={elem.open}>
+        <ak-layer target={`.${className}`} position="bottom left" style={style} open={elem.open}>
           <slot></slot>
         </ak-layer>
       </div>

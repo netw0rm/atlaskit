@@ -3,6 +3,7 @@ import cx from 'classnames';
 import styles from './shadow.less';
 
 export default define('editor-button', {
+  // elem.active controlled/uncontrolled?
   render(elem) {
     return (
       <div className={cx(styles.locals.root, {[styles.locals.active]: elem.active})}>

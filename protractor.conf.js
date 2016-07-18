@@ -2,7 +2,7 @@ const path = require('path');
 
 const rq = [
   path.join(__dirname, 'packages', 'akutil-cucumber', 'src', '**', '*-steps.js'),
-  path.join(process.cwd(), 'cucumber', 'stepDefinitions', '**', 'steps.js'),
+  path.join(process.cwd(), 'cucumber', 'step_definitions', '**', 'steps.js'),
 ];
 
 function webComponentLocator(componentNamePrefix, parentElement) {

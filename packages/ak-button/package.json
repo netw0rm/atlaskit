@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "ak-button webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.register.js",
+  "webpack": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-button"
   },
@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "akutil-shared-styles": "*",
-    "skatejs": "1.0.0-beta.7"
+    "skatejs": "1.0.0-beta.10"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

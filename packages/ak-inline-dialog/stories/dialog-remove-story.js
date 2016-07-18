@@ -2,12 +2,12 @@ import reactify from 'akutil-react';
 import { storiesOf } from '@kadira/storybook';
 import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import { name } from '../package.json';
-import akInlineDialog from '../src/index';
+import AkInlineDialog from '../src/index';
 
 const { React, ReactDOM } = window;
 const { Component } = React;
 
-const Dialog = reactify(akInlineDialog, {
+const Dialog = reactify(AkInlineDialog, {
   React,
   ReactDOM,
 });

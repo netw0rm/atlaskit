@@ -3,7 +3,7 @@ import shadowStyles from './pf-mention-picker-shadow.less';
 import pfResourcedMentionList from './pf-resourced-mention-list'; // eslint-disable-line no-unused-vars, max-len
 import { localProp } from './skate-local-props';
 
-import akInlineDialog from 'ak-inline-dialog'; // eslint-disable-line no-unused-vars
+import 'ak-inline-dialog';
 import { define, vdom, prop, emit, state } from 'skatejs'; // eslint-disable-line no-unused-vars
 
 const definition = {

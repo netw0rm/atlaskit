@@ -995,18 +995,6 @@
       "from": "chalk@>=1.1.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/chalk/-/chalk-1.1.3.tgz"
     },
-    "change-case": {
-      "version": "2.3.1",
-      "from": "change-case@>=2.3.0 <2.4.0",
-      "resolved": "https://registry.npmjs.org/change-case/-/change-case-2.3.1.tgz",
-      "dependencies": {
-        "camel-case": {
-          "version": "1.2.2",
-          "from": "camel-case@>=1.1.1 <2.0.0",
-          "resolved": "https://registry.npmjs.org/camel-case/-/camel-case-1.2.2.tgz"
-        }
-      }
-    },
     "chokidar": {
       "version": "1.6.0",
       "from": "chokidar@>=1.0.0 <2.0.0",
@@ -1345,11 +1333,6 @@
       "from": "console-control-strings@>=1.1.0 <1.2.0",
       "resolved": "https://registry.npmjs.org/console-control-strings/-/console-control-strings-1.1.0.tgz"
     },
-    "constant-case": {
-      "version": "1.1.2",
-      "from": "constant-case@>=1.1.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/constant-case/-/constant-case-1.1.2.tgz"
-    },
     "constants-browserify": {
       "version": "0.0.1",
       "from": "constants-browserify@0.0.1",
@@ -1577,14 +1560,7 @@
         "cz-conventional-changelog": {
           "version": "0.0.0-semantically-released.0",
           "from": "jpnelson/cz-conventional-changelog#a9a5468d",
-          "resolved": "git://github.com/jpnelson/cz-conventional-changelog.git#a9a5468de0380a40a52d7af68481f644ad77386e",
-          "dependencies": {
-            "word-wrap": {
-              "version": "1.1.0",
-              "from": "word-wrap@>=1.0.3 <2.0.0",
-              "resolved": "https://registry.npmjs.org/word-wrap/-/word-wrap-1.1.0.tgz"
-            }
-          }
+          "resolved": "git://github.com/jpnelson/cz-conventional-changelog.git#a9a5468de0380a40a52d7af68481f644ad77386e"
         },
         "interpret": {
           "version": "1.0.1",
@@ -1836,11 +1812,6 @@
       "version": "1.5.1",
       "from": "domutils@1.5.1",
       "resolved": "https://registry.npmjs.org/domutils/-/domutils-1.5.1.tgz"
-    },
-    "dot-case": {
-      "version": "1.1.2",
-      "from": "dot-case@>=1.1.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/dot-case/-/dot-case-1.1.2.tgz"
     },
     "dot-prop": {
       "version": "3.0.0",
@@ -3608,7 +3579,59 @@
     "html-minifier": {
       "version": "1.5.0",
       "from": "html-minifier@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/html-minifier/-/html-minifier-1.5.0.tgz"
+      "resolved": "https://registry.npmjs.org/html-minifier/-/html-minifier-1.5.0.tgz",
+      "dependencies": {
+        "camel-case": {
+          "version": "1.2.2",
+          "from": "camel-case@>=1.1.1 <2.0.0",
+          "resolved": "https://registry.npmjs.org/camel-case/-/camel-case-1.2.2.tgz"
+        },
+        "change-case": {
+          "version": "2.3.1",
+          "from": "change-case@>=2.3.0 <2.4.0",
+          "resolved": "https://registry.npmjs.org/change-case/-/change-case-2.3.1.tgz"
+        },
+        "constant-case": {
+          "version": "1.1.2",
+          "from": "constant-case@>=1.1.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/constant-case/-/constant-case-1.1.2.tgz"
+        },
+        "dot-case": {
+          "version": "1.1.2",
+          "from": "dot-case@>=1.1.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/dot-case/-/dot-case-1.1.2.tgz"
+        },
+        "param-case": {
+          "version": "1.1.2",
+          "from": "param-case@>=1.1.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/param-case/-/param-case-1.1.2.tgz"
+        },
+        "pascal-case": {
+          "version": "1.1.2",
+          "from": "pascal-case@>=1.1.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/pascal-case/-/pascal-case-1.1.2.tgz"
+        },
+        "path-case": {
+          "version": "1.1.2",
+          "from": "path-case@>=1.1.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/path-case/-/path-case-1.1.2.tgz"
+        },
+        "sentence-case": {
+          "version": "1.1.3",
+          "from": "sentence-case@>=1.1.1 <2.0.0",
+          "resolved": "https://registry.npmjs.org/sentence-case/-/sentence-case-1.1.3.tgz"
+        },
+        "snake-case": {
+          "version": "1.1.2",
+          "from": "snake-case@>=1.1.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/snake-case/-/snake-case-1.1.2.tgz"
+        },
+        "title-case": {
+          "version": "1.1.2",
+          "from": "title-case@>=1.1.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/title-case/-/title-case-1.1.2.tgz"
+        }
+      }
     },
     "html-webpack-plugin": {
       "version": "2.22.0",
@@ -4169,11 +4192,13 @@
         },
         "glob": {
           "version": "4.5.3",
-          "from": "glob@>=4.0.0 <5.0.0"
+          "from": "glob@4.5.3",
+          "resolved": "https://registry.npmjs.org/glob/-/glob-4.5.3.tgz"
         },
         "minimatch": {
           "version": "2.0.10",
-          "from": "minimatch@>=2.0.1 <3.0.0"
+          "from": "minimatch@2.0.10",
+          "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-2.0.10.tgz"
         },
         "stream-via": {
           "version": "1.0.3",
@@ -5465,11 +5490,6 @@
       "from": "pako@>=0.2.0 <0.3.0",
       "resolved": "https://registry.npmjs.org/pako/-/pako-0.2.8.tgz"
     },
-    "param-case": {
-      "version": "1.1.2",
-      "from": "param-case@>=1.1.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/param-case/-/param-case-1.1.2.tgz"
-    },
     "parse-github-repo-url": {
       "version": "1.3.0",
       "from": "parse-github-repo-url@>=1.0.0 <2.0.0",
@@ -5506,26 +5526,14 @@
       "resolved": "https://registry.npmjs.org/parseurl/-/parseurl-1.3.1.tgz"
     },
     "pascal-case": {
-      "version": "1.1.2",
-      "from": "pascal-case@>=1.1.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/pascal-case/-/pascal-case-1.1.2.tgz",
-      "dependencies": {
-        "camel-case": {
-          "version": "1.2.2",
-          "from": "camel-case@>=1.1.1 <2.0.0",
-          "resolved": "https://registry.npmjs.org/camel-case/-/camel-case-1.2.2.tgz"
-        }
-      }
+      "version": "2.0.0",
+      "from": "pascal-case@>=2.0.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/pascal-case/-/pascal-case-2.0.0.tgz"
     },
     "path-browserify": {
       "version": "0.0.0",
       "from": "path-browserify@0.0.0",
       "resolved": "https://registry.npmjs.org/path-browserify/-/path-browserify-0.0.0.tgz"
-    },
-    "path-case": {
-      "version": "1.1.2",
-      "from": "path-case@>=1.1.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/path-case/-/path-case-1.1.2.tgz"
     },
     "path-exists": {
       "version": "1.0.0",
@@ -6429,11 +6437,6 @@
       "from": "send@0.14.1",
       "resolved": "https://registry.npmjs.org/send/-/send-0.14.1.tgz"
     },
-    "sentence-case": {
-      "version": "1.1.3",
-      "from": "sentence-case@>=1.1.1 <2.0.0",
-      "resolved": "https://registry.npmjs.org/sentence-case/-/sentence-case-1.1.3.tgz"
-    },
     "sequencify": {
       "version": "0.0.7",
       "from": "sequencify@>=0.0.7 <0.1.0",
@@ -6562,11 +6565,6 @@
       "version": "1.1.6",
       "from": "slide@>=1.1.3 <2.0.0",
       "resolved": "https://registry.npmjs.org/slide/-/slide-1.1.6.tgz"
-    },
-    "snake-case": {
-      "version": "1.1.2",
-      "from": "snake-case@>=1.1.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/snake-case/-/snake-case-1.1.2.tgz"
     },
     "sntp": {
       "version": "1.0.9",
@@ -7019,11 +7017,6 @@
       "version": "1.4.2",
       "from": "timers-browserify@>=1.0.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/timers-browserify/-/timers-browserify-1.4.2.tgz"
-    },
-    "title-case": {
-      "version": "1.1.2",
-      "from": "title-case@>=1.1.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/title-case/-/title-case-1.1.2.tgz"
     },
     "tmp": {
       "version": "0.0.28",

@@ -23,6 +23,18 @@ describe('ak-badge', () => {
 
     component[symbols.shadowRoot].innerHTML.should.match(/5/);
   });
+  it('should fire an event when the value is changed', () => {
+    let changed = false;
+    const component = new AkutilComponentTemplate();
+    component.value = 5;
+
+    component.addEventListener('change', () => {
+      changed = true;
+    });
+
+    component.value = 6;
+    expect(changed).to.equal(true);
+  });
   describe('max prop', () => {
     it('should constrain the value when set', (done) => {
       const component = new AkutilComponentTemplate();

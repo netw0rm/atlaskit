@@ -25,6 +25,7 @@ const definition = {
     value: prop.number({
       attribute: true,
       default: 0,
+      event: 'change',
     }),
     max: prop.number({
       attribute: true,

@@ -3,11 +3,25 @@ require('es6-promise').polyfill();
 import 'whatwg-fetch';
 
 
-const buildUrl = (baseUrl, path, data) => {
+const buildUrl = (baseUrl, path, data, secOptions) => {
   const searchParam = new URLSearchParams();
   for (const key in data) { // eslint-disable-line no-restricted-syntax
     if (data.hasOwnProperty(key)) {
       searchParam.append(key, data[key]);
+    }
+  }
+  if (secOptions && secOptions.params) {
+    for (const key in secOptions.params) { // eslint-disable-line no-restricted-syntax
+      if (secOptions.params.hasOwnProperty(key)) {
+        const values = secOptions.params[key];
+        if (Array.isArray(values)) {
+          for (let i = 0; i < values.length; i++) {
+            searchParam.append(key, values[i]);
+          }
+        } else {
+          searchParam.append(key, values);
+        }
+      }
     }
   }
   let seperator = '';
@@ -17,12 +31,33 @@ const buildUrl = (baseUrl, path, data) => {
   return `${baseUrl}${seperator}${path}?${searchParam.toString()}`;
 };
 
+const buildHeaders = (secOptions) => {
+  const headers = new Headers();
+  if (secOptions && secOptions.headers) {
+    for (const key in secOptions.headers) { // eslint-disable-line no-restricted-syntax
+      if (secOptions.headers.hasOwnProperty(key)) {
+        const values = secOptions.headers[key];
+        if (Array.isArray(values)) {
+          for (let i = 0; i < values.length; i++) {
+            headers.append(key, values[i]);
+          }
+        } else {
+          headers.append(key, values);
+        }
+      }
+    }
+  }
+
+  return headers;
+};
+
 /**
  * @returns Promise containing the json response
  */
-const requestService = (baseUrl, path, data) => {
-  const url = buildUrl(baseUrl, path, data);
-  return fetch(url)
+const requestService = (baseUrl, path, data, secOptions) => {
+  const url = buildUrl(baseUrl, path, data, secOptions);
+  const headers = buildHeaders(secOptions);
+  return fetch(new Request(url, { headers }))
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -106,8 +141,17 @@ class MentionResource extends AbstractMentionResource {
    *
    * @param config = {
    *   url: string (required), // the base url of the mentions service
-   *   securityProvider: function (required), // a function returning a security token as a
-   *     String (initially just the organisationId)
+   *   securityProvider: function (required),
+   *   a function returning an object with headers and/or params, e.g.
+   *      { headers: {
+   *          key1: [values],
+   *          key2: value,
+   *        },
+   *        params: {
+   *          key1: [values],
+   *          key2: value,
+   *        }
+   *      }
    *   application: string (required), // the site, or product
    *   containerId: string (optional)
    * }
@@ -164,26 +208,27 @@ class MentionResource extends AbstractMentionResource {
    * @returns Promise
    */
   _initialState() {
+    const secOptions = this._config.securityProvider();
     const options = {
-      groupId: this._config.securityProvider(),
       application: this._config.application,
     };
+
     if (this._config.containerId) {
       options.containerId = this._config.containerId;
     }
-    return requestService(this._config.url, 'mentions/bootstrap', options);
+    return requestService(this._config.url, 'mentions/bootstrap', options, secOptions);
   }
 
   _search(query) {
+    const secOptions = this._config.securityProvider();
     const options = {
       query,
-      groupId: this._config.securityProvider(),
       application: this._config.application,
     };
     if (this._config.containerId) {
       options.containerId = this._config.containerId;
     }
-    return requestService(this._config.url, 'mentions/search', options);
+    return requestService(this._config.url, 'mentions/search', options, secOptions);
   }
 }
 

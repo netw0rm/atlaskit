@@ -3437,68 +3437,6 @@
       "from": "html-minifier@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/html-minifier/-/html-minifier-1.5.0.tgz"
     },
-    "html-webpack-plugin": {
-      "version": "2.22.0",
-      "from": "html-webpack-plugin@>=2.22.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/html-webpack-plugin/-/html-webpack-plugin-2.22.0.tgz",
-      "dependencies": {
-        "change-case": {
-          "version": "3.0.0",
-          "from": "change-case@>=3.0.0 <3.1.0",
-          "resolved": "https://registry.npmjs.org/change-case/-/change-case-3.0.0.tgz"
-        },
-        "constant-case": {
-          "version": "2.0.0",
-          "from": "constant-case@>=2.0.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/constant-case/-/constant-case-2.0.0.tgz"
-        },
-        "dot-case": {
-          "version": "2.1.0",
-          "from": "dot-case@>=2.1.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/dot-case/-/dot-case-2.1.0.tgz"
-        },
-        "he": {
-          "version": "1.1.0",
-          "from": "he@>=1.1.0 <1.2.0",
-          "resolved": "https://registry.npmjs.org/he/-/he-1.1.0.tgz"
-        },
-        "html-minifier": {
-          "version": "2.1.7",
-          "from": "html-minifier@>=2.1.6 <3.0.0",
-          "resolved": "https://registry.npmjs.org/html-minifier/-/html-minifier-2.1.7.tgz"
-        },
-        "param-case": {
-          "version": "2.1.0",
-          "from": "param-case@>=2.1.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/param-case/-/param-case-2.1.0.tgz"
-        },
-        "pascal-case": {
-          "version": "2.0.0",
-          "from": "pascal-case@>=2.0.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/pascal-case/-/pascal-case-2.0.0.tgz"
-        },
-        "path-case": {
-          "version": "2.1.0",
-          "from": "path-case@>=2.1.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/path-case/-/path-case-2.1.0.tgz"
-        },
-        "sentence-case": {
-          "version": "2.1.0",
-          "from": "sentence-case@>=2.1.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/sentence-case/-/sentence-case-2.1.0.tgz"
-        },
-        "snake-case": {
-          "version": "2.1.0",
-          "from": "snake-case@>=2.1.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/snake-case/-/snake-case-2.1.0.tgz"
-        },
-        "title-case": {
-          "version": "2.1.0",
-          "from": "title-case@>=2.1.0 <3.0.0",
-          "resolved": "https://registry.npmjs.org/title-case/-/title-case-2.1.0.tgz"
-        }
-      }
-    },
     "htmlparser2": {
       "version": "3.3.0",
       "from": "htmlparser2@>=3.3.0 <3.4.0",

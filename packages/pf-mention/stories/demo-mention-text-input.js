@@ -1,6 +1,5 @@
 import { PropTypes } from 'react';
 import reactify from 'akutil-react';
-import akInlineDialog from 'ak-inline-dialog';
 
 import pfMentionPicker from '../src/wc/pf-mention-picker';
 import SearchTextInput from './demo-search-text-input';
@@ -9,11 +8,6 @@ import { getWebComponent } from './util';
 const { React, ReactDOM } = window;
 
 const MentionPicker = reactify(pfMentionPicker, {
-  React,
-  ReactDOM,
-});
-
-const AKInlineDialog = reactify(akInlineDialog, {
   React,
   ReactDOM,
 });

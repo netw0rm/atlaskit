@@ -1,5 +1,15 @@
-<a name="56.1.1"></a>
-## 56.1.1 (2016-07-15)
+<a name="56.1.2"></a>
+## 56.1.2 (2016-07-18)
+
+
+
+<a name="ak-layer@56.1.2"></a>
+## ak-layer@56.1.2 (2016-07-18)
+
+
+### Bug Fixes
+
+* **skate:** SkateJS update to beta.10 ([620034a](https://bitbucket.org/atlassian/atlaskit/commits/620034a))
 
 
 
@@ -19,6 +29,7 @@
 
 ### Bug Fixes
 
+* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
 * remove string attr from target ([26ed13d](https://bitbucket.org/atlassian/atlaskit/commits/26ed13d))
 
 

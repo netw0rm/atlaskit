@@ -1,7 +1,7 @@
 import reactify from 'akutil-react';
 import AkInlineDialog from '../src/index';
 import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
-import styles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
+import styles from 'style!./../src/host.less';
 
 const { React, ReactDOM } = window;
 const { Component } = React;

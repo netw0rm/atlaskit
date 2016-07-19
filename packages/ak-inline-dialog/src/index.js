@@ -3,7 +3,7 @@
 
 import { getPositionFromClasses } from 'akutil-common';
 import { vdom, prop, define, symbols } from 'skatejs';
-import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, max-len
+import headStyles from 'style!./host.less';
 import shadowStyles from './shadow.less';
 import 'ak-layer';
 

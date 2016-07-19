@@ -8,11 +8,11 @@ export default define('editorkit-option', {
       <div>
         <style>{styles.toString()}</style>
         <a
-          onclick={ _ => emit(elem, 'selectFont') }
+          onclick={() => emit(elem, 'selectFont')}
           className={classnames(
           styles.locals[elem.font],
           styles.locals.selectOptions, {
-            [styles.locals.active]: elem.active === true
+            [styles.locals.active]: elem.active === true,
           }
         )}
         ><slot /></a>

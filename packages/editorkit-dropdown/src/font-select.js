@@ -1,7 +1,6 @@
 import { vdom, define, prop, emit } from 'skatejs';
-import classnames from 'classnames';
 import styles from './font-select.less';
-import 'editor-button';
+import Button from 'editor-button';
 
 export default define('editorkit-font-select', {
   render(elem) {
@@ -14,15 +13,15 @@ export default define('editorkit-font-select', {
     return (
       <div>
         <style>{styles.toString()}</style>
-        <editor-button onclick={() => emit(elem, 'toggleDropdown')} className={className}>
+        <Button onclick={() => emit(elem, 'toggleDropdown')} className={className}>
           <span className={styles.locals.buttonSpan}>{elem.selectedReadableName}</span>
-        </editor-button>
+        </Button>
         <slot style={style} />
       </div>
     );
   },
   props: {
     open: prop.boolean({ attribute: true }),
-    selectedReadableName: prop.string({ attribute: true })
-  }
+    selectedReadableName: prop.string({ attribute: true }),
+  },
 });

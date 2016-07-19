@@ -9,6 +9,7 @@ const definition = {
   props: {
     label: prop.string({ attribute: true }),
     primary: prop.boolean({ attribute: true }),
+    disabled: prop.boolean({ attribute: true }),
   },
   render(elem) {
     const classes = [shadowStyles.locals.myClassName];
@@ -17,12 +18,21 @@ const definition = {
       classes.push(shadowStyles.locals.primary);
     }
 
+    if (elem.disabled) {
+      classes.push(shadowStyles.locals.disabled);
+    }
+
     const classListNames = classNames(classes);
 
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <button className={classListNames}>{elem.label}</button>
+        <button
+          className={classListNames}
+          disabled={elem.disabled}
+        >
+          {elem.label}
+        </button>
       </div>
     );
   },

@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { symbols } from 'skatejs';
-import AkutilComponentTemplate from '../src/index.register.js';
+import AkutilComponentTemplate from '../src/index.js';
 
 chai.use(chaiAsPromised);
 chai.should();

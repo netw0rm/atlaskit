@@ -75,9 +75,20 @@ export const apiConfig = {
   url: 'https://pf-mentions-service.internal.domain.dev.atlassian.io/',
   application: 'HIPCHAT',
   securityProvider() {
-    return 10804;
+    return {
+      headers: {
+        // Dummy jwt token for testing in dev service
+        Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0Njg1NjA4NjUsImV4cCI6MTQ2ODU2MDkyNSwiaXNzIjoiaGlwY2hhdCIsInN1YiI6IjEwMTQ5IiwiYXVkIjoicGYtbWVudGlvbnMtc2VydmljZSJ9.pwU_1DUAhNPTUmOvzqnMOwgzlFf8Ig7US0AVOhGBL-Y',
+        'X-Bogus': 'single',
+        'X-Bogus-Array': ['1', 'Hello'],
+      },
+      params: {
+        bogus1: 'onlyone',
+        bogusArray: ['first', 'second'],
+      },
+    };
   },
-  // containerId: 2595975,
+  containerId: 2595975,
 };
 
 export const resourceProvider = new MentionResource(apiConfig);

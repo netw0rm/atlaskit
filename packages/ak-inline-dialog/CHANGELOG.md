@@ -1,5 +1,15 @@
-<a name="69.2.1"></a>
-## 69.2.1 (2016-07-14)
+<a name="69.2.2"></a>
+## 69.2.2 (2016-07-18)
+
+
+
+<a name="ak-inline-dialog@69.2.2"></a>
+## ak-inline-dialog@69.2.2 (2016-07-18)
+
+
+### Bug Fixes
+
+* **skate:** SkateJS update to beta.10 ([620034a](https://bitbucket.org/atlassian/atlaskit/commits/620034a))
 
 
 

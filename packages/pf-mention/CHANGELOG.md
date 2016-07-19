@@ -1,5 +1,35 @@
-<a name="1.0.1"></a>
-## 1.0.1 (2016-07-14)
+<a name="1.0.4"></a>
+## 1.0.4 (2016-07-18)
+
+
+
+<a name="pf-mention@1.0.4"></a>
+## pf-mention@1.0.4 (2016-07-18)
+
+
+### Bug Fixes
+
+* **skate:** SkateJS update to beta.10 ([620034a](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/620034a))
+
+
+
+<a name="pf-mention@1.0.3"></a>
+## pf-mention@1.0.3 (2016-07-15)
+
+
+### Bug Fixes
+
+* Pass open down to ak-inline-dialog to ensure reposition occurs at right time. ([7ef43d1](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/7ef43d1))
+
+
+
+<a name="pf-mention@1.0.2"></a>
+## pf-mention@1.0.2 (2016-07-14)
+
+
+### Bug Fixes
+
+* Fix bad export for MentionResource ([1502f73](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/1502f73))
 
 
 

@@ -1,12 +1,11 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import definition from '../src/index';
-import { define } from 'skatejs';
-const { React, ReactDOM, uniqueWebComponent } = window;
+import AkUtilComponentTemplate from '../src/index';
+const { React, ReactDOM } = window;
 import { name } from '../package.json';
 import styles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
 
-const Component = reactify(uniqueWebComponent(name, definition, define), {
+const Component = reactify(AkUtilComponentTemplate, {
   React,
   ReactDOM,
 });

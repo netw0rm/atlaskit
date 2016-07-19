@@ -1,13 +1,12 @@
 import reactify from 'akutil-react';
-import definition from '../src/index';
-import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
-import { name } from '../package.json';
+import AkInlineDialog from '../src/index';
+import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import styles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
 
-const { React, ReactDOM, uniqueWebComponent } = window;
+const { React, ReactDOM } = window;
 const { Component } = React;
 
-const Dialog = reactify(uniqueWebComponent(name, definition, define), {
+const Dialog = reactify(AkInlineDialog, {
   React,
   ReactDOM,
 });

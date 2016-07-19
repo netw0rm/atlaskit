@@ -1,19 +1,17 @@
 {
-  "name": "ak-navigation",
+  "name": "ak-navigation-container",
   "version": "0.0.0",
-  "description": "ak-navigation webcomponent",
+  "description": "ak-navigation-container webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-navigation"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-navigation-container"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "akutil-shared-styles": "*",
-    "ak-navigation-container": "*",
-    "ak-navigation-link": "*",
     "skatejs": "1.0.0-beta.10"
   },
   "author": "Atlassian Pty Ltd",

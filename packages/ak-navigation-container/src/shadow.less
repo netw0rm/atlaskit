@@ -1,0 +1,30 @@
+// These styles will be inserted into a style tag inside
+// the shadow dom of each instance of the component
+
+// Only do class selectors in here, anything else leaks to the rest of the page in
+// browsers that do not support shadow DOM
+@import 'shared-variables.less';
+
+@ak-navigation-container-name-color: #42526E;
+
+.logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.container-name {
+  color: @ak-navigation-container-name-color;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-family: @ak-bold-font-family;
+  font-size: 14px;
+}
+
+.container-links {
+  display: flex;
+  flex-direction: column;
+  font-family: @ak-medium-font-family;
+  font-size: 14px;
+}

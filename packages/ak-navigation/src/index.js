@@ -3,6 +3,8 @@ import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 
 import { vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
+import 'ak-navigation-container';
+import 'ak-navigation-link';
 
 const definition = {
   render(elem) {
@@ -13,7 +15,7 @@ const definition = {
           Global
         </div>
         <div className={shadowStyles.locals.container}>
-          <p>I am an {elem.tagName} element!</p>
+          <slot />
         </div>
       </div>
     );

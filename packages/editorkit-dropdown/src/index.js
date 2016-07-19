@@ -1,8 +1,8 @@
 import { vdom, define, prop, symbols } from 'skatejs';
 import styles from './index.less';
-import './font-select';
-import './option';
-import './overlay';
+import FontSelect from './font-select';
+import Option from './option';
+import Overlay from './overlay';
 
 function toggle(elem) {
   const overlay = elem[symbols.shadowRoot].querySelector('editorkit-overlay');
@@ -13,7 +13,7 @@ function toggle(elem) {
 
   if (!fontSelect.open) {
     const editorButton = elem.querySelector('editor-button');
-    editorButton.active = false
+    editorButton.active = false;
   }
 }
 
@@ -22,15 +22,18 @@ export default define('editorkit-dropdown', {
     return (
       <div className={styles.locals.root}>
         <style>{styles.toString()}</style>
-        <editorkit-overlay />
-        <editorkit-font-select className={styles.locals.dropdown} selectedReadableName={elem.selectedReadableName}>
+        <Overlay />
+        <FontSelect
+          className={styles.locals.dropdown}
+          selectedReadableName={elem.selectedReadableName}
+        >
           <ul className={styles.locals.dropdownContent}>
-            <li><editorkit-option font="paragraph" active={true}>Paragraph</editorkit-option></li>
-            <li><editorkit-option font="heading1">Heading 1</editorkit-option></li>
-            <li><editorkit-option font="heading2">Heading 2</editorkit-option></li>
-            <li><editorkit-option font="heading3">Heading 3</editorkit-option></li>
+            <li><Option font="paragraph" active>Paragraph</Option></li>
+            <li><Option font="heading1">Heading 1</Option></li>
+            <li><Option font="heading2">Heading 2</Option></li>
+            <li><Option font="heading3">Heading 3</Option></li>
           </ul>
-        </editorkit-font-select>
+        </FontSelect>
       </div>
     );
   },
@@ -53,9 +56,9 @@ export default define('editorkit-dropdown', {
     },
     toggleDropdown(elem) {
       toggle(elem);
-    }
+    },
   },
   props: {
-    selectedReadableName: prop.string()
-  }
+    selectedReadableName: prop.string(),
+  },
 });

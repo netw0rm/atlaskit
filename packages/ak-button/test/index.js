@@ -18,32 +18,45 @@ describe('ak-button', () => {
     expect(getButtonElement(component)).to.be.defined;
   });
 
-
-  describe('types', () => {
+  describe('behaviour', () => {
     beforeEach(() => {
       component = new AkButton();
     });
 
-    describe('default', () => {
-      it('should be possible to specify a button label', () => {
-        state(component, { label: 'test' });
-        expect(getButtonElement(component).innerHTML).to.equal('test');
+    describe('states', () =>
+      describe('disabled', () =>
+        it('should reject any attached onclick handler', () => {
+          const onclickhandler = sinon.spy();
+          state(component, { onClick: onclickhandler });
+          state(component, { disable: true });
+          getButtonElement(component).click();
+          expect(onclickhandler.calledOnce).to.be.false;
+        })
+      )
+    );
+
+    describe('types', () => {
+      describe('default', () => {
+        it('should be possible to specify a button label', () => {
+          state(component, { label: 'test' });
+          expect(getButtonElement(component).innerHTML).to.equal('test');
+        });
+
+        it('should be possible to set an onclick event handler', () => {
+          const onclickhandler = sinon.spy();
+          component.onclick = onclickhandler;
+          getButtonElement(component).click();
+
+          expect(onclickhandler.calledOnce).to.be.true;
+        });
       });
 
-      it('should be possible to set an onclick event handler', (done) => {
-        const onclickhandler = sinon.spy();
-        component.onclick = onclickhandler;
-        getButtonElement(component).click();
-
-        expect(onclickhandler.calledOnce).to.be.true;
-        done();
-      });
-    });
-
-    describe('primary', () => {
-      it('should have attribute primary', () => {
-        state(component, { primary: true });
-        expect(component.primary).to.be.true;
+      // This test is useless, try to test if the primary class
+      describe('primary', () => {
+        it('should have attribute primary', () => {
+          state(component, { primary: true });
+          expect(component.primary).to.be.true;
+        });
       });
     });
   });

@@ -3,7 +3,9 @@ import reactify from 'akutil-react';
 import AkAvatar from '../src/index';
 import avatarStoryStyles from 'style!./stories.less'; // eslint-disable-line import/no-unresolved
 import { name } from '../package.json';
+import hostStyles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
 
+/* eslint-disable max-len */
 const { React, ReactDOM } = window;
 
 const Avatar = reactify(AkAvatar, {
@@ -12,19 +14,14 @@ const Avatar = reactify(AkAvatar, {
 });
 
 const avatarUrl = 'https://design.atlassian.com/images/avatars/avatar-96.png';
+const avatarClass = hostStyles['ak-avatar'];
 
 storiesOf(name, module)
   .add('A default avatar', () => (
-    <Avatar src={avatarUrl} />
+    <Avatar src={avatarUrl} className={avatarClass} />
   ))
   .add('An avatar with an incorrectly defined size (falls back to default)', () => (
-    <Avatar src={avatarUrl} size="megalarge" />
-  ))
-  .add('A xsmall avatar', () => (
-    <Avatar src={avatarUrl} size="xsmall" />
-  ))
-  .add('A xlarge avatar', () => (
-    <Avatar src={avatarUrl} size="xlarge" />
+    <Avatar src={avatarUrl} size="megalarge" className={avatarClass} />
   ))
   .add('A xlarge avatar on background', () => {
     const divStyle = {
@@ -33,59 +30,54 @@ storiesOf(name, module)
     };
     return (
       <div style={divStyle}>
-        <Avatar src={avatarUrl} size="xlarge" />
+        <Avatar src={avatarUrl} size="xlarge" className={avatarClass} />
       </div>
     );
   })
   .add('A row of avatars', () => {
     const avatarRowStyle = { marginLeft: '10px' };
     return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
-      <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} />
-      <Avatar src={avatarUrl} size="small" style={avatarRowStyle} />
-      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} />
-      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} />
+      <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} className={avatarClass} />
+      <Avatar src={avatarUrl} size="small" style={avatarRowStyle} className={avatarClass} />
+      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} className={avatarClass} />
+      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} />
     </div>);
   })
   .add('A row of avatars with border color', () => {
     const avatarRowStyle = { marginLeft: '10px' };
     const borderColor = 'red';
     return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
-      <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="small" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} borderColor={borderColor} />
+      <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} borderColor={borderColor} className={avatarClass} />
+      <Avatar src={avatarUrl} size="small" style={avatarRowStyle} borderColor={borderColor} className={avatarClass} />
+      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} borderColor={borderColor} className={avatarClass} />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} className={avatarClass} />
+      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} borderColor={borderColor} className={avatarClass} />
     </div>);
   })
-  .add('Avatars in a group', () => {
-    const avatarRowStyle = { marginLeft: '10px', position: 'relative' };
-    const borderColor = 'white';
-    const divStyle = {
-      padding: '10px',
-    };
-    return (<div style={divStyle}>
-      <Avatar src={avatarUrl} size="large" />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+  .add('A row of avatars with online presence', () => {
+    const avatarRowStyle = { 'margin-left': '10px' };
+    return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
+      <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} className={avatarClass} presence="online" />
+      <Avatar src={avatarUrl} size="small" style={avatarRowStyle} className={avatarClass} presence="online" />
+      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="online" />
+      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} className={avatarClass} presence="online" />
+      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} presence="online" />
     </div>);
   })
-  .add('Avatars in a group with a background color', () => {
-    const avatarRowStyle = { marginLeft: '10px', position: 'relative' };
-    const borderColor = 'white';
-    const divStyle = {
-      padding: '10px',
-      backgroundColor: 'blue',
-    };
-    return (<div style={divStyle}>
-      <Avatar src={avatarUrl} size="large" />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} borderColor={borderColor} />
+  .add('All presences', () => {
+    const avatarRowStyle = { 'margin-left': '10px' };
+    return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
+      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} presence="none" />
+      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} presence="online" />
+      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} presence="away" />
+      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} presence="busy" />
+      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} presence="offline" />
+    </div>);
+  })
+  .add('Avatar with a description', () => {
+    const avatarRowStyle = { 'margin-left': '10px' };
+    return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
+      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} description="This is an avatar!" />
     </div>);
   });

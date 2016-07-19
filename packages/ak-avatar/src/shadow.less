@@ -1,33 +1,127 @@
 @import 'shared-variables.less';
 
+@ak-avatar-size-xlarge: 64px;
+@ak-avatar-size-large: 48px;
+@ak-avatar-size-medium: 32px;
+@ak-avatar-size-small: 24px;
+@ak-avatar-size-xsmall: 16px;
+
+@ak-avatar-background: #F0F2F5;
+
+// Used to calculate how large the presence icon should be
+@ak-avatar-presence-img-ratio: 0.25;
+// Angle that the presence bubble sits on the avatar. 3:00 is 0 degrees
+@ak-avatar-presence-angle: 45deg;
+
+@ak-avatar-presence-color-online: #48CC8C;
+@ak-avatar-presence-color-away: #FFC400;
+@ak-avatar-presence-color-busy: #D93A35;
+@ak-avatar-presence-color-offline: #8993A4;
+
+
 .img {
   background-clip: padding-box;
   background-color: @ak-avatar-background;
   border-radius: 100%;
   border: 1px solid transparent;
-  height: 100%;
   margin: 0 auto;
-  width: 100%;
   vertical-align: bottom;
+}
+
+.outerDiv {
+  position: relative;
 
   &.xsmall {
-    height: @ak-avatar-size-xsmall;
-    width: @ak-avatar-size-xsmall;
+    img {
+      height: @ak-avatar-size-xsmall;
+      width: @ak-avatar-size-xsmall;
+    }
+
+    .presence {
+      .presenceMixin(@ak-avatar-size-xsmall);
+    }
   }
   &.small {
-    height: @ak-avatar-size-small;
-    width: @ak-avatar-size-small;
+    img {
+      height: @ak-avatar-size-small;
+      width: @ak-avatar-size-small;
+    }
+
+    .presence {
+      .presenceMixin(@ak-avatar-size-small);
+    }
   }
   &.medium {
-    height: @ak-avatar-size-medium;
-    width: @ak-avatar-size-medium;
+    img {
+      height: @ak-avatar-size-medium;
+      width: @ak-avatar-size-medium;
+    }
+
+    .presence {
+      .presenceMixin(@ak-avatar-size-medium);
+    }
   }
   &.large {
-    height: @ak-avatar-size-large;
-    width: @ak-avatar-size-large;
+    img {
+      height: @ak-avatar-size-large;
+      width: @ak-avatar-size-large;
+    }
+
+    .presence {
+      .presenceMixin(@ak-avatar-size-large);
+    }
   }
   &.xlarge {
-    height: @ak-avatar-size-xlarge;
-    width: @ak-avatar-size-xlarge;
+    img {
+      height: @ak-avatar-size-xlarge;
+      width: @ak-avatar-size-xlarge;
+    }
+
+    .presence {
+      .presenceMixin(@ak-avatar-size-xlarge);
+    }
+  }
+}
+
+.presenceMixin(@size) {
+  @presence-size: @size * @ak-avatar-presence-img-ratio;
+
+  height: @presence-size;
+  width: @presence-size;
+  // We use top and bottom to center the presence icon
+  top: ~"calc(50% - " @presence-size/2 ~")";
+  left: ~"calc(50% - " @presence-size/2 ~")";
+  // And the margin-left to move the center of the presence icon to the right edge of the avatar
+  margin-left: @size / 2;
+  // We set the transformation-origin to be the center of the avatar
+  transform-origin: -(@size/2-@presence-size/2) @presence-size/2;
+  // Now we can change the rotation to have the presence icon sit anywhere on the edge of the avatar
+  transform: rotate(@ak-avatar-presence-angle);
+}
+
+.presence {
+  position: absolute;
+
+  border: 1px solid #ffffff;
+  border-radius: 100%;
+
+  &.none {
+    display: none;
+  }
+
+  &.online {
+    background: @ak-avatar-presence-color-online;
+  }
+
+  &.away {
+    background: @ak-avatar-presence-color-away;
+  }
+
+  &.busy {
+    background: @ak-avatar-presence-color-busy;
+  }
+
+  &.offline {
+    background: @ak-avatar-presence-color-offline;
   }
 }

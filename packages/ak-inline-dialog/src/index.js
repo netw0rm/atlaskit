@@ -36,19 +36,23 @@ const definition = {
       elem[symbols.shadowRoot].firstChild.alignment.reposition();
     }
 
-    return (
-      <ak-layer
-        open={elem.open}
-        position={elem.position}
-        attachment={elem.attachment}
-        target={elem.target}
-      >
-        <style>{shadowStyles.toString()}</style>
-        <div class={shadowStyles.locals.inlineDialogContainer} style={styles}>
-          <slot />
-        </div>
-      </ak-layer>
-    );
+    if (elem.open) {
+      return (
+        <ak-layer
+          open={elem.open}
+          position={elem.position}
+          attachment={elem.attachment}
+          target={elem.target}
+        >
+          <style>{shadowStyles.toString()}</style>
+          <div class={shadowStyles.locals.inlineDialogContainer} style={styles}>
+            <slot />
+          </div>
+        </ak-layer>
+      );
+    } else {
+      return '';
+    }
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),

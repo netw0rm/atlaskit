@@ -1,7 +1,7 @@
 import { vdom, define, prop, symbols } from 'skatejs';
 import styles from './index.less';
 import './font-select';
-import './options';
+import './option';
 import './overlay';
 
 function toggle(elem) {
@@ -25,27 +25,27 @@ export default define('editorkit-dropdown', {
         <editorkit-overlay />
         <editorkit-font-select className={styles.locals.dropdown} selectedReadableName={elem.selectedReadableName}>
           <ul className={styles.locals.dropdownContent}>
-            <li><editorkit-option-paragraph /></li>
-            <li><editorkit-option-heading1 /></li>
-            <li><editorkit-option-heading2 /></li>
-            <li><editorkit-option-heading3 /></li>
-            <li><editorkit-option-monospace /></li>
+            <li><editorkit-option font="paragraph" active={true}>Paragraph</editorkit-option></li>
+            <li><editorkit-option font="heading1">Heading 1</editorkit-option></li>
+            <li><editorkit-option font="heading2">Heading 2</editorkit-option></li>
+            <li><editorkit-option font="heading3">Heading 3</editorkit-option></li>
           </ul>
         </editorkit-font-select>
       </div>
     );
   },
   ready(elem) {
-    elem.selectedFont = 'editorkit-option-paragraph';
+    elem.selectedFont = 'paragraph';
     elem.selectedReadableName = 'Paragraph';
   },
   events: {
     selectFont(elem, { target }) {
-      elem.selectedReadableName = target.readableName;
+      elem.selectedReadableName = target.innerHTML;
 
-      const selectedFont = elem.querySelector(elem.selectedFont);
-      selectedFont.active = false
-      elem.selectedFont = target.tagName.toLowerCase();
+      const selectedFont = elem.querySelector(`[font="${elem.selectedFont}"]`);
+      selectedFont.active = false;
+
+      elem.selectedFont = target.getAttribute('font');
 
       target.active = true;
 

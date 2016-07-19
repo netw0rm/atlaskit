@@ -1,11 +1,10 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import definition from '../src/index';
-import { define } from 'skatejs';
-const { React, ReactDOM, uniqueWebComponent } = window;
+import EditorkitDropdown from '../src/index';
+const { React, ReactDOM } = window;
 import { name } from '../package.json';
 
-const Component = reactify(uniqueWebComponent(name, definition, define), {
+const Component = reactify(EditorkitDropdown, {
   React,
   ReactDOM,
 });

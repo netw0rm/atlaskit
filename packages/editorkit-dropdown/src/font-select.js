@@ -17,7 +17,7 @@ export default define('editorkit-font-select', {
         <editor-button onclick={() => emit(elem, 'toggleDropdown')} className={className}>
           <span className={styles.locals.buttonSpan}>{elem.selectedReadableName}</span>
         </editor-button>
-        <slot style={style}></slot>
+        <slot style={style} />
       </div>
     );
   },

@@ -1,14 +1,14 @@
-import { vdom, prop } from 'skatejs';
+import { vdom, define, prop, symbols } from 'skatejs';
 import styles from './index.less';
 import './font-select';
 import './options';
 import './overlay';
 
 function toggle(elem) {
-  const overlay = elem.querySelector('editorkit-overlay');
+  const overlay = elem[symbols.shadowRoot].querySelector('editorkit-overlay');
   overlay.open = !overlay.open;
 
-  const fontSelect = elem.querySelector('editorkit-font-select');
+  const fontSelect = elem[symbols.shadowRoot].querySelector('editorkit-font-select');
   fontSelect.open = !fontSelect.open;
 
   if (!fontSelect.open) {
@@ -17,7 +17,7 @@ function toggle(elem) {
   }
 }
 
-export default {
+export default define('editorkit-dropdown', {
   render(elem) {
     return (
       <div className={styles.locals.root}>
@@ -58,4 +58,4 @@ export default {
   props: {
     selectedReadableName: prop.string()
   }
-}
+});

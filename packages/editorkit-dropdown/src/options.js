@@ -32,6 +32,7 @@ export const optionsFactory = (name, font, readableName) => {
   });
 };
 
+// todo: refactor this
 export const optionParagraph = optionsFactory('editorkit-option-paragraph', 'paragraph', 'Paragraph');
 export const optionHeading1 = optionsFactory('editorkit-option-heading1', 'heading1', 'Heading 1');
 export const optionHeading2 = optionsFactory('editorkit-option-heading2', 'heading2', 'Heading 2');

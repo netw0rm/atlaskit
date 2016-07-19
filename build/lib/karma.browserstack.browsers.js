@@ -55,7 +55,7 @@ const browserStackBrowsers = {
   // Android
   android: {
     os: 'android',
-    os_version: '5.0',
+    os_version: '5',
     device: 'Nexus 5',
   },
 };

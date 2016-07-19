@@ -10,7 +10,9 @@ const definition = {
       // JSX requires that there only be a single root element.
       // Incremental DOM doesn't require this.
       <a
-        className={`${shadowStyles.locals.link} ${elem.selected ? shadowStyles.locals.selected : ''}`}
+        className={`
+        ${shadowStyles.locals.link}
+        ${elem.selected ? shadowStyles.locals.selected : ''}`}
         href={elem.href}
       >
         <style>{shadowStyles.toString()}</style>

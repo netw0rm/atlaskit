@@ -7,7 +7,7 @@ import 'ak-navigation-container';
 import 'ak-navigation-link';
 
 const definition = {
-  render(elem) {
+  render() {
     return (
       <div className={shadowStyles.locals.navigation}>
         <style>{shadowStyles.toString()}</style>

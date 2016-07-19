@@ -83,7 +83,6 @@ module.exports = (config) => {
       customLaunchers: browserStackBrowsers,
       browsers: Object.keys(browserStackBrowsers),
       captureTimeout: 120000,
-      browserNoActivityTimeout: 60000,
       reporters: ['dots'],
       autoWatch: false,
       concurrency: 5,

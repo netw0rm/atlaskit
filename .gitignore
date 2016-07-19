@@ -11,5 +11,5 @@ npm-debug.log.*
 .ci_failed
 .DS_Store
 TESTS-*.xml
-
+browserstack.err
 local.log

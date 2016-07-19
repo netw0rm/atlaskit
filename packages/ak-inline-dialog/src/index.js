@@ -50,9 +50,9 @@ const definition = {
           </div>
         </ak-layer>
       );
-    } else {
-      return '';
     }
+
+    return '';
   },
   props: {
     position: prop.string({ attribute: true, default: 'right middle' }),

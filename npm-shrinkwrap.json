@@ -5819,8 +5819,8 @@
     },
     "retry-cli": {
       "version": "0.3.0",
-      "from": "retry-cli@>=0.3.0 <0.4.0",
-      "resolved": "https://registry.npmjs.org/retry-cli/-/retry-cli-0.3.0.tgz",
+      "from": "joscha/retry-cli#8c581f9",
+      "resolved": "git://github.com/joscha/retry-cli.git#8c581f95d57484eca25eb629d88a3d4c43f7523c",
       "dependencies": {
         "retry": {
           "version": "0.9.0",

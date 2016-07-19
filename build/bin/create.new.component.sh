@@ -11,7 +11,7 @@ if [[ $# -eq 0 || "$1" == "" ]]
 fi
 
 COMP_NAME="$1"
-PASCAL_CASE_NAME=$(node ./build/bin/pascal.case "$COMP_NAME" | sed "s/^Ak//")
+PASCAL_CASE_NAME=$(./build/bin/pascal.case.js "$COMP_NAME" | sed "s/^Ak//")
 
 # TODO: Should we check the name to see if it looks namespaced? Hard code acceptable name spaces or
 # base it on existing components?

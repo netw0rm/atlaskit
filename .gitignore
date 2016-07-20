@@ -11,5 +11,6 @@ npm-debug.log.*
 .ci_failed
 .DS_Store
 TESTS-*.xml
+atlaskit.iml
 browserstack.err
 local.log

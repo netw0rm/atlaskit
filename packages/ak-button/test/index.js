@@ -2,6 +2,7 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { symbols, state } from 'skatejs';
 import AkButton from '../src/index.js';
+import shadowStyles from '../src/shadow.less';
 
 chai.use(chaiAsPromised);
 const expect = chai.expect;
@@ -10,7 +11,11 @@ describe('ak-button', () => {
   let component;
 
   const getButtonElement = (elem) =>
-    elem[symbols.shadowRoot].querySelector('button');
+    elem[symbols.shadowRoot].querySelector(`.${shadowStyles.locals.akButton}`);
+
+  const getButtonLabelElement = (elem) =>
+    getButtonElement(elem).querySelector(`.${shadowStyles.locals.label}`);
+
 
   it('should be possible to create the component', () => {
     component = new AkButton();
@@ -27,8 +32,7 @@ describe('ak-button', () => {
       describe('disabled', () =>
         it('should reject any attached onclick handler', () => {
           const onclickhandler = sinon.spy();
-          state(component, { onClick: onclickhandler });
-          state(component, { disable: true });
+          state(component, { onclick: onclickhandler, disabled: true });
           getButtonElement(component).click();
           expect(onclickhandler.calledOnce).to.be.false;
         })
@@ -39,7 +43,7 @@ describe('ak-button', () => {
       describe('default', () => {
         it('should be possible to specify a button label', () => {
           state(component, { label: 'test' });
-          expect(getButtonElement(component).innerHTML).to.equal('test');
+          expect(getButtonLabelElement(component).innerHTML).to.equal('test');
         });
 
         it('should be possible to set an onclick event handler', () => {
@@ -51,11 +55,11 @@ describe('ak-button', () => {
         });
       });
 
-      // This test is useless, try to test if the primary class
       describe('primary', () => {
         it('should have attribute primary', () => {
           state(component, { primary: true });
-          expect(component.primary).to.be.true;
+          const buttonClasses = Array.from(getButtonElement(component).classList);
+          expect(buttonClasses).to.include(shadowStyles.locals.primary);
         });
       });
     });

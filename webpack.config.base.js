@@ -71,10 +71,6 @@ const standardConfig = {
           },
         },
       ],
-      {
-        test: /\.html$/,
-        loader: 'html-loader',
-      },
     ],
   },
   plugins: [],

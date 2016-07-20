@@ -3,7 +3,7 @@ import reactify from 'akutil-react';
 import AkAvatar from '../src/index';
 import avatarStoryStyles from 'style!./stories.less';
 import { name } from '../package.json';
-import hostStyles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
+import hostStyles from 'style!./../src/host.less';
 
 /* eslint-disable max-len */
 const { React, ReactDOM } = window;
@@ -14,7 +14,7 @@ const Avatar = reactify(AkAvatar, {
 });
 
 const avatarClass = hostStyles['ak-avatar'];
-const avatarUrl = require('url!./avatar-96.png'); // eslint-disable-line import/no-unresolved
+const avatarUrl = require('url!./avatar-96.png');
 
 storiesOf(name, module)
   .add('A default avatar', () => (

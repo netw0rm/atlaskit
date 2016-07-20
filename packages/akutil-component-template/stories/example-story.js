@@ -3,7 +3,7 @@ import reactify from 'akutil-react';
 import AkUtilComponentTemplate from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
-import styles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
+import styles from 'style!./../src/host.less';
 
 const Component = reactify(AkUtilComponentTemplate, {
   React,
@@ -13,6 +13,9 @@ const Component = reactify(AkUtilComponentTemplate, {
 storiesOf(name, module)
   .add('a simple akutil-component-template', () => (
     <Component />
+  ))
+  .add('a simple akutil-component-template with a name', () => (
+    <Component name="MyComponent" />
   ))
   .add('an akutil-component-template that emits an action when it is clicked', () => (
     <Component id="myComponent" onClick={action('clicking the WebComponent')} />

@@ -13,4 +13,6 @@ npm-debug.log.*
 TESTS-*.xml
 .vscode
 
+atlaskit.iml
+browserstack.err
 local.log

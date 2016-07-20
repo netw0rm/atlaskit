@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkAvatar from '../src/index';
-import avatarStoryStyles from 'style!./stories.less'; // eslint-disable-line import/no-unresolved
+import avatarStoryStyles from 'style!./stories.less';
 import { name } from '../package.json';
 import hostStyles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
 
@@ -13,8 +13,8 @@ const Avatar = reactify(AkAvatar, {
   ReactDOM,
 });
 
-const avatarUrl = 'https://design.atlassian.com/images/avatars/avatar-96.png';
 const avatarClass = hostStyles['ak-avatar'];
+const avatarUrl = require('url!./avatar-96.png'); // eslint-disable-line import/no-unresolved
 
 storiesOf(name, module)
   .add('A default avatar', () => (

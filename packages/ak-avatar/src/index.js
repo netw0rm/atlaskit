@@ -1,5 +1,5 @@
 /** @jsx vdom */
-import 'style!./host.less'; // eslint-disable-line import/no-unresolved
+import 'style!./host.less';
 
 import classNames from 'classnames';
 import shadowStyles from './shadow.less';
@@ -20,6 +20,14 @@ const PRESENCE_ATTRIBUTE_ENUM = {
   invalidDefault: 'none',
 };
 
+/**
+ * @description The definition for the Avatar component.
+ * @class Avatar
+ * @example @html <ak-avatar src="my/avatar/src/image.png"></ak-avatar>
+ * @example @js import Avatar from 'ak-avatar';
+ * const myAvatar = new Avatar();
+ *
+ */
 const definition = {
   render(elem) {
     const imgClasses = classNames(shadowStyles.locals.img);
@@ -38,21 +46,68 @@ const definition = {
       </div>
     );
   },
+
   props: {
+    /**
+     * @description The size of the avatar. One of:
+     * 'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', or 'xxxlarge'.
+     * @memberof Avatar
+     * @instance
+     * @default medium
+     * @type {string}
+     * @example @html <ak-avatar size="large"></ak-avatar>
+     * @example @js avatar.size = 'large';
+     */
     size: enumeration(SIZE_ATTRIBUTE_ENUM)({
       attribute: true,
     }),
+
+    /**
+     * @description The source URL.
+     * @memberof Avatar
+     * @instance
+     * @type {string}
+     * @example @html <ak-avatar src="my/avatar/src.png"></ak-avatar>
+     * @example @js avatar.src = 'my/avatar/src.png';
+     */
     presence: enumeration(PRESENCE_ATTRIBUTE_ENUM)({
       attribute: true,
     }),
+
+    /**
+     * @description The source URL.
+     * @memberof Avatar
+     * @instance
+     * @type {string}
+     * @example @html <ak-avatar src="my/avatar/src.png"></ak-avatar>
+     * @example @js avatar.src = 'my/avatar/src.png';
+     */
     src: {
       attribute: true,
       // Add a default so that creating via `new AKAvatar()` doesnt try to load a url of `null`
       default: '',
     },
+
+    /* eslint-disable max-len */
+    /**
+     * @description The description for the Avatar. Used by screen readers.
+     * @memberof Avatar
+     * @instance
+     * @type {string}
+     * @example @html <ak-avatar description="Avatar for Jon Snow" src="my/avatar/src.png"></ak-avatar>
+     * @example @js avatar.alt = 'Avatar for Jon Snow';
+     */
+    /* eslint-enable max-len */
     description: {
       attribute: true,
     },
+
+    /**
+     * @description The border color for the Avatar.
+     * @memberof Avatar
+     * @instance
+     * @type {string}
+     */
     borderColor: {
       attribute: true,
     },

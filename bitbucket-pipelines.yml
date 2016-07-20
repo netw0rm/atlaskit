@@ -25,4 +25,5 @@ pipelines:
           - npm install
           - npm run lint
           - npm run dist
+          - npm run test/ci -- --browsers=Chrome
           - npm run test/browserstack/ci

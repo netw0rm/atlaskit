@@ -12,7 +12,7 @@ const definition = {
     disabled: prop.boolean({ attribute: true }),
   },
   render(elem) {
-    const classes = [shadowStyles.locals.myClassName];
+    const classes = [shadowStyles.locals.akButton];
 
     if (elem.primary) {
       classes.push(shadowStyles.locals.primary);
@@ -25,13 +25,13 @@ const definition = {
     const classListNames = classNames(classes);
 
     return (
-      <div>
+      <div className={shadowStyles.locals.container}>
         <style>{shadowStyles.toString()}</style>
         <button
           className={classListNames}
           disabled={elem.disabled}
         >
-          {elem.label}
+          <span className={shadowStyles.locals.label}>{elem.label}</span>
         </button>
       </div>
     );

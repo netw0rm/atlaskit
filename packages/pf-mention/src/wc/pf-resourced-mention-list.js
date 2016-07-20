@@ -1,4 +1,4 @@
-import headStyles from 'style!../host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import 'style!../host.less';
 import shadowStyles from './pf-resourced-mention-list-shadow.less';
 import mentionList from './pf-mention-list'; // eslint-disable-line no-unused-vars
 import { localProp } from './skate-local-props';

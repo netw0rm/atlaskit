@@ -3,7 +3,7 @@ import reactify from 'akutil-react';
 import AkUtilComponentTemplate from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
-import styles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
+import styles from 'style!./../src/host.less';
 
 const Component = reactify(AkUtilComponentTemplate, {
   React,

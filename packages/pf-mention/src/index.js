@@ -1,4 +1,4 @@
-import headStyles from 'style!./host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import 'style!./host.less';
 
 import MentionResource, { AbstractMentionResource } from './api/pf-mention-resource';
 import MentionList from './wc/pf-mention-list';

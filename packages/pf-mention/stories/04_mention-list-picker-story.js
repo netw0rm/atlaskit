@@ -1,4 +1,4 @@
-import storyStyles from 'style!./stories.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import 'style!./stories.less';
 
 import MentionTextInput from './demo-mention-text-input';
 import { resourceProvider, MockPresenceProvider } from './story-data';

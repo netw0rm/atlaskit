@@ -15,6 +15,8 @@ const attachmentMap = {
   'left bottom': { el: 'bottom right', target: 'bottom left', animation: 'left' },
 };
 
+const defaultPosition = 'right middle';
+
 function getPositionFromClasses(classes) {
   const cl = classes.split(' ');
   let position = '';
@@ -94,7 +96,7 @@ Alignment.prototype = {
   },
 
   update(elem) {
-    if (this.disabled || !elem.position || !elem.target) {
+    if (this.disabled || !elem.target) {
       return this;
     }
 
@@ -106,12 +108,12 @@ Alignment.prototype = {
       this.renderNode = getElement(elem.renderElementTo);
       this.renderNode.appendChild(this.renderElement);
     }
-
+    const position = attachmentMap[elem.position] || attachmentMap[defaultPosition];
     const opts = {
       element: this.renderElement,
       target: getElement(elem.target),
-      attachment: attachmentMap[elem.position].el,
-      targetAttachment: attachmentMap[elem.position].target,
+      attachment: position.el,
+      targetAttachment: position.target,
       constraints: [
         {
           to: elem.attachment || 'window',

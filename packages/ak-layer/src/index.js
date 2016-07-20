@@ -10,14 +10,6 @@ const definition = {
     target: { attribute: true },
     renderElementTo: prop.string({ attribute: true }),
     doNotMoveInDOM: prop.boolean({ attribute: true, default: true }),
-    open: prop.string({
-      attribute: true,
-      set(elem) {
-        if (elem.alignment) {
-          elem.alignment.reposition();
-        }
-      },
-    }),
   },
   attached(elem) {
     if (!elem.alignment) {

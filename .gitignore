@@ -12,5 +12,5 @@ npm-debug.log.*
 .DS_Store
 TESTS-*.xml
 atlaskit.iml
-
+browserstack.err
 local.log

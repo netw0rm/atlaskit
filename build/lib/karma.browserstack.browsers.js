@@ -53,11 +53,13 @@ const browserStackBrowsers = {
   },
 
   // Android
+  /* disabled temporarily on 2016-07-19
   android: {
     os: 'android',
     os_version: '4.4',
     device: 'Samsung Galaxy S5',
   },
+  */
 };
 
 // This is the same for every browser.

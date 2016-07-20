@@ -3,7 +3,6 @@ import reactify from 'akutil-react';
 import AkButtonTemplate from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
-// import styles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
 
 const AkButton = reactify(AkButtonTemplate, {
   React,

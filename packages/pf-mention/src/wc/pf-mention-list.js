@@ -1,4 +1,4 @@
-import headStyles from 'style!../host.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import 'style!../host.less';
 import shadowStyles from './pf-mention-list-shadow.less';
 import mentionItem from './pf-mention-item'; // eslint-disable-line no-unused-vars
 import scrollable from './pf-scrollable'; // eslint-disable-line no-unused-vars

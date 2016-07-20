@@ -1,9 +1,9 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import akUtilComponentTemplate from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
-import styles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
+import Lorem from 'react-lorem-component';
 
 const Component = reactify(akUtilComponentTemplate, {
   React,
@@ -11,14 +11,14 @@ const Component = reactify(akUtilComponentTemplate, {
 });
 
 storiesOf(name, module)
-  .add('a simple ak-navigation', () => (
+  .add('empty ak-navigation', () => (
     <Component />
   ))
-  .add('a simple ak-navigation with no margins', () => (
+  .add('ak-navigation with no margins', () => (
     <div>
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <Component>
-        <ak-navigation-container name="Nucleus" link="http://nucleus.com" logo="https://s3.amazonaws.com/uploads.hipchat.com/10804/576067/VtJT4vjBKJXG5GI/Group%204.png">
+        <ak-navigation-container name="Nucleus" href="http://nucleus.com" logo="https://s3.amazonaws.com/uploads.hipchat.com/10804/576067/VtJT4vjBKJXG5GI/Group%204.png">
           <ak-navigation-link selected href="/jira">Test</ak-navigation-link>
           <ak-navigation-link>Test</ak-navigation-link>
           <ak-navigation-link>Test</ak-navigation-link>
@@ -26,22 +26,16 @@ storiesOf(name, module)
       </Component>
     </div>
   ))
-  .add('an ak-navigation that emits an action when it is clicked', () => (
-    <Component id="myComponent" onClick={action('clicking the WebComponent')} />
-  ))
-  .add('an ak-navigation that removes itself when being clicked', () => {
-    const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
-    const cls = styles.akutilComponentTemplate;
-    return (<Component id="myComponent" className={cls} onClick={removeMe} />);
-  })
-  .addMonkeyTest('a ak-navigation with monkey testing', () => (
-    // Use this to add a story that has fuzzy testing attached.
-    <Component />
-  ))
-  .addMonitored('an ak-navigation with monitored performance', () => (
+  .addMonitored('an ak-navigation with page reflow tested', () => (
     // Use this to add a story that has a little fps/memory gauge that allows you
     // to monitor performance whilst developing
-    <Component />
+    <div style={{ display: 'flex' }}>
+      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
+      <Component />
+      <div>
+        <Lorem count={30} />
+      </div>
+    </div>
   ), () => {
     // This is where the actual work is done - anything in here will be monitored by the stats
     // view and displayed, so this is where you want to do your animation work, etc.

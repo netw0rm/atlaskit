@@ -19,7 +19,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "^0.0.3"
+    "akutil-react": "^0.0.3",
+    "react-lorem-component": "^0.10.0"
   },
   "repository": {
     "type": "git",

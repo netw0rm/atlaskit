@@ -14,12 +14,18 @@
   top: 0;
   left: 0;
   position: fixed;
-  width: 300px;
+  width: 80px;
   height: 100%;
   display: flex;
+  transition: width 250ms;
+  overflow: hidden;
+
+  &.open {
+    width: 300px;
+  }
 
   .global {
-    width: 80px;
+    flex: 0 0 80px;
     background-color: @ak-navigation-global-color;
   }
 

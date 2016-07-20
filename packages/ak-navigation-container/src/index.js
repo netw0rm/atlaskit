@@ -30,9 +30,15 @@ const definition = {
     logo: prop.string({
       attribute: true,
     }),
-    link: prop.string({
+    href: prop.string({
       attribute: true,
     }),
+  },
+  events: {
+    'ak-navigation-link-selected': (elem, event) => {
+      Array.prototype.slice.call(elem.children).forEach((child) => { child.selected = false; });
+      event.target.selected = true;
+    },
   },
 };
 

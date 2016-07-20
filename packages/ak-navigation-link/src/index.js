@@ -1,8 +1,14 @@
 /** @jsx vdom */
 import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 
-import { vdom, define, prop } from 'skatejs';
+import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
+
+const enterKeyCode = 13;
+
+function select(elem) {
+  emit(elem, 'ak-navigation-link-selected');
+}
 
 const definition = {
   render(elem) {
@@ -14,11 +20,16 @@ const definition = {
         ${shadowStyles.locals.link}
         ${elem.selected ? shadowStyles.locals.selected : ''}`}
         href={elem.href}
+        tabindex="0"
       >
         <style>{shadowStyles.toString()}</style>
         <slot />
       </a>
     );
+  },
+  events: {
+    click: (elem) => select(elem),
+    keyup: (elem, event) => (event.keyCode === enterKeyCode) && select(elem),
   },
   props: {
     href: prop.string({

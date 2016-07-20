@@ -1,15 +1,17 @@
 /** @jsx vdom */
 import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 
-import { vdom, define } from 'skatejs';
+import { prop, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import 'ak-navigation-container';
 import 'ak-navigation-link';
 
 const definition = {
-  render() {
+  render(elem) {
     return (
-      <div className={shadowStyles.locals.navigation}>
+      <div
+        className={`${shadowStyles.locals.navigation} ${elem.open ? shadowStyles.locals.open : ''}`}
+      >
         <style>{shadowStyles.toString()}</style>
         <div className={shadowStyles.locals.global}>
           Global
@@ -19,6 +21,9 @@ const definition = {
         </div>
       </div>
     );
+  },
+  props: {
+    open: prop.boolean({ attribute: true, default: true }),
   },
 };
 

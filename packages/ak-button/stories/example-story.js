@@ -17,7 +17,14 @@ storiesOf(name, module)
   .add('a primary ak-button', () => (
     <AkButton label="Primary Button" primary />
   ))
-  .add('a disabled ak-button', () => {
+  .add('a disabled ak-button', () =>
+    <AkButton
+      disabled
+      label="Button"
+      onclick={action('clicking the WebComponent')}
+    />
+  )
+  .add('a button that can be disabled and enabled', () => {
     class MyComponent extends React.Component {
       constructor(props) {
         super(props);
@@ -42,7 +49,7 @@ storiesOf(name, module)
             <AkButton
               disabled={this.state.disable}
               label="Button"
-              onClick={action('clicking the WebComponent')}
+              onclick={action('clicking the WebComponent')}
             />
           </div>
         );

@@ -1,0 +1,8 @@
+version: '2'
+services:
+  atlaskit-unit-tests:
+    build:
+      context: .
+    volumes:
+      - .:/usr/src/app/
+    command: 'bash -c "npm run postinstall && npm test"' # npm run postinstall is needed to set up the symlinks between packages correctly in docker

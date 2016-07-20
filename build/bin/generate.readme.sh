@@ -25,7 +25,7 @@ if compgen -G "*/index\.js" > /dev/null; then
   then
     API=""
   else
-    API="\n$API"
+    API="\n$API\n"
   fi
 
 else

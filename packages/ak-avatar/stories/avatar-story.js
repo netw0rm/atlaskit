@@ -56,7 +56,7 @@ storiesOf(name, module)
     </div>);
   })
   .add('A row of avatars with online presence', () => {
-    const avatarRowStyle = { 'margin-left': '10px' };
+    const avatarRowStyle = { marginLeft: '10px' };
     return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
       <Avatar src={avatarUrl} size="xsmall" style={avatarRowStyle} className={avatarClass} presence="online" />
       <Avatar src={avatarUrl} size="small" style={avatarRowStyle} className={avatarClass} presence="online" />
@@ -66,7 +66,7 @@ storiesOf(name, module)
     </div>);
   })
   .add('All presences', () => {
-    const avatarRowStyle = { 'margin-left': '10px' };
+    const avatarRowStyle = { marginLeft: '10px' };
     return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
       <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} presence="none" />
       <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} presence="online" />
@@ -76,7 +76,7 @@ storiesOf(name, module)
     </div>);
   })
   .add('Avatar with a description', () => {
-    const avatarRowStyle = { 'margin-left': '10px' };
+    const avatarRowStyle = { marginLeft: '10px' };
     return (<div className={avatarStoryStyles.rowOfAvatarsStory}>
       <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} description="This is an avatar!" />
     </div>);

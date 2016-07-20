@@ -47,10 +47,11 @@ const definition = {
     }),
     src: {
       attribute: true,
+      // Add a default so that creating via `new AKAvatar()` doesnt try to load a url of `null`
+      default: '',
     },
     description: {
       attribute: true,
-      default: '',
     },
     borderColor: {
       attribute: true,

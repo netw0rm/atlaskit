@@ -47,6 +47,7 @@ const myDialog = new InlineDialog();
 Position of an inline-dialog relative to it's target. One of:
 
 |             | top left    | top center    | top right    |              |
+| --- | ---| --- |
 | left top    |             |               |              | right top    |
 | left middle |             |               |              | right middle |
 | left bottom |             |               |              | right bottom |

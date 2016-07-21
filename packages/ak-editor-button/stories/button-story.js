@@ -1,5 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
-import ButtonComponent from '../src/index';
+import ButtonComponent from '../src';
 import IconComponent from 'ak-editor-icon';
 import reactify from 'akutil-react';
 import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars

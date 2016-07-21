@@ -1,5 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
-import ToolbarComponent from '../src/index';
+import ToolbarComponent from '../src';
 import ToolbarButtonComponent from 'ak-editor-button';
 import TextFormattingComponent from 'ak-editor-toolbar-text-formatting';
 import IconComponent from 'ak-editor-icon';

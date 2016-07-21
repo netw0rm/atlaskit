@@ -1,5 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
-import ContentComponent from '../src/index';
+import ContentComponent from '../src';
 import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 import reactify from 'akutil-react';

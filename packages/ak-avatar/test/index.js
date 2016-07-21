@@ -7,7 +7,7 @@ import shadowStyles from '../src/shadow.less';
 
 chai.use(chaiAsPromised);
 chai.should();
-const expect = chai.expect; // eslint-disable-line no-unused-vars
+const expect = chai.expect;
 
 const defaultSize = 'medium';
 const defaultPresence = 'none';
@@ -19,7 +19,7 @@ const avatarSizes = {
   small: 24,
   medium: 32,
   large: 48,
-  xlarge: 64,
+  xlarge: 96,
 };
 
 function setupAvatar() {

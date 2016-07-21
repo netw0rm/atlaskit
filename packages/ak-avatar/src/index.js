@@ -50,7 +50,7 @@ const definition = {
   props: {
     /**
      * @description The size of the avatar. One of:
-     * 'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', or 'xxxlarge'.
+     * 'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', or 'xxlarge'.
      * @memberof Avatar
      * @instance
      * @default medium

@@ -49,8 +49,7 @@ const ReactComponent = reactify(Tabs, {});
 
 ReactDOM.render(<ReactComponent />, container);
 ```
-## Component API
-
+## Tabs
 * Properties
 
     *  [`tabs.name`](#Tabs+name) : string
@@ -90,6 +89,51 @@ component.announce(); // Fires the announce-name event.
 Fired when the `announce` method is called.
 
 **Kind**: event emitted by Tabs  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| detail.name | String | The name of the component. |
+## Tab
+* Properties
+
+    *  [`tab.tabname`](#Tab+tabname) : string
+
+* Methods
+
+    *  [`tab.tabannounce()`](#Tab+tabannounce) ⇒ Tab
+
+* Events
+
+    *  [`"announce-name"`](#Tab+event_announce-name)
+
+### Constructor
+Create instances of the component programmatically, or using markup.
+
+**JS Example**
+```js
+import Tab from 'ak-tab';
+const component = new Tab();
+```
+### `tab.tabname` : string
+The name of the Tab element.
+
+**Kind**: instance property of Tab  
+**Default**: `"Tab"`  
+### `tab.tabannounce()` ⇒ Tab
+Fire an event containing the name of the element.
+
+**Kind**: instance method of Tab  
+**Returns**: Tab - The Tab element.  
+**Emits**: announce-name  
+**JS Example**
+```js
+component.announce(); // Fires the announce-name event.
+```
+### `"announce-name"`
+Fired when the `announce` method is called.
+
+**Kind**: event emitted by Tab  
 **Properties**
 
 | Name | Type | Description |

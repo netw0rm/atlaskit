@@ -1,16 +1,14 @@
 /** @jsx vdom */
-import 'style!./host.less';
+import 'style!../host.less';
 
 import { emit, vdom, define } from 'skatejs';
-import shadowStyles from './shadow.less';
-
-import './children/tab';
+import shadowStyles from '../shadow.less';
 
 /**
  * @description Create instances of the component programmatically, or using markup.
- * @class Tabs
- * @example @js import Tabs from 'ak-tabs';
- * const component = new Tabs();
+ * @class Tab
+ * @example @js import Tab from 'ak-tab';
+ * const component = new Tab();
  */
 const definition = {
   render(elem) {
@@ -19,9 +17,9 @@ const definition = {
       // Incremental DOM doesn't require this.
       <div>
         {/* This is required for elements in the shadow root to be styled.
-           This is wrapped in the <div /> because you can't have more than one
-           root element.
-        */}
+         This is wrapped in the <div /> because you can't have more than one
+         root element.
+         */}
         <style>{shadowStyles.toString()}</style>
         <p className={shadowStyles.locals.myClassName}>My name is {elem.name}!</p>
       </div>
@@ -29,36 +27,36 @@ const definition = {
   },
   props: {
     /**
-     * @description The name of the Tabs element.
-     * @memberof Tabs
+     * @description The name of the Tab element.
+     * @memberof Tab
      * @instance
      * @type {string}
-     * @default Tabs
+     * @default Tab
      */
-    name: {
-      default: 'Tabs',
+    tabname: {
+      default: 'Tab',
     },
   },
   prototype: {
     /**
      * @description Fire an event containing the name of the element.
-     * @memberof Tabs
+     * @memberof Tab
      * @function
      * @instance
-     * @fires Tabs#announce-name
-     * @return {Tabs} The Tabs element.
+     * @fires Tab#announce-name
+     * @return {Tab} The Tab element.
      * @example @js component.announce(); // Fires the announce-name event.
      */
-    announce() {
+    tabannounce() {
       /**
-       * @event Tabs#announce-name
-       * @memberof Tabs
+       * @event Tab#announce-name
+       * @memberof Tab
        * @description Fired when the `announce` method is called.
        * @property {String} detail.name The name of the component.
        */
-      emit(this, 'announce-name', {
+      emit(this, 'tab-announce-name', {
         detail: {
-          name: this.name,
+          tabname: this.tabname,
         },
       });
       return this;
@@ -66,4 +64,4 @@ const definition = {
   },
 };
 
-export default define('ak-tabs', definition);
+export default define('ak-tab', definition);

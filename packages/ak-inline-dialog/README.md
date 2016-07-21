@@ -44,7 +44,10 @@ import InlineDialog from 'ak-inline-dialog';
 const myDialog = new InlineDialog();
 ```
 ### `inlineDialog.position` : string
-Position of an inline-dialog relative to it's target. One of:
+Position of an inline-dialog relative to it's target.
+The position attribute takes two positional arguments in the format`position="edge edge-position"`,
+where `edge` specifies what edge to align the inline dialog to, and `edge-position` specifies where on that edge the dialog should appear.
+Refer to the table below for examples:
 
 |             | top left    | top center    | top right    |              |
 |-------------|-------------|---------------|--------------|--------------|

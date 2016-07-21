@@ -10,24 +10,7 @@ editor-button {
     display: flex;
   }
 
-  path {
-    fill: @editor-inactive-foreground;
-  }
-
-  &:active:focus path {
-    fill: white;
-  }
-
   &[active] {
     color: @editor-active-foreground;
-
-    path,
-    &:not([disabled]):hover path {
-      fill: @editor-active-foreground;
-    }
-  }
-
-  &:not([disabled]):hover path {
-    fill: @editor-inactive-foreground;
   }
 }

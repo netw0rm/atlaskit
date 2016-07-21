@@ -40,7 +40,7 @@ import Layer from 'ak-layer';
 const myLayer = new Layer();
 ```
 ### `layer.position` : string
-Position of an layer relative to it's target. One of:
+Position of a layer relative to it's target. One of:
 
 |             | top left    | top center    | top right    |              |
 |-------------|-------------|---------------|--------------|--------------|

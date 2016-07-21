@@ -32,8 +32,12 @@ export const CONSTRAIN_ATTRIBUTE_ENUM = {
  */
 const definition = {
   props: {
+    /* eslint-disable max-len */
     /**
-     * @description Position of a layer relative to it's target. One of:
+     * @description Position of a layer relative to it's target.
+     * The position attribute takes two positional arguments in the format `position="edge edge-position"`,
+     * where `edge` specifies what edge to align the layer to, and `edge-position` specifies where on that edge the layer should appear.
+     * Refer to the table below for examples:
      *
      * |             | top left    | top center    | top right    |              |
      * |-------------|-------------|---------------|--------------|--------------|
@@ -48,6 +52,7 @@ const definition = {
      * @example @html <ak-layer position="top left"></ak-layer>
      * @example @js layer.position = 'top left';
      */
+    /* eslint-enable max-len */
     position: enumeration(POSITION_ATTRIBUTE_ENUM)({
       attribute: true,
     }),

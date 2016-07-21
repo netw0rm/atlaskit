@@ -25,6 +25,6 @@
     "editor-content": "*",
     "editor-icon": "*",
     "editor-toolbar-text-formatting": "*",
-    "prosemirror": "*"
+    "prosemirror": "0.8.3"
   }
 }

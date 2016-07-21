@@ -41,12 +41,12 @@ const myLayer = new Layer();
 ```
 ### `layer.position` : string
 Position of an layer relative to it's target. One of:
+
 |             | top left    | top center    | top right    |              |
 |-------------|-------------|---------------|--------------|--------------|
 | left top    |             |               |              | right top    |
-| left middle |             |               |              | right middle |
+| left middle |             |    target     |              | right middle |
 | left bottom |             |               |              | right bottom |
-|-------------|-------------|---------------|--------------|--------------|
 |             | bottom left | bottom center | bottom right |              |
 
 **Kind**: instance property of Layer  

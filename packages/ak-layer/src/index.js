@@ -33,13 +33,13 @@ export const CONSTRAIN_ATTRIBUTE_ENUM = {
 const definition = {
   props: {
     /**
-     * @description Position of an layer relative to it's target. One of:
+     * @description Position of a layer relative to it's target. One of:
+     *
      * |             | top left    | top center    | top right    |              |
      * |-------------|-------------|---------------|--------------|--------------|
      * | left top    |             |               |              | right top    |
-     * | left middle |             |               |              | right middle |
+     * | left middle |             |    target     |              | right middle |
      * | left bottom |             |               |              | right bottom |
-     * |-------------|-------------|---------------|--------------|--------------|
      * |             | bottom left | bottom center | bottom right |              |
      * @memberof Layer
      * @instance

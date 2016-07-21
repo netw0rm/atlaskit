@@ -52,7 +52,7 @@ const definition = {
       attribute: true,
     }),
     /**
-     * @description Constrain a layer to a scrollParent or window
+     * @description Constrain a layer to a scrollable parent or the window
      * @memberof Layer
      * @instance
      * @default 'window'

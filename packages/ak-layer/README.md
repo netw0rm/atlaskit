@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-A container responsible for the positioning of an elemenet on a page
+A container responsible for the positioning of an element on a page
 
 ## Setup and install
 
@@ -60,7 +60,7 @@ Position of an layer relative to it's target. One of:
 layer.position = 'top left';
 ```
 ### `layer.constrain` : String
-Constrain a layer to a scrollParent or window
+Constrain a layer to a scrollable parent or the window
 
 **Kind**: instance property of Layer  
 **Default**: `'window'`  

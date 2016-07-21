@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-A container responsible for the positioning of an elemenet on a page
+A container responsible for the positioning of an element on a page
 
 ## Setup and install
 

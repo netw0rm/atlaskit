@@ -4,7 +4,7 @@ import 'style!./host.less';
 import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 import { enumeration } from 'akutil-common';
-import { vdom, define } from 'skatejs';
+import { vdom, define, prop } from 'skatejs';
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
@@ -50,7 +50,7 @@ const definition = {
   props: {
     /**
      * @description The size of the avatar. One of:
-     * 'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', or 'xxlarge'.
+     * 'xsmall', 'small', 'medium', 'large', 'xlarge'.
      * @memberof Avatar
      * @instance
      * @default medium
@@ -82,11 +82,11 @@ const definition = {
      * @example @html <ak-avatar src="my/avatar/src.png"></ak-avatar>
      * @example @js avatar.src = 'my/avatar/src.png';
      */
-    src: {
+    src: prop.string({
       attribute: true,
       // Add a default so that creating via `new AKAvatar()` doesnt try to load a url of `null`
       default: '',
-    },
+    }),
 
     /* eslint-disable max-len */
     /**
@@ -98,9 +98,22 @@ const definition = {
      * @example @js avatar.alt = 'Avatar for Jon Snow';
      */
     /* eslint-enable max-len */
-    description: {
+    description: prop.string({
       attribute: true,
-    },
+    }),
+
+    /**
+     * @description The name of the person the avatar is for. Is used to create a default avatar if
+     * no src is provided.
+     * @memberof Avatar
+     * @instance
+     * @type {string}
+     * @example @html <ak-avatar user="Jon Snow" src="my/avatar/src.png"></ak-avatar>
+     * @example @js avatar.user = 'Jon Snow';
+     */
+    user: prop.string({
+      attribute: true,
+    }),
 
     /**
      * @description The border color for the Avatar.
@@ -108,9 +121,9 @@ const definition = {
      * @instance
      * @type {string}
      */
-    borderColor: {
+    borderColor: prop.string({
       attribute: true,
-    },
+    }),
   },
 };
 

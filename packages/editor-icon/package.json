@@ -13,8 +13,8 @@
     "dist",
     "src"
   ],
-  "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
+  "author": "Atlassian Pty Ltd",
   "dependencies": {
     "skatejs": "1.0.0-beta.12"
   },
@@ -22,5 +22,9 @@
     "idomizer": "^0.5.2",
     "loader-utils": "^0.2.15",
     "akutil-react": "0.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

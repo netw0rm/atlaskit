@@ -12,8 +12,8 @@
   "files": [
     "dist"
   ],
-  "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
+  "author": "Atlassian Pty Ltd",
   "dependencies": {
     "akutil-common": "0.1.0",
     "akutil-shared-styles": "*",
@@ -21,5 +21,9 @@
   },
   "devDependencies": {
     "akutil-react": "0.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
   }
 }

@@ -19,7 +19,7 @@
     "akutil-shared-styles": "*",
     "editor-button": "*",
     "editor-icon": "*",
-    "skatejs": "1.0.0-beta.11"
+    "skatejs": "1.0.0-beta.12"
   },
   "devDependencies": {
     "akutil-react": "0.0.3",

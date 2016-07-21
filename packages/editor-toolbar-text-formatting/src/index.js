@@ -4,49 +4,46 @@ import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unr
 import Button from 'editor-button';
 import Icon from 'editor-icon';
 
-// After the bug in beta.11
-// const ToggleButton = (props, chren) => (
-//   <Button
-//     onclick={() => !props.disabled && emit(elem, `toggle-${props.name}`)}
-//     className={shadowStyles.locals.button}
-//     active={props.active}
-//     disabled={props.disabled}
-//   >
-//     <Icon glyph={props.name} {...(props.active ? { fill: 'white' } : {})} />
-//   </Button>
-// )
-// <ToggleButton name="bold" active={elem.boldActive} disabled={elem.boldDisabled}></ToggleButton>
+/* eslint-disable react/prop-types */
+const ToggleButton = (props) => (
+  <Button
+    onclick={() => !props.disabled && props.emit(`toggle-${props.name}`)}
+    className={shadowStyles.locals.button}
+    active={props.active}
+    disabled={props.disabled}
+  >
+    <Icon glyph={props.name} {...(props.active ? { fill: 'white' } : {})} />
+  </Button>
+);
+/* eslint-enable react/prop-types */
 
 export default define('editor-toolbar-text-formatting', {
-  render: (elem) => (
-    <div className={shadowStyles.locals.root}>
-      <style>{shadowStyles.toString()}</style>
-      <Button
-        onclick={() => !elem.boldDisabled && emit(elem, 'toggle-bold')}
-        className={shadowStyles.locals.button}
-        active={elem.boldActive}
-        disabled={elem.boldDisabled}
-      >
-        <Icon glyph="bold" {...(elem.boldActive ? { fill: 'white' } : {})} />
-      </Button>
-      <Button
-        onclick={() => !elem.italicDisabled && emit(elem, 'toggle-italic')}
-        className={shadowStyles.locals.button}
-        active={elem.italicActive}
-        disabled={elem.italicDisabled}
-      >
-        <Icon glyph="italic" {...(elem.italicActive ? { fill: 'white' } : {})} />
-      </Button>
-      <Button
-        onclick={() => !elem.underlineDisabled && emit(elem, 'toggle-underline')}
-        className={shadowStyles.locals.button}
-        active={elem.underlineActive}
-        disabled={elem.underlineDisabled}
-      >
-        <Icon glyph="underline" {...(elem.underlineActive ? { fill: 'white' } : {})} />
-      </Button>
-    </div>
-  ),
+  render: (elem) => {
+    const boundEmit = emit.bind(null, elem); // eslint-disable-line react/jsx-no-bind
+    return (
+      <div className={shadowStyles.locals.root}>
+        <style>{shadowStyles.toString()}</style>
+        <ToggleButton
+          name="bold"
+          emit={boundEmit}
+          active={elem.boldActive}
+          disabled={elem.boldDisabled}
+        />
+        <ToggleButton
+          name="italic"
+          emit={boundEmit}
+          active={elem.italicActive}
+          disabled={elem.italicDisabled}
+        />
+        <ToggleButton
+          name="underline"
+          emit={boundEmit}
+          active={elem.underlineActive}
+          disabled={elem.underlineDisabled}
+        />
+      </div>
+    );
+  },
   props: {
     boldActive: prop.boolean({ attribute: true, default: false }),
     italicActive: prop.boolean({ attribute: true, default: false }),

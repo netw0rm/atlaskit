@@ -1,6 +1,6 @@
 import { define, vdom, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
-import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, no-unused-vars, max-len
+import 'style!./host.less';
 import Button from 'editor-button';
 import Icon from 'editor-icon';
 

@@ -1,6 +1,6 @@
 import { define, vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
-import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, no-unused-vars, max-len
+import 'style!./host.less';
 
 export default define('editor-toolbar', {
   render: () => (

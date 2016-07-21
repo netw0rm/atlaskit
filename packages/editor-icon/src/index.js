@@ -1,6 +1,6 @@
 import { define, vdom, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
-import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, no-unused-vars, max-len
+import 'style!./host.less';
 import icons from './pack-svgs!./'; // eslint-disable-line import/no-unresolved
 
 // Because we dynamically write a CSS style for the fill colour, and we're

@@ -1,6 +1,6 @@
 import { vdom, define, prop } from 'skatejs';
 import cx from 'classnames';
-import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, no-unused-vars, max-len
+import 'style!./host.less';
 import shadowStyles from './shadow.less';
 
 export default define('editor-button', {

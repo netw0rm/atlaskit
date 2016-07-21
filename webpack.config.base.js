@@ -55,6 +55,7 @@ const standardConfig = {
               [
                 'incremental-dom',
                 {
+                  components: true,
                   hoist: true,
                   prefix: 'vdom',
                 },

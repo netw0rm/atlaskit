@@ -3,7 +3,7 @@ import ToolbarComponent from '../src';
 import ToolbarButtonComponent from 'ak-editor-button';
 import TextFormattingComponent from 'ak-editor-toolbar-text-formatting';
 import IconComponent from 'ak-editor-icon';
-import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
+import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
 

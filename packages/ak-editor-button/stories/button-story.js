@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import ButtonComponent from '../src';
 import IconComponent from 'ak-editor-icon';
 import reactify from 'akutil-react';
-import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
+import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 
 const Button = reactify(ButtonComponent, { React, ReactDOM });

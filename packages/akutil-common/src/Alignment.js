@@ -122,11 +122,9 @@ Alignment.prototype = {
       ],
     };
 
-    if (elem.doNotMoveInDOM !== undefined) {
-      opts.optimizations = {
-        doNotMoveInDOM: elem.doNotMoveInDOM,
-      };
-    }
+    opts.optimizations = {
+      doNotMoveInDOM: true,
+    };
 
     if (!this.tether) {
       this.tether = new Tether(opts);

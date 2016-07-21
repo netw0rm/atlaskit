@@ -86,20 +86,15 @@ describe('ak-layer', () => {
     expect(component.position).not.to.equal(null);
     expect(component.position).to.equal(defaultPosition);
 
-    expect(component.attachment).not.to.equal(null);
-    expect(component.attachment).to.equal('window');
-
-    expect(component.doNotMoveInDOM).not.to.equal(null);
-    expect(component.doNotMoveInDOM).to.equal(true);
+    expect(component.constrain).not.to.equal(null);
+    expect(component.constrain).to.equal('window');
   });
 
   it('all the properties should be attributes', () => {
     const props = {
       position: { value: 'top left', attr: 'position' },
       target: { value: '#test', attr: 'target' },
-      attachment: { value: 'scrollParent', attr: 'attachment' },
-      renderElementTo: { value: 'body', attr: 'render-element-to' },
-      doNotMoveInDOM: { value: false, attr: 'do-not-move-in-d-o-m' },
+      constrain: { value: 'scrollParent', attr: 'constrain' },
     };
     const component = new LayerWC();
 

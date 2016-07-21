@@ -6,10 +6,13 @@
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   height: 40px;
-  display: flex;
-  align-items: center;
   padding-left: 10px;
   padding-right: 10px;
+
+  &, & > slot {
+    display: flex;
+    align-items: center;
+  }
 
   .slottedEditorButton() { margin-left: 10px; }
   > slot > * { .slottedEditorButton(); }

@@ -19,7 +19,9 @@ https.get('https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pullreq
   res.on('end', () => {
     const prData = JSON.parse(body.join(''));
     const prExists = prExistsForBranch(prData.values, process.env.CURRENT_BRANCH);
-    const testCmd = prExists ? 'npm run test/browserstack/ci' : 'npm test';
+    const prCommand = 'npm run test/browserstack/ci';
+    const branchCommand = 'npm run test/ci -- --browsers=Chrome';
+    const testCmd = prExists ? prCommand : branchCommand;
     log.info(`PR ${prExists ? 'exists' : 'does not exist'} for this branch - running '${testCmd}'`);
     childProcess.execSync(testCmd, {
       stdio: 'inherit',

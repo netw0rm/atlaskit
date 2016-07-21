@@ -1,13 +1,12 @@
-import storyStyles from 'style!./stories.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import 'style!./stories.less';
 
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import { definition } from '../src/wc/pf-mention-item';
-import { define } from 'skatejs';
+import pfMentionItem from '../src/wc/pf-mention-item';
 
-const { React, ReactDOM, uniqueWebComponent } = window;
+const { React, ReactDOM } = window;
 
-const MentionItem = reactify(uniqueWebComponent('pf-mention-item', definition, define), {
+const MentionItem = reactify(pfMentionItem, {
   React,
   ReactDOM,
 });
@@ -90,4 +89,3 @@ storiesOf('Mention Item', module)
       <MentionItem {...mention} />
     );
   });
-

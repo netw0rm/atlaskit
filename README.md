@@ -52,25 +52,6 @@ You'll then need to install it's dependencies and build by running
 npm install
 ```
 
-
-## Demo a component
-You can see your component running by staring a local dev-server
-
-### Start a dev-server
-
-```
-npm run dev/single my-component-name
-```
-This will create a bundle of all your component code and it's dependencies and all the code in your `demo/` directory. It will then start up a [webpack-dev-server](tools.md#markdown-header-webpack-dev-server) on `localhost:8080` and serve these files. It will automatically watch for changes and [hot-reload](link to hotreloading) them on the fly.
-
-**This is almost completely deprecated. Use [Storybook](#markdown-header-storybook) instead**
-
-### Demo page
-The entry point for your component demo will be `demo/index.ejs`. Your dependencies will automatically be injected by webpack. Any extra javascript you need to include on the page can be in `demo/index.js`.
-
-### Adding more demo pages
-You might choose to separate out your demo into multiple pages. Simply create a new `.ejs` file and link to it from the index page
-
 ## Flesh-out a component
 The functionality of your component will be contained in `src/index.js`. The template will contain a skate definition and styles will already be linked.
 
@@ -114,6 +95,21 @@ npm run prepublish/single my-component-name -- --bundle-deps
 ```
 
 This can be helpful for ad-hoc testing in JSFiddle for example.
+
+## Document a component
+AtlasKit uses [JSDoc](http://usejsdoc.org/)-style annotations to automatically generate the component API. See the `akutil-component-template` package for examples.
+
+A `README.md` file will be generated at `packages/my-component-name/README.md`. ** Do not edit this README file. ** Your changes will be overwritten.
+
+Instead, modify the `USAGE.md` file, located at `packages/my-component-name/USAGE.md`, with usage instructions and examples for the component.
+
+The README file will be automatically generated at release time by concatenating the file with the generated component API.
+
+You may regenerate the README file at any time with the following command:
+
+```
+npm run docs/single my-component-name
+```
 
 ## Test a component
 

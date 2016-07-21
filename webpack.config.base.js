@@ -1,11 +1,10 @@
 const camelCase = require('camelcase');
-const glob = require('glob');
 const path = require('path');
 const pkg = require(path.join(process.cwd(), 'package.json'));
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': glob.sync('./src/index*.js'),
+    'dist/bundle.js': './src/index.js',
   },
   output: {
     path: './',
@@ -72,10 +71,6 @@ const standardConfig = {
           },
         },
       ],
-      {
-        test: /\.html$/,
-        loader: 'html-loader',
-      },
     ],
   },
   plugins: [],

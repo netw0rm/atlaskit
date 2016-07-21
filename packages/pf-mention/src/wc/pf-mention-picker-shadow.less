@@ -1,0 +1,16 @@
+// FIXME: workaround host.less not in shadow dom
+ak-inline-dialog {
+  display: block;
+
+  &:not([defined]) {
+    display: none;
+  }
+}
+
+pf-resourced-mention-list {
+  display: block;
+
+  &:not([defined]) {
+    display: none;
+  }
+}

@@ -1,10 +1,11 @@
 <a name="0.1.0"></a>
-# 0.1.0 (2016-07-14)
+# 0.1.0 (2016-07-18)
 
 
 ### Bug Fixes
 
 * bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
+* **skate:** SkateJS update to beta.10 ([620034a](https://bitbucket.org/atlassian/atlaskit/commits/620034a))
 
 
 ### Features

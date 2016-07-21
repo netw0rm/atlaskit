@@ -1,4 +1,4 @@
-import storyStyles from 'style!./stories.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import 'style!./stories.less';
 
 import MentionTextInput from './demo-mention-text-input';
 import { resourceProvider, MockPresenceProvider } from './story-data';
@@ -39,7 +39,6 @@ storiesOf('Mention List Picker', module)
       onSelection={action('mention selected')}
       resourceProvider={resourceProvider}
       presenceProvider={new MockPresenceProvider()}
-      relativePosition="above"
     />
   ))
   .add('Input field at bottom mention list. Real API. Mocked presence', () => (

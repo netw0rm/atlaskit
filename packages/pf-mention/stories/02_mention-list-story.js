@@ -1,16 +1,15 @@
-import storyStyles from 'style!./stories.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import 'style!./stories.less';
 
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import { define } from 'skatejs';
 
-import { definition } from '../src/wc/pf-mention-list';
+import pfMentionList from '../src/wc/pf-mention-list';
 import { mentions } from './story-data';
 import { getWebComponent } from './util';
 
-const { React, ReactDOM, uniqueWebComponent } = window;
+const { React, ReactDOM } = window;
 
-const MentionList = reactify(uniqueWebComponent('pf-mention-list', definition, define), {
+const MentionList = reactify(pfMentionList, {
   React,
   ReactDOM,
 });

@@ -1,9 +1,15 @@
 /** @jsx vdom */
-import 'style!./host.less'; // eslint-disable-line import/no-unresolved
+import 'style!./host.less';
 
-import { vdom } from 'skatejs';
+import { emit, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 
+/**
+ * @description Create instances of the component programmatically, or using markup.
+ * @class AkUtilComponentTemplate
+ * @example @js import AkUtilComponentTemplate from 'akutil-component-template';
+ * const component = new AkUtilComponentTemplate();
+ */
 const definition = {
   render(elem) {
     return (
@@ -15,10 +21,47 @@ const definition = {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
-        <p className={shadowStyles.locals.myClassName}>I am an {elem.tagName} element!</p>
+        <p className={shadowStyles.locals.myClassName}>My name is {elem.name}!</p>
       </div>
     );
   },
+  props: {
+    /**
+     * @description The name of the AkUtilComponentTemplate element.
+     * @memberof AkUtilComponentTemplate
+     * @instance
+     * @type {string}
+     * @default AkUtilComponentTemplate
+     */
+    name: {
+      default: 'AkUtilComponentTemplate',
+    },
+  },
+  prototype: {
+    /**
+     * @description Fire an event containing the name of the element.
+     * @memberof AkUtilComponentTemplate
+     * @function
+     * @instance
+     * @fires AkUtilComponentTemplate#announce-name
+     * @return {AkUtilComponentTemplate} The AkUtilComponentTemplate element.
+     * @example @js component.announce(); // Fires the announce-name event.
+     */
+    announce() {
+      /**
+       * @event AkUtilComponentTemplate#announce-name
+       * @memberof AkUtilComponentTemplate
+       * @description Fired when the `announce` method is called.
+       * @property {String} detail.name The name of the component.
+       */
+      emit(this, 'announce-name', {
+        detail: {
+          name: this.name,
+        },
+      });
+      return this;
+    },
+  },
 };
 
-export default definition;
+export default define('akutil-component-template', definition);

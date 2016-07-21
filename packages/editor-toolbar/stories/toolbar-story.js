@@ -7,10 +7,10 @@ import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
 
-const Toolbar = reactify(ToolbarComponent, { React, ReactDOM, });
-const ToolbarButton = reactify(ToolbarButtonComponent, { React, ReactDOM, });
-const Icon = reactify(IconComponent, { React, ReactDOM, });
-const TextFormatting = reactify(TextFormattingComponent, { React, ReactDOM, });
+const Toolbar = reactify(ToolbarComponent, { React, ReactDOM });
+const ToolbarButton = reactify(ToolbarButtonComponent, { React, ReactDOM });
+const Icon = reactify(IconComponent, { React, ReactDOM });
+const TextFormatting = reactify(TextFormattingComponent, { React, ReactDOM });
 
 storiesOf('editor-toolbar', module)
   .add('Empty', () => (

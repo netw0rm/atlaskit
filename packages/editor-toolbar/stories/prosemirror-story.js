@@ -6,13 +6,12 @@ import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
 
-import { ProseMirror, commands } from 'prosemirror/dist/edit'
-import { schema, StrongMark, Doc } from 'prosemirror/dist/schema-basic'
-import { exampleSetup } from 'prosemirror/dist/example-setup'
+import { ProseMirror, commands } from 'prosemirror/dist/edit';
+import { schema } from 'prosemirror/dist/schema-basic';
 
-const Toolbar = reactify(ToolbarComponent, { React, ReactDOM, });
-const TextFormatting = reactify(TextFormattingComponent, { React, ReactDOM, });
-const Content = reactify(ContentComponent, { React, ReactDOM, });
+const Toolbar = reactify(ToolbarComponent, { React, ReactDOM });
+const TextFormatting = reactify(TextFormattingComponent, { React, ReactDOM });
+const Content = reactify(ContentComponent, { React, ReactDOM });
 
 storiesOf('editor-toolbar', module)
   .add('ProseMirror', () => {
@@ -33,56 +32,55 @@ storiesOf('editor-toolbar', module)
         );
 
         const pm = this.pm = new ProseMirror({
-          place: this._editorNode,
-          doc: doc,
-          plugins: []
-        })
+          place: this.editorElement,
+          doc,
+          plugins: [],
+        });
 
         pm.updateScheduler([
           pm.on.selectionChange,
           pm.on.change,
-          pm.on.activeMarkChange
+          pm.on.activeMarkChange,
         ], () => this.syncStateFromEditor());
       }
 
       syncStateFromEditor() {
         const markActive = (pm, type) => {
-          let {from, to, empty} = pm.selection
-          if (empty) return type.isInSet(pm.activeMarks())
-          else return pm.doc.rangeHasMark(from, to, type)
+          const { from, to, empty } = pm.selection;
+          if (empty) return type.isInSet(pm.activeMarks());
+          return pm.doc.rangeHasMark(from, to, type);
         };
 
         this.setState({
-          boldActive: !!markActive(this.pm, schema.marks['strong']),
-          italicActive: !!markActive(this.pm, schema.marks['em']),
-        })
+          boldActive: !!markActive(this.pm, schema.marks.strong),
+          italicActive: !!markActive(this.pm, schema.marks.em),
+        });
       }
 
       render() {
         return (
-          <div ref={(elem) => elem && (this._editorNode = elem.firstChild.nextSibling)}>
+          <div ref={(elem) => elem && (this.editorElement = elem.firstChild.nextSibling)}>
             <Toolbar>
               <TextFormatting
                 boldActive={this.state.boldActive}
                 italicActive={this.state.italicActive}
-                underlineActive={false}
                 boldDisabled={this.state.boldDisabled}
                 italicDisabled={this.state.italicDisabled}
-                underlineDisabled={true}
+                underlineDisabled
                 ontoggle-bold={() => this.toggleMark('strong')}
                 ontoggle-italic={() => this.toggleMark('em')}
-                />
+              />
             </Toolbar>
-            <Content openTop/>
+            <Content openTop />
           </div>
         );
       }
 
       toggleMark(name) {
-        this.pm.on.interaction.dispatch()
+        this.pm.on.interaction.dispatch();
         commands.toggleMark(schema.marks[name])(this.pm);
       }
     }
 
-    return <Demo />
+    return <Demo />;
   });

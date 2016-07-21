@@ -5,8 +5,8 @@ import reactify from 'akutil-react';
 import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 
-const Button = reactify(ButtonComponent, { React, ReactDOM, });
-const Icon = reactify(IconComponent, { React, ReactDOM, });
+const Button = reactify(ButtonComponent, { React, ReactDOM });
+const Icon = reactify(IconComponent, { React, ReactDOM });
 
 storiesOf('editor-button', module)
   .add('Empty', () => (
@@ -28,11 +28,11 @@ storiesOf('editor-button', module)
     <Button><Icon glyph="bold" /></Button>
   ))
   .add('Icon (active)', () => (
-    <Button active><Icon glyph="bold" fill="white"/></Button>
+    <Button active><Icon glyph="bold" fill="white" /></Button>
   ))
   .add('Icon (disabled)', () => (
     <Button disabled><Icon glyph="bold" /></Button>
   ))
   .add('Icon (active + disabled)', () => (
-    <Button active disabled><Icon glyph="bold" fill="white"/></Button>
+    <Button active disabled><Icon glyph="bold" fill="white" /></Button>
   ));

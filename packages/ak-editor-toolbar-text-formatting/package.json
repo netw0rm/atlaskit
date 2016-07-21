@@ -1,0 +1,30 @@
+{
+  "name": "ak-editor-toolbar-text-formatting",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-toolbar-text-formatting",
+    "pre-release": "lerna-semantic-release pre"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "Apache-2.0",
+  "author": "Atlassian Pty Ltd",
+  "dependencies": {
+    "akutil-shared-styles": "*",
+    "ak-editor-button": "*",
+    "ak-editor-icon": "*",
+    "skatejs": "1.0.0-beta.12"
+  },
+  "devDependencies": {
+    "akutil-react": "0.0.3",
+    "prosemirror": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

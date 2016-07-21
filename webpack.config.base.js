@@ -58,7 +58,6 @@ const standardConfig = {
                   components: true,
                   hoist: true,
                   prefix: 'vdom',
-                  components: true,
                 },
               ],
             ],

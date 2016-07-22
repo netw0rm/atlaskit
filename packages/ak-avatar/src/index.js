@@ -43,7 +43,7 @@ const definition = {
       imgStyle.borderColor = elem.borderColor;
     }
     return (
-      <div class={outerDivClass} style={outerDivStyle} aria-label={elem.description}>
+      <div class={outerDivClass} style={outerDivStyle} aria-label={elem.label}>
         <style>{shadowStyles.toString()}</style>
         {
           elem.src ? <img alt={elem.description} src={elem.src} class={imgClasses} style={imgStyle} /> : getInitials(elem.fullName) // eslint-disable-line max-len
@@ -96,15 +96,15 @@ const definition = {
 
     /* eslint-disable max-len */
     /**
-     * @description The description for the Avatar. Used by screen readers.
+     * @description The label for the Avatar. Used by screen readers.
      * @memberof Avatar
      * @instance
      * @type {string}
-     * @example @html <ak-avatar description="Avatar for Jon Snow" src="my/avatar/src.png"></ak-avatar>
-     * @example @js avatar.alt = 'Avatar for Jon Snow';
+     * @example @html <ak-avatar label="Avatar for Jon Snow" src="my/avatar/src.png"></ak-avatar>
+     * @example @js avatar.label = 'Avatar for Jon Snow';
      */
     /* eslint-enable max-len */
-    description: prop.string({
+    label: prop.string({
       attribute: true,
     }),
 

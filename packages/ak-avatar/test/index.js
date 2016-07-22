@@ -12,7 +12,7 @@ const expect = chai.expect;
 
 const defaultSize = 'medium';
 const defaultPresence = 'none';
-const defaultDescription = undefined;
+const defaultLabel = undefined;
 const defaultBorderColor = undefined;
 
 const avatarSizes = {
@@ -57,7 +57,7 @@ describe('ak-avatar', () => {
 
     expect(component.size).to.equal(defaultSize, 'size');
     expect(component.presence).to.equal(defaultPresence, 'presence');
-    expect(component.description).to.equal(defaultDescription, 'description');
+    expect(component.label).to.equal(defaultLabel, 'label');
     expect(component.borderColor).to.equal(defaultBorderColor, 'borderColor');
   });
 
@@ -111,7 +111,7 @@ describe('ak-avatar', () => {
     });
   });
 
-  describe('description property', () => {
+  describe('label property', () => {
     let component;
     let container;
 
@@ -125,12 +125,12 @@ describe('ak-avatar', () => {
 
     it('should set an aria-label on the outerDiv', (done) => {
       const outerDiv = component[symbols.shadowRoot].firstChild;
-      const description = 'This is an avatar!';
+      const label = 'This is an avatar!';
 
-      component.description = description;
+      component.label = label;
 
       afterMutation(() => {
-        expect(outerDiv.getAttribute('aria-label')).to.equal(description, 'description');
+        expect(outerDiv.getAttribute('aria-label')).to.equal(label, 'label');
       }, done);
     });
   });

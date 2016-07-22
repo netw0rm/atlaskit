@@ -81,10 +81,11 @@ storiesOf(name, module)
       <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} presence="offline" />
     </div>);
   })
-  .add('Avatar with a description', () => {
-    const avatarRowStyle = { marginLeft: '10px' };
+  .add('Avatar with a label', () => {
+    const avatarRowStyle = { margin: '10px' };
     return (<div className={avatarRowClass}>
-      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} description="This is an avatar!" />
+      <div>This image should have an aria-label that should be read out when tabbing to the link around it.</div>
+      <a href="#"><Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} label="This is an avatar!" /></a>
     </div>);
   })
   .add('Avatars with names instead of images', () => {

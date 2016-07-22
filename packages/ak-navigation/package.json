@@ -12,8 +12,7 @@
   ],
   "dependencies": {
     "akutil-shared-styles": "*",
-    "ak-navigation-container": "*",
-    "ak-navigation-link": "*",
+    "ak-page": "*",
     "skatejs": "1.0.0-beta.10"
   },
   "author": "Atlassian Pty Ltd",

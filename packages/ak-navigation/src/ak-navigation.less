@@ -1,13 +1,10 @@
-// These styles will be inserted into a style tag inside
-// the shadow dom of each instance of the component
-
-// Only do class selectors in here, anything else leaks to the rest of the page in
-// browsers that do not support shadow DOM
 @import 'shared-variables.less';
+@import 'ak-navigation-link.less';
 
 // Hard coded for now as we don't have the full palette yet
 @ak-navigation-global-color: #004CAF;
 @ak-navigation-container-color: #EFF2F5;
+@ak-navigation-container-name-color: #42526E;
 
 .navigation {
   background-color: @ak-navigation-container-color;
@@ -17,8 +14,11 @@
   width: 80px;
   height: 100%;
   display: flex;
-  transition: width 250ms;
   overflow: hidden;
+
+  &.should-animate {
+    transition: width 250ms;
+  }
 
   &.open {
     width: 300px;
@@ -31,6 +31,26 @@
 
   .container {
     padding: 20px;
+  }
+
+  .container-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .container-name {
+    color: @ak-navigation-container-name-color;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-family: @ak-bold-font-family;
+    font-size: 14px;
+  }
+
+  .container-links {
+    font-family: @ak-medium-font-family;
+    font-size: 14px;
   }
 }
 

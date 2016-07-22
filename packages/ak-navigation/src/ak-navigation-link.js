@@ -2,7 +2,7 @@
 import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 
 import { vdom, define, prop, emit } from 'skatejs';
-import shadowStyles from './shadow.less';
+import shadowStyles from './ak-navigation-link.less';
 
 const enterKeyCode = 13;
 

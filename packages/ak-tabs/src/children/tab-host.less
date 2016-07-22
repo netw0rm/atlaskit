@@ -1,0 +1,10 @@
+@import '../shared-variables.less';
+
+ak-tab {
+  display: inline-block;
+
+  &:not([defined]),
+  &:not([selected]) {
+    display: none;
+  }
+}

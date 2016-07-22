@@ -1,66 +1,56 @@
 /** @jsx vdom */
-import 'style!../host.less';
+import 'style!./tab-host.less';
 
-import { emit, vdom, define } from 'skatejs';
-import shadowStyles from '../shadow.less';
+import { emit, vdom, define, prop } from 'skatejs';
+import shadowStyles from './tab-shadow.less';
+
+function emitTabChangedEvent(elem) {
+  emit(elem, 'ak-tab-changed', {
+    detail: {
+      label: elem.label,
+      selected: elem.selected,
+    },
+  });
+}
 
 /**
- * @description Create instances of the component programmatically, or using markup.
+ * @description Tabs are an easy way to view and switch between different views of the same content.
  * @class Tab
  * @example @js import Tab from 'ak-tab';
  * const component = new Tab();
  */
 const definition = {
-  render(elem) {
+  render() {
     return (
-      // JSX requires that there only be a single root element.
-      // Incremental DOM doesn't require this.
       <div>
-        {/* This is required for elements in the shadow root to be styled.
-         This is wrapped in the <div /> because you can't have more than one
-         root element.
-         */}
         <style>{shadowStyles.toString()}</style>
-        <p className={shadowStyles.locals.myClassName}>My name is {elem.name}!</p>
+        <slot />
       </div>
     );
   },
+  attached(elem) {
+    emitTabChangedEvent(elem);
+  },
   props: {
     /**
-     * @description The name of the Tab element.
+     * @description The label to display in the tab navigation
      * @memberof Tab
      * @instance
      * @type {string}
-     * @default Tab
      */
-    tabname: {
-      default: 'Tab',
+    label: {
+      attribute: true,
+      set: emitTabChangedEvent,
     },
-  },
-  prototype: {
     /**
-     * @description Fire an event containing the name of the element.
+     * @description Whether the tab is selected.
      * @memberof Tab
-     * @function
      * @instance
-     * @fires Tab#announce-name
-     * @return {Tab} The Tab element.
-     * @example @js component.announce(); // Fires the announce-name event.
      */
-    tabannounce() {
-      /**
-       * @event Tab#announce-name
-       * @memberof Tab
-       * @description Fired when the `announce` method is called.
-       * @property {String} detail.name The name of the component.
-       */
-      emit(this, 'tab-announce-name', {
-        detail: {
-          tabname: this.tabname,
-        },
-      });
-      return this;
-    },
+    selected: prop.boolean({
+      attribute: true,
+      set: emitTabChangedEvent,
+    }),
   },
 };
 

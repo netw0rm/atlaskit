@@ -1,9 +1,8 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import Tabs from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
-import styles from 'style!./../src/host.less';
 
 const Component = reactify(Tabs, {
   React,
@@ -12,32 +11,9 @@ const Component = reactify(Tabs, {
 
 storiesOf(name, module)
   .add('a simple ak-tabs', () => (
-    <Component />
-  ))
-  .add('a simple ak-tabs with a name', () => (
-    <Component name="MyComponent" />
-  ))
-  .add('an ak-tabs that emits an action when it is clicked', () => (
-    <Component id="myComponent" onClick={action('clicking the WebComponent')} />
-  ))
-  .add('an ak-tabs that removes itself when being clicked', () => {
-    const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
-    const cls = styles.akutilComponentTemplate;
-    return (<Component id="myComponent" className={cls} onClick={removeMe} />);
-  })
-  .addMonkeyTest('a ak-tabs with monkey testing', () => (
-    // Use this to add a story that has fuzzy testing attached.
-    <Component />
-  ))
-  .addMonitored('an ak-tabs with monitored performance', () => (
-    // Use this to add a story that has a little fps/memory gauge that allows you
-    // to monitor performance whilst developing
-    <Component />
-  ), () => {
-    // This is where the actual work is done - anything in here will be monitored by the stats
-    // view and displayed, so this is where you want to do your animation work, etc.
-    const x = Math.random() * 1000000;
-    for (let i = 0; i < x; i++) {
-      Math.random(); // burn some CPU cycles
-    }
-  });
+    <Component>
+      <ak-tab label="Tab 1">Tab 1 content</ak-tab>
+      <ak-tab selected label="Tab 2">Tab 2 content</ak-tab>
+      <ak-tab label="Tab 3">Tab 3 content</ak-tab>
+    </Component>
+  ));

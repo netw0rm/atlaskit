@@ -1,0 +1,30 @@
+{
+  "name": "editorkit-link-button",
+  "version": "0.0.1",
+  "description": "editorkit-link-button webcomponent",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single editorkit-link-button",
+    "pre-release": "lerna-semantic-release pre"
+  },
+  "private": true,
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "akutil-shared-styles": "*",
+    "ak-editor-button": "2.0.0",
+    "ak-editor-icon": "2.0.0",
+    "skatejs": "1.0.0-beta.12"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "akutil-react": "^0.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

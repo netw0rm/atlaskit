@@ -16,23 +16,23 @@ const AkPage = reactify(akPage, {
   ReactDOM,
 });
 
-class TogglingSidebar extends React.Component {
+const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-es6-class
   getInitialState() {
     return { open: true };
-  }
+  },
   componentDidMount() {
     this.timer = setInterval(this.toggle, 300);
-  }
+  },
   componentWillUnmount() {
     window.clearInterval(this.timer);
-  }
+  },
   toggle() {
     this.setState({ open: !this.state.open });
-  }
+  },
   render() {
     return <AkNavigation open={this.state && this.state.open} />;
-  }
-}
+  },
+});
 
 function wrapInDivs(el, n) {
   let wrappedEl = el;

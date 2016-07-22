@@ -1,5 +1,10 @@
-<a name="56.3.0"></a>
-# 56.3.0 (2016-07-22)
+<a name="56.3.1"></a>
+## 56.3.1 (2016-07-22)
+
+
+
+<a name="ak-layer@56.3.1"></a>
+## ak-layer@56.3.1 (2016-07-22)
 
 
 
@@ -39,7 +44,6 @@
 
 ### Bug Fixes
 
-* **sizes:** there are only 5 sizes ([ed9d5dc](https://bitbucket.org/atlassian/atlaskit/commits/ed9d5dc))
 * remove string attr from target ([26ed13d](https://bitbucket.org/atlassian/atlaskit/commits/26ed13d))
 
 

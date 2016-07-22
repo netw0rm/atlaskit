@@ -23,18 +23,3 @@
 
 
 
-<a name="ak-avatar@0.12.7"></a>
-## ak-avatar@0.12.7 (2016-07-11)
-
-
-### Bug Fixes
-
-* **sizes:** there are only 5 sizes ([ed9d5dc](https://bitbucket.org/atlassian/atlaskit/commits/ed9d5dc))
-
-
-
-<a name="ak-avatar@0.12.6"></a>
-## ak-avatar@0.12.6 (2016-07-08)
-
-
-

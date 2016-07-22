@@ -15,7 +15,6 @@
 ### Bug Fixes
 
 * **package:** Add ak- prefix to editor-*, and fix licensing. ([15751dc](https://bitbucket.org/atlassian/atlaskit/commits/15751dc))
-* **sizes:** there are only 5 sizes ([ed9d5dc](https://bitbucket.org/atlassian/atlaskit/commits/ed9d5dc))
 
 
 

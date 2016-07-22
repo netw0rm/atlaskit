@@ -1,5 +1,16 @@
-<a name="69.4.0"></a>
-# 69.4.0 (2016-07-22)
+<a name="69.4.1"></a>
+## 69.4.1 (2016-07-22)
+
+
+
+<a name="ak-inline-dialog@69.4.1"></a>
+## ak-inline-dialog@69.4.1 (2016-07-22)
+
+
+### Bug Fixes
+
+* fix for the wrong initial position ([18c6bb4](https://bitbucket.org/atlassian/atlaskit/commits/18c6bb4))
+* remove setInterval ([f97ad99](https://bitbucket.org/atlassian/atlaskit/commits/f97ad99))
 
 
 
@@ -49,7 +60,6 @@
 
 ### Bug Fixes
 
-* **sizes:** there are only 5 sizes ([ed9d5dc](https://bitbucket.org/atlassian/atlaskit/commits/ed9d5dc))
 * remove string attr from target ([26ed13d](https://bitbucket.org/atlassian/atlaskit/commits/26ed13d))
 
 

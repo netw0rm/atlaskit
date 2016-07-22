@@ -44,5 +44,11 @@
     &[disabled] {
       opacity: 0.5;
     }
+
+    // Firefox applies a 2px left & right padding to buttons.
+    &::-moz-focus-inner {
+      padding: 0;
+      border: 0
+    }
   }
 }

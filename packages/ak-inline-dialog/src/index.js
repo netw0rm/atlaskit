@@ -2,7 +2,7 @@
 /* eslint react/no-unknown-property: 0 */
 import 'style!./host.less';
 import { getPositionFromClasses, enumeration } from 'akutil-common';
-import { vdom, prop, define, symbols } from 'skatejs';
+import { vdom, prop, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer'; // eslint-disable-line no-unused-vars, max-len
 
@@ -36,16 +36,18 @@ const definition = {
       styles.borderRadius = elem.borderRadius;
     }
 
-    if (elem[symbols.shadowRoot] && elem[symbols.shadowRoot].firstChild && elem[symbols.shadowRoot].firstChild.alignment) { // eslint-disable-line max-len
-      elem[symbols.shadowRoot].firstChild.alignment.reposition();
-    }
-
     return (
       <ak-layer
         open={elem.open}
         position={elem.position}
         attachment={elem.constrain}
         target={elem.target}
+        onRender={(layer) => {
+          if (elem.open && layer.alignment) {
+            elem.positioned = true;
+          }
+        }
+        }
       >
         <style>{shadowStyles.toString()}</style>
         <div class={shadowStyles.locals.inlineDialogContainer} style={styles}>
@@ -148,6 +150,10 @@ const definition = {
      * @example @js dialog.padding = '3px'
      */
     padding: prop.string({
+      attribute: true,
+    }),
+
+    positioned: prop.boolean({
       attribute: true,
     }),
   },

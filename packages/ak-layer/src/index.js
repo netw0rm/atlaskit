@@ -79,6 +79,7 @@ const definition = {
      * @example @js layer.target = '#target'
      */
     target: { attribute: true },
+    onRender: {},
   },
   attached(elem) {
     if (!elem.alignment) {
@@ -96,6 +97,10 @@ const definition = {
   render(elem) {
     if (elem.alignment) {
       elem.alignment.update(elem);
+    }
+
+    if (elem.onRender) {
+      elem.onRender(elem);
     }
 
     return (

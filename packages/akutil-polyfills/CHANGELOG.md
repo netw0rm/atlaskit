@@ -1,5 +1,5 @@
 <a name="0.0.12"></a>
-## 0.0.12 (2016-07-18)
+## 0.0.12 (2016-07-22)
 
 
 
@@ -14,17 +14,8 @@
 
 ### Bug Fixes
 
+* **sizes:** there are only 5 sizes ([ed9d5dc](https://bitbucket.org/atlassian/atlaskit/commits/ed9d5dc))
 * Upgrade skatejs-named-slots to fix SVG bug ([cf64c02](https://bitbucket.org/atlassian/atlaskit/commits/cf64c02))
-
-
-
-<a name="akutil-polyfills@0.0.10"></a>
-## akutil-polyfills@0.0.10 (2016-07-08)
-
-
-### Bug Fixes
-
-* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
 
 
 

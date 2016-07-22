@@ -1,5 +1,5 @@
 <a name="0.13.2"></a>
-## 0.13.2 (2016-07-18)
+## 0.13.2 (2016-07-22)
 
 
 
@@ -35,11 +35,6 @@
 
 <a name="ak-avatar@0.12.6"></a>
 ## ak-avatar@0.12.6 (2016-07-08)
-
-
-### Bug Fixes
-
-* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
 
 
 

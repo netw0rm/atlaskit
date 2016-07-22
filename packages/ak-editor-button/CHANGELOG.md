@@ -1,10 +1,15 @@
-<a name="33.0.2"></a>
-## 33.0.2 (2016-07-22)
+<a name="2.0.0"></a>
+# 2.0.0 (2016-07-22)
+
+
+### Bug Fixes
+
+* Fix Firefox styling of ak-editor-button ([647695d](https://bitbucket.org/atlassian/atlaskit/commits/647695d))
 
 
 
-<a name="akutil-shared-styles@33.0.1"></a>
-## akutil-shared-styles@33.0.1 (2016-07-22)
+<a name="ak-editor-button@1.0.0"></a>
+# ak-editor-button@1.0.0 (2016-07-22)
 
 
 ### Bug Fixes

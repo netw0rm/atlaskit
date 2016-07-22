@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-content",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

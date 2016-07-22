@@ -44,9 +44,7 @@ const definition = {
         target={elem.target}
         onRender={(layer) => {
           if (elem.open && layer.alignment) {
-            setInterval(() => {
-              elem.positioned = true;
-            }, 0);
+            elem.positioned = true;
           }
         }
         }

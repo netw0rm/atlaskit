@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 import { enumeration } from 'akutil-common';
 import { vdom, define, prop } from 'skatejs';
+import { getInitials, getColorForInitials } from './helpers.js'; // eslint-disable-line max-len
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
@@ -15,7 +16,7 @@ const SIZE_ATTRIBUTE_ENUM = {
 
 const PRESENCE_ATTRIBUTE_ENUM = {
   attribute: 'presence',
-  values: ['none', 'online', 'away', 'busy', 'offline'], // not confirmed yet
+  values: ['none', 'online', 'away', 'busy', 'offline'],
   missingDefault: 'none',
   invalidDefault: 'none',
 };
@@ -33,15 +34,20 @@ const definition = {
     const imgClasses = classNames(shadowStyles.locals.img);
     const presenceClasses = classNames([shadowStyles.locals.presence, shadowStyles.locals[elem.presence]]); // eslint-disable-line max-len
     const outerDivClass = classNames([shadowStyles.locals.outerDiv, shadowStyles.locals[elem.size]]); // eslint-disable-line max-len
+    const outerDivStyle = {
+      backgroundColor: elem.src ? 'transparent' : getColorForInitials(getInitials(elem.fullName)),
+    };
     const imgStyle = {};
 
     if (elem.borderColor) {
       imgStyle.borderColor = elem.borderColor;
     }
     return (
-      <div class={outerDivClass} aria-label={elem.description}>
+      <div class={outerDivClass} style={outerDivStyle} aria-label={elem.description}>
         <style>{shadowStyles.toString()}</style>
-        <img alt={elem.description} src={elem.src} class={imgClasses} style={imgStyle} />
+        {
+          elem.src ? <img alt={elem.description} src={elem.src} class={imgClasses} style={imgStyle} /> : getInitials(elem.fullName) // eslint-disable-line max-len
+        }
         <div class={presenceClasses}></div>
       </div>
     );
@@ -108,10 +114,10 @@ const definition = {
      * @memberof Avatar
      * @instance
      * @type {string}
-     * @example @html <ak-avatar user="Jon Snow" src="my/avatar/src.png"></ak-avatar>
-     * @example @js avatar.user = 'Jon Snow';
+     * @example @html <ak-avatar full-name="Jon Snow" src="my/avatar/src.png"></ak-avatar>
+     * @example @js avatar.fullName = 'Jon Snow';
      */
-    user: prop.string({
+    fullName: prop.string({
       attribute: true,
     }),
 

@@ -22,6 +22,8 @@ const Icon = reactify(IconComponent, {
   ReactDOM,
 });
 
+const marginLeft = 5;
+
 storiesOf(name, module)
   .add('a simple ak-hyperlink-popup', () => (
     <Component />
@@ -42,5 +44,13 @@ storiesOf(name, module)
       <EditorButton><Icon glyph="unlink" fill="white" /></EditorButton>
       <EditorButton><Icon glyph="open" fill="white" /></EditorButton>
       <input />
+    </Component>
+  ))
+  .add('a "real" hyperlink popup', () => (
+    <Component>
+      <EditorButton><Icon glyph="unlink" fill="white" style={{ marginLeft }} /></EditorButton>
+      <EditorButton><Icon glyph="open" fill="white" style={{ marginLeft }} /></EditorButton>
+      <div style={{ height: '100%', width: 1, background: 'lightgrey', marginLeft }} />
+      <input style={{ marginLeft }} />
     </Component>
   ));

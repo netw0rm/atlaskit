@@ -4,10 +4,20 @@ import HyperlinkPopup from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 import 'style!./../src/host.less';
-import EditorButton from 'ak-editor-button';
-import Icon from 'ak-editor-icon';
+import EditorButtonComponent from 'ak-editor-button';
+import IconComponent from 'ak-editor-icon';
 
 const Component = reactify(HyperlinkPopup, {
+  React,
+  ReactDOM,
+});
+
+const EditorButton = reactify(EditorButtonComponent, {
+  React,
+  ReactDOM,
+});
+
+const Icon = reactify(IconComponent, {
   React,
   ReactDOM,
 });

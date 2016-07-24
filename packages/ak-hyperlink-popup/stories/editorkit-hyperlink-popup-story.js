@@ -28,19 +28,19 @@ storiesOf(name, module)
   ))
   .add('with one button', () => (
     <Component>
-      <EditorButton><Icon glyph="unlink" /></EditorButton>
+      <EditorButton><Icon glyph="unlink" fill="white" /></EditorButton>
     </Component>
   ))
   .add('with two buttons', () => (
     <Component>
-      <EditorButton><Icon glyph="unlink" /></EditorButton>
-      <EditorButton><Icon glyph="open" /></EditorButton>
+      <EditorButton><Icon glyph="unlink" fill="white" /></EditorButton>
+      <EditorButton><Icon glyph="open" fill="white" /></EditorButton>
     </Component>
   ))
   .add('with two buttons and a input', () => (
     <Component>
-      <EditorButton><Icon glyph="unlink" /></EditorButton>
-      <EditorButton><Icon glyph="open" /></EditorButton>
+      <EditorButton><Icon glyph="unlink" fill="white" /></EditorButton>
+      <EditorButton><Icon glyph="open" fill="white" /></EditorButton>
       <input />
     </Component>
   ));

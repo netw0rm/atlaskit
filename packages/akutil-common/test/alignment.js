@@ -55,6 +55,7 @@ describe('aui/internal/alignment', () => {
       expect(Alignment.getElement(div)).to.equal(div);
       expect(Alignment.getElement()).to.equal(document.body);
       expect(Alignment.getElement('#test')).to.equal(div);
+      expect(Alignment.getElement('#non-existing-test')).to.equal(undefined);
     });
 
     // this is completely Tether-dependent

@@ -81,6 +81,15 @@ const definition = {
     target: { attribute: true },
     onRender: {},
   },
+  observedAttributes: ['class'],
+  attributeChanged(elem, data) {
+    if (elem.alignment && data.newValue) {
+      const newPosition = elem.alignment.getPositionFromClasses(data.newValue);
+      if (newPosition && newPosition !== elem.actualPosition) {
+        elem.actualPosition = newPosition; // eslint-disable-line no-param-reassign
+      }
+    }
+  },
   attached(elem) {
     if (!elem.alignment) {
       elem.alignment = new Alignment(elem);  // eslint-disable-line no-param-reassign

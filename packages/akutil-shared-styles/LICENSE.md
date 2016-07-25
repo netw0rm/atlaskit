@@ -1,1 +1,0 @@
-Atlassian Design Guidelines License

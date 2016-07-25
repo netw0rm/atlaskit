@@ -15,15 +15,8 @@ import './children/tab';
  */
 const definition = {
   created(elem) {
-    elem._children = [];
-
     // Listen for tab change event.
     elem.addEventListener('ak-tab-changed', e => {
-      // Register the tab if it hasn't already been registered.
-      if (elem._children.indexOf(e.target) < 0) {
-        elem._children.push(e.target);
-      }
-
       // If the tab has been selected, deselect all other tabs.
       if (e.target.selected) {
         elem.children.forEach(el => {
@@ -33,8 +26,9 @@ const definition = {
         });
       }
 
-      elem._labels = elem._children.map(el => el.label);
-      elem._selected = elem._children.map(el => el.selected);
+      // Set the property to trigger a re-render.
+      elem._labels = elem.children.map(el => el.label);
+      elem._selected = elem.children.map(el => el.selected);
 
       e.stopPropagation();
     });
@@ -44,24 +38,29 @@ const definition = {
       <div>
         <style>{shadowStyles.toString()}</style>
         <div class="ak-tab-labels">
-          {elem._children && elem._children.map(label => {
-            const classes = `${shadowStyles.locals.akTabLabel}
-                             ${label.selected ? shadowStyles.locals.akTabLabelSelected : ''}`;
-            return (
-              <a
-                href="#"
-                className={classes}
-                onclick={function () { label.selected = true; }}
-              >{label.label}</a>
-            );
-          })}
+          {elem.children && elem.children
+            .filter(child => child.nodeName === 'AK-TAB' && child.hasAttribute('defined'))
+            .map(label => {
+              const classes = `${shadowStyles.locals.akTabLabel}
+                               ${label.selected ? shadowStyles.locals.akTabLabelSelected : ''}`;
+              return (
+                <a
+                  href="#"
+                  className={classes}
+                  onclick={function () { label.selected = true; }}
+                >{label.label}</a>
+              );
+            })
+          }
         </div>
         <slot />
       </div>
     );
   },
   props: {
+    /** TODO: Use Symbol once supported in skate */
     _labels: prop.array({}),
+    /** TODO: Use Symbol once supported in skate */
     _selected: prop.array({}),
   },
 };

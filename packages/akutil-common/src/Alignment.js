@@ -1,11 +1,24 @@
 import Tether from 'tether';
 
+/**
+ * @description Helper class for positioning elements on a page
+ * @class Alignment
+ * @example @js import Alignment from 'akutil-common';
+ * const alignment = new Alignment({});
+ */
 export default class Alignment {
+  /**
+   * @description Create an alignment.
+   * @param {object} elem - Options
+   */
   constructor(elem) {
     this.disabled = false;
     this.update(elem);
   }
-
+  /**
+   * @description Disable positioning
+   * @example @js alignment.disable();
+   */
   disable() {
     if (this.tether) {
       this.disabled = true;
@@ -13,7 +26,11 @@ export default class Alignment {
     }
     return this;
   }
-
+  /**
+   * @description Disable positioning and destroy element.
+   * Being used in the ak-layer component on the 'detached' event
+   * @example @js alignment.destroy();
+   */
   destroy() {
     if (this.tether) {
       this.disabled = true;
@@ -27,7 +44,10 @@ export default class Alignment {
 
     return this;
   }
-
+  /**
+   * @description Enable positioning after disabling
+   * @example @js alignment.enable();
+   */
   enable() {
     if (this.tether) {
       this.disabled = false;
@@ -35,7 +55,15 @@ export default class Alignment {
     }
     return this;
   }
-
+  /* eslint-disable max-len  */
+  /**
+   * @description Update the positioning.
+   * It either creates a new Tether object or updates the current object with the new options.
+   * If the positioning is disabled or there is no target element, then this function will do nothing.
+   * @example @js alignment.update(elem);
+   * @param {object} elem - Options
+   */
+  /* eslint-enable max-len */
   update(elem) {
     const { defaultPosition, defaultConstraint, getElement, attachmentMap } = this.constructor;
     if (this.disabled || !elem.target) {
@@ -80,13 +108,20 @@ export default class Alignment {
     return this;
   }
 
+  /**
+   * @description Manually trigger the repositioning
+   * @example @js alignment.update(elem);
+   */
   reposition() {
     if (this.tether) {
       this.tether.position();
     }
     return this;
   }
-
+  /**
+   * @description Returns a position from the Tether-classes.
+   * @example @js const position = alignment.getPositionFromClasses(stringWithClassesOnAnElement);
+   */
   getPositionFromClasses(classes) {
     if (!classes) return '';
     const { attachmentMap } = this.constructor;
@@ -119,7 +154,12 @@ export default class Alignment {
 
     return position;
   }
-
+  /* eslint-disable max-len  */
+  /**
+   * @description Returns an element from a selector or the element itself if it was passed as an argument
+   * @example @js Alignment.getElement('#TargetId');
+   */
+  /* eslint-enable max-len */
   static getElement(node) {
     if (typeof node === 'string') {
       const elements = document.querySelectorAll(node);
@@ -133,15 +173,24 @@ export default class Alignment {
 
     return node || document.body;
   }
-
+  /**
+   * @description Default position
+   * @return {String} A string with the default position
+   */
   static get defaultPosition() {
     return 'right middle';
   }
-
+  /**
+   * @description Default constraint
+   * @return {String} A string with the default constraint
+   */
   static get defaultConstraint() {
     return 'window';
   }
-
+  /**
+   * @description Transformation map from position to Tether-required points
+   * @return {Object} Map of transformations
+   */
   static get attachmentMap() {
     return {
       'top left': { el: 'bottom left', target: 'top left', animation: 'top' },

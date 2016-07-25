@@ -5,6 +5,7 @@ import { vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Chrome from './chrome';
 import Text from './text';
+import Href from './href';
 import Button from './button';
 
 /**
@@ -27,11 +28,18 @@ export default define('ak-tag', {
       button = <Button text={elem['remove-button-text']} />;
     }
 
+    let label;
+    if (!elem.href) {
+      label = <Text>{elem.text}</Text>;
+    } else {
+      label = <Href href={elem.href}>{elem.text}</Href>;
+    }
+
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
         <Chrome>
-          <Text>{elem.text}</Text>
+          {label}
           {button}
         </Chrome>
       </div>
@@ -39,18 +47,19 @@ export default define('ak-tag', {
   },
   props: {
     /**
-     * @description The tag text.
+     * @description (Optional) A target href for the tag text to link to.
      * @memberof Tag
      * @instance
      * @type {string}
-     * @example @html <ak-tag text="todo"></ak-tag>
-     * @example @js tag.text = 'todo';
+     * @example @html <ak-tag href="http://www.some.url"></ak-tag>
+     * @example @js tag.href = 'http://www.some.url';
      */
-    text: {
+    href: {
       attribute: true,
     },
+
     /**
-     * @description The text for the remove button.
+     * @description (Optional) The text for the remove button.
      *              Implicitly defines that there will be a remove button
      * @memberof Tag
      * @instance
@@ -61,6 +70,18 @@ export default define('ak-tag', {
     'remove-button-text': {
       attribute: true,
       default: '',
+    },
+
+    /**
+     * @description The tag text.
+     * @memberof Tag
+     * @instance
+     * @type {string}
+     * @example @html <ak-tag text="todo"></ak-tag>
+     * @example @js tag.text = 'todo';
+     */
+    text: {
+      attribute: true,
     },
   },
 });

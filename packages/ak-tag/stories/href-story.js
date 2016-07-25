@@ -10,9 +10,6 @@ const Component = reactify(Tag, {
 });
 
 storiesOf(name, module)
-  .add('remove-button: simple', () => (
-    <Component text="some tag" remove-button-text="Remove me" />
-  ))
-  .add('remove-button: with href', () => (
-    <Component href="http://www.atlassian.com" text="atlassian" remove-button-text="Remove me" />
+  .add('href: custom link', () => (
+    <Component href="https://www.atlassian.com/search?query=jira" text="jira" />
   ));

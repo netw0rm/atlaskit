@@ -310,7 +310,7 @@
     },
     "autoprefixer": {
       "version": "6.3.7",
-      "from": "autoprefixer@>=6.3.1 <7.0.0",
+      "from": "autoprefixer@>=6.3.7 <7.0.0",
       "resolved": "https://registry.npmjs.org/autoprefixer/-/autoprefixer-6.3.7.tgz"
     },
     "aws-sign2": {
@@ -4528,7 +4528,7 @@
         "shelljs": {
           "version": "0.7.1",
           "from": "shelljs@>=0.7.0 <0.8.0",
-          "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.1.tgz"
+          "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.2.tgz"
         }
       }
     },
@@ -4555,7 +4555,7 @@
         "shelljs": {
           "version": "0.7.1",
           "from": "shelljs@>=0.7.0 <0.8.0",
-          "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.1.tgz"
+          "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.2.tgz"
         }
       }
     },
@@ -4594,7 +4594,7 @@
         "shelljs": {
           "version": "0.7.1",
           "from": "shelljs@>=0.7.0 <0.8.0",
-          "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.1.tgz"
+          "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.2.tgz"
         }
       }
     },
@@ -5638,7 +5638,7 @@
     },
     "postcss": {
       "version": "5.1.0",
-      "from": "postcss@>=5.0.6 <6.0.0",
+      "from": "postcss@>=5.0.21 <6.0.0",
       "resolved": "https://registry.npmjs.org/postcss/-/postcss-5.1.0.tgz",
       "dependencies": {
         "supports-color": {
@@ -5692,6 +5692,11 @@
       "version": "2.0.1",
       "from": "postcss-filter-plugins@>=2.0.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/postcss-filter-plugins/-/postcss-filter-plugins-2.0.1.tgz"
+    },
+    "postcss-loader": {
+      "version": "0.9.1",
+      "from": "postcss-loader@>=0.9.1 <0.10.0",
+      "resolved": "https://registry.npmjs.org/postcss-loader/-/postcss-loader-0.9.1.tgz"
     },
     "postcss-merge-idents": {
       "version": "2.1.6",

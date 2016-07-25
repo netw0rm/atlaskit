@@ -14,6 +14,7 @@ module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line n
   }));
 
   storybookBaseConfig.module.loaders = webpackConfig.module.loaders;
+  storybookBaseConfig.postcss = webpackConfig.postcss;
 
   // Return the altered config
   return storybookBaseConfig;

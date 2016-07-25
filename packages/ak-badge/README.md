@@ -1,0 +1,9 @@
+# ak-badge
+
+This is a sample component that displays a styled text.
+
+You can use it via:
+
+```html
+<ak-badge></ak-badge>
+```

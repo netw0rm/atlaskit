@@ -7,7 +7,7 @@ import 'style!./../src/host.less';
 import EditorButtonComponent from 'ak-editor-button';
 import IconComponent from 'ak-editor-icon';
 import ToolbarComponent from 'ak-editor-toolbar';
-import LinkButtonComponent from 'ak-editor-hyperlink-popup-button';
+import LinkButtonComponent from 'ak-editor-toolbar-hyperlink';
 
 const Component = reactify(HyperlinkPopup, {
   React,

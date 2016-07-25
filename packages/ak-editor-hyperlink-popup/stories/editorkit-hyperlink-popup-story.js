@@ -67,7 +67,7 @@ storiesOf(name, module)
     </Component>
   ))
   .add('a "real" hyperlink popup targeting to link button', () => {
-    class LinkButtonInToolbar extends Component {
+    class LinkButtonInToolbar extends React.Component {
       constructor(props) {
         super(props);
         this.state = {

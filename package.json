@@ -61,7 +61,7 @@
     "raw-loader": "^0.5.1",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
-    "retry-cli": "joscha/retry-cli#8c581f9",
+    "retry-cli": "^0.4.0",
     "semantic-release": "~4.3.0",
     "stats.js": "^0.16.0",
     "style-loader": "^0.13.1",

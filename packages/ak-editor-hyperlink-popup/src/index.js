@@ -51,7 +51,7 @@ const definition = {
     );
   },
   props: {
-    position: prop.string({ attribute: true, default: 'right middle' }),
+    position: prop.string({ attribute: true, default: 'bottom center' }),
     open: prop.boolean({ attribute: true, default: false }),
     target: { attribute: true },
     attachment: prop.string({ attribute: true, default: 'window' }),

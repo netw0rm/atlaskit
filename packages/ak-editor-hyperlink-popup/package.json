@@ -1,11 +1,11 @@
 {
-  "name": "editorkit-hyperlink-popup",
+  "name": "ak-editor-hyperlink-popup",
   "version": "0.0.1",
-  "description": "editorkit-hyperlink-popup webcomponent",
+  "description": "ak-editor-hyperlink-popup webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single editorkit-hyperlink-popup"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-hyperlink-popup"
   },
   "files": [
     "dist"
@@ -20,8 +20,10 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "akutil-react": "^0.0.3",
-    "ak-editor-icon": "2.0.0",
-    "ak-editor-button": "2.0.0"
+    "ak-editor-icon": "^2.0.0",
+    "ak-editor-button": "^2.0.0",
+    "ak-editor-toolbar": "^2.0.0",
+    "ak-editor-hyperlink-popup-button": "*"
   },
   "repository": {
     "type": "git",

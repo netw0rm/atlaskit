@@ -1,11 +1,11 @@
 {
-  "name": "editorkit-link-button",
+  "name": "ak-editor-hyperlink-popup-button",
   "version": "0.0.1",
-  "description": "editorkit-link-button webcomponent",
+  "description": "ak-editor-hyperlink-popup-button webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single editorkit-link-button",
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-hyperlink-popup-button",
     "pre-release": "lerna-semantic-release pre"
   },
   "private": true,

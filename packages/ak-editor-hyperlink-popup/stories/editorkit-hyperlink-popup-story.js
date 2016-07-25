@@ -6,6 +6,8 @@ import { name } from '../package.json';
 import 'style!./../src/host.less';
 import EditorButtonComponent from 'ak-editor-button';
 import IconComponent from 'ak-editor-icon';
+import ToolbarComponent from 'ak-editor-toolbar';
+import LinkButtonComponent from 'ak-editor-hyperlink-popup-button';
 
 const Component = reactify(HyperlinkPopup, {
   React,
@@ -22,11 +24,21 @@ const Icon = reactify(IconComponent, {
   ReactDOM,
 });
 
+const Toolbar = reactify(ToolbarComponent, {
+  React,
+  ReactDOM,
+});
+
+const LinkButton = reactify(LinkButtonComponent, {
+  React,
+  ReactDOM,
+});
+
 const marginLeft = 5;
 
 storiesOf(name, module)
   .add('a simple ak-hyperlink-popup', () => (
-    <Component />
+    <Component open="false" />
   ))
   .add('with one button', () => (
     <Component>
@@ -53,4 +65,17 @@ storiesOf(name, module)
       <div style={{ height: '100%', width: 1, background: 'lightgrey', marginLeft }} />
       <input style={{ marginLeft }} />
     </Component>
+  ))
+  .add('a "real" hyperlink popup targeting to link button', () => (
+    <div>
+      <Toolbar>
+        <LinkButton className="link-button" />
+      </Toolbar>
+      <Component target=".link-button">
+        <EditorButton><Icon glyph="unlink" fill="white" style={{ marginLeft }} /></EditorButton>
+        <EditorButton><Icon glyph="open" fill="white" style={{ marginLeft }} /></EditorButton>
+        <div style={{ height: '100%', width: 1, background: 'lightgrey', marginLeft }} />
+        <input style={{ marginLeft }} />
+      </Component>
+    </div>
   ));

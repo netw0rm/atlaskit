@@ -1,5 +1,15 @@
-<a name="0.13.1"></a>
-## 0.13.1 (2016-07-15)
+<a name="0.13.2"></a>
+## 0.13.2 (2016-07-22)
+
+
+
+<a name="ak-avatar@0.13.2"></a>
+## ak-avatar@0.13.2 (2016-07-18)
+
+
+### Bug Fixes
+
+* **skate:** SkateJS update to beta.10 ([620034a](https://bitbucket.org/atlassian/atlaskit/commits/620034a))
 
 
 
@@ -10,21 +20,6 @@
 
 <a name="ak-avatar@0.13.0"></a>
 # ak-avatar@0.13.0 (2016-07-11)
-
-
-
-<a name="ak-avatar@0.12.7"></a>
-## ak-avatar@0.12.7 (2016-07-11)
-
-
-### Bug Fixes
-
-* **sizes:** there are only 5 sizes ([ed9d5dc](https://bitbucket.org/atlassian/atlaskit/commits/ed9d5dc))
-
-
-
-<a name="ak-avatar@0.12.6"></a>
-## ak-avatar@0.12.6 (2016-07-08)
 
 
 

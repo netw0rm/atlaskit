@@ -1,4 +1,11 @@
 {
   "root": true,
-  "extends": "ak-base"
+  "extends": "ak-base",
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.config.development.js"
+      }
+    }
+  }
 }

@@ -1,16 +1,20 @@
 /** @jsx vdom */
 /* eslint react/no-unknown-property: 0 */
-
-import { getPositionFromClasses } from 'akutil-common';
+import 'style!./host.less';
+import { getPositionFromClasses, enumeration } from 'akutil-common';
 import { vdom, prop, define } from 'skatejs';
-import headStyles from 'style!./host.less'; // eslint-disable-line import/no-unresolved, max-len
 import shadowStyles from './shadow.less';
-import 'ak-layer';
+import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer'; // eslint-disable-line no-unused-vars, max-len
 
+/**
+ * @description The definition for the InlineDialog component.
+ * @class InlineDialog
+ * @example @html <ak-inline-dialog target="#target"></ak-inline-dialog>
+ * @example @js import InlineDialog from 'ak-inline-dialog';
+ * const myDialog = new InlineDialog();
+ *
+ */
 const definition = {
-  attached(elem) {
-    elem.className = headStyles.akInlineDialog; // eslint-disable-line no-param-reassign
-  },
   observedAttributes: ['class'],
   attributeChanged(elem, data) {
     if (data.newValue) {
@@ -31,12 +35,19 @@ const definition = {
     if (elem.borderRadius) {
       styles.borderRadius = elem.borderRadius;
     }
+
     return (
       <ak-layer
         open={elem.open}
         position={elem.position}
-        attachment={elem.attachment}
+        attachment={elem.constrain}
         target={elem.target}
+        onRender={(layer) => {
+          if (elem.open && layer.alignment) {
+            elem.positioned = true;
+          }
+        }
+        }
       >
         <style>{shadowStyles.toString()}</style>
         <div class={shadowStyles.locals.inlineDialogContainer} style={styles}>
@@ -46,14 +57,105 @@ const definition = {
     );
   },
   props: {
-    position: prop.string({ attribute: true, default: 'right middle' }),
-    open: prop.string({ attribute: true, default: 'false' }),
-    target: { attribute: true },
-    attachment: prop.string({ attribute: true, default: 'window' }),
-    renderElementTo: { attribute: true },
-    boxShadow: prop.string({ attribute: true }),
-    borderRadius: prop.string({ attribute: true }),
-    padding: prop.string({ attribute: true }),
+    /* eslint-disable max-len  */
+    /**
+     * @description Position of an inline-dialog relative to it's target.
+     * The position attribute takes two positional arguments in the format`position="edge edge-position"`,
+     * where `edge` specifies what edge to align the inline dialog to, and `edge-position` specifies where on that edge the dialog should appear.
+     * Refer to the table below for examples:
+     *
+     * |             | top left    | top center    | top right    |              |
+     * |-------------|-------------|---------------|--------------|--------------|
+     * | left top    |             |               |              | right top    |
+     * | left middle |             |    target     |              | right middle |
+     * | left bottom |             |               |              | right bottom |
+     * |             | bottom left | bottom center | bottom right |              |
+     * @memberof InlineDialog
+     * @instance
+     * @default right middle
+     * @type {string}
+     * @example @html <ak-inline-dialog position="top left"></ak-inline-dialog>
+     * @example @js dialog.position = 'top left';
+     */
+    /* eslint-enable max-len */
+    position: enumeration(POSITION_ATTRIBUTE_ENUM)({
+      attribute: true,
+    }),
+    /**
+     * @description Controls visibility of an inline-dialog. Dialog is invisible by default.
+     * @memberof InlineDialog
+     * @instance
+     * @default false
+     * @type Boolean
+     * @example @html <ak-inline-dialog open></ak-inline-dialog>
+     * @example @js dialog.open = true;
+     */
+    open: prop.boolean({
+      attribute: true,
+      default: false,
+    }),
+    /**
+     * @description Target of an inline-dialog.
+     * Selector or element on a page relative to which inline-dialog should be positioned
+     * @memberof InlineDialog
+     * @instance
+     * @type String
+     * @example @html <ak-inline-dialog target="#target"></ak-inline-dialog>
+     * @example @js dialog.target = document.body.querySelector('#target');
+     * @example @js dialog.target = '#target'
+     */
+    target: {
+      attribute: true,
+    },
+    /**
+     * @description Constrain an inline-dialog to a scrollable parent or the window
+     * @memberof InlineDialog
+     * @instance
+     * @default 'window'
+     * @type String
+     * @example @html <ak-inline-dialog constrain="scrollParent"></ak-inline-dialog>
+     * @example @js dialog.constrain = 'scrollParent'
+     */
+    constrain: enumeration(CONSTRAIN_ATTRIBUTE_ENUM)({
+      attribute: true,
+    }),
+    /**
+     * @description Box-shadow style for the inline-dialog
+     * @memberof InlineDialog
+     * @instance
+     * @type String
+     * @example @html <ak-inline-dialog box-shadow="0 0 10px 10px #f0f0f0"></ak-inline-dialog>
+     * @example @js dialog.boxShadow = '0 0 10px 10px #f0f0f0'
+     */
+    boxShadow: prop.string({
+      attribute: true,
+    }),
+    /**
+     * @description Border-radius style for the inline-dialog
+     * @memberof InlineDialog
+     * @instance
+     * @type String
+     * @example @html <ak-inline-dialog border-radius="3px"></ak-inline-dialog>
+     * @example @js dialog.borderRadius = '3px'
+     */
+    borderRadius: prop.string({
+      attribute: true,
+    }),
+    /**
+     * @description Padding style for the inline-dialog
+     * @memberof InlineDialog
+     * @instance
+     * @type String
+     * @example @html <ak-inline-dialog padding="3px"></ak-inline-dialog>
+     * @example @js dialog.padding = '3px'
+     */
+    padding: prop.string({
+      attribute: true,
+    }),
+
+    positioned: prop.boolean({
+      attribute: true,
+    }),
   },
 };
 

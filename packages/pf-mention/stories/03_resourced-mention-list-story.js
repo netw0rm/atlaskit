@@ -1,4 +1,4 @@
-import storyStyles from 'style!./stories.less'; // eslint-disable-line no-unused-vars, import/no-unresolved, max-len
+import 'style!./stories.less';
 
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';

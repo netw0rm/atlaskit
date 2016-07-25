@@ -1,5 +1,4 @@
 const path = require('path');
-const browserStackBrowsers = require('./build/lib/karma.browserstack.browsers.js');
 const webpackConfig = require('./webpack.config.karma.js');
 
 module.exports = (config) => {
@@ -29,6 +28,12 @@ module.exports = (config) => {
     // (you don't need to specify the entry option)
     // webpack watches dependencies
     webpack: webpackConfig,
+
+    webpackMiddleware: {
+      stats: {
+        chunks: false,
+      },
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -67,26 +72,4 @@ module.exports = (config) => {
   const additionalPreprocessors = {};
   additionalPreprocessors[polyfills] = ['webpack', 'sourcemap'];
   Object.assign(config.preprocessors, additionalPreprocessors);
-
-  if (process.env.BROWSERSTACK) {
-    const pkgJsonPath = path.join(process.cwd(), 'package.json');
-    const packageName = require(pkgJsonPath).name; // eslint-disable-line global-require
-    Object.assign(config, {
-      browserStack: {
-        username: process.env.BROWSERSTACK_USERNAME,
-        accessKey: process.env.BROWSERSTACK_KEY,
-        startTunnel: !process.env.BROWSERSTACK_TUNNEL,
-        tunnelIdentifier: process.env.BROWSERSTACK_TUNNEL || 'ak_tunnel',
-        project: 'AtlasKit',
-        name: packageName,
-      },
-      customLaunchers: browserStackBrowsers,
-      browsers: Object.keys(browserStackBrowsers),
-      captureTimeout: 120000,
-      reporters: ['dots'],
-      autoWatch: false,
-      concurrency: 5,
-      client: {},
-    });
-  }
 };

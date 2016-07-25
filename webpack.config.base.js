@@ -55,6 +55,7 @@ const standardConfig = {
               [
                 'incremental-dom',
                 {
+                  components: true,
                   hoist: true,
                   prefix: 'vdom',
                 },
@@ -71,10 +72,6 @@ const standardConfig = {
           },
         },
       ],
-      {
-        test: /\.html$/,
-        loader: 'html-loader',
-      },
     ],
   },
   plugins: [],

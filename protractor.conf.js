@@ -2,7 +2,7 @@ const path = require('path');
 
 const rq = [
   path.join(__dirname, 'packages', 'akutil-cucumber', 'src', '**', '*-steps.js'),
-  path.join(process.cwd(), 'cucumber', 'stepDefinitions', '**', 'steps.js'),
+  path.join(process.cwd(), 'cucumber', 'step_definitions', '**', 'steps.js'),
 ];
 
 function webComponentLocator(componentNamePrefix, parentElement) {
@@ -14,7 +14,7 @@ function webComponentLocator(componentNamePrefix, parentElement) {
     .filter((node) => tagMatcher.test(node.tagName));
 }
 
-const protractorConf = {
+exports.config = {
   seleniumAddress: process.env.SELENIUM_ADDRESS,
   baseUrl: process.env.BASE_URL,
   framework: 'custom',
@@ -44,25 +44,3 @@ const protractorConf = {
     by.addLocator('webComponentNamePrefix', webComponentLocator);
   },
 };
-
-if (process.env.BROWSERSTACK) {
-  Object.assign(protractorConf, {
-    seleniumAddress: 'http://hub.browserstack.com/wd/hub',
-    capabilities: {
-      browserName: 'Chrome',
-      os: 'OS X',
-      os_version: 'El Capitan',
-      resolution: '1024x768',
-
-      build: `${process.env.PKG} Integration`,
-      name: `${process.env.PKG} protractor tests`,
-
-      'browserstack.user': process.env.BROWSERSTACK_USERNAME,
-      'browserstack.key': process.env.BROWSERSTACK_KEY,
-      'browserstack.debug': 'true',
-      'browserstack.local': 'true',
-    },
-  });
-}
-
-exports.config = protractorConf;

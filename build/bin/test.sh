@@ -7,11 +7,28 @@ COMPONENT_DIR=$(basename `pwd`)
 
 {
     if [ -d "test" ]; then
-        echo -e "Testing $COMPONENT_DIR"
-        karma start ../../karma.conf.js --single-run --reporters=dots,junit $@
+        echo
+        echo -e "\033[34mTesting $COMPONENT_DIR\033[0m"
+
+        if [ -n "$FAILED_CI_FILE" ]; then
+          retry="retry --retries=2 --fail-on-last -- "
+        else
+          retry=""
+        fi
+
+        if [ -n "$BROWSERSTACK" ]; then
+          if [ -n "$BRANCH_BUILD"]; then
+            KARMA_CONF="../../karma.conf.browserstack.branch.js"
+          else
+            KARMA_CONF="../../karma.conf.browserstack.master.js"
+          fi
+        else
+          KARMA_CONF="../../karma.conf.js"
+        fi
+
+        $retry karma start $KARMA_CONF --single-run --reporters=dots,junit $@
     else
-        echo -e "\033[34m No 'test' dir in packages/$COMPONENT_DIR; Skipping tests."
-        echo -e "\033[0m"
+        echo -e "\033[34mNo 'test' dir in packages/$COMPONENT_DIR; Skipping tests.\033[0m"
     fi
 } || {
     if [ -n "$FAILED_CI_FILE" ]; then

@@ -1,6 +1,6 @@
 {
   "name": "ak-avatar",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -16,7 +16,7 @@
     "akutil-common": "^0.1.0",
     "akutil-shared-styles": "*",
     "classnames": "^2.2.5",
-    "skatejs": "1.0.0-beta.10"
+    "skatejs": "1.0.0-beta.12"
   },
   "devDependencies": {
     "akutil-react": "^0.0.3"

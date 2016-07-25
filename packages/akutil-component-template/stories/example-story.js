@@ -1,11 +1,11 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import webComponent from '../src/index';
+import WebComponent from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
-import styles from 'style!./../src/host.less'; // eslint-disable-line import/no-unresolved
+import styles from 'style!./../src/host.less';
 
-const Component = reactify(webComponent, {
+const Component = reactify(WebComponent, {
   React,
   ReactDOM,
 });
@@ -13,6 +13,9 @@ const Component = reactify(webComponent, {
 storiesOf(name, module)
   .add('a simple akutil-component-template', () => (
     <Component />
+  ))
+  .add('a simple akutil-component-template with a name', () => (
+    <Component name="MyComponent" />
   ))
   .add('an akutil-component-template that emits an action when it is clicked', () => (
     <Component id="myComponent" onClick={action('clicking the WebComponent')} />

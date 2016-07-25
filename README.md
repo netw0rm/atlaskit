@@ -96,6 +96,21 @@ npm run prepublish/single my-component-name -- --bundle-deps
 
 This can be helpful for ad-hoc testing in JSFiddle for example.
 
+## Document a component
+AtlasKit uses [JSDoc](http://usejsdoc.org/)-style annotations to automatically generate the component API. See the `akutil-component-template` package for examples.
+
+A `README.md` file will be generated at `packages/my-component-name/README.md`. ** Do not edit this README file. ** Your changes will be overwritten.
+
+Instead, modify the `USAGE.md` file, located at `packages/my-component-name/USAGE.md`, with usage instructions and examples for the component.
+
+The README file will be automatically generated at release time by concatenating the file with the generated component API.
+
+You may regenerate the README file at any time with the following command:
+
+```
+npm run docs/single my-component-name
+```
+
 ## Test a component
 
 ### Storybook

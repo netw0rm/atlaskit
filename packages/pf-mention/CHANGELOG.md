@@ -1,5 +1,15 @@
-<a name="1.0.4"></a>
-## 1.0.4 (2016-07-18)
+<a name="1.2.0"></a>
+# 1.2.0 (2016-07-22)
+
+
+
+<a name="pf-mention@1.1.0"></a>
+# pf-mention@1.1.0 (2016-07-22)
+
+
+### Features
+
+* Change getSecurity provider to allow returning of headers of query params. Setup demo dev toke ([19d10ed](https://bitbucket.org/atlassian/atlaskit/commits/19d10ed))
 
 
 
@@ -9,7 +19,7 @@
 
 ### Bug Fixes
 
-* **skate:** SkateJS update to beta.10 ([620034a](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/620034a))
+* **skate:** SkateJS update to beta.10 ([620034a](https://bitbucket.org/atlassian/atlaskit/commits/620034a))
 
 
 
@@ -19,7 +29,7 @@
 
 ### Bug Fixes
 
-* Pass open down to ak-inline-dialog to ensure reposition occurs at right time. ([7ef43d1](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/7ef43d1))
+* Pass open down to ak-inline-dialog to ensure reposition occurs at right time. ([7ef43d1](https://bitbucket.org/atlassian/atlaskit/commits/7ef43d1))
 
 
 
@@ -29,7 +39,7 @@
 
 ### Bug Fixes
 
-* Fix bad export for MentionResource ([1502f73](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/1502f73))
+* Fix bad export for MentionResource ([1502f73](https://bitbucket.org/atlassian/atlaskit/commits/1502f73))
 
 
 
@@ -39,19 +49,14 @@
 
 ### Bug Fixes
 
-* endsWith is not available in IE ([d8b1f01](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/d8b1f01))
-* **polyfill:** URLSearchParams is not available on IE, Safari, Mobile Chrome and Mobile Safari ([a887fe7](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/a887fe7))
-* **polyfill:** URLSearchParams is not available on IE, Safari, Mobile Chrome and Mobile Safari ([6c2081f](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/6c2081f))
+* endsWith is not available in IE ([d8b1f01](https://bitbucket.org/atlassian/atlaskit/commits/d8b1f01))
+* **polyfill:** URLSearchParams is not available on IE, Safari, Mobile Chrome and Mobile Safari ([a887fe7](https://bitbucket.org/atlassian/atlaskit/commits/a887fe7))
+* **polyfill:** URLSearchParams is not available on IE, Safari, Mobile Chrome and Mobile Safari ([6c2081f](https://bitbucket.org/atlassian/atlaskit/commits/6c2081f))
 
 
 
 <a name="pf-mention@1.0.0"></a>
 # pf-mention@1.0.0 (2016-07-12)
-
-
-### Bug Fixes
-
-* bricked release 0.0.9 ([20604da](https://aui-team-bot/:j6Rw/%22Jt4J+3~Y-%,@bitbucket.org/atlassian/atlaskit.git/commits/20604da))
 
 
 

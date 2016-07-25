@@ -17,4 +17,4 @@ const definition = {
   },
 };
 
-export default define('ak-hyperlink-button', definition);
+export default define('ak-editor-hyperlink-popup-button', definition);

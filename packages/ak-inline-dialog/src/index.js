@@ -1,7 +1,7 @@
 /** @jsx vdom */
 /* eslint react/no-unknown-property: 0 */
 import 'style!./host.less';
-import { getPositionFromClasses, enumeration } from 'akutil-common';
+import { enumeration } from 'akutil-common';
 import { vdom, prop, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer'; // eslint-disable-line no-unused-vars, max-len
@@ -15,15 +15,6 @@ import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-lay
  *
  */
 const definition = {
-  observedAttributes: ['class'],
-  attributeChanged(elem, data) {
-    if (data.newValue) {
-      const newPosition = getPositionFromClasses(data.newValue);
-      if (newPosition && newPosition !== elem.actualPosition) {
-        elem.actualPosition = newPosition; // eslint-disable-line no-param-reassign
-      }
-    }
-  },
   render(elem) {
     const styles = {};
     if (elem.boxShadow) {

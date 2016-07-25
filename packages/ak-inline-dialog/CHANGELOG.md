@@ -1,5 +1,5 @@
 <a name="69.4.1"></a>
-## 69.4.1 (2016-07-22)
+## 69.4.1 (2016-07-25)
 
 
 
@@ -53,19 +53,8 @@
 # ak-inline-dialog@69.2.0 (2016-07-12)
 
 
-
-<a name="ak-inline-dialog@69.1.0"></a>
-# ak-inline-dialog@69.1.0 (2016-07-12)
-
-
-### Bug Fixes
-
-* remove string attr from target ([26ed13d](https://bitbucket.org/atlassian/atlaskit/commits/26ed13d))
-
-
 ### Features
 
-* "doNotMoveInDOM" property (tether fork) ([6405bdc](https://bitbucket.org/atlassian/atlaskit/commits/6405bdc))
 * css options for inline-dialog ([a63837b](https://bitbucket.org/atlassian/atlaskit/commits/a63837b))
 
 

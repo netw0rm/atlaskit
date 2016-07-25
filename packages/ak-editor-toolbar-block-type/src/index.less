@@ -1,0 +1,48 @@
+.fontSelect {
+  position: relative;
+}
+
+.dropdown-content {
+  list-style-type: none;
+  padding: 0;
+  border-radius: 0 3px 3px 3px;
+  box-shadow: 0 0 0 0.5px rgba(0,0,0,0.05), 0 3px 10px -4px rgba(0,0,0,0.4);
+  overflow: hidden;
+  display: none;
+  position: absolute;
+  margin-top: -3px;
+  width: 170px;
+
+  &.dropdownOpen {
+    display: block;
+  }
+
+  [font=paragraph] {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+  }
+
+  [font=heading1] {
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  [font=heading2] {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 20px;
+  }
+
+  [font=heading3] {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+  }
+
+  [font=monospace] {
+    font-family: monospace;
+  }
+}

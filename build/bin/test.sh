@@ -11,13 +11,13 @@ COMPONENT_DIR=$(basename `pwd`)
         echo -e "\033[34mTesting $COMPONENT_DIR\033[0m"
 
         if [ -n "$FAILED_CI_FILE" ]; then
-          retry="retry --retries=2 --fail-on-last -- "
+          retry="retry --retries=2 -- "
         else
           retry=""
         fi
 
         if [ -n "$BROWSERSTACK" ]; then
-          if [ -n "$BRANCH_BUILD"]; then
+          if [ -n "$BRANCH_BUILD" ]; then
             KARMA_CONF="../../karma.conf.browserstack.branch.js"
           else
             KARMA_CONF="../../karma.conf.browserstack.master.js"

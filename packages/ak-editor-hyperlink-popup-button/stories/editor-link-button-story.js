@@ -20,7 +20,7 @@ storiesOf(name, module)
   .add('a simple ak-editor-hyperlink-popup-button', () => (
     <Component />
   ))
-  .add('ak-editor-toolbar-block-type in toolbar', () => (
+  .add('ak-editor-hyperlink-popup-button in toolbar', () => (
     <Toolbar>
       <Component />
     </Toolbar>

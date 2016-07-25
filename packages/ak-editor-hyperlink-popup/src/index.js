@@ -56,9 +56,6 @@ const definition = {
     target: { attribute: true },
     attachment: prop.string({ attribute: true, default: 'window' }),
     renderElementTo: { attribute: true },
-    boxShadow: prop.string({ attribute: true }),
-    borderRadius: prop.string({ attribute: true }),
-    padding: prop.string({ attribute: true }),
   },
 };
 

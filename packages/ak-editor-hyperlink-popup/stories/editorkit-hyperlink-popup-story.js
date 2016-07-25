@@ -38,7 +38,7 @@ const marginLeft = 5;
 
 storiesOf(name, module)
   .add('a simple ak-hyperlink-popup', () => (
-    <Component open="false" />
+    <Component />
   ))
   .add('with one button', () => (
     <Component>
@@ -66,16 +66,48 @@ storiesOf(name, module)
       <input style={{ marginLeft }} />
     </Component>
   ))
-  .add('a "real" hyperlink popup targeting to link button', () => (
-    <div>
-      <Toolbar>
-        <LinkButton className="link-button" />
-      </Toolbar>
-      <Component target=".link-button">
-        <EditorButton><Icon glyph="unlink" fill="white" style={{ marginLeft }} /></EditorButton>
-        <EditorButton><Icon glyph="open" fill="white" style={{ marginLeft }} /></EditorButton>
-        <div style={{ height: '100%', width: 1, background: 'lightgrey', marginLeft }} />
-        <input style={{ marginLeft }} />
-      </Component>
-    </div>
-  ));
+  .add('a "real" hyperlink popup targeting to link button', () => {
+    class LinkButtonInToolbar extends Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          open: false,
+        };
+
+        // Bind callback methods to make `this` the correct context.
+        this.handleClick = this.handleClick.bind(this);
+      }
+
+      handleClick() {
+        if (this.props.event === 'click') {
+          this.setState({ open: !this.state.open });
+        }
+      }
+
+      render() {
+        return (
+          <div>
+            <Toolbar>
+              <LinkButton className="link-button" onClick={this.handleClick} />
+            </Toolbar>
+            <Component target=".link-button" open={this.state.open}>
+              <EditorButton>
+                <Icon glyph="unlink" fill="white" style={{ marginLeft }} />
+              </EditorButton>
+              <EditorButton>
+                <Icon glyph="open" fill="white" style={{ marginLeft }} />
+              </EditorButton>
+              <div style={{ height: '100%', width: 1, background: 'lightgrey', marginLeft }} />
+              <input style={{ marginLeft }} />
+            </Component>
+          </div>
+        );
+      }
+    }
+
+    LinkButtonInToolbar.propTypes = {
+      event: React.PropTypes.string,
+    };
+
+    return <LinkButtonInToolbar />;
+  });

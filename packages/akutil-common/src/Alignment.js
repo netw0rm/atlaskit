@@ -37,7 +37,7 @@ export default class Alignment {
   }
 
   update(elem) {
-    const { defaultPosition, defaultConstrain, getElement, attachmentMap } = this.constructor;
+    const { defaultPosition, defaultConstraint, getElement, attachmentMap } = this.constructor;
     if (this.disabled || !elem.target) {
       return this;
     }
@@ -59,7 +59,7 @@ export default class Alignment {
       targetAttachment: position.target,
       constraints: [
         {
-          to: elem.attachment || defaultConstrain,
+          to: elem.attachment || defaultConstraint,
           attachment: 'together',
         },
       ],
@@ -90,7 +90,7 @@ export default class Alignment {
   getPositionFromClasses(classes) {
     if (!classes) return '';
     const { attachmentMap } = this.constructor;
-    const cl = classes.split(' ');
+    const cl = classes.split(/\s+/g);
     let position = '';
     let targetClasses;
     let elementClasses;
@@ -100,14 +100,19 @@ export default class Alignment {
     elementClasses = cl.filter((val) => val.search('tether-element-attached') === 0);
     elementClasses = elementClasses.map((val) => val.replace('tether-element-attached-', ''));
 
+    const elementClassesString = elementClasses.join(' ');
+    const elementClassesStringReverse = elementClasses.reverse().join(' ');
+    const targetClassesString = targetClasses.join(' ');
+    const targetClassesStringReverse = targetClasses.reverse().join(' ');
+
     Object.keys(attachmentMap).forEach((i) => {
       const el = attachmentMap[i].el;
       const target = attachmentMap[i].target;
 
-      if ((el === elementClasses.join(' ')
-        || el === elementClasses.reverse().join(' '))
-        && (target === targetClasses.join(' ')
-        || target === targetClasses.reverse().join(' '))) {
+      if ((el === elementClassesString
+        || el === elementClassesStringReverse)
+        && (target === targetClassesString
+        || target === targetClassesStringReverse)) {
         position = i;
       }
     });
@@ -133,7 +138,7 @@ export default class Alignment {
     return 'right middle';
   }
 
-  static get defaultConstrain() {
+  static get defaultConstraint() {
     return 'window';
   }
 

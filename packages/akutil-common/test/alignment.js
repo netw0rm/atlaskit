@@ -17,7 +17,7 @@ describe('aui/internal/alignment', () => {
   it('should have all the properties', () => {
     const align = new Alignment({});
     expect(Alignment.attachmentMap).not.to.equal(undefined);
-    expect(Alignment.defaultConstrain).not.to.equal(undefined);
+    expect(Alignment.defaultConstraint).not.to.equal(undefined);
     expect(Alignment.defaultPosition).not.to.equal(undefined);
     expect(Alignment.getElement).not.to.equal(undefined);
 
@@ -41,8 +41,8 @@ describe('aui/internal/alignment', () => {
         expect(Alignment.attachmentMap[val]).not.to.equal(undefined);
       });
     });
-    it('defaultConstrain', () => {
-      expect(Alignment.defaultConstrain).to.equal('window');
+    it('defaultConstraint', () => {
+      expect(Alignment.defaultConstraint).to.equal('window');
     });
     it('defaultPosition', () => {
       expect(Alignment.defaultPosition).to.equal('right middle');
@@ -136,6 +136,10 @@ describe('aui/internal/alignment', () => {
         {
           value: undefined,
           position: '',
+        },
+        {
+          value: 'tether-element-attached-right      tether-target-attached-right      tether-element-attached-top     tether-target-attached-bottom', // eslint-disable-line max-len
+          position: 'bottom right',
         },
       ];
       classes.forEach((val) => {

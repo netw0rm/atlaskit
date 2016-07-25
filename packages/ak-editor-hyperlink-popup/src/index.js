@@ -30,7 +30,7 @@ const definition = {
     return (
       <ak-layer
         open={elem.open}
-        position={elem.position}
+        position="bottom center"
         attachment={elem.constrain}
         target={elem.target}
         onRender={(layer) => {
@@ -41,7 +41,7 @@ const definition = {
         }
       >
         <style>{shadowStyles.toString()}</style>
-        <div class={shadowStyles.locals.HyperlinkPopupContainer} style={styles}>
+        <div class={shadowStyles.locals.hyperlinkPopup} style={styles}>
           <slot />
         </div>
       </ak-layer>
@@ -49,29 +49,6 @@ const definition = {
   },
   props: {
     /* eslint-disable max-len  */
-    /**
-     * @description Position of an hyperlink-popup relative to it's target.
-     * The position attribute takes two positional arguments in the format`position="edge edge-position"`,
-     * where `edge` specifies what edge to align the hyperlink-popup to, and `edge-position` specifies where on that edge the dialog should appear.
-     * Refer to the table below for examples:
-     *
-     * |             | top left    | top center    | top right    |              |
-     * |-------------|-------------|---------------|--------------|--------------|
-     * | left top    |             |               |              | right top    |
-     * | left middle |             |    target     |              | right middle |
-     * | left bottom |             |               |              | right bottom |
-     * |             | bottom left | bottom center | bottom right |              |
-     * @memberof HyperlinkPopup
-     * @instance
-     * @default right middle
-     * @type {string}
-     * @example @html <ak-editor-hyperlink-popup position="top left"></ak-editor-hyperlink-popup>
-     * @example @js dialog.position = 'top left';
-     */
-    /* eslint-enable max-len */
-    position: enumeration(POSITION_ATTRIBUTE_ENUM)({
-      attribute: true,
-    }),
     /**
      * @description Controls visibility of an hyperlink-popup. Dialog is invisible by default.
      * @memberof HyperlinkPopup

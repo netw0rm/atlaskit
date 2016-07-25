@@ -79,9 +79,7 @@ storiesOf(name, module)
       }
 
       handleClick() {
-        if (this.props.event === 'click') {
-          this.setState({ open: !this.state.open });
-        }
+        this.setState({ open: !this.state.open });
       }
 
       render() {

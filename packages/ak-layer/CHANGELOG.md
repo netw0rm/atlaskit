@@ -1,5 +1,5 @@
 <a name="56.3.1"></a>
-## 56.3.1 (2016-07-22)
+## 56.3.1 (2016-07-25)
 
 
 
@@ -40,16 +40,6 @@
 
 <a name="ak-layer@56.1.0"></a>
 # ak-layer@56.1.0 (2016-07-12)
-
-
-### Bug Fixes
-
-* remove string attr from target ([26ed13d](https://bitbucket.org/atlassian/atlaskit/commits/26ed13d))
-
-
-### Features
-
-* "doNotMoveInDOM" property (tether fork) ([6405bdc](https://bitbucket.org/atlassian/atlaskit/commits/6405bdc))
 
 
 

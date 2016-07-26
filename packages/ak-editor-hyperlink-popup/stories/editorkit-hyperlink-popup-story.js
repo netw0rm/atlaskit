@@ -88,7 +88,11 @@ storiesOf(name, module)
             <Toolbar>
               <LinkButton className="link-button" onClick={this.handleClick} />
             </Toolbar>
-            <Component target=".link-button" open={this.state.open}>
+            <Component
+              target=".link-button"
+              open={this.state.open}
+              className="ak-editor-hyperlink-popup"
+            >
               <EditorButton>
                 <Icon glyph="unlink" fill="white" style={{ marginLeft }} />
               </EditorButton>

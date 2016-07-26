@@ -1,5 +1,15 @@
-<a name="56.3.1"></a>
-## 56.3.1 (2016-07-25)
+<a name="56.4.0"></a>
+# 56.4.0 (2016-07-26)
+
+
+
+<a name="ak-layer@56.4.0"></a>
+# ak-layer@56.4.0 (2016-07-26)
+
+
+### Features
+
+* swith to fixed versions of ak-layer and akutil-shared-styles ([117a881](https://bitbucket.org/atlassian/atlaskit/commits/117a881))
 
 
 

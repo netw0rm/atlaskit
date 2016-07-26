@@ -5,10 +5,59 @@
 // browsers that do not support shadow DOM
 @import 'shared-variables.less';
 
-.ak-tab-label + .ak-tab-label {
-  margin-left: 15px;
+.ak-tab-items {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
 }
 
-.ak-tab-label-selected {
-  background-color: red;
+.ak-tab-item {
+  line-height: 20px;
+  font-size: 14px;
+  color: #253858;
+  text-decoration: none;
+  position: relative;
+  padding: @ak-tabs-padding;
+}
+
+.ak-tab-item::before,
+.ak-tab-item-selected::after {
+  content: '';
+  height: 5px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f0f2f5;
+}
+
+.ak-tab-item-selected {
+  color: #0074E0;
+  border-radius: 4px;
+
+  &::after {
+    border-radius: 5px;
+    left: @ak-tabs-padding;
+    right: @ak-tabs-padding;
+    background-color: currentColor;
+  }
+}
+
+/* Remove padding for first and last items */
+.ak-tab-item:first-of-type {
+  padding-left: 0;
+
+  &::before,
+  &::after {
+    left: 0;
+  }
+}
+
+.ak-tab-item:last-of-type {
+  padding-right: 0;
+
+  &::before,
+  &::after {
+    right: 0;
+  }
 }

@@ -37,12 +37,12 @@ const definition = {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <div class="ak-tab-labels">
+        <div className={shadowStyles.locals.akTabItems}>
           {elem.children && elem.children
             .filter(child => child.nodeName === 'AK-TAB' && child.hasAttribute('defined'))
             .map(label => {
-              const classes = `${shadowStyles.locals.akTabLabel}
-                               ${label.selected ? shadowStyles.locals.akTabLabelSelected : ''}`;
+              const classes = `${shadowStyles.locals.akTabItem}
+                               ${label.selected ? shadowStyles.locals.akTabItemSelected : ''}`;
               return (
                 <a
                   href="#"

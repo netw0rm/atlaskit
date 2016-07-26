@@ -24,7 +24,9 @@ const definition = {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <slot />
+        <div class={shadowStyles.locals.akTabPane}>
+          <slot />
+        </div>
       </div>
     );
   },

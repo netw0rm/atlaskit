@@ -5,13 +5,13 @@
 // browsers that do not support shadow DOM
 @import 'shared-variables.less';
 
-.ak-tab-items {
+.ak-tab-labels {
   display: flex;
   flex-wrap: wrap;
   position: relative;
 }
 
-.ak-tab-item {
+.ak-tab-label {
   line-height: 20px;
   font-size: 14px;
   color: #253858;
@@ -20,8 +20,8 @@
   padding: @ak-tabs-padding;
 }
 
-.ak-tab-item::before,
-.ak-tab-item-selected::after {
+.ak-tab-label::before,
+.ak-tab-label-selected::after {
   content: '';
   height: 5px;
   position: absolute;
@@ -31,7 +31,7 @@
   background-color: #f0f2f5;
 }
 
-.ak-tab-item-selected {
+.ak-tab-label-selected {
   color: #0074E0;
   border-radius: 4px;
 
@@ -44,7 +44,7 @@
 }
 
 /* Remove padding for first and last items */
-.ak-tab-item:first-of-type {
+.ak-tab-label:first-of-type {
   padding-left: 0;
 
   &::before,
@@ -53,7 +53,7 @@
   }
 }
 
-.ak-tab-item:last-of-type {
+.ak-tab-label:last-of-type {
   padding-right: 0;
 
   &::before,

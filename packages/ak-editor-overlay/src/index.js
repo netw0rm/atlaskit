@@ -13,7 +13,7 @@ export default define('ak-editor-overlay', {
         <div
           className={styles.locals.overlay}
           style={style}
-          onclick={() => emit(elem, 'toggleOverlay')}
+          onclick={() => emit(elem, 'clickOverlay')}
         />
       </div>
     );

@@ -29,7 +29,7 @@ export default define('ak-editor-toolbar-block-type', {
     return (
       <div className={styles.locals.root}>
         <style>{styles.toString()}</style>
-        <Overlay open={elem.dropdownOpen} ontoggleOverlay={() => toggle(elem)} />
+        <Overlay open={elem.dropdownOpen} onclickOverlay={() => toggle(elem)} />
         <FontSelect
           className={styles.locals.fontSelect}
           selectedReadableName={fonts[elem.selectedFont]}

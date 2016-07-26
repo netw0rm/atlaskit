@@ -5,6 +5,7 @@ import { enumeration } from 'akutil-common';
 import { vdom, prop, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer'; // eslint-disable-line no-unused-vars, max-len
+import Overlay from 'ak-editor-overlay';
 
 /**
  * @description The definition for the HyperlinkPopup component.
@@ -28,23 +29,25 @@ const definition = {
     }
 
     return (
-      <ak-layer
-        open={elem.open}
-        position="bottom center"
-        attachment={elem.constrain}
-        target={elem.target}
-        onRender={(layer) => {
-          if (elem.open && layer.alignment) {
-            elem.positioned = true;
-          }
-        }
-        }
-      >
-        <style>{shadowStyles.toString()}</style>
-        <div class={shadowStyles.locals.hyperlinkPopup} style={styles}>
-          <slot />
-        </div>
-      </ak-layer>
+      <div onclickOverlay={() => { elem.open = !elem.open; }}>
+        <Overlay open={elem.open} />
+        <ak-layer
+          open={elem.open}
+          position="bottom center"
+          attachment={elem.constrain}
+          target={elem.target}
+          onRender={(layer) => {
+            if (elem.open && layer.alignment) {
+              elem.positioned = true;
+            }
+          }}
+        >
+          <style>{shadowStyles.toString()}</style>
+          <div class={shadowStyles.locals.hyperlinkPopup} style={styles}>
+            <slot />
+          </div>
+        </ak-layer>
+      </div>
     );
   },
   props: {

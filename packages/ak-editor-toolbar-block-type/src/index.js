@@ -3,7 +3,7 @@ import cx from 'classnames';
 import styles from './index.less';
 import FontSelect from './font-select';
 import Option from './option';
-import Overlay from './overlay';
+import Overlay from 'ak-editor-overlay';
 
 const fonts = {
   paragraph: 'Paragraph',
@@ -29,7 +29,7 @@ export default define('ak-editor-toolbar-block-type', {
     return (
       <div className={styles.locals.root}>
         <style>{styles.toString()}</style>
-        <Overlay open={elem.dropdownOpen} ontoggleDropdown={() => toggle(elem)} />
+        <Overlay open={elem.dropdownOpen} ontoggleOverlay={() => toggle(elem)} />
         <FontSelect
           className={styles.locals.fontSelect}
           selectedReadableName={fonts[elem.selectedFont]}

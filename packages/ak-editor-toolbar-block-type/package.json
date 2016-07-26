@@ -18,6 +18,7 @@
     "akutil-shared-styles": "*",
     "classnames": "^2.2.5",
     "ak-editor-button": "2.0.0",
+    "ak-editor-overlay": "0.0.0",
     "skatejs": "1.0.0-beta.12"
   },
   "devDependencies": {

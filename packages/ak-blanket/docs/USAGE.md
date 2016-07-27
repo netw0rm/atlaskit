@@ -42,10 +42,10 @@ The main purpose of the blanket component is to provide the `overlay` layer for 
 ```
 define('modal-dialog-component', () => {
  attached(elem) {
-   window.addEventListener('ak-blanket-click', doSomethingWhenBlanketClicked(elem));
+   window.addEventListener('ak-blanket-blur', doSomethingWhenBlanketClicked(elem));
  },
  detached(elem) {
-   window.removeEventListener('ak-blanket-click', doSomethingWhenBlanketClicked(elem));
+   window.removeEventListener('ak-blanket-blur', doSomethingWhenBlanketClicked(elem));
  },
  render(elem) {
    return (

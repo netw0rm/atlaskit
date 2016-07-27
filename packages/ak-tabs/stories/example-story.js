@@ -36,4 +36,11 @@ storiesOf(name, module)
       <ak-tab label="Another tab">Tab content</ak-tab>
       <ak-tab label="Another tab">Tab content</ak-tab>
     </Component>
+  ))
+  .add('ak-tabs with multiple tabs with selected attribute', () => (
+    <Component>
+      <ak-tab selected label="Tab 1">Tab 1 has selected attribute</ak-tab>
+      <ak-tab selected label="Tab 2">Tab 2 has selected attribute</ak-tab>
+      <ak-tab selected label="Tab 3">Tab 3 has selected attribute</ak-tab>
+    </Component>
   ));

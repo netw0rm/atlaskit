@@ -12,7 +12,8 @@ function prExistsForBranch(prList, wantedBranch) {
   return false;
 }
 
-https.get('https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pullrequests?state=OPEN&pagelen=50', (res) => {
+const apiUrl = `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pullrequests?state=OPEN&pagelen=50&t=${Date.now()}`;
+https.get(apiUrl, (res) => {
   res.setEncoding('utf8');
   const body = [];
   res.on('data', chunk => body.push(chunk));

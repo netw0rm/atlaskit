@@ -17,9 +17,7 @@ const EVENT_TAB_DESELECT = 'ak-tab-deselect';
  */
 function labelClickHandler(label) {
   return () => {
-    if (!label.selected) {
-      emit(label, EVENT_TAB_SELECT, { detail: { label } });
-    }
+    emit(label, EVENT_TAB_SELECT, { detail: { label } });
   };
 }
 
@@ -60,22 +58,28 @@ const definition = {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <div className={shadowStyles.locals.akTabLabels}>
+        <ul className={shadowStyles.locals.akTabLabels}>
           {elem.children && elem.children
             .filter(child => !!child.label)
             .map(label => {
               const classes = `${shadowStyles.locals.akTabLabel}
                                ${label.selected ? shadowStyles.locals.akTabLabelSelected : ''}`;
+              const ariaSelected = label.selected ? 'true' : 'false';
+              const tabIndex = label.selected ? '0' : '-1';
+              const clickHandler = label.selected ? null : labelClickHandler(label);
               return (
-                <a
-                  href="#"
-                  className={classes}
-                  onclick={labelClickHandler(label)}
-                >{label.label}</a>
+                <li className={classes}>
+                  <a
+                    href="#"
+                    onclick={clickHandler}
+                    aria-selected={ariaSelected}
+                    tabIndex={tabIndex}
+                  >{label.label}</a>
+                </li>
               );
             })
           }
-        </div>
+        </ul>
         <slot />
       </div>
     );

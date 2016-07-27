@@ -22,9 +22,10 @@ function emitTabChangedEvent(elem) {
  * const component = new Tab();
  */
 const definition = {
-  render() {
+  render(elem) {
+    const ariaHidden = elem.selected ? 'false' : 'true';
     return (
-      <div>
+      <div aria-hidden={ariaHidden}>
         <style>{shadowStyles.toString()}</style>
         <div class={shadowStyles.locals.akTabPane}>
           <slot />

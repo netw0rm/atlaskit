@@ -43,4 +43,17 @@ storiesOf(name, module)
       <ak-tab selected label="Tab 2">Tab 2 has selected attribute</ak-tab>
       <ak-tab selected label="Tab 3">Tab 3 has selected attribute</ak-tab>
     </Component>
+  ))
+  .add('ak-tabs with tabbable content', () => (
+    <Component>
+      <ak-tab selected label="Tab 1">
+        <h1>Tab 1</h1>
+        <p>Some text here with a <a href="#">link</a>.</p>
+      </ak-tab>
+      <ak-tab selected label="Tab 2">
+        <h1>Tab 2</h1>
+        <p>Some more text here with a <a href="#">link</a>.</p>
+        <p>Another <a href="#">link</a>.</p>
+      </ak-tab>
+    </Component>
   ));

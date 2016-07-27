@@ -9,6 +9,11 @@ AtlasKit is the Design Platform's implementation of ADG3. It is a collection of 
 ```
 npm install @atlaskit/my-component-name
 ```
+
+# Reporting issues
+
+Please refer to [our issue tracker](https://ecosystem.atlassian.net/projects/AK).
+
 # Development
 
 ### Getting started

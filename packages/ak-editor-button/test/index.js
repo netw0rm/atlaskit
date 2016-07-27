@@ -26,9 +26,19 @@ describe('ak-editor-button', () => {
 
   it('should be possible to create a component', () => {
     const component = new AkEditorButton();
-    expect(component).to.be.defined;
     expect(shadowDomQuery(component, `.${classKeys.root}`)).to.be.defined;
     expect(component.tagName.toLowerCase()).to.equal(name);
+  });
+
+  it('should call preventDefault when onmousedown event is triggered', () => {
+    const component = new AkEditorButton();
+    const button = getShadowButtonElem(component);
+
+    const event = new CustomEvent('mousedown', {});
+    sinon.spy(event, 'preventDefault');
+
+    button.dispatchEvent(event);
+    expect(event.preventDefault.called).to.be.true;
   });
 
   describe('attributes', () => {

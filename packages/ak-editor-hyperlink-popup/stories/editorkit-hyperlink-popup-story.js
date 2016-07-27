@@ -38,28 +38,28 @@ const marginLeft = 5;
 
 storiesOf(name, module)
   .add('a simple ak-hyperlink-popup', () => (
-    <Component />
+    <Component open />
   ))
   .add('with one button', () => (
-    <Component>
+    <Component open>
       <EditorButton><Icon glyph="unlink" fill="white" /></EditorButton>
     </Component>
   ))
   .add('with two buttons', () => (
-    <Component>
+    <Component open>
       <EditorButton><Icon glyph="unlink" fill="white" /></EditorButton>
       <EditorButton><Icon glyph="open" fill="white" /></EditorButton>
     </Component>
   ))
   .add('with two buttons and a input', () => (
-    <Component>
+    <Component open>
       <EditorButton><Icon glyph="unlink" fill="white" /></EditorButton>
       <EditorButton><Icon glyph="open" fill="white" /></EditorButton>
       <input />
     </Component>
   ))
   .add('a "real" hyperlink popup', () => (
-    <Component>
+    <Component open>
       <EditorButton><Icon glyph="unlink" fill="white" style={{ marginLeft }} /></EditorButton>
       <EditorButton><Icon glyph="open" fill="white" style={{ marginLeft }} /></EditorButton>
       <div style={{ height: '100%', width: 1, background: 'lightgrey', marginLeft }} />
@@ -86,7 +86,11 @@ storiesOf(name, module)
         return (
           <div>
             <Toolbar>
-              <LinkButton className="link-button" onClick={this.handleClick} />
+              <LinkButton
+                className="link-button"
+                onClick={this.handleClick}
+                style={{ position: 'absolute', left: 200 }}
+              />
             </Toolbar>
             <Component
               target=".link-button"

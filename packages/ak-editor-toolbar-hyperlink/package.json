@@ -16,6 +16,7 @@
     "akutil-shared-styles": "^33.0.2",
     "ak-editor-button": "^2.0.0",
     "ak-editor-icon": "^2.0.0",
+    "ak-editor-hyperlink-popup": "*",
     "skatejs": "^1.0.0-beta.12"
   },
   "author": "Atlassian Pty Ltd",

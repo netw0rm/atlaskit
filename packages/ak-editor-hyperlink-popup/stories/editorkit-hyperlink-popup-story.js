@@ -7,7 +7,6 @@ import 'style!./../src/host.less';
 import EditorButtonComponent from 'ak-editor-button';
 import IconComponent from 'ak-editor-icon';
 import ToolbarComponent from 'ak-editor-toolbar';
-import LinkButtonComponent from 'ak-editor-toolbar-hyperlink';
 
 const Component = reactify(HyperlinkPopup, {
   React,
@@ -25,11 +24,6 @@ const Icon = reactify(IconComponent, {
 });
 
 const Toolbar = reactify(ToolbarComponent, {
-  React,
-  ReactDOM,
-});
-
-const LinkButton = reactify(LinkButtonComponent, {
   React,
   ReactDOM,
 });
@@ -86,11 +80,11 @@ storiesOf(name, module)
         return (
           <div>
             <Toolbar>
-              <LinkButton
+              <EditorButton
                 className="link-button"
                 onClick={this.handleClick}
                 style={{ position: 'absolute', left: 200 }}
-              />
+              ><Icon glyph="link" /></EditorButton>
             </Toolbar>
             <Component
               target=".link-button"

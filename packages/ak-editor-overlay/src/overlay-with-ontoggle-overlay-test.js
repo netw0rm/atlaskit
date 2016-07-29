@@ -1,10 +1,10 @@
 import { vdom, define } from 'skatejs';
 import Overlay from '../src/index';
 
-export default define('overlay-with-ontoggleOverlay', {
+export default define('overlay-with-onclickOverlay', {
   render() {
     return (
-      <div ontoggleOverlay={() => console.log('toggle!')}>
+      <div onclickOverlay={() => console.log('toggle!')}>
         <Overlay open />
       </div>
     );

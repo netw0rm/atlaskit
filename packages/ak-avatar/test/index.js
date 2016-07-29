@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { symbols } from 'skatejs';
 import { name } from '../package.json';
 import AKAvatar from '../src/index.js';
-import { COLORS, getColorForInitials } from '../src/helpers.js';
+import { getInitialsForAllColors } from '../src/helpers.js';
 import shadowStyles from '../src/shadow.less';
 
 chai.use(chaiAsPromised);
@@ -269,34 +269,15 @@ describe('ak-avatar', () => {
     });
 
     it('should be able to generate all possible colors from a set of initials', () => {
-      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-      // A list of key/values where the key is the color (#RRGGBB) and the value is a boolean
-      // for whether it has been generated yet.
-      const colorsGenerated = {};
-      let generatedColor;
+      const initials = getInitialsForAllColors();
 
-      Object.keys(COLORS).forEach((color) => {
-        colorsGenerated[COLORS[color]] = false;
-      });
-
-      // loop over all possible initials AA->ZZ
-      letters.forEach(firstLetter => {
-        letters.forEach(secondLetter => {
-          const initials = firstLetter + secondLetter;
-
-          generatedColor = getColorForInitials(initials);
-
-          colorsGenerated[generatedColor] = true;
-        });
-      });
-
-      Object.keys(colorsGenerated).forEach(color => {
-        // we perform the check twice so we can log the failing values to help debug if this test
-        // ever fails
-        if (!colorsGenerated[color]) {
-          console.log(`Unable to generate color: ${color} with any set of initials`); // eslint-disable-line no-console, max-len
+      Object.keys(initials).forEach(color => {
+        // We do the check twice here so we can make debugging easier if we ever break this test
+        if (!initials[color]) {
+          console.log(`Unable to find initials to generate the color: ${color}`); // eslint-disable-line no-console, max-len
         }
-        expect(colorsGenerated[color]).to.be.equal(true, color);
+
+        expect(initials[color]).to.not.be.equal(true, color);
       });
     });
   });

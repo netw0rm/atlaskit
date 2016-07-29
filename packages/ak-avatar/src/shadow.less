@@ -1,9 +1,9 @@
 @import 'shared-variables.less';
 
-@ak-avatar-size-xlarge: 96px;
-@ak-avatar-size-large: 48px;
-@ak-avatar-size-medium: 32px;
-@ak-avatar-size-small: 24px;
+@ak-avatar-size-xlarge: 100px;
+@ak-avatar-size-large: 50px;
+@ak-avatar-size-medium: 30px;
+@ak-avatar-size-small: 20px;
 @ak-avatar-size-xsmall: 16px;
 
 @ak-avatar-background: #F0F2F5;
@@ -11,7 +11,7 @@
 // Used to calculate how large the presence icon should be
 @ak-avatar-presence-img-ratio: 0.25;
 // Angle that the presence bubble sits on the avatar. 3:00 is 0 degrees
-@ak-avatar-presence-angle: 45deg;
+@ak-avatar-presence-angle: 40deg;
 
 @ak-avatar-presence-color-online: #48CC8C;
 @ak-avatar-presence-color-away: #FFC400;
@@ -22,7 +22,6 @@
 .img {
   background-clip: padding-box;
   margin: 0 auto;
-  vertical-align: bottom;
   border-radius: 100%;
   height: 100%;
   width: 100%;
@@ -34,20 +33,17 @@
   border-radius: 100%;
   border: 1px solid transparent;
   text-align: center;
+  vertical-align: bottom;
 
-  &.xsmall {
-    .sizeMixin(@ak-avatar-size-xsmall);
-
-    .presence {
-      .presenceMixin(@ak-avatar-size-xsmall);
-    }
-  }
   &.small {
     .sizeMixin(@ak-avatar-size-small);
 
     .presence {
       .presenceMixin(@ak-avatar-size-small);
     }
+
+    font-size: 12px;
+    font-weight: 600;
   }
   &.medium {
     .sizeMixin(@ak-avatar-size-medium);
@@ -55,6 +51,9 @@
     .presence {
       .presenceMixin(@ak-avatar-size-medium);
     }
+
+    font-size: 14px;
+    font-weight: 600;
   }
   &.large {
     .sizeMixin(@ak-avatar-size-large);
@@ -62,6 +61,9 @@
     .presence {
       .presenceMixin(@ak-avatar-size-large);
     }
+
+    font-size: 24px;
+    font-weight: 500;
   }
   &.xlarge {
     .sizeMixin(@ak-avatar-size-xlarge);
@@ -69,13 +71,16 @@
     .presence {
       .presenceMixin(@ak-avatar-size-xlarge);
     }
+
+    font-size: 46px;
+    font-weight: 500;
   }
 }
 
 .presence {
   position: absolute;
 
-  border: 1px solid #ffffff;
+  border: 2px solid #ffffff;
   border-radius: 100%;
 
   &.none {
@@ -100,7 +105,7 @@
 }
 
 .presenceMixin(@size) {
-  @presence-size: @size * @ak-avatar-presence-img-ratio;
+  @presence-size: 8px;
 
   height: @presence-size;
   width: @presence-size;
@@ -119,5 +124,4 @@
   height: @size;
   width: @size;
   line-height: @size;
-  font-size: @size * 0.46;
 }

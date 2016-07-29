@@ -4,44 +4,34 @@
 
 // These will be fetched from shared-styles later and a class will be applied instead
 const COLORS = {
-  R50: '#FECECD',
   R100: '#FDAFAC',
   R200: '#F48580',
   R300: '#ED5451',
   R400: '#D93A35',
-  R500: '#BF2117',
 
-  Y50: '#FFF2BF',
   Y100: '#FFE580',
   Y200: '#FFD740',
   Y300: '#FFC400',
   Y400: '#FFAB00',
-  Y500: '#FF991F',
 
-  G50: '#ECFDF4',
   G100: '#78F0B7',
   G200: '#64E6A4',
   G300: '#48CC8C',
   G400: '#2DB07C',
-  G500: '#008364',
 
-  B50: '#BFEBFF',
   B100: '#23A9FA',
   B200: '#0091EA',
   B300: '#0074E0',
   B400: '#165ECC',
-  B500: '#1251AE',
 
-  P50: '#DEDCF2',
   P100: '#B6AFDB',
   P200: '#8D86BF',
   P300: '#6C64A6',
   P400: '#4B4388',
-  P500: '#3E3678',
 };
 
 function getInitials(name) {
-  if (!name || name.length < 3) {
+  if (!name) {
     return name;
   }
   // if there are not two clear names, just return one initial
@@ -63,8 +53,39 @@ function getColorForInitials(initials) {
   return COLORS[colors[idx]];
 }
 
+/* Returns a object where the keys are the color names and the values are a
+ * set of initials that will produce that color or false if it is not possible */
+function getInitialsForAllColors() {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  // A list of key/values where the key is the color (#RRGGBB) and the value is a boolean
+  // for whether it has been generated yet.
+  const colorsGenerated = {};
+  let generatedColor;
+
+  Object.keys(COLORS).forEach((color) => {
+    colorsGenerated[color] = false;
+  });
+
+  // Loop over all possible initials AA->ZZ
+  letters.forEach(firstLetter => {
+    letters.forEach(secondLetter => {
+      const initials = `${firstLetter} ${secondLetter}`;
+
+      generatedColor = getColorForInitials(initials);
+
+      // need to find the name that the color matches
+      const colorName = Object.keys(COLORS).find(colName => COLORS[colName] === generatedColor);
+
+      colorsGenerated[colorName] = initials;
+    });
+  });
+
+  return colorsGenerated;
+}
+
 export {
   COLORS,
   getInitials,
   getColorForInitials,
+  getInitialsForAllColors,
 };

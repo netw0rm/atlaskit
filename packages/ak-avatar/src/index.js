@@ -9,7 +9,7 @@ import { getInitials, getColorForInitials } from './helpers.js'; // eslint-disab
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
-  values: ['xsmall', 'small', 'medium', 'large', 'xlarge'],
+  values: ['small', 'medium', 'large', 'xlarge'],
   missingDefault: 'medium',
   invalidDefault: 'medium',
 };
@@ -20,6 +20,14 @@ const PRESENCE_ATTRIBUTE_ENUM = {
   missingDefault: 'none',
   invalidDefault: 'none',
 };
+
+/* When displaying the initials, we want to truncate it if the size is 'small' */
+function displayInitials(initials, elem) {
+  if (elem.size === 'small') {
+    return initials.substring(0, 1);
+  }
+  return initials;
+}
 
 /**
  * @description The definition for the Avatar component.
@@ -34,8 +42,9 @@ const definition = {
     const imgClasses = classNames(shadowStyles.locals.img);
     const presenceClasses = classNames([shadowStyles.locals.presence, shadowStyles.locals[elem.presence]]); // eslint-disable-line max-len
     const outerDivClass = classNames([shadowStyles.locals.outerDiv, shadowStyles.locals[elem.size]]); // eslint-disable-line max-len
+    const initials = getInitials(elem.fullName);
     const outerDivStyle = {
-      backgroundColor: elem.src ? 'transparent' : getColorForInitials(getInitials(elem.fullName)),
+      backgroundColor: elem.src ? 'transparent' : getColorForInitials(initials),
     };
     const imgStyle = {};
 
@@ -46,9 +55,11 @@ const definition = {
       <div class={outerDivClass} style={outerDivStyle} aria-label={elem.label}>
         <style>{shadowStyles.toString()}</style>
         {
-          elem.src ? <img alt={elem.description} src={elem.src} class={imgClasses} style={imgStyle} /> : getInitials(elem.fullName) // eslint-disable-line max-len
+          elem.src ? <img alt={elem.description} src={elem.src} class={imgClasses} style={imgStyle} /> : displayInitials(initials, elem) // eslint-disable-line max-len
         }
-        <div class={presenceClasses}></div>
+        {
+          elem.size === 'medium' ? <div class={presenceClasses}></div> : null
+        }
       </div>
     );
   },

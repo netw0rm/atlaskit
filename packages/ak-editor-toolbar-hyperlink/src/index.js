@@ -7,13 +7,17 @@ import EditorButton from 'ak-editor-button';
 import Icon from 'ak-editor-icon';
 import HyperlinkPopup from 'ak-editor-hyperlink-popup';
 
+function toggle(elem) {
+  elem.open = !elem.open;
+}
+
 const definition = {
   render(elem) {
     const marginLeft = 5;
 
     const LinkButton = (<EditorButton
       class="link-button"
-      onclick={() => { elem.open = !elem.open; }}
+      onclick={() => toggle(elem)}
     ><Icon glyph="link" /></EditorButton>);
 
     let linkButton;
@@ -28,6 +32,7 @@ const definition = {
           target={linkButton}
           open={elem.open}
           class="ak-editor-hyperlink-popup"
+          onclickOverlay={() => toggle(elem)}
         >
           <EditorButton>
             <Icon glyph="unlink" fill="white" style={{ marginLeft }} />

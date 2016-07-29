@@ -10,15 +10,54 @@ import Tab, { EVENT_TAB_CHANGE } from './children/tab'; // eslint-disable-line n
 const EVENT_TAB_SELECT = 'ak-tab-select';
 const EVENT_TAB_DESELECT = 'ak-tab-deselect';
 
+const tabLabel = Symbol();
+
 /**
- * Helper function. Takes a label element and returns a handler that emits a event.
- * @param label
+ * Helper function. Takes a tab element and returns a handler that emits a event.
+ * @param tab
  * @returns {Function}
  */
-function labelClickHandler(label) {
+function labelClickHandler(tab) {
   return () => {
-    emit(label, EVENT_TAB_SELECT, { detail: { label } });
+    emit(tab, EVENT_TAB_SELECT, { detail: { tab } });
   };
+}
+
+function findTab(tabs, current, offset) {
+  const all = tabs.children.filter(el => el.label);
+
+  let index = all.indexOf(current) + offset;
+  if (index > all.length - 1) {
+    index = all.length - 1;
+  } else if (index < 0) {
+    index = 0;
+  }
+
+  return all[index];
+}
+
+/**
+ * Helper function. Returns a handler that handles a keydown event on a label.
+ * @param tabs
+ * @param tab
+ * @returns {Function}
+ */
+function labelKeydownHandler(tabs, tab) {
+  return e => {
+    let tabToSelect;
+    if (e.keyCode === 37 /* LEFT */) {
+      tabToSelect = findTab(tabs, tab, -1);
+    } else if (e.keyCode === 39 /* RIGHT */) {
+      tabToSelect = findTab(tabs, tab, 1);
+    }
+    if (tabToSelect) {
+      emit(tabToSelect, EVENT_TAB_SELECT, { detail: { tab: tabToSelect, keyboardNav: true } });
+    }
+  };
+}
+
+function getLabelForTab(tab) {
+  return tab[tabLabel];
 }
 
 /**
@@ -43,7 +82,7 @@ const definition = {
         elem.children
           .filter(el => !!el.selected && el !== targetLabel)
           .forEach(labelToDeselect => {
-            emit(labelToDeselect, EVENT_TAB_DESELECT, { detail: { label: labelToDeselect } });
+            emit(labelToDeselect, EVENT_TAB_DESELECT, { detail: { tab: labelToDeselect } });
           });
       }
 
@@ -61,20 +100,26 @@ const definition = {
         <ul className={shadowStyles.locals.akTabLabels}>
           {elem.children && elem.children
             .filter(child => !!child.label)
-            .map(label => {
+            .map(tab => {
               const classes = `${shadowStyles.locals.akTabLabel}
-                               ${label.selected ? shadowStyles.locals.akTabLabelSelected : ''}`;
-              const ariaSelected = label.selected ? 'true' : 'false';
-              const tabIndex = label.selected ? '0' : '-1';
-              const clickHandler = label.selected ? null : labelClickHandler(label);
+                               ${tab.selected ? shadowStyles.locals.akTabLabelSelected : ''}`;
+              const ariaSelected = tab.selected ? 'true' : 'false';
+              const tabIndex = tab.selected ? '0' : '-1';
+              const clickHandler = tab.selected ? null : labelClickHandler(tab);
+              const keydownHandler = labelKeydownHandler(elem, tab);
+              const ref = el => {
+                tab[tabLabel] = el;
+              };
               return (
                 <li className={classes}>
                   <a
                     href="#"
                     onclick={clickHandler}
+                    onkeydown={keydownHandler}
                     aria-selected={ariaSelected}
                     tabIndex={tabIndex}
-                  >{label.label}</a>
+                    ref={ref}
+                  >{tab.label}</a>
                 </li>
               );
             })
@@ -95,7 +140,10 @@ const definition = {
     onSelect: {
       default() {
         return e => {
-          e.detail.label.selected = true;
+          e.detail.tab.selected = true;
+          if (e.detail.keyboardNav) {
+            getLabelForTab(e.detail.tab).focus();
+          }
         };
       },
     },
@@ -105,7 +153,7 @@ const definition = {
     onDeselect: {
       default() {
         return e => {
-          e.detail.label.selected = false;
+          e.detail.tab.selected = false;
         };
       },
     },

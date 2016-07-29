@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { vdom, define, prop } from 'skatejs';
+import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
 import Icon from 'ak-editor-icon';
@@ -18,12 +18,20 @@ const definition = {
     const LinkButton = (<EditorButton
       class="link-button"
       onclick={() => toggle(elem)}
+      disabled={elem.disabled}
     ><Icon glyph="link" /></EditorButton>);
 
     let linkButton;
 
     return (
-      <div>
+      <div
+        onkeyup={event => {
+          if (event.keyCode === 13) {
+            toggle(elem);
+            emit(elem, 'enterkeyup');
+          }
+        }}
+      >
         <style>{shadowStyles.toString()}</style>
 
         {linkButton = LinkButton()}
@@ -58,6 +66,10 @@ const definition = {
      * @example @js dialog.open = true;
      */
     open: prop.boolean({
+      attribute: true,
+      default: false,
+    }),
+    disabled: prop.boolean({
       attribute: true,
       default: false,
     }),

@@ -24,4 +24,10 @@ storiesOf(name, module)
     <Toolbar>
       <Component />
     </Toolbar>
+  ))
+  .add('disabled state', () => (
+    <Component disabled />
+  ))
+  .add('emit enter key up event', () => (
+    <Component onenterkeyup={() => console.log('You just entered :)')} />
   ));

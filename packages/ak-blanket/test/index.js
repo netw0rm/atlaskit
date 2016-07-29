@@ -36,7 +36,6 @@ describe('ak-blanket', () => {
       const props = {
         obscured: { value: false, attr: 'obscured' },
         clickable: { value: false, attr: 'clickable' },
-        zIndex: { value: 9999, attr: 'z-index' },
       };
 
       Object.keys(props).forEach((key) => {

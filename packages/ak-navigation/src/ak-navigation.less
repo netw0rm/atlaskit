@@ -14,7 +14,6 @@
   width: 80px;
   height: 100%;
   display: flex;
-  overflow: hidden;
 
   &.should-animate {
     transition: width 250ms;
@@ -30,7 +29,8 @@
   }
 
   .container {
-    padding: 20px;
+    padding: 20px 0;
+    overflow: hidden;
   }
 
   .container-logo {
@@ -46,11 +46,13 @@
     margin-bottom: 10px;
     font-family: @ak-bold-font-family;
     font-size: 14px;
+    padding: 0 20px;
   }
 
   .container-links {
     font-family: @ak-medium-font-family;
     font-size: 14px;
+    padding: 0 20px;
   }
 }
 

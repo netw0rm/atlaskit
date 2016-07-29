@@ -6,7 +6,9 @@
   text-decoration: none;
   cursor: pointer;
   margin: 10px 0;
-  display: block;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
 }
 
 .icon {
@@ -20,6 +22,8 @@
   line-height: 30px;
   display: inline-block;
   vertical-align: text-bottom;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .selected {

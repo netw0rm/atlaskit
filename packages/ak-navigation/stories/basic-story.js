@@ -58,9 +58,27 @@ storiesOf(name, module)
         containerHref="http://nucleus.com"
         containerLogo="https://s3.amazonaws.com/uploads.hipchat.com/10804/576067/VtJT4vjBKJXG5GI/Group%204.png"
       >
-        <ak-navigation-link selected href="/jira">Test</ak-navigation-link>
-        <ak-navigation-link>Test</ak-navigation-link>
-        <ak-navigation-link>Test</ak-navigation-link>
+        <ak-navigation-link selected>
+          <ak-icon slot="icon" glyph="calendar" /> Calendar
+        </ak-navigation-link>
+        <ak-navigation-link>
+          <ak-icon slot="icon" glyph="canvas" /> Canvas
+        </ak-navigation-link>
+        <ak-navigation-link>
+          <ak-icon slot="icon" glyph="page" /> Page
+        </ak-navigation-link>
+        <ak-navigation-link>
+          <ak-icon slot="icon" glyph="person" /> Person
+        </ak-navigation-link>
+        <ak-navigation-link>
+          <ak-icon slot="icon" glyph="question" /> Question
+        </ak-navigation-link>
+        <ak-navigation-link>
+          <ak-icon slot="icon" glyph="quote" /> Quote
+        </ak-navigation-link>
+        <ak-navigation-link>
+          <ak-icon slot="icon" glyph="quote" /> Reaaaaaaaaaaaaaaaaaaaaaaaaally long
+        </ak-navigation-link>
       </AkNavigation>
     </div>
   ))

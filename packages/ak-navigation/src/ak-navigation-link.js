@@ -23,7 +23,12 @@ const definition = {
         tabindex="0"
       >
         <style>{shadowStyles.toString()}</style>
-        <slot />
+        <div className={shadowStyles.locals.icon}>
+          <slot name="icon" />
+        </div>
+        <div className={shadowStyles.locals.text}>
+          <slot />
+        </div>
       </a>
     );
   },

@@ -1,8 +1,9 @@
 /** @jsx vdom */
 /* eslint react/no-unknown-property: 0 */
-import 'style!./host.less';
+import hostStyle from './host.less';
 import { enumeration } from 'akutil-common';
 import { vdom, prop, define } from 'skatejs';
+import cx from 'classnames';
 import shadowStyles from './shadow.less';
 import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer'; // eslint-disable-line no-unused-vars, max-len
 import Overlay from 'ak-editor-overlay';
@@ -29,7 +30,13 @@ const definition = {
     }
 
     return (
-      <div onclickOverlay={() => { elem.open = !elem.open; }}>
+      <div
+        onclickOverlay={() => { elem.open = !elem.open; }}
+        class={cx({
+          [hostStyle.locals.akEditorHyperlinkPopup]: !elem.open,
+        })}
+      >
+        <style>{hostStyle.toString()}</style>
         <Overlay open={elem.open} />
         <ak-layer
           open={elem.open}

@@ -24,7 +24,6 @@ export default define('ak-blanket', {
     const classes = classNames(
       [shadowStyles.locals.blanket, { [`${shadowStyles.locals.obscured}`]: elem.obscured }]
     );
-    const styles = elem.zIndex ? { zIndex: elem.zIndex } : '';
 
     return (
       <div>
@@ -32,7 +31,6 @@ export default define('ak-blanket', {
         <div
           onclick={handleBlur(elem)}
           ontouch={handleBlur(elem)}
-          style={styles}
           class={classes}
         >
         </div>
@@ -65,17 +63,6 @@ export default define('ak-blanket', {
     clickable: prop.boolean({
       attribute: true,
       default: false,
-    }),
-    /**
-     * @description z-index style for the blanket
-     * @memberof Blanket
-     * @instance
-     * @type Number
-     * @example @html <ak-blanket z-index="9999"></ak-blanket>
-     * @example @js component.zIndex = 9999
-     */
-    zIndex: prop.number({
-      attribute: true,
     }),
   },
 });

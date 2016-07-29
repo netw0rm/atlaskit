@@ -1,14 +1,15 @@
 /** @jsx vdom */
 /* eslint react/no-unknown-property: 0 */
 import 'style!./host.less';
-import { enumeration, keyPressHandler } from 'akutil-common';
+import { enumeration, KeyPressHandler } from 'akutil-common';
 import { vdom, prop, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer'; // eslint-disable-line no-unused-vars, max-len
 import 'ak-blanket';
 
-function hideDialogOnBlanketClick(elem) {
-  return function () {
+let keyPress;
+function closeDialog(elem) {
+  return () => {
     elem.open = false;
   };
 }
@@ -34,14 +35,12 @@ function renderBlanketIfNeeded(elem) {
  */
 const definition = {
   attached(elem) {
-    keyPressHandler('ESCAPE', () => {
-      elem.open = false;
-      emit(elem, 'inline-dialog-escape');
-    });
-    window.addEventListener('ak-blanket-click', hideDialogOnBlanketClick(elem));
+    keyPress = new KeyPressHandler('ESCAPE', closeDialog(elem));
+    window.addEventListener('ak-blanket-click', closeDialog(elem));
   },
   detached(elem) {
-    window.removeEventListener('ak-blanket-click', hideDialogOnBlanketClick(elem));
+    keyPress.destroy();
+    window.removeEventListener('ak-blanket-click', closeDialog(elem));
   },
   render(elem) {
     const styles = {};
@@ -53,6 +52,14 @@ const definition = {
     }
     if (elem.borderRadius) {
       styles.borderRadius = elem.borderRadius;
+    }
+
+    if (elem.open === true) {
+      emit(elem, 'ak-after-open');
+    }
+
+    if (elem.open === false) {
+      emit(elem, 'ak-after-close');
     }
 
     return (
@@ -115,23 +122,6 @@ const definition = {
     open: prop.boolean({
       attribute: true,
       default: false,
-      set(elem, data) {
-        if (data.newValue === true) {
-          emit(elem, 'ak-before-open');
-          // emulating start and finish of an animation
-          setTimeout(() => {
-            emit(elem, 'ak-after-open');
-          }, 300);
-        }
-
-        if (data.newValue === false) {
-          emit(elem, 'ak-before-close');
-          // emulating start and finish of an animation
-          setTimeout(() => {
-            emit(elem, 'ak-before-close');
-          }, 300);
-        }
-      },
     }),
     /**
      * @description Target of an inline-dialog.

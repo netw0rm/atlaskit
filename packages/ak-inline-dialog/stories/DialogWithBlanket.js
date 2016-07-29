@@ -20,23 +20,29 @@ class DialogWithBlanket extends Component {
 
     // Bind callback methods to make `this` the correct context.
     this.handleClick = this.handleClick.bind(this);
-    this.handleEsqPress = this.handleEsqPress.bind(this);
+    this.handleDialogClosed = this.handleDialogClosed.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener('inline-dialog-escape', this.handleEsqPress);
+    window.addEventListener('ak-after-close', this.handleDialogClosed);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('inline-dialog-escape', this.handleEsqPress);
+    window.removeEventListener('ak-after-close', this.handleDialogClosed);
   }
 
   handleClick() {
-    this.setState({ open: !this.props.open });
+    this.setState({ open: true });
   }
 
-  handleEsqPress() {
-    this.setState({ open: this.props.open });
+  handleDialogClosed() {
+    // if the dialog was closed from the inside
+    // for example by pressing esc button or by clicking on the blanket
+    // this.state will be out of sync with the dialog's open property
+    // unless we manually sync it again
+    if (this.props.open !== this.state.open) {
+      this.setState({ open: false });
+    }
   }
 
   render() {

@@ -45,7 +45,7 @@ export default define('ak-blanket', {
      * @memberof Blanket
      * @instance
      * @type Boolean
-     * @default true
+     * @default false
      * @example @html <ak-blanket obscure></ak-blanket>
      * @example @js component.obscure = true
      */
@@ -58,7 +58,7 @@ export default define('ak-blanket', {
      * @memberof Blanket
      * @instance
      * @type Boolean
-     * @default true
+     * @default false
      * @example @html <ak-blanket clickable></ak-blanket>
      * @example @js component.clickable = true
      */

@@ -77,7 +77,6 @@ ReactDOM.render(<ReactComponent />, container);
 
     *  [`blanket.obscured`](#Blanket+obscured) : Boolean
     *  [`blanket.clickable`](#Blanket+clickable) : Boolean
-    *  [`blanket.zIndex`](#Blanket+zIndex) : Number
 
 ### Constructor
 Create instances of the component programmatically, or using markup.
@@ -112,16 +111,4 @@ If click on the blanket emits a 'blanket-click' event.
 **JS Example**
 ```js
 component.clickable = true
-```
-### `blanket.zIndex` : Number
-z-index style for the blanket
-
-**Kind**: instance property of Blanket  
-**HTML Example**
-```js
-<ak-blanket z-index="9999"></ak-blanket>
-```
-**JS Example**
-```js
-component.zIndex = 9999
 ```

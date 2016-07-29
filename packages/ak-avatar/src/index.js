@@ -23,6 +23,9 @@ const PRESENCE_ATTRIBUTE_ENUM = {
 
 /* When displaying the initials, we want to truncate it if the size is 'small' */
 function displayInitials(initials, elem) {
+  if (!initials) {
+    return null;
+  }
   if (elem.size === 'small') {
     return initials.substring(0, 1);
   }

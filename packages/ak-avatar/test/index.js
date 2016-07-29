@@ -16,11 +16,10 @@ const defaultLabel = undefined;
 const defaultBorderColor = undefined;
 
 const avatarSizes = {
-  xsmall: 16,
-  small: 24,
-  medium: 32,
-  large: 48,
-  xlarge: 96,
+  small: 20,
+  medium: 30,
+  large: 50,
+  xlarge: 100,
 };
 
 /* Creates a default avatar in a div, appends it to the body and returns a reference to both */

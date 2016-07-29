@@ -12,9 +12,10 @@ const Component = reactify(Tabs, {
 storiesOf(name, module)
   .add('simple ak-tabs', () => (
     <Component>
-      <ak-tab label="Tab 1">Tab 1 content</ak-tab>
-      <ak-tab selected label="Tab 2">Tab 2 content</ak-tab>
-      <ak-tab label="Tab 3">Tab 3 content</ak-tab>
+      <ak-tab selected label="Details">Details content</ak-tab>
+      <ak-tab label="Diff">Diff content</ak-tab>
+      <ak-tab label="Commits">Commits content</ak-tab>
+      <ak-tab label="Pipeline">Pipeline content</ak-tab>
     </Component>
   ))
   .add('ak-tabs with many items', () => (

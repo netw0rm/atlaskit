@@ -1,8 +1,3 @@
-// These styles will be inserted into a style tag inside
-// the shadow dom of each instance of the component
-
-// Only do class selectors in here, anything else leaks to the rest of the page in
-// browsers that do not support shadow DOM
 @import 'shared-variables.less';
 
 .ak-tab-labels {
@@ -14,56 +9,63 @@
 }
 
 .ak-tab-label {
-  color: #253858;
+  color: #344563;
   font-size: 14px;
   line-height: 20px;
-  padding: @ak-tabs-padding;
+  margin: @ak-tabs-margin;
   position: relative;
+  white-space: nowrap;
+
+  &:hover,
+  &:active,
+  &:active::before{
+    color: @ak-tabs-color-active;
+  }
+
+  &:focus {
+    outline: none;
+    border: 1px solid @ak-tabs-color-focus;
+  }
 }
 
 .ak-tab-label > a {
   color: inherit;
   text-decoration: none;
+  padding: @ak-tabs-margin;
+
+  &:focus {
+    outline: 0;
+    box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
+    border-radius: 3px;
+  }
 }
 
-.ak-tab-label::before,
+.ak-tab-labels::before,
 .ak-tab-label-selected::after {
   content: '';
-  height: 5px;
+  height: 1px;
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #f0f2f5;
+  left: @ak-tabs-margin;
+  right: @ak-tabs-margin;
+  bottom: @ak-tabs-focus-width - @ak-tabs-margin;
+  background-color: @ak-tabs-color-line-default;
+  width: inherit;
+  margin: @ak-tabs-margin;
 }
 
 .ak-tab-label-selected {
-  color: #0074E0;
-  border-radius: 4px;
+  color: @ak-tabs-color-selected;
 
   &::after {
-    border-radius: 5px;
-    left: @ak-tabs-padding;
-    right: @ak-tabs-padding;
     background-color: currentColor;
+    margin: 0;
   }
 }
 
-/* Remove padding for first and last items */
+// Align first label with line
 .ak-tab-label:first-of-type {
-  padding-left: 0;
-
   &::before,
   &::after {
-    left: 0;
-  }
-}
-
-.ak-tab-label:last-of-type {
-  padding-right: 0;
-
-  &::before,
-  &::after {
-    right: 0;
+    left: @ak-tabs-margin;
   }
 }

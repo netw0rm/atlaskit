@@ -19,7 +19,9 @@ const tabLabel = Symbol();
  */
 function labelClickHandler(tab) {
   return () => {
-    emit(tab, EVENT_TAB_SELECT, { detail: { tab } });
+    if (!tab.selected) {
+      emit(tab, EVENT_TAB_SELECT, { detail: { tab } });
+    }
   };
 }
 
@@ -105,17 +107,13 @@ const definition = {
                                ${tab.selected ? shadowStyles.locals.akTabLabelSelected : ''}`;
               const ariaSelected = tab.selected ? 'true' : 'false';
               const tabIndex = tab.selected ? '0' : '-1';
-              const clickHandler = tab.selected ? null : labelClickHandler(tab);
-              const keydownHandler = labelKeydownHandler(elem, tab);
-              const ref = el => {
-                tab[tabLabel] = el;
-              };
+              const ref = el => { tab[tabLabel] = el; };
               return (
                 <li className={classes}>
                   <a
                     href="#"
-                    onclick={clickHandler}
-                    onkeydown={keydownHandler}
+                    onclick={labelClickHandler(tab)}
+                    onkeydown={labelKeydownHandler(elem, tab)}
                     aria-selected={ariaSelected}
                     tabIndex={tabIndex}
                     ref={ref}

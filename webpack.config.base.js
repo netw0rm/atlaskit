@@ -1,6 +1,7 @@
 const camelCase = require('camelcase');
 const path = require('path');
 const pkg = require(path.join(process.cwd(), 'package.json'));
+const autoprefixer = require('autoprefixer');
 
 const standardConfig = {
   entry: {
@@ -21,12 +22,8 @@ const standardConfig = {
         loader: 'json',
       },
       {
-        test: /\.css$/,
-        loader: 'style!css',
-      },
-      {
         test: /\.less$/,
-        loader: 'css?modules&camelCase!less',
+        loader: 'css?modules&camelCase&importLoaders=1!postcss-loader!less',
       },
       [ // exclusive configs for babel (first one that matches will be used)
         { // Support react/jsx in stories, react/ directory, or react-*.js files
@@ -55,6 +52,7 @@ const standardConfig = {
               [
                 'incremental-dom',
                 {
+                  components: true,
                   hoist: true,
                   prefix: 'vdom',
                 },
@@ -73,6 +71,13 @@ const standardConfig = {
       ],
     ],
   },
+  postcss: () => [
+    autoprefixer({
+      // have a look here: https://confluence.atlassian.com/display/Cloud/Supported+browsers
+      // "not Opera" w/o version qualifier is not valid, so I chose a really high version number
+      browsers: 'last 1 version, ie 11, Android > 4, not Opera < 1000',
+    }),
+  ],
   plugins: [],
 };
 

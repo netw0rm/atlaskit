@@ -1,0 +1,16 @@
+@import 'shared-variables.less';
+
+ak-editor-button {
+  color: @ak-editor-inactive-foreground;
+  font-size: 17px;
+  height: 20px;
+  line-height: 20px;
+
+  > _shadow_root_ {
+    display: flex;
+  }
+
+  &[active] {
+    color: @ak-editor-active-foreground;
+  }
+}

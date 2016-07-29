@@ -4,13 +4,15 @@ import 'style!./host.less';
 import { emit, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 
+const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
+
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class AkUtilComponentTemplate
  * @example @js import AkUtilComponentTemplate from 'akutil-component-template';
  * const component = new AkUtilComponentTemplate();
  */
-const definition = {
+export default define('akutil-component-template', {
   render(elem) {
     return (
       // JSX requires that there only be a single root element.
@@ -21,7 +23,7 @@ const definition = {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
-        <p className={shadowStyles.locals.myClassName}>My name is {elem.name}!</p>
+        <Paragraph className={shadowStyles.locals.myClassName}>My name is {elem.name}!</Paragraph>
       </div>
     );
   },
@@ -62,6 +64,4 @@ const definition = {
       return this;
     },
   },
-};
-
-export default define('akutil-component-template', definition);
+});

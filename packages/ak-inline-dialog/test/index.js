@@ -56,8 +56,8 @@ describe('ak-inline-dialog', () => {
       expect(component.position).not.to.equal(null);
       expect(component.position).to.equal(defaultPosition);
 
-      expect(component.attachment).not.to.equal(null);
-      expect(component.attachment).to.equal('window');
+      expect(component.constrain).not.to.equal(null);
+      expect(component.constrain).to.equal('window');
 
       expect(component.open).not.to.equal(null);
       expect(component.open).to.equal(false);
@@ -68,8 +68,7 @@ describe('ak-inline-dialog', () => {
         position: { value: 'top left', attr: 'position' },
         open: { value: true, attr: 'open' },
         target: { value: '#test', attr: 'target' },
-        attachment: { value: 'scrollParent', attr: 'attachment' },
-        renderElementTo: { value: 'body', attr: 'render-element-to' },
+        constrain: { value: 'scrollParent', attr: 'constrain' },
         boxShadow: { value: 'none', attr: 'box-shadow' },
         borderRadius: { value: '2px', attr: 'border-radius' },
         padding: { value: '2px', attr: 'padding' },

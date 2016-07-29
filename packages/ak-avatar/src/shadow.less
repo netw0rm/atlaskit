@@ -4,7 +4,6 @@
 @ak-avatar-size-large: 50px;
 @ak-avatar-size-medium: 30px;
 @ak-avatar-size-small: 20px;
-@ak-avatar-size-xsmall: 16px;
 
 @ak-avatar-background: #F0F2F5;
 
@@ -39,7 +38,10 @@
     .sizeMixin(@ak-avatar-size-small);
 
     .presence {
-      .presenceMixin(@ak-avatar-size-small);
+      @presence-size: 8px;
+      @presence-offset: 12px;
+
+      .presenceMixin(@presence-size, @presence-offset);
     }
 
     font-size: 12px;
@@ -49,7 +51,10 @@
     .sizeMixin(@ak-avatar-size-medium);
 
     .presence {
-      .presenceMixin(@ak-avatar-size-medium);
+      @presence-size: 8px;
+      @presence-offset: 20px;
+
+      .presenceMixin(@presence-size, @presence-offset);
     }
 
     font-size: 14px;
@@ -59,7 +64,10 @@
     .sizeMixin(@ak-avatar-size-large);
 
     .presence {
-      .presenceMixin(@ak-avatar-size-large);
+      @presence-size: 12px;
+      @presence-offset: 35px;
+
+      .presenceMixin(@presence-size, @presence-offset);
     }
 
     font-size: 24px;
@@ -69,7 +77,12 @@
     .sizeMixin(@ak-avatar-size-xlarge);
 
     .presence {
-      .presenceMixin(@ak-avatar-size-xlarge);
+      @presence-size: 22px;
+      @presence-offset: 72px;
+
+      .presenceMixin(@presence-size, @presence-offset);
+
+      border-width: 4px;
     }
 
     font-size: 46px;
@@ -104,20 +117,12 @@
   }
 }
 
-.presenceMixin(@size) {
-  @presence-size: 8px;
+.presenceMixin(@size, @offset) {
+  height: @size;
+  width: @size;
 
-  height: @presence-size;
-  width: @presence-size;
-  // We use top and bottom to center the presence icon
-  top: ~"calc(50% - " @presence-size/2 ~")";
-  left: ~"calc(50% - " @presence-size/2 ~")";
-  // And the margin-left to move the center of the presence icon to the right edge of the avatar
-  margin-left: @size / 2;
-  // We set the transformation-origin to be the center of the avatar
-  transform-origin: -(@size/2-@presence-size/2) @presence-size/2;
-  // Now we can change the rotation to have the presence icon sit anywhere on the edge of the avatar
-  transform: rotate(@ak-avatar-presence-angle);
+  top: @offset;
+  left: @offset;
 }
 
 .sizeMixin(@size) {

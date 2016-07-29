@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 import { enumeration } from 'akutil-common';
 import { vdom, define, prop } from 'skatejs';
-import { getInitials, getColorForInitials } from './helpers.js'; // eslint-disable-line max-len
+import { getInitials, getColorForInitials } from './helpers.js';
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
@@ -43,8 +43,14 @@ function displayInitials(initials, elem) {
 const definition = {
   render(elem) {
     const imgClasses = classNames(shadowStyles.locals.img);
-    const presenceClasses = classNames([shadowStyles.locals.presence, shadowStyles.locals[elem.presence]]); // eslint-disable-line max-len
-    const outerDivClass = classNames([shadowStyles.locals.outerDiv, shadowStyles.locals[elem.size]]); // eslint-disable-line max-len
+    const presenceClasses = classNames([
+      shadowStyles.locals.presence,
+      shadowStyles.locals[elem.presence],
+    ]);
+    const outerDivClass = classNames([
+      shadowStyles.locals.outerDiv,
+      shadowStyles.locals[elem.size],
+    ]);
     const initials = getInitials(elem.fullName);
     const outerDivStyle = {
       backgroundColor: elem.src ? 'transparent' : getColorForInitials(initials),
@@ -60,9 +66,7 @@ const definition = {
         {
           elem.src ? <img alt={elem.description} src={elem.src} class={imgClasses} style={imgStyle} /> : displayInitials(initials, elem) // eslint-disable-line max-len
         }
-        {
-          elem.size === 'medium' ? <div class={presenceClasses}></div> : null
-        }
+        <div class={presenceClasses}></div>
       </div>
     );
   },

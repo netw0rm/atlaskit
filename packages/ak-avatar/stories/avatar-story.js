@@ -53,7 +53,7 @@ storiesOf(name, module)
   .add('All avatars with online presence', () => {
     const avatarRowStyle = { marginLeft: '10px' };
     return (<div>
-      <div>Only medium sized avatars should have presence displayed</div>
+      <div>Presence icons should be allowed to be shown at any size, but are reccomended only for <strong>medium</strong></div>
       <div className={avatarRowClass}>
         <Avatar src={avatarUrl} size="small" style={avatarRowStyle} className={avatarClass} presence="online" />
         <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="online" />
@@ -86,10 +86,10 @@ storiesOf(name, module)
         <div className={colClass}>
           <div className={headerClass}>fullName="Jon Snow"</div>
           <div className={avatarRowClass}>
-            <Avatar fullName="Jon Snow" size="small" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon Snow" size="medium" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon Snow" size="large" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon Snow" size="xlarge" style={avatarRowStyle} className={avatarClass} />
+            <Avatar fullName="Mon Snow" presence="online" size="small" style={avatarRowStyle} className={avatarClass} />
+            <Avatar fullName="Jon Snow" presence="online" size="medium" style={avatarRowStyle} className={avatarClass} />
+            <Avatar fullName="Jon Snow" presence="online" size="large" style={avatarRowStyle} className={avatarClass} />
+            <Avatar fullName="Jon Snow" presence="online" size="xlarge" style={avatarRowStyle} className={avatarClass} />
           </div>
         </div>
         <div className={colClass}>

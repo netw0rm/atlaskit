@@ -26,8 +26,10 @@ const myAvatar = new Avatar();
 * Properties
 
     *  [`avatar.size`](#Avatar+size) : string
+    *  [`avatar.presence`](#Avatar+presence) : string
     *  [`avatar.src`](#Avatar+src) : string
-    *  [`avatar.alt`](#Avatar+alt) : string
+    *  [`avatar.label`](#Avatar+label) : string
+    *  [`avatar.fullName`](#Avatar+fullName) : string
     *  [`avatar.borderColor`](#Avatar+borderColor) : string
 
 ### Constructor
@@ -44,7 +46,7 @@ const myAvatar = new Avatar();
 ```
 ### `avatar.size` : string
 The size of the avatar. One of:
-'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', or 'xxxlarge'.
+'xsmall', 'small', 'medium', 'large', 'xlarge'.
 
 **Kind**: instance property of Avatar  
 **Default**: `"medium"`  
@@ -55,6 +57,18 @@ The size of the avatar. One of:
 **JS Example**
 ```js
 avatar.size = 'large';
+```
+### `avatar.presence` : string
+The source URL.
+
+**Kind**: instance property of Avatar  
+**HTML Example**
+```js
+<ak-avatar src="my/avatar/src.png"></ak-avatar>
+```
+**JS Example**
+```js
+avatar.src = 'my/avatar/src.png';
 ```
 ### `avatar.src` : string
 The source URL.
@@ -68,17 +82,30 @@ The source URL.
 ```js
 avatar.src = 'my/avatar/src.png';
 ```
-### `avatar.alt` : string
-The alt text for the Avatar.
+### `avatar.label` : string
+The label for the Avatar. Used by screen readers.
 
 **Kind**: instance property of Avatar  
 **HTML Example**
 ```js
-<ak-avatar alt="Avatar image" src="my/avatar/src.png"></ak-avatar>
+<ak-avatar label="Avatar for Jon Snow" src="my/avatar/src.png"></ak-avatar>
 ```
 **JS Example**
 ```js
-avatar.alt = 'Avatar image';
+avatar.label = 'Avatar for Jon Snow';
+```
+### `avatar.fullName` : string
+The name of the person the avatar is for. Is used to create a default avatar if
+no src is provided.
+
+**Kind**: instance property of Avatar  
+**HTML Example**
+```js
+<ak-avatar full-name="Jon Snow" src="my/avatar/src.png"></ak-avatar>
+```
+**JS Example**
+```js
+avatar.fullName = 'Jon Snow';
 ```
 ### `avatar.borderColor` : string
 The border color for the Avatar.

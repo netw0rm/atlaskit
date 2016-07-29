@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { vdom, define, prop, emit } from 'skatejs';
+import { vdom, define, prop, emit, symbols } from 'skatejs';
 import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
 import Icon from 'ak-editor-icon';
@@ -9,6 +9,13 @@ import HyperlinkPopup from 'ak-editor-hyperlink-popup';
 
 function toggle(elem) {
   elem.open = !elem.open;
+
+  if (elem.open) {
+    const input = elem[symbols.shadowRoot].querySelector('.input');
+
+    // todo: fix the hack
+    setTimeout(() => input.focus(), 5);
+  }
 }
 
 const definition = {
@@ -49,7 +56,7 @@ const definition = {
             <Icon glyph="open" fill="white" style={{ marginLeft }} />
           </EditorButton>
           <div style={{ height: '100%', width: 1, background: 'lightgrey', marginLeft }} />
-          <input style={{ marginLeft }} />
+          <input style={{ marginLeft }} class="input" />
         </HyperlinkPopup>
       </div>
     );

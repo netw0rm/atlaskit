@@ -91,7 +91,7 @@ const component = new Blanket();
 Is blanket grey with opacity or transparent. By default it's transparent.
 
 **Kind**: instance property of Blanket  
-**Default**: `true`  
+**Default**: `false`  
 **HTML Example**
 ```js
 <ak-blanket obscure></ak-blanket>
@@ -104,7 +104,7 @@ component.obscure = true
 If click on the blanket emits a 'blanket-click' event.
 
 **Kind**: instance property of Blanket  
-**Default**: `true`  
+**Default**: `false`  
 **HTML Example**
 ```js
 <ak-blanket clickable></ak-blanket>

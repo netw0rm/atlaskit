@@ -2,7 +2,7 @@ import { define, vdom, prop, symbols } from 'skatejs';
 import shadowStyles from './shadow.less';
 import 'style!./host.less';
 
-export default define('ak-editor-hyperlink-popup-text-input', {
+export default define('ak-editor-popup-text-input', {
   render(elem) {
     return (
       <div className={shadowStyles.locals.container}>

@@ -3,63 +3,104 @@ import chaiAsPromised from 'chai-as-promised';
 import { symbols, state } from 'skatejs';
 import AkButton from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
+import { name } from '../package.json';
+const classKeys = shadowStyles.locals;
 
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 describe('ak-button', () => {
-  let component;
+  const shadowDomQuery = (elem, classes) =>
+    elem[symbols.shadowRoot].querySelector(classes);
 
-  const getButtonElement = (elem) =>
-    elem[symbols.shadowRoot].querySelector(`.${shadowStyles.locals.akButton}`);
+  const getShadowButtonElem = (elem) =>
+    shadowDomQuery(elem, `.${classKeys.akButton}`);
 
-  const getButtonLabelElement = (elem) =>
-    getButtonElement(elem).querySelector(`.${shadowStyles.locals.label}`);
-
-
-  it('should be possible to create the component', () => {
-    component = new AkButton();
-    expect(component).to.be.defined;
-    expect(getButtonElement(component)).to.be.defined;
+  it('should not throws when component is instanciated', () => {
+    expect(() => {
+      new AkButton(); // eslint-disable-line no-new
+    }).not.to.throw(Error);
   });
 
-  describe('behaviour', () => {
+  it('should be possible to create a component', () => {
+    const component = new AkButton();
+    expect(shadowDomQuery(component, `.${classKeys.akButton}`)).to.be.defined;
+    expect(component.tagName.toLowerCase()).to.equal(name);
+  });
+
+  it('should call preventDefault when onmousedown event is triggered', () => {
+    const component = new AkButton();
+    const button = getShadowButtonElem(component);
+
+    const event = new CustomEvent('mousedown', {});
+    sinon.spy(event, 'preventDefault');
+
+    button.dispatchEvent(event);
+    expect(event.preventDefault.called).to.be.true;
+  });
+
+  describe('attributes', () => {
+    let component;
     beforeEach(() => {
       component = new AkButton();
     });
 
-    describe('states', () =>
-      describe('disabled', () =>
-        it('should reject any attached onclick handler', () => {
-          const onclickhandler = sinon.spy();
-          state(component, { onclick: onclickhandler, disabled: true });
-          getButtonElement(component).click();
-          expect(onclickhandler.calledOnce).to.be.false;
-        })
-      )
-    );
+    describe('type', () => {
+      describe('defaults', () =>
+        it('button should have type=button', () =>
+          expect(getShadowButtonElem(component).getAttribute('type')).to.equals('button')
+        )
+      );
+    });
 
-    describe('types', () => {
-      describe('default', () => {
-        it('should be possible to specify a button label', () => {
-          state(component, { label: 'test' });
-          expect(getButtonLabelElement(component).innerHTML).to.equal('test');
-        });
-
-        it('should be possible to set an onclick event handler', () => {
-          const onclickhandler = sinon.spy();
-          component.onclick = onclickhandler;
-          getButtonElement(component).click();
-
-          expect(onclickhandler.calledOnce).to.be.true;
+    describe('appearence', () => {
+      describe('standard', () => {
+        it.skip('button should only have akButton class', () => {
+          state(component, { appearence: 'standard' });
+          const buttonClasses = getShadowButtonElem(component).classList;
+          expect(buttonClasses).to.have.lengthOf(1);
+          expect(buttonClasses[0]).to.equals(shadowStyles.locals.akButton);
         });
       });
 
       describe('primary', () => {
-        it('should have attribute primary', () => {
-          state(component, { primary: true });
-          const buttonClasses = Array.from(getButtonElement(component).classList);
-          expect(buttonClasses).to.include(shadowStyles.locals.primary);
+        const selector = `.${classKeys.akButton}.${classKeys.primary}`;
+        beforeEach(() =>
+          state(component, { appearence: 'primary' })
+        );
+
+        it('button should have primary class', () =>
+          expect(shadowDomQuery(component, selector)).not.to.be.null
+        );
+
+        it('button should not have primary class after it is removed', () => {
+          state(component, { appearence: 'standard' });
+          expect(shadowDomQuery(component, selector)).to.be.null;
+        });
+      });
+    });
+
+    describe('when disabled attribute is set', () => {
+      const selector = `.${classKeys.container} button[disabled]`;
+      beforeEach(() =>
+        state(component, { disabled: true })
+      );
+
+      it('button should have disabled attribute', () =>
+        expect(shadowDomQuery(component, selector)).not.to.be.null
+      );
+
+      it('button should not have disabled attribute after it is removed', () => {
+        state(component, { disabled: false });
+        expect(shadowDomQuery(component, selector)).to.be.null;
+      });
+
+      describe('onclick event', () => {
+        it('should not be triggered', () => {
+          const onclick = sinon.spy();
+          state(component, { onclick });
+          getShadowButtonElem(component).click();
+          expect(onclick.called).to.equals(false);
         });
       });
     });

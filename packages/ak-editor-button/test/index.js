@@ -18,11 +18,9 @@ describe('ak-editor-button', () => {
   const getShadowButtonElem = (elem) =>
     shadowDomQuery(elem, `.${classKeys.root} button`);
 
-  it('should not throws when component is instanciated', () => {
-    expect(() => {
-      new AkEditorButton(); // eslint-disable-line no-new
-    }).not.to.throw(Error);
-  });
+  it('should not throws when component is instantiated', () =>
+    expect(() => (new AkEditorButton())).not.to.throw(Error)
+  );
 
   it('should be possible to create a component', () => {
     const component = new AkEditorButton();

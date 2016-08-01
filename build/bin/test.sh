@@ -17,7 +17,7 @@ COMPONENT_DIR=$(basename `pwd`)
         fi
 
         if [ -n "$BROWSERSTACK" ]; then
-          if [ -n "$BRANCH_BUILD"]; then
+          if [ -n "$BRANCH_BUILD" ]; then
             KARMA_CONF="../../karma.conf.browserstack.branch.js"
           else
             KARMA_CONF="../../karma.conf.browserstack.master.js"

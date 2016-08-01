@@ -9,6 +9,11 @@ AtlasKit is the Design Platform's implementation of ADG3. It is a collection of 
 ```
 npm install @atlaskit/my-component-name
 ```
+
+# Reporting issues
+
+Please refer to [our issue tracker](https://ecosystem.atlassian.net/projects/AK).
+
 # Development
 
 ### Getting started
@@ -22,7 +27,7 @@ You're now ready to start developing in AtlasKit!
 
 Once you made some changes, stage them and then commit them using `npm run commit` (This will use [Commitizen](https://github.com/commitizen/cz-cli) under the covers).
 
-# How do I... ...
+# How do I...
 
 ## Generate a new component skeleton
 ```npm run create my-component-name```

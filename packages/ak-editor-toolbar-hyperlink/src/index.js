@@ -6,16 +6,16 @@ import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
 import Icon from 'ak-editor-icon';
 import Popup from 'ak-editor-popup';
-import HyperlinkPopupTextInput from 'ak-editor-hyperlink-popup-text-input';
+import TextInput from 'ak-editor-hyperlink-popup-text-input';
 
 function toggle(elem, input) {
   elem.open = !elem.open;
 
   if (elem.open) {
-    const popupInput = input || elem[symbols.shadowRoot].querySelector('.popup-input');
+    const textInput = input || elem[symbols.shadowRoot].querySelector('.text-input');
 
     // todo: fix the hack
-    setTimeout(() => popupInput.focus(), 5);
+    setTimeout(() => textInput.focus(), 5);
   }
 }
 
@@ -37,9 +37,9 @@ const definition = {
       <div
         onkeyup={event => {
           if (event.keyCode === 13) {
-            const input = elem[symbols.shadowRoot].querySelector('.popup-input');
-            toggle(elem, input);
-            emit(elem, 'save', { detail: { value: input.value } });
+            const textInput = elem[symbols.shadowRoot].querySelector('.text-input');
+            toggle(elem, textInput);
+            emit(elem, 'save', { detail: { value: textInput.value } });
           }
         }}
       >
@@ -50,9 +50,9 @@ const definition = {
         <Popup
           target={linkButton}
           open={elem.open}
-          onclickOverlay={() => toggle(elem)}
+          onak-blanket-click={() => toggle(elem)}
         >
-          <HyperlinkPopupTextInput class="popup-input" placeholder="Paste link" />
+          <TextInput class="text-input" placeholder="Paste link" />
         </Popup>
       </div>
     );

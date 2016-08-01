@@ -11,17 +11,15 @@ const AkButton = reactify(AkButtonTemplate, {
 
 storiesOf(name, module)
   .add('a default ak-button', () => (
-    <AkButton label="Button" />
+    <AkButton>Button</AkButton>
   ))
   .add('a primary ak-button', () => (
-    <AkButton label="Primary Button" primary />
+    <AkButton appearence="primary">Primary Button</AkButton>
   ))
   .add('a disabled ak-button', () =>
-    <AkButton
-      disabled
-      label="Button"
-      onclick={action('clicking the WebComponent')}
-    />
+    <AkButton disabled onclick={action('clicking the WebComponent')}>
+      Button
+    </AkButton>
   )
   .add('a button that can be disabled and enabled', () => {
     class MyComponent extends React.Component {
@@ -47,9 +45,10 @@ storiesOf(name, module)
             />
             <AkButton
               disabled={this.state.disable}
-              label="Button"
               onclick={action('clicking the WebComponent')}
-            />
+            >
+              Button
+            </AkButton>
           </div>
         );
       }
@@ -58,5 +57,5 @@ storiesOf(name, module)
     return <MyComponent />;
   })
   .add('an ak-button that emits an action when it is clicked', () => (
-    <AkButton id="myComponent" label="Button" onClick={action('clicking the WebComponent')} />
+    <AkButton id="myComponent" onClick={action('clicking the WebComponent')}>Button</AkButton>
   ));

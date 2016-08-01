@@ -5,17 +5,24 @@ import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 
+const APPEARENCES = ['primary', 'standard'];
+
 const definition = {
   props: {
-    label: prop.string({ attribute: true }),
-    primary: prop.boolean({ attribute: true }),
+    appearence: prop.string({ attribute: true }),
     disabled: prop.boolean({ attribute: true }),
+    type: prop.string({ attribute: true }),
   },
   render(elem) {
     const classes = [shadowStyles.locals.akButton];
+    // TODO: constraint buttonType to only be button or submit
+    const buttonType = (elem.type) ? elem.type : 'button';
 
-    if (elem.primary) {
-      classes.push(shadowStyles.locals.primary);
+    if (elem.appearence) {
+      const index = APPEARENCES.indexOf(elem.appearence);
+      if (index >= 0) {
+        classes.push(shadowStyles.locals[APPEARENCES[index]]);
+      }
     }
 
     if (elem.disabled) {
@@ -29,9 +36,13 @@ const definition = {
         <style>{shadowStyles.toString()}</style>
         <button
           className={classListNames}
+          type={buttonType}
           disabled={elem.disabled}
+          onmousedown={(e) => e.preventDefault()}
         >
-          <span className={shadowStyles.locals.label}>{elem.label}</span>
+          <span className={shadowStyles.locals.label}>
+            <slot />
+          </span>
         </button>
       </div>
     );

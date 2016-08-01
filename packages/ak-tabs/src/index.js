@@ -5,10 +5,7 @@ import 'style!./host.less';
 import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 
-import Tab, { EVENT_TAB_CHANGE } from './children/tab'; // eslint-disable-line no-unused-vars
-
-const EVENT_TAB_SELECT = 'ak-tab-select';
-const EVENT_TAB_DESELECT = 'ak-tab-deselect';
+import Tab, { events as tabEvents } from './children/tab'; // eslint-disable-line no-unused-vars
 
 const tabLabel = Symbol();
 
@@ -20,7 +17,7 @@ const tabLabel = Symbol();
 function labelClickHandler(tab) {
   return () => {
     if (!tab.selected) {
-      emit(tab, EVENT_TAB_SELECT, { detail: { tab } });
+      emit(tab, tabEvents.EVENT_TAB_SELECT, { detail: { tab } });
     }
   };
 }
@@ -53,7 +50,11 @@ function labelKeydownHandler(tabs, tab) {
       tabToSelect = findTab(tabs, tab, 1);
     }
     if (tabToSelect) {
-      emit(tabToSelect, EVENT_TAB_SELECT, { detail: { tab: tabToSelect, keyboardNav: true } });
+      emit(
+        tabToSelect,
+        tabEvents.EVENT_TAB_SELECT,
+        { detail: { tab: tabToSelect, keyboardNav: true } }
+      );
     }
   };
 }
@@ -66,25 +67,29 @@ function getLabelForTab(tab) {
  * @description Tabs are an easy way to view and switch between different views of the same content.
  * @class Tabs
  * @example @js import Tabs from 'ak-tabs';
- * const component = new Tabs();
+ * const tabs = new Tabs();
  */
 const definition = {
   created(elem) {
     // Call the onSelect or onDeselect handler when the matching event is fired.
-    elem.addEventListener(EVENT_TAB_SELECT, e => { elem.onSelect(e); });
-    elem.addEventListener(EVENT_TAB_DESELECT, e => { elem.onDeselect(e); });
+    elem.addEventListener(tabEvents.EVENT_TAB_SELECT, e => { elem.onSelect(e); });
+    elem.addEventListener(tabEvents.EVENT_TAB_DESELECT, e => { elem.onDeselect(e); });
 
     /* When a tab is changed, we need to emit an event to deselect any previously-selected tab,
      * and update properties to re-render.
      */
-    elem.addEventListener(EVENT_TAB_CHANGE, e => {
+    elem.addEventListener(tabEvents.EVENT_TAB_CHANGE, e => {
       // If the tab has been selected, we need to deselect all other tabs.
       const targetLabel = e.target;
       if (targetLabel.selected) {
         elem.children
           .filter(el => !!el.selected && el !== targetLabel)
           .forEach(labelToDeselect => {
-            emit(labelToDeselect, EVENT_TAB_DESELECT, { detail: { tab: labelToDeselect } });
+            emit(
+              labelToDeselect,
+              tabEvents.EVENT_TAB_DESELECT,
+              { detail: { tab: labelToDeselect } }
+            );
           });
       }
 
@@ -99,7 +104,7 @@ const definition = {
     // If there is no selected tab, try to select the first tab.
     if (!elem.children.some(el => el.label && el.selected)) {
       const tab = elem.children.find(el => el.label);
-      emit(tab, EVENT_TAB_SELECT, { detail: { tab } });
+      emit(tab, tabEvents.EVENT_TAB_SELECT, { detail: { tab } });
     }
   },
   render(elem) {
@@ -140,7 +145,10 @@ const definition = {
     /** TODO: Use Symbol once supported in skate */
     _selected: prop.array({}),
     /**
-     * Handler for selecting a tab..
+     * @description Handler for selecting a tab.
+     * @memberof Tabs
+     * @instance
+     * @type {Function}
      */
     onSelect: {
       default() {
@@ -153,7 +161,10 @@ const definition = {
       },
     },
     /**
-     * Handler for deselecting a tab..
+     * @description Handler for deselecting a tab.
+     * @memberof Tabs
+     * @instance
+     * @type {Function}
      */
     onDeselect: {
       default() {

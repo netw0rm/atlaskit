@@ -49,7 +49,11 @@ const ReactComponent = reactify(Tabs, {});
 
 ReactDOM.render(<ReactComponent />, container);
 ```
-## Component API
+## Tabs API
+* Properties
+
+    *  [`tabs.onSelect`](#Tabs+onSelect) : function
+    *  [`tabs.onDeselect`](#Tabs+onDeselect) : function
 
 ### Constructor
 Tabs are an easy way to view and switch between different views of the same content.
@@ -57,14 +61,26 @@ Tabs are an easy way to view and switch between different views of the same cont
 **JS Example**
 ```js
 import Tabs from 'ak-tabs';
-const component = new Tabs();
+const tabs = new Tabs();
 ```
-## Component API
+### `tabs.onSelect` : function
+Handler for selecting a tab.
 
+**Kind**: instance property of Tabs  
+### `tabs.onDeselect` : function
+Handler for deselecting a tab.
+
+**Kind**: instance property of Tabs  
+## Tab API
 * Properties
 
     *  [`tab.label`](#Tab+label) : string
-    *  [`tab.selected`](#Tab+selected)
+    *  [`tab.selected`](#Tab+selected) : Boolean
+
+* Events
+
+    *  [`"ak-tab-select"`](#Tab+event_ak-tab-select)
+    *  [`"ak-tab-deselect"`](#Tab+event_ak-tab-deselect)
 
 ### Constructor
 Tabs are an easy way to view and switch between different views of the same content.
@@ -78,7 +94,27 @@ const component = new Tab();
 The label to display in the tab navigation
 
 **Kind**: instance property of Tab  
-### `tab.selected`
-Whether the tab is selected.
+### `tab.selected` : Boolean
+Whether the tab is selected. Only one tab can be selected at a time,
 
 **Kind**: instance property of Tab  
+### `"ak-tab-select"`
+Fired when a tab is selected.
+
+**Kind**: event emitted by Tab  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| detail.tab | Tab | The tab element. |
+| detail.keyboardNav | Tab | Whether the tab was selected via a key press. |
+
+### `"ak-tab-deselect"`
+Fired when a tab is deselected.
+
+**Kind**: event emitted by Tab  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| detail.tab | Tab | The tab element. |

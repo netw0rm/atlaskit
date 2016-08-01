@@ -4,10 +4,36 @@ import 'style!./tab-host.less';
 import { emit, vdom, define, prop } from 'skatejs';
 import shadowStyles from './tab-shadow.less';
 
-const EVENT_TAB_CHANGE = 'ak-tab-change';
+const events = {
+  /**
+   * @event Tab#ak-tab-select
+   * @memberof Tab
+   * @description Fired when a tab is selected.
+   * @property {Tab} detail.tab The tab element.
+   * @property {Tab} detail.keyboardNav Whether the tab was selected via a key press.
+   */
+  EVENT_TAB_SELECT: 'ak-tab-select',
+  /**
+   * @event Tab#ak-tab-deselect
+   * @memberof Tab
+   * @description Fired when a tab is deselected.
+   * @property {Tab} detail.tab The tab element.
+   */
+  EVENT_TAB_DESELECT: 'ak-tab-deselect',
+  /**
+   * @event Tab#ak-tab-change
+   * @memberof Tab
+   * @description Fired when a tab has changed.
+   * @property {String} detail.label The tab label.
+   * @property {Boolean} detail.selected Whether the tab is selected.
+   * @private
+   */
+  EVENT_TAB_CHANGE: 'ak-tab-change',
+};
+
 
 function emitTabChangedEvent(elem) {
-  emit(elem, 'ak-tab-change', {
+  emit(elem, events.EVENT_TAB_CHANGE, {
     detail: {
       label: elem.label,
       selected: elem.selected,
@@ -48,9 +74,10 @@ const definition = {
       set: emitTabChangedEvent,
     },
     /**
-     * @description Whether the tab is selected.
+     * @description Whether the tab is selected. Only one tab can be selected at a time,
      * @memberof Tab
      * @instance
+     * @type {Boolean}
      */
     selected: prop.boolean({
       attribute: true,
@@ -60,4 +87,4 @@ const definition = {
 };
 
 export default define('ak-tab', definition);
-export { EVENT_TAB_CHANGE };
+export { events };

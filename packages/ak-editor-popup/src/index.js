@@ -9,11 +9,11 @@ import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-lay
 import Blanket from 'ak-blanket';
 
 /**
- * @description The definition for the HyperlinkPopup component.
- * @class HyperlinkPopup
- * @example @html <ak-editor-hyperlink-popup target="#target"></ak-editor-hyperlink-popup>
- * @example @js import HyperlinkPopup from 'ak-editor-hyperlink-popup';
- * const myPopup = new HyperlinkPopup();
+ * @description The definition for the Popup component.
+ * @class Popup
+ * @example @html <ak-editor-popup target="#target"></ak-editor-popup>
+ * @example @js import Popup from 'ak-editor-popup';
+ * const myPopup = new Popup();
  *
  */
 const definition = {
@@ -35,7 +35,7 @@ const definition = {
           elem.open = !elem.open;
         }}
         class={cx({
-          [hostStyle.locals.akEditorHyperlinkPopup]: !elem.open,
+          [hostStyle.locals.akEditorPopup]: !elem.open,
         })}
       >
         <style>{hostStyle.toString()}</style>
@@ -52,7 +52,7 @@ const definition = {
           }}
         >
           <style>{shadowStyles.toString()}</style>
-          <div class={shadowStyles.locals.hyperlinkPopup} style={styles}>
+          <div class={shadowStyles.locals.popup} style={styles}>
             <slot />
           </div>
         </ak-layer>
@@ -62,12 +62,12 @@ const definition = {
   props: {
     /* eslint-disable max-len  */
     /**
-     * @description Controls visibility of an hyperlink-popup. Dialog is invisible by default.
-     * @memberof HyperlinkPopup
+     * @description Controls visibility of an -popup. Dialog is invisible by default.
+     * @memberof Popup
      * @instance
      * @default false
      * @type Boolean
-     * @example @html <ak-editor-hyperlink-popup open></ak-editor-hyperlink-popup>
+     * @example @html <ak-editor-popup open></ak-editor-popup>
      * @example @js dialog.open = true;
      */
     open: prop.boolean({
@@ -75,12 +75,12 @@ const definition = {
       default: false,
     }),
     /**
-     * @description Target of an hyperlink-popup.
-     * Selector or element on a page relative to which hyperlink-popup should be positioned
-     * @memberof HyperlinkPopup
+     * @description Target of an -popup.
+     * Selector or element on a page relative to which -popup should be positioned
+     * @memberof Popup
      * @instance
      * @type String
-     * @example @html <ak-editor-hyperlink-popup target="#target"></ak-editor-hyperlink-popup>
+     * @example @html <ak-editor-popup target="#target"></ak-editor-popup>
      * @example @js dialog.target = document.body.querySelector('#target');
      * @example @js dialog.target = '#target'
      */
@@ -88,45 +88,45 @@ const definition = {
       attribute: true,
     },
     /**
-     * @description Constrain an hyperlink-popup to a scrollable parent or the window
-     * @memberof HyperlinkPopup
+     * @description Constrain an -popup to a scrollable parent or the window
+     * @memberof Popup
      * @instance
      * @default 'window'
      * @type String
-     * @example @html <ak-editor-hyperlink-popup constrain="scrollParent"></ak-editor-hyperlink-popup>
+     * @example @html <ak-editor-popup constrain="scrollParent"></ak-editor-popup>
      * @example @js dialog.constrain = 'scrollParent'
      */
     constrain: enumeration(CONSTRAIN_ATTRIBUTE_ENUM)({
       attribute: true,
     }),
     /**
-     * @description Box-shadow style for the hyperlink-popup
-     * @memberof HyperlinkPopup
+     * @description Box-shadow style for the -popup
+     * @memberof Popup
      * @instance
      * @type String
-     * @example @html <ak-editor-hyperlink-popup box-shadow="0 0 10px 10px #f0f0f0"></ak-editor-hyperlink-popup>
+     * @example @html <ak-editor-popup box-shadow="0 0 10px 10px #f0f0f0"></ak-editor-popup>
      * @example @js dialog.boxShadow = '0 0 10px 10px #f0f0f0'
      */
     boxShadow: prop.string({
       attribute: true,
     }),
     /**
-     * @description Border-radius style for the hyperlink-popup
-     * @memberof HyperlinkPopup
+     * @description Border-radius style for the -popup
+     * @memberof Popup
      * @instance
      * @type String
-     * @example @html <ak-editor-hyperlink-popup border-radius="3px"></ak-editor-hyperlink-popup>
+     * @example @html <ak-editor-popup border-radius="3px"></ak-editor-popup>
      * @example @js dialog.borderRadius = '3px'
      */
     borderRadius: prop.string({
       attribute: true,
     }),
     /**
-     * @description Padding style for the hyperlink-popup
-     * @memberof HyperlinkPopup
+     * @description Padding style for the -popup
+     * @memberof Popup
      * @instance
      * @type String
-     * @example @html <ak-editor-hyperlink-popup padding="3px"></ak-editor-hyperlink-popup>
+     * @example @html <ak-editor-popup padding="3px"></ak-editor-popup>
      * @example @js dialog.padding = '3px'
      */
     padding: prop.string({
@@ -139,4 +139,4 @@ const definition = {
   },
 };
 
-export default define('ak-editor-hyperlink-popup', definition);
+export default define('ak-editor-popup', definition);

@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import HyperlinkPopup from '../src/index';
+import Popup from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 import 'style!./../src/host.less';
@@ -8,7 +8,7 @@ import EditorButtonComponent from 'ak-editor-button';
 import IconComponent from 'ak-editor-icon';
 import ToolbarComponent from 'ak-editor-toolbar';
 
-const Component = reactify(HyperlinkPopup, {
+const Component = reactify(Popup, {
   React,
   ReactDOM,
 });
@@ -31,7 +31,7 @@ const Toolbar = reactify(ToolbarComponent, {
 const marginLeft = 5;
 
 storiesOf(name, module)
-  .add('a simple ak-hyperlink-popup', () => (
+  .add('a simple ak-editor-popup', () => (
     <Component open />
   ))
   .add('with one button', () => (
@@ -52,7 +52,7 @@ storiesOf(name, module)
       <input />
     </Component>
   ))
-  .add('a "real" hyperlink popup', () => (
+  .add('a "real" editor popup', () => (
     <Component open>
       <EditorButton><Icon glyph="unlink" fill="white" style={{ marginLeft }} /></EditorButton>
       <EditorButton><Icon glyph="open" fill="white" style={{ marginLeft }} /></EditorButton>
@@ -60,7 +60,7 @@ storiesOf(name, module)
       <input style={{ marginLeft }} />
     </Component>
   ))
-  .add('a "real" hyperlink popup targeting to link button', () => {
+  .add('a "real" editor popup targeting to link button', () => {
     class LinkButtonInToolbar extends React.Component {
       constructor(props) {
         super(props);
@@ -89,7 +89,7 @@ storiesOf(name, module)
             <Component
               target=".link-button"
               open={this.state.open}
-              className="ak-editor-hyperlink-popup"
+              className="ak-editor-popup"
             >
               <EditorButton>
                 <Icon glyph="unlink" fill="white" style={{ marginLeft }} />

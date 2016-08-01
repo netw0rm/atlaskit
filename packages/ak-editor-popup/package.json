@@ -1,11 +1,11 @@
 {
-  "name": "ak-editor-hyperlink-popup",
+  "name": "ak-editor-popup",
   "version": "0.0.1",
-  "description": "ak-editor-hyperlink-popup webcomponent",
+  "description": "ak-editor-popup webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-hyperlink-popup"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-popup"
   },
   "files": [
     "dist"

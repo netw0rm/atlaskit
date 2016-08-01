@@ -5,7 +5,7 @@ import { vdom, define, prop, emit, symbols } from 'skatejs';
 import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
 import Icon from 'ak-editor-icon';
-import HyperlinkPopup from 'ak-editor-hyperlink-popup';
+import Popup from 'ak-editor-popup';
 import HyperlinkPopupTextInput from 'ak-editor-hyperlink-popup-text-input';
 
 function toggle(elem, input) {
@@ -47,25 +47,25 @@ const definition = {
 
         {linkButton = LinkButton()}
 
-        <HyperlinkPopup
+        <Popup
           target={linkButton}
           open={elem.open}
           onclickOverlay={() => toggle(elem)}
         >
           <HyperlinkPopupTextInput class="popup-input" placeholder="Paste link" />
-        </HyperlinkPopup>
+        </Popup>
       </div>
     );
   },
   props: {
     /* eslint-disable max-len  */
     /**
-     * @description Controls visibility of an hyperlink-popup. Dialog is invisible by default.
-     * @memberof HyperlinkPopup
+     * @description Controls visibility of an popup. Dialog is invisible by default.
+     * @memberof Popup
      * @instance
      * @default false
      * @type Boolean
-     * @example @html <ak-editor-hyperlink-popup open></ak-editor-hyperlink-popup>
+     * @example @html <ak-editor-popup open></ak-editor-popup>
      * @example @js dialog.open = true;
      */
     open: prop.boolean({

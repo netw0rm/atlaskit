@@ -21,11 +21,6 @@
   &:active::before{
     color: @ak-tabs-color-active;
   }
-
-  &:focus {
-    outline: none;
-    border: 1px solid @ak-tabs-color-focus;
-  }
 }
 
 .ak-tab-label > a {
@@ -34,13 +29,13 @@
   padding: @ak-tabs-margin;
 
   &:focus {
-    outline: 0;
+    outline: none;
     box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
     border-radius: 3px;
   }
 }
 
-.ak-tab-labels::before,
+.ak-tab-labels:not(:empty)::before,
 .ak-tab-label-selected::after {
   content: '';
   height: 1px;

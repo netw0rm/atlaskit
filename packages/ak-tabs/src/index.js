@@ -95,6 +95,13 @@ const definition = {
       e.stopPropagation();
     });
   },
+  attached(elem) {
+    // If there is no selected tab, try to select the first tab.
+    if (!elem.children.some(el => el.label && el.selected)) {
+      const tab = elem.children.find(el => el.label);
+      emit(tab, EVENT_TAB_SELECT, { detail: { tab } });
+    }
+  },
   render(elem) {
     return (
       <div>

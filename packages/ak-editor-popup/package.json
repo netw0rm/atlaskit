@@ -12,7 +12,6 @@
   ],
   "dependencies": {
     "akutil-shared-styles": "^33.0.2",
-    "akutil-common": "^0.1.0",
     "ak-layer": "^56.3.1",
     "skatejs": "1.0.0-beta.12",
     "classnames": "^2.2.5"

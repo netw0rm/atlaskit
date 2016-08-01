@@ -1,7 +1,6 @@
 /** @jsx vdom */
 /* eslint react/no-unknown-property: 0 */
 import hostStyle from './host.less';
-import { enumeration } from 'akutil-common';
 import { vdom, prop, define } from 'skatejs';
 import cx from 'classnames';
 import shadowStyles from './shadow.less';
@@ -19,15 +18,6 @@ import Blanket from 'ak-blanket';
 const definition = {
   render(elem) {
     const styles = {};
-    if (elem.boxShadow) {
-      styles.boxShadow = elem.boxShadow;
-    }
-    if (elem.padding) {
-      styles.padding = elem.padding;
-    }
-    if (elem.borderRadius) {
-      styles.borderRadius = elem.borderRadius;
-    }
 
     return (
       <div
@@ -87,55 +77,6 @@ const definition = {
     target: {
       attribute: true,
     },
-    /**
-     * @description Constrain an -popup to a scrollable parent or the window
-     * @memberof Popup
-     * @instance
-     * @default 'window'
-     * @type String
-     * @example @html <ak-editor-popup constrain="scrollParent"></ak-editor-popup>
-     * @example @js dialog.constrain = 'scrollParent'
-     */
-    constrain: enumeration(CONSTRAIN_ATTRIBUTE_ENUM)({
-      attribute: true,
-    }),
-    /**
-     * @description Box-shadow style for the -popup
-     * @memberof Popup
-     * @instance
-     * @type String
-     * @example @html <ak-editor-popup box-shadow="0 0 10px 10px #f0f0f0"></ak-editor-popup>
-     * @example @js dialog.boxShadow = '0 0 10px 10px #f0f0f0'
-     */
-    boxShadow: prop.string({
-      attribute: true,
-    }),
-    /**
-     * @description Border-radius style for the -popup
-     * @memberof Popup
-     * @instance
-     * @type String
-     * @example @html <ak-editor-popup border-radius="3px"></ak-editor-popup>
-     * @example @js dialog.borderRadius = '3px'
-     */
-    borderRadius: prop.string({
-      attribute: true,
-    }),
-    /**
-     * @description Padding style for the -popup
-     * @memberof Popup
-     * @instance
-     * @type String
-     * @example @html <ak-editor-popup padding="3px"></ak-editor-popup>
-     * @example @js dialog.padding = '3px'
-     */
-    padding: prop.string({
-      attribute: true,
-    }),
-
-    positioned: prop.boolean({
-      attribute: true,
-    }),
   },
 };
 

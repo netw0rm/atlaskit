@@ -30,4 +30,7 @@ storiesOf(name, module)
   ))
   .add('emit enter key up event', () => (
     <Component onenterkeyup={() => console.log('You just entered :)')} />
+  ))
+  .add('with some margin', () => (
+    <Component style={{ position: 'absolute', marginLeft: 200 }} />
   ));

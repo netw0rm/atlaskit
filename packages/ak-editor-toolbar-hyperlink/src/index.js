@@ -6,6 +6,7 @@ import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
 import Icon from 'ak-editor-icon';
 import HyperlinkPopup from 'ak-editor-hyperlink-popup';
+import HyperlinkPopupTextInput from 'ak-editor-hyperlink-popup-text-input';
 
 function toggle(elem) {
   elem.open = !elem.open;
@@ -20,8 +21,6 @@ function toggle(elem) {
 
 const definition = {
   render(elem) {
-    const marginLeft = 5;
-
     const LinkButton = (<EditorButton
       class="link-button"
       onclick={() => {
@@ -52,7 +51,7 @@ const definition = {
           open={elem.open}
           onclickOverlay={() => toggle(elem)}
         >
-          <input style={{ marginLeft }} class="input" />
+          <HyperlinkPopupTextInput class="input" placeholder="Paste link" />
         </HyperlinkPopup>
       </div>
     );

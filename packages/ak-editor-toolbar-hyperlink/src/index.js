@@ -8,14 +8,14 @@ import Icon from 'ak-editor-icon';
 import HyperlinkPopup from 'ak-editor-hyperlink-popup';
 import HyperlinkPopupTextInput from 'ak-editor-hyperlink-popup-text-input';
 
-function toggle(elem) {
+function toggle(elem, input) {
   elem.open = !elem.open;
 
   if (elem.open) {
-    const input = elem[symbols.shadowRoot].querySelector('.input');
+    const popupInput = input || elem[symbols.shadowRoot].querySelector('.popup-input');
 
     // todo: fix the hack
-    setTimeout(() => input.focus(), 5);
+    setTimeout(() => popupInput.focus(), 5);
   }
 }
 
@@ -37,8 +37,9 @@ const definition = {
       <div
         onkeyup={event => {
           if (event.keyCode === 13) {
-            toggle(elem);
-            emit(elem, 'save');
+            const input = elem[symbols.shadowRoot].querySelector('.popup-input');
+            toggle(elem, input);
+            emit(elem, 'save', { detail: { value: input.value } });
           }
         }}
       >
@@ -51,7 +52,7 @@ const definition = {
           open={elem.open}
           onclickOverlay={() => toggle(elem)}
         >
-          <HyperlinkPopupTextInput class="input" placeholder="Paste link" />
+          <HyperlinkPopupTextInput class="popup-input" placeholder="Paste link" />
         </HyperlinkPopup>
       </div>
     );

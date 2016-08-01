@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import ToolbarComponent from 'ak-editor-toolbar';
 import EditorkitLinkButton from '../src/index';
@@ -29,7 +29,11 @@ storiesOf(name, module)
     <Component disabled />
   ))
   .add('emit enter key up event', () => (
-    <Component onenterkeyup={() => console.log('You just entered :)')} />
+    <Component
+      onsave={(e) => {
+        action('You just entered :)')(e.detail.value);
+      }}
+    />
   ))
   .add('with some margin', () => (
     <Component style={{ position: 'absolute', marginLeft: 200 }} />

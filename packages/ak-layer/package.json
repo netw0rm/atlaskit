@@ -1,6 +1,6 @@
 {
   "name": "ak-layer",
-  "version": "56.1.2",
+  "version": "56.4.0",
   "description": "A layer component",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -15,8 +15,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "akutil-common": "^0.1.0",
-    "akutil-shared-styles": "*",
-    "skatejs": "v1.0.0-beta.10"
+    "akutil-shared-styles": "^33.0.2",
+    "skatejs": "v1.0.0-beta.12"
   },
   "repository": {
     "type": "git",

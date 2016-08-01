@@ -9,6 +9,11 @@ AtlasKit is the Design Platform's implementation of ADG3. It is a collection of 
 ```
 npm install @atlaskit/my-component-name
 ```
+
+# Reporting issues
+
+Please refer to [our issue tracker](https://ecosystem.atlassian.net/projects/AK).
+
 # Development
 
 ### Getting started
@@ -22,7 +27,7 @@ You're now ready to start developing in AtlasKit!
 
 Once you made some changes, stage them and then commit them using `npm run commit` (This will use [Commitizen](https://github.com/commitizen/cz-cli) under the covers).
 
-# How do I... ...
+# How do I...
 
 ## Generate a new component skeleton
 ```npm run create my-component-name```
@@ -95,6 +100,21 @@ npm run prepublish/single my-component-name -- --bundle-deps
 ```
 
 This can be helpful for ad-hoc testing in JSFiddle for example.
+
+## Document a component
+AtlasKit uses [JSDoc](http://usejsdoc.org/)-style annotations to automatically generate the component API. See the `akutil-component-template` package for examples.
+
+A `README.md` file will be generated at `packages/my-component-name/README.md`. ** Do not edit this README file. ** Your changes will be overwritten.
+
+Instead, modify the `USAGE.md` file, located at `packages/my-component-name/USAGE.md`, with usage instructions and examples for the component.
+
+The README file will be automatically generated at release time by concatenating the file with the generated component API.
+
+You may regenerate the README file at any time with the following command:
+
+```
+npm run docs/single my-component-name
+```
 
 ## Test a component
 

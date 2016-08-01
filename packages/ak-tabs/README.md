@@ -49,93 +49,36 @@ const ReactComponent = reactify(Tabs, {});
 
 ReactDOM.render(<ReactComponent />, container);
 ```
-## Tabs
-* Properties
-
-    *  [`tabs.name`](#Tabs+name) : string
-
-* Methods
-
-    *  [`tabs.announce()`](#Tabs+announce) ⇒ Tabs
-
-* Events
-
-    *  [`"announce-name"`](#Tabs+event_announce-name)
+## Component API
 
 ### Constructor
-Create instances of the component programmatically, or using markup.
+Tabs are an easy way to view and switch between different views of the same content.
 
 **JS Example**
 ```js
 import Tabs from 'ak-tabs';
 const component = new Tabs();
 ```
-### `tabs.name` : string
-The name of the Tabs element.
+## Component API
 
-**Kind**: instance property of Tabs  
-**Default**: `"Tabs"`  
-### `tabs.announce()` ⇒ Tabs
-Fire an event containing the name of the element.
-
-**Kind**: instance method of Tabs  
-**Returns**: Tabs - The Tabs element.  
-**Emits**: announce-name  
-**JS Example**
-```js
-component.announce(); // Fires the announce-name event.
-```
-### `"announce-name"`
-Fired when the `announce` method is called.
-
-**Kind**: event emitted by Tabs  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| detail.name | String | The name of the component. |
-## Tab
 * Properties
 
-    *  [`tab.tabname`](#Tab+tabname) : string
-
-* Methods
-
-    *  [`tab.tabannounce()`](#Tab+tabannounce) ⇒ Tab
-
-* Events
-
-    *  [`"announce-name"`](#Tab+event_announce-name)
+    *  [`tab.label`](#Tab+label) : string
+    *  [`tab.selected`](#Tab+selected)
 
 ### Constructor
-Create instances of the component programmatically, or using markup.
+Tabs are an easy way to view and switch between different views of the same content.
 
 **JS Example**
 ```js
 import Tab from 'ak-tab';
 const component = new Tab();
 ```
-### `tab.tabname` : string
-The name of the Tab element.
+### `tab.label` : string
+The label to display in the tab navigation
 
 **Kind**: instance property of Tab  
-**Default**: `"Tab"`  
-### `tab.tabannounce()` ⇒ Tab
-Fire an event containing the name of the element.
+### `tab.selected`
+Whether the tab is selected.
 
-**Kind**: instance method of Tab  
-**Returns**: Tab - The Tab element.  
-**Emits**: announce-name  
-**JS Example**
-```js
-component.announce(); // Fires the announce-name event.
-```
-### `"announce-name"`
-Fired when the `announce` method is called.
-
-**Kind**: event emitted by Tab  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| detail.name | String | The name of the component. |
+**Kind**: instance property of Tab  

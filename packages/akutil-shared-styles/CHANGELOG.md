@@ -1,10 +1,15 @@
-<a name="33.0.0"></a>
-# 33.0.0 (2016-07-18)
+<a name="33.0.2"></a>
+## 33.0.2 (2016-07-26)
+
+
+
+<a name="akutil-shared-styles@33.0.1"></a>
+## akutil-shared-styles@33.0.1 (2016-07-22)
 
 
 ### Bug Fixes
 
-* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
+* **package:** Add ak- prefix to editor-*, and fix licensing. ([15751dc](https://bitbucket.org/atlassian/atlaskit/commits/15751dc))
 
 
 

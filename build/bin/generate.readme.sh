@@ -1,24 +1,51 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
+printf "\033[34m"
+echo "Generating README.md..."
+printf "\033[0m"
+
+# Get usage docs
+if compgen -G "docs/USAGE\.md" > /dev/null; then
+  USAGE="$(cat ./docs/USAGE.md)"
+else
+  USAGE=""
+fi
+
 # Generate API docs
-API="$(../../node_modules/.bin/jsdoc2md \
+if compgen -G "*/index\.js" > /dev/null; then
+
+  API="$(../../node_modules/.bin/jsdoc2md \
     --plugin dmd-bitbucket ak-dmd-plugin \
     --src ./src/index.js \
     --member-index-format list \
     --name-format)"
 
-for file in $(find ./src/children -name "*.js"); do
-  NEXT="$(../../node_modules/.bin/jsdoc2md \
-    --plugin dmd-bitbucket ak-dmd-plugin \
-    --src $file \
-    --member-index-format list \
-    --name-format)"
-  API="$API\n$NEXT"
-done
+    for file in $(find ./src/children -name "*.js"); do
+      NEXT="$(../../node_modules/.bin/jsdoc2md \
+        --plugin dmd-bitbucket ak-dmd-plugin \
+        --src $file \
+        --member-index-format list \
+        --name-format)"
+      API="$API\n$NEXT"
+    done
+
+
+  if [[ $API == *"ERROR, Cannot find class"* ]]
+  then
+    API=""
+  else
+    API="\n$API\n"
+  fi
+
+else
+  API=""
+fi
 
 # Concatenate USAGE docs and JSDoc output
-(
-  cat ./docs/USAGE.md
-  echo "$API"
-) > README.md
+if [ -n "$USAGE" ] || [ -n "$API" ]; then
+  (
+    printf "$USAGE"
+    printf "$API"
+  ) > README.md
+fi

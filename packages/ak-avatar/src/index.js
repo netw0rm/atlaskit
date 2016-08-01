@@ -74,7 +74,7 @@ const definition = {
   props: {
     /**
      * @description The size of the avatar. One of:
-     * 'xsmall', 'small', 'medium', 'large', 'xlarge'.
+     * small', 'medium', 'large', 'xlarge'.
      * @memberof Avatar
      * @instance
      * @default medium
@@ -87,12 +87,15 @@ const definition = {
     }),
 
     /**
-     * @description The source URL.
+     * @description An indicator or a users online status.
+     * Will show a small colored icon on the avatar itself.
+     * 'online', 'offline', 'busy' or 'none'
      * @memberof Avatar
      * @instance
+     * @default none
      * @type {string}
-     * @example @html <ak-avatar src="my/avatar/src.png"></ak-avatar>
-     * @example @js avatar.src = 'my/avatar/src.png';
+     * @example @html <ak-avatar presence="online"></ak-avatar>
+     * @example @js avatar.presence = 'online';
      */
     presence: enumeration(PRESENCE_ATTRIBUTE_ENUM)({
       attribute: true,
@@ -112,16 +115,15 @@ const definition = {
       default: '',
     }),
 
-    /* eslint-disable max-len */
     /**
-     * @description The label for the Avatar. Used by screen readers.
+     * @description The label for the Avatar. Used by screen readers and as fallback content should
+     * the image fail to load.
      * @memberof Avatar
      * @instance
      * @type {string}
      * @example @html <ak-avatar label="Avatar for Jon Snow" src="my/avatar/src.png"></ak-avatar>
      * @example @js avatar.label = 'Avatar for Jon Snow';
      */
-    /* eslint-enable max-len */
     label: prop.string({
       attribute: true,
     }),

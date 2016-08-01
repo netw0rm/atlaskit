@@ -45,4 +45,14 @@ storiesOf('ak-editor-hyperlink-popup-text-input', module)
     }
 
     return <Demo />;
-  });
+  })
+  .add('focus()', () => (
+    <Container>
+      <button
+        onClick={() => {
+          document.getElementById('focus()').focus();
+        }}
+      />
+      <TextInput id="focus()" />
+    </Container>
+  ));

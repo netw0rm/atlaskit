@@ -14,6 +14,7 @@ const defaultSize = 'medium';
 const defaultPresence = 'none';
 const defaultLabel = undefined;
 const defaultBorderColor = undefined;
+const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 
 const avatarSizes = {
   small: 20,
@@ -132,6 +133,21 @@ describe('ak-avatar', () => {
         expect(outerDiv.getAttribute('aria-label')).to.equal(label, 'label');
       }, done);
     });
+
+    it('should set the alt of the internal img', (done) => {
+      let img;
+      const label = 'This is an avatar!';
+
+      // set the src so that we have an img and not just initials
+      component.src = oneByOnePixel;
+      component.label = label;
+
+      afterMutation(() => {
+        img = component[symbols.shadowRoot].firstChild.querySelector('img');
+
+        expect(img.getAttribute('alt')).to.equal(label);
+      }, done);
+    });
   });
 
   describe('presence property', () => {
@@ -167,7 +183,6 @@ describe('ak-avatar', () => {
   });
 
   describe('src property', () => {
-    const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
     let component;
     let container;
 
@@ -191,7 +206,6 @@ describe('ak-avatar', () => {
   });
 
   describe('fullName property', () => {
-    const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
     let component;
     let container;
     let outerDiv;

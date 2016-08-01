@@ -64,7 +64,12 @@ const definition = {
       <div class={outerDivClass} style={outerDivStyle} aria-label={elem.label}>
         <style>{shadowStyles.toString()}</style>
         {
-          elem.src ? <img alt={elem.description} src={elem.src} class={imgClasses} style={imgStyle} /> : displayInitials(initials, elem) // eslint-disable-line max-len
+          elem.src ? <img
+            alt={elem.label}
+            src={elem.src}
+            class={imgClasses}
+            style={imgStyle}
+          /> : displayInitials(initials, elem)
         }
         <div class={presenceClasses}></div>
       </div>

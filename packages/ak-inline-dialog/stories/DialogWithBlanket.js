@@ -61,7 +61,7 @@ class DialogWithBlanket extends Component {
           attachment={this.props.attachTo}
           position={this.props.position}
           hasBlanket={this.props.hasBlanket}
-          isBlanketObscure={this.props.blanketObscure}
+          isBlanketTinted={this.props.blanketTinted}
         >
           <button
             onClick={this.handleClick}
@@ -83,7 +83,7 @@ DialogWithBlanket.propTypes = {
   style: React.PropTypes.object,
   attachTo: React.PropTypes.string,
   hasBlanket: React.PropTypes.bool,
-  blanketObscure: React.PropTypes.bool,
+  blanketTinted: React.PropTypes.bool,
   open: React.PropTypes.bool,
 };
 

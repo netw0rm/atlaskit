@@ -201,7 +201,7 @@ storiesOf(name, module)
       <DialogWithBlanket hasBlanket />
     </div>
   ))
-  .add('Dialog with the blanket - obscure', () => (
+  .add('Dialog with the blanket - tinted', () => (
     <div
       id="target"
       style={{
@@ -213,6 +213,6 @@ storiesOf(name, module)
         padding: '0px',
       }}
     >
-      <DialogWithBlanket hasBlanket blanketObscure />
+      <DialogWithBlanket hasBlanket blanketTinted />
     </div>
   ));

@@ -17,7 +17,7 @@ function closeDialog(elem) {
 function renderBlanketIfNeeded(elem) {
   if (elem.hasBlanket) {
     return (<ak-blanket
-      obscured={elem.isBlanketObscure}
+      tinted={elem.isBlanketTinted}
       clickable={elem.isBlanketClickable}
     />);
   }
@@ -213,10 +213,10 @@ const definition = {
      * @instance
      * @type Boolean
      * @default false
-     * @example @html <ak-inline-dialog is-blanket-obscure="true"></ak-inline-dialog>
-     * @example @js dialog.isBlanketObscure = true
+     * @example @html <ak-inline-dialog is-blanket-tinted="true"></ak-inline-dialog>
+     * @example @js dialog.isBlanketTinted = true
      */
-    isBlanketObscure: prop.boolean({
+    isBlanketTinted: prop.boolean({
       attribute: true,
       default: false,
     }),

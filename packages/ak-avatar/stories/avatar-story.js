@@ -6,7 +6,6 @@ import avatarStoryStyles from 'style!./stories.less';
 import { name } from '../package.json';
 import hostStyles from 'style!./../src/host.less';
 
-/* eslint-disable max-len */
 const { React, ReactDOM } = window;
 
 const Avatar = reactify(AkAvatar, {
@@ -22,13 +21,29 @@ const rowClass = avatarStoryStyles.row;
 const colClass = avatarStoryStyles.col;
 const headerClass = avatarStoryStyles.header;
 
+// Create an avatar with some sensible defaults
+const DefaultAvatar = (props) => <Avatar
+  src={avatarUrl}
+  style={{ marginLeft: '10px' }}
+  className={avatarClass}
+  {...props}
+/>;
+
+// Create a row of avatars, one of each size with whatever props are passed in
+const AllAvatarSizes = (props) => <div className={avatarRowClass}>
+  <DefaultAvatar size="small" {...props} />
+  <DefaultAvatar size="medium" {...props} />
+  <DefaultAvatar size="large" {...props} />
+  <DefaultAvatar size="xlarge" {...props} />
+</div>;
+
 
 storiesOf(name, module)
   .add('A default avatar', () => (
-    <Avatar src={avatarUrl} className={avatarClass} />
+    <DefaultAvatar />
   ))
   .add('An avatar with an incorrectly defined size (falls back to default)', () => (
-    <Avatar src={avatarUrl} size="megalarge" className={avatarClass} />
+    <DefaultAvatar size="megalarge" />
   ))
   .add('A xlarge avatar on background', () => {
     const divStyle = {
@@ -41,142 +56,91 @@ storiesOf(name, module)
       </div>
     );
   })
-  .add('A row of avatars', () => {
-    const avatarRowStyle = { marginLeft: '10px' };
-    return (<div className={avatarRowClass}>
-      <Avatar src={avatarUrl} size="small" style={avatarRowStyle} className={avatarClass} />
-      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} />
-      <Avatar src={avatarUrl} size="large" style={avatarRowStyle} className={avatarClass} />
-      <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} />
-    </div>);
-  })
-  .add('All avatars with online presence', () => {
-    const avatarRowStyle = { marginLeft: '10px' };
-    return (<div>
-      <div>Presence icons should be allowed to be shown at any size, but are reccomended only for <strong>medium</strong></div>
-      <div className={avatarRowClass}>
-        <Avatar src={avatarUrl} size="small" style={avatarRowStyle} className={avatarClass} presence="online" />
-        <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="online" />
-        <Avatar src={avatarUrl} size="large" style={avatarRowStyle} className={avatarClass} presence="online" />
-        <Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} presence="online" />
+  .add('A row of avatars', () => (
+    <AllAvatarSizes />
+  ))
+  .add('All avatars with online presence', () => (
+    <div>
+      <div>Presence icons should be allowed to be shown at any size,
+        but are reccomended only for <strong>medium</strong>
       </div>
-    </div>);
-  })
-  .add('All presences', () => {
-    const avatarRowStyle = { marginLeft: '10px' };
-    return (<div className={avatarRowClass}>
-      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="none" />
-      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="online" />
-      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="busy" />
-      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="offline" />
-    </div>);
-  })
-  .add('Avatar with a label', () => {
-    const avatarRowStyle = { margin: '10px' };
-    return (<div className={avatarRowClass}>
-      <div>This image should have an aria-label that should be read out when tabbing to the link around it.</div>
-      <a href="#"><Avatar src={avatarUrl} size="xlarge" style={avatarRowStyle} className={avatarClass} label="This is an avatar!" /></a>
-    </div>);
-  })
-  .add('Avatars with names instead of images', () => {
-    const avatarRowStyle = { marginLeft: '10px' };
-    return (<div>
+      <AllAvatarSizes presence="online" />
+    </div>
+  ))
+  .add('All presences', () => (
+    <div className={avatarRowClass}>
+      <DefaultAvatar presence="none" />
+      <DefaultAvatar presence="online" />
+      <DefaultAvatar presence="busy" />
+      <DefaultAvatar presence="offline" />
+    </div>)
+  )
+  .add('Avatar with a label', () => (
+    <div className={avatarRowClass}>
+      <div>
+        This image should have an aria-label that should be read out when tabbing to the link
+          around it.
+      </div>
+      <a href="#"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
+    </div>
+  ))
+  .add('Avatars with names instead of images', () => (
+    // We override the src in each one so that we force the initials to show
+    <div>
       <div className={rowClass}>
         <div className={colClass}>
           <div className={headerClass}>fullName="Jon Snow"</div>
-          <div className={avatarRowClass}>
-            <Avatar fullName="Mon Snow" presence="online" size="small" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon Snow" presence="online" size="medium" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon Snow" presence="online" size="large" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon Snow" presence="online" size="xlarge" style={avatarRowStyle} className={avatarClass} />
-          </div>
+          <AllAvatarSizes fullName="Jon Snow" src="" />
         </div>
         <div className={colClass}>
           <div className={headerClass}>fullName="Jon P. Snow"</div>
-          <div className={avatarRowClass}>
-            <Avatar fullName="Jon P. Snow" size="small" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon P. Snow" size="medium" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon P. Snow" size="large" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon P. Snow" size="xlarge" style={avatarRowStyle} className={avatarClass} />
-          </div>
+          <AllAvatarSizes fullName="Jon P. Snow" src="" />
         </div>
       </div>
       <div className={rowClass}>
         <div className={colClass}>
           <div className={headerClass}>fullName="Jon"</div>
-          <div className={avatarRowClass}>
-            <Avatar fullName="Jon" size="small" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon" size="medium" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon" size="large" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Jon" size="xlarge" style={avatarRowStyle} className={avatarClass} />
-          </div>
+          <AllAvatarSizes fullName="Jon" src="" />
         </div>
         <div className={colClass}>
           <div className={headerClass}>fullName="Kit Harrington"</div>
-          <div className={avatarRowClass}>
-            <Avatar fullName="Kit Harrington" size="small" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Kit Harrington" size="medium" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Kit Harrington" size="large" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="Kit Harrington" size="xlarge" style={avatarRowStyle} className={avatarClass} />
-          </div>
+          <AllAvatarSizes fullName="Kit Harrington" src="" />
         </div>
       </div>
       <div className={rowClass}>
         <div className={colClass}>
           <div className={headerClass}>Wide letters</div>
-          <div className={avatarRowClass}>
-            <Avatar fullName="W W" size="small" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="W W" size="medium" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="W W" size="large" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="W W" size="xlarge" style={avatarRowStyle} className={avatarClass} />
-          </div>
+          <AllAvatarSizes fullName="W W" src="" />
         </div>
         <div className={colClass}>
           <div className={headerClass}>Wide letters</div>
-          <div className={avatarRowClass}>
-            <Avatar fullName="M M" size="small" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="M M" size="medium" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="M M" size="large" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="M M" size="xlarge" style={avatarRowStyle} className={avatarClass} />
-          </div>
+          <AllAvatarSizes fullName="M M" src="" />
         </div>
       </div>
       <div className={rowClass}>
         <div className={colClass}>
           <div className={headerClass}>Chinese Characters</div>
-          <div className={avatarRowClass}>
-            <Avatar fullName="王 鹏" size="small" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="王 鹏" size="medium" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="王 鹏" size="large" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="王 鹏" size="xlarge" style={avatarRowStyle} className={avatarClass} />
-          </div>
+          <AllAvatarSizes fullName="王 鹏" src="" />
         </div>
         <div className={colClass}>
           <div className={headerClass}>Arabic characters</div>
-          <div className={avatarRowClass}>
-            <Avatar fullName="عبد العزيز" size="small" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="عبد العزيز" size="medium" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="عبد العزيز" size="large" style={avatarRowStyle} className={avatarClass} />
-            <Avatar fullName="عبد العزيز" size="xlarge" style={avatarRowStyle} className={avatarClass} />
-          </div>
+          <AllAvatarSizes fullName="عبد العزيز" src="" />
         </div>
       </div>
-    </div>);
-  })
+    </div>
+  ))
   .add('All avatar colors', () => {
-    const avatarRowStyle = { marginLeft: '10px' };
     // a generated list of initials that happen to fall on each value in the palette in order
     const initials = getInitialsForAllColors();
     const colorsInOrder = Object.keys(initials).sort();
     const initialsInOrder = colorsInOrder.map(colName => initials[colName]);
     return (<div className={avatarRowClass} style={{ width: '400px' }} >
       {
-        initialsInOrder.map((user) => <Avatar fullName={user} size="large" style={avatarRowStyle} className={avatarClass} />)
+        initialsInOrder.map((user) => <Avatar fullName={user} size="large" />)
       }
     </div>);
   })
   .add('All avatar colors with all presences', () => {
-    const avatarRowStyle = { marginLeft: '10px' };
     // a generated list of initials that happen to fall on each value in the palette in order
     const initials = getInitialsForAllColors();
     return (<div >
@@ -184,28 +148,32 @@ storiesOf(name, module)
         <div className={colClass}>
           <div className={avatarRowClass} style={{ width: '270px' }} >
             {
-              Object.values(initials).map((user) => <Avatar fullName={user} size="medium" style={avatarRowStyle} className={avatarClass} presence="online" />)
+              Object.values(initials).map((user) =>
+                <DefaultAvatar src="" fullName={user} presence="online" />)
             }
           </div>
         </div>
         <div className={colClass}>
           <div className={avatarRowClass} style={{ width: '270px' }} >
             {
-              Object.values(initials).map((user) => <Avatar fullName={user} size="medium" style={avatarRowStyle} className={avatarClass} presence="away" />)
+              Object.values(initials).map((user) =>
+                <DefaultAvatar src="" fullName={user} presence="away" />)
             }
           </div>
         </div>
         <div className={colClass}>
           <div className={avatarRowClass} style={{ width: '270px' }} >
             {
-              Object.values(initials).map((user) => <Avatar fullName={user} size="medium" style={avatarRowStyle} className={avatarClass} presence="busy" />)
+              Object.values(initials).map((user) =>
+                <DefaultAvatar src="" fullName={user} presence="busy" />)
             }
           </div>
         </div>
         <div className={colClass}>
           <div className={avatarRowClass} style={{ width: '270px' }} >
             {
-              Object.values(initials).map((user) => <Avatar fullName={user} size="medium" style={avatarRowStyle} className={avatarClass} presence="offline" />)
+              Object.values(initials).map((user) =>
+                <DefaultAvatar src="" fullName={user} presence="offline" />)
             }
           </div>
         </div>

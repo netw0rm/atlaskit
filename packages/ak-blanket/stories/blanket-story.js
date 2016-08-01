@@ -14,14 +14,14 @@ function doSomethingOnClick() {
 }
 
 storiesOf(name, module)
-  .add('a simple ak-blanket - obscured', () => {
+  .add('a simple ak-blanket - tinted', () => {
     window.removeEventListener('ak-blanket-click', doSomethingOnClick);
     window.addEventListener('ak-blanket-click', doSomethingOnClick);
 
     return (
       <div>
         this is just an empty blanket. Click on it!
-        <Component clickable obscured />
+        <Component clickable tinted />
       </div>
     );
   })

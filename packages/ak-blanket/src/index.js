@@ -22,7 +22,7 @@ function handleBlur(elem) {
 export default define('ak-blanket', {
   render(elem) {
     const classes = classNames(
-      [shadowStyles.locals.blanket, { [`${shadowStyles.locals.obscured}`]: elem.obscured }]
+      [shadowStyles.locals.blanket, { [`${shadowStyles.locals.tinted}`]: elem.tinted }]
     );
 
     return (
@@ -44,10 +44,10 @@ export default define('ak-blanket', {
      * @instance
      * @type Boolean
      * @default false
-     * @example @html <ak-blanket obscure></ak-blanket>
-     * @example @js component.obscure = true
+     * @example @html <ak-blanket tinted></ak-blanket>
+     * @example @js component.tinted = true
      */
-    obscured: prop.boolean({
+    tinted: prop.boolean({
       attribute: true,
       default: false,
     }),

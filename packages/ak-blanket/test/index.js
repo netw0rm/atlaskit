@@ -25,8 +25,8 @@ describe('ak-blanket', () => {
     });
 
     it('should have all the default properties after creation', () => {
-      expect(component.obscured).not.to.equal(null);
-      expect(component.obscured).to.equal(false);
+      expect(component.tinted).not.to.equal(null);
+      expect(component.tinted).to.equal(false);
 
       expect(component.clickable).not.to.equal(null);
       expect(component.clickable).to.equal(false);
@@ -34,7 +34,7 @@ describe('ak-blanket', () => {
 
     it('all the properties should be attributes', () => {
       const props = {
-        obscured: { value: false, attr: 'obscured' },
+        tinted: { value: false, attr: 'tinted' },
         clickable: { value: false, attr: 'clickable' },
       };
 

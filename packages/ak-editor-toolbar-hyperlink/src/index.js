@@ -33,6 +33,8 @@ const definition = {
 
     let linkButton;
 
+    /* eslint-disable no-return-assign  */
+    /* eslint-disable new-cap  */
     return (
       <div
         onkeyup={event => {

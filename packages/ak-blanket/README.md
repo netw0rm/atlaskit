@@ -50,7 +50,7 @@ define('modal-dialog-component', () => {
  render(elem) {
    return (
      <div>
-       <ak-blanket clickable obscured />
+       <ak-blanket clickable tinted />
        <div>the rest of the awesome component here</div>
      </div>
    );
@@ -75,7 +75,7 @@ ReactDOM.render(<ReactComponent />, container);
 
 * Properties
 
-    *  [`blanket.obscured`](#Blanket+obscured) : Boolean
+    *  [`blanket.tinted`](#Blanket+tinted) : Boolean
     *  [`blanket.clickable`](#Blanket+clickable) : Boolean
 
 ### Constructor
@@ -86,18 +86,18 @@ Create instances of the component programmatically, or using markup.
 import Blanket from 'ak-blanket';
 const component = new Blanket();
 ```
-### `blanket.obscured` : Boolean
+### `blanket.tinted` : Boolean
 Is blanket grey with opacity or transparent. By default it's transparent.
 
 **Kind**: instance property of Blanket  
 **Default**: `false`  
 **HTML Example**
 ```js
-<ak-blanket obscure></ak-blanket>
+<ak-blanket tinted></ak-blanket>
 ```
 **JS Example**
 ```js
-component.obscure = true
+component.tinted = true
 ```
 ### `blanket.clickable` : Boolean
 If click on the blanket emits a 'blanket-click' event.

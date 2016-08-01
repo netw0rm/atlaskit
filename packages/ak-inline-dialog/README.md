@@ -32,7 +32,7 @@ const myDialog = new InlineDialog();
     *  [`inlineDialog.padding`](#InlineDialog+padding) : String
     *  [`inlineDialog.hasBlanket`](#InlineDialog+hasBlanket) : Boolean
     *  [`inlineDialog.isBlanketClickable`](#InlineDialog+isBlanketClickable) : Boolean
-    *  [`inlineDialog.isBlanketObscure`](#InlineDialog+isBlanketObscure) : Boolean
+    *  [`inlineDialog.isBlanketTinted`](#InlineDialog+isBlanketTinted) : Boolean
     *  [`inlineDialog.isClosableOnEsc`](#InlineDialog+isClosableOnEsc) : Boolean
 
 ### Constructor
@@ -175,18 +175,18 @@ If click on the blanket dismisses the dialog. By default it is.
 ```js
 dialog.isBlanketClickable = true
 ```
-### `inlineDialog.isBlanketObscure` : Boolean
+### `inlineDialog.isBlanketTinted` : Boolean
 Is blanket grey with opacity or transparent. By default it's transparent.
 
 **Kind**: instance property of InlineDialog  
 **Default**: `false`  
 **HTML Example**
 ```js
-<ak-inline-dialog is-blanket-obscure="true"></ak-inline-dialog>
+<ak-inline-dialog is-blanket-tinted="true"></ak-inline-dialog>
 ```
 **JS Example**
 ```js
-dialog.isBlanketObscure = true
+dialog.isBlanketTinted = true
 ```
 ### `inlineDialog.isClosableOnEsc` : Boolean
 Is blanket is closable by pressing the 'escape' button. By default it is.

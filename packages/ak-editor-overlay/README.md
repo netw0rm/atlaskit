@@ -1,3 +1,0 @@
-```js
-<ak-editor-overlay />
-```

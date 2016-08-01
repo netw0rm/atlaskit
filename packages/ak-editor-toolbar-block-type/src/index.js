@@ -3,7 +3,7 @@ import cx from 'classnames';
 import styles from './index.less';
 import FontSelect from './font-select';
 import Option from './option';
-import Overlay from 'ak-editor-overlay';
+import Blanket from 'ak-blanket';
 
 const fonts = {
   paragraph: 'Paragraph',
@@ -27,9 +27,14 @@ function selectFont(elem) {
 export default define('ak-editor-toolbar-block-type', {
   render(elem) {
     return (
-      <div className={styles.locals.root}>
+      <div
+        className={styles.locals.root}
+        onak-blanket-click={() => {
+          toggle(elem);
+        }}
+      >
         <style>{styles.toString()}</style>
-        <Overlay open={elem.dropdownOpen} onclickOverlay={() => toggle(elem)} />
+        {elem.dropdownOpen ? <Blanket clickable /> : null}
         <FontSelect
           className={styles.locals.fontSelect}
           selectedReadableName={fonts[elem.selectedFont]}

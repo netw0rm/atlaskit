@@ -1,5 +1,5 @@
 <a name="1.2.0"></a>
-# 1.2.0 (2016-07-26)
+# 1.2.0 (2016-08-01)
 
 
 
@@ -29,6 +29,7 @@
 
 ### Bug Fixes
 
+* FAB-370 add attributes to prop types in pf-mention-picker ([b1929da](https://bitbucket.org/atlassian/atlaskit/commits/b1929da))
 * Pass open down to ak-inline-dialog to ensure reposition occurs at right time. ([7ef43d1](https://bitbucket.org/atlassian/atlaskit/commits/7ef43d1))
 
 
@@ -57,6 +58,11 @@
 
 <a name="pf-mention@1.0.0"></a>
 # pf-mention@1.0.0 (2016-07-12)
+
+
+### Bug Fixes
+
+* Remove broken export from ak-inline-dialog, and prevent usage upstream. ([e5cc55f](https://bitbucket.org/atlassian/atlaskit/commits/e5cc55f))
 
 
 

@@ -2,8 +2,9 @@
 import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 
 import { emit, prop, vdom, define } from 'skatejs';
-import shadowStyles from './ak-navigation.less';
+import shadowStyles from './index.less';
 import './ak-navigation-link';
+import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 
 const definition = {
   render(elem) {
@@ -17,7 +18,15 @@ const definition = {
       >
         <style>{shadowStyles.toString()}</style>
         <div className={shadowStyles.locals.global}>
-          Global
+          <div className={shadowStyles.locals.globalPrimary}>
+            <slot name="global-home" />
+          </div>
+          <div className={shadowStyles.locals.globalSecondary}>
+            <slot name="global-search" />
+          </div>
+          <div className={shadowStyles.locals.globalSecondary}>
+            <slot name="global-create" />
+          </div>
         </div>
         <div className={shadowStyles.locals.container}>
           <div className={shadowStyles.locals.containerName}>
@@ -88,6 +97,21 @@ const definition = {
       const containerLinks = Array.prototype.slice.call(elem.children);
       containerLinks.forEach((child) => { child.selected = false; });
       event.target.selected = true;
+    },
+    touchstart: (elem, event) => {
+      elem.touchstart = event;
+    },
+    touchend: (elem, event) => {
+      const swipeType = getSwipeType(elem.touchstart, event);
+      if (swipeType === noSwipe) {
+        return;
+      }
+
+      if (swipeType === swipeLeft) {
+        elem.open = true;
+      } else if (swipeType === swipeRight) {
+        elem.open = false;
+      }
     },
   },
 };

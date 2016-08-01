@@ -19,8 +19,7 @@ import InlineDialog from 'ak-inline-dialog';
 
 const myDialog = new InlineDialog();
 ```
-## Component API
-
+## InlineDialog API
 * Properties
 
     *  [`inlineDialog.position`](#InlineDialog+position) : string

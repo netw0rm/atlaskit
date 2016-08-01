@@ -50,7 +50,7 @@ define('modal-dialog-component', () => {
  render(elem) {
    return (
      <div>
-       <ak-blanket clickable obscured />
+       <ak-blanket clickable tinted />
        <div>the rest of the awesome component here</div>
      </div>
    );

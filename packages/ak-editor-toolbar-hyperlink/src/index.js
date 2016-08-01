@@ -24,7 +24,11 @@ const definition = {
 
     const LinkButton = (<EditorButton
       class="link-button"
-      onclick={() => toggle(elem)}
+      onclick={() => {
+        if (!elem.disabled) {
+          toggle(elem);
+        }
+      }}
       disabled={elem.disabled}
     ><Icon glyph="link" /></EditorButton>);
 

@@ -67,7 +67,6 @@ storiesOf(name, module)
     return (<div className={avatarRowClass}>
       <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="none" />
       <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="online" />
-      <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="away" />
       <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="busy" />
       <Avatar src={avatarUrl} size="medium" style={avatarRowStyle} className={avatarClass} presence="offline" />
     </div>);

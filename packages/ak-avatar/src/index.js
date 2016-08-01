@@ -16,7 +16,7 @@ const SIZE_ATTRIBUTE_ENUM = {
 
 const PRESENCE_ATTRIBUTE_ENUM = {
   attribute: 'presence',
-  values: ['none', 'online', 'away', 'busy', 'offline'],
+  values: ['none', 'online', 'busy', 'offline'],
   missingDefault: 'none',
   invalidDefault: 'none',
 };

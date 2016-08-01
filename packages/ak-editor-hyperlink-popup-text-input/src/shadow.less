@@ -16,19 +16,7 @@
     outline: none;
   }
 
-  &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color: @ak-editor-popup-text;
-    opacity: 0.5;
-  }
-  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color: @ak-editor-popup-text;
-    opacity: 0.5;
-  }
-  &::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color: @ak-editor-popup-text;
-    opacity: 0.5;
-  }
-  &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  &::placeholder {
     color: @ak-editor-popup-text;
     opacity: 0.5;
   }

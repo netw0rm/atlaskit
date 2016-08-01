@@ -14,10 +14,10 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "akutil-react": "*",
-    "akutil-shared-styles": "*",
+    "akutil-react": "^0.0.3",
+    "akutil-shared-styles": "^33.0.2",
     "classnames": "^2.2.5",
-    "ak-editor-button": "2.0.0",
+    "ak-editor-button": "^2.0.0",
     "skatejs": "1.0.0-beta.12"
   },
   "devDependencies": {

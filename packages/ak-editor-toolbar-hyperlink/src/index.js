@@ -39,7 +39,7 @@ const definition = {
         onkeyup={event => {
           if (event.keyCode === 13) {
             toggle(elem);
-            emit(elem, 'enterkeyup');
+            emit(elem, 'save');
           }
         }}
       >
@@ -50,16 +50,8 @@ const definition = {
         <HyperlinkPopup
           target={linkButton}
           open={elem.open}
-          class="ak-editor-hyperlink-popup"
           onclickOverlay={() => toggle(elem)}
         >
-          <EditorButton>
-            <Icon glyph="unlink" fill="white" style={{ marginLeft }} />
-          </EditorButton>
-          <EditorButton>
-            <Icon glyph="open" fill="white" style={{ marginLeft }} />
-          </EditorButton>
-          <div style={{ height: '100%', width: 1, background: 'lightgrey', marginLeft }} />
           <input style={{ marginLeft }} class="input" />
         </HyperlinkPopup>
       </div>

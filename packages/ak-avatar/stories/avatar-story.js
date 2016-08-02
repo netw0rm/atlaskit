@@ -14,6 +14,7 @@ const Avatar = reactify(AkAvatar, {
 
 const avatarClass = hostStyles['ak-avatar'];
 const avatarUrl = require('url!./avatar-96.png');
+const transparentAvatarUrl = require('url!./avatar-96-transparent.png');
 
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 

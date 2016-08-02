@@ -39,6 +39,7 @@ class ToggleDemo extends Component {
           target="#target"
           position="bottom left"
           renderElementTo="#root"
+          hasBlanket={false}
         >
           <div>
             Demo

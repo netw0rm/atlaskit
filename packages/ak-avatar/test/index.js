@@ -3,7 +3,6 @@ import chaiAsPromised from 'chai-as-promised';
 import { symbols } from 'skatejs';
 import { name } from '../package.json';
 import AKAvatar from '../src/index.js';
-import { getInitialsForAllColors } from '../src/helpers.js';
 import shadowStyles from '../src/shadow.less';
 
 chai.use(chaiAsPromised);
@@ -13,7 +12,6 @@ const expect = chai.expect;
 const defaultSize = 'medium';
 const defaultPresence = 'none';
 const defaultLabel = undefined;
-const defaultBorderColor = undefined;
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 
 const avatarSizes = {
@@ -58,7 +56,6 @@ describe('ak-avatar', () => {
     expect(component.size).to.equal(defaultSize, 'size');
     expect(component.presence).to.equal(defaultPresence, 'presence');
     expect(component.label).to.equal(defaultLabel, 'label');
-    expect(component.borderColor).to.equal(defaultBorderColor, 'borderColor');
   });
 
   describe('size property', () => {
@@ -202,96 +199,6 @@ describe('ak-avatar', () => {
         expect(img.src).to.equal(oneByOnePixel);
         done();
       }, done);
-    });
-  });
-
-  describe('fullName property', () => {
-    let component;
-    let container;
-    let outerDiv;
-
-    beforeEach(() => {
-      [component, container] = setupAvatar(component, container);
-      outerDiv = component[symbols.shadowRoot].firstChild;
-    });
-
-    afterEach(() => {
-      document.body.removeChild(container);
-    });
-
-    it('should not display any text if a src is defined', (done) => {
-      component.src = oneByOnePixel;
-      component.fullName = 'Charlie Atlas';
-
-      afterMutation(() => {
-        expect(outerDiv.innerText).to.equal('');
-      }, done);
-    });
-
-    it('should set the background color to transparent if src is defined', (done) => {
-      component.src = oneByOnePixel;
-      component.fullName = 'Charlie Atlas';
-      const transparent = 'rgba(0, 0, 0, 0)';
-
-      afterMutation(() => {
-        expect(getComputedStyle(outerDiv).backgroundColor).to.equal(transparent);
-      }, done);
-    });
-
-    it('should set the background color when fullname is set', (done) => {
-      component.fullName = 'Charlie Atlas';
-      const transparent = 'rgba(0, 0, 0, 0)';
-
-      afterMutation(() => {
-        expect(getComputedStyle(outerDiv).backgroundColor).to.not.equal(transparent);
-      }, done);
-    });
-
-    // Lots of similar tests here so we set up some test data with expected values
-    const tests = [{
-      desc: 'should handle simple first and last names',
-      name: 'Charlie Atlas',
-      expected: 'CA',
-    }, {
-      desc: 'should only show the first letter if only one name provided',
-      name: 'Charlie',
-      expected: 'C',
-    }, {
-      desc: 'should work with multiple \'middle names\'',
-      name: 'Charlie James Otter Fairydust Atlas',
-      expected: 'CA',
-    }, {
-      desc: 'should capitalise initials for one name',
-      name: 'charlie',
-      expected: 'C',
-    }, {
-      desc: 'should capitalise initials for two names',
-      name: 'charlie atlas',
-      expected: 'CA',
-    }];
-
-    tests.forEach((testData) => {
-      it(testData.desc, (done) => {
-        component.fullName = testData.name;
-        const expectedIntitials = testData.expected;
-
-        afterMutation(() => {
-          expect(outerDiv.innerText).to.equal(expectedIntitials);
-        }, done);
-      });
-    });
-
-    it('should be able to generate all possible colors from a set of initials', () => {
-      const initials = getInitialsForAllColors();
-
-      Object.keys(initials).forEach(color => {
-        // We do the check twice here so we can make debugging easier if we ever break this test
-        if (!initials[color]) {
-          console.log(`Unable to find initials to generate the color: ${color}`); // eslint-disable-line no-console, max-len
-        }
-
-        expect(initials[color]).to.not.be.equal(true, color);
-      });
     });
   });
 });

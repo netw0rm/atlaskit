@@ -1,7 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkAvatar from '../src/index';
-import { getInitialsForAllColors } from '../src/helpers';
 import avatarStoryStyles from 'style!./stories.less';
 import { name } from '../package.json';
 import hostStyles from 'style!./../src/host.less';
@@ -17,9 +16,6 @@ const avatarClass = hostStyles['ak-avatar'];
 const avatarUrl = require('url!./avatar-96.png');
 
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
-const rowClass = avatarStoryStyles.row;
-const colClass = avatarStoryStyles.col;
-const headerClass = avatarStoryStyles.header;
 
 // Create an avatar with some sensible defaults
 const DefaultAvatar = (props) => <Avatar
@@ -45,18 +41,47 @@ storiesOf(name, module)
   .add('An avatar with an incorrectly defined size (falls back to default)', () => (
     <DefaultAvatar size="megalarge" />
   ))
-  .add('A xlarge avatar on background', () => {
-    const divStyle = {
-      backgroundColor: 'blue',
+  .add('Avatars on colored background', () => {
+    const rainbowStyle = {
+      background: 'linear-gradient(red, orange, yellow, green, blue, indigo, violet)',
       padding: '10px',
+      marginTop: '10px',
     };
+    const cubeStyle = {
+      backgroundColor: '#556',
+      // eslint-disable-next-line max-len
+      backgroundImage: `linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+      linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+      linear-gradient(30deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+      linear-gradient(150deg, #445 12%, transparent 12.5%, transparent 87%, #445 87.5%, #445),
+      linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a),
+      linear-gradient(60deg, #99a 25%, transparent 25.5%, transparent 75%, #99a 75%, #99a)`,
+      backgroundSize: '80px 140px',
+      backgroundPosition: '0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px',
+      padding: '10px',
+      color: 'white',
+    };
+    const transparentPixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; // eslint-disable-line  max-len
     return (
-      <div style={divStyle}>
-        <Avatar src={avatarUrl} size="xlarge" className={avatarClass} />
+      <div>
+        <div>
+          Here we have a xlarge avatar, an avatar with partial transparency, and a completely
+          transparent image
+        </div>
+        <div style={rainbowStyle}>
+          <DefaultAvatar size="xlarge" />
+          <DefaultAvatar size="xlarge" src={transparentAvatarUrl} />
+          <DefaultAvatar size="xlarge" src={transparentPixel} />
+        </div>
+        <div style={cubeStyle}>
+          <DefaultAvatar size="xlarge" />
+          <DefaultAvatar size="xlarge" src={transparentAvatarUrl} />
+          <DefaultAvatar size="xlarge" src={transparentPixel} />
+        </div>
       </div>
     );
   })
-  .add('A row of avatars', () => (
+  .add('All avatar sizes', () => (
     <AllAvatarSizes />
   ))
   .add('All avatars with online presence', () => (
@@ -79,104 +104,9 @@ storiesOf(name, module)
     <div className={avatarRowClass}>
       <div>
         This image should have an aria-label that should be read out when tabbing to the link
-          around it.
+          around it and also an alt text.
       </div>
       <a href="#"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
+      <a href="#"><DefaultAvatar size="xlarge" label="This is an avatar!" src="" /></a>
     </div>
-  ))
-  .add('Avatars with names instead of images', () => (
-    // We override the src in each one so that we force the initials to show
-    <div>
-      <div className={rowClass}>
-        <div className={colClass}>
-          <div className={headerClass}>fullName="Jon Snow"</div>
-          <AllAvatarSizes fullName="Jon Snow" src="" />
-        </div>
-        <div className={colClass}>
-          <div className={headerClass}>fullName="Jon P. Snow"</div>
-          <AllAvatarSizes fullName="Jon P. Snow" src="" />
-        </div>
-      </div>
-      <div className={rowClass}>
-        <div className={colClass}>
-          <div className={headerClass}>fullName="Jon"</div>
-          <AllAvatarSizes fullName="Jon" src="" />
-        </div>
-        <div className={colClass}>
-          <div className={headerClass}>fullName="Kit Harrington"</div>
-          <AllAvatarSizes fullName="Kit Harrington" src="" />
-        </div>
-      </div>
-      <div className={rowClass}>
-        <div className={colClass}>
-          <div className={headerClass}>Wide letters</div>
-          <AllAvatarSizes fullName="W W" src="" />
-        </div>
-        <div className={colClass}>
-          <div className={headerClass}>Wide letters</div>
-          <AllAvatarSizes fullName="M M" src="" />
-        </div>
-      </div>
-      <div className={rowClass}>
-        <div className={colClass}>
-          <div className={headerClass}>Chinese Characters</div>
-          <AllAvatarSizes fullName="王 鹏" src="" />
-        </div>
-        <div className={colClass}>
-          <div className={headerClass}>Arabic characters</div>
-          <AllAvatarSizes fullName="عبد العزيز" src="" />
-        </div>
-      </div>
-    </div>
-  ))
-  .add('All avatar colors', () => {
-    // a generated list of initials that happen to fall on each value in the palette in order
-    const initials = getInitialsForAllColors();
-    const colorsInOrder = Object.keys(initials).sort();
-    const initialsInOrder = colorsInOrder.map(colName => initials[colName]);
-    return (<div className={avatarRowClass} style={{ width: '400px' }} >
-      {
-        initialsInOrder.map((user) => <Avatar fullName={user} size="large" />)
-      }
-    </div>);
-  })
-  .add('All avatar colors with all presences', () => {
-    // a generated list of initials that happen to fall on each value in the palette in order
-    const initials = getInitialsForAllColors();
-    return (<div >
-      <div className={rowClass}>
-        <div className={colClass}>
-          <div className={avatarRowClass} style={{ width: '270px' }} >
-            {
-              Object.values(initials).map((user) =>
-                <DefaultAvatar src="" fullName={user} presence="online" />)
-            }
-          </div>
-        </div>
-        <div className={colClass}>
-          <div className={avatarRowClass} style={{ width: '270px' }} >
-            {
-              Object.values(initials).map((user) =>
-                <DefaultAvatar src="" fullName={user} presence="away" />)
-            }
-          </div>
-        </div>
-        <div className={colClass}>
-          <div className={avatarRowClass} style={{ width: '270px' }} >
-            {
-              Object.values(initials).map((user) =>
-                <DefaultAvatar src="" fullName={user} presence="busy" />)
-            }
-          </div>
-        </div>
-        <div className={colClass}>
-          <div className={avatarRowClass} style={{ width: '270px' }} >
-            {
-              Object.values(initials).map((user) =>
-                <DefaultAvatar src="" fullName={user} presence="offline" />)
-            }
-          </div>
-        </div>
-      </div>
-    </div>);
-  });
+  ));

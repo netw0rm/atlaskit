@@ -170,6 +170,14 @@ describe('ak-avatar', () => {
       }, done);
     });
 
+    it('should be visible when presence is set to \'online\'', (done) => {
+      component.presence = 'online';
+
+      afterMutation(() => {
+        expect(getComputedStyle(presence).display).to.not.equal('none');
+      }, done);
+    });
+
     it('should default to none when set to an invalid value', (done) => {
       component.presence = 'spooky';
 

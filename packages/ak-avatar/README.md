@@ -29,8 +29,6 @@ const myAvatar = new Avatar();
     *  [`avatar.presence`](#Avatar+presence) : string
     *  [`avatar.src`](#Avatar+src) : string
     *  [`avatar.label`](#Avatar+label) : string
-    *  [`avatar.fullName`](#Avatar+fullName) : string
-    *  [`avatar.borderColor`](#Avatar+borderColor) : string
 
 ### Constructor
 The definition for the Avatar component.
@@ -46,7 +44,7 @@ const myAvatar = new Avatar();
 ```
 ### `avatar.size` : string
 The size of the avatar. One of:
-'xsmall', 'small', 'medium', 'large', 'xlarge'.
+small', 'medium', 'large', 'xlarge'.
 
 **Kind**: instance property of Avatar  
 **Default**: `"medium"`  
@@ -59,16 +57,19 @@ The size of the avatar. One of:
 avatar.size = 'large';
 ```
 ### `avatar.presence` : string
-The source URL.
+An indicator or a users online status.
+Will show a small colored icon on the avatar itself.
+'online', 'offline', 'busy' or 'none'
 
 **Kind**: instance property of Avatar  
+**Default**: `"none"`  
 **HTML Example**
 ```js
-<ak-avatar src="my/avatar/src.png"></ak-avatar>
+<ak-avatar presence="online"></ak-avatar>
 ```
 **JS Example**
 ```js
-avatar.src = 'my/avatar/src.png';
+avatar.presence = 'online';
 ```
 ### `avatar.src` : string
 The source URL.
@@ -83,7 +84,8 @@ The source URL.
 avatar.src = 'my/avatar/src.png';
 ```
 ### `avatar.label` : string
-The label for the Avatar. Used by screen readers.
+The label for the Avatar. Used by screen readers and as fallback content should
+the image fail to load.
 
 **Kind**: instance property of Avatar  
 **HTML Example**
@@ -94,20 +96,3 @@ The label for the Avatar. Used by screen readers.
 ```js
 avatar.label = 'Avatar for Jon Snow';
 ```
-### `avatar.fullName` : string
-The name of the person the avatar is for. Is used to create a default avatar if
-no src is provided.
-
-**Kind**: instance property of Avatar  
-**HTML Example**
-```js
-<ak-avatar full-name="Jon Snow" src="my/avatar/src.png"></ak-avatar>
-```
-**JS Example**
-```js
-avatar.fullName = 'Jon Snow';
-```
-### `avatar.borderColor` : string
-The border color for the Avatar.
-
-**Kind**: instance property of Avatar  

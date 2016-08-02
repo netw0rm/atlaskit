@@ -6,7 +6,7 @@ import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
 import Icon from 'ak-editor-icon';
 import Popup from 'ak-editor-popup';
-import TextInput from 'ak-editor-hyperlink-popup-text-input';
+import TextInput from 'ak-editor-popup-text-input';
 
 function toggle(elem, input) {
   elem.open = !elem.open;

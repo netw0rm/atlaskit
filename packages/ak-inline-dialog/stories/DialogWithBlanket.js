@@ -11,7 +11,7 @@ const Dialog = reactify(AkInlineDialog, {
   ReactDOM,
 });
 
-class DialogWithButton extends Component {
+class DialogWithBlanket extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,23 +20,27 @@ class DialogWithButton extends Component {
 
     // Bind callback methods to make `this` the correct context.
     this.handleClick = this.handleClick.bind(this);
-    this.handleMouseOver = this.handleMouseOver.bind(this);
-    this.handleMouseOut = this.handleMouseOut.bind(this);
+    this.handleDialogClosed = this.handleDialogClosed.bind(this);
   }
+
+  componentDidMount() {
+    window.addEventListener('ak-after-close', this.handleDialogClosed);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('ak-after-close', this.handleDialogClosed);
+  }
+
   handleClick() {
-    if (this.props.event === 'click') {
-      this.setState({ open: !this.state.open });
-    }
+    this.setState({ open: true });
   }
 
-  handleMouseOver() {
-    if (this.props.event === 'hover') {
-      this.setState({ open: true });
-    }
-  }
-
-  handleMouseOut() {
-    if (this.props.event === 'hover') {
+  handleDialogClosed() {
+    // if the dialog was closed from the inside
+    // for example by pressing esc button or by clicking on the blanket
+    // this.state will be out of sync with the dialog's open property
+    // unless we manually sync it again
+    if (this.props.open !== this.state.open) {
       this.setState({ open: false });
     }
   }
@@ -46,11 +50,9 @@ class DialogWithButton extends Component {
       <div style={this.props.style}>
         <button
           onClick={this.handleClick}
-          onMouseOver={this.handleMouseOver}
-          onMouseOut={this.handleMouseOut}
           style={{ border: 0, background: '#dfdfdf' }}
         >
-          {this.props.position}
+          test button
         </button>
         <Dialog
           className={styles.akInlineDialog}
@@ -58,7 +60,8 @@ class DialogWithButton extends Component {
           target="#target"
           attachment={this.props.attachTo}
           position={this.props.position}
-          hasBlanket={false}
+          hasBlanket={this.props.hasBlanket}
+          isBlanketTinted={this.props.blanketTinted}
         >
           <button
             onClick={this.handleClick}
@@ -66,18 +69,22 @@ class DialogWithButton extends Component {
             onMouseOut={this.handleMouseOut}
             style={{ border: 0, background: '#dfdfdf' }}
           >
-            {this.props.position}
+            text inside
           </button>
         </Dialog>
       </div>
     );
   }
 }
-DialogWithButton.propTypes = {
+
+DialogWithBlanket.propTypes = {
   event: React.PropTypes.string,
   position: React.PropTypes.string,
   style: React.PropTypes.object,
   attachTo: React.PropTypes.string,
+  hasBlanket: React.PropTypes.bool,
+  blanketTinted: React.PropTypes.bool,
+  open: React.PropTypes.bool,
 };
 
-export default DialogWithButton;
+export default DialogWithBlanket;

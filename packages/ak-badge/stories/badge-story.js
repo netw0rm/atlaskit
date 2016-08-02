@@ -11,7 +11,13 @@ const Badge = reactify(AkBadge, {
 
 storiesOf(name, module)
   .add('with a value', () => (
-    <Badge id="myComponent" value="5" />
+    <div>
+      <p><Badge id="myComponent" value="5" /> default</p>
+      <p><Badge id="myComponent" appearance="primary" value="5" /> primary</p>
+      <p><Badge id="myComponent" appearance="important" value="5" /> important</p>
+      <p><Badge id="myComponent" appearance="added" value="5" /> added</p>
+      <p><Badge id="myComponent" appearance="removed" value="5" /> removed</p>
+    </div>
   ))
   .add('with a max value', () => (
     <Badge id="myComponent" value="500" max="99" />

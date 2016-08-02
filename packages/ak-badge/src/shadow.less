@@ -3,10 +3,41 @@
 
 // Only do class selectors in here, anything else leaks to the rest of the page in
 // browsers that do not support shadow DOM
+@import '../node_modules/akutil-shared-styles/src/colors.less';
 @import 'shared-variables.less';
 
 .value {
-  background: @ak-badge-background;
-  border-radius: 1em;
-  color: @ak-badge-color;
+  border-radius: 2em;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1;
+  min-width: 1;
+  padding: 0.16666666666667em 0.5em;
+  text-align: center;
+}
+
+.default {
+  background: #dee1e6;
+  color: #42526e;
+}
+
+.primary {
+  background: #165ecc;
+  color: #ffffff;
+}
+
+.important {
+  background: #ed5451;
+  color: #ffffff;
+}
+
+.added {
+  background: #daf2e6;
+  color: #008465;
+}
+
+.removed {
+  background: #ffe1e4;
+  color: #bf2117;
 }

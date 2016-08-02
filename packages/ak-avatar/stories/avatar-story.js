@@ -12,7 +12,7 @@ const Avatar = reactify(AkAvatar, {
   ReactDOM,
 });
 
-const avatarClass = hostStyles['ak-avatar'];
+const avatarClass = hostStyles.akAvatar;
 const avatarUrl = require('url!./avatar-96.png');
 const transparentAvatarUrl = require('url!./avatar-96-transparent.png');
 

@@ -35,13 +35,13 @@ const definition = {
       shadowStyles.locals.presence,
       shadowStyles.locals[elem.presence],
     ]);
-    const outerDivClass = classNames([
+    const outerDivClasses = classNames([
       shadowStyles.locals.outerDiv,
       shadowStyles.locals[elem.size],
     ]);
 
     return (
-      <div class={outerDivClass} aria-label={elem.label}>
+      <div class={outerDivClasses} aria-label={elem.label}>
         <style>{shadowStyles.toString()}</style>
         <img alt={elem.label} src={elem.src} class={imgClasses} />
         <div class={presenceClasses}></div>
@@ -65,7 +65,7 @@ const definition = {
     }),
 
     /**
-     * @description An indicator or a users online status.
+     * @description An indicator of a users online status.
      * Will show a small colored icon on the avatar itself.
      * 'online', 'offline', 'busy' or 'none'
      * @memberof Avatar
@@ -89,8 +89,6 @@ const definition = {
      */
     src: prop.string({
       attribute: true,
-      // Add a default so that creating via `new AKAvatar()` doesnt try to load a url of `null`
-      default: '',
     }),
 
     /**

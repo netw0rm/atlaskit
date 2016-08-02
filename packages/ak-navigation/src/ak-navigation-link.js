@@ -13,8 +13,6 @@ function select(elem) {
 const definition = {
   render(elem) {
     return (
-      // JSX requires that there only be a single root element.
-      // Incremental DOM doesn't require this.
       <a
         className={`
         ${shadowStyles.locals.link}

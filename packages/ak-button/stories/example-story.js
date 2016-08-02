@@ -37,12 +37,15 @@ storiesOf(name, module)
       render() {
         return (
           <div>
-            Disable
-            <input
-              type="checkbox"
-              onChange={this.handleClick.bind(this)}  // eslint-disable-line react/jsx-no-bind
-              defaultChecked={this.state.disable}
-            />
+            <label>
+              Disabled
+              <input
+                type="checkbox"
+                id="disable-checkbox"
+                onChange={this.handleClick.bind(this)}  // eslint-disable-line react/jsx-no-bind
+                defaultChecked={this.state.disable}
+              />
+            </label>
             <AkButton
               disabled={this.state.disable}
               onclick={action('clicking the WebComponent')}

@@ -16,10 +16,12 @@ function closeDialog(elem) {
 
 function renderBlanketIfNeeded(elem) {
   if (elem.hasBlanket) {
-    return (<ak-blanket
-      tinted={elem.isBlanketTinted}
-      clickable={elem.isBlanketClickable}
-    />);
+    return (
+      <ak-blanket
+        tinted={elem.isBlanketTinted}
+        clickable={elem.isBlanketClickable}
+      />
+    );
   }
 
   return '';
@@ -56,9 +58,7 @@ const definition = {
 
     if (elem.open === true) {
       emit(elem, 'ak-after-open');
-    }
-
-    if (elem.open === false) {
+    } else if (elem.open === false) {
       emit(elem, 'ak-after-close');
     }
 
@@ -72,7 +72,11 @@ const definition = {
           target={elem.target}
           onRender={(layer) => {
             if (elem.open && layer.alignment) {
-              elem.positioned = true;
+              // by default the dialog has opacity 0
+              // and only with attribute 'positioned' it has opacity 1
+              // this behavior is to avoid 'flashing' of a dialog
+              // when it's initially positioning itself on a page
+              elem.setAttribute('positioned', true);
             }
           }
           }
@@ -232,10 +236,6 @@ const definition = {
     isClosableOnEsc: prop.boolean({
       attribute: true,
       default: true,
-    }),
-
-    positioned: prop.boolean({
-      attribute: true,
     }),
   },
 };

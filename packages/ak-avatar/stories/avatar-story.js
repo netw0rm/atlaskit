@@ -18,7 +18,6 @@ const transparentAvatarUrl = require('url!./avatar-96-transparent.png');
 
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 
-// Create an avatar with some sensible defaults
 const DefaultAvatar = (props) => <Avatar
   src={avatarUrl}
   style={{ marginLeft: '10px' }}
@@ -26,7 +25,6 @@ const DefaultAvatar = (props) => <Avatar
   {...props}
 />;
 
-// Create a row of avatars, one of each size with whatever props are passed in
 const AllAvatarSizes = (props) => <div className={avatarRowClass}>
   <DefaultAvatar size="small" {...props} />
   <DefaultAvatar size="medium" {...props} />

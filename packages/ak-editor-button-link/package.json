@@ -1,11 +1,11 @@
 {
-  "name": "ak-editor-hyperlink-popup-text-input",
+  "name": "ak-editor-button-link",
   "version": "0.1.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-hyperlink-popup-text-input",
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-button-link",
     "pre-release": "lerna-semantic-release pre"
   },
   "files": [
@@ -18,7 +18,8 @@
     "skatejs": "1.0.0-beta.12"
   },
   "devDependencies": {
-    "akutil-react": "0.0.3"
+    "akutil-react": "0.0.3",
+    "ak-editor-icon": "^2.0.0"
   },
   "repository": {
     "type": "git",

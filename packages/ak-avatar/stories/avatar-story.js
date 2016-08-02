@@ -37,7 +37,12 @@ const AllAvatarSizes = (props) => <div className={avatarRowClass}>
 
 storiesOf(name, module)
   .add('A default avatar', () => (
-    <DefaultAvatar />
+    <div>
+      <div>
+        By default an avatar should be medium sized and have no presence
+      </div>
+      <DefaultAvatar />
+    </div>
   ))
   .add('An avatar with an incorrectly defined size (falls back to default)', () => (
     <DefaultAvatar size="megalarge" />
@@ -67,7 +72,7 @@ storiesOf(name, module)
       <div>
         <div>
           Here we have a xlarge avatar, an avatar with partial transparency, and a completely
-          transparent image
+          transparent image. No border is shown around them.
         </div>
         <div style={rainbowStyle}>
           <DefaultAvatar size="xlarge" />

@@ -11,7 +11,7 @@ const Container = (props) => (
   </div>
 );
 
-storiesOf('ak-editor-hyperlink-popup-text-input', module)
+storiesOf('ak-editor-popup-text-input', module)
   .add('Empty', () => (
     <Container>
       <TextInput />

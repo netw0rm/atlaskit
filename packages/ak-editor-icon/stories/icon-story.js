@@ -1,5 +1,4 @@
 import { storiesOf } from '@kadira/storybook';
-import { vdom } from 'skatejs';
 const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
 import IconComponent from '../src';

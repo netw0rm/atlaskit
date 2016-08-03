@@ -1,6 +1,6 @@
 {
   "name": "ak-navigation",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "ak-navigation webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -12,8 +12,8 @@
   ],
   "dependencies": {
     "akutil-shared-styles": "*",
-    "ak-page": "*",
-    "ak-icon": "*",
+    "ak-page": "^1.0.0",
+    "ak-icon": "^1.0.0",
     "skatejs": "1.0.0-beta.10"
   },
   "author": "Atlassian Pty Ltd",

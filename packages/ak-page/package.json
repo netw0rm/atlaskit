@@ -1,6 +1,6 @@
 {
   "name": "ak-page",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "ak-page webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -11,7 +11,7 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "*",
+    "akutil-shared-styles": "^33.0.2",
     "skatejs": "1.0.0-beta.10"
   },
   "author": "Atlassian Pty Ltd",

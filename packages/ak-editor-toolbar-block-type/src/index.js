@@ -22,7 +22,7 @@ function selectFont(elem) {
     elem.selectedFont = event.detail.font;
     toggle(elem);
 
-    // remove this when reactify v0.0.7 is resolved (https://github.com/webcomponents/react-integration/commit/53f8bf59a76b0ea0929bf2e95866ce949456eef5)
+    // remove this when reactify v0.0.7 is released (https://github.com/webcomponents/react-integration/commit/53f8bf59a76b0ea0929bf2e95866ce949456eef5)
     emit(elem, 'selectfont', { detail: { font: elem.selectedFont } });
   };
 }

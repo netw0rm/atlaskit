@@ -102,9 +102,9 @@
       "resolved": "https://registry.npmjs.org/ak-dmd-plugin/-/ak-dmd-plugin-0.0.7.tgz"
     },
     "akutil-polyfills": {
-      "version": "0.0.13",
-      "from": "akutil-polyfills@>=0.0.13 <0.0.14",
-      "resolved": "https://registry.npmjs.org/akutil-polyfills/-/akutil-polyfills-0.0.13.tgz"
+      "version": "0.0.11",
+      "from": "akutil-polyfills@>=0.0.11 <0.0.12",
+      "resolved": "https://registry.npmjs.org/akutil-polyfills/-/akutil-polyfills-0.0.11.tgz"
     },
     "align-text": {
       "version": "0.1.4",

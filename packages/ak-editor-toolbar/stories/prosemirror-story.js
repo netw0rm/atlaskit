@@ -52,6 +52,11 @@ storiesOf('ak-editor-toolbar', module)
         }));
       }
 
+      toggleMark(name) {
+        this.pm.on.interaction.dispatch();
+        commands.toggleMark(schema.marks[name])(this.pm);
+      }
+
       render() {
         return (
           <div ref={(elem) => elem && (this.editorElement = elem.firstChild.nextSibling)}>
@@ -67,11 +72,6 @@ storiesOf('ak-editor-toolbar', module)
             <Content openTop />
           </div>
         );
-      }
-
-      toggleMark(name) {
-        this.pm.on.interaction.dispatch();
-        commands.toggleMark(schema.marks[name])(this.pm);
       }
     }
 

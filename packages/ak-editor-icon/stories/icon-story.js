@@ -46,15 +46,13 @@ storiesOf('ak-editor-icon', module)
         this.toggleAnimation = this.toggleAnimation.bind(this);
       }
 
-      randomIcon() {
-        const icons = [
-          'add', 'align-center', 'align-left', 'align-right',
-          'attachment', 'bold', 'bullet-list', 'code', 'date', 'decision',
-          'emoji', 'expand', 'help', 'image', 'indent', 'italic', 'link',
-          'mention', 'more', 'number-list', 'open', 'outdent', 'redo', 'table',
-          'task', 'text-color', 'underline', 'undo', 'unlink',
-        ];
-        return icons[Math.floor(Math.random() * icons.length)];
+      componentDidMount() {
+        this.startAnimating();
+        this.checkbox.checked = true;
+      }
+
+      componentWillUnmount() {
+        this.stopAnimating();
       }
 
       startAnimating() {
@@ -73,13 +71,15 @@ storiesOf('ak-editor-icon', module)
         }
       }
 
-      componentDidMount() {
-        this.startAnimating();
-        this.checkbox.checked = true;
-      }
-
-      componentWillUnmount() {
-        this.stopAnimating();
+      randomIcon() {
+        const icons = [
+          'add', 'align-center', 'align-left', 'align-right',
+          'attachment', 'bold', 'bullet-list', 'code', 'date', 'decision',
+          'emoji', 'expand', 'help', 'image', 'indent', 'italic', 'link',
+          'mention', 'more', 'number-list', 'open', 'outdent', 'redo', 'table',
+          'task', 'text-color', 'underline', 'undo', 'unlink',
+        ];
+        return icons[Math.floor(Math.random() * icons.length)];
       }
 
       render() {
@@ -107,4 +107,3 @@ storiesOf('ak-editor-icon', module)
 
     return <Demo />;
   });
-

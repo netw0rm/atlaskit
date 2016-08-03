@@ -1,6 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
-const { React } = window; // eslint-disable-line no-unused-vars
 
 import DialogWithInput from './DialogWithInput.js';
 import DialogWithButton from './DialogWithButton.js';

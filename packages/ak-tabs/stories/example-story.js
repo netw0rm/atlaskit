@@ -38,6 +38,29 @@ storiesOf(name, module)
       <ak-tab label="Another tab">Tab content</ak-tab>
     </Component>
   ))
+  .add('simple ak-tabs inside a container', () => (
+    <div style={{ width: '50%', border: '1px solid black' }}>
+      <Component>
+        <ak-tab label="Details">Details content</ak-tab>
+        <ak-tab label="Diff">Diff content</ak-tab>
+        <ak-tab label="Commits">Commits content</ak-tab>
+        <ak-tab label="Pipeline">Pipeline content</ak-tab>
+      </Component>
+    </div>
+  ))
+  .add('ak-tabs with many items inside a container', () => (
+    <div style={{ width: '50%', border: '1px solid black' }}>
+      <Component>
+        <ak-tab label="Long tab name 1">Tab 1 content</ak-tab>
+        <ak-tab selected label="Long tab name 2">Tab 2 content</ak-tab>
+        <ak-tab label="Long tab name 3">Tab 3 content</ak-tab>
+        <ak-tab label="Another tab">Tab content</ak-tab>
+        <ak-tab label="Another tab">Tab content</ak-tab>
+        <ak-tab label="Another tab">Tab content</ak-tab>
+        <ak-tab label="Another tab">Tab content</ak-tab>
+      </Component>
+    </div>
+  ))
   .add('ak-tabs with no children', () => (
     <Component />
   ))

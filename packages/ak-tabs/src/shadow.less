@@ -1,17 +1,28 @@
 @import 'shared-variables.less';
 
+.ak-tab-labels-container {
+  position: relative;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  max-height: @ak-tabs-line-height + (2 * @ak-tabs-margin);
+}
+
 .ak-tab-labels {
   display: flex;
-  flex-wrap: wrap;
   list-style-type: none;
   padding: 0;
+  margin: 0;
   position: relative;
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
 .ak-tab-label {
   color: #344563;
   font-size: 14px;
-  line-height: 20px;
+  line-height: @ak-tabs-line-height;
   margin: @ak-tabs-margin;
   position: relative;
   white-space: nowrap;
@@ -21,21 +32,23 @@
   &:active::before{
     color: @ak-tabs-color-active;
   }
-}
 
-.ak-tab-label > a {
-  color: inherit;
-  text-decoration: none;
-  padding: @ak-tabs-margin;
+  & > a {
+    color: inherit;
+    text-decoration: none;
+    padding: @ak-tabs-margin;
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
-    border-radius: 3px;
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
+      border-radius: 3px;
+    }
   }
 }
 
+// Tab labels line
 .ak-tab-labels:not(:empty)::before,
+.ak-tab-label::before,
 .ak-tab-label-selected::after {
   content: '';
   height: 1px;
@@ -45,7 +58,16 @@
   bottom: @ak-tabs-focus-width - @ak-tabs-margin;
   background-color: @ak-tabs-color-line-default;
   width: inherit;
+  margin: 0;
+}
+
+.ak-tab-labels:not(:empty)::before {
   margin: @ak-tabs-margin;
+}
+
+
+.ak-tab-label:not(:last-of-type)::before {
+  right: (-3 * @ak-tabs-margin);
 }
 
 .ak-tab-label-selected {
@@ -53,7 +75,6 @@
 
   &::after {
     background-color: currentColor;
-    margin: 0;
   }
 }
 
@@ -63,4 +84,34 @@
   &::after {
     left: @ak-tabs-margin;
   }
+}
+
+.ak-tab-labels-fade-start-overlay,
+.ak-tab-labels-fade-end-overlay {
+  display: none;
+}
+
+// Fade effect
+.ak-tab-labels-fade-start ~ .ak-tab-labels-fade-start-overlay {
+  background: linear-gradient(to left, transparent, white);
+  content: "";
+  display: block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 30px;
+  z-index: 1;
+}
+
+.ak-tab-labels-fade-end ~ .ak-tab-labels-fade-end-overlay {
+  background: linear-gradient(to right, transparent, white);
+  content: "";
+  display: block;
+  height: 100%;
+  left: ~"calc(100% - 30px)";
+  position: absolute;
+  top: 0;
+  width: 30px;
+  z-index: 1;
 }

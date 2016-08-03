@@ -8,6 +8,7 @@ import shadowStyles from './shadow.less';
 import Tab, { events as tabEvents } from './children/tab'; // eslint-disable-line no-unused-vars
 
 const tabLabel = Symbol();
+const labelsContainer = Symbol();
 
 /**
  * Helper function. Takes a tab element and returns a handler that emits a event.
@@ -59,8 +60,83 @@ function labelKeydownHandler(tabs, tab) {
   };
 }
 
+/**
+ * Helper function. Hide or show the start and end fade overlays if required.
+ * TODO: Needs to be done on page resize.
+ * @param scrollContainer The scrolling container element.
+ */
+function updateScrollFade(scrollContainer) {
+  const hasOverflow = scrollContainer.scrollWidth > scrollContainer.getBoundingClientRect().width;
+  if (hasOverflow) {
+    const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+    const currScroll = scrollContainer.scrollLeft;
+
+    if (currScroll === 0) {
+      scrollContainer.classList.remove(shadowStyles.locals.akTabLabelsFadeStart);
+    } else {
+      scrollContainer.classList.add(shadowStyles.locals.akTabLabelsFadeStart);
+    }
+
+    if (Math.abs(currScroll - maxScroll) < 1) {
+      scrollContainer.classList.remove(shadowStyles.locals.akTabLabelsFadeEnd);
+    } else {
+      scrollContainer.classList.add(shadowStyles.locals.akTabLabelsFadeEnd);
+    }
+  } else {
+    scrollContainer.classList.remove(shadowStyles.locals.akTabLabelsFadeEnd);
+    scrollContainer.classList.remove(shadowStyles.locals.akTabLabelsFadeStart);
+  }
+}
+
+function labelScrollHandler(e) {
+  if (e.wheelDelta > 0) {
+    this.scrollLeft -= 10;
+  } else if (e.wheelDelta < 0) {
+    this.scrollLeft += 10;
+  }
+
+  updateScrollFade(this);
+}
+
+function labelFocusHandler(tabs) {
+  return () => {
+    // Need to wait for the scroll
+    setTimeout(() => {
+      updateScrollFade(tabs[labelsContainer]);
+    }, 50);
+  };
+}
+
 function getLabelForTab(tab) {
   return tab[tabLabel];
+}
+
+function generateTabLabels(tabsEl) {
+  return tabsEl.children ?
+    tabsEl.children
+    .filter(child => !!child.label)
+    .map(tab => {
+      const classes = `${shadowStyles.locals.akTabLabel}
+                       ${tab.selected ? shadowStyles.locals.akTabLabelSelected : ''}`;
+      const ariaSelected = tab.selected ? 'true' : 'false';
+      const tabIndex = tab.selected ? '0' : '-1';
+      const ref = el => {
+        tab[tabLabel] = el;
+      };
+      return (
+        <li className={classes}>
+          <a
+            href="#"
+            onclick={labelClickHandler(tab)}
+            onkeydown={labelKeydownHandler(tabsEl, tab)}
+            onfocus={labelFocusHandler(tabsEl)}
+            aria-selected={ariaSelected}
+            tabIndex={tabIndex}
+            ref={ref}
+          >{tab.label}</a>
+        </li>
+      );
+    }) : '';
 }
 
 /**
@@ -104,37 +180,32 @@ const definition = {
     // If there is no selected tab, try to select the first tab.
     if (!elem.children.some(el => el.label && el.selected)) {
       const tab = elem.children.find(el => el.label);
-      emit(tab, tabEvents.EVENT_TAB_SELECT, { detail: { tab } });
+      if (tab) {
+        emit(tab, tabEvents.EVENT_TAB_SELECT, { detail: { tab } });
+      }
     }
   },
   render(elem) {
+    const labelsRef = el => {
+      elem[labelsContainer] = el;
+      updateScrollFade(el);
+    };
     return (
       <div>
-        <style>{shadowStyles.toString()}</style>
-        <ul className={shadowStyles.locals.akTabLabels}>
-          {elem.children && elem.children
-            .filter(child => !!child.label)
-            .map(tab => {
-              const classes = `${shadowStyles.locals.akTabLabel}
-                               ${tab.selected ? shadowStyles.locals.akTabLabelSelected : ''}`;
-              const ariaSelected = tab.selected ? 'true' : 'false';
-              const tabIndex = tab.selected ? '0' : '-1';
-              const ref = el => { tab[tabLabel] = el; };
-              return (
-                <li className={classes}>
-                  <a
-                    href="#"
-                    onclick={labelClickHandler(tab)}
-                    onkeydown={labelKeydownHandler(elem, tab)}
-                    aria-selected={ariaSelected}
-                    tabIndex={tabIndex}
-                    ref={ref}
-                  >{tab.label}</a>
-                </li>
-              );
-            })
-          }
-        </ul>
+        {elem.children.length ?
+          <div className={shadowStyles.locals.akTabLabelsContainer}>
+            <style>{shadowStyles.toString()}</style>
+            <ul
+              className={shadowStyles.locals.akTabLabels}
+              onmousewheel={labelScrollHandler}
+              ref={labelsRef}
+            >
+              {generateTabLabels(elem)}
+            </ul>
+            <div className={shadowStyles.locals.akTabLabelsFadeStartOverlay}></div>
+            <div className={shadowStyles.locals.akTabLabelsFadeEndOverlay}></div>
+          </div> : ''
+        }
         <slot />
       </div>
     );

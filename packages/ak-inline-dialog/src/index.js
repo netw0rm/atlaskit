@@ -1,10 +1,31 @@
 /** @jsx vdom */
 /* eslint react/no-unknown-property: 0 */
 import 'style!./host.less';
-import { getPositionFromClasses, enumeration } from 'akutil-common';
-import { vdom, prop, define } from 'skatejs';
+import { enumeration, KeyPressHandler } from 'akutil-common';
+import { vdom, prop, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer'; // eslint-disable-line no-unused-vars, max-len
+import 'ak-blanket';
+
+let keyPress;
+function closeDialog(elem) {
+  return () => {
+    elem.open = false;
+  };
+}
+
+function renderBlanketIfNeeded(elem) {
+  if (elem.hasBlanket) {
+    return (
+      <ak-blanket
+        tinted={elem.isBlanketTinted}
+        clickable={elem.isBlanketClickable}
+      />
+    );
+  }
+
+  return '';
+}
 
 /**
  * @description The definition for the InlineDialog component.
@@ -15,14 +36,13 @@ import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-lay
  *
  */
 const definition = {
-  observedAttributes: ['class'],
-  attributeChanged(elem, data) {
-    if (data.newValue) {
-      const newPosition = getPositionFromClasses(data.newValue);
-      if (newPosition && newPosition !== elem.actualPosition) {
-        elem.actualPosition = newPosition; // eslint-disable-line no-param-reassign
-      }
-    }
+  attached(elem) {
+    keyPress = new KeyPressHandler('ESCAPE', closeDialog(elem));
+    window.addEventListener('ak-blanket-click', closeDialog(elem));
+  },
+  detached(elem) {
+    keyPress.destroy();
+    window.removeEventListener('ak-blanket-click', closeDialog(elem));
   },
   render(elem) {
     const styles = {};
@@ -36,24 +56,37 @@ const definition = {
       styles.borderRadius = elem.borderRadius;
     }
 
+    if (elem.open === true) {
+      emit(elem, 'ak-after-open');
+    } else if (elem.open === false) {
+      emit(elem, 'ak-after-close');
+    }
+
     return (
-      <ak-layer
-        open={elem.open}
-        position={elem.position}
-        attachment={elem.constrain}
-        target={elem.target}
-        onRender={(layer) => {
-          if (elem.open && layer.alignment) {
-            elem.positioned = true;
+      <div>
+        {renderBlanketIfNeeded(elem)}
+        <ak-layer
+          open={elem.open}
+          position={elem.position}
+          attachment={elem.constrain}
+          target={elem.target}
+          onRender={(layer) => {
+            if (elem.open && layer.alignment) {
+              // by default the dialog has opacity 0
+              // and only with attribute 'positioned' it has opacity 1
+              // this behavior is to avoid 'flashing' of a dialog
+              // when it's initially positioning itself on a page
+              elem.setAttribute('positioned', true);
+            }
           }
-        }
-        }
-      >
-        <style>{shadowStyles.toString()}</style>
-        <div class={shadowStyles.locals.inlineDialogContainer} style={styles}>
-          <slot />
-        </div>
-      </ak-layer>
+          }
+        >
+          <style>{shadowStyles.toString()}</style>
+          <div class={shadowStyles.locals.inlineDialogContainer} style={styles}>
+            <slot />
+          </div>
+        </ak-layer>
+      </div>
     );
   },
   props: {
@@ -152,9 +185,57 @@ const definition = {
     padding: prop.string({
       attribute: true,
     }),
-
-    positioned: prop.boolean({
+    /**
+     * @description If dialog has a blanket underneath or not. By default it has.
+     * @memberof InlineDialog
+     * @instance
+     * @type Boolean
+     * @default true
+     * @example @html <ak-inline-dialog has-blanket="true"></ak-inline-dialog>
+     * @example @js dialog.hasBlanket = true
+     */
+    hasBlanket: prop.boolean({
       attribute: true,
+      default: true,
+    }),
+    /**
+     * @description If click on the blanket dismisses the dialog. By default it is.
+     * @memberof InlineDialog
+     * @instance
+     * @type Boolean
+     * @default true
+     * @example @html <ak-inline-dialog is-blanket-clickable="true"></ak-inline-dialog>
+     * @example @js dialog.isBlanketClickable = true
+     */
+    isBlanketClickable: prop.boolean({
+      attribute: true,
+      default: true,
+    }),
+    /**
+     * @description Is blanket grey with opacity or transparent. By default it's transparent.
+     * @memberof InlineDialog
+     * @instance
+     * @type Boolean
+     * @default false
+     * @example @html <ak-inline-dialog is-blanket-tinted="true"></ak-inline-dialog>
+     * @example @js dialog.isBlanketTinted = true
+     */
+    isBlanketTinted: prop.boolean({
+      attribute: true,
+      default: false,
+    }),
+    /**
+     * @description Is blanket is closable by pressing the 'escape' button. By default it is.
+     * @memberof InlineDialog
+     * @instance
+     * @type Boolean
+     * @default true
+     * @example @html <ak-inline-dialog is-closable-on-esc="true"></ak-inline-dialog>
+     * @example @js dialog.isClosableOnEsc = true
+     */
+    isClosableOnEsc: prop.boolean({
+      attribute: true,
+      default: true,
     }),
   },
 };

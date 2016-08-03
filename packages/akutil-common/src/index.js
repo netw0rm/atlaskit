@@ -1,4 +1,6 @@
 import { enumeration } from './properties';
-import Alignment, { attachmentMap, getPositionFromClasses } from './Alignment';
+import Alignment from './Alignment';
+import keyCode from 'keycode';
+import KeyPressHandler from './KeyPressHandler';
 
-export { enumeration, Alignment, attachmentMap, getPositionFromClasses };
+export { enumeration, Alignment, keyCode, KeyPressHandler };

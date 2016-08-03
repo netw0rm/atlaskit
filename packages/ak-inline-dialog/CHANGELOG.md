@@ -1,5 +1,15 @@
-<a name="69.4.1"></a>
-## 69.4.1 (2016-07-25)
+<a name="69.5.0"></a>
+# 69.5.0 (2016-08-01)
+
+
+
+<a name="ak-inline-dialog@69.5.0"></a>
+# ak-inline-dialog@69.5.0 (2016-07-26)
+
+
+### Features
+
+* swith to fixed versions of ak-layer and akutil-shared-styles ([117a881](https://bitbucket.org/atlassian/atlaskit/commits/117a881))
 
 
 
@@ -30,6 +40,9 @@
 
 ### Bug Fixes
 
+* endsWith is not available in IE ([d8b1f01](https://bitbucket.org/atlassian/atlaskit/commits/d8b1f01))
+* FAB-370 add attributes to prop types in pf-mention-picker ([b1929da](https://bitbucket.org/atlassian/atlaskit/commits/b1929da))
+* Fix bad export for MentionResource ([1502f73](https://bitbucket.org/atlassian/atlaskit/commits/1502f73))
 * **skate:** SkateJS update to beta.10 ([620034a](https://bitbucket.org/atlassian/atlaskit/commits/620034a))
 
 
@@ -46,16 +59,6 @@
 ### Bug Fixes
 
 * Remove broken export from ak-inline-dialog, and prevent usage upstream. ([e5cc55f](https://bitbucket.org/atlassian/atlaskit/commits/e5cc55f))
-
-
-
-<a name="ak-inline-dialog@69.2.0"></a>
-# ak-inline-dialog@69.2.0 (2016-07-12)
-
-
-### Features
-
-* css options for inline-dialog ([a63837b](https://bitbucket.org/atlassian/atlaskit/commits/a63837b))
 
 
 

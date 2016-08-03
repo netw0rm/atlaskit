@@ -42,6 +42,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
         super(props);
         this.state = {
           selectedFont: 'paragraph',
+          canChangeBlockType: false,
         };
       }
 
@@ -76,20 +77,23 @@ storiesOf('ak-editor-toolbar-block-type', module)
           const nodes = getSelectionNodes(pm.selection, pm.doc.content.content);
           const node = nodes[0];
           const name = node.type.name;
+          let fontName;
 
           if (name === 'paragraph') {
-            this.setState({
-              selectedFont: name,
-            });
+            fontName = name;
           } else if (name === 'code_block') {
-            this.setState({
-              selectedFont: 'monospace',
-            });
+            fontName = 'monospace';
           } else {
-            this.setState({
-              selectedFont: name + (node.attrs.level - 1),
-            });
+            fontName = name + (node.attrs.level - 1);
           }
+
+          const canChangeBlockType = commands.setBlockType(schema.nodes.code_block)(pm, false) ||
+            commands.setBlockType(schema.nodes.paragraph)(pm, false);
+
+          this.setState({
+            selectedFont: fontName,
+            canChangeBlockType,
+          });
         });
       }
 
@@ -98,6 +102,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
           <div ref={(elem) => elem && (this.editorElement = elem.firstChild.nextSibling)}>
             <Toolbar>
               <BlockType
+                disabled={!this.state.canChangeBlockType}
                 selectedFont={this.state.selectedFont}
                 onSelectFont={(event) => {
                   this.pm.on.interaction.dispatch();

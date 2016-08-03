@@ -40,6 +40,7 @@ export default define('ak-editor-toolbar-block-type', {
         <style>{styles.toString()}</style>
         {elem.dropdownOpen ? <Blanket clickable /> : null}
         <FontSelect
+          disabled={elem.disabled}
           className={styles.locals.fontSelect}
           selectedReadableName={fonts[elem.selectedFont]}
           ontoggleDropdown={() => toggle(elem)}
@@ -64,5 +65,6 @@ export default define('ak-editor-toolbar-block-type', {
   props: {
     dropdownOpen: prop.boolean({ attribute: true }),
     selectedFont: prop.string({ attribute: true, default: Object.keys(fonts)[0] }),
+    disabled: prop.boolean({ attribute: true }),
   },
 });

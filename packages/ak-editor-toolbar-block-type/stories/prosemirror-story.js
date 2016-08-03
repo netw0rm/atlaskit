@@ -13,6 +13,28 @@ const Toolbar = reactify(ToolbarComponent, { React, ReactDOM });
 const BlockType = reactify(BlockTypeComponent, { React, ReactDOM });
 const Content = reactify(ContentComponent, { React, ReactDOM });
 
+function getSelectionNodes({ from, to }, content) {
+  let count = 0;
+  const nodes = [];
+
+  for (let index = 0; index < content.length; index++) {
+    const node = content[index];
+    const size = node.content.size;
+
+    count += size + 2;
+
+    if (from <= count) {
+      nodes.push(node);
+    }
+
+    if (to < count) {
+      break;
+    }
+  }
+
+  return nodes;
+}
+
 storiesOf('ak-editor-toolbar-block-type', module)
   .add('ProseMirror', () => {
     class Demo extends React.Component {
@@ -27,12 +49,17 @@ storiesOf('ak-editor-toolbar-block-type', module)
         const doc = schema.node('doc', null,
           [schema.node('heading',
             { level: 2 },
-            schema.text('Title')
+            schema.text('1')
           ),
 
           schema.node('paragraph',
             null,
-            schema.text('Hello world!')
+            schema.text('4')
+          ),
+
+          schema.node('code_block',
+            null,
+            schema.text('7')
           )]
         );
 
@@ -46,8 +73,23 @@ storiesOf('ak-editor-toolbar-block-type', module)
           pm.on.selectionChange,
           pm.on.change,
         ], () => {
-          // todo
-          // getBlockType(pm.selection, pm.doc.content.content);
+          const nodes = getSelectionNodes(pm.selection, pm.doc.content.content);
+          const node = nodes[0];
+          const name = node.type.name;
+
+          if (name === 'paragraph') {
+            this.setState({
+              selectedFont: name,
+            });
+          } else if (name === 'code_block') {
+            this.setState({
+              selectedFont: 'monospace',
+            });
+          } else {
+            this.setState({
+              selectedFont: name + node.attrs.level,
+            });
+          }
         });
       }
 
@@ -71,6 +113,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
                       { level }
                     )(this.pm);
                   }
+                  // todo: put cursor back to the position?
                 }}
               />
             </Toolbar>

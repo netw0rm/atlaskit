@@ -3,7 +3,6 @@ import cx from 'classnames';
 import styles from './index.less';
 import FontSelect from './font-select';
 import Option from './option';
-import Blanket from 'ak-blanket';
 
 const fonts = {
   paragraph: 'Paragraph',
@@ -20,7 +19,7 @@ function toggle(elem) {
 function selectFont(elem) {
   return (event) => {
     elem.selectedFont = event.detail.font;
-    toggle(elem);
+    elem.dropdownOpen = false;
 
     // remove this when reactify v0.0.7 is released (https://github.com/webcomponents/react-integration/commit/53f8bf59a76b0ea0929bf2e95866ce949456eef5)
     emit(elem, 'selectfont', { detail: { font: elem.selectedFont } });
@@ -28,17 +27,24 @@ function selectFont(elem) {
 }
 
 export default define('ak-editor-toolbar-block-type', {
+  created(elem) {
+    elem.closeBlockTypeDropdown = () => {
+      elem.dropdownOpen = false;
+    };
+  },
+  attached(elem) {
+    elem.context.addEventListener('click', elem.closeBlockTypeDropdown, true);
+  },
+  detached(elem) {
+    elem.context.removeEventListener('click', elem.closeBlockTypeDropdown, true);
+  },
   render(elem) {
     return (
       <div
         className={styles.locals.root}
-        onak-blanket-click={() => {
-          toggle(elem);
-        }}
         onselectFont={selectFont(elem)}
       >
         <style>{styles.toString()}</style>
-        {elem.dropdownOpen ? <Blanket clickable /> : null}
         <FontSelect
           disabled={elem.disabled}
           className={styles.locals.fontSelect}
@@ -66,5 +72,6 @@ export default define('ak-editor-toolbar-block-type', {
     dropdownOpen: prop.boolean({ attribute: true }),
     selectedFont: prop.string({ attribute: true, default: Object.keys(fonts)[0] }),
     disabled: prop.boolean({ attribute: true }),
+    context: { attribute: true, default: document },
   },
 });

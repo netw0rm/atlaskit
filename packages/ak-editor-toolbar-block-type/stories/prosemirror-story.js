@@ -49,17 +49,17 @@ storiesOf('ak-editor-toolbar-block-type', module)
         const doc = schema.node('doc', null,
           [schema.node('heading',
             { level: 2 },
-            schema.text('1')
+            schema.text('Title')
           ),
 
           schema.node('paragraph',
             null,
-            schema.text('4')
+            schema.text('paragraph')
           ),
 
           schema.node('code_block',
             null,
-            schema.text('7')
+            schema.text('var a = 1;')
           )]
         );
 

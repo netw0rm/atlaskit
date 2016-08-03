@@ -1,0 +1,33 @@
+{
+  "name": "ak-editor-toolbar-hyperlink",
+  "version": "0.0.1",
+  "description": "ak-editor-toolbar-hyperlink webcomponent",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-toolbar-hyperlink",
+    "pre-release": "lerna-semantic-release pre"
+  },
+  "private": true,
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "akutil-shared-styles": "^33.0.2",
+    "ak-editor-button": "^2.0.0",
+    "ak-editor-icon": "^2.0.0",
+    "ak-editor-popup": "*",
+    "ak-editor-popup-text-input": "*",
+    "skatejs": "1.0.0-beta.12"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "akutil-react": "^0.0.3",
+    "ak-editor-toolbar": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

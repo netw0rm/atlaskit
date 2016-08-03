@@ -19,7 +19,8 @@ import InlineDialog from 'ak-inline-dialog';
 
 const myDialog = new InlineDialog();
 ```
-## InlineDialog API
+## Component API
+
 * Properties
 
     *  [`inlineDialog.position`](#InlineDialog+position) : string
@@ -29,6 +30,10 @@ const myDialog = new InlineDialog();
     *  [`inlineDialog.boxShadow`](#InlineDialog+boxShadow) : String
     *  [`inlineDialog.borderRadius`](#InlineDialog+borderRadius) : String
     *  [`inlineDialog.padding`](#InlineDialog+padding) : String
+    *  [`inlineDialog.hasBlanket`](#InlineDialog+hasBlanket) : Boolean
+    *  [`inlineDialog.isBlanketClickable`](#InlineDialog+isBlanketClickable) : Boolean
+    *  [`inlineDialog.isBlanketTinted`](#InlineDialog+isBlanketTinted) : Boolean
+    *  [`inlineDialog.isClosableOnEsc`](#InlineDialog+isClosableOnEsc) : Boolean
 
 ### Constructor
 The definition for the InlineDialog component.
@@ -143,4 +148,56 @@ Padding style for the inline-dialog
 **JS Example**
 ```js
 dialog.padding = '3px'
+```
+### `inlineDialog.hasBlanket` : Boolean
+If dialog has a blanket underneath or not. By default it has.
+
+**Kind**: instance property of InlineDialog  
+**Default**: `true`  
+**HTML Example**
+```js
+<ak-inline-dialog has-blanket="true"></ak-inline-dialog>
+```
+**JS Example**
+```js
+dialog.hasBlanket = true
+```
+### `inlineDialog.isBlanketClickable` : Boolean
+If click on the blanket dismisses the dialog. By default it is.
+
+**Kind**: instance property of InlineDialog  
+**Default**: `true`  
+**HTML Example**
+```js
+<ak-inline-dialog is-blanket-clickable="true"></ak-inline-dialog>
+```
+**JS Example**
+```js
+dialog.isBlanketClickable = true
+```
+### `inlineDialog.isBlanketTinted` : Boolean
+Is blanket grey with opacity or transparent. By default it's transparent.
+
+**Kind**: instance property of InlineDialog  
+**Default**: `false`  
+**HTML Example**
+```js
+<ak-inline-dialog is-blanket-tinted="true"></ak-inline-dialog>
+```
+**JS Example**
+```js
+dialog.isBlanketTinted = true
+```
+### `inlineDialog.isClosableOnEsc` : Boolean
+Is blanket is closable by pressing the 'escape' button. By default it is.
+
+**Kind**: instance property of InlineDialog  
+**Default**: `true`  
+**HTML Example**
+```js
+<ak-inline-dialog is-closable-on-esc="true"></ak-inline-dialog>
+```
+**JS Example**
+```js
+dialog.isClosableOnEsc = true
 ```

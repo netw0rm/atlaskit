@@ -49,7 +49,8 @@ const ReactComponent = reactify(Tabs, {});
 
 ReactDOM.render(<ReactComponent />, container);
 ```
-## Tabs API
+## Component API
+
 * Properties
 
     *  [`tabs.onSelect`](#Tabs+onSelect) : function
@@ -71,7 +72,8 @@ Handler for selecting a tab.
 Handler for deselecting a tab.
 
 **Kind**: instance property of Tabs  
-## Tab API
+## Component API
+
 * Properties
 
     *  [`tab.label`](#Tab+label) : string

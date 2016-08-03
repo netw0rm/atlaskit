@@ -66,7 +66,8 @@ export default class Alignment {
   /* eslint-enable max-len */
   update(elem) {
     const { defaultPosition, defaultConstraint, getElement, attachmentMap } = this.constructor;
-    if (this.disabled || !elem.target) {
+
+    if (this.disabled || !elem.target || !getElement(elem.target)) {
       return this;
     }
 

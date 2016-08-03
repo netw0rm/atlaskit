@@ -21,7 +21,8 @@ import Avatar from 'ak-avatar';
 
 const myAvatar = new Avatar();
 ```
-## Avatar API
+## Component API
+
 * Properties
 
     *  [`avatar.size`](#Avatar+size) : string

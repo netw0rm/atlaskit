@@ -2,7 +2,6 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkInlineDialog from '../src/index.js';
 import { name } from '../package.json';
-import { symbols } from 'skatejs';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -90,12 +89,6 @@ describe('ak-inline-dialog', () => {
           expect(attr).to.equal(props[key].value);
         }
       });
-    });
-
-    it('first child in the shadow dom should be layer component', () => {
-      expect(component[symbols.shadowRoot]).not.to.equal(null);
-      expect(component[symbols.shadowRoot].firstChild).not.to.equal(null);
-      expect(component[symbols.shadowRoot].firstChild.tagName.toLowerCase()).to.equal('ak-layer');
     });
   });
 

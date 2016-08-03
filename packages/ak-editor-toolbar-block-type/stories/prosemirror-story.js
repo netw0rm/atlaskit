@@ -118,7 +118,6 @@ storiesOf('ak-editor-toolbar-block-type', module)
                       { level }
                     )(this.pm);
                   }
-                  // todo: put cursor back to the position?
                 }}
               />
             </Toolbar>

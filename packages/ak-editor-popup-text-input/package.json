@@ -1,11 +1,11 @@
 {
-  "name": "ak-editor-hyperlink-popup-text-input",
+  "name": "ak-editor-popup-text-input",
   "version": "0.1.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-hyperlink-popup-text-input",
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-popup-text-input",
     "pre-release": "lerna-semantic-release pre"
   },
   "files": [

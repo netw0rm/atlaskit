@@ -6531,9 +6531,9 @@
       "resolved": "https://registry.npmjs.org/sinon-chai/-/sinon-chai-2.8.0.tgz"
     },
     "skatejs-named-slots": {
-      "version": "0.3.1",
-      "from": "skatejs-named-slots@>=0.3.1 <0.4.0",
-      "resolved": "https://registry.npmjs.org/skatejs-named-slots/-/skatejs-named-slots-0.3.1.tgz"
+      "version": "0.3.3",
+      "from": "skatejs-named-slots@>=0.3.3 <0.4.0",
+      "resolved": "https://registry.npmjs.org/skatejs-named-slots/-/skatejs-named-slots-0.3.3.tgz"
     },
     "slash": {
       "version": "1.0.0",

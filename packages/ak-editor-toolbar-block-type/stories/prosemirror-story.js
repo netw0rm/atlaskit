@@ -21,6 +21,7 @@ function getSelectionNodes({ from, to }, content) {
     const node = content[index];
     const size = node.content.size;
 
+    // first position is 1, another 1 for eof, hense +2
     count += size + 2;
 
     if (from < count) {
@@ -77,21 +78,27 @@ storiesOf('ak-editor-toolbar-block-type', module)
           const nodes = getSelectionNodes(pm.selection, pm.doc.content.content);
           const node = nodes[0];
           const name = node.type.name;
-          let fontName;
+          let blockType;
 
           if (name === 'paragraph') {
-            fontName = name;
+            blockType = name;
           } else if (name === 'code_block') {
-            fontName = 'monospace';
+            blockType = 'monospace';
           } else {
-            fontName = name + (node.attrs.level - 1);
+            // heading 1 (displayed in the blockType button) is actually heading 2
+            // heading 1 is reserved and not used in the editor
+            blockType = name + (node.attrs.level - 1);
           }
 
-          const canChangeBlockType = commands.setBlockType(schema.nodes.code_block)(pm, false) ||
-            commands.setBlockType(schema.nodes.paragraph)(pm, false);
+          // we can get away by not checking all the types since the dropdown get
+          // enabled as a group intead of per option
+          const canChangeBlockType = [
+            'code_block',
+            'paragraph',
+          ].some((type) => commands.setBlockType(schema.nodes[type])(pm, false));
 
           this.setState({
-            selectedFont: fontName,
+            selectedFont: blockType,
             canChangeBlockType,
           });
         });
@@ -112,6 +119,8 @@ storiesOf('ak-editor-toolbar-block-type', module)
                   } else if (font === 'monospace') {
                     commands.setBlockType(schema.nodes.code_block)(this.pm);
                   } else {
+                    // heading 1 (displayed in the blockType button) is actually heading 2
+                    // heading 1 is reserved and not used in the editor
                     const level = Number(font[font.length - 1]) + 1;
                     commands.setBlockType(
                       schema.nodes[font.substring(0, font.length - 1)],

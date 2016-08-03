@@ -9,7 +9,7 @@ export default define('ak-editor-toolbar-block-type-option', {
         <style>{styles.toString()}</style>
         <a
           onclick={() => emit(elem, 'selectFont', { detail: { font: elem.font } })}
-          onmousedown={e => e.preventDefault()}
+          onmousedown={/* don't blur the prose mirror editor */e => e.preventDefault()}
           className={classnames(
           styles.locals[elem.font],
           styles.locals.selectOptions, {

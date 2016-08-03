@@ -23,7 +23,7 @@ function getSelectionNodes({ from, to }, content) {
 
     count += size + 2;
 
-    if (from <= count) {
+    if (from < count) {
       nodes.push(node);
     }
 
@@ -87,7 +87,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
             });
           } else {
             this.setState({
-              selectedFont: name + node.attrs.level,
+              selectedFont: name + (node.attrs.level - 1),
             });
           }
         });

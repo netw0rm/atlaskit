@@ -14,7 +14,7 @@ module.exports = (config) => {
       tunnelIdentifier: process.env.BROWSERSTACK_TUNNEL || 'ak_tunnel',
       project: 'AtlasKit',
       name: packageName,
-      build: packageName,
+      build: `${process.env.CURRENT_BRANCH} ${process.env.HEAD_SHA}`,
     },
     captureTimeout: 120000,
     reporters: ['dots'],

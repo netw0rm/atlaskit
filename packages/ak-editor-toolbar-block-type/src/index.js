@@ -6,7 +6,7 @@ import Option from './option';
 import Blanket from 'ak-blanket';
 
 const fonts = {
-  paragraph: 'Paragraph',
+  paragraph: 'Normal text',
   heading1: 'Heading 1',
   heading2: 'Heading 2',
   heading3: 'Heading 3',

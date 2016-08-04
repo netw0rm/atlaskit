@@ -55,35 +55,3 @@ const ReactComponent = reactify(AkBadge, {});
 
 ReactDOM.render(<ReactComponent />, container);
 ```
-## Component API
-
-* Properties
-
-    *  [`akBadge.value`](#AkBadge+value) : number
-    *  [`akBadge.max`](#AkBadge+max) : number
-    *  [`akBadge.appearance`](#AkBadge+appearance) : string
-
-### Constructor
-Create instances of the component programmatically, or using markup.
-
-**JS Example**
-```js
-import AkBadge from 'ak-badge';
-const component = new AkBadge();
-```
-### `akBadge.value` : number
-The name of the AkBadge element.
-
-**Kind**: instance property of AkBadge  
-**Default**: `0`  
-### `akBadge.max` : number
-The max number to display, if value is 100, and max is 50, "55+" will be displayed
-
-**Kind**: instance property of AkBadge  
-**Default**: `-1`  
-### `akBadge.appearance` : string
-Affects the visual style of the badge.
-Allowed values are: 'default', 'primary', 'important', 'added', 'removed'.
-
-**Kind**: instance property of AkBadge  
-**Default**: `"default"`  

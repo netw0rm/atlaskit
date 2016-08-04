@@ -17,18 +17,7 @@ import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-lay
 const definition = {
   created(elem) {
     elem.close = (e) => {
-      let isDescendant = false;
-      let p = e.target;
-
-      while (p) {
-        if (p === elem) {
-          isDescendant = true;
-          break;
-        }
-        p = p.parentElement;
-      }
-
-      if (!isDescendant) {
+      if (!elem.contains(e.target)) {
         elem.open = false;
       }
     };

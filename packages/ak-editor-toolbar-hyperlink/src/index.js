@@ -8,26 +8,10 @@ import Icon from 'ak-editor-icon';
 import Popup from 'ak-editor-popup';
 import TextInput from 'ak-editor-popup-text-input';
 
-function toggle(elem, input) {
-  elem.open = !elem.open;
-
-  if (elem.open) {
-    const textInput = input || elem[symbols.shadowRoot].querySelector('.text-input');
-
-    // todo: fix the hack
-    setTimeout(() => textInput.focus(), 5);
-  }
-}
-
 const definition = {
   render(elem) {
     const LinkButton = (<EditorButton
       class="link-button"
-      onclick={() => {
-        if (!elem.disabled) {
-          toggle(elem);
-        }
-      }}
       disabled={elem.disabled}
     ><Icon glyph="link" /></EditorButton>);
 
@@ -37,10 +21,23 @@ const definition = {
     /* eslint-disable new-cap  */
     return (
       <div
+        onclick={() => {
+          if (!elem.disabled) {
+            const popup = elem[symbols.shadowRoot].querySelector('.popup');
+            popup.open = true;
+
+            const textInput = elem[symbols.shadowRoot].querySelector('.text-input');
+
+            // todo: fix the hack
+            setTimeout(() => textInput.focus(), 5);
+          }
+        }}
+
         onkeyup={event => {
           if (event.keyCode === 13) {
             const textInput = elem[symbols.shadowRoot].querySelector('.text-input');
-            toggle(elem, textInput);
+            const popup = elem[symbols.shadowRoot].querySelector('.popup');
+            popup.open = false;
             emit(elem, 'save', { detail: { value: textInput.value } });
           }
         }}
@@ -50,9 +47,8 @@ const definition = {
         {linkButton = LinkButton()}
 
         <Popup
+          class="popup"
           target={linkButton}
-          open={elem.open}
-          onak-blanket-click={() => toggle(elem)}
         >
           <TextInput class="text-input" placeholder="Paste link" />
         </Popup>
@@ -62,18 +58,14 @@ const definition = {
   props: {
     /* eslint-disable max-len  */
     /**
-     * @description Controls visibility of an popup. Dialog is invisible by default.
+     * @description Controls disablily of an popup.
      * @memberof Popup
      * @instance
      * @default false
      * @type Boolean
-     * @example @html <ak-editor-popup open></ak-editor-popup>
-     * @example @js dialog.open = true;
+     * @example @html <ak-editor-popup disabled></ak-editor-popup>
+     * @example @js dialog.disabled = true;
      */
-    open: prop.boolean({
-      attribute: true,
-      default: false,
-    }),
     disabled: prop.boolean({
       attribute: true,
       default: false,

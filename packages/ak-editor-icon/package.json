@@ -9,8 +9,7 @@
     "pre-release": "lerna-semantic-release pre"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",

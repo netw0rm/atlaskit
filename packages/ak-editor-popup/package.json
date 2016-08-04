@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-popup",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ak-editor-popup webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

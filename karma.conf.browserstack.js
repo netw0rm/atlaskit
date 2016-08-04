@@ -19,7 +19,7 @@ module.exports = (config) => {
     captureTimeout: 120000,
     reporters: ['dots'],
     autoWatch: false,
-    concurrency: 10,
+    concurrency: 5,
     client: {},
   });
 };

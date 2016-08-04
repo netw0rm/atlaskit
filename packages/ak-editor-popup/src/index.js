@@ -86,10 +86,10 @@ const definition = {
       attribute: true,
     },
     /**
-     * @description A global dom that listens to the close event.
+     * @description A global DOM Node that listens to the close event.
      * @memberof Popup
      * @instance
-     * @type DOM
+     * @type DOM Node
      * @example @js dialog.context = document.body.querySelector('#target');
      * @example @js dialog.context = document;
      */

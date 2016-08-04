@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-hyperlink-edit",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "ak-editor-content": "^2.0.0",
-    "akutil-react": "0.0.3",
-    "prosemirror": "0.8.3"
+    "akutil-react": "^0.0.3",
+    "prosemirror": "^0.8.3"
   },
   "repository": {
     "type": "git",

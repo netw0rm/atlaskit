@@ -17,7 +17,7 @@
     "akutil-common": "^0.1.0",
     "akutil-shared-styles": "^33.0.2",
     "ak-layer": "^56.3.1",
-    "ak-blanket": "^0.0.0",
+    "ak-blanket": "^1.0.0",
     "skatejs": "v1.0.0-beta.12",
     "web-animations-js": "^2.2.1"
   },

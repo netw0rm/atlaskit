@@ -169,12 +169,14 @@ storiesOf('ak-editor-hyperlink-edit', module)
 
       render() {
         return (
-          <div ref={(div) => {
-            if (div) {
-              this.container = div;
-              this.editorElement = div.firstChild;
-            }
-          }}>
+          <div
+            ref={(div) => {
+              if (div) {
+                this.container = div;
+                this.editorElement = div.firstChild;
+              }
+            }}
+          >
             <Content />
           </div>
         );

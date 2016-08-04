@@ -23,7 +23,7 @@ license file, please refer to the license file to find out more what you can and
 respective sub-component.
 Most components are also licensed under the Apache-2.0 license,
 however some of the components containing styles & icons are licensed under the Atlassian Design Guidelines license.
-Be aware that if you fork this repository you can continue to use those Atlassian Design Guidelines licensed components as-is, but you must not change them.
+Be aware that if you fork this repository you can continue to use those Atlassian Design Guidelines licensed components only under the given license restrictions.
 If you want to redistribute this whole repository you will need to replace these components with your own implementation.
 
 # Development

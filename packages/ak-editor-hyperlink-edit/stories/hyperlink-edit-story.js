@@ -26,18 +26,18 @@ class PoppedDemo extends React.Component {
       this.hyperlinkEdit.parentNode.removeChild(this.hyperlinkEdit);
       this.setState({ unlinked: true });
     });
-    document.body.appendChild(this.hyperlinkEdit);
+    this.refs.container.appendChild(this.hyperlinkEdit);
   }
 
   componentWillUnmount() {
-    if (this.hyperlinkEdit) {
-      this.hyperlinkEdit.dismiss();
+    if (this.hyperlinkEdit.parentNode) {
+      this.hyperlinkEdit.parentNode.removeChild(this.hyperlinkEdit);
     }
   }
 
   render() {
     return (
-      <div>
+      <div ref="container">
         <style>{styles.toString()}</style>
         <p contentEditable>Lorem ipsum ipsum ipsum ipsum ipsum ipsum <span
           className={this.state.unlinked ? null : styles.locals.hyperlink}
@@ -57,22 +57,16 @@ PoppedDemo.defaultProps = {
 storiesOf('ak-editor-hyperlink-edit', module)
   .add('Default', () => {
     class Demo extends React.Component {
-      componentWillUnmount() {
-        if (this.hyperlinkEdit) {
-          this.hyperlinkEdit.dismiss();
-        }
-      }
-
       editLink(target) {
         this.hyperlinkEdit = new HyperlinkEdit();
         this.hyperlinkEdit.href = 'https://example.com';
         this.hyperlinkEdit.attachTo = target;
-        document.body.appendChild(this.hyperlinkEdit);
+        this.refs.container.appendChild(this.hyperlinkEdit);
       }
 
       render() {
         return (
-          <div>
+          <div ref="container">
             <style>{styles.toString()}</style>
             <p contentEditable>Lorem ipsum <span
               className={styles.locals.hyperlink}
@@ -110,9 +104,17 @@ storiesOf('ak-editor-hyperlink-edit', module)
           element: popup,
           dismiss: () => {
             popup.removeEventListener(onUnlink);
-            popup.dismiss();
+            if (popup.parentNode) {
+              popup.parentNode.removeChild(popup);
+            }
           },
         };
+      }
+
+      componentWillUnmount() {
+        if (this.popup) {
+          this.popup.dismiss();
+        }
       }
 
       componentDidMount() {
@@ -159,7 +161,7 @@ storiesOf('ak-editor-hyperlink-edit', module)
                 const to = p.pos + p.nodeAfter.nodeSize;
                 pm.tr.removeMark(from, to, schema.marks.link).apply();
               });
-              document.body.appendChild(this.popup.element);
+              this.container.appendChild(this.popup.element);
             }
           }
         });
@@ -167,7 +169,12 @@ storiesOf('ak-editor-hyperlink-edit', module)
 
       render() {
         return (
-          <div ref={(div) => { if (div) { this.editorElement = div.firstChild; } }}>
+          <div ref={(div) => {
+            if (div) {
+              this.container = div;
+              this.editorElement = div.firstChild;
+            }
+          }}>
             <Content />
           </div>
         );
@@ -176,7 +183,7 @@ storiesOf('ak-editor-hyperlink-edit', module)
       componentWillUpdate(nextProps, nextState) {
         if (this.state.selectedLink !== nextState.selectedLink) {
           if (this.popup) {
-            this.popup.dismiss();
+            this.popup.parentNode.removeChild(this.popup);
             delete this.popup;
           }
 
@@ -190,7 +197,7 @@ storiesOf('ak-editor-hyperlink-edit', module)
             this.popup.addEventListener('unlink', () => {
 
             });
-            document.body.appendChild(this.popup);
+            this.container.appendChild(this.popup);
           }
         }
       }

@@ -61,15 +61,9 @@ export default define('ak-editor-hyperlink-edit', {
   },
 
   prototype: {
-    dismiss() {
-      if (this.parentNode) {
-        this.parentNode.removeChild(this);
-      }
-    },
-
     [onUnlinkSymbol]() {
-      if (emit(this, 'unlink')) {
-        this.dismiss();
+      if (emit(this, 'unlink') && this.parentNode) {
+        this.parentNode.removeChild(this);
       }
     },
   },

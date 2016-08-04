@@ -28,9 +28,7 @@ function selectFont(elem) {
 
 export default define('ak-editor-toolbar-block-type', {
   created(elem) {
-    elem.closeBlockTypeDropdown = () => {
-      elem.dropdownOpen = false;
-    };
+    elem.closeBlockTypeDropdown = () => { elem.dropdownOpen = false; };
   },
   attached(elem) {
     elem.context.addEventListener('click', elem.closeBlockTypeDropdown, true);

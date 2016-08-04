@@ -5,7 +5,6 @@ import { vdom, prop, define } from 'skatejs';
 import cx from 'classnames';
 import shadowStyles from './shadow.less';
 import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer'; // eslint-disable-line no-unused-vars, max-len
-import Blanket from 'ak-blanket';
 
 /**
  * @description The definition for the Popup component.
@@ -16,20 +15,40 @@ import Blanket from 'ak-blanket';
  *
  */
 const definition = {
+  created(elem) {
+    elem.close = (e) => {
+      let isDescendant = false;
+      let p = e.target;
+
+      while (p) {
+        if (p === elem) {
+          isDescendant = true;
+          break;
+        }
+        p = p.parentElement;
+      }
+
+      if (!isDescendant) {
+        elem.open = false;
+      }
+    };
+  },
+  attached(elem) {
+    elem.context.addEventListener('click', elem.close, true);
+  },
+  detached(elem) {
+    elem.context.removeEventListener('click', elem.close, true);
+  },
   render(elem) {
     const styles = {};
 
     return (
       <div
-        onak-blanket-click={() => {
-          elem.open = !elem.open;
-        }}
         class={cx({
           [hostStyle.locals.akEditorPopup]: !elem.open,
         })}
       >
         <style>{hostStyle.toString()}</style>
-        {elem.open ? <Blanket clickable /> : null}
         <ak-layer
           open={elem.open}
           position="bottom center"
@@ -77,6 +96,15 @@ const definition = {
     target: {
       attribute: true,
     },
+    /**
+     * @description A global dom that listens to the close event.
+     * @memberof Popup
+     * @instance
+     * @type DOM
+     * @example @js dialog.context = document.body.querySelector('#target');
+     * @example @js dialog.context = document;
+     */
+    context: { attribute: true, default: document },
   },
 };
 

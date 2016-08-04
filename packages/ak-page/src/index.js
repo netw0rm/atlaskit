@@ -3,13 +3,18 @@ import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 
 import { prop, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
+import classNames from 'classnames';
 
 const definition = {
   render(elem) {
     return (
       // JSX requires that there only be a single root element.
       // Incremental DOM doesn't require this.
-      <div className={elem.navigationOpen ? shadowStyles.locals.navigationOpen : ''}>
+      <div
+        className={classNames({
+          [shadowStyles.locals.navigationOpen]: elem.navigationOpen,
+        })}
+      >
         {/* This is required for elements in the shadow root to be styled.
            This is wrapped in the <div /> because you can't have more than one
            root element.

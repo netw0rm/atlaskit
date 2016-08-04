@@ -4,17 +4,17 @@ import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 import { emit, prop, vdom, define } from 'skatejs';
 import shadowStyles from './index.less';
 import './ak-navigation-link';
+import classNames from 'classnames';
 import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 
 const definition = {
   render(elem) {
     return (
       <div
-        className={[
-          shadowStyles.locals.navigation,
-          elem.open ? shadowStyles.locals.open : '',
-          elem.shouldAnimate ? shadowStyles.locals.shouldAnimate : '',
-        ].join(' ')}
+        className={classNames(shadowStyles.locals.navigation, {
+          [shadowStyles.locals.open]: elem.open,
+          [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
+        })}
       >
         <style>{shadowStyles.toString()}</style>
         <div className={shadowStyles.locals.global}>

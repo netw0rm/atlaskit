@@ -3,6 +3,7 @@ import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 
 import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './ak-navigation-link.less';
+import classNames from 'classnames';
 
 const enterKeyCode = 13;
 
@@ -14,9 +15,10 @@ const definition = {
   render(elem) {
     return (
       <a
-        className={`
-        ${shadowStyles.locals.link}
-        ${elem.selected ? shadowStyles.locals.selected : ''}`}
+        className={classNames(
+        shadowStyles.locals.link, {
+          [shadowStyles.locals.selected]: elem.selected,
+        })}
         href={elem.href}
         tabindex="0"
       >

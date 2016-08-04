@@ -77,7 +77,8 @@ The name of the AkBadge element.
 **Kind**: instance property of AkBadge  
 **Default**: `0`  
 ### `akBadge.max` : number
-The max number to display, if value is 100, and max is 50, "55+" will be displayed
+The max value to display.
+If value is 100, and max is 50, "55+" will be displayed
 
 **Kind**: instance property of AkBadge  
 **Default**: `-1`  

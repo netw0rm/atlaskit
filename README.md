@@ -1,5 +1,5 @@
 # AtlasKit
-[![master build](https://bitbucket-badges.useast.staging.atlassian.io/badge/atlassian/atlaskit.svg)](https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home)
+[![master build](https://bitbucket-badges.atlassian.io/badge/atlassian/atlaskit.svg)](https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
@@ -13,6 +13,18 @@ npm install @atlaskit/my-component-name
 # Reporting issues
 
 Please refer to [our issue tracker](https://ecosystem.atlassian.net/projects/AK).
+
+# Licensing
+
+This is a [mono-repo](https://github.com/babel/babel/blob/master/doc/design/monorepo.md),
+which means that different parts of this repository can have different licenses.
+Anything on the base level is licensed as Apache-2.0. Every folder inside `/packages` has its own
+license file, please refer to the license file to find out more what you can and can not do with the
+respective sub-component.
+Most components are also licensed under the Apache-2.0 license, however some of the components are licensed under different licenses
+(please refer to the `LICENSE` file in each package). Please note that especially packages containing styles & icons are licensed under the [Atlassian Design Guidelines license](https://design.atlassian.com/license/).
+Be aware that if you fork this repository you can continue to use those Atlassian Design Guidelines licensed components only under the given license restrictions.
+If you want to redistribute this whole repository you will need to replace these components with your own implementation.
 
 # Development
 

@@ -1,6 +1,6 @@
 {
   "name": "ak-blanket",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "description": "ak-blanket webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -11,7 +11,7 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^0.1.0",
+    "akutil-common": "^0.2.0",
     "akutil-shared-styles": "*",
     "classnames": "^2.2.5",
     "skatejs": "1.0.0-beta.12"
@@ -19,7 +19,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "^0.0.3"
+    "akutil-react": "^0.0.4"
   },
   "repository": {
     "type": "git",

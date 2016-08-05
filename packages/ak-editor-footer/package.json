@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "akutil-shared-styles": "^33.1.0",
-    "akutil-react": "0.0.3"
+    "akutil-react": "^0.0.4"
   },
   "repository": {
     "type": "git",

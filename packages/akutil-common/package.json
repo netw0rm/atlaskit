@@ -15,7 +15,7 @@
   "dependencies": {
     "keycode": "^2.1.2",
     "skatejs": "v1.0.0-beta.12",
-    "tether": "https://github.com/nadiam84/tether.git"
+    "tether": "git+https://github.com/nadiam84/tether.git"
   },
   "repository": {
     "type": "git",

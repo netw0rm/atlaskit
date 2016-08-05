@@ -5,7 +5,7 @@ import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 
-const APPEARENCES = ['primary', 'standard'];
+const APPEARENCES = ['primary', 'standard', 'subtle'];
 
 const definition = {
   props: {

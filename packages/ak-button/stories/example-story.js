@@ -24,6 +24,11 @@ storiesOf(name, module)
       Button
     </AkButton>
   )
+  .add('a subtle ak-button', () =>
+    <AkButton appearence="subtle" >
+      Button
+    </AkButton>
+  )
   .add('a button that can be disabled and enabled', () => {
     class MyComponent extends React.Component {
       constructor(props) {
@@ -89,6 +94,10 @@ storiesOf(name, module)
         <br />
         <AkButton >
           <Icon glyph="add" />
+        </AkButton>
+        <br />
+        <AkButton >
+          <Icon glyph="add" />
           button
           <Icon glyph="expand" />
         </AkButton>
@@ -97,6 +106,12 @@ storiesOf(name, module)
           <Icon glyph="add" />
           button
         </AkButton>
+        <br />
+        <AkButton appearence="subtle" >
+          <Icon glyph="add" />
+          button
+        </AkButton>
+
       </div>
     );
   });

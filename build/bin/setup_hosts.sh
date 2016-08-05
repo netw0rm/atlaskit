@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 mkdir -p /root/.ssh/
 touch /root/.ssh/known_hosts
 

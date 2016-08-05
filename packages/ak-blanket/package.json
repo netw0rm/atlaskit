@@ -11,7 +11,7 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^0.1.0",
+    "akutil-common": "^0.2.0",
     "akutil-shared-styles": "*",
     "classnames": "^2.2.5",
     "skatejs": "1.0.0-beta.12"

@@ -12,7 +12,7 @@ export default define('ak-editor-content', {
     const classNames = classLists.reduce((a, b) => a.concat(b), []).join(' ');
 
     return (
-      <div className={classNames}>
+      <div class={classNames}>
         <style>{shadowStyles.toString()}</style>
         <slot />
       </div>
@@ -20,7 +20,7 @@ export default define('ak-editor-content', {
   },
 
   props: {
-    openTop: prop.boolean({ attribute: true, default: false }),
-    openBottom: prop.boolean({ attribute: true, default: false }),
+    openTop: prop.boolean({ attribute: true }),
+    openBottom: prop.boolean({ attribute: true }),
   },
 });

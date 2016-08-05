@@ -16,7 +16,7 @@ export default define('ak-editor-icon', {
     const Icon = elem.glyph ? icons[elem.glyph](vdom) : () => {};
     const id = uniqueId();
     return (
-      <div className={`${shadowStyles.locals.root} ${id}`}>
+      <div class={`${shadowStyles.locals.root} ${id}`}>
         <style>{shadowStyles.toString()}</style>
         <style>{elem.fill && `.${id} path { fill: ${elem.fill}; }`}</style>
         <Icon />
@@ -24,7 +24,7 @@ export default define('ak-editor-icon', {
     );
   },
   props: {
-    glyph: prop.string({ attribute: true, default: null }),
-    fill: prop.string({ attribute: true, default: null }),
+    glyph: prop.string({ attribute: true }),
+    fill: prop.string({ attribute: true }),
   },
 });

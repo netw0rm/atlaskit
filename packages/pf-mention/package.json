@@ -13,7 +13,7 @@
   "dependencies": {
     "ak-avatar": "^0.13.1",
     "ak-inline-dialog": "^69.2.1",
-    "akutil-common": "^0.1.0",
+    "akutil-common": "^0.2.0",
     "akutil-shared-styles": "*",
     "es6-promise": "^3.2.1",
     "skatejs": "1.0.0-beta.10",

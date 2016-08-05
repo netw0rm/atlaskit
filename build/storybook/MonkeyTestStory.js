@@ -1,5 +1,5 @@
 import React from 'react';
-import gremlins from 'gremlins.js/src/main.js';
+import gremlins from '@atlassian/gremlins.js/src/main.js';
 
 class MonkeyTestStory extends React.Component {
   componentDidMount() {

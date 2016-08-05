@@ -1,15 +1,16 @@
-<a name="2.0.0"></a>
-# 2.0.0 (2016-08-05)
-
-
-
-<a name="ak-editor-toolbar-text-formatting@1.0.0"></a>
-# ak-editor-toolbar-text-formatting@1.0.0 (2016-07-22)
+<a name="0.1.0"></a>
+# 0.1.0 (2016-08-05)
 
 
 ### Bug Fixes
 
-* **package:** Add ak- prefix to editor-*, and fix licensing. ([15751dc](https://bitbucket.org/atlassian/atlaskit/commits/15751dc))
+* Fix eslint problems. ([9b6089c](https://bitbucket.org/atlassian/atlaskit/commits/9b6089c))
+
+
+### Features
+
+* Add ak-editor-hyperlink-edit ([4e9f477](https://bitbucket.org/atlassian/atlaskit/commits/4e9f477))
+* Remove dismiss() API from ak-editor-hyperlink-edit. ([fa50b7d](https://bitbucket.org/atlassian/atlaskit/commits/fa50b7d))
 
 
 

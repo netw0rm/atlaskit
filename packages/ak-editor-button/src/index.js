@@ -10,14 +10,14 @@ function preventDefault(e) {
 export default define('ak-editor-button', {
   render(elem) {
     return (
-      <div className={cx(shadowStyles.locals.root, { [shadowStyles.locals.active]: elem.active })}>
+      <div class={cx(shadowStyles.locals.root, { [shadowStyles.locals.active]: elem.active })}>
         <style>{shadowStyles.toString()}</style>
-        <button disabled={elem.disabled} onmousedown={preventDefault}><slot /></button>
+        <button disabled={elem.disabled} on-mousedown={preventDefault}><slot /></button>
       </div>
     );
   },
   props: {
-    active: prop.boolean({ attribute: true, default: false }),
-    disabled: prop.boolean({ attribute: true, default: false }),
+    active: prop.boolean({ attribute: true }),
+    disabled: prop.boolean({ attribute: true }),
   },
 });

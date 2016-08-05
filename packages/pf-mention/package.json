@@ -11,9 +11,9 @@
     "dist"
   ],
   "dependencies": {
-    "ak-avatar": "^0.13.1",
-    "ak-inline-dialog": "^69.2.1",
-    "akutil-common": "^0.1.0",
+    "ak-avatar": "^0.13.2",
+    "ak-inline-dialog": "^69.6.1",
+    "akutil-common": "^0.2.0",
     "akutil-shared-styles": "*",
     "es6-promise": "^3.2.1",
     "skatejs": "1.0.0-beta.10",
@@ -27,7 +27,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "akutil-react": "^0.0.3",
+    "akutil-react": "^0.0.4",
     "fetch-mock": "^4.6.0"
   }
 }

@@ -40,9 +40,7 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >
-          <span className={shadowStyles.locals.label}>
-            <slot />
-          </span>
+          <slot />
         </button>
       </div>
     );

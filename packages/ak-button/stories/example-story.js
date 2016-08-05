@@ -3,11 +3,14 @@ import reactify from 'akutil-react';
 import AkButtonTemplate from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
+import IconComponent from 'ak-editor-icon';
 
 const AkButton = reactify(AkButtonTemplate, {
   React,
   ReactDOM,
 });
+
+const Icon = reactify(IconComponent, { React, ReactDOM });
 
 storiesOf(name, module)
   .add('a default ak-button', () => (
@@ -61,4 +64,39 @@ storiesOf(name, module)
   })
   .add('an ak-button that emits an action when it is clicked', () => (
     <AkButton id="myComponent" onClick={action('clicking the WebComponent')}>Button</AkButton>
-  ));
+  ))
+  .add('an ak-button with icons', () => {
+    const containerStyle = {
+      display: 'flex',
+      flexDirection: 'column',
+    };
+
+    const itemStyle = {
+      marginTop: '10px',
+    };
+
+    return (
+      <div style={containerStyle}>
+        <AkButton style={itemStyle}>
+          <Icon glyph="add" />
+          button
+        </AkButton>
+        <br />
+        <AkButton >
+          button
+          <Icon glyph="expand" />
+        </AkButton>
+        <br />
+        <AkButton >
+          <Icon glyph="add" />
+          button
+          <Icon glyph="expand" />
+        </AkButton>
+        <br />
+        <AkButton disabled onclick={action('clicking the WebComponent')}>
+          <Icon glyph="add" />
+          button
+        </AkButton>
+      </div>
+    );
+  });

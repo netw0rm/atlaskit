@@ -22,7 +22,7 @@
     "web-animations-js": "^2.2.1"
   },
   "devDependencies": {
-    "akutil-react": "0.0.4"
+    "akutil-react": "^0.0.4"
   },
   "repository": {
     "type": "git",

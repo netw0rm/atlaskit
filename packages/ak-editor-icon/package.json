@@ -19,7 +19,7 @@
   "devDependencies": {
     "idomizer": "^0.5.2",
     "loader-utils": "^0.2.15",
-    "akutil-react": "0.0.4"
+    "akutil-react": "^0.0.4"
   },
   "repository": {
     "type": "git",

@@ -28,28 +28,28 @@ export default define('ak-editor-toolbar-block-type', {
   render(elem) {
     return (
       <div
-        className={styles.locals.root}
-        onak-blanket-click={() => {
+        class={styles.locals.root}
+        on-ak-blanket-click={() => {
           toggle(elem);
         }}
       >
         <style>{styles.toString()}</style>
         {elem.dropdownOpen ? <Blanket clickable /> : null}
         <FontSelect
-          className={styles.locals.fontSelect}
+          class={styles.locals.fontSelect}
           selectedReadableName={fonts[elem.selectedFont]}
-          ontoggleDropdown={() => toggle(elem)}
+          onToggleDropdown={() => toggle(elem)}
           active={elem.dropdownOpen}
         >
           <ul
-            className={cx(styles.locals.dropdownContent, {
+            class={cx(styles.locals.dropdownContent, {
               [styles.locals.dropdownOpen]: elem.dropdownOpen,
             })}
           >
             {Object.keys(fonts).map(font => (
               <li><Option
                 font={font}
-                onselectFont={selectFont(elem)}
+                onSelectFont={selectFont(elem)}
                 active={elem.selectedFont === font}
               >{fonts[font]}</Option></li>
             ))}

@@ -1,6 +1,4 @@
-/** @jsx vdom */
 import 'style!./host.less';
-
 import { emit, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 
@@ -23,7 +21,7 @@ export default define('akutil-component-template', {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
-        <Paragraph className={shadowStyles.locals.myClassName}>My name is {elem.name}!</Paragraph>
+        <Paragraph class={shadowStyles.locals.myClassName}>My name is {elem.name}!</Paragraph>
       </div>
     );
   },

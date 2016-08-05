@@ -1,6 +1,4 @@
-/** @jsx vdom */
 import 'style!./host.less';
-
 import { vdom, define, prop, emit, symbols } from 'skatejs';
 import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
@@ -19,11 +17,11 @@ function toggle(elem, input) {
   }
 }
 
-const definition = {
+export default define('ak-editor-toolbar-hyperlink', {
   render(elem) {
     const LinkButton = (<EditorButton
       class="link-button"
-      onclick={() => {
+      on-click={() => {
         if (!elem.disabled) {
           toggle(elem);
         }
@@ -37,7 +35,7 @@ const definition = {
     /* eslint-disable new-cap  */
     return (
       <div
-        onkeyup={event => {
+        on-keyup={event => {
           if (event.keyCode === 13) {
             const textInput = elem[symbols.shadowRoot].querySelector('.text-input');
             toggle(elem, textInput);
@@ -52,7 +50,7 @@ const definition = {
         <Popup
           target={linkButton}
           open={elem.open}
-          onak-blanket-click={() => toggle(elem)}
+          on-ak-blanket-click={() => toggle(elem)}
         >
           <TextInput class="text-input" placeholder="Paste link" />
         </Popup>
@@ -60,7 +58,7 @@ const definition = {
     );
   },
   props: {
-    /* eslint-disable max-len  */
+    disabled: prop.boolean({ attribute: true }),
     /**
      * @description Controls visibility of an popup. Dialog is invisible by default.
      * @memberof Popup
@@ -70,15 +68,6 @@ const definition = {
      * @example @html <ak-editor-popup open></ak-editor-popup>
      * @example @js dialog.open = true;
      */
-    open: prop.boolean({
-      attribute: true,
-      default: false,
-    }),
-    disabled: prop.boolean({
-      attribute: true,
-      default: false,
-    }),
+    open: prop.boolean({ attribute: true }),
   },
-};
-
-export default define('ak-editor-toolbar-hyperlink', definition);
+});

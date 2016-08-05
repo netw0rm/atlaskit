@@ -7,8 +7,8 @@ import Icon from 'ak-editor-icon';
 /* eslint-disable react/prop-types */
 const ToggleButton = (props) => (
   <Button
-    onclick={() => !props.disabled && props.emit(`toggle-${props.name}`)}
-    className={shadowStyles.locals.button}
+    on-click={() => !props.disabled && props.emit(`toggle-${props.name}`)}
+    class={shadowStyles.locals.button}
     active={props.active}
     disabled={props.disabled}
   >
@@ -18,10 +18,10 @@ const ToggleButton = (props) => (
 /* eslint-enable react/prop-types */
 
 export default define('ak-editor-toolbar-text-formatting', {
-  render: (elem) => {
+  render(elem) {
     const boundEmit = emit.bind(null, elem); // eslint-disable-line react/jsx-no-bind
     return (
-      <div className={shadowStyles.locals.root}>
+      <div class={shadowStyles.locals.root}>
         <style>{shadowStyles.toString()}</style>
         <ToggleButton
           name="bold"
@@ -45,11 +45,11 @@ export default define('ak-editor-toolbar-text-formatting', {
     );
   },
   props: {
-    boldActive: prop.boolean({ attribute: true, default: false }),
-    italicActive: prop.boolean({ attribute: true, default: false }),
-    underlineActive: prop.boolean({ attribute: true, default: false }),
-    boldDisabled: prop.boolean({ attribute: true, default: false }),
-    italicDisabled: prop.boolean({ attribute: true, default: false }),
-    underlineDisabled: prop.boolean({ attribute: true, default: false }),
+    boldActive: prop.boolean({ attribute: true }),
+    italicActive: prop.boolean({ attribute: true }),
+    underlineActive: prop.boolean({ attribute: true }),
+    boldDisabled: prop.boolean({ attribute: true }),
+    italicDisabled: prop.boolean({ attribute: true }),
+    underlineDisabled: prop.boolean({ attribute: true }),
   },
 });

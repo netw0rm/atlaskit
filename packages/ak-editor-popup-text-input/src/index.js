@@ -5,14 +5,14 @@ import 'style!./host.less';
 export default define('ak-editor-popup-text-input', {
   render(elem) {
     return (
-      <div className={shadowStyles.locals.container}>
+      <div class={shadowStyles.locals.container}>
         <style>{shadowStyles.toString()}</style>
         <input
           type="text"
-          className={shadowStyles.locals.textInput}
+          class={shadowStyles.locals.textInput}
           placeholder={elem.placeholder}
           value={elem.value}
-          oninput={(e) => { elem.value = e.target.value; }}
+          on-input={(e) => { elem.value = e.target.value; }}
         />
       </div>
     );
@@ -23,7 +23,7 @@ export default define('ak-editor-popup-text-input', {
     },
   },
   props: {
-    value: prop.string({ attribute: true }),
     placeholder: prop.string({ attribute: true }),
+    value: prop.string({ attribute: true }),
   },
 });

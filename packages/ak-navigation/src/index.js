@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 
 const sidebarOpenByDefault = true;
+const shouldAnimateThreshold = 100; // ms
 
 const definition = {
   render(elem) {
@@ -79,13 +80,13 @@ const definition = {
       attribute: true,
     }),
   },
-  ready(elem) {
+  attached(elem) {
     setTimeout(() => {
       elem.shouldAnimate = true;
-    }, 100);
+    }, shouldAnimateThreshold);
   },
-  events: {
-    'ak-navigation-open-state-changed': (elem, event) => {
+  created(elem) {
+    elem.addEventListener('ak-navigation-open-state-changed', (event) => {
       // We want to make the event bubble TODO incorporate this as an option for skate
       // https://github.com/skatejs/skatejs/issues/683
       if (event.detail.openState !== undefined) {
@@ -94,16 +95,26 @@ const definition = {
       emit(elem, 'ak-navigation-open-state-changed', {
         detail: { openState: event.detail.newValue },
       });
-    },
-    'ak-navigation-link-selected': (elem, event) => {
+    });
+    elem.addEventListener('ak-navigation-link-selected', (event) => {
       const containerLinks = Array.prototype.slice.call(elem.children);
       containerLinks.forEach((child) => { child.selected = false; });
       event.target.selected = true;
-    },
-    touchstart: (elem, event) => {
+    });
+    elem.addEventListener('ak-navigation-open-state-changed', (event) => {
       elem.touchstart = event;
-    },
-    touchend: (elem, event) => {
+    });
+    elem.addEventListener('touchstart', (event) => {
+      // We want to make the event bubble TODO incorporate this as an option for skate
+      // https://github.com/skatejs/skatejs/issues/683
+      if (event.detail.openState !== undefined) {
+        return; // we don't want to loop indefinitely
+      }
+      emit(elem, 'ak-navigation-open-state-changed', {
+        detail: { openState: event.detail.newValue },
+      });
+    });
+    elem.addEventListener('touchend', (event) => {
       const swipeType = getSwipeType(elem.touchstart, event);
       if (swipeType === noSwipe) {
         return;
@@ -114,7 +125,7 @@ const definition = {
       } else if (swipeType === swipeRight) {
         elem.open = false;
       }
-    },
+    });
   },
 };
 

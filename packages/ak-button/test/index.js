@@ -80,7 +80,7 @@ describe('ak-button', () => {
       });
     });
 
-    describe('when disabled attribute is set', () => {
+    describe.skip('when disabled attribute is set', () => {
       const selector = `.${classKeys.container} button[disabled]`;
       beforeEach(() =>
         state(component, { disabled: true })

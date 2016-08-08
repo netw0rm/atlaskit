@@ -27,7 +27,6 @@ export default define('ak-button-group', {
   },
   created(elem) {
     elem.addEventListener('x-radio-button-click', (e) => {
-      console.log('radio-clicked', e);
       [...elem.childNodes].forEach((item) => {
         item.selected = item === e.target;
       });

@@ -1,9 +1,9 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import ButtonGroup from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
-import styles from 'style!./../src/host.less';
+// import styles from 'style!./../src/host.less';
 import RadioButton from '../../ak-radio-button/src/index';
 
 const ReactButtonGroup = reactify(ButtonGroup, {

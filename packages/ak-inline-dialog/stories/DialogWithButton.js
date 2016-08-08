@@ -58,6 +58,7 @@ class DialogWithButton extends Component {
           target="#target"
           attachment={this.props.attachTo}
           position={this.props.position}
+          hasBlanket={false}
         >
           <button
             onClick={this.handleClick}

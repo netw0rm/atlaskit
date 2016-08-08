@@ -1,4 +1,4 @@
-import Tether from 'tether';
+import Tether from '@atlassian/tether';
 
 /**
  * @description Helper class for positioning elements on a page
@@ -66,7 +66,8 @@ export default class Alignment {
   /* eslint-enable max-len */
   update(elem) {
     const { defaultPosition, defaultConstraint, getElement, attachmentMap } = this.constructor;
-    if (this.disabled || !elem.target) {
+
+    if (this.disabled || !elem.target || !getElement(elem.target)) {
       return this;
     }
 

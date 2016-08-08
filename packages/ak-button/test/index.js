@@ -53,10 +53,10 @@ describe('ak-button', () => {
       );
     });
 
-    describe('appearence', () => {
+    describe('appearance', () => {
       describe('standard', () => {
         it.skip('button should only have akButton class', () => {
-          state(component, { appearence: 'standard' });
+          state(component, { appearance: 'standard' });
           const buttonClasses = getShadowButtonElem(component).classList;
           expect(buttonClasses).to.have.lengthOf(1);
           expect(buttonClasses[0]).to.equals(shadowStyles.locals.akButton);
@@ -66,7 +66,7 @@ describe('ak-button', () => {
       describe('primary', () => {
         const selector = `.${classKeys.akButton}.${classKeys.primary}`;
         beforeEach(() =>
-          state(component, { appearence: 'primary' })
+          state(component, { appearance: 'primary' })
         );
 
         it('button should have primary class', () =>
@@ -74,7 +74,7 @@ describe('ak-button', () => {
         );
 
         it('button should not have primary class after it is removed', () => {
-          state(component, { appearence: 'standard' });
+          state(component, { appearance: 'standard' });
           expect(shadowDomQuery(component, selector)).to.be.null;
         });
       });

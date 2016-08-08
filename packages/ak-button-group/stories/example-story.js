@@ -1,12 +1,15 @@
-import {
-  storiesOf,
-  // action
-} from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import RadioButton from '../src/index';
+import ButtonGroup from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
-// import styles from 'style!./../src/host.less';
+import styles from 'style!./../src/host.less';
+import RadioButton from '../../ak-radio-button/src/index';
+
+const ReactButtonGroup = reactify(ButtonGroup, {
+  React,
+  ReactDOM,
+});
 
 const ReactRadioButton = reactify(RadioButton, {
   React,
@@ -14,27 +17,36 @@ const ReactRadioButton = reactify(RadioButton, {
 });
 
 storiesOf(name, module)
-  .add('a simple ak-radio-button', () => (
-    <ReactRadioButton>
-      My Button
-    </ReactRadioButton>
+  .add('ak-button-group with default width', () => (
+    <ReactButtonGroup>
+      <ReactRadioButton>One</ReactRadioButton>
+      <ReactRadioButton>Two</ReactRadioButton>
+      <ReactRadioButton>Three</ReactRadioButton>
+    </ReactButtonGroup>
+  ))
+  .add('ak-button-group with fixed width a little wider than items', () => (
+    <ReactButtonGroup style={{ width: 300 }}>
+      <ReactRadioButton>One</ReactRadioButton>
+      <ReactRadioButton>Two</ReactRadioButton>
+      <ReactRadioButton>Three</ReactRadioButton>
+    </ReactButtonGroup>
   ));
-  // .add('a simple ak-radio-button with a name', () => (
+  // .add('a simple ak-button-group with a name', () => (
   //   <Component name="MyComponent" />
   // ))
-  // .add('an ak-radio-button that emits an action when it is clicked', () => (
+  // .add('an ak-button-group that emits an action when it is clicked', () => (
   //   <Component id="myComponent" onClick={action('clicking the WebComponent')} />
   // ))
-  // .add('an ak-radio-button that removes itself when being clicked', () => {
+  // .add('an ak-button-group that removes itself when being clicked', () => {
   //   const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
   //   const cls = styles.akutilComponentTemplate;
   //   return (<Component id="myComponent" className={cls} onClick={removeMe} />);
   // })
-  // .addMonkeyTest('a ak-radio-button with monkey testing', () => (
+  // .addMonkeyTest('a ak-button-group with monkey testing', () => (
   //   // Use this to add a story that has fuzzy testing attached.
   //   <Component />
   // ))
-  // .addMonitored('an ak-radio-button with monitored performance', () => (
+  // .addMonitored('an ak-button-group with monitored performance', () => (
   //   // Use this to add a story that has a little fps/memory gauge that allows you
   //   // to monitor performance whilst developing
   //   <Component />

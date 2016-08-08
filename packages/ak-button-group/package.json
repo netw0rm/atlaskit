@@ -1,17 +1,16 @@
 {
-  "name": "ak-radio-button",
+  "name": "ak-button-group",
   "version": "0.0.0",
-  "description": "ak-radio-button webcomponent",
+  "description": "ak-button-group webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-radio-button"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-button-group"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "ak-button": "*",
     "akutil-shared-styles": "*",
     "skatejs": "1.0.0-beta.12"
   },

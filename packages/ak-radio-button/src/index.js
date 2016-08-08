@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { emit, vdom, define } from 'skatejs';
+import { emit, vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import AkButton from 'ak-button';
 
@@ -16,11 +16,19 @@ export default define('ak-radio-button', {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <AkButton selected>
-          {elem.name}
+        <AkButton appearance={elem.selected ? 'primary' : 'standard'}>
+          <slot />
         </AkButton>
       </div>
     );
+  },
+  created(elem) {
+    elem.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      elem.announce();
+    });
   },
   props: {
     /**
@@ -33,6 +41,10 @@ export default define('ak-radio-button', {
     name: {
       default: 'RadioButton',
     },
+    selected: prop.boolean({
+      attribute: true,
+      default: false,
+    }),
   },
   prototype: {
     /**
@@ -51,7 +63,7 @@ export default define('ak-radio-button', {
        * @description Fired when the `announce` method is called.
        * @property {String} detail.name The name of the component.
        */
-      emit(this, 'announce-name', {
+      emit(this, 'x-radio-button-click', {
         detail: {
           name: this.name,
         },

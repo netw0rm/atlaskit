@@ -42,7 +42,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
       constructor(props) {
         super(props);
         this.state = {
-          selectedFont: 'paragraph',
+          selectedFont: 'normalText',
           canChangeBlockType: false,
         };
       }
@@ -56,7 +56,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
 
           schema.node('paragraph',
             null,
-            schema.text('paragraph')
+            schema.text('Normal text')
           ),
 
           schema.node('code_block',
@@ -81,7 +81,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
           let blockType;
 
           if (name === 'paragraph') {
-            blockType = name;
+            blockType = 'normalText';
           } else if (name === 'code_block') {
             blockType = 'monospace';
           } else {
@@ -114,7 +114,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
                 onSelectFont={(event) => {
                   this.pm.on.interaction.dispatch();
                   const font = event.detail.font;
-                  if (font === 'paragraph') {
+                  if (font === 'normalText') {
                     commands.setBlockType(schema.nodes.paragraph)(this.pm);
                   } else if (font === 'monospace') {
                     commands.setBlockType(schema.nodes.code_block)(this.pm);

@@ -2,16 +2,18 @@
 
 .ak-tab-labels {
   display: flex;
-  flex-wrap: wrap;
   list-style-type: none;
   padding: 0;
+  margin: 0;
   position: relative;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .ak-tab-label {
   color: #344563;
   font-size: 14px;
-  line-height: 20px;
+  line-height: @ak-tabs-line-height;
   margin: @ak-tabs-margin;
   position: relative;
   white-space: nowrap;
@@ -21,20 +23,43 @@
   &:active::before{
     color: @ak-tabs-color-active;
   }
-}
 
-.ak-tab-label > a {
-  color: inherit;
-  text-decoration: none;
-  padding: @ak-tabs-margin;
+  & > a {
+    color: inherit;
+    text-decoration: none;
+    padding: @ak-tabs-margin;
 
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
-    border-radius: 3px;
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
+      border-radius: 3px;
+    }
+  }
+
+  .ak-tabs-button {
+    cursor: pointer;
+
+    &::after {
+      border-right: 0.2em solid currentColor;
+      border-top: 0.2em solid currentColor;
+      content: "";
+      color: inherit;
+      display: inline-block;
+      width: 0.4em;
+      height: 0.4em;
+      margin: 0 5px;
+      position: relative;
+      transform: rotate(135deg);
+    }
+  }
+
+  &.ak-tab-label-hidden {
+    visibility: hidden;
+    position: absolute;
   }
 }
 
+// Tab labels line
 .ak-tab-labels:not(:empty)::before,
 .ak-tab-label-selected::after {
   content: '';
@@ -45,6 +70,10 @@
   bottom: @ak-tabs-focus-width - @ak-tabs-margin;
   background-color: @ak-tabs-color-line-default;
   width: inherit;
+  margin: 0;
+}
+
+.ak-tab-labels:not(:empty)::before {
   margin: @ak-tabs-margin;
 }
 
@@ -53,7 +82,6 @@
 
   &::after {
     background-color: currentColor;
-    margin: 0;
   }
 }
 

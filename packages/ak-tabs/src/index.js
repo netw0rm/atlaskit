@@ -187,7 +187,7 @@ const definition = {
         <style>{shadowStyles.toString()}</style>
         <ul
           className={shadowStyles.locals.akTabLabels}
-          ref={el => { elem[labelsContainer] = el; }}
+          ref={el => (elem[labelsContainer] = el)}
         >
           {elem.children && elem.children.map(
             tab => {
@@ -204,13 +204,13 @@ const definition = {
                     aria-selected={ariaSelected}
                     tabIndex={tabIndex}
                     onclick={labelClickHandler(tab)}
-                    ref={el => { tab[tabLabel] = el; }}
+                    ref={el => (tab[tabLabel] = el)}
                   >{tab.label}</a>
                 </li>
               );
             }
           ).concat(
-            <li className={buttonClasses} ref={el => { elem[buttonContainer] = el; }}>
+            <li className={buttonClasses} ref={el => (elem[buttonContainer] = el)}>
               <a className={shadowStyles.locals.akTabsButton}>More</a>
             </li>
           )

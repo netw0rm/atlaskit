@@ -61,6 +61,7 @@ class DialogWithInput extends Component {
           open={this.state.open}
           target="#target"
           position="top left"
+          hasBlanket={false}
         >
           some text in inline-dialog
         </Dialog>

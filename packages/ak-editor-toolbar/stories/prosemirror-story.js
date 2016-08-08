@@ -15,6 +15,12 @@ const Content = reactify(ContentComponent, { React, ReactDOM });
 
 storiesOf('ak-editor-toolbar', module)
   .add('ProseMirror', () => {
+    const markActive = (pm, type) => {
+      const { from, to, empty } = pm.selection;
+      if (empty) return type.isInSet(pm.activeMarks());
+      return pm.doc.rangeHasMark(from, to, type);
+    };
+
     class Demo extends React.Component {
       constructor(props) {
         super(props);
@@ -41,20 +47,10 @@ storiesOf('ak-editor-toolbar', module)
           pm.on.selectionChange,
           pm.on.change,
           pm.on.activeMarkChange,
-        ], () => this.syncStateFromEditor());
-      }
-
-      syncStateFromEditor() {
-        const markActive = (pm, type) => {
-          const { from, to, empty } = pm.selection;
-          if (empty) return type.isInSet(pm.activeMarks());
-          return pm.doc.rangeHasMark(from, to, type);
-        };
-
-        this.setState({
-          boldActive: !!markActive(this.pm, schema.marks.strong),
-          italicActive: !!markActive(this.pm, schema.marks.em),
-        });
+        ], () => this.setState({
+          boldActive: !!markActive(pm, schema.marks.strong),
+          italicActive: !!markActive(pm, schema.marks.em),
+        }));
       }
 
       render() {
@@ -64,8 +60,6 @@ storiesOf('ak-editor-toolbar', module)
               <TextFormatting
                 boldActive={this.state.boldActive}
                 italicActive={this.state.italicActive}
-                boldDisabled={this.state.boldDisabled}
-                italicDisabled={this.state.italicDisabled}
                 underlineDisabled
                 ontoggle-bold={() => this.toggleMark('strong')}
                 ontoggle-italic={() => this.toggleMark('em')}

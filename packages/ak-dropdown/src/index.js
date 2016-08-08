@@ -20,6 +20,21 @@ function handleTriggerClick(elem) {
   };
 }
 
+function selectItem(elem, list) {
+  return () => {
+    // disabled items should not allow any interactions
+    // selected item doesn't need to be selected again
+    if (elem.disabled || elem.selected) {
+      return;
+    }
+    list.forEach((child) => {
+      child.selected = false;
+    });
+    elem.selected = true;
+    emit(elem, 'ak-dropdown-selected');
+  };
+}
+
 define('ak-dropdown-trigger', {
   render(elem) {
     if (isOnlyOneTextNode(elem)) {
@@ -63,7 +78,7 @@ define('ak-dropdown-item', {
       }]
     );
     return (
-      <div class={classes}>
+      <div class={classes} on-click={selectItem(elem, list)}>
         <style>{shadowItemStyles.toString()}</style>
         <slot />
       </div>

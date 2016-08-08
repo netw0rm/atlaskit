@@ -122,7 +122,6 @@ function calculateVisibleTabs(tabsEl) {
     }
   }
 
-
   return [...visibleTabs.keys()];
 }
 
@@ -217,6 +216,29 @@ const definition = {
         }
         </ul>
         <slot />
+        <div>
+          <hr />
+          <p>Dropdown content:</p>
+          <ul className={shadowStyles.locals.ddContainer}>
+            {elem.children && elem.children.map(
+              tab => {
+                const isVisible = elem._visibleTabs.indexOf(tab) > -1;
+                const classes = `${shadowStyles.locals.ddItem}
+                                 ${tab.selected ? shadowStyles.locals.ddSelected : ''}
+                                 ${isVisible ? shadowStyles.locals.ddHidden : ''}`;
+                return (
+                  <li className={classes}>
+                    <a
+                      href="#"
+                      onclick={labelClickHandler(tab)}
+                      tabIndex="-1"
+                    >{tab.label}</a>
+                  </li>
+                );
+              }
+            )}
+          </ul>
+        </div>
       </div>
     );
   },

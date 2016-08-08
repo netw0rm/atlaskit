@@ -23,19 +23,22 @@ storiesOf(name, module)
       <ak-tab label="Long tab name 1">Tab 1 content</ak-tab>
       <ak-tab selected label="Initially selected tab 2">Tab 2 content</ak-tab>
       <ak-tab label="Long tab name 3">Tab 3 content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
-      <ak-tab label="Another tab">Tab content</ak-tab>
+      <ak-tab label="Another tab 5">Tab content</ak-tab>
+      <ak-tab label="Another tab 6">Tab content</ak-tab>
+      <ak-tab label="Another tab 7">Tab content</ak-tab>
+      <ak-tab label="Another tab 8">Tab content</ak-tab>
+      <ak-tab label="Another tab 9">Tab content</ak-tab>
+      <ak-tab label="Another tab 10">Tab content</ak-tab>
+      <ak-tab label="Another tab 11">Tab content</ak-tab>
+      <ak-tab label="Another tab 12">Tab content</ak-tab>
+      <ak-tab label="Another tab 13">Tab content</ak-tab>
+      <ak-tab label="Another tab 14">Tab content</ak-tab>
+      <ak-tab label="Another tab 15">Tab content</ak-tab>
+      <ak-tab label="Another tab 16">Tab content</ak-tab>
+      <ak-tab label="Another tab 17">Tab content</ak-tab>
+      <ak-tab label="Another tab 18">Tab content</ak-tab>
+      <ak-tab label="Another tab 19">Tab content</ak-tab>
+      <ak-tab label="Another tab 20">Tab content</ak-tab>
     </Component>
   ))
   .add('simple ak-tabs inside a container', () => (

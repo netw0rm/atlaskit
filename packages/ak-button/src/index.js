@@ -7,10 +7,18 @@ import classNames from 'classnames';
 
 const APPEARENCES = ['primary', 'standard', 'subtle'];
 
+const handleSlotClick = (component) =>
+  (e) => {
+    if (component.disabled) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
 const definition = {
   props: {
     appearence: prop.string({ attribute: true }),
-    disabled: prop.boolean({ attribute: true }),
+    disabled: prop.boolean({ attribute: true, default: false }),
     type: prop.string({ attribute: true }),
   },
   render(elem) {
@@ -40,7 +48,7 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >
-          <slot />
+          <slot onclick={handleSlotClick(elem)} />
         </button>
       </div>
     );

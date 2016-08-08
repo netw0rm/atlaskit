@@ -3,7 +3,6 @@ import reactify from 'akutil-react';
 import BlockType from '../src/index';
 import ToolbarComponent from 'ak-editor-toolbar';
 const { React, ReactDOM } = window;
-import { vdom } from 'skatejs';
 import { name } from '../package.json';
 
 const Component = reactify(BlockType, { React, ReactDOM });

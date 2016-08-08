@@ -76,13 +76,10 @@ storiesOf(name, module)
       flexDirection: 'column',
     };
 
-    const itemStyle = {
-      marginTop: '10px',
-    };
 
     return (
       <div style={containerStyle}>
-        <AkButton style={itemStyle}>
+        <AkButton onclick={action('clicking the WebComponent')}>
           <Icon glyph="add" />
           button
         </AkButton>

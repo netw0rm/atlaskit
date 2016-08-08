@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types,react/react-in-jsx-scope */
+/* eslint-disable react/prop-types */
 import { storiesOf } from '@kadira/storybook';
 import TextInputComponent from '../src';
 import reactify from 'akutil-react';

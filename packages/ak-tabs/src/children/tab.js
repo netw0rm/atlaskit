@@ -31,6 +31,9 @@ const events = {
   EVENT_TAB_CHANGE: 'ak-tab-change',
 };
 
+const symbols = {
+  tabLabel: Symbol(),
+};
 
 function emitTabChangedEvent(elem) {
   emit(elem, events.EVENT_TAB_CHANGE, {
@@ -87,4 +90,4 @@ const definition = {
 };
 
 export default define('ak-tab', definition);
-export { events };
+export { events, symbols };

@@ -4,17 +4,16 @@ import 'style!./host.less';
 
 import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
+import Tab, { // eslint-disable-line no-unused-vars
+  events as tabEvents,
+  symbols as tabSymbols,
+} from './children/tab';
 
-import Tab, { events as tabEvents } from './children/tab'; // eslint-disable-line no-unused-vars
 
-// ak-tabs
+/* Symbols */
 const labelsContainer = Symbol();
 const resizeListener = Symbol();
 const buttonContainer = Symbol();
-
-// TODO: These should belong to the tab component
-// ak-tab
-const tabLabel = Symbol();
 
 /* Helpers */
 
@@ -22,7 +21,6 @@ function getAllTabs(tabsEl) {
   return tabsEl.children.filter(el => el.label);
 }
 
-/*
 function getNextOrPrevTab(tabsEl, tab, isNext) {
   const all = getAllTabs(tabsEl);
   let index = all.indexOf(tab);
@@ -43,7 +41,6 @@ function getNextTab(tabsEl, tab) {
 function getPrevTab(tabsEl, tab) {
   return getNextOrPrevTab(tabsEl, tab, false);
 }
-*/
 
 function getSelectedTab(tabsEl) {
   const all = getAllTabs(tabsEl);
@@ -51,7 +48,7 @@ function getSelectedTab(tabsEl) {
 }
 
 function getLabelForTab(tab) {
-  return tab[tabLabel];
+  return tab[tabSymbols.tabLabel];
 }
 
 /* Handlers */
@@ -64,7 +61,23 @@ function labelClickHandler(tab) {
   };
 }
 
-// TODO: Keyboard nav
+function labelKeydownHandler(tabsEl, tab) {
+  return e => {
+    let tabToSelect;
+    if (e.keyCode === 37 /* LEFT */) {
+      tabToSelect = getPrevTab(tabsEl, tab);
+    } else if (e.keyCode === 39 /* RIGHT */) {
+      tabToSelect = getNextTab(tabsEl, tab);
+    }
+    if (tabToSelect) {
+      emit(
+        tabToSelect,
+        tabEvents.EVENT_TAB_SELECT,
+        { detail: { tab: tabToSelect, keyboardNav: true } }
+      );
+    }
+  };
+}
 
 function calculateVisibleTabs(tabsEl) {
   const tabLabelsContainer = tabsEl[labelsContainer];
@@ -75,7 +88,7 @@ function calculateVisibleTabs(tabsEl) {
 
   // Get the width of the <li> item containing each tab label element.
   const MARGIN = 5; // Margin 5px
-  const allTabs = getAllTabs(tabsEl).filter(tab => tab[tabLabel]);
+  const allTabs = getAllTabs(tabsEl).filter(tab => tab[tabSymbols.tabLabel]);
 
   let widthRemaining = tabLabelsContainer.getBoundingClientRect().width;
   const tabWidths = new Map(allTabs.map(
@@ -203,7 +216,8 @@ const definition = {
                     aria-selected={ariaSelected}
                     tabIndex={tabIndex}
                     onclick={labelClickHandler(tab)}
-                    ref={el => (tab[tabLabel] = el)}
+                    onkeydown={labelKeydownHandler(elem, tab)}
+                    ref={el => (tab[tabSymbols.tabLabel] = el)}
                   >{tab.label}</a>
                 </li>
               );
@@ -259,7 +273,11 @@ const definition = {
         return e => {
           e.detail.tab.selected = true;
           if (e.detail.keyboardNav) {
-            e.detail.tab[tabLabel].focus();
+            /* TODO: Ideally this would happen at render time in the ref callback, which would
+               require us to set some state that is accessed in the render function. */
+            setTimeout(() => {
+              e.detail.tab[tabSymbols.tabLabel].focus();
+            }, 50);
           }
         };
       },

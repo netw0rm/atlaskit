@@ -49,7 +49,7 @@ const definition = {
   },
 
   render(elem) {
-    const { target, position, renderElementTo } = elem;
+    const { target, position } = elem;
     const { resourceProvider, presenceProvider, query } = elem;
     const style = {
       display: elem.visible ? 'block' : 'none',
@@ -63,7 +63,6 @@ const definition = {
             target={target}
             position={position}
             open={elem.visible}
-            renderElementTo={renderElementTo}
             padding="0"
           >
             <pf-resourced-mention-list
@@ -101,9 +100,6 @@ const definition = {
       attribute: true,
     }),
     position: prop.string({
-      attribute: true,
-    }),
-    renderElementTo: prop.string({
       attribute: true,
     }),
   },

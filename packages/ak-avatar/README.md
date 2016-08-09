@@ -43,8 +43,8 @@ import Avatar from 'ak-avatar';
 const myAvatar = new Avatar();
 ```
 ### `avatar.size` : string
-The size of the avatar. One of:
-small', 'medium', 'large', 'xlarge'.
+The size of the avatar.
+Allowed values are: 'small', 'medium', 'large', 'xlarge'.
 
 **Kind**: instance property of Avatar  
 **Default**: `"medium"`  
@@ -57,9 +57,9 @@ small', 'medium', 'large', 'xlarge'.
 avatar.size = 'large';
 ```
 ### `avatar.presence` : string
-An indicator or a users online status.
+An indicator of a users online status.
 Will show a small colored icon on the avatar itself.
-'online', 'offline', 'busy' or 'none'
+Allowed values are: 'online', 'offline', 'busy' or 'none'
 
 **Kind**: instance property of Avatar  
 **Default**: `"none"`  

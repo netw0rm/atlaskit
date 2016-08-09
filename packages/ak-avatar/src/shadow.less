@@ -83,10 +83,7 @@
 }
 
 .presence {
-  position: absolute;
-
-  border: 2px solid #ffffff;
-  border-radius: 100%;
+  position: relative;
 
   &.none {
     display: none;
@@ -102,6 +99,21 @@
 
   &.offline {
     background: @ak-avatar-presence-color-offline;
+
+    &:before {
+      @middle-bubble-size: 50%;
+
+      content: '';
+      display: inline-block;
+      position: absolute;
+      height: @middle-bubble-size;
+      width: @middle-bubble-size;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 100%;
+      background-color: white;
+    }
   }
 }
 

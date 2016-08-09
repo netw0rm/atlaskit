@@ -99,4 +99,41 @@ storiesOf(name, module)
         <p>Another <a href="#">link</a>.</p>
       </ak-tab>
     </Component>
+  ))
+  .add('ak-tabs with a very long label', () => (
+    <Component>
+      <ak-tab
+        selected
+        label="This tab has a very long with lots of text in it that goes on and on and on and
+        should take up all the horizontal space on the page, and be truncated to fit on the page.
+        Here is some more text to ensure that this label does indeed take up all the available
+        horizontal space and force the ak-tabs component to handle it."
+      >
+        <h1>Tab 1</h1>
+        <p>Some text here with a <a href="#">link</a>.</p>
+      </ak-tab>
+    </Component>
+  ))
+  .add('ak-tabs with multiple very long labels', () => (
+    <Component>
+      <ak-tab
+        selected
+        label="This tab has a very long with lots of text in it that goes on and on and on and
+        should take up all the horizontal space on the page, and be truncated to fit on the page.
+        Here is some more text to ensure that this label does indeed take up all the available
+        horizontal space and force the ak-tabs component to handle it."
+      >
+        <h1>Tab 1</h1>
+        <p>Some text here with a <a href="#">link</a>.</p>
+      </ak-tab>
+      <ak-tab
+        selected
+        label="This second tab also is very long and has lots of text. If this tab is selected, the
+        label text should be truncated with an ellipsis so that it fits onto the available space on
+        the page."
+      >
+        <h1>Tab 2</h1>
+        <p>Some text here with a <a href="#">link</a>.</p>
+      </ak-tab>
+    </Component>
   ));

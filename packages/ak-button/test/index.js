@@ -59,16 +59,27 @@ describe('ak-button', () => {
     });
 
     describe('appearence', () => {
-      describe('standard', () => {
-        it('button should only have akButton class', () => {
-          props(component, { appearence: 'standard' });
-          const buttonClasses = getShadowButtonElem(component).classList;
-          expect(buttonClasses).to.have.lengthOf(1);
-          expect(buttonClasses[0]).to.equals(shadowStyles.locals.akButton);
+      [
+        {
+          message: 'standard',
+          appearence: 'standard',
+        },
+        {
+          message: 'when invalid appearence provided',
+          appearence: 'invalid',
+        },
+      ].forEach(testCase => {
+        describe(testCase.message, () => {
+          it('button should only have akButton class', () => {
+            props(component, { appearence: testCase.appearence });
+            const buttonClasses = getShadowButtonElem(component).classList;
+            expect(buttonClasses).to.have.lengthOf(1);
+            expect(buttonClasses[0]).to.equals(shadowStyles.locals.akButton);
+          });
         });
       });
 
-      ['subtle', 'primary'].forEach(appearenceName => {
+      ['subtle', 'primary', 'selected'].forEach(appearenceName => {
         describe(appearenceName, () => {
           const selector = `.${classKeys.akButton}.${classKeys[appearenceName]}`;
           beforeEach(() =>

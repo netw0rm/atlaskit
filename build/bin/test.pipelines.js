@@ -21,7 +21,7 @@ https.get(apiUrl, (res) => {
     const prData = JSON.parse(body.join(''));
     const branchName = process.env.CURRENT_BRANCH;
     const prExists = prExistsForBranch(prData.values, branchName);
-    const prCommand = 'npm run test/browserstack/ci';
+    const prCommand = 'npm run test/browserstack/ci/fast';
     const branchCommand = 'npm run test/ci -- --browsers=Chrome';
     const testCmd = prExists ? prCommand : branchCommand;
     const existsWords = prExists ? 'exists' : 'does not exist';

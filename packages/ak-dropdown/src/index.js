@@ -10,6 +10,32 @@ import classNames from 'classnames';
 import { KeyPressHandler } from 'akutil-common';
 
 const listWidthGap = 10;
+let keyPress;
+
+function isChildOf(child, parent) {
+  if (child.parentNode === parent) {
+    return true;
+  } else if (child.parentNode === null) {
+    return false;
+  }
+
+  return isChildOf(child.parentNode, parent);
+}
+
+function closeDropdown(trigger, list) {
+  return () => {
+    list.open = false;
+    trigger.opened = false;
+  };
+}
+
+function handleClickOutside(trigger, list, elem) {
+  return (e) => {
+    if (e.target !== elem && !isChildOf(e.target, elem)) {
+      closeDropdown(trigger, list)();
+    }
+  };
+}
 
 function isOnlyOneTextNode(elem) {
   return elem.childNodes && elem.childNodes.length === 1 && elem.childNodes[0].nodeType === 3;
@@ -138,32 +164,6 @@ define('ak-dropdown-list', {
     }),
   },
 });
-
-let keyPress;
-function isChildOf(child, parent) {
-  if (child.parentNode === parent) {
-    return true;
-  } else if (child.parentNode === null) {
-    return false;
-  }
-
-  return isChildOf(child.parentNode, parent);
-}
-
-function closeDropdown(trigger, list) {
-  return () => {
-    list.open = false;
-    trigger.opened = false;
-  };
-}
-
-function handleClickOutside(trigger, list, elem) {
-  return (e) => {
-    if (e.target !== elem && !isChildOf(e.target, elem)) {
-      closeDropdown(trigger, list)();
-    }
-  };
-}
 
 export default define('ak-dropdown', {
   attached(elem) {

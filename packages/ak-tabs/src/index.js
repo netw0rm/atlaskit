@@ -1,7 +1,7 @@
 /** @jsx vdom */
 /* eslint no-underscore-dangle: 0 */
 import 'style!./host.less';
-
+import { debounce } from 'akutil-common';
 import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Tab, { // eslint-disable-line no-unused-vars
@@ -178,10 +178,10 @@ const definition = {
       }
     }
 
-    elem[resizeListener] = () => {
+    elem[resizeListener] = debounce(() => {
       // TODO: Debounce me.
       elem._visibleTabs = calculateVisibleTabs(elem);
-    };
+    }, 500);
     window.addEventListener('resize', elem[resizeListener]);
   },
   detached(elem) {

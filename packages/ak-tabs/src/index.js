@@ -173,7 +173,9 @@ const definition = {
     // If there is no selected tab, try to select the first tab.
     if (!elem.children.some(el => el.label && el.selected)) {
       const tab = elem.children.find(el => el.label);
-      emit(tab, tabEvents.EVENT_TAB_SELECT, { detail: { tab } });
+      if (tab) {
+        emit(tab, tabEvents.EVENT_TAB_SELECT, { detail: { tab } });
+      }
     }
 
     elem[resizeListener] = () => {

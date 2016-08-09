@@ -3895,7 +3895,8 @@
     },
     "inherits": {
       "version": "2.0.1",
-      "from": "inherits@2.0.1"
+      "from": "inherits@2.0.1",
+      "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
     },
     "ini": {
       "version": "1.3.4",
@@ -5253,10 +5254,25 @@
       "from": "npm-registry-client@>=6.5.1 <7.0.0",
       "resolved": "https://registry.npmjs.org/npm-registry-client/-/npm-registry-client-6.5.1.tgz",
       "dependencies": {
+        "are-we-there-yet": {
+          "version": "1.1.2",
+          "from": "are-we-there-yet@>=1.1.2 <1.2.0",
+          "resolved": "https://registry.npmjs.org/are-we-there-yet/-/are-we-there-yet-1.1.2.tgz"
+        },
+        "gauge": {
+          "version": "2.6.0",
+          "from": "gauge@>=2.6.0 <2.7.0",
+          "resolved": "https://registry.npmjs.org/gauge/-/gauge-2.6.0.tgz"
+        },
         "graceful-fs": {
           "version": "3.0.8",
           "from": "graceful-fs@>=3.0.0 <4.0.0",
           "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-3.0.8.tgz"
+        },
+        "npmlog": {
+          "version": "4.0.0",
+          "from": "npmlog@latest",
+          "resolved": "https://registry.npmjs.com/npmlog/-/npmlog-4.0.0.tgz"
         }
       }
     },
@@ -6531,9 +6547,9 @@
       "resolved": "https://registry.npmjs.org/sinon-chai/-/sinon-chai-2.8.0.tgz"
     },
     "skatejs-named-slots": {
-      "version": "0.3.1",
+      "version": "0.3.3",
       "from": "skatejs-named-slots@>=0.3.1 <0.4.0",
-      "resolved": "https://registry.npmjs.org/skatejs-named-slots/-/skatejs-named-slots-0.3.1.tgz"
+      "resolved": "https://registry.npmjs.org/skatejs-named-slots/-/skatejs-named-slots-0.3.3.tgz"
     },
     "slash": {
       "version": "1.0.0",
@@ -6847,7 +6863,8 @@
     },
     "string_decoder": {
       "version": "0.10.31",
-      "from": "string_decoder@>=0.10.0 <0.11.0"
+      "from": "string_decoder@0.10.31",
+      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
     },
     "string-tools": {
       "version": "1.0.0",

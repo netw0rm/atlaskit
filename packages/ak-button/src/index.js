@@ -5,7 +5,7 @@ import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 
-const APPEARENCES = ['primary', 'standard', 'subtle'];
+const APPEARANCES = ['primary', 'standard', 'subtle', 'selected'];
 
 const handleSlotClick = (component) =>
   (e) => {
@@ -17,7 +17,7 @@ const handleSlotClick = (component) =>
 
 const definition = {
   props: {
-    appearence: prop.string({ attribute: true }),
+    appearance: prop.string({ attribute: true }),
     disabled: prop.boolean({ attribute: true, default: false }),
     type: prop.string({ attribute: true }),
   },
@@ -26,10 +26,10 @@ const definition = {
     // TODO: constraint buttonType to only be button or submit
     const buttonType = (elem.type) ? elem.type : 'button';
 
-    if (elem.appearence) {
-      const index = APPEARENCES.indexOf(elem.appearence);
+    if (elem.appearance) {
+      const index = APPEARANCES.indexOf(elem.appearance);
       if (index >= 0) {
-        classes.push(shadowStyles.locals[APPEARENCES[index]]);
+        classes.push(shadowStyles.locals[APPEARANCES[index]]);
       }
     }
 

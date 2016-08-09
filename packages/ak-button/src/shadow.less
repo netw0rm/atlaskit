@@ -71,6 +71,19 @@
     }
   }
 
+  &.selected {
+    background: @n800;
+    color: #FFF;
+
+    &:hover {
+      background: @n700;
+    }
+
+    &:active {
+      background: @blue300;
+    }
+  }
+
   &.subtle:not(:hover):not(:focus):not(:active) {
     background: none;
   }

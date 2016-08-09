@@ -58,29 +58,29 @@ describe('ak-button', () => {
       );
     });
 
-    describe('appearence', () => {
+    describe('appearance', () => {
       describe('standard', () => {
         it('button should only have akButton class', () => {
-          props(component, { appearence: 'standard' });
+          props(component, { appearance: 'standard' });
           const buttonClasses = getShadowButtonElem(component).classList;
           expect(buttonClasses).to.have.lengthOf(1);
           expect(buttonClasses[0]).to.equals(shadowStyles.locals.akButton);
         });
       });
 
-      ['subtle', 'primary'].forEach(appearenceName => {
-        describe(appearenceName, () => {
-          const selector = `.${classKeys.akButton}.${classKeys[appearenceName]}`;
+      ['subtle', 'primary'].forEach(appearanceName => {
+        describe(appearanceName, () => {
+          const selector = `.${classKeys.akButton}.${classKeys[appearanceName]}`;
           beforeEach(() =>
-            props(component, { appearence: appearenceName })
+            props(component, { appearance: appearanceName })
           );
 
-          it(`button should have ${appearenceName} class`, () =>
+          it(`button should have ${appearanceName} class`, () =>
             expect(shadowDomQuery(component, selector)).not.to.be.null
           );
 
           it('button should not have subtle class after it is removed', () => {
-            props(component, { appearence: 'standard' });
+            props(component, { appearance: 'standard' });
             expect(shadowDomQuery(component, selector)).to.be.null;
           });
         });

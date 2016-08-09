@@ -17,7 +17,7 @@ storiesOf(name, module)
     <AkButton>Button</AkButton>
   ))
   .add('a primary ak-button', () => (
-    <AkButton appearence="primary">Primary Button</AkButton>
+    <AkButton appearance="primary">Primary Button</AkButton>
   ))
   .add('a disabled ak-button', () =>
     <AkButton disabled onclick={action('clicking the WebComponent')}>
@@ -25,7 +25,7 @@ storiesOf(name, module)
     </AkButton>
   )
   .add('a subtle ak-button', () =>
-    <AkButton appearence="subtle" >
+    <AkButton appearance="subtle" >
       Button
     </AkButton>
   )
@@ -104,7 +104,7 @@ storiesOf(name, module)
           button
         </AkButton>
         <br />
-        <AkButton appearence="subtle" >
+        <AkButton appearance="subtle" >
           <Icon glyph="add" />
           button
         </AkButton>

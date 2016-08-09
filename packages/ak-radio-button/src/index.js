@@ -18,6 +18,16 @@ export default define('ak-radio-button', {
         <style>{shadowStyles.toString()}</style>
         <AkButton appearance={elem.selected ? 'selected' : 'standard'}>
           <slot />
+
+          // We may not need the input[type=radio] if we
+          // are going to manually export values to forms..
+          <input
+            type="radio"
+            className={shadowStyles.locals.realRadio}
+            name={elem.name}
+            value={elem.value}
+            checked={elem.selected}
+          />
         </AkButton>
       </div>
     );
@@ -45,6 +55,12 @@ export default define('ak-radio-button', {
       attribute: true,
       default: false,
     }),
+  },
+  attributeChanged(elem, data) {
+    if (data.name === 'selected' && elem.selected) {
+      // TODO
+      // elem.querySelector('ak-button').focus();
+    }
   },
   prototype: {
     /**

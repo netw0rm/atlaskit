@@ -4,23 +4,29 @@
 // Only do class selectors in here, anything else leaks to the rest of the page in
 // browsers that do not support shadow DOM
 @import 'shared-variables.less';
+@button-spacing: 4px;
 
 .container {
-  background-color: #EEE;
   display: inline-flex;
   justify-content: space-between;
 }
 
-::slotted(*) {
-  // display: inline-block;
-  // flex: 1;
-  background: yellow;
-  border: 1px solid red;
-  color: red;
+::content ak-radio-button {
+  flex: 1;
+  margin: 0 @button-spacing/2;
 }
 
-ak-radio-button {
-  border: 1px solid green;
+::slotted(*) {
+  flex: 1;
+  margin: 0 @button-spacing/2;
+}
+
+::slotted(:first-child) {
+  margin-left: 0;
+}
+
+::slotted(:last-child) {
+  margin-right: 0;
 }
 
 // .container > * {

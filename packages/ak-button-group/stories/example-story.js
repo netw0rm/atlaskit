@@ -23,13 +23,6 @@ storiesOf(name, module)
       <ReactRadioButton>Two</ReactRadioButton>
       <ReactRadioButton>Three</ReactRadioButton>
     </ReactButtonGroup>
-  ))
-  .add('ak-button-group with fixed width a little wider than items', () => (
-    <ReactButtonGroup style={{ width: 300 }}>
-      <ReactRadioButton selected>One</ReactRadioButton>
-      <ReactRadioButton>Two</ReactRadioButton>
-      <ReactRadioButton>Three</ReactRadioButton>
-    </ReactButtonGroup>
   ));
   // .add('a simple ak-button-group with a name', () => (
   //   <Component name="MyComponent" />

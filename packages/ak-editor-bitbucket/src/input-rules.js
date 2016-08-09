@@ -4,7 +4,7 @@ import { InputRule, inputRules as pmInputRules, allInputRules,
        blockQuoteRule, bulletListRule, codeBlockRule,
        orderedListRule, headingRule} from 'prosemirror/dist/inputrules';
 
-import hyperlink from '@atlassian/editorkit-hyperlink-plugin/dist/autoconvert';
+import hyperlink from 'atlassian-editorkit-hyperlink-plugin/dist/autoconvert';
 
 const buildBlockRules = function(nodes) {
   const rules = [];

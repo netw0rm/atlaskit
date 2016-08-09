@@ -1,5 +1,5 @@
 /* eslint-disable */
-import hyperlink from '@atlassian/editorkit-hyperlink-plugin/dist/pastehandler';
+import hyperlink from 'atlassian-editorkit-hyperlink-plugin/dist/pastehandler';
 import { Slice } from 'prosemirror/dist/model';
 import { markdownParser } from './markdown-parser';
 

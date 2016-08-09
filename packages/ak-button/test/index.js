@@ -56,6 +56,11 @@ describe('ak-button', () => {
           expect(getShadowButtonElem(component).getAttribute('type')).to.equals('button')
         )
       );
+
+      it('button should not have invalid type', () => {
+        props(component, { type: 'invalid' });
+        expect(getShadowButtonElem(component).getAttribute('type')).to.equals('button');
+      });
     });
 
     describe('appearence', () => {

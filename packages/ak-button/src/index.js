@@ -4,8 +4,23 @@ import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
+import { enumeration } from 'akutil-common';
 
-const APPEARENCES = ['primary', 'standard', 'subtle', 'selected'];
+// const APPEARENCES = ['primary', 'standard', 'subtle', 'selected'];
+
+const APPEARENCES = {
+  attribute: 'appearence',
+  values: [
+    'primary', 'standard', 'subtle', 'selected',
+  ],
+};
+
+const TYPES = {
+  attribute: 'type',
+  values: ['button', 'submit'],
+  missingDefault: 'button',
+  invalidDefault: 'button',
+};
 
 const handleSlotClick = (component) =>
   (e) => {
@@ -17,20 +32,19 @@ const handleSlotClick = (component) =>
 
 const definition = {
   props: {
-    appearence: prop.string({ attribute: true }),
+    appearence: enumeration(APPEARENCES)({
+      attribute: true,
+    }),
     disabled: prop.boolean({ attribute: true, default: false }),
-    type: prop.string({ attribute: true }),
+    type: enumeration(TYPES)({
+      attribute: true,
+    }),
   },
   render(elem) {
     const classes = [shadowStyles.locals.akButton];
-    // TODO: constraint buttonType to only be button or submit
-    const buttonType = (elem.type) ? elem.type : 'button';
 
     if (elem.appearence) {
-      const index = APPEARENCES.indexOf(elem.appearence);
-      if (index >= 0) {
-        classes.push(shadowStyles.locals[APPEARENCES[index]]);
-      }
+      classes.push(shadowStyles.locals[elem.appearence]);
     }
 
     if (elem.disabled) {
@@ -44,7 +58,7 @@ const definition = {
         <style>{shadowStyles.toString()}</style>
         <button
           className={classListNames}
-          type={buttonType}
+          type={elem.type}
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >

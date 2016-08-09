@@ -65,7 +65,9 @@ const definition = {
             onload={imageLoadedHandler(elem)}
           /> : ''
         }
-        <div class={presenceClasses}></div>
+        <slot>
+          <div class={presenceClasses}></div>
+        </slot>
       </div>
     );
   },

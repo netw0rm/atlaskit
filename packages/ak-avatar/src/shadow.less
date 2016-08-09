@@ -11,6 +11,17 @@
 @ak-avatar-presence-color-busy: @ak-color-Y500;
 @ak-avatar-presence-color-offline: @ak-color-N40;
 
+slot {
+  display: inline-block;
+  position: absolute;
+
+  & >:first-child {
+    height: 100%;
+    width: 100%;
+    border: 2px solid white;
+    border-radius: 100%;
+  }
+}
 
 .img {
   background-clip: padding-box;
@@ -38,43 +49,45 @@
   &.small {
     .sizeMixin(@ak-avatar-size-small);
 
-    .presence {
-      @presence-size: 8px;
-      @presence-offset: 12px;
+    slot {
+      @slot-size: 8px;
+      @slot-offset: 12px;
 
-      .presenceMixin(@presence-size, @presence-offset);
+      .slotMixin(@slot-size, @slot-offset);
     }
   }
   &.medium {
     .sizeMixin(@ak-avatar-size-medium);
 
-    .presence {
-      @presence-size: 8px;
-      @presence-offset: 20px;
+    slot {
+      @slot-size: 8px;
+      @slot-offset: 20px;
 
-      .presenceMixin(@presence-size, @presence-offset);
+      .slotMixin(@slot-size, @slot-offset);
     }
   }
   &.large {
     .sizeMixin(@ak-avatar-size-large);
 
-    .presence {
-      @presence-size: 12px;
-      @presence-offset: 35px;
+    slot {
+      @slot-size: 12px;
+      @slot-offset: 35px;
 
-      .presenceMixin(@presence-size, @presence-offset);
+      .slotMixin(@slot-size, @slot-offset);
     }
   }
   &.xlarge {
     .sizeMixin(@ak-avatar-size-xlarge);
 
-    .presence {
-      @presence-size: 22px;
-      @presence-offset: 72px;
+    slot {
+      @slot-size: 22px;
+      @slot-offset: 72px;
 
-      .presenceMixin(@presence-size, @presence-offset);
+      .slotMixin(@slot-size, @slot-offset);
 
-      border-width: 4px;
+      & >:first-child {
+        border-width: 4px;
+      }
     }
   }
   &.loaded {
@@ -117,7 +130,7 @@
   }
 }
 
-.presenceMixin(@size, @offset) {
+.slotMixin(@size, @offset) {
   height: @size;
   width: @size;
 

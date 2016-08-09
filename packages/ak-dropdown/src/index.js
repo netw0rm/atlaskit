@@ -7,6 +7,7 @@ import shadowItemStyles from './shadow-item.less';
 import shadowTriggerStyles from './shadow-trigger.less';
 import 'ak-layer';
 import classNames from 'classnames';
+import { KeyPressHandler } from 'akutil-common';
 
 const listWidthGap = 10;
 
@@ -138,14 +139,48 @@ define('ak-dropdown-list', {
   },
 });
 
+let keyPress;
+function isChildOf(child, parent) {
+  if (child.parentNode === parent) {
+    return true;
+  } else if (child.parentNode === null) {
+    return false;
+  }
+
+  return isChildOf(child.parentNode, parent);
+}
+
+function closeDropdown(trigger, list) {
+  return () => {
+    list.open = false;
+    trigger.opened = false;
+  };
+}
+
+function handleClickOutside(trigger, list, elem) {
+  return (e) => {
+    if (e.target !== elem && !isChildOf(e.target, elem)) {
+      closeDropdown(trigger, list)();
+    }
+  };
+}
+
 export default define('ak-dropdown', {
   attached(elem) {
     const list = elem[symbols.shadowRoot].querySelector('ak-dropdown-list');
     const trigger = elem[symbols.shadowRoot].querySelector('ak-dropdown-trigger');
+
     elem.addEventListener('ak-dropdown-trigger-click', () => {
       list.open = !list.open;
       trigger.opened = list.open;
     });
+
+    keyPress = new KeyPressHandler('ESCAPE', closeDropdown(trigger, list));
+    document.addEventListener('click', handleClickOutside(trigger, list, elem));
+  },
+  detached() {
+    keyPress.destroy();
+    document.removeEventListener('click', handleClickOutside);
   },
   render() {
     return (

@@ -5,12 +5,20 @@ import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 
-const APPEARANCES = ['primary', 'standard', 'selected'];
+const APPEARENCES = ['primary', 'standard', 'subtle'];
+
+const handleSlotClick = (component) =>
+  (e) => {
+    if (component.disabled) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
 
 const definition = {
   props: {
-    appearance: prop.string({ attribute: true }),
-    disabled: prop.boolean({ attribute: true }),
+    appearence: prop.string({ attribute: true }),
+    disabled: prop.boolean({ attribute: true, default: false }),
     type: prop.string({ attribute: true }),
   },
   render(elem) {
@@ -18,10 +26,10 @@ const definition = {
     // TODO: constraint buttonType to only be button or submit
     const buttonType = (elem.type) ? elem.type : 'button';
 
-    if (elem.appearance) {
-      const index = APPEARANCES.indexOf(elem.appearance);
+    if (elem.appearence) {
+      const index = APPEARENCES.indexOf(elem.appearence);
       if (index >= 0) {
-        classes.push(shadowStyles.locals[elem.appearance]);
+        classes.push(shadowStyles.locals[APPEARENCES[index]]);
       }
     }
 
@@ -40,9 +48,7 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >
-          <span className={shadowStyles.locals.label}>
-            <slot />
-          </span>
+          <slot onclick={handleSlotClick(elem)} />
         </button>
       </div>
     );

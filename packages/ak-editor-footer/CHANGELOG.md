@@ -1,20 +1,10 @@
-<a name="1.0.0"></a>
-# 1.0.0 (2016-08-08)
-
-
-
-<a name="ak-editor-button-link@1.0.0"></a>
-# ak-editor-button-link@1.0.0 (2016-08-04)
-
-
-### Bug Fixes
-
-* Version for akutil-shared-styles dependency. ([bc22e0b](https://bitbucket.org/atlassian/atlaskit/commits/bc22e0b))
+<a name="0.1.0"></a>
+# 0.1.0 (2016-08-08)
 
 
 ### Features
 
-* Add ak-editor-button-link package. ([ee97309](https://bitbucket.org/atlassian/atlaskit/commits/ee97309))
+* Add ak-editor-footer. ([5552d52](https://bitbucket.org/atlassian/atlaskit/commits/5552d52))
 
 
 

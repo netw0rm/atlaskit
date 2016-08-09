@@ -9,6 +9,9 @@
 // we define a class here in order to re-use it in the storybook
 // (because in storybook the component name is randomly generated)
 ak-button {
-  display: inline-block;
+
+  > _shadow_root_ {
+    display: flex;
+  }
 
 }

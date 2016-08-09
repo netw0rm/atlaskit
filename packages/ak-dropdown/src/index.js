@@ -49,18 +49,18 @@ function handleTriggerClick(elem) {
   };
 }
 
-function selectItem(elem, list) {
+function selectItem(item, list) {
   return () => {
     // disabled items should not allow any interactions
     // selected item doesn't need to be selected again
-    if (elem.disabled || elem.selected) {
+    if (item.disabled || item.selected) {
       return;
     }
     list.forEach((child) => {
       child.selected = false;
     });
-    elem.selected = true;
-    emit(elem, 'ak-dropdown-selected');
+    item.selected = true;
+    emit(item, 'ak-dropdown-selected');
   };
 }
 
@@ -174,6 +174,10 @@ export default define('ak-dropdown', {
     elem.addEventListener('ak-dropdown-trigger-click', () => {
       list.open = !list.open;
       trigger.opened = list.open;
+    });
+    elem.addEventListener('ak-dropdown-selected', () => {
+      list.open = false;
+      trigger.opened = false;
     });
 
     keyPress = new KeyPressHandler('ESCAPE', closeDropdown(elem));

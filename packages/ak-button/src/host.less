@@ -14,4 +14,11 @@ ak-button {
     display: flex;
   }
 
+  /* IE 10+ */
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+     &[disabled] {
+        pointer-events: none;
+     }
+  }
+
 }

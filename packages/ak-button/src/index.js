@@ -5,8 +5,7 @@ import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
-
-// const APPEARENCES = ['primary', 'standard', 'subtle', 'selected'];
+import 'ak-editor-icon';
 
 const APPEARENCES = {
   attribute: 'appearence',
@@ -22,13 +21,31 @@ const TYPES = {
   invalidDefault: 'button',
 };
 
-const handleSlotClick = (component) =>
+const preventClickWhenDisabled = (component) =>
   (e) => {
     if (component.disabled) {
       e.preventDefault();
       e.stopPropagation();
     }
   };
+
+const createIcon = (elem, glyph, id) => {
+  if (!glyph) {
+    return false;
+  }
+  let fill;
+  if (elem.appearence === 'selected') {
+    fill = '#ECEEF1';
+  }
+  if (elem.disabled) {
+    fill = '#B3BAC5';
+  }
+  return vdom.element('ak-editor-icon', {
+    id,
+    glyph,
+    fill,
+  });
+};
 
 const definition = {
   props: {
@@ -39,16 +56,18 @@ const definition = {
     type: enumeration(TYPES)({
       attribute: true,
     }),
+    leftIcon: prop.string({ attribute: true, default: null }),
+    rightIcon: prop.string({ attribute: true, default: null }),
   },
   render(elem) {
     const classes = [shadowStyles.locals.akButton];
 
-    if (elem.appearence) {
-      classes.push(shadowStyles.locals[elem.appearence]);
-    }
-
     if (elem.disabled) {
       classes.push(shadowStyles.locals.disabled);
+    } else {
+      if (elem.appearence) {
+        classes.push(shadowStyles.locals[elem.appearence]);
+      }
     }
 
     const classListNames = classNames(classes);
@@ -62,7 +81,14 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >
-          <slot onclick={handleSlotClick(elem)} />
+          <div
+            className={shadowStyles.locals.contentContainer}
+            onclick={preventClickWhenDisabled(elem)}
+          >
+            {createIcon(elem, elem.leftIcon, 'left-icon')}
+            <slot />
+            {createIcon(elem, elem.rightIcon, 'right-icon')}
+          </div>
         </button>
       </div>
     );

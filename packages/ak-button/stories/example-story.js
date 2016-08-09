@@ -3,14 +3,11 @@ import reactify from 'akutil-react';
 import AkButtonTemplate from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
-import IconComponent from 'ak-editor-icon';
 
 const AkButton = reactify(AkButtonTemplate, {
   React,
   ReactDOM,
 });
-
-const Icon = reactify(IconComponent, { React, ReactDOM });
 
 storiesOf(name, module)
   .add('a default ak-button', () => (
@@ -54,6 +51,15 @@ storiesOf(name, module)
                 defaultChecked={this.state.disable}
               />
             </label>
+            <label>
+              Selected
+              <input
+                type="checkbox"
+                id="disable-checkbox"
+                onChange={this.handleClick.bind(this)}  // eslint-disable-line react/jsx-no-bind
+                defaultChecked={this.state.disable}
+              />
+            </label>
             <AkButton
               disabled={this.state.disable}
               onclick={action('clicking the WebComponent')}
@@ -88,8 +94,8 @@ storiesOf(name, module)
           <AkButton
             appearence={this.state.selected ? 'selected' : 'standard'}
             onClick={this.handleClick.bind(this)} // eslint-disable-line react/jsx-no-bind
+            leftIcon="add"
           >
-            <Icon glyph="add" />
             Button
           </AkButton>
         );
@@ -139,8 +145,10 @@ storiesOf(name, module)
           iconNames.map(
             iconName =>
               <div>
-                <AkButton style={buttonStyle}><Icon glyph={iconName} /></AkButton>
-                <AkButton style={buttonStyle} disabled><Icon glyph={iconName} /></AkButton>
+                <AkButton style={buttonStyle} leftIcon={iconName} />
+                <AkButton style={buttonStyle} disabled leftIcon={iconName} />
+                <AkButton style={buttonStyle} appearence="subtle" leftIcon={iconName} />
+                <AkButton style={buttonStyle} appearence="selected" leftIcon={iconName} />
               </div>
           )
         }
@@ -156,49 +164,48 @@ storiesOf(name, module)
 
     return (
       <div style={containerStyle}>
-        <AkButton onclick={action('clicking the WebComponent')}>
-          <Icon glyph="add" />
+        <AkButton onclick={action('clicking the WebComponent')} leftIcon="add">
           button
         </AkButton>
         <br />
-        <AkButton onclick={action('clicking the WebComponent')} disabled>
-          <Icon glyph="add" />
+        <AkButton onclick={action('clicking the WebComponent')} disabled leftIcon="add">
           button
         </AkButton>
 
         <br />
-        <AkButton >
+        <AkButton rightIcon="expand">
           button
-          <Icon glyph="expand" />
         </AkButton>
         <br />
-        <AkButton disabled>
+        <AkButton disabled rightIcon="expand">
           button
-          <Icon glyph="expand" />
         </AkButton>
         <br />
 
-        <AkButton>
-          <Icon glyph="add" />
+        <AkButton leftIcon="add" rightIcon="expand">
           button
-          <Icon glyph="expand" />
         </AkButton>
         <br />
 
-        <AkButton disabled>
-          <Icon glyph="add" />
+        <AkButton disabled leftIcon="add" rightIcon="expand">
           button
-          <Icon glyph="expand" />
         </AkButton>
         <br />
 
-        <AkButton appearence="subtle" >
-          <Icon glyph="add" />
+        <AkButton appearence="subtle" leftIcon="add">
           button
         </AkButton>
         <br />
-        <AkButton appearence="subtle" disabled>
-          <Icon glyph="add" />
+        <AkButton appearence="subtle" disabled leftIcon="add">
+          button
+        </AkButton>
+        <br />
+
+        <AkButton appearence="selected" leftIcon="bullet-list">
+          button
+        </AkButton>
+        <br />
+        <AkButton appearence="selected" disabled leftIcon="bullet-list">
           button
         </AkButton>
 

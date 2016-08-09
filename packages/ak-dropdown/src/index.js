@@ -1,15 +1,12 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { emit, vdom, define, prop, symbols } from 'skatejs';
-import shadowListStyles from './shadow-list.less';
-import shadowItemStyles from './shadow-item.less';
-import shadowTriggerStyles from './shadow-trigger.less';
-import 'ak-layer';
-import classNames from 'classnames';
+import { vdom, define, symbols } from 'skatejs';
 import { KeyPressHandler } from 'akutil-common';
+import './item';
+import './list';
+import './trigger';
 
-const listWidthGap = 10;
 let keyPress;
 
 function isChildOf(child, parent) {
@@ -38,134 +35,6 @@ function handleClickOutside(elem) {
     }
   };
 }
-
-function isOnlyOneTextNode(elem) {
-  return elem.childNodes && elem.childNodes.length === 1 && elem.childNodes[0].nodeType === 3;
-}
-
-function handleTriggerClick(elem) {
-  return () => {
-    emit(elem, 'ak-dropdown-trigger-click');
-  };
-}
-
-function selectItem(item, list) {
-  return () => {
-    // disabled items should not allow any interactions
-    // selected item doesn't need to be selected again
-    if (item.disabled || item.selected) {
-      return;
-    }
-    list.forEach((child) => {
-      child.selected = false;
-    });
-    item.selected = true;
-    emit(item, 'ak-dropdown-selected');
-  };
-}
-
-define('ak-dropdown-trigger', {
-  render(elem) {
-    if (isOnlyOneTextNode(elem)) {
-      const classes = classNames(
-        [shadowTriggerStyles.locals.trigger, {
-          [`${shadowTriggerStyles.locals.disabled}`]: elem.disabled,
-          [`${shadowTriggerStyles.locals.opened}`]: elem.opened,
-        }]
-      );
-
-      return (
-        <div class={classes} on-click={handleTriggerClick(elem)}>
-          <style>{shadowTriggerStyles.toString()}</style>
-          <slot />
-        </div>
-      );
-    }
-
-    return <slot on-click={handleTriggerClick(elem)} />;
-  },
-  props: {
-    disabled: prop.boolean({
-      attribute: true,
-    }),
-    opened: prop.boolean({
-      attribute: true,
-    }),
-  },
-});
-
-define('ak-dropdown-item', {
-  render(elem) {
-    const list = elem.parentNode[symbols.shadowRoot].querySelectorAll('ak-dropdown-item');
-
-    const classes = classNames(
-      [shadowItemStyles.locals.item, {
-        [`${shadowItemStyles.locals.disabled}`]: elem.disabled,
-        [`${shadowItemStyles.locals.selected}`]: elem.selected,
-        [`${shadowItemStyles.locals.first}`]: list[0] === elem,
-        [`${shadowItemStyles.locals.last}`]: list[list.length - 1] === elem,
-      }]
-    );
-    return (
-      <div class={classes} on-click={selectItem(elem, list)}>
-        <style>{shadowItemStyles.toString()}</style>
-        <slot />
-      </div>
-    );
-  },
-  props: {
-    disabled: prop.boolean({
-      attribute: true,
-    }),
-    selected: prop.boolean({
-      attribute: true,
-    }),
-  },
-});
-
-define('ak-dropdown-list', {
-  render(elem) {
-    if (!elem.open) {
-      return '';
-    }
-
-    let target = elem.parentNode.querySelector('ak-dropdown-trigger');
-    target = target[symbols.shadowRoot].firstChild;
-
-    const styles = {
-      minWidth: `${target.getBoundingClientRect().width + listWidthGap}px`,
-    };
-
-    return (
-      <ak-layer
-        position="bottom left"
-        target={target}
-        ref={(layer) => {
-          setTimeout(() => {
-            if (elem.open && layer.alignment) {
-                // by default dropdown has opacity 0
-                // and only with attribute 'positioned' it has opacity 1
-                // this behavior is to avoid 'flashing' of dropdown
-                // when it's initially positioning itself on a page
-              elem.setAttribute('positioned', true);
-            }
-          }, 10);
-        }
-        }
-      >
-        <div className={shadowListStyles.locals.list} style={styles}>
-          <style>{shadowListStyles.toString()}</style>
-          <slot />
-        </div>
-      </ak-layer>
-    );
-  },
-  props: {
-    open: prop.boolean({
-      attribute: true,
-    }),
-  },
-});
 
 export default define('ak-dropdown', {
   attached(elem) {

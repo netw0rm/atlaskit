@@ -5,12 +5,11 @@
 @ak-avatar-size-medium: 30px;
 @ak-avatar-size-small: 20px;
 
-@ak-avatar-background: transparent;
+@ak-avatar-background: @ak-color-N40;
 
-@ak-avatar-presence-color-online: #48CC8C;
-@ak-avatar-presence-color-away: #FFC400;
-@ak-avatar-presence-color-busy: #D93A35;
-@ak-avatar-presence-color-offline: #8993A4;
+@ak-avatar-presence-color-online: @ak-color-G300;
+@ak-avatar-presence-color-busy: @ak-color-Y500;
+@ak-avatar-presence-color-offline: @ak-color-N40;
 
 
 .img {
@@ -19,6 +18,14 @@
   border-radius: 100%;
   height: 100%;
   width: 100%;
+
+  &.hidden {
+    display: none;
+  }
+
+  &.loaded {
+    animation: fadeIn 0.5s;
+  }
 }
 
 .outerDiv {
@@ -86,10 +93,6 @@
     background: @ak-avatar-presence-color-online;
   }
 
-  &.away {
-    background: @ak-avatar-presence-color-away;
-  }
-
   &.busy {
     background: @ak-avatar-presence-color-busy;
   }
@@ -110,4 +113,9 @@
 .sizeMixin(@size) {
   height: @size;
   width: @size;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

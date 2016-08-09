@@ -15,7 +15,6 @@ npm install --progress=false "git+https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY
 # Generate momnorep summary which will feed into jekyll
 echo "Generating summary files using panop"
 BITBUCKET_PASS=$BITBUCKET_PW_READONLY `npm bin`/panop --repo=atlassian/atlaskit \
-  --yml=../atlaskit-registry/_data/components.yml \
   --json=../atlaskit-registry/api/full.json
 
 # Install atlaskit-registry dependencies

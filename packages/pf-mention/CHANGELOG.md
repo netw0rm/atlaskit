@@ -1,5 +1,15 @@
-<a name="1.2.0"></a>
-# 1.2.0 (2016-08-01)
+<a name="1.2.1"></a>
+## 1.2.1 (2016-08-08)
+
+
+
+<a name="pf-mention@1.2.1"></a>
+## pf-mention@1.2.1 (2016-08-05)
+
+
+### Bug Fixes
+
+* **package:** Fix package dependencies on github packages that were removed ([1c1a99e](https://bitbucket.org/atlassian/atlaskit/commits/1c1a99e))
 
 
 
@@ -29,7 +39,6 @@
 
 ### Bug Fixes
 
-* FAB-370 add attributes to prop types in pf-mention-picker ([b1929da](https://bitbucket.org/atlassian/atlaskit/commits/b1929da))
 * Pass open down to ak-inline-dialog to ensure reposition occurs at right time. ([7ef43d1](https://bitbucket.org/atlassian/atlaskit/commits/7ef43d1))
 
 
@@ -60,9 +69,34 @@
 # pf-mention@1.0.0 (2016-07-12)
 
 
+
+<a name="0.0.1-atlas-animation3"></a>
+## 0.0.1-atlas-animation3 (2016-06-08)
+
+
+
+<a name="1.1.6-atlas-animation"></a>
+## 1.1.6-atlas-animation (2016-06-08)
+
+
+
+<a name="13.1.0-tmp-atlaskit-component-b"></a>
+# 13.1.0-tmp-atlaskit-component-b (2016-06-08)
+
+
+
+<a name="13.1.0-tmp-atlaskit-component-a"></a>
+# 13.1.0-tmp-atlaskit-component-a (2016-06-08)
+
+
 ### Bug Fixes
 
-* Remove broken export from ak-inline-dialog, and prevent usage upstream. ([e5cc55f](https://bitbucket.org/atlassian/atlaskit/commits/e5cc55f))
+* **components:** commented out a line ([4b91174](https://bitbucket.org/atlassian/atlaskit/commits/4b91174))
+
+
+### Features
+
+* **components:** Add an ! mark ([2b7bdb0](https://bitbucket.org/atlassian/atlaskit/commits/2b7bdb0))
 
 
 

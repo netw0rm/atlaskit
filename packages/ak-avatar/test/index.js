@@ -208,5 +208,74 @@ describe('ak-avatar', () => {
         done();
       }, done);
     });
+
+    const testCases = [{
+      src: undefined,
+      expectImgToBeRendered: false,
+    }, {
+      src: oneByOnePixel,
+      expectImgToBeRendered: true,
+    }];
+
+    testCases.forEach((testCase) => {
+      it(`it should ${!testCase.expectImgToBeRendered ? 'not' : ''} render img tag when src set to ${testCase.src}`, (done) => { // eslint-disable-line max-len
+        component.src = testCase.src;
+
+        afterMutation(() => {
+          const img = component[symbols.shadowRoot].firstChild.querySelector('img');
+
+          expect(img !== null).to.equal(testCase.expectImgToBeRendered);
+        }, done);
+      });
+    });
+  });
+
+  describe('loading behaviour', () => {
+    let component;
+    let container;
+    let img;
+
+    beforeEach((done) => {
+      [component, container] = setupAvatar(component, container);
+      // Need to set a src on the image to make sure the img tag is rendered
+      component.src = oneByOnePixel;
+
+      afterMutation(() => {
+        img = component[symbols.shadowRoot].firstChild.querySelector('img');
+
+        // Make sure we have actually rendered the img tag in the avatar
+        expect(img).to.not.be.null;
+      }, done);
+    });
+
+    afterEach(() => {
+      document.body.removeChild(container);
+    });
+
+    it('should hide the image if __loading is true', (done) => {
+      component.src = oneByOnePixel; // Have to set so that the img tag is rendered
+      component.__loading = true; // eslint-disable-line no-underscore-dangle
+      const hiddenClass = shadowStyles.locals.hidden;
+
+      afterMutation(() => {
+        expect(Array.from(img.classList)).to.contain(hiddenClass);
+      }, done);
+    });
+
+    // it('should show the image if __loading is false', (done) => {
+    //   component.src = oneByOnePixel;
+    //   //component.__loading = false; // eslint-disable-line no-underscore-dangle
+    //   const hiddenClass = shadowStyles.locals.hidden;
+
+    //   setTimeout(() => {
+    //     expect()
+    //   }, 1);
+    //   afterMutation(() => {
+    //     const img = component[symbols.shadowRoot].firstChild.querySelector('img');
+    //     debugger;
+
+    //     expect(Array.from(img.classList)).to.not.contain(hiddenClass);
+    //   }, done);
+    // });
   });
 });

@@ -2,7 +2,6 @@ import { storiesOf } from '@kadira/storybook';
 import LinkComponent from '../src';
 import IconComponent from 'ak-editor-icon';
 import reactify from 'akutil-react';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 
 const Link = reactify(LinkComponent, { React, ReactDOM });

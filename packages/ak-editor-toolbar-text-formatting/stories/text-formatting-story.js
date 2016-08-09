@@ -1,6 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
 import TextFormattingComponent from '../src';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
 

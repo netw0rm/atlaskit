@@ -20,17 +20,18 @@ storiesOf(name, module)
   ))
   .add('ak-tabs with many items', () => (
     <Component>
-      <ak-tab label="Long tab name 1">Tab 1 content</ak-tab>
-      <ak-tab selected label="Initially selected tab 2">Tab 2 content</ak-tab>
-      <ak-tab label="Long tab name 3">Tab 3 content</ak-tab>
+      <ak-tab label="Tab 1">Tab 1 content</ak-tab>
+      <ak-tab label="Tab 2">Tab 2 content</ak-tab>
+      <ak-tab label="Tab 3">Tab 3 content</ak-tab>
+      <ak-tab label="Tab 4">Tab 4 content</ak-tab>
       <ak-tab label="Another tab 5">Tab content</ak-tab>
       <ak-tab label="Tab 6">Tab content</ak-tab>
       <ak-tab label="Tab 7">Tab content</ak-tab>
       <ak-tab label="Tab 8">Tab content</ak-tab>
       <ak-tab label="Tab 9">Tab content</ak-tab>
-      <ak-tab label="Tab 10">Tab content</ak-tab>
+      <ak-tab label="Long tab name 10">Tab content</ak-tab>
       <ak-tab label="Tab 11">Tab content</ak-tab>
-      <ak-tab label="Tab 12">Tab content</ak-tab>
+      <ak-tab selected label="Initially selected tab 12">Tab content</ak-tab>
       <ak-tab label="Tab 13">Tab content</ak-tab>
       <ak-tab label="Tab 14">Tab content</ak-tab>
       <ak-tab label="Tab 15">Tab content</ak-tab>

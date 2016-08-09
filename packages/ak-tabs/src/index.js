@@ -107,15 +107,10 @@ function calculateVisibleTabs(tabsEl) {
   // The dropdown trigger item needs to be displayed
   widthRemaining -= tabsButtonContainer.getBoundingClientRect().width;
 
-  // The currently selected tab has the highest priority
+  // The currently selected tab is always displayed
   const selectedTab = getSelectedTab(tabsEl);
-  if (widthRemaining >= tabWidths.get(selectedTab)) {
-    visibleTabs.set(selectedTab, true);
-    widthRemaining -= tabWidths.get(selectedTab);
-  } else {
-    // If the selected tab does not fit in the remaining space, display only the dropdown trigger.
-    return [];
-  }
+  visibleTabs.set(selectedTab, true);
+  widthRemaining -= tabWidths.get(selectedTab);
 
   // Then try to fit each tab in the remaining space, until one doesn't fit
   let hasWidthRemaining = widthRemaining > 0;

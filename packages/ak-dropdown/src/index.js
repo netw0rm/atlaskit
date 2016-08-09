@@ -40,7 +40,7 @@ export default define('ak-dropdown', {
   attached(elem) {
     const list = elem[symbols.shadowRoot].querySelector('ak-dropdown-list');
     const trigger = elem[symbols.shadowRoot].querySelector('ak-dropdown-trigger');
-    elem.addEventListener('ak-dropdown-trigger-click', () => {
+    elem.addEventListener('ak-dropdown-trigger-activated', () => {
       list.open = !list.open;
       trigger.opened = list.open;
     });

@@ -48,10 +48,11 @@ const definition = {
       shadowStyles.locals.presence,
       shadowStyles.locals[elem.presence],
     ]);
-    const outerDivClasses = classNames([
-      shadowStyles.locals.outerDiv,
-      shadowStyles.locals[elem.size],
-    ]);
+    const outerDivClasses = classNames({
+      [shadowStyles.locals.outerDiv]: true,
+      [shadowStyles.locals[elem.size]]: true,
+      [shadowStyles.locals.loaded]: !elem.__loading,
+    });
 
     return (
       <div class={outerDivClasses} aria-label={elem.label}>

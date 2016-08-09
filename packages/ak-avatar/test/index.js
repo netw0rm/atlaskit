@@ -11,7 +11,7 @@ const expect = chai.expect;
 
 const defaultSize = 'medium';
 const defaultPresence = 'none';
-const defaultLabel = undefined;
+const defaultLabel = '';
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 
 const avatarSizes = {
@@ -46,7 +46,6 @@ describe('ak-avatar', () => {
     expect(() => {
       component = new AKAvatar();
     }).to.not.throw(Error);
-    expect(component.getAttribute('defined')).not.to.equal(null);
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 
@@ -112,8 +111,9 @@ describe('ak-avatar', () => {
     let component;
     let container;
 
-    beforeEach(() => {
+    beforeEach((done) => {
       [component, container] = setupAvatar(component, container);
+      afterMutation(() => {}, done);
     });
 
     afterEach(() => {
@@ -152,10 +152,12 @@ describe('ak-avatar', () => {
     let container;
     let presence;
 
-    beforeEach(() => {
+    beforeEach((done) => {
       [component, container] = setupAvatar(component, container);
-      const shadowDOM = component[symbols.shadowRoot].firstChild;
-      presence = shadowDOM.querySelector(`.${shadowStyles.locals.presence}`);
+      afterMutation(() => {
+        const shadowDOM = component[symbols.shadowRoot].firstChild;
+        presence = shadowDOM.querySelector(`.${shadowStyles.locals.presence}`);
+      }, done);
     });
 
     afterEach(() => {

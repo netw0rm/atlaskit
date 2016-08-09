@@ -15,8 +15,11 @@ const Avatar = reactify(AkAvatar, {
 const avatarClass = hostStyles.akAvatar;
 const avatarUrl = require('url!./avatar-96.png');
 const transparentAvatarUrl = require('url!./avatar-96-transparent.png');
+const tickUrl = require('url!./tick.png');
+const tickWithBackgroundUrl = require('url!./tick-with-background.png');
 
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
+const storybookExampleClass = avatarStoryStyles.example;
 
 const DefaultAvatar = (props) => <Avatar
   src={avatarUrl}
@@ -98,12 +101,40 @@ storiesOf(name, module)
   ))
   .add('All presences', () => (
     <div className={avatarRowClass}>
-      <DefaultAvatar presence="none" />
-      <DefaultAvatar presence="online" />
-      <DefaultAvatar presence="busy" />
-      <DefaultAvatar presence="offline" />
+      <DefaultAvatar size="large" presence="none" />
+      <DefaultAvatar size="large" presence="online" />
+      <DefaultAvatar size="large" presence="busy" />
+      <DefaultAvatar size="large" presence="offline" />
     </div>)
   )
+  .add('Avatars with images in the slot', () => (
+    <div>
+      <div className={storybookExampleClass} >
+        <div>
+          These avatars have an image in their default slot
+        </div>
+        <AllAvatarSizes>
+          <img src={tickWithBackgroundUrl} role="presentation" />
+        </AllAvatarSizes>
+      </div>
+      <div className={storybookExampleClass} >
+        <div>
+          These avatars show the behaviour of transparent images in slots
+        </div>
+        <AllAvatarSizes>
+          <img src={tickUrl} role="presentation" />
+        </AllAvatarSizes>
+      </div>
+      <div className={storybookExampleClass} >
+        <div>
+          These avatars show that an image in the slot should override the presence
+        </div>
+        <AllAvatarSizes presence="online">
+          <img src={tickWithBackgroundUrl} role="presentation" />
+        </AllAvatarSizes>
+      </div>
+    </div>
+  ))
   .add('Avatar with a label', () => (
     <div className={avatarRowClass}>
       <div>

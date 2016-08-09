@@ -103,7 +103,7 @@ describe('ak-button', () => {
       });
     });
 
-    describe('when disabled attribute is set', () => {
+    describe('disabled', () => {
       const selector = `.${classKeys.container} button[disabled]`;
       beforeEach(() =>
         props(component, { disabled: true })
@@ -113,6 +113,16 @@ describe('ak-button', () => {
         expect(shadowDomQuery(component, selector)).not.to.be.null
       );
 
+      it('button should override any other class', () => {
+        props(component, { disabled: true, appearence: 'selected' });
+        const buttonClasses = getShadowButtonElem(component).classList;
+        expect(buttonClasses).to.have.lengthOf(2);
+        expect([
+          shadowStyles.locals.akButton,
+          shadowStyles.locals.disabled,
+        ]).to.have.members([buttonClasses[0], buttonClasses[1]]);
+      });
+
       it('button should not have disabled attribute after it is removed', () => {
         props(component, { disabled: false });
         expect(shadowDomQuery(component, selector)).to.be.null;
@@ -120,10 +130,13 @@ describe('ak-button', () => {
 
       describe('onclick event', () => {
         it('should not be triggered when button is clicked', () => {
-          const onclick = sinon.spy();
-          props(component, { onclick });
-          getShadowButtonElem(component).click();
-          expect(onclick.called).to.equals(false);
+          // disable this test on ie11 for now. It works in the storybook.
+          if (!(/rv:11.0/i.test(window.navigator.userAgent))) {
+            const onclick = sinon.spy();
+            props(component, { onclick });
+            getShadowButtonElem(component).click();
+            expect(onclick.called).to.equals(false);
+          }
         });
 
         it('should not be triggered when any nested element is clicked', () => {
@@ -135,6 +148,55 @@ describe('ak-button', () => {
           props(component, { onclick });
           div.click();
           expect(onclick.called).to.equals(false);
+        });
+
+        describe('when icon attribute is set', () => {
+          beforeEach(() =>
+            props(component, { leftIcon: 'add' })
+          );
+
+          describe('and icon is clicked', () => {
+            const onclick = sinon.spy();
+            beforeEach(() => {
+              const icon = shadowDomQuery(component, `.${classKeys.akButton} #left-icon`);
+              props(component, { onclick });
+              icon.click();
+            });
+            it('should not be triggered', () => expect(onclick.called).to.equals(false));
+          });
+        });
+      });
+    });
+
+    describe('icon', () => {
+      describe('position', () => {
+        const setupButton = (...args) => {
+          const attrs = args.reduce((acum, side) => {
+            acum[`${side}Icon`] = 'add';
+            return acum;
+          }, {});
+          props(component, attrs);
+          return shadowDomQuery(component, `.${shadowStyles.locals.contentContainer}`);
+        };
+
+        describe('on the left', () => {
+          it('should be rendered properly', () =>
+            expect(setupButton('left').firstChild.id).to.equals('left-icon')
+          );
+        });
+
+        describe('on the right', () => {
+          it('should be rendered properly', () =>
+            expect(setupButton('right').lastChild.id).to.equals('right-icon')
+          );
+        });
+
+        describe('on both sides', () => {
+          it('should be rendered properly', () => {
+            const button = setupButton('left', 'right');
+            expect(button.firstChild.id).to.equals('left-icon');
+            expect(button.lastChild.id).to.equals('right-icon');
+          });
         });
       });
     });

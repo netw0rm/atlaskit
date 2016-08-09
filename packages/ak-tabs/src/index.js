@@ -2,7 +2,7 @@
 /* eslint no-underscore-dangle: 0 */
 import 'style!./host.less';
 import { debounce } from 'akutil-common';
-import { vdom, define, prop, emit } from 'skatejs';
+import { vdom, define, prop } from 'skatejs';
 import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 import Tab, { // eslint-disable-line no-unused-vars
@@ -15,6 +15,7 @@ import Tab, { // eslint-disable-line no-unused-vars
 const labelsContainer = Symbol();
 const resizeListener = Symbol();
 const buttonContainer = Symbol();
+const focusSelectedOnRender = Symbol();
 
 /* Helpers */
 
@@ -55,11 +56,7 @@ function getLabelForTab(tab) {
 /* Handlers */
 
 function labelClickHandler(tab) {
-  return () => {
-    if (!tab.selected) {
-      emit(tab, tabEvents.EVENT_TAB_SELECT, { detail: { tab } });
-    }
-  };
+  return () => (tab.selected = true);
 }
 
 function labelKeydownHandler(tabsEl, tab) {
@@ -71,11 +68,8 @@ function labelKeydownHandler(tabsEl, tab) {
       tabToSelect = getNextTab(tabsEl, tab);
     }
     if (tabToSelect) {
-      emit(
-        tabToSelect,
-        tabEvents.EVENT_TAB_SELECT,
-        { detail: { tab: tabToSelect, keyboardNav: true } }
-      );
+      tabsEl[focusSelectedOnRender] = true;
+      tabToSelect.selected = true;
     }
   };
 }
@@ -152,35 +146,24 @@ const definition = {
       if (targetLabel.selected) {
         elem.children
           .filter(el => el.selected && el !== targetLabel)
-          .forEach(tabToDeselect => {
-            emit(
-              tabToDeselect,
-              tabEvents.EVENT_TAB_DESELECT,
-              { detail: { tab: tabToDeselect } }
-            );
-          });
+          .forEach(tab => (tab.selected = false));
       }
 
       elem._labels = elem.children.map(el => el.label);
       elem._selected = elem.children.map(el => el.selected);
       elem._visibleTabs = calculateVisibleTabs(elem);
     });
-
-    // Listen for tab select and deselect events
-    elem.addEventListener(tabEvents.EVENT_TAB_SELECT, e => { elem.onSelect(e); });
-    elem.addEventListener(tabEvents.EVENT_TAB_DESELECT, e => { elem.onDeselect(e); });
   },
   attached(elem) {
     // If there is no selected tab, try to select the first tab.
     if (!elem.children.some(el => el.label && el.selected)) {
       const tab = elem.children.find(el => el.label);
       if (tab) {
-        emit(tab, tabEvents.EVENT_TAB_SELECT, { detail: { tab } });
+        tab.selected = true;
       }
     }
 
     elem[resizeListener] = debounce(() => {
-      // TODO: Debounce me.
       elem._visibleTabs = calculateVisibleTabs(elem);
     }, 500);
     window.addEventListener('resize', elem[resizeListener]);
@@ -214,6 +197,13 @@ const definition = {
                 [shadowStyles.locals.akTabLabelHidden]: !isVisible,
                 [shadowStyles.locals.akTabLabelSingle]: isSingleTab,
               });
+              const ref = el => {
+                tab[tabSymbols.tabLabel] = el;
+                if (elem[focusSelectedOnRender] && tab.selected) {
+                  el.focus();
+                  elem[focusSelectedOnRender] = false;
+                }
+              };
               return (
                 <li className={classes}>
                   <a
@@ -222,7 +212,7 @@ const definition = {
                     tabIndex={tabIndex}
                     onclick={labelClickHandler(tab)}
                     onkeydown={labelKeydownHandler(elem, tab)}
-                    ref={el => (tab[tabSymbols.tabLabel] = el)}
+                    ref={ref}
                   >{tab.label}</a>
                 </li>
               );
@@ -267,40 +257,6 @@ const definition = {
     _labels: prop.array({}),
     _selected: prop.array({}),
     _visibleTabs: prop.array({}),
-
-    /**
-     * @description Handler for selecting a tab.
-     * @memberof Tabs
-     * @instance
-     * @type {Function}
-     */
-    onSelect: {
-      default() {
-        return e => {
-          e.detail.tab.selected = true;
-          if (e.detail.keyboardNav) {
-            /* TODO: Ideally this would happen at render time in the ref callback, which would
-               require us to set some state that is accessed in the render function. */
-            setTimeout(() => {
-              e.detail.tab[tabSymbols.tabLabel].focus();
-            }, 50);
-          }
-        };
-      },
-    },
-    /**
-     * @description Handler for deselecting a tab.
-     * @memberof Tabs
-     * @instance
-     * @type {Function}
-     */
-    onDeselect: {
-      default() {
-        return e => {
-          e.detail.tab.selected = false;
-        };
-      },
-    },
   },
 };
 

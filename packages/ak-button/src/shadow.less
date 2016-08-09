@@ -10,7 +10,6 @@
 }
 
 .ak-button {
-  //color: @ak-example-variable;
 
   font-family: BlinkMacSystemFont, 'Neue Haas Unica Pro', Helvetica, Arial, sans-serif;
   font-weight: 400;
@@ -19,7 +18,7 @@
 
   box-sizing: border-box;
   background: @buttonDefault;
-  color: #42526E;
+  color: @ak-color-N500;
   border: none;
   padding: 0 @base;
   line-height: @base*3;
@@ -59,15 +58,15 @@
   }
 
   &.primary {
-    background: @blue400;
-    color: #FFF;
+    background: @ak-color-B400;
+    color: @ak-color-N20;
 
     &:hover {
-      background: @blue500;
+      background: @ak-color-B500;
     }
 
     &:active {
-      background: @blue300;
+      background: @ak-color-B300;
     }
   }
 
@@ -76,7 +75,7 @@
   }
 
   &.disabled {
-    color: @n70;
+    color: @ak-color-N60;
 
     &:hover {
       cursor: not-allowed;
@@ -89,5 +88,10 @@
     slot * {
       opacity: 0.3;
     }
+  }
+
+  &.selected {
+    background: @ak-color-N700;
+    color: @ak-color-N20
   }
 }

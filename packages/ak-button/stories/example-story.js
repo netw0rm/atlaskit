@@ -70,6 +70,33 @@ storiesOf(name, module)
   .add('an ak-button that emits an action when it is clicked', () => (
     <AkButton id="myComponent" onClick={action('clicking the WebComponent')}>Button</AkButton>
   ))
+  .add('an ak-button selected', () => {
+    class SelectButton extends React.Component { // eslint-disable-line react/no-multi-comp
+      constructor(props) {
+        super(props);
+        this.state = {
+          selected: true,
+        };
+      }
+
+      handleClick() {
+        this.setState({ selected: !this.state.selected });
+      }
+
+      render() {
+        return (
+          <AkButton
+            appearence={this.state.selected ? 'selected' : 'standard'}
+            onClick={this.handleClick.bind(this)} // eslint-disable-line react/jsx-no-bind
+          >
+            <Icon glyph="add" />
+            Button
+          </AkButton>
+        );
+      }
+    }
+    return <SelectButton />;
+  })
   .add('ak-button with only icons', () => {
     const buttonStyle = {
       display: 'inline-block',

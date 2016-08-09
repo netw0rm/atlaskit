@@ -70,7 +70,57 @@ storiesOf(name, module)
   .add('an ak-button that emits an action when it is clicked', () => (
     <AkButton id="myComponent" onClick={action('clicking the WebComponent')}>Button</AkButton>
   ))
-  .add('an ak-button with icons', () => {
+  .add('ak-button with only icons', () => {
+    const buttonStyle = {
+      display: 'inline-block',
+      margin: '10px',
+    };
+    const iconNames = [
+      'add',
+      'align-center',
+      'align-left',
+      'align-right',
+      'attachment',
+      'bold',
+      'bullet-list',
+      'code',
+      'date',
+      'decision',
+      'emoji',
+      'expand',
+      'help',
+      'image',
+      'indent',
+      'italic',
+      'link',
+      'mention',
+      'more',
+      'number-list',
+      'open',
+      'outdent',
+      'redo',
+      'table',
+      'task',
+      'text-color',
+      'underline',
+      'undo',
+      'unlink',
+    ];
+    return (
+      <div>
+        {
+          iconNames.map(
+            iconName =>
+              <div>
+                <AkButton style={buttonStyle}><Icon glyph={iconName} /></AkButton>
+                <AkButton style={buttonStyle} disabled><Icon glyph={iconName} /></AkButton>
+              </div>
+          )
+        }
+      </div>
+    );
+  })
+  .add('ak-button with icons and text', () => {
     const containerStyle = {
       display: 'flex',
       flexDirection: 'column',
@@ -84,27 +134,43 @@ storiesOf(name, module)
           button
         </AkButton>
         <br />
+        <AkButton onclick={action('clicking the WebComponent')} disabled>
+          <Icon glyph="add" />
+          button
+        </AkButton>
+
+        <br />
         <AkButton >
           button
           <Icon glyph="expand" />
         </AkButton>
         <br />
-        <AkButton >
-          <Icon glyph="add" />
+        <AkButton disabled>
+          button
+          <Icon glyph="expand" />
         </AkButton>
         <br />
-        <AkButton >
+
+        <AkButton>
           <Icon glyph="add" />
           button
           <Icon glyph="expand" />
         </AkButton>
         <br />
-        <AkButton disabled onclick={action('clicking the WebComponent')}>
+
+        <AkButton disabled>
           <Icon glyph="add" />
           button
+          <Icon glyph="expand" />
         </AkButton>
         <br />
+
         <AkButton appearence="subtle" >
+          <Icon glyph="add" />
+          button
+        </AkButton>
+        <br />
+        <AkButton appearence="subtle" disabled>
           <Icon glyph="add" />
           button
         </AkButton>

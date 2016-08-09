@@ -82,6 +82,12 @@
       cursor: not-allowed;
       background: @buttonDefault;
     }
-  }
 
+    ::slotted(*) {
+      opacity: 0.3;
+    }
+    slot * {
+      opacity: 0.3;
+    }
+  }
 }

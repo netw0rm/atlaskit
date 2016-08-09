@@ -3,6 +3,7 @@
 import 'style!./host.less';
 import { debounce } from 'akutil-common';
 import { vdom, define, prop, emit } from 'skatejs';
+import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 import Tab, { // eslint-disable-line no-unused-vars
   events as tabEvents,
@@ -189,8 +190,11 @@ const definition = {
   },
   render(elem) {
     const hasOverflowingTabs = elem._visibleTabs.length < elem.children.length;
-    const buttonClasses = `${shadowStyles.locals.akTabLabel}
-                           ${hasOverflowingTabs ? '' : shadowStyles.locals.akTabLabelHidden}`;
+    const hasSingleTab = elem._visibleTabs.length === 1;
+    const buttonClasses = classNames({
+      [shadowStyles.locals.akTabLabel]: true,
+      [shadowStyles.locals.akTabLabelHidden]: !hasOverflowingTabs,
+    });
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
@@ -203,9 +207,13 @@ const definition = {
               const ariaSelected = tab.selected ? 'true' : 'false';
               const tabIndex = tab.selected ? '0' : '-1';
               const isVisible = elem._visibleTabs.indexOf(tab) > -1;
-              const classes = `${shadowStyles.locals.akTabLabel}
-                               ${tab.selected ? shadowStyles.locals.akTabLabelSelected : ''}
-                               ${isVisible ? '' : shadowStyles.locals.akTabLabelHidden}`;
+              const isSingleTab = hasSingleTab && isVisible;
+              const classes = classNames({
+                [shadowStyles.locals.akTabLabel]: true,
+                [shadowStyles.locals.akTabLabelSelected]: tab.selected,
+                [shadowStyles.locals.akTabLabelHidden]: !isVisible,
+                [shadowStyles.locals.akTabLabelSingle]: isSingleTab,
+              });
               return (
                 <li className={classes}>
                   <a
@@ -234,9 +242,10 @@ const definition = {
             {elem.children && elem.children.map(
               tab => {
                 const isVisible = elem._visibleTabs.indexOf(tab) > -1;
-                const classes = `${shadowStyles.locals.ddItem}
-                                 ${tab.selected ? shadowStyles.locals.ddSelected : ''}
-                                 ${isVisible ? shadowStyles.locals.ddHidden : ''}`;
+                const classes = classNames({
+                  [shadowStyles.locals.ddItem]: true,
+                  [shadowStyles.locals.ddHidden]: isVisible,
+                });
                 return (
                   <li className={classes}>
                     <a

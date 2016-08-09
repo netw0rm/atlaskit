@@ -57,6 +57,12 @@
     visibility: hidden;
     position: absolute;
   }
+
+  &.ak-tab-label-single {
+    min-width: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 // Tab labels line
@@ -98,10 +104,6 @@
   .dd-item a {
     color: @ak-tabs-color-label-default;
     text-decoration: none;
-  }
-
-  .dd-selected a {
-    color: @ak-tabs-color-selected;
   }
 
   .dd-hidden {

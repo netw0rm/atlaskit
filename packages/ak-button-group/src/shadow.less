@@ -6,11 +6,24 @@
 @import 'shared-variables.less';
 
 .container {
-  border: 1px solid red;
-  display: flex;
+  background-color: #EEE;
+  display: inline-flex;
   justify-content: space-between;
 }
 
-.container > ak-button {
-  flex: 1;
+::slotted(*) {
+  // display: inline-block;
+  // flex: 1;
+  background: yellow;
+  border: 1px solid red;
+  color: red;
 }
+
+ak-radio-button {
+  border: 1px solid green;
+}
+
+// .container > * {
+//   flex: 1;
+//   background: red;
+// }

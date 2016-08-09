@@ -6,7 +6,7 @@
 @import 'shared-variables.less';
 
 .container {
-  display: inline-block;
+  display: block;
 }
 
 .ak-button {
@@ -73,6 +73,19 @@
 
     &:active {
       background: @blue300;
+    }
+  }
+
+  &.selected {
+    background: @n800;
+    color: #FFF;
+
+    &:hover {
+      background: @n700;
+    }
+
+    &:active {
+      background: @n400;
     }
   }
 

@@ -5,7 +5,7 @@ import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 
-const APPEARANCES = ['primary', 'standard'];
+const APPEARANCES = ['primary', 'standard', 'selected'];
 
 const definition = {
   props: {
@@ -21,7 +21,7 @@ const definition = {
     if (elem.appearance) {
       const index = APPEARANCES.indexOf(elem.appearance);
       if (index >= 0) {
-        classes.push(shadowStyles.locals[APPEARANCES[index]]);
+        classes.push(shadowStyles.locals[elem.appearance]);
       }
     }
 

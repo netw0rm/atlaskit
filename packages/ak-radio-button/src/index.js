@@ -16,7 +16,7 @@ export default define('ak-radio-button', {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <AkButton appearance={elem.selected ? 'primary' : 'standard'}>
+        <AkButton appearance={elem.selected ? 'selected' : 'standard'}>
           <slot />
         </AkButton>
       </div>

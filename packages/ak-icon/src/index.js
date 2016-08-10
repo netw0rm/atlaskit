@@ -24,8 +24,8 @@ export default define('ak-icon', {
     );
   },
   props: {
-    glyph: prop.string({ attribute: true, default: null }),
-    fill: prop.string({ attribute: true, default: null }),
+    glyph: prop.string({ attribute: true }),
+    fill: prop.string({ attribute: true }),
   },
 });
 

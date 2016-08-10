@@ -179,6 +179,7 @@ const definition = {
         <ul
           className={shadowStyles.locals.akTabLabels}
           ref={el => (elem[labelsContainer] = el)}
+          role="tablist"
         >
           {elem.children && elem.children.map(
             tab => {
@@ -206,7 +207,7 @@ const definition = {
                   onkeydown={labelKeydownHandler(elem, tab)}
                   onclick={labelClickHandler(elem, tab)}
                   aria-selected={ariaSelected}
-                  role="button"
+                  role="tab"
                   ref={ref}
                 >
                   <span>{tab.label}</span>

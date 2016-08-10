@@ -54,7 +54,7 @@ const definition = {
     return (
       <div aria-hidden={ariaHidden}>
         <style>{shadowStyles.toString()}</style>
-        <div class={shadowStyles.locals.akTabPane}>
+        <div class={shadowStyles.locals.akTabPane} role="tabpanel">
           <slot />
         </div>
       </div>

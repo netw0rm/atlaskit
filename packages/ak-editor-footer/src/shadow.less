@@ -1,0 +1,46 @@
+@import 'shared-variables.less';
+
+.root {
+  border: 1px solid @ak-editor-subtle-accent;
+  font-size: 14px;
+  padding: 20px;
+
+  .childContent() { margin: 20px; }
+  > slot > * { .childContent(); }
+  > ::content > * { .childContent(); }
+  // Re-instate when https://ecosystem.atlassian.net/browse/AK-146 is resolved.
+  //> ::slotted(*) { .childContent(); }
+}
+
+.saveButton {
+  // TODO: move out to shared styles
+  background: @ak-editor-primary-button;
+  border: 1px solid @ak-editor-primary-button;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 5px 15px;
+}
+
+.cancelButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+  margin-left: 20px;
+  opacity: 0.5;
+
+  &:active {
+    outline: none;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.openTop {
+  border-top: 0;
+}

@@ -12,6 +12,10 @@ function select(elem) {
 }
 
 export default define('ak-navigation-link', {
+  created(elem) {
+    elem.addEventListener('click', () => select(elem));
+    elem.addEventListener('keyup', (event.keyCode === enterKeyCode) && select(elem));
+  },
   render(elem) {
     return (
       <a
@@ -31,10 +35,6 @@ export default define('ak-navigation-link', {
         </div>
       </a>
     );
-  },
-  events: {
-    click: (elem) => select(elem),
-    keyup: (elem, event) => (event.keyCode === enterKeyCode) && select(elem),
   },
   props: {
     href: prop.string({

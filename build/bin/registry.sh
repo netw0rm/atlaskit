@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 # Clone the atlaskit-registry repo into the folder above atlaskit

@@ -13,7 +13,6 @@ describe('ak-editor-button-link', () => {
     expect(() => {
       component = new AkEditorButtonLink();
     }).not.to.throw(Error);
-    expect(component.getAttribute('defined')).not.to.equal(null);
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 });

@@ -14,7 +14,6 @@ describe('ak-inline-dialog', () => {
     expect(() => {
       component = new AkInlineDialog();
     }).not.to.throw(Error);
-    expect(component.getAttribute('defined')).not.to.equal(null);
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 

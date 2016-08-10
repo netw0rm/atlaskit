@@ -54,6 +54,7 @@ storiesOf(name, module)
     <div>
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
+        open
         containerName="Nucleus"
         containerHref="http://nucleus.com"
         containerLogo="https://s3.amazonaws.com/uploads.hipchat.com/10804/576067/VtJT4vjBKJXG5GI/Group%204.png"

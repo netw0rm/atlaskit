@@ -18,7 +18,7 @@ let keyPress;
 export default define('ak-dropdown-trigger', {
   attached(elem) {
     const callback = handleTriggerActivated(elem);
-    keyPress = new KeyPressHandler('DOWN', callback);
+    keyPress = new KeyPressHandler('DOWN', callback, elem);
     keyPress.add('ENTER', callback);
     keyPress.add('SPACE', callback);
   },

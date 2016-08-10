@@ -1,4 +1,4 @@
-import { vdom, define, prop, symbols } from 'skatejs';
+import { vdom, define, prop } from 'skatejs';
 import shadowListStyles from './shadow-list.less';
 import 'ak-layer';
 
@@ -9,10 +9,7 @@ export default define('ak-dropdown-list', {
     if (!elem.open) {
       return '';
     }
-
-    let target = elem.parentNode.querySelector('ak-dropdown-trigger');
-    target = target[symbols.shadowRoot].firstChild;
-
+    let target = elem.parentNode.childNodes[0];
     const styles = {
       minWidth: `${target.getBoundingClientRect().width + listWidthGap}px`,
     };
@@ -30,7 +27,7 @@ export default define('ak-dropdown-list', {
                 // when it's initially positioning itself on a page
               elem.setAttribute('positioned', true);
             }
-          }, 10);
+          }, 100);
         }
         }
       >

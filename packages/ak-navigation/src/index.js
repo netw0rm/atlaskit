@@ -7,7 +7,6 @@ import './ak-navigation-link';
 import classNames from 'classnames';
 import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 
-const sidebarOpenByDefault = true;
 const shouldAnimateThreshold = 100; // ms
 
 const definition = {
@@ -50,15 +49,13 @@ const definition = {
     );
   },
   props: {
-    shouldAnimate: prop.boolean({ default: false }),
+    shouldAnimate: prop.boolean(),
     open: prop.boolean({
       attribute: true,
-      default: sidebarOpenByDefault,
       set(elem, data) {
-        const oldValue = data.oldValue === null ? sidebarOpenByDefault : data.oldValue;
-        if (!oldValue && data.newValue) {
+        if (data.oldValue && data.newValue) {
           emit(elem, 'ak-navigation-open');
-        } else if (oldValue && !data.newValue) {
+        } else if (data.oldValue && !data.newValue) {
           emit(elem, 'ak-navigation-close');
         }
       },

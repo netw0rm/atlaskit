@@ -1,20 +1,16 @@
-<a name="2.0.1"></a>
-## 2.0.1 (2016-08-10)
-
-
-
-<a name="ak-editor-icon@2.0.1"></a>
-## ak-editor-icon@2.0.1 (2016-08-05)
-
-
-
-<a name="ak-editor-icon@1.0.0"></a>
-# ak-editor-icon@1.0.0 (2016-07-22)
+<a name="0.1.0"></a>
+# 0.1.0 (2016-08-10)
 
 
 ### Bug Fixes
 
-* **package:** Add ak- prefix to editor-*, and fix licensing. ([15751dc](https://bitbucket.org/atlassian/atlaskit/commits/15751dc))
+* Remove a test assertion that's obsolete in latest skatejs. ([e336acd](https://bitbucket.org/atlassian/atlaskit/commits/e336acd))
+
+
+### Features
+
+* Add ak-editor-bitbucket. ([8f9bf1f](https://bitbucket.org/atlassian/atlaskit/commits/8f9bf1f))
+* Use a specific ak-editor-footer version. ([edc3a89](https://bitbucket.org/atlassian/atlaskit/commits/edc3a89))
 
 
 

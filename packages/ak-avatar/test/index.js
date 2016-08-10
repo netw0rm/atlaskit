@@ -211,13 +211,10 @@ describe('ak-avatar', () => {
       }, done);
     });
 
-    const testCases = [{
-      src: undefined,
-      expectImgToBeRendered: false,
-    }, {
-      src: oneByOnePixel,
-      expectImgToBeRendered: true,
-    }];
+    const testCases = [
+      { src: undefined, expectImgToBeRendered: false },
+      { src: oneByOnePixel, expectImgToBeRendered: true },
+    ];
 
     testCases.forEach((testCase) => {
       it(`it should ${!testCase.expectImgToBeRendered ? 'not' : ''} render img tag when src set to ${testCase.src}`, (done) => { // eslint-disable-line max-len
@@ -254,30 +251,21 @@ describe('ak-avatar', () => {
       document.body.removeChild(container);
     });
 
-    it('should hide the image if __loading is true', (done) => {
-      component.src = oneByOnePixel; // Have to set so that the img tag is rendered
-      component.__loading = true; // eslint-disable-line no-underscore-dangle
-      const hiddenClass = shadowStyles.locals.hidden;
+    const testCases = [
+      { loadingProp: true, expectImgToBeHidden: true },
+      { loadingProp: false, expectImgToBeHidden: false },
+    ];
 
-      afterMutation(() => {
-        expect(Array.from(img.classList)).to.contain(hiddenClass);
-      }, done);
+    testCases.forEach((testCase) => {
+      it(`should ${testCase.expectImgToBeHidden ? 'hide' : 'show'} the image if __loading is ${testCase.loadingProp}`, (done) => { // eslint-disable-line  max-len
+        const hiddenClass = shadowStyles.locals.hidden;
+        component.__loading = testCase.loadingProp; // eslint-disable-line no-underscore-dangle
+
+        afterMutation(() => {
+          const hasHiddenClass = Array.prototype.slice.call(img.classList).indexOf(hiddenClass) > -1; // eslint-disable-line  max-len
+          expect(hasHiddenClass).to.equal(testCase.expectImgToBeHidden);
+        }, done);
+      });
     });
-
-    // it('should show the image if __loading is false', (done) => {
-    //   component.src = oneByOnePixel;
-    //   //component.__loading = false; // eslint-disable-line no-underscore-dangle
-    //   const hiddenClass = shadowStyles.locals.hidden;
-
-    //   setTimeout(() => {
-    //     expect()
-    //   }, 1);
-    //   afterMutation(() => {
-    //     const img = component[symbols.shadowRoot].firstChild.querySelector('img');
-    //     debugger;
-
-    //     expect(Array.from(img.classList)).to.not.contain(hiddenClass);
-    //   }, done);
-    // });
   });
 });

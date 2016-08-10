@@ -1,0 +1,38 @@
+{
+  "name": "ak-editor-bitbucket",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-bitbucket -- --bundle-deps",
+    "pre-release": "lerna-semantic-release pre"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "Apache-2.0",
+  "author": "Atlassian Pty Ltd",
+  "dependencies": {
+    "atlassian-editorkit-hyperlink-plugin": "^0.0.18",
+    "atlassian-editorkit-markdown-inputrules-plugin": "^0.0.18",
+    "ak-editor-content": "^2.0.1",
+    "ak-editor-footer": "^0.1.0",
+    "ak-editor-toolbar": "^2.0.2",
+    "ak-editor-toolbar-block-type": "^0.0.1",
+    "ak-editor-toolbar-hyperlink": "^0.0.1",
+    "ak-editor-toolbar-text-formatting": "^2.0.0",
+    "browserkeymap": "^2.0.1",
+    "markdown-it": "^7.0.0",
+    "prosemirror": "^0.8.3",
+    "skatejs": "1.x"
+  },
+  "devDependencies": {
+    "akutil-react": "0.0.4",
+    "akutil-shared-styles": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

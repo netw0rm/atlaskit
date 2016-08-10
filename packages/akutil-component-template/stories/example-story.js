@@ -1,11 +1,11 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import AkUtilComponentTemplate from '../src/index';
+import WebComponent from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 import styles from 'style!./../src/host.less';
 
-const Component = reactify(AkUtilComponentTemplate, {
+const Component = reactify(WebComponent, {
   React,
   ReactDOM,
 });

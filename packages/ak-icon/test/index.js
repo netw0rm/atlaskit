@@ -13,7 +13,6 @@ describe('ak-icon', () => {
     expect(() => {
       component = new AkIcon();
     }).not.to.throw(Error);
-    expect(component.getAttribute('defined')).not.to.equal(null);
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 });

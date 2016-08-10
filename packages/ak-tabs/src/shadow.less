@@ -3,18 +3,18 @@
 .ak-tab-labels {
   display: flex;
   list-style-type: none;
-  padding: 0;
   margin: 0;
-  position: relative;
-  white-space: nowrap;
   overflow: hidden;
+  padding: 0;
+  position: relative;
 }
 
 .ak-tab-label {
   color: #344563;
+  cursor: pointer;
   font-size: 14px;
   line-height: @ak-tabs-line-height;
-  margin: @ak-tabs-margin;
+  padding: @ak-tabs-padding-vertical @ak-tabs-padding-horizontal;
   position: relative;
   white-space: nowrap;
 
@@ -24,21 +24,16 @@
     color: @ak-tabs-color-active;
   }
 
-  & > a {
-    color: inherit;
-    text-decoration: none;
-    padding: @ak-tabs-margin;
-
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
-      border-radius: 3px;
-    }
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
+    border-radius: 3px;
   }
 
   .ak-tabs-button {
     cursor: pointer;
 
+    // TODO: Replace with chevron
     &::after {
       border-right: 0.2em solid currentColor;
       border-top: 0.2em solid currentColor;
@@ -68,19 +63,15 @@
 // Tab labels line
 .ak-tab-labels:not(:empty)::before,
 .ak-tab-label-selected::after {
+  background-color: @ak-tabs-color-line-default;
   content: '';
   height: 1px;
-  position: absolute;
-  left: @ak-tabs-margin;
-  right: @ak-tabs-margin;
-  bottom: @ak-tabs-focus-width - @ak-tabs-margin;
-  background-color: @ak-tabs-color-line-default;
-  width: inherit;
   margin: 0;
-}
-
-.ak-tab-labels:not(:empty)::before {
-  margin: @ak-tabs-margin;
+  position: absolute;
+  width: inherit;
+  bottom: 0;
+  left: @ak-tabs-padding-horizontal;
+  right: @ak-tabs-padding-horizontal;
 }
 
 .ak-tab-label-selected {
@@ -91,15 +82,7 @@
   }
 }
 
-// Align first label with line
-.ak-tab-label:first-of-type {
-  &::before,
-  &::after {
-    left: @ak-tabs-margin;
-  }
-}
-
-// Temp. For dropdown demo.
+// Temporary. For dropdown placeholder.
 .dd-container {
   .dd-item a {
     color: @ak-tabs-color-label-default;

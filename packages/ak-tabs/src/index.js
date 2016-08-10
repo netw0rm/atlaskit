@@ -55,8 +55,11 @@ function getLabelForTab(tab) {
 
 /* Handlers */
 
-function labelClickHandler(tab) {
-  return () => (tab.selected = true);
+function labelClickHandler(tabsEl, tab) {
+  return () => {
+    tabsEl[focusSelectedOnRender] = true;
+    tab.selected = true;
+  };
 }
 
 function labelKeydownHandler(tabsEl, tab) {
@@ -82,12 +85,11 @@ function calculateVisibleTabs(tabsEl) {
   }
 
   // Get the width of the <li> item containing each tab label element.
-  const MARGIN = 5; // Margin 5px
   const allTabs = getAllTabs(tabsEl).filter(tab => tab[tabSymbols.tabLabel]);
 
   let widthRemaining = tabLabelsContainer.getBoundingClientRect().width;
   const tabWidths = new Map(allTabs.map(
-    tab => [tab, getLabelForTab(tab).parentNode.getBoundingClientRect().width + (2 * MARGIN)])
+    tab => [tab, getLabelForTab(tab).getBoundingClientRect().width])
   );
 
   // If all the tabs fit, then just display them all.
@@ -205,15 +207,16 @@ const definition = {
                 }
               };
               return (
-                <li className={classes}>
-                  <a
-                    href="#"
-                    aria-selected={ariaSelected}
-                    tabIndex={tabIndex}
-                    onclick={labelClickHandler(tab)}
-                    onkeydown={labelKeydownHandler(elem, tab)}
-                    ref={ref}
-                  >{tab.label}</a>
+                <li
+                  className={classes}
+                  tabIndex={tabIndex}
+                  onkeydown={labelKeydownHandler(elem, tab)}
+                  onclick={labelClickHandler(elem, tab)}
+                  aria-selected={ariaSelected}
+                  role="button"
+                  ref={ref}
+                >
+                  <span>{tab.label}</span>
                 </li>
               );
             }
@@ -240,7 +243,7 @@ const definition = {
                   <li className={classes}>
                     <a
                       href="#"
-                      onclick={labelClickHandler(tab)}
+                      onclick={labelClickHandler(elem, tab)}
                       tabIndex="-1"
                     >{tab.label}</a>
                   </li>

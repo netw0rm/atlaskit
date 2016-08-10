@@ -12,15 +12,57 @@ const Component = reactify(Tabs, {
 storiesOf(name, module)
   .add('simple ak-tabs', () => (
     <Component>
-      <ak-tabs-tab label="Details">Details content</ak-tabs-tab>
-      <ak-tabs-tab label="Diff">Diff content</ak-tabs-tab>
-      <ak-tabs-tab label="Commits">Commits content</ak-tabs-tab>
-      <ak-tabs-tab label="Pipeline">Pipeline content</ak-tabs-tab>
+      <ak-tabs-tab label="Details">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque id dapibus lectus.
+          Nam eu neque massa. Etiam faucibus a ligula non ullamcorper. Vestibulum ante ipsum primis
+          in faucibus orci luctus et ultrices posuere cubilia Curae; In in feugiat libero. Proin et
+          tortor lectus. Proin placerat augue sit amet justo dapibus facilisis. Interdum et
+          malesuada fames ac ante ipsum primis in faucibus.
+        </p>
+      </ak-tabs-tab>
+      <ak-tabs-tab label="Diff">
+        <p>
+          Fusce molestie interdum consequat. Pellentesque porttitor mi at nulla aliquam, fringilla
+          auctor urna molestie. Aenean molestie vel ipsum et scelerisque. Proin consectetur nisl
+          nibh, at semper magna vestibulum volutpat. Morbi a diam lacus. Nullam nec magna id velit
+          ultrices condimentum vel commodo turpis. Cras lacinia purus dolor, eget vestibulum quam
+          fringilla sed. Nam tristique ex sit amet scelerisque laoreet. Duis ut auctor ante. Aenean
+          quis augue ac justo mollis ultrices. Vivamus ut nisl sem. Phasellus cursus est sed velit
+          fermentum, vitae pellentesque turpis gravida. Nunc venenatis porttitor nisi vel blandit.
+          Sed ut feugiat metus, sit amet fermentum ex.
+        </p>
+      </ak-tabs-tab>
+      <ak-tabs-tab label="Commits">
+        <p>
+          Vestibulum sollicitudin enim ac orci tempus, quis convallis augue eleifend. Aenean
+          consectetur aliquam elit, ut ultrices eros convallis et. Aliquam at lacus egestas neque
+          eleifend ultrices. Praesent et nisi lacinia, efficitur mi non, facilisis urna. Phasellus
+          varius blandit felis vel dictum. Aenean posuere arcu in ligula feugiat pretium.
+          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis
+          egestas. Vestibulum vitae tincidunt sapien. Praesent convallis elementum diam. Mauris ac
+          urna sit amet risus auctor facilisis. Phasellus ex turpis, bibendum in varius eu,
+          convallis non velit.
+        </p>
+      </ak-tabs-tab>
+      <ak-tabs-tab label="Pipeline">
+        <p>
+          Donec sed nulla nec mauris laoreet facilisis eget non quam. Aenean hendrerit rutrum leo,
+          tempus sagittis velit. Integer placerat ultrices orci nec tempor. Nulla venenatis gravida
+          viverra. Donec id quam in eros viverra pellentesque. Sed convallis lacus id risus accumsan
+          ultrices. Suspendisse nec mauris et mauris commodo varius. Praesent metus est, pretium sit
+          amet ipsum ac, mollis interdum turpis. In tristique dignissim leo in dignissim.
+          Pellentesque est nulla, aliquam non nunc at, tincidunt euismod magna. Nulla ultricies
+          varius placerat. Vestibulum id placerat massa, in congue dolor. Etiam commodo nibh at
+          vehicula tempus. Suspendisse feugiat dolor at mauris mollis rhoncus. Quisque eget lacinia
+          felis. Fusce finibus libero sed nulla venenatis, non laoreet tortor sagittis.
+        </p>
+      </ak-tabs-tab>
     </Component>
   ))
   .add('ak-tabs with many items', () => (
     <Component>
-      <ak-tabs-tab label="1 Tab">Tab 1 content</ak-tabs-tab>
+      <ak-tabs-tab selected label="1 Tab">Tab 1 content</ak-tabs-tab>
       <ak-tabs-tab label="2 Tab">Tab 2 content</ak-tabs-tab>
       <ak-tabs-tab label="3 Tab">Tab 3 content</ak-tabs-tab>
       <ak-tabs-tab label="4 Tab">Tab 4 content</ak-tabs-tab>
@@ -31,7 +73,7 @@ storiesOf(name, module)
       <ak-tabs-tab label="9 Tab">Tab content</ak-tabs-tab>
       <ak-tabs-tab label="10 Long tab name">Tab content</ak-tabs-tab>
       <ak-tabs-tab label="11 Tab">Tab content</ak-tabs-tab>
-      <ak-tabs-tab selected label="12 Initially selected tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="12 Tab">Tab content</ak-tabs-tab>
       <ak-tabs-tab label="13 Tab">Tab content</ak-tabs-tab>
       <ak-tabs-tab label="14 Tab">Tab content</ak-tabs-tab>
       <ak-tabs-tab label="15 Tab">Tab content</ak-tabs-tab>

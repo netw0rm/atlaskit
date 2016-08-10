@@ -26,17 +26,23 @@ storiesOf(name, module)
       Button
     </AkButton>
   )
-  .add('a button that can be disabled and enabled', () => {
+  .add('a button disabled/selected', () => {
     class MyComponent extends React.Component {
       constructor(props) {
         super(props);
         this.state = {
           disable: false,
+          appearence: 'standard',
         };
       }
 
-      handleClick() {
+      disable() {
         this.setState({ disable: !this.state.disable });
+      }
+      select() {
+        this.setState({
+          appearence: this.state.appearence === 'standard' ? 'selected' : 'standard',
+        });
       }
 
       render() {
@@ -47,7 +53,7 @@ storiesOf(name, module)
               <input
                 type="checkbox"
                 id="disable-checkbox"
-                onChange={this.handleClick.bind(this)}  // eslint-disable-line react/jsx-no-bind
+                onChange={this.disable.bind(this)}  // eslint-disable-line react/jsx-no-bind
                 defaultChecked={this.state.disable}
               />
             </label>
@@ -55,14 +61,15 @@ storiesOf(name, module)
               Selected
               <input
                 type="checkbox"
-                id="disable-checkbox"
-                onChange={this.handleClick.bind(this)}  // eslint-disable-line react/jsx-no-bind
-                defaultChecked={this.state.disable}
+                id="selected-checkbox"
+                onChange={this.select.bind(this)}  // eslint-disable-line react/jsx-no-bind
+                defaultChecked={this.state.appearence === 'selected'}
               />
             </label>
             <AkButton
               disabled={this.state.disable}
-              onclick={action('clicking the WebComponent')}
+              appearence={this.state.appearence}
+              onclick={() => window.alert('clicking the WebComponent')}
             >
               Button
             </AkButton>
@@ -132,7 +139,6 @@ storiesOf(name, module)
       'open',
       'outdent',
       'redo',
-      'table',
       'task',
       'text-color',
       'underline',

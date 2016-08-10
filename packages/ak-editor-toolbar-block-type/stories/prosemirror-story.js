@@ -5,6 +5,7 @@ import ContentComponent from 'ak-editor-content';
 import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
+import invert from 'lodash.invert';
 
 import { ProseMirror, Plugin } from 'prosemirror/dist/edit';
 import { schema } from 'prosemirror/dist/schema-basic';
@@ -31,14 +32,7 @@ function getToolbarToProsemirrorMap() {
     return toolbarToProsemirrorMap;
   }
 
-  toolbarToProsemirrorMap = Object.keys(prosemirrorBlockToToolbarMap).reduce((
-    map,
-    item
-  ) => {
-    map[prosemirrorBlockToToolbarMap[item]] = item;
-    return map;
-  }, {});
-
+  toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
   return toolbarToProsemirrorMap;
 }
 

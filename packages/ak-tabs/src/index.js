@@ -5,6 +5,8 @@ import { debounce } from 'akutil-common';
 import { vdom, define, prop } from 'skatejs';
 import classNames from 'classnames';
 import shadowStyles from './shadow.less';
+
+import 'ak-editor-icon';
 import Tab, { // eslint-disable-line no-unused-vars
   events as tabEvents,
   symbols as tabSymbols,
@@ -225,7 +227,10 @@ const definition = {
                 onmousedown={() => {
                   elem._dropdownOpen = !elem._dropdownOpen;
                 }}
-              >More</a>
+              >
+                <span>More</span>
+                <ak-editor-icon glyph="expand" />
+              </a>
             </li>
           )
         }

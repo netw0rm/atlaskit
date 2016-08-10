@@ -32,20 +32,8 @@
 
   .ak-tabs-button {
     cursor: pointer;
-
-    // TODO: Replace with chevron
-    &::after {
-      border-right: 0.2em solid currentColor;
-      border-top: 0.2em solid currentColor;
-      content: "";
-      color: inherit;
-      display: inline-block;
-      width: 0.4em;
-      height: 0.4em;
-      margin: 0 5px;
-      position: relative;
-      transform: rotate(135deg);
-    }
+    display: flex;
+    align-items: center;
   }
 
   &.ak-tab-label-hidden {

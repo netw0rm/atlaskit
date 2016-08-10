@@ -24,6 +24,7 @@
     "akutil-react": "^0.0.4",
     "ak-editor-toolbar": "^2.0.0",
     "ak-editor-content": "^2.0.0",
+    "atlassian-editorkit-block-type-plugin": "0.0.7",
     "prosemirror": "^0.8.3"
   },
   "repository": {

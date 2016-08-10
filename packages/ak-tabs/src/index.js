@@ -132,16 +132,7 @@ function calculateVisibleTabs(tabsEl) {
 
 const definition = {
   created(elem) {
-    /* Check for existing selected tab:
-     * - If no tab is selected and a tab exists, select the first one
-     * - If multiple tabs are selected, select only the first one
-     */
-
-    /* Listen for tab change events
-     * - Select the tab
-     * - Calculate positioning and setup _visibleTabs
-     * - Re-render if necessary
-     */
+    // Listen for tab change events
     elem.addEventListener(tabEvents.EVENT_TAB_CHANGE, e => {
       // If the tab has been selected, we need to deselect all other tabs.
       const targetLabel = e.target;
@@ -151,6 +142,7 @@ const definition = {
           .forEach(tab => (tab.selected = false));
       }
 
+      // Re-render if necessary.
       elem._labels = elem.children.map(el => el.label);
       elem._selected = elem.children.map(el => el.selected);
       elem._visibleTabs = calculateVisibleTabs(elem);
@@ -165,6 +157,7 @@ const definition = {
       }
     }
 
+    // Re-render if necessary when the window is resized.
     elem[resizeListener] = debounce(() => {
       elem._visibleTabs = calculateVisibleTabs(elem);
     }, 500);

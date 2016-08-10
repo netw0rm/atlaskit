@@ -55,10 +55,10 @@ function getLabelForTab(tab) {
 
 /* Handlers */
 
-function labelClickHandler(tabsEl, tab) {
-  return () => {
-    tabsEl[focusSelectedOnRender] = true;
+function labelMousedownHandler(tab) {
+  return e => {
     tab.selected = true;
+    e.preventDefault(); // Prevent focus on the tab label.
   };
 }
 
@@ -195,9 +195,13 @@ const definition = {
               });
               const ref = el => {
                 tab[tabSymbols.tabLabel] = el;
-                if (elem[focusSelectedOnRender] && tab.selected) {
-                  el.focus();
-                  elem[focusSelectedOnRender] = false;
+                if (tab.selected) {
+                  if (elem[focusSelectedOnRender]) {
+                    el.focus();
+                    elem[focusSelectedOnRender] = false;
+                  }
+                } else {
+                  el.blur(); // Remove focus on a label that is no longer selected.
                 }
               };
               return (
@@ -205,7 +209,7 @@ const definition = {
                   className={classes}
                   tabIndex={tabIndex}
                   onkeydown={labelKeydownHandler(elem, tab)}
-                  onclick={labelClickHandler(elem, tab)}
+                  onmousedown={labelMousedownHandler(tab)}
                   aria-selected={ariaSelected}
                   role="tab"
                   ref={ref}
@@ -218,7 +222,7 @@ const definition = {
             <li className={buttonClasses} ref={el => (elem[buttonContainer] = el)}>
               <a
                 className={shadowStyles.locals.akTabsButton}
-                onclick={() => {
+                onmousedown={() => {
                   elem._dropdownOpen = !elem._dropdownOpen;
                 }}
               >More</a>
@@ -244,7 +248,7 @@ const definition = {
                 <li className={classes}>
                   <a
                     href="#"
-                    onclick={labelClickHandler(elem, tab)}
+                    onclick={labelMousedownHandler(tab)}
                     tabIndex="-1"
                   >{tab.label}</a>
                 </li>

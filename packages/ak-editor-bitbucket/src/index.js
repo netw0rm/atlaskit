@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { vdom, define, prop, symbols, emit } from 'skatejs';
 import { ProseMirror } from 'prosemirror/dist/edit';
 import 'style!./host.less';
@@ -17,7 +16,9 @@ import { markdownSerializer } from './markdown-serializer';
 import { nodeLifecycleHandler } from './node-lifecycle';
 import { hyperlinkTransformer, markdownTransformer } from './paste-handlers';
 
-const contentClassName = '__content__' + Date.now();
+// A hack to target the content element until https://github.com/skatejs/skatejs/issues/721
+// is fixed.
+const contentClassName = `__content__${Date.now()}`;
 const initEditorSymbol = '__init_editor__';
 const pmSymbol = '__pm__';
 const readySymbol = '__ready__';
@@ -31,7 +32,7 @@ export default define('ak-editor-bitbucket', {
     }
   },
 
-  render(elem) {
+  render() {
     return (
       <div className={shadowStyles.locals.root}>
         <style>{shadowStyles.toString()}</style>
@@ -102,12 +103,12 @@ export default define('ak-editor-bitbucket', {
       const pm = new ProseMirror({
         place: contentElement,
         doc: markdownParser(schema).parse(this.defaultValue),
-        plugins: [inputRules]
+        plugins: [inputRules],
       });
 
       // avoid invoking keyboard shortcuts in BB
       pm.wrapper.addEventListener('keypress', e => e.stopPropagation());
-      pm.wrapper.addEventListener('keydown',  e => e.stopPropagation());
+      pm.wrapper.addEventListener('keydown', e => e.stopPropagation());
 
       // add the keymap
       pm.addKeymap(buildKeymap(pm.schema));

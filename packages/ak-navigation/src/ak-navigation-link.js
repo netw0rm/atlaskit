@@ -11,7 +11,7 @@ function select(elem) {
   emit(elem, 'ak-navigation-link-selected');
 }
 
-const definition = {
+export default define('ak-navigation-link', {
   render(elem) {
     return (
       <a
@@ -44,6 +44,4 @@ const definition = {
       attribute: true,
     }),
   },
-};
-
-export default define('ak-navigation-link', definition);
+});

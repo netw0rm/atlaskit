@@ -12,7 +12,7 @@ export default define('ak-editor-button', {
     return (
       <div className={cx(shadowStyles.locals.root, { [shadowStyles.locals.active]: elem.active })}>
         <style>{shadowStyles.toString()}</style>
-        <button disabled={elem.disabled} on-mousedown={preventDefault}><slot /></button>
+        <button disabled={elem.disabled} onMousedown={preventDefault}><slot /></button>
       </div>
     );
   },

@@ -33,7 +33,7 @@ export default define('ak-editor-popup', {
           position="bottom center"
           attachment={elem.constrain}
           target={elem.target}
-          on-render={layer => {
+          onRender={layer => {
             if (elem.open && layer.alignment) {
               elem.positioned = true;
             }

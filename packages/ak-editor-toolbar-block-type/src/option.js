@@ -14,7 +14,7 @@ export default define('ak-editor-toolbar-block-type-option', {
               [styles.locals.active]: elem.active === true,
             }
           )}
-          on-click={() => emit(elem, 'selectFont', { detail: { font: elem.font } })}
+          onClick={() => emit(elem, 'selectFont', { detail: { font: elem.font } })}
         ><slot /></a>
       </div>
     );

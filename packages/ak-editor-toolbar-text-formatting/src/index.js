@@ -7,7 +7,7 @@ import Icon from 'ak-editor-icon';
 /* eslint-disable react/prop-types */
 const ToggleButton = (props) => (
   <Button
-    on-click={() => !props.disabled && props.emit(`toggle-${props.name}`)}
+    onClick={() => !props.disabled && props.emit(`toggle-${props.name}`)}
     className={shadowStyles.locals.button}
     active={props.active}
     disabled={props.disabled}

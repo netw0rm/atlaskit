@@ -29,8 +29,8 @@ export default define('ak-blanket', {
       <div>
         <style>{shadowStyles.toString()}</style>
         <div
-          on-click={handleBlur(elem)}
-          on-touch={handleBlur(elem)}
+          onClick={handleBlur(elem)}
+          onTouch={handleBlur(elem)}
           className={classes}
         >
         </div>

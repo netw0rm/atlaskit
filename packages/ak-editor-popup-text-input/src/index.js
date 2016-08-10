@@ -12,7 +12,7 @@ export default define('ak-editor-popup-text-input', {
           className={shadowStyles.locals.textInput}
           placeholder={elem.placeholder}
           value={elem.value}
-          on-input={(e) => { elem.value = e.target.value; }}
+          onInput={(e) => { elem.value = e.target.value; }}
         />
       </div>
     );

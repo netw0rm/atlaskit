@@ -21,7 +21,7 @@ export default define('ak-editor-toolbar-hyperlink', {
   render(elem) {
     const LinkButton = (<EditorButton
       className="link-button"
-      on-click={() => {
+      onClick={() => {
         if (!elem.disabled) {
           toggle(elem);
         }
@@ -35,7 +35,7 @@ export default define('ak-editor-toolbar-hyperlink', {
     /* eslint-disable new-cap  */
     return (
       <div
-        on-keyup={event => {
+        onKeyup={event => {
           if (event.keyCode === 13) {
             const textInput = elem[symbols.shadowRoot].querySelector('.text-input');
             toggle(elem, textInput);

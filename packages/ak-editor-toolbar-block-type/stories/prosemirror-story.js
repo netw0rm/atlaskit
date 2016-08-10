@@ -25,16 +25,7 @@ const prosemirrorBlockToToolbarMap = {
   code_block: 'monospace',
 };
 
-let toolbarToProsemirrorMap;
-// lazily compute the reverse
-function getToolbarToProsemirrorMap() {
-  if (toolbarToProsemirrorMap) {
-    return toolbarToProsemirrorMap;
-  }
-
-  toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
-  return toolbarToProsemirrorMap;
-}
+const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
 
 storiesOf('ak-editor-toolbar-block-type', module)
   .add('ProseMirror', () => {
@@ -104,7 +95,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
                 onSelectFont={(event) => {
                   const font = event.detail.font;
 
-                  const matches = getToolbarToProsemirrorMap()[font].match(/([a-zA-Z_]+)(\d*)/);
+                  const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
                   const blockType = matches[1];
                   const level = matches[2];
 

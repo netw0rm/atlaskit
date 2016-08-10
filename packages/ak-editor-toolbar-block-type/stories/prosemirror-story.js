@@ -57,13 +57,13 @@ storiesOf('ak-editor-toolbar-block-type', module)
         );
 
         let blockTypePluginInstance;
-        const pm = new ProseMirror({
+        new ProseMirror({ // eslint-disable-line
           place: this.editorElement,
           doc,
           plugins: [
             new Plugin(
               class BlockTypePluginDecorator {
-                constructor() {
+                constructor(pm) {
                   blockTypePluginInstance = new BlockTypePlugin(pm);
                   return blockTypePluginInstance;
                 }

@@ -8,9 +8,10 @@ export default define('ak-editor-toolbar-block-type-font-select', {
       <div>
         <style>{styles.toString()}</style>
         <Button
-          active={elem.active}
-          className={styles.locals.fontSelect}
+          disabled={elem.disabled}
           onClick={() => emit(elem, 'toggleDropdown')}
+          className={styles.locals.fontSelect}
+          active={elem.active}
         >
           <span className={styles.locals.buttonSpan}>{elem.selectedReadableName}</span>
         </Button>
@@ -19,7 +20,8 @@ export default define('ak-editor-toolbar-block-type-font-select', {
     );
   },
   props: {
-    active: prop.boolean({ attribute: true }),
     selectedReadableName: prop.string({ attribute: true }),
+    active: prop.boolean({ attribute: true }),
+    disabled: prop.boolean({ attribute: true }),
   },
 });

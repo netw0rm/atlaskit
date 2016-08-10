@@ -47,7 +47,7 @@ export default define('pf-mention-picker', {
   },
 
   render(elem) {
-    const { target, position, renderElementTo } = elem;
+    const { target, position } = elem;
     const { resourceProvider, presenceProvider, query } = elem;
     const style = {
       display: elem.visible ? 'block' : 'none',
@@ -61,7 +61,6 @@ export default define('pf-mention-picker', {
             target={target}
             position={position}
             open={elem.visible}
-            renderElementTo={renderElementTo}
             padding="0"
           >
             <ResourcedMentionList
@@ -100,9 +99,6 @@ export default define('pf-mention-picker', {
       attribute: true,
     }),
     position: prop.string({
-      attribute: true,
-    }),
-    renderElementTo: prop.string({
       attribute: true,
     }),
   },

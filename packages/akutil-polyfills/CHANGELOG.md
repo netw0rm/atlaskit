@@ -1,5 +1,25 @@
-<a name="0.0.13"></a>
-## 0.0.13 (2016-08-01)
+<a name="0.0.14"></a>
+## 0.0.14 (2016-08-10)
+
+
+### Bug Fixes
+
+* **bump:** bump to version 1 of named slots, w/ bug fix for Chrome non canary ([7dc92ab](https://bitbucket.org/atlassian/atlaskit/commits/7dc92ab))
+
+
+### BREAKING CHANGES
+
+* bump: bumped named slots from 0.x to 1.x
+
+
+
+<a name="akutil-polyfills@0.0.14"></a>
+## akutil-polyfills@0.0.14 (2016-08-04)
+
+
+### Bug Fixes
+
+* **package:** Update skatejs-named-slots to version w/o rollup problems' ([fc7d429](https://bitbucket.org/atlassian/atlaskit/commits/fc7d429))
 
 
 
@@ -9,8 +29,6 @@
 
 ### Bug Fixes
 
-* FAB-370 add attributes to prop types in pf-mention-picker ([b1929da](https://bitbucket.org/atlassian/atlaskit/commits/b1929da))
-* Fix bad export for MentionResource ([1502f73](https://bitbucket.org/atlassian/atlaskit/commits/1502f73))
 * **package:** bump skatejs-named-slots for a release ([4230d87](https://bitbucket.org/atlassian/atlaskit/commits/4230d87))
 
 
@@ -19,10 +37,85 @@
 ## akutil-polyfills@0.0.12 (2016-07-14)
 
 
+
+<a name="akutil-polyfills@0.0.11"></a>
+## akutil-polyfills@0.0.11 (2016-07-11)
+
+
 ### Bug Fixes
 
-* endsWith is not available in IE ([d8b1f01](https://bitbucket.org/atlassian/atlaskit/commits/d8b1f01))
-* Remove broken export from ak-inline-dialog, and prevent usage upstream. ([e5cc55f](https://bitbucket.org/atlassian/atlaskit/commits/e5cc55f))
+* Upgrade skatejs-named-slots to fix SVG bug ([cf64c02](https://bitbucket.org/atlassian/atlaskit/commits/cf64c02))
+
+
+
+<a name="akutil-polyfills@0.0.10"></a>
+## akutil-polyfills@0.0.10 (2016-07-08)
+
+
+### Bug Fixes
+
+* bricked release 0.0.9 ([20604da](https://bitbucket.org/atlassian/atlaskit/commits/20604da))
+
+
+
+<a name="akutil-polyfills@0.0.6"></a>
+## akutil-polyfills@0.0.6 (2016-07-07)
+
+
+
+<a name="akutil-polyfills@0.0.5"></a>
+## akutil-polyfills@0.0.5 (2016-07-07)
+
+
+### Bug Fixes
+
+* Bump skatejs-named-slots to 0.2.8 ([b7f4571](https://bitbucket.org/atlassian/atlaskit/commits/b7f4571))
+* fixed troubles with switching between stories ([d0fe678](https://bitbucket.org/atlassian/atlaskit/commits/d0fe678))
+
+
+
+<a name="akutil-polyfills@0.0.4"></a>
+## akutil-polyfills@0.0.4 (2016-06-29)
+
+
+
+<a name="akutil-polyfills@0.0.3"></a>
+## akutil-polyfills@0.0.3 (2016-06-27)
+
+
+
+<a name="akutil-polyfills@0.0.2"></a>
+## akutil-polyfills@0.0.2 (2016-06-24)
+
+
+
+<a name="0.0.1-atlas-animation3"></a>
+## 0.0.1-atlas-animation3 (2016-06-08)
+
+
+
+<a name="1.1.6-atlas-animation"></a>
+## 1.1.6-atlas-animation (2016-06-08)
+
+
+
+<a name="13.1.0-tmp-atlaskit-component-b"></a>
+# 13.1.0-tmp-atlaskit-component-b (2016-06-08)
+
+
+
+<a name="13.1.0-tmp-atlaskit-component-a"></a>
+# 13.1.0-tmp-atlaskit-component-a (2016-06-08)
+
+
+### Bug Fixes
+
+* **components:** commented out a line ([4b91174](https://bitbucket.org/atlassian/atlaskit/commits/4b91174))
+
+
+### Features
+
+* **components:** Add an ! mark ([2b7bdb0](https://bitbucket.org/atlassian/atlaskit/commits/2b7bdb0))
 
 
 

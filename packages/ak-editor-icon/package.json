@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-icon",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -9,8 +9,7 @@
     "pre-release": "lerna-semantic-release pre"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
@@ -20,7 +19,7 @@
   "devDependencies": {
     "idomizer": "^0.5.2",
     "loader-utils": "^0.2.15",
-    "akutil-react": "0.0.3"
+    "akutil-react": "^0.0.4"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar-block-type",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "An block type dropdown selector",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -17,12 +17,14 @@
     "akutil-shared-styles": "^33.0.2",
     "classnames": "^2.2.5",
     "ak-editor-button": "2.0.0",
-    "ak-blanket": "^0.0.0",
+    "ak-blanket": "^1.0.0",
     "skatejs": "1.x"
   },
   "devDependencies": {
-    "akutil-react": "0.0.3",
-    "ak-editor-toolbar": "2.0.0"
+    "akutil-react": "^0.0.4",
+    "ak-editor-toolbar": "^2.0.0",
+    "ak-editor-content": "^2.0.0",
+    "prosemirror": "^0.8.3"
   },
   "repository": {
     "type": "git",

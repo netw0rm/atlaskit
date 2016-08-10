@@ -3,6 +3,7 @@ import cx from 'classnames';
 import 'style!./host.less';
 import shadowStyles from './shadow.less';
 
+/* don't blur the prose mirror editor */
 function preventDefault(e) {
   e.preventDefault();
 }

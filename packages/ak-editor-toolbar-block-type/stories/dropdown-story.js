@@ -2,7 +2,6 @@ import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import BlockType from '../src/index';
 import ToolbarComponent from 'ak-editor-toolbar';
-import { vdom } from 'skatejs';
 import { name } from '../package.json';
 
 const { React, ReactDOM } = window;

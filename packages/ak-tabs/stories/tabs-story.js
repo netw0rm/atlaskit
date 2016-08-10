@@ -20,26 +20,26 @@ storiesOf(name, module)
   ))
   .add('ak-tabs with many items', () => (
     <Component>
-      <ak-tabs-tab label="Tab 1">Tab 1 content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 2">Tab 2 content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 3">Tab 3 content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 4">Tab 4 content</ak-tabs-tab>
-      <ak-tabs-tab label="Another tab 5">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 6">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 7">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 8">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 9">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Long tab name 10">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 11">Tab content</ak-tabs-tab>
-      <ak-tabs-tab selected label="Initially selected tab 12">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 13">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 14">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 15">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 16">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 17">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 18">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 19">Tab content</ak-tabs-tab>
-      <ak-tabs-tab label="Tab 20">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="1 Tab">Tab 1 content</ak-tabs-tab>
+      <ak-tabs-tab label="2 Tab">Tab 2 content</ak-tabs-tab>
+      <ak-tabs-tab label="3 Tab">Tab 3 content</ak-tabs-tab>
+      <ak-tabs-tab label="4 Tab">Tab 4 content</ak-tabs-tab>
+      <ak-tabs-tab label="5 Another tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="6 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="7 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="8 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="9 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="10 Long tab name">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="11 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab selected label="12 Initially selected tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="13 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="14 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="15 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="16 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="17 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="18 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="19 Tab">Tab content</ak-tabs-tab>
+      <ak-tabs-tab label="20 Tab">Tab content</ak-tabs-tab>
     </Component>
   ))
   .add('simple ak-tabs inside a container', () => (

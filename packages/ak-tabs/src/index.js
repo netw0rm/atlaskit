@@ -215,36 +215,42 @@ const definition = {
             }
           ).concat(
             <li className={buttonClasses} ref={el => (elem[buttonContainer] = el)}>
-              <a className={shadowStyles.locals.akTabsButton}>More</a>
+              <a
+                className={shadowStyles.locals.akTabsButton}
+                onclick={() => {
+                  elem._dropdownOpen = !elem._dropdownOpen;
+                }}
+              >More</a>
             </li>
           )
         }
         </ul>
         <slot />
-        <div>
-          <hr />
-          <p>Dropdown content:</p>
-          <ul className={shadowStyles.locals.ddContainer}>
-            {elem.children && elem.children.map(
-              tab => {
-                const isVisible = elem._visibleTabs.indexOf(tab) > -1;
-                const classes = classNames({
-                  [shadowStyles.locals.ddItem]: true,
-                  [shadowStyles.locals.ddHidden]: isVisible,
-                });
-                return (
-                  <li className={classes}>
-                    <a
-                      href="#"
-                      onclick={labelClickHandler(elem, tab)}
-                      tabIndex="-1"
-                    >{tab.label}</a>
-                  </li>
-                );
-              }
-            )}
-          </ul>
-        </div>
+        <ul
+          className={classNames({
+            [shadowStyles.locals.ddContainer]: true,
+            [shadowStyles.locals.ddHidden]: !elem._dropdownOpen,
+          })}
+        >
+          {elem.children && elem.children.map(
+            tab => {
+              const isVisible = elem._visibleTabs.indexOf(tab) > -1;
+              const classes = classNames({
+                [shadowStyles.locals.ddItem]: true,
+                [shadowStyles.locals.ddHidden]: isVisible,
+              });
+              return (
+                <li className={classes}>
+                  <a
+                    href="#"
+                    onclick={labelClickHandler(elem, tab)}
+                    tabIndex="-1"
+                  >{tab.label}</a>
+                </li>
+              );
+            }
+          )}
+        </ul>
       </div>
     );
   },
@@ -253,6 +259,9 @@ const definition = {
     _labels: prop.array({}),
     _selected: prop.array({}),
     _visibleTabs: prop.array({}),
+    _dropdownOpen: prop.boolean({
+      initial: false,
+    }),
   },
 };
 

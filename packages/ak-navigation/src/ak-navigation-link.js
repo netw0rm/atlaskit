@@ -14,7 +14,11 @@ function select(elem) {
 export default define('ak-navigation-link', {
   created(elem) {
     elem.addEventListener('click', () => select(elem));
-    elem.addEventListener('keyup', (event.keyCode === enterKeyCode) && select(elem));
+    elem.addEventListener('keyup', (event) => {
+      if (event.keyCode === enterKeyCode) {
+        select(elem);
+      }
+    });
   },
   render(elem) {
     return (

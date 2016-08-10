@@ -22,7 +22,7 @@ export default define('ak-editor-popup', {
         on-ak-blanket-click={() => {
           elem.open = !elem.open;
         }}
-        class={cx({
+        className={cx({
           [hostStyle.locals.akEditorPopup]: !elem.open,
         })}
       >
@@ -40,7 +40,7 @@ export default define('ak-editor-popup', {
           }}
         >
           <style>{shadowStyles.toString()}</style>
-          <div class={shadowStyles.locals.popup} style={styles}>
+          <div className={shadowStyles.locals.popup} style={styles}>
             <slot style={{ display: 'flex' }} />
           </div>
         </Layer>

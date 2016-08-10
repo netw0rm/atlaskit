@@ -21,7 +21,7 @@ export default define('akutil-component-template', {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
-        <Paragraph class={shadowStyles.locals.myClassName}>My name is {elem.name}!</Paragraph>
+        <Paragraph className={shadowStyles.locals.myClassName}>My name is {elem.name}!</Paragraph>
       </div>
     );
   },

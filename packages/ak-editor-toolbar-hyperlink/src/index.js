@@ -20,7 +20,7 @@ function toggle(elem, input) {
 export default define('ak-editor-toolbar-hyperlink', {
   render(elem) {
     const LinkButton = (<EditorButton
-      class="link-button"
+      className="link-button"
       on-click={() => {
         if (!elem.disabled) {
           toggle(elem);
@@ -52,7 +52,7 @@ export default define('ak-editor-toolbar-hyperlink', {
           open={elem.open}
           on-ak-blanket-click={() => toggle(elem)}
         >
-          <TextInput class="text-input" placeholder="Paste link" />
+          <TextInput className="text-input" placeholder="Paste link" />
         </Popup>
       </div>
     );

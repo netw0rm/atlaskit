@@ -12,7 +12,7 @@ export default define('ak-editor-content', {
     const classNames = classLists.reduce((a, b) => a.concat(b), []).join(' ');
 
     return (
-      <div class={classNames}>
+      <div className={classNames}>
         <style>{shadowStyles.toString()}</style>
         <slot />
       </div>

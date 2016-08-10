@@ -10,7 +10,7 @@ function preventDefault(e) {
 export default define('ak-editor-button', {
   render(elem) {
     return (
-      <div class={cx(shadowStyles.locals.root, { [shadowStyles.locals.active]: elem.active })}>
+      <div className={cx(shadowStyles.locals.root, { [shadowStyles.locals.active]: elem.active })}>
         <style>{shadowStyles.toString()}</style>
         <button disabled={elem.disabled} on-mousedown={preventDefault}><slot /></button>
       </div>

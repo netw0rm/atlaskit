@@ -8,7 +8,7 @@ export default define('ak-editor-toolbar-block-type-option', {
       <div>
         <style>{styles.toString()}</style>
         <a
-          class={classnames(
+          className={classnames(
             styles.locals[elem.font],
             styles.locals.selectOptions, {
               [styles.locals.active]: elem.active === true,

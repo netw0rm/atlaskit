@@ -4,7 +4,7 @@ import 'style!./host.less';
 
 export default define('ak-editor-toolbar', {
   render: () => (
-    <div class={shadowStyles.locals.root}>
+    <div className={shadowStyles.locals.root}>
       <style>{shadowStyles.toString()}</style>
       <slot />
     </div>

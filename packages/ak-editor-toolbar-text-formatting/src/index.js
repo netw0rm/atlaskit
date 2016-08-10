@@ -8,7 +8,7 @@ import Icon from 'ak-editor-icon';
 const ToggleButton = (props) => (
   <Button
     on-click={() => !props.disabled && props.emit(`toggle-${props.name}`)}
-    class={shadowStyles.locals.button}
+    className={shadowStyles.locals.button}
     active={props.active}
     disabled={props.disabled}
   >
@@ -21,7 +21,7 @@ export default define('ak-editor-toolbar-text-formatting', {
   render(elem) {
     const boundEmit = emit.bind(null, elem); // eslint-disable-line react/jsx-no-bind
     return (
-      <div class={shadowStyles.locals.root}>
+      <div className={shadowStyles.locals.root}>
         <style>{shadowStyles.toString()}</style>
         <ToggleButton
           name="bold"

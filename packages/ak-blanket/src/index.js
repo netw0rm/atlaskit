@@ -31,7 +31,7 @@ export default define('ak-blanket', {
         <div
           on-click={handleBlur(elem)}
           on-touch={handleBlur(elem)}
-          class={classes}
+          className={classes}
         >
         </div>
       </div>

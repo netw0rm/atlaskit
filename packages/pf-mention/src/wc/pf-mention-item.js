@@ -42,7 +42,7 @@ function renderHighlight(className, value, highlights, prefix) {
   }
 
   return (
-    <span class={className}>
+    <span className={className}>
       {prefixText}
       {parts.map(part => {
         if (part.m) {
@@ -57,7 +57,7 @@ function renderHighlight(className, value, highlights, prefix) {
 function renderTime(presence) {
   if (presence && presence.time) {
     return (
-      <div class={styles.time}>{presence.time}</div>
+      <div className={styles.time}>{presence.time}</div>
     );
   }
   return null;
@@ -79,10 +79,10 @@ export default define('pf-mention-item', {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <div class={classes.join(' ')}>
-          <div class={styles.row}>
+        <div className={classes.join(' ')}>
+          <div className={styles.row}>
             <Avatar src={elem.avatarUrl} size="medium" />
-            <div class={styles.nameSection}>
+            <div className={styles.nameSection}>
               {renderHighlight(styles.fullName, elem.name, nameHighlights)}
               {renderHighlight(styles.mentionName, elem.mentionName, mentionHighlights, '@')}
             </div>

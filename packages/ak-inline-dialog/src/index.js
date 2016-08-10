@@ -79,7 +79,7 @@ export default define('ak-inline-dialog', {
           }}
         >
           <style>{shadowStyles.toString()}</style>
-          <div class={shadowStyles.locals.inlineDialogContainer} style={styles}>
+          <div className={shadowStyles.locals.inlineDialogContainer} style={styles}>
             <slot />
           </div>
         </Layer>

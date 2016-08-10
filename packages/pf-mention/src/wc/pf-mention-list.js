@@ -163,9 +163,9 @@ export default define('pf-mention-list', {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <div class={classes}>
+        <div className={classes}>
           <Scrollable
-            class={styles.scrollable}
+            className={styles.scrollable}
             ref={(ref) => { elem._scrollable = ref; }}
           >
             {renderItems(elem)}

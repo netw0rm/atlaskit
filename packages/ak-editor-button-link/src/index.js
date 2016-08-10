@@ -5,7 +5,7 @@ import shadowStyles from './shadow.less';
 export default define('ak-editor-button-link', {
   render(elem) {
     return (
-      <a class={shadowStyles.locals.root} href={elem.href} target={elem.target}>
+      <a className={shadowStyles.locals.root} href={elem.href} target={elem.target}>
         <style>{shadowStyles.toString()}</style>
         <slot />
       </a>

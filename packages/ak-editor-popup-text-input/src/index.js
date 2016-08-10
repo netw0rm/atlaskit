@@ -5,11 +5,11 @@ import 'style!./host.less';
 export default define('ak-editor-popup-text-input', {
   render(elem) {
     return (
-      <div class={shadowStyles.locals.container}>
+      <div className={shadowStyles.locals.container}>
         <style>{shadowStyles.toString()}</style>
         <input
           type="text"
-          class={shadowStyles.locals.textInput}
+          className={shadowStyles.locals.textInput}
           placeholder={elem.placeholder}
           value={elem.value}
           on-input={(e) => { elem.value = e.target.value; }}

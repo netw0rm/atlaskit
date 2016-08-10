@@ -29,7 +29,9 @@ const preventClickWhenDisabled = (component) =>
     }
   };
 
-const createIcon = (elem, glyph, id) => {
+const createIcon = (elem, side) => {
+  const glyph = elem[`${side}Icon`];
+  const id = `${side}-icon`;
   if (!glyph) {
     return false;
   }
@@ -52,7 +54,7 @@ const definition = {
     appearence: enumeration(APPEARENCES)({
       attribute: true,
     }),
-    disabled: prop.boolean({ attribute: true, default: false }),
+    disabled: prop.boolean({ attribute: true }),
     type: enumeration(TYPES)({
       attribute: true,
     }),
@@ -85,9 +87,9 @@ const definition = {
             className={shadowStyles.locals.contentContainer}
             onclick={preventClickWhenDisabled(elem)}
           >
-            {createIcon(elem, elem.leftIcon, 'left-icon')}
+            {createIcon(elem, 'left')}
             <slot />
-            {createIcon(elem, elem.rightIcon, 'right-icon')}
+            {createIcon(elem, 'right')}
           </div>
         </button>
       </div>

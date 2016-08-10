@@ -1,7 +1,7 @@
 import 'style!../host.less';
 import shadowStyles from './pf-mention-picker-shadow.less';
 import { localProp } from './skate-local-props';
-import { define, vdom, prop, state } from 'skatejs';
+import { define, vdom, prop, props } from 'skatejs';
 import InlineDialog from 'ak-inline-dialog';
 import ResourcedMentionList from './pf-resourced-mention-list';
 
@@ -26,7 +26,7 @@ export default define('pf-mention-picker', {
     },
 
     _filterChange(mentions) {
-      state(this, {
+      props(this, {
         visible: mentions.length > 0,
       });
     },

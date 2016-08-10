@@ -135,11 +135,11 @@ const definition = {
     // Listen for tab change events
     elem.addEventListener(tabEvents.EVENT_TAB_CHANGE, e => {
       // If the tab has been selected, we need to deselect all other tabs.
-      const targetLabel = e.target;
-      if (targetLabel.selected) {
+      const tab = e.detail.tab;
+      if (tab.selected) {
         elem.children
-          .filter(el => el.selected && el !== targetLabel)
-          .forEach(tab => (tab.selected = false));
+          .filter(el => el.selected && el !== tab)
+          .forEach(el => (el.selected = false));
       }
 
       // Re-render if necessary.

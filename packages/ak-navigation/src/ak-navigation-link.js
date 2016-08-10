@@ -22,22 +22,24 @@ export default define('ak-navigation-link', {
   },
   render(elem) {
     return (
-      <a
+      <div
         className={classNames(
         shadowStyles.locals.link, {
           [shadowStyles.locals.selected]: elem.selected,
         })}
-        href={elem.href}
-        tabindex="0"
       >
         <style>{shadowStyles.toString()}</style>
         <div className={shadowStyles.locals.icon}>
           <slot name="icon" />
         </div>
-        <div className={shadowStyles.locals.text}>
+        <a
+          className={shadowStyles.locals.text}
+          href={elem.href}
+          tabindex="0"
+        >
           <slot />
-        </div>
-      </a>
+        </a>
+      </div>
     );
   },
   props: {

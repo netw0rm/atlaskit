@@ -8,7 +8,6 @@
     "prepublish": "cd .. && npm run prepublish/single ak-editor-toolbar-hyperlink",
     "pre-release": "lerna-semantic-release pre"
   },
-  "private": true,
   "files": [
     "dist"
   ],

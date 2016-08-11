@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 set -e
 
 HEAD_SHA=$(git rev-parse HEAD | cut -c1-6)

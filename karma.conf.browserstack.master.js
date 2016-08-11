@@ -1,5 +1,5 @@
 const baseConfig = require('./karma.conf.browserstack.js');
-const browserStackBrowsers = require('./build/lib/browserstack.browsers.branch.js');
+const browserStackBrowsers = require('./build/lib/browserstack.browsers.master.js');
 const fs = require('fs');
 const glob = require('glob');
 
@@ -40,6 +40,7 @@ module.exports = (config) => {
     query: {
       presets: [
         'es2015',
+        'react',
         'stage-0',
       ],
     },

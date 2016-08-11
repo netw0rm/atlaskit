@@ -1,11 +1,23 @@
-// const path = require('path');
 const baseConfig = require('./karma.conf.browserstack.js');
 const browserStackBrowsers = require('./build/lib/browserstack.browsers.branch.js');
+const fs = require('fs');
+const glob = require('glob');
+
+function concatTests(entryFile) {
+  let entryContents = '';
+  glob.sync('./packages/*/test/**/*.js').forEach((testFile) => {
+    entryContents += `require('${testFile}');\n`;
+  });
+  fs.writeFileSync(entryFile, entryContents);
+}
 
 module.exports = (config) => {
   baseConfig(config);
 
   const webpackAndSourcemap = ['webpack', 'sourcemap'];
+  const entryFile = 'browserstack-entry.js';
+
+  concatTests(entryFile);
 
   Object.assign(config, {
     customLaunchers: browserStackBrowsers,
@@ -13,13 +25,23 @@ module.exports = (config) => {
 
     files: [
       'packages/akutil-polyfills/src/index.js',
-      'packages/*/test/**/*.js',
+      entryFile,
     ],
 
     preprocessors: {
       'packages/akutil-polyfills/src/index.js': webpackAndSourcemap,
-      'packages/*/test/**/*.js': webpackAndSourcemap,
+      [entryFile]: webpackAndSourcemap,
     },
   });
-  console.log(config);
+
+  config.webpack.module.loaders.push({
+    loader: 'babel-loader',
+    test: new RegExp(entryFile),
+    query: {
+      presets: [
+        'es2015',
+        'stage-0',
+      ],
+    },
+  });
 };

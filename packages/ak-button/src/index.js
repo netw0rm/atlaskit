@@ -5,12 +5,20 @@ import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
+import 'ak-editor-icon';
 
 const APPEARENCES = {
   attribute: 'appearence',
   values: [
     'primary', 'standard', 'subtle', 'selected',
   ],
+};
+
+const TYPES = {
+  attribute: 'type',
+  values: ['button', 'submit'],
+  missingDefault: 'button',
+  invalidDefault: 'button',
 };
 
 const preventClickWhenDisabled = (component) =>
@@ -20,6 +28,26 @@ const preventClickWhenDisabled = (component) =>
       e.stopPropagation();
     }
   };
+
+const createIcon = (elem, side) => {
+  const glyph = elem[`${side}Icon`];
+  const id = `${side}-icon`;
+  if (!glyph) {
+    return false;
+  }
+  let fill;
+  if (elem.appearence === 'selected') {
+    fill = '#ECEEF1';
+  }
+  if (elem.disabled) {
+    fill = '#B3BAC5';
+  }
+  return vdom.element('ak-editor-icon', {
+    id,
+    glyph,
+    fill,
+  });
+};
 
 const definition = {
   props: {
@@ -44,6 +72,11 @@ const definition = {
      * @example @js button.disabled = true;
      */
     disabled: prop.boolean({ attribute: true }),
+    type: enumeration(TYPES)({
+      attribute: true,
+    }),
+    leftIcon: prop.string({ attribute: true, default: null }),
+    rightIcon: prop.string({ attribute: true, default: null }),
   },
   render(elem) {
     const classes = [shadowStyles.locals.akButton];
@@ -67,7 +100,14 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >
-          <slot onclick={preventClickWhenDisabled(elem)} />
+          <div
+            className={shadowStyles.locals.contentContainer}
+            onclick={preventClickWhenDisabled(elem)}
+          >
+            {createIcon(elem, 'left')}
+            <slot />
+            {createIcon(elem, 'right')}
+          </div>
         </button>
       </div>
     );

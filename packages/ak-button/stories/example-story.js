@@ -69,9 +69,7 @@ storiesOf(name, module)
             <AkButton
               disabled={this.state.disable}
               appearence={this.state.appearence}
-              onclick={
-                () => window.alert('clicking the WebComponent') // eslint-disable-line no-alert
-              }
+              onclick={() => window.alert('clicking the WebComponent')}
             >
               Button
             </AkButton>
@@ -84,4 +82,139 @@ storiesOf(name, module)
   })
   .add('an ak-button that emits an action when it is clicked', () => (
     <AkButton id="myComponent" onClick={action('clicking the WebComponent')}>Button</AkButton>
-  ));
+  ))
+  .add('an ak-button selected', () => {
+    class SelectButton extends React.Component { // eslint-disable-line react/no-multi-comp
+      constructor(props) {
+        super(props);
+        this.state = {
+          selected: true,
+        };
+      }
+
+      handleClick() {
+        this.setState({ selected: !this.state.selected });
+      }
+
+      render() {
+        return (
+          <AkButton
+            appearence={this.state.selected ? 'selected' : 'standard'}
+            onClick={this.handleClick.bind(this)} // eslint-disable-line react/jsx-no-bind
+            leftIcon="add"
+          >
+            Button
+          </AkButton>
+        );
+      }
+    }
+    return <SelectButton />;
+  })
+  .add('ak-button with only icons', () => {
+    const buttonStyle = {
+      display: 'inline-block',
+      margin: '10px',
+    };
+    const iconNames = [
+      'add',
+      'align-center',
+      'align-left',
+      'align-right',
+      'attachment',
+      'bold',
+      'bullet-list',
+      'code',
+      'date',
+      'decision',
+      'emoji',
+      'expand',
+      'help',
+      'image',
+      'indent',
+      'italic',
+      'link',
+      'mention',
+      'more',
+      'number-list',
+      'open',
+      'outdent',
+      'redo',
+      'task',
+      'text-color',
+      'underline',
+      'undo',
+      'unlink',
+    ];
+    return (
+      <div>
+        {
+          iconNames.map(
+            iconName =>
+              <div>
+                <AkButton style={buttonStyle} leftIcon={iconName} />
+                <AkButton style={buttonStyle} disabled leftIcon={iconName} />
+                <AkButton style={buttonStyle} appearence="subtle" leftIcon={iconName} />
+                <AkButton style={buttonStyle} appearence="selected" leftIcon={iconName} />
+              </div>
+          )
+        }
+      </div>
+    );
+  })
+  .add('ak-button with icons and text', () => {
+    const containerStyle = {
+      display: 'flex',
+      flexDirection: 'column',
+    };
+
+
+    return (
+      <div style={containerStyle}>
+        <AkButton onclick={action('clicking the WebComponent')} leftIcon="add">
+          button
+        </AkButton>
+        <br />
+        <AkButton onclick={action('clicking the WebComponent')} disabled leftIcon="add">
+          button
+        </AkButton>
+
+        <br />
+        <AkButton rightIcon="expand">
+          button
+        </AkButton>
+        <br />
+        <AkButton disabled rightIcon="expand">
+          button
+        </AkButton>
+        <br />
+
+        <AkButton leftIcon="add" rightIcon="expand">
+          button
+        </AkButton>
+        <br />
+
+        <AkButton disabled leftIcon="add" rightIcon="expand">
+          button
+        </AkButton>
+        <br />
+
+        <AkButton appearence="subtle" leftIcon="add">
+          button
+        </AkButton>
+        <br />
+        <AkButton appearence="subtle" disabled leftIcon="add">
+          button
+        </AkButton>
+        <br />
+
+        <AkButton appearence="selected" leftIcon="bullet-list">
+          button
+        </AkButton>
+        <br />
+        <AkButton appearence="selected" disabled leftIcon="bullet-list">
+          button
+        </AkButton>
+
+      </div>
+    );
+  });

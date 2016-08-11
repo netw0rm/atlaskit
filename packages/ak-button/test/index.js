@@ -50,6 +50,19 @@ describe('ak-button', () => {
   });
 
   describe('attributes', () => {
+    describe('type', () => {
+      describe('defaults', () =>
+        it('button should have type=button', () =>
+          expect(getShadowButtonElem(component).getAttribute('type')).to.equals('button')
+        )
+      );
+
+      it('button should not have invalid type', () => {
+        props(component, { type: 'invalid' });
+        expect(getShadowButtonElem(component).getAttribute('type')).to.equals('button');
+      });
+    });
+
     describe('appearence', () => {
       [
         {
@@ -135,6 +148,55 @@ describe('ak-button', () => {
           props(component, { onclick });
           div.click();
           expect(onclick.called).to.equals(false);
+        });
+
+        describe('when icon attribute is set', () => {
+          beforeEach(() =>
+            props(component, { leftIcon: 'add' })
+          );
+
+          describe('and icon is clicked', () => {
+            const onclick = sinon.spy();
+            beforeEach(() => {
+              const icon = shadowDomQuery(component, `.${classKeys.akButton} #left-icon`);
+              props(component, { onclick });
+              icon.click();
+            });
+            it('should not be triggered', () => expect(onclick.called).to.equals(false));
+          });
+        });
+      });
+    });
+
+    describe('icon', () => {
+      describe('position', () => {
+        const setupButton = (...args) => {
+          const attrs = args.reduce((acum, side) => {
+            acum[`${side}Icon`] = 'add';
+            return acum;
+          }, {});
+          props(component, attrs);
+          return shadowDomQuery(component, `.${shadowStyles.locals.contentContainer}`);
+        };
+
+        describe('on the left', () => {
+          it('should be rendered properly', () =>
+            expect(setupButton('left').firstChild.id).to.equals('left-icon')
+          );
+        });
+
+        describe('on the right', () => {
+          it('should be rendered properly', () =>
+            expect(setupButton('right').lastChild.id).to.equals('right-icon')
+          );
+        });
+
+        describe('on both sides', () => {
+          it('should be rendered properly', () => {
+            const button = setupButton('left', 'right');
+            expect(button.firstChild.id).to.equals('left-icon');
+            expect(button.lastChild.id).to.equals('right-icon');
+          });
         });
       });
     });

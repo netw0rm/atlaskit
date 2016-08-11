@@ -122,7 +122,6 @@
     "test/pipelines-branch": "BRANCH_BUILD=1 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD) ./build/bin/test.pipelines.js",
     "test/browserstack": "./build/bin/test.browserstack.sh",
     "test/browserstack/ci": "./build/bin/test.browserstack.ci.sh",
-    "test/browserstack/ci/fast": "./build/bin/test.browserstack.ci.fast.sh",
     "test/integration/browserstack": "node ./build/bin/test.integration.browserstack.js",
     "test/single": "./build/bin/test.single.sh",
     "test/single/integration": "./build/bin/test.single.integration.sh",

@@ -9,7 +9,7 @@ pipelines:
             - ./build/bin/setup_hosts.sh
             - npm install
             - npm run lint
-            - npm run test/browserstack/ci/fast
+            - npm run test/browserstack/ci
             - npm run storybook& # runs in background
             - PATH="`npm bin`:$PATH" wait-on http://0.0.0.0:9001/static/preview.bundle.js
             - npm run test/integration/browserstack

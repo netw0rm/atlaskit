@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 FAILED_CI_FILE=.ci_failed
 

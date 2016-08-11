@@ -50,20 +50,20 @@ describe('ak-button', () => {
   });
 
   describe('attributes', () => {
-    describe('appearence', () => {
+    describe('appearance', () => {
       [
         {
           message: 'standard',
-          appearence: 'standard',
+          appearance: 'standard',
         },
         {
-          message: 'when invalid appearence provided',
-          appearence: 'invalid',
+          message: 'when invalid appearance provided',
+          appearance: 'invalid',
         },
       ].forEach(testCase => {
         describe(testCase.message, () => {
           it('button should only have akButton class', () => {
-            props(component, { appearence: testCase.appearence });
+            props(component, { appearance: testCase.appearance });
             const buttonClasses = getShadowButtonElem(component).classList;
             expect(buttonClasses).to.have.lengthOf(1);
             expect(buttonClasses[0]).to.equals(shadowStyles.locals.akButton);
@@ -71,19 +71,19 @@ describe('ak-button', () => {
         });
       });
 
-      ['subtle', 'primary', 'selected'].forEach(appearenceName => {
-        describe(appearenceName, () => {
-          const selector = `.${classKeys.akButton}.${classKeys[appearenceName]}`;
+      ['subtle', 'primary', 'selected'].forEach(appearanceName => {
+        describe(appearanceName, () => {
+          const selector = `.${classKeys.akButton}.${classKeys[appearanceName]}`;
           beforeEach(() =>
-            props(component, { appearence: appearenceName })
+            props(component, { appearance: appearanceName })
           );
 
-          it(`button should have ${appearenceName} class`, () =>
+          it(`button should have ${appearanceName} class`, () =>
             expect(shadowDomQuery(component, selector)).not.to.be.null
           );
 
-          it(`button should not have ${appearenceName} class after it is removed`, () => {
-            props(component, { appearence: 'standard' });
+          it(`button should not have ${appearanceName} class after it is removed`, () => {
+            props(component, { appearance: 'standard' });
             expect(shadowDomQuery(component, selector)).to.be.null;
           });
         });
@@ -101,7 +101,7 @@ describe('ak-button', () => {
       );
 
       it('button should override any other class', () => {
-        props(component, { disabled: true, appearence: 'selected' });
+        props(component, { disabled: true, appearance: 'selected' });
         const buttonClasses = getShadowButtonElem(component).classList;
         expect(buttonClasses).to.have.lengthOf(2);
         expect([

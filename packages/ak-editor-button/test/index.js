@@ -1,18 +1,15 @@
+import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkEditorButton from '../src';
-import { name } from '../package.json';
+import Component from '../src';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-editor-button', () => {
+describe(name, () => {
   it('should be possible to create a component', () => {
-    let component;
-    expect(() => {
-      component = new AkEditorButton();
-    }).not.to.throw(Error);
+    const component = new Component();
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 });

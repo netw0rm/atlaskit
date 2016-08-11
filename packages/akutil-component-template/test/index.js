@@ -1,16 +1,15 @@
+import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { symbols } from 'skatejs';
-import AkutilComponentTemplate from '../src/index.js';
+import Component from '../src';
 
 chai.use(chaiAsPromised);
 chai.should();
-const expect = chai.expect; // eslint-disable-line no-unused-vars
+const expect = chai.expect;
 
-
-describe('akutil-component-template', () => {
+describe(name, () => {
   it('should be possible to create a component', () => {
-    const component = new AkutilComponentTemplate();
-    component[symbols.shadowRoot].innerHTML.should.match(/My name is .+?!/);
+    const component = new Component();
+    expect(component.tagName.toLowerCase()).to.equal(name);
   });
 });

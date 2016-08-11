@@ -16,7 +16,7 @@
     "akutil-common": "^0.2.0",
     "akutil-shared-styles": "*",
     "es6-promise": "^3.2.1",
-    "skatejs": "1.0.0-beta.12",
+    "skatejs": "1.0.0-beta.10",
     "url-search-params": "^0.5.0",
     "whatwg-fetch": "^1.0.0"
   },

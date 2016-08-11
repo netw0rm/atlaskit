@@ -10,9 +10,9 @@ echo -e "\033[34mTesting $COMPONENT_DIR\033[0m"
 if [ -n "$BROWSERSTACK" ]; then
   retry="retry --retries=2 -- "
   if [ -n "$BRANCH_BUILD" ]; then
-    KARMA_CONF="./karma.conf.browserstack.branch.js"
+    KARMA_CONF="karma.conf.browserstack.branch.js"
   else
-    KARMA_CONF="./karma.conf.browserstack.master.js"
+    KARMA_CONF="karma.conf.browserstack.master.js"
   fi
 else
   retry=""

@@ -20,7 +20,7 @@
     "ak-editor-button": "^2.0.0",
     "ak-editor-button-link": "^1.0.0",
     "ak-editor-icon": "^2.0.0",
-    "skatejs": "1.0.2"
+    "skatejs": "1.0.0-beta.12"
   },
   "devDependencies": {
     "ak-editor-content": "^2.0.0",

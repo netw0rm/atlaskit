@@ -1,26 +1,26 @@
-import { emit, vdom, define, prop, symbols } from 'skatejs';
+import { emit, vdom, define, prop } from 'skatejs';
 import shadowItemStyles from './shadow-item.less';
 import classNames from 'classnames';
 import keyCode from 'keycode';
 
 function selectItem(item) {
-  return () => {
-    // disabled items should not allow any interactions
-    // selected item doesn't need to be selected again
-    if (item.isDisabled || item.selected) {
-      return;
-    }
+  // disabled items should not allow any interactions
+  // selected item doesn't need to be selected again
+  if (item.isDisabled || item.selected) {
+    return;
+  }
 
-    emit(item, 'ak-dropdown-selected', {
-      detail: {
-        item,
-      },
-    });
-  };
+  emit(item, 'ak-dropdown-selected', {
+    detail: {
+      item,
+    },
+  });
 }
 
-function handleKeyUp(elem) {
+function handleKeyDown(elem) {
   return (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     switch (event.keyCode) {
       case keyCode('up'):
         emit(elem, 'ak-dropdown-item-up');
@@ -31,6 +31,10 @@ function handleKeyUp(elem) {
       case keyCode('tab'):
         emit(elem, 'ak-dropdown-item-tab');
         break;
+      case keyCode('space'):
+      case keyCode('enter'):
+        selectItem(elem);
+        break;
       default:
         break;
     }
@@ -39,21 +43,25 @@ function handleKeyUp(elem) {
 
 export default define('ak-dropdown-item', {
   render(elem) {
-    const list = elem.parentNode.childNodes;
     const classes = classNames(
       [shadowItemStyles.locals.item, {
         [`${shadowItemStyles.locals.disabled}`]: elem.isDisabled,
         [`${shadowItemStyles.locals.selected}`]: elem.selected,
-        [`${shadowItemStyles.locals.first}`]: list[0] === elem,
-        [`${shadowItemStyles.locals.last}`]: list[list.length - 1] === elem,
+        [`${shadowItemStyles.locals.first}`]: elem.first,
+        [`${shadowItemStyles.locals.last}`]: elem.last,
       }]
     );
+    const tabIndex = elem.selected ? '1' : '0';
+
     return (
       <div
-        tabindex="0"
+        tabindex={tabIndex}
         class={classes}
-        on-keyup={handleKeyUp(elem)}
-        on-click={selectItem(elem)}
+        on-keydown={handleKeyDown(elem)}
+        on-click={() => selectItem(elem)}
+        ref={el => (elem.item = el)}
+        aria-disabled={elem.isDisabled}
+        aria-selected={elem.selected}
       >
         <style>{shadowItemStyles.toString()}</style>
         <slot />
@@ -62,21 +70,29 @@ export default define('ak-dropdown-item', {
   },
   rendered(elem) {
     if (elem.focused) {
-      elem[symbols.shadowRoot].childNodes[0].focus();
+      elem.item.focus();
     }
   },
   props: {
+    // can't use disable, since skate would prevent bubbling,
+    // which I need in order to inform parent that an element is focused
     isDisabled: prop.boolean({
       attribute: true,
     }),
     selected: prop.boolean({
       attribute: true,
     }),
+    first: prop.boolean({
+      attribute: true,
+    }),
+    last: prop.boolean({
+      attribute: true,
+    }),
     focused: prop.boolean({
       attribute: true,
       set(elem, data) {
-        if (data.newValue && elem && elem[symbols.shadowRoot]) {
-          elem[symbols.shadowRoot].childNodes[0].focus();
+        if (data.newValue && elem && elem.item) {
+          elem.item.focus();
         }
       },
     }),

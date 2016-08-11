@@ -18,10 +18,19 @@ function toggleDialog(elem, value) {
     if (isOpen) {
       list.open = isOpen;
       trigger.opened = isOpen;
-      list.childNodes.forEach((item) => {
+      const l = list.childNodes.length;
+      list.childNodes.forEach((item, i) => {
         item.focused = false;
+        if (item.first && i) {
+          item.first = false;
+        }
+        if (item.last && i !== l - 1) {
+          item.last = false;
+        }
       });
       list.childNodes[0].focused = true;
+      list.childNodes[0].first = true;
+      list.childNodes[l - 1].last = true;
     } else {
       list.childNodes.forEach((item) => {
         item.focused = false;

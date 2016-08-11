@@ -1,39 +1,42 @@
 @import 'shared-variables.less';
 
 .item {
-  min-height:30px;
-  color:#fff;
+  height:30px;
+  color:@ak-dropdown-font-main;
   padding:5px 10px;
   box-sizing:border-box;
   cursor:pointer;
-  background:@ak-color-N700;
+  background:@ak-dropdown-background-main;
   display:block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
-    background:@ak-color-N800;
+    background:@ak-dropdown-background-hover;
   }
 
   &:active {
-    background:@ak-color-B50;
-    color:@ak-color-N800;
+    background:@ak-dropdown-background-active;
+    color:@ak-dropdown-font-active;
   }
 
   &:focus {
-    box-shadow: 0 0 0 2px @ak-color-B200;
+    box-shadow: 0 0 0 2px @ak-dropdown-focused-outline;
     outline: none;
-    background:@ak-color-N800;
-    position:relative;
+    position:relative; //making shadow on top of others
   }
 }
 
 .selected {
-  background:@ak-color-N800;
+  background:@ak-dropdown-background-selected;
+  color:@ak-dropdown-font-main;
 }
 
 .disabled {
   &, &:active, &:hover {
-    color:@ak-color-N40;
-    background:@ak-color-N700;
+    color:@ak-dropdown-font-disabled;
+    background:@ak-dropdown-background-disabled;
     cursor:not-allowed;
   }
 }

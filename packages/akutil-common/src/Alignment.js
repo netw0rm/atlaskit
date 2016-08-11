@@ -1,4 +1,4 @@
-import Tether from '@atlassian/tether';
+import Tether from 'atlassian-tether';
 
 /**
  * @description Helper class for positioning elements on a page

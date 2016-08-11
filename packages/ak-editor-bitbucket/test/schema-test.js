@@ -36,15 +36,6 @@ function insertFragmentIntoCursor(
   ).apply();
 }
 
-function assertTransformedDom(
-  expectedOutput
-) {
-  const transformedInput = pm.doc.content.toDOM();
-  const container = document.createElement('div');
-  container.appendChild(transformedInput.cloneNode(true));
-  expect(container.innerHTML).to.equal(expectedOutput);
-}
-
 function assertTransformedSchema(
   expectedOutput
 ) {
@@ -77,10 +68,6 @@ describe('ak-editor-bitbucket - schema', () => {
   it('should not be possible to create an image inside a code block', () => {
     const nodes = pm.schema.nodes;
 
-    assertTransformedDom(
-      '<p></p>'
-    );
-
     // place the cursor before the paragraph
     moveNodeSelection(-1);
 
@@ -88,10 +75,6 @@ describe('ak-editor-bitbucket - schema', () => {
      nodes.code_block.create({},
        nodes.text.create({}, 'text inside a code block')
      )
-    );
-
-    assertTransformedDom(
-      '<pre>text inside a code block</pre><p></p>'
     );
 
     assertTransformedSchema(
@@ -105,10 +88,6 @@ describe('ak-editor-bitbucket - schema', () => {
      nodes.image.create({
        src: 'http://atlassian.com/favicon.png',
      })
-    );
-
-    assertTransformedDom(
-      '<pre>text inside a code b</pre><p><img src="http://atlassian.com/favicon.png"></img>lock</p><p></p>'
     );
 
     assertTransformedSchema(

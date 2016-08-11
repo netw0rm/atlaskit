@@ -14,7 +14,7 @@ storiesOf(name, module)
     <AkButton>Button</AkButton>
   ))
   .add('a primary ak-button', () => (
-    <AkButton appearence="primary">Primary Button</AkButton>
+    <AkButton appearance="primary">Primary Button</AkButton>
   ))
   .add('a disabled ak-button', () =>
     <AkButton disabled onclick={action('clicking the WebComponent')}>
@@ -22,7 +22,7 @@ storiesOf(name, module)
     </AkButton>
   )
   .add('a subtle ak-button', () =>
-    <AkButton appearence="subtle" >
+    <AkButton appearance="subtle" >
       Button
     </AkButton>
   )
@@ -32,7 +32,7 @@ storiesOf(name, module)
         super(props);
         this.state = {
           disable: false,
-          appearence: 'standard',
+          appearance: 'standard',
         };
       }
 
@@ -41,7 +41,7 @@ storiesOf(name, module)
       }
       select() {
         this.setState({
-          appearence: this.state.appearence === 'standard' ? 'selected' : 'standard',
+          appearance: this.state.appearance === 'standard' ? 'selected' : 'standard',
         });
       }
 
@@ -63,12 +63,12 @@ storiesOf(name, module)
                 type="checkbox"
                 id="selected-checkbox"
                 onChange={this.select.bind(this)}  // eslint-disable-line react/jsx-no-bind
-                defaultChecked={this.state.appearence === 'selected'}
+                defaultChecked={this.state.appearance === 'selected'}
               />
             </label>
             <AkButton
               disabled={this.state.disable}
-              appearence={this.state.appearence}
+              appearance={this.state.appearance}
               onclick={
                 () => window.alert('clicking the WebComponent') // eslint-disable-line no-alert
               }

@@ -9,6 +9,11 @@
   display: inline-block;
 }
 
+.content-container {
+  display: flex;
+  align-items: center;
+}
+
 .ak-button {
 
   font-family: BlinkMacSystemFont, 'Neue Haas Unica Pro', Helvetica, Arial, sans-serif;
@@ -51,10 +56,10 @@
   &:focus {
     transition-duration: 0s, 0.2s;
     box-shadow: 0 0 0 2px @buttonFocus;
-  }
 
-  &:focus:active {
-    box-shadow: 0 0 0 0 @buttonFocus;
+    &:active {
+      box-shadow: 0 0 0 0 @buttonFocus;
+    }
   }
 
   &.primary {

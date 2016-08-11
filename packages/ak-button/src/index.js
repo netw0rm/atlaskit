@@ -6,8 +6,8 @@ import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
 
-const APPEARENCES = {
-  attribute: 'appearence',
+const APPEARANCES = {
+  attribute: 'appearance',
   values: [
     'primary', 'standard', 'subtle', 'selected',
   ],
@@ -29,10 +29,10 @@ const definition = {
      * @memberof Button
      * @default 'standard'
      * @type {string}
-     * @example @html <ak-button appearence="primary"></ak-button>
-     * @example @js button.appearence = 'primary';
+     * @example @html <ak-button appearance="primary"></ak-button>
+     * @example @js button.appearance = 'primary';
      */
-    appearence: enumeration(APPEARENCES)({
+    appearance: enumeration(APPEARANCES)({
       attribute: true,
     }),
     /**
@@ -51,8 +51,8 @@ const definition = {
     if (elem.disabled) {
       classes.push(shadowStyles.locals.disabled);
     } else {
-      if (elem.appearence) {
-        classes.push(shadowStyles.locals[elem.appearence]);
+      if (elem.appearance) {
+        classes.push(shadowStyles.locals[elem.appearance]);
       }
     }
 

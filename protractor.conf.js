@@ -7,14 +7,8 @@ const rq = [
 function webComponentLocator(componentNamePrefix, parentElement) {
   const using = parentElement || document;
   const tagMatcher = new RegExp(`^${componentNamePrefix}`);
-  return [].slice.call(using.querySelectorAll('*'))
-    .filter(node => tagMatcher.test(node.tagName.toLowerCase()))
-    .filter(node => {
-      // We must check the name rather than the reference because the custom
-      // Element polyfill overrides HTMLElement.
-      const ctor = node.constructor.name;
-      return ctor !== 'HTMLElement' && ctor !== 'HTMLUnknownElement';
-    });
+  return [].slice.call(using.querySelectorAll('*[defined]'))
+    .filter(node => tagMatcher.test(node.tagName.toLowerCase()));
 }
 
 exports.config = {

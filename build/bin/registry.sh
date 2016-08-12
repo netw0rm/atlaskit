@@ -13,6 +13,7 @@ mkdir -p ../atlaskit-registry/_data ../atlaskit-registry/api ../atlaskit-registr
 # temporarily here.
 echo "Installing panop from Atlassian private npm"
 mv .npmrc ._npmrc
+npm set loglevel warn
 npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
 npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
 npm install --progress=false @atlassian/panop

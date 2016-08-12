@@ -138,7 +138,7 @@ const definition = {
     time: prop.string({
       attribute: true,
     }),
-    highlight: prop.array(),
+    highlight: localProp.object(),
     ref: localProp.reference(),
   },
   // emits: {

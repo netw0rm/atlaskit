@@ -91,28 +91,26 @@ describe('ak-layer', () => {
   });
 
   it('all the properties should be attributes', () => {
-    const props = {
-      position: { value: 'top left', attr: 'position' },
-      target: { value: '#test', attr: 'target' },
-      constrain: { value: 'scrollParent', attr: 'constrain' },
-    };
     const component = new LayerWC();
+    [
+      { key: 'position', value: 'top left' },
+      { key: 'target', value: '' },
+      { key: 'constrain', value: 'window' },
+    ].forEach(data => {
+      component[data.key] = data.value;
+      const attr = component.getAttribute(data.key);
+      expect(attr).to.equals(data.value);
+    });
+  });
 
-    Object.keys(props).forEach((key) => {
-      component[key] = props[key].value;
-      expect(component[key]).not.to.equal(null);
-      expect(component[key]).to.equal(props[key].value);
-
-      const attr = component.getAttribute(props[key].attr);
-      if (typeof props[key].value === 'boolean') {
-        if (props[key].value === false) {
-          expect(attr).to.equal(null);
-        } else {
-          expect(attr).to.equal('');
-        }
-      } else {
-        expect(attr).to.equal(props[key].value);
-      }
+  it('default properties', () => {
+    const component = new LayerWC();
+    [
+      { key: 'constrain', default: 'window' },
+      { key: 'position', default: 'right middle' },
+    ].forEach(data => {
+      const attr = component.getAttribute(data.key);
+      expect(attr).to.equals(data.default);
     });
   });
 
@@ -164,102 +162,112 @@ describe('ak-layer', () => {
       document.body.appendChild(layerContainer);
     });
 
-    afterEach(() => {
-      document.body.removeChild(layerContainer);
-    });
+    afterEach(() => document.body.removeChild(layerContainer));
 
-    Object.keys(alignments).forEach((key) => {
-      it(`should support ${key} alignment`, (done) => {
-        component.position = key;
-        testPosition(component, targetNode, key, done);
-      });
-    });
+    Object.keys(alignments).forEach(key =>
+      describe(key, () => {
+        it(`should support ${key} alignment`, done => {
+          component.position = key;
+          testPosition(component, targetNode, key, done);
+        });
 
-    Object.keys(alignments).forEach((key) => {
-      it(`should support ${key} alignment inside a container with 'position: absolute'`, (done) => {
-        // Tether is usually moving the element from the dom in this situation
-        // But the layer has a flag 'do not move', so we have to check if it's working
-        layerContainer.style.width = '100px';
-        layerContainer.style.height = '100px';
-        layerContainer.style.position = 'absolute';
-        layerContainer.style.top = '100px';
-        layerContainer.style.left = '100px';
+        it(`should support ${key} alignment inside a container with 'position: absolute'`, done => {
+          // Tether is usually moving the element from the dom in this situation
+          // But the layer has a flag 'do not move', so we have to check if it's working
+          layerContainer.style.width = '100px';
+          layerContainer.style.height = '100px';
+          layerContainer.style.position = 'absolute';
+          layerContainer.style.top = '100px';
+          layerContainer.style.left = '100px';
 
-        component.position = key;
-        testPosition(component, targetNode, key, done);
-      });
-    });
+          component.position = key;
+          testPosition(component, targetNode, key, done);
+        });
 
-    Object.keys(alignments).forEach((key) => {
-      it(`should support ${key} alignment inside a scrollable container with 'overflow: auto'`, (done) => { // eslint-disable-line max-len
-        layerContainer.style.width = '100px';
-        layerContainer.style.height = '100px';
-        layerContainer.style.margin = '100px';
-        layerContainer.style.overflow = 'auto';
+        it(`should support ${key} alignment inside a scrollable container with 'overflow: auto'`, done => { // eslint-disable-line max-len
+          layerContainer.style.width = '100px';
+          layerContainer.style.height = '100px';
+          layerContainer.style.margin = '100px';
+          layerContainer.style.overflow = 'auto';
 
-        // make the horizontal and vertical scroll inside the parent div
-        const divInsideScrollable = document.createElement('div');
-        divInsideScrollable.style.width = '300px';
-        divInsideScrollable.style.height = '300px';
-        layerContainer.appendChild(divInsideScrollable);
+          // make the horizontal and vertical scroll inside the parent div
+          const divInsideScrollable = document.createElement('div');
+          divInsideScrollable.style.width = '300px';
+          divInsideScrollable.style.height = '300px';
+          layerContainer.appendChild(divInsideScrollable);
 
-        component.position = key;
-        testPosition(component, targetNode, key, done);
-      });
-    });
+          component.position = key;
+          testPosition(component, targetNode, key, done);
+        });
+      })
+    );
 
-    ['left top', 'left middle', 'left bottom', 'top left', 'top center', 'top right'].forEach((key) => { // eslint-disable-line max-len
-      it(`should flip ${key} alignment`, (done) => {
+    [
+      'left top',
+      'left middle',
+      'left bottom',
+      'top left',
+      'top center',
+      'top right',
+    ].forEach(key =>
+      it(`should flip ${key} alignment`, done => {
         layerContainer.style.position = 'absolute';
         layerContainer.style.top = '0';
         layerContainer.style.left = '0';
 
         component.position = key;
         testPosition(component, targetNode, key, done);
-      });
-    });
+      })
+    );
 
-    ['bottom left', 'bottom center', 'bottom right', 'right top', 'right middle', 'right bottom'].forEach((key) => { // eslint-disable-line max-len
-      it(`should flip ${key} alignment`, (done) => {
+    [
+      'bottom left',
+      'bottom center',
+      'bottom right',
+      'right top',
+      'right middle',
+      'right bottom',
+    ].forEach(key =>
+      it(`should flip ${key} alignment`, done => {
         layerContainer.style.position = 'absolute';
         layerContainer.style.bottom = '0';
         layerContainer.style.right = '0';
 
         component.position = key;
         testPosition(component, targetNode, key, done);
-      });
-    });
+      })
+    );
 
-    it(`default position should be ${defaultPosition}`, (done) => {
-      testPosition(component, targetNode, defaultPosition, done);
-    });
+    it(`default position should be ${defaultPosition}`, done =>
+      testPosition(component, targetNode, defaultPosition, done)
+    );
 
-    it('incorrect position should results in default position - edge', (done) => {
+    it('incorrect position should results in default position - edge', done => {
       component.position = 'top wrong';
       testPosition(component, targetNode, defaultPosition, done);
     });
 
-    it('incorrect position should results in default position - position', (done) => {
+    it('incorrect position should results in default position - position', done => {
       component.position = 'wrong top';
       testPosition(component, targetNode, defaultPosition, done);
     });
 
-    it('incorrect position should results in default position - both', (done) => {
+    it('incorrect position should results in default position - both', done => {
       component.position = 'wrong wrong';
       testPosition(component, targetNode, defaultPosition, done);
     });
 
-    it('incorrect position should results in default position - one missing', (done) => {
+    it('incorrect position should results in default position - one missing', done => {
       component.position = 'wrong';
       testPosition(component, targetNode, defaultPosition, done);
     });
 
-    it('incorrect position should results in default position - lots of spaces', (done) => {
+    it('incorrect position should results in default position - lots of spaces', done => {
       component.position = 'top    left';
       testPosition(component, targetNode, defaultPosition, done);
     });
 
-    it('incorrect position should results in default position - whitespace', (done) => {
+    it('incorrect position should results in default position - whitespace', done => {
       component.position = 'top\n\tleft';
       testPosition(component, targetNode, defaultPosition, done);
     });

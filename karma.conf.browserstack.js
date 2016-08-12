@@ -6,8 +6,9 @@ const fs = require('fs');
 const glob = require('glob');
 
 function concatTests(entryFile) {
+  const polyfillsPath = './packages/akutil-polyfills/src/index.js';
   let entryContents = '';
-  glob.sync('./packages/*/test/**/*.js').forEach((testFile) => {
+  glob.sync('./packages/*/test/**/*.js').unshift(polyfillsPath).forEach((testFile) => {
     entryContents += `require('${testFile}');\n`;
   });
   fs.writeFileSync(entryFile, entryContents);
@@ -37,13 +38,8 @@ module.exports = (config) => {
     concurrency: 5,
     client: {},
 
-    files: [
-      'packages/akutil-polyfills/src/index.js',
-      entryFile,
-    ],
-
+    files: [entryFile],
     preprocessors: {
-      'packages/akutil-polyfills/src/index.js': webpackAndSourcemap,
       [entryFile]: webpackAndSourcemap,
     },
   });

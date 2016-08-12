@@ -121,7 +121,7 @@ export default define('pf-mention-item', {
     time: prop.string({
       attribute: true,
     }),
-    highlight: prop.array(),
+    highlight: localProp.object(),
     ref: localProp.reference(),
   },
 });

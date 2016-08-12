@@ -20,7 +20,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "^0.0.3"
+    "akutil-react": "^0.0.3",
+    "sinon": "git+https://github.com/sinonjs/sinon.git"
   },
   "repository": {
     "type": "git",

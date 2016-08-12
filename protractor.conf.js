@@ -4,17 +4,17 @@ const rq = [
   path.join(process.cwd(), 'cucumber', 'step_definitions', '**', 'steps.js'),
 ];
 
-function isCustomElement(node) {
-  const ctor = node.constructor;
-  return ctor !== HTMLElement && ctor !== HTMLUnknownElement;
-}
-
 function webComponentLocator(componentNamePrefix, parentElement) {
   const using = parentElement || document;
   const tagMatcher = new RegExp(`^${componentNamePrefix}`);
   return [].slice.call(using.querySelectorAll('*'))
     .filter(node => tagMatcher.test(node.tagName.toLowerCase()))
-    .filter(isCustomElement);
+    .filter(node => {
+      // We must check the name rather than the reference because the custom
+      // Element polyfill overrides HTMLElement.
+      const ctor = node.constructor.name;
+      return ctor !== 'HTMLElement' && ctor !== 'HTMLUnknownElement';
+    });
 }
 
 exports.config = {

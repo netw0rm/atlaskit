@@ -56,6 +56,4 @@ module.exports = (config) => {
       ],
     },
   });
-  console.log(config.webpack.module.loaders);
-  process.exit(0);
 };

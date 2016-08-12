@@ -1,17 +1,20 @@
 const path = require('path');
-
 const rq = [
   path.join(__dirname, 'packages', 'akutil-cucumber', 'src', '**', '*-steps.js'),
   path.join(process.cwd(), 'cucumber', 'step_definitions', '**', 'steps.js'),
 ];
 
+function isCustomElement(node) {
+  const ctor = node.constructor;
+  return ctor !== HTMLElement && ctor !== HTMLUnknownElement;
+}
+
 function webComponentLocator(componentNamePrefix, parentElement) {
   const using = parentElement || document;
-  const tagMatcher = new RegExp('^' + componentNamePrefix, 'i'); // eslint-disable-line
-
-  return Array
-    .from(using.querySelectorAll('*[defined]'))
-    .filter((node) => tagMatcher.test(node.tagName));
+  const tagMatcher = new RegExp(`^${componentNamePrefix}`);
+  return [].slice.call(using.querySelectorAll('*'))
+    .filter(node => tagMatcher.test(node.tagName.toLowerCase()))
+    .filter(isCustomElement);
 }
 
 exports.config = {

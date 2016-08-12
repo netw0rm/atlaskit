@@ -1,5 +1,10 @@
-<a name="0.0.14"></a>
-## 0.0.14 (2016-08-10)
+<a name="1.0.0"></a>
+# 1.0.0 (2016-08-12)
+
+
+
+<a name="akutil-polyfills@1.0.0"></a>
+# akutil-polyfills@1.0.0 (2016-08-10)
 
 
 ### Bug Fixes

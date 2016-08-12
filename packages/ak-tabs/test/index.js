@@ -13,43 +13,64 @@ describe('ak-tabs', () => {
   const DEFAULT_LABEL = 'Default tab label';
   const DEFAULT_CONTENT = '<p>Default tab content</p>';
 
+  // The actual elements used in the tests
   let tabsElement;
   let tabElements;
-  let tabContainer;
+  let containerElement;
+
+  // A collection of values from which the test fixtures are generated
+  let tabs = [];
+  let containerWidth = '';
 
   // Helper function to create an ak-tabs component
-  function createTabs(tabsArray, containerSize) {
-    const tabs = tabsArray || [];
+  function createTabs(tabOptionsArray) {
+    const parent = new AkTabs();
+    const children = [];
 
-    tabsElement = new AkTabs();
-    tabElements = [];
+    tabOptionsArray.forEach(tabOptions => {
+      const newTabElement = new AkTabsTab();
 
-    tabs.forEach(tab => {
-      const newTab = new AkTabsTab();
+      newTabElement.label = tabOptions.label || DEFAULT_LABEL;
+      newTabElement.innerHTML = tabOptions.content || DEFAULT_CONTENT;
+      newTabElement.selected = tabOptions.selected;
 
-      newTab.label = tab.label || DEFAULT_LABEL;
-      newTab.innerHTML = tab.content || DEFAULT_CONTENT;
-      newTab.selected = tab.selected;
-
-      tabsElement.appendChild(newTab);
-      tabElements.push(newTab);
+      parent.appendChild(newTabElement);
+      children.push(newTabElement);
     });
 
-    tabContainer = document.createElement('div');
-    if (containerSize) {
-      tabContainer.style.width = containerSize;
-    }
-    tabContainer.appendChild(tabsElement);
-    document.body.appendChild(tabContainer);
+    return { parent, children };
   }
 
-  function cleanupTabs() {
-    document.body.removeChild(tabContainer);
-    tabContainer = null;
+  function createContainer(child, width) {
+    const container = document.createElement('div');
+
+    if (width) {
+      container.style.width = width;
+    }
+    container.appendChild(child);
+    document.body.appendChild(container);
+
+    return container;
   }
 
   function afterMutations(cb) {
     setTimeout(cb, 0);
+  }
+
+  function setupTabs(cb) {
+    const created = createTabs(tabs);
+    tabsElement = created.parent;
+    tabElements = created.children;
+    containerElement = createContainer(tabsElement, containerWidth);
+    afterMutations(cb);
+  }
+
+  function cleanupTabs() {
+    document.body.removeChild(containerElement);
+    tabsElement = null;
+    tabElements = [];
+    containerElement = null;
+    containerWidth = '';
   }
 
   describe('Initialisation', () => {
@@ -62,7 +83,10 @@ describe('ak-tabs', () => {
     });
 
     describe('with no children', () => {
-      beforeEach(() => (createTabs()));
+      beforeEach(done => {
+        tabs = [];
+        setupTabs(done);
+      });
       afterEach(cleanupTabs);
 
       it('does not take up any vertical space', () => {
@@ -74,10 +98,9 @@ describe('ak-tabs', () => {
 
     describe('with one child', () => {
       describe('that is selected', () => {
-        beforeEach(() => {
-          createTabs([{
-            selected: true,
-          }]);
+        beforeEach(done => {
+          tabs = [{ selected: true }];
+          setupTabs(done);
         });
         afterEach(cleanupTabs);
 
@@ -87,16 +110,14 @@ describe('ak-tabs', () => {
       });
 
       describe('that is not selected', () => {
-        beforeEach((done) => {
-          createTabs([{
-            selected: false,
-          }]);
-          afterMutations(done);
+        beforeEach(done => {
+          tabs = [{}];
+          setupTabs(done);
         });
         afterEach(cleanupTabs);
 
         it('selects the first child', () => {
-          // TODO
+          expect(tabElements[0].selected).to.equal(true);
         });
       });
 
@@ -115,10 +136,8 @@ describe('ak-tabs', () => {
       describe('with no overflow', () => {
         describe('with the first child selected', () => {
           beforeEach((done) => {
-            createTabs([
-              { selected: true }, {}, {}, {}, {}, {}, {}, {},
-            ], '99999px');
-            afterMutations(done);
+            tabs = [{ selected: true }, {}, {}, {}, {}, {}, {}, {}];
+            setupTabs(done);
           });
           afterEach(cleanupTabs);
 
@@ -135,14 +154,13 @@ describe('ak-tabs', () => {
       describe('with overflow', () => {
         describe('with the last child selected', () => {
           beforeEach((done) => {
-            createTabs([
-              {}, {}, {}, {}, {}, {}, {}, { selected: true },
-            ], '300px');
-            afterMutations(done);
+            tabs = [{}, {}, {}, {}, {}, {}, {}, { selected: true }];
+            containerWidth = '300px';
+            setupTabs(done);
           });
           afterEach(cleanupTabs);
 
-          it('displays the selected tab', () => {
+          it('displays the last tab', () => {
             expect(tabElements[tabElements.length - 1].selected).to.equal(true);
           });
 
@@ -161,7 +179,6 @@ describe('ak-tabs', () => {
       });
     });
   });
-
 
   describe('Events', () => {
     it('emits the "ak-tabs-tab-select" event if no initial tab is selected', () => {

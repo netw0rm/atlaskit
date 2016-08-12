@@ -1,5 +1,10 @@
-<a name="0.0.0"></a>
-# 0.0.0 (2016-08-12)
+<a name="1.0.0"></a>
+# 1.0.0 (2016-08-12)
+
+
+### Features
+
+* **component:** add swipe interactions, add global navigation ([ef4033b](https://bitbucket.org/atlassian/atlaskit/commits/ef4033b))
 
 
 

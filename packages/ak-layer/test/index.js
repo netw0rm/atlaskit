@@ -90,6 +90,30 @@ describe('ak-layer', () => {
     expect(component.constrain).to.equal('window');
   });
 
+  it('all the properties should be attributes', () => {
+    const component = new LayerWC();
+    [
+      { key: 'position', value: 'top left' },
+      { key: 'target', value: '' },
+      { key: 'constrain', value: 'window' },
+    ].forEach(data => {
+      component[data.key] = data.value;
+      const attr = component.getAttribute(data.key);
+      expect(attr).to.equals(data.value);
+    });
+  });
+
+  it('default properties', () => {
+    const component = new LayerWC();
+    [
+      { key: 'constrain', default: 'window' },
+      { key: 'position', default: 'right middle' },
+    ].forEach(data => {
+      const attr = component.getAttribute(data.key);
+      expect(attr).to.equals(data.default);
+    });
+  });
+
   describe('alignments', () => {
     let component;
     let targetNode;

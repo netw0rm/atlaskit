@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 function lint () {
     echo "Gathering files to lint..."
     diff=$(git diff --cached --name-only --diff-filter=ACM | grep -E '(\.jsx?)$')

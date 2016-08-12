@@ -1,0 +1,27 @@
+{
+  "name": "ak-page",
+  "version": "1.0.0",
+  "description": "ak-page webcomponent",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-page"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "akutil-shared-styles": "^33.0.2",
+    "classnames": "^2.2.5",
+    "skatejs": "^1.0.2"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "akutil-react": "^0.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

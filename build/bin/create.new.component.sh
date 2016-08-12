@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Creates a new component under the packages directory using a template
 # This is assumed to only be run from the `npm run create` command from the root directory
 

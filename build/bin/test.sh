@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This runs Karma (for CI via Lerna) but pipes errors to a temporarily
 # file so that Lerna doesn't stop.

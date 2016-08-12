@@ -1,10 +1,6 @@
 image: atlassianlabs/atlaskit
 pipelines:
   branches:
-    install-panop-npm-proxy:
-      - step:
-          script:
-            - npm run release/registry
     master:
       - step:
           script:

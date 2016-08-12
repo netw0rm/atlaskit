@@ -1,7 +1,7 @@
 import { afterMutations } from 'akutil-common';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { symbols, props } from 'skatejs';
+import { symbols } from 'skatejs';
 import AkutilComponentTemplate from '../src/index.js';
 
 chai.use(chaiAsPromised);
@@ -39,7 +39,7 @@ describe('akutil-component-template', () => {
       // afterMutations will pause between each function passed to it to ensure the component has
       // re-rendered before starting the next step.
       afterMutations(
-        () => props(component, { name: newName }),
+        () => { component.name = newName; },
         () => expect(paragraph.innerHTML).to.equal(expectedInnerHTML),
         done
       );

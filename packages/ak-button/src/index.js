@@ -63,7 +63,6 @@ const definition = {
         <style>{shadowStyles.toString()}</style>
         <button
           className={classListNames}
-          type={elem.type}
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >

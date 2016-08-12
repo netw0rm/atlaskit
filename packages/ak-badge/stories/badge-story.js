@@ -16,10 +16,10 @@ storiesOf(name, module)
   .add('with a value', () => (
     <div>
       <Badge id="myComponent" className={badgeClass} value="5" />
-      <Badge id="myComponent" className={badgeClass} appearance="primary" value="5" />
-      <Badge id="myComponent" className={badgeClass} appearance="important" value="5" />
-      <Badge id="myComponent" className={badgeClass} appearance="added" value="5" />
-      <Badge id="myComponent" className={badgeClass} appearance="removed" value="5" />
+      <Badge id="myComponent" className={badgeClass} appearance="primary" value="-5" />
+      <Badge id="myComponent" className={badgeClass} appearance="important" value="25" />
+      <Badge id="myComponent" className={badgeClass} appearance="added" value="3000" max="99" />
+      <Badge id="myComponent" className={badgeClass} appearance="removed" />
     </div>
   ))
   .add('with a max value', () => (

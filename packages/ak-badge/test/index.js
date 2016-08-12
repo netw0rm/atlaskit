@@ -12,11 +12,25 @@ const valueSelector = `.${styles.locals.value}`;
 
 describe('ak-badge', () => {
   describe('value property', () => {
-    it('should be visibly displayed', () => {
+    it('should be visibly displayed', (done) => {
       const component = new AkBadge();
       component.value = 5;
 
-      component[symbols.shadowRoot].innerHTML.should.match(/5/);
+      setTimeout(() => {
+        const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
+        expect(html).to.match(/5/);
+        done();
+      }, 0);
+    });
+    it('should only accept positive numbers', (done) => {
+      const component = new AkBadge();
+      component.value = -5;
+
+      setTimeout(() => {
+        const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
+        expect(html).to.match(/0/);
+        done();
+      }, 0);
     });
     it('should fire an event when changed', () => {
       let changed = false;
@@ -26,7 +40,6 @@ describe('ak-badge', () => {
       component.addEventListener('change', () => {
         changed = true;
       });
-
       component.value = 6;
       expect(changed).to.equal(true);
     });

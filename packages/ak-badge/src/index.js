@@ -20,7 +20,15 @@ const APPEARANCE_ENUM = {
  */
 const definition = {
   render(elem) {
-    const displayValue = elem.max > 0 && elem.value > elem.max ? `${elem.max}+` : elem.value;
+    const displayValue = (() => {
+      if (elem.value < 0) {
+        return 0;
+      }
+      if (elem.max > 0 && elem.value > elem.max) {
+        return `${elem.max}+`;
+      }
+      return elem.value;
+    })();
     const classes = classNames([shadowStyles.locals.value, shadowStyles.locals[elem.appearance]]);
 
     return (

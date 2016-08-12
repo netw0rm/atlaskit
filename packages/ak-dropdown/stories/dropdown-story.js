@@ -17,7 +17,7 @@ storiesOf(name, module)
         <ak-dropdown-trigger>Dropdown</ak-dropdown-trigger>
         <ak-dropdown-list>
           <ak-dropdown-item>text1</ak-dropdown-item>
-          <ak-dropdown-item is-disabled>text2</ak-dropdown-item>
+          <ak-dropdown-item disabled>text2</ak-dropdown-item>
           <ak-dropdown-item>text3</ak-dropdown-item>
           <ak-dropdown-item selected>
             really long text, really long text,

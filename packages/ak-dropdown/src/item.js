@@ -6,7 +6,7 @@ import keyCode from 'keycode';
 function selectItem(item) {
   // disabled items should not allow any interactions
   // selected item doesn't need to be selected again
-  if (item.isDisabled || item.selected) {
+  if (item.disabled || item.selected) {
     return;
   }
 
@@ -45,7 +45,7 @@ export default define('ak-dropdown-item', {
   render(elem) {
     const classes = classNames(
       [shadowItemStyles.locals.item, {
-        [`${shadowItemStyles.locals.disabled}`]: elem.isDisabled,
+        [`${shadowItemStyles.locals.disabled}`]: elem.disabled,
         [`${shadowItemStyles.locals.selected}`]: elem.selected,
         [`${shadowItemStyles.locals.first}`]: elem.first,
         [`${shadowItemStyles.locals.last}`]: elem.last,
@@ -60,7 +60,7 @@ export default define('ak-dropdown-item', {
         on-keydown={handleKeyDown(elem)}
         on-click={() => selectItem(elem)}
         ref={el => (elem.item = el)}
-        aria-disabled={elem.isDisabled}
+        aria-disabled={elem.disabled}
         aria-selected={elem.selected}
       >
         <style>{shadowItemStyles.toString()}</style>
@@ -76,7 +76,7 @@ export default define('ak-dropdown-item', {
   props: {
     // can't use disable, since skate would prevent bubbling,
     // which I need in order to inform parent that an element is focused
-    isDisabled: prop.boolean({
+    disabled: prop.boolean({
       attribute: true,
     }),
     selected: prop.boolean({

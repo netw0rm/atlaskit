@@ -9,8 +9,12 @@ const expect = chai.expect; // eslint-disable-line no-unused-vars
 
 
 describe('ak-page', () => {
-  it('should be possible to create a component', () => {
+  it('should be possible to create a component', (done) => {
     const component = new WebComponentTemplate();
-    component[symbols.shadowRoot].innerHTML.should.match(/I am an .+? element!/);
+    document.body.appendChild(component);
+    setTimeout(() => {
+      expect(component[symbols.shadowRoot]).to.be.defined;
+      done();
+    }, 1);
   });
 });

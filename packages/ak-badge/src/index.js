@@ -40,7 +40,7 @@ const definition = {
   },
   props: {
     /**
-     * @description The name of the AkBadge element.
+     * @description The value displayed within the badge.
      * @memberof AkBadge
      * @instance
      * @type {number}
@@ -53,7 +53,7 @@ const definition = {
     }),
     /**
      * @description The max value to display.
-     * If value is 100, and max is 50, "55+" will be displayed
+     * If value is 100, and max is 50, "50+" will be displayed
      * @memberof AkBadge
      * @instance
      * @type {number}

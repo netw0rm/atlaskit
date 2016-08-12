@@ -22,10 +22,16 @@ storiesOf(name, module)
       <Badge id="myComponent" className={badgeClass} appearance="removed" />
     </div>
   ))
+  .add('with no value', () => (
+    <Badge id="myComponent" className={badgeClass} />
+  ))
+  .add('with a negative value', () => (
+    <Badge id="myComponent" className={badgeClass} value="-5" />
+  ))
   .add('with a max value', () => (
     <Badge id="myComponent" className={badgeClass} value="500" max="99" />
   ))
-  .add('with an inactive max value', () => (
+  .add('with value <= max value', () => (
     <Badge id="myComponent" className={badgeClass} value="50" max="99" />
   ))
   .add('with value === max value', () => (

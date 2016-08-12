@@ -1,10 +1,19 @@
-// These styles will be inserted into a style tag inside
-// the shadow dom of each instance of the component
-
-// Only do class selectors in here, anything else leaks to the rest of the page in
-// browsers that do not support shadow DOM
-@import '../node_modules/akutil-shared-styles/src/colors.less';
 @import 'shared-variables.less';
+
+@ak-badge-default-background-color: @ak-color-N30;
+@ak-badge-default-text-color: @ak-color-N500;
+
+@ak-badge-primary-background-color: @ak-color-B400;
+@ak-badge-primary-text-color: #fff;
+
+@ak-badge-important-background-color: @ak-color-R300;
+@ak-badge-important-text-color: #fff;
+
+@ak-badge-added-background-color: @ak-color-G50;
+@ak-badge-added-text-color: @ak-color-G500;
+
+@ak-badge-removed-background-color: @ak-color-R50;
+@ak-badge-removed-text-color: @ak-color-R500;
 
 .container {
   display: inline-block;
@@ -16,32 +25,32 @@
   font-size: 12px;
   font-weight: normal;
   line-height: 1;
-  min-width: 1;
+  min-width: 1px;
   padding: 0.16666666666667em 0.5em;
   text-align: center;
 }
 
 .default {
-  background: #dee1e6;
-  color: #42526e;
+  background: @ak-badge-default-background-color;
+  color: @ak-badge-default-text-color;
 }
 
 .primary {
-  background: #165ecc;
-  color: #ffffff;
+  background: @ak-badge-primary-background-color;
+  color: @ak-badge-primary-text-color;
 }
 
 .important {
-  background: #ed5451;
-  color: #ffffff;
+  background: @ak-badge-important-background-color;
+  color: @ak-badge-important-text-color;
 }
 
 .added {
-  background: #daf2e6;
-  color: #008465;
+  background: @ak-badge-added-background-color;
+  color: @ak-badge-added-text-color;
 }
 
 .removed {
-  background: #ffe1e4;
-  color: #bf2117;
+  background: @ak-badge-removed-background-color;
+  color: @ak-badge-removed-text-color;
 }

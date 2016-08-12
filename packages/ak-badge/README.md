@@ -72,13 +72,13 @@ import AkBadge from 'ak-badge';
 const component = new AkBadge();
 ```
 ### `akBadge.value` : number
-The name of the AkBadge element.
+The value displayed within the badge.
 
 **Kind**: instance property of AkBadge  
 **Default**: `0`  
 ### `akBadge.max` : number
 The max value to display.
-If value is 100, and max is 50, "55+" will be displayed
+If value is 100, and max is 50, "50+" will be displayed
 
 **Kind**: instance property of AkBadge  
 **Default**: `-1`  

@@ -11,12 +11,6 @@ const valueSelector = `.${styles.locals.value}`;
 
 
 describe('ak-badge', () => {
-  it('should be possible to define the component', () => {
-    const component = new AkBadge();
-
-    expect(component).to.be.defined;
-    expect(component.getAttribute('defined')).not.to.equal(null);
-  });
   describe('value property', () => {
     it('should be visibly displayed', () => {
       const component = new AkBadge();

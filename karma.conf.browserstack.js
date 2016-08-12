@@ -9,7 +9,7 @@ function concatTests(entryFile) {
   let entryContents = '';
   const testFiles = glob.sync('./packages/*/test/**/*.js');
   testFiles.unshift('./packages/akutil-polyfills/src/index.js');
-  testFiles.forEach((testFile) => {
+  testFiles.forEach(testFile => {
     entryContents += `require('${testFile}');\n`;
   });
   fs.writeFileSync(entryFile, entryContents);
@@ -47,7 +47,7 @@ module.exports = (config) => {
 
   config.webpack.module.loaders.push({
     loader: 'babel-loader',
-    test: new RegExp(entryFile),
+    test: path.resolve(__dirname, entryFile),
     query: {
       presets: [
         'es2015',
@@ -56,4 +56,6 @@ module.exports = (config) => {
       ],
     },
   });
+  console.log(config.webpack.module.loaders);
+  process.exit(0);
 };

@@ -6,9 +6,10 @@ const fs = require('fs');
 const glob = require('glob');
 
 function concatTests(entryFile) {
-  const polyfillsPath = './packages/akutil-polyfills/src/index.js';
   let entryContents = '';
-  glob.sync('./packages/*/test/**/*.js').unshift(polyfillsPath).forEach((testFile) => {
+  const testFiles = glob.sync('./packages/*/test/**/*.js');
+  testFiles.unshift('./packages/akutil-polyfills/src/index.js');
+  testFiles.forEach((testFile) => {
     entryContents += `require('${testFile}');\n`;
   });
   fs.writeFileSync(entryFile, entryContents);

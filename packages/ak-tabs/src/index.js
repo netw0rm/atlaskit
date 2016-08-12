@@ -7,16 +7,15 @@ import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 
 import 'ak-editor-icon';
-import Tab, { // eslint-disable-line no-unused-vars
-  events as tabEvents,
-  symbols as tabSymbols,
-} from './children/tab';
+import Tab, { events as tabEvents } from './children/tab'; // eslint-disable-line no-unused-vars
 
+import {
+  labelsContainer,
+  buttonContainer,
+  tabLabel,
+} from './internal/symbols';
 
-/* Symbols */
-const labelsContainer = Symbol();
 const resizeListener = Symbol();
-const buttonContainer = Symbol();
 const focusSelectedOnRender = Symbol();
 
 /* Helpers */
@@ -52,7 +51,7 @@ function getSelectedTab(tabsEl) {
 }
 
 function getLabelForTab(tab) {
-  return tab[tabSymbols.tabLabel];
+  return tab[tabLabel];
 }
 
 /* Handlers */
@@ -87,7 +86,7 @@ function calculateVisibleTabs(tabsEl) {
   }
 
   // Get the width of the <li> item containing each tab label element.
-  const allTabs = getAllTabs(tabsEl).filter(tab => tab[tabSymbols.tabLabel]);
+  const allTabs = getAllTabs(tabsEl).filter(tab => tab[tabLabel]);
 
   let widthRemaining = tabLabelsContainer.getBoundingClientRect().width;
   const tabWidths = new Map(allTabs.map(
@@ -196,7 +195,7 @@ const definition = {
                 [shadowStyles.locals.akTabLabelSingle]: isSingleTab,
               });
               const ref = el => {
-                tab[tabSymbols.tabLabel] = el;
+                tab[tabLabel] = el;
                 if (tab.selected) {
                   if (elem[focusSelectedOnRender]) {
                     el.focus();

@@ -29,10 +29,6 @@ const events = {
   EVENT_TAB_CHANGE: 'ak-tabs-tab-change',
 };
 
-const symbols = {
-  tabLabel: Symbol(),
-};
-
 function emitTabChangedEvent(tab) {
   emit(tab, events.EVENT_TAB_CHANGE, { detail: { tab } });
 }
@@ -91,4 +87,4 @@ const definition = {
 };
 
 export default define('ak-tabs-tab', definition);
-export { events, symbols };
+export { events };

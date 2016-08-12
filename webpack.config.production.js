@@ -10,8 +10,8 @@ Object.assign(standardConfig.entry, {
 });
 
 if (!shouldBundleDependencies) {
-  // Only bundle dependencies that start with '.'.
-  standardConfig.externals = fs.readdirSync('node_modules');
+  standardConfig.externals = fs.readdirSync('node_modules')
+    .map(name => new RegExp(`^${name}($|/)`));
 }
 
 standardConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({

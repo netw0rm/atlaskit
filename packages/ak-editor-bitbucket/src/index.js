@@ -1,5 +1,5 @@
 import { vdom, define, prop, symbols, emit } from 'skatejs';
-import { ProseMirror } from 'prosemirror/dist/edit';
+import { ProseMirror, Plugin } from 'prosemirror/dist/edit';
 import 'style!./host.less';
 import shadowStyles from './shadow.less';
 import Content from 'ak-editor-content';
@@ -15,6 +15,8 @@ import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';
 import { nodeLifecycleHandler } from './node-lifecycle';
 import { hyperlinkTransformer, markdownTransformer } from './paste-handlers';
+import BlockTypePlugin from 'atlassian-editorkit-block-type-plugin';
+import invert from 'lodash.invert';
 
 // A hack to target the content element until https://github.com/skatejs/skatejs/issues/721
 // is fixed.
@@ -22,6 +24,18 @@ const contentClassName = `__content__${Date.now()}`;
 const initEditorSymbol = '__init_editor__';
 const pmSymbol = '__pm__';
 const readySymbol = '__ready__';
+
+const prosemirrorBlockToToolbarMap = {
+  paragraph: 'normalText',
+  // heading 1 (displayed in the blockType button) is actually heading 2
+  // heading 1 is reserved and not used in the editor
+  heading2: 'heading1',
+  heading3: 'heading2',
+  heading4: 'heading3',
+  code_block: 'monospace',
+};
+
+const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
 
 export default define('ak-editor-bitbucket', {
   rendered(elem) {
@@ -32,12 +46,24 @@ export default define('ak-editor-bitbucket', {
     }
   },
 
-  render() {
+  render(elem) {
     return (
       <div className={shadowStyles.locals.root}>
         <style>{shadowStyles.toString()}</style>
         <Toolbar>
-          <ToolbarBlockType />
+          <ToolbarBlockType
+            disabled={!elem.canChangeBlockType}
+            selectedFont={elem.selectedFont}
+            onSelectFont={(event) => {
+              const font = event.detail.font;
+
+              const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
+              const blockType = matches[1];
+              const level = matches[2];
+
+              this.blockTypePluginInstance.changeBlockType(blockType, { level });
+            }}
+          />
           <ToolbarTextFormatting />
           <ToolbarHyperlink />
         </Toolbar>
@@ -61,6 +87,8 @@ export default define('ak-editor-bitbucket', {
      * for details.
      */
     defaultValue: prop.string({ attribute: true }),
+    canChangeBlockType: prop.boolean(),
+    selectedFont: prop.string({ default: 'normalText' }),
   },
 
   prototype: {
@@ -100,11 +128,32 @@ export default define('ak-editor-bitbucket', {
 
     [initEditorSymbol]() {
       const contentElement = this[symbols.shadowRoot].querySelector(`.${contentClassName}`);
+      let blockTypePluginInstance;
       const pm = new ProseMirror({
         place: contentElement,
         doc: markdownParser(schema).parse(this.defaultValue),
-        plugins: [inputRules],
+        plugins: [
+          inputRules,
+          new Plugin(
+            class BlockTypePluginDecorator {
+              constructor(_pm) {
+                blockTypePluginInstance = new BlockTypePlugin(_pm);
+                return blockTypePluginInstance;
+              }
+            }
+          ),
+        ],
       });
+
+      blockTypePluginInstance.onChange(state => {
+        const name = state.selectedBlockType;
+        const blockType = prosemirrorBlockToToolbarMap[name];
+
+        this.selectedFont = blockType;
+        this.canChangeBlockType = state.enabled;
+      });
+
+      this.blockTypePluginInstance = blockTypePluginInstance;
 
       // avoid invoking keyboard shortcuts in BB
       pm.wrapper.addEventListener('keypress', e => e.stopPropagation());

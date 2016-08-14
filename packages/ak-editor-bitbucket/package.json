@@ -14,6 +14,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
+    "atlassian-editorkit-block-type-plugin": "^0.0.8",
     "atlassian-editorkit-hyperlink-plugin": "^0.0.18",
     "atlassian-editorkit-markdown-inputrules-plugin": "^0.0.18",
     "ak-editor-content": "^2.0.1",
@@ -23,6 +24,7 @@
     "ak-editor-toolbar-hyperlink": "^0.0.1",
     "ak-editor-toolbar-text-formatting": "^2.0.0",
     "browserkeymap": "^2.0.1",
+    "lodash.invert": "^4.2.0",
     "markdown-it": "^7.0.0",
     "prosemirror": "^0.8.3",
     "skatejs": "1.x"

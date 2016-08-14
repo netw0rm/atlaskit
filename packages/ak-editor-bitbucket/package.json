@@ -5,7 +5,7 @@
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-bitbucket -- --bundle-deps",
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-bitbucket -- --library-target=commonjs",
     "pre-release": "lerna-semantic-release pre"
   },
   "files": [

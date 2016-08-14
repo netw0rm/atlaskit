@@ -105,13 +105,6 @@ npm run prepublish/single my-component-name
 ```
 This will build the component and place the generated bundle under `packages/my-component-name/dist/`.
 
-If you pass the `--bundle-deps` flag it will bundle all the dependencies of the component:
-
-```
-npm run prepublish/single my-component-name -- --bundle-deps
-```
-
-This can be helpful for ad-hoc testing in JSFiddle for example.
 
 ## Document a component
 AtlasKit uses [JSDoc](http://usejsdoc.org/)-style annotations to automatically generate the component API. See the `akutil-component-template` package for examples.
@@ -248,6 +241,7 @@ Releasing components is completely automated. The process of releasing will begi
 ## Update a dependency of AtlasKit
 * Install AtlasKit - if your installation is from before we had the shrinkwrap file, you should run `npm run clean`.
 * Install your new dependency: `npm install my-package --save`.
+* Delete the current shrinkwrap file (due to a bug in how shirinkwrap handles dependencies on SHA hashes) `rm -f npm-shrinkwarp.json`
 * Run `npm shrinkwrap`
 * Create a PR
 

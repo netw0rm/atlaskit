@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 msha=$(git rev-list --merges HEAD~1..HEAD)
 if [ "" != "$msha" ]; then
   # HEAD is a merge commit

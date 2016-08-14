@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 # This script is used to remove lerna linked modules that don't export javascript files
 # When you `npm install` lerna bootstrap will run afterwards and link any packages that it has

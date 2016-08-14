@@ -1,5 +1,15 @@
-<a name="3.1.2"></a>
-## 3.1.2 (2016-08-05)
+<a name="3.1.3"></a>
+## 3.1.3 (2016-08-12)
+
+
+
+<a name="akutil-component-template@3.1.3"></a>
+## akutil-component-template@3.1.3 (2016-08-12)
+
+
+### Bug Fixes
+
+* **bump:** Bumping component template back to use skate beta 12 as it broke integration tests. Fix i ([5f51fd8](https://bitbucket.org/atlassian/atlaskit/commits/5f51fd8))
 
 
 

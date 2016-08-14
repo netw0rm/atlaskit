@@ -1,5 +1,20 @@
-<a name="0.0.14"></a>
-## 0.0.14 (2016-08-05)
+<a name="1.0.0"></a>
+# 1.0.0 (2016-08-12)
+
+
+
+<a name="akutil-polyfills@1.0.0"></a>
+# akutil-polyfills@1.0.0 (2016-08-10)
+
+
+### Bug Fixes
+
+* **bump:** bump to version 1 of named slots, w/ bug fix for Chrome non canary ([7dc92ab](https://bitbucket.org/atlassian/atlaskit/commits/7dc92ab))
+
+
+### BREAKING CHANGES
+
+* bump: bumped named slots from 0.x to 1.x
 
 
 

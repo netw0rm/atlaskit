@@ -2182,7 +2182,7 @@
     },
     "eslint-config-ak-stories": {
       "version": "2.0.1",
-      "from": "eslint-config-ak-stories@>=2.0.0 <3.0.0",
+      "from": "eslint-config-ak-stories@>=2.0.1 <3.0.0",
       "resolved": "https://registry.npmjs.org/eslint-config-ak-stories/-/eslint-config-ak-stories-2.0.1.tgz"
     },
     "eslint-config-ak-tests": {

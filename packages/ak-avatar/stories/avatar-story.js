@@ -11,7 +11,7 @@ const Avatar = reactify(AkAvatar, {
   ReactDOM,
 });
 
-const avatarUrl = require('url!./avatar-96.png'); // eslint-disable-line import/no-unresolved
+const avatarUrl = require('url!./avatar-96.png');
 
 storiesOf(name, module)
   .add('A default avatar', () => (

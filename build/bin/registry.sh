@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 set -e
 
 # Clone the atlaskit-registry repo into the folder above atlaskit
@@ -8,14 +8,20 @@ git clone --quiet "https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/
 mkdir -p ../atlaskit-registry/_data ../atlaskit-registry/api ../atlaskit-registry/resources
 
 # Install panop (converts monorepo to single YAML summary file)
-# Note: when BB Pipelines can access internal npm, we can use normal npm:
+# Note: unfortunately @atlassian scope is used on the public and private
+# npm registries, which is why we need to disable the .npmrc file
+# temporarily here.
 echo "Installing panop from Atlassian private npm"
-npm install --progress=false "git+https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/atlassian/panop.git"
+mv .npmrc ._npmrc
+npm set loglevel warn
+npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
+npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
+npm install --progress=false @atlassian/panop
+mv ._npmrc .npmrc
 
 # Generate momnorep summary which will feed into jekyll
 echo "Generating summary files using panop"
 BITBUCKET_PASS=$BITBUCKET_PW_READONLY `npm bin`/panop --repo=atlassian/atlaskit \
-  --yml=../atlaskit-registry/_data/components.yml \
   --json=../atlaskit-registry/api/full.json
 
 # Install atlaskit-registry dependencies

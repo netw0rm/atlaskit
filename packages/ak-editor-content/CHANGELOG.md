@@ -1,5 +1,15 @@
-<a name="2.0.0"></a>
-# 2.0.0 (2016-08-05)
+<a name="2.0.1"></a>
+## 2.0.1 (2016-08-12)
+
+
+
+<a name="ak-editor-content@2.0.1"></a>
+## ak-editor-content@2.0.1 (2016-08-08)
+
+
+### Bug Fixes
+
+* Disable ::slotted(*) styling until a fix to avoid rule merging is found. ([0e835c3](https://bitbucket.org/atlassian/atlaskit/commits/0e835c3))
 
 
 

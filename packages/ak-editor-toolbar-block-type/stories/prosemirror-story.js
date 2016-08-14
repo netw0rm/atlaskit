@@ -5,36 +5,27 @@ import ContentComponent from 'ak-editor-content';
 import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
+import invert from 'lodash.invert';
 
-import { ProseMirror, commands } from 'prosemirror/dist/edit';
+import { ProseMirror, Plugin } from 'prosemirror/dist/edit';
 import { schema } from 'prosemirror/dist/schema-basic';
+import BlockTypePlugin from 'atlassian-editorkit-block-type-plugin';
 
 const Toolbar = reactify(ToolbarComponent, { React, ReactDOM });
 const BlockType = reactify(BlockTypeComponent, { React, ReactDOM });
 const Content = reactify(ContentComponent, { React, ReactDOM });
 
-function getSelectionNodes({ from, to }, content) {
-  let count = 0;
-  const nodes = [];
+const prosemirrorBlockToToolbarMap = {
+  paragraph: 'normalText',
+  // heading 1 (displayed in the blockType button) is actually heading 2
+  // heading 1 is reserved and not used in the editor
+  heading2: 'heading1',
+  heading3: 'heading2',
+  heading4: 'heading3',
+  code_block: 'monospace',
+};
 
-  for (let index = 0; index < content.length; index++) {
-    const node = content[index];
-    const size = node.content.size;
-
-    // first position is 1, another 1 for eof, hense +2
-    count += size + 2;
-
-    if (from < count) {
-      nodes.push(node);
-    }
-
-    if (to < count) {
-      break;
-    }
-  }
-
-  return nodes;
-}
+const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
 
 storiesOf('ak-editor-toolbar-block-type', module)
   .add('ProseMirror', () => {
@@ -42,7 +33,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
       constructor(props) {
         super(props);
         this.state = {
-          selectedFont: 'paragraph',
+          selectedFont: 'normalText',
           canChangeBlockType: false,
         };
       }
@@ -56,7 +47,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
 
           schema.node('paragraph',
             null,
-            schema.text('paragraph')
+            schema.text('Normal text')
           ),
 
           schema.node('code_block',
@@ -65,43 +56,33 @@ storiesOf('ak-editor-toolbar-block-type', module)
           )]
         );
 
-        const pm = this.pm = new ProseMirror({
+        let blockTypePluginInstance;
+        new ProseMirror({ // eslint-disable-line
           place: this.editorElement,
           doc,
-          plugins: [],
+          plugins: [
+            new Plugin(
+              class BlockTypePluginDecorator {
+                constructor(pm) {
+                  blockTypePluginInstance = new BlockTypePlugin(pm);
+                  return blockTypePluginInstance;
+                }
+              }
+            ),
+          ],
         });
 
-        pm.updateScheduler([
-          pm.on.selectionChange,
-          pm.on.change,
-        ], () => {
-          const nodes = getSelectionNodes(pm.selection, pm.doc.content.content);
-          const node = nodes[0];
-          const name = node.type.name;
-          let blockType;
-
-          if (name === 'paragraph') {
-            blockType = name;
-          } else if (name === 'code_block') {
-            blockType = 'monospace';
-          } else {
-            // heading 1 (displayed in the blockType button) is actually heading 2
-            // heading 1 is reserved and not used in the editor
-            blockType = name + (node.attrs.level - 1);
-          }
-
-          // we can get away by not checking all the types since the dropdown get
-          // enabled as a group intead of per option
-          const canChangeBlockType = [
-            'code_block',
-            'paragraph',
-          ].some((type) => commands.setBlockType(schema.nodes[type])(pm, false));
+        blockTypePluginInstance.onChange(state => {
+          const name = state.selectedBlockType;
+          const blockType = prosemirrorBlockToToolbarMap[name];
 
           this.setState({
             selectedFont: blockType,
-            canChangeBlockType,
+            canChangeBlockType: state.enabled,
           });
         });
+
+        this.blockTypePluginInstance = blockTypePluginInstance;
       }
 
       render() {
@@ -112,21 +93,13 @@ storiesOf('ak-editor-toolbar-block-type', module)
                 disabled={!this.state.canChangeBlockType}
                 selectedFont={this.state.selectedFont}
                 onSelectFont={(event) => {
-                  this.pm.on.interaction.dispatch();
                   const font = event.detail.font;
-                  if (font === 'paragraph') {
-                    commands.setBlockType(schema.nodes.paragraph)(this.pm);
-                  } else if (font === 'monospace') {
-                    commands.setBlockType(schema.nodes.code_block)(this.pm);
-                  } else {
-                    // heading 1 (displayed in the blockType button) is actually heading 2
-                    // heading 1 is reserved and not used in the editor
-                    const level = Number(font[font.length - 1]) + 1;
-                    commands.setBlockType(
-                      schema.nodes[font.substring(0, font.length - 1)],
-                      { level }
-                    )(this.pm);
-                  }
+
+                  const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
+                  const blockType = matches[1];
+                  const level = matches[2];
+
+                  this.blockTypePluginInstance.changeBlockType(blockType, { level });
                 }}
               />
             </Toolbar>

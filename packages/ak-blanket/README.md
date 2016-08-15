@@ -71,8 +71,7 @@ const ReactComponent = reactify(Blanket, {});
 
 ReactDOM.render(<ReactComponent />, container);
 ```
-## Component API
-
+## Blanket API
 * Properties
 
     *  [`blanket.tinted`](#Blanket+tinted) : Boolean

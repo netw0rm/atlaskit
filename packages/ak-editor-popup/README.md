@@ -1,6 +1,5 @@
 
-## Component API
-
+## Popup API
 * Properties
 
     *  [`popup.open`](#Popup+open) : Boolean

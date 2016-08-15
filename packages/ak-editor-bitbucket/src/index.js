@@ -29,13 +29,22 @@ export default define('ak-editor-bitbucket', {
       elem[readySymbol] = true;
       elem[initEditorSymbol]();
       emit(elem, 'ready');
+
+      const img = document.createElement('img');
+      img.src = 'https://design.atlassian.com/images/brand/logo-21.png';
+      elem.querySelector('.modify-me').appendChild(img);
     }
   },
 
   render(elem) {
     return (
       <div>
-        <div class="prosemirror" />
+        <div skip>
+          <div class="prosemirror" />
+          {/* <input />
+          <iframe src="http://w3schools.com" /> */}
+          <div class="modify-me" skip></div>
+        </div>
         <button onclick={() => elem.abc = 'foo'}>foo</button>
       </div>
     );

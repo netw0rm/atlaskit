@@ -32,6 +32,8 @@ describe('ak-button', () => {
     waitForRender(component, done);
   });
 
+  afterEach(() => document.body.removeChild(component));
+
   it('should not throws when component is instanciated', () =>
     expect(() => (new AkButton())).not.to.throw(Error)
   );

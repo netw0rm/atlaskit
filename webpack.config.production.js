@@ -1,4 +1,3 @@
-const fs = require('fs');
 const webpack = require('webpack');
 const standardConfig = require('./webpack.config.base.js');
 const argv = require('minimist')(process.argv.slice(2));
@@ -10,8 +9,7 @@ Object.assign(standardConfig.entry, {
 });
 
 if (!shouldBundleDependencies) {
-  standardConfig.externals = fs.readdirSync('node_modules')
-    .map(name => new RegExp(`^${name}($|/)`));
+  standardConfig.externals = [/^[^.]/];
 }
 
 standardConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({

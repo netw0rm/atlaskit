@@ -27,7 +27,7 @@ export default define('pf-mention-picker', {
 
     _filterChange(mentions) {
       props(this, {
-        visible: mentions.length > 0,
+        _visible: mentions.length > 0,
       });
     },
   },
@@ -50,7 +50,7 @@ export default define('pf-mention-picker', {
     const { target, position } = elem;
     const { resourceProvider, presenceProvider, query } = elem;
     const style = {
-      display: elem.visible ? 'block' : 'none',
+      display: elem._visible ? 'block' : 'none',
     };
 
     if (target) {
@@ -60,7 +60,7 @@ export default define('pf-mention-picker', {
           <InlineDialog
             target={target}
             position={position}
-            open={elem.visible}
+            open={elem._visible}
             padding="0"
           >
             <ResourcedMentionList
@@ -101,5 +101,7 @@ export default define('pf-mention-picker', {
     position: prop.string({
       attribute: true,
     }),
+    // internal
+    _visible: prop.boolean(),
   },
 });

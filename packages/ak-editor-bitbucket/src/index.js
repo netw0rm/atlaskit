@@ -61,13 +61,14 @@ export default define('ak-editor-bitbucket', {
               const blockType = matches[1];
               const level = matches[2];
 
-              this.blockTypePluginInstance.changeBlockType(blockType, { level });
+              elem.blockTypePluginInstance.changeBlockType(blockType, { level });
             }}
           />
           <ToolbarTextFormatting />
           <ToolbarHyperlink />
         </Toolbar>
         <Content
+          skip
           className={contentClassName}
           openTop
           openBottom

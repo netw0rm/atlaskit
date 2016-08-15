@@ -25,7 +25,7 @@
     "browserkeymap": "^2.0.1",
     "markdown-it": "^7.0.0",
     "prosemirror": "^0.8.3",
-    "skatejs": "1.x"
+    "skatejs": "^1.0.0"
   },
   "devDependencies": {
     "akutil-react": "0.0.4",

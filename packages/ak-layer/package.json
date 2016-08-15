@@ -16,7 +16,7 @@
   "dependencies": {
     "akutil-common": "^0.2.0",
     "akutil-shared-styles": "^33.0.2",
-    "skatejs": "1.x"
+    "skatejs": "^1.0.0"
   },
   "repository": {
     "type": "git",

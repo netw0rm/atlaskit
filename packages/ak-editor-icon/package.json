@@ -14,7 +14,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "skatejs": "1.x"
+    "skatejs": "^1.0.0"
   },
   "devDependencies": {
     "idomizer": "^0.5.2",

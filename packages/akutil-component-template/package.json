@@ -13,7 +13,7 @@
   "dependencies": {
     "akutil-common": "0.x",
     "akutil-shared-styles": "*",
-    "skatejs": "1.x"
+    "skatejs": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

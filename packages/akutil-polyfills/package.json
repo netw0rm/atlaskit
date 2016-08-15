@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "es6-symbol": "^3.1.0",
-    "skatejs-web-components": "1.x"
+    "skatejs-web-components": "^1.0.0"
   },
   "repository": {
     "type": "git",

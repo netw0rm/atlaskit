@@ -49,8 +49,7 @@ const ReactComponent = reactify(AkUtilComponentTemplate, {});
 
 ReactDOM.render(<ReactComponent />, container);
 ```
-## Component API
-
+## AkUtilComponentTemplate API
 * Properties
 
     *  [`akUtilComponentTemplate.name`](#AkUtilComponentTemplate+name) : string

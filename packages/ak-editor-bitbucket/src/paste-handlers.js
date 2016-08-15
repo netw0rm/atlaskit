@@ -1,9 +1,6 @@
 /* eslint-disable */
-import hyperlink from 'atlassian-editorkit-hyperlink-plugin/dist/pastehandler';
 import { Slice } from 'prosemirror/dist/model';
 import { markdownParser } from './markdown-parser';
-
-export const hyperlinkTransformer = hyperlink.pasteTransformer;
 
 export const markdownTransformer = function(schema, slice) {
   var sliceContents = '';

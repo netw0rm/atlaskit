@@ -1,5 +1,5 @@
 import { vdom, define, prop, symbols, emit } from 'skatejs';
-import { ProseMirror } from 'prosemirror/dist/edit';
+import { ProseMirror, Plugin } from 'prosemirror/dist/edit';
 import 'style!./host.less';
 import shadowStyles from './shadow.less';
 import Content from 'ak-editor-content';
@@ -8,13 +8,18 @@ import Toolbar from 'ak-editor-toolbar';
 import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
+import { Schema } from 'prosemirror/dist/model';
 import { schema } from './schema';
-import { inputRules } from './input-rules';
 import { buildKeymap } from './keymap';
 import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';
 import { nodeLifecycleHandler } from './node-lifecycle';
-import { hyperlinkTransformer, markdownTransformer } from './paste-handlers';
+import { markdownTransformer } from './paste-handlers';
+
+// editorKit plugings
+import MarkdownInputRulesPlugin from 'atlassian-editorkit-markdown-inputrules-plugin';
+import HyperLinkPlugin from 'atlassian-editorkit-hyperlink-plugin';
+import ImageUploadPlugin from 'atlassian-editorkit-image-upload-plugin';
 
 // A hack to target the content element until https://github.com/skatejs/skatejs/issues/721
 // is fixed.
@@ -100,10 +105,18 @@ export default define('ak-editor-bitbucket', {
 
     [initEditorSymbol]() {
       const contentElement = this[symbols.shadowRoot].querySelector(`.${contentClassName}`);
+
+      schema.nodes.code_block.group += ` ${HyperLinkPlugin.DISABLED_GROUP}`;
+      schema.nodes.code_block.group += ` ${ImageUploadPlugin.DISABLED_GROUP}`;
+
       const pm = new ProseMirror({
         place: contentElement,
-        doc: markdownParser(schema).parse(this.defaultValue),
-        plugins: [inputRules],
+        doc: markdownParser(new Schema(schema)).parse(this.defaultValue),
+        plugins: [
+          new Plugin(MarkdownInputRulesPlugin),
+          new Plugin(HyperLinkPlugin),
+          new Plugin(ImageUploadPlugin),
+        ],
       });
 
       // avoid invoking keyboard shortcuts in BB
@@ -114,8 +127,7 @@ export default define('ak-editor-bitbucket', {
       pm.addKeymap(buildKeymap(pm.schema));
 
       // add paste handlers
-      pm.on.transformPasted.add(() => markdownTransformer(pm.schema));
-      pm.on.transformPasted.add(() => hyperlinkTransformer(pm));
+      pm.on.transformPasted.add((slice) => markdownTransformer(pm.schema, slice));
 
       // add node life cycle handler
       pm.on.flush.add(() => nodeLifecycleHandler(pm));

@@ -9,7 +9,7 @@ export default define('ak-editor-toolbar-block-type-font-select', {
         <style>{styles.toString()}</style>
         <Button
           disabled={elem.disabled}
-          onclick={() => emit(elem, 'toggleDropdown')}
+          onClick={() => emit(elem, 'toggleDropdown')}
           className={styles.locals.fontSelect}
           active={elem.active}
         >

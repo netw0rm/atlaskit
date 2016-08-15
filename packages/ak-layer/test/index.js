@@ -76,7 +76,6 @@ describe('ak-layer', () => {
     expect(() => {
       component = new LayerWC();
     }).not.to.throw(Error);
-    expect(component.getAttribute('defined')).not.to.equal(null);
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 

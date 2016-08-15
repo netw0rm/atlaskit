@@ -1,10 +1,8 @@
 import 'style!../host.less';
 import shadowStyles from './pf-mention-item-shadow.less';
 import { localProp } from './skate-local-props';
-
-import 'ak-avatar';
-import { define, vdom, prop, emit, state } from 'skatejs'; // eslint-disable-line no-unused-vars
-
+import { define, vdom, prop } from 'skatejs';
+import Avatar from 'ak-avatar';
 
 const styles = shadowStyles.locals;
 
@@ -65,14 +63,13 @@ function renderTime(presence) {
   return null;
 }
 
-const definition = {
-
+export default define('pf-mention-item', {
   render(elem) {
     const classes = [
       styles.item,
     ];
 
-    if (elem.selected === 'true') {
+    if (elem.selected) {
       classes.push(styles.selected);
     }
 
@@ -83,10 +80,8 @@ const definition = {
       <div>
         <style>{shadowStyles.toString()}</style>
         <div className={classes.join(' ')}>
-          <div
-            className={styles.row}
-          >
-            <ak-avatar src={elem.avatarUrl} size="medium" />
+          <div className={styles.row}>
+            <Avatar src={elem.avatarUrl} size="medium" />
             <div className={styles.nameSection}>
               {renderHighlight(styles.fullName, elem.name, nameHighlights)}
               {renderHighlight(styles.mentionName, elem.mentionName, mentionHighlights, '@')}
@@ -98,12 +93,6 @@ const definition = {
     );
   },
 
-  // attached(elem) {
-  //   emit(elem, 'attached', {
-  //     bubbles: false,
-  //   });
-  // },
-
   detached(elem) {
     if (elem.ref) {
       elem.ref(null);
@@ -114,14 +103,8 @@ const definition = {
     avatarUrl: prop.string({
       attribute: true,
     }),
-    // presence: {
-    //   attribute: true,
-    // },
-    // presence: PropTypes.object,
-    // FIXME prop.boolean doesn't propogate false changes :/
-    selected: prop.string({
+    selected: prop.boolean({
       attribute: true,
-      default: 'false',
     }),
     idx: prop.number({
       attribute: true,
@@ -141,13 +124,4 @@ const definition = {
     highlight: localProp.object(),
     ref: localProp.reference(),
   },
-  // emits: {
-  //   onSelection: PropTypes.func,
-  //   onHover: PropTypes.func,
-  // },
-};
-
-/* The constructor for our component */
-export default define('pf-mention-item', definition);
-
-export { definition };
+});

@@ -1,15 +1,15 @@
+import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { symbols } from 'skatejs';
-import AkEditorPopup from '../src/index.js';
+import Component from '../src';
 
 chai.use(chaiAsPromised);
 chai.should();
+const expect = chai.expect;
 
-
-describe('ak-editor-popup', () => {
+describe(name, () => {
   it('should be possible to create a component', () => {
-    const component = new AkEditorPopup();
-    component[symbols.shadowRoot].innerHTML.should.match(/ak-layer/);
+    const component = new Component();
+    expect(component.tagName.toLowerCase()).to.equal(name);
   });
 });

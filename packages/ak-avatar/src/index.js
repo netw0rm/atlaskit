@@ -33,7 +33,7 @@ const definition = {
     return (
       <span>
         <style>{shadowStyles.toString()}</style>
-        <img alt={elem.alt} src={elem.src} class={classes} style={imgStyle} />
+        <img alt={elem.alt} src={elem.src} className={classes} style={imgStyle} />
       </span>
     );
   },

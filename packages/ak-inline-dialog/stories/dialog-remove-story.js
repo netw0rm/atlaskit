@@ -34,7 +34,7 @@ class ToggleDemo extends Component {
     if (this.state.show) {
       dialog = (
         <Dialog
-          open="true"
+          open
           target="#target"
           position="bottom left"
           hasBlanket={false}

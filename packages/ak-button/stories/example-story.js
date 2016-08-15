@@ -1,6 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import AkButtonTemplate from '../src/index';
+import { AkButton as AkButtonTemplate, APPEARANCE } from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 
@@ -14,7 +14,7 @@ storiesOf(name, module)
     <AkButton>Button</AkButton>
   ))
   .add('a primary ak-button', () => (
-    <AkButton appearance="primary">Primary Button</AkButton>
+    <AkButton appearance={APPEARANCE.PRIMARY}>Primary Button</AkButton>
   ))
   .add('a disabled ak-button', () =>
     <AkButton disabled onclick={action('clicking the WebComponent')}>
@@ -22,7 +22,12 @@ storiesOf(name, module)
     </AkButton>
   )
   .add('a subtle ak-button', () =>
-    <AkButton appearance="subtle" >
+    <AkButton appearance={APPEARANCE.SUBTLE} >
+      Button
+    </AkButton>
+  )
+  .add('a button selected', () =>
+    <AkButton appearance={APPEARANCE.SELECTED} >
       Button
     </AkButton>
   )
@@ -32,7 +37,7 @@ storiesOf(name, module)
         super(props);
         this.state = {
           disable: false,
-          appearance: 'standard',
+          appearance: APPEARANCE.STANDARD,
         };
       }
 
@@ -41,7 +46,8 @@ storiesOf(name, module)
       }
       select() {
         this.setState({
-          appearance: this.state.appearance === 'standard' ? 'selected' : 'standard',
+          appearance: this.state.appearance === APPEARANCE.STANDARD ?
+            APPEARANCE.SELECTED : APPEARANCE.STANDARD,
         });
       }
 
@@ -63,7 +69,7 @@ storiesOf(name, module)
                 type="checkbox"
                 id="selected-checkbox"
                 onChange={this.select.bind(this)}  // eslint-disable-line react/jsx-no-bind
-                defaultChecked={this.state.appearance === 'selected'}
+                defaultChecked={this.state.appearance === APPEARANCE.SELECTED}
               />
             </label>
             <AkButton

@@ -6,11 +6,18 @@ import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
 
+const PRIMARY = 'primary';
+const STANDARD = 'standard';
+const SUBTLE = 'subtle';
+const SELECTED = 'selected';
+
+const APPEARANCE = {
+  PRIMARY, STANDARD, SUBTLE, SELECTED,
+};
+
 const APPEARANCES = {
   attribute: 'appearance',
-  values: [
-    'primary', 'standard', 'subtle', 'selected',
-  ],
+  values: Object.keys(APPEARANCE).map(key => APPEARANCE[key]),
 };
 
 const preventClickWhenDisabled = (elem) =>
@@ -69,4 +76,11 @@ const definition = {
   },
 };
 
-export default define('ak-button', definition);
+const AkButton = define('ak-button', definition);
+
+export default AkButton;
+
+export {
+  APPEARANCE,
+  AkButton,
+};

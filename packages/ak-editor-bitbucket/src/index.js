@@ -104,6 +104,7 @@ export default define('ak-editor-bitbucket', {
     },
 
     [initEditorSymbol]() {
+      const $el = this;
       const contentElement = this[symbols.shadowRoot].querySelector(`.${contentClassName}`);
 
       schema.nodes.code_block.group += ` ${HyperLinkPlugin.DISABLED_GROUP}`;
@@ -115,7 +116,31 @@ export default define('ak-editor-bitbucket', {
         plugins: [
           new Plugin(MarkdownInputRulesPlugin),
           new Plugin(HyperLinkPlugin),
-          new Plugin(ImageUploadPlugin),
+          new Plugin(class ImageUploadPluginDecorator {
+            constructor(proseMirrorInstance) {
+              const imageUploadPlugin = new ImageUploadPlugin(proseMirrorInstance);
+
+              imageUploadPlugin.dropAdapter.add((
+                _pm,
+                e
+              ) => {
+                if (typeof $el.imageUploader === 'function') {
+                  $el.imageUploader(e, imageUploadPlugin.addImage.bind(imageUploadPlugin));
+                }
+              });
+
+              imageUploadPlugin.pasteAdapter.add((
+                _pm,
+                e
+              ) => {
+                if (typeof $el.imageUploader === 'function') {
+                  $el.imageUploader(e, imageUploadPlugin.addImage.bind(imageUploadPlugin));
+                }
+              });
+
+              return imageUploadPlugin;
+            }
+          }),
         ],
       });
 

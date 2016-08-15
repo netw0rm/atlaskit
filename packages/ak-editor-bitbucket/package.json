@@ -21,7 +21,7 @@
     "ak-editor-toolbar-hyperlink": "^0.0.1",
     "ak-editor-toolbar-text-formatting": "^2.0.0",
     "atlassian-editorkit-hyperlink-plugin": "^0.0.20",
-    "atlassian-editorkit-image-upload-plugin": "^0.0.4",
+    "atlassian-editorkit-image-upload-plugin": "^0.0.6",
     "atlassian-editorkit-markdown-inputrules-plugin": "^0.0.18",
     "browserkeymap": "^2.0.1",
     "markdown-it": "^7.0.0",

@@ -119,13 +119,10 @@ describe('ak-button', () => {
 
       describe('onclick event', () => {
         it('should not be triggered when button is clicked', () => {
-          // disable this test on ie11 until we find a way to make this test green
-          if (!(/rv:11.0/i.test(window.navigator.userAgent))) {
-            const onclick = sinon.spy();
-            props(component, { onclick });
-            getShadowButtonElem(component).click();
-            expect(onclick.called).to.equals(false);
-          }
+          const onclick = sinon.spy();
+          props(component, { onclick });
+          getShadowButtonElem(component).click();
+          expect(onclick.called).to.equals(false);
         });
 
         it('should not be triggered when any nested element is clicked', () => {

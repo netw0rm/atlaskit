@@ -1,5 +1,5 @@
 /** @jsx vdom */
-import 'style!./host.less'; // eslint-disable-line import/no-unresolved
+import 'style!./host.less';
 
 import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
@@ -13,9 +13,9 @@ const APPEARANCES = {
   ],
 };
 
-const preventClickWhenDisabled = (component) =>
+const preventClickWhenDisabled = (elem) =>
   (e) => {
-    if (component.disabled) {
+    if (elem.disabled) {
       e.preventDefault();
       e.stopPropagation();
     }
@@ -50,19 +50,15 @@ const definition = {
 
     if (elem.disabled) {
       classes.push(shadowStyles.locals.disabled);
-    } else {
-      if (elem.appearance) {
-        classes.push(shadowStyles.locals[elem.appearance]);
-      }
+    } else if (elem.appearance) {
+      classes.push(shadowStyles.locals[elem.appearance]);
     }
-
-    const classListNames = classNames(classes);
 
     return (
       <div className={shadowStyles.locals.container}>
         <style>{shadowStyles.toString()}</style>
         <button
-          className={classListNames}
+          className={classNames(classes)}
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >

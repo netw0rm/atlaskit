@@ -28,6 +28,6 @@
   },
   "devDependencies": {
     "akutil-react": "^0.0.4",
-    "fetch-mock": "^4.6.0"
+    "fetch-mock": "^5.0.5"
   }
 }

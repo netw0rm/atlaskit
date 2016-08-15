@@ -43,8 +43,14 @@ export const markdownSerializer = new MarkdownSerializer({
     state.renderContent(node)
   },
   paragraph(state, node) {
-    state.renderInline(node)
-    state.closeBlock(node)
+    // for empty paragraphs add a new line,
+    // without trying to render the node.
+    if (node.content.content.length === 0) {
+      state.write("‌\n");
+    } else {
+      state.renderInline(node);
+      state.closeBlock(node);
+    };
   },
 
   image(state, node) {
@@ -52,7 +58,7 @@ export const markdownSerializer = new MarkdownSerializer({
                 (node.attrs.title ? " " + state.quote(node.attrs.title) : "") + ")")
   },
   hard_break(state) {
-    state.write("\\\n")
+    state.write("‌\n")
   },
   text(state, node) {
     state.text(node.text)

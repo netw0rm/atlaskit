@@ -13,13 +13,13 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "akutil-common": "^0.2.0",
     "akutil-shared-styles": "*",
     "classnames": "^2.2.5",
     "skatejs": "1.x"
   },
   "devDependencies": {
-    "akutil-react": "^0.0.4"
+    "akutil-react": "^0.0.4",
+    "akutil-common": "0.x"
   },
   "repository": {
     "type": "git",

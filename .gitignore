@@ -14,5 +14,5 @@ TESTS-*.xml
 atlaskit.iml
 browserstack.err
 local.log
-
+stories
 browserstack-entry.js

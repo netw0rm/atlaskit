@@ -11,14 +11,14 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "*",
-    "skatejs": "1.0.2"
+    "akutil-shared-styles": "^33.1.0",
+    "skatejs": "^1.0.2",
+    "akutil-common": "^0.2.1"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "^0.0.4",
-    "ak-editor-icon": "*"
+    "akutil-react": "^0.0.4"
   },
   "repository": {
     "type": "git",

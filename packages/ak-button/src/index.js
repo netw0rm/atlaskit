@@ -4,10 +4,16 @@ import 'style!./host.less'; // eslint-disable-line import/no-unresolved
 import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
+import { enumeration } from 'akutil-common';
 
-const APPEARANCES = ['primary', 'standard', 'subtle', 'selected'];
+const APPEARANCES = {
+  attribute: 'appearance',
+  values: [
+    'primary', 'standard', 'subtle', 'selected',
+  ],
+};
 
-const handleSlotClick = (component) =>
+const preventClickWhenDisabled = (component) =>
   (e) => {
     if (component.disabled) {
       e.preventDefault();
@@ -17,24 +23,37 @@ const handleSlotClick = (component) =>
 
 const definition = {
   props: {
-    appearance: prop.string({ attribute: true }),
-    disabled: prop.boolean({ attribute: true, default: false }),
-    type: prop.string({ attribute: true }),
+    /**
+     * @description Style of the button. One of:
+     * 'primary', 'standard', 'subtle', 'selected'.
+     * @memberof Button
+     * @default 'standard'
+     * @type {string}
+     * @example @html <ak-button appearance="primary"></ak-button>
+     * @example @js button.appearance = 'primary';
+     */
+    appearance: enumeration(APPEARANCES)({
+      attribute: true,
+    }),
+    /**
+     * @description Option to disable button and every click event
+     * @memberof Button
+     * @default false
+     * @type {boolean}
+     * @example @html <ak-button disabled></ak-button>
+     * @example @js button.disabled = true;
+     */
+    disabled: prop.boolean({ attribute: true }),
   },
   render(elem) {
     const classes = [shadowStyles.locals.akButton];
-    // TODO: constraint buttonType to only be button or submit
-    const buttonType = (elem.type) ? elem.type : 'button';
-
-    if (elem.appearance) {
-      const index = APPEARANCES.indexOf(elem.appearance);
-      if (index >= 0) {
-        classes.push(shadowStyles.locals[APPEARANCES[index]]);
-      }
-    }
 
     if (elem.disabled) {
       classes.push(shadowStyles.locals.disabled);
+    } else {
+      if (elem.appearance) {
+        classes.push(shadowStyles.locals[elem.appearance]);
+      }
     }
 
     const classListNames = classNames(classes);
@@ -44,11 +63,10 @@ const definition = {
         <style>{shadowStyles.toString()}</style>
         <button
           className={classListNames}
-          type={buttonType}
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >
-          <slot onclick={handleSlotClick(elem)} />
+          <slot onclick={preventClickWhenDisabled(elem)} />
         </button>
       </div>
     );

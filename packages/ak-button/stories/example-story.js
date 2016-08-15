@@ -3,14 +3,11 @@ import reactify from 'akutil-react';
 import AkButtonTemplate from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
-import IconComponent from 'ak-editor-icon';
 
 const AkButton = reactify(AkButtonTemplate, {
   React,
   ReactDOM,
 });
-
-const Icon = reactify(IconComponent, { React, ReactDOM });
 
 storiesOf(name, module)
   .add('a default ak-button', () => (
@@ -29,17 +26,23 @@ storiesOf(name, module)
       Button
     </AkButton>
   )
-  .add('a button that can be disabled and enabled', () => {
+  .add('a button disabled/selected', () => {
     class MyComponent extends React.Component {
       constructor(props) {
         super(props);
         this.state = {
           disable: false,
+          appearance: 'standard',
         };
       }
 
-      handleClick() {
+      disable() {
         this.setState({ disable: !this.state.disable });
+      }
+      select() {
+        this.setState({
+          appearance: this.state.appearance === 'standard' ? 'selected' : 'standard',
+        });
       }
 
       render() {
@@ -50,13 +53,25 @@ storiesOf(name, module)
               <input
                 type="checkbox"
                 id="disable-checkbox"
-                onChange={this.handleClick.bind(this)}  // eslint-disable-line react/jsx-no-bind
+                onChange={this.disable.bind(this)}  // eslint-disable-line react/jsx-no-bind
                 defaultChecked={this.state.disable}
+              />
+            </label>
+            <label>
+              Selected
+              <input
+                type="checkbox"
+                id="selected-checkbox"
+                onChange={this.select.bind(this)}  // eslint-disable-line react/jsx-no-bind
+                defaultChecked={this.state.appearance === 'selected'}
               />
             </label>
             <AkButton
               disabled={this.state.disable}
-              onclick={action('clicking the WebComponent')}
+              appearance={this.state.appearance}
+              onclick={
+                () => window.alert('clicking the WebComponent') // eslint-disable-line no-alert
+              }
             >
               Button
             </AkButton>
@@ -69,46 +84,4 @@ storiesOf(name, module)
   })
   .add('an ak-button that emits an action when it is clicked', () => (
     <AkButton id="myComponent" onClick={action('clicking the WebComponent')}>Button</AkButton>
-  ))
-  .add('an ak-button with icons', () => {
-    const containerStyle = {
-      display: 'flex',
-      flexDirection: 'column',
-    };
-
-
-    return (
-      <div style={containerStyle}>
-        <AkButton onclick={action('clicking the WebComponent')}>
-          <Icon glyph="add" />
-          button
-        </AkButton>
-        <br />
-        <AkButton >
-          button
-          <Icon glyph="expand" />
-        </AkButton>
-        <br />
-        <AkButton >
-          <Icon glyph="add" />
-        </AkButton>
-        <br />
-        <AkButton >
-          <Icon glyph="add" />
-          button
-          <Icon glyph="expand" />
-        </AkButton>
-        <br />
-        <AkButton disabled onclick={action('clicking the WebComponent')}>
-          <Icon glyph="add" />
-          button
-        </AkButton>
-        <br />
-        <AkButton appearance="subtle" >
-          <Icon glyph="add" />
-          button
-        </AkButton>
-
-      </div>
-    );
-  });
+  ));

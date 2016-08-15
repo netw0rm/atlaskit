@@ -49,8 +49,7 @@ const ReactComponent = reactify(RadioButton, {});
 
 ReactDOM.render(<ReactComponent />, container);
 ```
-## Component API
-
+## RadioButton API
 * Properties
 
     *  [`radioButton.name`](#RadioButton+name) : string

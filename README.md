@@ -104,7 +104,13 @@ If you want to check that webpack is correctly bundling your component, you can 
 npm run prepublish/single my-component-name
 ```
 This will build the component and place the generated bundle under `packages/my-component-name/dist/`.
+If you pass the `--bundle-deps` flag it will bundle all the dependencies of the component:
 
+```
+npm run prepublish/single my-component-name -- --bundle-deps
+```
+
+This can be helpful for ad-hoc testing in JSFiddle for example.
 
 ## Document a component
 AtlasKit uses [JSDoc](http://usejsdoc.org/)-style annotations to automatically generate the component API. See the `akutil-component-template` package for examples.

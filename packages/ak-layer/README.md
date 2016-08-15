@@ -19,8 +19,7 @@ import Layer from 'ak-layer';
 
 const myLayer = new Layer();
 ```
-## Component API
-
+## Layer API
 * Properties
 
     *  [`layer.position`](#Layer+position) : string

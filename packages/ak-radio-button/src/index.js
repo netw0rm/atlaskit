@@ -19,8 +19,6 @@ export default define('ak-radio-button', {
         <AkButton appearance={elem.selected ? 'selected' : 'standard'}>
           <slot />
 
-          // We may not need the input[type=radio] if we
-          // are going to manually export values to forms..
           <input
             type="radio"
             className={shadowStyles.locals.realRadio}

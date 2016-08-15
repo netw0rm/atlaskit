@@ -3,10 +3,18 @@ import chaiAsPromised from 'chai-as-promised';
 import { symbols } from 'skatejs';
 import ButtonGroup from '../src/index.js';
 import RadioButton from '../../ak-radio-button/src/index.js';
+import keyCode from 'keycode';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect; // eslint-disable-line no-unused-vars
+
+function setFixtures(elems) {
+  document.body.innerHTML = '';
+  elems.forEach(elem => {
+    document.body.appendChild(elem);
+  });
+}
 
 function waitForRender(elem, cb) {
   setTimeout(() => {
@@ -17,10 +25,25 @@ function waitForRender(elem, cb) {
   }, 0);
 }
 
+function pressKey(code, cb) {
+  // const keyPressEvent = new CustomEvent('keydown', {
+  //   bubbles: true,
+  //   cancelable: true,
+  // });
+  // keyPressEvent.keyCode = code;
+  const keyPressEvent = new KeyboardEvent('keydown', {
+    code,
+    keyCode: code,
+  });
+
+  document.dispatchEvent(keyPressEvent);
+  setTimeout(cb, 1);
+}
+
 describe('ak-button-group', () => {
   it('should be possible to create a component', () => {
     const btnGroup = new ButtonGroup();
-    document.body.appendChild(btnGroup);
+    setFixtures([btnGroup]);
     waitForRender(btnGroup, () => {
       btnGroup.hasOwnProperty(symbols.shadowRoot).should.equal(true);
     });
@@ -36,7 +59,8 @@ describe('ak-button-group', () => {
         radioBtn.innerText = `Radio ${i}`;
         btnGroup.appendChild(radioBtn);
       }
-      document.body.appendChild(btnGroup);
+
+      setFixtures([btnGroup]);
       waitForRender(btnGroup, done);
     });
 
@@ -58,6 +82,43 @@ describe('ak-button-group', () => {
           loopRadioBtn.selected.should.equal(loopRadioBtn === radioBtnToSelect);
         });
       });
+    });
+
+    it.skip('should be able to select radio buttons using keyboard tab/enter', (done) => {
+      const radioBtns = btnGroup.childNodes;
+
+      // inputBefore.focus();
+      // pressKey(keyCode('TAB'));
+
+      radioBtns[0].focus();
+      setTimeout(() => {
+        document.activeElement.should.equal(radioBtns[0]);
+        pressKey(keyCode('ENTER'));
+        radioBtns[0].selected.should.equal(true);
+        done();
+      });
+
+      // done();
+      // let focusedRadioButtonIndex = 0;
+      // function tabToNextButton() {
+      //     console.log(document.activeElement);
+      //     debugger;
+      //     pressKey(keyCode('ENTER'), () => {
+      //       radioBtns.forEach(loopRadioBtn => {
+      //         const shouldBtnBeSelected = loopRadioBtn === radioBtns[focusedRadioButtonIndex];
+      //         loopRadioBtn.selected.should.equal(
+      //           shouldBtnBeSelected,
+      //           `Radio button ${focusedRadioButtonIndex}`
+      //         );
+      //       });
+      //
+      //       focusedRadioButtonIndex++;
+      //       done();
+      //     });
+      //   });
+      // }
+      //
+      // tabToNextButton();
     });
   });
 });

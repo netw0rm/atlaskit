@@ -248,7 +248,7 @@ Releasing components is completely automated. The process of releasing will begi
 ## Update a dependency of AtlasKit
 * Install AtlasKit - if your installation is from before we had the shrinkwrap file, you should run `npm run clean`.
 * Install your new dependency: `npm install my-package --save`.
-* Delete the current shrinkwrap file (due to a bug in how shirinkwrap handles dependencies on SHA hashes) `rm -f npm-shrinkwarp.json`
+* Delete the current shrinkwrap file (due to a bug in how shirinkwrap handles dependencies on SHA hashes) `rm -f npm-shrinkwrap.json`
 * Run `npm shrinkwrap`
 * Create a PR
 

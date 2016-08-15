@@ -30,14 +30,12 @@ describe('ak-dropdown-item:', () => {
     });
 
     it('click on a component should emit `ak-dropdown-selected` event', (done) => {
-      const event = new CustomEvent('click', {});
-      let called = false;
+      const onclick = sinon.spy();
       itemContainer.appendChild(component);
-      itemContainer.addEventListener('ak-dropdown-selected', () => (called = true));
-      setTimeout(() => {
-        component[symbols.shadowRoot].firstChild.dispatchEvent(event);
-      });
-      setTimeout(() => expect(called).to.equal(true));
+      itemContainer.addEventListener('ak-dropdown-selected', onclick);
+
+      setTimeout(() => component[symbols.shadowRoot].firstChild.click());
+      setTimeout(() => expect(onclick.called).to.equal(true));
       setTimeout(() => done());
     });
   });

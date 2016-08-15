@@ -1,30 +1,40 @@
 import { emit, vdom, define, prop } from 'skatejs';
 import shadowTriggerStyles from './shadow-trigger.less';
 import classNames from 'classnames';
-import { KeyPressHandler } from 'akutil-common';
+import keyCode from 'keycode';
 
 function isOnlyOneTextNode(elem) {
-  return elem.childNodes && elem.childNodes.length === 1 && elem.childNodes[0].nodeType === 3;
+  return elem.childNodes && (
+      !elem.childNodes.length ||
+      (elem.childNodes.length === 1 && elem.childNodes[0].nodeType === 3)
+    );
 }
 
-function handleTriggerActivated(elem) {
-  return () => {
-    emit(elem, 'ak-dropdown-trigger-activated');
+function handleKeyDown(elem) {
+  return (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!elem.disabled && [
+      keyCode('down'),
+      keyCode('space'),
+      keyCode('enter')].indexOf(event.keyCode) > -1) {
+      emit(elem, 'ak-dropdown-trigger-activated');
+    }
   };
 }
 
-let keyPress;
+function handleClick(elem) {
+  return (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!elem.disabled) {
+      emit(elem, 'ak-dropdown-trigger-activated');
+    }
+  };
+}
 
 export default define('ak-dropdown-trigger', {
-  attached(elem) {
-    const callback = handleTriggerActivated(elem);
-    keyPress = new KeyPressHandler('DOWN', callback, elem);
-    keyPress.add('ENTER', callback);
-    keyPress.add('SPACE', callback);
-  },
-  detached() {
-    keyPress.destroy();
-  },
   render(elem) {
     if (isOnlyOneTextNode(elem)) {
       const classes = classNames(
@@ -35,14 +45,19 @@ export default define('ak-dropdown-trigger', {
       );
 
       return (
-        <div class={classes} on-click={handleTriggerActivated(elem)} tabindex="0">
+        <div
+          class={classes}
+          on-click={handleClick(elem)}
+          on-keydown={handleKeyDown(elem)}
+          tabindex="0"
+        >
           <style>{shadowTriggerStyles.toString()}</style>
           <slot />
         </div>
       );
     }
 
-    return <slot on-click={handleTriggerActivated(elem)} />;
+    return <slot on-click={handleClick(elem)} />;
   },
   props: {
     disabled: prop.boolean({

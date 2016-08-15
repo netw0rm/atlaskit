@@ -18,7 +18,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "^0.0.4"
+    "akutil-react": "^0.0.4",
+    "custom-event-polyfill": "0.2.2"
   },
   "repository": {
     "type": "git",

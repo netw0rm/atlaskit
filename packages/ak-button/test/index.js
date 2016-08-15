@@ -1,3 +1,4 @@
+import 'custom-event-polyfill';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { symbols, props } from 'skatejs';

@@ -3,7 +3,6 @@ import chaiAsPromised from 'chai-as-promised';
 import { symbols } from 'skatejs';
 import ButtonGroup from '../src/index.js';
 import RadioButton from '../../ak-radio-button/src/index.js';
-import keyCode from 'keycode';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -23,21 +22,6 @@ function waitForRender(elem, cb) {
     }
     return waitForRender(elem, cb);
   }, 0);
-}
-
-function pressKey(code, cb) {
-  // const keyPressEvent = new CustomEvent('keydown', {
-  //   bubbles: true,
-  //   cancelable: true,
-  // });
-  // keyPressEvent.keyCode = code;
-  const keyPressEvent = new KeyboardEvent('keydown', {
-    code,
-    keyCode: code,
-  });
-
-  document.dispatchEvent(keyPressEvent);
-  setTimeout(cb, 1);
 }
 
 describe('ak-button-group', () => {
@@ -64,7 +48,7 @@ describe('ak-button-group', () => {
       waitForRender(btnGroup, done);
     });
 
-    it('should contain 3 radio buttons', () => {
+    it('should contain the expected number radio buttons', () => {
       btnGroup.children.length.should.equal(3);
     });
 
@@ -75,50 +59,14 @@ describe('ak-button-group', () => {
     });
 
     it('should update selected prop on all radios when one is clicked', () => {
-      btnGroup.childNodes.forEach(radioBtnToSelect => {
+      const radioBtns = btnGroup.childNodes;
+      radioBtns.forEach(radioBtnToSelect => {
         radioBtnToSelect.click();
 
-        btnGroup.childNodes.forEach(loopRadioBtn => {
+        radioBtns.forEach(loopRadioBtn => {
           loopRadioBtn.selected.should.equal(loopRadioBtn === radioBtnToSelect);
         });
       });
-    });
-
-    it.skip('should be able to select radio buttons using keyboard tab/enter', (done) => {
-      const radioBtns = btnGroup.childNodes;
-
-      // inputBefore.focus();
-      // pressKey(keyCode('TAB'));
-
-      radioBtns[0].focus();
-      setTimeout(() => {
-        document.activeElement.should.equal(radioBtns[0]);
-        pressKey(keyCode('ENTER'));
-        radioBtns[0].selected.should.equal(true);
-        done();
-      });
-
-      // done();
-      // let focusedRadioButtonIndex = 0;
-      // function tabToNextButton() {
-      //     console.log(document.activeElement);
-      //     debugger;
-      //     pressKey(keyCode('ENTER'), () => {
-      //       radioBtns.forEach(loopRadioBtn => {
-      //         const shouldBtnBeSelected = loopRadioBtn === radioBtns[focusedRadioButtonIndex];
-      //         loopRadioBtn.selected.should.equal(
-      //           shouldBtnBeSelected,
-      //           `Radio button ${focusedRadioButtonIndex}`
-      //         );
-      //       });
-      //
-      //       focusedRadioButtonIndex++;
-      //       done();
-      //     });
-      //   });
-      // }
-      //
-      // tabToNextButton();
     });
   });
 });

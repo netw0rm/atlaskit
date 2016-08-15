@@ -39,7 +39,11 @@ function insertFragmentIntoCursor(
 function assertTransformedSchema(
   expectedOutput
 ) {
-  expect(pm.doc.toString()).to.equal(expectedOutput);
+  expect(
+    pm.doc.toString()
+  ).to.equal(
+    expectedOutput
+  );
 }
 
 function moveNodeSelection(

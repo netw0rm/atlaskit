@@ -1,4 +1,4 @@
-import { Schema, Block, Inline, Attribute, Text } from 'prosemirror/dist/model';
+import { Block, Inline, Attribute, Text } from 'prosemirror/dist/model';
 import { Doc, BlockQuote, OrderedList, BulletList,
        ListItem, HorizontalRule, Heading, Paragraph,
        Image, HardBreak, EmMark, StrongMark,
@@ -38,7 +38,7 @@ export class EntityInline extends Inline {
   }
 }
 
-export const schema = new Schema({
+export const schema = {
   nodes: {
     // imported from schema-basic
     doc: { type: Doc, content: 'block+' },
@@ -67,4 +67,4 @@ export const schema = new Schema({
     link: LinkMark,
     code: CodeMark,
   },
-});
+};

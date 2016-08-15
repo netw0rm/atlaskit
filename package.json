@@ -117,6 +117,8 @@
     "release/registry": "./build/bin/registry.sh",
     "storybook": "start-storybook -p 9001 -c ./build/storybook",
     "storybook/single": "./build/bin/storybook.single.sh",
+    "storybook/static": "build-storybook -c ./build/storybook",
+    "storybook/static/single": "./build/bin/storybook.static.single.sh",
     "test": "./node_modules/.bin/lerna exec -- ../../build/bin/test.sh --reporters=dots",
     "test/ci": "./node_modules/.bin/lerna exec --concurrency=1 -- ../../build/bin/test.sh --no-auto-watch --reporters=dots",
     "test/pipelines-branch": "BRANCH_BUILD=1 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD) ./build/bin/test.pipelines.js",

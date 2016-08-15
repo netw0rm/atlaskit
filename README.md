@@ -149,6 +149,17 @@ To run the storybook for all components:
 npm run storybook
 ```
 
+To statically publish the storybook:
+```
+npm run storybook/static -- -o your_target_dir
+```
+
+for one component:
+
+```
+npm run storybook/static/single my-component-name -- -o your_target_dir
+```
+
 ### Unit tests
 To run unit tests for a single component:
 

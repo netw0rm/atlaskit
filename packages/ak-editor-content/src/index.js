@@ -20,7 +20,7 @@ export default define('ak-editor-content', {
   },
 
   props: {
-    openTop: prop.boolean({ attribute: true, default: false }),
-    openBottom: prop.boolean({ attribute: true, default: false }),
+    openTop: prop.boolean({ attribute: true }),
+    openBottom: prop.boolean({ attribute: true }),
   },
 });

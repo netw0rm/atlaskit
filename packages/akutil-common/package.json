@@ -15,7 +15,7 @@
   "dependencies": {
     "atlassian-tether": "^1.3.4",
     "keycode": "^2.1.2",
-    "skatejs": "v1.0.0-beta.12"
+    "skatejs": "^1.0.0"
   },
   "repository": {
     "type": "git",

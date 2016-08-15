@@ -1,13 +1,11 @@
 import 'style!../host.less';
 import shadowStyles from './pf-mention-picker-shadow.less';
-import pfResourcedMentionList from './pf-resourced-mention-list'; // eslint-disable-line no-unused-vars, max-len
 import { localProp } from './skate-local-props';
+import { define, vdom, prop, props } from 'skatejs';
+import InlineDialog from 'ak-inline-dialog';
+import ResourcedMentionList from './pf-resourced-mention-list';
 
-import 'ak-inline-dialog';
-import { define, vdom, prop, emit, state } from 'skatejs'; // eslint-disable-line no-unused-vars
-
-const definition = {
-
+export default define('pf-mention-picker', {
   prototype: {
     selectNext() {
       if (this._mentionListRef) {
@@ -28,7 +26,7 @@ const definition = {
     },
 
     _filterChange(mentions) {
-      state(this, {
+      props(this, {
         visible: mentions.length > 0,
       });
     },
@@ -59,19 +57,19 @@ const definition = {
       return (
         <div style={style}>
           <style>{shadowStyles.toString()}</style>
-          <ak-inline-dialog
+          <InlineDialog
             target={target}
             position={position}
             open={elem.visible}
             padding="0"
           >
-            <pf-resourced-mention-list
+            <ResourcedMentionList
               resourceProvider={resourceProvider}
               presenceProvider={presenceProvider}
               query={query}
               ref={(ref) => { elem._mentionListRef = ref; }}
             />
-          </ak-inline-dialog>
+          </InlineDialog>
         </div>
       );
     }
@@ -95,6 +93,7 @@ const definition = {
     query: prop.string({
       attribute: true,
     }),
+
     // ak-inline-dialog
     target: prop.string({
       attribute: true,
@@ -103,9 +102,4 @@ const definition = {
       attribute: true,
     }),
   },
-};
-
-/* The constructor for our component */
-export default define('pf-mention-picker', definition);
-
-export { definition };
+});

@@ -1,14 +1,12 @@
 import 'style!../host.less';
 import shadowStyles from './pf-mention-list-shadow.less';
-import mentionItem from './pf-mention-item'; // eslint-disable-line no-unused-vars
-import scrollable from './pf-scrollable'; // eslint-disable-line no-unused-vars
 import { localProp } from './skate-local-props';
-
-import { define, vdom, prop, emit, state } from 'skatejs'; // eslint-disable-line no-unused-vars
+import { define, emit, prop, props, vdom } from 'skatejs';
+import Item from './pf-mention-item';
+import Scrollable from './pf-scrollable';
 
 // FIXME
 const defaultAvatar = 'https://dmg75ly2d8uj2.cloudfront.net/assets/img/avatar-all-here@2x.png';
-
 const styles = shadowStyles.locals;
 
 function revealItem(elem, key) {
@@ -40,7 +38,7 @@ function leftClick(event) {
 }
 
 function selectIndex(elem, index) {
-  state(elem, {
+  props(elem, {
     selectedIndex: index,
     selectedKey: elem.mentions[index].id,
   });
@@ -72,17 +70,17 @@ function renderItems(elem) {
     return (
       <div>
         {elem.mentions.map(mention => {
-          const selected = (elem.selectedKey === mention.id) ? 'true' : 'false';
+          const selected = elem.selectedKey === mention.id;
           const currentIdx = idx;
           const key = mention.id;
           const item = (
-            <pf-mention-item
+            <Item
               {...mention}
               avatarUrl={mention.avatarUrl || defaultAvatar}
               key={key}
               idx={idx}
               selected={selected}
-              onmousemove={(event) => {
+              onMousemove={(event) => {
                 if (actualMouseMove(elem, event)) {
                   selectIndex(elem, currentIdx);
                 }
@@ -90,7 +88,7 @@ function renderItems(elem) {
               /* Cannot use onclick, as onblur will close the element, and prevent
                * onClick from firing.
                */
-              onmousedown={(event) => {
+              onMousedown={(event) => {
                 if (leftClick(event)) {
                   elem.chooseCurrentSelection();
                   event.preventDefault();
@@ -124,8 +122,7 @@ function wrapIndex(elem, index) {
   return newIndex % len;
 }
 
-const definition = {
-
+export default define('pf-mention-list', {
   prototype: {
     selectNext() {
       const newIndex = wrapIndex(this, this.selectedIndex + 1);
@@ -167,12 +164,12 @@ const definition = {
       <div>
         <style>{shadowStyles.toString()}</style>
         <div className={classes}>
-          <pf-scrollable
+          <Scrollable
             className={styles.scrollable}
             ref={(ref) => { elem._scrollable = ref; }}
           >
             {renderItems(elem)}
-          </pf-scrollable>
+          </Scrollable>
         </div>
       </div>
     );
@@ -185,9 +182,4 @@ const definition = {
     }),
     ref: localProp.reference(),
   },
-};
-
-/* The constructor for our component */
-export default define('pf-mention-list', definition);
-
-export { definition };
+});

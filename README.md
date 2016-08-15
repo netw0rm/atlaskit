@@ -104,6 +104,7 @@ If you want to check that webpack is correctly bundling your component, you can 
 npm run prepublish/single my-component-name
 ```
 This will build the component and place the generated bundle under `packages/my-component-name/dist/`.
+
 If you pass the `--bundle-deps` flag it will bundle all the dependencies of the component:
 
 ```

@@ -4,7 +4,7 @@ import hostStyle from './host.less';
 import { vdom, prop, define } from 'skatejs';
 import cx from 'classnames';
 import shadowStyles from './shadow.less';
-import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer'; // eslint-disable-line no-unused-vars, max-len
+import Layer from 'ak-layer';
 import Blanket from 'ak-blanket';
 
 /**
@@ -13,39 +13,37 @@ import Blanket from 'ak-blanket';
  * @example @html <ak-editor-popup target="#target"></ak-editor-popup>
  * @example @js import Popup from 'ak-editor-popup';
  * const myPopup = new Popup();
- *
  */
-const definition = {
+export default define('ak-editor-popup', {
   render(elem) {
     const styles = {};
-
     return (
       <div
-        onak-blanket-click={() => {
+        on-ak-blanket-click={() => {
           elem.open = !elem.open;
         }}
-        class={cx({
+        className={cx({
           [hostStyle.locals.akEditorPopup]: !elem.open,
         })}
       >
         <style>{hostStyle.toString()}</style>
         {elem.open ? <Blanket clickable /> : null}
-        <ak-layer
+        <Layer
           open={elem.open}
           position="bottom center"
           attachment={elem.constrain}
           target={elem.target}
-          onRender={(layer) => {
+          onRender={layer => {
             if (elem.open && layer.alignment) {
               elem.positioned = true;
             }
           }}
         >
           <style>{shadowStyles.toString()}</style>
-          <div class={shadowStyles.locals.popup} style={styles}>
-            <slot />
+          <div className={shadowStyles.locals.popup} style={styles}>
+            <slot style={{ display: 'flex' }} />
           </div>
-        </ak-layer>
+        </Layer>
       </div>
     );
   },
@@ -60,10 +58,7 @@ const definition = {
      * @example @html <ak-editor-popup open></ak-editor-popup>
      * @example @js dialog.open = true;
      */
-    open: prop.boolean({
-      attribute: true,
-      default: false,
-    }),
+    open: prop.boolean({ attribute: true }),
     /**
      * @description Target of an -popup.
      * Selector or element on a page relative to which -popup should be positioned
@@ -74,10 +69,6 @@ const definition = {
      * @example @js dialog.target = document.body.querySelector('#target');
      * @example @js dialog.target = '#target'
      */
-    target: {
-      attribute: true,
-    },
+    target: { attribute: true },
   },
-};
-
-export default define('ak-editor-popup', definition);
+});

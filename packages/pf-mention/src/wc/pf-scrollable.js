@@ -1,10 +1,8 @@
 import 'style!../host.less';
 import { localProp } from './skate-local-props';
+import { define, vdom } from 'skatejs';
 
-import { define, vdom, prop, emit, state } from 'skatejs'; // eslint-disable-line no-unused-vars
-
-const definition = {
-
+export default define('pf-scrollable', {
   prototype: {
     reveal(child) {
       if (child) {
@@ -34,9 +32,4 @@ const definition = {
   props: {
     ref: localProp.reference(),
   },
-};
-
-/* The constructor for our component */
-export default define('pf-scrollable', definition);
-
-export { definition };
+});

@@ -118,7 +118,9 @@ describe('ak-button', () => {
       });
 
       describe('onclick event', () => {
-        it('should not be triggered when button is clicked', () => {
+        // skip this test for ie11
+        const isIE11 = navigator.userAgent.indexOf('rv:11.0') !== -1;
+        (isIE11 ? it.skip : it)('should not be triggered when button is clicked', () => {
           // disable this test on ie11 until we find a way to make this test green
           if (!(/rv:11.0/i.test(window.navigator.userAgent))) {
             const onclick = sinon.spy();

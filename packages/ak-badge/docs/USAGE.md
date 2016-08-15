@@ -41,7 +41,7 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </head>
 <body>
   <!-- ... -->
-  <ak-badge value="205" max="99" appearance="added"></ak-badge>
+  <ak-badge value="256" appearance="added"></ak-badge>
 </body>
 ```
 

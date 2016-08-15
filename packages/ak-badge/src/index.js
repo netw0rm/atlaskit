@@ -27,6 +27,9 @@ const definition = {
       if (elem.max > 0 && elem.value > elem.max) {
         return `${elem.max}+`;
       }
+      if (elem.value === Infinity) {
+        return '\u221E';
+      }
       return elem.value;
     })();
     const classes = classNames([shadowStyles.locals.value, shadowStyles.locals[elem.appearance]]);
@@ -57,11 +60,11 @@ const definition = {
      * @memberof AkBadge
      * @instance
      * @type {number}
-     * @default -1
+     * @default 99
      */
     max: prop.number({
       attribute: true,
-      default: -1,
+      default: 99,
     }),
     /**
      * @description Affects the visual style of the badge.

@@ -41,7 +41,7 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </head>
 <body>
   <!-- ... -->
-  <ak-badge value="205" max="99" appearance="added"></ak-badge>
+  <ak-badge value="256" appearance="added"></ak-badge>
 </body>
 ```
 
@@ -81,7 +81,7 @@ The max value to display.
 If value is 100, and max is 50, "50+" will be displayed
 
 **Kind**: instance property of AkBadge  
-**Default**: `-1`  
+**Default**: `99`  
 ### `akBadge.appearance` : string
 Affects the visual style of the badge.
 Allowed values are: 'default', 'primary', 'important', 'added', 'removed'.

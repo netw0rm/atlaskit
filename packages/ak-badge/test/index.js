@@ -32,6 +32,17 @@ describe('ak-badge', () => {
         done();
       }, 0);
     });
+    it('should show show Infinity as the ∞ character', (done) => {
+      const component = new AkBadge();
+      component.value = Infinity;
+      component.max = Infinity;
+
+      setTimeout(() => {
+        const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
+        expect(html).to.match(/∞/);
+        done();
+      }, 0);
+    });
     it('should fire an event when changed', () => {
       let changed = false;
       const component = new AkBadge();
@@ -45,10 +56,9 @@ describe('ak-badge', () => {
     });
   });
   describe('max property', () => {
-    it('should constrain the value when set', (done) => {
+    it('should constrain to 99+ when not specified', (done) => {
       const component = new AkBadge();
-      component.max = 99;
-      component.value = 111;
+      component.value = 101;
 
       setTimeout(() => {
         const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
@@ -56,14 +66,25 @@ describe('ak-badge', () => {
         done();
       }, 0);
     });
-    it('should not fire if equal to value', (done) => {
+    it('should constrain the value when set', (done) => {
       const component = new AkBadge();
-      component.max = 99;
-      component.value = 99;
+      component.max = 100;
+      component.value = 101;
 
       setTimeout(() => {
-        const el = component[symbols.shadowRoot].querySelector(valueSelector);
-        expect(el).to.not.match(/99\+/);
+        const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
+        expect(html).to.match(/100\+/);
+        done();
+      }, 0);
+    });
+    it('should not fire if equal to value', (done) => {
+      const component = new AkBadge();
+      component.max = 100;
+      component.value = 100;
+
+      setTimeout(() => {
+        const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
+        expect(html).to.not.match(/100\+/);
         done();
       }, 0);
     });

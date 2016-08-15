@@ -9,6 +9,7 @@ Object.assign(standardConfig.entry, {
 });
 
 if (!shouldBundleDependencies) {
+  // matches any non-relative component
   standardConfig.externals = [/^[^.]/];
 }
 

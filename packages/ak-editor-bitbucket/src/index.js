@@ -18,17 +18,12 @@ import { hyperlinkTransformer, markdownTransformer } from './paste-handlers';
 import BlockTypePlugin from 'atlassian-editorkit-block-type-plugin';
 import invert from 'lodash.invert';
 
-const contentClassName = `__content__${Date.now()}`;
-const initEditorSymbol = '__init_editor__';
-const pmSymbol = '__pm__';
 const readySymbol = '__ready__';
 
 export default define('ak-editor-bitbucket', {
   rendered(elem) {
     if (!elem[readySymbol]) {
       elem[readySymbol] = true;
-      elem[initEditorSymbol]();
-      emit(elem, 'ready');
 
       const img = document.createElement('img');
       img.src = 'https://design.atlassian.com/images/brand/logo-21.png';
@@ -40,9 +35,6 @@ export default define('ak-editor-bitbucket', {
     return (
       <div>
         <div skip>
-          <div class="prosemirror" />
-          {/* <input />
-          <iframe src="http://w3schools.com" /> */}
           <div class="modify-me" skip></div>
         </div>
         <button onclick={() => elem.abc = 'foo'}>foo</button>
@@ -52,27 +44,5 @@ export default define('ak-editor-bitbucket', {
 
   props: {
     abc: prop.string({ attribute: true }),
-  },
-
-  prototype: {
-    [initEditorSymbol]() {
-      const contentElement = this[symbols.shadowRoot].querySelector(`.prosemirror`);
-      let blockTypePluginInstance;
-      const pm = new ProseMirror({
-        place: contentElement,
-        doc: markdownParser(schema).parse(this.defaultValue),
-        plugins: [
-          inputRules,
-          new Plugin(
-            class BlockTypePluginDecorator {
-              constructor(_pm) {
-                blockTypePluginInstance = new BlockTypePlugin(_pm);
-                return blockTypePluginInstance;
-              }
-            }
-          ),
-        ],
-      });
-    },
   },
 });

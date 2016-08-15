@@ -4,6 +4,12 @@ import AkTabsTab from '../src/children/tab.js';
 import AkTabs from '../src/index.js';
 import { name } from '../package.json';
 
+import {
+  labelsContainer,
+  buttonContainer,
+  tabLabel,
+} from '../src/internal/symbols';
+
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect; // eslint-disable-line no-unused-vars
@@ -73,6 +79,44 @@ describe('ak-tabs', () => {
     containerWidth = '';
   }
 
+  function getLabelForTab(tab) {
+    return tab[tabLabel];
+  }
+
+  function getTabLabels() {
+    const labels = tabsElement[labelsContainer].children;
+    labels.pop(); // Remove More dropdown from list
+    return labels;
+  }
+
+  function getLabelContent(labelEl) {
+    return labelEl.querySelector('span').innerHTML;
+  }
+
+  function getSelectedTab() {
+    return tabElements.find(el => el.selected);
+  }
+
+  function getElementWidth(el) {
+    return el.getBoundingClientRect().width;
+  }
+
+  function hasOverflow(el) {
+    return el.scrollWidth > el.clientWidth;
+  }
+
+  function isVisible(el) {
+    return getComputedStyle(el).visibility !== 'hidden';
+  }
+
+  function hasVisibleDropdown(tabsEl) {
+    return isVisible(tabsEl[buttonContainer]);
+  }
+
+  function getVisibleTabs(tabsEl) {
+    return tabsEl._visibleTabs; // eslint-disable-line no-underscore-dangle
+  }
+
   describe('Initialisation', () => {
     it('can be initialised with constructor', () => {
       let component;
@@ -94,6 +138,10 @@ describe('ak-tabs', () => {
           'Empty Tabs component should have no height.'
         );
       });
+
+      it('does not show any labels', () => {
+        expect(getTabLabels().length).to.equal(0, 'There should be no labels.');
+      });
     });
 
     describe('with one child', () => {
@@ -107,6 +155,19 @@ describe('ak-tabs', () => {
         it('selects the first child', () => {
           expect(tabElements[0].selected).to.equal(true);
         });
+
+        it('displays the label for the selected tab', () => {
+          expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
+            'Label for selected tab should be visible.'
+          );
+        });
+
+        it('displays one label with the correct label text', () => {
+          expect(getTabLabels().length).to.equal(1,
+            'There should only be one label.'
+          );
+          expect(getLabelContent(getLabelForTab(tabElements[0]))).to.equal(DEFAULT_LABEL);
+        });
       });
 
       describe('that is not selected', () => {
@@ -119,24 +180,62 @@ describe('ak-tabs', () => {
         it('selects the first child', () => {
           expect(tabElements[0].selected).to.equal(true);
         });
+
+        it('displays the label for the selected tab', () => {
+          expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
+            'Label for selected tab should be visible.'
+          );
+        });
+
+        it('displays one label with the correct label text', () => {
+          expect(getTabLabels().length).to.equal(1,
+            'There should only be one label.'
+          );
+          expect(getLabelContent(getLabelForTab(tabElements[0]))).to.equal(DEFAULT_LABEL);
+        });
       });
 
-      describe('that is very long', () => {
+      describe('that is wider than its container', () => {
+        beforeEach(done => {
+          tabs = [{
+            selected: true,
+            label: `Long label text. Long label text. Long label text. Long label text.
+                    Long label text. Long label text. Long label text. Long label text.
+                    Long label text. Long label text. Long label text. Long label text.
+                    Long label text. Long label text. Long label text. Long label text.`,
+          }];
+          containerWidth = '300px';
+          setupTabs(done);
+        });
+        afterEach(cleanupTabs);
+
         it('truncates the label to fit the container', () => {
-          // TODO
+          const container = tabsElement[labelsContainer];
+          const label = getLabelForTab(getSelectedTab());
+
+          const containerElWidth = getElementWidth(container);
+          const tabLabelWidth = getElementWidth(label);
+
+          expect(hasOverflow(label)).to.equal(true, 'Label should be truncated.');
+          expect(tabLabelWidth).to.be.at.most(containerElWidth,
+            'Label should be smaller than the container.');
         });
 
         it('does not display the More dropdown', () => {
-          // TODO
+          expect(hasVisibleDropdown(tabsElement)).to.equal(false,
+            'Dropdown should not be visible.'
+          );
         });
       });
     });
 
-    describe('with many children', () => {
+    describe('with eight children', () => {
+      const NUM_CHILDREN = 8;
       describe('with no overflow', () => {
         describe('with the first child selected', () => {
           beforeEach((done) => {
             tabs = [{ selected: true }, {}, {}, {}, {}, {}, {}, {}];
+            containerWidth = '9999px';
             setupTabs(done);
           });
           afterEach(cleanupTabs);
@@ -145,8 +244,22 @@ describe('ak-tabs', () => {
             expect(tabElements[0].selected).to.equal(true);
           });
 
+          it('displays the label for the selected tab', () => {
+            expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
+              'Label for selected tab should be visible.'
+            );
+          });
+
+          it(`has ${NUM_CHILDREN} labels`, () => {
+            expect(getTabLabels().length).to.equal(NUM_CHILDREN,
+              `Should have ${NUM_CHILDREN} labels.`
+            );
+          });
+
           it('does not show the More dropdown', () => {
-            // TODO
+            expect(hasVisibleDropdown(tabsElement)).to.equal(false,
+              'Dropdown should not be visible.'
+            );
           });
         });
       });
@@ -165,34 +278,135 @@ describe('ak-tabs', () => {
           });
 
           it('displays the label for the selected tab', () => {
-            // TODO
+            expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
+              'Label for selected tab should be visible.'
+            );
           });
 
           it('shows the More dropdown', () => {
-            // TODO
+            expect(hasVisibleDropdown(tabsElement)).to.equal(true,
+              'Dropdown should be visible.'
+            );
           });
 
           it('pulls some labels into the dropdown menu', () => {
-            // TODO
+            const numVisibleTabs = getVisibleTabs(tabsElement).length;
+            const numTabs = tabElements.length;
+            expect(numVisibleTabs).to.be.below(numTabs,
+              'Some tabs should not be visible.'
+            );
+            // TODO: Ensure that dropdown menu contains the hidden items
           });
         });
       });
     });
   });
 
-  describe('Events', () => {
-    it('emits the "ak-tabs-tab-select" event if no initial tab is selected', () => {
-      // TODO
+  describe('Behaviour', () => {
+    beforeEach((done) => {
+      tabs = [{}, {}];
+      setupTabs(done);
+    });
+    afterEach(cleanupTabs);
+
+    describe('with one selected child', () => {
+      it('emits the tab selection event on initialisation', () => {
+        // TODO
+      });
+
+      it('does not emit any events when the tab is selected', () => {
+        // TODO
+      });
+
+      it('updates the label correctly when the property is set', () => {
+
+      });
+
+      it('updates the label correctly whe the attribute is set', () => {
+
+      });
+    });
+
+    describe('with three children and no overflow, with the second selected', () => {
+      it('emits the tab selection event on initialisation', () => {
+        // TODO test that the correct tab is selected
+      });
+
+      it('selects the first tab when clicked', () => {
+        // TODO test for selection
+        // TODO test for selection and deselection events
+      });
+
+      it('selects the first tab via keyboard nav', () => {
+        // TODO test for selection
+        // TODO test for selection and deselection events
+      });
+
+      it('selects the first tab when the property is set', () => {
+
+      });
+
+      it('selects the first tab when the attribute is set', () => {
+
+      });
+    });
+
+    describe('with eight children and overflow, with the first selected', () => {
+      it('emits the tab selection event on initialisation', () => {
+        // TODO test that the correct tab is selected
+      });
+
+      it('selects the last tab when clicked', () => {
+        // TODO test for selection
+        // TODO test for selection and deselection events
+      });
+
+      it('selects the last tab via keyboard nav', () => {
+        // TODO test for selection
+        // TODO test for selection and deselection events
+      });
     });
   });
 
   describe('Keyboard navigation', () => {
     describe('Tabbing', () => {
-      // TODO
+      describe('with two tabs with tabbable content, with the first tab selected', () => {
+        it('tabbing from the first tab label does not tab to the second label', () => {
+
+        });
+
+        it('tabbing from the focused label focuses the tabbable content', () => {
+
+        });
+      });
     });
 
     describe('with arrow keys', () => {
-      // TODO
+      describe('with a single child', () => {
+        it('pressing the LEFT arrow leaves focus on the label', () => {
+
+        });
+
+        it('pressing the RIGHT arrow leaves focus on the label', () => {
+
+        });
+      });
+
+      describe('with three children, with the second selected and focused', () => {
+        it('pressing the LEFT arrow selects the first tab', () => {
+
+        });
+
+        it('pressing the RIGHT arrow selects the third tab', () => {
+
+        });
+      });
+
+      describe('with eight children and overflow, with the last selected', () => {
+        it('pressing the LEFT arrow selects the seventh tab', () => {
+
+        });
+      });
     });
   });
 });

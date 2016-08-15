@@ -4,10 +4,15 @@ const standardConfig = require('./webpack.config.base.js');
 const argv = require('minimist')(process.argv.slice(2));
 
 const shouldBundleDependencies = !!argv['bundle-deps'];
+const libraryTarget = argv['library-target'];
 
 Object.assign(standardConfig.entry, {
   'dist/bundle.min.js': standardConfig.entry['dist/bundle.js'],
 });
+
+if (libraryTarget) {
+  standardConfig.output.libraryTarget = libraryTarget;
+}
 
 if (!shouldBundleDependencies) {
   // Only bundle dependencies that start with '.'.

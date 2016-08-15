@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar-block-type",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "An block type dropdown selector",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -14,14 +14,19 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "akutil-react": "*",
-    "akutil-shared-styles": "*",
+    "akutil-shared-styles": "^33.0.2",
     "classnames": "^2.2.5",
     "ak-editor-button": "2.0.0",
-    "skatejs": "1.0.0-beta.12"
+    "ak-blanket": "^1.0.0",
+    "skatejs": "^1.0.0"
   },
   "devDependencies": {
-    "ak-editor-toolbar": "2.0.0"
+    "akutil-react": "^0.0.4",
+    "ak-editor-toolbar": "^2.0.0",
+    "ak-editor-content": "^2.0.0",
+    "atlassian-editorkit-block-type-plugin": "0.0.7",
+    "lodash.invert": "^4.2.0",
+    "prosemirror": "^0.9.1"
   },
   "repository": {
     "type": "git",

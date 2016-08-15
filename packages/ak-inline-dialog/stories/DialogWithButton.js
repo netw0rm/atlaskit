@@ -1,6 +1,5 @@
 import reactify from 'akutil-react';
 import AkInlineDialog from '../src/index';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import styles from 'style!./../src/host.less';
 
 const { React, ReactDOM } = window;
@@ -58,6 +57,7 @@ class DialogWithButton extends Component {
           target="#target"
           attachment={this.props.attachTo}
           position={this.props.position}
+          hasBlanket={false}
         >
           <button
             onClick={this.handleClick}

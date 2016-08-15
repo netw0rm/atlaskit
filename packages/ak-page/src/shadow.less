@@ -1,0 +1,19 @@
+.navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.main {
+  margin-left: 80px;
+  transition: margin-left 200ms;
+
+  .navigation-open & {
+    margin-left: 300px;
+  }
+
+  .main-fixed {
+    max-width: 60vw;
+    margin: auto;
+  }
+}

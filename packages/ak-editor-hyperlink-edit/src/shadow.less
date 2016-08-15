@@ -1,0 +1,31 @@
+@import 'shared-variables.less';
+
+.root slot {
+  display: flex;
+}
+
+.button,
+.textInput,
+.separator {
+  margin-left: 10px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.textInput {
+  flex-grow: 1
+}
+
+.button {
+  width: 20px;
+  height: 20px;
+}
+
+.separator {
+  background: grey;
+  width: 1px;
+  height: 20px;
+  display: inline-block;
+}

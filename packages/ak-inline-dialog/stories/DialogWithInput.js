@@ -1,6 +1,5 @@
 import reactify from 'akutil-react';
 import AkInlineDialog from '../src/index';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import styles from 'style!./../src/host.less';
 
 const { React, ReactDOM } = window;
@@ -61,6 +60,7 @@ class DialogWithInput extends Component {
           open={this.state.open}
           target="#target"
           position="top left"
+          hasBlanket={false}
         >
           some text in inline-dialog
         </Dialog>

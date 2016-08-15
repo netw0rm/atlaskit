@@ -1,10 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import { name } from '../package.json';
-const { React } = window; // eslint-disable-line no-unused-vars
 
 import DialogWithInput from './DialogWithInput.js';
 import DialogWithButton from './DialogWithButton.js';
+import DialogWithBlanket from './DialogWithBlanket.js';
 
 storiesOf(name, module)
   .add('All dialogs together, open on click', () => (
@@ -184,4 +183,34 @@ storiesOf(name, module)
   ))
   .add('Dialog is showing on input onchange', () => (
     <DialogWithInput />
+  ))
+  .add('Dialog with the blanket - transparent', () => (
+    <div
+      id="target"
+      style={{
+        width: '320px',
+        height: '200px',
+        background: '#ccc',
+        margin: '100px auto',
+        position: 'relative',
+        padding: '0px',
+      }}
+    >
+      <DialogWithBlanket hasBlanket />
+    </div>
+  ))
+  .add('Dialog with the blanket - tinted', () => (
+    <div
+      id="target"
+      style={{
+        width: '320px',
+        height: '200px',
+        background: '#ccc',
+        margin: '100px auto',
+        position: 'relative',
+        padding: '0px',
+      }}
+    >
+      <DialogWithBlanket hasBlanket blanketTinted />
+    </div>
   ));

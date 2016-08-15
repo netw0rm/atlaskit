@@ -23,6 +23,7 @@ pipelines:
     - step:
         script:
           - npm config set progress false
+          - ./build/bin/setup_hosts.sh
           - npm install
           - npm run validate/package.json
           - npm run lint

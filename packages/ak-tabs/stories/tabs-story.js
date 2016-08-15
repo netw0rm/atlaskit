@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import Tabs from '../src/index';
 const { React, ReactDOM } = window;
@@ -8,6 +8,14 @@ const Component = reactify(Tabs, {
   React,
   ReactDOM,
 });
+
+function selectHandler(e) {
+  action(`The "${e.detail.tab.label}" tab was selected.`)();
+}
+
+function deselectHandler(e) {
+  action(`The "${e.detail.tab.label}" tab was deselected.`)();
+}
 
 storiesOf(name, module)
   .add('simple ak-tabs', () => (
@@ -179,4 +187,24 @@ storiesOf(name, module)
         <p>Some text here with a <a href="#">link</a>.</p>
       </ak-tabs-tab>
     </Component>
-  ));
+  ))
+  .add('ak-tabs with event listeners', () => {
+    window.removeEventListener('ak-tabs-tab-select', selectHandler);
+    window.removeEventListener('ak-tabs-tab-deselect', deselectHandler);
+
+    window.addEventListener('ak-tabs-tab-select', selectHandler);
+    window.addEventListener('ak-tabs-tab-deselect', deselectHandler);
+
+    return (
+      <Component>
+        <ak-tabs-tab selected label="Tab 1">
+          <h1>Tab 1</h1>
+          <p>An event listener will log output to the console when this tab is selected.</p>
+        </ak-tabs-tab>
+        <ak-tabs-tab label="Tab 2">
+          <h1>Tab 2</h1>
+          <p>An event listener will log output to the console when this tab is selected.</p>
+        </ak-tabs-tab>
+      </Component>
+    );
+  });

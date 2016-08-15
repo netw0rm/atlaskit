@@ -48,7 +48,7 @@ describe('ak-button', () => {
     const event = new CustomEvent('mousedown', {});
     sinon.spy(event, 'preventDefault');
     button.dispatchEvent(event);
-    expect(event.preventDefault.called).to.be.true;
+    expect(event.preventDefault).to.have.been.called;
   });
 
   describe('attributes', () => {
@@ -68,7 +68,7 @@ describe('ak-button', () => {
             props(component, { appearance: testCase.appearance });
             const buttonClasses = getShadowButtonElem(component).classList;
             expect(buttonClasses).to.have.lengthOf(1);
-            expect(buttonClasses[0]).to.equals(shadowStyles.locals.akButton);
+            expect(buttonClasses[0]).to.equal(shadowStyles.locals.akButton);
           });
         });
       });
@@ -124,7 +124,7 @@ describe('ak-button', () => {
             const onclick = sinon.spy();
             props(component, { onclick });
             getShadowButtonElem(component).click();
-            expect(onclick.called).to.equals(false);
+            expect(onclick).to.have.been.called;
           }
         });
 
@@ -136,7 +136,7 @@ describe('ak-button', () => {
 
           props(component, { onclick });
           div.click();
-          expect(onclick.called).to.equals(false);
+          expect(onclick).to.have.been.called;
         });
       });
     });

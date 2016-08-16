@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import List from '../src/list.js';
+import { List } from '../src/index.js';
 import { symbols } from 'skatejs';
 
 chai.use(chaiAsPromised);
@@ -21,7 +21,6 @@ describe('ak-dropdown-list:', () => {
       // testing to see that skate did its job as expected
       // (in case some breaking changes in it that affect rendering)
       setTimeout(() => {
-        expect(component.tagName.toLowerCase()).to.equal('ak-dropdown-list');
         expect(component[symbols.shadowRoot]).to.be.defined;
         expect(component[symbols.shadowRoot].firstChild).to.be.defined;
       });

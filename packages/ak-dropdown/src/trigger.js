@@ -1,4 +1,4 @@
-import { emit, vdom, define, prop } from 'skatejs';
+import { emit, vdom, prop } from 'skatejs';
 import shadowTriggerStyles from './shadow-trigger.less';
 import classNames from 'classnames';
 import keyCode from 'keycode';
@@ -34,7 +34,7 @@ function handleClick(elem) {
   };
 }
 
-export default define('ak-dropdown-trigger', {
+export default {
   render(elem) {
     if (isOnlyOneTextNode(elem)) {
       const classes = classNames(
@@ -67,4 +67,4 @@ export default define('ak-dropdown-trigger', {
       attribute: true,
     }),
   },
-});
+};

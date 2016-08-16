@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import Trigger from '../src/trigger.js';
+import { Trigger } from '../src/index.js';
 import keyCode from 'keycode';
 import { symbols } from 'skatejs';
 
@@ -22,7 +22,6 @@ describe('ak-dropdown-trigger:', () => {
       // testing to see that skate did its job as expected
       // (in case some breaking changes in it that affect rendering)
       setTimeout(() => {
-        expect(component.tagName.toLowerCase()).to.equal('ak-dropdown-trigger');
         expect(component[symbols.shadowRoot]).to.be.defined;
         expect(component[symbols.shadowRoot].firstChild).to.be.defined;
       });

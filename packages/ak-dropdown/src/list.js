@@ -1,10 +1,10 @@
-import { vdom, define, prop } from 'skatejs';
+import { vdom, prop } from 'skatejs';
 import shadowListStyles from './shadow-list.less';
-import 'ak-layer';
+import Layer from 'ak-layer';
 
 const listWidthGap = 10;
 
-export default define('ak-dropdown-list', {
+export default {
   render(elem) {
     if (!elem.open) {
       return '';
@@ -15,7 +15,7 @@ export default define('ak-dropdown-list', {
     };
 
     return (
-      <ak-layer
+      <Layer
         position="bottom left"
         target={target}
         ref={(layer) => {
@@ -35,7 +35,7 @@ export default define('ak-dropdown-list', {
           <style>{shadowListStyles.toString()}</style>
           <slot />
         </div>
-      </ak-layer>
+      </Layer>
     );
   },
   props: {
@@ -43,4 +43,4 @@ export default define('ak-dropdown-list', {
       attribute: true,
     }),
   },
-});
+};

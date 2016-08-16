@@ -1,4 +1,4 @@
-import { emit, vdom, define, prop } from 'skatejs';
+import { emit, vdom, prop } from 'skatejs';
 import shadowItemStyles from './shadow-item.less';
 import classNames from 'classnames';
 import keyCode from 'keycode';
@@ -41,7 +41,7 @@ function handleKeyDown(elem) {
   };
 }
 
-export default define('ak-dropdown-item', {
+export default {
   render(elem) {
     const classes = classNames(
       [shadowItemStyles.locals.item, {
@@ -97,4 +97,4 @@ export default define('ak-dropdown-item', {
       },
     }),
   },
-});
+};

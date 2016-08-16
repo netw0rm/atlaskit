@@ -2,9 +2,9 @@
 import 'style!./host.less';
 
 import { vdom, define } from 'skatejs';
-import './item';
-import './list';
-import './trigger';
+import ItemDefinition from './item';
+import ListDefinition from './list';
+import TriggerDefinition from './trigger';
 import keyCode from 'keycode';
 
 function toggleDialog(elem, value) {
@@ -102,6 +102,10 @@ function handleKeyPress(elem) {
     }
   };
 }
+
+export const Item = define('ak-dropdown-item', ItemDefinition);
+export const List = define('ak-dropdown-list', ListDefinition);
+export const Trigger = define('ak-dropdown-trigger', TriggerDefinition);
 
 export default define('ak-dropdown', {
   attached(elem) {

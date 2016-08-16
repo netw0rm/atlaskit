@@ -5202,6 +5202,11 @@
       "from": "over@>=0.0.5 <1.0.0",
       "resolved": "https://registry.npmjs.org/over/-/over-0.0.5.tgz"
     },
+    "package-json-validator": {
+      "version": "0.6.1",
+      "from": "package-json-validator@latest",
+      "resolved": "https://registry.npmjs.org/package-json-validator/-/package-json-validator-0.6.1.tgz"
+    },
     "pad": {
       "version": "1.0.0",
       "from": "pad@>=1.0.0 <2.0.0",

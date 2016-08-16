@@ -3,18 +3,22 @@ import 'style!./host.less';
 import shadowListStyles from './shadow-list.less';
 import { vdom, define, prop } from 'skatejs';
 import ItemDefinition from './item';
-import TriggerDefinition from './trigger';
+import TriggerDefinition, { TriggerButtonDefinition } from './trigger';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
   const trigger = elem.querySelector('ak-dropdown-trigger');
+  const triggerButton = trigger.querySelector('ak-trigger-button');
   const list = elem.querySelectorAll('ak-dropdown-item');
   if ((elem.open !== isOpen)) {
     elem.open = isOpen;
   }
   trigger.opened = isOpen;
+  if (triggerButton) {
+    triggerButton.opened = isOpen;
+  }
   // when the dialog is open the first item element should be focused,
   // properties 'first' and 'last' should be set (TBD: change to :first-child and :last-child)
   // when it's closed everything should be cleared
@@ -103,6 +107,7 @@ function handleKeyPress(elem) {
 
 export const Item = define('ak-dropdown-item', ItemDefinition);
 export const Trigger = define('ak-dropdown-trigger', TriggerDefinition);
+export const TriggerButton = define('ak-trigger-button', TriggerButtonDefinition);
 
 export default define('ak-dropdown', {
   attached(elem) {

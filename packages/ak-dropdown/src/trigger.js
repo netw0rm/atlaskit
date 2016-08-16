@@ -3,13 +3,6 @@ import shadowTriggerStyles from './shadow-trigger.less';
 import classNames from 'classnames';
 import keyCode from 'keycode';
 
-function isOnlyOneTextNode(elem) {
-  return elem.childNodes && (
-      !elem.childNodes.length ||
-      (elem.childNodes.length === 1 && elem.childNodes[0].nodeType === 3)
-    );
-}
-
 function handleKeyDown(elem) {
   return (event) => {
     event.preventDefault();
@@ -34,30 +27,41 @@ function handleClick(elem) {
   };
 }
 
+// this is a temporary button, in the future dropdown will be able to use a proper button
+export const TriggerButtonDefinition = {
+  render(elem) {
+    const classes = classNames(
+      [shadowTriggerStyles.locals.trigger, {
+        [`${shadowTriggerStyles.locals.disabled}`]: elem.disabled,
+        [`${shadowTriggerStyles.locals.opened}`]: elem.opened,
+      }]
+    );
+
+    return (
+      <div class={classes}>
+        <style>{shadowTriggerStyles.toString()}</style>
+        <slot />
+      </div>
+    );
+  },
+  props: {
+    opened: prop.boolean({
+      attribute: true,
+    }),
+  },
+};
+
 export default {
   render(elem) {
-    if (isOnlyOneTextNode(elem)) {
-      const classes = classNames(
-        [shadowTriggerStyles.locals.trigger, {
-          [`${shadowTriggerStyles.locals.disabled}`]: elem.disabled,
-          [`${shadowTriggerStyles.locals.opened}`]: elem.opened,
-        }]
-      );
-
-      return (
-        <div
-          class={classes}
-          on-click={handleClick(elem)}
-          on-keydown={handleKeyDown(elem)}
-          tabindex="0"
-        >
-          <style>{shadowTriggerStyles.toString()}</style>
-          <slot />
-        </div>
-      );
-    }
-
-    return <slot on-click={handleClick(elem)} />;
+    return (
+      <div
+        on-click={handleClick(elem)}
+        on-keydown={handleKeyDown(elem)}
+        tabindex="0"
+      >
+        <slot />
+      </div>
+    );
   },
   props: {
     disabled: prop.boolean({

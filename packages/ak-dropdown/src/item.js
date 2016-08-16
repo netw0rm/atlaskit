@@ -70,12 +70,10 @@ export default {
   },
   rendered(elem) {
     if (elem.focused) {
-      elem.item.focus();
+      setTimeout(() => elem.item.focus());
     }
   },
   props: {
-    // can't use disable, since skate would prevent bubbling,
-    // which I need in order to inform parent that an element is focused
     disabled: prop.boolean({
       attribute: true,
     }),
@@ -90,11 +88,6 @@ export default {
     }),
     focused: prop.boolean({
       attribute: true,
-      set(elem, data) {
-        if (data.newValue && elem && elem.item) {
-          elem.item.focus();
-        }
-      },
     }),
   },
 };

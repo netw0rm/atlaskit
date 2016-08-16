@@ -15,13 +15,13 @@
     "ak-page": "^1.0.0",
     "ak-icon": "^1.0.0",
     "classnames": "^2.2.5",
+    "keycode": "^2.1.2",
     "skatejs": "^1.0.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
     "akutil-react": "^0.0.3",
-    "keycode": "^2.1.2",
     "react-lorem-component": "^0.10.0"
   },
   "repository": {

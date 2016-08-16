@@ -55,8 +55,7 @@ const ReactComponent = reactify(AkBadge, {});
 
 ReactDOM.render(<ReactComponent />, container);
 ```
-## Component API
-
+## AkBadge API
 * Properties
 
     *  [`akBadge.value`](#AkBadge+value) : number

@@ -135,7 +135,6 @@ export default define('ak-editor-bitbucket', {
     [initEditorSymbol]() {
       const elem = this;
       const contentElement = this[symbols.shadowRoot].querySelector(`.${contentClassName}`);
-      let blockTypePluginInstance;
 
       schema.nodes.code_block.group += ` ${HyperLinkPlugin.DISABLED_GROUP}`;
       schema.nodes.code_block.group += ` ${ImageUploadPlugin.DISABLED_GROUP}`;
@@ -174,23 +173,24 @@ export default define('ak-editor-bitbucket', {
           new Plugin(
             class BlockTypePluginDecorator {
               constructor(_pm) {
-                blockTypePluginInstance = new BlockTypePlugin(_pm);
+                const blockTypePluginInstance = new BlockTypePlugin(_pm);
+
+                blockTypePluginInstance.onChange(state => {
+                  const name = state.selectedBlockType;
+                  const blockType = prosemirrorBlockToToolbarMap[name];
+
+                  this.selectedFont = blockType;
+                  this.canChangeBlockType = state.enabled;
+                });
+
+                elem.blockTypePluginInstance = blockTypePluginInstance;
+
                 return blockTypePluginInstance;
               }
             }
           ),
         ],
       });
-
-      blockTypePluginInstance.onChange(state => {
-        const name = state.selectedBlockType;
-        const blockType = prosemirrorBlockToToolbarMap[name];
-
-        this.selectedFont = blockType;
-        this.canChangeBlockType = state.enabled;
-      });
-
-      this.blockTypePluginInstance = blockTypePluginInstance;
 
       // avoid invoking keyboard shortcuts in BB
       pm.wrapper.addEventListener('keypress', e => e.stopPropagation());

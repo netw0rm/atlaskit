@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkTabsTab from '../src/children/tab.js';
+import sinon from 'sinon';
+import AkTabsTab, { events } from '../src/children/tab.js';
 import AkTabs from '../src/index.js';
 import { name } from '../package.json';
 
@@ -59,8 +60,8 @@ describe('ak-tabs', () => {
     return container;
   }
 
-  function afterMutations(cb) {
-    setTimeout(cb, 0);
+  function afterMutations(cb, delay) {
+    setTimeout(cb, delay || 10);
   }
 
   function setupTabs(cb) {
@@ -115,6 +116,10 @@ describe('ak-tabs', () => {
 
   function getVisibleTabs(tabsEl) {
     return tabsEl._visibleTabs; // eslint-disable-line no-underscore-dangle
+  }
+
+  function click(el) {
+    el.click();
   }
 
   describe('Initialisation', () => {
@@ -233,7 +238,7 @@ describe('ak-tabs', () => {
       const NUM_CHILDREN = 8;
       describe('with no overflow', () => {
         describe('with the first child selected', () => {
-          beforeEach((done) => {
+          beforeEach(done => {
             tabs = [{ selected: true }, {}, {}, {}, {}, {}, {}, {}];
             containerWidth = '9999px';
             setupTabs(done);
@@ -266,7 +271,7 @@ describe('ak-tabs', () => {
 
       describe('with overflow', () => {
         describe('with the last child selected', () => {
-          beforeEach((done) => {
+          beforeEach(done => {
             tabs = [{}, {}, {}, {}, {}, {}, {}, { selected: true }];
             containerWidth = '300px';
             setupTabs(done);
@@ -303,67 +308,225 @@ describe('ak-tabs', () => {
   });
 
   describe('Behaviour', () => {
-    beforeEach((done) => {
-      tabs = [{}, {}];
-      setupTabs(done);
-    });
-    afterEach(cleanupTabs);
+    let selectSpy;
+    let deselectSpy;
 
     describe('with one selected child', () => {
+      beforeEach(done => {
+        selectSpy = sinon.spy();
+        deselectSpy = sinon.spy();
+
+        window.addEventListener(events.EVENT_TAB_SELECT, selectSpy);
+        window.addEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
+
+        tabs = [{ label: 'Tab 1' }];
+        setupTabs(done);
+      });
+      afterEach(() => {
+        window.removeEventListener(events.EVENT_TAB_SELECT, selectSpy);
+        window.removeEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
+        cleanupTabs();
+      });
+
       it('emits the tab selection event on initialisation', () => {
-        // TODO
+        expect(selectSpy.callCount).to.equal(1,
+          'Tab selection event should have been fired on initialisation.'
+        );
+        expect(selectSpy.getCall(0).args[0].detail.tab).to.equal(getSelectedTab(),
+          'The tab selection event should be fired on the selected tab.'
+        );
       });
 
-      it('does not emit any events when the tab is selected', () => {
-        // TODO
+      it('does not emit any events when the tab label is clicked', () => {
+        const label = getLabelForTab(getSelectedTab());
+        click(label);
+        expect(selectSpy.callCount).to.equal(1,
+          'Tab selection event should not be emitted again when trying to select it again.'
+        );
       });
 
-      it('updates the label correctly when the property is set', () => {
+      it('updates the label correctly when the property is set', done => {
+        const tab = getSelectedTab();
+        const label = getLabelForTab(getSelectedTab());
+        const newLabelText = 'New tab label';
 
+        tab.label = newLabelText;
+
+        afterMutations(() => {
+          expect(label.textContent).to.equal(newLabelText,
+            'The tab label should display the new label text.'
+          );
+          done();
+        });
       });
 
-      it('updates the label correctly whe the attribute is set', () => {
+      it('updates the label correctly whe the attribute is set', done => {
+        const tab = getSelectedTab();
+        const label = getLabelForTab(getSelectedTab());
+        const newLabelText = 'New tab label';
 
+        tab.setAttribute('label', newLabelText);
+
+        afterMutations(() => {
+          expect(label.textContent).to.equal(newLabelText,
+            'The tab label should display the new label text.'
+          );
+          done();
+        });
       });
     });
 
     describe('with three children and no overflow, with the second selected', () => {
+      beforeEach(done => {
+        selectSpy = sinon.spy();
+        deselectSpy = sinon.spy();
+
+        window.addEventListener(events.EVENT_TAB_SELECT, selectSpy);
+        window.addEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
+
+        tabs = [
+          { label: 'Tab 1' },
+          { label: 'Tab 2', selected: true },
+          { label: 'Tab 3' },
+        ];
+        containerWidth = '9999px';
+        setupTabs(done);
+      });
+      afterEach(() => {
+        window.removeEventListener(events.EVENT_TAB_SELECT, selectSpy);
+        window.removeEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
+        cleanupTabs();
+      });
+
       it('emits the tab selection event on initialisation', () => {
-        // TODO test that the correct tab is selected
+        expect(selectSpy.callCount).to.equal(1,
+          'Tab selection event should have been fired on initialisation.'
+        );
+        expect(selectSpy.getCall(0).args[0].detail.tab).to.equal(getSelectedTab(),
+          'The tab selection event should be fired on the selected tab.'
+        );
       });
 
-      it('selects the first tab when clicked', () => {
-        // TODO test for selection
-        // TODO test for selection and deselection events
-      });
+      describe('selects the first item', () => {
+        function assertFirstTabSelected(cb) {
+          afterMutations(() => {
+            expect(tabElements[0].selected).to.equal(true, 'Tab 1 should be selected');
+            expect(tabElements[1].selected).to.equal(false, 'Tab 2 should be deselected');
+            expect(tabElements[2].selected).to.equal(false, 'Tab 3 should be deselected');
 
-      it('selects the first tab via keyboard nav', () => {
-        // TODO test for selection
-        // TODO test for selection and deselection events
-      });
+            expect(selectSpy.callCount).to.equal(2,
+              'Tab selection event should have been fired when selecting a tab.'
+            );
+            expect(selectSpy.getCall(1).args[0].detail.tab).to.equal(tabElements[0],
+              'The tab selection event should be fired on the first tab.'
+            );
+            expect(deselectSpy.callCount).to.equal(1,
+              'Tab deselection event should be fired when deselecting a tab.'
+            );
+            expect(deselectSpy.getCall(0).args[0].detail.tab).to.equal(tabElements[1],
+              'The tab deselection event should be fired on the second tab.'
+            );
+            cb();
+          });
+        }
 
-      it('selects the first tab when the property is set', () => {
+        it('when clicked', done => {
+          click(getLabelForTab(tabElements[0]));
+          assertFirstTabSelected(done);
+        });
 
-      });
+        it('via keyboard nav', () => {
+          // TODO test for selection
+          // TODO test for selection and deselection events
+        });
 
-      it('selects the first tab when the attribute is set', () => {
+        it('when the property is set', done => {
+          tabElements[0].selected = true;
+          assertFirstTabSelected(done);
+        });
 
+        it('when the attribute is set', done => {
+          afterMutations(() => {
+            tabElements[0].setAttribute('selected', '');
+            assertFirstTabSelected(done);
+          }, 1000);
+        });
+
+        it('when the selected item is deselected', done => {
+          tabElements[0].selected = false;
+          assertFirstTabSelected(done);
+        });
       });
     });
 
     describe('with eight children and overflow, with the first selected', () => {
+      beforeEach(done => {
+        selectSpy = sinon.spy();
+        deselectSpy = sinon.spy();
+
+        window.addEventListener(events.EVENT_TAB_SELECT, selectSpy);
+        window.addEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
+
+        tabs = [
+          { label: 'Tab 1', selected: true },
+          { label: 'Tab 2' },
+          { label: 'Tab 3' },
+          { label: 'Tab 4' },
+          { label: 'Tab 5' },
+          { label: 'Tab 6' },
+          { label: 'Tab 7' },
+          { label: 'Tab 8' },
+        ];
+        containerWidth = '300px';
+        setupTabs(done);
+      });
+      afterEach(() => {
+        window.removeEventListener(events.EVENT_TAB_SELECT, selectSpy);
+        window.removeEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
+        cleanupTabs();
+      });
+
       it('emits the tab selection event on initialisation', () => {
-        // TODO test that the correct tab is selected
+        expect(selectSpy.callCount).to.equal(1,
+          'Tab selection event should have been fired on initialisation.'
+        );
+        expect(selectSpy.getCall(0).args[0].detail.tab).to.equal(getSelectedTab(),
+          'The tab selection event should be fired on the selected tab.'
+        );
       });
 
-      it('selects the last tab when clicked', () => {
-        // TODO test for selection
-        // TODO test for selection and deselection events
-      });
+      describe('selects the last tab', () => {
+        function assertLastTabSelected(cb) {
+          afterMutations(() => {
+            expect(tabElements[7].selected).to.equal(true, 'Tab 8 should be selected');
+            for (let i = 0; i < 7; i++) {
+              expect(tabElements[i].selected).to.equal(false, `Tab ${i + 1} should be deselected`);
+            }
 
-      it('selects the last tab via keyboard nav', () => {
-        // TODO test for selection
-        // TODO test for selection and deselection events
+            expect(selectSpy.callCount).to.equal(2,
+              'Tab selection event should have been fired when selecting a tab.'
+            );
+            expect(selectSpy.getCall(1).args[0].detail.tab).to.equal(tabElements[7],
+              'The tab selection event should be fired on the first tab.'
+            );
+            expect(deselectSpy.callCount).to.equal(1,
+              'Tab deselection event should be fired when deselecting a tab.'
+            );
+            expect(deselectSpy.getCall(0).args[0].detail.tab).to.equal(tabElements[0],
+              'The tab deselection event should be fired on the first tab.'
+            );
+            cb();
+          });
+        }
+
+        it('when clicked', done => {
+          click(getLabelForTab(tabElements[7]));
+          assertLastTabSelected(done);
+        });
+
+        it('via keyboard nav', () => {
+          // TODO
+        });
       });
     });
   });

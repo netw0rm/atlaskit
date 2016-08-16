@@ -8,63 +8,63 @@ chai.should();
 const expect = chai.expect;
 const body = document.querySelector('body');
 
-let pm;
-
-beforeEach(() => {
-  pm = new ProseMirror(
-    {
-      place: body.appendChild(
-        document.createElement('div')
-      ),
-      plugins: [],
-      schema,
-    }
-  );
-});
-
-afterEach(() => {
-  pm = null;
-  body.innerHTML = '';
-});
-
-function insertFragmentIntoCursor(
-  fragment
-) {
-  pm.tr.insert(
-    pm.selection.$from.pos,
-    fragment
-  ).apply();
-}
-
-function assertTransformedSchema(
-  expectedOutput
-) {
-  expect(pm.doc.toString()).to.equal(expectedOutput);
-}
-
-function moveNodeSelection(
-  pos
-) {
-  const cursorPos = pm.selection.$from.pos;
-
-  // place the cursor before the paragraph
-  pm.setNodeSelection(
-    cursorPos + pos
-  );
-}
-
-function moveTextSelection(
-  pos
-) {
-  const cursorPos = pm.selection.$from.pos;
-
-  // place the cursor before the paragraph
-  pm.setTextSelection(
-    cursorPos + pos
-  );
-}
-
 describe('ak-editor-bitbucket - schema', () => {
+  let pm;
+
+  function insertFragmentIntoCursor(
+    fragment
+  ) {
+    pm.tr.insert(
+      pm.selection.$from.pos,
+      fragment
+    ).apply();
+  }
+
+  function assertTransformedSchema(
+    expectedOutput
+  ) {
+    expect(pm.doc.toString()).to.equal(expectedOutput);
+  }
+
+  function moveNodeSelection(
+    pos
+  ) {
+    const cursorPos = pm.selection.$from.pos;
+
+    // place the cursor before the paragraph
+    pm.setNodeSelection(
+      cursorPos + pos
+    );
+  }
+
+  function moveTextSelection(
+    pos
+  ) {
+    const cursorPos = pm.selection.$from.pos;
+
+    // place the cursor before the paragraph
+    pm.setTextSelection(
+      cursorPos + pos
+    );
+  }
+
+  beforeEach(() => {
+    pm = new ProseMirror(
+      {
+        place: body.appendChild(
+          document.createElement('div')
+        ),
+        plugins: [],
+        schema,
+      }
+    );
+  });
+
+  afterEach(() => {
+    pm = null;
+    body.innerHTML = '';
+  });
+
   it('should not be possible to create an image inside a code block', () => {
     const nodes = pm.schema.nodes;
 

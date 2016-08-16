@@ -56,8 +56,8 @@ echo "Uploading registry to CDN..."
 java -jar ../prebake-distributor-runner.jar \
 --step=resources \
 --s3-bucket=$S3_BUCKET \
---s3-key-prefix="$S3_KEY_PREFIX" \
---s3-gz-key-prefix="$S3_GZ_KEY_PREFIX" \
+--s3-key-prefix="$S3_KEY_PREFIX/registry" \
+--s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/registry" \
 --compress=css,js,svg,ttf,html,json,ico,eot,otf \
 --pre-bake-bundle=../ak-registry-cdn.zip
 
@@ -69,9 +69,9 @@ cf-invalidate -- EVOK132JF0N16 '/atlaskit/registry/*'
 echo "CDN invalidation (registry) finished."
 
 echo "Building storybooks"
-mkdir -p ../atlaskit-stories/resources
+mkdir -p ../atlaskit-stories
 npm run storybook/static/registry
-mv stories ../atlaskit-stories/resources
+mv ./stories ../atlaskit-stories/resources
 rm -f ../ak-storybooks-cdn.zip
 zip -0 -r -T ../ak-storybooks-cdn.zip ../atlaskit-stories/resources
 
@@ -79,8 +79,8 @@ echo "Uploading storybooks to CDN..."
 java -jar ../prebake-distributor-runner.jar \
 --step=resources \
 --s3-bucket=$S3_BUCKET \
---s3-key-prefix="$S3_KEY_PREFIX" \
---s3-gz-key-prefix="$S3_GZ_KEY_PREFIX" \
+--s3-key-prefix="$S3_KEY_PREFIX/stories" \
+--s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/stories" \
 --compress=css,js,svg,ttf,html,json,ico,eot,otf \
 --pre-bake-bundle=../ak-storybooks-cdn.zip
 

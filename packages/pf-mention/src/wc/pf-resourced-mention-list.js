@@ -110,9 +110,6 @@ export default define('pf-resourced-mention-list', {
   detached(elem) {
     unsubscribeUpdates(elem, elem.resourceProvider);
     unsubscribePresenceUpdates(elem, elem.presenceProvider);
-    if (elem.ref) {
-      elem.ref(null);
-    }
   },
 
   render(elem) {
@@ -121,7 +118,7 @@ export default define('pf-resourced-mention-list', {
         <style>{shadowStyles.toString()}</style>
         <MentionList
           mentions={elem.mentions}
-          ref={(ref) => { elem._mentionListRef = ref; }}
+          refWorkaround={(ref) => { elem._mentionListRef = ref; }}
         />
       </div>
     );
@@ -143,7 +140,6 @@ export default define('pf-resourced-mention-list', {
         subscribePresenceUpdates(elem, data.newValue);
       },
     }),
-    ref: localProp.reference(),
 
     // Internal state...
     // TODO use symbols

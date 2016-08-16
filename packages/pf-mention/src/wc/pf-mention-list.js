@@ -146,8 +146,8 @@ export default define('pf-mention-list', {
   },
 
   detached(elem) {
-    if (elem.ref) {
-      elem.ref(null);
+    if (elem.refWorkaround) {
+      elem.refWorkaround(null);
     }
   },
 
@@ -180,6 +180,6 @@ export default define('pf-mention-list', {
     selectedKey: prop.string({
       attribute: true,
     }),
-    ref: localProp.reference(),
+    refWorkaround: localProp.reference(),
   },
 });

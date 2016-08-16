@@ -41,9 +41,6 @@ export default define('pf-mention-picker', {
     if (elem.resourceProvider) {
       elem.resourceProvider.unsubscribe(elem._filterChange);
     }
-    if (elem.ref) {
-      elem.ref(null);
-    }
   },
 
   render(elem) {
@@ -89,7 +86,6 @@ export default define('pf-mention-picker', {
       },
     }),
     presenceProvider: localProp.object(),
-    ref: localProp.reference(),
     query: prop.string({
       attribute: true,
     }),

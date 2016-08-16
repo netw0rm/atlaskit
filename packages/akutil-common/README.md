@@ -1,1 +1,0 @@
-# akutil-common

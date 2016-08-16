@@ -16,3 +16,4 @@ browserstack.err
 local.log
 /stories
 browserstack-entry.js
+README.md

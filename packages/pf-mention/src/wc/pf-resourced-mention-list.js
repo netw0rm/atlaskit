@@ -110,6 +110,9 @@ export default define('pf-resourced-mention-list', {
   detached(elem) {
     unsubscribeUpdates(elem, elem.resourceProvider);
     unsubscribePresenceUpdates(elem, elem.presenceProvider);
+    if (elem.refWorkaround) {
+      elem.refWorkaround(null);
+    }
   },
 
   render(elem) {
@@ -153,5 +156,6 @@ export default define('pf-resourced-mention-list', {
         elem._updateQuery(data.newValue);
       },
     }),
+    refWorkaround: localProp.reference(),
   },
 });

@@ -28,4 +28,4 @@ pipelines:
           - npm run validate/package.json
           - npm run lint
           - npm run dist
-          - npm run test/pipelines-branch
+          - npm run test/browserstack/ci

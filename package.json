@@ -123,7 +123,6 @@
     "storybook/static/registry":"rm -rf ./stories && ./node_modules/.bin/lerna exec -- ../../build/bin/storybook.static.registry.sh",
     "test": "./node_modules/.bin/lerna exec -- ../../build/bin/test.sh --reporters=dots",
     "test/ci": "./node_modules/.bin/lerna exec --concurrency=1 -- ../../build/bin/test.sh --no-auto-watch --reporters=dots",
-    "test/pipelines-branch": "BRANCH_BUILD=1 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD) ./build/bin/test.pipelines.js",
     "test/browserstack": "./build/bin/test.browserstack.sh",
     "test/browserstack/ci": "./build/bin/test.browserstack.ci.sh",
     "test/integration/browserstack": "node ./build/bin/test.integration.browserstack.js",

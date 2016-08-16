@@ -54,6 +54,7 @@
     "minilog": "^3.0.1",
     "minimist": "1.2.0",
     "mocha": "^3.0.1",
+    "package-json-validator": "^0.6.1",
     "pascal-case": "^2.0.0",
     "postcss-loader": "^0.9.1",
     "precommit-hook": "^3.0.0",
@@ -133,6 +134,7 @@
     "test/single/watch": "./build/bin/test.single.watch.sh",
     "validate": "npm ls >/dev/null && ./node_modules/.bin/lerna exec -- npm ls >/dev/null",
     "validate/lint-changed": "./build/bin/lint-changed.sh",
+    "validate/package.json": "pjv && ./node_modules/.bin/lerna exec -- pjv",
     "webpack/single": "./build/bin/webpack.single.sh"
   }
 }

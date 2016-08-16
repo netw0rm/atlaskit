@@ -9,27 +9,20 @@ const Component = reactify(Dropdown, {
   ReactDOM,
 });
 
-const dropdownInsides = function () {
-  return (
-    <ak-dropdown-list>
-      <ak-dropdown-item>text1</ak-dropdown-item>
-      <ak-dropdown-item disabled>text2</ak-dropdown-item>
-      <ak-dropdown-item>text3</ak-dropdown-item>
-      <ak-dropdown-item selected>
-        really long text, really long text,
-        really long text, really long text
-      </ak-dropdown-item>
-      <ak-dropdown-item>text5</ak-dropdown-item>
-    </ak-dropdown-list>
-  );
-};
 storiesOf(name, module)
   .add('simple ak-dropdown', () => (
     <div>
       <input type="text" placeholder="so we can test focus on dropdown from here" />
       <Component>
-        <ak-dropdown-trigger>Dropdown</ak-dropdown-trigger>
-        {dropdownInsides()}
+        <ak-dropdown-trigger slot="trigger">Dropdown</ak-dropdown-trigger>
+        <ak-dropdown-item slot="list">text1</ak-dropdown-item>
+        <ak-dropdown-item slot="list" disabled>text2</ak-dropdown-item>
+        <ak-dropdown-item slot="list">text3</ak-dropdown-item>
+        <ak-dropdown-item slot="list" selected>
+          really long text, really long text,
+          really long text, really long text
+        </ak-dropdown-item>
+        <ak-dropdown-item slot="list">text5</ak-dropdown-item>
       </Component>
       33
     </div>
@@ -38,17 +31,15 @@ storiesOf(name, module)
     <div>
       <input type="text" placeholder="so we can test focus on dropdown from here" />
       <Component open>
-        <ak-dropdown-trigger>Dropdown</ak-dropdown-trigger>
-        <ak-dropdown-list>
-          <ak-dropdown-item>text1</ak-dropdown-item>
-          <ak-dropdown-item disabled>text2</ak-dropdown-item>
-          <ak-dropdown-item>text3</ak-dropdown-item>
-          <ak-dropdown-item selected>
-            really long text, really long text,
-            really long text, really long text
-          </ak-dropdown-item>
-          <ak-dropdown-item>text5</ak-dropdown-item>
-        </ak-dropdown-list>
+        <ak-dropdown-trigger slot="trigger">Dropdown</ak-dropdown-trigger>
+        <ak-dropdown-item slot="list">text1</ak-dropdown-item>
+        <ak-dropdown-item slot="list" disabled>text2</ak-dropdown-item>
+        <ak-dropdown-item slot="list">text3</ak-dropdown-item>
+        <ak-dropdown-item slot="list" selected>
+          really long text, really long text,
+          really long text, really long text
+        </ak-dropdown-item>
+        <ak-dropdown-item slot="list">text5</ak-dropdown-item>
       </Component>
       33
     </div>

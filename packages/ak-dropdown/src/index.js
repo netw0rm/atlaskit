@@ -1,47 +1,45 @@
 /** @jsx vdom */
 import 'style!./host.less';
-
+import shadowListStyles from './shadow-list.less';
 import { vdom, define, prop } from 'skatejs';
 import ItemDefinition from './item';
-import ListDefinition from './list';
 import TriggerDefinition from './trigger';
 import keyCode from 'keycode';
+import Layer from 'ak-layer';
 
 function toggleDialog(elem, value) {
-  const list = elem.childNodes[1];
-  const trigger = elem.childNodes[0];
-  const isOpen = value === undefined ? !list.open : value;
-
+  const isOpen = value === undefined ? !elem.open : value;
+  const trigger = elem.querySelector('ak-dropdown-trigger');
+  const list = elem.querySelectorAll('ak-dropdown-item');
+  if ((elem.open !== isOpen)) {
+    elem.open = isOpen;
+  }
+  trigger.opened = isOpen;
+  // when the dialog is open the first item element should be focused,
+  // properties 'first' and 'last' should be set (TBD: change to :first-child and :last-child)
+  // when it's closed everything should be cleared
   if (isOpen) {
-    list.open = isOpen;
-    trigger.opened = isOpen;
-    const l = list.childNodes.length;
-    list.childNodes.forEach((item, i) => {
+    list[0].focused = true;
+    list[0].first = true;
+    list[list.length - 1].last = true;
+  } else {
+    list.forEach((item) => {
       item.focused = false;
-      if (item.first && i) {
+      if (item.first) {
         item.first = false;
       }
-      if (item.last && i !== l - 1) {
+      if (item.last) {
         item.last = false;
       }
     });
-    list.childNodes[0].focused = true;
-    list.childNodes[0].first = true;
-    list.childNodes[l - 1].last = true;
-  } else {
-    list.childNodes.forEach((item) => {
-      item.focused = false;
-    });
-    list.open = isOpen;
-    trigger.opened = isOpen;
   }
 }
 
 function selectItem(elem, event) {
-  const list = elem.childNodes[1];
-  const l = list.childNodes.length;
+  const list = elem.querySelectorAll('ak-dropdown-item');
+  const l = list.length;
   for (let i = 0; i < l; i++) {
-    const item = list.childNodes[i];
+    const item = list[i];
     if (item.selected) {
       item.selected = false;
     }
@@ -62,26 +60,26 @@ function isChildOf(child, parent) {
 }
 
 function focusPrev(elem) {
-  const list = elem.childNodes[1];
-  const l = list.childNodes.length;
+  const list = elem.querySelectorAll('ak-dropdown-item');
+  const l = list.length;
   for (let i = 0; i < l; i++) {
-    const item = list.childNodes[i];
+    const item = list[i];
     if (item.focused && i) {
       item.focused = false;
-      list.childNodes[i - 1].focused = true;
+      list[i - 1].focused = true;
       break;
     }
   }
 }
 
 function focusNext(elem) {
-  const list = elem.childNodes[1];
-  const l = list.childNodes.length;
+  const list = elem.querySelectorAll('ak-dropdown-item');
+  const l = list.length;
   for (let i = 0; i < l; i++) {
-    const item = list.childNodes[i];
+    const item = list[i];
     if (item.focused && (i < (l - 1))) {
       item.focused = false;
-      list.childNodes[i + 1].focused = true;
+      list[i + 1].focused = true;
       break;
     }
   }
@@ -104,7 +102,6 @@ function handleKeyPress(elem) {
 }
 
 export const Item = define('ak-dropdown-item', ItemDefinition);
-export const List = define('ak-dropdown-list', ListDefinition);
 export const Trigger = define('ak-dropdown-trigger', TriggerDefinition);
 
 export default define('ak-dropdown', {
@@ -122,16 +119,52 @@ export default define('ak-dropdown', {
     document.removeEventListener('click', handleClickOutside);
     document.removeEventListener('click', handleKeyPress);
   },
-  render() {
+  render(elem) {
+    let target;
+    const listWidthGap = 10;
+    let styles;
+
     return (
-      <slot />
+      <div>
+        <div
+          ref={(el) => {
+            target = el;
+            styles = {
+              minWidth: `${target.getBoundingClientRect().width + listWidthGap}px`,
+            };
+          }}
+        ><slot name="trigger" /></div>
+        <div style={{ display: elem.open ? 'block' : 'none' }}>
+          <Layer
+            position="bottom left"
+            target={target}
+            ref={(layer) => {
+              setTimeout(() => {
+                if (elem.open && layer.alignment) {
+                    // by default dropdown has opacity 0
+                    // and only with attribute 'positioned' it has opacity 1
+                    // this behavior is to avoid 'flashing' of dropdown
+                    // when it's initially positioning itself on a page
+                  elem.setAttribute('positioned', true);
+                }
+              });
+            }
+          }
+          >
+            <div className={shadowListStyles.locals.list} style={styles}>
+              <style>{shadowListStyles.toString()}</style>
+              <slot name="list" />
+            </div>
+          </Layer>
+        </div>
+      </div>
     );
   },
   props: {
     open: prop.boolean({
       attribute: true,
       set(elem, data) {
-        if (elem && elem.childNodes && elem.childNodes.length && data.newValue !== data.oldValue) {
+        if (elem && data.newValue !== data.oldValue) {
           toggleDialog(elem, data.newValue);
         }
       },

@@ -27,14 +27,14 @@ export default define('ak-editor-bitbucket', {
 
       const img = document.createElement('img');
       img.src = 'https://design.atlassian.com/images/brand/logo-21.png';
-      elem.querySelector('.modify-me').appendChild(img);
+      elem[symbols.shadowRoot].querySelector('.modify-me').appendChild(img);
     }
   },
 
   render(elem) {
     return (
       <div>
-        <div skip>
+        <div>
           <div class="modify-me" skip></div>
         </div>
         <button onclick={() => elem.abc = 'foo'}>foo</button>

@@ -27,7 +27,7 @@
     "lodash.invert": "^4.2.0",
     "markdown-it": "^7.0.0",
     "prosemirror": "^0.8.3",
-    "skatejs": "1.x"
+    "skatejs": "file:///Users/smao/Documents/skatejs"
   },
   "devDependencies": {
     "akutil-react": "0.0.4",

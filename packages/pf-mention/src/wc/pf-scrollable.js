@@ -1,5 +1,4 @@
 import 'style!../host.less';
-import { localProp } from './skate-local-props';
 import { define, vdom } from 'skatejs';
 
 export default define('pf-scrollable', {
@@ -21,15 +20,5 @@ export default define('pf-scrollable', {
 
   render() {
     return (<slot />);
-  },
-
-  detached(elem) {
-    if (elem.ref) {
-      elem.ref(null);
-    }
-  },
-
-  props: {
-    ref: localProp.reference(),
   },
 });

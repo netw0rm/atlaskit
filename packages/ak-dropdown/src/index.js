@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { vdom, define } from 'skatejs';
+import { vdom, define, prop } from 'skatejs';
 import ItemDefinition from './item';
 import ListDefinition from './list';
 import TriggerDefinition from './trigger';
@@ -126,5 +126,15 @@ export default define('ak-dropdown', {
     return (
       <slot />
     );
+  },
+  props: {
+    open: prop.boolean({
+      attribute: true,
+      set(elem, data) {
+        if (elem && elem.childNodes && elem.childNodes.length && data.newValue !== data.oldValue) {
+          toggleDialog(elem, data.newValue);
+        }
+      },
+    }),
   },
 });

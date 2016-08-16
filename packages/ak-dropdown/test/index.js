@@ -7,15 +7,19 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-dropdown-trigger:', () => {
+describe('ak-dropdown:', () => {
   describe('general behavior:', () => {
     let component;
-    let triggerContainer;
+    let dropdownContainer;
 
     beforeEach(() => {
       component = new Dropdown();
-      triggerContainer = document.createElement('div');
-      triggerContainer.appendChild(component);
+      dropdownContainer = document.createElement('div');
+      dropdownContainer.appendChild(component);
+      document.body.appendChild(dropdownContainer);
+    });
+    afterEach(() => {
+      document.body.removeChild(dropdownContainer);
     });
     it('should be possible to create a component', (done) => {
       // testing to see that skate did its job as expected

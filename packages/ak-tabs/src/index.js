@@ -2,12 +2,12 @@
 /* eslint no-underscore-dangle: 0 */
 import 'style!./host.less';
 import { debounce } from 'akutil-common';
-import { vdom, define, prop } from 'skatejs';
+import { vdom, define, prop, emit } from 'skatejs';
 import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 
 import 'ak-editor-icon';
-import Tab, { events as tabEvents } from './children/tab'; // eslint-disable-line no-unused-vars
+import Tab, { events } from './children/tab'; // eslint-disable-line no-unused-vars
 
 import {
   labelsContainer,
@@ -56,11 +56,12 @@ function getLabelForTab(tab) {
 
 /* Handlers */
 
-function labelMousedownHandler(tab) {
-  return e => {
-    tab.selected = true;
-    e.preventDefault(); // Prevent focus on the tab label.
-  };
+function labelMouseDownHandler(e) {
+  e.preventDefault(); // Prevent focus on the tab label.
+}
+
+function labelClickHandler(tab) {
+  return () => (tab.selected = true);
 }
 
 function labelKeydownHandler(tabsEl, tab) {
@@ -134,18 +135,24 @@ function calculateVisibleTabs(tabsEl) {
 const definition = {
   created(elem) {
     // Listen for tab change events
-    elem.addEventListener(tabEvents.EVENT_TAB_CHANGE, e => {
+    elem.addEventListener(events.EVENT_TAB_CHANGE, e => {
       // If the tab has been selected, we need to deselect all other tabs.
-      const tab = e.detail.tab;
-      if (tab.selected) {
-        elem.children
-          .filter(el => el.selected && el !== tab)
-          .forEach(el => (el.selected = false));
+      if (e.detail.hasOwnProperty('selected')) {
+        const tab = e.detail.tab;
+        if (tab.selected) {
+          elem.children
+            .filter(el => el.selected && el !== tab)
+            .forEach(el => (el.selected = false));
+        }
+
+        // Emit event for tab selection or deselection
+        const eventName = tab.selected ? events.EVENT_TAB_SELECT : events.EVENT_TAB_DESELECT;
+        emit(tab, eventName, { detail: { tab } });
       }
 
       // Re-render if necessary.
-      elem._labels = elem.children.map(el => el.label);
       elem._selected = elem.children.map(el => el.selected);
+      elem._labels = elem.children.map(el => el.label);
       elem._visibleTabs = calculateVisibleTabs(elem);
     });
   },
@@ -210,7 +217,8 @@ const definition = {
                   className={classes}
                   tabIndex={tabIndex}
                   onkeydown={labelKeydownHandler(elem, tab)}
-                  onmousedown={labelMousedownHandler(tab)}
+                  onmousedown={labelMouseDownHandler}
+                  onclick={labelClickHandler(tab)}
                   aria-selected={ariaSelected}
                   role="tab"
                   ref={ref}
@@ -223,7 +231,7 @@ const definition = {
             <li className={buttonClasses} ref={el => (elem[buttonContainer] = el)}>
               <a
                 className={shadowStyles.locals.akTabsButton}
-                onmousedown={() => {
+                onclick={() => {
                   elem._dropdownOpen = !elem._dropdownOpen;
                 }}
               >
@@ -252,7 +260,7 @@ const definition = {
                 <li className={classes}>
                   <a
                     href="#"
-                    onclick={labelMousedownHandler(tab)}
+                    onclick={labelClickHandler(tab)}
                     tabIndex="-1"
                   >{tab.label}</a>
                 </li>

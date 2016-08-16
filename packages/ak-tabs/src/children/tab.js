@@ -29,13 +29,8 @@ const events = {
   EVENT_TAB_CHANGE: 'ak-tabs-tab-change',
 };
 
-function emitTabChangedEvent(tab) {
-  emit(tab, events.EVENT_TAB_CHANGE, { detail: { tab } });
-}
-
-function emitTabSelectionEvent(tab, isSelected) {
-  const eventName = isSelected ? events.EVENT_TAB_SELECT : events.EVENT_TAB_DESELECT;
-  emit(tab, eventName, { detail: { tab } });
+function emitTabChangedEvent(tab, detail) {
+  emit(tab, events.EVENT_TAB_CHANGE, { detail });
 }
 
 /**
@@ -57,7 +52,7 @@ const definition = {
     );
   },
   attached(elem) {
-    emitTabChangedEvent(elem);
+    emitTabChangedEvent(elem, { tab: elem });
   },
   props: {
     /**
@@ -66,10 +61,15 @@ const definition = {
      * @instance
      * @type {string}
      */
-    label: {
+    label: prop.string({
       attribute: true,
-      set: emitTabChangedEvent,
-    },
+      set(elem) {
+        emitTabChangedEvent(elem, {
+          tab: elem,
+          label: elem.label,
+        });
+      },
+    }),
     /**
      * @description Whether the tab is selected. Only one tab can be selected at a time,
      * @memberof Tab
@@ -78,9 +78,11 @@ const definition = {
      */
     selected: prop.boolean({
       attribute: true,
-      set(elem, data) {
-        emitTabChangedEvent(elem);
-        emitTabSelectionEvent(elem, data.newValue);
+      set(elem) {
+        emitTabChangedEvent(elem, {
+          tab: elem,
+          selected: elem.selected,
+        });
       },
     }),
   },

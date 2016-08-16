@@ -93,6 +93,8 @@ TO_INVALIDATE=$($LERNA_LOC exec -- node -e \
 'var pkg = require("./package.json"); console.log("/atlaskit/stories/" + pkg.name + "/" + pkg.version + "/*")'\
 | sed 1,2d)
 
+echo "Invalidating: $TO_INVALIDATE"
+
 AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
 AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
 cf-invalidate -- EVOK132JF0N16 `echo $TO_INVALIDATE`

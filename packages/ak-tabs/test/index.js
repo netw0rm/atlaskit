@@ -122,7 +122,43 @@ describe('ak-tabs', () => {
     el.click();
   }
 
-  describe('Initialisation', () => {
+  /* Keyboard nav helpers */
+
+  function pressKey(keyCode, el) {
+    const e = new CustomEvent('keydown', { bubbles: true, cancelable: true });
+    e.keyCode = keyCode;
+    const elem = el || document.activeElement;
+    elem.dispatchEvent(e);
+  }
+
+  function pressLeftKey(el) {
+    pressKey(37, el);
+  }
+
+  function pressRightKey(el) {
+    pressKey(39, el);
+  }
+
+  function keyboardNav(tabsEl, isLeft, numPresses, cb) {
+    const label = getLabelForTab(getSelectedTab());
+    isLeft ? pressLeftKey(label) : pressRightKey(label);
+
+    if (numPresses > 1) {
+      afterMutations(() => (keyboardNav(tabsEl, isLeft, numPresses - 1, cb)));
+    } else {
+      afterMutations(cb);
+    }
+  }
+
+  function keyboardNavLeft(cb, numPresses) {
+    keyboardNav(tabsElement, true, numPresses || 1, cb);
+  }
+
+  function keyboardNavRight(cb, numPresses) {
+    keyboardNav(tabsElement, false, numPresses || 1, cb);
+  }
+
+  describe('- Initialisation -', () => {
     it('can be initialised with constructor', () => {
       let component;
       expect(() => {
@@ -307,7 +343,7 @@ describe('ak-tabs', () => {
     });
   });
 
-  describe('Behaviour', () => {
+  describe('- Behaviour -', () => {
     let selectSpy;
     let deselectSpy;
 
@@ -435,9 +471,10 @@ describe('ak-tabs', () => {
           assertFirstTabSelected(done);
         });
 
-        it('via keyboard nav', () => {
-          // TODO test for selection
-          // TODO test for selection and deselection events
+        it('via keyboard nav', done => {
+          keyboardNavLeft(() => {
+            assertFirstTabSelected(done);
+          });
         });
 
         it('when the property is set', done => {
@@ -496,78 +533,113 @@ describe('ak-tabs', () => {
       });
 
       describe('selects the last tab', () => {
-        function assertLastTabSelected(cb) {
-          afterMutations(() => {
-            expect(tabElements[7].selected).to.equal(true, 'Tab 8 should be selected');
-            for (let i = 0; i < 7; i++) {
-              expect(tabElements[i].selected).to.equal(false, `Tab ${i + 1} should be deselected`);
-            }
-
-            expect(selectSpy.callCount).to.equal(2,
-              'Tab selection event should have been fired when selecting a tab.'
-            );
-            expect(selectSpy.getCall(1).args[0].detail.tab).to.equal(tabElements[7],
-              'The tab selection event should be fired on the first tab.'
-            );
-            expect(deselectSpy.callCount).to.equal(1,
-              'Tab deselection event should be fired when deselecting a tab.'
-            );
-            expect(deselectSpy.getCall(0).args[0].detail.tab).to.equal(tabElements[0],
-              'The tab deselection event should be fired on the first tab.'
-            );
-            cb();
-          });
-        }
-
-        it('when clicked', done => {
+        it('when clicked', () => {
           click(getLabelForTab(tabElements[7]));
-          assertLastTabSelected(done);
+
+          expect(tabElements[7].selected).to.equal(true, 'Tab 8 should be selected');
+          for (let i = 0; i < 7; i++) {
+            expect(tabElements[i].selected).to.equal(false, `Tab ${i + 1} should be deselected`);
+          }
+
+          expect(selectSpy.callCount).to.equal(2,
+            'Tab selection event should have been fired when selecting a tab.'
+          );
+          expect(selectSpy.getCall(1).args[0].detail.tab).to.equal(tabElements[7],
+            'The tab selection event should be fired on the first tab.'
+          );
+          expect(deselectSpy.callCount).to.equal(1,
+            'Tab deselection event should be fired when deselecting a tab.'
+          );
+          expect(deselectSpy.getCall(0).args[0].detail.tab).to.equal(tabElements[0],
+            'The tab deselection event should be fired on the first tab.'
+          );
         });
 
-        it('via keyboard nav', () => {
-          // TODO
+        it('via keyboard nav', done => {
+          keyboardNavRight(() => {
+            expect(tabElements[7].selected).to.equal(true, 'Tab 8 should be selected');
+
+            expect(selectSpy.callCount).to.equal(8,
+              'Tab selection event should have been fired 8 times in total.'
+            );
+            expect(deselectSpy.callCount).to.equal(7,
+              'Tab deselection event should have been fired 7 times in total.'
+            );
+
+            for (let i = 0; i < 7; i++) {
+              expect(tabElements[i].selected).to.equal(false, `Tab ${i + 1} should be deselected`);
+
+              expect(selectSpy.getCall(i + 1).args[0].detail.tab).to.equal(tabElements[i + 1],
+                `The tab selection event should be fired on tab ${i + 1}.`
+              );
+              expect(deselectSpy.getCall(i).args[0].detail.tab).to.equal(tabElements[i],
+                `The tab deselection event should be fired on tab ${i}.`
+              );
+            }
+
+            done();
+          }, 7);
         });
       });
     });
   });
 
-  describe('Keyboard navigation', () => {
-    describe('Tabbing', () => {
-      describe('with two tabs with tabbable content, with the first tab selected', () => {
-        it('tabbing from the first tab label does not tab to the second label', () => {
-
-        });
-
-        it('tabbing from the focused label focuses the tabbable content', () => {
-
-        });
-      });
-    });
-
+  describe('- Keyboard navigation -', () => {
     describe('with arrow keys', () => {
-      describe('with a single child', () => {
-        it('pressing the LEFT arrow leaves focus on the label', () => {
+      describe('with three children, with the second selected', () => {
+        beforeEach(done => {
+          tabs = [
+            { label: 'Tab 1' },
+            { label: 'Tab 2', selected: true },
+            { label: 'Tab 3' },
+          ];
+          setupTabs(done);
+        });
+        afterEach(cleanupTabs);
 
+        it('pressing the LEFT arrow selects the first tab', done => {
+          keyboardNavLeft(() => {
+            expect(tabElements[0].selected).to.equal(true,
+              'The first tab should be selected.'
+            );
+            done();
+          });
         });
 
-        it('pressing the RIGHT arrow leaves focus on the label', () => {
-
-        });
-      });
-
-      describe('with three children, with the second selected and focused', () => {
-        it('pressing the LEFT arrow selects the first tab', () => {
-
-        });
-
-        it('pressing the RIGHT arrow selects the third tab', () => {
-
+        it('pressing the RIGHT arrow selects the third tab', done => {
+          keyboardNavRight(() => {
+            expect(tabElements[2].selected).to.equal(true,
+              'The first tab should be selected.'
+            );
+            done();
+          });
         });
       });
 
       describe('with eight children and overflow, with the last selected', () => {
-        it('pressing the LEFT arrow selects the seventh tab', () => {
+        beforeEach(done => {
+          tabs = [
+            { label: 'Tab 1' },
+            { label: 'Tab 2' },
+            { label: 'Tab 3' },
+            { label: 'Tab 4' },
+            { label: 'Tab 5' },
+            { label: 'Tab 6' },
+            { label: 'Tab 7' },
+            { label: 'Tab 8', selected: true },
+          ];
+          containerWidth = '300px';
+          setupTabs(done);
+        });
+        afterEach(cleanupTabs);
 
+        it('pressing the LEFT arrow selects the seventh tab', done => {
+          keyboardNavLeft(() => {
+            expect(tabElements[6].selected).to.equal(true,
+              'The seventh tab should be selected.'
+            );
+            done();
+          });
         });
       });
     });

@@ -73,7 +73,6 @@ export const mentions = [
 
 export const apiConfig = {
   url: 'https://pf-mentions-service.internal.domain.dev.atlassian.io/',
-  application: 'HIPCHAT',
   securityProvider() {
     return {
       headers: {

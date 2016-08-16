@@ -1,5 +1,15 @@
-<a name="0.2.2"></a>
-## 0.2.2 (2016-08-12)
+<a name="0.3.0"></a>
+# 0.3.0 (2016-08-15)
+
+
+
+<a name="akutil-common@0.3.0"></a>
+# akutil-common@0.3.0 (2016-08-12)
+
+
+### Features
+
+* **component:** Added testHelpers.js to akututil-common ([48d23f1](https://bitbucket.org/atlassian/atlaskit/commits/48d23f1))
 
 
 

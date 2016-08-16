@@ -1,4 +1,5 @@
 import { vdom, define, prop, symbols, emit } from 'skatejs';
+import invert from 'lodash.invert';
 import { ProseMirror, Plugin } from 'prosemirror/dist/edit';
 import 'style!./host.less';
 import shadowStyles from './shadow.less';
@@ -8,15 +9,19 @@ import Toolbar from 'ak-editor-toolbar';
 import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
+import { Schema } from 'prosemirror/dist/model';
 import { schema } from './schema';
-import { inputRules } from './input-rules';
 import { buildKeymap } from './keymap';
 import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';
 import { nodeLifecycleHandler } from './node-lifecycle';
-import { hyperlinkTransformer, markdownTransformer } from './paste-handlers';
+import { markdownTransformer } from './paste-handlers';
+
+// editorKit plugings
 import BlockTypePlugin from 'atlassian-editorkit-block-type-plugin';
-import invert from 'lodash.invert';
+import MarkdownInputRulesPlugin from 'atlassian-editorkit-markdown-inputrules-plugin';
+import HyperLinkPlugin from 'atlassian-editorkit-hyperlink-plugin';
+import ImageUploadPlugin from 'atlassian-editorkit-image-upload-plugin';
 
 // A hack to target the content element until https://github.com/skatejs/skatejs/issues/721
 // is fixed.
@@ -128,13 +133,44 @@ export default define('ak-editor-bitbucket', {
     },
 
     [initEditorSymbol]() {
+      const elem = this;
       const contentElement = this[symbols.shadowRoot].querySelector(`.${contentClassName}`);
       let blockTypePluginInstance;
+
+      schema.nodes.code_block.group += ` ${HyperLinkPlugin.DISABLED_GROUP}`;
+      schema.nodes.code_block.group += ` ${ImageUploadPlugin.DISABLED_GROUP}`;
+
       const pm = new ProseMirror({
         place: contentElement,
-        doc: markdownParser(schema).parse(this.defaultValue),
+        doc: markdownParser(new Schema(schema)).parse(this.defaultValue),
         plugins: [
-          inputRules,
+          new Plugin(MarkdownInputRulesPlugin),
+          new Plugin(HyperLinkPlugin),
+          new Plugin(class ImageUploadPluginDecorator {
+            constructor(proseMirrorInstance) {
+              const imageUploadPlugin = new ImageUploadPlugin(proseMirrorInstance);
+
+              imageUploadPlugin.dropAdapter.add((
+                _pm,
+                e
+              ) => {
+                if (typeof elem.imageUploader === 'function') {
+                  elem.imageUploader(e, imageUploadPlugin.addImage.bind(imageUploadPlugin));
+                }
+              });
+
+              imageUploadPlugin.pasteAdapter.add((
+                _pm,
+                e
+              ) => {
+                if (typeof elem.imageUploader === 'function') {
+                  elem.imageUploader(e, imageUploadPlugin.addImage.bind(imageUploadPlugin));
+                }
+              });
+
+              return imageUploadPlugin;
+            }
+          }),
           new Plugin(
             class BlockTypePluginDecorator {
               constructor(_pm) {
@@ -164,8 +200,7 @@ export default define('ak-editor-bitbucket', {
       pm.addKeymap(buildKeymap(pm.schema));
 
       // add paste handlers
-      pm.on.transformPasted.add(() => markdownTransformer(pm.schema));
-      pm.on.transformPasted.add(() => hyperlinkTransformer(pm));
+      pm.on.transformPasted.add((slice) => markdownTransformer(pm.schema, slice));
 
       // add node life cycle handler
       pm.on.flush.add(() => nodeLifecycleHandler(pm));

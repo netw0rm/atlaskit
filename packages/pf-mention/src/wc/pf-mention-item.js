@@ -93,12 +93,6 @@ export default define('pf-mention-item', {
     );
   },
 
-  detached(elem) {
-    if (elem.ref) {
-      elem.ref(null);
-    }
-  },
-
   props: {
     avatarUrl: prop.string({
       attribute: true,
@@ -122,6 +116,5 @@ export default define('pf-mention-item', {
       attribute: true,
     }),
     highlight: localProp.object(),
-    ref: localProp.reference(),
   },
 });

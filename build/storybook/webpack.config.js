@@ -9,8 +9,12 @@ module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line n
 
   storybookBaseConfig.plugins = storybookBaseConfig.plugins.concat(webpackConfig.plugins);
 
+  const folders = getPackageRestrictions(process.env.PACKAGE);
+  const isSingle = folders.length === 1;
   storybookBaseConfig.plugins.push(new webpack.DefinePlugin({
-    PACKAGE_FOLDERS: JSON.stringify(getPackageRestrictions(process.env.PACKAGE)),
+    IS_RUNNING_SINGLE_PACKAGE: isSingle,
+    PACKAGE_FOLDERS: JSON.stringify(folders),
+    PACKAGE_STORY_FOLDER: isSingle ? JSON.stringify(`../../packages/${folders[0]}/stories`) : null,
   }));
 
   storybookBaseConfig.module.loaders = webpackConfig.module.loaders;

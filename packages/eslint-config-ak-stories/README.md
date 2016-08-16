@@ -1,1 +1,0 @@
-# eslint-config-ak-stories

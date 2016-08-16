@@ -16,7 +16,10 @@ export default define('ak-radio-button', {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <AkButton appearance={elem.selected ? 'selected' : 'standard'}>
+        <AkButton
+          appearance={elem.selected ? 'selected' : 'standard'}
+          disabled={elem.disabled}
+        >
           <slot />
 
           <input
@@ -49,6 +52,10 @@ export default define('ak-radio-button', {
     name: {
       default: 'RadioButton',
     },
+    disabled: prop.boolean({
+      attribute: true,
+      default: false,
+    }),
     selected: prop.boolean({
       attribute: true,
       default: false,

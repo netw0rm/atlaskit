@@ -17,9 +17,72 @@ const ReactRadioButton = reactify(RadioButton, {
 });
 
 storiesOf(name, module)
-  .add('ak-button-group with default width', () => (
+  .add('plain ak-button-group of radio buttons (none selected)', () => (
+    <ReactButtonGroup>
+      <ReactRadioButton>One</ReactRadioButton>
+      <ReactRadioButton>Two</ReactRadioButton>
+      <ReactRadioButton>Three</ReactRadioButton>
+    </ReactButtonGroup>
+  ))
+  .add('plain ak-button-group of radio buttons (first selected)', () => (
     <ReactButtonGroup>
       <ReactRadioButton selected>One</ReactRadioButton>
+      <ReactRadioButton>Two</ReactRadioButton>
+      <ReactRadioButton>Three</ReactRadioButton>
+    </ReactButtonGroup>
+  ))
+  .add('ak-button-group of radio buttons with one disabled', () => (
+    <ReactButtonGroup>
+      <ReactRadioButton selected>One</ReactRadioButton>
+      <ReactRadioButton>Two</ReactRadioButton>
+      <ReactRadioButton disabled>Three</ReactRadioButton>
+    </ReactButtonGroup>
+  ))
+  .add('ak-button-group of radio buttons with one selected and all disabled', () => (
+    <ReactButtonGroup>
+      <ReactRadioButton disabled selected>One</ReactRadioButton>
+      <ReactRadioButton disabled>Two</ReactRadioButton>
+      <ReactRadioButton disabled>Three</ReactRadioButton>
+    </ReactButtonGroup>
+  ))
+  .add('ak-button-group of radio buttons with an input before for focus testing', () => (
+    <div>
+      <input type="text" placeholder="focus here first" />
+      <ReactButtonGroup>
+        <ReactRadioButton>One</ReactRadioButton>
+        <ReactRadioButton>Two</ReactRadioButton>
+        <ReactRadioButton>Three</ReactRadioButton>
+      </ReactButtonGroup>
+    </div>
+  ))
+  .add('ak-button-group with radio buttons and an ak-button inside', () => (
+    <ReactButtonGroup>
+      <ReactRadioButton>One</ReactRadioButton>
+      <ReactRadioButton>Two</ReactRadioButton>
+      <ReactRadioButton>Three</ReactRadioButton>
+      <ak-button>ak-button</ak-button>
+    </ReactButtonGroup>
+  ))
+  .add('ak-button-group with radio buttons and a paragraph inside', () => (
+    <ReactButtonGroup>
+      <ReactRadioButton>One</ReactRadioButton>
+      <ReactRadioButton>Two</ReactRadioButton>
+      <ReactRadioButton>Three</ReactRadioButton>
+      <p>Paragraph</p>
+    </ReactButtonGroup>
+  ))
+  .add('ak-button-group that overflows the parent div', () => (
+    <div style={{ border: '1px solid #AAA', width: 75 }}>
+      <ReactButtonGroup>
+        <ReactRadioButton>One</ReactRadioButton>
+        <ReactRadioButton>Two</ReactRadioButton>
+        <ReactRadioButton>Three</ReactRadioButton>
+      </ReactButtonGroup>
+    </div>
+  ))
+  .add('ak-button-group with CSS display: block', () => (
+    <ReactButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
+      <ReactRadioButton>One</ReactRadioButton>
       <ReactRadioButton>Two</ReactRadioButton>
       <ReactRadioButton>Three</ReactRadioButton>
     </ReactButtonGroup>

@@ -1,7 +1,4 @@
-import {
-  storiesOf,
-  // action
-} from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import RadioButton from '../src/index';
 const { React, ReactDOM } = window;

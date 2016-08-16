@@ -2,6 +2,7 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { ProseMirror } from 'prosemirror/dist/edit/main';
 import { schema } from '../src/schema';
+import { Schema } from 'prosemirror/dist/model';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -55,7 +56,7 @@ describe('ak-editor-bitbucket - schema', () => {
           document.createElement('div')
         ),
         plugins: [],
-        schema,
+        schema: new Schema(schema),
       }
     );
   });

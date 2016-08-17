@@ -176,12 +176,12 @@ describe('ak-tabs', () => {
 
       it('does not take up any vertical space', () => {
         expect(tabsElement.getBoundingClientRect().height).to.equal(0,
-          'Empty Tabs component should have no height.'
+          'Empty Tabs component should have no height'
         );
       });
 
       it('does not show any labels', () => {
-        expect(getTabLabels().length).to.equal(0, 'There should be no labels.');
+        expect(getTabLabels().length).to.equal(0, 'There should be no labels');
       });
     });
 
@@ -199,13 +199,13 @@ describe('ak-tabs', () => {
 
         it('displays the label for the selected tab', () => {
           expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
-            'Label for selected tab should be visible.'
+            'Label for selected tab should be visible'
           );
         });
 
         it('displays one label with the correct label text', () => {
           expect(getTabLabels().length).to.equal(1,
-            'There should only be one label.'
+            'There should only be one label'
           );
           expect(getLabelContent(getLabelForTab(tabElements[0]))).to.equal(DEFAULT_LABEL);
         });
@@ -224,7 +224,7 @@ describe('ak-tabs', () => {
 
         it('displays the label for the selected tab', () => {
           expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
-            'Label for selected tab should be visible.'
+            'Label for selected tab should be visible'
           );
         });
 
@@ -257,14 +257,14 @@ describe('ak-tabs', () => {
           const containerElWidth = getElementWidth(container);
           const tabLabelWidth = getElementWidth(label);
 
-          expect(hasOverflow(label)).to.equal(true, 'Label should be truncated.');
+          expect(hasOverflow(label)).to.equal(true, 'Label should be truncated');
           expect(tabLabelWidth).to.be.at.most(containerElWidth,
-            'Label should be smaller than the container.');
+            'Label should be smaller than the container');
         });
 
         it('does not display the More dropdown', () => {
           expect(hasVisibleDropdown(tabsElement)).to.equal(false,
-            'Dropdown should not be visible.'
+            'Dropdown should not be visible'
           );
         });
       });
@@ -287,7 +287,7 @@ describe('ak-tabs', () => {
 
           it('displays the label for the selected tab', () => {
             expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
-              'Label for selected tab should be visible.'
+              'Label for selected tab should be visible'
             );
           });
 
@@ -299,7 +299,7 @@ describe('ak-tabs', () => {
 
           it('does not show the More dropdown', () => {
             expect(hasVisibleDropdown(tabsElement)).to.equal(false,
-              'Dropdown should not be visible.'
+              'Dropdown should not be visible'
             );
           });
         });
@@ -320,13 +320,13 @@ describe('ak-tabs', () => {
 
           it('displays the label for the selected tab', () => {
             expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
-              'Label for selected tab should be visible.'
+              'Label for selected tab should be visible'
             );
           });
 
           it('shows the More dropdown', () => {
             expect(hasVisibleDropdown(tabsElement)).to.equal(true,
-              'Dropdown should be visible.'
+              'Dropdown should be visible'
             );
           });
 
@@ -334,7 +334,7 @@ describe('ak-tabs', () => {
             const numVisibleTabs = getVisibleTabs(tabsElement).length;
             const numTabs = tabElements.length;
             expect(numVisibleTabs).to.be.below(numTabs,
-              'Some tabs should not be visible.'
+              'Some tabs should not be visible'
             );
             // TODO: Ensure that dropdown menu contains the hidden items
           });
@@ -600,7 +600,7 @@ describe('ak-tabs', () => {
         it('pressing the LEFT arrow selects the first tab', done => {
           keyboardNavLeft(() => {
             expect(tabElements[0].selected).to.equal(true,
-              'The first tab should be selected.'
+              'The first tab should be selected'
             );
             done();
           });
@@ -609,7 +609,7 @@ describe('ak-tabs', () => {
         it('pressing the RIGHT arrow selects the third tab', done => {
           keyboardNavRight(() => {
             expect(tabElements[2].selected).to.equal(true,
-              'The first tab should be selected.'
+              'The first tab should be selected'
             );
             done();
           });
@@ -636,7 +636,7 @@ describe('ak-tabs', () => {
         it('pressing the LEFT arrow selects the seventh tab', done => {
           keyboardNavLeft(() => {
             expect(tabElements[6].selected).to.equal(true,
-              'The seventh tab should be selected.'
+              'The seventh tab should be selected'
             );
             done();
           });

@@ -22,6 +22,7 @@ import BlockTypePlugin from 'atlassian-editorkit-block-type-plugin';
 import MarkdownInputRulesPlugin from 'atlassian-editorkit-markdown-inputrules-plugin';
 import HyperLinkPlugin from 'atlassian-editorkit-hyperlink-plugin';
 import ImageUploadPlugin from 'atlassian-editorkit-image-upload-plugin';
+import TextFormattingPlugin from 'atlassian-editorkit-text-formatting-plugin';
 
 // A hack to target the content element until https://github.com/skatejs/skatejs/issues/721
 // is fixed.
@@ -42,6 +43,24 @@ const prosemirrorBlockToToolbarMap = {
 
 const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
 
+function selectFont(blockTypePluginInstance) {
+  return (event) => {
+    const font = event.detail.font;
+
+    const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
+    const blockType = matches[1];
+    const level = matches[2];
+
+    blockTypePluginInstance.changeBlockType(blockType, { level });
+  };
+}
+
+function toggleMark(textFormattingPluginInstance, name) {
+  return () => {
+    textFormattingPluginInstance.toggleMark(name);
+  };
+}
+
 export default define('ak-editor-bitbucket', {
   rendered(elem) {
     if (!elem[readySymbol]) {
@@ -59,17 +78,19 @@ export default define('ak-editor-bitbucket', {
           <ToolbarBlockType
             disabled={!elem.canChangeBlockType}
             selectedFont={elem.selectedFont}
-            onSelectFont={(event) => {
-              const font = event.detail.font;
-
-              const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
-              const blockType = matches[1];
-              const level = matches[2];
-
-              elem.blockTypePluginInstance.changeBlockType(blockType, { level });
-            }}
+            onSelectFont={selectFont(elem.blockTypePluginInstance)}
           />
-          <ToolbarTextFormatting />
+          <ToolbarTextFormatting
+            boldActive={elem.strongActive}
+            italicActive={elem.emActive}
+            underlineActive={elem.underlineActive}
+            boldDisabled={elem.textFormattingDisabled}
+            italicDisabled={elem.textFormattingDisabled}
+            underlineDisabled={elem.textFormattingDisabled}
+            onToggle-bold={toggleMark(elem.textFormattingPluginInstance, 'bold')}
+            onToggle-italic={toggleMark(elem.textFormattingPluginInstance, 'italic')}
+            onToggle-underline={toggleMark(elem.textFormattingPluginInstance, 'underline')}
+          />
           <ToolbarHyperlink />
         </Toolbar>
         <Content
@@ -134,14 +155,14 @@ export default define('ak-editor-bitbucket', {
 
     [initEditorSymbol]() {
       const elem = this;
-      const contentElement = this[symbols.shadowRoot].querySelector(`.${contentClassName}`);
+      const contentElement = elem[symbols.shadowRoot].querySelector(`.${contentClassName}`);
 
       schema.nodes.code_block.group += ` ${HyperLinkPlugin.DISABLED_GROUP}`;
       schema.nodes.code_block.group += ` ${ImageUploadPlugin.DISABLED_GROUP}`;
 
       const pm = new ProseMirror({
         place: contentElement,
-        doc: markdownParser(new Schema(schema)).parse(this.defaultValue),
+        doc: markdownParser(new Schema(schema)).parse(elem.defaultValue),
         plugins: [
           new Plugin(MarkdownInputRulesPlugin),
           new Plugin(HyperLinkPlugin),
@@ -170,25 +191,39 @@ export default define('ak-editor-bitbucket', {
               return imageUploadPlugin;
             }
           }),
-          new Plugin(
-            class BlockTypePluginDecorator {
-              constructor(_pm) {
-                const blockTypePluginInstance = new BlockTypePlugin(_pm);
+          new Plugin(class BlockTypePluginDecorator {
+            constructor(_pm) {
+              const blockTypePluginInstance = new BlockTypePlugin(_pm);
 
-                blockTypePluginInstance.onChange(state => {
-                  const name = state.selectedBlockType;
-                  const blockType = prosemirrorBlockToToolbarMap[name];
+              blockTypePluginInstance.onChange(state => {
+                const name = state.selectedBlockType;
+                const blockType = prosemirrorBlockToToolbarMap[name];
 
-                  this.selectedFont = blockType;
-                  this.canChangeBlockType = state.enabled;
-                });
+                elem.selectedFont = blockType;
+                elem.canChangeBlockType = state.enabled;
+              });
 
-                elem.blockTypePluginInstance = blockTypePluginInstance;
+              elem.blockTypePluginInstance = blockTypePluginInstance;
 
-                return blockTypePluginInstance;
-              }
+              return blockTypePluginInstance;
             }
-          ),
+          }),
+          new Plugin(class TextFormattingPluginDecorator {
+            constructor(_pm) {
+              const textFormattingPluginInstance = new TextFormattingPlugin(_pm);
+
+              textFormattingPluginInstance.onChange(state => {
+                elem.strongActive = state.strongActive;
+                elem.emActive = state.emActive;
+                elem.underlineActive = state.underlineActive;
+                elem.textFormattingDisabled = state.enabled;
+              });
+
+              elem.textFormattingPluginInstance = textFormattingPluginInstance;
+
+              return textFormattingPluginInstance;
+            }
+          }),
         ],
       });
 

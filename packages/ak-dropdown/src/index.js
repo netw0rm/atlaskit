@@ -59,14 +59,14 @@ function selectItem(elem, event) {
   toggleDialog(elem, false);
 }
 
-function isChildOf(child, parent) {
+function isDescendantOf(child, parent) {
   if (child.parentNode === parent) {
     return true;
   } else if (child.parentNode === null) {
     return false;
   }
 
-  return isChildOf(child.parentNode, parent);
+  return isDescendantOf(child.parentNode, parent);
 }
 
 function focusPrev(elem) {
@@ -97,7 +97,7 @@ function focusNext(elem) {
 
 function handleClickOutside(elem) {
   return (e) => {
-    if (e.target !== elem && !isChildOf(e.target, elem)) {
+    if (e.target !== elem && !isDescendantOf(e.target, elem)) {
       toggleDialog(elem, false);
     }
   };

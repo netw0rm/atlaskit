@@ -30,8 +30,6 @@ popd
 rm -f ../ak-registry-cdn.zip
 zip -0 -r -T ../ak-registry-cdn.zip ../atlaskit-registry/resources
 
-exit 0
-
 # Authenticate with Atlassian Maven (only required for BB pipelines)
 if [ -n "$MVN_USERNAME" ]
   then

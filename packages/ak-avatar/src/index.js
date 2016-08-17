@@ -39,38 +39,47 @@ function imageLoadedHandler(elem) {
  */
 const definition = {
   render(elem) {
-    const imgClasses = classNames({
-      [shadowStyles.locals.img]: true,
-      [shadowStyles.locals.hidden]: elem.__loading,
-      [shadowStyles.locals.loaded]: !elem.__loading,
-    });
     const presenceClasses = classNames([
       shadowStyles.locals.presence,
       shadowStyles.locals[elem.presence],
     ]);
-    const outerDivClasses = classNames({
-      [shadowStyles.locals.outerDiv]: true,
-      [shadowStyles.locals[elem.size]]: true,
+    const sizeClasses = classNames([
+      shadowStyles.locals[elem.size],
+      shadowStyles.locals.size,
+    ]);
+    const imgWrapperClasses = classNames({
+      [shadowStyles.locals.hidden]: elem.__loading,
       [shadowStyles.locals.loaded]: !elem.__loading,
+    }, shadowStyles.locals.imgWrapper);
+    const slotWrapperClasses = classNames({
+      // hide the slot if no presence and no slotted content to hide the border of the presence
+      [shadowStyles.locals.hidden]: elem.presence === 'none' && !elem.children.length,
+      [shadowStyles.locals.defaultSlotWrapper]: true,
     });
-
     return (
-      <div class={outerDivClasses} aria-label={elem.label}>
+      <div>
         <style>{shadowStyles.toString()}</style>
-        {
-          elem.src ? <img
-            alt={elem.label}
-            src={elem.src}
-            class={imgClasses}
-            onload={imageLoadedHandler(elem)}
-          /> : ''
-        }
-        <slot>
-          <div class={presenceClasses}></div>
-        </slot>
+        <div className={sizeClasses}>
+          <div className={imgWrapperClasses} aria-label={elem.label}>
+            {
+              elem.src ? <img
+                alt={elem.label}
+                src={elem.src}
+                className={shadowStyles.locals.img}
+                onload={imageLoadedHandler(elem)}
+              /> : ''
+            }
+          </div>
+          <div className={slotWrapperClasses}>
+            <slot className={shadowStyles.locals.defaultSlotElement}>
+              <div class={presenceClasses}></div>
+            </slot>
+          </div>
+        </div>
       </div>
     );
   },
+
 
   props: {
     /**

@@ -157,11 +157,12 @@ const definition = {
     });
   },
   attached(elem) {
-    // If there is no selected tab, try to select the first tab.
-    if (!elem.children.some(el => el.label && el.selected)) {
-      const tab = elem.children.find(el => el.label);
-      if (tab) {
-        tab.selected = true;
+    // If there is a selected tab, emit the event for the tab.
+    const allTabs = getAllTabs(elem);
+    if (allTabs.length) {
+      const selectedTab = allTabs.find(el => el.selected);
+      if (selectedTab) {
+        emit(selectedTab, events.EVENT_TAB_SELECT, { detail: { tab: selectedTab } });
       }
     }
 

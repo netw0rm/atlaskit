@@ -69,25 +69,17 @@ function isDescendantOf(child, parent) {
   return isDescendantOf(child.parentNode, parent);
 }
 
-function focusPrev(elem) {
+function changeFocus(elem, type) {
   const list = elem.querySelectorAll('ak-dropdown-item');
   const l = list.length;
+
   for (let i = 0; i < l; i++) {
     const item = list[i];
-    if (item.focused && i) {
+    if (type === 'prev' && item.focused && !item.first) {
       item.focused = false;
       list[i - 1].focused = true;
       break;
-    }
-  }
-}
-
-function focusNext(elem) {
-  const list = elem.querySelectorAll('ak-dropdown-item');
-  const l = list.length;
-  for (let i = 0; i < l; i++) {
-    const item = list[i];
-    if (item.focused && (i < (l - 1))) {
+    } else if (type === 'next' && item.focused && !item.last) {
       item.focused = false;
       list[i + 1].focused = true;
       break;
@@ -126,8 +118,8 @@ export default define('ak-dropdown', {
   attached(elem) {
     elem.addEventListener('ak-dropdown-trigger-activated', () => toggleDialog(elem));
     elem.addEventListener('ak-dropdown-selected', (e) => selectItem(elem, e));
-    elem.addEventListener('ak-dropdown-item-up', () => focusPrev(elem));
-    elem.addEventListener('ak-dropdown-item-down', () => focusNext(elem));
+    elem.addEventListener('ak-dropdown-item-up', () => changeFocus(elem, 'prev'));
+    elem.addEventListener('ak-dropdown-item-down', () => changeFocus(elem, 'next'));
     elem.addEventListener('ak-dropdown-item-tab', () => toggleDialog(elem, false));
 
     document.addEventListener('click', handleClickOutside(elem));

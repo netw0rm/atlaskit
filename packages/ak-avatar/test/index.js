@@ -34,6 +34,7 @@ function setupAvatar() {
   return [component, container];
 }
 
+
 describe('ak-avatar', () => {
   it('should be possible to create a component', () => {
     let component;
@@ -55,18 +56,13 @@ describe('ak-avatar', () => {
     let component;
     let container;
 
-    beforeEach(() => {
-      [component, container] = setupAvatar(component, container);
-    });
-
-    afterEach(() => {
-      document.body.removeChild(container);
-    });
+    beforeEach(() => ([component, container] = setupAvatar(component, container)));
+    afterEach(() => (document.body.removeChild(container)));
 
     Object.keys(avatarSizes).forEach((size) => {
       it('should accept all valid values (size = ${size})', (done) => {
         afterMutations(
-          () => { component.size = size; },
+          () => (component.size = size),
           () => {
             expect(component.size).to.equal(size);
             expect(component.getAttribute('size')).to.equal(size);
@@ -80,7 +76,7 @@ describe('ak-avatar', () => {
     invalidSizes.forEach((size) => {
       it('should be default value when invalid size passed', (done) => {
         afterMutations(
-          () => { component.size = size; },
+          () => (component.size = size),
           // We only check the property and not the attribute because setting an attribute to
           // null for example should set the prop to the default value but remove the attribute
           () => expect(component.size).to.equal(defaultSize),
@@ -91,14 +87,13 @@ describe('ak-avatar', () => {
 
     Object.keys(avatarSizes).forEach((size) => {
       it(`should change the dimensions of the avatar when size=${size}`, (done) => {
-        const borderSize = 1;
         let expected;
 
         afterMutations(
-          () => { component.size = size; },
+          () => (component.size = size),
           () => {
             const rect = component.getClientRects()[0];
-            expected = avatarSizes[size] + 2 * borderSize;
+            expected = avatarSizes[size];
             expect(rect.height).to.equal(expected);
             expect(rect.width).to.equal(expected);
           },
@@ -114,7 +109,7 @@ describe('ak-avatar', () => {
 
     beforeEach((done) => {
       afterMutations(
-        () => { [component, container] = setupAvatar(component, container); },
+        () => ([component, container] = setupAvatar(component, container)),
         done
       );
     });
@@ -123,12 +118,12 @@ describe('ak-avatar', () => {
       document.body.removeChild(container);
     });
 
-    it('should set an aria-label on the outerDiv', (done) => {
-      const outerDiv = component[symbols.shadowRoot].firstChild;
+    it('should set an aria-label on the imgWrapper', (done) => {
+      const outerDiv = component[symbols.shadowRoot].querySelector(`.${shadowStyles.locals.imgWrapper}`); // eslint-disable-line  max-len
       const label = 'This is an avatar!';
 
       afterMutations(
-        () => { component.label = label; },
+        () => (component.label = label),
         () => expect(outerDiv.getAttribute('aria-label')).to.equal(label, 'label'),
         done
       );
@@ -144,7 +139,7 @@ describe('ak-avatar', () => {
           component.src = oneByOnePixel;
           component.label = label;
         },
-        () => { img = component[symbols.shadowRoot].firstChild.querySelector('img'); },
+        () => (img = component[symbols.shadowRoot].firstChild.querySelector('img')),
         () => expect(img.getAttribute('alt')).to.equal(label),
         done);
     });
@@ -157,7 +152,7 @@ describe('ak-avatar', () => {
 
     beforeEach((done) => {
       afterMutations(
-        () => { [component, container] = setupAvatar(component, container); },
+        () => ([component, container] = setupAvatar(component, container)),
         () => {
           const shadowDOM = component[symbols.shadowRoot].firstChild;
           presence = shadowDOM.querySelector(`.${shadowStyles.locals.presence}`);
@@ -172,7 +167,7 @@ describe('ak-avatar', () => {
 
     it('should not be visible when set to "none"', (done) => {
       afterMutations(
-        () => { component.presence = 'none'; },
+        () => (component.presence = 'none'),
         () => expect(getComputedStyle(presence).display).to.equal('none'),
         done
       );
@@ -180,7 +175,7 @@ describe('ak-avatar', () => {
 
     it('should be visible when presence is set to \'online\'', (done) => {
       afterMutations(
-        () => { component.presence = 'online'; },
+        () => (component.presence = 'online'),
         () => expect(getComputedStyle(presence).display).to.not.equal('none'),
         done
       );
@@ -188,7 +183,7 @@ describe('ak-avatar', () => {
 
     it('should default to none when set to an invalid value', (done) => {
       afterMutations(
-        () => { component.presence = 'spooky'; },
+        () => (component.presence = 'spooky'),
         () => expect(getComputedStyle(presence).display).to.equal(defaultPresence),
         done
       );
@@ -199,17 +194,12 @@ describe('ak-avatar', () => {
     let component;
     let container;
 
-    beforeEach(() => {
-      [component, container] = setupAvatar(component, container);
-    });
-
-    afterEach(() => {
-      document.body.removeChild(container);
-    });
+    beforeEach(() => ([component, container] = setupAvatar(component, container)));
+    afterEach(() => (document.body.removeChild(container)));
 
     it('should set the src property on the internal img', (done) => {
       afterMutations(
-        () => { component.src = oneByOnePixel; },
+        () => (component.src = oneByOnePixel),
         () => {
           const img = component[symbols.shadowRoot].firstChild.querySelector('img');
           expect(img.src).to.equal(oneByOnePixel);
@@ -226,7 +216,7 @@ describe('ak-avatar', () => {
     testCases.forEach((testCase) => {
       it(`it should ${!testCase.expectImgToBeRendered ? 'not' : ''} render img tag when src set to ${testCase.src}`, (done) => { // eslint-disable-line max-len
         afterMutations(
-          () => { component.src = testCase.src; },
+          () => (component.src = testCase.src),
           () => {
             const img = component[symbols.shadowRoot].firstChild.querySelector('img');
             expect(img !== null).to.equal(testCase.expectImgToBeRendered);
@@ -240,16 +230,16 @@ describe('ak-avatar', () => {
   describe('loading behaviour', () => {
     let component;
     let container;
-    let img;
+    let imgWrapper;
 
     beforeEach((done) => {
       afterMutations(
-        () => { [component, container] = setupAvatar(component, container); },
+        () => ([component, container] = setupAvatar(component, container)),
         // Need to set a src on the image to make sure the img tag is rendered
-        () => { component.src = oneByOnePixel; },
-        () => { img = component[symbols.shadowRoot].firstChild.querySelector('img'); },
-        // Make sure we have actually rendered the img tag in the avatar
-        () => expect(img).to.not.be.null,
+        () => (component.src = oneByOnePixel),
+        () => (imgWrapper = component[symbols.shadowRoot].querySelector(`.${shadowStyles.locals.imgWrapper}`)), // eslint-disable-line  max-len
+        // Make sure we have actually rendered the imgWrapper in the avatar
+        () => expect(imgWrapper).to.not.be.null,
         done
       );
     });
@@ -259,19 +249,19 @@ describe('ak-avatar', () => {
     });
 
     const testCases = [
-      { loadingProp: true, expectImgToBeHidden: true },
-      { loadingProp: false, expectImgToBeHidden: false },
+      { loadingProp: true, expectImgToBeShown: false },
+      { loadingProp: false, expectImgToBeShown: true },
     ];
 
     testCases.forEach((testCase) => {
-      it(`should ${testCase.expectImgToBeHidden ? 'hide' : 'show'} the image if __loading is ${testCase.loadingProp}`, (done) => { // eslint-disable-line  max-len
-        const hiddenClass = shadowStyles.locals.hidden;
+      it(`should ${testCase.expectImgToBeShown ? 'show' : 'hide'} the image if __loading is ${testCase.loadingProp}`, (done) => { // eslint-disable-line  max-len
+        const loadedClass = shadowStyles.locals.loaded;
 
         afterMutations(
-          () => { component.__loading = testCase.loadingProp; }, // eslint-disable-line no-underscore-dangle, max-len
+          () => (component.__loading = testCase.loadingProp), // eslint-disable-line no-underscore-dangle, max-len
           () => {
-            const hasHiddenClass = Array.prototype.slice.call(img.classList).indexOf(hiddenClass) > -1; // eslint-disable-line max-len
-            expect(hasHiddenClass).to.equal(testCase.expectImgToBeHidden);
+            const hasLoadedClass = Array.prototype.slice.call(imgWrapper.classList).indexOf(loadedClass) > -1; // eslint-disable-line max-len
+            expect(hasLoadedClass).to.equal(testCase.expectImgToBeShown);
           },
           done
         );

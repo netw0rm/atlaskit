@@ -10,24 +10,21 @@
 }
 
 .ak-button {
-
+  align-items: center;
+  box-sizing: border-box;
+  background: @buttonDefault;
+  border: none;
+  border-radius: @base-radius;
+  color: @ak-color-N500;
+  display: flex;
   font-family: BlinkMacSystemFont, 'Neue Haas Unica Pro', Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: @base-font;
-
-  box-sizing: border-box;
-  background: @buttonDefault;
-  color: @ak-color-N500;
-  border: none;
-  padding: 0 @base;
-  line-height: @base*3;
   height: @base*3;
-  border-radius: @base-radius;
-  font-size: @base-font;
+  line-height: @base*3;
   margin: 0;
-  display: flex;
-  align-items: center;
+  padding: 0 @base;
   text-align: center;
   transition: background 0s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
 
@@ -40,12 +37,7 @@
   &:active {
     background: @buttonActive;
     transition-duration: 0s;
-  }
-
-  &:active,
-  &:focus {
     outline: none;
-    box-shadow: none;
   }
 
   &:focus {

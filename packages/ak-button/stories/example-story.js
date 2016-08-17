@@ -75,9 +75,7 @@ storiesOf(name, module)
             <AkButton
               disabled={this.state.disable}
               appearance={this.state.appearance}
-              onclick={
-                () => window.alert('clicking the WebComponent') // eslint-disable-line no-alert
-              }
+              onclick={action('clicking the WebComponent')}
             >
               Button
             </AkButton>

@@ -7,11 +7,13 @@ PKG="$1"
 shift || true
 
 PKG=$($BASEDIR/_get_package_name.sh)
+VERSION=$($BASEDIR/_get_package_version.sh)
 
 if [ -d "stories" ]; then
     echo "$PKG: Generating storybook"
     cd ../..
-    npm run storybook/static/single $PKG -- -o stories/$PKG
+    mkdir -p stories/$PKG/$VERSION
+    npm run storybook/static/single $PKG -- -o stories/$PKG/$VERSION
 else
     echo "$PKG: Skipping storybook generation since no stories/ dir"
 fi

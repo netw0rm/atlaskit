@@ -12,8 +12,10 @@ pipelines:
             - npm run lint
             - npm run test/browserstack/ci
             - npm run storybook& # runs in background
+            - STORYBOOK_PID=$!
             - PATH="`npm bin`:$PATH" wait-on http://0.0.0.0:9001/static/preview.bundle.js
             - npm run test/integration/browserstack
+            - kill $STORYBOOK_PID
             - ./build/bin/prep_for_release.sh
             - npm run release
             - npm run release/changelog
@@ -28,4 +30,4 @@ pipelines:
           - npm run validate/package.json
           - npm run lint
           - npm run dist
-          - npm run test/pipelines-branch
+          - npm run test/browserstack/ci

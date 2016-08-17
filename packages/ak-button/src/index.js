@@ -1,25 +1,24 @@
 /** @jsx vdom */
-import 'style!./host.less'; // eslint-disable-line import/no-unresolved
+import 'style!./host.less';
 
 import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
 
-const APPEARANCES = {
-  attribute: 'appearance',
-  values: [
-    'primary', 'standard', 'subtle', 'selected',
-  ],
+const PRIMARY = 'primary';
+const STANDARD = 'standard';
+const SUBTLE = 'subtle';
+const SELECTED = 'selected';
+
+const APPEARANCE = {
+  PRIMARY, STANDARD, SUBTLE, SELECTED,
 };
 
-const preventClickWhenDisabled = (component) =>
-  (e) => {
-    if (component.disabled) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  };
+const APPEARANCES = {
+  attribute: 'appearance',
+  values: Object.keys(APPEARANCE).map(key => APPEARANCE[key]),
+};
 
 const definition = {
   props: {
@@ -50,27 +49,30 @@ const definition = {
 
     if (elem.disabled) {
       classes.push(shadowStyles.locals.disabled);
-    } else {
-      if (elem.appearance) {
-        classes.push(shadowStyles.locals[elem.appearance]);
-      }
+    } else if (elem.appearance) {
+      classes.push(shadowStyles.locals[elem.appearance]);
     }
-
-    const classListNames = classNames(classes);
 
     return (
       <div className={shadowStyles.locals.container}>
         <style>{shadowStyles.toString()}</style>
         <button
-          className={classListNames}
+          className={classNames(classes)}
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >
-          <slot onclick={preventClickWhenDisabled(elem)} />
+          <slot />
         </button>
       </div>
     );
   },
 };
 
-export default define('ak-button', definition);
+const AkButton = define('ak-button', definition);
+
+export default AkButton;
+
+export {
+  APPEARANCE,
+  AkButton,
+};

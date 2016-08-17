@@ -17,7 +17,7 @@ npm install akutil-component-template
 The `akutil-component-template` package exports the AkUtilComponentTemplate [Skate](https://github.com/skatejs/skatejs) component.
 
 Import the component in your JS resource:
- 
+
 #### bundle.js
 
 ```

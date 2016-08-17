@@ -1,9 +1,14 @@
-// These styles will be inserted into a style tag inside
-// the shadow dom of each instance of the component
+@import '../node_modules/akutil-shared-styles/src/colors.less';
 
-// Only do class selectors in here, anything else leaks to the rest of the page in
-// browsers that do not support shadow DOM
-@import 'shared-variables.less';
+@base: 10px;
+@base-font: 14px;
+@base-radius: 3px;
+
+@buttonDefault: fade(@ak-color-N900, 6%);
+@buttonHover: fade(@ak-color-N900, 10%);
+@buttonFocus: fade(@ak-color-B200, 80%);
+@buttonActive: fade(@ak-color-B50, 50%);
+
 
 .container {
   display: inline-block;
@@ -17,8 +22,6 @@
   border-radius: @base-radius;
   color: @ak-color-N500;
   display: flex;
-  font-family: BlinkMacSystemFont, 'Neue Haas Unica Pro', Helvetica, Arial, sans-serif;
-  font-weight: 400;
   font-style: normal;
   font-size: @base-font;
   height: @base*3;
@@ -70,7 +73,7 @@
     color: @ak-color-N60;
 
     ::content > * { pointer-events: none; }
-    ::sloted(*) { pointer-events: none; }
+    ::slotted(*) { pointer-events: none; }
     slot > * { pointer-events: none; }
 
     &:hover {

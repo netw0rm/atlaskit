@@ -17,6 +17,10 @@ describe('ak-dropdown-trigger:', () => {
       component = new Trigger();
       triggerContainer = document.createElement('div');
       triggerContainer.appendChild(component);
+      document.body.appendChild(triggerContainer);
+    });
+    afterEach(() => {
+      document.body.removeChild(triggerContainer);
     });
     it('should be possible to create a component', (done) => {
       // testing to see that skate did its job as expected
@@ -58,6 +62,10 @@ describe('ak-dropdown-trigger:', () => {
         bubbles: true,
         cancelable: true,
       });
+      document.body.appendChild(itemContainer);
+    });
+    afterEach(() => {
+      document.body.removeChild(itemContainer);
     });
     Object.keys(eventsMap).forEach((key) => {
       it(`keypress event on the ${key} key should emit ${eventsMap[key]} event`, (done) => {

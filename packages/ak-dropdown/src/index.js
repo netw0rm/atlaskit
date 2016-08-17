@@ -9,13 +9,19 @@ import Layer from 'ak-layer';
 
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
-  const trigger = elem.querySelector('ak-dropdown-trigger');
-  const triggerButton = trigger.querySelector('ak-trigger-button');
   const list = elem.querySelectorAll('ak-dropdown-item');
   if ((elem.open !== isOpen)) {
     elem.open = isOpen;
   }
-  trigger.opened = isOpen;
+  if (!list || !list.length) {
+    return;
+  }
+  const trigger = elem.querySelector('ak-dropdown-trigger');
+  let triggerButton;
+  if (trigger) {
+    trigger.opened = isOpen;
+    triggerButton = trigger.querySelector('ak-trigger-button');
+  }
   if (triggerButton) {
     triggerButton.opened = isOpen;
   }

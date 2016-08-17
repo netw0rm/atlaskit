@@ -16,6 +16,10 @@ describe('ak-dropdown-item:', () => {
       component = new Item();
       itemContainer = document.createElement('div');
       itemContainer.appendChild(component);
+      document.body.appendChild(itemContainer);
+    });
+    afterEach(() => {
+      document.body.removeChild(itemContainer);
     });
     it('should be possible to create a component', (done) => {
       // testing to see that skate did its job as expected
@@ -57,6 +61,10 @@ describe('ak-dropdown-item:', () => {
         bubbles: true,
         cancelable: true,
       });
+      document.body.appendChild(itemContainer);
+    });
+    afterEach(() => {
+      document.body.removeChild(itemContainer);
     });
     Object.keys(eventsMap).forEach((key) => {
       it(`keypress event on the ${key} key should emit ${eventsMap[key]} event`, (done) => {

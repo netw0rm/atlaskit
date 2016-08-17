@@ -1,6 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import { AkButton as AkButtonTemplate, APPEARANCE } from '../src/index';
+import AkButtonTemplate, { APPEARANCE } from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 

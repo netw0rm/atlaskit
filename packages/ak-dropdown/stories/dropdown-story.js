@@ -14,14 +14,14 @@ storiesOf(name, module)
     <div>
       <Component>
         <ak-dropdown-trigger slot="trigger">Dropdown</ak-dropdown-trigger>
-        <ak-dropdown-item slot="list">text1</ak-dropdown-item>
-        <ak-dropdown-item slot="list" disabled>text2</ak-dropdown-item>
-        <ak-dropdown-item slot="list">text3</ak-dropdown-item>
-        <ak-dropdown-item slot="list" selected>
+        <ak-dropdown-item>text1</ak-dropdown-item>
+        <ak-dropdown-item disabled>text2</ak-dropdown-item>
+        <ak-dropdown-item>text3</ak-dropdown-item>
+        <ak-dropdown-item selected>
           really long text, really long text,
           really long text, really long text
         </ak-dropdown-item>
-        <ak-dropdown-item slot="list">text5</ak-dropdown-item>
+        <ak-dropdown-item>text5</ak-dropdown-item>
       </Component>
     </div>
   ))
@@ -29,14 +29,14 @@ storiesOf(name, module)
     <div>
       <Component open>
         <ak-dropdown-trigger slot="trigger">Dropdown</ak-dropdown-trigger>
-        <ak-dropdown-item slot="list">text1</ak-dropdown-item>
-        <ak-dropdown-item slot="list" disabled>text2</ak-dropdown-item>
-        <ak-dropdown-item slot="list">text3</ak-dropdown-item>
-        <ak-dropdown-item slot="list" selected>
+        <ak-dropdown-item>text1</ak-dropdown-item>
+        <ak-dropdown-item disabled>text2</ak-dropdown-item>
+        <ak-dropdown-item>text3</ak-dropdown-item>
+        <ak-dropdown-item selected>
           really long text, really long text,
           really long text, really long text
         </ak-dropdown-item>
-        <ak-dropdown-item slot="list">text5</ak-dropdown-item>
+        <ak-dropdown-item>text5</ak-dropdown-item>
       </Component>
     </div>
   ))
@@ -46,14 +46,14 @@ storiesOf(name, module)
         <ak-dropdown-trigger slot="trigger">
           <ak-trigger-button>Dropdown-button</ak-trigger-button>
         </ak-dropdown-trigger>
-        <ak-dropdown-item slot="list">text1</ak-dropdown-item>
-        <ak-dropdown-item slot="list" disabled>text2</ak-dropdown-item>
-        <ak-dropdown-item slot="list">text3</ak-dropdown-item>
-        <ak-dropdown-item slot="list" selected>
+        <ak-dropdown-item>text1</ak-dropdown-item>
+        <ak-dropdown-item disabled>text2</ak-dropdown-item>
+        <ak-dropdown-item>text3</ak-dropdown-item>
+        <ak-dropdown-item selected>
           really long text, really long text,
           really long text, really long text
         </ak-dropdown-item>
-        <ak-dropdown-item slot="list">text5</ak-dropdown-item>
+        <ak-dropdown-item>text5</ak-dropdown-item>
       </Component>
     </div>
   ));

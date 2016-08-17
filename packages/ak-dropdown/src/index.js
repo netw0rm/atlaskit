@@ -151,7 +151,9 @@ export default define('ak-dropdown', {
               minWidth: `${target.getBoundingClientRect().width + listWidthGap}px`,
             };
           }}
-        ><slot name="trigger" /></div>
+        >
+          <slot name="trigger" />
+        </div>
         <div style={{ display: elem.open ? 'block' : 'none' }}>
           <Layer
             position="bottom left"
@@ -171,7 +173,7 @@ export default define('ak-dropdown', {
           >
             <div className={shadowListStyles.locals.list} style={styles}>
               <style>{shadowListStyles.toString()}</style>
-              <slot name="list" />
+              <slot />
             </div>
           </Layer>
         </div>

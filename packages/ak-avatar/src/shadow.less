@@ -26,16 +26,6 @@
 @ak-avatar-presence-color-busy: @ak-color-Y500;
 @ak-avatar-presence-color-offline: @ak-color-N40;
 
-
-.img {
-  height: 100%;
-  width: 100%;
-
-  &.loaded {
-    animation: fadeIn 0.5s;
-  }
-}
-
 // We wrap these rules in :host so that polyfilled browsers will ignore everything inside it
 :host {
   .small {
@@ -87,9 +77,8 @@
   overflow: hidden;
   position: absolute;
 }
+
 ///////////// END OF POLYFILL STYLES //////////////////
-
-
 .imgWrapper {
   align-content: center;
   align-items: middle;
@@ -99,10 +88,23 @@
   height: 100%;
   overflow: hidden;
   width: 100%;
+  // need to transformZ to lift it into a GPU layer so that the img
+  // doesnt ignore overflow:hidden when animating the opacity
+  transform: translateZ(0);
 
+  img {
+    height: 100%;
+    width: 100%;
+    display: none;
+  }
   // Avatars will have a background color present until the image is loaded
   &.loaded {
     background-color: transparent;
+
+    img {
+      display: inline-block;
+      animation: fadeIn 0.5s;
+    }
   }
 }
 

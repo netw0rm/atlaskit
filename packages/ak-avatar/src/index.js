@@ -48,7 +48,6 @@ const definition = {
       shadowStyles.locals.size,
     ]);
     const imgWrapperClasses = classNames({
-      [shadowStyles.locals.hidden]: elem.__loading,
       [shadowStyles.locals.loaded]: !elem.__loading,
     }, shadowStyles.locals.imgWrapper);
     const slotWrapperClasses = classNames({

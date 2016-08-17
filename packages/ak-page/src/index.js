@@ -34,10 +34,13 @@ const definition = {
   props: {
     navigationOpen: prop.boolean({ default: true }),
   },
-  events: {
-    'ak-navigation-open-state-changed': (elem, event) => {
-      elem.navigationOpen = event.detail.openState;
-    },
+  created(elem) {
+    elem.addEventListener('ak-navigation-open', () => {
+      elem.navigationOpen = true;
+    });
+    elem.addEventListener('ak-navigation-close', () => {
+      elem.navigationOpen = false;
+    });
   },
 };
 

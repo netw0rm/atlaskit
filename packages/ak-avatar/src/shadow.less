@@ -1,102 +1,114 @@
 @import '../node_modules/akutil-shared-styles/src/colors.less';
 
-@ak-avatar-size-xlarge: 100px;
-@ak-avatar-size-large: 50px;
-@ak-avatar-size-medium: 30px;
-@ak-avatar-size-small: 20px;
+// Size of the entire component, not including the borders
+@img-size-small: 20px;
+@img-size-medium: 30px;
+@img-size-large: 50px;
+@img-size-xlarge: 100px;
 
+// Size of the presence icon, not including the borders
+@presence-size-small: 8px;
+@presence-size-medium: 8px;
+@presence-size-large: 12px;
+@presence-size-xlarge: 22px;
+
+// The top and left offset for where the presence icon should be positioned
+@presence-offset-small: 12px;
+@presence-offset-medium: 20px;
+@presence-offset-large: 35px;
+@presence-offset-xlarge: 72px;
+
+// The color shown behind the avatar whilst it is still loading
 @ak-avatar-background: @ak-color-N40;
 
+// Default presence colors
 @ak-avatar-presence-color-online: @ak-color-G300;
 @ak-avatar-presence-color-busy: @ak-color-Y500;
 @ak-avatar-presence-color-offline: @ak-color-N40;
 
-slot {
-  display: inline-block;
-  position: absolute;
-
-  & >:first-child {
-    height: 100%;
-    width: 100%;
-    border: 2px solid white;
-    border-radius: 100%;
-  }
-}
 
 .img {
-  background-clip: padding-box;
-  margin: 0 auto;
-  border-radius: 100%;
   height: 100%;
   width: 100%;
-
-  &.hidden {
-    display: none;
-  }
 
   &.loaded {
     animation: fadeIn 0.5s;
   }
 }
 
-.outerDiv {
-  position: relative;
+// We wrap these rules in :host so that polyfilled browsers will ignore everything inside it
+:host {
+  .small {
+    .sizeMixin(small, default-slot-wrapper);
+  }
+  .medium {
+    .sizeMixin(medium, default-slot-wrapper);
+  }
+  .large {
+    .sizeMixin(large, default-slot-wrapper);
+  }
+  .xlarge {
+    .sizeMixin(xlarge, default-slot-wrapper);
+  }
+
+  .default-slot-wrapper {
+    align-content: center;
+    border: 2px solid white;
+    border-radius: 100%;
+    align-items: middle;
+    display: flex;
+    overflow: hidden;
+    position: absolute;
+  }
+}
+
+///////////// START OF POLYFILL STYLES //////////////////
+// We repeat some similar rules to the above but use the '.default-slot-element' class rather than
+// '.default-slot-wrapper' as native browsers will ignore styles applied to the slot element
+.small {
+  .sizeMixin(small, default-slot-element);
+}
+.medium {
+  .sizeMixin(medium, default-slot-element);
+}
+.large {
+  .sizeMixin(large, default-slot-element);
+}
+.xlarge {
+  .sizeMixin(xlarge, default-slot-element);
+}
+
+.default-slot-element {
+  align-content: center;
+  border: 2px solid white;
+  border-radius: 100%;
+  align-items: middle;
+  display: flex;
+  overflow: hidden;
+  position: absolute;
+}
+///////////// END OF POLYFILL STYLES //////////////////
+
+
+.imgWrapper {
+  align-content: center;
+  align-items: middle;
   background-color: @ak-avatar-background;
   border-radius: 100%;
-  border: 1px solid transparent;
-  vertical-align: bottom;
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
 
-  &.small {
-    .sizeMixin(@ak-avatar-size-small);
-
-    slot {
-      @slot-size: 8px;
-      @slot-offset: 12px;
-
-      .slotMixin(@slot-size, @slot-offset);
-    }
-  }
-  &.medium {
-    .sizeMixin(@ak-avatar-size-medium);
-
-    slot {
-      @slot-size: 8px;
-      @slot-offset: 20px;
-
-      .slotMixin(@slot-size, @slot-offset);
-    }
-  }
-  &.large {
-    .sizeMixin(@ak-avatar-size-large);
-
-    slot {
-      @slot-size: 12px;
-      @slot-offset: 35px;
-
-      .slotMixin(@slot-size, @slot-offset);
-    }
-  }
-  &.xlarge {
-    .sizeMixin(@ak-avatar-size-xlarge);
-
-    slot {
-      @slot-size: 22px;
-      @slot-offset: 72px;
-
-      .slotMixin(@slot-size, @slot-offset);
-
-      & >:first-child {
-        border-width: 4px;
-      }
-    }
-  }
+  // Avatars will have a background color present until the image is loaded
   &.loaded {
     background-color: transparent;
   }
 }
 
 .presence {
-  position: relative;
+  height: 100%;
+  width: 100%;
 
   &.none {
     display: none;
@@ -113,34 +125,45 @@ slot {
   &.offline {
     background: @ak-avatar-presence-color-offline;
 
+    // Adds the dot inside the offline presence indicator
     &:before {
       @middle-bubble-size: 50%;
 
-      content: '';
-      display: inline-block;
-      position: absolute;
-      height: @middle-bubble-size;
-      width: @middle-bubble-size;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 100%;
       background-color: white;
+      border-radius: 100%;
+      content: '';
+      height: @middle-bubble-size;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: @middle-bubble-size;
     }
   }
 }
 
-.slotMixin(@size, @offset) {
-  height: @size;
-  width: @size;
-
-  top: @offset;
-  left: @offset;
+.hidden {
+  display: none;
 }
 
-.sizeMixin(@size) {
-  height: @size;
-  width: @size;
+.sizeMixin(@size, @slotClass) {
+  // We build the names of the variables we will use for size and offsets
+  @height: "img-size-@{size}";
+  @width: "img-size-@{size}";
+  @presenceSize: "presence-size-@{size}";
+  @presenceOffset: "presence-offset-@{size}";
+
+  height: @@height;
+  width: @@width;
+
+  // we take in the slotclass so that this mixin can be used to target either the slot element
+  // or the slot wrapper. Once we remove the need for polyfills this will be changed to the wrapper
+  .@{slotClass} {
+    left: @@presenceOffset;
+    height: @@presenceSize;
+    top: @@presenceOffset;
+    width: @@presenceSize;
+  }
 }
 
 @keyframes fadeIn {

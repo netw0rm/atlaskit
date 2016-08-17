@@ -11,8 +11,8 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "*",
-    "akutil-common": "*",
+    "akutil-shared-styles": "^33.1.0",
+    "akutil-common": "^0.3.0",
     "skatejs": "1.x",
     "ak-layer": "^56.4.0",
     "classnames": "^2.2.5",
@@ -21,7 +21,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "^0.0.3"
+    "akutil-react": "^0.0.4"
   },
   "repository": {
     "type": "git",

@@ -44,9 +44,9 @@ For the dropdown to work it has to include trigger and list of elements. Simple 
 ```
 <ak-dropdown>
   <ak-dropdown-trigger slot="trigger">Some text</ak-dropdown-trigger>
-  <ak-dropdown-item slot="list">first item</ak-dropdown-item>
-  <ak-dropdown-item slot="list">second item</ak-dropdown-item>
-  <ak-dropdown-item slot="list">third item</ak-dropdown-item>
+  <ak-dropdown-item>first item</ak-dropdown-item>
+  <ak-dropdown-item>second item</ak-dropdown-item>
+  <ak-dropdown-item>third item</ak-dropdown-item>
 </ak-dropdown>
 ```
 
@@ -55,7 +55,7 @@ Trigger by default is not styled. Any html element could be used as the trigger 
 ```
 <ak-dropdown>
   <ak-dropdown-trigger slot="trigger"><ak-trigger-button>Button as the trigger</ak-trigger-button></ak-dropdown-trigger>
-  <ak-dropdown-item slot="list">first item</ak-dropdown-item>
+  <ak-dropdown-item>first item</ak-dropdown-item>
 </ak-dropdown>
 ```
 

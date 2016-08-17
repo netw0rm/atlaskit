@@ -12,16 +12,20 @@ npm config set progress false
 npm set loglevel warn
 npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
 npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
-npm install @atlassian/atlaskit-registry@1.0.0
+npm install @atlassian/atlaskit-registry@1.1.1
 mv ._npmrc .npmrc
 
 # Build website using jekyll
 echo "Building registry"
-mkdir -p ../atlaskit-registry/resources
+TARGET_PATH_RELATIVE=../atlaskit-registry/resources
+mkdir -p $TARGET_PATH_RELATIVE
+pushd $TARGET_PATH_RELATIVE
+TARGET_PATH=`pwd`
+popd
 REGISTRY_BIN=`npm bin`/ak-registry
 REGISTRY_PATH=`npm root`/@atlassian/atlaskit-registry
 pushd $REGISTRY_PATH
-BITBUCKET_PASS=$BITBUCKET_PW_READONLY $REGISTRY_BIN -- --destination $BASEDIR/../atlaskit-registry/resources
+BITBUCKET_PASS=$BITBUCKET_PW_READONLY $REGISTRY_BIN --destination $TARGET_PATH
 popd
 
 # Zip the built website so we can upload to CDN

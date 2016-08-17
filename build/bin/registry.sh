@@ -53,7 +53,10 @@ npm install cloudfront-invalidate-cli@1.0.3 -g
 
 # Upload to CDN
 echo "Uploading registry to CDN..."
-java -jar ../prebake-distributor-runner.jar \
+java \
+-jar \
+-Dlog4j.configurationFile=build/bin/logger.xml \
+../prebake-distributor-runner.jar \
 --step=resources \
 --s3-bucket=$S3_BUCKET \
 --s3-key-prefix="$S3_KEY_PREFIX/registry" \
@@ -76,7 +79,10 @@ rm -f ../ak-storybooks-cdn.zip
 zip -0 -r -T ../ak-storybooks-cdn.zip ../atlaskit-stories/resources
 
 echo "Uploading storybooks to CDN..."
-java -jar ../prebake-distributor-runner.jar \
+java \
+-jar \
+-Dlog4j.configurationFile=build/bin/logger.xml \
+../prebake-distributor-runner.jar \
 --step=resources \
 --s3-bucket=$S3_BUCKET \
 --s3-key-prefix="$S3_KEY_PREFIX/stories" \

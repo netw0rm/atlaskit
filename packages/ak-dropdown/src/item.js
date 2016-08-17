@@ -40,15 +40,14 @@ function handleKeyDown(elem) {
     }
   };
 }
-/* eslint-disable max-len */
 export default {
   render(elem) {
     const classes = classNames(
       [shadowItemStyles.locals.item, {
-        [`${shadowItemStyles.locals.disabled}`]: elem.disabled,
-        [`${shadowItemStyles.locals.selected}`]: elem.selected,
-        [`${shadowItemStyles.locals.first}`]: elem.first,
-        [`${shadowItemStyles.locals.last}`]: elem.last,
+        [shadowItemStyles.locals.disabled]: elem.disabled,
+        [shadowItemStyles.locals.selected]: elem.selected,
+        [shadowItemStyles.locals.first]: elem.first,
+        [shadowItemStyles.locals.last]: elem.last,
       }]
     );
     const tabIndex = elem.selected ? '1' : '0';
@@ -56,9 +55,9 @@ export default {
     return (
       <div
         tabindex={tabIndex}
-        class={classes}
-        on-keydown={handleKeyDown(elem)}
-        on-click={() => selectItem(elem)}
+        className={classes}
+        onkeydown={handleKeyDown(elem)}
+        onclick={() => selectItem(elem)}
         ref={el => (elem.item = el)}
         aria-disabled={elem.disabled}
         aria-selected={elem.selected}
@@ -79,7 +78,9 @@ export default {
      * @memberof Dropdown
      * @default false
      * @type {Boolean}
-     * @example @html <ak-dropdown><ak-dropdown-item disabled>some content</ak-dropdown-item></ak-dropdown>
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-item disabled>some content</ak-dropdown-item>
+     * </ak-dropdown>
      * @example @js dropdown.childNodes[0].disabled = true;
      */
     disabled: prop.boolean({
@@ -90,7 +91,9 @@ export default {
      * @memberof Dropdown
      * @default false
      * @type {Boolean}
-     * @example @html <ak-dropdown><ak-dropdown-item selected>some content</ak-dropdown-item></ak-dropdown>
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-item selected>some content</ak-dropdown-item>
+     * </ak-dropdown>
      * @example @js dropdown.childNodes[0].selected = true;
      */
     selected: prop.boolean({
@@ -101,7 +104,9 @@ export default {
      * @memberof Dropdown
      * @default false
      * @type {Boolean}
-     * @example @html <ak-dropdown><ak-dropdown-item first>some content</ak-dropdown-item></ak-dropdown>
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-item first>some content</ak-dropdown-item>
+     * </ak-dropdown>
      * @example @js dropdown.childNodes[0].first = true;
      */
     first: prop.boolean({
@@ -112,7 +117,9 @@ export default {
      * @memberof Dropdown
      * @default false
      * @type {Boolean}
-     * @example @html <ak-dropdown><ak-dropdown-item last>some content</ak-dropdown-item></ak-dropdown>
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-item last>some content</ak-dropdown-item>
+     * </ak-dropdown>
      * @example @js dropdown.childNodes[0].last = true;
      */
     last: prop.boolean({
@@ -123,7 +130,9 @@ export default {
      * @memberof Dropdown
      * @default false
      * @type {Boolean}
-     * @example @html <ak-dropdown><ak-dropdown-item focused>some content</ak-dropdown-item></ak-dropdown>
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-item focused>some content</ak-dropdown-item>
+     * </ak-dropdown>
      * @example @js dropdown.childNodes[0].focused = true;
      */
     focused: prop.boolean({
@@ -131,4 +140,3 @@ export default {
     }),
   },
 };
-/* eslint-enable max-len */

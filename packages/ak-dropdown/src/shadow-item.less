@@ -1,24 +1,24 @@
 @import 'shared-variables.less';
 
 .item {
-  height:30px;
-  color:@ak-dropdown-font-main;
-  padding:5px 10px;
-  box-sizing:border-box;
-  cursor:pointer;
-  background:@ak-dropdown-background-main;
-  display:block;
+  height: 30px;
+  color: @ak-dropdown-font-main;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  background-color: @ak-dropdown-background-main;
+  display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
   &:hover {
-    background:@ak-dropdown-background-hover;
+    background-color: @ak-dropdown-background-hover;
   }
 
   &:active {
-    background:@ak-dropdown-background-active;
-    color:@ak-dropdown-font-active;
+    background-color: @ak-dropdown-background-active;
+    color: @ak-dropdown-font-active;
   }
 
   &:focus {
@@ -29,23 +29,23 @@
 }
 
 .selected {
-  background:@ak-dropdown-background-selected;
-  color:@ak-dropdown-font-main;
+  background-color: @ak-dropdown-background-selected;
+  color: @ak-dropdown-font-main;
 }
 
 .disabled {
   &, &:active, &:hover {
-    color:@ak-dropdown-font-disabled;
-    background:@ak-dropdown-background-disabled;
-    cursor:not-allowed;
+    color: @ak-dropdown-font-disabled;
+    background-color: @ak-dropdown-background-disabled;
+    cursor: not-allowed;
   }
 }
 
 .first {
-  border-top-right-radius:@ak-dropdown-border-radius;
+  border-top-right-radius: @ak-dropdown-border-radius;
 }
 
 .last {
-  border-bottom-left-radius:@ak-dropdown-border-radius;
-  border-bottom-right-radius:@ak-dropdown-border-radius;
+  border-bottom-left-radius: @ak-dropdown-border-radius;
+  border-bottom-right-radius: @ak-dropdown-border-radius;
 }

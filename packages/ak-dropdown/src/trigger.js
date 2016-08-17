@@ -32,13 +32,13 @@ export const TriggerButtonDefinition = {
   render(elem) {
     const classes = classNames(
       [shadowTriggerStyles.locals.trigger, {
-        [`${shadowTriggerStyles.locals.disabled}`]: elem.disabled,
-        [`${shadowTriggerStyles.locals.opened}`]: elem.opened,
+        [shadowTriggerStyles.locals.disabled]: elem.disabled,
+        [shadowTriggerStyles.locals.opened]: elem.opened,
       }]
     );
 
     return (
-      <div class={classes}>
+      <div className={classes}>
         <style>{shadowTriggerStyles.toString()}</style>
         <slot />
       </div>
@@ -50,14 +50,12 @@ export const TriggerButtonDefinition = {
     }),
   },
 };
-
-/* eslint-disable max-len */
 export default {
   render(elem) {
     return (
       <div
-        on-click={handleClick(elem)}
-        on-keydown={handleKeyDown(elem)}
+        onclick={handleClick(elem)}
+        onkeydown={handleKeyDown(elem)}
         tabindex="0"
       >
         <slot />
@@ -70,7 +68,9 @@ export default {
      * @memberof Dropdown
      * @default false
      * @type {Boolean}
-     * @example @html <ak-dropdown><ak-dropdown-trigger disabled>Dropdown trigger</ak-dropdown-trigger></ak-dropdown>
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-trigger disabled>Dropdown trigger</ak-dropdown-trigger>
+     * </ak-dropdown>
      * @example @js dropdown.childNodes[0].disabled = true;
      */
     disabled: prop.boolean({
@@ -81,7 +81,9 @@ export default {
      * @memberof Dropdown
      * @default false
      * @type {Boolean}
-     * @example @html <ak-dropdown><ak-dropdown-trigger opened>Dropdown trigger</ak-dropdown-trigger></ak-dropdown>
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-trigger opened>Dropdown trigger</ak-dropdown-trigger>
+     * </ak-dropdown>
      * @example @js dropdown.childNodes[0].opened = true;
      */
     opened: prop.boolean({

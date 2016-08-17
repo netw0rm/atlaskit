@@ -7,13 +7,11 @@ BASEDIR=$(dirname $0)
 # npm registries, which is why we need to disable the .npmrc file
 # temporarily here.
 echo "Installing atlaskit-registry from Atlassian private npm"
-mv .npmrc ._npmrc
 npm config set progress false
 npm set loglevel warn
 npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
 npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
 npm install @atlassian/atlaskit-registry@1.1.1
-mv ._npmrc .npmrc
 
 # Build website using jekyll
 echo "Building registry"

@@ -21,7 +21,7 @@ const focusSelectedOnRender = Symbol();
 /* Helpers */
 
 function getAllTabs(tabsEl) {
-  return tabsEl.children.filter(el => el.label);
+  return [...tabsEl.children].filter(el => el.label);
 }
 
 function getNextOrPrevTab(tabsEl, tab, isNext) {
@@ -136,11 +136,12 @@ const definition = {
   created(elem) {
     // Listen for tab change events
     elem.addEventListener(events.EVENT_TAB_CHANGE, e => {
+      const allTabs = getAllTabs(elem);
       // If the tab has been selected, we need to deselect all other tabs.
       if (e.detail.hasOwnProperty('selected')) {
         const tab = e.detail.tab;
         if (tab.selected) {
-          elem.children
+          allTabs
             .filter(el => el.selected && el !== tab)
             .forEach(el => (el.selected = false));
         }
@@ -151,8 +152,8 @@ const definition = {
       }
 
       // Re-render if necessary.
-      elem._selected = elem.children.map(el => el.selected);
-      elem._labels = elem.children.map(el => el.label);
+      elem._selected = allTabs.map(el => el.selected);
+      elem._labels = allTabs.map(el => el.label);
       elem._visibleTabs = calculateVisibleTabs(elem);
     });
   },
@@ -176,7 +177,8 @@ const definition = {
     window.removeEventListener('resize', elem[resizeListener]);
   },
   render(elem) {
-    const hasOverflowingTabs = elem._visibleTabs.length < elem.children.length;
+    const allTabs = getAllTabs(elem);
+    const hasOverflowingTabs = elem._visibleTabs.length < allTabs.length;
     const hasSingleTab = elem._visibleTabs.length === 1;
     const buttonClasses = classNames({
       [shadowStyles.locals.akTabLabel]: true,
@@ -190,7 +192,7 @@ const definition = {
           ref={el => (elem[labelsContainer] = el)}
           role="tablist"
         >
-          {elem.children && elem.children.map(
+          {allTabs && allTabs.map(
             tab => {
               const ariaSelected = tab.selected ? 'true' : 'false';
               const tabIndex = tab.selected ? '0' : '-1';
@@ -250,7 +252,7 @@ const definition = {
             [shadowStyles.locals.ddHidden]: !elem._dropdownOpen,
           })}
         >
-          {elem.children && elem.children.map(
+          {allTabs && allTabs.map(
             tab => {
               const isVisible = elem._visibleTabs.indexOf(tab) > -1;
               const classes = classNames({

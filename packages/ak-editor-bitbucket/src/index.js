@@ -6,6 +6,7 @@ import shadowStyles from './shadow.less';
 import Content from 'ak-editor-content';
 import Footer from 'ak-editor-footer';
 import Toolbar from 'ak-editor-toolbar';
+import HyperLink from 'ak-editor-hyperlink-edit';
 import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
@@ -43,7 +44,7 @@ const prosemirrorBlockToToolbarMap = {
 
 const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
 
-function selectFont(blockTypePluginInstance) {
+function selectFont(blockTypePlugin) {
   return (event) => {
     const font = event.detail.font;
 
@@ -51,13 +52,31 @@ function selectFont(blockTypePluginInstance) {
     const blockType = matches[1];
     const level = matches[2];
 
-    blockTypePluginInstance.changeBlockType(blockType, { level });
+    blockTypePlugin.changeBlockType(blockType, { level });
   };
 }
 
-function toggleMark(textFormattingPluginInstance, name) {
+function toggleMark(textFormattingPlugin, name) {
   return () => {
-    textFormattingPluginInstance.toggleMark(name);
+    textFormattingPlugin.toggleMark(name);
+  };
+}
+
+function unlink(hyperLinkPlugin) {
+  return () => {
+    hyperLinkPlugin.removeLink();
+  };
+}
+
+function changeHyperLinkValue(hyperLinkPlugin) {
+  return (event) => {
+    const newLink = event.target.value;
+    if (newLink) {
+      hyperLinkPlugin.updateLink({
+        href: newLink,
+        text: newLink,
+      });
+    }
   };
 }
 
@@ -78,7 +97,7 @@ export default define('ak-editor-bitbucket', {
           <ToolbarBlockType
             disabled={!elem.canChangeBlockType}
             selectedFont={elem.selectedFont}
-            onSelectFont={selectFont(elem.blockTypePluginInstance)}
+            onSelectFont={selectFont(elem.blockTypePlugin)}
           />
           <ToolbarTextFormatting
             boldActive={elem.strongActive}
@@ -87,9 +106,9 @@ export default define('ak-editor-bitbucket', {
             boldDisabled={elem.textFormattingDisabled}
             italicDisabled={elem.textFormattingDisabled}
             underlineDisabled={elem.textFormattingDisabled}
-            onToggle-bold={toggleMark(elem.textFormattingPluginInstance, 'bold')}
-            onToggle-italic={toggleMark(elem.textFormattingPluginInstance, 'italic')}
-            onToggle-underline={toggleMark(elem.textFormattingPluginInstance, 'underline')}
+            onToggle-bold={toggleMark(elem.textFormattingPlugin, 'bold')}
+            onToggle-italic={toggleMark(elem.textFormattingPlugin, 'italic')}
+            onToggle-underline={toggleMark(elem.textFormattingPlugin, 'underline')}
           />
           <ToolbarHyperlink />
         </Toolbar>
@@ -99,6 +118,15 @@ export default define('ak-editor-bitbucket', {
           openTop
           openBottom
         />
+        {elem.hyperLinkActive ?
+          <HyperLink
+            href={elem.hyperLinkText}
+            textInputValue={elem.hyperLinkText}
+            attachTo={elem.hyperLinkElement}
+            onUnlink={unlink(elem.hyperLinkPlugin)}
+            onchange={changeHyperLinkValue(elem.hyperLinkPlugin)}
+          /> :
+          null}
         <Footer openTop />
       </div>
     );
@@ -165,7 +193,21 @@ export default define('ak-editor-bitbucket', {
         doc: markdownParser(new Schema(schema)).parse(elem.defaultValue),
         plugins: [
           new Plugin(MarkdownInputRulesPlugin),
-          new Plugin(HyperLinkPlugin),
+          new Plugin(class HyperLinkPluginDecorator {
+            constructor(proseMirrorInstance) {
+              const hyperLinkPlugin = new HyperLinkPlugin(proseMirrorInstance);
+
+              hyperLinkPlugin.onChange(state => {
+                elem.hyperLinkActive = state.active;
+                elem.hyperLinkElement = state.element;
+                elem.hyperLinkText = state.text;
+              });
+
+              elem.hyperLinkPlugin = hyperLinkPlugin;
+
+              return hyperLinkPlugin;
+            }
+          }),
           new Plugin(class ImageUploadPluginDecorator {
             constructor(proseMirrorInstance) {
               const imageUploadPlugin = new ImageUploadPlugin(proseMirrorInstance);
@@ -192,10 +234,10 @@ export default define('ak-editor-bitbucket', {
             }
           }),
           new Plugin(class BlockTypePluginDecorator {
-            constructor(_pm) {
-              const blockTypePluginInstance = new BlockTypePlugin(_pm);
+            constructor(proseMirrorInstance) {
+              const blockTypePlugin = new BlockTypePlugin(proseMirrorInstance);
 
-              blockTypePluginInstance.onChange(state => {
+              blockTypePlugin.onChange(state => {
                 const name = state.selectedBlockType;
                 const blockType = prosemirrorBlockToToolbarMap[name];
 
@@ -203,25 +245,25 @@ export default define('ak-editor-bitbucket', {
                 elem.canChangeBlockType = state.enabled;
               });
 
-              elem.blockTypePluginInstance = blockTypePluginInstance;
+              elem.blockTypePlugin = blockTypePlugin;
 
-              return blockTypePluginInstance;
+              return blockTypePlugin;
             }
           }),
           new Plugin(class TextFormattingPluginDecorator {
-            constructor(_pm) {
-              const textFormattingPluginInstance = new TextFormattingPlugin(_pm);
+            constructor(proseMirrorInstance) {
+              const textFormattingPlugin = new TextFormattingPlugin(proseMirrorInstance);
 
-              textFormattingPluginInstance.onChange(state => {
+              textFormattingPlugin.onChange(state => {
                 elem.strongActive = state.strongActive;
                 elem.emActive = state.emActive;
                 elem.underlineActive = state.underlineActive;
                 elem.textFormattingDisabled = state.enabled;
               });
 
-              elem.textFormattingPluginInstance = textFormattingPluginInstance;
+              elem.textFormattingPlugin = textFormattingPlugin;
 
-              return textFormattingPluginInstance;
+              return textFormattingPlugin;
             }
           }),
         ],

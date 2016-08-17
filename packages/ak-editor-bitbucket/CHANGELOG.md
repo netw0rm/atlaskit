@@ -1,5 +1,10 @@
-<a name="0.1.0"></a>
-# 0.1.0 (2016-08-12)
+<a name="0.2.0"></a>
+# 0.2.0 (2016-08-16)
+
+
+
+<a name="ak-editor-bitbucket@0.2.0"></a>
+# ak-editor-bitbucket@0.2.0 (2016-08-16)
 
 
 ### Bug Fixes
@@ -11,6 +16,7 @@
 
 * Add ak-editor-bitbucket. ([8f9bf1f](https://bitbucket.org/atlassian/atlaskit/commits/8f9bf1f))
 * Use a specific ak-editor-footer version. ([edc3a89](https://bitbucket.org/atlassian/atlaskit/commits/edc3a89))
+* **ak-editor-bitbucket:** wiring plugins ([1466b5c](https://bitbucket.org/atlassian/atlaskit/commits/1466b5c))
 
 
 

@@ -13,10 +13,10 @@ const Avatar = reactify(AkAvatar, {
 });
 
 const avatarClass = hostStyles.akAvatar;
-const avatarUrl = require('url!./avatar-96.png');
-const transparentAvatarUrl = require('url!./avatar-96-transparent.png');
-const tickUrl = require('url!./tick.png');
-const tickWithBackgroundUrl = require('url!./tick-with-background.png');
+const avatarUrl = require('url!./doge.jpg');
+const transparentAvatarUrl = require('url!./face-w-transparency.png');
+const tickUrl = require('url!./tick.svg');
+const tickWithBackgroundUrl = require('url!./tick.png');
 
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 const storybookExampleClass = avatarStoryStyles.example;
@@ -109,28 +109,98 @@ storiesOf(name, module)
   )
   .add('Avatars with images in the slot', () => (
     <div>
+      <div>As well as the presence attribute, avatars can also display custom content on their badge
+        by slotting it inside the element. <br />
+        No styling is applied to slotted content by default and it is up the consumer to make the
+        content fit (height and width of 100% and a background color
+        are a good start)
+      </div>
       <div className={storybookExampleClass} >
         <div>
-          These avatars have an image in their default slot
+          These avatars have an image in their default slot and have been styled with "height: 100%;
+          width: 100%;"
         </div>
         <AllAvatarSizes>
-          <img src={tickWithBackgroundUrl} role="presentation" />
+          <img
+            src={tickWithBackgroundUrl}
+            role="presentation"
+            style={{ height: '100%', width: '100%' }}
+          />
         </AllAvatarSizes>
       </div>
       <div className={storybookExampleClass} >
         <div>
-          These avatars show the behaviour of transparent images in slots
+          These avatars show the behaviour of transparent images in slots.
+          Note there is no added background color
         </div>
         <AllAvatarSizes>
-          <img src={tickUrl} role="presentation" />
+          <img
+            src={tickUrl}
+            role="presentation"
+            style={{ height: '100%', width: '100%', color: 'green' }}
+          />
         </AllAvatarSizes>
       </div>
       <div className={storybookExampleClass} >
         <div>
-          These avatars show that an image in the slot should override the presence
+          These avatars have presence AND an image in the slot. The expected behaviour is that the
+          images will take precedence.
         </div>
         <AllAvatarSizes presence="online">
-          <img src={tickWithBackgroundUrl} role="presentation" />
+          <img
+            src={tickWithBackgroundUrl}
+            role="presentation"
+            style={{ height: '100%', width: '100%' }}
+          />
+        </AllAvatarSizes>
+      </div>
+      <div className={storybookExampleClass} >
+        <div>
+          This example shows using a styled div as a presence.
+        </div>
+        <AllAvatarSizes presence="online">
+          <div
+            style={{
+              backgroundColor: 'green',
+              height: '100%',
+              width: '100%',
+              textAlign: 'center',
+              color: 'white',
+              marginTop: '1px',
+              lineHeight: '100%',
+              fontSize: '1em',
+            }}
+          >
+            1
+          </div>
+        </AllAvatarSizes>
+      </div>
+      <div className={storybookExampleClass} >
+        <div>
+          Another example showing a styled div as the inserted content
+        </div>
+        <AllAvatarSizes presence="online">
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              background: 'grey',
+              display: 'inline-block',
+            }}
+          >
+            <div
+              style={{
+                width: '60%',
+                height: '20%',
+                background: 'red',
+                position: 'relative',
+                top: '45%',
+                left: '20%',
+                transform: 'rotate(50deg)',
+              }}
+            >
+            </div>
+          </div>
         </AllAvatarSizes>
       </div>
     </div>

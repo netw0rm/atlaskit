@@ -8,14 +8,14 @@ export default define('ak-editor-toolbar-block-type-option', {
       <div>
         <style>{styles.toString()}</style>
         <a
-          onclick={() => emit(elem, 'selectFont', { detail: { font: elem.font } })}
-          onmousedown={/* don't blur the prose mirror editor */e => e.preventDefault()}
+          onClick={() => emit(elem, 'selectFont', { detail: { font: elem.font } })}
+          onMousedown={/* don't blur the prose mirror editor */e => e.preventDefault()}
           className={classnames(
-          styles.locals[elem.font],
-          styles.locals.selectOptions, {
-            [styles.locals.active]: elem.active === true,
-          }
-        )}
+            styles.locals[elem.font],
+            styles.locals.selectOptions, {
+              [styles.locals.active]: elem.active === true,
+            }
+          )}
         ><slot /></a>
       </div>
     );

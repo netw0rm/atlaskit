@@ -32,10 +32,10 @@ export default define('ak-editor-toolbar-block-type', {
     return (
       <div
         className={styles.locals.root}
-        onak-blanket-click={() => {
+        on-ak-blanket-click={() => {
           toggle(elem);
         }}
-        onselectFont={selectFont(elem)}
+        onSelectFont={selectFont(elem)}
       >
         <style>{styles.toString()}</style>
         {elem.dropdownOpen ? <Blanket clickable /> : null}
@@ -43,7 +43,7 @@ export default define('ak-editor-toolbar-block-type', {
           disabled={elem.disabled}
           className={styles.locals.fontSelect}
           selectedReadableName={fonts[elem.selectedFont]}
-          ontoggleDropdown={() => toggle(elem)}
+          onToggleDropdown={() => toggle(elem)}
           active={elem.dropdownOpen}
         >
           <ul

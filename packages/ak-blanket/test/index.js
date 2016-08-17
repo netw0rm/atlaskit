@@ -13,7 +13,6 @@ describe('ak-blanket', () => {
     expect(() => {
       component = new AkBlanket();
     }).not.to.throw(Error);
-    expect(component.getAttribute('defined')).not.to.equal(null);
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 

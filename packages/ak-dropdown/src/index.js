@@ -7,6 +7,9 @@ import TriggerDefinition, { TriggerButtonDefinition } from './trigger';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 
+// Width of a dropdown should be no less than width of it's trigger plus 10
+const diffBetweenDropdonAndTrigger = 10;
+
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
   const list = elem.querySelectorAll('ak-dropdown-item');
@@ -103,6 +106,15 @@ function handleKeyPress(elem) {
   };
 }
 
+// min widht of a dropdown should be more than width of the trigger (by design)
+// max-width is controled by css, everything that's exceeding its limit
+// is ellipsed (by design, controlled by css)
+function getDropdownStyles(elem) {
+  return {
+    minWidth: `${elem.getBoundingClientRect().width + diffBetweenDropdonAndTrigger}px`,
+  };
+}
+
 export const Item = define('ak-dropdown-item', ItemDefinition);
 export const Trigger = define('ak-dropdown-trigger', TriggerDefinition);
 export const TriggerButton = define('ak-trigger-button', TriggerButtonDefinition);
@@ -131,7 +143,6 @@ export default define('ak-dropdown', {
   },
   render(elem) {
     let target;
-    const listWidthGap = 10;
     let styles;
 
     return (
@@ -139,9 +150,8 @@ export default define('ak-dropdown', {
         <div
           ref={(el) => {
             target = el;
-            styles = {
-              minWidth: `${target.getBoundingClientRect().width + listWidthGap}px`,
-            };
+            // width of the dropdown depends on the width of the trigger
+            styles = getDropdownStyles(target);
           }}
         >
           <slot name="trigger" />

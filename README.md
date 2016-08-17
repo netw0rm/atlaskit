@@ -149,6 +149,17 @@ To run the storybook for all components:
 npm run storybook
 ```
 
+To statically publish the storybook:
+```
+npm run storybook/static -- -o your_target_dir
+```
+
+for one component:
+
+```
+npm run storybook/static/single my-component-name -- -o your_target_dir
+```
+
 ### Unit tests
 To run unit tests for a single component:
 
@@ -256,6 +267,7 @@ Releasing components is completely automated. The process of releasing will begi
 ## Update a dependency of AtlasKit
 * Install AtlasKit - if your installation is from before we had the shrinkwrap file, you should run `npm run clean`.
 * Install your new dependency: `npm install my-package --save`.
+* Delete the current shrinkwrap file (due to a bug in how shirinkwrap handles dependencies on SHA hashes) `rm -f npm-shrinkwrap.json`
 * Run `npm shrinkwrap`
 * Create a PR
 

@@ -1,14 +1,13 @@
 import 'style!../host.less';
 import shadowStyles from './pf-resourced-mention-list-shadow.less';
-import mentionList from './pf-mention-list'; // eslint-disable-line no-unused-vars
 import { localProp } from './skate-local-props';
-
-import { define, vdom, prop, emit, state } from 'skatejs'; // eslint-disable-line no-unused-vars
+import { define, vdom, prop, props } from 'skatejs';
+import MentionList from './pf-mention-list';
 
 function applyPresence(mentions, presences) {
   const updatedMentions = [];
   for (let i = 0; i < mentions.length; i++) {
-    const mention = Object.assign({}, mentions[i]); // shallow copy
+    const mention = Object.assign({}, mentions[i]);
     const presence = presences[mention.id];
     if (presence) {
       mention.presence = presence;
@@ -53,8 +52,7 @@ function subscribePresenceUpdates(elem, presenceProvider) {
   }
 }
 
-const definition = {
-
+export default define('pf-resourced-mention-list', {
   prototype: {
     selectNext() {
       if (this._mentionListRef) {
@@ -83,14 +81,14 @@ const definition = {
     _filterChange(mentions) {
       // Retain known presence
       const currentPresences = extractPresences(this.mentions);
-      state(this, {
+      props(this, {
         mentions: applyPresence(mentions, currentPresences),
       });
       this._refreshPresences(mentions);
     },
 
     _presenceUpdate(presences) {
-      state(this, {
+      props(this, {
         mentions: applyPresence(this.mentions, presences),
       });
     },
@@ -112,8 +110,8 @@ const definition = {
   detached(elem) {
     unsubscribeUpdates(elem, elem.resourceProvider);
     unsubscribePresenceUpdates(elem, elem.presenceProvider);
-    if (elem.ref) {
-      elem.ref(null);
+    if (elem.refWorkaround) {
+      elem.refWorkaround(null);
     }
   },
 
@@ -121,9 +119,9 @@ const definition = {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <pf-mention-list
+        <MentionList
           mentions={elem.mentions}
-          ref={(ref) => { elem._mentionListRef = ref; }}
+          refWorkaround={(ref) => { elem._mentionListRef = ref; }}
         />
       </div>
     );
@@ -145,8 +143,9 @@ const definition = {
         subscribePresenceUpdates(elem, data.newValue);
       },
     }),
-    ref: localProp.reference(),
+
     // Internal state...
+    // TODO use symbols
     mentions: prop.array({
       default: [],
       initial: [],
@@ -157,10 +156,6 @@ const definition = {
         elem._updateQuery(data.newValue);
       },
     }),
+    refWorkaround: localProp.reference(),
   },
-};
-
-/* The constructor for our component */
-export default define('pf-resourced-mention-list', definition);
-
-export { definition };
+});

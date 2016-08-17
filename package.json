@@ -54,6 +54,7 @@
     "minilog": "^3.0.1",
     "minimist": "1.2.0",
     "mocha": "^3.0.1",
+    "package-json-validator": "^0.6.1",
     "pascal-case": "^2.0.0",
     "postcss-loader": "^0.9.1",
     "precommit-hook": "^3.0.0",
@@ -117,9 +118,11 @@
     "release/registry": "./build/bin/registry.sh",
     "storybook": "start-storybook -p 9001 -c ./build/storybook",
     "storybook/single": "./build/bin/storybook.single.sh",
+    "storybook/static": "build-storybook -c ./build/storybook",
+    "storybook/static/single": "./build/bin/storybook.static.single.sh",
+    "storybook/static/registry":"rm -rf ./stories && ./node_modules/.bin/lerna exec --concurrency=1 -- ../../build/bin/storybook.static.registry.sh",
     "test": "./node_modules/.bin/lerna exec -- ../../build/bin/test.sh --reporters=dots",
     "test/ci": "./node_modules/.bin/lerna exec --concurrency=1 -- ../../build/bin/test.sh --no-auto-watch --reporters=dots",
-    "test/pipelines-branch": "BRANCH_BUILD=1 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD) ./build/bin/test.pipelines.js",
     "test/browserstack": "./build/bin/test.browserstack.sh",
     "test/browserstack/ci": "./build/bin/test.browserstack.ci.sh",
     "test/integration/browserstack": "node ./build/bin/test.integration.browserstack.js",
@@ -130,6 +133,7 @@
     "test/single/watch": "./build/bin/test.single.watch.sh",
     "validate": "npm ls >/dev/null && ./node_modules/.bin/lerna exec -- npm ls >/dev/null",
     "validate/lint-changed": "./build/bin/lint-changed.sh",
+    "validate/package.json": "pjv && ./node_modules/.bin/lerna exec -- pjv",
     "webpack/single": "./build/bin/webpack.single.sh"
   }
 }

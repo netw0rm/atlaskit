@@ -1,8 +1,8 @@
 import { afterMutations } from 'akutil-common';
+import { symbols } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { symbols } from 'skatejs';
-import AkutilComponentTemplate from '../src/index.js';
+import Component from '../src';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -13,7 +13,7 @@ describe('akutil-component-template', () => {
   let component;
 
   beforeEach((done) => {
-    component = new AkutilComponentTemplate();
+    component = new Component();
 
     afterMutations(
       // append component to the body to ensure it has been rendered.

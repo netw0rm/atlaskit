@@ -1,11 +1,9 @@
-/** @jsx vdom */
-import 'style!./host.less'; // eslint-disable-line import/no-unresolved
-
+import 'style!./host.less';
 import { prop, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 
-const definition = {
+export default define('ak-page', {
   render(elem) {
     return (
       // JSX requires that there only be a single root element.
@@ -39,6 +37,4 @@ const definition = {
       elem.navigationOpen = event.detail.openState;
     },
   },
-};
-
-export default define('ak-page', definition);
+});

@@ -53,7 +53,7 @@ const definition = {
     open: prop.boolean({
       attribute: true,
       set(elem, data) {
-        if (data.oldValue && data.newValue) {
+        if (!data.oldValue && data.newValue) {
           emit(elem, 'ak-navigation-open');
         } else if (data.oldValue && !data.newValue) {
           emit(elem, 'ak-navigation-close');

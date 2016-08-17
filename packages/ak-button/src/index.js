@@ -20,14 +20,6 @@ const APPEARANCES = {
   values: Object.keys(APPEARANCE).map(key => APPEARANCE[key]),
 };
 
-const preventClickWhenDisabled = (elem) =>
-  (e) => {
-    if (elem.disabled) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  };
-
 const definition = {
   props: {
     /**
@@ -69,7 +61,7 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >
-          <slot onclick={preventClickWhenDisabled(elem)} />
+          <slot />
         </button>
       </div>
     );

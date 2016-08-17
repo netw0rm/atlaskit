@@ -1,9 +1,10 @@
 @import 'shared-variables.less';
 
+.ak-button,
 ak-button {
 
-  > _shadow_root_ {
-    display: block;
+  &[disabled] {
+    pointer-events: none;
   }
 
 }

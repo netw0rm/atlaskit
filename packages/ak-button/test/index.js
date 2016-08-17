@@ -118,29 +118,14 @@ describe('ak-button', () => {
         expect(shadowDomQuery(component, selector)).to.be.null;
       });
 
-      describe('onclick event', () => {
-        // skip this test for ie11
-        const isIE11 = navigator.userAgent.indexOf('rv:11.0') !== -1;
-        (isIE11 ? it.skip : it)('should not be triggered when button is clicked', () => {
-          // disable this test on ie11 until we find a way to make this test green
-          if (!(/rv:11.0/i.test(window.navigator.userAgent))) {
-            const onclick = sinon.spy();
-            props(component, { onclick });
-            getShadowButtonElem(component).click();
-            expect(onclick).to.have.been.called;
-          }
-        });
+      it('button should have pointer-events: none css attribute', () =>
+        expect(window.getComputedStyle(component).pointerEvents).to.equal('none')
+      );
 
-        it('should not be triggered when any nested element is clicked', () => {
-          const onclick = sinon.spy();
-          const div = document.createElement('div');
-          div.appendChild(document.createTextNode('CLICK ME'));
-          component.appendChild(div);
-
-          props(component, { onclick });
-          div.click();
-          expect(onclick).to.have.been.called;
-        });
+      it('button\'s children should have pointer-events: none css attribute', () => {
+        const div = document.createElement('div', 'test');
+        component.appendChild(div);
+        expect(window.getComputedStyle(div).pointerEvents).to.equal('none');
       });
     });
   });

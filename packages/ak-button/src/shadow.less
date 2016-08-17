@@ -77,6 +77,10 @@
   &.disabled {
     color: @ak-color-N60;
 
+    ::content > * { pointer-events: none; }
+    ::sloted(*) { pointer-events: none; }
+    slot > * { pointer-events: none; }
+
     &:hover {
       cursor: not-allowed;
       background: @buttonDefault;

@@ -213,7 +213,7 @@ describe('ak-tabs', () => {
 
       describe('that is not selected', () => {
         beforeEach(done => {
-          tabs = [{}];
+          tabs = [{ selected: true }];
           setupTabs(done);
         });
         afterEach(cleanupTabs);
@@ -355,7 +355,7 @@ describe('ak-tabs', () => {
         window.addEventListener(events.EVENT_TAB_SELECT, selectSpy);
         window.addEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
 
-        tabs = [{ label: 'Tab 1' }];
+        tabs = [{ label: 'Tab 1', selected: true }];
         setupTabs(done);
       });
       afterEach(() => {
@@ -487,11 +487,6 @@ describe('ak-tabs', () => {
             tabElements[0].setAttribute('selected', '');
             assertFirstTabSelected(done);
           }, 1000);
-        });
-
-        it('when the selected item is deselected', done => {
-          tabElements[0].selected = false;
-          assertFirstTabSelected(done);
         });
       });
     });

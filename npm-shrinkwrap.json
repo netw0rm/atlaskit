@@ -1,6 +1,6 @@
 {
   "name": "atlaskit",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "dependencies": {
     "@atlassian/gremlins.js": {
       "version": "0.1.0",

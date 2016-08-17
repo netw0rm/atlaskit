@@ -63,11 +63,13 @@ const definition = {
      */
     label: prop.string({
       attribute: true,
-      set(elem) {
-        emitTabChangedEvent(elem, {
-          tab: elem,
-          label: elem.label,
-        });
+      set(elem, data) {
+        if (data.oldValue !== data.newValue) {
+          emitTabChangedEvent(elem, {
+            tab: elem,
+            label: elem.label,
+          });
+        }
       },
     }),
     /**
@@ -78,11 +80,13 @@ const definition = {
      */
     selected: prop.boolean({
       attribute: true,
-      set(elem) {
-        emitTabChangedEvent(elem, {
-          tab: elem,
-          selected: elem.selected,
-        });
+      set(elem, data) {
+        if (data.oldValue !== data.newValue) {
+          emitTabChangedEvent(elem, {
+            tab: elem,
+            selected: elem.selected,
+          });
+        }
       },
     }),
   },

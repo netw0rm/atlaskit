@@ -2,7 +2,7 @@ import 'custom-event-polyfill';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { symbols, props } from 'skatejs';
-import AkButton from '../src/index.js';
+import AkButton, { APPEARANCE } from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
 import { name } from '../package.json';
 const classKeys = shadowStyles.locals;
@@ -53,11 +53,17 @@ describe('ak-button', () => {
   });
 
   describe('attributes', () => {
+    describe('defaults', () =>
+      it('button should have type="button" by default', () =>
+        expect(getShadowButtonElem(component).type).to.equal('button')
+      )
+    );
+
     describe('appearance', () => {
       [
         {
           message: 'standard',
-          appearance: 'standard',
+          appearance: APPEARANCE.STANDARD,
         },
         {
           message: 'when invalid appearance provided',
@@ -74,7 +80,7 @@ describe('ak-button', () => {
         });
       });
 
-      ['subtle', 'primary', 'selected'].forEach(appearanceName => {
+      [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE, APPEARANCE.SELECTED].forEach(appearanceName => {
         describe(appearanceName, () => {
           const selector = `.${classKeys.akButton}.${classKeys[appearanceName]}`;
           beforeEach(() =>
@@ -86,7 +92,7 @@ describe('ak-button', () => {
           );
 
           it(`button should not have ${appearanceName} class after it is removed`, () => {
-            props(component, { appearance: 'standard' });
+            props(component, { appearance: APPEARANCE.STANDARD });
             expect(shadowDomQuery(component, selector)).to.be.null;
           });
         });

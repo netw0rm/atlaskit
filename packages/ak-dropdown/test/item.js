@@ -32,12 +32,12 @@ describe('ak-dropdown-item:', () => {
     });
 
     it('click on a component should emit `ak-dropdown-selected` event', (done) => {
-      const onclick = sinon.spy();
+      const clickSpy = sinon.spy();
       itemContainer.appendChild(component);
-      itemContainer.addEventListener('ak-dropdown-selected', onclick);
+      itemContainer.addEventListener('ak-dropdown-selected', clickSpy);
 
       setTimeout(() => component[symbols.shadowRoot].firstChild.click());
-      setTimeout(() => expect(onclick.called).to.equal(true));
+      setTimeout(() => expect(clickSpy.called).to.equal(true));
       setTimeout(() => done());
     });
   });

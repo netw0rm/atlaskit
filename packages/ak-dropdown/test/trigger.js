@@ -33,12 +33,12 @@ describe('ak-dropdown-trigger:', () => {
     });
 
     it('click on a component should emit `ak-dropdown-trigger-activated` event', (done) => {
-      const onclick = sinon.spy();
+      const clickSpy = sinon.spy();
       triggerContainer.appendChild(component);
-      triggerContainer.addEventListener('ak-dropdown-trigger-activated', onclick);
+      triggerContainer.addEventListener('ak-dropdown-trigger-activated', clickSpy);
 
       setTimeout(() => component[symbols.shadowRoot].firstChild.click());
-      setTimeout(() => expect(onclick.called).to.equal(true));
+      setTimeout(() => expect(clickSpy.called).to.equal(true));
       setTimeout(done);
     });
   });

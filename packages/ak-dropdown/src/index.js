@@ -115,6 +115,13 @@ export const Item = define('ak-dropdown-item', ItemDefinition);
 export const Trigger = define('ak-dropdown-trigger', TriggerDefinition);
 export const TriggerButton = define('ak-trigger-button', TriggerButtonDefinition);
 
+/**
+ * @description The definition for the Dropdown component.
+ * @class Dropdown
+ * @example @html <ak-dropdown></ak-dropdown>
+ * @example @js import Dropdown from 'ak-dropdown';
+ * const dropdown = new Dropdown();
+ */
 export default define('ak-dropdown', {
   attached(elem) {
     elem.addEventListener('ak-dropdown-trigger-activated', () => toggleDialog(elem));
@@ -172,6 +179,14 @@ export default define('ak-dropdown', {
     );
   },
   props: {
+    /**
+     * @description Open/closed state of the dropdown
+     * @memberof Dropdown
+     * @default false
+     * @type {Boolean}
+     * @example @html <ak-dropdown open></ak-dropdown>
+     * @example @js dropdown.open = true;
+     */
     open: prop.boolean({
       attribute: true,
       set(elem, data) {

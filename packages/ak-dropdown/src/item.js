@@ -40,7 +40,7 @@ function handleKeyDown(elem) {
     }
   };
 }
-
+/* eslint-disable max-len */
 export default {
   render(elem) {
     const classes = classNames(
@@ -74,20 +74,61 @@ export default {
     }
   },
   props: {
+    /**
+     * @description disabled state of a dropdown's item
+     * @memberof Dropdown
+     * @default false
+     * @type {Boolean}
+     * @example @html <ak-dropdown><ak-dropdown-item disabled>some content</ak-dropdown-item></ak-dropdown>
+     * @example @js dropdown.childNodes[0].disabled = true;
+     */
     disabled: prop.boolean({
       attribute: true,
     }),
+    /**
+     * @description selected state of a dropdown's item
+     * @memberof Dropdown
+     * @default false
+     * @type {Boolean}
+     * @example @html <ak-dropdown><ak-dropdown-item selected>some content</ak-dropdown-item></ak-dropdown>
+     * @example @js dropdown.childNodes[0].selected = true;
+     */
     selected: prop.boolean({
       attribute: true,
     }),
+    /**
+     * @description is this item is first in the list of items
+     * @memberof Dropdown
+     * @default false
+     * @type {Boolean}
+     * @example @html <ak-dropdown><ak-dropdown-item first>some content</ak-dropdown-item></ak-dropdown>
+     * @example @js dropdown.childNodes[0].first = true;
+     */
     first: prop.boolean({
       attribute: true,
     }),
+    /**
+     * @description is this item is last in the list of items
+     * @memberof Dropdown
+     * @default false
+     * @type {Boolean}
+     * @example @html <ak-dropdown><ak-dropdown-item last>some content</ak-dropdown-item></ak-dropdown>
+     * @example @js dropdown.childNodes[0].last = true;
+     */
     last: prop.boolean({
       attribute: true,
     }),
+    /**
+     * @description focused state of a dropdown's item
+     * @memberof Dropdown
+     * @default false
+     * @type {Boolean}
+     * @example @html <ak-dropdown><ak-dropdown-item focused>some content</ak-dropdown-item></ak-dropdown>
+     * @example @js dropdown.childNodes[0].focused = true;
+     */
     focused: prop.boolean({
       attribute: true,
     }),
   },
 };
+/* eslint-enable max-len */

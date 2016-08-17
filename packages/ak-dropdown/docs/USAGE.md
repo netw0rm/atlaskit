@@ -39,6 +39,26 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </body>
 ```
 
+For the dropdown to work it has to include trigger and list of elements. Simple example of a dropdown:
+
+```
+<ak-dropdown>
+  <ak-dropdown-trigger slot="trigger">Some text</ak-dropdown-trigger>
+  <ak-dropdown-item slot="list">first item</ak-dropdown-item>
+  <ak-dropdown-item slot="list">second item</ak-dropdown-item>
+  <ak-dropdown-item slot="list">third item</ak-dropdown-item>
+</ak-dropdown>
+```
+
+Trigger by default is not styled. Any html element could be used as the trigger (button, tab item, etc):
+
+```
+<ak-dropdown>
+  <ak-dropdown-trigger slot="trigger"><ak-trigger-button>Button as the trigger</ak-trigger-button></ak-dropdown-trigger>
+  <ak-dropdown-item slot="list">first item</ak-dropdown-item>
+</ak-dropdown>
+```
+
 ### React
 
 ```

@@ -51,6 +51,7 @@ export const TriggerButtonDefinition = {
   },
 };
 
+/* eslint-disable max-len */
 export default {
   render(elem) {
     return (
@@ -64,9 +65,25 @@ export default {
     );
   },
   props: {
+    /**
+     * @description disabled state of the dropdown's trigger
+     * @memberof Dropdown
+     * @default false
+     * @type {Boolean}
+     * @example @html <ak-dropdown><ak-dropdown-trigger disabled>Dropdown trigger</ak-dropdown-trigger></ak-dropdown>
+     * @example @js dropdown.childNodes[0].disabled = true;
+     */
     disabled: prop.boolean({
       attribute: true,
     }),
+    /**
+     * @description opened state of the dropdown's trigger
+     * @memberof Dropdown
+     * @default false
+     * @type {Boolean}
+     * @example @html <ak-dropdown><ak-dropdown-trigger opened>Dropdown trigger</ak-dropdown-trigger></ak-dropdown>
+     * @example @js dropdown.childNodes[0].opened = true;
+     */
     opened: prop.boolean({
       attribute: true,
     }),

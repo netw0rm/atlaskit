@@ -11,10 +11,10 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^0.3.x",
+    "akutil-common": "^0.3.0",
     "akutil-shared-styles": "^33.1.0",
     "classnames": "^2.2.5",
-    "skatejs": "1.0.1"
+    "skatejs": "^1.0.1"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

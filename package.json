@@ -1,6 +1,6 @@
 {
   "name": "atlaskit",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Atlassian Pty Ltd",
   "config": {
     "commitizen": {
@@ -120,7 +120,7 @@
     "storybook/single": "./build/bin/storybook.single.sh",
     "storybook/static": "build-storybook -c ./build/storybook",
     "storybook/static/single": "./build/bin/storybook.static.single.sh",
-    "storybook/static/registry":"rm -rf ./stories && ./node_modules/.bin/lerna exec --concurrency=1 -- ../../build/bin/storybook.static.registry.sh",
+    "storybook/static/registry": "rm -rf ./stories && ./node_modules/.bin/lerna exec --concurrency=1 -- ../../build/bin/storybook.static.registry.sh",
     "test": "./node_modules/.bin/lerna exec -- ../../build/bin/test.sh --reporters=dots",
     "test/ci": "./node_modules/.bin/lerna exec --concurrency=1 -- ../../build/bin/test.sh --no-auto-watch --reporters=dots",
     "test/browserstack": "./build/bin/test.browserstack.sh",

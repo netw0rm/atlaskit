@@ -1,6 +1,6 @@
 {
   "name": "atlaskit",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "author": "Atlassian Pty Ltd",
   "config": {
     "commitizen": {

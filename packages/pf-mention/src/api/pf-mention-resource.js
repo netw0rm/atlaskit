@@ -2,7 +2,6 @@ import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, M
 require('es6-promise').polyfill();
 import 'whatwg-fetch';
 
-
 const buildUrl = (baseUrl, path, data, secOptions) => {
   const searchParam = new URLSearchParams();
   for (const key in data) { // eslint-disable-line no-restricted-syntax
@@ -152,7 +151,6 @@ class MentionResource extends AbstractMentionResource {
    *          key2: value,
    *        }
    *      }
-   *   application: string (required), // the site, or product
    *   containerId: string (optional)
    * }
    *
@@ -166,11 +164,7 @@ class MentionResource extends AbstractMentionResource {
     if (!config.securityProvider) {
       throw new Error('config.securityProvider is a required parameter');
     }
-    if (!config.application) {
-      throw new Error('config.application is a required parameter');
-    }
 
-    // FIXME clone/immutable js?
     this._config = config;
     this._lastReturnedSearch = 0;
   }
@@ -209,9 +203,7 @@ class MentionResource extends AbstractMentionResource {
    */
   _initialState() {
     const secOptions = this._config.securityProvider();
-    const options = {
-      application: this._config.application,
-    };
+    const options = {};
 
     if (this._config.containerId) {
       options.containerId = this._config.containerId;
@@ -223,7 +215,6 @@ class MentionResource extends AbstractMentionResource {
     const secOptions = this._config.securityProvider();
     const options = {
       query,
-      application: this._config.application,
     };
     if (this._config.containerId) {
       options.containerId = this._config.containerId;

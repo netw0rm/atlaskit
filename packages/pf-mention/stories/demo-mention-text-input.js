@@ -101,7 +101,6 @@ const MentionTextInput = React.createClass({
         <MentionPicker
           target="#search-text"
           position={position}
-          renderElementTo="#root" /* Workaround for storybook cleanup */
           {...mentionListProps}
           onselected={(event) => { this._handleSelection(event); }}
           ref={(ref) => { this._mentionListRef = getWebComponent(ref); }}

@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
 BASEDIR=$(dirname $0)
-PKG=$(basename $PWD)
+PKG=$($BASEDIR/_get_package_name.sh)
 
 if [ -d "cucumber" ]; then
     echo "$PKG: Running integration tests on BrowserStack"

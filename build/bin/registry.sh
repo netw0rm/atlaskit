@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 set -e
 
 # Clone the atlaskit-registry repo into the folder above atlaskit
@@ -8,14 +8,20 @@ git clone --quiet "https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/
 mkdir -p ../atlaskit-registry/_data ../atlaskit-registry/api ../atlaskit-registry/resources
 
 # Install panop (converts monorepo to single YAML summary file)
-# Note: when BB Pipelines can access internal npm, we can use normal npm:
+# Note: unfortunately @atlassian scope is used on the public and private
+# npm registries, which is why we need to disable the .npmrc file
+# temporarily here.
 echo "Installing panop from Atlassian private npm"
-npm install --progress=false "git+https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/atlassian/panop.git"
+mv .npmrc ._npmrc
+npm set loglevel warn
+npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
+npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
+npm install --progress=false @atlassian/panop
+mv ._npmrc .npmrc
 
 # Generate momnorep summary which will feed into jekyll
 echo "Generating summary files using panop"
 BITBUCKET_PASS=$BITBUCKET_PW_READONLY `npm bin`/panop --repo=atlassian/atlaskit \
-  --yml=../atlaskit-registry/_data/components.yml \
   --json=../atlaskit-registry/api/full.json
 
 # Install atlaskit-registry dependencies
@@ -42,20 +48,52 @@ fi
 echo "Installing CDN tool"
 mvn -B dependency:copy -Dartifact=com.atlassian.scripts.prebake.distributor:prebake-distributor-runner:0.22.0 -Dmdep.stripClassifier=true -Dmdep.stripVersion=true -Dsilent=true -DoutputDirectory=..
 
+echo "Installing cloudfront-invalidate-cli"
+npm install cloudfront-invalidate-cli@1.0.3 -g
+
 # Upload to CDN
-echo "Uploading to Atlassian CDN..."
-java -jar ../prebake-distributor-runner.jar \
+echo "Uploading registry to CDN..."
+java \
+-jar \
+-Dlog4j.configurationFile=build/bin/logger.xml \
+../prebake-distributor-runner.jar \
 --step=resources \
 --s3-bucket=$S3_BUCKET \
---s3-key-prefix="$S3_KEY_PREFIX" \
---s3-gz-key-prefix="$S3_GZ_KEY_PREFIX" \
+--s3-key-prefix="$S3_KEY_PREFIX/registry" \
+--s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/registry" \
 --compress=css,js,svg,ttf,html,json,ico,eot,otf \
 --pre-bake-bundle=../ak-registry-cdn.zip
 
 # Invalidate CDN caches
-npm install cloudfront-invalidate-cli@1.0.3 -g
-echo "CDN invalidation starting now (this may take some time)"
+echo "CDN invalidation (registry) starting now (this may take some time)"
 AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
 AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
 cf-invalidate -- EVOK132JF0N16 '/atlaskit/registry/*'
-echo "CDN invalidation finished."
+echo "CDN invalidation (registry) finished."
+
+echo "Building storybooks"
+mkdir -p ../atlaskit-stories
+npm run storybook/static/registry
+mv ./stories ../atlaskit-stories/resources
+rm -f ../ak-storybooks-cdn.zip
+zip -0 -r -T ../ak-storybooks-cdn.zip ../atlaskit-stories/resources
+
+echo "Uploading storybooks to CDN..."
+java \
+-jar \
+-Dlog4j.configurationFile=build/bin/logger.xml \
+../prebake-distributor-runner.jar \
+--step=resources \
+--s3-bucket=$S3_BUCKET \
+--s3-key-prefix="$S3_KEY_PREFIX/stories" \
+--s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/stories" \
+--compress=css,js,svg,ttf,html,json,ico,eot,otf \
+--pre-bake-bundle=../ak-storybooks-cdn.zip
+
+# Invalidate CDN caches
+echo "CDN invalidation (storybooks) starting now (this may take some time)"
+
+AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
+AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
+cf-invalidate -- EVOK132JF0N16 '/atlaskit/stories/*'
+echo "CDN invalidation (storybooks) finished."

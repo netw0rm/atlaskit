@@ -1,0 +1,33 @@
+@import 'shared-variables.less';
+
+@ak-navigation-link-color: @ak-color-N500;
+@ak-navigation-selected-link-color: @ak-color-B500;
+
+.link {
+  color: @ak-navigation-link-color;
+  text-decoration: none;
+  cursor: pointer;
+  margin: 10px 0;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  position: relative;
+  margin-left: 10px;
+  margin-right: 20px;
+  display: inline-block;
+}
+
+.text {
+  line-height: 30px;
+  display: inline-block;
+  vertical-align: text-bottom;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selected {
+  color: @ak-navigation-selected-link-color;
+}

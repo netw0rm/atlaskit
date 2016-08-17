@@ -2,7 +2,6 @@ import { storiesOf } from '@kadira/storybook';
 import ToolbarComponent from '../src';
 import TextFormattingComponent from 'ak-editor-toolbar-text-formatting';
 import ContentComponent from 'ak-editor-content';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
 
@@ -53,6 +52,11 @@ storiesOf('ak-editor-toolbar', module)
         }));
       }
 
+      toggleMark(name) {
+        this.pm.on.interaction.dispatch();
+        commands.toggleMark(schema.marks[name])(this.pm);
+      }
+
       render() {
         return (
           <div ref={(elem) => elem && (this.editorElement = elem.firstChild.nextSibling)}>
@@ -68,11 +72,6 @@ storiesOf('ak-editor-toolbar', module)
             <Content openTop />
           </div>
         );
-      }
-
-      toggleMark(name) {
-        this.pm.on.interaction.dispatch();
-        commands.toggleMark(schema.marks[name])(this.pm);
       }
     }
 

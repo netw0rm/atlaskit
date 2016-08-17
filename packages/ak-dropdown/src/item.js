@@ -18,10 +18,10 @@ function selectItem(item) {
 }
 
 function handleKeyDown(elem) {
-  return (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    switch (event.keyCode) {
+  return (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    switch (e.keyCode) {
       case keyCode('up'):
         emit(elem, 'ak-dropdown-item-up');
         break;

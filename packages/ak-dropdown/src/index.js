@@ -96,8 +96,8 @@ function handleClickOutside(elem) {
 }
 
 function handleKeyPress(elem) {
-  return (event) => {
-    if (event.keyCode === keyCode('escape')) {
+  return (e) => {
+    if (e.keyCode === keyCode('escape')) {
       toggleDialog(elem, false);
     }
   };

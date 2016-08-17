@@ -4,23 +4,23 @@ import classNames from 'classnames';
 import keyCode from 'keycode';
 
 function handleKeyDown(elem) {
-  return (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  return (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
     if (!elem.disabled && [
       keyCode('down'),
       keyCode('space'),
-      keyCode('enter')].indexOf(event.keyCode) > -1) {
+      keyCode('enter')].indexOf(e.keyCode) > -1) {
       emit(elem, 'ak-dropdown-trigger-activated');
     }
   };
 }
 
 function handleClick(elem) {
-  return (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  return (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (!elem.disabled) {
       emit(elem, 'ak-dropdown-trigger-activated');
     }

@@ -13,10 +13,10 @@ const Avatar = reactify(AkAvatar, {
 });
 
 const avatarClass = hostStyles.akAvatar;
-const avatarUrl = require('url!./avatar-96.png');
-const transparentAvatarUrl = require('url!./avatar-96-transparent.png');
-const tickUrl = require('url!./tick.png');
-const tickWithBackgroundUrl = require('url!./tick-with-background.png');
+const avatarUrl = require('url!./doge.jpg');
+const transparentAvatarUrl = require('url!./face-w-transparency.png');
+const tickUrl = require('url!./tick.svg');
+const tickWithBackgroundUrl = require('url!./tick.png');
 
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 const storybookExampleClass = avatarStoryStyles.example;

@@ -4,12 +4,21 @@
   border: 1px solid @ak-editor-subtle-accent;
   font-size: 14px;
   padding: 20px;
+  overflow: auto;
 
   .childContent() { margin: 20px; }
   > slot > * { .childContent(); }
   > ::content > * { .childContent(); }
   // Re-instate when https://ecosystem.atlassian.net/browse/AK-146 is resolved.
   //> ::slotted(*) { .childContent(); }
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
 }
 
 .saveButton {
@@ -38,6 +47,17 @@
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+.icon-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:focus {
+    outline: none;
   }
 }
 

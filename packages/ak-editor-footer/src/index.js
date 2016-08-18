@@ -1,6 +1,19 @@
 import { define, vdom, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import 'style!./host.less';
+import Icon from 'ak-editor-icon';
+
+function icons() {
+  return ['mention', 'image', 'emoji', 'task', 'attachment', 'decision', 'date']
+    .map((icon) => (
+      <button
+        className={shadowStyles.locals.iconButton}
+        onclick={(event) => emit(event.currentTarget, `click${icon}`)}
+      >
+        <Icon glyph={icon} />
+      </button>
+  ));
+}
 
 export default define('ak-editor-footer', {
   render: (elem) => {
@@ -13,14 +26,19 @@ export default define('ak-editor-footer', {
     return (
       <div className={classNames}>
         <style>{shadowStyles.toString()}</style>
-        <button
-          className={shadowStyles.locals.saveButton}
-          onclick={() => emit(elem, 'save')}
-        >Save</button>
-        <button
-          className={shadowStyles.locals.cancelButton}
-          onclick={() => emit(elem, 'cancel')}
-        >Cancel</button>
+        <div className={shadowStyles.locals.left}>
+          <button
+            className={shadowStyles.locals.saveButton}
+            onclick={() => emit(elem, 'save')}
+          >Save</button>
+          <button
+            className={shadowStyles.locals.cancelButton}
+            onclick={() => emit(elem, 'cancel')}
+          >Cancel</button>
+        </div>
+        <div className={shadowStyles.locals.right}>
+          {icons()}
+        </div>
       </div>
     );
   },

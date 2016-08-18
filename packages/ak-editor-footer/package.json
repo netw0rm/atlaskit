@@ -14,6 +14,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
+    "ak-editor-icon": "^2.0.1",
     "skatejs": "^1.0.0"
   },
   "devDependencies": {

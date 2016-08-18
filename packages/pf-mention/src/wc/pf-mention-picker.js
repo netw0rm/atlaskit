@@ -5,6 +5,7 @@ import { define, vdom, prop, props } from 'skatejs';
 import InlineDialog from 'ak-inline-dialog';
 import ResourcedMentionList from './pf-resourced-mention-list';
 import debug from '../util/logger';
+import uniqueId from '../util/id';
 
 export default define('pf-mention-picker', {
   prototype: {
@@ -35,6 +36,7 @@ export default define('pf-mention-picker', {
 
   created(elem) {
     elem.visible = false;
+    elem._subscriberKey = uniqueId('pf-mention-picker');
     elem._filterChange = elem._filterChange.bind(elem);
   },
 
@@ -82,10 +84,10 @@ export default define('pf-mention-picker', {
     resourceProvider: localProp.object({
       set(elem, data) {
         if (data.oldValue) {
-          data.oldValue.unsubscribe(elem);
+          data.oldValue.unsubscribe(elem._subscriberKey);
         }
         if (data.newValue) {
-          data.newValue.subscribe(elem, elem._filterChange);
+          data.newValue.subscribe(elem._subscriberKey, elem._filterChange);
         }
       },
     }),

@@ -96,7 +96,8 @@ class AbstractMentionResource {
 
   _notifyListeners(mentions) {
     debug('pf-mention-resource._notifyListeners',
-      mentions && mentions.mentions && mentions.mentions.length);
+      mentions && mentions.mentions && mentions.mentions.length,
+      this._changeListeners);
 
     this._changeListeners.forEach((listener, key) => {
       try {

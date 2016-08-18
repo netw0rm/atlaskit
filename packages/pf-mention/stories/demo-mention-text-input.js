@@ -5,6 +5,7 @@ import pfMentionPicker from '../src/wc/pf-mention-picker';
 import SearchTextInput from './demo-search-text-input';
 import { getWebComponent } from './util';
 import debug from '../src/util/logger';
+import uniqueId from '../src/util/id';
 
 const { React, ReactDOM } = window;
 
@@ -26,6 +27,7 @@ const MentionTextInput = React.createClass({
   },
 
   getInitialState() {
+    this._subscriberKey = uniqueId('demo-mention-text-input');
     return {
       active: false,
       visible: false,
@@ -34,13 +36,13 @@ const MentionTextInput = React.createClass({
 
   componentWillMount() {
     if (this.props.resourceProvider) {
-      this.props.resourceProvider.subscribe(this, this._filterChange);
+      this.props.resourceProvider.subscribe(this._subscriberKey, this._filterChange);
     }
   },
 
   componentWillUnmount() {
     if (this.props.resourceProvider) {
-      this.props.resourceProvider.unsubscribe(this);
+      this.props.resourceProvider.unsubscribe(this._subscriberKey);
     }
   },
 

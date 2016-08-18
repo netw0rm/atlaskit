@@ -4,6 +4,7 @@ import { localProp } from './skate-local-props';
 import { define, emit, prop, props, vdom } from 'skatejs';
 import Item from './pf-mention-item';
 import Scrollable from './pf-scrollable';
+import debug from '../util/logger';
 
 // FIXME
 const defaultAvatar = 'https://dmg75ly2d8uj2.cloudfront.net/assets/img/avatar-all-here@2x.png';
@@ -61,6 +62,8 @@ function adjustSelection(elem) {
 
 function renderItems(elem) {
   let idx = 0;
+
+  debug('pf-mention-list: rendering', elem.mentions.length, 'mentions');
 
   if (elem.mentions.length) {
     adjustSelection(elem);
@@ -152,6 +155,8 @@ export default define('pf-mention-list', {
   },
 
   render(elem) {
+    debug('pf-mention-list.render', elem.mentions.length);
+
     const classes = [
       styles.list,
     ];

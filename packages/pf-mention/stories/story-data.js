@@ -1,4 +1,7 @@
 import MentionResource from '../src/api/pf-mention-resource';
+import debug, { enableLogger } from '../src/util/logger';
+
+enableLogger(true);
 
 export const mentions = [
   {
@@ -105,7 +108,7 @@ export class MockPresenceProvider {
       'unavailable',
       null,
     ];
-    this._listeners = [];
+    this._listeners = new Map();
   }
 
   _getTimeout() {
@@ -143,22 +146,22 @@ export class MockPresenceProvider {
       }
     }
     setTimeout(() => {
-      this._listeners.forEach((listener) => {
+      this._listeners.forEach((listener, key) => {
         try {
           listener(precences);
         } catch (e) {
           // ignore error from listener
-          console.log('error from listener, ignoring', e);
+          debug(`error from listener '${key}', ignoring`, e);
         }
       });
     }, this._getTimeout());
   }
 
-  subscribe(listener) {
-    this._listeners.push(listener);
+  subscribe(key, listener) {
+    this._listeners.set(key, listener);
   }
 
-  unsubscribe(listener) {
-    this._listeners = this._listeners.filter((v) => v !== listener);
+  unsubscribe(key) {
+    this._listeners.delete(key);
   }
 }

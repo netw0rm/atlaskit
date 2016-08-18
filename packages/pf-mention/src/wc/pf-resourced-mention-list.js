@@ -3,6 +3,7 @@ import shadowStyles from './pf-resourced-mention-list-shadow.less';
 import { localProp } from './skate-local-props';
 import { define, vdom, prop, props } from 'skatejs';
 import MentionList from './pf-mention-list';
+import debug from '../util/logger';
 
 function applyPresence(mentions, presences) {
   const updatedMentions = [];
@@ -30,25 +31,25 @@ function extractPresences(mentions) {
 
 function unsubscribeUpdates(elem, resourceProvider) {
   if (resourceProvider) {
-    resourceProvider.unsubscribe(elem._filterChange);
+    resourceProvider.unsubscribe(elem);
   }
 }
 
 function subscribeUpdates(elem, resourceProvider) {
   if (resourceProvider) {
-    resourceProvider.subscribe(elem._filterChange);
+    resourceProvider.subscribe(elem, elem._filterChange);
   }
 }
 
 function unsubscribePresenceUpdates(elem, presenceProvider) {
   if (presenceProvider) {
-    presenceProvider.unsubscribe(elem._presenceUpdate);
+    presenceProvider.unsubscribe(elem);
   }
 }
 
 function subscribePresenceUpdates(elem, presenceProvider) {
   if (presenceProvider) {
-    presenceProvider.subscribe(elem._presenceUpdate);
+    presenceProvider.subscribe(elem, elem._presenceUpdate);
   }
 }
 
@@ -102,9 +103,9 @@ export default define('pf-resourced-mention-list', {
   },
 
   created(elem) {
-    elem._updateQuery('');
     elem._filterChange = elem._filterChange.bind(elem);
     elem._presenceUpdate = elem._presenceUpdate.bind(elem);
+    elem._updateQuery('');
   },
 
   detached(elem) {
@@ -116,6 +117,8 @@ export default define('pf-resourced-mention-list', {
   },
 
   render(elem) {
+    debug('pf-resourced-mention-list.render', elem.mentions.length);
+
     return (
       <div>
         <style>{shadowStyles.toString()}</style>

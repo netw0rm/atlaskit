@@ -7,52 +7,29 @@ printf "\033[0m"
 
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
-  USAGE="$(cat ./docs/USAGE.md)"
+  USAGE="$(cat ./docs/USAGE.md)\n"
 else
   USAGE=""
 fi
 
 # Generate API docs
 API=""
-if compgen -G "*/index\.js" > /dev/null; then
-
-  API="$(../../node_modules/.bin/jsdoc2md \
+for file in $(find ./src -name "index*.js"); do
+  NEXT="$(../../node_modules/.bin/jsdoc2md \
     --plugin dmd-bitbucket ak-dmd-plugin \
-    --src ./src/index.js \
+    --src $file \
     --member-index-format list \
     --name-format)"
 
-  if [[ $API == *"ERROR, Cannot find class"* ]]
+  if [[ $NEXT == *"ERROR, Cannot find class"* ]]
   then
-    API=""
+    NEXT=""
   else
-    API="\n$API\n"
+    NEXT="$NEXT\n"
   fi
 
-else
-  API=""
-fi
-
-if [ -d ./src/children ]
-then
-  for file in $(find ./src/children -name "*.js"); do
-    NEXT="$(../../node_modules/.bin/jsdoc2md \
-      --plugin dmd-bitbucket ak-dmd-plugin \
-      --src $file \
-      --member-index-format list \
-      --name-format)"
-
-    if [[ $NEXT == *"ERROR, Cannot find class"* ]]
-    then
-      NEXT=""
-    else
-      NEXT="$NEXT\n"
-    fi
-
-    API="$API\n$NEXT"
-  done
-fi
-
+  API="$API\n$NEXT"
+done
 
 
 # Concatenate USAGE docs and JSDoc output

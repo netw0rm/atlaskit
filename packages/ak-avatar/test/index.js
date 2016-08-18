@@ -34,6 +34,10 @@ function setupAvatar() {
   return [component, container];
 }
 
+function tearDownAvatar(container) {
+  document.body.removeChild(container);
+}
+
 
 describe('ak-avatar', () => {
   it('should be possible to create a component', () => {
@@ -57,7 +61,7 @@ describe('ak-avatar', () => {
     let container;
 
     beforeEach(() => ([component, container] = setupAvatar(component, container)));
-    afterEach(() => (document.body.removeChild(container)));
+    afterEach(() => (tearDownAvatar(container)));
 
     Object.keys(avatarSizes).forEach((size) => {
       it('should accept all valid values (size = ${size})', (done) => {
@@ -115,7 +119,7 @@ describe('ak-avatar', () => {
     });
 
     afterEach(() => {
-      document.body.removeChild(container);
+      tearDownAvatar(container);
     });
 
     it('should set an aria-label on the imgWrapper', (done) => {
@@ -139,7 +143,7 @@ describe('ak-avatar', () => {
           component.src = oneByOnePixel;
           component.label = label;
         },
-        () => (img = component[symbols.shadowRoot].firstChild.querySelector('img')),
+        () => (img = component[symbols.shadowRoot].querySelector('img')),
         () => expect(img.getAttribute('alt')).to.equal(label),
         done);
     });
@@ -154,7 +158,7 @@ describe('ak-avatar', () => {
       afterMutations(
         () => ([component, container] = setupAvatar(component, container)),
         () => {
-          const shadowDOM = component[symbols.shadowRoot].firstChild;
+          const shadowDOM = component[symbols.shadowRoot];
           presence = shadowDOM.querySelector(`.${shadowStyles.locals.presence}`);
         },
         done
@@ -162,7 +166,7 @@ describe('ak-avatar', () => {
     });
 
     afterEach(() => {
-      document.body.removeChild(container);
+      tearDownAvatar(container);
     });
 
     it('should not be visible when set to "none"', (done) => {
@@ -195,14 +199,38 @@ describe('ak-avatar', () => {
     let container;
 
     beforeEach(() => ([component, container] = setupAvatar(component, container)));
-    afterEach(() => (document.body.removeChild(container)));
+    afterEach(() => (tearDownAvatar(container)));
 
     it('should set the src property on the internal img', (done) => {
       afterMutations(
         () => (component.src = oneByOnePixel),
         () => {
-          const img = component[symbols.shadowRoot].firstChild.querySelector('img');
+          const img = component[symbols.shadowRoot].querySelector('img');
           expect(img.src).to.equal(oneByOnePixel);
+        },
+        done
+      );
+    });
+
+    it('should not add the .loaded class if img fails to load', done => {
+      afterMutations(
+        () => (component.src = 'notavalidURL'),
+        () => {
+          const imgWrapper = component[symbols.shadowRoot].querySelector(`.${shadowStyles.locals.imgWrapper}`); // eslint-disable-line  max-len
+          const hasLoadedClass = Array.prototype.slice.call(imgWrapper.classList).indexOf(shadowStyles.locals.loaded) > -1; // eslint-disable-line max-len
+          expect(hasLoadedClass).to.equal(false);
+        },
+        done
+      );
+    });
+
+    it('should add the .loaded class if img loads successfully', done => {
+      afterMutations(
+        () => (component.src = oneByOnePixel),
+        () => {
+          const imgWrapper = component[symbols.shadowRoot].querySelector(`.${shadowStyles.locals.imgWrapper}`); // eslint-disable-line  max-len
+          const hasLoadedClass = Array.prototype.slice.call(imgWrapper.classList).indexOf(shadowStyles.locals.loaded) > -1; // eslint-disable-line max-len
+          expect(hasLoadedClass).to.equal(true);
         },
         done
       );
@@ -218,7 +246,7 @@ describe('ak-avatar', () => {
         afterMutations(
           () => (component.src = testCase.src),
           () => {
-            const img = component[symbols.shadowRoot].firstChild.querySelector('img');
+            const img = component[symbols.shadowRoot].querySelector('img');
             expect(img !== null).to.equal(testCase.expectImgToBeRendered);
           },
           done
@@ -245,7 +273,7 @@ describe('ak-avatar', () => {
     });
 
     afterEach(() => {
-      document.body.removeChild(container);
+      tearDownAvatar(container);
     });
 
     const testCases = [

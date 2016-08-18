@@ -22,6 +22,7 @@ describe('ak-badge', () => {
   afterEach(() => {
     fixture.removeChild(component);
     component = null;
+    document.body.removeChild(fixture);
   });
   describe('value property', () => {
     it('should be visibly displayed', (done) => {

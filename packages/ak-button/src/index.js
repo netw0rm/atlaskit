@@ -6,24 +6,41 @@ import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
 
-const PRIMARY = 'primary';
-const STANDARD = 'standard';
-const SUBTLE = 'subtle';
-const SELECTED = 'selected';
+const attributeValuesToEnumObject = values =>
+  values.reduce((acum, val) => {
+    acum[val.toUpperCase()] = val;
+    return acum;
+  }, {});
 
-const APPEARANCE = {
-  PRIMARY, STANDARD, SUBTLE, SELECTED,
+const APPEARANCE_VALUES = [
+  'primary',
+  'standard',
+  'subtle',
+  'selected',
+];
+const TYPE_VALUES = [
+  'button',
+  'submit',
+];
+const APPEARANCE = attributeValuesToEnumObject(APPEARANCE_VALUES);
+const TYPE = attributeValuesToEnumObject(TYPE_VALUES);
+
+const appearancePropertyValues = {
+  attribute: 'appearance',
+  values: APPEARANCE_VALUES,
 };
 
-const APPEARANCES = {
-  attribute: 'appearance',
-  values: Object.keys(APPEARANCE).map(key => APPEARANCE[key]),
+const typePropertyValues = {
+  attribute: 'type',
+  values: TYPE_VALUES,
+  missingDefault: 'button',
+  invalidDefault: 'button',
 };
 
 const definition = {
   props: {
     /**
-     * @description Style of the button. One of:
+     * @description Predefined appearances of an ak-button. One of:
      * 'primary', 'standard', 'subtle', 'selected'.
      * @memberof Button
      * @default 'standard'
@@ -31,7 +48,19 @@ const definition = {
      * @example @html <ak-button appearance="primary"></ak-button>
      * @example @js button.appearance = 'primary';
      */
-    appearance: enumeration(APPEARANCES)({
+    appearance: enumeration(appearancePropertyValues)({
+      attribute: true,
+    }),
+    /**
+     * @description Type of the ak-button. One of:
+     * 'button', 'submit'.
+     * @memberof Button
+     * @default 'button'
+     * @type {string}
+     * @example @html <ak-button type="submit"></ak-button>
+     * @example @js button.type = 'submit';
+     */
+    type: enumeration(typePropertyValues)({
       attribute: true,
     }),
     /**
@@ -58,6 +87,7 @@ const definition = {
         <style>{shadowStyles.toString()}</style>
         <button
           className={classNames(classes)}
+          type={elem.type}
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >
@@ -69,10 +99,9 @@ const definition = {
 };
 
 const AkButton = define('ak-button', definition);
-
 export default AkButton;
 
 export {
   APPEARANCE,
-  AkButton,
+  TYPE,
 };

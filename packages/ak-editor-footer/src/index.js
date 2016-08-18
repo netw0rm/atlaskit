@@ -4,7 +4,7 @@ import 'style!./host.less';
 import Icon from 'ak-editor-icon';
 
 function tools() {
-  return ['mention', 'image', 'emoji', 'task', 'attachment', 'decision', 'date']
+  return ['mention', 'image']
     .map((icon) => (
       <button
         className={shadowStyles.locals.iconButton}

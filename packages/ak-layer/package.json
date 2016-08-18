@@ -14,7 +14,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "akutil-common": "^0.3.0",
+    "akutil-common": "^1.0.0",
     "akutil-shared-styles": "^33.0.2",
     "skatejs": "^1.0.0"
   },

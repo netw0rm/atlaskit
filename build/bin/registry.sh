@@ -12,7 +12,7 @@ npm config set progress false
 npm set loglevel warn
 npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
 npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
-npm install @atlassian/atlaskit-registry@1.2.0
+npm install @atlassian/atlaskit-registry@^1.2.0
 mv ._npmrc .npmrc
 
 # Build website using jekyll

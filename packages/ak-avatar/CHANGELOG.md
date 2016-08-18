@@ -172,9 +172,18 @@
 
 ### Features
 
-* **code:** initial commit for ak-avatar ([e66318d](https://bitbucket.org/atlassian/atlaskit/commits/e66318d))
 * Bare functionality of ak-avatar ([e0bfd32](https://bitbucket.org/atlassian/atlaskit/commits/e0bfd32))
 * Rest of the bare functionality for ak-avatar ([bcd9b92](https://bitbucket.org/atlassian/atlaskit/commits/bcd9b92))
+
+
+
+<a name="ak-avatar@1.0.0"></a>
+# ak-avatar@1.0.0 (2016-06-17)
+
+
+### Features
+
+* **code:** initial commit for ak-avatar ([e66318d](https://bitbucket.org/atlassian/atlaskit/commits/e66318d))
 
 
 

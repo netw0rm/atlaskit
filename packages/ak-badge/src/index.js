@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { define, prop, vdom } from 'skatejs';
+import { Component, define, emit, prop, vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
@@ -41,6 +41,17 @@ const definition = {
       </span>
     );
   },
+  updated(elem, prev) {
+    if (prev && prev.value !== elem.value) {
+      emit(elem, 'change', {
+        detail: {
+          oldValue: prev.value,
+          newValue: elem.value,
+        },
+      });
+    }
+    return Component.updated(elem, prev);
+  },
   props: {
     /**
      * @description The value displayed within the badge.
@@ -52,7 +63,6 @@ const definition = {
     value: prop.number({
       attribute: true,
       default: 0,
-      event: 'change',
     }),
     /**
      * @description The max value to display.

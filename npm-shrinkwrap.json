@@ -1603,6 +1603,18 @@
       "from": "create-hmac@>=1.1.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/create-hmac/-/create-hmac-1.1.4.tgz"
     },
+    "cross-spawn": {
+      "version": "4.0.0",
+      "from": "cross-spawn@>=4.0.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/cross-spawn/-/cross-spawn-4.0.0.tgz",
+      "dependencies": {
+        "lru-cache": {
+          "version": "4.0.1",
+          "from": "lru-cache@>=4.0.1 <5.0.0",
+          "resolved": "https://registry.npmjs.org/lru-cache/-/lru-cache-4.0.1.tgz"
+        }
+      }
+    },
     "cryptiles": {
       "version": "2.0.5",
       "from": "cryptiles@>=2.0.0 <3.0.0",
@@ -4289,9 +4301,9 @@
       "resolved": "https://registry.npmjs.org/lazy-cache/-/lazy-cache-1.0.4.tgz"
     },
     "lerna": {
-      "version": "2.0.0-beta.24",
-      "from": "lerna@2.0.0-beta.24",
-      "resolved": "https://registry.npmjs.org/lerna/-/lerna-2.0.0-beta.24.tgz",
+      "version": "2.0.0-beta.26",
+      "from": "lerna@>=2.0.0-beta.26 <3.0.0",
+      "resolved": "https://registry.npmjs.org/lerna/-/lerna-2.0.0-beta.26.tgz",
       "dependencies": {
         "inquirer": {
           "version": "0.12.0",
@@ -5642,6 +5654,11 @@
       "version": "0.0.0",
       "from": "prr@>=0.0.0 <0.1.0",
       "resolved": "https://registry.npmjs.org/prr/-/prr-0.0.0.tgz"
+    },
+    "pseudomap": {
+      "version": "1.0.2",
+      "from": "pseudomap@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/pseudomap/-/pseudomap-1.0.2.tgz"
     },
     "public-encrypt": {
       "version": "4.0.0",
@@ -7466,6 +7483,11 @@
       "version": "4.0.1",
       "from": "xtend@>=4.0.0 <5.0.0",
       "resolved": "https://registry.npmjs.org/xtend/-/xtend-4.0.1.tgz"
+    },
+    "yallist": {
+      "version": "2.0.0",
+      "from": "yallist@>=2.0.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/yallist/-/yallist-2.0.0.tgz"
     },
     "yargs": {
       "version": "3.10.0",

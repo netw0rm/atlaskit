@@ -1,11 +1,10 @@
 /** @jsx vdom */
-/* eslint react/no-unknown-property: 0 */
 import 'style!./host.less';
 import { enumeration, KeyPressHandler } from 'akutil-common';
 import { vdom, prop, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
-import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer'; // eslint-disable-line no-unused-vars, max-len
-import 'ak-blanket';
+import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer';
+import Blanket from 'ak-blanket';
 
 let keyPress;
 function closeDialog(elem) {
@@ -17,7 +16,7 @@ function closeDialog(elem) {
 function renderBlanketIfNeeded(elem) {
   if (elem.hasBlanket) {
     return (
-      <ak-blanket
+      <Blanket
         tinted={elem.isBlanketTinted}
         clickable={elem.isBlanketClickable}
       />
@@ -33,9 +32,8 @@ function renderBlanketIfNeeded(elem) {
  * @example @html <ak-inline-dialog target="#target"></ak-inline-dialog>
  * @example @js import InlineDialog from 'ak-inline-dialog';
  * const myDialog = new InlineDialog();
- *
  */
-const definition = {
+export default define('ak-inline-dialog', {
   attached(elem) {
     keyPress = new KeyPressHandler('ESCAPE', closeDialog(elem));
     window.addEventListener('ak-blanket-click', closeDialog(elem));
@@ -65,7 +63,7 @@ const definition = {
     return (
       <div>
         {renderBlanketIfNeeded(elem)}
-        <ak-layer
+        <Layer
           open={elem.open}
           position={elem.position}
           attachment={elem.constrain}
@@ -78,14 +76,13 @@ const definition = {
               // when it's initially positioning itself on a page
               elem.setAttribute('positioned', true);
             }
-          }
-          }
+          }}
         >
           <style>{shadowStyles.toString()}</style>
-          <div class={shadowStyles.locals.inlineDialogContainer} style={styles}>
+          <div className={shadowStyles.locals.inlineDialogContainer} style={styles}>
             <slot />
           </div>
-        </ak-layer>
+        </Layer>
       </div>
     );
   },
@@ -125,7 +122,6 @@ const definition = {
      */
     open: prop.boolean({
       attribute: true,
-      default: false,
     }),
     /**
      * @description Target of an inline-dialog.
@@ -222,7 +218,6 @@ const definition = {
      */
     isBlanketTinted: prop.boolean({
       attribute: true,
-      default: false,
     }),
     /**
      * @description Is blanket is closable by pressing the 'escape' button. By default it is.
@@ -235,9 +230,6 @@ const definition = {
      */
     isClosableOnEsc: prop.boolean({
       attribute: true,
-      default: true,
     }),
   },
-};
-
-export default define('ak-inline-dialog', definition);
+});

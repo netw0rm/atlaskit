@@ -18,10 +18,10 @@
     "classnames": "^2.2.5",
     "ak-editor-button": "2.0.0",
     "ak-blanket": "^1.0.0",
-    "skatejs": "1.0.0-beta.12"
+    "skatejs": "^1.0.0"
   },
   "devDependencies": {
-    "akutil-react": "^0.0.4",
+    "akutil-react": "^1.0.0",
     "ak-editor-toolbar": "^2.0.0",
     "ak-editor-content": "^2.0.0",
     "atlassian-editorkit-block-type-plugin": "0.0.7",

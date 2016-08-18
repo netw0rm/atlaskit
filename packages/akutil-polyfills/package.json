@@ -13,9 +13,7 @@
   },
   "dependencies": {
     "es6-symbol": "^3.1.0",
-    "es6-map": "^0.1.4",
-    "skatejs-named-slots": "^1.0.1",
-    "webcomponents.js": "webcomponents/webcomponentsjs#b77ca74"
+    "skatejs-web-components": "^1.0.0"
   },
   "repository": {
     "type": "git",

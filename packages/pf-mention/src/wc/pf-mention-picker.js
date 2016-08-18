@@ -1,13 +1,11 @@
 import 'style!../host.less';
 import shadowStyles from './pf-mention-picker-shadow.less';
-import pfResourcedMentionList from './pf-resourced-mention-list'; // eslint-disable-line no-unused-vars, max-len
 import { localProp } from './skate-local-props';
+import { define, vdom, prop, props } from 'skatejs';
+import InlineDialog from 'ak-inline-dialog';
+import ResourcedMentionList from './pf-resourced-mention-list';
 
-import 'ak-inline-dialog';
-import { define, vdom, prop, emit, state } from 'skatejs'; // eslint-disable-line no-unused-vars
-
-const definition = {
-
+export default define('pf-mention-picker', {
   prototype: {
     selectNext() {
       if (this._mentionListRef) {
@@ -28,8 +26,8 @@ const definition = {
     },
 
     _filterChange(mentions) {
-      state(this, {
-        visible: mentions.length > 0,
+      props(this, {
+        _visible: mentions.length > 0,
       });
     },
   },
@@ -43,35 +41,32 @@ const definition = {
     if (elem.resourceProvider) {
       elem.resourceProvider.unsubscribe(elem._filterChange);
     }
-    if (elem.ref) {
-      elem.ref(null);
-    }
   },
 
   render(elem) {
     const { target, position } = elem;
     const { resourceProvider, presenceProvider, query } = elem;
     const style = {
-      display: elem.visible ? 'block' : 'none',
+      display: elem._visible ? 'block' : 'none',
     };
 
     if (target) {
       return (
         <div style={style}>
           <style>{shadowStyles.toString()}</style>
-          <ak-inline-dialog
+          <InlineDialog
             target={target}
             position={position}
-            open={elem.visible}
+            open={elem._visible}
             padding="0"
           >
-            <pf-resourced-mention-list
+            <ResourcedMentionList
               resourceProvider={resourceProvider}
               presenceProvider={presenceProvider}
               query={query}
-              ref={(ref) => { elem._mentionListRef = ref; }}
+              refWorkaround={(ref) => { elem._mentionListRef = ref; }}
             />
-          </ak-inline-dialog>
+          </InlineDialog>
         </div>
       );
     }
@@ -91,10 +86,10 @@ const definition = {
       },
     }),
     presenceProvider: localProp.object(),
-    ref: localProp.reference(),
     query: prop.string({
       attribute: true,
     }),
+
     // ak-inline-dialog
     target: prop.string({
       attribute: true,
@@ -102,10 +97,7 @@ const definition = {
     position: prop.string({
       attribute: true,
     }),
+    // internal
+    _visible: prop.boolean(),
   },
-};
-
-/* The constructor for our component */
-export default define('pf-mention-picker', definition);
-
-export { definition };
+});

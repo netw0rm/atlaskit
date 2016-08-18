@@ -1,11 +1,9 @@
-/** @jsx vdom */
-import 'style!./host.less'; // eslint-disable-line import/no-unresolved
-
+import 'style!./host.less';
 import { prop, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 
-const definition = {
+export default define('ak-page', {
   render(elem) {
     return (
       // JSX requires that there only be a single root element.
@@ -34,11 +32,12 @@ const definition = {
   props: {
     navigationOpen: prop.boolean({ default: true }),
   },
-  events: {
-    'ak-navigation-open-state-changed': (elem, event) => {
-      elem.navigationOpen = event.detail.openState;
-    },
+  created(elem) {
+    elem.addEventListener('ak-navigation-open', () => {
+      elem.navigationOpen = true;
+    });
+    elem.addEventListener('ak-navigation-close', () => {
+      elem.navigationOpen = false;
+    });
   },
-};
-
-export default define('ak-page', definition);
+});

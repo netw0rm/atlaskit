@@ -1,36 +1,32 @@
 #!/usr/bin/env bash
 set -e
 
-# Clone the atlaskit-registry repo into the folder above atlaskit
-echo "Cloning atlaskit-registry repo"
-rm -rf ../atlaskit-registry
-git clone --quiet "https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/atlassian/atlaskit-registry.git" ../atlaskit-registry
-mkdir -p ../atlaskit-registry/_data ../atlaskit-registry/api ../atlaskit-registry/resources
+BASEDIR=$(dirname $0)
 
-# Install panop (converts monorepo to single YAML summary file)
 # Note: unfortunately @atlassian scope is used on the public and private
 # npm registries, which is why we need to disable the .npmrc file
 # temporarily here.
-echo "Installing panop from Atlassian private npm"
+echo "Installing atlaskit-registry from Atlassian private npm"
 mv .npmrc ._npmrc
+npm config set progress false
 npm set loglevel warn
 npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
 npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
-npm install --progress=false @atlassian/panop
+npm install @atlassian/atlaskit-registry@^1.2.0
 mv ._npmrc .npmrc
 
-# Generate momnorep summary which will feed into jekyll
-echo "Generating summary files using panop"
-BITBUCKET_PASS=$BITBUCKET_PW_READONLY `npm bin`/panop --repo=atlassian/atlaskit \
-  --json=../atlaskit-registry/api/full.json
-
-# Install atlaskit-registry dependencies
-echo "Installing jekyll"
-bundle install --quiet --gemfile=../atlaskit-registry/Gemfile
-
 # Build website using jekyll
-echo "Building site using Jekyll"
-jekyll build --source ../atlaskit-registry --destination ../atlaskit-registry/resources
+echo "Building registry"
+TARGET_PATH_RELATIVE=../atlaskit-registry/resources
+mkdir -p $TARGET_PATH_RELATIVE
+pushd $TARGET_PATH_RELATIVE
+TARGET_PATH=`pwd`
+popd
+REGISTRY_BIN=`npm bin`/ak-registry
+REGISTRY_PATH=`npm root`/@atlassian/atlaskit-registry
+pushd $REGISTRY_PATH
+BITBUCKET_PASS=$BITBUCKET_PW_READONLY $REGISTRY_BIN --destination $TARGET_PATH
+popd
 
 # Zip the built website so we can upload to CDN
 rm -f ../ak-registry-cdn.zip
@@ -48,20 +44,52 @@ fi
 echo "Installing CDN tool"
 mvn -B dependency:copy -Dartifact=com.atlassian.scripts.prebake.distributor:prebake-distributor-runner:0.22.0 -Dmdep.stripClassifier=true -Dmdep.stripVersion=true -Dsilent=true -DoutputDirectory=..
 
+echo "Installing cloudfront-invalidate-cli"
+npm install cloudfront-invalidate-cli@1.0.3 -g
+
 # Upload to CDN
-echo "Uploading to Atlassian CDN..."
-java -jar ../prebake-distributor-runner.jar \
+echo "Uploading registry to CDN..."
+java \
+-jar \
+-Dlog4j.configurationFile=build/bin/logger.xml \
+../prebake-distributor-runner.jar \
 --step=resources \
 --s3-bucket=$S3_BUCKET \
---s3-key-prefix="$S3_KEY_PREFIX" \
---s3-gz-key-prefix="$S3_GZ_KEY_PREFIX" \
+--s3-key-prefix="$S3_KEY_PREFIX/registry" \
+--s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/registry" \
 --compress=css,js,svg,ttf,html,json,ico,eot,otf \
 --pre-bake-bundle=../ak-registry-cdn.zip
 
 # Invalidate CDN caches
-npm install cloudfront-invalidate-cli@1.0.3 -g
-echo "CDN invalidation starting now (this may take some time)"
+echo "CDN invalidation (registry) starting now (this may take some time)"
 AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
 AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
 cf-invalidate -- EVOK132JF0N16 '/atlaskit/registry/*'
-echo "CDN invalidation finished."
+echo "CDN invalidation (registry) finished."
+
+echo "Building storybooks"
+mkdir -p ../atlaskit-stories
+npm run storybook/static/registry
+mv ./stories ../atlaskit-stories/resources
+rm -f ../ak-storybooks-cdn.zip
+zip -0 -r -T ../ak-storybooks-cdn.zip ../atlaskit-stories/resources
+
+echo "Uploading storybooks to CDN..."
+java \
+-jar \
+-Dlog4j.configurationFile=build/bin/logger.xml \
+../prebake-distributor-runner.jar \
+--step=resources \
+--s3-bucket=$S3_BUCKET \
+--s3-key-prefix="$S3_KEY_PREFIX/stories" \
+--s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/stories" \
+--compress=css,js,svg,ttf,html,json,ico,eot,otf \
+--pre-bake-bundle=../ak-storybooks-cdn.zip
+
+# Invalidate CDN caches
+echo "CDN invalidation (storybooks) starting now (this may take some time)"
+
+AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
+AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
+cf-invalidate -- EVOK132JF0N16 '/atlaskit/stories/*'
+echo "CDN invalidation (storybooks) finished."

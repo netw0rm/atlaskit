@@ -1,5 +1,10 @@
-<a name="1.2.0"></a>
-# 1.2.0 (2016-08-18)
+<a name="2.0.0"></a>
+# 2.0.0 (2016-08-18)
+
+
+
+<a name="ak-avatar@2.0.0"></a>
+# ak-avatar@2.0.0 (2016-08-18)
 
 
 ### Chores
@@ -7,8 +12,14 @@
 * **bump:** Bumped avatar version 1.2.0 so we can release 2.0.0 with this commit ([8a76dee](https://bitbucket.org/atlassian/atlaskit/commits/8a76dee))
 
 
+### Features
+
+* **component:** BREAKING CHANGE: Actually a dummy commit to release avatar, due to a broken release ([6816f30](https://bitbucket.org/atlassian/atlaskit/commits/6816f30))
+
+
 ### BREAKING CHANGES
 
+* component: dummy commit
 * bump: releasing v2.0.0
 
 

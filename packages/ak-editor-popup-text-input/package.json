@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:storybook:webpack": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-editor-popup-text-input",
     "pre-release": "lerna-semantic-release pre"

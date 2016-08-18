@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "ak-editor-toolbar-hyperlink webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:storybook:webpack": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-editor-toolbar-hyperlink",
     "pre-release": "lerna-semantic-release pre"

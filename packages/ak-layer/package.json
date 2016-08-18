@@ -3,7 +3,8 @@
   "version": "56.4.1",
   "description": "A layer component",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:storybook:webpack": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-layer",
     "pre-release": "lerna-semantic-release pre"

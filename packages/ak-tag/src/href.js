@@ -3,6 +3,7 @@ import shadowStyles from './shadow.less';
 
 const href = (props, children) => (
   <a
+    tabindex="-1"
     className={shadowStyles.locals.href}
     href={props.href}
   >

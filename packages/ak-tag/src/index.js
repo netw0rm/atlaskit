@@ -23,6 +23,7 @@ export default define('ak-tag', {
       return null;
     }
 
+    const chromeAttrs = {};
     let button = '';
     if (elem['remove-button-text']) {
       button = <Button text={elem['remove-button-text']} />;
@@ -32,17 +33,18 @@ export default define('ak-tag', {
     if (!elem.href) {
       label = <Text>{elem.text}</Text>;
     } else {
+      chromeAttrs.tabindex = 0;
       label = <Href href={elem.href}>{elem.text}</Href>;
     }
 
     return (
-      <div>
+      <span>
         <style>{shadowStyles.toString()}</style>
-        <Chrome>
+        <Chrome {...chromeAttrs}>
           {label}
           {button}
         </Chrome>
-      </div>
+      </span>
     );
   },
   props: {

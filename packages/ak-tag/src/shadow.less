@@ -5,22 +5,54 @@
 // browsers that do not support shadow DOM
 @import 'shared-variables.less';
 
-.chrome {
-  border: 1px solid black;
-  padding: 4px;
-  border-radius: 5%;
+@border-radius: 3px;
+@grid-unit: 10px;
+
+.outline() {
+  &:focus {
+    outline: none;
+    box-shadow: 0px 0px 0px @border-radius @ak-color-B100;
+  }
 }
 
-.href,
+.chrome {
+  background-color: #E5E8ED; // TODO: change this to ADG color from akutil-shared-styles
+  padding: 0;
+  margin: 0;
+  border-radius: @border-radius;
+  .outline();
+}
+
 .text {
   font-family: @ak-font-family;
+  color: @ak-color-N700;
+  font-size: 14px;
+  height: @grid-unit;
+  margin: 4px;
+}
+
+.href {
+  .text;
+  text-decoration: none;
+
+  &:hover {
+    color: @ak-color-B400;
+  }
 }
 
 .button {
-  color: blue;
+  color: @ak-color-N700;
+  font-size: medium;
   appearance: none;
   background: none;
   border: none;
   padding: 0;
   margin: 0;
+  border-radius: @border-radius;
+  .outline();
+
+  &:focus,
+  &:hover {
+    color: @ak-color-R500;
+  }
 }

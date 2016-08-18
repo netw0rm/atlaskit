@@ -3,6 +3,7 @@ import reactify from 'akutil-react';
 import Tag from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
+import styles from 'style!./../src/host.less';
 
 const Component = reactify(Tag, {
   React,
@@ -11,10 +12,16 @@ const Component = reactify(Tag, {
 
 storiesOf(name, module)
   .add('text: simple', () => (
-    <Component text="watersports" />
+    <Component
+      className={styles.akTag}
+      text="watersports"
+    />
   ))
   .add('text: special characters (must not alert)', () => (
-    <Component text="<script>alert('must not alert');</script>" />
+    <Component
+      className={styles.akTag}
+      text="<script>alert('must not alert');</script>"
+    />
   ))
   .add('text: special characters, programmatically (must not alert)', () => {
     const attachTag = (e) => {
@@ -23,6 +30,7 @@ storiesOf(name, module)
       }
       e.innerHTML = '';
       const tag = new Tag();
+      tag.className = styles.akTag;
       tag.text = '<script>alert(\'must not alert either!\');</script>';
       e.appendChild(tag);
     };

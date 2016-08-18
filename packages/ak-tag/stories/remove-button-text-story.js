@@ -3,6 +3,7 @@ import reactify from 'akutil-react';
 import Tag from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
+import styles from 'style!./../src/host.less';
 
 const Component = reactify(Tag, {
   React,
@@ -11,8 +12,17 @@ const Component = reactify(Tag, {
 
 storiesOf(name, module)
   .add('remove-button: simple', () => (
-    <Component text="some tag" remove-button-text="Remove me" />
+    <Component
+      className={styles.akTag}
+      text="some tag"
+      remove-button-text="Remove me"
+    />
   ))
   .add('remove-button: with href', () => (
-    <Component href="http://www.atlassian.com" text="atlassian" remove-button-text="Remove me" />
+    <Component
+      className={styles.akTag}
+      href="http://www.atlassian.com"
+      text="atlassian"
+      remove-button-text="Remove me"
+    />
   ));

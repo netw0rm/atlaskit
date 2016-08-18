@@ -11,6 +11,7 @@ const expect = chai.expect; // eslint-disable-line no-unused-vars
 const valueSelector = `.${styles.locals.value}`;
 const fixture = document.createElement('div');
 let component;
+const value = () => component[symbols.shadowRoot].querySelector(valueSelector);
 
 describe('ak-badge', () => {
   beforeEach(() => {
@@ -27,7 +28,7 @@ describe('ak-badge', () => {
       afterMutations(
           () => (component.value = 5),
           () => {
-            const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
+            const html = value().innerHTML;
             expect(html).to.match(/5/);
           },
           done
@@ -37,7 +38,7 @@ describe('ak-badge', () => {
       afterMutations(
           () => (component.value = -5),
           () => {
-            const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
+            const html = value().innerHTML;
             expect(html).to.match(/0/);
           },
           done
@@ -48,7 +49,7 @@ describe('ak-badge', () => {
           () => (component.value = Infinity),
           () => (component.max = Infinity),
           () => {
-            const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
+            const html = value().innerHTML;
             expect(html).to.match(/∞/);
           },
           done
@@ -77,7 +78,7 @@ describe('ak-badge', () => {
       afterMutations(
           () => (component.value = 101),
           () => {
-            const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
+            const html = value().innerHTML;
             expect(html).to.match(/99\+/);
           },
           done
@@ -88,7 +89,7 @@ describe('ak-badge', () => {
           () => (component.value = 200),
           () => (component.max = 100),
           () => {
-            const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
+            const html = value().innerHTML;
             expect(html).to.match(/100\+/);
           },
           done
@@ -99,7 +100,7 @@ describe('ak-badge', () => {
           () => (component.value = 200),
           () => (component.max = 200),
           () => {
-            const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
+            const html = value().innerHTML;
             expect(html).to.not.match(/200\+/);
           },
           done
@@ -121,8 +122,8 @@ describe('ak-badge', () => {
       afterMutations(
           () => (component.value = 20),
           () => {
-            const el = component[symbols.shadowRoot].querySelector(`.${styles.locals.default}`);
-            expect(el).to.not.equal(null);
+            const el = value();
+            expect(el.classList.contains(styles.locals.default)).to.equal(true);
           },
           done
       );
@@ -132,8 +133,8 @@ describe('ak-badge', () => {
           () => (component.value = 50),
           () => (component.appearance = 'removed'),
           () => {
-            const el = component[symbols.shadowRoot].querySelector(`.${styles.locals.removed}`);
-            expect(el).to.not.equal(null);
+            const el = value();
+            expect(el.classList.contains(styles.locals.removed)).to.equal(true);
           },
           done
       );
@@ -143,8 +144,9 @@ describe('ak-badge', () => {
           () => (component.value = 9),
           () => (component.appearance = 'foo'),
           () => {
-            const el = component[symbols.shadowRoot].querySelector(`.${styles.locals.default}`);
-            expect(el).to.not.equal(null);
+            const el = value();
+            expect(el.classList.contains(styles.locals.default)).to.equal(true);
+            expect(el.classList.contains('foo')).to.equal(false);
           },
           done
       );

@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { define, emit, prop, vdom } from 'skatejs';
+import { Component, define, emit, prop, vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
@@ -50,7 +50,7 @@ const definition = {
         },
       });
     }
-    return true;
+    return Component.updated(elem, prev);
   },
   props: {
     /**

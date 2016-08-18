@@ -6,17 +6,14 @@ import reactify from 'akutil-react';
 
 const Footer = reactify(FooterComponent, { React, ReactDOM });
 
+const footerAction = action('footer');
+
 storiesOf('ak-editor-footer', module)
   .add('Empty', () => (
     <Footer
-      onSave={() => action('Save')()}
-      onCancel={() => action('Cancel')()}
-      onClickmention={() => action('mention')()}
-      onClickimage={() => action('image')()}
-      onClickemoji={() => action('emoji')()}
-      onClicktask={() => action('task')()}
-      onClickattachment={() => action('attachment')()}
-      onClickdecision={() => action('decision')()}
-      onClickdate={() => action('date')()}
+      onSave={() => footerAction('Save')}
+      onCancel={() => footerAction('Cancel')}
+      onClickmention={() => footerAction('mention')}
+      onClickimage={() => footerAction('image')}
     />
   ));

@@ -7,7 +7,7 @@ const rq = [
 
 function webComponentLocator(componentNamePrefix, parentElement) {
   const using = parentElement || document;
-  const tagMatcher = new RegExp('^' + componentNamePrefix, 'i'); // eslint-disable-line
+  const tagMatcher = new RegExp(`^${componentNamePrefix}`, 'i');
 
   return Array
     .from(using.querySelectorAll('*[defined]'))

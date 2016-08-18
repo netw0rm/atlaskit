@@ -1,7 +1,7 @@
 import { define, vdom, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import 'style!./host.less';
-import icons from './pack-svgs!./'; // eslint-disable-line import/no-unresolved
+import icons from './pack-svgs!./';
 
 // Because we dynamically write a CSS style for the fill colour, and we're
 // dealing with polyfill'd shadow DOM that doesn't enforce CSS boundaries, we
@@ -24,7 +24,7 @@ export default define('ak-editor-icon', {
     );
   },
   props: {
-    glyph: prop.string({ attribute: true, default: null }),
-    fill: prop.string({ attribute: true, default: null }),
+    glyph: prop.string({ attribute: true }),
+    fill: prop.string({ attribute: true }),
   },
 });

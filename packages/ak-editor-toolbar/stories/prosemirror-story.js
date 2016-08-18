@@ -2,7 +2,6 @@ import { storiesOf } from '@kadira/storybook';
 import ToolbarComponent from '../src';
 import TextFormattingComponent from 'ak-editor-toolbar-text-formatting';
 import ContentComponent from 'ak-editor-content';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
 
@@ -15,6 +14,12 @@ const Content = reactify(ContentComponent, { React, ReactDOM });
 
 storiesOf('ak-editor-toolbar', module)
   .add('ProseMirror', () => {
+    const markActive = (pm, type) => {
+      const { from, to, empty } = pm.selection;
+      if (empty) return type.isInSet(pm.activeMarks());
+      return pm.doc.rangeHasMark(from, to, type);
+    };
+
     class Demo extends React.Component {
       constructor(props) {
         super(props);
@@ -41,20 +46,15 @@ storiesOf('ak-editor-toolbar', module)
           pm.on.selectionChange,
           pm.on.change,
           pm.on.activeMarkChange,
-        ], () => this.syncStateFromEditor());
+        ], () => this.setState({
+          boldActive: !!markActive(pm, schema.marks.strong),
+          italicActive: !!markActive(pm, schema.marks.em),
+        }));
       }
 
-      syncStateFromEditor() {
-        const markActive = (pm, type) => {
-          const { from, to, empty } = pm.selection;
-          if (empty) return type.isInSet(pm.activeMarks());
-          return pm.doc.rangeHasMark(from, to, type);
-        };
-
-        this.setState({
-          boldActive: !!markActive(this.pm, schema.marks.strong),
-          italicActive: !!markActive(this.pm, schema.marks.em),
-        });
+      toggleMark(name) {
+        this.pm.on.interaction.dispatch();
+        commands.toggleMark(schema.marks[name])(this.pm);
       }
 
       render() {
@@ -64,8 +64,6 @@ storiesOf('ak-editor-toolbar', module)
               <TextFormatting
                 boldActive={this.state.boldActive}
                 italicActive={this.state.italicActive}
-                boldDisabled={this.state.boldDisabled}
-                italicDisabled={this.state.italicDisabled}
                 underlineDisabled
                 ontoggle-bold={() => this.toggleMark('strong')}
                 ontoggle-italic={() => this.toggleMark('em')}
@@ -74,11 +72,6 @@ storiesOf('ak-editor-toolbar', module)
             <Content openTop />
           </div>
         );
-      }
-
-      toggleMark(name) {
-        this.pm.on.interaction.dispatch();
-        commands.toggleMark(schema.marks[name])(this.pm);
       }
     }
 

@@ -8,7 +8,6 @@ const baseUrl = 'https://bogus/';
 
 const apiConfig = {
   url: baseUrl,
-  application: 'HIPCHAT',
   securityProvider() {
     return 10804;
   },
@@ -28,41 +27,44 @@ function checkOrder(expected, actual) {
 }
 
 fetchMock
-  .mock(/\/mentions\/search\?.*query=craig&.*/, {
+  .mock(/\/mentions\/search\?.*query=craig(&|$)/, {
     body: JSON.stringify({
       mentions: resultCraig,
     }),
   })
-  .mock(/\/mentions\/search\?.*query=c&.*/, {
+  .mock(/\/mentions\/search\?.*query=c(&|$)/, {
     body: JSON.stringify({
       mentions: resultC,
     }),
   })
-  .mock(/\/mentions\/search\?.*query=delay&.*/, {
+  .mock(/\/mentions\/search\?.*query=delay(&|$)/, {
     // "delay" is like "c", but delayed
     body: JSON.stringify({
       mentions: resultC,
     }),
   })
-  .mock(/\/mentions\/search\?.*query=broken&.*/, 500);
+  .mock(/\/mentions\/search\?.*query=broken(&|$)/, 500);
 
 describe('MentionResource', function () {
   const defaultFetch = global.fetch;
-  const delayMatch = /\/mentions\/search\?.*query=delay&.*/;
+  const delayMatch = /\/mentions\/search\?.*query=delay(&|$)/;
 
   before(function () {
     global.fetch = function (input, init) {
-      if (typeof input === 'string') {
-        if (delayMatch.test(input)) {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              defaultFetch(input, init).then(
-                (response) => { resolve(response); },
-                (reason) => { reject(reason); }
-              );
-            }, 100);
-          });
-        }
+      let url = input;
+      if (typeof url === 'object') {
+        // Request object, not url string
+        url = url.url;
+      }
+      if (delayMatch.test(url)) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            defaultFetch(input, init).then(
+              (response) => { resolve(response); },
+              (reason) => { reject(reason); }
+            );
+          }, 100);
+        });
       }
       return defaultFetch(input, init);
     };
@@ -132,7 +134,7 @@ describe('MentionResource', function () {
         resource.filter('craig');
       }, 100);
     });
-    it('out of order responses', function () {
+    it('out of order responses', function (done) {
       const resource = new MentionResource(apiConfig);
       const results = [];
       const expected = [resultCraig];

@@ -2,7 +2,6 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkInlineDialog from '../src/index.js';
 import { name } from '../package.json';
-import { symbols } from 'skatejs';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -11,11 +10,7 @@ const defaultPosition = 'right middle';
 
 describe('ak-inline-dialog', () => {
   it('should be possible to create a component', () => {
-    let component;
-    expect(() => {
-      component = new AkInlineDialog();
-    }).not.to.throw(Error);
-    expect(component.getAttribute('defined')).not.to.equal(null);
+    const component = new AkInlineDialog();
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 
@@ -26,6 +21,10 @@ describe('ak-inline-dialog', () => {
       component = new AkInlineDialog();
     });
 
+    // TODO consider changing as this is overlapping quite a bit with Skate
+    // behaviour that is already tested. In fact, this isn't testing what
+    // it's supposed to be testing. Here it's testing standard DOM
+    // behaviour because the component won't even have a shadow root yet.
     it('should be possible to set content to a component', () => {
       const textContent = 'some text inside inline dialog';
       const htmlContent = '<div><h1>title</h1><p>Some text</p></div>';
@@ -38,6 +37,8 @@ describe('ak-inline-dialog', () => {
       expect(component.innerHTML).to.equal(htmlContent);
     });
 
+    // TODO consider changing as this is overlapping quite a bit with Skate
+    // behaviour that is already tested and with standard DOM behaviour.
     it('event handlers inside a component should work', () => {
       const button = document.createElement('button');
       let clicked = false;
@@ -52,6 +53,8 @@ describe('ak-inline-dialog', () => {
       expect(clicked).to.equal(true);
     });
 
+    // TODO consider changing as this is overlapping quite a bit with Skate
+    // behaviour that is already tested.
     it('should have all the default properties after creation', () => {
       expect(component.position).not.to.equal(null);
       expect(component.position).to.equal(defaultPosition);
@@ -63,6 +66,8 @@ describe('ak-inline-dialog', () => {
       expect(component.open).to.equal(false);
     });
 
+    // TODO consider changing as this is overlapping quite a bit with Skate
+    // behaviour that is already tested.
     it('all the properties should be attributes', () => {
       const props = {
         position: { value: 'top left', attr: 'position' },
@@ -91,12 +96,6 @@ describe('ak-inline-dialog', () => {
         }
       });
     });
-
-    it('first child in the shadow dom should be layer component', () => {
-      expect(component[symbols.shadowRoot]).not.to.equal(null);
-      expect(component[symbols.shadowRoot].firstChild).not.to.equal(null);
-      expect(component[symbols.shadowRoot].firstChild.tagName.toLowerCase()).to.equal('ak-layer');
-    });
   });
 
   describe('visibility', () => {
@@ -115,11 +114,12 @@ describe('ak-inline-dialog', () => {
       expect(elem.offsetParent).not.to.equal(null);
     }
 
-    beforeEach(() => {
+    beforeEach(done => {
       inlineDialogContainer = document.createElement('div');
       component = new AkInlineDialog();
       inlineDialogContainer.appendChild(component);
       document.body.appendChild(inlineDialogContainer);
+      setTimeout(done);
     });
 
     afterEach(() => {
@@ -128,36 +128,45 @@ describe('ak-inline-dialog', () => {
 
     it('should be closed by default', () => {
       expect(component.open).to.equal(false);
-      expect(component.getAttribute('open')).not.to.equal(true);
+      expect(component.hasAttribute('open')).to.equal(false);
       checkInvisibility(component);
     });
 
-    it('should be open when property `open` is set to true', () => {
+    it('should be open when property `open` is set to true', done => {
       component.open = true;
-      checkVisibility(component);
+      setTimeout(() => checkVisibility(component));
+      setTimeout(done);
     });
 
-    it('should be open when attribute `open` is set to true', () => {
-      component.setAttribute('open', true);
-      checkVisibility(component);
+    it('should be open when attribute `open` is set to true', done => {
+      component.setAttribute('open', '');
+      setTimeout(() => checkVisibility(component));
+      setTimeout(done);
     });
 
-    it('should be closed when property `open` is set to false', () => {
-      // should be open first before attempts to close it
-      component.open = true;
+    describe('if open', () => {
+      beforeEach(done => {
+        component.open = true;
+        setTimeout(done);
+      });
 
-      component.open = false;
-      checkInvisibility(component);
+      it('should be closed when property `open` is set to false', done => {
+        setTimeout(() => checkVisibility(component));
+        setTimeout(() => (component.open = false));
+        setTimeout(() => checkInvisibility(component));
+        setTimeout(done);
+      });
+
+      it('should be closed when attribute `open` is removed', done => {
+        component.removeAttribute('open');
+        setTimeout(() => checkInvisibility(component));
+        setTimeout(done);
+      });
     });
 
-    it('should be closed when attribute `open` is removed', () => {
-      // should be open first before attempts to close it
-      component.open = true;
-
-      component.removeAttribute('open');
-      checkInvisibility(component);
-    });
-
+    // Consider removing as this is testing 100% skate behaviour. If we want to
+    // ensure that an attribute is linked, we should test that we've correctly
+    // declared the property on the component constructor.
     it('attribute `open` and property `open` should be in sync', () => {
       component.open = true;
       expect(component.open).to.equal(true);

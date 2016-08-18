@@ -3,8 +3,8 @@
 .root {
   border: 1px solid @ak-editor-subtle-accent;
   font-size: 14px;
-  padding: 20px;
   overflow: auto;
+  padding: 20px;
 
   .childContent() { margin: 20px; }
   > slot > * { .childContent(); }
@@ -39,9 +39,9 @@
   .button-mixin();
   background: none;
   border: none;
-  padding: 0;
   margin-left: 20px;
   opacity: 0.5;
+  padding: 0;
 
   &:active {
     outline: none;
@@ -54,8 +54,8 @@
 
 .icon-button {
   .button-mixin();
-  border: none;
   background: none;
+  border: none;
   padding: 0;
 }
 

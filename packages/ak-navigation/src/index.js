@@ -53,7 +53,7 @@ const definition = {
     open: prop.boolean({
       attribute: true,
       set(elem, data) {
-        if (data.oldValue && data.newValue) {
+        if (!data.oldValue && data.newValue) {
           emit(elem, 'ak-navigation-open');
         } else if (data.oldValue && !data.newValue) {
           emit(elem, 'ak-navigation-close');
@@ -83,33 +83,13 @@ const definition = {
     }, shouldAnimateThreshold);
   },
   created(elem) {
-    elem.addEventListener('ak-navigation-open-state-changed', (event) => {
-      // We want to make the event bubble TODO incorporate this as an option for skate
-      // https://github.com/skatejs/skatejs/issues/683
-      if (event.detail.openState !== undefined) {
-        return; // we don't want to loop indefinitely
-      }
-      emit(elem, 'ak-navigation-open-state-changed', {
-        detail: { openState: event.detail.newValue },
-      });
-    });
     elem.addEventListener('ak-navigation-link-selected', (event) => {
       const containerLinks = Array.prototype.slice.call(elem.children);
       containerLinks.forEach((child) => { child.selected = false; });
       event.target.selected = true;
     });
-    elem.addEventListener('ak-navigation-open-state-changed', (event) => {
-      elem.touchstart = event;
-    });
     elem.addEventListener('touchstart', (event) => {
-      // We want to make the event bubble TODO incorporate this as an option for skate
-      // https://github.com/skatejs/skatejs/issues/683
-      if (event.detail.openState !== undefined) {
-        return; // we don't want to loop indefinitely
-      }
-      emit(elem, 'ak-navigation-open-state-changed', {
-        detail: { openState: event.detail.newValue },
-      });
+      elem.touchstart = event;
     });
     elem.addEventListener('touchend', (event) => {
       const swipeType = getSwipeType(elem.touchstart, event);

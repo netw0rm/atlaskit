@@ -83,7 +83,7 @@ function renderItems(elem) {
               key={key}
               idx={idx}
               selected={selected}
-              onMousemove={(event) => {
+              onmousemove={(event) => {
                 if (actualMouseMove(elem, event)) {
                   selectIndex(elem, currentIdx);
                 }
@@ -91,7 +91,8 @@ function renderItems(elem) {
               /* Cannot use onclick, as onblur will close the element, and prevent
                * onClick from firing.
                */
-              onMousedown={(event) => {
+              onmousedown={(event) => {
+                debug('mousedown', event);
                 if (leftClick(event)) {
                   elem.chooseCurrentSelection();
                   event.preventDefault();
@@ -141,6 +142,7 @@ export default define('pf-mention-list', {
       emit(this, 'selected', {
         detail: this.mentions[this.selectedIndex],
       });
+      debug('pf-mention-list.chooseCurrentSelection', this.mentions[this.selectedIndex]);
     },
   },
 

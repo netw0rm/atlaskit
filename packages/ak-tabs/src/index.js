@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 
 import 'ak-editor-icon';
-import Tab, { events } from './children/tab'; // eslint-disable-line no-unused-vars
+import Tab, { events } from './index-tab'; // eslint-disable-line no-unused-vars
 
 import {
   labelsContainer,

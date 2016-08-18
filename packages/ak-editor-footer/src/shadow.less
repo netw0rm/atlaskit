@@ -21,22 +21,24 @@
   float: right;
 }
 
+.button-mixin() {
+  cursor: pointer;
+  font-size: inherit;
+}
+
 .saveButton {
-  // TODO: move out to shared styles
+  .button-mixin();
   background: @ak-editor-primary-button;
   border: 1px solid @ak-editor-primary-button;
   border-radius: 3px;
   color: white;
-  cursor: pointer;
-  font-size: inherit;
   padding: 5px 15px;
 }
 
 .cancelButton {
+  .button-mixin();
   background: none;
   border: none;
-  cursor: pointer;
-  font-size: inherit;
   padding: 0;
   margin-left: 20px;
   opacity: 0.5;
@@ -51,14 +53,10 @@
 }
 
 .icon-button {
+  .button-mixin();
   border: none;
   background: none;
-  cursor: pointer;
   padding: 0;
-
-  &:focus {
-    outline: none;
-  }
 }
 
 .openTop {

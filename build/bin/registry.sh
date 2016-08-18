@@ -1,36 +1,32 @@
 #!/usr/bin/env bash
 set -e
 
-# Clone the atlaskit-registry repo into the folder above atlaskit
-echo "Cloning atlaskit-registry repo"
-rm -rf ../atlaskit-registry
-git clone --quiet "https://$BITBUCKET_USER:$BITBUCKET_PW_READONLY@bitbucket.org/atlassian/atlaskit-registry.git" ../atlaskit-registry
-mkdir -p ../atlaskit-registry/_data ../atlaskit-registry/api ../atlaskit-registry/resources
+BASEDIR=$(dirname $0)
 
-# Install panop (converts monorepo to single YAML summary file)
 # Note: unfortunately @atlassian scope is used on the public and private
 # npm registries, which is why we need to disable the .npmrc file
 # temporarily here.
-echo "Installing panop from Atlassian private npm"
+echo "Installing atlaskit-registry from Atlassian private npm"
 mv .npmrc ._npmrc
+npm config set progress false
 npm set loglevel warn
 npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
 npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
-npm install --progress=false @atlassian/panop
+npm install @atlassian/atlaskit-registry@1.1.1
 mv ._npmrc .npmrc
 
-# Generate momnorep summary which will feed into jekyll
-echo "Generating summary files using panop"
-BITBUCKET_PASS=$BITBUCKET_PW_READONLY `npm bin`/panop --repo=atlassian/atlaskit \
-  --json=../atlaskit-registry/api/full.json
-
-# Install atlaskit-registry dependencies
-echo "Installing jekyll"
-bundle install --quiet --gemfile=../atlaskit-registry/Gemfile
-
 # Build website using jekyll
-echo "Building site using Jekyll"
-jekyll build --source ../atlaskit-registry --destination ../atlaskit-registry/resources
+echo "Building registry"
+TARGET_PATH_RELATIVE=../atlaskit-registry/resources
+mkdir -p $TARGET_PATH_RELATIVE
+pushd $TARGET_PATH_RELATIVE
+TARGET_PATH=`pwd`
+popd
+REGISTRY_BIN=`npm bin`/ak-registry
+REGISTRY_PATH=`npm root`/@atlassian/atlaskit-registry
+pushd $REGISTRY_PATH
+BITBUCKET_PASS=$BITBUCKET_PW_READONLY $REGISTRY_BIN --destination $TARGET_PATH
+popd
 
 # Zip the built website so we can upload to CDN
 rm -f ../ak-registry-cdn.zip

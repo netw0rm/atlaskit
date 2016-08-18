@@ -4,11 +4,9 @@
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
 
-AtlasKit is the Design Platform's implementation of ADG3. It is a collection of reusable webcomponents that can be consumed independently (No more upgrade pains!). Each component is independently versioned and published to npm and can be installed through
-
-```
-npm install @atlaskit/my-component-name
-```
+AtlasKit is the Design Platform's implementation of ADG3.
+It is a collection of reusable webcomponents that can be consumed independently (No more upgrade pains!).
+Each component is independently versioned and published to npm, a list can be found in the [registry](http://aui-cdn.atlassian.com/atlaskit/registry/).
 
 # Reporting issues
 

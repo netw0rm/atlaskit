@@ -1,5 +1,21 @@
-<a name="0.13.3"></a>
-## 0.13.3 (2016-08-16)
+<a name="0.14.0"></a>
+# 0.14.0 (2016-08-18)
+
+
+
+<a name="ak-avatar@0.14.0"></a>
+# ak-avatar@0.14.0 (2016-08-17)
+
+
+### Bug Fixes
+
+* **component:** fixed bug with loading behaviour and styles ([9b99f5c](https://bitbucket.org/atlassian/atlaskit/commits/9b99f5c))
+* **component:** Fixed introduced but where backgrounds were no longer tranparent on loaded avatars ([182e08e](https://bitbucket.org/atlassian/atlaskit/commits/182e08e))
+
+
+### Features
+
+* **component:** Added loading to Avatars so that they show a grey background and fadein once loaded ([f43d037](https://bitbucket.org/atlassian/atlaskit/commits/f43d037))
 
 
 
@@ -9,7 +25,15 @@
 
 ### Bug Fixes
 
+* **component:** Fixed alt of img, added test for it ([d3e4b34](https://bitbucket.org/atlassian/atlaskit/commits/d3e4b34))
 * **package:** Fix package dependencies on github packages that were removed ([1c1a99e](https://bitbucket.org/atlassian/atlaskit/commits/1c1a99e))
+
+
+### Features
+
+* **component:** add user prop, update other props to use prop.string ([1d58cda](https://bitbucket.org/atlassian/atlaskit/commits/1d58cda))
+* **component:** Added presence to ak-avatar, some minor cleanups ([9bc4a61](https://bitbucket.org/atlassian/atlaskit/commits/9bc4a61))
+* **component:** Added the fullName property with associated tests and stories ([e5777dd](https://bitbucket.org/atlassian/atlaskit/commits/e5777dd))
 
 
 

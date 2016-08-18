@@ -14,7 +14,7 @@ fi
 
 # Generate API docs
 API=""
-for file in $(find ./src -name "index*.js"); do
+for file in $(find ./src -name "index*.js" | sort); do
   NEXT="$(../../node_modules/.bin/jsdoc2md \
     --plugin dmd-bitbucket ak-dmd-plugin \
     --src $file \

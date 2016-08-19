@@ -11,9 +11,9 @@
 
 
 .container {
-  display: inline-flex;
-
-  & button {
+  display: inline-block;
+  
+  .button {
     align-items: center;
     box-sizing: border-box;
     background: @buttonDefault;
@@ -73,7 +73,7 @@
 
       ::content > * { pointer-events: none; }
       ::slotted(*) { pointer-events: none; }
-      slot > * { pointer-events: none; }
+      .slot > * { pointer-events: none; }
 
       &:hover {
         cursor: not-allowed;

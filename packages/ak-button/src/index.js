@@ -28,6 +28,7 @@ const TYPE = attributeValuesToEnumObject(TYPE_VALUES);
 const appearancePropertyValues = {
   attribute: 'appearance',
   values: APPEARANCE_VALUES,
+  invalidDefault: APPEARANCE.STANDARD,
 };
 
 const typePropertyValues = {
@@ -74,7 +75,7 @@ const definition = {
     disabled: prop.boolean({ attribute: true }),
   },
   render(elem) {
-    const classes = [];
+    const classes = [shadowStyles.locals.button];
 
     if (elem.disabled) {
       classes.push(shadowStyles.locals.disabled);
@@ -91,7 +92,7 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >
-          <slot />
+          <slot className={shadowStyles.locals.slot} />
         </button>
       </div>
     );

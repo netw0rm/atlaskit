@@ -7,7 +7,7 @@ function tools() {
   return ['mention', 'image']
     .map((icon) => (
       <button
-        className={shadowStyles.locals.iconButton}
+        className={`${shadowStyles.locals.iconButton} ${icon}`}
         onclick={(event) => emit(event.currentTarget, `click${icon}`)}
       >
         <Icon glyph={icon} />

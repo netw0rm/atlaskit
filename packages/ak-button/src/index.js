@@ -94,7 +94,7 @@ const definition = {
     }
 
     return (
-      <div className={shadowStyles.locals.container}>
+      <div>
         <style>{shadowStyles.toString()}</style>
         <button
           className={classNames(classes)}

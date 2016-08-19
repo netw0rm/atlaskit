@@ -86,7 +86,7 @@ describe('ak-button', () => {
 
       [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE].forEach(appearanceName => {
         describe(appearanceName, () => {
-          const selector = `.${classKeys.container} .${classKeys[appearanceName]}`;
+          const selector = `.${classKeys.button}.${classKeys[appearanceName]}`;
           beforeEach(() =>
             props(component, { appearance: appearanceName })
           );
@@ -104,7 +104,7 @@ describe('ak-button', () => {
     });
 
     describe('selected', () => {
-      const selector = `.${classKeys.container} .${classKeys.selected}`;
+      const selector = `.${classKeys.button}.${classKeys.selected}`;
       beforeEach(() =>
         props(component, { selected: true })
       );
@@ -120,7 +120,7 @@ describe('ak-button', () => {
     });
 
     describe('disabled', () => {
-      const selector = `.${classKeys.container} button[disabled]`;
+      const selector = `.${classKeys.button}[disabled]`;
       beforeEach(() =>
         props(component, { disabled: true })
       );

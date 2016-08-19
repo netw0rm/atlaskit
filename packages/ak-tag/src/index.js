@@ -1,12 +1,16 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { vdom, define } from 'skatejs';
+import { vdom, define, prop, props } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Chrome from './chrome';
 import Text from './text';
 import Href from './href';
 import Button from './button';
+import {
+  akColorN500 as defaultButtonFill,
+  akColorR500 as highlightButtonFill,
+} from 'akutil-shared-styles';
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -26,7 +30,15 @@ export default define('ak-tag', {
     const chromeAttrs = {};
     let button = '';
     if (elem['remove-button-text']) {
-      button = <Button text={elem['remove-button-text']} />;
+       /* eslint-disable no-underscore-dangle */
+      const hover = (toggle) => props(elem, { __removeButtonHover: toggle });
+      button = (<Button
+        fill={elem.__removeButtonHover ? highlightButtonFill : defaultButtonFill}
+        text={elem['remove-button-text']}
+        onmouseover={() => hover(true)}
+        onmouseout={() => hover(false)}
+      />);
+      /* eslint-enable no-underscore-dangle */
     }
 
     let label;
@@ -85,5 +97,10 @@ export default define('ak-tag', {
     text: {
       attribute: true,
     },
+
+    // TODO replace with Symbol as soon as Skate suuports it
+    __removeButtonHover: prop.boolean({
+      initial: false,
+    }),
   },
 });

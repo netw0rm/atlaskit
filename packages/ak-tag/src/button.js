@@ -1,19 +1,16 @@
 import { vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
-
 import X from './X';
 
-const AK_COLOR_N500 = '#42526E'; // @ak-color-N500
 
+/* eslint-disable react/prop-types */
 const button = (props) => (
   <button
+    {...props}
     className={shadowStyles.locals.button}
     aria-label={props.text}
   >
-    <X fill={AK_COLOR_N500} />
+    <X fill={props.fill} />
   </button>
 );
-button.propTypes = {
-  text: null,
-};
 export default button;

@@ -32,7 +32,7 @@ function imageLoadedHandler(elem) {
 /**
  * @description The definition for the Avatar component.
  * @class Avatar
- * @example @html <ak-avatar src="my/avatar/src/image.png"></ak-avatar>
+ * @example @html <ak-avatar src="my/avatar/src/doge.png"></ak-avatar>
  * @example @js import Avatar from 'ak-avatar';
  * const myAvatar = new Avatar();
  *

@@ -1,6 +1,6 @@
 {
   "name": "ak-page",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "ak-page webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -18,7 +18,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "^0.0.4"
+    "akutil-react": "^1.0.0"
   },
   "repository": {
     "type": "git",

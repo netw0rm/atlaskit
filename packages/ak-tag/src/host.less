@@ -13,15 +13,16 @@ ak-tag {
   display: inline-block;
   margin-left: 6px;
   margin-right: 6px;
+
   &:not([defined]) {
     display: none;
   }
-}
 
-ak-tag:first-of-type {
-  margin-left: auto;
-}
+  &:first-of-type {
+    margin-left: auto;
+  }
 
-ak-tag:last-of-type {
-  margin-right: auto;
+  &:last-of-type {
+    margin-right: auto;
+  }
 }

@@ -50,13 +50,13 @@ export default define('ak-tag', {
     }
 
     return (
-      <span>
+      <div>
         <style>{shadowStyles.toString()}</style>
         <Chrome {...chromeAttrs}>
           {label}
           {button}
         </Chrome>
-      </span>
+      </div>
     );
   },
   props: {

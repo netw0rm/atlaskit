@@ -1,7 +1,8 @@
 import { vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
 
-const href = (props, children) => (
+/* eslint-disable react/prop-types */
+export default (props, children) => (
   <a
     tabindex="-1"
     className={shadowStyles.locals.href}
@@ -10,8 +11,3 @@ const href = (props, children) => (
       {children()}
   </a>
 );
-href.propTypes = {
-  href: null,
-};
-
-export default href;

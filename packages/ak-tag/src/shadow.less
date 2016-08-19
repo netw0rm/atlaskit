@@ -7,6 +7,8 @@
 
 @border-radius: 3px;
 @grid-unit: 10px;
+@max-height: 18px;
+@distance: 4px;
 
 .outline() {
   &:focus {
@@ -20,6 +22,10 @@
   padding: 0;
   margin: 0;
   border-radius: @border-radius;
+  display: flex;
+  height: @max-height;
+  max-height: @max-height;
+  flex-direction: row;
   .outline();
 }
 
@@ -27,8 +33,10 @@
   font-family: @ak-font-family;
   color: @ak-color-N700;
   font-size: 14px;
-  height: @grid-unit;
-  margin: 4px;
+  margin-left: @distance;
+  margin-right: @distance;
+  align-self: flex-start;
+  height: 100%;
 }
 
 .href {
@@ -41,18 +49,17 @@
 }
 
 .button {
-  color: @ak-color-N700;
-  font-size: medium;
   appearance: none;
   background: none;
   border: none;
   padding: 0;
   margin: 0;
   border-radius: @border-radius;
+  align-self: flex-end;
+  display: flex;
   .outline();
-
-  &:focus,
-  &:hover {
-    color: @ak-color-R500;
-  }
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 10px;
 }

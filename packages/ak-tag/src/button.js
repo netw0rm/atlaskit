@@ -1,7 +1,6 @@
 import { vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
-import X from './X';
-
+import RemoveIcon from './remove-icon';
 
 /* eslint-disable react/prop-types */
 const button = (props) => (
@@ -10,7 +9,7 @@ const button = (props) => (
     className={shadowStyles.locals.button}
     aria-label={props.text}
   >
-    <X fill={props.fill} />
+    <RemoveIcon fill={props.fill} />
   </button>
 );
 export default button;

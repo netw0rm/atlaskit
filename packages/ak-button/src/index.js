@@ -74,7 +74,7 @@ const definition = {
     disabled: prop.boolean({ attribute: true }),
   },
   render(elem) {
-    const classes = [shadowStyles.locals.akButton];
+    const classes = [];
 
     if (elem.disabled) {
       classes.push(shadowStyles.locals.disabled);

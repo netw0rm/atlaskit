@@ -2,6 +2,8 @@
   "name": "akutil-shared-styles",
   "version": "33.1.1",
   "description": "Shared styles for AtlasKit components",
+  "ak:link": true,
+  "main": "dist/bundle.js",
   "webpack": "src/index.js",
   "scripts": {
     "gen-js": "node ./bin/generate-vars-export.js > src/index.js",

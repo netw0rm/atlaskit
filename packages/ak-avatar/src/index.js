@@ -143,7 +143,7 @@ const definition = {
       attribute: true,
     }),
 
-    // Private prop, will be replaced with a symbol soon, no jsdoc annotation as not public API
+    // TODO replace with Symbol as soon as Skate suuports it
     __loading: prop.boolean({
       initial: false,
     }),

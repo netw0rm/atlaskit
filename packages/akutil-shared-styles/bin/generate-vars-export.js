@@ -18,6 +18,7 @@ glob('**/*.less', {}, (err, files) => {
     return Object.assign(prev, lessToJs(fileContent));
   }, {});
 
+  console.log('/* eslint-disable quotes, max-len */');
   Object.keys(vars).forEach((key) => {
     console.log(`const ${jsifyLessVariable(key)} = ${JSON.stringify(vars[key])};`);
   });

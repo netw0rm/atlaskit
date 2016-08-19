@@ -15,6 +15,6 @@ storiesOf(name, module)
     <Component
       className={styles.akTag}
       href="https://www.atlassian.com/search?query=jira"
-      text="jira"
+      text="JIRA"
     />
   ));

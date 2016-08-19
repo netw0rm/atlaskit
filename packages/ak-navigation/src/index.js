@@ -9,7 +9,7 @@ import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 
 const shouldAnimateThreshold = 100; // ms
 
-const definition = {
+export default define('ak-navigation', {
   render(elem) {
     return (
       <div
@@ -104,6 +104,4 @@ const definition = {
       }
     });
   },
-};
-
-export default define('ak-navigation', definition);
+});

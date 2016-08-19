@@ -112,12 +112,13 @@ export default define('ak-editor-bitbucket', {
           />
           <ToolbarHyperlink />
         </Toolbar>
-        <Content
-          skip
-          className={contentClassName}
-          openTop
-          openBottom
-        />
+        <div skip={elem[readySymbol]}>
+          <Content
+            className={contentClassName}
+            openTop
+            openBottom
+          />
+        </div>
         {elem.hyperLinkActive ?
           <HyperLink
             href={elem.hyperLinkText}

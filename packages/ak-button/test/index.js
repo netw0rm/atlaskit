@@ -16,7 +16,11 @@ describe('ak-button', () => {
     elem[symbols.shadowRoot].querySelector(classes);
 
   const getShadowButtonElem = (elem) =>
-    shadowDomQuery(elem, `.${classKeys.akButton}`);
+    shadowDomQuery(elem, `.${classKeys.button}`);
+
+  const indexOf = (array, value) => Array.prototype.indexOf.call(array, value);
+  const containsClass = (array, ...classes) =>
+    classes.reduce((acum, val) => acum && (indexOf(array, val) > -1), true);
 
   function waitForRender(elem, cb) {
     setTimeout(() => {
@@ -40,7 +44,7 @@ describe('ak-button', () => {
   );
 
   it('should be possible to create a component', () => {
-    expect(shadowDomQuery(component, `.${classKeys.akButton}`)).to.be.defined;
+    expect(getShadowButtonElem(component)).to.be.defined;
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 
@@ -71,18 +75,18 @@ describe('ak-button', () => {
         },
       ].forEach(testCase => {
         describe(testCase.message, () => {
-          it('button should only have akButton class', () => {
+          it('button should only have .button class', () => {
             props(component, { appearance: testCase.appearance });
             const buttonClasses = getShadowButtonElem(component).classList;
             expect(buttonClasses).to.have.lengthOf(1);
-            expect(buttonClasses[0]).to.equal(shadowStyles.locals.akButton);
+            expect(containsClass(buttonClasses, classKeys.button)).to.be.true;
           });
         });
       });
 
       [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE, APPEARANCE.SELECTED].forEach(appearanceName => {
         describe(appearanceName, () => {
-          const selector = `.${classKeys.akButton}.${classKeys[appearanceName]}`;
+          const selector = `.${classKeys.container} .${classKeys[appearanceName]}`;
           beforeEach(() =>
             props(component, { appearance: appearanceName })
           );
@@ -113,10 +117,7 @@ describe('ak-button', () => {
         props(component, { disabled: true, appearance: 'selected' });
         const buttonClasses = getShadowButtonElem(component).classList;
         expect(buttonClasses).to.have.lengthOf(2);
-        expect([
-          shadowStyles.locals.akButton,
-          shadowStyles.locals.disabled,
-        ]).to.have.members([buttonClasses[0], buttonClasses[1]]);
+        expect(containsClass(buttonClasses, classKeys.button, classKeys.disabled)).to.be.true;
       });
 
       it('button should not have disabled attribute after it is removed', () => {

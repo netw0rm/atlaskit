@@ -1,5 +1,20 @@
-<a name="33.1.1"></a>
-## 33.1.1 (2016-08-18)
+<a name="33.2.0"></a>
+# 33.2.0 (2016-08-19)
+
+
+
+<a name="akutil-shared-styles@33.2.0"></a>
+# akutil-shared-styles@33.2.0 (2016-08-19)
+
+
+### Bug Fixes
+
+* **package:** Added main entry & adapted linking code for lerna ([57477dc](https://bitbucket.org/atlassian/atlaskit/commits/57477dc))
+
+
+### Features
+
+* **component:** This exposes a main file that includes all variables declared in less ([ef1e48c](https://bitbucket.org/atlassian/atlaskit/commits/ef1e48c))
 
 
 

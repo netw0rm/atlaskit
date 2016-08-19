@@ -4,6 +4,8 @@ import reactify from 'akutil-react';
 import pfMentionPicker from '../src/wc/pf-mention-picker';
 import SearchTextInput from './demo-search-text-input';
 import { getWebComponent } from './util';
+import debug from '../src/util/logger';
+import uniqueId from '../src/util/id';
 
 const { React, ReactDOM } = window;
 
@@ -25,6 +27,7 @@ const MentionTextInput = React.createClass({
   },
 
   getInitialState() {
+    this._subscriberKey = uniqueId('demo-mention-text-input');
     return {
       active: false,
       visible: false,
@@ -33,13 +36,13 @@ const MentionTextInput = React.createClass({
 
   componentWillMount() {
     if (this.props.resourceProvider) {
-      this.props.resourceProvider.subscribe(this._filterChange);
+      this.props.resourceProvider.subscribe(this._subscriberKey, this._filterChange);
     }
   },
 
   componentWillUnmount() {
     if (this.props.resourceProvider) {
-      this.props.resourceProvider.unsubscribe(this._filterChange);
+      this.props.resourceProvider.unsubscribe(this._subscriberKey);
     }
   },
 
@@ -76,6 +79,7 @@ const MentionTextInput = React.createClass({
   },
 
   render() {
+    debug('demo-mention-text-input.render');
     /* eslint no-unused-vars: 0 */
     const { label, onSelection, relativePosition, ...mentionListProps } = this.props;
     const position = (relativePosition === 'above') ? 'top left' : 'bottom left';

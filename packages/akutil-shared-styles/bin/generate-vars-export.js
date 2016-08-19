@@ -11,7 +11,7 @@ function jsifyLessVariable(variable) {
 /* eslint-disable no-console */
 glob('**/*.less', {}, (err, files) => {
   if (err) {
-    process.exit(1);
+    throw err;
   }
   const vars = files.reduce((prev, file) => {
     const fileContent = fs.readFileSync(file, 'utf8');

@@ -84,7 +84,7 @@ describe('ak-button', () => {
         });
       });
 
-      [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE, APPEARANCE.SELECTED].forEach(appearanceName => {
+      [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE].forEach(appearanceName => {
         describe(appearanceName, () => {
           const selector = `.${classKeys.container} .${classKeys[appearanceName]}`;
           beforeEach(() =>
@@ -103,6 +103,22 @@ describe('ak-button', () => {
       });
     });
 
+    describe('selected', () => {
+      const selector = `.${classKeys.container} .${classKeys.selected}`;
+      beforeEach(() =>
+        props(component, { selected: true })
+      );
+
+      it('button should have selected class', () =>
+        expect(shadowDomQuery(component, selector)).not.to.be.null
+      );
+
+      it('button should not have selected class after it is removed', () => {
+        props(component, { selected: false });
+        expect(shadowDomQuery(component, selector)).to.be.null;
+      });
+    });
+
     describe('disabled', () => {
       const selector = `.${classKeys.container} button[disabled]`;
       beforeEach(() =>
@@ -114,7 +130,7 @@ describe('ak-button', () => {
       );
 
       it('button should override any other class', () => {
-        props(component, { disabled: true, appearance: 'selected' });
+        props(component, { disabled: true, selected: true });
         const buttonClasses = getShadowButtonElem(component).classList;
         expect(buttonClasses).to.have.lengthOf(2);
         expect(containsClass(buttonClasses, classKeys.button, classKeys.disabled)).to.be.true;

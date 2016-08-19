@@ -28,7 +28,7 @@ storiesOf(name, module)
     </AkButton>
   )
   .add('a button selected', () =>
-    <AkButton appearance={APPEARANCE.SELECTED} >
+    <AkButton selected>
       Button
     </AkButton>
   )

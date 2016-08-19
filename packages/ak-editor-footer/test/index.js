@@ -15,11 +15,11 @@ describe(name, () => {
   });
 
   describe('button events', () => {
-    ['save', 'cancel'].forEach((buttonName) => {
-      it(`should trigger ${buttonName} event`, () => {
+    ['save', 'cancel'].forEach((action) => {
+      it(`should trigger ${action} event`, () => {
         let clicked = false;
         const component = new Component();
-        const button = component.querySelector(shadowStyles.locals[`${buttonName}Button`]);
+        const button = component.querySelector(shadowStyles.locals[`${action}Button`]);
         const event = new CustomEvent('click', {});
         component.addEventListener('click', () => {
           clicked = true;
@@ -30,17 +30,17 @@ describe(name, () => {
     });
   });
 
-  describe('tool events', () => {
-    ['mention', 'image'].forEach((toolName) => {
-      it(`should trigger ${toolName} event`, () => {
+  describe('insert events', () => {
+    ['mention', 'image'].forEach((insertName) => {
+      it(`should trigger ${insertName} event`, () => {
         let clicked = false;
         const component = new Component();
-        const tool = component.querySelector(toolName);
+        const insert = component.querySelector(insertName);
         const event = new CustomEvent('click', {});
         component.addEventListener('click', () => {
           clicked = true;
         });
-        tool.emit(event);
+        insert.emit(event);
         expect(clicked).to.equal(true);
       });
     });

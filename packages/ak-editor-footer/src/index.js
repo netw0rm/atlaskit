@@ -3,7 +3,7 @@ import shadowStyles from './shadow.less';
 import 'style!./host.less';
 import Icon from 'ak-editor-icon';
 
-function tools() {
+function insert() {
   return ['mention', 'image']
     .map((icon) => (
       <button
@@ -27,7 +27,7 @@ export default define('ak-editor-footer', {
     return (
       <div className={classNames}>
         <style>{shadowStyles.toString()}</style>
-        <div className={shadowStyles.locals.buttons}>
+        <div className={shadowStyles.locals.actions}>
           <button
             className={shadowStyles.locals.saveButton}
             onclick={() => emit(elem, 'save')}
@@ -37,8 +37,8 @@ export default define('ak-editor-footer', {
             onclick={() => emit(elem, 'cancel')}
           >Cancel</button>
         </div>
-        <div className={shadowStyles.locals.tools}>
-          {tools()}
+        <div className={shadowStyles.locals.insert}>
+          {insert()}
         </div>
       </div>
     );

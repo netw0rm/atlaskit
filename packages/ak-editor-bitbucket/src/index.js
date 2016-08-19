@@ -9,7 +9,6 @@ import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
 import { schema } from './schema';
-import { inputRules } from './input-rules';
 import { buildKeymap } from './keymap';
 import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';

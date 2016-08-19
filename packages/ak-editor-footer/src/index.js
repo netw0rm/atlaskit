@@ -20,6 +20,7 @@ export default define('ak-editor-footer', {
     const classLists = [
       [shadowStyles.locals.root],
       elem.openTop ? [shadowStyles.locals.openTop] : [],
+      [shadowStyles.locals.footer],
     ];
     const classNames = classLists.reduce((a, b) => a.concat(b), []).join(' ');
 

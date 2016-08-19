@@ -3,7 +3,6 @@
 .root {
   border: 1px solid @ak-editor-subtle-accent;
   font-size: 14px;
-  overflow: auto;
   padding: 20px;
 
   .childContent() { margin: 20px; }
@@ -13,12 +12,16 @@
   //> ::slotted(*) { .childContent(); }
 }
 
+.footer {
+  display: flex;
+  align-items: center;
+}
+
 .buttons {
-  float: left;
+  flex-grow: 1;
 }
 
 .tools {
-  float: right;
 }
 
 .button-mixin() {

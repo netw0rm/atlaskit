@@ -8,35 +8,14 @@ const Icon = reactify(IconComponent, { React, ReactDOM });
 storiesOf('ak-editor-icon', module)
   .add('All icons', () => (
     <div>
-      <Icon glyph="add" />
-      <Icon glyph="align-center" />
-      <Icon glyph="align-left" />
-      <Icon glyph="align-right" />
-      <Icon glyph="attachment" />
       <Icon glyph="bold" />
-      <Icon glyph="bullet-list" />
-      <Icon glyph="code" />
-      <Icon glyph="date" />
-      <Icon glyph="decision" />
-      <Icon glyph="emoji" />
-      <Icon glyph="expand" />
-      <Icon glyph="help" />
-      <Icon glyph="image" />
-      <Icon glyph="indent" />
       <Icon glyph="italic" />
+      <Icon glyph="underline" />
+      <Icon glyph="bullet-list" />
+      <Icon glyph="number-list" />
+      <Icon glyph="image" />
       <Icon glyph="link" />
       <Icon glyph="mention" />
-      <Icon glyph="more" />
-      <Icon glyph="number-list" />
-      <Icon glyph="open" />
-      <Icon glyph="outdent" />
-      <Icon glyph="redo" />
-      <Icon glyph="table" />
-      <Icon glyph="task" />
-      <Icon glyph="text-color" />
-      <Icon glyph="underline" />
-      <Icon glyph="undo" />
-      <Icon glyph="unlink" />
     </div>
   ))
   .add('Animated', () => {

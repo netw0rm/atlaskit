@@ -1,7 +1,5 @@
 # Layer
 
-## Synopsis
-
 A container responsible for the positioning of an element on a page
 
 ## Setup and install

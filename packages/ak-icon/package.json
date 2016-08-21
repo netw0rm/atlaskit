@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:storybook:webpack": "src/index.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-icon",
     "pre-release": "lerna-semantic-release pre"

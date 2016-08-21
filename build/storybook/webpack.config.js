@@ -28,7 +28,7 @@ module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line n
 
   storybookBaseConfig.resolve = storybookBaseConfig.resolve || {};
   storybookBaseConfig.resolve.packageMains = [
-    'ak:storybook:webpack',
+    'ak:webpack:raw',
     ...defaultPackageMains(),
   ];
 

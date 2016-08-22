@@ -28,7 +28,7 @@ storiesOf(name, module)
     </AkButton>
   )
   .add('a compact button', () =>
-    <AkButton appearance="compact">
+    <AkButton appearance={APPEARANCE.COMPACT}>
       Button
     </AkButton>
   )

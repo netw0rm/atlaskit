@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "akutil-shared-styles": "^33.1.0",
-    "akutil-common": "^1.0.0",
+    "akutil-common": "^2.0.0",
     "classnames": "^2.2.5",
     "skatejs": "^1.0.0"
   },

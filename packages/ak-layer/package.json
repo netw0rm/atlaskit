@@ -16,7 +16,8 @@
   "dependencies": {
     "akutil-common": "^0.3.0",
     "akutil-shared-styles": "^33.0.2",
-    "skatejs": "^1.0.0"
+    "skatejs": "^1.0.0",
+    "popper.js": "https://github.com/FezVrasta/popper.js#27069a2ed604a962d18e0e11b916ac9a1529e14a"
   },
   "repository": {
     "type": "git",

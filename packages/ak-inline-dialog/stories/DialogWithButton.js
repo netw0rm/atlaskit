@@ -41,6 +41,7 @@ class DialogWithButton extends Component {
   }
 
   render() {
+    console.log('prop', this.props.boundariesElement);
     return (
       <div style={this.props.style}>
         <button
@@ -58,6 +59,7 @@ class DialogWithButton extends Component {
           attachment={this.props.attachTo}
           position={this.props.position}
           hasBlanket={false}
+          boundariesElement={this.props.boundariesElement}
         >
           <button
             onClick={this.handleClick}
@@ -77,6 +79,7 @@ DialogWithButton.propTypes = {
   position: React.PropTypes.string,
   style: React.PropTypes.object,
   attachTo: React.PropTypes.string,
+  boundariesElement: React.PropTypes.string,
 };
 
 export default DialogWithButton;

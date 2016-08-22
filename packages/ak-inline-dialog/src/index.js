@@ -43,6 +43,15 @@ export default define('ak-inline-dialog', {
     window.removeEventListener('ak-blanket-click', closeDialog(elem));
   },
   render(elem) {
+    if (elem.open === true) {
+      emit(elem, 'ak-after-open');
+    } else if (elem.open === false) {
+      emit(elem, 'ak-after-close');
+    }
+    if (elem.open === false) {
+      return '';
+    }
+
     const styles = {};
     if (elem.boxShadow) {
       styles.boxShadow = elem.boxShadow;
@@ -53,30 +62,15 @@ export default define('ak-inline-dialog', {
     if (elem.borderRadius) {
       styles.borderRadius = elem.borderRadius;
     }
-
-    if (elem.open === true) {
-      emit(elem, 'ak-after-open');
-    } else if (elem.open === false) {
-      emit(elem, 'ak-after-close');
-    }
-
     return (
       <div>
         {renderBlanketIfNeeded(elem)}
         <Layer
-          open={elem.open}
           position={elem.position}
           attachment={elem.constrain}
           target={elem.target}
-          onRender={(layer) => {
-            if (elem.open && layer.alignment) {
-              // by default the dialog has opacity 0
-              // and only with attribute 'positioned' it has opacity 1
-              // this behavior is to avoid 'flashing' of a dialog
-              // when it's initially positioning itself on a page
-              elem.setAttribute('positioned', true);
-            }
-          }}
+          boundariesElement={elem.boundariesElement}
+          enableFlip={elem.enableFlip}
         >
           <style>{shadowStyles.toString()}</style>
           <div className={shadowStyles.locals.inlineDialogContainer} style={styles}>
@@ -229,6 +223,10 @@ export default define('ak-inline-dialog', {
      * @example @js dialog.isClosableOnEsc = true
      */
     isClosableOnEsc: prop.boolean({
+      attribute: true,
+    }),
+    boundariesElement: { attribute: true },
+    enableFlip: prop.boolean({
       attribute: true,
     }),
   },

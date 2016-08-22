@@ -1,25 +1,42 @@
+import reactify from 'akutil-react';
+import AkInlineDialog from '../src/index';
 import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
+
+const { React, ReactDOM } = window;
+
+const Dialog = reactify(AkInlineDialog, {
+  React,
+  ReactDOM,
+});
 
 import DialogWithInput from './DialogWithInput.js';
 import DialogWithButton from './DialogWithButton.js';
 import DialogWithBlanket from './DialogWithBlanket.js';
-
-const { React } = window; // eslint-disable-line no-unused-vars
+import ToggleDemo from './DialogRemoveDom.js';
 
 storiesOf(name, module)
   .add('All dialogs together, open on click', () => (
     <div
-      id="target"
       style={{
         width: '320px',
         height: '200px',
-        background: '#ccc',
-        margin: '100px auto',
         position: 'relative',
-        padding: '0px',
+        top: '100px',
+        left: '300px',
       }}
     >
+      <div
+        id="target"
+        style={{
+          width: '320px',
+          height: '200px',
+          background: '#ccc',
+          margin: '0',
+          position: 'relative',
+          padding: '0px',
+        }}
+      ></div>
       <DialogWithButton
         event="click"
         position="top left"
@@ -155,31 +172,26 @@ storiesOf(name, module)
       />
     </div>
   ))
-  .add('Dialogs could be constrain to a parent', () => (
+  .add('Dialogs can be constrain to a parent (flip)', () => (
     <div
-      style={{
-        width: '60%',
-        height: '350px',
-        background: '#ccc',
-        margin: '10px auto',
-        position: 'relative',
-        overflow: 'auto',
-        padding: '0px',
-      }}
+      id="container"
+      style={{ margin: '0 auto', width: '300px', height: '300px', overflow: 'scroll', flex: '1', border: '1px solid red' }} // eslint-disable-line max-len
     >
       <div
-        style={{
-          width: '2000px',
-          height: '2000px',
-          border: '1px solid red',
-        }}
+        style={{ height: '200%', width: '200%', display: 'flex', alignContent: 'center', alignItems: 'center' }} // eslint-disable-line max-len
       >
-      </div>
-      <div
-        id="target"
-        style={{ position: 'absolute', top: '150px', left: '150px', width: '150px', height: '50px', background: '#ff0000' }} // eslint-disable-line max-len
-      >
-        <DialogWithButton event="click" position="top left" attachTo="scrollParent" />
+        <div
+          id="target"
+          style={{ background: '#ff0000', width: '100px', height: '100px', border: '1px solid red' }} // eslint-disable-line max-len
+        ></div>
+        <Dialog
+          open
+          enableFlip
+          hasBlanket={false}
+          target="#target"
+          position="bottom left"
+          boundariesElement="#container"
+        >bottom left positioning</Dialog>
       </div>
     </div>
   ))
@@ -215,4 +227,5 @@ storiesOf(name, module)
     >
       <DialogWithBlanket hasBlanket blanketTinted />
     </div>
-  ));
+  ))
+  .add('Toggle add/remove from dom', () => (<ToggleDemo />));

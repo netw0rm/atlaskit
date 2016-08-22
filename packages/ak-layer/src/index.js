@@ -1,5 +1,6 @@
-import { vdom, define } from 'skatejs';
-import { Alignment, enumeration } from 'akutil-common';
+import { vdom, define, prop } from 'skatejs';
+import Alignment from './Alignment';
+import { enumeration } from 'akutil-common';
 
 export const POSITION_ATTRIBUTE_ENUM = {
   attribute: 'position',
@@ -77,23 +78,24 @@ export default define('ak-layer', {
      */
     target: { attribute: true },
     onRender: {},
-  },
-  observedAttributes: ['class'],
-  attributeChanged(elem, data) {
-    if (elem.alignment && data.newValue) {
-      const newPosition = elem.alignment.getPositionFromClasses(data.newValue);
-      if (newPosition && newPosition !== elem.actualPosition) {
-        elem.actualPosition = newPosition;
-      }
-    }
+    boundariesElement: { attribute: true },
+    enableFlip: prop.boolean({
+      attribute: true,
+    }),
   },
   attached(elem) {
-    if (!elem.alignment) {
-      elem.alignment = new Alignment(elem);
-    } else {
-      elem.alignment.enable();
-      elem.alignment.update(elem);
+    const options = {
+      elem: elem.positionedDOM,
+      target: elem.target,
+      position: elem.position,
+      enableFlip: elem.enableFlip,
+    };
+
+    if (elem.boundariesElement) {
+      options.boundariesElement = elem.boundariesElement;
     }
+
+    elem.alignment = new Alignment(options);
   },
   detached(elem) {
     if (elem.alignment) {
@@ -102,7 +104,7 @@ export default define('ak-layer', {
   },
   render(elem) {
     if (elem.alignment) {
-      elem.alignment.update(elem);
+      elem.alignment.reposition();
     }
 
     if (elem.onRender) {
@@ -110,7 +112,13 @@ export default define('ak-layer', {
     }
 
     return (
-      <slot />
+      <div
+        ref={(el) => {
+          elem.positionedDOM = el;
+        }}
+      >
+        <slot />
+      </div>
     );
   },
 });

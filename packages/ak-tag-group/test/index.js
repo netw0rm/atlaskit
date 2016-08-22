@@ -1,4 +1,4 @@
-import { afterMutations } from 'akutil-common';
+import { afterMutations } from 'akutil-common-test';
 import { symbols } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';

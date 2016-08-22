@@ -28,24 +28,34 @@ Now we can use the defined tag in our HTML markup, e.g.:
 
 #### index.html
 
-```
+```html
 <html>
 <head>
   <script src="bundle.js"></script>
 </head>
 <body>
   <!-- ... -->
-  <ak-tag text="watersports"></ak-tag>
+  <ak-tag text="Jelly bean"></ak-tag>
 </body>
+```
+
+or within another JS resource:
+
+#### index.js
+```javascript
+const myTag = new Tag();
+myTag.text = 'Jelly bean';
+
+document.body.appendChild(myTag);
 ```
 
 ### React
 
-```
+```javascript
 import Tag from 'ak-tag';
 import reactify from 'skatejs-react-integration';
 
 const ReactComponent = reactify(Tag, {});
 
-ReactDOM.render(<ReactComponent text="watersports" />, container);
+ReactDOM.render(<ReactComponent text="Jelly bean" />, container);
 ```

@@ -1,5 +1,16 @@
-<a name="2.0.1"></a>
-## 2.0.1 (2016-08-18)
+<a name="2.1.0"></a>
+# 2.1.0 (2016-08-22)
+
+
+
+<a name="ak-editor-icon@2.1.0"></a>
+# ak-editor-icon@2.1.0 (2016-08-22)
+
+
+### Features
+
+* **ak-editor-icon:** add compression configuration ([fdfffd1](https://bitbucket.org/atlassian/atlaskit/commits/fdfffd1))
+* **ak-editor-icon:** removing icons that are not needed ([d8242d0](https://bitbucket.org/atlassian/atlaskit/commits/d8242d0))
 
 
 

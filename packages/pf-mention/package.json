@@ -11,7 +11,7 @@
     "dist"
   ],
   "dependencies": {
-    "ak-avatar": "^0.14.0",
+    "ak-avatar": "^2.0.0",
     "ak-inline-dialog": "^69.6.1",
     "akutil-common": "^1.0.0",
     "akutil-shared-styles": "^33.1.0",

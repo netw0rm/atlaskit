@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import AkEditorButton from '../src';
 import { symbols, props } from 'skatejs';
 import shadowStyles from '../src/shadow.less';
-import { afterMutations } from 'akutil-common';
+import { afterMutations } from 'akutil-common-test';
 
 const classKeys = shadowStyles.locals;
 

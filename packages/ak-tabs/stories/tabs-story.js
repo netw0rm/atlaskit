@@ -1,10 +1,11 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import Tabs from '../src/index';
+import AkTabs from '../src/index';
+import AkTab from '../src/index-tab';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 
-const Component = reactify(Tabs, {
+const Component = reactify(AkTabs, {
   React,
   ReactDOM,
 });
@@ -20,7 +21,7 @@ function deselectHandler(e) {
 storiesOf(name, module)
   .add('simple ak-tabs', () => (
     <Component>
-      <ak-tabs-tab label="Details">
+      <ak-tabs-tab selected label="Details">
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque id dapibus lectus.
           Nam eu neque massa. Etiam faucibus a ligula non ullamcorper. Vestibulum ante ipsum primis
@@ -206,5 +207,26 @@ storiesOf(name, module)
           <p>An event listener will log output to the console when this tab is selected.</p>
         </ak-tabs-tab>
       </Component>
+    );
+  })
+  .add('ak-tabs added programatically', () => {
+    function addTab() {
+      const newTab = new AkTab();
+      newTab.label = 'New tab';
+      newTab.innerHTML = '<p>New tab content</p>';
+      document.getElementById('my-tabs').appendChild(newTab);
+    }
+
+    window.removeEventListener('ak-tabs-tab-select', selectHandler);
+    window.removeEventListener('ak-tabs-tab-deselect', deselectHandler);
+
+    window.addEventListener('ak-tabs-tab-select', selectHandler);
+    window.addEventListener('ak-tabs-tab-deselect', deselectHandler);
+
+    return (
+      <div>
+        <Component id="my-tabs" />
+        <button onClick={addTab}>Add tab</button>
+      </div>
     );
   });

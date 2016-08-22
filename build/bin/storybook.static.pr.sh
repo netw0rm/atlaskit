@@ -36,4 +36,5 @@ echo "CDN invalidation (storybooks) finished."
 echo "Post storybook URL to build"
 BB_BUILD_STATUS_URL="https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/commit/$GITHEAD/statuses/build"
 STORYBOOK_URL="https://aui-cdn.atlassian.com/atlaskit/pr/stories/$GITHEAD/"
-curl -u atlassian:$BITBUCKET_ATLASSIAN_API_KEY -d "{\"key\":\"STORYBOOK-$GITHEAD\",\"state\":\"SUCCESSFUL\",\"name\":\"Storybook\",\"description\":\"The storybook for this pull request\",\"url\":\"$STORYBOOK_URL\"}" -H 'Content-Type: application/json' $BB_BUILD_STATUS_URL
+GITHEAD_SHORT=$(git rev-parse --short HEAD)
+curl -u atlassian:$BITBUCKET_ATLASSIAN_API_KEY -d "{\"key\":\"STORYBOOK-$GITHEAD_SHORT\",\"state\":\"SUCCESSFUL\",\"name\":\"Storybook\",\"description\":\"The storybook for this pull request\",\"url\":\"$STORYBOOK_URL\"}" -H 'Content-Type: application/json' $BB_BUILD_STATUS_URL

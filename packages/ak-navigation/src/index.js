@@ -6,6 +6,7 @@ import shadowStyles from './index.less';
 import './ak-navigation-link';
 import classNames from 'classnames';
 import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
+import keycode from 'keycode';
 
 const shouldAnimateThreshold = 100; // ms
 
@@ -101,6 +102,11 @@ export default define('ak-navigation', {
         elem.open = true;
       } else if (swipeType === swipeRight) {
         elem.open = false;
+      }
+    });
+    document.body.addEventListener('keyup', (event) => {
+      if (keycode(event) === '[') {
+        elem.open = !elem.open;
       }
     });
   },

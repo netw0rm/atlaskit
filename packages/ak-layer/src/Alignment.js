@@ -12,8 +12,8 @@ export default class Alignment {
    * @param {object} elem - Options
    */
   constructor(options) {
+    if (!options.target || !options.elem) return;
     const { defaultPosition, getElement, attachmentMap } = this.constructor;
-
     const opts = Object.assign({
       position: defaultPosition,
     }, options);

@@ -16,35 +16,56 @@ describe(name, () => {
   });
 
   describe('button events', () => {
-    ['save', 'cancel'].forEach((action) => {
-      it(`should trigger ${action} event`, () => {
-        let clicked = false;
-        const component = new Component();
-        const button = component[symbols.shadowRoot]
-          .querySelector(shadowStyles.locals[`${action}Button`]);
-        const event = new CustomEvent('click', {});
-        component.addEventListener(action, () => {
-          clicked = true;
-        });
-        button.emit(event);
-        expect(clicked).to.equal(true);
+    it('should trigger save event', () => {
+      let clicked = false;
+      const component = new Component();
+      const button = component[symbols.shadowRoot]
+        .querySelector(shadowStyles.locals.saveButton);
+      const event = new CustomEvent('click', {});
+      component.addEventListener('save', () => {
+        clicked = true;
       });
+      button.emit(event);
+      expect(clicked).to.equal(true);
+    });
+
+    it('should trigger cancel event', () => {
+      let clicked = false;
+      const component = new Component();
+      const button = component[symbols.shadowRoot]
+        .querySelector(shadowStyles.locals.cancelButton);
+      const event = new CustomEvent('click', {});
+      component.addEventListener('cancel', () => {
+        clicked = true;
+      });
+      button.emit(event);
+      expect(clicked).to.equal(true);
     });
   });
 
   describe('insert events', () => {
-    ['mention', 'image'].forEach((insertName) => {
-      it(`should trigger ${insertName} event`, () => {
-        let clicked = false;
-        const component = new Component();
-        const insert = component[symbols.shadowRoot].querySelector(insertName);
-        const event = new CustomEvent('click', {});
-        component.addEventListener(`insert${insertName}`, () => {
-          clicked = true;
-        });
-        insert.emit(event);
-        expect(clicked).to.equal(true);
+    it('should trigger mention event', () => {
+      let clicked = false;
+      const component = new Component();
+      const insert = component[symbols.shadowRoot].querySelectorAll('button')[0];
+      const event = new CustomEvent('click', {});
+      component.addEventListener('insertmention', () => {
+        clicked = true;
       });
+      insert.emit(event);
+      expect(clicked).to.equal(true);
+    });
+
+    it('should trigger image event', () => {
+      let clicked = false;
+      const component = new Component();
+      const insert = component[symbols.shadowRoot].querySelectorAll('button')[1];
+      const event = new CustomEvent('click', {});
+      component.addEventListener('insertimage', () => {
+        clicked = true;
+      });
+      insert.emit(event);
+      expect(clicked).to.equal(true);
     });
   });
 });

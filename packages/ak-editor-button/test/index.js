@@ -14,8 +14,8 @@ const expect = chai.expect;
 
 describe('ak-editor-button', () => {
   let component;
-  const shadowDomQuery = (elem, classes) =>
-    elem[symbols.shadowRoot].querySelector(classes);
+  const shadowDomQuery = (elem, selector) =>
+    elem[symbols.shadowRoot].querySelector(selector);
 
   const getShadowButtonElem = (elem) =>
     shadowDomQuery(elem, `.${classKeys.root} button`);
@@ -48,13 +48,13 @@ describe('ak-editor-button', () => {
   describe('attributes', () => {
     describe('default attributes', () => {
       it('should not have active class', () => {
-        const classes = `.${classKeys.root}.${classKeys.active}`;
-        expect(shadowDomQuery(component, classes)).to.be.null;
+        const selector = `.${classKeys.root}.${classKeys.active}`;
+        expect(shadowDomQuery(component, selector)).to.be.null;
       });
 
       it('should not have button disabled', () => {
-        const classes = `.${classKeys.root} button[disabled]`;
-        expect(shadowDomQuery(component, classes)).to.be.null;
+        const selector = `.${classKeys.root} button[disabled]`;
+        expect(shadowDomQuery(component, selector)).to.be.null;
       });
     });
 

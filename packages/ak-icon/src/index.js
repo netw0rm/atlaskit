@@ -13,7 +13,7 @@ const uniqueId = (() => {
 
 export default define('ak-icon', {
   render: (elem) => {
-    const Icon = elem.glyph ? icons[elem.glyph](vdom) : () => {};
+    const Icon = elem.glyph && icons[elem.glyph] ? icons[elem.glyph](vdom) : () => {};
     const id = uniqueId();
     return (
       <div className={`${shadowStyles.locals.root} ${id}`}>

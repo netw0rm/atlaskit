@@ -110,6 +110,7 @@
     "postinstall": "./node_modules/.bin/lerna bootstrap && validate-commit-msg && npm run lerna/link",
     "lerna/link": "./build/bin/no.js.npm.link.sh",
     "lint": "eslint --format 'node_modules/eslint-friendly-formatter' . --ext .js,.jsx",
+    "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "prepublish/single": "./build/bin/prepublish.single.sh",
     "prune": "./node_modules/.bin/lerna exec -- npm prune && npm prune",
     "release": "git diff --exit-code && lerna-semantic-release pre && lerna-semantic-release perform",

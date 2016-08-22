@@ -84,7 +84,7 @@ describe('ak-button', () => {
         });
       });
 
-      [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE].forEach(appearanceName => {
+      [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE, APPEARANCE.COMPACT].forEach(appearanceName => {
         describe(appearanceName, () => {
           const selector = `.${classKeys.button}.${classKeys[appearanceName]}`;
           beforeEach(() =>

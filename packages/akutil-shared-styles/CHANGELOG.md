@@ -1,5 +1,15 @@
-<a name="33.2.0"></a>
-# 33.2.0 (2016-08-22)
+<a name="33.2.1"></a>
+## 33.2.1 (2016-08-22)
+
+
+
+<a name="akutil-shared-styles@33.2.1"></a>
+## akutil-shared-styles@33.2.1 (2016-08-22)
+
+
+### Bug Fixes
+
+* **colors:** Fix some color codes ([a57b6ab](https://bitbucket.org/atlassian/atlaskit/commits/a57b6ab))
 
 
 

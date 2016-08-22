@@ -1,4 +1,4 @@
-import Tether from 'tether';
+import Tether from 'atlassian-tether';
 
 /**
  * @description Helper class for positioning elements on a page
@@ -35,11 +35,6 @@ export default class Alignment {
     if (this.tether) {
       this.disabled = true;
       this.tether.destroy();
-      if (this.renderElement && this.renderElement.parentNode) {
-        this.renderElement.parentNode.removeChild(this.renderElement);
-        delete this.renderElement;
-      }
-      this.renderNode = null;
     }
 
     return this;
@@ -71,18 +66,9 @@ export default class Alignment {
       return this;
     }
 
-    if (!this.renderElement) {
-      this.renderElement = elem.renderElement || elem;
-    }
-
-    if (elem.renderElementTo && !this.renderNode) {
-      this.renderNode = getElement(elem.renderElementTo);
-      this.renderNode.appendChild(this.renderElement);
-    }
-
     const position = attachmentMap[elem.position] || attachmentMap[defaultPosition];
     const opts = {
-      element: this.renderElement,
+      element: elem,
       target: getElement(elem.target),
       attachment: position.el,
       targetAttachment: position.target,

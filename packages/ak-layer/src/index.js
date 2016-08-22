@@ -1,6 +1,4 @@
-/** @jsx vdom */
-
-import { vdom, prop, define } from 'skatejs'; // eslint-disable-line no-unused-vars
+import { vdom, define } from 'skatejs';
 import { Alignment, enumeration } from 'akutil-common';
 
 export const POSITION_ATTRIBUTE_ENUM = {
@@ -28,9 +26,8 @@ export const CONSTRAIN_ATTRIBUTE_ENUM = {
  * @example @html <ak-layer target="#target"></ak-layer>
  * @example @js import Layer from 'ak-layer';
  * const myLayer = new Layer();
- *
  */
-const definition = {
+export default define('ak-layer', {
   props: {
     /* eslint-disable max-len */
     /**
@@ -86,13 +83,13 @@ const definition = {
     if (elem.alignment && data.newValue) {
       const newPosition = elem.alignment.getPositionFromClasses(data.newValue);
       if (newPosition && newPosition !== elem.actualPosition) {
-        elem.actualPosition = newPosition; // eslint-disable-line no-param-reassign
+        elem.actualPosition = newPosition;
       }
     }
   },
   attached(elem) {
     if (!elem.alignment) {
-      elem.alignment = new Alignment(elem);  // eslint-disable-line no-param-reassign
+      elem.alignment = new Alignment(elem);
     } else {
       elem.alignment.enable();
       elem.alignment.update(elem);
@@ -116,6 +113,4 @@ const definition = {
       <slot />
     );
   },
-};
-
-export default define('ak-layer', definition);
+});

@@ -1,6 +1,5 @@
 import reactify from 'akutil-react';
 import { storiesOf } from '@kadira/storybook';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import { name } from '../package.json';
 import AkInlineDialog from '../src/index';
 
@@ -35,10 +34,9 @@ class ToggleDemo extends Component {
     if (this.state.show) {
       dialog = (
         <Dialog
-          open="true"
+          open
           target="#target"
           position="bottom left"
-          renderElementTo="#root"
           hasBlanket={false}
         >
           <div>

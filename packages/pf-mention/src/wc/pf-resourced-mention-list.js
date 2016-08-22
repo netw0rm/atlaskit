@@ -1,14 +1,15 @@
 import 'style!../host.less';
 import shadowStyles from './pf-resourced-mention-list-shadow.less';
-import mentionList from './pf-mention-list'; // eslint-disable-line no-unused-vars
 import { localProp } from './skate-local-props';
-
-import { define, vdom, prop, emit, state } from 'skatejs'; // eslint-disable-line no-unused-vars
+import { define, vdom, prop, props } from 'skatejs';
+import MentionList from './pf-mention-list';
+import debug from '../util/logger';
+import uniqueId from '../util/id';
 
 function applyPresence(mentions, presences) {
   const updatedMentions = [];
   for (let i = 0; i < mentions.length; i++) {
-    const mention = Object.assign({}, mentions[i]); // shallow copy
+    const mention = Object.assign({}, mentions[i]);
     const presence = presences[mention.id];
     if (presence) {
       mention.presence = presence;
@@ -31,30 +32,29 @@ function extractPresences(mentions) {
 
 function unsubscribeUpdates(elem, resourceProvider) {
   if (resourceProvider) {
-    resourceProvider.unsubscribe(elem._filterChange);
+    resourceProvider.unsubscribe(elem._subscriberKey);
   }
 }
 
 function subscribeUpdates(elem, resourceProvider) {
   if (resourceProvider) {
-    resourceProvider.subscribe(elem._filterChange);
+    resourceProvider.subscribe(elem._subscriberKey, elem._filterChange);
   }
 }
 
 function unsubscribePresenceUpdates(elem, presenceProvider) {
   if (presenceProvider) {
-    presenceProvider.unsubscribe(elem._presenceUpdate);
+    presenceProvider.unsubscribe(elem._subscriberKey);
   }
 }
 
 function subscribePresenceUpdates(elem, presenceProvider) {
   if (presenceProvider) {
-    presenceProvider.subscribe(elem._presenceUpdate);
+    presenceProvider.subscribe(elem._subscriberKey, elem._presenceUpdate);
   }
 }
 
-const definition = {
-
+export default define('pf-resourced-mention-list', {
   prototype: {
     selectNext() {
       if (this._mentionListRef) {
@@ -83,14 +83,14 @@ const definition = {
     _filterChange(mentions) {
       // Retain known presence
       const currentPresences = extractPresences(this.mentions);
-      state(this, {
+      props(this, {
         mentions: applyPresence(mentions, currentPresences),
       });
       this._refreshPresences(mentions);
     },
 
     _presenceUpdate(presences) {
-      state(this, {
+      props(this, {
         mentions: applyPresence(this.mentions, presences),
       });
     },
@@ -104,26 +104,27 @@ const definition = {
   },
 
   created(elem) {
-    elem._updateQuery('');
+    elem._subscriberKey = uniqueId('pf-resourced-mention-list');
     elem._filterChange = elem._filterChange.bind(elem);
     elem._presenceUpdate = elem._presenceUpdate.bind(elem);
+    elem._updateQuery('');
   },
 
   detached(elem) {
-    unsubscribeUpdates(elem, elem.resourceProvider);
-    unsubscribePresenceUpdates(elem, elem.presenceProvider);
-    if (elem.ref) {
-      elem.ref(null);
+    if (elem.refWorkaround) {
+      elem.refWorkaround(null);
     }
   },
 
   render(elem) {
+    debug('pf-resourced-mention-list.render', elem.mentions.length);
+
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <pf-mention-list
+        <MentionList
           mentions={elem.mentions}
-          ref={(ref) => { elem._mentionListRef = ref; }}
+          refWorkaround={(ref) => { elem._mentionListRef = ref; }}
         />
       </div>
     );
@@ -145,8 +146,9 @@ const definition = {
         subscribePresenceUpdates(elem, data.newValue);
       },
     }),
-    ref: localProp.reference(),
+
     // Internal state...
+    // TODO use symbols
     mentions: prop.array({
       default: [],
       initial: [],
@@ -157,10 +159,6 @@ const definition = {
         elem._updateQuery(data.newValue);
       },
     }),
+    refWorkaround: localProp.reference(),
   },
-};
-
-/* The constructor for our component */
-export default define('pf-resourced-mention-list', definition);
-
-export { definition };
+});

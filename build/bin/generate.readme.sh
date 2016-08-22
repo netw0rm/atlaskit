@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
 printf "\033[34m"
@@ -7,30 +7,30 @@ printf "\033[0m"
 
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
-  USAGE="$(cat ./docs/USAGE.md)"
+  USAGE="$(cat ./docs/USAGE.md)\n"
 else
   USAGE=""
 fi
 
 # Generate API docs
-if compgen -G "*/index\.js" > /dev/null; then
+API=""
+for file in $(find ./src -name "index*.js" | sort); do
+  NEXT="$(../../node_modules/.bin/jsdoc2md \
+    --plugin dmd-bitbucket ak-dmd-plugin \
+    --src $file \
+    --member-index-format list \
+    --name-format)"
 
-  API="$(../../node_modules/.bin/jsdoc2md \
-  --plugin dmd-bitbucket ak-dmd-plugin \
-  --src ./src/index.js \
-  --member-index-format list \
-  --name-format)"
-
-  if [[ $API == *"ERROR, Cannot find class"* ]]
+  if [[ $NEXT == *"ERROR, Cannot find class"* ]]
   then
-    API=""
+    NEXT=""
   else
-    API="\n$API\n"
+    NEXT="$NEXT\n"
   fi
 
-else
-  API=""
-fi
+  API="$API\n$NEXT"
+done
+
 
 # Concatenate USAGE docs and JSDoc output
 if [ -n "$USAGE" ] || [ -n "$API" ]; then

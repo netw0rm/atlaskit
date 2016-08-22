@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-content",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -14,11 +14,11 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "akutil-shared-styles": "*",
-    "skatejs": "1.0.0-beta.12"
+    "akutil-shared-styles": "^33.1.0",
+    "skatejs": "^1.0.0"
   },
   "devDependencies": {
-    "akutil-react": "0.0.3"
+    "akutil-react": "^1.0.0"
   },
   "repository": {
     "type": "git",

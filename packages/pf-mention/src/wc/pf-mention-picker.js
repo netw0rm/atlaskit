@@ -1,13 +1,13 @@
 import 'style!../host.less';
 import shadowStyles from './pf-mention-picker-shadow.less';
-import pfResourcedMentionList from './pf-resourced-mention-list'; // eslint-disable-line no-unused-vars, max-len
 import { localProp } from './skate-local-props';
+import { define, vdom, prop, props } from 'skatejs';
+import InlineDialog from 'ak-inline-dialog';
+import ResourcedMentionList from './pf-resourced-mention-list';
+import debug from '../util/logger';
+import uniqueId from '../util/id';
 
-import 'ak-inline-dialog';
-import { define, vdom, prop, emit, state } from 'skatejs'; // eslint-disable-line no-unused-vars
-
-const definition = {
-
+export default define('pf-mention-picker', {
   prototype: {
     selectNext() {
       if (this._mentionListRef) {
@@ -28,51 +28,51 @@ const definition = {
     },
 
     _filterChange(mentions) {
-      state(this, {
-        visible: mentions.length > 0,
+      props(this, {
+        _visible: mentions.length > 0,
       });
     },
   },
 
   created(elem) {
     elem.visible = false;
+    elem._subscriberKey = uniqueId('pf-mention-picker');
     elem._filterChange = elem._filterChange.bind(elem);
   },
 
   detached(elem) {
     if (elem.resourceProvider) {
-      elem.resourceProvider.unsubscribe(elem._filterChange);
-    }
-    if (elem.ref) {
-      elem.ref(null);
+      elem.resourceProvider.unsubscribe(elem);
     }
   },
 
   render(elem) {
-    const { target, position, renderElementTo } = elem;
+    const { target, position } = elem;
     const { resourceProvider, presenceProvider, query } = elem;
     const style = {
-      display: elem.visible ? 'block' : 'none',
+      display: elem._visible ? 'block' : 'none',
     };
+
+    debug('pf-mention-picker.render', query);
 
     if (target) {
       return (
         <div style={style}>
           <style>{shadowStyles.toString()}</style>
-          <ak-inline-dialog
+          <InlineDialog
             target={target}
             position={position}
-            open={elem.visible}
-            renderElementTo={renderElementTo}
+            open={elem._visible}
             padding="0"
+            hasBlanket={false}
           >
-            <pf-resourced-mention-list
+            <ResourcedMentionList
               resourceProvider={resourceProvider}
               presenceProvider={presenceProvider}
               query={query}
-              ref={(ref) => { elem._mentionListRef = ref; }}
+              refWorkaround={(ref) => { elem._mentionListRef = ref; }}
             />
-          </ak-inline-dialog>
+          </InlineDialog>
         </div>
       );
     }
@@ -84,18 +84,18 @@ const definition = {
     resourceProvider: localProp.object({
       set(elem, data) {
         if (data.oldValue) {
-          data.oldValue.unsubscribe(elem._filterChange);
+          data.oldValue.unsubscribe(elem._subscriberKey);
         }
         if (data.newValue) {
-          data.newValue.subscribe(elem._filterChange);
+          data.newValue.subscribe(elem._subscriberKey, elem._filterChange);
         }
       },
     }),
     presenceProvider: localProp.object(),
-    ref: localProp.reference(),
     query: prop.string({
       attribute: true,
     }),
+
     // ak-inline-dialog
     target: prop.string({
       attribute: true,
@@ -103,13 +103,7 @@ const definition = {
     position: prop.string({
       attribute: true,
     }),
-    renderElementTo: prop.string({
-      attribute: true,
-    }),
+    // internal
+    _visible: prop.boolean(),
   },
-};
-
-/* The constructor for our component */
-export default define('pf-mention-picker', definition);
-
-export { definition };
+});

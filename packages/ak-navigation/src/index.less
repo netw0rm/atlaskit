@@ -1,0 +1,71 @@
+@import 'shared-variables.less';
+@import 'ak-navigation-link.less';
+
+@ak-navigation-global-color: @ak-color-B500;
+@ak-navigation-container-color: @ak-color-N20;
+@ak-navigation-container-name-color: @ak-color-N500;
+
+.navigation {
+  background-color: @ak-navigation-container-color;
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 80px;
+  height: 100%;
+  display: flex;
+
+  &.should-animate {
+    transition: width 250ms;
+  }
+
+  &.open {
+    width: 300px;
+  }
+
+  .global {
+    flex: 0 0 80px;
+    background-color: @ak-navigation-global-color;
+    color: white;
+    flex-direction: column;
+    align-items: center;
+
+    .global-primary {
+      margin: 25px auto;
+      width: 20px;
+    }
+
+    .global-secondary {
+      margin: 10px auto;
+      height: 30px;
+      width: 20px;
+    }
+  }
+
+  .container {
+    padding: 20px 0;
+    overflow: hidden;
+  }
+
+  .container-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .container-name {
+    color: @ak-navigation-container-name-color;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-family: @ak-font-family;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 0 20px;
+  }
+
+  .container-links {
+    font-family: @ak-font-family;
+    font-size: 14px;
+    padding: 0 20px;
+  }
+}

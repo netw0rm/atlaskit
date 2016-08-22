@@ -5,7 +5,7 @@ import FontSelect from './font-select';
 import Option from './option';
 
 const fonts = {
-  paragraph: 'Paragraph',
+  normalText: 'Normal text',
   heading1: 'Heading 1',
   heading2: 'Heading 2',
   heading3: 'Heading 3',
@@ -47,7 +47,7 @@ export default define('ak-editor-toolbar-block-type', {
           disabled={elem.disabled}
           className={styles.locals.fontSelect}
           selectedReadableName={fonts[elem.selectedFont]}
-          ontoggleDropdown={() => toggle(elem)}
+          onToggleDropdown={() => toggle(elem)}
           active={elem.dropdownOpen}
         >
           <ul

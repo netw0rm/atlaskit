@@ -1,6 +1,7 @@
 import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
 require('es6-promise').polyfill();
 import 'whatwg-fetch';
+import debug from '../util/logger';
 
 const buildUrl = (baseUrl, path, data, secOptions) => {
   const searchParam = new URLSearchParams();
@@ -71,22 +72,22 @@ const requestService = (baseUrl, path, data, secOptions) => {
 class AbstractMentionResource {
 
   constructor() {
-    this._changeListeners = [];
-    this._errListeners = [];
+    this._changeListeners = new Map();
+    this._errListeners = new Map();
   }
 
-  subscribe(callback, errCallback) {
+  subscribe(key, callback, errCallback) {
     if (callback) {
-      this._changeListeners.push(callback);
+      this._changeListeners.set(key, callback);
     }
     if (errCallback) {
-      this._errListeners.push(errCallback);
+      this._errListeners.set(key, errCallback);
     }
   }
 
-  unsubscribe(callback, errCallback) {
-    this._changeListeners = this._changeListeners.filter((v) => v !== callback);
-    this._errListeners = this._errListeners.filter((v) => v !== errCallback);
+  unsubscribe(key) {
+    this._changeListeners.delete(key);
+    this._errListeners.delete(key);
   }
 
   filter(query) {
@@ -94,27 +95,27 @@ class AbstractMentionResource {
   }
 
   _notifyListeners(mentions) {
-    this._changeListeners.forEach((listener) => {
+    debug('pf-mention-resource._notifyListeners',
+      mentions && mentions.mentions && mentions.mentions.length,
+      this._changeListeners);
+
+    this._changeListeners.forEach((listener, key) => {
       try {
         listener(mentions.mentions);
       } catch (e) {
         // ignore error from listener
-        if (process.env.NODE_ENV === 'development') {
-          console.log('error from listener, ignoring', e); // eslint-disable-line no-console
-        }
+        debug(`error from listener '${key}', ignoring`, e);
       }
     });
   }
 
   _notifyErrorListeners(error) {
-    this._errListeners.forEach((listener) => {
+    this._errListeners.forEach((listener, key) => {
       try {
         listener(error);
       } catch (e) {
         // ignore error from listener
-        if (process.env.NODE_ENV === 'development') {
-          console.log('error from listener, ignoring', e); // eslint-disable-line no-console
-        }
+        debug(`error from listener '${key}', ignoring`, e);
       }
     });
   }
@@ -176,10 +177,8 @@ class MentionResource extends AbstractMentionResource {
         this._lastReturnedSearch = searchTime;
         this._notifyListeners(mentions);
       } else {
-        if (process.env.NODE_ENV === 'development') {
-          const date = new Date(searchTime).toISOString().substr(17, 6);
-          console.log('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
-        }
+        const date = new Date(searchTime).toISOString().substr(17, 6);
+        debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
       }
     };
 

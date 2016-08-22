@@ -4,6 +4,8 @@ import { localProp } from './skate-local-props';
 import { define, vdom, prop, props } from 'skatejs';
 import InlineDialog from 'ak-inline-dialog';
 import ResourcedMentionList from './pf-resourced-mention-list';
+import debug from '../util/logger';
+import uniqueId from '../util/id';
 
 export default define('pf-mention-picker', {
   prototype: {
@@ -34,12 +36,13 @@ export default define('pf-mention-picker', {
 
   created(elem) {
     elem.visible = false;
+    elem._subscriberKey = uniqueId('pf-mention-picker');
     elem._filterChange = elem._filterChange.bind(elem);
   },
 
   detached(elem) {
     if (elem.resourceProvider) {
-      elem.resourceProvider.unsubscribe(elem._filterChange);
+      elem.resourceProvider.unsubscribe(elem);
     }
   },
 
@@ -50,6 +53,8 @@ export default define('pf-mention-picker', {
       display: elem._visible ? 'block' : 'none',
     };
 
+    debug('pf-mention-picker.render', query);
+
     if (target) {
       return (
         <div style={style}>
@@ -59,6 +64,7 @@ export default define('pf-mention-picker', {
             position={position}
             open={elem._visible}
             padding="0"
+            hasBlanket={false}
           >
             <ResourcedMentionList
               resourceProvider={resourceProvider}
@@ -78,10 +84,10 @@ export default define('pf-mention-picker', {
     resourceProvider: localProp.object({
       set(elem, data) {
         if (data.oldValue) {
-          data.oldValue.unsubscribe(elem._filterChange);
+          data.oldValue.unsubscribe(elem._subscriberKey);
         }
         if (data.newValue) {
-          data.newValue.subscribe(elem._filterChange);
+          data.newValue.subscribe(elem._subscriberKey, elem._filterChange);
         }
       },
     }),

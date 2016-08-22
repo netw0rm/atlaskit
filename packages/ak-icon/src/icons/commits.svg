@@ -1,0 +1,19 @@
+
+<svg width="9px" height="17px" viewBox="94 166 9 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="2.5" cy="8.5" r="2.5"></circle>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-2" y="-2" width="9" height="9">
+            <rect x="-2" y="4" width="9" height="9" fill="white"></rect>
+            <use xlink:href="#path-1" fill="black"></use>
+        </mask>
+    </defs>
+    <g id="Group-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(96.000000, 166.000000)">
+        <path d="M1,1.25005059 C1,0.559666712 1.55483103,0 2.25,0 L2.25,0 C2.94035594,0 3.5,0.554400692 3.5,1.24155239 L3.5,2.73960866 L3.5,15.7594301 C3.5,16.444578 2.94516897,17 2.25,17 L2.25,17 C1.55964406,17 1,16.4343796 1,15.7499494 L1,1.25005059 Z" id="Rectangle-189" fill="currentColor"></path>
+        <g id="Oval-96">
+            <use fill="currentColor" fill-rule="evenodd" xlink:href="#path-1"></use>
+            <use stroke="currentColor" mask="url(#mask-2)" stroke-width="4" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

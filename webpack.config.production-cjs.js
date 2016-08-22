@@ -5,6 +5,6 @@ productionConfig.entry = {
   'dist/bundle-cjs.min.js': productionConfig.entry['dist/bundle.js'],
 };
 
-productionConfig.output.libraryTarget = 'commonjs';
+productionConfig.output.libraryTarget = 'commonjs2';
 
 module.exports = productionConfig;

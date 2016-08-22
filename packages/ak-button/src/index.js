@@ -16,6 +16,7 @@ const APPEARANCE_VALUES = [
   'primary',
   'standard',
   'subtle',
+  'compact',
 ];
 const TYPE_VALUES = [
   'button',
@@ -41,7 +42,7 @@ const definition = {
   props: {
     /**
      * @description Predefined appearances of an ak-button. One of:
-     * 'primary', 'standard', 'subtle'.
+     * 'primary', 'standard', 'subtle', 'compact'
      * @memberof Button
      * @default 'standard'
      * @type {string}

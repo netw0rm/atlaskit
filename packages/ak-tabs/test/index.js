@@ -366,10 +366,16 @@ describe('ak-tabs', () => {
 
       it('emits the tab selection event on initialisation', () => {
         expect(selectSpy.callCount).to.equal(1,
-          'Tab selection event should have been fired on initialisation.'
+          'Tab selection event should have been fired on initialisation'
         );
         expect(selectSpy.getCall(0).args[0].detail.tab).to.equal(getSelectedTab(),
-          'The tab selection event should be fired on the selected tab.'
+          'The tab selection event should be fired on the selected tab'
+        );
+        expect(selectSpy.getCall(0).args[0].detail.tab.selected).to.equal(true,
+          'The tab passed in the event data should be selected'
+        );
+        expect(selectSpy.getCall(0).args[0].detail.tab.label).to.equal('Tab 1',
+          'The tab passed in the event data should have the correct label'
         );
       });
 
@@ -377,7 +383,7 @@ describe('ak-tabs', () => {
         const label = getLabelForTab(getSelectedTab());
         click(label);
         expect(selectSpy.callCount).to.equal(1,
-          'Tab selection event should not be emitted again when trying to select it again.'
+          'Tab selection event should not be emitted again when trying to select it again'
         );
       });
 
@@ -390,13 +396,13 @@ describe('ak-tabs', () => {
 
         afterMutations(() => {
           expect(label.textContent).to.equal(newLabelText,
-            'The tab label should display the new label text.'
+            'The tab label should display the new label text'
           );
           done();
         });
       });
 
-      it('updates the label correctly whe the attribute is set', done => {
+      it('updates the label correctly when the attribute is set', done => {
         const tab = getSelectedTab();
         const label = getLabelForTab(getSelectedTab());
         const newLabelText = 'New tab label';
@@ -405,7 +411,7 @@ describe('ak-tabs', () => {
 
         afterMutations(() => {
           expect(label.textContent).to.equal(newLabelText,
-            'The tab label should display the new label text.'
+            'The tab label should display the new label text'
           );
           done();
         });
@@ -436,10 +442,10 @@ describe('ak-tabs', () => {
 
       it('emits the tab selection event on initialisation', () => {
         expect(selectSpy.callCount).to.equal(1,
-          'Tab selection event should have been fired on initialisation.'
+          'Tab selection event should have been fired on initialisation'
         );
         expect(selectSpy.getCall(0).args[0].detail.tab).to.equal(getSelectedTab(),
-          'The tab selection event should be fired on the selected tab.'
+          'The tab selection event should be fired on the selected tab'
         );
       });
 
@@ -451,16 +457,16 @@ describe('ak-tabs', () => {
             expect(tabElements[2].selected).to.equal(false, 'Tab 3 should be deselected');
 
             expect(selectSpy.callCount).to.equal(2,
-              'Tab selection event should have been fired when selecting a tab.'
+              'Tab selection event should have been fired when selecting a tab'
             );
             expect(selectSpy.getCall(1).args[0].detail.tab).to.equal(tabElements[0],
-              'The tab selection event should be fired on the first tab.'
+              'The tab selection event should be fired on the first tab'
             );
             expect(deselectSpy.callCount).to.equal(1,
-              'Tab deselection event should be fired when deselecting a tab.'
+              'Tab deselection event should be fired when deselecting a tab'
             );
             expect(deselectSpy.getCall(0).args[0].detail.tab).to.equal(tabElements[1],
-              'The tab deselection event should be fired on the second tab.'
+              'The tab deselection event should be fired on the second tab'
             );
             cb();
           });
@@ -483,10 +489,8 @@ describe('ak-tabs', () => {
         });
 
         it('when the attribute is set', done => {
-          afterMutations(() => {
-            tabElements[0].setAttribute('selected', '');
-            assertFirstTabSelected(done);
-          }, 1000);
+          tabElements[0].setAttribute('selected', '');
+          assertFirstTabSelected(done);
         });
       });
     });
@@ -520,10 +524,10 @@ describe('ak-tabs', () => {
 
       it('emits the tab selection event on initialisation', () => {
         expect(selectSpy.callCount).to.equal(1,
-          'Tab selection event should have been fired on initialisation.'
+          'Tab selection event should have been fired on initialisation'
         );
         expect(selectSpy.getCall(0).args[0].detail.tab).to.equal(getSelectedTab(),
-          'The tab selection event should be fired on the selected tab.'
+          'The tab selection event should be fired on the selected tab'
         );
       });
 
@@ -537,16 +541,16 @@ describe('ak-tabs', () => {
           }
 
           expect(selectSpy.callCount).to.equal(2,
-            'Tab selection event should have been fired when selecting a tab.'
+            'Tab selection event should have been fired when selecting a tab'
           );
           expect(selectSpy.getCall(1).args[0].detail.tab).to.equal(tabElements[7],
-            'The tab selection event should be fired on the first tab.'
+            'The tab selection event should be fired on the first tab'
           );
           expect(deselectSpy.callCount).to.equal(1,
-            'Tab deselection event should be fired when deselecting a tab.'
+            'Tab deselection event should be fired when deselecting a tab'
           );
           expect(deselectSpy.getCall(0).args[0].detail.tab).to.equal(tabElements[0],
-            'The tab deselection event should be fired on the first tab.'
+            'The tab deselection event should be fired on the first tab'
           );
         });
 
@@ -555,10 +559,10 @@ describe('ak-tabs', () => {
             expect(tabElements[7].selected).to.equal(true, 'Tab 8 should be selected');
 
             expect(selectSpy.callCount).to.equal(8,
-              'Tab selection event should have been fired 8 times in total.'
+              'Tab selection event should have been fired 8 times in total'
             );
             expect(deselectSpy.callCount).to.equal(7,
-              'Tab deselection event should have been fired 7 times in total.'
+              'Tab deselection event should have been fired 7 times in total'
             );
 
             for (let i = 0; i < 7; i++) {

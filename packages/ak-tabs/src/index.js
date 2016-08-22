@@ -136,41 +136,31 @@ const definition = {
   created(elem) {
     // Listen for tab change events
     elem.addEventListener(events.EVENT_TAB_CHANGE, e => {
-      const allTabs = getAllTabs(elem);
-      // If the tab has been selected, we need to deselect all other tabs.
-      if (e.detail.hasOwnProperty('selected')) {
+      if (e.detail.change && e.detail.change.selected) {
+        // Emit the selection or deselection event.
         const tab = e.detail.tab;
-        if (tab.selected) {
-          allTabs
+        const eventName = e.detail.change.selected.newValue ?
+          events.EVENT_TAB_SELECT : events.EVENT_TAB_DESELECT;
+        emit(tab, eventName, { detail: { tab } });
+
+        // If the tab has been selected, we need to deselect all other tabs.
+        if (e.detail.change.selected.newValue) {
+          getAllTabs(elem)
             .filter(el => el.selected && el !== tab)
             .forEach(el => (el.selected = false));
         }
-
-        // Emit event for tab selection or deselection
-        const eventName = tab.selected ? events.EVENT_TAB_SELECT : events.EVENT_TAB_DESELECT;
-        emit(tab, eventName, { detail: { tab } });
       }
 
       // Re-render if necessary.
+      const allTabs = getAllTabs(elem);
       elem._selected = allTabs.map(el => el.selected);
       elem._labels = allTabs.map(el => el.label);
       elem._visibleTabs = calculateVisibleTabs(elem);
     });
   },
   attached(elem) {
-    // If there is a selected tab, emit the event for the tab.
-    const allTabs = getAllTabs(elem);
-    if (allTabs.length) {
-      const selectedTab = allTabs.find(el => el.selected);
-      if (selectedTab) {
-        emit(selectedTab, events.EVENT_TAB_SELECT, { detail: { tab: selectedTab } });
-      }
-    }
-
     // Re-render if necessary when the window is resized.
-    elem[resizeListener] = debounce(() => {
-      elem._visibleTabs = calculateVisibleTabs(elem);
-    }, 500);
+    elem[resizeListener] = debounce(() => (elem._visibleTabs = calculateVisibleTabs(elem)), 500);
     window.addEventListener('resize', elem[resizeListener]);
   },
   detached(elem) {

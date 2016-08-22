@@ -29,6 +29,10 @@ const events = {
   EVENT_TAB_CHANGE: 'ak-tabs-tab-change',
 };
 
+// We need to keep track of whether the element has rendered before, so we know whether it is safe
+// to emit events in the property setter.
+const hasRendered = Symbol();
+
 function emitTabChangedEvent(tab, detail) {
   emit(tab, events.EVENT_TAB_CHANGE, { detail });
 }
@@ -40,6 +44,9 @@ function emitTabChangedEvent(tab, detail) {
  * const component = new Tab();
  */
 const definition = {
+  created(elem) {
+    elem[hasRendered] = false;
+  },
   render(elem) {
     const ariaHidden = elem.selected ? 'false' : 'true';
     return (
@@ -51,8 +58,18 @@ const definition = {
       </div>
     );
   },
-  attached(elem) {
-    emitTabChangedEvent(elem, { tab: elem });
+  rendered(elem) {
+    if (!elem[hasRendered]) {
+      const changed = {};
+      ['label', 'selected'].filter(propName => elem[propName]).forEach(propName => {
+        changed[propName] = { name: propName, oldValue: null, newValue: elem[propName] };
+      });
+      emitTabChangedEvent(elem, {
+        tab: elem,
+        change: changed,
+      });
+      elem[hasRendered] = true;
+    }
   },
   props: {
     /**
@@ -64,10 +81,15 @@ const definition = {
     label: prop.string({
       attribute: true,
       set(elem, data) {
-        if (data.oldValue !== data.newValue) {
+        if (data.oldValue !== data.newValue && elem[hasRendered]) {
           emitTabChangedEvent(elem, {
             tab: elem,
-            label: elem.label,
+            change: {
+              label: {
+                oldValue: data.oldValue,
+                newValue: data.newValue,
+              },
+            },
           });
         }
       },
@@ -81,10 +103,15 @@ const definition = {
     selected: prop.boolean({
       attribute: true,
       set(elem, data) {
-        if (data.oldValue !== data.newValue) {
+        if (data.oldValue !== data.newValue && elem[hasRendered]) {
           emitTabChangedEvent(elem, {
             tab: elem,
-            selected: elem.selected,
+            change: {
+              selected: {
+                oldValue: data.oldValue,
+                newValue: data.newValue,
+              },
+            },
           });
         }
       },

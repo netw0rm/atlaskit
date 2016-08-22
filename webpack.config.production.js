@@ -9,8 +9,9 @@ Object.assign(standardConfig.entry, {
 });
 
 if (!shouldBundleDependencies) {
-  // matches any non-relative component
-  standardConfig.externals = [/^[^.]/];
+  // Matches any non-relative, non-loader require() -- we deem these to be
+  // external.
+  standardConfig.externals = [/^[^.!][^!]*$/];
 }
 
 standardConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({

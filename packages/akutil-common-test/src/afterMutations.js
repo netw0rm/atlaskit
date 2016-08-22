@@ -30,4 +30,4 @@ function afterMutations(...fns) {
   }, 1);
 }
 
-export { afterMutations };
+export default afterMutations;

@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { symbols } from 'skatejs';
 import AkBadge from '../src/index.js';
 import styles from '../src/shadow.less';
-import { afterMutations } from 'akutil-common';
+import { afterMutations } from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();

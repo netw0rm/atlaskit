@@ -16,7 +16,7 @@ const APPEARANCE_VALUES = [
   'primary',
   'standard',
   'subtle',
-  'selected',
+  'compact',
 ];
 const TYPE_VALUES = [
   'button',
@@ -42,7 +42,7 @@ const definition = {
   props: {
     /**
      * @description Predefined appearances of an ak-button. One of:
-     * 'primary', 'standard', 'subtle', 'selected'.
+     * 'primary', 'standard', 'subtle', 'compact'
      * @memberof Button
      * @default 'standard'
      * @type {string}
@@ -73,18 +73,29 @@ const definition = {
      * @example @js button.disabled = true;
      */
     disabled: prop.boolean({ attribute: true }),
+    /**
+     * @description Option to make a button selected
+     * @memberof Button
+     * @default false
+     * @type {boolean}
+     * @example @html <ak-button selected></ak-button>
+     * @example @js button.selected = true;
+     */
+    selected: prop.boolean({ attribute: true }),
   },
   render(elem) {
     const classes = [shadowStyles.locals.button];
 
     if (elem.disabled) {
       classes.push(shadowStyles.locals.disabled);
+    } else if (elem.selected) {
+      classes.push(shadowStyles.locals.selected);
     } else if (elem.appearance) {
       classes.push(shadowStyles.locals[elem.appearance]);
     }
 
     return (
-      <div className={shadowStyles.locals.container}>
+      <div>
         <style>{shadowStyles.toString()}</style>
         <button
           className={classNames(classes)}

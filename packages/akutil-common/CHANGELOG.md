@@ -1,5 +1,20 @@
-<a name="1.0.0"></a>
-# 1.0.0 (2016-08-19)
+<a name="2.0.0"></a>
+# 2.0.0 (2016-08-22)
+
+
+
+<a name="akutil-common@2.0.0"></a>
+# akutil-common@2.0.0 (2016-08-22)
+
+
+### Code Refactoring
+
+* Move the test helpers out of the common package ([d500d5c](https://bitbucket.org/atlassian/atlaskit/commits/d500d5c))
+
+
+### BREAKING CHANGES
+
+* afterMutations gone
 
 
 

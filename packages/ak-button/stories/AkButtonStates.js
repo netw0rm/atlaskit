@@ -1,5 +1,5 @@
 const { React, ReactDOM } = window;
-import AkButtonTemplate, { APPEARANCE } from '../src/index';
+import AkButtonTemplate from '../src/index';
 import reactify from 'akutil-react';
 import { action } from '@kadira/storybook';
 const AkButton = reactify(AkButtonTemplate, {
@@ -11,45 +11,41 @@ export default class MyComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      disable: false,
-      appearance: APPEARANCE.STANDARD,
+      disabled: false,
+      selected: false,
     };
   }
 
-  disable() {
-    this.setState({ disable: !this.state.disable });
+  updateState(value) {
+    return () => {
+      const data = {};
+      data[value] = !this.state[value];
+      this.setState(data);
+    };
   }
-  select() {
-    this.setState({
-      appearance: this.state.appearance === APPEARANCE.STANDARD ?
-        APPEARANCE.SELECTED : APPEARANCE.STANDARD,
-    });
+
+  createCheckboxState(state) {
+    return (
+      <label>
+        {state}
+        <input
+          type="checkbox"
+          id="selected-checkbox"
+          onChange={this.updateState(state)}
+          defaultChecked={this.state[state]}
+        />
+      </label>
+    );
   }
 
   render() {
     return (
       <div>
-        <label>
-          Disabled
-          <input
-            type="checkbox"
-            id="disable-checkbox"
-            onChange={this.disable.bind(this)}  // eslint-disable-line react/jsx-no-bind
-            defaultChecked={this.state.disable}
-          />
-        </label>
-        <label>
-          Selected
-          <input
-            type="checkbox"
-            id="selected-checkbox"
-            onChange={this.select.bind(this)}  // eslint-disable-line react/jsx-no-bind
-            defaultChecked={this.state.appearance === APPEARANCE.SELECTED}
-          />
-        </label>
+        {this.createCheckboxState('disabled')}
+        {this.createCheckboxState('selected')}
         <AkButton
-          disabled={this.state.disable}
-          appearance={this.state.appearance}
+          disabled={this.state.disabled}
+          selected={this.state.selected}
           onclick={action('clicking the WebComponent')}
         >
           Button

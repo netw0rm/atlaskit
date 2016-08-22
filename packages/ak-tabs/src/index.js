@@ -236,31 +236,6 @@ const definition = {
         }
         </ul>
         <slot />
-        <ul
-          className={classNames({
-            [shadowStyles.locals.ddContainer]: true,
-            [shadowStyles.locals.ddHidden]: !elem._dropdownOpen,
-          })}
-        >
-          {allTabs && allTabs.map(
-            tab => {
-              const isVisible = elem._visibleTabs.indexOf(tab) > -1;
-              const classes = classNames({
-                [shadowStyles.locals.ddItem]: true,
-                [shadowStyles.locals.ddHidden]: isVisible,
-              });
-              return (
-                <li className={classes}>
-                  <a
-                    href="#"
-                    onclick={labelClickHandler(tab)}
-                    tabIndex="-1"
-                  >{tab.label}</a>
-                </li>
-              );
-            }
-          )}
-        </ul>
       </div>
     );
   },

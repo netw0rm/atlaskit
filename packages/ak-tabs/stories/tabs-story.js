@@ -217,12 +217,6 @@ storiesOf(name, module)
       document.getElementById('my-tabs').appendChild(newTab);
     }
 
-    window.removeEventListener('ak-tabs-tab-select', selectHandler);
-    window.removeEventListener('ak-tabs-tab-deselect', deselectHandler);
-
-    window.addEventListener('ak-tabs-tab-select', selectHandler);
-    window.addEventListener('ak-tabs-tab-deselect', deselectHandler);
-
     return (
       <div>
         <Component id="my-tabs" />

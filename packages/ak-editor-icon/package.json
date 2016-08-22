@@ -6,6 +6,7 @@
   "webpack": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-editor-icon",
+    "compress": "find . -name *.svg -exec svgo {} {} \\;",
     "pre-release": "lerna-semantic-release pre"
   },
   "files": [
@@ -13,13 +14,17 @@
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
+  "os": [
+    "!win32"
+  ],
   "dependencies": {
     "skatejs": "^1.0.0"
   },
   "devDependencies": {
+    "akutil-react": "^1.0.0",
     "idomizer": "^0.5.2",
     "loader-utils": "^0.2.15",
-    "akutil-react": "^1.0.0"
+    "svgo": "^0.6.6"
   },
   "repository": {
     "type": "git",

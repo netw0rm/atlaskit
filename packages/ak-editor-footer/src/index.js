@@ -8,7 +8,7 @@ function insert() {
     .map((icon) => (
       <button
         className={`${shadowStyles.locals.iconButton} ${icon}`}
-        onclick={(event) => emit(event.currentTarget, `click${icon}`)}
+        onclick={(event) => emit(event.currentTarget, `insert${icon}`)}
       >
         <Icon glyph={icon} />
       </button>

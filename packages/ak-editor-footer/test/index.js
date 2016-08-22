@@ -1,6 +1,7 @@
 import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import { symbols } from 'skatejs';
 import Component from '../src';
 import shadowStyles from '../src/shadow.less';
 
@@ -19,9 +20,10 @@ describe(name, () => {
       it(`should trigger ${action} event`, () => {
         let clicked = false;
         const component = new Component();
-        const button = component.querySelector(shadowStyles.locals[`${action}Button`]);
+        const button = component[symbols.shadowRoot]
+          .querySelector(shadowStyles.locals[`${action}Button`]);
         const event = new CustomEvent('click', {});
-        component.addEventListener('click', () => {
+        component.addEventListener(action, () => {
           clicked = true;
         });
         button.emit(event);
@@ -35,9 +37,9 @@ describe(name, () => {
       it(`should trigger ${insertName} event`, () => {
         let clicked = false;
         const component = new Component();
-        const insert = component.querySelector(insertName);
+        const insert = component[symbols.shadowRoot].querySelector(insertName);
         const event = new CustomEvent('click', {});
-        component.addEventListener('click', () => {
+        component.addEventListener(`insert${insertName}`, () => {
           clicked = true;
         });
         insert.emit(event);

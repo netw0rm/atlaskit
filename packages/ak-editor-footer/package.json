@@ -18,6 +18,7 @@
     "skatejs": "^1.0.0"
   },
   "devDependencies": {
+    "akutil-common": "*",
     "akutil-shared-styles": "^33.1.0",
     "akutil-react": "^1.0.0"
   },

@@ -15,6 +15,7 @@ storiesOf('ak-editor-icon', module)
       <Icon glyph="number-list" />
       <Icon glyph="image" />
       <Icon glyph="link" />
+      <Icon glyph="unlink" />
       <Icon glyph="mention" />
     </div>
   ))
@@ -52,11 +53,15 @@ storiesOf('ak-editor-icon', module)
 
       randomIcon() {
         const icons = [
-          'add', 'align-center', 'align-left', 'align-right',
-          'attachment', 'bold', 'bullet-list', 'code', 'date', 'decision',
-          'emoji', 'expand', 'help', 'image', 'indent', 'italic', 'link',
-          'mention', 'more', 'number-list', 'open', 'outdent', 'redo', 'table',
-          'task', 'text-color', 'underline', 'undo', 'unlink',
+          'bold',
+          'italic',
+          'underline',
+          'bullet-list',
+          'number-list',
+          'image',
+          'link',
+          'unlink',
+          'mention',
         ];
         return icons[Math.floor(Math.random() * icons.length)];
       }

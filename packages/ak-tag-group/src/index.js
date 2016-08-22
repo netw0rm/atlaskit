@@ -2,8 +2,6 @@ import 'style!./host.less';
 import { emit, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 
-const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
-
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class TagGroup
@@ -11,12 +9,12 @@ const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
  * const component = new TagGroup();
  */
 export default define('ak-tag-group', {
-  render(elem) {
+  render() {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
         <div className={shadowStyles.locals.group}>
-
+          <slot />
         </div>
       </div>
     );

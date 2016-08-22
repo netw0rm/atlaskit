@@ -1,6 +1,6 @@
 {
   "name": "ak-tag-group",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "ak-tag-group webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -17,6 +17,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
+    "ak-tag": "^1.0.0",
     "akutil-common-test": "^1.0.0",
     "akutil-react": "^1.0.0"
   },

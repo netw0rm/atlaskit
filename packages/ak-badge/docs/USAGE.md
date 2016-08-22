@@ -1,8 +1,6 @@
 # AkBadge
 
-## Synopsis
-
-Badges are visual indicators for numeric values such as tallies and other quantities. 
+Badges are visual indicators for numeric values such as tallies and other quantities.
 
 They are not used for anything other than integers. For statuses, use Lozenges. To call out tags or other high-visibility attributes, use Labels.
 Badges are used before or, more commonly, after the name or label of the thing they quantify.
@@ -23,7 +21,7 @@ npm install ak-badge
 The `ak-badge` package exports the AkBadge [Skate](https://github.com/skatejs/skatejs) component.
 
 Import the component in your JS resource:
- 
+
 #### bundle.js
 
 ```

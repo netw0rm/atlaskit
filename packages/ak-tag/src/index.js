@@ -7,10 +7,6 @@ import Chrome from './chrome';
 import Text from './text';
 import Href from './href';
 import Button from './button';
-import {
-  akColorN500 as defaultButtonFill,
-  akColorR500 as highlightButtonFill,
-} from 'akutil-shared-styles';
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -27,13 +23,19 @@ export default define('ak-tag', {
       return null;
     }
 
-    const chromeAttrs = {};
+    const isLinked = !!elem.href;
+    const isRemovable = !!elem['remove-button-text'];
+    /* eslint-disable no-underscore-dangle */
+    const chromeAttrs = {
+      isLinked,
+      isRemovable,
+      markedForRemoval: elem.__removeButtonHover,
+    };
+
     let button = '';
-    if (elem['remove-button-text']) {
-       /* eslint-disable no-underscore-dangle */
+    if (isRemovable) {
       const hover = (toggle) => props(elem, { __removeButtonHover: toggle });
       button = (<Button
-        fill={elem.__removeButtonHover ? highlightButtonFill : defaultButtonFill}
         text={elem['remove-button-text']}
         onmouseover={() => hover(true)}
         onmouseout={() => hover(false)}
@@ -42,7 +44,7 @@ export default define('ak-tag', {
     }
 
     let label;
-    if (!elem.href) {
+    if (!isLinked) {
       label = <Text>{elem.text}</Text>;
     } else {
       chromeAttrs.tabindex = 0;

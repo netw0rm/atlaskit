@@ -10,30 +10,60 @@ const Component = reactify(Tag, {
   ReactDOM,
 });
 
+const cupcakeipsum = 'Croissant topping tiramisu gummi bears. Bonbon chocolate bar danish soufflé';
+
 storiesOf(name, module)
   .add('text: simple', () => (
     <Component
       className={styles.akTag}
-      text="watersports"
+      text="Marshmallow"
     />
   ))
-  .add('text: special characters (must not alert)', () => (
-    <Component
-      className={styles.akTag}
-      text="<script>alert('must not alert');</script>"
-    />
-  ))
-  .add('text: special characters, programmatically (must not alert)', () => {
-    const attachTag = (e) => {
-      if (!e) {
-        return;
-      }
-      e.innerHTML = '';
-      const tag = new Tag();
-      tag.className = styles.akTag;
-      tag.text = '<script>alert(\'must not alert either!\');</script>';
-      e.appendChild(tag);
-    };
-
-    return (<div ref={attachTag}></div>);
-  });
+  .add('text: maximum length (ellipsis)', () => (
+    <table>
+      <tr>
+        <th>Full text</th>
+        <td>{cupcakeipsum}</td>
+      </tr>
+      <tr>
+        <th>Text</th>
+        <td>
+          <Component
+            className={styles.akTag}
+            text={cupcakeipsum}
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>Linked</th>
+        <td>
+          <Component
+            className={styles.akTag}
+            text={cupcakeipsum}
+            href="http://www.cupcakeipsum.com/"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>Removable</th>
+        <td>
+          <Component
+            className={styles.akTag}
+            text={cupcakeipsum}
+            remove-button-text="No sweets for you!"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>Removable & linked</th>
+        <td>
+          <Component
+            className={styles.akTag}
+            text={cupcakeipsum}
+            remove-button-text="No sweets for you!"
+            href="http://www.cupcakeipsum.com/"
+          />
+        </td>
+      </tr>
+    </table>
+  ));

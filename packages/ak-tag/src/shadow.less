@@ -6,19 +6,28 @@
 @import 'shared-variables.less';
 
 @border-radius: 3px;
+@outline-width: 2px;
 @grid-unit: 10px;
 @max-height: 18px;
 @distance: 4px;
+@max-width: 200px - 2 * @distance;
+@button-width: @grid-unit + @border-radius;
+@font-size: 14px;
 
-.outline() {
+.outline(@color) {
   &:focus {
     outline: none;
-    box-shadow: 0px 0px 0px @border-radius @ak-color-B100;
+    box-shadow: 0px 0px 0px @outline-width @color;
   }
 }
 
+.nooutline() {
+  box-shadow: none;
+}
+
 .chrome {
-  background-color: #E5E8ED; // TODO: change this to ADG color from akutil-shared-styles
+  cursor:default;
+  background-color: @ak-color-N20;
   padding: 0;
   margin: 0;
   border-radius: @border-radius;
@@ -26,17 +35,50 @@
   height: @max-height;
   max-height: @max-height;
   flex-direction: row;
-  .outline();
+  .outline(@ak-color-B100);
+  &:hover {
+    background-color: @ak-color-N30;
+    .nooutline();
+
+    .button {
+      .nooutline();
+    }
+  }
+  &.isLinked.markedForRemoval {
+    background-color: @ak-color-R50;
+
+    .href {
+      color: @ak-color-R500;
+    }
+  }
+
+  &:focus {
+    .href {
+      color: @ak-color-B400;
+    }
+  }
+
+  &.isRemovable {
+    .text, .href {
+      max-width: @max-width - @button-width;
+    }
+  }
 }
 
 .text {
   font-family: @ak-font-family;
   color: @ak-color-N700;
-  font-size: 14px;
+  font-size: @font-size;
   margin-left: @distance;
   margin-right: @distance;
   align-self: flex-start;
   height: 100%;
+
+  // text truncation
+  max-width: @max-width;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .href {
@@ -57,9 +99,13 @@
   border-radius: @border-radius;
   align-self: flex-end;
   display: flex;
-  .outline();
+  .outline(@ak-color-R300);
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 10px;
+  width: @button-width;
+  color: @ak-color-N500;
+  &:hover {
+    color: @ak-color-R500;
+  }
 }

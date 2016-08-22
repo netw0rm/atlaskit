@@ -14,7 +14,7 @@ storiesOf(name, module)
   .add('href: custom link', () => (
     <Component
       className={styles.akTag}
-      href="https://www.atlassian.com/search?query=jira"
-      text="JIRA"
+      href="https://www.atlassian.com/search?query=Carrot%20cake"
+      text="Carrot cake"
     />
   ));

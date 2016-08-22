@@ -21,15 +21,15 @@ const RemovableComponent = (props) => (
 storiesOf(name, module)
   .add('groups: left alignment', () => (
     <div>
-      <RemovableComponent text="Watermelons" />
-      <RemovableComponent text="Stardew valley" />
-      <RemovableComponent text="Pineapple bun" />
+      <RemovableComponent text="Candy canes" />
+      <RemovableComponent text="Tiramisu" />
+      <RemovableComponent text="Gummi bears" />
     </div>
   ))
   .add('groups: right alignment', () => (
     <div>
-      <RemovableComponent text="Watermelons" />
-      <RemovableComponent text="Stardew valley" />
-      <RemovableComponent text="Pineapple bun" />
+      <RemovableComponent text="Candy canes" />
+      <RemovableComponent text="Tiramisu" />
+      <RemovableComponent text="Gummi bears" />
     </div>
   ));

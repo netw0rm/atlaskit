@@ -14,7 +14,7 @@ storiesOf(name, module)
   .add('remove-button: simple', () => (
     <Component
       className={styles.akTag}
-      text="some tag"
+      text="Liquorice"
       remove-button-text="Remove me"
     />
   ))
@@ -22,7 +22,22 @@ storiesOf(name, module)
     <Component
       className={styles.akTag}
       href="http://www.atlassian.com"
-      text="atlassian"
-      remove-button-text="Remove me"
+      text="Gingerbread"
+      remove-button-text="Nibble, nibble, gnaw who is nibbling at my little house?"
     />
+  ))
+  .add('remove-button: hover unlinked vs. linked', () => (
+    <div>
+      <Component
+        className={styles.akTag}
+        text="Fruitcake"
+        remove-button-text="Brush your teeth!"
+      />
+      <Component
+        className={styles.akTag}
+        href="http://www.cupcakeipsum.com"
+        text="Chupa chups"
+        remove-button-text="Brush your teeth!"
+      />
+    </div>
   ));

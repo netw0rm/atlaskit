@@ -8,8 +8,9 @@ const button = (props) => (
     {...props}
     className={shadowStyles.locals.button}
     aria-label={props.text}
+    onmousedown={(e) => e.preventDefault()}
   >
-    <RemoveIcon fill={props.fill} />
+    <RemoveIcon />
   </button>
 );
 export default button;

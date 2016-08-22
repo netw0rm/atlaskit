@@ -2,8 +2,9 @@ import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkEditorButton from '../src';
-import { symbols, state } from 'skatejs';
+import { symbols, props } from 'skatejs';
 import shadowStyles from '../src/shadow.less';
+import { afterMutations } from 'akutil-common';
 
 const classKeys = shadowStyles.locals;
 
@@ -12,24 +13,29 @@ chai.should();
 const expect = chai.expect;
 
 describe('ak-editor-button', () => {
+  let component;
   const shadowDomQuery = (elem, classes) =>
     elem[symbols.shadowRoot].querySelector(classes);
 
   const getShadowButtonElem = (elem) =>
     shadowDomQuery(elem, `.${classKeys.root} button`);
 
+  beforeEach(done => {
+    component = new AkEditorButton();
+    document.body.appendChild(component);
+    afterMutations(done);
+  });
+
   it('should not throws when component is instantiated', () =>
     expect(() => (new AkEditorButton())).not.to.throw(Error)
   );
 
   it('should be possible to create a component', () => {
-    const component = new AkEditorButton();
     expect(shadowDomQuery(component, `.${classKeys.root}`)).to.be.defined;
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 
   it('should call preventDefault when onmousedown event is triggered', () => {
-    const component = new AkEditorButton();
     const button = getShadowButtonElem(component);
 
     const event = new CustomEvent('mousedown', {});
@@ -40,11 +46,6 @@ describe('ak-editor-button', () => {
   });
 
   describe('attributes', () => {
-    let component;
-    beforeEach(() => {
-      component = new AkEditorButton();
-    });
-
     describe('default attributes', () => {
       it('should not have active class', () => {
         const classes = `.${classKeys.root}.${classKeys.active}`;
@@ -60,7 +61,7 @@ describe('ak-editor-button', () => {
     describe('active attribute', () => {
       const selector = `.${classKeys.root}.${classKeys.active}`;
       beforeEach(() =>
-        state(component, { active: true })
+        props(component, { active: true })
       );
 
       it('container should have active class', () =>
@@ -68,7 +69,7 @@ describe('ak-editor-button', () => {
       );
 
       it('container should not have active class after it is removed', () => {
-        state(component, { active: false });
+        props(component, { active: false });
         expect(shadowDomQuery(component, selector)).to.be.null;
       });
     });
@@ -76,7 +77,7 @@ describe('ak-editor-button', () => {
     describe('when disabled attribute is set', () => {
       const selector = `.${classKeys.root} button[disabled]`;
       beforeEach(() =>
-        state(component, { disabled: true })
+        props(component, { disabled: true })
       );
 
       it('button should have disabled attribute', () =>
@@ -84,24 +85,8 @@ describe('ak-editor-button', () => {
       );
 
       it('button should not have disabled attribute after it is removed', () => {
-        state(component, { disabled: false });
+        props(component, { disabled: false });
         expect(shadowDomQuery(component, selector)).to.be.null;
-      });
-
-      describe('onclick event', () => {
-        const checkOnClickEvent = shouldBeCalled => {
-          const onclick = sinon.spy();
-          state(component, { onclick });
-          state(getShadowButtonElem(component), { onclick });
-          getShadowButtonElem(component).click();
-          expect(onclick.called).to.equals(shouldBeCalled);
-        };
-
-        it('button should not trigger onclick event', () => checkOnClickEvent(false));
-        it('button should trigger onclick event after it is removed', () => {
-          state(component, { disabled: false });
-          checkOnClickEvent(true);
-        });
       });
     });
   });

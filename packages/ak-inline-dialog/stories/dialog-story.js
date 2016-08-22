@@ -5,6 +5,8 @@ import DialogWithInput from './DialogWithInput.js';
 import DialogWithButton from './DialogWithButton.js';
 import DialogWithBlanket from './DialogWithBlanket.js';
 
+const { React } = window; // eslint-disable-line no-unused-vars
+
 storiesOf(name, module)
   .add('All dialogs together, open on click', () => (
     <div

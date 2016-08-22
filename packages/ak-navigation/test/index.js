@@ -1,17 +1,16 @@
+import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { symbols } from 'skatejs';
 import AkNavigation from '../src/index.js';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-
 describe('ak-navigation', () => {
-  it.skip('should be possible to create a component', () => {
+  it('should be possible to create a component', () => {
     const component = new AkNavigation();
-    component[symbols.shadowRoot].innerHTML.should.match(/I am an .+? element!/);
+    expect(component.tagName.toLowerCase()).to.equal(name);
   });
 
   it('fires an ak-navigation-open event when opening', () => {

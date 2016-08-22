@@ -1,15 +1,15 @@
+import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { symbols } from 'skatejs';
-import AkEditorToolbarHyperlink from '../src/index.js';
+import Component from '../src';
 
 chai.use(chaiAsPromised);
 chai.should();
+const expect = chai.expect;
 
-
-describe('ak-editor-toolbar-hyperlink', () => {
+describe(name, () => {
   it('should be possible to create a component', () => {
-    const component = new AkEditorToolbarHyperlink();
-    component[symbols.shadowRoot].innerHTML.should.match(/ak-editor-button/);
+    const component = new Component();
+    expect(component.tagName.toLowerCase()).to.equal(name);
   });
 });

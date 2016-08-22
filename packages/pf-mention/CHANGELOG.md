@@ -1,5 +1,30 @@
-<a name="1.2.1"></a>
-## 1.2.1 (2016-08-12)
+<a name="1.2.6"></a>
+## 1.2.6 (2016-08-22)
+
+
+
+<a name="pf-mention@1.2.6"></a>
+## pf-mention@1.2.6 (2016-08-19)
+
+
+
+<a name="pf-mention@1.2.5"></a>
+## pf-mention@1.2.5 (2016-08-16)
+
+
+
+<a name="pf-mention@1.2.4"></a>
+## pf-mention@1.2.4 (2016-08-15)
+
+
+
+<a name="pf-mention@1.2.3"></a>
+## pf-mention@1.2.3 (2016-08-15)
+
+
+
+<a name="pf-mention@1.2.2"></a>
+## pf-mention@1.2.2 (2016-08-12)
 
 
 

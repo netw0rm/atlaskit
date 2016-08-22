@@ -29,9 +29,9 @@ export default define('ak-blanket', {
       <div>
         <style>{shadowStyles.toString()}</style>
         <div
-          onclick={handleBlur(elem)}
-          ontouch={handleBlur(elem)}
-          class={classes}
+          onClick={handleBlur(elem)}
+          onTouch={handleBlur(elem)}
+          className={classes}
         >
         </div>
       </div>
@@ -47,10 +47,7 @@ export default define('ak-blanket', {
      * @example @html <ak-blanket tinted></ak-blanket>
      * @example @js component.tinted = true
      */
-    tinted: prop.boolean({
-      attribute: true,
-      default: false,
-    }),
+    tinted: prop.boolean({ attribute: true }),
     /**
      * @description If click on the blanket emits a 'blanket-click' event.
      * @memberof Blanket
@@ -60,9 +57,6 @@ export default define('ak-blanket', {
      * @example @html <ak-blanket clickable></ak-blanket>
      * @example @js component.clickable = true
      */
-    clickable: prop.boolean({
-      attribute: true,
-      default: false,
-    }),
+    clickable: prop.boolean({ attribute: true }),
   },
 });

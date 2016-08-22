@@ -1,1 +1,0 @@
-# akutil-cz-atlaskit-changelog

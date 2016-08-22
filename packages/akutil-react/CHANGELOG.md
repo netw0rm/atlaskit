@@ -1,5 +1,20 @@
-<a name="0.0.4"></a>
-## 0.0.4 (2016-08-12)
+<a name="1.0.0"></a>
+# 1.0.0 (2016-08-22)
+
+
+
+<a name="akutil-react@1.0.0"></a>
+# akutil-react@1.0.0 (2016-08-18)
+
+
+### Bug Fixes
+
+* utils should be 1.x ([117ff3c](https://bitbucket.org/atlassian/atlaskit/commits/117ff3c))
+
+
+### BREAKING CHANGES
+
+* does not actually break anything, but we need to go post 1.x
 
 
 

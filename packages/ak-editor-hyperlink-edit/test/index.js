@@ -1,19 +1,15 @@
+import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkEditorHyperlinkEdit from '../src';
-import { name } from '../package.json';
+import Component from '../src';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-editor-hyperlink-edit', () => {
+describe(name, () => {
   it('should be possible to create a component', () => {
-    let component;
-    expect(() => {
-      component = new AkEditorHyperlinkEdit();
-    }).not.to.throw(Error);
-    expect(component.getAttribute('defined')).not.to.equal(null);
+    const component = new Component();
     expect(component.tagName.toLowerCase()).to.equal(name);
   });
 });

@@ -8,7 +8,6 @@ const baseUrl = 'https://bogus/';
 
 const apiConfig = {
   url: baseUrl,
-  application: 'HIPCHAT',
   securityProvider() {
     return 10804;
   },
@@ -28,41 +27,44 @@ function checkOrder(expected, actual) {
 }
 
 fetchMock
-  .mock(/\/mentions\/search\?.*query=craig&.*/, {
+  .mock(/\/mentions\/search\?.*query=craig(&|$)/, {
     body: JSON.stringify({
       mentions: resultCraig,
     }),
   })
-  .mock(/\/mentions\/search\?.*query=c&.*/, {
+  .mock(/\/mentions\/search\?.*query=c(&|$)/, {
     body: JSON.stringify({
       mentions: resultC,
     }),
   })
-  .mock(/\/mentions\/search\?.*query=delay&.*/, {
+  .mock(/\/mentions\/search\?.*query=delay(&|$)/, {
     // "delay" is like "c", but delayed
     body: JSON.stringify({
       mentions: resultC,
     }),
   })
-  .mock(/\/mentions\/search\?.*query=broken&.*/, 500);
+  .mock(/\/mentions\/search\?.*query=broken(&|$)/, 500);
 
 describe('MentionResource', function () {
   const defaultFetch = global.fetch;
-  const delayMatch = /\/mentions\/search\?.*query=delay&.*/;
+  const delayMatch = /\/mentions\/search\?.*query=delay(&|$)/;
 
   before(function () {
     global.fetch = function (input, init) {
-      if (typeof input === 'string') {
-        if (delayMatch.test(input)) {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              defaultFetch(input, init).then(
-                (response) => { resolve(response); },
-                (reason) => { reject(reason); }
-              );
-            }, 100);
-          });
-        }
+      let url = input;
+      if (typeof url === 'object') {
+        // Request object, not url string
+        url = url.url;
+      }
+      if (delayMatch.test(url)) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            defaultFetch(input, init).then(
+              (response) => { resolve(response); },
+              (reason) => { reject(reason); }
+            );
+          }, 100);
+        });
       }
       return defaultFetch(input, init);
     };
@@ -75,7 +77,7 @@ describe('MentionResource', function () {
   describe('#subscribe', function () {
     it('subscribe should receive updates', function (done) {
       const resource = new MentionResource(apiConfig);
-      resource.subscribe(function (mentions) {
+      resource.subscribe('test1', function (mentions) {
         expect(mentions.length).to.equal(resultCraig.length);
         done();
       });
@@ -84,14 +86,14 @@ describe('MentionResource', function () {
     it('multiple subscriptions should receive updates', function (done) {
       const resource = new MentionResource(apiConfig);
       let count = 0;
-      resource.subscribe(function (mentions) {
+      resource.subscribe('test1', function (mentions) {
         expect(mentions.length).to.equal(resultCraig.length);
         count++;
         if (count === 2) {
           done();
         }
       });
-      resource.subscribe(function (mentions) {
+      resource.subscribe('test2', function (mentions) {
         expect(mentions.length).to.equal(resultCraig.length);
         count++;
         if (count === 2) {
@@ -105,8 +107,8 @@ describe('MentionResource', function () {
     it('subscriber should no longer called', function (done) {
       const resource = new MentionResource(apiConfig);
       const listener = sinon.spy();
-      resource.subscribe(listener);
-      resource.unsubscribe(listener);
+      resource.subscribe('test1', listener);
+      resource.unsubscribe('test1');
       resource.filter('craig');
       // Not desirable...
       setTimeout(function () {
@@ -120,7 +122,7 @@ describe('MentionResource', function () {
       const resource = new MentionResource(apiConfig);
       const results = [];
       const expected = [resultC, resultCraig];
-      resource.subscribe(function (mentions) {
+      resource.subscribe('test1', function (mentions) {
         results.push(mentions);
         if (results.length === 2) {
           checkOrder(expected, results);
@@ -132,11 +134,11 @@ describe('MentionResource', function () {
         resource.filter('craig');
       }, 100);
     });
-    it('out of order responses', function () {
+    it('out of order responses', function (done) {
       const resource = new MentionResource(apiConfig);
       const results = [];
       const expected = [resultCraig];
-      resource.subscribe(function (mentions) {
+      resource.subscribe('test1', function (mentions) {
         results.push(mentions);
         if (results.length === 1) {
           checkOrder(expected, results);
@@ -153,7 +155,7 @@ describe('MentionResource', function () {
     });
     it('error response', function (done) {
       const resource = new MentionResource(apiConfig);
-      resource.subscribe(function () {
+      resource.subscribe('test1', function () {
         assert.fail('Should not be called');
       }, function () {
         done();

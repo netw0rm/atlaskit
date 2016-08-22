@@ -1,6 +1,6 @@
 {
   "name": "ak-navigation",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "ak-navigation webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -11,17 +11,17 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "*",
+    "akutil-shared-styles": "^33.1.0",
     "ak-page": "^1.0.0",
     "ak-icon": "^1.0.0",
     "classnames": "^2.2.5",
+    "keycode": "^2.1.2",
     "skatejs": "^1.0.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "^0.0.3",
-    "keycode": "^2.1.2",
+    "akutil-react": "^1.0.0",
     "react-lorem-component": "^0.10.0"
   },
   "repository": {

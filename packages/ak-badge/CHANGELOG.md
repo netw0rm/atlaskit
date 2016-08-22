@@ -1,10 +1,16 @@
-<a name="0.0.0"></a>
-# 0.0.0 (2016-08-17)
+<a name="0.0.1"></a>
+## 0.0.1 (2016-08-22)
+
+
+
+<a name="ak-badge@0.0.1"></a>
+## ak-badge@0.0.1 (2016-08-18)
 
 
 ### Bug Fixes
 
 * **bump:** Bumped akutil-shared-styles to the right version ([ac4fb76](https://bitbucket.org/atlassian/atlaskit/commits/ac4fb76))
+* **bump:** bumping to skate 1.0.1 because 1.0.0 was a broken release ([1db5919](https://bitbucket.org/atlassian/atlaskit/commits/1db5919))
 * **bump:** Locking the version of akutil-shared-styles ([ba1444a](https://bitbucket.org/atlassian/atlaskit/commits/ba1444a))
 * **component:** ak-badge should only display positive values ([acf5824](https://bitbucket.org/atlassian/atlaskit/commits/acf5824))
 

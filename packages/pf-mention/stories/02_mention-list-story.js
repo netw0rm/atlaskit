@@ -6,6 +6,7 @@ import reactify from 'akutil-react';
 import pfMentionList from '../src/wc/pf-mention-list';
 import { mentions } from './story-data';
 import { getWebComponent } from './util';
+import debug from '../src/util/logger';
 
 const { React, ReactDOM } = window;
 
@@ -51,7 +52,7 @@ const RefreshableMentionList = React.createClass({
       <MentionList
         mentions={this.state.mentions}
         onselected={(mention) => {
-          console.log('mention selected', mention);
+          debug('mention selected', mention);
           action('mention selected');
         }}
         ref={(ref) => { this._mentionList = ref; }}

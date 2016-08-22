@@ -3,121 +3,154 @@ import chaiAsPromised from 'chai-as-promised';
 import { symbols } from 'skatejs';
 import AkBadge from '../src/index.js';
 import styles from '../src/shadow.less';
+import { afterMutations } from 'akutil-common';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect; // eslint-disable-line no-unused-vars
 const valueSelector = `.${styles.locals.value}`;
-
+const fixture = document.createElement('div');
+let component;
+const value = () => component[symbols.shadowRoot].querySelector(valueSelector);
 
 describe('ak-badge', () => {
+  beforeEach(() => {
+    document.body.appendChild(fixture);
+    component = new AkBadge();
+    fixture.appendChild(component);
+  });
+  afterEach(() => {
+    fixture.removeChild(component);
+    component = null;
+    document.body.removeChild(fixture);
+  });
   describe('value property', () => {
     it('should be visibly displayed', (done) => {
-      const component = new AkBadge();
-      component.value = 5;
-
-      setTimeout(() => {
-        const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
-        expect(html).to.match(/5/);
-        done();
-      }, 0);
+      afterMutations(
+          () => (component.value = 5),
+          () => {
+            const html = value().innerHTML;
+            expect(html).to.match(/5/);
+          },
+          done
+      );
     });
     it('should only accept positive numbers', (done) => {
-      const component = new AkBadge();
-      component.value = -5;
-
-      setTimeout(() => {
-        const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
-        expect(html).to.match(/0/);
-        done();
-      }, 0);
+      afterMutations(
+          () => (component.value = -5),
+          () => {
+            const html = value().innerHTML;
+            expect(html).to.match(/0/);
+          },
+          done
+      );
     });
     it('should show show Infinity as the ∞ character', (done) => {
-      const component = new AkBadge();
-      component.value = Infinity;
-      component.max = Infinity;
-
-      setTimeout(() => {
-        const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
-        expect(html).to.match(/∞/);
-        done();
-      }, 0);
+      afterMutations(
+          () => (component.value = Infinity),
+          () => (component.max = Infinity),
+          () => {
+            const html = value().innerHTML;
+            expect(html).to.match(/∞/);
+          },
+          done
+      );
     });
-    it('should fire an event when changed', () => {
+    it('should fire an event when changed', (done) => {
       let changed = false;
-      const component = new AkBadge();
-      component.value = 5;
+      let detail;
 
-      component.addEventListener('change', () => {
+      component.addEventListener('change', (e) => {
         changed = true;
+        detail = e.detail;
       });
-      component.value = 6;
-      expect(changed).to.equal(true);
+
+      afterMutations(
+          () => (component.value = 6),
+          () => expect(changed).to.equal(true),
+          () => expect(detail.oldValue).to.equal(0),
+          () => expect(detail.newValue).to.equal(6),
+          done
+      );
     });
   });
   describe('max property', () => {
     it('should constrain to 99+ when not specified', (done) => {
-      const component = new AkBadge();
-      component.value = 101;
-
-      setTimeout(() => {
-        const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
-        expect(html).to.match(/99\+/);
-        done();
-      }, 0);
+      afterMutations(
+          () => (component.value = 101),
+          () => {
+            const html = value().innerHTML;
+            expect(html).to.match(/99\+/);
+          },
+          done
+      );
     });
     it('should constrain the value when set', (done) => {
-      const component = new AkBadge();
-      component.max = 100;
-      component.value = 101;
-
-      setTimeout(() => {
-        const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
-        expect(html).to.match(/100\+/);
-        done();
-      }, 0);
+      afterMutations(
+          () => (component.value = 200),
+          () => (component.max = 100),
+          () => {
+            const html = value().innerHTML;
+            expect(html).to.match(/100\+/);
+          },
+          done
+      );
     });
-    it('should not fire if equal to value', (done) => {
-      const component = new AkBadge();
-      component.max = 100;
-      component.value = 100;
-
-      setTimeout(() => {
-        const html = component[symbols.shadowRoot].querySelector(valueSelector).innerHTML;
-        expect(html).to.not.match(/100\+/);
-        done();
-      }, 0);
+    it('should not constrain if equal to value', (done) => {
+      afterMutations(
+          () => (component.value = 200),
+          () => (component.max = 200),
+          () => {
+            const html = value().innerHTML;
+            expect(html).to.not.match(/200\+/);
+          },
+          done
+      );
+    });
+    it('should not modify the actual value', (done) => {
+      afterMutations(
+          () => (component.value = 300),
+          () => (component.max = 200),
+          () => {
+            expect(component.value).to.equal(300);
+          },
+          done
+      );
     });
   });
   describe('appearance property', () => {
-    it('should be "default" when not set', () => {
-      const component = new AkBadge();
-      const el = component[symbols.shadowRoot].querySelector(`.${styles.locals.default}`);
-      component.value = 13;
-
-      expect(el).to.not.equal(null);
+    it('should be "default" when not set', (done) => {
+      afterMutations(
+          () => (component.value = 20),
+          () => {
+            const el = value();
+            expect(el.classList.contains(styles.locals.default)).to.equal(true);
+          },
+          done
+      );
     });
     it('should change when set to an approved value', (done) => {
-      const component = new AkBadge();
-      component.value = 13;
-      component.appearance = 'removed';
-
-      setTimeout(() => {
-        const el = component[symbols.shadowRoot].querySelector(`.${styles.locals.removed}`);
-        expect(el).to.not.equal(null);
-        done();
-      }, 0);
+      afterMutations(
+          () => (component.value = 50),
+          () => (component.appearance = 'removed'),
+          () => {
+            const el = value();
+            expect(el.classList.contains(styles.locals.removed)).to.equal(true);
+          },
+          done
+      );
     });
     it('should revert to "default" when set to an invalid value', (done) => {
-      const component = new AkBadge();
-      component.value = 13;
-      component.appearance = 'foo';
-
-      setTimeout(() => {
-        const el = component[symbols.shadowRoot].querySelector(`.${styles.locals.default}`);
-        expect(el).to.not.equal(null);
-        done();
-      }, 0);
+      afterMutations(
+          () => (component.value = 9),
+          () => (component.appearance = 'foo'),
+          () => {
+            const el = value();
+            expect(el.classList.contains(styles.locals.default)).to.equal(true);
+            expect(el.classList.contains('foo')).to.equal(false);
+          },
+          done
+      );
     });
   });
 });

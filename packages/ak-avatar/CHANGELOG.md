@@ -1,5 +1,10 @@
-<a name="1.2.0"></a>
-# 1.2.0 (2016-08-18)
+<a name="2.0.0"></a>
+# 2.0.0 (2016-08-19)
+
+
+
+<a name="ak-avatar@2.0.0"></a>
+# ak-avatar@2.0.0 (2016-08-18)
 
 
 ### Chores
@@ -7,8 +12,14 @@
 * **bump:** Bumped avatar version 1.2.0 so we can release 2.0.0 with this commit ([8a76dee](https://bitbucket.org/atlassian/atlaskit/commits/8a76dee))
 
 
+### Features
+
+* **component:** BREAKING CHANGE: Actually a dummy commit to release avatar, due to a broken release ([6816f30](https://bitbucket.org/atlassian/atlaskit/commits/6816f30))
+
+
 ### BREAKING CHANGES
 
+* component: dummy commit
 * bump: releasing v2.0.0
 
 
@@ -172,9 +183,18 @@
 
 ### Features
 
-* **code:** initial commit for ak-avatar ([e66318d](https://bitbucket.org/atlassian/atlaskit/commits/e66318d))
 * Bare functionality of ak-avatar ([e0bfd32](https://bitbucket.org/atlassian/atlaskit/commits/e0bfd32))
 * Rest of the bare functionality for ak-avatar ([bcd9b92](https://bitbucket.org/atlassian/atlaskit/commits/bcd9b92))
+
+
+
+<a name="ak-avatar@1.0.0"></a>
+# ak-avatar@1.0.0 (2016-06-17)
+
+
+### Features
+
+* **code:** initial commit for ak-avatar ([e66318d](https://bitbucket.org/atlassian/atlaskit/commits/e66318d))
 
 
 

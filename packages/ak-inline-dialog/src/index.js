@@ -48,9 +48,9 @@ export default define('ak-inline-dialog', {
     } else if (elem.open === false) {
       emit(elem, 'ak-after-close');
     }
-    if (elem.open === false) {
-      return '';
-    }
+    // if (elem.open === false) {
+    //   return '';
+    // }
 
     const styles = {};
     if (elem.boxShadow) {

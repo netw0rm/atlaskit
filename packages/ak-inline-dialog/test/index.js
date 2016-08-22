@@ -101,6 +101,7 @@ describe('ak-inline-dialog', () => {
   describe('visibility', () => {
     let inlineDialogContainer;
     let component;
+    let target;
 
     function checkInvisibility(elem) {
       expect(elem.getBoundingClientRect().width).to.equal(0);
@@ -115,10 +116,17 @@ describe('ak-inline-dialog', () => {
     }
 
     beforeEach(done => {
+      target = document.createElement('div');
+      target.setAttribute('id', 'target');
+      target.style.width = '100px';
+      target.style.height = '100px';
       inlineDialogContainer = document.createElement('div');
       component = new AkInlineDialog();
+      inlineDialogContainer.appendChild(target);
       inlineDialogContainer.appendChild(component);
       document.body.appendChild(inlineDialogContainer);
+      component.target = '#target';
+      component.innerHTML = '<div><h1>title</h1><p>Some text</p></div>';
       setTimeout(done);
     });
 
@@ -129,18 +137,20 @@ describe('ak-inline-dialog', () => {
     it('should be closed by default', () => {
       expect(component.open).to.equal(false);
       expect(component.hasAttribute('open')).to.equal(false);
-      checkInvisibility(component);
+      checkInvisibility(component.childNodes[0]);
     });
 
     it('should be open when property `open` is set to true', done => {
       component.open = true;
-      setTimeout(() => checkVisibility(component));
+      setTimeout(() => {
+        checkVisibility(component.childNodes[0]);
+      });
       setTimeout(done);
     });
 
     it('should be open when attribute `open` is set to true', done => {
       component.setAttribute('open', '');
-      setTimeout(() => checkVisibility(component));
+      setTimeout(() => checkVisibility(component.childNodes[0]));
       setTimeout(done);
     });
 
@@ -151,15 +161,15 @@ describe('ak-inline-dialog', () => {
       });
 
       it('should be closed when property `open` is set to false', done => {
-        setTimeout(() => checkVisibility(component));
+        setTimeout(() => checkVisibility(component.childNodes[0]));
         setTimeout(() => (component.open = false));
-        setTimeout(() => checkInvisibility(component));
+        setTimeout(() => checkInvisibility(component.childNodes[0]));
         setTimeout(done);
       });
 
       it('should be closed when attribute `open` is removed', done => {
         component.removeAttribute('open');
-        setTimeout(() => checkInvisibility(component));
+        setTimeout(() => checkInvisibility(component.childNodes[0]));
         setTimeout(done);
       });
     });

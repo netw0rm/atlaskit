@@ -6,7 +6,7 @@ import { name } from '../package.json';
 const containerClass = classNames(storyStyles.container);
 
 import AnimatedBox from './AnimatedBox.js';
-
+import AnimatedBoxGroup from './AnimatedBoxGroup.js';
 
 storiesOf(name, module)
   .add('Bold, Optimistic and Combined curves', () => (
@@ -17,14 +17,7 @@ storiesOf(name, module)
       <p>In this example we are simply animating the translateY property but the same idea would
         apply to animating anthing else.
       </p>
-      <div className={containerClass}>
-        <AnimatedBox boxStyle="bold" animationClass="boldBounce">Bold</AnimatedBox>
-        <AnimatedBox
-          boxStyle="optimistic"
-          animationClass="optimisticBounce"
-        >Optimistic</AnimatedBox>
-        <AnimatedBox boxStyle="combined" animationClass="combinedBounce">Combined</AnimatedBox>
-      </div>
+      <AnimatedBoxGroup />
     </div>
   ))
   .add('Bold animation curve', () => (

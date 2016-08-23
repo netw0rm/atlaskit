@@ -131,7 +131,7 @@
     },
     "akutil-shared-styles": {
       "version": "33.4.0",
-      "from": "akutil-shared-styles@>=33.3.0 <34.0.0",
+      "from": "akutil-shared-styles@>=33.4.0 <34.0.0",
       "resolved": "https://registry.npmjs.org/akutil-shared-styles/-/akutil-shared-styles-33.4.0.tgz"
     },
     "align-text": {

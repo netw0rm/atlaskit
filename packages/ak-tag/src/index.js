@@ -100,7 +100,7 @@ export default define('ak-tag', {
       attribute: true,
     },
 
-    // TODO replace with Symbol as soon as Skate suuports it
+    // TODO replace with Symbol as soon as Skate supports it
     __removeButtonHover: prop.boolean({
       initial: false,
     }),

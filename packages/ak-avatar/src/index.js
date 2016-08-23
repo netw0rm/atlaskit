@@ -143,7 +143,7 @@ const definition = {
       attribute: true,
     }),
 
-    // TODO replace with Symbol as soon as Skate suuports it
+    // TODO replace with Symbol as soon as Skate supports it
     __loading: prop.boolean({
       initial: false,
     }),

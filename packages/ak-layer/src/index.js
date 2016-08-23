@@ -83,6 +83,15 @@ export default define('ak-layer', {
       attribute: true,
     }),
   },
+  prototype: {
+    reposition() {
+      if (this.alignment) {
+        this.alignment.reposition();
+      }
+
+      return this;
+    },
+  },
   attached(elem) {
     const options = {
       elem: elem.positionedDOM,

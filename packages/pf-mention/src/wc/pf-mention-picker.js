@@ -65,6 +65,9 @@ export default define('pf-mention-picker', {
             open={elem._visible}
             padding="0"
             hasBlanket={false}
+            ref={(el) => {
+              elem._dialog = el;
+            }}
           >
             <ResourcedMentionList
               resourceProvider={resourceProvider}
@@ -77,6 +80,14 @@ export default define('pf-mention-picker', {
       );
     }
     return null;
+  },
+
+  rendered(elem) {
+    // since the content of the dialog is dynamic it needs to be repositioned manually
+    // after this content was generated
+    setTimeout(() => {
+      elem._dialog.reposition();
+    });
   },
 
   props: {

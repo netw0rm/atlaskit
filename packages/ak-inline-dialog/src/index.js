@@ -48,9 +48,6 @@ export default define('ak-inline-dialog', {
     } else if (elem.open === false) {
       emit(elem, 'ak-after-close');
     }
-    // if (elem.open === false) {
-    //   return '';
-    // }
 
     const styles = {};
     if (elem.boxShadow) {
@@ -71,6 +68,9 @@ export default define('ak-inline-dialog', {
           target={elem.target}
           boundariesElement={elem.boundariesElement}
           enableFlip={elem.enableFlip}
+          ref={(el) => {
+            elem.layer = el;
+          }}
         >
           <style>{shadowStyles.toString()}</style>
           <div className={shadowStyles.locals.inlineDialogContainer} style={styles}>
@@ -79,6 +79,15 @@ export default define('ak-inline-dialog', {
         </Layer>
       </div>
     );
+  },
+  prototype: {
+    reposition() {
+      if (this.layer) {
+        this.layer.reposition();
+      }
+
+      return this;
+    },
   },
   props: {
     /* eslint-disable max-len  */

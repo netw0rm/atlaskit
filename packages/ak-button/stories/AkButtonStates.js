@@ -22,12 +22,12 @@ export default class MyComponent extends React.Component {
   createCheckboxBooleanAttribute(attribute) {
     return (
       <label>
-        {attribute}
         <input
           type="checkbox"
           onChange={() => this.setState({ [attribute]: !this.state[attribute] })}
           checked={this.state[attribute]}
         />
+        {attribute}
       </label>
     );
   }
@@ -35,12 +35,12 @@ export default class MyComponent extends React.Component {
   createRadioAppearanceAttribute(attribute) {
     return (
       <label>
-        {attribute}
         <input
           type="radio"
           onChange={() => this.setState({ appearance: attribute })}
           checked={this.state.appearance === attribute}
         />
+        {attribute}
       </label>
     );
   }
@@ -48,6 +48,7 @@ export default class MyComponent extends React.Component {
   render() {
     return (
       <div>
+        <style>{"label {margin-right: 10px;}"}</style>
         <form>
           <label><strong>Boolean Attributes</strong></label>
           <br />

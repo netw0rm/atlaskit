@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
-    <title>image</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="image" fill="#505F79">
-            <g transform="translate(4.000000, 4.000000)" id="Combined-Shape">
-                <path d="M5,9 L4,8 L2,10 L5,10 L10,10 L10,8.19999981 L8,6 L5,9 Z M0,1.00247329 C0,0.448822582 0.455760956,0 1.00247329,0 L10.9975267,0 C11.5511774,0 12,0.455760956 12,1.00247329 L12,10.9975267 C12,11.5511774 11.544239,12 10.9975267,12 L1.00247329,12 C0.448822582,12 0,11.544239 0,10.9975267 L0,1.00247329 Z M3.5,5 C4.32842712,5 5,4.32842712 5,3.5 C5,2.67157288 4.32842712,2 3.5,2 C2.67157288,2 2,2.67157288 2,3.5 C2,4.32842712 2.67157288,5 3.5,5 Z"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9 13l-1-1-2 2h8v-1.8L12 10l-3 3zM4 5.002C4 4.45 4.456 4 5.002 4h9.996C15.55 4 16 4.456 16 5.002v9.996C16 15.55 15.544 16 14.998 16H5.002A1.007 1.007 0 0 1 4 14.998V5.002zM7.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="#505F79" fill-rule="evenodd"/></svg>

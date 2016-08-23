@@ -1,4 +1,5 @@
 import 'custom-event-polyfill';
+import assign from 'object-assign';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { symbols, props } from 'skatejs';
@@ -12,8 +13,8 @@ const expect = chai.expect;
 
 describe('ak-button', () => {
   let component;
-  const shadowDomQuery = (elem, classes) =>
-    elem[symbols.shadowRoot].querySelector(classes);
+  const shadowDomQuery = (elem, selector) =>
+    elem[symbols.shadowRoot].querySelector(selector);
 
   const getShadowButtonElem = (elem) =>
     shadowDomQuery(elem, `.${classKeys.button}`);
@@ -103,6 +104,53 @@ describe('ak-button', () => {
       });
     });
 
+    describe('compact', () => {
+      const selector = `.${classKeys.button}.${classKeys.compact}`;
+      beforeEach(() =>
+        props(component, { compact: true })
+      );
+
+      it('button should have compact class', () =>
+        expect(shadowDomQuery(component, selector)).not.to.be.null
+      );
+
+      describe('when button is compact', () => {
+        [
+          {
+            setup: { disabled: true },
+            expectedClass: 'disabled',
+          },
+          {
+            setup: { selected: true },
+            expectedClass: 'selected',
+          },
+          {
+            setup: { appearance: APPEARANCE.PRIMARY },
+            expectedClass: 'primary',
+          },
+          {
+            setup: { appearance: APPEARANCE.SUBTLE },
+            expectedClass: 'subtle',
+          },
+        ].forEach(testCase => {
+          describe(`and is also ${JSON.stringify(testCase.setup)}`, () => {
+            beforeEach(() =>
+              (props(component, assign({ compact: true }, testCase.setup)))
+            );
+            it(`button should have compact and ${testCase.expectedClass} class`, () => {
+              const buttonClasses = getShadowButtonElem(component).classList;
+              expect(buttonClasses).to.have.lengthOf(3);
+              expect(containsClass(buttonClasses,
+                classKeys.button,
+                classKeys.compact,
+                classKeys[testCase.expectedClass]
+              )).to.be.true;
+            });
+          });
+        });
+      });
+    });
+
     describe('selected', () => {
       const selector = `.${classKeys.button}.${classKeys.selected}`;
       beforeEach(() =>
@@ -112,6 +160,13 @@ describe('ak-button', () => {
       it('button should have selected class', () =>
         expect(shadowDomQuery(component, selector)).not.to.be.null
       );
+
+      it('selected button should override any appearance', () => {
+        props(component, { appearance: APPEARANCE.PRIMARY, selected: true });
+        const buttonClasses = getShadowButtonElem(component).classList;
+        expect(buttonClasses).to.have.lengthOf(2);
+        expect(containsClass(buttonClasses, classKeys.button, classKeys.selected)).to.be.true;
+      });
 
       it('button should not have selected class after it is removed', () => {
         props(component, { selected: false });

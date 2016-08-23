@@ -1,0 +1,39 @@
+// These styles will be inserted into a style tag inside
+// the shadow dom of each instance of the component
+
+// Only do class selectors in here, anything else leaks to the rest of the page in
+// browsers that do not support shadow DOM
+@import 'shared-variables.less';
+
+.wrapper {
+  display: flex;
+}
+.avatarSlotWrapper {
+  align-self: stretch;
+  background: red;
+  height: 100%;
+}
+.content {
+  flex: 1 0 auto;
+}
+.avatarSlot {
+  background: red;
+}
+.metadata {
+  display: flex;
+  flex: 1 1 auto;
+}
+.authorSlotWrapper {
+  color: blue;
+}
+.authorSlot {
+  color: blue;
+}
+.timeSlotWrapper {
+  color: red;
+  flex: 1 1 auto;
+}
+.timeSlot {
+  color: red;
+  flex: 1 1 auto;
+}

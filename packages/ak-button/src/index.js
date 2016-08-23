@@ -6,17 +6,35 @@ import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
 
+const classKeys = shadowStyles.locals;
+
 const attributeValuesToEnumObject = values =>
   values.reduce((acum, val) => {
     acum[val.toUpperCase()] = val;
     return acum;
   }, {});
 
+const getClasses = elem => {
+  const classes = [classKeys.button];
+
+  if (elem.compact) {
+    classes.push(classKeys.compact);
+  }
+
+  if (elem.disabled) {
+    classes.push(classKeys.disabled);
+  } else if (elem.selected) {
+    classes.push(classKeys.selected);
+  } else if (elem.appearance) {
+    classes.push(classKeys[elem.appearance]);
+  }
+  return classes;
+};
+
 const APPEARANCE_VALUES = [
   'primary',
   'standard',
   'subtle',
-  'compact',
 ];
 const TYPE_VALUES = [
   'button',
@@ -74,6 +92,15 @@ const definition = {
      */
     disabled: prop.boolean({ attribute: true }),
     /**
+     * @description Option to make a button compact
+     * @memberof Button
+     * @default false
+     * @type {boolean}
+     * @example @html <ak-button compact></ak-button>
+     * @example @js button.compact = true;
+     */
+    compact: prop.boolean({ attribute: true }),
+    /**
      * @description Option to make a button selected
      * @memberof Button
      * @default false
@@ -84,15 +111,7 @@ const definition = {
     selected: prop.boolean({ attribute: true }),
   },
   render(elem) {
-    const classes = [shadowStyles.locals.button];
-
-    if (elem.disabled) {
-      classes.push(shadowStyles.locals.disabled);
-    } else if (elem.selected) {
-      classes.push(shadowStyles.locals.selected);
-    } else if (elem.appearance) {
-      classes.push(shadowStyles.locals[elem.appearance]);
-    }
+    const classes = getClasses(elem);
 
     return (
       <div>
@@ -103,7 +122,7 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={(e) => e.preventDefault()}
         >
-          <slot className={shadowStyles.locals.slot} />
+          <slot className={classKeys.slot} />
         </button>
       </div>
     );

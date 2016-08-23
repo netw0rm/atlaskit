@@ -1,3 +1,5 @@
+@import '../src/animations.less';
+
 .example {
   border: 1px dotted blue;
   width: 500px;
@@ -24,22 +26,47 @@
   font-size: 20px;
 }
 
-.bold {
-  border-radius: 10px;
-}
-
-.optimistic {
-  border-radius: 100%;
-}
-
-.combined {
-  border-radius:35px;
-  transform: rotate(45deg);
-}
-
 .buttonContainer {
   display: flex;
   justify-content: space-between;
   padding-left: 55px;
   padding-right: 50px;
+}
+
+.bold {
+  border-radius: 10px;
+  animation: boldBounce 1s infinite;
+  // now define an animation called boldBounce
+  .boldAnimation({.boldAnimClass;}, boldBounce);
+}
+
+.optimistic {
+  border-radius: 100%;
+  animation: optimisticBounce 1s infinite;
+  .optimisticAnimation({.optimisticAnimClass;}, optimisticBounce);
+}
+
+.combined {
+  border-radius:35px;
+  animation: combinedBounce 1s infinite;
+  .combinedAnimation({.combinedAnimClass;}, combinedBounce);
+}
+
+.boldAnimClass {
+  .toAnimate(@modifier) {
+    transform: translateY(-200px * @modifier);
+  }
+}
+
+.optimisticAnimClass {
+  .toAnimate(@modifier) {
+    transform: translateY(-200px * @modifier);
+  }
+}
+
+.combinedAnimClass {
+  .toAnimate(@modifier) {
+    // Here we show that you can also have static properties in your animations (the rotation)
+    transform: translateY(-200px * @modifier) rotate(45deg);
+  }
 }

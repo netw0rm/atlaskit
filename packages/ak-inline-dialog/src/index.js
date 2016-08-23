@@ -89,10 +89,10 @@ export default define('ak-inline-dialog', {
   props: {
     /* eslint-disable max-len  */
     /**
-     * @description Position of an inline-dialog relative to it's target.
+     * @description Position of an inline-dialog relative to it’s target.
      * The position attribute takes two positional arguments in the format`position="edge edge-position"`,
-     * where `edge` specifies what edge to align the inline dialog to, and `edge-position` specifies where on that edge the dialog should appear.
-     * Refer to the table below for examples:
+     * where `edge` specifies the edge you haveto align the inline dialog to, and `edge-position` specifies where on that edge the dialog should appear.
+     * Checkout the examples in the following table:
      *
      * |             | top left    | top center    | top right    |              |
      * |-------------|-------------|---------------|--------------|--------------|
@@ -112,7 +112,7 @@ export default define('ak-inline-dialog', {
       attribute: true,
     }),
     /**
-     * @description Controls visibility of an inline-dialog. Dialog is invisible by default.
+     * @description Controls the visibility of an inline-dialog. It is invisible by default.
      * @memberof InlineDialog
      * @instance
      * @default false
@@ -125,7 +125,7 @@ export default define('ak-inline-dialog', {
     }),
     /**
      * @description Target of an inline-dialog.
-     * Selector or element on a page relative to which inline-dialog should be positioned
+     * Selector or element on a page relative to which the inline-dialog should be positioned
      * @memberof InlineDialog
      * @instance
      * @type String
@@ -137,7 +137,7 @@ export default define('ak-inline-dialog', {
       attribute: true,
     },
     /**
-     * @description Constrain an inline-dialog to a scrollable parent or the window
+     * @description Constrain an inline-dialog to a scrollable parent or to the window
      * @memberof InlineDialog
      * @instance
      * @default 'window'
@@ -182,7 +182,8 @@ export default define('ak-inline-dialog', {
       attribute: true,
     }),
     /**
-     * @description If dialog has a blanket underneath or not. By default it has.
+     * @description Defines whether a dialog has a blanket underneath or not.
+     * It does have a blanket underneath.
      * @memberof InlineDialog
      * @instance
      * @type Boolean
@@ -195,7 +196,8 @@ export default define('ak-inline-dialog', {
       default: true,
     }),
     /**
-     * @description If click on the blanket dismisses the dialog. By default it is.
+     * @description If there is a click on the blanket, it dismisses the dialog.
+     * The blanket is clickable by default.
      * @memberof InlineDialog
      * @instance
      * @type Boolean
@@ -208,7 +210,8 @@ export default define('ak-inline-dialog', {
       default: true,
     }),
     /**
-     * @description Is blanket grey with opacity or transparent. By default it's transparent.
+     * @description Defines if the blanket is grey with opacity or transparent.
+     * It's transparent by default.
      * @memberof InlineDialog
      * @instance
      * @type Boolean
@@ -220,7 +223,7 @@ export default define('ak-inline-dialog', {
       attribute: true,
     }),
     /**
-     * @description Is blanket is closable by pressing the 'escape' button. By default it is.
+     * @description Close the blanket by pressing the 'escape' button. It's closable by default.
      * @memberof InlineDialog
      * @instance
      * @type Boolean

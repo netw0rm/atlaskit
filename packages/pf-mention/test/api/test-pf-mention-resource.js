@@ -77,7 +77,7 @@ describe('MentionResource', function () {
   describe('#subscribe', function () {
     it('subscribe should receive updates', function (done) {
       const resource = new MentionResource(apiConfig);
-      resource.subscribe(function (mentions) {
+      resource.subscribe('test1', function (mentions) {
         expect(mentions.length).to.equal(resultCraig.length);
         done();
       });
@@ -86,14 +86,14 @@ describe('MentionResource', function () {
     it('multiple subscriptions should receive updates', function (done) {
       const resource = new MentionResource(apiConfig);
       let count = 0;
-      resource.subscribe(function (mentions) {
+      resource.subscribe('test1', function (mentions) {
         expect(mentions.length).to.equal(resultCraig.length);
         count++;
         if (count === 2) {
           done();
         }
       });
-      resource.subscribe(function (mentions) {
+      resource.subscribe('test2', function (mentions) {
         expect(mentions.length).to.equal(resultCraig.length);
         count++;
         if (count === 2) {
@@ -107,8 +107,8 @@ describe('MentionResource', function () {
     it('subscriber should no longer called', function (done) {
       const resource = new MentionResource(apiConfig);
       const listener = sinon.spy();
-      resource.subscribe(listener);
-      resource.unsubscribe(listener);
+      resource.subscribe('test1', listener);
+      resource.unsubscribe('test1');
       resource.filter('craig');
       // Not desirable...
       setTimeout(function () {
@@ -122,7 +122,7 @@ describe('MentionResource', function () {
       const resource = new MentionResource(apiConfig);
       const results = [];
       const expected = [resultC, resultCraig];
-      resource.subscribe(function (mentions) {
+      resource.subscribe('test1', function (mentions) {
         results.push(mentions);
         if (results.length === 2) {
           checkOrder(expected, results);
@@ -138,7 +138,7 @@ describe('MentionResource', function () {
       const resource = new MentionResource(apiConfig);
       const results = [];
       const expected = [resultCraig];
-      resource.subscribe(function (mentions) {
+      resource.subscribe('test1', function (mentions) {
         results.push(mentions);
         if (results.length === 1) {
           checkOrder(expected, results);
@@ -155,7 +155,7 @@ describe('MentionResource', function () {
     });
     it('error response', function (done) {
       const resource = new MentionResource(apiConfig);
-      resource.subscribe(function () {
+      resource.subscribe('test1', function () {
         assert.fail('Should not be called');
       }, function () {
         done();

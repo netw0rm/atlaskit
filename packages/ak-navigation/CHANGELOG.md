@@ -1,5 +1,21 @@
-<a name="1.0.1"></a>
-## 1.0.1 (2016-08-18)
+<a name="2.0.0"></a>
+# 2.0.0 (2016-08-23)
+
+
+
+<a name="ak-navigation@2.0.0"></a>
+# ak-navigation@2.0.0 (2016-08-18)
+
+
+### Features
+
+* **component:** ak-navigation and ak-page event changes ([27a0e09](https://bitbucket.org/atlassian/atlaskit/commits/27a0e09))
+
+
+### BREAKING CHANGES
+
+* component: ak-navigation-open-state-change event has been removed. Use ak-navigation-open and
+ak-navigation-close instead.
 
 
 

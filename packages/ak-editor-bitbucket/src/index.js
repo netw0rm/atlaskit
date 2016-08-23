@@ -1,5 +1,5 @@
 import { vdom, define, prop, symbols, emit } from 'skatejs';
-import { ProseMirror, Plugin } from 'prosemirror/dist/edit';
+import { ProseMirror, Plugin } from '../prosemirror/dist/edit';
 import 'style!./host.less';
 import shadowStyles from './shadow.less';
 import Content from 'ak-editor-content';
@@ -10,7 +10,7 @@ import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
 import { Schema } from 'prosemirror/dist/model';
 import { schema } from './schema';
-import { buildKeymap } from './keymap';
+// import { buildKeymap } from './keymap';
 import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';
 import { nodeLifecycleHandler } from './node-lifecycle';
@@ -149,7 +149,7 @@ export default define('ak-editor-bitbucket', {
       pm.wrapper.addEventListener('keydown', e => e.stopPropagation());
 
       // add the keymap
-      pm.addKeymap(buildKeymap(pm.schema));
+      // pm.addKeymap(buildKeymap(pm.schema));
 
       // add paste handlers
       pm.on.transformPasted.add((slice) => markdownTransformer(pm.schema, slice));

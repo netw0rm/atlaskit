@@ -1,9 +1,9 @@
 /* eslint-disable */
 import Keymap from "browserkeymap";
 import browser from "prosemirror/dist/util/browser";
-import { commands } from  "prosemirror/dist/edit";
+import commands from  "prosemirror/dist/commands";
 
-const { wrapIn, setBlockType, wrapInList, splitListItem, liftListItem, 
+const { wrapIn, setBlockType, splitListItem, liftListItem,
   sinkListItem, chainCommands, newlineInCode, toggleMark } = commands;
 
 // Note: This is a copy pasta from prosemirror's example setup.
@@ -61,13 +61,13 @@ export function buildKeymap(schema, mapKeys) {
   for (let name in schema.nodes) {
     let node = schema.nodes[name];
 
-    if (name === "bullet_list") {
-      bind("Shift-Ctrl-8", wrapInList(node));
-    }
-
-    if (name === "ordered_list") {
-      bind("Shift-Ctrl-9", wrapInList(node));
-    }
+    // if (name === "bullet_list") {
+    //   bind("Shift-Ctrl-8", wrapInList(node));
+    // }
+    //
+    // if (name === "ordered_list") {
+    //   bind("Shift-Ctrl-9", wrapInList(node));
+    // }
 
     if (name === "blockquote") {
       bind("Shift-Ctrl-.", wrapIn(node));

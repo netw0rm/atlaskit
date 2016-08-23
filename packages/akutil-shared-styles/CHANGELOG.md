@@ -1,5 +1,15 @@
-<a name="33.3.0"></a>
-# 33.3.0 (2016-08-23)
+<a name="33.4.0"></a>
+# 33.4.0 (2016-08-23)
+
+
+
+<a name="akutil-shared-styles@33.4.0"></a>
+# akutil-shared-styles@33.4.0 (2016-08-23)
+
+
+### Features
+
+* Add default font size ([537c7c4](https://bitbucket.org/atlassian/atlaskit/commits/537c7c4))
 
 
 

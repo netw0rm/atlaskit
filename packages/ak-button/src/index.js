@@ -23,12 +23,10 @@ const getClasses = elem => {
 
   if (elem.disabled) {
     classes.push(classKeys.disabled);
-  } else {
-    if (elem.selected) {
-      classes.push(classKeys.selected);
-    } else if (elem.appearance) {
-      classes.push(classKeys[elem.appearance]);
-    }
+  } else if (elem.selected) {
+    classes.push(classKeys.selected);
+  } else if (elem.appearance) {
+    classes.push(classKeys[elem.appearance]);
   }
   return classes;
 };

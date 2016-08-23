@@ -1,12 +1,10 @@
 # AkUtilComponentTemplate
 
-## Synopsis
-
 This is a template for AtlasKit components. Update this file with usage instructions and examples.
 
 ## Setup and install
 
-```
+```sh
 npm install akutil-component-template
 ```
 
@@ -17,18 +15,18 @@ npm install akutil-component-template
 The `akutil-component-template` package exports the AkUtilComponentTemplate [Skate](https://github.com/skatejs/skatejs) component.
 
 Import the component in your JS resource:
- 
+
 #### bundle.js
 
-```
-import AkUtilComponentTemplate from 'akutil-component-template';
+```js
+import 'akutil-component-template';
 ```
 
 Now we can use the defined tag in our HTML markup, e.g.:
 
 #### index.html
 
-```
+```html
 <html>
 <head>
   <script src="bundle.js"></script>
@@ -39,9 +37,18 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </body>
 ```
 
+or from within another JavaScript resource:
+
+```js
+import AkUtilComponentTemplate from 'akutil-component-template';
+
+const component = new AkUtilComponentTemplate();
+document.body.appendChild(component);
+```
+
 ### React
 
-```
+```js
 import AkUtilComponentTemplate from 'akutil-component-template';
 import reactify from 'skatejs-react-integration';
 

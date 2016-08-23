@@ -1,7 +1,5 @@
 # Inline Dialog
 
-## Synopsis
-
 A container for secondary content/controls to be displayed on user request.
 
 ## Setup and install

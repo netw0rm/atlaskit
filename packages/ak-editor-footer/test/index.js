@@ -1,15 +1,88 @@
 import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import { emit, symbols } from 'skatejs';
 import Component from '../src';
+import shadowStyles from '../src/shadow.less';
+import { afterMutations } from 'akutil-common';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
 describe(name, () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
   it('should be possible to create a component', () => {
     const component = new Component();
     expect(component.tagName.toLowerCase()).to.equal(name);
+  });
+
+  describe('button events', () => {
+    it('should trigger save event', done => {
+      let clicked = false;
+      const component = new Component();
+      document.body.appendChild(component);
+      component.addEventListener('save', () => { clicked = true; });
+      afterMutations(
+        () => {
+          const button = component[symbols.shadowRoot]
+            .querySelector(`.${shadowStyles.locals.saveButton}`);
+          emit(button, 'click');
+        },
+        () => expect(clicked).to.equal(true),
+        done
+      );
+    });
+
+    it('should trigger cancel event', done => {
+      let clicked = false;
+      const component = new Component();
+      document.body.appendChild(component);
+      component.addEventListener('cancel', () => { clicked = true; });
+      afterMutations(
+        () => {
+          const button = component[symbols.shadowRoot]
+            .querySelector(`.${shadowStyles.locals.cancelButton}`);
+          emit(button, 'click');
+        },
+        () => expect(clicked).to.equal(true),
+        done
+      );
+    });
+  });
+
+  describe('insert events', () => {
+    it('should trigger mention event', done => {
+      let clicked = false;
+      const component = new Component();
+      document.body.appendChild(component);
+      component.addEventListener('insertmention', () => { clicked = true; });
+      afterMutations(
+        () => {
+          const insert = component[symbols.shadowRoot].querySelectorAll('button')[2];
+          emit(insert, 'click');
+        },
+        () => expect(clicked).to.equal(true),
+        done
+      );
+    });
+
+    it('should trigger image event', done => {
+      let clicked = false;
+      const component = new Component();
+      document.body.appendChild(component);
+      component.addEventListener('insertimage', () => { clicked = true; });
+      afterMutations(
+        () => {
+          const insert = component[symbols.shadowRoot].querySelectorAll('button')[3];
+          emit(insert, 'click');
+        },
+        () => expect(clicked).to.equal(true),
+        done
+      );
+    });
   });
 });

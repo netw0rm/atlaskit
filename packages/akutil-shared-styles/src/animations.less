@@ -1,4 +1,7 @@
+// Adding this dummy variable to get around an issue with less-vars-to-js no parsing files with noscript
+// variables. PR to fix it is here https://github.com/mjt01/less-vars-to-js/pull/3
 @dummyVar: 1;
+
 .boldAnimation(@animationClass; @name) {
     @animationClass();
 

@@ -18,9 +18,9 @@ glob('src/*.less', {}, (err, files) => {
     return Object.assign(prev, lessToJs(fileContent));
   }, {});
 
-  console.log('/* NOTE: This file is generated from the LESS variables found inside this */');
-  console.log('/*       Component. */');
-  console.log('/*       DO NOT MODIFY THIS FILE AS YOUR CHANGES WILL BE OVERRIDDEN */');
+  console.log('// NOTE: This file is generated from the LESS variables found inside this');
+  console.log('//       Component.');
+  console.log('//       DO NOT MODIFY THIS FILE AS YOUR CHANGES WILL BE OVERRIDDEN');
   console.log('/* eslint-disable quotes, max-len */');
   Object.keys(vars).forEach((key) => {
     console.log(`const ${jsifyLessVariable(key)} = ${JSON.stringify(vars[key])};`);

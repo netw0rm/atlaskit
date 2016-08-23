@@ -55,5 +55,5 @@ module.exports = (config) => {
     },
   });
 
-  console.log(config);
+  console.log(JSON.stringify(config));
 };

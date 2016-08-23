@@ -1,4 +1,5 @@
 import 'custom-event-polyfill';
+import assign from 'object-assign';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { symbols, props } from 'skatejs';
@@ -134,7 +135,7 @@ describe('ak-button', () => {
         ].forEach(testCase => {
           describe(`and is also ${JSON.stringify(testCase.setup)}`, () => {
             beforeEach(() =>
-              (props(component, Object.assign({ compact: true }, testCase.setup)))
+              (props(component, assign({ compact: true }, testCase.setup)))
             );
             it(`button should have compact and ${testCase.expectedClass} class`, () => {
               const buttonClasses = getShadowButtonElem(component).classList;

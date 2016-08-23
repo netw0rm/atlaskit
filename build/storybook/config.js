@@ -10,6 +10,8 @@ import minilog from 'minilog';
 minilog.enable();
 const log = minilog('storybook');
 
+import 'style!./styles.less';
+
 // Utilities for stories
 window.React = React;
 window.ReactDOM = ReactDOM;

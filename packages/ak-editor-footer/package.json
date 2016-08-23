@@ -15,10 +15,10 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-icon": "^2.0.1",
+    "akutil-shared-styles": "^33.1.0",
     "skatejs": "^1.0.0"
   },
   "devDependencies": {
-    "akutil-shared-styles": "^33.1.0",
     "akutil-common-test": "^1.0.0",
     "akutil-react": "^1.0.0"
   },

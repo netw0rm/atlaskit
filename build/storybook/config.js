@@ -3,6 +3,7 @@ import { configure, setAddon } from '@kadira/storybook';
 import 'akutil-polyfills';
 import MonitoredStory from './MonitoredStory.js';
 import MonkeyTestStory from './MonkeyTestStory.js';
+import RTLStory from './RTLStory.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import minilog from 'minilog';
@@ -59,6 +60,14 @@ setAddon({
       <MonkeyTestStory>
         {storyFn(context)}
       </MonkeyTestStory>
+    ));
+  },
+
+  addRTL(storyName, storyFn) {
+    this.add(storyName, (context) => (
+      <RTLStory>
+        {storyFn(context)}
+      </RTLStory>
     ));
   },
 });

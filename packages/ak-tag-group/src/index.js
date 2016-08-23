@@ -13,8 +13,8 @@ export default define('ak-tag-group', {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <div className={shadowStyles.locals.group}>
-          <slot />
+        <div className={shadowStyles.locals.defaultSlotWrapper}>
+          <slot className={shadowStyles.locals.defaultSlot} />
         </div>
       </div>
     );

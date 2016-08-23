@@ -5,6 +5,33 @@
 // browsers that do not support shadow DOM
 @import 'shared-variables.less';
 
-.group {
-  color: @ak-example-variable;
+@spacing: 6px;
+
+.flex() {
+  display: flex;
+  flex-wrap: wrap;
+  padding: @spacing;
+}
+
+.flex-item() {
+  margin: @spacing;
+}
+
+:host .default-slot-wrapper {
+  .flex;
+}
+
+.default-slot {
+  .flex;
+  & > * {
+     .flex-item();
+  }
+}
+
+::content > * {
+  .flex-item();
+}
+
+::slotted(*) {
+  .flex-item();
 }

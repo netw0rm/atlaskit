@@ -21,49 +21,51 @@ storiesOf(name, module)
   ))
   .add('text: maximum length (ellipsis)', () => (
     <table>
-      <tr>
-        <th>Full text</th>
-        <td>{cupcakeipsum}</td>
-      </tr>
-      <tr>
-        <th>Text</th>
-        <td>
-          <Component
-            className={styles.akTag}
-            text={cupcakeipsum}
-          />
-        </td>
-      </tr>
-      <tr>
-        <th>Linked</th>
-        <td>
-          <Component
-            className={styles.akTag}
-            text={cupcakeipsum}
-            href="http://www.cupcakeipsum.com/"
-          />
-        </td>
-      </tr>
-      <tr>
-        <th>Removable</th>
-        <td>
-          <Component
-            className={styles.akTag}
-            text={cupcakeipsum}
-            remove-button-text="No sweets for you!"
-          />
-        </td>
-      </tr>
-      <tr>
-        <th>Removable & linked</th>
-        <td>
-          <Component
-            className={styles.akTag}
-            text={cupcakeipsum}
-            remove-button-text="No sweets for you!"
-            href="http://www.cupcakeipsum.com/"
-          />
-        </td>
-      </tr>
+      <tbody>
+        <tr>
+          <th>Full text</th>
+          <td>{cupcakeipsum}</td>
+        </tr>
+        <tr>
+          <th>Text</th>
+          <td>
+            <Component
+              className={styles.akTag}
+              text={cupcakeipsum}
+            />
+          </td>
+        </tr>
+        <tr>
+          <th>Linked</th>
+          <td>
+            <Component
+              className={styles.akTag}
+              text={cupcakeipsum}
+              href="http://www.cupcakeipsum.com/"
+            />
+          </td>
+        </tr>
+        <tr>
+          <th>Removable</th>
+          <td>
+            <Component
+              className={styles.akTag}
+              text={cupcakeipsum}
+              remove-button-text="No sweets for you!"
+            />
+          </td>
+        </tr>
+        <tr>
+          <th>Removable & linked</th>
+          <td>
+            <Component
+              className={styles.akTag}
+              text={cupcakeipsum}
+              remove-button-text="No sweets for you!"
+              href="http://www.cupcakeipsum.com/"
+            />
+          </td>
+        </tr>
+      </tbody>
     </table>
   ));

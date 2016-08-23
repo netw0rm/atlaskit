@@ -33,6 +33,7 @@ storiesOf(name, module)
         text="Fruitcake"
         remove-button-text="Brush your teeth!"
       />
+      <hr />
       <Component
         className={styles.akTag}
         href="http://www.cupcakeipsum.com"

@@ -33,25 +33,47 @@
   padding-right: 50px;
 }
 
+// The following three classes are only used to style the animated boxes
+// (bold, optimistic, combined)
 .bold {
   border-radius: 10px;
-  animation: boldBounce 1s infinite;
-  // now define an animation called boldBounce
-  .boldAnimation({.boldAnimClass;}, boldBounce);
 }
 
 .optimistic {
   border-radius: 100%;
-  animation: optimisticBounce 1s infinite;
-  .optimisticAnimation({.optimisticAnimClass;}, optimisticBounce);
 }
 
 .combined {
   border-radius:35px;
-  animation: combinedBounce 1s infinite;
+  transform: rotate(45deg);
+
+  span {
+    display: block;
+    transform: rotate(-45deg);
+  }
+}
+
+
+// The following three classes create and apply our new animations
+// boldBounce, optimisticBounce, combinedBounce)
+.boldBounce {
+  animation: boldBounce 1.5s 1;
+  // now define an animation called boldBounce
+  .boldAnimation({.boldAnimClass;}, boldBounce);
+}
+
+.optimisticBounce {
+  animation: optimisticBounce 1s 1;
+  .optimisticAnimation({.optimisticAnimClass;}, optimisticBounce);
+}
+
+.combinedBounce {
+  animation: combinedBounce 1s 1;
   .combinedAnimation({.combinedAnimClass;}, combinedBounce);
 }
 
+// The following three classes are only to store the mixins used for the animations
+// (boldAnimClass, optimisticAnimClass, combinedAnimClass)
 .boldAnimClass {
   .toAnimate(@modifier) {
     transform: translateY(-200px * @modifier);

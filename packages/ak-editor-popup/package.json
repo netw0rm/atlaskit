@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "ak-editor-popup webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-popup"
   },

@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "ak-navigation webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-navigation"
   },

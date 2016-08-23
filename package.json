@@ -12,7 +12,7 @@
     "@kadira/storybook": "^2.3.0",
     "ak-dmd-plugin": "0.0.9",
     "akutil-polyfills": "^1.0.0",
-    "akutil-shared-styles": "^33.2.1",
+    "akutil-shared-styles": "^33.3.0",
     "autoprefixer": "^6.3.7",
     "babel-core": "^6.13.2",
     "babel-loader": "^6.2.4",

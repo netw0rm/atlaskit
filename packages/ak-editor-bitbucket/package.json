@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-editor-bitbucket -- --bundle-deps",
     "pre-release": "lerna-semantic-release pre"

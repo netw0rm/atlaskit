@@ -7,7 +7,7 @@
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single akutil-polyfills"
   },

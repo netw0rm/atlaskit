@@ -3,7 +3,7 @@
   "version": "1.2.6",
   "description": "pf-mention webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single pf-mention"
   },

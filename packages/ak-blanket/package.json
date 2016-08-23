@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "ak-blanket webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-blanket"
   },

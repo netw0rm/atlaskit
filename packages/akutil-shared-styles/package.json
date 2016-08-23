@@ -4,7 +4,7 @@
   "description": "Shared styles for AtlasKit components",
   "ak:link": true,
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle.js",
   "scripts": {
     "gen-js": "node ./bin/generate-vars-export.js > src/index.js",
     "prepublish": "npm run gen-js && cd ../.. && npm run prepublish/single akutil-shared-styles"

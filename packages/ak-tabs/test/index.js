@@ -29,46 +29,31 @@ describe('ak-tabs', () => {
   let tabs = [];
   let containerWidth = '';
 
-  // Helper function to create an ak-tabs component
-  function createTabs(tabOptionsArray) {
-    const parent = new AkTabs();
-    const children = [];
-
-    tabOptionsArray.forEach(tabOptions => {
-      const newTabElement = new AkTabsTab();
-
-      newTabElement.label = tabOptions.label || DEFAULT_LABEL;
-      newTabElement.innerHTML = tabOptions.content || DEFAULT_CONTENT;
-      newTabElement.selected = tabOptions.selected;
-
-      parent.appendChild(newTabElement);
-      children.push(newTabElement);
-    });
-
-    return { parent, children };
-  }
-
-  function createContainer(child, width) {
-    const container = document.createElement('div');
-
-    if (width) {
-      container.style.width = width;
-    }
-    container.appendChild(child);
-    document.body.appendChild(container);
-
-    return container;
-  }
-
   function afterMutations(cb, delay) {
     setTimeout(cb, delay || 10);
   }
 
   function setupTabs(cb) {
-    const created = createTabs(tabs);
-    tabsElement = created.parent;
-    tabElements = created.children;
-    containerElement = createContainer(tabsElement, containerWidth);
+    containerElement = document.createElement('div');
+    containerElement.style.width = containerWidth;
+
+    tabsElement = new AkTabs();
+    tabElements = [];
+
+    tabs.forEach(tabOptions => {
+      const newTab = new AkTabsTab();
+      tabElements.push(newTab);
+
+      newTab.label = tabOptions.label || DEFAULT_LABEL;
+      // TODO: This a workaround for https://github.com/skatejs/skatejs/issues/733
+      tabOptions.selected && (newTab.selected = true);
+      newTab.innerHTML = tabOptions.content || DEFAULT_CONTENT;
+
+      tabsElement.appendChild(newTab);
+    });
+    containerElement.appendChild(tabsElement);
+    document.body.appendChild(containerElement);
+
     afterMutations(cb);
   }
 
@@ -488,11 +473,10 @@ describe('ak-tabs', () => {
           assertFirstTabSelected(done);
         });
 
-        // TODO: Investigate why this test is failing.
-        // it('when the attribute is set', done => {
-        //   tabElements[0].setAttribute('selected', '');
-        //  assertFirstTabSelected(done);
-        // });
+        it('when the attribute is set', done => {
+          tabElements[0].setAttribute('selected', '');
+          assertFirstTabSelected(done);
+        });
       });
     });
 

@@ -27,10 +27,25 @@ storiesOf(name, module)
       Button
     </AkButton>
   )
-  .add('a compact button', () =>
-    <AkButton compact>
-      Button
-    </AkButton>
+  .add('compact buttons', () =>
+    <div>
+      <style>{"ak-button {margin-left: 10px;}"}</style>
+      <AkButton compact>
+        Button
+      </AkButton>
+      <AkButton compact appearance="primary">
+        Button
+      </AkButton>
+      <AkButton compact appearance="subtle">
+        Button
+      </AkButton>
+      <AkButton compact selected>
+        Button
+      </AkButton>
+      <AkButton compact disabled onclick={action('clicking the WebComponent')}>
+        Button
+      </AkButton>
+    </div>
   )
   .add('a button selected', () =>
     <AkButton selected>

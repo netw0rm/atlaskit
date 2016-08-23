@@ -45,8 +45,7 @@ describe('ak-tabs', () => {
       tabElements.push(newTab);
 
       newTab.label = tabOptions.label || DEFAULT_LABEL;
-      // TODO: This a workaround for https://github.com/skatejs/skatejs/issues/733
-      tabOptions.selected && (newTab.selected = true);
+      newTab.selected = tabOptions.selected;
       newTab.innerHTML = tabOptions.content || DEFAULT_CONTENT;
 
       tabsElement.appendChild(newTab);

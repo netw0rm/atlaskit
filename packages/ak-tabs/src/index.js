@@ -21,7 +21,7 @@ const focusSelectedOnRender = Symbol();
 /* Helpers */
 
 function getAllTabs(tabsEl) {
-  return [...tabsEl.children].filter(el => el.label);
+  return [].slice.call(tabsEl.children).filter(el => el.label);
 }
 
 function getNextOrPrevTab(tabsEl, tab, isNext) {
@@ -47,7 +47,7 @@ function getPrevTab(tabsEl, tab) {
 
 function getSelectedTab(tabsEl) {
   const all = getAllTabs(tabsEl);
-  return all.length ? all.find(el => el.selected) || all[0] : null;
+  return all.length && all.filter(el => el.selected)[0] || null;
 }
 
 function getLabelForTab(tab) {
@@ -90,13 +90,15 @@ function calculateVisibleTabs(tabsEl) {
   const allTabs = getAllTabs(tabsEl).filter(tab => tab[tabLabel]);
 
   let widthRemaining = tabLabelsContainer.getBoundingClientRect().width;
-  const tabWidths = new Map(allTabs.map(
-    tab => [tab, getLabelForTab(tab).getBoundingClientRect().width])
-  );
+  const tabWidths = new Map();
+  allTabs.forEach(tab => {
+    tabWidths.set(tab, getLabelForTab(tab).getBoundingClientRect().width);
+  });
 
   // If all the tabs fit, then just display them all.
-  const hasOverflowingTabs = [...tabWidths.values()].reduce((a, b) => a + b, 0) > widthRemaining;
-  if (!hasOverflowingTabs) {
+  let totalWidth = 0;
+  tabWidths.forEach((value) => (totalWidth += value));
+  if (totalWidth <= widthRemaining) {
     return allTabs;
   }
 
@@ -108,8 +110,10 @@ function calculateVisibleTabs(tabsEl) {
 
   // The currently selected tab is always displayed
   const selectedTab = getSelectedTab(tabsEl);
-  visibleTabs.set(selectedTab, true);
-  widthRemaining -= tabWidths.get(selectedTab);
+  if (selectedTab) {
+    visibleTabs.set(selectedTab, true);
+    widthRemaining -= tabWidths.get(selectedTab);
+  }
 
   // Then try to fit each tab in the remaining space, until one doesn't fit
   let hasWidthRemaining = widthRemaining > 0;
@@ -129,7 +133,9 @@ function calculateVisibleTabs(tabsEl) {
     }
   }
 
-  return [...visibleTabs.keys()];
+  const visible = [];
+  visibleTabs.forEach((value, key) => (visible.push(key)));
+  return visible;
 }
 
 const definition = {
@@ -250,3 +256,4 @@ const definition = {
 };
 
 export default define('ak-tabs', definition);
+export { Tab };

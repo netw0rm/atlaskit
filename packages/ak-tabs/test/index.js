@@ -1,16 +1,12 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
-import AkTabsTab, { events } from '../src/index-tab.js';
-import AkTabs from '../src/index.js';
+import { events } from '../src/index-tab.js';
+import AkTabs, { Tab as AkTabsTab } from '../src/index.js';
 import { name } from '../package.json';
 import keycode from 'keycode';
 
-import {
-  labelsContainer,
-  buttonContainer,
-  tabLabel,
-} from '../src/internal/symbols';
+import { labelsContainer, buttonContainer, tabLabel } from '../src/internal/symbols';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -82,7 +78,7 @@ describe('ak-tabs', () => {
   }
 
   function getTabLabels() {
-    const labels = [...tabsElement[labelsContainer].children];
+    const labels = [].slice.call(tabsElement[labelsContainer].children);
     labels.pop(); // Remove More dropdown from list
     return labels;
   }
@@ -92,7 +88,7 @@ describe('ak-tabs', () => {
   }
 
   function getSelectedTab() {
-    return tabElements.find(el => el.selected);
+    return tabElements.filter(el => el.selected)[0];
   }
 
   function getElementWidth(el) {
@@ -103,12 +99,13 @@ describe('ak-tabs', () => {
     return el.scrollWidth > el.clientWidth;
   }
 
-  function isVisible(el) {
-    return getComputedStyle(el).visibility !== 'hidden';
+  function isHidden(el) {
+    const computedStyle = getComputedStyle(el);
+    return computedStyle.visibility === 'hidden' || computedStyle.opacity === '0';
   }
 
   function hasVisibleDropdown(tabsEl) {
-    return isVisible(tabsEl[buttonContainer]);
+    return !isHidden(tabsEl[buttonContainer]);
   }
 
   function getVisibleTabs(tabsEl) {
@@ -195,7 +192,7 @@ describe('ak-tabs', () => {
         });
 
         it('displays the label for the selected tab', () => {
-          expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
+          expect(isHidden(getLabelForTab(getSelectedTab()))).to.equal(false,
             'Label for selected tab should be visible'
           );
         });
@@ -218,7 +215,7 @@ describe('ak-tabs', () => {
         });
 
         it('displays the label for the selected tab', () => {
-          expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
+          expect(isHidden(getLabelForTab(getSelectedTab()))).to.equal(false,
             'Label for selected tab should be visible'
           );
         });
@@ -275,7 +272,7 @@ describe('ak-tabs', () => {
           });
 
           it('displays the label for the selected tab', () => {
-            expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
+            expect(isHidden(getLabelForTab(getSelectedTab()))).to.equal(false,
               'Label for selected tab should be visible'
             );
           });
@@ -308,7 +305,7 @@ describe('ak-tabs', () => {
           });
 
           it('displays the label for the selected tab', () => {
-            expect(isVisible(getLabelForTab(getSelectedTab()))).to.equal(true,
+            expect(isHidden(getLabelForTab(getSelectedTab()))).to.equal(false,
               'Label for selected tab should be visible'
             );
           });

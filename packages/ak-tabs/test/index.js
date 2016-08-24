@@ -4,6 +4,7 @@ import sinon from 'sinon';
 import AkTabsTab, { events } from '../src/index-tab.js';
 import AkTabs from '../src/index.js';
 import { name } from '../package.json';
+import keycode from 'keycode';
 
 import {
   labelsContainer,
@@ -25,15 +26,24 @@ describe('ak-tabs', () => {
   let tabElements;
   let containerElement;
 
-  // A collection of values from which the test fixtures are generated
+  let selectSpy;
+  let deselectSpy;
+
+  // Values from which the test fixtures are generated
   let tabs = [];
   let containerWidth = '';
 
-  function afterMutations(cb, delay) {
-    setTimeout(cb, delay || 10);
+  function afterMutations(fn) {
+    setTimeout(fn, 10);
   }
 
   function setupTabs(cb) {
+    selectSpy = sinon.spy();
+    deselectSpy = sinon.spy();
+
+    window.addEventListener(events.EVENT_TAB_SELECT, selectSpy);
+    window.addEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
+
     containerElement = document.createElement('div');
     containerElement.style.width = containerWidth;
 
@@ -57,6 +67,9 @@ describe('ak-tabs', () => {
   }
 
   function cleanupTabs() {
+    window.removeEventListener(events.EVENT_TAB_SELECT, selectSpy);
+    window.removeEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
+
     document.body.removeChild(containerElement);
     tabsElement = null;
     tabElements = [];
@@ -116,11 +129,11 @@ describe('ak-tabs', () => {
   }
 
   function pressLeftKey(el) {
-    pressKey(37, el);
+    pressKey(keycode('left'), el);
   }
 
   function pressRightKey(el) {
-    pressKey(39, el);
+    pressKey(keycode('right'), el);
   }
 
   function keyboardNav(tabsEl, isLeft, numPresses, cb) {
@@ -188,9 +201,7 @@ describe('ak-tabs', () => {
         });
 
         it('displays one label with the correct label text', () => {
-          expect(getTabLabels().length).to.equal(1,
-            'There should only be one label'
-          );
+          expect(getTabLabels().length).to.equal(1, 'There should only be one label');
           expect(getLabelContent(getLabelForTab(tabElements[0]))).to.equal(DEFAULT_LABEL);
         });
       });
@@ -213,9 +224,7 @@ describe('ak-tabs', () => {
         });
 
         it('displays one label with the correct label text', () => {
-          expect(getTabLabels().length).to.equal(1,
-            'There should only be one label.'
-          );
+          expect(getTabLabels().length).to.equal(1, 'There should only be one label.');
           expect(getLabelContent(getLabelForTab(tabElements[0]))).to.equal(DEFAULT_LABEL);
         });
       });
@@ -225,11 +234,9 @@ describe('ak-tabs', () => {
           tabs = [{
             selected: true,
             label: `Long label text. Long label text. Long label text. Long label text.
-                    Long label text. Long label text. Long label text. Long label text.
-                    Long label text. Long label text. Long label text. Long label text.
                     Long label text. Long label text. Long label text. Long label text.`,
           }];
-          containerWidth = '300px';
+          containerWidth = '200px';
           setupTabs(done);
         });
         afterEach(cleanupTabs);
@@ -247,9 +254,7 @@ describe('ak-tabs', () => {
         });
 
         it('does not display the More dropdown', () => {
-          expect(hasVisibleDropdown(tabsElement)).to.equal(false,
-            'Dropdown should not be visible'
-          );
+          expect(hasVisibleDropdown(tabsElement)).to.equal(false, 'Dropdown should not be visible');
         });
       });
     });
@@ -309,17 +314,13 @@ describe('ak-tabs', () => {
           });
 
           it('shows the More dropdown', () => {
-            expect(hasVisibleDropdown(tabsElement)).to.equal(true,
-              'Dropdown should be visible'
-            );
+            expect(hasVisibleDropdown(tabsElement)).to.equal(true, 'Dropdown should be visible');
           });
 
           it('pulls some labels into the dropdown menu', () => {
             const numVisibleTabs = getVisibleTabs(tabsElement).length;
             const numTabs = tabElements.length;
-            expect(numVisibleTabs).to.be.below(numTabs,
-              'Some tabs should not be visible'
-            );
+            expect(numVisibleTabs).to.be.below(numTabs, 'Some tabs should not be visible');
             // TODO: Ensure that dropdown menu contains the hidden items
           });
         });
@@ -328,25 +329,12 @@ describe('ak-tabs', () => {
   });
 
   describe('- Behaviour -', () => {
-    let selectSpy;
-    let deselectSpy;
-
     describe('with one selected child', () => {
       beforeEach(done => {
-        selectSpy = sinon.spy();
-        deselectSpy = sinon.spy();
-
-        window.addEventListener(events.EVENT_TAB_SELECT, selectSpy);
-        window.addEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
-
         tabs = [{ label: 'Tab 1', selected: true }];
         setupTabs(done);
       });
-      afterEach(() => {
-        window.removeEventListener(events.EVENT_TAB_SELECT, selectSpy);
-        window.removeEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
-        cleanupTabs();
-      });
+      afterEach(cleanupTabs);
 
       it('emits the tab selection event on initialisation', () => {
         expect(selectSpy.callCount).to.equal(1,
@@ -404,12 +392,6 @@ describe('ak-tabs', () => {
 
     describe('with three children and no overflow, with the second selected', () => {
       beforeEach(done => {
-        selectSpy = sinon.spy();
-        deselectSpy = sinon.spy();
-
-        window.addEventListener(events.EVENT_TAB_SELECT, selectSpy);
-        window.addEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
-
         tabs = [
           { label: 'Tab 1' },
           { label: 'Tab 2', selected: true },
@@ -418,11 +400,7 @@ describe('ak-tabs', () => {
         containerWidth = '9999px';
         setupTabs(done);
       });
-      afterEach(() => {
-        window.removeEventListener(events.EVENT_TAB_SELECT, selectSpy);
-        window.removeEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
-        cleanupTabs();
-      });
+      afterEach(cleanupTabs);
 
       it('emits the tab selection event on initialisation', () => {
         expect(selectSpy.callCount).to.equal(1,
@@ -481,12 +459,6 @@ describe('ak-tabs', () => {
 
     describe('with eight children and overflow, with the first selected', () => {
       beforeEach(done => {
-        selectSpy = sinon.spy();
-        deselectSpy = sinon.spy();
-
-        window.addEventListener(events.EVENT_TAB_SELECT, selectSpy);
-        window.addEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
-
         tabs = [
           { label: 'Tab 1', selected: true },
           { label: 'Tab 2' },
@@ -500,11 +472,7 @@ describe('ak-tabs', () => {
         containerWidth = '300px';
         setupTabs(done);
       });
-      afterEach(() => {
-        window.removeEventListener(events.EVENT_TAB_SELECT, selectSpy);
-        window.removeEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
-        cleanupTabs();
-      });
+      afterEach(cleanupTabs);
 
       it('emits the tab selection event on initialisation', () => {
         expect(selectSpy.callCount).to.equal(1,
@@ -582,18 +550,14 @@ describe('ak-tabs', () => {
 
         it('pressing the LEFT arrow selects the first tab', done => {
           keyboardNavLeft(() => {
-            expect(tabElements[0].selected).to.equal(true,
-              'The first tab should be selected'
-            );
+            expect(tabElements[0].selected).to.equal(true, 'The first tab should be selected');
             done();
           });
         });
 
         it('pressing the RIGHT arrow selects the third tab', done => {
           keyboardNavRight(() => {
-            expect(tabElements[2].selected).to.equal(true,
-              'The first tab should be selected'
-            );
+            expect(tabElements[2].selected).to.equal(true, 'The first tab should be selected');
             done();
           });
         });
@@ -618,9 +582,7 @@ describe('ak-tabs', () => {
 
         it('pressing the LEFT arrow selects the seventh tab', done => {
           keyboardNavLeft(() => {
-            expect(tabElements[6].selected).to.equal(true,
-              'The seventh tab should be selected'
-            );
+            expect(tabElements[6].selected).to.equal(true, 'The seventh tab should be selected');
             done();
           });
         });

@@ -11,7 +11,7 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^0.3.0",
+    "akutil-common": "^2.0.0",
     "akutil-shared-styles": "*",
     "ak-editor-icon": "*",
     "classnames": "^2.2.5",

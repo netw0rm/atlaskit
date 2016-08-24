@@ -5,7 +5,8 @@ import AnimatedBox from './AnimatedBox.js';
 const { React } = window;
 const { Component } = React;
 
-/* This is a simple component used to consume an animation from shared-styles */
+/* This component simply renders three AnimatedBoxes with a button underneath
+   to run the animationClass of each at the same time */
 class AnimatedBoxGroup extends Component {
   constructor(props) {
     super(props);

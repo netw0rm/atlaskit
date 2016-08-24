@@ -49,6 +49,7 @@ const ReactComponent = reactify(ButtonGroup, {});
 
 ReactDOM.render(<ReactComponent />, container);
 ```
+
 ## ButtonGroup API
 * Properties
 

@@ -75,3 +75,4 @@ const MyButton = define('my-elem', {
 
 document.body.appendChild(new MyButton())  // renders <ak-button>My Button</ak-button>
 ```
+

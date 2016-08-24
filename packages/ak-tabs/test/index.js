@@ -10,7 +10,7 @@ import { labelsContainer, buttonContainer, tabLabel } from '../src/internal/symb
 
 chai.use(chaiAsPromised);
 chai.should();
-const expect = chai.expect; // eslint-disable-line no-unused-vars
+const expect = chai.expect;
 
 
 describe('ak-tabs', () => {

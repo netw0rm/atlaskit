@@ -148,12 +148,6 @@ describe('ak-inline-dialog', () => {
       setTimeout(done);
     });
 
-    it('should be open when attribute `open` is set to true', done => {
-      component.setAttribute('open', '');
-      setTimeout(() => checkVisibility(component.childNodes[0]));
-      setTimeout(done);
-    });
-
     describe('if open', () => {
       beforeEach(done => {
         component.open = true;
@@ -166,25 +160,6 @@ describe('ak-inline-dialog', () => {
         setTimeout(() => checkInvisibility(component.childNodes[0]));
         setTimeout(done);
       });
-
-      it('should be closed when attribute `open` is removed', done => {
-        component.removeAttribute('open');
-        setTimeout(() => checkInvisibility(component.childNodes[0]));
-        setTimeout(done);
-      });
-    });
-
-    // Consider removing as this is testing 100% skate behaviour. If we want to
-    // ensure that an attribute is linked, we should test that we've correctly
-    // declared the property on the component constructor.
-    it('attribute `open` and property `open` should be in sync', () => {
-      component.open = true;
-      expect(component.open).to.equal(true);
-      expect(component.getAttribute('open')).to.equal('');
-
-      component.open = false;
-      expect(component.open).to.equal(false);
-      expect(component.getAttribute('open')).to.equal(null);
     });
   });
 });

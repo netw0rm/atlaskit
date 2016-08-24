@@ -55,14 +55,6 @@ ReactDOM.render(<ReactComponent />, container);
 
     *  [`buttonGroup.name`](#ButtonGroup+name) : string
 
-* Methods
-
-    *  [`buttonGroup.announce()`](#ButtonGroup+announce) ⇒ ButtonGroup
-
-* Events
-
-    *  [`"announce-name"`](#ButtonGroup+event_announce-name)
-
 ### Constructor
 Create instances of the component programmatically, or using markup.
 
@@ -76,22 +68,3 @@ The name of the ButtonGroup element.
 
 **Kind**: instance property of ButtonGroup  
 **Default**: `"ButtonGroup"`  
-### `buttonGroup.announce()` ⇒ ButtonGroup
-Fire an event containing the name of the element.
-
-**Kind**: instance method of ButtonGroup  
-**Returns**: ButtonGroup - The ButtonGroup element.  
-**Emits**: announce-name  
-**JS Example**
-```js
-component.announce(); // Fires the announce-name event.
-```
-### `"announce-name"`
-Fired when the `announce` method is called.
-
-**Kind**: event emitted by ButtonGroup  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| detail.name | String | The name of the component. |

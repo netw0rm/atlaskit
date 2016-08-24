@@ -53,7 +53,7 @@ export default define('ak-inline-dialog', {
     // do not render anything if the dialog is hidden
     // helps with avoiding flashing
     if (!elem.open) {
-      return '';
+      return null;
     }
 
     const styles = {};

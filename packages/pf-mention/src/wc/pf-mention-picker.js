@@ -7,12 +7,6 @@ import ResourcedMentionList from './pf-resourced-mention-list';
 import debug from '../util/logger';
 import uniqueId from '../util/id';
 
-function updateDialogPosition() {
-  if (this._dialog && this._dialog.reposition) {
-    this._dialog.reposition();
-  }
-}
-
 export default define('pf-mention-picker', {
   prototype: {
     selectNext() {
@@ -38,6 +32,11 @@ export default define('pf-mention-picker', {
         _visible: mentions.length > 0,
       });
     },
+    _updateDialogPosition(event) {
+      if (event.target._dialog && event.target._dialog.reposition) {
+        event.target._dialog.reposition();
+      }
+    },
   },
 
   created(elem) {
@@ -47,14 +46,14 @@ export default define('pf-mention-picker', {
   },
 
   attached(elem) {
-    document.addEventListener('pf-mention-list-rendered', updateDialogPosition.bind(elem));
+    document.addEventListener('pf-mention-list-rendered', elem._updateDialogPosition);
   },
 
   detached(elem) {
     if (elem.resourceProvider) {
       elem.resourceProvider.unsubscribe(elem);
     }
-    document.removeEventListener('pf-mention-list-rendered', updateDialogPosition);
+    document.removeEventListener('pf-mention-list-rendered', elem._updateDialogPosition);
   },
 
   render(elem) {

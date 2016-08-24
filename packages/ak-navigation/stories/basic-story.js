@@ -78,7 +78,7 @@ storiesOf(name, module)
     <AkNavigation />
   ))
   .add('ak-navigation that starts open', () => (
-    <AkPage>
+    <AkPage navigationOpen>
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"

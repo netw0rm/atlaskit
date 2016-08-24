@@ -3,7 +3,8 @@
   "version": "2.0.0",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-avatar"
   },
@@ -14,7 +15,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "akutil-shared-styles": "^33.1.0",
-    "akutil-common": "^1.0.0",
+    "akutil-common": "^2.0.0",
     "classnames": "^2.2.5",
     "skatejs": "^1.0.0"
   },

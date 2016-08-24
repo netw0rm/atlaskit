@@ -1,5 +1,15 @@
-<a name="3.1.3"></a>
-## 3.1.3 (2016-08-22)
+<a name="3.1.4"></a>
+## 3.1.4 (2016-08-24)
+
+
+
+<a name="akutil-component-template@3.1.4"></a>
+## akutil-component-template@3.1.4 (2016-08-22)
+
+
+### Bug Fixes
+
+* **test:** Use sinon chai ([33c8a6b](https://bitbucket.org/atlassian/atlaskit/commits/33c8a6b))
 
 
 

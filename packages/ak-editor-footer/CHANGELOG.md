@@ -1,5 +1,15 @@
-<a name="0.1.0"></a>
-# 0.1.0 (2016-08-22)
+<a name="0.1.1"></a>
+## 0.1.1 (2016-08-24)
+
+
+
+<a name="ak-editor-footer@0.1.1"></a>
+## ak-editor-footer@0.1.1 (2016-08-24)
+
+
+### Bug Fixes
+
+* **dependencies:** akutil-shared-styles is used in src, so needs to be a normal dependency ([13ed9bf](https://bitbucket.org/atlassian/atlaskit/commits/13ed9bf))
 
 
 ### Features

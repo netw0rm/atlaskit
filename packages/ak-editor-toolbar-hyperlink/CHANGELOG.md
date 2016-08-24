@@ -1,5 +1,25 @@
-<a name="0.0.1"></a>
-## 0.0.1 (2016-08-23)
+<a name="0.0.3"></a>
+## 0.0.3 (2016-08-24)
+
+
+
+<a name="ak-editor-toolbar-hyperlink@0.0.3"></a>
+## ak-editor-toolbar-hyperlink@0.0.3 (2016-08-24)
+
+
+### Bug Fixes
+
+* **styles:** Leftover style from component template ([313fd68](https://bitbucket.org/atlassian/atlaskit/commits/313fd68))
+
+
+
+<a name="ak-editor-toolbar-hyperlink@0.0.2"></a>
+## ak-editor-toolbar-hyperlink@0.0.2 (2016-08-24)
+
+
+### Bug Fixes
+
+* Upgrade skate to fix spread attributes in JSX. ([944a7d2](https://bitbucket.org/atlassian/atlaskit/commits/944a7d2))
 
 
 

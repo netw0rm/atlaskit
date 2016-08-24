@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -15,7 +15,7 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "akutil-shared-styles": "^33.1.0",
-    "skatejs": "^1.0.0"
+    "skatejs": "^1.2.2"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",

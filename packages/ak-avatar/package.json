@@ -16,7 +16,7 @@
     "akutil-shared-styles": "^33.1.0",
     "akutil-common": "^2.0.0",
     "classnames": "^2.2.5",
-    "skatejs": "^1.0.0"
+    "skatejs": "^1.2.2"
   },
   "devDependencies": {
     "akutil-common-test": "^1.0.0",

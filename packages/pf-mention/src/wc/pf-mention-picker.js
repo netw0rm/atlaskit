@@ -7,6 +7,10 @@ import ResourcedMentionList from './pf-resourced-mention-list';
 import debug from '../util/logger';
 import uniqueId from '../util/id';
 
+function updatePopup() {
+  this._dialog.reposition();
+}
+
 export default define('pf-mention-picker', {
   prototype: {
     selectNext() {
@@ -40,10 +44,15 @@ export default define('pf-mention-picker', {
     elem._filterChange = elem._filterChange.bind(elem);
   },
 
+  attached(elem) {
+    document.addEventListener('updatePopup', updatePopup.bind(elem));
+  },
+
   detached(elem) {
     if (elem.resourceProvider) {
       elem.resourceProvider.unsubscribe(elem);
     }
+    document.removeEventListener('updatePopup', updatePopup);
   },
 
   render(elem) {

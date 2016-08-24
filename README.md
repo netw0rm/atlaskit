@@ -26,8 +26,12 @@ If you want to redistribute this whole repository you will need to replace these
 
 # Development
 
+
 ### Getting started
-Clone the repo and install the dependencies
+
+#### Prerequisites
+* [node](https://nodejs.org/) version should be 6 or above (to check `node -v`)
+* [npm](https://www.npmjs.com/) version should be 3 or above (to check `npm --version`) or use [nvm](https://github.com/creationix/nvm)
 
 ```
 git clone git@bitbucket.org:atlassian/atlaskit.git

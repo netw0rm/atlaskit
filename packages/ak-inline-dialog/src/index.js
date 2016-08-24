@@ -43,7 +43,7 @@ export default define('ak-inline-dialog', {
     window.removeEventListener('ak-blanket-click', closeDialog(elem));
   },
   render(elem) {
-    if (elem.open !== undefined) {
+    if (typeof elem.open === 'boolean') {
       if (elem.open) {
         emit(elem, 'ak-after-open');
       } else {

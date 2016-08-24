@@ -5,6 +5,7 @@ import AkTagWebComponent from 'ak-tag';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 import styles from 'style!./../src/host.less';
+import tagStyles from 'style!ak-tag/src/host.less';
 
 const Group = reactify(WebComponent, {
   React,
@@ -21,7 +22,13 @@ const sweets = 'Liquorice bear claw liquorice croissant cotton candy caramels. L
 const overflowStory = () => (
   <div style={{ border: '1px solid black' }}>
     <Group className={styles.akTagGroup}>
-      {sweets.split(' ').map((sweet, i) => <Tag href="http://www.cupcakeipsum.com/" key={i} text={sweet} />)}
+      {sweets.split(' ').map((sweet, i) => (
+        <Tag
+          className={tagStyles.akTag}
+          href="http://www.cupcakeipsum.com/"
+          key={i}
+          text={sweet}
+        />))}
     </Group>
   </div>
 );

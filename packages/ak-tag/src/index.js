@@ -1,12 +1,16 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { vdom, define, prop, props } from 'skatejs';
+import { vdom, define, prop, props, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Chrome from './chrome';
 import Text from './text';
 import Href from './href';
 import Button from './button';
+
+const EVENTS = {
+  REMOVE: 'remove',
+};
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -39,6 +43,7 @@ export default define('ak-tag', {
         text={elem['remove-button-text']}
         onmouseover={() => hover(true)}
         onmouseout={() => hover(false)}
+        onclick={() => emit(elem, EVENTS.REMOVE)}
       />);
       /* eslint-enable no-underscore-dangle */
     }
@@ -106,3 +111,5 @@ export default define('ak-tag', {
     }),
   },
 });
+
+export { EVENTS };

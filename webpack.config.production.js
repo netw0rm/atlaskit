@@ -1,4 +1,3 @@
-const fs = require('fs');
 const webpack = require('webpack');
 const standardConfig = require('./webpack.config.base.js');
 const argv = require('minimist')(process.argv.slice(2));
@@ -10,8 +9,9 @@ Object.assign(standardConfig.entry, {
 });
 
 if (!shouldBundleDependencies) {
-  // Only bundle dependencies that start with '.'.
-  standardConfig.externals = fs.readdirSync('node_modules');
+  // Matches any non-relative, non-loader require() -- we deem these to be
+  // external.
+  standardConfig.externals = [/^[^.!][^!]*$/];
 }
 
 standardConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({

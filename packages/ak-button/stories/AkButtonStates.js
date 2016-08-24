@@ -11,48 +11,78 @@ export default class MyComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      disable: false,
+      disabled: false,
+      selected: false,
+      compact: false,
       appearance: APPEARANCE.STANDARD,
+      label: 'Button',
     };
   }
 
-  disable() {
-    this.setState({ disable: !this.state.disable });
+  createCheckboxBooleanAttribute(attribute) {
+    return (
+      <label>
+        <input
+          type="checkbox"
+          onChange={() => this.setState({ [attribute]: !this.state[attribute] })}
+          checked={this.state[attribute]}
+        />
+        {attribute}
+      </label>
+    );
   }
-  select() {
-    this.setState({
-      appearance: this.state.appearance === APPEARANCE.STANDARD ?
-        APPEARANCE.SELECTED : APPEARANCE.STANDARD,
-    });
+
+  createRadioAppearanceAttribute(attribute) {
+    return (
+      <label>
+        <input
+          type="radio"
+          onChange={() => this.setState({ appearance: attribute })}
+          checked={this.state.appearance === attribute}
+        />
+        {attribute}
+      </label>
+    );
   }
 
   render() {
     return (
       <div>
-        <label>
-          Disabled
+        <style>{"label {margin-right: 10px;}"}</style>
+        <form>
+          <label><strong>Boolean Attributes</strong></label>
+          <br />
+          {this.createCheckboxBooleanAttribute('disabled')}
+          {this.createCheckboxBooleanAttribute('selected')}
+          {this.createCheckboxBooleanAttribute('compact')}
+        </form>
+        <br />
+        <form>
+          <label><strong>Appearances</strong></label>
+          <br />
+          {this.createRadioAppearanceAttribute(APPEARANCE.STANDARD)}
+          {this.createRadioAppearanceAttribute(APPEARANCE.PRIMARY)}
+          {this.createRadioAppearanceAttribute(APPEARANCE.SUBTLE)}
+        </form>
+        <br />
+        <form>
+          <label><strong>Button Text</strong></label>
+          <br />
           <input
-            type="checkbox"
-            id="disable-checkbox"
-            onChange={this.disable.bind(this)}  // eslint-disable-line react/jsx-no-bind
-            defaultChecked={this.state.disable}
+            type="text"
+            value={this.state.label}
+            onChange={event => this.setState({ label: event.target.value })}
           />
-        </label>
-        <label>
-          Selected
-          <input
-            type="checkbox"
-            id="selected-checkbox"
-            onChange={this.select.bind(this)}  // eslint-disable-line react/jsx-no-bind
-            defaultChecked={this.state.appearance === APPEARANCE.SELECTED}
-          />
-        </label>
+        </form>
+        <br />
         <AkButton
-          disabled={this.state.disable}
+          disabled={this.state.disabled}
+          selected={this.state.selected}
+          compact={this.state.compact}
           appearance={this.state.appearance}
           onclick={action('clicking the WebComponent')}
         >
-          Button
+          {this.state.label}
         </AkButton>
       </div>
     );

@@ -8,7 +8,9 @@ import debug from '../util/logger';
 import uniqueId from '../util/id';
 
 function updateDialogPosition() {
-  this._dialog.reposition();
+  if (this._dialog && this._dialog.reposition) {
+    this._dialog.reposition();
+  }
 }
 
 export default define('pf-mention-picker', {

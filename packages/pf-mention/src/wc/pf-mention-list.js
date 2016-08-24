@@ -182,7 +182,7 @@ export default define('pf-mention-list', {
   },
 
   rendered(elem) {
-    emit(elem, 'updatePopup');
+    emit(elem, 'pf-mention-list-rendered');
   },
 
   props: {

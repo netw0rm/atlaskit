@@ -50,6 +50,11 @@ export default define('ak-inline-dialog', {
         emit(elem, 'ak-after-close');
       }
     }
+    // do not render anything if the dialog is hidden
+    // helps with avoiding flashing
+    if (!elem.open) {
+      return '';
+    }
 
     const styles = {};
     if (elem.boxShadow) {
@@ -66,7 +71,6 @@ export default define('ak-inline-dialog', {
         {renderBlanketIfNeeded(elem)}
         <Layer
           position={elem.position}
-          attachment={elem.constrain}
           target={elem.target}
           boundariesElement={elem.boundariesElement}
           enableFlip={elem.enableFlip}

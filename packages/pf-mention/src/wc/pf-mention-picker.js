@@ -63,7 +63,6 @@ export default define('pf-mention-picker', {
     };
 
     debug('pf-mention-picker.render', query);
-
     if (target) {
       return (
         <div style={style}>
@@ -94,9 +93,9 @@ export default define('pf-mention-picker', {
   rendered(elem) {
     // since the content of the dialog is dynamic it needs to be repositioned manually
     // after this content was generated
-    setTimeout(() => {
+    if (elem._dialog && elem._dialog.reposition) {
       elem._dialog.reposition();
-    });
+    }
   },
 
   props: {

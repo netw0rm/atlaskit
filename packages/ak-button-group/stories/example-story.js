@@ -1,17 +1,17 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
+import Button from 'ak-button';
 import ButtonGroup from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 // import styles from 'style!./../src/host.less';
-import RadioButton from '../../ak-radio-button/src/index';
 
 const ReactButtonGroup = reactify(ButtonGroup, {
   React,
   ReactDOM,
 });
 
-const ReactRadioButton = reactify(RadioButton, {
+const ReactButton = reactify(Button, {
   React,
   ReactDOM,
 });

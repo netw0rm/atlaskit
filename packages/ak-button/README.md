@@ -13,7 +13,7 @@ npm install ak-button
 ## Using the component
 
 ### HTML
-The `ak-button` package exports the Button [skate](https://github.com/skatejs/skatejs) component.
+This package exports the `ak-button` [skate](https://github.com/skatejs/skatejs) component.
 Import the component in your JS resource:
 
 #### bundle.js
@@ -75,3 +75,4 @@ const MyButton = define('my-elem', {
 
 document.body.appendChild(new MyButton())  // renders <ak-button>My Button</ak-button>
 ```
+

@@ -15,7 +15,7 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "akutil-shared-styles": "^33.1.0",
-    "skatejs": "^1.0.0"
+    "skatejs": "^1.2.2"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0"

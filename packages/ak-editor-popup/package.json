@@ -14,7 +14,7 @@
     "akutil-shared-styles": "^33.0.2",
     "ak-layer": "^56.4.0",
     "classnames": "^2.2.5",
-    "skatejs": "^1.0.0"
+    "skatejs": "^1.2.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

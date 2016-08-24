@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import storyStyles from 'style!./stories.less';
 import AnimatedBox from './AnimatedBox.js';
 
@@ -47,4 +46,3 @@ class AnimatedBoxGroup extends Component {
 }
 
 export default AnimatedBoxGroup;
-/* eslint-enable react/prop-types */

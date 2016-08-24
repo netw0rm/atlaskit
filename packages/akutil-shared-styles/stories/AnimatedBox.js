@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import classNames from 'classnames';
 import storyStyles from 'style!./stories.less';
 
@@ -47,5 +46,10 @@ class AnimatedBox extends Component {
   }
 }
 
+AnimatedBox.propTypes = {
+  animationClass: React.PropTypes.string,
+  boxStyle: React.PropTypes.string,
+  children: React.PropTypes.node,
+};
+
 export default AnimatedBox;
-/* eslint-enable react/prop-types */

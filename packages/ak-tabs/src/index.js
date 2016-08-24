@@ -7,7 +7,6 @@ import classNames from 'classnames';
 import keycode from 'keycode';
 import shadowStyles from './shadow.less';
 
-import 'ak-editor-icon';
 import Tab, { events } from './index-tab'; // eslint-disable-line no-unused-vars
 
 import {
@@ -230,7 +229,6 @@ const definition = {
                 }}
               >
                 <span>More</span>
-                <ak-editor-icon glyph="expand" />
               </a>
             </li>
           )

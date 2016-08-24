@@ -1,0 +1,21 @@
+.hostContext(@hostContextSelector; @hostContentStyles) {
+    :host-context(@{hostContextSelector}) {
+        @hostContentStyles();
+    }
+
+    @{hostContextSelector} {
+        // outline: 1px solid red !important;
+        // .button { background-color:  red !important; }
+        @hostContentStyles();
+    }
+}
+
+.host(@groupingSelector; @sel; @hostStyles) {
+    :host(:@{sel}) {
+      @hostStyles();
+    }
+
+    @{groupingSelector} slot > :@{sel} {
+        @hostStyles();
+    }
+}

@@ -1,4 +1,5 @@
 @import '../node_modules/akutil-shared-styles/src/colors.less';
+@import 'host-context-mixin.less';
 
 @base: 10px;
 @base-font: 14px;
@@ -88,3 +89,27 @@
       line-height: @base*2.2;
     }
   }
+
+@hostAllBtns: {
+  .button {
+    border-radius: 0;
+    border: 1px solid blue;
+  }
+};
+.hostContext(ak-button-group, @hostAllBtns);
+
+@hostFirstBtn: {
+  .button {
+    border-top-left-radius: @base-radius;
+    border-bottom-left-radius: @base-radius;
+  }
+};
+.host(ak-button-group, first-child, @hostFirstBtn);
+
+@hostLastBtn: {
+  .button {
+    border-top-right-radius: @base-radius;
+    border-bottom-right-radius: @base-radius;
+  }
+};
+.host(ak-button-group, last-child, @hostLastBtn);

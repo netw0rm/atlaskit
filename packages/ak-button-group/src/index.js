@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { emit, vdom, define } from 'skatejs';
+import { vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 
 /**
@@ -25,13 +25,6 @@ export default define('ak-button-group', {
       </div>
     );
   },
-  created(elem) {
-    elem.addEventListener('x-radio-button-click', (e) => {
-      [...elem.childNodes].forEach((item) => {
-        item.selected = item === e.target;
-      });
-    });
-  },
   props: {
     /**
      * @description The name of the ButtonGroup element.
@@ -42,31 +35,6 @@ export default define('ak-button-group', {
      */
     name: {
       default: 'ButtonGroup',
-    },
-  },
-  prototype: {
-    /**
-     * @description Fire an event containing the name of the element.
-     * @memberof ButtonGroup
-     * @function
-     * @instance
-     * @fires ButtonGroup#announce-name
-     * @return {ButtonGroup} The ButtonGroup element.
-     * @example @js component.announce(); // Fires the announce-name event.
-     */
-    announce() {
-      /**
-       * @event ButtonGroup#announce-name
-       * @memberof ButtonGroup
-       * @description Fired when the `announce` method is called.
-       * @property {String} detail.name The name of the component.
-       */
-      emit(this, 'announce-name', {
-        detail: {
-          name: this.name,
-        },
-      });
-      return this;
     },
   },
 });

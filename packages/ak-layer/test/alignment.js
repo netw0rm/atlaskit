@@ -2,9 +2,7 @@ import Alignment from '../src/Alignment';
 
 describe('alignment', () => {
   it('should be possible to create a new instance', () => {
-    expect(() => {
-      new Alignment({}); // eslint-disable-line no-new
-    }).not.to.throw(Error);
+    expect(() => (new Alignment({}))).not.to.throw(Error);
   });
 
   describe('properties', () => {
@@ -14,9 +12,9 @@ describe('alignment', () => {
       [
         'top left', 'top center', 'top right', 'right top', 'right middle', 'right bottom',
         'bottom left', 'bottom center', 'bottom right', 'left top', 'left middle', 'left bottom',
-      ].forEach((val) => {
-        expect(Alignment.attachmentMap[val]).not.to.equal(undefined);
-      });
+      ].forEach((val) =>
+        expect(Alignment.attachmentMap[val]).not.to.equal(undefined)
+      );
     });
     it('defaultPosition', () => {
       expect(Alignment.defaultPosition).to.equal('right middle');

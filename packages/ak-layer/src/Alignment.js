@@ -1,4 +1,5 @@
 import Popper from 'popper.js';
+import assign from 'object-assign';
 /**
  * @description Helper class for positioning elements on a page
  * @class Alignment
@@ -14,7 +15,7 @@ export default class Alignment {
   constructor(options) {
     if (!options.target || !options.elem) return;
     const { defaultPosition, getElement, attachmentMap } = this.constructor;
-    const opts = Object.assign({
+    const opts = assign({
       position: defaultPosition,
     }, options);
 
@@ -76,12 +77,12 @@ export default class Alignment {
     }
     return this;
   }
-  /* eslint-disable max-len  */
+
   /**
-   * @description Returns an element from a selector or the element itself if it was passed as an argument
+   * @description
+   * Returns an element from a selector or the element itself if it was passed as an argument
    * @example @js Alignment.getElement('#TargetId');
    */
-  /* eslint-enable max-len */
   static getElement(node) {
     if (typeof node === 'string') {
       const elements = document.querySelectorAll(node);

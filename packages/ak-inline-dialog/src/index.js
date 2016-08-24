@@ -43,10 +43,12 @@ export default define('ak-inline-dialog', {
     window.removeEventListener('ak-blanket-click', closeDialog(elem));
   },
   render(elem) {
-    if (elem.open === true) {
-      emit(elem, 'ak-after-open');
-    } else if (elem.open === false) {
-      emit(elem, 'ak-after-close');
+    if (elem.open !== undefined) {
+      if (elem.open) {
+        emit(elem, 'ak-after-open');
+      } else {
+        emit(elem, 'ak-after-close');
+      }
     }
 
     const styles = {};
@@ -68,8 +70,8 @@ export default define('ak-inline-dialog', {
           target={elem.target}
           boundariesElement={elem.boundariesElement}
           enableFlip={elem.enableFlip}
-          ref={(el) => {
-            elem.layer = el;
+          ref={(layerElem) => {
+            elem.layer = layerElem;
           }}
         >
           <style>{shadowStyles.toString()}</style>

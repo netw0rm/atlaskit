@@ -41,7 +41,6 @@ class DialogWithButton extends Component {
   }
 
   render() {
-    console.log('prop', this.props.boundariesElement);
     return (
       <div style={this.props.style}>
         <button

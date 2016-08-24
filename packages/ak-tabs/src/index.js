@@ -4,6 +4,7 @@ import 'style!./host.less';
 import { debounce } from 'akutil-common';
 import { vdom, define, prop, emit } from 'skatejs';
 import classNames from 'classnames';
+import keycode from 'keycode';
 import shadowStyles from './shadow.less';
 
 import 'ak-editor-icon';
@@ -67,9 +68,9 @@ function labelClickHandler(tab) {
 function labelKeydownHandler(tabsEl, tab) {
   return e => {
     let tabToSelect;
-    if (e.keyCode === 37 /* LEFT */) {
+    if (e.keyCode === keycode('left')) {
       tabToSelect = getPrevTab(tabsEl, tab);
-    } else if (e.keyCode === 39 /* RIGHT */) {
+    } else if (e.keyCode === keycode('right')) {
       tabToSelect = getNextTab(tabsEl, tab);
     }
     if (tabToSelect) {

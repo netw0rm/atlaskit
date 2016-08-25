@@ -1,5 +1,15 @@
-<a name="1.0.0"></a>
-# 1.0.0 (2016-08-25)
+<a name="1.0.1"></a>
+## 1.0.1 (2016-08-25)
+
+
+
+<a name="akutil-polyfills@1.0.1"></a>
+## akutil-polyfills@1.0.1 (2016-08-25)
+
+
+### Bug Fixes
+
+* **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
 
 
 

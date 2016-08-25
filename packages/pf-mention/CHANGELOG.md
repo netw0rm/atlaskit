@@ -1,5 +1,10 @@
-<a name="1.2.7"></a>
-## 1.2.7 (2016-08-25)
+<a name="1.2.8"></a>
+## 1.2.8 (2016-08-25)
+
+
+
+<a name="pf-mention@1.2.8"></a>
+## pf-mention@1.2.8 (2016-08-25)
 
 
 
@@ -17,6 +22,11 @@
 
 <a name="pf-mention@1.2.6"></a>
 ## pf-mention@1.2.6 (2016-08-19)
+
+
+### Bug Fixes
+
+* **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
 
 
 

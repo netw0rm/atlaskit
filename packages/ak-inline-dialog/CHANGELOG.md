@@ -1,5 +1,10 @@
-<a name="70.0.0"></a>
-# 70.0.0 (2016-08-25)
+<a name="70.0.1"></a>
+## 70.0.1 (2016-08-25)
+
+
+
+<a name="ak-inline-dialog@70.0.1"></a>
+## ak-inline-dialog@70.0.1 (2016-08-25)
 
 
 
@@ -9,6 +14,7 @@
 
 ### Bug Fixes
 
+* **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
 * fix flashing problem for the dialog ([0d3425e](https://bitbucket.org/atlassian/atlaskit/commits/0d3425e))
 
 

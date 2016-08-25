@@ -1,9 +1,10 @@
 {
   "name": "pf-mention",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "pf-mention webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single pf-mention"
   },
@@ -12,7 +13,7 @@
   ],
   "dependencies": {
     "ak-avatar": "^2.0.0",
-    "ak-inline-dialog": "^69.6.1",
+    "ak-inline-dialog": "^70.0.0",
     "akutil-common": "^2.0.0",
     "akutil-shared-styles": "^33.1.0",
     "es6-promise": "^3.2.1",

@@ -1,9 +1,10 @@
 {
   "name": "ak-editor-popup",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "ak-editor-popup webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-popup"
   },
@@ -12,7 +13,7 @@
   ],
   "dependencies": {
     "ak-blanket": "^1.0.0",
-    "ak-layer": "^56.4.0",
+    "ak-layer": "^57.0.0",
     "akutil-shared-styles": "^33.0.2",
     "classnames": "^2.2.5",
     "skatejs": "^1.2.2"

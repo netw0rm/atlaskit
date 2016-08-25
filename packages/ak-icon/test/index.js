@@ -13,6 +13,6 @@ describe('ak-icon', () => {
     expect(() => {
       component = new AkIcon();
     }).not.to.throw(Error);
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 });

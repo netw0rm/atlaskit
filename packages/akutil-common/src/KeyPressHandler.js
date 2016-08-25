@@ -1,17 +1,17 @@
 import keyCode from 'keycode';
 
 export default class KeyPressHandler {
-  constructor(key, callback) {
+  constructor(key, callback, elem) {
     this.keyListeners = {};
     this.keyListeners[keyCode(key)] = callback;
-
+    this.elem = elem || document;
     this.listener = (e) => {
       if (this.keyListeners[e.keyCode]) {
         this.keyListeners[e.keyCode]();
       }
     };
 
-    document.addEventListener('keydown', this.listener);
+    this.elem.addEventListener('keydown', this.listener);
   }
 
   add(key, callback) {
@@ -21,7 +21,7 @@ export default class KeyPressHandler {
   destroy(key) {
     if (!key) {
       this.keyListeners = undefined;
-      document.removeEventListener('keydown', this.listener);
+      this.elem.removeEventListener('keydown', this.listener);
     } else {
       delete this.keyListeners[keyCode(key)];
     }

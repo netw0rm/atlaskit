@@ -5,4 +5,12 @@ HEAD_SHA=$(git rev-parse --short HEAD)
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 # Run the Browserstack tests
-HEAD_SHA=$HEAD_SHA CURRENT_BRANCH="$CURRENT_BRANCH" BROWSERSTACK=1 build/bin/test.sh
+HEAD_SHA=$HEAD_SHA \
+CURRENT_BRANCH="$CURRENT_BRANCH" \
+retry \
+--retries=2 \
+-- \
+karma start \
+karma.conf.browserstack.js \
+--single-run \
+--reporters=dots,junit

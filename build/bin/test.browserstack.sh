@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-HEAD_SHA=$(git rev-parse HEAD | cut -c1-6)
+HEAD_SHA=$(git rev-parse --short HEAD)
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 # Run the Browserstack tests

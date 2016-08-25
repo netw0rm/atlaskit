@@ -18,7 +18,7 @@
     "ak-editor-button": "^2.0.1",
     "akutil-shared-styles": "^33.0.2",
     "classnames": "^2.2.5",
-    "skatejs": "^1.2.2"
+    "skatejs": "^1.2.3"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",

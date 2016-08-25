@@ -1,6 +1,7 @@
-import { vdom, define, prop, symbols, emit } from 'skatejs';
+import { vdom, define, prop, emit } from 'skatejs';
 import { ProseMirror, Plugin } from 'prosemirror/dist/edit';
 import 'style!./host.less';
+import cx from 'classnames';
 import shadowStyles from './shadow.less';
 import Content from 'ak-editor-content';
 import Footer from 'ak-editor-footer';
@@ -21,25 +22,40 @@ import MarkdownInputRulesPlugin from 'atlassian-editorkit-markdown-inputrules-pl
 import HyperLinkPlugin from 'atlassian-editorkit-hyperlink-plugin';
 import ImageUploadPlugin from 'atlassian-editorkit-image-upload-plugin';
 
-// A hack to target the content element until https://github.com/skatejs/skatejs/issues/721
-// is fixed.
-const contentClassName = `__content__${Date.now()}`;
-const initEditorSymbol = '__init_editor__';
-const pmSymbol = '__pm__';
-const readySymbol = '__ready__';
+const $initEditor = '__init_editor__';
+const $pm = '__pm__';
+const $ready = '__ready__';
+const $focused = '__focused__';
+const $wrapper = '__wrapper__';
+const $onContentClick = '__onContentClick__';
+
+function bind(elem, propName) {
+  elem[propName] = elem[propName].bind(elem);
+}
 
 export default define('ak-editor-bitbucket', {
+  created(elem) {
+    bind(elem, $onContentClick);
+    bind(elem, 'focus');
+  },
+
   rendered(elem) {
-    if (!elem[readySymbol]) {
-      elem[readySymbol] = true;
-      elem[initEditorSymbol]();
+    if (!elem[$ready]) {
+      elem[$ready] = true;
+      elem[$initEditor]();
       emit(elem, 'ready');
     }
   },
 
-  render() {
+  render(elem) {
     return (
-      <div className={shadowStyles.locals.root}>
+      <div
+        className={
+          cx(shadowStyles.locals.root, {
+            [shadowStyles.locals.focused]: elem[$focused],
+          })
+        }
+      >
         <style>{shadowStyles.toString()}</style>
         <Toolbar>
           <ToolbarBlockType />
@@ -47,9 +63,12 @@ export default define('ak-editor-bitbucket', {
           <ToolbarHyperlink />
         </Toolbar>
         <Content
-          className={contentClassName}
+          className={shadowStyles.locals.content}
+          onclick={elem[$onContentClick]}
+          ref={(wrapper) => { elem[$wrapper] = wrapper; }}
           openTop
           openBottom
+          skip
         />
         <Footer openTop />
       </div>
@@ -66,14 +85,20 @@ export default define('ak-editor-bitbucket', {
      * for details.
      */
     defaultValue: prop.string({ attribute: true }),
+
+    /**
+     * True if the editor has focus.
+     * @private
+     */
+    [$focused]: prop.boolean(),
   },
 
   prototype: {
     /**
-     * Focus the editor.
+     * Focus the content region of the editor.
      */
     focus() {
-      const pm = this[pmSymbol];
+      const pm = this[$pm];
       pm.focus();
     },
 
@@ -81,7 +106,7 @@ export default define('ak-editor-bitbucket', {
      * Clear the content of the editor, making it an empty document.
      */
     clear() {
-      const pm = this[pmSymbol];
+      const pm = this[$pm];
       pm.tr.delete(0, pm.doc.content.size).apply();
     },
 
@@ -90,7 +115,7 @@ export default define('ak-editor-bitbucket', {
      * @returns {string}
      */
     get value() {
-      const pm = this[pmSymbol];
+      const pm = this[$pm];
       return markdownSerializer.serialize(pm.doc);
     },
 
@@ -100,18 +125,25 @@ export default define('ak-editor-bitbucket', {
      * @returns {boolean}
      */
     get ready() {
-      return this[readySymbol] || false;
+      return this[$ready] || false;
     },
 
-    [initEditorSymbol]() {
+    [$onContentClick](e) {
+      if (e.target === e.currentTarget) {
+        this.focus();
+      }
+    },
+
+    [$initEditor]() {
       const elem = this;
-      const contentElement = this[symbols.shadowRoot].querySelector(`.${contentClassName}`);
+      elem.addEventListener('blur', () => { elem[$focused] = false; });
+      elem.addEventListener('focus', () => { elem[$focused] = true; });
 
       schema.nodes.code_block.group += ` ${HyperLinkPlugin.DISABLED_GROUP}`;
       schema.nodes.code_block.group += ` ${ImageUploadPlugin.DISABLED_GROUP}`;
 
       const pm = new ProseMirror({
-        place: contentElement,
+        place: this[$wrapper],
         doc: markdownParser(new Schema(schema)).parse(this.defaultValue),
         plugins: [
           new Plugin(MarkdownInputRulesPlugin),
@@ -160,7 +192,7 @@ export default define('ak-editor-bitbucket', {
       // 'change' event is public API
       pm.on.change.add(() => emit(this, 'change'));
 
-      this[pmSymbol] = pm;
+      this[$pm] = pm;
     },
   },
 });

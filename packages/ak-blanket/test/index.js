@@ -13,7 +13,7 @@ describe('ak-blanket', () => {
     expect(() => {
       component = new AkBlanket();
     }).not.to.throw(Error);
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   describe('general behaviour', () => {

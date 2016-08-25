@@ -45,7 +45,7 @@ describe('ak-avatar', () => {
     expect(() => {
       component = new AKAvatar();
     }).to.not.throw(Error);
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   it('should have all the expected default properties after creation', () => {

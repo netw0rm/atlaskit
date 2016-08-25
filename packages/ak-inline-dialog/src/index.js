@@ -43,6 +43,19 @@ export default define('ak-inline-dialog', {
     window.removeEventListener('ak-blanket-click', closeDialog(elem));
   },
   render(elem) {
+    if (typeof elem.open === 'boolean') {
+      if (elem.open) {
+        emit(elem, 'ak-after-open');
+      } else {
+        emit(elem, 'ak-after-close');
+      }
+    }
+    // do not render anything if the dialog is hidden
+    // helps with avoiding flashing
+    if (!elem.open) {
+      return null;
+    }
+
     const styles = {};
     if (elem.boxShadow) {
       styles.boxShadow = elem.boxShadow;
@@ -53,29 +66,16 @@ export default define('ak-inline-dialog', {
     if (elem.borderRadius) {
       styles.borderRadius = elem.borderRadius;
     }
-
-    if (elem.open === true) {
-      emit(elem, 'ak-after-open');
-    } else if (elem.open === false) {
-      emit(elem, 'ak-after-close');
-    }
-
     return (
       <div>
         {renderBlanketIfNeeded(elem)}
         <Layer
-          open={elem.open}
           position={elem.position}
-          attachment={elem.constrain}
           target={elem.target}
-          onRender={(layer) => {
-            if (elem.open && layer.alignment) {
-              // by default the dialog has opacity 0
-              // and only with attribute 'positioned' it has opacity 1
-              // this behavior is to avoid 'flashing' of a dialog
-              // when it's initially positioning itself on a page
-              elem.setAttribute('positioned', true);
-            }
+          boundariesElement={elem.boundariesElement}
+          enableFlip={elem.enableFlip}
+          ref={(layerElem) => {
+            elem.layer = layerElem;
           }}
         >
           <style>{shadowStyles.toString()}</style>
@@ -85,6 +85,15 @@ export default define('ak-inline-dialog', {
         </Layer>
       </div>
     );
+  },
+  prototype: {
+    reposition() {
+      if (this.layer) {
+        this.layer.reposition();
+      }
+
+      return this;
+    },
   },
   props: {
     /* eslint-disable max-len  */
@@ -229,6 +238,10 @@ export default define('ak-inline-dialog', {
      * @example @js dialog.isClosableOnEsc = true
      */
     isClosableOnEsc: prop.boolean({
+      attribute: true,
+    }),
+    boundariesElement: { attribute: true },
+    enableFlip: prop.boolean({
       attribute: true,
     }),
   },

@@ -1,5 +1,17 @@
-<a name="1.2.6"></a>
-## 1.2.6 (2016-08-24)
+<a name="1.2.7"></a>
+## 1.2.7 (2016-08-25)
+
+
+
+<a name="pf-mention@1.2.7"></a>
+## pf-mention@1.2.7 (2016-08-25)
+
+
+### Bug Fixes
+
+* **component:** empty commit to trigger mentions release ([31f7099](https://bitbucket.org/atlassian/atlaskit/commits/31f7099))
+* **component:** fix mention's render after the dialog's height update ([369b97f](https://bitbucket.org/atlassian/atlaskit/commits/369b97f))
+* fix flashing problem for the dialog ([0d3425e](https://bitbucket.org/atlassian/atlaskit/commits/0d3425e))
 
 
 

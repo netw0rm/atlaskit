@@ -1,6 +1,6 @@
 {
   "name": "pf-mention",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "pf-mention webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

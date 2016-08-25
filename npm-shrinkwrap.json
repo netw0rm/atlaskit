@@ -125,9 +125,9 @@
       "resolved": "https://registry.npmjs.org/ak-dmd-plugin/-/ak-dmd-plugin-0.0.9.tgz"
     },
     "akutil-polyfills": {
-      "version": "1.0.0",
-      "from": "akutil-polyfills@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/akutil-polyfills/-/akutil-polyfills-1.0.0.tgz"
+      "version": "1.0.1",
+      "from": "akutil-polyfills@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/akutil-polyfills/-/akutil-polyfills-1.0.1.tgz"
     },
     "akutil-shared-styles": {
       "version": "33.4.0",

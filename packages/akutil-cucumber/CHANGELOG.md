@@ -1,5 +1,10 @@
 <a name="0.0.0"></a>
-# 0.0.0 (2016-08-23)
+# 0.0.0 (2016-08-25)
+
+
+### Bug Fixes
+
+* **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
 
 
 

@@ -1,0 +1,99 @@
+@import '../src/animations.less';
+
+.example {
+  border: 1px dotted blue;
+  width: 500px;
+  padding: 10px;
+  margin: 10px;
+  display: inline-block;
+}
+
+.container {
+  margin: auto;
+  margin-top: 200px;
+  width: 500px;
+}
+
+.box {
+  background-color: #0049B0;
+  height: 100px;
+  width: 100px;
+  display: inline-block;
+  margin: 30px;
+  color: white;
+  text-align: center;
+  line-height: 100px;
+  font-size: 20px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 55px;
+  padding-right: 50px;
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+}
+
+// The following three classes are only used to style the animated boxes
+// (bold, optimistic, combined)
+.bold {
+  border-radius: 10px;
+}
+
+.optimistic {
+  border-radius: 100%;
+}
+
+.combined {
+  border-radius:35px;
+  transform: rotate(45deg);
+
+  span {
+    display: block;
+    transform: rotate(-45deg);
+  }
+}
+
+
+// The following three classes create and apply our new animations
+// boldBounce, optimisticBounce, combinedBounce)
+.boldBounce {
+  animation: boldBounce 1s 1;
+  // now define an animation called boldBounce
+  .boldAnimation({.boldAnimClass;}, boldBounce);
+}
+
+.optimisticBounce {
+  animation: optimisticBounce 1s 1;
+  .optimisticAnimation({.optimisticAnimClass;}, optimisticBounce);
+}
+
+.combinedBounce {
+  animation: combinedBounce 1s 1;
+  .combinedAnimation({.combinedAnimClass;}, combinedBounce);
+}
+
+// The following three classes are only to store the mixins used for the animations
+// (boldAnimClass, optimisticAnimClass, combinedAnimClass)
+.boldAnimClass {
+  .toAnimate(@modifier) {
+    transform: translateY(-200px * @modifier);
+  }
+}
+
+.optimisticAnimClass {
+  .toAnimate(@modifier) {
+    transform: translateY(-200px * @modifier);
+  }
+}
+
+.combinedAnimClass {
+  .toAnimate(@modifier) {
+    // Here we show that you can also have static properties in your animations (the rotation)
+    transform: translateY(-200px * @modifier) rotate(45deg);
+  }
+}

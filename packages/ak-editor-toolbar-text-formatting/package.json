@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar-text-formatting",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -18,7 +18,7 @@
     "akutil-shared-styles": "^33.1.0",
     "ak-editor-button": "*",
     "ak-editor-icon": "*",
-    "skatejs": "^1.0.0"
+    "skatejs": "^1.2.2"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",

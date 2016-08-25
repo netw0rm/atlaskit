@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { emit, symbols } from 'skatejs';
 import Component from '../src';
 import shadowStyles from '../src/shadow.less';
-import { afterMutations } from 'akutil-common';
+import { afterMutations } from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -17,7 +17,7 @@ describe(name, () => {
 
   it('should be possible to create a component', () => {
     const component = new Component();
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   describe('button events', () => {

@@ -1,5 +1,21 @@
-<a name="2.0.0"></a>
-# 2.0.0 (2016-08-23)
+<a name="2.0.2"></a>
+## 2.0.2 (2016-08-25)
+
+
+
+<a name="ak-editor-toolbar-text-formatting@2.0.2"></a>
+## ak-editor-toolbar-text-formatting@2.0.2 (2016-08-25)
+
+
+
+<a name="ak-editor-toolbar-text-formatting@2.0.1"></a>
+## ak-editor-toolbar-text-formatting@2.0.1 (2016-08-24)
+
+
+### Bug Fixes
+
+* **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
+* Upgrade skate to fix spread attributes in JSX. ([944a7d2](https://bitbucket.org/atlassian/atlaskit/commits/944a7d2))
 
 
 

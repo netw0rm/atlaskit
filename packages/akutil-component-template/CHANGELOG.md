@@ -1,5 +1,10 @@
-<a name="3.1.4"></a>
-## 3.1.4 (2016-08-23)
+<a name="3.1.5"></a>
+## 3.1.5 (2016-08-25)
+
+
+
+<a name="akutil-component-template@3.1.5"></a>
+## akutil-component-template@3.1.5 (2016-08-25)
 
 
 
@@ -9,6 +14,7 @@
 
 ### Bug Fixes
 
+* **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
 * **test:** Use sinon chai ([33c8a6b](https://bitbucket.org/atlassian/atlaskit/commits/33c8a6b))
 
 

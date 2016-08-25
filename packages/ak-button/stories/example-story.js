@@ -11,7 +11,7 @@ const AkButton = reactify(AkButtonTemplate, {
 });
 
 storiesOf(name, module)
-  .add('a default ak-button', () => (
+  .add('a standard ak-button', () => (
     <AkButton>Button</AkButton>
   ))
   .add('a primary ak-button', () => (
@@ -27,7 +27,15 @@ storiesOf(name, module)
       Button
     </AkButton>
   )
-  .add('compact buttons', () =>
+  .add('a selected button', () =>
+    <AkButton selected>
+      Button
+    </AkButton>
+  )
+  .add('an ak-button that emits an action when it is clicked', () => (
+    <AkButton id="myComponent" onClick={action('clicking the WebComponent')}>Button</AkButton>
+  ))
+  .add('compact buttons with all attributes', () =>
     <div>
       <style>{"ak-button {margin-left: 10px;}"}</style>
       <AkButton compact>
@@ -47,14 +55,9 @@ storiesOf(name, module)
       </AkButton>
     </div>
   )
-  .add('a button selected', () =>
-    <AkButton selected>
-      Button
-    </AkButton>
-  )
   .add('an ak-button that emits an action when it is clicked', () => (
     <AkButton id="myComponent" onClick={action('clicking the WebComponent')}>Button</AkButton>
   ))
-  .add('a button that can change state and attributes', () =>
+  .add('a button that can change its attributes', () =>
     <AkButtonStates />
   );

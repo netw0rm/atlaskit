@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-icon",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -19,7 +19,7 @@
     "!win32"
   ],
   "dependencies": {
-    "skatejs": "^1.0.0"
+    "skatejs": "^1.2.2"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",

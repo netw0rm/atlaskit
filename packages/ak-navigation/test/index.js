@@ -10,7 +10,7 @@ const expect = chai.expect;
 describe('ak-navigation', () => {
   it('should be possible to create a component', () => {
     const component = new AkNavigation();
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   it('fires an ak-navigation-open event when opening', () => {

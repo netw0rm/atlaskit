@@ -1,5 +1,3 @@
-import 'style!./stories.less';
-
 import MentionTextInput from './demo-mention-text-input';
 import { resourceProvider, MockPresenceProvider } from './story-data';
 import { storiesOf, action } from '@kadira/storybook';

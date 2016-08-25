@@ -11,17 +11,12 @@ module.exports = (config) => {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha', 'chai', 'sinon-chai'],
 
-    // list of files / patterns to load in the browser
-    // all dependencies should be traced through here
     files: [
-      'test/**/*.js',
+      'packages/*/test/**/*.js',
     ],
 
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    // webpack will trace and watch all dependencies
     preprocessors: {
-      'test/**/*.js': ['webpack', 'sourcemap'],
+      'packages/*/test/**/*.js': ['webpack', 'sourcemap'],
     },
 
     // karma watches the test entry points

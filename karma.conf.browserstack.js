@@ -1,4 +1,3 @@
-const webpackConfig = require('./webpack.config.karma.browserstack.js');
 const baseConfig = require('./karma.conf.js');
 const addPolyFills = require('./karma.conf.addPolyFills.js');
 
@@ -19,11 +18,6 @@ module.exports = (config) => {
     autoWatch: false,
     concurrency: 5,
     client: {},
-    webpack: webpackConfig,
-    files: ['packages/*/test/**/*.js'],
-    preprocessors: {
-      'packages/*/test/**/*.js': ['webpack', 'sourcemap'],
-    },
   });
 
   addPolyFills(config);

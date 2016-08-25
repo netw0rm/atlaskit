@@ -16,12 +16,7 @@ if [ -n "$BROWSERSTACK" ]; then
   fi
 else
   retry=""
-  KARMA_CONF="../../karma.conf.js"
+  KARMA_CONF="karma.conf.js"
 fi
 
-# Run the tests if in Browserstack mode, or if test/ dir exists for Lerna
-if [ -n "$BROWSERSTACK" ] || [ -d "test" ]; then
-    $retry karma start $KARMA_CONF --single-run --reporters=dots,junit $@
-else
-    echo -e "\033[34mNo 'test' dir in $COMPONENT_DIR; Skipping tests.\033[0m"
-fi
+$retry karma start $KARMA_CONF --single-run --reporters=dots,junit $@

@@ -1,5 +1,6 @@
 const baseConfig = require('./karma.conf.js');
 const addPolyFills = require('./karma.conf.addPolyFills.js');
+const browserStackBrowsers = require('./build/lib/browserstack.browsers.js');
 
 module.exports = (config) => {
   baseConfig(config);
@@ -18,6 +19,8 @@ module.exports = (config) => {
     autoWatch: false,
     concurrency: 5,
     client: {},
+    customLaunchers: browserStackBrowsers,
+    browsers: Object.keys(browserStackBrowsers),
   });
 
   addPolyFills(config);

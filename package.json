@@ -123,7 +123,7 @@
     "storybook/static": "build-storybook -c ./build/storybook",
     "storybook/static/single": "./build/bin/storybook.static.single.sh",
     "storybook/static/registry": "rm -rf ./stories && ./node_modules/.bin/lerna exec --concurrency=1 -- ../../build/bin/storybook.static.registry.sh",
-    "test": "./build/bin/test.sh --no-auto-watch --reporters=dots",
+    "test": "karma start karma.conf.js --single-run --no-auto-watch --reporters=dots",
     "test/browserstack": "./build/bin/test.browserstack.sh",
     "test/browserstack/ci": "./build/bin/test.browserstack.ci.sh",
     "test/integration/browserstack": "node ./build/bin/test.integration.browserstack.js",

@@ -18,7 +18,7 @@
     "ak-editor-button": "^2.0.0",
     "ak-editor-button-link": "^1.0.0",
     "ak-editor-icon": "^2.0.0",
-    "ak-editor-popup": "^0.0.3",
+    "ak-editor-popup": "^0.0.4",
     "ak-editor-popup-text-input": "^0.1.0",
     "akutil-shared-styles": "^33.1.0",
     "skatejs": "^1.2.2"

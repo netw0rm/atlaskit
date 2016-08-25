@@ -28,7 +28,7 @@ echo $NO_JS_PACKAGES
 ALL_PACKAGES=$($LERNA_LOC exec pwd\
 | sed 1,2d)
 
-echo "Seting up source links..."
+echo "Setting up source links..."
 
 # Set up the npm link for each of the packages with no js
 echo ${NO_JS_PACKAGES} | xargs npm link 1>/dev/null

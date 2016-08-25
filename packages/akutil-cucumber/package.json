@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "Cucumber steps for AtlasKit components",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single akutil-cucumber"
   },

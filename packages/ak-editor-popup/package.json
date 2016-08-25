@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "ak-blanket": "^1.0.0",
-    "ak-layer": "^56.4.0",
+    "ak-layer": "^57.0.0",
     "akutil-shared-styles": "^33.0.2",
     "classnames": "^2.2.5",
     "skatejs": "^1.2.2"

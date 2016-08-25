@@ -1,5 +1,10 @@
-<a name="2.1.0"></a>
-# 2.1.0 (2016-08-25)
+<a name="2.2.0"></a>
+# 2.2.0 (2016-08-25)
+
+
+
+<a name="akutil-common@2.2.0"></a>
+# akutil-common@2.2.0 (2016-08-25)
 
 
 
@@ -55,6 +60,11 @@
 
 <a name="akutil-common@0.2.2"></a>
 ## akutil-common@0.2.2 (2016-08-12)
+
+
+### Features
+
+* add element to the keypresshandler ([a772d2b](https://bitbucket.org/atlassian/atlaskit/commits/a772d2b))
 
 
 

@@ -14,9 +14,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "atlassian-tether": "^1.3.4",
-    "keycode": "^2.1.2",
-    "skatejs": "^1.2.2"
+    "keycode": "^2.1.2"
   },
   "repository": {
     "type": "git",

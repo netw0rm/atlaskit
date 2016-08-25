@@ -1,6 +1,6 @@
 {
   "name": "akutil-shared-styles",
-  "version": "33.4.0",
+  "version": "33.5.0",
   "description": "Shared styles for AtlasKit components",
   "ak:link": true,
   "main": "dist/bundle.js",
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "camelcase": "^3.0.0",
+    "classnames": "^2.2.5",
     "glob": "^7.0.5",
     "less-vars-to-js": "^1.1.1"
   }

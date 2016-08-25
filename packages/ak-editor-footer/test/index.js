@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { emit, symbols } from 'skatejs';
 import Component from '../src';
 import shadowStyles from '../src/shadow.less';
-import { afterMutations } from 'akutil-common';
+import { afterMutations } from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();

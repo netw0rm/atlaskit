@@ -3,7 +3,8 @@
   "version": "3.1.4",
   "description": "akutil-component-template webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single akutil-component-template"
   },

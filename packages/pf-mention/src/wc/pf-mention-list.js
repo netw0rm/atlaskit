@@ -4,6 +4,7 @@ import { localProp } from './skate-local-props';
 import { define, emit, prop, props, vdom } from 'skatejs';
 import Item from './pf-mention-item';
 import Scrollable from './pf-scrollable';
+import debug from '../util/logger';
 
 // FIXME
 const defaultAvatar = 'https://dmg75ly2d8uj2.cloudfront.net/assets/img/avatar-all-here@2x.png';
@@ -62,6 +63,8 @@ function adjustSelection(elem) {
 function renderItems(elem) {
   let idx = 0;
 
+  debug('pf-mention-list: rendering', elem.mentions.length, 'mentions');
+
   if (elem.mentions.length) {
     adjustSelection(elem);
 
@@ -80,7 +83,7 @@ function renderItems(elem) {
               key={key}
               idx={idx}
               selected={selected}
-              onMousemove={(event) => {
+              onmousemove={(event) => {
                 if (actualMouseMove(elem, event)) {
                   selectIndex(elem, currentIdx);
                 }
@@ -88,7 +91,8 @@ function renderItems(elem) {
               /* Cannot use onclick, as onblur will close the element, and prevent
                * onClick from firing.
                */
-              onMousedown={(event) => {
+              onmousedown={(event) => {
+                debug('mousedown', event);
                 if (leftClick(event)) {
                   elem.chooseCurrentSelection();
                   event.preventDefault();
@@ -109,7 +113,6 @@ function renderItems(elem) {
       </div>
     );
   }
-
   return null;
 }
 
@@ -138,6 +141,7 @@ export default define('pf-mention-list', {
       emit(this, 'selected', {
         detail: this.mentions[this.selectedIndex],
       });
+      debug('pf-mention-list.chooseCurrentSelection', this.mentions[this.selectedIndex]);
     },
   },
 
@@ -152,6 +156,8 @@ export default define('pf-mention-list', {
   },
 
   render(elem) {
+    debug('pf-mention-list.render', elem.mentions.length);
+
     const classes = [
       styles.list,
     ];
@@ -173,6 +179,10 @@ export default define('pf-mention-list', {
         </div>
       </div>
     );
+  },
+
+  rendered(elem) {
+    emit(elem, 'pf-mention-list-rendered');
   },
 
   props: {

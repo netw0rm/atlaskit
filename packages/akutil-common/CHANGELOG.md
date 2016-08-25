@@ -1,5 +1,45 @@
-<a name="0.3.0"></a>
-# 0.3.0 (2016-08-16)
+<a name="2.1.0"></a>
+# 2.1.0 (2016-08-25)
+
+
+
+<a name="akutil-common@2.1.0"></a>
+# akutil-common@2.1.0 (2016-08-25)
+
+
+
+<a name="akutil-common@2.0.0"></a>
+# akutil-common@2.0.0 (2016-08-22)
+
+
+### Code Refactoring
+
+* Move the test helpers out of the common package ([d500d5c](https://bitbucket.org/atlassian/atlaskit/commits/d500d5c))
+
+
+### Features
+
+* tether to popper switch ([65a5370](https://bitbucket.org/atlassian/atlaskit/commits/65a5370))
+
+
+### BREAKING CHANGES
+
+* afterMutations gone
+
+
+
+<a name="akutil-common@1.0.0"></a>
+# akutil-common@1.0.0 (2016-08-18)
+
+
+### Bug Fixes
+
+* utils should be 1.x ([117ff3c](https://bitbucket.org/atlassian/atlaskit/commits/117ff3c))
+
+
+### BREAKING CHANGES
+
+* does not actually break anything, but we need to go post 1.x
 
 
 

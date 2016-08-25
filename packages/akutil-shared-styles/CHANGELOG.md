@@ -1,5 +1,61 @@
-<a name="33.1.0"></a>
-# 33.1.0 (2016-08-16)
+<a name="33.5.0"></a>
+# 33.5.0 (2016-08-25)
+
+
+
+<a name="akutil-shared-styles@33.5.0"></a>
+# akutil-shared-styles@33.5.0 (2016-08-24)
+
+
+
+<a name="akutil-shared-styles@33.4.0"></a>
+# akutil-shared-styles@33.4.0 (2016-08-23)
+
+
+### Features
+
+* Add default font size ([537c7c4](https://bitbucket.org/atlassian/atlaskit/commits/537c7c4))
+
+
+
+<a name="akutil-shared-styles@33.3.0"></a>
+# akutil-shared-styles@33.3.0 (2016-08-23)
+
+
+### Features
+
+* **component:** Added bold, optimistic and combined animations to shared-styles ([5e22fec](https://bitbucket.org/atlassian/atlaskit/commits/5e22fec))
+* Add grid.less ([cd3e3eb](https://bitbucket.org/atlassian/atlaskit/commits/cd3e3eb))
+
+
+
+<a name="akutil-shared-styles@33.2.1"></a>
+## akutil-shared-styles@33.2.1 (2016-08-22)
+
+
+### Bug Fixes
+
+* **colors:** Fix some color codes ([a57b6ab](https://bitbucket.org/atlassian/atlaskit/commits/a57b6ab))
+
+
+
+<a name="akutil-shared-styles@33.2.0"></a>
+# akutil-shared-styles@33.2.0 (2016-08-19)
+
+
+### Bug Fixes
+
+* **package:** Added main entry & adapted linking code for lerna ([57477dc](https://bitbucket.org/atlassian/atlaskit/commits/57477dc))
+
+
+### Features
+
+* **component:** This exposes a main file that includes all variables declared in less ([ef1e48c](https://bitbucket.org/atlassian/atlaskit/commits/ef1e48c))
+
+
+
+<a name="akutil-shared-styles@33.1.1"></a>
+## akutil-shared-styles@33.1.1 (2016-08-18)
 
 
 

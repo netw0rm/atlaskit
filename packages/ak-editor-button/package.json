@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-button",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -16,11 +16,12 @@
   "dependencies": {
     "akutil-shared-styles": "^33.0.2",
     "classnames": "^2.2.5",
-    "skatejs": "^1.0.0"
+    "skatejs": "^1.2.2"
   },
   "devDependencies": {
-    "akutil-react": "^0.0.4",
-    "ak-editor-icon": "^2.0.1"
+    "akutil-react": "^1.0.0",
+    "ak-editor-icon": "^2.0.1",
+    "akutil-common-test": "^1.0.0"
   },
   "repository": {
     "type": "git",

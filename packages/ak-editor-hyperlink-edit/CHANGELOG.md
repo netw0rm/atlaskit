@@ -1,10 +1,16 @@
-<a name="0.1.0"></a>
-# 0.1.0 (2016-08-16)
+<a name="0.1.1"></a>
+## 0.1.1 (2016-08-25)
+
+
+
+<a name="ak-editor-hyperlink-edit@0.1.1"></a>
+## ak-editor-hyperlink-edit@0.1.1 (2016-08-24)
 
 
 ### Bug Fixes
 
 * Fix eslint problems. ([9b6089c](https://bitbucket.org/atlassian/atlaskit/commits/9b6089c))
+* Upgrade skate to fix spread attributes in JSX. ([944a7d2](https://bitbucket.org/atlassian/atlaskit/commits/944a7d2))
 
 
 ### Features

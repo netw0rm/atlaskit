@@ -1,5 +1,3 @@
-import 'style!./stories.less';
-
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 

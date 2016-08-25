@@ -1,5 +1,26 @@
-<a name="69.6.2"></a>
-## 69.6.2 (2016-08-16)
+<a name="70.0.0"></a>
+# 70.0.0 (2016-08-25)
+
+
+
+<a name="ak-inline-dialog@70.0.0"></a>
+# ak-inline-dialog@70.0.0 (2016-08-25)
+
+
+### Bug Fixes
+
+* fix flashing problem for the dialog ([0d3425e](https://bitbucket.org/atlassian/atlaskit/commits/0d3425e))
+
+
+### Features
+
+* tether to popper switch ([65a5370](https://bitbucket.org/atlassian/atlaskit/commits/65a5370))
+* working with repositioning changed ([4cdd7c8](https://bitbucket.org/atlassian/atlaskit/commits/4cdd7c8))
+
+
+### BREAKING CHANGES
+
+* reposition now in the prototype of the dialog
 
 
 

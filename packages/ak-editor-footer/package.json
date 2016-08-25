@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-footer",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -14,11 +14,13 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "skatejs": "^1.0.0"
+    "ak-editor-icon": "^2.0.1",
+    "skatejs": "^1.2.2"
   },
   "devDependencies": {
+    "akutil-common-test": "^1.0.0",
     "akutil-shared-styles": "^33.1.0",
-    "akutil-react": "^0.0.4"
+    "akutil-react": "^1.0.0"
   },
   "repository": {
     "type": "git",

@@ -1,13 +1,16 @@
-import { afterMutations } from 'akutil-common';
+import { afterMutations } from 'akutil-common-test';
 import { symbols } from 'skatejs';
+const { shadowRoot } = symbols;
 import chai from 'chai';
+import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import Component from '../src';
 
+chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
+
 const expect = chai.expect;
-const shadowRoot = symbols.shadowRoot;
 
 describe('akutil-component-template', () => {
   let component;

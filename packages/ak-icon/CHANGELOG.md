@@ -1,5 +1,15 @@
-<a name="1.0.0"></a>
-# 1.0.0 (2016-08-16)
+<a name="1.0.1"></a>
+## 1.0.1 (2016-08-25)
+
+
+
+<a name="ak-icon@1.0.1"></a>
+## ak-icon@1.0.1 (2016-08-22)
+
+
+### Bug Fixes
+
+* make icon ID unique ([3607943](https://bitbucket.org/atlassian/atlaskit/commits/3607943))
 
 
 ### Features

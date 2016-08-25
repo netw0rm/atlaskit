@@ -1,6 +1,6 @@
 {
   "name": "pf-mention",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "pf-mention webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "ak-avatar": "^2.0.0",
-    "ak-inline-dialog": "^69.6.1",
+    "ak-inline-dialog": "^70.0.0",
     "akutil-common": "^2.0.0",
     "akutil-shared-styles": "^33.1.0",
     "es6-promise": "^3.2.1",

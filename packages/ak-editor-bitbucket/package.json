@@ -26,7 +26,7 @@
     "atlassian-editorkit-markdown-inputrules-plugin": "^0.0.18",
     "browserkeymap": "^2.0.1",
     "markdown-it": "^7.0.0",
-    "prosemirror": "atlassian/prosemirror#b674f90ee7931d7a467992bbc961ce4626cd63c4",
+    "prosemirror": "https://github.com/atlassian/prosemirror#b674f90ee7931d7a467992bbc961ce4626cd63c4",
     "skatejs": "^1.2.3"
   },
   "devDependencies": {

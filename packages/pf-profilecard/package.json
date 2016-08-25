@@ -1,0 +1,38 @@
+{
+  "name": "pf-profilecard",
+  "version": "0.0.0",
+  "description": "pf-profilecard webcomponent",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single pf-profilecard",
+    "test": "cd ../.. && npm run test/single pf-profilecard",
+    "test/watch": "cd ../.. && npm run test/single/watch pf-profilecard"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "ak-avatar": "^3.0.0",
+    "ak-button": "^1.4.0",
+    "akutil-common": "^2.5.0",
+    "akutil-shared-styles": "^34.0.1",
+    "babel-runtime": "^6.11.6",
+    "skatejs": "^3.0.0",
+    "url-search-params": "^0.5.0",
+    "whatwg-fetch": "^1.0.0"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "akutil-common-test": "^3.0.0",
+    "akutil-react": "^1.2.0",
+    "idomizer": "^0.5.3",
+    "loader-utils": "^0.2.16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

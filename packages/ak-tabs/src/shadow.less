@@ -12,6 +12,7 @@
 .ak-tab-label {
   color: @ak-tabs-color-label-default;
   cursor: pointer;
+  flex-shrink: 0; // Prevents labels from shrinking in Safari when the container shrinks.
   font-size: @ak-tabs-font-size;
   line-height: @ak-tabs-line-height;
   padding: @ak-tabs-padding-vertical @ak-tabs-padding-horizontal;
@@ -43,6 +44,7 @@
   }
 
   &.ak-tab-label-single {
+    flex-shrink: 1;
     min-width: 30px;
     overflow: hidden;
     text-overflow: ellipsis;

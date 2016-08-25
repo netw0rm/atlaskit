@@ -32,6 +32,11 @@ export default define('pf-mention-picker', {
         _visible: mentions.length > 0,
       });
     },
+    _updateDialogPosition(event) {
+      if (event.target._dialog && event.target._dialog.reposition) {
+        event.target._dialog.reposition();
+      }
+    },
   },
 
   created(elem) {
@@ -40,10 +45,15 @@ export default define('pf-mention-picker', {
     elem._filterChange = elem._filterChange.bind(elem);
   },
 
+  attached(elem) {
+    document.addEventListener('pf-mention-list-rendered', elem._updateDialogPosition);
+  },
+
   detached(elem) {
     if (elem.resourceProvider) {
       elem.resourceProvider.unsubscribe(elem);
     }
+    document.removeEventListener('pf-mention-list-rendered', elem._updateDialogPosition);
   },
 
   render(elem) {
@@ -54,7 +64,6 @@ export default define('pf-mention-picker', {
     };
 
     debug('pf-mention-picker.render', query);
-
     if (target) {
       return (
         <div style={style}>
@@ -65,6 +74,9 @@ export default define('pf-mention-picker', {
             open={elem._visible}
             padding="0"
             hasBlanket={false}
+            ref={(el) => {
+              elem._dialog = el;
+            }}
           >
             <ResourcedMentionList
               resourceProvider={resourceProvider}
@@ -77,6 +89,14 @@ export default define('pf-mention-picker', {
       );
     }
     return null;
+  },
+
+  rendered(elem) {
+    // since the content of the dialog is dynamic it needs to be repositioned manually
+    // after this content was generated
+    if (elem._dialog && elem._dialog.reposition) {
+      elem._dialog.reposition();
+    }
   },
 
   props: {

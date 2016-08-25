@@ -113,7 +113,6 @@ function renderItems(elem) {
       </div>
     );
   }
-
   return null;
 }
 
@@ -180,6 +179,10 @@ export default define('pf-mention-list', {
         </div>
       </div>
     );
+  },
+
+  rendered(elem) {
+    emit(elem, 'pf-mention-list-rendered');
   },
 
   props: {

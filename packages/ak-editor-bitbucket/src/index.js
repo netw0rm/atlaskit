@@ -32,6 +32,18 @@ const $ready = '__ready__';
 const $focused = '__focused__';
 const $wrapper = '__wrapper__';
 const $onContentClick = '__onContentClick__';
+const $canChangeBlockType = '__canChangeBlockType__';
+const $strongActive = '__strongActive__';
+const $emActive = '__emActive__';
+const $underlineActive = '__underlineActive__';
+const $textFormattingDisabled = '__textFormattingDisabled__';
+const $textFormattingPlugin = '__textFormattingPlugin__';
+const $hyperLinkText = '__hyperLinkText__';
+const $selectedFont = '__selectedFont__';
+const $blockTypePlugin = '__blockTypePlugin__';
+const $hyperLinkElement = '__hyperLinkElement__';
+const $hyperLinkPlugin = '__hyperLinkPlugin__';
+const $hyperLinkActive = '__hyperLinkActive__';
 
 function bind(elem, propName) {
   elem[propName] = elem[propName].bind(elem);
@@ -111,20 +123,20 @@ export default define('ak-editor-bitbucket', {
         <style>{shadowStyles.toString()}</style>
         <Toolbar>
           <ToolbarBlockType
-            disabled={!elem.canChangeBlockType}
-            selectedFont={elem.selectedFont}
-            onSelectFont={selectFont(elem.blockTypePlugin)}
+            disabled={!elem[$canChangeBlockType]}
+            selectedFont={elem[$selectedFont]}
+            onSelectFont={selectFont(elem[$blockTypePlugin])}
           />
           <ToolbarTextFormatting
-            boldActive={elem.strongActive}
-            italicActive={elem.emActive}
-            underlineActive={elem.underlineActive}
-            boldDisabled={elem.textFormattingDisabled}
-            italicDisabled={elem.textFormattingDisabled}
-            underlineDisabled={elem.textFormattingDisabled}
-            onToggle-bold={toggleMark(elem.textFormattingPlugin, 'bold')}
-            onToggle-italic={toggleMark(elem.textFormattingPlugin, 'italic')}
-            onToggle-underline={toggleMark(elem.textFormattingPlugin, 'underline')}
+            boldActive={elem[$strongActive]}
+            italicActive={elem[$emActive]}
+            underlineActive={elem[$underlineActive]}
+            boldDisabled={elem[$textFormattingDisabled]}
+            italicDisabled={elem[$textFormattingDisabled]}
+            underlineDisabled={elem[$textFormattingDisabled]}
+            onToggle-bold={toggleMark(elem[$textFormattingPlugin], 'strong')}
+            onToggle-italic={toggleMark(elem[$textFormattingPlugin], 'em')}
+            onToggle-underline={toggleMark(elem[$textFormattingPlugin], 'underline')}
           />
           <ToolbarHyperlink />
         </Toolbar>
@@ -136,13 +148,13 @@ export default define('ak-editor-bitbucket', {
           openBottom
           skip
         />
-        {elem.hyperLinkActive ?
+        {elem[$hyperLinkActive] ?
           <HyperLink
-            href={elem.hyperLinkText}
-            textInputValue={elem.hyperLinkText}
-            attachTo={elem.hyperLinkElement}
-            onUnlink={unlink(elem.hyperLinkPlugin)}
-            onchange={changeHyperLinkValue(elem.hyperLinkPlugin)}
+            href={elem[$hyperLinkText]}
+            textInputValue={elem[$hyperLinkText]}
+            attachTo={elem[$hyperLinkElement]}
+            onUnlink={unlink(elem[$hyperLinkPlugin])}
+            onchange={changeHyperLinkValue(elem[$hyperLinkPlugin])}
           />
         : null}
         <Footer openTop />
@@ -168,6 +180,16 @@ export default define('ak-editor-bitbucket', {
      * @private
      */
     [$focused]: prop.boolean(),
+
+    [$canChangeBlockType]: prop.boolean(),
+    [$strongActive]: prop.boolean(),
+    [$emActive]: prop.boolean(),
+    [$underlineActive]: prop.boolean(),
+    [$textFormattingDisabled]: prop.boolean(),
+    [$hyperLinkText]: prop.string(),
+    [$selectedFont]: prop.string(),
+    [$hyperLinkElement]: {},
+    [$hyperLinkActive]: prop.boolean(),
   },
 
   prototype: {
@@ -229,12 +251,12 @@ export default define('ak-editor-bitbucket', {
               const hyperLinkPlugin = new HyperLinkPlugin(proseMirrorInstance);
 
               hyperLinkPlugin.onChange(state => {
-                elem.hyperLinkActive = state.active;
-                elem.hyperLinkElement = state.element;
-                elem.hyperLinkText = state.text;
+                elem[$hyperLinkActive] = state.active;
+                elem[$hyperLinkElement] = state.element;
+                elem[$hyperLinkText] = state.text;
               });
 
-              elem.hyperLinkPlugin = hyperLinkPlugin;
+              elem[$hyperLinkPlugin] = hyperLinkPlugin;
 
               return hyperLinkPlugin;
             }
@@ -272,11 +294,11 @@ export default define('ak-editor-bitbucket', {
                 const name = state.selectedBlockType;
                 const blockType = prosemirrorBlockToToolbarMap[name];
 
-                elem.selectedFont = blockType;
-                elem.canChangeBlockType = state.enabled;
+                elem[$selectedFont] = blockType;
+                elem[$canChangeBlockType] = state.enabled;
               });
 
-              elem.blockTypePlugin = blockTypePlugin;
+              elem[$blockTypePlugin] = blockTypePlugin;
 
               return blockTypePlugin;
             }
@@ -286,13 +308,13 @@ export default define('ak-editor-bitbucket', {
               const textFormattingPlugin = new TextFormattingPlugin(proseMirrorInstance);
 
               textFormattingPlugin.onChange(state => {
-                elem.strongActive = state.strongActive;
-                elem.emActive = state.emActive;
-                elem.underlineActive = state.underlineActive;
-                elem.textFormattingDisabled = state.enabled;
+                elem[$strongActive] = state.strongActive;
+                elem[$emActive] = state.emActive;
+                elem[$underlineActive] = state.underlineActive;
+                elem[$textFormattingDisabled] = state.enabled;
               });
 
-              elem.textFormattingPlugin = textFormattingPlugin;
+              elem[$textFormattingPlugin] = textFormattingPlugin;
 
               return textFormattingPlugin;
             }

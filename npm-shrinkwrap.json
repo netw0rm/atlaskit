@@ -4185,6 +4185,11 @@
       "from": "karma-mocha@>=1.1.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/karma-mocha/-/karma-mocha-1.1.1.tgz"
     },
+    "karma-mocha-reporter": {
+      "version": "2.1.0",
+      "from": "karma-mocha-reporter@>=2.1.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/karma-mocha-reporter/-/karma-mocha-reporter-2.1.0.tgz"
+    },
     "karma-sourcemap-loader": {
       "version": "0.3.7",
       "from": "karma-sourcemap-loader@>=0.3.7 <0.4.0",

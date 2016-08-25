@@ -47,6 +47,7 @@
     "karma-firefox-launcher": "^1.0.0",
     "karma-junit-reporter": "^1.1.0",
     "karma-mocha": "^1.1.1",
+    "karma-mocha-reporter": "^2.1.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.0",
     "lerna": "^2.0.0-beta.26",

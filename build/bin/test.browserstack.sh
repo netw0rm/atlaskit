@@ -13,4 +13,4 @@ retry \
 karma start \
 karma.conf.browserstack.js \
 --single-run \
---reporters=dots,junit
+--reporters=mocha,junit

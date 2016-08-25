@@ -1,5 +1,35 @@
-<a name="1.0.0"></a>
-# 1.0.0 (2016-08-18)
+<a name="2.2.0"></a>
+# 2.2.0 (2016-08-25)
+
+
+
+<a name="akutil-common@2.2.0"></a>
+# akutil-common@2.2.0 (2016-08-25)
+
+
+
+<a name="akutil-common@2.1.0"></a>
+# akutil-common@2.1.0 (2016-08-25)
+
+
+
+<a name="akutil-common@2.0.0"></a>
+# akutil-common@2.0.0 (2016-08-22)
+
+
+### Code Refactoring
+
+* Move the test helpers out of the common package ([d500d5c](https://bitbucket.org/atlassian/atlaskit/commits/d500d5c))
+
+
+### Features
+
+* tether to popper switch ([65a5370](https://bitbucket.org/atlassian/atlaskit/commits/65a5370))
+
+
+### BREAKING CHANGES
+
+* afterMutations gone
 
 
 
@@ -30,6 +60,11 @@
 
 <a name="akutil-common@0.2.2"></a>
 ## akutil-common@0.2.2 (2016-08-12)
+
+
+### Features
+
+* add element to the keypresshandler ([a772d2b](https://bitbucket.org/atlassian/atlaskit/commits/a772d2b))
 
 
 

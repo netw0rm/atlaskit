@@ -1,11 +1,13 @@
 {
   "name": "ak-editor-icon",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-editor-icon",
+    "compress": "find . -name *.svg -exec svgo {} {} \\;",
     "pre-release": "lerna-semantic-release pre"
   },
   "files": [
@@ -13,13 +15,17 @@
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
+  "os": [
+    "!win32"
+  ],
   "dependencies": {
-    "skatejs": "^1.0.0"
+    "skatejs": "^1.2.2"
   },
   "devDependencies": {
+    "akutil-react": "^1.0.0",
     "idomizer": "^0.5.2",
     "loader-utils": "^0.2.15",
-    "akutil-react": "^1.0.0"
+    "svgo": "^0.6.6"
   },
   "repository": {
     "type": "git",

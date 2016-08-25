@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
-    <title>underline</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="underline" fill="#505F79">
-            <g transform="translate(4.000000, 4.000000)" id="Combined-Shape">
-                <path d="M1,0 L1,6 C1,8.91606658 2.73661118,11 6,11 C9.26338882,11 11,8.91606658 11,6 L11,0 L9,0 L9,6 C9,7.88393342 8.06994452,9 6,9 C3.93005548,9 3,7.88393342 3,6 L3,0 L1,0 Z M0,12 L12,12 L12,13.5 L0,13.5 L0,12 Z"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 4v6c0 2.916 1.737 5 5 5s5-2.084 5-5V4h-2v6c0 1.884-.93 3-3 3s-3-1.116-3-3V4H5zM4 16h12v1.5H4V16z" fill="#505F79" fill-rule="evenodd"/></svg>

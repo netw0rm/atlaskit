@@ -3,7 +3,8 @@
   "version": "1.0.1",
   "description": "ak-blanket webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-blanket"
   },
@@ -11,10 +12,10 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^1.0.0",
+    "akutil-common": "^2.0.0",
     "akutil-shared-styles": "^33.1.0",
     "classnames": "^2.2.5",
-    "skatejs": "^1.0.0"
+    "skatejs": "^1.2.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

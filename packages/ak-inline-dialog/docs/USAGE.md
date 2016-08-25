@@ -1,7 +1,5 @@
 # Inline Dialog
 
-## Synopsis
-
 The Inline Dialog is a container for secondary content and controls that are displayed on user request.
 
 ## Setup and install

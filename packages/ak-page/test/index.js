@@ -10,6 +10,6 @@ const expect = chai.expect;
 describe('ak-page', () => {
   it('should be possible to create a component', () => {
     const component = new Component();
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 });

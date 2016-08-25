@@ -100,7 +100,7 @@ export default define('ak-inline-dialog', {
     /**
      * @description Position of an inline-dialog relative to it’s target.
      * The position attribute takes two positional arguments in the format`position="edge edge-position"`,
-     * where `edge` specifies the edge you haveto align the inline dialog to, and `edge-position` specifies where on that edge the dialog should appear.
+     * where `edge` specifies the edge you have to align the inline dialog to, and `edge-position` specifies where on that edge the dialog should appear.
      * Checkout the examples in the following table:
      *
      * |             | top left    | top center    | top right    |              |

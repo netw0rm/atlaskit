@@ -1,5 +1,10 @@
-<a name="2.0.0"></a>
-# 2.0.0 (2016-08-23)
+<a name="2.1.0"></a>
+# 2.1.0 (2016-08-25)
+
+
+
+<a name="akutil-common@2.1.0"></a>
+# akutil-common@2.1.0 (2016-08-25)
 
 
 
@@ -10,6 +15,11 @@
 ### Code Refactoring
 
 * Move the test helpers out of the common package ([d500d5c](https://bitbucket.org/atlassian/atlaskit/commits/d500d5c))
+
+
+### Features
+
+* tether to popper switch ([65a5370](https://bitbucket.org/atlassian/atlaskit/commits/65a5370))
 
 
 ### BREAKING CHANGES

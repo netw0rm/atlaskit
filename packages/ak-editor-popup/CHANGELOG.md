@@ -1,5 +1,10 @@
-<a name="0.0.3"></a>
-## 0.0.3 (2016-08-25)
+<a name="0.0.4"></a>
+## 0.0.4 (2016-08-25)
+
+
+
+<a name="ak-editor-popup@0.0.4"></a>
+## ak-editor-popup@0.0.4 (2016-08-25)
 
 
 
@@ -9,6 +14,7 @@
 
 ### Bug Fixes
 
+* **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
 * Upgrade skate to fix spread attributes in JSX. ([944a7d2](https://bitbucket.org/atlassian/atlaskit/commits/944a7d2))
 
 

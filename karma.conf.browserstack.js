@@ -1,11 +1,9 @@
 const webpackConfig = require('./webpack.config.karma.browserstack.js');
 const baseConfig = require('./karma.conf.js');
 const addPolyFills = require('./karma.conf.addPolyFills.js');
-const writeEntryFile = require('./karma.conf.browserstack.writeEntryFile.js');
 
 module.exports = (config) => {
   baseConfig(config);
-  const entryFile = writeEntryFile('browserstack-entry.js');
 
   Object.assign(config, {
     browserStack: {
@@ -21,10 +19,10 @@ module.exports = (config) => {
     autoWatch: false,
     concurrency: 5,
     client: {},
-    webpack: webpackConfig(entryFile),
-    files: [entryFile],
+    webpack: webpackConfig,
+    files: ['packages/*/test/**/*.js'],
     preprocessors: {
-      [entryFile]: ['webpack', 'sourcemap'],
+      'packages/*/test/**/*.js': ['webpack', 'sourcemap'],
     },
   });
 

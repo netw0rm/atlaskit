@@ -36,6 +36,9 @@ const standardConfig = {
               'react', // required by react-storybook
               'stage-0',
             ],
+            plugins: [
+              'transform-runtime',
+            ],
           },
         },
         { // Support jsx to incremental dom in non-react locations (above).
@@ -49,6 +52,7 @@ const standardConfig = {
               'stage-0',
             ],
             plugins: [
+              'transform-runtime',
               [
                 'incremental-dom',
                 {

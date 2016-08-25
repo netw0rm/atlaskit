@@ -1,5 +1,15 @@
-<a name="2.1.0"></a>
-# 2.1.0 (2016-08-23)
+<a name="2.1.1"></a>
+## 2.1.1 (2016-08-24)
+
+
+
+<a name="ak-editor-icon@2.1.1"></a>
+## ak-editor-icon@2.1.1 (2016-08-24)
+
+
+### Bug Fixes
+
+* Upgrade skate to fix spread attributes in JSX. ([944a7d2](https://bitbucket.org/atlassian/atlaskit/commits/944a7d2))
 
 
 

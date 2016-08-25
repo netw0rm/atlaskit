@@ -1,5 +1,15 @@
-<a name="2.0.2"></a>
-## 2.0.2 (2016-08-23)
+<a name="2.0.3"></a>
+## 2.0.3 (2016-08-24)
+
+
+
+<a name="ak-editor-toolbar@2.0.3"></a>
+## ak-editor-toolbar@2.0.3 (2016-08-24)
+
+
+### Bug Fixes
+
+* Upgrade skate to fix spread attributes in JSX. ([944a7d2](https://bitbucket.org/atlassian/atlaskit/commits/944a7d2))
 
 
 

@@ -1,5 +1,10 @@
-<a name="33.4.0"></a>
-# 33.4.0 (2016-08-23)
+<a name="33.5.0"></a>
+# 33.5.0 (2016-08-24)
+
+
+
+<a name="akutil-shared-styles@33.5.0"></a>
+# akutil-shared-styles@33.5.0 (2016-08-24)
 
 
 
@@ -19,6 +24,7 @@
 
 ### Features
 
+* **component:** Added bold, optimistic and combined animations to shared-styles ([5e22fec](https://bitbucket.org/atlassian/atlaskit/commits/5e22fec))
 * Add grid.less ([cd3e3eb](https://bitbucket.org/atlassian/atlaskit/commits/cd3e3eb))
 
 

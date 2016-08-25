@@ -63,6 +63,7 @@ export default class MyComponent extends React.Component {
           {this.createRadioAppearanceAttribute(APPEARANCE.STANDARD)}
           {this.createRadioAppearanceAttribute(APPEARANCE.PRIMARY)}
           {this.createRadioAppearanceAttribute(APPEARANCE.SUBTLE)}
+          {this.createRadioAppearanceAttribute(APPEARANCE.LINK)}
         </form>
         <br />
         <form>

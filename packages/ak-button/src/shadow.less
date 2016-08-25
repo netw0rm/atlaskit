@@ -22,6 +22,11 @@
 @selectedBackgroundColor: @ak-color-N700;
 @selectedColor: @ak-color-N20;
 
+// Link Button Colors
+@linkColor: @ak-color-B400;
+@linkColorHover: @ak-color-B300;
+@linkColorActive: @linkColorHover;
+
 // Disabled button Colors
 @disabledColor: @ak-color-N40;
 
@@ -42,12 +47,12 @@
     outline: none;
     padding: 0 @base;
     text-align: center;
-    transition: background 0s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+    transition: background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
 
     &:hover {
       background: @defaultBackgroundColorHover;
       cursor: pointer;
-      transition: background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+      transition: background 0.2s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
     }
 
     &:active {
@@ -96,6 +101,27 @@
     &.selected {
       background: @selectedBackgroundColor;
       color: @selectedColor;
+    }
+
+    &.link {
+      background: none;
+      color: @linkColor;
+      transition: color 0.1s ease-out;
+
+      &:hover {
+        color: @linkColorHover;
+        text-decoration: underline;
+      }
+
+      &:active {
+        color: @linkColorActive;
+        text-decoration: none;
+      }
+
+      &.disabled {
+        color: @disabledColor;
+        background: none;
+      }
     }
 
     &.compact {

@@ -1,5 +1,5 @@
-const path = require('path');
 const webpackConfig = require('./webpack.config.karma.js');
+const addPolyFills = require('./karma.conf.addPolyFills.js');
 
 module.exports = (config) => {
   Object.assign(config, {
@@ -67,9 +67,5 @@ module.exports = (config) => {
   });
 
   // add the polyfill file to the test run
-  const polyfills = path.join(__dirname, 'packages', 'akutil-polyfills', 'src', 'index.js');
-  config.files.unshift(polyfills);
-  const additionalPreprocessors = {};
-  additionalPreprocessors[polyfills] = ['webpack', 'sourcemap'];
-  Object.assign(config.preprocessors, additionalPreprocessors);
+  addPolyFills(config);
 };

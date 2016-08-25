@@ -1,27 +1,11 @@
-const path = require('path');
+const webpackConfig = require('./webpack.config.karma.browserstack.js');
 const baseConfig = require('./karma.conf.js');
-const pkgJsonPath = path.join(process.cwd(), 'package.json');
-const packageName = require(pkgJsonPath).name;
-const fs = require('fs');
-const glob = require('glob');
-
-function concatTests(entryFile) {
-  let entryContents = '';
-  const testFiles = glob.sync('./packages/*/test/**/*.js');
-  testFiles.unshift('./packages/akutil-polyfills/src/index.js');
-  testFiles.forEach(testFile => {
-    entryContents += `require('${testFile}');\n`;
-  });
-  fs.writeFileSync(entryFile, entryContents);
-}
+const addPolyFills = require('./karma.conf.addPolyFills.js');
+const writeEntryFile = require('./karma.conf.browserstack.writeEntryFile.js');
 
 module.exports = (config) => {
   baseConfig(config);
-
-  const webpackAndSourcemap = ['webpack', 'sourcemap'];
-  const entryFile = 'browserstack-entry.js';
-
-  concatTests(entryFile);
+  const entryFile = writeEntryFile('browserstack-entry.js');
 
   Object.assign(config, {
     browserStack: {
@@ -30,7 +14,6 @@ module.exports = (config) => {
       startTunnel: !process.env.BROWSERSTACK_TUNNEL,
       tunnelIdentifier: process.env.BROWSERSTACK_TUNNEL || 'ak_tunnel',
       project: 'AtlasKit',
-      name: packageName,
       build: `${process.env.CURRENT_BRANCH} ${new Date().getTime()} ${process.env.HEAD_SHA}`,
     },
     captureTimeout: 120000,
@@ -38,20 +21,12 @@ module.exports = (config) => {
     autoWatch: false,
     concurrency: 5,
     client: {},
-
+    webpack: webpackConfig(entryFile),
     files: [entryFile],
     preprocessors: {
-      [entryFile]: webpackAndSourcemap,
+      [entryFile]: ['webpack', 'sourcemap'],
     },
   });
 
-  config.webpack.module.loaders.push({
-    loader: 'babel-loader',
-    test: path.resolve(__dirname, entryFile),
-    query: {
-      presets: [
-        'es2015',
-      ],
-    },
-  });
+  addPolyFills(config);
 };

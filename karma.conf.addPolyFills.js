@@ -1,7 +1,5 @@
-const path = require('path');
-
 function addPolyFills(config) {
-  const polyfills = path.join(__dirname, 'packages', 'akutil-polyfills', 'src', 'index.js');
+  const polyfills = require.resolve('akutil-polyfills');
   config.files.unshift(polyfills);
   const additionalPreprocessors = {};
   additionalPreprocessors[polyfills] = ['webpack', 'sourcemap'];

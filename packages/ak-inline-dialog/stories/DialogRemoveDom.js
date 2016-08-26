@@ -1,6 +1,4 @@
 import reactify from 'akutil-react';
-import { storiesOf } from '@kadira/storybook';
-import { name } from '../package.json';
 import AkInlineDialog from '../src/index';
 
 const { React, ReactDOM } = window;
@@ -55,6 +53,4 @@ class ToggleDemo extends Component {
     );
   }
 }
-
-storiesOf(`${name} ToggleDemo`, module)
-  .add('Toggle add/remove from dom', () => (<ToggleDemo />));
+export default ToggleDemo;

@@ -12,6 +12,7 @@ fi
 
 COMP_NAME="$1"
 PASCAL_CASE_NAME=$(./build/bin/pascal.case.js "$COMP_NAME" | sed "s/^Ak//")
+CAMEL_CASE=$(./build/bin/camel.case.js "$COMP_NAME")
 
 # TODO: Should we check the name to see if it looks namespaced? Hard code acceptable name spaces or
 # base it on existing components?
@@ -30,12 +31,12 @@ cp -r "packages/akutil-component-template" "packages/$COMP_NAME"
 # `xargs` is passing them to sed
 # `sed` is replacing instances of 'akutil-component-template' and 'AkUtilComponentTemplate' with the new component name
 # LC_CTYPE and LANG=C: http://stackoverflow.com/questions/19242275/re-error-illegal-byte-sequence-on-mac-os-x
-LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' -e "s/akutil-component-template/${COMP_NAME}/g" -e "s/AkUtilComponentTemplate/${PASCAL_CASE_NAME}/g" '{}'
+LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' -e "s/akutil-component-template/${COMP_NAME}/g" -e "s/AkUtilComponentTemplate/${PASCAL_CASE_NAME}/g" -e "s/akUtilComponentTemplate/${CAMEL_CASE}/g" '{}'
 
 pushd "packages/$COMP_NAME"
 
 # Make sure our version for the new package is 0.0.0
-sed -i '' 's/"version": "\([^"]*\)"/"version": "0.0.0"/' package.json
+sed -i '' 's/"version": "\([^"]*\)"/"version": "1.0.0"/' package.json
 
 # Empty changelog
 > CHANGELOG.md
@@ -47,4 +48,5 @@ npm install
 
 npm run docs/single "$COMP_NAME"
 
-echo "New component '$COMP_NAME' created (v0.0.0)"
+echo "New component '$COMP_NAME' created (v1.0.0)"
+echo "Hint: Please leave the version at 1.0.0+, as otherwise caret dependencies work differently"

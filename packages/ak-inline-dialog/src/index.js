@@ -192,7 +192,7 @@ export default define('ak-inline-dialog', {
     }),
     /**
      * @description Defines whether a dialog has a blanket underneath or not.
-     * It does have a blanket underneath.
+     * It does have a blanket underneath by default.
      * @memberof InlineDialog
      * @instance
      * @type Boolean
@@ -220,7 +220,7 @@ export default define('ak-inline-dialog', {
     }),
     /**
      * @description Defines if the blanket is grey with opacity or transparent.
-     * It's transparent by default.
+     * It‘s transparent by default.
      * @memberof InlineDialog
      * @instance
      * @type Boolean
@@ -232,7 +232,7 @@ export default define('ak-inline-dialog', {
       attribute: true,
     }),
     /**
-     * @description Close the blanket by pressing the 'escape' button. It's closable by default.
+     * @description Close the blanket by pressing the “escape” button. It‘s closable by default.
      * @memberof InlineDialog
      * @instance
      * @type Boolean

@@ -1,10 +1,20 @@
-<a name="2.1.2"></a>
-## 2.1.2 (2016-08-25)
+<a name="2.2.0"></a>
+# 2.2.0 (2016-08-26)
+
+
+
+<a name="ak-editor-icon@2.2.0"></a>
+# ak-editor-icon@2.2.0 (2016-08-26)
 
 
 
 <a name="ak-editor-icon@2.1.2"></a>
 ## ak-editor-icon@2.1.2 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

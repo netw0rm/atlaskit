@@ -1,10 +1,20 @@
-<a name="1.2.8"></a>
-## 1.2.8 (2016-08-25)
+<a name="1.3.0"></a>
+# 1.3.0 (2016-08-26)
+
+
+
+<a name="pf-mention@1.3.0"></a>
+# pf-mention@1.3.0 (2016-08-26)
 
 
 
 <a name="pf-mention@1.2.8"></a>
 ## pf-mention@1.2.8 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

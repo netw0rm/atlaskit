@@ -1,10 +1,25 @@
-<a name="2.0.2"></a>
-## 2.0.2 (2016-08-25)
+<a name="2.1.0"></a>
+# 2.1.0 (2016-08-26)
+
+
+
+<a name="ak-editor-toolbar-text-formatting@2.1.0"></a>
+# ak-editor-toolbar-text-formatting@2.1.0 (2016-08-26)
+
+
+### Features
+
+* Initial integration of lists plugin. ([fe33246](https://bitbucket.org/atlassian/atlaskit/commits/fe33246))
 
 
 
 <a name="ak-editor-toolbar-text-formatting@2.0.2"></a>
 ## ak-editor-toolbar-text-formatting@2.0.2 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

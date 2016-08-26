@@ -1,10 +1,20 @@
-<a name="0.1.3"></a>
-## 0.1.3 (2016-08-25)
+<a name="0.2.0"></a>
+# 0.2.0 (2016-08-26)
+
+
+
+<a name="ak-editor-footer@0.2.0"></a>
+# ak-editor-footer@0.2.0 (2016-08-26)
 
 
 
 <a name="ak-editor-footer@0.1.3"></a>
 ## ak-editor-footer@0.1.3 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

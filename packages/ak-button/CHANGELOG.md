@@ -1,5 +1,15 @@
-<a name="0.2.0"></a>
-# 0.2.0 (2016-08-25)
+<a name="0.3.0"></a>
+# 0.3.0 (2016-08-26)
+
+
+
+<a name="ak-button@0.3.0"></a>
+# ak-button@0.3.0 (2016-08-26)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

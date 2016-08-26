@@ -1,9 +1,10 @@
 {
   "name": "ak-page",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "ak-page webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-page"
   },

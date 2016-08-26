@@ -1,9 +1,10 @@
 {
   "name": "ak-editor-popup",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "ak-editor-popup webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-popup"
   },

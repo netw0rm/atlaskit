@@ -76,7 +76,7 @@ describe('ak-layer', () => {
     expect(() => {
       component = new LayerWC();
     }).not.to.throw(Error);
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   it('default properties', () => {

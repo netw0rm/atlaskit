@@ -1,5 +1,10 @@
-<a name="2.1.1"></a>
-## 2.1.1 (2016-08-25)
+<a name="2.1.2"></a>
+## 2.1.2 (2016-08-25)
+
+
+
+<a name="ak-editor-icon@2.1.2"></a>
+## ak-editor-icon@2.1.2 (2016-08-25)
 
 
 
@@ -15,6 +20,11 @@
 
 <a name="ak-editor-icon@2.1.0"></a>
 # ak-editor-icon@2.1.0 (2016-08-22)
+
+
+### Bug Fixes
+
+* **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
 
 
 ### Features

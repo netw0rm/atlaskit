@@ -3,6 +3,7 @@ import reactify from 'akutil-react';
 import akNavigation from '../src/index';
 import akPage from 'ak-page';
 import 'ak-icon';
+import 'ak-avatar';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 import Lorem from 'react-lorem-component';
@@ -42,11 +43,13 @@ const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-
     </AkNavigation>);
   },
 });
-const projectUrl = require('url!./nucleus.png');
+const containerLogo = require('url!./nucleus.png');
+const userAvatar = require('url!./emma.jpg');
+
 const containerProps = {
   containerName: 'Nucleus',
   containerHref: 'http://example.com',
-  containerLogo: projectUrl,
+  containerLogo,
 };
 
 const NavigationLinks = () => <div>
@@ -88,6 +91,8 @@ storiesOf(name, module)
         <ak-icon slot="global-home" glyph="jira" />
         <ak-icon slot="global-search" glyph="search" />
         <ak-icon slot="global-create" glyph="create" />
+        <ak-avatar src={userAvatar} slot="global-profile" />
+        <ak-icon slot="global-help" glyph="help" />
         <NavigationLinks />
       </AkNavigation>
       <div is slot="content">

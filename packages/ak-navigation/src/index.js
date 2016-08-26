@@ -30,6 +30,14 @@ export default define('ak-navigation', {
           <div className={shadowStyles.locals.globalSecondary}>
             <slot name="global-create" />
           </div>
+          <div className={shadowStyles.locals.globalBottom}>
+            <div className={shadowStyles.locals.globalSecondary}>
+              <slot name="global-help" />
+            </div>
+            <div className={shadowStyles.locals.globalSecondary}>
+              <slot name="global-profile" />
+            </div>
+          </div>
         </div>
         <div className={shadowStyles.locals.container}>
           <div className={shadowStyles.locals.containerName}>

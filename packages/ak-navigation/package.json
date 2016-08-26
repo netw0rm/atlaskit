@@ -23,7 +23,8 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "akutil-react": "^1.0.0",
-    "react-lorem-component": "^0.10.0"
+    "react-lorem-component": "^0.10.0",
+    "akutil-common-test": "^1.0.0"
   },
   "repository": {
     "type": "git",

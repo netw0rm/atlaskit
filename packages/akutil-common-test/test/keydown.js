@@ -1,8 +1,6 @@
 import { keydown } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
-import keyCode from 'keycode';
-import { afterMutations } from '../src';
 chai.should();
 chai.use(sinonChai);
 

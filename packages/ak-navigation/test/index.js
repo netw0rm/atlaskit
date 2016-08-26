@@ -1,4 +1,5 @@
 import { name } from '../package.json';
+import { keydown, afterMutations } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkNavigation from '../src/index.js';
@@ -33,5 +34,34 @@ describe('ak-navigation', () => {
     });
     component.open = false;
     expect(called).to.equal(true);
+  });
+
+  it('toggling does not work before attached', () => {
+    const component = new AkNavigation();
+    expect(component.open).to.equal(false);
+    afterMutations(() => {
+      keydown('[');
+      expect(component.open).to.equal(false);
+    });
+  });
+
+  it('toggling works while attached', () => {
+    const component = new AkNavigation();
+    document.body.appendChild(component);
+    expect(component.open).to.equal(false);
+    afterMutations(() => {
+      keydown('[');
+      expect(component.open).to.equal(true);
+    });
+  });
+
+  it('toggling does not work after deteached', () => {
+    const component = new AkNavigation();
+    document.body.appendChild(component);
+    expect(component.open).to.equal(false);
+    afterMutations(() => {
+      keydown('[');
+      expect(component.open).to.equal(false);
+    });
   });
 });

@@ -78,10 +78,21 @@ export default define('ak-navigation', {
       attribute: true,
     }),
   },
+  prototype: {
+    toggleHandler(event) {
+      if (event.keyCode === keycode('[')) {
+        this.open = !this.open;
+      }
+    },
+  },
   attached(elem) {
     setTimeout(() => {
       elem.shouldAnimate = true;
     }, shouldAnimateThreshold);
+    document.body.addEventListener('keyup', elem.toggleHandler.bind(elem));
+  },
+  detached(elem) {
+    document.body.removeEventListener('keyup', elem.toggleHandler);
   },
   created(elem) {
     elem.addEventListener('ak-navigation-link-selected', (event) => {
@@ -102,11 +113,6 @@ export default define('ak-navigation', {
         elem.open = true;
       } else if (swipeType === swipeRight) {
         elem.open = false;
-      }
-    });
-    document.body.addEventListener('keyup', (event) => {
-      if (keycode(event) === '[') {
-        elem.open = !elem.open;
       }
     });
   },

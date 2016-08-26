@@ -6974,7 +6974,7 @@
                     "string_decoder": {
                       "version": "0.10.31",
                       "from": "string_decoder@0.10.31",
-                      "resolved": "http://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
+                      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
                     },
                     "util-deprecate": {
                       "version": "1.0.1",

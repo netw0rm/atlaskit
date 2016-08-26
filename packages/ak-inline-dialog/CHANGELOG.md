@@ -1,10 +1,20 @@
-<a name="70.0.1"></a>
-## 70.0.1 (2016-08-26)
+<a name="70.1.0"></a>
+# 70.1.0 (2016-08-26)
+
+
+
+<a name="ak-inline-dialog@70.1.0"></a>
+# ak-inline-dialog@70.1.0 (2016-08-26)
 
 
 
 <a name="ak-inline-dialog@70.0.1"></a>
 ## ak-inline-dialog@70.0.1 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

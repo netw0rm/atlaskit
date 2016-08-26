@@ -1,5 +1,10 @@
-<a name="2.0.1"></a>
-## 2.0.1 (2016-08-26)
+<a name="2.1.0"></a>
+# 2.1.0 (2016-08-26)
+
+
+
+<a name="ak-page@2.1.0"></a>
+# ak-page@2.1.0 (2016-08-26)
 
 
 
@@ -10,6 +15,11 @@
 ### Bug Fixes
 
 * **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

@@ -42,11 +42,11 @@ const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-
     </AkNavigation>);
   },
 });
-
+const projectUrl = require('url!./nucleus.png');
 const containerProps = {
   containerName: 'Nucleus',
-  containerHref: 'http://nucleus.com',
-  containerLogo: 'https://s3.amazonaws.com/uploads.hipchat.com/10804/576067/VtJT4vjBKJXG5GI/Group%204.png',
+  containerHref: 'http://example.com',
+  containerLogo: projectUrl,
 };
 
 const NavigationLinks = () => <div>

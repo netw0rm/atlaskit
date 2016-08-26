@@ -1,5 +1,10 @@
-<a name="0.1.0"></a>
-# 0.1.0 (2016-08-26)
+<a name="0.2.0"></a>
+# 0.2.0 (2016-08-26)
+
+
+
+<a name="ak-dropdown@0.2.0"></a>
+# ak-dropdown@0.2.0 (2016-08-26)
 
 
 
@@ -24,8 +29,9 @@
 * **component:** item now have link with href ([ea4f33f](https://bitbucket.org/atlassian/atlaskit/commits/ea4f33f))
 * **component:** make dropdown close on click outside and esc button ([4e4510f](https://bitbucket.org/atlassian/atlaskit/commits/4e4510f))
 * **component:** open property for the dropdown ([84ba2fa](https://bitbucket.org/atlassian/atlaskit/commits/84ba2fa))
-* **component:** trigger now supports keyboard interactions ([fa30154](https://bitbucket.org/atlassian/atlaskit/commits/fa30154))
 * add element to the keypresshandler ([a772d2b](https://bitbucket.org/atlassian/atlaskit/commits/a772d2b))
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
+* **component:** trigger now supports keyboard interactions ([fa30154](https://bitbucket.org/atlassian/atlaskit/commits/fa30154))
 
 
 

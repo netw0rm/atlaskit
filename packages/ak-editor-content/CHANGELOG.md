@@ -1,10 +1,20 @@
-<a name="2.0.3"></a>
-## 2.0.3 (2016-08-26)
+<a name="2.1.0"></a>
+# 2.1.0 (2016-08-26)
+
+
+
+<a name="ak-editor-content@2.1.0"></a>
+# ak-editor-content@2.1.0 (2016-08-26)
 
 
 
 <a name="ak-editor-content@2.0.3"></a>
 ## ak-editor-content@2.0.3 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

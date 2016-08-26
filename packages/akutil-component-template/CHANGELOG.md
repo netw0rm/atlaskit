@@ -1,10 +1,20 @@
-<a name="3.1.5"></a>
-## 3.1.5 (2016-08-26)
+<a name="3.2.0"></a>
+# 3.2.0 (2016-08-26)
+
+
+
+<a name="akutil-component-template@3.2.0"></a>
+# akutil-component-template@3.2.0 (2016-08-26)
 
 
 
 <a name="akutil-component-template@3.1.5"></a>
 ## akutil-component-template@3.1.5 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

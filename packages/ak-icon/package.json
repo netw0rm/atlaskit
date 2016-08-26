@@ -1,9 +1,10 @@
 {
   "name": "ak-icon",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-icon",
     "pre-release": "lerna-semantic-release pre"
@@ -15,7 +16,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "skatejs": "^1.0.2"
+    "skatejs": "^1.2.2"
   },
   "devDependencies": {
     "idomizer": "^0.5.2",

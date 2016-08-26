@@ -1,9 +1,10 @@
 {
   "name": "ak-badge",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ak-badge webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-badge"
   },
@@ -14,7 +15,7 @@
     "akutil-common": "^2.0.0",
     "akutil-shared-styles": "^33.1.0",
     "classnames": "^2.2.5",
-    "skatejs": "^1.0.1"
+    "skatejs": "^1.2.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

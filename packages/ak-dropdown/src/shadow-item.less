@@ -1,0 +1,51 @@
+@import 'shared-variables.less';
+
+.item {
+  height: 30px;
+  color: @ak-dropdown-font-main;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  background-color: @ak-dropdown-background-main;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:hover {
+    background-color: @ak-dropdown-background-hover;
+  }
+
+  &:active {
+    background-color: @ak-dropdown-background-active;
+    color: @ak-dropdown-font-active;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px @ak-dropdown-focused-outline;
+    outline: none;
+    position:relative; //making shadow on top of others
+  }
+}
+
+.selected {
+  background-color: @ak-dropdown-background-selected;
+  color: @ak-dropdown-font-main;
+}
+
+.disabled {
+  &, &:active, &:hover {
+    color: @ak-dropdown-font-disabled;
+    background-color: @ak-dropdown-background-disabled;
+    cursor: not-allowed;
+  }
+}
+
+.first {
+  border-top-right-radius: @ak-dropdown-border-radius;
+}
+
+.last {
+  border-bottom-left-radius: @ak-dropdown-border-radius;
+  border-bottom-right-radius: @ak-dropdown-border-radius;
+}

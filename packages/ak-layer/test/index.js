@@ -76,36 +76,12 @@ describe('ak-layer', () => {
     expect(() => {
       component = new LayerWC();
     }).not.to.throw(Error);
-    expect(component.tagName.toLowerCase()).to.equal(name);
-  });
-
-  it('should have all the default properties after creation', () => {
-    const component = new LayerWC();
-
-    expect(component.position).not.to.equal(null);
-    expect(component.position).to.equal(defaultPosition);
-
-    expect(component.constrain).not.to.equal(null);
-    expect(component.constrain).to.equal('window');
-  });
-
-  it('all the properties should be attributes', () => {
-    const component = new LayerWC();
-    [
-      { key: 'position', value: 'top left' },
-      { key: 'target', value: '' },
-      { key: 'constrain', value: 'window' },
-    ].forEach(data => {
-      component[data.key] = data.value;
-      const attr = component.getAttribute(data.key);
-      expect(attr).to.equals(data.value);
-    });
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   it('default properties', () => {
     const component = new LayerWC();
     [
-      { key: 'constrain', default: 'window' },
       { key: 'position', default: 'right middle' },
     ].forEach(data => {
       const attr = component.getAttribute(data.key);
@@ -141,24 +117,23 @@ describe('ak-layer', () => {
       let rectComponent;
       let rectTarget;
       setTimeout(() => {
-        rectComponent = elem.getBoundingClientRect();
+        rectComponent = elem.childNodes[0].getBoundingClientRect();
         rectTarget = target.getBoundingClientRect();
         expect(alignments[key].top(rectComponent, rectTarget)).to.equal(0);
         expect(alignments[key].left(rectComponent, rectTarget)).to.equal(0);
         done();
-      }, 1);
+      }, 50); // it has 'anti-flashing' logic now, so it needs some time. 0 doesn't work here
     }
 
     beforeEach(() => {
       const targetID = getTargetId();
       targetNode = createTarget(targetID);
       layerContainer = document.createElement('div');
-      targetNode.style.margin = '100px';
-
-      component = createComponent(targetID);
-      layerContainer.appendChild(component);
       layerContainer.appendChild(targetNode);
       document.body.appendChild(layerContainer);
+      document.body.style.padding = '100px';
+      component = createComponent(targetID);
+      layerContainer.appendChild(component);
     });
 
     afterEach(() => document.body.removeChild(layerContainer));

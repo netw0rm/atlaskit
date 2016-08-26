@@ -1,9 +1,10 @@
 {
   "name": "ak-editor-icon",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-editor-icon",
     "compress": "find . -name *.svg -exec svgo {} {} \\;",
@@ -18,7 +19,7 @@
     "!win32"
   ],
   "dependencies": {
-    "skatejs": "^1.0.0"
+    "skatejs": "^1.2.2"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",

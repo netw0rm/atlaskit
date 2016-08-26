@@ -1,5 +1,31 @@
-<a name="56.4.1"></a>
-## 56.4.1 (2016-08-24)
+<a name="57.0.1"></a>
+## 57.0.1 (2016-08-25)
+
+
+
+<a name="ak-layer@57.0.1"></a>
+## ak-layer@57.0.1 (2016-08-25)
+
+
+
+<a name="ak-layer@57.0.0"></a>
+# ak-layer@57.0.0 (2016-08-25)
+
+
+### Bug Fixes
+
+* **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
+
+
+### Features
+
+* tether to popper switch ([65a5370](https://bitbucket.org/atlassian/atlaskit/commits/65a5370))
+* working with repositioning changed ([4cdd7c8](https://bitbucket.org/atlassian/atlaskit/commits/4cdd7c8))
+
+
+### BREAKING CHANGES
+
+* reposition now in the prototype of the dialog
 
 
 

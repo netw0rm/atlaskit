@@ -36,7 +36,7 @@ LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed 
 pushd "packages/$COMP_NAME"
 
 # Make sure our version for the new package is 0.0.0
-sed -i '' 's/"version": "\([^"]*\)"/"version": "0.0.0"/' package.json
+sed -i '' 's/"version": "\([^"]*\)"/"version": "1.0.0"/' package.json
 
 # Empty changelog
 > CHANGELOG.md
@@ -48,4 +48,5 @@ npm install
 
 npm run docs/single "$COMP_NAME"
 
-echo "New component '$COMP_NAME' created (v0.0.0)"
+echo "New component '$COMP_NAME' created (v1.0.0)"
+echo "Hint: Please leave the version at 1.0.0+, as otherwise caret dependencies work differently"

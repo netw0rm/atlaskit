@@ -32,6 +32,11 @@ storiesOf(name, module)
       Button
     </AkButton>
   )
+  .add('a link button', () =>
+    <AkButton appearance={APPEARANCE.LINK}>
+      Button
+    </AkButton>
+  )
   .add('an ak-button that emits an action when it is clicked', () => (
     <AkButton id="myComponent" onClick={action('clicking the WebComponent')}>Button</AkButton>
   ))

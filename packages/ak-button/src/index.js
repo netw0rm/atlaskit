@@ -14,27 +14,21 @@ const attributeValuesToEnumObject = values =>
     return acum;
   }, {});
 
-const getClasses = elem => {
-  const classes = [classKeys.button];
-
-  if (elem.compact) {
-    classes.push(classKeys.compact);
-  }
-
-  if (elem.disabled) {
-    classes.push(classKeys.disabled);
-  } else if (elem.selected) {
-    classes.push(classKeys.selected);
-  } else if (elem.appearance) {
-    classes.push(classKeys[elem.appearance]);
-  }
-  return classes;
-};
+const getClasses = elem => ({
+  [classKeys.button]: true,
+  [classKeys.compact]: elem.compact,
+  [classKeys.disabled]: elem.disabled,
+  [classKeys.selected]: elem.selected && !elem.disabled,
+  [classKeys.primary]: elem.appearance === 'primary' && !elem.disabled && !elem.selected,
+  [classKeys.subtle]: elem.appearance === 'subtle' && !elem.disabled && !elem.selected,
+  [classKeys.link]: elem.appearance === 'link' && !elem.selected,
+});
 
 const APPEARANCE_VALUES = [
   'primary',
   'standard',
   'subtle',
+  'link',
 ];
 const TYPE_VALUES = [
   'button',
@@ -111,16 +105,14 @@ const definition = {
     selected: prop.boolean({ attribute: true }),
   },
   render(elem) {
-    const classes = getClasses(elem);
-
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
         <button
-          className={classNames(classes)}
+          className={classNames(getClasses(elem))}
           type={elem.type}
           disabled={elem.disabled}
-          onmousedown={(e) => e.preventDefault()}
+          onmousedown={e => e.preventDefault()}
         >
           <slot className={classKeys.slot} />
         </button>

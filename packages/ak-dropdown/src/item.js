@@ -19,8 +19,6 @@ function selectItem(item) {
 
 function handleKeyDown(elem) {
   return (e) => {
-    e.preventDefault();
-    e.stopPropagation();
     switch (e.keyCode) {
       case keyCode('up'):
         emit(elem, 'ak-dropdown-item-up');
@@ -29,6 +27,7 @@ function handleKeyDown(elem) {
         emit(elem, 'ak-dropdown-item-down');
         break;
       case keyCode('tab'):
+        e.preventDefault();
         emit(elem, 'ak-dropdown-item-tab');
         break;
       case keyCode('space'):
@@ -40,6 +39,17 @@ function handleKeyDown(elem) {
     }
   };
 }
+
+const RenderItem = (attrs, children) => {
+  if (attrs.href) {
+    return <a {...attrs}>{children()}</a>;
+  }
+
+  // don't need empty href attribute on a div
+  delete attrs.href;
+  return <div {...attrs}>{children()}</div>;
+};
+
 export default {
   render(elem) {
     const classes = classNames(
@@ -53,7 +63,7 @@ export default {
     const tabIndex = elem.selected ? '1' : '0';
 
     return (
-      <div
+      <RenderItem
         tabindex={tabIndex}
         className={classes}
         onkeydown={handleKeyDown(elem)}
@@ -61,10 +71,11 @@ export default {
         ref={el => (elem.item = el)}
         aria-disabled={elem.disabled}
         aria-selected={elem.selected}
+        href={elem.href}
       >
         <style>{shadowItemStyles.toString()}</style>
         <slot />
-      </div>
+      </RenderItem>
     );
   },
   rendered(elem) {
@@ -136,6 +147,9 @@ export default {
      * @example @js dropdown.childNodes[0].focused = true;
      */
     focused: prop.boolean({
+      attribute: true,
+    }),
+    href: prop.string({
       attribute: true,
     }),
   },

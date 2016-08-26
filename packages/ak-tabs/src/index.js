@@ -1,7 +1,7 @@
 /** @jsx vdom */
 /* eslint no-underscore-dangle: 0 */
 import 'style!./host.less';
-import { debounce } from 'akutil-common';
+import debounce from 'debounce';
 import { vdom, define, prop, emit } from 'skatejs';
 import classNames from 'classnames';
 import keycode from 'keycode';
@@ -162,7 +162,7 @@ const definition = {
   },
   attached(elem) {
     // Re-render if necessary when the window is resized.
-    elem[resizeListener] = debounce(() => (elem._visibleTabs = calculateVisibleTabs(elem)), 500);
+    elem[resizeListener] = debounce(() => (elem._visibleTabs = calculateVisibleTabs(elem)), 200);
     window.addEventListener('resize', elem[resizeListener]);
   },
   detached(elem) {

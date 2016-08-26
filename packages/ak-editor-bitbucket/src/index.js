@@ -89,6 +89,15 @@ function toggleMark(textFormattingPlugin, name) {
   };
 }
 
+function addHyperLink(hyperLinkPlugin) {
+  return (event) => {
+    const href = event.detail.value;
+    hyperLinkPlugin.addLink({
+      href,
+    });
+  };
+}
+
 function unlink(hyperLinkPlugin) {
   return () => {
     hyperLinkPlugin.removeLink();
@@ -155,7 +164,9 @@ export default define('ak-editor-bitbucket', {
             on-toggle-number-list={() => elem[$listsPlugin].toggleList('ordered_list')}
             on-toggle-bullet-list={() => elem[$listsPlugin].toggleList('bullet_list')}
           />
-          <ToolbarHyperlink />
+          <ToolbarHyperlink
+            onSave={addHyperLink(elem[$hyperLinkPlugin])}
+          />
         </Toolbar>
         <Content
           className={shadowStyles.locals.content}

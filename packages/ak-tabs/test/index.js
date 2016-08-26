@@ -77,7 +77,7 @@ describe('ak-tabs', () => {
   }
 
   function getTabLabels() {
-    const labels = [].slice.call(tabsElement[labelsContainer].children);
+    const labels = Array.from(tabsElement[labelsContainer].children);
     labels.pop(); // Remove More dropdown from list
     return labels;
   }

@@ -21,7 +21,7 @@ const focusSelectedOnRender = Symbol();
 /* Helpers */
 
 function getAllTabs(tabsEl) {
-  return [].slice.call(tabsEl.children).filter(el => el.label);
+  return Array.from(tabsEl.children).filter(el => el.label);
 }
 
 function getNextOrPrevTab(tabsEl, tab, isNext) {

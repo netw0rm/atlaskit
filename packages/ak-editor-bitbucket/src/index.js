@@ -158,14 +158,14 @@ export default define('ak-editor-bitbucket', {
             on-toggle-italic={toggleMark(elem[$textFormattingPlugin], 'em')}
             on-toggle-underline={toggleMark(elem[$textFormattingPlugin], 'underline')}
           />
+          <ToolbarHyperlink
+            onSave={addHyperLink(elem[$hyperLinkPlugin])}
+          />
           <ToolbarLists
             bulletlistActive={elem[$bulletListActive]}
             numberlistActive={elem[$numberListActive]}
             on-toggle-number-list={() => elem[$listsPlugin].toggleList('ordered_list')}
             on-toggle-bullet-list={() => elem[$listsPlugin].toggleList('bullet_list')}
-          />
-          <ToolbarHyperlink
-            onSave={addHyperLink(elem[$hyperLinkPlugin])}
           />
         </Toolbar>
         <Content

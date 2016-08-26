@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import keycode from 'keycode';
 import shadowStyles from './shadow.less';
 
-import Tab, { EVENTS } from './index-tab'; // eslint-disable-line no-unused-vars
+import Tab, { EVENTS } from './index-tab';
 
 import {
   labelsContainer,
@@ -28,11 +28,9 @@ function getNextOrPrevTab(tabsEl, tab, isNext) {
   const all = getAllTabs(tabsEl);
   let index = all.indexOf(tab);
 
-  if (isNext) {
-    index = index >= all.length - 1 ? index : index + 1;
-  } else {
-    index = index <= 0 ? index : index - 1;
-  }
+  index = isNext ? index + 1 : index - 1;
+  if (index < 0) index = 0;
+  if (index > all.length - 1) index = all.length - 1;
 
   return all[index];
 }
@@ -151,9 +149,7 @@ const definition = {
 
         // If the tab has been selected, we need to deselect all other tabs.
         if (e.detail.change.selected.newValue) {
-          getAllTabs(elem)
-            .filter(el => el.selected && el !== tab)
-            .forEach(el => (el.selected = false));
+          getAllTabs(elem).filter(el => el !== tab).forEach(el => (el.selected = false));
         }
       }
 
@@ -180,6 +176,7 @@ const definition = {
       [shadowStyles.locals.akTabLabel]: true,
       [shadowStyles.locals.akTabLabelHidden]: !hasOverflowingTabs,
     });
+    // TODO: We need to handle i18n for the 'More' text.
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
@@ -190,7 +187,7 @@ const definition = {
         >
           {allTabs && allTabs.map(
             tab => {
-              const ariaSelected = tab.selected ? 'true' : 'false';
+              const ariaSelected = `${!!tab.selected}`;
               const tabIndex = tab.selected ? '0' : '-1';
               const isVisible = elem._visibleTabs.indexOf(tab) > -1;
               const isSingleTab = hasSingleTab && isVisible;

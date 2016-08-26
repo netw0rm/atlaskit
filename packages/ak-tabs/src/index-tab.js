@@ -48,7 +48,7 @@ const definition = {
     elem[hasRendered] = false;
   },
   render(elem) {
-    const ariaHidden = elem.selected ? 'false' : 'true';
+    const ariaHidden = `${!!elem.selected}`;
     return (
       <div aria-hidden={ariaHidden}>
         <style>{shadowStyles.toString()}</style>

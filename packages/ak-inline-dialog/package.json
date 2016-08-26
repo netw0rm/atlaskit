@@ -18,7 +18,7 @@
     "ak-layer": "^57.0.0",
     "akutil-common": "^2.0.0",
     "akutil-shared-styles": "^33.0.2",
-    "skatejs": "^1.2.3",
+    "skatejs": "^1.2.4",
     "web-animations-js": "^2.2.1"
   },
   "devDependencies": {

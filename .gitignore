@@ -3,6 +3,8 @@ lerna-debug.log
 node_modules
 npm-debug.log
 npm-debug.log.*
+.jshintignore
+.jshintrc
 .released-packages
 .idea
 .idea/

@@ -1,5 +1,10 @@
-<a name="0.0.0"></a>
-# 0.0.0 (2016-08-26)
+<a name="0.1.0"></a>
+# 0.1.0 (2016-08-26)
+
+
+
+<a name="ak-dropdown@0.1.0"></a>
+# ak-dropdown@0.1.0 (2016-08-26)
 
 
 ### Bug Fixes
@@ -9,16 +14,18 @@
 
 ### Features
 
-* add element to the keypresshandler ([a772d2b](https://bitbucket.org/atlassian/atlaskit/commits/a772d2b))
 * **bump:** BREAKING CHANGE: just to make it release v1 ([b2e2575](https://bitbucket.org/atlassian/atlaskit/commits/b2e2575))
 * **component:** add select item functionality ([15d175e](https://bitbucket.org/atlassian/atlaskit/commits/15d175e))
 * **component:** ak-dropdown-item finished ([720ff0e](https://bitbucket.org/atlassian/atlaskit/commits/720ff0e))
 * **component:** basic keyboard support ([64ca37a](https://bitbucket.org/atlassian/atlaskit/commits/64ca37a))
+* **component:** change selected color ([c7c83d1](https://bitbucket.org/atlassian/atlaskit/commits/c7c83d1))
 * **component:** close dropdown on select item ([c58e612](https://bitbucket.org/atlassian/atlaskit/commits/c58e612))
 * **component:** initial commit for ak-dropdown ([34a2d22](https://bitbucket.org/atlassian/atlaskit/commits/34a2d22))
+* **component:** item now have link with href ([ea4f33f](https://bitbucket.org/atlassian/atlaskit/commits/ea4f33f))
 * **component:** make dropdown close on click outside and esc button ([4e4510f](https://bitbucket.org/atlassian/atlaskit/commits/4e4510f))
 * **component:** open property for the dropdown ([84ba2fa](https://bitbucket.org/atlassian/atlaskit/commits/84ba2fa))
 * **component:** trigger now supports keyboard interactions ([fa30154](https://bitbucket.org/atlassian/atlaskit/commits/fa30154))
+* add element to the keypresshandler ([a772d2b](https://bitbucket.org/atlassian/atlaskit/commits/a772d2b))
 
 
 

@@ -9,8 +9,8 @@ import Footer from 'ak-editor-footer';
 import Toolbar from 'ak-editor-toolbar';
 import HyperLink from 'ak-editor-hyperlink-edit';
 import ToolbarBlockType from 'ak-editor-toolbar-block-type';
+import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
-import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
 import { Schema } from 'prosemirror/dist/model';
 import { schema } from './schema';
 import { buildKeymap } from './keymap';
@@ -21,6 +21,7 @@ import { markdownTransformer } from './paste-handlers';
 
 // editorKit plugings
 import BlockTypePlugin from 'atlassian-editorkit-block-type-plugin';
+import ListsPlugin from 'atlassian-editorkit-lists-plugin';
 import MarkdownInputRulesPlugin from 'atlassian-editorkit-markdown-inputrules-plugin';
 import HyperLinkPlugin from 'atlassian-editorkit-hyperlink-plugin';
 import ImageUploadPlugin from 'atlassian-editorkit-image-upload-plugin';
@@ -41,9 +42,17 @@ const $textFormattingPlugin = '__textFormattingPlugin__';
 const $hyperLinkText = '__hyperLinkText__';
 const $selectedFont = '__selectedFont__';
 const $blockTypePlugin = '__blockTypePlugin__';
+const $listsPlugin = '__listsPlugin__';
 const $hyperLinkElement = '__hyperLinkElement__';
 const $hyperLinkPlugin = '__hyperLinkPlugin__';
 const $hyperLinkActive = '__hyperLinkActive__';
+const $bulletListActive = '__bulletListActive__';
+const $numberListActive = '__numberListActive__';
+
+const functionProp = () => ({
+  coerce: val => (typeof val === 'function' ? val : () => {}),
+  default: null,
+});
 
 function bind(elem, propName) {
   elem[propName] = elem[propName].bind(elem);
@@ -134,11 +143,17 @@ export default define('ak-editor-bitbucket', {
             boldDisabled={elem[$textFormattingDisabled]}
             italicDisabled={elem[$textFormattingDisabled]}
             underlineDisabled={elem[$textFormattingDisabled]}
-            onToggle-bold={toggleMark(elem[$textFormattingPlugin], 'strong')}
-            onToggle-italic={toggleMark(elem[$textFormattingPlugin], 'em')}
-            onToggle-underline={toggleMark(elem[$textFormattingPlugin], 'underline')}
+            underlineHidden
+            on-toggle-bold={toggleMark(elem[$textFormattingPlugin], 'strong')}
+            on-toggle-italic={toggleMark(elem[$textFormattingPlugin], 'em')}
+            on-toggle-underline={toggleMark(elem[$textFormattingPlugin], 'underline')}
           />
-          <ToolbarHyperlink />
+          <ToolbarLists
+            bulletlistActive={elem[$bulletListActive]}
+            numberlistActive={elem[$numberListActive]}
+            on-toggle-number-list={() => elem[$listsPlugin].toggleList('ordered_list')}
+            on-toggle-bullet-list={() => elem[$listsPlugin].toggleList('bullet_list')}
+          />
         </Toolbar>
         <Content
           className={shadowStyles.locals.content}
@@ -172,8 +187,7 @@ export default define('ak-editor-bitbucket', {
      * for details.
      */
     defaultValue: prop.string({ attribute: true }),
-    canChangeBlockType: prop.boolean(),
-    selectedFont: prop.string({ default: 'normalText' }),
+    imageUploader: functionProp(),
 
     /**
      * True if the editor has focus.
@@ -187,9 +201,11 @@ export default define('ak-editor-bitbucket', {
     [$underlineActive]: prop.boolean(),
     [$textFormattingDisabled]: prop.boolean(),
     [$hyperLinkText]: prop.string(),
-    [$selectedFont]: prop.string(),
+    [$selectedFont]: prop.string({ default: 'normalText' }),
     [$hyperLinkElement]: {},
     [$hyperLinkActive]: prop.boolean(),
+    [$bulletListActive]: prop.boolean(),
+    [$numberListActive]: prop.boolean(),
   },
 
   prototype: {
@@ -264,24 +280,11 @@ export default define('ak-editor-bitbucket', {
           new Plugin(class ImageUploadPluginDecorator {
             constructor(proseMirrorInstance) {
               const imageUploadPlugin = new ImageUploadPlugin(proseMirrorInstance);
+              const insertImage = (url) => imageUploadPlugin.addImage(url);
+              const handler = (_, e) => elem.imageUploader(e, insertImage);
 
-              imageUploadPlugin.dropAdapter.add((
-                _pm,
-                e
-              ) => {
-                if (typeof elem.imageUploader === 'function') {
-                  elem.imageUploader(e, imageUploadPlugin.addImage.bind(imageUploadPlugin));
-                }
-              });
-
-              imageUploadPlugin.pasteAdapter.add((
-                _pm,
-                e
-              ) => {
-                if (typeof elem.imageUploader === 'function') {
-                  elem.imageUploader(e, imageUploadPlugin.addImage.bind(imageUploadPlugin));
-                }
-              });
+              imageUploadPlugin.dropAdapter.add(handler);
+              imageUploadPlugin.pasteAdapter.add(handler);
 
               return imageUploadPlugin;
             }
@@ -301,6 +304,20 @@ export default define('ak-editor-bitbucket', {
               elem[$blockTypePlugin] = blockTypePlugin;
 
               return blockTypePlugin;
+            }
+          }),
+          new Plugin(class ListsPluginDecorator {
+            constructor(proseMirrorInstance) {
+              const listsPlugin = new ListsPlugin(proseMirrorInstance);
+
+              listsPlugin.onChange(state => {
+                elem[$bulletListActive] = state.active && state.type === 'bullet_list';
+                elem[$numberListActive] = state.active && state.type === 'ordered_list';
+              });
+
+              elem[$listsPlugin] = listsPlugin;
+
+              return listsPlugin;
             }
           }),
           new Plugin(class TextFormattingPluginDecorator {

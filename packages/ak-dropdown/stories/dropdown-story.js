@@ -34,6 +34,7 @@ storiesOf(`${name} component`, module)
         <ak-dropdown-item disabled>some text here</ak-dropdown-item>
         <ak-dropdown-item>another text</ak-dropdown-item>
         <ak-dropdown-item>such long text for such small dropdown isn't it?</ak-dropdown-item>
+        <ak-dropdown-item href="http://atlassian.com">This is a clickable link</ak-dropdown-item>
       </DropdownReactComponent>
     </div>
   ))

@@ -42,4 +42,10 @@ storiesOf(`${name} item`, module)
       </ItemReactComponent>
     </div>
   ))
+  .add('item with link', () => (
+    <div style={{ width: '300px' }}>
+      <ItemReactComponent href="http://atlassian.com">This item is a clickable link</ItemReactComponent>
+      <ItemReactComponent>Test item2</ItemReactComponent>
+    </div>
+  ))
 ;

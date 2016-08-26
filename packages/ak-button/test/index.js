@@ -85,7 +85,7 @@ describe('ak-button', () => {
         });
       });
 
-      [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE].forEach(appearanceName => {
+      [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE, APPEARANCE.LINK].forEach(appearanceName => {
         describe(appearanceName, () => {
           const selector = `.${classKeys.button}.${classKeys[appearanceName]}`;
           beforeEach(() =>
@@ -184,11 +184,34 @@ describe('ak-button', () => {
         expect(shadowDomQuery(component, selector)).not.to.be.null
       );
 
-      it('button should override any other class', () => {
-        props(component, { disabled: true, selected: true });
-        const buttonClasses = getShadowButtonElem(component).classList;
-        expect(buttonClasses).to.have.lengthOf(2);
-        expect(containsClass(buttonClasses, classKeys.button, classKeys.disabled)).to.be.true;
+      [
+        { selected: true },
+        { appearance: APPEARANCE.PRIMARY },
+        { appearance: APPEARANCE.SUBTLE },
+      ].forEach(setup =>
+        describe(`when button also has ${setup}`, () => {
+          beforeEach(() => props(component, setup));
+
+          it('disabled button should discard any other class', () => {
+            const buttonClasses = getShadowButtonElem(component).classList;
+            expect(buttonClasses).to.have.lengthOf(2);
+            expect(containsClass(buttonClasses, classKeys.button, classKeys.disabled)).to.be.true;
+          });
+        })
+      );
+
+      describe('when button also has appearance link', () => {
+        beforeEach(() => props(component, { appearance: APPEARANCE.LINK }));
+
+        it('should have both disabled and link classes', () => {
+          const buttonClasses = getShadowButtonElem(component).classList;
+          expect(buttonClasses).to.have.lengthOf(3);
+          expect(containsClass(buttonClasses,
+            classKeys.button,
+            classKeys.disabled,
+            classKeys.link)
+          ).to.be.true;
+        });
       });
 
       it('button should not have disabled attribute after it is removed', () => {

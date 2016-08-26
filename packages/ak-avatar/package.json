@@ -1,9 +1,10 @@
 {
   "name": "ak-avatar",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-avatar"
   },
@@ -16,7 +17,7 @@
     "akutil-shared-styles": "^33.1.0",
     "akutil-common": "^2.0.0",
     "classnames": "^2.2.5",
-    "skatejs": "^1.2.2"
+    "skatejs": "^1.2.4"
   },
   "devDependencies": {
     "akutil-common-test": "^1.0.0",

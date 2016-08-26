@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-editor-hyperlink-edit",
     "pre-release": "lerna-semantic-release pre"
@@ -17,10 +18,10 @@
     "ak-editor-button": "^2.0.0",
     "ak-editor-button-link": "^1.0.0",
     "ak-editor-icon": "^2.0.0",
-    "ak-editor-popup": "^0.0.3",
+    "ak-editor-popup": "^0.0.4",
     "ak-editor-popup-text-input": "^0.1.0",
     "akutil-shared-styles": "^33.1.0",
-    "skatejs": "^1.2.2"
+    "skatejs": "^1.2.4"
   },
   "devDependencies": {
     "ak-editor-content": "^2.0.0",

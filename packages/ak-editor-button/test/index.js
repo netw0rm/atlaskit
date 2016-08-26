@@ -32,7 +32,7 @@ describe('ak-editor-button', () => {
 
   it('should be possible to create a component', () => {
     expect(shadowDomQuery(component, `.${classKeys.root}`)).to.be.defined;
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   it('should call preventDefault when onmousedown event is triggered', () => {

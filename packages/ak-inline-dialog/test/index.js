@@ -11,7 +11,7 @@ const defaultPosition = 'right middle';
 describe('ak-inline-dialog', () => {
   it('should be possible to create a component', () => {
     const component = new AkInlineDialog();
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   describe('general behaviour', () => {

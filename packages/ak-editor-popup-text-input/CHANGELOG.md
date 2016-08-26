@@ -1,5 +1,20 @@
-<a name="0.1.1"></a>
-## 0.1.1 (2016-08-25)
+<a name="0.2.0"></a>
+# 0.2.0 (2016-08-26)
+
+
+
+<a name="ak-editor-popup-text-input@0.2.0"></a>
+# ak-editor-popup-text-input@0.2.0 (2016-08-26)
+
+
+
+<a name="ak-editor-popup-text-input@0.1.2"></a>
+## ak-editor-popup-text-input@0.1.2 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 
@@ -9,6 +24,7 @@
 
 ### Bug Fixes
 
+* **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
 * Upgrade skate to fix spread attributes in JSX. ([944a7d2](https://bitbucket.org/atlassian/atlaskit/commits/944a7d2))
 
 

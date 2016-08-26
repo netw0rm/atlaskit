@@ -1,5 +1,20 @@
-<a name="1.0.1"></a>
-## 1.0.1 (2016-08-25)
+<a name="1.1.0"></a>
+# 1.1.0 (2016-08-26)
+
+
+
+<a name="ak-icon@1.1.0"></a>
+# ak-icon@1.1.0 (2016-08-26)
+
+
+
+<a name="ak-icon@1.0.2"></a>
+## ak-icon@1.0.2 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 
@@ -10,6 +25,7 @@
 ### Bug Fixes
 
 * make icon ID unique ([3607943](https://bitbucket.org/atlassian/atlaskit/commits/3607943))
+* **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
 
 
 ### Features

@@ -1,9 +1,10 @@
 {
   "name": "akutil-common",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single akutil-common"
   },

@@ -1,5 +1,5 @@
 import { name } from '../package.json';
-import { keydown, afterMutations } from 'akutil-common-test';
+import { keydown, keyup, afterMutations } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkNavigation from '../src/index.js';
@@ -62,6 +62,24 @@ describe('ak-navigation', () => {
     afterMutations(() => {
       keydown('[');
       expect(component.open).to.equal(false);
+    });
+  });
+
+  it('sidebar link items are mutually exclusively selectable via enter', () => {
+    const component = new AkNavigation();
+    component.innerHTML = `
+      <ak-navigation-link selected></ak-navigation-link>
+      <ak-navigation-link></ak-navigation-link>
+      <ak-navigation-link></ak-navigation-link>
+    `;
+    afterMutations(() => {
+      expect(component.children[0].selected).to.equal(true);
+      expect(component.children[1].selected).to.equal(false);
+      expect(component.children[2].selected).to.equal(false);
+      keyup('enter', component.childNodes[1]);
+      expect(component.children[0].selected).to.equal(false);
+      expect(component.children[1].selected).to.equal(true);
+      expect(component.children[2].selected).to.equal(false);
     });
   });
 });

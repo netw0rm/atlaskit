@@ -4,7 +4,7 @@ import Dropdown from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 
-const Component = reactify(Dropdown, {
+const DropdownReactComponent = reactify(Dropdown, {
   React,
   ReactDOM,
 });
@@ -12,7 +12,7 @@ const Component = reactify(Dropdown, {
 storiesOf(`${name} component`, module)
   .add('simple dropdown', () => (
     <div>
-      <Component>
+      <DropdownReactComponent>
         <ak-dropdown-trigger slot="trigger">
           <ak-trigger-button>Dropdown-button</ak-trigger-button>
         </ak-dropdown-trigger>
@@ -20,12 +20,12 @@ storiesOf(`${name} component`, module)
         <ak-dropdown-item>text2</ak-dropdown-item>
         <ak-dropdown-item>some text here</ak-dropdown-item>
         <ak-dropdown-item>another text</ak-dropdown-item>
-      </Component>
+      </DropdownReactComponent>
     </div>
   ))
   .add('dropdown with everything', () => (
     <div>
-      <Component>
+      <DropdownReactComponent>
         <ak-dropdown-trigger slot="trigger">
           <ak-trigger-button>Dropdown-button</ak-trigger-button>
         </ak-dropdown-trigger>
@@ -34,7 +34,7 @@ storiesOf(`${name} component`, module)
         <ak-dropdown-item disabled>some text here</ak-dropdown-item>
         <ak-dropdown-item>another text</ak-dropdown-item>
         <ak-dropdown-item>such long text for such small dropdown isn't it?</ak-dropdown-item>
-      </Component>
+      </DropdownReactComponent>
     </div>
   ))
 ;

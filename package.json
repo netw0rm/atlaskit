@@ -120,7 +120,7 @@
     "release/announce": "[ -s .released-packages ] && cat .released-packages | sed 's/^/Released /' | xargs ./build/bin/hipchat_message.sh || return 0",
     "release/changelog": "if [ -s .released-packages ]; then lerna-semantic-release post; else return 0; fi",
     "release/registry": "./build/bin/registry.sh",
-    "shrinkwrap/update": "npm run clean && rm npm-shrinkwrap.json && npm install && rm node_modules/akutil-shared-styles && npm i --ignore-scripts && npm shrinkwrap",
+    "shrinkwrap/update": "npm run clean && rm npm-shrinkwrap.json && npm install --ignore-scripts && npm shrinkwrap",
     "storybook": "start-storybook -p 9001 -c ./build/storybook",
     "storybook/single": "./build/bin/storybook.single.sh",
     "storybook/static": "build-storybook -c ./build/storybook",

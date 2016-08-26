@@ -11,6 +11,7 @@ import HyperLink from 'ak-editor-hyperlink-edit';
 import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
+import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
 import { Schema } from 'prosemirror/dist/model';
 import { schema } from './schema';
 import { buildKeymap } from './keymap';
@@ -154,6 +155,7 @@ export default define('ak-editor-bitbucket', {
             on-toggle-number-list={() => elem[$listsPlugin].toggleList('ordered_list')}
             on-toggle-bullet-list={() => elem[$listsPlugin].toggleList('bullet_list')}
           />
+          <ToolbarHyperlink />
         </Toolbar>
         <Content
           className={shadowStyles.locals.content}

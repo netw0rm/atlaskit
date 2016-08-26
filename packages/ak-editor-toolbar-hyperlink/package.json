@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar-hyperlink",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "ak-editor-toolbar-hyperlink webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

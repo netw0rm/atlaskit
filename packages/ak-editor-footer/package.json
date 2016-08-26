@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-footer",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

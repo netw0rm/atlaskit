@@ -4,7 +4,7 @@ import 'style!./tab-host.less';
 import { emit, vdom, define, prop } from 'skatejs';
 import shadowStyles from './tab-shadow.less';
 
-const events = {
+const EVENTS = {
   /**
    * @event Tab#ak-tabs-tab-select
    * @memberof Tab
@@ -34,7 +34,7 @@ const events = {
 const hasRendered = Symbol();
 
 function emitTabChangedEvent(tab, detail) {
-  emit(tab, events.EVENT_TAB_CHANGE, { detail });
+  emit(tab, EVENTS.EVENT_TAB_CHANGE, { detail });
 }
 
 /**
@@ -85,10 +85,7 @@ const definition = {
           emitTabChangedEvent(elem, {
             tab: elem,
             change: {
-              label: {
-                oldValue: data.oldValue,
-                newValue: data.newValue,
-              },
+              label: data,
             },
           });
         }
@@ -107,10 +104,7 @@ const definition = {
           emitTabChangedEvent(elem, {
             tab: elem,
             change: {
-              selected: {
-                oldValue: data.oldValue,
-                newValue: data.newValue,
-              },
+              selected: data,
             },
           });
         }
@@ -120,4 +114,4 @@ const definition = {
 };
 
 export default define('ak-tabs-tab', definition);
-export { events };
+export { EVENTS };

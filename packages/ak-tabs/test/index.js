@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { events } from '../src/index-tab.js';
+import { EVENTS } from '../src/index-tab.js';
 import AkTabs, { Tab as AkTabsTab } from '../src/index.js';
 import { name } from '../package.json';
 import keycode from 'keycode';
@@ -36,8 +36,8 @@ describe('ak-tabs', () => {
     selectSpy = sinon.spy();
     deselectSpy = sinon.spy();
 
-    window.addEventListener(events.EVENT_TAB_SELECT, selectSpy);
-    window.addEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
+    window.addEventListener(EVENTS.EVENT_TAB_SELECT, selectSpy);
+    window.addEventListener(EVENTS.EVENT_TAB_DESELECT, deselectSpy);
 
     containerElement = document.createElement('div');
     containerElement.style.width = containerWidth;
@@ -62,8 +62,8 @@ describe('ak-tabs', () => {
   }
 
   function cleanupTabs() {
-    window.removeEventListener(events.EVENT_TAB_SELECT, selectSpy);
-    window.removeEventListener(events.EVENT_TAB_DESELECT, deselectSpy);
+    window.removeEventListener(EVENTS.EVENT_TAB_SELECT, selectSpy);
+    window.removeEventListener(EVENTS.EVENT_TAB_DESELECT, deselectSpy);
 
     document.body.removeChild(containerElement);
     tabsElement = null;

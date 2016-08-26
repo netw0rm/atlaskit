@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import keycode from 'keycode';
 import shadowStyles from './shadow.less';
 
-import Tab, { events } from './index-tab'; // eslint-disable-line no-unused-vars
+import Tab, { EVENTS } from './index-tab'; // eslint-disable-line no-unused-vars
 
 import {
   labelsContainer,
@@ -141,12 +141,12 @@ function calculateVisibleTabs(tabsEl) {
 const definition = {
   created(elem) {
     // Listen for tab change events
-    elem.addEventListener(events.EVENT_TAB_CHANGE, e => {
+    elem.addEventListener(EVENTS.EVENT_TAB_CHANGE, e => {
       if (e.detail.change && e.detail.change.selected) {
         // Emit the selection or deselection event.
         const tab = e.detail.tab;
         const eventName = e.detail.change.selected.newValue ?
-          events.EVENT_TAB_SELECT : events.EVENT_TAB_DESELECT;
+          EVENTS.EVENT_TAB_SELECT : EVENTS.EVENT_TAB_DESELECT;
         emit(tab, eventName, { detail: { tab } });
 
         // If the tab has been selected, we need to deselect all other tabs.

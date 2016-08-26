@@ -1,4 +1,4 @@
 import afterMutations from './after-mutations';
-import keydown from './keydown';
+import { keydown, keyup } from './user-interaction';
 
-export { afterMutations, keydown };
+export { afterMutations, keydown, keyup };

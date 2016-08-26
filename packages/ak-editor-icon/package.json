@@ -19,7 +19,7 @@
     "!win32"
   ],
   "dependencies": {
-    "skatejs": "^1.2.2"
+    "skatejs": "^1.2.4"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",

@@ -21,7 +21,7 @@
     "ak-editor-popup": "^0.0.4",
     "ak-editor-popup-text-input": "^0.1.0",
     "akutil-shared-styles": "^33.1.0",
-    "skatejs": "^1.2.2"
+    "skatejs": "^1.2.4"
   },
   "devDependencies": {
     "ak-editor-content": "^2.0.0",

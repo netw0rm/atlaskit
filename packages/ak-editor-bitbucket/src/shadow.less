@@ -2,4 +2,19 @@
 
 .root {
   display: block;
+  background: white;
+
+  [contenteditable] {
+    outline: none;
+    white-space: pre-wrap;
+  }
+}
+
+.content {
+  cursor: text;
+}
+
+.focused {
+  box-shadow: 0 0 0 2px @ak-editor-focus;
+  border-radius: 2px;
 }

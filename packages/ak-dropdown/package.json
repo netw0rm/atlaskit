@@ -13,7 +13,7 @@
   "dependencies": {
     "akutil-shared-styles": "^33.1.0",
     "akutil-common": "^2.2.0",
-    "skatejs": "^1.2.2",
+    "skatejs": "^1.2.4",
     "ak-layer": "^57.0.0",
     "classnames": "^2.2.5",
     "keycode": "^2.1.2"

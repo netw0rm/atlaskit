@@ -16,7 +16,7 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-icon": "^2.0.1",
-    "skatejs": "^1.2.2"
+    "skatejs": "^1.2.4"
   },
   "devDependencies": {
     "akutil-common-test": "^1.0.0",

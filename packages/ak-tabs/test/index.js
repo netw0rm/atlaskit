@@ -1,6 +1,5 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import sinon from 'sinon';
 import { events } from '../src/index-tab.js';
 import AkTabs, { Tab as AkTabsTab } from '../src/index.js';
 import { name } from '../package.json';

@@ -88,7 +88,7 @@ storiesOf(name, module)
         open
         {...containerProps}
       >
-        <ak-icon slot="global-home" glyph="jira" />
+        <ak-icon slot="global-home" glyph="bitbucket" />
         <ak-icon slot="global-search" glyph="search" />
         <ak-icon slot="global-create" glyph="create" />
         <ak-avatar src={userAvatar} slot="global-profile" />

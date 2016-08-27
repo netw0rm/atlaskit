@@ -9,6 +9,28 @@ import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 import keycode from 'keycode';
 
 const shouldAnimateThreshold = 100; // ms
+const globalCollapsedWidth = 60; // px
+const containerCollapsedWidth = 60; // px
+const expandedWidth = 280; // px
+
+const intermediateWidth = globalCollapsedWidth + containerCollapsedWidth;
+const collapsedWidth = globalCollapsedWidth;
+
+
+const containerPaddingExpanded = 20;
+const containerPaddingCollapsed = 10;
+// start collapsing the padding 16px out
+const containerPaddingCollapseStart = intermediateWidth + 16;
+
+function getContainerPadding(width) {
+  const paddingDelta = containerPaddingExpanded - containerPaddingCollapsed;
+  const gradient = (containerPaddingExpanded - containerPaddingCollapsed)
+    / (containerPaddingCollapseStart - intermediateWidth);
+
+  const padding = gradient * width + (paddingDelta - gradient * intermediateWidth);
+
+  return Math.min(containerPaddingExpanded, Math.max(containerPaddingCollapsed, padding));
+}
 
 export default define('ak-navigation', {
   render(elem) {
@@ -19,6 +41,16 @@ export default define('ak-navigation', {
           [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
         })}
       >
+        <style>{`
+          .${shadowStyles.locals.navigation} {
+            width: ${Math.max(elem.width, intermediateWidth)}px;
+            transform: translateX(${Math.min(elem.width - intermediateWidth, 0)}px);
+          }
+
+          .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
+            transform: translateX(${getContainerPadding(elem.width)}px);
+          }
+        `}</style>
         <style>{shadowStyles.toString()}</style>
         <div className={shadowStyles.locals.global}>
           <div className={shadowStyles.locals.globalPrimary}>
@@ -58,7 +90,12 @@ export default define('ak-navigation', {
     );
   },
   props: {
+    /** TODO: make these private props somehow **/
     shouldAnimate: prop.boolean(),
+    width: prop.number({
+      default: collapsedWidth,
+      attribute: true, //TODO: remove, this is for debugging
+    }),
     open: prop.boolean({
       attribute: true,
       set(elem, data) {
@@ -67,6 +104,7 @@ export default define('ak-navigation', {
         } else if (data.oldValue && !data.newValue) {
           emit(elem, 'ak-navigation-close');
         }
+        elem.width = elem.open ? expandedWidth : collapsedWidth;
       },
       event: 'ak-navigation-open-state-changed',
     }),

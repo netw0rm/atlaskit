@@ -21,7 +21,9 @@ export default define(name, {
       <div className={`${shadowStyles.locals.root} ${id}`}>
         <style>{shadowStyles.toString()}</style>
         <style>{elem.fill && `.${id} { color: ${elem.fill}; fill: ${elem.fill}; }`}</style>
-        <Icon />
+        <div className={shadowStyles.locals.icon}>
+          <Icon />
+        </div>
       </div>
     );
   },

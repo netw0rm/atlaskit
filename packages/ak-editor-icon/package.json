@@ -19,6 +19,7 @@
     "!win32"
   ],
   "dependencies": {
+    "babel-runtime": "^6.11.6",
     "skatejs": "^1.2.4"
   },
   "devDependencies": {

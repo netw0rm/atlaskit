@@ -15,6 +15,7 @@
     "ak-blanket": "^1.0.0",
     "ak-layer": "^57.0.0",
     "akutil-shared-styles": "^33.0.2",
+    "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "skatejs": "^1.2.4"
   },

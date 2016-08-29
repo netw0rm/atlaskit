@@ -10,11 +10,11 @@ module.exports = (config) => {
     frameworks: ['mocha', 'chai', 'sinon-chai'],
 
     files: [
-      'packages/*/test/**/*.js',
+      'packages/*/test/**/*.+(js|ts)',
     ],
 
     preprocessors: {
-      'packages/*/test/**/*.js': ['webpack', 'sourcemap'],
+      'packages/*/test/**/*.+(js|ts)': ['webpack', 'sourcemap'],
     },
 
     webpack: webpackConfig,

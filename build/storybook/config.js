@@ -31,11 +31,11 @@ function loadStories() {
   if (IS_RUNNING_SINGLE_PACKAGE) {
     // we are only running a single package, so we only need to look at stories within that package
     log.info(`Only loading stories for ${PACKAGE_FOLDERS[0]}`);
-    req = require.context(PACKAGE_STORY_FOLDER, false, /.+-story\.js$/);
+    req = require.context(PACKAGE_STORY_FOLDER, false, /.+-story\.[jt]sx?$/);
     stories = req.keys();
   } else {
     // we are running either all packages or a number greater than 1
-    req = require.context('../../packages/', true, /stories\/.+-story\.js$/);
+    req = require.context('../../packages/', true, /stories\/.+-story\.[jt]sx?$/);
     stories = req.keys();
     if (PACKAGE_FOLDERS.length) {
       // we are running a number greater than 1 (via a glob for example), so restrict

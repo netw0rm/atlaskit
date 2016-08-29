@@ -2,10 +2,26 @@ const camelCase = require('camelcase');
 const path = require('path');
 const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
+const webpack = require('webpack');
+
+const idomBabelPlugin = [
+  'incremental-dom',
+  {
+    components: true,
+    hoist: true,
+    prefix: 'vdom',
+  },
+];
+
+function defaultPackageMains() {
+  const options = new webpack.WebpackOptionsDefaulter();
+  options.process({});
+  return options.defaults.resolve.packageMains;
+}
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': './src/index.js',
+    'dist/bundle.js': './src/index',
   },
   output: {
     path: './',
@@ -15,10 +31,15 @@ const standardConfig = {
     // This will be the name of the global in the UMD module.
     library: camelCase(pkg.name),
   },
+  resolve: {
+    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.jsx'],
+    packageMains: ['ak:webpack:raw', ...defaultPackageMains()],
+  },
   module: {
     loaders: [
       {
-        test: /\.json/,
+        test: /\.json$/,
+        // test: /\/packages\/.*\.json$/,
         loader: 'json',
       },
       {
@@ -26,7 +47,41 @@ const standardConfig = {
         loader: 'css?modules&camelCase&importLoaders=1!postcss-loader!less',
       },
       [ // exclusive configs for babel (first one that matches will be used)
-        { // Support react/jsx in stories, react/ directory, or react-*.js files
+        //
+        // TYPESCRIPT
+        // Storybook only -- uses React rather than Incremental DOM
+        //
+        {
+          test: /\/stories\/.*?\.tsx?$/,
+          loader: `babel-loader?${JSON.stringify({
+            presets: [
+              'es2015',
+              'react',
+            ],
+            plugins: [
+              'transform-runtime',
+            ],
+          })}!ts-loader`,
+        },
+        //
+        // TYPESCRIPT
+        // Package code -- uses Incremental DOM rather than React
+        //
+        {
+          test: /\.tsx?$/,
+          loader: `babel-loader?${JSON.stringify({
+            presets: 'es2015',
+            plugins: [
+              'transform-runtime',
+              idomBabelPlugin,
+            ],
+          })}!ts-loader`,
+        },
+        //
+        // JAVASCRIPT
+        // Support react/jsx in stories, react/ directory, or react-*.js files
+        //
+        {
           loader: 'babel-loader',
           test: /\.jsx?$/,
           include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/, // eslint-disable-line max-len
@@ -41,10 +96,14 @@ const standardConfig = {
             ],
           },
         },
-        { // Support jsx to incremental dom in non-react locations (above).
-          // Make sure vdom is imported from skatejs where jsx is used
+        //
+        // JAVASCIRPT
+        // Support jsx to incremental dom in non-react locations (above).
+        // Make sure vdom is imported from skatejs where jsx is used
+        //
+        {
           loader: 'babel-loader',
-          test: /\.jsx?$/,
+          test: /\/packages\/.*\.jsx?$/,
           exclude: /node_modules|bower_components/, // eslint-disable-line max-len
           query: {
             presets: [
@@ -53,14 +112,7 @@ const standardConfig = {
             ],
             plugins: [
               'transform-runtime',
-              [
-                'incremental-dom',
-                {
-                  components: true,
-                  hoist: true,
-                  prefix: 'vdom',
-                },
-              ],
+              idomBabelPlugin,
             ],
           },
         },

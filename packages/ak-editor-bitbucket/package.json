@@ -26,7 +26,7 @@
     "ak-editor-hyperlink-edit": "^0.2.0",
     "atlassian-editorkit-block-type-plugin": "^0.0.11",
     "atlassian-editorkit-lists-plugin": "^0.0.1",
-    "atlassian-editorkit-hyperlink-plugin": "^0.0.23",
+    "atlassian-editorkit-hyperlink-plugin": "^0.0.26",
     "atlassian-editorkit-image-upload-plugin": "^0.0.6",
     "atlassian-editorkit-markdown-inputrules-plugin": "^0.0.18",
     "atlassian-editorkit-text-formatting-plugin": "^0.0.4",

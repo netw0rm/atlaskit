@@ -1,6 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import events from '../src/internal/events';
+import * as events from '../src/internal/events';
 import AkTabs from '../src/index';
 import AkTab from '../src/index-tab';
 const { React, ReactDOM } = window;

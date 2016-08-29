@@ -3,7 +3,7 @@ import 'style!./tab-host.less';
 
 import { emit, vdom, define, prop } from 'skatejs';
 import shadowStyles from './tab-shadow.less';
-import events from './internal/events';
+import * as events from './internal/events';
 
 // We need to keep track of whether the element has rendered before, so we know whether it is safe
 // to emit events in the property setter.

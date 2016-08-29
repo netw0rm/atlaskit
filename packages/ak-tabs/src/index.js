@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import keycode from 'keycode';
 import shadowStyles from './shadow.less';
 
-import events from './internal/events';
+import * as events from './internal/events';
 import Tab from './index-tab';
 
 import {

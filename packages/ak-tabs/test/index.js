@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import events from '../src/internal/events';
+import * as events from '../src/internal/events';
 import AkTabs, { Tab as AkTabsTab } from '../src/index.js';
 import { name } from '../package.json';
 import keycode from 'keycode';

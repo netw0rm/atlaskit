@@ -1,7 +1,7 @@
 # Badge
 
 Badges are visual indicators for numeric values such as tallies and scores. They're commonly used before and after the label of the thing they're quantifying.
-Badges must be used singly after a single item name, and must only have numbers.
+They must be used singly after a single item name, and have only numbers.
 
 * Use lozenges for statuses.
 

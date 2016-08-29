@@ -1,6 +1,6 @@
 import path from 'path';
 import { configure, setAddon } from '@kadira/storybook';
-import 'akutil-polyfills';
+import 'akutil-polyfills/src/index.js';
 import MonitoredStory from './MonitoredStory.js';
 import MonkeyTestStory from './MonkeyTestStory.js';
 import React from 'react';

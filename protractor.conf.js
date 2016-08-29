@@ -1,7 +1,7 @@
 const path = require('path');
 
 const rq = [
-  path.join(__dirname, 'packages', 'akutil-cucumber', 'src', '**', '*-steps.js'),
+  require.resolve('akutil-cucumber'),
   path.join(process.cwd(), 'cucumber', 'step_definitions', '**', 'steps.js'),
 ];
 

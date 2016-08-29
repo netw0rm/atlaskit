@@ -1,17 +1,43 @@
 @import 'shared-variables.less';
 
+@spacing: 10px;
+
+.flex() {
+  display: flex;
+  padding: 0 @spacing;
+  align-items:center;
+  box-sizing: border-box;
+  flex-flow: row wrap;
+}
+
+.flex-item() {
+  flex: 1 100%;
+}
+
+:host .item {
+  .flex;
+}
+
+::content > * {
+  .flex-item();
+}
+
+::slotted(*) {
+  .flex-item();
+}
+
 .item {
-  height: 30px;
   color: @ak-dropdown-font-main;
-  padding: 5px 10px;
   box-sizing: border-box;
   cursor: pointer;
   background-color: @ak-dropdown-background-main;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   text-decoration: none;
+  height:30px;
+
+  .flex;
+  & > * {
+    .flex-item();
+  }
 
   &:hover {
     background-color: @ak-dropdown-background-hover;
@@ -49,4 +75,14 @@
 .last {
   border-bottom-left-radius: @ak-dropdown-border-radius;
   border-bottom-right-radius: @ak-dropdown-border-radius;
+}
+
+.itemLeftPosition {
+  flex: 1 auto;
+}
+.itemDefaultPosition {
+  flex: 1000 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

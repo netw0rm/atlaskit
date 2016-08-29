@@ -40,16 +40,6 @@ function handleKeyDown(elem) {
   };
 }
 
-const RenderItem = (attrs, children) => {
-  if (attrs.href) {
-    return <a {...attrs}>{children()}</a>;
-  }
-
-  // don't need empty href attribute on a div
-  delete attrs.href;
-  return <div {...attrs}>{children()}</div>;
-};
-
 export default {
   render(elem) {
     const classes = classNames(
@@ -63,7 +53,7 @@ export default {
     const tabIndex = elem.selected ? '1' : '0';
 
     return (
-      <RenderItem
+      <a
         tabindex={tabIndex}
         className={classes}
         onkeydown={handleKeyDown(elem)}
@@ -71,11 +61,34 @@ export default {
         ref={el => (elem.item = el)}
         aria-disabled={elem.disabled}
         aria-selected={elem.selected}
-        href={elem.href}
+        href={elem.href ? elem.href : void 0}
       >
         <style>{shadowItemStyles.toString()}</style>
-        <slot />
-      </RenderItem>
+        {/* can't use 'className' here since it's not a custom element property
+         and it's transformed into 'classname' */}
+        <div class={shadowItemStyles.locals.itemLeftPosition}>
+          <slot
+            name="left"
+            ref={(el) => {
+              let hasNodes = false;
+              if (el.getAssignedNodes) {
+                hasNodes = el.getAssignedNodes().length;
+              } else if (el.getDistributedNodes) {
+                hasNodes = el.getDistributedNodes().length;
+              }
+
+              // I only want this padding if the slot is not empty
+              // to avoid double padding in the left
+              if (hasNodes) {
+                el.parentNode.style.paddingRight = '10px';
+              }
+            }}
+          />
+        </div>
+        {/* can't use 'className' here since it's not a custom element property
+         and it's transformed into 'classname' */}
+        <div class={shadowItemStyles.locals.itemDefaultPosition}><slot /></div>
+      </a>
     );
   },
   rendered(elem) {

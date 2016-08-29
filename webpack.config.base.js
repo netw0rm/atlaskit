@@ -21,7 +21,7 @@ function defaultPackageMains() {
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': './src/index',
+    'dist/bundle.js': `./${pkg['ak:webpack:raw']}`,
   },
   output: {
     path: './',

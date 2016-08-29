@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

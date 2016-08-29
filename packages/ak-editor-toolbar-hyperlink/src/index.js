@@ -26,8 +26,11 @@ export default define('ak-editor-toolbar-hyperlink', {
           toggle(elem);
         }
       }}
+      active={elem.active || elem.open}
       disabled={elem.disabled}
-    ><Icon glyph="link" /></EditorButton>);
+    >
+      <Icon glyph="link" {...((elem.active || elem.open) ? { fill: 'white' } : {})} />
+    </EditorButton>);
 
     let linkButton;
 
@@ -69,5 +72,6 @@ export default define('ak-editor-toolbar-hyperlink', {
      * @example @js dialog.open = true;
      */
     open: prop.boolean({ attribute: true }),
+    active: prop.boolean({ attribute: true }),
   },
 });

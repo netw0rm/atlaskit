@@ -159,6 +159,7 @@ export default define('ak-editor-bitbucket', {
             on-toggle-underline={toggleMark(elem[$textFormattingPlugin], 'underline')}
           />
           <ToolbarHyperlink
+            active={elem[$hyperLinkActive]}
             onSave={addHyperLink(elem[$hyperLinkPlugin])}
           />
           <ToolbarLists

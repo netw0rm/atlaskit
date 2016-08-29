@@ -1,10 +1,31 @@
-<a name="2.0.4"></a>
-## 2.0.4 (2016-08-25)
+<a name="2.3.0"></a>
+# 2.3.0 (2016-08-29)
+
+
+
+<a name="ak-editor-toolbar@2.2.0"></a>
+# ak-editor-toolbar@2.2.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
+* Update 0.x editor components to 1.x ([3324adb](https://bitbucket.org/atlassian/atlaskit/commits/3324adb))
+
+
+
+<a name="ak-editor-toolbar@2.1.0"></a>
+# ak-editor-toolbar@2.1.0 (2016-08-26)
 
 
 
 <a name="ak-editor-toolbar@2.0.4"></a>
 ## ak-editor-toolbar@2.0.4 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

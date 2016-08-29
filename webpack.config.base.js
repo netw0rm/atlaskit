@@ -26,15 +26,18 @@ const standardConfig = {
         loader: 'css?modules&camelCase&importLoaders=1!postcss-loader!less',
       },
       [ // exclusive configs for babel (first one that matches will be used)
-        { // Support react/jsx in stories, react/ directory, or react-*.js files
+        { // Support react/jsx in stories
           loader: 'babel-loader',
           test: /\.jsx?$/,
-          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/, // eslint-disable-line max-len
+          include: /stories\/.*\.jsx?$/,
           query: {
             presets: [
               'es2015',
               'react', // required by react-storybook
               'stage-0',
+            ],
+            plugins: [
+              'transform-runtime',
             ],
           },
         },
@@ -42,13 +45,14 @@ const standardConfig = {
           // Make sure vdom is imported from skatejs where jsx is used
           loader: 'babel-loader',
           test: /\.jsx?$/,
-          exclude: /node_modules|bower_components/, // eslint-disable-line max-len
+          exclude: /node_modules|bower_components/,
           query: {
             presets: [
               'es2015',
               'stage-0',
             ],
             plugins: [
+              'transform-runtime',
               [
                 'incremental-dom',
                 {
@@ -58,14 +62,6 @@ const standardConfig = {
                 },
               ],
             ],
-          },
-        },
-        { // this is for the v1 CustomElement polyfill and named-slots
-          loader: 'babel-loader',
-          test: /\.jsx?$/,
-          include: /(webcomponents\.js\/src|skatejs-named-slots\/src)/,
-          query: {
-            presets: 'es2015',
           },
         },
       ],

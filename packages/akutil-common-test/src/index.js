@@ -1,3 +1,4 @@
 import afterMutations from './afterMutations';
+import waitUntil from './waitUntil';
 
-export { afterMutations };
+export { afterMutations, waitUntil };

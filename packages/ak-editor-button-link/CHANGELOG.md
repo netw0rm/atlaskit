@@ -1,10 +1,30 @@
-<a name="1.0.2"></a>
-## 1.0.2 (2016-08-25)
+<a name="1.3.0"></a>
+# 1.3.0 (2016-08-29)
+
+
+
+<a name="ak-editor-button-link@1.2.0"></a>
+# ak-editor-button-link@1.2.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
+
+
+
+<a name="ak-editor-button-link@1.1.0"></a>
+# ak-editor-button-link@1.1.0 (2016-08-26)
 
 
 
 <a name="ak-editor-button-link@1.0.2"></a>
 ## ak-editor-button-link@1.0.2 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

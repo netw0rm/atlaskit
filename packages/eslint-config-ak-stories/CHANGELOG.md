@@ -1,5 +1,15 @@
-<a name="2.0.1"></a>
-## 2.0.1 (2016-08-25)
+<a name="2.2.0"></a>
+# 2.2.0 (2016-08-29)
+
+
+
+<a name="eslint-config-ak-stories@2.1.0"></a>
+# eslint-config-ak-stories@2.1.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
 
 
 

@@ -1,5 +1,10 @@
 <a name="1.1.2"></a>
-## 1.1.2 (2016-08-25)
+## 1.1.2 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
 
 
 

@@ -5,10 +5,10 @@ They must be used singly after a single item name, and have only numbers.
 
 * Use lozenges for statuses.
 
-* To call out tags and high-visibility attributes, use labels.
+* Use labels to call out tags and high-visibility attributes.
 
 
-* If you want to indicate units, use a tooltip.
+* Use a tooltip if you want to indicate units.
 
 
 

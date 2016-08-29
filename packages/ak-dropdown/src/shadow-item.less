@@ -7,7 +7,7 @@
   padding: 0 @spacing;
   align-items:center;
   box-sizing: border-box;
-  flex-flow: row wrap;
+  flex-wrap: nowrap;
 }
 
 .flex-item() {
@@ -78,10 +78,9 @@
 }
 
 .itemLeftPosition {
-  flex: 1 auto;
+  flex: 1;
 }
 .itemDefaultPosition {
-  flex: 1000 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

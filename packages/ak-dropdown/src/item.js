@@ -40,6 +40,17 @@ function handleKeyDown(elem) {
   };
 }
 
+function childHasLeftSlot(list) {
+  let hasSlot = false;
+  list.forEach((el) => {
+    if (el.getAttribute && el.getAttribute('slot') === 'left') {
+      hasSlot = true;
+    }
+  });
+
+  return hasSlot;
+}
+
 export default {
   render(elem) {
     const classes = classNames(
@@ -51,6 +62,7 @@ export default {
       }]
     );
     const tabIndex = elem.selected ? '1' : '0';
+    const renderLeftSlot = childHasLeftSlot(elem.childNodes);
 
     return (
       <a
@@ -64,24 +76,9 @@ export default {
         href={elem.href ? elem.href : void 0}
       >
         <style>{shadowItemStyles.toString()}</style>
-        <div className={shadowItemStyles.locals.itemLeftPosition}>
-          <slot
-            name="left"
-            ref={(slot) => {
-              let hasNodes = false;
-              if (slot.getAssignedNodes) {
-                hasNodes = slot.getAssignedNodes().length;
-              } else if (slot.getDistributedNodes) {
-                hasNodes = slot.getDistributedNodes().length;
-              }
-              // I only want this padding if the slot is not empty
-              // to avoid double padding in the left
-              if (hasNodes) {
-                slot.parentNode.style.marginRight = '10px';
-              }
-            }}
-          />
-        </div>
+        {renderLeftSlot ? <div className={shadowItemStyles.locals.itemLeftPosition}>
+          <slot name="left" />
+        </div> : null}
         <div className={shadowItemStyles.locals.itemDefaultPosition}><slot /></div>
       </a>
     );

@@ -73,7 +73,7 @@ describe('ak-dropdown-item:', () => {
     });
 
     it(`gap between default slot and left edge of the component should be ${defaultGap}`, () => {
-      const rectComponent = component.getBoundingClientRect();
+      const rectComponent = component[symbols.shadowRoot].firstChild.getBoundingClientRect();
       const rectDiv = component.childNodes[0].getBoundingClientRect();
       const gapLeft = rectDiv.left - rectComponent.left;
       expect(gapLeft).to.equal(defaultGap);
@@ -82,9 +82,9 @@ describe('ak-dropdown-item:', () => {
     it(`gap between default slot and right edge should be at least ${defaultGap}`, () => {
       component.innerHTML = `<div>test text test texttest texttest texttest texttest
       texttest texttest texttest texttest texttest texttest text</div>`;
-      const rectComponent = component.getBoundingClientRect();
+      const rectComponent = component[symbols.shadowRoot].firstChild.getBoundingClientRect();
       const rectDiv = component.childNodes[0].getBoundingClientRect();
-      const gapRight = rectComponent.right - rectDiv.right;
+      const gapRight = rectComponent.left + rectComponent.width - rectDiv.left - rectDiv.width;
       expect(gapRight).to.equal(defaultGap);
     });
   });
@@ -110,7 +110,7 @@ describe('ak-dropdown-item:', () => {
     });
 
     it(`gap between left slot and left edge of the component should be ${defaultGap}`, () => {
-      const rectComponent = component.getBoundingClientRect();
+      const rectComponent = component[symbols.shadowRoot].firstChild.getBoundingClientRect();
       const rectDiv = component.firstChild.getBoundingClientRect();
       const gap = rectDiv.left - rectComponent.left;
       expect(gap).to.equal(defaultGap);

@@ -1,5 +1,16 @@
-<a name="0.0.2"></a>
-## 0.0.2 (2016-08-26)
+<a name="0.1.0"></a>
+# 0.1.0 (2016-08-26)
+
+
+
+<a name="ak-editor-toolbar-lists@0.1.0"></a>
+# ak-editor-toolbar-lists@0.1.0 (2016-08-26)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
+* Initial integration of lists plugin. ([fe33246](https://bitbucket.org/atlassian/atlaskit/commits/fe33246))
 
 
 

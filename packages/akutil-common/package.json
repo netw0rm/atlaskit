@@ -1,6 +1,6 @@
 {
   "name": "akutil-common",
-  "version": "2.2.1",
+  "version": "2.4.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -14,6 +14,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
+    "babel-runtime": "^6.11.6",
     "keycode": "^2.1.2"
   },
   "repository": {

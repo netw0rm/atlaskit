@@ -1,6 +1,6 @@
 {
   "name": "ak-button",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "ak-button webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -14,6 +14,7 @@
   "dependencies": {
     "akutil-common": "^2.0.0",
     "akutil-shared-styles": "^33.1.0",
+    "babel-runtime": "^6.11.6",
     "skatejs": "^1.2.4"
   },
   "author": "Atlassian Pty Ltd",

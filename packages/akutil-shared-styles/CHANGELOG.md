@@ -1,5 +1,15 @@
-<a name="33.5.0"></a>
-# 33.5.0 (2016-08-26)
+<a name="33.7.0"></a>
+# 33.7.0 (2016-08-29)
+
+
+
+<a name="akutil-shared-styles@33.6.0"></a>
+# akutil-shared-styles@33.6.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
 
 
 

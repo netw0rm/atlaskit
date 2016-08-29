@@ -69,18 +69,17 @@ export default {
         <div class={shadowItemStyles.locals.itemLeftPosition}>
           <slot
             name="left"
-            ref={(el) => {
+            ref={(slot) => {
               let hasNodes = false;
-              if (el.getAssignedNodes) {
-                hasNodes = el.getAssignedNodes().length;
-              } else if (el.getDistributedNodes) {
-                hasNodes = el.getDistributedNodes().length;
+              if (slot.getAssignedNodes) {
+                hasNodes = slot.getAssignedNodes().length;
+              } else if (slot.getDistributedNodes) {
+                hasNodes = slot.getDistributedNodes().length;
               }
-
               // I only want this padding if the slot is not empty
               // to avoid double padding in the left
               if (hasNodes) {
-                el.parentNode.style.paddingRight = '10px';
+                slot.parentNode.style.marginRight = '10px';
               }
             }}
           />

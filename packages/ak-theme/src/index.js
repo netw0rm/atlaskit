@@ -1,65 +1,86 @@
-import 'style!./host.less';
-import { emit, vdom, define } from 'skatejs';
-import shadowStyles from './shadow.less';
+import { Component, emit, prop, vdom, define } from 'skatejs';
+import { style } from 'akutil-common';
+import themes from './themes';
 
-const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
+function varsFromChildren(host) {
+  return [].slice.call(host.children).reduce((prev, curr) => {
+    const [key, val] = [curr.getAttribute('key'), curr.getAttribute('val')];
 
-/**
- * @description Create instances of the component programmatically, or using markup.
- * @class Theme
- * @example @js import Theme from 'ak-theme';
- * const component = new Theme();
- */
-export default define('ak-theme', {
-  render(elem) {
-    return (
-      // JSX requires that there only be a single root element.
-      // Incremental DOM doesn't require this.
-      <div>
-        {/* This is required for elements in the shadow root to be styled.
-           This is wrapped in the <div /> because you can't have more than one
-           root element.
-        */}
-        <style>{shadowStyles.toString()}</style>
-        <Paragraph className={shadowStyles.locals.myClassName}>My name is {elem.name}!</Paragraph>
-      </div>
-    );
-  },
+    if (key.indexOf('.') > -1) {
+      const keys = key.split('.');
+      const first = keys.shift();
+      const last = keys.pop();
+      prev[first] = prev[first] || {};
+      let obj = prev[first];
+      while (keys.length) {
+        const part = keys.shift();
+        obj = obj[part] || (obj[part] = {});
+      }
+      obj[last] = val;
+    } else {
+      prev[key] = val;
+    }
+
+    return prev;
+  }, {});
+}
+
+export default define('x-theme', {
   props: {
-    /**
-     * @description The name of the Theme element.
-     * @memberof Theme
-     * @instance
-     * @type {string}
-     * @default Theme
-     */
-    name: {
-      default: 'Theme',
+    allVars: {
+      get(elem) {
+        return Object.assign(elem.mixins.reduce((prev, curr) => {
+          const theme = document.getElementById(curr);
+          return theme ? Object.assign(prev, theme.allVars) : prev;
+        }, {}), elem.ownVars);
+      },
+    },
+    id: prop.string({
+      attribute: true,
+    }),
+    mixin: prop.string({
+      attribute: true,
+    }),
+    ownVars: {
+      default: varsFromChildren,
     },
   },
-  prototype: {
-    /**
-     * @description Fire an event containing the name of the element.
-     * @memberof Theme
-     * @function
-     * @instance
-     * @fires Theme#announce-name
-     * @return {Theme} The Theme element.
-     * @example @js component.announce(); // Fires the announce-name event.
-     */
-    announce() {
-      /**
-       * @event Theme#announce-name
-       * @memberof Theme
-       * @description Fired when the `announce` method is called.
-       * @property {String} detail.name The name of the component.
-       */
-      emit(this, 'announce-name', {
-        detail: {
-          name: this.name,
-        },
+  detached(elem) {
+    const themeFor = elem.id;
+    emit(document, `x-theme-${themeFor}`, { detail: (themes[themeFor] = {}) });
+  },
+  updated(elem, prev) {
+    const newThemeFor = elem.id;
+    const oldThemeFor = prev && prev.id;
+
+    // Make sure props have changed.
+    if (!Component.updated(elem, prev)) {
+      return;
+    }
+
+    if (oldThemeFor) {
+      emit(document, `x-theme-${oldThemeFor}`, {
+        detail: (themes[oldThemeFor] = {}),
       });
-      return this;
+    }
+
+    if (newThemeFor) {
+      emit(document, `x-theme-${newThemeFor}`, {
+        detail: (themes[newThemeFor] = elem.allVars),
+      });
+    }
+
+    // Only need to render the first time.
+    // eslint-disable-next-line consistent-return
+    return !prev;
+  },
+  render(elem) {
+    style({ ':host': { display: 'none' } });
+    return <slot elem={elem} onSlotchange={() => (elem.ownVars = varsFromChildren(elem))} />;
+  },
+  prototype: {
+    get mixins() {
+      return this.mixin.split(' ');
     },
   },
 });

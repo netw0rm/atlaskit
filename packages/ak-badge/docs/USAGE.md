@@ -4,10 +4,7 @@ Badges are visual indicators for numeric values such as tallies and scores. They
 They must be used singly after a single item name, and have only numbers.
 
 * Use lozenges for statuses.
-
 * Use labels to call out tags and high-visibility attributes.
-
-
 * Use a tooltip if you want to indicate units.
 
 
@@ -32,7 +29,7 @@ Import the component in your JS resource as follows:
 import AkBadge from 'ak-badge';
 ```
 
-Now we can use the defined tag in our HTML markup. For example,
+Now we can use the defined tag in our HTML markup. For example:
 
 #### index.html
 

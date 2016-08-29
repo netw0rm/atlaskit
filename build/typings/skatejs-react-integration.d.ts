@@ -1,1 +1,1 @@
-declare module "akutil-react";
+declare module "skatejs-react-integration";

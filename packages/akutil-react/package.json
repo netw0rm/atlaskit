@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.ts",
+  "typings": "src/index.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single akutil-react"
   },

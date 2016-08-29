@@ -38,7 +38,7 @@ const $canChangeBlockType = '__canChangeBlockType__';
 const $strongActive = '__strongActive__';
 const $emActive = '__emActive__';
 const $underlineActive = '__underlineActive__';
-const $textFormattingDisabled = '__textFormattingDisabled__';
+const $canChangeTextFormatting = '__canChangeTextFormatting__';
 const $textFormattingPlugin = '__textFormattingPlugin__';
 const $hyperLinkText = '__hyperLinkText__';
 const $selectedFont = '__selectedFont__';
@@ -150,9 +150,9 @@ export default define('ak-editor-bitbucket', {
             boldActive={elem[$strongActive]}
             italicActive={elem[$emActive]}
             underlineActive={elem[$underlineActive]}
-            boldDisabled={elem[$textFormattingDisabled]}
-            italicDisabled={elem[$textFormattingDisabled]}
-            underlineDisabled={elem[$textFormattingDisabled]}
+            boldDisabled={!elem[$canChangeTextFormatting]}
+            italicDisabled={!elem[$canChangeTextFormatting]}
+            underlineDisabled={!elem[$canChangeTextFormatting]}
             underlineHidden
             on-toggle-bold={toggleMark(elem[$textFormattingPlugin], 'strong')}
             on-toggle-italic={toggleMark(elem[$textFormattingPlugin], 'em')}
@@ -213,7 +213,7 @@ export default define('ak-editor-bitbucket', {
     [$strongActive]: prop.boolean(),
     [$emActive]: prop.boolean(),
     [$underlineActive]: prop.boolean(),
-    [$textFormattingDisabled]: prop.boolean(),
+    [$canChangeTextFormatting]: prop.boolean(),
     [$hyperLinkText]: prop.string(),
     [$selectedFont]: prop.string({ default: 'normalText' }),
     [$hyperLinkElement]: {},
@@ -342,7 +342,7 @@ export default define('ak-editor-bitbucket', {
                 elem[$strongActive] = state.strongActive;
                 elem[$emActive] = state.emActive;
                 elem[$underlineActive] = state.underlineActive;
-                elem[$textFormattingDisabled] = state.enabled;
+                elem[$canChangeTextFormatting] = !state.enabled;
               });
 
               elem[$textFormattingPlugin] = textFormattingPlugin;

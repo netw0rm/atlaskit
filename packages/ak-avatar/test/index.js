@@ -234,14 +234,13 @@ describe('ak-avatar', () => {
   describe('loading behaviour', () => {
     let imgWrapper;
     const loadedClass = shadowStyles.locals.loaded;
-    const imgWrapperRendered = () => {
-      imgWrapper = getImgWrapper();
-      return imgWrapper !== null;
-    };
+    const imgWrapperRendered = () => (getImgWrapper() !== null);
 
     beforeEach(() => setupAvatar().then(() => {
       component.src = oneByOnePixel;
-      return waitUntil(imgWrapperRendered);
+      return waitUntil(imgWrapperRendered).then(() => {
+        imgWrapper = getImgWrapper();
+      });
     }));
 
     afterEach(tearDownAvatar);

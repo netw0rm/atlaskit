@@ -39,7 +39,6 @@ const standardConfig = {
     loaders: [
       {
         test: /\.json$/,
-        // test: /\/packages\/.*\.json$/,
         loader: 'json',
       },
       {
@@ -103,7 +102,7 @@ const standardConfig = {
         //
         {
           loader: 'babel-loader',
-          test: /\/packages\/.*\.jsx?$/,
+          test: /\.jsx?$/,
           exclude: /node_modules|bower_components/, // eslint-disable-line max-len
           query: {
             presets: [

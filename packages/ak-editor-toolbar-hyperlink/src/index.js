@@ -43,6 +43,7 @@ export default define('ak-editor-toolbar-hyperlink', {
             const textInput = elem[symbols.shadowRoot].querySelector('.text-input');
             toggle(elem, textInput);
             emit(elem, 'save', { detail: { value: textInput.value } });
+            textInput.value = '';
           }
         }}
       >

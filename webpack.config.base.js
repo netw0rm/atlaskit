@@ -20,16 +20,15 @@ function defaultPackageMains() {
 }
 
 /**
- * Build a loader chain
+ * Build a loader chain.
  *
- * @param {Object} spec -- {loader1: {}, loader2: {}...}
- *   The order of definition is significant. The prior example would build:
+ * @param {Object} spec -- {loader2: {}, loader1: {}, ...}
+ *   The order of definition is significant. The prior example would return:
  *
- *       'loader2?{}!loader1?{}'
+ *       'loader1?{}!loader2?{}'
  */
 const loaderChain = (spec) => Object.keys(spec)
   .map(key => `${key}?${JSON.stringify(spec[key])}`)
-  .reverse()
   .join('!');
 
 const standardConfig = {
@@ -57,13 +56,13 @@ const standardConfig = {
       {
         test: /\.less$/,
         loader: loaderChain({
-          less: {},
-          'postcss-loader': {},
           css: {
             modules: true,
             camelCase: true,
             importLoaders: 1,
           },
+          postcss: {},
+          less: {},
         }),
       },
       [ // exclusive configs for babel (first one that matches will be used)
@@ -74,8 +73,7 @@ const standardConfig = {
         {
           test: /\/stories\/.*?\.tsx?$/,
           loader: loaderChain({
-            'ts-loader': {},
-            'babel-loader': {
+            babel: {
               presets: [
                 'es2015',
                 'react',
@@ -84,6 +82,7 @@ const standardConfig = {
                 'transform-runtime',
               ],
             },
+            ts: {},
           }),
         },
         //
@@ -93,14 +92,14 @@ const standardConfig = {
         {
           test: /\.tsx?$/,
           loader: loaderChain({
-            'ts-loader': {},
-            'babel-loader': {
+            babel: {
               presets: 'es2015',
               plugins: [
                 'transform-runtime',
                 idomBabelPlugin,
               ],
             },
+            ts: {},
           }),
         },
         //
@@ -108,7 +107,7 @@ const standardConfig = {
         // Support react/jsx in stories, react/ directory, or react-*.js files
         //
         {
-          loader: 'babel-loader',
+          loader: 'babel',
           test: /\.jsx?$/,
           include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/, // eslint-disable-line max-len
           query: {
@@ -128,7 +127,7 @@ const standardConfig = {
         // Make sure vdom is imported from skatejs where jsx is used
         //
         {
-          loader: 'babel-loader',
+          loader: 'babel',
           test: /\.jsx?$/,
           exclude: /node_modules|bower_components/, // eslint-disable-line max-len
           query: {
@@ -143,7 +142,7 @@ const standardConfig = {
           },
         },
         { // this is for the v1 CustomElement polyfill and named-slots
-          loader: 'babel-loader',
+          loader: 'babel',
           test: /\.jsx?$/,
           include: /(webcomponents\.js\/src|skatejs-named-slots\/src)/,
           query: {

@@ -19,6 +19,19 @@ function defaultPackageMains() {
   return options.defaults.resolve.packageMains;
 }
 
+/**
+ * Build a loader chain
+ *
+ * @param {Object} spec -- {loader1: {}, loader2: {}...}
+ *   The order of definition is significant. The prior example would build:
+ *
+ *       'loader2?{}!loader1?{}'
+ */
+const loaderChain = (spec) => Object.keys(spec)
+  .map(key => `${key}?${JSON.stringify(spec[key])}`)
+  .reverse()
+  .join('!');
+
 const standardConfig = {
   entry: {
     'dist/bundle.js': `./${pkg['ak:webpack:raw']}`,
@@ -43,7 +56,15 @@ const standardConfig = {
       },
       {
         test: /\.less$/,
-        loader: 'css?modules&camelCase&importLoaders=1!postcss-loader!less',
+        loader: loaderChain({
+          less: {},
+          'postcss-loader': {},
+          css: {
+            modules: true,
+            camelCase: true,
+            importLoaders: 1,
+          },
+        }),
       },
       [ // exclusive configs for babel (first one that matches will be used)
         //
@@ -52,15 +73,18 @@ const standardConfig = {
         //
         {
           test: /\/stories\/.*?\.tsx?$/,
-          loader: `babel-loader?${JSON.stringify({
-            presets: [
-              'es2015',
-              'react',
-            ],
-            plugins: [
-              'transform-runtime',
-            ],
-          })}!ts-loader`,
+          loader: loaderChain({
+            'ts-loader': {},
+            'babel-loader': {
+              presets: [
+                'es2015',
+                'react',
+              ],
+              plugins: [
+                'transform-runtime',
+              ],
+            },
+          }),
         },
         //
         // TYPESCRIPT
@@ -68,13 +92,16 @@ const standardConfig = {
         //
         {
           test: /\.tsx?$/,
-          loader: `babel-loader?${JSON.stringify({
-            presets: 'es2015',
-            plugins: [
-              'transform-runtime',
-              idomBabelPlugin,
-            ],
-          })}!ts-loader`,
+          loader: loaderChain({
+            'ts-loader': {},
+            'babel-loader': {
+              presets: 'es2015',
+              plugins: [
+                'transform-runtime',
+                idomBabelPlugin,
+              ],
+            },
+          }),
         },
         //
         // JAVASCRIPT

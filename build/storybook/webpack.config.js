@@ -2,8 +2,6 @@ const webpack = require('webpack');
 const webpackConfig = require('../../webpack.config.development.js');
 const getPackageRestrictions = require('./getPackageRestrictions.js');
 
-const assign = (...args) => Object.assign(...args);
-
 module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line no-unused-vars
   // configType has a value of 'DEVELOPMENT' or 'PRODUCTION'
   // You can change the configuration based on that.
@@ -22,7 +20,9 @@ module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line n
   storybookBaseConfig.module.loaders = webpackConfig.module.loaders;
   storybookBaseConfig.postcss = webpackConfig.postcss;
 
-  storybookBaseConfig.resolve = assign(webpackConfig.resolve, storybookBaseConfig.resolve || {});
+  storybookBaseConfig.resolve = Object.assign(
+    webpackConfig.resolve,
+    storybookBaseConfig.resolve || {});
 
   // Return the altered config
   return storybookBaseConfig;

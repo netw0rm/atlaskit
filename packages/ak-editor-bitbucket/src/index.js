@@ -41,6 +41,7 @@ const $underlineActive = '__underlineActive__';
 const $canChangeTextFormatting = '__canChangeTextFormatting__';
 const $textFormattingPlugin = '__textFormattingPlugin__';
 const $hyperLinkText = '__hyperLinkText__';
+const $canLinkHyperlink = '__canLinkHyperlink__';
 const $selectedFont = '__selectedFont__';
 const $blockTypePlugin = '__blockTypePlugin__';
 const $listsPlugin = '__listsPlugin__';
@@ -160,6 +161,7 @@ export default define('ak-editor-bitbucket', {
           />
           <ToolbarHyperlink
             active={elem[$hyperLinkActive]}
+            disabled={!elem[$canLinkHyperlink]}
             onSave={addHyperLink(elem[$hyperLinkPlugin])}
           />
           <ToolbarLists
@@ -218,6 +220,7 @@ export default define('ak-editor-bitbucket', {
     [$selectedFont]: prop.string({ default: 'normalText' }),
     [$hyperLinkElement]: {},
     [$hyperLinkActive]: prop.boolean(),
+    [$canLinkHyperlink]: prop.boolean(),
     [$bulletListActive]: prop.boolean(),
     [$numberListActive]: prop.boolean(),
   },
@@ -281,6 +284,7 @@ export default define('ak-editor-bitbucket', {
               const hyperLinkPlugin = new HyperLinkPlugin(proseMirrorInstance);
 
               hyperLinkPlugin.onChange(state => {
+                elem[$canLinkHyperlink] = state.enabled;
                 elem[$hyperLinkActive] = state.active;
                 elem[$hyperLinkElement] = state.element;
                 elem[$hyperLinkText] = state.text;

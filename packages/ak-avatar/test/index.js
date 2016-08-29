@@ -78,10 +78,7 @@ describe('ak-avatar', () => {
 
         component.size = size;
 
-        return waitUntil(sizeAttributeIsSet).then(() => {
-          expect(component.size).to.equal(size);
-          expect(sizeAttributeIsSet()).to.equal(true);
-        }).should.be.fulfifilled;
+        return waitUntil(sizeAttributeIsSet).should.be.fulfifilled;
       });
     });
 
@@ -92,9 +89,7 @@ describe('ak-avatar', () => {
 
         component.size = size;
 
-        return waitUntil(sizeIsDefaultValue).then(() => {
-          expect(sizeIsDefaultValue()).to.be.true;
-        }).should.be.fulfifilled;
+        return waitUntil(sizeIsDefaultValue).should.be.fulfifilled;
       });
     });
 
@@ -108,9 +103,7 @@ describe('ak-avatar', () => {
 
         component.size = size;
 
-        return waitUntil(rectSizeIsExpected).then(() => {
-          expect((rectSizeIsExpected)()).to.be.true;
-        }).should.be.fulfifilled;
+        return waitUntil(rectSizeIsExpected).should.be.fulfifilled;
       });
     });
   });
@@ -126,9 +119,7 @@ describe('ak-avatar', () => {
 
       component.label = label;
 
-      return waitUntil(componentHasCorrectLabel).then(() => {
-        expect(componentHasCorrectLabel()).to.be.true;
-      }).should.be.fulfifilled;
+      return waitUntil(componentHasCorrectLabel).should.be.fulfifilled;
     });
 
     it('should set the alt of the internal img', () => {
@@ -141,12 +132,9 @@ describe('ak-avatar', () => {
 
       waitUntil(imgIsRendered).then(() => {
         img = getImage();
-
         component.label = label;
 
         return waitUntil(imgHasCorrectLabel);
-      }).then(() => {
-        expect(imgHasCorrectLabel()).to.be.true;
       }).should.be.fulfifilled;
     });
   });
@@ -161,9 +149,7 @@ describe('ak-avatar', () => {
 
       component.presence = 'none';
 
-      return waitUntil(presenceIsNotVisible).then(() => {
-        expect((presenceIsNotVisible)()).to.be.true;
-      }).should.be.fulfifilled;
+      return waitUntil(presenceIsNotVisible).should.be.fulfifilled;
     });
 
     it('should be visible when presence is set to \'online\'', () => {
@@ -172,9 +158,7 @@ describe('ak-avatar', () => {
 
       component.presence = 'online';
 
-      return waitUntil(presenceIsVisible).then(() => {
-        expect(presenceIsVisible()).to.be.true;
-      }).should.be.fulfifilled;
+      return waitUntil(presenceIsVisible).should.be.fulfifilled;
     });
 
     it('should default to none when set to an invalid value', () => {
@@ -183,9 +167,7 @@ describe('ak-avatar', () => {
 
       component.presence = 'spooky';
 
-      return waitUntil(presenceIsNotVisible).then(() => {
-        expect(presenceIsNotVisible()).to.be.true;
-      }).should.be.fulfifilled;
+      return waitUntil(presenceIsNotVisible).should.be.fulfifilled;
     });
   });
 
@@ -199,9 +181,7 @@ describe('ak-avatar', () => {
 
       component.src = oneByOnePixel;
 
-      return waitUntil(srcPropertyIsSet).then(() => {
-        expect(srcPropertyIsSet()).to.be.true;
-      }).should.be.fulfifilled;
+      return waitUntil(srcPropertyIsSet).should.be.fulfifilled;
     });
 
     it('should not add the .loaded class if img fails to load', () => {
@@ -216,8 +196,6 @@ describe('ak-avatar', () => {
         component.src = invalidSrc;
         // waitUntil we no longer have the loaded class
         return waitUntil(() => (!hasLoadedClass()));
-      }).then(() => {
-        expect(hasLoadedClass()).to.be.false;
       }).should.be.fulfifilled;
     });
 
@@ -227,9 +205,7 @@ describe('ak-avatar', () => {
 
       component.src = oneByOnePixel;
 
-      return waitUntil(hasLoadedClass).then(() => {
-        expect(hasLoadedClass()).to.be.true;
-      }).should.be.fulfifilled;
+      return waitUntil(hasLoadedClass).should.be.fulfifilled;
     });
 
     it('should render an img tag when src is set', () => {
@@ -237,9 +213,7 @@ describe('ak-avatar', () => {
 
       component.src = oneByOnePixel;
 
-      return waitUntil(imgRendered).then(() => {
-        expect(imgRendered()).to.be.true;
-      }).should.be.fulfifilled;
+      return waitUntil(imgRendered).should.be.fulfifilled;
     });
 
     it('should not render an img tag when src is not set', () => {
@@ -253,8 +227,6 @@ describe('ak-avatar', () => {
         // now we can set the src to undefined to see if the image is still rendered.
         component.src = undefined;
         return waitUntil(() => (!imgRendered()));
-      }).then(() => {
-        expect(imgRendered()).to.be.false;
       }).should.be.fulfifilled;
     });
   });
@@ -279,9 +251,7 @@ describe('ak-avatar', () => {
 
       component.__loading = false; // eslint-disable-line no-underscore-dangle
 
-      return waitUntil(imgShown).then(() => {
-        expect(imgShown()).to.be.true;
-      }).should.be.fulfifilled;
+      return waitUntil(imgShown).should.be.fulfifilled;
     });
 
     it('should not show the image if __loading is true', () => {
@@ -289,9 +259,7 @@ describe('ak-avatar', () => {
 
       component.__loading = true; // eslint-disable-line no-underscore-dangle
 
-      return waitUntil(imgHidden).then(() => {
-        expect(imgHidden()).to.be.true;
-      }).should.be.fulfifilled;
+      return waitUntil(imgHidden).should.be.fulfifilled;
     });
   });
 });

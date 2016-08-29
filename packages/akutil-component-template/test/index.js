@@ -42,7 +42,7 @@ describe('akutil-component-template', () => {
   });
 
   describe('name prop', () => {
-    it('should modify the rendered name', done => {
+    it('should modify the rendered name', () => {
       const newName = 'InigoMontoya';
       const expectedInnerHTML = `My name is ${newName}!`;
       const paragraph = getParagraph();
@@ -51,9 +51,8 @@ describe('akutil-component-template', () => {
 
       component.name = newName;
 
-      waitUntil(nameHasBeenModifiedCorrectly).then(() => {
-        expect(nameHasBeenModifiedCorrectly()).to.be.true;
-      }).then(done);
+      // here we can wrap our assertions in promises and just check that the promise was fulfilled
+      waitUntil(nameHasBeenModifiedCorrectly).should.be.fulfilled;
     });
   });
 });

@@ -1,4 +1,4 @@
 node_modules
 dist
 /stories
-/typings
+/build/typings

@@ -10,6 +10,6 @@
     "target": "es2015"
   },
   "files": [
-    "typings/index.d.ts"
+    "build/typings/index.d.ts"
   ]
 }

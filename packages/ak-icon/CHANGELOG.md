@@ -1,10 +1,20 @@
-<a name="1.3.0"></a>
-# 1.3.0 (2016-08-29)
+<a name="1.3.1"></a>
+## 1.3.1 (2016-08-29)
+
+
+
+<a name="ak-icon@1.3.1"></a>
+## ak-icon@1.3.1 (2016-08-29)
 
 
 
 <a name="ak-icon@1.2.0"></a>
 # ak-icon@1.2.0 (2016-08-29)
+
+
+### Bug Fixes
+
+* Use uid everywhere ([b118171](https://bitbucket.org/atlassian/atlaskit/commits/b118171))
 
 
 ### Features

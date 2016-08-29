@@ -1,10 +1,20 @@
-<a name="1.5.0"></a>
-# 1.5.0 (2016-08-29)
+<a name="1.5.1"></a>
+## 1.5.1 (2016-08-29)
+
+
+
+<a name="pf-mention@1.5.1"></a>
+## pf-mention@1.5.1 (2016-08-29)
 
 
 
 <a name="pf-mention@1.4.0"></a>
 # pf-mention@1.4.0 (2016-08-29)
+
+
+### Bug Fixes
+
+* Use uid everywhere ([b118171](https://bitbucket.org/atlassian/atlaskit/commits/b118171))
 
 
 ### Features

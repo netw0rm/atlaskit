@@ -64,9 +64,7 @@ export default {
         href={elem.href ? elem.href : void 0}
       >
         <style>{shadowItemStyles.toString()}</style>
-        {/* can't use 'className' here since it's not a custom element property
-         and it's transformed into 'classname' */}
-        <div class={shadowItemStyles.locals.itemLeftPosition}>
+        <div className={shadowItemStyles.locals.itemLeftPosition}>
           <slot
             name="left"
             ref={(slot) => {
@@ -84,9 +82,7 @@ export default {
             }}
           />
         </div>
-        {/* can't use 'className' here since it's not a custom element property
-         and it's transformed into 'classname' */}
-        <div class={shadowItemStyles.locals.itemDefaultPosition}><slot /></div>
+        <div className={shadowItemStyles.locals.itemDefaultPosition}><slot /></div>
       </a>
     );
   },

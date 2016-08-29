@@ -123,7 +123,7 @@
     "release/changelog": "if [ -s .released-packages ]; then lerna-semantic-release post; else return 0; fi",
     "release/registry": "./build/bin/registry.sh",
     "shrinkwrap/update": "npm run clean && rm npm-shrinkwrap.json && npm install --ignore-scripts && npm shrinkwrap",
-    "storybook": "start-storybook -p 9002 -c ./build/storybook",
+    "storybook": "start-storybook -p 9001 -c ./build/storybook",
     "storybook/single": "./build/bin/storybook.single.sh",
     "storybook/static": "build-storybook -c ./build/storybook",
     "storybook/static/single": "./build/bin/storybook.static.single.sh",

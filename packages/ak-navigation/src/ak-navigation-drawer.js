@@ -11,6 +11,7 @@ export default define('ak-navigation-drawer', {
       <div
         className={classNames(shadowStyles.locals.drawer, {
           [shadowStyles.locals.open]: elem.open,
+          [shadowStyles.locals.large]: elem.large,
         })}
       >
         <style>{shadowStyles.toString()}</style>

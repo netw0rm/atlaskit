@@ -43,61 +43,65 @@ const openCreateDrawer = el => el.addEventListener('click', () => {
 export default define('ak-navigation', {
   render(elem) {
     return (
-      <div
-        className={classNames(shadowStyles.locals.navigation, {
-          [shadowStyles.locals.open]: elem.open,
-          [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
-        })}
-      >
-        <style>{`
-          .${shadowStyles.locals.navigation} {
-            width: ${Math.max(elem.width, intermediateWidth)}px;
-            transform: translateX(${Math.min(elem.width - intermediateWidth, 0)}px);
-          }
+      <div>
+        <div
+          className={classNames(shadowStyles.locals.navigation, {
+            [shadowStyles.locals.open]: elem.open,
+            [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
+          })}
+        >
+          <style>{`
+            .${shadowStyles.locals.navigation} {
+              width: ${Math.max(elem.width, intermediateWidth)}px;
+              transform: translateX(${Math.min(elem.width - intermediateWidth, 0)}px);
+            }
 
-          .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
-            transform: translateX(${getContainerPadding(elem.width)}px);
-          }
-        `}</style>
-        <style>{shadowStyles.toString()}</style>
-        <div className={shadowStyles.locals.global}>
-          <div className={shadowStyles.locals.globalPrimary}>
-            <slot name="global-home" />
-          </div>
-          <div ref={openSearchDrawer} className={shadowStyles.locals.globalSecondary}>
-            <slot name="global-search" />
-          </div>
-          <div ref={openCreateDrawer} className={shadowStyles.locals.globalSecondary}>
-            <slot name="global-create" />
-          </div>
-          <div className={shadowStyles.locals.globalBottom}>
-            <div className={shadowStyles.locals.globalSecondary}>
-              <slot name="global-help" />
+            .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
+              transform: translateX(${getContainerPadding(elem.width)}px);
+            }
+          `}</style>
+          <style>{shadowStyles.toString()}</style>
+          <div className={shadowStyles.locals.global}>
+            <div className={shadowStyles.locals.globalPrimary}>
+              <slot name="global-home" />
             </div>
-            <div className={shadowStyles.locals.globalSecondary}>
-              <slot name="global-profile" />
+            <div ref={openSearchDrawer} className={shadowStyles.locals.globalSecondary}>
+              <slot name="global-search" />
+            </div>
+            <div ref={openCreateDrawer} className={shadowStyles.locals.globalSecondary}>
+              <slot name="global-create" />
+            </div>
+            <div className={shadowStyles.locals.globalBottom}>
+              <div className={shadowStyles.locals.globalSecondary}>
+                <slot name="global-help" />
+              </div>
+              <div className={shadowStyles.locals.globalSecondary}>
+                <slot name="global-profile" />
+              </div>
             </div>
           </div>
-        </div>
-        <ak-navigation-drawer open={elem.searchDrawerOpen}>
-          <slot name="global-search-drawer" />
-        </ak-navigation-drawer>
-        <ak-navigation-drawer open={elem.createDrawerOpen}>
-          <slot name="global-create-drawer" />
-        </ak-navigation-drawer>
-        <div className={shadowStyles.locals.container}>
-          <div className={shadowStyles.locals.containerName}>
-            <a href={elem.containerHref}>
-              <img
-                className={shadowStyles.locals.containerLogo}
-                alt={elem.containerName}
-                src={elem.containerLogo}
-              />
-            </a>
-            <span>{elem.containerName}</span>
-          </div>
-          <div className={shadowStyles.locals.containerLinks}>
-            <slot />
+
+          <ak-navigation-drawer large open={elem.searchDrawerOpen}>
+            <slot name="global-search-drawer" />
+          </ak-navigation-drawer>
+          <ak-navigation-drawer open={elem.createDrawerOpen}>
+            <slot name="global-create-drawer" />
+          </ak-navigation-drawer>
+
+          <div className={shadowStyles.locals.container}>
+            <div className={shadowStyles.locals.containerName}>
+              <a href={elem.containerHref}>
+                <img
+                  className={shadowStyles.locals.containerLogo}
+                  alt={elem.containerName}
+                  src={elem.containerLogo}
+                />
+              </a>
+              <span>{elem.containerName}</span>
+            </div>
+            <div className={shadowStyles.locals.containerLinks}>
+              <slot />
+            </div>
           </div>
         </div>
       </div>
@@ -118,6 +122,8 @@ export default define('ak-navigation', {
         } else if (data.oldValue && !data.newValue) {
           emit(elem, 'ak-navigation-close');
         }
+        elem.createDrawerOpen = elem.open && elem.createDrawerOpen;
+        elem.searchDrawerOpen = elem.open && elem.searchDrawerOpen;
         elem.width = elem.open ? expandedWidth : collapsedWidth;
       },
       event: 'ak-navigation-open-state-changed',

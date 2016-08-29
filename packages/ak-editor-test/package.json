@@ -15,7 +15,9 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "prosemirror": "^0.10.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"

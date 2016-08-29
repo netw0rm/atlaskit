@@ -3,17 +3,18 @@ import { ProseMirror } from 'prosemirror/dist/edit';
 import { Slice, Node, Fragment } from 'prosemirror/dist/model';
 import { schema } from 'prosemirror/dist/schema-basic';
 import testing from 'ak-editor-test';
+import { SyncPlugin } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-const { builder, chaiEditor, poke } = testing({ schema, Node, Slice, Fragment });
+const { builder, chaiEditor } = testing({ schema, Node, Slice, Fragment });
 const { doc, p, img } = builder;
 chai.use(chaiEditor);
 
 describe('ak-editor-plugin-image-upload', () => {
   const makeEditor = () => new ProseMirror({
     schema: schema,
-    plugins: [plugin]
+    plugins: [plugin, SyncPlugin]
   });
 
   it('should be able to register handlers for state change events', () => {
@@ -23,7 +24,6 @@ describe('ak-editor-plugin-image-upload', () => {
 
     plugin.get(pm).addImage({ src: 'https://atlassian.com/favicon.png' });
     pm.setNodeSelection(pm.selection.from - 1);
-    poke(pm);
 
     expect(onChange.callCount).to.equal(1);
   });
@@ -36,10 +36,8 @@ describe('ak-editor-plugin-image-upload', () => {
     plugin.get(pm).addImage({ src: 'https://atlassian.com/favicon.png' });
 
     pm.setNodeSelection(pm.selection.from - 1);
-    poke(pm);
     // TODO: Make the test pass with this line uncommented.
     // pm.setNodeSelection(pm.selection.from - 1);
-    poke(pm);
 
     expect(onChange.callCount).to.equal(1);
   });
@@ -52,9 +50,7 @@ describe('ak-editor-plugin-image-upload', () => {
     plugin.get(pm).addImage({ src: 'https://atlassian.com/favicon.png' });
 
     pm.setNodeSelection(pm.selection.from - 1);
-    poke(pm);
     pm.setTextSelection(pm.selection.from + 1);
-    poke(pm);
 
     expect(onChange.callCount).to.equal(2);
   });

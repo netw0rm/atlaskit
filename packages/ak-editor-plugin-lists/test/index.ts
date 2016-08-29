@@ -3,10 +3,11 @@ import { ProseMirror } from 'prosemirror/dist/edit';
 import { Slice, Node, Fragment } from 'prosemirror/dist/model';
 import { schema } from 'prosemirror/dist/schema-basic';
 import testing from 'ak-editor-test';
+import { SyncPlugin } from 'ak-editor-test';
 import * as chai from 'chai';
 const { expect } = chai;
 
-const { builder, chaiEditor, insertText, insert, poke } = testing({
+const { builder, chaiEditor, insertText, insert } = testing({
   schema, Node, Slice, Fragment })
 const { doc, p, text, ol, li } = builder;
 chai.use(chaiEditor);
@@ -14,7 +15,7 @@ chai.use(chaiEditor);
 describe('ak-editor-plugin-lists', () => {
   const makeEditor = () => new ProseMirror({
     schema: schema,
-    plugins: [plugin]
+    plugins: [plugin, SyncPlugin],
   });
 
   describe('ListsPlugin - API', () => {
@@ -25,7 +26,6 @@ describe('ak-editor-plugin-lists', () => {
       pm.setTextSelection(1);
       plugin.get(pm).onChange(onChange);
       plugin.get(pm).toggleList('ordered_list');
-      poke(pm);
 
       expect(onChange.callCount).to.equal(1);
     });
@@ -39,8 +39,6 @@ describe('ak-editor-plugin-lists', () => {
       plugin.get(pm).toggleList('ordered_list');
 
       pm.setTextSelection(3, 7); // <text>
-      poke(pm);
-      poke(pm);
 
       expect(onChange.callCount).to.equal(1);
     });
@@ -54,11 +52,9 @@ describe('ak-editor-plugin-lists', () => {
       plugin.get(pm).onChange(onChange);
 
       plugin.get(pm).toggleList('ordered_list');
-      poke(pm);
       expect(pm.doc).to.equal(doc(ol(li(p('text')))));
 
       plugin.get(pm).toggleList('ordered_list');
-      poke(pm);
       expect(pm.doc).to.equal(doc(p('text')));
 
       expect(onChange.callCount).to.equal(2);

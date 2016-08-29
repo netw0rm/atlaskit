@@ -3,8 +3,9 @@ import { ProseMirror } from 'prosemirror/dist/edit';
 import * as base64fileconverter from './base64fileconverter';
 import makeSchemaBuilder from './schema-builder';
 import makeChaiEditor from './chai';
+import SyncPlugin from './sync-plugin';
 
-export { base64fileconverter };
+export { base64fileconverter, SyncPlugin };
 
 export interface Context {
   Slice: typeof Slice;
@@ -33,14 +34,6 @@ export default (context: Context) => {
         to = from;
       }
       pm.setTextSelection(from, to);
-      api.poke(pm);
-    },
-
-    poke(pm: ProseMirror) {
-      // Poke inside the trigger all update schedulers. Normally it would be
-      // done on a timeout if the editor is in the DOM, but for tests we want to
-      // skip that requirement.
-      (pm as any).centralScheduler.force();
     },
   };
   return api;

@@ -209,6 +209,8 @@ You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome`
 
 > Hint: If you have problems starting the cucumber setup locally, try re-generating the docker images via: `npm run cucumber/single my-component -- --force-recreate`
 
+> Hint: You can (re-)start the Chrome within the VNC container via: Right click > Applications > Shells > Bash > $ x-www-browser --user-data-dir=. and then opening http://dev:9001
+
 ## Follow code style guidelines
 We are adhering to the [Airbnb](https://github.com/airbnb/javascript) javascript linting rules, which can be quite strict. Eslint will automatically run when attempting to commit, but can also run at any time using:
 

@@ -4,14 +4,11 @@ const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
-const idomBabelPlugin = [
-  'incremental-dom',
-  {
-    components: true,
-    hoist: true,
-    prefix: 'vdom',
-  },
-];
+const idomBabelPlugin = ['incremental-dom', {
+  components: true,
+  hoist: true,
+  prefix: 'vdom',
+}];
 
 function defaultPackageMains() {
   const options = new webpack.WebpackOptionsDefaulter();
@@ -71,7 +68,7 @@ const standardConfig = {
         // Storybook only -- uses React rather than Incremental DOM
         //
         {
-          test: /\/stories\/.*?\.tsx?$/,
+          test: /\/stories\/.*\.tsx?$/,
           loader: loaderChain({
             babel: {
               presets: [
@@ -109,7 +106,7 @@ const standardConfig = {
         {
           loader: 'babel',
           test: /\.jsx?$/,
-          include: /react-[^/]*\.jsx?$|react\/.*\.jsx?$|stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/, // eslint-disable-line max-len
+          include: /stories\/.*\.jsx?$/,
           query: {
             presets: [
               'es2015',
@@ -129,7 +126,7 @@ const standardConfig = {
         {
           loader: 'babel',
           test: /\.jsx?$/,
-          exclude: /node_modules|bower_components/, // eslint-disable-line max-len
+          exclude: /node_modules|bower_components/,
           query: {
             presets: [
               'es2015',
@@ -139,14 +136,6 @@ const standardConfig = {
               'transform-runtime',
               idomBabelPlugin,
             ],
-          },
-        },
-        { // this is for the v1 CustomElement polyfill and named-slots
-          loader: 'babel',
-          test: /\.jsx?$/,
-          include: /(webcomponents\.js\/src|skatejs-named-slots\/src)/,
-          query: {
-            presets: 'es2015',
           },
         },
       ],

@@ -12,6 +12,7 @@
     "dist"
   ],
   "dependencies": {
+    "babel-runtime": "^6.11.6",
     "react": "^0.14.0",
     "skatejs-react-integration": "^0.0.6",
     "uid": "^0.0.2"

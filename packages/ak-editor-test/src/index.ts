@@ -28,13 +28,6 @@ export default (context: Context) => {
       const { from, to } = pm.selection;
       pm.tr.replaceWith(from, to, api.builder.fragment(...content)).apply();
     },
-
-    select(pm: ProseMirror, from: number, to?: number) {
-      if (typeof to === 'undefined') {
-        to = from;
-      }
-      pm.setTextSelection(from, to);
-    },
   };
   return api;
 }

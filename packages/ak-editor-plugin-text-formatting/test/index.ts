@@ -7,7 +7,7 @@ import { SyncPlugin } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-const { builder, chaiEditor, insertText, select } = testing({
+const { builder, chaiEditor, insertText } = testing({
   schema, Node, Slice, Fragment })
 const { doc, p, text, em } = builder;
 chai.use(chaiEditor);
@@ -21,7 +21,7 @@ describe('ak-editor-plugin-text-formatting', () => {
   it('should be able to toggle em', () => {
     const pm = makeEditor();
     insertText(pm, 'text');
-    select(pm, 1, 2);
+    pm.setTextSelection(1, 2);
 
     expect(plugin.get(pm).toggleMark('em')).to.be.true;
     expect(pm.doc).to.equal(doc(p(em('t'), 'ext')))
@@ -32,7 +32,7 @@ describe('ak-editor-plugin-text-formatting', () => {
   it('should expose whether an em is active', () => {
     const pm = makeEditor();
     insertText(pm, 'text');
-    select(pm, 1, 2);
+    pm.setTextSelection(1, 2);
 
     expect(plugin.get(pm).getState().emActive).to.be.false;
     expect(plugin.get(pm).toggleMark('em')).to.be.true;

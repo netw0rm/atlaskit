@@ -273,9 +273,9 @@ declare module 'prosemirror/dist/edit/options' {
 
 declare module 'prosemirror/dist/edit/plugin' {
     import { ProseMirror } from 'prosemirror/dist/edit';
-    class Plugin<State> {
-        constructor(state: { new(...args: any[]): State; }, options?: any, prop?: any);
-        get(pm: ProseMirror): State;
+    class Plugin<S> {
+        constructor(state: { new(...args: any[]): S; }, options?: any, prop?: any);
+        get(pm: ProseMirror): S;
         attach(pm: ProseMirror): any;
         detach(pm: ProseMirror): void;
         ensure(pm: ProseMirror): any;

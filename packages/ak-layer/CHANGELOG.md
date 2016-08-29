@@ -1,10 +1,20 @@
-<a name="57.0.1"></a>
-## 57.0.1 (2016-08-25)
+<a name="57.1.0"></a>
+# 57.1.0 (2016-08-26)
+
+
+
+<a name="ak-layer@57.1.0"></a>
+# ak-layer@57.1.0 (2016-08-26)
 
 
 
 <a name="ak-layer@57.0.1"></a>
 ## ak-layer@57.0.1 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

@@ -231,7 +231,7 @@ describe('ak-avatar', () => {
     });
   });
 
-  describe.skip('loading behaviour', () => {
+  describe('loading behaviour', () => {
     let imgWrapper;
     const loadedClass = shadowStyles.locals.loaded;
     // const imgRendered = () => (getImage() !== null);
@@ -242,7 +242,7 @@ describe('ak-avatar', () => {
     afterEach(tearDownAvatar);
 
     it('should apply .loaded class when img loads successfully', () => {
-      const loadedClassRendered = (Array.prototype.slice.call(imgWrapper.classList).indexOf(loadedClass) > -1); // eslint-disable-line max-len
+      const loadedClassRendered = () => (Array.prototype.slice.call(imgWrapper.classList).indexOf(loadedClass) > -1); // eslint-disable-line max-len
 
       component.src = oneByOnePixel;
 
@@ -254,13 +254,27 @@ describe('ak-avatar', () => {
     });
 
     it('should not apply .loaded class when img does not load successfully', () => {
-      const imgHidden = () => (Array.prototype.slice.call(imgWrapper.classList).indexOf(loadedClass) === -1); // eslint-disable-line max-len
+      const loadedClassRendered = () => (Array.prototype.slice.call(imgWrapper.classList).indexOf(loadedClass) > -1); // eslint-disable-line max-len
 
-      // This time we set an invalid url. This time we expect there
-      component.src = 'invalidURL';
-      component.__loading = true; // eslint-disable-line no-underscore-dangle
-
-      return waitUntil(imgHidden).should.be.fulfilled;
+      // Again, we set up a successfully loaded image (that should have the .loaded class)
+      component.src = oneByOnePixel;
+      return waitUntil(loadedClassRendered)
+        .then(() => {
+          // now we set it to something invalid (and expect the .loaded class to be removed)
+          component.src = 'notaValidURL';
+          return waitUntil(() => !loadedClassRendered());
+        })
+        .then(() => {
+          // now we setup a short timer to make sure the .loaded class has not been reapplied
+          let timerExpired = false;
+          setTimeout(() => (timerExpired = true), 10);
+          return waitUntil(() => (timerExpired === true));
+        })
+        .then(() => {
+          // assert that the .loaded class is definitely not applied again, just in case
+          expect(loadedClassRendered()).to.be.false;
+        })
+        .should.be.fulfilled;
     });
   });
 });

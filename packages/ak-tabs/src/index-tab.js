@@ -3,38 +3,14 @@ import 'style!./tab-host.less';
 
 import { emit, vdom, define, prop } from 'skatejs';
 import shadowStyles from './tab-shadow.less';
-
-const EVENTS = {
-  /**
-   * @event Tab#ak-tabs-tab-select
-   * @memberof Tab
-   * @description Fired when a tab is selected.
-   * @property {Tab} detail.tab The tab element.
-   */
-  EVENT_TAB_SELECT: 'ak-tabs-tab-select',
-  /**
-   * @event Tab#ak-tabs-tab-deselect
-   * @memberof Tab
-   * @description Fired when a tab is deselected.
-   * @property {Tab} detail.tab The tab element.
-   */
-  EVENT_TAB_DESELECT: 'ak-tabs-tab-deselect',
-  /**
-   * @event Tab#ak-tabs-tab-change
-   * @memberof Tab
-   * @description Fired when a tab has changed.
-   * @property {Tab} detail.tab The tab element.
-   * @private
-   */
-  EVENT_TAB_CHANGE: 'ak-tabs-tab-change',
-};
+import events from './internal/events';
 
 // We need to keep track of whether the element has rendered before, so we know whether it is safe
 // to emit events in the property setter.
 const hasRendered = Symbol();
 
 function emitTabChangedEvent(tab, detail) {
-  emit(tab, EVENTS.EVENT_TAB_CHANGE, { detail });
+  emit(tab, events.TAB_CHANGE, { detail });
 }
 
 /**
@@ -114,4 +90,3 @@ const definition = {
 };
 
 export default define('ak-tabs-tab', definition);
-export { EVENTS };

@@ -1,5 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
+import events from '../src/internal/events';
 import AkTabs from '../src/index';
 import AkTab from '../src/index-tab';
 const { React, ReactDOM } = window;
@@ -190,11 +191,11 @@ storiesOf(name, module)
     </Component>
   ))
   .add('ak-tabs with event listeners', () => {
-    window.removeEventListener('ak-tabs-tab-select', selectHandler);
-    window.removeEventListener('ak-tabs-tab-deselect', deselectHandler);
+    window.removeEventListener(events.TAB_SELECT, selectHandler);
+    window.removeEventListener(events.TAB_DESELECT, deselectHandler);
 
-    window.addEventListener('ak-tabs-tab-select', selectHandler);
-    window.addEventListener('ak-tabs-tab-deselect', deselectHandler);
+    window.addEventListener(events.TAB_SELECT, selectHandler);
+    window.addEventListener(events.TAB_DESELECT, deselectHandler);
 
     return (
       <Component>

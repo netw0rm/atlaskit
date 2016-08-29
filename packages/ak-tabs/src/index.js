@@ -7,7 +7,8 @@ import classNames from 'classnames';
 import keycode from 'keycode';
 import shadowStyles from './shadow.less';
 
-import Tab, { EVENTS } from './index-tab';
+import events from './internal/events';
+import Tab from './index-tab';
 
 import {
   labelsContainer,
@@ -139,12 +140,12 @@ function calculateVisibleTabs(tabsEl) {
 const definition = {
   created(elem) {
     // Listen for tab change events
-    elem.addEventListener(EVENTS.EVENT_TAB_CHANGE, e => {
+    elem.addEventListener(events.TAB_CHANGE, e => {
       if (e.detail.change && e.detail.change.selected) {
         // Emit the selection or deselection event.
         const tab = e.detail.tab;
         const eventName = e.detail.change.selected.newValue ?
-          EVENTS.EVENT_TAB_SELECT : EVENTS.EVENT_TAB_DESELECT;
+          events.TAB_SELECT : events.TAB_DESELECT;
         emit(tab, eventName, { detail: { tab } });
 
         // If the tab has been selected, we need to deselect all other tabs.

@@ -1,5 +1,15 @@
-<a name="1.1.0"></a>
-# 1.1.0 (2016-08-26)
+<a name="1.3.0"></a>
+# 1.3.0 (2016-08-29)
+
+
+
+<a name="ak-icon@1.2.0"></a>
+# ak-icon@1.2.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
 
 
 

@@ -10,6 +10,7 @@ pipelines:
             - npm install
             - npm run validate/package.json
             - npm run lint
+            - npm run test/base
             - npm run test/browserstack/ci
             - npm run storybook& # runs in background
             - STORYBOOK_PID=$!
@@ -29,5 +30,6 @@ pipelines:
           - npm install
           - npm run validate/package.json
           - npm run lint
+          - npm run test/base
           - npm run test/browserstack/ci
           - npm run pr/storybook

@@ -96,7 +96,7 @@ const standardConfig = {
           },
         },
         //
-        // JAVASCIRPT
+        // JAVASCRIPT
         // Support jsx to incremental dom in non-react locations (above).
         // Make sure vdom is imported from skatejs where jsx is used
         //

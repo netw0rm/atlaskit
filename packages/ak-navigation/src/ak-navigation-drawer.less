@@ -1,0 +1,19 @@
+@import 'shared-variables.less';
+
+@ak-navigation-link-color: @ak-color-N500;
+@ak-navigation-selected-link-color: @ak-color-B500;
+
+.drawer {
+  position: absolute;
+  top: 0;
+  left: 60px; //TODO variable
+  width: 0;
+  overflow: hidden;
+  background: white;
+  height: 100%;
+  z-index: 1; //TODO move after container
+
+  &.open {
+    width: 300px;
+  }
+}

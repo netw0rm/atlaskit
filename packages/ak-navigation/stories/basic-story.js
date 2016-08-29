@@ -93,7 +93,14 @@ storiesOf(name, module)
         <ak-icon slot="global-create" glyph="create" />
         <ak-avatar src={userAvatar} slot="global-profile" />
         <ak-icon slot="global-help" glyph="help" />
+        <div is slot="global-search-drawer">
+          Search
+        </div>
+        <div is slot="global-create-drawer">
+          Create
+        </div>
         <NavigationLinks />
+
       </AkNavigation>
       <div is slot="content">
         <Lorem count="30" />

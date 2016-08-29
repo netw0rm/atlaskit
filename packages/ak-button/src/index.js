@@ -34,8 +34,9 @@ const TYPE_VALUES = [
   'button',
   'submit',
 ];
-const APPEARANCE = attributeValuesToEnumObject(APPEARANCE_VALUES);
-const TYPE = attributeValuesToEnumObject(TYPE_VALUES);
+
+export const APPEARANCE = attributeValuesToEnumObject(APPEARANCE_VALUES);
+export const TYPE = attributeValuesToEnumObject(TYPE_VALUES);
 
 const appearancePropertyValues = {
   attribute: 'appearance',
@@ -114,7 +115,14 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={e => e.preventDefault()}
         >
-          <slot className={classKeys.slot} />
+          <div className={classKeys.buttonContent}>
+            <span className={classKeys.beforeSlotWrapper}>
+              <slot name="before" className={classKeys.beforeSlot} />
+            </span>
+            <span className={classKeys.defaultSlotWrapper}>
+              <slot className={classKeys.defaultSlot} />
+            </span>
+          </div>
         </button>
       </div>
     );
@@ -123,8 +131,3 @@ const definition = {
 
 const AkButton = define('ak-button', definition);
 export default AkButton;
-
-export {
-  APPEARANCE,
-  TYPE,
-};

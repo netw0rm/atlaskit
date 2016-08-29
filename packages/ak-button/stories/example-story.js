@@ -2,17 +2,41 @@ import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkButtonTemplate, { APPEARANCE } from '../src/index';
 const { React, ReactDOM } = window;
-import AkButtonStates from './AkButtonStates';
+import buttonStatesExample from './AkButtonStates';
 import { name } from '../package.json';
+import IconTemplate from 'ak-icon';
 
 const AkButton = reactify(AkButtonTemplate, {
   React,
   ReactDOM,
 });
 
+const Icon = reactify(IconTemplate, {
+  React,
+  ReactDOM,
+});
+
+const GLYPHS = [
+  'calendar',
+  'create',
+  'question',
+  'person',
+  'page',
+];
+
+const AkButtonStates = buttonStatesExample({
+  React,
+  AkButton,
+  APPEARANCE,
+  Icon,
+  GLYPHS: [false].concat(GLYPHS),
+});
+
 storiesOf(name, module)
   .add('a standard ak-button', () => (
-    <AkButton>Button</AkButton>
+    <AkButton>
+      Button
+    </AkButton>
   ))
   .add('a primary ak-button', () => (
     <AkButton appearance={APPEARANCE.PRIMARY}>Primary Button</AkButton>
@@ -62,6 +86,40 @@ storiesOf(name, module)
   )
   .add('an ak-button that emits an action when it is clicked', () => (
     <AkButton id="myComponent" onClick={action('clicking the WebComponent')}>Button</AkButton>
+  ))
+  .add('an ak-button with icons', () => (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {
+        GLYPHS.map(glyph =>
+          (<div className="icons-container">
+              {<h1>{glyph}</h1>}
+              {[APPEARANCE.STANDARD, APPEARANCE.PRIMARY, APPEARANCE.SUBTLE]
+                .map(appearance => (
+                  <AkButton
+                    style={{ 'margin-right': '10px' }}
+                    onclick={action('clicking the WebComponent')}
+                    appearance={appearance}
+                  >
+                    <Icon slot="before" key={glyph} glyph={glyph} />
+                      Button
+                  </AkButton>
+                  )
+                )
+                .concat([
+                  <AkButton style={{ 'margin-right': '10px' }} selected>
+                    <Icon slot="before" key={glyph} glyph={glyph} />
+                    Button
+                  </AkButton>,
+                  <AkButton style={{ 'margin-right': '10px' }} disabled>
+                    <Icon slot="before" key={glyph} glyph={glyph} />
+                      Button
+                  </AkButton>,
+                ])
+              }
+          </div>)
+        )
+    }
+    </div>
   ))
   .add('a button that can change its attributes', () =>
     <AkButtonStates />

@@ -1,4 +1,3 @@
-/** @jsx vdom */
 import 'style!./tab-host.less';
 
 import { emit, vdom, define, prop } from 'skatejs';

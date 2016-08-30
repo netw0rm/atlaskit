@@ -1,141 +1,17 @@
-/** @jsx vdom */
 /* eslint no-underscore-dangle: 0 */
 import 'style!./host.less';
+import classNames from 'classnames';
 import debounce from 'debounce';
 import { vdom, define, prop, emit } from 'skatejs';
-import classNames from 'classnames';
-import keycode from 'keycode';
 import shadowStyles from './shadow.less';
 
+import * as helpers from './internal/tabs-helpers';
+import * as handlers from './internal/tabs-handlers';
 import * as events from './internal/events';
 import Tab from './index-tab';
 
-import {
-  labelsContainer,
-  buttonContainer,
-  tabLabel,
-} from './internal/symbols';
-
+import { buttonContainer, labelsContainer } from './internal/symbols';
 const resizeListener = Symbol();
-const focusSelectedOnRender = Symbol();
-
-/* Helpers */
-
-function getAllTabs(tabsEl) {
-  return Array.from(tabsEl.children).filter(el => el.label);
-}
-
-function getNextOrPrevTab(tabsEl, tab, isNext) {
-  const all = getAllTabs(tabsEl);
-  let index = all.indexOf(tab);
-
-  index = isNext ? index + 1 : index - 1;
-  if (index < 0) index = 0;
-  if (index > all.length - 1) index = all.length - 1;
-
-  return all[index];
-}
-
-function getNextTab(tabsEl, tab) {
-  return getNextOrPrevTab(tabsEl, tab, true);
-}
-
-function getPrevTab(tabsEl, tab) {
-  return getNextOrPrevTab(tabsEl, tab, false);
-}
-
-function getSelectedTab(tabsEl) {
-  const all = getAllTabs(tabsEl);
-  return all.length && all.filter(el => el.selected)[0] || null;
-}
-
-function getLabelForTab(tab) {
-  return tab[tabLabel];
-}
-
-/* Handlers */
-
-function labelMouseDownHandler(e) {
-  e.preventDefault(); // Prevent focus on the tab label.
-}
-
-function labelClickHandler(tab) {
-  return () => (tab.selected = true);
-}
-
-function labelKeydownHandler(tabsEl, tab) {
-  return e => {
-    let tabToSelect;
-    if (e.keyCode === keycode('left')) {
-      tabToSelect = getPrevTab(tabsEl, tab);
-    } else if (e.keyCode === keycode('right')) {
-      tabToSelect = getNextTab(tabsEl, tab);
-    }
-    if (tabToSelect) {
-      tabsEl[focusSelectedOnRender] = true;
-      tabToSelect.selected = true;
-    }
-  };
-}
-
-function calculateVisibleTabs(tabsEl) {
-  const tabLabelsContainer = tabsEl[labelsContainer];
-  const tabsButtonContainer = tabsEl[buttonContainer];
-  if (!tabLabelsContainer || !tabsButtonContainer) {
-    return [];
-  }
-
-  // Get the width of the <li> item containing each tab label element.
-  const allTabs = getAllTabs(tabsEl).filter(tab => tab[tabLabel]);
-
-  let widthRemaining = tabLabelsContainer.getBoundingClientRect().width;
-  const tabWidths = new Map();
-  allTabs.forEach(tab => {
-    tabWidths.set(tab, getLabelForTab(tab).getBoundingClientRect().width);
-  });
-
-  // If all the tabs fit, then just display them all.
-  let totalWidth = 0;
-  tabWidths.forEach((value) => (totalWidth += value));
-  if (totalWidth <= widthRemaining) {
-    return allTabs;
-  }
-
-  // Otherwise, we need to fit the tabs into the available space, and pull some into a dropdown
-  const visibleTabs = new Map();
-
-  // The dropdown trigger item needs to be displayed
-  widthRemaining -= tabsButtonContainer.getBoundingClientRect().width;
-
-  // The currently selected tab is always displayed
-  const selectedTab = getSelectedTab(tabsEl);
-  if (selectedTab) {
-    visibleTabs.set(selectedTab, true);
-    widthRemaining -= tabWidths.get(selectedTab);
-  }
-
-  // Then try to fit each tab in the remaining space, until one doesn't fit
-  let hasWidthRemaining = widthRemaining > 0;
-  for (let i = 0; i < allTabs.length && hasWidthRemaining; i++) {
-    const tab = allTabs[i];
-
-    if (!visibleTabs.has(tab)) {
-      const width = tabWidths.get(tab);
-
-      if (widthRemaining >= width) {
-        visibleTabs.set(tab, true);
-        widthRemaining -= width;
-        hasWidthRemaining = widthRemaining > 0;
-      } else {
-        hasWidthRemaining = false;
-      }
-    }
-  }
-
-  const visible = [];
-  visibleTabs.forEach((value, key) => (visible.push(key)));
-  return visible;
-}
 
 const definition = {
   created(elem) {
@@ -150,27 +26,29 @@ const definition = {
 
         // If the tab has been selected, we need to deselect all other tabs.
         if (e.detail.change.selected.newValue) {
-          getAllTabs(elem).filter(el => el !== tab).forEach(el => (el.selected = false));
+          helpers.getAllTabs(elem).filter(el => el !== tab).forEach(el => (el.selected = false));
         }
       }
 
       // Re-render if necessary.
-      const allTabs = getAllTabs(elem);
+      const allTabs = helpers.getAllTabs(elem);
       elem._selected = allTabs.map(el => el.selected);
       elem._labels = allTabs.map(el => el.label);
-      elem._visibleTabs = calculateVisibleTabs(elem);
+      elem._visibleTabs = helpers.calculateVisibleTabs(elem);
     });
   },
   attached(elem) {
     // Re-render if necessary when the window is resized.
-    elem[resizeListener] = debounce(() => (elem._visibleTabs = calculateVisibleTabs(elem)), 200);
+    elem[resizeListener] = debounce(
+      () => (elem._visibleTabs = helpers.calculateVisibleTabs(elem)), 200
+    );
     window.addEventListener('resize', elem[resizeListener]);
   },
   detached(elem) {
     window.removeEventListener('resize', elem[resizeListener]);
   },
   render(elem) {
-    const allTabs = getAllTabs(elem);
+    const allTabs = helpers.getAllTabs(elem);
     const hasOverflowingTabs = elem._visibleTabs.length < allTabs.length;
     const hasSingleTab = elem._visibleTabs.length === 1;
     const buttonClasses = classNames({
@@ -183,8 +61,8 @@ const definition = {
         <style>{shadowStyles.toString()}</style>
         <ul
           className={shadowStyles.locals.akTabLabels}
-          ref={el => (elem[labelsContainer] = el)}
           role="tablist"
+          ref={el => (elem[labelsContainer] = el)}
         >
           {allTabs && allTabs.map(
             tab => {
@@ -198,27 +76,16 @@ const definition = {
                 [shadowStyles.locals.akTabLabelHidden]: !isVisible,
                 [shadowStyles.locals.akTabLabelSingle]: isSingleTab,
               });
-              const ref = el => {
-                tab[tabLabel] = el;
-                if (tab.selected) {
-                  if (elem[focusSelectedOnRender]) {
-                    el.focus();
-                    elem[focusSelectedOnRender] = false;
-                  }
-                } else {
-                  el.blur(); // Remove focus on a label that is no longer selected.
-                }
-              };
               return (
                 <li
                   className={classes}
                   tabIndex={tabIndex}
-                  onkeydown={labelKeydownHandler(elem, tab)}
-                  onmousedown={labelMouseDownHandler}
-                  onclick={labelClickHandler(tab)}
+                  onkeydown={handlers.labelKeydownHandler(elem, tab)}
+                  onmousedown={handlers.labelMouseDownHandler}
+                  onclick={handlers.labelClickHandler(tab)}
                   aria-selected={ariaSelected}
                   role="tab"
-                  ref={ref}
+                  ref={handlers.labelRef(elem, tab)}
                 >
                   <span>{tab.label}</span>
                 </li>

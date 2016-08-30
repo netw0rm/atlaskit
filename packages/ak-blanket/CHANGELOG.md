@@ -1,5 +1,20 @@
-<a name="1.0.2"></a>
-## 1.0.2 (2016-08-25)
+<a name="1.3.0"></a>
+# 1.3.0 (2016-08-30)
+
+
+
+<a name="ak-blanket@1.2.0"></a>
+# ak-blanket@1.2.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
+
+
+
+<a name="ak-blanket@1.1.0"></a>
+# ak-blanket@1.1.0 (2016-08-26)
 
 
 
@@ -10,6 +25,11 @@
 ### Bug Fixes
 
 * **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

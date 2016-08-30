@@ -1,10 +1,40 @@
-<a name="2.1.2"></a>
-## 2.1.2 (2016-08-25)
+<a name="2.4.1"></a>
+## 2.4.1 (2016-08-30)
+
+
+
+<a name="ak-editor-icon@2.4.1"></a>
+## ak-editor-icon@2.4.1 (2016-08-29)
+
+
+
+<a name="ak-editor-icon@2.3.0"></a>
+# ak-editor-icon@2.3.0 (2016-08-29)
+
+
+### Bug Fixes
+
+* Use uid everywhere ([b118171](https://bitbucket.org/atlassian/atlaskit/commits/b118171))
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
+
+
+
+<a name="ak-editor-icon@2.2.0"></a>
+# ak-editor-icon@2.2.0 (2016-08-26)
 
 
 
 <a name="ak-editor-icon@2.1.2"></a>
 ## ak-editor-icon@2.1.2 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

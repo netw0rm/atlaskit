@@ -3,7 +3,6 @@ import cx from 'classnames';
 import styles from './index.less';
 import FontSelect from './font-select';
 import Option from './option';
-import Blanket from 'ak-blanket';
 
 const fonts = {
   normalText: 'Normal text',
@@ -14,7 +13,9 @@ const fonts = {
 };
 
 function toggle(elem) {
-  elem.dropdownOpen = !elem.dropdownOpen;
+  if (!elem.disabled || elem.dropdownOpen) {
+    elem.dropdownOpen = !elem.dropdownOpen;
+  }
 }
 
 function selectFont(elem) {
@@ -32,13 +33,9 @@ export default define('ak-editor-toolbar-block-type', {
     return (
       <div
         className={styles.locals.root}
-        on-ak-blanket-click={() => {
-          toggle(elem);
-        }}
         onSelectFont={selectFont(elem)}
       >
         <style>{styles.toString()}</style>
-        {elem.dropdownOpen ? <Blanket clickable /> : null}
         <FontSelect
           disabled={elem.disabled}
           className={styles.locals.fontSelect}

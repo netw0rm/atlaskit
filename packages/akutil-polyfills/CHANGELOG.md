@@ -1,5 +1,35 @@
-<a name="1.0.1"></a>
-## 1.0.1 (2016-08-25)
+<a name="2.2.0"></a>
+# 2.2.0 (2016-08-30)
+
+
+
+<a name="akutil-polyfills@2.1.0"></a>
+# akutil-polyfills@2.1.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
+
+
+
+<a name="akutil-polyfills@2.0.0"></a>
+# akutil-polyfills@2.0.0 (2016-08-26)
+
+
+### Code Refactoring
+
+* remove symbol polyfill ([9b01729](https://bitbucket.org/atlassian/atlaskit/commits/9b01729))
+
+
+### BREAKING CHANGES
+
+* remove the Symbol polyfill from the polyfills package and transform at runtime
+
+instead
+* remove the Symbol polyfill from the polyfills package and transform at runtime
+
+instead
 
 
 

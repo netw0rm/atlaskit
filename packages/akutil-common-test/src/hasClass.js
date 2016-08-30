@@ -5,8 +5,10 @@
  * @example @js const elem = document.querySelector('.fixture').firstChild;
  *  const elemIsHidden = hasClass(elem, 'hidden');
  */
-function hasClass(component, className) {
-  return Array.prototype.slice.call(component.classList).indexOf(className) > -1;
+export default function hasClass(component, ...classes) {
+  const componentClasses = component.classList;
+  return classes.reduce(
+    (acum, className) => acum && (Array.prototype.indexOf.call(componentClasses, className) > -1),
+    true
+  );
 }
-
-export default hasClass;

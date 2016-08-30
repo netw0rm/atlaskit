@@ -12,14 +12,11 @@ const expect = chai.expect;
 
 function setupComponent() {
   const component = new Component();
-  const componentHasShadowRoot = () => (getShadowRoot(component) !== null);
+  const componentHasShadowRoot = () => (getShadowRoot(component) || null);
 
   document.body.appendChild(component);
 
-  return waitUntil(componentHasShadowRoot).then(() => {
-    expect(componentHasShadowRoot()).to.be.true;
-    return component;
-  }).should.be.fulfilled;
+  return waitUntil(componentHasShadowRoot).then(() => component);
 }
 
 function tearDownComponent(component) {
@@ -31,7 +28,7 @@ describe('akutil-component-template', () => {
   let component;
   let shadowRoot;
 
-  beforeEach(() => setupComponent().then((newComponent) => {
+  beforeEach(() => setupComponent().then(newComponent => {
     component = newComponent;
     shadowRoot = getShadowRoot(component);
   }));

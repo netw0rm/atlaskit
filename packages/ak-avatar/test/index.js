@@ -28,17 +28,18 @@ const getPresence = (component) => (getShadowRoot(component).querySelector(prese
 const getImage = (component) => (getShadowRoot(component).querySelector('img'));
 
 // Helper functions for checking that certain elements are rendered
-const componentHasShadowRoot = (component) => (getShadowRoot(component) !== null);
+
 const imgIsRendered = (component) => (getImage(component) !== null);
 
 /* Creates a default avatar in a div, appends it to the body and returns a reference to both.
    Appending to the body ensures the component has been redered before we start the test */
 function setupAvatar() {
   const component = new AKAvatar();
+  const componentHasShadowRoot = () => (getShadowRoot(component) || null);
   component.src = '';
   document.body.appendChild(component);
   // We return a promise here so we can do more than just the default setting up
-  return waitUntil(() => componentHasShadowRoot(component));
+  return waitUntil(() => componentHasShadowRoot).then(() => component);
 }
 
 function tearDownAvatar(component) {
@@ -48,9 +49,7 @@ function tearDownAvatar(component) {
 describe('ak-avatar', () => {
   let component;
 
-  beforeEach(() => setupAvatar().then(() => {
-    component = document.body.querySelector('ak-avatar');
-  }));
+  beforeEach(() => setupAvatar().then(newComponent => (component = newComponent)));
   afterEach(() => tearDownAvatar(component));
 
   it('should be possible to create a component', () => {

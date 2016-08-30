@@ -1,6 +1,4 @@
-import { waitUntil } from 'akutil-common-test';
-import { symbols } from 'skatejs';
-const { shadowRoot } = symbols;
+import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -12,40 +10,39 @@ chai.should();
 
 const expect = chai.expect;
 
-let component;
+function setupComponent() {
+  const component = new Component();
+  const componentHasShadowRoot = () => (getShadowRoot(component) || null);
 
-const getShadowRoot = () => (component[shadowRoot]);
-const getParagraph = () => (getShadowRoot().querySelector('p'));
-
-function setUpComponent(done) {
-  const componentHasShadowRoot = () => (getShadowRoot() !== null);
-
-  component = new Component();
   document.body.appendChild(component);
 
-  waitUntil(componentHasShadowRoot).then(() => {
-    expect(componentHasShadowRoot()).to.be.true;
-  }).then(done);
+  return waitUntil(componentHasShadowRoot).then(() => component);
 }
 
-function tearDownComponent() {
+function tearDownComponent(component) {
   document.body.removeChild(component);
 }
 
 
 describe('akutil-component-template', () => {
-  beforeEach(setUpComponent);
-  afterEach(tearDownComponent);
+  let component;
+  let shadowRoot;
+
+  beforeEach(() => setupComponent().then(newComponent => {
+    component = newComponent;
+    shadowRoot = getShadowRoot(component);
+  }));
+  afterEach(() => tearDownComponent(component));
 
   it('should be possible to create a component', () => {
-    expect(component[shadowRoot].innerHTML).to.match(/My name is .+?!/);
+    expect(shadowRoot.innerHTML).to.match(/My name is .+?!/);
   });
 
   describe('name prop', () => {
     it('should modify the rendered name', () => {
       const newName = 'InigoMontoya';
       const expectedInnerHTML = `My name is ${newName}!`;
-      const paragraph = getParagraph();
+      const paragraph = shadowRoot.querySelector('p');
 
       const nameHasBeenModifiedCorrectly = () => (paragraph.innerHTML === expectedInnerHTML);
 

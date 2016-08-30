@@ -14,8 +14,10 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
+    "akutil-common-test": "^1.3.0",
     "jss": "^5.4.0",
-    "keycode": "^2.1.2"
+    "keycode": "^2.1.2",
+    "skatejs": "^1.2.4"
   },
   "repository": {
     "type": "git",

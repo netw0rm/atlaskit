@@ -112,7 +112,6 @@ export default define('ak-navigation', {
     shouldAnimate: prop.boolean(),
     width: prop.number({
       default: collapsedWidth,
-      attribute: true, //TODO: remove, this is for debugging
     }),
     open: prop.boolean({
       attribute: true,

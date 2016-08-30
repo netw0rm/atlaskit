@@ -1,65 +1,54 @@
 import 'style!./host.less';
-import { emit, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
+import { define, prop, vdom } from 'skatejs';
+import classNames from 'classnames';
+import { enumeration } from 'akutil-common';
 
-const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
-
+const APPEARANCE_ENUM = {
+  values: ['default', 'success', 'removed', 'inprogress', 'new', 'moved'],
+  missingDefault: 'default',
+  invalidDefault: 'default',
+};
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class Lozenge
  * @example @js import Lozenge from 'ak-lozenge';
  * const component = new Lozenge();
  */
-export default define('ak-lozenge', {
+const definition = {
   render(elem) {
+    const classes = classNames([shadowStyles.locals.lozenge, shadowStyles.locals[elem.appearance]]);
     return (
-      // JSX requires that there only be a single root element.
-      // Incremental DOM doesn't require this.
       <div>
-        {/* This is required for elements in the shadow root to be styled.
-           This is wrapped in the <div /> because you can't have more than one
-           root element.
-        */}
         <style>{shadowStyles.toString()}</style>
-        <Paragraph className={shadowStyles.locals.myClassName}>My name is {elem.name}!</Paragraph>
+        <div class={classes} bold={elem.bold}><slot></slot></div>
       </div>
     );
   },
   props: {
     /**
-     * @description The name of the Lozenge element.
-     * @memberof Lozenge
+     * @description Affects the visual style of the badge.
+     * Allowed values are: 'default', 'success', 'removed', 'inprogress', 'new', 'moved'.
+     * @memberof AkLozenge
      * @instance
      * @type {string}
-     * @default Lozenge
+     * @default default
      */
-    name: {
-      default: 'Lozenge',
-    },
-  },
-  prototype: {
+    appearance: enumeration(APPEARANCE_ENUM)({
+      attribute: true,
+    }),
     /**
-     * @description Fire an event containing the name of the element.
-     * @memberof Lozenge
-     * @function
+     * @description Toggles the bolder appearance.
+     * @memberof AkLozenge
      * @instance
-     * @fires Lozenge#announce-name
-     * @return {Lozenge} The Lozenge element.
-     * @example @js component.announce(); // Fires the announce-name event.
+     * @type {boolean}
+     * @default false
      */
-    announce() {
-      /**
-       * @event Lozenge#announce-name
-       * @memberof Lozenge
-       * @description Fired when the `announce` method is called.
-       * @property {String} detail.name The name of the component.
-       */
-      emit(this, 'announce-name', {
-        detail: {
-          name: this.name,
-        },
-      });
-      return this;
-    },
+    bold: prop.boolean({
+      attribute: true,
+      default: false,
+    }),
   },
-});
+};
+
+export default define('ak-lozenge', definition);

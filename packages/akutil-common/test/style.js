@@ -34,7 +34,7 @@ describe('style', () => {
     );
   });
 
-  describe.only('::slotted', () => {
+  describe('::slotted', () => {
     it('scoped slots', done => {
       const span = document.createElement('span');
       elem.appendChild(span);

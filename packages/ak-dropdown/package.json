@@ -1,9 +1,10 @@
 {
   "name": "ak-dropdown",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "description": "ak-dropdown webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-dropdown"
   },

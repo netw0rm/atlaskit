@@ -5,7 +5,7 @@ const autoprefixer = require('autoprefixer');
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': './src/index.js',
+    'dist/bundle.js': `./${pkg['ak:webpack:raw']}`,
   },
   output: {
     path: './',
@@ -29,7 +29,7 @@ const standardConfig = {
         { // Support react/jsx in stories
           loader: 'babel-loader',
           test: /\.jsx?$/,
-          include: /stories\/.*\.jsx?$/,
+          include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
           query: {
             presets: [
               'es2015',

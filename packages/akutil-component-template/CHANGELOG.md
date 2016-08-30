@@ -1,5 +1,15 @@
-<a name="3.2.0"></a>
-# 3.2.0 (2016-08-26)
+<a name="3.4.0"></a>
+# 3.4.0 (2016-08-30)
+
+
+
+<a name="akutil-component-template@3.3.0"></a>
+# akutil-component-template@3.3.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
 
 
 

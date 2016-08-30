@@ -1,10 +1,17 @@
-<a name="1.0.0"></a>
-# 1.0.0 (2016-08-26)
+<a name="1.2.0"></a>
+# 1.2.0 (2016-08-30)
+
+
+
+<a name="akutil-common-test@1.1.0"></a>
+# akutil-common-test@1.1.0 (2016-08-29)
 
 
 ### Features
 
 * Add afterMutations to akutil-common-test ([16cd287](https://bitbucket.org/atlassian/atlaskit/commits/16cd287))
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
+* **component:** Added waitUntil function to akutil-common-test ([3b04f03](https://bitbucket.org/atlassian/atlaskit/commits/3b04f03))
 
 
 

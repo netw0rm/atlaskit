@@ -160,8 +160,6 @@ You can also run all the Browserstack tests with Docker (as they are run in the 
 BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... docker-compose -f docker-compose-browserstack.yml up
 ```
 
-Thanks to Browserstack for providing AtlasKit with an open source license!
-
 ### Integration tests
 
 > Hint: [docker-compose](https://docs.docker.com/compose/) is needed for this.
@@ -177,11 +175,10 @@ You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome`
 > Hint: You can (re-)start the Chrome within the VNC container via: Right click > Applications > Shells > Bash > $ x-www-browser --user-data-dir=. and then opening http://dev:9001
 
 ## Follow code style guidelines
-We are adhering to the [Airbnb](https://github.com/airbnb/javascript) javascript linting rules, which can be quite strict. Eslint will automatically run when attempting to commit, but can also run at any time using:
+We are adhering to the [Airbnb](https://github.com/airbnb/javascript) javascript linting rules, which can be quite strict.
 
-```
-npm run lint
-```
+Eslint will automatically run when attempting to commit, but can also run at any time using: `npm run lint`
+
 *Note:* a lot of linting issues can be fixed automatically by passing the --fix flag to eslint: `npm run lint -- --fix`
 
 ### Modifying ESLint rules
@@ -236,8 +233,6 @@ Releasing components is completely automated. The process of releasing will begi
 * Run `npm shrinkwrap`
 * Create a PR
 
-### Update the documentation (reminder)
-
 ## Make changes to the Pipelines build
 AtlasKit uses Bitbucket Pipelines for it's continuous integration. The build scripts are defined in `bitbucket-pipelines.yml`.
 
@@ -248,4 +243,4 @@ Bitbucket pipelines works using a Docker image. This contains the initial setup 
 * Create the new Docker tag: `docker tag <IMAGE_ID> <YOUR-USER>/atlaskit:latest`
 * Push new image to Dockerhub: `docker push <YOUR-USER>/atlaskit`
 
-**Make sure you also update the `bitbucket-pipelines.yml` file with the name of your new image!**
+**Note:** Make sure you also update the `bitbucket-pipelines.yml` file with the name of your new image!

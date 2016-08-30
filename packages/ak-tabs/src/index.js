@@ -8,6 +8,7 @@ import shadowStyles from './shadow.less';
 import * as helpers from './internal/tabs-helpers';
 import * as handlers from './internal/tabs-handlers';
 import * as events from './internal/events';
+import * as i18n from './internal/i18n';
 import Tab from './index-tab';
 
 import { buttonContainer, labelsContainer } from './internal/symbols';
@@ -99,7 +100,7 @@ const definition = {
                   elem._dropdownOpen = !elem._dropdownOpen;
                 }}
               >
-                <span>More</span>
+                <span>{i18n.more}</span>
               </a>
             </li>
           )

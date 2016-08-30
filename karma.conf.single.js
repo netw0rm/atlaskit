@@ -6,13 +6,11 @@ module.exports = (config) => {
 
   Object.assign(config, {
     files: [
-      'test/{*,**/*}.js',
-      { pattern: 'src/{*,**/*}.js', included: false },
+      'test/**/*.js',
     ],
 
     preprocessors: {
-      'src/{*,**/*}.js': ['webpack', 'sourcemap'],
-      'test/{*,**/*}.js': ['webpack', 'sourcemap'],
+      'test/**/*.js': ['webpack', 'sourcemap'],
     },
   });
 

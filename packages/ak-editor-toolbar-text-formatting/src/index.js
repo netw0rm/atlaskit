@@ -23,24 +23,30 @@ export default define('ak-editor-toolbar-text-formatting', {
     return (
       <div className={shadowStyles.locals.root}>
         <style>{shadowStyles.toString()}</style>
-        <ToggleButton
-          name="bold"
-          emit={boundEmit}
-          active={elem.boldActive}
-          disabled={elem.boldDisabled}
-        />
-        <ToggleButton
-          name="italic"
-          emit={boundEmit}
-          active={elem.italicActive}
-          disabled={elem.italicDisabled}
-        />
-        <ToggleButton
-          name="underline"
-          emit={boundEmit}
-          active={elem.underlineActive}
-          disabled={elem.underlineDisabled}
-        />
+        {elem.boldHidden ? null :
+          <ToggleButton
+            name="bold"
+            emit={boundEmit}
+            active={elem.boldActive}
+            disabled={elem.boldDisabled}
+          />
+        }
+        {elem.italicHidden ? null :
+          <ToggleButton
+            name="italic"
+            emit={boundEmit}
+            active={elem.italicActive}
+            disabled={elem.italicDisabled}
+          />
+        }
+        {elem.underlineHidden ? null :
+          <ToggleButton
+            name="underline"
+            emit={boundEmit}
+            active={elem.underlineActive}
+            disabled={elem.underlineDisabled}
+          />
+        }
       </div>
     );
   },
@@ -51,5 +57,8 @@ export default define('ak-editor-toolbar-text-formatting', {
     boldDisabled: prop.boolean({ attribute: true }),
     italicDisabled: prop.boolean({ attribute: true }),
     underlineDisabled: prop.boolean({ attribute: true }),
+    boldHidden: prop.boolean({ attribute: true }),
+    italicHidden: prop.boolean({ attribute: true }),
+    underlineHidden: prop.boolean({ attribute: true }),
   },
 });

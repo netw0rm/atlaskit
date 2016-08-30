@@ -1,5 +1,16 @@
-<a name="2.2.1"></a>
-## 2.2.1 (2016-08-25)
+<a name="2.4.0"></a>
+# 2.4.0 (2016-08-30)
+
+
+
+<a name="akutil-common@2.3.0"></a>
+# akutil-common@2.3.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
+* **component:** Added waitUntil function to akutil-common-test ([3b04f03](https://bitbucket.org/atlassian/atlaskit/commits/3b04f03))
 
 
 

@@ -1,10 +1,30 @@
-<a name="70.0.1"></a>
-## 70.0.1 (2016-08-25)
+<a name="70.3.0"></a>
+# 70.3.0 (2016-08-30)
+
+
+
+<a name="ak-inline-dialog@70.2.0"></a>
+# ak-inline-dialog@70.2.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
+
+
+
+<a name="ak-inline-dialog@70.1.0"></a>
+# ak-inline-dialog@70.1.0 (2016-08-26)
 
 
 
 <a name="ak-inline-dialog@70.0.1"></a>
 ## ak-inline-dialog@70.0.1 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

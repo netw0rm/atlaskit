@@ -11,3 +11,9 @@ if [ "" == "$changed_files" ]; then
     echo "...no changes found that warrant testing. Done."
     exit 1
 fi
+
+author=$(git log -1 --pretty=%ae)
+if [ "$BOT_ACCOUNT_EMAIL" == "$author" ]; then
+    echo "...commit was made by bot account. Done."
+    exit 1
+fi

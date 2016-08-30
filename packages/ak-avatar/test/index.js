@@ -1,7 +1,6 @@
-import { waitUntil } from 'akutil-common-test';
+import { waitUntil, hasClass, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { symbols } from 'skatejs';
 import { name } from '../package.json';
 import AKAvatar from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
@@ -23,55 +22,54 @@ const avatarSizes = {
 const presenceClass = `.${shadowStyles.locals.presence}`;
 const imgWrapperClass = `.${shadowStyles.locals.imgWrapper}`;
 
-let component;
-let container;
-
 // Helper functions for getting various parts of the shadowDOM
-const getShadowRoot = () => (component[symbols.shadowRoot]);
-const getImgWrapper = () => (getShadowRoot().querySelector(imgWrapperClass));
-const getPresence = () => (getShadowRoot().querySelector(presenceClass));
-const getImage = () => (getShadowRoot().querySelector('img'));
+const getImgWrapper = (component) => (getShadowRoot(component).querySelector(imgWrapperClass));
+const getPresence = (component) => (getShadowRoot(component).querySelector(presenceClass));
+const getImage = (component) => (getShadowRoot(component).querySelector('img'));
 
 // Helper functions for checking that certain elements are rendered
-const componentHasShadowRoot = () => (getShadowRoot() !== null);
-const imgIsRendered = () => (getImage() !== null);
+
+const imgIsRendered = (component) => !!getImage(component);
 
 /* Creates a default avatar in a div, appends it to the body and returns a reference to both.
    Appending to the body ensures the component has been redered before we start the test */
 function setupAvatar() {
-  component = new AKAvatar();
-  container = document.createElement('div');
+  const component = new AKAvatar();
+  const componentHasShadowRoot = () => !!getShadowRoot(component);
   component.src = '';
-  container.appendChild(component);
-  document.body.appendChild(container);
+  document.body.appendChild(component);
   // We return a promise here so we can do more than just the default setting up
-  return waitUntil(componentHasShadowRoot);
+  return waitUntil(() => componentHasShadowRoot).then(() => component);
 }
 
-function tearDownAvatar() {
-  document.body.removeChild(container);
+function tearDownAvatar(component) {
+  document.body.removeChild(component);
 }
 
 describe('ak-avatar', () => {
+  let component;
+
+  beforeEach(() => setupAvatar().then(newComponent => (component = newComponent)));
+  afterEach(() => tearDownAvatar(component));
+
   it('should be possible to create a component', () => {
+    let newComponent;
+
     expect(() => {
-      component = new AKAvatar();
+      newComponent = new AKAvatar();
     }).to.not.throw(Error);
-    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
+    expect(newComponent.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   it('should have all the expected default properties after creation', () => {
-    component = new AKAvatar();
+    const newComponent = new AKAvatar();
 
-    expect(component.size).to.equal(defaultSize, 'size');
-    expect(component.presence).to.equal(defaultPresence, 'presence');
-    expect(component.label).to.equal(defaultLabel, 'label');
+    expect(newComponent.size).to.equal(defaultSize, 'size');
+    expect(newComponent.presence).to.equal(defaultPresence, 'presence');
+    expect(newComponent.label).to.equal(defaultLabel, 'label');
   });
 
   describe('size property', () => {
-    beforeEach(setupAvatar);
-    afterEach(tearDownAvatar);
-
     Object.keys(avatarSizes).forEach((size) => {
       it(`should accept all valid values (size = ${size})`, () => {
         const sizeAttributeIsSet = () => (component.getAttribute('size') === size);
@@ -109,11 +107,8 @@ describe('ak-avatar', () => {
   });
 
   describe('label property', () => {
-    beforeEach(setupAvatar);
-    afterEach(tearDownAvatar);
-
     it('should set an aria-label on the imgWrapper', () => {
-      const imgWrapper = getImgWrapper();
+      const imgWrapper = getImgWrapper(component);
       const label = 'This is an avatar!';
       const componentHasCorrectLabel = () => (imgWrapper.getAttribute('aria-label') === label);
 
@@ -123,15 +118,13 @@ describe('ak-avatar', () => {
     });
 
     it('should set the alt of the internal img', () => {
-      let img;
       const label = 'This is an avatar!';
-      const imgHasCorrectLabel = () => (img.getAttribute('alt') === label);
+      const imgHasCorrectLabel = () => (getImage(component).getAttribute('alt') === label);
 
       // set the src so that we have a rendered img
       component.src = oneByOnePixel;
 
-      waitUntil(imgIsRendered).then(() => {
-        img = getImage();
+      return waitUntil(() => imgIsRendered(component)).then(() => {
         component.label = label;
 
         return waitUntil(imgHasCorrectLabel);
@@ -140,11 +133,8 @@ describe('ak-avatar', () => {
   });
 
   describe('presence property', () => {
-    beforeEach(setupAvatar);
-    afterEach(tearDownAvatar);
-
     it('should not be visible when set to "none"', () => {
-      const presence = getPresence();
+      const presence = getPresence(component);
       const presenceIsNotVisible = () => (getComputedStyle(presence).display === 'none');
 
       component.presence = 'none';
@@ -153,7 +143,7 @@ describe('ak-avatar', () => {
     });
 
     it('should be visible when presence is set to \'online\'', () => {
-      const presence = getPresence();
+      const presence = getPresence(component);
       const presenceIsVisible = () => (getComputedStyle(presence).display !== 'none');
 
       component.presence = 'online';
@@ -162,7 +152,7 @@ describe('ak-avatar', () => {
     });
 
     it('should default to none when set to an invalid value', () => {
-      const presence = getPresence();
+      const presence = getPresence(component);
       const presenceIsNotVisible = () => (getComputedStyle(presence).display === 'none');
 
       component.presence = 'spooky';
@@ -172,44 +162,16 @@ describe('ak-avatar', () => {
   });
 
   describe('src property', () => {
-    const loadedClass = shadowStyles.locals.loaded;
-    beforeEach(setupAvatar);
-    afterEach(tearDownAvatar);
-
     it('should set the src property on the internal img', () => {
-      const srcPropertyIsSet = () => (getImage().src === oneByOnePixel);
+      const srcPropertyIsSet = () => (getImage(component).src === oneByOnePixel);
 
       component.src = oneByOnePixel;
 
       return waitUntil(srcPropertyIsSet).should.be.fulfilled;
     });
 
-    it('should not add the .loaded class if img fails to load', () => {
-      const invalidSrc = 'notavalidURL';
-      const hasLoadedClass = () => (Array.prototype.slice.call(getImgWrapper().classList).indexOf(loadedClass) > -1); // eslint-disable-line max-len
-
-      // we'll load an image first so that we can be sure we arent just seeing default behaviour
-      component.src = oneByOnePixel;
-
-      return waitUntil(hasLoadedClass).then(() => {
-        // now we set the src to something invalid
-        component.src = invalidSrc;
-        // waitUntil we no longer have the loaded class
-        return waitUntil(() => (!hasLoadedClass()));
-      }).should.be.fulfilled;
-    });
-
-    it('should add the .loaded class if img loads successfully', () => {
-      const imgWrapper = getImgWrapper();
-      const hasLoadedClass = () => (Array.prototype.slice.call(imgWrapper.classList).indexOf(loadedClass) > -1); // eslint-disable-line max-len
-
-      component.src = oneByOnePixel;
-
-      return waitUntil(hasLoadedClass).should.be.fulfilled;
-    });
-
     it('should render an img tag when src is set', () => {
-      const imgRendered = () => (getImage() !== null);
+      const imgRendered = () => !!getImage(component);
 
       component.src = oneByOnePixel;
 
@@ -217,7 +179,7 @@ describe('ak-avatar', () => {
     });
 
     it('should not render an img tag when src is not set', () => {
-      const imgRendered = () => (getImage() !== null);
+      const imgRendered = () => !!getImage(component);
 
       // We'll render an image first to make sure that we are actually changing the img and not
       // relying on defaults
@@ -234,15 +196,13 @@ describe('ak-avatar', () => {
   describe('loading behaviour', () => {
     let imgWrapper;
     const loadedClass = shadowStyles.locals.loaded;
-    // const imgRendered = () => (getImage() !== null);
 
     beforeEach(() => setupAvatar().then(() => {
-      imgWrapper = getImgWrapper();
+      imgWrapper = getImgWrapper(component);
     }));
-    afterEach(tearDownAvatar);
 
     it('should apply .loaded class when img loads successfully', () => {
-      const loadedClassRendered = () => (Array.prototype.slice.call(imgWrapper.classList).indexOf(loadedClass) > -1); // eslint-disable-line max-len
+      const loadedClassRendered = () => hasClass(imgWrapper, loadedClass);
 
       component.src = oneByOnePixel;
 
@@ -254,7 +214,7 @@ describe('ak-avatar', () => {
     });
 
     it('should not apply .loaded class when img does not load successfully', () => {
-      const loadedClassRendered = () => (Array.prototype.slice.call(imgWrapper.classList).indexOf(loadedClass) > -1); // eslint-disable-line max-len
+      const loadedClassRendered = () => hasClass(imgWrapper, loadedClass);
 
       // Again, we set up a successfully loaded image (that should have the .loaded class)
       component.src = oneByOnePixel;

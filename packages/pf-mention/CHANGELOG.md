@@ -1,10 +1,40 @@
-<a name="1.2.8"></a>
-## 1.2.8 (2016-08-25)
+<a name="1.5.1"></a>
+## 1.5.1 (2016-08-30)
+
+
+
+<a name="pf-mention@1.5.1"></a>
+## pf-mention@1.5.1 (2016-08-29)
+
+
+
+<a name="pf-mention@1.4.0"></a>
+# pf-mention@1.4.0 (2016-08-29)
+
+
+### Bug Fixes
+
+* Use uid everywhere ([b118171](https://bitbucket.org/atlassian/atlaskit/commits/b118171))
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
+
+
+
+<a name="pf-mention@1.3.0"></a>
+# pf-mention@1.3.0 (2016-08-26)
 
 
 
 <a name="pf-mention@1.2.8"></a>
 ## pf-mention@1.2.8 (2016-08-25)
+
+
+### Features
+
+* Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 
 

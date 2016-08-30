@@ -25,13 +25,13 @@ export default define('ak-editor-toolbar-lists', {
       <div className={shadowStyles.locals.root}>
         <style>{shadowStyles.toString()}</style>
         <ToggleButton
-          name="numberlist"
+          name="number-list"
           emit={boundEmit}
           active={elem.numberlistActive}
           disabled={elem.numberlistDisabled}
         />
         <ToggleButton
-          name="bulletlist"
+          name="bullet-list"
           emit={boundEmit}
           active={elem.bulletlistActive}
           disabled={elem.bulletlistDisabled}

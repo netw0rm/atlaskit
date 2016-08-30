@@ -13,7 +13,7 @@ if [ "" == "$changed_files" ]; then
 fi
 
 author=$(git log -1 --pretty=%ae)
-if [ "aui-team@atlassian.com" == "$author" ]; then
+if [ "$BOT_ACCOUNT_EMAIL" == "$author" ]; then
     echo "...commit was made by bot account. Done."
     exit 1
 fi

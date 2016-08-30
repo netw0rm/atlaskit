@@ -34,15 +34,32 @@ describe('style', () => {
     );
   });
 
-  it('::slotted', done => {
-    const span = document.createElement('span');
-    elem.appendChild(span);
-    afterMutations(
-      () => expect(window.getComputedStyle(span).color).to.equal('rgb(0, 0, 0)'),
-      () => (elem.css = { '::slotted(*)': { color: 'blue' } }),
-      () => expect(window.getComputedStyle(span).color).to.equal('rgb(0, 0, 255)'),
-      done
-    );
+  describe.only('::slotted', () => {
+    it('scoped slots', done => {
+      const span = document.createElement('span');
+      elem.appendChild(span);
+      afterMutations(
+        () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+        () => (elem.css = { '::slotted(*)': { display: 'none' } }),
+        () => expect(window.getComputedStyle(span).display).to.equal('none'),
+        done
+      );
+    });
+
+    // This is only necessary for polyfilled slots. We need to make sure that
+    // styles only target slots within the current, polyfilled shadow root.
+    it('slots outside of the shaow tree', done => {
+      const slot = document.createElement('slot');
+      const span = document.createElement('span');
+      span.appendChild(slot);
+      elem.appendChild(span);
+      afterMutations(
+        () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+        () => (elem.css = { '::slotted(*)': { display: 'none' } }),
+        () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+        done
+      );
+    });
   });
 
   it('classes', done => {

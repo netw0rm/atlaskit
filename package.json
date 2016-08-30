@@ -82,7 +82,7 @@
     "npm": ">=3.8",
     "node": ">=6.1"
   },
-  "homepage": "http://aui.atlassian.com",
+  "homepage": "https://aui-cdn.atlassian.com/atlaskit/registry/",
   "keywords": [
     "atlassian",
     "components",
@@ -110,8 +110,7 @@
     "cucumber/single": "./build/bin/cucumber.single.sh",
     "dist": "./node_modules/.bin/lerna run prepublish",
     "docs/single": "./build/bin/docs.single.sh",
-    "postinstall": "./node_modules/.bin/lerna bootstrap && node ./build/bin/pre-commit.install.js && validate-commit-msg && npm run lerna/link",
-    "lerna/link": "./build/bin/no.js.npm.link.sh",
+    "postinstall": "./build/bin/postinstall.sh",
     "lint": "eslint --format 'node_modules/eslint-friendly-formatter' . --ext .js,.jsx",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "prepublish/single": "./build/bin/prepublish.single.sh",

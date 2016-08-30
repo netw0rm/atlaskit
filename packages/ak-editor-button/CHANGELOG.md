@@ -1,5 +1,15 @@
-<a name="2.1.0"></a>
-# 2.1.0 (2016-08-26)
+<a name="2.3.0"></a>
+# 2.3.0 (2016-08-30)
+
+
+
+<a name="ak-editor-button@2.2.0"></a>
+# ak-editor-button@2.2.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
 
 
 

@@ -1,5 +1,15 @@
-<a name="70.1.0"></a>
-# 70.1.0 (2016-08-26)
+<a name="70.3.0"></a>
+# 70.3.0 (2016-08-30)
+
+
+
+<a name="ak-inline-dialog@70.2.0"></a>
+# ak-inline-dialog@70.2.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
 
 
 

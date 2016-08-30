@@ -5,7 +5,7 @@ const autoprefixer = require('autoprefixer');
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': './src/index.js',
+    'dist/bundle.js': `./${pkg['ak:webpack:raw']}`,
   },
   output: {
     path: './',

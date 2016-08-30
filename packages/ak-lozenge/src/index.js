@@ -19,10 +19,10 @@ const definition = {
   render(elem) {
     const classes = classNames([shadowStyles.locals.lozenge, shadowStyles.locals[elem.appearance]]);
     return (
-      <div>
+      <span className={shadowStyles.locals.wrapper}>
         <style>{shadowStyles.toString()}</style>
-        <div class={classes} bold={elem.bold}><slot></slot></div>
-      </div>
+        <span class={classes} bold={elem.bold}><slot></slot></span>
+      </span>
     );
   },
   props: {

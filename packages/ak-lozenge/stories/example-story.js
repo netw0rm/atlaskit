@@ -1,33 +1,52 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import WebComponent from '../src/index';
+import AkLozenge from '../src/index';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
+import hostStyles from 'style!./../src/host.less';
 
-const Component = reactify(WebComponent, {
+const Lozenge = reactify(AkLozenge, {
   React,
   ReactDOM,
 });
+const lozengeClass = hostStyles.akLozenge;
 
 storiesOf(name, module)
-  .add('a simple ak-lozenge', () => (
-    <Component />
+  .add('standard and bold lozenges', () => (
+    <div>
+      <h2>Standard lozenges</h2>
+      <p><Lozenge className={lozengeClass}>Default</Lozenge></p>
+      <p><Lozenge className={lozengeClass} appearance="success">Success</Lozenge></p>
+      <p><Lozenge className={lozengeClass} appearance="removed">removed</Lozenge></p>
+      <p><Lozenge className={lozengeClass} appearance="inprogress">in progress</Lozenge></p>
+      <p><Lozenge className={lozengeClass} appearance="new">new</Lozenge></p>
+      <p><Lozenge className={lozengeClass} appearance="moved">moved</Lozenge></p>
+      <h2>Bold lozenges</h2>
+      <p><Lozenge className={lozengeClass} bold>Default</Lozenge></p>
+      <p><Lozenge className={lozengeClass} bold appearance="success">Success</Lozenge></p>
+      <p><Lozenge className={lozengeClass} bold appearance="removed">removed</Lozenge></p>
+      <p><Lozenge className={lozengeClass} bold appearance="inprogress">in progress</Lozenge></p>
+      <p><Lozenge className={lozengeClass} bold appearance="new">new</Lozenge></p>
+      <p><Lozenge className={lozengeClass} bold appearance="moved">moved</Lozenge></p>
+    </div>
   ))
-  .add('a simple ak-lozenge with a name', () => (
-    <Component appearance="removed" />
+  .add('baseline alignment', () => (
+    <div>
+      <h1>heading <Lozenge className={lozengeClass} bold appearance="new">lozenge</Lozenge></h1>
+      <p>Content <Lozenge className={lozengeClass} bold appearance="new">lozenge</Lozenge>.</p>
+    </div>
   ))
-  .add('an ak-lozenge that emits an action when it is clicked', () => (
-    <Component appearance="removed" bold />
-  ))
-  .addMonitored('an ak-lozenge with monitored performance', () => (
-    // Use this to add a story that has a little fps/memory gauge that allows you
-    // to monitor performance whilst developing
-    <Component />
-  ), () => {
-    // This is where the actual work is done - anything in here will be monitored by the stats
-    // view and displayed, so this is where you want to do your animation work, etc.
-    const x = Math.random() * 1000000;
-    for (let i = 0; i < x; i++) {
-      Math.random(); // burn some CPU cycles
-    }
-  });
+  .add('truncation when too wide', () => (
+    <div>
+      <p>
+        <Lozenge className={lozengeClass} appearance="success">
+          very wide text which truncates
+        </Lozenge>
+      </p>
+      <p>
+        <Lozenge className={lozengeClass} appearance="success" bold>
+          very wide text which truncates
+        </Lozenge>
+      </p>
+    </div>
+  ));

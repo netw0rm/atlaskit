@@ -20,8 +20,8 @@ pipelines:
             - ./build/bin/prep_for_release.sh
             - npm run release
             - npm run release/changelog
-            - npm run release/announce
             - npm run release/registry
+            - npm run release/announce
   default:
     - step:
         script:

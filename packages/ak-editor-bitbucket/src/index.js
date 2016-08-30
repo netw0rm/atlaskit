@@ -11,6 +11,7 @@ import HyperLink from 'ak-editor-hyperlink-edit';
 import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
+import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
 import { Schema } from 'prosemirror/dist/model';
 import { schema } from './schema';
 import { buildKeymap } from './keymap';
@@ -37,9 +38,10 @@ const $canChangeBlockType = '__canChangeBlockType__';
 const $strongActive = '__strongActive__';
 const $emActive = '__emActive__';
 const $underlineActive = '__underlineActive__';
-const $textFormattingDisabled = '__textFormattingDisabled__';
+const $canChangeTextFormatting = '__canChangeTextFormatting__';
 const $textFormattingPlugin = '__textFormattingPlugin__';
 const $hyperLinkText = '__hyperLinkText__';
+const $canLinkHyperlink = '__canLinkHyperlink__';
 const $selectedFont = '__selectedFont__';
 const $blockTypePlugin = '__blockTypePlugin__';
 const $listsPlugin = '__listsPlugin__';
@@ -85,6 +87,15 @@ function selectFont(blockTypePlugin) {
 function toggleMark(textFormattingPlugin, name) {
   return () => {
     textFormattingPlugin.toggleMark(name);
+  };
+}
+
+function addHyperLink(hyperLinkPlugin) {
+  return (event) => {
+    const href = event.detail.value;
+    hyperLinkPlugin.addLink({
+      href,
+    });
   };
 }
 
@@ -140,13 +151,18 @@ export default define('ak-editor-bitbucket', {
             boldActive={elem[$strongActive]}
             italicActive={elem[$emActive]}
             underlineActive={elem[$underlineActive]}
-            boldDisabled={elem[$textFormattingDisabled]}
-            italicDisabled={elem[$textFormattingDisabled]}
-            underlineDisabled={elem[$textFormattingDisabled]}
+            boldDisabled={!elem[$canChangeTextFormatting]}
+            italicDisabled={!elem[$canChangeTextFormatting]}
+            underlineDisabled={!elem[$canChangeTextFormatting]}
             underlineHidden
             on-toggle-bold={toggleMark(elem[$textFormattingPlugin], 'strong')}
             on-toggle-italic={toggleMark(elem[$textFormattingPlugin], 'em')}
             on-toggle-underline={toggleMark(elem[$textFormattingPlugin], 'underline')}
+          />
+          <ToolbarHyperlink
+            active={elem[$hyperLinkActive]}
+            disabled={!elem[$canLinkHyperlink]}
+            onSave={addHyperLink(elem[$hyperLinkPlugin])}
           />
           <ToolbarLists
             bulletlistActive={elem[$bulletListActive]}
@@ -199,11 +215,12 @@ export default define('ak-editor-bitbucket', {
     [$strongActive]: prop.boolean(),
     [$emActive]: prop.boolean(),
     [$underlineActive]: prop.boolean(),
-    [$textFormattingDisabled]: prop.boolean(),
+    [$canChangeTextFormatting]: prop.boolean(),
     [$hyperLinkText]: prop.string(),
     [$selectedFont]: prop.string({ default: 'normalText' }),
     [$hyperLinkElement]: {},
     [$hyperLinkActive]: prop.boolean(),
+    [$canLinkHyperlink]: prop.boolean(),
     [$bulletListActive]: prop.boolean(),
     [$numberListActive]: prop.boolean(),
   },
@@ -267,6 +284,7 @@ export default define('ak-editor-bitbucket', {
               const hyperLinkPlugin = new HyperLinkPlugin(proseMirrorInstance);
 
               hyperLinkPlugin.onChange(state => {
+                elem[$canLinkHyperlink] = state.enabled;
                 elem[$hyperLinkActive] = state.active;
                 elem[$hyperLinkElement] = state.element;
                 elem[$hyperLinkText] = state.text;
@@ -328,7 +346,7 @@ export default define('ak-editor-bitbucket', {
                 elem[$strongActive] = state.strongActive;
                 elem[$emActive] = state.emActive;
                 elem[$underlineActive] = state.underlineActive;
-                elem[$textFormattingDisabled] = state.enabled;
+                elem[$canChangeTextFormatting] = !state.enabled;
               });
 
               elem[$textFormattingPlugin] = textFormattingPlugin;

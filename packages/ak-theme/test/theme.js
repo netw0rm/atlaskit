@@ -1,8 +1,6 @@
 import { afterMutations } from 'akutil-common-test';
 import Component from '..';
 
-const { expect } = window.chai;
-
 describe('ak-theme', () => {
   let component;
 
@@ -12,11 +10,12 @@ describe('ak-theme', () => {
     afterMutations(done);
   });
 
-  afterEach(() => {
+  afterEach((done) => {
     document.body.removeChild(component);
+    afterMutations(done);
   });
 
   it('should be possible to create a component', () => {
-    expect(component).to.not.be.visible;
+    expect(window.getComputedStyle(component).display).to.equal('none');
   });
 });

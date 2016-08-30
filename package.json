@@ -82,7 +82,7 @@
     "npm": ">=3.8",
     "node": ">=6.1"
   },
-  "homepage": "http://aui.atlassian.com",
+  "homepage": "https://aui-cdn.atlassian.com/atlaskit/registry/",
   "keywords": [
     "atlassian",
     "components",

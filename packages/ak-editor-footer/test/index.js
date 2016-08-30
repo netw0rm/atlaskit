@@ -11,20 +11,22 @@ chai.should();
 const expect = chai.expect;
 
 describe(name, () => {
-  afterEach(() => {
-    document.body.innerHTML = '';
+  let component;
+
+  beforeEach(() => {
+    component = new Component();
+    document.body.appendChild(component);
   });
 
+  afterEach(() => document.body.removeChild(component));
+
   it('should be possible to create a component', () => {
-    const component = new Component();
     expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   describe('button events', () => {
     it('should trigger save event', done => {
       let clicked = false;
-      const component = new Component();
-      document.body.appendChild(component);
       component.addEventListener('save', () => { clicked = true; });
       afterMutations(
         () => {
@@ -39,8 +41,6 @@ describe(name, () => {
 
     it('should trigger cancel event', done => {
       let clicked = false;
-      const component = new Component();
-      document.body.appendChild(component);
       component.addEventListener('cancel', () => { clicked = true; });
       afterMutations(
         () => {
@@ -57,8 +57,6 @@ describe(name, () => {
   describe('insert events', () => {
     it('should trigger mention event', done => {
       let clicked = false;
-      const component = new Component();
-      document.body.appendChild(component);
       component.addEventListener('insertmention', () => { clicked = true; });
       afterMutations(
         () => {
@@ -72,8 +70,6 @@ describe(name, () => {
 
     it('should trigger image event', done => {
       let clicked = false;
-      const component = new Component();
-      document.body.appendChild(component);
       component.addEventListener('insertimage', () => { clicked = true; });
       afterMutations(
         () => {

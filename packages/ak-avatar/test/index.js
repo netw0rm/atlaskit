@@ -29,13 +29,13 @@ const getImage = (component) => (getShadowRoot(component).querySelector('img'));
 
 // Helper functions for checking that certain elements are rendered
 
-const imgIsRendered = (component) => (getImage(component) !== null);
+const imgIsRendered = (component) => !!getImage(component);
 
 /* Creates a default avatar in a div, appends it to the body and returns a reference to both.
    Appending to the body ensures the component has been redered before we start the test */
 function setupAvatar() {
   const component = new AKAvatar();
-  const componentHasShadowRoot = () => (getShadowRoot(component) || null);
+  const componentHasShadowRoot = () => !!getShadowRoot(component);
   component.src = '';
   document.body.appendChild(component);
   // We return a promise here so we can do more than just the default setting up
@@ -171,7 +171,7 @@ describe('ak-avatar', () => {
     });
 
     it('should render an img tag when src is set', () => {
-      const imgRendered = () => (getImage(component) !== null);
+      const imgRendered = () => !!getImage(component);
 
       component.src = oneByOnePixel;
 
@@ -179,7 +179,7 @@ describe('ak-avatar', () => {
     });
 
     it('should not render an img tag when src is not set', () => {
-      const imgRendered = () => (getImage(component) !== null);
+      const imgRendered = () => !!getImage(component);
 
       // We'll render an image first to make sure that we are actually changing the img and not
       // relying on defaults

@@ -8,7 +8,7 @@ const { expect } = chai;
 
 const { builder, chaiEditor, insertText, insert, SyncPlugin } = testing({
   Fragment, Node, Plugin, schema, Slice,  })
-const { doc, p, text, ol, li } = builder;
+const { doc, p, text, ol, ul, li } = builder;
 chai.use(chaiEditor);
 
 describe('ak-editor-plugin-lists', () => {
@@ -55,6 +55,23 @@ describe('ak-editor-plugin-lists', () => {
 
       plugin.get(pm).toggleList('ordered_list');
       expect(pm.doc).to.equal(doc(p('text')));
+
+      expect(onChange.callCount).to.equal(2);
+    });
+
+    it('should be able to change between list types', () => {
+      const pm = makeEditor();
+      const onChange = sinon.spy();
+
+      insert(pm, 'text')
+      pm.setTextSelection(1)
+      plugin.get(pm).onChange(onChange);
+
+      plugin.get(pm).toggleList('ordered_list');
+      expect(pm.doc).to.equal(doc(ol(li(p('text')))));
+
+      plugin.get(pm).toggleList('bullet_list');
+      expect(pm.doc).to.equal(doc(ul(li(p('text')))));
 
       expect(onChange.callCount).to.equal(2);
     });

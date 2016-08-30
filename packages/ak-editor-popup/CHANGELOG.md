@@ -1,5 +1,16 @@
-<a name="0.1.0"></a>
-# 0.1.0 (2016-08-26)
+<a name="1.2.0"></a>
+# 1.2.0 (2016-08-30)
+
+
+
+<a name="ak-editor-popup@0.2.0"></a>
+# ak-editor-popup@0.2.0 (2016-08-29)
+
+
+### Features
+
+* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
+* Update 0.x editor components to 1.x ([3324adb](https://bitbucket.org/atlassian/atlaskit/commits/3324adb))
 
 
 

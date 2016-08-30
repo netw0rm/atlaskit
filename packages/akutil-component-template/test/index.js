@@ -1,6 +1,4 @@
-import { afterMutations } from 'akutil-common-test';
-import { symbols } from 'skatejs';
-const { shadowRoot } = symbols;
+import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -12,40 +10,46 @@ chai.should();
 
 const expect = chai.expect;
 
+function setupComponent() {
+  const component = new Component();
+  const componentHasShadowRoot = () => !!getShadowRoot(component);
+
+  document.body.appendChild(component);
+
+  return waitUntil(componentHasShadowRoot).then(() => component);
+}
+
+function tearDownComponent(component) {
+  document.body.removeChild(component);
+}
+
+
 describe('akutil-component-template', () => {
   let component;
+  let shadowRoot;
 
-  beforeEach((done) => {
-    component = new Component();
-
-    afterMutations(
-      // append component to the body to ensure it has been rendered.
-      () => document.body.appendChild(component),
-      done
-    );
-  });
-
-  afterEach(() => {
-    document.body.removeChild(component);
-  });
+  beforeEach(() => setupComponent().then(newComponent => {
+    component = newComponent;
+    shadowRoot = getShadowRoot(component);
+  }));
+  afterEach(() => tearDownComponent(component));
 
   it('should be possible to create a component', () => {
-    expect(component[shadowRoot].innerHTML).to.match(/My name is .+?!/);
+    expect(shadowRoot.innerHTML).to.match(/My name is .+?!/);
   });
 
   describe('name prop', () => {
-    it('should modify the rendered name', (done) => {
+    it('should modify the rendered name', () => {
       const newName = 'InigoMontoya';
       const expectedInnerHTML = `My name is ${newName}!`;
-      const paragraph = component[shadowRoot].querySelector('p');
+      const paragraph = shadowRoot.querySelector('p');
 
-      // afterMutations will pause between each function passed to it to ensure the component has
-      // re-rendered before starting the next step.
-      afterMutations(
-        () => { component.name = newName; },
-        () => expect(paragraph.innerHTML).to.equal(expectedInnerHTML),
-        done
-      );
+      const nameHasBeenModifiedCorrectly = () => (paragraph.innerHTML === expectedInnerHTML);
+
+      component.name = newName;
+
+      // here we can wrap our assertions in promises and just check that the promise was fulfilled
+      waitUntil(nameHasBeenModifiedCorrectly).should.be.fulfilled;
     });
   });
 });

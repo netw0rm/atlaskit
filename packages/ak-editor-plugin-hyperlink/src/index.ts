@@ -90,7 +90,7 @@ function isShallowObjectEqual(
   return JSON.stringify(oldObject) === JSON.stringify(newObject);
 }
 
-class HyperlinkPluginState {
+export default new Plugin(class HyperlinkPlugin {
   changeHandlers: StateChangeHandler[];
   inputRules: InputRule[];
   pm: ProseMirror;
@@ -249,6 +249,4 @@ class HyperlinkPluginState {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
-}
-
-export default new Plugin(HyperlinkPluginState);
+});

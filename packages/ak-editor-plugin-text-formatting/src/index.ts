@@ -39,7 +39,7 @@ function markActive(pm: ProseMirror, type: MarkType) : boolean {
   return pm.doc.rangeHasMark(from, to, markType);
 };
 
-export default new Plugin(class TextFormattingPluginState {
+export default new Plugin(class TextFormattingPlugin {
   changeHandlers: StateChangeHandler[];
   name: string;
   pm: ProseMirror;

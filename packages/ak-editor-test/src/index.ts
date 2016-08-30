@@ -1,17 +1,18 @@
 import { Fragment, Node, Slice, Schema } from 'prosemirror/dist/model';
-import { ProseMirror } from 'prosemirror/dist/edit';
+import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
 import * as base64fileconverter from './base64fileconverter';
 import makeSchemaBuilder from './schema-builder';
 import makeChaiEditor from './chai';
-import SyncPlugin from './sync-plugin';
+import makeSyncPlugin from './sync-plugin';
 
-export { base64fileconverter, SyncPlugin };
+export { base64fileconverter };
 
 export interface Context {
-  Slice: typeof Slice;
   Fragment: typeof Fragment;
   Node: typeof Node;
+  Slice: typeof Slice;
   schema: Schema;
+  Plugin: typeof Plugin;
 }
 
 export default (context: Context) => {
@@ -28,6 +29,8 @@ export default (context: Context) => {
       const { from, to } = pm.selection;
       pm.tr.replaceWith(from, to, api.builder.fragment(...content)).apply();
     },
+
+    SyncPlugin: makeSyncPlugin(context),
   };
   return api;
 }

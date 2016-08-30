@@ -1,12 +1,12 @@
 import { default as plugin } from '../src';
 import { Slice, Node, Fragment } from 'prosemirror/dist/model';
-import { ProseMirror } from 'prosemirror/dist/edit';
+import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
 import { schema } from 'prosemirror/dist/schema-basic';
 import testing from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-const { builder, chaiEditor } = testing({ schema, Node, Slice, Fragment })
+const { builder, chaiEditor } = testing({ Fragment, Node, Plugin, schema, Slice })
 const { a, code, p, pre, slice, text } = builder;
 chai.use(chaiEditor);
 

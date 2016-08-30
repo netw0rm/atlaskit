@@ -41,7 +41,7 @@ function isShallowObjectEqual(oldObject: ListsState, newObject: ListsState): boo
   return JSON.stringify(oldObject) === JSON.stringify(newObject);
 }
 
-export default new Plugin(class ListsPluginState {
+export default new Plugin(class ListsPlugin {
   changeHandlers: StateChangeHandler[];
   pm: ProseMirror;
   state: ListsState;

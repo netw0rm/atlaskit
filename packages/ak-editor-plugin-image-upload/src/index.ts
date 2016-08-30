@@ -81,7 +81,7 @@ function isShallowObjectEqual(
   return JSON.stringify(oldObject) === JSON.stringify(newObject);
 }
 
-class ImageUploadPluginState {
+export default new Plugin(class ImageUploadPlugin {
   changeHandlers: StateChangeHandler[];
   name: string;
   pasteAdapter: PasteAdapter;
@@ -223,6 +223,4 @@ class ImageUploadPluginState {
 
     return this.addImage(options);
   }
-}
-
-export default new Plugin(ImageUploadPluginState);
+});

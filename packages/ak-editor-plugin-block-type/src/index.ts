@@ -23,7 +23,7 @@ function getSelectionNode(selection: Selection) {
 
 export type StateChangeHandler = (state: BlockTypeState) => any;
 
-class BlockTypePluginState {
+export default new Plugin(class BlockTypePlugin {
   changeHandlers: StateChangeHandler[];
   pm: ProseMirror;
   state: BlockTypeState;
@@ -94,6 +94,4 @@ class BlockTypePluginState {
   onChange(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
   }
-}
-
-export default new Plugin(BlockTypePluginState);
+});

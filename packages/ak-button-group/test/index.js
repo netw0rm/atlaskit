@@ -8,26 +8,27 @@ import { waitUntil } from 'akutil-common-test';
 chai.use(chaiAsPromised);
 chai.should();
 
-let container;
-let btnGroup;
-
-// Helper functions for getting various parts of the shadowDOM
-const getShadowRoot = () => (btnGroup[symbols.shadowRoot]);
-const componentHasShadowRoot = () => (getShadowRoot() !== null);
-
-function setupButtonGroup() {
-  btnGroup = new ButtonGroup();
-  container = document.createElement('div');
-  container.appendChild(btnGroup);
-  document.body.appendChild(container);
-  return waitUntil(componentHasShadowRoot);
-}
-
-function tearDownContainer() {
-  document.body.removeChild(container);
-}
-
 describe('ak-button-group', () => {
+  let container;
+  let btnGroup;
+
+  // Helper functions for getting various parts of the shadowDOM
+  const getShadowRoot = () => (btnGroup[symbols.shadowRoot]);
+  const componentHasShadowRoot = () => (getShadowRoot() !== null);
+
+  function setupButtonGroup() {
+    btnGroup = new ButtonGroup();
+    container = document.createElement('div');
+    container.appendChild(btnGroup);
+    document.body.appendChild(container);
+    return waitUntil(componentHasShadowRoot);
+  }
+
+  function tearDownContainer(done) {
+    document.body.removeChild(container);
+    setTimeout(done, 0);
+  }
+
   beforeEach(setupButtonGroup);
   afterEach(tearDownContainer);
 

@@ -30,8 +30,8 @@
     });
  *
  */
-function waitUntil(fn) {
-  let counter = 0;
+function waitUntil(fn, timeout = 2000, step = 1) {
+  let iteration = 0;
   return new Promise((resolve, reject) => {
     try {
       ((function testFn() {
@@ -40,11 +40,12 @@ function waitUntil(fn) {
           return;
         }
         // making sure that this will not fall into the endless loop
-        counter++;
-        if (counter <= 2000) {
-          setTimeout(testFn, 1);
+        iteration++;
+        if (iteration * step <= timeout) {
+          setTimeout(testFn, step);
         } else {
           reject('timeout');
+          return;
         }
       })());
     } catch (e) {

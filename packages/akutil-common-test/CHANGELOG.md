@@ -1,5 +1,15 @@
-<a name="1.4.1"></a>
-## 1.4.1 (2016-08-31)
+<a name="1.5.0"></a>
+# 1.5.0 (2016-08-31)
+
+
+
+<a name="akutil-common-test@1.5.0"></a>
+# akutil-common-test@1.5.0 (2016-08-31)
+
+
+### Features
+
+* Add web component locator method ([076a363](https://bitbucket.org/atlassian/atlaskit/commits/076a363))
 
 
 

@@ -1,2 +1,4 @@
 /* eslint-env mocha */
-beforeEach(() => (document.body.innerHTML = ''));
+beforeEach(function cleanFixture() {
+  document.body.innerHTML = '';
+});

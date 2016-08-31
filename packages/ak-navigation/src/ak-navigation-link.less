@@ -3,14 +3,18 @@
 @ak-navigation-link-color: @ak-color-N500;
 @ak-navigation-selected-link-color: @ak-color-B500;
 
-.link {
+.wrapper {
   color: @ak-navigation-link-color;
-  text-decoration: none;
-  cursor: pointer;
   margin: 10px 0;
-  white-space: nowrap;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.link {
+  color: currentColor;
+  text-decoration: none;
 }
 
 .icon {
@@ -25,7 +29,6 @@
   display: inline-block;
   vertical-align: text-bottom;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .selected {

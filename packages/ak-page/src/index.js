@@ -30,7 +30,9 @@ export default define('ak-page', {
     );
   },
   props: {
-    navigationOpen: prop.boolean({ default: true }),
+    navigationOpen: prop.boolean({
+      attribute: true,
+    }),
   },
   created(elem) {
     elem.addEventListener('ak-navigation-open', () => {

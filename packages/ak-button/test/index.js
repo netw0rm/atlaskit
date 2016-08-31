@@ -5,6 +5,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { symbols, props } from 'skatejs';
 import AkButton, { APPEARANCE } from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
+import hostStyles from '../src/host.less';
 import { name } from '../package.json';
 const classKeys = shadowStyles.locals;
 
@@ -34,6 +35,7 @@ describe('ak-button', () => {
 
   beforeEach(done => {
     component = new AkButton();
+    props(component, { className: hostStyles.locals.akButton });
     document.body.appendChild(component);
     waitForRender(component, done);
   });

@@ -15,21 +15,62 @@ describe('hasClass', () => {
     document.body.removeChild(component);
   });
 
-  it('should return true for a known class on a component with single class', () => {
-    component.classList.add('foo');
-
-    expect(hasClass(component, 'foo')).to.be.true;
+  it('should return false with no arguments at all', () => {
+    expect(hasClass()).to.be.false;
+    expect(hasClass(false)).to.be.false;
+    expect(hasClass(null)).to.be.false;
   });
 
-  it('should return true for known class on a component with multiple classes', () => {
-    component.classList.add('foo');
-    component.classList.add('bar');
-    component.classList.add('zee');
-
-    expect(hasClass(component, 'bar')).to.be.true;
+  it('should return false if first argument is not a DOM Element', () => {
+    expect(hasClass({})).to.be.false;
+    expect(hasClass([])).to.be.false;
+    expect(hasClass('')).to.be.false;
+    expect(hasClass(1)).to.be.false;
   });
 
-  it('should return false for a class not on a component', () => {
-    expect(hasClass(component, 'foo')).to.be.false;
+  describe('when component has no class', () => {
+    it('should return true if no class provided', () =>
+      expect(hasClass(component)).to.be.true
+    );
+
+    it('should return false for any class provided', () =>
+      expect(hasClass(component, 'foo')).to.be.false
+    );
+  });
+
+  describe('when component has one class', () => {
+    beforeEach(() => component.classList.add('foo'));
+
+    it('should return true if no class provided', () =>
+      expect(hasClass(component)).to.be.true
+    );
+
+    it('should return true for a known class', () =>
+      expect(hasClass(component, 'foo')).to.be.true
+    );
+
+    it('should return false for an unknown class', () =>
+      expect(hasClass(component, 'test')).to.be.false
+    );
+  });
+
+  describe('when component has multiple classes', () => {
+    beforeEach(() =>
+      ['foo', 'bar', 'zee'].forEach(className =>
+        component.classList.add(className)
+      )
+    );
+
+    it('should return true for known class', () =>
+      expect(hasClass(component, 'bar')).to.be.true
+    );
+
+    it('should return true for multiple known classes', () =>
+      expect(hasClass(component, 'bar', 'foo', 'zee')).to.be.true
+    );
+
+    it('should return false for unknown classes', () =>
+      expect(hasClass(component, 'bar', 'foo', 'wat')).to.be.false
+    );
   });
 });

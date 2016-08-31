@@ -112,7 +112,10 @@ describe('ak-layer: appearance', () => {
   }
 
   function testPosition(elem, target, key, done) {
-    waitUntil(testPositionHelper(key, elem.childNodes[0], target)).then(done);
+    waitUntil(testPositionHelper(key, elem.childNodes[0], target)).then(() => {
+      expect(testPositionHelper(key, elem.childNodes[0], target)()).to.be.true;
+      done();
+    });
   }
 
   beforeEach(() => {

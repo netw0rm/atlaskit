@@ -172,6 +172,12 @@ export default function(ctx = defaultContext) {
     fragment: (...content: BuilderContent[]) => flatten<BuilderContent>(content),
     slice: (...content: BuilderContent[]) => new ctx.Slice(new ctx.Fragment(flatten<BuilderContent>(content)), 0, 0),
 
+    /**
+     * Insert nodes at the current selection.
+     *
+     * @returns refs from the inserted nodes, made relative to the document
+     *   insertion position
+     */
     insert: (pm: ProseMirror, ...content: BuilderContent[]) => {
       const { from, to } = pm.selection;
       const { nodes, refs } = coerce(content, ctx);

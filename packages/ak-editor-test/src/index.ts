@@ -1,5 +1,5 @@
 import { Fragment, Node, Slice, Schema } from 'prosemirror/dist/model';
-import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
+import { Plugin } from 'prosemirror/dist/edit';
 import * as base64fileconverter from './base64fileconverter';
 import makeSchemaBuilder from './schema-builder';
 import makeChaiPlugin from './chai';

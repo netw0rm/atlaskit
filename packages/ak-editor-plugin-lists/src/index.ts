@@ -105,7 +105,7 @@ export default new Plugin(class ListsPlugin {
       this.setState({
         active: true,
         type: rootNode.type.name,
-        enabled: canChange
+        enabled: true
       });
     } else if (!isListable || !canChange) {
       this.setState({ enabled: false });
@@ -122,10 +122,28 @@ export default new Plugin(class ListsPlugin {
     const pm = this.pm;
     const { $from } = pm.selection;
     const rootNode: Node = $from.node(1);
+    const isList: boolean = this.listTypes.indexOf(rootNode.type.name) !== -1;
 
-    // if we are already on the same list we should just lift it
-    if (type === rootNode.type.name) {
-      return commands.lift(pm, true);
+    if (isList) {
+      if (type === rootNode.type.name) {
+        // are we in the same list type, UL trying to toggle UL then we lift it
+        return commands.lift(pm, true);
+      }
+
+      // we are toggling list types OL to UL for example
+      const newList = (
+        pm.schema.nodes[(type as string)].create({}, rootNode.content)
+      );
+
+      const startPosition = $from.start(1) - 1;
+
+      pm.tr.replaceWith(
+        startPosition,
+        startPosition + rootNode.nodeSize,
+        newList
+      ).apply();
+
+      return true;
     }
 
     return commands.wrapInList(pm.schema.nodes[type as string] as Node)(pm);

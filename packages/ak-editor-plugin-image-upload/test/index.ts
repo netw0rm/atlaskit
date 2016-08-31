@@ -12,30 +12,27 @@ const { doc, p, img } = builder;
 chai.use(chaiPlugin);
 
 describe('ak-editor-plugin-image-upload', () => {
-  const editor = (...content: any[]) => {
-    const { pm, plugin } = makeEditor({
-      doc: doc(p(...content)),
-      plugin: ImageUploadPlugin,
-    });
+  const editor = (doc: any) => {
+    const { pm, plugin } = makeEditor({ doc, plugin: ImageUploadPlugin });
     return { pm, plugin, sel: pm.doc.refs['<>'] };
   };
   const favicon = () => img({ src: 'favicon.png' });
 
   it('allows change handler to be registered', () => {
-    const { plugin } = editor('');
+    const { plugin } = editor(doc(p('')));
 
     plugin.onChange(sinon.spy());
   });
 
   it('allows an image to be added at the current collapsed selection', () => {
-    const { pm, plugin } = editor('{<>}');
+    const { pm, plugin } = editor(doc(p('{<>}')));
 
     expect(plugin.addImage({ src: 'favicon.png' })).to.be.true;
     expect(pm.doc).to.deep.equal(doc(p(favicon())));
   });
 
   it('emits a change when an image is selected', () => {
-    const { pm, plugin, sel } = editor('{<>}', favicon());
+    const { pm, plugin, sel } = editor(doc(p('{<>}', favicon())));
     const onChange = sinon.spy();
     plugin.onChange(onChange);
 
@@ -45,7 +42,7 @@ describe('ak-editor-plugin-image-upload', () => {
   });
 
   it('does not emit multiple changes when an image is not selected', () => {
-    const { pm, plugin } = editor('{<>}t{a}e{b}st', favicon());
+    const { pm, plugin } = editor(doc(p('{<>}t{a}e{b}st', favicon())));
     const { a, b } = pm.doc.refs;
     const onChange = sinon.spy();
     plugin.onChange(onChange);
@@ -57,7 +54,7 @@ describe('ak-editor-plugin-image-upload', () => {
   });
 
   it('does not emit multiple changes when an image is selected multiple times', () => {
-    const { pm, plugin, sel } = editor('{<>}', favicon());
+    const { pm, plugin, sel } = editor(doc(p('{<>}', favicon())));
     const onChange = sinon.spy();
     pm.setNodeSelection(sel);
 
@@ -68,7 +65,7 @@ describe('ak-editor-plugin-image-upload', () => {
   });
 
   it('emits a change event when selection leaves an image', () => {
-    const { pm, plugin, sel } = editor('{a}test{<>}', favicon());
+    const { pm, plugin, sel } = editor(doc(p('{a}test{<>}', favicon())));
     const { a } = pm.doc.refs;
     const onChange = sinon.spy();
     pm.setNodeSelection(sel);
@@ -80,7 +77,7 @@ describe('ak-editor-plugin-image-upload', () => {
   });
 
   it('does not permit an image to be added when an image is selected', () => {
-    const { pm, plugin, sel } = editor('{<>}', favicon());
+    const { pm, plugin, sel } = editor(doc(p('{<>}', favicon())));
     pm.setNodeSelection(sel);
 
     expect(plugin.addImage({ src: 'favicon.png' })).to.be.false;
@@ -88,7 +85,7 @@ describe('ak-editor-plugin-image-upload', () => {
   });
 
   it('does not permit an image to be added when the state is disabled', () => {
-    const { pm, plugin } = editor('{<>}');
+    const { pm, plugin } = editor(doc(p('{<>}')));
 
     plugin.setState({ enabled: false });
 
@@ -97,13 +94,13 @@ describe('ak-editor-plugin-image-upload', () => {
   });
 
   it('does not permit an image to be removed at a collapsed text selection', () => {
-    const { plugin } = editor('test{<>}');
+    const { plugin } = editor(doc(p('test{<>}')));
 
     expect(plugin.removeImage()).to.be.false;
   });
 
   it('can remove a selected image', () => {
-    const { pm, plugin, sel } = editor('{<>}', favicon());
+    const { pm, plugin, sel } = editor(doc(p('{<>}', favicon())));
     pm.setNodeSelection(sel);
 
     expect(plugin.removeImage()).to.be.true;
@@ -111,7 +108,7 @@ describe('ak-editor-plugin-image-upload', () => {
   });
 
   it('can update a selected image', () => {
-    const { pm, plugin, sel } = editor('{<>}', favicon());
+    const { pm, plugin, sel } = editor(doc(p('{<>}', favicon())));
     pm.setNodeSelection(sel);
 
     const replacementImage = {

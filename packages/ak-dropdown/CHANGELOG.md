@@ -1,10 +1,20 @@
-<a name="0.4.0"></a>
-# 0.4.0 (2016-08-29)
+<a name="0.4.2"></a>
+## 0.4.2 (2016-08-31)
+
+
+
+<a name="ak-dropdown@0.4.1"></a>
+## ak-dropdown@0.4.1 (2016-08-30)
 
 
 
 <a name="ak-dropdown@0.3.0"></a>
 # ak-dropdown@0.3.0 (2016-08-29)
+
+
+### Bug Fixes
+
+* Fix the cucumber build ([b73f8ca](https://bitbucket.org/atlassian/atlaskit/commits/b73f8ca))
 
 
 ### Features

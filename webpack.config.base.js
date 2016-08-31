@@ -106,7 +106,7 @@ const standardConfig = {
         {
           loader: 'babel',
           test: /\.jsx?$/,
-          include: /stories\/.*\.jsx?$/,
+          include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
           query: {
             presets: [
               'es2015',

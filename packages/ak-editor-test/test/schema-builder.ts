@@ -4,7 +4,7 @@ import {
 } from '../src/schema-builder';
 import { expect } from 'chai';
 
-describe('ak-editor-plugin-image-upload schema-builder', () => {
+describe('ak-editor-test schema-builder', () => {
   const clone = (object = {}) => Object.assign({}, object);
   const { text } = builder();
 

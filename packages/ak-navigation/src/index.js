@@ -3,6 +3,7 @@ import 'style!./host.less';
 
 import { emit, prop, vdom, define } from 'skatejs';
 import shadowStyles from './index.less';
+import 'ak-blanket';
 import './ak-navigation-drawer';
 import './ak-navigation-link';
 import classNames from 'classnames';
@@ -40,10 +41,20 @@ const openCreateDrawer = el => el.addEventListener('click', () => {
   emit(el, 'ak-navigation-create-drawer-open');
 });
 
+function closeAllDrawers(elem) {
+  elem.createDrawerOpen = false;
+  elem.searchDrawerOpen = false;
+}
+
+
 export default define('ak-navigation', {
   render(elem) {
     return (
       <div>
+        <ak-blanket
+          onActivate={() => closeAllDrawers(elem)}
+          clickable={elem.createDrawerOpen || elem.searchDrawerOpen}
+        />
         <div
           className={classNames(shadowStyles.locals.navigation, {
             [shadowStyles.locals.open]: elem.open,
@@ -80,7 +91,6 @@ export default define('ak-navigation', {
               </div>
             </div>
           </div>
-
           <ak-navigation-drawer large open={elem.searchDrawerOpen}>
             <slot name="global-search-drawer" />
           </ak-navigation-drawer>

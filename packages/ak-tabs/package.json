@@ -22,7 +22,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "^1.0.0"
+    "akutil-react": "^1.0.0",
+    "akutil-common-test": "^1.3.0"
   },
   "repository": {
     "type": "git",

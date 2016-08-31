@@ -31,6 +31,7 @@
  *
  */
 function waitUntil(fn) {
+  let counter = 0;
   return new Promise((resolve, reject) => {
     try {
       ((function testFn() {
@@ -38,7 +39,13 @@ function waitUntil(fn) {
           resolve();
           return;
         }
-        setTimeout(testFn, 1);
+        // making sure that this will not fall into the endless loop
+        counter++;
+        if (counter <= 2000) {
+          setTimeout(testFn, 1);
+        } else {
+          reject('timeout');
+        }
       })());
     } catch (e) {
       reject(e);

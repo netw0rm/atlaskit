@@ -12,7 +12,7 @@ const expect = chai.expect;
 
 function setupComponent() {
   const component = new Component();
-  const componentHasShadowRoot = () => (getShadowRoot(component) || null);
+  const componentHasShadowRoot = () => !!getShadowRoot(component);
 
   document.body.appendChild(component);
 

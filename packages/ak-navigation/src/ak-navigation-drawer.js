@@ -1,5 +1,5 @@
 /** @jsx vdom */
-import 'style!./host.less'; // eslint-disable-line import/no-unresolved
+import 'style!./host.less';
 import shadowStyles from './ak-navigation-drawer.less';
 
 import { vdom, define, prop } from 'skatejs';

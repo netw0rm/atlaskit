@@ -1,5 +1,15 @@
-<a name="1.4.0"></a>
-# 1.4.0 (2016-08-31)
+<a name="1.4.1"></a>
+## 1.4.1 (2016-08-31)
+
+
+
+<a name="akutil-common-test@1.4.1"></a>
+## akutil-common-test@1.4.1 (2016-08-31)
+
+
+### Bug Fixes
+
+* Update custom-events-polyfill ([ffe99c9](https://bitbucket.org/atlassian/atlaskit/commits/ffe99c9))
 
 
 

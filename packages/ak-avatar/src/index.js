@@ -30,7 +30,7 @@ function imageLoadedHandler(elem) {
 }
 
 /**
- * @description Dfinition of the Avatar component.
+ * @description Definition of the Avatar component.
  * @class Avatar
  * @example @html <ak-avatar src="my/avatar/src/doge.png"></ak-avatar>
  * @example @js import Avatar from 'ak-avatar';
@@ -130,7 +130,7 @@ const definition = {
     }),
 
     /**
-     * @description Defines the label for the Avatar used by screen readers as a fallback content
+     * @description Defines the label for the Avatar used by screen readers as fallback content
      * if the image fails to load.
      * @memberof Avatar
      * @instance

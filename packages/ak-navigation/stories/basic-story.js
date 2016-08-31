@@ -46,10 +46,11 @@ const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-
 const containerLogo = require('url!./nucleus.png');
 const userAvatar = require('url!./emma.jpg');
 
-const containerProps = {
+const sharedProps = {
   containerName: 'Nucleus',
   containerHref: 'http://example.com',
   containerLogo,
+  productHref: 'http://atlassian.design',
 };
 
 const NavigationLinks = () => <div>
@@ -86,7 +87,7 @@ storiesOf(name, module)
       <AkNavigation
         slot="navigation"
         open
-        {...containerProps}
+        {...sharedProps}
       >
         <ak-icon slot="global-home" glyph="bitbucket" />
         <ak-icon slot="global-search" glyph="search" />
@@ -112,7 +113,7 @@ storiesOf(name, module)
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
-        {...containerProps}
+        {...sharedProps}
       >
         <ak-icon slot="global-home" glyph="jira" />
         <ak-icon slot="global-search" glyph="search" />
@@ -129,7 +130,7 @@ storiesOf(name, module)
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <TogglingSidebar
         slot="navigation"
-        {...containerProps}
+        {...sharedProps}
       >
         <ak-icon slot="global-home" glyph="jira" />
         <ak-icon slot="global-search" glyph="search" />

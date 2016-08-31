@@ -74,7 +74,9 @@ export default define('ak-navigation', {
           <style>{shadowStyles.toString()}</style>
           <div className={shadowStyles.locals.global}>
             <div className={shadowStyles.locals.globalPrimary}>
-              <slot name="global-home" />
+              <a href={elem.productHref || false}>
+                <slot name="global-home" />
+              </a>
             </div>
             <div ref={openSearchDrawer} className={shadowStyles.locals.globalSecondary}>
               <slot name="global-search" />

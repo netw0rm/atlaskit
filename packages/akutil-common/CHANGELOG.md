@@ -1,5 +1,15 @@
-<a name="2.4.0"></a>
-# 2.4.0 (2016-08-31)
+<a name="2.4.1"></a>
+## 2.4.1 (2016-08-31)
+
+
+
+<a name="akutil-common@2.4.1"></a>
+## akutil-common@2.4.1 (2016-08-31)
+
+
+### Bug Fixes
+
+* **keypresshandler:** Adds error handling to keypress handler ([1544f91](https://bitbucket.org/atlassian/atlaskit/commits/1544f91))
 
 
 

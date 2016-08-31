@@ -19,3 +19,4 @@ local.log
 /stories
 browserstack-entry.js
 packages/**/**/README.md
+packages/**/**/CHANGELOG.md

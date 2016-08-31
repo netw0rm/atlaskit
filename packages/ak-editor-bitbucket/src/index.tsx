@@ -44,9 +44,8 @@ const { vdom } = require('skatejs');
 
 const $initEditor = '__init_editor__';
 const $pm = '__pm__';
-const $ready = '__ready__';
-const $focused = '__focused__';
 const $expanded = '__expanded__';
+const $focused = '__focused__';
 const $wrapper = '__wrapper__';
 const $onContentClick = '__onContentClick__';
 const $canChangeBlockType = '__canChangeBlockType__';
@@ -131,9 +130,6 @@ function changeHyperLinkValue(elem: any) {
 function toggleExpansion(elem) {
   return () => {
     elem[$expanded] = !elem[$expanded];
-    if (elem[$expanded]) {
-      elem[$ready] = false;
-    }
   };
 }
 
@@ -144,10 +140,9 @@ export default define('ak-editor-bitbucket', {
   },
 
   rendered(elem: any) {
-    if (!elem[$ready] && elem[$expanded]) {
-      elem[$ready] = true;
+    if (elem[$expanded]) {
       elem[$initEditor]();
-      emit(elem, 'ready');
+      emit(elem, 'expanded');
 
       elem[$pm].focus();
     }
@@ -291,12 +286,12 @@ export default define('ak-editor-bitbucket', {
     },
 
     /**
-     * Returns true if the editor has been initialised and is ready for
+     * Returns true if the editor has been initialised and is expanded for
      * interaction.
      * @returns {boolean}
      */
-    get ready() {
-      return this[$ready] || false;
+    get expanded() {
+      return this[$expanded] || false;
     },
 
     [$onContentClick](e: MouseEvent) {

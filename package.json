@@ -11,6 +11,7 @@
     "@atlassian/gremlins.js": "^0.1.0",
     "@kadira/storybook": "^2.3.0",
     "ak-dmd-plugin": "0.0.9",
+    "akutil-common-test": "^1.0.0",
     "akutil-cucumber": "^1.0.0",
     "akutil-polyfills": "^2.0.0",
     "akutil-shared-styles": "^33.3.0",

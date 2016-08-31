@@ -1,5 +1,15 @@
-<a name="0.5.0"></a>
-# 0.5.0 (2016-08-30)
+<a name="0.5.1"></a>
+## 0.5.1 (2016-08-31)
+
+
+
+<a name="ak-button@0.5.1"></a>
+## ak-button@0.5.1 (2016-08-31)
+
+
+### Bug Fixes
+
+* Workaround to make tests green when importing ak-button multiple times ([0b9f9a4](https://bitbucket.org/atlassian/atlaskit/commits/0b9f9a4))
 
 
 

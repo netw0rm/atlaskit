@@ -21,9 +21,9 @@ describe('ak-button', () => {
   const getShadowButtonElem = (elem) =>
     shadowDomQuery(elem, `.${classKeys.button}`);
 
-  const expectButtonToHaveClasses = (_component, length, ...classes) => {
-    const button = getShadowButtonElem(_component);
-    expect(button.classList).to.have.lengthOf(length);
+  const expectButtonToHaveClasses = (testComponent, expectClassCount, ...classes) => {
+    const button = getShadowButtonElem(testComponent);
+    expect(button.classList).to.have.lengthOf(expectClassCount);
     expect(hasClass(button, ...classes)).to.be.true;
   };
 

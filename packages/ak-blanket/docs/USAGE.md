@@ -13,7 +13,7 @@ npm install ak-blanket
 The `ak-blanket` package exports the Blanket [Skate](https://github.com/skatejs/skatejs) component.
 
 Import the component in your JS resource:
- 
+
 #### bundle.js
 
 ```
@@ -42,10 +42,10 @@ The main purpose of the blanket component is to provide the `overlay` layer for 
 ```
 define('modal-dialog-component', () => {
  attached(elem) {
-   window.addEventListener('ak-blanket-blur', doSomethingWhenBlanketClicked(elem));
+   window.addEventListener('activate', doSomethingWhenBlanketClicked(elem));
  },
  detached(elem) {
-   window.removeEventListener('ak-blanket-blur', doSomethingWhenBlanketClicked(elem));
+   window.removeEventListener('activate', doSomethingWhenBlanketClicked(elem));
  },
  render(elem) {
    return (
@@ -57,7 +57,7 @@ define('modal-dialog-component', () => {
  })
 ```
 
-It emits the 'ak-blanket-blur' event when clicked/touched.
+It emits the 'activate' event when clicked/touched.
 Blanket component doesn't have the z-index style, so make sure you put it into an appropriate DOM position.
 For the purpose of simplicity blanket doesn't have any `show/hide` functionality. Since the main use of it suppose to be inside `popup` elements it would appear/disapper with the parent element.
 

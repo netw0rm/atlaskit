@@ -84,11 +84,11 @@ storiesOf('ak-editor-hyperlink-edit', module)
   .add('Popped (no unlink)', () => <PoppedDemo canUnlink={false} />)
   .add('ProseMirror', () => {
     const getDomElement = (pm, pos) => {
-      const { node, offset } = DOMFromPos(pm, pos); // eslint-disable-line new-cap
-      if (node.childNodes.length === 0) {
-        return node.parentNode;
+      const { nodeFactory, offset } = DOMFromPos(pm, pos); // eslint-disable-line new-cap
+      if (nodeFactory.childNodes.length === 0) {
+        return nodeFactory.parentNode;
       }
-      return node.childNodes[offset];
+      return nodeFactory.childNodes[offset];
     };
 
     class Demo extends React.Component {

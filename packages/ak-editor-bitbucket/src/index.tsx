@@ -1,6 +1,7 @@
-import { vdom, define, prop, emit } from 'skatejs';
+import './types';
+import { define, prop, emit } from 'skatejs';
 import invert from 'lodash.invert';
-import { ProseMirror, Plugin } from 'prosemirror/dist/edit';
+import { ProseMirror } from 'prosemirror/dist/edit';
 import 'style!./host.less';
 import cx from 'classnames';
 import shadowStyles from './shadow.less';
@@ -20,13 +21,26 @@ import { markdownSerializer } from './markdown-serializer';
 import { nodeLifecycleHandler } from './node-lifecycle';
 import { markdownTransformer } from './paste-handlers';
 
-// editorKit plugings
-import BlockTypePlugin from 'atlassian-editorkit-block-type-plugin';
-import ListsPlugin from 'atlassian-editorkit-lists-plugin';
-import MarkdownInputRulesPlugin from 'atlassian-editorkit-markdown-inputrules-plugin';
-import HyperLinkPlugin from 'atlassian-editorkit-hyperlink-plugin';
-import ImageUploadPlugin from 'atlassian-editorkit-image-upload-plugin';
-import TextFormattingPlugin from 'atlassian-editorkit-text-formatting-plugin';
+import BlockTypePlugin from 'ak-editor-plugin-block-type';
+import {
+  default as ListsPlugin,
+  ListType,
+} from 'ak-editor-plugin-lists';
+import MarkdownInputRulesPlugin from 'ak-editor-plugin-markdown-inputrules';
+import {
+  default as HyperlinkPlugin,
+  DISABLED_GROUP as HyperlinkPluginDisabledGroup
+} from 'ak-editor-plugin-hyperlink';
+import {
+  default as ImageUploadPlugin,
+  DISABLED_GROUP as ImageUploadPluginDisabledGroup,
+} from 'ak-editor-plugin-image-upload';
+import {
+  default as TextFormattingPlugin,
+  MarkType,
+} from 'ak-editor-plugin-text-formatting';
+
+const { vdom } = require('skatejs');
 
 const $initEditor = '__init_editor__';
 const $pm = '__pm__';
@@ -40,28 +54,24 @@ const $strongActive = '__strongActive__';
 const $emActive = '__emActive__';
 const $underlineActive = '__underlineActive__';
 const $canChangeTextFormatting = '__canChangeTextFormatting__';
-const $textFormattingPlugin = '__textFormattingPlugin__';
 const $hyperLinkText = '__hyperLinkText__';
 const $canLinkHyperlink = '__canLinkHyperlink__';
 const $selectedFont = '__selectedFont__';
-const $blockTypePlugin = '__blockTypePlugin__';
-const $listsPlugin = '__listsPlugin__';
 const $hyperLinkElement = '__hyperLinkElement__';
-const $hyperLinkPlugin = '__hyperLinkPlugin__';
 const $hyperLinkActive = '__hyperLinkActive__';
 const $bulletListActive = '__bulletListActive__';
 const $numberListActive = '__numberListActive__';
 
 const functionProp = () => ({
-  coerce: val => (typeof val === 'function' ? val : () => {}),
+  coerce: (val: any) => (typeof val === 'function' ? val : () => {}),
   default: null,
 });
 
-function bind(elem, propName) {
-  elem[propName] = elem[propName].bind(elem);
+function bind(object: any, propName: string) {
+  object[propName] = object[propName].bind(object);
 }
 
-const prosemirrorBlockToToolbarMap = {
+const prosemirrorBlockToToolbarMap: {[key: string]: string} = {
   paragraph: 'normalText',
   // heading 1 (displayed in the blockType button) is actually heading 2
   // heading 1 is reserved and not used in the editor
@@ -73,22 +83,24 @@ const prosemirrorBlockToToolbarMap = {
 
 const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
 
-function selectFont(blockTypePlugin) {
-  return (event) => {
+function selectFont(elem: any) {
+  return (event: any) => {
     const font = event.detail.font;
 
     const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
     const blockType = matches[1];
     const level = matches[2];
 
-    blockTypePlugin.changeBlockType(blockType, { level });
+    BlockTypePlugin.get(elem[$pm]).changeBlockType(blockType, { level });
   };
 }
 
-function toggleMark(textFormattingPlugin, name) {
-  return () => {
-    textFormattingPlugin.toggleMark(name);
-  };
+function toggleMark(elem: any, name: MarkType) {
+  return () => TextFormattingPlugin.get(elem[$pm]).toggleMark(name);
+}
+
+function toggleList(elem: any, name: ListType) {
+  return () => ListsPlugin.get(elem[$pm]).toggleList(name);
 }
 
 function addHyperLink(hyperLinkPlugin) {
@@ -100,17 +112,15 @@ function addHyperLink(hyperLinkPlugin) {
   };
 }
 
-function unlink(hyperLinkPlugin) {
-  return () => {
-    hyperLinkPlugin.removeLink();
-  };
+function unlink(elem: any) {
+  return () => HyperlinkPlugin.get(elem[$pm]).removeLink();
 }
 
-function changeHyperLinkValue(hyperLinkPlugin) {
-  return (event) => {
-    const newLink = event.target.value;
+function changeHyperLinkValue(elem: any) {
+  return (event: MouseEvent) => {
+    const newLink = (event.target as any).value;
     if (newLink) {
-      hyperLinkPlugin.updateLink({
+      HyperlinkPlugin.get(elem[$pm]).updateLink({
         href: newLink,
         text: newLink,
       });
@@ -128,12 +138,12 @@ function toggleExpansion(elem) {
 }
 
 export default define('ak-editor-bitbucket', {
-  created(elem) {
+  created(elem: any) {
     bind(elem, $onContentClick);
     bind(elem, 'focus');
   },
 
-  rendered(elem) {
+  rendered(elem: any) {
     if (!elem[$ready] && elem[$expanded]) {
       elem[$ready] = true;
       elem[$initEditor]();
@@ -143,7 +153,7 @@ export default define('ak-editor-bitbucket', {
     }
   },
 
-  render(elem) {
+  render(elem: any) {
     const FullEditor = (<div>
       <Toolbar>
         <ToolbarBlockType
@@ -289,7 +299,7 @@ export default define('ak-editor-bitbucket', {
       return this[$ready] || false;
     },
 
-    [$onContentClick](e) {
+    [$onContentClick](e: MouseEvent) {
       if (e.target === e.currentTarget) {
         this.focus();
       }
@@ -300,90 +310,58 @@ export default define('ak-editor-bitbucket', {
       elem.addEventListener('blur', () => { elem[$focused] = false; });
       elem.addEventListener('focus', () => { elem[$focused] = true; });
 
-      schema.nodes.code_block.group += ` ${HyperLinkPlugin.DISABLED_GROUP}`;
-      schema.nodes.code_block.group += ` ${ImageUploadPlugin.DISABLED_GROUP}`;
+      schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
+      schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
 
       const pm = new ProseMirror({
         place: this[$wrapper],
         doc: markdownParser(new Schema(schema)).parse(this.defaultValue),
         plugins: [
-          new Plugin(MarkdownInputRulesPlugin),
-          new Plugin(class HyperLinkPluginDecorator {
-            constructor(proseMirrorInstance) {
-              const hyperLinkPlugin = new HyperLinkPlugin(proseMirrorInstance);
-
-              hyperLinkPlugin.onChange(state => {
-                elem[$canLinkHyperlink] = state.enabled;
-                elem[$hyperLinkActive] = state.active;
-                elem[$hyperLinkElement] = state.element;
-                elem[$hyperLinkText] = state.text;
-              });
-
-              elem[$hyperLinkPlugin] = hyperLinkPlugin;
-
-              return hyperLinkPlugin;
-            }
-          }),
-          new Plugin(class ImageUploadPluginDecorator {
-            constructor(proseMirrorInstance) {
-              const imageUploadPlugin = new ImageUploadPlugin(proseMirrorInstance);
-              const insertImage = (url) => imageUploadPlugin.addImage(url);
-              const handler = (_, e) => elem.imageUploader(e, insertImage);
-
-              imageUploadPlugin.dropAdapter.add(handler);
-              imageUploadPlugin.pasteAdapter.add(handler);
-
-              return imageUploadPlugin;
-            }
-          }),
-          new Plugin(class BlockTypePluginDecorator {
-            constructor(proseMirrorInstance) {
-              const blockTypePlugin = new BlockTypePlugin(proseMirrorInstance);
-
-              blockTypePlugin.onChange(state => {
-                const name = state.selectedBlockType;
-                const blockType = prosemirrorBlockToToolbarMap[name];
-
-                elem[$selectedFont] = blockType;
-                elem[$canChangeBlockType] = state.enabled;
-              });
-
-              elem[$blockTypePlugin] = blockTypePlugin;
-
-              return blockTypePlugin;
-            }
-          }),
-          new Plugin(class ListsPluginDecorator {
-            constructor(proseMirrorInstance) {
-              const listsPlugin = new ListsPlugin(proseMirrorInstance);
-
-              listsPlugin.onChange(state => {
-                elem[$bulletListActive] = state.active && state.type === 'bullet_list';
-                elem[$numberListActive] = state.active && state.type === 'ordered_list';
-              });
-
-              elem[$listsPlugin] = listsPlugin;
-
-              return listsPlugin;
-            }
-          }),
-          new Plugin(class TextFormattingPluginDecorator {
-            constructor(proseMirrorInstance) {
-              const textFormattingPlugin = new TextFormattingPlugin(proseMirrorInstance);
-
-              textFormattingPlugin.onChange(state => {
-                elem[$strongActive] = state.strongActive;
-                elem[$emActive] = state.emActive;
-                elem[$underlineActive] = state.underlineActive;
-                elem[$canChangeTextFormatting] = !state.enabled;
-              });
-
-              elem[$textFormattingPlugin] = textFormattingPlugin;
-
-              return textFormattingPlugin;
-            }
-          }),
+          MarkdownInputRulesPlugin,
+          HyperlinkPlugin,
+          ImageUploadPlugin,
+          BlockTypePlugin,
+          ListsPlugin,
+          TextFormattingPlugin,
         ],
+      });
+
+      // Hyperlink plugin wiring
+      HyperlinkPlugin.get(pm).onChange(state => {
+        elem[$canLinkHyperlink] = state.enabled;
+        elem[$hyperLinkActive] = state.active;
+        elem[$hyperLinkElement] = state.element;
+        elem[$hyperLinkText] = state.text;
+      });
+
+      // Image upload plugin wiring
+      const insertImage = (url: string) => ImageUploadPlugin.get(pm).addImage(url);
+      const handler = (_: any, e: any) => elem.imageUploader(e, insertImage);
+      ImageUploadPlugin.get(pm).dropAdapter.add(handler);
+      ImageUploadPlugin.get(pm).pasteAdapter.add(handler);
+
+      // Block type plugin wiring
+      BlockTypePlugin.get(pm).onChange(state => {
+        const name = state.selectedBlockType
+        if (typeof name === 'string') {
+          const blockType = prosemirrorBlockToToolbarMap[name] as string;
+          elem[$selectedFont] = blockType;
+          elem[$canChangeBlockType] = state.enabled;
+        }
+      });
+
+      // Lists
+      ListsPlugin.get(pm).onChange(state => {
+        elem[$bulletListActive] = state.active && state.type === 'bullet_list';
+        elem[$numberListActive] = state.active && state.type === 'ordered_list';
+      });
+
+      // Text formatting
+      TextFormattingPlugin.get(pm).onChange(state => {
+        elem[$strongActive] = state.strongActive;
+        elem[$emActive] = state.emActive;
+        elem[$underlineActive] = state.underlineActive;
+        elem[$canChangeTextFormatting] = !state.enabled;
       });
 
       // avoid invoking keyboard shortcuts in BB
@@ -394,7 +372,7 @@ export default define('ak-editor-bitbucket', {
       pm.addKeymap(buildKeymap(pm.schema));
 
       // add paste handlers
-      pm.on.transformPasted.add((slice) => markdownTransformer(pm.schema, slice));
+      pm.on.transformPasted.add(slice => markdownTransformer(pm.schema, slice));
 
       // add node life cycle handler
       pm.on.flush.add(() => nodeLifecycleHandler(pm));

@@ -1,12 +1,26 @@
 /**
- * @description A simple helper method to check whether a node has a certain className on it.
- * @param {Node} component A node to check for a className on.
- * @param {String} className The className to check for the existance of
+ * @description A simple helper method to check whether a node has a set of classNames on it.
+ *  Will return true, only if a component is provided and it has all the classNames applied to it.
+ * @param {Node} component A node to check for classNames.
+ * @param {...String=} classes A list of classNames to check for the existance of
  * @example @js const elem = document.querySelector('.fixture').firstChild;
  *  const elemIsHidden = hasClass(elem, 'hidden');
+ *  const elemIsSelectedAndHidden = hasClass(elem, 'hidden', 'selected');
  */
-function hasClass(component, className) {
-  return Array.prototype.slice.call(component.classList).indexOf(className) > -1;
-}
+export default function hasClass(component, ...classes) {
+  if (process.env.NODE_ENV === 'development') {
+    if (classes.length === 0) {
+      console.warn('No classes given to test against.'); // eslint-disable-line no-console
+    }
+  }
 
-export default hasClass;
+  if (!component || !(component instanceof Element)) {
+    return false;
+  }
+
+  const componentClasses = component.classList;
+  return classes.reduce(
+    (acum, className) => acum && (Array.prototype.indexOf.call(componentClasses, className) > -1),
+    true
+  );
+}

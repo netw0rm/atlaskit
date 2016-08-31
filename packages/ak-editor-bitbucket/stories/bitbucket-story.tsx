@@ -1,29 +1,14 @@
 import { storiesOf, action } from '@kadira/storybook';
 import BitbucketComponent from '../src';
 import reactify from 'akutil-react';
-import { vdom } from 'skatejs';
-const { React, ReactDOM } = window;
+import { base64fileconverter } from 'ak-editor-test';
+const { React, ReactDOM } = window as any;
 
 const Bitbucket = reactify(BitbucketComponent, { React, ReactDOM });
+const { Converter, dropHandler, pasteHandler } = base64fileconverter;
+const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
-import {
-  Converter,
-  dropHandler,
-  pasteHandler,
-} from 'atlassian-editorkit-image-upload-plugin/dist/base64fileconverter';
-
-const converter = new Converter(
-  [
-    'jpg',
-    'jpeg',
-    'png',
-    'gif',
-    'svg',
-  ],
-  10000000
-);
-
-const imageUploader = (e, fn) => {
+const imageUploader = (e: any, fn: any) => {
   if (e instanceof ClipboardEvent) {
     pasteHandler(converter, e, fn);
   } else if (e instanceof DragEvent) {
@@ -33,8 +18,8 @@ const imageUploader = (e, fn) => {
 
 storiesOf('ak-editor-bitbucket', module)
   .add('Empty', () => (
-    <Bitbucket />
-  ))
+    <Bitbucket />;
+  )
   .add('With default value', () => (
     <Bitbucket defaultValue="What do you want to say?" />
   ))
@@ -52,14 +37,16 @@ storiesOf('ak-editor-bitbucket', module)
     />
   ))
   .add('Markdown preview', () => {
-    class Demo extends React.Component {
+    type Props = {};
+    type State = { markdown: string };
+    class Demo extends React.Component<Props, State> {
       constructor() {
         super();
         this.state = { markdown: '' };
         this.updateMarkdown = this.updateMarkdown.bind(this);
       }
 
-      updateMarkdown(e) {
+      updateMarkdown(e: any) {
         this.setState({ markdown: e.target.value });
       }
 

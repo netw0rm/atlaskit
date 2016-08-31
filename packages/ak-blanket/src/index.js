@@ -5,10 +5,14 @@ import { prop, vdom, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 
-function handleBlur(elem) {
+const EVENTS = {
+  ACTIVATE: 'activate',
+};
+
+function handleActivation(elem) {
   return () => {
     if (elem.clickable) {
-      emit(elem, 'ak-blanket-click');
+      emit(elem, EVENTS.ACTIVATE);
     }
   };
 }
@@ -29,8 +33,8 @@ export default define('ak-blanket', {
       <div>
         <style>{shadowStyles.toString()}</style>
         <div
-          onClick={handleBlur(elem)}
-          onTouch={handleBlur(elem)}
+          onClick={handleActivation(elem)}
+          onTouch={handleActivation(elem)}
           className={classes}
         >
         </div>
@@ -60,3 +64,5 @@ export default define('ak-blanket', {
     clickable: prop.boolean({ attribute: true }),
   },
 });
+
+export { EVENTS };

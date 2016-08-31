@@ -6,11 +6,11 @@ module.exports = (config) => {
 
   Object.assign(config, {
     files: [
-      'test/**/*.js',
+      'test/**/*.+(ts|js)',
     ],
 
     preprocessors: {
-      'test/**/*.js': ['webpack', 'sourcemap'],
+      'test/**/*.+(js|ts)': ['webpack', 'sourcemap'],
     },
   });
 

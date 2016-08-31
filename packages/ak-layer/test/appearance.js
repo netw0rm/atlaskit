@@ -1,10 +1,12 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import LayerWC from '../src/index';
+import { waitUntil } from 'akutil-common-test';
+import { props } from 'skatejs';
 
 chai.use(chaiAsPromised);
 chai.should();
-const expect = chai.expect;
+
 const defaultPosition = 'right middle';
 
 const alignments = {
@@ -94,19 +96,23 @@ describe('ak-layer: appearance', () => {
     node.setAttribute('id', `target${id}`);
     return node;
   }
-  function testPosition(elem, target, key, done) {
-    let rectComponent;
-    let rectTarget;
 
-    setTimeout(() => {
-      rectComponent = elem.childNodes[0].getBoundingClientRect();
-      rectTarget = target.getBoundingClientRect();
-      expect(alignments[key].top(rectComponent, rectTarget)).to.equal(0);
-      expect(alignments[key].left(rectComponent, rectTarget)).to.equal(0);
-      done();
-      // this should be more than 60 fps,
-      // since positioning tool uses requestAnimationFrame to update positioning
-    }, 100);
+  function testPositionHelper(key, lcomponent, ltarget) {
+    return () => {
+      const cRect = lcomponent.getBoundingClientRect();
+      const tRect = ltarget.getBoundingClientRect();
+
+      if (alignments[key].top(cRect, tRect)
+        || alignments[key].left(cRect, tRect)) {
+        return false;
+      }
+
+      return true;
+    };
+  }
+
+  function testPosition(elem, target, key, done) {
+    waitUntil(testPositionHelper(key, elem.childNodes[0], target)).then(done);
   }
 
   beforeEach(() => {
@@ -173,7 +179,7 @@ describe('ak-layer: appearance', () => {
       layerContainer.style.top = '0';
       layerContainer.style.left = '0';
 
-      component.position = key;
+      props(component, { position: key });
       testPosition(component, targetNode, key, done);
     })
   );

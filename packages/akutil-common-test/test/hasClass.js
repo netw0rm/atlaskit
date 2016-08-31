@@ -15,9 +15,30 @@ describe('hasClass', () => {
     document.body.removeChild(component);
   });
 
-  it('should return true for a known class on a component with single class', () => {
-    component.classList.add('foo');
-    expect(hasClass(component, 'foo')).to.be.true;
+  describe('when component has no class', () => {
+    it('should return true if no class provided', () =>
+      expect(hasClass(component)).to.be.true
+    );
+
+    it('should return false for any class provided', () =>
+      expect(hasClass(component, 'foo')).to.be.false
+    );
+  });
+
+  describe('when component has one class', () => {
+    beforeEach(() => component.classList.add('foo'));
+
+    it('should return true if no class provided', () =>
+      expect(hasClass(component)).to.be.true
+    );
+
+    it('should return true for a known class', () =>
+      expect(hasClass(component, 'foo')).to.be.true
+    );
+
+    it('should return false for an unknown class', () =>
+      expect(hasClass(component, 'test')).to.be.false
+    );
   });
 
   describe('when component has multiple classes', () => {
@@ -38,9 +59,5 @@ describe('hasClass', () => {
     it('should return false for unknown classes', () =>
       expect(hasClass(component, 'bar', 'foo', 'wat')).to.be.false
     );
-  });
-
-  it('should return false for a class not on a component', () => {
-    expect(hasClass(component, 'foo')).to.be.false;
   });
 });

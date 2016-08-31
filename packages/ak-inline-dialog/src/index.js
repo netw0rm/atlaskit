@@ -4,14 +4,10 @@ import { enumeration, KeyPressHandler } from 'akutil-common';
 import { vdom, prop, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer';
-import Blanket, { EVENTS as BLANKET_EVENTS } from 'ak-blanket';
+import Blanket from 'ak-blanket';
 
-let keyPress;
-function closeDialog(elem) {
-  return () => {
-    elem.open = false;
-  };
-}
+const closeHandlerSymbol = Symbol();
+const keyPressHandlerSymbol = Symbol();
 
 function renderBlanketIfNeeded(elem) {
   if (elem.hasBlanket) {
@@ -19,6 +15,7 @@ function renderBlanketIfNeeded(elem) {
       <Blanket
         tinted={elem.isBlanketTinted}
         clickable={elem.isBlanketClickable}
+        on-activate={elem[closeHandlerSymbol]}
       />
     );
   }
@@ -35,12 +32,11 @@ function renderBlanketIfNeeded(elem) {
  */
 export default define('ak-inline-dialog', {
   attached(elem) {
-    keyPress = new KeyPressHandler('ESCAPE', closeDialog(elem));
-    window.addEventListener(BLANKET_EVENTS.ACTIVATE, closeDialog(elem));
+    elem[closeHandlerSymbol] = () => (elem.open = false);
+    elem[keyPressHandlerSymbol] = new KeyPressHandler('ESCAPE', elem[closeHandlerSymbol]);
   },
   detached(elem) {
-    keyPress.destroy();
-    window.removeEventListener(BLANKET_EVENTS.ACTIVATE, closeDialog(elem));
+    elem[keyPressHandlerSymbol].destroy();
   },
   render(elem) {
     if (typeof elem.open === 'boolean') {

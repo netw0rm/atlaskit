@@ -1,7 +1,7 @@
 import { convertedHandlerCallback, Converter, dropHandler, pasteHandler } from '../src/base64fileconverter';
 import { expect } from 'chai';
 
-describe('ak-editor-plugin-image-upload base64fileconverter', () => {
+describe('ak-editor-test base64fileconverter', () => {
   let savedFileReader: any;
 
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('ak-editor-plugin-image-upload base64fileconverter', () => {
   afterEach(() => {
     (window as any).FileReader = savedFileReader;
   })
-  
+
   const mockFile = (args: { size?: number, type?: string } = {}): File => ({
     size: typeof args.size !== 'undefined' ? args.size : 1,
     type: typeof args.type !== 'undefined' ? args.type : 'png',

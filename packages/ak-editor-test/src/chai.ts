@@ -2,13 +2,14 @@ import { Context } from './';
 
 export default (context: Context) => {
   return (chai: any) => {
-    const { Assertion } = chai;
+    const { Assertion, util } = chai;
 
     // Node
     Assertion.overwriteMethod('equal', (_super: Function) => {
       return function (right: any) {
         const left: any = this._obj;
-        if (right instanceof context.Node) {
+        const deep = util.flag(this, 'deep');
+        if (deep && right instanceof context.Node) {
           new Assertion(left).instanceOf(context.Node);
           this.assert(left.eq(right),
             "expected #{exp} to equal #{act}",
@@ -25,7 +26,8 @@ export default (context: Context) => {
     Assertion.overwriteMethod('equal', (_super: Function) => {
       return function (right: any) {
         const left: any = this._obj;
-        if (right instanceof context.Fragment) {
+        const deep = util.flag(this, 'deep');
+        if (deep && right instanceof context.Fragment) {
           new Assertion(left).instanceOf(context.Fragment);
           this.assert(left.eq(right),
             "expected #{exp} to equal #{act}",
@@ -42,7 +44,8 @@ export default (context: Context) => {
     Assertion.overwriteMethod('equal', (_super: Function) => {
       return function (right: any) {
         const left: any = this._obj;
-        if (right instanceof context.Slice) {
+        const deep = util.flag(this, 'deep');
+        if (deep && right instanceof context.Slice) {
           new Assertion(left).instanceOf(context.Slice);
           this.assert(left.content.eq(right.content),
             "expected left's fragment #{exp} to equal right's fragment #{act}",

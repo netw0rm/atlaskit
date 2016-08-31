@@ -16,7 +16,7 @@ function applyLinkMarkerToNode(
   linkText: string,
   from: number
 ) : Transform {
-  const mark: Mark = pm.schema.marks.link.create({ href: linkText });
+  const mark: Mark = pm.schema.marks['link'].create({ href: linkText });
   return transform.addMark(from, from + linkText.length, mark);
 }
 

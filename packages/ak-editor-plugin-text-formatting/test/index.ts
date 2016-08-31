@@ -1,40 +1,33 @@
-import { default as plugin } from '../src';
-import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
+import TextFormattingPlugin from '../src';
+import { Plugin } from 'prosemirror/dist/edit';
 import { Slice, Node, Fragment } from 'prosemirror/dist/model';
 import { schema } from 'prosemirror/dist/schema-basic';
 import testing from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-const { builder, chaiEditor, insertText, SyncPlugin } = testing({
+const { builder, chaiPlugin, makeEditor } = testing({
   Fragment, Node, Plugin, schema, Slice })
 const { doc, p, text, em } = builder;
-chai.use(chaiEditor);
+chai.use(chaiPlugin);
 
 describe('ak-editor-plugin-text-formatting', () => {
-  const makeEditor = () => new ProseMirror({
-    schema: schema,
-    plugins: [plugin, SyncPlugin]
-  });
+  const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin });
 
   it('should be able to toggle em', () => {
-    const pm = makeEditor();
-    insertText(pm, 'text');
-    pm.setTextSelection(1, 2);
+    const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
 
-    expect(plugin.get(pm).toggleMark('em')).to.be.true;
-    expect(pm.doc).to.equal(doc(p(em('t'), 'ext')))
-    expect(plugin.get(pm).toggleMark('em')).to.be.true;
-    expect(pm.doc).to.equal(doc(p('text')))
+    expect(plugin.toggleMark('em')).to.be.true;
+    expect(pm.doc).to.deep.equal(doc(p(em('t'), 'ext')))
+    expect(plugin.toggleMark('em')).to.be.true;
+    expect(pm.doc).to.deep.equal(doc(p('text')))
   });
 
   it('should expose whether an em is active', () => {
-    const pm = makeEditor();
-    insertText(pm, 'text');
-    pm.setTextSelection(1, 2);
+    const { plugin } = editor(doc(p('te{a}xt')));
 
-    expect(plugin.get(pm).getState().emActive).to.be.false;
-    expect(plugin.get(pm).toggleMark('em')).to.be.true;
-    expect(plugin.get(pm).getState().emActive).to.be.true;
+    expect(plugin.getState().emActive).to.be.false;
+    expect(plugin.toggleMark('em')).to.be.true;
+    expect(plugin.getState().emActive).to.be.true;
   });
 });

@@ -1,56 +1,51 @@
-import { default as plugin } from '../src';
-import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
+import BlockTypePlugin from '../src';
+import { Plugin } from 'prosemirror/dist/edit';
 import { Slice, Node, Fragment } from 'prosemirror/dist/model';
 import { schema } from 'prosemirror/dist/schema-basic';
 import testing from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-const { builder, chaiEditor, insertText, SyncPlugin } = testing({
+const { builder, chaiPlugin, makeEditor } = testing({
   Fragment, Node, Plugin, Slice, schema })
 const { doc, p, text, h1 } = builder;
-chai.use(chaiEditor);
+chai.use(chaiPlugin);
 
 describe('ak-editor-plugin-block-type', () => {
-  const makeEditor = () => new ProseMirror({
-    schema: schema,
-    plugins: [plugin, SyncPlugin]
-  });
+  const editor = (doc: any) => {
+    const { pm, plugin } = makeEditor({ doc, plugin: BlockTypePlugin });
+    return { pm, plugin, sel: pm.doc.refs['<>'] };
+  };
 
   it('should be able to change to heading1', () => {
-    const pm = makeEditor();
-    insertText(pm, 'text');
-    pm.setTextSelection(2);
+    const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
-    expect(plugin.get(pm).changeBlockType('heading')).to.be.true;
-    expect(pm.doc).to.equal(doc(h1('text')));
+    expect(plugin.changeBlockType('heading')).to.be.true;
+    expect(pm.doc).to.deep.equal(doc(h1('text')));
   });
 
   it('should not be able to change to the same block type', () => {
-    const pm = makeEditor();
-    insertText(pm, 'text');
-    pm.setTextSelection(2);
+    const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
-    expect(plugin.get(pm).changeBlockType('paragraph')).to.be.false;
-    expect(pm.doc).to.equal(doc(p('text')));
+    expect(plugin.changeBlockType('paragraph')).to.be.false;
+    expect(pm.doc).to.deep.equal(doc(p('text')));
   });
 
   it('should not be able to change block types when selecting two nodes', () => {
-    const pm = makeEditor();
-    pm.setDocInner(doc(p('line1'), p('line2')));
-    pm.setTextSelection(1, 10);
+    const { pm, plugin } = editor(doc(p('li{<}ne1'), p('li{>}ne2')));
 
-    expect(plugin.get(pm).changeBlockType('heading')).to.be.false;
+    expect(plugin.changeBlockType('heading')).to.be.false;
+    expect(pm.doc).to.deep.equal(doc(p('line1'), p('line2')));
   });
 
   it('should change state when selecting different block types', () => {
-    const pm = makeEditor();
-    pm.setDocInner(doc(h1('text'), p('text')));
+    const { pm, plugin } = editor(doc(h1('te{h1Pos}xt'), p('te{pPos}xt')));
+    const { h1Pos, pPos } = pm.doc.refs;
 
-    pm.setTextSelection(2);
-    expect(plugin.get(pm).getState().selectedBlockType).to.equal('heading1');
+    pm.setTextSelection(h1Pos);
+    expect(plugin.getState().selectedBlockType).to.equal('heading1');
 
-    pm.setTextSelection(10);
-    expect(plugin.get(pm).getState().selectedBlockType).to.equal('paragraph');
+    pm.setTextSelection(pPos);
+    expect(plugin.getState().selectedBlockType).to.equal('paragraph');
   });
 });

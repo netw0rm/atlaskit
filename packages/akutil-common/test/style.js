@@ -13,7 +13,7 @@ describe('style', () => {
       },
       render(el) {
         classes = style(el.css);
-        return <slot />;
+        return <slot className="my-slot" />;
       },
     });
     elem = new Elem();
@@ -39,9 +39,9 @@ describe('style', () => {
       const span = document.createElement('span');
       elem.appendChild(span);
       afterMutations(
-        () => expect(window.getComputedStyle(span).display).to.equal('inline'),
-        () => (elem.css = { '::slotted(*)': { display: 'none' } }),
-        () => expect(window.getComputedStyle(span).display).to.equal('none'),
+        () => expect(window.getComputedStyle(span).position).to.equal('static', 'before'),
+        () => (elem.css = { '::slotted(*)': { position: 'relative' } }),
+        () => expect(window.getComputedStyle(span).position).to.equal('relative', 'after'),
         done
       );
     });
@@ -49,14 +49,18 @@ describe('style', () => {
     // This is only necessary for polyfilled slots. We need to make sure that
     // styles only target slots within the current, polyfilled shadow root.
     it('slots outside of the shaow tree', done => {
-      const slot = document.createElement('slot');
-      const span = document.createElement('span');
-      span.appendChild(slot);
-      elem.appendChild(span);
+      const descendantSlot = document.createElement('slot');
+      const descendantSlotParent = document.createElement('span');
+      const descendantSlotChild = document.createElement('span');
+      descendantSlotParent.appendChild(descendantSlot);
+      descendantSlot.appendChild(descendantSlotChild);
+      elem.appendChild(descendantSlotParent);
       afterMutations(
-        () => expect(window.getComputedStyle(span).display).to.equal('inline'),
-        () => (elem.css = { '::slotted(*)': { display: 'none' } }),
-        () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+        // eslint-disable-next-line max-len
+        () => expect(window.getComputedStyle(descendantSlotChild).position).to.equal('static', 'before'),
+        () => (elem.css = { '.my-slot::slotted(*)': { position: 'relative' } }),
+        // eslint-disable-next-line max-len
+        () => expect(window.getComputedStyle(descendantSlotChild).position).to.equal('static', 'after'),
         done
       );
     });

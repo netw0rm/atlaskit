@@ -16,7 +16,9 @@ jss.use(rule => {
     if (supportsShadowDOM) {
       rule.selectorText = rule.name;
     } else {
-      rule.selectorText = rule.options.sheet.options.elem.tagName.toLowerCase();
+      const match = rule.selectorText.match(/:host\((.*)\)/);
+      const matchSelector = match && match[1] || '';
+      rule.selectorText = rule.options.sheet.options.elem.tagName.toLowerCase() + matchSelector;
     }
   }
 });
@@ -25,15 +27,17 @@ jss.use(rule => {
 // ------------------
 
 jss.use(rule => {
-  if (rule.name.indexOf('::slotted') === 0) {
-    const match = rule.selectorText.match(/::slotted\((.*)\)/);
-    const matchSelector = match && match[1] || '';
+  if (rule.name.indexOf('::slotted') > -1) {
+    const match = rule.name.match(/(.*)::slotted\((.*)\)/);
+    const matchSlot = match && match[1] || '';
+    const matchSelector = match && match[2] || '';
     if (supportsShadowDOMV1) {
       rule.selectorText = rule.name;
     } else if (supportsShadowDOMV0) {
-      rule.selectorText = `::content > ${matchSelector}`;
+      rule.selectorText = `${matchSlot}::content > ${matchSelector}`;
     } else {
-      rule.selectorText = `slot > ${matchSelector}`;
+      const lcTagName = rule.options.sheet.options.elem.tagName.toLowerCase();
+      rule.selectorText = `${lcTagName} slot${matchSlot} > ${matchSelector}`;
     }
   }
 });

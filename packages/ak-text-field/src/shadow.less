@@ -14,18 +14,6 @@
   margin-top: 20px;
 }
 
-// .default-slot-wrapper {
-//   :host & {
-//     @slotStyles();
-//   }
-// }
-// .default-slot-element {
-//   @slotStyles();
-//   & > * {
-//     @childStyles();
-//   }
-// }
-
 @inputHostStyles: {
   background-color: rgba(9, 30, 66, 0.03); // TODO use ak-color-*
   border: 1px solid #dfe1e6; // TODO use ak-color-*
@@ -67,5 +55,8 @@
   }
 };
 
+.default-slot-element > * {
+  @inputHostStyles();
+}
 ::content > input { @inputHostStyles(); }
 ::slotted(input)  { @inputHostStyles(); }

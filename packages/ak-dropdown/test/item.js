@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Item, EVENTS as DROPDOWN_EVENTS } from '../src';
+import { Item, events as dropdownEvents } from '../src';
 import keyCode from 'keycode';
 import { symbols } from 'skatejs';
 import 'custom-event-polyfill';
@@ -35,7 +35,7 @@ describe('ak-dropdown-item', () => {
     it('click on a component should emit `selected` event', (done) => {
       const clickSpy = sinon.spy();
       itemContainer.appendChild(component);
-      itemContainer.addEventListener(DROPDOWN_EVENTS.SELECTED, clickSpy);
+      itemContainer.addEventListener(dropdownEvents.selected, clickSpy);
 
       setTimeout(() => component[symbols.shadowRoot].firstChild.click());
       setTimeout(() => expect(clickSpy.called).to.equal(true));
@@ -44,11 +44,11 @@ describe('ak-dropdown-item', () => {
   });
   describe('keyboard events', () => {
     const eventsMap = {
-      up: DROPDOWN_EVENTS.ITEM_UP,
-      down: DROPDOWN_EVENTS.ITEM_DOWN,
-      space: DROPDOWN_EVENTS.SELECTED,
-      enter: DROPDOWN_EVENTS.SELECTED,
-      tab: DROPDOWN_EVENTS.ITEM_TAB,
+      up: dropdownEvents.item.up,
+      down: dropdownEvents.item.down,
+      space: dropdownEvents.selected,
+      enter: dropdownEvents.selected,
+      tab: dropdownEvents.item.tab,
     };
     let component;
     let itemContainer;

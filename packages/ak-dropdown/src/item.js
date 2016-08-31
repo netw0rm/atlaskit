@@ -2,7 +2,7 @@ import { emit, vdom, prop } from 'skatejs';
 import shadowItemStyles from './shadow-item.less';
 import classNames from 'classnames';
 import keyCode from 'keycode';
-import EVENTS from './internal/events';
+import { selected as selectedEvent, item as itemEvents } from './internal/events';
 
 function selectItem(item) {
   // disabled items should not allow any interactions
@@ -11,7 +11,7 @@ function selectItem(item) {
     return;
   }
 
-  emit(item, EVENTS.SELECTED, {
+  emit(item, selectedEvent, {
     detail: {
       item,
     },
@@ -22,14 +22,14 @@ function handleKeyDown(elem) {
   return (e) => {
     switch (e.keyCode) {
       case keyCode('up'):
-        emit(elem, EVENTS.ITEM_UP);
+        emit(elem, itemEvents.up);
         break;
       case keyCode('down'):
-        emit(elem, EVENTS.ITEM_DOWN);
+        emit(elem, itemEvents.down);
         break;
       case keyCode('tab'):
         e.preventDefault();
-        emit(elem, EVENTS.ITEM_TAB);
+        emit(elem, itemEvents.tab);
         break;
       case keyCode('space'):
       case keyCode('enter'):

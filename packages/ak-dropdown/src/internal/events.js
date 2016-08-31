@@ -1,7 +1,9 @@
-export default {
-  SELECTED: 'selected',
-  ITEM_UP: 'item-up',
-  ITEM_DOWN: 'item-down',
-  ITEM_TAB: 'item-tab',
-  TRIGGER_ACTIVATED: 'trigger-activated',
-};
+export const selected = 'selected';
+export const item = Object.freeze({
+  up: 'up',
+  down: 'down',
+  tab: 'tab',
+});
+export const trigger = Object.freeze({
+  activated: 'activated',
+});

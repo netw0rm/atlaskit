@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Trigger, EVENTS as DROPDOWN_EVENTS } from '../src';
+import { Trigger, events as dropdownEvents } from '../src';
+const { trigger: triggerEvents } = dropdownEvents;
 import keyCode from 'keycode';
 import { symbols } from 'skatejs';
 import 'custom-event-polyfill';
@@ -33,10 +34,10 @@ describe('ak-dropdown-trigger', () => {
       setTimeout(done);
     });
 
-    it(`click on a component should emit '${DROPDOWN_EVENTS.TRIGGER_ACTIVATED}' event`, (done) => {
+    it(`click on a component should emit '${triggerEvents.activated}' event`, (done) => {
       const clickSpy = sinon.spy();
       triggerContainer.appendChild(component);
-      triggerContainer.addEventListener(DROPDOWN_EVENTS.TRIGGER_ACTIVATED, clickSpy);
+      triggerContainer.addEventListener(triggerEvents.activated, clickSpy);
 
       setTimeout(() => component[symbols.shadowRoot].firstChild.click());
       setTimeout(() => expect(clickSpy.called).to.equal(true));
@@ -47,9 +48,9 @@ describe('ak-dropdown-trigger', () => {
     // this is a map for consistency with 'item' tests
     // also they are the same for now, but it's possible its going to change
     const eventsMap = {
-      down: DROPDOWN_EVENTS.TRIGGER_ACTIVATED,
-      space: DROPDOWN_EVENTS.TRIGGER_ACTIVATED,
-      enter: DROPDOWN_EVENTS.TRIGGER_ACTIVATED,
+      down: triggerEvents.activated,
+      space: triggerEvents.activated,
+      enter: triggerEvents.activated,
     };
     let component;
     let itemContainer;

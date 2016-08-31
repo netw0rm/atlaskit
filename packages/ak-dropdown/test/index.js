@@ -21,14 +21,15 @@ describe('ak-dropdown', () => {
     });
 
     it('should have an events export with defined events', () => {
-      exports.EVENTS.should.be.defined;
-      Object.keys(exports.EVENTS).should.be.deep.equal([
-        'SELECTED',
-        'ITEM_UP',
-        'ITEM_DOWN',
-        'ITEM_TAB',
-        'TRIGGER_ACTIVATED',
-      ]);
+      exports.events.should.be.defined;
+      exports.events.selected.should.be.defined;
+      Object.keys(exports.events.item).should.be.deep.equal(['up', 'down', 'tab']);
+      Object.keys(exports.events.trigger).should.be.deep.equal(['activated']);
+    });
+
+    it('should not be okay to mess with event exports', () => {
+      Object.isFrozen(exports.events.item).should.be.true;
+      Object.isFrozen(exports.events.trigger).should.be.true;
     });
   });
 

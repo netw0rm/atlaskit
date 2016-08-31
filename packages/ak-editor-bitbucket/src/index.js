@@ -213,7 +213,7 @@ export default define('ak-editor-bitbucket', {
           <input
             placeholder={elem.defaultValue}
             onclick={toggleExpansion(elem)}
-            class={shadowStyles.locals.fakeInput}
+            className={shadowStyles.locals.fakeInput}
           />
         }
       </div>

@@ -62,6 +62,10 @@
     width: @container-logo-size;
     height: @container-logo-size;
     margin-right: 10px;
+    
+    &:not([src]) {
+      visibility: hidden;
+    }
   }
 
   .container-name {

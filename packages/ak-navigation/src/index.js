@@ -101,16 +101,16 @@ export default define('ak-navigation', {
           </ak-navigation-drawer>
 
           <div className={shadowStyles.locals.container}>
-            <div className={shadowStyles.locals.containerName}>
+            {elem.containerName ? <div className={shadowStyles.locals.containerName}>
               <a href={elem.containerHref}>
                 <img
                   className={shadowStyles.locals.containerLogo}
                   alt={elem.containerName}
-                  src={elem.containerLogo}
+                  src={elem.containerLogo || false}
                 />
               </a>
               <span>{elem.containerName}</span>
-            </div>
+            </div> : ''}
             <div className={shadowStyles.locals.containerLinks}>
               <slot />
             </div>

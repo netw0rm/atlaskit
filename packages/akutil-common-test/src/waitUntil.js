@@ -29,6 +29,9 @@
  *    // Now we can do more stuff in here!
     });
  *
+ *  // It is also possible to set a timeout and steps
+ *  waitUntil(elemRenderedImgTag, 1000, 10).then(() => (expect(elemRenderedImgTag()).to.be.true));
+ *  // it will do iterations every 10 ms and will reject after approximately 1s
  */
 function waitUntil(fn, timeout = 2000, step = 1) {
   let iteration = 0;

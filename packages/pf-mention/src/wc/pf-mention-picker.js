@@ -7,6 +7,8 @@ import ResourcedMentionList from './pf-resourced-mention-list';
 import debug from '../util/logger';
 import uniqueId from '../util/id';
 
+const styles = shadowStyles.locals;
+
 export default define('pf-mention-picker', {
   prototype: {
     selectNext() {
@@ -28,6 +30,7 @@ export default define('pf-mention-picker', {
     },
 
     _filterChange(mentions) {
+      debug('pf-mention-picker._filterChange', mentions.length);
       props(this, {
         _visible: mentions.length > 0,
       });
@@ -63,32 +66,46 @@ export default define('pf-mention-picker', {
       display: elem._visible ? 'block' : 'none',
     };
 
-    debug('pf-mention-picker.render', query);
+    const resourceMentionList = (
+      <ResourcedMentionList
+        resourceProvider={resourceProvider}
+        presenceProvider={presenceProvider}
+        query={query}
+        refWorkaround={(ref) => { elem._mentionListRef = ref; }}
+      />
+    );
+
+    let content;
     if (target) {
-      return (
-        <div style={style}>
-          <style>{shadowStyles.toString()}</style>
-          <InlineDialog
-            target={target}
-            position={position}
-            open={elem._visible}
-            padding="0"
-            hasBlanket={false}
-            ref={(el) => {
-              elem._dialog = el;
-            }}
-          >
-            <ResourcedMentionList
-              resourceProvider={resourceProvider}
-              presenceProvider={presenceProvider}
-              query={query}
-              refWorkaround={(ref) => { elem._mentionListRef = ref; }}
-            />
-          </InlineDialog>
+      content = (
+        <InlineDialog
+          target={target}
+          position={position}
+          open={elem._visible}
+          padding="0"
+          hasBlanket={false}
+          ref={(el) => {
+            elem._dialog = el;
+          }}
+        >
+          {resourceMentionList}
+        </InlineDialog>
+      );
+    } else {
+      content = (
+        <div class={styles.noDialogContainer}>
+          {resourceMentionList}
         </div>
       );
     }
-    return null;
+
+    debug('pf-mention-picker.render', query);
+    return (
+      <div style={style}>
+        <style>{shadowStyles.toString()}</style>
+        {content}
+      </div>
+    );
   },
 
   rendered(elem) {

@@ -23,4 +23,3 @@ export const insert = (pm: ProseMirror, ...content: BuilderContent[]) => {
   pm.tr.replaceWith(from, to, nodes).apply();
   return offsetRefs(refs, from);
 };
-

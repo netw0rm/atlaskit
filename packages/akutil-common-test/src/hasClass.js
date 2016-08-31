@@ -14,7 +14,7 @@ export default function hasClass(component, ...classes) {
     }
   }
 
-  if (!!!component || !(component instanceof Element)) {
+  if (!component || !(component instanceof Element)) {
     return false;
   }
 

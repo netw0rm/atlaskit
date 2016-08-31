@@ -5,14 +5,10 @@ import { vdom, prop, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer';
 import Blanket from 'ak-blanket';
+import * as events from './internal/events';
 
 const closeHandlerSymbol = Symbol();
 const keyPressHandlerSymbol = Symbol();
-
-const EVENTS = {
-  AFTER_OPEN: 'after-open',
-  AFTER_CLOSE: 'after-close',
-};
 
 function renderBlanketIfNeeded(elem) {
   if (elem.hasBlanket) {
@@ -46,9 +42,9 @@ export default define('ak-inline-dialog', {
   render(elem) {
     if (typeof elem.open === 'boolean') {
       if (elem.open) {
-        emit(elem, EVENTS.AFTER_OPEN);
+        emit(elem, events.afterOpen);
       } else {
-        emit(elem, EVENTS.AFTER_CLOSE);
+        emit(elem, events.afterClose);
       }
     }
     // do not render anything if the dialog is hidden
@@ -251,4 +247,4 @@ export default define('ak-inline-dialog', {
   },
 });
 
-export { EVENTS };
+export { events };

@@ -108,7 +108,7 @@ export default define('ak-navigation', {
     );
   },
   props: {
-    /** TODO: make these private props somehow **/
+    /** TODO: make these private, see https://github.com/skatejs/skatejs/issues/687 **/
     shouldAnimate: prop.boolean(),
     width: prop.number({
       default: collapsedWidth,

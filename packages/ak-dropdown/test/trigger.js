@@ -1,15 +1,16 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Trigger } from '../src/index.js';
+import { Trigger, EVENTS as DROPDOWN_EVENTS } from '../src';
 import keyCode from 'keycode';
 import { symbols } from 'skatejs';
+import 'custom-event-polyfill';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-dropdown-trigger:', () => {
-  describe('general behavior:', () => {
+describe('ak-dropdown-trigger', () => {
+  describe('general behavior', () => {
     let component;
     let triggerContainer;
 
@@ -32,23 +33,23 @@ describe('ak-dropdown-trigger:', () => {
       setTimeout(done);
     });
 
-    it('click on a component should emit `ak-dropdown-trigger-activated` event', (done) => {
+    it(`click on a component should emit '${DROPDOWN_EVENTS.TRIGGER_ACTIVATED}' event`, (done) => {
       const clickSpy = sinon.spy();
       triggerContainer.appendChild(component);
-      triggerContainer.addEventListener('ak-dropdown-trigger-activated', clickSpy);
+      triggerContainer.addEventListener(DROPDOWN_EVENTS.TRIGGER_ACTIVATED, clickSpy);
 
       setTimeout(() => component[symbols.shadowRoot].firstChild.click());
       setTimeout(() => expect(clickSpy.called).to.equal(true));
       setTimeout(done);
     });
   });
-  describe('keyboard events:', () => {
+  describe('keyboard events', () => {
     // this is a map for consistency with 'item' tests
     // also they are the same for now, but it's possible its going to change
     const eventsMap = {
-      down: 'ak-dropdown-trigger-activated',
-      space: 'ak-dropdown-trigger-activated',
-      enter: 'ak-dropdown-trigger-activated',
+      down: DROPDOWN_EVENTS.TRIGGER_ACTIVATED,
+      space: DROPDOWN_EVENTS.TRIGGER_ACTIVATED,
+      enter: DROPDOWN_EVENTS.TRIGGER_ACTIVATED,
     };
     let component;
     let itemContainer;

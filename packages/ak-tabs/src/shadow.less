@@ -1,10 +1,96 @@
-// These styles will be inserted into a style tag inside
-// the shadow dom of each instance of the component
-
-// Only do class selectors in here, anything else leaks to the rest of the page in
-// browsers that do not support shadow DOM
 @import 'shared-variables.less';
 
-.my-class-name {
-  color: @ak-example-variable;
+.ak-tab-labels {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+.ak-tab-label {
+  color: @ak-tabs-color-label-default;
+  cursor: pointer;
+  font-size: @ak-tabs-font-size;
+  line-height: @ak-tabs-line-height;
+  padding: @ak-tabs-padding-vertical @ak-tabs-padding-horizontal;
+  position: relative;
+  white-space: nowrap;
+
+  &:hover,
+  &:active,
+  &:active::before{
+    color: @ak-tabs-color-active;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
+    border-radius: 3px;
+  }
+
+  .ak-tabs-button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  &.ak-tab-label-hidden {
+    opacity: 0;
+    position: absolute;
+    visibility: hidden;
+  }
+
+  &.ak-tab-label-single {
+    min-width: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// Tab labels line
+.ak-tab-labels:not(:empty)::before,
+.ak-tab-label-selected::after {
+  background-color: @ak-tabs-color-line-default;
+  content: '';
+  height: 1px;
+  margin: 0;
+  position: absolute;
+  width: inherit;
+  bottom: 0;
+  left: @ak-tabs-padding-horizontal;
+  right: @ak-tabs-padding-horizontal;
+}
+
+.ak-tab-label-selected {
+  color: @ak-tabs-color-selected;
+
+  &::after {
+    background-color: currentColor;
+  }
+}
+
+// Temporary. For dropdown placeholder.
+.dd-container {
+  list-style-type: none;
+  margin: 0;
+  position: absolute;
+  right: 0;
+  top: 40px;
+
+  .dd-item {
+    border: 1px solid black;
+    margin: 0;
+    padding: 5px;
+
+    a {
+      color: @ak-tabs-color-label-default;
+      text-decoration: none;
+    }
+  }
+}
+
+.dd-hidden {
+  display: none;
 }

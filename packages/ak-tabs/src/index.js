@@ -1,65 +1,125 @@
+/* eslint no-underscore-dangle: 0 */
 import 'style!./host.less';
-import { emit, vdom, define } from 'skatejs';
+import classNames from 'classnames';
+import debounce from 'debounce';
+import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 
-const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
+import * as helpers from './internal/tabs-helpers';
+import * as handlers from './internal/tabs-handlers';
+import * as events from './internal/events';
+import * as i18n from './internal/i18n';
+import Tab from './index-tab';
 
-/**
- * @description Create instances of the component programmatically, or using markup.
- * @class Tabs
- * @example @js import Tabs from 'ak-tabs';
- * const component = new Tabs();
- */
-export default define('ak-tabs', {
+import { buttonContainer, labelsContainer } from './internal/symbols';
+const resizeListener = Symbol();
+
+const definition = {
+  created(elem) {
+    // Listen for tab change events
+    elem.addEventListener(events.TAB_CHANGE, e => {
+      if (e.detail.change && e.detail.change.selected) {
+        // Emit the selection or deselection event.
+        const tab = e.detail.tab;
+        const eventName = e.detail.change.selected.newValue ?
+          events.TAB_SELECT : events.TAB_DESELECT;
+        emit(tab, eventName, { detail: { tab } });
+
+        // If the tab has been selected, we need to deselect all other tabs.
+        if (e.detail.change.selected.newValue) {
+          helpers.getAllTabs(elem).filter(el => el !== tab).forEach(el => (el.selected = false));
+        }
+      }
+
+      // Re-render if necessary.
+      const allTabs = helpers.getAllTabs(elem);
+      elem._selected = allTabs.map(el => el.selected);
+      elem._labels = allTabs.map(el => el.label);
+      elem._visibleTabs = helpers.calculateVisibleTabs(elem);
+    });
+  },
+  attached(elem) {
+    // Re-render if necessary when the window is resized.
+    elem[resizeListener] = debounce(
+      () => (elem._visibleTabs = helpers.calculateVisibleTabs(elem)), 200
+    );
+    window.addEventListener('resize', elem[resizeListener]);
+  },
+  detached(elem) {
+    window.removeEventListener('resize', elem[resizeListener]);
+  },
   render(elem) {
+    const allTabs = helpers.getAllTabs(elem);
+    const hasOverflowingTabs = elem._visibleTabs.length < allTabs.length;
+    const hasSingleTab = elem._visibleTabs.length === 1;
+    const buttonClasses = classNames({
+      [shadowStyles.locals.akTabLabel]: true,
+      [shadowStyles.locals.akTabLabelHidden]: !hasOverflowingTabs,
+    });
+    // TODO: We need to handle i18n for the 'More' text.
     return (
-      // JSX requires that there only be a single root element.
-      // Incremental DOM doesn't require this.
       <div>
-        {/* This is required for elements in the shadow root to be styled.
-           This is wrapped in the <div /> because you can't have more than one
-           root element.
-        */}
         <style>{shadowStyles.toString()}</style>
-        <Paragraph className={shadowStyles.locals.myClassName}>My name is {elem.name}!</Paragraph>
+        <ul
+          className={shadowStyles.locals.akTabLabels}
+          role="tablist"
+          ref={el => (elem[labelsContainer] = el)}
+        >
+          {allTabs && allTabs.map(
+            tab => {
+              const ariaSelected = `${!!tab.selected}`;
+              const tabIndex = tab.selected ? '0' : '-1';
+              const isVisible = elem._visibleTabs.indexOf(tab) > -1;
+              const isSingleTab = hasSingleTab && isVisible;
+              const classes = classNames({
+                [shadowStyles.locals.akTabLabel]: true,
+                [shadowStyles.locals.akTabLabelSelected]: tab.selected,
+                [shadowStyles.locals.akTabLabelHidden]: !isVisible,
+                [shadowStyles.locals.akTabLabelSingle]: isSingleTab,
+              });
+              return (
+                <li
+                  className={classes}
+                  tabIndex={tabIndex}
+                  onkeydown={handlers.labelKeydownHandler(elem, tab)}
+                  onmousedown={handlers.labelMouseDownHandler}
+                  onclick={handlers.labelClickHandler(tab)}
+                  aria-selected={ariaSelected}
+                  role="tab"
+                  ref={handlers.labelRef(elem, tab)}
+                >
+                  <span>{tab.label}</span>
+                </li>
+              );
+            }
+          ).concat(
+            <li className={buttonClasses} ref={el => (elem[buttonContainer] = el)}>
+              <a
+                className={shadowStyles.locals.akTabsButton}
+                onclick={() => {
+                  elem._dropdownOpen = !elem._dropdownOpen;
+                }}
+              >
+                <span>{i18n.more}</span>
+              </a>
+            </li>
+          )
+        }
+        </ul>
+        <slot />
       </div>
     );
   },
   props: {
-    /**
-     * @description The name of the Tabs element.
-     * @memberof Tabs
-     * @instance
-     * @type {string}
-     * @default Tabs
-     */
-    name: {
-      default: 'Tabs',
-    },
+    /** TODO: Use Symbol once supported in skate */
+    _labels: prop.array({}),
+    _selected: prop.array({}),
+    _visibleTabs: prop.array({}),
+    _dropdownOpen: prop.boolean({
+      initial: false,
+    }),
   },
-  prototype: {
-    /**
-     * @description Fire an event containing the name of the element.
-     * @memberof Tabs
-     * @function
-     * @instance
-     * @fires Tabs#announce-name
-     * @return {Tabs} The Tabs element.
-     * @example @js component.announce(); // Fires the announce-name event.
-     */
-    announce() {
-      /**
-       * @event Tabs#announce-name
-       * @memberof Tabs
-       * @description Fired when the `announce` method is called.
-       * @property {String} detail.name The name of the component.
-       */
-      emit(this, 'announce-name', {
-        detail: {
-          name: this.name,
-        },
-      });
-      return this;
-    },
-  },
-});
+};
+
+export default define('ak-tabs', definition);
+export { Tab };

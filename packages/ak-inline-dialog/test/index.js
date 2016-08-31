@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkInlineDialog from '../src/index.js';
+import AkInlineDialog, { EVENTS as DIALOG_EVENTS } from '../src';
+import 'custom-event-polyfill';
 import { name } from '../package.json';
 
 chai.use(chaiAsPromised);
@@ -160,6 +161,20 @@ describe('ak-inline-dialog', () => {
         setTimeout(() => checkInvisibility(component.childNodes[0]));
         setTimeout(done);
       });
+    });
+  });
+
+  describe('eventing', () => {
+    it('should be possible to close the dialog with a blanket activation', () => {
+      throw new Error('implement me');
+    });
+
+    it(`should be possible to subscribe to the '${DIALOG_EVENTS.AFTER_OPEN}' event`, () => {
+      throw new Error('implement me');
+    });
+
+    it(`should be possible to subscribe to the '${DIALOG_EVENTS.AFTER_CLOSE}' event`, () => {
+      throw new Error('implement me');
     });
   });
 });

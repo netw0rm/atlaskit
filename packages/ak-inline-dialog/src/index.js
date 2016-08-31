@@ -9,6 +9,11 @@ import Blanket from 'ak-blanket';
 const closeHandlerSymbol = Symbol();
 const keyPressHandlerSymbol = Symbol();
 
+const EVENTS = {
+  AFTER_OPEN: 'after-open',
+  AFTER_CLOSE: 'after-close',
+};
+
 function renderBlanketIfNeeded(elem) {
   if (elem.hasBlanket) {
     return (
@@ -41,9 +46,9 @@ export default define('ak-inline-dialog', {
   render(elem) {
     if (typeof elem.open === 'boolean') {
       if (elem.open) {
-        emit(elem, 'ak-after-open');
+        emit(elem, EVENTS.AFTER_OPEN);
       } else {
-        emit(elem, 'ak-after-close');
+        emit(elem, EVENTS.AFTER_CLOSE);
       }
     }
     // do not render anything if the dialog is hidden
@@ -245,3 +250,5 @@ export default define('ak-inline-dialog', {
     }),
   },
 });
+
+export { EVENTS };

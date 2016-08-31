@@ -40,9 +40,9 @@
       "resolved": "https://registry.npmjs.org/@kadira/storybook-addon-links/-/storybook-addon-links-1.0.1.tgz"
     },
     "@kadira/storybook-addons": {
-      "version": "1.4.0",
+      "version": "1.5.0",
       "from": "@kadira/storybook-addons@>=1.3.1 <2.0.0",
-      "resolved": "https://registry.npmjs.org/@kadira/storybook-addons/-/storybook-addons-1.4.0.tgz"
+      "resolved": "https://registry.npmjs.org/@kadira/storybook-addons/-/storybook-addons-1.5.0.tgz"
     },
     "@kadira/storybook-channel": {
       "version": "1.1.0",
@@ -123,6 +123,11 @@
       "version": "0.0.9",
       "from": "ak-dmd-plugin@0.0.9",
       "resolved": "https://registry.npmjs.org/ak-dmd-plugin/-/ak-dmd-plugin-0.0.9.tgz"
+    },
+    "akutil-common-test": {
+      "version": "1.5.0",
+      "from": "akutil-common-test@>=1.5.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/akutil-common-test/-/akutil-common-test-1.5.0.tgz"
     },
     "akutil-cucumber": {
       "version": "1.0.0",
@@ -3611,6 +3616,11 @@
       "from": "imurmurhash@>=0.1.4 <0.2.0",
       "resolved": "https://registry.npmjs.org/imurmurhash/-/imurmurhash-0.1.4.tgz"
     },
+    "incremental-dom": {
+      "version": "0.4.1",
+      "from": "incremental-dom@0.4.1",
+      "resolved": "https://registry.npmjs.org/incremental-dom/-/incremental-dom-0.4.1.tgz"
+    },
     "indent-string": {
       "version": "2.1.0",
       "from": "indent-string@>=2.1.0 <3.0.0",
@@ -6125,10 +6135,15 @@
       "from": "sinon-chai@>=2.8.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/sinon-chai/-/sinon-chai-2.8.0.tgz"
     },
+    "skatejs": {
+      "version": "1.2.4",
+      "from": "skatejs@>=1.2.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/skatejs/-/skatejs-1.2.4.tgz"
+    },
     "skatejs-named-slots": {
-      "version": "1.1.1",
+      "version": "1.2.0",
       "from": "skatejs-named-slots@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/skatejs-named-slots/-/skatejs-named-slots-1.1.1.tgz"
+      "resolved": "https://registry.npmjs.org/skatejs-named-slots/-/skatejs-named-slots-1.2.0.tgz"
     },
     "skatejs-web-components": {
       "version": "1.0.4",

@@ -44,7 +44,9 @@ Once you made some changes, stage them and then commit them using `npm run commi
 # How do I...
 
 ## Generate a new component skeleton
-```npm run create my-component-name```
+```
+npm run create my-component-name
+```
 
 Will create a new templated component under `packages/my-component-name` with everything you need to get started.
 

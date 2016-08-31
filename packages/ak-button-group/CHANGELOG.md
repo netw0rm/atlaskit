@@ -1,25 +1,5 @@
-<a name="1.0.2"></a>
-## 1.0.2 (2016-08-31)
-
-
-### Features
-
-* Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
-
-
-
-<a name="eslint-config-ak-tests@1.0.2"></a>
-## eslint-config-ak-tests@1.0.2 (2016-06-29)
-
-
-
-<a name="eslint-config-ak-tests@1.0.1"></a>
-## eslint-config-ak-tests@1.0.1 (2016-06-27)
-
-
-
-<a name="eslint-config-ak-tests@1.0.0"></a>
-# eslint-config-ak-tests@1.0.0 (2016-06-24)
+<a name="0.0.0"></a>
+# 0.0.0 (2016-08-31)
 
 
 

@@ -1,5 +1,20 @@
-<a name="1.3.0"></a>
-# 1.3.0 (2016-08-31)
+<a name="2.0.0"></a>
+# 2.0.0 (2016-08-31)
+
+
+
+<a name="ak-blanket@2.0.0"></a>
+# ak-blanket@2.0.0 (2016-08-31)
+
+
+### Code Refactoring
+
+* **events:** Change the event name to not contain a prefix ([0c299c2](https://bitbucket.org/atlassian/atlaskit/commits/0c299c2))
+
+
+### BREAKING CHANGES
+
+* events: This changes the event name used from 'ak-blanket-click' to 'activate'
 
 
 

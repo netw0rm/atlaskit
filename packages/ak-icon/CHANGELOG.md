@@ -1,5 +1,10 @@
-<a name="1.5.0"></a>
-# 1.5.0 (2016-08-31)
+<a name="1.6.0"></a>
+# 1.6.0 (2016-08-31)
+
+
+
+<a name="ak-icon@1.6.0"></a>
+# ak-icon@1.6.0 (2016-08-31)
 
 
 
@@ -19,11 +24,14 @@
 
 ### Bug Fixes
 
+* **component:** no matter what size the icon svg is, it will now be centered ([9f1ad20](https://bitbucket.org/atlassian/atlaskit/commits/9f1ad20))
 * Use uid everywhere ([b118171](https://bitbucket.org/atlassian/atlaskit/commits/b118171))
 
 
 ### Features
 
+* **component:** add new glyph for help icon ([398e72a](https://bitbucket.org/atlassian/atlaskit/commits/398e72a))
+* **component:** add three new icons: teams, snippets, bitbucket ([58de65b](https://bitbucket.org/atlassian/atlaskit/commits/58de65b))
 * Make babel-runtime part of the package, so it can be de-duplicated on build by the consumer ([9863540](https://bitbucket.org/atlassian/atlaskit/commits/9863540))
 
 
@@ -37,8 +45,14 @@
 ## ak-icon@1.0.2 (2016-08-25)
 
 
+### Bug Fixes
+
+* **component:** icon can have an undefined glyph and not throw an exception ([6b5213f](https://bitbucket.org/atlassian/atlaskit/commits/6b5213f))
+
+
 ### Features
 
+* **component:** new icons for ak-navigation in bitbucket ([3e75d6a](https://bitbucket.org/atlassian/atlaskit/commits/3e75d6a))
 * Fix various bugs in ak-editor-bitbucket, upgrade skatejs everywhere. ([122b23a](https://bitbucket.org/atlassian/atlaskit/commits/122b23a))
 
 

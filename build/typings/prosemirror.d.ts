@@ -179,7 +179,7 @@ declare module 'prosemirror/dist/edit/main' {
     type AnySubscription = Subscription<(...args: any[]) => any>;
 
     interface On {
-      transformPasted: Subscription<(slice: Slice) => any>;
+      transformPasted: Subscription<(slice: Slice) => Slice>;
       flush: AnySubscription;
       change: AnySubscription;
       activeMarkChange: AnySubscription;
@@ -691,15 +691,15 @@ declare module 'prosemirror/dist/model/node' {
     class Node {
         constructor(type: any, attrs: any, content: any, marks: any);
         content: any;
-        nodeSize: any;
+        nodeSize: number;
         childCount: any;
         child(index: any): any;
         maybeChild(index: any): any;
         forEach(f: any): void;
-        textBetween(from: any, to: any, separator: any): any;
+        textBetween(from: number, to: number, separator?: any): any;
         firstChild: any;
         lastChild: any;
-        eq(other: any): any;
+        eq(other: any): boolean;
         sameMarkup(other: any): boolean;
         hasMarkup(type: any, attrs: any, marks: any): boolean;
         copy(content?: any): any;
@@ -851,7 +851,7 @@ declare module 'prosemirror/dist/model/schema' {
         create(attrs: any): any;
         static compile(marks: any, schema: any): any;
         removeFromSet(set: any): any;
-        isInSet(set: any): any;
+        isInSet(set: this[]): this | undefined;
         toDOM(_: any): void;
         matchDOMTag: any;
         matchDOMStyle: any;
@@ -859,15 +859,15 @@ declare module 'prosemirror/dist/model/schema' {
     export { MarkType };
     class Schema {
         constructor(spec: any, data?: any);
-        marks: any;
+        marks: {[type: string]: MarkType};
         nodes: any;
         nodeSpec: any;
         node(type: any, attrs?: any, content?: any, marks?: any): any;
-        text(text: any, marks?: any): any;
-        mark(name: any, attrs?: any): any;
+        text(text: string, marks?: any): TextNode;
+        mark(name: string, attrs?: any): any;
         nodeFromJSON(json: any): any;
         markFromJSON(json: any): any;
-        nodeType(name: any): any;
+        nodeType(name: string): any;
         parseDOM(dom: any, options?: {}): any;
     }
     export { Schema };
@@ -915,7 +915,7 @@ declare module 'prosemirror/dist/prompt' {
 }
 
 declare module 'prosemirror/dist/schema-basic' {
-    import { Block, Inline, Text, Attribute, MarkType } from 'prosemirror/dist/model';
+    import { Block, Inline, Text, Attribute, MarkType, Schema } from 'prosemirror/dist/model';
     export { Text };
     class Doc extends Block {
     }
@@ -1077,7 +1077,7 @@ declare module 'prosemirror/dist/schema-basic' {
         toDOM(): string[];
     }
     export { CodeMark };
-    const schema: any;
+    const schema: Schema;
     export { schema };
 }
 

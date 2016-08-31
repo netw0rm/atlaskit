@@ -1,8 +1,9 @@
 import { ProseMirror } from 'prosemirror/dist/edit';
+import { Slice } from 'prosemirror/dist/model';
 import { Context } from './';
 
-export default function(context: Context) {
-  return new context.Plugin(class SyncPlugin {
+export default function(ctx: Context) {
+  return new ctx.Plugin(class SyncPlugin {
     constructor(pm: ProseMirror) {
       // Poke inside the trigger all update schedulers. Normally it would be
       // done on a timeout if the editor is in the DOM, but for tests we want to
@@ -11,9 +12,22 @@ export default function(context: Context) {
         (pm as any).centralScheduler.force();
       }
 
+      // Some subscription handlers need to adhere to specific behaviour (e.g.
+      // returning a value).
+      const handlers = {
+        transformPasted(slice: Slice) {
+          forceSync();
+          return slice;
+        },
+      };
+
+      const defaultHandler = () => { forceSync(); };
+
       Object.keys(pm.on)
-        .map(name => (pm.on as any)[name])
-        .forEach(subscription => subscription.add(forceSync));
+        .forEach(name => {
+          const handler = (handlers as any)[name] || defaultHandler;
+          (pm.on as any)[name].add(handler);
+        });
     }
   });
 }

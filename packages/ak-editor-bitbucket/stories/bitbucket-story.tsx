@@ -17,10 +17,9 @@ const imageUploader = (e: any, fn: any) => {
 };
 
 storiesOf('ak-editor-bitbucket', module)
-  .add('Empty', () => {
-    debugger;
-    return <Bitbucket />;
-  })
+  .add('Empty', () => (
+    <Bitbucket />;
+  )
   .add('With default value', () => (
     <Bitbucket defaultValue="What do you want to say?" />
   ))
@@ -40,7 +39,6 @@ storiesOf('ak-editor-bitbucket', module)
   .add('Markdown preview', () => {
     type Props = {};
     type State = { markdown: string };
-    debugger;
     class Demo extends React.Component<Props, State> {
       constructor() {
         super();

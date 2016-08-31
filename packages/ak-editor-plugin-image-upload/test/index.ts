@@ -1,130 +1,125 @@
-import { default as plugin } from '../src';
-import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
+import ImageUploadPlugin from '../src';
+import { Plugin } from 'prosemirror/dist/edit';
 import { Slice, Node, Fragment } from 'prosemirror/dist/model';
 import { schema } from 'prosemirror/dist/schema-basic';
 import testing from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-const { builder, chaiEditor, SyncPlugin }= testing({ Fragment, Node, Plugin, schema, Slice });
+const { builder, chaiPlugin, makeEditor } = testing({
+  Fragment, Node, Plugin, schema, Slice });
 const { doc, p, img } = builder;
-chai.use(chaiEditor);
+chai.use(chaiPlugin);
 
 describe('ak-editor-plugin-image-upload', () => {
-  const makeEditor = () => new ProseMirror({
-    schema: schema,
-    plugins: [plugin, SyncPlugin]
+  const editor = (...content: any[]) => {
+    const { pm, plugin } = makeEditor({
+      doc: doc(p(...content)),
+      plugin: ImageUploadPlugin,
+    });
+    return { pm, plugin, sel: pm.doc.refs['<>'] };
+  };
+  const favicon = () => img({ src: 'favicon.png' });
+
+  it('allows change handler to be registered', () => {
+    const { plugin } = editor('');
+
+    plugin.onChange(sinon.spy());
   });
 
-  it('should be able to register handlers for state change events', () => {
-    const pm = makeEditor();
-    const onChange = sinon.spy();
-    plugin.get(pm).onChange(onChange);
+  it('allows an image to be added at the current collapsed selection', () => {
+    const { pm, plugin } = editor('{<>}');
 
-    plugin.get(pm).addImage({ src: 'https://atlassian.com/favicon.png' });
-    pm.setNodeSelection(pm.selection.from - 1);
+    expect(plugin.addImage({ src: 'favicon.png' })).to.be.true;
+    expect(pm.doc).to.deep.equal(doc(p(favicon())));
+  });
+
+  it('emits a change when an image is selected', () => {
+    const { pm, plugin, sel } = editor('{<>}', favicon());
+    const onChange = sinon.spy();
+    plugin.onChange(onChange);
+
+    pm.setNodeSelection(sel);
 
     expect(onChange.callCount).to.equal(1);
   });
 
-  it('should not emit extra change events when state has not changed', () => {
-    const pm = makeEditor();
+  it('does not emit multiple changes when an image is not selected', () => {
+    const { pm, plugin } = editor('{<>}t{a}e{b}st', favicon());
+    const { a, b } = pm.doc.refs;
     const onChange = sinon.spy();
-    plugin.get(pm).onChange(onChange);
+    plugin.onChange(onChange);
 
-    plugin.get(pm).addImage({ src: 'https://atlassian.com/favicon.png' });
+    pm.setTextSelection(a);
+    pm.setTextSelection(b);
 
-    pm.setNodeSelection(pm.selection.from - 1);
-    // TODO: Make the test pass with this line uncommented.
-    // pm.setNodeSelection(pm.selection.from - 1);
+    expect(onChange.callCount).to.equal(0);
+  });
+
+  it('does not emit multiple changes when an image is selected multiple times', () => {
+    const { pm, plugin, sel } = editor('{<>}', favicon());
+    const onChange = sinon.spy();
+    pm.setNodeSelection(sel);
+
+    plugin.onChange(onChange);
+    pm.setNodeSelection(sel);
+
+    expect(onChange.callCount).to.equal(0);
+  });
+
+  it('emits a change event when selection leaves an image', () => {
+    const { pm, plugin, sel } = editor('{a}test{<>}', favicon());
+    const { a } = pm.doc.refs;
+    const onChange = sinon.spy();
+    pm.setNodeSelection(sel);
+    plugin.onChange(onChange);
+
+    pm.setTextSelection(a);
 
     expect(onChange.callCount).to.equal(1);
   });
 
-  it('should emit change events when the state has changed', () => {
-    const pm = makeEditor();
-    const onChange = sinon.spy();
-    plugin.get(pm).onChange(onChange);
+  it('does not permit an image to be added when an image is selected', () => {
+    const { pm, plugin, sel } = editor('{<>}', favicon());
+    pm.setNodeSelection(sel);
 
-    plugin.get(pm).addImage({ src: 'https://atlassian.com/favicon.png' });
-
-    pm.setNodeSelection(pm.selection.from - 1);
-    pm.setTextSelection(pm.selection.from + 1);
-
-    expect(onChange.callCount).to.equal(2);
+    expect(plugin.addImage({ src: 'favicon.png' })).to.be.false;
+    expect(pm.doc).to.deep.equal(doc(p(favicon())));
   });
 
-  it('should not be able to create an image on another image', () => {
-    const pm = makeEditor();
-    const imageOptions = { src: 'https://atlassian.com/favicon.png' };
+  it('does not permit an image to be added when the state is disabled', () => {
+    const { pm, plugin } = editor('{<>}');
 
-    plugin.get(pm).addImage(imageOptions);
-    // place the cursor on top of the image we just added
-    pm.setNodeSelection(pm.selection.from - 1);
+    plugin.setState({ enabled: false });
 
-    expect(plugin.get(pm).addImage(imageOptions)).to.be.false;
+    expect(plugin.addImage({ src: 'favicon.png' })).to.be.false;
+    expect(pm.doc).to.deep.equal(doc(p()));
   });
 
-  it('should not be able to create an image when state is disabled', () => {
-    const pm = makeEditor();
-    const imageOptions = { src: 'https://atlassian.com/favicon.png' };
+  it('does not permit an image to be removed at a collapsed text selection', () => {
+    const { plugin } = editor('test{<>}');
 
-    plugin.get(pm).setState({ enabled: false });
-
-    expect(plugin.get(pm).addImage(imageOptions)).to.be.false;
+    expect(plugin.removeImage()).to.be.false;
   });
 
-  it('should be able to create an image ImageUploadOptions', () => {
-    const pm = makeEditor();
-    const imageOptions = {
-      src: 'https://atlassian.com/favicon.png',
-      title: 'Atlassian'
-    };
+  it('can remove a selected image', () => {
+    const { pm, plugin, sel } = editor('{<>}', favicon());
+    pm.setNodeSelection(sel);
 
-    expect(plugin.get(pm).addImage(imageOptions)).to.be.true;
-    expect(pm.doc).to.equal(doc(p(img(imageOptions))));
+    expect(plugin.removeImage()).to.be.true;
+    expect(pm.doc).to.deep.equal(doc(p()));
   });
 
-  it('should not be able to remove a a non image', () => {
-    const pm = makeEditor();
-    expect(plugin.get(pm).removeImage()).to.be.false;
-  });
+  it('can update a selected image', () => {
+    const { pm, plugin, sel } = editor('{<>}', favicon());
+    pm.setNodeSelection(sel);
 
-  it('should be able to remove an image', () => {
-    const pm = makeEditor();
-    const imageOptions = {
-      src: 'https://atlassian.com/favicon.png',
-      title: 'Atlassian'
-    };
-
-    expect(plugin.get(pm).addImage(imageOptions)).to.be.true;
-    expect(pm.doc).to.equal(doc(p(img(imageOptions))));
-
-    // place the cursor on top of the image we just added
-    pm.setNodeSelection(pm.selection.from - 1);
-
-    expect(plugin.get(pm).removeImage()).to.be.true;
-    expect(pm.doc).to.equal(doc(p()));
-  });
-
-  it('should be able to update an image', () => {
-    const pm = makeEditor();
-    const originalImage = {
-      src: 'https://atlassian.com/favicon.png',
-      title: 'Atlassian'
-    };
     const replacementImage = {
-      src: 'https://atlassian.com/favicon.png',
+      src: 'atlassian.png',
       title: 'Atlassian'
     };
 
-    expect(plugin.get(pm).addImage(originalImage)).to.be.true;
-    expect(pm.doc).to.equal(doc(p(img(originalImage))));
-
-    // place the cursor on top of the image we just added
-    pm.setNodeSelection(pm.selection.from - 1);
-
-    expect(plugin.get(pm).updateImage(replacementImage)).to.be.true;
-    expect(pm.doc).to.equal(doc(p(img(replacementImage))));
+    expect(plugin.updateImage(replacementImage)).to.be.true;
+    expect(pm.doc).to.deep.equal(doc(p(img(replacementImage))));
   });
 });

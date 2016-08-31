@@ -32,8 +32,8 @@ const attachFacadeInput = function(elem) {
     }
   });
 
-  Array.prototype.forEach.call(list, (node) => {
-    listObserver.observe(node, { attributes: true });
+  Array.prototype.forEach.call(list, (nodeFactory) => {
+    listObserver.observe(nodeFactory, { attributes: true });
   });
 
   // observe attribute changes and sync its ProseMirror node.
@@ -135,20 +135,20 @@ export const nodeLifecycleHandler = function(pm) {
     return
   }
 
-  Array.prototype.forEach.call(nodes, (node) => {
+  Array.prototype.forEach.call(nodes, (nodeFactory) => {
     node.removeAttribute('editor-activate');
 
     // FIXME: refactor this to have a nice, reusable API
-    const nodeType = node.getAttribute('editor-node-type');
+    const nodeType = nodeFactory.getAttribute('editor-node-type');
     if (nodeType === "entity") {
-      const data = node.getAttribute('editor-data');
+      const data = nodeFactory.getAttribute('editor-data');
 
       // if the first character of data attribute matches one of the lead characters.
       // attach the facade input,
       if (['@', ':'].indexOf(data) !== -1) {
-        attachFacadeInput(node);
+        attachFacadeInput(nodeFactory);
       } else {
-        renderEntity(node);
+        renderEntity(nodeFactory);
       }
     }
   });

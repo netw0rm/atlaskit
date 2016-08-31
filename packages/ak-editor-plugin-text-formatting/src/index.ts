@@ -27,14 +27,14 @@ export type StateChangeHandler = (state: TextFormattingState) => any;
 
 export type MarkType = 'strong' | 'em' | 'underline';
 
-function markActive(pm: ProseMirror, type: MarkType) : boolean {
+function markActive(pm: ProseMirror, type: MarkType): boolean {
   const markType = pm.schema.marks[type];
   if (!markType) {
     return false;
   }
   const { from, to, empty } = pm.selection;
   if (empty) {
-    return markType.isInSet(pm.activeMarks());
+    return Boolean(markType.isInSet(pm.activeMarks()));
   }
   return pm.doc.rangeHasMark(from, to, markType);
 };

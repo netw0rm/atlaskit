@@ -1,60 +1,182 @@
-import { Node } from 'prosemirror/dist/model';
+import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
+import { Fragment, Node, Slice } from 'prosemirror/dist/model';
+import { schema } from 'prosemirror/dist/schema-basic';
 import { Context } from './';
+import matches from './matches';
 
-export default function(context: Context) {
-  type Content = string | Node | Node[];
-  type Attrs = {[key: string]: any};
+export const defaultContext = { Fragment, Node, Plugin, Slice, schema };
 
-  function flatten(content: Content[]) {
-    let result: Node[] = [];
+type position = number;
+export type Refs = {[name: string]: position};
+type BuilderContent = string | Node | Node[];
+type RefsContent = RefsNode | RefsNode[];
 
-    content.forEach(child => {
-      if (typeof child === "string") {
-        result.push(context.schema.text(child));
-      } else if (child instanceof context.Node) {
-        result.push(child);
-      } else if (child instanceof Array) {
-        result = result.concat(child);
-      }
-    });
+/**
+ * ProseMirror doesn't support empty text nodes, so this class provides a way to
+ * insert refs into the builder without needing to actually insert a node.
+ */
+export class RefsTrackingNode {
+  refs: Refs;
+}
 
-    return result;
+export interface RefsNode extends Node {
+  refs: Refs;
+}
+
+/**
+ * Create a text node.
+ *
+ * Special markers called "refs" can be put in the text. Refs provide a way to
+ * get a reference to the position in text after the node has been constructed.
+ */
+export function text(value: string, ctx: Context): RefsNode | RefsTrackingNode {
+  let stripped = "";
+  let textIndex = 0;
+  let refs: Refs = {};
+
+  for (let match of matches(value, /{(\w+|<|>|<>)}/g)) {
+    const [refToken, refName] = match;
+    stripped += value.slice(textIndex, match.index);
+    refs[refName] = stripped.length;
+    textIndex = match.index + refToken.length
   }
 
-  function block(type: string, attrs?: Attrs) {
-    return function(...content: Content[]): Node {
-      const nodes = flatten(content);
-      return context.schema.nodes[type].create(attrs, nodes);
+  stripped += value.slice(textIndex);
+
+  const node = stripped === ""
+    ? new RefsTrackingNode()
+    : ctx.schema.text(stripped) as RefsNode;
+
+  node.refs = refs;
+  return node;
+}
+
+/**
+ * Offset ref position values by some amount.
+ */
+export function offsetRefs(refs: Refs, offset: number): Refs {
+  const result = {} as Refs;
+  for (const name in refs) {
+    result[name] = refs[name] + offset;
+  }
+  return result;
+}
+
+/**
+ * Given a collection of nodes, sequence them in an array and return the result
+ * along with the updated refs.
+ */
+export function sequence(...content: (RefsNode | RefsTrackingNode)[]) {
+  let position = 0;
+  const refs = {} as Refs;
+  const nodes = [] as RefsNode[];
+
+  // It's bizarre that this is necessary. An if/else in the for...of should have
+  // sufficient but it did not work at the time of writing.
+  const isRefsTrackingNode = (n: any): n is RefsTrackingNode => n instanceof RefsTrackingNode;
+  const isRefsNode = (n: any): n is RefsNode => !isRefsTrackingNode(n);
+
+  for (const node of content) {
+    if (isRefsTrackingNode(node)) {
+      Object.assign(refs, offsetRefs(node.refs, position));
+    }
+    if (isRefsNode(node)) {
+      const thickness = node.isText ? 0 : 1;
+      Object.assign(refs, offsetRefs(node.refs, position + thickness));
+      position += node.nodeSize;
+      nodes.push(node as RefsNode);
     }
   }
+  return { nodes, refs };
+}
 
-  function mark(type: string, attrs?: Attrs) {
-    const mark = context.schema.mark(type, attrs)
-    return (...content: Content[]) => flatten(content)
-      .map(n => mark.type.isInSet(n.marks)
-        ? n
-        : n.mark(mark.addToSet(n.marks)));
+/**
+ * Given a jagged array, flatten it down to a single level.
+ */
+export function flatten<T>(deep: (T | T[])[]): T[] {
+  const flat = [] as T[];
+  for (let item of deep) {
+    if (Array.isArray(item)) {
+      flat.splice(flat.length, 0, ...item);
+    } else {
+      flat.push(item);
+    }
   }
+  return flat;
+}
 
+/**
+ * Coerce builder content into ref nodes.
+ */
+function coerce(content: BuilderContent[], ctx: Context) {
+  const refsContent = content
+    .map(item => typeof item === 'string'
+      ? text(item, ctx)
+      : item) as RefsContent[];
+  return sequence(...flatten(refsContent));
+}
+
+/**
+ * Create a factory for nodes.
+ */
+export function nodeFactory(type: string, attrs = {}, ctx: Context) {
+  const nodeType = ctx.schema.nodes[type];
+
+  return function(...content: BuilderContent[]): RefsNode {
+    const { nodes, refs } = coerce(content, ctx);
+    const node = nodeType.create(attrs, nodes) as RefsNode;
+    node.refs = refs;
+    return node;
+  }
+}
+
+/**
+ * Create a factory for marks.
+ */
+export function markFactory(type: string, attrs = {}, ctx: Context) {
+  const mark = ctx.schema.mark(type, attrs)
+  return (...content: BuilderContent[]) => {
+    const { nodes } = coerce(content, ctx);
+    return nodes
+      .map(node => {
+        if (mark.type.isInSet(node.marks)) {
+          return node;
+        } else {
+          const refNode = node.mark(mark.addToSet(node.marks)) as RefsNode;
+          refNode.refs = node.refs;
+          return refNode;
+        }
+      });
+  };
+}
+
+export default function(ctx = defaultContext) {
   return {
-    doc: block("doc"),
-    p: block("paragraph"),
-    blockquote: block("blockquote"),
-    pre: block("code_block"),
-    h1: block("heading", {level: 1}),
-    h2: block("heading", {level: 2}),
-    li: block("list_item"),
-    ul: block("bullet_list"),
-    ol: block("ordered_list"),
-    br: context.schema.node("hard_break"),
-    img: (attrs: { src: string, alt?: string, title?: string }) => context.schema.node("image", attrs),
-    hr: context.schema.node("horizontal_rule"),
-    em: mark("em"),
-    strong: mark("strong"),
-    code: mark("code"),
-    a: (attrs: { href: string }) => mark("link", attrs),
-    text: (text: string) => context.schema.text(text),
-    fragment: (...content: Content[]) => flatten(content),
-    slice: (...content: Content[]) => new context.Slice(new context.Fragment(flatten(content)), 0, 0),
+    doc: nodeFactory("doc", {}, ctx),
+    p: nodeFactory("paragraph", {}, ctx),
+    blockquote: nodeFactory("blockquote", {}, ctx),
+    pre: nodeFactory("code_block", {}, ctx),
+    h1: nodeFactory("heading", {level: 1}, ctx),
+    h2: nodeFactory("heading", {level: 2}, ctx),
+    li: nodeFactory("list_item", {}, ctx),
+    ul: nodeFactory("bullet_list", {}, ctx),
+    ol: nodeFactory("ordered_list", {}, ctx),
+    br: ctx.schema.node("hard_break"),
+    img: (attrs: { src: string, alt?: string, title?: string }) => ctx.schema.node("image", attrs),
+    hr: ctx.schema.node("horizontal_rule"),
+    em: markFactory("em", {}, ctx),
+    strong: markFactory("strong", {}, ctx),
+    code: markFactory("code", {}, ctx),
+    a: (attrs: { href: string }) => markFactory("link", attrs, ctx),
+    text: (value: string) => text(value, ctx),
+    fragment: (...content: BuilderContent[]) => flatten<BuilderContent>(content),
+    slice: (...content: BuilderContent[]) => new ctx.Slice(new ctx.Fragment(flatten<BuilderContent>(content)), 0, 0),
+
+    insert: (pm: ProseMirror, ...content: BuilderContent[]) => {
+      const { from, to } = pm.selection;
+      const { nodes, refs } = coerce(content, ctx);
+      pm.tr.replaceWith(from, to, nodes).apply();
+      return offsetRefs(refs, from);
+    },
   };
 };

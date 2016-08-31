@@ -32,6 +32,7 @@ const $initEditor = '__init_editor__';
 const $pm = '__pm__';
 const $ready = '__ready__';
 const $focused = '__focused__';
+const $expanded = '__expanded__';
 const $wrapper = '__wrapper__';
 const $onContentClick = '__onContentClick__';
 const $canChangeBlockType = '__canChangeBlockType__';
@@ -117,6 +118,15 @@ function changeHyperLinkValue(hyperLinkPlugin) {
   };
 }
 
+function toggleExpansion(elem) {
+  return () => {
+    elem[$expanded] = !elem[$expanded];
+    if (elem[$expanded]) {
+      elem[$ready] = false;
+    }
+  };
+}
+
 export default define('ak-editor-bitbucket', {
   created(elem) {
     bind(elem, $onContentClick);
@@ -124,10 +134,12 @@ export default define('ak-editor-bitbucket', {
   },
 
   rendered(elem) {
-    if (!elem[$ready]) {
+    if (!elem[$ready] && elem[$expanded]) {
       elem[$ready] = true;
       elem[$initEditor]();
       emit(elem, 'ready');
+
+      elem[$pm].focus();
     }
   },
 
@@ -141,54 +153,69 @@ export default define('ak-editor-bitbucket', {
         }
       >
         <style>{shadowStyles.toString()}</style>
-        <Toolbar>
-          <ToolbarBlockType
-            disabled={!elem[$canChangeBlockType]}
-            selectedFont={elem[$selectedFont]}
-            onSelectFont={selectFont(elem[$blockTypePlugin])}
+        {elem[$expanded] ?
+          <div>
+            <Toolbar>
+              <ToolbarBlockType
+                disabled={!elem[$canChangeBlockType]}
+                selectedFont={elem[$selectedFont]}
+                onSelectFont={selectFont(elem[$blockTypePlugin])}
+              />
+              <ToolbarTextFormatting
+                boldActive={elem[$strongActive]}
+                italicActive={elem[$emActive]}
+                underlineActive={elem[$underlineActive]}
+                boldDisabled={!elem[$canChangeTextFormatting]}
+                italicDisabled={!elem[$canChangeTextFormatting]}
+                underlineDisabled={!elem[$canChangeTextFormatting]}
+                underlineHidden
+                on-toggle-bold={toggleMark(elem[$textFormattingPlugin], 'strong')}
+                on-toggle-italic={toggleMark(elem[$textFormattingPlugin], 'em')}
+                on-toggle-underline={toggleMark(elem[$textFormattingPlugin], 'underline')}
+              />
+              <ToolbarHyperlink
+                active={elem[$hyperLinkActive]}
+                disabled={!elem[$canLinkHyperlink]}
+                onSave={addHyperLink(elem[$hyperLinkPlugin])}
+              />
+              <ToolbarLists
+                bulletlistActive={elem[$bulletListActive]}
+                numberlistActive={elem[$numberListActive]}
+                on-toggle-number-list={() => elem[$listsPlugin].toggleList('ordered_list')}
+                on-toggle-bullet-list={() => elem[$listsPlugin].toggleList('bullet_list')}
+              />
+            </Toolbar>
+            <Content
+              className={shadowStyles.locals.content}
+              onclick={elem[$onContentClick]}
+              ref={(wrapper) => { elem[$wrapper] = wrapper; }}
+              openTop
+              openBottom
+              skip
+            />
+            {elem[$hyperLinkActive] ?
+              <HyperLink
+                href={elem[$hyperLinkText]}
+                textInputValue={elem[$hyperLinkText]}
+                attachTo={elem[$hyperLinkElement]}
+                onUnlink={unlink(elem[$hyperLinkPlugin])}
+                onchange={changeHyperLinkValue(elem[$hyperLinkPlugin])}
+              />
+              : null
+            }
+            <Footer
+              openTop
+              onSave={toggleExpansion(elem)}
+              oncancel={toggleExpansion(elem)}
+            />
+          </div>
+          :
+          <input
+            placeholder={elem.defaultValue}
+            onclick={toggleExpansion(elem)}
+            class={shadowStyles.locals.fakeInput}
           />
-          <ToolbarTextFormatting
-            boldActive={elem[$strongActive]}
-            italicActive={elem[$emActive]}
-            underlineActive={elem[$underlineActive]}
-            boldDisabled={!elem[$canChangeTextFormatting]}
-            italicDisabled={!elem[$canChangeTextFormatting]}
-            underlineDisabled={!elem[$canChangeTextFormatting]}
-            underlineHidden
-            on-toggle-bold={toggleMark(elem[$textFormattingPlugin], 'strong')}
-            on-toggle-italic={toggleMark(elem[$textFormattingPlugin], 'em')}
-            on-toggle-underline={toggleMark(elem[$textFormattingPlugin], 'underline')}
-          />
-          <ToolbarHyperlink
-            active={elem[$hyperLinkActive]}
-            disabled={!elem[$canLinkHyperlink]}
-            onSave={addHyperLink(elem[$hyperLinkPlugin])}
-          />
-          <ToolbarLists
-            bulletlistActive={elem[$bulletListActive]}
-            numberlistActive={elem[$numberListActive]}
-            on-toggle-number-list={() => elem[$listsPlugin].toggleList('ordered_list')}
-            on-toggle-bullet-list={() => elem[$listsPlugin].toggleList('bullet_list')}
-          />
-        </Toolbar>
-        <Content
-          className={shadowStyles.locals.content}
-          onclick={elem[$onContentClick]}
-          ref={(wrapper) => { elem[$wrapper] = wrapper; }}
-          openTop
-          openBottom
-          skip
-        />
-        {elem[$hyperLinkActive] ?
-          <HyperLink
-            href={elem[$hyperLinkText]}
-            textInputValue={elem[$hyperLinkText]}
-            attachTo={elem[$hyperLinkElement]}
-            onUnlink={unlink(elem[$hyperLinkPlugin])}
-            onchange={changeHyperLinkValue(elem[$hyperLinkPlugin])}
-          />
-        : null}
-        <Footer openTop />
+        }
       </div>
     );
   },
@@ -210,7 +237,7 @@ export default define('ak-editor-bitbucket', {
      * @private
      */
     [$focused]: prop.boolean(),
-
+    [$expanded]: prop.boolean(),
     [$canChangeBlockType]: prop.boolean(),
     [$strongActive]: prop.boolean(),
     [$emActive]: prop.boolean(),

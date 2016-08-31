@@ -1,15 +1,16 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Item } from '../src/index.js';
+import { Item, events as dropdownEvents } from '../src';
 import keyCode from 'keycode';
 import { symbols } from 'skatejs';
+import 'custom-event-polyfill';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-dropdown-item:', () => {
-  describe('general behavior:', () => {
+describe('ak-dropdown-item', () => {
+  describe('general behavior', () => {
     let component;
     let itemContainer;
     beforeEach(() => {
@@ -31,23 +32,23 @@ describe('ak-dropdown-item:', () => {
       setTimeout(done);
     });
 
-    it('click on a component should emit `ak-dropdown-selected` event', (done) => {
+    it('click on a component should emit `selected` event', (done) => {
       const clickSpy = sinon.spy();
       itemContainer.appendChild(component);
-      itemContainer.addEventListener('ak-dropdown-selected', clickSpy);
+      itemContainer.addEventListener(dropdownEvents.selected, clickSpy);
 
       setTimeout(() => component[symbols.shadowRoot].firstChild.click());
       setTimeout(() => expect(clickSpy.called).to.equal(true));
       setTimeout(() => done());
     });
   });
-  describe('keyboard events:', () => {
+  describe('keyboard events', () => {
     const eventsMap = {
-      up: 'ak-dropdown-item-up',
-      down: 'ak-dropdown-item-down',
-      space: 'ak-dropdown-selected',
-      enter: 'ak-dropdown-selected',
-      tab: 'ak-dropdown-item-tab',
+      up: dropdownEvents.item.up,
+      down: dropdownEvents.item.down,
+      space: dropdownEvents.selected,
+      enter: dropdownEvents.selected,
+      tab: dropdownEvents.item.tab,
     };
     let component;
     let itemContainer;

@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkBlanket, { EVENTS } from '../src';
+import AkBlanket, { events } from '../src';
 import { name } from '../package.json';
 import { Component } from 'skatejs';
 
@@ -15,9 +15,9 @@ describe('ak-blanket', () => {
     });
 
     it('should have an events export with defined events', () => {
-      EVENTS.should.be.defined;
-      Object.keys(EVENTS).should.be.deep.equal([
-        'ACTIVATE',
+      events.should.be.defined;
+      Object.keys(events).should.be.deep.equal([
+        'activate',
       ]);
     });
   });

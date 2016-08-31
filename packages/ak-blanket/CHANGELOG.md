@@ -1,5 +1,20 @@
-<a name="2.0.0"></a>
-# 2.0.0 (2016-08-31)
+<a name="3.0.0"></a>
+# 3.0.0 (2016-08-31)
+
+
+
+<a name="ak-blanket@3.0.0"></a>
+# ak-blanket@3.0.0 (2016-08-31)
+
+
+### Code Refactoring
+
+* **eventing:** Changed the way events are exported ([6ab80d0](https://bitbucket.org/atlassian/atlaskit/commits/6ab80d0))
+
+
+### BREAKING CHANGES
+
+* eventing: event exports changed
 
 
 

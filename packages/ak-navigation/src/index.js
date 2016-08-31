@@ -113,6 +113,14 @@ export default define('ak-navigation', {
     width: prop.number({
       default: collapsedWidth,
     }),
+    toggleHandler: {
+      default: (elem) => function toggleHandler(event) {
+        if (event.keyCode === keycode('[')) {
+          elem.open = !elem.open;
+        }
+      },
+    },
+
     open: prop.boolean({
       attribute: true,
       set(elem, data) {
@@ -157,21 +165,14 @@ export default define('ak-navigation', {
       },
     }),
   },
-  prototype: {
-    toggleHandler(event) {
-      if (event.keyCode === keycode('[')) {
-        this.open = !this.open;
-      }
-    },
-  },
   attached(elem) {
     setTimeout(() => {
       elem.shouldAnimate = true;
     }, shouldAnimateThreshold);
-    document.body.addEventListener('keyup', elem.toggleHandler.bind(elem));
+    document.addEventListener('keyup', elem.toggleHandler);
   },
   detached(elem) {
-    document.body.removeEventListener('keyup', elem.toggleHandler);
+    document.removeEventListener('keyup', elem.toggleHandler);
   },
   created(elem) {
     elem.addEventListener('ak-navigation-create-drawer-open', () => {

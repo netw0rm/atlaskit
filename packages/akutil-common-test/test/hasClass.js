@@ -15,6 +15,19 @@ describe('hasClass', () => {
     document.body.removeChild(component);
   });
 
+  it('should return false with no arguments at all', () => {
+    expect(hasClass()).to.be.false;
+    expect(hasClass(false)).to.be.false;
+    expect(hasClass(null)).to.be.false;
+  });
+
+  it('should return false if first argument is not a DOM Element', () => {
+    expect(hasClass({})).to.be.false;
+    expect(hasClass([])).to.be.false;
+    expect(hasClass('')).to.be.false;
+    expect(hasClass(1)).to.be.false;
+  });
+
   describe('when component has no class', () => {
     it('should return true if no class provided', () =>
       expect(hasClass(component)).to.be.true

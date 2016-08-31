@@ -26,43 +26,104 @@ describe('style', () => {
     afterMutations(done);
   });
 
-  it(':host', done => {
-    elem.css = { ':host': { display: 'none' } };
-    afterMutations(
-      () => expect(window.getComputedStyle(elem).display).to.equal('none'),
-      done
-    );
-  });
-
-  describe('::slotted', () => {
-    it('scoped slots', done => {
-      const span = document.createElement('span');
-      elem.appendChild(span);
+  describe(':host', () => {
+    it('no selectors', done => {
+      elem.css = { ':host': { display: 'none' } };
       afterMutations(
-        () => expect(window.getComputedStyle(span).position).to.equal('static', 'before'),
-        () => (elem.css = { '::slotted(*)': { position: 'relative' } }),
-        () => expect(window.getComputedStyle(span).position).to.equal('relative', 'after'),
+        () => expect(window.getComputedStyle(elem).display).to.equal('none'),
         done
       );
     });
 
-    // This is only necessary for polyfilled slots. We need to make sure that
-    // styles only target slots within the current, polyfilled shadow root.
-    it('slots outside of the shaow tree', done => {
-      const descendantSlot = document.createElement('slot');
-      const descendantSlotParent = document.createElement('span');
-      const descendantSlotChild = document.createElement('span');
-      descendantSlotParent.appendChild(descendantSlot);
-      descendantSlot.appendChild(descendantSlotChild);
-      elem.appendChild(descendantSlotParent);
+    it('selectors', done => {
+      elem.css = { ':host([test])': { display: 'none' } };
       afterMutations(
-        // eslint-disable-next-line max-len
-        () => expect(window.getComputedStyle(descendantSlotChild).position).to.equal('static', 'before'),
-        () => (elem.css = { '.my-slot::slotted(*)': { position: 'relative' } }),
-        // eslint-disable-next-line max-len
-        () => expect(window.getComputedStyle(descendantSlotChild).position).to.equal('static', 'after'),
+        () => expect(window.getComputedStyle(elem).display).to.equal('inline'),
+        () => elem.setAttribute('test', ''),
+        () => expect(window.getComputedStyle(elem).display).to.equal('none'),
+        () => elem.removeAttribute('test'),
+        () => expect(window.getComputedStyle(elem).display).to.equal('inline'),
         done
       );
+    });
+  });
+
+  describe('::slotted', () => {
+    describe('scoped', () => {
+      it('(*)', done => {
+        const span = document.createElement('span');
+        elem.appendChild(span);
+        afterMutations(
+          () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+          () => (elem.css = { '::slotted(*)': { display: 'none' } }),
+          () => expect(window.getComputedStyle(span).display).to.equal('none'),
+          done
+        );
+      });
+
+      it('(selector)', done => {
+        const span = document.createElement('span');
+        elem.appendChild(span);
+        afterMutations(
+          () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+          () => (elem.css = { '::slotted([test])': { display: 'none' } }),
+          () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+          () => span.setAttribute('test', ''),
+          () => expect(window.getComputedStyle(span).display).to.equal('none'),
+          () => span.removeAttribute('test'),
+          () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+          done
+        );
+      });
+    });
+
+    // This is only necessary for polyfilled slots. We need to make sure that
+    // styles only target slots within the current, polyfilled shadow root.
+    describe('unscoped', () => {
+      it('(*)', done => {
+        const descendantSlot = document.createElement('slot');
+        const descendantSlotParent = document.createElement('span');
+        const descendantSlotChild = document.createElement('span');
+
+        descendantSlotParent.appendChild(descendantSlot);
+        descendantSlot.appendChild(descendantSlotChild);
+        elem.appendChild(descendantSlotParent);
+
+        afterMutations(
+          // eslint-disable-next-line max-len
+          () => expect(window.getComputedStyle(descendantSlotChild).position).to.equal('static'),
+
+          // No need to test selectors here (we've done that above).
+          () => (elem.css = { '.my-slot::slotted(*)': { position: 'relative' } }),
+
+          // eslint-disable-next-line max-len
+          () => expect(window.getComputedStyle(descendantSlotChild).position).to.equal('static'),
+          done
+        );
+      });
+
+      it('(selector)', done => {
+        const descendantSlot = document.createElement('slot');
+        const descendantSlotParent = document.createElement('span');
+        const descendantSlotChild = document.createElement('span');
+
+        descendantSlotParent.appendChild(descendantSlot);
+        descendantSlot.appendChild(descendantSlotChild);
+        elem.appendChild(descendantSlotParent);
+
+        afterMutations(
+          // eslint-disable-next-line max-len
+          () => expect(window.getComputedStyle(descendantSlotChild).position).to.equal('static'),
+          () => (elem.css = { '.my-slot::slotted([test])': { position: 'relative' } }),
+          () => expect(window.getComputedStyle(descendantSlotChild).position).to.equal('static'),
+          () => descendantSlotChild.setAttribute('test', ''),
+          () => expect(window.getComputedStyle(descendantSlotChild).position).to.equal('static'),
+          () => descendantSlotChild.removeAttribute('test'),
+          // eslint-disable-next-line max-len
+          () => expect(window.getComputedStyle(descendantSlotChild).position).to.equal('static'),
+          done
+        );
+      });
     });
   });
 

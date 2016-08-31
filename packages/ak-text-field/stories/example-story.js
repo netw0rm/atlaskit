@@ -65,6 +65,9 @@ storiesOf(name, module)
   .add('standard ak-text-field', () => (
     generateFormWithInput({})
   ))
+  .add('standard ak-text-field [type=email]', () => (
+    generateFormWithInput({ type: 'email' })
+  ))
   .add('disabled ak-text-field', () => (
     generateFormWithInput({ disabled: true })
   ))

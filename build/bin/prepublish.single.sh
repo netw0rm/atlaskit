@@ -9,3 +9,4 @@ shift || true
 $BASEDIR/_scope_command.sh "$PKG" "../../build/bin/generate.readme.sh"
 $BASEDIR/_scope_command.sh "$PKG" "webpack --config ../../webpack.config.production.js $@"
 $BASEDIR/_scope_command.sh "$PKG" "webpack --config ../../webpack.config.production-cjs.js $@"
+$BASEDIR/_scope_command.sh "$PKG" "webpack --config ../../webpack.config.production-with-deps.js $@"

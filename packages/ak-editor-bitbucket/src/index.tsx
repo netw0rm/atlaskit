@@ -153,37 +153,46 @@ export default define('ak-editor-bitbucket', {
   },
 
   render(elem: any) {
+    let fakeInputClassNames = shadowStyles.locals.fakeInput;
+
+    if (elem.context === 'comment') {
+      fakeInputClassNames += ` ${shadowStyles.locals.comment}`;
+    }
+
     const FullEditor = (<div>
-      <Toolbar>
-        <ToolbarBlockType
-          disabled={!elem[$canChangeBlockType]}
-          selectedFont={elem[$selectedFont]}
-          onSelectFont={selectFont(elem[$blockTypePlugin])}
-        />
-        <ToolbarTextFormatting
-          boldActive={elem[$strongActive]}
-          italicActive={elem[$emActive]}
-          underlineActive={elem[$underlineActive]}
-          boldDisabled={!elem[$canChangeTextFormatting]}
-          italicDisabled={!elem[$canChangeTextFormatting]}
-          underlineDisabled={!elem[$canChangeTextFormatting]}
-          underlineHidden
-          on-toggle-bold={toggleMark(elem[$textFormattingPlugin], 'strong')}
-          on-toggle-italic={toggleMark(elem[$textFormattingPlugin], 'em')}
-          on-toggle-underline={toggleMark(elem[$textFormattingPlugin], 'underline')}
-        />
-        <ToolbarHyperlink
-          active={elem[$hyperLinkActive]}
-          disabled={!elem[$canLinkHyperlink]}
-          onSave={addHyperLink(elem[$hyperLinkPlugin])}
-        />
-        <ToolbarLists
-          bulletlistActive={elem[$bulletListActive]}
-          numberlistActive={elem[$numberListActive]}
-          on-toggle-number-list={() => elem[$listsPlugin].toggleList('ordered_list')}
-          on-toggle-bullet-list={() => elem[$listsPlugin].toggleList('bullet_list')}
-        />
-      </Toolbar>
+      {elem.context === 'comment' ?
+        <Toolbar>
+          <ToolbarBlockType
+            disabled={!elem[$canChangeBlockType]}
+            selectedFont={elem[$selectedFont]}
+            onSelectFont={selectFont(elem[$blockTypePlugin])}
+          />
+          <ToolbarTextFormatting
+            boldActive={elem[$strongActive]}
+            italicActive={elem[$emActive]}
+            underlineActive={elem[$underlineActive]}
+            boldDisabled={!elem[$canChangeTextFormatting]}
+            italicDisabled={!elem[$canChangeTextFormatting]}
+            underlineDisabled={!elem[$canChangeTextFormatting]}
+            underlineHidden
+            on-toggle-bold={toggleMark(elem[$textFormattingPlugin], 'strong')}
+            on-toggle-italic={toggleMark(elem[$textFormattingPlugin], 'em')}
+            on-toggle-underline={toggleMark(elem[$textFormattingPlugin], 'underline')}
+          />
+          <ToolbarHyperlink
+            active={elem[$hyperLinkActive]}
+            disabled={!elem[$canLinkHyperlink]}
+            onSave={addHyperLink(elem[$hyperLinkPlugin])}
+          />
+          <ToolbarLists
+            bulletlistActive={elem[$bulletListActive]}
+            numberlistActive={elem[$numberListActive]}
+            on-toggle-number-list={() => elem[$listsPlugin].toggleList('ordered_list')}
+            on-toggle-bullet-list={() => elem[$listsPlugin].toggleList('bullet_list')}
+          />
+        </Toolbar>
+        : null
+      }
       <Content
         className={shadowStyles.locals.content}
         onclick={elem[$onContentClick]}
@@ -224,7 +233,7 @@ export default define('ak-editor-bitbucket', {
           <input
             placeholder={elem.defaultValue}
             onclick={toggleExpansion(elem)}
-            className={shadowStyles.locals.fakeInput}
+            className={fakeInputClassNames}
           />
         }
       </div>
@@ -242,6 +251,7 @@ export default define('ak-editor-bitbucket', {
      */
     defaultValue: prop.string({ attribute: true }),
     imageUploader: functionProp(),
+    context: prop.string({ attribute: true }),
 
     /**
      * True if the editor has focus.

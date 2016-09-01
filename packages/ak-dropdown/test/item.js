@@ -1,8 +1,9 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Item } from '../src/index.js';
+import { Item, events as dropdownEvents } from '../src';
 import keyCode from 'keycode';
 import { symbols, props } from 'skatejs';
+import 'custom-event-polyfill';
 
 const defaultHeight = 30;
 const defaultGap = 10;
@@ -11,7 +12,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-dropdown-item:', () => {
+describe('ak-dropdown-item', () => {
   let itemContainer;
 
   beforeEach((done) => {
@@ -25,7 +26,7 @@ describe('ak-dropdown-item:', () => {
     document.body.removeChild(itemContainer);
   });
 
-  describe('general behavior:', () => {
+  describe('general behavior', () => {
     let component;
 
     beforeEach((done) => {
@@ -41,7 +42,7 @@ describe('ak-dropdown-item:', () => {
       expect(component[symbols.shadowRoot].firstChild).to.be.defined;
     });
 
-    it('click on a component should emit `ak-dropdown-selected` event', () => {
+    it('click on a component should emit `selected` event', () => {
       const clickSpy = sinon.spy();
       itemContainer.addEventListener('ak-dropdown-selected', clickSpy);
       component[symbols.shadowRoot].firstChild.click();
@@ -49,7 +50,7 @@ describe('ak-dropdown-item:', () => {
       expect(clickSpy.called).to.equal(true);
     });
 
-    it('click on a disabled component should NOT emit `ak-dropdown-selected` event', () => {
+    it('click on a disabled component should NOT emit `selected` event', () => {
       const clickSpy = sinon.spy();
       itemContainer.addEventListener('ak-dropdown-selected', clickSpy);
       props(component, { disabled: true });
@@ -58,7 +59,7 @@ describe('ak-dropdown-item:', () => {
       expect(clickSpy.called).to.equal(false);
     });
 
-    it('click on a selected component should NOT emit `ak-dropdown-selected` event', () => {
+    it('click on a selected component should NOT emit `selected` event', () => {
       const clickSpy = sinon.spy();
       itemContainer.addEventListener('ak-dropdown-selected', clickSpy);
       props(component, { selected: true });
@@ -150,13 +151,13 @@ describe('ak-dropdown-item:', () => {
     });
   });
 
-  describe('keyboard events:', () => {
+  describe('keyboard events', () => {
     const eventsMap = {
-      up: 'ak-dropdown-item-up',
-      down: 'ak-dropdown-item-down',
-      space: 'ak-dropdown-selected',
-      enter: 'ak-dropdown-selected',
-      tab: 'ak-dropdown-item-tab',
+      up: dropdownEvents.item.up,
+      down: dropdownEvents.item.down,
+      space: dropdownEvents.selected,
+      enter: dropdownEvents.selected,
+      tab: dropdownEvents.item.tab,
     };
     let component;
     let event;

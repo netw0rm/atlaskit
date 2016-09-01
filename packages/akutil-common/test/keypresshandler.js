@@ -1,7 +1,9 @@
 import keyCode from 'keycode';
-import KeyPressHandler from '../src/KeyPressHandler';
+import 'custom-event-polyfill';
+import KeyPressHandler,
+      { KeyInvalidError, CallbackInvalidError } from '../src/index.KeyPressHandler';
 
-describe('aui/internal/keypresshandler', () => {
+describe('KeyPressHandler', () => {
   let keyPressEvent;
   let keyPressCallback;
   let keyPressObj;
@@ -71,5 +73,17 @@ describe('aui/internal/keypresshandler', () => {
       expect(newCallback).not.to.be.called;
       done();
     }, 0);
+  });
+
+  describe('error cases', () => {
+    it('should throw if the given key is invalid', () => {
+      expect(() => new KeyPressHandler('FOOBAR', () => null)).to.throw(KeyInvalidError);
+      expect(() => keyPressObj.add('FOOBAR', () => null)).to.throw(KeyInvalidError);
+    });
+
+    it('should throw if the given callback is invalid', () => {
+      expect(() => new KeyPressHandler('ESCAPE', null)).to.throw(CallbackInvalidError);
+      expect(() => keyPressObj.add('ESCAPE', null)).to.throw(CallbackInvalidError);
+    });
   });
 });

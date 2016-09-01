@@ -29,7 +29,7 @@ const standardConfig = {
         { // Support react/jsx in stories
           loader: 'babel-loader',
           test: /\.jsx?$/,
-          include: /stories\/.*\.jsx?$/,
+          include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
           query: {
             presets: [
               'es2015',

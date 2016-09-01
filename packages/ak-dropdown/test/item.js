@@ -44,7 +44,7 @@ describe('ak-dropdown-item', () => {
 
     it('click on a component should emit `selected` event', () => {
       const clickSpy = sinon.spy();
-      itemContainer.addEventListener('ak-dropdown-selected', clickSpy);
+      itemContainer.addEventListener('selected', clickSpy);
       component[symbols.shadowRoot].firstChild.click();
 
       expect(clickSpy.called).to.equal(true);
@@ -52,7 +52,7 @@ describe('ak-dropdown-item', () => {
 
     it('click on a disabled component should NOT emit `selected` event', () => {
       const clickSpy = sinon.spy();
-      itemContainer.addEventListener('ak-dropdown-selected', clickSpy);
+      itemContainer.addEventListener('selected', clickSpy);
       props(component, { disabled: true });
       component[symbols.shadowRoot].firstChild.click();
 
@@ -61,7 +61,7 @@ describe('ak-dropdown-item', () => {
 
     it('click on a selected component should NOT emit `selected` event', () => {
       const clickSpy = sinon.spy();
-      itemContainer.addEventListener('ak-dropdown-selected', clickSpy);
+      itemContainer.addEventListener('selected', clickSpy);
       props(component, { selected: true });
       component[symbols.shadowRoot].firstChild.click();
 

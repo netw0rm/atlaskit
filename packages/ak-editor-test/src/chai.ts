@@ -1,7 +1,6 @@
 import { Fragment, Node, Slice } from 'ak-editor-prosemirror';
 
 export default (chai: any) => {
-  debugger;
   const { Assertion, util } = chai;
 
   // Node

@@ -9,7 +9,8 @@ import Layer from 'ak-layer';
 import * as events from './internal/events';
 
 // Width of a dropdown should be no less than width of it's trigger plus 10
-const diffBetweenDropdonAndTrigger = 10;
+const diffBetweenDropdownAndTrigger = 10;
+const dropdownMinWidth = 150;
 
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
@@ -107,12 +108,16 @@ function handleKeyPress(elem) {
   };
 }
 
-// min widht of a dropdown should be more than width of the trigger (by design)
+// min width of a dropdown should be more than width of the trigger (by design)
 // max-width is controled by css, everything that's exceeding its limit
 // is ellipsed (by design, controlled by css)
-function getDropdownStyles(elem) {
+function getDropdownStyles(target, dropdown) {
+  const dropdownPositionedToSide =
+    dropdown.position.indexOf('left') === 0 || dropdown.position.indexOf('right') === 0;
+  const minWidth = dropdownPositionedToSide ?
+  target.getBoundingClientRect().width + diffBetweenDropdownAndTrigger : dropdownMinWidth;
   return {
-    minWidth: `${elem.getBoundingClientRect().width + diffBetweenDropdonAndTrigger}px`,
+    minWidth: `${minWidth}px`,
   };
 }
 
@@ -152,14 +157,14 @@ export default define('ak-dropdown', {
           ref={(el) => {
             target = el;
             // width of the dropdown depends on the width of the trigger
-            styles = getDropdownStyles(target);
+            styles = getDropdownStyles(target, elem);
           }}
         >
           <slot name="trigger" />
         </div>
         <div style={{ display: elem.open ? 'block' : 'none' }}>
           <Layer
-            position="bottom left"
+            position={elem.position}
             target={target}
             ref={(layer) => {
               setTimeout(() => {
@@ -169,12 +174,13 @@ export default define('ak-dropdown', {
                     // this behavior is to avoid 'flashing' of dropdown
                     // when it's initially positioning itself on a page
                   elem.setAttribute('positioned', true);
+                  layer.reposition();
                 }
               });
             }
           }
           >
-            <div className={shadowListStyles.locals.list} style={styles}>
+            <div className={shadowListStyles.locals.list} style={styles} position={elem.position}>
               <style>{shadowListStyles.toString()}</style>
               <slot />
             </div>
@@ -199,6 +205,18 @@ export default define('ak-dropdown', {
           toggleDialog(elem, data.newValue);
         }
       },
+    }),
+    /**
+     * @description Position of the dropdown. See the documentation of ak-layer@57 for more details.
+     * @memberof Dropdown
+     * @default bottom left
+     * @type {string}
+     * @example @html <ak-dropdown position="right top"></ak-dropdown>
+     * @example @js dropdown.position = 'top right';
+     */
+    position: prop.string({
+      attribute: true,
+      default: 'bottom left',
     }),
   },
 });

@@ -1,4 +1,3 @@
-const path = require('path');
 const webpackConfig = require('./webpack.config.karma.js');
 const addPolyFills = require('./karma.conf.addPolyFills.js');
 
@@ -11,7 +10,6 @@ module.exports = (config) => {
     frameworks: ['mocha', 'chai', 'sinon-chai'],
 
     files: [
-      path.join(__dirname, 'build', 'lib', 'karma.reset.js'),
       'packages/*/test/**/*.js',
     ],
 

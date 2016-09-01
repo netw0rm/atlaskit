@@ -1,19 +1,12 @@
 const webpack = require('webpack');
 const standardConfig = require('./webpack.config.base.js');
 const externalsMatcher = require('./build/lib/externalsMatcher.js');
-const argv = require('minimist')(process.argv.slice(2));
-
-const shouldBundleDependencies = !!argv['bundle-deps'];
 
 Object.assign(standardConfig.entry, {
   'dist/bundle.min.js': standardConfig.entry['dist/bundle.js'],
 });
 
-if (!shouldBundleDependencies) {
-  // Matches any non-relative, non-loader require() -- we deem these to be
-  // external.
-  standardConfig.externals = [externalsMatcher];
-}
+standardConfig.externals = [externalsMatcher];
 
 standardConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
   include: /\.js$/, // Only remove dead code

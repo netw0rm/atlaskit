@@ -125,9 +125,9 @@
       "resolved": "https://registry.npmjs.org/ak-dmd-plugin/-/ak-dmd-plugin-0.0.9.tgz"
     },
     "akutil-common-test": {
-      "version": "1.5.0",
+      "version": "1.5.1",
       "from": "akutil-common-test@>=1.5.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/akutil-common-test/-/akutil-common-test-1.5.0.tgz"
+      "resolved": "https://registry.npmjs.org/akutil-common-test/-/akutil-common-test-1.5.1.tgz"
     },
     "akutil-cucumber": {
       "version": "1.0.0",
@@ -1341,14 +1341,7 @@
     "compare-func": {
       "version": "1.3.2",
       "from": "compare-func@>=1.3.1 <2.0.0",
-      "resolved": "https://registry.npmjs.org/compare-func/-/compare-func-1.3.2.tgz",
-      "dependencies": {
-        "dot-prop": {
-          "version": "3.0.0",
-          "from": "dot-prop@>=3.0.0 <4.0.0",
-          "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-3.0.0.tgz"
-        }
-      }
+      "resolved": "https://registry.npmjs.org/compare-func/-/compare-func-1.3.2.tgz"
     },
     "component-bind": {
       "version": "1.0.0",
@@ -1403,9 +1396,9 @@
       "resolved": "https://registry.npmjs.org/config-master/-/config-master-2.0.4.tgz"
     },
     "configstore": {
-      "version": "2.0.0",
+      "version": "2.1.0",
       "from": "configstore@>=2.0.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/configstore/-/configstore-2.0.0.tgz"
+      "resolved": "https://registry.npmjs.org/configstore/-/configstore-2.1.0.tgz"
     },
     "connect": {
       "version": "3.4.1",
@@ -1928,9 +1921,9 @@
       "resolved": "https://registry.npmjs.org/domain-browser/-/domain-browser-1.1.7.tgz"
     },
     "dot-prop": {
-      "version": "2.4.0",
-      "from": "dot-prop@>=2.3.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-2.4.0.tgz"
+      "version": "3.0.0",
+      "from": "dot-prop@>=3.0.0 <4.0.0",
+      "resolved": "https://registry.npmjs.org/dot-prop/-/dot-prop-3.0.0.tgz"
     },
     "duplexer": {
       "version": "0.1.1",
@@ -3650,7 +3643,8 @@
     },
     "inherits": {
       "version": "2.0.1",
-      "from": "inherits@>=2.0.1 <3.0.0"
+      "from": "inherits@^2.0.1",
+      "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
     },
     "ini": {
       "version": "1.3.4",
@@ -4354,7 +4348,8 @@
             },
             "lerna-semantic-release-utils": {
               "version": "1.0.9",
-              "from": "lerna-semantic-release-utils@>=1.0.0 <2.0.0"
+              "from": "lerna-semantic-release-utils@^1.0.0",
+              "resolved": "https://registry.npmjs.org/lerna-semantic-release-utils/-/lerna-semantic-release-utils-1.0.9.tgz"
             }
           }
         },
@@ -4819,7 +4814,7 @@
     },
     "minimist": {
       "version": "1.2.0",
-      "from": "minimist@1.2.0",
+      "from": "minimist@>=1.1.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/minimist/-/minimist-1.2.0.tgz"
     },
     "mkdirp": {
@@ -6200,9 +6195,9 @@
       "resolved": "https://registry.npmjs.org/sinon-chai/-/sinon-chai-2.8.0.tgz"
     },
     "skatejs": {
-      "version": "1.2.4",
-      "from": "skatejs@>=1.2.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/skatejs/-/skatejs-1.2.4.tgz"
+      "version": "1.2.5",
+      "from": "skatejs@>=1.2.5 <2.0.0",
+      "resolved": "https://registry.npmjs.org/skatejs/-/skatejs-1.2.5.tgz"
     },
     "skatejs-named-slots": {
       "version": "1.2.0",
@@ -6516,7 +6511,8 @@
     },
     "string_decoder": {
       "version": "0.10.31",
-      "from": "string_decoder@>=0.10.0 <0.11.0"
+      "from": "string_decoder@~0.10.x",
+      "resolved": "http://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
     },
     "string-tools": {
       "version": "1.0.0",
@@ -7334,9 +7330,9 @@
       "resolved": "https://registry.npmjs.org/webpack-dev-middleware/-/webpack-dev-middleware-1.6.1.tgz"
     },
     "webpack-dev-server": {
-      "version": "1.15.0",
+      "version": "1.15.1",
       "from": "webpack-dev-server@>=1.14.1 <2.0.0",
-      "resolved": "https://registry.npmjs.org/webpack-dev-server/-/webpack-dev-server-1.15.0.tgz"
+      "resolved": "https://registry.npmjs.org/webpack-dev-server/-/webpack-dev-server-1.15.1.tgz"
     },
     "webpack-hot-middleware": {
       "version": "2.12.2",

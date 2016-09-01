@@ -1,0 +1,28 @@
+// These styles will be inserted into a style tag inside
+// the shadow dom of each instance of the component
+@import '~akutil-shared-styles/src/colors.less';
+
+.hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.tooltip {
+  @leftAndRightPadding: 8px;
+  @topAndBottomPadding: 4px; // (20px height - 12px font) / 2 to get the top
+
+  font-size: 12px;
+  border-radius: 5px;
+  background-color: @ak-color-N900;
+  height: 20px;
+  padding: @topAndBottomPadding @leftAndRightPadding;
+  max-width: 200px;
+  color: white;
+  margin: 10px;
+}

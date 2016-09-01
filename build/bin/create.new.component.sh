@@ -38,8 +38,8 @@ pushd "packages/$COMP_NAME" > /dev/null
 # Make sure our version for the new package is 0.0.0
 sed -i '' 's/"version": "\([^"]*\)"/"version": "1.0.0"/' package.json
 
-# Empty changelog
-> CHANGELOG.md
+# Delete changelog
+rm CHANGELOG.md
 
 popd > /dev/null
 

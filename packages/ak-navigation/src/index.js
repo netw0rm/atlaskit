@@ -7,6 +7,15 @@ import './ak-navigation-link';
 import classNames from 'classnames';
 import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 import keycode from 'keycode';
+import * as events from './internal/events';
+const {
+  linkSelected: linkSelectedEvent,
+  createDrawerOpen: createDrawerOpenEvent,
+  searchDrawerOpen: searchDrawerOpenEvent,
+  close: closeEvent,
+  open: openEvent,
+  openStateChanged: openStateChangedEvent,
+} = events;
 
 const shouldAnimateThreshold = 100; // ms
 const globalCollapsedWidth = 60; // px
@@ -31,10 +40,10 @@ function getContainerPadding(width) {
 }
 // TODO: keyboard interaction
 const openSearchDrawer = el => el.addEventListener('click', () => {
-  emit(el, 'ak-navigation-search-drawer-open');
+  emit(el, searchDrawerOpenEvent);
 });
 const openCreateDrawer = el => el.addEventListener('click', () => {
-  emit(el, 'ak-navigation-create-drawer-open');
+  emit(el, createDrawerOpenEvent);
 });
 
 export default define('ak-navigation', {
@@ -122,15 +131,15 @@ export default define('ak-navigation', {
       attribute: true,
       set(elem, data) {
         if (!data.oldValue && data.newValue) {
-          emit(elem, 'ak-navigation-open');
+          emit(elem, openEvent);
         } else if (data.oldValue && !data.newValue) {
-          emit(elem, 'ak-navigation-close');
+          emit(elem, closeEvent);
         }
         elem.createDrawerOpen = elem.open && elem.createDrawerOpen;
         elem.searchDrawerOpen = elem.open && elem.searchDrawerOpen;
         elem.width = elem.open ? expandedWidth : collapsedWidth;
       },
-      event: 'ak-navigation-open-state-changed',
+      event: openStateChangedEvent,
     }),
     containerName: prop.string({
       attribute: true,
@@ -172,13 +181,13 @@ export default define('ak-navigation', {
     document.removeEventListener('keyup', elem.toggleHandler);
   },
   created(elem) {
-    elem.addEventListener('ak-navigation-create-drawer-open', () => {
+    elem.addEventListener(createDrawerOpenEvent, () => {
       elem.createDrawerOpen = true;
     });
-    elem.addEventListener('ak-navigation-search-drawer-open', () => {
+    elem.addEventListener(searchDrawerOpenEvent, () => {
       elem.searchDrawerOpen = true;
     });
-    elem.addEventListener('ak-navigation-link-selected', (event) => {
+    elem.addEventListener(linkSelectedEvent, (event) => {
       const containerLinks = Array.prototype.slice.call(elem.children);
       containerLinks.forEach((child) => { child.selected = false; });
       event.target.selected = true;
@@ -200,3 +209,5 @@ export default define('ak-navigation', {
     });
   },
 });
+
+export { events };

@@ -2,7 +2,8 @@ import { name } from '../package.json';
 import { keyup, afterMutations, getShadowRoot, waitUntil } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkNavigation from '../src/index.js';
+import AkNavigation, { events as navigationEvents } from '../src';
+const { open: navigationOpenEvent } = navigationEvents;
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -49,7 +50,7 @@ describe('ak-navigation', () => {
   it('fires an ak-navigation-open event when opening', () => {
     component.open = false;
     let called = false;
-    component.addEventListener('ak-navigation-open', () => {
+    component.addEventListener(navigationOpenEvent, () => {
       called = true;
     });
     component.open = true;

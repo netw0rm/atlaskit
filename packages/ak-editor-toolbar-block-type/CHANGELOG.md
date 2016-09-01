@@ -1,5 +1,20 @@
-<a name="1.2.0"></a>
-# 1.2.0 (2016-08-31)
+<a name="2.0.0"></a>
+# 2.0.0 (2016-09-01)
+
+
+
+<a name="ak-editor-toolbar-block-type@2.0.0"></a>
+# ak-editor-toolbar-block-type@2.0.0 (2016-09-01)
+
+
+### Bug Fixes
+
+* **ak-blanket:** Updated ak-blanket dependency ([e0eccaf](https://bitbucket.org/atlassian/atlaskit/commits/e0eccaf))
+
+
+### BREAKING CHANGES
+
+* ak-blanket: ak-blanket events changed
 
 
 

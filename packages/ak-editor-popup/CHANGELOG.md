@@ -1,5 +1,26 @@
-<a name="1.2.0"></a>
-# 1.2.0 (2016-08-31)
+<a name="2.0.0"></a>
+# 2.0.0 (2016-09-01)
+
+
+
+<a name="ak-editor-popup@2.0.0"></a>
+# ak-editor-popup@2.0.0 (2016-09-01)
+
+
+### Bug Fixes
+
+* **ak-blanket:** Updated ak-blanket dependency ([e0eccaf](https://bitbucket.org/atlassian/atlaskit/commits/e0eccaf))
+
+
+### Code Refactoring
+
+* use new ak-blanket ([9077eef](https://bitbucket.org/atlassian/atlaskit/commits/9077eef))
+
+
+### BREAKING CHANGES
+
+* ak-blanket: ak-blanket events changed
+* events exposed by ak-blanket changed
 
 
 

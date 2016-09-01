@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { posFromDOM } from 'prosemirror/dist/edit/dompos';
+import { posFromDOM } from 'ak-editor-prosemirror';
 import { FacadeInput } from './facade-input';
 
 const attachFacadeInput = function(elem) {

@@ -14,9 +14,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
-  "dependencies": {},
-  "devDependencies": {
-    "prosemirror": "^0.10.0"
+  "dependencies": {
+    "ak-editor-prosemirror": "^1.0.0",
+    "babel-runtime": "^6.11.6"
   },
   "repository": {
     "type": "git",

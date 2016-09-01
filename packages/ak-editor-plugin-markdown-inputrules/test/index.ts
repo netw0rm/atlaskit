@@ -1,14 +1,8 @@
 import MarkdownInputRulesPlugin from '../src';
-import { Slice, Node, Fragment } from 'prosemirror/dist/model';
-import { Plugin } from 'prosemirror/dist/edit';
-import { schema } from 'prosemirror/dist/schema-basic';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import testing from 'ak-editor-test';
+import { chaiPlugin, makeEditor, doc, a, p, em, strong, code, hr, img } from 'ak-editor-test';
 
-const { builder, chaiPlugin, makeEditor } = testing({
-  Fragment, schema, Node, Plugin, Slice })
-const { doc, a, p, em, strong, code, hr, img } = builder;
 chai.use(chaiPlugin);
 
 describe('ak-editor-plugin-markdown-inputrules', () => {

@@ -1,7 +1,7 @@
 import './types';
 import { define, prop, emit } from 'skatejs';
 import invert from 'lodash.invert';
-import { ProseMirror } from 'prosemirror/dist/edit';
+import { ProseMirror, Schema } from 'ak-editor-prosemirror';
 import 'style!./host.less';
 import cx from 'classnames';
 import shadowStyles from './shadow.less';
@@ -13,7 +13,6 @@ import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
-import { Schema } from 'prosemirror/dist/model';
 import { schema } from './schema';
 import { buildKeymap } from './keymap';
 import { markdownParser } from './markdown-parser';
@@ -102,12 +101,10 @@ function toggleList(elem: any, name: ListType) {
   return () => ListsPlugin.get(elem[$pm]).toggleList(name);
 }
 
-function addHyperLink(hyperLinkPlugin) {
-  return (event) => {
+function addHyperLink(elem: any) {
+  return (event: any) => {
     const href = event.detail.value;
-    hyperLinkPlugin.addLink({
-      href,
-    });
+    HyperlinkPlugin.get(elem[$pm]).addLink({ href });
   };
 }
 
@@ -172,7 +169,7 @@ export default define('ak-editor-bitbucket', {
           <ToolbarHyperlink
             active={elem[$hyperLinkActive]}
             disabled={!elem[$canLinkHyperlink]}
-            onSave={addHyperLink(elem[$hyperLinkPlugin])}
+            onSave={addHyperLink(elem)}
           />
           <ToolbarLists
             bulletlistActive={elem[$bulletListActive]}
@@ -296,7 +293,7 @@ export default define('ak-editor-bitbucket', {
           TextFormattingPlugin,
         ],
       });
-      
+
       // Hyperlink plugin wiring
       HyperlinkPlugin.get(pm).onChange(state => {
         elem[$canLinkHyperlink] = state.enabled;
@@ -332,7 +329,7 @@ export default define('ak-editor-bitbucket', {
         elem[$strongActive] = state.strongActive;
         elem[$emActive] = state.emActive;
         elem[$underlineActive] = state.underlineActive;
-        elem[$canChangeTextFormatting] = !state.enabled;
+        elem[$canChangeTextFormatting] = !state.disabled;
       });
 
       // avoid invoking keyboard shortcuts in BB

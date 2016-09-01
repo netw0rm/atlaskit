@@ -4,9 +4,7 @@ import TextFormattingComponent from 'ak-editor-toolbar-text-formatting';
 import ContentComponent from 'ak-editor-content';
 const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
-
-import { ProseMirror, commands } from 'prosemirror/dist/edit';
-import { schema } from 'prosemirror/dist/schema-basic';
+import { ProseMirror, commands, schema } from 'ak-editor-prosemirror';
 
 const Toolbar = reactify(ToolbarComponent, { React, ReactDOM });
 const TextFormatting = reactify(TextFormattingComponent, { React, ReactDOM });

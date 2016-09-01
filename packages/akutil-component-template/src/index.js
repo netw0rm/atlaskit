@@ -2,6 +2,8 @@ import 'style!./host.less';
 import classNames from 'classnames';
 import { emit, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
+import * as events from './internal/events';
+const { announceName: announceNameEvent } = events;
 
 const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
 
@@ -59,7 +61,7 @@ export default define('akutil-component-template', {
        * @description Fired when the `announce` method is called.
        * @property {String} detail.name The name of the component.
        */
-      emit(this, 'announce-name', {
+      emit(this, announceNameEvent, {
         detail: {
           name: this.name,
         },
@@ -68,3 +70,5 @@ export default define('akutil-component-template', {
     },
   },
 });
+
+export { events };

@@ -94,6 +94,13 @@ export default define('ak-editor-bitbucket', {
   created(elem: any) {
     bind(elem, $onContentClick);
     bind(elem, 'focus');
+    bind(elem, $selectFont);
+    bind(elem, $toggleMark);
+    bind(elem, $toggleList);
+    bind(elem, $addHyperLink);
+    bind(elem, $unlink);
+    bind(elem, $changeHyperLinkValue);
+    bind(elem, $toggleExpansion);
   },
 
   rendered(elem: any) {

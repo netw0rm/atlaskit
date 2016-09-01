@@ -1,5 +1,4 @@
 const baseConfig = require('./base.js');
-const addPolyFills = require('./addPolyFills.js');
 const browserStackBrowsers = require('./browserstack.browsers.js');
 
 module.exports = (config) => {
@@ -22,6 +21,4 @@ module.exports = (config) => {
     customLaunchers: browserStackBrowsers,
     browsers: Object.keys(browserStackBrowsers),
   });
-
-  addPolyFills(config);
 };

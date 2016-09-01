@@ -1,4 +1,3 @@
-import { vdom } from 'skatejs';
 import jss from 'jss';
 
 const { HTMLContentElement, HTMLSlotElement, ShadowRoot } = window;
@@ -52,13 +51,16 @@ function findHost(e) {
   }
 }
 
-export default function (css) {
+export default function ({ element }, css) {
   let ret;
+
+  // Currently this will get run on every render because it's not in the outer
+  // scope (i.e. different fn reference every time).
   function ref(e) {
     const sheet = jss.createStyleSheet(css, { elem: findHost(e) });
     ret = sheet.classes;
     e.textContent = sheet.toString();
   }
-  vdom.element('style', { css, ref, skip: true });
+  element('style', { css, ref, skip: true });
   return ret;
 }

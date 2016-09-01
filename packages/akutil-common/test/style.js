@@ -12,7 +12,7 @@ describe('style', () => {
         css: {},
       },
       render(el) {
-        classes = style(el.css);
+        classes = style(vdom, el.css);
         return <slot className="my-slot" />;
       },
     });

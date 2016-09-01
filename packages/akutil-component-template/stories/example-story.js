@@ -21,7 +21,7 @@ storiesOf(name, module)
     <Component
       name="MyComponent"
       onClick={function onClick() { this.announce(); }}
-      onAnnounceName={action(events.announceName)}
+      onAnnounce-name={action(events.announceName)}
     />
   ))
   .add('an akutil-component-template that emits an action when it is clicked', () => (

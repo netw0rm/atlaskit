@@ -3,6 +3,7 @@ import 'style!./host.less';
 
 import { emit, prop, vdom, define } from 'skatejs';
 import shadowStyles from './index.less';
+import 'ak-blanket';
 import './ak-navigation-drawer';
 import './ak-navigation-link';
 import classNames from 'classnames';
@@ -40,10 +41,20 @@ const openCreateDrawer = el => el.addEventListener('click', () => {
   emit(el, 'ak-navigation-create-drawer-open');
 });
 
+function closeAllDrawers(elem) {
+  elem.createDrawerOpen = false;
+  elem.searchDrawerOpen = false;
+}
+
+
 export default define('ak-navigation', {
   render(elem) {
     return (
       <div>
+        <ak-blanket
+          onActivate={() => closeAllDrawers(elem)}
+          clickable={elem.createDrawerOpen || elem.searchDrawerOpen}
+        />
         <div
           className={classNames(shadowStyles.locals.navigation, {
             [shadowStyles.locals.open]: elem.open,
@@ -63,7 +74,9 @@ export default define('ak-navigation', {
           <style>{shadowStyles.toString()}</style>
           <div className={shadowStyles.locals.global}>
             <div className={shadowStyles.locals.globalPrimary}>
-              <slot name="global-home" />
+              <a href={elem.productHref || false}>
+                <slot name="global-home" />
+              </a>
             </div>
             <div ref={openSearchDrawer} className={shadowStyles.locals.globalSecondary}>
               <slot name="global-search" />
@@ -80,7 +93,6 @@ export default define('ak-navigation', {
               </div>
             </div>
           </div>
-
           <ak-navigation-drawer large open={elem.searchDrawerOpen}>
             <slot name="global-search-drawer" />
           </ak-navigation-drawer>
@@ -89,16 +101,16 @@ export default define('ak-navigation', {
           </ak-navigation-drawer>
 
           <div className={shadowStyles.locals.container}>
-            <div className={shadowStyles.locals.containerName}>
+            {elem.containerName ? <div className={shadowStyles.locals.containerName}>
               <a href={elem.containerHref}>
                 <img
                   className={shadowStyles.locals.containerLogo}
                   alt={elem.containerName}
-                  src={elem.containerLogo}
+                  src={elem.containerLogo || false}
                 />
               </a>
               <span>{elem.containerName}</span>
-            </div>
+            </div> : ''}
             <div className={shadowStyles.locals.containerLinks}>
               <slot />
             </div>

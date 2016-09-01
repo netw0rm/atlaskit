@@ -20,4 +20,5 @@ function locateWebComponent(componentNamePrefix, parentElement) {
     .filter((node) => tagMatcher.test(node.tagName));
 }
 
-export default locateWebComponent;
+// Note: no es6 export here, as it needs to be loaded by protractor
+module.exports = locateWebComponent;

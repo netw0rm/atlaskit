@@ -1,10 +1,17 @@
-// FIXME: workaround host.less not in shadow dom
+@import '../shared-variables.less';
+
 ak-inline-dialog {
   display: block;
 
   &:not([defined]) {
     display: none;
   }
+}
+
+.no-dialog-container {
+  border: 1px solid @no-dialog-container-border-color;
+  border-radius: @no-dialog-container-border-radius;
+  box-shadow: @no-dialog-container-box-shadow;
 }
 
 pf-resourced-mention-list {

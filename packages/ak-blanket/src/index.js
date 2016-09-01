@@ -4,15 +4,12 @@ import 'style!./host.less';
 import { prop, vdom, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
-
-const EVENTS = {
-  ACTIVATE: 'activate',
-};
+import * as events from './internal/events';
 
 function handleActivation(elem) {
   return () => {
     if (elem.clickable) {
-      emit(elem, EVENTS.ACTIVATE);
+      emit(elem, events.activate);
     }
   };
 }
@@ -65,4 +62,4 @@ export default define('ak-blanket', {
   },
 });
 
-export { EVENTS };
+export { events };

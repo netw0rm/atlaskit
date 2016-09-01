@@ -1,0 +1,32 @@
+
+<svg width="19px" height="18px" viewBox="90 246 19 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <ellipse id="path-1" cx="6.11860795" cy="13.1029412" rx="1.10294118" ry="1.11860795"></ellipse>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-2" y="-2" width="6.20588235" height="6.23721591">
+            <rect x="3.01566678" y="9.98433322" width="6.20588235" height="6.23721591" fill="white"></rect>
+            <use xlink:href="#path-1" fill="black"></use>
+        </mask>
+        <ellipse id="path-3" cx="1.88419118" cy="1.47691761" rx="1.10294118" ry="1.11860795"></ellipse>
+        <mask id="mask-4" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-2" y="-2" width="6.20588235" height="6.23721591">
+            <rect x="-1.21875" y="-1.64169034" width="6.20588235" height="6.23721591" fill="white"></rect>
+            <use xlink:href="#path-3" fill="black"></use>
+        </mask>
+    </defs>
+    <g id="l0020_pull-request-new-20-copy-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(92.000000, 247.000000)">
+        <g id="Group-38" stroke="currentColor">
+            <g id="Group-37" transform="translate(7.000000, 0.000000)">
+                <g id="Group-36">
+                    <path d="M6.05721507,11.6445312 L6.05721507,4.47746088 C6.05721507,3.37259134 5.15599375,2.47691761 4.05597464,2.47691761 L0.599556446,2.47691761" id="Path-221" stroke-width="2"></path>
+                    <polygon id="Path-37-Copy" stroke-linejoin="round" fill="currentColor" points="0.811135465 0.753774168 4.48760605 0.753774168 4.48760605 1.4995128 1.54642958 1.4995128 1.54642958 4.48246735 0.811135465 4.48246735"></polygon>
+                    <use id="Oval-18-Copy" mask="url(#mask-2)" stroke-width="4" transform="translate(6.118608, 13.102941) rotate(-90.000000) translate(-6.118608, -13.102941) " xlink:href="#path-1"></use>
+                </g>
+            </g>
+            <g id="Group-40" transform="translate(0.000000, 1.000000)">
+                <path d="M7.85605022,8.97708129 L-2.12103108,8.97708133" id="Line" stroke-width="2" stroke-linecap="round" transform="translate(2.378969, 9.477081) rotate(-90.000000) translate(-2.378969, -9.477081) "></path>
+                <use id="Oval-18" mask="url(#mask-4)" stroke-width="4" transform="translate(1.884191, 1.476918) rotate(-90.000000) translate(-1.884191, -1.476918) " xlink:href="#path-3"></use>
+            </g>
+        </g>
+    </g>
+</svg>

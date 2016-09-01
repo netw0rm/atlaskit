@@ -2,6 +2,7 @@ import { emit, vdom, prop } from 'skatejs';
 import shadowItemStyles from './shadow-item.less';
 import classNames from 'classnames';
 import keyCode from 'keycode';
+import { selected as selectedEvent, item as itemEvents } from './internal/events';
 
 function selectItem(item) {
   // disabled items should not allow any interactions
@@ -10,7 +11,7 @@ function selectItem(item) {
     return;
   }
 
-  emit(item, 'ak-dropdown-selected', {
+  emit(item, selectedEvent, {
     detail: {
       item,
     },
@@ -21,14 +22,14 @@ function handleKeyDown(elem) {
   return (e) => {
     switch (e.keyCode) {
       case keyCode('up'):
-        emit(elem, 'ak-dropdown-item-up');
+        emit(elem, itemEvents.up);
         break;
       case keyCode('down'):
-        emit(elem, 'ak-dropdown-item-down');
+        emit(elem, itemEvents.down);
         break;
       case keyCode('tab'):
         e.preventDefault();
-        emit(elem, 'ak-dropdown-item-tab');
+        emit(elem, itemEvents.tab);
         break;
       case keyCode('space'):
       case keyCode('enter'):
@@ -40,15 +41,18 @@ function handleKeyDown(elem) {
   };
 }
 
-const RenderItem = (attrs, children) => {
-  if (attrs.href) {
-    return <a {...attrs}>{children()}</a>;
-  }
+function childHasLeftSlot(list) {
+  return [...list].some(el => (el.getAttribute && el.getAttribute('slot') === 'left'));
+}
 
-  // don't need empty href attribute on a div
-  delete attrs.href;
-  return <div {...attrs}>{children()}</div>;
-};
+function renderLeftSlot(elem) {
+  if (childHasLeftSlot(elem.childNodes)) {
+    return (<div className={shadowItemStyles.locals.itemLeftPosition}>
+      <slot name="left" />
+    </div>);
+  }
+  return null;
+}
 
 export default {
   render(elem) {
@@ -63,7 +67,7 @@ export default {
     const tabIndex = elem.selected ? '1' : '0';
 
     return (
-      <RenderItem
+      <a
         tabindex={tabIndex}
         className={classes}
         onkeydown={handleKeyDown(elem)}
@@ -71,11 +75,12 @@ export default {
         ref={el => (elem.item = el)}
         aria-disabled={elem.disabled}
         aria-selected={elem.selected}
-        href={elem.href}
+        href={elem.href ? elem.href : void 0}
       >
         <style>{shadowItemStyles.toString()}</style>
-        <slot />
-      </RenderItem>
+        {renderLeftSlot(elem)}
+        <div className={shadowItemStyles.locals.itemDefaultPosition}><slot /></div>
+      </a>
     );
   },
   rendered(elem) {

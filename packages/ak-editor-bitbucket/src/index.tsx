@@ -248,7 +248,6 @@ export default define('ak-editor-bitbucket', {
      * @private
      */
     [$focused]: prop.boolean(),
-    [$ready]: prop.boolean(),
     [$expanded]: prop.boolean(),
     [$canChangeBlockType]: prop.boolean(),
     [$strongActive]: prop.boolean(),
@@ -305,7 +304,7 @@ export default define('ak-editor-bitbucket', {
      * @returns {boolean}
      */
     get expanded() {
-      return this[$expanded] || false;
+      return this[$expanded];
     },
 
     [$onContentClick](e: MouseEvent) {

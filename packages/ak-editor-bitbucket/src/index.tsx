@@ -44,6 +44,7 @@ const { vdom } = require('skatejs');
 
 const $initEditor = '__init_editor__';
 const $pm = '__pm__';
+const $ready = '__ready__';
 const $expanded = '__expanded__';
 const $focused = '__focused__';
 const $wrapper = '__wrapper__';
@@ -142,7 +143,10 @@ export default define('ak-editor-bitbucket', {
   rendered(elem: any) {
     if (elem[$expanded]) {
       elem[$initEditor]();
-      emit(elem, 'expanded');
+      if (!elem[$ready]) {
+        emit(elem, 'ready');
+        elem[$ready] = true;
+      }
 
       elem[$pm].focus();
     }
@@ -244,6 +248,7 @@ export default define('ak-editor-bitbucket', {
      * @private
      */
     [$focused]: prop.boolean(),
+    [$ready]: prop.boolean(),
     [$expanded]: prop.boolean(),
     [$canChangeBlockType]: prop.boolean(),
     [$strongActive]: prop.boolean(),
@@ -286,7 +291,16 @@ export default define('ak-editor-bitbucket', {
     },
 
     /**
-     * Returns true if the editor has been initialised and is expanded for
+     * Returns true if the editor has been initialised and is ready for
+     * interaction.
+     * @returns {boolean}
+     */
+    get ready() {
+      return this[$ready] || false;
+    },
+
+    /**
+     * Returns true if the editor is expanded for
      * interaction.
      * @returns {boolean}
      */

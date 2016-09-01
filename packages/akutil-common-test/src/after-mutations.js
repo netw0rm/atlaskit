@@ -1,11 +1,3 @@
-/*
-
-
-   USAGE
-   ```
-
-   ```
-*/
 /**
  * @description Runs a list of functions, pausing between each one to ensure the component
    has had time to re-render.

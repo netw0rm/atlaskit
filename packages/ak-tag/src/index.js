@@ -7,10 +7,7 @@ import Chrome from './chrome';
 import Text from './text';
 import Href from './href';
 import Button from './button';
-
-const EVENTS = {
-  REMOVE: 'remove',
-};
+import * as events from './internal/events';
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -43,7 +40,7 @@ export default define('ak-tag', {
         text={elem['remove-button-text']}
         onmouseover={() => hover(true)}
         onmouseout={() => hover(false)}
-        onclick={() => emit(elem, EVENTS.REMOVE)}
+        onclick={() => emit(elem, events.remove)}
       />);
       /* eslint-enable no-underscore-dangle */
     }
@@ -112,4 +109,4 @@ export default define('ak-tag', {
   },
 });
 
-export { EVENTS };
+export { events };

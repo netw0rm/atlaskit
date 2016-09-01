@@ -36,6 +36,7 @@ function toggleDialog(elem, value) {
     list[0].focused = true;
     list[0].first = true;
     list[list.length - 1].last = true;
+    elem.reposition();
   } else {
     list.forEach((item) => {
       item.focused = false;
@@ -142,6 +143,15 @@ export default define('ak-dropdown', {
     document.removeEventListener('click', handleClickOutside);
     document.removeEventListener('click', handleKeyPress);
   },
+  prototype: {
+    reposition() {
+      if (this.layer) {
+        this.layer.reposition();
+      }
+
+      return this;
+    },
+  },
   render(elem) {
     let target;
     let styles;
@@ -161,7 +171,9 @@ export default define('ak-dropdown', {
           <Layer
             position="bottom left"
             target={target}
+            enableFlip
             ref={(layer) => {
+              elem.layer = layer;
               setTimeout(() => {
                 if (elem.open && layer.alignment) {
                     // by default dropdown has opacity 0

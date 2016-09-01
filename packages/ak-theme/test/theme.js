@@ -1,21 +1,21 @@
 import { afterMutations } from 'akutil-common-test';
-import Component from '..';
+import Theme from '../src/index';
 
 describe('ak-theme', () => {
-  let component;
+  let theme;
 
-  beforeEach((done) => {
-    component = new Component();
-    document.body.appendChild(component);
+  beforeEach(done => {
+    theme = new Theme();
+    document.body.appendChild(theme);
     afterMutations(done);
   });
 
-  afterEach((done) => {
-    document.body.removeChild(component);
+  afterEach(done => {
+    document.body.removeChild(theme);
     afterMutations(done);
   });
 
-  it('should be possible to create a component', () => {
-    expect(window.getComputedStyle(component).display).to.equal('none');
+  it('should not be visible', () => {
+    expect(window.getComputedStyle(theme).display).to.equal('none');
   });
 });

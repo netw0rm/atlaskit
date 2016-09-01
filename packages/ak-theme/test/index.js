@@ -1,6 +1,6 @@
-import Theme, { themeable } from '..';
+import Theme, { themeable } from '../src';
 
-describe('API', () => {
+describe('ak-theme', () => {
   it('default export', () => {
     expect(Theme).to.be.a('function');
   });

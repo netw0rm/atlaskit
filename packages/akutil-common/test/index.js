@@ -4,7 +4,7 @@ import {
     computeEnumValue, setEnumAttribute,
 } from '../src/attributes';
 
-describe('API', () => {
+describe('akutil-common exports', () => {
   it('named exports', () => {
     expect(exports.enumeration).to.be.a('function', 'enumeration');
     expect(exports.keyCode).to.be.an('function', 'keyCode');

@@ -13,7 +13,9 @@ const fonts = {
 };
 
 function toggle(elem) {
-  elem.dropdownOpen = !elem.dropdownOpen;
+  if (!elem.disabled || elem.dropdownOpen) {
+    elem.dropdownOpen = !elem.dropdownOpen;
+  }
 }
 
 function selectFont(elem) {

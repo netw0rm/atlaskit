@@ -1,10 +1,10 @@
-import { afterMutations } from 'akutil-common-test';
-import { symbols } from 'skatejs';
-const { shadowRoot } = symbols;
+import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
-import Component from '../src';
+import { Component } from 'skatejs';
+import MyComponent, { events } from '../src';
+
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -12,40 +12,61 @@ chai.should();
 
 const expect = chai.expect;
 
+function setupComponent() {
+  const component = new MyComponent();
+  const componentHasShadowRoot = () => !!getShadowRoot(component);
+
+  document.body.appendChild(component);
+
+  return waitUntil(componentHasShadowRoot).then(() => component);
+}
+
+function tearDownComponent(component) {
+  document.body.removeChild(component);
+}
+
+
 describe('akutil-component-template', () => {
-  let component;
+  describe('exports', () => {
+    it('should export a base component', () => {
+      (new MyComponent).should.be.an.instanceof(Component);
+    });
 
-  beforeEach((done) => {
-    component = new Component();
-
-    afterMutations(
-      // append component to the body to ensure it has been rendered.
-      () => document.body.appendChild(component),
-      done
-    );
+    it('should have an events export with defined events', () => {
+      events.should.be.defined;
+      Object.keys(events).should.be.deep.equal([
+        'announceName',
+      ]);
+    });
   });
 
-  afterEach(() => {
-    document.body.removeChild(component);
-  });
+  describe('logic', () => {
+    let component;
+    let shadowRoot;
 
-  it('should be possible to create a component', () => {
-    expect(component[shadowRoot].innerHTML).to.match(/My name is .+?!/);
-  });
+    beforeEach(() => setupComponent().then(newComponent => {
+      component = newComponent;
+      shadowRoot = getShadowRoot(component);
+    }));
+    afterEach(() => tearDownComponent(component));
 
-  describe('name prop', () => {
-    it('should modify the rendered name', (done) => {
-      const newName = 'InigoMontoya';
-      const expectedInnerHTML = `My name is ${newName}!`;
-      const paragraph = component[shadowRoot].querySelector('p');
+    it('should be possible to create a component', () => {
+      expect(shadowRoot.innerHTML).to.match(/My name is .+?!/);
+    });
 
-      // afterMutations will pause between each function passed to it to ensure the component has
-      // re-rendered before starting the next step.
-      afterMutations(
-        () => { component.name = newName; },
-        () => expect(paragraph.innerHTML).to.equal(expectedInnerHTML),
-        done
-      );
+    describe('name prop', () => {
+      it('should modify the rendered name', () => {
+        const newName = 'InigoMontoya';
+        const expectedInnerHTML = `My name is ${newName}!`;
+        const paragraph = shadowRoot.querySelector('p');
+
+        const nameHasBeenModifiedCorrectly = () => (paragraph.innerHTML === expectedInnerHTML);
+
+        component.name = newName;
+
+        // here we can wrap our assertions in promises and just check that the promise was fulfilled
+        return waitUntil(nameHasBeenModifiedCorrectly).should.be.fulfilled;
+      });
     });
   });
 });

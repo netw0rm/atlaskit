@@ -10,6 +10,7 @@ pipelines:
             - npm install
             - npm run validate/package.json
             - npm run lint
+            - npm run test/base
             - npm run test/browserstack/ci
             - npm run storybook& # runs in background
             - STORYBOOK_PID=$!
@@ -18,9 +19,8 @@ pipelines:
             - kill $STORYBOOK_PID
             - ./build/bin/prep_for_release.sh
             - npm run release
-            - npm run release/changelog
-            - npm run release/announce
             - npm run release/registry
+            - npm run release/announce
   default:
     - step:
         script:
@@ -29,5 +29,6 @@ pipelines:
           - npm install
           - npm run validate/package.json
           - npm run lint
+          - npm run test/base
           - npm run test/browserstack/ci
           - npm run pr/storybook

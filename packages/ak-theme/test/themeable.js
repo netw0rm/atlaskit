@@ -1,0 +1,3 @@
+describe('ak-theme, { themeable }', () => {
+
+});

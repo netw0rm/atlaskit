@@ -124,6 +124,11 @@
       "from": "ak-dmd-plugin@0.0.9",
       "resolved": "https://registry.npmjs.org/ak-dmd-plugin/-/ak-dmd-plugin-0.0.9.tgz"
     },
+    "akutil-common-test": {
+      "version": "1.5.0",
+      "from": "akutil-common-test@>=1.5.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/akutil-common-test/-/akutil-common-test-1.5.0.tgz"
+    },
     "akutil-cucumber": {
       "version": "1.0.0",
       "from": "akutil-cucumber@>=1.0.0 <2.0.0",
@@ -3611,6 +3616,11 @@
       "from": "imurmurhash@>=0.1.4 <0.2.0",
       "resolved": "https://registry.npmjs.org/imurmurhash/-/imurmurhash-0.1.4.tgz"
     },
+    "incremental-dom": {
+      "version": "0.4.1",
+      "from": "incremental-dom@0.4.1",
+      "resolved": "https://registry.npmjs.org/incremental-dom/-/incremental-dom-0.4.1.tgz"
+    },
     "indent-string": {
       "version": "2.1.0",
       "from": "indent-string@>=2.1.0 <3.0.0",
@@ -6188,6 +6198,11 @@
       "version": "2.8.0",
       "from": "sinon-chai@>=2.8.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/sinon-chai/-/sinon-chai-2.8.0.tgz"
+    },
+    "skatejs": {
+      "version": "1.2.4",
+      "from": "skatejs@>=1.2.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/skatejs/-/skatejs-1.2.4.tgz"
     },
     "skatejs-named-slots": {
       "version": "1.2.0",

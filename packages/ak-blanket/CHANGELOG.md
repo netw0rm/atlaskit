@@ -1,5 +1,15 @@
-<a name="3.0.0"></a>
-# 3.0.0 (2016-09-01)
+<a name="3.0.1"></a>
+## 3.0.1 (2016-09-01)
+
+
+
+<a name="ak-blanket@3.0.1"></a>
+## ak-blanket@3.0.1 (2016-09-01)
+
+
+### Bug Fixes
+
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
 
 
 

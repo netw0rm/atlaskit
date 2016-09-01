@@ -1,5 +1,10 @@
-<a name="71.0.0"></a>
-# 71.0.0 (2016-09-01)
+<a name="71.0.1"></a>
+## 71.0.1 (2016-09-01)
+
+
+
+<a name="ak-inline-dialog@71.0.1"></a>
+## ak-inline-dialog@71.0.1 (2016-09-01)
 
 
 
@@ -9,8 +14,9 @@
 
 ### Bug Fixes
 
-* Uses new ak-blanket with changed event names ([5ab3be3](https://bitbucket.org/atlassian/atlaskit/commits/5ab3be3))
 * **ak-blanket:** Updated ak-blanket dependency ([e0eccaf](https://bitbucket.org/atlassian/atlaskit/commits/e0eccaf))
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
+* Uses new ak-blanket with changed event names ([5ab3be3](https://bitbucket.org/atlassian/atlaskit/commits/5ab3be3))
 
 
 ### Code Refactoring

@@ -1,5 +1,15 @@
-<a name="1.5.1"></a>
-## 1.5.1 (2016-09-01)
+<a name="1.5.2"></a>
+## 1.5.2 (2016-09-01)
+
+
+
+<a name="pf-mention@1.5.2"></a>
+## pf-mention@1.5.2 (2016-09-01)
+
+
+### Bug Fixes
+
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
 
 
 

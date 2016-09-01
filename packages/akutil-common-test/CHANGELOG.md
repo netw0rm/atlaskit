@@ -1,5 +1,15 @@
-<a name="1.5.0"></a>
-# 1.5.0 (2016-09-01)
+<a name="1.5.1"></a>
+## 1.5.1 (2016-09-01)
+
+
+
+<a name="akutil-common-test@1.5.1"></a>
+## akutil-common-test@1.5.1 (2016-09-01)
+
+
+### Bug Fixes
+
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
 
 
 

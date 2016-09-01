@@ -1,5 +1,10 @@
-<a name="2.0.0"></a>
-# 2.0.0 (2016-09-01)
+<a name="2.0.1"></a>
+## 2.0.1 (2016-09-01)
+
+
+
+<a name="ak-editor-bitbucket@2.0.1"></a>
+## ak-editor-bitbucket@2.0.1 (2016-09-01)
 
 
 
@@ -10,6 +15,7 @@
 ### Bug Fixes
 
 * **ak-blanket:** Updated ak-blanket dependency ([e0eccaf](https://bitbucket.org/atlassian/atlaskit/commits/e0eccaf))
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
 
 
 ### Code Refactoring

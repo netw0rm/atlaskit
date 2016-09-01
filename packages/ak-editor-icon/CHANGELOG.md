@@ -1,5 +1,15 @@
-<a name="2.4.1"></a>
-## 2.4.1 (2016-08-31)
+<a name="2.4.2"></a>
+## 2.4.2 (2016-09-01)
+
+
+
+<a name="ak-editor-icon@2.4.2"></a>
+## ak-editor-icon@2.4.2 (2016-09-01)
+
+
+### Bug Fixes
+
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
 
 
 

@@ -1,5 +1,15 @@
-<a name="0.0.0"></a>
-# 0.0.0 (2016-08-31)
+<a name="0.0.1"></a>
+## 0.0.1 (2016-09-01)
+
+
+
+<a name="ak-button-group@0.0.1"></a>
+## ak-button-group@0.0.1 (2016-09-01)
+
+
+### Bug Fixes
+
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
 
 
 

@@ -1,7 +1,13 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkInlineDialog from '../src/index.js';
+import AkInlineDialog, { events } from '../src';
+const { afterOpen: afterOpenEvent, afterClose: afterCloseEvent } = events;
+import 'custom-event-polyfill';
 import { name } from '../package.json';
+import { events as blanketEvents } from 'ak-blanket';
+const { activate: activateBlanketEvent } = blanketEvents;
+import { afterMutations, getShadowRoot, locateWebComponent } from 'akutil-common-test';
+import { Component } from 'skatejs';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -9,6 +15,17 @@ const expect = chai.expect;
 const defaultPosition = 'right middle';
 
 describe('ak-inline-dialog', () => {
+  describe('exports', () => {
+    it('should export a base component', () => {
+      (new AkInlineDialog).should.be.an.instanceof(Component);
+    });
+
+    it('should have an events export with defined events', () => {
+      events.should.be.defined;
+      Object.keys(events).should.be.deep.equal(['afterOpen', 'afterClose']);
+    });
+  });
+
   it('should be possible to create a component', () => {
     const component = new AkInlineDialog();
     expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
@@ -159,6 +176,38 @@ describe('ak-inline-dialog', () => {
         setTimeout(() => (component.open = false));
         setTimeout(() => checkInvisibility(component.childNodes[0]));
         setTimeout(done);
+      });
+    });
+
+    describe('eventing', () => {
+      it('should be possible to close the dialog with a blanket activation', (done) => {
+        afterMutations(
+          () => (component.open = true),
+          () => {
+            const blanket = locateWebComponent('ak-blanket', getShadowRoot(component))[0];
+            const event = new CustomEvent(activateBlanketEvent);
+            blanket.dispatchEvent(event);
+          },
+          () => {
+            expect(component.open).to.be.false;
+          },
+          done
+        );
+      });
+
+      it(`should be possible to subscribe to the '${afterOpenEvent}' event`, (done) => {
+        afterMutations(
+          () => component.addEventListener(afterOpenEvent, () => done()),
+          () => (component.open = true)
+        );
+      });
+
+      it(`should be possible to subscribe to the '${afterCloseEvent}' event`, (done) => {
+        afterMutations(
+          () => (component.open = true),
+          () => component.addEventListener(afterCloseEvent, () => done()),
+          () => (component.open = false)
+        );
       });
     });
   });

@@ -1,5 +1,26 @@
-<a name="1.2.0"></a>
-# 1.2.0 (2016-08-31)
+<a name="2.0.1"></a>
+## 2.0.1 (2016-09-01)
+
+
+
+<a name="ak-editor-toolbar-block-type@2.0.1"></a>
+## ak-editor-toolbar-block-type@2.0.1 (2016-09-01)
+
+
+
+<a name="ak-editor-toolbar-block-type@2.0.0"></a>
+# ak-editor-toolbar-block-type@2.0.0 (2016-09-01)
+
+
+### Bug Fixes
+
+* **ak-blanket:** Updated ak-blanket dependency ([e0eccaf](https://bitbucket.org/atlassian/atlaskit/commits/e0eccaf))
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
+
+
+### BREAKING CHANGES
+
+* ak-blanket: ak-blanket events changed
 
 
 

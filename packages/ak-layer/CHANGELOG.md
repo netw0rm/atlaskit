@@ -1,5 +1,15 @@
-<a name="57.3.1"></a>
-## 57.3.1 (2016-08-31)
+<a name="57.3.2"></a>
+## 57.3.2 (2016-09-01)
+
+
+
+<a name="ak-layer@57.3.2"></a>
+## ak-layer@57.3.2 (2016-09-01)
+
+
+### Bug Fixes
+
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
 
 
 

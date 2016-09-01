@@ -42,6 +42,13 @@ import {
 
 const { vdom } = require('skatejs');
 
+const $selectFont = '__selectFont__';
+const $toggleMark = '__toggleMark__';
+const $toggleList = '__toggleList__';
+const $addHyperLink = '__addHyperLink__';
+const $unlink = '__unlink__';
+const $changeHyperLinkValue = '__changeHyperLinkValue__';
+const $toggleExpansion = '__toggleExpansion__';
 const $initEditor = '__init_editor__';
 const $pm = '__pm__';
 const $ready = '__ready__';
@@ -83,57 +90,6 @@ const prosemirrorBlockToToolbarMap: {[key: string]: string} = {
 
 const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
 
-function selectFont(elem: any) {
-  return (event: any) => {
-    const font = event.detail.font;
-
-    const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
-    const blockType = matches[1];
-    const level = matches[2];
-
-    BlockTypePlugin.get(elem[$pm]).changeBlockType(blockType, { level });
-  };
-}
-
-function toggleMark(elem: any, name: MarkType) {
-  return () => TextFormattingPlugin.get(elem[$pm]).toggleMark(name);
-}
-
-function toggleList(elem: any, name: ListType) {
-  return () => ListsPlugin.get(elem[$pm]).toggleList(name);
-}
-
-function addHyperLink(hyperLinkPlugin) {
-  return (event) => {
-    const href = event.detail.value;
-    hyperLinkPlugin.addLink({
-      href,
-    });
-  };
-}
-
-function unlink(elem: any) {
-  return () => HyperlinkPlugin.get(elem[$pm]).removeLink();
-}
-
-function changeHyperLinkValue(elem: any) {
-  return (event: MouseEvent) => {
-    const newLink = (event.target as any).value;
-    if (newLink) {
-      HyperlinkPlugin.get(elem[$pm]).updateLink({
-        href: newLink,
-        text: newLink,
-      });
-    }
-  };
-}
-
-function toggleExpansion(elem) {
-  return () => {
-    elem[$expanded] = !elem[$expanded];
-  };
-}
-
 export default define('ak-editor-bitbucket', {
   created(elem: any) {
     bind(elem, $onContentClick);
@@ -164,7 +120,7 @@ export default define('ak-editor-bitbucket', {
         <ToolbarBlockType
           disabled={!elem[$canChangeBlockType]}
           selectedFont={elem[$selectedFont]}
-          onSelectFont={selectFont(elem[$blockTypePlugin])}
+          onSelectFont={elem[$selectFont]}
         />
         <ToolbarTextFormatting
           boldActive={elem[$strongActive]}
@@ -174,14 +130,12 @@ export default define('ak-editor-bitbucket', {
           italicDisabled={!elem[$canChangeTextFormatting]}
           underlineDisabled={!elem[$canChangeTextFormatting]}
           underlineHidden
-          on-toggle-bold={toggleMark(elem[$textFormattingPlugin], 'strong')}
-          on-toggle-italic={toggleMark(elem[$textFormattingPlugin], 'em')}
-          on-toggle-underline={toggleMark(elem[$textFormattingPlugin], 'underline')}
+          onToggletextformatting={elem[$toggleMark]}
         />
         <ToolbarHyperlink
           active={elem[$hyperLinkActive]}
           disabled={!elem[$canLinkHyperlink]}
-          onSave={addHyperLink(elem[$hyperLinkPlugin])}
+          onSave={elem[$addHyperLink]}
         />
         <ToolbarLists
           bulletlistActive={elem[$bulletListActive]}
@@ -203,15 +157,15 @@ export default define('ak-editor-bitbucket', {
           href={elem[$hyperLinkText]}
           textInputValue={elem[$hyperLinkText]}
           attachTo={elem[$hyperLinkElement]}
-          onUnlink={unlink(elem[$hyperLinkPlugin])}
-          onchange={changeHyperLinkValue(elem[$hyperLinkPlugin])}
+          onUnlink={elem[$unlink]}
+          onchange={elem[$changeHyperLinkValue]}
         />
         : null
       }
       <Footer
         openTop
-        onSave={toggleExpansion(elem)}
-        oncancel={toggleExpansion(elem)}
+        onSave={elem[$toggleExpansion]}
+        oncancel={elem[$toggleExpansion]}
       />
     </div>);
 
@@ -229,7 +183,7 @@ export default define('ak-editor-bitbucket', {
           :
           <input
             placeholder={elem.defaultValue}
-            onclick={toggleExpansion(elem)}
+            onclick={elem[$toggleExpansion]}
             className={fakeInputClassNames}
           />
         }
@@ -318,6 +272,49 @@ export default define('ak-editor-bitbucket', {
       if (e.target === e.currentTarget) {
         this.focus();
       }
+    },
+
+    [$selectFont](event: MouseEvent) {
+      const font = event.detail.font;
+
+      const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
+      const blockType = matches[1];
+      const level = matches[2];
+
+      BlockTypePlugin.get(this[$pm]).changeBlockType(blockType, { level });
+    },
+
+    [$toggleMark](event: MouseEvent) {
+      TextFormattingPlugin.get(this[$pm]).toggleMark(event.detail.mark);
+    },
+
+    [$toggleList](event: MouseEvent) {
+      ListsPlugin.get(this[$pm]).toggleList(name);
+    },
+
+    [$addHyperLink](event: MouseEvent) {
+      const href = event.detail.value;
+      HyperlinkPlugin.get(this[$pm]).addLink({
+        href,
+      });
+    },
+
+    [$unlink]() {
+      HyperlinkPlugin.get(this[$pm]).removeLink();
+    },
+
+    [$changeHyperLinkValue](event: MouseEvent) {
+      const newLink = (event.target as any).value;
+      if (newLink) {
+        HyperlinkPlugin.get(this[$pm]).updateLink({
+          href: newLink,
+          text: newLink,
+        });
+      }
+    },
+
+    [$toggleExpansion]() {
+      this[$expanded] = !this[$expanded];
     },
 
     [$initEditor]() {

@@ -1,7 +1,8 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { symbols } from 'skatejs';
-import AkBadge from '../src/index.js';
+import AkBadge, { events } from '../src';
+const { change: changeEvent } = events;
 import styles from '../src/shadow.less';
 import { afterMutations } from 'akutil-common-test';
 
@@ -60,7 +61,7 @@ describe('ak-badge', () => {
       let changed = false;
       let detail;
 
-      component.addEventListener('change', (e) => {
+      component.addEventListener(changeEvent, (e) => {
         changed = true;
         detail = e.detail;
       });

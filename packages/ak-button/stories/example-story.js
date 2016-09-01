@@ -87,8 +87,9 @@ storiesOf(name, module)
   .add('an ak-button that emits an action when it is clicked', () => (
     <AkButton id="myComponent" onClick={action('clicking the WebComponent')}>Button</AkButton>
   ))
-  .add('an ak-button with icons', () => (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+  .add('an ak-button with icons', () => {
+    const buttonStyles = { 'margin-right': '10px', display: 'inline-flex' };
+    return (<div style={{ display: 'flex', flexDirection: 'column' }}>
       {
         GLYPHS.map(glyph =>
           (<div className="icons-container">
@@ -96,7 +97,7 @@ storiesOf(name, module)
               {[APPEARANCE.STANDARD, APPEARANCE.PRIMARY, APPEARANCE.SUBTLE]
                 .map(appearance => (
                   <AkButton
-                    style={{ 'margin-right': '10px' }}
+                    style={buttonStyles}
                     onclick={action('clicking the WebComponent')}
                     appearance={appearance}
                   >
@@ -106,11 +107,11 @@ storiesOf(name, module)
                   )
                 )
                 .concat([
-                  <AkButton style={{ 'margin-right': '10px' }} selected>
+                  <AkButton style={buttonStyles} selected>
                     <Icon slot="before" key={glyph} glyph={glyph} />
                     Button
                   </AkButton>,
-                  <AkButton style={{ 'margin-right': '10px' }} disabled>
+                  <AkButton style={buttonStyles} disabled>
                     <Icon slot="before" key={glyph} glyph={glyph} />
                       Button
                   </AkButton>,
@@ -119,8 +120,8 @@ storiesOf(name, module)
           </div>)
         )
     }
-    </div>
-  ))
+    </div>);
+  })
   .add('a button that can change its attributes', () =>
     <AkButtonStates />
   );

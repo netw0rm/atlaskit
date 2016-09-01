@@ -24,9 +24,7 @@ const containerPaddingCollapseStart = intermediateWidth + 16;
 
 function getContainerPadding(width) {
   const paddingDelta = containerPaddingExpanded - containerPaddingCollapsed;
-  const gradient = (containerPaddingExpanded - containerPaddingCollapsed)
-    / (containerPaddingCollapseStart - intermediateWidth);
-
+  const gradient = paddingDelta / (containerPaddingCollapseStart - intermediateWidth);
   const padding = gradient * width + (paddingDelta - gradient * intermediateWidth);
 
   return Math.min(containerPaddingExpanded, Math.max(containerPaddingCollapsed, padding));

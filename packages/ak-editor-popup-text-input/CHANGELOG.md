@@ -1,5 +1,15 @@
-<a name="1.2.0"></a>
-# 1.2.0 (2016-08-30)
+<a name="1.2.1"></a>
+## 1.2.1 (2016-09-01)
+
+
+
+<a name="ak-editor-popup-text-input@1.2.1"></a>
+## ak-editor-popup-text-input@1.2.1 (2016-09-01)
+
+
+### Bug Fixes
+
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
 
 
 

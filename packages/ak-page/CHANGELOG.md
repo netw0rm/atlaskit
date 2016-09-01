@@ -1,5 +1,20 @@
-<a name="2.3.0"></a>
-# 2.3.0 (2016-08-30)
+<a name="3.0.1"></a>
+## 3.0.1 (2016-09-01)
+
+
+
+<a name="ak-page@3.0.1"></a>
+## ak-page@3.0.1 (2016-09-01)
+
+
+### Bug Fixes
+
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
+
+
+
+<a name="ak-page@3.0.0"></a>
+# ak-page@3.0.0 (2016-08-31)
 
 
 
@@ -24,6 +39,8 @@
 
 ### Bug Fixes
 
+* **component:** change visual styles to have fixed width, better commit icon ([957a859](https://bitbucket.org/atlassian/atlaskit/commits/957a859))
+* **component:** changed the width to 80vw ([a1b7676](https://bitbucket.org/atlassian/atlaskit/commits/a1b7676))
 * **package:** Publish an extra commonjs-only (no UMD) bundle for webpack consumption. ([bb0a3ce](https://bitbucket.org/atlassian/atlaskit/commits/bb0a3ce))
 
 

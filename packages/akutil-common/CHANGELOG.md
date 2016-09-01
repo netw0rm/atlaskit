@@ -1,5 +1,25 @@
-<a name="2.4.0"></a>
-# 2.4.0 (2016-08-30)
+<a name="2.4.2"></a>
+## 2.4.2 (2016-09-01)
+
+
+
+<a name="akutil-common@2.4.2"></a>
+## akutil-common@2.4.2 (2016-09-01)
+
+
+### Bug Fixes
+
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
+
+
+
+<a name="akutil-common@2.4.1"></a>
+## akutil-common@2.4.1 (2016-08-31)
+
+
+### Bug Fixes
+
+* **keypresshandler:** Adds error handling to keypress handler ([1544f91](https://bitbucket.org/atlassian/atlaskit/commits/1544f91))
 
 
 

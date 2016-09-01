@@ -52,4 +52,15 @@ describe('waitUntil', () => {
         done();
       });
   });
+
+  it('should reject after a certain timeout', (done) => {
+    let val = 2;
+    // Change the value of val in 10ms time
+    setTimeout(() => (val += 1), 10);
+    // now wait until val = 1, which will never happen;
+    waitUntil(() => (val === 1), 100, 10).then(() => {}, (e) => {
+      expect(e).to.equal('timeout');
+      done();
+    });
+  });
 });

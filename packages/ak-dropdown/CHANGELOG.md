@@ -1,5 +1,32 @@
-<a name="0.4.2"></a>
-## 0.4.2 (2016-08-30)
+<a name="1.0.1"></a>
+## 1.0.1 (2016-09-01)
+
+
+
+<a name="ak-dropdown@1.0.1"></a>
+## ak-dropdown@1.0.1 (2016-09-01)
+
+
+### Bug Fixes
+
+* Bump skatejs to pull in a fix for how attributes are handled in components. ([bd9bb8f](https://bitbucket.org/atlassian/atlaskit/commits/bd9bb8f))
+
+
+
+<a name="ak-dropdown@1.0.0"></a>
+# ak-dropdown@1.0.0 (2016-08-31)
+
+
+### Code Refactoring
+
+* **eventing:** Change the event names exposed ([e7b4f80](https://bitbucket.org/atlassian/atlaskit/commits/e7b4f80))
+* **eventing:** Changes the event exports ([9bc550b](https://bitbucket.org/atlassian/atlaskit/commits/9bc550b))
+
+
+### BREAKING CHANGES
+
+* eventing: event exports
+* eventing: the event names expose will change (prefix remove)
 
 
 

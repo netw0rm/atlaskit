@@ -1,6 +1,6 @@
-const baseConfig = require('./karma.conf.js');
-const addPolyFills = require('./karma.conf.addPolyFills.js');
-const browserStackBrowsers = require('./build/lib/browserstack.browsers.js');
+const baseConfig = require('./base.js');
+const addPolyFills = require('./addPolyFills.js');
+const browserStackBrowsers = require('./browserstack.browsers.js');
 
 module.exports = (config) => {
   baseConfig(config);

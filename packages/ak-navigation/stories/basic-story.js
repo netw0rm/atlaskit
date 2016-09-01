@@ -4,6 +4,7 @@ import akNavigation from '../src/index';
 import akPage from 'ak-page';
 import 'ak-icon';
 import 'ak-avatar';
+import 'ak-dropdown';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 import Lorem from 'react-lorem-component';
@@ -46,10 +47,11 @@ const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-
 const containerLogo = require('url!./nucleus.png');
 const userAvatar = require('url!./emma.jpg');
 
-const containerProps = {
+const sharedProps = {
   containerName: 'Nucleus',
   containerHref: 'http://example.com',
   containerLogo,
+  productHref: 'http://atlassian.design',
 };
 
 const NavigationLinks = () => <div>
@@ -86,7 +88,77 @@ storiesOf(name, module)
       <AkNavigation
         slot="navigation"
         open
-        {...containerProps}
+        {...sharedProps}
+      >
+        <ak-icon slot="global-home" glyph="bitbucket" />
+        <ak-icon slot="global-search" glyph="search" />
+        <ak-icon slot="global-create" glyph="create" />
+
+        <ak-dropdown position="right bottom" slot="global-profile">
+          <ak-dropdown-trigger slot="trigger">
+            <ak-avatar src={userAvatar} />
+          </ak-dropdown-trigger>
+          <ak-dropdown-item>Online help</ak-dropdown-item>
+          <ak-dropdown-item>Learn git</ak-dropdown-item>
+        </ak-dropdown>
+
+        <ak-dropdown position="right bottom" slot="global-help">
+          <ak-dropdown-trigger slot="trigger">
+            <ak-icon glyph="help" />
+          </ak-dropdown-trigger>
+          <ak-dropdown-item>View profile</ak-dropdown-item>
+          <ak-dropdown-item>Bitbucket settings</ak-dropdown-item>
+          <ak-dropdown-item>Integration</ak-dropdown-item>
+          <ak-dropdown-item>Launch missiles</ak-dropdown-item>
+        </ak-dropdown>
+
+        <div is slot="global-search-drawer">
+          Search
+        </div>
+        <div is slot="global-create-drawer">
+          Create
+        </div>
+        <NavigationLinks />
+
+      </AkNavigation>
+      <div is slot="content">
+        <Lorem count="30" />
+      </div>
+    </AkPage>
+  ))
+  .add('ak-navigation with no container logo', () => (
+    <AkPage navigationOpen>
+      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
+      <AkNavigation
+        slot="navigation"
+        open
+        containerName="Electron"
+      >
+        <ak-icon slot="global-home" glyph="bitbucket" />
+        <ak-icon slot="global-search" glyph="search" />
+        <ak-icon slot="global-create" glyph="create" />
+        <ak-avatar src={userAvatar} slot="global-profile" />
+        <ak-icon slot="global-help" glyph="help" />
+        <div is slot="global-search-drawer">
+          Search
+        </div>
+        <div is slot="global-create-drawer">
+          Create
+        </div>
+        <NavigationLinks />
+
+      </AkNavigation>
+      <div is slot="content">
+        <Lorem count="30" />
+      </div>
+    </AkPage>
+  ))
+  .add('ak-navigation with no container logo or name', () => (
+    <AkPage navigationOpen>
+      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
+      <AkNavigation
+        slot="navigation"
+        open
       >
         <ak-icon slot="global-home" glyph="bitbucket" />
         <ak-icon slot="global-search" glyph="search" />
@@ -112,7 +184,7 @@ storiesOf(name, module)
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
-        {...containerProps}
+        {...sharedProps}
       >
         <ak-icon slot="global-home" glyph="jira" />
         <ak-icon slot="global-search" glyph="search" />
@@ -129,7 +201,7 @@ storiesOf(name, module)
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <TogglingSidebar
         slot="navigation"
-        {...containerProps}
+        {...sharedProps}
       >
         <ak-icon slot="global-home" glyph="jira" />
         <ak-icon slot="global-search" glyph="search" />

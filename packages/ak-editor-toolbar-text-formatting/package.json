@@ -19,7 +19,7 @@
     "ak-editor-icon": "*",
     "akutil-shared-styles": "^33.1.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.2.4"
+    "skatejs": "^1.2.5"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",

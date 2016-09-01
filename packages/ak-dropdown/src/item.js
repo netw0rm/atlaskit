@@ -42,14 +42,16 @@ function handleKeyDown(elem) {
 }
 
 function childHasLeftSlot(list) {
-  let hasSlot = false;
-  list.forEach((el) => {
-    if (el.getAttribute && el.getAttribute('slot') === 'left') {
-      hasSlot = true;
-    }
-  });
+  return [...list].some(el => (el.getAttribute && el.getAttribute('slot') === 'left'));
+}
 
-  return hasSlot;
+function renderLeftSlot(elem) {
+  if (childHasLeftSlot(elem.childNodes)) {
+    return (<div className={shadowItemStyles.locals.itemLeftPosition}>
+      <slot name="left" />
+    </div>);
+  }
+  return null;
 }
 
 export default {
@@ -63,7 +65,6 @@ export default {
       }]
     );
     const tabIndex = elem.selected ? '1' : '0';
-    const renderLeftSlot = childHasLeftSlot(elem.childNodes);
 
     return (
       <a
@@ -77,9 +78,7 @@ export default {
         href={elem.href ? elem.href : void 0}
       >
         <style>{shadowItemStyles.toString()}</style>
-        {renderLeftSlot ? <div className={shadowItemStyles.locals.itemLeftPosition}>
-          <slot name="left" />
-        </div> : null}
+        {renderLeftSlot(elem)}
         <div className={shadowItemStyles.locals.itemDefaultPosition}><slot /></div>
       </a>
     );

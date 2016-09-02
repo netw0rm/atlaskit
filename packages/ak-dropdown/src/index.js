@@ -10,6 +10,7 @@ import * as events from './internal/events';
 
 // Width of a dropdown should be no less than width of it's trigger plus 10
 const diffBetweenDropdonAndTrigger = 10;
+const offset = '0 2';
 
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
@@ -172,6 +173,7 @@ export default define('ak-dropdown', {
             position="bottom left"
             target={target}
             enableFlip
+            offset={offset}
             ref={(layer) => {
               elem.layer = layer;
               setTimeout(() => {

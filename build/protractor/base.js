@@ -1,5 +1,5 @@
 const path = require('path');
-const pathToLocator = path.join(__dirname, 'packages', 'akutil-common-test', 'src', 'index.locateWebComponent.js'); // eslint-disable-line max-len
+const pathToLocator = path.join(__dirname, '..', '..', 'packages', 'akutil-common-test', 'src', 'index.locateWebComponent.js'); // eslint-disable-line max-len
 const webComponentLocator = require(pathToLocator);
 
 const rq = [

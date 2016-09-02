@@ -1,8 +1,8 @@
-import { Block, Inline, Attribute, Text } from 'prosemirror/dist/model';
-import { Doc, BlockQuote, OrderedList, BulletList,
-       ListItem, HorizontalRule, Heading, Paragraph,
-       Image, HardBreak, EmMark, StrongMark,
-       LinkMark, CodeMark } from 'prosemirror/dist/schema-basic';
+import {
+  Block, Inline, Attribute, Text, Doc, BlockQuote, OrderedList, BulletList,
+  ListItem, HorizontalRule, Heading, Paragraph, Image, HardBreak, EmMark,
+  StrongMark, LinkMark, CodeMark,
+} from 'ak-editor-prosemirror';
 
 export class CodeBlock extends Block {
   get isCode() { return true; }

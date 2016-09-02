@@ -1,14 +1,8 @@
 import ListsPlugin from '../src';
-import { Plugin } from 'prosemirror/dist/edit';
-import { Slice, Node, Fragment } from 'prosemirror/dist/model';
-import { schema } from 'prosemirror/dist/schema-basic';
-import testing from 'ak-editor-test';
+import { chaiPlugin, makeEditor, doc, p, text, ol, ul, li } from 'ak-editor-test';
 import * as chai from 'chai';
 const { expect } = chai;
 
-const { builder, chaiPlugin, makeEditor } = testing({
-  Fragment, Node, Plugin, schema, Slice })
-const { doc, p, text, ol, ul, li } = builder;
 chai.use(chaiPlugin);
 
 describe('ak-editor-plugin-lists', () => {

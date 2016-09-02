@@ -5,10 +5,8 @@ import { vdom } from 'skatejs';
 const { React, ReactDOM } = window;
 import styles from './styles.less';
 import reactify from 'akutil-react';
+import { ProseMirror, DOMFromPos, schema } from 'ak-editor-prosemirror';
 
-import { ProseMirror } from 'prosemirror/dist/edit';
-import { DOMFromPos } from 'prosemirror/dist/edit/dompos';
-import { schema } from 'prosemirror/dist/schema-basic';
 const Content = reactify(ContentComponent, { React, ReactDOM });
 
 class PoppedDemo extends React.Component {

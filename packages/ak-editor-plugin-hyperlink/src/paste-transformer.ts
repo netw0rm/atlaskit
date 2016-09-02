@@ -1,8 +1,4 @@
-import { ProseMirror } from 'prosemirror/dist/edit/main';
-import { Node } from 'prosemirror/dist/model/node';
-import { Mark } from 'prosemirror/dist/model/mark';
-import { Slice, Fragment } from 'prosemirror/dist/model';
-import { Transform } from 'prosemirror/dist/transform';
+import { ProseMirror, Node, Mark, Slice, Fragment, Transform } from 'ak-editor-prosemirror';
 import { URL } from './regex';
 
 // This could be somehow added via schema ?

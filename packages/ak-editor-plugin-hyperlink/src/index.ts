@@ -1,12 +1,7 @@
-import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
-import { ResolvedPos } from 'prosemirror/dist/model/resolvedpos';
-import { Node } from 'prosemirror/dist/model/node';
-import { Mark } from 'prosemirror/dist/model/mark';
-import { inputRules, InputRule, allInputRules } from 'prosemirror/dist/inputrules';
 import {
-  DOMFromPos as getDomElementFromPosition,
-} from 'prosemirror/dist/edit/dompos';
-
+  Plugin, ProseMirror, ResolvedPos, Node, Mark, inputRules, InputRule,
+  allInputRules, DOMFromPos as getDomElementFromPosition
+} from 'ak-editor-prosemirror';
 import hyperLinkRule from './input-rule';
 import pasteTransformer from './paste-transformer';
 

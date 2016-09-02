@@ -1,6 +1,4 @@
-import { ProseMirror } from 'prosemirror/dist/edit/main';
-import { Mark } from 'prosemirror/dist/model/mark';
-import { InputRule } from 'prosemirror/dist/inputrules';
+import { ProseMirror, Mark, InputRule } from 'ak-editor-prosemirror';
 import { URL } from './regex';
 
 const urlAtEndOfLine = new RegExp(`${URL.source}$`);

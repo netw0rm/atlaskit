@@ -1,5 +1,5 @@
 import DropAdapter from '../src/drop-adapter';
-import { ProseMirror } from 'prosemirror/dist/edit/main';
+import { ProseMirror } from 'ak-editor-prosemirror';
 import { expect } from 'chai';
 
 describe('ak-editor-plugin-image-upload DropAdapter', () => {

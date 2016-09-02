@@ -1,4 +1,6 @@
-import { convertedHandlerCallback, Converter, dropHandler, pasteHandler } from '../src/base64fileconverter';
+import { 
+  convertedHandlerCallback, Converter, dropHandler, pasteHandler
+} from '../src/base64fileconverter';
 import { expect } from 'chai';
 
 describe('ak-editor-test base64fileconverter', () => {

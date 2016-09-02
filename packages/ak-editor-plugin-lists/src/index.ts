@@ -1,10 +1,6 @@
-import './types';
-import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
-import { ResolvedPos } from 'prosemirror/dist/model/resolvedpos';
-import { Node } from 'prosemirror/dist/model/node';
-import { UpdateScheduler } from 'prosemirror/dist/edit/update';
-import { commands } from 'prosemirror/dist/edit/commands';
-import Keymap from 'browserkeymap';
+import {
+  Keymap, Plugin, ProseMirror, ResolvedPos, Node, UpdateScheduler, commands
+} from 'ak-editor-prosemirror';
 
 export type ListType = 'bullet_list' | 'ordered_list' | null;
 

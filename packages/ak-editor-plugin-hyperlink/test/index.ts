@@ -1,14 +1,8 @@
 import HyperlinkPlugin from '../src';
-import { Plugin } from 'prosemirror/dist/edit';
-import { Slice, Node, Fragment } from 'prosemirror/dist/model';
-import { schema } from 'prosemirror/dist/schema-basic';
-import testing from 'ak-editor-test';
+import { chaiPlugin, makeEditor, doc, a, p, text, insert } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-const { builder, chaiPlugin, makeEditor } = testing({
-  Fragment, Node, Plugin, Slice, schema });
-const { doc, a, p, text, insert } = builder;
 chai.use(chaiPlugin);
 
 describe('ak-editor-plugin-hyperlink', () => {

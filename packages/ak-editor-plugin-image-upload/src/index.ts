@@ -1,9 +1,7 @@
-import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
-import { UpdateScheduler } from 'prosemirror/dist/edit/update';
-import { ResolvedPos } from 'prosemirror/dist/model/resolvedpos';
-import { DOMFromPos as getDomElementFromPosition } from 'prosemirror/dist/edit/dompos';
-import { Node } from 'prosemirror/dist/model';
-
+import {
+  Plugin, ProseMirror, UpdateScheduler, ResolvedPos,
+  DOMFromPos as getDomElementFromPosition, Node,
+} from 'ak-editor-prosemirror';
 import PasteAdapter from './paste-adapter';
 import DropAdapter from './drop-adapter';
 

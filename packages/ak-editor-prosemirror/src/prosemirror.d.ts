@@ -34,7 +34,7 @@ declare module 'prosemirror/dist/commands-table' {
 }
 
 declare module 'prosemirror/dist/edit/commands' {
-    namespace commands {
+    export namespace commands {
       export * from 'prosemirror/dist/commands-list';
       export * from 'prosemirror/dist/commands-table';
       export function chainCommands(...commands: any[]): (pm: any, apply: any) => any;
@@ -145,6 +145,7 @@ declare module 'prosemirror/dist/edit/range' {
 }
 
 declare module 'prosemirror/dist/edit' {
+    export { commands } from 'prosemirror/dist/edit/commands';
     export { ProseMirror } from 'prosemirror/dist/edit/main';
     export { Selection, TextSelection, NodeSelection } from 'prosemirror/dist/edit/selection';
     export { MarkedRange } from 'prosemirror/dist/edit/range';

@@ -1,26 +1,25 @@
-import { Fragment, Node, Slice, Schema } from 'prosemirror/dist/model';
-import { Plugin } from 'prosemirror/dist/edit';
 import * as base64fileconverter from './base64fileconverter';
-import makeSchemaBuilder from './schema-builder';
-import makeChaiPlugin from './chai';
-import makeSyncPlugin from './sync-plugin';
-import makeMakeEditor from './make-editor';
+import { offsetRefs, BuilderContent, coerce } from './schema-builder';
+import { ProseMirror } from 'ak-editor-prosemirror';
 
 export { base64fileconverter };
+export { default as chaiPlugin } from './chai';
+export { default as SyncPlugin } from './sync-plugin';
+export { default as makeEditor } from './make-editor';
+export {
+  doc, p, blockquote, pre, h1, h2, li, ul, ol, br, img, hr, em, strong, code, a,
+  text, fragment, slice
+} from './schema-builder';
 
-export interface Context {
-  Fragment: typeof Fragment;
-  Node: typeof Node;
-  Slice: typeof Slice;
-  schema: Schema;
-  Plugin: typeof Plugin;
-}
-
-export default (ctx: Context) => ({
-  builder: makeSchemaBuilder(ctx),
-  chaiPlugin: makeChaiPlugin(ctx),
-  SyncPlugin: makeSyncPlugin(ctx),
-  makeEditor: makeMakeEditor(ctx),
-});
-
-
+/**
+ * Insert nodes at the current selection.
+ *
+ * @returns refs from the inserted nodes, made relative to the document
+ *   insertion position
+ */
+export const insert = (pm: ProseMirror, ...content: BuilderContent[]) => {
+  const { from, to } = pm.selection;
+  const { nodes, refs } = coerce(content);
+  pm.tr.replaceWith(from, to, nodes).apply();
+  return offsetRefs(refs, from);
+};

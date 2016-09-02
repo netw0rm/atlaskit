@@ -2,9 +2,9 @@ import { storiesOf, action } from '@kadira/storybook';
 import BitbucketComponent from '../src';
 import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-test';
-const { React, ReactDOM } = window as any;
+import { Component } from 'react';
 
-const Bitbucket = reactify(BitbucketComponent, { React, ReactDOM });
+const Bitbucket = reactify(BitbucketComponent);
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
@@ -18,8 +18,8 @@ const imageUploader = (e: any, fn: any) => {
 
 storiesOf('ak-editor-bitbucket', module)
   .add('Empty', () => (
-    <Bitbucket />;
-  )
+    <Bitbucket />
+  ))
   .add('With default value', () => (
     <Bitbucket defaultValue="What do you want to say?" />
   ))
@@ -39,7 +39,7 @@ storiesOf('ak-editor-bitbucket', module)
   .add('Markdown preview', () => {
     type Props = {};
     type State = { markdown: string };
-    class Demo extends React.Component<Props, State> {
+    class Demo extends Component<Props, State> {
       constructor() {
         super();
         this.state = { markdown: '' };

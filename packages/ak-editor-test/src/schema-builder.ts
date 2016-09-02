@@ -1,14 +1,9 @@
-import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
-import { Fragment, Node, Slice } from 'prosemirror/dist/model';
-import { schema } from 'prosemirror/dist/schema-basic';
-import { Context } from './';
+import { Fragment, Node, Slice, schema } from 'ak-editor-prosemirror'
 import matches from './matches';
-
-export const defaultContext = { Fragment, Node, Plugin, Slice, schema };
 
 type position = number;
 export type Refs = {[name: string]: position};
-type BuilderContent = string | Node | Node[];
+export type BuilderContent = string | Node | Node[];
 type RefsContent = RefsNode | RefsNode[];
 
 /**
@@ -29,7 +24,7 @@ export interface RefsNode extends Node {
  * Special markers called "refs" can be put in the text. Refs provide a way to
  * get a reference to the position in text after the node has been constructed.
  */
-export function text(value: string, ctx: Context): RefsNode | RefsTrackingNode {
+export function text(value: string): RefsNode | RefsTrackingNode {
   let stripped = "";
   let textIndex = 0;
   let refs: Refs = {};
@@ -45,7 +40,7 @@ export function text(value: string, ctx: Context): RefsNode | RefsTrackingNode {
 
   const node = stripped === ""
     ? new RefsTrackingNode()
-    : ctx.schema.text(stripped) as RefsNode;
+    : schema.text(stripped) as RefsNode;
 
   node.refs = refs;
   return node;
@@ -108,10 +103,10 @@ export function flatten<T>(deep: (T | T[])[]): T[] {
 /**
  * Coerce builder content into ref nodes.
  */
-function coerce(content: BuilderContent[], ctx: Context) {
+export function coerce(content: BuilderContent[]) {
   const refsContent = content
     .map(item => typeof item === 'string'
-      ? text(item, ctx)
+      ? text(item)
       : item) as RefsContent[];
   return sequence(...flatten(refsContent));
 }
@@ -119,11 +114,11 @@ function coerce(content: BuilderContent[], ctx: Context) {
 /**
  * Create a factory for nodes.
  */
-export function nodeFactory(type: string, attrs = {}, ctx: Context) {
-  const nodeType = ctx.schema.nodes[type];
+export function nodeFactory(type: string, attrs = {}) {
+  const nodeType = schema.nodes[type];
 
   return function(...content: BuilderContent[]): RefsNode {
-    const { nodes, refs } = coerce(content, ctx);
+    const { nodes, refs } = coerce(content);
     const node = nodeType.create(attrs, nodes) as RefsNode;
     node.refs = refs;
     return node;
@@ -133,10 +128,10 @@ export function nodeFactory(type: string, attrs = {}, ctx: Context) {
 /**
  * Create a factory for marks.
  */
-export function markFactory(type: string, attrs = {}, ctx: Context) {
-  const mark = ctx.schema.mark(type, attrs)
+export function markFactory(type: string, attrs = {}) {
+  const mark = schema.mark(type, attrs)
   return (...content: BuilderContent[]) => {
-    const { nodes } = coerce(content, ctx);
+    const { nodes } = coerce(content);
     return nodes
       .map(node => {
         if (mark.type.isInSet(node.marks)) {
@@ -150,39 +145,21 @@ export function markFactory(type: string, attrs = {}, ctx: Context) {
   };
 }
 
-export default function(ctx = defaultContext) {
-  return {
-    doc: nodeFactory("doc", {}, ctx),
-    p: nodeFactory("paragraph", {}, ctx),
-    blockquote: nodeFactory("blockquote", {}, ctx),
-    pre: nodeFactory("code_block", {}, ctx),
-    h1: nodeFactory("heading", {level: 1}, ctx),
-    h2: nodeFactory("heading", {level: 2}, ctx),
-    li: nodeFactory("list_item", {}, ctx),
-    ul: nodeFactory("bullet_list", {}, ctx),
-    ol: nodeFactory("ordered_list", {}, ctx),
-    br: ctx.schema.node("hard_break"),
-    img: (attrs: { src: string, alt?: string, title?: string }) => ctx.schema.node("image", attrs),
-    hr: ctx.schema.node("horizontal_rule"),
-    em: markFactory("em", {}, ctx),
-    strong: markFactory("strong", {}, ctx),
-    code: markFactory("code", {}, ctx),
-    a: (attrs: { href: string }) => markFactory("link", attrs, ctx),
-    text: (value: string) => text(value, ctx),
-    fragment: (...content: BuilderContent[]) => flatten<BuilderContent>(content),
-    slice: (...content: BuilderContent[]) => new ctx.Slice(new ctx.Fragment(flatten<BuilderContent>(content)), 0, 0),
-
-    /**
-     * Insert nodes at the current selection.
-     *
-     * @returns refs from the inserted nodes, made relative to the document
-     *   insertion position
-     */
-    insert: (pm: ProseMirror, ...content: BuilderContent[]) => {
-      const { from, to } = pm.selection;
-      const { nodes, refs } = coerce(content, ctx);
-      pm.tr.replaceWith(from, to, nodes).apply();
-      return offsetRefs(refs, from);
-    },
-  };
-};
+export const doc = nodeFactory("doc", {});
+export const p = nodeFactory("paragraph", {});
+export const blockquote = nodeFactory("blockquote", {});
+export const pre = nodeFactory("code_block", {});
+export const h1 = nodeFactory("heading", {level: 1});
+export const h2 = nodeFactory("heading", {level: 2});
+export const li = nodeFactory("list_item", {});
+export const ul = nodeFactory("bullet_list", {});
+export const ol = nodeFactory("ordered_list", {});
+export const br = schema.node("hard_break");
+export const img = (attrs: { src: string, alt?: string, title?: string }) => schema.node("image", attrs);
+export const hr = schema.node("horizontal_rule");
+export const em = markFactory("em", {});
+export const strong = markFactory("strong", {});
+export const code = markFactory("code", {});
+export const a = (attrs: { href: string }) => markFactory("link", attrs);
+export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
+export const slice = (...content: BuilderContent[]) => new Slice(new Fragment(flatten<BuilderContent>(content)), 0, 0);

@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
 import { props, Component } from 'skatejs';
 import { name } from '../package.json';
-import { waitUntil, getShadowRoot } from 'akutil-common-test';
+import { afterMutations, getShadowRoot } from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -46,17 +46,16 @@ describe('ak-dropdown', () => {
     let component;
     let dropdownContainer;
 
-    beforeEach(() => {
+    beforeEach((done) => {
       component = createDropdown();
       dropdownContainer = document.createElement('div');
       dropdownContainer.innerHTML = component;
       document.body.appendChild(dropdownContainer);
 
-      return waitUntil(() =>
-        dropdownContainer.firstChild.getAttribute('defined') !== null
-      ).then(() => {
-        component = dropdownContainer.firstChild;
-      });
+      afterMutations(
+        () => (component = dropdownContainer.firstChild),
+        done
+      );
     });
     afterEach(() => {
       document.body.removeChild(dropdownContainer);

@@ -1,14 +1,8 @@
 import TextFormattingPlugin from '../src';
-import { Plugin } from 'prosemirror/dist/edit';
-import { Slice, Node, Fragment } from 'prosemirror/dist/model';
-import { schema } from 'prosemirror/dist/schema-basic';
-import testing from 'ak-editor-test';
+import { doc, p, em, chaiPlugin, makeEditor } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-const { builder, chaiPlugin, makeEditor } = testing({
-  Fragment, Node, Plugin, schema, Slice })
-const { doc, p, text, em } = builder;
 chai.use(chaiPlugin);
 
 describe('ak-editor-plugin-text-formatting', () => {
@@ -31,3 +25,4 @@ describe('ak-editor-plugin-text-formatting', () => {
     expect(plugin.getState().emActive).to.be.true;
   });
 });
+

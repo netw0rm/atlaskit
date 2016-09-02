@@ -1,6 +1,6 @@
 /* eslint-disable */
 import './types';
-import { Slice } from 'prosemirror/dist/model';
+import { Slice } from 'ak-editor-prosemirror';
 import { markdownParser } from './markdown-parser';
 
 export const markdownTransformer = function(schema: any, slice: any) {

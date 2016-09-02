@@ -1,7 +1,4 @@
-import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
-import { Selection } from 'prosemirror/dist/edit/selection';
-import { commands } from 'prosemirror/dist/edit/commands';
-import { UpdateScheduler } from 'prosemirror/dist/edit/update';
+import { commands, Plugin, ProseMirror, Selection, UpdateScheduler } from 'ak-editor-prosemirror';
 
 export interface BlockTypeState {
   selectedBlockType?: string;

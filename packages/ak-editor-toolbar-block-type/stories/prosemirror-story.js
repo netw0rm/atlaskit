@@ -7,8 +7,7 @@ const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
 import invert from 'lodash.invert';
 
-import { ProseMirror, Plugin } from 'prosemirror/dist/edit';
-import { schema } from 'prosemirror/dist/schema-basic';
+import { ProseMirror, Plugin, schema } from 'ak-editor-prosemirror';
 import BlockTypePlugin from 'atlassian-editorkit-block-type-plugin';
 
 const Toolbar = reactify(ToolbarComponent, { React, ReactDOM });

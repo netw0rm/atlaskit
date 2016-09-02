@@ -1,7 +1,6 @@
 import PasteAdapter from '../src/paste-adapter';
-
 import { expect } from 'chai';
-import { ProseMirror } from 'prosemirror/dist/edit/main';
+import { ProseMirror } from 'ak-editor-prosemirror';
 
 describe('ak-editor-plugin-image-upload PasteAdapter', () => {
   const mockEditor = (): ProseMirror => {

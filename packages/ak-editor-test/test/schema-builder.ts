@@ -1,12 +1,8 @@
-import {
-  default as builder, nodeFactory, markFactory, sequence,
-  defaultContext as ctx, RefsTrackingNode
-} from '../src/schema-builder';
+import { p, text, nodeFactory, markFactory, sequence, RefsTrackingNode } from '../src/schema-builder';
 import { expect } from 'chai';
 
 describe('ak-editor-test schema-builder', () => {
   const clone = (object = {}) => Object.assign({}, object);
-  const { text } = builder();
 
   describe('text', () => {
     it('returns a refs tracking node for an empty string', () => {
@@ -82,17 +78,17 @@ describe('ak-editor-test schema-builder', () => {
 
   describe('nodeFactory', () => {
     it('returns a function', () => {
-      expect(nodeFactory('paragraph', {}, ctx)).to.be.an.instanceOf(Function);
+      expect(nodeFactory('paragraph', {})).to.be.an.instanceOf(Function);
     });
 
     it('returns a factory that returns ref\'d nodes', () => {
-      const p = nodeFactory('paragraph', {}, ctx);
+      const p = nodeFactory('paragraph', {});
 
       expect(p()).to.have.property('refs');
     });
 
     it('correctly calculates flat node ref positions', () => {
-      const p = nodeFactory('paragraph', {}, ctx);
+      const p = nodeFactory('paragraph', {});
       const node = p('t{a}ex{b}t');
       const { a, b } = node.refs;
 
@@ -100,7 +96,7 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('correctly calculates flat node ref positions with refs tracking node', () => {
-      const p = nodeFactory('paragraph', {}, ctx);
+      const p = nodeFactory('paragraph', {});
       const node = p('{a}', 'text', '{b}');
       const { a, b } = node.refs;
 
@@ -108,7 +104,7 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('correctly calculates single nested node ref positions', () => {
-      const p = nodeFactory('paragraph', {}, ctx);
+      const p = nodeFactory('paragraph', {});
       const node = p(p('t{a}ex{b}t'));
       const { a, b } = node.refs;
 
@@ -116,7 +112,7 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('correctly calculates twice nested node ref positions', () => {
-      const p = nodeFactory('paragraph', {}, ctx);
+      const p = nodeFactory('paragraph', {});
       const node = p(p(p('t{a}ex{b}t')));
       const { a, b } = node.refs;
 
@@ -131,11 +127,10 @@ describe('ak-editor-test schema-builder', () => {
   });
 
   describe('markFactory', () => {
-    const em = markFactory('em', {}, ctx);
-    const { p } = builder();
+    const em = markFactory('em', {});
 
     it('returns a function', () => {
-      expect(markFactory('em', {}, ctx)).to.be.an.instanceOf(Function);
+      expect(markFactory('em', {})).to.be.an.instanceOf(Function);
     });
 
     it('returns a builder that returns an array', () => {
@@ -150,8 +145,6 @@ describe('ak-editor-test schema-builder', () => {
   });
 
   describe('sequence', () => {
-    const { p } = builder();
-
     it('makes no changes to nodes with no refs', () => {
       const a = text('0');
       const b = text('0');

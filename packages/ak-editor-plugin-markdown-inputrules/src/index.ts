@@ -1,8 +1,6 @@
-import './types';
-import { Plugin, ProseMirror } from 'prosemirror/dist/edit';
-import { Mark } from 'prosemirror/dist/model/mark';
-import { Schema } from 'prosemirror/dist/model/schema';
-import { InputRule, inputRules, allInputRules } from 'prosemirror/dist/inputrules';
+import {
+  Plugin, ProseMirror, Mark, Schema, InputRule, inputRules, allInputRules
+} from 'ak-editor-prosemirror';
 
 function replaceWithNode(
   pm: ProseMirror,

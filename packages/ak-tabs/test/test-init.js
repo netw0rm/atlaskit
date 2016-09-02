@@ -26,10 +26,7 @@ describe('ak-tabs initialisation -', () => {
   let fixtures;
 
   function setUpTest(opts = {}) {
-    beforeEach(done => (setupTabs(opts, (out) => {
-      fixtures = out;
-      done();
-    })));
+    beforeEach(() => (setupTabs(opts).then(out => (fixtures = out))));
     afterEach(() => cleanupTabs(fixtures));
   }
 

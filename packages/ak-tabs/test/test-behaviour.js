@@ -1,9 +1,8 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import '../src/index.js';
-
+import { waitUntil } from 'akutil-common-test';
 import {
-  afterMutations,
   setupTabs,
   cleanupTabs,
   getSelectedTab,
@@ -21,10 +20,7 @@ describe('ak-tabs behaviour -', () => {
   let fixtures;
 
   function setUpTest(opts = {}) {
-    beforeEach(done => (setupTabs(opts, (out) => {
-      fixtures = out;
-      done();
-    })));
+    beforeEach(() => (setupTabs(opts).then(out => (fixtures = out))));
     afterEach(() => cleanupTabs(fixtures));
   }
 
@@ -54,34 +50,24 @@ describe('ak-tabs behaviour -', () => {
       );
     });
 
-    it('updates the label correctly when the property is set', done => {
+    it('updates the label correctly when the property is set', () => {
       const tab = getSelectedTab(fixtures.tabs);
       const label = getLabelForTab(tab);
       const newLabelText = 'New tab label';
 
       tab.label = newLabelText;
 
-      afterMutations(() => {
-        expect(label.textContent).to.equal(newLabelText,
-          'The tab label should display the new label text'
-        );
-        done();
-      });
+      return waitUntil(() => (label.textContent === newLabelText)).should.be.fulfilled;
     });
 
-    it('updates the label correctly when the attribute is set', done => {
+    it('updates the label correctly when the attribute is set', () => {
       const tab = getSelectedTab(fixtures.tabs);
       const label = getLabelForTab(tab);
       const newLabelText = 'New tab label';
 
       tab.setAttribute('label', newLabelText);
 
-      afterMutations(() => {
-        expect(label.textContent).to.equal(newLabelText,
-          'The tab label should display the new label text'
-        );
-        done();
-      });
+      return waitUntil(() => (label.textContent === newLabelText)).should.be.fulfilled;
     });
   });
 
@@ -105,8 +91,10 @@ describe('ak-tabs behaviour -', () => {
     });
 
     describe('selects the first item', () => {
-      function assertFirstTabSelected(cb) {
-        afterMutations(() => {
+      function expectFirstTabSelected() {
+        return waitUntil(() => (
+          fixtures.spies.select.callCount > 1 && fixtures.spies.deselect.callCount > 0
+        )).then(() => {
           expect(fixtures.tabs[0].selected).to.equal(true, 'Tab 1 should be selected');
           expect(fixtures.tabs[1].selected).to.equal(false, 'Tab 2 should be deselected');
           expect(fixtures.tabs[2].selected).to.equal(false, 'Tab 3 should be deselected');
@@ -123,29 +111,27 @@ describe('ak-tabs behaviour -', () => {
           expect(fixtures.spies.deselect.getCall(0).args[0].detail.tab).to.equal(fixtures.tabs[1],
             'The tab deselection event should be fired on the second tab'
           );
-          cb();
         });
       }
 
-      it('when clicked', done => {
+      it('when clicked', () => {
         click(getLabelForTab(fixtures.tabs[0]));
-        assertFirstTabSelected(done);
+        expectFirstTabSelected();
       });
 
-      it('via keyboard nav', done => {
-        keyboardNavLeft(fixtures.el, () => {
-          assertFirstTabSelected(done);
-        });
+      it('via keyboard nav', () => {
+        keyboardNavLeft(fixtures.el);
+        return expectFirstTabSelected();
       });
 
-      it('when the property is set', done => {
+      it('when the property is set', () => {
         fixtures.tabs[0].selected = true;
-        assertFirstTabSelected(done);
+        return expectFirstTabSelected();
       });
 
-      it('when the attribute is set', done => {
+      it('when the attribute is set', () => {
         fixtures.tabs[0].setAttribute('selected', '');
-        assertFirstTabSelected(done);
+        return expectFirstTabSelected();
       });
     });
   });
@@ -178,26 +164,34 @@ describe('ak-tabs behaviour -', () => {
       it('when clicked', () => {
         click(getLabelForTab(fixtures.tabs[7]));
 
-        expect(fixtures.tabs[7].selected).to.equal(true, 'Tab 8 should be selected');
-        for (let i = 0; i < 7; i++) {
-          expect(fixtures.tabs[i].selected).to.equal(false, `Tab ${i + 1} should be deselected`);
-        }
-        expect(fixtures.spies.select.callCount).to.equal(2,
-          'Tab selection event should have been fired when selecting a tab'
-        );
-        expect(fixtures.spies.select.getCall(1).args[0].detail.tab).to.equal(fixtures.tabs[7],
-          'The tab selection event should be fired on the first tab'
-        );
-        expect(fixtures.spies.deselect.callCount).to.equal(1,
-          'Tab deselection event should be fired when deselecting a tab'
-        );
-        expect(fixtures.spies.deselect.getCall(0).args[0].detail.tab).to.equal(fixtures.tabs[0],
-          'The tab deselection event should be fired on the first tab'
-        );
+        waitUntil(() => (
+          fixtures.spies.select.callCount > 1 && fixtures.spies.deselect.callCount > 0
+        )).then(() => {
+          expect(fixtures.tabs[7].selected).to.equal(true, 'Tab 8 should be selected');
+          for (let i = 0; i < 7; i++) {
+            expect(fixtures.tabs[i].selected).to.equal(false, `Tab ${i + 1} should be deselected`);
+          }
+          expect(fixtures.spies.select.callCount).to.equal(2,
+            'Tab selection event should have been fired when selecting a tab'
+          );
+          expect(fixtures.spies.select.getCall(1).args[0].detail.tab).to.equal(fixtures.tabs[7],
+            'The tab selection event should be fired on the first tab'
+          );
+          expect(fixtures.spies.deselect.callCount).to.equal(1,
+            'Tab deselection event should be fired when deselecting a tab'
+          );
+          expect(fixtures.spies.deselect.getCall(0).args[0].detail.tab).to.equal(fixtures.tabs[0],
+            'The tab deselection event should be fired on the first tab'
+          );
+        });
       });
 
-      it('via keyboard nav', done => {
-        keyboardNavRight(fixtures.el, () => {
+      it('via keyboard nav', () => {
+        keyboardNavRight(fixtures.el, 7);
+
+        waitUntil(() => (
+          fixtures.spies.select.callCount >= 8 && fixtures.spies.deselect.callCount >= 7
+        )).then(() => {
           expect(fixtures.tabs[7].selected).to.equal(true, 'Tab 8 should be selected');
           expect(fixtures.spies.select.callCount).to.equal(8,
             'Tab selection event should have been fired 8 times in total'
@@ -214,8 +208,7 @@ describe('ak-tabs behaviour -', () => {
               `The tab deselection event should be fired on tab ${i}.`
             );
           }
-          done();
-        }, 7);
+        });
       });
     });
   });

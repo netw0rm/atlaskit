@@ -15,29 +15,33 @@ import Icon from 'ak-icon';
 import { buttonContainer, labelsContainer } from './internal/symbols';
 const resizeListener = Symbol();
 
+function onTabChange(elem) {
+  return (e) => {
+    if (e.detail.change && e.detail.change.selected) {
+      // Emit the selection or deselection event.
+      const tab = e.detail.tab;
+      const eventName = e.detail.change.selected.newValue ?
+        events.TAB_SELECT : events.TAB_DESELECT;
+      emit(tab, eventName, { detail: { tab } });
+
+      // If the tab has been selected, we need to deselect all other tabs.
+      if (e.detail.change.selected.newValue) {
+        helpers.getAllTabs(elem).filter(el => el !== tab).forEach(el => (el.selected = false));
+      }
+    }
+
+    // Re-render if necessary.
+    const allTabs = helpers.getAllTabs(elem);
+    elem._selected = allTabs.map(el => el.selected);
+    elem._labels = allTabs.map(el => el.label);
+    elem._visibleTabs = helpers.calculateVisibleTabs(elem);
+  };
+}
+
 const definition = {
   created(elem) {
     // Listen for tab change events
-    elem.addEventListener(events.TAB_CHANGE, e => {
-      if (e.detail.change && e.detail.change.selected) {
-        // Emit the selection or deselection event.
-        const tab = e.detail.tab;
-        const eventName = e.detail.change.selected.newValue ?
-          events.TAB_SELECT : events.TAB_DESELECT;
-        emit(tab, eventName, { detail: { tab } });
-
-        // If the tab has been selected, we need to deselect all other tabs.
-        if (e.detail.change.selected.newValue) {
-          helpers.getAllTabs(elem).filter(el => el !== tab).forEach(el => (el.selected = false));
-        }
-      }
-
-      // Re-render if necessary.
-      const allTabs = helpers.getAllTabs(elem);
-      elem._selected = allTabs.map(el => el.selected);
-      elem._labels = allTabs.map(el => el.label);
-      elem._visibleTabs = helpers.calculateVisibleTabs(elem);
-    });
+    elem.addEventListener(events.TAB_CHANGE, onTabChange(elem));
   },
   attached(elem) {
     // Re-render if necessary when the window is resized.

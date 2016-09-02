@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+pushd ../.. > /dev/null
+JSDOC2MD_LOC="`npm bin`/jsdoc2md"
+popd > /dev/null
+
 printf "\033[34m"
 echo "Generating README.md..."
 printf "\033[0m"
@@ -15,7 +19,7 @@ fi
 # Generate API docs
 API=""
 for file in $(find ./src -name "index*.js" | sort); do
-  NEXT="$(../../node_modules/.bin/jsdoc2md \
+  NEXT="$($JSDOC2MD_LOC \
     --plugin dmd-bitbucket ak-dmd-plugin \
     --src $file \
     --member-index-format list \

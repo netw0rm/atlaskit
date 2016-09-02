@@ -41,9 +41,17 @@ import {
 
 const { vdom } = require('skatejs');
 
+const $selectFont = '__selectFont__';
+const $toggleMark = '__toggleMark__';
+const $toggleList = '__toggleList__';
+const $addHyperLink = '__addHyperLink__';
+const $unlink = '__unlink__';
+const $changeHyperLinkValue = '__changeHyperLinkValue__';
+const $toggleExpansion = '__toggleExpansion__';
 const $initEditor = '__init_editor__';
 const $pm = '__pm__';
 const $ready = '__ready__';
+const $expanded = '__expanded__';
 const $focused = '__focused__';
 const $wrapper = '__wrapper__';
 const $onContentClick = '__onContentClick__';
@@ -81,64 +89,92 @@ const prosemirrorBlockToToolbarMap: {[key: string]: string} = {
 
 const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
 
-function selectFont(elem: any) {
-  return (event: any) => {
-    const font = event.detail.font;
-
-    const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
-    const blockType = matches[1];
-    const level = matches[2];
-
-    BlockTypePlugin.get(elem[$pm]).changeBlockType(blockType, { level });
-  };
-}
-
-function toggleMark(elem: any, name: MarkType) {
-  return () => TextFormattingPlugin.get(elem[$pm]).toggleMark(name);
-}
-
-function toggleList(elem: any, name: ListType) {
-  return () => ListsPlugin.get(elem[$pm]).toggleList(name);
-}
-
-function addHyperLink(elem: any) {
-  return (event: any) => {
-    const href = event.detail.value;
-    HyperlinkPlugin.get(elem[$pm]).addLink({ href });
-  };
-}
-
-function unlink(elem: any) {
-  return () => HyperlinkPlugin.get(elem[$pm]).removeLink();
-}
-
-function changeHyperLinkValue(elem: any) {
-  return (event: MouseEvent) => {
-    const newLink = (event.target as any).value;
-    if (newLink) {
-      HyperlinkPlugin.get(elem[$pm]).updateLink({
-        href: newLink,
-        text: newLink,
-      });
-    }
-  };
-}
-
 export default define('ak-editor-bitbucket', {
   created(elem: any) {
     bind(elem, $onContentClick);
     bind(elem, 'focus');
+    bind(elem, $selectFont);
+    bind(elem, $toggleMark);
+    bind(elem, $toggleList);
+    bind(elem, $addHyperLink);
+    bind(elem, $unlink);
+    bind(elem, $changeHyperLinkValue);
+    bind(elem, $toggleExpansion);
   },
 
   rendered(elem: any) {
-    if (!elem[$ready]) {
-      elem[$ready] = true;
+    if (elem[$expanded]) {
       elem[$initEditor]();
-      emit(elem, 'ready');
+      if (!elem[$ready]) {
+        emit(elem, 'ready');
+        elem[$ready] = true;
+      }
+
+      elem[$pm].focus();
     }
   },
 
   render(elem: any) {
+    let fakeInputClassNames = shadowStyles.locals.fakeInput;
+
+    if (elem.context === 'comment') {
+      fakeInputClassNames += ` ${shadowStyles.locals.comment}`;
+    }
+
+    const FullEditor = (<div>
+      <Toolbar>
+        <ToolbarBlockType
+          disabled={!elem[$canChangeBlockType]}
+          selectedFont={elem[$selectedFont]}
+          onSelectFont={elem[$selectFont]}
+        />
+        <ToolbarTextFormatting
+          boldActive={elem[$strongActive]}
+          italicActive={elem[$emActive]}
+          underlineActive={elem[$underlineActive]}
+          boldDisabled={!elem[$canChangeTextFormatting]}
+          italicDisabled={!elem[$canChangeTextFormatting]}
+          underlineDisabled={!elem[$canChangeTextFormatting]}
+          underlineHidden
+          onToggletextformatting={elem[$toggleMark]}
+        />
+        <ToolbarHyperlink
+          active={elem[$hyperLinkActive]}
+          disabled={!elem[$canLinkHyperlink]}
+          onSave={elem[$addHyperLink]}
+        />
+        <ToolbarLists
+          bulletlistActive={elem[$bulletListActive]}
+          numberlistActive={elem[$numberListActive]}
+          on-toggle-number-list={() => elem[$listsPlugin].toggleList('ordered_list')}
+          on-toggle-bullet-list={() => elem[$listsPlugin].toggleList('bullet_list')}
+        />
+      </Toolbar>
+      <Content
+        className={shadowStyles.locals.content}
+        onclick={elem[$onContentClick]}
+        ref={(wrapper) => { elem[$wrapper] = wrapper; }}
+        openTop
+        openBottom
+        skip
+      />
+      {elem[$hyperLinkActive] ?
+        <HyperLink
+          href={elem[$hyperLinkText]}
+          textInputValue={elem[$hyperLinkText]}
+          attachTo={elem[$hyperLinkElement]}
+          onUnlink={elem[$unlink]}
+          onchange={elem[$changeHyperLinkValue]}
+        />
+        : null
+      }
+      <Footer
+        openTop
+        onSave={elem[$toggleExpansion]}
+        oncancel={elem[$toggleExpansion]}
+      />
+    </div>);
+
     return (
       <div
         className={
@@ -148,54 +184,15 @@ export default define('ak-editor-bitbucket', {
         }
       >
         <style>{shadowStyles.toString()}</style>
-        <Toolbar>
-          <ToolbarBlockType
-            disabled={!elem[$canChangeBlockType]}
-            selectedFont={elem[$selectedFont]}
-            onSelectFont={selectFont(elem)}
+        {elem[$expanded] ?
+          <FullEditor />
+          :
+          <input
+            placeholder={elem.defaultValue}
+            onclick={elem[$toggleExpansion]}
+            className={fakeInputClassNames}
           />
-          <ToolbarTextFormatting
-            boldActive={elem[$strongActive]}
-            italicActive={elem[$emActive]}
-            underlineActive={elem[$underlineActive]}
-            boldDisabled={!elem[$canChangeTextFormatting]}
-            italicDisabled={!elem[$canChangeTextFormatting]}
-            underlineDisabled={!elem[$canChangeTextFormatting]}
-            underlineHidden
-            on-toggle-bold={toggleMark(elem, 'strong')}
-            on-toggle-italic={toggleMark(elem, 'em')}
-            on-toggle-underline={toggleMark(elem, 'underline')}
-          />
-          <ToolbarHyperlink
-            active={elem[$hyperLinkActive]}
-            disabled={!elem[$canLinkHyperlink]}
-            onSave={addHyperLink(elem)}
-          />
-          <ToolbarLists
-            bulletlistActive={elem[$bulletListActive]}
-            numberlistActive={elem[$numberListActive]}
-            on-toggle-number-list={toggleList(elem, 'ordered_list')}
-            on-toggle-bullet-list={toggleList(elem, 'bullet_list')}
-          />
-        </Toolbar>
-        <Content
-          className={shadowStyles.locals.content}
-          onclick={elem[$onContentClick]}
-          ref={(wrapper: HTMLElement) => { elem[$wrapper] = wrapper; }}
-          openTop
-          openBottom
-          skip
-        />
-        {elem[$hyperLinkActive] ?
-          <HyperLink
-            href={elem[$hyperLinkText]}
-            textInputValue={elem[$hyperLinkText]}
-            attachTo={elem[$hyperLinkElement]}
-            onUnlink={unlink(elem)}
-            onchange={changeHyperLinkValue(elem)}
-          />
-        : null}
-        <Footer openTop />
+        }
       </div>
     );
   },
@@ -211,13 +208,14 @@ export default define('ak-editor-bitbucket', {
      */
     defaultValue: prop.string({ attribute: true }),
     imageUploader: functionProp(),
+    context: prop.string({ attribute: true }),
 
     /**
      * True if the editor has focus.
      * @private
      */
     [$focused]: prop.boolean(),
-
+    [$expanded]: prop.boolean(),
     [$canChangeBlockType]: prop.boolean(),
     [$strongActive]: prop.boolean(),
     [$emActive]: prop.boolean(),
@@ -267,10 +265,62 @@ export default define('ak-editor-bitbucket', {
       return this[$ready] || false;
     },
 
+    /**
+     * Returns true if the editor is expanded for
+     * interaction.
+     * @returns {boolean}
+     */
+    get expanded() {
+      return this[$expanded];
+    },
+
     [$onContentClick](e: MouseEvent) {
       if (e.target === e.currentTarget) {
         this.focus();
       }
+    },
+
+    [$selectFont](event: MouseEvent) {
+      const font = event.detail.font;
+
+      const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
+      const blockType = matches[1];
+      const level = matches[2];
+
+      BlockTypePlugin.get(this[$pm]).changeBlockType(blockType, { level });
+    },
+
+    [$toggleMark](event: MouseEvent) {
+      TextFormattingPlugin.get(this[$pm]).toggleMark(event.detail.mark);
+    },
+
+    [$toggleList](event: MouseEvent) {
+      ListsPlugin.get(this[$pm]).toggleList(name);
+    },
+
+    [$addHyperLink](event: MouseEvent) {
+      const href = event.detail.value;
+      HyperlinkPlugin.get(this[$pm]).addLink({
+        href,
+      });
+    },
+
+    [$unlink]() {
+      HyperlinkPlugin.get(this[$pm]).removeLink();
+    },
+
+    [$changeHyperLinkValue](event: MouseEvent) {
+      const newLink = (event.target as any).value;
+      if (newLink) {
+        HyperlinkPlugin.get(this[$pm]).updateLink({
+          href: newLink,
+          text: newLink,
+        });
+      }
+    },
+
+    [$toggleExpansion]() {
+      this[$expanded] = !this[$expanded];
     },
 
     [$initEditor]() {

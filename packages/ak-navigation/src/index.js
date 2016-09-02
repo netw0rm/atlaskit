@@ -11,15 +11,15 @@ import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 import keycode from 'keycode';
 
 const shouldAnimateThreshold = 100; // ms
-const globalCollapsedWidth = 60; // px
-const containerCollapsedWidth = 60; // px
-const expandedWidth = 280; // px
+const globalCollapsedWidth = 60; // px this is duplicated in shared-variables.less
+const containerCollapsedWidth = 60; // px this is duplicated in shared-variables.less
+const expandedWidth = 280; // px this is duplicated in shared-variables.less
 
 const intermediateWidth = globalCollapsedWidth + containerCollapsedWidth;
 const collapsedWidth = globalCollapsedWidth;
 
 
-const containerPaddingExpanded = 20;
+const containerPaddingExpanded = 20; // px this is duplicated in shared-variables.less
 const containerPaddingCollapsed = 10;
 // start collapsing the padding 16px out
 const containerPaddingCollapseStart = intermediateWidth + 16;
@@ -109,7 +109,7 @@ export default define('ak-navigation', {
                   src={elem.containerLogo || false}
                 />
               </a>
-              <span>{elem.containerName}</span>
+              <span className={shadowStyles.locals.containerNameText}>{elem.containerName}</span>
             </div> : ''}
             <div className={shadowStyles.locals.containerLinks}>
               <slot />

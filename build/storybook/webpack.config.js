@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const webpackConfig = require('../../webpack.config.development.js');
+const webpackConfig = require('../webpack/development.js');
 const getPackageRestrictions = require('./getPackageRestrictions.js');
 
 function defaultPackageMains() {

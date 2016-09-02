@@ -1,4 +1,3 @@
-/** @jsx vdom */
 import 'style!./host.less';
 import shadowStyles from './ak-navigation-drawer.less';
 

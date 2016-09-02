@@ -7,8 +7,8 @@ const { React, ReactDOM } = window;
 import reactify from 'akutil-react';
 import invert from 'lodash.invert';
 
-import { ProseMirror, Plugin, schema } from 'ak-editor-prosemirror';
-import BlockTypePlugin from 'atlassian-editorkit-block-type-plugin';
+import { ProseMirror, schema } from 'ak-editor-prosemirror';
+import BlockTypePlugin from 'ak-editor-plugin-block-type';
 
 const Toolbar = reactify(ToolbarComponent, { React, ReactDOM });
 const BlockType = reactify(BlockTypeComponent, { React, ReactDOM });
@@ -55,23 +55,15 @@ storiesOf('ak-editor-toolbar-block-type', module)
           )]
         );
 
-        let blockTypePluginInstance;
-        new ProseMirror({ // eslint-disable-line
+        this.pm = new ProseMirror({ // eslint-disable-line
           place: this.editorElement,
           doc,
           plugins: [
-            new Plugin(
-              class BlockTypePluginDecorator {
-                constructor(pm) {
-                  blockTypePluginInstance = new BlockTypePlugin(pm);
-                  return blockTypePluginInstance;
-                }
-              }
-            ),
+            BlockTypePlugin,
           ],
         });
 
-        blockTypePluginInstance.onChange(state => {
+        BlockTypePlugin.get(this.pm).onChange(state => {
           const name = state.selectedBlockType;
           const blockType = prosemirrorBlockToToolbarMap[name];
 
@@ -80,8 +72,6 @@ storiesOf('ak-editor-toolbar-block-type', module)
             canChangeBlockType: state.enabled,
           });
         });
-
-        this.blockTypePluginInstance = blockTypePluginInstance;
       }
 
       render() {
@@ -98,7 +88,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
                   const blockType = matches[1];
                   const level = matches[2];
 
-                  this.blockTypePluginInstance.changeBlockType(blockType, { level });
+                  BlockTypePlugin.get(this.pm).changeBlockType(blockType, { level });
                 }}
               />
             </Toolbar>

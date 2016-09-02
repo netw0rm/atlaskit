@@ -38,7 +38,7 @@ function toggleDialog(elem, value) {
     list[list.length - 1].last = true;
     elem.reposition();
   } else {
-    list.forEach((item) => {
+    [...list].forEach((item) => {
       item.focused = false;
       if (item.first) {
         item.first = false;

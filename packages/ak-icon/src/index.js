@@ -6,7 +6,7 @@ import uid from 'uid';
 
 export default define('ak-icon', {
   render: (elem) => {
-    const Icon = elem.glyph ? icons[elem.glyph](vdom) : () => {};
+    const Icon = elem.glyph && icons[elem.glyph] ? icons[elem.glyph](vdom) : () => {};
     // Because we dynamically write a CSS style for the fill colour, and we're
     // dealing with polyfill'd shadow DOM that doesn't enforce CSS boundaries, we
     // need to use a unique class name as the target.
@@ -15,7 +15,9 @@ export default define('ak-icon', {
       <div className={`${shadowStyles.locals.root} ${id}`}>
         <style>{shadowStyles.toString()}</style>
         <style>{elem.fill && `.${id} { color: ${elem.fill}; fill: ${elem.fill}; }`}</style>
-        <Icon />
+        <div className={shadowStyles.locals.icon}>
+          <Icon />
+        </div>
       </div>
     );
   },

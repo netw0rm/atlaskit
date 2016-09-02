@@ -6,6 +6,7 @@ import ItemDefinition from './item';
 import TriggerDefinition, { TriggerButtonDefinition } from './trigger';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
+import * as events from './internal/events';
 
 // Width of a dropdown should be no less than width of it's trigger plus 10
 const diffBetweenDropdonAndTrigger = 10;
@@ -128,11 +129,11 @@ export const TriggerButton = define('ak-trigger-button', TriggerButtonDefinition
  */
 export default define('ak-dropdown', {
   attached(elem) {
-    elem.addEventListener('ak-dropdown-trigger-activated', () => toggleDialog(elem));
-    elem.addEventListener('ak-dropdown-selected', (e) => selectItem(elem, e));
-    elem.addEventListener('ak-dropdown-item-up', () => changeFocus(elem, 'prev'));
-    elem.addEventListener('ak-dropdown-item-down', () => changeFocus(elem, 'next'));
-    elem.addEventListener('ak-dropdown-item-tab', () => toggleDialog(elem, false));
+    elem.addEventListener(events.trigger.activated, () => toggleDialog(elem));
+    elem.addEventListener(events.selected, (e) => selectItem(elem, e));
+    elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
+    elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
+    elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
 
     document.addEventListener('click', handleClickOutside(elem));
     document.addEventListener('keypress', handleKeyPress(elem));
@@ -201,3 +202,5 @@ export default define('ak-dropdown', {
     }),
   },
 });
+
+export { events };

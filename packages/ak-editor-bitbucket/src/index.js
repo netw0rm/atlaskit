@@ -19,6 +19,7 @@ import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';
 import { nodeLifecycleHandler } from './node-lifecycle';
 import { markdownTransformer } from './paste-handlers';
+import * as events from './internal/events';
 
 // editorKit plugings
 import BlockTypePlugin from 'atlassian-editorkit-block-type-plugin';
@@ -127,7 +128,7 @@ export default define('ak-editor-bitbucket', {
     if (!elem[$ready]) {
       elem[$ready] = true;
       elem[$initEditor]();
-      emit(elem, 'ready');
+      emit(elem, events.ready);
     }
   },
 
@@ -371,9 +372,11 @@ export default define('ak-editor-bitbucket', {
       pm.on.flush.add(() => nodeLifecycleHandler(pm));
 
       // 'change' event is public API
-      pm.on.change.add(() => emit(this, 'change'));
+      pm.on.change.add(() => emit(this, events.change));
 
       this[$pm] = pm;
     },
   },
 });
+
+export { events };

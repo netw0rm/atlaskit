@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-hyperlink-edit",
-  "version": "1.2.0",
+  "version": "6.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -18,11 +18,11 @@
     "ak-editor-button": "^2.0.0",
     "ak-editor-button-link": "^1.0.0",
     "ak-editor-icon": "^2.0.0",
-    "ak-editor-popup": "^1.0.0",
+    "ak-editor-popup": "^2.0.1",
     "ak-editor-popup-text-input": "^1.0.0",
     "akutil-shared-styles": "^33.1.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.2.4"
+    "skatejs": "^1.2.5"
   },
   "devDependencies": {
     "ak-editor-content": "^2.0.0",

@@ -23,7 +23,7 @@ const standardConfig = {
       },
       {
         test: /\.less$/,
-        loader: 'css?modules&camelCase&importLoaders=1!postcss-loader!less',
+        loader: 'css?modules&camelCase&mergeRules=false&importLoaders=1!postcss-loader!less',
       },
       [ // exclusive configs for babel (first one that matches will be used)
         { // Support react/jsx in stories

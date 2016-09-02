@@ -1,5 +1,6 @@
 const path = require('path');
-const webComponentLocator = require('./build/lib/webComponentLocator.js');
+const pathToLocator = path.join(__dirname, 'packages', 'akutil-common-test', 'src', 'index.locateWebComponent.js'); // eslint-disable-line max-len
+const webComponentLocator = require(pathToLocator);
 
 const rq = [
   require.resolve('akutil-cucumber'),

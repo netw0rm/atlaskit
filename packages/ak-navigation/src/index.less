@@ -5,39 +5,51 @@
 @ak-navigation-container-color: @ak-color-N20;
 @ak-navigation-container-name-color: @ak-color-N500;
 
+@global-bar-width: 60px;
+@global-primary-item-margin: 25px;
+@global-secondary-item-margin: 10px;
+@global-secondary-item-height: 30px;
+@container-logo-size: 40px;
+
 .navigation {
   background-color: @ak-navigation-container-color;
   top: 0;
   left: 0;
   position: fixed;
-  width: 80px;
   height: 100%;
   display: flex;
 
   &.should-animate {
-    transition: width 250ms;
-  }
-
-  &.open {
-    width: 300px;
+    transition: width 250ms, transform 250ms;
   }
 
   .global {
-    flex: 0 0 80px;
+    flex: 0 0 @global-bar-width;
     background-color: @ak-navigation-global-color;
     color: white;
     flex-direction: column;
     align-items: center;
+    position: relative;
 
     .global-primary {
-      margin: 25px auto;
-      width: 20px;
+      margin: @global-primary-item-margin auto;
+      text-align: center;
+
+      a {
+        color: currentColor;
+      }
     }
 
     .global-secondary {
       margin: 10px auto;
-      height: 30px;
-      width: 20px;
+      height: @global-secondary-item-height;
+      text-align: center;
+    }
+
+    .global-bottom {
+      bottom: 0;
+      position: absolute;
+      width: 100%;
     }
   }
 
@@ -47,9 +59,13 @@
   }
 
   .container-logo {
-    width: 40px;
-    height: 40px;
+    width: @container-logo-size;
+    height: @container-logo-size;
     margin-right: 10px;
+    
+    &:not([src]) {
+      visibility: hidden;
+    }
   }
 
   .container-name {
@@ -59,11 +75,9 @@
     margin-bottom: 10px;
     font-weight: bold;
     font-size: 14px;
-    padding: 0 20px;
   }
 
   .container-links {
     font-size: 14px;
-    padding: 0 20px;
   }
 }

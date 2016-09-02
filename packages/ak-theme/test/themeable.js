@@ -132,5 +132,10 @@ describe('ak-theme, { themeable }', () => {
       elem.themeName = 'test';
       expect(elem.themeVars.test).to.equal(true);
     });
+
+    it('should be empty when changed to a theme that does not exist', () => {
+      elem.themeName = '';
+      expect(Object.keys(elem.themeVars).length).to.equal(0);
+    });
   });
 });

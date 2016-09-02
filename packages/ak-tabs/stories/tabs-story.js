@@ -288,11 +288,14 @@ storiesOf(name, module)
     );
   })
   .add('ak-tabs added programatically', () => {
+    let i = 1;
+
     function addTab() {
       const newTab = new AkTab();
-      newTab.label = 'New tab';
-      newTab.innerHTML = '<p>New tab content</p>';
+      newTab.label = `New tab ${i}`;
+      newTab.innerHTML = `<p>New tab content ${i}</p>`;
       document.getElementById('my-tabs').appendChild(newTab);
+      i++;
     }
 
     return (

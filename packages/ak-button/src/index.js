@@ -107,7 +107,7 @@ const definition = {
   },
   render(elem) {
     return (
-      <div>
+      <span>
         <style>{shadowStyles.toString()}</style>
         <button
           className={classNames(getClasses(elem))}
@@ -115,16 +115,16 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={e => e.preventDefault()}
         >
-          <div className={classKeys.buttonContent}>
+          <span className={classKeys.buttonContent}>
             <span className={classKeys.beforeSlotWrapper}>
               <slot name="before" className={classKeys.beforeSlot} />
             </span>
             <span className={classKeys.defaultSlotWrapper}>
               <slot className={classKeys.defaultSlot} />
             </span>
-          </div>
+          </span>
         </button>
-      </div>
+      </span>
     );
   },
 };

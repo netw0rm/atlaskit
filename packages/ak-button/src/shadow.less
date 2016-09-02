@@ -1,9 +1,16 @@
 @import '~akutil-shared-styles/src/colors.less';
 
-@base: 10px;
-@base-font: 14px;
+@base-font: inherit;
+@em: 14;
+@grid: 8;
+@lineHeight: 20;
+
+@buttonLineHeight: @lineHeight / @em;
+@buttonHeight: unit(@grid * 4 / @em, em);
+@compactButtonHeight: unit(@grid * 3 / @em, em);
+
 @base-radius: 3px;
-@before-slot-right-margin: 8px;
+@before-slot-right-margin: unit(@grid, px);
 
 // Default Button Colors
 @defaultBackgroundColor: @ak-color-N20;
@@ -37,19 +44,22 @@
   margin-right: @before-slot-right-margin;
 }
 :host .before-slot-wrapper {
-  align-items: center;
+  align-self: center;
   display: flex;
 }
 
+_shadow_root_ {
+  display: inline-flex;
+}
 //firefox
 .button-content {
-  align-items: center;
-  display: flex;
+  align-items: baseline;
+  display: inline-flex;
   flex-wrap: nowrap;
 }
 .before-slot,
 .default-slot {
-  display: flex;
+  display: inline-flex;
 }
 button::-moz-focus-inner {
   margin: 0;
@@ -62,18 +72,20 @@ button::-moz-focus-inner {
 .button {
   box-sizing: border-box;
   background: @defaultBackgroundColor;
-  border: none;
+  border-width: 0;
   border-radius: @base-radius;
   color: @defaultColor;
+  display: flex;
   font-style: normal;
   font-size: @base-font;
-  height: @base*3;
-  line-height: @base*3;
+  height: @buttonHeight;
+  line-height: @buttonLineHeight;
   margin: 0;
   outline: none;
-  padding: 0 @base;
+  padding: unit((@grid * 0.75), px) unit(@grid, px);
   text-align: center;
   transition: background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+  user-select: none;
 
   &:hover {
     background: @defaultBackgroundColorHover;
@@ -151,7 +163,8 @@ button::-moz-focus-inner {
   }
 
   &.compact {
-    height: @base*2.2;
-    line-height: @base*2.2;
+    height: @compactButtonHeight;
+    padding-top: unit((@grid / 4), px);
+    padding-bottom: unit((@grid / 4), px);
   }
 }

@@ -25,6 +25,7 @@ const GLYPHS = [
   'question',
   'person',
   'page',
+  'expand',
 ];
 
 const AkButtonStates = buttonStatesExample({
@@ -66,43 +67,42 @@ storiesOf(name, module)
     </AkButton>
   )
   .add('an ak-button that emits an action when it is clicked', () => (
-    <AkButton className={buttonClass} onClick={action('clicking the WebComponent')}>
-      Button
-    </AkButton>
+    <div>
+      <p>
+        some text
+        <AkButton className={buttonClass} onClick={action('clicking the WebComponent')}>
+          Button
+        </AkButton>
+        more text
+      </p>
+    </div>
   ))
   .add('compact buttons with all attributes', () =>
     <div>
-      <style>{"ak-button {margin-left: 10px;}"}</style>
-      <AkButton className={buttonClass} compact>
-        Button
-      </AkButton>
-      <AkButton className={buttonClass} compact appearance="primary">
-        Button
-      </AkButton>
-      <AkButton className={buttonClass} compact appearance="subtle">
-        Button
-      </AkButton>
-      <AkButton className={buttonClass} compact selected>
-        Button
-      </AkButton>
-      <AkButton
-        className={buttonClass}
-        compact
-        disabled
-        onclick={action('clicking the WebComponent')}
-      >
-        Button
-      </AkButton>
+      <p>
+        <AkButton className={buttonClass} compact>
+          Button
+        </AkButton>
+        <AkButton className={buttonClass} compact appearance="primary">
+          Button
+        </AkButton>
+        <AkButton className={buttonClass} compact appearance="subtle">
+          Button
+        </AkButton>
+        <AkButton className={buttonClass} compact selected>
+          Button
+        </AkButton>
+        <AkButton
+          className={buttonClass}
+          compact
+          disabled
+          onclick={action('clicking the WebComponent')}
+        >
+          Button
+        </AkButton>
+      </p>
     </div>
   )
-  .add('an ak-button that emits an action when it is clicked', () => (
-    <AkButton
-      className={buttonClass}
-      onClick={action('clicking the WebComponent')}
-    >
-      Button
-    </AkButton>
-  ))
   .add('an ak-button with icons', () => {
     const buttonStyles = { 'margin-right': '10px', display: 'inline-flex' };
     return (<div style={{ display: 'flex', flexDirection: 'column' }}>

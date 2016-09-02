@@ -101,17 +101,20 @@ export default function buttonStatesExample(dependencies) {
             />
           </form>
           <br />
-          <AkButton
-            disabled={this.state.disabled}
-            selected={this.state.selected}
-            compact={this.state.compact}
-            appearance={this.state.appearance}
-            className={buttonClass}
-            onclick={action('clicking the WebComponent')}
-          >
-            {this.createIcon()}
-            {this.state.label}
-          </AkButton>
+          <p>
+            Baseline alignment check
+            <AkButton
+              disabled={this.state.disabled}
+              selected={this.state.selected}
+              compact={this.state.compact}
+              appearance={this.state.appearance}
+              className={buttonClass}
+              onclick={action('clicking the WebComponent')}
+            >
+              {this.createIcon()}
+              {this.state.label}
+            </AkButton>
+          </p>
         </div>
       );
     }

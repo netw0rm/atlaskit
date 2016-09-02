@@ -6,7 +6,7 @@ module.exports = (config) => {
 
   Object.assign(config, {
     files: [
-      'test/**/*.+(ts|js)',
+      'test/**/*.+(js|ts)',
     ],
 
     preprocessors: {

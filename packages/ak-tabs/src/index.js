@@ -10,6 +10,7 @@ import * as handlers from './internal/tabs-handlers';
 import * as events from './internal/events';
 import * as i18n from './internal/i18n';
 import Tab from './index-tab';
+import Icon from 'ak-icon';
 
 import { buttonContainer, labelsContainer } from './internal/symbols';
 const resizeListener = Symbol();
@@ -101,6 +102,7 @@ const definition = {
                 }}
               >
                 <span>{i18n.more}</span>
+                <Icon glyph="expand" />
               </a>
             </li>
           )

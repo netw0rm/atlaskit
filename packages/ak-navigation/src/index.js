@@ -1,13 +1,22 @@
-/** @jsx vdom */
 import 'style!./host.less';
 
 import { emit, prop, vdom, define } from 'skatejs';
 import shadowStyles from './index.less';
+import 'ak-blanket';
 import './ak-navigation-drawer';
 import './ak-navigation-link';
 import classNames from 'classnames';
 import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 import keycode from 'keycode';
+import * as events from './internal/events';
+const {
+  linkSelected: linkSelectedEvent,
+  createDrawerOpen: createDrawerOpenEvent,
+  searchDrawerOpen: searchDrawerOpenEvent,
+  close: closeEvent,
+  open: openEvent,
+  openStateChanged: openStateChangedEvent,
+} = events;
 
 const shouldAnimateThreshold = 100; // ms
 const globalCollapsedWidth = 60; // px
@@ -25,25 +34,33 @@ const containerPaddingCollapseStart = intermediateWidth + 16;
 
 function getContainerPadding(width) {
   const paddingDelta = containerPaddingExpanded - containerPaddingCollapsed;
-  const gradient = (containerPaddingExpanded - containerPaddingCollapsed)
-    / (containerPaddingCollapseStart - intermediateWidth);
-
+  const gradient = paddingDelta / (containerPaddingCollapseStart - intermediateWidth);
   const padding = gradient * width + (paddingDelta - gradient * intermediateWidth);
 
   return Math.min(containerPaddingExpanded, Math.max(containerPaddingCollapsed, padding));
 }
 // TODO: keyboard interaction
 const openSearchDrawer = el => el.addEventListener('click', () => {
-  emit(el, 'ak-navigation-search-drawer-open');
+  emit(el, searchDrawerOpenEvent);
 });
 const openCreateDrawer = el => el.addEventListener('click', () => {
-  emit(el, 'ak-navigation-create-drawer-open');
+  emit(el, createDrawerOpenEvent);
 });
+
+function closeAllDrawers(elem) {
+  elem.createDrawerOpen = false;
+  elem.searchDrawerOpen = false;
+}
+
 
 export default define('ak-navigation', {
   render(elem) {
     return (
       <div>
+        <ak-blanket
+          onActivate={() => closeAllDrawers(elem)}
+          clickable={elem.createDrawerOpen || elem.searchDrawerOpen}
+        />
         <div
           className={classNames(shadowStyles.locals.navigation, {
             [shadowStyles.locals.open]: elem.open,
@@ -63,7 +80,9 @@ export default define('ak-navigation', {
           <style>{shadowStyles.toString()}</style>
           <div className={shadowStyles.locals.global}>
             <div className={shadowStyles.locals.globalPrimary}>
-              <slot name="global-home" />
+              <a href={elem.productHref || false}>
+                <slot name="global-home" />
+              </a>
             </div>
             <div ref={openSearchDrawer} className={shadowStyles.locals.globalSecondary}>
               <slot name="global-search" />
@@ -80,7 +99,6 @@ export default define('ak-navigation', {
               </div>
             </div>
           </div>
-
           <ak-navigation-drawer large open={elem.searchDrawerOpen}>
             <slot name="global-search-drawer" />
           </ak-navigation-drawer>
@@ -89,16 +107,16 @@ export default define('ak-navigation', {
           </ak-navigation-drawer>
 
           <div className={shadowStyles.locals.container}>
-            <div className={shadowStyles.locals.containerName}>
+            {elem.containerName ? <div className={shadowStyles.locals.containerName}>
               <a href={elem.containerHref}>
                 <img
                   className={shadowStyles.locals.containerLogo}
                   alt={elem.containerName}
-                  src={elem.containerLogo}
+                  src={elem.containerLogo || false}
                 />
               </a>
               <span>{elem.containerName}</span>
-            </div>
+            </div> : ''}
             <div className={shadowStyles.locals.containerLinks}>
               <slot />
             </div>
@@ -125,15 +143,15 @@ export default define('ak-navigation', {
       attribute: true,
       set(elem, data) {
         if (!data.oldValue && data.newValue) {
-          emit(elem, 'ak-navigation-open');
+          emit(elem, openEvent);
         } else if (data.oldValue && !data.newValue) {
-          emit(elem, 'ak-navigation-close');
+          emit(elem, closeEvent);
         }
         elem.createDrawerOpen = elem.open && elem.createDrawerOpen;
         elem.searchDrawerOpen = elem.open && elem.searchDrawerOpen;
         elem.width = elem.open ? expandedWidth : collapsedWidth;
       },
-      event: 'ak-navigation-open-state-changed',
+      event: openStateChangedEvent,
     }),
     containerName: prop.string({
       attribute: true,
@@ -175,13 +193,13 @@ export default define('ak-navigation', {
     document.removeEventListener('keyup', elem.toggleHandler);
   },
   created(elem) {
-    elem.addEventListener('ak-navigation-create-drawer-open', () => {
+    elem.addEventListener(createDrawerOpenEvent, () => {
       elem.createDrawerOpen = true;
     });
-    elem.addEventListener('ak-navigation-search-drawer-open', () => {
+    elem.addEventListener(searchDrawerOpenEvent, () => {
       elem.searchDrawerOpen = true;
     });
-    elem.addEventListener('ak-navigation-link-selected', (event) => {
+    elem.addEventListener(linkSelectedEvent, (event) => {
       const containerLinks = Array.prototype.slice.call(elem.children);
       containerLinks.forEach((child) => { child.selected = false; });
       event.target.selected = true;
@@ -203,3 +221,5 @@ export default define('ak-navigation', {
     });
   },
 });
+
+export { events };

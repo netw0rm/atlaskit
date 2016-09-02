@@ -17,5 +17,7 @@ atlaskit.iml
 browserstack.err
 local.log
 /stories
+/storybook-static
 browserstack-entry.js
 packages/**/**/README.md
+packages/**/**/CHANGELOG.md

@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import akNavigation from '../src/index';
 import akPage from 'ak-page';
@@ -18,6 +18,7 @@ const AkPage = reactify(akPage, {
   ReactDOM,
 });
 
+// TODO: move this in its own file - can potentially be re-used by ak-page as well
 const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-es6-class
   propTypes: {
     children: React.PropTypes.oneOfType([
@@ -38,7 +39,13 @@ const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-
     this.setState({ open: !this.state.open });
   },
   render() {
-    return (<AkNavigation {...this.props} open={this.state && this.state.open}>
+    return (<AkNavigation
+      {...this.props}
+      onLinkSelected={action('link selected')}
+      onClose={action('close')}
+      onOpen={action('open')}
+      open={this.state && this.state.open}
+    >
       {this.props.children}
     </AkNavigation>);
   },
@@ -46,10 +53,11 @@ const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-
 const containerLogo = require('url!./nucleus.png');
 const userAvatar = require('url!./emma.jpg');
 
-const containerProps = {
+const sharedProps = {
   containerName: 'Nucleus',
   containerHref: 'http://example.com',
   containerLogo,
+  productHref: 'http://atlassian.design',
 };
 
 const NavigationLinks = () => <div>
@@ -86,7 +94,60 @@ storiesOf(name, module)
       <AkNavigation
         slot="navigation"
         open
-        {...containerProps}
+        {...sharedProps}
+      >
+        <ak-icon slot="global-home" glyph="bitbucket" />
+        <ak-icon slot="global-search" glyph="search" />
+        <ak-icon slot="global-create" glyph="create" />
+        <ak-avatar src={userAvatar} slot="global-profile" />
+        <ak-icon slot="global-help" glyph="help" />
+        <div is slot="global-search-drawer">
+          Search
+        </div>
+        <div is slot="global-create-drawer">
+          Create
+        </div>
+        <NavigationLinks />
+
+      </AkNavigation>
+      <div is slot="content">
+        <Lorem count="30" />
+      </div>
+    </AkPage>
+  ))
+  .add('ak-navigation with no container logo', () => (
+    <AkPage navigationOpen>
+      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
+      <AkNavigation
+        slot="navigation"
+        open
+        containerName="Electron"
+      >
+        <ak-icon slot="global-home" glyph="bitbucket" />
+        <ak-icon slot="global-search" glyph="search" />
+        <ak-icon slot="global-create" glyph="create" />
+        <ak-avatar src={userAvatar} slot="global-profile" />
+        <ak-icon slot="global-help" glyph="help" />
+        <div is slot="global-search-drawer">
+          Search
+        </div>
+        <div is slot="global-create-drawer">
+          Create
+        </div>
+        <NavigationLinks />
+
+      </AkNavigation>
+      <div is slot="content">
+        <Lorem count="30" />
+      </div>
+    </AkPage>
+  ))
+  .add('ak-navigation with no container logo or name', () => (
+    <AkPage navigationOpen>
+      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
+      <AkNavigation
+        slot="navigation"
+        open
       >
         <ak-icon slot="global-home" glyph="bitbucket" />
         <ak-icon slot="global-search" glyph="search" />
@@ -112,7 +173,7 @@ storiesOf(name, module)
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
-        {...containerProps}
+        {...sharedProps}
       >
         <ak-icon slot="global-home" glyph="jira" />
         <ak-icon slot="global-search" glyph="search" />
@@ -129,7 +190,7 @@ storiesOf(name, module)
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <TogglingSidebar
         slot="navigation"
-        {...containerProps}
+        {...sharedProps}
       >
         <ak-icon slot="global-home" glyph="jira" />
         <ak-icon slot="global-search" glyph="search" />

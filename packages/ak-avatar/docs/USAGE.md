@@ -1,8 +1,8 @@
 # Avatar
 
-Avatars are used to add a human touch and instant clarity when understanding which user did what in
-the application. We also use avatars for projects, repositories, spaces, groups and other container
-metaphors within Atlassian apps.
+The Avatars represent users that are collaborating within the same application. You can use an avatar for projects, repositories and spaces within the Atlassian applications.
+
+
 
 ## Setup and install
 
@@ -10,7 +10,7 @@ metaphors within Atlassian apps.
 npm install ak-avatar
 ```
 
-## Using the definition
+## Using the component
 
 The `ak-avatar` package exports the Avatar [skate](https://github.com/skatejs/skatejs) component:
 

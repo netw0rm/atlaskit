@@ -1,4 +1,5 @@
 import './types';
+import * as events from './internal/events';
 import { define, prop, emit } from 'skatejs';
 import invert from 'lodash.invert';
 import { ProseMirror, Schema } from 'ak-editor-prosemirror';
@@ -19,7 +20,6 @@ import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';
 import { nodeLifecycleHandler } from './node-lifecycle';
 import { markdownTransformer } from './paste-handlers';
-
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import {
   default as ListsPlugin,
@@ -402,3 +402,5 @@ export default define('ak-editor-bitbucket', {
     },
   },
 });
+
+export { events };

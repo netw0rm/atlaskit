@@ -17,9 +17,13 @@
     "classnames": "^2.2.5",
     "skatejs": "^1.2.5"
   },
+  "peerDependencies": {
+    "ak-navigation": "^2.0.0"
+  },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
+    "ak-navigation": "^2.4.1",
     "akutil-react": "^1.0.0"
   },
   "repository": {

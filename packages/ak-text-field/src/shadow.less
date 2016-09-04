@@ -14,7 +14,9 @@
   margin-top: 20px;
 }
 
-@inputHostStyles: {
+// NORMAL STATE
+
+@baseInputStyle: {
   background-color: rgba(9, 30, 66, 0.03); // TODO use ak-color-*
   border: 1px solid #dfe1e6; // TODO use ak-color-*
   border-radius: 3px;
@@ -22,41 +24,45 @@
   padding: 10px;
   width: 300px;
   transition: background-color 0.2s, border-color 0.2s;
-
-  &::-webkit-input-placeholder {
-    color: #6c798f; // TODO use ak-color-*
-  }
-
-  &:hover {
-    border-color: rgba(9, 30, 66, 0); // TODO use ak-color-*
-    background-color: #F0F2F5; // TODO use ak-color-*
-  }
-
-  &:focus {
-    background-color: rgba(9, 30, 66, 0.03); // TODO use ak-color-*
-    border-width: 2px;
-    border-color: #23a9fa; // TODO use ak-color-*
-    box-shadow: none;
-    outline: none;
-    position: relative;
-    top: -1px;
-    left: -1px;
-    margin-bottom: -2px;
-  }
-
-  &[disabled] {
-    background-color: #f2f3f5; // TODO use ak-color-*
-    border: 1px solid #f2f3f5;
-    cursor: not-allowed;
-
-    &::-webkit-input-placeholder {
-      color: #afb6c2; // TODO use ak-color-*
-    }
-  }
 };
+.default-slot-element > input { @baseInputStyle(); }
+::content > input { @baseInputStyle(); }
+::slotted(input)  { @baseInputStyle(); }
 
-.default-slot-element > * {
-  @inputHostStyles();
-}
-::content > input { @inputHostStyles(); }
-::slotted(input)  { @inputHostStyles(); }
+// HOVER STATE
+
+@hoverInputStyle: {
+  border-color: rgba(9, 30, 66, 0); // TODO use ak-color-*
+  background-color: #F0F2F5; // TODO use ak-color-*
+};
+.default-slot-element > input:hover { @hoverInputStyle(); }
+::content > input:hover { @hoverInputStyle(); }
+::slotted(input:hover)  { @hoverInputStyle(); }
+
+// FOCUS STATE
+
+@focusInputStyle: {
+  background-color: rgba(9, 30, 66, 0.03); // TODO use ak-color-*
+  border-width: 2px;
+  border-color: #23a9fa; // TODO use ak-color-*
+  box-shadow: none;
+  outline: none;
+  position: relative;
+  top: -1px;
+  left: -1px;
+  margin-bottom: -2px;
+};
+.default-slot-element > input:focus { @focusInputStyle(); }
+::content > input:focus { @focusInputStyle(); }
+::slotted(input:focus)  { @focusInputStyle(); }
+
+// DISABLED STATE
+
+@disabledInputStyle: {
+  background-color: #f2f3f5; // TODO use ak-color-*
+  border: 1px solid #f2f3f5;
+  cursor: not-allowed;
+};
+.default-slot-element > input[disabled] { @disabledInputStyle(); }
+::content > input[disabled] { @disabledInputStyle(); }
+::slotted(input[disabled])  { @disabledInputStyle(); }

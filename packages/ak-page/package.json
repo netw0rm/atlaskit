@@ -18,12 +18,12 @@
     "skatejs": "^1.2.5"
   },
   "peerDependencies": {
-    "ak-navigation": "^3.0.0"
+    "ak-navigation": "*"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-navigation": "^3.0.0",
+    "ak-navigation": "*",
     "akutil-react": "^1.0.0"
   },
   "repository": {

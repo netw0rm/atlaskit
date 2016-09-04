@@ -16,7 +16,7 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-prosemirror": "^1.0.0",
-    "akutil-shared-styles": "^33.1.0",
+    "akutil-shared-styles": "^33.7.0",
     "babel-runtime": "^6.11.6",
     "skatejs": "^1.2.5"
   },

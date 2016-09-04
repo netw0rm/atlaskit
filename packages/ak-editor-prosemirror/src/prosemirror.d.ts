@@ -1,70 +1,69 @@
 declare module 'prosemirror/dist/collab' {
-    import { rebaseSteps } from 'prosemirror/dist/collab/rebase';
-    export { rebaseSteps };
-    const collabEditing: any;
-    export { collabEditing };
+    export import { rebaseSteps } from 'prosemirror/dist/collab/rebase';
+    export const collabEditing: any;
 }
 
 declare module 'prosemirror/dist/collab/rebase' {
     import { Remapping, Transform } from 'prosemirror/dist/transform';
-    function rebaseSteps(doc: any, forward: any, steps: any, maps: any): {
+    export function rebaseSteps(doc: any, forward: any, steps: any, maps: any): {
         doc: any;
         transform: any; mapping: Remapping;
         positions: any[];
     };
-    export { rebaseSteps };
 }
 
 declare module 'prosemirror/dist/commands-list' {
-    export function wrapInList(nodeType: any, attrs?: any): (pm: any, apply?: any) => boolean;
-    export function splitListItem(nodeType: any): (pm: any) => boolean;
-    export function liftListItem(nodeType: any): (pm: any, apply: any) => boolean;
-    export function sinkListItem(nodeType: any): (pm: any, apply: any) => boolean;
+    import { ProseMirror } from 'prosemirror/dist/edit';
+    export function wrapInList(nodeType: any, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
+    export function splitListItem(nodeType: any): (pm: ProseMirror) => boolean;
+    export function liftListItem(nodeType: any): (pm: ProseMirror, apply: any) => boolean;
+    export function sinkListItem(nodeType: any): (pm: ProseMirror, apply: any) => boolean;
 }
 
 declare module 'prosemirror/dist/commands-table' {
-    export function addColumnBefore(pm: any, apply: any): boolean;
-    export function addColumnAfter(pm: any, apply: any): boolean;
-    export function removeColumn(pm: any, apply: any): boolean;
-    export function addRowBefore(pm: any, apply: any): boolean;
-    export function addRowAfter(pm: any, apply: any): boolean;
-    export function removeRow(pm: any, apply: any): boolean;
-    export function selectNextCell(pm: any, apply: any): boolean;
-    export function selectPreviousCell(pm: any, apply: any): boolean;
+    import { ProseMirror } from 'prosemirror/dist/edit';
+    export function addColumnBefore(pm: ProseMirror, apply: any): boolean;
+    export function addColumnAfter(pm: ProseMirror, apply: any): boolean;
+    export function removeColumn(pm: ProseMirror, apply: any): boolean;
+    export function addRowBefore(pm: ProseMirror, apply: any): boolean;
+    export function addRowAfter(pm: ProseMirror, apply: any): boolean;
+    export function removeRow(pm: ProseMirror, apply: any): boolean;
+    export function selectNextCell(pm: ProseMirror, apply: any): boolean;
+    export function selectPreviousCell(pm: ProseMirror, apply: any): boolean;
 }
 
 declare module 'prosemirror/dist/edit/commands' {
+    import { ProseMirror } from 'prosemirror/dist/edit';
     export namespace commands {
       export * from 'prosemirror/dist/commands-list';
       export * from 'prosemirror/dist/commands-table';
-      export function chainCommands(...commands: any[]): (pm: any, apply: any) => any;
-      export function createParagraphNear(pm: any, apply: any): boolean;
-      export function deleteCharAfter(pm: any, apply: any): boolean;
-      export function deleteCharBefore(pm: any, apply: any): boolean;
-      export function deleteSelection(pm: any, apply: any): boolean;
-      export function deleteWordAfter(pm: any, apply: any): boolean;
-      export function deleteWordBefore(pm: any, apply: any): boolean;
-      export function joinBackward(pm: any, apply: any): boolean;
-      export function joinDown(pm: any, apply: any): boolean;
-      export function joinForward(pm: any, apply: any): boolean;
-      export function joinUp(pm: any, apply: any): boolean;
-      export function lift(pm: any, apply: any): boolean;
-      export function liftEmptyBlock(pm: any, apply: any): boolean;
-      export function newlineInCode(pm: any, apply: any): boolean;
-      export function redo(pm: any, apply: any): boolean;
-      export function selectParentNode(pm: any, apply: any): boolean;
-      export function setBlockType(nodeType: any, attrs?: any): (pm: any, apply?: any) => boolean;
-      export function splitBlock(pm: any, apply: any): boolean;
-      export function toggleMark(markType: any, attrs?: any): (pm: any, apply?: any) => boolean;
-      export function undo(pm: any, apply: any): boolean;
-      export function wrapIn(nodeType: any, attrs: any): (pm: any, apply: any) => boolean;
+      export function chainCommands(...commands: any[]): (pm: ProseMirror, apply: any) => any;
+      export function createParagraphNear(pm: ProseMirror, apply: any): boolean;
+      export function deleteCharAfter(pm: ProseMirror, apply: any): boolean;
+      export function deleteCharBefore(pm: ProseMirror, apply: any): boolean;
+      export function deleteSelection(pm: ProseMirror, apply: any): boolean;
+      export function deleteWordAfter(pm: ProseMirror, apply: any): boolean;
+      export function deleteWordBefore(pm: ProseMirror, apply: any): boolean;
+      export function joinBackward(pm: ProseMirror, apply: any): boolean;
+      export function joinDown(pm: ProseMirror, apply: any): boolean;
+      export function joinForward(pm: ProseMirror, apply: any): boolean;
+      export function joinUp(pm: ProseMirror, apply: any): boolean;
+      export function lift(pm: ProseMirror, apply: any): boolean;
+      export function liftEmptyBlock(pm: ProseMirror, apply: any): boolean;
+      export function newlineInCode(pm: ProseMirror, apply: any): boolean;
+      export function redo(pm: ProseMirror, apply: any): boolean;
+      export function selectParentNode(pm: ProseMirror, apply: any): boolean;
+      export function setBlockType(nodeType: any, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
+      export function splitBlock(pm: ProseMirror, apply: any): boolean;
+      export function toggleMark(markType: any, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
+      export function undo(pm: ProseMirror, apply: any): boolean;
+      export function wrapIn(nodeType: any, attrs: any): (pm: ProseMirror, apply: any) => boolean;
       export let baseKeymap: any;
     }
 }
 
 declare module 'prosemirror/dist/edit/capturekeys' {
-    const captureKeys: any;
-    export { captureKeys };
+    export const captureKeys: any;
 }
 
 declare module 'prosemirror/dist/edit/css' {
@@ -72,53 +71,43 @@ declare module 'prosemirror/dist/edit/css' {
 }
 
 declare module 'prosemirror/dist/edit/domchange' {
-    function readInputChange(pm: any): boolean;
-    export { readInputChange };
-    function readCompositionChange(pm: any, margin: any): boolean;
-    export { readCompositionChange };
+    import { ProseMirror } from 'prosemirror/dist/edit';
+    export function readInputChange(pm: ProseMirror): boolean;
+    export function readCompositionChange(pm: ProseMirror, margin: any): boolean;
 }
 
 declare module 'prosemirror/dist/edit/dompos' {
-    function posFromDOM(dom: any, domOffset: any, bias?: number): any;
-    export { posFromDOM };
-    function childContainer(dom: any): any;
-    export { childContainer };
-    function DOMFromPos(pm: any, pos: any, loose?: any): {
+    import { ProseMirror } from 'prosemirror/dist/edit';
+    export function posFromDOM(dom: any, domOffset: any, bias?: number): any;
+    export function childContainer(dom: any): any;
+    export function DOMFromPos(pm: ProseMirror, pos: any, loose?: any): {
         node: any;
         offset: any;
     };
-    export { DOMFromPos };
-    function DOMFromPosFromEnd(pm: any, pos: any): {
+    export function DOMFromPosFromEnd(pm: ProseMirror, pos: any): {
         node: any;
         offset: any;
     };
-    export { DOMFromPosFromEnd };
-    function DOMAfterPos(pm: any, pos: any): any;
-    export { DOMAfterPos };
-    function scrollIntoView(pm: any, pos: any): void;
-    export { scrollIntoView };
-    function posAtCoords(pm: any, coords: any): {
+    export function DOMAfterPos(pm: ProseMirror, pos: any): any;
+    export function scrollIntoView(pm: ProseMirror, pos: any): void;
+    export function posAtCoords(pm: ProseMirror, coords: any): {
         pos: any;
         inside: any;
     };
-    export { posAtCoords };
-    function coordsAtPos(pm: any, pos: any): {
+    export function coordsAtPos(pm: ProseMirror, pos: any): {
         top: any;
         bottom: any;
         left: any;
         right: any;
     };
-    export { coordsAtPos };
 }
 
 declare module 'prosemirror/dist/edit/draw' {
-    const DIRTY_RESCAN: number, DIRTY_REDRAW: number;
-    export { DIRTY_RESCAN };
-    export { DIRTY_REDRAW };
-    function draw(pm: any, doc: any): void;
-    export { draw };
-    function redraw(pm: any, dirty: any, doc: any, prev: any): void;
-    export { redraw };
+    import { ProseMirror } from 'prosemirror/dist/edit';
+    export const DIRTY_RESCAN: number;
+    export const DIRTY_REDRAW: number;
+    export function draw(pm: ProseMirror, doc: any): void;
+    export function redraw(pm: ProseMirror, dirty: any, doc: any, prev: any): void;
 }
 
 declare module 'prosemirror/dist/edit/selection' {
@@ -154,15 +143,15 @@ declare module 'prosemirror/dist/edit' {
 }
 
 declare module 'prosemirror/dist/edit/input' {
-    class Input {
-        constructor(pm: any);
+    import { ProseMirror } from 'prosemirror/dist/edit';
+    export class Input {
+        constructor(pm: ProseMirror);
         dispatchKey(name: any, e: any): boolean;
         insertText(from: any, to: any, text: any, findSelection: any): void;
         composing: any;
         startComposition(dataLen: any, realStart: any): void;
         applyComposition(andFlush: any): void;
     }
-    export { Input };
 }
 
 declare module 'prosemirror/dist/edit/main' {
@@ -212,7 +201,7 @@ declare module 'prosemirror/dist/edit/main' {
       domDrop: AnySubscription;
     }
 
-    class ProseMirror {
+    export class ProseMirror {
         constructor(opts: any);
         on: On;
         schema: Schema;
@@ -264,12 +253,10 @@ declare module 'prosemirror/dist/edit/main' {
         unscheduleDOMUpdate(f: any): void;
         updateScheduler(subscriptions: any, start: any): UpdateScheduler;
     }
-    export { ProseMirror };
 }
 
 declare module 'prosemirror/dist/edit/options' {
-    function parseOptions(obj: any): any;
-    export { parseOptions };
+    export function parseOptions(obj: any): any;
 }
 
 declare module 'prosemirror/dist/edit/plugin' {
@@ -279,7 +266,7 @@ declare module 'prosemirror/dist/edit/plugin' {
       new(pm: ProseMirror, ...args: any[]): S;
     }
 
-    class Plugin<S> {
+    export class Plugin<S> {
         constructor(state: PluginStateCtor<S>, options?: any, prop?: any);
         get(pm: ProseMirror): S;
         attach(pm: ProseMirror): any;
@@ -287,13 +274,13 @@ declare module 'prosemirror/dist/edit/plugin' {
         ensure(pm: ProseMirror): any;
         config(options: any): this;
     }
-    export { Plugin };
 }
 
 declare module 'prosemirror/dist/edit/transform' {
+    import { ProseMirror } from 'prosemirror/dist/edit';
     import { Transform } from 'prosemirror/dist/transform';
-    class EditorTransform extends Transform {
-        constructor(pm: any);
+    export class EditorTransform extends Transform {
+        constructor(pm: ProseMirror);
         apply(options?: any): any;
         applyAndScroll(): any;
         selection: any;
@@ -302,57 +289,50 @@ declare module 'prosemirror/dist/edit/transform' {
         deleteSelection(): any;
         typeText(text: any): this;
     }
-    export { EditorTransform };
 }
 
 declare module 'prosemirror/dist/edit/update' {
-    class EditorScheduler {
-        constructor(pm: any);
+    import { ProseMirror } from 'prosemirror/dist/edit';
+    export class EditorScheduler {
+        constructor(pm: ProseMirror);
         set(f: any): void;
         unset(f: any): void;
         force(): void;
         onFlush(): void;
     }
-    export { EditorScheduler };
-    class UpdateScheduler {
-        constructor(pm: any, subscriptions: any, start: any);
+    export class UpdateScheduler {
+        constructor(pm: ProseMirror, subscriptions: any, start: any);
         detach(): void;
         onEvent(): void;
         force(): void;
     }
-    export { UpdateScheduler };
 }
 
 declare module 'prosemirror/dist/example-setup' {
-    import { buildMenuItems } from 'prosemirror/dist/example-setup/menu';
-    export { buildMenuItems };
-    import { buildKeymap } from 'prosemirror/dist/example-setup/keymap';
-    export { buildKeymap };
+    export { buildMenuItems } from 'prosemirror/dist/example-setup/menu';
+    export { buildKeymap } from 'prosemirror/dist/example-setup/keymap';
     export var exampleSetup: any;
-    function buildInputRules(schema: any): any[];
-    export { buildInputRules };
+    export function buildInputRules(schema: any): any[];
 }
 
 declare module 'prosemirror/dist/example-setup/keymap' {
-    function buildKeymap(schema: any, mapKeys: any): any;
-    export { buildKeymap };
+    export function buildKeymap(schema: any, mapKeys: any): any;
 }
 
 declare module 'prosemirror/dist/example-setup/menu' {
-    function buildMenuItems(schema: any): {};
-    export { buildMenuItems };
+    export function buildMenuItems(schema: any): {};
 }
 
 declare module 'prosemirror/dist/example-setup/style' {
-    const cls: string;
-    export { cls as className };
+    export const className: string;
 }
 
 declare module 'prosemirror/dist/history' {
-    class History {
-        constructor(pm: any, options: any);
+    import { ProseMirror } from 'prosemirror/dist/edit';
+    export class History {
+        constructor(pm: ProseMirror, options: any);
         resetState(): void;
-        detach(pm: any): void;
+        detach(pm: ProseMirror): void;
         recordTransform(transform: any, selection: any, options: any): void;
         undo(): any;
         redo(): any;
@@ -366,9 +346,7 @@ declare module 'prosemirror/dist/history' {
         backToVersion(version: any): boolean;
         rebased(newMaps: any, rebasedTransform: any, positions: any): void;
     }
-    export { History };
-    const historyPlugin: any;
-    export { historyPlugin };
+    export const historyPlugin: any;
 }
 
 declare module 'prosemirror/dist/inputrules' {
@@ -378,41 +356,31 @@ declare module 'prosemirror/dist/inputrules' {
 }
 
 declare module 'prosemirror/dist/inputrules/inputrules' {
-    class InputRule {
+    import { ProseMirror } from 'prosemirror/dist/edit';
+    export class InputRule {
         constructor(match: any, filter: any, handler: any);
     }
-    export { InputRule };
-    class InputRules {
-        constructor(pm: any, options: any);
+    export class InputRules {
+        constructor(pm: ProseMirror, options: any);
         detach(): void;
         addRule(rule: any): void;
         removeRule(rule: any): boolean;
         onTextInput(text: any): void;
         backspace(): boolean;
     }
-    export { InputRules };
-    const inputRules: any;
-    export { inputRules };
+    export const inputRules: any;
 }
 
 declare module 'prosemirror/dist/inputrules/rules' {
     import { InputRule } from 'prosemirror/dist/inputrules/inputrules';
-    const emDash: InputRule;
-    export { emDash };
-    const ellipsis: InputRule;
-    export { ellipsis };
-    const openDoubleQuote: InputRule;
-    export { openDoubleQuote };
-    const closeDoubleQuote: InputRule;
-    export { closeDoubleQuote };
-    const openSingleQuote: InputRule;
-    export { openSingleQuote };
-    const closeSingleQuote: InputRule;
-    export { closeSingleQuote };
-    const smartQuotes: InputRule[];
-    export { smartQuotes };
-    const allInputRules: InputRule[];
-    export { allInputRules };
+    export const emDash: InputRule;
+    export const ellipsis: InputRule;
+    export const openDoubleQuote: InputRule;
+    export const closeDoubleQuote: InputRule;
+    export const openSingleQuote: InputRule;
+    export const closeSingleQuote: InputRule;
+    export const smartQuotes: InputRule[];
+    export const allInputRules: InputRule[];
 }
 
 declare module 'prosemirror/dist/inputrules/util' {
@@ -427,13 +395,11 @@ declare module 'prosemirror/dist/inputrules/util' {
 }
 
 declare module 'prosemirror/dist/markdown/from_markdown' {
-    class MarkdownParser {
+    export class MarkdownParser {
         constructor(schema: any, tokenizer: any, tokens: any);
         parse(text: any): any;
     }
-    export { MarkdownParser };
-    const defaultMarkdownParser: MarkdownParser;
-    export { defaultMarkdownParser };
+    export const defaultMarkdownParser: MarkdownParser;
 }
 
 declare module 'prosemirror/dist/markdown' {
@@ -442,14 +408,12 @@ declare module 'prosemirror/dist/markdown' {
 }
 
 declare module 'prosemirror/dist/markdown/to_markdown' {
-    class MarkdownSerializer {
+    export class MarkdownSerializer {
         constructor(nodes: any, marks: any);
         serialize(content: any, options: any): any;
     }
-    export { MarkdownSerializer };
-    const defaultMarkdownSerializer: MarkdownSerializer;
-    export { defaultMarkdownSerializer };
-    class MarkdownSerializerState {
+    export const defaultMarkdownSerializer: MarkdownSerializer;
+    export class MarkdownSerializerState {
         constructor(nodes: any, marks: any, options: any);
         flushClose(size: any): void;
         wrapBlock(delim: any, firstDelim: any, node: any, f: any): void;
@@ -467,12 +431,10 @@ declare module 'prosemirror/dist/markdown/to_markdown' {
         repeat(str: any, n: any): string;
         markString(mark: any, open: any): any;
     }
-    export { MarkdownSerializerState };
 }
 
 declare module 'prosemirror/dist/menu/icons' {
-    function getIcon(icon: any): HTMLDivElement;
-    export { getIcon };
+    export function getIcon(icon: any): HTMLDivElement;
 }
 
 declare module 'prosemirror/dist/menu' {
@@ -482,25 +444,22 @@ declare module 'prosemirror/dist/menu' {
 }
 
 declare module 'prosemirror/dist/menu/menu' {
-    class MenuItem {
+    import { ProseMirror } from 'prosemirror/dist/edit';
+    export class MenuItem {
         constructor(spec: any);
-        render(pm: any): any;
+        render(pm: ProseMirror): any;
     }
-    export { MenuItem };
-    class Dropdown {
+    export class Dropdown {
         constructor(content: any, options: any);
-        render(pm: any): HTMLAnchorElement;
-        expand(pm: any, dom: any, items: any): () => boolean;
+        render(pm: ProseMirror): HTMLAnchorElement;
+        expand(pm: ProseMirror, dom: any, items: any): () => boolean;
     }
-    export { Dropdown };
-    class DropdownSubmenu {
+    export class DropdownSubmenu {
         constructor(content: any, options: any);
-        render(pm: any): HTMLAnchorElement;
+        render(pm: ProseMirror): HTMLAnchorElement;
     }
-    export { DropdownSubmenu };
-    function renderGrouped(pm: any, content: any): DocumentFragment;
-    export { renderGrouped };
-    const icons: {
+    export function renderGrouped(pm: ProseMirror, content: any): DocumentFragment;
+    export const icons: {
         join: {
             width: number;
             height: number;
@@ -561,46 +520,32 @@ declare module 'prosemirror/dist/menu/menu' {
             path: string;
         };
     };
-    export { icons };
-    const joinUpItem: MenuItem;
-    export { joinUpItem };
-    const liftItem: MenuItem;
-    export { liftItem };
-    const selectParentNodeItem: MenuItem;
-    export { selectParentNodeItem };
-    const undoItem: MenuItem;
-    export { undoItem };
-    const redoItem: MenuItem;
-    export { redoItem };
-    function toggleMarkItem(markType: any, options: any): MenuItem;
-    export { toggleMarkItem };
-    function insertItem(nodeType: any, options: any): MenuItem;
-    export { insertItem };
-    function wrapItem(nodeType: any, options: any): MenuItem;
-    export { wrapItem };
-    function blockTypeItem(nodeType: any, options: any): MenuItem;
-    export { blockTypeItem };
+    export const joinUpItem: MenuItem;
+    export const liftItem: MenuItem;
+    export const selectParentNodeItem: MenuItem;
+    export const undoItem: MenuItem;
+    export const redoItem: MenuItem;
+    export function toggleMarkItem(markType: any, options: any): MenuItem;
+    export function insertItem(nodeType: any, options: any): MenuItem;
+    export function wrapItem(nodeType: any, options: any): MenuItem;
+    export export function blockTypeItem(nodeType: any, options: any): MenuItem;
 }
 
 declare module 'prosemirror/dist/menu/menubar' {
-    const menuBar: any;
-    export { menuBar };
+    export const menuBar: any;
 }
 
 declare module 'prosemirror/dist/menu/tooltipmenu' {
-    const tooltipMenu: any;
-    export { tooltipMenu };
+    export const tooltipMenu: any;
 }
 
 declare module 'prosemirror/dist/model/diff' {
-    function findDiffStart(a: any, b: any, pos: any): any;
-    export { findDiffStart };
-    function findDiffEnd(a: any, b: any, posA: any, posB: any): any;
-    export { findDiffEnd };
+    export function findDiffStart(a: any, b: any, pos: any): any;
+    export function findDiffEnd(a: any, b: any, posA: any, posB: any): any;
 }
 
 declare module 'prosemirror/dist/model/fragment' {
-    class Fragment {
+    export class Fragment {
         constructor(content: any, size?: any);
         toString(): string;
         toStringInner(): any;
@@ -632,14 +577,11 @@ declare module 'prosemirror/dist/model/fragment' {
         };
         toDOM(options?: {}): any;
     }
-    export { Fragment };
 }
 
 declare module 'prosemirror/dist/model/from_dom' {
-    function parseDOM(schema: any, dom: any, options: any): any;
-    export { parseDOM };
-    function parseDOMInContext($context: any, dom: any, options?: {}): any;
-    export { parseDOMInContext };
+    export function parseDOM(schema: any, dom: any, options: any): any;
+    export function parseDOMInContext($context: any, dom: any, options?: {}): any;
 }
 
 declare module 'prosemirror/dist/model/replace' {
@@ -670,7 +612,7 @@ declare module 'prosemirror/dist/model' {
 
 declare module 'prosemirror/dist/model/mark' {
     import { MarkType } from 'prosemirror/dist/model/schema';
-    class Mark {
+    export class Mark {
         constructor(type: any, attrs: any);
         toJSON(): {
             _: any;
@@ -684,12 +626,11 @@ declare module 'prosemirror/dist/model/mark' {
         static sameSet(a: any, b: any): boolean;
         static setFrom(marks: any): any;
     }
-    export { Mark };
 }
 
 declare module 'prosemirror/dist/model/node' {
     import { ResolvedPos } from 'prosemirror/dist/model/resolvedpos';
-    class Node {
+    export class Node {
         constructor(type: any, attrs: any, content: any, marks: any);
         content: any;
         nodeSize: number;
@@ -745,8 +686,7 @@ declare module 'prosemirror/dist/model/node' {
         static fromJSON(schema: any, json: any): any;
         toDOM(options?: {}): any;
     }
-    export { Node };
-    class TextNode extends Node {
+    export class TextNode extends Node {
         constructor(type: any, attrs: any, content: any, marks: any);
         toString(): any;
         textContent: any;
@@ -759,11 +699,10 @@ declare module 'prosemirror/dist/model/node' {
             type: any;
         };
     }
-    export { TextNode };
 }
 
 declare module 'prosemirror/dist/model/resolvedpos' {
-    class ResolvedPos {
+    export class ResolvedPos {
         constructor(pos: any, path: any, parentOffset: any);
         depth: number;
         pos: number;
@@ -788,8 +727,7 @@ declare module 'prosemirror/dist/model/resolvedpos' {
         static resolve(doc: any, pos: any): ResolvedPos;
         static resolveCached(doc: any, pos: any): any;
     }
-    export { ResolvedPos };
-    class NodeRange {
+    export class NodeRange {
         constructor($from: any, $to: any, depth: any);
         start: any;
         end: any;
@@ -797,12 +735,11 @@ declare module 'prosemirror/dist/model/resolvedpos' {
         startIndex: any;
         endIndex: any;
     }
-    export { NodeRange };
 }
 
 declare module 'prosemirror/dist/model/schema' {
     import { Node, TextNode } from 'prosemirror/dist/model/node';
-    class NodeType {
+    export class NodeType {
         constructor(name: any, schema: any);
         isBlock: boolean;
         isTextblock: boolean;
@@ -819,32 +756,27 @@ declare module 'prosemirror/dist/model/schema' {
         createAndFill(attrs: any, content: any, marks: any): Node;
         validContent(content: any, attrs: any): any;
         static compile(nodes: any, schema: any): any;
-        toDOM(_: any): void;
-        matchDOMTag: any;
+        toDOM(node?: Node): any[];
+        get matchDOMTag(): any;
     }
-    export { NodeType };
-    class Block extends NodeType {
+    export class Block extends NodeType {
         isBlock: boolean;
         isTextblock: any;
     }
-    export { Block };
-    class Inline extends NodeType {
+    export class Inline extends NodeType {
         isInline: boolean;
     }
-    export { Inline };
-    class Text extends Inline {
+    export class Text extends Inline {
         selectable: boolean;
         isText: boolean;
         create(attrs: any, content: any, marks: any): TextNode;
         toDOM(node: any): any;
     }
-    export { Text };
-    class Attribute {
-        constructor(options?: {});
-        isRequired: boolean;
+    export class Attribute {
+        constructor(options?: { default?: any, compute?: () => any });
+        get isRequired(): boolean;
     }
-    export { Attribute };
-    class MarkType {
+    export class MarkType {
         constructor(name: any, rank: any, schema: any);
         name: string;
         schema: Schema;
@@ -857,8 +789,7 @@ declare module 'prosemirror/dist/model/schema' {
         matchDOMTag: any;
         matchDOMStyle: any;
     }
-    export { MarkType };
-    class Schema {
+    export class Schema {
         constructor(spec: any, data?: any);
         marks: {[type: string]: MarkType};
         nodes: any;
@@ -871,19 +802,17 @@ declare module 'prosemirror/dist/model/schema' {
         nodeType(name: string): any;
         parseDOM(dom: any, options?: {}): any;
     }
-    export { Schema };
 }
 
 declare module 'prosemirror/dist/model/to_dom' {
-    function fragmentToDOM(fragment: any, options: any): any;
-    export { fragmentToDOM };
-    function nodeToDOM(node: any, options: any): any;
-    export { nodeToDOM };
+    export function fragmentToDOM(fragment: any, options: any): any;
+    export function nodeToDOM(node: any, options: any): any;
 }
 
 declare module 'prosemirror/dist/prompt' {
-    class FieldPrompt {
-        constructor(pm: any, title: any, fields: any);
+    import { ProseMirror } from 'prosemirror/dist/edit';
+    export class FieldPrompt {
+        constructor(pm: ProseMirror, title: any, fields: any);
         close(): void;
         open(callback: any): void;
         values(): any;
@@ -892,43 +821,35 @@ declare module 'prosemirror/dist/prompt' {
         };
         reportInvalid(dom: any, message: any): void;
     }
-    export { FieldPrompt };
-    class Field {
+    export class Field {
         constructor(options: any);
         read(dom: any): any;
         validateType(_value: any): void;
         validate(value: any): any;
         clean(value: any): any;
     }
-    export { Field };
-    class TextField extends Field {
-        render(pm: any): HTMLAnchorElement;
+    export class TextField extends Field {
+        render(pm: ProseMirror): HTMLAnchorElement;
     }
-    export { TextField };
-    class SelectField extends Field {
-        render(pm: any): HTMLAnchorElement;
+    export class SelectField extends Field {
+        render(pm: ProseMirror): HTMLAnchorElement;
     }
-    export { SelectField };
-    function openPrompt(pm: any, content: any, options: any): {
+    export function openPrompt(pm: ProseMirror, content: any, options: any): {
         close: () => void;
     };
-    export { openPrompt };
 }
 
 declare module 'prosemirror/dist/schema-basic' {
     import { Block, Inline, Text, Attribute, MarkType, Schema } from 'prosemirror/dist/model';
-    export { Text };
-    class Doc extends Block {
+    export class Doc extends Block {
     }
-    export { Doc };
-    class BlockQuote extends Block {
+    export class BlockQuote extends Block {
         matchDOMTag: {
             'blockquote': any;
         };
         toDOM(): (string | number)[];
     }
-    export { BlockQuote };
-    class OrderedList extends Block {
+    export class OrderedList extends Block {
         attrs: {
             order: Attribute;
         };
@@ -941,29 +862,25 @@ declare module 'prosemirror/dist/schema-basic' {
             start: any;
         } | number)[];
     }
-    export { OrderedList };
-    class BulletList extends Block {
+    export class BulletList extends Block {
         matchDOMTag: {
             'ul': any;
         };
         toDOM(): (string | number)[];
     }
-    export { BulletList };
-    class ListItem extends Block {
+    export class ListItem extends Block {
         matchDOMTag: {
             'li': any;
         };
         toDOM(): (string | number)[];
     }
-    export { ListItem };
-    class HorizontalRule extends Block {
+    export class HorizontalRule extends Block {
         matchDOMTag: {
             'hr': any;
         };
         toDOM(): (string | string[])[];
     }
-    export { HorizontalRule };
-    class Heading extends Block {
+    export class Heading extends Block {
         attrs: {
             level: Attribute;
         };
@@ -990,8 +907,7 @@ declare module 'prosemirror/dist/schema-basic' {
         };
         toDOM(node: any): (string | number)[];
     }
-    export { Heading };
-    class CodeBlock extends Block {
+    export class CodeBlock extends Block {
         isCode: boolean;
         matchDOMTag: {
             'pre': {
@@ -1000,15 +916,13 @@ declare module 'prosemirror/dist/schema-basic' {
         };
         toDOM(): (string | (string | number)[])[];
     }
-    export { CodeBlock };
-    class Paragraph extends Block {
+    export class Paragraph extends Block {
         matchDOMTag: {
             'p': any;
         };
         toDOM(): (string | number)[];
     }
-    export { Paragraph };
-    class Image extends Inline {
+    export class Image extends Inline {
         attrs: {
             src: Attribute;
             alt: Attribute;
@@ -1024,8 +938,7 @@ declare module 'prosemirror/dist/schema-basic' {
         };
         toDOM(node: any): any[];
     }
-    export { Image };
-    class HardBreak extends Inline {
+    export class HardBreak extends Inline {
         selectable: boolean;
         isBR: boolean;
         matchDOMTag: {
@@ -1033,8 +946,7 @@ declare module 'prosemirror/dist/schema-basic' {
         };
         toDOM(): string[];
     }
-    export { HardBreak };
-    class EmMark extends MarkType {
+    export class EmMark extends MarkType {
         matchDOMTag: {
             'i': any;
             'em': any;
@@ -1044,8 +956,7 @@ declare module 'prosemirror/dist/schema-basic' {
         };
         toDOM(): string[];
     }
-    export { EmMark };
-    class StrongMark extends MarkType {
+    export class StrongMark extends MarkType {
         matchDOMTag: {
             'b': any;
             'strong': any;
@@ -1055,8 +966,7 @@ declare module 'prosemirror/dist/schema-basic' {
         };
         toDOM(): string[];
     }
-    export { StrongMark };
-    class LinkMark extends MarkType {
+    export class LinkMark extends MarkType {
         attrs: {
             href: Attribute;
             title: Attribute;
@@ -1069,21 +979,18 @@ declare module 'prosemirror/dist/schema-basic' {
         };
         toDOM(node: any): any[];
     }
-    export { LinkMark };
-    class CodeMark extends MarkType {
+    export class CodeMark extends MarkType {
         isCode: boolean;
         matchDOMTag: {
             'code': any;
         };
         toDOM(): string[];
     }
-    export { CodeMark };
-    const schema: Schema;
-    export { schema };
+    export const schema: Schema;
 }
 
 declare module 'prosemirror/dist/tooltip' {
-    class Tooltip {
+    export class Tooltip {
         constructor(wrapper: any, options: any);
         detach(): void;
         getSize(node: any): {
@@ -1093,7 +1000,6 @@ declare module 'prosemirror/dist/tooltip' {
         open(node: any, pos: any): void;
         close(): void;
     }
-    export { Tooltip };
 }
 
 declare module 'prosemirror/dist/transform/transform' {
@@ -1130,11 +1036,10 @@ declare module 'prosemirror/dist/transform' {
 }
 
 declare module 'prosemirror/dist/transform/map' {
-    class MapResult {
+    export class MapResult {
         constructor(pos: any, deleted?: boolean, recover?: any);
     }
-    export { MapResult };
-    class PosMap {
+    export class PosMap {
         constructor(ranges: any, inverted?: boolean);
         recover(value: any): any;
         mapResult(pos: any, bias: any): any;
@@ -1144,8 +1049,7 @@ declare module 'prosemirror/dist/transform/map' {
         invert(): PosMap;
         toString(): string;
     }
-    export { PosMap };
-    class Remapping {
+    export class Remapping {
         constructor(head?: any[], tail?: any[]);
         addToFront(map: any, corr: any): number;
         addToBack(map: any, corr: any): number;
@@ -1155,11 +1059,8 @@ declare module 'prosemirror/dist/transform/map' {
         _map(pos: any, bias: any, simple: any): any;
         toString(): string;
     }
-    export { Remapping };
-    function mapThrough(mappables: any, pos: any, bias: any, start: any): any;
-    export { mapThrough };
-    function mapThroughResult(mappables: any, pos: any, bias: any, start: any): MapResult;
-    export { mapThroughResult };
+    export function mapThrough(mappables: any, pos: any, bias: any, start: any): any;
+    export function mapThroughResult(mappables: any, pos: any, bias: any, start: any): MapResult;
 }
 
 declare module 'prosemirror/dist/transform/mark' {
@@ -1169,7 +1070,7 @@ declare module 'prosemirror/dist/transform/mark' {
 declare module 'prosemirror/dist/transform/replace_step' {
     import { Step, StepResult } from 'prosemirror/dist/transform/step';
     import { PosMap } from 'prosemirror/dist/transform/map';
-    class ReplaceStep extends Step {
+    export class ReplaceStep extends Step {
         constructor(from: any, to: any, slice: any, structure: any);
         apply(doc: any): StepResult;
         posMap(): PosMap;
@@ -1177,8 +1078,7 @@ declare module 'prosemirror/dist/transform/replace_step' {
         map(mapping: any): any;
         static fromJSON(schema: any, json: any): any;
     }
-    export { ReplaceStep };
-    class ReplaceAroundStep extends Step {
+    export class ReplaceAroundStep extends Step {
         constructor(from: any, to: any, gapFrom: any, gapTo: any, slice: any, insert: any, structure: any);
         apply(doc: any): StepResult;
         posMap(): PosMap;
@@ -1186,7 +1086,6 @@ declare module 'prosemirror/dist/transform/replace_step' {
         map(mapping: any): ReplaceAroundStep;
         static fromJSON(schema: any, json: any): ReplaceAroundStep;
     }
-    export { ReplaceAroundStep };
 }
 
 declare module 'prosemirror/dist/transform/replace' {
@@ -1194,7 +1093,7 @@ declare module 'prosemirror/dist/transform/replace' {
 }
 
 declare module 'prosemirror/dist/transform/step' {
-    class Step {
+    export class Step {
         apply(_doc: any): void;
         posMap(): any;
         invert(_doc: any): void;
@@ -1205,88 +1104,64 @@ declare module 'prosemirror/dist/transform/step' {
         static fromJSON(schema: any, json: any): any;
         static jsonID(id: any, stepClass: any): any;
     }
-    export { Step };
-    class StepResult {
+    export class StepResult {
         constructor(doc: any, failed: any);
         static ok(doc: any): StepResult;
         static fail(message: any): StepResult;
         static fromReplace(doc: any, from: any, to: any, slice: any): StepResult;
     }
-    export { StepResult };
 }
 
 declare module 'prosemirror/dist/transform/structure' {
-    function liftTarget(range: any): any;
-    export { liftTarget };
-    function findWrapping(range: any, nodeType: any, attrs: any, innerRange?: any): any;
-    export { findWrapping };
-    function canSplit(doc: any, pos: any, depth: number, typeAfter: any, attrsAfter: any): any;
-    export { canSplit };
-    function joinable(doc: any, pos: any): any;
-    export { joinable };
-    function joinPoint(doc: any, pos: any, dir?: number): any;
-    export { joinPoint };
-    function insertPoint(doc: any, pos: any, nodeType: any, attrs: any): any;
-    export { insertPoint };
+    export function liftTarget(range: any): any;
+    export function findWrapping(range: any, nodeType: any, attrs: any, innerRange?: any): any;
+    export function canSplit(doc: any, pos: any, depth: number, typeAfter: any, attrsAfter: any): any;
+    export function joinable(doc: any, pos: any): any;
+    export function joinPoint(doc: any, pos: any, dir?: number): any;
+    export function insertPoint(doc: any, pos: any, nodeType: any, attrs: any): any;
 }
 
 declare module 'prosemirror/dist/util/browser' {
-    var _default: {
-        mac: boolean;
-        ie: boolean;
-        ie_version: any;
-        gecko: boolean;
-        ios: boolean;
-    };
-    export default _default;
+    export const mac: boolean;
+    export const ie: boolean;
+    export const ie_version: any;
+    export const gecko: boolean;
+    export const ios: boolean;
 }
 
 declare module 'prosemirror/dist/util/char' {
-    function isWordChar(ch: any): boolean;
-    export { isWordChar };
-    function charCategory(ch: any): string;
-    export { charCategory };
-    function isExtendingChar(ch: any): boolean;
-    export { isExtendingChar };
+    export function isWordChar(ch: any): boolean;
+    export function charCategory(ch: any): string;
+    export function isExtendingChar(ch: any): boolean;
 }
 
 declare module 'prosemirror/dist/util/comparedeep' {
-    function compareDeep(a: any, b: any): boolean;
-    export { compareDeep };
+    export function compareDeep(a: any, b: any): boolean;
 }
 
 declare module 'prosemirror/dist/util/dom' {
-    function elt(tag: any, attrs: any, ...args: any[]): HTMLAnchorElement;
-    export { elt };
-    function requestAnimationFrame(f: any): any;
-    export { requestAnimationFrame };
-    function cancelAnimationFrame(handle: any): any;
-    export { cancelAnimationFrame };
-    function contains(parent: any, child: any): any;
-    export { contains };
-    function insertCSS(css: any): void;
-    export { insertCSS };
-    function ensureCSSAdded(): void;
-    export { ensureCSSAdded };
+    export function elt(tag: any, attrs: any, ...args: any[]): HTMLAnchorElement;
+    export function requestAnimationFrame(f: any): any;
+    export function cancelAnimationFrame(handle: any): any;
+    export function contains(parent: any, child: any): any;
+    export function insertCSS(css: any): void;
+    export function ensureCSSAdded(): void;
 }
 
 declare module 'prosemirror/dist/util/error' {
-    function ProseMirrorError(message: any): void;
-    export { ProseMirrorError };
+    export function ProseMirrorError(message: any): void;
 }
 
 declare module 'prosemirror/dist/util/map' {
-    const Map: any;
-    export { Map };
+    export const Map: any;
 }
 
 declare module 'prosemirror/dist/util/obj' {
-    function copyObj(obj: any, base: any): any;
-    export { copyObj };
+    export function copyObj(obj: any, base: any): any;
 }
 
 declare module 'prosemirror/dist/util/orderedmap' {
-    class OrderedMap {
+    export class OrderedMap {
         constructor(content: any);
         find(key: any): number;
         get(key: any): any;
@@ -1302,7 +1177,6 @@ declare module 'prosemirror/dist/util/orderedmap' {
         size: number;
         static from(value: any): any;
     }
-    export { OrderedMap };
 }
 
 declare module 'prosemirror/dist/test/build';

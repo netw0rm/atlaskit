@@ -12,18 +12,18 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^33.1.0",
+    "akutil-shared-styles": "^33.7.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "skatejs": "^1.2.5"
   },
   "peerDependencies": {
-    "ak-navigation": "^3.0.0"
+    "ak-navigation": "*"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-navigation": "^3.0.0",
+    "ak-navigation": "*",
     "akutil-react": "^1.0.0"
   },
   "repository": {

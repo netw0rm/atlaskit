@@ -1,4 +1,4 @@
-const webpackConfig = require('../../webpack.config.development.js');
+const webpackConfig = require('../webpack/development.js');
 
 module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line no-unused-vars
   // configType has a value of 'DEVELOPMENT' or 'PRODUCTION'

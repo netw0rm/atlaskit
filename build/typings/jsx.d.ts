@@ -6,5 +6,6 @@ declare namespace JSX {
     fieldset: any;
     legend: any;
     pre: any;
+    slot: any;
   }
 }

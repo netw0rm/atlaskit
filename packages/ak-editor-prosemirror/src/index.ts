@@ -62,11 +62,14 @@ export {
   CodeMark,
 } from 'prosemirror/dist/schema-basic';
 
-export { 
+export {
   MarkdownParser,
   MarkdownSerializer,
 } from 'prosemirror/dist/markdown';
 
-export { default as browser } from "prosemirror/dist/util/browser";
+import * as browser from "prosemirror/dist/util/browser";
+export { browser }
+
+export { OrderedMap } from "prosemirror/dist/util/orderedmap";
 
 export { posFromDOM } from 'prosemirror/dist/edit/dompos';

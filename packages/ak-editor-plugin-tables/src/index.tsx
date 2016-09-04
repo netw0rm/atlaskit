@@ -32,7 +32,7 @@ export class TableCell extends Block {
   }
 }
 
-interface IAkEditorTable {
+interface IAkEditorTable extends HTMLElement {
   cols: number[];
   rows: number[];
 }
@@ -43,17 +43,42 @@ define('ak-editor-table', {
     cols: prop.array({ attribute: true }),
   },
 
+  created(elem: IAkEditorTable) {
+    elem.addEventListener('keydown', (e) => {
+      alert(`keydown ${e}`);
+    });
+  },
+
   render(elem: IAkEditorTable) {
     return (
       <table border="1">
         <tbody>
         {elem.rows.map(row => (
           <tr>{elem.cols.map(col => (
-            <td><slot name={`${row}-${col}`}/></td>
+            <td><slot name={`${row}-${col}`}>empty</slot></td>
           ))}</tr>
         ))}
         </tbody>
       </table>
     );
+  },
+});
+
+interface IAkEditorTableCell extends HTMLElement {
+  cols: number[];
+  rows: number[];
+}
+
+define('ak-editor-table-cell', {
+  props: {
+    row: prop.number({ attribute: true }),
+    col: prop.number({ attribute: true }),
+  },
+
+  created(elem: IAkEditorTableCell) {
+  },
+
+  render(elem: IAkEditorTableCell) {
+    return (<slot />);
   },
 });

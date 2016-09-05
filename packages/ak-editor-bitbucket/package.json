@@ -34,7 +34,6 @@
     "ak-editor-plugin-text-formatting": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "browserkeymap": "^2.0.1",
-    "lodash.invert": "^4.2.0",
     "markdown-it": "^7.0.0",
     "skatejs": "^1.2.5"
   },

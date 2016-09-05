@@ -1,7 +1,6 @@
 import './types';
 import * as events from './internal/events';
 import { define, prop, emit } from 'skatejs';
-import invert from 'lodash.invert';
 import { ProseMirror, Schema } from 'ak-editor-prosemirror';
 import 'style!./host.less';
 import cx from 'classnames';
@@ -63,6 +62,7 @@ const $canChangeTextFormatting = '__canChangeTextFormatting__';
 const $hyperLinkText = '__hyperLinkText__';
 const $canLinkHyperlink = '__canLinkHyperlink__';
 const $selectedFont = '__selectedFont__';
+const $fonts = '__fonts__';
 const $hyperLinkElement = '__hyperLinkElement__';
 const $hyperLinkActive = '__hyperLinkActive__';
 const $bulletListActive = '__bulletListActive__';
@@ -77,20 +77,71 @@ function bind(object: any, propName: string) {
   object[propName] = object[propName].bind(object);
 }
 
-const prosemirrorBlockToToolbarMap: {[key: string]: string} = {
-  paragraph: 'normalText',
-  // heading 1 (displayed in the blockType button) is actually heading 2
-  // heading 1 is reserved and not used in the editor
-  heading2: 'heading1',
-  heading3: 'heading2',
-  heading4: 'heading3',
-  code_block: 'monospace',
-};
+const commentFonts = [{
+  name: 'normalText',
+  display: 'Normal text',
+  schemaName: 'paragraph',
+}, {
+  name: 'blockQuote',
+  display: 'Block quote',
+  schemaName: 'blockQuote',
+}, {
+  name: 'monospace',
+  display: 'Monospace',
+  schemaName: 'code_block',
+}];
 
-const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
+const objectFonts = [{
+  name: 'normalText',
+  display: 'Normal text',
+  schemaName: 'paragraph',
+}, {
+  name: 'heading1',
+  display: 'Heading 1',
+  schemaName: 'heading',
+  level: 2,
+}, {
+  name: 'heading2',
+  display: 'Heading 2',
+  schemaName: 'heading',
+  level: 3,
+}, {
+  name: 'heading3',
+  display: 'Heading 3',
+  schemaName: 'heading',
+  level: 4,
+}, {
+  name: 'blockQuote',
+  display: 'Block quote',
+  schemaName: 'blockQuote',
+}, {
+  name: 'monospace',
+  display: 'Monospace',
+  schemaName: 'code_block',
+}];
+
+function getFont({ blockType, fontName }, fonts) {
+  let len = fonts.length;
+  while (--len >= 0) {
+    const font = fonts[len];
+    if (font.name === fontName ||
+      (font.schemaName + (font.level ? font.level : '')) === blockType) {
+      return font;
+    }
+  }
+
+  // not found
+  return {};
+}
 
 export default define('ak-editor-bitbucket', {
   created(elem: any) {
+    if (elem.context === 'comment') {
+      elem[$fonts] = commentFonts;
+    } else {
+      elem[$fonts] = objectFonts;
+    }
+
     bind(elem, $onContentClick);
     bind(elem, 'focus');
     bind(elem, $selectFont);
@@ -126,6 +177,7 @@ export default define('ak-editor-bitbucket', {
         <ToolbarBlockType
           disabled={!elem[$canChangeBlockType]}
           selectedFont={elem[$selectedFont]}
+          fonts={elem[$fonts]}
           onSelectFont={elem[$selectFont]}
         />
         <ToolbarTextFormatting
@@ -222,7 +274,7 @@ export default define('ak-editor-bitbucket', {
     [$underlineActive]: prop.boolean(),
     [$canChangeTextFormatting]: prop.boolean(),
     [$hyperLinkText]: prop.string(),
-    [$selectedFont]: prop.string({ default: 'normalText' }),
+    [$selectedFont]: {},
     [$hyperLinkElement]: {},
     [$hyperLinkActive]: prop.boolean(),
     [$canLinkHyperlink]: prop.boolean(),
@@ -283,9 +335,8 @@ export default define('ak-editor-bitbucket', {
     [$selectFont](event: MouseEvent) {
       const font = event.detail.font;
 
-      const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
-      const blockType = matches[1];
-      const level = matches[2];
+      const blockType = font.schemaName;
+      const level = font.level;
 
       BlockTypePlugin.get(this[$pm]).changeBlockType(blockType, { level });
     },
@@ -360,12 +411,10 @@ export default define('ak-editor-bitbucket', {
 
       // Block type plugin wiring
       BlockTypePlugin.get(pm).onChange(state => {
-        const name = state.selectedBlockType
-        if (typeof name === 'string') {
-          const blockType = prosemirrorBlockToToolbarMap[name] as string;
-          elem[$selectedFont] = blockType;
-          elem[$canChangeBlockType] = state.enabled;
-        }
+        const blockType = state.selectedBlockType;
+        const font = getFont({ blockType }, elem[$fonts]);
+        elem[$selectedFont] = font;
+        elem[$canChangeBlockType] = state.enabled;
       });
 
       // Lists

@@ -1,18 +1,13 @@
 import 'style!./host.less';
 // import classNames from 'classnames';
-import { symbols, vdom, define } from 'skatejs';
+import { vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 
 function handleLabelClick(elem) {
   return () => {
-    const nodes = elem[symbols.shadowRoot].querySelector('slot').assignedNodes();
-
-    // Loop over light DOM nodes and focus on first input
-    for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].tagName === 'INPUT') {
-        nodes[i].focus();
-        break;
-      }
+    const firstInput = elem.querySelector('input');
+    if (firstInput) {
+      firstInput.focus();
     }
   };
 }

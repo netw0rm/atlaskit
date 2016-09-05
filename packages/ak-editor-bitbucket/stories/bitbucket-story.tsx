@@ -34,6 +34,36 @@ storiesOf('ak-editor-bitbucket', module)
       imageUploader={imageUploader}
     />
   ))
+  .add('with mentions', () => {
+    type Props = {};
+    type State = { markdown: string };
+    class EditorWithMentions extends Component<Props, State> {
+      constructor() {
+        super();
+        this.renderer = this.renderer.bind(this);
+        this.autocompleter = this.autocompleter.bind(this);
+      }
+
+      renderer(e: any) {
+        console.log(e);
+      }
+
+      autocompleter(e: any) {
+        console.log(e);
+      }
+
+      render() {
+        return (
+          <Bitbucket
+            onMentionRender={this.renderer}
+            onMentionAutocompete={this.autocompleter}
+          />
+        )
+      }
+    }
+
+    return <EditorWithMentions />;
+  })
   .add('Events', () => (
     <Bitbucket
       onChange={action('change')}

@@ -38,6 +38,7 @@ import {
   default as TextFormattingPlugin,
   MarkType,
 } from 'ak-editor-plugin-text-formatting';
+import MentionsPlugin from 'ak-editor-plugin-mentions';
 
 // typescript only supports this. TODO: investigate why
 const { vdom } = require('skatejs');
@@ -414,6 +415,7 @@ export default define('ak-editor-bitbucket', {
           BlockTypePlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          MentionsPlugin,
         ],
       });
 
@@ -453,6 +455,18 @@ export default define('ak-editor-bitbucket', {
         elem[$canChangeTextFormatting] = !state.disabled;
       });
 
+      // Mentions wiring
+      const emitMentionEvent = (ev: string) => {
+        return (el: HTMLElement, pm: ProseMirror) => emit(this, ev, {
+          detail: {
+            el: el,
+            pm: ProseMirror
+          }
+        });
+      }
+      MentionsPlugin.get(pm).renderHandler = emitMentionEvent('onMentionRender');
+      MentionsPlugin.get(pm).autocompleteHandler = emitMentionEvent('onMentionAutocomplete');
+
       // avoid invoking keyboard shortcuts in BB
       pm.wrapper.addEventListener('keypress', e => e.stopPropagation());
       pm.wrapper.addEventListener('keydown', e => e.stopPropagation());
@@ -462,9 +476,6 @@ export default define('ak-editor-bitbucket', {
 
       // add paste handlers
       pm.on.transformPasted.add(slice => markdownTransformer(pm.schema, slice));
-
-      // add node life cycle handler
-      pm.on.flush.add(() => nodeLifecycleHandler(pm));
 
       // 'change' event is public API
       pm.on.change.add(() => emit(this, 'change'));

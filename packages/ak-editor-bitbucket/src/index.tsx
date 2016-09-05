@@ -457,14 +457,11 @@ export default define('ak-editor-bitbucket', {
       // Mentions wiring
       const emitMentionEvent = (ev: string) => {
         return (el: HTMLElement, pm: ProseMirror) => emit(this, ev, {
-          detail: {
-            el: el,
-            pm: ProseMirror
-          }
+          detail: { el, pm }
         });
       }
-      MentionsPlugin.get(pm).renderHandler = emitMentionEvent('onMentionRender');
-      MentionsPlugin.get(pm).autocompleteHandler = emitMentionEvent('onMentionAutocomplete');
+      MentionsPlugin.get(pm).renderHandler = emitMentionEvent('mentionrender');
+      MentionsPlugin.get(pm).autocompleteHandler = emitMentionEvent('mentionautocomplete');
 
       // avoid invoking keyboard shortcuts in BB
       pm.wrapper.addEventListener('keypress', e => e.stopPropagation());

@@ -34,7 +34,7 @@ storiesOf('ak-editor-bitbucket', module)
       imageUploader={imageUploader}
     />
   ))
-  .add('with mentions', () => {
+  .add('Mentions (insert dummy when typed @)', () => {
     type Props = {};
     type State = { markdown: string };
     class EditorWithMentions extends Component<Props, State> {
@@ -45,18 +45,31 @@ storiesOf('ak-editor-bitbucket', module)
       }
 
       renderer(e: any) {
-        console.log(e);
+        const detail = e.detail;
+        const pm = detail.pm;
+        const el = detail.el;
+
+        el.innerText = el.getAttribute('editor-data');
+        el.style.border = "1px solid #000";
+        el.style.backgroundColor = "#ccc";
+        el.style.padding = "2px";
       }
 
       autocompleter(e: any) {
-        console.log(e);
+        const detail = e.detail;
+        const pm = detail.pm;
+        const el = detail.el;
+
+        const m = pm.schema.nodes.mention.create({ data: '@foo' });
+        const cursor = pm.selection.to;
+        pm.tr.replaceWith(cursor-1, cursor, m).apply();
       }
 
       render() {
         return (
           <Bitbucket
             onMentionRender={this.renderer}
-            onMentionAutocompete={this.autocompleter}
+            onMentionAutocomplete={this.autocompleter}
           />
         )
       }

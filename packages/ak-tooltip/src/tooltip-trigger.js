@@ -32,13 +32,13 @@ function handleMouseLeave() {
  * @description Create instances of a tooltip-trigger programmatically, or using markup.
  * @class TooltipTrigger
  * @example @html <ak-tooltip-trigger position="bottom" description="Save">
- *   <ak-button glyph="Save" labelled-by="myTooltip"></ak-button>
+ *   <ak-button glyph="Save" described-by="myTooltip"></ak-button>
  * </ak-tooltip>
  * @example @js import TooltipTrigger from 'ak-tooltip-trigger'
  * const component = new TooltipTrigger();
  * component.position = 'bottom';
  * component.description = 'Save';
- * component.innerHTML = '<ak-button glyph="Save" labelled-by="myTooltip"></ak-button>';
+ * component.innerHTML = '<ak-button glyph="Save" aria-described-by="myTooltip"></ak-button>';
  */
 export default define('ak-tooltip-trigger', {
   render(elem) {

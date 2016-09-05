@@ -19,6 +19,18 @@ function positionToPopperPosition(position) {
   }
   return allowedPostions[defaultTooltipPosition];
 }
+
+function getAnimationClass(position) {
+  const animationMapping = {
+    top: shadowStyles.locals.slideUpAnimation,
+    bottom: shadowStyles.locals.slideDownAnimation,
+    left: shadowStyles.locals.slideLeftAnimation,
+    right: shadowStyles.locals.slideRightAnimation,
+  };
+
+  return animationMapping[position] ? animationMapping[position] : undefined;
+}
+
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class Tooltip
@@ -29,7 +41,10 @@ function positionToPopperPosition(position) {
  */
 export default define('ak-tooltip', {
   render(elem) {
-    const messageBoxClasses = shadowStyles.locals.tooltip;
+    const messageBoxClasses = classNames({
+      [shadowStyles.locals.tooltip]: true,
+      [getAnimationClass(elem.position)]: elem.isShown,
+    });
     const layerClasses = classNames({
       [shadowStyles.locals.hidden]: !elem.isShown,
     });
@@ -41,6 +56,7 @@ export default define('ak-tooltip', {
           className={layerClasses}
           ref={(ref) => (elem.layer = ref)}
           enableFlip="true"
+          style={{ pointerEvents: 'none' }}
         >
           <style>{shadowStyles.toString()}</style>
           <div className={messageBoxClasses}>{elem.description}</div>
@@ -130,5 +146,6 @@ export default define('ak-tooltip', {
       attribute: true,
     },
     isShown: prop.boolean(),
+    animating: prop.boolean(),
   },
 });

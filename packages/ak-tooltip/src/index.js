@@ -56,7 +56,6 @@ export default define('ak-tooltip', {
           className={layerClasses}
           ref={(ref) => (elem.layer = ref)}
           enableFlip="true"
-          style={{ pointerEvents: 'none' }}
         >
           <style>{shadowStyles.toString()}</style>
           <div className={messageBoxClasses}>{elem.description}</div>

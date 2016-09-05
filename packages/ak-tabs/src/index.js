@@ -12,7 +12,7 @@ import * as i18n from './internal/i18n';
 import Tab from './index-tab';
 import Icon from 'ak-icon';
 
-import { buttonContainer, labelsContainer } from './internal/symbols';
+import { buttonContainer, labelsContainer, tabLabel } from './internal/symbols';
 const resizeListener = Symbol();
 
 function onTabChange(elem) {
@@ -34,7 +34,12 @@ function onTabChange(elem) {
     const allTabs = helpers.getAllTabs(elem);
     elem._selected = allTabs.map(el => el.selected);
     elem._labels = allTabs.map(el => el.label);
-    elem._visibleTabs = helpers.calculateVisibleTabs(elem);
+
+    /* Wait for render to be called before calculating the tabs that should be visible.
+     * We need to do this because new tabs may have been added, so we need to wait for the labels
+     * to be rendered before we can calculate their widths and render again if necessary.
+     */
+    setTimeout(() => (elem._visibleTabs = helpers.calculateVisibleTabs(elem)), 0);
   };
 }
 
@@ -55,13 +60,12 @@ const definition = {
   },
   render(elem) {
     const allTabs = helpers.getAllTabs(elem);
-    const hasOverflowingTabs = elem._visibleTabs.length < allTabs.length;
+    const hasOverflowingTabs = elem._visibleTabs.length < allTabs.filter(el => el[tabLabel]).length;
     const hasSingleTab = elem._visibleTabs.length === 1;
     const buttonClasses = classNames({
       [shadowStyles.locals.akTabLabel]: true,
       [shadowStyles.locals.akTabLabelHidden]: !hasOverflowingTabs,
     });
-    // TODO: We need to handle i18n for the 'More' text.
     return (
       <div>
         <style>{shadowStyles.toString()}</style>

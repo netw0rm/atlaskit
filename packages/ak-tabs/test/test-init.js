@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkTabs from '../src/index.js';
-
 import { labelsContainer } from '../src/internal/symbols';
+import { waitUntil } from 'akutil-common-test';
 import {
   setupTabs,
   cleanupTabs,
@@ -58,11 +58,9 @@ describe('ak-tabs initialisation -', () => {
         expect(fixtures.tabs[0].selected).to.equal(true);
       });
 
-      it('displays the label for the selected tab', () => {
-        expect(isHidden(getLabelForTab(fixtures.tabs[0]))).to.equal(false,
-          'Label for selected tab should be visible'
-        );
-      });
+      it('displays the label for the selected tab', () =>
+        waitUntil(() => !isHidden(getLabelForTab(fixtures.tabs[0]))).should.be.fulfilled
+      );
 
       it('displays one label with the correct label text', () => {
         expect(getTabLabels(fixtures.el).length).to.equal(1, 'There should only be one label');
@@ -77,11 +75,9 @@ describe('ak-tabs initialisation -', () => {
         expect(fixtures.tabs[0].selected).to.equal(false);
       });
 
-      it('displays the label for the tab', () => {
-        expect(isHidden(getLabelForTab(fixtures.tabs[0]))).to.equal(false,
-          'Label for selected tab should be visible'
-        );
-      });
+      it('displays the label for the tab', () =>
+        waitUntil(() => !isHidden(getLabelForTab(fixtures.tabs[0]))).should.be.fulfilled
+      );
 
       it('displays one label with the correct label text', () => {
         expect(getTabLabels(fixtures.el).length).to.equal(1, 'There should only be one label.');
@@ -103,17 +99,16 @@ describe('ak-tabs initialisation -', () => {
         const container = fixtures.el[labelsContainer];
         const label = getLabelForTab(getSelectedTab(fixtures.tabs));
 
-        const containerElWidth = getElementWidth(container);
-        const tabLabelWidth = getElementWidth(label);
-
-        expect(hasOverflow(label)).to.equal(true, 'Label should be truncated');
-        expect(tabLabelWidth).to.be.at.most(containerElWidth,
-          'Label should be smaller than the container');
+        return waitUntil(() => hasOverflow(label)).then(() =>
+          waitUntil(() => (
+            getElementWidth(label) <= getElementWidth(container)
+          )).should.be.fulfilled
+        );
       });
 
-      it('does not display the More dropdown', () => {
-        expect(hasVisibleDropdown(fixtures.el)).to.equal(false, 'Dropdown should not be visible');
-      });
+      it('does not display the More dropdown', () =>
+        waitUntil(() => !hasVisibleDropdown(fixtures.el)).should.be.fulfilled
+      );
     });
   });
 
@@ -130,11 +125,10 @@ describe('ak-tabs initialisation -', () => {
           expect(fixtures.tabs[0].selected).to.equal(true);
         });
 
-        it('displays the label for the selected tab', () => {
-          expect(isHidden(getLabelForTab(getSelectedTab(fixtures.tabs)))).to.equal(false,
-            'Label for selected tab should be visible'
-          );
-        });
+        it('displays the label for the selected tab', () =>
+          waitUntil(() =>
+            !isHidden(getLabelForTab(getSelectedTab(fixtures.tabs)))).should.be.fulfilled
+        );
 
         it(`has ${NUM_CHILDREN} labels`, () => {
           expect(getTabLabels(fixtures.el).length).to.equal(NUM_CHILDREN,
@@ -142,11 +136,9 @@ describe('ak-tabs initialisation -', () => {
           );
         });
 
-        it('does not show the More dropdown', () => {
-          expect(hasVisibleDropdown(fixtures.el)).to.equal(false,
-            'Dropdown should not be visible'
-          );
-        });
+        it('does not show the More dropdown', () =>
+          expect(waitUntil(() => !hasVisibleDropdown(fixtures.el))).to.be.fulfilled
+        );
       });
     });
 
@@ -163,20 +155,20 @@ describe('ak-tabs initialisation -', () => {
           );
         });
 
-        it('displays the label for the selected tab', () => {
-          expect(isHidden(getLabelForTab(getSelectedTab(fixtures.tabs)))).to.equal(false,
-            'Label for selected tab should be visible'
-          );
-        });
+        it('displays the label for the selected tab', () =>
+          waitUntil(() =>
+            isHidden(getLabelForTab(getSelectedTab(fixtures.tabs)))
+          ).should.be.fulfilled
+        );
 
-        it('shows the More dropdown', () => {
-          expect(hasVisibleDropdown(fixtures.el)).to.equal(true, 'Dropdown should be visible');
-        });
+        it('shows the More dropdown', () =>
+          waitUntil(() => hasVisibleDropdown(fixtures.el)).should.be.fulfilled
+        );
 
         it('pulls some labels into the dropdown menu', () => {
           const numVisibleTabs = getVisibleTabs(fixtures.el).length;
           const numTabs = fixtures.tabs.length;
-          expect(numVisibleTabs).to.be.below(numTabs, 'Some tabs should not be visible');
+          return waitUntil(() => numVisibleTabs < numTabs).should.be.fulfilled;
           // TODO: Ensure that dropdown menu contains the hidden items
         });
       });

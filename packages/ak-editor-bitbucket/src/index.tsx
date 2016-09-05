@@ -77,12 +77,14 @@ function bind(object: any, propName: string) {
   object[propName] = object[propName].bind(object);
 }
 
-type fontsType = {
+type fontType = {
   name: string,
   display: string,
   schemaName: string,
   level?: number,
-}[];
+};
+
+type fontsType = fontType[];
 
 const commentFonts = [{
   name: 'normalText',
@@ -129,7 +131,7 @@ const objectFonts = [{
 
 type getFontParamType = { blockType?: string, fontName?: string };
 
-function getFont({ blockType, fontName }: getFontParamType, fonts: fontsType) {
+function getFont({ blockType, fontName }: getFontParamType, fonts: fontsType): fontType {
   let len = fonts.length;
   while (--len >= 0) {
     const font = fonts[len];
@@ -139,8 +141,8 @@ function getFont({ blockType, fontName }: getFontParamType, fonts: fontsType) {
     }
   }
 
-  // not found
-  return {};
+  // not found (should not reach this!)
+  throw new Error('Cannot get your font!');
 }
 
 export default define('ak-editor-bitbucket', {

@@ -110,8 +110,6 @@ npm run prepublish/single my-component-name
 
 This will build the component and place the generated bundle under `packages/my-component-name/dist/`.
 
-If you need an ad-hoc component with dependencies bundled (e.g. for JSFiddle/Codepen testing), just use `npm run prepublish/single my-component-name -- --bundle-deps`
-
 ## Document a component
 AtlasKit uses [JSDoc](http://usejsdoc.org/)-style annotations to automatically generate the component API. See the `akutil-component-template` package for examples.
 

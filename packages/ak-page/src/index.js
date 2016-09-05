@@ -2,6 +2,8 @@ import 'style!./host.less';
 import { prop, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
+import Navigation, { events as navigationEvents } from 'ak-navigation';
+const { open: navigationOpenEvent, close: navigationCloseEvent } = navigationEvents;
 
 export default define('ak-page', {
   render(elem) {
@@ -35,11 +37,15 @@ export default define('ak-page', {
     }),
   },
   created(elem) {
-    elem.addEventListener('ak-navigation-open', () => {
-      elem.navigationOpen = true;
+    elem.addEventListener(navigationOpenEvent, (e) => {
+      if (e.target instanceof Navigation) {
+        elem.navigationOpen = true;
+      }
     });
-    elem.addEventListener('ak-navigation-close', () => {
-      elem.navigationOpen = false;
+    elem.addEventListener(navigationCloseEvent, (e) => {
+      if (e.target instanceof Navigation) {
+        elem.navigationOpen = false;
+      }
     });
   },
 });

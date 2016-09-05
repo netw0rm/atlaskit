@@ -1,5 +1,5 @@
-const karmaConf = require('./karma.conf.js');
-const addPolyFills = require('./karma.conf.addPolyFills.js');
+const karmaConf = require('./base.js');
+const addPolyFills = require('./addPolyFills.js');
 
 module.exports = (config) => {
   karmaConf(config);

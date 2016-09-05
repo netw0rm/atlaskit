@@ -1,10 +1,9 @@
-import themes from './themes';
+import themes, { themeNameFromNode } from './themes';
 
 const $handleThemeChanged = Symbol();
-const tagNameLC = e => e.tagName.toLowerCase();
 
-function eventName(name) {
-  return `ak-theme-${name}`;
+function eventName(id) {
+  return `ak-theme-${id}`;
 }
 
 function getThemeVars(id) {
@@ -20,8 +19,8 @@ function themeNameHandler(elem, data) {
     if (newValue) {
       elem[$handleThemeChanged] = () => (elem.themeVars = getThemeVars(newValue));
       document.addEventListener(eventName(newValue), elem[$handleThemeChanged]);
-      elem.themeVars = getThemeVars(newValue);
     }
+    elem.themeVars = getThemeVars(newValue);
   }
 }
 
@@ -29,7 +28,7 @@ export default function (opts) {
   const { props } = opts;
   return Object.assign({}, opts, props || {}, {
     props: Object.assign({
-      themeName: { attribute: true, initial: tagNameLC, set: themeNameHandler },
+      themeName: { attribute: true, initial: themeNameFromNode, set: themeNameHandler },
       themeVars: { default() { return {}; } },
     }),
   });

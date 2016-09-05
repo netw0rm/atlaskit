@@ -15,7 +15,11 @@ function notify(themeName, themeVars = null) {
 
 function varsFromChildren(host) {
   return [].slice.call(host.children).reduce((prev, curr) => {
-    const [key, val] = [curr.getAttribute('key'), curr.getAttribute('val')];
+    const [key, val] = [curr.getAttribute('name'), curr.getAttribute('value')];
+
+    if (!key) {
+      return prev;
+    }
 
     if (key.indexOf('.') > -1) {
       const keys = key.split('.');

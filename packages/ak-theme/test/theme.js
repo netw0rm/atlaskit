@@ -1,5 +1,5 @@
 import { afterMutations } from 'akutil-common-test';
-import Theme from '../src/index';
+import Theme, { Var } from '../src/index';
 import themes from '../src/themes';
 
 function createTheme(id = '', ownVars = {}) {
@@ -7,8 +7,8 @@ function createTheme(id = '', ownVars = {}) {
   if (id) {
     theme.id = id;
   }
-  Object.keys(ownVars).forEach(key => (
-    theme.innerHTML += `<ak-var key="${key}" val="${ownVars[key]}"></ak-var>`
+  Object.keys(ownVars).forEach(name => (
+    theme.appendChild(Object.assign(new Var(), { name, value: ownVars[name] }))
   ));
   return theme;
 }
@@ -148,5 +148,20 @@ describe('ak-theme', () => {
     // Passing an empthy previous value should cause it to render because that
     // indiciates that it is the initial render.
     expect(Theme.updated(theme1, null)).to.equal(true);
+  });
+
+  it('should not error when a theme var does not have a name', done => {
+    const theme = new Theme();
+    theme.appendChild(Object.assign(new Var(), { value: 'test' }));
+
+    // This causes the theme to try and get the vars from its children. The
+    // code that does this needs to guard against null names.
+    document.body.appendChild(theme);
+
+    // We also want to test to make sure no vars get set.
+    afterMutations(
+      () => expect(Object.keys(theme.ownVars).length).to.equal(0),
+      done
+    );
   });
 });

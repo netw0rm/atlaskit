@@ -1,14 +1,10 @@
 import { themeable } from '../src';
 import { define, emit } from 'skatejs';
 import { afterMutations } from 'akutil-common-test';
-import themes from '../src/themes';
-
-function tagName(elem) {
-  return elem.tagName.toLowerCase();
-}
+import themes, { themeNameFromNode } from '../src/themes';
 
 function eventName(elem) {
-  return `ak-theme-${elem.tagName.toLowerCase()}`;
+  return `ak-theme-${themeNameFromNode(elem)}`;
 }
 
 describe('ak-theme, { themeable }', () => {
@@ -37,11 +33,11 @@ describe('ak-theme, { themeable }', () => {
     });
 
     it('should be a property', () => {
-      expect(elem.themeName).to.equal(tagName(elem));
+      expect(elem.themeName).to.equal(themeNameFromNode(elem));
     });
 
     it('should be an attribute', () => {
-      expect(elem.getAttribute('theme-name')).to.equal(tagName(elem));
+      expect(elem.getAttribute('theme-name')).to.equal(themeNameFromNode(elem));
     });
 
     describe('listeners', () => {
@@ -61,7 +57,7 @@ describe('ak-theme, { themeable }', () => {
       it('should have a listener bound on initialisation', () => {
         // To check if listeners were added / removed on initialisation, we need
         // to create a themeable element *after* the spies are created.
-        const elemAfterSpies = document.createElement(tagName(elem));
+        const elemAfterSpies = document.createElement(themeNameFromNode(elem));
 
         expect(spyAddEventListener.callCount).to.equal(1);
         expect(spyAddEventListener.getCall(0).args[0]).to.equal(eventName(elemAfterSpies));
@@ -80,7 +76,7 @@ describe('ak-theme, { themeable }', () => {
       });
 
       it('should not add / remove listeners if the value does not change', () => {
-        elem.themeName = tagName(elem);
+        elem.themeName = themeNameFromNode(elem);
         expect(spyAddEventListener.callCount).to.equal(0);
         expect(spyRemoveEventListener.callCount).to.equal(0);
       });
@@ -116,13 +112,13 @@ describe('ak-theme, { themeable }', () => {
     });
 
     it('should contain the current theme vars if it exists', () => {
-      themes[tagName(elem)] = { test: true };
-      const elemAfterTheme = document.createElement(tagName(elem));
+      themes[themeNameFromNode(elem)] = { test: true };
+      const elemAfterTheme = document.createElement(themeNameFromNode(elem));
       expect(elemAfterTheme.themeVars.test).to.equal(true);
     });
 
     it('should update when the event is triggered', () => {
-      themes[tagName(elem)] = { test: true };
+      themes[themeNameFromNode(elem)] = { test: true };
       emit(document, eventName(elem));
       expect(elem.themeVars.test).to.equal(true);
     });
@@ -133,9 +129,12 @@ describe('ak-theme, { themeable }', () => {
       expect(elem.themeVars.test).to.equal(true);
     });
 
-    it('should be empty when changed to a theme that does not exist', () => {
+    it('should be empty when changed to a theme that does not exist', done => {
       elem.themeName = '';
-      expect(Object.keys(elem.themeVars).length).to.equal(0);
+      afterMutations(
+        () => expect(Object.keys(elem.themeVars).length).to.equal(0),
+        done
+      );
     });
   });
 });

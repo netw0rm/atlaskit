@@ -2,6 +2,17 @@ import { Component, emit, prop, vdom, define } from 'skatejs';
 import { style } from 'akutil-common';
 import themes from './themes';
 
+function notify(themeName, themeVars = null) {
+  if (themeName) {
+    if (themeVars) {
+      themes[themeName] = themeVars;
+    } else {
+      delete themes[themeName];
+    }
+    emit(document, `ak-theme-${themeName}`, { detail: themeVars });
+  }
+}
+
 function varsFromChildren(host) {
   return [].slice.call(host.children).reduce((prev, curr) => {
     const [key, val] = [curr.getAttribute('key'), curr.getAttribute('val')];
@@ -25,7 +36,7 @@ function varsFromChildren(host) {
   }, {});
 }
 
-export default define('x-theme', {
+export default define('ak-theme', {
   props: {
     allVars: {
       get(elem) {
@@ -42,41 +53,42 @@ export default define('x-theme', {
       attribute: true,
     }),
     ownVars: {
-      default: varsFromChildren,
+      default() {
+        return {};
+      },
     },
   },
   detached(elem) {
-    const themeFor = elem.id;
-    emit(document, `x-theme-${themeFor}`, { detail: (themes[themeFor] = {}) });
+    notify(elem.id);
   },
   updated(elem, prev) {
-    const newThemeFor = elem.id;
-    const oldThemeFor = prev && prev.id;
-
     // Make sure props have changed.
     if (!Component.updated(elem, prev)) {
       return;
     }
 
-    if (oldThemeFor) {
-      emit(document, `x-theme-${oldThemeFor}`, {
-        detail: (themes[oldThemeFor] = {}),
-      });
+    const firstRender = !prev;
+    const oldThemeId = prev && prev.id;
+    const newThemeId = elem.id;
+
+    // If it's the first render we need to populate the ownVars.
+    if (firstRender) {
+      elem.ownVars = varsFromChildren(elem);
     }
 
-    if (newThemeFor) {
-      emit(document, `x-theme-${newThemeFor}`, {
-        detail: (themes[newThemeFor] = elem.allVars),
-      });
+    // Trigger events for the old / new theme ids.
+    if (oldThemeId !== newThemeId) {
+      notify(oldThemeId);
+      notify(newThemeId, elem.allVars);
     }
 
     // Only need to render the first time.
     // eslint-disable-next-line consistent-return
-    return !prev;
+    return firstRender;
   },
   render(elem) {
     style(vdom, { ':host': { display: 'none' } });
-    return <slot elem={elem} onSlotchange={() => (elem.ownVars = varsFromChildren(elem))} />;
+    return <slot onSlotchange={() => (elem.ownVars = varsFromChildren(elem))} />;
   },
   prototype: {
     get mixins() {

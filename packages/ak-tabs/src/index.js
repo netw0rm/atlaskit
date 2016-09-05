@@ -51,13 +51,14 @@ const definition = {
   },
   render(elem) {
     const allTabs = helpers.getAllTabs(elem);
-    const hasOverflowingTabs = elem._visibleTabs.length < allTabs.length;
+    const numTabs = allTabs.length;
+    const hasOverflowingTabs = elem._visibleTabs.length < numTabs;
     const hasSingleTab = elem._visibleTabs.length === 1;
     const buttonClasses = classNames({
       [shadowStyles.locals.akTabLabel]: true,
       [shadowStyles.locals.akTabLabelHidden]: !hasOverflowingTabs,
     });
-    // TODO: We need to handle i18n for the 'More' text.
+    let pos = 1;
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
@@ -86,6 +87,8 @@ const definition = {
                   onmousedown={handlers.labelMouseDownHandler}
                   onclick={handlers.labelClickHandler(tab)}
                   aria-selected={ariaSelected}
+                  aria-setsize={numTabs}
+                  aria-posinset={pos++}
                   role="tab"
                   ref={handlers.labelRef(elem, tab)}
                 >
@@ -94,7 +97,11 @@ const definition = {
               );
             }
           ).concat(
-            <li className={buttonClasses} ref={el => (elem[buttonContainer] = el)}>
+            <li
+              className={buttonClasses}
+              aria-hidden="true"
+              ref={el => (elem[buttonContainer] = el)}
+            >
               <a
                 className={shadowStyles.locals.akTabsButton}
                 onclick={() => {

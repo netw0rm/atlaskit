@@ -60,8 +60,13 @@ describe('ak-text-field', () => {
         setTimeout(() => {
           focusSpy.calledOnce.should.be.true;
           done();
-        }, 100);
+        }, 1);
       });
+    });
+
+    it('should not throw when label clicked with no input', () => {
+      const label = shadowRoot.querySelector('label');
+      label.click();
     });
   });
 });

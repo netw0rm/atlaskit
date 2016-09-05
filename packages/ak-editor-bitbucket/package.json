@@ -32,7 +32,6 @@
     "atlassian-editorkit-text-formatting-plugin": "^0.0.4",
     "babel-runtime": "^6.11.6",
     "browserkeymap": "^2.0.1",
-    "lodash.invert": "^4.2.0",
     "markdown-it": "^7.0.0",
     "prosemirror": "https://github.com/atlassian/prosemirror#b674f90ee7931d7a467992bbc961ce4626cd63c4",
     "skatejs": "^1.2.5"

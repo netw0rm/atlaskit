@@ -1,5 +1,4 @@
 import { vdom, define, prop, emit } from 'skatejs';
-import invert from 'lodash.invert';
 import { ProseMirror, Plugin } from 'prosemirror/dist/edit';
 import 'style!./host.less';
 import cx from 'classnames';
@@ -44,6 +43,7 @@ const $textFormattingPlugin = '__textFormattingPlugin__';
 const $hyperLinkText = '__hyperLinkText__';
 const $canLinkHyperlink = '__canLinkHyperlink__';
 const $selectedFont = '__selectedFont__';
+const $fonts = '__fonts__';
 const $blockTypePlugin = '__blockTypePlugin__';
 const $listsPlugin = '__listsPlugin__';
 const $hyperLinkElement = '__hyperLinkElement__';
@@ -61,25 +61,68 @@ function bind(elem, propName) {
   elem[propName] = elem[propName].bind(elem);
 }
 
-const prosemirrorBlockToToolbarMap = {
-  paragraph: 'normalText',
-  // heading 1 (displayed in the blockType button) is actually heading 2
-  // heading 1 is reserved and not used in the editor
-  heading2: 'heading1',
-  heading3: 'heading2',
-  heading4: 'heading3',
-  code_block: 'monospace',
-};
+const commentFonts = [{
+  name: 'normalText',
+  display: 'Normal text',
+  schemaName: 'paragraph',
+}, {
+  name: 'blockQuote',
+  display: 'Block quote',
+  schemaName: 'blockQuote',
+}, {
+  name: 'monospace',
+  display: 'Monospace',
+  schemaName: 'code_block',
+}];
 
-const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
+const objectFonts = [{
+  name: 'normalText',
+  display: 'Normal text',
+  schemaName: 'paragraph',
+}, {
+  name: 'heading1',
+  display: 'Heading 1',
+  schemaName: 'heading',
+  level: 2,
+}, {
+  name: 'heading2',
+  display: 'Heading 2',
+  schemaName: 'heading',
+  level: 3,
+}, {
+  name: 'heading3',
+  display: 'Heading 3',
+  schemaName: 'heading',
+  level: 4,
+}, {
+  name: 'blockQuote',
+  display: 'Block quote',
+  schemaName: 'blockQuote',
+}, {
+  name: 'monospace',
+  display: 'Monospace',
+  schemaName: 'code_block',
+}];
+
+function getFont({ blockType, fontName }, fonts) {
+  let len = fonts.length;
+  while (--len >= 0) {
+    const font = fonts[len];
+    if (font.name === fontName ||
+      (font.schemaName + (font.level ? font.level : '')) === blockType) {
+      return font;
+    }
+  }
+
+  // not found
+  return {};
+}
 
 function selectFont(blockTypePlugin) {
   return (event) => {
     const font = event.detail.font;
-
-    const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
-    const blockType = matches[1];
-    const level = matches[2];
+    const blockType = font.schemaName;
+    const level = font.level;
 
     blockTypePlugin.changeBlockType(blockType, { level });
   };
@@ -120,6 +163,11 @@ function changeHyperLinkValue(hyperLinkPlugin) {
 
 export default define('ak-editor-bitbucket', {
   created(elem) {
+    if (elem.context === 'comment') {
+      elem[$fonts] = commentFonts;
+    } else {
+      elem[$fonts] = objectFonts;
+    }
     bind(elem, $onContentClick);
     bind(elem, 'focus');
   },
@@ -146,6 +194,7 @@ export default define('ak-editor-bitbucket', {
           <ToolbarBlockType
             disabled={!elem[$canChangeBlockType]}
             selectedFont={elem[$selectedFont]}
+            fonts={elem[$fonts]}
             onSelectFont={selectFont(elem[$blockTypePlugin])}
           />
           <ToolbarTextFormatting
@@ -218,7 +267,7 @@ export default define('ak-editor-bitbucket', {
     [$underlineActive]: prop.boolean(),
     [$canChangeTextFormatting]: prop.boolean(),
     [$hyperLinkText]: prop.string(),
-    [$selectedFont]: prop.string({ default: 'normalText' }),
+    [$selectedFont]: {},
     [$hyperLinkElement]: {},
     [$hyperLinkActive]: prop.boolean(),
     [$canLinkHyperlink]: prop.boolean(),
@@ -313,10 +362,10 @@ export default define('ak-editor-bitbucket', {
               const blockTypePlugin = new BlockTypePlugin(proseMirrorInstance);
 
               blockTypePlugin.onChange(state => {
-                const name = state.selectedBlockType;
-                const blockType = prosemirrorBlockToToolbarMap[name];
+                const blockType = state.selectedBlockType;
+                const font = getFont({ blockType }, elem[$fonts]);
 
-                elem[$selectedFont] = blockType;
+                elem[$selectedFont] = font;
                 elem[$canChangeBlockType] = state.enabled;
               });
 

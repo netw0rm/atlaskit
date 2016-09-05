@@ -1,4 +1,4 @@
-import { define } from 'skatejs';
+import { define, vdom } from 'skatejs';
 import AKTrigger from '../src/tooltip-trigger';
 
 /*
@@ -22,7 +22,7 @@ export default define('ak-container', {
       right: '0px',
     };
     return (
-      <div >
+      <div>
         We can bind tooltips to items in the shadowDOM easily as we don't rely on looking elements
         up by ID.<br /><br />
         <div style={containerStyles}>

@@ -29,10 +29,7 @@ function positionToPopperPosition(position) {
  */
 export default define('ak-tooltip', {
   render(elem) {
-    const messageBoxClasses = classNames({
-      [shadowStyles.locals.hidden]: false,
-      [shadowStyles.locals.tooltip]: true,
-    });
+    const messageBoxClasses = shadowStyles.locals.tooltip;
     const layerClasses = classNames({
       [shadowStyles.locals.hidden]: !elem.isShown,
     });

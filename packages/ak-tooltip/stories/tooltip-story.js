@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import TooltipWC from '../src/index';
 import TooltipTriggerWC from '../src/tooltip-trigger';
-import ContainerWC from './container';
+import ContainerWC from '../src/container';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 import styles from 'style!./../src/host.less';
@@ -17,7 +17,7 @@ const TooltipTrigger = reactify(TooltipTriggerWC, {
   ReactDOM,
 });
 
-const Container = reactify(ContainerWC, {
+const Test = reactify(ContainerWC, {
   React,
   ReactDOM,
 });
@@ -47,7 +47,7 @@ storiesOf(name, module)
   .add('a tooltip binding to elements in shadowDOM', () => (
     <div>
       <DefaultTooltip id="ak-tooltip" />
-      <Container />
+      <Test />
     </div>
   ))
   .add('a tooltip around a focusable element', () => (

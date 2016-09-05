@@ -3,7 +3,7 @@ import { InputRule, inputRules } from 'prosemirror/dist/inputrules';
 
 import { mentionRule, emoticonRule } from './input-rules';
 
-class BitbucketMentionsPluginState {
+class MentionsPluginState {
   pm: ProseMirror;
   renderHandler: (el: HTMLElement, pm: ProseMirror) => void
   autocompleteHandler: (el: HTMLElement, pm: ProseMirror) => void
@@ -49,4 +49,4 @@ class BitbucketMentionsPluginState {
   }
 }
 
-export default new Plugin(BitbucketMentionsPluginState);
+export default new Plugin(MentionsPluginState);

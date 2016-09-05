@@ -16,7 +16,7 @@ interface DOMAttributes {
 export class Mention extends Inline {
   get attrs(): MentionAttributes {
     return {
-      data: new Attribute({default: '@'}),
+      data: new Attribute({default: ''}),
       hydrate: new Attribute({default: true})
     };
   }

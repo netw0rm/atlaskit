@@ -1,13 +1,13 @@
 {
-  "name": "ak-editor-plugin-bb-mentions",
+  "name": "ak-editor-plugin-mentions",
   "version": "1.0.0",
-  "description": "provides Bitbucket mentions functionality",
+  "description": "This plugin provides mentions node type and related behaviors to Atlassian Editor",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.ts",
   "typings": "src/index.ts",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-plugin-bb-mentions"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-plugin-mentions"
   },
   "files": [
     "dist"

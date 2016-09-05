@@ -49,7 +49,7 @@ describe('Mention node - parsing from DOM', () => {
 
 describe('Mentions node - serializing to DOM', () => {
   const insertNode = (pm: ProseMirror) : void => {
-    const m = pm.schema.nodes.mention.create({ data: '@' });
+    const m = pm.schema.nodes.mention.create({ data: '@bar' });
     pm.tr.insert(0, m).apply();
   }
 
@@ -66,7 +66,7 @@ describe('Mentions node - serializing to DOM', () => {
     expect(mentionNode).not.to.equal(null);
 
     expect(mentionNode.getAttribute('contenteditable')).to.equal('false');
-    expect(mentionNode.getAttribute('editor-data')).to.equal('@');
+    expect(mentionNode.getAttribute('editor-data')).to.equal('@bar');
     expect(mentionNode.getAttribute('editor-hydrate')).to.equal('true');
   });
 });

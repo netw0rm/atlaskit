@@ -27,7 +27,7 @@ const makeEditor = () => {
   });
 }
 
-describe('ak-editor-plugin-bb-mentions - on flush', () => {
+describe('ak-editor-plugin-mentions - on flush', () => {
   it('should hydrate nodes', () => {
     const pm = makeEditor();
     const pluginInstance = plugin.get(pm);
@@ -40,7 +40,7 @@ describe('ak-editor-plugin-bb-mentions - on flush', () => {
   });
 });
 
-describe('ak-editor-plugin-bb-mentions - when no data set on mention nodes', () => {
+describe('ak-editor-plugin-mentions - when no data set on mention nodes', () => {
   it('should call the auto-complete handler', () => {
     const pm = makeEditor();
     const mockRenderHandler = sinon.spy();
@@ -61,7 +61,7 @@ describe('ak-editor-plugin-bb-mentions - when no data set on mention nodes', () 
   });
 });
 
-describe('ak-editor-plugin-bb-mentions - when theres data set on mention nodes', () => {
+describe('ak-editor-plugin-mentions - when theres data set on mention nodes', () => {
   it('should call the render handler', () => {
     const pm = makeEditor();
     const mockRenderHandler = sinon.spy();

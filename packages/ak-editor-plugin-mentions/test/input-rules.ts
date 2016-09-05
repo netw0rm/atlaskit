@@ -20,7 +20,7 @@ const makeEditor = () => new ProseMirror({
   plugins: [ plugin ],
 });
 
-describe('ak-editor-plugin-bb-mentions - input rules', () => {
+describe('ak-editor-plugin-mentions - input rules', () => {
   it('should replace a standalone "@" with mention node', () => {
     const pm = makeEditor();
     pm.input.insertText(0, 0,'foo @');

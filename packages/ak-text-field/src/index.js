@@ -1,5 +1,4 @@
 import 'style!./host.less';
-// import classNames from 'classnames';
 import { vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 

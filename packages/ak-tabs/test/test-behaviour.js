@@ -116,7 +116,7 @@ describe('ak-tabs behaviour -', () => {
 
       it('when clicked', () => {
         click(getLabelForTab(fixtures.tabs[0]));
-        expectFirstTabSelected();
+        return expectFirstTabSelected();
       });
 
       it('via keyboard nav', () => {

@@ -51,7 +51,6 @@ const $justToggleExpansion = '__justToggleExpansion__';
 const $initEditor = '__init_editor__';
 const $pm = '__pm__';
 const $ready = '__ready__';
-const $expanded = '__expanded__';
 const $focused = '__focused__';
 const $wrapper = '__wrapper__';
 const $onContentClick = '__onContentClick__';
@@ -164,7 +163,7 @@ export default define('ak-editor-bitbucket', {
   },
 
   rendered(elem: any) {
-    if (elem[$expanded] && elem[$justToggleExpansion]) {
+    if (elem.expanded && elem[$justToggleExpansion]) {
       elem[$justToggleExpansion] = false;
       elem[$initEditor]();
       if (!elem[$ready]) {
@@ -247,7 +246,7 @@ export default define('ak-editor-bitbucket', {
         }
       >
         <style>{shadowStyles.toString()}</style>
-        {elem[$expanded] ?
+        {elem.expanded ?
           <FullEditor />
           :
           <input
@@ -272,13 +271,13 @@ export default define('ak-editor-bitbucket', {
     defaultValue: prop.string({ attribute: true }),
     imageUploader: functionProp(),
     context: prop.string({ attribute: true }),
+    expanded: prop.boolean({ attribute: true }),
 
     /**
      * True if the editor has focus.
      * @private
      */
     [$focused]: prop.boolean(),
-    [$expanded]: prop.boolean(),
     [$canChangeBlockType]: prop.boolean(),
     [$strongActive]: prop.boolean(),
     [$emActive]: prop.boolean(),
@@ -328,15 +327,6 @@ export default define('ak-editor-bitbucket', {
       return this[$ready] || false;
     },
 
-    /**
-     * Returns true if the editor is expanded for
-     * interaction.
-     * @returns {boolean}
-     */
-    get expanded() {
-      return this[$expanded];
-    },
-
     [$onContentClick](e: MouseEvent) {
       if (e.target === e.currentTarget) {
         this.focus();
@@ -382,7 +372,7 @@ export default define('ak-editor-bitbucket', {
     },
 
     [$toggleExpansion]() {
-      this[$expanded] = !this[$expanded];
+      this.expanded = !this.expanded;
       this[$justToggleExpansion] = true;
     },
 

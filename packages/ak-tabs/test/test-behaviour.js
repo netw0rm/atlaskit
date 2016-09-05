@@ -164,7 +164,7 @@ describe('ak-tabs behaviour -', () => {
       it('when clicked', () => {
         click(getLabelForTab(fixtures.tabs[7]));
 
-        waitUntil(() => (
+        return waitUntil(() => (
           fixtures.spies.select.callCount > 1 && fixtures.spies.deselect.callCount > 0
         )).then(() => {
           expect(fixtures.tabs[7].selected).to.equal(true, 'Tab 8 should be selected');
@@ -189,7 +189,7 @@ describe('ak-tabs behaviour -', () => {
       it('via keyboard nav', () => {
         keyboardNavRight(fixtures.el, 7);
 
-        waitUntil(() => (
+        return waitUntil(() => (
           fixtures.spies.select.callCount >= 8 && fixtures.spies.deselect.callCount >= 7
         )).then(() => {
           expect(fixtures.tabs[7].selected).to.equal(true, 'Tab 8 should be selected');

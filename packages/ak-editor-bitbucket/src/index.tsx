@@ -47,6 +47,7 @@ const $addHyperLink = '__addHyperLink__';
 const $unlink = '__unlink__';
 const $changeHyperLinkValue = '__changeHyperLinkValue__';
 const $toggleExpansion = '__toggleExpansion__';
+const $justToggleExpansion = '__justToggleExpansion__';
 const $initEditor = '__init_editor__';
 const $pm = '__pm__';
 const $ready = '__ready__';
@@ -154,7 +155,8 @@ export default define('ak-editor-bitbucket', {
   },
 
   rendered(elem: any) {
-    if (elem[$expanded]) {
+    if (elem[$expanded] && elem[$justToggleExpansion]) {
+      elem[$justToggleExpansion] = false;
       elem[$initEditor]();
       if (!elem[$ready]) {
         emit(elem, 'ready');
@@ -372,6 +374,7 @@ export default define('ak-editor-bitbucket', {
 
     [$toggleExpansion]() {
       this[$expanded] = !this[$expanded];
+      this[$justToggleExpansion] = true;
     },
 
     [$initEditor]() {

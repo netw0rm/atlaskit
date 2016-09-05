@@ -6,6 +6,7 @@ import ItemDefinition from './item';
 import TriggerDefinition, { TriggerButtonDefinition } from './trigger';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
+import * as events from './internal/events';
 
 // Width of a dropdown should be no less than width of it's trigger plus 10
 const diffBetweenDropdonAndTrigger = 10;
@@ -35,8 +36,9 @@ function toggleDialog(elem, value) {
     list[0].focused = true;
     list[0].first = true;
     list[list.length - 1].last = true;
+    elem.reposition();
   } else {
-    list.forEach((item) => {
+    [...list].forEach((item) => {
       item.focused = false;
       if (item.first) {
         item.first = false;
@@ -128,11 +130,11 @@ export const TriggerButton = define('ak-trigger-button', TriggerButtonDefinition
  */
 export default define('ak-dropdown', {
   attached(elem) {
-    elem.addEventListener('ak-dropdown-trigger-activated', () => toggleDialog(elem));
-    elem.addEventListener('ak-dropdown-selected', (e) => selectItem(elem, e));
-    elem.addEventListener('ak-dropdown-item-up', () => changeFocus(elem, 'prev'));
-    elem.addEventListener('ak-dropdown-item-down', () => changeFocus(elem, 'next'));
-    elem.addEventListener('ak-dropdown-item-tab', () => toggleDialog(elem, false));
+    elem.addEventListener(events.trigger.activated, () => toggleDialog(elem));
+    elem.addEventListener(events.selected, (e) => selectItem(elem, e));
+    elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
+    elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
+    elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
 
     document.addEventListener('click', handleClickOutside(elem));
     document.addEventListener('keypress', handleKeyPress(elem));
@@ -140,6 +142,15 @@ export default define('ak-dropdown', {
   detached() {
     document.removeEventListener('click', handleClickOutside);
     document.removeEventListener('click', handleKeyPress);
+  },
+  prototype: {
+    reposition() {
+      if (this.layer) {
+        this.layer.reposition();
+      }
+
+      return this;
+    },
   },
   render(elem) {
     let target;
@@ -160,7 +171,9 @@ export default define('ak-dropdown', {
           <Layer
             position="bottom left"
             target={target}
+            enableFlip
             ref={(layer) => {
+              elem.layer = layer;
               setTimeout(() => {
                 if (elem.open && layer.alignment) {
                     // by default dropdown has opacity 0
@@ -201,3 +214,5 @@ export default define('ak-dropdown', {
     }),
   },
 });
+
+export { events };

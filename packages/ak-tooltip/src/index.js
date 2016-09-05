@@ -63,12 +63,6 @@ export default define('ak-tooltip', {
       </div>
     );
   },
-  attached(elem) {
-    const id = elem.id;
-    if (!id) {
-      return;
-    }
-  },
   prototype: {
     /**
      * @description Causes an ak-tooltip to become visible and positioned to whichever element it

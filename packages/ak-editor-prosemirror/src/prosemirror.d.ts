@@ -741,24 +741,24 @@ declare module 'prosemirror/dist/model/schema' {
     import { Node, TextNode } from 'prosemirror/dist/model/node';
     import { OrderedMap } from 'prosemirror/dist/util/orderedmap';
     export class NodeType {
-      constructor(name: any, schema: any);
-      isBlock: boolean;
-      isTextblock: boolean;
-      isInline: boolean;
-      isText: boolean;
-      isLeaf: any;
-      selectable: boolean;
-      draggable: boolean;
-      hasRequiredAttrs(ignore: any): boolean;
-      compatibleContent(other: any): any;
-      computeAttrs(attrs: any): any;
-      create(attrs: any, content: any, marks: any): Node;
-      createChecked(attrs: any, content: any, marks: any): Node;
-      createAndFill(attrs: any, content: any, marks: any): Node;
-      validContent(content: any, attrs: any): any;
-      static compile(nodes: any, schema: any): any;
-      toDOM(node?: Node): any[];
-      get matchDOMTag(): any;
+        constructor(name: any, schema: any);
+        isBlock: boolean;
+        isTextblock: boolean;
+        isInline: boolean;
+        isText: boolean;
+        isLeaf: any;
+        selectable: boolean;
+        draggable: boolean;
+        hasRequiredAttrs(ignore: any): boolean;
+        compatibleContent(other: any): any;
+        computeAttrs(attrs: any): any;
+        create(attrs: any, content: any, marks: any): Node;
+        createChecked(attrs: any, content: any, marks: any): Node;
+        createAndFill(attrs: any, content: any, marks: any): Node;
+        validContent(content: any, attrs: any): any;
+        static compile(nodes: any, schema: any): any;
+        toDOM(node?: Node): any[];
+        get matchDOMTag(): any;
     }
     export class Block extends NodeType {
         isBlock: boolean;

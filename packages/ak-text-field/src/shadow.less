@@ -17,11 +17,12 @@
 // NORMAL STATE
 
 @baseInputStyle: {
-  background-color: rgba(9, 30, 66, 0.03); // TODO use ak-color-*
-  border: 1px solid #dfe1e6; // TODO use ak-color-*
+  background-color: @ak-color-N10A;
+  border: 1px solid @ak-color-N30A;
   border-radius: 3px;
   font-size: 14px;
-  padding: 10px;
+  padding: 9px 8px 9px 8px;
+  padding: 13px 8px 13px 8px;
   width: 300px;
   transition: background-color 0.2s, border-color 0.2s;
 };
@@ -32,8 +33,8 @@
 // HOVER STATE
 
 @hoverInputStyle: {
-  border-color: rgba(9, 30, 66, 0); // TODO use ak-color-*
-  background-color: #F0F2F5; // TODO use ak-color-*
+  border-color: @ak-color-N20;
+  background-color: @ak-color-N20;
 };
 .default-slot-element > input:hover { @hoverInputStyle(); }
 ::content > input:hover { @hoverInputStyle(); }
@@ -42,9 +43,9 @@
 // FOCUS STATE
 
 @focusInputStyle: {
-  background-color: rgba(9, 30, 66, 0.03); // TODO use ak-color-*
+  background-color: white;
   border-width: 2px;
-  border-color: #23a9fa; // TODO use ak-color-*
+  border-color: @ak-color-B100;
   box-shadow: none;
   outline: none;
   position: relative;
@@ -59,8 +60,9 @@
 // DISABLED STATE
 
 @disabledInputStyle: {
-  background-color: #f2f3f5; // TODO use ak-color-*
-  border: 1px solid #f2f3f5;
+  background-color: @ak-color-N20A;
+  border: 1px solid @ak-color-N20A;
+  color: @ak-color-N60;
   cursor: not-allowed;
 };
 .default-slot-element > input[disabled] { @disabledInputStyle(); }

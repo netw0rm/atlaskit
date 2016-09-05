@@ -122,7 +122,7 @@ export default define('ak-editor-bitbucket', {
       fakeInputClassNames += ` ${shadowStyles.locals.comment}`;
     }
 
-    const FullEditor = (<div>
+    const FullEditor: any = (<div>
       <Toolbar>
         <ToolbarBlockType
           disabled={!elem[$canChangeBlockType]}
@@ -154,7 +154,7 @@ export default define('ak-editor-bitbucket', {
       <Content
         className={shadowStyles.locals.content}
         onclick={elem[$onContentClick]}
-        ref={(wrapper) => { elem[$wrapper] = wrapper; }}
+        ref={(wrapper: HTMLElement) => { elem[$wrapper] = wrapper; }}
         openTop
         openBottom
         skip

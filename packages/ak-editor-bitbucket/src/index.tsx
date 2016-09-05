@@ -67,6 +67,7 @@ const $hyperLinkElement = '__hyperLinkElement__';
 const $hyperLinkActive = '__hyperLinkActive__';
 const $bulletListActive = '__bulletListActive__';
 const $numberListActive = '__numberListActive__';
+const $listsPlugin = '__listsPlugin__';
 
 const functionProp = () => ({
   coerce: (val: any) => (typeof val === 'function' ? val : () => {}),

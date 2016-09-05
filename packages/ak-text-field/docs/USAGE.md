@@ -1,6 +1,8 @@
 # TextField
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+Provides a standard way to create a text-based form input with an associated label.
+
+When the label is clicked, the input will receive focus as expected.
 
 ## Setup and install
 
@@ -33,7 +35,9 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </head>
 <body>
   <!-- ... -->
-  <ak-text-field></ak-text-field>
+  <ak-text-field label="First name">
+    <input type="text" name="fname" required />
+  </ak-text-field>
 </body>
 ```
 
@@ -42,8 +46,13 @@ or from within another JavaScript resource:
 ```js
 import TextField from 'ak-text-field';
 
-const component = new TextField();
-document.body.appendChild(component);
+const textField = new TextField();
+textField.label = 'First name';
+
+const textInput = document.createElement('input');
+textField.appendChild(textInput);
+
+document.body.appendChild(textInput);
 ```
 
 ### React
@@ -52,7 +61,7 @@ document.body.appendChild(component);
 import TextField from 'ak-text-field';
 import reactify from 'skatejs-react-integration';
 
-const ReactComponent = reactify(TextField, {});
+const ReactTextField = reactify(TextField, {});
 
-ReactDOM.render(<ReactComponent />, container);
+ReactDOM.render(<ReactTextField />, container);
 ```

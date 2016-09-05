@@ -33,14 +33,11 @@ export default define('ak-text-field', {
   },
   props: {
     /**
-     * @description The name of the TextField element.
+     * @description The label to be rendered next to the supplied text input.
      * @memberof TextField
      * @instance
      * @type {string}
-     * @default TextField
      */
-    label: {
-      attribute: true,
-    },
+    label: { attribute: true },
   },
 });

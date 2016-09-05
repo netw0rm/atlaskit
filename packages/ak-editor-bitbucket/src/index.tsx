@@ -17,7 +17,6 @@ import { schema } from './schema';
 import { buildKeymap } from './keymap';
 import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';
-import { nodeLifecycleHandler } from './node-lifecycle';
 import { markdownTransformer } from './paste-handlers';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import {

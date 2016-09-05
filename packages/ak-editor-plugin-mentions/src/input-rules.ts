@@ -1,5 +1,4 @@
-import { ProseMirror } from 'prosemirror/dist/edit';
-import { InputRule } from 'prosemirror/dist/inputrules';
+import { ProseMirror, InputRule } from 'ak-editor-prosemirror';
 
 const makeNode = (pm: ProseMirror) => pm.schema.nodes.mention.create({ data: '' });
 

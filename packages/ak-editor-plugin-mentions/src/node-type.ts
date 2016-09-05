@@ -1,4 +1,4 @@
-import { Inline, Attribute, Node as PMNode } from 'prosemirror/dist/model';
+import { Inline, Attribute, Node as PMNode } from 'ak-editor-prosemirror';
 
 interface MentionAttributes {
   data: any;

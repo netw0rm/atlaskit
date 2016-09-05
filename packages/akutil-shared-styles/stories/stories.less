@@ -58,42 +58,28 @@
   }
 }
 
+// Here we define the animation parameters for our bounce animations
+@translate: 'transform', 'translateY(XXpx)', 0, -200;
+@combinedTranslate: 'transform', 'translateY(XXpx) rotate(45deg)', 0, -200;
 
 // The following three classes create and apply our new animations
 // boldBounce, optimisticBounce, combinedBounce)
 .boldBounce {
   animation: boldBounce 1s 1;
   // now define an animation called boldBounce
-  .boldAnimation({.boldAnimClass;}, boldBounce);
+  .createBoldAnimation(@translate, 'boldBounce');
 }
 
 .optimisticBounce {
   animation: optimisticBounce 1s 1;
-  .optimisticAnimation({.optimisticAnimClass;}, optimisticBounce);
+  .createOptimisticAnimation(@translate, 'optimisticBounce');
 }
 
 .combinedBounce {
   animation: combinedBounce 1s 1;
-  .combinedAnimation({.combinedAnimClass;}, combinedBounce);
+  // Here, we couldn't use the @translate prop because we need to keep the rotation on the object
+  // So we create @combinedTranslate that has the rotation and the translation with only the translation animated.
+  .createCombinedAnimation(@combinedTranslate, 'combinedBounce');
 }
 
-// The following three classes are only to store the mixins used for the animations
-// (boldAnimClass, optimisticAnimClass, combinedAnimClass)
-.boldAnimClass {
-  .toAnimate(@modifier) {
-    transform: translateY(-200px * @modifier);
-  }
-}
 
-.optimisticAnimClass {
-  .toAnimate(@modifier) {
-    transform: translateY(-200px * @modifier);
-  }
-}
-
-.combinedAnimClass {
-  .toAnimate(@modifier) {
-    // Here we show that you can also have static properties in your animations (the rotation)
-    transform: translateY(-200px * @modifier) rotate(45deg);
-  }
-}

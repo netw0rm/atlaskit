@@ -8,32 +8,30 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
 
-function setupComponent() {
-  const component = new Component();
-  component.label = 'My label';
-  const componentHasShadowRoot = () => !!getShadowRoot(component);
-
-  document.body.appendChild(component);
-
-  return waitUntil(componentHasShadowRoot).then(() => component);
-}
-
-function tearDownComponent(component) {
-  document.body.removeChild(component);
-}
-
-
 describe('ak-text-field', () => {
-  let component;
-  let shadowRoot;
-
-  beforeEach(() => setupComponent().then(newComponent => {
-    component = newComponent;
-    shadowRoot = getShadowRoot(component);
-  }));
-  afterEach(() => tearDownComponent(component));
-
   describe('label', () => {
+    function setupComponent() {
+      const component = new Component();
+      component.label = 'My label';
+      const componentHasShadowRoot = () => !!getShadowRoot(component);
+
+      document.body.appendChild(component);
+
+      return waitUntil(componentHasShadowRoot).then(() => component);
+    }
+
+    function tearDownComponent(component) {
+      document.body.removeChild(component);
+    }
+
+    let component;
+    let shadowRoot;
+
+    beforeEach(() => setupComponent().then(newComponent => {
+      component = newComponent;
+      shadowRoot = getShadowRoot(component);
+    }));
+    afterEach(() => tearDownComponent(component));
     it('should render the supplied label', () => {
       const expectedLabel = 'My new label';
       component.label = expectedLabel;

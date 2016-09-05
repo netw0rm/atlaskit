@@ -44,8 +44,8 @@ export default define('ak-text-field', {
      * @type {string}
      * @default TextField
      */
-    name: {
-      default: 'TextField',
+    label: {
+      attribute: true,
     },
   },
 });

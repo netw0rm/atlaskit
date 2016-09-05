@@ -8,10 +8,9 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
 
-const expect = chai.expect;
-
 function setupComponent() {
   const component = new Component();
+  component.label = 'My label';
   const componentHasShadowRoot = () => !!getShadowRoot(component);
 
   document.body.appendChild(component);
@@ -34,26 +33,35 @@ describe('ak-text-field', () => {
   }));
   afterEach(() => tearDownComponent(component));
 
-  it.skip('should be possible to create a component', () => {
-    expect(shadowRoot.innerHTML).to.match(/My name is .+?!/);
-  });
+  describe('label', () => {
+    it('should render the supplied label', () => {
+      const expectedLabel = 'My new label';
+      component.label = expectedLabel;
 
-  describe.skip('name prop', () => {
-    it('should modify the rendered name', () => {
-      const newName = 'InigoMontoya';
-      const expectedInnerHTML = `My name is ${newName}!`;
-      const paragraph = shadowRoot.querySelector('p');
+      const label = shadowRoot.querySelector('label');
+      const labelIsCorrect = () => (label.innerText === expectedLabel);
 
-      const nameHasBeenModifiedCorrectly = () => (paragraph.innerHTML === expectedInnerHTML);
-
-      component.name = newName;
-
-      // here we can wrap our assertions in promises and just check that the promise was fulfilled
-      waitUntil(nameHasBeenModifiedCorrectly).should.be.fulfilled;
+      return waitUntil(labelIsCorrect).should.be.fulfilled;
     });
-  });
 
-  it('should modify the rendered name', () => {
-    (1).should.equal(1);
+    it('should focus input when label clicked', (done) => {
+      const focusSpy = sinon.spy();
+      const input = document.createElement('input');
+      component.appendChild(input);
+      input.addEventListener('focus', focusSpy);
+
+      const labelText = 'My other label';
+      const label = shadowRoot.querySelector('label');
+      component.label = labelText;
+      const labelIsCorrect = () => (label.innerText === labelText);
+
+      waitUntil(labelIsCorrect).should.be.fulfilled.then(() => {
+        label.click();
+        setTimeout(() => {
+          focusSpy.calledOnce.should.be.true;
+          done();
+        }, 100);
+      });
+    });
   });
 });

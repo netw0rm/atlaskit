@@ -78,6 +78,13 @@ function bind(object: any, propName: string) {
   object[propName] = object[propName].bind(object);
 }
 
+type fontsType = {
+  name: string,
+  display: string,
+  schemaName: string,
+  level?: number,
+}[];
+
 const commentFonts = [{
   name: 'normalText',
   display: 'Normal text',
@@ -121,7 +128,9 @@ const objectFonts = [{
   schemaName: 'code_block',
 }];
 
-function getFont({ blockType, fontName }, fonts) {
+type getFontParamType = { blockType?: string, fontName?: string };
+
+function getFont({ blockType, fontName }: getFontParamType, fonts: fontsType) {
   let len = fonts.length;
   while (--len >= 0) {
     const font = fonts[len];

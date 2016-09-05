@@ -26,7 +26,7 @@ describe('ak-editor-plugin-mentions - input rules', () => {
     pm.input.insertText(0, 0,'foo @');
 
     const cursorFocus: ResolvedPos = pm.selection.$to;
-    expect(cursorFocus.nodeBefore).to.be.nodeType('mention');
+    expect(cursorFocus.nodeBefore).to.be.of.nodeType(Mention);
   });
 
   it('should not replace a "@" thats part of a word', () => {
@@ -34,7 +34,7 @@ describe('ak-editor-plugin-mentions - input rules', () => {
     pm.input.insertText(0, 0, 'foo@');
 
     const cursorFocus: ResolvedPos = pm.selection.$to;
-    expect(cursorFocus.nodeBefore).not.to.be.nodeType('mention');
+    expect(cursorFocus.nodeBefore).not.to.be.of.nodeType(Mention);
   });
 
   it('should replace a standalone ":" with mention node', () => {
@@ -42,7 +42,7 @@ describe('ak-editor-plugin-mentions - input rules', () => {
     pm.input.insertText(0, 0, 'foo :');
 
     const cursorFocus: ResolvedPos = pm.selection.$to;
-    expect(cursorFocus.nodeBefore).to.be.nodeType('mention');
+    expect(cursorFocus.nodeBefore).to.be.of.nodeType(Mention);
   });
 
   it('should not replace a ":" thats part of a word', () => {
@@ -50,6 +50,6 @@ describe('ak-editor-plugin-mentions - input rules', () => {
     pm.input.insertText(0, 0, 'foo:');
 
     const cursorFocus: ResolvedPos = pm.selection.$to;
-    expect(cursorFocus.nodeBefore).not.to.be.nodeType('mention');
+    expect(cursorFocus.nodeBefore).not.to.be.of.nodeType(Mention);
   });
 });

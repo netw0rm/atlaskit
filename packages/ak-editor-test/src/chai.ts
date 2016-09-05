@@ -68,14 +68,13 @@ export default (chai: any) => {
     };
   });
 
-  Assertion.addMethod('nodeType', function(nodeType: string) {
+  Assertion.addMethod('nodeType', function(nodeType: NodeType) {
     const obj: Node = util.flag(this, 'object');
     const negate: boolean = util.flag(this, 'negate');
 
-    if (!negate) {
-      new Assertion(obj.type.name).to.be.equal(nodeType);
-    } else {
-      new Assertion(obj.type.name).to.be.not.equal(nodeType);
+    if (negate) {
+      return new Assertion(obj.type).not.to.be.an.instanceof(nodeType);
     }
+    return new Assertion(obj.type).to.be.an.instanceof(nodeType);
   });
 }

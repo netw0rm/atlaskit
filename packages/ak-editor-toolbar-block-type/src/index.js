@@ -57,7 +57,7 @@ export default define('ak-editor-toolbar-block-type', {
   props: {
     dropdownOpen: prop.boolean({ attribute: true }),
     selectedFont: { attribute: true },
-    fonts: prop.array({ attribute: true, default: [] }),
+    fonts: prop.array({ attribute: true }),
     disabled: prop.boolean({ attribute: true }),
   },
 });

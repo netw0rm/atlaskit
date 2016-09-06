@@ -63,7 +63,7 @@ const $strongActive = '__strongActive__';
 const $emActive = '__emActive__';
 const $underlineActive = '__underlineActive__';
 const $canChangeTextFormatting = '__canChangeTextFormatting__';
-const $hyperLinkText = '__hyperLinkText__';
+const $hyperLinkHref = '__hyperLinkHref__';
 const $canLinkHyperlink = '__canLinkHyperlink__';
 const $selectedFont = '__selectedFont__';
 const $fonts = '__fonts__';
@@ -236,8 +236,8 @@ export default define('ak-editor-bitbucket', {
       />
       {elem[$hyperLinkActive] ?
         <HyperLink
-          href={elem[$hyperLinkText]}
-          textInputValue={elem[$hyperLinkText]}
+          href={elem[$hyperLinkHref]}
+          textInputValue={elem[$hyperLinkHref]}
           attachTo={elem[$hyperLinkElement]}
           onUnlink={elem[$unlink]}
           onchange={elem[$changeHyperLinkValue]}
@@ -298,7 +298,7 @@ export default define('ak-editor-bitbucket', {
     [$emActive]: prop.boolean(),
     [$underlineActive]: prop.boolean(),
     [$canChangeTextFormatting]: prop.boolean(),
-    [$hyperLinkText]: prop.string(),
+    [$hyperLinkHref]: prop.string(),
     [$selectedFont]: {},
     [$hyperLinkElement]: {},
     [$hyperLinkActive]: prop.boolean(),
@@ -422,7 +422,7 @@ export default define('ak-editor-bitbucket', {
         elem[$canLinkHyperlink] = state.enabled;
         elem[$hyperLinkActive] = state.active;
         elem[$hyperLinkElement] = state.element;
-        elem[$hyperLinkText] = state.text;
+        elem[$hyperLinkHref] = state.href;
       });
 
       // Image upload plugin wiring

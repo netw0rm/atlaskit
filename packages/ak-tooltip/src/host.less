@@ -10,7 +10,13 @@
 .ak-tooltip,
 ak-tooltip {
   display: none;
+  // we remove pointer events to prevent the tooltip from getting in the way of hovering
   pointer-events: none;
+  // and hide the tooltip outside of the viewport by default to prevent flashes of old positions
+  // when next appearing
+  top: -999em;
+  left: -999em;
+  position: absolute;
 
   &[visible] {
     display: inline-block;

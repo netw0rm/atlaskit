@@ -45,7 +45,8 @@ const $addHyperLink = '__addHyperLink__';
 const $unlink = '__unlink__';
 const $changeHyperLinkValue = '__changeHyperLinkValue__';
 const $toggleExpansion = '__toggleExpansion__';
-const $justToggleExpansion = '__justToggleExpansion__';
+// a flag that indicates it just toggled so that rendered wouldn't init pm again
+const $justToggledExpansion = '__justToggledExpansion__';
 const $initEditor = '__init_editor__';
 const $pm = '__pm__';
 const $ready = '__ready__';
@@ -164,8 +165,8 @@ export default define('ak-editor-bitbucket', {
   },
 
   rendered(elem: any) {
-    if (elem.expanded && elem[$justToggleExpansion]) {
-      elem[$justToggleExpansion] = false;
+    if (elem.expanded && elem[$justToggledExpansion]) {
+      elem[$justToggledExpansion] = false;
       elem[$initEditor]();
       if (!elem[$ready]) {
         emit(elem, 'ready');
@@ -374,7 +375,7 @@ export default define('ak-editor-bitbucket', {
 
     [$toggleExpansion]() {
       this.expanded = !this.expanded;
-      this[$justToggleExpansion] = true;
+      this[$justToggledExpansion] = true;
     },
 
     [$initEditor]() {

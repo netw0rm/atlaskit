@@ -739,6 +739,7 @@ declare module 'prosemirror/dist/model/resolvedpos' {
 
 declare module 'prosemirror/dist/model/schema' {
     import { Node, TextNode } from 'prosemirror/dist/model/node';
+    import { OrderedMap } from 'prosemirror/dist/util/orderedmap';
     export class NodeType {
         constructor(name: any, schema: any);
         isBlock: boolean;
@@ -793,7 +794,8 @@ declare module 'prosemirror/dist/model/schema' {
         constructor(spec: any, data?: any);
         marks: {[type: string]: MarkType};
         nodes: any;
-        nodeSpec: any;
+        nodeSpec: OrderedMap;
+        markSpec: OrderedMap;
         node(type: any, attrs?: any, content?: any, marks?: any): any;
         text(text: string, marks?: any): TextNode;
         mark(name: string, attrs?: any): any;

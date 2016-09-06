@@ -1,4 +1,5 @@
-import { Fragment, Node, Slice } from 'ak-editor-prosemirror';
+/// <reference path="./chai.d.ts"/>
+import { Fragment, Node, Slice, NodeType } from 'ak-editor-prosemirror';
 
 export default (chai: any) => {
   const { Assertion, util } = chai;
@@ -65,5 +66,15 @@ export default (chai: any) => {
         _super.apply(this, arguments);
       }
     };
+  });
+
+  Assertion.addMethod('nodeType', function(nodeType: NodeType) {
+    const obj: Node = util.flag(this, 'object');
+    const negate: boolean = util.flag(this, 'negate');
+
+    if (negate) {
+      return new Assertion(obj.type).not.to.be.an.instanceof(nodeType);
+    }
+    return new Assertion(obj.type).to.be.an.instanceof(nodeType);
   });
 }

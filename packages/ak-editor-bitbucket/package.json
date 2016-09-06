@@ -32,6 +32,7 @@
     "ak-editor-plugin-lists": "^1.0.0",
     "ak-editor-plugin-markdown-inputrules": "^1.0.0",
     "ak-editor-plugin-text-formatting": "^1.0.0",
+    "ak-editor-plugin-mentions": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "browserkeymap": "^2.0.1",
     "markdown-it": "^7.0.0",

@@ -1,41 +1,15 @@
 import {
-  Block, Inline, Attribute, Text, Doc, BlockQuote, OrderedList, BulletList,
+  Block, Text, Doc, BlockQuote, OrderedList, BulletList,
   ListItem, HorizontalRule, Heading, Paragraph, Image, HardBreak, EmMark,
   StrongMark, LinkMark, CodeMark,
 } from 'ak-editor-prosemirror';
+
+import { Mention } from 'ak-editor-plugin-mentions';
 
 export class CodeBlock extends Block {
   get isCode() { return true; }
   get matchDOMTag() { return { pre: [null, { preserveWhitespace: true }] }; }
   toDOM() { return ['pre', 0]; }
-}
-
-export class EntityInline extends Inline {
-  get attrs() {
-    return {
-      data: new Attribute({ default: '@' }),
-      activate: new Attribute({ default: true }),
-    };
-  }
-  get matchDOMTag() {
-    return {
-      'span[editor-node-type=entity]': (dom) => ({
-        data: dom.getAttribute('editor-data'),
-        activate: (dom.getAttribute('editor-activate') === 'true'),
-      }),
-    };
-  }
-  toDOM(node) {
-    const attrs = {};
-    attrs['editor-data'] = node.attrs.data;
-    attrs.contenteditable = 'false';
-    attrs['editor-node-type'] = 'entity';
-
-    if (node.attrs.activate) {
-      attrs['editor-activate'] = 'true';
-    }
-    return ['span', attrs];
-  }
 }
 
 export const schema = {
@@ -58,7 +32,7 @@ export const schema = {
 
     // custom nodes
     code_block: { type: CodeBlock, content: 'text*', group: 'block' },
-    entity_inline: { type: EntityInline, group: 'inline' },
+    mention: { type: Mention, group: 'inline' },
   },
 
   marks: {

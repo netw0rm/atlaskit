@@ -34,6 +34,45 @@ storiesOf('ak-editor-bitbucket', module)
       imageUploader={imageUploader}
     />
   ))
+  .add('Mentions (insert dummy when typed @)', () => {
+    type Props = {};
+    type State = {};
+    class EditorWithMentions extends Component<Props, State> {
+      constructor() {
+        super();
+        this.renderer = this.renderer.bind(this);
+        this.autocompleter = this.autocompleter.bind(this);
+      }
+
+      renderer(e: any) {
+        const { pm, el } = e.detail;
+
+        el.innerText = el.getAttribute('editor-data');
+        el.style.border = "1px solid #000";
+        el.style.backgroundColor = "#ccc";
+        el.style.padding = "2px";
+      }
+
+      autocompleter(e: any) {
+        const { pm, el } = e.detail;
+
+        const m = pm.schema.nodes.mention.create({ data: '@foo' });
+        const cursor = pm.selection.to;
+        pm.tr.replaceWith(cursor-1, cursor, m).apply();
+      }
+
+      render() {
+        return (
+          <Bitbucket
+            onMentionRender={this.renderer}
+            onMentionAutocomplete={this.autocompleter}
+          />
+        )
+      }
+    }
+
+    return <EditorWithMentions />;
+  })
   .add('Events', () => (
     <Bitbucket
       onChange={action('change')}

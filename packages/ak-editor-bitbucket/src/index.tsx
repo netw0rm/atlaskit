@@ -32,6 +32,7 @@ import {
 import {
   default as ImageUploadPlugin,
   DISABLED_GROUP as ImageUploadPluginDisabledGroup,
+  ImageUploadOptions
 } from 'ak-editor-plugin-image-upload';
 import {
   default as TextFormattingPlugin,
@@ -46,6 +47,7 @@ const $toggleMark = '__toggleMark__';
 const $toggleList = '__toggleList__';
 const $addHyperLink = '__addHyperLink__';
 const $unlink = '__unlink__';
+const $insertImage = '__insertImage__';
 const $changeHyperLinkValue = '__changeHyperLinkValue__';
 const $toggleExpansion = '__toggleExpansion__';
 // a flag that indicates it just toggled so that rendered wouldn't init pm again
@@ -165,6 +167,7 @@ export default define('ak-editor-bitbucket', {
     bind(elem, $unlink);
     bind(elem, $changeHyperLinkValue);
     bind(elem, $toggleExpansion);
+    bind(elem, $insertImage);
   },
 
   rendered(elem: any) {
@@ -239,6 +242,7 @@ export default define('ak-editor-bitbucket', {
         openTop
         onSave={elem[$toggleExpansion]}
         oncancel={elem[$toggleExpansion]}
+        onInsertimage={elem[$insertImage]}
       />
     </div>);
 
@@ -362,6 +366,10 @@ export default define('ak-editor-bitbucket', {
       });
     },
 
+    [$insertImage]() {
+      this.imageUploader(false, (attr: ImageUploadOptions) => ImageUploadPlugin.get(this[$pm]).addImage(attr));
+    },
+
     [$unlink]() {
       HyperlinkPlugin.get(this[$pm]).removeLink();
     },
@@ -411,7 +419,7 @@ export default define('ak-editor-bitbucket', {
       });
 
       // Image upload plugin wiring
-      const insertImage = (url: string) => ImageUploadPlugin.get(pm).addImage(url);
+      const insertImage = (attr: ImageUploadOptions) => ImageUploadPlugin.get(pm).addImage(attr);
       const handler = (_: any, e: any) => elem.imageUploader(e, insertImage);
       ImageUploadPlugin.get(pm).dropAdapter.add(handler);
       ImageUploadPlugin.get(pm).pasteAdapter.add(handler);

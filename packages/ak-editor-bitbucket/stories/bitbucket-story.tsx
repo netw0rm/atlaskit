@@ -13,6 +13,12 @@ const imageUploader = (e: any, fn: any) => {
     pasteHandler(converter, e, fn);
   } else if (e instanceof DragEvent) {
     dropHandler(converter, e, fn);
+  } else {
+    // we cannot trigger a real file viewer from here
+    // so we just simulate a succesful image upload and insert an image
+    fn({
+      src: 'https://design.atlassian.com/images/brand/logo-21.png'
+    });
   }
 };
 

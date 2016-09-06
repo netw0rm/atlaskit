@@ -14,7 +14,7 @@ function notify(themeName, themeVars = null) {
 }
 
 function varsFromChildren(host) {
-  return [].slice.call(host.children).reduce((prev, curr) => {
+  return [...host.children].reduce((prev, curr) => {
     const [key, val] = [curr.getAttribute('name'), curr.getAttribute('value')];
 
     if (!key) {

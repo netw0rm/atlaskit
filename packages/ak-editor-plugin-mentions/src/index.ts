@@ -31,10 +31,9 @@ class MentionsPluginState {
     }
 
     Array.prototype.forEach.call(elements, (el: HTMLElement) => {
-      el.removeAttribute('editor-hydrate');
-
       const nodeType = el.getAttribute('editor-node-type');
       if (nodeType === 'mention') {
+        el.removeAttribute('editor-hydrate');
         const data = el.getAttribute('editor-data');
 
         // if theres data set, render the element

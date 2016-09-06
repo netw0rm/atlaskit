@@ -57,7 +57,8 @@ describe('ak-editor-plugin-mentions - when no data set on mention nodes', () => 
 
     expect(mockAutocompleteHandler.calledWith(
       sinon.match.instanceOf(HTMLElement),
-      sinon.match.instanceOf(ProseMirror))).to.be.true;
+      sinon.match.instanceOf(ProseMirror)
+    )).to.be.true;
   });
 });
 
@@ -78,7 +79,8 @@ describe('ak-editor-plugin-mentions - when theres data set on mention nodes', ()
 
     expect(mockRenderHandler.calledWith(
       sinon.match.instanceOf(HTMLElement),
-      sinon.match.instanceOf(ProseMirror))).to.be.true;
+      sinon.match.instanceOf(ProseMirror)
+    )).to.be.true;
   });
 
   it('should call the render handler for every node', () => {

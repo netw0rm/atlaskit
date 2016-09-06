@@ -1,4 +1,4 @@
-const productionConfig = require('./webpack.config.production.js');
+const productionConfig = require('./production.js');
 
 delete productionConfig.externals;
 

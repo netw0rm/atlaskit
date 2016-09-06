@@ -1,13 +1,22 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
-import { symbols, Component } from 'skatejs';
+import { props, Component } from 'skatejs';
 import { name } from '../package.json';
+import { afterMutations, getShadowRoot } from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
+function createDropdown() {
+  const html = `<ak-dropdown>
+                  <ak-dropdown-trigger slot="trigger">test</ak-dropdown-trigger>
+                  <ak-dropdown-item>124</ak-dropdown-item>
+                  <ak-dropdown-item>444</ak-dropdown-item>
+                </ak-dropdown>`;
+  return html;
+}
 describe('ak-dropdown', () => {
   describe('exports', () => {
     it('should export a base component', () => {
@@ -37,24 +46,34 @@ describe('ak-dropdown', () => {
     let component;
     let dropdownContainer;
 
-    beforeEach(() => {
-      component = new Dropdown();
+    beforeEach((done) => {
+      component = createDropdown();
       dropdownContainer = document.createElement('div');
-      dropdownContainer.appendChild(component);
+      dropdownContainer.innerHTML = component;
       document.body.appendChild(dropdownContainer);
+
+      afterMutations(
+        () => (component = dropdownContainer.firstChild),
+        done
+      );
     });
     afterEach(() => {
       document.body.removeChild(dropdownContainer);
     });
-    it('should be possible to create a component', (done) => {
+
+    it('should be possible to create a component', () => {
       // testing to see that skate did its job as expected
       // (in case some breaking changes in it that affect rendering)
-      setTimeout(() => {
-        expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
-        expect(component[symbols.shadowRoot]).to.be.defined;
-        expect(component[symbols.shadowRoot].firstChild).to.be.defined;
-      });
-      setTimeout(done);
+      expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
+      expect(getShadowRoot(component)).to.be.defined;
+      expect(getShadowRoot(component).firstChild).to.be.defined;
+    });
+
+    it('dropdown should reposition itself after being open', () => {
+      const spy = sinon.spy();
+      component.reposition = spy;
+      props(component, { open: true });
+      expect(spy.called).to.equal(true);
     });
   });
 });

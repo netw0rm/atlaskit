@@ -33,15 +33,15 @@ cp -r "packages/akutil-component-template" "packages/$COMP_NAME"
 # LC_CTYPE and LANG=C: http://stackoverflow.com/questions/19242275/re-error-illegal-byte-sequence-on-mac-os-x
 LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' -e "s/akutil-component-template/${COMP_NAME}/g" -e "s/AkUtilComponentTemplate/${PASCAL_CASE_NAME}/g" -e "s/akUtilComponentTemplate/${CAMEL_CASE}/g" '{}'
 
-pushd "packages/$COMP_NAME"
+pushd "packages/$COMP_NAME" > /dev/null
 
 # Make sure our version for the new package is 0.0.0
 sed -i '' 's/"version": "\([^"]*\)"/"version": "1.0.0"/' package.json
 
-# Empty changelog
-> CHANGELOG.md
+# Delete changelog
+rm CHANGELOG.md
 
-popd
+popd > /dev/null
 
 # Install dependencies and link internal packages
 npm install

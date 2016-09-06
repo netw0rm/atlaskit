@@ -1,25 +1,19 @@
 import { vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
-import classNames from 'classnames';
+import classnames from 'classnames';
 /* eslint-disable react/prop-types */
 export default (props, children) => {
-  const classes = [shadowStyles.locals.chrome];
-  if (props.markedForRemoval) {
-    classes.push(shadowStyles.locals.markedForRemoval);
-  }
+  const classNames = classnames({
+    [shadowStyles.locals.chrome]: true,
+    [shadowStyles.locals.markedForRemoval]: props.markedForRemoval,
+    [shadowStyles.locals.isLinked]: props.isLinked,
+    [shadowStyles.locals.isRemovable]: props.isRemovable,
+    [shadowStyles.locals.isRemoving]: props.isRemoving,
+  });
 
-  if (props.isLinked) {
-    classes.push(shadowStyles.locals.isLinked);
-  }
-
-  if (props.isRemovable) {
-    classes.push(shadowStyles.locals.isRemovable);
-  }
-
-  return (<span
-    {...props}
-    className={classNames(classes)}
-  >
+  return (
+    <span {...props} className={classNames}>
       {children()}
-  </span>);
+    </span>
+  );
 };

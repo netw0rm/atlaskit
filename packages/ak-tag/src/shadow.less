@@ -4,6 +4,7 @@
 // Only do class selectors in here, anything else leaks to the rest of the page in
 // browsers that do not support shadow DOM
 @import 'shared-variables.less';
+@import '~akutil-shared-styles/src/mixins/animations.less';
 
 @border-radius: 3px;
 @outline-width: 2px;
@@ -59,8 +60,18 @@
   }
 
   &.isRemovable {
+    overflow: hidden;
     .text, .href {
       max-width: @max-width - @button-width;
+    }
+  }
+
+  &.isRemoving {
+    animation: removeAnimation 250ms;
+    transform-origin: inherit;
+    will-change: transform;
+    .text {
+      visibility: hidden;
     }
   }
 }
@@ -108,3 +119,6 @@
     color: @ak-color-R500;
   }
 }
+
+@removeAnimation: 'transform', 'scaleX(XX)', 1, 0;
+.createBoldAnimation(@removeAnimation, 'removeAnimation');

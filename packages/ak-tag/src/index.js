@@ -8,7 +8,10 @@ import Text from './text';
 import Href from './href';
 import Button from './button';
 import * as events from './internal/events';
-const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
+const {
+  beforeRemove: beforeRemoveEvent,
+  afterRemove: afterRemoveEvent,
+} = events;
 import { name } from '../package.json';
 import logger from './internal/logger';
 
@@ -34,6 +37,12 @@ export default define(name, {
       isLinked,
       isRemovable,
       markedForRemoval: elem.__removeButtonHover,
+      isRemoving: elem.__isRemoving,
+      onAnimationend: (e) => {
+        if (e.animationName === shadowStyles.locals.removeAnimation) {
+          emit(elem, afterRemoveEvent);
+        }
+      },
     };
 
     let button = '';
@@ -45,8 +54,9 @@ export default define(name, {
         onmouseout={() => hover(false)}
         onclick={() => {
           if (emit(elem, beforeRemoveEvent)) {
-            // start animation here
-            emit(elem, afterRemoveEvent);
+            props(elem, {
+              __isRemoving: true,
+            });
           } else {
             if (process.env.NODE_ENV === 'development') {
               logger.log(`Cancelled ${beforeRemoveEvent} event for tag "${elem.text}"`);
@@ -66,7 +76,7 @@ export default define(name, {
     }
 
     return (
-      <div>
+      <div style={{ 'transform-origin': 'inherit' }}>
         <style>{shadowStyles.toString()}</style>
         <Chrome {...chromeAttrs}>
           {label}
@@ -116,6 +126,10 @@ export default define(name, {
 
     // TODO replace with Symbol as soon as Skate supports it
     __removeButtonHover: prop.boolean({
+      initial: false,
+    }),
+
+    __isRemoving: prop.boolean({
       initial: false,
     }),
   },

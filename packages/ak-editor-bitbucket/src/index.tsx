@@ -136,7 +136,7 @@ const objectFonts = [{
 
 type getFontParamType = { blockType?: string, fontName?: string };
 
-function getFont({ blockType, fontName }: getFontParamType, fonts: blockTypesType): blockTypeType | undefined {
+function getFont({ blockType, fontName }: getFontParamType, fonts: blockTypesType): blockTypeType | void {
   let len = fonts.length;
   while (--len >= 0) {
     const font = fonts[len];

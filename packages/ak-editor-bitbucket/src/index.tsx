@@ -1,7 +1,6 @@
 import './types';
 import * as events from './internal/events';
-import { define, prop, emit, vdom } from 'skatejs';
-import invert from 'lodash.invert';
+import { define, prop, emit } from 'skatejs';
 import { ProseMirror, Schema } from 'ak-editor-prosemirror';
 import 'style!./host.less';
 import cx from 'classnames';
@@ -39,6 +38,9 @@ import {
   MarkType,
 } from 'ak-editor-plugin-text-formatting';
 
+// typescript only supports this. TODO: investigate why
+const { vdom } = require('skatejs');
+
 const $selectFont = '__selectFont__';
 const $toggleMark = '__toggleMark__';
 const $toggleList = '__toggleList__';
@@ -46,10 +48,11 @@ const $addHyperLink = '__addHyperLink__';
 const $unlink = '__unlink__';
 const $changeHyperLinkValue = '__changeHyperLinkValue__';
 const $toggleExpansion = '__toggleExpansion__';
+// a flag that indicates it just toggled so that rendered wouldn't init pm again
+const $justToggledExpansion = '__justToggledExpansion__';
 const $initEditor = '__init_editor__';
 const $pm = '__pm__';
 const $ready = '__ready__';
-const $expanded = '__expanded__';
 const $focused = '__focused__';
 const $wrapper = '__wrapper__';
 const $onContentClick = '__onContentClick__';
@@ -61,6 +64,7 @@ const $canChangeTextFormatting = '__canChangeTextFormatting__';
 const $hyperLinkText = '__hyperLinkText__';
 const $canLinkHyperlink = '__canLinkHyperlink__';
 const $selectedFont = '__selectedFont__';
+const $fonts = '__fonts__';
 const $hyperLinkElement = '__hyperLinkElement__';
 const $hyperLinkActive = '__hyperLinkActive__';
 const $bulletListActive = '__bulletListActive__';
@@ -76,20 +80,82 @@ function bind(object: any, propName: string) {
   object[propName] = object[propName].bind(object);
 }
 
-const prosemirrorBlockToToolbarMap: {[key: string]: string} = {
-  paragraph: 'normalText',
-  // heading 1 (displayed in the blockType button) is actually heading 2
-  // heading 1 is reserved and not used in the editor
-  heading2: 'heading1',
-  heading3: 'heading2',
-  heading4: 'heading3',
-  code_block: 'monospace',
+type blockTypeType = {
+  name: string,
+  display: string,
+  schemaName: string,
+  level?: number,
 };
 
-const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
+type blockTypesType = blockTypeType[];
+
+const commentFonts = [{
+  name: 'normalText',
+  display: 'Normal text',
+  schemaName: 'paragraph',
+}, {
+  name: 'blockQuote',
+  display: 'Block quote',
+  schemaName: 'blockquote',
+}, {
+  name: 'monospace',
+  display: 'Monospace',
+  schemaName: 'code_block',
+}];
+
+const objectFonts = [{
+  name: 'normalText',
+  display: 'Normal text',
+  schemaName: 'paragraph',
+}, {
+  name: 'heading1',
+  display: 'Heading 1',
+  schemaName: 'heading',
+  level: 2,
+}, {
+  name: 'heading2',
+  display: 'Heading 2',
+  schemaName: 'heading',
+  level: 3,
+}, {
+  name: 'heading3',
+  display: 'Heading 3',
+  schemaName: 'heading',
+  level: 4,
+}, {
+  name: 'blockQuote',
+  display: 'Block quote',
+  schemaName: 'blockquote',
+}, {
+  name: 'monospace',
+  display: 'Monospace',
+  schemaName: 'code_block',
+}];
+
+type getFontParamType = { blockType?: string, fontName?: string };
+
+function getFont({ blockType, fontName }: getFontParamType, fonts: blockTypesType): blockTypeType {
+  let len = fonts.length;
+  while (--len >= 0) {
+    const font = fonts[len];
+    if (font.name === fontName ||
+      (font.schemaName + (font.level ? font.level : '')) === blockType) {
+      return font;
+    }
+  }
+
+  // not found (should not reach this!)
+  throw new Error('Cannot get your font!');
+}
 
 export default define('ak-editor-bitbucket', {
   created(elem: any) {
+    if (elem.context === 'comment') {
+      elem[$fonts] = commentFonts;
+    } else {
+      elem[$fonts] = objectFonts;
+    }
+
     bind(elem, $onContentClick);
     bind(elem, 'focus');
     bind(elem, $selectFont);
@@ -102,7 +168,8 @@ export default define('ak-editor-bitbucket', {
   },
 
   rendered(elem: any) {
-    if (elem[$expanded]) {
+    if (elem.expanded && elem[$justToggledExpansion]) {
+      elem[$justToggledExpansion] = false;
       elem[$initEditor]();
       if (!elem[$ready]) {
         emit(elem, 'ready');
@@ -120,11 +187,12 @@ export default define('ak-editor-bitbucket', {
       fakeInputClassNames += ` ${shadowStyles.locals.comment}`;
     }
 
-    const FullEditor: any = (<div>
+    const fullEditor: any = (<div>
       <Toolbar>
         <ToolbarBlockType
           disabled={!elem[$canChangeBlockType]}
           selectedFont={elem[$selectedFont]}
+          fonts={elem[$fonts]}
           onSelectFont={elem[$selectFont]}
         />
         <ToolbarTextFormatting
@@ -183,8 +251,8 @@ export default define('ak-editor-bitbucket', {
         }
       >
         <style>{shadowStyles.toString()}</style>
-        {elem[$expanded] ?
-          <FullEditor />
+        {elem.expanded ?
+          fullEditor
           :
           <input
             placeholder={elem.defaultValue}
@@ -208,20 +276,20 @@ export default define('ak-editor-bitbucket', {
     defaultValue: prop.string({ attribute: true }),
     imageUploader: functionProp(),
     context: prop.string({ attribute: true }),
+    expanded: prop.boolean({ attribute: true }),
 
     /**
      * True if the editor has focus.
      * @private
      */
     [$focused]: prop.boolean(),
-    [$expanded]: prop.boolean(),
     [$canChangeBlockType]: prop.boolean(),
     [$strongActive]: prop.boolean(),
     [$emActive]: prop.boolean(),
     [$underlineActive]: prop.boolean(),
     [$canChangeTextFormatting]: prop.boolean(),
     [$hyperLinkText]: prop.string(),
-    [$selectedFont]: prop.string({ default: 'normalText' }),
+    [$selectedFont]: {},
     [$hyperLinkElement]: {},
     [$hyperLinkActive]: prop.boolean(),
     [$canLinkHyperlink]: prop.boolean(),
@@ -264,15 +332,6 @@ export default define('ak-editor-bitbucket', {
       return this[$ready] || false;
     },
 
-    /**
-     * Returns true if the editor is expanded for
-     * interaction.
-     * @returns {boolean}
-     */
-    get expanded() {
-      return this[$expanded];
-    },
-
     [$onContentClick](e: MouseEvent) {
       if (e.target === e.currentTarget) {
         this.focus();
@@ -282,9 +341,8 @@ export default define('ak-editor-bitbucket', {
     [$selectFont](event: CustomEvent) {
       const font = event.detail.font;
 
-      const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
-      const blockType = matches[1];
-      const level = matches[2];
+      const blockType = font.schemaName;
+      const level = font.level;
 
       BlockTypePlugin.get(this[$pm]).changeBlockType(blockType, { level });
     },
@@ -319,7 +377,8 @@ export default define('ak-editor-bitbucket', {
     },
 
     [$toggleExpansion]() {
-      this[$expanded] = !this[$expanded];
+      this.expanded = !this.expanded;
+      this[$justToggledExpansion] = true;
     },
 
     [$initEditor]() {
@@ -359,12 +418,10 @@ export default define('ak-editor-bitbucket', {
 
       // Block type plugin wiring
       BlockTypePlugin.get(pm).onChange(state => {
-        const name = state.selectedBlockType
-        if (typeof name === 'string') {
-          const blockType = prosemirrorBlockToToolbarMap[name] as string;
-          elem[$selectedFont] = blockType;
-          elem[$canChangeBlockType] = state.enabled;
-        }
+        const blockType = state.selectedBlockType;
+        const font = getFont({ blockType }, elem[$fonts]);
+        elem[$selectedFont] = font;
+        elem[$canChangeBlockType] = state.enabled;
       });
 
       // Lists

@@ -187,7 +187,7 @@ export default define('ak-editor-bitbucket', {
       fakeInputClassNames += ` ${shadowStyles.locals.comment}`;
     }
 
-    const FullEditor: any = (<div>
+    const fullEditor: any = (<div>
       <Toolbar>
         <ToolbarBlockType
           disabled={!elem[$canChangeBlockType]}
@@ -252,7 +252,7 @@ export default define('ak-editor-bitbucket', {
       >
         <style>{shadowStyles.toString()}</style>
         {elem.expanded ?
-          <FullEditor />
+          fullEditor
           :
           <input
             placeholder={elem.defaultValue}

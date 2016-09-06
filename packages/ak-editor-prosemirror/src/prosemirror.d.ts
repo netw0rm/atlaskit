@@ -57,7 +57,7 @@ declare module 'prosemirror/dist/edit/commands' {
       export function splitBlock(pm: ProseMirror, apply: any): boolean;
       export function toggleMark(markType: any, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
       export function undo(pm: ProseMirror, apply: any): boolean;
-      export function wrapIn(nodeType: any, attrs: any): (pm: ProseMirror, apply: any) => boolean;
+      export function wrapIn(nodeType: any, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
       export let baseKeymap: any;
     }
 }

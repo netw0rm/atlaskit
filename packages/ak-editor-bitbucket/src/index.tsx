@@ -39,7 +39,7 @@ import {
   MarkType,
 } from 'ak-editor-plugin-text-formatting';
 
-// typescript only supports this. TODO: investigate why
+// typescript removes unused var if we import it :(
 const { vdom } = require('skatejs');
 
 const $selectFont = '__selectFont__';

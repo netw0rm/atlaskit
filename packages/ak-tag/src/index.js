@@ -8,6 +8,9 @@ import Text from './text';
 import Href from './href';
 import Button from './button';
 import * as events from './internal/events';
+const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
+import { name } from '../package.json';
+import logger from './internal/logger';
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -15,11 +18,11 @@ import * as events from './internal/events';
  * @example @js import Tag from 'ak-tag';
  * const tag = new Tag();
  */
-export default define('ak-tag', {
+export default define(name, {
   render(elem) {
     if (!elem.text) {
       if (process.env.NODE_ENV === 'development') {
-        console.warn('No text given, not rendering.'); // eslint-disable-line no-console
+        logger.warn('No text given, not rendering.');
       }
       return null;
     }
@@ -40,7 +43,16 @@ export default define('ak-tag', {
         text={elem['remove-button-text']}
         onmouseover={() => hover(true)}
         onmouseout={() => hover(false)}
-        onclick={() => emit(elem, events.remove)}
+        onclick={() => {
+          if (emit(elem, beforeRemoveEvent)) {
+            // start animation here
+            emit(elem, afterRemoveEvent);
+          } else {
+            if (process.env.NODE_ENV === 'development') {
+              logger.log(`Cancelled ${beforeRemoveEvent} event for tag "${elem.text}"`);
+            }
+          }
+        }}
       />);
       /* eslint-enable no-underscore-dangle */
     }

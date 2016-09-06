@@ -1,6 +1,7 @@
 import reactify from 'akutil-react';
 import tagStyles from 'style!ak-tag/src/host.less';
-import AkTagWebComponent, { EVENTS as TAG_EVENTS } from 'ak-tag';
+import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
+const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = tagEvents;
 import WebComponent from '../src/index';
 const { React, ReactDOM } = window;
 
@@ -20,20 +21,32 @@ class EventedGroup extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = { tags: this.props.initialTags };
-    this.boundRemoveCallback = this.removeCallback.bind(this);
+    this.state = {
+      tags: this.props.initialTags,
+      allowRemoval: true,
+    };
+    this.boundBeforeRemoveCallback = this.beforeRemoveCallback.bind(this);
+    this.boundAfterRemoveCallback = this.afterRemoveCallback.bind(this);
     this.onRemove = this.props.onRemove || (() => null);
   }
 
   componentDidMount() {
-    this.group.addEventListener(TAG_EVENTS.REMOVE, this.boundRemoveCallback);
+    this.group.addEventListener(beforeRemoveEvent, this.boundBeforeRemoveCallback);
+    this.group.addEventListener(afterRemoveEvent, this.boundAfterRemoveCallback);
   }
 
   componentWillUnmount() {
-    this.group.removeEventListener(TAG_EVENTS.REMOVE, this.boundRemoveCallback);
+    this.group.removeEventListener(beforeRemoveEvent, this.boundBeforeRemoveCallback);
+    this.group.removeEventListener(afterRemoveEvent, this.boundAfterRemoveCallback);
   }
 
-  removeCallback(e) {
+  beforeRemoveCallback(e) {
+    if (!this.state.allowRemoval) {
+      e.preventDefault();
+    }
+  }
+
+  afterRemoveCallback(e) {
     this.onRemove(e.target.text);
     const tags = this.state.tags.filter((text) => text !== e.target.text);
     this.setState({ tags });
@@ -42,6 +55,14 @@ class EventedGroup extends React.Component {
   render() {
     return (
       <div ref={(g) => (this.group = g)}>
+        <input
+          id="allow-remove"
+          type="checkbox"
+          defaultChecked={this.state.allowRemoval}
+          onChange={(e) => (this.setState({ allowRemoval: e.target.checked }))}
+        />
+        <label htmlFor="allow-remove">Allow tag removal</label>
+        <hr />
         <Group>
           {this.state.tags.map((text) => (<Tag
             text={text}

@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 import keycode from 'keycode';
 import * as events from './internal/events';
+
 const {
   linkSelected: linkSelectedEvent,
   createDrawerOpen: createDrawerOpenEvent,
@@ -220,3 +221,5 @@ export default define('ak-navigation', {
     });
   },
 });
+
+export { events };

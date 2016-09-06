@@ -5,8 +5,8 @@ export { Mention } from './node-type';
 
 class MentionsPluginState {
   pm: ProseMirror;
-  renderHandler: (el: HTMLElement, pm: ProseMirror) => void
-  autocompleteHandler: (el: HTMLElement, pm: ProseMirror) => void
+  renderHandler: (el: HTMLElement, pm: ProseMirror) => void;
+  autocompleteHandler: (el: HTMLElement, pm: ProseMirror) => void;
 
   constructor(pm: ProseMirror) {
     this.pm = pm;
@@ -39,9 +39,9 @@ class MentionsPluginState {
         // if theres data set, render the element
         // otherwise prompt for autocomplete.
         if (data && data.length) {
-          this.renderHandler(el, pm);
+          this.renderHandler && this.renderHandler(el, pm);
         } else {
-          this.autocompleteHandler(el, pm);
+          this.autocompleteHandler && this.autocompleteHandler(el, pm);
         }
       }
     });

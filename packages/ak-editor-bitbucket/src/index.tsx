@@ -136,7 +136,7 @@ const objectFonts = [{
 
 type getFontParamType = { blockType?: string, fontName?: string };
 
-function getFont({ blockType, fontName }: getFontParamType, fonts: blockTypesType): blockTypeType {
+function getFont({ blockType, fontName }: getFontParamType, fonts: blockTypesType): blockTypeType | undefined {
   let len = fonts.length;
   while (--len >= 0) {
     const font = fonts[len];
@@ -145,9 +145,6 @@ function getFont({ blockType, fontName }: getFontParamType, fonts: blockTypesTyp
       return font;
     }
   }
-
-  // not found (should not reach this!)
-  throw new Error('Cannot get your font!');
 }
 
 interface formattingMap {

@@ -109,7 +109,7 @@ function handleKeyPress(elem) {
 }
 
 // min width of a dropdown should be more than width of the trigger (by design)
-// max-width is controled by css, everything that's exceeding its limit
+// max-width is controlled by css, everything that's exceeding its limit
 // is ellipsed (by design, controlled by css)
 function getDropdownStyles(target, dropdown) {
   const dropdownPositionedToSide =

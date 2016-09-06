@@ -1,25 +1,38 @@
-import { keydown, keyup } from '../src';
+import { checkVisibility, checkInvisibility } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 chai.should();
 chai.use(sinonChai);
 
-describe('keydown', () => {
-  it('fire keydown events', () => {
-    const spy = sinon.spy();
-    document.addEventListener('keydown', spy);
-    keydown('[');
-    document.removeEventListener('keydown', spy);
-    spy.should.have.been.calledOnce;
+describe('visible elements', () => {
+  let div;
+
+  beforeEach(() => {
+    div = document.createElement('div');
+    div.setAttribute('style', 'display: block; width: 50px; height: 50px;');
+    document.body.appendChild(div);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(div);
+  });
+
+  it('checkVisibility returns true', () => {
+    expect(checkVisibility(div)).to.equal(true);
+  });
+
+  it('checkInvisibility returns false', () => {
+    expect(checkInvisibility(div)).to.equal(false);
   });
 });
+describe('invisible elements', () => {
+  const div = document.createElement('div');
 
-describe('keyup', () => {
-  it('fire keyup events', () => {
-    const spy = sinon.spy();
-    document.addEventListener('keyup', spy);
-    keyup('[');
-    document.removeEventListener('keyup', spy);
-    spy.should.have.been.calledOnce;
+  it('checkVisibility returns false', () => {
+    expect(checkVisibility(div)).to.equal(false);
+  });
+
+  it('checkInvisibility returns true', () => {
+    expect(checkInvisibility(div)).to.equal(true);
   });
 });

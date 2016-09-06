@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { vdom, define, prop } from 'skatejs';
 import Layer from 'ak-layer';
 import shadowStyles from './shadow.less';
+import TooltipTrigger from './tooltip-trigger';
 
 const defaultTooltipPosition = 'bottom';
 
@@ -109,6 +110,7 @@ export default define('ak-tooltip', {
     visible: prop.boolean({
       attribute: true,
     }),
-    animating: prop.boolean(),
   },
 });
+
+export { TooltipTrigger };

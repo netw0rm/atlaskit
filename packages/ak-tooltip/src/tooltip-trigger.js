@@ -1,35 +1,8 @@
 import 'style!./host.less';
 import debounce from 'debounce';
 import { vdom, define } from 'skatejs';
+import { handleMouseEnter, handleMouseLeave } from './event-handlers';
 
-
-function handleMouseEnter() {
-  const trigger = this;
-  const tooltipBoundTo = trigger.slotEle.assignedNodes()[0];
-  const tooltipID = tooltipBoundTo.getAttribute('aria-describedby');
-  if (tooltipID) {
-    const tooltip = document.getElementById(tooltipID);
-    if (tooltip) {
-      tooltip.setAttribute('aria-label', trigger.description);
-      tooltip.target = tooltipBoundTo;
-      tooltip.description = trigger.description;
-      tooltip.position = trigger.position;
-      tooltip.visible = true;
-    }
-  }
-}
-
-function handleMouseLeave() {
-  const trigger = this;
-  const tooltipBoundTo = trigger.slotEle.assignedNodes()[0];
-  const tooltipID = tooltipBoundTo.getAttribute('aria-describedby');
-  if (tooltipID) {
-    const tooltip = document.getElementById(tooltipID);
-    if (tooltip) {
-      tooltip.visible = false;
-    }
-  }
-}
 
 /**
  * @description Create instances of a tooltip-trigger programmatically, or using markup.

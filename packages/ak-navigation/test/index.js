@@ -2,7 +2,8 @@ import { name } from '../package.json';
 import { keyup, afterMutations, getShadowRoot, waitUntil } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkNavigation from '../src/index.js';
+import AkNavigation, { events as navigationEvents } from '../src';
+const { open: navigationOpenEvent, close: navigationCloseEvent } = navigationEvents;
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -46,20 +47,20 @@ describe('ak-navigation', () => {
     expect(shadowRoot.innerHTML).to.not.equal('');
   });
 
-  it('fires an ak-navigation-open event when opening', () => {
+  it(`fires an "${navigationOpenEvent}" event when opening`, () => {
     component.open = false;
     let called = false;
-    component.addEventListener('ak-navigation-open', () => {
+    component.addEventListener(navigationOpenEvent, () => {
       called = true;
     });
     component.open = true;
     expect(called).to.equal(true);
   });
 
-  it('fires an ak-navigation-open event when closing', () => {
+  it(`fires an "${navigationCloseEvent}" event when closing`, () => {
     component.open = true;
     let called = false;
-    component.addEventListener('ak-navigation-close', () => {
+    component.addEventListener(navigationCloseEvent, () => {
       called = true;
     });
     component.open = false;

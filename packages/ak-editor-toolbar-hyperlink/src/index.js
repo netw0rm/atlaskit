@@ -54,7 +54,7 @@ export default define('ak-editor-toolbar-hyperlink', {
         <Popup
           target={linkButton}
           open={elem.open}
-          on-ak-blanket-click={() => toggle(elem)}
+          on-activate={() => toggle(elem)}
         >
           <TextInput className="text-input" placeholder="Paste link" />
         </Popup>

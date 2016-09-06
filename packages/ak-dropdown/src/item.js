@@ -22,9 +22,11 @@ function handleKeyDown(elem) {
   return (e) => {
     switch (e.keyCode) {
       case keyCode('up'):
+        e.preventDefault();
         emit(elem, itemEvents.up);
         break;
       case keyCode('down'):
+        e.preventDefault();
         emit(elem, itemEvents.down);
         break;
       case keyCode('tab'):

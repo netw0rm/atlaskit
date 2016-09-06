@@ -18,8 +18,7 @@ describe('getShadowRoot', () => {
 
   it('should return the shadowroot of a component if it has one', () => {
     const componentHasShadowRoot = () => !!getShadowRoot(component);
-
-    waitUntil(componentHasShadowRoot).should.be.fulfilled;
+    return waitUntil(componentHasShadowRoot).should.be.fulfilled;
   });
 
   it('should return undefined for component without shadowroot', () => {

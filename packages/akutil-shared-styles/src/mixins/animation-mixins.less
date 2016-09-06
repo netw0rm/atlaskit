@@ -1,0 +1,41 @@
+@import './common-mixins';
+
+// This is an internal mixin that is used to create the content inside each keyframe
+// @param @values is the list of 4-tuples passed into the generated animation mixin
+// @param @mod is a value showing how close to the end value a property is
+//   (i.e 0 is the start, 1 is the end, 0.5 is half way, 1.2 would be 20% overshoot, etc)
+.calculateKeyframe(@values, @mod) {
+  & when (length(@values) = 4) and (length(extract(@values, 1)) = 1){
+    .calcProp(@values,  @mod);
+  }
+  & when not (length(@values) = 4) {
+    .calcMultipleProps(@values, @mod);
+  }
+  & when not (length(extract(@values, 1)) = 1) {
+    .calcMultipleProps(@values, @mod);
+  }
+}
+
+// mixin for calculating one prop value into one prop of a keyframe
+// i.e @propVals = 'transform', 'translateY(XXpx)', 0, -200;
+//     @mod = 0.5;
+//     output: transform: translateY(-100px);
+.calcProp(@propVals, @mod) {
+  @propName:  e(extract(@propVals, 1));
+  @str: extract(@propVals, 2);
+  @from: extract(@propVals, 3);
+  @to: extract(@propVals, 4);
+
+  @newValue: @from + (@to - @from)*@mod;
+  @newStr: replace(@str, 'XX', @newValue);
+
+  @{propName}: e(@newStr);
+}
+
+// mixin for calculating multiple keyframe prop values at once.
+// just calls .calcProp in a loop
+.calcMultipleProps(@props, @mod) {
+  .for(@props); .-each(@value) {
+    .calcProp(@value, @mod);
+  }
+}

@@ -1,6 +1,6 @@
 import './types';
 import * as events from './internal/events';
-import { define, prop, emit, vdom } from 'skatejs';
+import { define, prop, emit } from 'skatejs';
 import { ProseMirror, Schema } from 'ak-editor-prosemirror';
 import 'style!./host.less';
 import cx from 'classnames';
@@ -37,6 +37,9 @@ import {
   default as TextFormattingPlugin,
   MarkType,
 } from 'ak-editor-plugin-text-formatting';
+
+// typescript only supports this. TODO: investigate why
+const { vdom } = require('skatejs');
 
 const $selectFont = '__selectFont__';
 const $toggleMark = '__toggleMark__';

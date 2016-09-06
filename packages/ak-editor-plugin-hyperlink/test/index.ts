@@ -148,6 +148,14 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(pm.doc).to.deep.equal(doc(p(a({ href: href })(text))));
     });
 
+    it('should not be able to link if selection is empty', () => {
+      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+      pm.setTextSelection(1);
+      const { enabled } = plugin.getState();
+
+      expect(enabled).to.equal(false);
+    });
+
     it('should not be able to unlink a node that has no link', () => {
       const { pm, plugin } = editor(doc(p('{<}text{>}')));
 

@@ -1,4 +1,4 @@
-import { getShadowRoot, waitUntil } from '../src';
+import { getShadowRoot } from '../src';
 import Avatar from 'ak-avatar';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
@@ -14,12 +14,6 @@ describe('getShadowRoot', () => {
   });
   afterEach(() => {
     document.body.removeChild(component);
-  });
-
-  it('should return the shadowroot of a component if it has one', () => {
-    const componentHasShadowRoot = () => !!getShadowRoot(component);
-
-    return waitUntil(componentHasShadowRoot).should.be.fulfilled;
   });
 
   it('should return undefined for component without shadowroot', () => {

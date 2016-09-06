@@ -75,20 +75,19 @@ describe('ak-editor-plugin-hyperlink', () => {
     });
 
     it('should be able to register handlers for state change events', () => {
-      const { pm, plugin } = editor(doc(p('{<>}')));
+      const { pm, plugin } = editor(doc(p(a({ href: '' })('te{pos}xt'))));
       const spy = sinon.spy();
-      const { pos } = insert(pm, a({ href: '' })('te{pos}xt'));
       plugin.onChange(spy);
 
-      pm.setTextSelection(pos);
+      pm.setTextSelection(pm.doc.refs.pos);
 
       expect(spy.callCount).to.equal(1);
     });
 
     it('does not emit `change` multiple times when the selection moves within a link', () => {
-      const { pm, plugin } = editor(doc(p('{<>}')));
+      const { pm, plugin } = editor(doc(p('{<>}text', a({ href: '' })('l{pos1}i{pos2}nk'))));
       const onChange = sinon.spy();
-      const { pos1, pos2 } = insert(pm, 'text', a({ href: '' })('l{pos1}i{pos2}nk'));
+      const { pos1, pos2 } = pm.doc.refs;
       plugin.onChange(onChange);
 
       pm.setTextSelection(pos1);

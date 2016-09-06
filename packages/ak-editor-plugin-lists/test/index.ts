@@ -26,7 +26,6 @@ describe('ak-editor-plugin-lists', () => {
     });
 
     it('should not emit extra change events when moving within an ordered list', () => {
-      // TODO: Fix case when moving to the end of the text.
       const { pm, plugin } = editor(doc(ol(li(p('t{<>}ex{end}t')))));
       const { end } = pm.doc.refs;
       const onChange = sinon.spy();
@@ -37,8 +36,18 @@ describe('ak-editor-plugin-lists', () => {
       expect(onChange.callCount).to.equal(0);
     });
 
+    it('should not emit extra change events when moving within an ordered list to the last character', () => {
+      const { pm, plugin } = editor(doc(ol(li(p('t{<>}ext{end}')))));
+      const { end } = pm.doc.refs;
+      const onChange = sinon.spy();
+      plugin.onChange(onChange);
+
+      pm.setTextSelection(end);
+
+      expect(onChange.callCount).to.equal(0);
+    });
+
     it('should emit change events when the state has changed', () => {
-      // TODO: Fix the case where the entire word is selected.
       const { plugin } = editor(doc(p('t{<}ex{>}t')));
       const onChange = sinon.spy();
       plugin.onChange(onChange);
@@ -50,6 +59,20 @@ describe('ak-editor-plugin-lists', () => {
 
       expect(onChange.callCount).to.equal(4);
     });
+
+    it('should emit change events when the state has changed with entire word selected', () => {
+      const { plugin } = editor(doc(p('{<}text{>}')));
+      const onChange = sinon.spy();
+      plugin.onChange(onChange);
+
+      plugin.toggleList('ordered_list');
+      plugin.toggleList('ordered_list');
+      plugin.toggleList('bullet_list');
+      plugin.toggleList('bullet_list');
+
+      expect(onChange.callCount).to.equal(4);
+    });
+
 
     it('should allow toggling between normal text and ordered list', () => {
       const { pm, plugin } = editor(doc(p('t{a}ex{b}t')));

@@ -1,7 +1,6 @@
 import { Plugin, ProseMirror, inputRules } from 'ak-editor-prosemirror';
 
 import { mentionRule, emoticonRule } from './input-rules';
-export { Mention } from './node-type';
 
 class MentionsPluginState {
   pm: ProseMirror;

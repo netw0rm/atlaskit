@@ -13,7 +13,7 @@ import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
-import { schema } from './schema';
+import schema from 'ak-editor-schema';
 import { buildKeymap } from './keymap';
 import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';

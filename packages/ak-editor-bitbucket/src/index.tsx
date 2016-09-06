@@ -1,6 +1,6 @@
 import './types';
 import * as events from './internal/events';
-import { define, prop, emit } from 'skatejs';
+import { define, prop, emit, vdom } from 'skatejs';
 import invert from 'lodash.invert';
 import { ProseMirror, Schema } from 'ak-editor-prosemirror';
 import 'style!./host.less';
@@ -39,8 +39,6 @@ import {
   MarkType,
 } from 'ak-editor-plugin-text-formatting';
 
-const { vdom } = require('skatejs');
-
 const $selectFont = '__selectFont__';
 const $toggleMark = '__toggleMark__';
 const $toggleList = '__toggleList__';
@@ -67,6 +65,7 @@ const $hyperLinkElement = '__hyperLinkElement__';
 const $hyperLinkActive = '__hyperLinkActive__';
 const $bulletListActive = '__bulletListActive__';
 const $numberListActive = '__numberListActive__';
+const $listsPlugin = '__listsPlugin__';
 
 const functionProp = () => ({
   coerce: (val: any) => (typeof val === 'function' ? val : () => {}),
@@ -121,7 +120,7 @@ export default define('ak-editor-bitbucket', {
       fakeInputClassNames += ` ${shadowStyles.locals.comment}`;
     }
 
-    const FullEditor = (<div>
+    const FullEditor: any = (<div>
       <Toolbar>
         <ToolbarBlockType
           disabled={!elem[$canChangeBlockType]}
@@ -153,7 +152,7 @@ export default define('ak-editor-bitbucket', {
       <Content
         className={shadowStyles.locals.content}
         onclick={elem[$onContentClick]}
-        ref={(wrapper) => { elem[$wrapper] = wrapper; }}
+        ref={(wrapper: HTMLElement) => { elem[$wrapper] = wrapper; }}
         openTop
         openBottom
         skip
@@ -280,7 +279,7 @@ export default define('ak-editor-bitbucket', {
       }
     },
 
-    [$selectFont](event: MouseEvent) {
+    [$selectFont](event: CustomEvent) {
       const font = event.detail.font;
 
       const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
@@ -290,15 +289,15 @@ export default define('ak-editor-bitbucket', {
       BlockTypePlugin.get(this[$pm]).changeBlockType(blockType, { level });
     },
 
-    [$toggleMark](event: MouseEvent) {
+    [$toggleMark](event: CustomEvent) {
       TextFormattingPlugin.get(this[$pm]).toggleMark(event.detail.mark);
     },
 
-    [$toggleList](event: MouseEvent) {
+    [$toggleList](event: CustomEvent) {
       ListsPlugin.get(this[$pm]).toggleList(name);
     },
 
-    [$addHyperLink](event: MouseEvent) {
+    [$addHyperLink](event: CustomEvent) {
       const href = event.detail.value;
       HyperlinkPlugin.get(this[$pm]).addLink({
         href,
@@ -309,7 +308,7 @@ export default define('ak-editor-bitbucket', {
       HyperlinkPlugin.get(this[$pm]).removeLink();
     },
 
-    [$changeHyperLinkValue](event: MouseEvent) {
+    [$changeHyperLinkValue](event: Event) {
       const newLink = (event.target as any).value;
       if (newLink) {
         HyperlinkPlugin.get(this[$pm]).updateLink({

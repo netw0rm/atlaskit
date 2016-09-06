@@ -19,7 +19,7 @@ export default define('ak-page', {
         */}
         <style>{shadowStyles.toString()}</style>
         <div className={shadowStyles.locals.navigation}>
-          <slot name="navigation" />
+
         </div>
         <div className={shadowStyles.locals.main}>
           <div className={shadowStyles.locals.mainFixed}>

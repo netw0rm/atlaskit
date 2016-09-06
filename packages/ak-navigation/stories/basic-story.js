@@ -148,7 +148,7 @@ storiesOf(name, module)
         <NavigationLinks />
 
       </AkNavigation>
-      <div is slot="content">
+      <div>
         <Lorem count="30" />
       </div>
     </AkPage>
@@ -174,7 +174,7 @@ storiesOf(name, module)
         <NavigationLinks />
 
       </AkNavigation>
-      <div is slot="content">
+      <div>
         <Lorem count="30" />
       </div>
     </AkPage>
@@ -191,7 +191,7 @@ storiesOf(name, module)
         <ak-icon slot="global-create" glyph="create" />
         <NavigationLinks />
       </AkNavigation>
-      <div is slot="content">
+      <div>
         <Lorem count="30" />
       </div>
     </AkPage>
@@ -208,7 +208,7 @@ storiesOf(name, module)
         <ak-icon slot="global-create" glyph="create" />
         <NavigationLinks />
       </TogglingSidebar>
-      <div is slot="content">
+      <div>
         <Lorem count="30" />
       </div>
     </AkPage>

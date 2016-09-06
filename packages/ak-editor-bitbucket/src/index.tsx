@@ -150,6 +150,15 @@ function getFont({ blockType, fontName }: getFontParamType, fonts: blockTypesTyp
   throw new Error('Cannot get your font!');
 }
 
+interface formattingMap {
+  [propName: string]: MarkType;
+}
+
+const formattingToProseMirrorMark: formattingMap = {
+  bold: 'strong',
+  italic: 'em',
+};
+
 export default define('ak-editor-bitbucket', {
   created(elem: any) {
     if (elem.context === 'comment') {
@@ -216,8 +225,8 @@ export default define('ak-editor-bitbucket', {
         <ToolbarLists
           bulletlistActive={elem[$bulletListActive]}
           numberlistActive={elem[$numberListActive]}
-          on-toggle-number-list={() => elem[$listsPlugin].toggleList('ordered_list')}
-          on-toggle-bullet-list={() => elem[$listsPlugin].toggleList('bullet_list')}
+          on-toggle-number-list={() => elem[$toggleList]('ordered_list')}
+          on-toggle-bullet-list={() => elem[$toggleList]('bullet_list')}
         />
       </Toolbar>
       <Content
@@ -352,10 +361,11 @@ export default define('ak-editor-bitbucket', {
     },
 
     [$toggleMark](event: CustomEvent) {
-      TextFormattingPlugin.get(this[$pm]).toggleMark(event.detail.mark);
+      const mark: MarkType = formattingToProseMirrorMark[event.detail.mark];
+      TextFormattingPlugin.get(this[$pm]).toggleMark(mark);
     },
 
-    [$toggleList](event: CustomEvent) {
+    [$toggleList](name: ListType) {
       ListsPlugin.get(this[$pm]).toggleList(name);
     },
 

@@ -8,7 +8,7 @@ import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
 
-// Width of a dropdown should be no less than width of it's trigger plus 10
+// Width of a dropdown should be at least width of it's trigger + 10px
 const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
 

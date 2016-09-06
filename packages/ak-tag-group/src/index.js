@@ -1,6 +1,17 @@
 import 'style!./host.less';
-import { emit, vdom, define } from 'skatejs';
+import { vdom, define } from 'skatejs';
+import { enumeration } from 'akutil-common';
 import shadowStyles from './shadow.less';
+import classnames from 'classnames';
+
+const ALIGNMENT_RIGHT = 'right';
+
+const ALIGNMENT_ATTRIBUTE_ENUM = {
+  attribute: 'alignment',
+  values: ['left', ALIGNMENT_RIGHT],
+  missingDefault: '',
+  invalidDefault: '',
+};
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -9,11 +20,18 @@ import shadowStyles from './shadow.less';
  * const component = new TagGroup();
  */
 export default define('ak-tag-group', {
-  render() {
+  render(elem) {
+    const isRightAligned = elem.alignment === ALIGNMENT_RIGHT;
+    const classNames = classnames({
+      [shadowStyles.locals.defaultSlotWrapper]: true,
+      [shadowStyles.locals.rightAligned]: isRightAligned,
+      [shadowStyles.locals.leftAligned]: !isRightAligned,
+    });
+
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <div className={shadowStyles.locals.defaultSlotWrapper}>
+        <div className={classNames}>
           <slot className={shadowStyles.locals.defaultSlot} />
         </div>
       </div>
@@ -21,39 +39,15 @@ export default define('ak-tag-group', {
   },
   props: {
     /**
-     * @description The name of the TagGroup element.
+     * @description (Optional) An alignment. Defaults to left.
      * @memberof TagGroup
      * @instance
      * @type {string}
-     * @default TagGroup
+     * @example @html <ak-tag-group alignment="right"></ak-tag-group>
+     * @example @js tagGroup.alignment = 'left';
      */
-    name: {
-      default: 'TagGroup',
-    },
-  },
-  prototype: {
-    /**
-     * @description Fire an event containing the name of the element.
-     * @memberof TagGroup
-     * @function
-     * @instance
-     * @fires TagGroup#announce-name
-     * @return {TagGroup} The TagGroup element.
-     * @example @js component.announce(); // Fires the announce-name event.
-     */
-    announce() {
-      /**
-       * @event TagGroup#announce-name
-       * @memberof TagGroup
-       * @description Fired when the `announce` method is called.
-       * @property {String} detail.name The name of the component.
-       */
-      emit(this, 'announce-name', {
-        detail: {
-          name: this.name,
-        },
-      });
-      return this;
-    },
+    alignment: enumeration(ALIGNMENT_ATTRIBUTE_ENUM)({
+      attribute: true,
+    }),
   },
 });

@@ -24,6 +24,7 @@ class EventedGroup extends React.Component {
     this.state = {
       tags: this.props.initialTags,
       allowRemoval: true,
+      alignment: this.props.alignment,
     };
     this.boundBeforeRemoveCallback = this.beforeRemoveCallback.bind(this);
     this.boundAfterRemoveCallback = this.afterRemoveCallback.bind(this);
@@ -63,7 +64,7 @@ class EventedGroup extends React.Component {
         />
         <label htmlFor="allow-remove">Allow tag removal</label>
         <hr />
-        <Group>
+        <Group alignment={this.state.alignment}>
           {this.state.tags.map((text) => (<Tag
             text={text}
             key={text}
@@ -78,6 +79,7 @@ class EventedGroup extends React.Component {
 
 EventedGroup.displayName = 'EventedGroup';
 EventedGroup.propTypes = {
+  alignment: React.PropTypes.string.isRequired,
   initialTags: React.PropTypes.array.isRequired,
   onRemove: React.PropTypes.func,
 };

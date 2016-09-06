@@ -96,7 +96,7 @@ const commentFonts = [{
 }, {
   name: 'blockQuote',
   display: 'Block quote',
-  schemaName: 'blockQuote',
+  schemaName: 'blockquote',
 }, {
   name: 'monospace',
   display: 'Monospace',
@@ -125,7 +125,7 @@ const objectFonts = [{
 }, {
   name: 'blockQuote',
   display: 'Block quote',
-  schemaName: 'blockQuote',
+  schemaName: 'blockquote',
 }, {
   name: 'monospace',
   display: 'Monospace',

@@ -6093,14 +6093,14 @@
       "resolved": "https://registry.npmjs.org/skatejs/-/skatejs-1.3.0.tgz"
     },
     "skatejs-named-slots": {
-      "version": "1.2.0",
-      "from": "skatejs-named-slots@1.2.0",
-      "resolved": "https://registry.npmjs.org/skatejs-named-slots/-/skatejs-named-slots-1.2.0.tgz"
+      "version": "1.2.1",
+      "from": "skatejs-named-slots@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/skatejs-named-slots/-/skatejs-named-slots-1.2.1.tgz"
     },
     "skatejs-web-components": {
-      "version": "1.1.1",
+      "version": "1.1.2",
       "from": "skatejs-web-components@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/skatejs-web-components/-/skatejs-web-components-1.1.1.tgz"
+      "resolved": "https://registry.npmjs.org/skatejs-web-components/-/skatejs-web-components-1.1.2.tgz"
     },
     "slash": {
       "version": "1.0.0",

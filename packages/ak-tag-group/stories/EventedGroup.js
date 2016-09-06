@@ -1,4 +1,5 @@
 import reactify from 'akutil-react';
+import groupStyles from 'style!./../src/host.less';
 import tagStyles from 'style!ak-tag/src/host.less';
 import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = tagEvents;
@@ -64,7 +65,7 @@ class EventedGroup extends React.Component {
         />
         <label htmlFor="allow-remove">Allow tag removal</label>
         <hr />
-        <Group alignment={this.state.alignment}>
+        <Group className={groupStyles.akTagGroup} alignment={this.state.alignment}>
           {this.state.tags.map((text) => (<Tag
             text={text}
             key={text}

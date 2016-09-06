@@ -4316,19 +4316,7 @@
     "lerna-semantic-release-io": {
       "version": "5.0.13",
       "from": "lerna-semantic-release-io@>=5.0.13 <6.0.0",
-      "resolved": "https://registry.npmjs.org/lerna-semantic-release-io/-/lerna-semantic-release-io-5.0.13.tgz",
-      "dependencies": {
-        "npmlog": {
-          "version": "4.0.0",
-          "from": "npmlog@>=4.0.0 <5.0.0",
-          "resolved": "https://registry.npmjs.com/npmlog/-/npmlog-4.0.0.tgz"
-        },
-        "semantic-release": {
-          "version": "0.0.0-placeholder",
-          "from": "semantic-release/semantic-release#a5cb9ea7f7a66657f95f0d913126e812adb6d9f8",
-          "resolved": "git://github.com/semantic-release/semantic-release.git#a5cb9ea7f7a66657f95f0d913126e812adb6d9f8"
-        }
-      }
+      "resolved": "https://registry.npmjs.org/lerna-semantic-release-io/-/lerna-semantic-release-io-5.0.13.tgz"
     },
     "lerna-semantic-release-perform": {
       "version": "4.0.13",
@@ -4350,19 +4338,7 @@
     "lerna-semantic-release-pre": {
       "version": "4.0.14",
       "from": "lerna-semantic-release-pre@>=4.0.14 <5.0.0",
-      "resolved": "https://registry.npmjs.org/lerna-semantic-release-pre/-/lerna-semantic-release-pre-4.0.14.tgz",
-      "dependencies": {
-        "npmlog": {
-          "version": "4.0.0",
-          "from": "npmlog@>=4.0.0 <5.0.0",
-          "resolved": "https://registry.npmjs.com/npmlog/-/npmlog-4.0.0.tgz"
-        },
-        "semantic-release": {
-          "version": "0.0.0-placeholder",
-          "from": "semantic-release/semantic-release#a5cb9ea7f7a66657f95f0d913126e812adb6d9f8",
-          "resolved": "git://github.com/semantic-release/semantic-release.git#a5cb9ea7f7a66657f95f0d913126e812adb6d9f8"
-        }
-      }
+      "resolved": "https://registry.npmjs.org/lerna-semantic-release-pre/-/lerna-semantic-release-pre-4.0.14.tgz"
     },
     "lerna-semantic-release-utils": {
       "version": "4.0.12",
@@ -6015,24 +5991,14 @@
       }
     },
     "semantic-release": {
-      "version": "4.3.5",
-      "from": "semantic-release@>=4.3.0 <4.4.0",
-      "resolved": "https://registry.npmjs.org/semantic-release/-/semantic-release-4.3.5.tgz",
+      "version": "0.0.0-placeholder",
+      "from": "semantic-release/semantic-release#a5cb9ea7f7a66657f95f0d913126e812adb6d9f8",
+      "resolved": "git://github.com/semantic-release/semantic-release.git#a5cb9ea7f7a66657f95f0d913126e812adb6d9f8",
       "dependencies": {
-        "@semantic-release/condition-travis": {
-          "version": "4.1.4",
-          "from": "@semantic-release/condition-travis@>=4.1.2 <5.0.0",
-          "resolved": "https://registry.npmjs.org/@semantic-release/condition-travis/-/condition-travis-4.1.4.tgz"
-        },
-        "lodash": {
-          "version": "3.10.1",
-          "from": "lodash@>=3.9.3 <4.0.0",
-          "resolved": "https://registry.npmjs.org/lodash/-/lodash-3.10.1.tgz"
-        },
-        "run-auto": {
-          "version": "1.1.3",
-          "from": "run-auto@>=1.1.2 <2.0.0",
-          "resolved": "https://registry.npmjs.org/run-auto/-/run-auto-1.1.3.tgz"
+        "npmlog": {
+          "version": "4.0.0",
+          "from": "npmlog@>=4.0.0 <5.0.0",
+          "resolved": "https://registry.npmjs.com/npmlog/-/npmlog-4.0.0.tgz"
         }
       }
     },

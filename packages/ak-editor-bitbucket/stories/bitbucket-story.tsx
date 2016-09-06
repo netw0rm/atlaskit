@@ -36,7 +36,7 @@ storiesOf('ak-editor-bitbucket', module)
   ))
   .add('Mentions (insert dummy when typed @)', () => {
     type Props = {};
-    type State = { markdown: string };
+    type State = {};
     class EditorWithMentions extends Component<Props, State> {
       constructor() {
         super();
@@ -45,9 +45,7 @@ storiesOf('ak-editor-bitbucket', module)
       }
 
       renderer(e: any) {
-        const detail = e.detail;
-        const pm = detail.pm;
-        const el = detail.el;
+        const { pm, el } = e.detail;
 
         el.innerText = el.getAttribute('editor-data');
         el.style.border = "1px solid #000";
@@ -56,9 +54,7 @@ storiesOf('ak-editor-bitbucket', module)
       }
 
       autocompleter(e: any) {
-        const detail = e.detail;
-        const pm = detail.pm;
-        const el = detail.el;
+        const { pm, el } = e.detail;
 
         const m = pm.schema.nodes.mention.create({ data: '@foo' });
         const cursor = pm.selection.to;

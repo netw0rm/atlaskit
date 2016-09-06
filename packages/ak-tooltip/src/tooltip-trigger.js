@@ -11,7 +11,10 @@ function handleMouseEnter() {
     const tooltip = document.getElementById(tooltipID);
     if (tooltip) {
       tooltip.setAttribute('aria-label', trigger.description);
-      tooltip.show(tooltipBoundTo, trigger.description, trigger.position);
+      tooltip.target = tooltipBoundTo;
+      tooltip.description = trigger.description;
+      tooltip.position = trigger.position;
+      tooltip.visible = true;
     }
   }
 }
@@ -23,7 +26,7 @@ function handleMouseLeave() {
   if (tooltipID) {
     const tooltip = document.getElementById(tooltipID);
     if (tooltip) {
-      tooltip.hide();
+      tooltip.visible = false;
     }
   }
 }

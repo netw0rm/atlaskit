@@ -8,6 +8,7 @@
 @fontColor: white;
 @maxWidth: 200px;
 @borderRadius: 5px;
+@leftAndRightTextPadding: 8px;
 @marginDistance: 10px;
 @animationMovementDistance: 20;
 @animationDelay: 0.1s;
@@ -26,14 +27,13 @@
 }
 
 .tooltip {
-  @leftAndRightPadding: 8px;
-  @topAndBottomPadding: 4px; // (20px height - 12px font) / 2 to get the top
+  @topAndBottomPadding: 4px;
 
   font-size: @fontSize;
   border-radius: @borderRadius;
   background-color: @ak-color-N900;
   height: 20px; // likely to be changed once we have multiline tooltips
-  padding: @topAndBottomPadding @leftAndRightPadding;
+  padding: @topAndBottomPadding @leftAndRightTextPadding;
   max-width: @maxWidth;
   color: @fontColor;
   margin: @marginDistance;

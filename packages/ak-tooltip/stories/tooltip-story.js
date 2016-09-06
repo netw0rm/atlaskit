@@ -23,7 +23,7 @@ const Test = reactify(ContainerWC, {
   ReactDOM,
 });
 
-const tooltipClass = styles.tooltip;
+const tooltipClass = styles.akTooltip;
 
 const DefaultTooltip = (props) => <Tooltip className={tooltipClass} {...props} />;
 

@@ -43,13 +43,14 @@ export default define('ak-tooltip', {
   render(elem) {
     const messageBoxClasses = classNames({
       [shadowStyles.locals.tooltip]: true,
-      [getAnimationClass(elem.position)]: elem.isShown,
+      [getAnimationClass(elem.position)]: elem.visible,
     });
     const layerClasses = classNames({
-      [shadowStyles.locals.hidden]: !elem.isShown,
+      [shadowStyles.locals.hidden]: !elem.visible,
     });
     return (
       <div>
+        <style>{shadowStyles.toString()}</style>
         <Layer
           target={elem.target}
           position={positionToPopperPosition(elem.position)}
@@ -57,44 +58,10 @@ export default define('ak-tooltip', {
           ref={(ref) => (elem.layer = ref)}
           enableFlip="true"
         >
-          <style>{shadowStyles.toString()}</style>
           <div className={messageBoxClasses}>{elem.description}</div>
         </Layer>
       </div>
     );
-  },
-  prototype: {
-    /**
-     * @description Causes an ak-tooltip to become visible and positioned to whichever element it
-     * is bound to. This is normally called by an ak-tooltip-trigger
-     * @memberof Tooltip
-     * @function
-     * @instance
-     * @param {node} elem The element to bind a tooltip to.
-     * @param {string} description The text to display in the tooltip.
-     * @param {string} position The position (relative to elem) the tooltip should be shown.
-     * Allowed values: top, bottom, left, right.
-     * @return undefined
-     * @example @js component.show(helpButton, 'Show help menu', 'bottom');
-    */
-    show(elem, description, position) {
-      this.position = position;
-      this.description = description;
-      this.target = elem;
-      this.isShown = true;
-    },
-    /**
-     * @description Causes an ak-tooltip to no longer be visible.
-     * This is normally fired from an ak-tooltip-trigger.
-     * @memberof Tooltip
-     * @function
-     * @instance
-     * @return undefined
-     * @example @js component.hide();
-    */
-    hide() {
-      this.isShown = false;
-    },
   },
   props: {
     /**
@@ -138,7 +105,10 @@ export default define('ak-tooltip', {
     description: {
       attribute: true,
     },
-    isShown: prop.boolean(),
+    // These two props are not API thus, dont have jsdocs.
+    visible: prop.boolean({
+      attribute: true,
+    }),
     animating: prop.boolean(),
   },
 });

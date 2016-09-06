@@ -9,9 +9,10 @@
 // (because in storybook the component name is randomly generated)
 .ak-tooltip,
 ak-tooltip {
-  display: inline-block;
+  display: none;
+  pointer-events: none;
 
-  &:not([defined]) {
-    display: none;
+  &[visible] {
+    display: inline-block;
   }
 }

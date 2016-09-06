@@ -39,7 +39,7 @@ export const TriggerButtonDefinition = {
     );
 
     return (
-      <div className={classes}>
+      <div className={classes} tabIndex="0">
         <style>{shadowTriggerStyles.toString()}</style>
         <slot />
       </div>
@@ -57,7 +57,6 @@ export default {
       <div
         onclick={handleClick(elem)}
         onkeydown={handleKeyDown(elem)}
-        tabindex="0"
       >
         <slot />
       </div>

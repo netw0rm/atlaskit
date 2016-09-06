@@ -164,4 +164,22 @@ describe('ak-theme', () => {
       done
     );
   });
+
+  it('should support dot notation', done => {
+    const theme = createTheme('theme', {
+      mykey1: 'mykey1',
+      'my.key2': 'mykey2',
+      'my.key.3': 'mykey3',
+    });
+    document.body.appendChild(theme);
+    afterMutations(
+      () => {
+        const vars = themes.theme;
+        expect(vars.mykey1).to.equal('mykey1');
+        expect(vars.my.key2).to.equal('mykey2');
+        expect(vars.my.key[3]).to.equal('mykey3');
+      },
+      done
+    );
+  });
 });

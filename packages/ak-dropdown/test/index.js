@@ -49,9 +49,11 @@ describe('ak-dropdown', () => {
 
   describe('general behavior', () => {
     let component;
+    let shadowRoot;
 
     beforeEach(() => setupComponent().then(newComponent => {
       component = newComponent;
+      shadowRoot = getShadowRoot(component);
     }));
     afterEach(() => tearDownComponent(component));
     it('should be possible to create a component', (done) => {
@@ -71,6 +73,14 @@ describe('ak-dropdown', () => {
         () => (expect(checkVisibility(component.childNodes[0])).to.equal(false)),
         () => (component.open = true),
         () => (expect(checkVisibility(component.childNodes[0])).to.equal(true)),
+        done
+      );
+    });
+    it('position is reflected to inner layer', (done) => {
+      afterMutations(
+        () => (expect(shadowRoot.querySelector('ak-layer').position).to.equal('bottom left')),
+        () => (component.position = 'top left'),
+        () => (expect(shadowRoot.querySelector('ak-layer').position).to.equal('top left')),
         done
       );
     });

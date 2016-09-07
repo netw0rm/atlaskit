@@ -37,7 +37,7 @@
 // Disabled button Colors
 @disabledColor: @ak-color-N40;
 
-::slotted([slot="before"]) > * {
+::slotted([slot="before"]) > {
   margin-right: @before-slot-right-margin;
 }
 ::content > [slot="before"] {
@@ -47,11 +47,14 @@
   align-self: center;
   display: flex;
 }
+.before-slot-wrapper {
+  align-self: center;
+  display: flex;
+}
 
 _shadow_root_ {
   display: inline-flex;
 }
-//firefox
 .button-content {
   align-items: baseline;
   display: inline-flex;
@@ -64,6 +67,7 @@ _shadow_root_ {
 button::-moz-focus-inner {
   margin: 0;
   padding: 0;
+  border: 0;
 }
 .before-slot > * {
   margin-right: @before-slot-right-margin;
@@ -75,7 +79,7 @@ button::-moz-focus-inner {
   border-width: 0;
   border-radius: @base-radius;
   color: @defaultColor;
-  display: flex;
+  display: inline-flex;
   font-style: normal;
   font-size: @base-font;
   height: @buttonHeight;

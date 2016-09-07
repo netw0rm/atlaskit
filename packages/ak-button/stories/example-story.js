@@ -21,7 +21,6 @@ const Icon = reactify(IconTemplate, {
 
 const GLYPHS = [
   'calendar',
-  'create',
   'question',
   'person',
   'page',
@@ -103,7 +102,18 @@ storiesOf(name, module)
       </p>
     </div>
   )
-  .add('an ak-button with icons', () => {
+  .add('an ak-button with only icons', () => (
+    <div>
+      {
+        GLYPHS.map(glyph =>
+          (<AkButton className={buttonClass} style={{ 'margin-right': '10px' }}>
+            <Icon key={glyph} glyph={glyph} />
+          </AkButton>)
+        )
+      }
+    </div>
+  ))
+  .add('an ak-button with icon + text', () => {
     const buttonStyles = { 'margin-right': '10px', display: 'inline-flex' };
     return (<div style={{ display: 'flex', flexDirection: 'column' }}>
       {

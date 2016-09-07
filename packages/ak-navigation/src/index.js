@@ -49,6 +49,9 @@ function closeAllDrawers(elem) {
   elem.searchDrawerOpen = false;
 }
 
+function isDrawerOpen(elem) {
+  return elem.createDrawerOpen || elem.searchDrawerOpen;
+}
 
 export default define('ak-navigation', {
   render(elem) {
@@ -56,7 +59,10 @@ export default define('ak-navigation', {
       <div>
         <ak-blanket
           onActivate={() => closeAllDrawers(elem)}
-          clickable={elem.createDrawerOpen || elem.searchDrawerOpen}
+          clickable={isDrawerOpen(elem)}
+          className={classNames(shadowStyles.locals.blanket, {
+            [shadowStyles.locals.blanketActive]: isDrawerOpen(elem),
+          })}
         />
         <div
           className={classNames(shadowStyles.locals.navigation, {

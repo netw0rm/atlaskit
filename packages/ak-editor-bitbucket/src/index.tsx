@@ -265,7 +265,7 @@ export default define('ak-editor-bitbucket', {
           fullEditor
           :
           <input
-            placeholder={elem.defaultValue}
+            placeholder={elem.placeholder}
             onclick={elem[$toggleExpansion]}
             className={fakeInputClassNames}
           />
@@ -284,6 +284,7 @@ export default define('ak-editor-bitbucket', {
      * for details.
      */
     defaultValue: prop.string({ attribute: true }),
+    placeholder: prop.string({ attribute: true }),
     imageUploader: functionProp(),
     context: prop.string({ attribute: true }),
     expanded: prop.boolean({ attribute: true }),

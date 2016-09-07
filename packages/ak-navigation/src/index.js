@@ -9,6 +9,8 @@ import './ak-navigation-link';
 import classNames from 'classnames';
 import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 import keycode from 'keycode';
+import 'custom-event-polyfill';
+
 
 const shouldAnimateThreshold = 100; // ms
 const globalCollapsedWidth = 60; // px this is duplicated in shared-variables.less
@@ -34,11 +36,12 @@ function getContainerPadding(width) {
   return Math.min(containerPaddingExpanded, Math.max(containerPaddingCollapsed, padding));
 }
 // TODO: keyboard interaction
+// TODO: use emit when https://github.com/skatejs/skatejs/pull/767 is merged and released
 const openSearchDrawer = el => el.addEventListener('click', () => {
-  emit(el, 'ak-navigation-search-drawer-open');
+  el.dispatchEvent(new Event('ak-navigation-search-drawer-open', { composed: true }));
 });
 const openCreateDrawer = el => el.addEventListener('click', () => {
-  emit(el, 'ak-navigation-create-drawer-open');
+  el.dispatchEvent(new Event('ak-navigation-create-drawer-open', { composed: true }));
 });
 
 function closeAllDrawers(elem) {

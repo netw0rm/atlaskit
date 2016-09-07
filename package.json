@@ -54,7 +54,7 @@
     "karma-mocha-reporter": "^2.1.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.0",
-    "lerna": "github:atlassian/lerna#enhanced-bootstrap-2",
+    "lerna": "github:atlassian/lerna#enhanced-bootstrap",
     "lerna-semantic-release": "^8.0.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",

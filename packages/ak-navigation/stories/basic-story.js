@@ -128,7 +128,7 @@ storiesOf(name, module)
         <NavigationLinks />
 
       </AkNavigation>
-      <div is slot="content">
+      <div>
         <Lorem count="30" />
       </div>
     </AkPage>

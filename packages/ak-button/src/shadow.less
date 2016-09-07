@@ -53,7 +53,7 @@
 }
 
 _shadow_root_ {
-  display: inline-flex;
+  display: inline-block;
 }
 .button-content {
   align-items: baseline;
@@ -73,13 +73,17 @@ button::-moz-focus-inner {
   margin-right: @before-slot-right-margin;
 }
 
+.root {
+  display: inline-block;
+}
+
 .button {
   box-sizing: border-box;
   background: @defaultBackgroundColor;
   border-width: 0;
   border-radius: @base-radius;
   color: @defaultColor;
-  display: inline-flex;
+  display: inline-block;
   font-style: normal;
   font-size: @base-font;
   height: @buttonHeight;

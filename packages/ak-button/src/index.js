@@ -107,7 +107,7 @@ const definition = {
   },
   render(elem) {
     return (
-      <span>
+      <span className={classKeys.root}>
         <style>{shadowStyles.toString()}</style>
         <button
           className={classNames(getClasses(elem))}

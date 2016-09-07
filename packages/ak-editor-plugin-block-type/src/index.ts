@@ -83,6 +83,7 @@ export default new Plugin(class BlockTypePlugin {
       return false;
     }
     commands.setBlockType(pm.schema.nodes.paragraph as Node)(pm)
+    commands.lift(pm);
 
     if (blockType === 'blockquote') {
       return commands.wrapIn(pm.schema.nodes[blockType] as Node)(pm);

@@ -48,7 +48,7 @@ declare module 'prosemirror/dist/edit/commands' {
       export function joinDown(pm: ProseMirror, apply: any): boolean;
       export function joinForward(pm: ProseMirror, apply: any): boolean;
       export function joinUp(pm: ProseMirror, apply: any): boolean;
-      export function lift(pm: ProseMirror, apply: any): boolean;
+      export function lift(pm: ProseMirror, apply?: any): boolean;
       export function liftEmptyBlock(pm: ProseMirror, apply: any): boolean;
       export function newlineInCode(pm: ProseMirror, apply: any): boolean;
       export function redo(pm: ProseMirror, apply: any): boolean;

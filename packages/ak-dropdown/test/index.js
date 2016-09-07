@@ -3,10 +3,24 @@ import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
 import { symbols, Component } from 'skatejs';
 import { name } from '../package.json';
+import { afterMutations, getShadowRoot, waitUntil, checkVisibility } from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
+
+function setupComponent() {
+  const component = new Dropdown();
+  const componentHasShadowRoot = () => !!getShadowRoot(component);
+
+  document.body.appendChild(component);
+
+  return waitUntil(componentHasShadowRoot).then(() => component);
+}
+
+function tearDownComponent(component) {
+  document.body.removeChild(component);
+}
 
 describe('ak-dropdown', () => {
   describe('exports', () => {
@@ -35,17 +49,11 @@ describe('ak-dropdown', () => {
 
   describe('general behavior', () => {
     let component;
-    let dropdownContainer;
 
-    beforeEach(() => {
-      component = new Dropdown();
-      dropdownContainer = document.createElement('div');
-      dropdownContainer.appendChild(component);
-      document.body.appendChild(dropdownContainer);
-    });
-    afterEach(() => {
-      document.body.removeChild(dropdownContainer);
-    });
+    beforeEach(() => setupComponent().then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
     it('should be possible to create a component', (done) => {
       // testing to see that skate did its job as expected
       // (in case some breaking changes in it that affect rendering)
@@ -55,6 +63,16 @@ describe('ak-dropdown', () => {
         expect(component[symbols.shadowRoot].firstChild).to.be.defined;
       });
       setTimeout(done);
+    });
+    it('open property controls open state', (done) => {
+      component.innerHTML = '<span>something visible</span>';
+      afterMutations(
+        () => (component.open = false),
+        () => (expect(checkVisibility(component.childNodes[0])).to.equal(false)),
+        () => (component.open = true),
+        () => (expect(checkVisibility(component.childNodes[0])).to.equal(true)),
+        done
+      );
     });
   });
 });

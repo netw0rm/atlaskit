@@ -87,17 +87,19 @@ export default define('ak-navigation', {
                 <slot name="global-home" />
               </a>
             </div>
-            <div ref={openSearchDrawer} className={shadowStyles.locals.globalSecondary}>
-              <slot name="global-search" />
-            </div>
-            <div ref={openCreateDrawer} className={shadowStyles.locals.globalSecondary}>
-              <slot name="global-create" />
+            <div className={shadowStyles.locals.globalSecondary}>
+              <div ref={openSearchDrawer} className={shadowStyles.locals.globalSecondaryItem}>
+                <slot name="global-search" />
+              </div>
+              <div ref={openCreateDrawer} className={shadowStyles.locals.globalSecondaryItem}>
+                <slot name="global-create" />
+              </div>
             </div>
             <div className={shadowStyles.locals.globalBottom}>
-              <div className={shadowStyles.locals.globalSecondary}>
+              <div className={shadowStyles.locals.globalSecondaryItem}>
                 <slot name="global-help" />
               </div>
-              <div className={shadowStyles.locals.globalSecondary}>
+              <div className={shadowStyles.locals.globalSecondaryItem}>
                 <slot name="global-profile" />
               </div>
             </div>

@@ -29,6 +29,7 @@
   }
 
   .global {
+    display: flex;
     flex: 0 0 @global-bar-width;
     background-color: @ak-navigation-global-color;
     color: white;
@@ -45,15 +46,14 @@
       }
     }
 
-    .global-secondary {
+    .global-secondary-item {
       margin: 10px auto;
       height: @global-secondary-item-height;
       text-align: center;
     }
 
     .global-bottom {
-      bottom: 0;
-      position: absolute;
+      margin-top: auto;
       width: 100%;
     }
   }

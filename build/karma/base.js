@@ -44,8 +44,6 @@ module.exports = (config) => {
 
     reportSlowerThan: 200,
 
-    retryLimit: 6,
-
     singleRun: false,
 
     concurrency: Infinity,

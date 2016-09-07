@@ -86,7 +86,7 @@ const definition = {
                   tabIndex={tabIndex}
                   onkeydown={handlers.labelKeydownHandler(elem, tab)}
                   onmousedown={handlers.labelMouseDownHandler}
-                  onclick={handlers.labelClickHandler(tab)}
+                  onclick={handlers.labelSelectedHandler(tab)}
                   aria-selected={ariaSelected}
                   role="tab"
                   ref={handlers.labelRef(elem, tab)}
@@ -110,7 +110,7 @@ const definition = {
                 </Trigger>
                 {
                   allTabs && allTabs.filter(tab => !tabsVisible.get(tab)).map(tab => (
-                    <Item onSelected={handlers.labelClickHandler(tab)}>{tab.label}</Item>
+                    <Item onSelected={handlers.labelSelectedHandler(tab)}>{tab.label}</Item>
                   ))
                 }
               </Dropdown>

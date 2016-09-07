@@ -6,7 +6,7 @@ import 'custom-event-polyfill';
 import { name } from '../package.json';
 import { events as blanketEvents } from 'ak-blanket';
 const { activate: activateBlanketEvent } = blanketEvents;
-import { afterMutations, getShadowRoot, locateWebComponent, checkVisibility, checkInvisibility }
+import { afterMutations, getShadowRoot, checkVisibility, checkInvisibility }
   from 'akutil-common-test';
 import { Component } from 'skatejs';
 

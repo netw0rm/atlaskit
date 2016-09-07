@@ -1,9 +1,9 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
-import { props, symbols, Component } from 'skatejs';
+import { props, Component } from 'skatejs';
 import { name } from '../package.json';
-import { afterMutations, getShadowRoot, waitUntil, checkVisibility } from 'akutil-common-test';
+import { afterMutations, getShadowRoot, checkVisibility } from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();

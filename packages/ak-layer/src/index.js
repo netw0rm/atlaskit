@@ -27,6 +27,7 @@ function createNewAlignment(elem) {
     target: elem.target,
     position: elem.position,
     enableFlip: elem.enableFlip,
+    offset: elem.offset,
   };
 
   if (elem.boundariesElement) {
@@ -124,6 +125,9 @@ export default define('ak-layer', {
     enableFlip: prop.boolean({
       attribute: true,
     }),
+    offset: {
+      attribute: true,
+    },
   },
   prototype: {
     reposition() {

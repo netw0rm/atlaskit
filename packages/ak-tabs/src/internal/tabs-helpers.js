@@ -26,6 +26,11 @@ const getNextTab = (tabsEl, tab) => (getNextOrPrevTab(tabsEl, tab, true));
 
 const getPrevTab = (tabsEl, tab) => (getNextOrPrevTab(tabsEl, tab, false));
 
+/*
+ * Find the tab labels that should be visible by comparing their widths against the width of the
+ * tabs container. This depends on the tab labels having been rendered already, in order for them
+ * to have a width.
+ */
 const calculateVisibleTabs = (tabsEl) => {
   const tabLabelsContainer = tabsEl[labelsContainer];
   const tabsButtonContainer = tabsEl[buttonContainer];
@@ -85,9 +90,21 @@ const calculateVisibleTabs = (tabsEl) => {
   return visible;
 };
 
+const getTabsVisibility = (tabsEl) => {
+  const tabsVisibility = new Map();
+  if (tabsEl) {
+    getAllTabs(tabsEl).forEach(tab => (tabsVisibility.set(tab, false)));
+    tabsEl._visibleTabs.forEach( // eslint-disable-line no-underscore-dangle
+      tab => (tabsVisibility.set(tab, true))
+    );
+  }
+  return tabsVisibility;
+};
+
 export {
   getAllTabs,
   getNextTab,
   getPrevTab,
   calculateVisibleTabs,
+  getTabsVisibility,
 };

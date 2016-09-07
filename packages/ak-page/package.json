@@ -1,6 +1,6 @@
 {
   "name": "ak-page",
-  "version": "3.0.2",
+  "version": "3.0.8",
   "description": "ak-page webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -18,12 +18,12 @@
     "skatejs": "^1.2.5"
   },
   "peerDependencies": {
-    "ak-navigation": "^3.0.0"
+    "ak-navigation": "*"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-navigation": "^3.0.0",
+    "ak-navigation": "*",
     "akutil-react": "^1.0.0"
   },
   "repository": {

@@ -112,6 +112,7 @@
     "dist": "./node_modules/.bin/lerna run prepublish",
     "docs/single": "./build/bin/docs.single.sh",
     "postinstall": "./build/bin/postinstall.sh",
+    "preinstall": "./build/bin/preinstall.sh",
     "lint": "eslint --format 'node_modules/eslint-friendly-formatter' . --ext .js,.jsx",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "prepublish/single": "./build/bin/prepublish.single.sh",

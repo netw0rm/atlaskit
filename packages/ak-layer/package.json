@@ -1,6 +1,6 @@
 {
   "name": "ak-layer",
-  "version": "57.3.2",
+  "version": "57.4.0",
   "description": "A layer component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

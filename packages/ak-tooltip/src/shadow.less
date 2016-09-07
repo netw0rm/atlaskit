@@ -5,10 +5,12 @@
 
 
 @fontSize: 12px;
+@lineHeight: calc(16 / unit(@fontSize));
 @fontColor: white;
 @maxWidth: 200px;
 @borderRadius: 5px;
 @leftAndRightTextPadding: 8px;
+@topAndBottomPadding: 2px;
 @marginDistance: 10px;
 @animationMovementDistance: 20;
 @animationDelay: 0.1s;
@@ -28,13 +30,12 @@
 }
 
 .tooltip {
-  @topAndBottomPadding: 4px;
-
   background-color: @ak-color-N900;
   border-radius: @borderRadius;
   box-sizing: border-box;
   color: @fontColor;
   font-size: @fontSize;
+  line-height: @lineHeight;
   max-width: @maxWidth;
   margin: @marginDistance;
   padding: @topAndBottomPadding @leftAndRightTextPadding;

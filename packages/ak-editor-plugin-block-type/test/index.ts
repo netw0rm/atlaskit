@@ -18,14 +18,14 @@ describe('ak-editor-plugin-block-type', () => {
     expect(pm.doc).to.deep.equal(doc(h1('text')));
   });
 
-  it('should be able to change to quoteblock', () => {
+  it('should be able to change to blockquote', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
     expect(plugin.changeBlockType('blockquote')).to.be.true;
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
-  it('should be able to change to back to paragraph and then change to quoteblock', () => {
+  it('should be able to change to back to paragraph and then change to blockquote', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
     expect(plugin.changeBlockType('heading')).to.be.true;
@@ -33,7 +33,7 @@ describe('ak-editor-plugin-block-type', () => {
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
-  it('should be not able to nest quoteblock', () => {
+  it('should be not able to nest blockquote', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
     expect(plugin.changeBlockType('blockquote')).to.be.true;

@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import akNavigation from '../src/index';
 import akPage from 'ak-page';
@@ -18,6 +18,7 @@ const AkPage = reactify(akPage, {
   ReactDOM,
 });
 
+// TODO: move this in its own file - can potentially be re-used by ak-page as well
 const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-es6-class
   propTypes: {
     children: React.PropTypes.oneOfType([
@@ -38,7 +39,13 @@ const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-
     this.setState({ open: !this.state.open });
   },
   render() {
-    return (<AkNavigation {...this.props} open={this.state && this.state.open}>
+    return (<AkNavigation
+      {...this.props}
+      onLinkSelected={action('link selected')}
+      onClose={action('close')}
+      onOpen={action('open')}
+      open={this.state && this.state.open}
+    >
       {this.props.children}
     </AkNavigation>);
   },

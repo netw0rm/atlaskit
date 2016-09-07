@@ -1,4 +1,4 @@
-const protractorConf = require('./protractor.conf.js').config;
+const protractorConf = require('./base.js').config;
 
 Object.assign(protractorConf, {
   seleniumAddress: 'http://hub.browserstack.com/wd/hub',

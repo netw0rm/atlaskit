@@ -12,6 +12,7 @@ import * as events from './internal/events';
 import * as i18n from './internal/i18n';
 import Tab from './index-tab';
 import Icon from 'ak-icon';
+import Dropdown, { Item, Trigger } from 'ak-dropdown';
 
 import { buttonContainer, labelsContainer } from './internal/symbols';
 const resizeListener = Symbol();
@@ -58,6 +59,7 @@ const definition = {
       [shadowStyles.locals.akTabLabel]: true,
       [shadowStyles.locals.akTabLabelHidden]: !hasOverflowingTabs,
     });
+    const tabsVisible = helpers.getTabsVisibility(elem);
     let pos = 1;
     return (
       <div>
@@ -71,7 +73,7 @@ const definition = {
             tab => {
               const ariaSelected = `${!!tab.selected}`;
               const tabIndex = tab.selected ? '0' : '-1';
-              const isVisible = elem._visibleTabs.indexOf(tab) > -1;
+              const isVisible = tabsVisible.get(tab);
               const isSingleTab = hasSingleTab && isVisible;
               const classes = classNames({
                 [shadowStyles.locals.akTabLabel]: true,
@@ -85,7 +87,7 @@ const definition = {
                   tabIndex={tabIndex}
                   onkeydown={handlers.labelKeydownHandler(elem, tab)}
                   onmousedown={handlers.labelMouseDownHandler}
-                  onclick={handlers.labelClickHandler(tab)}
+                  onclick={handlers.labelSelectedHandler(tab)}
                   aria-selected={ariaSelected}
                   aria-setsize={numTabs}
                   aria-posinset={pos++}
@@ -102,15 +104,19 @@ const definition = {
               aria-hidden="true"
               ref={el => (elem[buttonContainer] = el)}
             >
-              <a
-                className={shadowStyles.locals.akTabsButton}
-                onclick={() => {
-                  elem._dropdownOpen = !elem._dropdownOpen;
-                }}
-              >
-                <span>{i18n.more}</span>
-                <Icon glyph="expand" />
-              </a>
+              <Dropdown>
+                <Trigger slot="trigger" tabIndex="-1">
+                  <a className={shadowStyles.locals.akTabsButton}>
+                    <span>{i18n.more}</span>
+                    <Icon glyph="expand" />
+                  </a>
+                </Trigger>
+                {
+                  allTabs && allTabs.filter(tab => !tabsVisible.get(tab)).map(tab => (
+                    <Item onSelected={handlers.labelSelectedHandler(tab)}>{tab.label}</Item>
+                  ))
+                }
+              </Dropdown>
             </li>
           )
         }

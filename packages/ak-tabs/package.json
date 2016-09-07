@@ -11,7 +11,7 @@
     "dist"
   ],
   "dependencies": {
-    "ak-dropdown": "^1.12.0",
+    "ak-dropdown": "^1.14.0",
     "ak-icon": "^1.6.0",
     "akutil-shared-styles": "^33.7.0",
     "classnames": "^2.2.5",

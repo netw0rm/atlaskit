@@ -110,7 +110,7 @@ const definition = {
                 </Trigger>
                 {
                   allTabs && allTabs.filter(tab => !tabsVisible.get(tab)).map(tab => (
-                    <Item onclick={handlers.labelClickHandler(tab)}>{tab.label}</Item>
+                    <Item onSelected={handlers.labelClickHandler(tab)}>{tab.label}</Item>
                   ))
                 }
               </Dropdown>

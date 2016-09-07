@@ -78,7 +78,6 @@ describe('ak-editor-plugin-hyperlink', () => {
       const { pm, plugin } = editor(doc(p(a({ href: '' })('te{pos}xt'))));
       const spy = sinon.spy();
       plugin.onChange(spy);
-      const { pos } = insert(pm, a({ href: '' })('te{pos}xt'));
 
       pm.setTextSelection(pm.doc.refs.pos);
 
@@ -88,8 +87,8 @@ describe('ak-editor-plugin-hyperlink', () => {
     it('does not emit `change` multiple times when the selection moves within a link', () => {
       const { pm, plugin } = editor(doc(p('{<>}text', a({ href: '' })('l{pos1}i{pos2}nk'))));
       const onChange = sinon.spy();
-      plugin.onChange(onChange);
       const { pos1, pos2 } = pm.doc.refs;
+      plugin.onChange(onChange);
 
       pm.setTextSelection(pos1);
       pm.setTextSelection(pos2);

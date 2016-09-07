@@ -82,13 +82,7 @@ storiesOf(name, module)
   .add('empty ak-navigation', () => (
     <AkNavigation />
   ))
-  .add('ak-navigation with a long container name', () => (
-    <AkNavigation open containerName="Antidisestablishmentterianism" />
-  ))
-  .add('ak-navigation with a container name that spans two lines', () => (
-    <AkNavigation open containerName="Super duper cloud purchasing experience platform team" />
-  ))
-  .add('ak-navigation that starts open', () => (
+  .add('ak-navigation with the lot', () => (
     <AkPage navigationOpen>
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
@@ -131,6 +125,12 @@ storiesOf(name, module)
         <Lorem count="30" />
       </div>
     </AkPage>
+  ))
+  .add('ak-navigation with a long container name', () => (
+    <AkNavigation open containerName="Antidisestablishmentterianism" />
+  ))
+  .add('ak-navigation with a container name that spans two lines', () => (
+    <AkNavigation open containerName="Super duper cloud purchasing experience platform team" />
   ))
   .add('ak-navigation with no container logo', () => (
     <AkPage navigationOpen>

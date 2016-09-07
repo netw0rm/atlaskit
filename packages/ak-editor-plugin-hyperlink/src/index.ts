@@ -134,14 +134,18 @@ export default new Plugin(class HyperlinkPlugin {
 
   __update__() {
     const pm = this.pm;
-    const { $head, $to } = pm.selection;
+    const {
+      $head,
+      $to,
+      empty
+    } = pm.selection;
     const oldState = this.getState();
 
     const $resolvedPos: ResolvedPos = $head || $to;
 
-    const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos);
+    // because $resolvedPos.pos - 1 is actually the correct position
+    const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
     const isLink = isCursorOnLink(pm, $resolvedPos.pos);
-    const isLinkable = activeNode ? isNodeLinkable(pm, activeNode) : oldState.enabled;
 
     if (isLink && activeNode) {
       this.setState(isLink.attrs, {
@@ -149,8 +153,15 @@ export default new Plugin(class HyperlinkPlugin {
         element: getDomElement(pm, getBoundariesWithin($head)),
         text: activeNode.textContent,
       });
-    } else if (!isLinkable) {
-      this.setState({ enabled: false });
+    } else if (
+      empty ||
+      !(activeNode ? isNodeLinkable(pm, activeNode) : oldState.enabled)
+    ) {
+      this.setState(
+        {
+          enabled: false,
+        }
+      );
     } else {
       this.setState();
     }

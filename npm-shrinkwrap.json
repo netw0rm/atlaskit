@@ -4308,7 +4308,7 @@
     "lerna": {
       "version": "2.0.0-beta.26",
       "from": "atlassian/lerna#enhanced-bootstrap",
-      "resolved": "git://github.com/atlassian/lerna.git#fec776c72779b07719c7049166848fd1c9ba8965",
+      "resolved": "git://github.com/atlassian/lerna.git#577aa3dede7989ddc1864ebd9c5f582874c01fdc",
       "dependencies": {
         "async": {
           "version": "1.5.2",

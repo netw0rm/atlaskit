@@ -11,6 +11,7 @@ import * as events from './internal/events';
 // Width of a dropdown should be at least width of it's trigger + 10px
 const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
+const offset = '0 2';
 
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
@@ -37,8 +38,9 @@ function toggleDialog(elem, value) {
     list[0].focused = true;
     list[0].first = true;
     list[list.length - 1].last = true;
+    elem.reposition();
   } else {
-    list.forEach((item) => {
+    [...list].forEach((item) => {
       item.focused = false;
       if (item.first) {
         item.first = false;
@@ -147,6 +149,15 @@ export default define('ak-dropdown', {
     document.removeEventListener('click', handleClickOutside);
     document.removeEventListener('click', handleKeyPress);
   },
+  prototype: {
+    reposition() {
+      if (this.layer) {
+        this.layer.reposition();
+      }
+
+      return this;
+    },
+  },
   render(elem) {
     let target;
     let styles;
@@ -166,7 +177,10 @@ export default define('ak-dropdown', {
           <Layer
             position={elem.position}
             target={target}
+            enableFlip
+            offset={offset}
             ref={(layer) => {
+              elem.layer = layer;
               setTimeout(() => {
                 if (elem.open && layer.alignment) {
                     // by default dropdown has opacity 0

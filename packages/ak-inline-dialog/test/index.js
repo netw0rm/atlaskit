@@ -59,6 +59,7 @@ describe('ak-inline-dialog', () => {
     // behaviour that is already tested and with standard DOM behaviour.
     it('event handlers inside a component should work', () => {
       const button = document.createElement('button');
+      document.body.appendChild(button);
       let clicked = false;
       const event = new CustomEvent('click', {});
 
@@ -170,10 +171,14 @@ describe('ak-inline-dialog', () => {
 
     describe('eventing', () => {
       it('should be possible to close the dialog with a blanket activation', (done) => {
+        let blanket;
         afterMutations(
+          () => (component.hasBlanket = true),
           () => (component.open = true),
           () => {
-            const blanket = locateWebComponent('ak-blanket', getShadowRoot(component))[0];
+            blanket = getShadowRoot(component).firstChild.firstChild;
+          },
+          () => {
             const event = new CustomEvent(activateBlanketEvent);
             blanket.dispatchEvent(event);
           },

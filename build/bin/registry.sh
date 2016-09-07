@@ -19,14 +19,14 @@ mv ._npmrc .npmrc
 echo "Building registry"
 TARGET_PATH_RELATIVE=../atlaskit-registry/resources
 mkdir -p $TARGET_PATH_RELATIVE
-pushd $TARGET_PATH_RELATIVE
+pushd $TARGET_PATH_RELATIVE > /dev/null
 TARGET_PATH=`pwd`
-popd
+popd > /dev/null
 REGISTRY_BIN=`npm bin`/ak-registry
 REGISTRY_PATH=`npm root`/@atlassian/atlaskit-registry
-pushd $REGISTRY_PATH
+pushd $REGISTRY_PATH > /dev/null
 BITBUCKET_PASS=$BITBUCKET_PW_READONLY $REGISTRY_BIN --destination $TARGET_PATH
-popd
+popd > /dev/null
 
 # Zip the built website so we can upload to CDN
 rm -f ../ak-registry-cdn.zip

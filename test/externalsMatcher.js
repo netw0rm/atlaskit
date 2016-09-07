@@ -4,7 +4,7 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 chai.should();
 
-const externalsMatcher = require('../build/lib/externalsMatcher.js');
+const externalsMatcher = require('../build/webpack/externalsMatcher.js');
 
 const matchAgainst = (dep, context = '') => new Promise((resolve, reject) => {
   externalsMatcher(context, dep, (err, isExternal) => {

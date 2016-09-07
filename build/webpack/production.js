@@ -1,6 +1,6 @@
 const webpack = require('webpack');
-const standardConfig = require('./webpack.config.base.js');
-const externalsMatcher = require('./build/lib/externalsMatcher.js');
+const standardConfig = require('./base.js');
+const externalsMatcher = require('./externalsMatcher.js');
 
 Object.assign(standardConfig.entry, {
   'dist/bundle.min.js': standardConfig.entry['dist/bundle.js'],

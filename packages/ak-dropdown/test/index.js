@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
-import { symbols, Component } from 'skatejs';
+import { props, symbols, Component } from 'skatejs';
 import { name } from '../package.json';
 import { afterMutations, getShadowRoot, waitUntil, checkVisibility } from 'akutil-common-test';
 
@@ -9,17 +9,13 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-function setupComponent() {
-  const component = new Dropdown();
-  const componentHasShadowRoot = () => !!getShadowRoot(component);
-
-  document.body.appendChild(component);
-
-  return waitUntil(componentHasShadowRoot).then(() => component);
-}
-
-function tearDownComponent(component) {
-  document.body.removeChild(component);
+function createDropdown() {
+  const html = `<ak-dropdown>
+                  <ak-dropdown-trigger slot="trigger">test</ak-dropdown-trigger>
+                  <ak-dropdown-item>124</ak-dropdown-item>
+                  <ak-dropdown-item>444</ak-dropdown-item>
+                </ak-dropdown>`;
+  return html;
 }
 
 describe('ak-dropdown', () => {
@@ -49,22 +45,36 @@ describe('ak-dropdown', () => {
 
   describe('general behavior', () => {
     let component;
+    let dropdownContainer;
     let shadowRoot;
 
-    beforeEach(() => setupComponent().then(newComponent => {
-      component = newComponent;
-      shadowRoot = getShadowRoot(component);
-    }));
-    afterEach(() => tearDownComponent(component));
-    it('should be possible to create a component', (done) => {
+    beforeEach((done) => {
+      dropdownContainer = document.createElement('div');
+      dropdownContainer.innerHTML = createDropdown();
+      document.body.appendChild(dropdownContainer);
+
+      afterMutations(
+        () => (component = dropdownContainer.firstChild),
+        done
+      );
+    });
+    afterEach(() => {
+      document.body.removeChild(dropdownContainer);
+    });
+
+    it('should be possible to create a component', () => {
       // testing to see that skate did its job as expected
       // (in case some breaking changes in it that affect rendering)
-      setTimeout(() => {
-        expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
-        expect(component[symbols.shadowRoot]).to.be.defined;
-        expect(component[symbols.shadowRoot].firstChild).to.be.defined;
-      });
-      setTimeout(done);
+      expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
+      expect(getShadowRoot(component)).to.be.defined;
+      expect(getShadowRoot(component).firstChild).to.be.defined;
+    });
+
+    it('dropdown should reposition itself after being open', () => {
+      const spy = sinon.spy();
+      component.reposition = spy;
+      props(component, { open: true });
+      expect(spy.called).to.equal(true);
     });
     it('open property controls open state', (done) => {
       component.innerHTML = '<span>something visible</span>';

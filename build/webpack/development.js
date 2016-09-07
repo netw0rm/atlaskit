@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const standardConfig = require('./webpack.config.base.js');
+const standardConfig = require('./base.js');
 
 standardConfig.plugins.push(new webpack.DefinePlugin({
   'process.env': {

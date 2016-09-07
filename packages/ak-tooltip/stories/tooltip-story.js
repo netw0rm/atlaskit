@@ -38,7 +38,7 @@ const buttonStyles = {
 storiesOf(name, module)
   .add('a simple ak-tooltip with ak-tooltip-trigger', () => (
     <div>
-      <TooltipTrigger position="top" description="fgf">
+      <TooltipTrigger position="top" description="This is a tooltip">
         <span style={buttonStyles} aria-describedby="ak-tooltip">Hover over me</span>
       </TooltipTrigger>
 
@@ -63,7 +63,7 @@ storiesOf(name, module)
   ))
   .add('a tooltip with all directions', () => (
     <div>
-      <FourDirectionTooltipTrigger description="test" />
+      <FourDirectionTooltipTrigger description="This is a tooltip" />
       <DefaultTooltip id="ak-tooltip" />
     </div>
   ))
@@ -73,6 +73,43 @@ storiesOf(name, module)
       <Container />
     </div>
   ))
+  .add('a tooltip in a scrollable parent', () => {
+    const simpleButtonStyles = {
+      backgroundColor: 'orange',
+      padding: '5px',
+      position: 'relative',
+      top: '100px',
+      left: '100px',
+    };
+    const scrollableStyles = {
+      border: '1px solid',
+      height: '300px',
+      width: '300px',
+      'overflow-y': 'scroll',
+    };
+    const topInfoText = {
+      position: 'relative',
+      top: '350px',
+      'text-align': 'center',
+    };
+    const bottomInfoText = {
+      'text-align': 'center',
+      'margin-top': '5px',
+    };
+    return (
+      <div>
+        <div style={scrollableStyles}>
+          <div style={bottomInfoText}>Try scrolling this box</div>
+          <TooltipTrigger position="top" description="This is a tooltip">
+            <span style={simpleButtonStyles} aria-describedby="ak-tooltip">Hover over me</span>
+          </TooltipTrigger>
+          <div style={topInfoText}>This content is to create scrolling</div>
+        </div>
+
+        <DefaultTooltip id="ak-tooltip" />
+      </div>
+    );
+  })
   .add('a tooltip around a focusable element', () => (
     <div>
       <TooltipTrigger position="bottom" description="I am describing a focusable element!">

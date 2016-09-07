@@ -21,15 +21,31 @@ function positionToPopperPosition(position) {
   return allowedPostions[defaultTooltipPosition];
 }
 
-function getAnimationClass(position) {
+function getAnimationClass(elem, position) {
   const animationMapping = {
     top: shadowStyles.locals.slideUpAnimation,
     bottom: shadowStyles.locals.slideDownAnimation,
     left: shadowStyles.locals.slideLeftAnimation,
     right: shadowStyles.locals.slideRightAnimation,
   };
+  const flippedAnimations = {
+    top: 'bottom',
+    bottom: 'top',
+    left: 'right',
+    right: 'left',
+  };
 
-  return animationMapping[position] ? animationMapping[position] : undefined;
+  // if the tooltip has been flipped we need to apply the opposite animation
+  const actualPosition = elem.isFlipped ? flippedAnimations[position] : position;
+  return animationMapping[actualPosition] ? animationMapping[actualPosition] : undefined;
+}
+
+// Function passed to Layer -> Alignment -> Popper and called when Popper performs an update.
+// data is an object containing all the information computed by Popper.js (boundary element,
+// offsets, originalPlacement, placement, styles)
+function layerOnUpdate(data, elem) {
+  // Check if the Layer has been flipped
+  elem.isFlipped = (data.placement !== data.originalPlacement);
 }
 
 /**
@@ -44,11 +60,12 @@ export default define('ak-tooltip', {
   render(elem) {
     const messageBoxClasses = classNames({
       [shadowStyles.locals.tooltip]: true,
-      [getAnimationClass(elem.position)]: elem.visible,
+      [getAnimationClass(elem, elem.position)]: elem.visible,
     });
     const layerClasses = classNames({
       [shadowStyles.locals.hidden]: !elem.visible,
     });
+
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
@@ -58,6 +75,7 @@ export default define('ak-tooltip', {
           className={layerClasses}
           ref={(ref) => (elem.layer = ref)}
           enableFlip="true"
+          updateCallback={(data) => layerOnUpdate(data, elem)}
         >
           <div className={messageBoxClasses}>{elem.description}</div>
         </Layer>
@@ -109,6 +127,9 @@ export default define('ak-tooltip', {
     // These two props are not API thus, dont have jsdocs.
     visible: prop.boolean({
       attribute: true,
+    }),
+    isFlipped: prop.boolean({
+      initial: false,
     }),
   },
 });

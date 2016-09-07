@@ -33,6 +33,10 @@ function createNewAlignment(elem) {
     options.boundariesElement = elem.boundariesElement;
   }
 
+  if (elem.updateCallback) {
+    options.onUpdate = elem.updateCallback;
+  }
+
   return new Alignment(options);
 }
 
@@ -115,6 +119,7 @@ export default define('ak-layer', {
       },
     },
     onRender: {},
+    updateCallback: {},
     boundariesElement: { attribute: true },
     enableFlip: prop.boolean({
       attribute: true,

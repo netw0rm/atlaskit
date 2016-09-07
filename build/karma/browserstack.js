@@ -15,7 +15,7 @@ module.exports = (config) => {
     },
     logLevel: config.LOG_ERROR,
     captureTimeout: 120000,
-    reporters: ['dots'],
+    reporters: ['dots', 'BrowserStack'],
     autoWatch: false,
     concurrency: 5,
     client: {},

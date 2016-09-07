@@ -1,6 +1,5 @@
 import { afterMutations } from 'akutil-common-test';
-import Theme, { Var } from '../src/index';
-import themes from '../src/themes';
+import Theme, { events, Var } from '../src/index';
 
 function createTheme(id = '', ownVars = {}) {
   const theme = new Theme();
@@ -95,11 +94,18 @@ describe('ak-theme', () => {
   it('should emit an event when attached', done => {
     const theme = createTheme('test', { key: 'val' });
     const spy = sinon.spy();
-    document.addEventListener('ak-theme-test', spy);
+    document.addEventListener(events.themeChanged, spy);
     document.body.appendChild(theme);
     afterMutations(
-      () => expect(spy.callCount).to.equal(1),
-      () => expect(spy.getCall(0).args[0].detail).to.deep.equal({ key: 'val' }),
+      () => expect(spy.callCount).to.equal(2),
+      () => expect(spy.getCall(0).args[0].detail).to.deep.equal({
+        themeName: null,
+        themeVars: null,
+      }),
+      () => expect(spy.getCall(1).args[0].detail).to.deep.equal({
+        themeName: 'test',
+        themeVars: { key: 'val' },
+      }),
       () => theme.remove(),
       done
     );
@@ -110,29 +116,14 @@ describe('ak-theme', () => {
     const spy = sinon.spy();
     document.body.appendChild(theme);
     afterMutations(
-      () => document.addEventListener('ak-theme-test', spy),
+      () => document.addEventListener(events.themeChanged, spy),
       () => theme.remove(),
       () => expect(spy.callCount).to.equal(1),
-      () => expect(spy.getCall(0).args[0].detail).to.equal(null),
+      () => expect(spy.getCall(0).args[0].detail).to.deep.equal({
+        themeName: 'test',
+        themeVars: null,
+      }),
       () => theme.remove(),
-      done
-    );
-  });
-
-  it('should empty the old theme vars if the id changes', done => {
-    expect(themes.theme1Updated).to.equal(undefined);
-    theme1.id = 'theme1Updated';
-    afterMutations(
-      () => expect(themes.theme1).to.equal(undefined),
-      done
-    );
-  });
-
-  it('should set the new theme vars if the id changes', done => {
-    expect(themes.theme1).to.deep.equal(theme1.allVars);
-    theme1.id = 'theme1Updated';
-    afterMutations(
-      () => expect(themes.theme1Updated).to.deep.equal(theme1.allVars),
       done
     );
   });
@@ -174,7 +165,7 @@ describe('ak-theme', () => {
     document.body.appendChild(theme);
     afterMutations(
       () => {
-        const vars = themes.theme;
+        const vars = theme.ownVars;
         expect(vars.mykey1).to.equal('mykey1');
         expect(vars.my.key2).to.equal('mykey2');
         expect(vars.my.key[3]).to.equal('mykey3');

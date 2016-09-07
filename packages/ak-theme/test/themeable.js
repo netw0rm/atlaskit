@@ -1,23 +1,33 @@
-import { themeable } from '../src';
 import { define, emit } from 'skatejs';
 import { afterMutations } from 'akutil-common-test';
-import themes, { themeNameFromNode } from '../src/themes';
-
-function eventName(elem) {
-  return `ak-theme-${themeNameFromNode(elem)}`;
-}
+import { tagName, themeNameFromNode } from '../src/themes';
+import Theme, { events, themeable, Var } from '../src';
 
 describe('ak-theme, { themeable }', () => {
   let elem;
+  let elemTheme;
+  let elemThemeVar;
 
   beforeEach(done => {
     elem = new (define('x-test', themeable({})));
+    elemTheme = new Theme();
+    elemThemeVar = new Var();
+
+    elemTheme.id = tagName(elem);
+
+    elemThemeVar.name = 'testname';
+    elemThemeVar.value = 'testvalue';
+
+    elemTheme.appendChild(elemThemeVar);
+
     document.body.appendChild(elem);
+    document.body.appendChild(elemTheme);
+
     afterMutations(done);
   });
 
   afterEach(done => {
-    document.body.removeChild(elem);
+    elem.remove();
     afterMutations(done);
   });
 
@@ -54,40 +64,29 @@ describe('ak-theme, { themeable }', () => {
         spyRemoveEventListener.restore();
       });
 
-      it('should have a listener bound on initialisation', () => {
-        // To check if listeners were added / removed on initialisation, we need
-        // to create a themeable element *after* the spies are created.
+      it('should have a listener bound when attached', done => {
+        // To check if listeners were added, we have to manually add it so that
+        // the spies are registered before we add it to the document.
         const elemAfterSpies = document.createElement(themeNameFromNode(elem));
-
-        expect(spyAddEventListener.callCount).to.equal(1);
-        expect(spyAddEventListener.getCall(0).args[0]).to.equal(eventName(elemAfterSpies));
-
-        expect(spyRemoveEventListener.callCount).to.equal(0);
+        document.body.appendChild(elemAfterSpies);
+        afterMutations(
+          () => expect(spyAddEventListener.callCount).to.equal(1),
+          () => expect(spyAddEventListener.getCall(0).args[0]).to.equal(events.themeChanged),
+          done
+        );
       });
 
-      it('should add listener for new theme and remove listener for old theme', () => {
-        elem.themeName = 'newval1';
-
-        expect(spyAddEventListener.callCount).to.equal(1);
-        expect(spyAddEventListener.getCall(0).args[0]).to.equal('ak-theme-newval1');
-
-        expect(spyRemoveEventListener.callCount).to.equal(1);
-        expect(spyRemoveEventListener.getCall(0).args[0]).to.equal(eventName(elem));
-      });
-
-      it('should not add / remove listeners if the value does not change', () => {
-        elem.themeName = themeNameFromNode(elem);
-        expect(spyAddEventListener.callCount).to.equal(0);
-        expect(spyRemoveEventListener.callCount).to.equal(0);
-      });
-
-      it('should not add a listener if the value is falsy, but should remove the old value', () => {
-        elem.themeName = '';
-
-        expect(spyAddEventListener.callCount).to.equal(0);
-
-        expect(spyRemoveEventListener.callCount).to.equal(1);
-        expect(spyRemoveEventListener.getCall(0).args[0]).to.equal(eventName(elem));
+      it('should have listener unbound when detached', done => {
+        // To check if listeners were removed we have to manually add it and
+        // then remove it so we can check it after it's removed.
+        const elemAfterSpies = document.createElement(themeNameFromNode(elem));
+        document.body.appendChild(elemAfterSpies);
+        afterMutations(
+          () => elemAfterSpies.remove(),
+          () => expect(spyRemoveEventListener.callCount).to.equal(1),
+          () => expect(spyRemoveEventListener.getCall(0).args[0]).to.equal(events.themeChanged),
+          done
+        );
       });
     });
   });
@@ -107,26 +106,32 @@ describe('ak-theme, { themeable }', () => {
       expect(elem.themeVars).to.be.an('object');
     });
 
-    it('should be an empty object if no theme exists', () => {
-      expect(Object.keys(elem.themeVars).length).to.equal(0);
+    it('should be an empty object if no theme exists', done => {
+      elem.themeName = 'non-existent-theme';
+      afterMutations(
+        () => expect(Object.keys(elem.themeVars).length).to.equal(0),
+        done
+      );
     });
 
     it('should contain the current theme vars if it exists', () => {
-      themes[themeNameFromNode(elem)] = { test: true };
-      const elemAfterTheme = document.createElement(themeNameFromNode(elem));
-      expect(elemAfterTheme.themeVars.test).to.equal(true);
+      expect(elem.themeVars.testname).to.equal('testvalue');
     });
 
     it('should update when the event is triggered', () => {
-      themes[themeNameFromNode(elem)] = { test: true };
-      emit(document, eventName(elem));
+      const themeName = tagName(elem);
+      const themeVars = { test: true };
+      emit(document, events.themeChanged, { detail: { themeName, themeVars } });
       expect(elem.themeVars.test).to.equal(true);
     });
 
-    it('should update when the themeName is changed', () => {
-      themes.test = { test: true };
-      elem.themeName = 'test';
-      expect(elem.themeVars.test).to.equal(true);
+    it('should update when the themeName is changed', done => {
+      elemTheme.id = 'test';
+      afterMutations(
+        () => (elem.themeName = 'test'),
+        () => expect(elem.themeVars.testname).to.equal('testvalue'),
+        done
+      );
     });
 
     it('should be empty when changed to a theme that does not exist', done => {

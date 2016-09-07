@@ -1,16 +1,9 @@
 import { Component, emit, prop, vdom, define } from 'skatejs';
 import { style } from 'akutil-common';
-import themes from './themes';
+import { themeChanged } from './events';
 
-function notify(themeName, themeVars = null) {
-  if (themeName) {
-    if (themeVars) {
-      themes[themeName] = themeVars;
-    } else {
-      delete themes[themeName];
-    }
-    emit(document, `ak-theme-${themeName}`, { detail: themeVars });
-  }
+function notify(themeName = null, themeVars = null) {
+  emit(document, themeChanged, { detail: { themeName, themeVars } });
 }
 
 function varsFromChildren(host) {

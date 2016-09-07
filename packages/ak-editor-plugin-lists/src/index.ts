@@ -91,7 +91,9 @@ export default new Plugin(class ListsPlugin {
 
     const $resolvedPos: ResolvedPos = $head || $to;
 
-    const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos);
+    // resolvedPos.pos creates an extra offset
+    const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
+
     const rootNode: Node = $from.node(1);
     const isList: boolean = this.listTypes.indexOf(rootNode.type.name) !== -1;
     const isListable = activeNode ? isNodeListable(pm, activeNode) : oldState.enabled;

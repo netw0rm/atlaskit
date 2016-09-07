@@ -6,15 +6,6 @@
 @import 'shared-variables.less';
 @import '~akutil-shared-styles/src/mixins/animations.less';
 
-@border-radius: 3px;
-@outline-width: 2px;
-@grid-unit: 10px;
-@max-height: 18px;
-@distance: 4px;
-@max-width: 200px - 2 * @distance;
-@button-width: @grid-unit + @border-radius;
-@font-size: 14px;
-
 .outline(@color) {
   &:focus {
     outline: none;
@@ -26,20 +17,25 @@
   box-shadow: none;
 }
 
+.rootNode {
+
+}
+
 .chrome {
+  .outline(@ak-color-B100);
   cursor:default;
   background-color: @ak-color-N20;
   padding: 0;
-  margin: 0;
+  margin: @spacing;
   border-radius: @border-radius;
   display: flex;
   height: @max-height;
   max-height: @max-height;
   flex-direction: row;
-  .outline(@ak-color-B100);
+
   &:hover {
-    background-color: @ak-color-N30;
     .nooutline();
+    background-color: @ak-color-N30;
 
     .button {
       .nooutline();
@@ -60,18 +56,21 @@
   }
 
   &.isRemovable {
-    overflow: hidden;
     .text, .href {
-      max-width: @max-width - @button-width;
+      max-width: @max-text-width - @button-width;
     }
   }
+}
 
+.animationWrapper {
+  box-sizing: border-box;
+  //padding: @spacing;
   &.isRemoving {
     animation: removeAnimation 250ms forwards;
-    transform-origin: inherit;
-    will-change: transform;
-    .text {
-      visibility: hidden;
+    will-change: width;
+
+    .chrome {
+      overflow: hidden;
     }
   }
 }
@@ -85,7 +84,7 @@
   height: 100%;
 
   // text truncation
-  max-width: @max-width;
+  max-width: @max-text-width;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -101,6 +100,7 @@
 }
 
 .button {
+  .outline(@ak-color-R300);
   appearance: none;
   background: none;
   border: none;
@@ -109,7 +109,6 @@
   border-radius: @border-radius;
   align-self: flex-end;
   display: flex;
-  .outline(@ak-color-R300);
   align-items: center;
   justify-content: center;
   height: 100%;
@@ -120,5 +119,5 @@
   }
 }
 
-@removeAnimation: 'transform', 'scaleX(XX)', 1, 0;
+@removeAnimation: 'max-width', 'XX', @animation-width, 0;
 .createBoldAnimation(@removeAnimation, 'removeAnimation');

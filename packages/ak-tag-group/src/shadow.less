@@ -3,30 +3,27 @@
 .flex() {
   display: flex;
   flex-wrap: wrap;
-  padding: @spacing;
 }
 
 .rightAligned {
-  transform-origin: right;
-}
-
-.leftAligned {
-  transform-origin: left;
+  justify-content: flex-end;
 }
 
 .flex-item() {
-  margin: @spacing;
+  flex: 0 1 auto;
 }
 
-:host .default-slot-wrapper {
+:host .slot-wrapper {
+  .flex;
+  width: 100%;
+}
+
+.slot {
   .flex;
 }
 
-.default-slot {
-  .flex;
-  & > * {
-     .flex-item();
-  }
+.rootNode {
+  width: 100%;
 }
 
 ::content > * {
@@ -35,4 +32,8 @@
 
 ::slotted(*) {
   .flex-item();
+}
+
+:host([alignment="right"]) .slot-wrapper {
+  .rightAligned;
 }

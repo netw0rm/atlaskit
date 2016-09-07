@@ -4,11 +4,12 @@ import { enumeration } from 'akutil-common';
 import shadowStyles from './shadow.less';
 import classnames from 'classnames';
 
+const ALIGNMENT_LEFT = 'left';
 const ALIGNMENT_RIGHT = 'right';
 
 const ALIGNMENT_ATTRIBUTE_ENUM = {
   attribute: 'alignment',
-  values: ['left', ALIGNMENT_RIGHT],
+  values: [ALIGNMENT_LEFT, ALIGNMENT_RIGHT],
   missingDefault: '',
   invalidDefault: '',
 };
@@ -23,16 +24,15 @@ export default define('ak-tag-group', {
   render(elem) {
     const isRightAligned = elem.alignment === ALIGNMENT_RIGHT;
     const classNames = classnames({
-      [shadowStyles.locals.defaultSlotWrapper]: true,
+      [shadowStyles.locals.slot]: true,
       [shadowStyles.locals.rightAligned]: isRightAligned,
-      [shadowStyles.locals.leftAligned]: !isRightAligned,
     });
 
     return (
-      <div>
+      <div className={shadowStyles.locals.rootNode}>
         <style>{shadowStyles.toString()}</style>
-        <div className={classNames}>
-          <slot className={shadowStyles.locals.defaultSlot} />
+        <div className={shadowStyles.locals.slotWrapper}>
+          <slot className={classNames} />
         </div>
       </div>
     );

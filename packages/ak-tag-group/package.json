@@ -25,6 +25,9 @@
     "akutil-common-test": "^1.0.0",
     "akutil-react": "^1.0.0"
   },
+  "peerDependencies": {
+    "ak-tag": "^1.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"

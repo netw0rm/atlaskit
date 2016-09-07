@@ -8,7 +8,6 @@ export default (props, children) => {
     [shadowStyles.locals.markedForRemoval]: props.markedForRemoval,
     [shadowStyles.locals.isLinked]: props.isLinked,
     [shadowStyles.locals.isRemovable]: props.isRemovable,
-    [shadowStyles.locals.isRemoving]: props.isRemoving,
   });
 
   return (

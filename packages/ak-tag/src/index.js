@@ -14,6 +14,7 @@ const {
 } = events;
 import { name } from '../package.json';
 import logger from './internal/logger';
+import classnames from 'classnames';
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -37,12 +38,6 @@ export default define(name, {
       isLinked,
       isRemovable,
       markedForRemoval: elem.__removeButtonHover,
-      isRemoving: elem.__isRemoving,
-      onAnimationend: (e) => {
-        if (e.animationName === shadowStyles.locals.removeAnimation) {
-          emit(elem, afterRemoveEvent);
-        }
-      },
     };
 
     let button = '';
@@ -75,13 +70,26 @@ export default define(name, {
       label = <Href href={elem.href}>{elem.text}</Href>;
     }
 
+    const animationWrapperClasses = classnames({
+      [shadowStyles.locals.animationWrapper]: true,
+      [shadowStyles.locals.isRemoving]: elem.__isRemoving, // eslint-disable-line no-underscore-dangle, max-len
+    });
+
+    const onAnimationend = (e) => {
+      if (e.animationName === shadowStyles.locals.removeAnimation) {
+        emit(elem, afterRemoveEvent);
+      }
+    };
+
     return (
-      <div style={{ 'transform-origin': 'inherit' }}>
+      <div className={shadowStyles.locals.rootNode}>
         <style>{shadowStyles.toString()}</style>
-        <Chrome {...chromeAttrs}>
-          {label}
-          {button}
-        </Chrome>
+        <div className={animationWrapperClasses} onAnimationend={onAnimationend}>
+          <Chrome {...chromeAttrs}>
+            {label}
+            {button}
+          </Chrome>
+        </div>
       </div>
     );
   },

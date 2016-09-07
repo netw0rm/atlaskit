@@ -22,7 +22,7 @@ const sweets = 'Liquorice bear claw liquorice croissant cotton candy caramels. L
 const overflowStory = () => (
   <div style={{ border: '1px solid black' }}>
     <Group className={styles.akTagGroup}>
-      {sweets.split(' ').map((sweet, i) => (
+      {sweets.split(/[\s\.]+/).map((sweet, i) => (
         <Tag
           className={tagStyles.akTag}
           href="http://www.cupcakeipsum.com/"

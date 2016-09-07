@@ -55,6 +55,7 @@ describe('ak-dropdown', () => {
 
       afterMutations(
         () => (component = dropdownContainer.firstChild),
+        () => (shadowRoot = getShadowRoot(component)),
         done
       );
     });
@@ -77,12 +78,12 @@ describe('ak-dropdown', () => {
       expect(spy.called).to.equal(true);
     });
     it('open property controls open state', (done) => {
-      component.innerHTML = '<span>something visible</span>';
       afterMutations(
+        () => (component.innerHTML = '<span>something visible</span>'),
         () => (component.open = false),
-        () => (expect(checkVisibility(component.childNodes[0])).to.equal(false)),
+        () => (expect(checkVisibility(component.children[0])).to.equal(false)),
         () => (component.open = true),
-        () => (expect(checkVisibility(component.childNodes[0])).to.equal(true)),
+        () => (expect(checkVisibility(component.children[0])).to.equal(true)),
         done
       );
     });

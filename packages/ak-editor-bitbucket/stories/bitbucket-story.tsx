@@ -60,7 +60,7 @@ storiesOf('ak-editor-bitbucket', module)
         return (
           <div ref="root">
             <Bitbucket
-              defaultValue="What do you want to say?"
+              placeholder="What do you want to say?"
               onChange={this.updateMarkdown}
               onReady={this.updateMarkdown}
             />

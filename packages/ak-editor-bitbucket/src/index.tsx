@@ -39,7 +39,7 @@ import {
   MarkType,
 } from 'ak-editor-plugin-text-formatting';
 
-// typescript only supports this. TODO: investigate why
+// typescript removes unused var if we import it :(
 const { vdom } = require('skatejs');
 
 const $selectFont = '__selectFont__';
@@ -265,7 +265,7 @@ export default define('ak-editor-bitbucket', {
           fullEditor
           :
           <input
-            placeholder={elem.defaultValue}
+            placeholder={elem.placeholder}
             onclick={elem[$toggleExpansion]}
             className={fakeInputClassNames}
           />
@@ -284,6 +284,7 @@ export default define('ak-editor-bitbucket', {
      * for details.
      */
     defaultValue: prop.string({ attribute: true }),
+    placeholder: prop.string({ attribute: true }),
     imageUploader: functionProp(),
     context: prop.string({ attribute: true }),
     expanded: prop.boolean({ attribute: true }),

@@ -187,7 +187,7 @@ describe('ak-inline-dialog', () => {
           () => (component.hasBlanket = true),
           () => (component.open = true),
           () => {
-            blanket = getShadowRoot(component).querySelector('ak-blanket');
+            blanket = getShadowRoot(component).firstChild.firstChild;
           },
           () => {
             const event = new CustomEvent(activateBlanketEvent);

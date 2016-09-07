@@ -30,6 +30,7 @@ const standardConfig = {
           loader: 'babel-loader',
           test: /\.jsx?$/,
           include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
+          exclude: /stories\/skate\/.*\.js/,
           query: {
             presets: [
               'es2015',

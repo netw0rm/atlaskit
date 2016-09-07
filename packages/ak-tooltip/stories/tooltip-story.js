@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import TooltipWC from '../src/index';
 import TooltipTriggerWC from '../src/tooltip-trigger';
-import ContainerWC from '../src/container';
+import ContainerWC from './skate/container';
 import FourDirectionTooltipTrigger from './four-direction-tooltip-trigger';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';

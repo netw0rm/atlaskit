@@ -30,14 +30,14 @@
 .tooltip {
   @topAndBottomPadding: 4px;
 
-  font-size: @fontSize;
-  border-radius: @borderRadius;
   background-color: @ak-color-N900;
-  height: 20px; // likely to be changed once we have multiline tooltips
-  padding: @topAndBottomPadding @leftAndRightTextPadding;
-  max-width: @maxWidth;
+  border-radius: @borderRadius;
+  box-sizing: border-box;
   color: @fontColor;
+  font-size: @fontSize;
+  max-width: @maxWidth;
   margin: @marginDistance;
+  padding: @topAndBottomPadding @leftAndRightTextPadding;
   pointer-events: none;
 }
 

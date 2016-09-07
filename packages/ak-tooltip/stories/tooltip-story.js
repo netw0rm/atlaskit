@@ -18,7 +18,7 @@ const TooltipTrigger = reactify(TooltipTriggerWC, {
   ReactDOM,
 });
 
-const Test = reactify(ContainerWC, {
+const Container = reactify(ContainerWC, {
   React,
   ReactDOM,
 });
@@ -39,7 +39,23 @@ storiesOf(name, module)
   .add('a simple ak-tooltip with ak-tooltip-trigger', () => (
     <div>
       <TooltipTrigger position="top" description="fgf">
-        <span style={buttonStyles} aria-describedby="ak-tooltip">Click me</span>
+        <span style={buttonStyles} aria-describedby="ak-tooltip">Hover over me</span>
+      </TooltipTrigger>
+
+      <DefaultTooltip id="ak-tooltip" />
+    </div>
+  ))
+  .add('a tooltip with a really long description', () => (
+    <div>
+      <TooltipTrigger
+        position="top"
+        description={`This is a really really really really really really really really really
+          really really really really really really really really really really really really
+          really really really really really really really really really really really really
+          really really really really really really really really really really really really
+          really really really really really long tooltip`}
+      >
+        <span style={buttonStyles} aria-describedby="ak-tooltip">Hover over me</span>
       </TooltipTrigger>
 
       <DefaultTooltip id="ak-tooltip" />
@@ -54,12 +70,12 @@ storiesOf(name, module)
   .add('a tooltip binding to elements in shadowDOM', () => (
     <div>
       <DefaultTooltip id="ak-tooltip" />
-      <Test />
+      <Container />
     </div>
   ))
   .add('a tooltip around a focusable element', () => (
     <div>
-      <TooltipTrigger position="right" description="hi sean">
+      <TooltipTrigger position="bottom" description="I am describing a focusable element!">
         <a href="#" style={buttonStyles} aria-describedby="ak-tooltip">Focus on me!</a>
       </TooltipTrigger>
       <DefaultTooltip id="ak-tooltip" />

@@ -17,6 +17,8 @@ ak-tooltip {
   top: -999em;
   left: -999em;
   position: absolute;
+    // The width is required to prevent an issue where the tooltip wont stretch to fit content.
+  width: 100vw;
 
   &[visible] {
     display: inline-block;

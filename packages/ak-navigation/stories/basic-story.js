@@ -30,7 +30,7 @@ const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-
     return { open: true };
   },
   componentDidMount() {
-    this.timer = setInterval(this.toggle, 1000);
+    this.timer = setInterval(this.toggle, 3000);
   },
   componentWillUnmount() {
     window.clearInterval(this.timer);

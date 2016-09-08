@@ -1,16 +1,12 @@
 import { vdom } from 'skatejs';
 
+import 'style!./host.less';
 import shadowStyles from './shadow.less';
-
 
 /* eslint-disable react/prop-types */
 export default (props, children) => (
-  <a
-    {...props}
-    tabindex="-1"
-    className={shadowStyles.locals.href}
-    href={props.href}
-  >
-      {children()}
-  </a>
+  <div {...props}>
+    <style>{shadowStyles.toString()}</style>
+    {children()}
+  </div>
 );

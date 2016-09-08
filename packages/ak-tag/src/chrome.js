@@ -1,6 +1,9 @@
 import { vdom } from 'skatejs';
-import shadowStyles from './shadow.less';
 import classnames from 'classnames';
+import { KeyPressHandler } from 'akutil-common';
+
+import shadowStyles from './shadow.less';
+
 /* eslint-disable react/prop-types */
 export default (props, children) => {
   const classNames = classnames({
@@ -10,8 +13,27 @@ export default (props, children) => {
     [shadowStyles.locals.isRemovable]: props.isRemovable,
   });
 
+  const attachKeyHandlers = (elem) => {
+    if (!props.isLinked) {
+      return;
+    }
+
+    const followLink = () => {
+      elem.querySelector('a').click();
+    };
+
+    const handler = new KeyPressHandler('ENTER', followLink, elem);
+    handler.add('SPACE', followLink);
+  };
+
   return (
-    <span {...props} className={classNames}>
+    <span
+      {...props}
+      tabindex={props.isLinked ? 0 : -1}
+      className={classNames}
+      ref={attachKeyHandlers}
+      onmousedown={(e) => (e.preventDefault())}
+    >
       {children()}
     </span>
   );

@@ -34,4 +34,4 @@ const overflowStory = () => (
 
 storiesOf(name, module)
   .add('tag overflow', overflowStory)
-  .addRTL('tag overflow (RTL)', overflowStory);
+  .addSwapped('tag overflow (swapped)', overflowStory);

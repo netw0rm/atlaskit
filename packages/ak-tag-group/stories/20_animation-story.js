@@ -28,9 +28,9 @@ const removeTag = () => setTimeout(() => {
 
 storiesOf(name, module)
   .add('animation (left alignment)', () => alignmentStory('left'))
-  .addRTL('animation (left alignment) (RTL)', () => alignmentStory('left'))
+  .addSwapped('animation (left alignment) (swapped)', () => alignmentStory('left'))
   .add('animation (right alignment)', () => alignmentStory('right'))
-  .addRTL('animation (right alignment) (RTL)', () => alignmentStory('right'))
+  .addSwapped('animation (right alignment) (swapped)', () => alignmentStory('right'))
   .addMonitored('animation (auto-remove)', () => {
     removeTag();
     return (<AlignedStory onRemove={removeTag} initialTags={tagNames} />);

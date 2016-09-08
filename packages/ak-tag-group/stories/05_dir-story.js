@@ -40,5 +40,5 @@ const story = () => (
 
 storiesOf(name, module)
   .add('text direction', story)
-  .addRTL('text direction (RTL)', story)
+  .addSwapped('text direction (swapped)', story)
 ;

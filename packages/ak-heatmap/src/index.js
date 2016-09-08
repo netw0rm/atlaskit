@@ -6,7 +6,6 @@ import * as d3 from 'd3'; // eslint-disable-line no-unused-vars
 import CalHeatMap from 'cal-heatmap/src/cal-heatmap.js';
 import Button from 'ak-button';
 import ButtonGroup from 'ak-button-group';
-import InlineDialog from 'ak-inline-dialog';
 import { enumeration } from 'akutil-common';
 
 const LEGEND_POSITION = {
@@ -161,6 +160,17 @@ function setHovers(node, elem) {
     }
   });
 }
+
+function evaluate(obj, expression) {
+  const res = new Function('$$', 'return ' + expression)(obj);
+  console.log(obj, expression, res);
+  return res;
+}
+
+function getCount(count, expression) {
+  const res = (typeof count !== 'object') ? count : evaluate(count, expression);
+  return res;
+}
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class Heatmap
@@ -215,27 +225,25 @@ export default define('ak-heatmap', {
       legendCellSize: elem.legendCellSize,
       legendCellPadding: elem.legendCellPadding,
       legendVerticalPosition: elem.legendVerticalPosition,
-      start: elem.start
+      start: elem.start,
+      legendColors: {
+        min: "#23A9FA",
+        max: "#1251AE"
+      }
     };
 
     options = cleanTheObject(options);
-    // options.onComplete = () => {
-    //   setHovers(elem._heatMapContainer, elem);
-    // };
 
     if (typeof elem.data === 'string' || elem.dataLocal) {
       options.afterLoadData = (data) => {
         let stats = {};
         let full = {};
         for (var d in data) {
-          stats[data[d].time] = data[d].count;
-          full[data[d].time] = data[d];
+          stats[data[d].time] = getCount(data[d].count, elem.expression);
         }
-        elem._mapData = full;
         return stats;
       };
     }
-
 
     cal.init(options);
 
@@ -302,6 +310,9 @@ export default define('ak-heatmap', {
       attribute: true,
     }),
     start: {
+      attribute: true,
+    },
+    expression: {
       attribute: true,
     },
   },

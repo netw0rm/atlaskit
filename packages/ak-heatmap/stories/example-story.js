@@ -10014,18 +10014,6 @@ const HeatMapData = {
 }
 const HeatMapData2 = [
   {
-    "count": 6,
-    "events": [
-      "<a href=\"https://amitdev.atlassian.net/secure/ViewProfile.jspa?name=admin\" class=\"activity-item-user activity-item-author\">Amit  [Administrator]</a> commented on       <a href=\"https://amitdev.atlassian.net/browse/TRIAL-7\">TRIAL-7 - This is a sample task. Tasks are used to break down the steps to implement a user story</a>\n  ",
-      "<a href=\"https://amitdev.atlassian.net/secure/ViewProfile.jspa?name=admin\" class=\"activity-item-user activity-item-author\">Amit  [Administrator]</a> created       <a href=\"https://amitdev.atlassian.net/browse/TRIAL-9\">TRIAL-9 - As a developer, I&#39;d like to update story status during the sprint &gt;&gt; Click the Active sprints link at the top right of the screen to go to the Active sprints where the current Sprint&#39;s items can be updated</a>\n  ",
-      "<a href=\"https://amitdev.atlassian.net/secure/ViewProfile.jspa?name=admin\" class=\"activity-item-user activity-item-author\">Amit  [Administrator]</a> created       <a href=\"https://amitdev.atlassian.net/browse/TRIAL-8\">TRIAL-8 - As a product owner, I&#39;d like to include bugs, tasks and other issue types in my backlog &gt;&gt; Bugs like this one will also appear in your backlog but they are not normally estimated</a>\n  ",
-      "<a href=\"https://amitdev.atlassian.net/secure/ViewProfile.jspa?name=admin\" class=\"activity-item-user activity-item-author\">Amit  [Administrator]</a> created       <a href=\"https://amitdev.atlassian.net/browse/TRIAL-7\">TRIAL-7 - This is a sample task. Tasks are used to break down the steps to implement a user story</a>\n  ",
-      "<a href=\"https://amitdev.atlassian.net/secure/ViewProfile.jspa?name=admin\" class=\"activity-item-user activity-item-author\">Amit  [Administrator]</a> created       <a href=\"https://amitdev.atlassian.net/browse/TRIAL-6\">TRIAL-6 - As a scrum master, I&#39;d like to break stories down into tasks we can track during the sprint &gt;&gt; Try creating a task by clicking the Sub-Tasks tab in the Detail View on the right</a>\n  ",
-      "<a href=\"https://amitdev.atlassian.net/secure/ViewProfile.jspa?name=admin\" class=\"activity-item-user activity-item-author\">Amit  [Administrator]</a> created       <a href=\"https://amitdev.atlassian.net/browse/TRIAL-5\">TRIAL-5 - As a team, I&#39;d like to commit to a set of stories to be completed in a sprint (or iteration) &gt;&gt; Click &quot;Create Sprint&quot; then drag the footer down to select issues for a sprint (you can&#39;t start a sprint at the moment because one is already active)</a>\n  "
-    ],
-    "time": 1468454448
-  },
-  {
     "count": 3,
     "events": [
       "<a href=\"https://amitdev.atlassian.net/secure/ViewProfile.jspa?name=admin\" class=\"activity-item-user activity-item-author\">Amit  [Administrator]</a> created       <a href=\"https://amitdev.atlassian.net/browse/TRIAL-4\">TRIAL-4 - As a team, I&#39;d like to estimate the effort of a story in Story Points so we can understand the work remaining &gt;&gt; Try setting the Story Points for this story in the &quot;Estimate&quot; field</a>\n  ",
@@ -10042,13 +10030,30 @@ const HeatMapData2 = [
     "time": 1473308943
   }
 ]
+const HeatMapData3 = [
+  {
+    "count": {
+      num1: 1,
+      num2: 4
+    },
+    "time": 1468454447
+  },
+  {
+    "count": {
+      num1: 2,
+      num2: 4
+    },
+    "time": 1473308943
+  }
+]
 storiesOf(name, module)
-  .add('a simple ak-heatmap', () => (
+  .add('a simple ak-heatmap with jira-type data', () => (
     <div style={{
-        marginTop: '50px'
+        margin: '50px'
       }}>
       <HeatmapWC
         domain="month"
+        range="8"
         data={HeatMapData2}
         dataLocal
         hasButtons
@@ -10057,7 +10062,40 @@ storiesOf(name, module)
         start={new Date(2016, 1)}
       />
     </div>
-  ));
+  ))
+  .add('a simple ak-heatmap with default data', () => (
+    <div style={{
+        margin: '50px'
+      }}>
+      <HeatmapWC
+        domain="month"
+        range="8"
+        data={HeatMapData}
+        hasButtons
+        displayLegend
+        tooltip
+        start={new Date(2000, 1)}
+        legend={[10, 40, 70, 100]}
+      />
+    </div>
+  ))
+  .add('a simple ak-heatmap with evaluated data', () => (
+    <div style={{
+        margin: '50px'
+      }}>
+      <HeatmapWC
+        domain="month"
+        range="8"
+        data={HeatMapData3}
+        dataLocal
+        hasButtons
+        displayLegend
+        tooltip
+        start={new Date(2016, 6)}
+        expression="($$.num1 + $$.num2)"
+      />
+    </div>
+  ));;
 // .add('a simple ak-heatmap with a name', () => (
 //   <HeatmapWC name="MyComponent" />
 // ))

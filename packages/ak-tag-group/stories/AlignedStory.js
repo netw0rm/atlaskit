@@ -8,7 +8,7 @@ const AlignedStory = (props) => (<EventedGroup
 />);
 
 AlignedStory.propTypes = {
-  alignment: React.PropTypes.string.isRequired,
+  alignment: React.PropTypes.string,
   initialTags: React.PropTypes.array.isRequired,
   onRemove: React.PropTypes.func,
 };

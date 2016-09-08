@@ -80,7 +80,7 @@ class EventedGroup extends React.Component {
 
 EventedGroup.displayName = 'EventedGroup';
 EventedGroup.propTypes = {
-  alignment: React.PropTypes.string.isRequired,
+  alignment: React.PropTypes.string,
   initialTags: React.PropTypes.array.isRequired,
   onRemove: React.PropTypes.func,
 };

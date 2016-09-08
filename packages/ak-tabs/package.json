@@ -13,6 +13,7 @@
   "dependencies": {
     "ak-icon": "^1.6.0",
     "akutil-shared-styles": "^33.7.0",
+    "array-equal": "^1.0.0",
     "classnames": "^2.2.5",
     "debounce": "^1.0.0",
     "keycode": "^2.1.4",

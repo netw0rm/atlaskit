@@ -12,11 +12,11 @@ const Component = reactify(AkTabs, {
 });
 
 function selectHandler(e) {
-  action(`The "${e.detail.tab.label}" tab was selected.`)();
+  action(`The "${e.target.label}" tab was selected.`)();
 }
 
 function deselectHandler(e) {
-  action(`The "${e.detail.tab.label}" tab was deselected.`)();
+  action(`The "${e.target.label}" tab was deselected.`)();
 }
 
 storiesOf(name, module)

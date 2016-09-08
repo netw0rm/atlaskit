@@ -31,13 +31,13 @@ describe('ak-tabs behaviour -', () => {
       expect(fixtures.spies.select.callCount).to.equal(1,
         'Tab selection event should have been fired on initialisation'
       );
-      expect(fixtures.spies.select.getCall(0).args[0].detail.tab).to.equal(
+      expect(fixtures.spies.select.getCall(0).args[0].target).to.equal(
         getSelectedTab(fixtures.tabs), 'The tab selection event should be fired on the selected tab'
       );
-      expect(fixtures.spies.select.getCall(0).args[0].detail.tab.selected).to.equal(true,
+      expect(fixtures.spies.select.getCall(0).args[0].target.selected).to.equal(true,
         'The tab passed in the event data should be selected'
       );
-      expect(fixtures.spies.select.getCall(0).args[0].detail.tab.label).to.equal('Tab 1',
+      expect(fixtures.spies.select.getCall(0).args[0].target.label).to.equal('Tab 1',
         'The tab passed in the event data should have the correct label'
       );
     });
@@ -85,7 +85,7 @@ describe('ak-tabs behaviour -', () => {
       expect(fixtures.spies.select.callCount).to.equal(1,
         'Tab selection event should have been fired on initialisation'
       );
-      expect(fixtures.spies.select.getCall(0).args[0].detail.tab).to.equal(
+      expect(fixtures.spies.select.getCall(0).args[0].target).to.equal(
         getSelectedTab(fixtures.tabs), 'The tab selection event should be fired on the selected tab'
       );
     });
@@ -102,13 +102,13 @@ describe('ak-tabs behaviour -', () => {
           expect(fixtures.spies.select.callCount).to.equal(2,
             'Tab selection event should have been fired when selecting a tab'
           );
-          expect(fixtures.spies.select.getCall(1).args[0].detail.tab).to.equal(fixtures.tabs[0],
+          expect(fixtures.spies.select.getCall(1).args[0].target).to.equal(fixtures.tabs[0],
             'The tab selection event should be fired on the first tab'
           );
           expect(fixtures.spies.deselect.callCount).to.equal(1,
             'Tab deselection event should be fired when deselecting a tab'
           );
-          expect(fixtures.spies.deselect.getCall(0).args[0].detail.tab).to.equal(fixtures.tabs[1],
+          expect(fixtures.spies.deselect.getCall(0).args[0].target).to.equal(fixtures.tabs[1],
             'The tab deselection event should be fired on the second tab'
           );
         });
@@ -155,7 +155,7 @@ describe('ak-tabs behaviour -', () => {
       expect(fixtures.spies.select.callCount).to.equal(1,
         'Tab selection event should have been fired on initialisation'
       );
-      expect(fixtures.spies.select.getCall(0).args[0].detail.tab).to.equal(
+      expect(fixtures.spies.select.getCall(0).args[0].target).to.equal(
         getSelectedTab(fixtures.tabs), 'The tab selection event should be fired on the selected tab'
       );
     });
@@ -174,13 +174,13 @@ describe('ak-tabs behaviour -', () => {
           expect(fixtures.spies.select.callCount).to.equal(2,
             'Tab selection event should have been fired when selecting a tab'
           );
-          expect(fixtures.spies.select.getCall(1).args[0].detail.tab).to.equal(fixtures.tabs[7],
+          expect(fixtures.spies.select.getCall(1).args[0].target).to.equal(fixtures.tabs[7],
             'The tab selection event should be fired on the first tab'
           );
           expect(fixtures.spies.deselect.callCount).to.equal(1,
             'Tab deselection event should be fired when deselecting a tab'
           );
-          expect(fixtures.spies.deselect.getCall(0).args[0].detail.tab).to.equal(fixtures.tabs[0],
+          expect(fixtures.spies.deselect.getCall(0).args[0].target).to.equal(fixtures.tabs[0],
             'The tab deselection event should be fired on the first tab'
           );
         });
@@ -201,10 +201,10 @@ describe('ak-tabs behaviour -', () => {
           );
           for (let i = 0; i < 7; i++) {
             expect(fixtures.tabs[i].selected).to.equal(false, `Tab ${i + 1} should be deselected`);
-            expect(fixtures.spies.select.getCall(i + 1).args[0].detail.tab).to.equal(
+            expect(fixtures.spies.select.getCall(i + 1).args[0].target).to.equal(
               fixtures.tabs[i + 1], `The tab selection event should be fired on tab ${i + 1}.`
             );
-            expect(fixtures.spies.deselect.getCall(i).args[0].detail.tab).to.equal(fixtures.tabs[i],
+            expect(fixtures.spies.deselect.getCall(i).args[0].target).to.equal(fixtures.tabs[i],
               `The tab deselection event should be fired on tab ${i}.`
             );
           }

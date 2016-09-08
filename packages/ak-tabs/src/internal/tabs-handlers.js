@@ -1,7 +1,7 @@
 import keycode from 'keycode';
 
 import { getPrevTab, getNextTab } from './tabs-helpers';
-import { focusSelectedOnRender, tabLabel } from './symbols';
+import { focusOnRender, focusOnSecondRender, tabLabel } from './symbols';
 
 function labelMouseDownHandler(e) {
   e.preventDefault(); // Prevent focus on the tab label.
@@ -20,7 +20,7 @@ function labelKeydownHandler(tabsEl, tab) {
       tabToSelect = getNextTab(tabsEl, tab);
     }
     if (tabToSelect) {
-      tabsEl[focusSelectedOnRender] = true;
+      tabsEl[focusOnRender] = true;
       tabToSelect.selected = true;
     }
   };
@@ -30,9 +30,13 @@ function labelRef(tabsEl, tab) {
   return el => {
     tab[tabLabel] = el;
     if (tab.selected) {
-      if (tabsEl[focusSelectedOnRender]) {
+      if (tabsEl[focusOnRender]) {
         el.focus();
-        tabsEl[focusSelectedOnRender] = false;
+        tabsEl[focusOnRender] = false;
+      }
+      if (tabsEl[focusOnSecondRender]) {
+        el.focus();
+        tabsEl[focusOnRender] = tabsEl[focusOnSecondRender] = false;
       }
     } else {
       el.blur(); // Remove focus on a label that is no longer selected.

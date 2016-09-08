@@ -1,4 +1,10 @@
-import { buttonContainer, labelsContainer, tabLabel } from './symbols';
+import {
+  buttonContainer,
+  focusOnRender,
+  focusOnSecondRender,
+  labelsContainer,
+  tabLabel,
+} from './symbols';
 
 const getAllTabs = (tabsEl) => (Array.from(tabsEl.children).filter(el => el.label));
 
@@ -7,8 +13,9 @@ function getNextOrPrevTab(tabsEl, tab, isNext) {
   let index = all.indexOf(tab);
 
   index = isNext ? index + 1 : index - 1;
-  if (index < 0) index = 0;
-  if (index > all.length - 1) index = all.length - 1;
+  if (index < 0 || index > all.length - 1) {
+    return null;
+  }
 
   return all[index];
 }
@@ -90,12 +97,17 @@ const updateProps = (tabsEl) => {
   tabsEl._selected = allTabs.map(el => el.selected); // eslint-disable-line no-underscore-dangle
   tabsEl._labels = allTabs.map(el => el.label); // eslint-disable-line no-underscore-dangle
 
+  const shouldFocusOnSecondRender = tabsEl[focusOnRender];
+  tabsEl[focusOnSecondRender] = false;
+
   /* Wait for render to be called before calculating the tabs that should be visible.
    * We need to do this because new tabs may have been added, so we need to wait for the labels
    * to be rendered before we can calculate their widths and render again if necessary.
    */
-  // eslint-disable-next-line no-underscore-dangle
-  setTimeout(() => (tabsEl._visibleTabs = calculateVisibleTabs(tabsEl)), 0);
+  setTimeout(() => {
+    tabsEl[focusOnSecondRender] = shouldFocusOnSecondRender;
+    tabsEl._visibleTabs = calculateVisibleTabs(tabsEl); // eslint-disable-line no-underscore-dangle
+  }, 0);
 };
 
 export {

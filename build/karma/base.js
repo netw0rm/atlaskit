@@ -40,7 +40,9 @@ module.exports = (config) => {
 
     browsers: ['Chrome', 'Firefox'],
 
-    browserNoActivityTimeout: 60000,
+    browserNoActivityTimeout: 30000,
+
+    reportSlowerThan: 200,
 
     singleRun: false,
 

@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import debounce from 'debounce';
 import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
+import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 
 import * as helpers from './internal/tabs-helpers';
 import * as handlers from './internal/tabs-handlers';
@@ -42,24 +43,24 @@ const definition = {
   },
   attached(elem) {
     // Re-render if necessary when the window is resized.
-    elem[resizeListener] = debounce(
-      () => (elem._visibleTabs = helpers.calculateVisibleTabs(elem)), 200
+    elem[resizeListener] = new ResizeSensor(elem,
+      debounce(() => (elem._visibleTabs = helpers.calculateVisibleTabs(elem)), 200)
     );
-    window.addEventListener('resize', elem[resizeListener]);
   },
   detached(elem) {
-    window.removeEventListener('resize', elem[resizeListener]);
+    elem[resizeListener].detach();
   },
   render(elem) {
     const allTabs = helpers.getAllTabs(elem);
-    const hasOverflowingTabs = elem._visibleTabs.length < allTabs.length;
+    const numTabs = allTabs.length;
+    const hasOverflowingTabs = elem._visibleTabs.length < numTabs;
     const hasSingleTab = elem._visibleTabs.length === 1;
     const buttonClasses = classNames({
       [shadowStyles.locals.akTabLabel]: true,
       [shadowStyles.locals.akTabLabelHidden]: !hasOverflowingTabs,
     });
     const tabsVisible = helpers.getTabsVisibility(elem);
-    // TODO: We need to handle i18n for the 'More' text.
+    let pos = 1;
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
@@ -88,6 +89,8 @@ const definition = {
                   onmousedown={handlers.labelMouseDownHandler}
                   onclick={handlers.labelSelectedHandler(tab)}
                   aria-selected={ariaSelected}
+                  aria-setsize={numTabs}
+                  aria-posinset={pos++}
                   role="tab"
                   ref={handlers.labelRef(elem, tab)}
                 >

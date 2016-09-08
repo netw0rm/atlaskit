@@ -4,7 +4,8 @@ import AkTabs from '../src/index';
 
 import * as events from '../src/internal/events';
 import { buttonContainer, labelsContainer, tabLabel } from '../src/internal/symbols';
-import styles from 'style!../src/host.less';
+import tabsStyles from 'style!../src/host.less';
+import tabStyles from 'style!../src/tab-host.less';
 
 const defaultLabel = 'Default tab label';
 const defaultContent = '<p>Default tab content</p>';
@@ -28,7 +29,7 @@ function setupTabs(opts, cb) {
   const tabElements = [];
 
   // We need to add the class because the tagname is random in our tests.
-  tabsElement.classList.add(styles.akTabs);
+  tabsElement.classList.add(tabsStyles.akTabs);
 
   if (opts.tabs) {
     opts.tabs.forEach(tabOptions => {
@@ -39,6 +40,7 @@ function setupTabs(opts, cb) {
       newTab.selected = !!tabOptions.selected;
       newTab.innerHTML = tabOptions.content || defaultContent;
 
+      newTab.classList.add(tabStyles.akTabsTab);
       tabsElement.appendChild(newTab);
     });
   }

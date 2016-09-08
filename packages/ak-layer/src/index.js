@@ -102,7 +102,19 @@ export default define('ak-layer', {
      * @example @js layer.target = document.body.querySelector('#target');
      * @example @js layer.target = '#target'
      */
-    target: { attribute: true },
+    target: {
+      attribute: true,
+      set(elem, data) {
+        if (elem.alignment) {
+          if (data.newValue !== data.oldValue) {
+            elem.alignment.destroy();
+            elem.alignment = createNewAlignment(elem);
+          } else {
+            elem.alignment.reposition();
+          }
+        }
+      },
+    },
     onRender: {},
     boundariesElement: { attribute: true },
     enableFlip: prop.boolean({

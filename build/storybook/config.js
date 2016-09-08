@@ -3,6 +3,7 @@ import { configure, setAddon } from '@kadira/storybook';
 import 'akutil-polyfills';
 import MonitoredStory from './MonitoredStory.js';
 import MonkeyTestStory from './MonkeyTestStory.js';
+import SwappedDirectionStory from './SwappedDirectionStory.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import minilog from 'minilog';
@@ -65,6 +66,14 @@ setAddon({
       <MonkeyTestStory>
         {storyFn(context)}
       </MonkeyTestStory>
+    ));
+  },
+
+  addSwapped(storyName, storyFn) {
+    this.add(storyName, (context) => (
+      <SwappedDirectionStory>
+        {storyFn(context)}
+      </SwappedDirectionStory>
     ));
   },
 });

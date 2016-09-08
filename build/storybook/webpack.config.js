@@ -13,6 +13,7 @@ module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line n
   // You can change the configuration based on that.
   // 'PRODUCTION' is used when building the static version of storybook.
 
+  storybookBaseConfig.devtool = webpackConfig.devtool;
   storybookBaseConfig.plugins = storybookBaseConfig.plugins.concat(webpackConfig.plugins);
 
   const folders = getPackageRestrictions(process.env.PACKAGE);

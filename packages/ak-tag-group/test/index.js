@@ -1,4 +1,4 @@
-import { afterMutations, getShadowRoot } from 'akutil-common-test';
+import { afterMutations, getShadowRoot, waitUntil } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import TagGroup from '../src';
@@ -9,14 +9,10 @@ chai.should();
 describe('ak-tag-group', () => {
   let component;
 
-  beforeEach((done) => {
+  beforeEach(() => {
     component = new TagGroup();
-
-    afterMutations(
-      // append component to the body to ensure it has been rendered.
-      () => document.body.appendChild(component),
-      done
-    );
+    document.body.appendChild(component);
+    return waitUntil(() => !!getShadowRoot(component));
   });
 
   afterEach(() => {

@@ -50,6 +50,15 @@ describe('KeyPressHandler', () => {
     }, 0);
   });
 
+  it('should pass on the event object', (done) => {
+    document.dispatchEvent(keyPressEvent);
+    setTimeout(() => {
+      expect(keyPressCallback).to.be.called;
+      expect(keyPressCallback).to.have.been.calledWith(keyPressEvent);
+      done();
+    }, 0);
+  });
+
   it('should be possible to remove an event', (done) => {
     keyPressObj.destroy('ESCAPE');
 

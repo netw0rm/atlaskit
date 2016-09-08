@@ -1,3 +1,4 @@
+/* eslint-disable */
 import 'style!./host.less';
 import { vdom, define, prop } from 'skatejs';
 import * as events from './internal/events';
@@ -8,7 +9,6 @@ import ButtonGroup from 'ak-button-group';
 import InlineDialog from 'ak-inline-dialog';
 import { enumeration } from 'akutil-common';
 
-/* eslint-disable no-underscore-dangle */
 const LEGEND_POSITION = {
   attribute: 'legendVerticalPosition',
   values: ['top', 'center', 'bottom'],
@@ -184,15 +184,6 @@ export default define('ak-heatmap', {
             </ButtonGroup>
           </div> :
           null}
-        {elem.tooltip ?
-          <InlineDialog
-            position="top center"
-            hasBlanket={false}
-            ref={(el) => (elem._tooltip = el)}
-            boundariesElement={elem._heatMapContainer}
-          >test</InlineDialog>
-          : null
-        }
       </div>
     );
   },
@@ -215,7 +206,7 @@ export default define('ak-heatmap', {
       verticalOrientation: elem.verticalOrientation,
       colLimit: elem.colLimit,
       rowLimit: elem.rowLimit,
-      // tooltip: elem.tooltip,
+      tooltip: elem.tooltip,
       label: elem.label,
       minDate: elem.minDate,
       maxDate: elem.maxDate,
@@ -224,20 +215,23 @@ export default define('ak-heatmap', {
       legendCellSize: elem.legendCellSize,
       legendCellPadding: elem.legendCellPadding,
       legendVerticalPosition: elem.legendVerticalPosition,
-      start: elem.start,
+      start: elem.start
     };
 
     options = cleanTheObject(options);
-    options.onComplete = () => {
-      setHovers(elem._heatMapContainer, elem);
-    };
+    // options.onComplete = () => {
+    //   setHovers(elem._heatMapContainer, elem);
+    // };
 
-    if (typeof elem.data === 'string') {
+    if (typeof elem.data === 'string' || elem.dataLocal) {
       options.afterLoadData = (data) => {
         let stats = {};
+        let full = {};
         for (var d in data) {
           stats[data[d].time] = data[d].count;
+          full[data[d].time] = data[d];
         }
+        elem._mapData = full;
         return stats;
       };
     }

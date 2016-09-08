@@ -7,7 +7,8 @@ describe('ak-theme, { themes }', () => {
   });
 
   it('themeHandlers', () => {
-    expect(themeHandlers).to.be.a('WeakMap');
+    // If we test WeakMap directly, this breaks in polyfilled browsers.
+    expect(typeof themeHandlers).to.equal('object');
   });
 
   it('themeNameFromNode', () => {

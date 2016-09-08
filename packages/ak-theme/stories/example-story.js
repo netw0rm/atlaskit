@@ -3,18 +3,24 @@ import { name } from '../package.json';
 import { define, vdom } from 'skatejs';
 import { style } from 'akutil-common';
 import reactify from 'akutil-react';
-import Theme, { themeable } from '../src/index';
+import Theme, { themeable, Var } from '../src/index';
 
 const ReactTheme = reactify(Theme);
+const ReactThemeVar = reactify(Var);
 const TestTheme1 = () => (
-  <ReactTheme id="x-btn">
-    <ak-var name="background" value="blue" />
-    <ak-var name="text" value="white" />
+  <ReactTheme id="x-btn-base">
+    <ReactThemeVar name="background" value="blue" />
+    <ReactThemeVar name="text" value="white" />
   </ReactTheme>
 );
 const TestTheme2 = () => (
+  <ReactTheme id="x-btn" mixin="x-btn-base">
+    <ReactThemeVar name="background" value="red" />
+  </ReactTheme>
+);
+const TestTheme3 = () => (
   <ReactTheme id="x-btn-super" mixin="x-btn">
-    <ak-var name="background" value="red" />
+    <ReactThemeVar name="background" value="orange" />
   </ReactTheme>
 );
 const Btn = reactify(define('x-btn', themeable({
@@ -31,16 +37,13 @@ const Btn = reactify(define('x-btn', themeable({
 })));
 
 storiesOf(name, module)
-  .add('one ak-theme', () => (
-    <div>
-      <TestTheme1 />
-      <Btn>test</Btn>
-    </div>
-  ))
-  .add('one theme mixing in another theme', () => (
+  .add('theme casdcading', () => (
     <div>
       <TestTheme1 />
       <TestTheme2 />
-      <Btn themeName="x-btn-super">test</Btn>
+      <TestTheme3 />
+      <Btn themeName="x-btn-base">theme: x-btn-base</Btn>
+      <Btn>theme: x-btn (default)</Btn>
+      <Btn themeName="x-btn-super">theme: x-btn-super</Btn>
     </div>
   ));

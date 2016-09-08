@@ -3,19 +3,28 @@ import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
 import { props, Component } from 'skatejs';
 import { name } from '../package.json';
-import { afterMutations, getShadowRoot, checkVisibility } from 'akutil-common-test';
+import { afterMutations, getShadowRoot, checkVisibility, waitUntil } from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-function createDropdown() {
-  const html = `<ak-dropdown>
-                  <ak-dropdown-trigger slot="trigger">test</ak-dropdown-trigger>
-                  <ak-dropdown-item>124</ak-dropdown-item>
-                  <ak-dropdown-item>444</ak-dropdown-item>
-                </ak-dropdown>`;
-  return html;
+function setupComponent() {
+  const component = new Dropdown();
+  component.innerHTML = `
+    <ak-dropdown-trigger slot="trigger">test</ak-dropdown-trigger>
+    <ak-dropdown-item>124</ak-dropdown-item>
+    <ak-dropdown-item>444</ak-dropdown-item>
+  `;
+  const componentHasShadowRoot = () => !!getShadowRoot(component);
+
+  document.body.appendChild(component);
+
+  return waitUntil(componentHasShadowRoot).then(() => component);
+}
+
+function tearDownComponent(component) {
+  document.body.removeChild(component);
 }
 
 describe('ak-dropdown', () => {
@@ -45,23 +54,13 @@ describe('ak-dropdown', () => {
 
   describe('general behavior', () => {
     let component;
-    let dropdownContainer;
     let shadowRoot;
 
-    beforeEach((done) => {
-      dropdownContainer = document.createElement('div');
-      dropdownContainer.innerHTML = createDropdown();
-      document.body.appendChild(dropdownContainer);
-
-      afterMutations(
-        () => (component = dropdownContainer.firstChild),
-        () => (shadowRoot = getShadowRoot(component)),
-        done
-      );
-    });
-    afterEach(() => {
-      document.body.removeChild(dropdownContainer);
-    });
+    beforeEach(() => setupComponent().then(newComponent => {
+      component = newComponent;
+      shadowRoot = getShadowRoot(component);
+    }));
+    afterEach(() => tearDownComponent(component));
 
     it('should be possible to create a component', () => {
       // testing to see that skate did its job as expected

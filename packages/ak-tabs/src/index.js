@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import debounce from 'debounce';
 import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
+import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 
 import * as helpers from './internal/tabs-helpers';
 import * as handlers from './internal/tabs-handlers';
@@ -12,6 +13,7 @@ import * as events from './internal/events';
 import * as i18n from './internal/i18n';
 import Tab from './index-tab';
 import Icon from 'ak-icon';
+import Dropdown, { Item, Trigger } from 'ak-dropdown';
 
 import { buttonContainer, labelsContainer, tabLabel } from './internal/symbols';
 const resizeListener = Symbol();
@@ -31,13 +33,12 @@ const definition = {
   },
   attached(elem) {
     // Re-render if necessary when the window is resized.
-    elem[resizeListener] = debounce(
-      () => (elem._visibleTabs = helpers.calculateVisibleTabs(elem)), 200
+    elem[resizeListener] = new ResizeSensor(elem,
+      debounce(() => (elem._visibleTabs = helpers.calculateVisibleTabs(elem)), 200)
     );
-    window.addEventListener('resize', elem[resizeListener]);
   },
   detached(elem) {
-    window.removeEventListener('resize', elem[resizeListener]);
+    elem[resizeListener].detach();
   },
   updated(elem, prev) {
     if (!prev) {
@@ -53,12 +54,15 @@ const definition = {
   },
   render(elem) {
     const allTabs = helpers.getAllTabs(elem);
+    const numTabs = allTabs.length;
     const hasOverflowingTabs = elem._visibleTabs.length < allTabs.filter(el => el[tabLabel]).length;
     const hasSingleTab = elem._visibleTabs.length === 1;
     const buttonClasses = classNames({
       [shadowStyles.locals.akTabLabel]: true,
       [shadowStyles.locals.akTabLabelHidden]: !hasOverflowingTabs,
     });
+    const tabsVisible = helpers.getTabsVisibility(elem);
+    let pos = 1;
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
@@ -71,7 +75,7 @@ const definition = {
             tab => {
               const ariaSelected = `${!!tab.selected}`;
               const tabIndex = tab.selected ? '0' : '-1';
-              const isVisible = elem._visibleTabs.indexOf(tab) > -1;
+              const isVisible = tabsVisible.get(tab);
               const isSingleTab = hasSingleTab && isVisible;
               const classes = classNames({
                 [shadowStyles.locals.akTabLabel]: true,
@@ -85,8 +89,10 @@ const definition = {
                   tabIndex={tabIndex}
                   onkeydown={handlers.labelKeydownHandler(elem, tab)}
                   onmousedown={handlers.labelMouseDownHandler}
-                  onclick={handlers.labelClickHandler(tab)}
+                  onclick={handlers.labelSelectedHandler(tab)}
                   aria-selected={ariaSelected}
+                  aria-setsize={numTabs}
+                  aria-posinset={pos++}
                   role="tab"
                   ref={handlers.labelRef(elem, tab)}
                 >
@@ -95,11 +101,24 @@ const definition = {
               );
             }
           ).concat(
-            <li className={buttonClasses} ref={el => (elem[buttonContainer] = el)}>
-              <a className={shadowStyles.locals.akTabsButton}>
-                <span>{i18n.more}</span>
-                <Icon glyph="expand" />
-              </a>
+            <li
+              className={buttonClasses}
+              aria-hidden="true"
+              ref={el => (elem[buttonContainer] = el)}
+            >
+              <Dropdown>
+                <Trigger slot="trigger" tabIndex="-1">
+                  <a className={shadowStyles.locals.akTabsButton}>
+                    <span>{i18n.more}</span>
+                    <Icon glyph="expand" />
+                  </a>
+                </Trigger>
+                {
+                  allTabs && allTabs.filter(tab => !tabsVisible.get(tab)).map(tab => (
+                    <Item onSelected={handlers.labelSelectedHandler(tab)}>{tab.label}</Item>
+                  ))
+                }
+              </Dropdown>
             </li>
           )
         }

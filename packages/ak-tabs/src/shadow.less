@@ -4,7 +4,6 @@
   display: flex;
   list-style-type: none;
   margin: 0;
-  overflow: hidden;
   padding: 0;
   position: relative;
 }
@@ -12,6 +11,7 @@
 .ak-tab-label {
   color: @ak-tabs-color-label-default;
   cursor: pointer;
+  flex: 0 0 auto; // Prevents labels from shrinking in Safari when the container shrinks.
   font-size: @ak-tabs-font-size;
   line-height: @ak-tabs-line-height;
   padding: @ak-tabs-padding-vertical @ak-tabs-padding-horizontal;
@@ -25,24 +25,24 @@
   }
 
   &:focus {
-    outline: none;
-    box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
     border-radius: 3px;
+    box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
+    outline: none;
   }
 
   .ak-tabs-button {
+    align-items: center;
     cursor: pointer;
     display: flex;
-    align-items: center;
   }
 
   &.ak-tab-label-hidden {
     opacity: 0;
     position: absolute;
-    visibility: hidden;
   }
 
   &.ak-tab-label-single {
+    flex-shrink: 1;
     min-width: 30px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -53,14 +53,14 @@
 .ak-tab-labels:not(:empty)::before,
 .ak-tab-label-selected::after {
   background-color: @ak-tabs-color-line-default;
+  bottom: 0;
   content: '';
   height: 1px;
+  left: @ak-tabs-padding-horizontal;
   margin: 0;
   position: absolute;
-  width: inherit;
-  bottom: 0;
-  left: @ak-tabs-padding-horizontal;
   right: @ak-tabs-padding-horizontal;
+  width: inherit;
 }
 
 .ak-tab-label-selected {

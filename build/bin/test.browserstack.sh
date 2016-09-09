@@ -11,6 +11,6 @@ retry \
 --retries=2 \
 -- \
 karma start \
-karma.conf.browserstack.js \
+./build/karma/browserstack.js \
 --single-run \
 --reporters=mocha,junit

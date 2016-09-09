@@ -1,5 +1,5 @@
-const webpackConfig = require('./webpack.config.karma.js');
-const addPolyFills = require('./karma.conf.addPolyFills.js');
+const webpackConfig = require('../webpack/karma.js');
+const addPolyFills = require('./addPolyFills.js');
 
 module.exports = (config) => {
   Object.assign(config, {

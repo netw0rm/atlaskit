@@ -7,7 +7,7 @@ function labelMouseDownHandler(e) {
   e.preventDefault(); // Prevent focus on the tab label.
 }
 
-function labelClickHandler(tab) {
+function labelSelectedHandler(tab) {
   return () => (tab.selected = true);
 }
 
@@ -46,7 +46,7 @@ function labelRef(tabsEl, tab) {
 
 export {
   labelMouseDownHandler,
-  labelClickHandler,
+  labelSelectedHandler,
   labelKeydownHandler,
   labelRef,
 };

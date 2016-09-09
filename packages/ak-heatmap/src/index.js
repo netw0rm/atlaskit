@@ -163,14 +163,9 @@ function setHovers(node, elem) {
 
 function evaluate(obj, expression) {
   const res = new Function('$$', 'return ' + expression)(obj);
-  console.log(obj, expression, res);
   return res;
 }
 
-function getCount(count, expression) {
-  const res = (typeof count !== 'object') ? count : evaluate(count, expression);
-  return res;
-}
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class Heatmap
@@ -239,7 +234,7 @@ export default define('ak-heatmap', {
         let stats = {};
         let full = {};
         for (var d in data) {
-          stats[data[d].time] = getCount(data[d].count, elem.expression);
+          stats[data[d].time] = elem.expression? evaluate(data[d], elem.expression) : data[d].count
         }
         return stats;
       };

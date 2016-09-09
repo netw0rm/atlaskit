@@ -10032,14 +10032,16 @@ const HeatMapData2 = [
 ]
 const HeatMapData3 = [
   {
-    "count": {
+    "count": 1,
+    data: {
       num1: 1,
       num2: 4
     },
     "time": 1468454447
   },
   {
-    "count": {
+    "count": 1,
+    data: {
       num1: 2,
       num2: 4
     },
@@ -10092,7 +10094,7 @@ storiesOf(name, module)
         displayLegend
         tooltip
         start={new Date(2016, 6)}
-        expression="($$.num1 + $$.num2)"
+        expression="($$.data.num1 + $$.data.num2 + $$.count)"
       />
     </div>
   ));;

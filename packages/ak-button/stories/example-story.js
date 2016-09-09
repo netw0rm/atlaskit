@@ -79,16 +79,26 @@ storiesOf(name, module)
   .add('compact buttons with all attributes', () =>
     <div>
       <p>
-        <AkButton className={buttonClass} compact>
+        <AkButton className={buttonClass} compact style={{ 'margin-right': '10px' }}>
           Button
         </AkButton>
-        <AkButton className={buttonClass} compact appearance="primary">
+        <AkButton
+          className={buttonClass}
+          compact
+          appearance="primary"
+          style={{ 'margin-right': '10px' }}
+        >
           Button
         </AkButton>
-        <AkButton className={buttonClass} compact appearance="subtle">
+        <AkButton
+          className={buttonClass}
+          compact
+          appearance="subtle"
+          style={{ 'margin-right': '10px' }}
+        >
           Button
         </AkButton>
-        <AkButton className={buttonClass} compact selected>
+        <AkButton className={buttonClass} compact selected style={{ 'margin-right': '10px' }}>
           Button
         </AkButton>
         <AkButton
@@ -96,6 +106,7 @@ storiesOf(name, module)
           compact
           disabled
           onclick={action('clicking the WebComponent')}
+          style={{ 'margin-right': '10px' }}
         >
           Button
         </AkButton>

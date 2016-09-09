@@ -12,7 +12,8 @@ export default function buttonStatesExample(dependencies) {
         compact: false,
         appearance: APPEARANCE.STANDARD,
         label: 'Button',
-        glyph: false,
+        before: false,
+        after: false,
       };
     }
 
@@ -42,22 +43,22 @@ export default function buttonStatesExample(dependencies) {
       );
     }
 
-    createRadioIconOption(glyph) {
+    createRadioIconOption(glyph, side) {
       return (
         <label>
           <input
             type="radio"
-            onChange={() => this.setState({ glyph })}
-            checked={this.state.glyph === glyph}
+            onChange={() => this.setState({ [side]: glyph })}
+            checked={this.state[side] === glyph}
           />
           {glyph || 'no icon'}
         </label>
       );
     }
 
-    createIcon() {
-      if (this.state.glyph) {
-        return (<Icon slot="before" key={this.state.glyph} glyph={this.state.glyph} />);
+    createIcon(side) {
+      if (this.state[side]) {
+        return (<Icon slot={side} key={`${side}-${this.state[side]}`} glyph={this.state[side]} />);
       }
       return false;
     }
@@ -84,10 +85,18 @@ export default function buttonStatesExample(dependencies) {
           </form>
           <br />
           <form>
-            <label><strong>Icons</strong></label>
+            <label><strong>Left Icons</strong></label>
             <br />
             {
-              GLYPHS.map(glyph => this.createRadioIconOption(glyph))
+              GLYPHS.map(glyph => this.createRadioIconOption(glyph, 'before'))
+            }
+          </form>
+          <br />
+          <form>
+            <label><strong>Right Icons</strong></label>
+            <br />
+            {
+              GLYPHS.map(glyph => this.createRadioIconOption(glyph, 'after'))
             }
           </form>
           <br />
@@ -111,7 +120,8 @@ export default function buttonStatesExample(dependencies) {
               className={buttonClass}
               onclick={action('clicking the WebComponent')}
             >
-              {this.createIcon()}
+              {this.createIcon('before')}
+              {this.createIcon('after')}
               {this.state.label}
             </AkButton>
           </p>

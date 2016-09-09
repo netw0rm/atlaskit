@@ -71,6 +71,15 @@ describe('ak-button', () => {
         expect(window.getComputedStyle(div).marginRight).to.equal('8px')
       );
     });
+
+    describe('after', () => {
+      const div = createDivTest({ slotName: 'after' });
+      beforeEach(() => component.appendChild(div));
+
+      it('slotted element should have margin-left applied', () =>
+        expect(window.getComputedStyle(div).marginLeft).to.equal('8px')
+      );
+    });
   });
 
   describe('attributes', () => {

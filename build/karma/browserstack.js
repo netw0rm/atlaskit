@@ -18,9 +18,9 @@ module.exports = (config) => {
     reporters: ['dots', 'BrowserStack'],
     browserNoActivityTimeout: 30000,
     autoWatch: false,
-    concurrency: 1,
+    concurrency: 5,
     client: {},
     customLaunchers: browserStackBrowsers,
-    browsers: Object.keys(browserStackBrowsers),
+    browsers: ['internet_explorer_11'], //Object.keys(browserStackBrowsers),
   });
 };

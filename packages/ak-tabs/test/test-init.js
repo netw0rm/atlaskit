@@ -137,7 +137,7 @@ describe('ak-tabs initialisation -', () => {
         });
 
         it('does not show the More dropdown', () =>
-          expect(waitUntil(() => !hasVisibleDropdown(fixtures.el))).to.be.fulfilled
+          waitUntil(() => !hasVisibleDropdown(fixtures.el)).should.be.fulfilled
         );
       });
     });

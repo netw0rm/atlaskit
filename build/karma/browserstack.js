@@ -18,7 +18,7 @@ module.exports = (config) => {
     reporters: ['dots', 'BrowserStack'],
     browserNoActivityTimeout: 30000,
     autoWatch: false,
-    concurrency: 5,
+    concurrency: 1,
     client: {},
     customLaunchers: browserStackBrowsers,
     browsers: Object.keys(browserStackBrowsers),

@@ -42,8 +42,6 @@ module.exports = (config) => {
 
     reportSlowerThan: 200,
 
-    browserNoActivityTimeout: 90000,
-
     singleRun: false,
 
     concurrency: Infinity,

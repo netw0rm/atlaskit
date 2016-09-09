@@ -1,16 +1,17 @@
 /* eslint-disable */
-import { Slice } from 'prosemirror/dist/model';
+import './types';
+import { Slice } from 'ak-editor-prosemirror';
 import { markdownParser } from './markdown-parser';
 
-export const markdownTransformer = function(schema, slice) {
+export const markdownTransformer = function(schema: any, slice: any) {
   var sliceContents = '';
-  const canParseAsMarkdown = slice.content.content.every((node) => {
+  const canParseAsMarkdown = slice.content.content.every((node: any) => {
     // we attempt to convert to Markdown if only all nodes are paragraphs
     if (node.type.name !== "paragraph") return false;
 
     sliceContents = sliceContents + node.toDOM().innerText + '\n';
     // all nodes in a paragraph should either be text (without any marks) and hard breaks.
-    return node.content.content.every((child) => {
+    return node.content.content.every((child: any) => {
       return ['text', 'hard_break'].indexOf(child.type.name) > -1 && !child.marks.length
     });
   });

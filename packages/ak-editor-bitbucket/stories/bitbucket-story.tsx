@@ -1,33 +1,24 @@
 import { storiesOf, action } from '@kadira/storybook';
 import BitbucketComponent from '../src';
 import reactify from 'akutil-react';
-import { vdom } from 'skatejs';
-const { React, ReactDOM } = window;
+import { base64fileconverter } from 'ak-editor-test';
+import { Component } from 'react';
 
-const Bitbucket = reactify(BitbucketComponent, { React, ReactDOM });
+const Bitbucket = reactify(BitbucketComponent);
+const { Converter, dropHandler, pasteHandler } = base64fileconverter;
+const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
-import {
-  Converter,
-  dropHandler,
-  pasteHandler,
-} from 'atlassian-editorkit-image-upload-plugin/dist/base64fileconverter';
-
-const converter = new Converter(
-  [
-    'jpg',
-    'jpeg',
-    'png',
-    'gif',
-    'svg',
-  ],
-  10000000
-);
-
-const imageUploader = (e, fn) => {
+const imageUploader = (e: any, fn: any) => {
   if (e instanceof ClipboardEvent) {
     pasteHandler(converter, e, fn);
   } else if (e instanceof DragEvent) {
     dropHandler(converter, e, fn);
+  } else {
+    // we cannot trigger a real file viewer from here
+    // so we just simulate a succesful image upload and insert an image
+    fn({
+      src: 'https://design.atlassian.com/images/brand/logo-21.png'
+    });
   }
 };
 
@@ -52,14 +43,16 @@ storiesOf('ak-editor-bitbucket', module)
     />
   ))
   .add('Markdown preview', () => {
-    class Demo extends React.Component {
+    type Props = {};
+    type State = { markdown: string };
+    class Demo extends Component<Props, State> {
       constructor() {
         super();
         this.state = { markdown: '' };
         this.updateMarkdown = this.updateMarkdown.bind(this);
       }
 
-      updateMarkdown(e) {
+      updateMarkdown(e: any) {
         this.setState({ markdown: e.target.value });
       }
 
@@ -67,7 +60,7 @@ storiesOf('ak-editor-bitbucket', module)
         return (
           <div ref="root">
             <Bitbucket
-              defaultValue="What do you want to say?"
+              placeholder="What do you want to say?"
               onChange={this.updateMarkdown}
               onReady={this.updateMarkdown}
             />

@@ -10012,62 +10012,11 @@ const HeatMapData = {
   "978319139": 4,
   "978324903": 5
 }
-const HeatMapData2 = [
-  {
-    "count": 3,
-    "events": [
-      "<a href=\"https://amitdev.atlassian.net/secure/ViewProfile.jspa?name=admin\" class=\"activity-item-user activity-item-author\">Amit  [Administrator]</a> created       <a href=\"https://amitdev.atlassian.net/browse/TRIAL-4\">TRIAL-4 - As a team, I&#39;d like to estimate the effort of a story in Story Points so we can understand the work remaining &gt;&gt; Try setting the Story Points for this story in the &quot;Estimate&quot; field</a>\n  ",
-      "<a href=\"https://amitdev.atlassian.net/secure/ViewProfile.jspa?name=admin\" class=\"activity-item-user activity-item-author\">Amit  [Administrator]</a> created       <a href=\"https://amitdev.atlassian.net/browse/TRIAL-2\">TRIAL-2 - As a product owner, I&#39;d like to express work in terms of actual user problems, aka User Stories, and place them in the backlog &gt;&gt; Try creating a new story with the &quot;+ Create Issue&quot; button (top right of screen)</a>\n  ",
-      "<a href=\"https://amitdev.atlassian.net/secure/ViewProfile.jspa?name=admin\" class=\"activity-item-user activity-item-author\">Amit  [Administrator]</a> created       <a href=\"https://amitdev.atlassian.net/browse/TRIAL-1\">TRIAL-1 - As an Agile team, I&#39;d like to learn about Scrum &gt;&gt; Click the &quot;TRIAL-1&quot; link at the left of this row to see detail in the Description tab on the right</a>\n  "
-    ],
-    "time": 1468454447
-  },
-  {
-    "count": 1,
-    "events": [
-      "<a href=\"https://amitdev.atlassian.net/secure/ViewProfile.jspa?name=admin\" class=\"activity-item-user activity-item-author\">Amit  [Administrator]</a> created       <a href=\"https://amitdev.atlassian.net/browse/TRIAL-24\">TRIAL-24 - trial</a>\n  "
-    ],
-    "time": 1473308943
-  }
-]
-const HeatMapData3 = [
-  {
-    "count": 1,
-    data: {
-      num1: 1,
-      num2: 4
-    },
-    "time": 1468454447
-  },
-  {
-    "count": 1,
-    data: {
-      num1: 2,
-      num2: 4
-    },
-    "time": 1473308943
-  }
-]
+
 storiesOf(name, module)
-  .add('a simple ak-heatmap with jira-type data', () => (
+  .add('a simple ak-heatmap with test data', () => (
     <div style={{
-        margin: '50px'
-      }}>
-      <HeatmapWC
-        domain="month"
-        range="8"
-        data={HeatMapData2}
-        dataLocal
-        hasButtons
-        displayLegend
-        tooltip
-        start={new Date(2016, 1)}
-      />
-    </div>
-  ))
-  .add('a simple ak-heatmap with default data', () => (
-    <div style={{
-        margin: '50px'
+        margin: '100px'
       }}>
       <HeatmapWC
         domain="month"
@@ -10081,20 +10030,36 @@ storiesOf(name, module)
       />
     </div>
   ))
-  .add('a simple ak-heatmap with evaluated data', () => (
+  .add('a simple ak-heatmap with jira data', () => (
     <div style={{
-        margin: '50px'
+        margin: '100px'
       }}>
       <HeatmapWC
         domain="month"
         range="8"
-        data={HeatMapData3}
+        data="https://activity-streams.internal.domain.dev.atlassian.io/jira"
+        dataLocal
+        hasButtons
+        displayLegend
+        tooltip
+        start={new Date(2016, 1)}
+      />
+    </div>
+  ))
+  .add('a simple ak-heatmap with evaluated bitbucket data', () => (
+    <div style={{
+        margin: '100px'
+      }}>
+      <HeatmapWC
+        domain="month"
+        range="8"
+        data="https://activity-streams.internal.domain.dev.atlassian.io/bitbucket"
         dataLocal
         hasButtons
         displayLegend
         tooltip
         start={new Date(2016, 6)}
-        expression="($$.data.num1 + $$.data.num2 + $$.count)"
+        expression="Math.round(($$.data.comments + $$.data.commits + $$.data['pull-requests'])/3)"
       />
     </div>
   ));;

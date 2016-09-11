@@ -15,6 +15,5 @@
   .slottedEditorButton() { margin-left: 10px; }
   > slot > * { .slottedEditorButton(); }
   > ::content > * { .slottedEditorButton(); }
-  // Re-instate when https://ecosystem.atlassian.net/browse/AK-146 is resolved.
-  //> ::slotted(*) { .slottedEditorButton(); }
+  > ::slotted(*) { .slottedEditorButton(); }
 }

@@ -1,8 +1,9 @@
-/* eslint-disable */
-import { browser, commands, Keymap } from  "ak-editor-prosemirror";
+import { browser, commands, Keymap, ProseMirror, Schema } from  "ak-editor-prosemirror";
 
 const { wrapIn, setBlockType, wrapInList, splitListItem, liftListItem,
   sinkListItem, chainCommands, newlineInCode, toggleMark } = commands;
+
+type Command = (pm: ProseMirror, apply?: any) => any;
 
 // Note: This is a copy pasta from prosemirror's example setup.
 // Modified to match custom nodes and markers.
@@ -30,13 +31,13 @@ const { wrapIn, setBlockType, wrapInList, splitListItem, liftListItem,
 // You can suppress or map these bindings by passing a `mapKeys`
 // argument, which maps key names (say `"Mod-B"` to either `false`, to
 // remove the binding, or a new key name string.
-export function buildKeymap(schema, mapKeys) {
-  let keys = {}
-  function bind(key, cmd) {
+export function buildKeymap(schema: Schema, mapKeys?: { [key: string]: (string | boolean) }) {
+  let keys: { [key: string]: Command } = {}
+  function bind(key: string, cmd: Command) {
     if (mapKeys) {
       let mapped = mapKeys[key];
       if (mapped === false) return;
-      if (mapped) key = mapped
+      if (mapped) key = mapped as string
     }
     keys[key] = cmd;
   }
@@ -73,7 +74,7 @@ export function buildKeymap(schema, mapKeys) {
 
     if (name === "hard_break") {
       let cmd = chainCommands(newlineInCode,
-                              pm => pm.tr.replaceSelection(node.create()).applyAndScroll());
+        (pm: ProseMirror) => pm.tr.replaceSelection(node.create()).applyAndScroll());
       bind("Mod-Enter", cmd);
       bind("Shift-Enter", cmd);
       if (browser.mac) bind("Ctrl-Enter", cmd)

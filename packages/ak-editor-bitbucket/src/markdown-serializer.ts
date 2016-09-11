@@ -55,7 +55,7 @@ export const markdownSerializer = new MarkdownSerializer({
     state.write("\\\n")
   },
   text(state, node) {
-    state.text(node.text)
+    state.text(node.textContent)
   },
   entity_inline(state, node) {
     state.text(node.attrs.data);

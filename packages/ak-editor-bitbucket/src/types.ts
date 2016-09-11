@@ -1,7 +1,5 @@
 declare module "prosemirror/*";
 declare module "*/markdown-parser";
-declare module "*/keymap";
-declare module "*/markdown-serializer";
 declare module "*.less";
 declare module "lodash.invert";
 declare module "classnames";

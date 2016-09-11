@@ -129,7 +129,7 @@ class AkEditorBitbucket extends Component {
   defaultValue: string;
   placeholder: string;
   imageUploader: Function;
-  context: string;
+  context: 'comment' | 'object' = 'object';
   expanded: boolean;
 
   // private state

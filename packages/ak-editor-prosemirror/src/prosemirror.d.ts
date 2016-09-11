@@ -1,5 +1,5 @@
 declare module 'prosemirror/dist/collab' {
-    export import { rebaseSteps } from 'prosemirror/dist/collab/rebase';
+    export { rebaseSteps } from 'prosemirror/dist/collab/rebase';
     export const collabEditing: any;
 }
 
@@ -285,7 +285,7 @@ declare module 'prosemirror/dist/edit/transform' {
         applyAndScroll(): any;
         selection: any;
         setSelection(selection: any): this;
-        replaceSelection(node: any, inheritMarks: any): this;
+        replaceSelection(node: any, inheritMarks?: boolean): this;
         deleteSelection(): any;
         typeText(text: any): this;
     }
@@ -408,9 +408,20 @@ declare module 'prosemirror/dist/markdown' {
 }
 
 declare module 'prosemirror/dist/markdown/to_markdown' {
+    import { Node, Mark } from 'prosemirror/dist/model';
+    type NodeSerializer = (state: MarkdownSerializerState, node: Node) => void;
+    type MarkEdgeSerializer = string | ((state: MarkdownSerializerState, mark: Mark) => string);
+    interface MarkSerializer {
+      open: MarkEdgeSerializer;
+      close: MarkEdgeSerializer;
+      mixable?: boolean;
+    }
     export class MarkdownSerializer {
-        constructor(nodes: any, marks: any);
-        serialize(content: any, options: any): any;
+        constructor(
+          nodes: { [name: string]: NodeSerializer },
+          marks: { [name: string]: MarkSerializer },
+        );
+        serialize(content: Node, options?: any): any;
     }
     export const defaultMarkdownSerializer: MarkdownSerializer;
     export class MarkdownSerializerState {
@@ -421,12 +432,12 @@ declare module 'prosemirror/dist/markdown/to_markdown' {
         ensureNewLine(): void;
         write(content: any): void;
         closeBlock(node: any): void;
-        text(text: any, escape: any): void;
+        text(text: any, escape?: any): void;
         render(node: any): void;
         renderContent(parent: any): void;
         renderInline(parent: any): void;
-        renderList(node: any, delim: any, firstDelim: any): void;
-        esc(str: any, startOfLine: any): any;
+        renderList(node: any, delim: any, firstDelim: (i: number) => string): void;
+        esc(str: any, startOfLine?: any): any;
         quote(str: any): string;
         repeat(str: any, n: any): string;
         markString(mark: any, open: any): any;
@@ -528,7 +539,7 @@ declare module 'prosemirror/dist/menu/menu' {
     export function toggleMarkItem(markType: any, options: any): MenuItem;
     export function insertItem(nodeType: any, options: any): MenuItem;
     export function wrapItem(nodeType: any, options: any): MenuItem;
-    export export function blockTypeItem(nodeType: any, options: any): MenuItem;
+    export function blockTypeItem(nodeType: any, options: any): MenuItem;
 }
 
 declare module 'prosemirror/dist/menu/menubar' {

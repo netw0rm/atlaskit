@@ -15,11 +15,10 @@ import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
-import { schema } from './schema';
+import schema from 'ak-editor-schema';
 import { buildKeymap } from './keymap';
 import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';
-import { nodeLifecycleHandler } from './node-lifecycle';
 import { markdownTransformer } from './paste-handlers';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import {
@@ -40,6 +39,7 @@ import {
   default as TextFormattingPlugin,
   MarkType,
 } from 'ak-editor-plugin-text-formatting';
+import MentionsPlugin from 'ak-editor-plugin-mentions';
 
 // typescript removes unused var if we import it :(
 const { vdom } = require('skatejs');
@@ -418,6 +418,7 @@ class AkEditorBitbucket extends Component {
         BlockTypePlugin,
         ListsPlugin,
         TextFormattingPlugin,
+        MentionsPlugin,
       ],
     });
 
@@ -457,6 +458,15 @@ class AkEditorBitbucket extends Component {
       this._canChangeTextFormatting = !state.disabled;
     });
 
+    // Mentions wiring
+    const emitMentionEvent = (ev: string) => {
+      return (el: HTMLElement, pm: ProseMirror) => emit(this, ev, {
+        detail: { el, pm }
+      });
+    }
+    MentionsPlugin.get(pm).renderHandler = emitMentionEvent('mentionrender');
+    MentionsPlugin.get(pm).autocompleteHandler = emitMentionEvent('mentionautocomplete');
+
     // avoid invoking keyboard shortcuts in BB
     pm.wrapper.addEventListener('keypress', e => e.stopPropagation());
     pm.wrapper.addEventListener('keydown', e => e.stopPropagation());
@@ -466,9 +476,6 @@ class AkEditorBitbucket extends Component {
 
     // add paste handlers
     pm.on.transformPasted.add(slice => markdownTransformer(pm.schema, slice));
-
-    // add node life cycle handler
-    pm.on.flush.add(() => nodeLifecycleHandler(pm));
 
     // 'change' event is public API
     pm.on.change.add(() => emit(this, 'change'));

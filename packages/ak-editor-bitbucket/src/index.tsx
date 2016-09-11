@@ -2,7 +2,7 @@ import './types';
 import autobind from 'autobind-decorator';
 import * as events from './internal/events';
 import { define, prop, emit, Component } from 'skatejs';
-import { ProseMirror, Schema } from 'ak-editor-prosemirror';
+import { ProseMirror, Schema, Text } from 'ak-editor-prosemirror';
 import 'style!./host.less';
 import cx from 'classnames';
 import maybe from './maybe';
@@ -17,7 +17,6 @@ import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
 import schema from 'ak-editor-schema';
 import { buildKeymap } from './keymap';
-import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';
 import { markdownTransformer } from './paste-handlers';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
@@ -410,7 +409,7 @@ class AkEditorBitbucket extends Component {
 
     const pm = new ProseMirror({
       place: this._wrapper,
-      doc: markdownParser(new Schema(schema)).parse(this.defaultValue),
+      doc: new Text({}, this.defaultValue),
       plugins: [
         MarkdownInputRulesPlugin,
         HyperlinkPlugin,

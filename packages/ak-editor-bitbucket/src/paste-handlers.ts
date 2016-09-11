@@ -1,7 +1,6 @@
 /* eslint-disable */
 import './types';
 import { Slice } from 'ak-editor-prosemirror';
-import { markdownParser } from './markdown-parser';
 
 export const markdownTransformer = function(schema: any, slice: any) {
   var sliceContents = '';
@@ -17,8 +16,7 @@ export const markdownTransformer = function(schema: any, slice: any) {
   });
 
   if (canParseAsMarkdown && sliceContents.length) {
-    const parsed = markdownParser(schema).parse(sliceContents);
-    return new Slice(parsed.content, slice.openLeft, slice.openRight, slice.possibleParent);
+    return new Slice(sliceContents, slice.openLeft, slice.openRight, slice.possibleParent);
   } else {
     return slice
   }

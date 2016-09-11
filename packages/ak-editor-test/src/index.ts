@@ -6,6 +6,7 @@ export { base64fileconverter };
 export { default as chaiPlugin } from './chai';
 export { default as SyncPlugin } from './sync-plugin';
 export { default as makeEditor } from './make-editor';
+export { default as fixtures } from './fixtures';
 export {
   doc, p, blockquote, pre, h1, h2, li, ul, ol, br, img, hr, em, strong, code, a,
   text, fragment, slice

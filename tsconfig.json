@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": false,
+    "experimentalDecorators": true,
     "jsx": "preserve",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,

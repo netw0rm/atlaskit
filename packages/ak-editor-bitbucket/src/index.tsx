@@ -1,9 +1,11 @@
 import './types';
+import autobind from 'autobind-decorator';
 import * as events from './internal/events';
-import { define, prop, emit } from 'skatejs';
+import { define, prop, emit, Component } from 'skatejs';
 import { ProseMirror, Schema } from 'ak-editor-prosemirror';
 import 'style!./host.less';
 import cx from 'classnames';
+import maybe from './maybe';
 import shadowStyles from './shadow.less';
 import Content from 'ak-editor-content';
 import Footer from 'ak-editor-footer';
@@ -13,11 +15,10 @@ import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
-import { schema } from './schema';
+import schema from 'ak-editor-schema';
 import { buildKeymap } from './keymap';
 import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';
-import { nodeLifecycleHandler } from './node-lifecycle';
 import { markdownTransformer } from './paste-handlers';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import {
@@ -38,49 +39,15 @@ import {
   default as TextFormattingPlugin,
   MarkType,
 } from 'ak-editor-plugin-text-formatting';
+import MentionsPlugin from 'ak-editor-plugin-mentions';
 
 // typescript removes unused var if we import it :(
 const { vdom } = require('skatejs');
-
-const $selectFont = '__selectFont__';
-const $toggleMark = '__toggleMark__';
-const $toggleList = '__toggleList__';
-const $addHyperLink = '__addHyperLink__';
-const $unlink = '__unlink__';
-const $insertImage = '__insertImage__';
-const $changeHyperLinkValue = '__changeHyperLinkValue__';
-const $toggleExpansion = '__toggleExpansion__';
-// a flag that indicates it just toggled so that rendered wouldn't init pm again
-const $justToggledExpansion = '__justToggledExpansion__';
-const $initEditor = '__init_editor__';
-const $pm = '__pm__';
-const $ready = '__ready__';
-const $focused = '__focused__';
-const $wrapper = '__wrapper__';
-const $onContentClick = '__onContentClick__';
-const $canChangeBlockType = '__canChangeBlockType__';
-const $strongActive = '__strongActive__';
-const $emActive = '__emActive__';
-const $underlineActive = '__underlineActive__';
-const $canChangeTextFormatting = '__canChangeTextFormatting__';
-const $hyperLinkHref = '__hyperLinkHref__';
-const $canLinkHyperlink = '__canLinkHyperlink__';
-const $selectedFont = '__selectedFont__';
-const $fonts = '__fonts__';
-const $hyperLinkElement = '__hyperLinkElement__';
-const $hyperLinkActive = '__hyperLinkActive__';
-const $bulletListActive = '__bulletListActive__';
-const $numberListActive = '__numberListActive__';
-const $listsPlugin = '__listsPlugin__';
 
 const functionProp = () => ({
   coerce: (val: any) => (typeof val === 'function' ? val : () => {}),
   default: null,
 });
-
-function bind(object: any, propName: string) {
-  object[propName] = object[propName].bind(object);
-}
 
 type blockTypeType = {
   name: string,
@@ -156,40 +123,95 @@ const formattingToProseMirrorMark: formattingMap = {
   italic: 'em',
 };
 
-export default define('ak-editor-bitbucket', {
-  created(elem: any) {
+@autobind
+class AkEditorBitbucket extends Component {
+  // public state
+  defaultValue: string;
+  placeholder: string;
+  imageUploader: Function;
+  context: string;
+  expanded: boolean;
+
+  // private state
+  _focused: boolean;
+  _canChangeBlockType: boolean;
+  _strongActive: boolean;
+  _emActive: boolean;
+  _underlineActive: boolean;
+  _canChangeTextFormatting: boolean;
+  _hyperLinkHref: string;
+  _selectedFont: any;
+  _hyperLinkElement: HTMLElement | undefined;
+  _hyperLinkActive: boolean;
+  _canLinkHyperlink: boolean;
+  _bulletListActive: boolean;
+  _numberListActive: boolean;
+
+  // internal
+  _fonts: any;
+  _justToggledExpansion: boolean;
+  _pm: ProseMirror | null = null;
+  _ready: boolean;
+  _wrapper: HTMLElement;
+
+  static get props() {
+    return {
+      /**
+       * The initial markdown value for the editor.
+       *
+       * Changes to this value are not reflected in the editor. This property
+       * follows the "uncontrolled" component pattern in React. See
+       * https://facebook.github.io/react/docs/forms.html#uncontrolled-components
+       * for details.
+       */
+      defaultValue: prop.string({ attribute: true }),
+      placeholder: prop.string({ attribute: true }),
+      imageUploader: functionProp(),
+      context: prop.string({ attribute: true }),
+      expanded: prop.boolean({ attribute: true }),
+
+      /**
+       * True if the editor has focus.
+       * @private
+       */
+      _focused: prop.boolean(),
+      _canChangeBlockType: prop.boolean(),
+      _strongActive: prop.boolean(),
+      _emActive: prop.boolean(),
+      _underlineActive: prop.boolean(),
+      _canChangeTextFormatting: prop.boolean(),
+      _hyperLinkHref: prop.string(),
+      _selectedFont: {},
+      _hyperLinkElement: {},
+      _hyperLinkActive: prop.boolean(),
+      _canLinkHyperlink: prop.boolean(),
+      _bulletListActive: prop.boolean(),
+      _numberListActive: prop.boolean(),
+    };
+  }
+
+  static created(elem: AkEditorBitbucket) {
     if (elem.context === 'comment') {
-      elem[$fonts] = commentFonts;
+      elem._fonts = commentFonts;
     } else {
-      elem[$fonts] = objectFonts;
+      elem._fonts = objectFonts;
     }
+  }
 
-    bind(elem, $onContentClick);
-    bind(elem, 'focus');
-    bind(elem, $selectFont);
-    bind(elem, $toggleMark);
-    bind(elem, $toggleList);
-    bind(elem, $addHyperLink);
-    bind(elem, $unlink);
-    bind(elem, $changeHyperLinkValue);
-    bind(elem, $toggleExpansion);
-    bind(elem, $insertImage);
-  },
-
-  rendered(elem: any) {
-    if (elem.expanded && elem[$justToggledExpansion]) {
-      elem[$justToggledExpansion] = false;
-      elem[$initEditor]();
-      if (!elem[$ready]) {
+  static rendered(elem: AkEditorBitbucket) {
+    if (elem.expanded && elem._justToggledExpansion) {
+      elem._justToggledExpansion = false;
+      elem._initEditor();
+      if (!elem._ready) {
         emit(elem, 'ready');
-        elem[$ready] = true;
+        elem._ready = true;
       }
 
-      elem[$pm].focus();
+      elem.focus();
     }
-  },
+  }
 
-  render(elem: any) {
+  static render(elem: AkEditorBitbucket) {
     let fakeInputClassNames = shadowStyles.locals.fakeInput;
 
     if (elem.context === 'comment') {
@@ -199,56 +221,56 @@ export default define('ak-editor-bitbucket', {
     const fullEditor: any = (<div>
       <Toolbar>
         <ToolbarBlockType
-          disabled={!elem[$canChangeBlockType]}
-          selectedFont={elem[$selectedFont]}
-          fonts={elem[$fonts]}
-          onSelectFont={elem[$selectFont]}
+          disabled={!elem._canChangeBlockType}
+          selectedFont={elem._selectedFont}
+          fonts={elem._fonts}
+          onSelectFont={elem._selectFont}
         />
         <ToolbarTextFormatting
-          boldActive={elem[$strongActive]}
-          italicActive={elem[$emActive]}
-          underlineActive={elem[$underlineActive]}
-          boldDisabled={!elem[$canChangeTextFormatting]}
-          italicDisabled={!elem[$canChangeTextFormatting]}
-          underlineDisabled={!elem[$canChangeTextFormatting]}
+          boldActive={elem._strongActive}
+          italicActive={elem._emActive}
+          underlineActive={elem._underlineActive}
+          boldDisabled={!elem._canChangeTextFormatting}
+          italicDisabled={!elem._canChangeTextFormatting}
+          underlineDisabled={!elem._canChangeTextFormatting}
           underlineHidden
-          onToggletextformatting={elem[$toggleMark]}
+          onToggletextformatting={elem._toggleMark}
         />
         <ToolbarHyperlink
-          active={elem[$hyperLinkActive]}
-          disabled={!elem[$canLinkHyperlink]}
-          onSave={elem[$addHyperLink]}
+          active={elem._hyperLinkActive}
+          disabled={!elem._canLinkHyperlink}
+          onSave={elem._addHyperLink}
         />
         <ToolbarLists
-          bulletlistActive={elem[$bulletListActive]}
-          numberlistActive={elem[$numberListActive]}
-          on-toggle-number-list={() => elem[$toggleList]('ordered_list')}
-          on-toggle-bullet-list={() => elem[$toggleList]('bullet_list')}
+          bulletlistActive={elem._bulletListActive}
+          numberlistActive={elem._numberListActive}
+          on-toggle-number-list={() => elem._toggleList('ordered_list')}
+          on-toggle-bullet-list={() => elem._toggleList('bullet_list')}
         />
       </Toolbar>
       <Content
         className={shadowStyles.locals.content}
-        onclick={elem[$onContentClick]}
-        ref={(wrapper: HTMLElement) => { elem[$wrapper] = wrapper; }}
+        onclick={elem._onContentClick}
+        ref={(wrapper: HTMLElement) => { elem._wrapper = wrapper; }}
         openTop
         openBottom
         skip
       />
-      {elem[$hyperLinkActive] ?
+      {elem._hyperLinkActive ?
         <HyperLink
-          href={elem[$hyperLinkHref]}
-          textInputValue={elem[$hyperLinkHref]}
-          attachTo={elem[$hyperLinkElement]}
-          onUnlink={elem[$unlink]}
-          onchange={elem[$changeHyperLinkValue]}
+          href={elem._hyperLinkHref}
+          textInputValue={elem._hyperLinkHref}
+          attachTo={elem._hyperLinkElement}
+          onUnlink={elem._unlink}
+          onchange={elem._changeHyperLinkValue}
         />
         : null
       }
       <Footer
         openTop
-        onSave={elem[$toggleExpansion]}
-        oncancel={elem[$toggleExpansion]}
-        onInsertimage={elem[$insertImage]}
+        onSave={elem._toggleExpansion}
+        onCancel={elem._toggleExpansion}
+        onInsertimage={elem._insertImage}
       />
     </div>);
 
@@ -256,7 +278,7 @@ export default define('ak-editor-bitbucket', {
       <div
         className={
           cx(shadowStyles.locals.root, {
-            [shadowStyles.locals.focused]: elem[$focused],
+            [shadowStyles.locals.focused]: elem._focused,
           })
         }
       >
@@ -266,213 +288,201 @@ export default define('ak-editor-bitbucket', {
           :
           <input
             placeholder={elem.placeholder}
-            onclick={elem[$toggleExpansion]}
+            onclick={elem._toggleExpansion}
             className={fakeInputClassNames}
           />
         }
       </div>
     );
-  },
+  }
 
-  props: {
-    /**
-     * The initial markdown value for the editor.
-     *
-     * Changes to this value are not reflected in the editor. This property
-     * follows the "uncontrolled" component pattern in React. See
-     * https://facebook.github.io/react/docs/forms.html#uncontrolled-components
-     * for details.
-     */
-    defaultValue: prop.string({ attribute: true }),
-    placeholder: prop.string({ attribute: true }),
-    imageUploader: functionProp(),
-    context: prop.string({ attribute: true }),
-    expanded: prop.boolean({ attribute: true }),
-
-    /**
-     * True if the editor has focus.
-     * @private
-     */
-    [$focused]: prop.boolean(),
-    [$canChangeBlockType]: prop.boolean(),
-    [$strongActive]: prop.boolean(),
-    [$emActive]: prop.boolean(),
-    [$underlineActive]: prop.boolean(),
-    [$canChangeTextFormatting]: prop.boolean(),
-    [$hyperLinkHref]: prop.string(),
-    [$selectedFont]: {},
-    [$hyperLinkElement]: {},
-    [$hyperLinkActive]: prop.boolean(),
-    [$canLinkHyperlink]: prop.boolean(),
-    [$bulletListActive]: prop.boolean(),
-    [$numberListActive]: prop.boolean(),
-  },
-
-  prototype: {
-    /**
-     * Focus the content region of the editor.
-     */
-    focus() {
-      const pm = this[$pm];
+  /**
+   * Focus the content region of the editor.
+   */
+  focus(): void {
+    for (const pm of maybe(this._pm)) {
       pm.focus();
-    },
+    }
+  }
 
-    /**
-     * Clear the content of the editor, making it an empty document.
-     */
-    clear() {
-      const pm = this[$pm];
+  /**
+   * Clear the content of the editor, making it an empty document.
+   */
+  clear(): void {
+    for (const pm of maybe(this._pm)) {
       pm.tr.delete(0, pm.doc.content.size).apply();
-    },
+    }
+  }
 
-    /**
-     * Return the current markdown value from the editor.
-     * @returns {string}
-     */
-    get value() {
-      const pm = this[$pm];
+  /**
+   * Return the current markdown value from the editor.
+   * @returns {string}
+   */
+  get value(): string {
+    for (const pm of maybe(this._pm)) {
       return markdownSerializer.serialize(pm.doc);
-    },
+    }
+    return this.defaultValue;
+  }
 
-    /**
-     * Returns true if the editor has been initialised and is ready for
-     * interaction.
-     * @returns {boolean}
-     */
-    get ready() {
-      return this[$ready] || false;
-    },
+  /**
+   * Returns true if the editor has been initialised and is ready for
+   * interaction.
+   */
+  get ready(): boolean {
+    return this._ready || false;
+  }
 
-    [$onContentClick](e: MouseEvent) {
-      if (e.target === e.currentTarget) {
-        this.focus();
-      }
-    },
+  _onContentClick(e: MouseEvent): void {
+    if (e.target === e.currentTarget) {
+      this.focus();
+    }
+  }
 
-    [$selectFont](event: CustomEvent) {
-      const font = event.detail.font;
+  _selectFont(event: CustomEvent): void {
+    const font = event.detail.font;
 
-      const blockType = font.schemaName;
-      const level = font.level;
+    const blockType = font.schemaName;
+    const level = font.level;
 
-      BlockTypePlugin.get(this[$pm]).changeBlockType(blockType, { level });
-    },
+    for (const pm of maybe(this._pm)) {
+      BlockTypePlugin.get(pm).changeBlockType(blockType, { level });
+    }
+  }
 
-    [$toggleMark](event: CustomEvent) {
-      const mark: MarkType = formattingToProseMirrorMark[event.detail.mark];
-      TextFormattingPlugin.get(this[$pm]).toggleMark(mark);
-    },
+  _toggleMark(event: CustomEvent): void {
+    const mark: MarkType = formattingToProseMirrorMark[event.detail.mark];
 
-    [$toggleList](name: ListType) {
-      ListsPlugin.get(this[$pm]).toggleList(name);
-    },
+    for (const pm of maybe(this._pm)) {
+      TextFormattingPlugin.get(pm).toggleMark(mark);
+    }
+  }
 
-    [$addHyperLink](event: CustomEvent) {
-      const href = event.detail.value;
-      HyperlinkPlugin.get(this[$pm]).addLink({
-        href,
-      });
-    },
+  _toggleList(name: ListType): void {
+    for (const pm of maybe(this._pm)) {
+      ListsPlugin.get(pm).toggleList(name);
+    }
+  }
 
-    [$insertImage]() {
-      this.imageUploader(false, (attr: ImageUploadOptions) => ImageUploadPlugin.get(this[$pm]).addImage(attr));
-    },
+  _addHyperLink(event: CustomEvent): void {
+    const href = event.detail.value;
+    for (const pm of maybe(this._pm)) {
+      HyperlinkPlugin.get(pm).addLink({ href });
+    }
+  }
 
-    [$unlink]() {
-      HyperlinkPlugin.get(this[$pm]).removeLink();
-    },
+  _insertImage(): void {
+    for (const pm of maybe(this._pm)) {
+      this.imageUploader(false, (attr: ImageUploadOptions) =>
+        ImageUploadPlugin.get(pm).addImage(attr));
+    }
+  }
 
-    [$changeHyperLinkValue](event: Event) {
-      const newLink = (event.target as any).value;
-      if (newLink) {
-        HyperlinkPlugin.get(this[$pm]).updateLink({
+  _unlink(): void {
+    for (const pm of maybe(this._pm)) {
+      HyperlinkPlugin.get(pm).removeLink();
+    }
+  }
+
+  _changeHyperLinkValue(event: Event) {
+    const newLink = (event.target as any).value;
+    if (newLink) {
+      for (const pm of maybe(this._pm)) {
+        HyperlinkPlugin.get(pm).updateLink({
           href: newLink,
           text: newLink,
         });
       }
-    },
+    }
+  }
 
-    [$toggleExpansion]() {
-      this.expanded = !this.expanded;
-      this[$justToggledExpansion] = true;
-    },
+  _toggleExpansion() {
+    this.expanded = !this.expanded;
+    this._justToggledExpansion = true;
+  }
 
-    [$initEditor]() {
-      const elem = this;
-      elem.addEventListener('blur', () => { elem[$focused] = false; });
-      elem.addEventListener('focus', () => { elem[$focused] = true; });
+  _initEditor() {
+    this.addEventListener('blur', () => { this._focused = false; });
+    this.addEventListener('focus', () => { this._focused = true; });
 
-      schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
-      schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
+    schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
+    schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
 
-      const pm = new ProseMirror({
-        place: this[$wrapper],
-        doc: markdownParser(new Schema(schema)).parse(this.defaultValue),
-        plugins: [
-          MarkdownInputRulesPlugin,
-          HyperlinkPlugin,
-          ImageUploadPlugin,
-          BlockTypePlugin,
-          ListsPlugin,
-          TextFormattingPlugin,
-        ],
+    const pm = new ProseMirror({
+      place: this._wrapper,
+      doc: markdownParser(new Schema(schema)).parse(this.defaultValue),
+      plugins: [
+        MarkdownInputRulesPlugin,
+        HyperlinkPlugin,
+        ImageUploadPlugin,
+        BlockTypePlugin,
+        ListsPlugin,
+        TextFormattingPlugin,
+        MentionsPlugin,
+      ],
+    });
+
+    // Hyperlink plugin wiring
+    HyperlinkPlugin.get(pm).onChange(state => {
+      this._canLinkHyperlink = state.enabled as boolean;
+      this._hyperLinkActive = state.active as boolean;
+      this._hyperLinkElement = state.element as HTMLElement;
+      this._hyperLinkHref = state.href as string;
+    });
+
+    // Image upload plugin wiring
+    const insertImage = (attr: ImageUploadOptions) => ImageUploadPlugin.get(pm).addImage(attr);
+    const handler = (_: any, e: any) => this.imageUploader(e, insertImage);
+    ImageUploadPlugin.get(pm).dropAdapter.add(handler);
+    ImageUploadPlugin.get(pm).pasteAdapter.add(handler);
+
+    // Block type plugin wiring
+    BlockTypePlugin.get(pm).onChange(state => {
+      const blockType = state.selectedBlockType;
+      const font = getFont({ blockType }, this._fonts);
+      this._selectedFont = font;
+      this._canChangeBlockType = state.enabled as boolean;
+    });
+
+    // Lists
+    ListsPlugin.get(pm).onChange(state => {
+      this._bulletListActive = Boolean(state.active && state.type === 'bullet_list');
+      this._numberListActive = Boolean(state.active && state.type === 'ordered_list');
+    });
+
+    // Text formatting
+    TextFormattingPlugin.get(pm).onChange(state => {
+      this._strongActive = state.strongActive;
+      this._emActive = state.emActive;
+      this._underlineActive = state.underlineActive;
+      this._canChangeTextFormatting = !state.disabled;
+    });
+
+    // Mentions wiring
+    const emitMentionEvent = (ev: string) => {
+      return (el: HTMLElement, pm: ProseMirror) => emit(this, ev, {
+        detail: { el, pm }
       });
+    }
+    MentionsPlugin.get(pm).renderHandler = emitMentionEvent('mentionrender');
+    MentionsPlugin.get(pm).autocompleteHandler = emitMentionEvent('mentionautocomplete');
 
-      // Hyperlink plugin wiring
-      HyperlinkPlugin.get(pm).onChange(state => {
-        elem[$canLinkHyperlink] = state.enabled;
-        elem[$hyperLinkActive] = state.active;
-        elem[$hyperLinkElement] = state.element;
-        elem[$hyperLinkHref] = state.href;
-      });
+    // avoid invoking keyboard shortcuts in BB
+    pm.wrapper.addEventListener('keypress', e => e.stopPropagation());
+    pm.wrapper.addEventListener('keydown', e => e.stopPropagation());
 
-      // Image upload plugin wiring
-      const insertImage = (attr: ImageUploadOptions) => ImageUploadPlugin.get(pm).addImage(attr);
-      const handler = (_: any, e: any) => elem.imageUploader(e, insertImage);
-      ImageUploadPlugin.get(pm).dropAdapter.add(handler);
-      ImageUploadPlugin.get(pm).pasteAdapter.add(handler);
+    // add the keymap
+    pm.addKeymap(buildKeymap(pm.schema));
 
-      // Block type plugin wiring
-      BlockTypePlugin.get(pm).onChange(state => {
-        const blockType = state.selectedBlockType;
-        const font = getFont({ blockType }, elem[$fonts]);
-        elem[$selectedFont] = font;
-        elem[$canChangeBlockType] = state.enabled;
-      });
+    // add paste handlers
+    pm.on.transformPasted.add(slice => markdownTransformer(pm.schema, slice));
 
-      // Lists
-      ListsPlugin.get(pm).onChange(state => {
-        elem[$bulletListActive] = state.active && state.type === 'bullet_list';
-        elem[$numberListActive] = state.active && state.type === 'ordered_list';
-      });
+    // 'change' event is public API
+    pm.on.change.add(() => emit(this, 'change'));
 
-      // Text formatting
-      TextFormattingPlugin.get(pm).onChange(state => {
-        elem[$strongActive] = state.strongActive;
-        elem[$emActive] = state.emActive;
-        elem[$underlineActive] = state.underlineActive;
-        elem[$canChangeTextFormatting] = !state.disabled;
-      });
+    this._pm = pm;
+  }
+}
 
-      // avoid invoking keyboard shortcuts in BB
-      pm.wrapper.addEventListener('keypress', e => e.stopPropagation());
-      pm.wrapper.addEventListener('keydown', e => e.stopPropagation());
-
-      // add the keymap
-      pm.addKeymap(buildKeymap(pm.schema));
-
-      // add paste handlers
-      pm.on.transformPasted.add(slice => markdownTransformer(pm.schema, slice));
-
-      // add node life cycle handler
-      pm.on.flush.add(() => nodeLifecycleHandler(pm));
-
-      // 'change' event is public API
-      pm.on.change.add(() => emit(this, 'change'));
-
-      this[$pm] = pm;
-    },
-  },
-});
-
+export default define('ak-editor-bitbucket', AkEditorBitbucket);
 export { events };

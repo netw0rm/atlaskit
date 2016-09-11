@@ -83,11 +83,12 @@ export default new Plugin(class BlockTypePlugin {
       return false;
     }
 
+    // clear blockquote
+    commands.lift(pm);
+
     if (blockType === 'blockquote') {
       // change it back to paragraph
       commands.setBlockType(pm.schema.nodes.paragraph as Node)(pm);
-      // clear blockquote
-      commands.lift(pm);
       return commands.wrapIn(pm.schema.nodes[blockType] as Node)(pm);
     }
 

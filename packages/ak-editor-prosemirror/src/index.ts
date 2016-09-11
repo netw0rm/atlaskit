@@ -10,6 +10,7 @@ export {
   Inline,
   Mark,
   Node,
+  NodeType,
   ResolvedPos,
   Slice,
   Schema,

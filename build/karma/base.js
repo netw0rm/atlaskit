@@ -40,6 +40,8 @@ module.exports = (config) => {
 
     browsers: ['Chrome', 'Firefox'],
 
+    reportSlowerThan: 200,
+
     singleRun: false,
 
     concurrency: Infinity,

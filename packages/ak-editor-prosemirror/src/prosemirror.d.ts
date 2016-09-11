@@ -48,7 +48,7 @@ declare module 'prosemirror/dist/edit/commands' {
       export function joinDown(pm: ProseMirror, apply: any): boolean;
       export function joinForward(pm: ProseMirror, apply: any): boolean;
       export function joinUp(pm: ProseMirror, apply: any): boolean;
-      export function lift(pm: ProseMirror, apply: any): boolean;
+      export function lift(pm: ProseMirror, apply?: any): boolean;
       export function liftEmptyBlock(pm: ProseMirror, apply: any): boolean;
       export function newlineInCode(pm: ProseMirror, apply: any): boolean;
       export function redo(pm: ProseMirror, apply: any): boolean;
@@ -57,7 +57,7 @@ declare module 'prosemirror/dist/edit/commands' {
       export function splitBlock(pm: ProseMirror, apply: any): boolean;
       export function toggleMark(markType: any, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
       export function undo(pm: ProseMirror, apply: any): boolean;
-      export function wrapIn(nodeType: any, attrs: any): (pm: ProseMirror, apply: any) => boolean;
+      export function wrapIn(nodeType: any, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
       export let baseKeymap: any;
     }
 }

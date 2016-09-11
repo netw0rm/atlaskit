@@ -1,5 +1,5 @@
 import BlockTypePlugin from '../src';
-import { chaiPlugin, makeEditor, doc, p, text, h1 } from 'ak-editor-test';
+import { chaiPlugin, makeEditor, doc, p, text, h1, blockquote } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
@@ -16,6 +16,29 @@ describe('ak-editor-plugin-block-type', () => {
 
     expect(plugin.changeBlockType('heading')).to.be.true;
     expect(pm.doc).to.deep.equal(doc(h1('text')));
+  });
+
+  it('should be able to change to blockquote', () => {
+    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+
+    expect(plugin.changeBlockType('blockquote')).to.be.true;
+    expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
+  });
+
+  it('should be able to change to back to paragraph and then change to blockquote', () => {
+    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+
+    expect(plugin.changeBlockType('heading')).to.be.true;
+    expect(plugin.changeBlockType('blockquote')).to.be.true;
+    expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
+  });
+
+  it('should be not able to nest blockquote', () => {
+    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+
+    expect(plugin.changeBlockType('blockquote')).to.be.true;
+    expect(plugin.changeBlockType('blockquote')).to.be.true;
+    expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
   it('should not be able to change to the same block type', () => {

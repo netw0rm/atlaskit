@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-test",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -15,7 +15,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "ak-editor-prosemirror": "^1.0.0",
+    "ak-editor-prosemirror": "^2.0.0",
     "babel-runtime": "^6.11.6"
   },
   "repository": {

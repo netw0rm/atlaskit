@@ -77,15 +77,25 @@ export default new Plugin(class BlockTypePlugin {
 
   changeBlockType(blockType: string, attrs?: Object) : boolean {
     const { enabled } = this.getState();
+    const pm = this.pm;
 
     if (!enabled) {
       return false;
     }
 
+    // clear blockquote
+    commands.lift(pm);
+
+    if (blockType === 'blockquote') {
+      // change it back to paragraph
+      commands.setBlockType(pm.schema.nodes.paragraph as Node)(pm);
+      return commands.wrapIn(pm.schema.nodes[blockType] as Node)(pm);
+    }
+
     return commands.setBlockType(
-      this.pm.schema.nodes[blockType],
+      pm.schema.nodes[blockType],
       attrs
-    )(this.pm);
+    )(pm);
   }
 
   onChange(cb: StateChangeHandler) {

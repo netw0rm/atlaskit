@@ -1,9 +1,7 @@
 /* eslint-disable */
-import Keymap from "browserkeymap";
-import browser from "prosemirror/dist/util/browser";
-import { commands } from  "prosemirror/dist/edit";
+import { browser, commands, Keymap } from  "ak-editor-prosemirror";
 
-const { wrapIn, setBlockType, wrapInList, splitListItem, liftListItem, 
+const { wrapIn, setBlockType, wrapInList, splitListItem, liftListItem,
   sinkListItem, chainCommands, newlineInCode, toggleMark } = commands;
 
 // Note: This is a copy pasta from prosemirror's example setup.

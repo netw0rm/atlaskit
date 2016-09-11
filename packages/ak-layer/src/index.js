@@ -21,6 +21,22 @@ export const CONSTRAIN_ATTRIBUTE_ENUM = {
   invalidDefault: 'window',
 };
 
+function createNewAlignment(elem) {
+  const options = {
+    elem: elem.positionedDOM,
+    target: elem.target,
+    position: elem.position,
+    enableFlip: elem.enableFlip,
+    offset: elem.offset,
+  };
+
+  if (elem.boundariesElement) {
+    options.boundariesElement = elem.boundariesElement;
+  }
+
+  return new Alignment(options);
+}
+
 /**
  * @description The definition for the Layer component.
  * @class Layer
@@ -53,6 +69,16 @@ export default define('ak-layer', {
     /* eslint-enable max-len */
     position: enumeration(POSITION_ATTRIBUTE_ENUM)({
       attribute: true,
+      set(elem, data) {
+        if (elem.alignment) {
+          if (data.newValue !== data.oldValue) {
+            elem.alignment.destroy();
+            elem.alignment = createNewAlignment(elem);
+          } else {
+            elem.alignment.reposition();
+          }
+        }
+      },
     }),
     /**
      * @description Constrain a layer to a scrollable parent or the window
@@ -82,6 +108,9 @@ export default define('ak-layer', {
     enableFlip: prop.boolean({
       attribute: true,
     }),
+    offset: {
+      attribute: true,
+    },
   },
   prototype: {
     reposition() {
@@ -93,18 +122,7 @@ export default define('ak-layer', {
     },
   },
   attached(elem) {
-    const options = {
-      elem: elem.positionedDOM,
-      target: elem.target,
-      position: elem.position,
-      enableFlip: elem.enableFlip,
-    };
-
-    if (elem.boundariesElement) {
-      options.boundariesElement = elem.boundariesElement;
-    }
-
-    elem.alignment = new Alignment(options);
+    elem.alignment = createNewAlignment(elem);
   },
   detached(elem) {
     if (elem.alignment) {

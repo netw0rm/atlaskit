@@ -1,10 +1,11 @@
 {
   "name": "akutil-react",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Toolbox for transforming a SkateJS-based WebComponent into a React component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.ts",
+  "typings": "src/index.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single akutil-react"
   },

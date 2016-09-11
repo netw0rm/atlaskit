@@ -1,6 +1,8 @@
-import afterMutations from './afterMutations';
-import hasClass from './hasClass';
-import getShadowRoot from './getShadowRoot';
 import waitUntil from './waitUntil';
+import afterMutations from './after-mutations';
+import hasClass from './hasClass';
+import { keydown, keyup } from './user-interaction';
+import getShadowRoot from './getShadowRoot';
+import locateWebComponent from './index.locateWebComponent';
 
-export { afterMutations, waitUntil, hasClass, getShadowRoot };
+export { afterMutations, waitUntil, hasClass, getShadowRoot, keydown, keyup, locateWebComponent };

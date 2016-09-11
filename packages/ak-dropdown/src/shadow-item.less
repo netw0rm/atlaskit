@@ -1,17 +1,42 @@
 @import 'shared-variables.less';
 
+@spacing: 10px;
+
+.flex() {
+  display: flex;
+  padding: 0 @spacing;
+  align-items:center;
+  box-sizing: border-box;
+  flex-wrap: nowrap;
+}
+
+// don't want to remove for now because of the mixing
+.flex-item() {}
+
+:host .item {
+  .flex;
+}
+
+::content > * {
+  .flex-item();
+}
+
+::slotted(*) {
+  .flex-item();
+}
+
 .item {
-  height: 30px;
   color: @ak-dropdown-font-main;
-  padding: 5px 10px;
   box-sizing: border-box;
   cursor: pointer;
   background-color: @ak-dropdown-background-main;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   text-decoration: none;
+  height:30px;
+
+  .flex;
+  & > * {
+    .flex-item();
+  }
 
   &:hover {
     background-color: @ak-dropdown-background-hover;
@@ -42,11 +67,12 @@
   }
 }
 
-.first {
-  border-top-right-radius: @ak-dropdown-border-radius;
+.itemLeftPosition {
+  margin-right:10px;
 }
 
-.last {
-  border-bottom-left-radius: @ak-dropdown-border-radius;
-  border-bottom-right-radius: @ak-dropdown-border-radius;
+.itemDefaultPosition {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

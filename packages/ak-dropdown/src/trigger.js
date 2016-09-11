@@ -2,6 +2,7 @@ import { emit, vdom, prop } from 'skatejs';
 import shadowTriggerStyles from './shadow-trigger.less';
 import classNames from 'classnames';
 import keyCode from 'keycode';
+import { trigger as triggerEvents } from './internal/events';
 
 function handleKeyDown(elem) {
   return (e) => {
@@ -12,7 +13,7 @@ function handleKeyDown(elem) {
       keyCode('down'),
       keyCode('space'),
       keyCode('enter')].indexOf(e.keyCode) > -1) {
-      emit(elem, 'ak-dropdown-trigger-activated');
+      emit(elem, triggerEvents.activated);
     }
   };
 }
@@ -22,7 +23,7 @@ function handleClick(elem) {
     e.preventDefault();
     e.stopPropagation();
     if (!elem.disabled) {
-      emit(elem, 'ak-dropdown-trigger-activated');
+      emit(elem, triggerEvents.activated);
     }
   };
 }
@@ -38,7 +39,7 @@ export const TriggerButtonDefinition = {
     );
 
     return (
-      <div className={classes}>
+      <div className={classes} tabIndex="0">
         <style>{shadowTriggerStyles.toString()}</style>
         <slot />
       </div>
@@ -56,7 +57,6 @@ export default {
       <div
         onclick={handleClick(elem)}
         onkeydown={handleKeyDown(elem)}
-        tabindex="0"
       >
         <slot />
       </div>

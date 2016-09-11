@@ -5,7 +5,9 @@ import chaiAsPromised from 'chai-as-promised';
 import { symbols, props } from 'skatejs';
 import AkButton, { APPEARANCE } from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
+import hostStyles from '../src/host.less';
 import { name } from '../package.json';
+import { hasClass, waitUntil } from 'akutil-common-test';
 const classKeys = shadowStyles.locals;
 
 chai.use(chaiAsPromised);
@@ -19,23 +21,26 @@ describe('ak-button', () => {
   const getShadowButtonElem = (elem) =>
     shadowDomQuery(elem, `.${classKeys.button}`);
 
-  const indexOf = (array, value) => Array.prototype.indexOf.call(array, value);
-  const containsClass = (array, ...classes) =>
-    classes.reduce((acum, val) => acum && (indexOf(array, val) > -1), true);
+  const expectButtonToHaveClasses = (testComponent, expectClassCount, ...classes) => {
+    const button = getShadowButtonElem(testComponent);
+    expect(button.classList).to.have.lengthOf(expectClassCount);
+    expect(hasClass(button, ...classes)).to.be.true;
+  };
 
-  function waitForRender(elem, cb) {
-    setTimeout(() => {
-      if (elem[symbols.shadowRoot]) {
-        return cb();
-      }
-      return waitForRender(elem, cb);
-    }, 0);
-  }
+  const createDivTest = config => {
+    const div = document.createElement('div');
+    div.innerText = 'test';
+    if (config.slotName) {
+      div.slot = config.slotName;
+    }
+    return div;
+  };
 
-  beforeEach(done => {
+  beforeEach(() => {
     component = new AkButton();
+    props(component, { className: hostStyles.locals.akButton });
     document.body.appendChild(component);
-    waitForRender(component, done);
+    return waitUntil(() => component[symbols.shadowRoot] !== null);
   });
 
   afterEach(() => document.body.removeChild(component));
@@ -55,6 +60,17 @@ describe('ak-button', () => {
     sinon.spy(event, 'preventDefault');
     button.dispatchEvent(event);
     expect(event.preventDefault).to.have.been.called;
+  });
+
+  describe('slots', () => {
+    describe('before', () => {
+      const div = createDivTest({ slotName: 'before' });
+      beforeEach(() => component.appendChild(div));
+
+      it('slotted element should have margin-right applied', () =>
+        expect(window.getComputedStyle(div).marginRight).to.equal('8px')
+      );
+    });
   });
 
   describe('attributes', () => {
@@ -78,9 +94,7 @@ describe('ak-button', () => {
         describe(testCase.message, () => {
           it('button should only have .button class', () => {
             props(component, { appearance: testCase.appearance });
-            const buttonClasses = getShadowButtonElem(component).classList;
-            expect(buttonClasses).to.have.lengthOf(1);
-            expect(containsClass(buttonClasses, classKeys.button)).to.be.true;
+            expectButtonToHaveClasses(component, 1, classKeys.button);
           });
         });
       });
@@ -137,15 +151,13 @@ describe('ak-button', () => {
             beforeEach(() =>
               (props(component, assign({ compact: true }, testCase.setup)))
             );
-            it(`button should have compact and ${testCase.expectedClass} class`, () => {
-              const buttonClasses = getShadowButtonElem(component).classList;
-              expect(buttonClasses).to.have.lengthOf(3);
-              expect(containsClass(buttonClasses,
+            it(`button should have compact and ${testCase.expectedClass} class`, () =>
+              expectButtonToHaveClasses(component, 3,
                 classKeys.button,
                 classKeys.compact,
                 classKeys[testCase.expectedClass]
-              )).to.be.true;
-            });
+              )
+            );
           });
         });
       });
@@ -163,9 +175,10 @@ describe('ak-button', () => {
 
       it('selected button should override any appearance', () => {
         props(component, { appearance: APPEARANCE.PRIMARY, selected: true });
-        const buttonClasses = getShadowButtonElem(component).classList;
-        expect(buttonClasses).to.have.lengthOf(2);
-        expect(containsClass(buttonClasses, classKeys.button, classKeys.selected)).to.be.true;
+        expectButtonToHaveClasses(component, 2,
+          classKeys.button,
+          classKeys.selected
+        );
       });
 
       it('button should not have selected class after it is removed', () => {
@@ -192,26 +205,25 @@ describe('ak-button', () => {
         describe(`when button also has ${setup}`, () => {
           beforeEach(() => props(component, setup));
 
-          it('disabled button should discard any other class', () => {
-            const buttonClasses = getShadowButtonElem(component).classList;
-            expect(buttonClasses).to.have.lengthOf(2);
-            expect(containsClass(buttonClasses, classKeys.button, classKeys.disabled)).to.be.true;
-          });
+          it('disabled button should discard any other class', () =>
+            expectButtonToHaveClasses(component, 2,
+              classKeys.button,
+              classKeys.disabled
+            )
+          );
         })
       );
 
       describe('when button also has appearance link', () => {
         beforeEach(() => props(component, { appearance: APPEARANCE.LINK }));
 
-        it('should have both disabled and link classes', () => {
-          const buttonClasses = getShadowButtonElem(component).classList;
-          expect(buttonClasses).to.have.lengthOf(3);
-          expect(containsClass(buttonClasses,
+        it('should have both disabled and link classes', () =>
+          expectButtonToHaveClasses(component, 3,
             classKeys.button,
             classKeys.disabled,
-            classKeys.link)
-          ).to.be.true;
-        });
+            classKeys.link
+          )
+        );
       });
 
       it('button should not have disabled attribute after it is removed', () => {
@@ -223,10 +235,21 @@ describe('ak-button', () => {
         expect(window.getComputedStyle(component).pointerEvents).to.equal('none')
       );
 
-      it('button\'s children should have pointer-events: none css attribute', () => {
-        const div = document.createElement('div', 'test');
-        component.appendChild(div);
-        expect(window.getComputedStyle(div).pointerEvents).to.equal('none');
+      describe('when button has slotted elements', () => {
+        const addSlottedElement = slotName => {
+          const div = createDivTest({ slot: slotName });
+          component.appendChild(div);
+          return div;
+        };
+
+        [false, 'before'].forEach(slotName =>
+          describe(`on ${slotName || 'default'} slot`, () =>
+            it('slotted elements should have pointer-events: none css attribute', () => {
+              const div = addSlottedElement(slotName);
+              expect(window.getComputedStyle(div).pointerEvents).to.equal('none');
+            })
+          )
+        );
       });
     });
   });

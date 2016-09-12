@@ -21,17 +21,18 @@ class MentionsPluginState {
   hydrateNodes(): void {
     const pm = this.pm;
     const wrapper = pm.wrapper;
-    const elements = wrapper.querySelectorAll('[editor-hydrate]');
+    const elements = wrapper.querySelectorAll('[editor-entity-type]');
 
     if (!elements.length) {
       return
     }
 
     Array.prototype.forEach.call(elements, (el: HTMLElement) => {
-      const nodeType = el.getAttribute('editor-node-type');
-      if (nodeType === 'mention') {
-        el.removeAttribute('editor-hydrate');
-        const data = el.getAttribute('editor-data');
+      const hydrated = el.getAttribute('editor-hydrated');
+      const entityType = el.getAttribute('editor-entity-type');
+      if (!hydrated && entityType === 'mention') {
+        el.setAttribute('editor-hydrated', 'true');
+        const data = el.getAttribute('editor-entity-id');
 
         // if theres data set, render the element
         // otherwise prompt for autocomplete.

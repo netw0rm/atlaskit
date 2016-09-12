@@ -15,11 +15,7 @@ const schema: Schema = new Schema({
   marks: schemaBasic.markSpec
 });
 
-const makeEditor = () => {
-  // Flush only works when editor is attached to DOM
-  const container = document.createElement('div');
-  document.body.appendChild(container);
-
+const makeEditor = (container: Node) => {
   return new ProseMirror({
     schema: schema,
     plugins: [ plugin ],
@@ -28,8 +24,19 @@ const makeEditor = () => {
 }
 
 describe('ak-editor-plugin-mentions - on flush', () => {
+  let container: Node;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(container);
+  });
+
   it('should hydrate nodes', () => {
-    const pm = makeEditor();
+    const pm = makeEditor(container);
     const pluginInstance = plugin.get(pm);
     const hydrateNodes = sinon.spy(pluginInstance, "hydrateNodes");
 
@@ -40,16 +47,27 @@ describe('ak-editor-plugin-mentions - on flush', () => {
   });
 });
 
-describe('ak-editor-plugin-mentions - when no data set on mention nodes', () => {
+describe('ak-editor-plugin-mentions - when entity id is not set on mention nodes', () => {
+  let container: Node;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(container);
+  });
+
   it('should call the auto-complete handler', () => {
-    const pm = makeEditor();
+    const pm = makeEditor(container);
     const mockRenderHandler = sinon.spy();
     const mockAutocompleteHandler = sinon.spy();
     plugin.get(pm).renderHandler = mockRenderHandler;
     plugin.get(pm).autocompleteHandler = mockAutocompleteHandler;
 
     // insert a mention node
-    const m = pm.schema.nodes.mention.create({ data: '' });
+    const m = pm.schema.nodes.mention.create({ id: '' });
     pm.tr.insert(0, m).apply();
     pm.flush();
 
@@ -63,15 +81,26 @@ describe('ak-editor-plugin-mentions - when no data set on mention nodes', () => 
 });
 
 describe('ak-editor-plugin-mentions - when theres data set on mention nodes', () => {
+  let container: Node;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(container);
+  });
+
   it('should call the render handler', () => {
-    const pm = makeEditor();
+    const pm = makeEditor(container);
     const mockRenderHandler = sinon.spy();
     const mockAutocompleteHandler = sinon.spy();
     plugin.get(pm).renderHandler = mockRenderHandler;
     plugin.get(pm).autocompleteHandler = mockAutocompleteHandler;
 
     // insert a mention node
-    const m = pm.schema.nodes.mention.create({ data: '@foo' });
+    const m = pm.schema.nodes.mention.create({ id: '@foo' });
     pm.tr.insert(0, m).apply();
     pm.flush();
 
@@ -84,19 +113,56 @@ describe('ak-editor-plugin-mentions - when theres data set on mention nodes', ()
   });
 
   it('should call the render handler for every node', () => {
-    const pm = makeEditor();
+    const pm = makeEditor(container);
     const mockRenderHandler = sinon.spy();
     const mockAutocompleteHandler = sinon.spy();
     plugin.get(pm).renderHandler = mockRenderHandler;
     plugin.get(pm).autocompleteHandler = mockAutocompleteHandler;
 
     // insert a mention node
-    const m = pm.schema.nodes.mention.create({ data: '@foo' });
+    const m = pm.schema.nodes.mention.create({ id: '@foo' });
     pm.tr.insert(0, m).apply();
     pm.tr.insert(0, m).apply();
     pm.flush();
 
     expect(mockAutocompleteHandler.called).not.to.be.true;
     expect(mockRenderHandler.callCount).to.equal(2);
+  });
+});
+
+describe('ak-editor-plugin-mentions - when DOM contains hydrated nodes', () => {
+  let container: Node;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(container);
+  });
+
+  it('should not call handlers on already hydratd nodes', () => {
+    const pm = makeEditor(container);
+    const mockRenderHandler = sinon.spy();
+    const mockAutocompleteHandler = sinon.spy();
+    plugin.get(pm).renderHandler = mockRenderHandler;
+    plugin.get(pm).autocompleteHandler = mockAutocompleteHandler;
+
+    // insert the first mention node
+    const m1 = pm.schema.nodes.mention.create({ id: '' });
+    pm.tr.insert(0, m1).apply();
+    pm.flush();
+
+    expect(mockAutocompleteHandler.called).to.be.true;
+    expect(mockAutocompleteHandler.callCount).to.equal(1);
+
+    // insert another mention node
+    const m2 = pm.schema.nodes.mention.create({ id: '' });
+    pm.tr.insert(0, m2).apply();
+    pm.flush();
+
+    expect(mockAutocompleteHandler.called).to.be.true;
+    expect(mockAutocompleteHandler.callCount).to.equal(2);
   });
 });

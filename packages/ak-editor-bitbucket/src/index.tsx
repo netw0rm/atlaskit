@@ -175,16 +175,16 @@ class AkEditorBitbucket extends Component {
        * @private
        */
       _focused: prop.boolean(),
-      _canChangeBlockType: prop.boolean(),
+      _canChangeBlockType: prop.boolean({ default: true }),
       _strongActive: prop.boolean(),
       _emActive: prop.boolean(),
       _underlineActive: prop.boolean(),
-      _canChangeTextFormatting: prop.boolean(),
+      _canChangeTextFormatting: prop.boolean({ default: true }),
       _hyperLinkHref: prop.string(),
       _selectedFont: {},
       _hyperLinkElement: {},
       _hyperLinkActive: prop.boolean(),
-      _canLinkHyperlink: prop.boolean(),
+      _canLinkHyperlink: prop.boolean({ default: true }),
       _bulletListActive: prop.boolean(),
       _numberListActive: prop.boolean(),
     };

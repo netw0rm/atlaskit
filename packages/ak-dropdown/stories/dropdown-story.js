@@ -27,19 +27,17 @@ class DropdownWithOutsideTrigger extends Component {
 
   render() {
     return (
-      <div
-        ref={(el) => {
-          if (el && !this.state.target) {
-            this.setState({ target: el.childNodes[0].firstChild });
-          }
-        }}
-      >
-        <div onClick={this.handleClick}>
-          <ak-avatar
-            src={avatarUrl}
-            size="small"
-          />
-        </div>
+      <div>
+        <ak-avatar
+          src={avatarUrl}
+          size="small"
+          ref={(el) => {
+            if (el && !this.state.target) {
+              this.setState({ target: el });
+            }
+          }}
+          onClick={this.handleClick}
+        />
         <DropdownReactComponent target={this.state.target} open={this.state.open}>
           <ak-dropdown-item>text1</ak-dropdown-item>
           <ak-dropdown-item>text2</ak-dropdown-item>

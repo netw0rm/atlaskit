@@ -11,7 +11,6 @@ import {
   getLabelForTab,
   getLabelContent,
   getElementWidth,
-  getVisibleTabs,
   isHidden,
   hasOverflow,
   hasVisibleDropdown,
@@ -157,7 +156,7 @@ describe('ak-tabs initialisation -', () => {
 
         it('displays the label for the selected tab', () =>
           waitUntil(() =>
-            isHidden(getLabelForTab(getSelectedTab(fixtures.tabs)))
+            !isHidden(getLabelForTab(getSelectedTab(fixtures.tabs)))
           ).should.be.fulfilled
         );
 
@@ -166,7 +165,7 @@ describe('ak-tabs initialisation -', () => {
         );
 
         it('pulls some labels into the dropdown menu', () => {
-          const numVisibleTabs = getVisibleTabs(fixtures.el).length;
+          const numVisibleTabs = getTabLabels(fixtures.el).filter(el => !isHidden(el)).length;
           const numTabs = fixtures.tabs.length;
           return waitUntil(() => numVisibleTabs < numTabs).should.be.fulfilled;
           // TODO: Ensure that dropdown menu contains the hidden items

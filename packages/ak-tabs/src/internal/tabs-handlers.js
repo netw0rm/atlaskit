@@ -1,7 +1,7 @@
 import keycode from 'keycode';
 
 import { getPrevTab, getNextTab } from './tabs-helpers';
-import { focusOnRender, focusOnSecondRender, tabLabel } from './symbols';
+import { focusOnRender, tabLabel } from './symbols';
 
 function labelMouseDownHandler(e) {
   e.preventDefault(); // Prevent focus on the tab label.
@@ -33,10 +33,6 @@ function labelRef(tabsEl, tab) {
       if (tabsEl[focusOnRender]) {
         el.focus();
         tabsEl[focusOnRender] = false;
-      }
-      if (tabsEl[focusOnSecondRender]) {
-        el.focus();
-        tabsEl[focusOnRender] = tabsEl[focusOnSecondRender] = false;
       }
     } else {
       el.blur(); // Remove focus on a label that is no longer selected.

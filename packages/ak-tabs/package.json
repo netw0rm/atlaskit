@@ -17,7 +17,6 @@
     "ak-dropdown": "^1.14.0",
     "ak-icon": "^1.6.0",
     "akutil-shared-styles": "^33.7.0",
-    "array-equal": "^1.0.0",
     "classnames": "^2.2.5",
     "css-element-queries": "^0.3.2",
     "debounce": "^1.0.0",

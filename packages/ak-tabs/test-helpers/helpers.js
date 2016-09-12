@@ -101,10 +101,6 @@ function hasVisibleDropdown(tabsEl) {
   return !isHidden(tabsEl[buttonContainer]);
 }
 
-function getVisibleTabs(tabsEl) {
-  return tabsEl._visibleTabs; // eslint-disable-line no-underscore-dangle
-}
-
 function click(el) {
   el.click();
 }
@@ -163,7 +159,6 @@ export {
   hasOverflow,
   isHidden,
   hasVisibleDropdown,
-  getVisibleTabs,
   click,
   keyboardNavLeft,
   keyboardNavRight,

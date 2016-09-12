@@ -1,6 +1,5 @@
 /* eslint no-underscore-dangle: 0 */
 import 'style!./host.less';
-import arrayEqual from 'array-equal';
 import classNames from 'classnames';
 import debounce from 'debounce';
 import { vdom, define, prop } from 'skatejs';
@@ -15,7 +14,7 @@ import Tab from './index-tab';
 import Icon from 'ak-icon';
 import Dropdown, { Item, Trigger } from 'ak-dropdown';
 
-import { buttonContainer, labelsContainer, tabLabel } from './internal/symbols';
+import { buttonContainer, labelsContainer } from './internal/symbols';
 const resizeListener = Symbol();
 
 const definition = {
@@ -33,35 +32,13 @@ const definition = {
   },
   attached(elem) {
     // Re-render if necessary when the window is resized.
-    elem[resizeListener] = new ResizeSensor(elem,
-      debounce(() => (elem._visibleTabs = helpers.calculateVisibleTabs(elem)), 200)
-    );
+    elem[resizeListener] = new ResizeSensor(elem, debounce(() => (helpers.updateProps(elem)), 200));
   },
   detached(elem) {
     elem[resizeListener].detach();
   },
-  updated(elem, prev) {
-    if (!prev) {
-      return true;
-    }
-    // eslint-disable-next-line no-restricted-syntax
-    for (const name in prev) {
-      if (!arrayEqual(prev[name], elem[name])) {
-        return true;
-      }
-    }
-    return false;
-  },
   render(elem) {
     const allTabs = helpers.getAllTabs(elem);
-    const numTabs = allTabs.length;
-    const hasOverflowingTabs = elem._visibleTabs.length < allTabs.filter(el => el[tabLabel]).length;
-    const hasSingleTab = elem._visibleTabs.length === 1;
-    const buttonClasses = classNames({
-      [shadowStyles.locals.akTabLabel]: true,
-      [shadowStyles.locals.akTabLabelHidden]: !hasOverflowingTabs,
-    });
-    const tabsVisible = helpers.getTabsVisibility(elem);
     let pos = 1;
     return (
       <div>
@@ -75,13 +52,8 @@ const definition = {
             tab => {
               const ariaSelected = `${!!tab.selected}`;
               const tabIndex = tab.selected ? '0' : '-1';
-              const isVisible = tabsVisible.get(tab);
-              const isSingleTab = hasSingleTab && isVisible;
-              const classes = classNames({
-                [shadowStyles.locals.akTabLabel]: true,
+              const classes = classNames(shadowStyles.locals.akTabLabel, {
                 [shadowStyles.locals.akTabLabelSelected]: tab.selected,
-                [shadowStyles.locals.akTabLabelHidden]: !isVisible,
-                [shadowStyles.locals.akTabLabelSingle]: isSingleTab,
               });
               return (
                 <li
@@ -91,7 +63,7 @@ const definition = {
                   onmousedown={handlers.labelMouseDownHandler}
                   onclick={handlers.labelSelectedHandler(tab)}
                   aria-selected={ariaSelected}
-                  aria-setsize={numTabs}
+                  aria-setsize={allTabs.length}
                   aria-posinset={pos++}
                   role="tab"
                   ref={handlers.labelRef(elem, tab)}
@@ -102,7 +74,7 @@ const definition = {
             }
           ).concat(
             <li
-              className={buttonClasses}
+              className={shadowStyles.locals.akTabLabel}
               aria-hidden="true"
               ref={el => (elem[buttonContainer] = el)}
             >
@@ -114,7 +86,7 @@ const definition = {
                   </a>
                 </Trigger>
                 {
-                  allTabs && allTabs.filter(tab => !tabsVisible.get(tab)).map(tab => (
+                  allTabs && allTabs.map(tab => (
                     <Item onSelected={handlers.labelSelectedHandler(tab)}>{tab.label}</Item>
                   ))
                 }
@@ -127,11 +99,11 @@ const definition = {
       </div>
     );
   },
+  rendered: helpers.showVisibleTabs,
   props: {
     /** TODO: Use Symbol once supported in skate */
     _labels: prop.array({}),
     _selected: prop.array({}),
-    _visibleTabs: prop.array({}),
   },
 };
 

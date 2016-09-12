@@ -1,7 +1,6 @@
+import shadowStyles from '../shadow.less';
 import {
   buttonContainer,
-  focusOnRender,
-  focusOnSecondRender,
   labelsContainer,
   tabLabel,
 } from './symbols';
@@ -97,6 +96,34 @@ const calculateVisibleTabs = (tabsEl) => {
   return visible;
 };
 
+/**
+ * Show visible tabs by calling calculateVisibleTabs and hiding tabs which do not fit in the
+ * container and should not be displayed.
+ * @param tabsEl
+ */
+function showVisibleTabs(tabsEl) {
+  const allTabs = getAllTabs(tabsEl);
+  const visibleTabs = calculateVisibleTabs(tabsEl);
+
+  // Only show visible tabs
+  allTabs.forEach(el => {
+    el[tabLabel].classList.add(shadowStyles.locals.akTabLabelHidden);
+  });
+  visibleTabs.forEach(el => {
+    el[tabLabel].classList.remove(shadowStyles.locals.akTabLabelHidden);
+  });
+
+  // Hide the More dropdown if there are no children
+  const showDropdown = visibleTabs.length < allTabs.length;
+  tabsEl[buttonContainer].classList.toggle(shadowStyles.locals.akTabLabelHidden, !showDropdown);
+
+  // Truncate the label if there is only a single tab
+  if (visibleTabs.length) {
+    const isSingleTab = visibleTabs.length === 1;
+    visibleTabs[0][tabLabel].classList.toggle(shadowStyles.locals.akTabLabelSingle, isSingleTab);
+  }
+}
+
 const getTabsVisibility = (tabsEl) => {
   const tabsVisibility = new Map();
   if (tabsEl) {
@@ -112,18 +139,6 @@ const updateProps = (tabsEl) => {
   const allTabs = getAllTabs(tabsEl);
   tabsEl._selected = allTabs.map(el => el.selected); // eslint-disable-line no-underscore-dangle
   tabsEl._labels = allTabs.map(el => el.label); // eslint-disable-line no-underscore-dangle
-
-  const shouldFocusOnSecondRender = tabsEl[focusOnRender];
-  tabsEl[focusOnSecondRender] = false;
-
-  /* Wait for render to be called before calculating the tabs that should be visible.
-   * We need to do this because new tabs may have been added, so we need to wait for the labels
-   * to be rendered before we can calculate their widths and render again if necessary.
-   */
-  setTimeout(() => {
-    tabsEl[focusOnSecondRender] = shouldFocusOnSecondRender;
-    tabsEl._visibleTabs = calculateVisibleTabs(tabsEl); // eslint-disable-line no-underscore-dangle
-  }, 0);
 };
 
 export {
@@ -131,6 +146,7 @@ export {
   getNextTab,
   getPrevTab,
   calculateVisibleTabs,
+  showVisibleTabs,
   getTabsVisibility,
   updateProps,
 };

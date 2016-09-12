@@ -2,15 +2,16 @@ const karmaConf = require('./base.js');
 const addPolyFills = require('./addPolyFills.js');
 
 module.exports = (config) => {
+  const files = 'test/**/*.+(js|ts)';
   karmaConf(config);
 
   Object.assign(config, {
     files: [
-      'test/**/*.+(js|ts)',
+      files,
     ],
 
     preprocessors: {
-      'test/**/*.+(js|ts)': ['webpack', 'sourcemap'],
+      [files]: ['webpack', 'sourcemap'],
     },
   });
 

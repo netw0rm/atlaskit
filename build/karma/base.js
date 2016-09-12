@@ -2,6 +2,8 @@ const webpackConfig = require('../webpack/karma.js');
 const addPolyFills = require('./addPolyFills.js');
 
 module.exports = (config) => {
+  const files = 'packages/*/test/**/*.+(js|ts)';
+
   Object.assign(config, {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     // setting to process.cwd will make all paths start in current component directory
@@ -10,11 +12,11 @@ module.exports = (config) => {
     frameworks: ['mocha', 'chai', 'sinon-chai'],
 
     files: [
-      'packages/*/test/**/*.+(js|ts)',
+      files,
     ],
 
     preprocessors: {
-      'packages/*/test/**/*.+(js|ts)': ['webpack', 'sourcemap'],
+      [files]: ['webpack', 'sourcemap'],
     },
 
     webpack: webpackConfig,

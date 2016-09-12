@@ -14,7 +14,6 @@ module.exports = (config) => {
       project: 'AtlasKit',
       build: `${process.env.CURRENT_BRANCH} ${new Date().getTime()} ${process.env.HEAD_SHA}`,
     },
-    logLevel: config.LOG_INFO,
     captureTimeout: 120000,
     reporters: ['dots', 'BrowserStack'],
     autoWatch: false,

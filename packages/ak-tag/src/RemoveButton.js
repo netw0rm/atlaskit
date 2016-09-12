@@ -1,6 +1,6 @@
 import { vdom } from 'skatejs';
-import { KeyPressHandler } from 'akutil-common';
 
+import keyHandler from './internal/keyHandler';
 import shadowStyles from './shadow.less';
 import RemoveIcon from './RemoveIcon';
 
@@ -12,11 +12,6 @@ export default (props) => {
     props.onActivation();
   };
 
-  const attachButtonKeyHandlers = (el) => {
-    const handler = new KeyPressHandler('ENTER', removeAction, el);
-    handler.add('SPACE', removeAction);
-  };
-
   return (<button
     {...props}
     className={shadowStyles.locals.button}
@@ -24,7 +19,7 @@ export default (props) => {
     onmousedown={(e) => (e.preventDefault())}
     onmouseover={() => props.onHoverStateChange(true)}
     onmouseout={() => props.onHoverStateChange(false)}
-    ref={attachButtonKeyHandlers}
+    ref={(el) => (keyHandler(el, removeAction))}
     onclick={removeAction}
   >
     <RemoveIcon />

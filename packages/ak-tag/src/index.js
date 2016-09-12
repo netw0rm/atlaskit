@@ -3,8 +3,7 @@ import createError from 'create-error';
 
 // component parts
 import Chrome from './Chrome';
-import Text from './Text';
-import Href from './Href';
+import Label from './Label';
 import Root from './Root';
 import RemoveButton from './RemoveButton';
 import AnimationWrapper from './AnimationWrapper';
@@ -41,7 +40,6 @@ export default define(name, {
     const isRemoving = elem[isRemovingSymbol];
 
     const Button = isRemovable ? RemoveButton : () => null;
-    const Label = isLinked ? Href : Text;
 
     return (
       <Root>

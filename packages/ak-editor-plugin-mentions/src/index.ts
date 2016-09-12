@@ -1,6 +1,6 @@
 import { Plugin, ProseMirror, inputRules } from 'ak-editor-prosemirror';
 
-import { mentionRule, emoticonRule } from './input-rules';
+import { mentionRule } from './input-rules';
 
 class MentionsPluginState {
   pm: ProseMirror;
@@ -12,9 +12,7 @@ class MentionsPluginState {
 
     // add the input rules to insert mentions and emoticons
     if (this.pm.schema.nodes.mention) {
-      [ mentionRule, emoticonRule ].forEach((rule) => {
-        inputRules.ensure(pm).addRule(rule);
-      });
+      inputRules.ensure(pm).addRule(mentionRule);
     }
 
     this.pm.on.flush.add(() => this.hydrateNodes());

@@ -5,7 +5,6 @@ import Tag from '../src';
 
 chai.use(chaiAsPromised);
 chai.should();
-const expect = chai.expect; // eslint-disable-line no-unused-vars
 
 
 describe('ak-tag', () => {

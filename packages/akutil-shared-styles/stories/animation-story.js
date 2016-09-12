@@ -1,12 +1,13 @@
 import classNames from 'classnames';
 import { storiesOf } from '@kadira/storybook';
-import storyStyles from 'style!./stories.less';
+import storyStyles from 'style!./animation-story.less';
 import { name } from '../package.json';
 
 const containerClass = classNames(storyStyles.container);
 
 import AnimatedBox from './AnimatedBox.js';
 import AnimatedBoxGroup from './AnimatedBoxGroup.js';
+import AnimationSandbox from './AnimationSandbox.js';
 
 storiesOf(name, module)
   .add('Bold, Optimistic and Combined curves', () => (
@@ -54,6 +55,15 @@ storiesOf(name, module)
       <p>The combined animation curve brings in the best of both worlds</p>
       <div className={containerClass}>
         <AnimatedBox boxStyle="combined" animationClass="combinedBounce">Combined</AnimatedBox>
+      </div>
+    </div>
+  ))
+  .add('Animation Sandbox', () => (
+    <div>
+      <p>This is a small sandbox to test animations</p>
+
+      <div>
+        <AnimationSandbox />
       </div>
     </div>
   ));

@@ -24,6 +24,7 @@
     "camelcase": "^3.0.0",
     "classnames": "^2.2.5",
     "glob": "^7.0.5",
+    "less": "^2.7.1",
     "less-vars-to-js": "^1.1.1"
   },
   "dependencies": {

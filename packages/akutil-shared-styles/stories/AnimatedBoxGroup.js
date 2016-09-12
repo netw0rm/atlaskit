@@ -1,4 +1,4 @@
-import storyStyles from 'style!./stories.less';
+import storyStyles from 'style!./animation-story.less';
 import AnimatedBox from './AnimatedBox.js';
 
 const { React } = window;

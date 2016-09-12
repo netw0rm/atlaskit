@@ -1,0 +1,69 @@
+@import '../src/mixins/animations.less';
+
+.animationSandbox {
+  display: inline-flex;
+
+  .codeBox {
+    textarea {
+      resize: none;
+    }
+  }
+  .sandboxContainer {
+    display: inline-block;
+    margin-left: 5px;
+
+    .sandbox {
+      @sandBoxSize: 370px;
+      border: 1px solid;
+      height: @sandBoxSize;
+      width: @sandBoxSize;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .animateMe {
+        @boxSize: 80px;
+        display: inline-block;
+        height: @boxSize;
+        width: @boxSize;
+        line-height: @boxSize;
+        border: 1px solid;
+        font-size: 12px;
+        text-align: center;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .bottomRow {
+    display: flex;
+    justify-content: center;
+    border: 1px solid;
+    padding: 5px;
+
+  }
+
+  .errorRow {
+    padding: 5px;
+    color: red;
+  }
+}
+
+.infoPanel {
+  padding: 5px;
+
+  code {
+    white-space: pre;
+    display: block;
+    padding: 5px;
+  }
+}
+
+.flexCol {
+  display: flex;
+  flex-direction: column;
+}
+.flexRow {
+  display: flex;
+  flex-direction: row;
+}

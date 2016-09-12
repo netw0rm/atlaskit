@@ -221,7 +221,7 @@ export default define('ak-dropdown', {
       },
     }),
     /**
-     * @description Position of the dropdown. See the documentation of ak-layer@57 for more details.
+     * @description Position of the dropdown. See the documentation of ak-layer for more details.
      * @memberof Dropdown
      * @default bottom left
      * @type {string}

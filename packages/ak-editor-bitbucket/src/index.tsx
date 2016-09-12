@@ -149,7 +149,6 @@ class AkEditorBitbucket extends Component {
 
   // internal
   _fonts: any;
-  _justToggledExpansion: boolean;
   _pm: ProseMirror | null = null;
   _ready: boolean;
   _wrapper: HTMLElement;
@@ -199,8 +198,7 @@ class AkEditorBitbucket extends Component {
   }
 
   static rendered(elem: AkEditorBitbucket) {
-    if (elem.expanded && elem._justToggledExpansion) {
-      elem._justToggledExpansion = false;
+    if (elem.expanded) {
       elem._initEditor();
       if (!elem._ready) {
         emit(elem, 'ready');
@@ -268,8 +266,8 @@ class AkEditorBitbucket extends Component {
       }
       <Footer
         openTop
-        onSave={elem._toggleExpansion}
-        onCancel={elem._toggleExpansion}
+        onSave={elem.collapse}
+        onCancel={elem.collapse}
         onInsertimage={elem._insertImage}
       />
     </div>);
@@ -288,7 +286,7 @@ class AkEditorBitbucket extends Component {
           :
           <input
             placeholder={elem.placeholder}
-            onclick={elem._toggleExpansion}
+            onclick={elem.expand}
             className={fakeInputClassNames}
           />
         }
@@ -396,12 +394,28 @@ class AkEditorBitbucket extends Component {
     }
   }
 
-  _toggleExpansion() {
-    this.expanded = !this.expanded;
-    this._justToggledExpansion = true;
+  expand() {
+    if (this.expanded) {
+      return;
+    }
+
+    this.expanded = true;
+  }
+
+  collapse() {
+    if (!this.expanded) {
+      return;
+    }
+
+    this.expanded = false;
+    this._pm = null;
   }
 
   _initEditor() {
+    if (this._pm) {
+      return;
+    }
+
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
 

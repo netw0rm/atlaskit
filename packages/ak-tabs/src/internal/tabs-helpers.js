@@ -1,9 +1,5 @@
 import shadowStyles from '../shadow.less';
-import {
-  buttonContainer,
-  labelsContainer,
-  tabLabel,
-} from './symbols';
+import { buttonContainer, labelsContainer, tabLabel } from './symbols';
 
 const getAllTabs = (tabsEl) => (Array.from(tabsEl.children).filter(el => el.label));
 

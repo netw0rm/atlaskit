@@ -1,0 +1,26 @@
+{
+  "name": "ak-editor-facade-input",
+  "version": "1.0.0",
+  "description": "Use to insert a facade input field (for legacy reasons)",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.ts",
+  "typings": "src/index.ts",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-facade-input"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "ak-editor-test": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

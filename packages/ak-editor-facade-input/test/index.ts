@@ -1,0 +1,66 @@
+import * as chai from 'chai';
+import { expect } from 'chai';
+import { fixtures } from 'ak-editor-test';
+import FacadeInput from '../src/index';
+
+const target = fixtures();
+
+describe('Facade Input', () => {
+  afterEach(() => {
+    const elements = document.querySelectorAll('.facade-input');
+    for (let i = 0; i < elements.length; i++) {
+      const el = elements[i];
+      el.parentNode.removeChild(el);
+    }
+  });
+
+  it('should be initialized with given values', () => {
+    new FacadeInput(target(), {
+      initialValue: 'foo',
+      classList: ['facade-input'],
+    });
+
+    const elem = document.querySelector('.facade-input');
+    expect((elem as HTMLInputElement).value).to.equal('foo');
+  });
+
+  it('should call the sync function when theres a user input', (done) => {
+    const fInput = new FacadeInput(target(), {
+      initialValue: 'foo',
+      classList: ['facade-input'],
+    });
+
+    let syncedVal = '';
+    fInput.onSync = (val) => {
+      syncedVal = val;
+    }
+
+    const elem = document.querySelector('.facade-input');
+    (elem as HTMLInputElement).value = 'barbaz';
+
+    setTimeout(() => {
+      expect(syncedVal).to.equal('barbaz');
+      done();
+    }, 100);
+  });
+
+  it('should be removed when marked for removal', (done) => {
+    const fInput = new FacadeInput(target(), {
+      initialValue: 'foo',
+      classList: ['facade-input'],
+    });
+
+    let willRemove = false;
+    fInput.onSync = (val, r) => {
+      willRemove = r
+    }
+
+    fInput.markForRemoval();
+    setTimeout(() => {
+      expect(willRemove).to.be.true;
+      expect(fInput.removed).to.be.true;
+      expect(document.querySelector('.facade-input')).to.be.null;
+      done();
+    }, 100);
+  });
+});

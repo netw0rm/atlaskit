@@ -26,7 +26,13 @@ describe('visible elements', () => {
   });
 });
 describe('invisible elements', () => {
-  const div = document.createElement('div');
+  let div;
+
+  beforeEach(() => {
+    div = document.createElement('div');
+    div.setAttribute('style', 'display: none;');
+    document.body.appendChild(div);
+  });
 
   it('checkVisibility returns false', () => {
     expect(checkVisibility(div)).to.equal(false);

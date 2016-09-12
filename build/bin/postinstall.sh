@@ -14,8 +14,3 @@ echo "Installing hooks..."
 printf "\033[0m"
 node $BASEDIR/pre-commit.install.js
 validate-commit-msg
-
-printf "\033[34m"
-echo "Setting up symlinks..."
-printf "\033[0m"
-$BASEDIR/no.js.npm.link.sh

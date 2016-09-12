@@ -1,6 +1,6 @@
 const karmaConf = require('./base.js');
 
-const base = 'test';
+const base = 'packages/*/test';
 const files = `${base}/**/*.+(js|ts)`;
 const exclude = `${base}/_*.+(js|ts)`;
 

@@ -1,5 +1,5 @@
 /**
- * returns true iff elem is invisible
+ * returns true if and only if `elem` is invisible
  * @param elem – the element to check
  */
 export function checkInvisibility(elem) {
@@ -9,7 +9,7 @@ export function checkInvisibility(elem) {
 }
 
 /**
- * returns true iff elem is visible
+ * returns true if and only if `elem` is visible
  * @param elem – the element to check
  */
 export function checkVisibility(elem) {

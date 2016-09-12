@@ -8,11 +8,15 @@ function createTemporary(definition) {
   const component = new TemporaryWebComponent();
   const componentHasShadowRoot = () => !!getShadowRoot(component);
   document.body.appendChild(component);
-  return waitUntil(() => componentHasShadowRoot).then(() => component);
+  return waitUntil(componentHasShadowRoot).then(() => component);
 }
 
 function removeTemporary(component) {
   document.body.removeChild(component);
 }
 
-export { createTemporary, removeTemporary };
+function getRootNode(component) {
+  return getShadowRoot(component).firstChild;
+}
+
+export { createTemporary, removeTemporary, getRootNode };

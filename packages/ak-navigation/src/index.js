@@ -41,12 +41,11 @@ function getContainerPadding(width) {
   return Math.min(containerPaddingExpanded, Math.max(containerPaddingCollapsed, padding));
 }
 // TODO: keyboard interaction
-// TODO: use emit when https://github.com/skatejs/skatejs/pull/767 is merged and released
 const openSearchDrawer = el => el.addEventListener('click', () => {
-  el.dispatchEvent(new Event(searchDrawerOpenEvent, { composed: true }));
+  emit(el, searchDrawerOpenEvent);
 });
 const openCreateDrawer = el => el.addEventListener('click', () => {
-  el.dispatchEvent(new Event(createDrawerOpenEvent, { composed: true }));
+  emit(el, createDrawerOpenEvent);
 });
 
 function closeAllDrawers(elem) {

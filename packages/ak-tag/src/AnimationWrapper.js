@@ -1,23 +1,21 @@
-import { vdom, emit } from 'skatejs';
+import { vdom } from 'skatejs';
 import classnames from 'classnames';
-
-import { afterRemove as afterRemoveEvent } from './internal/events';
 import shadowStyles from './shadow.less';
 
-
-export default (elem, isRemovingSymbol) => {
+/* eslint-disable react/prop-types */
+export default (props, children) => {
   const animationWrapperClasses = classnames({
     [shadowStyles.locals.animationWrapper]: true,
-    [shadowStyles.locals.isRemoving]: elem[isRemovingSymbol],
+    [shadowStyles.locals.isRemoving]: props.isRemoving,
   });
 
   const onAnimationend = (e) => {
     if (e.animationName === shadowStyles.locals.removeAnimation) {
-      emit(elem, afterRemoveEvent);
+      props.afterAnimation();
     }
   };
 
-  return (props, children) => (<div
+  return (<div
     {...props}
     className={animationWrapperClasses}
     onAnimationend={onAnimationend}

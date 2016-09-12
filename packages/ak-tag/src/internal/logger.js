@@ -1,11 +1,11 @@
 import { name } from '../../package.json';
-
-function warn(text) {
-  console.warn(`${name}: ${text}`); // eslint-disable-line no-console
+import debug from 'debug';
+if (process.env.NODE_ENV === 'development') {
+  localStorage.debug = `${name}:*`;
 }
 
-function log(text) {
-  console.log(`${name}: ${text}`); // eslint-disable-line no-console
-}
-
-export default { warn, log };
+export default {
+  log: debug(`${name}:log`),
+  warn: debug(`${name}:warn`),
+  error: debug(`${name}:error`),
+};

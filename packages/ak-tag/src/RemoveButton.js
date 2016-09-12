@@ -1,15 +1,15 @@
-import { vdom, props } from 'skatejs';
+import { vdom } from 'skatejs';
 import { KeyPressHandler } from 'akutil-common';
 
 import shadowStyles from './shadow.less';
-import RemoveIcon from './remove-icon';
+import RemoveIcon from './RemoveIcon';
 
-export default (elem, buttonHoverSymbol) => {
-  const hoverAction = (toggle) => props(elem, { [buttonHoverSymbol]: toggle });
+/* eslint-disable react/prop-types */
+export default (props) => {
   const removeAction = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    elem.remove();
+    props.onActivation();
   };
 
   const attachButtonKeyHandlers = (el) => {
@@ -17,13 +17,13 @@ export default (elem, buttonHoverSymbol) => {
     handler.add('SPACE', removeAction);
   };
 
-  return (properties) => (<button
-    {...properties}
+  return (<button
+    {...props}
     className={shadowStyles.locals.button}
-    aria-label={properties.text}
+    aria-label={props.text}
     onmousedown={(e) => (e.preventDefault())}
-    onmouseover={() => hoverAction(true)}
-    onmouseout={() => hoverAction(false)}
+    onmouseover={() => props.onHoverStateChange(true)}
+    onmouseout={() => props.onHoverStateChange(false)}
     ref={attachButtonKeyHandlers}
     onclick={removeAction}
   >

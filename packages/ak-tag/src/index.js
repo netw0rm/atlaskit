@@ -1,14 +1,16 @@
 import { vdom, define, prop, props, emit } from 'skatejs';
 import createError from 'create-error';
 
-import Chrome from './chrome';
-import Text from './text';
-import Href from './href';
-import Root from './root';
-import createRemoveButton from './createRemoveButton';
-import createAnimationWrapper from './createAnimationWrapper';
+// component parts
+import Chrome from './Chrome';
+import Text from './Text';
+import Href from './Href';
+import Root from './Root';
+import RemoveButton from './RemoveButton';
+import AnimationWrapper from './AnimationWrapper';
+
 import * as events from './internal/events';
-const { beforeRemove: beforeRemoveEvent } = events;
+const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
 import { name } from '../package.json';
 import logger from './internal/logger';
 
@@ -30,29 +32,34 @@ const NotRemovableError = createError('NotRemovableError');
 export default define(name, {
   render(elem) {
     if (!elem.text) {
-      if (process.env.NODE_ENV === 'development') {
-        logger.warn('No text given, not rendering.');
-      }
+      logger.warn('No text given, not rendering.');
       return null;
     }
 
     const isLinked = elem.isLinked();
     const isRemovable = elem.isRemovable();
+    const isRemoving = elem[isRemovingSymbol];
 
-    const RemoveButton = isRemovable ? createRemoveButton(elem, buttonHoverSymbol) : () => null;
+    const Button = isRemovable ? RemoveButton : () => null;
     const Label = isLinked ? Href : Text;
-    const AnimationWrapper = createAnimationWrapper(elem, isRemovingSymbol);
 
     return (
       <Root>
-        <AnimationWrapper>
+        <AnimationWrapper
+          isRemoving={isRemoving}
+          afterAnimation={() => emit(elem, afterRemoveEvent)}
+        >
           <Chrome
             isLinked={isLinked}
             isRemovable={isRemovable}
             markedForRemoval={elem[buttonHoverSymbol]}
           >
             <Label href={elem.href}>{elem.text}</Label>
-            <RemoveButton text={elem['remove-button-text']} />
+            <Button
+              onHoverStateChange={(isHovering) => props(elem, { [buttonHoverSymbol]: isHovering })}
+              onActivation={() => elem.remove()}
+              text={elem['remove-button-text']}
+            />
           </Chrome>
         </AnimationWrapper>
       </Root>
@@ -102,9 +109,7 @@ export default define(name, {
             [isRemovingSymbol]: true,
           });
         } else {
-          if (process.env.NODE_ENV === 'development') {
-            logger.log(`Cancelled ${beforeRemoveEvent} event for tag "${this.text}"`);
-          }
+          logger.log(`Cancelled ${beforeRemoveEvent} event for tag "${this.text}"`);
         }
       }
     },

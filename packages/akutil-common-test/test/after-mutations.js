@@ -17,4 +17,16 @@ describe('afterMutations', () => {
         done();
       });
   });
+
+  it('should allow returning values', (done) => {
+    afterMutations(
+      () => 1,
+      (n) => {
+        n.should.be.equal(1);
+        return n + 2;
+      },
+      (n) => (n.should.be.equal(3)),
+      done
+    );
+  });
 });

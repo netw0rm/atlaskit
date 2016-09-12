@@ -4,6 +4,7 @@ import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import Tooltip, { TooltipTrigger } from '../src';
 import { handleMouseEnter, handleMouseLeave } from '../src/event-handlers';
+import { emit } from 'skatejs';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -38,24 +39,42 @@ function tearDownComponent(tooltip, trigger) {
 describe('ak-tooltip-trigger', () => {
   let tooltip;
   let trigger;
-  let shadowRoot; // eslint-disable-line no-unused-vars
-  let slottedContent;
 
   beforeEach(() => setupComponent().then(({ tooltip: newTooltip, trigger: newTrigger }) => {
     tooltip = newTooltip;
     trigger = newTrigger;
-    shadowRoot = getShadowRoot(tooltip);
-    slottedContent = document.body.querySelector('a');
   }));
   afterEach(() => tearDownComponent(tooltip, trigger));
 
-  it.skip('should open a tooltip when slottedContent gets focus', () => {
-    const tooltipIsOpen = () => (tooltip.visible);
+  ['focus', 'mouseenter'].forEach(event => {
+    it(`should open a tooltip when ${event} event fired`, () => {
+      const tooltipIsOpen = () => (tooltip.visible);
 
-    slottedContent.focus();
+      expect(tooltipIsOpen()).to.be.falsy;
+      emit(trigger, event, {});
 
-    return waitUntil(tooltipIsOpen).should.be.fulfilled;
+      return waitUntil(tooltipIsOpen).should.be.fulfilled;
+    });
   });
+
+  const tooltipEvents = {
+    blur: 'focus',
+    mouseleave: 'mouseenter',
+  };
+  Object.keys(tooltipEvents).forEach(event => {
+    it(`should close a tooltip when ${event} event fired`, () => {
+      const tooltipIsOpen = () => (tooltip.visible);
+
+      // set up the negative case and confirm tooltip is open
+      emit(trigger, tooltipEvents[event]);
+      return waitUntil(tooltipIsOpen).then(() => {
+        // now emit the event and check that the tooltip closes
+        emit(trigger, event);
+        return waitUntil(() => !tooltipIsOpen());
+      }).should.be.fulfilled;
+    });
+  });
+
 
   describe('handleMouseEnter event handler', () => {
     it('should open a tooltip', () => {

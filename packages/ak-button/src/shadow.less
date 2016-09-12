@@ -45,6 +45,15 @@
   margin-left: @side-slot-margin;
 }
 
+// todo: get rid of v0 support once browserstack chrome stable is v53
+::content > [slot="before"] {
+  margin-right: @side-slot-margin;
+}
+
+::content > [slot="after"] {
+  margin-left: @side-slot-margin;
+}
+
 .before-slot > * {
   margin-right: @side-slot-margin;
 }

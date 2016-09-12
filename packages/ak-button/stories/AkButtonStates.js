@@ -11,7 +11,6 @@ export default function buttonStatesExample(dependencies) {
         selected: false,
         compact: false,
         appearance: APPEARANCE.STANDARD,
-        label: 'Button',
         before: false,
         after: false,
       };
@@ -100,16 +99,6 @@ export default function buttonStatesExample(dependencies) {
             }
           </form>
           <br />
-          <form>
-            <label><strong>Button Text</strong></label>
-            <br />
-            <input
-              type="text"
-              value={this.state.label}
-              onChange={event => this.setState({ label: event.target.value })}
-            />
-          </form>
-          <br />
           <p>
             Baseline alignment check
             <AkButton
@@ -122,7 +111,7 @@ export default function buttonStatesExample(dependencies) {
             >
               {this.createIcon('before')}
               {this.createIcon('after')}
-              {this.state.label}
+              Button
             </AkButton>
           </p>
         </div>

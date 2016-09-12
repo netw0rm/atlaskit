@@ -28,8 +28,7 @@ function handleClick(elem) {
   };
 }
 
-// this is a temporary button, in the future dropdown will be able to use a proper button
-export const TriggerButtonDefinition = {
+export default {
   render(elem) {
     const classes = classNames(
       [shadowTriggerStyles.locals.trigger, {
@@ -37,27 +36,14 @@ export const TriggerButtonDefinition = {
         [shadowTriggerStyles.locals.opened]: elem.opened,
       }]
     );
-
-    return (
-      <div className={classes} tabIndex="0">
-        <style>{shadowTriggerStyles.toString()}</style>
-        <slot />
-      </div>
-    );
-  },
-  props: {
-    opened: prop.boolean({
-      attribute: true,
-    }),
-  },
-};
-export default {
-  render(elem) {
     return (
       <div
+        className={classes}
+        tabIndex="0"
         onclick={handleClick(elem)}
         onkeydown={handleKeyDown(elem)}
       >
+        <style>{shadowTriggerStyles.toString()}</style>
         <slot />
       </div>
     );

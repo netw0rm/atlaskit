@@ -2,6 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import Dropdown from '../src/index';
 const { React, ReactDOM } = window;
+const { Component } = React;
 import { name } from '../package.json';
 
 const DropdownReactComponent = reactify(Dropdown, {
@@ -11,13 +12,50 @@ const DropdownReactComponent = reactify(Dropdown, {
 
 const avatarUrl = require('url!./doge.jpg');
 
+class DropdownWithOutsideTrigger extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+
+    // Bind callback methods to make `this` the correct context.
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState({ open: true });
+  }
+
+  render() {
+    return (
+      <div
+        ref={(el) => {
+          if (el && !this.state.target) {
+            this.setState({ target: el.childNodes[0].firstChild });
+          }
+        }}
+      >
+        <div onClick={this.handleClick}>
+          <ak-avatar
+            src={avatarUrl}
+            size="small"
+          />
+        </div>
+        <DropdownReactComponent target={this.state.target} open={this.state.open}>
+          <ak-dropdown-item>text1</ak-dropdown-item>
+          <ak-dropdown-item>text2</ak-dropdown-item>
+          <ak-dropdown-item>some text here</ak-dropdown-item>
+          <ak-dropdown-item>another text</ak-dropdown-item>
+        </DropdownReactComponent>
+      </div>
+    );
+  }
+}
+
 storiesOf(`${name} component`, module)
   .add('simple dropdown', () => (
     <div>
       <DropdownReactComponent>
-        <ak-dropdown-trigger slot="trigger">
-          <ak-trigger-button>Dropdown-button</ak-trigger-button>
-        </ak-dropdown-trigger>
+        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
         <ak-dropdown-item>text1</ak-dropdown-item>
         <ak-dropdown-item>text2</ak-dropdown-item>
         <ak-dropdown-item>some text here</ak-dropdown-item>
@@ -25,12 +63,13 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
+  .add('simple dropdown with outside trigger', () => (
+    <DropdownWithOutsideTrigger />
+  ))
   .add('dropdown with avatars', () => (
     <div>
       <DropdownReactComponent>
-        <ak-dropdown-trigger slot="trigger">
-          <ak-trigger-button>People list</ak-trigger-button>
-        </ak-dropdown-trigger>
+        <ak-dropdown-trigger slot="trigger">People list</ak-dropdown-trigger>
         <ak-dropdown-item>
           <ak-avatar slot="left" src={avatarUrl} size="small" />
           Adam Smith
@@ -62,9 +101,7 @@ storiesOf(`${name} component`, module)
   .add('dropdown with everything', () => (
     <div>
       <DropdownReactComponent>
-        <ak-dropdown-trigger slot="trigger">
-          <ak-trigger-button>Dropdown-button</ak-trigger-button>
-        </ak-dropdown-trigger>
+        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
         <ak-dropdown-item>text1</ak-dropdown-item>
         <ak-dropdown-item selected>text2</ak-dropdown-item>
         <ak-dropdown-item disabled>some text here</ak-dropdown-item>

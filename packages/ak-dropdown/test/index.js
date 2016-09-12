@@ -26,12 +26,12 @@ describe('ak-dropdown', () => {
     it('should have an sub-components exports', () => {
       (new exports.Item).should.be.an.instanceof(Component);
       (new exports.Trigger).should.be.an.instanceof(Component);
-      (new exports.TriggerButton).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
+      const eventsArray = ['selected', 'afterOpen', 'afterClose', 'item', 'trigger'];
       exports.events.should.be.defined;
-      Object.keys(exports.events).should.be.deep.equal(['selected', 'item', 'trigger']);
+      Object.keys(exports.events).should.be.deep.equal(eventsArray);
       Object.keys(exports.events.item).should.be.deep.equal(['up', 'down', 'tab']);
       Object.keys(exports.events.trigger).should.be.deep.equal(['activated']);
     });

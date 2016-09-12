@@ -6,6 +6,7 @@ import {
 
 import { Mention } from './mention';
 import { CodeBlock } from './code-block';
+import { DelMark } from './del-mark';
 
 export const schema = {
   nodes: {
@@ -34,5 +35,6 @@ export const schema = {
     em: EmMark,
     strong: StrongMark,
     code: CodeMark,
+    del: DelMark,
   },
 };

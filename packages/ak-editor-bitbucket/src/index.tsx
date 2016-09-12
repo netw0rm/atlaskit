@@ -130,9 +130,9 @@ class AkEditorBitbucket extends Component {
   placeholder: string;
   imageUploader: Function;
   context: string;
-  expanded: boolean;
 
   // private state
+  _expanded: boolean;
   _focused: boolean;
   _canChangeBlockType: boolean;
   _strongActive: boolean;
@@ -167,8 +167,8 @@ class AkEditorBitbucket extends Component {
       placeholder: prop.string({ attribute: true }),
       imageUploader: functionProp(),
       context: prop.string({ attribute: true }),
-      expanded: prop.boolean({ attribute: true }),
 
+      _expanded: prop.boolean({ attribute: true }),
       /**
        * True if the editor has focus.
        * @private
@@ -198,7 +198,7 @@ class AkEditorBitbucket extends Component {
   }
 
   static rendered(elem: AkEditorBitbucket) {
-    if (elem.expanded) {
+    if (elem._expanded) {
       elem._initEditor();
       if (!elem._ready) {
         emit(elem, 'ready');
@@ -281,7 +281,7 @@ class AkEditorBitbucket extends Component {
         }
       >
         <style>{shadowStyles.toString()}</style>
-        {elem.expanded ?
+        {elem._expanded ?
           fullEditor
           :
           <input
@@ -395,19 +395,19 @@ class AkEditorBitbucket extends Component {
   }
 
   expand() {
-    if (this.expanded) {
+    if (this._expanded) {
       return;
     }
 
-    this.expanded = true;
+    this._expanded = true;
   }
 
   collapse() {
-    if (!this.expanded) {
+    if (!this._expanded) {
       return;
     }
 
-    this.expanded = false;
+    this._expanded = false;
     this._pm = null;
   }
 

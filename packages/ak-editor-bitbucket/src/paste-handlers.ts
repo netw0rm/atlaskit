@@ -20,6 +20,6 @@ export const markdownTransformer = function(schema: any, slice: any) {
     const parsed = markdownParser(schema).parse(sliceContents);
     return new Slice(parsed.content, slice.openLeft, slice.openRight, slice.possibleParent);
   } else {
-    return slice
+    return slice;
   }
 }

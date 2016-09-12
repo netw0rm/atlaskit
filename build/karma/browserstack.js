@@ -1,4 +1,4 @@
-const baseConfig = require('./base.js');
+const baseConfig = require('./all.js');
 const browserStackBrowsers = require('./browserstack.browsers.js');
 
 module.exports = (config) => {

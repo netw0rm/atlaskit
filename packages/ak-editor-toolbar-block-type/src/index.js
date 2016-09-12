@@ -4,14 +4,6 @@ import styles from './index.less';
 import FontSelect from './font-select';
 import Option from './option';
 
-const fonts = {
-  normalText: 'Normal text',
-  heading1: 'Heading 1',
-  heading2: 'Heading 2',
-  heading3: 'Heading 3',
-  monospace: 'Monospace',
-};
-
 function toggle(elem) {
   if (!elem.disabled || elem.dropdownOpen) {
     elem.dropdownOpen = !elem.dropdownOpen;
@@ -30,6 +22,8 @@ function selectFont(elem) {
 
 export default define('ak-editor-toolbar-block-type', {
   render(elem) {
+    const selectedFont = elem.selectedFont || elem.fonts[0];
+
     return (
       <div
         className={styles.locals.root}
@@ -39,7 +33,7 @@ export default define('ak-editor-toolbar-block-type', {
         <FontSelect
           disabled={elem.disabled}
           className={styles.locals.fontSelect}
-          selectedReadableName={fonts[elem.selectedFont]}
+          selectedReadableName={selectedFont.display}
           onToggleDropdown={() => toggle(elem)}
           active={elem.dropdownOpen}
         >
@@ -48,11 +42,12 @@ export default define('ak-editor-toolbar-block-type', {
               [styles.locals.dropdownOpen]: elem.dropdownOpen,
             })}
           >
-            {Object.keys(fonts).map(font => (
+            {elem.fonts.map(font => (
               <li><Option
                 font={font}
-                active={elem.selectedFont === font}
-              >{fonts[font]}</Option></li>
+                font-name={font.name}
+                active={selectedFont === font}
+              >{font.display}</Option></li>
             ))}
           </ul>
         </FontSelect>
@@ -61,7 +56,8 @@ export default define('ak-editor-toolbar-block-type', {
   },
   props: {
     dropdownOpen: prop.boolean({ attribute: true }),
-    selectedFont: prop.string({ attribute: true, default: Object.keys(fonts)[0] }),
+    selectedFont: { attribute: true },
+    fonts: prop.array({ attribute: true }),
     disabled: prop.boolean({ attribute: true }),
   },
 });

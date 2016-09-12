@@ -39,7 +39,7 @@ export default {
     return (
       <div
         className={classes}
-        tabIndex="0"
+        tabIndex={elem.tabIndex}
         onclick={handleClick(elem)}
         onkeydown={handleKeyDown(elem)}
       >
@@ -74,6 +74,20 @@ export default {
      */
     opened: prop.boolean({
       attribute: true,
+    }),
+    /**
+     * @description tabIndex of the dropdown's trigger
+     * @memberof Dropdown
+     * @default 0
+     * @type {Number}
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-trigger tab-index="1">Dropdown trigger</ak-dropdown-trigger>
+     * </ak-dropdown>
+     * @example @js dropdown.childNodes[0].tabIndex = 1;
+     */
+    tabIndex: prop.number({
+      attribute: true,
+      default: 0,
     }),
   },
 };

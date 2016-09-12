@@ -8,6 +8,9 @@ import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
 
+// TODO dangling to Symbol once this is supported: https://github.com/skatejs/skatejs/issues/687
+/* eslint-disable no-underscore-dangle */
+
 // Width of a dropdown should be at least width of it's trigger + 10px
 const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
@@ -39,8 +42,8 @@ function toggleDialog(elem, value) {
     list[0].first = true;
     list[list.length - 1].last = true;
     elem.reposition();
-    document.addEventListener('click', elem.handleClickOutside);
-    document.addEventListener('keydown', elem.handleKeyDown);
+    document.addEventListener('click', elem._handleClickOutside);
+    document.addEventListener('keydown', elem._handleKeyDown);
     emit(elem, events.afterOpen);
   } else {
     [...list].forEach((item) => {
@@ -52,8 +55,8 @@ function toggleDialog(elem, value) {
         item.last = false;
       }
     });
-    document.removeEventListener('click', elem.handleClickOutside);
-    document.removeEventListener('keydown', elem.handleKeyDown);
+    document.removeEventListener('click', elem._handleClickOutside);
+    document.removeEventListener('keydown', elem._handleKeyDown);
     emit(elem, events.afterClose);
   }
 }
@@ -130,12 +133,12 @@ export default define('ak-dropdown', {
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
     elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
-    elem.handleClickOutside = (e) => {
+    elem._handleClickOutside = (e) => {
       if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem)) {
         toggleDialog(elem, false);
       }
     };
-    elem.handleKeyDown = (e) => {
+    elem._handleKeyDown = (e) => {
       if (elem.open && e.keyCode === keyCode('escape')) {
         toggleDialog(elem, false);
       }
@@ -143,8 +146,8 @@ export default define('ak-dropdown', {
   },
   prototype: {
     reposition() {
-      if (this.layer) {
-        this.layer.reposition();
+      if (this._layer) {
+        this._layer.reposition();
       }
 
       return this;
@@ -175,7 +178,7 @@ export default define('ak-dropdown', {
             enableFlip
             offset={offset}
             ref={(layer) => {
-              elem.layer = layer;
+              elem._layer = layer;
               setTimeout(() => {
                 if (elem.open && layer.alignment) {
                     // by default dropdown has opacity 0
@@ -232,9 +235,7 @@ export default define('ak-dropdown', {
      * @memberof Dropdown
      * @example @js dropdown.target = document.getElementById("#target");
      */
-    target: {
-      attribute: true,
-    },
+    target: {},
   },
 });
 

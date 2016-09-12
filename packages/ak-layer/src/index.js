@@ -80,9 +80,7 @@ export default define('ak-layer', {
     /* eslint-enable max-len */
     position: enumeration(POSITION_ATTRIBUTE_ENUM)({
       attribute: true,
-      set(elem, data) {
-        reCreateAlignmentIfNeeded(elem, data);
-      },
+      set: reCreateAlignmentIfNeeded,
     }),
     /**
      * @description Target of a layer.
@@ -96,28 +94,20 @@ export default define('ak-layer', {
      */
     target: {
       attribute: true,
-      set(elem, data) {
-        reCreateAlignmentIfNeeded(elem, data);
-      },
+      set: reCreateAlignmentIfNeeded,
     },
     onRender: {},
     boundariesElement: {
       attribute: true,
-      set(elem, data) {
-        reCreateAlignmentIfNeeded(elem, data);
-      },
+      set: reCreateAlignmentIfNeeded,
     },
     enableFlip: prop.boolean({
       attribute: true,
-      set(elem, data) {
-        reCreateAlignmentIfNeeded(elem, data);
-      },
+      set: reCreateAlignmentIfNeeded,
     }),
     offset: {
       attribute: true,
-      set(elem, data) {
-        reCreateAlignmentIfNeeded(elem, data);
-      },
+      set: reCreateAlignmentIfNeeded,
     },
   },
   prototype: {

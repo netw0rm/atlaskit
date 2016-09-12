@@ -233,7 +233,7 @@ export default define('ak-dropdown', {
     /**
      * @description Link to the target element
      * @memberof Dropdown
-     * @example @js dropdown.target = document.getElementById("#target");
+     * @example @js dropdown.target = document.getElementById("target");
      */
     target: {},
   },

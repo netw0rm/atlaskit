@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-A button group provides a visual grouping for related Button (`<ak-button>`) elements.
+A button group provides a visual grouping for related Button (`<ak-button>`) elements. You can use this component whenever you have several buttons that do the same such as the pull request's Approve and Decline buttons.
 
 ## Setup and install
 

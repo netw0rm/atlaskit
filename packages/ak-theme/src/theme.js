@@ -46,22 +46,44 @@ function varsFromChildren(host) {
   }, {});
 }
 
+function mixins(elem) {
+  return elem.mixin.split(' ');
+}
+
 export default define('ak-theme', {
   props: {
+    /**
+     * @description Returns own and theme vars inherited from mixins.
+     * @type {object}
+     */
     allVars: {
       get(elem) {
-        return Object.assign(elem.mixins.reduce((prev, curr) => {
+        return Object.assign(mixins(elem).reduce((prev, curr) => {
           const theme = document.getElementById(curr);
           return theme ? Object.assign(prev, theme.allVars) : prev;
         }, {}), elem.ownVars);
       },
     },
+    /**
+     * @description The id of the theme. This is used to identify the theme a given component should
+     * use.
+     * @type {string}
+     */
     id: prop.string({
       attribute: true,
     }),
+    /**
+     * @description Space-separated ids of other themes that should be mixed in (in order of
+     * appearance) into this theme, this theme overriding any conflicts.
+     * @type {string}
+     */
     mixin: prop.string({
       attribute: true,
     }),
+    /**
+     * @description Returns the theme variables for only this theme, excluding any mixed in themes.
+     * @type {string}
+     */
     ownVars: {
       default() {
         return {};
@@ -99,10 +121,5 @@ export default define('ak-theme', {
   render(elem) {
     style(vdom, { ':host': { display: 'none' } });
     return <slot onSlotchange={() => (elem.ownVars = varsFromChildren(elem))} />;
-  },
-  prototype: {
-    get mixins() {
-      return this.mixin.split(' ');
-    },
   },
 });

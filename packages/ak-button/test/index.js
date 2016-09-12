@@ -2,6 +2,7 @@ import 'custom-event-polyfill';
 import assign from 'object-assign';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import sinonChai from 'sinon-chai';
 import { symbols, props } from 'skatejs';
 import AkButton, { APPEARANCE } from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
@@ -11,6 +12,7 @@ import { hasClass, waitUntil } from 'akutil-common-test';
 const classKeys = shadowStyles.locals;
 
 chai.use(chaiAsPromised);
+chai.use(sinonChai);
 const expect = chai.expect;
 
 describe('ak-button', () => {

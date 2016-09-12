@@ -74,7 +74,8 @@ export default define('ak-tooltip', {
           position={positionToPopperPosition(elem.position)}
           className={layerClasses}
           ref={(ref) => (elem.layer = ref)}
-          enableFlip="true"
+          enableFlip
+          boundariesElement={document.body}
           updateCallback={(data) => layerOnUpdate(data, elem)}
         >
           <div className={messageBoxClasses}>{elem.description}</div>

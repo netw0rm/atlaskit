@@ -21,7 +21,7 @@ describe('ak-tag-group', () => {
 
   it('should be possible to create a component', (done) => {
     afterMutations(
-      () => getShadowRoot(component).querySelectorAll('slot'),
+      () => getShadowRoot(component).querySelectorAll('slot,content'),
       (nodes) => {
         const slots = Array.from(nodes);
         slots.length.should.be.equal(1);

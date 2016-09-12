@@ -2,6 +2,7 @@ import 'custom-event-polyfill';
 import assign from 'object-assign';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import sinonChai from 'sinon-chai';
 import { symbols, props } from 'skatejs';
 import AkButton, { APPEARANCE } from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
@@ -11,6 +12,7 @@ import { hasClass, waitUntil } from 'akutil-common-test';
 const classKeys = shadowStyles.locals;
 
 chai.use(chaiAsPromised);
+chai.use(sinonChai);
 const expect = chai.expect;
 
 describe('ak-button', () => {
@@ -25,6 +27,15 @@ describe('ak-button', () => {
     const button = getShadowButtonElem(testComponent);
     expect(button.classList).to.have.lengthOf(expectClassCount);
     expect(hasClass(button, ...classes)).to.be.true;
+  };
+
+  const createDivTest = config => {
+    const div = document.createElement('div');
+    div.innerText = 'test';
+    if (config.slotName) {
+      div.slot = config.slotName;
+    }
+    return div;
   };
 
   beforeEach(() => {
@@ -51,6 +62,17 @@ describe('ak-button', () => {
     sinon.spy(event, 'preventDefault');
     button.dispatchEvent(event);
     expect(event.preventDefault).to.have.been.called;
+  });
+
+  describe('slots', () => {
+    describe('before', () => {
+      const div = createDivTest({ slotName: 'before' });
+      beforeEach(() => component.appendChild(div));
+
+      it('slotted element should have margin-right applied', () =>
+        expect(window.getComputedStyle(div).marginRight).to.equal('8px')
+      );
+    });
   });
 
   describe('attributes', () => {
@@ -215,10 +237,21 @@ describe('ak-button', () => {
         expect(window.getComputedStyle(component).pointerEvents).to.equal('none')
       );
 
-      it('button\'s children should have pointer-events: none css attribute', () => {
-        const div = document.createElement('div', 'test');
-        component.appendChild(div);
-        expect(window.getComputedStyle(div).pointerEvents).to.equal('none');
+      describe('when button has slotted elements', () => {
+        const addSlottedElement = slotName => {
+          const div = createDivTest({ slot: slotName });
+          component.appendChild(div);
+          return div;
+        };
+
+        [false, 'before'].forEach(slotName =>
+          describe(`on ${slotName || 'default'} slot`, () =>
+            it('slotted elements should have pointer-events: none css attribute', () => {
+              const div = addSlottedElement(slotName);
+              expect(window.getComputedStyle(div).pointerEvents).to.equal('none');
+            })
+          )
+        );
       });
     });
   });

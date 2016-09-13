@@ -108,10 +108,6 @@ storiesOf(name, module)
           <ak-dropdown-item>Learn git</ak-dropdown-item>
         </ak-dropdown>
 
-        <ak-avatar src={userAvatar} slot="global-profile-dropdown-trigger" />
-        <ak-dropdown-item slot="global-profile-dropdown">Online help</ak-dropdown-item>
-        <ak-dropdown-item slot="global-profile-dropdown">Learn git</ak-dropdown-item>
-
         <ak-dropdown position="right bottom" slot="global-help">
           <ak-dropdown-trigger slot="trigger">
             <ak-icon glyph="help" />

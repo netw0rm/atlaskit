@@ -1,4 +1,4 @@
-import { emit, vdom, prop } from 'skatejs';
+import { emit, vdom, prop, define } from 'skatejs';
 import shadowTriggerStyles from './shadow-trigger.less';
 import classNames from 'classnames';
 import keyCode from 'keycode';
@@ -27,18 +27,10 @@ function handleClick(elem) {
     }
   };
 }
-
-export default {
+export const DropdownTrigger = define('ak-dropdown-trigger', {
   render(elem) {
-    const classes = classNames(
-      [shadowTriggerStyles.locals.trigger, {
-        [shadowTriggerStyles.locals.disabled]: elem.disabled,
-        [shadowTriggerStyles.locals.opened]: elem.opened,
-      }]
-    );
     return (
       <div
-        className={classes}
         tabIndex={elem.tabIndex}
         onclick={handleClick(elem)}
         onkeydown={handleKeyDown(elem)}
@@ -90,4 +82,28 @@ export default {
       default: 0,
     }),
   },
-};
+});
+
+export const DropdownTriggerButton = define('ak-dropdown-trigger-button',
+  class extends DropdownTrigger {
+    static render(elem) {
+      const classes = classNames(
+        [shadowTriggerStyles.locals.trigger, {
+          [shadowTriggerStyles.locals.disabled]: elem.disabled,
+          [shadowTriggerStyles.locals.opened]: elem.opened,
+        }]
+      );
+      return (
+        <div
+          className={classes}
+          tabIndex={elem.tabIndex}
+          onclick={handleClick(elem)}
+          onkeydown={handleKeyDown(elem)}
+        >
+          <style>{shadowTriggerStyles.toString()}</style>
+          <slot />
+        </div>
+      );
+    }
+  }
+);

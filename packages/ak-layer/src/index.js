@@ -70,14 +70,6 @@ export default define('ak-layer', {
       set: reCreateAlignmentIfNeeded,
     },
     /**
-     * @description Callback function that is called whenever the Layer flips its position.
-     * @memberof Layer
-     * @instance
-     * @type function
-     * @example @js layer.onFlip = () => { console.log('Layer has been flipped'); };
-     */
-    onFlip: {},
-    /**
      * @description Callback function that is called whenever layer is rendered.
      * The Layer element will be passed in as an argument.
      * @memberof Layer

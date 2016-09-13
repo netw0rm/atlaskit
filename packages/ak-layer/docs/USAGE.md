@@ -1,6 +1,6 @@
 # Layer
 
-A container responsible for the positioning of an element on a page
+The layer is responsible for the positioning of an element on a page.
 
 ## Setup and install
 
@@ -8,7 +8,7 @@ A container responsible for the positioning of an element on a page
 npm install ak-layer
 ```
 
-## Using the definition
+## Using the component
 
 The `ak-layer` package exports the Layer [skate](https://github.com/skatejs/skatejs) component:
 

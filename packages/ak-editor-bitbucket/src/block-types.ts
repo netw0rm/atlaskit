@@ -39,8 +39,8 @@ export const blockTypes = {
     display   : 'Block quote',
     schemaName: 'blockquote',
   }, {
-    name      : 'monospace',
-    display   : 'Monospace',
+    name      : 'codeBlock',
+    display   : 'Code block',
     schemaName: 'code_block',
   }],
 
@@ -54,8 +54,8 @@ export const blockTypes = {
     display   : 'Block quote',
     schemaName: 'blockquote',
   }, {
-    name      : 'monospace',
-    display   : 'Monospace',
+    name      : 'codeBlock',
+    display   : 'Code block',
     schemaName: 'code_block',
   }],
 };

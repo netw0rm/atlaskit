@@ -3,27 +3,15 @@ import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import { Component } from 'skatejs';
-import MyComponent, { events } from '../src';
 
+import MyComponent, { events } from '../src';
+import { setupComponent, tearDownComponent } from './_helpers';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
 
 const expect = chai.expect;
-
-function setupComponent() {
-  const component = new MyComponent();
-  const componentHasShadowRoot = () => !!getShadowRoot(component);
-
-  document.body.appendChild(component);
-
-  return waitUntil(componentHasShadowRoot).then(() => component);
-}
-
-function tearDownComponent(component) {
-  document.body.removeChild(component);
-}
 
 
 describe('akutil-component-template', () => {
@@ -44,7 +32,7 @@ describe('akutil-component-template', () => {
     let component;
     let shadowRoot;
 
-    beforeEach(() => setupComponent().then(newComponent => {
+    beforeEach(() => setupComponent(MyComponent).then(newComponent => {
       component = newComponent;
       shadowRoot = getShadowRoot(component);
     }));

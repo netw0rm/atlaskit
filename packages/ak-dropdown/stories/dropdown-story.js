@@ -112,7 +112,9 @@ storiesOf(`${name} component`, module)
   .add('dropdown with a buttonless trigger', () => (
     <div>
       <DropdownReactComponent>
-        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
+        <ak-dropdown-trigger slot="trigger">
+          <ak-avatar src={avatarUrl} size="small" />
+        </ak-dropdown-trigger>
         <ak-dropdown-item>Joscha</ak-dropdown-item>
         <ak-dropdown-item>Wuz</ak-dropdown-item>
         <ak-dropdown-item>Here</ak-dropdown-item>

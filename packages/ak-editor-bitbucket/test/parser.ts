@@ -1,4 +1,4 @@
-import { schema } from '../src/schema';
+import { Parser } from '../src/parser';
 import { Schema } from 'ak-editor-prosemirror';
 import { chaiPlugin, doc, p, text,
          h1, h2, h3, h4, h5, h6, hr } from 'ak-editor-test';
@@ -7,15 +7,10 @@ import { expect } from 'chai';
 
 chai.use(chaiPlugin);
 
+const parse = (new Parser()).parse;
+
 // Based on https://bitbucket.org/tutorials/markdowndemo
 describe('Parse Bitbucket rendered HTML', () => {
-  const parse = (html: string) => {
-    const el = document.createElement('div');
-    el.innerHTML = html;
-
-    return schema.parseDOM(el);
-  }
-
   describe('block elements', () => {
     it('should support level 1 to 6 headings', () => {
       expect(parse('<h1>text</h1>')).to.deep.equal(doc(h1('text')));

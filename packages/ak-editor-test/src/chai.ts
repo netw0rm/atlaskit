@@ -1,5 +1,6 @@
 /// <reference path="./chai.d.ts"/>
 import { Fragment, Node, Slice, NodeType } from 'ak-editor-prosemirror';
+import schema from 'ak-editor-schema';
 
 export default (chai: any) => {
   const { Assertion, util } = chai;
@@ -76,5 +77,33 @@ export default (chai: any) => {
       return new Assertion(obj.type).not.to.be.an.instanceof(nodeType);
     }
     return new Assertion(obj.type).to.be.an.instanceof(nodeType);
+  });
+
+  Assertion.addMethod('mark', function(mark: string) {
+    const obj: Node = util.flag(this, 'object');
+    const negate: boolean = util.flag(this, 'negate');
+
+    // this assumes marks are applied to first text node of the first child.
+    const hasMark = obj.rangeHasMark(0, 2, schema.marks[mark]);
+
+    if (negate) {
+      return new Assertion(hasMark).not.to.be.true;
+    }
+    return new Assertion(hasMark).to.be.true;
+  });
+
+  Assertion.addMethod('marks', function(marks: string[]) {
+    const obj: Node = util.flag(this, 'object');
+    const negate: boolean = util.flag(this, 'negate');
+
+    // this assumes marks are applied to first text node of the first child.
+    const hasAllMarks = marks.every((mark) => {
+      return obj.rangeHasMark(0, 2, schema.marks[mark]);
+    });
+
+    if (negate) {
+      return new Assertion(hasAllMarks).not.to.be.true;
+    }
+    return new Assertion(hasAllMarks).to.be.true;
   });
 }

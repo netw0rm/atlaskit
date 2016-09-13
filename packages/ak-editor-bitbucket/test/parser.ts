@@ -28,18 +28,34 @@ describe('Parse Bitbucket rendered HTML', () => {
     it('should support horizontal rules', () => {
       expect(parse('<hr>')).to.deep.equal(doc(hr));
     });
+
+    it('should support images');
   });
 
   describe('inline elements', () => {
-    it('should support emphasis');
+    it('should support emphasis', () => {
+      expect(parse('<p><em>text</em></p>')).to.have.mark('em');
+    });
 
-    it('should support strikethrough');
+    it('should support strong', () => {
+      expect(parse('<p><strong>text</strong></p>')).to.have.mark('strong');
+    });
 
-    it('should support inline preformatted code');
+    it('should support strikethrough', () => {
+      expect(parse('<p><del>text</del></p>')).to.have.mark('del');
+    });
 
-    it('should support links');
+    it('should support inline preformatted code', () => {
+      expect(parse('<p><code>text</code></p>')).to.have.mark('code');
+    });
 
-    it('should support images');
+    it('should support links', () => {
+      expect(parse('<p><a href="http://example.com">link</a></p>')).to.have.mark('link');
+    });
+
+    it('should support both strong and em', () => {
+      expect(parse('<p><strong><em>text</em></strong></p>')).to.have.marks(['em', 'strong']);
+    });
   });
 
   describe('blockquotes', () => {

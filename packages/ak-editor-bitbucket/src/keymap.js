@@ -31,12 +31,17 @@ const { wrapIn, setBlockType, wrapInList, splitListItem, liftListItem,
 // argument, which maps key names (say `"Mod-B"` to either `false`, to
 // remove the binding, or a new key name string.
 export function buildKeymap(schema, mapKeys) {
-  let keys = {}
+  let keys = {};
   function bind(key, cmd) {
     if (mapKeys) {
       let mapped = mapKeys[key];
-      if (mapped === false) return;
-      if (mapped) key = mapped
+      if (mapped === false) {
+        return;
+      }
+
+      if (mapped) {
+        key = mapped;
+      }
     }
     keys[key] = cmd;
   }
@@ -53,7 +58,7 @@ export function buildKeymap(schema, mapKeys) {
     }
 
     if (name === "code") {
-      bind("Mod-`", toggleMark(mark))
+      bind("Mod-`", toggleMark(mark));
     }
   }
   for (let name in schema.nodes) {
@@ -72,17 +77,21 @@ export function buildKeymap(schema, mapKeys) {
     }
 
     if (name === "hard_break") {
-      let cmd = chainCommands(newlineInCode,
-                              pm => pm.tr.replaceSelection(node.create()).applyAndScroll());
+      let cmd = chainCommands(
+        newlineInCode,
+        pm => pm.tr.replaceSelection(node.create()).applyAndScroll()
+      );
       bind("Mod-Enter", cmd);
       bind("Shift-Enter", cmd);
-      if (browser.mac) bind("Ctrl-Enter", cmd)
+      if (browser.mac) {
+        bind("Ctrl-Enter", cmd);
+      }
     }
 
     if (name === "list_item") {
       bind("Enter", splitListItem(node));
       bind("Mod-[", liftListItem(node));
-      bind("Mod-]", sinkListItem(node))
+      bind("Mod-]", sinkListItem(node));
     }
 
     if (name === "paragraph") {
@@ -90,7 +99,7 @@ export function buildKeymap(schema, mapKeys) {
     }
 
     if (name === "code_block") {
-      bind("Shift-Ctrl-\\", setBlockType(node))
+      bind("Shift-Ctrl-\\", setBlockType(node));
     }
 
     if (name === "heading") {
@@ -103,5 +112,5 @@ export function buildKeymap(schema, mapKeys) {
       bind("Mod-Shift--", pm => pm.tr.replaceSelection(node.create()).applyAndScroll());
     }
   }
-  return new Keymap(keys)
+  return new Keymap(keys);
 }

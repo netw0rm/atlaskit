@@ -1,5 +1,7 @@
 # Tag
 
+![Example tags](docs/overview.png)
+
 ## Synopsis
 
 This component displays as a tag with an optional link and/or button to remove the given tag.

@@ -28,12 +28,13 @@ storiesOf(name, module)
   ))
   .add('remove-button: hover unlinked vs. linked', () => (
     <div>
+      Hover over our remove buttons
+      <hr />
       <Component
         className={styles.akTag}
         text="Fruitcake"
         remove-button-text="Brush your teeth!"
       />
-      <hr />
       <Component
         className={styles.akTag}
         href="http://www.cupcakeipsum.com"

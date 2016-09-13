@@ -20,12 +20,9 @@ function shadowRootQuerySelector(component, selector) {
   return null;
 }
 
-function shadowRootQuerySelectorAll(component, selector) {
+function slotQuerySelectorAll(component, selector) {
   if (component) {
-    const shadowRoot = getShadowRoot(component);
-    if (shadowRoot) {
-      return shadowRoot.querySelectorAll(selector);
-    }
+    return component.querySelectorAll(selector);
   }
   return [];
 }
@@ -36,5 +33,5 @@ export function getMentionItems(pfMentionPicker) {
     'pf-resourced-mention-list');
   const mentionList = shadowRootQuerySelector(resourcedMentionList, 'pf-mention-list');
   const scrollable = shadowRootQuerySelector(mentionList, 'pf-scrollable');
-  return shadowRootQuerySelectorAll(scrollable, 'pf-mention-item') || [];
+  return slotQuerySelectorAll(scrollable, 'pf-mention-item');
 }

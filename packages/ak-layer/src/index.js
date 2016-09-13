@@ -133,6 +133,7 @@ export default define('ak-layer', {
       attribute: true,
       set: reCreateAlignmentIfNeeded,
     },
+    // internal property, no docs required
     _isFlipped: prop.boolean(),
   },
   prototype: {
@@ -161,7 +162,7 @@ export default define('ak-layer', {
      * @example @js const isFlipped = elem.isFlipped;
     */
     get isFlipped() {
-      return this._isFlipped; // eslint-disable-line no-underscore-dangle
+      return !!this._isFlipped; // eslint-disable-line no-underscore-dangle
     },
   },
   attached(elem) {

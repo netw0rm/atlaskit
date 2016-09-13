@@ -39,12 +39,12 @@ export default define('ak-tag-group', {
   },
   props: {
     /**
-     * @description (Optional) An alignment. Defaults to left.
+     * @description (Optional) An alignment. Defaults to an empty string (left alignment).
      * @memberof TagGroup
      * @instance
      * @type {string}
      * @example @html <ak-tag-group alignment="right"></ak-tag-group>
-     * @example @js tagGroup.alignment = 'left';
+     * @example @js tagGroup.alignment = 'right';
      */
     alignment: enumeration(ALIGNMENT_ATTRIBUTE_ENUM)({
       attribute: true,

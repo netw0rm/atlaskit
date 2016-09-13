@@ -131,6 +131,18 @@ class AkEditorBitbucket extends Component {
   imageUploader: Function;
   context: string;
 
+  get expanded(): boolean {
+    return this._expanded;
+  }
+
+  set expanded(val) {
+    this._expanded = val;
+
+    if (!this._expanded) {
+      this._pm = null;
+    }
+  }
+
   // private state
   _expanded: boolean;
   _focused: boolean;
@@ -198,7 +210,7 @@ class AkEditorBitbucket extends Component {
   }
 
   static rendered(elem: AkEditorBitbucket) {
-    if (elem._expanded) {
+    if (elem.expanded) {
       elem._initEditor();
       if (!elem._ready) {
         emit(elem, 'ready');
@@ -266,8 +278,8 @@ class AkEditorBitbucket extends Component {
       }
       <Footer
         openTop
-        onSave={elem.collapse}
-        onCancel={elem.collapse}
+        onSave={() => elem.expanded = false}
+        onCancel={() => elem.expanded = false}
         onInsertimage={elem._insertImage}
       />
     </div>);
@@ -281,12 +293,12 @@ class AkEditorBitbucket extends Component {
         }
       >
         <style>{shadowStyles.toString()}</style>
-        {elem._expanded ?
+        {elem.expanded ?
           fullEditor
           :
           <input
             placeholder={elem.placeholder}
-            onclick={elem.expand}
+            onclick={() => elem.expanded = true}
             className={fakeInputClassNames}
           />
         }
@@ -392,23 +404,6 @@ class AkEditorBitbucket extends Component {
         });
       }
     }
-  }
-
-  expand() {
-    if (this._expanded) {
-      return;
-    }
-
-    this._expanded = true;
-  }
-
-  collapse() {
-    if (!this._expanded) {
-      return;
-    }
-
-    this._expanded = false;
-    this._pm = null;
   }
 
   _initEditor() {

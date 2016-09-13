@@ -101,17 +101,21 @@ storiesOf(name, module)
         <ak-icon slot="global-create" glyph="create" />
 
         <ak-dropdown position="right bottom" slot="global-profile">
-          <ak-navigation-global-item slot="trigger">
+          <ak-dropdown-trigger slot="trigger">
             <ak-avatar src={userAvatar} />
-          </ak-navigation-global-item>
+          </ak-dropdown-trigger>
           <ak-dropdown-item>Online help</ak-dropdown-item>
           <ak-dropdown-item>Learn git</ak-dropdown-item>
         </ak-dropdown>
 
+        <ak-avatar src={userAvatar} slot="global-profile-dropdown-trigger" />
+        <ak-dropdown-item slot="global-profile-dropdown">Online help</ak-dropdown-item>
+        <ak-dropdown-item slot="global-profile-dropdown">Learn git</ak-dropdown-item>
+
         <ak-dropdown position="right bottom" slot="global-help">
-          <ak-navigation-global-item slot="trigger">
+          <ak-dropdown-trigger slot="trigger">
             <ak-icon glyph="help" />
-          </ak-navigation-global-item>
+          </ak-dropdown-trigger>
           <ak-dropdown-item>View profile</ak-dropdown-item>
           <ak-dropdown-item>Bitbucket settings</ak-dropdown-item>
           <ak-dropdown-item>Integration</ak-dropdown-item>

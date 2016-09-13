@@ -20,12 +20,18 @@ export default (props, children) => {
     [shadowStyles.locals.isRemovable]: props.isRemovable,
   });
 
+  const targetProps = {};
+  if (props.isLinked) {
+    targetProps.role = 'link';
+    targetProps.ref = attachKeyHandlers;
+  }
+
   return (
     <span
       {...props}
+      {...targetProps}
       tabindex={props.isLinked ? 0 : -1}
       className={classNames}
-      ref={props.isLinked ? attachKeyHandlers : () => null}
       onmousedown={(e) => (e.preventDefault())}
     >
       {children()}

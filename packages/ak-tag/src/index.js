@@ -27,7 +27,9 @@ const isRemovingSymbol = '__isRemoving';
  * @fires Tag#beforeRemove
  * @fires Tag#afterRemove
  * @example @js import Tag from 'ak-tag';
+ *
  * const tag = new Tag();
+ * document.body.appendChild(tag);
  */
 export default define(name, {
   render(elem) {
@@ -74,6 +76,8 @@ export default define(name, {
   prototype: {
     /**
      * @description Getter to find out whether the tag is linked.
+     *              This is implicitly controlled by the {@link Tag#href} attribute.
+     *
      * @memberof Tag
      * @function
      * @instance
@@ -85,7 +89,8 @@ export default define(name, {
     },
     /**
      * @description Getter to find out whether the tag is removable.
-     *              Is implicitly controlled by the `remove-button-text` attribute.
+     *              This is implicitly controlled by the {@link Tag#remove-button-text} attribute.
+     *
      * @memberof Tag
      * @function
      * @instance
@@ -102,12 +107,29 @@ export default define(name, {
      *              event. The {@link Tag#afterRemove} event is fired upon completion.
      *              Please note that the tag is not actually removed from the DOM. It is up to the
      *              consumer to remove the DOM representation.
+     *
      * @memberof Tag
      * @function
      * @instance
-     * @emits Tag#beforeRemove, Tag#afterRemove
+     * @emits Tag#beforeRemove
+     * @emits Tag#afterRemove
      * @throws {NotRemovableError} throws an error if invoked on a tag that is not removable
      * @example @js tag.remove(); // triggers the tag removal
+     * @example @js import Tag, { events, exceptions } from 'ak-tag';
+     * const { beforeRemove, afterRemove } = events;
+     * const { NotRemovableError } = exceptions;
+     *
+     * const tag = new Tag();
+     * tag.addEventListener(beforeRemove, (e) => {
+     *   console.log('Just about to start the remove animation');
+     *   // e.preventDefault(); // this would stop the removal process
+     * });
+     * tag.addEventListener(afterRemove, () => {
+     *   console.log('Remove animation finished');
+     *   document.body.removeChild(tag); // actually remove the DOM representation
+     * });
+     *
+     * document.body.appendChild(tag);
      */
     remove() {
       if (!this.isRemovable()) {
@@ -125,12 +147,36 @@ export default define(name, {
   },
   props: {
     /**
-     * @description (Optional) A target href for the tag text to link to.
+     * @description (Required) The tag text content.
+     *              This is a required attribute.
+     *              Omitting it will stop the tag from being rendered.
+     *
      * @memberof Tag
      * @instance
      * @type {string}
-     * @example @html <ak-tag href="http://www.some.url"></ak-tag>
-     * @example @js tag.href = 'http://www.some.url';
+     * @example @html <ak-tag text="Cupcake"></ak-tag>
+     * @example @js const tag = new Tag();
+     * tag.text = 'Cupcake';
+     * // Shows a tag with the text 'Cupcake'
+     */
+    text: {
+      attribute: true,
+    },
+
+    /**
+     * @description (Optional) A target href for the tag text to link to.
+     *              If this attribute is non-empty, the tag will contain a link to the given URL.
+     *              The given URL reference will be used as-is and will open in the same window.
+     *              This attribute implicitly controls {@link Tag#isLinked}.
+     *
+     * @memberof Tag
+     * @instance
+     * @type {string}
+     * @example @html <ak-tag text="Cupcake" href="http://www.cupcakeipsum.com/"></ak-tag>
+     * @example @js const tag = new Tag();
+     * tag.text = 'Cupcake';
+     * tag.href = 'http://www.cupcakeipsum.com/';
+     * // Shows a tag with the text 'Cupcake' and a link to cupcakeipsum.com
      */
     href: {
       attribute: true,
@@ -139,29 +185,21 @@ export default define(name, {
     /**
      * @description (Optional) The text for the remove button.
      *              Implicitly defines that there will be a remove button.
-     *              Implicitly controls {@link Tag.isRemovable}.
+     *              This attribute implicitly controls {@link Tag#isRemovable}.
+     *
      * @memberof Tag
      * @instance
      * @name remove-button-text
      * @type {string}
-     * @example @html <ak-tag remove-button-text="Delete tag"></ak-tag>
-     * @example @js tag.removeButtonText = 'Delete tag';
+     * @example @html <ak-tag text="Cupcake" remove-button-text="OMG, I am so full!"></ak-tag>
+     * @example @js const tag = new Tag();
+     * tag.text = 'Cupcake';
+     * tag.removeButtonText = 'OMG, I am so full!';
+     * // Shows a tag with the text 'Cupcake' and a remove button
      */
     'remove-button-text': {
       attribute: true,
       default: '',
-    },
-
-    /**
-     * @description The tag text.
-     * @memberof Tag
-     * @instance
-     * @type {string}
-     * @example @html <ak-tag text="todo"></ak-tag>
-     * @example @js tag.text = 'todo';
-     */
-    text: {
-      attribute: true,
     },
 
     [buttonHoverSymbol]: prop.boolean({

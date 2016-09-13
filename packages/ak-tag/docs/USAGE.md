@@ -4,9 +4,12 @@
 
 This component displays as a tag with an optional link and/or button to remove the given tag.
 
+Although the `ak-tag` component can be used by itself, it works best in conjunction with the
+[`ak-tag-group`](https://www.npmjs.com/package/ak-tag-group) component.
+
 ## Setup and install
 
-```
+```console
 npm install ak-tag
 ```
 
@@ -14,14 +17,14 @@ npm install ak-tag
 
 ### HTML
 
-The `ak-tag` package exports the Tag [Skate](https://github.com/skatejs/skatejs) component.
+The `ak-tag` package exports the Tag [Skate](https://github.com/skatejs/skatejs) component. It automatically registers the respective `<ak-tag>` web component upon import.
 
 Import the component in your JS resource:
 
 #### bundle.js
 
-```
-import Tag from 'ak-tag';
+```javascript
+import 'ak-tag';
 ```
 
 Now we can use the defined tag in our HTML markup, e.g.:
@@ -30,23 +33,26 @@ Now we can use the defined tag in our HTML markup, e.g.:
 
 ```html
 <html>
-<head>
-  <script src="bundle.js"></script>
-</head>
-<body>
-  <!-- ... -->
-  <ak-tag text="Jelly bean"></ak-tag>
-</body>
+  <head>
+    <script src="bundle.js"></script>
+  </head>
+  <body>
+    <!-- ... -->
+    <ak-tag text="Jelly bean"></ak-tag>
+  </body>
+</html>
 ```
 
 or within another JS resource:
 
 #### index.js
 ```javascript
-const myTag = new Tag();
-myTag.text = 'Jelly bean';
+import Tag from 'ak-tag';
 
-document.body.appendChild(myTag);
+const tag = new Tag();
+tag.text = 'Jelly bean';
+
+document.body.appendChild(tag);
 ```
 
 ### React

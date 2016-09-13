@@ -1,6 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import FooterComponent from '../src';
-const { React } = window;
+import React from 'React';
 import reactify from 'akutil-react';
 
 const Footer = reactify(FooterComponent);

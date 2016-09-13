@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import webComponent from '../src/index';
-const { React } = window;
+import React from 'React';
 import { name } from '../package.json';
 
 import AkNavigation from 'ak-navigation';

@@ -3,7 +3,7 @@ import { storiesOf } from '@kadira/storybook';
 import TextInputComponent from '../src';
 import reactify from 'akutil-react';
 
-const { React } = window;
+import React from 'React';
 const TextInput = reactify(TextInputComponent);
 const Container = (props) => (
   <div style={{ backgroundColor: '#545454', padding: '5px 10px' }}>

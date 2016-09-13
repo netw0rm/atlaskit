@@ -2,7 +2,7 @@ import reactify from 'akutil-react';
 import AkInlineDialog from '../src/index';
 import styles from 'style!./../src/host.less';
 
-const { React } = window;
+import React from 'React';
 const { Component } = React;
 
 const Dialog = reactify(AkInlineDialog);

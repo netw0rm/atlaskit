@@ -7,7 +7,7 @@ import { getWebComponent } from './util';
 import debug from '../src/util/logger';
 import uniqueId from '../src/util/id';
 
-const { React } = window;
+import React from 'React';
 
 const MentionPicker = reactify(pfMentionPicker);
 

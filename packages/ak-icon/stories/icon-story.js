@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import { vdom } from 'skatejs';
-const { React } = window;
+import React from 'React';
 import reactify from 'akutil-react';
 import IconComponent, { glyphs } from '../src';
 

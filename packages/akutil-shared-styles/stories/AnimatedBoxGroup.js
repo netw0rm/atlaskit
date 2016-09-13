@@ -1,7 +1,7 @@
 import storyStyles from 'style!./stories.less';
 import AnimatedBox from './AnimatedBox.js';
 
-const { React } = window;
+import React from 'React';
 const { Component } = React;
 
 /* This component simply renders three AnimatedBoxes with a button underneath

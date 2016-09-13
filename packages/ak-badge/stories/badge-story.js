@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkBadge from '../src/index';
-const { React } = window;
+import React from 'React';
 import { name } from '../package.json';
 import hostStyles from 'style!./../src/host.less';
 

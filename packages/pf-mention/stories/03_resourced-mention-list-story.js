@@ -6,7 +6,7 @@ import SearchTextInput from './demo-search-text-input';
 import { resourceProvider } from './story-data';
 import { getWebComponent } from './util';
 
-const { React } = window;
+import React from 'React';
 
 const ResourcedMentionList = reactify(pfResourcedMentionList);
 

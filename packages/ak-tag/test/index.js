@@ -1,8 +1,10 @@
+import { Component } from 'skatejs';
 import { waitUntil, afterMutations, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
-import Tag, { NotRemovableError, events } from '../src';
+import Tag, { exceptions, events } from '../src';
+const { NotRemovableError } = exceptions;
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
 import { getRootNode } from './_helpers';
 
@@ -26,6 +28,22 @@ describe('ak-tag', () => {
 
   afterEach(() => {
     document.body.removeChild(component);
+  });
+
+  describe('exports', () => {
+    it('should export a base component', () => {
+      (new Tag).should.be.an.instanceof(Component);
+    });
+
+    it('should have an events export with defined events', () => {
+      events.should.be.defined;
+      Object.keys(events).should.be.deep.equal(['beforeRemove', 'afterRemove']);
+    });
+
+    it('should have an exceptions export with defined exceptions', () => {
+      exceptions.should.be.defined;
+      Object.keys(exceptions).should.be.deep.equal(['NotRemovableError']);
+    });
   });
 
   it('should be possible to create a component', (done) => {

@@ -1,5 +1,5 @@
 import { vdom, define, prop, props, emit } from 'skatejs';
-import createError from 'create-error';
+
 
 // component parts
 import Chrome from './Chrome';
@@ -8,7 +8,9 @@ import Root from './Root';
 import RemoveButton from './RemoveButton';
 import AnimationWrapper from './AnimationWrapper';
 
-import * as events from './internal/events';
+import * as events from './internal/index.events';
+import * as exceptions from './internal/index.exceptions';
+const { NotRemovableError } = exceptions;
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
 import { name } from '../package.json';
 import logger from './internal/logger';
@@ -18,7 +20,6 @@ const buttonHoverSymbol = '__removeButtonHover';
 // TODO replace with es6 Symbols as soon as Skate supports it
 const isRemovingSymbol = '__isRemoving';
 
-const NotRemovableError = createError('NotRemovableError');
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -41,11 +42,18 @@ export default define(name, {
 
     const Button = isRemovable ? RemoveButton : () => null;
 
+    const emitRemoveEvent = () => {
+      emit(elem, afterRemoveEvent, {
+        bubbles: true,
+        cancelable: false,
+      });
+    };
+
     return (
       <Root>
         <AnimationWrapper
           isRemoving={isRemoving}
-          afterAnimation={() => emit(elem, afterRemoveEvent)}
+          afterAnimation={emitRemoveEvent}
         >
           <Chrome
             isLinked={isLinked}
@@ -77,6 +85,7 @@ export default define(name, {
     },
     /**
      * @description Getter to find out whether the tag is removable.
+     *              Is implicitly controlled by the `remove-button-text` attribute.
      * @memberof Tag
      * @function
      * @instance
@@ -89,12 +98,14 @@ export default define(name, {
     /**
      * @description Allows to programmatically start the tag removal
      *              (same as if the user activated the remove button)
-     *              The removal can be prevented by preventing the `beforeRemove`
-     *              event. The `afterRemove` is fired upon completion.
+     *              The removal can be prevented by preventing the {@link Tag#beforeRemove}
+     *              event. The {@link Tag#afterRemove} event is fired upon completion.
+     *              Please note that the tag is not actually removed from the DOM. It is up to the
+     *              consumer to remove the DOM representation.
      * @memberof Tag
      * @function
      * @instance
-     * @return void
+     * @emits Tag#beforeRemove, Tag#afterRemove
      * @throws {NotRemovableError} throws an error if invoked on a tag that is not removable
      * @example @js tag.remove(); // triggers the tag removal
      */
@@ -127,9 +138,11 @@ export default define(name, {
 
     /**
      * @description (Optional) The text for the remove button.
-     *              Implicitly defines that there will be a remove button
+     *              Implicitly defines that there will be a remove button.
+     *              Implicitly controls {@link Tag.isRemovable}.
      * @memberof Tag
      * @instance
+     * @name remove-button-text
      * @type {string}
      * @example @html <ak-tag remove-button-text="Delete tag"></ak-tag>
      * @example @js tag.removeButtonText = 'Delete tag';
@@ -161,4 +174,4 @@ export default define(name, {
   },
 });
 
-export { events, NotRemovableError };
+export { events, exceptions };

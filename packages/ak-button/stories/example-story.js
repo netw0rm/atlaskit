@@ -36,6 +36,8 @@ const AkButtonStates = buttonStatesExample({
   GLYPHS: [false].concat(GLYPHS),
 });
 
+const buttonStyles = { 'margin-right': '10px', display: 'inline-flex' };
+
 storiesOf(name, module)
   .add('a standard ak-button', () => (
     <AkButton className={buttonClass}>
@@ -79,16 +81,26 @@ storiesOf(name, module)
   .add('compact buttons with all attributes', () =>
     <div>
       <p>
-        <AkButton className={buttonClass} compact>
+        <AkButton className={buttonClass} compact style={buttonStyles}>
           Button
         </AkButton>
-        <AkButton className={buttonClass} compact appearance="primary">
+        <AkButton
+          className={buttonClass}
+          compact
+          appearance="primary"
+          style={buttonStyles}
+        >
           Button
         </AkButton>
-        <AkButton className={buttonClass} compact appearance="subtle">
+        <AkButton
+          className={buttonClass}
+          compact
+          appearance="subtle"
+          style={buttonStyles}
+        >
           Button
         </AkButton>
-        <AkButton className={buttonClass} compact selected>
+        <AkButton className={buttonClass} compact selected style={buttonStyles}>
           Button
         </AkButton>
         <AkButton
@@ -96,6 +108,7 @@ storiesOf(name, module)
           compact
           disabled
           onclick={action('clicking the WebComponent')}
+          style={buttonStyles}
         >
           Button
         </AkButton>
@@ -106,16 +119,15 @@ storiesOf(name, module)
     <div>
       {
         GLYPHS.map(glyph =>
-          (<AkButton className={buttonClass} style={{ 'margin-right': '10px' }}>
+          (<AkButton className={buttonClass} style={buttonStyles}>
             <Icon key={glyph} glyph={glyph} />
           </AkButton>)
         )
       }
     </div>
   ))
-  .add('an ak-button with icon + text', () => {
-    const buttonStyles = { 'margin-right': '10px', display: 'inline-flex' };
-    return (<div style={{ display: 'flex', flexDirection: 'column' }}>
+  .add('an ak-button with icon + text', () =>
+    (<div style={{ display: 'flex', flexDirection: 'column' }}>
       {
         GLYPHS.map(glyph =>
           (<div className="icons-container">
@@ -147,8 +159,8 @@ storiesOf(name, module)
           </div>)
         )
     }
-    </div>);
-  })
+    </div>)
+  )
   .add('a button that can change its attributes', () =>
     <AkButtonStates />
   );

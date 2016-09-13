@@ -278,8 +278,8 @@ class AkEditorBitbucket extends Component {
       }
       <Footer
         openTop
-        onSave={() => elem.expanded = false}
-        onCancel={() => elem.expanded = false}
+        onSave={elem._collapse}
+        onCancel={elem._collapse}
         onInsertimage={elem._insertImage}
       />
     </div>);
@@ -298,7 +298,7 @@ class AkEditorBitbucket extends Component {
           :
           <input
             placeholder={elem.placeholder}
-            onclick={() => elem.expanded = true}
+            onclick={elem._expand}
             className={fakeInputClassNames}
           />
         }
@@ -341,6 +341,14 @@ class AkEditorBitbucket extends Component {
    */
   get ready(): boolean {
     return this._ready || false;
+  }
+
+  _expand(): void {
+    this.expanded = true;
+  }
+
+  _collapse(): void {
+    this.expanded = false;
   }
 
   _onContentClick(e: MouseEvent): void {

@@ -5,6 +5,7 @@ import shadowStyles from './index.less';
 import 'ak-blanket';
 import './ak-navigation-drawer';
 import './ak-navigation-link';
+import './ak-navigation-global-item';
 import classNames from 'classnames';
 import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 import keycode from 'keycode';

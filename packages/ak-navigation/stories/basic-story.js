@@ -4,7 +4,6 @@ import akNavigation from '../src/index';
 import akPage from 'ak-page';
 import 'ak-icon';
 import 'ak-avatar';
-import 'ak-dropdown';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 import Lorem from 'react-lorem-component';
@@ -102,17 +101,17 @@ storiesOf(name, module)
         <ak-icon slot="global-create" glyph="create" />
 
         <ak-dropdown position="right bottom" slot="global-profile">
-          <ak-dropdown-trigger slot="trigger">
+          <ak-navigation-global-item slot="trigger">
             <ak-avatar src={userAvatar} />
-          </ak-dropdown-trigger>
+          </ak-navigation-global-item>
           <ak-dropdown-item>Online help</ak-dropdown-item>
           <ak-dropdown-item>Learn git</ak-dropdown-item>
         </ak-dropdown>
 
         <ak-dropdown position="right bottom" slot="global-help">
-          <ak-dropdown-trigger slot="trigger">
+          <ak-navigation-global-item slot="trigger">
             <ak-icon glyph="help" />
-          </ak-dropdown-trigger>
+          </ak-navigation-global-item>
           <ak-dropdown-item>View profile</ak-dropdown-item>
           <ak-dropdown-item>Bitbucket settings</ak-dropdown-item>
           <ak-dropdown-item>Integration</ak-dropdown-item>

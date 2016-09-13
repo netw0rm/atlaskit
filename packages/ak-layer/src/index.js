@@ -97,20 +97,65 @@ export default define('ak-layer', {
       set: reCreateAlignmentIfNeeded,
     },
     onRender: {},
+    /**
+     * @description Element to act as a boundary for the Layer.
+     * The Layer will not sit outside this element if it can help it.
+     * If, through it's normal positoning, it would end up outside the boundary the layer
+     * will flip positions if the enableFlip prop is set.
+     * Can either be an element or a selector of an element.
+     * If not set the boundary will be the current viewport.
+     * @memberof Layer
+     * @instance
+     * @type HTMLElement | String
+     * @example @html <ak-layer enableFlip boundariesElement="#container"></ak-layer>
+     * @example @js layer.taboundariesElementrget = document.body.querySelector('#container');
+     * @example @js layer.enableFlip = true;
+     */
     boundariesElement: {
       attribute: true,
       set: reCreateAlignmentIfNeeded,
     },
+    /**
+     * @description Sets whether a Layer will flip it's position if there is not enough space in
+     * the requested position.
+     * i.e. if a layer is set to position="top middle" but placing it there would cause
+     * it to be outside the viewport (or the boundariesElement if that is set)
+     * the Layer will instead be positioned in "bottom middle".
+     * @memberof Layer
+     * @instance
+     * @type Boolean
+     * @example @html <ak-layer enableFlip></ak-layer>
+     * @example @js layer.enableFlip = true;
+     */
     enableFlip: prop.boolean({
       attribute: true,
       set: reCreateAlignmentIfNeeded,
     }),
+    /**
+     * @description A string representing the offsets from the target element in the format
+     * "[x-offset] [y-offset]", measured in pixels.
+     * @memberof Layer
+     * @instance
+     * @type String
+     * @example @html <ak-layer offset="0 2"></ak-layer>
+     * @example @js layer.offset = '0 2';
+     */
     offset: {
       attribute: true,
       set: reCreateAlignmentIfNeeded,
     },
   },
   prototype: {
+    /**
+     * @description Forces the Inline-Dialog to recalculate and reposition itself on the page.
+     * This should not usually be required as any modifications to the Layer itself should also
+     * cause reposition to be called.
+     * @memberof InlineDialog
+     * @function
+     * @instance
+     * @return undefined
+     * @example @js inlineDialog.reposition();
+    */
     reposition() {
       if (this.alignment) {
         this.alignment.reposition();

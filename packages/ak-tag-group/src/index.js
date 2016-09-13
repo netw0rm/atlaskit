@@ -18,7 +18,9 @@ const ALIGNMENT_ATTRIBUTE_ENUM = {
  * @description Create instances of the component programmatically, or using markup.
  * @class TagGroup
  * @example @js import TagGroup from 'ak-tag-group';
- * const component = new TagGroup();
+ *
+ * const tagGroup = new TagGroup();
+ * document.body.appendChild(tagGroup);
  */
 export default define('ak-tag-group', {
   render(elem) {
@@ -39,7 +41,9 @@ export default define('ak-tag-group', {
   },
   props: {
     /**
-     * @description (Optional) An alignment. Defaults to an empty string (left alignment).
+     * @description (Optional) A group alignment.
+     *              Defaults to an empty string (text start alignment).
+     *
      * @memberof TagGroup
      * @instance
      * @type {string}

@@ -82,6 +82,7 @@ export default define('pf-resourced-mention-list', {
 
     _filterChange(mentions) {
       // Retain known presence
+      debug('pf-resourced-mentions-list._filterChange', mentions && mentions.length);
       const currentPresences = extractPresences(this.mentions);
       props(this, {
         mentions: applyPresence(mentions, currentPresences),
@@ -133,6 +134,7 @@ export default define('pf-resourced-mention-list', {
   props: {
     resourceProvider: localProp.object({
       set(elem, data) {
+        debug('pf-resourced-mention-list.resourceProvider.set', data);
         unsubscribeUpdates(elem, data.oldValue);
         subscribeUpdates(elem, data.newValue);
         if (typeof elem.query === 'string') {

@@ -1,4 +1,4 @@
-import 'style!../host.less';
+import 'style!../host.less'; // eslint-disable-line import/no-unresolved import/no-duplicates
 import shadowStyles from './pf-mention-list-shadow.less';
 import { localProp } from './skate-local-props';
 import { define, emit, prop, props, vdom } from 'skatejs';

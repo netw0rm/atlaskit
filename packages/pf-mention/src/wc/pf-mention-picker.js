@@ -120,6 +120,7 @@ export default define('pf-mention-picker', {
     // pf-resourced-mention-list
     resourceProvider: localProp.object({
       set(elem, data) {
+        debug('pf-mention-picker.resourceProvider.set', data);
         if (data.oldValue) {
           data.oldValue.unsubscribe(elem._subscriberKey);
         }

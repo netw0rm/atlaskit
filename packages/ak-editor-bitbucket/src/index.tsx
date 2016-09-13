@@ -130,21 +130,9 @@ class AkEditorBitbucket extends Component {
   placeholder: string;
   imageUploader: Function;
   context: string;
-
-  get expanded(): boolean {
-    return this._expanded;
-  }
-
-  set expanded(val) {
-    this._expanded = val;
-
-    if (!this._expanded) {
-      this._pm = null;
-    }
-  }
+  expanded: boolean;
 
   // private state
-  _expanded: boolean;
   _focused: boolean;
   _canChangeBlockType: boolean;
   _strongActive: boolean;
@@ -179,8 +167,8 @@ class AkEditorBitbucket extends Component {
       placeholder: prop.string({ attribute: true }),
       imageUploader: functionProp(),
       context: prop.string({ attribute: true }),
+      expanded: prop.boolean({ attribute: true }),
 
-      _expanded: prop.boolean({ attribute: true }),
       /**
        * True if the editor has focus.
        * @private
@@ -218,6 +206,8 @@ class AkEditorBitbucket extends Component {
       }
 
       elem.focus();
+    } else {
+      elem._pm = null;
     }
   }
 

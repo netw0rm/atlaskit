@@ -71,6 +71,7 @@ interface formattingMap {
 const formattingToProseMirrorMark: formattingMap = {
   bold: 'strong',
   italic: 'em',
+  code: 'code',
 };
 
 @autobind
@@ -88,6 +89,7 @@ class AkEditorBitbucket extends Component {
   _strongActive: boolean;
   _emActive: boolean;
   _underlineActive: boolean;
+  _codeActive: boolean;
   _canChangeTextFormatting: boolean;
   _hyperLinkHref: string;
   _selectedBlockType: any;
@@ -98,7 +100,7 @@ class AkEditorBitbucket extends Component {
   _numberListActive: boolean;
 
   // internal
-  _blockTypes: Array<blockTypeType>;
+  _blockTypes: blockTypeType[];
   _justToggledExpansion: boolean;
   _pm: ProseMirror | null = null;
   _ready: boolean;
@@ -129,6 +131,7 @@ class AkEditorBitbucket extends Component {
       _strongActive: prop.boolean(),
       _emActive: prop.boolean(),
       _underlineActive: prop.boolean(),
+      _codeActive: prop.boolean(),
       _canChangeTextFormatting: prop.boolean(),
       _hyperLinkHref: prop.string(),
       _selectedBlockType: {},
@@ -180,9 +183,11 @@ class AkEditorBitbucket extends Component {
           boldActive={elem._strongActive}
           italicActive={elem._emActive}
           underlineActive={elem._underlineActive}
+          codeActive={elem._codeActive}
           boldDisabled={!elem._canChangeTextFormatting}
           italicDisabled={!elem._canChangeTextFormatting}
           underlineDisabled={!elem._canChangeTextFormatting}
+          codeDisabled={!elem._canChangeTextFormatting}
           underlineHidden
           onToggletextformatting={elem._toggleMark}
         />
@@ -403,6 +408,7 @@ class AkEditorBitbucket extends Component {
       this._strongActive = state.strongActive;
       this._emActive = state.emActive;
       this._underlineActive = state.underlineActive;
+      this._codeActive = state.codeActive;
       this._canChangeTextFormatting = !state.disabled;
     });
 

@@ -13,7 +13,7 @@ export type blockTypesType = blockTypeType[];
  *
  * Note: Each property corresponds to a context name.
  */
-export const blockTypes = {
+export const blockTypes : any = {
   // Those block types are used when no "context" has been provided.
   _defaultContext: [{
     name      : 'normalText',

@@ -1,5 +1,5 @@
 import { vdom, define, prop } from 'skatejs';
-import Alignment from './Alignment';
+import { reCreateAlignmentIfNeeded, createNewAlignment } from './internal/helpers';
 import { enumeration } from 'akutil-common';
 
 export const POSITION_ATTRIBUTE_ENUM = {
@@ -20,33 +20,6 @@ export const CONSTRAIN_ATTRIBUTE_ENUM = {
   missingDefault: 'window',
   invalidDefault: 'window',
 };
-
-function createNewAlignment(elem) {
-  const options = {
-    elem: elem.positionedDOM,
-    target: elem.target,
-    position: elem.position,
-    enableFlip: elem.enableFlip,
-    offset: elem.offset,
-  };
-
-  if (elem.boundariesElement) {
-    options.boundariesElement = elem.boundariesElement;
-  }
-
-  return new Alignment(options);
-}
-
-function reCreateAlignmentIfNeeded(elem, data) {
-  if (elem.alignment) {
-    if (data.newValue !== data.oldValue) {
-      elem.alignment.destroy();
-      elem.alignment = createNewAlignment(elem);
-    } else {
-      elem.alignment.reposition();
-    }
-  }
-}
 
 /**
  * @description The definition for the Layer component.
@@ -96,6 +69,22 @@ export default define('ak-layer', {
       attribute: true,
       set: reCreateAlignmentIfNeeded,
     },
+    /**
+     * @description Callback function that is called whenever the Layer flips its position.
+     * @memberof Layer
+     * @instance
+     * @type function
+     * @example @js layer.onFlip = () => { console.log('Layer has been flipped'); };
+     */
+    onFlip: {},
+    /**
+     * @description Callback function that is called whenever layer is rendered.
+     * The Layer element will be passed in as an argument.
+     * @memberof Layer
+     * @instance
+     * @type function
+     * @example @js layer.onRender = (elem) => { console.log(elem); };
+     */
     onRender: {},
     /**
      * @description Element to act as a boundary for the Layer.
@@ -144,6 +133,7 @@ export default define('ak-layer', {
       attribute: true,
       set: reCreateAlignmentIfNeeded,
     },
+    _isFlipped: prop.boolean(),
   },
   prototype: {
     /**
@@ -162,6 +152,16 @@ export default define('ak-layer', {
       }
 
       return this;
+    },
+    /**
+     * @description Will be true if a Layer has been flipped from its original position.
+     * @memberof InlineDialog
+     * @instance
+     * @return Boolean
+     * @example @js const isFlipped = elem.isFlipped;
+    */
+    get isFlipped() {
+      return this._isFlipped; // eslint-disable-line no-underscore-dangle
     },
   },
   attached(elem) {

@@ -4,6 +4,7 @@ import akNavigation from '../src/index';
 import akPage from 'ak-page';
 import 'ak-icon';
 import 'ak-avatar';
+import 'ak-dropdown';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 import Lorem from 'react-lorem-component';

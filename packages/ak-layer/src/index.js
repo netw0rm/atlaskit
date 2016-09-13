@@ -34,10 +34,6 @@ function createNewAlignment(elem) {
     options.boundariesElement = elem.boundariesElement;
   }
 
-  if (elem.updateCallback) {
-    options.onUpdate = elem.updateCallback;
-  }
-
   return new Alignment(options);
 }
 

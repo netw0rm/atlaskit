@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { vdom, define, prop } from 'skatejs';
+import { vdom, define, prop, props } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
@@ -26,20 +26,21 @@ const getClasses = elem => ({
 
 const getSlotName = side => side || 'default';
 
-const getSlot = side => (
+const getSlot = ({ elem, side } = {}) => (
   <span className={classKeys[`${getSlotName(side)}SlotWrapper`]}>
     <slot
+      ref={ref => (elem[`${getSlotName(side)}Slot`] = ref)}
       name={side}
       className={classKeys[`${getSlotName(side)}Slot`]}
     />
   </span>
 );
 
-const getContent = () => (
+const getContent = elem => (
   <span className={classKeys.buttonContent}>
-    {getSlot('before')}
-    {getSlot()}
-    {getSlot('after')}
+    {elem.notext ? getSlot({ elem, side: 'before' }) : false}
+    {getSlot({ elem })}
+    {elem.notext ? getSlot({ elem, side: 'after' }) : false}
   </span>
 );
 
@@ -123,6 +124,15 @@ const definition = {
      * @example @js button.selected = true;
      */
     selected: prop.boolean({ attribute: true }),
+    notext: prop.boolean({ attribute: false, default: false }),
+  },
+  rendered(elem) {
+    // console.log(elem.defaultSlot.assignedNodes());
+    setTimeout(() => {
+      if (elem.defaultSlot.assignedNodes().length === 0 && !elem.notext) {
+        props(elem, { _notext: true });
+      }
+    });
   },
   render(elem) {
     return (
@@ -134,7 +144,7 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={e => e.preventDefault()}
         >
-          {getContent()}
+          {getContent(elem)}
         </button>
       </span>
     );

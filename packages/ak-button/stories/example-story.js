@@ -36,7 +36,7 @@ const AkButtonStates = buttonStatesExample({
   GLYPHS: [false].concat(GLYPHS),
 });
 
-const buttonStyles = { 'margin-right': '10px', display: 'inline-flex' };
+const buttonStyles = { marginRight: '10px', display: 'inline-flex' };
 
 storiesOf(name, module)
   .add('a standard ak-button', () => (
@@ -120,7 +120,7 @@ storiesOf(name, module)
       {
         GLYPHS.map(glyph =>
           (<AkButton className={buttonClass} style={buttonStyles}>
-            <Icon key={glyph} glyph={glyph} />
+            <Icon slot="before" key={glyph} glyph={glyph} />
           </AkButton>)
         )
       }

@@ -5,12 +5,22 @@ import { afterMutations } from 'akutil-common-test';
 const { expect } = chai;
 
 describe('ak-editor-bitbucket', () => {
+  let component: any;
+  beforeEach(() => {
+    component = new AkEditorBitbucket();
+    document.body.appendChild(component);
+  });
+  afterEach(() => {
+    document.body.removeChild(component);
+    component = null;
+  });
+
   it('is possible to create a component', () => {
-    let component: any;
+    let editor: any;
     expect(() => {
-      component = new AkEditorBitbucket();
+      editor = new AkEditorBitbucket();
     }).not.to.throw(Error);
-    expect(component.tagName).to.match(/^ak-editor-bitbucket/i);
+    expect(editor.tagName).to.match(/^ak-editor-bitbucket/i);
   });
 
   it('does not be ready when instantiated outside the DOM', () => {
@@ -18,9 +28,29 @@ describe('ak-editor-bitbucket', () => {
     expect(editor.ready).to.be.false;
   });
 
-  it('does not be expanded by default', () => {
-    const editor = new AkEditorBitbucket();
-    expect(editor.expanded).to.be.false;
+  it('does not be expanded by default', (done) => {
+    expect(component.expanded).to.be.false;
+    afterMutations(
+      () => (expect(component._pm).to.be.a('null')),
+      done
+    );
+  });
+
+  it('can be set to expanded', (done) => {
+    component.expanded = true;
+    afterMutations(
+      () => (expect(component._pm).to.be.an('object')),
+      done
+    );
+  });
+
+  it('can be set to expanded and collapsed', (done) => {
+    component.expanded = true;
+    afterMutations(
+      () => (component.expanded = false),
+      () => (expect(component._pm).to.be.a('null')),
+      done
+    );
   });
 
   describe('.value', () => {

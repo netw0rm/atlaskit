@@ -40,14 +40,6 @@ function getAnimationClass(elem, position) {
   return animationMapping[actualPosition] ? animationMapping[actualPosition] : undefined;
 }
 
-// Function passed to Layer -> Alignment -> Popper and called when Popper performs an update.
-// data is an object containing all the information computed by Popper.js (boundary element,
-// offsets, originalPlacement, placement, styles)
-function layerOnUpdate(data, elem) {
-  // Check if the Layer has been flipped
-  elem.isFlipped = (data.placement !== data.originalPlacement);
-}
-
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class Tooltip
@@ -76,12 +68,19 @@ export default define('ak-tooltip', {
           ref={(ref) => (elem.layer = ref)}
           enableFlip
           boundariesElement={document.body}
-          updateCallback={(data) => layerOnUpdate(data, elem)}
         >
           <div className={messageBoxClasses}>{elem.description}</div>
         </Layer>
       </div>
     );
+  },
+  prototype: {
+    get isFlipped() {
+      if (this.layer) {
+        return this.layer.isFlipped;
+      }
+      return undefined;
+    },
   },
   props: {
     /**
@@ -128,9 +127,6 @@ export default define('ak-tooltip', {
     // These two props are not API thus, dont have jsdocs.
     visible: prop.boolean({
       attribute: true,
-    }),
-    isFlipped: prop.boolean({
-      initial: false,
     }),
   },
 });

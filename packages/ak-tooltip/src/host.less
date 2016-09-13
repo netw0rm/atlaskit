@@ -13,6 +13,9 @@ ak-tooltip {
   // we remove pointer events to prevent the tooltip from getting in the way of hovering
   pointer-events: none;
   // The width is required to prevent an issue where the tooltip wont stretch to fit content.
+  top: -9999;
+  left: -9999;
+  position: absolute;
   width: 100vw;
 
   &[visible] {

@@ -10,12 +10,31 @@ import { getShadowRoot } from 'akutil-common-test';
            > pf-mention-item (0..n)
  */
 
+function shadowRootQuerySelector(component, selector) {
+  if (component) {
+    const shadowRoot = getShadowRoot(component);
+    if (shadowRoot) {
+      return shadowRoot.querySelector(selector);
+    }
+  }
+  return null;
+}
+
+function shadowRootQuerySelectorAll(component, selector) {
+  if (component) {
+    const shadowRoot = getShadowRoot(component);
+    if (shadowRoot) {
+      return shadowRoot.querySelectorAll(selector);
+    }
+  }
+  return [];
+}
+
 export function getMentionItems(pfMentionPicker) {
-  const dialog = getShadowRoot(pfMentionPicker).querySelector('ak-inline-dialog');
-  const resourcedMentionList = getShadowRoot(dialog || pfMentionPicker)
-    .querySelector('pf-resourced-mention-list');
-  const mentionList = resourcedMentionList && getShadowRoot(resourcedMentionList)
-    .querySelector('pf-mention-list');
-  const scrollable = mentionList && getShadowRoot(mentionList).querySelector('pf-scrollable');
-  return scrollable && scrollable.querySelectorAll('pf-mention-item') || [];
+  const dialog = shadowRootQuerySelector(pfMentionPicker, 'ak-inline-dialog');
+  const resourcedMentionList = shadowRootQuerySelector(dialog || pfMentionPicker,
+    'pf-resourced-mention-list');
+  const mentionList = shadowRootQuerySelector(resourcedMentionList, 'pf-mention-list');
+  const scrollable = shadowRootQuerySelector(mentionList, 'pf-scrollable');
+  return shadowRootQuerySelectorAll(scrollable, 'pf-mention-item') || [];
 }

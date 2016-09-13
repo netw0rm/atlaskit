@@ -1,13 +1,10 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import Blanket, { events as blanketEvents } from '../src/index';
-const { React, ReactDOM } = window;
+const { React } = window;
 import { name } from '../package.json';
 
-const Component = reactify(Blanket, {
-  React,
-  ReactDOM,
-});
+const Component = reactify(Blanket);
 
 function doSomethingOnClick() {
   action(`the "${blanketEvents.activate}" event is caught`)();

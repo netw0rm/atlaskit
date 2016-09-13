@@ -2,12 +2,9 @@ import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import pfMentionItem from '../src/wc/pf-mention-item';
 
-const { React, ReactDOM } = window;
+const { React } = window;
 
-const MentionItem = reactify(pfMentionItem, {
-  React,
-  ReactDOM,
-});
+const MentionItem = reactify(pfMentionItem);
 
 function renderSingleMention(mention) {
   return (

@@ -15,7 +15,7 @@
   "dependencies": {
     "babel-runtime": "^6.11.6",
     "react": "^0.14.0",
-    "skatejs-react-integration": "^0.0.6",
+    "skatejs-react-integration": "^1.0.0",
     "uid": "^0.0.2"
   },
   "author": "Atlassian Pty Ltd",

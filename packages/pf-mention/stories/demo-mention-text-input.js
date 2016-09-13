@@ -7,12 +7,9 @@ import { getWebComponent } from './util';
 import debug from '../src/util/logger';
 import uniqueId from '../src/util/id';
 
-const { React, ReactDOM } = window;
+const { React } = window;
 
-const MentionPicker = reactify(pfMentionPicker, {
-  React,
-  ReactDOM,
-});
+const MentionPicker = reactify(pfMentionPicker);
 
 const MentionTextInput = React.createClass({
 

@@ -1,9 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import TextFormattingComponent from '../src';
-const { React, ReactDOM } = window;
+const { React } = window;
 import reactify from 'akutil-react';
 
-const TextFormatting = reactify(TextFormattingComponent, { React, ReactDOM });
+const TextFormatting = reactify(TextFormattingComponent);
 
 storiesOf('ak-editor-toolbar-text-formatting', module)
   .add('Basic', () => (

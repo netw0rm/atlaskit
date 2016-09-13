@@ -3,12 +3,9 @@ import AkInlineDialog from '../src/index';
 import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
 
-const { React, ReactDOM } = window;
+const { React } = window;
 
-const Dialog = reactify(AkInlineDialog, {
-  React,
-  ReactDOM,
-});
+const Dialog = reactify(AkInlineDialog);
 
 import DialogWithInput from './DialogWithInput.js';
 import DialogWithButton from './DialogWithButton.js';

@@ -3,16 +3,16 @@ import ToolbarComponent from 'ak-editor-toolbar';
 import BlockTypeComponent from '../src';
 import ContentComponent from 'ak-editor-content';
 import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
-const { React, ReactDOM } = window;
+const { React } = window;
 import reactify from 'akutil-react';
 import invert from 'lodash.invert';
 
 import { ProseMirror, schema } from 'ak-editor-prosemirror';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 
-const Toolbar = reactify(ToolbarComponent, { React, ReactDOM });
-const BlockType = reactify(BlockTypeComponent, { React, ReactDOM });
-const Content = reactify(ContentComponent, { React, ReactDOM });
+const Toolbar = reactify(ToolbarComponent);
+const BlockType = reactify(BlockTypeComponent);
+const Content = reactify(ContentComponent);
 
 const prosemirrorBlockToToolbarMap = {
   paragraph: 'normalText',

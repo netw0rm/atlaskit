@@ -1,10 +1,9 @@
 import { storiesOf, action } from '@kadira/storybook';
 import FooterComponent from '../src';
-const { React, ReactDOM } = window;
-import { vdom } from 'skatejs';
+const { React } = window;
 import reactify from 'akutil-react';
 
-const Footer = reactify(FooterComponent, { React, ReactDOM });
+const Footer = reactify(FooterComponent);
 
 const footerAction = action('footer');
 

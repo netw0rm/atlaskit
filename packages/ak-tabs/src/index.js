@@ -2,7 +2,7 @@
 import 'style!./host.less';
 import classNames from 'classnames';
 import debounce from 'debounce';
-import { vdom, define, prop } from 'skatejs';
+import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 
@@ -12,7 +12,7 @@ import * as events from './internal/events';
 import * as i18n from './internal/i18n';
 import Tab from './index-tab';
 import Icon from 'ak-icon';
-import Dropdown, { Item, Trigger } from 'ak-dropdown';
+import Dropdown, { Item, events as ddEvents } from 'ak-dropdown';
 
 import { buttonContainer, labelsContainer } from './internal/symbols';
 const resizeListener = Symbol();
@@ -79,15 +79,20 @@ const definition = {
               ref={el => (elem[buttonContainer] = el)}
             >
               <Dropdown>
-                <Trigger slot="trigger" tabIndex="-1">
-                  <a className={shadowStyles.locals.akTabsButton}>
-                    <span>{i18n.more}</span>
-                    <Icon glyph="expand" />
-                  </a>
-                </Trigger>
+                <a
+                  slot="trigger"
+                  className={shadowStyles.locals.akTabsButton}
+                  onClick={(e) => (emit(e.target, ddEvents.trigger.activated))}
+                >
+                  <span>{i18n.more}</span>
+                  <Icon glyph="expand" />
+                </a>
                 {
                   allTabs && allTabs.map(tab => (
-                    <Item onSelected={handlers.labelSelectedHandler(tab)}>{tab.label}</Item>
+                    <Item
+                      onSelected={handlers.labelSelectedHandler(tab)}
+                      ref={handlers.dropdownItemRef(tab)}
+                    >{tab.label}</Item>
                   ))
                 }
               </Dropdown>

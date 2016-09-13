@@ -1,7 +1,7 @@
 import keycode from 'keycode';
 
 import { getPrevTab, getNextTab } from './tabs-helpers';
-import { focusOnRender, tabLabel } from './symbols';
+import { focusOnRender, tabDropdownItem, tabLabel } from './symbols';
 
 function labelMouseDownHandler(e) {
   e.preventDefault(); // Prevent focus on the tab label.
@@ -40,9 +40,14 @@ function labelRef(tabsEl, tab) {
   };
 }
 
+function dropdownItemRef(tab) {
+  return el => (tab[tabDropdownItem] = el);
+}
+
 export {
   labelMouseDownHandler,
   labelSelectedHandler,
   labelKeydownHandler,
   labelRef,
+  dropdownItemRef,
 };

@@ -1,5 +1,5 @@
 import shadowStyles from '../shadow.less';
-import { buttonContainer, labelsContainer, tabLabel } from './symbols';
+import { buttonContainer, labelsContainer, tabDropdownItem, tabLabel } from './symbols';
 
 const getAllTabs = (tabsEl) => (Array.from(tabsEl.children).filter(el => el.label));
 
@@ -104,9 +104,11 @@ function showVisibleTabs(tabsEl) {
   // Only show visible tabs
   allTabs.forEach(el => {
     el[tabLabel].classList.add(shadowStyles.locals.akTabLabelHidden);
+    el[tabDropdownItem].classList.remove(shadowStyles.locals.akTabDdItemHidden);
   });
   visibleTabs.forEach(el => {
     el[tabLabel].classList.remove(shadowStyles.locals.akTabLabelHidden);
+    el[tabDropdownItem].classList.add(shadowStyles.locals.akTabDdItemHidden);
   });
 
   // Hide the More dropdown if there are no children

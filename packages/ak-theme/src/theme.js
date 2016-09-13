@@ -53,18 +53,6 @@ function mixins(elem) {
 export default define('ak-theme', {
   props: {
     /**
-     * @description Returns own and theme vars inherited from mixins.
-     * @type {object}
-     */
-    allVars: {
-      get(elem) {
-        return Object.assign(mixins(elem).reduce((prev, curr) => {
-          const theme = document.getElementById(curr);
-          return theme ? Object.assign(prev, theme.allVars) : prev;
-        }, {}), elem.ownVars);
-      },
-    },
-    /**
      * @description The id of the theme. This is used to identify the theme a given component should
      * use.
      * @type {string}
@@ -102,15 +90,18 @@ export default define('ak-theme', {
     const firstRender = !prev;
     const oldThemeId = prev && prev.id;
     const newThemeId = elem.id;
+    const themeUnassigned = oldThemeId && !newThemeId && oldThemeId !== newThemeId;
 
     // If it's the first render we need to populate the ownVars.
     if (firstRender) {
       elem.ownVars = varsFromChildren(elem);
     }
 
-    // Trigger events for the old / new theme ids.
-    if (oldThemeId !== newThemeId) {
+    // If the theme changed and it changed from something to nothing, notify that the theme has
+    // been removed by sending a nulled themeVars.
+    if (themeUnassigned) {
       notify(oldThemeId);
+    } else {
       notify(newThemeId, elem.allVars);
     }
 
@@ -121,5 +112,17 @@ export default define('ak-theme', {
   render(elem) {
     style(vdom, { ':host': { display: 'none' } });
     return <slot onSlotchange={() => (elem.ownVars = varsFromChildren(elem))} />;
+  },
+  prototype: {
+    /**
+     * @description Returns own and theme vars inherited from mixins.
+     * @type {object}
+     */
+    get allVars() {
+      return Object.assign(mixins(this).reduce((prev, curr) => {
+        const theme = document.getElementById(curr);
+        return theme ? Object.assign(prev, theme.allVars) : prev;
+      }, {}), this.ownVars);
+    },
   },
 });

@@ -75,12 +75,6 @@ describe('ak-theme', () => {
     expect(theme.getAttribute('mixin')).to.equal('theme1 theme2 theme3');
   });
 
-  it('mixins should be an array', () => {
-    const theme = createTheme();
-    theme.mixin = 'theme1 theme2 theme3';
-    expect(theme.mixins).to.deep.equal(['theme1', 'theme2', 'theme3']);
-  });
-
   it('ownVars should be an object', () => {
     const theme = createTheme();
     expect(theme.ownVars).to.be.an('object');
@@ -99,10 +93,6 @@ describe('ak-theme', () => {
     afterMutations(
       () => expect(spy.callCount).to.equal(2),
       () => expect(spy.getCall(0).args[0].detail).to.deep.equal({
-        themeName: null,
-        themeVars: null,
-      }),
-      () => expect(spy.getCall(1).args[0].detail).to.deep.equal({
         themeName: 'test',
         themeVars: { key: 'val' },
       }),

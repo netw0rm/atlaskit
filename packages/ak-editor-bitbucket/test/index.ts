@@ -31,7 +31,10 @@ describe('ak-editor-bitbucket', () => {
   it('does not be expanded by default', (done) => {
     expect(component.expanded).to.be.false;
     afterMutations(
-      () => (expect(component._pm).to.be.a('null')),
+      () => {
+        const pm = component.querySelector('.ProseMirror');
+        expect(pm).to.be.a('null');
+      },
       done
     );
   });
@@ -39,7 +42,10 @@ describe('ak-editor-bitbucket', () => {
   it('can be set to expanded', (done) => {
     component.expanded = true;
     afterMutations(
-      () => (expect(component._pm).to.be.an('object')),
+      () => {
+        const pm = component.querySelector('.ProseMirror');
+        expect(pm).to.be.an('object');
+      },
       done
     );
   });
@@ -47,8 +53,13 @@ describe('ak-editor-bitbucket', () => {
   it('can be set to expanded and collapsed', (done) => {
     component.expanded = true;
     afterMutations(
-      () => (component.expanded = false),
-      () => (expect(component._pm).to.be.a('null')),
+      () => {
+        component.expanded = false;
+      },
+      () => {
+        const pm = component.querySelector('.ProseMirror');
+        expect(pm).to.be.a('null');
+      },
       done
     );
   });

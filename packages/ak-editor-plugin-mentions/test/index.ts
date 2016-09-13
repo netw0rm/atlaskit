@@ -4,7 +4,7 @@ import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { chaiPlugin } from 'ak-editor-test';
+import { chaiPlugin, fixtures } from 'ak-editor-test';
 
 chai.use(chaiPlugin);
 
@@ -23,20 +23,11 @@ const makeEditor = (container: Node) => {
   });
 }
 
+const container = fixtures();
+
 describe('ak-editor-plugin-mentions - on flush', () => {
-  let container: Node;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    document.body.removeChild(container);
-  });
-
   it('should hydrate nodes', () => {
-    const pm = makeEditor(container);
+    const pm = makeEditor(container());
     const pluginInstance = plugin.get(pm);
     const hydrateNodes = sinon.spy(pluginInstance, "hydrateNodes");
 
@@ -48,19 +39,8 @@ describe('ak-editor-plugin-mentions - on flush', () => {
 });
 
 describe('ak-editor-plugin-mentions - when entity id is not set on mention nodes', () => {
-  let container: Node;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    document.body.removeChild(container);
-  });
-
   it('should call the auto-complete handler', () => {
-    const pm = makeEditor(container);
+    const pm = makeEditor(container());
     const mockRenderHandler = sinon.spy();
     const mockAutocompleteHandler = sinon.spy();
     plugin.get(pm).renderHandler = mockRenderHandler;
@@ -81,19 +61,8 @@ describe('ak-editor-plugin-mentions - when entity id is not set on mention nodes
 });
 
 describe('ak-editor-plugin-mentions - when theres data set on mention nodes', () => {
-  let container: Node;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    document.body.removeChild(container);
-  });
-
   it('should call the render handler', () => {
-    const pm = makeEditor(container);
+    const pm = makeEditor(container());
     const mockRenderHandler = sinon.spy();
     const mockAutocompleteHandler = sinon.spy();
     plugin.get(pm).renderHandler = mockRenderHandler;
@@ -113,7 +82,7 @@ describe('ak-editor-plugin-mentions - when theres data set on mention nodes', ()
   });
 
   it('should call the render handler for every node', () => {
-    const pm = makeEditor(container);
+    const pm = makeEditor(container());
     const mockRenderHandler = sinon.spy();
     const mockAutocompleteHandler = sinon.spy();
     plugin.get(pm).renderHandler = mockRenderHandler;
@@ -131,19 +100,8 @@ describe('ak-editor-plugin-mentions - when theres data set on mention nodes', ()
 });
 
 describe('ak-editor-plugin-mentions - when DOM contains hydrated nodes', () => {
-  let container: Node;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    document.body.removeChild(container);
-  });
-
   it('should not call handlers on already hydratd nodes', () => {
-    const pm = makeEditor(container);
+    const pm = makeEditor(container());
     const mockRenderHandler = sinon.spy();
     const mockAutocompleteHandler = sinon.spy();
     plugin.get(pm).renderHandler = mockRenderHandler;

@@ -111,12 +111,6 @@ export default define('pf-resourced-mention-list', {
     elem._updateQuery('');
   },
 
-  detached(elem) {
-    if (elem.refWorkaround) {
-      elem.refWorkaround(null);
-    }
-  },
-
   render(elem) {
     debug('pf-resourced-mention-list.render', elem.mentions.length);
 
@@ -125,7 +119,7 @@ export default define('pf-resourced-mention-list', {
         <style>{shadowStyles.toString()}</style>
         <MentionList
           mentions={elem.mentions}
-          refWorkaround={(ref) => { elem._mentionListRef = ref; }}
+          ref={(ref) => { elem._mentionListRef = ref; }}
         />
       </div>
     );
@@ -161,6 +155,5 @@ export default define('pf-resourced-mention-list', {
         elem._updateQuery(data.newValue);
       },
     }),
-    refWorkaround: localProp.reference(),
   },
 });

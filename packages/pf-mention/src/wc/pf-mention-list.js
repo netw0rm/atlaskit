@@ -1,6 +1,5 @@
 import 'style!../host.less'; // eslint-disable-line import/no-unresolved import/no-duplicates
 import shadowStyles from './pf-mention-list-shadow.less';
-import { localProp } from './skate-local-props';
 import { define, emit, prop, props, vdom } from 'skatejs';
 import Item from './pf-mention-item';
 import Scrollable from './pf-scrollable';
@@ -149,12 +148,6 @@ export default define('pf-mention-list', {
     elem._items = {};
   },
 
-  detached(elem) {
-    if (elem.refWorkaround) {
-      elem.refWorkaround(null);
-    }
-  },
-
   render(elem) {
     debug('pf-mention-list.render', elem.mentions.length);
 
@@ -190,6 +183,5 @@ export default define('pf-mention-list', {
     selectedKey: prop.string({
       attribute: true,
     }),
-    refWorkaround: localProp.reference(),
   },
 });

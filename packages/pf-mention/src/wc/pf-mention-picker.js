@@ -71,7 +71,7 @@ export default define('pf-mention-picker', {
         resourceProvider={resourceProvider}
         presenceProvider={presenceProvider}
         query={query}
-        refWorkaround={(ref) => { elem._mentionListRef = ref; }}
+        ref={(ref) => { elem._mentionListRef = ref; }}
       />
     );
 

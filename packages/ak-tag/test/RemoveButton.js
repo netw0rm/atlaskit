@@ -75,11 +75,7 @@ describe('ak-tag', () => {
 
     describe('activation', () => {
       it('should be possible to activate the button via click', () => {
-        const clickEvent = new MouseEvent('click', {
-          view: window,
-          bubbles: true,
-          cancelable: true,
-        });
+        const clickEvent = new CustomEvent('click');
         const preventDefaultSpy = sinon.spy(clickEvent, 'preventDefault');
         const stopPropagationSpy = sinon.spy(clickEvent, 'stopPropagation');
         rootNode.dispatchEvent(clickEvent);

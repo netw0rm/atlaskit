@@ -13,26 +13,29 @@ function createTheme(id = '', ownVars = {}) {
 }
 
 describe('ak-theme', () => {
+  let body;
   let theme1;
   let theme2;
   let theme3;
 
   beforeEach(done => {
+    body = document.body;
+
     theme1 = createTheme('theme1', { key1: 'val1' });
     theme2 = createTheme('theme2', { key2: 'val2' });
     theme3 = createTheme('theme3', { key3: 'val3' });
 
-    document.body.appendChild(theme1);
-    document.body.appendChild(theme2);
-    document.body.appendChild(theme3);
+    body.appendChild(theme1);
+    body.appendChild(theme2);
+    body.appendChild(theme3);
 
     afterMutations(done);
   });
 
   afterEach(done => {
-    theme1.remove();
-    theme2.remove();
-    theme3.remove();
+    body.removeChild(theme1);
+    body.removeChild(theme2);
+    body.removeChild(theme3);
     afterMutations(done);
   });
 
@@ -89,14 +92,14 @@ describe('ak-theme', () => {
     const theme = createTheme('test', { key: 'val' });
     const spy = sinon.spy();
     document.addEventListener(events.themeChanged, spy);
-    document.body.appendChild(theme);
+    body.appendChild(theme);
     afterMutations(
       () => expect(spy.callCount).to.equal(2),
       () => expect(spy.getCall(0).args[0].detail).to.deep.equal({
         themeName: 'test',
         themeVars: { key: 'val' },
       }),
-      () => theme.remove(),
+      () => body.removeChild(theme),
       done
     );
   });
@@ -104,16 +107,15 @@ describe('ak-theme', () => {
   it('should emit an event when detached', done => {
     const theme = createTheme('test', { key: 'val' });
     const spy = sinon.spy();
-    document.body.appendChild(theme);
+    body.appendChild(theme);
     afterMutations(
       () => document.addEventListener(events.themeChanged, spy),
-      () => theme.remove(),
+      () => body.removeChild(theme),
       () => expect(spy.callCount).to.equal(1),
       () => expect(spy.getCall(0).args[0].detail).to.deep.equal({
         themeName: 'test',
         themeVars: null,
       }),
-      () => theme.remove(),
       done
     );
   });

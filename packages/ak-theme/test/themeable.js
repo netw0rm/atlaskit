@@ -4,6 +4,12 @@ import { tagName, themeNameFromNode } from '../src/themes';
 import Theme, { events, themeable, Var } from '../src';
 
 describe('ak-theme, { themeable }', () => {
+  let body;
+
+  beforeEach(() => {
+    body = document.body;
+  });
+
   describe('props', () => {
     let elem;
     let elemTheme;
@@ -26,7 +32,7 @@ describe('ak-theme, { themeable }', () => {
     });
 
     afterEach(done => {
-      elem.remove();
+      body.removeChild(elem);
       afterMutations(done);
     });
 
@@ -81,7 +87,7 @@ describe('ak-theme, { themeable }', () => {
           const elemAfterSpies = document.createElement(themeNameFromNode(elem));
           document.body.appendChild(elemAfterSpies);
           afterMutations(
-            () => elemAfterSpies.remove(),
+            () => body.removeChild(elemAfterSpies),
             () => expect(spyRemoveEventListener.callCount).to.equal(1),
             () => expect(spyRemoveEventListener.getCall(0).args[0]).to.equal(events.themeChanged),
             done
@@ -153,18 +159,18 @@ describe('ak-theme, { themeable }', () => {
     it('should call overridden attached', done => {
       createElement({
         attached(e) {
-          e.remove();
+          body.removeChild(e);
           done();
         },
       });
     });
 
     it('should call overridden detached', done => {
-      createElement({
+      body.removeChild(createElement({
         detached() {
           done();
         },
-      }).remove();
+      }));
     });
   });
 

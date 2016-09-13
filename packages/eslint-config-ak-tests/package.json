@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-ak-tests",
-  "version": "1.0.2",
+  "version": "1.4.0",
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "main": ".eslintrc",

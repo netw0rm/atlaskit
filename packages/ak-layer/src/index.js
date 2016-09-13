@@ -27,6 +27,7 @@ function createNewAlignment(elem) {
     target: elem.target,
     position: elem.position,
     enableFlip: elem.enableFlip,
+    offset: elem.offset,
   };
 
   if (elem.boundariesElement) {
@@ -34,6 +35,17 @@ function createNewAlignment(elem) {
   }
 
   return new Alignment(options);
+}
+
+function reCreateAlignmentIfNeeded(elem, data) {
+  if (elem.alignment) {
+    if (data.newValue !== data.oldValue) {
+      elem.alignment.destroy();
+      elem.alignment = createNewAlignment(elem);
+    } else {
+      elem.alignment.reposition();
+    }
+  }
 }
 
 /**
@@ -68,28 +80,7 @@ export default define('ak-layer', {
     /* eslint-enable max-len */
     position: enumeration(POSITION_ATTRIBUTE_ENUM)({
       attribute: true,
-      set(elem, data) {
-        if (elem.alignment) {
-          if (data.newValue !== data.oldValue) {
-            elem.alignment.destroy();
-            elem.alignment = createNewAlignment(elem);
-          } else {
-            elem.alignment.reposition();
-          }
-        }
-      },
-    }),
-    /**
-     * @description Constrain a layer to a scrollable parent or the window
-     * @memberof Layer
-     * @instance
-     * @default 'window'
-     * @type String
-     * @example @html <ak-layer constrain="scrollParent"></ak-layer>
-     * @example @js layer.constrain = 'scrollParent'
-     */
-    constrain: enumeration(CONSTRAIN_ATTRIBUTE_ENUM)({
-      attribute: true,
+      set: reCreateAlignmentIfNeeded,
     }),
     /**
      * @description Target of a layer.
@@ -101,12 +92,23 @@ export default define('ak-layer', {
      * @example @js layer.target = document.body.querySelector('#target');
      * @example @js layer.target = '#target'
      */
-    target: { attribute: true },
+    target: {
+      attribute: true,
+      set: reCreateAlignmentIfNeeded,
+    },
     onRender: {},
-    boundariesElement: { attribute: true },
+    boundariesElement: {
+      attribute: true,
+      set: reCreateAlignmentIfNeeded,
+    },
     enableFlip: prop.boolean({
       attribute: true,
+      set: reCreateAlignmentIfNeeded,
     }),
+    offset: {
+      attribute: true,
+      set: reCreateAlignmentIfNeeded,
+    },
   },
   prototype: {
     reposition() {

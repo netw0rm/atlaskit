@@ -67,8 +67,8 @@ export default define('ak-inline-dialog', {
       <div>
         {renderBlanketIfNeeded(elem)}
         <Layer
-          position={elem.position}
           target={elem.target}
+          position={elem.position}
           boundariesElement={elem.boundariesElement}
           enableFlip={elem.enableFlip}
           ref={(layerElem) => {

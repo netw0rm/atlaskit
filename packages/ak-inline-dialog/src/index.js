@@ -67,8 +67,8 @@ export default define('ak-inline-dialog', {
       <div>
         {renderBlanketIfNeeded(elem)}
         <Layer
-          position={elem.position}
           target={elem.target}
+          position={elem.position}
           boundariesElement={elem.boundariesElement}
           enableFlip={elem.enableFlip}
           ref={(layerElem) => {
@@ -84,6 +84,16 @@ export default define('ak-inline-dialog', {
     );
   },
   prototype: {
+    /**
+     * @description Forces the Layer to recalculate and reposition itself on the page. This should
+     * not usually be required as any modifications to the Layer itself should also cause reposition
+     * to be called.
+     * @memberof InlineDialog
+     * @function
+     * @instance
+     * @return undefined
+     * @example @js layer.reposition();
+    */
     reposition() {
       if (this.layer) {
         this.layer.reposition();
@@ -93,11 +103,12 @@ export default define('ak-inline-dialog', {
     },
   },
   props: {
-    /* eslint-disable max-len  */
     /**
      * @description Position of an inline-dialog relative to it’s target.
-     * The position attribute takes two positional arguments in the format`position="edge edge-position"`,
-     * where `edge` specifies the edge you have to align the inline dialog to, and `edge-position` specifies where on that edge the dialog should appear.
+     * The position attribute takes two positional arguments in the
+     * format`position="edge edge-position"`, where `edge` specifies the edge you have to align
+     * the inline dialog to, and `edge-position` specifies where on that edge the dialog should
+     * appear.
      * Checkout the examples in the following table:
      *
      * |             | top left    | top center    | top right    |              |
@@ -113,7 +124,6 @@ export default define('ak-inline-dialog', {
      * @example @html <ak-inline-dialog position="top left"></ak-inline-dialog>
      * @example @js dialog.position = 'top left';
      */
-    /* eslint-enable max-len */
     position: enumeration(POSITION_ATTRIBUTE_ENUM)({
       attribute: true,
     }),
@@ -240,7 +250,33 @@ export default define('ak-inline-dialog', {
     isClosableOnEsc: prop.boolean({
       attribute: true,
     }),
+    /**
+     * @description Element to act as a boundary for the Inline-Dialog.
+     * The Inline-Dialog will not sit outside this element if it can help it.
+     * If, through it's normal positoning, it would end up outside the boundary the Dialog
+     * will flip positions if the enableFlip prop is set.
+     * Can either be an element or a selector of an element.
+     * If not set the boundary will be the current viewport.
+     * @memberof Layer
+     * @instance
+     * @type HTMLElement | String
+     * @example @html <ak-inline-dialog enableFlip boundariesElement="#container"></ak-layer>
+     * @example @js inlineDialog.boundariesElement = document.body.querySelector('#container');
+     * @example @js inlineDialog.enableFlip = true;
+     */
     boundariesElement: { attribute: true },
+    /**
+     * @description Sets whether an Inline-Dialog will flip it's position if there is not enough
+     * space in the requested position.
+     * i.e. if an Inline-Dialog is set to position="top middle" but placing it there would cause
+     * it to be outside the viewport (or the boundariesElement if that is set)
+     * the Inline-Dialog will instead be positioned in "bottom middle".
+     * @memberof Layer
+     * @instance
+     * @type Boolean
+     * @example @html <ak-layer enableFlip></ak-layer>
+     * @example @js layer.enableFlip = true;
+     */
     enableFlip: prop.boolean({
       attribute: true,
     }),

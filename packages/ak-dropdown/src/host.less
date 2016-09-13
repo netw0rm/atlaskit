@@ -30,3 +30,17 @@ ak-dropdown-list {
     opacity: 1;
   }
 }
+
+ak-dropdown-group {
+  display:block;
+
+  // first group element shouldn't have any empty space above it
+  &:first-of-type {
+    margin-top:-@ak-dropdown-group-space;
+  }
+}
+
+// first group element that has items before it should have empty space before it
+ak-dropdown-item + ak-dropdown-group:first-of-type {
+  margin-top:0;
+}

@@ -36,6 +36,7 @@ describe('ak-dropdown', () => {
     it('should have an sub-components exports', () => {
       (new exports.Item).should.be.an.instanceof(Component);
       (new exports.Trigger).should.be.an.instanceof(Component);
+      (new exports.Group).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
@@ -87,10 +88,14 @@ describe('ak-dropdown', () => {
       );
     });
     it('position is reflected to inner layer', (done) => {
+      // we can't just do querySelector('ak-layer') here, ak-layer is defined a few times
+      // and doesn't have a nice clear tag name anymore
+      let layer;
       afterMutations(
-        () => (expect(shadowRoot.querySelector('ak-layer').position).to.equal('bottom left')),
+        () => (layer = shadowRoot.firstChild.childNodes[1].firstChild),
+        () => (expect(layer.position).to.equal('bottom left')),
         () => (component.position = 'top left'),
-        () => (expect(shadowRoot.querySelector('ak-layer').position).to.equal('top left')),
+        () => (expect(layer.position).to.equal('top left')),
         done
       );
     });

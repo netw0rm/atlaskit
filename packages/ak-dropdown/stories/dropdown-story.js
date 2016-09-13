@@ -96,6 +96,27 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
+  .add('dropdown with grouping', () => (
+    <div>
+      <DropdownReactComponent>
+        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
+        <ak-dropdown-item>some text here</ak-dropdown-item>
+        <ak-dropdown-item>some text here</ak-dropdown-item>
+        <ak-dropdown-group title="title one">
+          <ak-dropdown-item>text1</ak-dropdown-item>
+          <ak-dropdown-item selected>text2</ak-dropdown-item>
+        </ak-dropdown-group>
+        <ak-dropdown-group title="title two">
+          <ak-dropdown-item disabled>some text here</ak-dropdown-item>
+          <ak-dropdown-item>another text</ak-dropdown-item>
+        </ak-dropdown-group>
+        <ak-dropdown-group>
+          <ak-dropdown-item>this is a group</ak-dropdown-item>
+          <ak-dropdown-item>without any title</ak-dropdown-item>
+        </ak-dropdown-group>
+      </DropdownReactComponent>
+    </div>
+  ))
   .add('dropdown with everything', () => (
     <div>
       <DropdownReactComponent>
@@ -106,6 +127,10 @@ storiesOf(`${name} component`, module)
         <ak-dropdown-item>another text</ak-dropdown-item>
         <ak-dropdown-item>such long text for such small dropdown isn't it?</ak-dropdown-item>
         <ak-dropdown-item href="http://atlassian.com">This is a clickable link</ak-dropdown-item>
+        <ak-dropdown-group title="some group">
+          <ak-dropdown-item>this is a group</ak-dropdown-item>
+          <ak-dropdown-item>another text</ak-dropdown-item>
+        </ak-dropdown-group>
       </DropdownReactComponent>
     </div>
   ))

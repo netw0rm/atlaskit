@@ -4,7 +4,7 @@ export class DelMark extends MarkType {
   get matchDOMTag() { return {"del": null, "s": null, "strike": null} }
   get matchDOMStyle() {
     return {
-      "text-decoration": (value: string) => value == "line-through" && null
+      "text-decoration": (value: string) => value == "line-through" ? null : false,
     }
   }
   toDOM() { return ['del']; }

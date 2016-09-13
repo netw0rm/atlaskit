@@ -2,8 +2,6 @@
 
 ![Example tags](docs/overview.png)
 
-## Synopsis
-
 This component displays as a tag with an optional link and/or button to remove the given tag.
 
 Although the `ak-tag` component can be used by itself, it works best in conjunction with the
@@ -11,7 +9,7 @@ Although the `ak-tag` component can be used by itself, it works best in conjunct
 
 ## Setup and install
 
-```console
+```sh
 npm install ak-tag
 ```
 

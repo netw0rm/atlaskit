@@ -17,11 +17,11 @@ describe('ak-theme, { themeable }', () => {
 
     beforeEach(done => {
       elem = new (define('x-test', themeable({})));
-      document.body.appendChild(elem);
+      body.appendChild(elem);
 
       elemTheme = new Theme();
       elemTheme.id = tagName(elem);
-      document.body.appendChild(elemTheme);
+      body.appendChild(elemTheme);
 
       elemThemeVar = new Var();
       elemThemeVar.name = 'testname';

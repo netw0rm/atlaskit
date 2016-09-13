@@ -1,5 +1,7 @@
 import { themeChanged } from './events';
-import { themeHandlers, themeNameFromNode } from './themes';
+import { themeNameFromNode } from './themes';
+
+const $themeHandler = Symbol();
 
 function applyTheme(elem, data) {
   const { newValue } = data;
@@ -30,18 +32,18 @@ export default function (opts) {
       }
 
       applyTheme(elem, { newValue: elem.themeName });
-      document.addEventListener(themeChanged, themeHandlers.set(elem, e => {
+      document.addEventListener(themeChanged, elem[$themeHandler] = e => {
         const { themeName, themeVars } = e.detail;
         if (elem.themeName === themeName) {
           elem.themeVars = themeVars;
         }
-      }).get(elem));
+      });
     },
     detached(elem) {
       if (detached) {
         detached(elem);
       }
-      document.removeEventListener(themeChanged, themeHandlers.get(elem));
+      document.removeEventListener(themeChanged, elem[$themeHandler]);
     },
   });
 }

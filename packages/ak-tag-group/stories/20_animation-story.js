@@ -4,6 +4,8 @@ import AlignedStory from './AlignedStory.js';
 import tagNames from './tagNames';
 import { locateWebComponent } from 'akutil-common-test';
 import sample from 'lodash.sample';
+import { alignment } from '../src';
+const { start, end } = alignment;
 
 const tags = ['Candy canes', 'Tiramisu', 'Gummi bears', 'Wagon Wheels', 'Chupa Chups'];
 const onRemove = (text) => action('Removing tag')(text);
@@ -27,10 +29,10 @@ const removeTag = () => setTimeout(() => {
 }, 100);
 
 storiesOf(name, module)
-  .add('animation (left alignment)', () => alignmentStory('left'))
-  .addSwapped('animation (left alignment) (swapped)', () => alignmentStory('left'))
-  .add('animation (right alignment)', () => alignmentStory('right'))
-  .addSwapped('animation (right alignment) (swapped)', () => alignmentStory('right'))
+  .add('animation (text-start alignment)', () => alignmentStory(start))
+  .addSwapped('animation (text-start alignment) (swapped)', () => alignmentStory(start))
+  .add('animation (text-end alignment)', () => alignmentStory(end))
+  .addSwapped('animation (text-end alignment) (swapped)', () => alignmentStory(end))
   .addMonitored('animation (auto-remove)', () => {
     removeTag();
     return (<AlignedStory onRemove={removeTag} initialTags={tagNames} />);

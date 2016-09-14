@@ -32,7 +32,7 @@ describe('ak-tag-group', () => {
 
     it('should have an alignment export with defined alignment values', () => {
       alignment.should.be.defined;
-      Object.keys(alignment).should.be.deep.equal(['left', 'right']);
+      Object.keys(alignment).should.be.deep.equal(['start', 'end']);
     });
   });
 

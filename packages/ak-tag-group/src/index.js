@@ -5,21 +5,21 @@ import shadowStyles from './shadow.less';
 import classnames from 'classnames';
 
 /**
- * Group alignment values
+ * Group alignment values. Based on the text-direction.
  *
  * @exports alignment
  * @enum {string}
  */
 const alignment = {
-  /** Left alignment */
-  left: 'left',
-  /** Right alignment */
-  right: 'right',
+  /** text-start alignment */
+  start: 'start',
+  /** text-end alignment */
+  end: 'end',
 };
 
 const ALIGNMENT_ATTRIBUTE_ENUM = {
   attribute: 'alignment',
-  values: [alignment.left, alignment.right],
+  values: [alignment.start, alignment.end],
   missingDefault: '',
   invalidDefault: '',
 };
@@ -39,10 +39,10 @@ const ALIGNMENT_ATTRIBUTE_ENUM = {
  */
 export default define('ak-tag-group', {
   render(elem) {
-    const isRightAligned = elem.alignment === alignment.right;
+    const isEndAligned = elem.alignment === alignment.end;
     const classNames = classnames({
       [shadowStyles.locals.slot]: true,
-      [shadowStyles.locals.rightAligned]: isRightAligned,
+      [shadowStyles.locals.endAligned]: isEndAligned,
     });
 
     return (
@@ -62,15 +62,15 @@ export default define('ak-tag-group', {
      * the alignment).
      *
      * This setting also controls the animation direction on tag removal,
-     * e.g. left alignment means that the tags list moves to the left on removal
-     * right alignment means it moves to the right (all based on the text direction,
-     * e.g. right alignment in LTR means the tags move to the right, right alignment
+     * e.g. start alignment means that the tags list moves to the text-start on removal
+     * end alignment means it moves to the text-end (all based on the text direction,
+     * e.g. start alignment in LTR means the tags move to the right, start alignment
      * in RTL means the tags move to the left).
      *
      * @memberof TagGroup
      * @instance
      * @type {alignment}
-     * @example @html <ak-tag-group alignment="right">
+     * @example @html <ak-tag-group alignment="end">
      *   <ak-tag text="Cupcake"/ >
      *   <ak-tag text="Cheesecake"/ >
      *   <ak-tag text="Chocolate"/ >
@@ -86,7 +86,7 @@ export default define('ak-tag-group', {
      * });
      * tags.forEach((tag) => tagGroup.appendChild(tag));
      *
-     * tagGroup.alignment = alignment.right; // Is aligned at text-end of the current text direction
+     * tagGroup.alignment = alignment.end; // Is aligned at text-end of the current text direction
      *
      * document.body.appendChild(tagGroup); // show the tag group with the tags
      */

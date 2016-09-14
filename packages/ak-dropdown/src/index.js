@@ -173,33 +173,31 @@ export default define('ak-dropdown', {
           </div>
           : null
         }
-        <div style={{ display: elem.open ? 'block' : 'none' }}>
-          <Layer
-            position={elem.position}
-            target={target}
-            enableFlip
-            offset={offset}
-            ref={(layer) => {
-              elem._layer = layer;
-              setTimeout(() => {
-                if (elem.open && layer.alignment) {
-                    // by default dropdown has opacity 0
-                    // and only with attribute 'positioned' it has opacity 1
-                    // this behavior is to avoid 'flashing' of dropdown
-                    // when it's initially positioning itself on a page
-                  elem.setAttribute('positioned', true);
-                  layer.reposition();
-                }
-              });
-            }
+        {elem.open ? <Layer
+          position={elem.position}
+          target={target}
+          enableFlip
+          offset={offset}
+          ref={(layer) => {
+            elem._layer = layer;
+            setTimeout(() => {
+              if (elem.open && layer.alignment) {
+                  // by default dropdown has opacity 0
+                  // and only with attribute 'positioned' it has opacity 1
+                  // this behavior is to avoid 'flashing' of dropdown
+                  // when it's initially positioning itself on a page
+                elem.setAttribute('positioned', true);
+                layer.reposition();
+              }
+            });
           }
-          >
-            <div className={shadowListStyles.locals.list} style={styles} position={elem.position}>
-              <style>{shadowListStyles.toString()}</style>
-              <slot />
-            </div>
-          </Layer>
-        </div>
+        }
+        >
+          <div className={shadowListStyles.locals.list} style={styles}>
+            <style>{shadowListStyles.toString()}</style>
+            <slot />
+          </div>
+        </Layer> : null}
       </div>
     );
   },

@@ -71,12 +71,6 @@ describe('ak-dropdown', () => {
       expect(getShadowRoot(component).firstChild).to.be.defined;
     });
 
-    it('dropdown should reposition itself after being open', () => {
-      const spy = sinon.spy();
-      component.reposition = spy;
-      props(component, { open: true });
-      expect(spy.called).to.equal(true);
-    });
     it('open property controls open state', (done) => {
       afterMutations(
         () => (component.innerHTML = '<span>something visible</span>'),
@@ -91,8 +85,9 @@ describe('ak-dropdown', () => {
       // we can't just do querySelector('ak-layer') here, ak-layer is defined a few times
       // and doesn't have a nice clear tag name anymore
       let layer;
+      props(component, { open: true });
       afterMutations(
-        () => (layer = shadowRoot.firstChild.childNodes[1].firstChild),
+        () => (layer = shadowRoot.firstChild.childNodes[1]),
         () => (expect(layer.position).to.equal('bottom left')),
         () => (component.position = 'top left'),
         () => (expect(layer.position).to.equal('top left')),

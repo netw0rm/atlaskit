@@ -180,8 +180,6 @@ export default define('pf-mention-list', {
 
   props: {
     mentions: prop.array(),
-    selectedKey: prop.string({
-      attribute: true,
-    }),
+    selectedKey: prop.string({ attribute: true }),
   },
 });

@@ -1,10 +1,10 @@
 import 'style!../host.less';
 import shadowStyles from './pf-mention-picker-shadow.less';
-import { localProp } from './skate-local-props';
-import { define, vdom, prop, props } from 'skatejs';
+import { define, vdom, prop } from 'skatejs';
 import InlineDialog from 'ak-inline-dialog';
 import ResourcedMentionList from './pf-resourced-mention-list';
 import debug from '../util/logger';
+import hasChanges from '../util/has-changes';
 import uniqueId from '../util/id';
 
 const styles = shadowStyles.locals;
@@ -31,10 +31,9 @@ export default define('pf-mention-picker', {
 
     _filterChange(mentions) {
       debug('pf-mention-picker._filterChange', mentions.length);
-      props(this, {
-        _visible: mentions.length > 0,
-      });
+      this._visible = mentions.length > 0;
     },
+
     _updateDialogPosition(event) {
       if (event.target._dialog && event.target._dialog.reposition) {
         event.target._dialog.reposition();
@@ -43,7 +42,6 @@ export default define('pf-mention-picker', {
   },
 
   created(elem) {
-    elem.visible = false;
     elem._subscriberKey = uniqueId('pf-mention-picker');
     elem._filterChange = elem._filterChange.bind(elem);
   },
@@ -54,14 +52,13 @@ export default define('pf-mention-picker', {
 
   detached(elem) {
     if (elem.resourceProvider) {
-      elem.resourceProvider.unsubscribe(elem);
+      elem.resourceProvider.unsubscribe(elem._subscriberKey);
     }
     document.removeEventListener('pf-mention-list-rendered', elem._updateDialogPosition);
   },
 
   render(elem) {
-    const { target, position } = elem;
-    const { resourceProvider, presenceProvider, query } = elem;
+    const { resourceProvider, presenceProvider, query, target, position } = elem;
     const style = {
       display: elem._visible ? 'block' : 'none',
     };
@@ -116,31 +113,40 @@ export default define('pf-mention-picker', {
     }
   },
 
+  updated(elem, prevProps = {}) {
+    const resourceProviderChanged = elem.resourceProvider !== prevProps.resourceProvider;
+    const queryChanged = elem.query !== prevProps.query;
+    const canFilter = elem.query && elem.resourceProvider;
+    const shouldFilter = canFilter && (queryChanged || resourceProviderChanged);
+
+    // resource provider
+    if (resourceProviderChanged) {
+      if (prevProps.resourceProvider) {
+        prevProps.resourceProvider.unsubscribe(elem._subscriberKey);
+      }
+      if (elem.resourceProvider) {
+        elem.resourceProvider.subscribe(elem._subscriberKey, elem._filterChange);
+      }
+    }
+
+    // re-filter if necessary
+    if (shouldFilter) {
+      elem.resourceProvider.filter(elem.query);
+    }
+
+    return hasChanges(elem, prevProps);
+  },
+
   props: {
     // pf-resourced-mention-list
-    resourceProvider: localProp.object({
-      set(elem, data) {
-        debug('pf-mention-picker.resourceProvider.set', data);
-        if (data.oldValue) {
-          data.oldValue.unsubscribe(elem._subscriberKey);
-        }
-        if (data.newValue) {
-          data.newValue.subscribe(elem._subscriberKey, elem._filterChange);
-        }
-      },
-    }),
-    presenceProvider: localProp.object(),
-    query: prop.string({
-      attribute: true,
-    }),
+    resourceProvider: {},
+    presenceProvider: {},
+    query: prop.string({ attribute: true, default: () => undefined }),
 
     // ak-inline-dialog
-    target: prop.string({
-      attribute: true,
-    }),
-    position: prop.string({
-      attribute: true,
-    }),
+    target: prop.string({ attribute: true }),
+    position: prop.string({ attribute: true }),
+
     // internal
     _visible: prop.boolean(),
   },

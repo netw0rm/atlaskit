@@ -1,9 +1,9 @@
 import 'style!../host.less';
 import shadowStyles from './pf-resourced-mention-list-shadow.less';
-import { localProp } from './skate-local-props';
-import { define, vdom, prop, props } from 'skatejs';
+import { define, vdom, prop } from 'skatejs';
 import MentionList from './pf-mention-list';
 import debug from '../util/logger';
+import hasChanges from '../util/has-changes';
 import uniqueId from '../util/id';
 
 function applyPresence(mentions, presences) {
@@ -30,30 +30,6 @@ function extractPresences(mentions) {
   return presences;
 }
 
-function unsubscribeUpdates(elem, resourceProvider) {
-  if (resourceProvider) {
-    resourceProvider.unsubscribe(elem._subscriberKey);
-  }
-}
-
-function subscribeUpdates(elem, resourceProvider) {
-  if (resourceProvider) {
-    resourceProvider.subscribe(elem._subscriberKey, elem._filterChange);
-  }
-}
-
-function unsubscribePresenceUpdates(elem, presenceProvider) {
-  if (presenceProvider) {
-    presenceProvider.unsubscribe(elem._subscriberKey);
-  }
-}
-
-function subscribePresenceUpdates(elem, presenceProvider) {
-  if (presenceProvider) {
-    presenceProvider.subscribe(elem._subscriberKey, elem._presenceUpdate);
-  }
-}
-
 export default define('pf-resourced-mention-list', {
   prototype: {
     selectNext() {
@@ -74,31 +50,21 @@ export default define('pf-resourced-mention-list', {
       }
     },
 
-    _updateQuery(query) {
-      if (this.resourceProvider) {
-        this.resourceProvider.filter(query);
-      }
-    },
-
     _filterChange(mentions) {
       // Retain known presence
       debug('pf-resourced-mentions-list._filterChange', mentions && mentions.length);
-      const currentPresences = extractPresences(this.mentions);
-      props(this, {
-        mentions: applyPresence(mentions, currentPresences),
-      });
+      const currentPresences = extractPresences(this._mentions);
+      this._mentions = applyPresence(mentions, currentPresences);
       this._refreshPresences(mentions);
     },
 
     _presenceUpdate(presences) {
-      props(this, {
-        mentions: applyPresence(this.mentions, presences),
-      });
+      this._mentions = applyPresence(this._mentions, presences);
     },
 
     _refreshPresences(mentions) {
       if (this.presenceProvider) {
-        const ids = mentions.map((mention) => mention.id);
+        const ids = mentions.map(mention => mention.id);
         this.presenceProvider.refreshPresence(ids);
       }
     },
@@ -108,52 +74,52 @@ export default define('pf-resourced-mention-list', {
     elem._subscriberKey = uniqueId('pf-resourced-mention-list');
     elem._filterChange = elem._filterChange.bind(elem);
     elem._presenceUpdate = elem._presenceUpdate.bind(elem);
-    elem._updateQuery('');
   },
 
   render(elem) {
-    debug('pf-resourced-mention-list.render', elem.mentions.length);
+    debug('pf-resourced-mention-list.render', elem._mentions.length);
 
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
         <MentionList
-          mentions={elem.mentions}
-          ref={(ref) => { elem._mentionListRef = ref; }}
+          mentions={elem._mentions}
+          ref={ref => { elem._mentionListRef = ref; }}
         />
       </div>
     );
   },
 
-  props: {
-    resourceProvider: localProp.object({
-      set(elem, data) {
-        debug('pf-resourced-mention-list.resourceProvider.set', data);
-        unsubscribeUpdates(elem, data.oldValue);
-        subscribeUpdates(elem, data.newValue);
-        if (typeof elem.query === 'string') {
-          elem._updateQuery(elem.query);
-        }
-      },
-    }),
-    presenceProvider: localProp.object({
-      set(elem, data) {
-        unsubscribePresenceUpdates(elem, data.oldValue);
-        subscribePresenceUpdates(elem, data.newValue);
-      },
-    }),
+  updated(elem, prevProps = {}) {
+    // resource provider
+    if (elem.resourceProvider !== prevProps.resourceProvider) {
+      if (prevProps.resourceProvider) {
+        prevProps.resourceProvider.unsubscribe(elem._subscriberKey);
+      }
+      if (elem.resourceProvider) {
+        elem.resourceProvider.subscribe(elem._subscriberKey, elem._filterChange);
+      }
+    }
 
-    // Internal state...
-    // TODO use symbols
-    mentions: prop.array({
-      default: [],
-      initial: [],
-    }),
-    query: prop.string({
-      default: '',
-      set(elem, data) {
-        elem._updateQuery(data.newValue);
-      },
-    }),
+    // presence provider
+    if (elem.presenceProvider !== prevProps.presenceProvider) {
+      if (prevProps.presenceProvider) {
+        prevProps.presenceProvider.unsubscribe(elem._subscriberKey);
+      }
+      if (elem.presenceProvider) {
+        elem.presenceProvider.subscribe(elem._subscriberKey, elem._presenceUpdate);
+      }
+    }
+
+    return hasChanges(elem, prevProps);
+  },
+
+  props: {
+    resourceProvider: {},
+    presenceProvider: {},
+    query: {},
+
+    // Internal state
+    _mentions: prop.array(),
   },
 });

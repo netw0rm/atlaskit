@@ -120,7 +120,7 @@ describe('ak-dropdown-item', () => {
     let componentDomElem;
 
     beforeEach(() => {
-      const html = '<div slot="left" style="height:40px;width:40px;"></div><div>some text</div>';
+      const html = '<div slot="left" style="height:30px;width:30px;"></div><div>some text</div>';
       component = `<ak-dropdown-item>${html}</ak-dropdown-item>`;
       itemContainer.innerHTML = component;
 

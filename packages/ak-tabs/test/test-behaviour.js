@@ -10,7 +10,7 @@ import {
   click,
   keyboardNavLeft,
   keyboardNavRight,
-} from '../test-helpers/helpers';
+} from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.should();

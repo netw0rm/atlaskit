@@ -15,7 +15,7 @@ import {
   hasOverflow,
   hasVisibleDropdown,
   defaultLabel,
-} from '../test-helpers/helpers';
+} from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.should();

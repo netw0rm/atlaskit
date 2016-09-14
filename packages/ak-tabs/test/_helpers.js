@@ -1,8 +1,6 @@
 import keycode from 'keycode';
-import AkTabsTab from '../src/index-tab';
-import AkTabs from '../src/index';
-
-import * as events from '../src/internal/events';
+import AkTabs, { events, Tab as AkTabsTab } from '../src';
+const { tabChange: tabChangeEvent } = events;
 import { buttonContainer, labelsContainer, tabLabel } from '../src/internal/symbols';
 import tabsStyles from 'style!../src/host.less';
 import tabStyles from 'style!../src/tab-host.less';
@@ -17,8 +15,8 @@ function afterMutations(fn) {
 }
 
 function setupTabs(opts) {
-  const changeSpy = sinon.spy();  // eslint-disable-line no-undef
-  window.addEventListener(events.TAB_CHANGE, changeSpy);
+  const changeSpy = sinon.spy();
+  window.addEventListener(tabChangeEvent, changeSpy);
 
   const containerElement = document.createElement('div');
   containerElement.style.width = opts.width || defaultWidth;
@@ -55,7 +53,7 @@ function setupTabs(opts) {
 }
 
 function cleanupTabs(fixtures) {
-  window.removeEventListener(events.TAB_CHANGE, fixtures.spies.change);
+  window.removeEventListener(tabChangeEvent, fixtures.spies.change);
   document.body.removeChild(fixtures.container);
 }
 

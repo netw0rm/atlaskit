@@ -1,11 +1,10 @@
 import jss from 'jss';
 
-const { ShadowRoot } = window;
+const { HTMLContentElement, HTMLSlotElement, ShadowRoot } = window;
 const native = fn => (fn || '').toString().indexOf('[native code]') > -1;
-const div = document.createElement('div');
 const supportsShadowDOM = native(ShadowRoot);
-const supportsShadowDOMV0 = supportsShadowDOM && div.createShadowRoot;
-const supportsShadowDOMV1 = supportsShadowDOM && div.attachShadow;
+const supportsShadowDOMV0 = supportsShadowDOM && HTMLContentElement;
+const supportsShadowDOMV1 = supportsShadowDOM && HTMLSlotElement;
 
 // Polyfill :host
 // --------------
@@ -38,6 +37,7 @@ jss.use(rule => {
       const lcTagName = rule.options.sheet.options.elem.tagName.toLowerCase();
       rule.selectorText = `${lcTagName} slot${matchSlot} > ${matchSelector}`;
     }
+    console.log(rule.selectorText);
   }
 });
 

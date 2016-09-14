@@ -67,6 +67,7 @@ export {
 export {
   MarkdownParser,
   MarkdownSerializer,
+  MarkdownSerializerState
 } from 'prosemirror/dist/markdown';
 
 import * as browser from "prosemirror/dist/util/browser";

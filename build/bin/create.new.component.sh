@@ -25,6 +25,7 @@ if [ -d "packages/$COMP_NAME" ]
 fi
 
 # Copy template files into packages directory
+rm -rf packages/akutil-component-template/node_modules
 cp -r "packages/akutil-component-template" "packages/$COMP_NAME"
 
 # `find` is getting all the files under the new directory
@@ -37,9 +38,6 @@ pushd "packages/$COMP_NAME" > /dev/null
 
 # Make sure our version for the new package is 0.0.0
 sed -i '' 's/"version": "\([^"]*\)"/"version": "1.0.0"/' package.json
-
-# Delete changelog
-rm CHANGELOG.md
 
 popd > /dev/null
 

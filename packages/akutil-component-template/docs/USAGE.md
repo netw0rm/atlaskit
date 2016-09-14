@@ -48,6 +48,8 @@ document.body.appendChild(component);
 
 ### React
 
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
+
 ```js
 import AkUtilComponentTemplate from 'akutil-component-template';
 import reactify from 'skatejs-react-integration';

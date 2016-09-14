@@ -32,12 +32,17 @@ type Command = (pm: ProseMirror, apply?: any) => any;
 // argument, which maps key names (say `"Mod-B"` to either `false`, to
 // remove the binding, or a new key name string.
 export function buildKeymap(schema: Schema, mapKeys?: { [key: string]: (string | boolean) }) {
-  let keys: { [key: string]: Command } = {}
+  let keys = {} as { [key: string]: Command }
   function bind(key: string, cmd: Command) {
     if (mapKeys) {
       let mapped = mapKeys[key];
-      if (mapped === false) return;
-      if (mapped) key = mapped as string
+      if (mapped === false) {
+        return;
+      }
+
+      if (mapped) {
+        key = mapped as string;
+      }
     }
     keys[key] = cmd;
   }
@@ -54,7 +59,7 @@ export function buildKeymap(schema: Schema, mapKeys?: { [key: string]: (string |
     }
 
     if (name === "code") {
-      bind("Mod-`", toggleMark(mark))
+      bind("Mod-`", toggleMark(mark));
     }
   }
   for (let name in schema.nodes) {
@@ -73,17 +78,20 @@ export function buildKeymap(schema: Schema, mapKeys?: { [key: string]: (string |
     }
 
     if (name === "hard_break") {
-      let cmd = chainCommands(newlineInCode,
+      let cmd = chainCommands(
+        newlineInCode,
         (pm: ProseMirror) => pm.tr.replaceSelection(node.create()).applyAndScroll());
       bind("Mod-Enter", cmd);
       bind("Shift-Enter", cmd);
-      if (browser.mac) bind("Ctrl-Enter", cmd)
+      if (browser.mac) {
+        bind("Ctrl-Enter", cmd);
+      }
     }
 
     if (name === "list_item") {
       bind("Enter", splitListItem(node));
       bind("Mod-[", liftListItem(node));
-      bind("Mod-]", sinkListItem(node))
+      bind("Mod-]", sinkListItem(node));
     }
 
     if (name === "paragraph") {
@@ -91,7 +99,7 @@ export function buildKeymap(schema: Schema, mapKeys?: { [key: string]: (string |
     }
 
     if (name === "code_block") {
-      bind("Shift-Ctrl-\\", setBlockType(node))
+      bind("Shift-Ctrl-\\", setBlockType(node));
     }
 
     if (name === "heading") {
@@ -104,5 +112,5 @@ export function buildKeymap(schema: Schema, mapKeys?: { [key: string]: (string |
       bind("Mod-Shift--", pm => pm.tr.replaceSelection(node.create()).applyAndScroll());
     }
   }
-  return new Keymap(keys)
+  return new Keymap(keys);
 }

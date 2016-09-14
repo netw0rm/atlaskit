@@ -11,6 +11,7 @@ export {
   Mark,
   Node,
   NodeType,
+  MarkType,
   ResolvedPos,
   Slice,
   Schema,

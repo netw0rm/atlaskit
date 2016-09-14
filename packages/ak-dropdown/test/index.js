@@ -71,19 +71,11 @@ describe('ak-dropdown', () => {
       expect(getShadowRoot(component)).to.be.defined;
       expect(getShadowRoot(component).firstChild).to.be.defined;
     });
-    it('open property controls open state', (done) => {
-      afterMutations(
-        () => (
-          component.innerHTML = `<ak-dropdown-trigger-button slot="trigger">
-            test</ak-dropdown-trigger-button>
-            <ak-dropdown-item><span>something visible</span></ak-dropdown-item>`
-        ),
-        () => (component.open = false),
-        () => (expect(checkVisibility(component.children[1])).to.equal(false)),
-        () => (component.open = true),
-        () => (expect(checkVisibility(component.children[0])).to.equal(true)),
-        done
-      );
+    it('open property controls open state', () => {
+      props(component, { open: false });
+      expect(checkVisibility(component.children[1])).to.equal(false);
+      props(component, { open: true });
+      expect(checkVisibility(component.children[0])).to.equal(true);
     });
     it('position is reflected to inner layer', (done) => {
       // we can't just do querySelector('ak-layer') here, ak-layer is defined a few times

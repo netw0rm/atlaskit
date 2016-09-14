@@ -66,36 +66,28 @@ describe('ak-editor-plugin-block-type', () => {
     expect(plugin.getState().selectedBlockType).to.equal('paragraph');
   });
 
-  it('should get current state immediately', (done) => {
+  it('should get current state immediately', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
     const spy = sinon.spy();
 
     plugin.subscribe(spy);
 
-    setTimeout(() => {
-      expect(spy.calledWith({
-        selectedBlockType: 'paragraph',
-        enabled: true
-      })).to.be.true;
-
-      done();
-    }, 500);
+    expect(spy.calledWith({
+      selectedBlockType: 'paragraph',
+      enabled: true
+    })).to.be.true;
   });
 
-  it('should be able to subscribe the changes', (done) => {
+  it('should be able to subscribe the changes', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
     const spy = sinon.spy();
 
     plugin.subscribe(spy);
     plugin.changeBlockType('heading');
 
-    setTimeout(() => {
-      expect(spy.calledWith({
-        selectedBlockType: 'heading1',
-        enabled: true
-      })).to.be.true;
-
-      done();
-    }, 500);
+    expect(spy.calledWith({
+      selectedBlockType: 'heading1',
+      enabled: true
+    })).to.be.true;
   });
 });

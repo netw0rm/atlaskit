@@ -1,5 +1,4 @@
 import { commands, Plugin, ProseMirror, Selection, UpdateScheduler } from 'ak-editor-prosemirror';
-const tick = setImmediate || setTimeout;
 
 export interface BlockTypeState {
   selectedBlockType?: string;
@@ -101,6 +100,6 @@ export default new Plugin(class BlockTypePlugin {
 
   subscribe(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
-    tick(() => cb(this.getState()));
+    cb(this.getState());
   }
 });

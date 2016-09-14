@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import TextFormattingComponent from '../src';
-import React from 'React';
+import React from 'react';
 import reactify from 'akutil-react';
 
 const TextFormatting = reactify(TextFormattingComponent);

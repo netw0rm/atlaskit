@@ -1,5 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
-import React from 'React';
+import React from 'react';
 import reactify from 'akutil-react';
 import IconComponent from '../src';
 

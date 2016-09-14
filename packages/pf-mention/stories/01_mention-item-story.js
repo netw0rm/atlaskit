@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import pfMentionItem from '../src/wc/pf-mention-item';
 
-import React from 'React';
+import React from 'react';
 
 const MentionItem = reactify(pfMentionItem);
 

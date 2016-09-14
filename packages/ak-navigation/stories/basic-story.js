@@ -5,7 +5,7 @@ import akPage from 'ak-page';
 import 'ak-icon';
 import 'ak-avatar';
 import 'ak-dropdown';
-import React from 'React';
+import React from 'react';
 import { name } from '../package.json';
 import Lorem from 'react-lorem-component';
 

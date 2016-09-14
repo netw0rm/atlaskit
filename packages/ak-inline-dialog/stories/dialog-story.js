@@ -3,7 +3,7 @@ import AkInlineDialog from '../src/index';
 import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
 
-import React from 'React';
+import React from 'react';
 
 const Dialog = reactify(AkInlineDialog);
 

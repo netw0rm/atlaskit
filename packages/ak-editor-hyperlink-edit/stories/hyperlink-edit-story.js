@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import HyperlinkEdit from '../src';
 import ContentComponent from 'ak-editor-content';
 import { vdom } from 'skatejs';
-import React from 'React';
+import React from 'react';
 import styles from './styles.less';
 import reactify from 'akutil-react';
 import { ProseMirror, DOMFromPos, schema } from 'ak-editor-prosemirror';

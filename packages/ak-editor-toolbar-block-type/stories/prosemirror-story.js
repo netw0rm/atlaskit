@@ -3,7 +3,7 @@ import ToolbarComponent from 'ak-editor-toolbar';
 import BlockTypeComponent from '../src';
 import ContentComponent from 'ak-editor-content';
 import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
-import React from 'React';
+import React from 'react';
 import reactify from 'akutil-react';
 import invert from 'lodash.invert';
 

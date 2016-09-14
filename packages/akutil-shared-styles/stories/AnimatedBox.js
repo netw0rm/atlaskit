@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import storyStyles from 'style!./stories.less';
 
-import React from 'React';
+import React from 'react';
 const { Component } = React;
 
 const boxClass = storyStyles.box;

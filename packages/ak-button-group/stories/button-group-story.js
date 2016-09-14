@@ -3,7 +3,7 @@ import reactify from 'akutil-react';
 import AkButton from 'ak-button';
 import Icon from 'ak-icon';
 import AkButtonGroup from '../src/index';
-import React from 'React';
+import React from 'react';
 import { name } from '../package.json';
 // import styles from 'style!./../src/host.less';
 

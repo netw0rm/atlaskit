@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import Popup from '../src/index';
-import React from 'React';
+import React from 'react';
 import { name } from '../package.json';
 import 'style!./../src/host.less';
 import EditorButtonComponent from 'ak-editor-button';

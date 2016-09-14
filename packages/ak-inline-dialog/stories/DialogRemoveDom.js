@@ -1,7 +1,7 @@
 import reactify from 'akutil-react';
 import AkInlineDialog from '../src/index';
 
-import React from 'React';
+import React from 'react';
 const { Component } = React;
 
 const Dialog = reactify(AkInlineDialog);

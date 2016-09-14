@@ -6,7 +6,7 @@ import { mentions } from './story-data';
 import { getWebComponent } from './util';
 import debug from '../src/util/logger';
 
-import React from 'React';
+import React from 'react';
 
 const MentionList = reactify(pfMentionList);
 

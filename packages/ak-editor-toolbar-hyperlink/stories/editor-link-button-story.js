@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import ToolbarComponent from 'ak-editor-toolbar';
 import EditorkitLinkButton from '../src/index';
-import React from 'React';
+import React from 'react';
 import { name } from '../package.json';
 import 'style!./../src/host.less';
 

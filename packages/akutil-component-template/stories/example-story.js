@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import WebComponent, { events } from '../src';
-import React from 'React';
+import React from 'react';
 import { name } from '../package.json';
 import styles from 'style!./../src/host.less';
 

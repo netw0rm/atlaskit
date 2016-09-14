@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import reactify from 'akutil-react';
 
 import pfMentionPicker from '../src/wc/pf-mention-picker';
@@ -6,8 +6,6 @@ import SearchTextInput from './demo-search-text-input';
 import { getWebComponent } from './util';
 import debug from '../src/util/logger';
 import uniqueId from '../src/util/id';
-
-import React from 'React';
 
 const MentionPicker = reactify(pfMentionPicker);
 

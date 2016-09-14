@@ -5,7 +5,7 @@ import avatarStoryStyles from 'style!./stories.less';
 import { name } from '../package.json';
 import hostStyles from 'style!./../src/host.less';
 
-import React from 'React';
+import React from 'react';
 
 const Avatar = reactify(AkAvatar);
 

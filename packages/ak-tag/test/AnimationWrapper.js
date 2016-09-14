@@ -25,13 +25,13 @@ describe('ak-tag', () => {
       };
 
       return createTemporary(definition)
-      .then(newComponent => {
-        component = newComponent;
-        return getShadowRoot(component);
-      })
-      .then(shadowRoot => {
-        shadowRoot.should.be.defined;
-      }).should.be.fulfilled;
+        .then(newComponent => {
+          component = newComponent;
+          return getShadowRoot(component);
+        })
+        .then(shadowRoot => {
+          shadowRoot.should.be.defined;
+        }).should.be.fulfilled;
     });
 
     it('should play the animation when being removed and call back after', (done) => {

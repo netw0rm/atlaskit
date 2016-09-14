@@ -45,14 +45,12 @@ jss.use(rule => {
 function findHost(e) {
   // eslint-disable-next-line no-cond-assign, no-param-reassign
   while (e = e.parentNode) {
-    // Handle native.
-    if (supportsShadowDOM && e instanceof ShadowRoot) {
+    if (ShadowRoot && e instanceof ShadowRoot) {
       // v0: parentNode
       // v1: host
       return e.parentNode || e.host;
     }
 
-    // Handle polyfill.
     if (e.shadowRoot) {
       return e;
     }

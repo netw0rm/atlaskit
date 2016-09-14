@@ -8,10 +8,6 @@ import ReactDOM from 'react-dom';
 
 import 'style!./styles.less';
 
-// Utilities for stories
-window.React = React;
-window.ReactDOM = ReactDOM;
-
 function loadStories() {
   // Use a webpack loader to dynamically require stories.
   //

@@ -4,6 +4,17 @@
 @ak-navigation-selected-link-color: @ak-color-B500;
 
 .wrapper {
+  &:hover::before {
+    background: @ak-color-N30;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    height: 40px;
+    left: -20px;
+  }
+
   color: @ak-navigation-link-color;
   margin: 10px 0;
   display: flex;
@@ -15,6 +26,7 @@
 .link {
   color: currentColor;
   text-decoration: none;
+  position: relative; //to prevent stacking context issues with the pseudo element
 }
 
 .icon {

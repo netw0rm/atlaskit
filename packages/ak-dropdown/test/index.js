@@ -71,12 +71,15 @@ describe('ak-dropdown', () => {
       expect(getShadowRoot(component)).to.be.defined;
       expect(getShadowRoot(component).firstChild).to.be.defined;
     });
-
     it('open property controls open state', (done) => {
       afterMutations(
-        () => (component.innerHTML = '<span>something visible</span>'),
+        () => (
+          component.innerHTML = `<ak-dropdown-trigger-button slot="trigger">
+            test</ak-dropdown-trigger-button>
+            <ak-dropdown-item><span>something visible</span></ak-dropdown-item>`
+        ),
         () => (component.open = false),
-        () => (expect(checkVisibility(component.children[0])).to.equal(false)),
+        () => (expect(checkVisibility(component.children[1])).to.equal(false)),
         () => (component.open = true),
         () => (expect(checkVisibility(component.children[0])).to.equal(true)),
         done

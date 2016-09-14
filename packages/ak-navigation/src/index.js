@@ -57,6 +57,46 @@ function isDrawerOpen(elem) {
   return elem.createDrawerOpen || elem.searchDrawerOpen;
 }
 
+const startMouseX = Symbol('startMouseX');
+const startNavigationWidth = Symbol('startNavigationWidth');
+const currentMouseX = Symbol('currentMouseX');
+const isDragging = Symbol('isDragging');
+
+function bindDragHandlers(resizer, navigation) {
+  function drag(e) {
+    navigation[currentMouseX] = e.screenX;
+  }
+
+  function updateNavigationWidth() {
+    const delta = navigation[currentMouseX] - navigation[startMouseX];
+    navigation.width = navigation[startNavigationWidth] + delta;
+  }
+
+  function updateNavigationWidthWhileResizing() {
+    updateNavigationWidth();
+    if (navigation[isDragging]) {
+      window.requestAnimationFrame(updateNavigationWidthWhileResizing);
+    }
+  }
+
+  resizer.addEventListener('mousedown', (e) => {
+    if (navigation[isDragging]) {
+      return;
+    }
+    navigation[startMouseX] = e.screenX;
+    navigation[startNavigationWidth] = navigation.width;
+    navigation[isDragging] = true;
+    document.body.addEventListener('mousemove', drag);
+
+    window.requestAnimationFrame(updateNavigationWidthWhileResizing);
+  });
+
+  resizer.addEventListener('mouseup', () => {
+    navigation[isDragging] = false;
+    document.body.removeEventListener('mousemove', drag);
+  });
+}
+
 export default define('ak-navigation', {
   render(elem) {
     return (
@@ -130,6 +170,10 @@ export default define('ak-navigation', {
               <slot />
             </div>
           </div>
+          <div
+            ref={(resizer) => bindDragHandlers(resizer, elem)}
+            className={shadowStyles.locals.resize}
+          />
         </div>
       </div>
     );

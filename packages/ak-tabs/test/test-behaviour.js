@@ -93,7 +93,7 @@ describe('ak-tabs behaviour -', () => {
     describe('selects the first item', () => {
       function expectFirstTabSelected() {
         return waitUntil(() => (
-          fixtures.spies.select.callCount > 1 && fixtures.spies.deselect.callCount > 0
+          fixtures.spies.select.callCount === 2 && fixtures.spies.deselect.callCount === 1
         )).then(() => {
           expect(fixtures.tabs[0].selected).to.equal(true, 'Tab 1 should be selected');
           expect(fixtures.tabs[1].selected).to.equal(false, 'Tab 2 should be deselected');
@@ -165,7 +165,7 @@ describe('ak-tabs behaviour -', () => {
         click(getLabelForTab(fixtures.tabs[7]));
 
         return waitUntil(() => (
-          fixtures.spies.select.callCount > 1 && fixtures.spies.deselect.callCount > 0
+          fixtures.spies.select.callCount === 2 && fixtures.spies.deselect.callCount === 1
         )).then(() => {
           expect(fixtures.tabs[7].selected).to.equal(true, 'Tab 8 should be selected');
           for (let i = 0; i < 7; i++) {
@@ -190,7 +190,7 @@ describe('ak-tabs behaviour -', () => {
         keyboardNavRight(fixtures.el, 7);
 
         return waitUntil(() => (
-          fixtures.spies.select.callCount >= 8 && fixtures.spies.deselect.callCount >= 7
+          fixtures.spies.select.callCount === 8 && fixtures.spies.deselect.callCount === 7
         )).then(() => {
           expect(fixtures.tabs[7].selected).to.equal(true, 'Tab 8 should be selected');
           expect(fixtures.spies.select.callCount).to.equal(8,

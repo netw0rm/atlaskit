@@ -28,13 +28,14 @@ Now we can use the defined tag in our HTML markup, e.g.:
 
 ```html
 <html>
-<head>
-  <script src="bundle.js"></script>
-</head>
-<body>
-  <!-- ... -->
-  <akutil-component-template></akutil-component-template>
-</body>
+  <head>
+    <script src="bundle.js"></script>
+  </head>
+  <body>
+    <!-- ... -->
+    <akutil-component-template></akutil-component-template>
+  </body>
+</html>
 ```
 
 or from within another JavaScript resource:

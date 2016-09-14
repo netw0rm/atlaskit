@@ -49,7 +49,7 @@ function reCreateAlignmentIfNeeded(elem, data) {
 }
 
 /**
- * @description The definition for the Layer component.
+ * @description The layer is responsible for the positioning of an element on a page.
  * @class Layer
  * @example @html <ak-layer target="#target"></ak-layer>
  * @example @js import Layer from 'ak-layer';

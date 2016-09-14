@@ -32,7 +32,7 @@ module.exports = (config) => {
 
     browsers: ['Chrome', 'Firefox'],
 
-    reportSlowerThan: 200,
+    reportSlowerThan: 500, // default animation duration is 250ms
 
     singleRun: false,
 

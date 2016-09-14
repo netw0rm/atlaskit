@@ -68,7 +68,7 @@ describe('ak-editor-plugin-block-type', () => {
     expect(plugin.getState().selectedBlockType).to.equal('paragraph');
   });
 
-  it('should get current state immediately', () => {
+  it('should get current state immediately one subscribed', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
     const spy = sinon.spy();
 

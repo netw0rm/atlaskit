@@ -71,42 +71,50 @@ describe('ak-editor-plugin-hyperlink', () => {
     it('should allow a change handler to be registered', () => {
       const { plugin } = editor(doc(p('')));
 
-      plugin.onChange(sinon.spy());
+      plugin.subscribe(sinon.spy());
+    });
+
+    it('should get current state immediately one subscribed', () => {
+      const { pm, plugin } = editor(doc(p(a({ href: '' })('te{pos}xt'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should be able to register handlers for state change events', () => {
       const { pm, plugin } = editor(doc(p(a({ href: '' })('te{pos}xt'))));
       const spy = sinon.spy();
-      plugin.onChange(spy);
+      plugin.subscribe(spy);
 
       pm.setTextSelection(pm.doc.refs.pos);
 
-      expect(spy.callCount).to.equal(1);
+      expect(spy.callCount).to.equal(2);
     });
 
     it('does not emit `change` multiple times when the selection moves within a link', () => {
       const { pm, plugin } = editor(doc(p('{<>}text', a({ href: '' })('l{pos1}i{pos2}nk'))));
-      const onChange = sinon.spy();
+      const spy = sinon.spy();
       const { pos1, pos2 } = pm.doc.refs;
-      plugin.onChange(onChange);
+      plugin.subscribe(spy);
 
       pm.setTextSelection(pos1);
       pm.setTextSelection(pos2);
 
-      expect(onChange.callCount).to.equal(1);
+      expect(spy.callCount).to.equal(2);
     });
 
     it('emits change when the selection leaves a link', () => {
       const { pm, plugin } = editor(doc(p('te{textPos}xt {<>}')));
       const { textPos } = pm.doc.refs;
-      const onChange = sinon.spy();
+      const spy = sinon.spy();
       const { linkPos } = insert(pm, a({ href: '' })('li{linkPos}nk'));
       pm.setTextSelection(linkPos);
 
-      plugin.onChange(onChange);
+      plugin.subscribe(spy);
       pm.setTextSelection(textPos);
 
-      expect(onChange.callCount).to.equal(1);
+      expect(spy.callCount).to.equal(2);
     });
 
     it('does not permit adding a link to a collapsed selection', () => {

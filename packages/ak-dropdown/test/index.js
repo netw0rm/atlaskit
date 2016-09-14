@@ -12,7 +12,7 @@ const expect = chai.expect;
 function setupComponent() {
   const component = new Dropdown();
   component.innerHTML = `
-    <ak-dropdown-trigger slot="trigger">test</ak-dropdown-trigger>
+    <ak-dropdown-trigger-button slot="trigger">test</ak-dropdown-trigger-button>
     <ak-dropdown-item>124</ak-dropdown-item>
     <ak-dropdown-item>444</ak-dropdown-item>
   `;
@@ -35,7 +35,8 @@ describe('ak-dropdown', () => {
 
     it('should have an sub-components exports', () => {
       (new exports.Item).should.be.an.instanceof(Component);
-      (new exports.Trigger).should.be.an.instanceof(Component);
+      (new exports.DropdownTrigger).should.be.an.instanceof(Component);
+      (new exports.DropdownTriggerButton).should.be.an.instanceof(Component);
       (new exports.Group).should.be.an.instanceof(Component);
     });
 

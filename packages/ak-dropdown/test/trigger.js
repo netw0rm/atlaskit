@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Trigger, events as dropdownEvents } from '../src';
+import { DropdownTrigger, DropdownTriggerButton, events as dropdownEvents } from '../src';
 const { trigger: triggerEvents } = dropdownEvents;
 import keyCode from 'keycode';
 import { symbols } from 'skatejs';
@@ -10,13 +10,13 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-dropdown-trigger', () => {
+describe('ak-dropdown-trigger-button', () => {
   describe('general behavior', () => {
     let component;
     let triggerContainer;
 
     beforeEach(() => {
-      component = new Trigger();
+      component = new DropdownTriggerButton();
       triggerContainer = document.createElement('div');
       triggerContainer.appendChild(component);
       document.body.appendChild(triggerContainer);
@@ -57,7 +57,7 @@ describe('ak-dropdown-trigger', () => {
     let event;
 
     beforeEach(() => {
-      component = new Trigger();
+      component = new DropdownTriggerButton();
       itemContainer = document.createElement('div');
       itemContainer.appendChild(component);
       event = new CustomEvent('keydown', {
@@ -92,6 +92,32 @@ describe('ak-dropdown-trigger', () => {
         setTimeout(() => expect(called.called).to.be.false);
         setTimeout(() => done());
       });
+    });
+  });
+});
+
+describe('ak-dropdown-trigger', () => {
+  describe('sanity checking', () => {
+    let component;
+    let triggerContainer;
+
+    beforeEach(() => {
+      component = new DropdownTrigger();
+      triggerContainer = document.createElement('div');
+      triggerContainer.appendChild(component);
+      document.body.appendChild(triggerContainer);
+    });
+    afterEach(() => {
+      document.body.removeChild(triggerContainer);
+    });
+    it('should be possible to create a component', (done) => {
+      // testing to see that skate did its job as expected
+      // (in case some breaking changes in it that affect rendering)
+      setTimeout(() => {
+        expect(component[symbols.shadowRoot]).to.be.defined;
+        expect(component[symbols.shadowRoot].firstChild).to.be.defined;
+      });
+      setTimeout(done);
     });
   });
 });

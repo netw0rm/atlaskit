@@ -54,7 +54,7 @@ storiesOf(`${name} component`, module)
   .add('simple dropdown', () => (
     <div>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
+        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
         <ak-dropdown-item>text1</ak-dropdown-item>
         <ak-dropdown-item>text2</ak-dropdown-item>
         <ak-dropdown-item>some text here</ak-dropdown-item>
@@ -68,7 +68,7 @@ storiesOf(`${name} component`, module)
   .add('dropdown with avatars', () => (
     <div>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger slot="trigger">People list</ak-dropdown-trigger>
+        <ak-dropdown-trigger-button slot="trigger">People list</ak-dropdown-trigger-button>
         <ak-dropdown-item>
           <ak-avatar slot="left" src={avatarUrl} size="small" />
           Adam Smith
@@ -142,7 +142,7 @@ storiesOf(`${name} component`, module)
   .add('dropdown with everything', () => (
     <div>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
+        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
         <ak-dropdown-group>
           <ak-dropdown-item>text1</ak-dropdown-item>
           <ak-dropdown-item selected>text2</ak-dropdown-item>
@@ -155,6 +155,19 @@ storiesOf(`${name} component`, module)
           <ak-dropdown-item>this is a group</ak-dropdown-item>
           <ak-dropdown-item>another text</ak-dropdown-item>
         </ak-dropdown-group>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('dropdown with a buttonless trigger', () => (
+    <div>
+      <DropdownReactComponent>
+        <ak-dropdown-trigger slot="trigger">
+          <ak-avatar src={avatarUrl} size="small" />
+        </ak-dropdown-trigger>
+        <ak-dropdown-item>Joscha</ak-dropdown-item>
+        <ak-dropdown-item>Wuz</ak-dropdown-item>
+        <ak-dropdown-item>Here</ak-dropdown-item>
+        <ak-dropdown-item>2016</ak-dropdown-item>
       </DropdownReactComponent>
     </div>
   ))

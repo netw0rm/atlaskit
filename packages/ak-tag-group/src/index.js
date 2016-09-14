@@ -5,17 +5,17 @@ import shadowStyles from './shadow.less';
 import classnames from 'classnames';
 
 /**
- * Alignment values
+ * Group alignment values
  *
  * @exports alignment
  * @enum {string}
  */
-const alignment = Object.freeze({
+const alignment = {
   /** Left alignment */
   left: 'left',
   /** Right alignment */
   right: 'right',
-});
+};
 
 const ALIGNMENT_ATTRIBUTE_ENUM = {
   attribute: 'alignment',

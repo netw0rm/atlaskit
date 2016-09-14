@@ -1,5 +1,5 @@
 /// <reference path="./chai.d.ts"/>
-import { Fragment, Node, Slice, NodeType } from 'ak-editor-prosemirror';
+import { Fragment, Node, Mark, Text, Slice, NodeType } from 'ak-editor-prosemirror';
 import schema from 'ak-editor-schema';
 
 export default (chai: any) => {
@@ -79,31 +79,22 @@ export default (chai: any) => {
     return new Assertion(obj.type).to.be.an.instanceof(nodeType);
   });
 
-  Assertion.addMethod('mark', function(mark: string) {
+  Assertion.addMethod('textWithMarks', function(text: string, marks: Mark[] ) {
     const obj: Node = util.flag(this, 'object');
     const negate: boolean = util.flag(this, 'negate');
 
-    // this assumes marks are applied to first text node of the first child.
-    const hasMark = obj.rangeHasMark(0, 2, schema.marks[mark]);
-
-    if (negate) {
-      return new Assertion(hasMark).not.to.be.true;
-    }
-    return new Assertion(hasMark).to.be.true;
-  });
-
-  Assertion.addMethod('marks', function(marks: string[]) {
-    const obj: Node = util.flag(this, 'object');
-    const negate: boolean = util.flag(this, 'negate');
-
-    // this assumes marks are applied to first text node of the first child.
-    const hasAllMarks = marks.every((mark) => {
-      return obj.rangeHasMark(0, 2, schema.marks[mark]);
+    let matched = false;
+    obj.descendants((node: Node, pos: number) => {
+      if (node.type instanceof Text && node.text === text) {
+        if (Mark.sameSet(node.marks, marks)) {
+          matched = true;
+        }
+      }
     });
 
     if (negate) {
-      return new Assertion(hasAllMarks).not.to.be.true;
+      return new Assertion(matched).not.to.be.true;
     }
-    return new Assertion(hasAllMarks).to.be.true;
+    return new Assertion(matched).to.be.true;
   });
 }

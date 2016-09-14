@@ -4,10 +4,13 @@ import { chaiPlugin, doc, p, text,
          h1, h2, h3, h4, h5, h6, hr } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import schema from 'ak-editor-schema';
 
 chai.use(chaiPlugin);
 
 const parse = (new Parser()).parse;
+
+const createMark = (mark: string, attrs?: {}) => schema.marks[mark].create(attrs);
 
 // Based on https://bitbucket.org/tutorials/markdowndemo
 describe('Parse Bitbucket rendered HTML', () => {
@@ -34,27 +37,34 @@ describe('Parse Bitbucket rendered HTML', () => {
 
   describe('inline elements', () => {
     it('should support emphasis', () => {
-      expect(parse('<p><em>text</em></p>')).to.have.mark('em');
+      const em = createMark('em');
+      expect(parse('<p><em>text</em></p>')).to.have.textWithMarks('text', [ em ]);
     });
 
     it('should support strong', () => {
-      expect(parse('<p><strong>text</strong></p>')).to.have.mark('strong');
+      const strong = createMark('strong');
+      expect(parse('<p><strong>text</strong></p>')).to.have.textWithMarks('text', [ strong ]);
     });
 
     it('should support strikethrough', () => {
-      expect(parse('<p><del>text</del></p>')).to.have.mark('del');
+      const del = createMark('del');
+      expect(parse('<p><del>text</del></p>')).to.have.textWithMarks('text', [ del ]);
     });
 
     it('should support inline preformatted code', () => {
-      expect(parse('<p><code>text</code></p>')).to.have.mark('code');
+      const code = createMark('code');
+      expect(parse('<p><code>text</code></p>')).to.have.textWithMarks('text', [ code ]);
     });
 
     it('should support links', () => {
-      expect(parse('<p><a href="http://example.com">link</a></p>')).to.have.mark('link');
+      const link = createMark('link', { href: 'http://example.com' });
+      expect(parse('<p><a href="http://example.com">example link</a></p>')).to.have.textWithMarks('example link', [ link ]);
     });
 
     it('should support both strong and em', () => {
-      expect(parse('<p><strong><em>text</em></strong></p>')).to.have.marks(['em', 'strong']);
+      const em = createMark('em');
+      const strong = createMark('strong');
+      expect(parse('<p><strong><em>text</em></strong></p>')).to.have.textWithMarks('text', [em, strong]);
     });
   });
 

@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import '../src/index.js';
+import '../src';
 import { waitUntil } from 'akutil-common-test';
 import {
   setupTabs,

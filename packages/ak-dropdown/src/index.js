@@ -25,15 +25,13 @@ function toggleDialog(elem, value) {
   if (!list || !list.length) {
     return;
   }
-  const trigger = elem.querySelector('ak-dropdown-trigger');
-  let triggerButton;
+
+  const trigger = elem.querySelector('[slot="trigger"]');
+
   if (trigger) {
     trigger.opened = isOpen;
-    triggerButton = trigger.querySelector('ak-trigger-button');
   }
-  if (triggerButton) {
-    triggerButton.opened = isOpen;
-  }
+
   // when the dialog is open the first item element should be focused,
   // properties 'first' and 'last' should be set (TBD: change to :first-child and :last-child)
   // when it's closed everything should be cleared

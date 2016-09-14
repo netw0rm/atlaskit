@@ -79,6 +79,7 @@ export default {
         aria-disabled={elem.disabled}
         aria-selected={elem.selected}
         href={elem.href ? elem.href : void 0}
+        target={elem.target ? elem.target : void 0}
       >
         <style>{shadowItemStyles.toString()}</style>
         {renderLeftSlot(elem)}
@@ -158,6 +159,9 @@ export default {
       attribute: true,
     }),
     href: prop.string({
+      attribute: true,
+    }),
+    target: prop.string({
       attribute: true,
     }),
   },

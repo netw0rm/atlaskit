@@ -23,7 +23,7 @@ function setupPicker() {
   return waitUntil(() => componentHasShadowRoot).then(() => component);
 }
 
-function tearDownAvatar(component) {
+function tearDownPicker(component) {
   document.body.removeChild(component);
 }
 
@@ -31,7 +31,7 @@ describe('pf-mention-picker', () => {
   let component;
 
   beforeEach(() => setupPicker().then(newComponent => (component = newComponent)));
-  afterEach(() => tearDownAvatar(component));
+  afterEach(() => tearDownPicker(component));
 
   it('should accept all mention names by default', () => {
     const defaultMentionItemsShow = () => (getMentionItems(component).length === mentionDataSize);

@@ -212,6 +212,21 @@ storiesOf(name, module)
       </div>
     </AkPage>
   ))
+  .add('ak-navigation with a square container logo', () => (
+    <AkPage>
+      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
+      <AkNavigation
+        slot="navigation"
+        containerLogo={userAvatar}
+        containerName="Your profile"
+      >
+        <NavigationLinks />
+      </AkNavigation>
+      <div>
+        <Lorem count="30" />
+      </div>
+    </AkPage>
+  ))
   .add('ak-navigation that toggles itself', () => (
     <AkPage>
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />

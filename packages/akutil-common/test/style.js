@@ -49,32 +49,30 @@ describe('style', () => {
   });
 
   describe('::slotted', () => {
-    describe('scoped', () => {
-      it('(*)', done => {
-        const span = document.createElement('span');
-        elem.appendChild(span);
-        afterMutations(
-          () => expect(window.getComputedStyle(span).display).to.equal('inline'),
-          () => (elem.css = { '::slotted(*)': { display: 'none' } }),
-          () => expect(window.getComputedStyle(span).display).to.equal('none'),
-          done
-        );
-      });
+    it('(*)', done => {
+      const span = document.createElement('span');
+      elem.appendChild(span);
+      afterMutations(
+        () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+        () => (elem.css = { '::slotted(*)': { display: 'none' } }),
+        () => expect(window.getComputedStyle(span).display).to.equal('none'),
+        done
+      );
+    });
 
-      it('(selector)', done => {
-        const span = document.createElement('span');
-        elem.appendChild(span);
-        afterMutations(
-          () => expect(window.getComputedStyle(span).display).to.equal('inline'),
-          () => (elem.css = { '::slotted([test])': { display: 'none' } }),
-          () => expect(window.getComputedStyle(span).display).to.equal('inline'),
-          () => span.setAttribute('test', ''),
-          () => expect(window.getComputedStyle(span).display).to.equal('none'),
-          () => span.removeAttribute('test'),
-          () => expect(window.getComputedStyle(span).display).to.equal('inline'),
-          done
-        );
-      });
+    it('(selector)', done => {
+      const span = document.createElement('span');
+      elem.appendChild(span);
+      afterMutations(
+        () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+        () => (elem.css = { '::slotted([test])': { display: 'none' } }),
+        () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+        () => span.setAttribute('test', ''),
+        () => expect(window.getComputedStyle(span).display).to.equal('none'),
+        () => span.removeAttribute('test'),
+        () => expect(window.getComputedStyle(span).display).to.equal('inline'),
+        done
+      );
     });
 
     // This is only necessary for polyfilled slots. We need to make sure that

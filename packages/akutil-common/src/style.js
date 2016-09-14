@@ -1,11 +1,11 @@
 import jss from 'jss';
 
-const { HTMLContentElement, HTMLSlotElement, ShadowRoot } = window;
+const { ShadowRoot } = window;
 const native = fn => (fn || '').toString().indexOf('[native code]') > -1;
 const div = document.createElement('div');
 const supportsShadowDOM = native(ShadowRoot);
-const supportsShadowDOMV0 = div.createShadowRoot && native(HTMLContentElement);
-const supportsShadowDOMV1 = div.attachShadow && native(HTMLSlotElement);
+const supportsShadowDOMV0 = supportsShadowDOM && div.createShadowRoot;
+const supportsShadowDOMV1 = supportsShadowDOM && div.attachShadow;
 
 // Polyfill :host
 // --------------
@@ -45,6 +45,13 @@ jss.use(rule => {
 function findHost(e) {
   // eslint-disable-next-line no-cond-assign, no-param-reassign
   while (e = e.parentNode) {
+    // Handle native.
+    if (e instanceof ShadowRoot) {
+      // The host property is v1, parentNode works in v0.
+      return e.parentNode || e.host;
+    }
+
+    // This will catch any polyfilling where the ShadowRoot interface isn't patched.
     if (e.shadowRoot) {
       return e;
     }

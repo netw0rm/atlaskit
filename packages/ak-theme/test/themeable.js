@@ -131,9 +131,9 @@ describe('ak-theme, { themeable }', () => {
       });
 
       it('should update when the themeName is changed', done => {
-        elemTheme.id = 'test';
+        elemTheme.id = 'sadoijfioasdjfioadsoifjioafd';
         afterMutations(
-          () => (elem.themeName = 'test'),
+          () => (elem.themeName = 'sadoijfioasdjfioadsoifjioafd'),
           () => expect(elem.themeVars.testname).to.equal('testvalue'),
           done
         );

@@ -193,28 +193,32 @@ describe('ak-theme, { themeable }', () => {
 
     it('theme before element', done => {
       const name = 'x-test-theme-before-element';
-      const frag = document.createDocumentFragment();
-      let elem;
-      frag.appendChild(createTheme(name));
-      frag.appendChild(elem = createElement(name));
-      document.body.appendChild(frag);
+      const elem = createElement(name);
+      const theme = createTheme(name);
+      body.appendChild(theme);
       afterMutations(
+        () => body.appendChild(elem),
         () => expect(elem.themeVars.testname).to.equal('testvalue'),
-        () => (document.body.innerHTML = ''),
+        () => {
+          body.removeChild(elem);
+          body.removeChild(theme);
+        },
         done
       );
     });
 
     it('theme after element', done => {
       const name = 'x-test-theme-after-element';
-      const frag = document.createDocumentFragment();
-      let elem;
-      frag.appendChild(elem = createElement(name));
-      frag.appendChild(createTheme(name));
-      document.body.appendChild(frag);
+      const elem = createElement(name);
+      const theme = createTheme(name);
+      body.appendChild(elem);
       afterMutations(
+        () => body.appendChild(theme),
         () => expect(elem.themeVars.testname).to.equal('testvalue'),
-        () => (document.body.innerHTML = ''),
+        () => {
+          body.removeChild(elem);
+          body.removeChild(theme);
+        },
         done
       );
     });

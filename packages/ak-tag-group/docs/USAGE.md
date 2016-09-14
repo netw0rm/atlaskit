@@ -1,6 +1,6 @@
 # TagGroup
 
-![Example tag group](docs/animation.gif)
+![Example tag group](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tag-group/docs/animation.gif)
 
 This component displays an arbitrary number of [`ak-tag`](https://www.npmjs.com/package/ak-tag)s
 in a grouped manner.

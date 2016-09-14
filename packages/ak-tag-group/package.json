@@ -9,8 +9,7 @@
     "prepublish": "cd ../.. && npm run prepublish/single ak-tag-group"
   },
   "files": [
-    "dist",
-    "docs"
+    "dist"
   ],
   "dependencies": {
     "akutil-common": "^2.0.0",

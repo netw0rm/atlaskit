@@ -1,6 +1,6 @@
 import { emit, vdom, prop, define } from 'skatejs';
-import shadowTriggerStyles from './shadow-trigger.less';
-import classNames from 'classnames';
+import 'ak-button';
+import 'ak-icon';
 import keyCode from 'keycode';
 import { trigger as triggerEvents } from './internal/events';
 
@@ -35,7 +35,6 @@ export const DropdownTrigger = define('ak-dropdown-trigger', {
         onclick={handleClick(elem)}
         onkeydown={handleKeyDown(elem)}
       >
-        <style>{shadowTriggerStyles.toString()}</style>
         <slot />
       </div>
     );
@@ -85,25 +84,34 @@ export const DropdownTrigger = define('ak-dropdown-trigger', {
 });
 
 export const DropdownTriggerButton = define('ak-dropdown-trigger-button',
-  class extends DropdownTrigger {
-    static render(elem) {
-      const classes = classNames(
-        [shadowTriggerStyles.locals.trigger, {
-          [shadowTriggerStyles.locals.disabled]: elem.disabled,
-          [shadowTriggerStyles.locals.opened]: elem.opened,
-        }]
-      );
+  DropdownTrigger.extend({
+    render(elem) {
       return (
-        <div
-          className={classes}
+        <ak-button
           tabIndex={elem.tabIndex}
           onclick={handleClick(elem)}
           onkeydown={handleKeyDown(elem)}
+          selected={elem.opened}
+          disabled={elem.disabled}
         >
-          <style>{shadowTriggerStyles.toString()}</style>
-          <slot />
-        </div>
+          {elem.getContent()}
+        </ak-button>
       );
-    }
-  }
-);
+    },
+    prototype: {
+      getContent() {
+        vdom.element('ak-icon', { slot: 'after', glyph: 'expand' });
+        vdom.element('slot');
+      },
+    },
+  }));
+
+
+export const DropdownTriggerArrow = define('ak-dropdown-trigger-arrow',
+  DropdownTriggerButton.extend({
+    prototype: {
+      getContent() {
+        vdom.element('ak-icon', { glyph: 'expand' });
+      },
+    },
+  }));

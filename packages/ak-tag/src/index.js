@@ -26,9 +26,11 @@ const isRemovingSymbol = '__isRemoving';
  * @class Tag
  * @fires Tag#beforeRemove
  * @fires Tag#afterRemove
+ * @example @html <ak-tag text="Cupcake" />
  * @example @js import Tag from 'ak-tag';
  *
  * const tag = new Tag();
+ * tag.text = 'Cupcake';
  * document.body.appendChild(tag);
  */
 export default define(name, {
@@ -115,11 +117,13 @@ export default define(name, {
      * @emits Tag#afterRemove
      * @throws {NotRemovableError} throws an error if invoked on a tag that is not removable
      * @example @js tag.remove(); // triggers the tag removal
-     * @example @js import Tag, { events, exceptions } from 'ak-tag';
+     * @example @js import Tag, { events } from 'ak-tag';
      * const { beforeRemove, afterRemove } = events;
-     * const { NotRemovableError } = exceptions;
      *
      * const tag = new Tag();
+     * tag.text = 'Cupcake';
+     * tag.removeButtonText = 'Too much food';
+     *
      * tag.addEventListener(beforeRemove, (e) => {
      *   console.log('Just about to start the remove animation');
      *   // e.preventDefault(); // this would stop the removal process
@@ -130,6 +134,21 @@ export default define(name, {
      * });
      *
      * document.body.appendChild(tag);
+     * @example @js import Tag, { exceptions } from 'ak-tag';
+     * const { NotRemovableError } = exceptions;
+     *
+     * const tag = new Tag();
+     * tag.text = 'Cupcake';
+     *
+     * document.body.appendChild(tag);
+     *
+     * try {
+     *   tag.remove();
+     * } catch(e) {
+     *   if (e instanceof NotRemovableError) {
+     *     console.error('Could not remove tag');
+     *   }
+     * }
      */
     remove() {
       if (!this.isRemovable()) {
@@ -150,6 +169,8 @@ export default define(name, {
      * @description (Required) The tag text content.
      *              This is a required attribute.
      *              Omitting it will stop the tag from being rendered.
+     *              The text passed will be sanitized, e.g. passed HTML will be represented
+     *              as plain text.
      *
      * @memberof Tag
      * @instance
@@ -157,7 +178,11 @@ export default define(name, {
      * @example @html <ak-tag text="Cupcake"></ak-tag>
      * @example @js const tag = new Tag();
      * tag.text = 'Cupcake';
-     * // Shows a tag with the text 'Cupcake'
+     * document.body.appendChild(tag); // Shows a tag with the text 'Cupcake'
+     * @example @js const tag = new Tag();
+     * tag.text = '<script>alert("no no");</script>';
+     * document.body.appendChild(tag); // Shows a tag with the text
+     *                                 // '<script>alert("no no");</script>'
      */
     text: {
       attribute: true,
@@ -176,7 +201,8 @@ export default define(name, {
      * @example @js const tag = new Tag();
      * tag.text = 'Cupcake';
      * tag.href = 'http://www.cupcakeipsum.com/';
-     * // Shows a tag with the text 'Cupcake' and a link to cupcakeipsum.com
+     * document.body.appendChild(tag); // Shows a tag with the text 'Cupcake'
+     *                                 // and a link to cupcakeipsum.com
      */
     href: {
       attribute: true,
@@ -195,7 +221,7 @@ export default define(name, {
      * @example @js const tag = new Tag();
      * tag.text = 'Cupcake';
      * tag.removeButtonText = 'OMG, I am so full!';
-     * // Shows a tag with the text 'Cupcake' and a remove button
+     * document.body.appendChild(tag); // Shows a tag with the text 'Cupcake' and a remove button
      */
     'remove-button-text': {
       attribute: true,

@@ -9,9 +9,9 @@
  *   remove-button-text="No more"
  *   onBeforeRemove={(e) => console.log('Just about to start the remove animation')}
  * ></ak-tag>
- * @example @js import { exceptions } from 'ak-tag';
+ * @example @js import { events } from 'ak-tag';
  *
- * tag.addEventListener(exceptions.beforeRemove, (e) => {
+ * tag.addEventListener(events.beforeRemove, (e) => {
  *   console.log('Just about to start the remove animation');
  *   // e.preventDefault(); // this would stop the removal process
  * });
@@ -29,9 +29,9 @@ export const beforeRemove = 'beforeRemove';
  *   remove-button-text="No more"
  *   onAfterRemove={(e) => console.log('Finished the remove animation')}
  * ></ak-tag>
- * @example @js import { exceptions } from 'ak-tag';
+ * @example @js import { events } from 'ak-tag';
  *
- * tag.addEventListener(exceptions.afterRemove, () => {
+ * tag.addEventListener(events.afterRemove, () => {
  *   console.log('Finished the remove animation');
  *   document.body.removeChild(tag);
  * });

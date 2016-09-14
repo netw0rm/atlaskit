@@ -99,6 +99,12 @@ export const DropdownTriggerButton = define('ak-dropdown-trigger-button',
       );
     },
     prototype: {
+      /**
+       * @description HTML Content is generated in this Template method with the intention
+       * to ease any content variation of this component, by overriding the `getContent` method.
+       * @memberof Dropdown
+       * @example See `DropdownTriggerArrow`
+       **/
       getContent() {
         vdom.element('ak-icon', { slot: 'after', glyph: 'expand' });
         vdom.element('slot');

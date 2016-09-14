@@ -1,32 +1,37 @@
-// You can use element selectors here (e.g. whatever is exposed in index.js)
-// to style your web component light DOM.
-
-// Anything in here leaks to the rest of the page and nothing in here can affect things within
-// the shadow part of the component.
-
 @import 'shared-variables.less';
 
-// we define a class here in order to re-use it in the storybook
-// (because in storybook the component name is randomly generated)
 .ak-dropdown,
 ak-dropdown {
   display: inline-block;
-  font-family: @ak-dropdown-font-family;
 }
 
 .ak-dropdown-trigger,
 ak-dropdown-trigger {
   display: inline-block;
-  min-height: 30px;
-  max-width: 300px;
+}
+
+.ak-dropdown-trigger-button,
+ak-dropdown-trigger-button {
+  display: inline-block;
 }
 
 .ak-dropdown-list,
 ak-dropdown-list {
-  position: absolute;
   opacity: 0;
+  position: absolute;
 
   &[positioned] {
     opacity: 1;
+  }
+}
+
+.ak-dropdown-group,
+ak-dropdown-group {
+  display: block;
+
+  // first group element shouldn't have any empty space above it
+  & + .ak-dropdown-group,
+  & + ak-dropdown-group {
+    margin-top: @ak-dropdown-group-margin;
   }
 }

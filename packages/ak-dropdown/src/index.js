@@ -4,6 +4,7 @@ import shadowListStyles from './shadow-list.less';
 import { vdom, define, prop, emit } from 'skatejs';
 import ItemDefinition from './item';
 import './trigger';
+import GroupDefinition from './group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
@@ -115,6 +116,7 @@ function getDropdownStyles(target, dropdown) {
 }
 
 export const Item = define('ak-dropdown-item', ItemDefinition);
+export const Group = define('ak-dropdown-group', GroupDefinition);
 
 /**
  * @description The definition for the Dropdown component.
@@ -168,33 +170,31 @@ export default define('ak-dropdown', {
           </div>
           : null
         }
-        <div style={{ display: elem.open ? 'block' : 'none' }}>
-          <Layer
-            position={elem.position}
-            target={target}
-            enableFlip
-            offset={offset}
-            ref={(layer) => {
-              elem._layer = layer;
-              setTimeout(() => {
-                if (elem.open && layer.alignment) {
-                    // by default dropdown has opacity 0
-                    // and only with attribute 'positioned' it has opacity 1
-                    // this behavior is to avoid 'flashing' of dropdown
-                    // when it's initially positioning itself on a page
-                  elem.setAttribute('positioned', true);
-                  layer.reposition();
-                }
-              });
-            }
+        {elem.open ? <Layer
+          position={elem.position}
+          target={target}
+          enableFlip
+          offset={offset}
+          ref={(layer) => {
+            elem._layer = layer;
+            setTimeout(() => {
+              if (elem.open && layer.alignment) {
+                  // by default dropdown has opacity 0
+                  // and only with attribute 'positioned' it has opacity 1
+                  // this behavior is to avoid 'flashing' of dropdown
+                  // when it's initially positioning itself on a page
+                elem.setAttribute('positioned', true);
+                layer.reposition();
+              }
+            });
           }
-          >
-            <div className={shadowListStyles.locals.list} style={styles} position={elem.position}>
-              <style>{shadowListStyles.toString()}</style>
-              <slot />
-            </div>
-          </Layer>
-        </div>
+        }
+        >
+          <div className={shadowListStyles.locals.list} style={styles}>
+            <style>{shadowListStyles.toString()}</style>
+            <slot />
+          </div>
+        </Layer> : null}
       </div>
     );
   },

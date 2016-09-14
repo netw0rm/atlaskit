@@ -19,14 +19,10 @@ const resizeListener = Symbol();
 
 const definition = {
   created(elem) {
-    elem.addEventListener(events.TAB_SELECT, (e) => {
-      helpers.getAllTabs(elem).filter(el => el !== e.target).forEach(el => (el.selected = false));
-      helpers.updateProps(elem);
-    });
-    elem.addEventListener(events.TAB_DESELECT, () => {
-      helpers.updateProps(elem);
-    });
-    elem.addEventListener(events.TAB_LABEL_CHANGE, () => {
+    elem.addEventListener(events.TAB_CHANGE, (e) => {
+      if (e.target.selected) {
+        helpers.getAllTabs(elem).forEach(el => (el.selected = el === e.target));
+      }
       helpers.updateProps(elem);
     });
   },

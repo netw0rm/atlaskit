@@ -24,29 +24,37 @@ describe('ak-tabs behaviour -', () => {
     afterEach(() => cleanupTabs(fixtures));
   }
 
+  function expectChangeEventProperties(e, props, errorMsg) {
+    if (props.target) {
+      expect(e.target).to.equal(props.target, errorMsg);
+    }
+    if (props.selected) {
+      expect(e.target.selected).to.equal(props.selected, errorMsg);
+    }
+    if (props.label) {
+      expect(e.target.label).to.equal(props.label, errorMsg);
+    }
+  }
+
   describe('with one selected child', () => {
     setUpTest({ tabs: [{ label: 'Tab 1', selected: true }] });
 
-    it('emits the tab selection event on initialisation', () => {
-      expect(fixtures.spies.select.callCount).to.equal(1,
-        'Tab selection event should have been fired on initialisation'
+    it('emits the tab change event on initialisation', () => {
+      expect(fixtures.spies.change.callCount).to.equal(1,
+        'Tab change event should have been fired on initialisation'
       );
-      expect(fixtures.spies.select.getCall(0).args[0].target).to.equal(
-        getSelectedTab(fixtures.tabs), 'The tab selection event should be fired on the selected tab'
-      );
-      expect(fixtures.spies.select.getCall(0).args[0].target.selected).to.equal(true,
-        'The tab passed in the event data should be selected'
-      );
-      expect(fixtures.spies.select.getCall(0).args[0].target.label).to.equal('Tab 1',
-        'The tab passed in the event data should have the correct label'
-      );
+      expectChangeEventProperties(fixtures.spies.change.getCall(0).args[0], {
+        target: getSelectedTab(fixtures.tabs),
+        selected: true,
+        label: 'Tab 1',
+      });
     });
 
     it('does not emit any events when the tab label is clicked', () => {
       const label = getLabelForTab(getSelectedTab(fixtures.tabs));
       click(label);
-      expect(fixtures.spies.select.callCount).to.equal(1,
-        'Tab selection event should not be emitted again when trying to select it again'
+      expect(fixtures.spies.change.callCount).to.equal(1,
+        'Tab change event should not be emitted again when trying to select it again'
       );
     });
 
@@ -72,45 +80,47 @@ describe('ak-tabs behaviour -', () => {
   });
 
   describe('with three children and no overflow, with the second selected', () => {
+    const tabs = [
+      { label: 'Tab 1' },
+      { label: 'Tab 2', selected: true },
+      { label: 'Tab 3' },
+    ];
+
     setUpTest({
-      tabs: [
-        { label: 'Tab 1' },
-        { label: 'Tab 2', selected: true },
-        { label: 'Tab 3' },
-      ],
+      tabs,
       width: '9999px',
     });
 
-    it('emits the tab selection event on initialisation', () => {
-      expect(fixtures.spies.select.callCount).to.equal(1,
-        'Tab selection event should have been fired on initialisation'
+    it('emits the tab change event on initialisation', () => {
+      expect(fixtures.spies.change.callCount).to.equal(tabs.length,
+        'Tab change event should have been fired on initialisation'
       );
-      expect(fixtures.spies.select.getCall(0).args[0].target).to.equal(
-        getSelectedTab(fixtures.tabs), 'The tab selection event should be fired on the selected tab'
-      );
+      expectChangeEventProperties(fixtures.spies.change.getCall(1).args[0], {
+        target: getSelectedTab(fixtures.tabs),
+        selected: true,
+        label: 'Tab 2',
+      }, 'Tab change event should have been fired on the selected tab');
     });
 
     describe('selects the first item', () => {
       function expectFirstTabSelected() {
         return waitUntil(() => (
-          fixtures.spies.select.callCount > 1 && fixtures.spies.deselect.callCount > 0
+          fixtures.spies.change.callCount >= (tabs.length + 2)
         )).then(() => {
           expect(fixtures.tabs[0].selected).to.equal(true, 'Tab 1 should be selected');
           expect(fixtures.tabs[1].selected).to.equal(false, 'Tab 2 should be deselected');
           expect(fixtures.tabs[2].selected).to.equal(false, 'Tab 3 should be deselected');
-
-          expect(fixtures.spies.select.callCount).to.equal(2,
-            'Tab selection event should have been fired when selecting a tab'
+          expect(fixtures.spies.change.callCount).to.equal((tabs.length + 2),
+            'Tab change event should have been fired when selecting and deselecting a tab'
           );
-          expect(fixtures.spies.select.getCall(1).args[0].target).to.equal(fixtures.tabs[0],
-            'The tab selection event should be fired on the first tab'
-          );
-          expect(fixtures.spies.deselect.callCount).to.equal(1,
-            'Tab deselection event should be fired when deselecting a tab'
-          );
-          expect(fixtures.spies.deselect.getCall(0).args[0].target).to.equal(fixtures.tabs[1],
-            'The tab deselection event should be fired on the second tab'
-          );
+          expectChangeEventProperties(fixtures.spies.change.getCall(tabs.length).args[0], {
+            target: fixtures.tabs[0],
+            selected: true,
+          }, 'Select the first tab');
+          expectChangeEventProperties(fixtures.spies.change.getCall(tabs.length + 1).args[0], {
+            target: fixtures.tabs[1],
+            selected: false,
+          }, 'Deselect the second tab');
         });
       }
 
@@ -137,27 +147,29 @@ describe('ak-tabs behaviour -', () => {
   });
 
   describe('with eight children and overflow, with the first selected', () => {
+    const tabs = [
+      { label: 'Tab 1', selected: true },
+      { label: 'Tab 2' },
+      { label: 'Tab 3' },
+      { label: 'Tab 4' },
+      { label: 'Tab 5' },
+      { label: 'Tab 6' },
+      { label: 'Tab 7' },
+      { label: 'Tab 8' },
+    ];
     setUpTest({
-      tabs: [
-        { label: 'Tab 1', selected: true },
-        { label: 'Tab 2' },
-        { label: 'Tab 3' },
-        { label: 'Tab 4' },
-        { label: 'Tab 5' },
-        { label: 'Tab 6' },
-        { label: 'Tab 7' },
-        { label: 'Tab 8' },
-      ],
+      tabs,
       width: '300px',
     });
 
-    it('emits the tab selection event on initialisation', () => {
-      expect(fixtures.spies.select.callCount).to.equal(1,
+    it('emits the tab change event on initialisation', () => {
+      expect(fixtures.spies.change.callCount).to.equal(tabs.length,
         'Tab selection event should have been fired on initialisation'
       );
-      expect(fixtures.spies.select.getCall(0).args[0].target).to.equal(
-        getSelectedTab(fixtures.tabs), 'The tab selection event should be fired on the selected tab'
-      );
+      expectChangeEventProperties(fixtures.spies.change.getCall(0).args[0], {
+        target: getSelectedTab(fixtures.tabs),
+        selected: true,
+      }, 'The tab change event should be fired on the selected tab');
     });
 
     describe('selects the last tab', () => {
@@ -165,49 +177,48 @@ describe('ak-tabs behaviour -', () => {
         click(getLabelForTab(fixtures.tabs[7]));
 
         return waitUntil(() => (
-          fixtures.spies.select.callCount > 1 && fixtures.spies.deselect.callCount > 0
+          fixtures.spies.change.callCount >= (tabs.length + 2)
         )).then(() => {
           expect(fixtures.tabs[7].selected).to.equal(true, 'Tab 8 should be selected');
           for (let i = 0; i < 7; i++) {
             expect(fixtures.tabs[i].selected).to.equal(false, `Tab ${i + 1} should be deselected`);
           }
-          expect(fixtures.spies.select.callCount).to.equal(2,
-            'Tab selection event should have been fired when selecting a tab'
-          );
-          expect(fixtures.spies.select.getCall(1).args[0].target).to.equal(fixtures.tabs[7],
-            'The tab selection event should be fired on the first tab'
-          );
-          expect(fixtures.spies.deselect.callCount).to.equal(1,
-            'Tab deselection event should be fired when deselecting a tab'
-          );
-          expect(fixtures.spies.deselect.getCall(0).args[0].target).to.equal(fixtures.tabs[0],
-            'The tab deselection event should be fired on the first tab'
-          );
+          expectChangeEventProperties(fixtures.spies.change.getCall(tabs.length).args[0], {
+            target: fixtures.tabs[7],
+            selected: true,
+          }, 'Select the last tab');
+          expectChangeEventProperties(fixtures.spies.change.getCall(tabs.length + 1).args[0], {
+            target: fixtures.tabs[0],
+            selected: false,
+          }, 'Deselect the first tab');
         });
       });
 
       it('via keyboard nav', () => {
         keyboardNavRight(fixtures.el, 7);
 
+        const numCalls = tabs.length + (2 * (tabs.length - 1));
         return waitUntil(() => (
-          fixtures.spies.select.callCount >= 8 && fixtures.spies.deselect.callCount >= 7
+          fixtures.spies.change.callCount >= numCalls
         )).then(() => {
           expect(fixtures.tabs[7].selected).to.equal(true, 'Tab 8 should be selected');
-          expect(fixtures.spies.select.callCount).to.equal(8,
-            'Tab selection event should have been fired 8 times in total'
-          );
-          expect(fixtures.spies.deselect.callCount).to.equal(7,
-            'Tab deselection event should have been fired 7 times in total'
-          );
           for (let i = 0; i < 7; i++) {
             expect(fixtures.tabs[i].selected).to.equal(false, `Tab ${i + 1} should be deselected`);
-            expect(fixtures.spies.select.getCall(i + 1).args[0].target).to.equal(
-              fixtures.tabs[i + 1], `The tab selection event should be fired on tab ${i + 1}.`
-            );
-            expect(fixtures.spies.deselect.getCall(i).args[0].target).to.equal(fixtures.tabs[i],
-              `The tab deselection event should be fired on tab ${i}.`
-            );
           }
+          expectChangeEventProperties(
+            fixtures.spies.change.getCall(numCalls - 2).args[0],
+            {
+              target: fixtures.tabs[7],
+              selected: true,
+            }, 'Select last tab'
+          );
+          expectChangeEventProperties(
+            fixtures.spies.change.getCall(numCalls - 1).args[0],
+            {
+              target: fixtures.tabs[6],
+              selected: false,
+            }, 'Deselect second last tab'
+          );
         });
       });
     });

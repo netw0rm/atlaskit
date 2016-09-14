@@ -11,12 +11,8 @@ const Component = reactify(AkTabs, {
   ReactDOM,
 });
 
-function selectHandler(e) {
-  action(`The "${e.target.label}" tab was selected.`)();
-}
-
-function deselectHandler(e) {
-  action(`The "${e.target.label}" tab was deselected.`)();
+function changeHandler(e) {
+  action(`The "${e.target.label}" tab was changed. selected: ${e.target.selected}`)();
 }
 
 storiesOf(name, module)
@@ -268,11 +264,8 @@ storiesOf(name, module)
     </Component>
   ))
   .add('ak-tabs with event listeners', () => {
-    window.removeEventListener(events.TAB_SELECT, selectHandler);
-    window.removeEventListener(events.TAB_DESELECT, deselectHandler);
-
-    window.addEventListener(events.TAB_SELECT, selectHandler);
-    window.addEventListener(events.TAB_DESELECT, deselectHandler);
+    window.removeEventListener(events.TAB_CHANGE, changeHandler);
+    window.addEventListener(events.TAB_CHANGE, changeHandler);
 
     return (
       <Component>

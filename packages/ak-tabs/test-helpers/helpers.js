@@ -17,11 +17,8 @@ function afterMutations(fn) {
 }
 
 function setupTabs(opts) {
-  const selectSpy = sinon.spy();  // eslint-disable-line no-undef
-  const deselectSpy = sinon.spy(); // eslint-disable-line no-undef
-
-  window.addEventListener(events.TAB_SELECT, selectSpy);
-  window.addEventListener(events.TAB_DESELECT, deselectSpy);
+  const changeSpy = sinon.spy();  // eslint-disable-line no-undef
+  window.addEventListener(events.TAB_CHANGE, changeSpy);
 
   const containerElement = document.createElement('div');
   containerElement.style.width = opts.width || defaultWidth;
@@ -53,16 +50,12 @@ function setupTabs(opts) {
     el: tabsElement,
     tabs: tabElements,
     container: containerElement,
-    spies: {
-      select: selectSpy,
-      deselect: deselectSpy,
-    },
+    spies: { change: changeSpy },
   }));
 }
 
 function cleanupTabs(fixtures) {
-  window.removeEventListener(events.TAB_SELECT, fixtures.spies.select);
-  window.removeEventListener(events.TAB_DESELECT, fixtures.spies.deselect);
+  window.removeEventListener(events.TAB_CHANGE, fixtures.spies.change);
   document.body.removeChild(fixtures.container);
 }
 

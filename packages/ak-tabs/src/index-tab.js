@@ -12,23 +12,11 @@ import * as events from './internal/events';
  */
 const definition = {
   updated(elem, prev) {
-    // Emit events for any props that have changed
-    if (prev) {
-      if (prev && prev.selected !== elem.selected) {
-        emit(elem, elem.selected ? events.TAB_SELECT : events.TAB_DESELECT);
-      }
-      if (prev.label !== elem.label) {
-        emit(elem, events.TAB_LABEL_CHANGE);
-      }
-    } else {
-      if (elem.selected) {
-        emit(elem, events.TAB_SELECT);
-      }
-      if (elem.label) {
-        emit(elem, events.TAB_LABEL_CHANGE);
-      }
+    const wasUpdated = Component.updated(elem, prev);
+    if (wasUpdated) {
+      emit(elem, events.TAB_CHANGE);
     }
-    return Component.updated(elem, prev);
+    return wasUpdated;
   },
   render(elem) {
     const ariaHidden = `${!!elem.selected}`;

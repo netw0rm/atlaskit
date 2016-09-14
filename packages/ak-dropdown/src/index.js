@@ -3,7 +3,7 @@ import 'style!./host.less';
 import shadowListStyles from './shadow-list.less';
 import { vdom, define, prop, emit } from 'skatejs';
 import ItemDefinition from './item';
-import TriggerDefinition from './trigger';
+import './trigger';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
@@ -117,7 +117,6 @@ function getDropdownStyles(target, dropdown) {
 }
 
 export const Item = define('ak-dropdown-item', ItemDefinition);
-export const Trigger = define('ak-dropdown-trigger', TriggerDefinition);
 
 /**
  * @description The definition for the Dropdown component.
@@ -240,3 +239,4 @@ export default define('ak-dropdown', {
 });
 
 export { events };
+export { DropdownTrigger, DropdownTriggerButton } from './trigger';

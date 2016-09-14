@@ -2,7 +2,7 @@
 
 ## Setup and install
 
-```
+```sh
 npm install ak-blanket
 ```
 
@@ -16,7 +16,7 @@ Import the component in your JS resource:
 
 #### bundle.js
 
-```
+```js
 import 'ak-blanket';
 ```
 
@@ -24,7 +24,7 @@ Now we can use the defined tag in our HTML markup, e.g.:
 
 #### index.html
 
-```
+```html
 <html>
 <head>
   <script src="bundle.js"></script>
@@ -39,7 +39,7 @@ Now we can use the defined tag in our HTML markup, e.g.:
 
 The main purpose of the blanket component is to provide the `overlay` layer for components such as `modal dialog` or `tooltip`. It can be achieved like this:
 
-```
+```js
 define('modal-dialog-component', () => {
  attached(elem) {
    window.addEventListener('activate', doSomethingWhenBlanketClicked(elem));
@@ -63,7 +63,7 @@ For the purpose of simplicity blanket doesn't have any `show/hide` functionality
 
 ### React
 
-```
+```js
 import Blanket from 'ak-blanket';
 import reactify from 'skatejs-react-integration';
 

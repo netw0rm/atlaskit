@@ -40,7 +40,7 @@ const ALIGNMENT_ATTRIBUTE_ENUM = {
 export default define('ak-tag-group', {
   render(elem) {
     const isEndAligned = elem.alignment === alignment.end;
-    const classNames = classnames({
+    const slotClasses = classnames({
       [shadowStyles.locals.slot]: true,
       [shadowStyles.locals.endAligned]: isEndAligned,
     });
@@ -49,7 +49,7 @@ export default define('ak-tag-group', {
       <div className={shadowStyles.locals.rootNode}>
         <style>{shadowStyles.toString()}</style>
         <div className={shadowStyles.locals.slotWrapper}>
-          <slot className={classNames} />
+          <slot className={slotClasses} />
         </div>
       </div>
     );

@@ -13,6 +13,7 @@ export {
   li, ul, ol, br, img, hr, em, strong, code, a,
   text, fragment, slice
 } from './schema-builder';
+export { fromHTML, toHTML } from './html-helpers';
 
 /**
  * Insert nodes at the current selection.

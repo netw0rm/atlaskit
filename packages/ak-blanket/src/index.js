@@ -17,7 +17,6 @@ function handleActivation(elem) {
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class Blanket
- * @emits Blanket#activate
  * @example @js import Blanket from 'ak-blanket';
  * const component = new Blanket();
  */
@@ -55,6 +54,7 @@ export default define('ak-blanket', {
      *
      * @memberof Blanket
      * @instance
+     * @emits Blanket#activate
      * @type Boolean
      * @default false
      * @example @html <ak-blanket clickable></ak-blanket>

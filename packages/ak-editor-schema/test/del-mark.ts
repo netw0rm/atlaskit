@@ -1,10 +1,10 @@
-import { schema as schemaSpec } from '../src/schema';
-import { Fragment, Node, Schema } from 'ak-editor-prosemirror';
+import { schema } from '../src/schema';
+import { Fragment, Node } from 'ak-editor-prosemirror';
 import * as chai from 'chai';
-import { assert } from 'chai';
+import { expect } from 'chai';
+import { chaiPlugin } from 'ak-editor-test';
 
-// FIXME: initiazling schema should happen in src/schema.ts
-const schema = new Schema(schemaSpec);
+chai.use(chaiPlugin);
 
 const parse = (html: string) => {
   const el = document.createElement('div');
@@ -12,49 +12,47 @@ const parse = (html: string) => {
   return schema.parseDOM(el);
 }
 
-const hasDelMark = (doc: Node) => {
-  return assert(doc.rangeHasMark(0, 2, schema.marks['del']), 'should contain del mark');
-}
-
-const matchDOM = (node: Node, html: string) => {
+const toHTML = (node: Node) => {
   const el = document.createElement('div');
   el.appendChild(node.toDOM());
-  return assert(el.innerHTML === html, 'not the expected DOM output');
+  return el.innerHTML
 }
 
 describe('Del mark - parsing from DOM', () => {
+  const del = schema.marks['del'].create({});
+
   it('supports <del> tag', () => {
     const doc = parse(`
       <p><del>text</del></p>
     `);
-    hasDelMark(doc);
+    expect(doc).to.have.textWithMarks('text', [ del ]);
   });
 
   it('supports <s> tag', () => {
     const doc = parse(`
       <p><s>text</s></p>
     `);
-    hasDelMark(doc);
+    expect(doc).to.have.textWithMarks('text', [ del ]);
   });
 
   it('supports <strike> tag', () => {
     const doc = parse(`
       <p><strike>text</strike></p>
     `);
-    hasDelMark(doc);
+    expect(doc).to.have.textWithMarks('text', [ del ]);
   });
 
   it('supports line-through text decoration', () => {
     const doc = parse(`
       <p><span style="text-decoration: line-through">text</span></p>
     `);
-    hasDelMark(doc);
+    expect(doc).to.have.textWithMarks('text', [ del ]);
   });
 });
 
 describe('Del mark - serializing to DOM', () => {
   it('should render a <del> tag', () => {
     const node = schema.text('foo', [ schema.marks['del'].create({}) ] );
-    matchDOM(node, '<del>foo</del>');
+    expect(toHTML(node)).to.equal('<del>foo</del>');
   });
 });

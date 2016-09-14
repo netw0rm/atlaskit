@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import * as events from '../src/internal/events';
-import AkTabs from '../src/index';
+import AkTabs, { events } from '../src';
+const { tabChange: tabChangeEvent } = events;
 import AkTab from '../src/index-tab';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
@@ -264,8 +264,9 @@ storiesOf(name, module)
     </Component>
   ))
   .add('ak-tabs with event listeners', () => {
-    window.removeEventListener(events.TAB_CHANGE, changeHandler);
-    window.addEventListener(events.TAB_CHANGE, changeHandler);
+    // TODO bind via JSX attribute 'onTabChange={() => ...}'
+    window.removeEventListener(tabChangeEvent, changeHandler);
+    window.addEventListener(tabChangeEvent, changeHandler);
 
     return (
       <Component>

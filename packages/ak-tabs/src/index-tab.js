@@ -2,7 +2,7 @@ import 'style!./tab-host.less';
 import classNames from 'classnames';
 import { emit, vdom, define, prop, Component } from 'skatejs';
 import shadowStyles from './tab-shadow.less';
-import * as events from './internal/events';
+import { tabChange as tabChangeEvent } from './internal/events';
 
 /**
  * @description Tabs are an easy way to view and switch between different views of the same content.
@@ -14,7 +14,7 @@ const definition = {
   updated(elem, prev) {
     const wasUpdated = Component.updated(elem, prev);
     if (wasUpdated) {
-      emit(elem, events.TAB_CHANGE);
+      emit(elem, tabChangeEvent);
     }
     return wasUpdated;
   },

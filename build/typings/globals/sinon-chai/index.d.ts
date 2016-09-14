@@ -75,5 +75,7 @@ declare namespace Chai {
 declare module "sinon-chai" {
     function sinonChai(chai: any, utils: any): void;
     namespace sinonChai { }
-    export = sinonChai;
+    // export = sinonChai;
+    // modified by Atlassian
+    export default sinonChai;
 }

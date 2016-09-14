@@ -33,6 +33,10 @@ echo "Packaging docs"
 rm -f $ZIP_FILE
 zip -0 -r -T $ZIP_FILE ../atlaskit-docs/resources
 
+CDN_PREFIX="pr/docs"
+AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
+AK_PATH_SHA="$AK_PATH/$GITHEAD"
+
 echo "Uploading docs to CDN..."
 java \
 -jar \
@@ -40,8 +44,8 @@ java \
 ../prebake-distributor-runner.jar \
 --step=resources \
 --s3-bucket=$S3_BUCKET \
---s3-key-prefix="$S3_KEY_PREFIX/pr/docs" \
---s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/pr/docs" \
+--s3-key-prefix="$S3_KEY_PREFIX/$CDN_PREFIX" \
+--s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/$CDN_PREFIX" \
 --compress=css,js,svg,ttf,html,json,ico,eot,otf \
 --pre-bake-bundle=$ZIP_FILE
 
@@ -49,11 +53,11 @@ java \
 echo "CDN invalidation (docs) starting now (this may take some time)"
 AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
 AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
-cf-invalidate -- EVOK132JF0N16 "/atlaskit/pr/docs/$GITHEAD/*"
+cf-invalidate -- $CLOUDFRONT_DISTRIBUTION "/$AK_PATH_SHA/*"
 echo "CDN invalidation (docs) finished."
 
 echo "Post docs URL to build"
 BB_BUILD_STATUS_URL="https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/commit/$GITHEAD/statuses/build"
-DOCS_URL="https://aui-cdn.atlassian.com/atlaskit/pr/docs/$GITHEAD/"
+DOCS_URL="$CDN_URL_BASE/$AK_PATH_SHA/"
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 curl -sS --fail -u $BITBUCKET_USER:$BITBUCKET_PASSWORD -d "{\"key\":\"DOCS-$GITHEAD_SHORT\",\"state\":\"SUCCESSFUL\",\"name\":\"Docs\",\"description\":\"The docs for this pull request\",\"url\":\"$DOCS_URL\"}" -H 'Content-Type: application/json' $BB_BUILD_STATUS_URL

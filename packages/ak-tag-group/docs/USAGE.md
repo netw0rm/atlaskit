@@ -1,5 +1,7 @@
 # TagGroup
 
+![Example tag group](docs/animation.gif)
+
 This component displays an arbitrary number of [`ak-tag`](https://www.npmjs.com/package/ak-tag)s
 in a grouped manner.
 The group manages spacing and animation direction and allows for some alignment options.

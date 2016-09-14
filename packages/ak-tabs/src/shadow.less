@@ -8,14 +8,14 @@
   position: relative;
 }
 
-.ak-tab-label {
+.ak-tab-label,
+.ak-tabs-button-container {
   color: @ak-tabs-color-label-default;
   cursor: pointer;
   flex: 0 0 auto; // Prevents labels from shrinking in Safari when the container shrinks.
   font-size: @ak-tabs-font-size;
   line-height: @ak-tabs-line-height;
   padding: @ak-tabs-padding-vertical @ak-tabs-padding-horizontal;
-  position: relative;
   white-space: nowrap;
 
   &:hover,
@@ -30,23 +30,29 @@
     outline: none;
   }
 
-  .ak-tabs-button {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-  }
-
   &.ak-tab-label-hidden {
     opacity: 0;
     pointer-events: none;
     position: absolute;
   }
+}
+
+.ak-tab-label {
+  position: relative;
 
   &.ak-tab-label-single {
     flex-shrink: 1;
     min-width: 30px;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+
+.ak-tabs-button-container {
+  .ak-tabs-button {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
   }
 }
 

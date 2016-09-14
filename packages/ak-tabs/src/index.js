@@ -74,7 +74,7 @@ const definition = {
             }
           ).concat(
             <li
-              className={shadowStyles.locals.akTabLabel}
+              className={shadowStyles.locals.akTabsButtonContainer}
               aria-hidden="true"
               ref={el => (elem[buttonContainer] = el)}
             >

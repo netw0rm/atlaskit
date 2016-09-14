@@ -46,12 +46,13 @@ function findHost(e) {
   // eslint-disable-next-line no-cond-assign, no-param-reassign
   while (e = e.parentNode) {
     // Handle native.
-    if (e instanceof ShadowRoot) {
-      // The host property is v1, parentNode works in v0.
+    if (supportsShadowDOM && e instanceof ShadowRoot) {
+      // v0: parentNode
+      // v1: host
       return e.parentNode || e.host;
     }
 
-    // This will catch any polyfilling where the ShadowRoot interface isn't patched.
+    // Handle polyfill.
     if (e.shadowRoot) {
       return e;
     }

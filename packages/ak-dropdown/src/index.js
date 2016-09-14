@@ -3,7 +3,7 @@ import 'style!./host.less';
 import shadowListStyles from './shadow-list.less';
 import { vdom, define, prop, emit } from 'skatejs';
 import ItemDefinition from './item';
-import TriggerDefinition from './trigger';
+import './trigger';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
@@ -25,15 +25,13 @@ function toggleDialog(elem, value) {
   if (!list || !list.length) {
     return;
   }
-  const trigger = elem.querySelector('ak-dropdown-trigger');
-  let triggerButton;
+
+  const trigger = elem.querySelector('[slot="trigger"]');
+
   if (trigger) {
     trigger.opened = isOpen;
-    triggerButton = trigger.querySelector('ak-trigger-button');
   }
-  if (triggerButton) {
-    triggerButton.opened = isOpen;
-  }
+
   // when the dialog is open the first item element should be focused,
   // properties 'first' and 'last' should be set (TBD: change to :first-child and :last-child)
   // when it's closed everything should be cleared
@@ -117,7 +115,6 @@ function getDropdownStyles(target, dropdown) {
 }
 
 export const Item = define('ak-dropdown-item', ItemDefinition);
-export const Trigger = define('ak-dropdown-trigger', TriggerDefinition);
 
 /**
  * @description The definition for the Dropdown component.
@@ -240,3 +237,4 @@ export default define('ak-dropdown', {
 });
 
 export { events };
+export { DropdownTrigger, DropdownTriggerButton } from './trigger';

@@ -1,4 +1,5 @@
 # Blanket
+The main purpose of the blanket component is to provide the overlay layer for components such as a modal dialog or a tooltip.
 
 ## Setup and install
 
@@ -20,7 +21,7 @@ Import the component in your JS resource:
 import 'ak-blanket';
 ```
 
-Now we can use the defined tag in our HTML markup, e.g.:
+Now you can use the defined tag in your HTML markup, for example:
 
 #### index.html
 
@@ -59,9 +60,11 @@ define('modal-dialog-component', () => {
 
 It emits the 'activate' event when clicked/touched.
 Blanket component doesn't have the z-index style, so make sure you put it into an appropriate DOM position.
-For the purpose of simplicity blanket doesn't have any `show/hide` functionality. Since the main use of it suppose to be inside `popup` elements it would appear/disapper with the parent element.
+For the purpose of simplicity blanket doesn't have any `show/hide` functionality. Since the main use of it suppose to be inside `popup` elements it would appear/disappear with the parent element.
 
 ### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```js
 import Blanket from 'ak-blanket';

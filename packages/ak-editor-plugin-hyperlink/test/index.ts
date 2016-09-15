@@ -77,7 +77,7 @@ describe('ak-editor-plugin-hyperlink', () => {
     });
 
     it('should get current state immediately once subscribed', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: '' })('te{pos}xt'))));
+      const { pm, plugin } = editor(doc(p(a({ href: '' })('text'))));
       const spy = sinon.spy();
       plugin.subscribe(spy);
 

@@ -2,6 +2,7 @@ import 'custom-event-polyfill';
 import assign from 'object-assign';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import sinonChai from 'sinon-chai';
 import { symbols, props } from 'skatejs';
 import AkButton, { APPEARANCE } from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
@@ -9,8 +10,10 @@ import hostStyles from '../src/host.less';
 import { name } from '../package.json';
 import { hasClass, waitUntil } from 'akutil-common-test';
 const classKeys = shadowStyles.locals;
+import { akGridSize } from 'akutil-shared-styles';
 
 chai.use(chaiAsPromised);
+chai.use(sinonChai);
 const expect = chai.expect;
 
 describe('ak-button', () => {
@@ -68,7 +71,16 @@ describe('ak-button', () => {
       beforeEach(() => component.appendChild(div));
 
       it('slotted element should have margin-right applied', () =>
-        expect(window.getComputedStyle(div).marginRight).to.equal('8px')
+        expect(window.getComputedStyle(div).marginRight).to.equal(akGridSize)
+      );
+    });
+
+    describe('after', () => {
+      const div = createDivTest({ slotName: 'after' });
+      beforeEach(() => component.appendChild(div));
+
+      it('slotted element should have margin-left applied', () =>
+        expect(window.getComputedStyle(div).marginLeft).to.equal(akGridSize)
       );
     });
   });

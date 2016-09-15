@@ -4,6 +4,7 @@ export interface TextFormattingState {
   strongActive: boolean;
   emActive: boolean;
   underlineActive: boolean;
+  codeActive: boolean;
   disabled: boolean;
 }
 
@@ -11,6 +12,7 @@ const DEFAULT_STATE: TextFormattingState = {
   strongActive: false,
   emActive: false,
   underlineActive: false,
+  codeActive: false,
   disabled: true,
 };
 
@@ -23,7 +25,7 @@ function isShallowObjectEqual(
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
-export type MarkType = 'strong' | 'em' | 'underline';
+export type MarkType = 'strong' | 'em' | 'underline' | 'code';
 
 function markActive(pm: ProseMirror, type: MarkType): boolean {
   const markType = pm.schema.marks[type];
@@ -75,7 +77,7 @@ export default new Plugin(class TextFormattingPlugin {
     const pm = this.pm;
     const oldState = this.getState();
 
-    const enabled = ['strong', 'em', 'underline'].some((type) => {
+    const enabled = ['strong', 'em', 'underline', 'code'].some((type) => {
       const markType = pm.schema.marks[type];
       if (!markType) {
         return false;
@@ -88,6 +90,7 @@ export default new Plugin(class TextFormattingPlugin {
       strongActive: markActive(pm, 'strong'),
       emActive: markActive(pm, 'em'),
       underlineActive: markActive(pm, 'underline'),
+      codeActive: markActive(pm, 'code'),
       disabled: !enabled,
     });
 

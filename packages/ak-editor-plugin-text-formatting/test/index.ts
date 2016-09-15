@@ -68,7 +68,7 @@ describe('ak-editor-plugin-text-formatting', () => {
   });
 
   it('should allow a change handler to be attached', () => {
-    const { plugin } = editor(doc(p('te{a}xt')));
+    const { plugin } = editor(doc(p('text')));
     const spy = sinon.spy()
     plugin.subscribe(spy);
 
@@ -78,12 +78,13 @@ describe('ak-editor-plugin-text-formatting', () => {
       disabled: false,
       emActive: false,
       strongActive: false,
+      codeActive: false,
       underlineActive: false
     });
   });
 
   it('should allow a change handler to be attached', () => {
-    const { plugin } = editor(doc(p('te{a}xt')));
+    const { plugin } = editor(doc(p('text')));
     const spy = sinon.spy()
     plugin.subscribe(spy);
 
@@ -95,6 +96,7 @@ describe('ak-editor-plugin-text-formatting', () => {
       disabled: false,
       emActive: true,
       strongActive: false,
+      codeActive: false,
       underlineActive: false
     });
   });

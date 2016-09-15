@@ -19,7 +19,7 @@ const offset = '0 2';
 
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
-  const list = [...elem.children].filter((el) => !!el.matches('ak-dropdown-item'));
+  const list = [...elem.children].filter((el) => el.matches('ak-dropdown-item'));
   if ((elem.open !== isOpen)) {
     elem.open = isOpen;
   }
@@ -27,7 +27,7 @@ function toggleDialog(elem, value) {
     return;
   }
 
-  const trigger = [...elem.children].filter((el) => !!el.matches('[slot="trigger"]'));
+  const trigger = [...elem.children].filter((el) => el.matches('[slot="trigger"]'));
 
   if (trigger) {
     trigger.opened = isOpen;

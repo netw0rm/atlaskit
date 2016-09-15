@@ -149,19 +149,6 @@ describe('ak-theme', () => {
   });
 
   describe('dot-notation', () => {
-    let errors;
-    let onerror;
-
-    beforeEach(() => {
-      errors = [];
-      onerror = window.onerror;
-      window.onerror = e => errors.push(e);
-    });
-
-    afterEach(() => {
-      window.onerror = onerror;
-    });
-
     it('should support dot-notation', done => {
       const theme = createTheme('theme', {
         mykey1: 'mykey1',
@@ -180,14 +167,14 @@ describe('ak-theme', () => {
       );
     });
 
-    it('should error when trying to create an object from an already defined string', done => {
+    it('should overwrite namespaces', done => {
       const theme = createTheme('theme', {
         my: 'my',
         'my.key': 'mykey',
       });
       document.body.appendChild(theme);
       afterMutations(
-        () => expect(errors.length).to.equal(1),
+        () => expect(theme.ownVars.my).to.deep.equal({ key: 'mykey' }),
         done
       );
     });

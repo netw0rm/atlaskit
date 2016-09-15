@@ -19,12 +19,14 @@ function varsFromChildren(host) {
       const first = keys.shift();
       const last = keys.pop();
 
-      // If there is already a value for the first part of the object, we use
-      // that instead of creating a new one.
-      prev[first] = prev[first] || {};
+      // If there is already a value for the first part of the object, we use that instead of
+      // creating a new one. However, if it's not an object then we overwrite it.
+      if (typeof prev[first] !== 'object') {
+        prev[first] = {};
+      }
 
       // We store the nested object here so that we can loop over the parts of
-      // the var name and do the smae thing we did above for each part, storing
+      // the var name and do the same thing we did above for each part, storing
       // the nested object as its value. Once we're done, the value of obj will
       // be the inner-most nested value and we can set the variable value to
       // it.

@@ -1,5 +1,5 @@
 import { Component, define, emit, prop } from 'skatejs';
-import { events } from '../src';
+import { prop as eProp } from '../src/index.events';
 
 export default define('ak-theme-prop', {
   props: {
@@ -8,7 +8,7 @@ export default define('ak-theme-prop', {
   },
   updated(elem, prev) {
     if (Component.updated(elem, prev)) {
-      emit(elem, events.prop.change, { detail: { [elem.name]: elem.value } });
+      emit(elem, eProp.change, { detail: { [elem.name]: elem.value } });
     }
   },
 });

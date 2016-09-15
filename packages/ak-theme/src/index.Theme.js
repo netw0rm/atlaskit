@@ -1,6 +1,6 @@
 import { Component, emit, prop, vdom, define } from 'skatejs';
 import { style } from 'akutil-common';
-import { change } from './events';
+import { change } from './index.events';
 
 function notify(themeName = null, themeProps = null) {
   emit(document, change, { detail: { themeName, themeProps } });

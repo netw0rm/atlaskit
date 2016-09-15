@@ -1,5 +1,5 @@
-import { change } from './events';
-import { themeNameFromNode } from './themes';
+import { change } from './index.events';
+import { themeNameFromNode } from './_themes';
 
 const $themeHandler = Symbol();
 

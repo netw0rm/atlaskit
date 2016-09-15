@@ -1,4 +1,4 @@
-import { events, Prop } from '../src/index';
+import { events, Prop } from '../src';
 
 describe('ak-theme-prop', () => {
   let prop;

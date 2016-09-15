@@ -1,4 +1,4 @@
-import { tagName, themeNameFromNode } from '../src/themes';
+import { tagName, themeNameFromNode } from '../src/_themes';
 
 describe('ak-theme, { themes }', () => {
   it('tagName', () => {

@@ -1,5 +1,5 @@
 import { afterMutations } from 'akutil-common-test';
-import Theme, { events, Prop } from '../src/index';
+import Theme, { events, Prop } from '../src';
 
 function createTheme(id = '', ownVars = {}) {
   const theme = new Theme();

@@ -1,7 +1,7 @@
-import * as events from './events';
-import Prop from './prop';
-import Theme from './theme';
-import themeable from './themeable';
+import * as events from './index.events';
+import Prop from './index.Prop';
+import Theme from './index.Theme';
+import themeable from './index.themeable';
 
 export default Theme;
 export { events, Prop, themeable };

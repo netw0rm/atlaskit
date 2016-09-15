@@ -13,15 +13,25 @@ function activateEditorByClicking(editor: AkEditorBitbucket) : void {
 }
 
 function waitForEditorToBeReady(editor: AkEditorBitbucket) : Promise<boolean> {
-  return waitUntil(() => {
-    return editor && !!editor._ready;
-  }, 10000);
+  return new Promise((resolve, reject) => {
+    const successFn = () => {
+      clearTimeout(failTimer);
+      resolve(editor);
+    };
+
+    const failTimer = setTimeout(() => {
+      editor.removeEventListener('ready', successFn);
+      reject();
+    }, 2000);
+
+    editor.addEventListener('ready', successFn, { once: true });
+  });
 }
 
 function buildExpandedEditor(fixture : any) : Promise<AkEditorBitbucket> {
   return new Promise(function(resolve) {
     let editor: AkEditorBitbucket;
-    fixture.innerHTML = `<ak-editor-bitbucket expanded="true"></ak-editor-bitbucket>`;
+    fixture.innerHTML = `<ak-editor-bitbucket expanded></ak-editor-bitbucket>`;
 
     afterMutations(
       () => {
@@ -90,19 +100,6 @@ describe('ak-editor-bitbucket', () => {
   });
 
   describe('editor toolbar', () => {
-    let tmpContainer: any;
-    let editor: any;
-
-    beforeEach((done) => {
-      tmpContainer = fixture();
-      tmpContainer.innerHTML = `<ak-editor-bitbucket></ak-editor-bitbucket>`;
-
-      afterMutations(
-        () => (editor = tmpContainer.firstChild),
-        done
-      );
-    });
-
     it('should have all default elements', () => {
       return buildExpandedEditor(fixture()).then((editor) => {
         [
@@ -122,14 +119,18 @@ describe('ak-editor-bitbucket', () => {
         const bt = getShadowRoot(editor).querySelector('ak-editor-toolbar-block-type');
         expect(bt).to.not.be.null;
 
-        // debugger;
-        const fs = getShadowRoot(bt).querySelector('ak-editor-toolbar-block-type-select');
-        expect(fs).to.not.be.null;
-
-        const btShadowRoot = getShadowRoot(bt);
+        // on Firefox, shadowRoot is not available right away so we have to wait for it
         return waitUntil(() => {
-          // it takes roughly 3 iterations to render those elements and attach them to <ul>
-          return btShadowRoot.querySelectorAll('ak-editor-toolbar-block-type-option').length >= 2;
+          return !!getShadowRoot(bt);
+        }).then(() => {
+          const fs = getShadowRoot(bt).querySelector('ak-editor-toolbar-block-type-select');
+          expect(fs).to.not.be.null;
+
+          const btShadowRoot = getShadowRoot(bt);
+          return waitUntil(() => {
+            // it takes roughly 3 iterations to render all elements and attach them to <ul>
+            return btShadowRoot.querySelectorAll('ak-editor-toolbar-block-type-option').length >= 2;
+          });
         });
       });
     });

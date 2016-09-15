@@ -1,8 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import AkTabs, { events } from '../src';
+import AkTabs, { events, Tab as AkTab } from '../src';
 const { tabChange: tabChangeEvent } = events;
-import AkTab from '../src/index-tab';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
 

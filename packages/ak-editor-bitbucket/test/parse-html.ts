@@ -31,8 +31,8 @@ describe('Parse Bitbucket rendered HTML', () => {
     });
 
     it('should support images', () => {
-      const parsed = parse('<p><img alt="Alt text" src="/path/to/image.jpg"></p>')
-      expect(parsed).to.deep.equal(doc(p(img({ src: "/path/to/image.jpg", alt: "Alt text", title: "" }))));
+      const parsed = parse('<p><img alt="Alt text" src="http://path/to/image.jpg"></p>')
+      expect(parsed).to.deep.equal(doc(p(img({ src: "http://path/to/image.jpg", alt: "Alt text", title: "" }))));
     });
   });
 

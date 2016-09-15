@@ -8,17 +8,23 @@ import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 
 import * as helpers from './internal/tabs-helpers';
 import * as handlers from './internal/tabs-handlers';
-import * as events from './internal/events';
+import * as events from './internal/index.events';
 const { tabChange: tabChangeEvent } = events;
 import * as i18n from './internal/i18n';
-import Tab from './index-tab';
+import Tab from './index.tab';
 import Icon from 'ak-icon';
 import Dropdown, { Item, DropdownTrigger } from 'ak-dropdown';
 
 import { buttonContainer, labelsContainer } from './internal/symbols';
 const resizeListener = Symbol();
 
-const definition = {
+/**
+ * @description The Tabs element. Container to manage and display Tab elements.
+ * @class Tabs
+ * @example @js import Tabs from 'ak-tabs';
+ * const myTabs = new Tabs();
+ */
+export default define('ak-tabs', {
   created(elem) {
     elem.addEventListener(tabChangeEvent, (e) => {
       if (e.target.selected) {
@@ -106,8 +112,7 @@ const definition = {
     _labels: prop.array({}),
     _selected: prop.array({}),
   },
-};
+});
 
-export default define('ak-tabs', definition);
 export { Tab };
 export { events };

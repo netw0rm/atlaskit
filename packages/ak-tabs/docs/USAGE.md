@@ -35,7 +35,11 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </head>
 <body>
   <!-- ... -->
-  <ak-tabs></ak-tabs>
+  <ak-tabs>
+    <ak-tabs-tab label="My first tab">
+      <p>Hello world!</p>
+    </ak-tabs-tab>
+  </ak-tabs>
 </body>
 ```
 

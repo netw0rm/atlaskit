@@ -7,7 +7,7 @@ export interface BlockTypeState {
 
 const DEFAULT_STATE: BlockTypeState = {
   selectedBlockType: 'paragraph',
-  enabled: false
+  enabled: true
 };
 
 function isShallowObjectEqual(oldObject: BlockTypeState, newObject: BlockTypeState): boolean {

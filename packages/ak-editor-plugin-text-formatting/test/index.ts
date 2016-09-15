@@ -32,11 +32,28 @@ describe('ak-editor-plugin-text-formatting', () => {
     const spy = sinon.spy()
     plugin.subscribe(spy);
 
-    expect(spy).to.have.been.calledOnce;
+    expect(spy).to.have.been.callCount(1);
 
     expect(spy).to.have.been.calledWith({
-      disabled: true,
+      disabled: false,
       emActive: false,
+      strongActive: false,
+      underlineActive: false
+    });
+  });
+
+  it('should allow a change handler to be attached', () => {
+    const { plugin } = editor(doc(p('te{a}xt')));
+    const spy = sinon.spy()
+    plugin.subscribe(spy);
+
+    plugin.toggleMark('em')
+
+    expect(spy).to.have.been.callCount(2);
+
+    expect(spy).to.have.been.calledWith({
+      disabled: false,
+      emActive: true,
       strongActive: false,
       underlineActive: false
     });

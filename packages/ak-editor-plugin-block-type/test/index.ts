@@ -78,7 +78,7 @@ describe('ak-editor-plugin-block-type', () => {
 
     expect(spy).to.have.been.calledWith({
       selectedBlockType: 'paragraph',
-      enabled: false
+      enabled: true
     });
   });
 

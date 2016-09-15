@@ -11,7 +11,7 @@ const DEFAULT_STATE: TextFormattingState = {
   strongActive: false,
   emActive: false,
   underlineActive: false,
-  disabled: true,
+  disabled: false,
 };
 
 function isShallowObjectEqual(

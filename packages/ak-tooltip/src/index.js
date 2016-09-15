@@ -50,8 +50,8 @@ function updateCallback(elem, data) {
  * @class Tooltip
  * @example @html <ak-tooltip id='myTooltip'></ak-tooltip>
  * @example @js import Tooltip from 'ak-tooltip';
- * const component = new Tooltip();
- * component.id = 'myTooltip';'
+ * const tooltip = new Tooltip();
+ * tooltip.id = 'myTooltip';
  */
 export default define('ak-tooltip', {
   render(elem) {
@@ -84,7 +84,7 @@ export default define('ak-tooltip', {
   props: {
     /**
      * @description The location of where the tooltip will appear, relative to the component it
-     * is bound to. Usually this would be set by an ak-tooltip-trigger.
+     * is bound to. This is usually set by an ak-tooltip-trigger.
      * Allowed values: top, bottom, left and right.
      * @memberof Tooltip
      * @instance

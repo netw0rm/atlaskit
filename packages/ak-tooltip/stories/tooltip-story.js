@@ -63,7 +63,7 @@ storiesOf(name, module)
   ))
   .add('a tooltip with all directions', () => (
     <div>
-      <FourDirectionTooltipTrigger description="This is a tooltip" />
+      <FourDirectionTooltipTrigger description="Tooltip!" />
       <DefaultTooltip id="ak-tooltip" />
     </div>
   ))

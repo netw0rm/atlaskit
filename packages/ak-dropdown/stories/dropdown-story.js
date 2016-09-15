@@ -171,4 +171,16 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
+  .add('two dropdowns', () => (
+    <div>
+      <DropdownReactComponent>
+        <ak-dropdown-trigger-button slot="trigger">A</ak-dropdown-trigger-button>
+        <ak-dropdown-item>A</ak-dropdown-item>
+      </DropdownReactComponent>
+      <DropdownReactComponent>
+        <ak-dropdown-trigger-button slot="trigger">B</ak-dropdown-trigger-button>
+        <ak-dropdown-item>B</ak-dropdown-item>
+      </DropdownReactComponent>
+    </div>
+  ))
 ;

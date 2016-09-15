@@ -19,7 +19,7 @@ const offset = '0 2';
 
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
-  const list = elem.querySelectorAll('ak-dropdown-item');
+  const list = [...elem.children].filter((el) => !!el.matches('ak-dropdown-item'));
   if ((elem.open !== isOpen)) {
     elem.open = isOpen;
   }
@@ -27,7 +27,7 @@ function toggleDialog(elem, value) {
     return;
   }
 
-  const trigger = elem.querySelector('[slot="trigger"]');
+  const trigger = [...elem.children].filter((el) => !!el.matches('[slot="trigger"]'));
 
   if (trigger) {
     trigger.opened = isOpen;
@@ -145,7 +145,7 @@ export default define('ak-dropdown', {
   },
   prototype: {
     reposition() {
-      if (this._layer) {
+      if (this._layer && this._layer.hasAttribute('defined')) {
         this._layer.reposition();
       }
 
@@ -170,11 +170,12 @@ export default define('ak-dropdown', {
           </div>
           : null
         }
-        {elem.open ? <Layer
+        <Layer
           position={elem.position}
           target={target}
           enableFlip
           offset={offset}
+          style={{ display: elem.open ? 'block' : 'none' }}
           ref={(layer) => {
             elem._layer = layer;
             setTimeout(() => {
@@ -194,7 +195,7 @@ export default define('ak-dropdown', {
             <style>{shadowListStyles.toString()}</style>
             <slot />
           </div>
-        </Layer> : null}
+        </Layer>
       </div>
     );
   },

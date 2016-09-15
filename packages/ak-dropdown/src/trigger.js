@@ -6,9 +6,6 @@ import { trigger as triggerEvents } from './internal/events';
 
 function handleKeyDown(elem) {
   return (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
     if (!elem.disabled && [
       keyCode('down'),
       keyCode('space'),
@@ -19,9 +16,7 @@ function handleKeyDown(elem) {
 }
 
 function handleClick(elem) {
-  return (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  return () => {
     if (!elem.disabled) {
       emit(elem, triggerEvents.activated);
     }

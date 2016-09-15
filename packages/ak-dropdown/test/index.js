@@ -3,7 +3,12 @@ import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
 import { props, Component } from 'skatejs';
 import { name } from '../package.json';
-import { afterMutations, getShadowRoot, checkVisibility, waitUntil } from 'akutil-common-test';
+import {
+  afterMutations,
+  getShadowRoot,
+  checkVisibility,
+  waitUntil,
+} from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -17,14 +22,33 @@ function setupComponent() {
     <ak-dropdown-item>444</ak-dropdown-item>
   `;
   const componentHasShadowRoot = () => !!getShadowRoot(component);
-
   document.body.appendChild(component);
-
   return waitUntil(componentHasShadowRoot).then(() => component);
 }
 
 function tearDownComponent(component) {
   document.body.removeChild(component);
+}
+
+function clickDropdownTrigger(component) {
+  getShadowRoot(component.querySelector('[slot="trigger"]')).firstChild.click();
+}
+
+function setupTwoDropdowns() {
+  const component1 = new Dropdown();
+  const component2 = new Dropdown();
+  const html = `
+    <ak-dropdown-trigger-button slot="trigger">test</ak-dropdown-trigger-button>
+    <ak-dropdown-item>124</ak-dropdown-item>
+    <ak-dropdown-item>444</ak-dropdown-item>
+  `;
+  component1.innerHTML = html;
+  component2.innerHTML = html;
+  const componentsHaveShadowRoot = () => !!getShadowRoot(component1) && !!getShadowRoot(component2);
+  document.body.appendChild(component1);
+  document.body.appendChild(component2);
+  const components = { component1, component2 };
+  return waitUntil(componentsHaveShadowRoot).then(() => components);
 }
 
 describe('ak-dropdown', () => {
@@ -77,6 +101,13 @@ describe('ak-dropdown', () => {
       props(component, { open: true });
       expect(checkVisibility(component.children[0])).to.equal(true);
     });
+    it('three clicks leaves the dropdown open with items in it', () => {
+      props(component, { open: true });
+      props(component, { open: false });
+      props(component, { open: true });
+      expect(component.open).to.equal(true);
+      expect(checkVisibility(component.children[1])).to.equal(true);
+    });
     it('position is reflected to inner layer', (done) => {
       // we can't just do querySelector('ak-layer') here, ak-layer is defined a few times
       // and doesn't have a nice clear tag name anymore
@@ -87,6 +118,30 @@ describe('ak-dropdown', () => {
         () => (expect(layer.position).to.equal('bottom left')),
         () => (component.position = 'top left'),
         () => (expect(layer.position).to.equal('top left')),
+        done
+      );
+    });
+  });
+
+  describe('two dropdowns', () => {
+    let component1;
+    let component2;
+
+    beforeEach(() => setupTwoDropdowns().then(components => {
+      component1 = components.component1;
+      component2 = components.component2;
+    }));
+    afterEach(() => {
+      tearDownComponent(component1);
+      tearDownComponent(component2);
+    });
+
+    it('dropdowns are mutually exclusively openable via mouse', (done) => {
+      afterMutations(
+        () => (clickDropdownTrigger(component1)),
+        () => (clickDropdownTrigger(component2)),
+        () => (expect(component1.open).to.equal(false)),
+        () => (expect(component2.open).to.equal(true)),
         done
       );
     });

@@ -91,7 +91,7 @@ export default define('ak-inline-dialog', {
      * @memberof InlineDialog
      * @function
      * @instance
-     * @return undefined
+     * @return {InlineDialog}
      * @example @js layer.reposition();
     */
     reposition() {
@@ -274,7 +274,7 @@ export default define('ak-inline-dialog', {
      * @memberof Layer
      * @instance
      * @type Boolean
-     * @example @html <ak-layer enableFlip></ak-layer>
+     * @example @html <ak-layer enable-flip></ak-layer>
      * @example @js layer.enableFlip = true;
      */
     enableFlip: prop.boolean({

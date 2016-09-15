@@ -35,7 +35,7 @@ function getAnimationClass(elem, position) {
     right: 'left',
   };
   // if the tooltip has been flipped we need to apply the opposite animation
-  const actualPosition = elem.isFlipped ? flippedAnimations[position] : position;
+  const actualPosition = elem._isFlipped ? flippedAnimations[position] : position; // eslint-disable-line no-underscore-dangle, max-len
   return animationMapping[actualPosition] ? animationMapping[actualPosition] : undefined;
 }
 

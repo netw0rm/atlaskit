@@ -1,8 +1,8 @@
 import { vdom, define, prop, emit } from 'skatejs';
-import styles from './font-select.less';
+import styles from './block-type-select.less';
 import Button from 'ak-editor-button';
 
-export default define('ak-editor-toolbar-block-type-font-select', {
+export default define('ak-editor-toolbar-block-type-select', {
   render(elem) {
     return (
       <div>
@@ -10,7 +10,7 @@ export default define('ak-editor-toolbar-block-type-font-select', {
         <Button
           disabled={elem.disabled}
           onClick={() => emit(elem, 'toggleDropdown')}
-          className={styles.locals.fontSelect}
+          className={styles.locals.blockTypeSelect}
           active={elem.active}
         >
           <span className={styles.locals.buttonSpan}>{elem.selectedReadableName}</span>

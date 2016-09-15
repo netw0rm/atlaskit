@@ -124,6 +124,9 @@ export default define('ak-layer', {
       attribute: true,
       set: reCreateAlignmentIfNeeded,
     },
+    onUpdate: {
+      initial: undefined,
+    },
     // internal property, no docs required
     _isFlipped: prop.boolean(),
   },

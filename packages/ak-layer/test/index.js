@@ -11,14 +11,20 @@ const expect = chai.expect;
 describe('ak-layer: logic', () => {
   let fixture;
   let container;
+  let target;
 
   beforeEach(() => {
     container = document.createElement('div');
+    target = document.createElement('div');
     fixture = new LayerWC();
+    target.id = 'target';
+    fixture.target = target;
+
     const componentHasShadowRoot = () => !!getShadowRoot(fixture);
 
     container.appendChild(fixture);
     document.body.appendChild(container);
+    document.body.appendChild(target);
 
     return waitUntil(componentHasShadowRoot);
   });
@@ -52,16 +58,69 @@ describe('ak-layer: logic', () => {
       expect(elemIsFlipped()).to.be.false;
       handlePopperUpdate(fixture, fakePopperUpdate);
 
-      waitUntil(elemIsFlipped).should.be.fulfilled;
+      return waitUntil(elemIsFlipped).should.be.fulfilled;
     });
     it('should be false if the layer does have enough space', () => {
+      const fakeUpdateWithFlip = {
+        flipped: true,
+      };
       // popper will not send a 'flipped' param if it was not flipped
-      const fakePopperUpdate = {};
+      const fakeUpdateNoFlip = {};
       const elemIsFlipped = () => fixture.isFlipped;
 
-      handlePopperUpdate(fixture, fakePopperUpdate);
+      // set up the negative case first, so we'll cause a flip
+      handlePopperUpdate(fixture, fakeUpdateWithFlip);
 
-      waitUntil(elemIsFlipped).should.be.fulfilled;
+      return waitUntil(elemIsFlipped)
+        .then(() => {
+          handlePopperUpdate(fixture, fakeUpdateNoFlip);
+
+          // now check that we are unflipped
+          return waitUntil(() => !elemIsFlipped());
+        }).should.be.fulfilled;
+    });
+  });
+
+  describe('onUpdate callback', () => {
+    it('should be called when popper gets updated', () => {
+      const spy = sinon.spy();
+      const onUpdateCalled = () => (spy.callCount > 0);
+
+      fixture.onUpdate = spy;
+      // trigger an update in popper
+      fixture.position = 'top center';
+
+      return waitUntil(onUpdateCalled).should.be.fulfilled;
+    });
+
+    it('should pass in isFlipped:true value when flipped', () => {
+      const spy = sinon.spy();
+      const fakeUpdateWithFlip = {
+        flipped: true,
+      };
+      const onUpdateCalled = () => (spy.callCount > 0);
+
+      fixture.onUpdate = spy;
+      handlePopperUpdate(fixture, fakeUpdateWithFlip);
+
+      return waitUntil(onUpdateCalled).then(() => {
+        // check that the first argument to the first call of the spy had .isFlipped: true
+        expect(spy.args[0][0].isFlipped).to.be.true;
+      }).should.be.fulfilled;
+    });
+
+    it('should pass in isFlipped:false value when not flipped', () => {
+      const spy = sinon.spy();
+      const fakeUpdateWithNoFlip = {};
+      const onUpdateCalled = () => (spy.callCount > 0);
+
+      fixture.onUpdate = spy;
+      handlePopperUpdate(fixture, fakeUpdateWithNoFlip);
+
+      return waitUntil(onUpdateCalled).then(() => {
+        // check that the first argument to the first call of the spy had .isFlipped: false
+        expect(spy.args[0][0].isFlipped).to.be.false;
+      }).should.be.fulfilled;
     });
   });
 });

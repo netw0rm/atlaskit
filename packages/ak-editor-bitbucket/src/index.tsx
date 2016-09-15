@@ -364,7 +364,7 @@ class AkEditorBitbucket extends Component {
 
     const pm = new ProseMirror({
       place: this._wrapper,
-      doc: markdownParser(new Schema(schema)).parse(this.defaultValue),
+      doc: markdownParser(schema).parse(this.defaultValue),
       plugins: [
         MarkdownInputRulesPlugin,
         HyperlinkPlugin,

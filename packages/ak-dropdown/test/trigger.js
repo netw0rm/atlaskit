@@ -1,6 +1,11 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { DropdownTrigger, DropdownTriggerButton, events as dropdownEvents } from '../src';
+import {
+  DropdownTrigger,
+  DropdownTriggerButton,
+  DropdownTriggerArrow,
+  events as dropdownEvents,
+} from '../src';
 const { trigger: triggerEvents } = dropdownEvents;
 import keyCode from 'keycode';
 import { symbols } from 'skatejs';
@@ -23,15 +28,6 @@ describe('ak-dropdown-trigger-button', () => {
     });
     afterEach(() => {
       document.body.removeChild(triggerContainer);
-    });
-    it('should be possible to create a component', (done) => {
-      // testing to see that skate did its job as expected
-      // (in case some breaking changes in it that affect rendering)
-      setTimeout(() => {
-        expect(component[symbols.shadowRoot]).to.be.defined;
-        expect(component[symbols.shadowRoot].firstChild).to.be.defined;
-      });
-      setTimeout(done);
     });
 
     it(`click on a component should emit '${triggerEvents.activated}' event`, (done) => {
@@ -96,28 +92,34 @@ describe('ak-dropdown-trigger-button', () => {
   });
 });
 
-describe('ak-dropdown-trigger', () => {
-  describe('sanity checking', () => {
-    let component;
-    let triggerContainer;
+describe('sanity checking', () => {
+  let component;
+  let triggerContainer;
 
-    beforeEach(() => {
-      component = new DropdownTrigger();
-      triggerContainer = document.createElement('div');
-      triggerContainer.appendChild(component);
-      document.body.appendChild(triggerContainer);
-    });
-    afterEach(() => {
-      document.body.removeChild(triggerContainer);
-    });
-    it('should be possible to create a component', (done) => {
-      // testing to see that skate did its job as expected
-      // (in case some breaking changes in it that affect rendering)
-      setTimeout(() => {
-        expect(component[symbols.shadowRoot]).to.be.defined;
-        expect(component[symbols.shadowRoot].firstChild).to.be.defined;
+  [
+    DropdownTrigger,
+    DropdownTriggerButton,
+    DropdownTriggerArrow,
+  ].forEach(constructor => {
+    describe(`${constructor.name}`, () => {
+      beforeEach(() => {
+        component = new constructor();
+        triggerContainer = document.createElement('div');
+        triggerContainer.appendChild(component);
+        document.body.appendChild(triggerContainer);
       });
-      setTimeout(done);
+      afterEach(() => {
+        document.body.removeChild(triggerContainer);
+      });
+      it('should be possible to create a component', (done) => {
+        // testing to see that skate did its job as expected
+        // (in case some breaking changes in it that affect rendering)
+        setTimeout(() => {
+          expect(component[symbols.shadowRoot]).to.be.defined;
+          expect(component[symbols.shadowRoot].firstChild).to.be.defined;
+        });
+        setTimeout(done);
+      });
     });
   });
 });

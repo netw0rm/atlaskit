@@ -105,6 +105,7 @@ describe('ak-tabs behaviour -', () => {
     describe('selects the first item', () => {
       function expectFirstTabSelected() {
         return waitUntil(() => (
+          // Tab change event fire should fire once for each tab on init, and twice for selection.
           fixtures.spies.change.callCount === tabs.length + 2
         )).then(() => {
           expect(fixtures.tabs[0].selected).to.equal(true, 'Tab 1 should be selected');
@@ -174,17 +175,20 @@ describe('ak-tabs behaviour -', () => {
 
     describe('selects the last tab', () => {
       it('when clicked', () => {
-        click(getLabelForTab(fixtures.tabs[7]));
+        click(getLabelForTab(fixtures.tabs[tabs.length - 1]));
 
         return waitUntil(() => (
+          // Tab change event should fire once for each tab on init, and twice for the click.
           fixtures.spies.change.callCount === tabs.length + 2
         )).then(() => {
-          expect(fixtures.tabs[7].selected).to.equal(true, 'Tab 8 should be selected');
-          for (let i = 0; i < 7; i++) {
+          expect(fixtures.tabs[tabs.length - 1].selected).to.equal(true,
+            'Tab 8 should be selected'
+          );
+          for (let i = 0; i < tabs.length - 1; i++) {
             expect(fixtures.tabs[i].selected).to.equal(false, `Tab ${i + 1} should be deselected`);
           }
           expectChangeEventProperties(fixtures.spies.change.getCall(tabs.length).args[0], {
-            target: fixtures.tabs[7],
+            target: fixtures.tabs[tabs.length - 1],
             selected: true,
           }, 'Select the last tab');
           expectChangeEventProperties(fixtures.spies.change.getCall(tabs.length + 1).args[0], {
@@ -195,27 +199,30 @@ describe('ak-tabs behaviour -', () => {
       });
 
       it('via keyboard nav', () => {
-        keyboardNavRight(fixtures.el, 7);
+        keyboardNavRight(fixtures.el, tabs.length - 1);
 
+        // Tab change event fire should fire once for each tab on init, and twice for each keypress.
         const numCalls = tabs.length + (2 * (tabs.length - 1));
         return waitUntil(() => (
           fixtures.spies.change.callCount === numCalls
         )).then(() => {
-          expect(fixtures.tabs[7].selected).to.equal(true, 'Tab 8 should be selected');
-          for (let i = 0; i < 7; i++) {
+          expect(fixtures.tabs[tabs.length - 1].selected).to.equal(true,
+            'Tab 8 should be selected'
+          );
+          for (let i = 0; i < tabs.length - 1; i++) {
             expect(fixtures.tabs[i].selected).to.equal(false, `Tab ${i + 1} should be deselected`);
           }
           expectChangeEventProperties(
             fixtures.spies.change.getCall(numCalls - 2).args[0],
             {
-              target: fixtures.tabs[7],
+              target: fixtures.tabs[tabs.length - 1],
               selected: true,
             }, 'Select last tab'
           );
           expectChangeEventProperties(
             fixtures.spies.change.getCall(numCalls - 1).args[0],
             {
-              target: fixtures.tabs[6],
+              target: fixtures.tabs[tabs.length - 2],
               selected: false,
             }, 'Deselect second last tab'
           );

@@ -3,29 +3,29 @@ import { name } from '../package.json';
 import { define, vdom } from 'skatejs';
 import { style } from 'akutil-common';
 import reactify from 'akutil-react';
-import Theme, { themeable, Var } from '../src/index';
+import Theme, { Prop, themeable } from '../src/index';
 
 const ReactTheme = reactify(Theme);
-const ReactThemeVar = reactify(Var);
+const ReactThemeProp = reactify(Prop);
 const TestTheme1 = () => (
   <ReactTheme id="x-btn-base">
-    <ReactThemeVar name="background" value="blue" />
-    <ReactThemeVar name="text" value="white" />
+    <ReactThemeProp name="background" value="blue" />
+    <ReactThemeProp name="text" value="white" />
   </ReactTheme>
 );
 const TestTheme2 = () => (
   <ReactTheme id="x-btn" mixin="x-btn-base">
-    <ReactThemeVar name="background" value="red" />
+    <ReactThemeProp name="background" value="red" />
   </ReactTheme>
 );
 const TestTheme3 = () => (
   <ReactTheme id="x-btn-super" mixin="x-btn">
-    <ReactThemeVar name="background" value="orange" />
+    <ReactThemeProp name="background" value="orange" />
   </ReactTheme>
 );
 const Btn = reactify(define('x-btn', themeable({
   render(elem) {
-    const { background, text } = elem.themeVars;
+    const { background, text } = elem.themeProps;
     const css = style(vdom, {
       btn: {
         background: `${background} none`,

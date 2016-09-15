@@ -1,9 +1,9 @@
 import { Component, emit, prop, vdom, define } from 'skatejs';
 import { style } from 'akutil-common';
-import { themeChanged } from './events';
+import { change } from './events';
 
-function notify(themeName = null, themeVars = null) {
-  emit(document, themeChanged, { detail: { themeName, themeVars } });
+function notify(themeName = null, themeProps = null) {
+  emit(document, change, { detail: { themeName, themeProps } });
 }
 
 function varsFromChildren(host) {
@@ -98,7 +98,7 @@ export default define('ak-theme', {
     }
 
     // If the theme changed and it changed from something to nothing, notify that the theme has
-    // been removed by sending a nulled themeVars.
+    // been removed by sending a nulled themeProps.
     if (themeUnassigned) {
       notify(oldThemeId);
     } else {
@@ -112,7 +112,7 @@ export default define('ak-theme', {
   render(elem) {
     const update = () => (elem.ownVars = varsFromChildren(elem));
     style(vdom, { ':host': { display: 'none' } });
-    return <slot onSlotchange={update} onThemevarchanged={update} />;
+    return <slot onSlotchange={update} onThemePropChange={update} />;
   },
   prototype: {
     /**

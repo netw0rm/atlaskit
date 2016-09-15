@@ -1,7 +1,7 @@
 import { define, emit } from 'skatejs';
 import { afterMutations } from 'akutil-common-test';
 import { tagName, themeNameFromNode } from '../src/themes';
-import Theme, { events, themeable, Var } from '../src';
+import Theme, { events, Prop, themeable } from '../src';
 
 describe('ak-theme, { themeable }', () => {
   let body;
@@ -13,7 +13,7 @@ describe('ak-theme, { themeable }', () => {
   describe('props', () => {
     let elem;
     let elemTheme;
-    let elemThemeVar;
+    let elemThemeProp;
 
     beforeEach(done => {
       elem = new (define('x-test', themeable({})));
@@ -23,10 +23,10 @@ describe('ak-theme, { themeable }', () => {
       elemTheme.id = tagName(elem);
       body.appendChild(elemTheme);
 
-      elemThemeVar = new Var();
-      elemThemeVar.name = 'testname';
-      elemThemeVar.value = 'testvalue';
-      elemTheme.appendChild(elemThemeVar);
+      elemThemeProp = new Prop();
+      elemThemeProp.name = 'testname';
+      elemThemeProp.value = 'testvalue';
+      elemTheme.appendChild(elemThemeProp);
 
       afterMutations(done);
     });
@@ -76,7 +76,7 @@ describe('ak-theme, { themeable }', () => {
           document.body.appendChild(elemAfterSpies);
           afterMutations(
             () => expect(spyAddEventListener.callCount).to.equal(1),
-            () => expect(spyAddEventListener.getCall(0).args[0]).to.equal(events.themeChanged),
+            () => expect(spyAddEventListener.getCall(0).args[0]).to.equal(events.change),
             done
           );
         });
@@ -89,52 +89,52 @@ describe('ak-theme, { themeable }', () => {
           afterMutations(
             () => body.removeChild(elemAfterSpies),
             () => expect(spyRemoveEventListener.callCount).to.equal(1),
-            () => expect(spyRemoveEventListener.getCall(0).args[0]).to.equal(events.themeChanged),
+            () => expect(spyRemoveEventListener.getCall(0).args[0]).to.equal(events.change),
             done
           );
         });
       });
     });
 
-    describe('themeVars', () => {
+    describe('themeProps', () => {
       it('should define an object', () => {
-        expect(elem.constructor.props.themeVars).to.be.an('object');
+        expect(elem.constructor.props.themeProps).to.be.an('object');
       });
 
-      it('should override existing themeVars', () => {
-        const defBefore = { props: { themeVars: {} } };
+      it('should override existing themeProps', () => {
+        const defBefore = { props: { themeProps: {} } };
         const defAfter = themeable(defBefore);
-        expect(defBefore.props.themeVars).to.not.equal(defAfter.props.themeVars);
+        expect(defBefore.props.themeProps).to.not.equal(defAfter.props.themeProps);
       });
 
       it('should be a property', () => {
-        expect(elem.themeVars).to.be.an('object');
+        expect(elem.themeProps).to.be.an('object');
       });
 
       it('should be an empty object if no theme exists', done => {
         elem.themeName = 'non-existent-theme';
         afterMutations(
-          () => expect(Object.keys(elem.themeVars).length).to.equal(0),
+          () => expect(Object.keys(elem.themeProps).length).to.equal(0),
           done
         );
       });
 
       it('should contain the current theme vars if it exists', () => {
-        expect(elem.themeVars.testname).to.equal('testvalue');
+        expect(elem.themeProps.testname).to.equal('testvalue');
       });
 
       it('should update when the event is triggered', () => {
         const themeName = tagName(elem);
-        const themeVars = { test: true };
-        emit(document, events.themeChanged, { detail: { themeName, themeVars } });
-        expect(elem.themeVars.test).to.equal(true);
+        const themeProps = { test: true };
+        emit(document, events.change, { detail: { themeName, themeProps } });
+        expect(elem.themeProps.test).to.equal(true);
       });
 
       it('should update when the themeName is changed', done => {
         elemTheme.id = 'sadoijfioasdjfioadsoifjioafd';
         afterMutations(
           () => (elem.themeName = 'sadoijfioasdjfioadsoifjioafd'),
-          () => expect(elem.themeVars.testname).to.equal('testvalue'),
+          () => expect(elem.themeProps.testname).to.equal('testvalue'),
           done
         );
       });
@@ -142,7 +142,7 @@ describe('ak-theme, { themeable }', () => {
       it('should be empty when changed to a theme that does not exist', done => {
         elem.themeName = '';
         afterMutations(
-          () => expect(Object.keys(elem.themeVars).length).to.equal(0),
+          () => expect(Object.keys(elem.themeProps).length).to.equal(0),
           done
         );
       });
@@ -183,10 +183,10 @@ describe('ak-theme, { themeable }', () => {
       const eTheme = new Theme();
       eTheme.id = name;
 
-      const eThemeVar = new Var();
-      eThemeVar.name = 'testname';
-      eThemeVar.value = 'testvalue';
-      eTheme.appendChild(eThemeVar);
+      const eThemeProp = new Prop();
+      eThemeProp.name = 'testname';
+      eThemeProp.value = 'testvalue';
+      eTheme.appendChild(eThemeProp);
 
       return eTheme;
     }
@@ -198,7 +198,7 @@ describe('ak-theme, { themeable }', () => {
       body.appendChild(theme);
       afterMutations(
         () => body.appendChild(elem),
-        () => expect(elem.themeVars.testname).to.equal('testvalue'),
+        () => expect(elem.themeProps.testname).to.equal('testvalue'),
         () => {
           body.removeChild(elem);
           body.removeChild(theme);
@@ -214,7 +214,7 @@ describe('ak-theme, { themeable }', () => {
       body.appendChild(elem);
       afterMutations(
         () => body.appendChild(theme),
-        () => expect(elem.themeVars.testname).to.equal('testvalue'),
+        () => expect(elem.themeProps.testname).to.equal('testvalue'),
         () => {
           body.removeChild(elem);
           body.removeChild(theme);

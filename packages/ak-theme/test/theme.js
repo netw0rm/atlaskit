@@ -1,5 +1,5 @@
 import { afterMutations } from 'akutil-common-test';
-import Theme, { events, Var } from '../src/index';
+import Theme, { events, Prop } from '../src/index';
 
 function createTheme(id = '', ownVars = {}) {
   const theme = new Theme();
@@ -7,7 +7,7 @@ function createTheme(id = '', ownVars = {}) {
     theme.id = id;
   }
   Object.keys(ownVars).forEach(name => (
-    theme.appendChild(Object.assign(new Var(), { name, value: ownVars[name] }))
+    theme.appendChild(Object.assign(new Prop(), { name, value: ownVars[name] }))
   ));
   return theme;
 }
@@ -91,13 +91,13 @@ describe('ak-theme', () => {
   it('should emit an event when attached', done => {
     const theme = createTheme('test', { key: 'val' });
     const spy = sinon.spy();
-    document.addEventListener(events.themeChanged, spy);
+    document.addEventListener(events.change, spy);
     body.appendChild(theme);
     afterMutations(
       () => expect(spy.called).to.equal(true),
       () => expect(spy.lastCall.args[0].detail).to.deep.equal({
         themeName: 'test',
-        themeVars: { key: 'val' },
+        themeProps: { key: 'val' },
       }),
       () => body.removeChild(theme),
       done
@@ -109,12 +109,12 @@ describe('ak-theme', () => {
     const spy = sinon.spy();
     body.appendChild(theme);
     afterMutations(
-      () => document.addEventListener(events.themeChanged, spy),
+      () => document.addEventListener(events.change, spy),
       () => body.removeChild(theme),
       () => expect(spy.called).to.equal(true),
       () => expect(spy.lastCall.args[0].detail).to.deep.equal({
         themeName: 'test',
-        themeVars: null,
+        themeProps: null,
       }),
       done
     );
@@ -133,9 +133,9 @@ describe('ak-theme', () => {
     expect(Theme.updated(theme1, null)).to.equal(true);
   });
 
-  it('should not error when a theme var does not have a name', done => {
+  it('should not error when a theme prop does not have a name', done => {
     const theme = new Theme();
-    theme.appendChild(Object.assign(new Var(), { value: 'test' }));
+    theme.appendChild(Object.assign(new Prop(), { value: 'test' }));
 
     // This causes the theme to try and get the vars from its children. The
     // code that does this needs to guard against null names.
@@ -157,10 +157,10 @@ describe('ak-theme', () => {
     document.body.appendChild(theme);
     afterMutations(
       () => {
-        const vars = theme.ownVars;
-        expect(vars.mykey1).to.equal('mykey1');
-        expect(vars.my.key2).to.equal('mykey2');
-        expect(vars.my.key[3]).to.equal('mykey3');
+        const props = theme.ownVars;
+        expect(props.mykey1).to.equal('mykey1');
+        expect(props.my.key2).to.equal('mykey2');
+        expect(props.my.key[3]).to.equal('mykey3');
       },
       done
     );

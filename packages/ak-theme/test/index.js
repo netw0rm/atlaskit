@@ -1,4 +1,4 @@
-import Theme, { events, themeable, Var } from '../src';
+import Theme, { events, Prop, themeable } from '../src';
 
 describe('ak-theme', () => {
   it('default export', () => {
@@ -8,6 +8,6 @@ describe('ak-theme', () => {
   it('named exports', () => {
     expect(events).to.be.an('object');
     expect(themeable).to.be.a('function', 'themeable');
-    expect(Var).to.be.a('function', 'Var');
+    expect(Prop).to.be.a('function', 'Prop');
   });
 });

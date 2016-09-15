@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-A button group provides a visual grouping for related Button (`<ak-button>`) elements.
+A button group provides a visual grouping for related Button (`<ak-button>`) elements. You can use this component whenever you have multiple buttons with related actions, such as as the pull requests Approve and Decline buttons.
 
 ## Setup and install
 
@@ -44,6 +44,8 @@ Now we can use the defined tag in our HTML markup, e.g.:
 ```
 
 ### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```
 import ButtonGroup from 'ak-button-group';

@@ -1,7 +1,7 @@
 import { vdom, define, prop, emit } from 'skatejs';
 import cx from 'classnames';
 import styles from './index.less';
-import FontSelect from './font-select';
+import Select from './block-type-select';
 import Option from './option';
 
 function toggle(elem) {
@@ -10,30 +10,30 @@ function toggle(elem) {
   }
 }
 
-function selectFont(elem) {
+function selectBlockType(elem) {
   return (event) => {
-    elem.selectedFont = event.detail.font;
+    elem.selectedBlockType = event.detail.blockType;
     toggle(elem);
 
-    // remove this when reactify v0.0.7 is released (https://github.com/webcomponents/react-integration/commit/53f8bf59a76b0ea0929bf2e95866ce949456eef5)
-    emit(elem, 'selectfont', { detail: { font: elem.selectedFont } });
+    // TODO: remove this when reactify v0.0.7 is released (https://github.com/webcomponents/react-integration/commit/53f8bf59a76b0ea0929bf2e95866ce949456eef5)
+    emit(elem, 'selectblocktype', { detail: { blockType: elem.selectedBlockType } });
   };
 }
 
 export default define('ak-editor-toolbar-block-type', {
   render(elem) {
-    const selectedFont = elem.selectedFont || elem.fonts[0];
+    const selectedBlockType = elem.selectedBlockType || elem.blockTypes[0] || {};
 
     return (
       <div
         className={styles.locals.root}
-        onSelectFont={selectFont(elem)}
+        onSelectBlockType={selectBlockType(elem)}
       >
         <style>{styles.toString()}</style>
-        <FontSelect
+        <Select
           disabled={elem.disabled}
-          className={styles.locals.fontSelect}
-          selectedReadableName={selectedFont.display}
+          className={styles.locals.blockTypeSelect}
+          selectedReadableName={selectedBlockType.display}
           onToggleDropdown={() => toggle(elem)}
           active={elem.dropdownOpen}
         >
@@ -42,22 +42,22 @@ export default define('ak-editor-toolbar-block-type', {
               [styles.locals.dropdownOpen]: elem.dropdownOpen,
             })}
           >
-            {elem.fonts.map(font => (
+            {elem.blockTypes.map(blockType => (
               <li><Option
-                font={font}
-                font-name={font.name}
-                active={selectedFont === font}
-              >{font.display}</Option></li>
+                blockType={blockType}
+                blockTypeName={blockType.name}
+                active={selectedBlockType === blockType}
+              >{blockType.display}</Option></li>
             ))}
           </ul>
-        </FontSelect>
+        </Select>
       </div>
     );
   },
   props: {
     dropdownOpen: prop.boolean({ attribute: true }),
-    selectedFont: { attribute: true },
-    fonts: prop.array({ attribute: true }),
+    selectedBlockType: { attribute: true },
+    blockTypes: prop.array({ attribute: true }),
     disabled: prop.boolean({ attribute: true }),
   },
 });

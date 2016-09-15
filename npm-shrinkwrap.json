@@ -1977,11 +1977,6 @@
       "from": "dmd@>=1.4.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/dmd/-/dmd-1.4.2.tgz"
     },
-    "dmd-bitbucket": {
-      "version": "0.1.10",
-      "from": "dmd-bitbucket@0.1.10",
-      "resolved": "https://registry.npmjs.org/dmd-bitbucket/-/dmd-bitbucket-0.1.10.tgz"
-    },
     "doctrine": {
       "version": "1.3.0",
       "from": "doctrine@>=1.2.2 <2.0.0",

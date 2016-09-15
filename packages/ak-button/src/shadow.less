@@ -10,7 +10,7 @@
 @compactButtonHeight: unit(@grid * 3 / @em, em);
 
 @base-radius: 3px;
-@before-slot-right-margin: unit(@grid, px);
+@side-slot-margin: unit(@grid, px);
 
 // Default Button Colors
 @defaultBackgroundColor: @ak-color-N20;
@@ -38,16 +38,36 @@
 @disabledColor: @ak-color-N40;
 
 ::slotted([slot="before"]) > {
-  margin-right: @before-slot-right-margin;
+  margin-right: @side-slot-margin;
 }
+
+::slotted([slot="after"]) > {
+  margin-left: @side-slot-margin;
+}
+
+// todo: get rid of v0 support once browserstack chrome stable is v53
 ::content > [slot="before"] {
-  margin-right: @before-slot-right-margin;
+  margin-right: @side-slot-margin;
 }
+
+::content > [slot="after"] {
+  margin-left: @side-slot-margin;
+}
+
+.before-slot > * {
+  margin-right: @side-slot-margin;
+}
+
+.after-slot > * {
+  margin-left: @side-slot-margin;
+}
+
+
 :host .before-slot-wrapper {
   align-self: center;
   display: flex;
 }
-.before-slot-wrapper {
+.before-slot-wrapper, .after-slot-wrapper {
   align-self: center;
   display: flex;
 }
@@ -61,6 +81,7 @@ _shadow_root_ {
   flex-wrap: nowrap;
 }
 .before-slot,
+.after-slot,
 .default-slot {
   display: inline-flex;
 }
@@ -68,9 +89,6 @@ button::-moz-focus-inner {
   margin: 0;
   padding: 0;
   border: 0;
-}
-.before-slot > * {
-  margin-right: @before-slot-right-margin;
 }
 
 .root {

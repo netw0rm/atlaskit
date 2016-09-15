@@ -1,6 +1,6 @@
 import 'style!./host.less';
 import classNames from 'classnames';
-import { vdom, define, prop } from 'skatejs';
+import { vdom, define, prop, props } from 'skatejs';
 import Layer from 'ak-layer';
 import shadowStyles from './shadow.less';
 import TooltipTrigger from './tooltip-trigger';
@@ -34,10 +34,15 @@ function getAnimationClass(elem, position) {
     left: 'right',
     right: 'left',
   };
-
   // if the tooltip has been flipped we need to apply the opposite animation
   const actualPosition = elem.isFlipped ? flippedAnimations[position] : position;
   return animationMapping[actualPosition] ? animationMapping[actualPosition] : undefined;
+}
+
+function flipCallback(elem) {
+  props(elem, {
+    _isFlipped: true,
+  });
 }
 
 /**
@@ -59,18 +64,20 @@ export default define('ak-tooltip', {
     });
 
     return (
-      <div>
+      <div className={layerClasses}>
         <style>{shadowStyles.toString()}</style>
-        <Layer
-          target={elem.target}
-          position={positionToPopperPosition(elem.position)}
-          className={layerClasses}
-          ref={(ref) => (elem.layer = ref)}
-          enableFlip
-          boundariesElement={document.body}
-        >
-          <div className={messageBoxClasses}>{elem.description}</div>
-        </Layer>
+        {elem.visible ?
+          <Layer
+            target={elem.target}
+            position={positionToPopperPosition(elem.position)}
+            flipCallback={() => flipCallback(elem)}
+            ref={(ref) => (elem.layer = ref)}
+            enableFlip
+            boundariesElement={document.body}
+          >
+            <div className={messageBoxClasses}>{elem.description}</div>
+          </Layer> :
+        null}
       </div>
     );
   },
@@ -128,6 +135,7 @@ export default define('ak-tooltip', {
     visible: prop.boolean({
       attribute: true,
     }),
+    _isFlipped: prop.boolean(),
   },
 });
 

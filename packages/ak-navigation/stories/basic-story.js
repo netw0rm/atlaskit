@@ -59,6 +59,9 @@ const NavigationLinks = () => <div>
   <ak-navigation-link selected>
     <ak-icon slot="icon" glyph="calendar" /> Calendar
   </ak-navigation-link>
+  <ak-navigation-link href="http://atlassian.design" >
+    <ak-icon slot="icon" glyph="overview" /> Atlassian design
+  </ak-navigation-link>
   <ak-navigation-link>
     <ak-icon slot="icon" glyph="canvas" /> Canvas
   </ak-navigation-link>

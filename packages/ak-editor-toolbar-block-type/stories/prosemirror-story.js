@@ -2,7 +2,6 @@ import { storiesOf } from '@kadira/storybook';
 import ToolbarComponent from 'ak-editor-toolbar';
 import BlockTypeComponent from '../src';
 import ContentComponent from 'ak-editor-content';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import React from 'react';
 import reactify from 'akutil-react';
 import invert from 'lodash.invert';
@@ -32,7 +31,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
       constructor(props) {
         super(props);
         this.state = {
-          selectedFont: 'normalText',
+          selectedBlockType: 'normalText',
           canChangeBlockType: false,
         };
       }
@@ -68,7 +67,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
           const blockType = prosemirrorBlockToToolbarMap[name];
 
           this.setState({
-            selectedFont: blockType,
+            selectedBlockType: blockType,
             canChangeBlockType: state.enabled,
           });
         });
@@ -80,11 +79,11 @@ storiesOf('ak-editor-toolbar-block-type', module)
             <Toolbar>
               <BlockType
                 disabled={!this.state.canChangeBlockType}
-                selectedFont={this.state.selectedFont}
-                onSelectFont={(event) => {
-                  const font = event.detail.font;
+                selectedBlockType={this.state.selectedBlockType}
+                onSelectBlockType={(event) => {
+                  const selected = event.detail.blockType;
 
-                  const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
+                  const matches = toolbarToProsemirrorMap[selected].match(/([a-zA-Z_]+)(\d*)/);
                   const blockType = matches[1];
                   const level = matches[2];
 

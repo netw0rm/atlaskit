@@ -1,6 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkButton from 'ak-button';
+import Dropdown from 'ak-dropdown';
 import Icon from 'ak-icon';
 import AkButtonGroup from '../src/index';
 import React from 'react';
@@ -10,6 +11,7 @@ import { name } from '../package.json';
 const ReactAkButtonGroup = reactify(AkButtonGroup);
 const ReactAkButton = reactify(AkButton);
 const ReactIcon = reactify(Icon);
+const ReactDropdown = reactify(Dropdown);
 
 storiesOf(name, module)
   .add('plain ak-button-group of ak-buttons', () => (
@@ -71,7 +73,18 @@ storiesOf(name, module)
     <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
       <ReactAkButton>Edit</ReactAkButton>
       <ReactAkButton>
-        <ReactIcon glyph="home" />
+        <ReactIcon glyph="question" />
       </ReactAkButton>
+    </ReactAkButtonGroup>
+  ))
+  .add('ak-button-group with ak-dropdown > ak-button (split button)', () => (
+    <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
+      <ReactAkButton>Edit</ReactAkButton>
+      <ReactDropdown>
+        <ak-dropdown-trigger-arrow slot="trigger"></ak-dropdown-trigger-arrow>
+        <ak-dropdown-item>Foo</ak-dropdown-item>
+        <ak-dropdown-item>Bar</ak-dropdown-item>
+        <ak-dropdown-item>Baz</ak-dropdown-item>
+      </ReactDropdown>
     </ReactAkButtonGroup>
   ));

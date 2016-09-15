@@ -110,8 +110,9 @@ export default define('ak-theme', {
     return firstRender;
   },
   render(elem) {
+    const update = () => (elem.ownVars = varsFromChildren(elem));
     style(vdom, { ':host': { display: 'none' } });
-    return <slot onSlotchange={() => (elem.ownVars = varsFromChildren(elem))} />;
+    return <slot onSlotchange={update} onThemevarchanged={update} />;
   },
   prototype: {
     /**

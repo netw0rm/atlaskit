@@ -37,6 +37,7 @@ jss.use(rule => {
       const lcTagName = rule.options.sheet.options.elem.tagName.toLowerCase();
       rule.selectorText = `${lcTagName} slot${matchSlot} > ${matchSelector}`;
     }
+    console.log(rule.selectorText);
   }
 });
 

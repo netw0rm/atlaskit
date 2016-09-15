@@ -94,8 +94,8 @@ describe('ak-theme', () => {
     document.addEventListener(events.themeChanged, spy);
     body.appendChild(theme);
     afterMutations(
-      () => expect(spy.callCount).to.equal(2),
-      () => expect(spy.getCall(0).args[0].detail).to.deep.equal({
+      () => expect(spy.called).to.equal(true),
+      () => expect(spy.lastCall.args[0].detail).to.deep.equal({
         themeName: 'test',
         themeVars: { key: 'val' },
       }),
@@ -111,8 +111,8 @@ describe('ak-theme', () => {
     afterMutations(
       () => document.addEventListener(events.themeChanged, spy),
       () => body.removeChild(theme),
-      () => expect(spy.callCount).to.equal(1),
-      () => expect(spy.getCall(0).args[0].detail).to.deep.equal({
+      () => expect(spy.called).to.equal(true),
+      () => expect(spy.lastCall.args[0].detail).to.deep.equal({
         themeName: 'test',
         themeVars: null,
       }),

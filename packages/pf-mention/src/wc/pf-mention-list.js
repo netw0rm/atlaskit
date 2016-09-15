@@ -92,8 +92,8 @@ function renderItems(elem) {
                * onClick from firing.
                */
               onmousedown={(event) => {
-                debug('mousedown', event);
                 if (leftClick(event)) {
+                  selectIndex(elem, currentIdx);
                   elem.chooseCurrentSelection();
                   event.preventDefault();
                 }

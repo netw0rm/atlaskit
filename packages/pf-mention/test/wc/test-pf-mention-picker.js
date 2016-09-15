@@ -2,14 +2,17 @@ import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
-import { mentionDataSize } from '../../src/support/mention-data';
+import mentionData, { mentionDataSize } from '../../src/support/mention-data';
 import MentionResource from '../../src/support/mock-pf-mention-resource';
 import MentionPicker from '../../src/wc/pf-mention-picker';
-import { getMentionItems, getError, getMentionList } from '../../src/support/pf-selectors';
+import { getMentionItems, getError, getMentionList,
+  isMentionItemSelected, getMentionItemById } from '../../src/support/pf-selectors';
 
 chai.use(chaiAsPromised);
 chai.should();
 // const expect = chai.expect;
+
+const mentions = mentionData.mentions;
 
 function setupPicker() {
   const component = new MentionPicker();
@@ -86,6 +89,76 @@ describe('pf-mention-picker', () => {
           } catch (err) {
             reject(err);
           }
+        }, (reason) => reject(reason));
+      }, (reason) => reject(reason));
+    });
+  });
+
+  it('should change selection when navigating next', () => {
+    const defaultMentionItemsShow = () => (getMentionItems(component).length === mentionDataSize);
+    const secondItemSelected = () => isMentionItemSelected(component, mentions[1].id);
+
+    return new Promise((resolve, reject) => {
+      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+        component.selectNext();
+        waitUntil(secondItemSelected).should.be.fulfilled.then(() => {
+          resolve();
+        }, (reason) => reject(reason));
+      }, (reason) => reject(reason));
+    });
+  });
+
+  it('should change selection when navigating previous', () => {
+    const defaultMentionItemsShow = () => (getMentionItems(component).length === mentionDataSize);
+    const lastItemSelected = () =>
+      isMentionItemSelected(component, mentions[mentions.length - 1].id);
+
+    return new Promise((resolve, reject) => {
+      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+        component.selectPrevious();
+        waitUntil(lastItemSelected).should.be.fulfilled.then(() => {
+          resolve();
+        }, (reason) => reject(reason));
+      }, (reason) => reject(reason));
+    });
+  });
+
+  it('should choose current selection when chooseCurrentSelection called', () => {
+    let chosenMention = null;
+
+    const defaultMentionItemsShow = () => (getMentionItems(component).length === mentionDataSize);
+    const secondItemSelected = () => isMentionItemSelected(component, mentions[1].id);
+    const chooseSecondItem = () => (chosenMention && chosenMention.id === mentions[1].id);
+
+    component.addEventListener('selected', (event) => { chosenMention = event.detail; });
+
+    return new Promise((resolve, reject) => {
+      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+        component.selectNext();
+        waitUntil(secondItemSelected).should.be.fulfilled.then(() => {
+          component.chooseCurrentSelection();
+          waitUntil(chooseSecondItem).should.be.fulfilled.then(() => {
+            resolve();
+          }, (reason) => reject(reason));
+        }, (reason) => reject(reason));
+      }, (reason) => reject(reason));
+    });
+  });
+
+  it('should choose clicked selection when item clicked', () => {
+    let chosenMention = null;
+
+    const defaultMentionItemsShow = () => (getMentionItems(component).length === mentionDataSize);
+    const chooseThirdItem = () => (chosenMention && chosenMention.id === mentions[2].id);
+
+    component.addEventListener('selected', (event) => { chosenMention = event.detail; });
+
+    return new Promise((resolve, reject) => {
+      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+        const item = getMentionItemById(component, mentions[2].id);
+        item.dispatchEvent(new MouseEvent('mousedown'));
+        waitUntil(chooseThirdItem).should.be.fulfilled.then(() => {
+          resolve();
         }, (reason) => reject(reason));
       }, (reason) => reject(reason));
     });

@@ -6,25 +6,28 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-icon",
-    "pre-release": "lerna-semantic-release pre"
+    "gen-js": "node ./bin/generate-icon-exports.js",
+    "prepublish": "npm run gen-js && cd ../.. && npm run prepublish/single ak-icon",
+    "pretest": "npm run gen-js"
   },
   "files": [
-    "dist",
-    "src"
+    "glyph"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.2.5",
-    "uid": "^0.0.2"
+    "skatejs": "^1.2.5"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",
-    "idomizer": "^0.5.2",
-    "img-loader": "^1.3.1",
-    "loader-utils": "^0.2.15"
+    "async": "^2.0.1",
+    "camelcase": "^3.0.0",
+    "glob": "^7.0.5",
+    "lodash.sample": "^4.2.1",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.5.4",
+    "svgo": "^0.7.0"
   },
   "repository": {
     "type": "git",

@@ -30,7 +30,7 @@ describe('ak-editor-plugin-lists', () => {
 
       plugin.toggleList('ordered_list');
 
-      expect(spy.callCount).to.equal(2);
+      expect(spy).to.have.been.callCount(2);
 
       expect(spy).to.have.been.calledWith({
         active: true,
@@ -47,7 +47,7 @@ describe('ak-editor-plugin-lists', () => {
 
       pm.setTextSelection(end);
 
-      expect(spy.callCount).to.equal(1);
+      expect(spy).to.have.been.callCount(1);
     });
 
     it('should not emit extra change events when moving within an ordered list to the last character', () => {
@@ -58,7 +58,7 @@ describe('ak-editor-plugin-lists', () => {
 
       pm.setTextSelection(end);
 
-      expect(spy.callCount).to.equal(1);
+      expect(spy).to.have.been.callCount(1);
     });
 
     it('should emit change events when the state has changed', () => {
@@ -71,7 +71,7 @@ describe('ak-editor-plugin-lists', () => {
       plugin.toggleList('bullet_list');
       plugin.toggleList('bullet_list');
 
-      expect(spy.callCount).to.equal(5);
+      expect(spy).to.have.been.callCount(5);
     });
 
     it('should emit change events when the state has changed with entire word selected', () => {
@@ -84,9 +84,8 @@ describe('ak-editor-plugin-lists', () => {
       plugin.toggleList('bullet_list');
       plugin.toggleList('bullet_list');
 
-      expect(spy.callCount).to.equal(5);
+      expect(spy).to.have.been.callCount(5);
     });
-
 
     it('should allow toggling between normal text and ordered list', () => {
       const { pm, plugin } = editor(doc(p('t{a}ex{b}t')));

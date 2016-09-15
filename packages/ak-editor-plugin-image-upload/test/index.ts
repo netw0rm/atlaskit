@@ -33,7 +33,7 @@ describe('ak-editor-plugin-image-upload', () => {
     const spy = sinon.spy();
     plugin.subscribe(spy);
 
-    expect(spy.callCount).to.equal(1);
+    expect(spy).to.have.been.callCount(1);
 
     expect(spy).to.have.been.calledWith({
       active: false,
@@ -51,7 +51,7 @@ describe('ak-editor-plugin-image-upload', () => {
 
     pm.setNodeSelection(sel);
 
-    expect(spy.callCount).to.equal(2);
+    expect(spy).to.have.been.callCount(2);
   });
 
   it('does not emit multiple changes when an image is not selected', () => {
@@ -63,7 +63,7 @@ describe('ak-editor-plugin-image-upload', () => {
     pm.setTextSelection(a);
     pm.setTextSelection(b);
 
-    expect(spy.callCount).to.equal(1);
+    expect(spy).to.have.been.callCount(1);
   });
 
   it('does not emit multiple changes when an image is selected multiple times', () => {
@@ -72,7 +72,7 @@ describe('ak-editor-plugin-image-upload', () => {
 
     plugin.subscribe(spy);
 
-    expect(spy.callCount).to.equal(1);
+    expect(spy).to.have.been.callCount(1);
   });
 
   it('emits a change event when selection leaves an image', () => {
@@ -84,7 +84,7 @@ describe('ak-editor-plugin-image-upload', () => {
 
     pm.setTextSelection(a);
 
-    expect(spy.callCount).to.equal(2);
+    expect(spy).to.have.been.callCount(2);
   });
 
   it('does not permit an image to be added when an image is selected', () => {

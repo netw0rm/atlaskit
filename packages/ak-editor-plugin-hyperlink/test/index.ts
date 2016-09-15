@@ -81,7 +81,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      expect(spy.callCount).to.equal(1);
+      expect(spy).to.have.been.callCount(1);
 
       expect(spy).to.have.been.calledWith({
         active: false,
@@ -102,7 +102,7 @@ describe('ak-editor-plugin-hyperlink', () => {
 
       pm.setTextSelection(pm.doc.refs.pos);
 
-      expect(spy.callCount).to.equal(2);
+      expect(spy).to.have.been.callCount(2);
     });
 
     it('does not emit `change` multiple times when the selection moves within a link', () => {
@@ -114,7 +114,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       pm.setTextSelection(pos1);
       pm.setTextSelection(pos2);
 
-      expect(spy.callCount).to.equal(2);
+      expect(spy).to.have.been.callCount(2);
     });
 
     it('emits change when the selection leaves a link', () => {
@@ -127,7 +127,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       plugin.subscribe(spy);
       pm.setTextSelection(textPos);
 
-      expect(spy.callCount).to.equal(2);
+      expect(spy).to.have.been.callCount(2);
     });
 
     it('does not permit adding a link to a collapsed selection', () => {

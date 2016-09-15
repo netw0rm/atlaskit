@@ -101,7 +101,8 @@ export default new Plugin(class TextFormattingPlugin {
     return commands.toggleMark(this.pm.schema.marks[name])(this.pm);
   }
 
-  onChange(cb: StateChangeHandler) {
+  subscribe(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
+    cb(this.getState());
   }
 });

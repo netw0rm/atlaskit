@@ -74,7 +74,7 @@ describe('ak-editor-plugin-block-type', () => {
 
     plugin.subscribe(spy);
 
-    expect(spy.callCount).to.equal(1);
+    expect(spy).to.have.been.callCount(1);
 
     expect(spy).to.have.been.calledWith({
       selectedBlockType: 'paragraph',
@@ -89,7 +89,7 @@ describe('ak-editor-plugin-block-type', () => {
     plugin.subscribe(spy);
     plugin.changeBlockType('heading');
 
-    expect(spy.callCount).to.equal(2);
+    expect(spy).to.have.been.callCount(2);
 
     expect(spy).to.have.been.calledWith({
       selectedBlockType: 'heading1',

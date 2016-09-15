@@ -6,6 +6,7 @@ import * as events from '../src/internal/events';
 import { buttonContainer, labelsContainer, tabLabel } from '../src/internal/symbols';
 import tabsStyles from 'style!../src/host.less';
 import tabStyles from 'style!../src/tab-host.less';
+import { getShadowRoot, waitUntil } from 'akutil-common-test';
 
 const defaultLabel = 'Default tab label';
 const defaultContent = '<p>Default tab content</p>';
@@ -15,7 +16,7 @@ function afterMutations(fn) {
   setTimeout(fn, 10);
 }
 
-function setupTabs(opts, cb) {
+function setupTabs(opts) {
   const selectSpy = sinon.spy();  // eslint-disable-line no-undef
   const deselectSpy = sinon.spy(); // eslint-disable-line no-undef
 
@@ -48,17 +49,15 @@ function setupTabs(opts, cb) {
   containerElement.appendChild(tabsElement);
   document.body.appendChild(containerElement);
 
-  afterMutations(() => (
-    cb({
-      el: tabsElement,
-      tabs: tabElements,
-      container: containerElement,
-      spies: {
-        select: selectSpy,
-        deselect: deselectSpy,
-      },
-    })
-  ));
+  return waitUntil(() => !!getShadowRoot(tabsElement)).then(() => ({
+    el: tabsElement,
+    tabs: tabElements,
+    container: containerElement,
+    spies: {
+      select: selectSpy,
+      deselect: deselectSpy,
+    },
+  }));
 }
 
 function cleanupTabs(fixtures) {
@@ -102,10 +101,6 @@ function hasVisibleDropdown(tabsEl) {
   return !isHidden(tabsEl[buttonContainer]);
 }
 
-function getVisibleTabs(tabsEl) {
-  return tabsEl._visibleTabs; // eslint-disable-line no-underscore-dangle
-}
-
 function click(el) {
   el.click();
 }
@@ -131,7 +126,7 @@ function pressRightKey(el) {
   pressKey(keycode('right'), el);
 }
 
-function keyboardNav(tabsEl, isLeft, numPresses, cb) {
+function keyboardNav(tabsEl, isLeft, numPresses) {
   const label = getLabelForTab(getSelectedTab(getTabs(tabsEl)));
   if (isLeft) {
     pressLeftKey(label);
@@ -140,18 +135,16 @@ function keyboardNav(tabsEl, isLeft, numPresses, cb) {
   }
 
   if (numPresses > 1) {
-    afterMutations(() => (keyboardNav(tabsEl, isLeft, numPresses - 1, cb)));
-  } else {
-    afterMutations(cb);
+    afterMutations(() => (keyboardNav(tabsEl, isLeft, numPresses - 1)));
   }
 }
 
-function keyboardNavLeft(tabsEl, cb, numPresses) {
-  keyboardNav(tabsEl, true, numPresses || 1, cb);
+function keyboardNavLeft(tabsEl, numPresses = 1) {
+  keyboardNav(tabsEl, true, numPresses);
 }
 
-function keyboardNavRight(tabsEl, cb, numPresses) {
-  keyboardNav(tabsEl, false, numPresses || 1, cb);
+function keyboardNavRight(tabsEl, numPresses = 1) {
+  keyboardNav(tabsEl, false, numPresses);
 }
 
 export {
@@ -166,7 +159,6 @@ export {
   hasOverflow,
   isHidden,
   hasVisibleDropdown,
-  getVisibleTabs,
   click,
   keyboardNavLeft,
   keyboardNavRight,

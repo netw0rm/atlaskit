@@ -1,4 +1,5 @@
-import { buttonContainer, labelsContainer, tabLabel } from './symbols';
+import shadowStyles from '../shadow.less';
+import { buttonContainer, labelsContainer, tabDropdownItem, tabLabel } from './symbols';
 
 const getAllTabs = (tabsEl) => (Array.from(tabsEl.children).filter(el => el.label));
 
@@ -7,8 +8,9 @@ function getNextOrPrevTab(tabsEl, tab, isNext) {
   let index = all.indexOf(tab);
 
   index = isNext ? index + 1 : index - 1;
-  if (index < 0) index = 0;
-  if (index > all.length - 1) index = all.length - 1;
+  if (index < 0 || index > all.length - 1) {
+    return null;
+  }
 
   return all[index];
 }
@@ -90,6 +92,36 @@ const calculateVisibleTabs = (tabsEl) => {
   return visible;
 };
 
+/**
+ * Show visible tabs by calling calculateVisibleTabs and hiding tabs which do not fit in the
+ * container and should not be displayed.
+ * @param tabsEl
+ */
+function showVisibleTabs(tabsEl) {
+  const allTabs = getAllTabs(tabsEl);
+  const visibleTabs = calculateVisibleTabs(tabsEl);
+
+  // Only show visible tabs
+  allTabs.forEach(el => {
+    el[tabLabel].classList.add(shadowStyles.locals.akTabLabelHidden);
+    el[tabDropdownItem].classList.remove(shadowStyles.locals.akTabDdItemHidden);
+  });
+  visibleTabs.forEach(el => {
+    el[tabLabel].classList.remove(shadowStyles.locals.akTabLabelHidden);
+    el[tabDropdownItem].classList.add(shadowStyles.locals.akTabDdItemHidden);
+  });
+
+  // Hide the More dropdown if there are no children
+  const showDropdown = visibleTabs.length < allTabs.length;
+  tabsEl[buttonContainer].classList.toggle(shadowStyles.locals.akTabLabelHidden, !showDropdown);
+
+  // Truncate the label if there is only a single tab
+  if (visibleTabs.length) {
+    const isSingleTab = visibleTabs.length === 1;
+    visibleTabs[0][tabLabel].classList.toggle(shadowStyles.locals.akTabLabelSingle, isSingleTab);
+  }
+}
+
 const getTabsVisibility = (tabsEl) => {
   const tabsVisibility = new Map();
   if (tabsEl) {
@@ -101,10 +133,18 @@ const getTabsVisibility = (tabsEl) => {
   return tabsVisibility;
 };
 
+const updateProps = (tabsEl) => {
+  const allTabs = getAllTabs(tabsEl);
+  tabsEl._selected = allTabs.map(el => el.selected); // eslint-disable-line no-underscore-dangle
+  tabsEl._labels = allTabs.map(el => el.label); // eslint-disable-line no-underscore-dangle
+};
+
 export {
   getAllTabs,
   getNextTab,
   getPrevTab,
   calculateVisibleTabs,
+  showVisibleTabs,
   getTabsVisibility,
+  updateProps,
 };

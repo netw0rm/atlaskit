@@ -1,16 +1,18 @@
 // ak-tabs symbols
 
-const labelsContainer = Symbol();
 const buttonContainer = Symbol();
-const focusSelectedOnRender = Symbol();
+const focusOnRender = Symbol();
+const labelsContainer = Symbol();
 
 // ak-tabs-tab symbols
 
+const tabDropdownItem = Symbol();
 const tabLabel = Symbol();
 
 export {
-  labelsContainer,
   buttonContainer,
-  focusSelectedOnRender,
+  focusOnRender,
+  labelsContainer,
+  tabDropdownItem,
   tabLabel,
 };

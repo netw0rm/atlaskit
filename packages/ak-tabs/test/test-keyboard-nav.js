@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import '../src/index.js';
-
+import { waitUntil } from 'akutil-common-test';
 import {
   setupTabs,
   cleanupTabs,
@@ -11,16 +11,12 @@ import {
 
 chai.use(chaiAsPromised);
 chai.should();
-const expect = chai.expect;
 
 describe('ak-tabs keyboard nav -', () => {
   let fixtures;
 
   function setUpTest(opts = {}) {
-    beforeEach(done => (setupTabs(opts, (out) => {
-      fixtures = out;
-      done();
-    })));
+    beforeEach(() => (setupTabs(opts).then(out => (fixtures = out))));
     afterEach(() => cleanupTabs(fixtures));
   }
 
@@ -34,18 +30,14 @@ describe('ak-tabs keyboard nav -', () => {
         ],
       });
 
-      it('pressing the LEFT arrow selects the first tab', done => {
-        keyboardNavLeft(fixtures.el, () => {
-          expect(fixtures.tabs[0].selected).to.equal(true, 'The first tab should be selected');
-          done();
-        });
+      it('pressing the LEFT arrow selects the first tab', () => {
+        keyboardNavLeft(fixtures.el);
+        return waitUntil(() => fixtures.tabs[0].selected).should.be.fulfilled;
       });
 
-      it('pressing the RIGHT arrow selects the third tab', done => {
-        keyboardNavRight(fixtures.el, () => {
-          expect(fixtures.tabs[2].selected).to.equal(true, 'The first tab should be selected');
-          done();
-        });
+      it('pressing the RIGHT arrow selects the third tab', () => {
+        keyboardNavRight(fixtures.el);
+        return waitUntil(() => fixtures.tabs[2].selected).should.be.fulfilled;
       });
     });
 
@@ -64,11 +56,9 @@ describe('ak-tabs keyboard nav -', () => {
         ],
       });
 
-      it('pressing the LEFT arrow selects the seventh tab', done => {
-        keyboardNavLeft(fixtures.el, () => {
-          expect(fixtures.tabs[6].selected).to.equal(true, 'The seventh tab should be selected');
-          done();
-        });
+      it('pressing the LEFT arrow selects the seventh tab', () => {
+        keyboardNavLeft(fixtures.el);
+        return waitUntil(() => fixtures.tabs[6].selected).should.be.fulfilled;
       });
     });
   });

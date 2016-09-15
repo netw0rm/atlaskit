@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import * as events from '../src/internal/events';
-import AkTabs from '../src/index';
+import AkTabs, { events } from '../src';
+const { tabChange: tabChangeEvent } = events;
 import AkTab from '../src/index-tab';
 const { React, ReactDOM } = window;
 import { name } from '../package.json';
@@ -11,12 +11,8 @@ const Component = reactify(AkTabs, {
   ReactDOM,
 });
 
-function selectHandler(e) {
-  action(`The "${e.target.label}" tab was selected.`)();
-}
-
-function deselectHandler(e) {
-  action(`The "${e.target.label}" tab was deselected.`)();
+function changeHandler(e) {
+  action(`The "${e.target.label}" tab was changed. selected: ${e.target.selected}`)();
 }
 
 storiesOf(name, module)
@@ -268,11 +264,9 @@ storiesOf(name, module)
     </Component>
   ))
   .add('ak-tabs with event listeners', () => {
-    window.removeEventListener(events.TAB_SELECT, selectHandler);
-    window.removeEventListener(events.TAB_DESELECT, deselectHandler);
-
-    window.addEventListener(events.TAB_SELECT, selectHandler);
-    window.addEventListener(events.TAB_DESELECT, deselectHandler);
+    // TODO bind via JSX attribute 'onTabChange={() => ...}'
+    window.removeEventListener(tabChangeEvent, changeHandler);
+    window.addEventListener(tabChangeEvent, changeHandler);
 
     return (
       <Component>

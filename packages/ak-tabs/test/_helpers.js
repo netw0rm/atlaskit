@@ -1,8 +1,6 @@
 import keycode from 'keycode';
-import AkTabsTab from '../src/index-tab';
-import AkTabs from '../src/index';
-
-import * as events from '../src/internal/events';
+import AkTabs, { events, Tab as AkTabsTab } from '../src';
+const { tabChange: tabChangeEvent } = events;
 import { buttonContainer, labelsContainer, tabLabel } from '../src/internal/symbols';
 import tabsStyles from 'style!../src/host.less';
 import tabStyles from 'style!../src/tab-host.less';
@@ -17,11 +15,8 @@ function afterMutations(fn) {
 }
 
 function setupTabs(opts) {
-  const selectSpy = sinon.spy();  // eslint-disable-line no-undef
-  const deselectSpy = sinon.spy(); // eslint-disable-line no-undef
-
-  window.addEventListener(events.TAB_SELECT, selectSpy);
-  window.addEventListener(events.TAB_DESELECT, deselectSpy);
+  const changeSpy = sinon.spy();
+  window.addEventListener(tabChangeEvent, changeSpy);
 
   const containerElement = document.createElement('div');
   containerElement.style.width = opts.width || defaultWidth;
@@ -53,16 +48,12 @@ function setupTabs(opts) {
     el: tabsElement,
     tabs: tabElements,
     container: containerElement,
-    spies: {
-      select: selectSpy,
-      deselect: deselectSpy,
-    },
+    spies: { change: changeSpy },
   }));
 }
 
 function cleanupTabs(fixtures) {
-  window.removeEventListener(events.TAB_SELECT, fixtures.spies.select);
-  window.removeEventListener(events.TAB_DESELECT, fixtures.spies.deselect);
+  window.removeEventListener(tabChangeEvent, fixtures.spies.change);
   document.body.removeChild(fixtures.container);
 }
 

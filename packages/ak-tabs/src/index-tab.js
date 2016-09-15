@@ -2,7 +2,7 @@ import 'style!./tab-host.less';
 import classNames from 'classnames';
 import { emit, vdom, define, prop, Component } from 'skatejs';
 import shadowStyles from './tab-shadow.less';
-import * as events from './internal/events';
+import { tabChange as tabChangeEvent } from './internal/events';
 
 /**
  * @description Tabs are an easy way to view and switch between different views of the same content.
@@ -12,23 +12,11 @@ import * as events from './internal/events';
  */
 const definition = {
   updated(elem, prev) {
-    // Emit events for any props that have changed
-    if (prev) {
-      if (prev && prev.selected !== elem.selected) {
-        emit(elem, elem.selected ? events.TAB_SELECT : events.TAB_DESELECT);
-      }
-      if (prev.label !== elem.label) {
-        emit(elem, events.TAB_LABEL_CHANGE);
-      }
-    } else {
-      if (elem.selected) {
-        emit(elem, events.TAB_SELECT);
-      }
-      if (elem.label) {
-        emit(elem, events.TAB_LABEL_CHANGE);
-      }
+    const wasUpdated = Component.updated(elem, prev);
+    if (wasUpdated) {
+      emit(elem, tabChangeEvent);
     }
-    return Component.updated(elem, prev);
+    return wasUpdated;
   },
   render(elem) {
     const ariaHidden = `${!!elem.selected}`;

@@ -9,6 +9,7 @@ import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import * as helpers from './internal/tabs-helpers';
 import * as handlers from './internal/tabs-handlers';
 import * as events from './internal/events';
+const { tabChange: tabChangeEvent } = events;
 import * as i18n from './internal/i18n';
 import Tab from './index-tab';
 import Icon from 'ak-icon';
@@ -19,14 +20,10 @@ const resizeListener = Symbol();
 
 const definition = {
   created(elem) {
-    elem.addEventListener(events.TAB_SELECT, (e) => {
-      helpers.getAllTabs(elem).filter(el => el !== e.target).forEach(el => (el.selected = false));
-      helpers.updateProps(elem);
-    });
-    elem.addEventListener(events.TAB_DESELECT, () => {
-      helpers.updateProps(elem);
-    });
-    elem.addEventListener(events.TAB_LABEL_CHANGE, () => {
+    elem.addEventListener(tabChangeEvent, (e) => {
+      if (e.target.selected) {
+        helpers.getAllTabs(elem).forEach(el => (el.selected = el === e.target));
+      }
       helpers.updateProps(elem);
     });
   },
@@ -113,3 +110,4 @@ const definition = {
 
 export default define('ak-tabs', definition);
 export { Tab };
+export { events };

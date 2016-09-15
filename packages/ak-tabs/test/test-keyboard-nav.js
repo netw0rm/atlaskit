@@ -1,13 +1,13 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import '../src/index.js';
+import '../src';
 import { waitUntil } from 'akutil-common-test';
 import {
   setupTabs,
   cleanupTabs,
   keyboardNavLeft,
   keyboardNavRight,
-} from '../test-helpers/helpers';
+} from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.should();

@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkTabs from '../src/index.js';
+import AkTabs from '../src';
 import { labelsContainer } from '../src/internal/symbols';
 import { waitUntil } from 'akutil-common-test';
 import {
@@ -15,7 +15,7 @@ import {
   hasOverflow,
   hasVisibleDropdown,
   defaultLabel,
-} from '../test-helpers/helpers';
+} from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.should();

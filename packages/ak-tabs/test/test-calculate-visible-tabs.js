@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 
 import { labelsContainer } from '../src/internal/symbols';
 import { calculateVisibleTabs } from '../src/internal/tabs-helpers';
-import { setupTabs, cleanupTabs, getElementWidth } from '../test-helpers/helpers';
+import { setupTabs, cleanupTabs, getElementWidth } from './_helpers';
 
 
 chai.use(chaiAsPromised);

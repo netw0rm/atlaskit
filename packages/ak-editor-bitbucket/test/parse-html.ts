@@ -1,4 +1,4 @@
-import { Parser } from '../src/parser';
+import parse from '../src/parse-html';
 import { Schema } from 'ak-editor-prosemirror';
 import { chaiPlugin, doc, p, text,
          h1, h2, h3, h4, h5, h6, hr, img } from 'ak-editor-test';
@@ -7,8 +7,6 @@ import { expect } from 'chai';
 import schema from 'ak-editor-schema';
 
 chai.use(chaiPlugin);
-
-const parse = (new Parser()).parse;
 
 const createMark = (mark: string, attrs?: {}) => schema.marks[mark].create(attrs);
 

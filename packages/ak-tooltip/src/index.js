@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { vdom, define, prop, props } from 'skatejs';
 import Layer from 'ak-layer';
 import shadowStyles from './shadow.less';
-import TooltipTrigger from './tooltip-trigger';
+import TooltipTrigger from './index.tooltip-trigger';
 
 const defaultTooltipPosition = 'bottom';
 
@@ -39,9 +39,9 @@ function getAnimationClass(elem, position) {
   return animationMapping[actualPosition] ? animationMapping[actualPosition] : undefined;
 }
 
-function flipCallback(elem) {
+function updateCallback(elem, data) {
   props(elem, {
-    _isFlipped: true,
+    _isFlipped: data.isFlipped,
   });
 }
 
@@ -70,7 +70,7 @@ export default define('ak-tooltip', {
           <Layer
             target={elem.target}
             position={positionToPopperPosition(elem.position)}
-            flipCallback={() => flipCallback(elem)}
+            onUpdate={(data) => updateCallback(elem, data)}
             ref={(ref) => (elem.layer = ref)}
             enableFlip
             boundariesElement={document.body}
@@ -80,14 +80,6 @@ export default define('ak-tooltip', {
         null}
       </div>
     );
-  },
-  prototype: {
-    get isFlipped() {
-      if (this.layer) {
-        return this.layer.isFlipped;
-      }
-      return undefined;
-    },
   },
   props: {
     /**
@@ -135,6 +127,7 @@ export default define('ak-tooltip', {
     visible: prop.boolean({
       attribute: true,
     }),
+    // TODO replace with symbol once supported by skate.
     _isFlipped: prop.boolean(),
   },
 });

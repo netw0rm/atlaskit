@@ -1,5 +1,5 @@
 import reactify from 'akutil-react';
-import TooltipTriggerWC from '../src/tooltip-trigger';
+import TooltipTriggerWC from '../src/index.tooltip-trigger';
 
 const { React, ReactDOM } = window;
 const { Component } = React;

@@ -1,7 +1,7 @@
 import 'style!./host.less';
 import debounce from 'debounce';
 import { vdom, define } from 'skatejs';
-import { handleMouseEnter, handleMouseLeave } from './event-handlers';
+import { handleMouseEnter, handleMouseLeave } from './internal/event-handlers';
 
 
 /**

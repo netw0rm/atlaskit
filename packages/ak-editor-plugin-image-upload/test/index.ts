@@ -2,8 +2,10 @@ import ImageUploadPlugin from '../src';
 import { chaiPlugin, makeEditor, doc, p, img } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
+chai.use(sinonChai);
 
 describe('ak-editor-plugin-image-upload', () => {
   const testImgSrc = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
@@ -32,6 +34,14 @@ describe('ak-editor-plugin-image-upload', () => {
     plugin.subscribe(spy);
 
     expect(spy.callCount).to.equal(1);
+
+    expect(spy).to.have.been.calledWith({
+      active: false,
+      alt: "",
+      enabled: true,
+      src: "",
+      title: "",
+    });
   });
 
   it('emits a change when an image is selected', () => {

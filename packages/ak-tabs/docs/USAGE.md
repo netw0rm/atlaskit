@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+Tabs are an easy way to view and switch between different views of similar content..
 
 ## Setup and install
 

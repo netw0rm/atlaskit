@@ -148,21 +148,48 @@ describe('ak-theme', () => {
     );
   });
 
-  it('should support dot notation', done => {
-    const theme = createTheme('theme', {
-      mykey1: 'mykey1',
-      'my.key2': 'mykey2',
-      'my.key.3': 'mykey3',
+  describe('dot-notation', () => {
+    let errors;
+    let onerror;
+
+    beforeEach(() => {
+      errors = [];
+      onerror = window.onerror;
+      window.onerror = e => errors.push(e);
     });
-    document.body.appendChild(theme);
-    afterMutations(
-      () => {
-        const props = theme.ownVars;
-        expect(props.mykey1).to.equal('mykey1');
-        expect(props.my.key2).to.equal('mykey2');
-        expect(props.my.key[3]).to.equal('mykey3');
-      },
-      done
-    );
+
+    afterEach(() => {
+      window.onerror = onerror;
+    });
+
+    it('should support dot-notation', done => {
+      const theme = createTheme('theme', {
+        mykey1: 'mykey1',
+        'my.key2': 'mykey2',
+        'my.key.3': 'mykey3',
+      });
+      document.body.appendChild(theme);
+      afterMutations(
+        () => {
+          const props = theme.ownVars;
+          expect(props.mykey1).to.equal('mykey1');
+          expect(props.my.key2).to.equal('mykey2');
+          expect(props.my.key[3]).to.equal('mykey3');
+        },
+        done
+      );
+    });
+
+    it('should error when trying to create an object from an already defined string', done => {
+      const theme = createTheme('theme', {
+        my: 'my',
+        'my.key': 'mykey',
+      });
+      document.body.appendChild(theme);
+      afterMutations(
+        () => expect(errors.length).to.equal(1),
+        done
+      );
+    });
   });
 });

@@ -3,6 +3,7 @@ import shadowStyles from './pf-mention-list-shadow.less';
 import { define, emit, prop, props, vdom } from 'skatejs';
 import Item from './pf-mention-item';
 import Scrollable from './pf-scrollable';
+import { whoopsUri } from './icons';
 import debug from '../util/logger';
 
 // FIXME
@@ -154,17 +155,41 @@ export default define('pf-mention-list', {
     const classes = [
       styles.list,
     ];
+    const scollableClasses = [
+      styles.scrollable,
+    ];
+
+    const hasMentions = elem.mentions && elem.mentions.length;
+    // If we get an error, but existing mentions are displayed, lets
+    // just continue to show the existing mentions we have
+    const showError = elem.showError && !hasMentions;
+
+    if (!elem.mentions.length && !showError) {
+      classes.push(styles.empty);
+    }
 
     if (!elem.mentions.length) {
-      classes.push(styles.empty);
+      scollableClasses.push(styles.empty);
+    }
+
+    let errorSection = null;
+    if (showError) {
+      // TODO add warning icon
+      errorSection = (
+        <div class={styles.mentionError}>
+          <p><img src={whoopsUri} alt="whoops" /></p>
+          <p>Something went wrong</p>
+        </div>
+      );
     }
 
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
         <div className={classes}>
+          {errorSection}
           <Scrollable
-            className={styles.scrollable}
+            className={scollableClasses}
             ref={(ref) => { elem._scrollable = ref; }}
           >
             {renderItems(elem)}
@@ -181,6 +206,9 @@ export default define('pf-mention-list', {
   props: {
     mentions: prop.array(),
     selectedKey: prop.string({
+      attribute: true,
+    }),
+    showError: prop.boolean({
       attribute: true,
     }),
   },

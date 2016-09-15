@@ -35,6 +35,14 @@ export default define('pf-mention-picker', {
         _visible: mentions.length > 0,
       });
     },
+
+    _filterError(error) {
+      debug('pf-mention-picker._filterError', error);
+      props(this, {
+        _visible: true,
+      });
+    },
+
     _updateDialogPosition(event) {
       if (event.target._dialog && event.target._dialog.reposition) {
         event.target._dialog.reposition();
@@ -46,6 +54,7 @@ export default define('pf-mention-picker', {
     elem.visible = false;
     elem._subscriberKey = uniqueId('pf-mention-picker');
     elem._filterChange = elem._filterChange.bind(elem);
+    elem._filterError = elem._filterError.bind(elem);
   },
 
   attached(elem) {
@@ -125,7 +134,7 @@ export default define('pf-mention-picker', {
           data.oldValue.unsubscribe(elem._subscriberKey);
         }
         if (data.newValue) {
-          data.newValue.subscribe(elem._subscriberKey, elem._filterChange);
+          data.newValue.subscribe(elem._subscriberKey, elem._filterChange, elem._filterError);
         }
       },
     }),

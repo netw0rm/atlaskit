@@ -1,4 +1,4 @@
-let debugEnabled = true;
+let debugEnabled = false;
 let stacktracesEnabled = false;
 
 export function enableLogger(enable) {

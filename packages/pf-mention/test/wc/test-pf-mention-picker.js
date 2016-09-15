@@ -5,7 +5,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { mentionDataSize } from '../../src/support/mention-data';
 import MentionResource from '../../src/support/mock-pf-mention-resource';
 import MentionPicker from '../../src/wc/pf-mention-picker';
-import { getMentionItems } from '../../src/support/pf-selectors';
+import { getMentionItems, getError, getMentionList } from '../../src/support/pf-selectors';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -48,5 +48,46 @@ describe('pf-mention-picker', () => {
     const defaultMentionItemsShow = () => (getMentionItems(component).length === 1);
     component.query = 'shae';
     return waitUntil(defaultMentionItemsShow).should.be.fulfilled;
+  });
+
+  it('should report error when service fails', () => {
+    const defaultMentionItemsShow = () => (getMentionItems(component).length === mentionDataSize);
+    const noMentionItemsShown = () => getMentionItems(component).length === 0;
+    const mentionErrorShown = () => !!getError(component);
+
+    return new Promise((resolve, reject) => {
+      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+        component.query = 'nothing';
+        waitUntil(noMentionItemsShown).should.be.fulfilled.then(() => {
+          component.query = 'error';
+          waitUntil(mentionErrorShown).should.be.fulfilled.then(() => {
+            resolve();
+          }, (reason) => reject(reason));
+        }, (reason) => reject(reason));
+      }, (reason) => reject(reason));
+    });
+  });
+
+  it('should display previous mention if error straight after', () => {
+    const defaultMentionItemsShow = () => (getMentionItems(component).length === mentionDataSize);
+    const mentionErrorProcessed = () => {
+      const mentionList = getMentionList(component);
+      return mentionList && mentionList.showError;
+    };
+
+    return new Promise((resolve, reject) => {
+      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+        component.query = 'error';
+        waitUntil(mentionErrorProcessed).should.be.fulfilled.then(() => {
+          try {
+            expect(getMentionItems(component).length, 'Number of mention items')
+              .to.equal(mentionDataSize);
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
+        }, (reason) => reject(reason));
+      }, (reason) => reject(reason));
+    });
   });
 });

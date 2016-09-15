@@ -1,27 +1,44 @@
 import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
-import { afterMutations, waitUntil } from 'akutil-common-test';
+import { emit } from "skatejs";
+import { fixtures } from 'ak-editor-test';
+import { afterMutations, waitUntil, getShadowRoot } from 'akutil-common-test';
 
 const { expect } = chai;
 
 function activateEditorByClicking(editor: AkEditorBitbucket) : void {
-  const clickEvent = new MouseEvent("click", {
-    view: window,
-    bubbles: true,
-    cancelable: true
-  });
-  const inputEl = editor.shadowRoot.querySelector('* > input');
+  const inputEl = getShadowRoot(editor).querySelector('* > input');
   expect(inputEl).to.not.be.null;
-  expect(inputEl.dispatchEvent(clickEvent)).to.be.true;
+  emit(inputEl, 'click');
 }
 
 function waitForEditorToBeReady(editor: AkEditorBitbucket) : Promise<boolean> {
   return waitUntil(() => {
     return editor && !!editor._ready;
+  }, 10000);
+}
+
+function buildExpandedEditor(fixture : any) : Promise<AkEditorBitbucket> {
+  return new Promise(function(resolve) {
+    let editor: AkEditorBitbucket;
+    fixture.innerHTML = `<ak-editor-bitbucket expanded="true"></ak-editor-bitbucket>`;
+
+    afterMutations(
+      () => {
+        // TODO: Remove this after "expanded" attribute is fixed
+        activateEditorByClicking(fixture.firstChild);
+
+        waitForEditorToBeReady(fixture.firstChild).then(() => {
+          resolve(fixture.firstChild);
+        });
+      }
+    );
   });
 }
 
 describe('ak-editor-bitbucket', () => {
+  const fixture = fixtures();
+
   it('is possible to create a component', () => {
     let component: any;
     expect(() => {
@@ -35,71 +52,6 @@ describe('ak-editor-bitbucket', () => {
     expect(editor.ready).to.be.false;
   });
 
-  it('does not be expanded by default', () => {
-    const editor = new AkEditorBitbucket();
-    expect(editor.expanded).to.be.false;
-  });
-
-  describe('default config', function(){
-    let tmpContainer : any;
-    let editor : any;
-
-    this.timeout(30000);
-
-    beforeEach((done) => {
-      tmpContainer = document.createElement('div');
-      tmpContainer.innerHTML = `<ak-editor-bitbucket></ak-editor-bitbucket>`;
-      document.body.appendChild(tmpContainer);
-
-      afterMutations(
-        () => (editor = tmpContainer.firstChild),
-        done
-      );
-    });
-
-    afterEach(() => {
-      document.body.removeChild(tmpContainer);
-    });
-
-    it('should expand after clicking the input element', (done) => {
-      activateEditorByClicking(editor);
-      expect(editor.expanded).to.be.true;
-      done();
-    });
-
-    it('should have toolbar with all default elements', () => {
-      activateEditorByClicking(editor);
-      return waitForEditorToBeReady(editor).then(() => {
-        [
-          'ak-editor-toolbar',
-          'ak-editor-toolbar-block-type',
-          'ak-editor-toolbar-lists',
-          'ak-editor-toolbar-hyperlink',
-          'ak-editor-toolbar-text-formatting'
-        ].forEach((selector) => {
-          expect(editor.shadowRoot.querySelector(selector)).to.not.be.null;
-        });
-      });
-    });
-
-    it('should have options in block type dropdown', () => {
-      activateEditorByClicking(editor);
-
-      return waitForEditorToBeReady(editor).then(() => {
-        const bt = editor.shadowRoot.querySelector('ak-editor-toolbar-block-type');
-        expect(bt).to.not.be.null;
-
-        const fs = bt.shadowRoot.querySelector('ak-editor-toolbar-block-type-font-select');
-        expect(fs).to.not.be.null;
-
-        return waitUntil(() => {
-          return bt.shadowRoot.querySelectorAll('ak-editor-toolbar-block-type-option').length >= 2;
-        }, 2000);
-      });
-    });
-
-  });
-
   describe('.value', () => {
     it('returns an empty string by default', () => {
       const editor = new AkEditorBitbucket();
@@ -111,5 +63,76 @@ describe('ak-editor-bitbucket', () => {
       editor.defaultValue = 'foo';
       expect(editor.value).to.equal('foo');
     });
+  });
+
+  describe('collapsed editor', () => {
+    let tmpContainer: any;
+    let editor: any;
+
+    beforeEach((done) => {
+      tmpContainer = fixture();
+      tmpContainer.innerHTML = `<ak-editor-bitbucket></ak-editor-bitbucket>`;
+
+      afterMutations(
+        () => (editor = tmpContainer.firstChild),
+        done
+      );
+    });
+
+    it('should not be expanded by default', () => {
+      expect(editor.expanded).to.be.false;
+    });
+
+    it('should expand after clicking the input element', () => {
+      activateEditorByClicking(editor);
+      expect(editor.expanded).to.be.true;
+    });
+  });
+
+  describe('editor toolbar', () => {
+    let tmpContainer: any;
+    let editor: any;
+
+    beforeEach((done) => {
+      tmpContainer = fixture();
+      tmpContainer.innerHTML = `<ak-editor-bitbucket></ak-editor-bitbucket>`;
+
+      afterMutations(
+        () => (editor = tmpContainer.firstChild),
+        done
+      );
+    });
+
+    it('should have all default elements', () => {
+      return buildExpandedEditor(fixture()).then((editor) => {
+        [
+          'ak-editor-toolbar',
+          'ak-editor-toolbar-block-type',
+          'ak-editor-toolbar-lists',
+          'ak-editor-toolbar-hyperlink',
+          'ak-editor-toolbar-text-formatting'
+        ].forEach((selector) => {
+          expect(getShadowRoot(editor).querySelector(selector)).to.not.be.null;
+        });
+      });
+    });
+
+    it('should have options in block type dropdown', () => {
+      return buildExpandedEditor(fixture()).then((editor) => {
+        const bt = getShadowRoot(editor).querySelector('ak-editor-toolbar-block-type');
+        expect(bt).to.not.be.null;
+
+        // debugger;
+        const fs = getShadowRoot(bt).querySelector('ak-editor-toolbar-block-type-select');
+        expect(fs).to.not.be.null;
+
+        const btShadowRoot = getShadowRoot(bt);
+        return waitUntil(() => {
+          // it takes roughly 3 iterations to render those elements and attach them to <ul>
+          return btShadowRoot.querySelectorAll('ak-editor-toolbar-block-type-option').length >= 2;
+        });
+      });
+    });
+
   });
 });

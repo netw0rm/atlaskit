@@ -69,14 +69,16 @@ describe('ak-editor-plugin-block-type', () => {
   });
 
   it('should get current state immediately once subscribed', () => {
-    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+    const { pm, plugin } = editor(doc(p('text')));
     const spy = sinon.spy();
 
     plugin.subscribe(spy);
 
+    expect(spy.callCount).to.equal(1);
+
     expect(spy).to.have.been.calledWith({
       selectedBlockType: 'paragraph',
-      enabled: true
+      enabled: false
     });
   });
 
@@ -86,6 +88,8 @@ describe('ak-editor-plugin-block-type', () => {
 
     plugin.subscribe(spy);
     plugin.changeBlockType('heading');
+
+    expect(spy.callCount).to.equal(2);
 
     expect(spy).to.have.been.calledWith({
       selectedBlockType: 'heading1',

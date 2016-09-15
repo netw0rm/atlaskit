@@ -2,8 +2,10 @@ import HyperlinkPlugin from '../src';
 import { chaiPlugin, makeEditor, doc, a, p, text, insert } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
+chai.use(sinonChai);
 
 describe('ak-editor-plugin-hyperlink', () => {
   const editor = (doc: any) => {
@@ -80,6 +82,17 @@ describe('ak-editor-plugin-hyperlink', () => {
       plugin.subscribe(spy);
 
       expect(spy.callCount).to.equal(1);
+
+      expect(spy).to.have.been.calledWith({
+        active: false,
+        element: null,
+        enabled: true,
+        href: "",
+        rel: "",
+        target: "",
+        text: "",
+        title: "",
+      });
     });
 
     it('should be able to register handlers for state change events', () => {

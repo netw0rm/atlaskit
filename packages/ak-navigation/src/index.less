@@ -37,6 +37,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    z-index: 1; //needed so that child dropdowns can trump the container nav links
 
     .global-primary {
       margin: @global-primary-item-margin auto;
@@ -50,7 +51,8 @@
     .global-secondary-item {
       margin: 10px auto;
       height: @global-secondary-item-height;
-      text-align: center;
+      display: flex;
+      justify-content: center;
     }
 
     .global-bottom {

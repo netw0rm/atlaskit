@@ -1,13 +1,14 @@
 import {
-  Block, Text, Doc, BlockQuote, OrderedList, BulletList,
+  Block, Text, Doc, BlockQuote, OrderedList, BulletList, Schema,
   ListItem, HorizontalRule, Heading, Paragraph, Image, HardBreak, EmMark,
   StrongMark, LinkMark, CodeMark,
 } from 'ak-editor-prosemirror';
 
 import { Mention, Emoji } from './entity';
 import { CodeBlock } from './code-block';
+import { DelMark } from './del-mark';
 
-export const schema = {
+const schemaSpec = {
   nodes: {
     doc: { type: Doc, content: 'block+' },
 
@@ -35,5 +36,7 @@ export const schema = {
     em: EmMark,
     strong: StrongMark,
     code: CodeMark,
+    del: DelMark,
   },
 };
+export const schema = new Schema(schemaSpec);

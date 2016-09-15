@@ -9,7 +9,7 @@ module.exports.pitch = function pitch() {
     .map(filename => {
       const name = path.basename(filename, '.svg');
       const loader = 'idomizer/lib/plugins/idomizer-loader';
-      return `exports[${JSON.stringify(name)}] = require("${loader}!./${subdir}/${filename}");`;
+      return `exports[${JSON.stringify(name)}] = require("${loader}!img./${subdir}/${filename}");`;
     })
     .join('\n');
 };

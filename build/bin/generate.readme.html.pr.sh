@@ -16,9 +16,6 @@ mkdir -p $OUTDIR
 export OUTDIR="$OUTDIR"
 $LERNA_LOC exec -- ../../build/bin/generate.readme.html.sh
 
-echo "Removing empty files..."
-find $OUTDIR -size  0 -print0 | xargs -0 rm
-
 echo "Generating docs index..."
 
 INDEX_FILE="index.html"

@@ -221,7 +221,7 @@ describe('ak-avatar', () => {
       return waitUntil(loadedClassRendered)
         .then(() => {
           // now we set it to something invalid (and expect the .loaded class to be removed)
-          component.src = 'notaValidURL';
+          component.src = 'http://not.a.valid.url';
           return waitUntil(() => !loadedClassRendered());
         })
         .then(() => {

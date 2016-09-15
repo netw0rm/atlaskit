@@ -1,6 +1,6 @@
 # Tag
 
-![Example tags](docs/overview.png)
+![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tag/docs/overview.png)
 
 This component displays as a tag with an optional link and/or button to remove the given tag.
 

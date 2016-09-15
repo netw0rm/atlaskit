@@ -238,4 +238,4 @@ export default define('ak-dropdown', {
 });
 
 export { events };
-export { DropdownTrigger, DropdownTriggerButton } from './trigger';
+export { DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow } from './trigger';

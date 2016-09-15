@@ -183,4 +183,15 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
+  .add('dropdown with icon only button trigger', () => (
+    <div>
+      <DropdownReactComponent>
+        <ak-dropdown-trigger-arrow slot="trigger"></ak-dropdown-trigger-arrow>
+        <ak-dropdown-item>Joscha</ak-dropdown-item>
+        <ak-dropdown-item>Wuz</ak-dropdown-item>
+        <ak-dropdown-item>Here</ak-dropdown-item>
+        <ak-dropdown-item>2016</ak-dropdown-item>
+      </DropdownReactComponent>
+    </div>
+  ))
 ;

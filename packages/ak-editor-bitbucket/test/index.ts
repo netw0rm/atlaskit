@@ -2,19 +2,13 @@ import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations } from 'akutil-common-test';
 import { symbols } from 'skatejs';
+import { fixtures } from 'ak-editor-test';
 
 const { expect } = chai;
 
 describe('ak-editor-bitbucket', () => {
-  let component: any;
-  beforeEach(() => {
-    component = new AkEditorBitbucket();
-    document.body.appendChild(component);
-  });
-  afterEach(() => {
-    document.body.removeChild(component);
-    component = null;
-  });
+  const fixture = fixtures();
+  const makeEditor = () => fixture().appendChild(new AkEditorBitbucket());
 
   it('is possible to create a component', () => {
     let editor: any;
@@ -30,10 +24,12 @@ describe('ak-editor-bitbucket', () => {
   });
 
   it('does not be expanded by default', (done) => {
-    expect(component.expanded).to.be.false;
+    const editor = makeEditor();
+
+    expect(editor.expanded).to.be.false;
     afterMutations(
       () => {
-        const pm = component.querySelector('.ProseMirror');
+        const pm = editor[symbols.shadowRoot].querySelector('.ProseMirror');
         expect(pm).to.be.a('null');
       },
       done
@@ -41,10 +37,12 @@ describe('ak-editor-bitbucket', () => {
   });
 
   it('can be set to expanded', (done) => {
-    component.expanded = true;
+    const editor = makeEditor();
+
+    editor.expanded = true;
     afterMutations(
       () => {
-        const pm = component[symbols.shadowRoot].querySelector('.ProseMirror');
+        const pm = editor[symbols.shadowRoot].querySelector('.ProseMirror');
         expect(pm).to.be.ok;
       },
       done
@@ -52,13 +50,15 @@ describe('ak-editor-bitbucket', () => {
   });
 
   it('can be set to expanded and collapsed', (done) => {
-    component.expanded = true;
+    const editor = makeEditor();
+
+    editor.expanded = true;
     afterMutations(
       () => {
-        component.expanded = false;
+        editor.expanded = false;
       },
       () => {
-        const pm = component.querySelector('.ProseMirror');
+        const pm = editor[symbols.shadowRoot].querySelector('.ProseMirror');
         expect(pm).to.be.a('null');
       },
       done

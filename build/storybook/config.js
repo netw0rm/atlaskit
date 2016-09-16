@@ -4,7 +4,6 @@ import MonitoredStory from './MonitoredStory.js';
 import MonkeyTestStory from './MonkeyTestStory.js';
 import SwappedDirectionStory from './SwappedDirectionStory.js';
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import 'style!./styles.less';
 

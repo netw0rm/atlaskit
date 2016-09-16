@@ -8,7 +8,7 @@ const { expect } = chai;
 
 describe('ak-editor-bitbucket', () => {
   const fixture = fixtures();
-  const makeEditor = () => fixture().appendChild(new AkEditorBitbucket());
+  const makeEditor = () => fixture().appendChild(new AkEditorBitbucket()) as any;
 
   it('is possible to create a component', () => {
     let editor: any;

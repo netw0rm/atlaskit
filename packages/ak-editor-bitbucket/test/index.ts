@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations } from 'akutil-common-test';
+import { symbols } from 'skatejs';
 
 const { expect } = chai;
 
@@ -43,8 +44,8 @@ describe('ak-editor-bitbucket', () => {
     component.expanded = true;
     afterMutations(
       () => {
-        const pm = component.querySelector('.ProseMirror');
-        expect(pm).to.be.an('object');
+        const pm = component[symbols.shadowRoot].querySelector('.ProseMirror');
+        expect(pm).to.be.ok;
       },
       done
     );

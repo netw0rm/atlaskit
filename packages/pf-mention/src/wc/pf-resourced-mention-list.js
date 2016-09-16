@@ -100,8 +100,13 @@ export default define('pf-resourced-mention-list', {
   },
 
   updated(elem, prevProps = {}) {
+    const resourceProviderChanged = elem.resourceProvider !== prevProps.resourceProvider;
+    const queryChanged = elem.query !== prevProps.query;
+    const canFilter = (typeof elem.query === 'string') && elem.resourceProvider;
+    const shouldFilter = canFilter && (queryChanged || resourceProviderChanged);
+
     // resource provider
-    if (elem.resourceProvider !== prevProps.resourceProvider) {
+    if (resourceProviderChanged) {
       if (prevProps.resourceProvider) {
         prevProps.resourceProvider.unsubscribe(elem._subscriberKey);
       }
@@ -120,13 +125,17 @@ export default define('pf-resourced-mention-list', {
       }
     }
 
+    if (shouldFilter) {
+      elem.resourceProvider.filter(elem.query);
+    }
+
     return hasChanges(elem, prevProps);
   },
 
   props: {
     resourceProvider: {},
     presenceProvider: {},
-    query: {},
+    query: prop.string({ attribute: true, default: () => '' }),
 
     // Internal state
     _mentions: prop.array(),

@@ -102,7 +102,6 @@ export default define('pf-mention-picker', {
       );
     }
 
-    debug('pf-mention-picker.render', query);
     return (
       <div style={style}>
         <style>{shadowStyles.toString()}</style>
@@ -121,9 +120,6 @@ export default define('pf-mention-picker', {
 
   updated(elem, prevProps = {}) {
     const resourceProviderChanged = elem.resourceProvider !== prevProps.resourceProvider;
-    const queryChanged = elem.query !== prevProps.query;
-    const canFilter = elem.query && elem.resourceProvider;
-    const shouldFilter = canFilter && (queryChanged || resourceProviderChanged);
 
     // resource provider
     if (resourceProviderChanged) {
@@ -133,11 +129,6 @@ export default define('pf-mention-picker', {
       if (elem.resourceProvider) {
         elem.resourceProvider.subscribe(elem._subscriberKey, elem._filterChange);
       }
-    }
-
-    // re-filter if necessary
-    if (shouldFilter) {
-      elem.resourceProvider.filter(elem.query);
     }
 
     return hasChanges(elem, prevProps);

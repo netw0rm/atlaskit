@@ -1,5 +1,5 @@
 import EventedGroup from './EventedGroup.js';
-const { React } = window;
+import React from 'react';
 
 const AlignedStory = (props) => (<EventedGroup
   alignment={props.alignment}

@@ -1,10 +1,10 @@
 import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { emit, symbols } from 'skatejs';
+import { emit } from 'skatejs';
 import Component from '../src';
 import shadowStyles from '../src/shadow.less';
-import { afterMutations } from 'akutil-common-test';
+import { afterMutations, getShadowRoot } from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -30,7 +30,7 @@ describe(name, () => {
       component.addEventListener('save', () => { clicked = true; });
       afterMutations(
         () => {
-          const button = component[symbols.shadowRoot]
+          const button = getShadowRoot(component)
             .querySelector(`.${shadowStyles.locals.saveButton}`);
           emit(button, 'click');
         },
@@ -44,7 +44,7 @@ describe(name, () => {
       component.addEventListener('cancel', () => { clicked = true; });
       afterMutations(
         () => {
-          const button = component[symbols.shadowRoot]
+          const button = getShadowRoot(component)
             .querySelector(`.${shadowStyles.locals.cancelButton}`);
           emit(button, 'click');
         },
@@ -60,7 +60,7 @@ describe(name, () => {
       component.addEventListener('insertmention', () => { clicked = true; });
       afterMutations(
         () => {
-          const insert = component[symbols.shadowRoot].querySelectorAll('button')[2];
+          const insert = getShadowRoot(component).querySelectorAll('button')[2];
           emit(insert, 'click');
         },
         () => expect(clicked).to.equal(true),
@@ -73,7 +73,7 @@ describe(name, () => {
       component.addEventListener('insertimage', () => { clicked = true; });
       afterMutations(
         () => {
-          const insert = component[symbols.shadowRoot].querySelectorAll('button')[3];
+          const insert = getShadowRoot(component).querySelectorAll('button')[3];
           emit(insert, 'click');
         },
         () => expect(clicked).to.equal(true),

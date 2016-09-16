@@ -54,8 +54,14 @@ export default define('pf-resourced-mention-list', {
       // Retain known presence
       debug('pf-resourced-mentions-list._filterChange', mentions && mentions.length);
       const currentPresences = extractPresences(this._mentions);
+      this._showError = false;
       this._mentions = applyPresence(mentions, currentPresences);
       this._refreshPresences(mentions);
+    },
+
+    _filterError(error) {
+      debug('pf-resourced-mentions-list._filterError', error);
+      this._showError = true;
     },
 
     _presenceUpdate(presences) {
@@ -73,7 +79,9 @@ export default define('pf-resourced-mention-list', {
   created(elem) {
     elem._subscriberKey = uniqueId('pf-resourced-mention-list');
     elem._filterChange = elem._filterChange.bind(elem);
+    elem._filterError = elem._filterError.bind(elem);
     elem._presenceUpdate = elem._presenceUpdate.bind(elem);
+    elem._showError = false;
   },
 
   render(elem) {
@@ -84,6 +92,7 @@ export default define('pf-resourced-mention-list', {
         <style>{shadowStyles.toString()}</style>
         <MentionList
           mentions={elem._mentions}
+          showError={elem._showError}
           ref={ref => { elem._mentionListRef = ref; }}
         />
       </div>
@@ -97,7 +106,7 @@ export default define('pf-resourced-mention-list', {
         prevProps.resourceProvider.unsubscribe(elem._subscriberKey);
       }
       if (elem.resourceProvider) {
-        elem.resourceProvider.subscribe(elem._subscriberKey, elem._filterChange);
+        elem.resourceProvider.subscribe(elem._subscriberKey, elem._filterChange, elem._filterError);
       }
     }
 
@@ -121,5 +130,6 @@ export default define('pf-resourced-mention-list', {
 
     // Internal state
     _mentions: prop.array(),
+    _showError: prop.boolean(),
   },
 });

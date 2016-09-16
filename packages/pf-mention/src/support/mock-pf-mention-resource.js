@@ -30,12 +30,19 @@ class MentionResource extends AbstractMentionResource {
       }
     };
 
+    const notifyErrors = (error) => {
+      this._notifyErrorListeners(error);
+    };
+
     const minWait = this._config.minWait || 0;
     const randomTime = (this._config.maxWait || 0) - minWait;
     const waitTime = Math.random() * randomTime + minWait;
     setTimeout(() => {
       let mentions;
-      if (query) {
+      if (query === 'error') {
+        notifyErrors('mock-error');
+        return;
+      } else if (query) {
         mentions = search.search(query);
       } else {
         mentions = mentionData.mentions;

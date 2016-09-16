@@ -1,6 +1,6 @@
 # Tooltip
 
-![Example tooltip](http://i.imgur.com/VbvuNFu.gif)
+![Example tooltip](http://i.imgur.com/VbvuNFu.gif?1)
 
 This component is used to display extra information to a user about an element by displaying a
 floating description. Tooltip is usable by itself, but it is **highly** reccomended to be used in

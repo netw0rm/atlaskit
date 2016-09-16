@@ -2,8 +2,10 @@ import BlockTypePlugin from '../src';
 import { chaiPlugin, makeEditor, doc, p, text, h1, blockquote } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
+chai.use(sinonChai);
 
 describe('ak-editor-plugin-block-type', () => {
   const editor = (doc: any) => {
@@ -64,5 +66,34 @@ describe('ak-editor-plugin-block-type', () => {
 
     pm.setTextSelection(pPos);
     expect(plugin.getState().selectedBlockType).to.equal('paragraph');
+  });
+
+  it('should get current state immediately once subscribed', () => {
+    const { pm, plugin } = editor(doc(p('text')));
+    const spy = sinon.spy();
+
+    plugin.subscribe(spy);
+
+    expect(spy).to.have.been.callCount(1);
+
+    expect(spy).to.have.been.calledWith({
+      selectedBlockType: 'paragraph',
+      enabled: true
+    });
+  });
+
+  it('should be able to subscribe the changes', () => {
+    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+    const spy = sinon.spy();
+
+    plugin.subscribe(spy);
+    plugin.changeBlockType('heading');
+
+    expect(spy).to.have.been.callCount(2);
+
+    expect(spy).to.have.been.calledWith({
+      selectedBlockType: 'heading1',
+      enabled: true
+    });
   });
 });

@@ -17,6 +17,7 @@ storiesOf('ak-editor-icon', module)
       <Icon glyph="link" />
       <Icon glyph="unlink" />
       <Icon glyph="mention" />
+      <Icon glyph="code" />
     </div>
   ))
   .add('Animated', () => {
@@ -62,6 +63,7 @@ storiesOf('ak-editor-icon', module)
           'link',
           'unlink',
           'mention',
+          'code',
         ];
         return icons[Math.floor(Math.random() * icons.length)];
       }

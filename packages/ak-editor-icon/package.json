@@ -7,8 +7,7 @@
   "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-editor-icon",
-    "compress": "find . -name *.svg -exec svgo {} {} \\;",
-    "pre-release": "lerna-semantic-release pre"
+    "compress": "find . -name *.svg -exec svgo {} {} \\;"
   },
   "files": [
     "dist"

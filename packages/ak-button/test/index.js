@@ -10,6 +10,7 @@ import hostStyles from '../src/host.less';
 import { name } from '../package.json';
 import { hasClass, waitUntil } from 'akutil-common-test';
 const classKeys = shadowStyles.locals;
+import { akGridSize } from 'akutil-shared-styles';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -70,7 +71,16 @@ describe('ak-button', () => {
       beforeEach(() => component.appendChild(div));
 
       it('slotted element should have margin-right applied', () =>
-        expect(window.getComputedStyle(div).marginRight).to.equal('8px')
+        expect(window.getComputedStyle(div).marginRight).to.equal(akGridSize)
+      );
+    });
+
+    describe('after', () => {
+      const div = createDivTest({ slotName: 'after' });
+      beforeEach(() => component.appendChild(div));
+
+      it('slotted element should have margin-left applied', () =>
+        expect(window.getComputedStyle(div).marginLeft).to.equal(akGridSize)
       );
     });
   });

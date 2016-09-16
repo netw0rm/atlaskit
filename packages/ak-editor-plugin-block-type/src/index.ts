@@ -7,7 +7,7 @@ export interface BlockTypeState {
 
 const DEFAULT_STATE: BlockTypeState = {
   selectedBlockType: 'paragraph',
-  enabled: false
+  enabled: true
 };
 
 function isShallowObjectEqual(oldObject: BlockTypeState, newObject: BlockTypeState): boolean {
@@ -98,7 +98,8 @@ export default new Plugin(class BlockTypePlugin {
     )(pm);
   }
 
-  onChange(cb: StateChangeHandler) {
+  subscribe(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
+    cb(this.getState());
   }
 });

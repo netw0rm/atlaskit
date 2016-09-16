@@ -30,6 +30,17 @@ function tearDownPicker(component) {
   document.body.removeChild(component);
 }
 
+function newMouseDownEvent() {
+  try {
+    return new MouseEvent('mousedown');
+  } catch (e) {
+    const event = document.createEvent('MouseEvent');
+    event.initMouseEvent('mousedown', true, true, window, 1, 0, 0, 0, 0, false, false, false,
+      false, 0, null);
+    return event;
+  }
+}
+
 describe('pf-mention-picker', () => {
   let component;
 
@@ -156,7 +167,7 @@ describe('pf-mention-picker', () => {
     return new Promise((resolve, reject) => {
       waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
         const item = getMentionItemById(component, mentions[2].id);
-        item.dispatchEvent(new MouseEvent('mousedown'));
+        item.dispatchEvent(newMouseDownEvent());
         waitUntil(chooseThirdItem).should.be.fulfilled.then(() => {
           resolve();
         }, (reason) => reject(reason));

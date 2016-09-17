@@ -1,0 +1,16 @@
+* Properties
+
+{{setLevel this 0~}}
+{{#if (descendants min=(option 'memberIndex.minDescendants'))~}}
+{{#if isExported~}}
+{{#if (equal (depth) 0)}}
+
+{{>member-index-props}}
+
+{{/if~}}
+{{else~}}
+
+{{>member-index-props}}
+
+{{/if~}}
+{{/if~}}

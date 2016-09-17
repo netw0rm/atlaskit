@@ -377,7 +377,7 @@ class AkEditorBitbucket extends Component {
     });
 
     // Hyperlink plugin wiring
-    HyperlinkPlugin.get(pm).onChange(state => {
+    HyperlinkPlugin.get(pm).subscribe(state => {
       this._canLinkHyperlink = state.enabled as boolean;
       this._hyperLinkActive = state.active as boolean;
       this._hyperLinkElement = state.element as HTMLElement;
@@ -391,20 +391,20 @@ class AkEditorBitbucket extends Component {
     ImageUploadPlugin.get(pm).pasteAdapter.add(handler);
 
     // Block type plugin wiring
-    BlockTypePlugin.get(pm).onChange(state => {
+    BlockTypePlugin.get(pm).subscribe(state => {
       const blockType = state.selectedBlockType;
       this._selectedBlockType = getBlockType({ blockType }, this._blockTypes);
       this._canChangeBlockType = state.enabled as boolean;
     });
 
     // Lists
-    ListsPlugin.get(pm).onChange(state => {
+    ListsPlugin.get(pm).subscribe(state => {
       this._bulletListActive = Boolean(state.active && state.type === 'bullet_list');
       this._numberListActive = Boolean(state.active && state.type === 'ordered_list');
     });
 
     // Text formatting
-    TextFormattingPlugin.get(pm).onChange(state => {
+    TextFormattingPlugin.get(pm).subscribe(state => {
       this._strongActive = state.strongActive;
       this._emActive = state.emActive;
       this._underlineActive = state.underlineActive;

@@ -147,7 +147,8 @@ export default new Plugin(class ListsPlugin {
     return commands.wrapInList(pm.schema.nodes[type as string] as Node)(pm);
   }
 
-  onChange(cb: StateChangeHandler) {
+  subscribe(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
+    cb(this.getState());
   }
 });

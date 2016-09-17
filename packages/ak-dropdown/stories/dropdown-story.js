@@ -4,6 +4,7 @@ import Dropdown from '../src/index';
 const { React, ReactDOM } = window;
 const { Component } = React;
 import { name } from '../package.json';
+import 'ak-avatar';
 
 const DropdownReactComponent = reactify(Dropdown, {
   React,
@@ -52,8 +53,8 @@ class DropdownWithOutsideTrigger extends Component {
 storiesOf(`${name} component`, module)
   .add('simple dropdown', () => (
     <div>
-      <DropdownReactComponent>
-        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
+      <DropdownReactComponent open>
+        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
         <ak-dropdown-item>text1</ak-dropdown-item>
         <ak-dropdown-item>text2</ak-dropdown-item>
         <ak-dropdown-item>some text here</ak-dropdown-item>
@@ -66,8 +67,8 @@ storiesOf(`${name} component`, module)
   ))
   .add('dropdown with avatars', () => (
     <div>
-      <DropdownReactComponent>
-        <ak-dropdown-trigger slot="trigger">People list</ak-dropdown-trigger>
+      <DropdownReactComponent open>
+        <ak-dropdown-trigger-button slot="trigger">People list</ak-dropdown-trigger-button>
         <ak-dropdown-item>
           <ak-avatar slot="left" src={avatarUrl} size="small" />
           Adam Smith
@@ -96,16 +97,88 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
+  .add('dropdown with grouping', () => (
+    <div>
+      <DropdownReactComponent open>
+        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
+        <ak-dropdown-item>some text here</ak-dropdown-item>
+        <ak-dropdown-item>some text here</ak-dropdown-item>
+        <ak-dropdown-group title="title one">
+          <ak-dropdown-item>text1</ak-dropdown-item>
+          <ak-dropdown-item selected>text2</ak-dropdown-item>
+        </ak-dropdown-group>
+        <ak-dropdown-group title="title two">
+          <ak-dropdown-item disabled>some text here</ak-dropdown-item>
+          <ak-dropdown-item>another text</ak-dropdown-item>
+        </ak-dropdown-group>
+        <ak-dropdown-group>
+          <ak-dropdown-item>this is a group</ak-dropdown-item>
+          <ak-dropdown-item>without any title</ak-dropdown-item>
+        </ak-dropdown-group>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('dropdown with grouping without headers', () => (
+    <div>
+      <DropdownReactComponent open>
+        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
+        <ak-dropdown-item>some text here</ak-dropdown-item>
+        <ak-dropdown-item>some text here</ak-dropdown-item>
+        <ak-dropdown-group>
+          <ak-dropdown-item>text1</ak-dropdown-item>
+          <ak-dropdown-item>text2</ak-dropdown-item>
+        </ak-dropdown-group>
+        <ak-dropdown-group>
+          <ak-dropdown-item disabled>some text here</ak-dropdown-item>
+          <ak-dropdown-item>another text</ak-dropdown-item>
+        </ak-dropdown-group>
+        <ak-dropdown-group>
+          <ak-dropdown-item>this is a group</ak-dropdown-item>
+          <ak-dropdown-item>without any title</ak-dropdown-item>
+        </ak-dropdown-group>
+      </DropdownReactComponent>
+    </div>
+  ))
   .add('dropdown with everything', () => (
     <div>
+      <DropdownReactComponent open>
+        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
+        <ak-dropdown-group>
+          <ak-dropdown-item>text1</ak-dropdown-item>
+          <ak-dropdown-item selected>text2</ak-dropdown-item>
+          <ak-dropdown-item disabled>some text here</ak-dropdown-item>
+          <ak-dropdown-item>another text</ak-dropdown-item>
+          <ak-dropdown-item>such long text for such small dropdown isn't it?</ak-dropdown-item>
+          <ak-dropdown-item href="http://atlassian.com">This is a clickable link</ak-dropdown-item>
+        </ak-dropdown-group>
+        <ak-dropdown-group title="some group">
+          <ak-dropdown-item>this is a group</ak-dropdown-item>
+          <ak-dropdown-item>another text</ak-dropdown-item>
+        </ak-dropdown-group>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('dropdown with a buttonless trigger', () => (
+    <div>
       <DropdownReactComponent>
-        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
-        <ak-dropdown-item>text1</ak-dropdown-item>
-        <ak-dropdown-item selected>text2</ak-dropdown-item>
-        <ak-dropdown-item disabled>some text here</ak-dropdown-item>
-        <ak-dropdown-item>another text</ak-dropdown-item>
-        <ak-dropdown-item>such long text for such small dropdown isn't it?</ak-dropdown-item>
-        <ak-dropdown-item href="http://atlassian.com">This is a clickable link</ak-dropdown-item>
+        <ak-dropdown-trigger slot="trigger">
+          <ak-avatar src={avatarUrl} size="small" />
+        </ak-dropdown-trigger>
+        <ak-dropdown-item>Joscha</ak-dropdown-item>
+        <ak-dropdown-item>Wuz</ak-dropdown-item>
+        <ak-dropdown-item>Here</ak-dropdown-item>
+        <ak-dropdown-item>2016</ak-dropdown-item>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('dropdown with icon only button trigger', () => (
+    <div>
+      <DropdownReactComponent>
+        <ak-dropdown-trigger-arrow slot="trigger"></ak-dropdown-trigger-arrow>
+        <ak-dropdown-item>Joscha</ak-dropdown-item>
+        <ak-dropdown-item>Wuz</ak-dropdown-item>
+        <ak-dropdown-item>Here</ak-dropdown-item>
+        <ak-dropdown-item>2016</ak-dropdown-item>
       </DropdownReactComponent>
     </div>
   ))

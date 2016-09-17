@@ -1,4 +1,5 @@
-import { Fragment, Node, Slice, schema } from 'ak-editor-prosemirror'
+import { Fragment, Node, Slice } from 'ak-editor-prosemirror';
+import schema from 'ak-editor-schema';
 import matches from './matches';
 
 type position = number;
@@ -151,6 +152,10 @@ export const blockquote = nodeFactory("blockquote", {});
 export const pre = nodeFactory("code_block", {});
 export const h1 = nodeFactory("heading", {level: 1});
 export const h2 = nodeFactory("heading", {level: 2});
+export const h3 = nodeFactory("heading", {level: 3});
+export const h4 = nodeFactory("heading", {level: 4});
+export const h5 = nodeFactory("heading", {level: 5});
+export const h6 = nodeFactory("heading", {level: 6});
 export const li = nodeFactory("list_item", {});
 export const ul = nodeFactory("bullet_list", {});
 export const ol = nodeFactory("ordered_list", {});

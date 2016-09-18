@@ -2,10 +2,10 @@ import { storiesOf } from '@kadira/storybook';
 import ButtonComponent from '../src';
 import IconComponent from 'ak-editor-icon';
 import reactify from 'akutil-react';
-const { React, ReactDOM } = window;
+import React from 'react';
 
-const Button = reactify(ButtonComponent, { React, ReactDOM });
-const Icon = reactify(IconComponent, { React, ReactDOM });
+const Button = reactify(ButtonComponent);
+const Icon = reactify(IconComponent);
 
 storiesOf('ak-editor-button', module)
   .add('Empty', () => (

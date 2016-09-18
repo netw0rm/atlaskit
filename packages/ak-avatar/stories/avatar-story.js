@@ -5,12 +5,9 @@ import avatarStoryStyles from 'style!./stories.less';
 import { name } from '../package.json';
 import hostStyles from 'style!./../src/host.less';
 
-const { React, ReactDOM } = window;
+import React from 'react';
 
-const Avatar = reactify(AkAvatar, {
-  React,
-  ReactDOM,
-});
+const Avatar = reactify(AkAvatar);
 
 const avatarClass = hostStyles.akAvatar;
 const avatarUrl = require('url!./doge.jpg');

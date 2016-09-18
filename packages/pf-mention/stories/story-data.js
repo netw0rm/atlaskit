@@ -1,4 +1,4 @@
-import MentionResource from '../src/api/pf-mention-resource';
+import MentionResource from '../src/support/mock-pf-mention-resource';
 import debug, { enableLogger } from '../src/util/logger';
 
 enableLogger(true);
@@ -74,26 +74,15 @@ export const mentions = [
   },
 ];
 
-export const apiConfig = {
-  url: 'https://pf-mentions-service.internal.domain.dev.atlassian.io/',
-  securityProvider() {
-    return {
-      headers: {
-        // Dummy jwt token for testing in dev service
-        Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0Njg1NjA4NjUsImV4cCI6MTQ2ODU2MDkyNSwiaXNzIjoiaGlwY2hhdCIsInN1YiI6IjEwMTQ5IiwiYXVkIjoicGYtbWVudGlvbnMtc2VydmljZSJ9.pwU_1DUAhNPTUmOvzqnMOwgzlFf8Ig7US0AVOhGBL-Y',
-        'X-Bogus': 'single',
-        'X-Bogus-Array': ['1', 'Hello'],
-      },
-      params: {
-        bogus1: 'onlyone',
-        bogusArray: ['first', 'second'],
-      },
-    };
-  },
-  containerId: 2595975,
-};
+export const slowResourceProvider = new MentionResource({
+  minWait: 10,
+  maxWait: 100,
+});
 
-export const resourceProvider = new MentionResource(apiConfig);
+export const resourceProvider = new MentionResource({
+  minWait: 10,
+  maxWait: 25,
+});
 
 export class MockPresenceProvider {
 

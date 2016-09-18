@@ -1,14 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkBadge from '../src/index';
-const { React, ReactDOM } = window;
+import React from 'react';
 import { name } from '../package.json';
 import hostStyles from 'style!./../src/host.less';
 
-const Badge = reactify(AkBadge, {
-  React,
-  ReactDOM,
-});
+const Badge = reactify(AkBadge);
 
 const badgeClass = hostStyles.akBadge;
 

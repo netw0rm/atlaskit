@@ -2,13 +2,10 @@ import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkTabs, { events, Tab as AkTab } from '../src';
 const { tabChange: tabChangeEvent } = events;
-const { React, ReactDOM } = window;
+import React from 'react';
 import { name } from '../package.json';
 
-const Component = reactify(AkTabs, {
-  React,
-  ReactDOM,
-});
+const Component = reactify(AkTabs);
 
 function changeHandler(e) {
   action(`The "${e.target.label}" tab was changed. selected: ${e.target.selected}`)();

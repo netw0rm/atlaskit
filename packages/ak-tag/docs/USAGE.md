@@ -10,7 +10,7 @@ Although the `ak-tag` component can be used by itself, it works best in conjunct
 
 ## Play with it
 
-Go to [` the story book`](https://aui-cdn.atlassian.com/atlaskit/stories/ak-avatar/2.3.1/) to try for yourself.
+Go to [` the Storybook`](https://aui-cdn.atlassian.com/atlaskit/stories/ak-avatar/2.3.1/) to try for yourself.
 
 
 

@@ -1,6 +1,6 @@
 import MentionResource from '../../src/api/pf-mention-resource';
 
-import { resultC, resultCraig } from '../../src/support/mention-data';
+import { resultC, resultCraig } from '../../src/data';
 
 import fetchMock from 'fetch-mock';
 

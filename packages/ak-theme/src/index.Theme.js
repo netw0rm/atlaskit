@@ -6,6 +6,10 @@ function notify(themeName = null, themeProps = null) {
   emit(document, change, { detail: { themeName, themeProps } });
 }
 
+function ensureObject(potentialObj) {
+  return potentialObj && typeof potentialObj === 'object' ? potentialObj : {};
+}
+
 function varsFromChildren(host) {
   return [...host.children].reduce((prev, curr) => {
     const [key, val] = [curr.getAttribute('name'), curr.getAttribute('value')];
@@ -16,25 +20,15 @@ function varsFromChildren(host) {
 
     if (key.indexOf('.') > -1) {
       const keys = key.split('.');
-      const first = keys.shift();
       const last = keys.pop();
 
-      // If there is already a value for the first part of the object, we use that instead of
-      // creating a new one. However, if it's not an object then we overwrite it.
-      if (typeof prev[first] !== 'object') {
-        prev[first] = {};
-      }
+      // We use obj to nest the object values because we need to return prev.
+      let obj = prev;
 
-      // We store the nested object here so that we can loop over the parts of
-      // the var name and do the same thing we did above for each part, storing
-      // the nested object as its value. Once we're done, the value of obj will
-      // be the inner-most nested value and we can set the variable value to
-      // it.
-      let obj = prev[first];
-
+      // We ensure each part except for the last is an object. Previous values are overwritten.
       while (keys.length) {
         const part = keys.shift();
-        obj = obj[part] || (obj[part] = {});
+        obj = obj[part] = ensureObject(obj[part]);
       }
 
       // This will be the inner-most object, so we set the last part of the key

@@ -171,10 +171,11 @@ describe('ak-theme', () => {
       const theme = createTheme('theme', {
         my: 'my',
         'my.key': 'mykey',
+        'my.key.subkey': 'mykeysubkey',
       });
       document.body.appendChild(theme);
       afterMutations(
-        () => expect(theme.ownVars.my).to.deep.equal({ key: 'mykey' }),
+        () => expect(theme.ownVars.my).to.deep.equal({ key: { subkey: 'mykeysubkey' } }),
         done
       );
     });

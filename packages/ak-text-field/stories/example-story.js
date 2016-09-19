@@ -78,7 +78,7 @@ storiesOf(name, module)
     generateFormWithInput({ disabled: true, placeholder: 'Such input, very uneditable' })
   ))
   .add('ak-text-field with really long label', () => (
-    generateFormWithInput({ label: 'Example label with a realllly reallly long label that goes past the edge of the input!' }) // eslint-disable-line max-len
+    generateFormWithInput({ label: 'Example label with a realllly reallly reallly reallly reallly long label that goes past the edge of the input!' }) // eslint-disable-line max-len
   ))
   .add('ak-text-field with multiline label string', () => (
     generateFormWithInput({ label: `Example\nlabel` })

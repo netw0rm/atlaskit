@@ -20,13 +20,15 @@ function handleLabelClick(elem) {
 export default define('ak-text-field', {
   render(elem) {
     return (
-      <div className={shadowStyles.locals.defaultSlotWrapper}>
+      <div>
         <style>{shadowStyles.toString()}</style>
         <label
           onclick={handleLabelClick(elem)}
           className={shadowStyles.locals.label}
-        >{elem.label}</label>
-        <slot className={shadowStyles.locals.defaultSlotElement} />
+        >
+          {elem.label}
+          <slot className={shadowStyles.locals.defaultSlotElement} />
+        </label>
       </div>
     );
   },

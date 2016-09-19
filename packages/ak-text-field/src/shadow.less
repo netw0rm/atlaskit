@@ -1,65 +1,81 @@
-// These styles will be inserted into a style tag inside
-// the shadow dom of each instance of the component
-
-// Only do class selectors in here, anything else leaks to the rest of the page in
-// browsers that do not support shadow DOM
 @import 'shared-variables.less';
+@import 'shadow-variables.less';
 
-.defaultSlotWrapper {
-  max-width: 496px; // fits 8px grid
-}
+// State definitions
+
+@baseInputStyle: {
+  background-color: @ak-color-N10A;
+  border: unit(@standard-border-width, px) solid @ak-color-N30A;
+  border-radius: 3px;
+  font-size: 14px;
+  margin-top: unit(@label-input-spacing, px);
+  padding: unit(@input-vertical-padding, px) unit(@input-horizontal-padding, px);
+  transition: background-color @input-style-transition-duration ease-in-out,
+              border-color @input-style-transition-duration ease-in-out;
+  width: 100%;
+};
+
+@hoverInputStyle: {
+  background-color: @ak-color-N20;
+  border-color: @ak-color-N20;
+};
+
+@focusInputStyle: {
+  background-color: white;
+  border-width: unit(@focused-border-width, px);
+  border-color: @ak-color-B100;
+  outline: none;
+  padding: unit(@focused-input-vertical-padding, px) unit(@focused-input-horizontal-padding, px);
+};
+
+@disabledInputStyle: {
+  background-color: @ak-color-N20A;
+  border-width: unit(@standard-border-width, px);
+  border-color: @ak-color-N20A;
+  color: @ak-color-N60;
+  cursor: not-allowed;
+};
+
+// Label style
 
 .label {
   color: @ak-color-N200;
   display: block;
   font-size: 12px;
   font-weight: 500;
-  margin-top: 20px;
-  padding-bottom: 10px;
-  white-space: nowrap;
+  max-width: unit(@grid * 124, px); // fits 8px grid
+  padding-top: unit(@label-top-spacing, px);
 }
 
-// NORMAL STATE
+// Styles for native shadow DOM browsers
 
-@baseInputStyle: {
-  background-color: @ak-color-N10A;
-  border: 1px solid @ak-color-N30A;
-  border-radius: 3px;
-  font-size: 14px;
-  padding: 13px 8px;
-  transition: background-color 0.2s, border-color 0.2s;
-  width: 100%;
-};
-.default-slot-element > input { @baseInputStyle(); }
-::slotted(input)  { @baseInputStyle(); }
+::slotted(input) {
+  @baseInputStyle();
+}
+::slotted(input:hover) {
+  @hoverInputStyle();
+}
+::slotted(input:focus) {
+  @focusInputStyle();
+}
+::slotted(input[disabled]) {
+  @disabledInputStyle();
+}
 
-// HOVER STATE
+// Styles for polyfilled shadow DOM
 
-@hoverInputStyle: {
-  background-color: @ak-color-N20;
-  border-color: @ak-color-N20;
-};
-.default-slot-element > input:hover { @hoverInputStyle(); }
-::slotted(input:hover)  { @hoverInputStyle(); }
+.default-slot-element > input {
+  @baseInputStyle();
 
-// FOCUS STATE
+  &:hover {
+    @hoverInputStyle();
+  }
 
-@focusInputStyle: {
-  background-color: white;
-  border-width: 2px;
-  border-color: @ak-color-B100;
-  padding: 12px 7px;
-};
-.default-slot-element > input:focus { @focusInputStyle(); }
-::slotted(input:focus)  { @focusInputStyle(); }
+  &:focus {
+    @focusInputStyle();
+  }
 
-// DISABLED STATE
-
-@disabledInputStyle: {
-  background-color: @ak-color-N20A;
-  border: 1px solid @ak-color-N20A;
-  color: @ak-color-N60;
-  cursor: not-allowed;
-};
-.default-slot-element > input[disabled] { @disabledInputStyle(); }
-::slotted(input[disabled])  { @disabledInputStyle(); }
+  &[disabled] {
+    @disabledInputStyle();
+  }
+}

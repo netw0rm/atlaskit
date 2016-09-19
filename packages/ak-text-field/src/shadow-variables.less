@@ -1,0 +1,22 @@
+// Base grid
+@grid: 4;
+
+// Label margins
+@label-top-spacing: @grid * 5;
+@label-input-spacing: @grid * 3;
+
+// Input border width
+@standard-border-width: 1;
+@focused-border-width: 2;
+
+// Input padding
+@input-vertical-padding: @label-input-spacing;
+@input-horizontal-padding: @grid * 2;
+
+// Transition speed
+@input-style-transition-duration: 0.2s;
+
+// Calculated values
+@border-width-diff: @focused-border-width - @standard-border-width;
+@focused-input-vertical-padding: @input-vertical-padding - @border-width-diff;
+@focused-input-horizontal-padding: @input-horizontal-padding - @border-width-diff;

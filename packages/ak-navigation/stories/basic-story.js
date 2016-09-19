@@ -5,19 +5,13 @@ import akPage from 'ak-page';
 import 'ak-icon';
 import 'ak-avatar';
 import 'ak-dropdown';
-const { React, ReactDOM } = window;
+import React from 'react';
 import { name } from '../package.json';
 import Lorem from 'react-lorem-component';
 
-const AkNavigation = reactify(akNavigation, {
-  React,
-  ReactDOM,
-});
+const AkNavigation = reactify(akNavigation);
 
-const AkPage = reactify(akPage, {
-  React,
-  ReactDOM,
-});
+const AkPage = reactify(akPage);
 
 // TODO: move this in its own file - can potentially be re-used by ak-page as well
 const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-es6-class

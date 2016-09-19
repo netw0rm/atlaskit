@@ -17,9 +17,7 @@ import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
 import schema from 'ak-editor-schema';
 import { buildKeymap } from './keymap';
-import { markdownParser } from './markdown-parser';
 import { markdownSerializer } from './markdown-serializer';
-import { markdownTransformer } from './paste-handlers';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 
@@ -364,7 +362,7 @@ class AkEditorBitbucket extends Component {
 
     const pm = new ProseMirror({
       place: this._wrapper,
-      doc: markdownParser(schema).parse(this.defaultValue),
+      schema,
       plugins: [
         MarkdownInputRulesPlugin,
         HyperlinkPlugin,
@@ -377,7 +375,7 @@ class AkEditorBitbucket extends Component {
     });
 
     // Hyperlink plugin wiring
-    HyperlinkPlugin.get(pm).onChange(state => {
+    HyperlinkPlugin.get(pm).subscribe(state => {
       this._canLinkHyperlink = state.enabled as boolean;
       this._hyperLinkActive = state.active as boolean;
       this._hyperLinkElement = state.element as HTMLElement;
@@ -391,20 +389,20 @@ class AkEditorBitbucket extends Component {
     ImageUploadPlugin.get(pm).pasteAdapter.add(handler);
 
     // Block type plugin wiring
-    BlockTypePlugin.get(pm).onChange(state => {
+    BlockTypePlugin.get(pm).subscribe(state => {
       const blockType = state.selectedBlockType;
       this._selectedBlockType = getBlockType({ blockType }, this._blockTypes);
       this._canChangeBlockType = state.enabled as boolean;
     });
 
     // Lists
-    ListsPlugin.get(pm).onChange(state => {
+    ListsPlugin.get(pm).subscribe(state => {
       this._bulletListActive = Boolean(state.active && state.type === 'bullet_list');
       this._numberListActive = Boolean(state.active && state.type === 'ordered_list');
     });
 
     // Text formatting
-    TextFormattingPlugin.get(pm).onChange(state => {
+    TextFormattingPlugin.get(pm).subscribe(state => {
       this._strongActive = state.strongActive;
       this._emActive = state.emActive;
       this._underlineActive = state.underlineActive;
@@ -427,9 +425,6 @@ class AkEditorBitbucket extends Component {
 
     // add the keymap
     pm.addKeymap(buildKeymap(pm.schema));
-
-    // add paste handlers
-    pm.on.transformPasted.add(slice => markdownTransformer(pm.schema, slice));
 
     // 'change' event is public API
     pm.on.change.add(() => emit(this, 'change'));

@@ -1,15 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import Dropdown from '../src/index';
-const { React, ReactDOM } = window;
+import React from 'react';
 const { Component } = React;
 import { name } from '../package.json';
 import 'ak-avatar';
 
-const DropdownReactComponent = reactify(Dropdown, {
-  React,
-  ReactDOM,
-});
+const DropdownReactComponent = reactify(Dropdown);
 
 const avatarUrl = require('url!./doge.jpg');
 

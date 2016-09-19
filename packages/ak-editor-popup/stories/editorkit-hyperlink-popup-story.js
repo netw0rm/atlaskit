@@ -1,32 +1,20 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import Popup from '../src/index';
-const { React, ReactDOM } = window;
+import React from 'react';
 import { name } from '../package.json';
 import 'style!./../src/host.less';
 import EditorButtonComponent from 'ak-editor-button';
 import IconComponent from 'ak-editor-icon';
 import ToolbarComponent from 'ak-editor-toolbar';
 
-const Component = reactify(Popup, {
-  React,
-  ReactDOM,
-});
+const Component = reactify(Popup);
 
-const EditorButton = reactify(EditorButtonComponent, {
-  React,
-  ReactDOM,
-});
+const EditorButton = reactify(EditorButtonComponent);
 
-const Icon = reactify(IconComponent, {
-  React,
-  ReactDOM,
-});
+const Icon = reactify(IconComponent);
 
-const Toolbar = reactify(ToolbarComponent, {
-  React,
-  ReactDOM,
-});
+const Toolbar = reactify(ToolbarComponent);
 
 const marginLeft = 5;
 

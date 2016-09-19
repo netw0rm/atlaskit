@@ -1,4 +1,4 @@
-import { define, vdom, prop, symbols } from 'skatejs';
+import { define, vdom, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import 'style!./host.less';
 
@@ -19,7 +19,7 @@ export default define('ak-editor-popup-text-input', {
   },
   prototype: {
     focus() {
-      this[symbols.shadowRoot].querySelector(`.${shadowStyles.locals.textInput}`).focus();
+      this.shadowRoot.querySelector(`.${shadowStyles.locals.textInput}`).focus();
     },
   },
   props: {

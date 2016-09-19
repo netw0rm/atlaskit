@@ -1,0 +1,10 @@
+@import './shared-variables.less';
+
+.ak-tab-pane {
+  display: block;
+  padding: @ak-tabs-margin (2 * @ak-tabs-margin);
+
+  &:not(.selected) {
+    display: none;
+  }
+}

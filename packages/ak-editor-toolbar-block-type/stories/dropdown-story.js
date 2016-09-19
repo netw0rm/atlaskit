@@ -4,9 +4,9 @@ import BlockType from '../src/index';
 import ToolbarComponent from 'ak-editor-toolbar';
 import { name } from '../package.json';
 
-const { React, ReactDOM } = window;
-const Component = reactify(BlockType, { React, ReactDOM });
-const Toolbar = reactify(ToolbarComponent, { React, ReactDOM });
+import React from 'react';
+const Component = reactify(BlockType);
+const Toolbar = reactify(ToolbarComponent);
 
 storiesOf(name, module)
   .add('a simple ak-editor-toolbar-block-type', () => (

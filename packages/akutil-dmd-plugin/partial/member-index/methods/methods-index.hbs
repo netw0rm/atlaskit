@@ -1,0 +1,16 @@
+* Methods
+
+{{setLevel this 0~}}
+{{#if (descendants min=(option 'memberIndex.minDescendants'))~}}
+{{#if isExported~}}
+{{#if (equal (depth) 0)}}
+
+{{>member-index-methods}}
+
+{{/if~}}
+{{else~}}
+
+{{>member-index-methods}}
+
+{{/if~}}
+{{/if~}}

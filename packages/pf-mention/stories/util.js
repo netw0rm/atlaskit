@@ -1,4 +1,4 @@
-const ReactDOM = window.ReactDOM;
+import ReactDOM from 'react-dom';
 
 export function getWebComponent(reactComponent) {
   if (!reactComponent) {

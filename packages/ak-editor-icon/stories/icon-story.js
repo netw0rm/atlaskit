@@ -1,9 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
-const { React, ReactDOM } = window;
+import React from 'react';
 import reactify from 'akutil-react';
 import IconComponent from '../src';
 
-const Icon = reactify(IconComponent, { React, ReactDOM });
+const Icon = reactify(IconComponent);
 
 storiesOf('ak-editor-icon', module)
   .add('All icons', () => (

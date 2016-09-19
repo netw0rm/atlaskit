@@ -2,13 +2,10 @@ import reactify from 'akutil-react';
 import AkInlineDialog from '../src/index';
 import styles from 'style!./../src/host.less';
 
-const { React, ReactDOM } = window;
+import React from 'react';
 const { Component } = React;
 
-const Dialog = reactify(AkInlineDialog, {
-  React,
-  ReactDOM,
-});
+const Dialog = reactify(AkInlineDialog);
 
 class DialogWithBlanket extends Component {
   constructor(props) {

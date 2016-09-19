@@ -25,7 +25,7 @@ if [[ -z `find ./src -name "index*.js" -print -quit` ]]; then
 else
   DOCS="$($JSDOC2MD_LOC \
     --src "src/**/index*.js" \
-    --plugin ak-dmd-plugin \
+    --plugin akutil-dmd-plugin \
     --src $file \
     --member-index-format list \
     --name-format)"

@@ -1,6 +1,6 @@
 # Lozenge
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+Use lozenges to highlight an item's status for quick recognition. Lozenges can be emphasised and can use color to help convey meanings that users can learn and recognize across our products. Use subtle lozenges by default and in instances where they may dominate the screen, such as in long tables.
 
 ## Setup and install
 
@@ -33,7 +33,7 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </head>
 <body>
   <!-- ... -->
-  <ak-lozenge></ak-lozenge>
+  <ak-lozenge appearance="moved" bold>Moved</ak-lozenge>
 </body>
 ```
 

@@ -18,32 +18,24 @@ const transparentAvatarUrl = require('url!./face-w-transparency.png');
 storiesOf(name, module)
   .add('a simple ak-comment', () => (
     <Comment>
-      <div is slot="avatar">
-        <a href="#"><Avatar src={transparentAvatarUrl} label="Ross" /></a>
-      </div>
-      <div is slot="author">
-        <a href="#">Ross Somebody</a>
-      </div>
-      <div is slot="time">
-        5 minutes ago
-      </div>
+      <Avatar slot="avatar" src={transparentAvatarUrl} label="Ross" />
+      <a is slot="author" href="#">Ross Somebody</a>
+      <time is slot="time" datetime="2016-09-20T19:00">5 minutes ago</time>
+      <ButtonGroup slot="actions">
+        <Button appearance="subtle" compact><Icon glyph="teams" /></Button>
+        <Button appearance="subtle" compact><Icon glyph="create" /></Button>
+        <Button appearance="subtle" compact><Icon glyph="snippets" /></Button>
+      </ButtonGroup>
+      <p>Hello world!</p>
+      <p>There would obviously <a href="#">be lots of content</a> in here</p>
+      <ul>
+        <li>Lists of stuff helps readability</li>
+      </ul>
       <div is slot="reply">
         <p>
           Nest the ak-comments in here. We might need a comment-group component for expand/collapse
           and maybe for border separators?
         </p>
       </div>
-      <div is slot="actions">
-        <ButtonGroup>
-          <Button appearance="subtle" compact><Icon glyph="teams" /></Button>
-          <Button appearance="subtle" compact><Icon glyph="create" /></Button>
-          <Button appearance="subtle" compact><Icon glyph="snippets" /></Button>
-        </ButtonGroup>
-      </div>
-      <p>Hello world!</p>
-      <p>There would obviously <a href="#">be lots of content</a> in here</p>
-      <ul>
-        <li>Lists of stuff helps readability</li>
-      </ul>
     </Comment>
   ));

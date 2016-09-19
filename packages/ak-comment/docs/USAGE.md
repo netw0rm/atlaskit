@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+Comments enable a discussion on an entity such as a page, blog post, issue or pull request. Depending on the context, discussions can be between any combination of authors, contributors and readers.
 
 ## Setup and install
 
@@ -35,7 +35,19 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </head>
 <body>
   <!-- ... -->
-  <ak-comment></ak-comment>
+  <ak-comment>
+    <ak-avatar slot="avatar" src="..." label="Charlie Smith"></ak-avatar>
+    <a slot="author" href="...">Charlie Smith</a>
+    <time slot="time" datetime="2016-09-20T19:00">5 minutes ago</time>
+    <ak-button-group slot="actions">...</ak-button-group>
+    <p>Hello world!</p>
+    <p>This is my first ak-comment.</p>
+    <ak-comment-group slot="reply">
+      <ak-comment>...</ak-comment>
+      <ak-comment>...</ak-comment>
+      <ak-comment>...</ak-comment>
+    </ak-comment-group>
+  </ak-comment>
 </body>
 ```
 

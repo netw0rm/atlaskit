@@ -1,19 +1,16 @@
 const karmaConf = require('./base.js');
-const addPolyFills = require('./addPolyFills.js');
+
+const base = 'test';
+const files = `${base}/**/*.+(js|ts)`;
+const exclude = `${base}/_*.+(js|ts)`;
 
 module.exports = (config) => {
-  karmaConf(config);
-
   Object.assign(config, {
-    files: [
-      'test/**/*.+(js|ts)',
-    ],
-
+    exclude: [exclude],
+    files: [files],
     preprocessors: {
-      'test/**/*.+(js|ts)': ['webpack', 'sourcemap'],
+      [files]: ['webpack', 'sourcemap'],
     },
   });
-
-  // add the polyfill file to the test run
-  addPolyFills(config);
+  karmaConf(config);
 };

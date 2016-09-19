@@ -11,8 +11,8 @@ export default function buttonStatesExample(dependencies) {
         selected: false,
         compact: false,
         appearance: APPEARANCE.STANDARD,
-        label: 'Button',
-        glyph: false,
+        before: false,
+        after: false,
       };
     }
 
@@ -42,22 +42,22 @@ export default function buttonStatesExample(dependencies) {
       );
     }
 
-    createRadioIconOption(glyph) {
+    createRadioIconOption(glyph, side) {
       return (
         <label>
           <input
             type="radio"
-            onChange={() => this.setState({ glyph })}
-            checked={this.state.glyph === glyph}
+            onChange={() => this.setState({ [side]: glyph })}
+            checked={this.state[side] === glyph}
           />
           {glyph || 'no icon'}
         </label>
       );
     }
 
-    createIcon() {
-      if (this.state.glyph) {
-        return (<Icon slot="before" key={this.state.glyph} glyph={this.state.glyph} />);
+    createIcon(side) {
+      if (this.state[side]) {
+        return (<Icon slot={side} key={`${side}-${this.state[side]}`} glyph={this.state[side]} />);
       }
       return false;
     }
@@ -84,21 +84,19 @@ export default function buttonStatesExample(dependencies) {
           </form>
           <br />
           <form>
-            <label><strong>Icons</strong></label>
+            <label><strong>Left Icons</strong></label>
             <br />
             {
-              GLYPHS.map(glyph => this.createRadioIconOption(glyph))
+              GLYPHS.map(glyph => this.createRadioIconOption(glyph, 'before'))
             }
           </form>
           <br />
           <form>
-            <label><strong>Button Text</strong></label>
+            <label><strong>Right Icons</strong></label>
             <br />
-            <input
-              type="text"
-              value={this.state.label}
-              onChange={event => this.setState({ label: event.target.value })}
-            />
+            {
+              GLYPHS.map(glyph => this.createRadioIconOption(glyph, 'after'))
+            }
           </form>
           <br />
           <p>
@@ -111,8 +109,9 @@ export default function buttonStatesExample(dependencies) {
               className={buttonClass}
               onclick={action('clicking the WebComponent')}
             >
-              {this.createIcon()}
-              {this.state.label}
+              {this.createIcon('before')}
+              {this.createIcon('after')}
+              Button
             </AkButton>
           </p>
         </div>

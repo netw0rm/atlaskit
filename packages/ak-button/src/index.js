@@ -24,6 +24,25 @@ const getClasses = elem => ({
   [classKeys.link]: elem.appearance === 'link' && !elem.selected,
 });
 
+const getSlotName = side => side || 'default';
+
+const getSlot = side => (
+  <span className={classKeys[`${getSlotName(side)}SlotWrapper`]}>
+    <slot
+      name={side}
+      className={classKeys[`${getSlotName(side)}Slot`]}
+    />
+  </span>
+);
+
+const getContent = () => (
+  <span className={classKeys.buttonContent}>
+    {getSlot('before')}
+    {getSlot()}
+    {getSlot('after')}
+  </span>
+);
+
 const APPEARANCE_VALUES = [
   'primary',
   'standard',
@@ -115,14 +134,7 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={e => e.preventDefault()}
         >
-          <span className={classKeys.buttonContent}>
-            <span className={classKeys.beforeSlotWrapper}>
-              <slot name="before" className={classKeys.beforeSlot} />
-            </span>
-            <span className={classKeys.defaultSlotWrapper}>
-              <slot className={classKeys.defaultSlot} />
-            </span>
-          </span>
+          {getContent()}
         </button>
       </span>
     );

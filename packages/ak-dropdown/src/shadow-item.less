@@ -1,56 +1,32 @@
 @import 'shared-variables.less';
 
-@spacing: 10px;
-
-.flex() {
-  display: flex;
-  padding: 0 @spacing;
-  align-items:center;
-  box-sizing: border-box;
-  flex-wrap: nowrap;
-}
-
-// don't want to remove for now because of the mixing
-.flex-item() {}
-
-:host .item {
-  .flex;
-}
-
-::content > * {
-  .flex-item();
-}
-
-::slotted(*) {
-  .flex-item();
-}
-
 .item {
-  color: @ak-dropdown-font-main;
+  .flex();
   box-sizing: border-box;
-  cursor: pointer;
-  background-color: @ak-dropdown-background-main;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  padding: 0 10px;
   text-decoration: none;
-  height:30px;
 
-  .flex;
-  & > * {
-    .flex-item();
-  }
+  &:not(.disabled) {
+    color: @ak-dropdown-font-main;
+    cursor: pointer;
 
-  &:hover {
-    background-color: @ak-dropdown-background-hover;
-  }
+    &:hover {
+      background-color: @ak-dropdown-background-hover;
+    }
 
-  &:active {
-    background-color: @ak-dropdown-background-active;
-    color: @ak-dropdown-font-active;
+    &:active {
+      background-color: @ak-dropdown-background-active;
+      color: @ak-dropdown-font-active;
+    }
   }
 
   &:focus {
     box-shadow: 0 0 0 2px @ak-dropdown-focused-outline;
     outline: none;
-    position:relative; //making shadow on top of others
+    position: relative; //making shadow on top of others
   }
 }
 
@@ -60,19 +36,19 @@
 }
 
 .disabled {
-  &, &:active, &:hover {
-    color: @ak-dropdown-font-disabled;
-    background-color: @ak-dropdown-background-disabled;
-    cursor: not-allowed;
-  }
+  background-color: @ak-dropdown-background-disabled;
+  color: @ak-dropdown-font-disabled;
+  cursor: not-allowed;
 }
 
 .itemLeftPosition {
-  margin-right:10px;
+  margin-right: 10px;
+  min-width: 20px;
 }
 
 .itemDefaultPosition {
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  padding:8px 0;
 }

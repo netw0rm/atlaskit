@@ -1,0 +1,34 @@
+{
+  "name": "ak-tabs",
+  "version": "2.0.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-tabs"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "ak-dropdown": "^3.1.0",
+    "ak-icon": "^1.6.0",
+    "akutil-shared-styles": "^33.7.0",
+    "classnames": "^2.2.5",
+    "css-element-queries": "^0.3.2",
+    "debounce": "^1.0.0",
+    "keycode": "^2.1.4",
+    "skatejs": "^1.2.1"
+  },
+  "devDependencies": {
+    "akutil-react": "^1.0.0",
+    "akutil-common-test": "^1.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

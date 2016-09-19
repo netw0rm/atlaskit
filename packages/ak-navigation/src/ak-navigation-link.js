@@ -6,9 +6,15 @@ import classNames from 'classnames';
 import keycode from 'keycode';
 import { linkSelected as linkSelectedEvent } from './internal/events';
 
+const anchorElement = Symbol('anchor');
+
 function select(elem) {
   emit(elem, linkSelectedEvent);
+  if (elem.href) {
+    elem[anchorElement].click();
+  }
 }
+
 
 export default define('ak-navigation-link', {
   created(elem) {
@@ -33,6 +39,7 @@ export default define('ak-navigation-link', {
         <a
           className={classNames(shadowStyles.locals.text, shadowStyles.locals.link)}
           href={elem.href}
+          ref={(a) => { elem[anchorElement] = a; }}
           tabindex="0"
         >
           <slot />

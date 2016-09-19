@@ -6,12 +6,9 @@ import SearchTextInput from './demo-search-text-input';
 import { resourceProvider } from './story-data';
 import { getWebComponent } from './util';
 
-const { React, ReactDOM } = window;
+import React from 'react';
 
-const ResourcedMentionList = reactify(pfResourcedMentionList, {
-  React,
-  ReactDOM,
-});
+const ResourcedMentionList = reactify(pfResourcedMentionList);
 
 storiesOf('Resourced Mention List', module)
   .add('Input field mention list.  Real API. Key binding', () => {

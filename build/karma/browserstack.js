@@ -1,4 +1,4 @@
-const baseConfig = require('./base.js');
+const baseConfig = require('./all.js');
 const browserStackBrowsers = require('./browserstack.browsers.js');
 
 module.exports = (config) => {
@@ -14,7 +14,6 @@ module.exports = (config) => {
       project: 'AtlasKit',
       build: `${process.env.CURRENT_BRANCH} ${new Date().getTime()} ${process.env.HEAD_SHA}`,
     },
-    logLevel: config.LOG_INFO,
     captureTimeout: 120000,
     reporters: ['dots', 'BrowserStack'],
     autoWatch: false,

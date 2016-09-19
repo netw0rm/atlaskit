@@ -1,6 +1,7 @@
-import { Plugin, ProseMirror, schema } from 'ak-editor-prosemirror';
+import { Plugin, ProseMirror } from 'ak-editor-prosemirror';
 import SyncPlugin from './sync-plugin';
 import { RefsNode } from './schema-builder';
+import schema from 'ak-editor-schema';
 
 /**
  * Build a ProseMirror instance.

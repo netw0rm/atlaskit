@@ -3,7 +3,10 @@
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/fonts.less';
 
-@ak-dropdown-border-radius: 4px;
+@grid: 4;
+@item-spacing: unit(@grid * 2, px);
+
+@ak-dropdown-border-radius: 3px;
 @ak-dropdown-background-main: @ak-color-N700;
 @ak-dropdown-background-active: @ak-color-B50;
 @ak-dropdown-background-selected: @ak-color-N900;
@@ -18,3 +21,12 @@
 @ak-dropdown-font-heading: @ak-color-N50;
 
 @ak-dropdown-font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+
+@ak-dropdown-item-padding: @item-spacing;
+@ak-dropdown-group-margin: @item-spacing;
+
+.flex() {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+}

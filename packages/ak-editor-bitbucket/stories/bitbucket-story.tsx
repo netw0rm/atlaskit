@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import BitbucketComponent from '../src';
 import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-test';
-import { Component } from 'react';
+import React, { Component } from 'react';
 
 const Bitbucket = reactify(BitbucketComponent);
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
@@ -47,7 +47,7 @@ storiesOf('ak-editor-bitbucket', module)
       renderer(e: any) {
         const { pm, el } = e.detail;
 
-        el.innerText = el.getAttribute('editor-data');
+        el.innerText = el.getAttribute('editor-entity-id');
         el.style.border = "1px solid #000";
         el.style.backgroundColor = "#ccc";
         el.style.padding = "2px";
@@ -56,7 +56,7 @@ storiesOf('ak-editor-bitbucket', module)
       autocompleter(e: any) {
         const { pm, el } = e.detail;
 
-        const m = pm.schema.nodes.mention.create({ data: '@foo' });
+        const m = pm.schema.nodes.mention.create({ id: '@foo' });
         const cursor = pm.selection.to;
         pm.tr.replaceWith(cursor-1, cursor, m).apply();
       }

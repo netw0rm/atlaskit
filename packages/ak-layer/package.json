@@ -1,13 +1,12 @@
 {
   "name": "ak-layer",
-  "version": "57.6.0",
+  "version": "57.6.1",
   "description": "A layer component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-layer",
-    "pre-release": "lerna-semantic-release pre"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-layer"
   },
   "files": [
     "dist"

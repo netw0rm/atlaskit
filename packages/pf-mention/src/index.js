@@ -4,6 +4,7 @@ import MentionResource, { AbstractMentionResource } from './api/pf-mention-resou
 import MentionList from './wc/pf-mention-list';
 import ResourcedMentionList from './wc/pf-resourced-mention-list';
 import MentionPicker from './wc/pf-mention-picker';
+import * as events from './internal/index.events';
 
 export {
   MentionResource,
@@ -14,3 +15,5 @@ export {
 };
 
 export default MentionPicker;
+
+export { events };

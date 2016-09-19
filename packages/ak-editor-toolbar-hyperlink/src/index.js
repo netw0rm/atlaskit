@@ -1,5 +1,5 @@
 import 'style!./host.less';
-import { vdom, define, prop, emit, symbols } from 'skatejs';
+import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
 import Icon from 'ak-editor-icon';
@@ -10,7 +10,7 @@ function toggle(elem, input) {
   elem.open = !elem.open;
 
   if (elem.open) {
-    const textInput = input || elem[symbols.shadowRoot].querySelector('.text-input');
+    const textInput = input || elem.shadowRoot.querySelector('.text-input');
 
     // todo: fix the hack
     setTimeout(() => textInput.focus(), 5);
@@ -40,7 +40,7 @@ export default define('ak-editor-toolbar-hyperlink', {
       <div
         onKeyup={event => {
           if (event.keyCode === 13) {
-            const textInput = elem[symbols.shadowRoot].querySelector('.text-input');
+            const textInput = elem.shadowRoot.querySelector('.text-input');
             toggle(elem, textInput);
             emit(elem, 'save', { detail: { value: textInput.value } });
             textInput.value = '';

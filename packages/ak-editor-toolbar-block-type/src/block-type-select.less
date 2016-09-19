@@ -1,0 +1,14 @@
+.button-span {
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  font-weight: normal;
+  // this should be inherited, but Chrome somehow doesn't do it properly
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  .block-type-select[active] & {
+    color: white;
+  }
+}

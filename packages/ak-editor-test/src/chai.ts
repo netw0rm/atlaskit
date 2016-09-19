@@ -1,5 +1,6 @@
 /// <reference path="./chai.d.ts"/>
-import { Fragment, Node, Slice, NodeType } from 'ak-editor-prosemirror';
+import { Fragment, Node, Mark, Text, Slice, NodeType } from 'ak-editor-prosemirror';
+import schema from 'ak-editor-schema';
 
 export default (chai: any) => {
   const { Assertion, util } = chai;
@@ -76,5 +77,24 @@ export default (chai: any) => {
       return new Assertion(obj.type).not.to.be.an.instanceof(nodeType);
     }
     return new Assertion(obj.type).to.be.an.instanceof(nodeType);
+  });
+
+  Assertion.addMethod('textWithMarks', function(text: string, marks: Mark[] ) {
+    const obj: Node = util.flag(this, 'object');
+    const negate: boolean = util.flag(this, 'negate');
+
+    let matched = false;
+    obj.descendants((node: Node, pos: number) => {
+      if (node.type instanceof Text && node.text === text) {
+        if (Mark.sameSet(node.marks, marks)) {
+          matched = true;
+        }
+      }
+    });
+
+    if (negate) {
+      return new Assertion(matched).not.to.be.true;
+    }
+    return new Assertion(matched).to.be.true;
   });
 }

@@ -1,0 +1,37 @@
+{
+  "name": "ak-tag-group",
+  "version": "2.0.1",
+  "description": "ak-tag-group webcomponent",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-tag-group"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "akutil-common": "^2.0.0",
+    "akutil-shared-styles": "^33.1.0",
+    "babel-runtime": "^6.11.6",
+    "classnames": "^2.2.5",
+    "skatejs": "^1.2.5"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "ak-tag": "^2.0.0",
+    "akutil-common-test": "^1.0.0",
+    "akutil-react": "^1.0.0",
+    "lodash.sample": "^4.2.1",
+    "lodash.uniq": "^4.5.0"
+  },
+  "peerDependencies": {
+    "ak-tag": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

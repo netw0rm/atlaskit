@@ -6,9 +6,13 @@ import InlineDialog from 'ak-inline-dialog';
 import ResourcedMentionList from './pf-resourced-mention-list';
 import debug from '../util/logger';
 import uniqueId from '../util/id';
+import { mentionListRendered as mentionListRenderedEvent } from '../internal/index.events';
 
 const styles = shadowStyles.locals;
 
+/**
+* @class MentionPicker
+*/
 export default define('pf-mention-picker', {
   prototype: {
     selectNext() {
@@ -49,14 +53,14 @@ export default define('pf-mention-picker', {
   },
 
   attached(elem) {
-    document.addEventListener('pf-mention-list-rendered', elem._updateDialogPosition);
+    document.addEventListener(mentionListRenderedEvent, elem._updateDialogPosition);
   },
 
   detached(elem) {
     if (elem.resourceProvider) {
       elem.resourceProvider.unsubscribe(elem);
     }
-    document.removeEventListener('pf-mention-list-rendered', elem._updateDialogPosition);
+    document.removeEventListener(mentionListRenderedEvent, elem._updateDialogPosition);
   },
 
   render(elem) {

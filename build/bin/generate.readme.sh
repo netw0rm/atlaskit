@@ -6,7 +6,7 @@ JSDOC2MD_LOC="`npm bin`/jsdoc2md"
 popd > /dev/null
 
 printf "\033[34m"
-echo "Generating README.md..."
+printf "Generating README.md..."
 printf "\033[0m"
 
 # Get usage docs
@@ -17,24 +17,30 @@ else
 fi
 
 # Generate API docs
-API=""
-for file in $(find ./src -name "index*.js" | sort); do
-  NEXT="$($JSDOC2MD_LOC \
-    --plugin dmd-bitbucket ak-dmd-plugin \
+if [[ -z `find ./src -name "index*.js" -print -quit` ]]; then
+  API=""
+  printf "\033[34m"
+  echo " Nothing found that can be documented."
+  printf "\033[0m"
+else
+  DOCS="$($JSDOC2MD_LOC \
+    --src "src/**/index*.js" \
+    --plugin akutil-dmd-plugin \
     --src $file \
     --member-index-format list \
     --name-format)"
 
-  if [[ $NEXT == *"ERROR, Cannot find class"* ]]
-  then
-    NEXT=""
+  if [[ $DOCS == *"ERROR, Cannot find class"* ]]; then
+    printf "\033[34m"
+    echo " Could not find a class."
+    printf "\033[0m"
   else
-    NEXT="$NEXT\n"
+    API="\n$DOCS"
+    printf "\033[34m"
+    echo " done!"
+    printf "\033[0m"
   fi
-
-  API="$API\n$NEXT"
-done
-
+fi
 
 # Concatenate USAGE docs and JSDoc output
 if [ -n "$USAGE" ] || [ -n "$API" ]; then

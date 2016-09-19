@@ -12,7 +12,7 @@ const expect = chai.expect;
 function setupComponent() {
   const component = new Dropdown();
   component.innerHTML = `
-    <ak-dropdown-trigger slot="trigger">test</ak-dropdown-trigger>
+    <ak-dropdown-trigger-button slot="trigger">test</ak-dropdown-trigger-button>
     <ak-dropdown-item>124</ak-dropdown-item>
     <ak-dropdown-item>444</ak-dropdown-item>
   `;
@@ -35,13 +35,15 @@ describe('ak-dropdown', () => {
 
     it('should have an sub-components exports', () => {
       (new exports.Item).should.be.an.instanceof(Component);
-      (new exports.Trigger).should.be.an.instanceof(Component);
-      (new exports.TriggerButton).should.be.an.instanceof(Component);
+      (new exports.DropdownTrigger).should.be.an.instanceof(Component);
+      (new exports.DropdownTriggerButton).should.be.an.instanceof(Component);
+      (new exports.Group).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
+      const eventsArray = ['selected', 'afterOpen', 'afterClose', 'item', 'trigger'];
       exports.events.should.be.defined;
-      Object.keys(exports.events).should.be.deep.equal(['selected', 'item', 'trigger']);
+      Object.keys(exports.events).should.be.deep.equal(eventsArray);
       Object.keys(exports.events.item).should.be.deep.equal(['up', 'down', 'tab']);
       Object.keys(exports.events.trigger).should.be.deep.equal(['activated']);
     });
@@ -69,28 +71,22 @@ describe('ak-dropdown', () => {
       expect(getShadowRoot(component)).to.be.defined;
       expect(getShadowRoot(component).firstChild).to.be.defined;
     });
-
-    it('dropdown should reposition itself after being open', () => {
-      const spy = sinon.spy();
-      component.reposition = spy;
+    it('open property controls open state', () => {
+      props(component, { open: false });
+      expect(checkVisibility(component.children[1])).to.equal(false);
       props(component, { open: true });
-      expect(spy.called).to.equal(true);
-    });
-    it('open property controls open state', (done) => {
-      afterMutations(
-        () => (component.innerHTML = '<span>something visible</span>'),
-        () => (component.open = false),
-        () => (expect(checkVisibility(component.children[0])).to.equal(false)),
-        () => (component.open = true),
-        () => (expect(checkVisibility(component.children[0])).to.equal(true)),
-        done
-      );
+      expect(checkVisibility(component.children[0])).to.equal(true);
     });
     it('position is reflected to inner layer', (done) => {
+      // we can't just do querySelector('ak-layer') here, ak-layer is defined a few times
+      // and doesn't have a nice clear tag name anymore
+      let layer;
+      props(component, { open: true });
       afterMutations(
-        () => (expect(shadowRoot.querySelector('ak-layer').position).to.equal('bottom left')),
+        () => (layer = shadowRoot.firstChild.childNodes[1]),
+        () => (expect(layer.position).to.equal('bottom left')),
         () => (component.position = 'top left'),
-        () => (expect(shadowRoot.querySelector('ak-layer').position).to.equal('top left')),
+        () => (expect(layer.position).to.equal('top left')),
         done
       );
     });

@@ -113,8 +113,11 @@ describe('pf-mention-picker', () => {
 
     return new Promise((resolve, reject) => {
       waitUntil(defaultMentionItemsShow, testTimeout, step).should.be.fulfilled.then(() => {
+        console.log('picker loaded');
         component.selectNext();
+        console.log('selectNext called on component');
         waitUntil(secondItemSelected, testTimeout, step).should.be.fulfilled.then(() => {
+          console.log('selectNext selection confirmed');
           resolve();
         }, (reason) => reject(reason));
       }, (reason) => reject(reason));
@@ -128,8 +131,11 @@ describe('pf-mention-picker', () => {
 
     return new Promise((resolve, reject) => {
       waitUntil(defaultMentionItemsShow, testTimeout, step).should.be.fulfilled.then(() => {
+        console.log('picker loaded');
         component.selectPrevious();
+        console.log('selectPrevious called on component');
         waitUntil(lastItemSelected, testTimeout, step).should.be.fulfilled.then(() => {
+          console.log('selectPrevious selection confirmed');
           resolve();
         }, (reason) => reject(reason));
       }, (reason) => reject(reason));
@@ -147,10 +153,15 @@ describe('pf-mention-picker', () => {
 
     return new Promise((resolve, reject) => {
       waitUntil(defaultMentionItemsShow, testTimeout, step).should.be.fulfilled.then(() => {
+        console.log('picker loaded');
         component.selectNext();
+        console.log('selectNext called on component');
         waitUntil(secondItemSelected, testTimeout, step).should.be.fulfilled.then(() => {
+          console.log('selectNext selection confirmed');
           component.chooseCurrentSelection();
+          console.log('chooseCurrentSelection called on component');
           waitUntil(chooseSecondItem, testTimeout, step).should.be.fulfilled.then(() => {
+            console.log('chooseCurrentSelection event fired');
             resolve();
           }, (reason) => reject(reason));
         }, (reason) => reject(reason));

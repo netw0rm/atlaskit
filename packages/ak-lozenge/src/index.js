@@ -19,9 +19,9 @@ const definition = {
   render(elem) {
     const classes = classNames([shadowStyles.locals.lozenge, shadowStyles.locals[elem.appearance]]);
     return (
-      <span className={shadowStyles.locals.wrapper}>
+      <span class={classes} bold={elem.bold}>
         <style>{shadowStyles.toString()}</style>
-        <span class={classes} bold={elem.bold}><slot></slot></span>
+        <span className={shadowStyles.locals.content}><slot></slot></span>
       </span>
     );
   },

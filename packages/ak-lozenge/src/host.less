@@ -2,9 +2,12 @@
 // (because in storybook the component name is randomly generated)
 .ak-lozenge,
 ak-lozenge {
-  display: inline-block;
+  display: inline-flex;
 
   &:not([defined]) {
     display: none;
+  }
+  > _shadow_root_ {
+    display: inline-flex;
   }
 }

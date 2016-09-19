@@ -120,6 +120,27 @@ describe('ak-theme', () => {
     );
   });
 
+  it('should emit an event when attached again after being detached', done => {
+    const theme = createTheme('test', { key: 'val' });
+    const spy = sinon.spy();
+    document.addEventListener(events.change, spy);
+
+    body.appendChild(theme);
+    afterMutations(
+      () => expect(spy.called).to.equal(true, 'attach 1'),
+      () => spy.reset(),
+      () => body.removeChild(theme),
+      () => expect(spy.called).to.equal(true, 'detach 1'),
+      () => spy.reset(),
+      () => body.appendChild(theme),
+      () => expect(spy.called).to.equal(true, 'attach 2'),
+      () => spy.reset(),
+      () => body.removeChild(theme),
+      () => expect(spy.called).to.equal(true, 'detach 2'),
+      done
+    );
+  });
+
   it('should not re-render after the initial render', () => {
     // Setting the id to the same value should not re-render.
     expect(Theme.updated(theme1, { id: 'theme1' })).to.not.equal(true);

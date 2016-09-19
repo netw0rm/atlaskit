@@ -74,6 +74,9 @@ export default define('ak-theme', {
       },
     },
   },
+  attached(elem) {
+    notify(elem.id);
+  },
   detached(elem) {
     notify(elem.id);
   },
@@ -97,7 +100,8 @@ export default define('ak-theme', {
     // been removed by sending a nulled themeProps.
     if (themeUnassigned) {
       notify(oldThemeId);
-    } else {
+    // We don't need to notify on the initial render because we are doing this in attached().
+    } else if (!firstRender) {
       notify(newThemeId, elem.allVars);
     }
 

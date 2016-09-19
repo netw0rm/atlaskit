@@ -1,8 +1,9 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
-import { props, Component } from 'skatejs';
+import { props, Component, define, vdom } from 'skatejs';
 import { name } from '../package.json';
+import { afterOpen } from '../src/internal/events';
 import {
   afterMutations,
   getShadowRoot,
@@ -14,16 +15,33 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-function setupComponent() {
+const TriggerTest = define('trigger-test', {
+  props: {
+    opened: { attribute: true, default: false },
+  },
+  render() {
+    vdom.element('div', () => (vdom.text('test')));
+  },
+});
+
+function initComponent(setup) {
   const component = new Dropdown();
-  component.innerHTML = `
-    <ak-dropdown-trigger-button slot="trigger">test</ak-dropdown-trigger-button>
-    <ak-dropdown-item>124</ak-dropdown-item>
-    <ak-dropdown-item>444</ak-dropdown-item>
-  `;
+  setup(component);
+
   const componentHasShadowRoot = () => !!getShadowRoot(component);
   document.body.appendChild(component);
   return waitUntil(componentHasShadowRoot).then(() => component);
+}
+
+
+function setupComponentExample() {
+  return initComponent(component => {
+    component.innerHTML = `
+      <ak-dropdown-trigger-button slot="trigger">test</ak-dropdown-trigger-button>
+      <ak-dropdown-item>124</ak-dropdown-item>
+      <ak-dropdown-item>444</ak-dropdown-item>
+    `;
+  });
 }
 
 function tearDownComponent(component) {
@@ -32,23 +50,6 @@ function tearDownComponent(component) {
 
 function clickDropdownTrigger(component) {
   getShadowRoot(component.querySelector('[slot="trigger"]')).firstChild.click();
-}
-
-function setupTwoDropdowns() {
-  const component1 = new Dropdown();
-  const component2 = new Dropdown();
-  const html = `
-    <ak-dropdown-trigger-button slot="trigger">test</ak-dropdown-trigger-button>
-    <ak-dropdown-item>124</ak-dropdown-item>
-    <ak-dropdown-item>444</ak-dropdown-item>
-  `;
-  component1.innerHTML = html;
-  component2.innerHTML = html;
-  const componentsHaveShadowRoot = () => !!getShadowRoot(component1) && !!getShadowRoot(component2);
-  document.body.appendChild(component1);
-  document.body.appendChild(component2);
-  const components = { component1, component2 };
-  return waitUntil(componentsHaveShadowRoot).then(() => components);
 }
 
 describe('ak-dropdown', () => {
@@ -82,7 +83,7 @@ describe('ak-dropdown', () => {
     let component;
     let shadowRoot;
 
-    beforeEach(() => setupComponent().then(newComponent => {
+    beforeEach(() => setupComponentExample().then(newComponent => {
       component = newComponent;
       shadowRoot = getShadowRoot(component);
     }));
@@ -123,14 +124,54 @@ describe('ak-dropdown', () => {
     });
   });
 
+  describe('trigger', () => {
+    let triggerTest;
+
+    describe('slotted', () => {
+      beforeEach(() =>
+        (initComponent(comp => {
+          props(comp, { open: true });
+          triggerTest = new TriggerTest();
+          props(triggerTest, { slot: 'trigger', opened: false });
+          comp.appendChild(triggerTest);
+          comp.appendChild(document.createElement('ak-dropdown-item'));
+        }))
+      );
+
+      it('should set opened attribute in trigger element to true', () =>
+        expect(triggerTest.opened).to.be.true
+      );
+    });
+
+    describe('external', () => {
+      let eventSpy;
+
+      beforeEach(() =>
+        (initComponent(comp => {
+          eventSpy = sinon.spy();
+          props(comp, { open: true, target: triggerTest });
+          triggerTest = new TriggerTest();
+          comp.addEventListener(afterOpen, eventSpy);
+          comp.appendChild(document.createElement('ak-dropdown-item'));
+        }))
+      );
+
+      it('dropdown should be open', () =>
+        expect(eventSpy).to.have.been.called
+      );
+    });
+  });
+
   describe('two dropdowns', () => {
     let component1;
     let component2;
 
-    beforeEach(() => setupTwoDropdowns().then(components => {
-      component1 = components.component1;
-      component2 = components.component2;
-    }));
+    beforeEach(() =>
+      Promise.all([setupComponentExample(), setupComponentExample()])
+      .then(([c1, c2]) => {
+        component1 = c1;
+        component2 = c2;
+      }));
     afterEach(() => {
       tearDownComponent(component1);
       tearDownComponent(component2);

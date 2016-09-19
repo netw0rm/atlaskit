@@ -13,7 +13,9 @@ const avatarUrl = require('url!./doge.jpg');
 class DropdownWithOutsideTrigger extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      open: false,
+    };
 
     // Bind callback methods to make `this` the correct context.
     this.handleClick = this.handleClick.bind(this);

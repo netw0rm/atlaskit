@@ -29,7 +29,7 @@ function toggleDialog(elem, value) {
     return;
   }
 
-  const trigger = elem.triggerSlot.assignedNodes()[0];
+  const trigger = elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
 
   if (trigger) {
     props(trigger, { opened: isOpen });
@@ -154,6 +154,9 @@ export default define('ak-dropdown', {
       return this;
     },
   },
+  rendered(elem) {
+    toggleDialog(elem, elem.open);
+  },
   render(elem) {
     let target = elem.target;
     let styles;
@@ -215,11 +218,6 @@ export default define('ak-dropdown', {
      */
     open: prop.boolean({
       attribute: true,
-      set(elem, data) {
-        if (elem && data.newValue !== data.oldValue) {
-          setTimeout(() => toggleDialog(elem, data.newValue));
-        }
-      },
     }),
     /**
      * @description Position of the dropdown. See the documentation of ak-layer for more details.

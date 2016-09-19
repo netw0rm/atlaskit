@@ -138,8 +138,6 @@ class AkEditorBitbucket extends Component {
       _hyperLinkElement: {},
       _hyperLinkActive: prop.boolean(),
       _canLinkHyperlink: prop.boolean(),
-      _bulletlistDisabled: prop.boolean(),
-      _numberlistDisabled: prop.boolean(),
       _bulletListActive: prop.boolean(),
       _numberListActive: prop.boolean(),
     };
@@ -200,8 +198,6 @@ class AkEditorBitbucket extends Component {
           onSave={elem._addHyperLink}
         />
         <ToolbarLists
-          bulletlistDisabled={elem._bulletlistDisabled}
-          numberlistDisabled={elem._numberlistDisabled}
           bulletlistActive={elem._bulletListActive}
           numberlistActive={elem._numberListActive}
           on-toggle-number-list={() => elem._toggleList('ordered_list')}
@@ -413,10 +409,6 @@ class AkEditorBitbucket extends Component {
     ListsPlugin.get(pm).subscribe(state => {
       this._bulletListActive = Boolean(state.active && state.type === 'bullet_list');
       this._numberListActive = Boolean(state.active && state.type === 'ordered_list');
-
-      // todo: add the api in the plugin
-      this._bulletlistDisabled = true;
-      this._numberlistDisabled = true;
     });
 
     // Text formatting

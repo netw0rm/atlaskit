@@ -14,8 +14,10 @@ const tooltipClass = `.${shadowStyles.locals.tooltip}`;
 
 function setupComponent() {
   const component = new Tooltip();
-  const componentHasShadowRoot = () => (getShadowRoot(component) || null);
+  const componentHasShadowRoot = () => getShadowRoot(component);
 
+  // set it to visible so that everything in Layer gets rendered
+  component.visible = true;
   document.body.appendChild(component);
 
   return waitUntil(componentHasShadowRoot).then(() => component);
@@ -78,30 +80,45 @@ describe('ak-tooltip', () => {
   });
 
   describe('visible prop', () => {
-    it('should apply .hidden class when visible=false', () => {
+    it('should apply .hidden class to outer div when visible=false', () => {
       const hiddenClass = shadowStyles.locals.hidden;
-      const hiddenClassApplied = () => (hasClass(layer, hiddenClass));
+      const hiddenClassApplied = () => (hasClass(shadowRoot.firstChild, hiddenClass));
 
-      // we'll make the tooltip visible first to check the negative case
-      component.visible = true;
-      // wait until there is no .hidden class
-      return waitUntil(() => (!hiddenClassApplied())).then(() => {
-        // then set it to false to make sure .hidden gets applied
-        component.visible = false;
-        return waitUntil(hiddenClassApplied);
-      }).should.be.fulfilled;
+      expect(hiddenClassApplied()).to.be.false;
+      component.visible = false;
+
+      return waitUntil(hiddenClassApplied).should.be.fulfilled;
     });
 
     it('should apply an animation class when visible=true', () => {
-      const slideUpAnimationClass = shadowStyles.locals.slideUpAnimation;
-      const animationClassApplied = () => (hasClass(tooltip, slideUpAnimationClass));
+      const slideRightAnimationClass = shadowStyles.locals.slideRightAnimation;
+      const animationClassApplied = () => hasClass(tooltip, slideRightAnimationClass);
+      const layerRendered = () => shadowRoot.querySelector('ak-layer') !== null;
 
-      // set the position to top so we know which animation to look for
-      component.position = 'top';
-      expect(animationClassApplied()).to.be.false;
-      component.visible = true;
+      // we'll set up the negative case first by setting visible = false
+      expect(layerRendered()).to.be.true;
+      component.visible = false;
 
-      return waitUntil(animationClassApplied).should.be.fulfilled;
+      return waitUntil(() => !layerRendered()).then(() => {
+        // set the position to top so we know which animation to look for
+        component.position = 'right';
+        expect(animationClassApplied()).to.be.false;
+        component.visible = true;
+
+        return waitUntil(layerRendered).should.be.fulfilled;
+      });
+    });
+
+    it('should render Layer when visible=true', () => {
+      const layerRendered = () => shadowRoot.querySelector('ak-layer') !== null;
+
+      // need to set up the negative case first
+      component.visible = false;
+      return waitUntil(() => !layerRendered()).then(() => {
+        component.visible = true;
+
+        return waitUntil(layerRendered);
+      }).should.be.fulfilled;
     });
   });
 

@@ -10,7 +10,7 @@
 export default function hasClass(component, ...classes) {
   if (process.env.NODE_ENV === 'development') {
     if (classes.length === 0) {
-      console.warn('No classes given to test against.'); // eslint-disable-line no-console
+      console.warn('hasClass: No classes given.'); // eslint-disable-line no-console
     }
   }
 

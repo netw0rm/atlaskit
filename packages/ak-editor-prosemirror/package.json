@@ -1,0 +1,27 @@
+{
+  "name": "ak-editor-prosemirror",
+  "version": "2.2.0",
+  "description": "A proxy for ProseMirror, a peerDependencies compatible approach for Lerna.",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.ts",
+  "typings": "src/index.ts",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-prosemirror"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "prosemirror": "https://github.com/atlassian/prosemirror#0419e93d81fab481ed8a69b59615cd2458553d13"
+  },
+  "peerDependencies": {
+    "browserkeymap": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

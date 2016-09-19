@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { MarkdownSerializer } from 'prosemirror/dist/markdown';
+import { MarkdownSerializer } from 'ak-editor-prosemirror';
 
 // :: MarkdownSerializer
 // A serializer for the [basic schema](#schema).

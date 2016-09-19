@@ -1,13 +1,13 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "2.10.0",
+  "version": "3.0.0",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.tsx",
+  "typings": "src/index.tsx",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-bitbucket",
-    "pre-release": "lerna-semantic-release pre"
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-bitbucket"
   },
   "files": [
     "dist"
@@ -18,26 +18,30 @@
     "ak-blanket": "^3.0.0",
     "ak-editor-content": "^2.0.1",
     "ak-editor-footer": "^1.0.0",
-    "ak-editor-hyperlink-edit": "^1.0.0",
+    "ak-editor-hyperlink-edit": "^14.1.0",
+    "ak-editor-plugin-block-type": "^3.0.0",
+    "ak-editor-plugin-hyperlink": "^3.0.0",
+    "ak-editor-plugin-image-upload": "^3.0.0",
+    "ak-editor-plugin-lists": "^3.0.0",
+    "ak-editor-plugin-markdown-inputrules": "^3.0.0",
+    "ak-editor-plugin-text-formatting": "^3.0.0",
+    "ak-editor-plugin-mentions": "^3.0.0",
+    "ak-editor-prosemirror": "^2.0.0",
+    "ak-editor-schema": "^2.0.0",
     "ak-editor-toolbar": "^2.0.2",
     "ak-editor-toolbar-block-type": "^2.0.1",
-    "ak-editor-toolbar-hyperlink": "^1.0.0",
-    "ak-editor-toolbar-lists": "^1.0.0",
-    "ak-editor-toolbar-text-formatting": "^2.0.0",
-    "atlassian-editorkit-block-type-plugin": "^0.0.11",
-    "atlassian-editorkit-lists-plugin": "^0.0.1",
-    "atlassian-editorkit-hyperlink-plugin": "^0.0.26",
-    "atlassian-editorkit-image-upload-plugin": "^0.0.6",
-    "atlassian-editorkit-markdown-inputrules-plugin": "^0.0.18",
-    "atlassian-editorkit-text-formatting-plugin": "^0.0.4",
+    "ak-editor-toolbar-hyperlink": "^14.0.0",
+    "ak-editor-toolbar-lists": "^1.3.0",
+    "ak-editor-toolbar-text-formatting": "^2.4.0",
+    "autobind-decorator": "^1.3.3",
     "babel-runtime": "^6.11.6",
     "browserkeymap": "^2.0.1",
-    "lodash.invert": "^4.2.0",
-    "markdown-it": "^7.0.0",
-    "prosemirror": "https://github.com/atlassian/prosemirror#b674f90ee7931d7a467992bbc961ce4626cd63c4",
-    "skatejs": "^1.2.5"
+    "markdown-it": "^8.0.0",
+    "skatejs": "^1.4.1"
   },
   "devDependencies": {
+    "ak-editor-test": "^2.0.0",
+    "akutil-common-test": "^1.0.0",
     "akutil-react": "^1.0.0",
     "akutil-shared-styles": "^33.1.0"
   },

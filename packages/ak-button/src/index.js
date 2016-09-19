@@ -24,6 +24,25 @@ const getClasses = elem => ({
   [classKeys.link]: elem.appearance === 'link' && !elem.selected,
 });
 
+const getSlotName = side => side || 'default';
+
+const getSlot = side => (
+  <span className={classKeys[`${getSlotName(side)}SlotWrapper`]}>
+    <slot
+      name={side}
+      className={classKeys[`${getSlotName(side)}Slot`]}
+    />
+  </span>
+);
+
+const getContent = () => (
+  <span className={classKeys.buttonContent}>
+    {getSlot('before')}
+    {getSlot()}
+    {getSlot('after')}
+  </span>
+);
+
 const APPEARANCE_VALUES = [
   'primary',
   'standard',
@@ -34,8 +53,9 @@ const TYPE_VALUES = [
   'button',
   'submit',
 ];
-const APPEARANCE = attributeValuesToEnumObject(APPEARANCE_VALUES);
-const TYPE = attributeValuesToEnumObject(TYPE_VALUES);
+
+export const APPEARANCE = attributeValuesToEnumObject(APPEARANCE_VALUES);
+export const TYPE = attributeValuesToEnumObject(TYPE_VALUES);
 
 const appearancePropertyValues = {
   attribute: 'appearance',
@@ -106,7 +126,7 @@ const definition = {
   },
   render(elem) {
     return (
-      <div>
+      <span className={classKeys.root}>
         <style>{shadowStyles.toString()}</style>
         <button
           className={classNames(getClasses(elem))}
@@ -114,17 +134,12 @@ const definition = {
           disabled={elem.disabled}
           onmousedown={e => e.preventDefault()}
         >
-          <slot className={classKeys.slot} />
+          {getContent()}
         </button>
-      </div>
+      </span>
     );
   },
 };
 
 const AkButton = define('ak-button', definition);
 export default AkButton;
-
-export {
-  APPEARANCE,
-  TYPE,
-};

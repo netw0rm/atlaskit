@@ -1,8 +1,16 @@
 @import '~akutil-shared-styles/src/colors.less';
 
-@base: 10px;
-@base-font: 14px;
+@base-font: inherit;
+@em: 14;
+@grid: 8;
+@lineHeight: 20;
+
+@buttonLineHeight: @lineHeight / @em;
+@buttonHeight: unit(@grid * 4 / @em, em);
+@compactButtonHeight: unit(@grid * 3 / @em, em);
+
 @base-radius: 3px;
+@side-slot-margin: unit(@grid, px);
 
 // Default Button Colors
 @defaultBackgroundColor: @ak-color-N20;
@@ -29,102 +37,160 @@
 // Disabled button Colors
 @disabledColor: @ak-color-N40;
 
+::slotted([slot="before"]) > {
+  margin-right: @side-slot-margin;
+}
 
-  .button {
-    align-items: center;
-    box-sizing: border-box;
-    background: @defaultBackgroundColor;
-    border: none;
-    border-radius: @base-radius;
-    color: @defaultColor;
-    display: flex;
-    font-style: normal;
-    font-size: @base-font;
-    height: @base*3;
-    line-height: @base*3;
-    margin: 0;
-    outline: none;
-    padding: 0 @base;
-    text-align: center;
-    transition: background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+::slotted([slot="after"]) > {
+  margin-left: @side-slot-margin;
+}
+
+// todo: get rid of v0 support once browserstack chrome stable is v53
+::content > [slot="before"] {
+  margin-right: @side-slot-margin;
+}
+
+::content > [slot="after"] {
+  margin-left: @side-slot-margin;
+}
+
+.before-slot > * {
+  margin-right: @side-slot-margin;
+}
+
+.after-slot > * {
+  margin-left: @side-slot-margin;
+}
+
+
+:host .before-slot-wrapper {
+  align-self: center;
+  display: flex;
+}
+.before-slot-wrapper, .after-slot-wrapper {
+  align-self: center;
+  display: flex;
+}
+
+_shadow_root_ {
+  display: inline-block;
+}
+.button-content {
+  align-items: baseline;
+  display: inline-flex;
+  flex-wrap: nowrap;
+}
+.before-slot,
+.after-slot,
+.default-slot {
+  display: inline-flex;
+}
+button::-moz-focus-inner {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.root {
+  display: inline-block;
+}
+
+.button {
+  box-sizing: border-box;
+  background: @defaultBackgroundColor;
+  border-width: 0;
+  border-radius: @base-radius;
+  color: @defaultColor;
+  display: inline-block;
+  font-style: normal;
+  font-size: @base-font;
+  height: @buttonHeight;
+  line-height: @buttonLineHeight;
+  margin: 0;
+  outline: none;
+  padding: unit((@grid * 0.75), px) unit(@grid, px);
+  text-align: center;
+  transition: background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+  user-select: none;
+
+  &:hover {
+    background: @defaultBackgroundColorHover;
+    cursor: pointer;
+    transition: background 0.2s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+  }
+
+  &:active {
+    background: @defaultBackgroundColorActive;
+    transition-duration: 0s;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px @defaultBackgroundColorFocus;
+    transition-duration: 0s, 0.2s;
+
+    &:active {
+      box-shadow: 0 0 0 0 @defaultBackgroundColorFocus;
+    }
+  }
+
+  &.primary {
+    background: @primaryBackgroundColor;
+    color: @primaryColor;
 
     &:hover {
-      background: @defaultBackgroundColorHover;
-      cursor: pointer;
-      transition: background 0.2s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+      background: @primaryBackgroundColorHover;
     }
 
     &:active {
-      background: @defaultBackgroundColorActive;
-      transition-duration: 0s;
+      background: @primaryBackgroundColorActive;
+    }
+  }
+
+  &.subtle:not(:hover):not(:focus):not(:active) {
+    background: none;
+  }
+
+  &.disabled {
+    color: @disabledColor;
+
+    ::content > * { pointer-events: none; }
+    ::slotted(*) { pointer-events: none; }
+    .default-slot > * { pointer-events: none; }
+
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
+
+  &.selected {
+    background: @selectedBackgroundColor;
+    color: @selectedColor;
+  }
+
+  &.link {
+    background: none;
+    color: @linkColor;
+    transition: color 0.1s ease-out;
+
+    &:hover {
+      color: @linkColorHover;
+      text-decoration: underline;
     }
 
-    &:focus {
-      box-shadow: 0 0 0 2px @defaultBackgroundColorFocus;
-      transition-duration: 0s, 0.2s;
-
-      &:active {
-        box-shadow: 0 0 0 0 @defaultBackgroundColorFocus;
-      }
-    }
-
-    &.primary {
-      background: @primaryBackgroundColor;
-      color: @primaryColor;
-
-      &:hover {
-        background: @primaryBackgroundColorHover;
-      }
-
-      &:active {
-        background: @primaryBackgroundColorActive;
-      }
-    }
-
-    &.subtle:not(:hover):not(:focus):not(:active) {
-      background: none;
+    &:active {
+      color: @linkColorActive;
+      text-decoration: none;
     }
 
     &.disabled {
       color: @disabledColor;
-
-      ::content > * { pointer-events: none; }
-      ::slotted(*) { pointer-events: none; }
-      .slot > * { pointer-events: none; }
-
-      &:hover {
-        cursor: not-allowed;
-      }
-    }
-
-    &.selected {
-      background: @selectedBackgroundColor;
-      color: @selectedColor;
-    }
-
-    &.link {
       background: none;
-      color: @linkColor;
-      transition: color 0.1s ease-out;
-
-      &:hover {
-        color: @linkColorHover;
-        text-decoration: underline;
-      }
-
-      &:active {
-        color: @linkColorActive;
-        text-decoration: none;
-      }
-
-      &.disabled {
-        color: @disabledColor;
-        background: none;
-      }
-    }
-
-    &.compact {
-      height: @base*2.2;
-      line-height: @base*2.2;
     }
   }
+
+  &.compact {
+    height: @compactButtonHeight;
+    padding-top: unit((@grid / 4), px);
+    padding-bottom: unit((@grid / 4), px);
+  }
+}

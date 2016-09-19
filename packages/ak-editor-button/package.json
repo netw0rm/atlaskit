@@ -1,13 +1,12 @@
 {
   "name": "ak-editor-button",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-button",
-    "pre-release": "lerna-semantic-release pre"
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-button"
   },
   "files": [
     "dist"
@@ -15,10 +14,10 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "akutil-shared-styles": "^33.0.2",
+    "akutil-shared-styles": "^33.1.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^1.2.5"
+    "skatejs": "^1.4.1"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import markdownit from "markdown-it";
-import { MarkdownParser } from 'prosemirror/dist/markdown';
+import { MarkdownParser } from 'ak-editor-prosemirror';
 
 export const markdownParser = function(schema) {
   return new MarkdownParser(schema, markdownit("commonmark", {html: false}), {

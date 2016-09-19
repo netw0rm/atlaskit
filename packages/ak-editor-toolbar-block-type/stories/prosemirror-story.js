@@ -2,18 +2,16 @@ import { storiesOf } from '@kadira/storybook';
 import ToolbarComponent from 'ak-editor-toolbar';
 import BlockTypeComponent from '../src';
 import ContentComponent from 'ak-editor-content';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
-const { React, ReactDOM } = window;
+import React from 'react';
 import reactify from 'akutil-react';
 import invert from 'lodash.invert';
 
-import { ProseMirror, Plugin } from 'prosemirror/dist/edit';
-import { schema } from 'prosemirror/dist/schema-basic';
-import BlockTypePlugin from 'atlassian-editorkit-block-type-plugin';
+import { ProseMirror, schema } from 'ak-editor-prosemirror';
+import BlockTypePlugin from 'ak-editor-plugin-block-type';
 
-const Toolbar = reactify(ToolbarComponent, { React, ReactDOM });
-const BlockType = reactify(BlockTypeComponent, { React, ReactDOM });
-const Content = reactify(ContentComponent, { React, ReactDOM });
+const Toolbar = reactify(ToolbarComponent);
+const BlockType = reactify(BlockTypeComponent);
+const Content = reactify(ContentComponent);
 
 const prosemirrorBlockToToolbarMap = {
   paragraph: 'normalText',
@@ -33,7 +31,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
       constructor(props) {
         super(props);
         this.state = {
-          selectedFont: 'normalText',
+          selectedBlockType: 'normalText',
           canChangeBlockType: false,
         };
       }
@@ -56,33 +54,23 @@ storiesOf('ak-editor-toolbar-block-type', module)
           )]
         );
 
-        let blockTypePluginInstance;
-        new ProseMirror({ // eslint-disable-line
+        this.pm = new ProseMirror({ // eslint-disable-line
           place: this.editorElement,
           doc,
           plugins: [
-            new Plugin(
-              class BlockTypePluginDecorator {
-                constructor(pm) {
-                  blockTypePluginInstance = new BlockTypePlugin(pm);
-                  return blockTypePluginInstance;
-                }
-              }
-            ),
+            BlockTypePlugin,
           ],
         });
 
-        blockTypePluginInstance.onChange(state => {
+        BlockTypePlugin.get(this.pm).onChange(state => {
           const name = state.selectedBlockType;
           const blockType = prosemirrorBlockToToolbarMap[name];
 
           this.setState({
-            selectedFont: blockType,
+            selectedBlockType: blockType,
             canChangeBlockType: state.enabled,
           });
         });
-
-        this.blockTypePluginInstance = blockTypePluginInstance;
       }
 
       render() {
@@ -91,15 +79,15 @@ storiesOf('ak-editor-toolbar-block-type', module)
             <Toolbar>
               <BlockType
                 disabled={!this.state.canChangeBlockType}
-                selectedFont={this.state.selectedFont}
-                onSelectFont={(event) => {
-                  const font = event.detail.font;
+                selectedBlockType={this.state.selectedBlockType}
+                onSelectBlockType={(event) => {
+                  const selected = event.detail.blockType;
 
-                  const matches = toolbarToProsemirrorMap[font].match(/([a-zA-Z_]+)(\d*)/);
+                  const matches = toolbarToProsemirrorMap[selected].match(/([a-zA-Z_]+)(\d*)/);
                   const blockType = matches[1];
                   const level = matches[2];
 
-                  this.blockTypePluginInstance.changeBlockType(blockType, { level });
+                  BlockTypePlugin.get(this.pm).changeBlockType(blockType, { level });
                 }}
               />
             </Toolbar>

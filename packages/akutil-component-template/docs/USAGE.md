@@ -28,13 +28,14 @@ Now we can use the defined tag in our HTML markup, e.g.:
 
 ```html
 <html>
-<head>
-  <script src="bundle.js"></script>
-</head>
-<body>
-  <!-- ... -->
-  <akutil-component-template></akutil-component-template>
-</body>
+  <head>
+    <script src="bundle.js"></script>
+  </head>
+  <body>
+    <!-- ... -->
+    <akutil-component-template></akutil-component-template>
+  </body>
+</html>
 ```
 
 or from within another JavaScript resource:
@@ -47,6 +48,8 @@ document.body.appendChild(component);
 ```
 
 ### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```js
 import AkUtilComponentTemplate from 'akutil-component-template';

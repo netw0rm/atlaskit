@@ -6,7 +6,8 @@ import 'custom-event-polyfill';
 import { name } from '../package.json';
 import { events as blanketEvents } from 'ak-blanket';
 const { activate: activateBlanketEvent } = blanketEvents;
-import { afterMutations, getShadowRoot, locateWebComponent } from 'akutil-common-test';
+import { afterMutations, getShadowRoot, checkVisibility, checkInvisibility }
+  from 'akutil-common-test';
 import { Component } from 'skatejs';
 
 chai.use(chaiAsPromised);
@@ -58,6 +59,7 @@ describe('ak-inline-dialog', () => {
     // behaviour that is already tested and with standard DOM behaviour.
     it('event handlers inside a component should work', () => {
       const button = document.createElement('button');
+      document.body.appendChild(button);
       let clicked = false;
       const event = new CustomEvent('click', {});
 
@@ -120,18 +122,6 @@ describe('ak-inline-dialog', () => {
     let component;
     let target;
 
-    function checkInvisibility(elem) {
-      expect(elem.getBoundingClientRect().width).to.equal(0);
-      expect(elem.getBoundingClientRect().height).to.equal(0);
-      expect(elem.offsetParent).to.equal(null);
-    }
-
-    function checkVisibility(elem) {
-      expect(elem.getBoundingClientRect().width > 0).to.equal(true);
-      expect(elem.getBoundingClientRect().height > 0).to.equal(true);
-      expect(elem.offsetParent).not.to.equal(null);
-    }
-
     beforeEach(done => {
       target = document.createElement('div');
       target.setAttribute('id', 'target');
@@ -154,13 +144,13 @@ describe('ak-inline-dialog', () => {
     it('should be closed by default', () => {
       expect(component.open).to.equal(false);
       expect(component.hasAttribute('open')).to.equal(false);
-      checkInvisibility(component.childNodes[0]);
+      expect(checkInvisibility(component.childNodes[0])).to.equal(true);
     });
 
     it('should be open when property `open` is set to true', done => {
       component.open = true;
       setTimeout(() => {
-        checkVisibility(component.childNodes[0]);
+        expect(checkVisibility(component.childNodes[0])).to.equal(true);
       });
       setTimeout(done);
     });
@@ -172,19 +162,23 @@ describe('ak-inline-dialog', () => {
       });
 
       it('should be closed when property `open` is set to false', done => {
-        setTimeout(() => checkVisibility(component.childNodes[0]));
+        setTimeout(() => expect(checkVisibility(component.childNodes[0])).to.equal(true));
         setTimeout(() => (component.open = false));
-        setTimeout(() => checkInvisibility(component.childNodes[0]));
+        setTimeout(() => expect(checkInvisibility(component.childNodes[0])).to.equal(true));
         setTimeout(done);
       });
     });
 
     describe('eventing', () => {
       it('should be possible to close the dialog with a blanket activation', (done) => {
+        let blanket;
         afterMutations(
+          () => (component.hasBlanket = true),
           () => (component.open = true),
           () => {
-            const blanket = locateWebComponent('ak-blanket', getShadowRoot(component))[0];
+            blanket = getShadowRoot(component).firstChild.firstChild;
+          },
+          () => {
             const event = new CustomEvent(activateBlanketEvent);
             blanket.dispatchEvent(event);
           },

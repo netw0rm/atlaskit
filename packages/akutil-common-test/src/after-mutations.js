@@ -3,7 +3,9 @@
    has had time to re-render.
    Ensure that you pass `done` into the test and that you call it at the end
    as this will make your tests asyncronous.
- * @param {Function} fn... A list of functions to run in order
+ * @param {Function} fn... A list of functions to run in order.
+ *                    Each function is passed the return value of the last function
+ *                    (except for the last)
  * @example @js it('should respond to prop changes', (done) => {
  *    afterMutations(
  *      () => expect(component).to.be.in.some.state,
@@ -15,13 +17,15 @@
  *    );
  *  });
  */
+let ret;
 function afterMutations(...fns) {
   setTimeout(() => {
     const fn = fns.shift();
+    const isLastFn = fns.length === 0;
     if (typeof fn === 'function') {
-      fn();
+      ret = isLastFn ? fn() : fn(ret);
     }
-    if (fns.length) {
+    if (!isLastFn) {
       afterMutations.apply(null, fns);
     }
   }, 1);

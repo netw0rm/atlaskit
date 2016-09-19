@@ -1,0 +1,6 @@
+{{#if (equal kind "member")}}
+{{>index-indent}}*  {{>sig-link-parent}}
+{{/if~}}
+{{#indexChildren ~}}
+{{>member-index-props~}}
+{{/indexChildren}}

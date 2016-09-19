@@ -1,0 +1,26 @@
+{
+  "name": "ak-editor-test",
+  "version": "2.1.0",
+  "description": "",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.ts",
+  "typings": "src/index.ts",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-test"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "ak-editor-prosemirror": "^2.0.0",
+    "ak-editor-schema": "^2.0.0",
+    "babel-runtime": "^6.11.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

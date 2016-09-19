@@ -5,6 +5,10 @@ import { define, emit, prop, props, vdom } from 'skatejs';
 import Item from './pf-mention-item';
 import Scrollable from './pf-scrollable';
 import debug from '../util/logger';
+import {
+  mentionListRendered as mentionListRenderedEvent,
+  selected as selectedEvent,
+} from '../internal/index.events';
 
 // FIXME
 const defaultAvatar = 'https://dmg75ly2d8uj2.cloudfront.net/assets/img/avatar-all-here@2x.png';
@@ -138,7 +142,7 @@ export default define('pf-mention-list', {
     },
 
     chooseCurrentSelection() {
-      emit(this, 'selected', {
+      emit(this, selectedEvent, {
         detail: this.mentions[this.selectedIndex],
       });
       debug('pf-mention-list.chooseCurrentSelection', this.mentions[this.selectedIndex]);
@@ -182,7 +186,7 @@ export default define('pf-mention-list', {
   },
 
   rendered(elem) {
-    emit(elem, 'pf-mention-list-rendered');
+    emit(elem, mentionListRenderedEvent);
   },
 
   props: {

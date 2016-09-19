@@ -5,11 +5,16 @@
 @ak-navigation-container-color: @ak-color-N20;
 @ak-navigation-container-name-color: @ak-color-N500;
 
-@global-bar-width: 60px;
 @global-primary-item-margin: 25px;
 @global-secondary-item-margin: 10px;
 @global-secondary-item-height: 30px;
 @container-logo-size: 40px;
+
+@font-size: 14px;
+
+.blanket:not(.blanket-active) {
+  display: none;
+}
 
 .navigation {
   background-color: @ak-navigation-container-color;
@@ -24,6 +29,7 @@
   }
 
   .global {
+    display: flex;
     flex: 0 0 @global-bar-width;
     background-color: @ak-navigation-global-color;
     color: white;
@@ -40,15 +46,14 @@
       }
     }
 
-    .global-secondary {
+    .global-secondary-item {
       margin: 10px auto;
       height: @global-secondary-item-height;
       text-align: center;
     }
 
     .global-bottom {
-      bottom: 0;
-      position: absolute;
+      margin-top: auto;
       width: 100%;
     }
   }
@@ -56,6 +61,7 @@
   .container {
     padding: 20px 0;
     overflow: hidden;
+    width: 100%;
   }
 
   .container-logo {
@@ -74,10 +80,18 @@
     align-items: center;
     margin-bottom: 10px;
     font-weight: bold;
-    font-size: 14px;
+  }
+
+  .container-name-text {
+    width: @container-link-text-expanded-width;
+    font-size: @font-size;
+    line-height: @font-size;
+    max-height: @font-size * 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .container-links {
-    font-size: 14px;
+    font-size: @font-size;
   }
 }

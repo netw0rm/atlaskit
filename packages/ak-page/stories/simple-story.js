@@ -1,20 +1,14 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import webComponent from '../src/index';
-const { React, ReactDOM } = window;
+import React from 'react';
 import { name } from '../package.json';
 
 import AkNavigation from 'ak-navigation';
 
-const Component = reactify(webComponent, {
-  React,
-  ReactDOM,
-});
+const Component = reactify(webComponent);
 
-const Navigation = reactify(AkNavigation, {
-  React,
-  ReactDOM,
-});
+const Navigation = reactify(AkNavigation);
 
 storiesOf(name, module)
 .add('a simple ak-page', () => (

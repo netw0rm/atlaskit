@@ -1,6 +1,6 @@
 {
   "name": "akutil-common-test",
-  "version": "1.5.1",
+  "version": "1.8.1",
   "description": "",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

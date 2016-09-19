@@ -19,6 +19,7 @@ class KeyPressHandler {
   * @constructor
   * @param {String} key A named key. Case insensitive.
   * @param {Function} callback A callback function to invoke if the given key was activated.
+  *                            The callback is passed the event object.
   * @param {Node} [elem]  The element to listen for the key activation.
   *                       Defaults to document if none given.
   */
@@ -35,7 +36,7 @@ class KeyPressHandler {
     this.elem = elem || document;
     this.listener = (e) => {
       if (this.keyListeners[e.keyCode]) {
-        this.keyListeners[e.keyCode]();
+        this.keyListeners[e.keyCode](e);
       }
     };
 

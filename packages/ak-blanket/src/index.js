@@ -4,7 +4,7 @@ import 'style!./host.less';
 import { prop, vdom, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
-import * as events from './internal/events';
+import * as events from './internal/index.events';
 
 function handleActivation(elem) {
   return () => {
@@ -50,9 +50,11 @@ export default define('ak-blanket', {
      */
     tinted: prop.boolean({ attribute: true }),
     /**
-     * @description If click on the blanket emits a 'blanket-click' event.
+     * @description Whether the blanket is clickable.
+     *
      * @memberof Blanket
      * @instance
+     * @emits Blanket#activate
      * @type Boolean
      * @default false
      * @example @html <ak-blanket clickable></ak-blanket>

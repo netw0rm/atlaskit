@@ -1,15 +1,21 @@
 /** @jsx vdom */
 import 'style!./host.less';
 import shadowListStyles from './shadow-list.less';
-import { vdom, define, prop } from 'skatejs';
+import { vdom, define, prop, emit } from 'skatejs';
 import ItemDefinition from './item';
-import TriggerDefinition, { TriggerButtonDefinition } from './trigger';
+import './trigger';
+import GroupDefinition from './group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
 
-// Width of a dropdown should be no less than width of it's trigger plus 10
-const diffBetweenDropdonAndTrigger = 10;
+// TODO dangling to Symbol once this is supported: https://github.com/skatejs/skatejs/issues/687
+/* eslint-disable no-underscore-dangle */
+
+// Width of a dropdown should be at least width of it's trigger + 10px
+const diffBetweenDropdownAndTrigger = 10;
+const dropdownMinWidth = 150;
+const offset = '0 2';
 
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
@@ -20,15 +26,13 @@ function toggleDialog(elem, value) {
   if (!list || !list.length) {
     return;
   }
-  const trigger = elem.querySelector('ak-dropdown-trigger');
-  let triggerButton;
+
+  const trigger = elem.querySelector('[slot="trigger"]');
+
   if (trigger) {
     trigger.opened = isOpen;
-    triggerButton = trigger.querySelector('ak-trigger-button');
   }
-  if (triggerButton) {
-    triggerButton.opened = isOpen;
-  }
+
   // when the dialog is open the first item element should be focused,
   // properties 'first' and 'last' should be set (TBD: change to :first-child and :last-child)
   // when it's closed everything should be cleared
@@ -37,6 +41,9 @@ function toggleDialog(elem, value) {
     list[0].first = true;
     list[list.length - 1].last = true;
     elem.reposition();
+    document.addEventListener('click', elem._handleClickOutside);
+    document.addEventListener('keydown', elem._handleKeyDown);
+    emit(elem, events.afterOpen);
   } else {
     [...list].forEach((item) => {
       item.focused = false;
@@ -47,6 +54,9 @@ function toggleDialog(elem, value) {
         item.last = false;
       }
     });
+    document.removeEventListener('click', elem._handleClickOutside);
+    document.removeEventListener('keydown', elem._handleKeyDown);
+    emit(elem, events.afterClose);
   }
 }
 
@@ -92,34 +102,21 @@ function changeFocus(elem, type) {
   }
 }
 
-function handleClickOutside(elem) {
-  return (e) => {
-    if (e.target !== elem && !isDescendantOf(e.target, elem)) {
-      toggleDialog(elem, false);
-    }
-  };
-}
-
-function handleKeyPress(elem) {
-  return (e) => {
-    if (e.keyCode === keyCode('escape')) {
-      toggleDialog(elem, false);
-    }
-  };
-}
-
-// min widht of a dropdown should be more than width of the trigger (by design)
-// max-width is controled by css, everything that's exceeding its limit
+// min width of a dropdown should be more than width of the trigger (by design)
+// max-width is controlled by css, everything that's exceeding its limit
 // is ellipsed (by design, controlled by css)
-function getDropdownStyles(elem) {
+function getDropdownStyles(target, dropdown) {
+  const dropdownPositionedToSide =
+    dropdown.position.indexOf('left') === 0 || dropdown.position.indexOf('right') === 0;
+  const minWidth = dropdownPositionedToSide ?
+  target.getBoundingClientRect().width + diffBetweenDropdownAndTrigger : dropdownMinWidth;
   return {
-    minWidth: `${elem.getBoundingClientRect().width + diffBetweenDropdonAndTrigger}px`,
+    minWidth: `${minWidth}px`,
   };
 }
 
 export const Item = define('ak-dropdown-item', ItemDefinition);
-export const Trigger = define('ak-dropdown-trigger', TriggerDefinition);
-export const TriggerButton = define('ak-trigger-button', TriggerButtonDefinition);
+export const Group = define('ak-dropdown-group', GroupDefinition);
 
 /**
  * @description The definition for the Dropdown component.
@@ -135,63 +132,69 @@ export default define('ak-dropdown', {
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
     elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
-
-    document.addEventListener('click', handleClickOutside(elem));
-    document.addEventListener('keypress', handleKeyPress(elem));
-  },
-  detached() {
-    document.removeEventListener('click', handleClickOutside);
-    document.removeEventListener('click', handleKeyPress);
+    elem._handleClickOutside = (e) => {
+      if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem)) {
+        toggleDialog(elem, false);
+      }
+    };
+    elem._handleKeyDown = (e) => {
+      if (elem.open && e.keyCode === keyCode('escape')) {
+        toggleDialog(elem, false);
+      }
+    };
   },
   prototype: {
     reposition() {
-      if (this.layer) {
-        this.layer.reposition();
+      if (this._layer) {
+        this._layer.reposition();
       }
 
       return this;
     },
   },
   render(elem) {
-    let target;
+    let target = elem.target;
     let styles;
 
     return (
       <div>
-        <div
-          ref={(el) => {
-            target = el;
-            // width of the dropdown depends on the width of the trigger
-            styles = getDropdownStyles(target);
-          }}
-        >
-          <slot name="trigger" />
-        </div>
-        <div style={{ display: elem.open ? 'block' : 'none' }}>
-          <Layer
-            position="bottom left"
-            target={target}
-            enableFlip
-            ref={(layer) => {
-              elem.layer = layer;
-              setTimeout(() => {
-                if (elem.open && layer.alignment) {
-                    // by default dropdown has opacity 0
-                    // and only with attribute 'positioned' it has opacity 1
-                    // this behavior is to avoid 'flashing' of dropdown
-                    // when it's initially positioning itself on a page
-                  elem.setAttribute('positioned', true);
-                }
-              });
-            }
-          }
+        {!elem.target ?
+          <div
+            ref={(el) => {
+              target = el;
+              // width of the dropdown depends on the width of the trigger
+              styles = getDropdownStyles(target, elem);
+            }}
           >
-            <div className={shadowListStyles.locals.list} style={styles}>
-              <style>{shadowListStyles.toString()}</style>
-              <slot />
-            </div>
-          </Layer>
-        </div>
+            <slot name="trigger" />
+          </div>
+          : null
+        }
+        {elem.open ? <Layer
+          position={elem.position}
+          target={target}
+          enableFlip
+          offset={offset}
+          ref={(layer) => {
+            elem._layer = layer;
+            setTimeout(() => {
+              if (elem.open && layer.alignment) {
+                  // by default dropdown has opacity 0
+                  // and only with attribute 'positioned' it has opacity 1
+                  // this behavior is to avoid 'flashing' of dropdown
+                  // when it's initially positioning itself on a page
+                elem.setAttribute('positioned', true);
+                layer.reposition();
+              }
+            });
+          }
+        }
+        >
+          <div className={shadowListStyles.locals.list} style={styles}>
+            <style>{shadowListStyles.toString()}</style>
+            <slot />
+          </div>
+        </Layer> : null}
       </div>
     );
   },
@@ -212,7 +215,26 @@ export default define('ak-dropdown', {
         }
       },
     }),
+    /**
+     * @description Position of the dropdown. See the documentation of ak-layer for more details.
+     * @memberof Dropdown
+     * @default bottom left
+     * @type {string}
+     * @example @html <ak-dropdown position="right top"></ak-dropdown>
+     * @example @js dropdown.position = 'top right';
+     */
+    position: prop.string({
+      attribute: true,
+      default: 'bottom left',
+    }),
+    /**
+     * @description Link to the target element
+     * @memberof Dropdown
+     * @example @js dropdown.target = document.getElementById("target");
+     */
+    target: {},
   },
 });
 
 export { events };
+export { DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow } from './trigger';

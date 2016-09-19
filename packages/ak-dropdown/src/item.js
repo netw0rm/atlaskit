@@ -69,6 +69,7 @@ export default {
     const tabIndex = elem.selected ? '1' : '0';
 
     return (
+      // void 0 there is to remove href completely, null doesn't work
       <a
         tabindex={tabIndex}
         className={classes}

@@ -2,21 +2,24 @@ import 'custom-event-polyfill';
 import assign from 'object-assign';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { symbols, props } from 'skatejs';
+import sinonChai from 'sinon-chai';
+import { props } from 'skatejs';
 import AkButton, { APPEARANCE } from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
 import hostStyles from '../src/host.less';
 import { name } from '../package.json';
-import { hasClass, waitUntil } from 'akutil-common-test';
+import { hasClass, waitUntil, getShadowRoot } from 'akutil-common-test';
 const classKeys = shadowStyles.locals;
+import { akGridSize } from 'akutil-shared-styles';
 
 chai.use(chaiAsPromised);
+chai.use(sinonChai);
 const expect = chai.expect;
 
 describe('ak-button', () => {
   let component;
   const shadowDomQuery = (elem, selector) =>
-    elem[symbols.shadowRoot].querySelector(selector);
+    getShadowRoot(elem).querySelector(selector);
 
   const getShadowButtonElem = (elem) =>
     shadowDomQuery(elem, `.${classKeys.button}`);
@@ -27,11 +30,20 @@ describe('ak-button', () => {
     expect(hasClass(button, ...classes)).to.be.true;
   };
 
+  const createDivTest = config => {
+    const div = document.createElement('div');
+    div.innerText = 'test';
+    if (config.slotName) {
+      div.slot = config.slotName;
+    }
+    return div;
+  };
+
   beforeEach(() => {
     component = new AkButton();
     props(component, { className: hostStyles.locals.akButton });
     document.body.appendChild(component);
-    return waitUntil(() => component[symbols.shadowRoot] !== null);
+    return waitUntil(() => getShadowRoot(component) !== null);
   });
 
   afterEach(() => document.body.removeChild(component));
@@ -51,6 +63,26 @@ describe('ak-button', () => {
     sinon.spy(event, 'preventDefault');
     button.dispatchEvent(event);
     expect(event.preventDefault).to.have.been.called;
+  });
+
+  describe('slots', () => {
+    describe('before', () => {
+      const div = createDivTest({ slotName: 'before' });
+      beforeEach(() => component.appendChild(div));
+
+      it('slotted element should have margin-right applied', () =>
+        expect(window.getComputedStyle(div).marginRight).to.equal(akGridSize)
+      );
+    });
+
+    describe('after', () => {
+      const div = createDivTest({ slotName: 'after' });
+      beforeEach(() => component.appendChild(div));
+
+      it('slotted element should have margin-left applied', () =>
+        expect(window.getComputedStyle(div).marginLeft).to.equal(akGridSize)
+      );
+    });
   });
 
   describe('attributes', () => {
@@ -215,10 +247,21 @@ describe('ak-button', () => {
         expect(window.getComputedStyle(component).pointerEvents).to.equal('none')
       );
 
-      it('button\'s children should have pointer-events: none css attribute', () => {
-        const div = document.createElement('div', 'test');
-        component.appendChild(div);
-        expect(window.getComputedStyle(div).pointerEvents).to.equal('none');
+      describe('when button has slotted elements', () => {
+        const addSlottedElement = slotName => {
+          const div = createDivTest({ slot: slotName });
+          component.appendChild(div);
+          return div;
+        };
+
+        [false, 'before'].forEach(slotName =>
+          describe(`on ${slotName || 'default'} slot`, () =>
+            it('slotted elements should have pointer-events: none css attribute', () => {
+              const div = addSlottedElement(slotName);
+              expect(window.getComputedStyle(div).pointerEvents).to.equal('none');
+            })
+          )
+        );
       });
     });
   });

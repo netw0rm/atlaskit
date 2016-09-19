@@ -32,6 +32,12 @@ export default class Alignment {
       popperOptions.boundariesElement = getElement(options.boundariesElement);
     }
 
+    if (options.offset) {
+      popperOptions.modifiers.offset = {
+        offset: options.offset,
+      };
+    }
+
     if (!options.enableFlip) {
       popperOptions.modifiers.preventOverflow = {
         enabled: false,

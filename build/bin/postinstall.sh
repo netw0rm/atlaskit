@@ -5,11 +5,6 @@ BASEDIR=$(dirname $0)
 LERNA_LOC="`npm bin`/lerna"
 
 printf "\033[34m"
-echo "Removing old symlinks..."
-printf "\033[0m"
-find $BASEDIR/../.. -maxdepth 2 -lname \"*\" -exec rm -v {} \;
-
-printf "\033[34m"
 echo "Lerna bootstrap..."
 printf "\033[0m"
 $LERNA_LOC bootstrap
@@ -19,8 +14,3 @@ echo "Installing hooks..."
 printf "\033[0m"
 node $BASEDIR/pre-commit.install.js
 validate-commit-msg
-
-printf "\033[34m"
-echo "Setting up symlinks..."
-printf "\033[0m"
-$BASEDIR/no.js.npm.link.sh

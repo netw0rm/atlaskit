@@ -85,14 +85,13 @@ export default define('ak-inline-dialog', {
   },
   prototype: {
     /**
-     * @description Forces the Layer to recalculate and reposition itself on the page. This should
-     * not usually be required as any modifications to the Layer itself should also cause reposition
-     * to be called.
+     * @description Forces the dialog to recalculate and reposition itself on the page. This should
+     * not usually be required as any modifications to the dialog itself should also cause
+     * reposition to be called.
      * @memberof InlineDialog
-     * @function
      * @instance
      * @return {InlineDialog}
-     * @example @js layer.reposition();
+     * @example @js inlineDialog.reposition();
     */
     reposition() {
       if (this.layer) {
@@ -257,10 +256,11 @@ export default define('ak-inline-dialog', {
      * will flip positions if the enableFlip prop is set.
      * Can either be an element or a selector of an element.
      * If not set the boundary will be the current viewport.
-     * @memberof Layer
+     * @memberof InlineDialog
      * @instance
      * @type HTMLElement | String
-     * @example @html <ak-inline-dialog enableFlip boundariesElement="#container"></ak-layer>
+     * @example @html <ak-inline-dialog enable-flip boundaries-element="#container">
+     * </ak-inline-dialog>
      * @example @js inlineDialog.boundariesElement = document.body.querySelector('#container');
      * @example @js inlineDialog.enableFlip = true;
      */
@@ -271,11 +271,11 @@ export default define('ak-inline-dialog', {
      * i.e. if an Inline-Dialog is set to position="top middle" but placing it there would cause
      * it to be outside the viewport (or the boundariesElement if that is set)
      * the Inline-Dialog will instead be positioned in "bottom middle".
-     * @memberof Layer
+     * @memberof InlineDialog
      * @instance
      * @type Boolean
-     * @example @html <ak-layer enable-flip></ak-layer>
-     * @example @js layer.enableFlip = true;
+     * @example @html <ak-inline-dialog enable-flip></ak-inline-dialog>
+     * @example @js inlineDialog.enableFlip = true;
      */
     enableFlip: prop.boolean({
       attribute: true,

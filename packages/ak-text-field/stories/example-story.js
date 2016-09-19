@@ -2,12 +2,12 @@ import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import WebComponent from '../src/index';
 import ButtonWC from 'ak-button';
-const { React, ReactDOM } = window;
+import React from 'react';
 import { name } from '../package.json';
 // import styles from 'style!./../src/host.less';
 
-const ReactField = reactify(WebComponent, { React, ReactDOM });
-const ReactButton = reactify(ButtonWC, { React, ReactDOM });
+const ReactField = reactify(WebComponent);
+const ReactButton = reactify(ButtonWC);
 
 function generateInput(opts) {
   return (
@@ -103,4 +103,50 @@ storiesOf(name, module)
   ))
   .add('ak-text-fields submission test (ak-button submit button)', () => (
     submitTestForm(false)
+  ))
+  .add('ak-text-field that responds to parent resize', () => (
+    <div>
+      <ol className="ruler">
+        <li>0</li>
+        <li>100</li>
+        <li>200</li>
+        <li>300</li>
+        <li>400</li>
+        <li>500</li>
+        <li>600</li>
+      </ol>
+      <div className="resizing-parent">
+        {generateInput({ label: 'First name', id: 'fname' })}
+      </div>
+      <style>{`
+        .ruler {
+          margin: 0;
+          padding: 0;
+          list-style-type:none;
+        }
+
+        .ruler li {
+          float: left;
+          width: 100px;
+          border-bottom: 1px solid #333;
+        }
+
+        .resizing-parent {
+          clear: both;
+          width: 700px;
+          overflow: hidden;
+          background-color: white;
+          border-right: 1px dashed #333;
+          animation: growshrink 3s ease;
+          animation-iteration-count: infinite;
+          padding-bottom: 1em;
+        }
+
+        @keyframes growshrink {
+          0% { width: 700px; }
+          50% { width: 0; }
+          100% { width: 700px; }
+        }
+      `}</style>
+    </div>
   ));

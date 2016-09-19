@@ -5,6 +5,10 @@
 // browsers that do not support shadow DOM
 @import 'shared-variables.less';
 
+.defaultSlotWrapper {
+  max-width: 496px; // fits 8px grid
+}
+
 .label {
   color: @ak-color-N200;
   display: block;
@@ -12,6 +16,7 @@
   font-weight: 500;
   margin-top: 20px;
   padding-bottom: 10px;
+  white-space: nowrap;
 }
 
 // NORMAL STATE
@@ -23,10 +28,9 @@
   font-size: 14px;
   padding: 13px 8px;
   transition: background-color 0.2s, border-color 0.2s;
-  width: 300px;
+  width: 100%;
 };
 .default-slot-element > input { @baseInputStyle(); }
-::content > input { @baseInputStyle(); }
 ::slotted(input)  { @baseInputStyle(); }
 
 // HOVER STATE
@@ -36,7 +40,6 @@
   border-color: @ak-color-N20;
 };
 .default-slot-element > input:hover { @hoverInputStyle(); }
-::content > input:hover { @hoverInputStyle(); }
 ::slotted(input:hover)  { @hoverInputStyle(); }
 
 // FOCUS STATE
@@ -48,7 +51,6 @@
   padding: 12px 7px;
 };
 .default-slot-element > input:focus { @focusInputStyle(); }
-::content > input:focus { @focusInputStyle(); }
 ::slotted(input:focus)  { @focusInputStyle(); }
 
 // DISABLED STATE
@@ -60,5 +62,4 @@
   cursor: not-allowed;
 };
 .default-slot-element > input[disabled] { @disabledInputStyle(); }
-::content > input[disabled] { @disabledInputStyle(); }
 ::slotted(input[disabled])  { @disabledInputStyle(); }

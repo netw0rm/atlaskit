@@ -1,10 +1,15 @@
 import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations } from 'akutil-common-test';
+import { symbols } from 'skatejs';
+import { fixtures } from 'ak-editor-test';
 
 const { expect } = chai;
 
 describe('ak-editor-bitbucket', () => {
+  const fixture = fixtures();
+  const makeEditor = () => fixture().appendChild(new AkEditorBitbucket()) as any;
+
   it('is possible to create a component', () => {
     let component: any;
     expect(() => {
@@ -33,6 +38,24 @@ describe('ak-editor-bitbucket', () => {
       const editor = new AkEditorBitbucket();
       editor.defaultValue = 'foo';
       expect(editor.value).to.equal('foo');
+    });
+  });
+
+  describe('defaultValue', () => {
+    it('should contain a default value', (done) => {
+      const editor = makeEditor();
+
+      editor.defaultValue = 'foo';
+      editor.expanded = true;
+
+      afterMutations(
+        () => {
+          const span = editor[symbols.shadowRoot].querySelector('span');
+          console.log(span.textContent)
+          expect(span.textContent).to.eql('foo');
+        },
+        done
+      );
     });
   });
 });

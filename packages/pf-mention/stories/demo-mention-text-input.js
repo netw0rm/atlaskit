@@ -89,7 +89,7 @@ const MentionTextInput = React.createClass({
         onEnter={() => this._mentionListRef.chooseCurrentSelection()}
         onEscape={() => this._hideMentionPopup()}
         onFocus={() => this._showMentionPopup()}
-        onBlur={() => this._hideMentionPopup()}
+        // onBlur={() => this._hideMentionPopup()}
         inputRef={(ref) => { this._inputRef = ref; }}
         id="search-text"
       />

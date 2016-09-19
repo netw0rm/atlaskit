@@ -13,6 +13,8 @@ chai.should();
 // const expect = chai.expect;
 
 const mentions = mentionData.mentions;
+const testTimeout = 10000;
+const step = 10;
 
 function setupPicker() {
   const component = new MentionPicker();
@@ -23,7 +25,7 @@ function setupPicker() {
   });
   document.body.appendChild(component);
   // We return a promise here so we can do more than just the default setting up
-  return waitUntil(() => componentHasShadowRoot).then(() => component);
+  return waitUntil(() => componentHasShadowRoot).then(() => component, testTimeout, step);
 }
 
 function tearDownPicker(component) {
@@ -55,13 +57,13 @@ describe('pf-mention-picker', () => {
   it('should accept limit result to starting with s', () => {
     const defaultMentionItemsShow = () => (getMentionItems(component).length === 4);
     component.query = 's';
-    return waitUntil(defaultMentionItemsShow).should.be.fulfilled;
+    return waitUntil(defaultMentionItemsShow, testTimeout, step).should.be.fulfilled;
   });
 
   it('should accept limit result to starting with shae', () => {
     const defaultMentionItemsShow = () => (getMentionItems(component).length === 1);
     component.query = 'shae';
-    return waitUntil(defaultMentionItemsShow).should.be.fulfilled;
+    return waitUntil(defaultMentionItemsShow, testTimeout, step).should.be.fulfilled;
   });
 
   it('should report error when service fails', () => {
@@ -70,11 +72,11 @@ describe('pf-mention-picker', () => {
     const mentionErrorShown = () => !!getError(component);
 
     return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+      waitUntil(defaultMentionItemsShow, testTimeout, step).should.be.fulfilled.then(() => {
         component.query = 'nothing';
-        waitUntil(noMentionItemsShown).should.be.fulfilled.then(() => {
+        waitUntil(noMentionItemsShown, testTimeout, step).should.be.fulfilled.then(() => {
           component.query = 'error';
-          waitUntil(mentionErrorShown).should.be.fulfilled.then(() => {
+          waitUntil(mentionErrorShown, testTimeout, step).should.be.fulfilled.then(() => {
             resolve();
           }, (reason) => reject(reason));
         }, (reason) => reject(reason));
@@ -90,9 +92,9 @@ describe('pf-mention-picker', () => {
     };
 
     return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+      waitUntil(defaultMentionItemsShow, testTimeout, step).should.be.fulfilled.then(() => {
         component.query = 'error';
-        waitUntil(mentionErrorProcessed).should.be.fulfilled.then(() => {
+        waitUntil(mentionErrorProcessed, testTimeout, step).should.be.fulfilled.then(() => {
           try {
             expect(getMentionItems(component).length, 'Number of mention items')
               .to.equal(mentionDataSize);
@@ -110,9 +112,9 @@ describe('pf-mention-picker', () => {
     const secondItemSelected = () => isMentionItemSelected(component, mentions[1].id);
 
     return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+      waitUntil(defaultMentionItemsShow, testTimeout, step).should.be.fulfilled.then(() => {
         component.selectNext();
-        waitUntil(secondItemSelected).should.be.fulfilled.then(() => {
+        waitUntil(secondItemSelected, testTimeout, step).should.be.fulfilled.then(() => {
           resolve();
         }, (reason) => reject(reason));
       }, (reason) => reject(reason));
@@ -125,9 +127,9 @@ describe('pf-mention-picker', () => {
       isMentionItemSelected(component, mentions[mentions.length - 1].id);
 
     return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+      waitUntil(defaultMentionItemsShow, testTimeout, step).should.be.fulfilled.then(() => {
         component.selectPrevious();
-        waitUntil(lastItemSelected).should.be.fulfilled.then(() => {
+        waitUntil(lastItemSelected, testTimeout, step).should.be.fulfilled.then(() => {
           resolve();
         }, (reason) => reject(reason));
       }, (reason) => reject(reason));
@@ -144,11 +146,11 @@ describe('pf-mention-picker', () => {
     component.addEventListener('selected', (event) => { chosenMention = event.detail; });
 
     return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+      waitUntil(defaultMentionItemsShow, testTimeout, step).should.be.fulfilled.then(() => {
         component.selectNext();
-        waitUntil(secondItemSelected).should.be.fulfilled.then(() => {
+        waitUntil(secondItemSelected, testTimeout, step).should.be.fulfilled.then(() => {
           component.chooseCurrentSelection();
-          waitUntil(chooseSecondItem).should.be.fulfilled.then(() => {
+          waitUntil(chooseSecondItem, testTimeout, step).should.be.fulfilled.then(() => {
             resolve();
           }, (reason) => reject(reason));
         }, (reason) => reject(reason));
@@ -165,10 +167,10 @@ describe('pf-mention-picker', () => {
     component.addEventListener('selected', (event) => { chosenMention = event.detail; });
 
     return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+      waitUntil(defaultMentionItemsShow, testTimeout, step).should.be.fulfilled.then(() => {
         const item = getMentionItemById(component, mentions[2].id);
         item.dispatchEvent(newMouseDownEvent());
-        waitUntil(chooseThirdItem).should.be.fulfilled.then(() => {
+        waitUntil(chooseThirdItem, testTimeout, step).should.be.fulfilled.then(() => {
           resolve();
         }, (reason) => reject(reason));
       }, (reason) => reject(reason));

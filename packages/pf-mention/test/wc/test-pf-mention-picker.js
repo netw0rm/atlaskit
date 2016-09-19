@@ -163,7 +163,7 @@ describe('pf-mention-picker', () => {
     });
   });
 
-  it('should choose clicked selection when item clicked', () => {
+  it('should choose clicked selection when item clicked', function () {
     // Issues under IE in browserstack
     this.skip();
     let chosenMention = null;

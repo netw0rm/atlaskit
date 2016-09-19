@@ -18,7 +18,6 @@ import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
 import schema from 'ak-editor-schema';
 import { buildKeymap } from './keymap';
 import { markdownSerializer } from './markdown-serializer';
-import { markdownTransformer } from './paste-handlers';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 
@@ -426,9 +425,6 @@ class AkEditorBitbucket extends Component {
 
     // add the keymap
     pm.addKeymap(buildKeymap(pm.schema));
-
-    // add paste handlers
-    pm.on.transformPasted.add(slice => markdownTransformer(pm.schema, slice));
 
     // 'change' event is public API
     pm.on.change.add(() => emit(this, 'change'));

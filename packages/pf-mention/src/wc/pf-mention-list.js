@@ -43,11 +43,15 @@ function leftClick(event) {
 }
 
 function selectIndex(elem, index) {
+  console.log('pf-mention-list.selectIndex 1', index,
+    elem && elem.mentions && elem.mentions[index] && elem.mentions[index].id);
   props(elem, {
     selectedIndex: index,
     selectedKey: elem.mentions[index].id,
   });
+  console.log('pf-mention-list.selectIndex 2');
   revealItem(elem, elem.mentions[index].id);
+  console.log('pf-mention-list.selectIndex 3');
 }
 
 function adjustSelection(elem) {
@@ -134,12 +138,14 @@ export default define('pf-mention-list', {
     selectNext() {
       console.log('pf-mention-list.selectNext');
       const newIndex = wrapIndex(this, this.selectedIndex + 1);
+      console.log('pf-mention-list.selectNext newIndex', newIndex);
       selectIndex(this, newIndex);
     },
 
     selectPrevious() {
       console.log('pf-mention-list.selectPrevious');
       const newIndex = wrapIndex(this, this.selectedIndex - 1);
+      console.log('pf-mention-list.selectPrevious newIndex', newIndex);
       selectIndex(this, newIndex);
     },
 

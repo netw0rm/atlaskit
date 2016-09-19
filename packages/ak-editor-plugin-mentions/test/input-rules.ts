@@ -36,20 +36,4 @@ describe('ak-editor-plugin-mentions - input rules', () => {
     const cursorFocus: ResolvedPos = pm.selection.$to;
     expect(cursorFocus.nodeBefore).not.to.be.of.nodeType(Mention);
   });
-
-  it('should replace a standalone ":" with mention node', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, 'foo :');
-
-    const cursorFocus: ResolvedPos = pm.selection.$to;
-    expect(cursorFocus.nodeBefore).to.be.of.nodeType(Mention);
-  });
-
-  it('should not replace a ":" thats part of a word', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, 'foo:');
-
-    const cursorFocus: ResolvedPos = pm.selection.$to;
-    expect(cursorFocus.nodeBefore).not.to.be.of.nodeType(Mention);
-  });
 });

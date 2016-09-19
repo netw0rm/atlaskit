@@ -9,14 +9,6 @@ module.exports = (config) => {
 
     frameworks: ['mocha', 'chai', 'sinon-chai'],
 
-    files: [
-      'packages/*/test/**/*.+(js|ts)',
-    ],
-
-    preprocessors: {
-      'packages/*/test/**/*.+(js|ts)': ['webpack', 'sourcemap'],
-    },
-
     webpack: webpackConfig,
 
     webpackMiddleware: {
@@ -40,7 +32,7 @@ module.exports = (config) => {
 
     browsers: ['Chrome', 'Firefox'],
 
-    reportSlowerThan: 200,
+    reportSlowerThan: 500, // default animation duration is 250ms
 
     singleRun: false,
 

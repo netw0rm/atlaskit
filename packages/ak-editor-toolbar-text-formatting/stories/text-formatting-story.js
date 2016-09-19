@@ -1,9 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import TextFormattingComponent from '../src';
-const { React, ReactDOM } = window;
+import React from 'react';
 import reactify from 'akutil-react';
 
-const TextFormatting = reactify(TextFormattingComponent, { React, ReactDOM });
+const TextFormatting = reactify(TextFormattingComponent);
 
 storiesOf('ak-editor-toolbar-text-formatting', module)
   .add('Basic', () => (
@@ -20,6 +20,7 @@ storiesOf('ak-editor-toolbar-text-formatting', module)
           boldDisabled: false,
           italicDisabled: false,
           underlineDisabled: false,
+          codeDisabled: false,
         };
       }
 
@@ -33,6 +34,7 @@ storiesOf('ak-editor-toolbar-text-formatting', module)
               boldDisabled={this.state.boldDisabled}
               italicDisabled={this.state.italicDisabled}
               underlineDisabled={this.state.underlineDisabled}
+              codeDisabled={this.state.codeDisabled}
               ontoggle-bold={() => this.setState({
                 boldActive: !this.state.boldActive,
               })}
@@ -75,6 +77,17 @@ storiesOf('ak-editor-toolbar-text-formatting', module)
                 tabIndex="-1"
                 onFocus={() => this.setState({ underlineActive: true })}
                 onBlur={() => this.setState({ underlineActive: false })}
+              >underline text</u></p>
+            <p>
+              <input
+                type="checkbox"
+                checked={!this.state.codeDisabled}
+                onChange={(e) => this.setState({ codeDisabled: !e.target.checked })}
+              />
+              <u
+                tabIndex="-1"
+                onFocus={() => this.setState({ codeActive: true })}
+                onBlur={() => this.setState({ codeActive: false })}
               >underline text</u></p>
           </div>
         );

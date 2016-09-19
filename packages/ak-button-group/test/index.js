@@ -1,9 +1,9 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { symbols } from 'skatejs';
-import ButtonGroup from '../src/index.js';
+import { Component } from 'skatejs';
+import ButtonGroup from '../src';
 import Button from 'ak-button';
-import { waitUntil } from 'akutil-common-test';
+import { waitUntil, getShadowRoot } from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -13,8 +13,7 @@ describe('ak-button-group', () => {
   let btnGroup;
 
   // Helper functions for getting various parts of the shadowDOM
-  const getShadowRoot = () => (btnGroup[symbols.shadowRoot]);
-  const componentHasShadowRoot = () => (getShadowRoot() !== null);
+  const componentHasShadowRoot = () => (getShadowRoot(btnGroup) !== null);
 
   function setupButtonGroup() {
     btnGroup = new ButtonGroup();
@@ -33,7 +32,7 @@ describe('ak-button-group', () => {
   afterEach(tearDownContainer);
 
   it('should be possible to create a component', () => {
-    btnGroup.hasOwnProperty(symbols.shadowRoot).should.equal(true);
+    (new ButtonGroup).should.be.instanceof(Component);
   });
 
   it('group that x-overflows its container should stay on same line i.e. same height', (done) => {

@@ -12,7 +12,7 @@ npm config set progress false
 npm set loglevel warn
 npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
 npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
-npm install @atlassian/atlaskit-registry@^1.2.0
+npm install @atlassian/atlaskit-registry@^1.3.1
 mv ._npmrc .npmrc
 
 # Build website using jekyll
@@ -51,7 +51,7 @@ java \
 echo "CDN invalidation (registry) starting now (this may take some time)"
 AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
 AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
-cf-invalidate -- EVOK132JF0N16 '/atlaskit/registry/*'
+cf-invalidate -- $CLOUDFRONT_DISTRIBUTION '/atlaskit/registry/*'
 echo "CDN invalidation (registry) finished."
 
 echo "Building storybooks"
@@ -78,5 +78,5 @@ echo "CDN invalidation (storybooks) starting now (this may take some time)"
 
 AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
 AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
-cf-invalidate -- EVOK132JF0N16 '/atlaskit/stories/*'
+cf-invalidate -- $CLOUDFRONT_DISTRIBUTION '/atlaskit/stories/*'
 echo "CDN invalidation (storybooks) finished."

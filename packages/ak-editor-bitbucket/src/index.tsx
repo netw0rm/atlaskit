@@ -2,7 +2,7 @@ import './types';
 import autobind from 'autobind-decorator';
 import * as events from './internal/events';
 import { define, prop, emit, Component } from 'skatejs';
-import { ProseMirror, Schema, MarkdownParser } from 'ak-editor-prosemirror';
+import { ProseMirror, Schema } from 'ak-editor-prosemirror';
 import 'style!./host.less';
 import cx from 'classnames';
 import maybe from './maybe';
@@ -114,7 +114,7 @@ class AkEditorBitbucket extends Component {
        * https://facebook.github.io/react/docs/forms.html#uncontrolled-components
        * for details.
        */
-      defaultValue: prop.string({ attribute: true, default: '' }),
+      defaultValue: prop.string({ attribute: true }),
       placeholder: prop.string({ attribute: true }),
       imageUploader: functionProp(),
       context: prop.string({ attribute: true }),

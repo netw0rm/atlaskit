@@ -1,14 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkLozenge from '../src/index';
-const { React, ReactDOM } = window;
+import React from 'react';
 import { name } from '../package.json';
 import hostStyles from 'style!./../src/host.less';
 
-const Lozenge = reactify(AkLozenge, {
-  React,
-  ReactDOM,
-});
+const Lozenge = reactify(AkLozenge);
 const lozengeClass = hostStyles.akLozenge;
 
 storiesOf(name, module)
@@ -48,12 +45,12 @@ storiesOf(name, module)
     <div>
       <p>
         <Lozenge className={lozengeClass} appearance="success">
-          very wide text which truncates
+          very very very wide text which truncates
         </Lozenge>
       </p>
       <p>
         <Lozenge className={lozengeClass} appearance="success" bold>
-          very wide text which truncates
+          very very very wide text which truncates
         </Lozenge>
       </p>
     </div>

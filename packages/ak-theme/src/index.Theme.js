@@ -75,7 +75,7 @@ export default define('ak-theme', {
     },
   },
   attached(elem) {
-    notify(elem.id);
+    notify(elem.id, elem.allVars);
   },
   detached(elem) {
     notify(elem.id);

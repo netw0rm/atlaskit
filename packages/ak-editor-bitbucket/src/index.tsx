@@ -374,6 +374,15 @@ class AkEditorBitbucket extends Component {
       ],
     }
 
+    if (this.defaultValue) {
+      opts.doc = schema.node('doc', null,
+        [schema.node('paragraph',
+          null,
+          schema.text(this.defaultValue)
+        )]
+      );
+    }
+
     const pm = new ProseMirror(opts);
 
     // Hyperlink plugin wiring

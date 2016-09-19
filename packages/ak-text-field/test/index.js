@@ -58,7 +58,7 @@ describe('ak-text-field', () => {
         setTimeout(() => {
           focusSpy.calledOnce.should.be.true;
           done();
-        }, 1);
+        }, 100);
       });
     });
 

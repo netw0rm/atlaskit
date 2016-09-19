@@ -11,7 +11,11 @@ const ReactButton = reactify(ButtonWC);
 
 function generateInput(opts) {
   return (
-    <ReactField label={opts.label || 'Example label'}>
+    <ReactField
+      label={opts.label || 'Example label'}
+      compact={opts.compact}
+      required={opts.required}
+    >
       <input
         type={opts.type || 'text'}
         id={opts.id}
@@ -68,14 +72,25 @@ storiesOf(name, module)
   .add('standard ak-text-field [type=email]', () => (
     generateFormWithInput({ type: 'email' })
   ))
+  .add('required password ak-text-field', () => (
+    generateFormWithInput({ type: 'password', required: true })
+  ))
   .add('disabled ak-text-field', () => (
     generateFormWithInput({ disabled: true })
   ))
   .add('ak-text-field with placeholder', () => (
     generateFormWithInput({ placeholder: 'Oh wow, such input' })
   ))
-  .add('disabled ak-text-field with placeholder', () => (
-    generateFormWithInput({ disabled: true, placeholder: 'Such input, very uneditable' })
+  .add('ak-text-field with compact', () => (
+    generateFormWithInput({ compact: true })
+  ))
+  .add('ak-text-field with all options', () => (
+    generateFormWithInput({
+      compact: true,
+      disabled: true,
+      required: true,
+      placeholder: 'Such input, very uneditable',
+    })
   ))
   .add('ak-text-field with really long label', () => (
     generateFormWithInput({ label: 'Example label with a realllly reallly reallly reallly reallly long label that goes past the edge of the input!' }) // eslint-disable-line max-len

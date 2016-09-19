@@ -45,6 +45,11 @@
   font-weight: 500;
   max-width: unit(@grid * 124, px); // fits 8px grid
   padding-top: unit(@label-top-spacing, px);
+
+  .required {
+    color: @ak-color-R400;
+    padding-left: 7px;
+  }
 }
 
 // Styles for native shadow DOM browsers
@@ -52,6 +57,11 @@
 ::slotted(input) {
   @baseInputStyle();
 }
+
+:host([compact]) ::slotted(input) {
+  padding: unit(@input-compact-vertical-padding, px) unit(@input-horizontal-padding, px);
+}
+
 ::slotted(input:hover) {
   @hoverInputStyle();
 }
@@ -63,7 +73,6 @@
 }
 
 // Styles for polyfilled shadow DOM
-
 .default-slot-element > input {
   @baseInputStyle();
 
@@ -78,4 +87,8 @@
   &[disabled] {
     @disabledInputStyle();
   }
+}
+
+.default-slot-element[compact] > input {
+  padding: unit(@input-compact-vertical-padding, px) unit(@input-horizontal-padding, px);
 }

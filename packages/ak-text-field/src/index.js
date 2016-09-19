@@ -1,5 +1,5 @@
 import 'style!./host.less';
-import { vdom, define } from 'skatejs';
+import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 
 function handleLabelClick(elem) {
@@ -27,6 +27,7 @@ export default define('ak-text-field', {
           className={shadowStyles.locals.label}
         >
           {elem.label}
+          {elem.required && <span class={shadowStyles.locals.required}>*</span>}
           <slot className={shadowStyles.locals.defaultSlotElement} />
         </label>
       </div>
@@ -34,11 +35,25 @@ export default define('ak-text-field', {
   },
   props: {
     /**
+     * @description Whether to use compact sizing for the field.
+     * @memberof TextField
+     * @instance
+     * @type {Boolean}
+     */
+    compact: prop.boolean({ attribute: true }),
+    /**
      * @description The label to be rendered next to the supplied text input.
      * @memberof TextField
      * @instance
      * @type {string}
      */
     label: { attribute: true },
+    /**
+     * @description Whether the field is required.
+     * @memberof TextField
+     * @instance
+     * @type {Boolean}
+     */
+    required: prop.boolean({ attribute: true }),
   },
 });

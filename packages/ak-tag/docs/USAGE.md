@@ -14,7 +14,7 @@ Go to [` the Storybook`](https://aui-cdn.atlassian.com/atlaskit/stories/ak-avata
 
 
 
-## Seting up and installing
+## Setting up and installing
 
 ```sh
 npm install ak-tag

@@ -4,18 +4,11 @@ import tagStyles from 'style!ak-tag/src/host.less';
 import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = tagEvents;
 import WebComponent from '../src/index';
-const { React, ReactDOM } = window;
+import React from 'react';
 
-const Group = reactify(WebComponent, {
-  React,
-  ReactDOM,
-});
+const Group = reactify(WebComponent);
 
-const Tag = reactify(AkTagWebComponent, {
-  React,
-  ReactDOM,
-});
-
+const Tag = reactify(AkTagWebComponent);
 
 class EventedGroup extends React.Component {
 

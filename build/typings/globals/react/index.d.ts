@@ -175,7 +175,7 @@ declare namespace __React {
             [key: string]: ReactInstance
         };
     }
-    
+
     class PureComponent<P, S> extends Component<P, S> {}
 
     interface ClassicComponent<P, S> extends Component<P, S> {
@@ -2341,7 +2341,12 @@ declare namespace __React {
 }
 
 declare module "react" {
-    export = __React;
+    // MODIFIED BY ATLASSIAN START
+    // export = __React;
+    export default __React;
+    const { Component } = __React;
+    export { Component };
+    // MODIFIED BY ATLASSIAN END
 }
 
 declare namespace JSX {

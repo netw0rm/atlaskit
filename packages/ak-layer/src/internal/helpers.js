@@ -1,4 +1,5 @@
 import Alignment from './Alignment';
+import 'core-js/fn/array/find';
 
 function popperPositionToAlignmentPosition(position) {
   const positionMap = Alignment.attachmentMap;

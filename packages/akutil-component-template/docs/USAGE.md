@@ -4,7 +4,7 @@ This is a template for AtlasKit components. Update this file with usage instruct
 
 ##Try it out
 
-Go to [` the story book`]() to try for yourself.
+Go to [the Storybook]() to try for yourself.
 
 ## Setting up and installing
 

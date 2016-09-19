@@ -2,8 +2,6 @@
   "extends": "ak-tests",
   "rules": {
     "prefer-arrow-callback": 0,
-    "func-names": 0,
-    "no-underscore-dangle": 0,
-    "no-param-reassign": 0,
+    "func-names": 0
   }
 }

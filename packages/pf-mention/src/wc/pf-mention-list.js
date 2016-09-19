@@ -46,7 +46,7 @@ function selectIndex(elem, index) {
   console.log('pf-mention-list.selectIndex 1', index,
     elem && elem.mentions && elem.mentions[index] && elem.mentions[index].id);
   props(elem, {
-    selectedIndex: index,
+    _selectedindex: index,
     selectedKey: elem.mentions[index].id,
   });
   console.log('pf-mention-list.selectIndex 2');
@@ -137,14 +137,14 @@ export default define('pf-mention-list', {
   prototype: {
     selectNext() {
       console.log('pf-mention-list.selectNext');
-      const newIndex = wrapIndex(this, this.selectedIndex + 1);
+      const newIndex = wrapIndex(this, this._selectedindex + 1);
       console.log('pf-mention-list.selectNext newIndex', newIndex);
       selectIndex(this, newIndex);
     },
 
     selectPrevious() {
       console.log('pf-mention-list.selectPrevious');
-      const newIndex = wrapIndex(this, this.selectedIndex - 1);
+      const newIndex = wrapIndex(this, this._selectedindex - 1);
       console.log('pf-mention-list.selectPrevious newIndex', newIndex);
       selectIndex(this, newIndex);
     },
@@ -152,9 +152,9 @@ export default define('pf-mention-list', {
     chooseCurrentSelection() {
       console.log('pf-mention-list.chooseCurrentSelection');
       emit(this, selectedEvent, {
-        detail: this.mentions[this.selectedIndex],
+        detail: this.mentions[this._selectedindex],
       });
-      debug('pf-mention-list.chooseCurrentSelection', this.mentions[this.selectedIndex]);
+      debug('pf-mention-list.chooseCurrentSelection', this.mentions[this._selectedindex]);
     },
   },
 
@@ -220,5 +220,7 @@ export default define('pf-mention-list', {
     mentions: prop.array(),
     selectedKey: prop.string({ attribute: true }),
     showError: prop.boolean({ attribute: true }),
+    // internal
+    _selectedindex: prop.number(),
   },
 });

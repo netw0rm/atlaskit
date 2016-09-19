@@ -1,5 +1,5 @@
 import MentionTextInput from './demo-mention-text-input';
-import { resourceProvider, MockPresenceProvider } from './story-data';
+import { resourceProvider, slowResourceProvider, MockPresenceProvider } from './story-data';
 import { storiesOf, action } from '@kadira/storybook';
 // import reactify from 'akutil-react';
 // import { define } from 'skatejs';
@@ -14,14 +14,21 @@ const bottomStyle = {
 };
 
 storiesOf('Mention List Picker', module)
-  .add('Input field mention list. Real API. Key binding', () => (
+  .add('Input field mention list. Mock API. Key binding', () => (
     <MentionTextInput
       label="User search"
       onSelection={action('mention selected')}
       resourceProvider={resourceProvider}
     />
   ))
-  .add('Input field at bottom mention list. Real API. Key binding', () => (
+  .add('Input field mention list. Mock slow API. Key binding', () => (
+    <MentionTextInput
+      label="User search"
+      onSelection={action('mention selected')}
+      resourceProvider={slowResourceProvider}
+    />
+  ))
+  .add('Input field at bottom mention list. Mock API. Key binding', () => (
     <div style={bottomStyle} >
       <MentionTextInput
         label="User search"
@@ -31,7 +38,7 @@ storiesOf('Mention List Picker', module)
       />
     </div>
   ))
-  .add('Input field at top mention list. Real API. Mocked presence', () => (
+  .add('Input field at top mention list. Mock API. Mocked presence', () => (
     <MentionTextInput
       label="User search"
       onSelection={action('mention selected')}
@@ -39,7 +46,7 @@ storiesOf('Mention List Picker', module)
       presenceProvider={new MockPresenceProvider()}
     />
   ))
-  .add('Input field at bottom mention list. Real API. Mocked presence', () => (
+  .add('Input field at bottom mention list. Mock API. Mocked presence', () => (
     <div style={bottomStyle} >
       <MentionTextInput
         label="User search"
@@ -50,7 +57,7 @@ storiesOf('Mention List Picker', module)
       />
     </div>
   ))
-  .add('Input field at bottom mention list. Real API. Mocked presence (slow)', () => (
+  .add('Input field at bottom mention list. Mock API. Mocked presence (slow)', () => (
     <div
       style={bottomStyle}
     >

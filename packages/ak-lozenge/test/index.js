@@ -1,10 +1,9 @@
-import { afterMutations } from 'akutil-common-test';
-import { symbols } from 'skatejs';
-const { shadowRoot } = symbols;
+import { afterMutations, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
-import Component from '../src';
+import Lozenge from '../src';
+import styles from '../src/shadow.less';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -14,9 +13,11 @@ const expect = chai.expect;
 
 describe('ak-lozenge', () => {
   let component;
+  const lozengeSelector = `.${styles.locals.lozenge}`;
+  const lozengeDiv = () => getShadowRoot(component).querySelector(lozengeSelector);
 
   beforeEach((done) => {
-    component = new Component();
+    component = new Lozenge();
 
     afterMutations(
       // append component to the body to ensure it has been rendered.
@@ -29,22 +30,56 @@ describe('ak-lozenge', () => {
     document.body.removeChild(component);
   });
 
-  it('should be possible to create a component', () => {
-    expect(component[shadowRoot].innerHTML).to.match(/My name is .+?!/);
-  });
-
-  describe('name prop', () => {
-    it('should modify the rendered name', (done) => {
-      const newName = 'InigoMontoya';
-      const expectedInnerHTML = `My name is ${newName}!`;
-      const paragraph = component[shadowRoot].querySelector('p');
-
-      // afterMutations will pause between each function passed to it to ensure the component has
-      // re-rendered before starting the next step.
+  describe('bold property', () => {
+    it('should not be the default', (done) => {
       afterMutations(
-        () => { component.name = newName; },
-        () => expect(paragraph.innerHTML).to.equal(expectedInnerHTML),
+        () => {
+          const el = lozengeDiv();
+          expect(el.hasAttribute('bold')).to.equal(false);
+        },
         done
+      );
+    });
+    it('should change when toggled', (done) => {
+      afterMutations(
+        () => (component.bold = true),
+        () => {
+          const el = lozengeDiv();
+          expect(el.hasAttribute('bold')).to.equal(true);
+        },
+        done
+      );
+    });
+  });
+  describe('appearance property', () => {
+    it('should be "default" when not set', (done) => {
+      afterMutations(
+          () => {
+            const el = lozengeDiv();
+            expect(el.classList.contains(styles.locals.default)).to.equal(true);
+          },
+          done
+      );
+    });
+    it('should change when set to an approved value', (done) => {
+      afterMutations(
+          () => (component.appearance = 'success'),
+          () => {
+            const el = lozengeDiv();
+            expect(el.classList.contains(styles.locals.success)).to.equal(true);
+          },
+          done
+      );
+    });
+    it('should revert to "default" when set to an invalid value', (done) => {
+      afterMutations(
+          () => (component.appearance = 'foo'),
+          () => {
+            const el = lozengeDiv();
+            expect(el.classList.contains(styles.locals.default)).to.equal(true);
+            expect(el.classList.contains('foo')).to.equal(false);
+          },
+          done
       );
     });
   });

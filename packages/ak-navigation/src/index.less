@@ -49,10 +49,28 @@
     }
 
     .global-secondary-item {
+      &:hover::before {
+        background: black;
+        opacity: 0.2;
+      }
+      &:active::before {
+        background: @ak-color-B50;
+      }
+      &::before {
+        content: '';
+        width: @global-secondary-item-height;
+        height: @global-secondary-item-height;
+        position: absolute;
+        z-index: -1;
+        border-radius: 50%;
+      }
+      
+      cursor: pointer;
       margin: 10px auto;
       height: @global-secondary-item-height;
       display: flex;
       justify-content: center;
+      align-items: center;
     }
 
     .global-bottom {

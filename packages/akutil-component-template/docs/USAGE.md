@@ -2,9 +2,9 @@
 
 This is a template for AtlasKit components. Update this file with usage instructions and examples.
 
-##Play with it
+##Try it out
 
-Go to [the akutil-component-template storybook](https://aui-cdn.atlassian.com/atlaskit/stories/akutil-component-template/@VERSION@/) to try for yourself.
+Go to [` the story book`]() to try for yourself.
 
 ## Setting up and installing
 

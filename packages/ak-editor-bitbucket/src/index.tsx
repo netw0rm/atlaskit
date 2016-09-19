@@ -360,9 +360,12 @@ class AkEditorBitbucket extends Component {
     schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
     schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
 
-    const opts: any = {
+    const div = document.createElement('div');
+    div.innerHTML = this.defaultValue;
+
+    const pm = new ProseMirror({
       place: this._wrapper,
-      schema,
+      doc: schema.parseDOM(div),
       plugins: [
         MarkdownInputRulesPlugin,
         HyperlinkPlugin,
@@ -372,18 +375,7 @@ class AkEditorBitbucket extends Component {
         TextFormattingPlugin,
         MentionsPlugin,
       ],
-    }
-
-    if (this.defaultValue) {
-      opts.doc = schema.node('doc', null,
-        [schema.node('paragraph',
-          null,
-          schema.text(this.defaultValue)
-        )]
-      );
-    }
-
-    const pm = new ProseMirror(opts);
+    });
 
     // Hyperlink plugin wiring
     HyperlinkPlugin.get(pm).subscribe(state => {

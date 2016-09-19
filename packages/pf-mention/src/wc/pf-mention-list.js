@@ -4,7 +4,7 @@ import { define, emit, prop, props, vdom } from 'skatejs';
 import Item from './pf-mention-item';
 import Scrollable from './pf-scrollable';
 import { whoopsUri } from './icons';
-import debug, { logStacktrace } from '../util/logger';
+import debug from '../util/logger';
 import {
   mentionListRendered as mentionListRenderedEvent,
   selected as selectedEvent,

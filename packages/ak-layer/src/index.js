@@ -124,6 +124,18 @@ export default define('ak-layer', {
       attribute: true,
       set: reCreateAlignmentIfNeeded,
     },
+    /**
+     * @description Callback function that is called whenever layer is updated (it is rendered, it
+     * flips positition because it does not have enough space, etc).
+     * The callback will receive an object with the following properties:
+     * * `isFlipped` - boolean representing whether a layer has flipped from its original position.
+     * * `originalPosition` - the position the element was supposed to be rendered.
+     * * `actualPositon` - the position the element is actually in now after the update.
+     * @memberof Layer
+     * @instance
+     * @type function
+     * @example @js layer.onUpdate = (data) => { console.log(data.isFlipped); };
+     */
     onUpdate: {
       initial: undefined,
     },

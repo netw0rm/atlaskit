@@ -15,6 +15,7 @@ import * as events from './internal/events';
 // Width of a dropdown should be at least width of it's trigger + 10px
 const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
+// offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
 const offset = '0 2';
 
 function toggleDialog(elem, value) {

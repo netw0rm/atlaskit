@@ -97,7 +97,7 @@ export default new Plugin(class ListsPlugin {
     const rootNode: Node = $from.node(1);
     const isList: boolean = this.listTypes.indexOf(rootNode.type.name) !== -1;
     const isListable = activeNode ? isNodeListable(pm, activeNode) : oldState.enabled;
-    const canChange = canChangeToList(pm, this.listTypes);
+    const canChange = canChangeToList(pm, this.listTypes) || isList;
 
     if (isList && activeNode) {
       this.setState({

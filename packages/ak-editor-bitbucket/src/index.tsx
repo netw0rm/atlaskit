@@ -96,6 +96,8 @@ class AkEditorBitbucket extends Component {
   _hyperLinkElement: HTMLElement | undefined;
   _hyperLinkActive: boolean;
   _canLinkHyperlink: boolean;
+  _bulletlistDisabled: boolean;
+  _numberlistDisabled: boolean;
   _bulletListActive: boolean;
   _numberListActive: boolean;
 
@@ -406,9 +408,8 @@ class AkEditorBitbucket extends Component {
       this._bulletListActive = Boolean(state.active && state.type === 'bullet_list');
       this._numberListActive = Boolean(state.active && state.type === 'ordered_list');
 
-      // todo: add the api in the plugin
-      this._bulletlistDisabled = true;
-      this._numberlistDisabled = true;
+      this._bulletlistDisabled = Boolean(state.enabled);
+      this._numberlistDisabled = Boolean(state.enabled);
     });
 
     // Text formatting

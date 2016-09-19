@@ -26,7 +26,6 @@ const MentionTextInput = React.createClass({
     return {
       active: false,
       visible: false,
-      query: '',
     };
   },
 
@@ -63,9 +62,8 @@ const MentionTextInput = React.createClass({
 
   _updateSearch(event) {
     if (this.state.active) {
-      this.setState({
-        query: event.target.value || '',
-      });
+      const query = event.target.value;
+      this.props.resourceProvider.filter(query);
     }
   },
 
@@ -105,7 +103,6 @@ const MentionTextInput = React.createClass({
           {...mentionListProps}
           onselected={(event) => { this._handleSelection(event); }}
           ref={(ref) => { this._mentionListRef = getWebComponent(ref); }}
-          query={this.state.query}
         />
       );
     }

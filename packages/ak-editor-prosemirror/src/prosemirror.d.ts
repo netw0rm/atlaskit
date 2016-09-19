@@ -675,6 +675,7 @@ declare module 'prosemirror/dist/model/node' {
         attrs: any;
         marks: any;
         textContent: string;
+        text?: string;
         contentMatchAt(index: any): any;
         canReplace(from: any, to: any, replacement: any, start: any, end: any): any;
         canReplaceWith(from: any, to: any, type: any, attrs: any, marks: any): any;

@@ -32,3 +32,4 @@ pipelines:
           - npm run test/base
           - npm run test/browserstack/ci
           - npm run pr/storybook
+          - npm run pr/docs

@@ -1,10 +1,10 @@
 import { storiesOf } from '@kadira/storybook';
 import { vdom } from 'skatejs';
-const { React, ReactDOM } = window;
+import React from 'react';
 import reactify from 'akutil-react';
 import IconComponent, { glyphs } from '../src';
 
-const Icon = reactify(IconComponent, { React, ReactDOM });
+const Icon = reactify(IconComponent);
 
 storiesOf('ak-icon', module)
   .add('All icons', () => (
@@ -73,4 +73,3 @@ storiesOf('ak-icon', module)
 
     return <Demo />;
   });
-

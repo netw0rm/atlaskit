@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import reactify from 'akutil-react';
 
 import pfMentionPicker from '../src/wc/pf-mention-picker';
@@ -7,12 +7,7 @@ import { getWebComponent } from './util';
 import debug from '../src/util/logger';
 import uniqueId from '../src/util/id';
 
-const { React, ReactDOM } = window;
-
-const MentionPicker = reactify(pfMentionPicker, {
-  React,
-  ReactDOM,
-});
+const MentionPicker = reactify(pfMentionPicker);
 
 const MentionTextInput = React.createClass({
 
@@ -31,6 +26,7 @@ const MentionTextInput = React.createClass({
     return {
       active: false,
       visible: false,
+      query: '',
     };
   },
 
@@ -67,8 +63,9 @@ const MentionTextInput = React.createClass({
 
   _updateSearch(event) {
     if (this.state.active) {
-      const query = event.target.value;
-      this.props.resourceProvider.filter(query);
+      this.setState({
+        query: event.target.value || '',
+      });
     }
   },
 
@@ -108,6 +105,7 @@ const MentionTextInput = React.createClass({
           {...mentionListProps}
           onselected={(event) => { this._handleSelection(event); }}
           ref={(ref) => { this._mentionListRef = getWebComponent(ref); }}
+          query={this.state.query}
         />
       );
     }

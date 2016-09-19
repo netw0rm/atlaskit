@@ -3,8 +3,8 @@ import { storiesOf } from '@kadira/storybook';
 import TextInputComponent from '../src';
 import reactify from 'akutil-react';
 
-const { React, ReactDOM } = window;
-const TextInput = reactify(TextInputComponent, { React, ReactDOM });
+import React from 'react';
+const TextInput = reactify(TextInputComponent);
 const Container = (props) => (
   <div style={{ backgroundColor: '#545454', padding: '5px 10px' }}>
     {props.children}

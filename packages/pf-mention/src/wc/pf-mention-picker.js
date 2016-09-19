@@ -1,10 +1,10 @@
 import 'style!../host.less';
 import shadowStyles from './pf-mention-picker-shadow.less';
-import { define, vdom, prop } from 'skatejs';
+import { localProp } from './skate-local-props';
+import { define, vdom, prop, props } from 'skatejs';
 import InlineDialog from 'ak-inline-dialog';
 import ResourcedMentionList from './pf-resourced-mention-list';
 import debug from '../util/logger';
-import hasChanges from '../util/has-changes';
 import uniqueId from '../util/id';
 import { mentionListRendered as mentionListRenderedEvent } from '../internal/index.events';
 
@@ -35,14 +35,10 @@ export default define('pf-mention-picker', {
 
     _filterChange(mentions) {
       debug('pf-mention-picker._filterChange', mentions.length);
-      this._visible = mentions.length > 0;
+      props(this, {
+        _visible: mentions.length > 0,
+      });
     },
-
-    _filterError(error) {
-      debug('pf-mention-picker._filterError', error);
-      this._visible = true;
-    },
-
     _updateDialogPosition(event) {
       if (event.target._dialog && event.target._dialog.reposition) {
         event.target._dialog.reposition();
@@ -51,9 +47,9 @@ export default define('pf-mention-picker', {
   },
 
   created(elem) {
+    elem.visible = false;
     elem._subscriberKey = uniqueId('pf-mention-picker');
     elem._filterChange = elem._filterChange.bind(elem);
-    elem._filterError = elem._filterError.bind(elem);
   },
 
   attached(elem) {
@@ -62,13 +58,14 @@ export default define('pf-mention-picker', {
 
   detached(elem) {
     if (elem.resourceProvider) {
-      elem.resourceProvider.unsubscribe(elem._subscriberKey);
+      elem.resourceProvider.unsubscribe(elem);
     }
     document.removeEventListener(mentionListRenderedEvent, elem._updateDialogPosition);
   },
 
   render(elem) {
-    const { resourceProvider, presenceProvider, query, target, position } = elem;
+    const { target, position } = elem;
+    const { resourceProvider, presenceProvider, query } = elem;
     const style = {
       display: elem._visible ? 'block' : 'none',
     };
@@ -78,7 +75,7 @@ export default define('pf-mention-picker', {
         resourceProvider={resourceProvider}
         presenceProvider={presenceProvider}
         query={query}
-        ref={(ref) => { elem._mentionListRef = ref; }}
+        refWorkaround={(ref) => { elem._mentionListRef = ref; }}
       />
     );
 
@@ -106,6 +103,7 @@ export default define('pf-mention-picker', {
       );
     }
 
+    debug('pf-mention-picker.render', query);
     return (
       <div style={style}>
         <style>{shadowStyles.toString()}</style>
@@ -122,32 +120,30 @@ export default define('pf-mention-picker', {
     }
   },
 
-  updated(elem, prevProps = {}) {
-    const resourceProviderChanged = elem.resourceProvider !== prevProps.resourceProvider;
-
-    // resource provider
-    if (resourceProviderChanged) {
-      if (prevProps.resourceProvider) {
-        prevProps.resourceProvider.unsubscribe(elem._subscriberKey);
-      }
-      if (elem.resourceProvider) {
-        elem.resourceProvider.subscribe(elem._subscriberKey, elem._filterChange);
-      }
-    }
-
-    return hasChanges(elem, prevProps);
-  },
-
   props: {
     // pf-resourced-mention-list
-    resourceProvider: {},
-    presenceProvider: {},
-    query: prop.string({ attribute: true, default: () => undefined }),
+    resourceProvider: localProp.object({
+      set(elem, data) {
+        if (data.oldValue) {
+          data.oldValue.unsubscribe(elem._subscriberKey);
+        }
+        if (data.newValue) {
+          data.newValue.subscribe(elem._subscriberKey, elem._filterChange);
+        }
+      },
+    }),
+    presenceProvider: localProp.object(),
+    query: prop.string({
+      attribute: true,
+    }),
 
     // ak-inline-dialog
-    target: prop.string({ attribute: true }),
-    position: prop.string({ attribute: true }),
-
+    target: prop.string({
+      attribute: true,
+    }),
+    position: prop.string({
+      attribute: true,
+    }),
     // internal
     _visible: prop.boolean(),
   },

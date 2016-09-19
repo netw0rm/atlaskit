@@ -8,10 +8,9 @@ This component is displayed as a tag with an optional link and/or button to remo
 Although the `ak-tag` component can be used by itself, it works best in conjunction with the
 [`ak-tag-group`](https://www.npmjs.com/package/ak-tag-group) component.
 
-## Play with it
+## Try it out
 
-Go to [` the Storybook`](https://aui-cdn.atlassian.com/atlaskit/stories/ak-avatar/2.3.1/) to try for yourself.
-
+Go to[the Storybook](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tag/2.0.2/) to try for yourself.
 
 
 ## Setting up and installing
@@ -63,7 +62,7 @@ document.body.appendChild(tag);
 
 ### React
 
-The `ak-layer` package exports the Layer [skate](https://github.com/skatejs/skatejs) component:
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```javascript
 import Tag from 'ak-tag';

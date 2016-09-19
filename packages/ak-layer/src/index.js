@@ -150,7 +150,7 @@ export default define('ak-layer', {
      * @memberof Layer
      * @function
      * @instance
-     * @return undefined
+     * @return Layer
      * @example @js layer.reposition();
     */
     reposition() {

@@ -2,8 +2,10 @@ import HyperlinkPlugin from '../src';
 import { chaiPlugin, makeEditor, doc, a, p, text, insert } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
+chai.use(sinonChai);
 
 describe('ak-editor-plugin-hyperlink', () => {
   const editor = (doc: any) => {
@@ -71,42 +73,61 @@ describe('ak-editor-plugin-hyperlink', () => {
     it('should allow a change handler to be registered', () => {
       const { plugin } = editor(doc(p('')));
 
-      plugin.onChange(sinon.spy());
+      plugin.subscribe(sinon.spy());
+    });
+
+    it('should get current state immediately once subscribed', () => {
+      const { pm, plugin } = editor(doc(p(a({ href: '' })('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+
+      expect(spy).to.have.been.callCount(1);
+
+      expect(spy).to.have.been.calledWith({
+        active: false,
+        element: null,
+        enabled: true,
+        href: "",
+        rel: "",
+        target: "",
+        text: "",
+        title: "",
+      });
     });
 
     it('should be able to register handlers for state change events', () => {
       const { pm, plugin } = editor(doc(p(a({ href: '' })('te{pos}xt'))));
       const spy = sinon.spy();
-      plugin.onChange(spy);
+      plugin.subscribe(spy);
 
       pm.setTextSelection(pm.doc.refs.pos);
 
-      expect(spy.callCount).to.equal(1);
+      expect(spy).to.have.been.callCount(2);
     });
 
     it('does not emit `change` multiple times when the selection moves within a link', () => {
       const { pm, plugin } = editor(doc(p('{<>}text', a({ href: '' })('l{pos1}i{pos2}nk'))));
-      const onChange = sinon.spy();
+      const spy = sinon.spy();
       const { pos1, pos2 } = pm.doc.refs;
-      plugin.onChange(onChange);
+      plugin.subscribe(spy);
 
       pm.setTextSelection(pos1);
       pm.setTextSelection(pos2);
 
-      expect(onChange.callCount).to.equal(1);
+      expect(spy).to.have.been.callCount(2);
     });
 
     it('emits change when the selection leaves a link', () => {
       const { pm, plugin } = editor(doc(p('te{textPos}xt {<>}')));
       const { textPos } = pm.doc.refs;
-      const onChange = sinon.spy();
+      const spy = sinon.spy();
       const { linkPos } = insert(pm, a({ href: '' })('li{linkPos}nk'));
       pm.setTextSelection(linkPos);
 
-      plugin.onChange(onChange);
+      plugin.subscribe(spy);
       pm.setTextSelection(textPos);
 
-      expect(onChange.callCount).to.equal(1);
+      expect(spy).to.have.been.callCount(2);
     });
 
     it('does not permit adding a link to a collapsed selection', () => {

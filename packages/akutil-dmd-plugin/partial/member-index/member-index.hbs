@@ -1,0 +1,9 @@
+{{#if (hasApi 'member' min=(option 'memberIndex.minDescendants'))}}
+{{>props-index~}}
+{{/if}}
+{{#if (hasApi 'function' min=(option 'memberIndex.minDescendants'))}}
+{{>methods-index~}}
+{{/if}}
+{{#if (hasApi 'event' min=(option 'memberIndex.minDescendants'))}}
+{{>events-index~}}
+{{/if}}

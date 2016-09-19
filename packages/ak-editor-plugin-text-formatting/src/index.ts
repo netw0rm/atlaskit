@@ -13,7 +13,7 @@ const DEFAULT_STATE: TextFormattingState = {
   emActive: false,
   underlineActive: false,
   codeActive: false,
-  disabled: true,
+  disabled: false,
 };
 
 function isShallowObjectEqual(
@@ -104,7 +104,8 @@ export default new Plugin(class TextFormattingPlugin {
     return commands.toggleMark(this.pm.schema.marks[name])(this.pm);
   }
 
-  onChange(cb: StateChangeHandler) {
+  subscribe(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
+    cb(this.getState());
   }
 });

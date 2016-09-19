@@ -1,39 +1,43 @@
-// These styles will be inserted into a style tag inside
-// the shadow dom of each instance of the component
-
-// Only do class selectors in here, anything else leaks to the rest of the page in
-// browsers that do not support shadow DOM
 @import 'shared-variables.less';
 
-.wrapper {
+@grid: 4;
+
+.container {
   display: flex;
+  padding: unit(@grid * 2, px) 0;
 }
 .avatarSlotWrapper {
   align-self: stretch;
-  background: red;
   height: 100%;
+  padding: 0 unit(@grid * 2, px) 0 0;
+  width: 30px; // medium avatar size
 }
 .content {
   flex: 1 0 auto;
-}
-.avatarSlot {
-  background: red;
+  max-width: ~'calc(100% - 38px)'; // 30px avatar size and the 8px padding
 }
 .metadata {
   display: flex;
-  flex: 1 1 auto;
+  flex-wrap: wrap;
+  width: 100%;
 }
 .authorSlotWrapper {
-  color: blue;
-}
-.authorSlot {
-  color: blue;
+  margin-top: unit(@grid * 3, px);
+  padding: 0 unit(@grid * 2, px) 0 0;
 }
 .timeSlotWrapper {
-  color: red;
-  flex: 1 1 auto;
+  color: @ak-color-N600;
+  display: flex;
+  flex: 1 0 auto;
+  margin-top: unit(@grid * 3, px);
+
+  &::before {
+    content: "\b7\a0";
+  }
 }
-.timeSlot {
-  color: red;
-  flex: 1 1 auto;
+.actionSlotWrapper {
+  margin-top: unit(@grid * 3, px);
+}
+.replySlotWrapper {
+  margin-top: unit(@grid * 3, px);
 }

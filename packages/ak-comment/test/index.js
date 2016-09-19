@@ -1,5 +1,4 @@
-import { afterMutations } from 'akutil-common';
-import { symbols } from 'skatejs';
+import { afterMutations, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import Component from '../src';
@@ -7,16 +6,22 @@ import Component from '../src';
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
-const shadowRoot = symbols.shadowRoot;
+const getSlots = (component) => getShadowRoot(component).querySelectorAll('slot,content');
 
 describe('ak-comment', () => {
   let component;
 
   beforeEach((done) => {
     component = new Component();
+    component.innerHTML = `
+    <p is slot="avatar">avatar</p>
+    <p is slot="author">author</p>
+    <p is slot="time">time</p>
+    <p is slot="actions">actions</p>
+    <p is slot="reply">reply</p>
+    <p>default slot</p>`;
 
     afterMutations(
-      // append component to the body to ensure it has been rendered.
       () => document.body.appendChild(component),
       done
     );
@@ -26,23 +31,15 @@ describe('ak-comment', () => {
     document.body.removeChild(component);
   });
 
-  it('should be possible to create a component', () => {
-    expect(component[shadowRoot].innerHTML).to.match(/My name is .+?!/);
-  });
-
-  describe('name prop', () => {
-    it('should modify the rendered name', (done) => {
-      const newName = 'InigoMontoya';
-      const expectedInnerHTML = `My name is ${newName}!`;
-      const paragraph = component[shadowRoot].querySelector('p');
-
-      // afterMutations will pause between each function passed to it to ensure the component has
-      // re-rendered before starting the next step.
-      afterMutations(
-        () => { component.name = newName; },
-        () => expect(paragraph.innerHTML).to.equal(expectedInnerHTML),
-        done
-      );
-    });
+  it('should slot content correctly', (done) => {
+    afterMutations(
+      () => getSlots(component),
+      (slots) => {
+        for (let i = 0, l = slots.length; i < l; i++) {
+          expect(slots[i].assignedNodes().length).to.not.equal(0);
+        }
+      },
+      done
+    );
   });
 });

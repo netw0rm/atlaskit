@@ -14,7 +14,6 @@ import mentionListShadowStyles from '../../src/wc/pf-mention-list-shadow.less';
 function shadowRootQuerySelector(component, selector) {
   if (component) {
     const shadowRoot = getShadowRoot(component);
-    console.log('shadowRoot', !!shadowRoot, selector);
     if (shadowRoot) {
       return shadowRoot.querySelector(selector);
     }
@@ -37,14 +36,10 @@ function slotQuerySelector(component, selector) {
 }
 
 export function getMentionList(pfMentionPicker) {
-  console.log('pfMentionPicker', !!pfMentionPicker);
   const dialog = shadowRootQuerySelector(pfMentionPicker, 'ak-inline-dialog');
-  console.log('dialog', !!dialog);
   const resourcedMentionList = shadowRootQuerySelector(dialog || pfMentionPicker,
     'pf-resourced-mention-list');
-  console.log('resourcedMentionList', !!resourcedMentionList);
   const mentionList = shadowRootQuerySelector(resourcedMentionList, 'pf-mention-list');
-  console.log('mentionList', !!mentionList);
   return mentionList;
 }
 
@@ -65,12 +60,16 @@ export function getMentionItemById(pfMentionPicker, itemId) {
 
 export function getSelectedMentionItem(pfMentionPicker) {
   const scrollable = getScrollable(pfMentionPicker);
-  return slotQuerySelector(scrollable, 'pf-mention-item[selected]');
+  const selectedItem = slotQuerySelector(scrollable, 'pf-mention-item[selected]');
+  console.log('selectedItem', selectedItem && selectedItem.id);
+  return selectedItem;
 }
 
 export function isMentionItemSelected(pfMentionPicker, itemId) {
   const selectedItem = getSelectedMentionItem(pfMentionPicker);
-  return selectedItem && selectedItem.id === itemId;
+  const isSelected = selectedItem && selectedItem.id === itemId;
+  console.log('isSelected', itemId, isSelected);
+  return isSelected;
 }
 
 export function getError(pfMentionPicker) {

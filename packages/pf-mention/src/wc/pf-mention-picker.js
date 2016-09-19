@@ -16,18 +16,22 @@ const styles = shadowStyles.locals;
 export default define('pf-mention-picker', {
   prototype: {
     selectNext() {
+      console.log('pf-mention-picker.selectNext has _mentionListRef?', !!this._mentionListRef);
       if (this._mentionListRef) {
         this._mentionListRef.selectNext();
       }
     },
 
     selectPrevious() {
+      console.log('pf-mention-picker.selectPrevious has _mentionListRef?', !!this._mentionListRef);
       if (this._mentionListRef) {
         this._mentionListRef.selectPrevious();
       }
     },
 
     chooseCurrentSelection() {
+      console.log('pf-mention-picker.chooseCurrentSelection has _mentionListRef?',
+        !!this._mentionListRef);
       if (this._mentionListRef) {
         this._mentionListRef.chooseCurrentSelection();
       }
@@ -78,7 +82,11 @@ export default define('pf-mention-picker', {
         resourceProvider={resourceProvider}
         presenceProvider={presenceProvider}
         query={query}
-        ref={(ref) => { elem._mentionListRef = ref; }}
+        ref={(ref) => {
+          console.log('pf-mention-list.ref callback from pf-resourced-mention-list. ref has value?',
+            !!ref);
+          elem._mentionListRef = ref;
+        }}
       />
     );
 

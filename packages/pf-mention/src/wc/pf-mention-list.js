@@ -132,16 +132,19 @@ function wrapIndex(elem, index) {
 export default define('pf-mention-list', {
   prototype: {
     selectNext() {
+      console.log('pf-mention-list.selectNext');
       const newIndex = wrapIndex(this, this.selectedIndex + 1);
       selectIndex(this, newIndex);
     },
 
     selectPrevious() {
+      console.log('pf-mention-list.selectPrevious');
       const newIndex = wrapIndex(this, this.selectedIndex - 1);
       selectIndex(this, newIndex);
     },
 
     chooseCurrentSelection() {
+      console.log('pf-mention-list.chooseCurrentSelection');
       emit(this, selectedEvent, {
         detail: this.mentions[this.selectedIndex],
       });

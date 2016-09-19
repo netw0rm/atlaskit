@@ -15,7 +15,7 @@ pipelines:
             - npm run test/browserstack/ci
             - npm run storybook& # runs in background
             - STORYBOOK_PID=$!
-            - PATH="`npm bin`:$PATH" wait-on http://0.0.0.0:9001/static/preview.bundle.js
+            - PATH="`npm bin`:$PATH" wait-on -d 20000 -i 500 -t 120000 http-get://0.0.0.0:9001/ # give storybook 20 seconds, before checking every half second for a total of 2 minutes max if it is up
             - npm run test/integration/browserstack
             - kill $STORYBOOK_PID
             - npm run release

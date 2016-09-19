@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less';
 import shadowListStyles from './shadow-list.less';
-import { vdom, define, prop, emit } from 'skatejs';
+import { vdom, define, prop, props, emit } from 'skatejs';
 import ItemDefinition from './item';
 import './trigger';
 import GroupDefinition from './group';
@@ -20,7 +20,8 @@ const offset = '0 2';
 
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
-  const list = [...elem.children].filter((el) => el.matches('ak-dropdown-item'));
+  const list = elem.querySelectorAll('ak-dropdown-item');
+
   if ((elem.open !== isOpen)) {
     elem.open = isOpen;
   }
@@ -28,10 +29,10 @@ function toggleDialog(elem, value) {
     return;
   }
 
-  const trigger = [...elem.children].filter((el) => el.matches('[slot="trigger"]'));
+  const trigger = elem.triggerSlot.assignedNodes()[0];
 
   if (trigger) {
-    trigger.opened = isOpen;
+    props(trigger, { opened: isOpen });
   }
 
   // when the dialog is open the first item element should be focused,
@@ -167,7 +168,10 @@ export default define('ak-dropdown', {
               styles = getDropdownStyles(target, elem);
             }}
           >
-            <slot name="trigger" />
+            <slot
+              name="trigger"
+              ref={el => (elem.triggerSlot = el)}
+            />
           </div>
           : null
         }
@@ -213,7 +217,7 @@ export default define('ak-dropdown', {
       attribute: true,
       set(elem, data) {
         if (elem && data.newValue !== data.oldValue) {
-          toggleDialog(elem, data.newValue);
+          setTimeout(() => toggleDialog(elem, data.newValue));
         }
       },
     }),

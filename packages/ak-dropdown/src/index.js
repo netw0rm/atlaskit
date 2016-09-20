@@ -18,6 +18,10 @@ const dropdownMinWidth = 150;
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
 const offset = '0 2';
 
+function getTriggerElement(elem) {
+  return elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
+}
+
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
   const list = elem.querySelectorAll('ak-dropdown-item');
@@ -29,7 +33,7 @@ function toggleDialog(elem, value) {
     return;
   }
 
-  const trigger = elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
+  const trigger = getTriggerElement(elem);
 
   if (trigger) {
     props(trigger, { opened: isOpen });
@@ -157,7 +161,10 @@ export default define('ak-dropdown', {
     },
   },
   rendered(elem) {
-    toggleDialog(elem, elem.open);
+    const trigger = getTriggerElement(elem) || {};
+    if (trigger.opened !== elem.open) {
+      toggleDialog(elem, elem.open);
+    }
   },
   render(elem) {
     let target = elem.target;

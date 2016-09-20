@@ -168,6 +168,15 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
+  .add('dropdown with a link that opens in a new tab', () => (
+    <div>
+      <DropdownReactComponent>
+        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
+        <ak-dropdown-item href="http://atlassian.design" target="_blank">New tab</ak-dropdown-item>
+        <ak-dropdown-item href="http://atlassian.design">Same tab</ak-dropdown-item>
+      </DropdownReactComponent>
+    </div>
+  ))
   .add('dropdown with icon only button trigger', () => (
     <div>
       <DropdownReactComponent>

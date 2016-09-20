@@ -6,8 +6,23 @@ import { fixtures } from 'ak-editor-test';
 
 const { expect } = chai;
 
+const RewireSpy = () => {
+  const resetAfter = [];
+
+  afterEach(() => resetAfter.map(([ module, name ]) => module.__ResetDependency__(name)));
+
+  return (module, name) => {
+    const func = module.__GetDependency__(name);
+    const spy = sinon.spy(func);
+    module.__Rewire__(name, spy);
+    resetAfter.push([ module, name ]);
+    return spy;
+  }
+};
+
 describe('ak-editor-bitbucket', () => {
   const fixture = fixtures();
+  const rewireSpy = RewireSpy();
 
   it('is possible to create a component', () => {
     let component: any;
@@ -38,26 +53,8 @@ describe('ak-editor-bitbucket', () => {
       editor.defaultValue = 'foo';
       expect(editor.value).to.equal('foo');
     });
-  });
 
-  describe('defaultValue', () => {
-    const RewireSpy = () => {
-      const resetAfter = [];
-
-      afterEach(() => resetAfter.map(([ module, name ]) => module.__ResetDependency__(name)));
-
-      return (module, name) => {
-        const func = module.__GetDependency__(name);
-        const spy = sinon.spy(func);
-        module.__Rewire__(name, spy);
-        resetAfter.push([ module, name ]);
-        return spy;
-      }
-    };
-
-    const rewireSpy = RewireSpy();
-
-    it('should contain a default value', (done) => {
+    it('should honour default value', (done) => {
       const content = 'foo';
       const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
       const editor = fixture().appendChild(new AkEditorBitbucket()) as any;

@@ -7,9 +7,6 @@ const TooltipTrigger = reactify(TooltipTriggerWC);
 const buttonStyles = {
   backgroundColor: 'orange',
   padding: '5px',
-  position: 'absolute',
-  left: '100px',
-  top: '100px',
 };
 
 class FourDirectionTooltipTrigger extends Component {

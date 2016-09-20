@@ -23,49 +23,65 @@ const buttonStyles = {
   padding: '5px',
 };
 
-const positionedButtonStyles = {
-  backgroundColor: 'orange',
-  padding: '5px',
-  position: 'absolute',
-  left: '100px',
-  top: '100px',
+const containerStyle = {
+  display: 'flex',
+  height: '100vh',
+  alignItems: 'center',
+  justifyContent: 'center',
 };
 
 storiesOf(name, module)
   .add('a simple ak-tooltip with ak-tooltip-trigger', () => (
     <div>
-      <TooltipTrigger position="top" description="This is a tooltip">
-        <span style={positionedButtonStyles} aria-describedby="ak-tooltip">Hover over me</span>
-      </TooltipTrigger>
+      <div style={containerStyle}>
+        <TooltipTrigger position="top" description="This is a tooltip">
+          <span style={buttonStyles} aria-describedby="ak-tooltip">Hover over me</span>
+        </TooltipTrigger>
+
+      </div>
 
       <DefaultTooltip id="ak-tooltip" />
     </div>
   ))
   .add('a tooltip with a really long description', () => (
     <div>
-      <TooltipTrigger
-        position="top"
-        description={`This message is very long and spans multiple lines because it has a lot of
-          important information for the user. It might be a stacktrace, maybe longwinded
-          explanation about how stock derivatives work, or maybe just a haiku. In either case,
-          tooltips should reach their max width and then start wrapping text.`}
-      >
-        <span style={positionedButtonStyles} aria-describedby="ak-tooltip">Hover over me</span>
-      </TooltipTrigger>
+      <div style={containerStyle}>
+        <TooltipTrigger
+          position="top"
+          description={`This message is very long and spans multiple lines because it has a lot of
+            important information for the user. It might be a stacktrace, maybe longwinded
+            explanation about how stock derivatives work, or maybe just a haiku. In either case,
+            tooltips should reach their max width and then start wrapping text.`}
+        >
+          <span style={buttonStyles} aria-describedby="ak-tooltip">Hover over me</span>
+        </TooltipTrigger>
+      </div>
 
       <DefaultTooltip id="ak-tooltip" />
     </div>
   ))
   .add('a tooltip with all directions', () => (
     <div>
-      <FourDirectionTooltipTrigger description="Tooltip!" />
+      <div style={containerStyle}>
+        <FourDirectionTooltipTrigger description="Tooltip!" />
+      </div>
+
       <DefaultTooltip id="ak-tooltip" />
     </div>
   ))
   .add('a tooltip binding to elements in shadowDOM', () => (
     <div>
+      <div>
+        We can bind tooltips to items in the shadowDOM easily as we don't rely on looking
+        elements up by ID.
+        <br />
+        (This funcitonality broke in Chrome 53 and will be investigated)
+      </div>
+      <div style={containerStyle}>
+        <Container />
+      </div>
+
       <DefaultTooltip id="ak-tooltip" />
-      <Container />
     </div>
   ))
   .add('a tooltip in a scrollable parent', () => {
@@ -82,23 +98,30 @@ storiesOf(name, module)
       width: '300px',
       'overflow-y': 'scroll',
     };
-    const topInfoText = {
+    const bottomInfoText = {
       position: 'relative',
       top: '350px',
       'text-align': 'center',
     };
-    const bottomInfoText = {
+    const topInfoText = {
       'text-align': 'center',
       'margin-top': '5px',
     };
     return (
       <div>
-        <div style={scrollableStyles}>
-          <div style={bottomInfoText}>Try scrolling this box</div>
-          <TooltipTrigger position="top" description="This is a tooltip">
-            <span style={simpleButtonStyles} aria-describedby="ak-tooltip">Hover over me</span>
-          </TooltipTrigger>
-          <div style={topInfoText}>This content is to create scrolling</div>
+        <div>
+          Hint: Drag the Action Logger up to make the height small enough that the container
+          is near the top of the page, then scroll the button to the top and watch the tooltip flip
+          once it doesnt have enough space
+        </div>
+        <div style={containerStyle}>
+          <div style={scrollableStyles}>
+            <div style={topInfoText}>Try scrolling this box</div>
+            <TooltipTrigger position="top" description="This is a tooltip">
+              <span style={simpleButtonStyles} aria-describedby="ak-tooltip">Hover over me</span>
+            </TooltipTrigger>
+            <div style={bottomInfoText}>This content is to create scrolling</div>
+          </div>
         </div>
 
         <DefaultTooltip id="ak-tooltip" />
@@ -107,20 +130,16 @@ storiesOf(name, module)
   })
   .add('a tooltip around a focusable element', () => (
     <div>
-      <TooltipTrigger position="bottom" description="I am describing a focusable element!">
-        <a href="#" style={positionedButtonStyles} aria-describedby="ak-tooltip">Focus on me!</a>
-      </TooltipTrigger>
+      <div style={containerStyle}>
+        <TooltipTrigger position="bottom" description="I am describing a focusable element!">
+          <a href="#" style={buttonStyles} aria-describedby="ak-tooltip">Focus on me!</a>
+        </TooltipTrigger>
+      </div>
 
       <DefaultTooltip id="ak-tooltip" />
     </div>
   ))
   .add('a tooltip with multiple triggers', () => {
-    const containerStyle = {
-      display: 'flex',
-      height: '100vh',
-      alignItems: 'center',
-      justifyContent: 'center',
-    };
     const triggerStyles = {
       margin: '0 1em',
     };

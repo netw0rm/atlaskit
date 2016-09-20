@@ -91,10 +91,8 @@ describe('ak-editor-bitbucket', () => {
       editor.defaultValue = 'foo';
       expect(editor.value).to.equal('foo');
     });
-  });
 
-  describe('defaultValue', () => {
-    it('should contain a default value', (done) => {
+    it('should honour default value', (done) => {
       const content = 'foo';
       const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
       const editor = fixture().appendChild(new AkEditorBitbucket()) as any;

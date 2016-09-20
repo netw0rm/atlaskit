@@ -4,24 +4,15 @@ import TooltipWC from '../src/index';
 import TooltipTriggerWC from '../src/index.tooltip-trigger';
 import ContainerWC from './skate/container';
 import FourDirectionTooltipTrigger from './four-direction-tooltip-trigger';
-const { React, ReactDOM } = window;
+import React from 'react';
 import { name } from '../package.json';
 import styles from 'style!./../src/host.less';
 
-const Tooltip = reactify(TooltipWC, {
-  React,
-  ReactDOM,
-});
+const Tooltip = reactify(TooltipWC);
 
-const TooltipTrigger = reactify(TooltipTriggerWC, {
-  React,
-  ReactDOM,
-});
+const TooltipTrigger = reactify(TooltipTriggerWC);
 
-const Container = reactify(ContainerWC, {
-  React,
-  ReactDOM,
-});
+const Container = reactify(ContainerWC);
 
 const tooltipClass = styles.akTooltip;
 

@@ -11,7 +11,9 @@ printf "\033[0m"
 
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
-  USAGE="$(cat ./docs/USAGE.md)\n"
+  VERSION=$(node -e 'console.log(require("./package.json").version)')
+  USAGE=$(cat ./docs/USAGE.md | sed "s/@VERSION@/$VERSION/g")
+  USAGE="$USAGE\n"
 else
   USAGE=""
 fi

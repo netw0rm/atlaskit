@@ -6,7 +6,7 @@ If you use a layer with a component that could be opened or closed, you have to 
 
 ## Try it out
 
-Interact with a [live demo of the ak-layer component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-layer/).
+Interact with a [live demo of the ak-layer component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-layer/@VERSION@/).
 
 ## Installation
 

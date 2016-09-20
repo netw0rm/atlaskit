@@ -4,7 +4,7 @@ The Avatars represent users that are collaborating within the same application. 
 
 ## Try it out
 
-Interact with a [live demo of the ak-avatar component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-avatar/2.3.1/).
+Interact with a [live demo of the ak-avatar component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-avatar/@VERSION@/).
 
 ## Installation
 

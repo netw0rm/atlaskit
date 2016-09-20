@@ -4,7 +4,7 @@ This is a template for AtlasKit components. Update this file with usage instruct
 
 ## Try it out
 
-Interact with a [live demo of the ak-dropdown component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-dropdown/3.2.1/).
+Interact with a [live demo of the ak-dropdown component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-dropdown/@VERSION@/).
 
 ## Setting up and install
 

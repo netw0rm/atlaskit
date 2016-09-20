@@ -4,7 +4,7 @@ The Inline Dialog is a container for secondary content and controls that are dis
 
 ## Try it out
 
-Interact with a [live demo of the ak-inline-dialog component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-inline-dialog/71.0.6/).
+Interact with a [live demo of the ak-inline-dialog component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-inline-dialog/@VERSION@/).
 
 ## Installation
 

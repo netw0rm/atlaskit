@@ -9,7 +9,7 @@ The group manages spacing and animation direction and allows for some alignment 
 
 ## Try it out
 
-Interact with a [live demo of the ak-tag-group component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tag-group/2.0.1/).
+Interact with a [live demo of the ak-tag-group component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tag-group/@VERSION@/).
 
 ## Installation
 

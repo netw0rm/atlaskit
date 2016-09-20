@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less';
 import shadowListStyles from './shadow-list.less';
-import { vdom, define, prop, props, emit } from 'skatejs';
+import { vdom, define, prop, props, emit, ready } from 'skatejs';
 import ItemDefinition from './item';
 import './trigger';
 import GroupDefinition from './group';
@@ -147,8 +147,10 @@ export default define('ak-dropdown', {
   },
   prototype: {
     reposition() {
-      if (this._layer && this._layer.hasAttribute('defined')) {
-        this._layer.reposition();
+      if (this._layer) {
+        ready(this._layer, () => {
+          this._layer.reposition();
+        });
       }
 
       return this;

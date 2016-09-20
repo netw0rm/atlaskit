@@ -1,3 +1,4 @@
+import React from 'react';
 import classNames from 'classnames';
 import { storiesOf } from '@kadira/storybook';
 import storyStyles from 'style!./stories.less';

@@ -8,7 +8,6 @@ const { expect } = chai;
 
 describe('ak-editor-bitbucket', () => {
   const fixture = fixtures();
-  const makeEditor = () => fixture().appendChild(new AkEditorBitbucket()) as any;
 
   it('is possible to create a component', () => {
     let editor: any;
@@ -75,6 +74,44 @@ describe('ak-editor-bitbucket', () => {
       const editor = new AkEditorBitbucket();
       editor.defaultValue = 'foo';
       expect(editor.value).to.equal('foo');
+    });
+  });
+
+  describe('defaultValue', () => {
+    const RewireSpy = () => {
+      const resetAfter = [];
+
+      afterEach(() => resetAfter.map(([ module, name ]) => module.__ResetDependency__(name)));
+
+      return (module, name) => {
+        const func = module.__GetDependency__(name);
+        const spy = sinon.spy(func);
+        module.__Rewire__(name, spy);
+        resetAfter.push([ module, name ]);
+        return spy;
+      }
+    };
+
+    const rewireSpy = RewireSpy();
+
+    it('should contain a default value', (done) => {
+      const content = 'foo';
+      const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
+      const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
+
+      editor.defaultValue = content;
+
+      // TODO: Delete this after merging a different PR.
+      editor._justToggledExpansion = true;
+
+      afterMutations(
+        () => { editor.expanded = true; },
+        () => {
+          const opts = spy.firstCall.args[0];
+          expect(opts.doc).has.property('textContent', content);
+        },
+        done
+      );
     });
   });
 });

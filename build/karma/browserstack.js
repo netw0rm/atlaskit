@@ -1,5 +1,11 @@
 const baseConfig = require('./all.js');
-const browserStackBrowsers = require('./browserstack.browsers.js');
+const launchers = require(`./browserstack.browsers.stage.${process.env.BROWSERSTACK_STAGE}.js`);
+
+const browsers = Object.keys(launchers);
+browsers.forEach((key) => {
+  launchers[key].base = 'BrowserStack';
+});
+
 
 module.exports = (config) => {
   baseConfig(config);
@@ -15,12 +21,13 @@ module.exports = (config) => {
       build: `${process.env.CURRENT_BRANCH} ${new Date().getTime()} ${process.env.HEAD_SHA}`,
     },
     captureTimeout: 120000,
-    reporters: ['dots', 'BrowserStack'],
+    reporters: ['mocha', 'BrowserStack'],
+    singleRun: true,
     autoWatch: false,
     concurrency: 5,
     browserDisconnectTolerance: 5,
     client: {},
-    customLaunchers: browserStackBrowsers,
-    browsers: Object.keys(browserStackBrowsers),
+    customLaunchers: launchers,
+    browsers,
   });
 };

@@ -115,6 +115,7 @@ describe('ak-dropdown', () => {
                   <ak-dropdown-item>third</ak-dropdown-item>`;
     beforeEach(() => setupComponent(html).then(newComponent => {
       component = newComponent;
+      props(component, { open: true });
       items = component.querySelectorAll('ak-dropdown-item');
     }));
     afterEach(() => tearDownComponent(component));
@@ -134,17 +135,16 @@ describe('ak-dropdown', () => {
     it('only one item should be selected', (done) => {
       // mock the event from the item
       emit(items[0], selectedEvent, { detail: { item: items[0] } });
+      emit(items[1], selectedEvent, { detail: { item: items[1] } });
 
       afterMutations(
-        () => checkSelectedItems(items, 0),
-        () => emit(items[1], selectedEvent, { detail: { item: items[1] } }),
         () => checkSelectedItems(items, 1),
         done
       );
     });
 
     it('any checkbox item can be selected and unselected simultaneously', (done) => {
-      items.forEach(item => (props(item, { checkbox: true })));
+      [...items].forEach(item => (props(item, { checkbox: true })));
 
       // mock the event from the item
       emit(items[0], selectedEvent, { detail: { item: items[0] } });

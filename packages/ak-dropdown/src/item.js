@@ -71,7 +71,7 @@ export default {
     const classes = classNames(
       [shadowItemStyles.locals.item, {
         [shadowItemStyles.locals.disabled]: elem.disabled,
-        [shadowItemStyles.locals.selected]: elem.selected && !elem.checkbox && !elem.radio,
+        [shadowItemStyles.locals.selected]: elem.selected && !elem.checkbox,
         [shadowItemStyles.locals.first]: elem.first,
         [shadowItemStyles.locals.last]: elem.last,
       }]
@@ -130,9 +130,6 @@ export default {
       attribute: true,
     }),
     checkbox: prop.boolean({
-      attribute: true,
-    }),
-    radio: prop.boolean({
       attribute: true,
     }),
     /**

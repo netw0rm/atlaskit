@@ -41,7 +41,12 @@ describe('ak-editor-bitbucket', () => {
     expect(editor.ready).to.be.false;
   });
 
-  it('is not expanded by default', (done) => {
+  it('is not expanded by default', () => {
+    const editor = new AkEditorBitbucket();
+    expect(editor.expanded).to.be.false;
+  });
+
+  it('should not initialise ProseMirror by default', (done) => {
     const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
     const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
 
@@ -53,7 +58,7 @@ describe('ak-editor-bitbucket', () => {
     );
   });
 
-  it('can be set to expanded', (done) => {
+  it('should initialise ProseMirror when expanded', (done) => {
     const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
     const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
 
@@ -66,7 +71,7 @@ describe('ak-editor-bitbucket', () => {
     );
   });
 
-  it('can be set to expanded and collapsed', (done) => {
+  it('should destroy ProseMirror when collapsed', (done) => {
     const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
     const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
 

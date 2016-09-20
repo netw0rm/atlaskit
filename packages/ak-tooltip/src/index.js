@@ -124,7 +124,14 @@ export default define('ak-tooltip', {
     description: {
       attribute: true,
     },
-    // These two props are not API thus, dont have jsdocs.
+    /**
+     * @description Whether or not the tooltip is open and visible on the page.
+     * This is normally set by an ak-tooltip-trigger.
+     * @memberof Tooltip
+     * @instance
+     * @type {boolean}
+     * @default none
+    */
     visible: prop.boolean({
       attribute: true,
     }),

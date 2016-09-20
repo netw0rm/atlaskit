@@ -1,10 +1,11 @@
 # Dropdown
 
-## Synopsis
-
 This is a template for AtlasKit components. Update this file with usage instructions and examples.
 
-## Setup and install
+## Try it out
+
+Go to[the Storybook](https://aui-cdn.atlassian.com/atlaskit/stories/ak-avatar/2.3.1/) to try for yourself.
+## Setting up and install
 
 ```
 npm install ak-dropdown

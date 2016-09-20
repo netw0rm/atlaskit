@@ -170,11 +170,15 @@ describe('ak-theme, { themeable }', () => {
     });
 
     it('should call overridden detached', done => {
+      const theme = Object.assign(new Theme(), { id: 'foo' });
+      theme.appendChild(Object.assign(new Prop(), { name: 'myprop', value: 'myvalue' }));
+      document.body.appendChild(theme);
       body.removeChild(createElement({
-        detached() {
+        detached(e) {
+          expect(e.themeProps).to.deep.equal({ myprop: 'myvalue' });
           done();
         },
-      }));
+      }, { themeName: 'foo' }));
     });
   });
 

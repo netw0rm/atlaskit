@@ -1,3 +1,4 @@
+import './polyfill';
 import * as base64fileconverter from './base64fileconverter';
 import { offsetRefs, BuilderContent, coerce } from './schema-builder';
 import { ProseMirror } from 'ak-editor-prosemirror';

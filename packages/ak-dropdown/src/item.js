@@ -129,6 +129,16 @@ export default {
     selected: prop.boolean({
       attribute: true,
     }),
+    /**
+     * @description whether an item is a checkbox item
+     * @memberof Dropdown
+     * @default false
+     * @type {Boolean}
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-item checkbox>some content</ak-dropdown-item>
+     * </ak-dropdown>
+     * @example @js dropdown.childNodes[0].checkbox = true;
+     */
     checkbox: prop.boolean({
       attribute: true,
     }),

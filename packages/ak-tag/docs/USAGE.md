@@ -10,7 +10,7 @@ Although the `ak-tag` component can be used by itself, it works best in conjunct
 
 ## Try it out
 
-Go to[the Storybook](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tag/2.0.2/) to try for yourself.
+Go to [the ak-tag Storybook](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tag/@VERSION@/) to try for yourself.
 
 
 ## Setting up and installing

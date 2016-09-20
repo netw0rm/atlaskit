@@ -8,7 +8,6 @@ const { expect } = chai;
 
 describe('ak-editor-bitbucket', () => {
   const fixture = fixtures();
-  const makeEditor = () => fixture().appendChild(new AkEditorBitbucket()) as any;
 
   it('is possible to create a component', () => {
     let component: any;
@@ -42,17 +41,37 @@ describe('ak-editor-bitbucket', () => {
   });
 
   describe('defaultValue', () => {
-    it('should contain a default value', (done) => {
-      const editor = makeEditor();
+    const RewireSpy = () => {
+      const resetAfter = [];
 
-      editor.defaultValue = 'foo';
-      editor.expanded = true;
+      afterEach(() => resetAfter.map(([ module, name ]) => module.__ResetDependency__(name)));
+
+      return (module, name) => {
+        const func = module.__GetDependency__(name);
+        const spy = sinon.spy(func);
+        module.__Rewire__(name, spy);
+        resetAfter.push([ module, name ]);
+        return spy;
+      }
+    };
+
+    const rewireSpy = RewireSpy();
+
+    it('should contain a default value', (done) => {
+      const content = 'foo';
+      const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
+      const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
+
+      editor.defaultValue = content;
+
+      // TODO: Delete this after merging a different PR.
+      editor._justToggledExpansion = true;
 
       afterMutations(
+        () => { editor.expanded = true; },
         () => {
-          const span = editor[symbols.shadowRoot].querySelector('span');
-          console.log(span.textContent)
-          expect(span.textContent).to.eql('foo');
+          const opts = spy.firstCall.args[0];
+          expect(opts.doc).has.property('textContent', content);
         },
         done
       );

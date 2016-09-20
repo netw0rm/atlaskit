@@ -21,9 +21,17 @@ describe('ak-theme', () => {
   beforeEach(done => {
     body = document.body;
 
-    theme1 = createTheme('theme1', { key1: 'val1' });
-    theme2 = createTheme('theme2', { key2: 'val2' });
-    theme3 = createTheme('theme3', { key3: 'val3' });
+    theme1 = createTheme('theme1', {
+      key1: 'theme1 val1',
+    });
+    theme2 = createTheme('theme2', {
+      key2: 'theme2 val2',
+      key4: 'theme2 val4',
+    });
+    theme3 = createTheme('theme3', {
+      key3: 'theme3 val3',
+      key4: 'theme3 val4',
+    });
 
     body.appendChild(theme1);
     body.appendChild(theme2);
@@ -48,12 +56,23 @@ describe('ak-theme', () => {
   });
 
   it('allVars should contain mixed in themes', () => {
+    expect(theme1.allVars).to.deep.equal({
+      key1: 'theme1 val1',
+    }, 'mixin=""');
+    theme1.mixin = 'theme3 theme2';
+    expect(theme1.allVars).to.deep.equal({
+      key1: 'theme1 val1',
+      key2: 'theme2 val2',
+      key3: 'theme3 val3',
+      key4: 'theme2 val4',
+    }, 'mixin="theme3 theme2"');
     theme1.mixin = 'theme2 theme3';
     expect(theme1.allVars).to.deep.equal({
-      key1: 'val1',
-      key2: 'val2',
-      key3: 'val3',
-    });
+      key1: 'theme1 val1',
+      key2: 'theme2 val2',
+      key3: 'theme3 val3',
+      key4: 'theme3 val4',
+    }, 'mixin="theme2 theme3"');
   });
 
   it('id should be string', () => {
@@ -85,7 +104,14 @@ describe('ak-theme', () => {
   });
 
   it('ownVars should not contain mixed in themes', () => {
-    expect(theme1.ownVars).to.deep.equal({ key1: 'val1' });
+    const ownVars = {
+      key1: 'theme1 val1',
+    };
+    expect(theme1.ownVars).to.deep.equal(ownVars);
+    theme1.mixin = 'theme3 theme2';
+    expect(theme1.ownVars).to.deep.equal(ownVars);
+    theme1.mixin = 'theme2 theme3';
+    expect(theme1.ownVars).to.deep.equal(ownVars);
   });
 
   it('should emit an event when attached', done => {

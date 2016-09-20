@@ -45,11 +45,10 @@ storiesOf(name, module)
     <div>
       <TooltipTrigger
         position="top"
-        description={`This is a really really really really really really really really really
-          really really really really really really really really really really really really
-          really really really really really really really really really really really really
-          really really really really really really really really really really really really
-          really really really really really long tooltip`}
+        description={`This message is very long and spans multiple lines because it has a lot of
+          important information for the user. It might be a stacktrace, maybe longwinded
+          explanation about how stock derivatives work, or maybe just a haiku. In either case,
+          tooltips should reach their max width and then start wrapping text.`}
       >
         <span style={positionedButtonStyles} aria-describedby="ak-tooltip">Hover over me</span>
       </TooltipTrigger>

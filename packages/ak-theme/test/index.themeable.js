@@ -1,6 +1,6 @@
 import { define, emit } from 'skatejs';
 import { afterMutations } from 'akutil-common-test';
-import { tagName, themeNameFromNode } from '../src/_themes';
+import { tagName, themeNameFromNode } from '../src/util';
 import Theme, { events, Prop, themeable } from '../src';
 
 describe('ak-theme, { themeable }', () => {

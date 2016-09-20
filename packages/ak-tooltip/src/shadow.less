@@ -3,24 +3,24 @@
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/mixins/animations.less';
 
-
-@fontSize: 12px;
-@lineHeight: calc(16 / unit(@fontSize));
+@grid: 4;
+@fontSize: unit(3 * @grid, px);
+@lineHeight: (4 * @grid) / unit(@fontSize);
 @fontColor: white;
-@maxWidth: 420px;
+@maxWidth: unit(105 * @grid, px); // ~420px
 @borderRadius: 3px;
-@leftAndRightTextPadding: 8px;
-@topAndBottomPadding: 2px;
-@marginDistance: 10px;
-@animationMovementDistance: 10;
+@leftAndRightTextPadding: unit(2 * @grid, px);
+@topAndBottomPadding: unit(@grid / 2, px);
+@marginDistance: unit(2 * @grid, px);
+@animationMovementDistance: (3 * @grid);
 @animationDelay: 0.1s;
 @animationTime: @animationDelay + 1s;
 
 // Putting these styles in host.less with :not([visible]) causes a slight flash when moving the
 // mouse in the direction of the animation. Putting it here makes it work perfectly.
 .hidden {
-  top: -9999px;
-  left: -9999px;
+  top: -100vh;
+  left: -100vw;
   position: absolute;
 }
 

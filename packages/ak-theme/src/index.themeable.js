@@ -27,10 +27,6 @@ export default function (opts) {
       themeProps: { default() { return {}; } },
     }),
     attached(elem) {
-      if (attached) {
-        attached(elem);
-      }
-
       applyTheme(elem, { newValue: elem.themeName });
       document.addEventListener(change, elem[$themeHandler] = e => {
         const { themeName, themeProps } = e.detail;
@@ -38,6 +34,10 @@ export default function (opts) {
           elem.themeProps = themeProps;
         }
       });
+
+      if (attached) {
+        attached(elem);
+      }
     },
     detached(elem) {
       if (detached) {

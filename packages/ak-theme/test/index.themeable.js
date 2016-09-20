@@ -150,19 +150,23 @@ describe('ak-theme, { themeable }', () => {
   });
 
   describe('lifecycle', () => {
-    function createElement(opts) {
+    function createElement(opts, props = {}) {
       const e = new (define('x-test', themeable(opts)));
-      document.body.appendChild(e);
+      document.body.appendChild(Object.assign(e, props));
       return e;
     }
 
     it('should call overridden attached', done => {
+      const theme = Object.assign(new Theme(), { id: 'foo' });
+      theme.appendChild(Object.assign(new Prop(), { name: 'myprop', value: 'myvalue' }));
+      document.body.appendChild(theme);
       createElement({
         attached(e) {
+          expect(e.themeProps).to.deep.equal({ myprop: 'myvalue' });
           body.removeChild(e);
           done();
         },
-      });
+      }, { themeName: 'foo' });
     });
 
     it('should call overridden detached', done => {

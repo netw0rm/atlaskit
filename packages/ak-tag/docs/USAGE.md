@@ -7,7 +7,7 @@ This component displays as a tag with an optional link and/or button to remove t
 Although the `ak-tag` component can be used by itself, it works best in conjunction with the
 [`ak-tag-group`](https://www.npmjs.com/package/ak-tag-group) component.
 
-## Setup and install
+## Setting up and installing
 
 ```sh
 npm install ak-tag

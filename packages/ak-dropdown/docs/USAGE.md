@@ -4,7 +4,8 @@ This is a template for AtlasKit components. Update this file with usage instruct
 
 ## Try it out
 
-Go to[the Storybook](https://aui-cdn.atlassian.com/atlaskit/stories/ak-avatar/2.3.1/) to try for yourself.
+Interact with a [live demo of the ak-dropdown component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-dropdown/3.2.1/).
+
 ## Setting up and install
 
 ```
@@ -25,7 +26,7 @@ Import the component in your JS resource:
 import Dropdown from 'ak-dropdown';
 ```
 
-Now we can use the defined tag in our HTML markup, e.g.:
+Now you can use the defined tag in your HTML markup:
 
 #### index.html
 
@@ -61,6 +62,9 @@ Trigger by default is not styled. Any html element could be used as the trigger 
 ```
 
 ### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
+
 
 ```
 import Dropdown from 'ak-dropdown';

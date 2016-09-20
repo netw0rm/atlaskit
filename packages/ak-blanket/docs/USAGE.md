@@ -1,7 +1,12 @@
 # Blanket
+
 The main purpose of the blanket component is to provide the overlay layer for components such as a modal dialog or a tooltip.
 
-## Setup and install
+## Try it out
+
+Interact with a [live demo of the ak-blanket component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-blanket/3.0.1/).
+
+## Installation
 
 ```sh
 npm install ak-blanket
@@ -17,7 +22,7 @@ Import the component in your JS resource:
 
 #### bundle.js
 
-```js
+```javascript
 import 'ak-blanket';
 ```
 

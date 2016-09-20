@@ -1,4 +1,4 @@
-import markdownSerializer from '../src/index';
+import markdownSerializer from '../src/markdown-serializer';
 import {
   doc, text, p, pre, img, code, strong, blockquote, hr,
   h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, del

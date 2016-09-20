@@ -7,7 +7,8 @@ import { selected as selectedEvent, item as itemEvents } from './internal/events
 function selectItem(item) {
   // disabled items should not allow any interactions
   // selected item doesn't need to be selected again
-  if (item.disabled || item.selected) {
+  // unless it's a checkbox item
+  if (item.disabled || (item.selected && !item.checkbox)) {
     return;
   }
 
@@ -56,20 +57,28 @@ function renderLeftSlot(elem) {
   return null;
 }
 
+function renderCheckbox(elem) {
+  if (elem.checkbox) {
+    return (<div className={shadowItemStyles.locals.itemLeftPosition}>
+      {elem.selected ? <ak-icon glyph="checkbox-select" /> : <ak-icon glyph="checkbox" />}
+    </div>);
+  }
+  return null;
+}
+
 export default {
   render(elem) {
     const classes = classNames(
       [shadowItemStyles.locals.item, {
         [shadowItemStyles.locals.disabled]: elem.disabled,
-        [shadowItemStyles.locals.selected]: elem.selected,
+        [shadowItemStyles.locals.selected]: elem.selected && !elem.checkbox && !elem.radio,
         [shadowItemStyles.locals.first]: elem.first,
         [shadowItemStyles.locals.last]: elem.last,
       }]
     );
     const tabIndex = elem.selected ? '1' : '0';
-
     return (
-      // void 0 there is to remove href completely, null doesn't work
+      // void 0 is to remove href completely, null doesn't work
       <a
         tabindex={tabIndex}
         className={classes}
@@ -82,6 +91,7 @@ export default {
       >
         <style>{shadowItemStyles.toString()}</style>
         {renderLeftSlot(elem)}
+        {renderCheckbox(elem)}
         <div className={shadowItemStyles.locals.itemDefaultPosition}><slot /></div>
       </a>
     );
@@ -116,6 +126,12 @@ export default {
      * @example @js dropdown.childNodes[0].selected = true;
      */
     selected: prop.boolean({
+      attribute: true,
+    }),
+    checkbox: prop.boolean({
+      attribute: true,
+    }),
+    radio: prop.boolean({
       attribute: true,
     }),
     /**

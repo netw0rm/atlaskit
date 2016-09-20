@@ -1,35 +1,8 @@
 import 'style!./host.less';
 import debounce from 'debounce';
 import { vdom, define } from 'skatejs';
+import { handleMouseEnter, handleMouseLeave } from './internal/event-handlers';
 
-
-function handleMouseEnter() {
-  const trigger = this;
-  const tooltipBoundTo = trigger.slotEle.assignedNodes()[0];
-  const tooltipID = tooltipBoundTo.getAttribute('aria-describedby');
-  if (tooltipID) {
-    const tooltip = document.getElementById(tooltipID);
-    if (tooltip) {
-      tooltip.setAttribute('aria-label', trigger.description);
-      tooltip.target = tooltipBoundTo;
-      tooltip.description = trigger.description;
-      tooltip.position = trigger.position;
-      tooltip.visible = true;
-    }
-  }
-}
-
-function handleMouseLeave() {
-  const trigger = this;
-  const tooltipBoundTo = trigger.slotEle.assignedNodes()[0];
-  const tooltipID = tooltipBoundTo.getAttribute('aria-describedby');
-  if (tooltipID) {
-    const tooltip = document.getElementById(tooltipID);
-    if (tooltip) {
-      tooltip.visible = false;
-    }
-  }
-}
 
 /**
  * @description Create instances of a tooltip-trigger programmatically, or using markup.
@@ -38,16 +11,16 @@ function handleMouseLeave() {
  *   <ak-button glyph="Save" described-by="myTooltip"></ak-button>
  * </ak-tooltip>
  * @example @js import TooltipTrigger from 'ak-tooltip-trigger'
- * const component = new TooltipTrigger();
- * component.position = 'bottom';
- * component.description = 'Save';
- * component.innerHTML = '<ak-button glyph="Save" aria-described-by="myTooltip"></ak-button>';
+ * const trigger = new TooltipTrigger();
+ * trigger.position = 'bottom';
+ * trigger.description = 'Save';
+ * trigger.innerHTML = '<ak-button glyph="Save" aria-describedby="myTooltip"></ak-button>';
  */
 export default define('ak-tooltip-trigger', {
   render(elem) {
     return (
       <div>
-        <slot ref={el => (elem.slotEle = el)} />
+        <slot ref={el => (elem.slotElem = el)} />
       </div>
     );
   },

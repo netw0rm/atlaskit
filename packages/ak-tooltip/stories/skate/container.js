@@ -1,5 +1,5 @@
-import { define, vdom } from 'skatejs';
-import AKTrigger from '../src/tooltip-trigger';
+import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
+import AKTrigger from '../../src/index.tooltip-trigger';
 
 /*
    This is a simple container element to show that we can bind a tooltip to an element in the
@@ -23,10 +23,8 @@ export default define('ak-container', {
     };
     return (
       <div>
-        We can bind tooltips to items in the shadowDOM easily as we don't rely on looking elements
-        up by ID.<br /><br />
         <div style={containerStyles}>
-          <AKTrigger style={buttonStyles} position="bottom" description="fff">
+          <AKTrigger style={buttonStyles} position="bottom" description="This is a tooltip">
             <span aria-describedby="ak-tooltip">Hover Me</span>
           </AKTrigger>
         </div>

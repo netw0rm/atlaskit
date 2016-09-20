@@ -1,8 +1,10 @@
-import 'style!./host.less';
 import classNames from 'classnames';
-import { vdom, define, prop } from 'skatejs';
+import { vdom, define, prop, props } from 'skatejs';
 import Layer from 'ak-layer';
+
+import 'style!./host.less';
 import shadowStyles from './shadow.less';
+import TooltipTrigger from './index.tooltip-trigger';
 
 const defaultTooltipPosition = 'bottom';
 
@@ -20,15 +22,28 @@ function positionToPopperPosition(position) {
   return allowedPostions[defaultTooltipPosition];
 }
 
-function getAnimationClass(position) {
+function getAnimationClass(elem, position) {
   const animationMapping = {
     top: shadowStyles.locals.slideUpAnimation,
     bottom: shadowStyles.locals.slideDownAnimation,
     left: shadowStyles.locals.slideLeftAnimation,
     right: shadowStyles.locals.slideRightAnimation,
   };
+  const flippedAnimations = {
+    top: 'bottom',
+    bottom: 'top',
+    left: 'right',
+    right: 'left',
+  };
+  // if the tooltip has been flipped we need to apply the opposite animation
+  const actualPosition = elem._isFlipped ? flippedAnimations[position] : position; // eslint-disable-line no-underscore-dangle, max-len
+  return animationMapping[actualPosition] ? animationMapping[actualPosition] : undefined;
+}
 
-  return animationMapping[position] ? animationMapping[position] : undefined;
+function updateCallback(elem, data) {
+  props(elem, {
+    _isFlipped: data.isFlipped,
+  });
 }
 
 /**
@@ -36,37 +51,41 @@ function getAnimationClass(position) {
  * @class Tooltip
  * @example @html <ak-tooltip id='myTooltip'></ak-tooltip>
  * @example @js import Tooltip from 'ak-tooltip';
- * const component = new Tooltip();
- * component.id = 'myTooltip';'
+ * const tooltip = new Tooltip();
+ * tooltip.id = 'myTooltip';
  */
 export default define('ak-tooltip', {
   render(elem) {
     const messageBoxClasses = classNames({
       [shadowStyles.locals.tooltip]: true,
-      [getAnimationClass(elem.position)]: elem.visible,
+      [getAnimationClass(elem, elem.position)]: elem.visible,
     });
     const layerClasses = classNames({
       [shadowStyles.locals.hidden]: !elem.visible,
     });
+
     return (
-      <div>
+      <div className={layerClasses}>
         <style>{shadowStyles.toString()}</style>
-        <Layer
-          target={elem.target}
-          position={positionToPopperPosition(elem.position)}
-          className={layerClasses}
-          ref={(ref) => (elem.layer = ref)}
-          enableFlip="true"
-        >
-          <div className={messageBoxClasses}>{elem.description}</div>
-        </Layer>
+        {elem.visible ?
+          <Layer
+            target={elem.target}
+            position={positionToPopperPosition(elem.position)}
+            onUpdate={(data) => updateCallback(elem, data)}
+            ref={(ref) => (elem.layer = ref)}
+            enableFlip
+            boundariesElement={document.body}
+          >
+            <div className={messageBoxClasses}>{elem.description}</div>
+          </Layer> :
+        null}
       </div>
     );
   },
   props: {
     /**
      * @description The location of where the tooltip will appear, relative to the component it
-     * is bound to. Usually this would be set by an ak-tooltip-trigger.
+     * is bound to. This is usually set by an ak-tooltip-trigger.
      * Allowed values: top, bottom, left and right.
      * @memberof Tooltip
      * @instance
@@ -109,6 +128,9 @@ export default define('ak-tooltip', {
     visible: prop.boolean({
       attribute: true,
     }),
-    animating: prop.boolean(),
+    // TODO replace with symbol once supported by skate.
+    _isFlipped: prop.boolean(),
   },
 });
+
+export { TooltipTrigger };

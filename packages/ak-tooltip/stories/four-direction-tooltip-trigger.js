@@ -1,20 +1,12 @@
 import reactify from 'akutil-react';
-import TooltipTriggerWC from '../src/tooltip-trigger';
+import TooltipTriggerWC from '../src/index.tooltip-trigger';
+import React, { Component } from 'react';
 
-const { React, ReactDOM } = window;
-const { Component } = React;
-
-const TooltipTrigger = reactify(TooltipTriggerWC, {
-  React,
-  ReactDOM,
-});
+const TooltipTrigger = reactify(TooltipTriggerWC);
 
 const buttonStyles = {
   backgroundColor: 'orange',
   padding: '5px',
-  position: 'absolute',
-  left: '100px',
-  top: '100px',
 };
 
 class FourDirectionTooltipTrigger extends Component {

@@ -5,48 +5,45 @@
 
 
 @fontSize: 12px;
+@lineHeight: calc(16 / unit(@fontSize));
 @fontColor: white;
-@maxWidth: 200px;
-@borderRadius: 5px;
+@maxWidth: 420px;
+@borderRadius: 3px;
 @leftAndRightTextPadding: 8px;
+@topAndBottomPadding: 2px;
 @marginDistance: 10px;
-@animationMovementDistance: 20;
+@animationMovementDistance: 10;
 @animationDelay: 0.1s;
 @animationTime: @animationDelay + 1s;
 
-
+// Putting these styles in host.less with :not([visible]) causes a slight flash when moving the
+// mouse in the direction of the animation. Putting it here makes it work perfectly.
 .hidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
+  top: -9999px;
+  left: -9999px;
+  position: absolute;
 }
 
 .tooltip {
-  @topAndBottomPadding: 4px;
-
-  font-size: @fontSize;
-  border-radius: @borderRadius;
   background-color: @ak-color-N900;
-  height: 20px; // likely to be changed once we have multiline tooltips
-  padding: @topAndBottomPadding @leftAndRightTextPadding;
-  max-width: @maxWidth;
+  border-radius: @borderRadius;
+  box-sizing: border-box;
   color: @fontColor;
+  font-size: @fontSize;
+  line-height: @lineHeight;
+  max-width: @maxWidth;
   margin: @marginDistance;
+  padding: @topAndBottomPadding @leftAndRightTextPadding;
   pointer-events: none;
 }
 
 //************** Animations ***************//
 
 // define the props to transform for each animation
-@slideUp: 'transform', 'translateY(XXpx)', 20, 0;
-@slideDown: 'transform', 'translateY(XXpx)', -20, 0;
-@slideLeft: 'transform', 'translateX(XXpx)', 20, 0;
-@slideRight: 'transform', 'translateX(XXpx)', -20, 0;
+@slideUp: 'transform', 'translateY(XXpx)', @animationMovementDistance, 0;
+@slideDown: 'transform', 'translateY(XXpx)', -@animationMovementDistance, 0;
+@slideLeft: 'transform', 'translateX(XXpx)', @animationMovementDistance, 0;
+@slideRight: 'transform', 'translateX(XXpx)', -@animationMovementDistance, 0;
 @fadeIn: 'opacity', 'XX', 0, 1;
 
 // then create the keyframes for each

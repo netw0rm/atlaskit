@@ -164,8 +164,7 @@ export default define('ak-layer', {
      * @description Will be true if a Layer has been flipped from its original position.
      * @memberof Layer
      * @instance
-     * @function
-     * @return Boolean
+     * @type Boolean
      * @example @js const isFlipped = elem.isFlipped;
     */
     get isFlipped() {

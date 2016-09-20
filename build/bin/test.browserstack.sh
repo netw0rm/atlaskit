@@ -14,7 +14,7 @@ do
 
   HEAD_SHA=$HEAD_SHA \
   CURRENT_BRANCH="$CURRENT_BRANCH" \
-  STAGE=$STAGE \
+  BROWSERSTACK_STAGE=$STAGE \
   retry \
   --retries=$MAX_RETRIES \
   -- \

@@ -21,6 +21,11 @@ const DefaultTooltip = (props) => <Tooltip className={tooltipClass} {...props} /
 const buttonStyles = {
   backgroundColor: 'orange',
   padding: '5px',
+};
+
+const positionedButtonStyles = {
+  backgroundColor: 'orange',
+  padding: '5px',
   position: 'absolute',
   left: '100px',
   top: '100px',
@@ -30,7 +35,7 @@ storiesOf(name, module)
   .add('a simple ak-tooltip with ak-tooltip-trigger', () => (
     <div>
       <TooltipTrigger position="top" description="This is a tooltip">
-        <span style={buttonStyles} aria-describedby="ak-tooltip">Hover over me</span>
+        <span style={positionedButtonStyles} aria-describedby="ak-tooltip">Hover over me</span>
       </TooltipTrigger>
 
       <DefaultTooltip id="ak-tooltip" />
@@ -46,7 +51,7 @@ storiesOf(name, module)
           really really really really really really really really really really really really
           really really really really really long tooltip`}
       >
-        <span style={buttonStyles} aria-describedby="ak-tooltip">Hover over me</span>
+        <span style={positionedButtonStyles} aria-describedby="ak-tooltip">Hover over me</span>
       </TooltipTrigger>
 
       <DefaultTooltip id="ak-tooltip" />
@@ -104,9 +109,41 @@ storiesOf(name, module)
   .add('a tooltip around a focusable element', () => (
     <div>
       <TooltipTrigger position="bottom" description="I am describing a focusable element!">
-        <a href="#" style={buttonStyles} aria-describedby="ak-tooltip">Focus on me!</a>
+        <a href="#" style={positionedButtonStyles} aria-describedby="ak-tooltip">Focus on me!</a>
       </TooltipTrigger>
+
       <DefaultTooltip id="ak-tooltip" />
-      <span id="desc">This is a description</span>
     </div>
-  ));
+  ))
+  .add('a tooltip with multiple triggers', () => {
+    const containerStyle = {
+      display: 'flex',
+      height: '100vh',
+      alignItems: 'center',
+      justifyContent: 'center',
+    };
+    const triggerStyles = {
+      margin: '0 1em',
+    };
+    return (
+      <div>
+        <div style={containerStyle}>
+          <TooltipTrigger style={triggerStyles} position="top" description="This is a tooltip">
+            <span style={buttonStyles} aria-describedby="ak-tooltip">Button 1</span>
+          </TooltipTrigger>
+          <TooltipTrigger style={triggerStyles} position="top" description="This is a tooltip">
+            <span style={buttonStyles} aria-describedby="ak-tooltip">Button 2</span>
+          </TooltipTrigger>
+          <TooltipTrigger style={triggerStyles} position="top" description="This is a tooltip">
+            <span style={buttonStyles} aria-describedby="ak-tooltip">Button 3</span>
+          </TooltipTrigger>
+          <TooltipTrigger style={triggerStyles} position="top" description="This is a tooltip">
+            <span style={buttonStyles} aria-describedby="ak-tooltip">Button 4</span>
+          </TooltipTrigger>
+
+        </div>
+
+        <DefaultTooltip id="ak-tooltip" />
+      </div>
+    );
+  });

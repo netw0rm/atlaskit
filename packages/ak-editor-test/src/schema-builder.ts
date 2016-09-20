@@ -11,7 +11,7 @@ type RefsContent = RefsNode | RefsNode[];
  * ProseMirror doesn't support empty text nodes, so this class provides a way to
  * insert refs into the builder without needing to actually insert a node.
  */
-export class RefsTrackingNode {
+export class RefsTrackingNode extends Node {
   refs: Refs;
 }
 
@@ -127,11 +127,38 @@ export function nodeFactory(type: string, attrs = {}) {
 }
 
 /**
+ * Build a <pre> code block node with
+ *
+ * @param {Node|undefined} textContent  Code block text (defaults to empty)
+ * @param {String|null} params          Optional params, used primarily for hinting the language code was written in
+ * @returns {RefsNode}
+ */
+export function pre(textContent?: Node, params? : String|null) : RefsNode {
+  let node: RefsNode;
+
+  // Normalize params because we depend on the value in serializers
+  if (!params) {
+    params = null;
+  }
+
+  if (textContent) {
+    // textContent = text(''); // schema allows code block with empty text
+    const { nodes, refs } = coerce([textContent]);
+    node = schema.nodes['code_block'].create({ params }, nodes);
+    node.refs = refs;
+  } else {
+    node = schema.nodes['code_block'].create({ params });
+  }
+
+  return node;
+}
+
+/**
  * Create a factory for marks.
  */
 export function markFactory(type: string, attrs = {}) {
-  const mark = schema.mark(type, attrs)
-  return (...content: BuilderContent[]) => {
+  const mark = schema.mark(type, attrs);
+  return (...content: BuilderContent[]) : RefsNode[] => {
     const { nodes } = coerce(content);
     return nodes
       .map(node => {
@@ -149,7 +176,7 @@ export function markFactory(type: string, attrs = {}) {
 export const doc = nodeFactory("doc", {});
 export const p = nodeFactory("paragraph", {});
 export const blockquote = nodeFactory("blockquote", {});
-export const pre = nodeFactory("code_block", {});
+// export const pre = nodeFactory("code_block", {}); // pre = (attrs: { params?: string }) => schema.node("code_block", attrs);
 export const h1 = nodeFactory("heading", {level: 1});
 export const h2 = nodeFactory("heading", {level: 2});
 export const h3 = nodeFactory("heading", {level: 3});
@@ -165,6 +192,7 @@ export const hr = schema.node("horizontal_rule");
 export const em = markFactory("em", {});
 export const strong = markFactory("strong", {});
 export const code = markFactory("code", {});
-export const a = (attrs: { href: string }) => markFactory("link", attrs);
+export const del = markFactory("del", {});
+export const a = (attrs: { href: string, title?: string }) => markFactory("link", attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(new Fragment(flatten<BuilderContent>(content)), 0, 0);

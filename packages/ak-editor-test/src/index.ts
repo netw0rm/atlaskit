@@ -10,7 +10,7 @@ export { default as fixtures } from './fixtures';
 export {
   doc, p, blockquote, pre,
   h1, h2, h3, h4, h5, h6,
-  li, ul, ol, br, img, hr, em, strong, code, a,
+  li, ul, ol, br, img, hr, em, strong, code, del, a,
   text, fragment, slice
 } from './schema-builder';
 export { fromHTML, toHTML } from './html-helpers';

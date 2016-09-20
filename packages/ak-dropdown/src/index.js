@@ -192,6 +192,9 @@ export default define('ak-dropdown', {
           target={target}
           enableFlip
           offset={offset}
+          // TODO: this causes a positioning bug.
+          // Needs to be rewritten to conditionally render the <slot />
+          // See AK-343
           style={{ display: elem.open ? 'block' : 'none' }}
           ref={(layer) => {
             elem._layer = layer;

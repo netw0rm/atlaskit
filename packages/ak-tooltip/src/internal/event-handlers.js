@@ -1,9 +1,12 @@
 function handleMouseEnter() {
   const trigger = this;
-  const tooltipBoundTo = trigger.slotEle.assignedNodes()[0];
-  const tooltipID = tooltipBoundTo.getAttribute('aria-describedby');
-  if (tooltipID) {
-    const tooltip = document.getElementById(tooltipID);
+  const tooltipBoundTo = trigger.slotElem.assignedNodes()[0];
+  if (!tooltipBoundTo) {
+    return;
+  }
+  const tooltipId = tooltipBoundTo.getAttribute('aria-describedby');
+  if (tooltipId) {
+    const tooltip = document.getElementById(tooltipId);
     if (tooltip) {
       tooltip.setAttribute('aria-label', trigger.description);
       tooltip.target = tooltipBoundTo;
@@ -16,10 +19,10 @@ function handleMouseEnter() {
 
 function handleMouseLeave() {
   const trigger = this;
-  const tooltipBoundTo = trigger.slotEle.assignedNodes()[0];
-  const tooltipID = tooltipBoundTo.getAttribute('aria-describedby');
-  if (tooltipID) {
-    const tooltip = document.getElementById(tooltipID);
+  const tooltipBoundTo = trigger.slotElem.assignedNodes()[0];
+  const tooltipId = tooltipBoundTo.getAttribute('aria-describedby');
+  if (tooltipId) {
+    const tooltip = document.getElementById(tooltipId);
     if (tooltip) {
       tooltip.visible = false;
     }

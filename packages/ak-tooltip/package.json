@@ -1,7 +1,7 @@
 {
   "name": "ak-tooltip",
   "version": "1.0.0",
-  "description": "ak-tooltip webcomponent",
+  "description": "This component is used to display extra information to a user about an element by displaying a floating description.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
@@ -17,7 +17,7 @@
     "classnames": "^2.2.5",
     "debounce":"^1.0.0",
     "ak-layer": "^57.0.0",
-    "skatejs": "^1.2.4"
+    "skatejs": "^1.4.1"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

@@ -1,7 +1,8 @@
-import 'style!./host.less';
 import classNames from 'classnames';
 import { vdom, define, prop, props } from 'skatejs';
 import Layer from 'ak-layer';
+
+import 'style!./host.less';
 import shadowStyles from './shadow.less';
 import TooltipTrigger from './index.tooltip-trigger';
 

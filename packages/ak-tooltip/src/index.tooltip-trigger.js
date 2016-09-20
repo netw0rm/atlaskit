@@ -20,7 +20,7 @@ export default define('ak-tooltip-trigger', {
   render(elem) {
     return (
       <div>
-        <slot ref={el => (elem.slotEle = el)} />
+        <slot ref={el => (elem.slotElem = el)} />
       </div>
     );
   },

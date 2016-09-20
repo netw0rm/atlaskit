@@ -8,6 +8,10 @@ CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 # Run the Browserstack tests
 for STAGE in 1 2 3
 do
+  printf "\033[34m"
+  printf "Running browserstack test of stage $STAGE"
+  echo "\033[0m"
+
   HEAD_SHA=$HEAD_SHA \
   CURRENT_BRANCH="$CURRENT_BRANCH" \
   STAGE=$STAGE \

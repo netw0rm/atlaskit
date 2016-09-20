@@ -176,7 +176,6 @@ export function markFactory(type: string, attrs = {}) {
 export const doc = nodeFactory("doc", {});
 export const p = nodeFactory("paragraph", {});
 export const blockquote = nodeFactory("blockquote", {});
-// export const pre = nodeFactory("code_block", {}); // pre = (attrs: { params?: string }) => schema.node("code_block", attrs);
 export const h1 = nodeFactory("heading", {level: 1});
 export const h2 = nodeFactory("heading", {level: 2});
 export const h3 = nodeFactory("heading", {level: 3});

@@ -9,7 +9,6 @@ const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 const minilog = require('minilog');
 const { name } = require('../package.json');
-const camelCase = require('camelcase');
 const log = minilog('generate-icon-exports');
 minilog.enable();
 
@@ -42,13 +41,6 @@ async.waterfall([
               item.eachAttr((attr) => {
                 if (attr.prefix && attr.local) {
                   item.removeAttr(attr.name);
-                  const transformedName = camelCase(attr.prefix, attr.local);
-                  item.addAttr({
-                    name: transformedName,
-                    local: transformedName,
-                    prefix: '',
-                    value: attr.value,
-                  });
                 }
               });
             },

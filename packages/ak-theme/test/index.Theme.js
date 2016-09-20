@@ -1,4 +1,4 @@
-import { afterMutations } from 'akutil-common-test';
+import { afterMutations, checkInvisibility } from 'akutil-common-test';
 import Theme, { events, Prop } from '../src';
 
 function createTheme(id = '', ownVars = {}) {
@@ -48,7 +48,7 @@ describe('ak-theme', () => {
   });
 
   it('should not be visible', () => {
-    expect(window.getComputedStyle(theme1).display).to.equal('none');
+    expect(checkInvisibility(theme1)).to.equal(true, 'invisible');
   });
 
   it('allVars should be an object', () => {

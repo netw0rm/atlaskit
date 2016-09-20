@@ -48,7 +48,7 @@ describe('ak-theme-prop', () => {
       elem.name = 'same';
       elem.value = 'diff';
       elem.addEventListener(events.prop.change, spy);
-      elem.updated(elem, { name: 'same', value: 'same' });
+      Prop.updated(elem, { name: 'same', value: 'same' });
       expect(spy.callCount).to.equal(1);
     });
   });

@@ -1,6 +1,6 @@
 import { vdom } from 'skatejs';
 import sample from 'lodash.sample';
-const { React } = window;
+import React from 'react';
 
 export default class AnimationDemo extends React.Component {
   constructor(props) {

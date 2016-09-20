@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const webpack = require('webpack');
+const webpackConf = require('./webpack.config.js');
 const path = require('path');
 const glob = require('glob');
 const fs = require('fs');
@@ -13,24 +15,30 @@ const log = minilog('generate-icon-exports');
 minilog.enable();
 
 const fileEnding = '.svg';
+const defaultWidth = 20;
+const defaultHeight = 20;
+
 const maxWidth = 20;
 const maxHeight = 20;
 
 const rootFolder = path.join(__dirname, '..');
 const srcFolder = path.join(rootFolder, 'src');
+const tmpFolder = path.join(rootFolder, 'tmp');
 const destFolder = path.join(rootFolder, 'glyph');
 
 async.waterfall([
   function cleanOutputDir(cb) {
+    log.debug('cleaning destination directory');
     rimraf(destFolder, cb);
   },
   function findIconFiles(cb) {
+    log.debug('Finding SVG files to transform');
     glob(`**/*${fileEnding}`, {
       cwd: srcFolder,
     }, cb);
   },
-
   function workOnIcons(iconPaths, finishIconWork) {
+    log.debug('starting work on icons');
     const svgo = new SVGO({
       multipass: true,
       plugins: [
@@ -54,53 +62,92 @@ async.waterfall([
         .replace(new RegExp(`\\${fileEnding}$`), '');
       async.waterfall([
         function readSvg(cb) {
-          fs.readFile(path.join(srcFolder, iconRelativePathToSrc), 'utf8', cb);
+          const file = path.join(srcFolder, iconRelativePathToSrc);
+          log.debug(`"${iconRelativePathToSrc}": reading file`);
+          fs.readFile(file, 'utf8', cb);
         },
         function optimizeSvg(data, cb) {
+          log.debug(`"${iconRelativePathToSrc}": optimizing SVG`);
           svgo.optimize(data, (result) => {
             if (result.info.width > maxWidth) {
-              log.warn(`"${iconRelativePathToSrc}" is too wide: \
-${result.info.width} > ${maxWidth}`);
+              log.warn(`"${iconRelativePathToSrc}": too wide: ${result.info.width} > ${maxWidth}`);
             }
             if (result.info.height > maxHeight) {
-              log.warn(`"${iconRelativePathToSrc}" is too high: \
+              log.warn(`"${iconRelativePathToSrc}": too high: \
 ${result.info.height} > ${maxHeight}`);
             }
             cb(null, result);
           });
         },
         function generateExport({ data: svgData }, cb) {
+          log.debug(`"${iconRelativePathToSrc}": generating export`);
           const iconRelativePathDashed = iconRelativePathToSrcNoExt
             .replace(new RegExp(path.sep, 'g'), '-');
 
-          cb(null, `import { define, vdom } from 'skatejs';
+          const template =
+`import { define, vdom } from 'skatejs';
 
 // eslint-disable-next-line max-len, react/jsx-space-before-closing
 const Glyph = () => (${svgData});
 
 export default define('${name}-${iconRelativePathDashed}', {
   render() {
-    return (<Glyph />);
+    return (
+      <div style={{ display: 'flex', width: '${defaultWidth}px', height: '${defaultHeight}px' }}>
+        <div style={{ margin: 'auto' }}>
+          <Glyph />
+        </div>
+      </div>
+    );
   },
 });
-`);
+`;
+          cb(null, template);
         },
         function createDirs(contents, cb) {
-          const targetFile = path.join(destFolder, `${iconRelativePathToSrcNoExt}.js`);
+          const targetFile = path.join(tmpFolder, `${iconRelativePathToSrcNoExt}.js`);
+          log.debug(`"${iconRelativePathToSrc}": creating intermediate directories`);
           mkdirp(path.dirname(targetFile), (err) => cb(err, {
             targetFile,
             contents,
           }));
         },
         function writeFile({ contents, targetFile }, cb) {
+          log.debug(`"${iconRelativePathToSrc}": writing generated code to memory`);
           fs.writeFile(targetFile, contents, cb);
         },
+        function done(cb) {
+          log.info(`"${iconRelativePathToSrc}" transformed successfully`);
+          cb();
+        },
       ], callback);
-    }, finishIconWork);
+    }, (err) => finishIconWork(err, iconPaths));
+  },
+
+  function webpackify(iconPaths, cb) {
+    log.info('Tranforming icons via webpack');
+    const entry = iconPaths.reduce((prev, svgFile) => {
+      const base = svgFile.replace(/\.svg$/, '');
+      prev[base] = path.join(tmpFolder, base);
+      return prev;
+    }, {});
+    const compiler = webpack(webpackConf(destFolder, entry));
+    compiler.run((err, stats) => {
+      if (err) {
+        cb(err);
+        return;
+      }
+      if (stats.compilation.errors.length) {
+        cb(stats.compilation.errors);
+        return;
+      }
+      cb();
+    });
   },
 ], (err) => {
   if (err) {
     log.error(err);
     process.exit(1);
   }
+  log.info('Done!');
 });

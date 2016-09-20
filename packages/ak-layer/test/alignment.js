@@ -1,4 +1,4 @@
-import Alignment from '../src/Alignment';
+import Alignment from '../src/internal/Alignment';
 
 describe('alignment', () => {
   it('should be possible to create a new instance', () => {

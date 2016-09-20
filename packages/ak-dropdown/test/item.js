@@ -69,6 +69,33 @@ describe('ak-dropdown-item', () => {
     });
   });
 
+  describe('links', () => {
+    let component;
+    let componentDomElem;
+
+    beforeEach(() => {
+      component = `<ak-dropdown-item href="#foo" target="_blank">
+        <div>some text</div>
+      </ak-dropdown-item>`;
+      itemContainer.innerHTML = component;
+
+      return waitUntil(() =>
+        itemContainer.firstChild.getAttribute('defined') !== null
+      ).then(() => {
+        component = itemContainer.firstChild;
+        componentDomElem = getShadowRoot(component).firstChild;
+      });
+    });
+
+    it('href is matched on the link', () => {
+      expect(componentDomElem.getAttribute('href')).to.equal('#foo');
+    });
+
+    it('target is matched on the link', () => {
+      expect(componentDomElem.getAttribute('target')).to.equal('_blank');
+    });
+  });
+
   describe('sizing for a simple item:', () => {
     let component;
     let componentDomElem;

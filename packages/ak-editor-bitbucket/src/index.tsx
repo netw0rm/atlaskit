@@ -2,7 +2,7 @@ import './types';
 import autobind from 'autobind-decorator';
 import * as events from './internal/events';
 import { define, prop, emit, Component } from 'skatejs';
-import { ProseMirror, Schema } from 'ak-editor-prosemirror';
+import { ProseMirror, Schema, Node, posFromDOM } from 'ak-editor-prosemirror';
 import 'style!./host.less';
 import cx from 'classnames';
 import maybe from './maybe';
@@ -42,6 +42,7 @@ import {
   MarkType,
 } from 'ak-editor-plugin-text-formatting';
 import MentionsPlugin from 'ak-editor-plugin-mentions';
+import FacadeInput from 'ak-editor-facade-input';
 
 // typescript removes unused var if we import it :(
 const { vdom } = require('skatejs');
@@ -80,6 +81,8 @@ class AkEditorBitbucket extends Component {
   defaultValue: string;
   placeholder: string;
   imageUploader: Function;
+  mentionsTypeaheadCompleted: Function;
+  getMentionsList: Function;
   context: string;
   expanded: boolean;
 
@@ -119,6 +122,8 @@ class AkEditorBitbucket extends Component {
       defaultValue: prop.string({ attribute: true }),
       placeholder: prop.string({ attribute: true }),
       imageUploader: functionProp(),
+      mentionsTypeaheadCompleted: functionProp(),
+      getMentionsList: functionProp(),
       context: prop.string({ attribute: true }),
       expanded: prop.boolean({ attribute: true }),
 
@@ -413,13 +418,67 @@ class AkEditorBitbucket extends Component {
     });
 
     // Mentions wiring
-    const emitMentionEvent = (ev: string) => {
-      return (el: HTMLElement, pm: ProseMirror) => emit(this, ev, {
-        detail: { el, pm }
+    // TODO: Add testing
+    const attachFacadeInput = (elem: HTMLElement, pm: ProseMirror) => {
+      const initialValue = '@';
+      elem.innerText = initialValue;
+
+      const facadeInput = new FacadeInput(elem, {
+        initialValue: initialValue,
+        classList: ['fabric-editor-mention-overlay', 'bb-mention-input']
       });
+
+      this.mentionsTypeaheadCompleted(() => facadeInput.markForRemoval());
+
+      facadeInput.onSync = (value, willRemove) => {
+        if (willRemove) {
+          const offset = elem.getAttribute('pm-offset');
+          if (offset && offset.length) {
+            const pos = posFromDOM(elem, parseInt(offset, 10)).pos;
+            const node = pm.schema.nodes.mention.create({ id: value });
+            pm.tr.replaceWith(pos, pos+1, node).apply();
+            pm.setTextSelection(pos+1);
+            pm.focus();
+          }
+          return;
+        }
+
+        // When the value is empty, remove the mention node and facade input.
+        if (value == '') {
+          const offset = elem.getAttribute('pm-offset');
+          if (offset && offset.length) {
+            const pos = posFromDOM(elem, parseInt(offset, 10)).pos;
+            pm.tr.delete(pos, pos+1).apply();
+            facadeInput.markForRemoval();
+            pm.focus();
+          }
+        }
+      };
     }
-    MentionsPlugin.get(pm).renderHandler = emitMentionEvent('mentionrender');
-    MentionsPlugin.get(pm).autocompleteHandler = emitMentionEvent('mentionautocomplete');
+    const renderMention = (elem: HTMLElement) => {
+      const entityId = elem.getAttribute('editor-entity-id');
+      if (!entityId || !entityId.length) {
+        return
+      }
+
+      const mentionsList = this.getMentionsList();
+      const username = (entityId as string).substring(1).trim(); // remove the @ symbol and trailing whitespace
+      const matchingMention = mentionsList.find((m: any) => m.username === username);
+
+      const link = `/${username}`;
+      const displayName = matchingMention ? matchingMention.display_name : username;
+      const styles = `
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        background-color: #f5f5f5;
+        color: #3572b0;
+        padding: 0 3px;
+      `;
+      elem.innerHTML = `<a href="${link}" target="_blank" style="${styles}" rel="nofollow" title="${username}" class="mention">${displayName}<a/>`;
+    }
+    MentionsPlugin.get(pm).renderHandler = renderMention;
+    MentionsPlugin.get(pm).autocompleteHandler = attachFacadeInput;
 
     // avoid invoking keyboard shortcuts in BB
     pm.wrapper.addEventListener('keypress', e => e.stopPropagation());

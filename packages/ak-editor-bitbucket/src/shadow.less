@@ -16,16 +16,17 @@
     }
 
     code {
-      font-family: @ak-editor-code-font-famly;
+      font-family: @ak-editor-code-font-family;
       background: @ak-editor-code-background;
       padding: 2px 5px;
-      border-radius: 5px;
+      border-radius: @ak-editor-border-radius;
     }
 
     pre {
-      font-family: @ak-editor-code-font-famly;
+      font-family: @ak-editor-code-font-family;
       background: @ak-editor-code-background;
-      padding: 5px;
+      padding: 10px;
+      border-radius: @ak-editor-border-radius;
     }
   }
 }
@@ -50,7 +51,7 @@
 
 .focused {
   box-shadow: 0 0 0 2px @ak-editor-focus;
-  border-radius: 2px;
+  border-radius: @ak-editor-border-radius;
 }
 
 :global(.ProseMirror-drop-target) {

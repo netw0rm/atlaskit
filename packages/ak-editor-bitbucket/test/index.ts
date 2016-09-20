@@ -41,7 +41,7 @@ describe('ak-editor-bitbucket', () => {
     expect(editor.ready).to.be.false;
   });
 
-  it('does not be expanded by default', (done) => {
+  it('is not expanded by default', (done) => {
     const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
     const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
 

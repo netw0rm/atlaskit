@@ -88,6 +88,7 @@ export default {
         aria-disabled={elem.disabled}
         aria-selected={elem.selected}
         href={elem.href ? elem.href : void 0}
+        target={elem.target ? elem.target : void 0}
       >
         <style>{shadowItemStyles.toString()}</style>
         {renderLeftSlot(elem)}
@@ -173,7 +174,30 @@ export default {
     focused: prop.boolean({
       attribute: true,
     }),
+    /**
+     * @description href for a dropdown item's link'
+     * @memberof Dropdown
+     * @default ''
+     * @type {String}
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-item href="http://google.com">some content</ak-dropdown-item>
+     * </ak-dropdown>
+     * @example @js dropdownItem.href = 'http://google.com';
+     */
     href: prop.string({
+      attribute: true,
+    }),
+    /**
+     * @description target for a dropdown item's link
+     * @memberof Dropdown
+     * @default ''
+     * @type {String}
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-item href="http://google.com" target="_blank">some content</ak-dropdown-item>
+     * </ak-dropdown>
+     * @example @js dropdownItem._target = '_blank';
+     */
+    target: prop.string({
       attribute: true,
     }),
   },

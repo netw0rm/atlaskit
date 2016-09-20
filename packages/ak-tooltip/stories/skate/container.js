@@ -1,4 +1,4 @@
-import { define } from 'skatejs'; // eslint-disable-line no-unused-vars
+import { define } from 'skatejs';
 import AKTrigger from '../../src/index.tooltip-trigger';
 
 /*

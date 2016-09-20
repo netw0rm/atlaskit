@@ -27,7 +27,7 @@ class DropdownWithOutsideTrigger extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ padding: '40px' }}>
         <ak-avatar
           src={avatarUrl}
           size="small"
@@ -51,7 +51,7 @@ class DropdownWithOutsideTrigger extends Component {
 
 storiesOf(`${name} component`, module)
   .add('simple dropdown', () => (
-    <div>
+    <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
         <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
         <ak-dropdown-item>text1</ak-dropdown-item>
@@ -61,11 +61,24 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
+  .add('dropdown with checkbox items', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent open>
+        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
+        <ak-dropdown-group title="Checkboxes title">
+          <ak-dropdown-item checkbox>text1</ak-dropdown-item>
+          <ak-dropdown-item checkbox>text2</ak-dropdown-item>
+          <ak-dropdown-item checkbox>some text here</ak-dropdown-item>
+          <ak-dropdown-item checkbox>another text</ak-dropdown-item>
+        </ak-dropdown-group>
+      </DropdownReactComponent>
+    </div>
+  ))
   .add('simple dropdown with outside trigger', () => (
     <DropdownWithOutsideTrigger />
   ))
   .add('dropdown with avatars', () => (
-    <div>
+    <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
         <ak-dropdown-trigger-button slot="trigger">People list</ak-dropdown-trigger-button>
         <ak-dropdown-item>
@@ -97,7 +110,7 @@ storiesOf(`${name} component`, module)
     </div>
   ))
   .add('dropdown with grouping', () => (
-    <div>
+    <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
         <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
         <ak-dropdown-item>some text here</ak-dropdown-item>
@@ -118,7 +131,7 @@ storiesOf(`${name} component`, module)
     </div>
   ))
   .add('dropdown with grouping without headers', () => (
-    <div>
+    <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
         <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
         <ak-dropdown-item>some text here</ak-dropdown-item>
@@ -139,7 +152,7 @@ storiesOf(`${name} component`, module)
     </div>
   ))
   .add('dropdown with everything', () => (
-    <div>
+    <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
         <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
         <ak-dropdown-group>
@@ -158,7 +171,7 @@ storiesOf(`${name} component`, module)
     </div>
   ))
   .add('dropdown with a buttonless trigger', () => (
-    <div>
+    <div style={{ padding: '40px' }}>
       <DropdownReactComponent>
         <ak-dropdown-trigger slot="trigger">
           <ak-avatar src={avatarUrl} size="small" />
@@ -192,7 +205,7 @@ storiesOf(`${name} component`, module)
     </div>
   ))
   .add('dropdown with icon only button trigger', () => (
-    <div>
+    <div style={{ padding: '40px' }}>
       <DropdownReactComponent>
         <ak-dropdown-trigger-arrow slot="trigger"></ak-dropdown-trigger-arrow>
         <ak-dropdown-item>Joscha</ak-dropdown-item>

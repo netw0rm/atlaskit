@@ -1,7 +1,7 @@
 {
   "name": "ak-editor-icon",
   "version": "2.4.2",
-  "description": "",
+  "description": "Editor Icon web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",

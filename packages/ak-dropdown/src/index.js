@@ -66,7 +66,7 @@ function toggleDialog(elem, value) {
   }
 }
 
-function selectItem(elem, event) {
+function selectSimpleItem(elem, event) {
   const list = elem.querySelectorAll('ak-dropdown-item');
   const l = list.length;
   for (let i = 0; i < l; i++) {
@@ -78,6 +78,18 @@ function selectItem(elem, event) {
 
   event.detail.item.selected = true;
   toggleDialog(elem, false);
+}
+
+function selectCheckboxItem(elem, event) {
+  event.detail.item.selected = !event.detail.item.selected;
+}
+
+function selectItem(elem, event) {
+  if (event.detail.item.checkbox) {
+    selectCheckboxItem(elem, event);
+  } else {
+    selectSimpleItem(elem, event);
+  }
 }
 
 function isDescendantOf(child, parent) {

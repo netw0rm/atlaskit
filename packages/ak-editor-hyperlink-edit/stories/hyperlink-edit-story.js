@@ -2,12 +2,12 @@ import { storiesOf } from '@kadira/storybook';
 import HyperlinkEdit from '../src';
 import ContentComponent from 'ak-editor-content';
 import { vdom } from 'skatejs';
-const { React, ReactDOM } = window;
+import React from 'react';
 import styles from './styles.less';
 import reactify from 'akutil-react';
 import { ProseMirror, DOMFromPos, schema } from 'ak-editor-prosemirror';
 
-const Content = reactify(ContentComponent, { React, ReactDOM });
+const Content = reactify(ContentComponent);
 
 class PoppedDemo extends React.Component {
   constructor(props) {

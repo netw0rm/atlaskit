@@ -11,7 +11,9 @@ printf "\033[0m"
 
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
-  USAGE="$(cat ./docs/USAGE.md)\n"
+  VERSION=$(node -e 'console.log(require("./package.json").version)')
+  USAGE=$(cat ./docs/USAGE.md | sed "s/@VERSION@/$VERSION/g")
+  USAGE="$USAGE\n"
 else
   USAGE=""
 fi
@@ -25,7 +27,7 @@ if [[ -z `find ./src -name "index*.js" -print -quit` ]]; then
 else
   DOCS="$($JSDOC2MD_LOC \
     --src "src/**/index*.js" \
-    --plugin ak-dmd-plugin \
+    --plugin akutil-dmd-plugin \
     --src $file \
     --member-index-format list \
     --name-format)"

@@ -161,8 +161,9 @@ export default new Plugin(class ImageUploadPlugin {
     }
   }
 
-  onChange(cb: StateChangeHandler) {
+  subscribe(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
+    cb(this.getState());
   }
 
   addImage(options: ImageUploadOptions) : boolean {

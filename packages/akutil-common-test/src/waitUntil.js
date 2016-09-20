@@ -10,7 +10,7 @@
  * @param step amount of time to wait between checks of the `fn` condition (ms).
  * @example @js const elem = document.querySelector('.fixture').firstChild;
  *  // We put name our condition function so we can re-use it a couple of times
- *  const elemRenderedImgTag = () => (elem[symbols.shadowRoot].querySelector('img') !== null);
+ *  const elemRenderedImgTag = () => (elem.shadowRoot.querySelector('img') !== null);
  *
  *  // check that no image is rendered before we start
  *  expect(elemRenderedImgTag()).to.be.false;

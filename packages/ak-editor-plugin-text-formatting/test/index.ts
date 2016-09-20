@@ -2,8 +2,10 @@ import TextFormattingPlugin from '../src';
 import { doc, p, em, strong, code, chaiPlugin, makeEditor } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
+chai.use(sinonChai);
 
 describe('ak-editor-plugin-text-formatting', () => {
   const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin });
@@ -64,5 +66,38 @@ describe('ak-editor-plugin-text-formatting', () => {
       expect(plugin.getState().codeActive).to.be.true;
     });
   });
-});
 
+  it('should allow a change handler to be attached', () => {
+    const { plugin } = editor(doc(p('text')));
+    const spy = sinon.spy()
+    plugin.subscribe(spy);
+
+    expect(spy).to.have.been.callCount(1);
+
+    expect(spy).to.have.been.calledWith({
+      disabled: false,
+      emActive: false,
+      strongActive: false,
+      codeActive: false,
+      underlineActive: false
+    });
+  });
+
+  it('should allow a change handler to be attached', () => {
+    const { plugin } = editor(doc(p('text')));
+    const spy = sinon.spy()
+    plugin.subscribe(spy);
+
+    plugin.toggleMark('em')
+
+    expect(spy).to.have.been.callCount(2);
+
+    expect(spy).to.have.been.calledWith({
+      disabled: false,
+      emActive: true,
+      strongActive: false,
+      codeActive: false,
+      underlineActive: false
+    });
+  });
+});

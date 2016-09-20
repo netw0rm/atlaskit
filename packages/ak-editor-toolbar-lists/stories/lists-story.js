@@ -1,9 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import ListsComponent from '../src';
-const { React, ReactDOM } = window;
+import React from 'react';
 import reactify from 'akutil-react';
 
-const Lists = reactify(ListsComponent, { React, ReactDOM });
+const Lists = reactify(ListsComponent);
 
 storiesOf('ak-editor-toolbar-lists', module)
   .add('Basic', () => (

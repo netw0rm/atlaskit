@@ -1,15 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import Dropdown from '../src/index';
-const { React, ReactDOM } = window;
+import React from 'react';
 const { Component } = React;
 import { name } from '../package.json';
 import 'ak-avatar';
 
-const DropdownReactComponent = reactify(Dropdown, {
-  React,
-  ReactDOM,
-});
+const DropdownReactComponent = reactify(Dropdown);
 
 const avatarUrl = require('url!./doge.jpg');
 
@@ -168,6 +165,15 @@ storiesOf(`${name} component`, module)
         <ak-dropdown-item>Wuz</ak-dropdown-item>
         <ak-dropdown-item>Here</ak-dropdown-item>
         <ak-dropdown-item>2016</ak-dropdown-item>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('dropdown with a link that opens in a new tab', () => (
+    <div>
+      <DropdownReactComponent>
+        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
+        <ak-dropdown-item href="http://atlassian.design" target="_blank">New tab</ak-dropdown-item>
+        <ak-dropdown-item href="http://atlassian.design">Same tab</ak-dropdown-item>
       </DropdownReactComponent>
     </div>
   ))

@@ -1,7 +1,7 @@
 {
   "name": "ak-editor-hyperlink-edit",
   "version": "14.1.1",
-  "description": "",
+  "description": "Editor Hyperlink Edit web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
@@ -21,7 +21,7 @@
     "ak-editor-popup-text-input": "^1.0.0",
     "akutil-shared-styles": "^33.1.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.2.5"
+    "skatejs": "^1.4.1"
   },
   "devDependencies": {
     "ak-editor-content": "^2.0.0",

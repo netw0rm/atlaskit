@@ -1,15 +1,14 @@
 import { storiesOf } from '@kadira/storybook';
 import { vdom } from 'skatejs';
 import AnimationDemo from './AnimationDemo';
-const { React, ReactDOM } = window;
+import React from 'react';
 import reactify from 'akutil-react';
 import { name } from '../package.json';
-
 
 const req = require.context('../glyph', true, /^.*\.js/);
 const reactifiedComponents = req.keys().reduce((prev, file) => {
   const Icon = req(file).default;
-  const ReactIcon = reactify(Icon, { React, ReactDOM });
+  const ReactIcon = reactify(Icon);
   prev[file] = ReactIcon;
   return prev;
 }, {});

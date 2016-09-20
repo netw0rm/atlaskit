@@ -41,7 +41,7 @@
     "file-loader": "^0.9.0",
     "git-validate": "^2.2.2",
     "glob": "^7.0.5",
-    "glob-loader": "github:joscha/glob-loader#02c6113489f9cdf1632f278e7ce18550fe73e32f",
+    "glob-loader": "^0.3.0",
     "jsdoc-to-markdown": "^1.3.6",
     "json-loader": "^0.5.4",
     "karma": "^1.2.0",

@@ -182,10 +182,6 @@ class MentionResource extends AbstractMentionResource {
       }
     };
 
-    // const notifyErr = (error) => {
-    //   this._notifyErrorListeners(error);
-    // }
-
     if (!query) {
       this._initialState().then(notify, (error) => this._notifyErrorListeners(error));
     } else {

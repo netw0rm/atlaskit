@@ -2,7 +2,7 @@ import './types';
 import autobind from 'autobind-decorator';
 import * as events from './internal/events';
 import { define, prop, emit, Component } from 'skatejs';
-import { ProseMirror, Schema, Text } from 'ak-editor-prosemirror';
+import { ProseMirror, Schema } from 'ak-editor-prosemirror';
 import 'style!./host.less';
 import cx from 'classnames';
 import maybe from './maybe';
@@ -362,7 +362,7 @@ class AkEditorBitbucket extends Component {
 
     const pm = new ProseMirror({
       place: this._wrapper,
-      doc: new Text({}, this.defaultValue),
+      schema,
       plugins: [
         MarkdownInputRulesPlugin,
         HyperlinkPlugin,

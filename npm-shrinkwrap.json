@@ -3673,6 +3673,11 @@
       "from": "glob-base@>=0.3.0 <0.4.0",
       "resolved": "https://registry.npmjs.org/glob-base/-/glob-base-0.3.0.tgz"
     },
+    "glob-loader": {
+      "version": "0.3.0",
+      "from": "joscha/glob-loader#02c6113489f9cdf1632f278e7ce18550fe73e32f",
+      "resolved": "git://github.com/joscha/glob-loader.git#02c6113489f9cdf1632f278e7ce18550fe73e32f"
+    },
     "glob-parent": {
       "version": "2.0.0",
       "from": "glob-parent@>=2.0.0 <3.0.0",

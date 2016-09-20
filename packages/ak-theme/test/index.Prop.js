@@ -1,34 +1,34 @@
 import { events, Prop } from '../src';
 
 describe('ak-theme-prop', () => {
-  let prop;
+  let elem;
 
   beforeEach(() => {
-    prop = new Prop();
+    elem = new Prop();
   });
 
   describe('props', () => {
     describe('name', () => {
       it('should be an attribute', () => {
-        prop.name = 0;
-        expect(prop.hasAttribute('name')).to.equal(true);
+        elem.name = 0;
+        expect(elem.hasAttribute('name')).to.equal(true);
       });
 
       it('should be a string', () => {
-        prop.name = 0;
-        expect(prop.name).to.equal('0');
+        elem.name = 0;
+        expect(elem.name).to.equal('0');
       });
     });
 
     describe('value', () => {
       it('should be an attribute', () => {
-        prop.value = 0;
-        expect(prop.hasAttribute('value')).to.equal(true);
+        elem.value = 0;
+        expect(elem.hasAttribute('value')).to.equal(true);
       });
 
       it('should be a string', () => {
-        prop.value = 0;
-        expect(prop.value).to.equal('0');
+        elem.value = 0;
+        expect(elem.value).to.equal('0');
       });
     });
   });
@@ -36,19 +36,19 @@ describe('ak-theme-prop', () => {
   describe('updated', () => {
     it('should not emit an event if values did not change', () => {
       const spy = sinon.spy();
-      prop.name = 'same';
-      prop.value = 'same';
-      prop.addEventListener(events.prop.change, spy);
-      Prop.updated(prop, { name: 'same', value: 'same' });
+      elem.name = 'same';
+      elem.value = 'same';
+      elem.addEventListener(events.prop.change, spy);
+      Prop.updated(elem, { name: 'same', value: 'same' });
       expect(spy.callCount).to.equal(0);
     });
 
     it('should emit an event if values did change', () => {
       const spy = sinon.spy();
-      prop.name = 'same';
-      prop.value = 'diff';
-      prop.addEventListener(events.prop.change, spy);
-      Prop.updated(prop, { name: 'same', value: 'same' });
+      elem.name = 'same';
+      elem.value = 'diff';
+      elem.addEventListener(events.prop.change, spy);
+      elem.updated(elem, { name: 'same', value: 'same' });
       expect(spy.callCount).to.equal(1);
     });
   });

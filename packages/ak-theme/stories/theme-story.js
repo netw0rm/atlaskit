@@ -4,7 +4,7 @@ import { define, vdom } from 'skatejs';
 import { style } from 'akutil-common';
 import React from 'react';
 import reactify from 'akutil-react';
-import Theme, { Prop, themeable } from '../src/index';
+import Theme, { Prop, themeable } from '../src';
 
 const ReactTheme = reactify(Theme);
 const ReactThemeProp = reactify(Prop);

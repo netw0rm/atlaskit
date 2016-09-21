@@ -11,6 +11,7 @@
     "pretest": "npm run gen-js"
   },
   "files": [
+    "dist",
     "glyph"
   ],
   "license": "SEE LICENSE IN LICENSE",

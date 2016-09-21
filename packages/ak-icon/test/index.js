@@ -3,6 +3,10 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
 
+// This is an anti-pattern and a special case here as we auto-generate the exports
+// and need to make sure that the single ones align to the bundled ones.
+// DO NOT COPY TO OTHER COMPONENTS!
+import bundle from '../dist/bundle';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -70,6 +74,10 @@ describe(name, () => {
           'question',
           'search',
         ]);
+    });
+
+    it('are properly defined in bundle', () => {
+      Object.keys(bundle).should.be.deep.equal(Object.keys(components));
     });
   });
 

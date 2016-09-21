@@ -1,5 +1,6 @@
 import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import AKTrigger from '../../src/index.tooltip-trigger';
+import React from 'react';
 
 /*
    This is a simple container element to show that we can bind a tooltip to an element in the

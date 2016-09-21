@@ -1,12 +1,17 @@
 # TagGroup
 
-![Example tag group](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tag-group/docs/animation.gif)
 
 This component displays an arbitrary number of [`ak-tag`](https://www.npmjs.com/package/ak-tag)s
 in a grouped manner.
 The group manages spacing and animation direction and allows for some alignment options.
 
-## Setup and install
+![Example tag group](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tag-group/docs/animation.gif)
+
+## Try it out
+
+Interact with a [live demo of the ak-tag-group component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tag-group/@VERSION@/).
+
+## Installation
 
 ```sh
 npm install ak-tag ak-tag-group # ak-tag-group has a peer dependency on ak-tag
@@ -63,6 +68,8 @@ document.body.appendChild(tagGroup);
 ```
 
 ### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```sh
 npm install ak-tag ak-tag-group skatejs-react-integration

@@ -67,23 +67,55 @@ describe('ak-navigation', () => {
     expect(called).to.equal(true);
   });
 
-  it('toggling works while attached', (done) => {
+  it('toggling does nothing by default while attached', (done) => {
     expect(component.open).to.equal(false);
     afterMutations(() => {
       keyup('[');
-      expect(component.open).to.equal(true);
+      expect(component.open).to.equal(false);
     }, done);
   });
 
-  it('toggling does not work after detached', (done) => {
-    afterMutations(
-      () => document.body.removeChild(component),
-      () => expect(component.open).to.equal(false),
-      () => keyup('['),
-      () => expect(component.open).to.equal(false),
-      () => document.body.appendChild(component),
-      done
-    );
+  it('changing the open state changes the width', () => {
+    component.open = true;
+    const originalWidth = component.width;
+    component.open = false;
+    expect(component.width).to.not.equal(originalWidth);
+  });
+
+  describe('width containerHidden set', () => {
+    beforeEach(() => {
+      component.containerHidden = true;
+    });
+    it('changing the open state does not change the width', () => {
+      component.open = true;
+      const originalWidth = component.width;
+      component.open = false;
+      expect(component.width).to.equal(originalWidth);
+    });
+  });
+
+  describe('with collapsible set', () => {
+    beforeEach(() => {
+      component.collapsible = true;
+    });
+    it('toggling works while attached', (done) => {
+      expect(component.open).to.equal(false);
+      afterMutations(() => {
+        keyup('[');
+        expect(component.open).to.equal(true);
+      }, done);
+    });
+
+    it('toggling does not work after detached', (done) => {
+      afterMutations(
+        () => document.body.removeChild(component),
+        () => expect(component.open).to.equal(false),
+        () => keyup('['),
+        () => expect(component.open).to.equal(false),
+        () => document.body.appendChild(component),
+        done
+      );
+    });
   });
 
   describe('sidebar link items', () => {

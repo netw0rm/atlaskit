@@ -36,7 +36,7 @@ describe('ak-text-field', () => {
       const expectedLabel = 'My new label';
       component.label = expectedLabel;
 
-      const label = shadowRoot.querySelector('label');
+      const label = shadowRoot.querySelector('label > div');
       const labelIsCorrect = () => (label.innerText === expectedLabel);
 
       return waitUntil(labelIsCorrect).should.be.fulfilled;
@@ -49,7 +49,7 @@ describe('ak-text-field', () => {
       input.addEventListener('focus', focusSpy);
 
       const labelText = 'My other label';
-      const label = shadowRoot.querySelector('label');
+      const label = shadowRoot.querySelector('label > div');
       component.label = labelText;
       const labelIsCorrect = () => (label.innerText === labelText);
 

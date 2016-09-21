@@ -26,8 +26,10 @@ export default define('ak-text-field', {
           onclick={handleLabelClick(elem)}
           className={shadowStyles.locals.label}
         >
-          {elem.label}
-          {elem.required && <span class={shadowStyles.locals.required}>*</span>}
+          <div className={shadowStyles.locals.labelText}>
+            {elem.label}
+            {elem.required && <span class={shadowStyles.locals.required}>*</span>}
+          </div>
           <slot className={shadowStyles.locals.defaultSlotElement} />
         </label>
       </div>

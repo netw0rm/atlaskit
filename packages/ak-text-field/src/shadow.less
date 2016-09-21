@@ -1,15 +1,39 @@
 @import 'shared-variables.less';
-@import 'shadow-variables.less';
+
+// Base grid
+@grid: 4;
+
+// Label margins
+@label-top-spacing: unit(@grid * 5, px);
+@label-bottom-spacing: unit(@grid * 3, px);
+
+// Input border width
+@input-border-width: 1;
+@focused-border-width: 2;
+
+// Input padding
+@input-vertical-padding: @grid * 3;
+@input-horizontal-padding: @grid * 2;
+
+// Transition speed
+@input-style-transition-duration: 0.2s;
+
+// Mixin to redistribute spacing between border and padding
+.borders-and-padding (@border, @x-spacing, @y-spacing) {
+  border-width: unit(@border, px);
+  padding: unit((@y-spacing - @border), px) unit((@x-spacing - @border), px);
+}
 
 // State definitions
-
 @baseInputStyle: {
+  .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-vertical-padding);
   background-color: @ak-color-N10A;
-  border: unit(@standard-border-width, px) solid @ak-color-N30A;
+  border-color: @ak-color-N30A;
+  border-style: solid;
   border-radius: 3px;
+  box-sizing: border-box;
   font-size: 14px;
-  margin-top: unit(@label-input-spacing, px);
-  padding: unit(@input-vertical-padding, px) unit(@input-horizontal-padding, px);
+  line-height: 1.42857142857143; // effectively 20px - @grid * 5
   transition: background-color @input-style-transition-duration ease-in-out,
               border-color @input-style-transition-duration ease-in-out;
   width: 100%;
@@ -21,30 +45,29 @@
 };
 
 @focusInputStyle: {
+  .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-vertical-padding);
   background-color: white;
-  border-width: unit(@focused-border-width, px);
   border-color: @ak-color-B100;
   outline: none;
-  padding: unit(@focused-input-vertical-padding, px) unit(@focused-input-horizontal-padding, px);
 };
 
 @disabledInputStyle: {
   background-color: @ak-color-N20A;
-  border-width: unit(@standard-border-width, px);
   border-color: @ak-color-N20A;
   color: @ak-color-N60;
   cursor: not-allowed;
 };
 
 // Label style
-
 .label {
   color: @ak-color-N200;
   display: block;
+}
+
+.label-text {
   font-size: 12px;
-  font-weight: 500;
-  max-width: unit(@grid * 124, px); // fits 8px grid
-  padding-top: unit(@label-top-spacing, px);
+  line-height: 1.33333333333333; // effectively 16px - @grid * 4
+  padding: @label-top-spacing 0 @label-bottom-spacing 0;
 
   .required {
     color: @ak-color-R400;
@@ -53,15 +76,9 @@
 }
 
 // Styles for native shadow DOM browsers
-
 ::slotted(input) {
   @baseInputStyle();
 }
-
-:host([compact]) ::slotted(input) {
-  padding: unit(@input-compact-vertical-padding, px) unit(@input-horizontal-padding, px);
-}
-
 ::slotted(input:hover) {
   @hoverInputStyle();
 }
@@ -87,8 +104,4 @@
   &[disabled] {
     @disabledInputStyle();
   }
-}
-
-.default-slot-element[compact] > input {
-  padding: unit(@input-compact-vertical-padding, px) unit(@input-horizontal-padding, px);
 }

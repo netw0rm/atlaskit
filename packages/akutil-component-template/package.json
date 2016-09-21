@@ -1,6 +1,6 @@
 {
   "name": "akutil-component-template",
-  "version": "3.18.0",
+  "version": "3.18.1",
   "description": "akutil-component-template webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

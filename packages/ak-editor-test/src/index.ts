@@ -7,6 +7,7 @@ export { default as chaiPlugin } from './chai';
 export { default as SyncPlugin } from './sync-plugin';
 export { default as makeEditor } from './make-editor';
 export { default as fixtures } from './fixtures';
+export { default as RewireSpy } from './rewire-spy';
 export {
   doc, p, blockquote, pre,
   h1, h2, h3, h4, h5, h6,

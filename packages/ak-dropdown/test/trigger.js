@@ -34,7 +34,6 @@ describe('ak-dropdown-trigger-button', () => {
       const clickSpy = sinon.spy();
       triggerContainer.appendChild(component);
       triggerContainer.addEventListener(triggerEvents.activated, clickSpy);
-
       setTimeout(() => getShadowRoot(component).firstChild.click());
       setTimeout(() => expect(clickSpy.called).to.equal(true));
       setTimeout(done);

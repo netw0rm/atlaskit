@@ -1,6 +1,6 @@
 {
   "name": "ak-icon",
-  "version": "1.16.0",
+  "version": "2.0.0",
   "description": "Icon web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -9,8 +9,7 @@
     "prepublish": "cd .. && npm run prepublish/single ak-icon"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",

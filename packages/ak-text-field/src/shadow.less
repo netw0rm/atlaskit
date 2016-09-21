@@ -1,3 +1,4 @@
+@import '~akutil-shared-styles/src/colors.less';
 @import 'shared-variables.less';
 
 // Base grid
@@ -11,31 +12,40 @@
 @input-border-width: 1;
 @focused-border-width: 2;
 
-// Input padding
-@input-vertical-padding: @grid * 3;
+// Input sizing
 @input-horizontal-padding: @grid * 2;
+@input-height: 40;  // Standard text fields are 40px high.
+@input-compact-height: 32;  // Compact text fields are 32px high.
+@input-inner-height: @grid * 5; // effectively 20px
+@input-font-size: 14;
+@input-line-height: @input-inner-height / @input-font-size;
 
 // Transition speed
 @input-style-transition-duration: 0.2s;
 
+// Label sizing
+@label-inner-height: @grid * 4; // effectively 16px
+@label-font-size: 12;
+@label-line-height: @label-inner-height / @label-font-size;
+
 // Mixin to redistribute spacing between border and padding
-.borders-and-padding (@border, @x-spacing, @y-spacing) {
+.borders-and-padding (@border, @x-spacing, @height) {
   border-width: unit(@border, px);
-  padding: unit((@y-spacing - @border), px) unit((@x-spacing - @border), px);
+  padding: unit((@height - (2 * @border) - @input-inner-height) / 2, px) unit((@x-spacing - @border), px);
 }
 
 // State definitions
 @baseInputStyle: {
-  .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-vertical-padding);
+  .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-height);
   background-color: @ak-color-N10A;
   border-color: @ak-color-N30A;
   border-style: solid;
   border-radius: 3px;
   box-sizing: border-box;
-  font-size: 14px;
-  line-height: 1.42857142857143; // effectively 20px - @grid * 5
+  font-size: unit(@input-font-size, px);
+  line-height: @input-line-height;
   transition: background-color @input-style-transition-duration ease-in-out,
-              border-color @input-style-transition-duration ease-in-out;
+  border-color @input-style-transition-duration ease-in-out;
   width: 100%;
 };
 
@@ -45,7 +55,7 @@
 };
 
 @focusInputStyle: {
-  .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-vertical-padding);
+  .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-height);
   background-color: white;
   border-color: @ak-color-B100;
   outline: none;
@@ -65,8 +75,8 @@
 }
 
 .label-text {
-  font-size: 12px;
-  line-height: 1.33333333333333; // effectively 16px - @grid * 4
+  font-size: unit(@label-font-size, px);
+  line-height: @label-line-height;
   padding: @label-top-spacing 0 @label-bottom-spacing 0;
 
   .required {
@@ -89,6 +99,15 @@
   @disabledInputStyle();
 }
 
+:host([compact]) {
+  ::slotted(input) {
+    .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-compact-height);
+  }
+  ::slotted(input:focus) {
+    .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-compact-height);
+  }
+}
+
 // Styles for polyfilled shadow DOM
 .default-slot-element > input {
   @baseInputStyle();
@@ -103,5 +122,13 @@
 
   &[disabled] {
     @disabledInputStyle();
+  }
+}
+
+.default-slot-element[compact] > input {
+  .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-compact-height);
+
+  &:hover {
+    .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-compact-height);
   }
 }

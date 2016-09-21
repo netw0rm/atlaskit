@@ -2,34 +2,22 @@ import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations } from 'akutil-common-test';
 import { symbols } from 'skatejs';
-import { fixtures } from 'ak-editor-test';
+import { fixtures, RewireSpy } from 'ak-editor-test';
+import sinonChai from 'sinon-chai';
 
+chai.use(sinonChai);
 const { expect } = chai;
-
-const RewireSpy = () => {
-  const resetAfter: any[] = [];
-
-  afterEach(() => resetAfter.map(({ module, name }) => module.__ResetDependency__(name)));
-
-  return (module: any, name: string) => {
-    const func = module.__GetDependency__(name);
-    const spy = sinon.spy(func);
-    module.__Rewire__(name, spy);
-    resetAfter.push({ module, name });
-    return spy;
-  }
-};
 
 describe('ak-editor-bitbucket', () => {
   const fixture = fixtures();
   const rewireSpy = RewireSpy();
 
   it('is possible to create a component', () => {
-    let component: any;
+    let editor: any;
     expect(() => {
-      component = new AkEditorBitbucket();
+      editor = new AkEditorBitbucket();
     }).not.to.throw(Error);
-    expect(component.tagName).to.match(/^ak-editor-bitbucket/i);
+    expect(editor.tagName).to.match(/^ak-editor-bitbucket/i);
   });
 
   it('does not be ready when instantiated outside the DOM', () => {
@@ -37,9 +25,48 @@ describe('ak-editor-bitbucket', () => {
     expect(editor.ready).to.be.false;
   });
 
-  it('does not be expanded by default', () => {
+  it('is not expanded by default', () => {
     const editor = new AkEditorBitbucket();
     expect(editor.expanded).to.be.false;
+  });
+
+  it('should not initialise ProseMirror by default', (done) => {
+    const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
+    const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
+
+    afterMutations(
+      () => {
+        expect(spy).to.have.not.been.called;
+      },
+      done
+    );
+  });
+
+  it('should initialise ProseMirror when expanded', (done) => {
+    const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
+    const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
+
+    afterMutations(
+      () => { editor.expanded = true; },
+      () => {
+        expect(spy).to.have.been.callCount(1);
+      },
+      done
+    );
+  });
+
+  it('should destroy ProseMirror when collapsed', (done) => {
+    const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
+    const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
+
+    afterMutations(
+      () => { editor.expanded = true; },
+      () => { editor.expanded = false; },
+      () => {
+        expect(spy).to.have.been.callCount(1);
+      },
+      done
+    );
   });
 
   describe('.value', () => {
@@ -60,9 +87,6 @@ describe('ak-editor-bitbucket', () => {
       const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
 
       editor.defaultValue = content;
-
-      // TODO: Delete this after merging a different PR.
-      editor._justToggledExpansion = true;
 
       afterMutations(
         () => { editor.expanded = true; },

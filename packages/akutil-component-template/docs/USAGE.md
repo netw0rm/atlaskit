@@ -4,9 +4,9 @@ This is a template for AtlasKit components. Update this file with usage instruct
 
 ##Try it out
 
-Go to [the akutil-component-template Storybook](https://aui-cdn.atlassian.com/atlaskit/stories/akutil-component-template/@VERSION@/) to try for yourself.
+Interact with a [live demo of the akutil-component-template component](https://aui-cdn.atlassian.com/atlaskit/stories/akutil-component-template/@VERSION@/).
 
-## Setting up and installing
+## Installation
 
 ```sh
 npm install akutil-component-template

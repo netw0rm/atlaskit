@@ -99,27 +99,15 @@ describe('ak-navigation', () => {
     expect(called).to.equal(true);
   });
 
-  it(`fires an "${navigationCloseEvent}" event when closing`, () => {
-    component.open = true;
-    let called = false;
-    component.addEventListener(navigationCloseEvent, () => {
-      called = true;
-    });
-    component.open = false;
-    expect(called).to.equal(true);
-  });
-
-  it('fires an "${navigationCloseEvent}" event when closing', () => {
+  it(`fires an "${navigationCloseEvent}" event when closing`, (done) => {
     component.open = true;
     const originalWidth = component.width;
-    let called = false;
     component.addEventListener(widthChangedEvent, (e) => {
       expect(e.detail.oldWidth).to.equal(originalWidth);
       expect(e.detail.newWidth).to.equal(component.width);
-      called = true;
+      done();
     });
     component.open = false;
-    expect(called).to.equal(true);
   });
 
   it('toggling does nothing by default while attached', (done) => {

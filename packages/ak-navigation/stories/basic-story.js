@@ -84,7 +84,7 @@ const NavigationLinks = () => <div>
 
 const GlobalProfile = () => <ak-dropdown position="right bottom" slot="global-profile">
   <ak-dropdown-trigger slot="trigger">
-    <ak-avatar src={userAvatar} />
+    <ak-avatar size="small" src={userAvatar} />
   </ak-dropdown-trigger>
   <ak-dropdown-item>Online help</ak-dropdown-item>
   <ak-dropdown-item>Learn git</ak-dropdown-item>

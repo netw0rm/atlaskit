@@ -22,7 +22,7 @@ const maxWidth = 20;
 const maxHeight = 20;
 
 const rootFolder = path.join(__dirname, '..');
-const srcFolder = path.join(rootFolder, 'src');
+const srcFolder = path.join(rootFolder, 'src', 'icons');
 const tmpFolder = path.join(rootFolder, 'tmp');
 const destFolder = path.join(rootFolder, 'glyph');
 

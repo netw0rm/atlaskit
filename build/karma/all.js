@@ -1,26 +1,14 @@
-const fs = require('fs');
-const glob = require('glob');
+const path = require('path');
 const karmaConf = require('./base.js');
 
-const base = 'packages/*/test';
-const files = `${base}/**/!(_)*.+(js|ts)`;
-const tmp = 'browserstack-entry.js';
+
+const file = path.join(__dirname, 'all.entry.js');
 
 module.exports = (config) => {
-  const content = glob
-    .sync(files, {
-      cwd: process.cwd(),
-      realpath: true,
-    })
-    .map((jsFile) => `import '${jsFile}';`)
-    .join('\n');
-
-  fs.writeFileSync(tmp, content);
-
   Object.assign(config, {
-    files: [tmp],
+    files: [file],
     preprocessors: {
-      [tmp]: ['webpack', 'sourcemap'],
+      [file]: ['webpack', 'sourcemap'],
     },
   });
   karmaConf(config);

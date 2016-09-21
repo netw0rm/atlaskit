@@ -10,10 +10,10 @@ Although the `ak-tag` component can be used by itself, it works best in conjunct
 
 ## Try it out
 
-Go to [the ak-tag Storybook](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tag/@VERSION@/) to try for yourself.
+Interact with a [live demo of the ak-tag component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tag/@VERSION@/).
 
 
-## Setting up and installing
+## Installation
 
 ```sh
 npm install ak-tag

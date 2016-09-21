@@ -24,7 +24,7 @@ const DEFAULT_STATE: ListsState = {
 };
 
 function canChangeToList(pm: ProseMirror, listsTypes: ListType[]): boolean {
-  return listsTypes.some((type) => commands.setBlockType(pm.schema.nodes[type as string])(pm, false));
+  return listsTypes.some((type) => commands.wrapInList(pm.schema.nodes[type as string])(pm, false));
 }
 
 function isNodeListable(proseMirrorInstance: ProseMirror, node: Node): boolean {
@@ -97,7 +97,7 @@ export default new Plugin(class ListsPlugin {
     const rootNode: Node = $from.node(1);
     const isList: boolean = this.listTypes.indexOf(rootNode.type.name) !== -1;
     const isListable = activeNode ? isNodeListable(pm, activeNode) : oldState.enabled;
-    const canChange = canChangeToList(pm, this.listTypes) || isList;
+    const canChange = canChangeToList(pm, this.listTypes);
 
     if (isList && activeNode) {
       this.setState({

@@ -1,5 +1,5 @@
 import ListsPlugin from '../src';
-import { chaiPlugin, makeEditor, doc, p, text, ol, ul, li } from 'ak-editor-test';
+import { chaiPlugin, makeEditor, doc, p, text, ol, ul, li, h1 } from 'ak-editor-test';
 import * as chai from 'chai';
 const { expect } = chai;
 import sinonChai from 'sinon-chai';
@@ -126,6 +126,21 @@ describe('ak-editor-plugin-lists', () => {
         active: true,
         enabled: true,
         type: "ordered_list"
+      });
+    });
+
+    it('should allow toggling between ordered and bullet list', () => {
+      const { pm, plugin } = editor(doc(h1('te{pos}xt')));
+      const { pos } = pm.doc.refs;
+
+      pm.setTextSelection(pos);
+
+      const state = plugin.getState();
+
+      expect(state).to.eql({
+        active: false,
+        enabled: false,
+        type: null
       });
     });
   });

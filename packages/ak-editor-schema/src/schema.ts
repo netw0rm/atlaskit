@@ -1,5 +1,5 @@
 import {
-  Block, Text, Doc, BlockQuote, OrderedList, BulletList, Schema,
+  Text, Doc, BlockQuote, OrderedList, BulletList, Schema,
   ListItem, HorizontalRule, Heading, Paragraph, Image, HardBreak, EmMark,
   StrongMark, LinkMark, CodeMark,
 } from 'ak-editor-prosemirror';

@@ -18,7 +18,8 @@
     "ak-editor-prosemirror": "^2.0.0"
   },
   "devDependencies": {
-    "ak-editor-test": "^2.0.0"
+    "ak-editor-test": "^2.0.0",
+    "highlight.js": "^9.6.0"
   },
   "repository": {
     "type": "git",

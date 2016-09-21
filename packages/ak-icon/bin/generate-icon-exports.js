@@ -34,16 +34,19 @@ async.waterfall([
   },
   function cleanOutputDir(cb) {
     log.debug('cleaning destination directory');
+
     rimraf(destFolder, cb);
   },
   function findIconFiles(cb) {
     log.debug('Finding SVG files to transform');
+
     glob(`**/*${fileEnding}`, {
       cwd: srcFolder,
     }, cb);
   },
   function workOnIcons(iconPaths, finishIconWork) {
     log.debug('starting work on icons');
+
     const svgo = new SVGO({
       multipass: true,
       plugins: [
@@ -69,10 +72,12 @@ async.waterfall([
         function readSvg(cb) {
           const file = path.join(srcFolder, iconRelativePathToSrc);
           log.debug(`"${iconRelativePathToSrc}": reading file`);
+
           fs.readFile(file, 'utf8', cb);
         },
         function optimizeSvg(data, cb) {
           log.debug(`"${iconRelativePathToSrc}": optimizing SVG`);
+
           svgo.optimize(data, (result) => {
             if (result.info.width > maxWidth) {
               log.warn(`"${iconRelativePathToSrc}": too wide: ${result.info.width} > ${maxWidth}`);
@@ -86,9 +91,8 @@ ${result.info.height} > ${maxHeight}`);
         },
         function generateExport({ data: svgData }, cb) {
           log.debug(`"${iconRelativePathToSrc}": generating export`);
-          const iconRelativePathDashed = iconRelativePathToSrcNoExt
-            .replace(new RegExp(path.sep, 'g'), '-');
 
+          const iconRelativePathDashed = iconRelativePathToSrcNoExt.split(path.sep).join('-');
           const template =
 `import { define, vdom } from 'skatejs';
 
@@ -110,8 +114,9 @@ export default define('${name}-${iconRelativePathDashed}', {
           cb(null, template);
         },
         function createDirs(contents, cb) {
-          const targetFile = path.join(tmpFolder, `${iconRelativePathToSrcNoExt}.js`);
           log.debug(`"${iconRelativePathToSrc}": creating intermediate directories`);
+
+          const targetFile = path.join(tmpFolder, `${iconRelativePathToSrcNoExt}.js`);
           mkdirp(path.dirname(targetFile), (err) => cb(err, {
             targetFile,
             contents,
@@ -119,10 +124,12 @@ export default define('${name}-${iconRelativePathDashed}', {
         },
         function writeFile({ contents, targetFile }, cb) {
           log.debug(`"${iconRelativePathToSrc}": writing generated code to memory`);
+
           fs.writeFile(targetFile, contents, cb);
         },
         function done(cb) {
           log.info(`"${iconRelativePathToSrc}" transformed successfully`);
+
           cb();
         },
       ], callback);
@@ -131,6 +138,7 @@ export default define('${name}-${iconRelativePathDashed}', {
 
   function webpackify(iconPaths, cb) {
     log.info('Tranforming icons via webpack');
+
     const entry = iconPaths.reduce((prev, svgFile) => {
       const base = svgFile.replace(/\.svg$/, '');
       prev[base] = path.join(tmpFolder, base);

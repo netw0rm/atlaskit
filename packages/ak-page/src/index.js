@@ -3,7 +3,15 @@ import { prop, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import Navigation, { events as navigationEvents } from 'ak-navigation';
-const { open: navigationOpenEvent, close: navigationCloseEvent } = navigationEvents;
+const {
+  widthChanged: widthChangedEvent,
+} = navigationEvents;
+
+function handleWidthChanged(e, elem) {
+  if (e.target instanceof Navigation) {
+    elem.navigationWidth = e.detail.width;
+  }
+}
 
 export default define('ak-page', {
   render(elem) {
@@ -20,6 +28,11 @@ export default define('ak-page', {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
+        <style>{`
+            .${shadowStyles.locals.main} {
+              margin-left: ${elem.navigationWidth + 20}px;
+            }
+          `}</style>
         <div className={shadowStyles.locals.navigation}>
           <slot name="navigation" />
         </div>
@@ -32,20 +45,12 @@ export default define('ak-page', {
     );
   },
   props: {
-    navigationOpen: prop.boolean({
+    navigationWidth: prop.number({
       attribute: true,
+      default: 280,
     }),
   },
   created(elem) {
-    elem.addEventListener(navigationOpenEvent, (e) => {
-      if (e.target instanceof Navigation) {
-        elem.navigationOpen = true;
-      }
-    });
-    elem.addEventListener(navigationCloseEvent, (e) => {
-      if (e.target instanceof Navigation) {
-        elem.navigationOpen = false;
-      }
-    });
+    elem.addEventListener(widthChangedEvent, (e) => handleWidthChanged(e, elem));
   },
 });

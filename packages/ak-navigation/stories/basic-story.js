@@ -40,6 +40,7 @@ const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-
       onClose={action('close')}
       onOpen={action('open')}
       open={this.state && this.state.open}
+      collapsible
     >
       {this.props.children}
     </AkNavigation>);
@@ -53,6 +54,7 @@ const sharedProps = {
   containerHref: 'http://example.com',
   containerLogo,
   productHref: 'http://atlassian.design',
+  collapsible: true,
 };
 
 const NavigationLinks = () => <div>
@@ -170,10 +172,14 @@ storiesOf(name, module)
     </AkPage>
   ))
   .add('ak-navigation with a long container name', () => (
-    <AkNavigation open containerName="Antidisestablishmentterianism" />
+    <AkNavigation collapsible open containerName="Antidisestablishmentterianism" />
   ))
   .add('ak-navigation with a container name that spans two lines', () => (
-    <AkNavigation open containerName="Super duper cloud purchasing experience platform team" />
+    <AkNavigation
+      collapsible
+      open
+      containerName="Super duper cloud purchasing experience platform team"
+    />
   ))
   .add('ak-navigation with no container logo', () => (
     <AkPage navigationOpen>
@@ -207,6 +213,7 @@ storiesOf(name, module)
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
+        collapsible
         open
       >
         <ak-icon slot="global-home" glyph="bitbucket" />
@@ -233,6 +240,25 @@ storiesOf(name, module)
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
+        collapsible
+        {...sharedProps}
+      >
+        <ak-icon slot="global-home" glyph="jira" />
+        <ak-icon slot="global-search" glyph="search" />
+        <ak-icon slot="global-create" glyph="create" />
+        <NavigationLinks />
+      </AkNavigation>
+      <div>
+        <Lorem count="30" />
+      </div>
+    </AkPage>
+  ))
+  .add('ak-navigation with a hidden container', () => (
+    <AkPage>
+      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
+      <AkNavigation
+        slot="navigation"
+        containerHidden
         {...sharedProps}
       >
         <ak-icon slot="global-home" glyph="jira" />
@@ -252,6 +278,7 @@ storiesOf(name, module)
         slot="navigation"
         containerLogo={userAvatar}
         containerName="Your profile"
+        collapsible
       >
         <NavigationLinks />
       </AkNavigation>

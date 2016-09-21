@@ -6,7 +6,14 @@ import 'ak-blanket';
 import './ak-navigation-drawer';
 import './ak-navigation-link';
 import classNames from 'classnames';
-import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
+import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './internal/touch';
+import {
+  getContainerPadding,
+  getNavigationWidth,
+  getNavigationXOffset,
+  getExpandedWidth,
+  getCollapsedWidth,
+} from './internal/collapse';
 import keycode from 'keycode';
 import 'custom-event-polyfill';
 import * as events from './internal/events';
@@ -16,30 +23,11 @@ const {
   searchDrawerOpen: searchDrawerOpenEvent,
   close: closeEvent,
   open: openEvent,
-  openStateChanged: openStateChangedEvent,
+  widthChanged: widthChangedEvent,
 } = events;
 
 const shouldAnimateThreshold = 100; // ms
-const globalCollapsedWidth = 60; // px this is duplicated in shared-variables.less
-const containerCollapsedWidth = 60; // px this is duplicated in shared-variables.less
-const expandedWidth = 280; // px this is duplicated in shared-variables.less
 
-const intermediateWidth = globalCollapsedWidth + containerCollapsedWidth;
-const collapsedWidth = globalCollapsedWidth;
-
-
-const containerPaddingExpanded = 20; // px this is duplicated in shared-variables.less
-const containerPaddingCollapsed = 10;
-// start collapsing the padding 16px out
-const containerPaddingCollapseStart = intermediateWidth + 16;
-
-function getContainerPadding(width) {
-  const paddingDelta = containerPaddingExpanded - containerPaddingCollapsed;
-  const gradient = paddingDelta / (containerPaddingCollapseStart - intermediateWidth);
-  const padding = gradient * width + (paddingDelta - gradient * intermediateWidth);
-
-  return Math.min(containerPaddingExpanded, Math.max(containerPaddingCollapsed, padding));
-}
 // TODO: keyboard interaction
 const openSearchDrawer = el => el.addEventListener('click', () => {
   emit(el, searchDrawerOpenEvent);
@@ -55,6 +43,14 @@ function closeAllDrawers(elem) {
 
 function isDrawerOpen(elem) {
   return elem.createDrawerOpen || elem.searchDrawerOpen;
+}
+
+function emitWidthChagnedEvent(elem, width) {
+  emit(elem, widthChangedEvent, {
+    detail: {
+      width,
+    },
+  });
 }
 
 export default define('ak-navigation', {
@@ -76,8 +72,8 @@ export default define('ak-navigation', {
         >
           <style>{`
             .${shadowStyles.locals.navigation} {
-              width: ${Math.max(elem.width, intermediateWidth)}px;
-              transform: translateX(${Math.min(elem.width - intermediateWidth, 0)}px);
+              width: ${getNavigationWidth(elem)}px;
+              transform: translateX(${getNavigationXOffset(elem)}px);
             }
 
             .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
@@ -115,7 +111,11 @@ export default define('ak-navigation', {
             <slot name="global-create-drawer" />
           </ak-navigation-drawer>
 
-          <div className={shadowStyles.locals.container}>
+          <div
+            className={classNames(shadowStyles.locals.container, {
+              [shadowStyles.locals.containerHidden]: elem.containerHidden,
+            })}
+          >
             {elem.containerName ? <div className={shadowStyles.locals.containerName}>
               <a href={elem.containerHref}>
                 <img
@@ -138,10 +138,13 @@ export default define('ak-navigation', {
     /** TODO: make these private, see https://github.com/skatejs/skatejs/issues/687 **/
     shouldAnimate: prop.boolean(),
     width: prop.number({
-      default: collapsedWidth,
+      default: (elem) => getCollapsedWidth(elem),
     }),
     toggleHandler: {
       default: (elem) => function toggleHandler(event) {
+        if (!elem.collapsible) {
+          return;
+        }
         if (event.keyCode === keycode('[')) {
           elem.open = !elem.open;
         }
@@ -158,9 +161,12 @@ export default define('ak-navigation', {
         }
         elem.createDrawerOpen = elem.open && elem.createDrawerOpen;
         elem.searchDrawerOpen = elem.open && elem.searchDrawerOpen;
-        elem.width = elem.open ? expandedWidth : collapsedWidth;
+        const newWidth = elem.open ? getExpandedWidth(elem) : getCollapsedWidth(elem);
+        if (elem.width !== elem.newWidth) {
+          emitWidthChagnedEvent(elem, newWidth);
+        }
+        elem.width = newWidth;
       },
-      event: openStateChangedEvent,
     }),
     containerName: prop.string({
       attribute: true,
@@ -175,6 +181,12 @@ export default define('ak-navigation', {
       attribute: true,
     }),
     productHref: prop.string({
+      attribute: true,
+    }),
+    containerHidden: prop.boolean({
+      attribute: true,
+    }),
+    collapsible: prop.boolean({
       attribute: true,
     }),
     searchDrawerOpen: prop.boolean({
@@ -197,6 +209,7 @@ export default define('ak-navigation', {
       elem.shouldAnimate = true;
     }, shouldAnimateThreshold);
     document.addEventListener('keyup', elem.toggleHandler);
+    emitWidthChagnedEvent(elem, elem.width);
   },
   detached(elem) {
     document.removeEventListener('keyup', elem.toggleHandler);

@@ -360,9 +360,12 @@ class AkEditorBitbucket extends Component {
     schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
     schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
 
+    const div = document.createElement('div');
+    div.innerHTML = this.defaultValue;
+
     const pm = new ProseMirror({
       place: this._wrapper,
-      schema,
+      doc: schema.parseDOM(div),
       plugins: [
         MarkdownInputRulesPlugin,
         HyperlinkPlugin,

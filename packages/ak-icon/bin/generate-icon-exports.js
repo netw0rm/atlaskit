@@ -137,7 +137,7 @@ export default define('${name}-${iconRelativePathDashed}', {
   },
 
   function webpackify(iconPaths, cb) {
-    log.info('Tranforming icons via webpack');
+    log.info('Transforming icons via webpack');
 
     const entry = iconPaths.reduce((prev, svgFile) => {
       const base = svgFile.replace(/\.svg$/, '');

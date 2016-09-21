@@ -9,8 +9,7 @@
     "prepublish": "cd .. && npm run prepublish/single ak-icon"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",

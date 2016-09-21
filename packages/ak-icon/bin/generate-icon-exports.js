@@ -27,6 +27,11 @@ const tmpFolder = path.join(rootFolder, 'tmp');
 const destFolder = path.join(rootFolder, 'glyph');
 
 async.waterfall([
+  function cleanTmpDir(cb) {
+    log.debug('cleaning temp directory');
+
+    rimraf(tmpFolder, cb);
+  },
   function cleanOutputDir(cb) {
     log.debug('cleaning destination directory');
     rimraf(destFolder, cb);

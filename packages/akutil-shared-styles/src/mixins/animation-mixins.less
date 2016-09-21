@@ -1,9 +1,19 @@
 @import './common-mixins';
+// This file contains only private mixins used in the animation mixins and are not for public
+// consumption.
 
-// This is an internal mixin that is used to create the content inside each keyframe
-// @param @values is the list of 4-tuples passed into the generated animation mixin
+
+// This is an private mixin (should not ever need to be called by a consumer directly)
+//  that is used to create the content inside each keyframe.
+// @param @values is either a 4-tuple of animation properties OR a LIST of 4-tuples.
+//        The 4-tuples are in the form: [PropName], [PropString], [StartValue], [EndValue]
+//        Where PropName is the name of a CSS property (i.e 'transform')
+//              PropString is a string used to create the value of a prop containing an 'XX'
+//                         somewhere in it to be replaced with a value (i.e 'translate(XXpx)')
+//              StartValue is the first value that will be passed into the PropString (i.e '0')
+//              EndValue is the last value that will be passed into the PropString (i.e 200)
 // @param @mod is a value showing how close to the end value a property is
-//   (i.e 0 is the start, 1 is the end, 0.5 is half way, 1.2 would be 20% overshoot, etc)
+//             (i.e 0 is the start, 1 is the end, 0.5 is half way, 1.2 would be 20% overshoot, etc)
 .calculateKeyframe(@values, @mod) {
   & when (length(@values) = 4) and (length(extract(@values, 1)) = 1){
     .calcProp(@values,  @mod);
@@ -16,7 +26,7 @@
   }
 }
 
-// mixin for calculating one prop value into one prop of a keyframe
+// private mixin for calculating one prop value into one prop of a keyframe.
 // i.e @propVals = 'transform', 'translateY(XXpx)', 0, -200;
 //     @mod = 0.5;
 //     output: transform: translateY(-100px);
@@ -32,8 +42,8 @@
   @{propName}: e(@newStr);
 }
 
-// mixin for calculating multiple keyframe prop values at once.
-// just calls .calcProp in a loop
+// private mixin for calculating multiple keyframe prop values at once.
+// just calls .calcProp() in a loop
 .calcMultipleProps(@props, @mod) {
   .for(@props); .-each(@value) {
     .calcProp(@value, @mod);

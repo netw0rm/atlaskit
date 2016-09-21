@@ -10,60 +10,60 @@
   text-decoration: none;
 
   &:not(.disabled) {
-    color: @ak-dropdown-font-main;
+    color: @ak-dropdown-font-main-color;
     cursor: pointer;
 
     &:hover {
-      background-color: @ak-dropdown-background-hover;
+      background-color: @ak-dropdown-background-hover-color;
     }
 
     &:active {
-      background-color: @ak-dropdown-background-active;
-      color: @ak-dropdown-font-active;
+      background-color: @ak-dropdown-background-active-color;
+      color: @ak-dropdown-font-active-color;
 
       ak-icon,
       .ak-icon {
-        color: @ak-dropdown-icon;
+        color: @ak-dropdown-icon-color;
       }
 
       &.selected,
       &.selectedWithIcon {
         ak-icon,
         .ak-icon {
-          color: @ak-dropdown-icon;
+          color: @ak-dropdown-icon-color;
         }
       }
     }
 
     ak-icon,
     .ak-icon {
-      color: @ak-dropdown-icon;
+      color: @ak-dropdown-icon-color;
     }
 
     &.selected,
     &.selectedWithIcon {
       ak-icon,
       .ak-icon {
-        color: @ak-dropdown-icon-reverse;
+        color: @ak-dropdown-icon-reverse-color;
       }
     }
   }
 
   &:focus {
-    box-shadow: 0 0 0 2px @ak-dropdown-focused-outline;
+    box-shadow: 0 0 0 2px @ak-dropdown-focused-outline-color;
     outline: none;
-    position: relative; //making shadow on top of others, can't remove it because :hover has bgcolor
+    position: relative; // prevents bgcolor from obfuscating focus ring of focused elements
   }
 }
 
 .selected {
-  background-color: @ak-dropdown-background-selected;
-  color: @ak-dropdown-font-main;
+  background-color: @ak-dropdown-background-selected-color;
+  color: @ak-dropdown-font-main-color;
 }
 
 .disabled {
-  background-color: @ak-dropdown-background-disabled;
-  color: @ak-dropdown-font-disabled;
+  background-color: @ak-dropdown-background-disabled-color;
+  color: @ak-dropdown-font-disabled-color;
   cursor: not-allowed;
 }
 

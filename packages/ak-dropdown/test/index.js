@@ -259,16 +259,16 @@ describe('ak-dropdown', () => {
     let group1;
     let group2;
     let groups;
-    const html = `<ak-dropdown-grop>
+    const html = `<ak-dropdown-group>
                     <ak-dropdown-item radio>first</ak-dropdown-item>
                     <ak-dropdown-item radio>second</ak-dropdown-item>
                     <ak-dropdown-item radio>third</ak-dropdown-item>
-                  </ak-dropdown-grop>
-                  <ak-dropdown-grop>
+                  </ak-dropdown-group>
+                  <ak-dropdown-group>
                     <ak-dropdown-item radio>first</ak-dropdown-item>
                     <ak-dropdown-item radio>second</ak-dropdown-item>
                     <ak-dropdown-item radio>third</ak-dropdown-item>
-                  </ak-dropdown-grop>`;
+                  </ak-dropdown-group>`;
     beforeEach(() => setupComponentExample(html).then(newComponent => {
       component = newComponent;
       props(component, { open: true });

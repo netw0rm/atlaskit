@@ -3,7 +3,7 @@
   This is useful when we want to integrate with legacy systems,
   where features were built with the assumption only form elements like input / textarea
   are used to capture user input.
-  Example use case - for mentions and emoticons in Bibucket we use a facade input so autocomplete popups works.
+  Example use case - for mentions and emoticons in Bitbucket we use a facade input so autocomplete popups works.
 */
 
 type syncer = (val: string, willRemove: boolean) => void;
@@ -22,8 +22,8 @@ export default class FacadeInput {
   private classList: string[];
   private prevValue: string;
   private shouldRemove: boolean;
-  private syncInterval: number
-  private syncFunc: syncer
+  private syncInterval: number;
+  private syncFuncs: syncer[];
 
   constructor(target: HTMLElement, options: facadeOptions) {
     this.facade = document.createElement("input");
@@ -35,6 +35,7 @@ export default class FacadeInput {
 
     this.shouldRemove = false;
     this.removed = false;
+    this.syncFuncs = [];
 
     this.attachToDOM();
   }
@@ -44,10 +45,12 @@ export default class FacadeInput {
   }
 
   set onSync(func: syncer) {
-    this.syncFunc = func;
+    this.syncFuncs.push(func);
 
-    // start syncing
-    this.syncInterval = window.setInterval(this.sync.bind(this), 50);
+    // start syncing when the first event handler is attached
+    if (this.syncFuncs.length === 1) {
+      this.syncInterval = window.setInterval(this.sync.bind(this), 50);
+    }
   }
 
   private attachToDOM() {
@@ -99,6 +102,12 @@ export default class FacadeInput {
     this.removed = true;
   }
 
+  private callSyncFuncs(value: string, willRemove: boolean) {
+    this.syncFuncs.forEach((syncFunc: syncer) => {
+      syncFunc(value, willRemove);
+    });
+  }
+
   private sync() {
     // If the target element is no longer in the DOM,
     // remove the facade.
@@ -113,7 +122,7 @@ export default class FacadeInput {
     const curValue = this.facade.value;
     if (curValue === this.prevValue) {
       if (this.shouldRemove) {
-        this.syncFunc(curValue, this.shouldRemove);
+        this.callSyncFuncs(curValue, this.shouldRemove);
         return this.remove();
       }
       return;
@@ -123,7 +132,7 @@ export default class FacadeInput {
     const val = this.shouldRemove ? curValue.trim() : curValue;
 
     this.target.innerText = val;
-    this.syncFunc(val, this.shouldRemove);
+    this.callSyncFuncs(curValue, this.shouldRemove);
     this.prevValue = val;
 
     if (this.shouldRemove) {

@@ -70,12 +70,14 @@ export default class FacadeInput {
       el.style[style as any] = computedStyles.getPropertyValue(style);
     }
 
+    const fontSize: number = parseInt(computedStyles['font-size'], 10);
+
     // set positioning
     const rect = target.getBoundingClientRect();
     el.style.top = (window.scrollY + rect.top) + "px";
     el.style.left = (window.scrollX + rect.left) + "px";
     el.style.height = rect.height + "px";
-    el.style.width = (rect.width + 100) + "px";
+    el.style.width = (rect.width + fontSize * 10) + "px"; // give leeway to add around 10 characters at current font size
     el.style.position = "absolute";
     el.style.zIndex = "1500"; // FIXME: Treating this as a stalker element (https://extranet.atlassian.com/display/FED/2011/02/11/Possible+solution+to+z-index+insanity)
 

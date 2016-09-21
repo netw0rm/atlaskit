@@ -53,11 +53,25 @@ const component = new BitbucketLogo();
 document.body.appendChild(component);
 ```
 
+## Controlling the icon color
+
+The fill color of an icon can be controlled via CSS:
+
+```html
+<span style="color: red;">
+  <ak-icon-home></ak-icon-home>
+</span>
+```
+
 ### This package also provides all icons bundled in one export via:
+
+#### bundle.js
 
 ```js
 import 'ak-icon';
 ```
+
+#### index.html
 
 ```html
 <!-- ... -->

@@ -4,6 +4,7 @@ import AnimationDemo from './AnimationDemo';
 import React from 'react'; // eslint-disable-line no-unused-vars
 import reactify from 'akutil-react';
 import { name } from '../package.json';
+import styles from 'style!./styles.less';
 
 const req = require.context('../glyph', true, /^.*\.js/);
 const reactifiedComponents = req.keys().reduce((prev, file) => {
@@ -15,6 +16,16 @@ const reactifiedComponents = req.keys().reduce((prev, file) => {
 
 storiesOf('ak-icon', module)
   .add('All icons', () => (
+    <div className={styles.iconContainer}>
+      {Object.entries(reactifiedComponents).map(([key, Icon]) => <Icon key={key} />)}
+    </div>
+  ))
+  .add('All icons (colored)', () => (
+    <div className={styles.coloredIconContainer}>
+      {Object.entries(reactifiedComponents).map(([key, Icon]) => <Icon key={key} />)}
+    </div>
+  ))
+  .add('All icons (usage)', () => (
     <table>
       <thead>
         <tr>

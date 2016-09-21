@@ -1,5 +1,6 @@
 import { name } from '../package.json';
 import { keyup, afterMutations, getShadowRoot, waitUntil } from 'akutil-common-test';
+import { Component } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkNavigation, { events as navigationEvents } from '../src';
@@ -25,6 +26,24 @@ function setupComponent() {
 function tearDownComponent(component) {
   document.body.removeChild(component);
 }
+describe('exports', () => {
+  it('should export a base component', () => {
+    (new AkNavigation).should.be.an.instanceof(Component);
+  });
+
+  it('should have an events export with defined events', () => {
+    navigationEvents.should.be.defined;
+    Object.keys(navigationEvents).should.be.deep.equal([
+      'linkSelected',
+      'createDrawerOpen',
+      'searchDrawerOpen',
+      'open',
+      'close',
+      'widthChanged',
+      'openStateChanged',
+    ]);
+  });
+});
 describe('ak-navigation detached', () => {
   it('toggling does not work before attached', (done) => {
     const component = new AkNavigation();

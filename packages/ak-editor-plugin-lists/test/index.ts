@@ -115,11 +115,7 @@ describe('ak-editor-plugin-lists', () => {
     });
 
     it('should allow toggling between ordered and bullet list', () => {
-      const { pm, plugin } = editor(doc(ol(li(p('te{pos}xt')))));
-      const { pos } = pm.doc.refs;
-
-      pm.setTextSelection(pos);
-
+      const { pm, plugin } = editor(doc(ol(li(p('te{<>}xt')))));
       const state = plugin.getState();
 
       expect(state).to.eql({
@@ -130,11 +126,7 @@ describe('ak-editor-plugin-lists', () => {
     });
 
     it('should allow toggling between ordered and bullet list', () => {
-      const { pm, plugin } = editor(doc(h1('te{pos}xt')));
-      const { pos } = pm.doc.refs;
-
-      pm.setTextSelection(pos);
-
+      const { pm, plugin } = editor(doc(h1('te{<>}xt')));
       const state = plugin.getState();
 
       expect(state).to.eql({

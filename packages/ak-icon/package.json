@@ -6,8 +6,8 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "gen-js": "node ./bin/generate-icon-exports.js && cd ../.. && npm run prepublish/single ak-icon",
-    "prepublish": "npm run gen-js",
+    "gen-js": "node ./bin/generate-icon-exports.js",
+    "prepublish": "npm run gen-js && cd .. && npm run prepublish/single ak-icon",
     "pretest": "npm run gen-js"
   },
   "files": [

@@ -1,33 +1,54 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
-import { props, emit, Component } from 'skatejs';
+
+import { props, emit, Component, define, vdom } from 'skatejs';
 import { name } from '../package.json';
 import { afterMutations, getShadowRoot, checkVisibility, waitUntil } from 'akutil-common-test';
-import { selected as selectedEvent } from '../src/internal/events';
+import { selected as selectedEvent, afterOpen } from '../src/internal/events';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-function setupComponent(content) {
-  const html = content || `<ak-dropdown-item>124</ak-dropdown-item>
-    <ak-dropdown-item>444</ak-dropdown-item>`;
+const TriggerTest = define('trigger-test', {
+  props: {
+    opened: { attribute: true, default: false },
+  },
+  render() {
+    vdom.element('div', () => (vdom.text('test')));
+  },
+});
 
+function initComponent(setup) {
   const component = new Dropdown();
-  component.innerHTML = `
-    <ak-dropdown-trigger-button slot="trigger">test</ak-dropdown-trigger-button>
-    ${html}
-  `;
+  setup(component);
+
   const componentHasShadowRoot = () => !!getShadowRoot(component);
-
   document.body.appendChild(component);
-
   return waitUntil(componentHasShadowRoot).then(() => component);
+}
+
+const testDropdownItems = `
+  <ak-dropdown-item>124</ak-dropdown-item>
+  <ak-dropdown-item>444</ak-dropdown-item>
+`;
+
+function setupComponentExample(content = testDropdownItems) {
+  return initComponent(component => {
+    component.innerHTML = `
+      <ak-dropdown-trigger-button slot="trigger">test</ak-dropdown-trigger-button>
+      ${content}
+    `;
+  });
 }
 
 function tearDownComponent(component) {
   document.body.removeChild(component);
+}
+
+function clickDropdownTrigger(component) {
+  getShadowRoot(component.querySelector('[slot="trigger"]')).firstChild.click();
 }
 
 function checkSelectedItems(items, ...index) {
@@ -71,7 +92,7 @@ describe('ak-dropdown', () => {
     let component;
     let shadowRoot;
 
-    beforeEach(() => setupComponent().then(newComponent => {
+    beforeEach(() => setupComponentExample().then(newComponent => {
       component = newComponent;
       shadowRoot = getShadowRoot(component);
     }));
@@ -92,6 +113,14 @@ describe('ak-dropdown', () => {
       expect(checkVisibility(component.children[0])).to.equal(true);
     });
 
+    it('three clicks leaves the dropdown open with items in it', () => {
+      props(component, { open: true });
+      props(component, { open: false });
+      props(component, { open: true });
+      expect(component.open).to.equal(true);
+      expect(checkVisibility(component.children[1])).to.equal(true);
+    });
+
     it('position is reflected to inner layer', (done) => {
       // we can't just do querySelector('ak-layer') here, ak-layer is defined a few times
       // and doesn't have a nice clear tag name anymore
@@ -107,13 +136,77 @@ describe('ak-dropdown', () => {
     });
   });
 
+  describe('trigger', () => {
+    let triggerTest;
+
+    describe('slotted', () => {
+      beforeEach(() =>
+        (initComponent(comp => {
+          props(comp, { open: true });
+          triggerTest = new TriggerTest();
+          props(triggerTest, { slot: 'trigger', opened: false });
+          comp.appendChild(triggerTest);
+          comp.appendChild(document.createElement('ak-dropdown-item'));
+        }))
+      );
+
+      it('should set opened attribute in trigger element to true', () =>
+        expect(triggerTest.opened).to.be.true
+      );
+    });
+
+    describe('external', () => {
+      let eventSpy;
+
+      beforeEach(() =>
+        (initComponent(comp => {
+          eventSpy = sinon.spy();
+          props(comp, { open: true, target: triggerTest });
+          triggerTest = new TriggerTest();
+          comp.addEventListener(afterOpen, eventSpy);
+          comp.appendChild(document.createElement('ak-dropdown-item'));
+        }))
+      );
+
+      it('dropdown should be open', () =>
+        expect(eventSpy).to.have.been.called
+      );
+    });
+  });
+
+  describe('two dropdowns', () => {
+    let component1;
+    let component2;
+
+    beforeEach(() =>
+      Promise.all([setupComponentExample(), setupComponentExample()])
+      .then(([c1, c2]) => {
+        component1 = c1;
+        component2 = c2;
+      }));
+    afterEach(() => {
+      tearDownComponent(component1);
+      tearDownComponent(component2);
+    });
+
+    it('dropdowns are mutually exclusively openable via mouse', (done) => {
+      afterMutations(
+        () => (clickDropdownTrigger(component1)),
+        () => (clickDropdownTrigger(component2)),
+        () => (expect(component1.open).to.equal(false)),
+        () => (expect(component2.open).to.equal(true)),
+        done
+      );
+    });
+  });
+
   describe('select item', () => {
     let component;
     let items;
     const html = `<ak-dropdown-item>first</ak-dropdown-item>
                   <ak-dropdown-item>second</ak-dropdown-item>
                   <ak-dropdown-item>third</ak-dropdown-item>`;
-    beforeEach(() => setupComponent(html).then(newComponent => {
+    beforeEach(() => setupComponentExample(html).then(newComponent => {
       component = newComponent;
       props(component, { open: true });
       items = component.querySelectorAll('ak-dropdown-item');

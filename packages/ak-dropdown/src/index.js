@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import 'style!./host.less';
 import shadowListStyles from './shadow-list.less';
-import { vdom, define, prop, emit } from 'skatejs';
+import { vdom, define, prop, props, emit, ready } from 'skatejs';
 import ItemDefinition from './item';
 import './trigger';
 import GroupDefinition from './group';
@@ -18,9 +18,14 @@ const dropdownMinWidth = 150;
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
 const offset = '0 2';
 
+function getTriggerElement(elem) {
+  return elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
+}
+
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
   const list = elem.querySelectorAll('ak-dropdown-item');
+
   if ((elem.open !== isOpen)) {
     elem.open = isOpen;
   }
@@ -28,10 +33,10 @@ function toggleDialog(elem, value) {
     return;
   }
 
-  const trigger = elem.querySelector('[slot="trigger"]');
+  const trigger = getTriggerElement(elem);
 
   if (trigger) {
-    trigger.opened = isOpen;
+    props(trigger, { opened: isOpen });
   }
 
   // when the dialog is open the first item element should be focused,
@@ -159,11 +164,19 @@ export default define('ak-dropdown', {
   prototype: {
     reposition() {
       if (this._layer) {
-        this._layer.reposition();
+        ready(this._layer, () => {
+          this._layer.reposition();
+        });
       }
 
       return this;
     },
+  },
+  rendered(elem) {
+    const trigger = getTriggerElement(elem) || {};
+    if (trigger.opened !== elem.open) {
+      toggleDialog(elem, elem.open);
+    }
   },
   render(elem) {
     let target = elem.target;
@@ -179,15 +192,22 @@ export default define('ak-dropdown', {
               styles = getDropdownStyles(target, elem);
             }}
           >
-            <slot name="trigger" />
+            <slot
+              name="trigger"
+              ref={el => (elem.triggerSlot = el)}
+            />
           </div>
           : null
         }
-        {elem.open ? <Layer
+        <Layer
           position={elem.position}
           target={target}
           enableFlip
           offset={offset}
+          // TODO: this causes a positioning bug.
+          // Needs to be rewritten to conditionally render the <slot />
+          // See AK-343
+          style={{ display: elem.open ? 'block' : 'none' }}
           ref={(layer) => {
             elem._layer = layer;
             setTimeout(() => {
@@ -207,7 +227,7 @@ export default define('ak-dropdown', {
             <style>{shadowListStyles.toString()}</style>
             <slot />
           </div>
-        </Layer> : null}
+        </Layer>
       </div>
     );
   },
@@ -222,11 +242,6 @@ export default define('ak-dropdown', {
      */
     open: prop.boolean({
       attribute: true,
-      set(elem, data) {
-        if (elem && data.newValue !== data.oldValue) {
-          toggleDialog(elem, data.newValue);
-        }
-      },
     }),
     /**
      * @description Position of the dropdown. See the documentation of ak-layer for more details.

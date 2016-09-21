@@ -13,7 +13,9 @@ const avatarUrl = require('url!./doge.jpg');
 class DropdownWithOutsideTrigger extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      open: false,
+    };
 
     // Bind callback methods to make `this` the correct context.
     this.handleClick = this.handleClick.bind(this);
@@ -178,6 +180,18 @@ storiesOf(`${name} component`, module)
         <ak-dropdown-item>Wuz</ak-dropdown-item>
         <ak-dropdown-item>Here</ak-dropdown-item>
         <ak-dropdown-item>2016</ak-dropdown-item>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('two dropdowns', () => (
+    <div>
+      <DropdownReactComponent>
+        <ak-dropdown-trigger-button slot="trigger">A</ak-dropdown-trigger-button>
+        <ak-dropdown-item>A</ak-dropdown-item>
+      </DropdownReactComponent>
+      <DropdownReactComponent>
+        <ak-dropdown-trigger-button slot="trigger">B</ak-dropdown-trigger-button>
+        <ak-dropdown-item>B</ak-dropdown-item>
       </DropdownReactComponent>
     </div>
   ))

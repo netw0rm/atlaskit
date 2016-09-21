@@ -11,9 +11,7 @@ const { expect } = chai;
 const RewireSpy = () => {
   const resetAfter: any[] = [];
 
-  afterEach(() => resetAfter.map(({ module, name }) => {
-    module.__ResetDependency__(name)
-  }));
+  afterEach(() => resetAfter.map(({ module, name }) => module.__ResetDependency__(name)));
 
   return (module: any, name: string) => {
     const func = module.__GetDependency__(name);

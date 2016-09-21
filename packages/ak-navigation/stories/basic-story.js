@@ -82,6 +82,28 @@ const NavigationLinks = () => <div>
   </ak-navigation-link>
 </div>;
 
+const GlobalProfile = () => <ak-dropdown position="right bottom" slot="global-profile">
+  <ak-dropdown-trigger slot="trigger">
+    <ak-avatar src={userAvatar} />
+  </ak-dropdown-trigger>
+  <ak-dropdown-item>Online help</ak-dropdown-item>
+  <ak-dropdown-item>Learn git</ak-dropdown-item>
+</ak-dropdown>;
+
+const GlobalHelp = () => <ak-dropdown position="right bottom" slot="global-help">
+  <ak-dropdown-trigger slot="trigger">
+    <ak-icon glyph="help" />
+  </ak-dropdown-trigger>
+  <ak-dropdown-group title="Bitbucket">
+    <ak-dropdown-item>View profile</ak-dropdown-item>
+    <ak-dropdown-item>Bitbucket settings</ak-dropdown-item>
+    <ak-dropdown-item>Integration</ak-dropdown-item>
+  </ak-dropdown-group>
+  <ak-dropdown-group title="Missile silo">
+    <ak-dropdown-item>Launch missiles</ak-dropdown-item>
+  </ak-dropdown-group>
+</ak-dropdown>;
+
 storiesOf(name, module)
   .add('empty ak-navigation', () => (
     <AkNavigation />
@@ -98,23 +120,8 @@ storiesOf(name, module)
         <ak-icon slot="global-search" glyph="search" />
         <ak-icon slot="global-create" glyph="create" />
 
-        <ak-dropdown position="right bottom" slot="global-profile">
-          <ak-dropdown-trigger slot="trigger">
-            <ak-avatar src={userAvatar} />
-          </ak-dropdown-trigger>
-          <ak-dropdown-item>Online help</ak-dropdown-item>
-          <ak-dropdown-item>Learn git</ak-dropdown-item>
-        </ak-dropdown>
-
-        <ak-dropdown position="right bottom" slot="global-help">
-          <ak-dropdown-trigger slot="trigger">
-            <ak-icon glyph="help" />
-          </ak-dropdown-trigger>
-          <ak-dropdown-item>View profile</ak-dropdown-item>
-          <ak-dropdown-item>Bitbucket settings</ak-dropdown-item>
-          <ak-dropdown-item>Integration</ak-dropdown-item>
-          <ak-dropdown-item>Launch missiles</ak-dropdown-item>
-        </ak-dropdown>
+        <GlobalProfile />
+        <GlobalHelp />
 
         <div is slot="global-search-drawer">
           Search
@@ -122,6 +129,38 @@ storiesOf(name, module)
         <div is slot="global-create-drawer">
           Create
         </div>
+        <NavigationLinks />
+
+      </AkNavigation>
+      <div>
+        <Lorem count="30" />
+      </div>
+    </AkPage>
+  ))
+  .add('ak-navigation many navigation links', () => (
+    <AkPage navigationOpen>
+      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
+      <AkNavigation
+        slot="navigation"
+        open
+        {...sharedProps}
+      >
+        <ak-icon slot="global-home" glyph="bitbucket" />
+        <ak-icon slot="global-search" glyph="search" />
+        <ak-icon slot="global-create" glyph="create" />
+
+        <GlobalProfile />
+        <GlobalHelp />
+
+        <div is slot="global-search-drawer">
+          Search
+        </div>
+        <div is slot="global-create-drawer">
+          Create
+        </div>
+        <NavigationLinks />
+        <NavigationLinks />
+        <NavigationLinks />
         <NavigationLinks />
 
       </AkNavigation>
@@ -147,8 +186,8 @@ storiesOf(name, module)
         <ak-icon slot="global-home" glyph="bitbucket" />
         <ak-icon slot="global-search" glyph="search" />
         <ak-icon slot="global-create" glyph="create" />
-        <ak-avatar src={userAvatar} slot="global-profile" />
-        <ak-icon slot="global-help" glyph="help" />
+        <GlobalProfile />
+        <GlobalHelp />
         <div is slot="global-search-drawer">
           Search
         </div>
@@ -173,8 +212,8 @@ storiesOf(name, module)
         <ak-icon slot="global-home" glyph="bitbucket" />
         <ak-icon slot="global-search" glyph="search" />
         <ak-icon slot="global-create" glyph="create" />
-        <ak-avatar src={userAvatar} slot="global-profile" />
-        <ak-icon slot="global-help" glyph="help" />
+        <GlobalProfile />
+        <GlobalHelp />
         <div is slot="global-search-drawer">
           Search
         </div>
@@ -199,6 +238,21 @@ storiesOf(name, module)
         <ak-icon slot="global-home" glyph="jira" />
         <ak-icon slot="global-search" glyph="search" />
         <ak-icon slot="global-create" glyph="create" />
+        <NavigationLinks />
+      </AkNavigation>
+      <div>
+        <Lorem count="30" />
+      </div>
+    </AkPage>
+  ))
+  .add('ak-navigation with a square container logo', () => (
+    <AkPage>
+      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
+      <AkNavigation
+        slot="navigation"
+        containerLogo={userAvatar}
+        containerName="Your profile"
+      >
         <NavigationLinks />
       </AkNavigation>
       <div>

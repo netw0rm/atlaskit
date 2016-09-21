@@ -2,7 +2,11 @@
 
 This is a template for AtlasKit components. Update this file with usage instructions and examples.
 
-## Setup and install
+##Try it out
+
+Interact with a [live demo of the akutil-component-template component](https://aui-cdn.atlassian.com/atlaskit/stories/akutil-component-template/@VERSION@/).
+
+## Installation
 
 ```sh
 npm install akutil-component-template
@@ -22,7 +26,7 @@ Import the component in your JS resource:
 import 'akutil-component-template';
 ```
 
-Now we can use the defined tag in our HTML markup, e.g.:
+Now you can use the defined tag in your HTML markup:
 
 #### index.html
 
@@ -38,7 +42,7 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </html>
 ```
 
-or from within another JavaScript resource:
+You can also use it from within another JavaScript resource:
 
 ```js
 import AkUtilComponentTemplate from 'akutil-component-template';

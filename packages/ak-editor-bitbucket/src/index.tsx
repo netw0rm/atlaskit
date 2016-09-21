@@ -417,8 +417,8 @@ class AkEditorBitbucket extends Component {
       this._bulletListActive = Boolean(state.active && state.type === 'bullet_list');
       this._numberListActive = Boolean(state.active && state.type === 'ordered_list');
 
-      this._bulletlistDisabled = Boolean(state.enabled);
-      this._numberlistDisabled = Boolean(state.enabled);
+      this._bulletlistDisabled = !Boolean(state.enabled);
+      this._numberlistDisabled = !Boolean(state.enabled);
     });
 
     // Text formatting

@@ -63,4 +63,34 @@ describe('Facade Input', () => {
       done();
     }, 100);
   });
+
+  it('should be possible to attach mulitple sync functions', (done) => {
+    const fInput = new FacadeInput(target(), {
+      initialValue: 'foo',
+      classList: ['facade-input'],
+    });
+
+    let syncedVal1 = '';
+    let syncCallCount = 0;
+    fInput.onSync = (val) => {
+      syncedVal1 = val;
+      syncCallCount++;
+    }
+
+    let syncedVal2 = '';
+    fInput.onSync = (val) => {
+      syncedVal2 = val;
+      syncCallCount++;
+    }
+
+    const elem = document.querySelector('.facade-input');
+    (elem as HTMLInputElement).value = 'barbaz';
+
+    setTimeout(() => {
+      expect(syncedVal1).to.equal('barbaz');
+      expect(syncedVal2).to.equal('barbaz');
+      expect(syncCallCount).to.equal(2);
+      done();
+    }, 100);
+  });
 });

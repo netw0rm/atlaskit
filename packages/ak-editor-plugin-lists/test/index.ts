@@ -114,7 +114,7 @@ describe('ak-editor-plugin-lists', () => {
       expect(pm.doc).to.deep.equal(doc(p('text')));
     });
 
-    it('should allow toggling between ordered and bullet list', () => {
+    it('should make sure that it is enabled when selecting ordered list', () => {
       const { pm, plugin } = editor(doc(ol(li(p('te{<>}xt')))));
       const state = plugin.getState();
 
@@ -125,7 +125,7 @@ describe('ak-editor-plugin-lists', () => {
       });
     });
 
-    it('should allow toggling between ordered and bullet list', () => {
+    it('should be disabled when selecting h1', () => {
       const { pm, plugin } = editor(doc(h1('te{<>}xt')));
       const state = plugin.getState();
 

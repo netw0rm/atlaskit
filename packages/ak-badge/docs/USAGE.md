@@ -7,6 +7,8 @@ They must be used singly after a single item name, and have only numbers.
 * Use labels to call out tags and high-visibility attributes.
 * Use a tooltip if you want to indicate units.
 
+![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-badge/docs/badge.png)
+
 ## Try it out
 
 Interact with a [live demo of the ak-badge component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-badge/@VERSION@/).

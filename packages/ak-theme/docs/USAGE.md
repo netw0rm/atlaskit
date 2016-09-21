@@ -109,8 +109,8 @@ By default, a themeable component's theme is a theme that has an `id` that match
 This is handy when the display of a particular component may change when in the context of a different parent:
 
 ```html
-<ak-btn>My button</ak-btn>
+<ak-button>My button</ak-button>
 <ak-navigation>
-  <ak-btn theme-name="nav-btn">Navigation button</ak-btn>
+  <ak-button theme-name="nav-button">Navigation button</ak-button>
 </ak-navigatoin>
 ```

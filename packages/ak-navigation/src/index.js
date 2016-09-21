@@ -12,8 +12,8 @@ import 'custom-event-polyfill';
 import * as events from './internal/events';
 const {
   linkSelected: linkSelectedEvent,
-  createDrawerOpen: createDrawerOpenEvent,
-  searchDrawerOpen: searchDrawerOpenEvent,
+  createDrawerSelected: createDrawerSelectedEvent,
+  searchDrawerSelected: searchDrawerSelectedEvent,
   close: closeEvent,
   open: openEvent,
   openStateChanged: openStateChangedEvent,
@@ -41,11 +41,11 @@ function getContainerPadding(width) {
   return Math.min(containerPaddingExpanded, Math.max(containerPaddingCollapsed, padding));
 }
 // TODO: keyboard interaction
-const openSearchDrawer = el => el.addEventListener('click', () => {
-  emit(el, searchDrawerOpenEvent);
+const searchDrawer = el => el.addEventListener('click', () => {
+  emit(el, searchDrawerSelectedEvent);
 });
-const openCreateDrawer = el => el.addEventListener('click', () => {
-  emit(el, createDrawerOpenEvent);
+const createDrawer = el => el.addEventListener('click', () => {
+  emit(el, createDrawerSelectedEvent);
 });
 
 function closeAllDrawers(elem) {
@@ -92,10 +92,10 @@ export default define('ak-navigation', {
               </a>
             </div>
             <div className={shadowStyles.locals.globalSecondary}>
-              <div ref={openSearchDrawer} className={shadowStyles.locals.globalSecondaryItem}>
+              <div ref={searchDrawer} className={shadowStyles.locals.globalSecondaryItem}>
                 <slot name="global-search" />
               </div>
-              <div ref={openCreateDrawer} className={shadowStyles.locals.globalSecondaryItem}>
+              <div ref={createDrawer} className={shadowStyles.locals.globalSecondaryItem}>
                 <slot name="global-create" />
               </div>
             </div>
@@ -202,11 +202,11 @@ export default define('ak-navigation', {
     document.removeEventListener('keyup', elem.toggleHandler);
   },
   created(elem) {
-    elem.addEventListener(createDrawerOpenEvent, () => {
-      elem.createDrawerOpen = true;
+    elem.addEventListener(createDrawerSelectedEvent, () => {
+      elem.createDrawerOpen = !elem.createDrawerOpen;
     });
-    elem.addEventListener(searchDrawerOpenEvent, () => {
-      elem.searchDrawerOpen = true;
+    elem.addEventListener(searchDrawerSelectedEvent, () => {
+      elem.searchDrawerOpen = !elem.searchDrawerOpen;
     });
     elem.addEventListener(linkSelectedEvent, (event) => {
       const containerLinks = Array.prototype.slice.call(elem.children);

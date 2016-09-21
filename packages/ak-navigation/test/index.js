@@ -3,7 +3,13 @@ import { keyup, afterMutations, getShadowRoot, waitUntil } from 'akutil-common-t
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkNavigation, { events as navigationEvents } from '../src';
-const { open: navigationOpenEvent, close: navigationCloseEvent } = navigationEvents;
+import { emit } from 'skatejs';
+const {
+  open: navigationOpenEvent,
+  close: navigationCloseEvent,
+  searchDrawerSelected: searchDrawerSelectedEvent,
+  createDrawerSelected: createDrawerSelectedEvent,
+} = navigationEvents;
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -82,6 +88,28 @@ describe('ak-navigation', () => {
       () => keyup('['),
       () => expect(component.open).to.equal(false),
       () => document.body.appendChild(component),
+      done
+    );
+  });
+
+  it(`search drawer is toggled by the "${searchDrawerSelectedEvent}" event`, (done) => {
+    afterMutations(
+      () => expect(component.searchDrawerOpen).to.equal(false),
+      () => emit(component, searchDrawerSelectedEvent),
+      () => expect(component.searchDrawerOpen).to.equal(true),
+      () => emit(component, searchDrawerSelectedEvent),
+      () => expect(component.searchDrawerOpen).to.equal(false),
+      done
+    );
+  });
+
+  it(`create drawer is toggled by the "${createDrawerSelectedEvent}" event`, (done) => {
+    afterMutations(
+      () => expect(component.createDrawerOpen).to.equal(false),
+      () => emit(component, createDrawerSelectedEvent),
+      () => expect(component.createDrawerOpen).to.equal(true),
+      () => emit(component, createDrawerSelectedEvent),
+      () => expect(component.createDrawerOpen).to.equal(false),
       done
     );
   });

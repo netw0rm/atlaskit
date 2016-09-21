@@ -9,15 +9,6 @@
 // (because in storybook the component name is randomly generated)
 .ak-tooltip,
 ak-tooltip {
-  display: block;
   // we remove pointer events to prevent the tooltip from getting in the way of hovering
   pointer-events: none;
-  top: -9999px;
-  left: -9999px;
-  // The width is required to prevent an issue where the tooltip wont stretch to fit content.
-  width: 100vw;
-
-  &:not([visible]) {
-    display: none;
-  }
 }

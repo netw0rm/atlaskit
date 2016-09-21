@@ -95,11 +95,6 @@ export default define('ak-tooltip', {
     position: {
       default: defaultTooltipPosition,
       attribute: true,
-      set(elem) {
-        if (elem.layer) {
-          elem.layer.reposition();
-        }
-      },
     },
     /**
      * @description Either an id or a reference to an element that the tooltip is bound to.

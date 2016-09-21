@@ -45,10 +45,11 @@ function isDrawerOpen(elem) {
   return elem.createDrawerOpen || elem.searchDrawerOpen;
 }
 
-function emitWidthChagnedEvent(elem, width) {
+function emitWidthChangedEvent(elem, oldWidth, newWidth) {
   emit(elem, widthChangedEvent, {
     detail: {
-      width,
+      oldWidth,
+      newWidth,
     },
   });
 }
@@ -162,10 +163,11 @@ export default define('ak-navigation', {
         elem.createDrawerOpen = elem.open && elem.createDrawerOpen;
         elem.searchDrawerOpen = elem.open && elem.searchDrawerOpen;
         const newWidth = elem.open ? getExpandedWidth(elem) : getCollapsedWidth(elem);
-        if (elem.width !== elem.newWidth) {
-          emitWidthChagnedEvent(elem, newWidth);
-        }
+        const oldWidth = elem.width;
         elem.width = newWidth;
+        if (newWidth !== oldWidth) {
+          emitWidthChangedEvent(elem, oldWidth, newWidth);
+        }
       },
     }),
     containerName: prop.string({
@@ -209,7 +211,7 @@ export default define('ak-navigation', {
       elem.shouldAnimate = true;
     }, shouldAnimateThreshold);
     document.addEventListener('keyup', elem.toggleHandler);
-    emitWidthChagnedEvent(elem, elem.width);
+    emitWidthChangedEvent(elem, null, elem.width);
   },
   detached(elem) {
     document.removeEventListener('keyup', elem.toggleHandler);

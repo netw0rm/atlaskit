@@ -3,7 +3,11 @@ import { keyup, afterMutations, getShadowRoot, waitUntil } from 'akutil-common-t
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkNavigation, { events as navigationEvents } from '../src';
-const { open: navigationOpenEvent, close: navigationCloseEvent } = navigationEvents;
+const {
+  open: navigationOpenEvent,
+  close: navigationCloseEvent,
+  widthChanged: widthChangedEvent,
+} = navigationEvents;
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -29,6 +33,25 @@ describe('ak-navigation detached', () => {
       keyup('[');
       expect(component.open).to.equal(false);
     }, done);
+  });
+  describe('when it becomes attached', () => {
+    const component = new AkNavigation();
+    it('fires an "${navigationOpenEvent}" event when attached', (done) => {
+      let called = false;
+      component.addEventListener(widthChangedEvent, (e) => {
+        expect(e.detail.oldWidth).to.equal(null);
+        expect(e.detail.newWidth).to.equal(component.width);
+        called = true;
+      });
+      document.body.appendChild(component);
+      afterMutations(() => {
+        expect(called).to.equal(true);
+      }, done);
+    });
+
+    afterEach(() => {
+      document.body.removeChild(component);
+    });
   });
 });
 
@@ -61,6 +84,19 @@ describe('ak-navigation', () => {
     component.open = true;
     let called = false;
     component.addEventListener(navigationCloseEvent, () => {
+      called = true;
+    });
+    component.open = false;
+    expect(called).to.equal(true);
+  });
+
+  it('fires an "${navigationCloseEvent}" event when closing', () => {
+    component.open = true;
+    const originalWidth = component.width;
+    let called = false;
+    component.addEventListener(widthChangedEvent, (e) => {
+      expect(e.detail.oldWidth).to.equal(originalWidth);
+      expect(e.detail.newWidth).to.equal(component.width);
       called = true;
     });
     component.open = false;

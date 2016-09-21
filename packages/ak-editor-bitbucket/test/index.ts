@@ -2,25 +2,11 @@ import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations } from 'akutil-common-test';
 import { symbols } from 'skatejs';
-import { fixtures } from 'ak-editor-test';
+import { fixtures, RewireSpy } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 
 chai.use(sinonChai);
 const { expect } = chai;
-
-const RewireSpy = () => {
-  const resetAfter: any[] = [];
-
-  afterEach(() => resetAfter.map(({ module, name }) => module.__ResetDependency__(name)));
-
-  return (module: any, name: string) => {
-    const func = module.__GetDependency__(name);
-    const spy = sinon.spy(func);
-    module.__Rewire__(name, spy);
-    resetAfter.push({ module, name });
-    return spy;
-  }
-};
 
 describe('ak-editor-bitbucket', () => {
   const fixture = fixtures();

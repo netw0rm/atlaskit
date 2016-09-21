@@ -11,7 +11,7 @@ const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 const minilog = require('minilog');
 const { name } = require('../package.json');
-const log = minilog('generate-icon-exports');
+const log = minilog('ak-icon/gen-js');
 minilog.enable();
 
 const fileEnding = '.svg';

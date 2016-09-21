@@ -113,5 +113,20 @@ describe('ak-editor-plugin-lists', () => {
       plugin.toggleList('bullet_list');
       expect(pm.doc).to.deep.equal(doc(p('text')));
     });
+
+    it('should allow toggling between ordered and bullet list', () => {
+      const { pm, plugin } = editor(doc(ol(li(p('te{pos}xt')))));
+      const { pos } = pm.doc.refs;
+
+      pm.setTextSelection(pos);
+
+      const state = plugin.getState();
+
+      expect(state).to.eql({
+        active: true,
+        enabled: true,
+        type: "ordered_list"
+      });
+    });
   });
 });

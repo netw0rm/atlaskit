@@ -1,9 +1,12 @@
 {
   "name": "ak-icon",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "description": "Icon web components",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "gen-js": "node ./bin/generate-icon-exports.js",
+    "gen-js": "node ./bin/generate-icon-exports.js && cd ../.. && npm run prepublish/single ak-icon",
     "prepublish": "npm run gen-js",
     "pretest": "npm run gen-js"
   },
@@ -20,6 +23,7 @@
     "akutil-react": "^1.0.0",
     "async": "^2.0.1",
     "glob": "^7.0.5",
+    "glob-loader": "^0.3.0",
     "lodash.sample": "^4.2.1",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.5.4",

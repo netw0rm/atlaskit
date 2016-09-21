@@ -7,8 +7,9 @@
 
 @global-primary-item-margin: 25px;
 @global-secondary-item-margin: 10px;
-@global-secondary-item-height: 30px;
+@global-secondary-item-size: 30px;
 @container-logo-size: 40px;
+@container-logo-border-radius: @ak-border-radius;
 
 @font-size: 14px;
 
@@ -36,6 +37,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    z-index: 1; //needed so that child dropdowns can trump the container nav links
 
     .global-primary {
       margin: @global-primary-item-margin auto;
@@ -47,9 +49,32 @@
     }
 
     .global-secondary-item {
+      &:hover::before {
+        background: black;
+        opacity: 0.2;
+      }
+      &:active::before {
+        background: @ak-color-B50;
+      }
+      &::before {
+        content: '';
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        z-index: -1;
+        border-radius: 50%;
+      }
+      line-height: 0px;
+      position: relative;
+      width: 30px;
+      height: @global-secondary-item-size;
+      cursor: pointer;
       margin: 10px auto;
-      height: @global-secondary-item-height;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .global-bottom {
@@ -67,6 +92,7 @@
   .container-logo {
     width: @container-logo-size;
     height: @container-logo-size;
+    border-radius: @container-logo-border-radius;
     margin-right: 10px;
     
     &:not([src]) {

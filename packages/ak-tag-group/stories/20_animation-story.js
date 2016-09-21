@@ -1,3 +1,4 @@
+import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { name } from '../package.json';
 import AlignedStory from './AlignedStory.js';

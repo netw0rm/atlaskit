@@ -2,7 +2,7 @@ import './types';
 import autobind from 'autobind-decorator';
 import * as events from './internal/events';
 import { define, prop, emit, Component } from 'skatejs';
-import { ProseMirror, Schema, Text } from 'ak-editor-prosemirror';
+import { ProseMirror, Schema } from 'ak-editor-prosemirror';
 import 'style!./host.less';
 import cx from 'classnames';
 import maybe from './maybe';
@@ -154,8 +154,7 @@ class AkEditorBitbucket extends Component {
   }
 
   static rendered(elem: AkEditorBitbucket) : void {
-    if (elem.expanded && elem._justToggledExpansion) {
-      elem._justToggledExpansion = false;
+    if (elem.expanded) {
       elem._initEditor();
       if (!elem._ready) {
         emit(elem, 'ready');
@@ -163,6 +162,8 @@ class AkEditorBitbucket extends Component {
       }
 
       elem.focus();
+    } else {
+      elem._pm = null;
     }
   }
 
@@ -227,8 +228,8 @@ class AkEditorBitbucket extends Component {
       }
       <Footer
         openTop
-        onSave={elem._toggleExpansion}
-        onCancel={elem._toggleExpansion}
+        onSave={elem._collapse}
+        onCancel={elem._collapse}
         onInsertimage={elem._insertImage}
       />
     </div>);
@@ -247,7 +248,7 @@ class AkEditorBitbucket extends Component {
           :
           <input
             placeholder={elem.placeholder}
-            onclick={elem._toggleExpansion}
+            onclick={elem._expand}
             className={fakeInputClassNames}
           />
         }
@@ -290,6 +291,14 @@ class AkEditorBitbucket extends Component {
    */
   get ready(): boolean {
     return this._ready || false;
+  }
+
+  _expand(): void {
+    this.expanded = true;
+  }
+
+  _collapse(): void {
+    this.expanded = false;
   }
 
   _onContentClick(e: MouseEvent): void {
@@ -354,21 +363,23 @@ class AkEditorBitbucket extends Component {
     }
   }
 
-  _toggleExpansion() {
-    this.expanded = !this.expanded;
-    this._justToggledExpansion = true;
-  }
-
   _initEditor() {
+    if (this._pm) {
+      return;
+    }
+
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
 
     schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
     schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
 
+    const div = document.createElement('div');
+    div.innerHTML = this.defaultValue;
+
     const pm = new ProseMirror({
       place: this._wrapper,
-      doc: new Text({}, this.defaultValue),
+      doc: schema.parseDOM(div),
       plugins: [
         MarkdownInputRulesPlugin,
         HyperlinkPlugin,

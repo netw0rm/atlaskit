@@ -1,6 +1,5 @@
 import 'style!../host.less';
 import shadowStyles from './pf-mention-item-shadow.less';
-import { localProp } from './skate-local-props';
 import { define, vdom, prop } from 'skatejs';
 import Avatar from 'ak-avatar';
 
@@ -81,10 +80,10 @@ export default define('pf-mention-item', {
         <style>{shadowStyles.toString()}</style>
         <div className={classes.join(' ')}>
           <div className={styles.row}>
-            <Avatar src={elem.avatarUrl} size="medium" />
+            <Avatar src={elem.avatarurl} size="medium" />
             <div className={styles.nameSection}>
               {renderHighlight(styles.fullName, elem.name, nameHighlights)}
-              {renderHighlight(styles.mentionName, elem.mentionName, mentionHighlights, '@')}
+              {renderHighlight(styles.mentionName, elem.mentionname, mentionHighlights, '@')}
             </div>
             {renderTime(elem.presence)}
           </div>
@@ -94,27 +93,17 @@ export default define('pf-mention-item', {
   },
 
   props: {
-    avatarUrl: prop.string({
-      attribute: true,
-    }),
-    selected: prop.boolean({
-      attribute: true,
-    }),
-    idx: prop.number({
-      attribute: true,
-    }),
-    id: prop.string({
-      attribute: true,
-    }),
-    name: prop.string({
-      attribute: true,
-    }),
-    mentionName: prop.string({
-      attribute: true,
-    }),
-    time: prop.string({
-      attribute: true,
-    }),
-    highlight: localProp.object(),
+    avatarurl: prop.string({ attribute: true }),
+    selected: prop.boolean({ attribute: true }),
+    idx: prop.number({ attribute: true }),
+    id: prop.string({ attribute: true }),
+    name: prop.string({ attribute: true }),
+    mentionname: prop.string({ attribute: true }),
+    time: prop.string({ attribute: true }),
+    highlight: {
+      default: () => undefined,
+      serialize: JSON.stringify,
+      deserialize: JSON.parse,
+    },
   },
 });

@@ -451,10 +451,11 @@ class AkEditorBitbucket extends Component {
             pm.tr.delete(pos, pos+1).apply();
             facadeInput.markForRemoval();
             pm.focus();
+            return;
           }
         }
 
-        // when @ symbol is followed by a space remove the facade input
+        // When @ symbol is followed by a space remove the facade input
         if (value.match(/^@\s+/)) {
           const offset = elem.getAttribute('pm-offset');
           if (offset && offset.length) {
@@ -463,6 +464,7 @@ class AkEditorBitbucket extends Component {
             pm.tr.replaceWith(pos, pos+1, node).apply();
             facadeInput.markForRemoval();
             pm.focus();
+            return;
           }
         }
       };
@@ -473,9 +475,8 @@ class AkEditorBitbucket extends Component {
         return
       }
 
-      const mentionsList = this.getMentionsList();
       const username = (entityId as string).substring(1).trim(); // remove the @ symbol and trailing whitespace
-      const matchingMention = mentionsList.find((m: any) => m.username === username);
+      const matchingMention = this.getMentionsList().find((m: any) => m.username === username);
 
       if (matchingMention) {
         const link = `/${username}`;
@@ -488,7 +489,7 @@ class AkEditorBitbucket extends Component {
           color: #3572b0;
           padding: 0 3px;
         `;
-        elem.innerHTML = `<a href="${link}" target="_blank" style="${styles}" rel="nofollow" title="${username}" class="mention">${displayName}<a/>`;
+        elem.innerHTML = `<a href="${link}" target="_blank" style="${styles}" rel="nofollow" title="${username}" class="mention">${displayName}</a>`;
       } else {
         const offset = elem.getAttribute('pm-offset');
         if (offset && offset.length) {

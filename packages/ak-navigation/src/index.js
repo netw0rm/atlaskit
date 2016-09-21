@@ -10,7 +10,6 @@ import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './touch';
 import keycode from 'keycode';
 import 'custom-event-polyfill';
 import * as events from './internal/events';
-
 const {
   linkSelected: linkSelectedEvent,
   createDrawerOpen: createDrawerOpenEvent,

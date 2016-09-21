@@ -7,7 +7,7 @@
 
 @global-primary-item-margin: 25px;
 @global-secondary-item-margin: 10px;
-@global-secondary-item-size: 30px;
+@global-secondary-item-height: 30px;
 @container-logo-size: 40px;
 @container-logo-border-radius: @ak-border-radius;
 
@@ -42,6 +42,7 @@
     .global-primary {
       margin: @global-primary-item-margin auto;
       text-align: center;
+
       a {
         color: currentColor;
       }
@@ -57,20 +58,16 @@
       }
       &::before {
         content: '';
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
+        width: @global-secondary-item-height;
+        height: @global-secondary-item-height;
         position: absolute;
         z-index: -1;
         border-radius: 50%;
       }
-      line-height: 0px;
-      position: relative;
-      width: 30px;
-      height: @global-secondary-item-size;
+      
       cursor: pointer;
       margin: 10px auto;
+      height: @global-secondary-item-height;
       display: flex;
       justify-content: center;
       align-items: center;

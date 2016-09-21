@@ -47,6 +47,7 @@ const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-
 });
 const containerLogo = require('url!./nucleus.png');
 const userAvatar = require('url!./emma.jpg');
+
 const sharedProps = {
   containerName: 'Nucleus',
   containerHref: 'http://example.com',
@@ -83,7 +84,7 @@ const NavigationLinks = () => <div>
 
 const GlobalProfile = () => <ak-dropdown position="right bottom" slot="global-profile">
   <ak-dropdown-trigger slot="trigger">
-    <ak-avatar size="small" src={userAvatar} />
+    <ak-avatar src={userAvatar} />
   </ak-dropdown-trigger>
   <ak-dropdown-item>Online help</ak-dropdown-item>
   <ak-dropdown-item>Learn git</ak-dropdown-item>

@@ -435,7 +435,7 @@ class AkEditorBitbucket extends Component {
           const offset = elem.getAttribute('pm-offset');
           if (offset && offset.length) {
             const pos = posFromDOM(elem, parseInt(offset, 10)).pos;
-            const node = pm.schema.nodes.mention.create({ id: value });
+            const node = pm.schema.node('mention', { id: value });
             pm.tr.replaceWith(pos, pos+1, node).apply();
             pm.setTextSelection(pos+1);
             pm.focus();
@@ -444,7 +444,7 @@ class AkEditorBitbucket extends Component {
         }
 
         // When the value is empty, remove the mention node and facade input.
-        if (value == '') {
+        if (value === '') {
           const offset = elem.getAttribute('pm-offset');
           if (offset && offset.length) {
             const pos = posFromDOM(elem, parseInt(offset, 10)).pos;
@@ -453,9 +453,21 @@ class AkEditorBitbucket extends Component {
             pm.focus();
           }
         }
+
+        // when @ symbol is followed by a space remove the facade input
+        if (value.match(/^@\s+/)) {
+          const offset = elem.getAttribute('pm-offset');
+          if (offset && offset.length) {
+            const pos = posFromDOM(elem, parseInt(offset, 10)).pos;
+            const node = schema.text(value);
+            pm.tr.replaceWith(pos, pos+1, node).apply();
+            facadeInput.markForRemoval();
+            pm.focus();
+          }
+        }
       };
     }
-    const renderMention = (elem: HTMLElement) => {
+    const renderMention = (elem: HTMLElement, pm: ProseMirror) => {
       const entityId = elem.getAttribute('editor-entity-id');
       if (!entityId || !entityId.length) {
         return
@@ -465,17 +477,26 @@ class AkEditorBitbucket extends Component {
       const username = (entityId as string).substring(1).trim(); // remove the @ symbol and trailing whitespace
       const matchingMention = mentionsList.find((m: any) => m.username === username);
 
-      const link = `/${username}`;
-      const displayName = matchingMention ? matchingMention.display_name : username;
-      const styles = `
-        display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        background-color: #f5f5f5;
-        color: #3572b0;
-        padding: 0 3px;
-      `;
-      elem.innerHTML = `<a href="${link}" target="_blank" style="${styles}" rel="nofollow" title="${username}" class="mention">${displayName}<a/>`;
+      if (matchingMention) {
+        const link = `/${username}`;
+        const displayName = matchingMention.display_name;
+        const styles = `
+          display: inline-block;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          background-color: #f5f5f5;
+          color: #3572b0;
+          padding: 0 3px;
+        `;
+        elem.innerHTML = `<a href="${link}" target="_blank" style="${styles}" rel="nofollow" title="${username}" class="mention">${displayName}<a/>`;
+      } else {
+        const offset = elem.getAttribute('pm-offset');
+        if (offset && offset.length) {
+          const pos = posFromDOM(elem, parseInt(offset, 10)).pos;
+          const node = schema.text(entityId);
+          pm.tr.replaceWith(pos, pos+1, node).apply();
+        }
+      }
     }
     MentionsPlugin.get(pm).renderHandler = renderMention;
     MentionsPlugin.get(pm).autocompleteHandler = attachFacadeInput;

@@ -2,3 +2,5 @@ node_modules
 dist
 /stories
 /build/typings
+packages/ak-icon/glyph
+packages/ak-icon/tmp

@@ -87,10 +87,25 @@
       "from": "@semantic-release/release-notes-generator@>=2.0.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/@semantic-release/release-notes-generator/-/release-notes-generator-2.0.0.tgz"
     },
+    "@types/form-data": {
+      "version": "0.0.32",
+      "from": "@types/form-data@>=0.0.0 <0.1.0",
+      "resolved": "https://registry.npmjs.org/@types/form-data/-/form-data-0.0.32.tgz"
+    },
     "@types/jasmine": {
       "version": "2.2.34",
       "from": "@types/jasmine@>=2.2.31 <3.0.0",
       "resolved": "https://registry.npmjs.org/@types/jasmine/-/jasmine-2.2.34.tgz"
+    },
+    "@types/lodash": {
+      "version": "0.0.28",
+      "from": "@types/lodash@0.0.28",
+      "resolved": "https://registry.npmjs.org/@types/lodash/-/lodash-0.0.28.tgz"
+    },
+    "@types/moment": {
+      "version": "2.13.0",
+      "from": "@types/moment@>=2.11.29 <3.0.0",
+      "resolved": "https://registry.npmjs.org/@types/moment/-/moment-2.13.0.tgz"
     },
     "@types/node": {
       "version": "6.0.39",
@@ -101,6 +116,11 @@
       "version": "0.0.30",
       "from": "@types/q@>=0.0.30 <0.0.31",
       "resolved": "https://registry.npmjs.org/@types/q/-/q-0.0.30.tgz"
+    },
+    "@types/request": {
+      "version": "0.0.30",
+      "from": "@types/request@0.0.30",
+      "resolved": "https://registry.npmjs.org/@types/request/-/request-0.0.30.tgz"
     },
     "abab": {
       "version": "1.0.3",
@@ -3878,6 +3898,11 @@
       "from": "highlights-tokens@>=1.0.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/highlights-tokens/-/highlights-tokens-1.0.1.tgz"
     },
+    "hipchat-msg": {
+      "version": "0.1.0",
+      "from": "hipchat-msg@>=0.1.0 <0.2.0",
+      "resolved": "https://registry.npmjs.org/hipchat-msg/-/hipchat-msg-0.1.0.tgz"
+    },
     "hoek": {
       "version": "2.16.3",
       "from": "hoek@>=2.0.0 <3.0.0",
@@ -5366,6 +5391,16 @@
       "version": "1.0.0",
       "from": "modify-values@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/modify-values/-/modify-values-1.0.0.tgz"
+    },
+    "modular-log": {
+      "version": "0.3.10",
+      "from": "modular-log@>=0.3.10 <0.4.0",
+      "resolved": "https://registry.npmjs.org/modular-log/-/modular-log-0.3.10.tgz"
+    },
+    "moment": {
+      "version": "2.15.1",
+      "from": "moment@>=2.14.1 <3.0.0",
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.15.1.tgz"
     },
     "ms": {
       "version": "0.7.1",

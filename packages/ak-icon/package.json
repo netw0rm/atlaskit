@@ -1,27 +1,39 @@
 {
   "name": "ak-icon",
-  "version": "2.0.0",
-  "description": "Icon web component",
+  "version": "3.0.0",
+  "description": "Icon web components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-icon"
+    "gen-js": "node ./bin/generate-icon-exports.js",
+    "prepublish": "npm run gen-js && cd .. && npm run prepublish/single ak-icon",
+    "pretest": "npm run gen-js"
   },
   "files": [
-    "dist"
+    "dist",
+    "glyph"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.2.5",
-    "uid": "^0.0.2"
+    "skatejs": "^1.2.5"
   },
   "devDependencies": {
-    "idomizer": "^0.5.2",
-    "loader-utils": "^0.2.15",
-    "akutil-react": "^1.0.0"
+    "akutil-react": "^1.0.0",
+    "akutil-shared-styles": "^33.11.1",
+    "async": "^2.0.1",
+    "glob": "^7.0.5",
+    "glob-loader": "^0.3.0",
+    "lodash.sample": "^4.2.1",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.5.4",
+    "svgo": "^0.7.0",
+    "babel-plugin-incremental-dom": "^3.4.0",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-stage-0": "^6.5.0",
+    "webpack": "^1.13.1"
   },
   "repository": {
     "type": "git",

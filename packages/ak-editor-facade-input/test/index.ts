@@ -3,9 +3,9 @@ import { expect } from 'chai';
 import { fixtures } from 'ak-editor-test';
 import FacadeInput from '../src/index';
 
-const target = fixtures();
-
 describe('Facade Input', () => {
+  const target = fixtures();
+
   afterEach(() => {
     const elements = document.querySelectorAll('.facade-input');
     for (let i = 0; i < elements.length; i++) {

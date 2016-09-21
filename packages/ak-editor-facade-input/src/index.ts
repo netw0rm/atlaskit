@@ -70,7 +70,7 @@ export default class FacadeInput {
       el.style[style as any] = computedStyles.getPropertyValue(style);
     }
 
-    const fontSize: number = parseInt(computedStyles['font-size'], 10);
+    const fontSize: number = parseInt(computedStyles['font-size' as any], 10);
 
     // set positioning
     const rect = target.getBoundingClientRect();
@@ -125,7 +125,7 @@ export default class FacadeInput {
     if (curValue === this.prevValue) {
       if (this.shouldRemove) {
         this.callSyncFuncs(curValue, this.shouldRemove);
-        return this.remove();
+        this.remove();
       }
       return;
     }

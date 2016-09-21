@@ -143,8 +143,5 @@
     "validate/lint-changed": "./build/bin/lint-changed.sh",
     "validate/package.json": "pjv && ./node_modules/.bin/lerna exec -- pjv",
     "webpack/single": "./build/bin/webpack.single.sh"
-  },
-  "devDependencies": {
-    "lerna": "2.0.0-beta.28"
   }
 }

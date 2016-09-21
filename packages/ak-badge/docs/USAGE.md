@@ -7,11 +7,13 @@ They must be used singly after a single item name, and have only numbers.
 * Use labels to call out tags and high-visibility attributes.
 * Use a tooltip if you want to indicate units.
 
+## Try it out
 
+Interact with a [live demo of the ak-badge component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-badge/@VERSION@/).
 
-## Setup and install
+## Installation
 
-```
+```sh
 npm install ak-badge
 ```
 
@@ -25,15 +27,15 @@ Import the component in your JS resource as follows:
 
 #### bundle.js
 
-```
+```javascript
 import AkBadge from 'ak-badge';
 ```
 
-Now we can use the defined tag in our HTML markup. For example:
+Now we can use the defined tag in our HTML markup:
 
 #### index.html
 
-```
+```html
 <html>
 <head>
   <script src="bundle.js"></script>
@@ -45,6 +47,8 @@ Now we can use the defined tag in our HTML markup. For example:
 ```
 
 ### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```
 import AkBadge from 'ak-badge';

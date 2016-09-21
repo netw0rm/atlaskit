@@ -20,13 +20,39 @@
     &:active {
       background-color: @ak-dropdown-background-active;
       color: @ak-dropdown-font-active;
+
+      ak-icon,
+      .ak-icon {
+        color: @ak-dropdown-icon;
+      }
+
+      &.selected,
+      &.selectedWithIcon {
+        ak-icon,
+        .ak-icon {
+          color: @ak-dropdown-icon;
+        }
+      }
+    }
+
+    ak-icon,
+    .ak-icon {
+      color: @ak-dropdown-icon;
+    }
+
+    &.selected,
+    &.selectedWithIcon {
+      ak-icon,
+      .ak-icon {
+        color: @ak-dropdown-icon-reverse;
+      }
     }
   }
 
   &:focus {
     box-shadow: 0 0 0 2px @ak-dropdown-focused-outline;
     outline: none;
-    position: relative; //making shadow on top of others
+    position: relative; //making shadow on top of others, can't remove it because :hover has bgcolor
   }
 }
 
@@ -52,3 +78,4 @@
   white-space: nowrap;
   padding:8px 0;
 }
+

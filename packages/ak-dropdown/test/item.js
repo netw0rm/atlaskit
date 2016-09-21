@@ -4,7 +4,7 @@ import { Item, events as dropdownEvents } from '../src';
 import keyCode from 'keycode';
 import { props } from 'skatejs';
 import 'custom-event-polyfill';
-import { waitUntil, getShadowRoot } from 'akutil-common-test';
+import { waitUntil, getShadowRoot, afterMutations } from 'akutil-common-test';
 
 const defaultHeight = 30;
 const defaultGap = 10;
@@ -182,44 +182,57 @@ describe('ak-dropdown-item', () => {
   });
 
 
-  describe('sizing for an item with checkboxes', () => {
+  describe('sizing for an item with checkboxes or radio', () => {
     let component;
     let componentDomElem;
     let iconDomElem;
     let defaultDomElem;
 
-    beforeEach(() => {
-      component = '<ak-dropdown-item checkbox>some text</ak-dropdown-item>';
-      itemContainer.innerHTML = component;
+    ['checkbox', 'radio'].forEach((type) => {
+      beforeEach(() => {
+        component = `<ak-dropdown-item ${type}>some text</ak-dropdown-item>`;
+        itemContainer.innerHTML = component;
 
-      // wait until the component is rendered
-      return waitUntil(() =>
-        itemContainer.firstChild.getAttribute('defined') !== null
-      ).then(() => {
-        component = itemContainer.firstChild;
-        componentDomElem = getShadowRoot(component).firstChild;
-        iconDomElem = getShadowRoot(component).querySelector('ak-icon');
-        defaultDomElem = getShadowRoot(component).querySelector('slot,content').parentNode;
+        // wait until the component is rendered
+        return waitUntil(() =>
+          itemContainer.firstChild.getAttribute('defined') !== null
+        ).then(() => {
+          component = itemContainer.firstChild;
+          componentDomElem = getShadowRoot(component).firstChild;
+          iconDomElem = getShadowRoot(component).querySelector('ak-icon');
+          defaultDomElem = getShadowRoot(component).querySelector('slot,content').parentNode;
+        });
       });
-    });
 
-    it(`height should be equal ${defaultHeight}`, () => {
-      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(defaultHeight);
-    });
+      it(`${type}: height should be equal ${defaultHeight}`, (done) => {
+        afterMutations(
+          () => componentDomElem.getBoundingClientRect().height,
+          (height) => (expect(Math.round(height)).to.equal(defaultHeight)),
+          done
+        );
+      });
 
-    it(`gap between checkbox and left edge of the component should be ${defaultGap}`, () => {
-      const rectComponent = componentDomElem.getBoundingClientRect();
-      const rectIcon = iconDomElem.getBoundingClientRect();
-      const gap = rectIcon.left - rectComponent.left;
+      it(`gap between ${type} and left edge of the component should be ${defaultGap}`, (done) => {
+        const rectComponent = componentDomElem.getBoundingClientRect();
+        const rectIcon = iconDomElem.getBoundingClientRect();
+        const gap = rectIcon.left - rectComponent.left;
 
-      expect(Math.round(gap)).to.equal(defaultGap);
-    });
+        afterMutations(
+          () => (expect(Math.round(gap)).to.equal(defaultGap)),
+          done
+        );
+      });
 
-    it(`gap between checkbox and default slot should be ${defaultGap}`, () => {
-      const rectDefault = defaultDomElem.getBoundingClientRect();
-      const rectIcon = iconDomElem.getBoundingClientRect();
-      const gap = rectDefault.left - rectIcon.left - rectIcon.width;
-      expect(Math.round(gap)).to.equal(defaultGap);
+      it(`gap between ${type} and default slot should be ${defaultGap}`, (done) => {
+        const rectDefault = defaultDomElem.getBoundingClientRect();
+        const rectIcon = iconDomElem.getBoundingClientRect();
+        const gap = rectDefault.left - rectIcon.left - rectIcon.width;
+
+        afterMutations(
+          () => (expect(Math.round(gap)).to.equal(defaultGap)),
+          done
+        );
+      });
     });
   });
 

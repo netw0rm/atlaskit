@@ -110,6 +110,9 @@ storiesOf(name, module)
   .add('empty ak-navigation', () => (
     <AkNavigation />
   ))
+  .add('empty ak-navigation that is open and not collapsible', () => (
+    <AkNavigation open />
+  ))
   .add('ak-navigation with the lot', () => (
     <AkPage navigationOpen>
       <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />

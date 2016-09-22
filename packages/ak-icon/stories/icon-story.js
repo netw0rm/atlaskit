@@ -6,6 +6,9 @@ import reactify from 'akutil-react';
 import { name } from '../package.json';
 import styles from 'style!./styles.less';
 import toggleIcons from './ToggleIcons';
+import classnames from 'classnames';
+import fileToScope from '../src/fileToScope';
+import pathToDashed from '../src/pathToDashed';
 
 const req = require.context('../glyph', true, /^.*\.js/);
 const reactifiedComponents = req.keys().reduce((prev, file) => {
@@ -15,27 +18,27 @@ const reactifiedComponents = req.keys().reduce((prev, file) => {
   return prev;
 }, {});
 
-const ToggleableIcons = Object.keys(reactifiedComponents).filter((key) => (
-  key === './checkbox.js' || key === './radio.js')).map((key) => [key, reactifiedComponents[key]]);
+const ToggleableIcons = Object
+  .keys(reactifiedComponents)
+  .filter((key) => (key === './checkbox.js' || key === './radio.js'))
+  .map((key) => [key, reactifiedComponents[key]]);
 
 const ToggleIcons = toggleIcons({
   React,
   ToggleableIcons,
 });
 
+const AllIcons = (props) => (
+  // eslint-disable-next-line react/prop-types
+  <div {...props} className={classnames(styles.container, props.className)}>
+    {Object
+      .entries(reactifiedComponents)
+      .map(([key, Icon]) => <Icon title={`${fileToScope(key)}.svg`} key={key} />)}
+  </div>
+);
 
 storiesOf('ak-icon', module)
-  .add('All icons', () => (
-    <div className={styles.iconContainer}>
-      {Object.entries(reactifiedComponents).map(([key, Icon]) => <Icon key={key} />)}
-    </div>
-  ))
-  .add('All icons (colored)', () => (
-    <div className={styles.coloredIconContainer}>
-      {Object.entries(reactifiedComponents).map(([key, Icon]) => <Icon key={key} />)}
-    </div>
-  ))
-  .add('Two-color icons', () => <ToggleIcons />)
+  .add('All icons', () => <AllIcons />)
   .add('All icons (usage)', () => (
     <table>
       <thead>
@@ -48,9 +51,9 @@ storiesOf('ak-icon', module)
       <tbody>
         {Object.keys(reactifiedComponents).map((file) => {
           const Icon = reactifiedComponents[file];
-          const fileBase = file.substring(2, file.length - 3);
+          const fileBase = fileToScope(file);
           const importName = `${name}/glyph/${fileBase}`;
-          const tagName = `${name}-${fileBase.split('/').join('-')}`;
+          const tagName = `${name}-${pathToDashed(fileBase)}`;
           return (
             <tr key={file}>
               <td><Icon /></td>
@@ -62,4 +65,8 @@ storiesOf('ak-icon', module)
       </tbody>
     </table>
   ))
+  .add('All icons (colored)', () => (
+    <AllIcons className={styles.colored} />
+  ))
+  .add('Two-color icons', () => <ToggleIcons />)
   .add('Animated', () => <AnimationDemo components={reactifiedComponents} />);

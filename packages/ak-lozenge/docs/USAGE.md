@@ -2,7 +2,16 @@
 
 Use lozenges to highlight an item's status for quick recognition. Lozenges can be emphasised and can use color to help convey meanings that users can learn and recognize across our products. Use subtle lozenges by default and in instances where they may dominate the screen, such as in long tables.
 
-## Setup and install
+![Example lozenge](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-lozenge/docs/standard_lozenge.png)
+
+![Example lozenge](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-lozenge/docs/bold_lozenge.png)
+
+
+## Try it out
+
+Interact with a [live demo of the ak-lozenge component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-lozenge/@VERSION@/).
+
+## Installation
 
 ```sh
 npm install ak-lozenge
@@ -22,8 +31,7 @@ Import the component in your JS resource:
 import 'ak-lozenge';
 ```
 
-Now we can use the defined tag in our HTML markup, e.g.:
-
+Now you can use the defined tag in your HTML markup, for example
 #### index.html
 
 ```html
@@ -47,6 +55,8 @@ document.body.appendChild(component);
 ```
 
 ### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```js
 import Lozenge from 'ak-lozenge';

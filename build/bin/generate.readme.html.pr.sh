@@ -4,7 +4,11 @@ set -e
 LERNA_LOC="`npm bin`/lerna"
 BASEDIR=$(dirname $0)
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
+CDN_PREFIX="pr/docs"
+AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
+AK_PATH_SHA="$AK_PATH/$BITBUCKET_COMMIT"
 
+BUILD_URL="$CDN_URL_BASE/$AK_PATH_SHA/"
 BUILD_KEY="DOCS-$GITHEAD_SHORT"
 BUILD_NAME="Docs"
 BUILD_DESCRIPTION="The docs for this pull request"
@@ -19,6 +23,7 @@ bbuild \
 --key "$BUILD_KEY" \
 --name "$BUILD_NAME" \
 --description "$BUILD_DESCRIPTION" \
+--url "$BUILD_URL" \
 --state "INPROGRESS"
 
 echo "Installing marky-markdown"
@@ -46,10 +51,6 @@ echo "Packaging docs"
 rm -f $ZIP_FILE
 zip -0 -r -T $ZIP_FILE ../atlaskit-docs/resources
 
-CDN_PREFIX="pr/docs"
-AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
-AK_PATH_SHA="$AK_PATH/$BITBUCKET_COMMIT"
-
 echo "Uploading docs to CDN..."
 java \
 -jar \
@@ -70,7 +71,6 @@ cf-invalidate -- $CLOUDFRONT_DISTRIBUTION "/$AK_PATH_SHA/*"
 echo "CDN invalidation (docs) finished."
 
 echo "Post docs URL to build"
-DOCS_URL="$CDN_URL_BASE/$AK_PATH_SHA/"
 
 bbuild \
 --commit "$BITBUCKET_COMMIT" \
@@ -81,5 +81,5 @@ bbuild \
 --key "$BUILD_KEY" \
 --name "$BUILD_NAME" \
 --description "$BUILD_DESCRIPTION" \
---url "$DOCS_URL" \
+--url "$BUILD_URL" \
 --state "SUCCESSFUL"

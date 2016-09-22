@@ -4,6 +4,7 @@ set -e
 BASEDIR=$(dirname $0)
 GITHEAD=$(git rev-parse HEAD)
 
+BUILD_URL="$CDN_URL_BASE/atlaskit/pr/stories/$BITBUCKET_COMMIT/"
 BUILD_KEY="STORYBOOK-$GITHEAD_SHORT"
 BUILD_NAME="Storybook"
 BUILD_DESCRIPTION="The storybook for this pull request"
@@ -18,6 +19,7 @@ bbuild \
 --key "$BUILD_KEY" \
 --name "$BUILD_NAME" \
 --description "$BUILD_DESCRIPTION" \
+--url "$BUILD_URL" \
 --state "INPROGRESS"
 
 echo "Building storybooks"
@@ -48,7 +50,6 @@ cf-invalidate -- $CLOUDFRONT_DISTRIBUTION "/atlaskit/pr/stories/$BITBUCKET_COMMI
 echo "CDN invalidation (storybooks) finished."
 
 echo "Post storybook URL to build"
-STORYBOOK_URL="$CDN_URL_BASE/atlaskit/pr/stories/$BITBUCKET_COMMIT/"
 
 bbuild \
 --commit "$BITBUCKET_COMMIT" \
@@ -59,5 +60,5 @@ bbuild \
 --key "$BUILD_KEY" \
 --name "$BUILD_NAME" \
 --description "$BUILD_DESCRIPTION" \
---url "$STORYBOOK_URL" \
+--url "$BUILD_URL" \
 --state "SUCCESSFUL"

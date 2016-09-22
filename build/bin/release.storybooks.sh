@@ -3,6 +3,7 @@ set -e
 
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 
+BUILD_URL="$CDN_URL_BASE/$CDN_URL_SCOPE/registry/"
 BUILD_KEY="SBOOKS-$GITHEAD_SHORT"
 BUILD_NAME="Storybooks"
 BUILD_DESCRIPTION="The component storybooks"
@@ -17,6 +18,7 @@ bbuild \
 --key "$BUILD_KEY" \
 --name "$BUILD_NAME" \
 --description "$BUILD_DESCRIPTION" \
+--url "$BUILD_URL" \
 --state "INPROGRESS"
 
 echo "Building storybooks"
@@ -56,4 +58,5 @@ bbuild \
 --key "$BUILD_KEY" \
 --name "$BUILD_NAME" \
 --description "$BUILD_DESCRIPTION" \
+--url "$BUILD_URL" \
 --state "SUCCESSFUL"

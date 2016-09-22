@@ -4,6 +4,8 @@ set -e
 BASEDIR=$(dirname $0)
 
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
+BUILD_URL="$CDN_URL_BASE/$CDN_URL_SCOPE/registry/"
+
 
 BUILD_KEY="REGISTRY-$GITHEAD_SHORT"
 BUILD_NAME="Registry"
@@ -19,6 +21,7 @@ bbuild \
 --key "$BUILD_KEY" \
 --name "$BUILD_NAME" \
 --description "$BUILD_DESCRIPTION" \
+--url "$BUILD_URL" \
 --state "INPROGRESS"
 
 # Note: unfortunately @atlassian scope is used on the public and private
@@ -71,7 +74,6 @@ cf-invalidate -- $CLOUDFRONT_DISTRIBUTION '/atlaskit/registry/*'
 echo "CDN invalidation (registry) finished."
 
 echo "Post registry build completion status"
-REGISTRY_URL="$CDN_URL_BASE/$CDN_URL_SCOPE/registry/"
 
 bbuild \
 --commit "$BITBUCKET_COMMIT" \
@@ -82,5 +84,5 @@ bbuild \
 --key "$BUILD_KEY" \
 --name "$BUILD_NAME" \
 --description "$BUILD_DESCRIPTION" \
---url "$REGISTRY_URL" \
+--url "$BUILD_URL" \
 --state "SUCCESSFUL"

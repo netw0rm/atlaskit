@@ -1,15 +1,33 @@
 #!/usr/bin/env bash
 set -e
 
-MARKYMD_LOC="`npm bin`/marky-markdown"
 LERNA_LOC="`npm bin`/lerna"
 BASEDIR=$(dirname $0)
-GITHEAD=$(git rev-parse HEAD)
+GITHEAD_SHORT=$(git rev-parse --short HEAD)
+
+BUILD_KEY="DOCS-$GITHEAD_SHORT"
+BUILD_NAME="Docs"
+BUILD_DESCRIPTION="The docs for this pull request"
+
+echo "Post build in progress status"
+bbuild \
+--commit "$BITBUCKET_COMMIT" \
+--repo "$BITBUCKET_REPO_SLUG" \
+--owner "$BITBUCKET_REPO_OWNER" \
+--username "$BITBUCKET_USER" \
+--password "$BITBUCKET_PASSWORD" \
+--key "$BUILD_KEY" \
+--name "$BUILD_NAME" \
+--description "$BUILD_DESCRIPTION" \
+--state "INPROGRESS"
+
+echo "Installing marky-markdown"
+npm install -g marky-markdown@8.1.0
 
 echo "Generating docs HTML output from README.md files..."
 
 rm -rf ../atlaskit-docs
-OUTDIR="../atlaskit-docs/resources/$GITHEAD";
+OUTDIR="../atlaskit-docs/resources/$BITBUCKET_COMMIT";
 mkdir -p $OUTDIR
 export OUTDIR="$OUTDIR"
 $LERNA_LOC exec -- ../../build/bin/generate.readme.html.sh
@@ -30,7 +48,7 @@ zip -0 -r -T $ZIP_FILE ../atlaskit-docs/resources
 
 CDN_PREFIX="pr/docs"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
-AK_PATH_SHA="$AK_PATH/$GITHEAD"
+AK_PATH_SHA="$AK_PATH/$BITBUCKET_COMMIT"
 
 echo "Uploading docs to CDN..."
 java \
@@ -52,7 +70,16 @@ cf-invalidate -- $CLOUDFRONT_DISTRIBUTION "/$AK_PATH_SHA/*"
 echo "CDN invalidation (docs) finished."
 
 echo "Post docs URL to build"
-BB_BUILD_STATUS_URL="https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/commit/$GITHEAD/statuses/build"
 DOCS_URL="$CDN_URL_BASE/$AK_PATH_SHA/"
-GITHEAD_SHORT=$(git rev-parse --short HEAD)
-curl -sS --fail -u $BITBUCKET_USER:$BITBUCKET_PASSWORD -d "{\"key\":\"DOCS-$GITHEAD_SHORT\",\"state\":\"SUCCESSFUL\",\"name\":\"Docs\",\"description\":\"The docs for this pull request\",\"url\":\"$DOCS_URL\"}" -H 'Content-Type: application/json' $BB_BUILD_STATUS_URL
+
+bbuild \
+--commit "$BITBUCKET_COMMIT" \
+--repo "$BITBUCKET_REPO_SLUG" \
+--owner "$BITBUCKET_REPO_OWNER" \
+--username "$BITBUCKET_USER" \
+--password "$BITBUCKET_PASSWORD" \
+--key "$BUILD_KEY" \
+--name "$BUILD_NAME" \
+--description "$BUILD_DESCRIPTION" \
+--url "$DOCS_URL" \
+--state "SUCCESSFUL"

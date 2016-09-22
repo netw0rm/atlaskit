@@ -6,19 +6,18 @@ pipelines:
           script:
             - ./build/bin/last_commit_has_changes.sh || exit 0
             - npm config set progress false
-            - ./build/bin/setup_hosts.sh
+            - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - npm install
-            - run-p -ln "validate/package.json" lint "test/base" "test/browserstack/ci"
-            - npm run test/integration
+            - concurrently --kill-others "npm run validate/package.json" "npm run lint" "npm run test/base" "npm run test/browserstack/ci" "npm run test/integration"
             - npm run release
             - ./build/bin/install.cdntools.sh
-            - run-p -ln "release/registry" "release/announce"
+            - concurrently --kill-others "npm run release/registry" "npm run release/storybooks" "npm run release/announce"
   default:
     - step:
         script:
           - npm config set progress false
-          - ./build/bin/setup_hosts.sh
+          - ./build/bin/setup.sh
           - npm install
           - ./build/bin/install.cdntools.sh
-          - run-p -ln "validate/package.json" lint "test/base" "test/browserstack/ci" "pr/storybook" "pr/docs"
+          - concurrently --kill-others "npm run validate/package.json" "npm run lint" "npm run test/base" "npm run test/browserstack/ci" "npm run pr/storybook" "npm run pr/docs"

@@ -26,6 +26,14 @@ const AllIcons = (props) => (
   </div>
 );
 
+const AbsoluteAllIcons = (props) => (
+  <AllIcons
+    {...props}
+    // eslint-disable-next-line react/prop-types
+    style={Object.assign({ position: 'absolute' }, props.style || {})}
+  />
+);
+
 storiesOf('ak-icon', module)
   .add('All icons', () => <AllIcons />)
   .add('All icons (usage)', () => (
@@ -56,5 +64,16 @@ storiesOf('ak-icon', module)
   ))
   .add('All icons (colored)', () => (
     <AllIcons className={styles.colored} />
+  ))
+  .add('Icons with broken fills (solid parts)', () => (
+    <div>
+      <style>{'body { background: white; }'}</style>
+      <AbsoluteAllIcons
+        style={{ color: 'rgba(0,0,0,0.1)' }}
+      />
+      <AbsoluteAllIcons
+        style={{ color: 'transparent' }}
+      />
+    </div>
   ))
   .add('Animated', () => <AnimationDemo components={reactifiedComponents} />);

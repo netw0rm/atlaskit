@@ -2,9 +2,9 @@
 
 Use lozenges to highlight an item's status for quick recognition. Lozenges can be emphasised and can use color to help convey meanings that users can learn and recognize across our products. Use subtle lozenges by default and in instances where they may dominate the screen, such as in long tables.
 
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-lozenge/docs/standard_lozenge.png)
+![Example lozenge](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-lozenge/docs/standard_lozenge.png)
 
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-lozenge/docs/bold_lozenge.png)
+![Example lozenge](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-lozenge/docs/bold_lozenge.png)
 
 
 ## Try it out

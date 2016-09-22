@@ -2,7 +2,7 @@
 
 They're a simple graphical element that allow multiple panels to be contained within a single window and provide an easy way to switch between views of similar content.
 
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tabs/docs/tabs.gif)
+![Example tabs](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tabs/docs/tabs.gif)
 
 ## Try it out
 

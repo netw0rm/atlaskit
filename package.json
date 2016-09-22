@@ -116,7 +116,7 @@
     "docs/single": "./build/bin/docs.single.sh",
     "postinstall": "./build/bin/postinstall.sh",
     "lint": "eslint --color --format 'node_modules/eslint-friendly-formatter' . --ext .js,.jsx",
-    "pr/artifacts": "npm-run-all -ln --silent 'build/install/cdn-tools' --parallel 'pr/docs' 'pr/storybook'",
+    "pr/artifacts": "npm-run-all -ln 'build/install/cdn-tools' --parallel 'pr/docs' 'pr/storybook'",
     "pr/docs": "./build/bin/generate.readme.html.pr.sh",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "prepublish/single": "./build/bin/prepublish.single.sh",

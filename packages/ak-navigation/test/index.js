@@ -37,8 +37,8 @@ describe('exports', () => {
     navigationEvents.should.be.defined;
     Object.keys(navigationEvents).should.be.deep.equal([
       'linkSelected',
-      'createDrawerOpen',
-      'searchDrawerOpen',
+      'createDrawerSelected',
+      'searchDrawerSelected',
       'open',
       'close',
       'widthChanged',

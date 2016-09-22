@@ -1,5 +1,5 @@
 import ListsPlugin from '../src';
-import { chaiPlugin, makeEditor, doc, p, text, ol, ul, li } from 'ak-editor-test';
+import { chaiPlugin, makeEditor, doc, p, text, ol, ul, li, h1 } from 'ak-editor-test';
 import * as chai from 'chai';
 const { expect } = chai;
 import sinonChai from 'sinon-chai';
@@ -112,6 +112,28 @@ describe('ak-editor-plugin-lists', () => {
       expect(pm.doc).to.deep.equal(doc(ul(li(p('text')))));
       plugin.toggleList('bullet_list');
       expect(pm.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('should make sure that it is enabled when selecting ordered list', () => {
+      const { pm, plugin } = editor(doc(ol(li(p('te{<>}xt')))));
+      const state = plugin.getState();
+
+      expect(state).to.eql({
+        active: true,
+        enabled: true,
+        type: "ordered_list"
+      });
+    });
+
+    it('should be disabled when selecting h1', () => {
+      const { pm, plugin } = editor(doc(h1('te{<>}xt')));
+      const state = plugin.getState();
+
+      expect(state).to.eql({
+        active: false,
+        enabled: false,
+        type: null
+      });
     });
   });
 });

@@ -2,6 +2,8 @@ import { define, vdom, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import 'style!./host.less';
 import Icon from 'ak-editor-icon';
+import AkButton, { APPEARANCE } from 'ak-button';
+import AkButtonGroup from 'ak-button-group';
 
 function insert() {
   return ['mention', 'image']
@@ -27,16 +29,22 @@ export default define('ak-editor-footer', {
     return (
       <div className={classNames}>
         <style>{shadowStyles.toString()}</style>
-        <div className={shadowStyles.locals.actions}>
-          <button
+        <AkButtonGroup className={shadowStyles.locals.actions}>
+          <AkButton
             className={shadowStyles.locals.saveButton}
+            appearance={APPEARANCE.PRIMARY}
             onclick={() => emit(elem, 'save')}
-          >Save</button>
-          <button
+          >
+            Save
+          </AkButton>
+          <AkButton
             className={shadowStyles.locals.cancelButton}
+            appearance={APPEARANCE.SUBTLE}
             onclick={() => emit(elem, 'cancel')}
-          >Cancel</button>
-        </div>
+          >
+            Cancel
+          </AkButton>
+        </AkButtonGroup>
         <div className={shadowStyles.locals.insert}>
           {insert()}
         </div>

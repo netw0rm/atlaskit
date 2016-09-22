@@ -71,6 +71,7 @@ describe(name, () => {
           'jira/logo',
           'projects',
           'question',
+          'radio',
           'search',
         ]);
     });

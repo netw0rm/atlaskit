@@ -16,28 +16,34 @@ export default function toggleIcons(dependencies) {
     render() {
       return (
         <div>
-          {ToggleableIcons.map(([id, Icon]) => (
-            <div key={id}>
-              <h6 style={{ padding: 0, margin: '10px 5px' }}>
-                Click on an icon to see it 'check' and 'uncheck' itself
-              </h6>
+          <h6 style={{ padding: 0, margin: '10px 5px' }}>
+            Click on this icons to see them 'check' and 'uncheck' itselves
+          </h6>
+          <div className={styles.iconContainer}>
+            {ToggleableIcons.map(([id, Icon]) => (
               <Icon
+                key={id}
                 className={this.state.toggleColor ? styles.iconChecked : styles.iconUnchecked}
                 onClick={() => {
                   this.setState({ toggleColor: !this.state.toggleColor });
                 }}
               />
-              <h6 style={{ padding: 0, margin: '10px 5px' }}>
-                Click on an icon to see it 'reverse' itself while staying 'checked'
-              </h6>
+            ))}
+          </div>
+          <h6 style={{ padding: 0, margin: '10px 5px' }}>
+            Click on the icons to see them 'reverse' itself while staying 'checked'
+          </h6>
+          <div className={styles.iconContainer}>
+            {ToggleableIcons.map(([id, Icon]) => (
               <Icon
+                key={id}
                 className={this.state.toggleFill ? styles.iconReverse : styles.iconChecked}
                 onClick={() => {
                   this.setState({ toggleFill: !this.state.toggleFill });
                 }}
               />
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       );
     }

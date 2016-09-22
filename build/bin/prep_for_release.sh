@@ -22,4 +22,3 @@ $DEBUG git fsck --full
 $DEBUG npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
 
 $DEBUG npm install -g lerna-semantic-release@8.0.2
-$DEBUG npm install -g hipchat-msg@0.1.0

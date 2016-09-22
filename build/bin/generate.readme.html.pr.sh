@@ -2,7 +2,6 @@
 set -e
 
 LERNA_LOC="`npm bin`/lerna"
-BASEDIR=$(dirname $0)
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CDN_PREFIX="pr/docs"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"

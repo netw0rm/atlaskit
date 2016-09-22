@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-BASEDIR=$(dirname $0)
-
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
+
 BUILD_URL="$CDN_URL_BASE/$CDN_URL_SCOPE/registry/"
-
-
 BUILD_KEY="REGISTRY-$GITHEAD_SHORT"
 BUILD_NAME="Registry"
 BUILD_DESCRIPTION="The component registry"

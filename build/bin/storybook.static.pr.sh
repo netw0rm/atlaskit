@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-BASEDIR=$(dirname $0)
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 
 BUILD_URL="$CDN_URL_BASE/atlaskit/pr/stories/$BITBUCKET_COMMIT/"

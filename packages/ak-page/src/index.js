@@ -3,13 +3,21 @@ import { prop, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import Navigation, { events as navigationEvents } from 'ak-navigation';
-const { open: navigationOpenEvent, close: navigationCloseEvent } = navigationEvents;
+const {
+  widthChanged: widthChangedEvent,
+} = navigationEvents;
+
+const navigationPadding = 20;
+
+function handleWidthChanged(e, elem) {
+  if (e.target instanceof Navigation) {
+    elem.navigationWidth = e.detail.newWidth;
+  }
+}
 
 export default define('ak-page', {
   render(elem) {
     return (
-      // JSX requires that there only be a single root element.
-      // Incremental DOM doesn't require this.
       <div
         className={classNames({
           [shadowStyles.locals.navigationOpen]: elem.navigationOpen,
@@ -20,6 +28,11 @@ export default define('ak-page', {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
+        <style>{`
+            .${shadowStyles.locals.main} {
+              margin-left: ${elem.navigationWidth + navigationPadding}px;
+            }
+          `}</style>
         <div className={shadowStyles.locals.navigation}>
           <slot name="navigation" />
         </div>
@@ -32,20 +45,12 @@ export default define('ak-page', {
     );
   },
   props: {
-    navigationOpen: prop.boolean({
+    navigationWidth: prop.number({
       attribute: true,
+      default: 0,
     }),
   },
   created(elem) {
-    elem.addEventListener(navigationOpenEvent, (e) => {
-      if (e.target instanceof Navigation) {
-        elem.navigationOpen = true;
-      }
-    });
-    elem.addEventListener(navigationCloseEvent, (e) => {
-      if (e.target instanceof Navigation) {
-        elem.navigationOpen = false;
-      }
-    });
+    elem.addEventListener(widthChangedEvent, (e) => handleWidthChanged(e, elem));
   },
 });

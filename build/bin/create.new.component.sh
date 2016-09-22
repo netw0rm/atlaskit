@@ -36,8 +36,11 @@ LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed 
 
 pushd "packages/$COMP_NAME" > /dev/null
 
-# Make sure our version for the new package is 0.0.0
+# Make sure our version for the new package is 1.0.0
 sed -i '' 's/"version": "\([^"]*\)"/"version": "1.0.0"/' package.json
+
+rm -f README.md
+rm -f CHANGELOG.md
 
 popd > /dev/null
 

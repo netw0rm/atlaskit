@@ -20,4 +20,4 @@ pipelines:
           - ./build/bin/setup.sh
           - npm install
           - ./build/bin/install.cdntools.sh
-          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/storybook" "pr/docs"
+          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "test/integration" "pr/storybook" "pr/docs"

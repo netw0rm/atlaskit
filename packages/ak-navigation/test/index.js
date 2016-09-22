@@ -55,7 +55,7 @@ describe('ak-navigation detached', () => {
   });
   describe('when it becomes attached', () => {
     const component = new AkNavigation();
-    it('fires an "${navigationOpenEvent}" event when attached', (done) => {
+    it('fires an "${widthChangedEvent}" event when attached', (done) => {
       let called = false;
       component.addEventListener(widthChangedEvent, (e) => {
         expect(e.detail.oldWidth).to.equal(null);
@@ -99,7 +99,17 @@ describe('ak-navigation', () => {
     expect(called).to.equal(true);
   });
 
-  it(`fires an "${navigationCloseEvent}" event when closing`, (done) => {
+  it(`fires an "${navigationCloseEvent}" event when closing`, () => {
+    component.open = true;
+    let called = false;
+    component.addEventListener(navigationCloseEvent, () => {
+      called = true;
+    });
+    component.open = false;
+    expect(called).to.equal(true);
+  });
+
+  it(`fires an "${widthChangedEvent}" event when closing`, (done) => {
     component.open = true;
     const originalWidth = component.width;
     component.addEventListener(widthChangedEvent, (e) => {
@@ -108,6 +118,17 @@ describe('ak-navigation', () => {
       done();
     });
     component.open = false;
+  });
+
+  it(`fires an "${widthChangedEvent}" event when containerHidden changes`, (done) => {
+    component.open = true;
+    component.containerHidden = true;
+    const originalWidth = component.width;
+    component.addEventListener(widthChangedEvent, (e) => {
+      expect(e.detail.newWidth).to.not.equal(originalWidth);
+      done();
+    });
+    component.containerHidden = false;
   });
 
   it('toggling does nothing by default while attached', (done) => {

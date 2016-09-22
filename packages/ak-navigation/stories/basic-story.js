@@ -1,6 +1,7 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import akNavigation from '../src/index';
+import TogglingSidebar from './TogglingSidebar';
 import akPage from 'ak-page';
 import 'ak-icon';
 import 'ak-avatar';
@@ -13,39 +14,7 @@ const AkNavigation = reactify(akNavigation);
 
 const AkPage = reactify(akPage);
 
-// TODO: move this in its own file - can potentially be re-used by ak-page as well
-const TogglingSidebar = React.createClass({ // eslint-disable-line react/prefer-es6-class
-  propTypes: {
-    children: React.PropTypes.oneOfType([
-      React.PropTypes.arrayOf(React.PropTypes.node),
-      React.PropTypes.node,
-    ]),
-  },
-  getInitialState() {
-    return { open: true };
-  },
-  componentDidMount() {
-    this.timer = setInterval(this.toggle, 3000);
-  },
-  componentWillUnmount() {
-    window.clearInterval(this.timer);
-  },
-  toggle() {
-    this.setState({ open: !this.state.open });
-  },
-  render() {
-    return (<AkNavigation
-      {...this.props}
-      onLinkSelected={action('link selected')}
-      onClose={action('close')}
-      onOpen={action('open')}
-      open={this.state && this.state.open}
-      collapsible
-    >
-      {this.props.children}
-    </AkNavigation>);
-  },
-});
+
 const containerLogo = require('url!./nucleus.png');
 const userAvatar = require('url!./emma.jpg');
 
@@ -113,9 +82,8 @@ storiesOf(name, module)
   .add('empty ak-navigation that is open and not collapsible', () => (
     <AkNavigation open />
   ))
-  .add('ak-navigation with the lot', () => (
+  .add('with the lot', () => (
     <AkPage navigationOpen>
-      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
         open
@@ -142,9 +110,8 @@ storiesOf(name, module)
       </div>
     </AkPage>
   ))
-  .add('ak-navigation many navigation links', () => (
+  .add('many navigation links', () => (
     <AkPage navigationOpen>
-      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
         open
@@ -174,19 +141,18 @@ storiesOf(name, module)
       </div>
     </AkPage>
   ))
-  .add('ak-navigation with a long container name', () => (
+  .add('with a long container name', () => (
     <AkNavigation collapsible open containerName="Antidisestablishmentterianism" />
   ))
-  .add('ak-navigation with a container name that spans two lines', () => (
+  .add('with a container name that spans two lines', () => (
     <AkNavigation
       collapsible
       open
       containerName="Super duper cloud purchasing experience platform team"
     />
   ))
-  .add('ak-navigation with no container logo', () => (
+  .add('with no container logo', () => (
     <AkPage navigationOpen>
-      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
         open
@@ -211,9 +177,8 @@ storiesOf(name, module)
       </div>
     </AkPage>
   ))
-  .add('ak-navigation with no container logo or name', () => (
+  .add('with no container logo or name', () => (
     <AkPage navigationOpen>
-      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
         collapsible
@@ -238,9 +203,8 @@ storiesOf(name, module)
       </div>
     </AkPage>
   ))
-  .add('ak-navigation that starts closed', () => (
+  .add('that starts closed', () => (
     <AkPage>
-      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
         collapsible
@@ -256,9 +220,8 @@ storiesOf(name, module)
       </div>
     </AkPage>
   ))
-  .add('ak-navigation with a hidden container', () => (
+  .add('with a hidden container', () => (
     <AkPage>
-      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
         containerHidden
@@ -270,13 +233,13 @@ storiesOf(name, module)
         <NavigationLinks />
       </AkNavigation>
       <div>
+        The container should toggle between visible and hidden
         <Lorem count="30" />
       </div>
     </AkPage>
   ))
-  .add('ak-navigation with a square container logo', () => (
+  .add('with a square container logo', () => (
     <AkPage>
-      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
       <AkNavigation
         slot="navigation"
         containerLogo={userAvatar}
@@ -290,11 +253,43 @@ storiesOf(name, module)
       </div>
     </AkPage>
   ))
-  .add('ak-navigation that toggles itself', () => (
+  .add('with a square container logo', () => (
     <AkPage>
-      <style dangerouslySetInnerHTML={{ __html: 'body { margin: 0px }' }} />
+      <AkNavigation
+        slot="navigation"
+        containerLogo={userAvatar}
+        containerName="Your profile"
+        collapsible
+      >
+        <NavigationLinks />
+      </AkNavigation>
+      <div>
+        <Lorem count="30" />
+      </div>
+    </AkPage>
+  ))
+  .add('that toggles the open state', () => (
+    <AkPage>
       <TogglingSidebar
         slot="navigation"
+        propToToggle="open"
+        {...sharedProps}
+      >
+        <ak-icon slot="global-home" glyph="jira" />
+        <ak-icon slot="global-search" glyph="search" />
+        <ak-icon slot="global-create" glyph="create" />
+        <NavigationLinks />
+      </TogglingSidebar>
+      <div>
+        <Lorem count="30" />
+      </div>
+    </AkPage>
+  ))
+  .add('that toggles the containerHidden state', () => (
+    <AkPage>
+      <TogglingSidebar
+        slot="navigation"
+        propToToggle="containerHidden"
         {...sharedProps}
       >
         <ak-icon slot="global-home" glyph="jira" />

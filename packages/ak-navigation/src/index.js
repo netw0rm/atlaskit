@@ -54,6 +54,15 @@ function emitWidthChangedEvent(elem, oldWidth, newWidth) {
   });
 }
 
+function recomputeWidth(elem) {
+  const newWidth = elem.open ? getExpandedWidth(elem) : getCollapsedWidth(elem);
+  const oldWidth = elem.width;
+  elem.width = newWidth;
+  if (newWidth !== oldWidth) {
+    emitWidthChangedEvent(elem, oldWidth, newWidth);
+  }
+}
+
 export default define('ak-navigation', {
   render(elem) {
     return (
@@ -162,12 +171,7 @@ export default define('ak-navigation', {
         }
         elem.createDrawerOpen = elem.open && elem.createDrawerOpen;
         elem.searchDrawerOpen = elem.open && elem.searchDrawerOpen;
-        const newWidth = elem.open ? getExpandedWidth(elem) : getCollapsedWidth(elem);
-        const oldWidth = elem.width;
-        elem.width = newWidth;
-        if (newWidth !== oldWidth) {
-          emitWidthChangedEvent(elem, oldWidth, newWidth);
-        }
+        recomputeWidth(elem);
       },
     }),
     containerName: prop.string({
@@ -187,6 +191,9 @@ export default define('ak-navigation', {
     }),
     containerHidden: prop.boolean({
       attribute: true,
+      set(elem) {
+        recomputeWidth(elem);
+      },
     }),
     collapsible: prop.boolean({
       attribute: true,

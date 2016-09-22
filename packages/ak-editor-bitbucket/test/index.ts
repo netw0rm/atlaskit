@@ -1,27 +1,12 @@
 import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations, waitUntil, getShadowRoot  } from 'akutil-common-test';
-import { symbols } from 'skatejs';
+import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 
 chai.use(sinonChai);
 const { expect } = chai;
-
-const RewireSpy = () => {
-  const resetAfter: any[] = [];
-
-  afterEach(() => resetAfter.map(({ module, name }) => module.__ResetDependency__(name)));
-
-  return (module: any, name: string) => {
-    const func = module.__GetDependency__(name);
-    const spy = sinon.spy(func);
-    module.__Rewire__(name, spy);
-    resetAfter.push({ module, name });
-    return spy;
-  }
-};
-
 
 function activateEditorByClicking(editor: AkEditorBitbucket) : void {
   const inputEl = getShadowRoot(editor).querySelector('* > input');
@@ -29,38 +14,22 @@ function activateEditorByClicking(editor: AkEditorBitbucket) : void {
   emit(inputEl, 'click');
 }
 
-function waitForEditorToBeReady(editor: AkEditorBitbucket) : Promise<boolean> {
-  return new Promise((resolve, reject) => {
+function buildExpandedEditor(fixture : any) : Promise<AkEditorBitbucket> {
+  return new Promise(function(resolve, reject) {
     const successFn = () => {
       clearTimeout(failTimer);
-      resolve(editor);
+      resolve(fixture.firstChild);
     };
 
     const failTimer = setTimeout(() => {
-      editor.removeEventListener('ready', successFn);
+      fixture.removeEventListener('ready', successFn);
       reject('the editor didn\'t become ready in 1.5s');
     }, 1500);
 
-    editor.addEventListener('ready', successFn, { once: true });
+    fixture.addEventListener('ready', successFn, { once: true });
+    fixture.innerHTML = `<ak-editor-bitbucket expanded></ak-editor-bitbucket>`;
   });
 }
-
-function buildExpandedEditor(fixture : any) : Promise<AkEditorBitbucket> {
-  return new Promise(function(resolve) {
-    fixture.innerHTML = `<ak-editor-bitbucket></ak-editor-bitbucket>`;
-
-    afterMutations(
-      () => {
-        // TODO: this should not be required when using "expanded" attribute
-        activateEditorByClicking(fixture.firstChild);
-        waitForEditorToBeReady(fixture.firstChild).then(() => {
-          resolve(fixture.firstChild);
-        });
-      }
-    );
-  });
-}
-
 
 describe('ak-editor-bitbucket', () => {
   const fixture = fixtures();
@@ -142,9 +111,6 @@ describe('ak-editor-bitbucket', () => {
 
       editor.defaultValue = content;
 
-      // TODO: Delete this after merging a different PR.
-      editor._justToggledExpansion = true;
-
       afterMutations(
         () => { editor.expanded = true; },
         () => {
@@ -190,7 +156,6 @@ describe('ak-editor-bitbucket', () => {
           'ak-editor-toolbar-hyperlink',
           'ak-editor-toolbar-text-formatting'
         ].forEach((selector) => {
-          // debugger;
           expect(getShadowRoot(editor).querySelector(selector)).to.not.be.null;
         });
       });
@@ -201,7 +166,7 @@ describe('ak-editor-bitbucket', () => {
         const bt = getShadowRoot(editor).querySelector('ak-editor-toolbar-block-type');
         expect(bt).to.not.be.null;
 
-        // on Firefox, shadowRoot is not available right away so we have to wait for it
+        // on browsers without native ShadowDOM (i.e. Firefox, Safari), shadowRoot is not available right away
         return waitUntil(() => {
           return !!getShadowRoot(bt);
         }).then(() => {

@@ -231,6 +231,7 @@ class AkEditorBitbucket extends Component {
         onSave={elem._toggleExpansion}
         onCancel={elem._toggleExpansion}
         onInsertimage={elem._insertImage}
+        onInsertmention={elem._insertMention}
       />
     </div>);
 
@@ -334,6 +335,14 @@ class AkEditorBitbucket extends Component {
     for (const pm of maybe(this._pm)) {
       this.imageUploader(false, (attr: ImageUploadOptions) =>
         ImageUploadPlugin.get(pm).addImage(attr));
+    }
+  }
+
+  _insertMention(): void {
+    for (const pm of maybe(this._pm)) {
+      const node = pm.schema.node('mention', { id: '' });
+      pm.tr.replaceSelection(node).apply();
+      pm.focus();
     }
   }
 

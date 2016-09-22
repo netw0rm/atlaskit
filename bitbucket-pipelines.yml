@@ -5,19 +5,18 @@ pipelines:
       - step:
           script:
             - ./build/bin/last_commit_has_changes.sh || exit 0
-            - npm config set progress false
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - npm install
-            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "test/integration"
+            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci"
+            - npm run test/integration
             - npm run release
             - ./build/bin/install.cdntools.sh
             - run-p -ln "release/registry" "release/storybooks" "release/announce"
   default:
     - step:
         script:
-          - npm config set progress false
           - ./build/bin/setup.sh
           - npm install
           - ./build/bin/install.cdntools.sh
-          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "test/integration" "pr/storybook" "pr/docs"
+          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/storybook" "pr/docs"

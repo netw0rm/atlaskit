@@ -124,7 +124,9 @@ export default define('ak-navigation', {
                   src={elem.containerLogo || false}
                 />
               </a>
-              <span className={shadowStyles.locals.containerNameText}>{elem.containerName}</span>
+              <a href={elem.containerHref} className={shadowStyles.locals.containerNameText}>
+                {elem.containerName}
+              </a>
             </div> : ''}
             <div className={shadowStyles.locals.containerLinks}>
               <slot />

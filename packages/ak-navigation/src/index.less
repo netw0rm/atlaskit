@@ -90,7 +90,6 @@
   }
 
   .container-name {
-    color: @ak-navigation-container-name-color;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -98,12 +97,17 @@
   }
 
   .container-name-text {
+    color: @ak-navigation-container-name-color;
     width: @container-link-text-expanded-width;
     font-size: @font-size;
     line-height: @font-size;
     max-height: @font-size * 2;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .container-links {

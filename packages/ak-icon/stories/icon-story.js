@@ -15,12 +15,8 @@ const reactifiedComponents = req.keys().reduce((prev, file) => {
   return prev;
 }, {});
 
-const Checkbox = req('./checkbox.js').default;
-const ReactCheckbox = reactify(Checkbox);
-const Radio = req('./radio.js').default;
-const ReactRadio = reactify(Radio);
-
-const ToggleableIcons = [['checkbox', ReactCheckbox], ['radio', ReactRadio]];
+const ToggleableIcons = Object.keys(reactifiedComponents).filter((key) => (
+  key === './checkbox.js' || key === './radio.js')).map((key) => [key, reactifiedComponents[key]]);
 
 const ToggleIcons = toggleIcons({
   React,

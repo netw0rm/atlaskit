@@ -12,6 +12,12 @@ const rimraf = require('rimraf');
 const minilog = require('minilog');
 const { name } = require('../package.json');
 const log = minilog('ak-icon/gen-js');
+
+if (process.env.CLI) {
+  minilog.suggest.defaultResult = false;
+  minilog.suggest.clear().allow('ak-icon/gen-js', 'warn');
+}
+
 minilog.enable();
 
 const fileEnding = '.svg';
@@ -47,24 +53,6 @@ async.waterfall([
   function workOnIcons(iconPaths, finishIconWork) {
     log.debug('starting work on icons');
 
-    const svgo = new SVGO({
-      multipass: true,
-      plugins: [
-        {
-          rewriteXmlnsLink: {
-            type: 'perItem',
-            fn: (item) => {
-              item.eachAttr((attr) => {
-                if (attr.prefix && attr.local) {
-                  item.removeAttr(attr.name);
-                }
-              });
-            },
-          },
-        },
-      ],
-    });
-
     async.eachSeries(iconPaths, (iconRelativePathToSrc, callback) => {
       const iconRelativePathToSrcNoExt = iconRelativePathToSrc
         .replace(new RegExp(`\\${fileEnding}$`), '');
@@ -77,6 +65,45 @@ async.waterfall([
         },
         function optimizeSvg(data, cb) {
           log.debug(`"${iconRelativePathToSrc}": optimizing SVG`);
+
+          const knownItems = [];
+          const svgo = new SVGO({
+            multipass: true,
+            plugins: [
+              'removeTitle',
+              'cleanupIDs',
+              'collapseGroups',
+              {
+                rewriteXmlnsLink: {
+                  type: 'perItem',
+                  fn: (item) => {
+                    item.eachAttr((attr) => {
+                      if (attr.prefix && attr.local) {
+                        item.removeAttr(attr.name);
+                      }
+                    });
+                  },
+                },
+              },
+              {
+                warnOnDefinedFill: {
+                  type: 'perItem',
+                  fn: (item) => {
+                    if (item.hasAttr('fill')) {
+                      const { value: fill } = item.attr('fill');
+                      if (knownItems.indexOf(fill) !== -1) {
+                        return;
+                      }
+                      knownItems.push(fill);
+                      if (fill !== 'currentColor' && fill !== 'none') {
+                        log.warn(`"${iconRelativePathToSrc}": has a fill of "${fill}"`);
+                      }
+                    }
+                  },
+                },
+              },
+            ],
+          });
 
           svgo.optimize(data, (result) => {
             if (result.info.width > maxWidth) {

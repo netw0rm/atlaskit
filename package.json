@@ -145,7 +145,7 @@
     "test/single/watch": "./build/bin/test.single.watch.sh",
     "validate": "npm ls >/dev/null && ./node_modules/.bin/lerna exec -- npm ls >/dev/null",
     "validate/lint-changed": "./build/bin/lint-changed.sh",
-    "validate/package.json": "pjv && ./node_modules/.bin/lerna exec -- pjv",
+    "validate/package.json": "pjv -q && ./node_modules/.bin/lerna exec -- pjv -q",
     "webpack/single": "./build/bin/webpack.single.sh"
   }
 }

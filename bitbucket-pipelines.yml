@@ -27,4 +27,5 @@ pipelines:
           - npm config set progress false
           - ./build/bin/setup_hosts.sh
           - npm install
-          - PATH="`npm bin`:$PATH" FORCE_COLOR=1 run-p -l -n "validate/package.json" lint "test/base" "test/browserstack/ci" "pr/storybook" "pr/docs"
+          - export FORCE_COLOR=1
+          - PATH="`npm bin`:$PATH" run-p -l -n "validate/package.json" lint "test/base" "test/browserstack/ci" "pr/storybook" "pr/docs"

@@ -1,6 +1,6 @@
 import React from 'react';
 import { action } from '@kadira/storybook';
-import akNavigation from '../src/index';
+import akNavigation from '../src';
 import reactify from 'akutil-react';
 const AkNavigation = reactify(akNavigation);
 

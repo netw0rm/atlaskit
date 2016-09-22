@@ -5,6 +5,7 @@ import React from 'react'; // eslint-disable-line no-unused-vars
 import reactify from 'akutil-react';
 import { name } from '../package.json';
 import styles from 'style!./styles.less';
+import toggleIcons from './ToggleIcons';
 
 const req = require.context('../glyph', true, /^.*\.js/);
 const reactifiedComponents = req.keys().reduce((prev, file) => {
@@ -13,6 +14,16 @@ const reactifiedComponents = req.keys().reduce((prev, file) => {
   prev[file] = ReactIcon;
   return prev;
 }, {});
+
+const Checkbox = req('./checkbox.js').default;
+const ReactCheckbox = reactify(Checkbox);
+const ToggleableIcons = [['checkbox', ReactCheckbox]];
+
+const ToggleIcons = toggleIcons({
+  React,
+  ToggleableIcons,
+});
+
 
 storiesOf('ak-icon', module)
   .add('All icons', () => (
@@ -25,6 +36,7 @@ storiesOf('ak-icon', module)
       {Object.entries(reactifiedComponents).map(([key, Icon]) => <Icon key={key} />)}
     </div>
   ))
+  .add('Two-color icons', () => <ToggleIcons />)
   .add('All icons (usage)', () => (
     <table>
       <thead>

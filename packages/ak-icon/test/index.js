@@ -57,7 +57,6 @@ describe(name, () => {
           'bitbucket/teams',
           'bitbucket/wiki',
 
-          'checkbox-select',
           'checkbox',
 
           'confluence/calendar',

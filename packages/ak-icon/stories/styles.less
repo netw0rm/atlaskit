@@ -1,11 +1,13 @@
 @import '~akutil-shared-styles/src/colors.less';
 
-.icon-container {
+.container {
   display: flex;
   flex-wrap: wrap;
+  & > * {
+    margin: 10px;
+  }
 }
 
-.colored-icon-container {
-  .icon-container();
+.colored {
   color: @ak-color-R500;
 }

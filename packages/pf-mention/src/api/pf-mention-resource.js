@@ -139,7 +139,7 @@ class MentionResource extends AbstractMentionResource {
 
   /**
    *
-   * @param config = {
+   * @param {Object} config = {
    *   url: string (required), // the base url of the mentions service
    *   securityProvider: function (required),
    *   a function returning an object with headers and/or params, e.g.

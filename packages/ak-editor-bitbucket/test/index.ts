@@ -9,7 +9,7 @@ chai.use(sinonChai);
 const { expect } = chai;
 
 function activateEditorByClicking(editor: AkEditorBitbucket) : void {
-  const inputEl = getShadowRoot(editor).querySelector('* > input');
+  const inputEl = getShadowRoot(editor).querySelector('input');
   expect(inputEl).to.not.be.null;
   emit(inputEl, 'click');
 }

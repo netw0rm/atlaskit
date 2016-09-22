@@ -12,3 +12,12 @@
 .colored {
   color: @ak-color-R500;
 }
+
+.boxes {
+  & > * {
+    width: @max-width;
+    height: @max-height;
+    background: white;
+    overflow: hidden;
+  }
+}

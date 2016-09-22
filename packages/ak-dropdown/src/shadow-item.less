@@ -15,36 +15,60 @@
 
     &:hover {
       background-color: @ak-dropdown-background-hover-color;
+
+      .itemLeftPosition {
+        color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+        fill: transparent;
+      }
+
+      &.selectedWithIcon {
+        .itemLeftPosition {
+          color: @ak-color-B50;
+          fill: @ak-color-N700;
+        }
+      }
     }
 
     &:active {
       background-color: @ak-dropdown-background-active-color;
       color: @ak-dropdown-font-active-color;
 
-      ak-icon,
-      .ak-icon {
-        color: @ak-dropdown-icon-color;
+      .itemLeftPosition {
+        color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+        fill: transparent;
       }
 
-      &.selected,
       &.selectedWithIcon {
-        ak-icon,
-        .ak-icon {
-          color: @ak-dropdown-icon-color;
+        .itemLeftPosition {
+          color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+          fill: @ak-color-N700;
         }
       }
     }
 
-    ak-icon,
-    .ak-icon {
-      color: @ak-dropdown-icon-color;
+    .itemLeftPosition {
+      color: @ak-color-N400;
+      fill: @ak-color-N400;
     }
 
-    &.selected,
     &.selectedWithIcon {
-      ak-icon,
-      .ak-icon {
-        color: @ak-dropdown-icon-reverse-color;
+      .itemLeftPosition {
+        color: @ak-color-B50;
+        fill: @ak-color-N700;
+      }
+    }
+  }
+
+  &.disabled {
+    .itemLeftPosition {
+      color: @ak-color-N600;
+      fill: transparent;
+    }
+
+    &.selectedWithIcon {
+      .itemLeftPosition {
+        color: @ak-color-N600;
+        fill: @ak-color-N700;
       }
     }
   }

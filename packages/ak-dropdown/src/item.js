@@ -60,7 +60,7 @@ function renderLeftSlot(elem) {
 function renderCheckboxIfNeeded(elem) {
   if (elem.checkbox) {
     return (<div className={shadowItemStyles.locals.itemLeftPosition}>
-      <ak-icon glyph={elem.selected ? 'checkbox-select' : 'checkbox'} />
+      <ak-icon-checkbox />
     </div>);
   }
   return null;
@@ -69,7 +69,7 @@ function renderCheckboxIfNeeded(elem) {
 function renderRadioIfNeeded(elem) {
   if (elem.radio) {
     return (<div className={shadowItemStyles.locals.itemLeftPosition}>
-      <ak-icon glyph={elem.selected ? 'radio-select' : 'radio'} />
+      <ak-icon-radio />
     </div>);
   }
   return null;

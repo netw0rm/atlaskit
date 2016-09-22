@@ -76,4 +76,11 @@ storiesOf('ak-icon', module)
       />
     </div>
   ))
+  .add('Icons that are too big (red parts)', () => (
+    <div>
+      <style>{'body { background: white; }'}</style>
+      <AbsoluteAllIcons className={styles.colored} />
+      <AbsoluteAllIcons className={styles.boxes} />
+    </div>
+  ))
   .add('Animated', () => <AnimationDemo components={reactifiedComponents} />);

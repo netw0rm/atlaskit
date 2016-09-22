@@ -2,6 +2,8 @@ import { Component } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
+import fileToScope from '../src/fileToScope';
+import pathToDashed from '../src/pathToDashed';
 
 // This is an anti-pattern and a special case here as we auto-generate the exports
 // and need to make sure that the single ones align to the bundled ones.
@@ -10,11 +12,6 @@ import bundle from '../dist/bundle';
 
 chai.use(chaiAsPromised);
 chai.should();
-
-function fileToScope(file) {
-  return file.replace(/^\.\//, '').replace(/\.js$/, '');
-}
-
 
 // NOTE context change (../glyph) is a breaking change, as the exports change
 const req = require.context('../glyph', true, /^.*\.js/);
@@ -83,7 +80,7 @@ describe(name, () => {
 
   it('should be possible to create the components', () => {
     Object.keys(components).forEach((scope) => {
-      const iconName = scope.split('/').join('-');
+      const iconName = pathToDashed(scope);
       const Icon = components[scope];
       const component = new Icon();
 

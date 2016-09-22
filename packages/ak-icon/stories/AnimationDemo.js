@@ -1,6 +1,7 @@
 import { vdom } from 'skatejs';
 import sample from 'lodash.sample';
 import React from 'react';
+import styles from './styles.less';
 
 export default class AnimationDemo extends React.Component {
   constructor(props) {
@@ -48,7 +49,7 @@ export default class AnimationDemo extends React.Component {
           ref={(elem) => (this.checkbox = elem)}
         /> <label htmlFor="animate">Animate</label>
         <hr />
-        <div>
+        <div className={styles.locals.container}>
           {this.randomIcon()}
           {this.randomIcon()}
           {this.randomIcon()}

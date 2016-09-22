@@ -41,7 +41,7 @@ describe('Facade Input', () => {
     setTimeout(() => {
       expect(syncedVal).to.equal('barbaz');
       done();
-    }, 100);
+    }, 34);
   });
 
   it('should be removed when marked for removal', (done) => {
@@ -61,7 +61,7 @@ describe('Facade Input', () => {
       expect(fInput.removed).to.be.true;
       expect(document.querySelector('.facade-input')).to.be.null;
       done();
-    }, 100);
+    }, 34);
   });
 
   it('should be possible to attach mulitple sync functions', (done) => {
@@ -91,6 +91,6 @@ describe('Facade Input', () => {
       expect(syncedVal2).to.equal('barbaz');
       expect(syncCallCount).to.equal(2);
       done();
-    }, 100);
+    }, 34);
   });
 });

@@ -9,23 +9,20 @@ pipelines:
             - ./build/bin/setup_hosts.sh
             - ./build/bin/prep_for_release.sh
             - npm install
-            - npm run validate/package.json
-            - npm run lint
-            - npm run test/base
-            - npm run test/browserstack/ci
+            - run-p -ln "validate/package.json" lint "test/base" "test/browserstack/ci"
             - npm run storybook& # runs in background
             - STORYBOOK_PID=$!
             - PATH="`npm bin`:$PATH" wait-on -d 20000 -i 500 -t 120000 http-get://0.0.0.0:9001/ # give storybook 20 seconds, before checking every half second for a total of 2 minutes max if it is up
             - npm run test/integration/browserstack
             - kill $STORYBOOK_PID
             - npm run release
-            - npm run release/registry
-            - npm run release/announce
+            - ./build/bin/install.cdntools.sh
+            - run-p -ln "release/registry" "release/announce"
   default:
     - step:
         script:
           - npm config set progress false
           - ./build/bin/setup_hosts.sh
           - npm install
-          - export FORCE_COLOR=1
-          - PATH="`npm bin`:$PATH" run-p -l -n "validate/package.json" lint "test/base" "test/browserstack/ci" "pr/storybook" "pr/docs"
+          - ./build/bin/install.cdntools.sh
+          - run-p -ln "validate/package.json" lint "test/base" "test/browserstack/ci" "pr/storybook" "pr/docs"

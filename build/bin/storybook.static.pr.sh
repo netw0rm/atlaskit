@@ -4,8 +4,6 @@ set -e
 BASEDIR=$(dirname $0)
 GITHEAD=$(git rev-parse HEAD)
 
-$BASEDIR/_install_cdn_tools.sh
-
 echo "Building storybooks"
 mkdir -p ../atlaskit-stories
 npm run storybook/static -- -o stories/$GITHEAD

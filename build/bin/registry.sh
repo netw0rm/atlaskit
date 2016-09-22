@@ -32,8 +32,6 @@ popd > /dev/null
 rm -f ../ak-registry-cdn.zip
 zip -0 -r -T ../ak-registry-cdn.zip ../atlaskit-registry/resources
 
-$BASEDIR/_install_cdn_tools.sh
-
 # Upload to CDN
 echo "Uploading registry to CDN..."
 java \

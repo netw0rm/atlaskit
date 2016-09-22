@@ -6,8 +6,6 @@ LERNA_LOC="`npm bin`/lerna"
 BASEDIR=$(dirname $0)
 GITHEAD=$(git rev-parse HEAD)
 
-$BASEDIR/_install_cdn_tools.sh
-
 echo "Generating docs HTML output from README.md files..."
 
 rm -rf ../atlaskit-docs

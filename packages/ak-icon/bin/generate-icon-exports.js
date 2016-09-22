@@ -70,6 +70,9 @@ async.waterfall([
           const svgo = new SVGO({
             multipass: true,
             plugins: [
+              'removeTitle',
+              'cleanupIDs',
+              'collapseGroups',
               {
                 rewriteXmlnsLink: {
                   type: 'perItem',

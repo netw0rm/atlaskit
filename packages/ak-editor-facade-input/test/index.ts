@@ -21,7 +21,7 @@ describe('Facade Input', () => {
     });
 
     const elem = document.querySelector('.facade-input');
-    expect((elem as HTMLInputElement).value).to.equal('foo');
+    expect((elem as HTMLInputElement)).to.have.property('value', 'foo');
   });
 
   it('should call the sync function when theres a user input', (done) => {

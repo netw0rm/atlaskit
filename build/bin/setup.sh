@@ -22,4 +22,4 @@ echo "github.com,131.103.20.168 ssh-rsa $GH_KEY" >> /root/.ssh/known_hosts
 echo "github.com,192.30.252.130 ssh-rsa $GH_KEY" >> /root/.ssh/known_hosts
 
 npm install -g bitbucket-build-status@1.0.1
-npm install -g concurrently@3.0.0-rc1
+npm install -g npm-run-all@3.1.0

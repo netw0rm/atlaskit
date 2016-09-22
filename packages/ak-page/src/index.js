@@ -7,17 +7,17 @@ const {
   widthChanged: widthChangedEvent,
 } = navigationEvents;
 
+const navigationPadding = 20;
+
 function handleWidthChanged(e, elem) {
   if (e.target instanceof Navigation) {
-    elem.navigationWidth = e.detail.width;
+    elem.navigationWidth = e.detail.newWidth;
   }
 }
 
 export default define('ak-page', {
   render(elem) {
     return (
-      // JSX requires that there only be a single root element.
-      // Incremental DOM doesn't require this.
       <div
         className={classNames({
           [shadowStyles.locals.navigationOpen]: elem.navigationOpen,
@@ -30,7 +30,7 @@ export default define('ak-page', {
         <style>{shadowStyles.toString()}</style>
         <style>{`
             .${shadowStyles.locals.main} {
-              margin-left: ${elem.navigationWidth + 20}px;
+              margin-left: ${elem.navigationWidth + navigationPadding}px;
             }
           `}</style>
         <div className={shadowStyles.locals.navigation}>
@@ -47,7 +47,7 @@ export default define('ak-page', {
   props: {
     navigationWidth: prop.number({
       attribute: true,
-      default: 280,
+      default: 0,
     }),
   },
   created(elem) {

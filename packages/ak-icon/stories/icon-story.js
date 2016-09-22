@@ -5,7 +5,7 @@ import React from 'react'; // eslint-disable-line no-unused-vars
 import reactify from 'akutil-react';
 import { name } from '../package.json';
 import styles from 'style!./styles.less';
-import toggleIcons from './ToggleIcons';
+import ToggleIcons from './ToggleIcons';
 import classnames from 'classnames';
 import fileToScope from '../src/fileToScope';
 import pathToDashed from '../src/pathToDashed';
@@ -18,15 +18,10 @@ const reactifiedComponents = req.keys().reduce((prev, file) => {
   return prev;
 }, {});
 
-const ToggleableIcons = Object
+const toggleableIcons = Object
   .keys(reactifiedComponents)
   .filter((key) => (key === './checkbox.js' || key === './radio.js'))
   .map((key) => [key, reactifiedComponents[key]]);
-
-const ToggleIcons = toggleIcons({
-  React,
-  ToggleableIcons,
-});
 
 const AllIcons = (props) => (
   // eslint-disable-next-line react/prop-types
@@ -68,5 +63,5 @@ storiesOf('ak-icon', module)
   .add('All icons (colored)', () => (
     <AllIcons className={styles.colored} />
   ))
-  .add('Two-color icons', () => <ToggleIcons />)
+  .add('Two-color icons', () => <ToggleIcons icons={toggleableIcons} />)
   .add('Animated', () => <AnimationDemo components={reactifiedComponents} />);

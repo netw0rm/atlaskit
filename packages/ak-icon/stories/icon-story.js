@@ -1,75 +1,54 @@
 import { storiesOf } from '@kadira/storybook';
 import { vdom } from 'skatejs';
-import React from 'react';
+import AnimationDemo from './AnimationDemo';
+import React from 'react'; // eslint-disable-line no-unused-vars
 import reactify from 'akutil-react';
-import IconComponent, { glyphs } from '../src';
+import { name } from '../package.json';
+import styles from 'style!./styles.less';
 
-const Icon = reactify(IconComponent);
+const req = require.context('../glyph', true, /^.*\.js/);
+const reactifiedComponents = req.keys().reduce((prev, file) => {
+  const Icon = req(file).default;
+  const ReactIcon = reactify(Icon);
+  prev[file] = ReactIcon;
+  return prev;
+}, {});
 
 storiesOf('ak-icon', module)
   .add('All icons', () => (
-    <div>
-      {glyphs.map((glyph) => <Icon key={glyph} glyph={glyph} />)}
+    <div className={styles.iconContainer}>
+      {Object.entries(reactifiedComponents).map(([key, Icon]) => <Icon key={key} />)}
     </div>
   ))
-  .add('Animated', () => {
-    class Demo extends React.Component {
-      constructor(props) {
-        super(props);
-        this.toggleAnimation = this.toggleAnimation.bind(this);
-      }
-
-      randomIcon() {
-        return glyphs[Math.floor(Math.random() * glyphs.length)];
-      }
-
-      startAnimating() {
-        this.timer = setInterval(() => this.forceUpdate(), 300);
-      }
-
-      stopAnimating() {
-        clearInterval(this.timer);
-      }
-
-      toggleAnimation(e) {
-        if (e.target.checked) {
-          this.startAnimating();
-        } else {
-          this.stopAnimating();
-        }
-      }
-
-      componentDidMount() {
-        this.startAnimating();
-        this.checkbox.checked = true;
-      }
-
-      componentWillUnmount() {
-        this.stopAnimating();
-      }
-
-      render() {
-        return (
-          <div>
-            <Icon glyph={this.randomIcon()} />
-            <Icon glyph={this.randomIcon()} />
-            <Icon glyph={this.randomIcon()} />
-            <Icon glyph={this.randomIcon()} />
-            <Icon glyph={this.randomIcon()} />
-            <Icon glyph={this.randomIcon()} />
-            <Icon glyph={this.randomIcon()} />
-            <Icon glyph={this.randomIcon()} />
-            <div>
-              <input
-                type="checkbox"
-                onChange={this.toggleAnimation}
-                ref={(elem) => { this.checkbox = elem; }}
-              /> Animate
-            </div>
-          </div>
-        );
-      }
-    }
-
-    return <Demo />;
-  });
+  .add('All icons (colored)', () => (
+    <div className={styles.coloredIconContainer}>
+      {Object.entries(reactifiedComponents).map(([key, Icon]) => <Icon key={key} />)}
+    </div>
+  ))
+  .add('All icons (usage)', () => (
+    <table>
+      <thead>
+        <tr>
+          <th>Icon</th>
+          <th>Import</th>
+          <th>Web component</th>
+        </tr>
+      </thead>
+      <tbody>
+        {Object.keys(reactifiedComponents).map((file) => {
+          const Icon = reactifiedComponents[file];
+          const fileBase = file.substring(2, file.length - 3);
+          const importName = `${name}/glyph/${fileBase}`;
+          const tagName = `${name}-${fileBase.split('/').join('-')}`;
+          return (
+            <tr key={file}>
+              <td><Icon /></td>
+              <td><pre>import '{importName}';</pre></td>
+              <td><pre>&lt;{tagName}/&gt;</pre></td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  ))
+  .add('Animated', () => <AnimationDemo components={reactifiedComponents} />);

@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
+  "scripts": {
+    "prepublish": ""
+  },
   "dependencies": {
     "babel-runtime": "^6.11.6",
     "cz-lerna-changelog": "^0.3.0",

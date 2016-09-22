@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-lists",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A lists plugin for ProseMirror",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

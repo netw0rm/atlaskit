@@ -11,7 +11,7 @@ fi
 
 # Install CDN upload tool from Maven
 echo "Installing CDN tool"
-mvn -B dependency:copy -Dartifact=com.atlassian.scripts.prebake.distributor:prebake-distributor-runner:0.22.0 -Dmdep.stripClassifier=true -Dmdep.stripVersion=true -Dsilent=true -DoutputDirectory=..
+mvn -q -B dependency:copy -Dartifact=com.atlassian.scripts.prebake.distributor:prebake-distributor-runner:0.22.0 -Dmdep.stripClassifier=true -Dmdep.stripVersion=true -Dsilent=true -DoutputDirectory=..
 
 echo "Installing cloudfront-invalidate-cli"
 npm install cloudfront-invalidate-cli@1.0.3 -g --silent

@@ -1,14 +1,15 @@
 import { name } from '../package.json';
 import { keyup, afterMutations, getShadowRoot, waitUntil } from 'akutil-common-test';
+import { Component, emit } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkNavigation, { events as navigationEvents } from '../src';
-import { emit } from 'skatejs';
 const {
   open: navigationOpenEvent,
   close: navigationCloseEvent,
   searchDrawerSelected: searchDrawerSelectedEvent,
   createDrawerSelected: createDrawerSelectedEvent,
+  widthChanged: widthChangedEvent,
 } = navigationEvents;
 
 chai.use(chaiAsPromised);
@@ -27,6 +28,24 @@ function setupComponent() {
 function tearDownComponent(component) {
   document.body.removeChild(component);
 }
+describe('exports', () => {
+  it('should export a base component', () => {
+    (new AkNavigation).should.be.an.instanceof(Component);
+  });
+
+  it('should have an events export with defined events', () => {
+    navigationEvents.should.be.defined;
+    Object.keys(navigationEvents).should.be.deep.equal([
+      'linkSelected',
+      'createDrawerOpen',
+      'searchDrawerOpen',
+      'open',
+      'close',
+      'widthChanged',
+      'openStateChanged',
+    ]);
+  });
+});
 describe('ak-navigation detached', () => {
   it('toggling does not work before attached', (done) => {
     const component = new AkNavigation();
@@ -35,6 +54,25 @@ describe('ak-navigation detached', () => {
       keyup('[');
       expect(component.open).to.equal(false);
     }, done);
+  });
+  describe('when it becomes attached', () => {
+    const component = new AkNavigation();
+    it('fires an "${widthChangedEvent}" event when attached', (done) => {
+      let called = false;
+      component.addEventListener(widthChangedEvent, (e) => {
+        expect(e.detail.oldWidth).to.equal(null);
+        expect(e.detail.newWidth).to.equal(component.width);
+        called = true;
+      });
+      document.body.appendChild(component);
+      afterMutations(() => {
+        expect(called).to.equal(true);
+      }, done);
+    });
+
+    afterEach(() => {
+      document.body.removeChild(component);
+    });
   });
 });
 
@@ -73,23 +111,77 @@ describe('ak-navigation', () => {
     expect(called).to.equal(true);
   });
 
-  it('toggling works while attached', (done) => {
+  it(`fires an "${widthChangedEvent}" event when closing`, (done) => {
+    component.open = true;
+    const originalWidth = component.width;
+    component.addEventListener(widthChangedEvent, (e) => {
+      expect(e.detail.oldWidth).to.equal(originalWidth);
+      expect(e.detail.newWidth).to.equal(component.width);
+      done();
+    });
+    component.open = false;
+  });
+
+  it(`fires an "${widthChangedEvent}" event when containerHidden changes`, (done) => {
+    component.open = true;
+    component.containerHidden = true;
+    const originalWidth = component.width;
+    component.addEventListener(widthChangedEvent, (e) => {
+      expect(e.detail.newWidth).to.not.equal(originalWidth);
+      done();
+    });
+    component.containerHidden = false;
+  });
+
+  it('toggling does nothing by default while attached', (done) => {
     expect(component.open).to.equal(false);
     afterMutations(() => {
       keyup('[');
-      expect(component.open).to.equal(true);
+      expect(component.open).to.equal(false);
     }, done);
   });
 
-  it('toggling does not work after detached', (done) => {
-    afterMutations(
-      () => document.body.removeChild(component),
-      () => expect(component.open).to.equal(false),
-      () => keyup('['),
-      () => expect(component.open).to.equal(false),
-      () => document.body.appendChild(component),
-      done
-    );
+  it('changing the open state changes the width', () => {
+    component.open = true;
+    const originalWidth = component.width;
+    component.open = false;
+    expect(component.width).to.not.equal(originalWidth);
+  });
+
+  describe('width containerHidden set', () => {
+    beforeEach(() => {
+      component.containerHidden = true;
+    });
+    it('changing the open state does not change the width', () => {
+      component.open = true;
+      const originalWidth = component.width;
+      component.open = false;
+      expect(component.width).to.equal(originalWidth);
+    });
+  });
+
+  describe('with collapsible set', () => {
+    beforeEach(() => {
+      component.collapsible = true;
+    });
+    it('toggling works while attached', (done) => {
+      expect(component.open).to.equal(false);
+      afterMutations(() => {
+        keyup('[');
+        expect(component.open).to.equal(true);
+      }, done);
+    });
+
+    it('toggling does not work after detached', (done) => {
+      afterMutations(
+        () => document.body.removeChild(component),
+        () => expect(component.open).to.equal(false),
+        () => keyup('['),
+        () => expect(component.open).to.equal(false),
+        () => document.body.appendChild(component),
+        done
+      );
+    });
   });
 
   it(`search drawer is toggled by the "${searchDrawerSelectedEvent}" event`, (done) => {

@@ -410,23 +410,25 @@ declare module 'prosemirror/dist/markdown' {
 declare module 'prosemirror/dist/markdown/to_markdown' {
     export class MarkdownSerializer {
         constructor(nodes: any, marks: any);
-        serialize(content: any, options: any): any;
+        serialize(content: any, options?: Object): any;
     }
     export const defaultMarkdownSerializer: MarkdownSerializer;
     export class MarkdownSerializerState {
+        out: string;
+        closed: boolean;
         constructor(nodes: any, marks: any, options: any);
         flushClose(size: any): void;
         wrapBlock(delim: any, firstDelim: any, node: any, f: any): void;
         atBlank(): boolean;
         ensureNewLine(): void;
-        write(content: any): void;
+        write(content?: any): void;
         closeBlock(node: any): void;
-        text(text: any, escape: any): void;
+        text(text: any, escape?: boolean): void;
         render(node: any): void;
         renderContent(parent: any): void;
         renderInline(parent: any): void;
         renderList(node: any, delim: any, firstDelim: any): void;
-        esc(str: any, startOfLine: any): any;
+        esc(str: any, startOfLine?: boolean): any;
         quote(str: any): string;
         repeat(str: any, n: any): string;
         markString(mark: any, open: any): any;
@@ -631,7 +633,7 @@ declare module 'prosemirror/dist/model/mark' {
 declare module 'prosemirror/dist/model/node' {
     import { ResolvedPos } from 'prosemirror/dist/model/resolvedpos';
     export class Node {
-        constructor(type: any, attrs: any, content: any, marks: any);
+        constructor(type?: any, attrs?: any, content?: any, marks?: any);
         content: any;
         nodeSize: number;
         childCount: any;

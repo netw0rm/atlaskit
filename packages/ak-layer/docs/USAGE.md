@@ -4,6 +4,7 @@ The layer is responsible for the positioning of an element on a page. For exampl
 
 If you use a layer with a component that could be opened or closed, you have to make sure you re-render the layer the first time you open the component, otherwise it will end up with a wrong position.
 
+
 ## Try it out
 
 Interact with a [live demo of the ak-layer component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-layer/@VERSION@/).
@@ -24,7 +25,7 @@ Import the component in your JS resource:
  
 #### bundle.js
 
-```js
+```javascript
 import Layer from 'ak-layer';
 
 const myLayer = new Layer();
@@ -33,7 +34,7 @@ Now you can use the defined layer in your HTML markup:
 
 #### index.html
 
-```
+```html
 <html>
 <head>
   <script src="bundle.js"></script>

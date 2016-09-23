@@ -5,31 +5,19 @@ pipelines:
       - step:
           script:
             - ./build/bin/last_commit_has_changes.sh || exit 0
-            - npm config set progress false
-            - ./build/bin/setup_hosts.sh
+            - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - npm install
-            - npm run validate/package.json
-            - npm run lint
-            - npm run test/base
-            - npm run test/browserstack/ci
-            - npm run storybook& # runs in background
-            - STORYBOOK_PID=$!
-            - PATH="`npm bin`:$PATH" wait-on -d 20000 -i 500 -t 120000 http-get://0.0.0.0:9001/ # give storybook 20 seconds, before checking every half second for a total of 2 minutes max if it is up
-            - npm run test/integration/browserstack
-            - kill $STORYBOOK_PID
+            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "build/install/cdn-tools"
+            - npm run test/integration
+            - npm run release/check/is-workspace-clean
+            - npm run release/check/can-ff || exit 0
             - npm run release
-            - npm run release/registry
+            - run-p -ln "release/registry" "release/storybooks"
             - npm run release/announce
   default:
     - step:
         script:
-          - npm config set progress false
-          - ./build/bin/setup_hosts.sh
+          - ./build/bin/setup.sh
           - npm install
-          - npm run validate/package.json
-          - npm run lint
-          - npm run test/base
-          - npm run test/browserstack/ci
-          - npm run pr/storybook
-          - npm run pr/docs
+          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/artifacts"

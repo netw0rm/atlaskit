@@ -1,13 +1,19 @@
 # Tooltip
 
+Use this component to display extra information about an element by displaying a floating description. 
+
+You can use the tooltip alone, but it is reccomended to use it in conjunction with `ak-tooltip-trigger` , which is exported from this same package and will take care of all the event handling/binding.
+
 ![Example tooltip](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tooltip/docs/exampleTooltip.gif)
 
-This component is used to display extra information to a user about an element by displaying a
-floating description. Tooltip is usable by itself, but it is **highly** reccomended to be used in
-conjunction with `ak-tooltip-trigger` (exported from this same package), as it
-will take care of all the event handling/binding for you.
+##### Some Tips
+* You can have multiple tooltips on the page but it's generally advised to have one tooltip
+and multiple tooltip-triggers that are each bound to the same one.
+* Make sure your tooltip always has an `id`. Although it's possible to imperatively pass a reference
+of the tooltip to a trigger for example, it's much easier to declaratively use it's `id`.
+* Don't place the tooltip in any component's ShadowDOM as you wont be able to look it up by `id`.
 
-## Setup and install
+## Installation
 
 ```sh
 npm install ak-tooltip
@@ -24,7 +30,7 @@ Import both components in your JS resource:
 
 #### bundle.js
 
-```js
+```javascript
 import 'ak-tooltip';
 ```
 
@@ -56,14 +62,6 @@ The simplest way to create a tooltip is to:
 * Add an `aria-describedby="tooltipID"` attribute to the element you are wrapping (where
 `tooltipID` is the id of your tooltip above).
 
-##### Some Tips
-* You can have multiple tooltips on the page but it's generally advised to have one tooltip
-and multiple tooltip-triggers that are each bound to the same one.
-* Make sure your tooltip always has an `id`. Although it's possible to imperatively pass a reference
-of the tooltip to a trigger for example, it's much easier to declaratively use it's `id`.
-* Don't place the tooltip in any component's ShadowDOM as you wont be able to look it up by `id`.
-
-
 You can also use the components directly in JavaScript by importing the default and named exports.
 
 ```js
@@ -81,6 +79,8 @@ document.body.appendChild(trigger);
 ```
 
 ### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```js
 import Tooltip, { TooltipTrigger } from 'ak-tooltip';

@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar-block-type",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "An block type dropdown selector",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -25,7 +25,9 @@
     "ak-editor-content": "^2.0.0",
     "ak-editor-plugin-block-type": "^2.0.0",
     "ak-editor-prosemirror": "^2.0.0",
+    "ak-editor-test": "^2.3.0",
     "ak-editor-toolbar": "^2.0.0",
+    "akutil-common-test": "^1.8.1",
     "akutil-react": "^1.0.0",
     "lodash.invert": "^4.2.0"
   },

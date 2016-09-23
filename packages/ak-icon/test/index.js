@@ -54,7 +54,6 @@ describe(name, () => {
           'bitbucket/teams',
           'bitbucket/wiki',
 
-          'checkbox-select',
           'checkbox',
 
           'confluence/calendar',
@@ -69,6 +68,7 @@ describe(name, () => {
           'jira/logo',
           'projects',
           'question',
+          'radio',
           'search',
         ]);
     });

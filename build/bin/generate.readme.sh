@@ -25,14 +25,20 @@ if [[ -z `find ./src -name "*.js" -print -quit` ]]; then
   echo " Nothing found that can be documented."
   printf "\033[0m"
 else
+  set +e
   DOCS="$($JSDOC2MD_LOC \
     --verbose \
     --src "src/**/*.js" \
     --plugin akutil-dmd-plugin \
     --member-index-format list \
     --name-format)"
+  set -e
+  FAILED=$?
 
-  if [[ $DOCS == *"ERROR, Cannot find class"* ]]; then
+  if [ "$FAILED" -eq "1" ]; then
+    echo "Faield"
+
+  else if [[ $DOCS == *"ERROR, Cannot find class"* ]]; then
     printf "\033[34m"
     echo " Could not find a class."
     printf "\033[0m"

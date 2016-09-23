@@ -41,7 +41,7 @@ echo "Generating docs index..."
 INDEX_FILE="index.html"
 echo "<html><ul>" > $INDEX_FILE
 pushd $OUTDIR > /dev/null
-find . -type f \( ! -name ".html" \) -exec echo "<li><a href=\"{}\">{}</a></li>" ";" > $INDEX_FILE
+find . -type f \( -name "*.html" ! -name "$INDEX_FILE" \) -exec echo "<li><a href=\"{}\">{}</a></li>" ";" > $INDEX_FILE
 echo "</ul></html>" >> $INDEX_FILE
 popd > /dev/null
 

@@ -63,7 +63,6 @@ export default define('ak-editor-toolbar-hyperlink', {
     );
   },
   props: {
-    disabled: prop.boolean({ attribute: true }),
     /**
      * @description Controls disablily of an popup.
      * @memberof Popup
@@ -73,6 +72,7 @@ export default define('ak-editor-toolbar-hyperlink', {
      * @example @html <ak-editor-popup disabled></ak-editor-popup>
      * @example @js dialog.disabled = true;
      */
+    disabled: prop.boolean({ attribute: true }),
     open: prop.boolean({ attribute: true }),
     active: prop.boolean({ attribute: true }),
   },

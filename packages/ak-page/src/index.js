@@ -34,11 +34,11 @@ export default define('ak-page', {
             }
           `}</style>
         <div className={shadowStyles.locals.navigation}>
-          <slot name="navigation" />
+          <slot className={shadowStyles.locals.navigationSlot} name="navigation" />
         </div>
         <div className={shadowStyles.locals.main}>
           <div className={shadowStyles.locals.mainFixed}>
-            <slot />
+            <slot className={shadowStyles.locals.mainSlot} />
           </div>
         </div>
       </div>

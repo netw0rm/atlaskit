@@ -49,7 +49,7 @@ export default define('ak-text-field', {
      * @instance
      * @type {string}
      */
-    label: { attribute: true },
+    label: prop.string({ attribute: true }),
     /**
      * @description Whether the field is required.
      * @memberof TextField

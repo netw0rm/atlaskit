@@ -1,12 +1,17 @@
 # Tabs
 
-## Synopsis
+They're a simple graphical element that allow multiple panels to be contained within a single window and provide an easy way to switch between views of similar content.
 
-Tabs are an easy way to view and switch between different views of similar content..
+![Example tabs](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tabs/docs/tabs.gif)
 
-## Setup and install
+## Try it out
 
-```
+Interact with a [live demo of the ak-tabs component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tabs/@VERSION@/).
+
+
+## Installation
+
+```sh
 npm install ak-tabs
 ```
 
@@ -20,15 +25,15 @@ Import the component in your JS resource:
  
 #### bundle.js
 
-```
+```javascript
 import Tabs from 'ak-tabs';
 ```
 
-Now we can use the defined tag in our HTML markup, e.g.:
+Now you can use the defined tag in your HTML markup, for example:
 
 #### index.html
 
-```
+```html
 <html>
 <head>
   <script src="bundle.js"></script>
@@ -44,6 +49,8 @@ Now we can use the defined tag in our HTML markup, e.g.:
 ```
 
 ### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```
 import Tabs from 'ak-tabs';

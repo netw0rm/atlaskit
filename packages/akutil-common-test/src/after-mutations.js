@@ -17,13 +17,12 @@
  *    );
  *  });
  */
-let ret;
 function afterMutations(...fns) {
   setTimeout(() => {
     const fn = fns.shift();
     const isLastFn = fns.length === 0;
     if (typeof fn === 'function') {
-      ret = isLastFn ? fn() : fn(ret);
+      afterMutations.ret = isLastFn ? fn() : fn(afterMutations.ret);
     }
     if (!isLastFn) {
       afterMutations.apply(null, fns);

@@ -150,7 +150,7 @@ export default define('ak-layer', {
      * @memberof Layer
      * @function
      * @instance
-     * @return undefined
+     * @return Layer
      * @example @js layer.reposition();
     */
     reposition() {
@@ -164,7 +164,7 @@ export default define('ak-layer', {
      * @description Will be true if a Layer has been flipped from its original position.
      * @memberof Layer
      * @instance
-     * @return Boolean
+     * @type Boolean
      * @example @js const isFlipped = elem.isFlipped;
     */
     get isFlipped() {

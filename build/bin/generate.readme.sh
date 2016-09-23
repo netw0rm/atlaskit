@@ -26,9 +26,9 @@ if [[ -z `find ./src -name "*.js" -print -quit` ]]; then
   printf "\033[0m"
 else
   DOCS="$($JSDOC2MD_LOC \
+    --verbose \
     --src "src/**/*.js" \
     --plugin akutil-dmd-plugin \
-    --src $file \
     --member-index-format list \
     --name-format)"
 

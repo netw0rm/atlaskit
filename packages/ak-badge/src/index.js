@@ -5,6 +5,7 @@ import { Component, define, emit, prop, vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
+import * as events from './internal/events';
 
 const APPEARANCE_ENUM = {
   values: ['default', 'primary', 'important', 'added', 'removed'],
@@ -43,7 +44,7 @@ const definition = {
   },
   updated(elem, prev) {
     if (prev && prev.value !== elem.value) {
-      emit(elem, 'change', {
+      emit(elem, events.change, {
         detail: {
           oldValue: prev.value,
           newValue: elem.value,
@@ -91,3 +92,5 @@ const definition = {
 };
 
 export default define('ak-badge', definition);
+
+export { events };

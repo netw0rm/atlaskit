@@ -1,0 +1,16 @@
+* Events
+
+{{setLevel this 0~}}
+{{#if (descendants min=(option 'memberIndex.minDescendants'))~}}
+{{#if isExported~}}
+{{#if (equal (depth) 0)}}
+
+{{>member-index-events}}
+
+{{/if~}}
+{{else~}}
+
+{{>member-index-events}}
+
+{{/if~}}
+{{/if~}}

@@ -1,6 +1,9 @@
 import 'style!./host.less';
+import classNames from 'classnames';
 import { emit, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
+import * as events from './internal/events';
+const { announceName: announceNameEvent } = events;
 
 const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
 
@@ -12,6 +15,10 @@ const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
  */
 export default define('akutil-component-template', {
   render(elem) {
+    const paragraphClasses = classNames({
+      [shadowStyles.locals.myClassName]: true,
+      anotherClass: false,
+    });
     return (
       // JSX requires that there only be a single root element.
       // Incremental DOM doesn't require this.
@@ -21,7 +28,7 @@ export default define('akutil-component-template', {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
-        <Paragraph className={shadowStyles.locals.myClassName}>My name is {elem.name}!</Paragraph>
+        <Paragraph className={paragraphClasses}>My name is {elem.name}!</Paragraph>
       </div>
     );
   },
@@ -54,7 +61,7 @@ export default define('akutil-component-template', {
        * @description Fired when the `announce` method is called.
        * @property {String} detail.name The name of the component.
        */
-      emit(this, 'announce-name', {
+      emit(this, announceNameEvent, {
         detail: {
           name: this.name,
         },
@@ -63,3 +70,5 @@ export default define('akutil-component-template', {
     },
   },
 });
+
+export { events };

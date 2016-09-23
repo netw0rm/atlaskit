@@ -1,0 +1,30 @@
+{
+  "name": "akutil-common-test",
+  "version": "1.8.1",
+  "description": "Shared tests used by AtlasKit components",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single akutil-common-test"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "babel-runtime": "^6.11.6",
+    "skatejs": "^1.2.5",
+    "custom-event-polyfill": "^0.3.0",
+    "keycode": "^2.1.4"
+  },
+  "devDependencies": {
+    "ak-avatar": "^2.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

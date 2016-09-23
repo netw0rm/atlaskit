@@ -1,42 +1,23 @@
 import { storiesOf } from '@kadira/storybook';
-const { React, ReactDOM } = window;
+import React from 'react';
 import reactify from 'akutil-react';
 import IconComponent from '../src';
 
-const Icon = reactify(IconComponent, { React, ReactDOM });
+const Icon = reactify(IconComponent);
 
 storiesOf('ak-editor-icon', module)
   .add('All icons', () => (
     <div>
-      <Icon glyph="add" />
-      <Icon glyph="align-center" />
-      <Icon glyph="align-left" />
-      <Icon glyph="align-right" />
-      <Icon glyph="attachment" />
       <Icon glyph="bold" />
-      <Icon glyph="bullet-list" />
-      <Icon glyph="code" />
-      <Icon glyph="date" />
-      <Icon glyph="decision" />
-      <Icon glyph="emoji" />
-      <Icon glyph="expand" />
-      <Icon glyph="help" />
-      <Icon glyph="image" />
-      <Icon glyph="indent" />
       <Icon glyph="italic" />
-      <Icon glyph="link" />
-      <Icon glyph="mention" />
-      <Icon glyph="more" />
-      <Icon glyph="number-list" />
-      <Icon glyph="open" />
-      <Icon glyph="outdent" />
-      <Icon glyph="redo" />
-      <Icon glyph="table" />
-      <Icon glyph="task" />
-      <Icon glyph="text-color" />
       <Icon glyph="underline" />
-      <Icon glyph="undo" />
+      <Icon glyph="bullet-list" />
+      <Icon glyph="number-list" />
+      <Icon glyph="image" />
+      <Icon glyph="link" />
       <Icon glyph="unlink" />
+      <Icon glyph="mention" />
+      <Icon glyph="code" />
     </div>
   ))
   .add('Animated', () => {
@@ -73,11 +54,16 @@ storiesOf('ak-editor-icon', module)
 
       randomIcon() {
         const icons = [
-          'add', 'align-center', 'align-left', 'align-right',
-          'attachment', 'bold', 'bullet-list', 'code', 'date', 'decision',
-          'emoji', 'expand', 'help', 'image', 'indent', 'italic', 'link',
-          'mention', 'more', 'number-list', 'open', 'outdent', 'redo', 'table',
-          'task', 'text-color', 'underline', 'undo', 'unlink',
+          'bold',
+          'italic',
+          'underline',
+          'bullet-list',
+          'number-list',
+          'image',
+          'link',
+          'unlink',
+          'mention',
+          'code',
         ];
         return icons[Math.floor(Math.random() * icons.length)];
       }

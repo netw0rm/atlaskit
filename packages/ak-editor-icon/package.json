@@ -1,25 +1,32 @@
 {
   "name": "ak-editor-icon",
-  "version": "2.0.1",
-  "description": "",
+  "version": "2.4.2",
+  "description": "Editor Icon web component",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-editor-icon",
-    "pre-release": "lerna-semantic-release pre"
+    "compress": "find . -name *.svg -exec svgo {} {} \\;"
   },
   "files": [
     "dist"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
+  "os": [
+    "!win32"
+  ],
   "dependencies": {
-    "skatejs": "^1.0.0"
+    "babel-runtime": "^6.11.6",
+    "skatejs": "^1.4.1",
+    "uid": "^0.0.2"
   },
   "devDependencies": {
+    "akutil-react": "^1.0.0",
     "idomizer": "^0.5.2",
     "loader-utils": "^0.2.15",
-    "akutil-react": "^1.0.0"
+    "svgo": "^0.6.6"
   },
   "repository": {
     "type": "git",

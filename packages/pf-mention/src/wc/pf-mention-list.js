@@ -1,10 +1,14 @@
-import 'style!../host.less';
+import 'style!../host.less'; // eslint-disable-line import/no-unresolved import/no-duplicates
 import shadowStyles from './pf-mention-list-shadow.less';
-import { localProp } from './skate-local-props';
 import { define, emit, prop, props, vdom } from 'skatejs';
 import Item from './pf-mention-item';
 import Scrollable from './pf-scrollable';
+import { whoopsUri } from './icons';
 import debug from '../util/logger';
+import {
+  mentionListRendered as mentionListRenderedEvent,
+  selected as selectedEvent,
+} from '../internal/index.events';
 
 // FIXME
 const defaultAvatar = 'https://dmg75ly2d8uj2.cloudfront.net/assets/img/avatar-all-here@2x.png';
@@ -92,8 +96,8 @@ function renderItems(elem) {
                * onClick from firing.
                */
               onmousedown={(event) => {
-                debug('mousedown', event);
                 if (leftClick(event)) {
+                  selectIndex(elem, currentIdx);
                   elem.chooseCurrentSelection();
                   event.preventDefault();
                 }
@@ -113,7 +117,6 @@ function renderItems(elem) {
       </div>
     );
   }
-
   return null;
 }
 
@@ -139,7 +142,7 @@ export default define('pf-mention-list', {
     },
 
     chooseCurrentSelection() {
-      emit(this, 'selected', {
+      emit(this, selectedEvent, {
         detail: this.mentions[this.selectedIndex],
       });
       debug('pf-mention-list.chooseCurrentSelection', this.mentions[this.selectedIndex]);
@@ -150,29 +153,47 @@ export default define('pf-mention-list', {
     elem._items = {};
   },
 
-  detached(elem) {
-    if (elem.refWorkaround) {
-      elem.refWorkaround(null);
-    }
-  },
-
   render(elem) {
     debug('pf-mention-list.render', elem.mentions.length);
 
     const classes = [
       styles.list,
     ];
+    const scollableClasses = [
+      styles.scrollable,
+    ];
+
+    const hasMentions = elem.mentions && elem.mentions.length;
+    // If we get an error, but existing mentions are displayed, lets
+    // just continue to show the existing mentions we have
+    const showError = elem.showError && !hasMentions;
+
+    if (!elem.mentions.length && !showError) {
+      classes.push(styles.empty);
+    }
 
     if (!elem.mentions.length) {
-      classes.push(styles.empty);
+      scollableClasses.push(styles.empty);
+    }
+
+    let errorSection = null;
+    if (showError) {
+      // TODO add warning icon
+      errorSection = (
+        <div class={styles.mentionError}>
+          <p><img src={whoopsUri} alt="whoops" /></p>
+          <p>Something went wrong</p>
+        </div>
+      );
     }
 
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
         <div className={classes}>
+          {errorSection}
           <Scrollable
-            className={styles.scrollable}
+            className={scollableClasses}
             ref={(ref) => { elem._scrollable = ref; }}
           >
             {renderItems(elem)}
@@ -182,11 +203,13 @@ export default define('pf-mention-list', {
     );
   },
 
+  rendered(elem) {
+    emit(elem, mentionListRenderedEvent);
+  },
+
   props: {
     mentions: prop.array(),
-    selectedKey: prop.string({
-      attribute: true,
-    }),
-    refWorkaround: localProp.reference(),
+    selectedKey: prop.string({ attribute: true }),
+    showError: prop.boolean({ attribute: true }),
   },
 });

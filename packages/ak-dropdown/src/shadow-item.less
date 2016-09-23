@@ -1,0 +1,54 @@
+@import 'shared-variables.less';
+
+.item {
+  .flex();
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  padding: 0 10px;
+  text-decoration: none;
+
+  &:not(.disabled) {
+    color: @ak-dropdown-font-main;
+    cursor: pointer;
+
+    &:hover {
+      background-color: @ak-dropdown-background-hover;
+    }
+
+    &:active {
+      background-color: @ak-dropdown-background-active;
+      color: @ak-dropdown-font-active;
+    }
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px @ak-dropdown-focused-outline;
+    outline: none;
+    position: relative; //making shadow on top of others
+  }
+}
+
+.selected {
+  background-color: @ak-dropdown-background-selected;
+  color: @ak-dropdown-font-main;
+}
+
+.disabled {
+  background-color: @ak-dropdown-background-disabled;
+  color: @ak-dropdown-font-disabled;
+  cursor: not-allowed;
+}
+
+.itemLeftPosition {
+  margin-right: 10px;
+  min-width: 20px;
+}
+
+.itemDefaultPosition {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding:8px 0;
+}

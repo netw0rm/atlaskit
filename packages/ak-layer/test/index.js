@@ -1,274 +1,126 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import LayerWC from '../src/index';
-import { name } from '../package.json';
+import { waitUntil, getShadowRoot } from 'akutil-common-test';
+import { handlePopperUpdate } from '../src/internal/helpers';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
-const defaultPosition = 'right middle';
-const alignments = {
-  'top left': {
-    top: (rectComponent, rectTarget) => (rectComponent.top + rectComponent.height - rectTarget.top),
-    left: (rectComponent, rectTarget) => (rectComponent.left - rectTarget.left),
-    opposite: 'bottom left',
-  },
-  'top center': {
-    top: (rectComponent, rectTarget) => (rectComponent.top + rectComponent.height - rectTarget.top),
-    left: (rectComponent, rectTarget) => (rectTarget.left + rectTarget.width / 2 - rectComponent.left - rectComponent.width / 2), // eslint-disable-line max-len
-    opposite: 'bottom center',
-  },
-  'top right': {
-    top: (rectComponent, rectTarget) => (rectComponent.top + rectComponent.height - rectTarget.top),
-    left: (rectComponent, rectTarget) => (rectTarget.left + rectTarget.width - rectComponent.left - rectComponent.width), // eslint-disable-line max-len
-    opposite: 'bottom right',
-  },
-  'right top': {
-    top: (rectComponent, rectTarget) => (rectComponent.top - rectTarget.top),
-    left: (rectComponent, rectTarget) => (rectTarget.left + rectTarget.width - rectComponent.left),
-    opposite: 'left top',
-  },
-  'right middle': {
-    top: (rectComponent, rectTarget) => (rectTarget.top + rectTarget.height / 2 - rectComponent.top - rectComponent.height / 2), // eslint-disable-line max-len
-    left: (rectComponent, rectTarget) => (rectTarget.left + rectTarget.width - rectComponent.left),
-    opposite: 'left middle',
-  },
-  'right bottom': {
-    top: (rectComponent, rectTarget) => (rectTarget.top + rectTarget.height - rectComponent.top - rectComponent.height), // eslint-disable-line max-len
-    left: (rectComponent, rectTarget) => (rectTarget.left + rectTarget.width - rectComponent.left),
-    opposite: 'left bottom',
-  },
-  'bottom left': {
-    top: (rectComponent, rectTarget) => (rectComponent.top - rectTarget.height - rectTarget.top),
-    left: (rectComponent, rectTarget) => (rectComponent.left - rectTarget.left),
-    opposite: 'top left',
-  },
-  'bottom center': {
-    top: (rectComponent, rectTarget) => (rectComponent.top - rectTarget.height - rectTarget.top),
-    left: (rectComponent, rectTarget) => (rectTarget.left + rectTarget.width / 2 - rectComponent.left - rectComponent.width / 2), // eslint-disable-line max-len
-    opposite: 'top center',
-  },
-  'bottom right': {
-    top: (rectComponent, rectTarget) => (rectComponent.top - rectTarget.height - rectTarget.top),
-    left: (rectComponent, rectTarget) => (rectTarget.left + rectTarget.width - rectComponent.left - rectComponent.width), // eslint-disable-line max-len
-    opposite: 'top right',
-  },
-  'left top': {
-    top: (rectComponent, rectTarget) => (rectComponent.top - rectTarget.top),
-    left: (rectComponent, rectTarget) => (rectTarget.left - rectComponent.width - rectComponent.left), // eslint-disable-line max-len
-    opposite: 'right top',
-  },
-  'left middle': {
-    top: (rectComponent, rectTarget) => (rectTarget.top + rectTarget.height / 2 - rectComponent.top - rectComponent.height / 2), // eslint-disable-line max-len
-    left: (rectComponent, rectTarget) => (rectTarget.left - rectComponent.width - rectComponent.left), // eslint-disable-line max-len
-    opposite: 'right middle',
-  },
-  'left bottom': {
-    top: (rectComponent, rectTarget) => (rectTarget.top + rectTarget.height - rectComponent.top - rectComponent.height), // eslint-disable-line max-len
-    left: (rectComponent, rectTarget) => (rectTarget.left - rectComponent.width - rectComponent.left), // eslint-disable-line max-len
-    opposite: 'right bottom',
-  },
-};
 
-describe('ak-layer', () => {
+describe('ak-layer: logic', () => {
+  let fixture;
+  let container;
+  let target;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    target = document.createElement('div');
+    fixture = new LayerWC();
+    target.id = 'target';
+    fixture.target = target;
+
+    const componentHasShadowRoot = () => !!getShadowRoot(fixture);
+
+    container.appendChild(fixture);
+    document.body.appendChild(container);
+    document.body.appendChild(target);
+
+    return waitUntil(componentHasShadowRoot);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(container);
+  });
+
   it('should be possible to create a component', () => {
-    let component;
-    expect(() => {
-      component = new LayerWC();
-    }).not.to.throw(Error);
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(() => new LayerWC()).not.to.throw(Error);
   });
 
-  it('should have all the default properties after creation', () => {
-    const component = new LayerWC();
+  it('should have an alignment object attached', () => {
+    const alignmentObjectAttached = () => fixture.alignment !== undefined;
 
-    expect(component.position).not.to.equal(null);
-    expect(component.position).to.equal(defaultPosition);
-
-    expect(component.constrain).not.to.equal(null);
-    expect(component.constrain).to.equal('window');
+    return waitUntil(alignmentObjectAttached).should.be.fulfilled;
   });
 
-  it('all the properties should be attributes', () => {
-    const component = new LayerWC();
-    [
-      { key: 'position', value: 'top left' },
-      { key: 'target', value: '' },
-      { key: 'constrain', value: 'window' },
-    ].forEach(data => {
-      component[data.key] = data.value;
-      const attr = component.getAttribute(data.key);
-      expect(attr).to.equals(data.value);
+  describe('.isFlipped getter', () => {
+    it('should be true if the layer does not have enough space', () => {
+      // we'll test this by manually calling the handlePopperUpdate function, testing actual spaces
+      // would just be testing poppers functionality.
+
+      // popper sends back an object from the onUpdate method. We'll mock that object here
+      const fakePopperUpdate = {
+        flipped: true,
+      };
+      const elemIsFlipped = () => fixture.isFlipped;
+
+      // check the negative case first
+      expect(elemIsFlipped()).to.be.false;
+      handlePopperUpdate(fixture, fakePopperUpdate);
+
+      return waitUntil(elemIsFlipped).should.be.fulfilled;
+    });
+    it('should be false if the layer does have enough space', () => {
+      const fakeUpdateWithFlip = {
+        flipped: true,
+      };
+      // popper will not send a 'flipped' param if it was not flipped
+      const fakeUpdateNoFlip = {};
+      const elemIsFlipped = () => fixture.isFlipped;
+
+      // set up the negative case first, so we'll cause a flip
+      handlePopperUpdate(fixture, fakeUpdateWithFlip);
+
+      return waitUntil(elemIsFlipped)
+        .then(() => {
+          handlePopperUpdate(fixture, fakeUpdateNoFlip);
+
+          // now check that we are unflipped
+          return waitUntil(() => !elemIsFlipped());
+        }).should.be.fulfilled;
     });
   });
 
-  it('default properties', () => {
-    const component = new LayerWC();
-    [
-      { key: 'constrain', default: 'window' },
-      { key: 'position', default: 'right middle' },
-    ].forEach(data => {
-      const attr = component.getAttribute(data.key);
-      expect(attr).to.equals(data.default);
-    });
-  });
+  describe('onUpdate callback', () => {
+    it('should be called when popper gets updated', () => {
+      const spy = sinon.spy();
+      const onUpdateCalled = () => (spy.callCount > 0);
 
-  describe('alignments', () => {
-    let component;
-    let targetNode;
-    let layerContainer;
-    let idCounter = 0;
+      fixture.onUpdate = spy;
+      // trigger an update in popper
+      fixture.position = 'top center';
 
-    function getTargetId() {
-      return ++idCounter;
-    }
-
-    function createComponent(id) {
-      const node = new LayerWC();
-      node.innerHTML = '<div style="width:10px; height:10px;"></div>';
-      node.target = `#target${id}`;
-      return node;
-    }
-
-    function createTarget(id) {
-      const node = document.createElement('div');
-      node.style.width = '60px';
-      node.style.height = '60px';
-      node.setAttribute('id', `target${id}`);
-      return node;
-    }
-    function testPosition(elem, target, key, done) {
-      let rectComponent;
-      let rectTarget;
-      setTimeout(() => {
-        rectComponent = elem.getBoundingClientRect();
-        rectTarget = target.getBoundingClientRect();
-        expect(alignments[key].top(rectComponent, rectTarget)).to.equal(0);
-        expect(alignments[key].left(rectComponent, rectTarget)).to.equal(0);
-        done();
-      }, 1);
-    }
-
-    beforeEach(() => {
-      const targetID = getTargetId();
-      targetNode = createTarget(targetID);
-      layerContainer = document.createElement('div');
-      targetNode.style.margin = '100px';
-
-      component = createComponent(targetID);
-      layerContainer.appendChild(component);
-      layerContainer.appendChild(targetNode);
-      document.body.appendChild(layerContainer);
+      return waitUntil(onUpdateCalled).should.be.fulfilled;
     });
 
-    afterEach(() => document.body.removeChild(layerContainer));
+    it('should pass in isFlipped:true value when flipped', () => {
+      const spy = sinon.spy();
+      const fakeUpdateWithFlip = {
+        flipped: true,
+      };
+      const onUpdateCalled = () => (spy.callCount > 0);
 
-    Object.keys(alignments).forEach(key =>
-      describe(key, () => {
-        it(`should support ${key} alignment`, done => {
-          component.position = key;
-          testPosition(component, targetNode, key, done);
-        });
+      fixture.onUpdate = spy;
+      handlePopperUpdate(fixture, fakeUpdateWithFlip);
 
-        it(`should support ${key} alignment inside a container with 'position: absolute'`, done => {
-          // Tether is usually moving the element from the dom in this situation
-          // But the layer has a flag 'do not move', so we have to check if it's working
-          layerContainer.style.width = '100px';
-          layerContainer.style.height = '100px';
-          layerContainer.style.position = 'absolute';
-          layerContainer.style.top = '100px';
-          layerContainer.style.left = '100px';
-
-          component.position = key;
-          testPosition(component, targetNode, key, done);
-        });
-
-        it(`should support ${key} alignment inside a scrollable container with 'overflow: auto'`, done => { // eslint-disable-line max-len
-          layerContainer.style.width = '100px';
-          layerContainer.style.height = '100px';
-          layerContainer.style.margin = '100px';
-          layerContainer.style.overflow = 'auto';
-
-          // make the horizontal and vertical scroll inside the parent div
-          const divInsideScrollable = document.createElement('div');
-          divInsideScrollable.style.width = '300px';
-          divInsideScrollable.style.height = '300px';
-          layerContainer.appendChild(divInsideScrollable);
-
-          component.position = key;
-          testPosition(component, targetNode, key, done);
-        });
-      })
-    );
-
-    [
-      'left top',
-      'left middle',
-      'left bottom',
-      'top left',
-      'top center',
-      'top right',
-    ].forEach(key =>
-      it(`should flip ${key} alignment`, done => {
-        layerContainer.style.position = 'absolute';
-        layerContainer.style.top = '0';
-        layerContainer.style.left = '0';
-
-        component.position = key;
-        testPosition(component, targetNode, key, done);
-      })
-    );
-
-    [
-      'bottom left',
-      'bottom center',
-      'bottom right',
-      'right top',
-      'right middle',
-      'right bottom',
-    ].forEach(key =>
-      it(`should flip ${key} alignment`, done => {
-        layerContainer.style.position = 'absolute';
-        layerContainer.style.bottom = '0';
-        layerContainer.style.right = '0';
-
-        component.position = key;
-        testPosition(component, targetNode, key, done);
-      })
-    );
-
-    it(`default position should be ${defaultPosition}`, done =>
-      testPosition(component, targetNode, defaultPosition, done)
-    );
-
-    it('incorrect position should results in default position - edge', done => {
-      component.position = 'top wrong';
-      testPosition(component, targetNode, defaultPosition, done);
+      return waitUntil(onUpdateCalled).then(() => {
+        // check that the first argument to the first call of the spy had .isFlipped: true
+        expect(spy.args[0][0].isFlipped).to.be.true;
+      }).should.be.fulfilled;
     });
 
-    it('incorrect position should results in default position - position', done => {
-      component.position = 'wrong top';
-      testPosition(component, targetNode, defaultPosition, done);
-    });
+    it('should pass in isFlipped:false value when not flipped', () => {
+      const spy = sinon.spy();
+      const fakeUpdateWithNoFlip = {};
+      const onUpdateCalled = () => (spy.callCount > 0);
 
-    it('incorrect position should results in default position - both', done => {
-      component.position = 'wrong wrong';
-      testPosition(component, targetNode, defaultPosition, done);
-    });
+      fixture.onUpdate = spy;
+      handlePopperUpdate(fixture, fakeUpdateWithNoFlip);
 
-    it('incorrect position should results in default position - one missing', done => {
-      component.position = 'wrong';
-      testPosition(component, targetNode, defaultPosition, done);
-    });
-
-    it('incorrect position should results in default position - lots of spaces', done => {
-      component.position = 'top    left';
-      testPosition(component, targetNode, defaultPosition, done);
-    });
-
-    it('incorrect position should results in default position - whitespace', done => {
-      component.position = 'top\n\tleft';
-      testPosition(component, targetNode, defaultPosition, done);
+      return waitUntil(onUpdateCalled).then(() => {
+        // check that the first argument to the first call of the spy had .isFlipped: false
+        expect(spy.args[0][0].isFlipped).to.be.false;
+      }).should.be.fulfilled;
     });
   });
 });

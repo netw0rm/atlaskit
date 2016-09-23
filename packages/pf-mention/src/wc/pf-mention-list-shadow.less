@@ -1,5 +1,5 @@
-/* These styles will be inserted into a style tag inside the shadow dom of each instance of the
-    component */
+// These styles will be inserted into a style tag inside
+// the shadow dom of each instance of the component
 @import '../shared-variables.less';
 
 .list {
@@ -41,3 +41,21 @@ pf-scrollable {
   }
 }
 
+.mention-error {
+  background-color: #344563;
+  color: #9ba4b3;
+
+  height: 264px;
+
+  img {
+    opacity: .5;
+    padding-top: 70px;
+  }
+
+  p {
+    margin: 0;
+    text-align: center;
+    font-size: 14px;
+    padding-top: 20px;
+  }
+}

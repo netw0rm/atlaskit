@@ -1,9 +1,10 @@
 {
   "name": "akutil-cucumber",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Cucumber steps for AtlasKit components",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/general-steps.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single akutil-cucumber"
   },
@@ -12,7 +13,9 @@
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
-  "dependencies": {},
+  "dependencies": {
+    "babel-runtime": "^6.11.6"
+  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"

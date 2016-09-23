@@ -1,0 +1,6 @@
+{{#if (equal kind "function")}}
+{{>index-indent}}*  {{>sig-link-parent}}
+{{/if~}}
+{{#indexChildren ~}}
+{{>member-index-methods~}}
+{{/indexChildren}}

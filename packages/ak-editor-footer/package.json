@@ -1,12 +1,12 @@
 {
   "name": "ak-editor-footer",
-  "version": "0.1.0",
-  "description": "",
+  "version": "1.2.4",
+  "description": "Editor Footer web component",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-footer",
-    "pre-release": "lerna-semantic-release pre"
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-footer"
   },
   "files": [
     "dist"
@@ -14,9 +14,12 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "skatejs": "^1.0.0"
+    "ak-editor-icon": "^2.0.1",
+    "babel-runtime": "^6.11.6",
+    "skatejs": "^1.4.1"
   },
   "devDependencies": {
+    "akutil-common-test": "^1.0.0",
     "akutil-shared-styles": "^33.1.0",
     "akutil-react": "^1.0.0"
   },

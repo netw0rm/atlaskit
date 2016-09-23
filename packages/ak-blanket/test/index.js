@@ -1,19 +1,33 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkBlanket from '../src/index.js';
+import AkBlanket, { events } from '../src';
 import { name } from '../package.json';
+import { Component } from 'skatejs';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
 describe('ak-blanket', () => {
+  describe('exports', () => {
+    it('should export a base component', () => {
+      (new AkBlanket).should.be.an.instanceof(Component);
+    });
+
+    it('should have an events export with defined events', () => {
+      events.should.be.defined;
+      Object.keys(events).should.be.deep.equal([
+        'activate',
+      ]);
+    });
+  });
+
   it('should be possible to create a component', () => {
     let component;
     expect(() => {
       component = new AkBlanket();
     }).not.to.throw(Error);
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   describe('general behaviour', () => {

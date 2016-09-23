@@ -1,8 +1,19 @@
+import * as exports from '../src';
 import {
     computeBooleanValue, setBooleanAttribute,
     computeEnumValue, setEnumAttribute,
 } from '../src/attributes';
 
+describe('akutil-common exports', () => {
+  it('named exports', () => {
+    expect(exports.enumeration).to.be.a('function', 'enumeration');
+    expect(exports.keyCode).to.be.an('function', 'keyCode');
+    expect(exports.KeyPressHandler).to.be.a('function', 'KeyPressHandler');
+    expect(exports.style).to.be.a('function', 'style');
+  });
+});
+
+// TODO move these tests into separate files and give them appropriate names.
 
 const TRUTHY_VALUES = [true, 1, 'true', 'false'];
 const FALSY_VALUES = [false, 0, '', null, undefined];

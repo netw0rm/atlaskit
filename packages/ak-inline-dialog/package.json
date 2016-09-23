@@ -1,12 +1,12 @@
 {
   "name": "ak-inline-dialog",
-  "version": "69.6.2",
+  "version": "71.0.8",
   "description": "An inline dialog UI component",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-inline-dialog",
-    "pre-release": "lerna-semantic-release pre"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-inline-dialog"
   },
   "files": [
     "dist"
@@ -14,15 +14,18 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "akutil-common": "^1.0.0",
-    "akutil-shared-styles": "^33.0.2",
-    "ak-layer": "^56.4.0",
-    "ak-blanket": "^1.0.0",
-    "skatejs": "^1.0.0",
+    "ak-blanket": "^3.0.0",
+    "ak-layer": "^57.0.0",
+    "akutil-common": "^2.0.0",
+    "akutil-shared-styles": "^33.1.0",
+    "babel-runtime": "^6.11.6",
+    "skatejs": "^1.2.5",
     "web-animations-js": "^2.2.1"
   },
   "devDependencies": {
-    "akutil-react": "^1.0.0"
+    "akutil-common-test": "^1.0.0",
+    "akutil-react": "^1.0.0",
+    "custom-event-polyfill": "^0.3.0"
   },
   "repository": {
     "type": "git",

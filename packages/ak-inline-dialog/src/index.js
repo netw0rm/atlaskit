@@ -5,13 +5,10 @@ import { vdom, prop, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer';
 import Blanket from 'ak-blanket';
+import * as events from './internal/events';
 
-let keyPress;
-function closeDialog(elem) {
-  return () => {
-    elem.open = false;
-  };
-}
+const closeHandlerSymbol = Symbol();
+const keyPressHandlerSymbol = Symbol();
 
 function renderBlanketIfNeeded(elem) {
   if (elem.hasBlanket) {
@@ -19,6 +16,7 @@ function renderBlanketIfNeeded(elem) {
       <Blanket
         tinted={elem.isBlanketTinted}
         clickable={elem.isBlanketClickable}
+        on-activate={elem[closeHandlerSymbol]}
       />
     );
   }
@@ -35,14 +33,26 @@ function renderBlanketIfNeeded(elem) {
  */
 export default define('ak-inline-dialog', {
   attached(elem) {
-    keyPress = new KeyPressHandler('ESCAPE', closeDialog(elem));
-    window.addEventListener('ak-blanket-click', closeDialog(elem));
+    elem[closeHandlerSymbol] = () => (elem.open = false);
+    elem[keyPressHandlerSymbol] = new KeyPressHandler('ESCAPE', elem[closeHandlerSymbol]);
   },
   detached(elem) {
-    keyPress.destroy();
-    window.removeEventListener('ak-blanket-click', closeDialog(elem));
+    elem[keyPressHandlerSymbol].destroy();
   },
   render(elem) {
+    if (typeof elem.open === 'boolean') {
+      if (elem.open) {
+        emit(elem, events.afterOpen);
+      } else {
+        emit(elem, events.afterClose);
+      }
+    }
+    // do not render anything if the dialog is hidden
+    // helps with avoiding flashing
+    if (!elem.open) {
+      return null;
+    }
+
     const styles = {};
     if (elem.boxShadow) {
       styles.boxShadow = elem.boxShadow;
@@ -53,29 +63,16 @@ export default define('ak-inline-dialog', {
     if (elem.borderRadius) {
       styles.borderRadius = elem.borderRadius;
     }
-
-    if (elem.open === true) {
-      emit(elem, 'ak-after-open');
-    } else if (elem.open === false) {
-      emit(elem, 'ak-after-close');
-    }
-
     return (
       <div>
         {renderBlanketIfNeeded(elem)}
         <Layer
-          open={elem.open}
-          position={elem.position}
-          attachment={elem.constrain}
           target={elem.target}
-          onRender={(layer) => {
-            if (elem.open && layer.alignment) {
-              // by default the dialog has opacity 0
-              // and only with attribute 'positioned' it has opacity 1
-              // this behavior is to avoid 'flashing' of a dialog
-              // when it's initially positioning itself on a page
-              elem.setAttribute('positioned', true);
-            }
+          position={elem.position}
+          boundariesElement={elem.boundariesElement}
+          enableFlip={elem.enableFlip}
+          ref={(layerElem) => {
+            elem.layer = layerElem;
           }}
         >
           <style>{shadowStyles.toString()}</style>
@@ -86,13 +83,32 @@ export default define('ak-inline-dialog', {
       </div>
     );
   },
-  props: {
-    /* eslint-disable max-len  */
+  prototype: {
     /**
-     * @description Position of an inline-dialog relative to it's target.
-     * The position attribute takes two positional arguments in the format`position="edge edge-position"`,
-     * where `edge` specifies what edge to align the inline dialog to, and `edge-position` specifies where on that edge the dialog should appear.
-     * Refer to the table below for examples:
+     * @description Forces the dialog to recalculate and reposition itself on the page. This should
+     * not usually be required as any modifications to the dialog itself should also cause
+     * reposition to be called.
+     * @memberof InlineDialog
+     * @instance
+     * @return {InlineDialog}
+     * @example @js inlineDialog.reposition();
+    */
+    reposition() {
+      if (this.layer) {
+        this.layer.reposition();
+      }
+
+      return this;
+    },
+  },
+  props: {
+    /**
+     * @description Position of an inline-dialog relative to it’s target.
+     * The position attribute takes two positional arguments in the
+     * format`position="edge edge-position"`, where `edge` specifies the edge you have to align
+     * the inline dialog to, and `edge-position` specifies where on that edge the dialog should
+     * appear.
+     * Checkout the examples in the following table:
      *
      * |             | top left    | top center    | top right    |              |
      * |-------------|-------------|---------------|--------------|--------------|
@@ -107,12 +123,11 @@ export default define('ak-inline-dialog', {
      * @example @html <ak-inline-dialog position="top left"></ak-inline-dialog>
      * @example @js dialog.position = 'top left';
      */
-    /* eslint-enable max-len */
     position: enumeration(POSITION_ATTRIBUTE_ENUM)({
       attribute: true,
     }),
     /**
-     * @description Controls visibility of an inline-dialog. Dialog is invisible by default.
+     * @description Controls the visibility of an inline-dialog. It is invisible by default.
      * @memberof InlineDialog
      * @instance
      * @default false
@@ -125,7 +140,7 @@ export default define('ak-inline-dialog', {
     }),
     /**
      * @description Target of an inline-dialog.
-     * Selector or element on a page relative to which inline-dialog should be positioned
+     * Selector or element on a page relative to which the inline-dialog should be positioned
      * @memberof InlineDialog
      * @instance
      * @type String
@@ -137,7 +152,7 @@ export default define('ak-inline-dialog', {
       attribute: true,
     },
     /**
-     * @description Constrain an inline-dialog to a scrollable parent or the window
+     * @description Constrain an inline-dialog to a scrollable parent or to the window
      * @memberof InlineDialog
      * @instance
      * @default 'window'
@@ -182,7 +197,8 @@ export default define('ak-inline-dialog', {
       attribute: true,
     }),
     /**
-     * @description If dialog has a blanket underneath or not. By default it has.
+     * @description Defines whether a dialog has a blanket underneath or not.
+     * It does have a blanket underneath by default.
      * @memberof InlineDialog
      * @instance
      * @type Boolean
@@ -195,7 +211,8 @@ export default define('ak-inline-dialog', {
       default: true,
     }),
     /**
-     * @description If click on the blanket dismisses the dialog. By default it is.
+     * @description If there is a click on the blanket, it dismisses the dialog.
+     * The blanket is clickable by default.
      * @memberof InlineDialog
      * @instance
      * @type Boolean
@@ -208,7 +225,8 @@ export default define('ak-inline-dialog', {
       default: true,
     }),
     /**
-     * @description Is blanket grey with opacity or transparent. By default it's transparent.
+     * @description Defines if the blanket is grey with opacity or transparent.
+     * It‘s transparent by default.
      * @memberof InlineDialog
      * @instance
      * @type Boolean
@@ -220,7 +238,7 @@ export default define('ak-inline-dialog', {
       attribute: true,
     }),
     /**
-     * @description Is blanket is closable by pressing the 'escape' button. By default it is.
+     * @description Close the blanket by pressing the “escape” button. It‘s closable by default.
      * @memberof InlineDialog
      * @instance
      * @type Boolean
@@ -231,5 +249,38 @@ export default define('ak-inline-dialog', {
     isClosableOnEsc: prop.boolean({
       attribute: true,
     }),
+    /**
+     * @description Element to act as a boundary for the Inline-Dialog.
+     * The Inline-Dialog will not sit outside this element if it can help it.
+     * If, through it's normal positoning, it would end up outside the boundary the Dialog
+     * will flip positions if the enableFlip prop is set.
+     * Can either be an element or a selector of an element.
+     * If not set the boundary will be the current viewport.
+     * @memberof InlineDialog
+     * @instance
+     * @type HTMLElement | String
+     * @example @html <ak-inline-dialog enable-flip boundaries-element="#container">
+     * </ak-inline-dialog>
+     * @example @js inlineDialog.boundariesElement = document.body.querySelector('#container');
+     * @example @js inlineDialog.enableFlip = true;
+     */
+    boundariesElement: { attribute: true },
+    /**
+     * @description Sets whether an Inline-Dialog will flip it's position if there is not enough
+     * space in the requested position.
+     * i.e. if an Inline-Dialog is set to position="top middle" but placing it there would cause
+     * it to be outside the viewport (or the boundariesElement if that is set)
+     * the Inline-Dialog will instead be positioned in "bottom middle".
+     * @memberof InlineDialog
+     * @instance
+     * @type Boolean
+     * @example @html <ak-inline-dialog enable-flip></ak-inline-dialog>
+     * @example @js inlineDialog.enableFlip = true;
+     */
+    enableFlip: prop.boolean({
+      attribute: true,
+    }),
   },
 });
+
+export { events };

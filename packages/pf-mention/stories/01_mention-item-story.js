@@ -1,15 +1,10 @@
-import 'style!./stories.less';
-
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import pfMentionItem from '../src/wc/pf-mention-item';
 
-const { React, ReactDOM } = window;
+import React from 'react';
 
-const MentionItem = reactify(pfMentionItem, {
-  React,
-  ReactDOM,
-});
+const MentionItem = reactify(pfMentionItem);
 
 function renderSingleMention(mention) {
   return (

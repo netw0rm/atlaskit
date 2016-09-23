@@ -1,22 +1,19 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import Blanket from '../src/index';
-const { React, ReactDOM } = window;
+import Blanket, { events as blanketEvents } from '../src/index';
+import React from 'react';
 import { name } from '../package.json';
 
-const Component = reactify(Blanket, {
-  React,
-  ReactDOM,
-});
+const Component = reactify(Blanket);
 
 function doSomethingOnClick() {
-  action('the ak-blanket-click event is caught')();
+  action(`the "${blanketEvents.activate}" event is caught`)();
 }
 
 storiesOf(name, module)
   .add('a simple ak-blanket - tinted', () => {
-    window.removeEventListener('ak-blanket-click', doSomethingOnClick);
-    window.addEventListener('ak-blanket-click', doSomethingOnClick);
+    window.removeEventListener(blanketEvents.activate, doSomethingOnClick);
+    window.addEventListener(blanketEvents.activate, doSomethingOnClick);
 
     return (
       <div>
@@ -26,8 +23,8 @@ storiesOf(name, module)
     );
   })
   .add('a transparent ak-blanket that emits an event when it is clicked', () => {
-    window.removeEventListener('ak-blanket-click', doSomethingOnClick);
-    window.addEventListener('ak-blanket-click', doSomethingOnClick);
+    window.removeEventListener(blanketEvents.activate, doSomethingOnClick);
+    window.addEventListener(blanketEvents.activate, doSomethingOnClick);
     return (
       <div>
         this is just an empty blanket. Click on it!
@@ -35,4 +32,3 @@ storiesOf(name, module)
       </div>
     );
   });
-

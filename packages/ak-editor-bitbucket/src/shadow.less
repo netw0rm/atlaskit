@@ -2,4 +2,57 @@
 
 .root {
   display: block;
+  background: white;
+
+  [contenteditable] {
+    outline: none;
+    white-space: pre-wrap;
+
+    blockquote {
+      padding-left: 1em;
+      border-left: 3px solid #eee;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    code {
+      font-family: @code-font;
+      background: @code-bgcolor;
+      padding: 2px 5px;
+      border-radius: 5px;
+    }
+
+    pre {
+      font-family: @code-font;
+      background: @code-bgcolor;
+      padding: 5px;
+    }
+  }
+}
+
+.fake-input {
+  width: 100%;
+  display: block;
+  height: 50px;
+  &.comment {
+    height: 30px;
+  }
+  &::placeholder {
+    font-size: 14px;
+    padding: 20px;
+    color: black;
+  }
+}
+
+.content {
+  cursor: text;
+}
+
+.focused {
+  box-shadow: 0 0 0 2px @ak-editor-focus;
+  border-radius: 2px;
+}
+
+:global(.ProseMirror-drop-target) {
+  display: none;
 }

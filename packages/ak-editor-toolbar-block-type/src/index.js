@@ -1,28 +1,22 @@
 import { vdom, define, prop, emit } from 'skatejs';
 import cx from 'classnames';
 import styles from './index.less';
-import FontSelect from './font-select';
+import Select from './block-type-select';
 import Option from './option';
 
-const fonts = {
-  normalText: 'Normal text',
-  heading1: 'Heading 1',
-  heading2: 'Heading 2',
-  heading3: 'Heading 3',
-  monospace: 'Monospace',
-};
-
 function toggle(elem) {
-  elem.dropdownOpen = !elem.dropdownOpen;
+  if (!elem.disabled || elem.dropdownOpen) {
+    elem.dropdownOpen = !elem.dropdownOpen;
+  }
 }
 
-function selectFont(elem) {
+function selectBlockType(elem) {
   return (event) => {
-    elem.selectedFont = event.detail.font;
-    elem.dropdownOpen = false;
+    elem.selectedBlockType = event.detail.blockType;
+    toggle(elem);
 
-    // remove this when reactify v0.0.7 is released (https://github.com/webcomponents/react-integration/commit/53f8bf59a76b0ea0929bf2e95866ce949456eef5)
-    emit(elem, 'selectfont', { detail: { font: elem.selectedFont } });
+    // TODO: remove this when reactify v0.0.7 is released (https://github.com/webcomponents/react-integration/commit/53f8bf59a76b0ea0929bf2e95866ce949456eef5)
+    emit(elem, 'selectblocktype', { detail: { blockType: elem.selectedBlockType } });
   };
 }
 
@@ -37,16 +31,18 @@ export default define('ak-editor-toolbar-block-type', {
     elem.context.removeEventListener('click', elem.closeBlockTypeDropdown, true);
   },
   render(elem) {
+    const selectedBlockType = elem.selectedBlockType || elem.blockTypes[0] || {};
+
     return (
       <div
         className={styles.locals.root}
-        onselectFont={selectFont(elem)}
+        onSelectBlockType={selectBlockType(elem)}
       >
         <style>{styles.toString()}</style>
-        <FontSelect
+        <Select
           disabled={elem.disabled}
-          className={styles.locals.fontSelect}
-          selectedReadableName={fonts[elem.selectedFont]}
+          className={styles.locals.blockTypeSelect}
+          selectedReadableName={selectedBlockType.display}
           onToggleDropdown={() => toggle(elem)}
           active={elem.dropdownOpen}
         >
@@ -55,20 +51,22 @@ export default define('ak-editor-toolbar-block-type', {
               [styles.locals.dropdownOpen]: elem.dropdownOpen,
             })}
           >
-            {Object.keys(fonts).map(font => (
+            {elem.blockTypes.map(blockType => (
               <li><Option
-                font={font}
-                active={elem.selectedFont === font}
-              >{fonts[font]}</Option></li>
+                blockType={blockType}
+                blockTypeName={blockType.name}
+                active={selectedBlockType === blockType}
+              >{blockType.display}</Option></li>
             ))}
           </ul>
-        </FontSelect>
+        </Select>
       </div>
     );
   },
   props: {
     dropdownOpen: prop.boolean({ attribute: true }),
-    selectedFont: prop.string({ attribute: true, default: Object.keys(fonts)[0] }),
+    selectedBlockType: { attribute: true },
+    blockTypes: prop.array({ attribute: true }),
     disabled: prop.boolean({ attribute: true }),
     context: { attribute: true, default: document },
   },

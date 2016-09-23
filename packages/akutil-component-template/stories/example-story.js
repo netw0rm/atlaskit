@@ -1,14 +1,11 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import WebComponent from '../src/index';
-const { React, ReactDOM } = window;
+import WebComponent, { events } from '../src';
+import React from 'react';
 import { name } from '../package.json';
 import styles from 'style!./../src/host.less';
 
-const Component = reactify(WebComponent, {
-  React,
-  ReactDOM,
-});
+const Component = reactify(WebComponent);
 
 storiesOf(name, module)
   .add('a simple akutil-component-template', () => (
@@ -16,6 +13,13 @@ storiesOf(name, module)
   ))
   .add('a simple akutil-component-template with a name', () => (
     <Component name="MyComponent" />
+  ))
+  .add('a simple akutil-component-template that uses an emitted event', () => (
+    <Component
+      name="MyComponent"
+      onClick={function onClick() { this.announce(); }}
+      onAnnounce-name={action(events.announceName)}
+    />
   ))
   .add('an akutil-component-template that emits an action when it is clicked', () => (
     <Component id="myComponent" onClick={action('clicking the WebComponent')} />

@@ -1,7 +1,6 @@
 import { enumeration } from './properties';
-import Alignment from './Alignment';
-import { afterMutations } from './testHelpers';
 import keyCode from 'keycode';
-import KeyPressHandler from './KeyPressHandler';
+import KeyPressHandler from './index.KeyPressHandler';
+import style from './style';
 
-export { enumeration, Alignment, afterMutations, keyCode, KeyPressHandler };
+export { enumeration, keyCode, KeyPressHandler, style };

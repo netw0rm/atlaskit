@@ -1,9 +1,11 @@
 {
   "name": "akutil-react",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.3.0",
+  "description": "Toolbox for transforming a SkateJS-based WebComponent into a React component",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.ts",
+  "typings": "src/index.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single akutil-react"
   },
@@ -11,8 +13,10 @@
     "dist"
   ],
   "dependencies": {
-    "react": "^0.14.0",
-    "skatejs-react-integration": "^0.0.6",
+    "babel-runtime": "^6.11.6",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "skatejs-react-integration": "^1.0.0",
     "uid": "^0.0.2"
   },
   "author": "Atlassian Pty Ltd",

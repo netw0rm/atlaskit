@@ -1,0 +1,39 @@
+@import 'shared-variables.less';
+
+.flex() {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.endAligned {
+  justify-content: flex-end;
+}
+
+.flex-item() {
+  flex: 0 1 auto;
+}
+
+:host .slot-wrapper {
+  .flex();
+  width: 100%;
+}
+
+.slot {
+  .flex();
+}
+
+.rootNode {
+  width: 100%;
+}
+
+::content > * {
+  .flex-item();
+}
+
+::slotted(*) {
+  .flex-item();
+}
+
+:host([alignment="end"]) .slot-wrapper {
+  .endAligned();
+}

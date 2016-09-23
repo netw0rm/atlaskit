@@ -5,7 +5,6 @@ import { vdom, prop, define } from 'skatejs';
 import cx from 'classnames';
 import shadowStyles from './shadow.less';
 import Layer from 'ak-layer';
-import Blanket from 'ak-blanket';
 
 /**
  * @description The definition for the Popup component.
@@ -16,22 +15,16 @@ import Blanket from 'ak-blanket';
  */
 export default define('ak-editor-popup', {
   render(elem) {
-    const styles = {};
     return (
       <div
-        on-ak-blanket-click={() => {
-          elem.open = !elem.open;
-        }}
         className={cx({
           [hostStyle.locals.akEditorPopup]: !elem.open,
         })}
       >
         <style>{hostStyle.toString()}</style>
-        {elem.open ? <Blanket clickable /> : null}
         <Layer
           open={elem.open}
           position="bottom center"
-          attachment={elem.constrain}
           target={elem.target}
           onRender={layer => {
             if (elem.open && layer.alignment) {
@@ -40,7 +33,7 @@ export default define('ak-editor-popup', {
           }}
         >
           <style>{shadowStyles.toString()}</style>
-          <div className={shadowStyles.locals.popup} style={styles}>
+          <div className={shadowStyles.locals.popup}>
             <slot style={{ display: 'flex' }} />
           </div>
         </Layer>

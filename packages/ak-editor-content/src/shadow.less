@@ -6,8 +6,7 @@
   .childContent() { margin: 20px; }
   > slot > * { .childContent(); }
   > ::content > * { .childContent(); }
-  // Re-instate when https://ecosystem.atlassian.net/browse/AK-146 is resolved.
-  //> ::slotted(*) { .childContent(); }
+  > ::slotted(*) { .childContent(); }
 }
 
 .openTop {

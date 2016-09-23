@@ -1,9 +1,10 @@
 {
   "name": "pf-mention",
-  "version": "1.2.6",
+  "version": "2.1.1",
   "description": "pf-mention webcomponent",
   "main": "dist/bundle.js",
-  "webpack": "src/index.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single pf-mention"
   },
@@ -11,12 +12,14 @@
     "dist"
   ],
   "dependencies": {
-    "ak-avatar": "^0.14.0",
-    "ak-inline-dialog": "^69.6.1",
-    "akutil-common": "^1.0.0",
-    "akutil-shared-styles": "^33.1.0",
+    "ak-avatar": "^2.3.1",
+    "ak-inline-dialog": "^71.0.6",
+    "akutil-common": "^2.5.0",
+    "akutil-shared-styles": "^33.11.1",
+    "babel-runtime": "^6.11.6",
     "es6-promise": "^3.2.1",
-    "skatejs": "^1.0.0",
+    "skatejs": "^1.4.1",
+    "uid": "^0.0.2",
     "url-search-params": "^0.5.0",
     "whatwg-fetch": "^1.0.0"
   },
@@ -27,7 +30,9 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "akutil-react": "^1.0.0",
-    "fetch-mock": "^5.0.5"
+    "akutil-common-test": "^1.8.1",
+    "akutil-react": "^1.2.0",
+    "fetch-mock": "^5.0.5",
+    "js-search": "^1.3.2"
   }
 }

@@ -1,7 +1,14 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkInlineDialog from '../src/index.js';
+import AkInlineDialog, { events } from '../src';
+const { afterOpen: afterOpenEvent, afterClose: afterCloseEvent } = events;
+import 'custom-event-polyfill';
 import { name } from '../package.json';
+import { events as blanketEvents } from 'ak-blanket';
+const { activate: activateBlanketEvent } = blanketEvents;
+import { afterMutations, getShadowRoot, checkVisibility, checkInvisibility }
+  from 'akutil-common-test';
+import { Component } from 'skatejs';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -9,9 +16,20 @@ const expect = chai.expect;
 const defaultPosition = 'right middle';
 
 describe('ak-inline-dialog', () => {
+  describe('exports', () => {
+    it('should export a base component', () => {
+      (new AkInlineDialog).should.be.an.instanceof(Component);
+    });
+
+    it('should have an events export with defined events', () => {
+      events.should.be.defined;
+      Object.keys(events).should.be.deep.equal(['afterOpen', 'afterClose']);
+    });
+  });
+
   it('should be possible to create a component', () => {
     const component = new AkInlineDialog();
-    expect(component.tagName.toLowerCase()).to.equal(name);
+    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
   });
 
   describe('general behaviour', () => {
@@ -41,6 +59,7 @@ describe('ak-inline-dialog', () => {
     // behaviour that is already tested and with standard DOM behaviour.
     it('event handlers inside a component should work', () => {
       const button = document.createElement('button');
+      document.body.appendChild(button);
       let clicked = false;
       const event = new CustomEvent('click', {});
 
@@ -101,24 +120,20 @@ describe('ak-inline-dialog', () => {
   describe('visibility', () => {
     let inlineDialogContainer;
     let component;
-
-    function checkInvisibility(elem) {
-      expect(elem.getBoundingClientRect().width).to.equal(0);
-      expect(elem.getBoundingClientRect().height).to.equal(0);
-      expect(elem.offsetParent).to.equal(null);
-    }
-
-    function checkVisibility(elem) {
-      expect(elem.getBoundingClientRect().width > 0).to.equal(true);
-      expect(elem.getBoundingClientRect().height > 0).to.equal(true);
-      expect(elem.offsetParent).not.to.equal(null);
-    }
+    let target;
 
     beforeEach(done => {
+      target = document.createElement('div');
+      target.setAttribute('id', 'target');
+      target.style.width = '100px';
+      target.style.height = '100px';
       inlineDialogContainer = document.createElement('div');
       component = new AkInlineDialog();
+      inlineDialogContainer.appendChild(target);
       inlineDialogContainer.appendChild(component);
       document.body.appendChild(inlineDialogContainer);
+      component.target = '#target';
+      component.innerHTML = '<div><h1>title</h1><p>Some text</p></div>';
       setTimeout(done);
     });
 
@@ -129,18 +144,14 @@ describe('ak-inline-dialog', () => {
     it('should be closed by default', () => {
       expect(component.open).to.equal(false);
       expect(component.hasAttribute('open')).to.equal(false);
-      checkInvisibility(component);
+      expect(checkInvisibility(component.childNodes[0])).to.equal(true);
     });
 
     it('should be open when property `open` is set to true', done => {
       component.open = true;
-      setTimeout(() => checkVisibility(component));
-      setTimeout(done);
-    });
-
-    it('should be open when attribute `open` is set to true', done => {
-      component.setAttribute('open', '');
-      setTimeout(() => checkVisibility(component));
+      setTimeout(() => {
+        expect(checkVisibility(component.childNodes[0])).to.equal(true);
+      });
       setTimeout(done);
     });
 
@@ -151,30 +162,47 @@ describe('ak-inline-dialog', () => {
       });
 
       it('should be closed when property `open` is set to false', done => {
-        setTimeout(() => checkVisibility(component));
+        setTimeout(() => expect(checkVisibility(component.childNodes[0])).to.equal(true));
         setTimeout(() => (component.open = false));
-        setTimeout(() => checkInvisibility(component));
-        setTimeout(done);
-      });
-
-      it('should be closed when attribute `open` is removed', done => {
-        component.removeAttribute('open');
-        setTimeout(() => checkInvisibility(component));
+        setTimeout(() => expect(checkInvisibility(component.childNodes[0])).to.equal(true));
         setTimeout(done);
       });
     });
 
-    // Consider removing as this is testing 100% skate behaviour. If we want to
-    // ensure that an attribute is linked, we should test that we've correctly
-    // declared the property on the component constructor.
-    it('attribute `open` and property `open` should be in sync', () => {
-      component.open = true;
-      expect(component.open).to.equal(true);
-      expect(component.getAttribute('open')).to.equal('');
+    describe('eventing', () => {
+      it('should be possible to close the dialog with a blanket activation', (done) => {
+        let blanket;
+        afterMutations(
+          () => (component.hasBlanket = true),
+          () => (component.open = true),
+          () => {
+            blanket = getShadowRoot(component).firstChild.firstChild;
+          },
+          () => {
+            const event = new CustomEvent(activateBlanketEvent);
+            blanket.dispatchEvent(event);
+          },
+          () => {
+            expect(component.open).to.be.false;
+          },
+          done
+        );
+      });
 
-      component.open = false;
-      expect(component.open).to.equal(false);
-      expect(component.getAttribute('open')).to.equal(null);
+      it(`should be possible to subscribe to the '${afterOpenEvent}' event`, (done) => {
+        afterMutations(
+          () => component.addEventListener(afterOpenEvent, () => done()),
+          () => (component.open = true)
+        );
+      });
+
+      it(`should be possible to subscribe to the '${afterCloseEvent}' event`, (done) => {
+        afterMutations(
+          () => (component.open = true),
+          () => component.addEventListener(afterCloseEvent, () => done()),
+          () => (component.open = false)
+        );
+      });
     });
   });
 });

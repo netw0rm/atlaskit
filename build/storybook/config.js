@@ -1,49 +1,21 @@
-import path from 'path';
 import { configure, setAddon } from '@kadira/storybook';
 import 'akutil-polyfills';
 import MonitoredStory from './MonitoredStory.js';
 import MonkeyTestStory from './MonkeyTestStory.js';
+import SwappedDirectionStory from './SwappedDirectionStory.js';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import minilog from 'minilog';
-minilog.enable();
-const log = minilog('storybook');
 
-// Utilities for stories
-window.React = React;
-window.ReactDOM = ReactDOM;
+import 'style!./styles.less';
 
 function loadStories() {
-  /* global IS_RUNNING_SINGLE_PACKAGE,
-            PACKAGE_STORY_FOLDER,
-            PACKAGE_FOLDERS
-    (these get injected by the webpack config) */
-  let stories;
-  let req;
-
-  /* Attention: refactoring this seemingly weird piece of code in the wrong way
-     (e.g. calculating IS_RUNNING_SINGLE_PACKAGE at runtime and unifying the context definitions)
-     will cause storybook to build much much longer
-     (because webpack will evaluate both contexts and process all matching files).
-  */
-  if (IS_RUNNING_SINGLE_PACKAGE) {
-    // we are only running a single package, so we only need to look at stories within that package
-    log.info(`Only loading stories for ${PACKAGE_FOLDERS[0]}`);
-    req = require.context(PACKAGE_STORY_FOLDER, false, /.+-story\.js$/);
-    stories = req.keys();
-  } else {
-    // we are running either all packages or a number greater than 1
-    req = require.context('../../packages/', true, /stories\/.+-story\.js$/);
-    stories = req.keys();
-    if (PACKAGE_FOLDERS.length) {
-      // we are running a number greater than 1 (via a glob for example), so restrict
-      log.info(`Only loading stories for: ${PACKAGE_FOLDERS}`);
-      stories = stories.filter((p) => PACKAGE_FOLDERS.indexOf(p.split(path.sep)[1]) !== -1);
-    }
-  }
-  stories.forEach(req);
+  // Use a webpack loader to dynamically require stories.
+  //
+  // Normally you would use webpack's `require.context(…, true, …)` API within
+  // the client code and webpack would transform that for you, but in our case
+  // we can't use that due to lerna's symlinking strategy, and the lack of
+  // support for symlink cycles from `require.context()`.
+  require('./requireStories!./empty'); // eslint-disable-line global-require
 }
-
 
 setAddon({
   addMonitored(storyName, storyFn, rafFn) {
@@ -59,6 +31,14 @@ setAddon({
       <MonkeyTestStory>
         {storyFn(context)}
       </MonkeyTestStory>
+    ));
+  },
+
+  addSwapped(storyName, storyFn) {
+    this.add(storyName, (context) => (
+      <SwappedDirectionStory>
+        {storyFn(context)}
+      </SwappedDirectionStory>
     ));
   },
 });

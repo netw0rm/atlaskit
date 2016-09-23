@@ -2,14 +2,12 @@ import { storiesOf } from '@kadira/storybook';
 import HyperlinkEdit from '../src';
 import ContentComponent from 'ak-editor-content';
 import { vdom } from 'skatejs';
-const { React, ReactDOM } = window;
+import React from 'react';
 import styles from './styles.less';
 import reactify from 'akutil-react';
+import { ProseMirror, DOMFromPos, schema } from 'ak-editor-prosemirror';
 
-import { ProseMirror } from 'prosemirror/dist/edit';
-import { DOMFromPos } from 'prosemirror/dist/edit/dompos';
-import { schema } from 'prosemirror/dist/schema-basic';
-const Content = reactify(ContentComponent, { React, ReactDOM });
+const Content = reactify(ContentComponent);
 
 class PoppedDemo extends React.Component {
   constructor(props) {
@@ -84,11 +82,11 @@ storiesOf('ak-editor-hyperlink-edit', module)
   .add('Popped (no unlink)', () => <PoppedDemo canUnlink={false} />)
   .add('ProseMirror', () => {
     const getDomElement = (pm, pos) => {
-      const { node, offset } = DOMFromPos(pm, pos); // eslint-disable-line new-cap
-      if (node.childNodes.length === 0) {
-        return node.parentNode;
+      const { nodeFactory, offset } = DOMFromPos(pm, pos); // eslint-disable-line new-cap
+      if (nodeFactory.childNodes.length === 0) {
+        return nodeFactory.parentNode;
       }
-      return node.childNodes[offset];
+      return nodeFactory.childNodes[offset];
     };
 
     class Demo extends React.Component {

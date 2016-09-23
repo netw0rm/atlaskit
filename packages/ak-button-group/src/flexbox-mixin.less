@@ -1,0 +1,43 @@
+// These are the two mixins that give the functiionality.
+// One for named-slots one for default
+.slot(@slotStyles; @childStyles) {
+    .default-slot-wrapper {
+        :host & {
+            @slotStyles();
+        }
+    }
+    .default-slot-element {
+        @slotStyles();
+        & > * {
+            @childStyles();
+        }
+    }
+    ::content > * {
+        @childStyles();
+    }
+    ::slotted(*) {
+        @childStyles();
+    }
+}
+
+.slot(@slotname; @slotStyles; @childStyles;) {
+    // native
+  	.@{slotname}-slot-wrapper {
+        :host & {
+            @slotStyles();
+        }
+    }
+    // polyfill
+    .@{slotname}-slot-element {
+        @slotStyles();
+        &[name=@{slotname}] > * {
+            @childStyles();
+        }
+    }
+    ::content > [slot=@{slotname}] {
+        @childStyles();
+    }
+    ::slotted([slot=@{slotname}]) {
+        @childStyles();
+    }
+}

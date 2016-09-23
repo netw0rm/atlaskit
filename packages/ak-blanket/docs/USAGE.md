@@ -1,8 +1,16 @@
 # Blanket
 
-## Setup and install
+The main purpose of the blanket component is to provide the overlay layer for components such as a modal dialog or a tooltip.
 
-```
+![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-blanket/docs/blanket.gif)
+
+## Try it out
+
+Interact with a [live demo of the ak-blanket component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-blanket/@VERSION@/).
+
+## Installation
+
+```sh
 npm install ak-blanket
 ```
 
@@ -13,18 +21,18 @@ npm install ak-blanket
 The `ak-blanket` package exports the Blanket [Skate](https://github.com/skatejs/skatejs) component.
 
 Import the component in your JS resource:
- 
+
 #### bundle.js
 
-```
+```javascript
 import 'ak-blanket';
 ```
 
-Now we can use the defined tag in our HTML markup, e.g.:
+Now you can use the defined tag in your HTML markup, for example:
 
 #### index.html
 
-```
+```html
 <html>
 <head>
   <script src="bundle.js"></script>
@@ -39,13 +47,13 @@ Now we can use the defined tag in our HTML markup, e.g.:
 
 The main purpose of the blanket component is to provide the `overlay` layer for components such as `modal dialog` or `tooltip`. It can be achieved like this:
 
-```
+```js
 define('modal-dialog-component', () => {
  attached(elem) {
-   window.addEventListener('ak-blanket-blur', doSomethingWhenBlanketClicked(elem));
+   window.addEventListener('activate', doSomethingWhenBlanketClicked(elem));
  },
  detached(elem) {
-   window.removeEventListener('ak-blanket-blur', doSomethingWhenBlanketClicked(elem));
+   window.removeEventListener('activate', doSomethingWhenBlanketClicked(elem));
  },
  render(elem) {
    return (
@@ -57,13 +65,15 @@ define('modal-dialog-component', () => {
  })
 ```
 
-It emits the 'ak-blanket-blur' event when clicked/touched.
+It emits the 'activate' event when clicked/touched.
 Blanket component doesn't have the z-index style, so make sure you put it into an appropriate DOM position.
-For the purpose of simplicity blanket doesn't have any `show/hide` functionality. Since the main use of it suppose to be inside `popup` elements it would appear/disapper with the parent element.
+For the purpose of simplicity blanket doesn't have any `show/hide` functionality. Since the main use of it suppose to be inside `popup` elements it would appear/disappear with the parent element.
 
 ### React
 
-```
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
+
+```js
 import Blanket from 'ak-blanket';
 import reactify from 'skatejs-react-integration';
 

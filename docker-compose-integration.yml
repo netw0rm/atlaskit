@@ -7,9 +7,10 @@ services:
     logging:
       driver: none
   selenium-chrome:
-    # Uncomment the next line for a VNC server you can attach to (vnc://:secret@localhost:5900)
-    # image: selenium/node-chrome-debug
-    image: selenium/node-chrome
+    # You can attach a VNC server (vnc://:secret@localhost:5900)
+    image: selenium/node-chrome-debug:latest
+    # Uncomment the next line for production mode
+    # image: selenium/node-chrome:latest
     ports:
       - "5900:5900"
     depends_on:
@@ -22,7 +23,7 @@ services:
     logging:
       driver: none
   dev-server:
-    image: joscha/atlaskit
+    image: atlassianlabs/atlaskit:latest
     volumes:
       - .:/usr/src/app/
     ports:
@@ -31,11 +32,11 @@ services:
       SCOPE:
     command: 'bash -c
             "
-              npm install
+              npm run postinstall
               && npm run storybook/single \"$SCOPE\"
             "'
   cucumber:
-    image: joscha/atlaskit
+    image: atlassianlabs/atlaskit:latest
     volumes:
       - .:/usr/src/app/
     depends_on:

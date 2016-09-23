@@ -8,37 +8,55 @@
   .childContent() { margin: 20px; }
   > slot > * { .childContent(); }
   > ::content > * { .childContent(); }
-  // Re-instate when https://ecosystem.atlassian.net/browse/AK-146 is resolved.
-  //> ::slotted(*) { .childContent(); }
+  > ::slotted(*) { .childContent(); }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+}
+
+.actions {
+  flex-grow: 1;
+}
+
+.insert {
+}
+
+.button-mixin() {
+  cursor: pointer;
+  font-size: inherit;
 }
 
 .saveButton {
-  // TODO: move out to shared styles
+  .button-mixin();
   background: @ak-editor-primary-button;
   border: 1px solid @ak-editor-primary-button;
   border-radius: 3px;
   color: white;
-  cursor: pointer;
-  font-size: inherit;
   padding: 5px 15px;
 }
 
 .cancelButton {
+  .button-mixin();
   background: none;
   border: none;
-  cursor: pointer;
-  font-size: inherit;
-  padding: 0;
   margin-left: 20px;
   opacity: 0.5;
-
-  &:active {
-    outline: none;
-  }
+  padding: 0;
 
   &:hover {
     text-decoration: underline;
   }
+}
+
+.icon-button {
+  .button-mixin();
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .openTop {

@@ -2,13 +2,10 @@ import reactify from 'akutil-react';
 import AkInlineDialog from '../src/index';
 import styles from 'style!./../src/host.less';
 
-const { React, ReactDOM } = window;
+import React from 'react';
 const { Component } = React;
 
-const Dialog = reactify(AkInlineDialog, {
-  React,
-  ReactDOM,
-});
+const Dialog = reactify(AkInlineDialog);
 
 class DialogWithButton extends Component {
   constructor(props) {
@@ -58,6 +55,7 @@ class DialogWithButton extends Component {
           attachment={this.props.attachTo}
           position={this.props.position}
           hasBlanket={false}
+          boundariesElement={this.props.boundariesElement}
         >
           <button
             onClick={this.handleClick}
@@ -77,6 +75,7 @@ DialogWithButton.propTypes = {
   position: React.PropTypes.string,
   style: React.PropTypes.object,
   attachTo: React.PropTypes.string,
+  boundariesElement: React.PropTypes.string,
 };
 
 export default DialogWithButton;

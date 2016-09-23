@@ -1,0 +1,33 @@
+@import 'shared-variables.less';
+@import 'index.less';
+
+@ak-navigation-link-color: @ak-color-N500;
+@ak-navigation-selected-link-color: @ak-color-B500;
+
+@ak-navigation-drawer-box-shadow: 10px 0px 20px 0px rgba(0,0,0,0.15);
+
+.drawer {
+  transition: width 220ms cubic-bezier(0.15, 1, 0.3, 1), padding 220ms;
+  position: absolute;
+  top: 0;
+  left: @global-bar-width;
+  width: 0;
+  overflow: hidden;
+  background: white;
+  height: 100%;
+  box-shadow: @ak-navigation-drawer-box-shadow;
+  padding: 62px 0 0 0;
+
+  // TODO: this can be removed if we change the order in the shadow DOM, but there's a bug with
+  // having named slots after the default slot that makes this approach fail.
+
+  z-index: 1;
+
+  &.open {
+    width: 220px;
+    padding-left: 20px;
+    &.large {
+      width: 600px;
+    }
+  }
+}

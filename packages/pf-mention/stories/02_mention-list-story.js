@@ -1,5 +1,3 @@
-import 'style!./stories.less';
-
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 
@@ -8,12 +6,9 @@ import { mentions } from './story-data';
 import { getWebComponent } from './util';
 import debug from '../src/util/logger';
 
-const { React, ReactDOM } = window;
+import React from 'react';
 
-const MentionList = reactify(pfMentionList, {
-  React,
-  ReactDOM,
-});
+const MentionList = reactify(pfMentionList);
 
 function randomMentions() {
   return mentions.filter(() => Math.random() < 0.7);

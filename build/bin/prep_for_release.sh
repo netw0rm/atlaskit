@@ -2,14 +2,24 @@
 set -e
 
 # DEBUG=echo
+$DEBUG rm -rf .git
+$DEBUG git init
+$DEBUG git clean -dfx
 $DEBUG git config credential.helper store
 $DEBUG echo "https://$BITBUCKET_USER:$BITBUCKET_PASSWORD@bitbucket.org" > ~/.git-credentials
-$DEBUG git remote set-url origin "https://bitbucket.org/atlassian/atlaskit.git"
+$DEBUG git remote add origin "https://bitbucket.org/atlassian/atlaskit.git"
+$DEBUG git fetch origin
+$DEBUG git reset $BITBUCKET_COMMIT --hard
 $DEBUG git branch --set-upstream-to origin/$BITBUCKET_BRANCH
-$DEBUG git config --global user.email 'aui-team@atlassian.com'
-$DEBUG git config --global user.name 'AUI team account'
+$DEBUG git config --global user.email "$BOT_ACCOUNT_EMAIL"
+$DEBUG git config --global user.name "$BOT_ACCOUNT_NAME"
 $DEBUG git config --global push.default simple
-$DEBUG git fetch --unshallow
 $DEBUG git fetch --tags
-$DEBUG git tag --list #debug
+$DEBUG git fsck --full
+
 $DEBUG npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+
+LERNA_VERSION=$(node -e "console.log(require('./lerna.json').lerna)")
+
+$DEBUG npm install -g lerna@$LERNA_VERSION
+$DEBUG npm install -g lerna-semantic-release@8.0.2

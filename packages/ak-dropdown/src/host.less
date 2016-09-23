@@ -1,0 +1,47 @@
+@import 'shared-variables.less';
+
+.ak-dropdown,
+ak-dropdown {
+  display: inline-block;
+}
+
+.ak-dropdown-item,
+ak-dropdown-item {
+  display: block;
+
+  > _shadow_root_ {
+    display: block;
+  }
+
+}
+
+.ak-dropdown-trigger,
+ak-dropdown-trigger {
+  display: inline-block;
+}
+
+.ak-dropdown-trigger-button,
+ak-dropdown-trigger-button {
+  display: inline-block;
+}
+
+.ak-dropdown-list,
+ak-dropdown-list {
+  opacity: 0;
+  position: absolute;
+
+  &[positioned] {
+    opacity: 1;
+  }
+}
+
+.ak-dropdown-group,
+ak-dropdown-group {
+  display: block;
+
+  // first group element shouldn't have any empty space above it
+  & + .ak-dropdown-group,
+  & + ak-dropdown-group {
+    margin-top: @ak-dropdown-group-margin;
+  }
+}

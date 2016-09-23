@@ -3,20 +3,42 @@
 @ak-navigation-link-color: @ak-color-N500;
 @ak-navigation-selected-link-color: @ak-color-B500;
 
-.link {
+.wrapper {
+  &:hover::before {
+    background: @ak-color-N30;
+  }
+  &:active::before {
+    background: @ak-color-B50;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    left: -20px;
+    top: 0;
+    bottom: 0;
+  }
+
+  position: relative;
   color: @ak-navigation-link-color;
-  text-decoration: none;
-  cursor: pointer;
-  margin: 10px 0;
-  white-space: nowrap;
+  padding: 5px 0;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.link {
+  color: currentColor;
+  text-decoration: none;
+  position: relative; //to prevent stacking context issues with the pseudo element
 }
 
 .icon {
   position: relative;
-  margin-left: 10px;
-  margin-right: 20px;
+  margin-left: @navigation-link-icon-margin-left;
+  margin-right: @navigation-link-icon-margin-right;
+  width: @navigation-link-icon-size;
   display: inline-block;
 }
 
@@ -26,6 +48,7 @@
   vertical-align: text-bottom;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: @container-link-text-expanded-width;
 }
 
 .selected {

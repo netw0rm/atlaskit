@@ -4,11 +4,12 @@ import 'style!./host.less';
 import { prop, vdom, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
+import * as events from './internal/index.events';
 
-function handleBlur(elem) {
+function handleActivation(elem) {
   return () => {
     if (elem.clickable) {
-      emit(elem, 'ak-blanket-click');
+      emit(elem, events.activate);
     }
   };
 }
@@ -29,8 +30,8 @@ export default define('ak-blanket', {
       <div>
         <style>{shadowStyles.toString()}</style>
         <div
-          onClick={handleBlur(elem)}
-          onTouch={handleBlur(elem)}
+          onClick={handleActivation(elem)}
+          onTouch={handleActivation(elem)}
           className={classes}
         >
         </div>
@@ -49,9 +50,11 @@ export default define('ak-blanket', {
      */
     tinted: prop.boolean({ attribute: true }),
     /**
-     * @description If click on the blanket emits a 'blanket-click' event.
+     * @description Whether the blanket is clickable.
+     *
      * @memberof Blanket
      * @instance
+     * @emits Blanket#activate
      * @type Boolean
      * @default false
      * @example @html <ak-blanket clickable></ak-blanket>
@@ -60,3 +63,5 @@ export default define('ak-blanket', {
     clickable: prop.boolean({ attribute: true }),
   },
 });
+
+export { events };

@@ -1,5 +1,5 @@
 import 'style!./host.less';
-import { vdom, define, prop, emit, symbols } from 'skatejs';
+import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
 import Icon from 'ak-editor-icon';
@@ -10,7 +10,7 @@ function toggle(elem, input) {
   elem.open = !elem.open;
 
   if (elem.open) {
-    const textInput = input || elem[symbols.shadowRoot].querySelector('.text-input');
+    const textInput = input || elem.shadowRoot.querySelector('.text-input');
 
     // todo: fix the hack
     setTimeout(() => textInput.focus(), 5);
@@ -26,8 +26,11 @@ export default define('ak-editor-toolbar-hyperlink', {
           toggle(elem);
         }
       }}
+      active={elem.active || elem.open}
       disabled={elem.disabled}
-    ><Icon glyph="link" /></EditorButton>);
+    >
+      <Icon glyph="link" {...((elem.active || elem.open) ? { fill: 'white' } : {})} />
+    </EditorButton>);
 
     let linkButton;
 
@@ -37,10 +40,10 @@ export default define('ak-editor-toolbar-hyperlink', {
       <div
         onKeyup={event => {
           if (event.keyCode === 13) {
-            const textInput = elem[symbols.shadowRoot].querySelector('.text-input');
-            const popup = elem[symbols.shadowRoot].querySelector('.popup');
-            popup.open = false;
+            const textInput = elem.shadowRoot.querySelector('.text-input');
+            toggle(elem, textInput);
             emit(elem, 'save', { detail: { value: textInput.value } });
+            textInput.value = '';
           }
         }}
       >
@@ -52,7 +55,7 @@ export default define('ak-editor-toolbar-hyperlink', {
           class="popup"
           target={linkButton}
           open={elem.open}
-          on-ak-blanket-click={() => toggle(elem)}
+          on-activate={() => toggle(elem)}
         >
           <TextInput className="text-input" placeholder="Paste link" />
         </Popup>
@@ -71,5 +74,6 @@ export default define('ak-editor-toolbar-hyperlink', {
      * @example @js dialog.disabled = true;
      */
     open: prop.boolean({ attribute: true }),
+    active: prop.boolean({ attribute: true }),
   },
 });

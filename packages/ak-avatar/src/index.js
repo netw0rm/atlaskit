@@ -30,7 +30,7 @@ function imageLoadedHandler(elem) {
 }
 
 /**
- * @description The definition for the Avatar component.
+ * @description Definition of the Avatar component.
  * @class Avatar
  * @example @html <ak-avatar src="my/avatar/src/doge.png"></ak-avatar>
  * @example @js import Avatar from 'ak-avatar';
@@ -82,8 +82,8 @@ const definition = {
 
   props: {
     /**
-     * @description The size of the avatar.
-     * Allowed values are: 'small', 'medium', 'large', 'xlarge'.
+     * @description Defines the size of the avatar.
+     * Allowed values: 'small', 'medium', 'large', 'xlarge'.
      * @memberof Avatar
      * @instance
      * @default medium
@@ -96,9 +96,8 @@ const definition = {
     }),
 
     /**
-     * @description An indicator of a users online status.
-     * Will show a small colored icon on the avatar itself.
-     * Allowed values are: 'online', 'offline', 'busy' or 'none'
+     * @description Indicates a user's online status by showing a small icon on the avatar itself.
+     * Allowed values: 'online', 'offline', 'busy' or 'none'
      * @memberof Avatar
      * @instance
      * @default none
@@ -131,8 +130,8 @@ const definition = {
     }),
 
     /**
-     * @description The label for the Avatar. Used by screen readers and as fallback content should
-     * the image fail to load.
+     * @description Defines the label for the Avatar used by screen readers as fallback content
+     * if the image fails to load.
      * @memberof Avatar
      * @instance
      * @type {string}
@@ -143,7 +142,7 @@ const definition = {
       attribute: true,
     }),
 
-    // Private prop, will be replaced with a symbol soon, no jsdoc annotation as not public API
+    // TODO replace with Symbol as soon as Skate supports it
     __loading: prop.boolean({
       initial: false,
     }),

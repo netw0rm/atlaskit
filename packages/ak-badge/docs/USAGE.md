@@ -1,16 +1,21 @@
-# AkBadge
+# Badge
 
-Badges are visual indicators for numeric values such as tallies and other quantities.
+Badges are visual indicators for numeric values such as tallies and scores. They're commonly used before and after the label of the thing they're quantifying.
+They must be used singly after a single item name, and have only numbers.
 
-They are not used for anything other than integers. For statuses, use Lozenges. To call out tags or other high-visibility attributes, use Labels.
-Badges are used before or, more commonly, after the name or label of the thing they quantify.
-Use badges unambiguously – they should always be used singly, after a single item name.
-Use tooltips to enhance user understanding – to indicate units, for example.
-Badges are for counts, so should only contain numbers.
+* Use lozenges for statuses.
+* Use labels to call out tags and high-visibility attributes.
+* Use a tooltip if you want to indicate units.
 
-## Setup and install
+![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-badge/docs/badge.png)
 
-```
+## Try it out
+
+Interact with a [live demo of the ak-badge component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-badge/@VERSION@/).
+
+## Installation
+
+```sh
 npm install ak-badge
 ```
 
@@ -20,19 +25,19 @@ npm install ak-badge
 
 The `ak-badge` package exports the AkBadge [Skate](https://github.com/skatejs/skatejs) component.
 
-Import the component in your JS resource:
+Import the component in your JS resource as follows:
 
 #### bundle.js
 
-```
+```javascript
 import AkBadge from 'ak-badge';
 ```
 
-Now we can use the defined tag in our HTML markup, e.g.:
+Now we can use the defined tag in our HTML markup:
 
 #### index.html
 
-```
+```html
 <html>
 <head>
   <script src="bundle.js"></script>
@@ -44,6 +49,8 @@ Now we can use the defined tag in our HTML markup, e.g.:
 ```
 
 ### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```
 import AkBadge from 'ak-badge';

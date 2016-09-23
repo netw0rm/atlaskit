@@ -60,6 +60,7 @@ function submitTestForm(useNativeSubmitBtn) {
         target="myFrame"
       >
         <h2>Submit test</h2>
+        <p>Note: Ensure that you are not using HTTPS for this story.</p>
         {generateInput({ label: 'First name', id: 'fname' })}
         {generateInput({ label: 'Last name', id: 'lname' })}
         {generateInput({ type: 'email', label: 'Email', id: 'email' })}

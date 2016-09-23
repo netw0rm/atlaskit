@@ -1,6 +1,3 @@
-/** @jsx vdom */
-/* The no-underscore-dangle line can be removed once we can use symbols for prop names */
-/* eslint-disable no-underscore-dangle */
 import 'style!./host.less';
 
 import classNames from 'classnames';
@@ -22,10 +19,11 @@ const PRESENCE_ATTRIBUTE_ENUM = {
   invalidDefault: 'none',
 };
 
+const loadingSymbol = Symbol();
 
 function imageLoadedHandler(elem) {
   return () => {
-    props(elem, { __loading: false });
+    props(elem, { [loadingSymbol]: false });
   };
 }
 
@@ -48,7 +46,7 @@ const definition = {
       shadowStyles.locals.size,
     ]);
     const imgWrapperClasses = classNames({
-      [shadowStyles.locals.loaded]: !elem.__loading,
+      [shadowStyles.locals.loaded]: !elem[loadingSymbol],
     }, shadowStyles.locals.imgWrapper);
     const slotWrapperClasses = classNames({
       // hide the slot if no presence and no slotted content to hide the border of the presence
@@ -121,10 +119,10 @@ const definition = {
       attribute: true,
       set(elem, data) {
         // Check that we are setting an actual value and that its's not the same value as before
-        // otherwise no onLoad event will be fired from the img and therefore __loading will never
-        // be set back to false.
+        // otherwise no onLoad event will be fired from the img and therefore [loadingSymbol] will
+        // never be set back to false.
         if (data.newValue && data.oldValue !== data.newValue) {
-          props(elem, { __loading: true });
+          props(elem, { [loadingSymbol]: true });
         }
       },
     }),
@@ -142,8 +140,7 @@ const definition = {
       attribute: true,
     }),
 
-    // TODO replace with Symbol as soon as Skate supports it
-    __loading: prop.boolean({
+    [loadingSymbol]: prop.boolean({
       initial: false,
     }),
   },

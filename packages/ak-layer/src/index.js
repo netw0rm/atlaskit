@@ -1,6 +1,7 @@
 import { vdom, define, prop } from 'skatejs';
 import { reCreateAlignmentIfNeeded, createNewAlignment } from './internal/helpers';
 import { enumeration } from 'akutil-common';
+import { flippedSymbol } from './internal/symbols';
 
 export const POSITION_ATTRIBUTE_ENUM = {
   attribute: 'position',
@@ -140,7 +141,7 @@ export default define('ak-layer', {
       initial: undefined,
     },
     // internal property, no docs required
-    _isFlipped: prop.boolean(),
+    [flippedSymbol]: prop.boolean(),
   },
   prototype: {
     /**
@@ -168,7 +169,7 @@ export default define('ak-layer', {
      * @example @js const isFlipped = elem.isFlipped;
     */
     get isFlipped() {
-      return !!this._isFlipped; // eslint-disable-line no-underscore-dangle
+      return !!this[flippedSymbol];
     },
   },
   attached(elem) {

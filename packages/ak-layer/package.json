@@ -20,7 +20,7 @@
     "babel-runtime": "^6.11.6",
     "object-assign": "^4.1.0",
     "popper.js": "https://github.com/FezVrasta/popper.js#27069a2ed604a962d18e0e11b916ac9a1529e14a",
-    "skatejs": "^1.2.5"
+    "skatejs": "^1.5.1"
   },
   "repository": {
     "type": "git",

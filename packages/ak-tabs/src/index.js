@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle: 0 */
 import 'style!./host.less';
 import classNames from 'classnames';
 import debounce from 'debounce';
@@ -15,7 +14,7 @@ import Tab from './index.tab';
 import Icon from 'ak-icon';
 import Dropdown, { Item, DropdownTrigger } from 'ak-dropdown';
 
-import { buttonContainer, labelsContainer } from './internal/symbols';
+import { buttonContainer, labelsContainer, labelProp, selectedProp } from './internal/symbols';
 const resizeListener = Symbol();
 
 /**
@@ -108,9 +107,8 @@ export default define('ak-tabs', {
   },
   rendered: helpers.showVisibleTabs,
   props: {
-    /** TODO: Use Symbol once supported in skate */
-    _labels: prop.array({}),
-    _selected: prop.array({}),
+    [labelProp]: prop.array({}),
+    [selectedProp]: prop.array({}),
   },
 });
 

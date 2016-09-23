@@ -1,5 +1,6 @@
 import Alignment from './Alignment';
 import 'core-js/fn/array/find';
+import { flippedSymbol } from './symbols';
 
 function popperPositionToAlignmentPosition(position) {
   const positionMap = Alignment.attachmentMap;
@@ -11,12 +12,12 @@ function popperPositionToAlignmentPosition(position) {
 
 function handlePopperUpdate(elem, data) {
   // data.flipped is not always set, so we cast it to a boolean.
-  elem._isFlipped = !!data.flipped; // eslint-disable-line no-underscore-dangle
+  elem[flippedSymbol] = !!data.flipped;
 
   if (elem.onUpdate) {
     // we don't want to expose implementation details of popperjs, so we pull out the things we want
     const dataToPass = {
-      isFlipped: elem._isFlipped, // eslint-disable-line no-underscore-dangle
+      isFlipped: elem[flippedSymbol],
       originalPosition: popperPositionToAlignmentPosition(data.originalPlacement),
       actualPostion: popperPositionToAlignmentPosition(data.placement),
     };

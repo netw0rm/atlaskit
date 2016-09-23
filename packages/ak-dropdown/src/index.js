@@ -9,14 +9,15 @@ import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
 
-// TODO dangling to Symbol once this is supported: https://github.com/skatejs/skatejs/issues/687
-/* eslint-disable no-underscore-dangle */
-
 // Width of a dropdown should be at least width of it's trigger + 10px
 const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
 const offset = '0 2';
+
+const handleClickOutsideSymbol = Symbol();
+const handleKeyDownSymbol = Symbol();
+const layerSymbol = Symbol();
 
 function getTriggerElement(elem) {
   return elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
@@ -47,8 +48,8 @@ function toggleDialog(elem, value) {
     list[0].first = true;
     list[list.length - 1].last = true;
     elem.reposition();
-    document.addEventListener('click', elem._handleClickOutside);
-    document.addEventListener('keydown', elem._handleKeyDown);
+    document.addEventListener('click', elem[handleClickOutsideSymbol]);
+    document.addEventListener('keydown', elem[handleKeyDownSymbol]);
     emit(elem, events.afterOpen);
   } else {
     [...list].forEach((item) => {
@@ -60,8 +61,8 @@ function toggleDialog(elem, value) {
         item.last = false;
       }
     });
-    document.removeEventListener('click', elem._handleClickOutside);
-    document.removeEventListener('keydown', elem._handleKeyDown);
+    document.removeEventListener('click', elem[handleClickOutsideSymbol]);
+    document.removeEventListener('keydown', elem[handleKeyDownSymbol]);
     emit(elem, events.afterClose);
   }
 }
@@ -150,12 +151,12 @@ export default define('ak-dropdown', {
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
     elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
-    elem._handleClickOutside = (e) => {
+    elem[handleClickOutsideSymbol] = (e) => {
       if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem)) {
         toggleDialog(elem, false);
       }
     };
-    elem._handleKeyDown = (e) => {
+    elem[handleKeyDownSymbol] = (e) => {
       if (elem.open && e.keyCode === keyCode('escape')) {
         toggleDialog(elem, false);
       }
@@ -163,9 +164,9 @@ export default define('ak-dropdown', {
   },
   prototype: {
     reposition() {
-      if (this._layer) {
-        ready(this._layer, () => {
-          this._layer.reposition();
+      if (this[layerSymbol]) {
+        ready(this[layerSymbol], () => {
+          this[layerSymbol].reposition();
         });
       }
 
@@ -209,7 +210,7 @@ export default define('ak-dropdown', {
           // See AK-343
           style={{ display: elem.open ? 'block' : 'none' }}
           ref={(layer) => {
-            elem._layer = layer;
+            elem[layerSymbol] = layer;
             setTimeout(() => {
               if (elem.open && layer.alignment) {
                   // by default dropdown has opacity 0

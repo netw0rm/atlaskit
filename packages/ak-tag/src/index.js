@@ -15,10 +15,8 @@ const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = event
 import { name } from '../package.json';
 import logger from './internal/logger';
 
-// TODO replace with es6 Symbols as soon as Skate supports it
-const buttonHoverSymbol = '__removeButtonHover';
-// TODO replace with es6 Symbols as soon as Skate supports it
-const isRemovingSymbol = '__isRemoving';
+const buttonHoverSymbol = Symbol();
+const isRemovingSymbol = Symbol();
 
 
 /**

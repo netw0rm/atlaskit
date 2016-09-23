@@ -3,6 +3,8 @@
 const buttonContainer = Symbol();
 const focusOnRender = Symbol();
 const labelsContainer = Symbol();
+const labelProp = Symbol();
+const selectedProp = Symbol();
 
 // ak-tabs-tab symbols
 
@@ -15,4 +17,6 @@ export {
   labelsContainer,
   tabDropdownItem,
   tabLabel,
+  labelProp,
+  selectedProp,
 };

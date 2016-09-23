@@ -1,5 +1,12 @@
 import shadowStyles from '../shadow.less';
-import { buttonContainer, labelsContainer, tabDropdownItem, tabLabel } from './symbols';
+import {
+  buttonContainer,
+  labelsContainer,
+  tabDropdownItem,
+  tabLabel,
+  labelProp,
+  selectedProp,
+} from './symbols';
 
 const getAllTabs = (tabsEl) => (Array.from(tabsEl.children).filter(el => el.label));
 
@@ -135,8 +142,8 @@ const getTabsVisibility = (tabsEl) => {
 
 const updateProps = (tabsEl) => {
   const allTabs = getAllTabs(tabsEl);
-  tabsEl._selected = allTabs.map(el => el.selected); // eslint-disable-line no-underscore-dangle
-  tabsEl._labels = allTabs.map(el => el.label); // eslint-disable-line no-underscore-dangle
+  tabsEl[selectedProp] = allTabs.map(el => el.selected);
+  tabsEl[labelProp] = allTabs.map(el => el.label);
 };
 
 export {

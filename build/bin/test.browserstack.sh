@@ -2,7 +2,7 @@
 set -e
 
 MAX_RETRIES=2
-HEAD_SHA=$(git rev-parse --short HEAD)
+GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 # Run the Browserstack tests
@@ -14,7 +14,7 @@ do
   printf "\033[0m"
   echo
 
-  HEAD_SHA=$HEAD_SHA \
+  GITHEAD_SHORT="$GITHEAD_SHORT" \
   CURRENT_BRANCH="$CURRENT_BRANCH" \
   BROWSERSTACK_STAGE=$STAGE \
   retry \

@@ -1,0 +1,32 @@
+{
+  "name": "ak-editor-shared-styles",
+  "version": "0.0.1",
+  "description": "Shared styles for fabric editor components",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "gen-js": "node ./bin/generate-vars-export.js > src/index.js",
+    "prepublish": "npm run gen-js && cd ../.. && npm run prepublish/single ak-editor-shared-styles"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "devDependencies": {
+    "camelcase": "^3.0.0",
+    "classnames": "^2.2.5",
+    "glob": "^7.0.5",
+    "less-vars-to-js": "^1.1.1"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.11.6",
+    "akutil-shared-styles": "^33.11.1"
+  }
+}

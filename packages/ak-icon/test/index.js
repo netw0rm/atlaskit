@@ -71,6 +71,17 @@ describe(name, () => {
           'radio',
           'search',
         ]);
+        // If you find yourself here and wonder why this list is not auto-generated, then bear in
+        // mind that tests are supposed to tell you when a piece of software breaks.
+        // As the sole purpose of this component is providing icons:
+        //
+        // * changing an icon is a patch
+        // * adding an icon is a feature
+        // * removing an icon is breaking change
+        // * renaming an icon is a breaking change
+        //
+        // If we were to auto-generate this list, then renaming, adding or removing would NOT
+        // break any tests and thus not hint the developer at what kind of change he/she is making
     });
 
     it('are properly defined in bundle', () => {

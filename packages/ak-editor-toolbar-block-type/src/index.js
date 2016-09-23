@@ -15,10 +15,10 @@ export default define('ak-editor-toolbar-block-type', {
     elem.closeBlockTypeDropdown = elem.closeBlockTypeDropdown.bind(elem);
   },
   attached(elem) {
-    elem.context.addEventListener('click', elem.closeBlockTypeDropdown, true);
+    document.addEventListener('click', elem.closeBlockTypeDropdown, true);
   },
   detached(elem) {
-    elem.context.removeEventListener('click', elem.closeBlockTypeDropdown, true);
+    document.removeEventListener('click', elem.closeBlockTypeDropdown, true);
   },
   render(elem) {
     const selectedBlockType = elem.selectedBlockType || elem.blockTypes[0] || {};
@@ -62,16 +62,5 @@ export default define('ak-editor-toolbar-block-type', {
     selectedBlockType: { attribute: true },
     blockTypes: prop.array({ attribute: true }),
     disabled: prop.boolean({ attribute: true }),
-    /**
-     * @description context of where this component should be. A click handler,
-     *              closeBlockTypeDropdown, is registered on the context to
-     *              listen to the click event to close block type dropdown
-     * @memberof BlockType
-     * @instance
-     * @default document
-     * @type DOMElement
-     * @example @js blockType.context = document;
-     */
-    context: { attribute: true, default: document },
   },
 });

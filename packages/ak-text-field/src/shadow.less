@@ -1,0 +1,102 @@
+@import 'shared-variables.less';
+
+// Base grid
+@grid: 4;
+
+// Label margins
+@label-top-spacing: unit(@grid * 5, px);
+@label-bottom-spacing: unit(@grid * 3, px);
+
+// Input border width
+@input-border-width: 1;
+@focused-border-width: 2;
+
+// Input padding
+@input-vertical-padding: @grid * 3;
+@input-horizontal-padding: @grid * 2;
+
+// Transition speed
+@input-style-transition-duration: 0.2s;
+
+// Mixin to redistribute spacing between border and padding
+.borders-and-padding (@border, @x-spacing, @y-spacing) {
+  border-width: unit(@border, px);
+  padding: unit((@y-spacing - @border), px) unit((@x-spacing - @border), px);
+}
+
+// State definitions
+@baseInputStyle: {
+  .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-vertical-padding);
+  background-color: @ak-color-N10A;
+  border-color: @ak-color-N30A;
+  border-style: solid;
+  border-radius: 3px;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 1.42857142857143; // effectively 20px - @grid * 5
+  transition: background-color @input-style-transition-duration ease-in-out,
+              border-color @input-style-transition-duration ease-in-out;
+  width: 100%;
+};
+
+@hoverInputStyle: {
+  background-color: @ak-color-N20;
+  border-color: @ak-color-N20;
+};
+
+@focusInputStyle: {
+  .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-vertical-padding);
+  background-color: white;
+  border-color: @ak-color-B100;
+  outline: none;
+};
+
+@disabledInputStyle: {
+  background-color: @ak-color-N20A;
+  border-color: @ak-color-N20A;
+  color: @ak-color-N60;
+  cursor: not-allowed;
+};
+
+// Label style
+.label {
+  color: @ak-color-N200;
+  display: block;
+}
+
+.label-text {
+  font-size: 12px;
+  line-height: 1.33333333333333; // effectively 16px - @grid * 4
+  padding: @label-top-spacing 0 @label-bottom-spacing 0;
+}
+
+// Styles for native shadow DOM browsers
+::slotted(input) {
+  @baseInputStyle();
+}
+::slotted(input:hover) {
+  @hoverInputStyle();
+}
+::slotted(input:focus) {
+  @focusInputStyle();
+}
+::slotted(input[disabled]) {
+  @disabledInputStyle();
+}
+
+// Styles for polyfilled shadow DOM
+.default-slot-element > input {
+  @baseInputStyle();
+
+  &:hover {
+    @hoverInputStyle();
+  }
+
+  &:focus {
+    @focusInputStyle();
+  }
+
+  &[disabled] {
+    @disabledInputStyle();
+  }
+}

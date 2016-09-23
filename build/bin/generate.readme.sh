@@ -19,14 +19,14 @@ else
 fi
 
 # Generate API docs
-if [[ -z `find ./src -name "index*.js" -print -quit` ]]; then
+if [[ -z `find ./src -name "*.js" -print -quit` ]]; then
   API=""
   printf "\033[34m"
   echo " Nothing found that can be documented."
   printf "\033[0m"
 else
   DOCS="$($JSDOC2MD_LOC \
-    --src "src/**/index*.js" \
+    --src "src/**/*.js" \
     --plugin akutil-dmd-plugin \
     --src $file \
     --member-index-format list \

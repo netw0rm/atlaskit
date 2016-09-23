@@ -20,3 +20,13 @@ echo "github.com,192.30.252.129 ssh-rsa $GH_KEY" >> /root/.ssh/known_hosts
 echo "github.com,192.30.252.128 ssh-rsa $GH_KEY" >> /root/.ssh/known_hosts
 echo "github.com,131.103.20.168 ssh-rsa $GH_KEY" >> /root/.ssh/known_hosts
 echo "github.com,192.30.252.130 ssh-rsa $GH_KEY" >> /root/.ssh/known_hosts
+
+npm config set progress false
+npm config set color always
+npm config set loglevel warn
+
+echo "Installing bitbucket-build-status"
+npm install -g bitbucket-build-status@1.0.1
+
+echo "Installing npm-run-all"
+npm install -g npm-run-all@3.1.0

@@ -6,7 +6,9 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "gen-js": "node ./bin/generate-icon-exports.js",
+    "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.js",
+    "generate-icon-exports": "node ./bin/generate-icon-exports.js",
+    "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
     "prepublish": "CLI=1 npm run gen-js && cd .. && npm run prepublish/single ak-icon",
     "pretest": "npm run gen-js"
   },
@@ -18,7 +20,9 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "babel-runtime": "^6.11.6",
+    "camelcase": "^3.0.0",
     "classnames": "^2.2.5",
+    "lodash.escaperegexp": "^4.1.2",
     "skatejs": "^1.2.5"
   },
   "devDependencies": {
@@ -26,7 +30,6 @@
     "akutil-shared-styles": "^33.11.1",
     "async": "^2.0.1",
     "glob": "^7.0.5",
-    "glob-loader": "^0.3.0",
     "lodash.sample": "^4.2.1",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.5.4",

@@ -1,14 +1,11 @@
 import { Component } from 'skatejs';
 import chai from 'chai';
+import camelcase from 'camelcase';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
 import fileToScope from '../src/fileToScope';
 import pathToDashed from '../src/pathToDashed';
-
-// This is an anti-pattern and a special case here as we auto-generate the exports
-// and need to make sure that the single ones align to the bundled ones.
-// DO NOT COPY TO OTHER COMPONENTS!
-import bundle from '../dist/bundle';
+import * as bundle from '../src';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -85,7 +82,18 @@ describe(name, () => {
     });
 
     it('are properly defined in bundle', () => {
-      Object.keys(bundle).should.be.deep.equal(Object.keys(components));
+      // This could be any component, the important thing is the fixed named export
+      const { bitbucketLogo: BitbucketLogoIcon } = bundle;
+      (new BitbucketLogoIcon).should.be.instanceof(Component);
+
+      const bundleKeys = Object.keys(bundle);
+
+      bundleKeys.should.be.deep.equal(Object
+            .keys(components)
+            .map(pathToDashed)
+            .map((x) => camelcase(x)));
+
+      bundleKeys.forEach((key) => (new (bundle[key])).should.be.instanceof(Component));
     });
   });
 

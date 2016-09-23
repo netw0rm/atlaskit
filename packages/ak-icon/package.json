@@ -1,13 +1,13 @@
 {
   "name": "ak-icon",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Icon web components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
     "gen-js": "node ./bin/generate-icon-exports.js",
-    "prepublish": "npm run gen-js && cd .. && npm run prepublish/single ak-icon",
+    "prepublish": "CLI=1 npm run gen-js && cd .. && npm run prepublish/single ak-icon",
     "pretest": "npm run gen-js"
   },
   "files": [

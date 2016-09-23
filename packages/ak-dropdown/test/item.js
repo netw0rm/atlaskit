@@ -201,7 +201,7 @@ describe('ak-dropdown-item', () => {
         ).then(() => {
           component = itemContainer.firstChild;
           componentDomElem = getShadowRoot(component).firstChild;
-          iconDomElem = getShadowRoot(component).querySelector(iconClass).firstChild;
+          iconDomElem = getShadowRoot(component).querySelector(iconClass);
           defaultDomElem = getShadowRoot(component).querySelector('slot,content').parentNode;
         });
       });

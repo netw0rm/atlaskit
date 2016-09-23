@@ -42,7 +42,7 @@ describe('ak-text-field', () => {
       return waitUntil(labelIsCorrect).should.be.fulfilled;
     });
 
-    it('should focus input when label clicked', (done) => {
+    it('should focus input when label clicked', () => {
       const focusSpy = sinon.spy();
       const input = document.createElement('input');
       component.appendChild(input);
@@ -53,18 +53,17 @@ describe('ak-text-field', () => {
       component.label = labelText;
       const labelIsCorrect = () => (label.innerText === labelText);
 
-      waitUntil(labelIsCorrect).should.be.fulfilled.then(() => {
+      return waitUntil(labelIsCorrect).should.be.fulfilled.then(() => {
+        const labelFocused = () => (focusSpy.calledOnce);
+        expect(labelFocused()).to.equal(false);
         label.click();
-        setTimeout(() => {
-          focusSpy.calledOnce.should.be.true;
-          done();
-        }, 100);
+        return waitUntil(labelFocused).should.be.fulfilled;
       });
     });
 
-    it('should not throw when label clicked with no input', () => {
+    it('should not throw error when label clicked with no input', () => {
       const label = shadowRoot.querySelector('label');
-      label.click();
+      expect(() => (label.click())).to.not.throw(Error);
     });
   });
 });

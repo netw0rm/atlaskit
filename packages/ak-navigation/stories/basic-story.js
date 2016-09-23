@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import akNavigation from '../src/index';
+import akNavigation from '../src';
 import TogglingSidebar from './TogglingSidebar';
 import akPage from 'ak-page';
 import 'ak-icon';

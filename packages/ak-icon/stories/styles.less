@@ -1,3 +1,4 @@
+@import '../src/shared-variables.less';
 @import '~akutil-shared-styles/src/colors.less';
 
 .container {
@@ -26,4 +27,13 @@
 .icon-reverse {
   color: @ak-color-B50;
   fill: @ak-color-N700;
+}
+
+.boxes {
+  & > * {
+    width: @max-width;
+    height: @max-height;
+    background: white;
+    overflow: hidden;
+  }
 }

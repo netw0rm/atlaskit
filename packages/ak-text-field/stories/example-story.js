@@ -7,7 +7,7 @@ import { name } from '../package.json';
 
 const ReactField = reactify(WebComponent);
 const ReactButton = reactify(ButtonWC);
-const formTestUrl = 'https://www.w3schools.com/html/action_page.php';
+const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
 
 function generateInput(opts) {
   return (

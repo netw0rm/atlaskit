@@ -6,24 +6,23 @@ import Icon from 'ak-editor-icon';
 import Popup from 'ak-editor-popup';
 import TextInput from 'ak-editor-popup-text-input';
 
-function toggle(elem, input) {
-  elem.open = !elem.open;
-
-  if (elem.open) {
-    const textInput = input || elem.shadowRoot.querySelector('.text-input');
-
-    // todo: fix the hack
-    setTimeout(() => textInput.focus(), 5);
-  }
-}
-
 export default define('ak-editor-toolbar-hyperlink', {
+  created(elem) {
+    elem.openHyperlink = elem.openHyperlink.bind(elem);
+    elem.closeHyperlink = elem.closeHyperlink.bind(elem);
+  },
+  attached(elem) {
+    document.addEventListener('click', elem.closeHyperlink, true);
+  },
+  detached(elem) {
+    document.removeEventListener('click', elem.closeHyperlink, true);
+  },
   render(elem) {
     const LinkButton = (<EditorButton
       className="link-button"
       onClick={() => {
         if (!elem.disabled) {
-          toggle(elem);
+          elem.openHyperlink();
         }
       }}
       active={elem.active || elem.open}
@@ -41,7 +40,7 @@ export default define('ak-editor-toolbar-hyperlink', {
         onKeyup={event => {
           if (event.keyCode === 13) {
             const textInput = elem.shadowRoot.querySelector('.text-input');
-            toggle(elem, textInput);
+            elem.closeHyperlink();
             emit(elem, 'save', { detail: { value: textInput.value } });
             textInput.value = '';
           }
@@ -54,12 +53,25 @@ export default define('ak-editor-toolbar-hyperlink', {
         <Popup
           target={linkButton}
           open={elem.open}
-          on-activate={() => toggle(elem)}
+          on-activate={elem.openHyperlink}
         >
           <TextInput className="text-input" placeholder="Paste link" />
         </Popup>
       </div>
     );
+  },
+  prototype: {
+    openHyperlink() {
+      this.open = true;
+
+      const textInput = this.shadowRoot.querySelector('.text-input');
+
+      // todo: fix the hack
+      setTimeout(() => textInput.focus(), 5);
+    },
+    closeHyperlink() {
+      this.open = false;
+    },
   },
   props: {
     disabled: prop.boolean({ attribute: true }),

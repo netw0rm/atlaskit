@@ -272,7 +272,7 @@ describe('ak-dropdown', () => {
     beforeEach(() => setupComponentExample(html).then(newComponent => {
       component = newComponent;
       props(component, { open: true });
-      groups = component.querySelectorAll('ak-dropdown-grop');
+      groups = component.querySelectorAll('ak-dropdown-group');
       group1 = groups[0].children;
       group2 = groups[1].children;
     }));

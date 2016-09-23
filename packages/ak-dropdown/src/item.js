@@ -3,6 +3,8 @@ import shadowItemStyles from './shadow-item.less';
 import classNames from 'classnames';
 import keyCode from 'keycode';
 import { selected as selectedEvent, item as itemEvents } from './internal/events';
+import Checkbox from 'ak-icon/glyph/checkbox';
+import Radio from 'ak-icon/glyph/radio';
 
 function selectItem(item) {
   // disabled items should not allow any interactions
@@ -60,7 +62,7 @@ function renderLeftSlot(elem) {
 function renderCheckboxIfNeeded(elem) {
   if (elem.checkbox) {
     return (<div className={shadowItemStyles.locals.itemLeftPosition}>
-      <ak-icon-checkbox />
+      <Checkbox />
     </div>);
   }
   return null;
@@ -69,7 +71,7 @@ function renderCheckboxIfNeeded(elem) {
 function renderRadioIfNeeded(elem) {
   if (elem.radio) {
     return (<div className={shadowItemStyles.locals.itemLeftPosition}>
-      <ak-icon-radio />
+      <Radio />
     </div>);
   }
   return null;

@@ -199,7 +199,7 @@ describe('ak-dropdown-item', () => {
         ).then(() => {
           component = itemContainer.firstChild;
           componentDomElem = getShadowRoot(component).firstChild;
-          iconDomElem = getShadowRoot(component).querySelector('ak-icon');
+          iconDomElem = getShadowRoot(component).querySelector('ak-icon-checkbox, ak-icon-radio');
           defaultDomElem = getShadowRoot(component).querySelector('slot,content').parentNode;
         });
       });

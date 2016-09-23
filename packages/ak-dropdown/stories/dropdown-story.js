@@ -67,9 +67,41 @@ storiesOf(`${name} component`, module)
         <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
         <ak-dropdown-group title="Checkboxes title">
           <ak-dropdown-item checkbox>text1</ak-dropdown-item>
-          <ak-dropdown-item checkbox>text2</ak-dropdown-item>
+          <ak-dropdown-item checkbox disabled>text2</ak-dropdown-item>
           <ak-dropdown-item checkbox>some text here</ak-dropdown-item>
           <ak-dropdown-item checkbox>another text</ak-dropdown-item>
+        </ak-dropdown-group>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('dropdown with radio items', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent open>
+        <ak-dropdown-trigger-button slot="trigger">Dropdown</ak-dropdown-trigger-button>
+        <ak-dropdown-group title="Radio title">
+          <ak-dropdown-item radio>text1</ak-dropdown-item>
+          <ak-dropdown-item radio disabled>text2</ak-dropdown-item>
+          <ak-dropdown-item radio>some text here</ak-dropdown-item>
+          <ak-dropdown-item radio>another text</ak-dropdown-item>
+        </ak-dropdown-group>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('dropdown with radio items inside different groups', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent open>
+        <ak-dropdown-trigger-button slot="trigger">Dropdown</ak-dropdown-trigger-button>
+        <ak-dropdown-group title="One title">
+          <ak-dropdown-item radio>one</ak-dropdown-item>
+          <ak-dropdown-item radio>two</ak-dropdown-item>
+        </ak-dropdown-group>
+        <ak-dropdown-group title="Two title">
+          <ak-dropdown-item radio>three</ak-dropdown-item>
+          <ak-dropdown-item radio>four</ak-dropdown-item>
+        </ak-dropdown-group>
+        <ak-dropdown-group>
+          <ak-dropdown-item radio>this is a titleless group</ak-dropdown-item>
+          <ak-dropdown-item radio>separate group</ak-dropdown-item>
         </ak-dropdown-group>
       </DropdownReactComponent>
     </div>

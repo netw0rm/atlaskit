@@ -34,7 +34,13 @@ function generatePackageUrl(pkg, version) {
   return `${CDN_URL_BASE}/${CDN_URL_SCOPE}/registry/${pkg}/${version}/`;
 }
 
-if (!fs.existsSync(RELEASED_PACKAGES_FILE)) {
+let releasesFileContents = '';
+
+if (fs.existsSync(RELEASED_PACKAGES_FILE)) {
+  releasesFileContents = fs.readFileSync(RELEASED_PACKAGES_FILE, { encoding: 'utf8' });
+}
+
+if (releasesFileContents.trim() === '') {
   log.info('No release happened, no need to bug the AtlasKit guys :)');
   process.exit(0);
 }
@@ -49,7 +55,7 @@ akutil-polyfills@0.0.9
 akutil-shared-styles@33.0.0
 eslint-config-ak-base@1.1.2
 */
-const changedPackages = fs.readFileSync(RELEASED_PACKAGES_FILE, { encoding: 'utf8' })
+const changedPackages = releasesFileContents
                           .split('\n')
                           .map((line) => line.split('@'));
 

@@ -5,6 +5,7 @@ import keyCode from 'keycode';
 import { props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot, afterMutations } from 'akutil-common-test';
+import shadowItemStyles from '../src/shadow-item.less';
 
 const defaultHeight = 30;
 const defaultGap = 10;
@@ -187,6 +188,7 @@ describe('ak-dropdown-item', () => {
     let componentDomElem;
     let iconDomElem;
     let defaultDomElem;
+    const iconClass = `.${shadowItemStyles.locals.itemLeftPosition}`;
 
     ['checkbox', 'radio'].forEach((type) => {
       beforeEach(() => {
@@ -199,7 +201,7 @@ describe('ak-dropdown-item', () => {
         ).then(() => {
           component = itemContainer.firstChild;
           componentDomElem = getShadowRoot(component).firstChild;
-          iconDomElem = getShadowRoot(component).querySelector('ak-icon-checkbox, ak-icon-radio');
+          iconDomElem = getShadowRoot(component).querySelector(iconClass);
           defaultDomElem = getShadowRoot(component).querySelector('slot,content').parentNode;
         });
       });

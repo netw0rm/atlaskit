@@ -18,7 +18,7 @@ module.exports = (config) => {
       startTunnel: !process.env.BROWSERSTACK_TUNNEL,
       tunnelIdentifier: process.env.BROWSERSTACK_TUNNEL || 'ak_tunnel',
       project: 'AtlasKit',
-      build: `${process.env.CURRENT_BRANCH} ${new Date().getTime()} ${process.env.HEAD_SHA}`,
+      build: `${process.env.CURRENT_BRANCH} ${new Date().getTime()} ${process.env.GITHEAD_SHORT}`,
     },
     captureTimeout: 120000,
     reporters: ['mocha', 'BrowserStack'],

@@ -1,5 +1,5 @@
 import 'style!./host.less';
-import { vdom, define } from 'skatejs';
+import { vdom, prop, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 
 function handleLabelClick(elem) {
@@ -39,6 +39,6 @@ export default define('ak-text-field', {
      * @instance
      * @type {string}
      */
-    label: { attribute: true },
+    label: prop.string({ attribute: true }),
   },
 });

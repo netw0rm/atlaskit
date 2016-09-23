@@ -20,14 +20,14 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "camelcase": "^3.0.0",
-    "classnames": "^2.2.5",
     "skatejs": "^1.2.5"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",
     "akutil-shared-styles": "^33.11.1",
     "async": "^2.0.1",
+    "camelcase": "^3.0.0",
+    "classnames": "^2.2.5",
     "glob": "^7.0.5",
     "lodash.sample": "^4.2.1",
     "mkdirp": "^0.5.1",

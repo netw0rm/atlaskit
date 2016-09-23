@@ -1,4 +1,4 @@
-import { vdom, define, prop, emit } from 'skatejs';
+import { vdom, define, prop } from 'skatejs';
 import cx from 'classnames';
 import styles from './index.less';
 import Select from './block-type-select';
@@ -10,19 +10,9 @@ function toggle(elem) {
   }
 }
 
-function selectBlockType(elem) {
-  return (event) => {
-    elem.selectedBlockType = event.detail.blockType;
-    toggle(elem);
-
-    // TODO: remove this when reactify v0.0.7 is released (https://github.com/webcomponents/react-integration/commit/53f8bf59a76b0ea0929bf2e95866ce949456eef5)
-    emit(elem, 'selectblocktype', { detail: { blockType: elem.selectedBlockType } });
-  };
-}
-
 export default define('ak-editor-toolbar-block-type', {
   created(elem) {
-    elem.closeBlockTypeDropdown = () => { elem.dropdownOpen = false; };
+    elem.closeBlockTypeDropdown = elem.closeBlockTypeDropdown.bind(elem);
   },
   attached(elem) {
     elem.context.addEventListener('click', elem.closeBlockTypeDropdown, true);
@@ -36,7 +26,6 @@ export default define('ak-editor-toolbar-block-type', {
     return (
       <div
         className={styles.locals.root}
-        onSelectBlockType={selectBlockType(elem)}
       >
         <style>{styles.toString()}</style>
         <Select
@@ -63,11 +52,26 @@ export default define('ak-editor-toolbar-block-type', {
       </div>
     );
   },
+  prototype: {
+    closeBlockTypeDropdown() {
+      this.dropdownOpen = false;
+    },
+  },
   props: {
     dropdownOpen: prop.boolean({ attribute: true }),
     selectedBlockType: { attribute: true },
     blockTypes: prop.array({ attribute: true }),
     disabled: prop.boolean({ attribute: true }),
+    /**
+     * @description context of where this component should be. A click handler,
+     *              closeBlockTypeDropdown, is registered on the context to
+     *              listen to the click event to close block type dropdown
+     * @memberof BlockType
+     * @instance
+     * @default document
+     * @type DOMElement
+     * @example @js blockType.context = document;
+     */
     context: { attribute: true, default: document },
   },
 });

@@ -123,7 +123,7 @@
     "prune": "./node_modules/.bin/lerna exec -- npm prune && npm prune",
     "release": "lerna-semantic-release pre && lerna-semantic-release post && lerna-semantic-release perform",
     "release/announce": "./build/bin/release.announce.js || return 0",
-    "release/check/is-workspace-clean": "git diff --exit-code || echo '\n^ Workspace is not clean!'; return 1",
+    "release/check/is-workspace-clean": "git diff --exit-code || (echo \"\n^ Workspace is not clean!\"; exit 1)",
     "release/check/can-ff": "git pull --ff-only --no-edit origin || echo 'We are not the leading build - nothing to do here!'; return 1",
     "release/registry": "./build/bin/release.registry.sh",
     "release/storybooks": "./build/bin/release.storybooks.sh",

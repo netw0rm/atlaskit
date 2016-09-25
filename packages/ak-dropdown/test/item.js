@@ -5,7 +5,7 @@ import keyCode from 'keycode';
 import { props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot, afterMutations } from 'akutil-common-test';
-import shadowItemStyles from '../src/shadow-item.less';
+import shadowItemStyles from '../src/less/shadow-item.less';
 
 const defaultHeight = 30;
 const defaultGap = 10;

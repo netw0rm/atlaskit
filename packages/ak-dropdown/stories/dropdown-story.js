@@ -66,10 +66,10 @@ storiesOf(`${name} component`, module)
       <DropdownReactComponent open>
         <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
         <ak-dropdown-group title="Checkboxes title">
-          <ak-dropdown-item checkbox>text1</ak-dropdown-item>
-          <ak-dropdown-item checkbox disabled>text2</ak-dropdown-item>
-          <ak-dropdown-item checkbox>some text here</ak-dropdown-item>
-          <ak-dropdown-item checkbox>another text</ak-dropdown-item>
+          <ak-dropdown-item-checkbox>text1</ak-dropdown-item-checkbox>
+          <ak-dropdown-item-checkbox disabled>text2</ak-dropdown-item-checkbox>
+          <ak-dropdown-item-checkbox>some text here</ak-dropdown-item-checkbox>
+          <ak-dropdown-item-checkbox>another text</ak-dropdown-item-checkbox>
         </ak-dropdown-group>
       </DropdownReactComponent>
     </div>
@@ -79,10 +79,10 @@ storiesOf(`${name} component`, module)
       <DropdownReactComponent open>
         <ak-dropdown-trigger-button slot="trigger">Dropdown</ak-dropdown-trigger-button>
         <ak-dropdown-group title="Radio title">
-          <ak-dropdown-item radio>text1</ak-dropdown-item>
-          <ak-dropdown-item radio disabled>text2</ak-dropdown-item>
-          <ak-dropdown-item radio>some text here</ak-dropdown-item>
-          <ak-dropdown-item radio>another text</ak-dropdown-item>
+          <ak-dropdown-item-radio>text1</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio disabled>text2</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>some text here</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>another text</ak-dropdown-item-radio>
         </ak-dropdown-group>
       </DropdownReactComponent>
     </div>
@@ -92,16 +92,16 @@ storiesOf(`${name} component`, module)
       <DropdownReactComponent open>
         <ak-dropdown-trigger-button slot="trigger">Dropdown</ak-dropdown-trigger-button>
         <ak-dropdown-group title="One title">
-          <ak-dropdown-item radio>one</ak-dropdown-item>
-          <ak-dropdown-item radio>two</ak-dropdown-item>
+          <ak-dropdown-item-radio>one</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>two</ak-dropdown-item-radio>
         </ak-dropdown-group>
         <ak-dropdown-group title="Two title">
-          <ak-dropdown-item radio>three</ak-dropdown-item>
-          <ak-dropdown-item radio>four</ak-dropdown-item>
+          <ak-dropdown-item-radio>three</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>four</ak-dropdown-item-radio>
         </ak-dropdown-group>
         <ak-dropdown-group>
-          <ak-dropdown-item radio>this is a titleless group</ak-dropdown-item>
-          <ak-dropdown-item radio>separate group</ak-dropdown-item>
+          <ak-dropdown-item-radio>this is a titleless group</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>separate group</ak-dropdown-item-radio>
         </ak-dropdown-group>
       </DropdownReactComponent>
     </div>
@@ -179,25 +179,6 @@ storiesOf(`${name} component`, module)
         <ak-dropdown-group>
           <ak-dropdown-item>this is a group</ak-dropdown-item>
           <ak-dropdown-item>without any title</ak-dropdown-item>
-        </ak-dropdown-group>
-      </DropdownReactComponent>
-    </div>
-  ))
-  .add('dropdown with everything', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
-        <ak-dropdown-group>
-          <ak-dropdown-item>text1</ak-dropdown-item>
-          <ak-dropdown-item selected>text2</ak-dropdown-item>
-          <ak-dropdown-item disabled>some text here</ak-dropdown-item>
-          <ak-dropdown-item>another text</ak-dropdown-item>
-          <ak-dropdown-item>such long text for such small dropdown isn't it?</ak-dropdown-item>
-          <ak-dropdown-item href="http://atlassian.com">This is a clickable link</ak-dropdown-item>
-        </ak-dropdown-group>
-        <ak-dropdown-group title="some group">
-          <ak-dropdown-item>this is a group</ak-dropdown-item>
-          <ak-dropdown-item>another text</ak-dropdown-item>
         </ak-dropdown-group>
       </DropdownReactComponent>
     </div>

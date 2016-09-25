@@ -1,10 +1,13 @@
 /** @jsx vdom */
-import 'style!./host.less';
-import shadowListStyles from './shadow-list.less';
+import 'style!./less/host.less';
+import shadowListStyles from './less/shadow-list.less';
 import { vdom, define, prop, props, emit, ready } from 'skatejs';
-import ItemDefinition from './item';
-import './trigger';
-import GroupDefinition from './group';
+import './index.trigger';
+import './index.item';
+import './index.item.checkbox';
+import './index.item.radio';
+
+import GroupDefinition from './index.group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
@@ -17,6 +20,8 @@ const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
 const offset = '0 2';
+// tagnames of the possible dropdown items
+const itemsList = 'ak-dropdown-item, ak-dropdown-item-checkbox, ak-dropdown-item-radio';
 
 function getTriggerElement(elem) {
   return elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
@@ -24,7 +29,7 @@ function getTriggerElement(elem) {
 
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
-  const list = elem.querySelectorAll('ak-dropdown-item');
+  const list = elem.querySelectorAll(itemsList);
 
   if ((elem.open !== isOpen)) {
     elem.open = isOpen;
@@ -73,20 +78,18 @@ function selectSimpleItem(elem, event) {
       val.selected = false;
     }
   });
-
   event.detail.item.selected = true;
   toggleDialog(elem, false);
 }
 
-function selectCheckboxItem(elem, event) {
-  event.detail.item.selected = !event.detail.item.selected;
+function selectCheckboxItem(item) {
+  item.selected = !item.selected;
 }
 
 function selectRadioItem(elem, event) {
   const radioGroupItems = event.detail.item.parentNode.children;
-
   [...radioGroupItems].forEach((val) => {
-    if (val.radio && val.selected) {
+    if (val.selected && val.tagName === 'AK-DROPDOWN-ITEM-RADIO') {
       val.selected = false;
     }
   });
@@ -95,9 +98,10 @@ function selectRadioItem(elem, event) {
 }
 
 function selectItem(elem, event) {
-  if (event.detail.item.checkbox) {
-    selectCheckboxItem(elem, event);
-  } else if (event.detail.item.radio) {
+  // TODO: change this to a Symbol once this PR is merged https://github.com/skatejs/skatejs/pull/795
+  if (event.detail.item.tagName === 'AK-DROPDOWN-ITEM-CHECKBOX') {
+    selectCheckboxItem(event.detail.item);
+  } else if (event.detail.item.tagName === 'AK-DROPDOWN-ITEM-RADIO') {
     selectRadioItem(elem, event);
   } else {
     selectSimpleItem(elem, event);
@@ -115,7 +119,7 @@ function isDescendantOf(child, parent) {
 }
 
 function changeFocus(elem, type) {
-  const list = elem.querySelectorAll('ak-dropdown-item');
+  const list = elem.querySelectorAll(itemsList);
   const l = list.length;
 
   for (let i = 0; i < l; i++) {
@@ -135,17 +139,14 @@ function changeFocus(elem, type) {
 // min width of a dropdown should be more than width of the trigger (by design)
 // max-width is controlled by css, everything that's exceeding its limit
 // is ellipsed (by design, controlled by css)
-function getDropdownStyles(target, dropdown) {
+function getDropdownMinwidth(target, dropdown) {
   const dropdownPositionedToSide =
     dropdown.position.indexOf('left') === 0 || dropdown.position.indexOf('right') === 0;
-  const minWidth = dropdownPositionedToSide ?
+  const minWidth = !dropdownPositionedToSide ?
   target.getBoundingClientRect().width + diffBetweenDropdownAndTrigger : dropdownMinWidth;
-  return {
-    minWidth: `${minWidth}px`,
-  };
+  return `${minWidth}px`;
 }
 
-export const Item = define('ak-dropdown-item', ItemDefinition);
 export const Group = define('ak-dropdown-group', GroupDefinition);
 
 /**
@@ -192,16 +193,12 @@ export default define('ak-dropdown', {
   },
   render(elem) {
     let target = elem.target;
-    let styles;
-
     return (
       <div>
         {!elem.target ?
           <div
             ref={(el) => {
               target = el;
-              // width of the dropdown depends on the width of the trigger
-              styles = getDropdownStyles(target, elem);
             }}
           >
             <slot
@@ -235,7 +232,10 @@ export default define('ak-dropdown', {
           }
         }
         >
-          <div className={shadowListStyles.locals.list} style={styles}>
+          <div
+            className={shadowListStyles.locals.list}
+            style={{ minWidth: getDropdownMinwidth(target, elem) }}
+          >
             <style>{shadowListStyles.toString()}</style>
             <slot />
           </div>
@@ -277,4 +277,4 @@ export default define('ak-dropdown', {
 });
 
 export { events };
-export { DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow } from './trigger';
+export { DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow } from './index.trigger';

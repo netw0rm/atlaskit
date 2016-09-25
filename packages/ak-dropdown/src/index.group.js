@@ -1,5 +1,5 @@
 import { vdom, prop } from 'skatejs';
-import shadowGroupStyles from './shadow-group.less';
+import shadowGroupStyles from './less/shadow-group.less';
 
 export default {
   render(elem) {

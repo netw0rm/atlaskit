@@ -6,7 +6,7 @@ import keyCode from 'keycode';
 import Item from './internal/Item';
 import IconContainer from './internal/LeftSlotContainer';
 import DefaultSlotContainer from './internal/DefaultSlotContainer';
-import hasSlot from './internal/hasSlot';
+import childrenHaveSlot from './internal/childrenHaveSlot';
 
 export const BaseProps = {
   /**
@@ -91,7 +91,7 @@ export default define('ak-dropdown-item', {
         onclick={elem.selectItem(elem)}
       >
         <style>{shadowItemStyles.toString()}</style>
-        {hasSlot(elem.childNodes, 'left') ?
+        {childrenHaveSlot(elem.childNodes, 'left') ?
           <IconContainer>
             <slot name="left" />
           </IconContainer> :

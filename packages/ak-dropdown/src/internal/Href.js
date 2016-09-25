@@ -4,8 +4,6 @@ import { vdom } from 'skatejs';
 export default (props, children) => (
   <a
     {...props}
-    href={props.href}
-    target={props.target}
   >
       {children()}
   </a>

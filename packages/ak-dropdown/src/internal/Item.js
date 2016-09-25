@@ -14,8 +14,6 @@ export default (props, children) => {
     [shadowItemStyles.locals.item, Object.assign({
       [shadowItemStyles.locals.disabled]: props.disabled,
       [shadowItemStyles.locals.selected]: props.selected,
-      [shadowItemStyles.locals.first]: props.first,
-      [shadowItemStyles.locals.last]: props.last,
     }), props.classes]
   );
 

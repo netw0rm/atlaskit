@@ -4,7 +4,7 @@ import { Group } from '../src';
 import { Component, props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
-import shadowGroupStyles from '../src/shadow-group.less';
+import shadowGroupStyles from '../src/less/shadow-group.less';
 
 chai.use(chaiAsPromised);
 chai.should();

@@ -6,13 +6,13 @@ export default {
     return (
       <div className={shadowGroupStyles.locals.group}>
         <style>{shadowGroupStyles.toString()}</style>
-        {elem.title ? <h4 className={shadowGroupStyles.locals.title}>{elem.title}</h4> : null}
+        {elem.heading ? <h4 className={shadowGroupStyles.locals.heading}>{elem.heading}</h4> : null}
         <slot />
       </div>
     );
   },
   props: {
-    title: prop.string({
+    heading: prop.string({
       attribute: true,
     }),
   },

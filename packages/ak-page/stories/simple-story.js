@@ -24,6 +24,12 @@ storiesOf(name, module)
       <div>Content</div>
     </Component>
   ))
+  .add('with containerless navigation', () => (
+    <Component>
+      <Navigation slot="navigation" container-hidden />
+      <div>Content</div>
+    </Component>
+  ))
   .add('with navigation that has layering', () => (
     <Component>
       <style>{`

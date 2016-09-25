@@ -11,9 +11,11 @@
 }
 
 .main {
-  margin-left: 80px;
-  transition: margin-left 200ms;
   z-index: @content-z-index;
+
+  &.should-animate {
+    transition: margin-left 200ms;
+  }
 
   .main-fixed {
     max-width: 1280px;

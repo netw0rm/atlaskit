@@ -8,12 +8,15 @@ const {
 } = navigationEvents;
 
 const navigationPadding = 20;
+const shouldAnimateThreshold = 100; // ms
 
 function handleWidthChanged(e, elem) {
   if (e.target instanceof Navigation) {
     elem.navigationWidth = e.detail.newWidth;
   }
 }
+
+const navigationSlot = Symbol('navigationSlot');
 
 export default define('ak-page', {
   render(elem) {
@@ -34,9 +37,17 @@ export default define('ak-page', {
             }
           `}</style>
         <div className={shadowStyles.locals.navigation}>
-          <slot className={shadowStyles.locals.navigationSlot} name="navigation" />
+          <slot
+            ref={(el) => { elem[navigationSlot] = el; }}
+            className={shadowStyles.locals.navigationSlot}
+            name="navigation"
+          />
         </div>
-        <div className={shadowStyles.locals.main}>
+        <div
+          className={classNames(shadowStyles.locals.main, {
+            [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
+          })}
+        >
           <div className={shadowStyles.locals.mainFixed}>
             <slot className={shadowStyles.locals.mainSlot} />
           </div>
@@ -45,12 +56,22 @@ export default define('ak-page', {
     );
   },
   props: {
+    shouldAnimate: prop.boolean(),
     navigationWidth: prop.number({
       attribute: true,
-      default: 0,
     }),
   },
   created(elem) {
     elem.addEventListener(widthChangedEvent, (e) => handleWidthChanged(e, elem));
+  },
+  attached(elem) {
+    setTimeout(() => {
+      elem.shouldAnimate = true;
+    }, shouldAnimateThreshold);
+    const navigation = elem[navigationSlot].assignedNodes()[0];
+    if (!navigation) {
+      return;
+    }
+    elem.navigationWidth = navigation.width;
   },
 });

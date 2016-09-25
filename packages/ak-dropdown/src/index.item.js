@@ -105,7 +105,7 @@ export default define('ak-dropdown-item', {
   prototype: {
     selectItem(elem) {
       return () => {
-        if (elem.disabled) return;
+        if (elem.disabled || elem.selected) return;
         emit(elem, selectedEvent, {
           detail: { item: elem },
         });

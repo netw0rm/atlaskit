@@ -68,7 +68,6 @@ describe('ak-dropdown', () => {
     });
 
     it('should have an sub-components exports', () => {
-      (new exports.Item).should.be.an.instanceof(Component);
       (new exports.DropdownTrigger).should.be.an.instanceof(Component);
       (new exports.DropdownTriggerButton).should.be.an.instanceof(Component);
       (new exports.Group).should.be.an.instanceof(Component);
@@ -236,81 +235,81 @@ describe('ak-dropdown', () => {
       );
     });
 
-    it('any checkbox item can be selected and unselected simultaneously', (done) => {
-      [...items].forEach(item => (props(item, { checkbox: true })));
-
-      // mock the event from the item
-      emit(items[0], selectedEvent, { detail: { item: items[0] } });
-      emit(items[2], selectedEvent, { detail: { item: items[2] } });
-
-      afterMutations(
-        () => checkSelectedItems(items, 0, 2),
-        () => emit(items[0], selectedEvent, { detail: { item: items[0] } }),
-        () => checkSelectedItems(items, 2),
-        () => emit(items[0], selectedEvent, { detail: { item: items[2] } }),
-        () => checkSelectedItems(items),
-        done
-      );
-    });
+    // it('any checkbox item can be selected and unselected simultaneously', (done) => {
+    //   [...items].forEach(item => (props(item, { checkbox: true })));
+    //
+    //   // mock the event from the item
+    //   emit(items[0], selectedEvent, { detail: { item: items[0] } });
+    //   emit(items[2], selectedEvent, { detail: { item: items[2] } });
+    //
+    //   afterMutations(
+    //     () => checkSelectedItems(items, 0, 2),
+    //     () => emit(items[0], selectedEvent, { detail: { item: items[0] } }),
+    //     () => checkSelectedItems(items, 2),
+    //     () => emit(items[0], selectedEvent, { detail: { item: items[2] } }),
+    //     () => checkSelectedItems(items),
+    //     done
+    //   );
+    // });
   });
 
-  describe('select radio items', () => {
-    let component;
-    let group1;
-    let group2;
-    let groups;
-    const html = `<ak-dropdown-group>
-                    <ak-dropdown-item radio>first</ak-dropdown-item>
-                    <ak-dropdown-item radio>second</ak-dropdown-item>
-                    <ak-dropdown-item radio>third</ak-dropdown-item>
-                  </ak-dropdown-group>
-                  <ak-dropdown-group>
-                    <ak-dropdown-item radio>first</ak-dropdown-item>
-                    <ak-dropdown-item radio>second</ak-dropdown-item>
-                    <ak-dropdown-item radio>third</ak-dropdown-item>
-                  </ak-dropdown-group>`;
-    beforeEach(() => setupComponentExample(html).then(newComponent => {
-      component = newComponent;
-      props(component, { open: true });
-      groups = component.querySelectorAll('ak-dropdown-group');
-      group1 = groups[0].children;
-      group2 = groups[1].children;
-    }));
-    afterEach(() => tearDownComponent(component));
-
-    it('should be possible to select a radio item', (done) => {
-      const item = group1[0];
-
-      // mock the event from the item
-      emit(item, selectedEvent, { detail: { item } });
-
-      afterMutations(
-        () => expect(item.selected).to.equal(true),
-        done
-      );
-    });
-
-    it('only one item inside a group should be selected', (done) => {
-      // mock the event from the item
-      emit(group1[0], selectedEvent, { detail: { item: group1[0] } });
-      emit(group1[1], selectedEvent, { detail: { item: group1[1] } });
-
-      afterMutations(
-        () => checkSelectedItems(group1, 1),
-        done
-      );
-    });
-
-    it('should be possible to select items in different groups', (done) => {
-      // mock the event from the item
-      emit(group1[0], selectedEvent, { detail: { item: group1[0] } });
-      emit(group2[0], selectedEvent, { detail: { item: group2[0] } });
-
-      afterMutations(
-        () => checkSelectedItems(group1, 0),
-        () => checkSelectedItems(group2, 0),
-        done
-      );
-    });
-  });
+  // describe('select radio items', () => {
+  //   let component;
+  //   let group1;
+  //   let group2;
+  //   let groups;
+  //   const html = `<ak-dropdown-group>
+  //                   <ak-dropdown-item radio>first</ak-dropdown-item>
+  //                   <ak-dropdown-item radio>second</ak-dropdown-item>
+  //                   <ak-dropdown-item radio>third</ak-dropdown-item>
+  //                 </ak-dropdown-group>
+  //                 <ak-dropdown-group>
+  //                   <ak-dropdown-item radio>first</ak-dropdown-item>
+  //                   <ak-dropdown-item radio>second</ak-dropdown-item>
+  //                   <ak-dropdown-item radio>third</ak-dropdown-item>
+  //                 </ak-dropdown-group>`;
+  //   beforeEach(() => setupComponentExample(html).then(newComponent => {
+  //     component = newComponent;
+  //     props(component, { open: true });
+  //     groups = component.querySelectorAll('ak-dropdown-group');
+  //     group1 = groups[0].children;
+  //     group2 = groups[1].children;
+  //   }));
+  //   afterEach(() => tearDownComponent(component));
+  //
+  //   it('should be possible to select a radio item', (done) => {
+  //     const item = group1[0];
+  //
+  //     // mock the event from the item
+  //     emit(item, selectedEvent, { detail: { item } });
+  //
+  //     afterMutations(
+  //       () => expect(item.selected).to.equal(true),
+  //       done
+  //     );
+  //   });
+  //
+  //   it('only one item inside a group should be selected', (done) => {
+  //     // mock the event from the item
+  //     emit(group1[0], selectedEvent, { detail: { item: group1[0] } });
+  //     emit(group1[1], selectedEvent, { detail: { item: group1[1] } });
+  //
+  //     afterMutations(
+  //       () => checkSelectedItems(group1, 1),
+  //       done
+  //     );
+  //   });
+  //
+  //   it('should be possible to select items in different groups', (done) => {
+  //     // mock the event from the item
+  //     emit(group1[0], selectedEvent, { detail: { item: group1[0] } });
+  //     emit(group2[0], selectedEvent, { detail: { item: group2[0] } });
+  //
+  //     afterMutations(
+  //       () => checkSelectedItems(group1, 0),
+  //       () => checkSelectedItems(group2, 0),
+  //       done
+  //     );
+  //   });
+  // });
 });

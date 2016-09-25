@@ -28,7 +28,7 @@ export default define('ak-text-field', {
         >
           <div className={shadowStyles.locals.labelText}>
             {elem.label}
-            {elem.required && <span class={shadowStyles.locals.required}>*</span>}
+            {elem.required && <span class={shadowStyles.locals.labelRequired}>*</span>}
           </div>
           <slot className={shadowStyles.locals.defaultSlotElement} />
         </label>

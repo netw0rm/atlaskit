@@ -8,6 +8,7 @@ const {
 } = navigationEvents;
 
 const navigationPadding = 20;
+const shouldAnimateThreshold = 100; // ms
 
 function handleWidthChanged(e, elem) {
   if (e.target instanceof Navigation) {
@@ -15,14 +16,12 @@ function handleWidthChanged(e, elem) {
   }
 }
 
+const navigationSlot = Symbol('navigationSlot');
+
 export default define('ak-page', {
   render(elem) {
     return (
-      <div
-        className={classNames({
-          [shadowStyles.locals.navigationOpen]: elem.navigationOpen,
-        })}
-      >
+      <div>
         {/* This is required for elements in the shadow root to be styled.
            This is wrapped in the <div /> because you can't have more than one
            root element.
@@ -34,23 +33,41 @@ export default define('ak-page', {
             }
           `}</style>
         <div className={shadowStyles.locals.navigation}>
-          <slot name="navigation" />
+          <slot
+            ref={(el) => { elem[navigationSlot] = el; }}
+            className={shadowStyles.locals.navigationSlot}
+            name="navigation"
+          />
         </div>
-        <div className={shadowStyles.locals.main}>
+        <div
+          className={classNames(shadowStyles.locals.main, {
+            [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
+          })}
+        >
           <div className={shadowStyles.locals.mainFixed}>
-            <slot />
+            <slot className={shadowStyles.locals.mainSlot} />
           </div>
         </div>
       </div>
     );
   },
   props: {
+    shouldAnimate: prop.boolean(),
     navigationWidth: prop.number({
       attribute: true,
-      default: 0,
     }),
   },
   created(elem) {
     elem.addEventListener(widthChangedEvent, (e) => handleWidthChanged(e, elem));
+  },
+  attached(elem) {
+    setTimeout(() => {
+      elem.shouldAnimate = true;
+    }, shouldAnimateThreshold);
+    const navigation = elem[navigationSlot].assignedNodes()[0];
+    if (!navigation) {
+      return;
+    }
+    elem.navigationWidth = navigation.width;
   },
 });

@@ -3,6 +3,8 @@ import shadowItemStyles from './shadow-item.less';
 import classNames from 'classnames';
 import keyCode from 'keycode';
 import { selected as selectedEvent, item as itemEvents } from './internal/events';
+import Checkbox from 'ak-icon/glyph/checkbox';
+import Radio from 'ak-icon/glyph/radio';
 
 function selectItem(item) {
   // disabled items should not allow any interactions
@@ -57,10 +59,19 @@ function renderLeftSlot(elem) {
   return null;
 }
 
-function renderCheckbox(elem) {
+function renderCheckboxIfNeeded(elem) {
   if (elem.checkbox) {
     return (<div className={shadowItemStyles.locals.itemLeftPosition}>
-      {elem.selected ? <ak-icon glyph="checkbox-select" /> : <ak-icon glyph="checkbox" />}
+      <Checkbox />
+    </div>);
+  }
+  return null;
+}
+
+function renderRadioIfNeeded(elem) {
+  if (elem.radio) {
+    return (<div className={shadowItemStyles.locals.itemLeftPosition}>
+      <Radio />
     </div>);
   }
   return null;
@@ -71,7 +82,8 @@ export default {
     const classes = classNames(
       [shadowItemStyles.locals.item, {
         [shadowItemStyles.locals.disabled]: elem.disabled,
-        [shadowItemStyles.locals.selected]: elem.selected && !elem.checkbox,
+        [shadowItemStyles.locals.selected]: elem.selected && !elem.checkbox && !elem.radio,
+        [shadowItemStyles.locals.selectedWithIcon]: elem.selected && (elem.checkbox || elem.radio),
         [shadowItemStyles.locals.first]: elem.first,
         [shadowItemStyles.locals.last]: elem.last,
       }]
@@ -92,15 +104,11 @@ export default {
       >
         <style>{shadowItemStyles.toString()}</style>
         {renderLeftSlot(elem)}
-        {renderCheckbox(elem)}
+        {renderCheckboxIfNeeded(elem)}
+        {renderRadioIfNeeded(elem)}
         <div className={shadowItemStyles.locals.itemDefaultPosition}><slot /></div>
       </a>
     );
-  },
-  rendered(elem) {
-    if (elem.focused) {
-      setTimeout(() => elem.item.focus());
-    }
   },
   props: {
     /**
@@ -143,6 +151,19 @@ export default {
       attribute: true,
     }),
     /**
+     * @description whether an item is a radio item
+     * @memberof Dropdown
+     * @default false
+     * @type {Boolean}
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-item radio>some content</ak-dropdown-item>
+     * </ak-dropdown>
+     * @example @js dropdown.childNodes[0].radio = true;
+     */
+    radio: prop.boolean({
+      attribute: true,
+    }),
+    /**
      * @description is this item is first in the list of items
      * @memberof Dropdown
      * @default false
@@ -180,6 +201,11 @@ export default {
      */
     focused: prop.boolean({
       attribute: true,
+      set(elem, data) {
+        if (data.newValue) {
+          setTimeout(() => elem.item.focus());
+        }
+      },
     }),
     /**
      * @description href for a dropdown item's link'

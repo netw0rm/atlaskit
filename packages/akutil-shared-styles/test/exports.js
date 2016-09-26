@@ -8,7 +8,6 @@ chai.should();
 
 import * as lessVars from '../src';
 
-
 describe('exports', () => {
   it('should have well-defined exports', () => {
     Object.keys(lessVars).should.be.deep.equal([
@@ -73,6 +72,7 @@ describe('exports', () => {
       'akFontFamily',
       'akFontSizeDefault',
       'akGridSize',
+      'default',
     ]);
   });
 });

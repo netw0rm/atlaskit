@@ -122,7 +122,12 @@ ${result.info.height} > ${maxHeight}`);
 
           const iconRelativePathDashed = iconRelativePathToSrcNoExt.split(path.sep).join('-');
           const iconName = `${name}-${iconRelativePathDashed}`;
-          const template = componentTemplate(iconName, svgData, defaultWidth, defaultHeight);
+          const template = componentTemplate({
+            iconName,
+            svgData,
+            width: defaultWidth,
+            height: defaultHeight,
+          });
           cb(null, template);
         },
         function createDirs(contents, cb) {

@@ -1,4 +1,4 @@
-module.exports = (iconName, svgData, width, height) => `
+module.exports = ({ iconName, svgData, width, height }) => `
 
 import { define, vdom } from 'skatejs';
 

@@ -83,12 +83,12 @@ describe('Item', () => {
   });
 
   it('should not have any untested properties', () => {
-    const properties = ['tabindex', 'class', 'href', 'target'];
+    const properties = ['tabindex', 'class', 'href', 'target'].sort();
     const propsExisted = [];
     [...getRootNode(component).attributes].forEach((attr) => {
       propsExisted.push(attr.name);
     });
 
-    propsExisted.should.be.deep.equal(properties);
+    propsExisted.sort().should.be.deep.equal(properties);
   });
 });

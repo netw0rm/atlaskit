@@ -40,12 +40,12 @@ describe('Text', () => {
   });
 
   it('should not have any untested properties', () => {
-    const properties = ['test', 'test2'];
+    const properties = ['test', 'test2'].sort();
     const propsExisted = [];
     [...getRootNode(component).attributes].forEach((attr) => {
       propsExisted.push(attr.name);
     });
 
-    propsExisted.should.be.deep.equal(properties);
+    propsExisted.sort().should.be.deep.equal(properties);
   });
 });

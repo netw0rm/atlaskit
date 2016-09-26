@@ -45,12 +45,12 @@ describe('LeftSlotContainer', () => {
   });
 
   it('should not have any untested properties', () => {
-    const properties = ['test', 'test2', 'class'];
+    const properties = ['test', 'test2', 'class'].sort();
     const propsExisted = [];
     [...getRootNode(component).attributes].forEach((attr) => {
       propsExisted.push(attr.name);
     });
 
-    propsExisted.should.be.deep.equal(properties);
+    propsExisted.sort().should.be.deep.equal(properties);
   });
 });

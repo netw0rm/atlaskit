@@ -6,7 +6,7 @@ This package contains the AtlasKit icons. All icons should be consumed separatel
 
 ## Try it out
 
-Interact with a [live demo of the ak-icon component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-icon/@VERSION@/)
+Interact with a [live demo of the ak-icon component.](https://aui-cdn.atlassian.com/atlaskit/stories/ak-icon/@VERSION@/)
 
 ## Installation
 

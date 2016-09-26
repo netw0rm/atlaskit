@@ -1,6 +1,7 @@
 import 'style!./host.less';
 import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
+import classNames from 'classnames';
 
 function handleLabelClick(elem) {
   return () => {
@@ -30,7 +31,11 @@ export default define('ak-text-field', {
             {elem.label}
             {elem.required && <span class={shadowStyles.locals.labelRequired}>*</span>}
           </div>
-          <slot className={shadowStyles.locals.defaultSlotElement} />
+          <slot
+            className={classNames(shadowStyles.locals.defaultSlotElement, {
+              [shadowStyles.locals.compact]: elem.compact,
+            })}
+          />
         </label>
       </div>
     );

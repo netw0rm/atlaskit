@@ -4,10 +4,10 @@ import WebComponent from '../src/index';
 import ButtonWC from 'ak-button';
 import React from 'react';
 import { name } from '../package.json';
-// import styles from 'style!./../src/host.less';
 
 const ReactField = reactify(WebComponent);
 const ReactButton = reactify(ButtonWC);
+const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
 
 function generateInput(opts) {
   return (
@@ -30,7 +30,7 @@ function generateInput(opts) {
 function generateFormWithInput(opts) {
   return (
     <form
-      action="http://www.w3schools.com/html/action_page.php"
+      action={formTestUrl}
       method="post"
       style={{
         'background-color': 'white',
@@ -54,12 +54,13 @@ function submitTestForm(useNativeSubmitBtn) {
   return (
     <div>
       <form
-        action="http://www.w3schools.com/html/action_page.php"
+        action={formTestUrl}
         method="get"
         style={{ 'background-color': 'white', padding: '40px', width: '500px' }}
         target="myFrame"
       >
         <h2>Submit test</h2>
+        <p>Note: Ensure that you are not using HTTPS for this story.</p>
         {generateInput({ label: 'First name', id: 'fname' })}
         {generateInput({ label: 'Last name', id: 'lname' })}
         {generateInput({ type: 'email', label: 'Email', id: 'email' })}
@@ -107,7 +108,14 @@ storiesOf(name, module)
     generateFormWithInput({ label: 'Example <marquee>label</marquee>' })
   ))
   .add('ak-text-fields for autofill test', () => (
-    <form action="http://www.w3schools.com/html/action_page.php" method="post" style={{ 'background-color': 'white', padding: '40px' }}>
+    <form
+      action={formTestUrl}
+      method="post"
+      style={{
+        'background-color': 'white',
+        padding: '40px',
+      }}
+    >
       <h2>Autofill test</h2>
       {generateInput({ label: 'First name', id: 'fname' })}
       {generateInput({ label: 'Last name', id: 'lname' })}

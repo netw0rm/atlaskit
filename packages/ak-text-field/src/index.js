@@ -1,6 +1,7 @@
 import 'style!./host.less';
 import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
+import classNames from 'classnames';
 
 function handleLabelClick(elem) {
   return () => {
@@ -28,9 +29,13 @@ export default define('ak-text-field', {
         >
           <div className={shadowStyles.locals.labelText}>
             {elem.label}
-            {elem.required && <span class={shadowStyles.locals.required}>*</span>}
+            {elem.required && <span class={shadowStyles.locals.labelRequired}>*</span>}
           </div>
-          <slot className={shadowStyles.locals.defaultSlotElement} />
+          <slot
+            className={classNames(shadowStyles.locals.defaultSlotElement, {
+              [shadowStyles.locals.compact]: elem.compact,
+            })}
+          />
         </label>
       </div>
     );
@@ -41,6 +46,7 @@ export default define('ak-text-field', {
      * @memberof TextField
      * @instance
      * @type {Boolean}
+     * @default false
      */
     compact: prop.boolean({ attribute: true }),
     /**
@@ -49,12 +55,13 @@ export default define('ak-text-field', {
      * @instance
      * @type {string}
      */
-    label: { attribute: true },
+    label: prop.string({ attribute: true }),
     /**
      * @description Whether the field is required.
      * @memberof TextField
      * @instance
      * @type {Boolean}
+     * @default false
      */
     required: prop.boolean({ attribute: true }),
   },

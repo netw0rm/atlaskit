@@ -14,8 +14,8 @@
 
 // Input sizing
 @input-horizontal-padding: @grid * 2;
-@input-height: 40;  // Standard text fields are 40px high.
-@input-compact-height: 32;  // Compact text fields are 32px high.
+@input-height: @grid * 10;  // Standard text fields are 40px high.
+@input-compact-height: @grid * 8;  // Compact text fields are 32px high.
 @input-inner-height: @grid * 5; // effectively 20px
 @input-font-size: 14;
 @input-line-height: @input-inner-height / @input-font-size;
@@ -27,6 +27,7 @@
 @label-inner-height: @grid * 4; // effectively 16px
 @label-font-size: 12;
 @label-line-height: @label-inner-height / @label-font-size;
+@label-required-padding: 7px;
 
 // Mixin to redistribute spacing between border and padding
 .borders-and-padding (@border, @x-spacing, @height) {
@@ -78,11 +79,11 @@
   font-size: unit(@label-font-size, px);
   line-height: @label-line-height;
   padding: @label-top-spacing 0 @label-bottom-spacing 0;
+}
 
-  .required {
-    color: @ak-color-R400;
-    padding-left: 7px;
-  }
+.label-required {
+  color: @ak-color-R400;
+  padding-left: @label-required-padding;
 }
 
 // Styles for native shadow DOM browsers
@@ -125,10 +126,10 @@
   }
 }
 
-.default-slot-element[compact] > input {
+.default-slot-element.compact > input {
   .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-compact-height);
 
-  &:hover {
+  &:focus {
     .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-compact-height);
   }
 }

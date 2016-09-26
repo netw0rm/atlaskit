@@ -17,7 +17,12 @@ glob('../tmp/**/*.js', {
   /* eslint-disable no-console */
   console.log('// NOTE: This file is generated from the glyphs found inside this Component');
   console.log('//       DO NOT MODIFY THIS FILE AS YOUR CHANGES WILL BE OVERRIDDEN');
-  console.log('');
 
-  files.forEach((file) => console.log(`export ${pathToSymbol(file)} from '${file}';`));
+  const prefix = 'tmp';
+  files.forEach((file) => {
+    const pathToFile = pathToSymbol(file);
+    console.log();
+    console.log(`import ${prefix}${pathToFile} from '${file}';`);
+    console.log(`export const ${pathToFile} = ${prefix}${pathToFile};`);
+  });
 });

@@ -3,7 +3,7 @@ import assign from 'object-assign';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
-import { props } from 'skatejs';
+import { props, define } from 'skatejs';
 import AkButton, { APPEARANCE } from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
 import hostStyles from '../src/host.less';
@@ -48,21 +48,45 @@ describe('ak-button', () => {
 
   afterEach(() => document.body.removeChild(component));
 
-  it('should not throws when component is instanciated', () =>
-    expect(() => (new AkButton())).not.to.throw(Error)
-  );
+  describe('sanity check', () => {
+    it('should not throws when component is instanciated', () =>
+      expect(() => (new AkButton())).not.to.throw(Error)
+    );
 
-  it('should be possible to create a component', () => {
-    expect(getShadowButtonElem(component)).to.be.defined;
-    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
+    it('should be possible to create a component', () => {
+      expect(getShadowButtonElem(component)).to.be.defined;
+      expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
+    });
+
+    it('should call preventDefault when onmousedown event is triggered', () => {
+      const button = getShadowButtonElem(component);
+      const event = new CustomEvent('mousedown', {});
+      sinon.spy(event, 'preventDefault');
+      button.dispatchEvent(event);
+      expect(event.preventDefault).to.have.been.called;
+    });
   });
 
-  it('should call preventDefault when onmousedown event is triggered', () => {
-    const button = getShadowButtonElem(component);
-    const event = new CustomEvent('mousedown', {});
-    sinon.spy(event, 'preventDefault');
-    button.dispatchEvent(event);
-    expect(event.preventDefault).to.have.been.called;
+  describe('initial render', () => {
+    let testButton;
+
+    const definition = {
+      render: sinon.spy(),
+    };
+
+    const TestButton = define('test-button', AkButton.extend(definition));
+
+    beforeEach(() => {
+      testButton = new TestButton();
+      props(testButton, { appearance: APPEARANCE.primary, compact: true });
+      testButton.appendChild(document.createTextNode('test'));
+      document.body.appendChild(testButton);
+      return waitUntil(() => definition.render.called);
+    });
+
+    it('render should be called only once with all attributes', () =>
+      expect(definition.render).to.have.been.calledOnce
+    );
   });
 
   describe('slots', () => {

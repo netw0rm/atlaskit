@@ -124,6 +124,10 @@ const definition = {
      */
     selected: prop.boolean({ attribute: true }),
   },
+  updated(elem, prevProps) {
+    // Avoid initial render to avoid any glitch
+    return prevProps;
+  },
   render(elem) {
     return (
       <span className={classKeys.root}>

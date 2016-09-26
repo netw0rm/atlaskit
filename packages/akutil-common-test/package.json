@@ -18,7 +18,8 @@
     "babel-runtime": "^6.11.6",
     "skatejs": "^1.2.5",
     "custom-event-polyfill": "^0.3.0",
-    "keycode": "^2.1.4"
+    "keycode": "^2.1.4",
+    "uid": "^0.0.2"
   },
   "devDependencies": {
     "ak-avatar": "^2.1.0"

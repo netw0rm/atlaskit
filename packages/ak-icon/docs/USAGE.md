@@ -1,6 +1,6 @@
 # Icons
 
-This package contains the AtlasKit icons. All icons can (and should be) be consumed separately.
+This package contains the AtlasKit icons. All icons can (and should be, unless your build tool supports tree shaking) be consumed separately.
 
 > Please note the license of this package is the Atlassian Design Guidelines - please see LICENSE for more information.
 
@@ -63,12 +63,35 @@ The fill color of an icon can be controlled via CSS:
 </span>
 ```
 
-### This package also provides all icons bundled in one export via:
+### This package also provides all icons bundled in one export
+
+> Please keep in mind that unless your build tool supports tree shaking, you might want to import only a single icon instead of the bundled version.
 
 #### bundle.js
 
 ```js
-import 'ak-icon';
+import * as icons from 'ak-icon';
+const { bitbucketLogo: BitbucketLogo } = icons;
+
+// old-school
+const icon = new BitbucketLogo();
+document.body.appendChild(icon);
+
+// or JSX
+const x = (<BitbucketLogo />);
+```
+
+or a single one:
+
+```js
+import bitbucketLogo as BitbucketLogo from 'ak-icon';
+
+// old-school
+const icon = new BitbucketLogo();
+document.body.appendChild(icon);
+
+// or JSX
+const x = (<BitbucketLogo />);
 ```
 
 #### index.html

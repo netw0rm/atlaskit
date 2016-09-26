@@ -9,6 +9,14 @@ import * as keys from './keys';
 import calendars from './calendars';
 import classnames from 'classnames';
 
+const $a11y = Symbol();
+const $loseFocus = Symbol();
+const $navigateWithKeyboard = Symbol();
+const $next = Symbol();
+const $prev = Symbol();
+const $selectDay = Symbol();
+const $selectHandler = Symbol();
+
 const Announcer = () => (
   <div
     ref={(e) => {
@@ -35,89 +43,9 @@ const Announcer = () => (
  * const component = new Calendar();
  */
 export default define('ak-calendar', {
-  events: {
-    'click .next'() {
-      this.next();
-    },
-    'click .prev'() {
-      this.prev();
-    },
-    'click td'(e) {
-      const day = Number(e.currentTarget.getAttribute('data-day'));
-      const month = this.month;
-      const year = this.year;
-      emit(this, 'select', {
-        detail: { day, month, year },
-      });
-    },
-    blur() {
-      this.focused = 0;
-    },
-    keydown(e) {
-      const key = e.keyCode;
-      const focused = this.focused;
-      const isArrowKey = [keys.down, keys.left, keys.right, keys.up].indexOf(key) > -1;
-      const isInitialArrowKeyPress = !focused && isArrowKey;
+  props: {
+    [$a11y]: prop.string(),
 
-      if (isInitialArrowKeyPress) {
-        this.focused = 1;
-        return;
-      }
-
-      if (key === keys.down) {
-        const next = focused + 7;
-        const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
-
-        if (next > daysInMonth) {
-          this.next();
-          this.focused = next - daysInMonth;
-        } else {
-          this.focused = next;
-        }
-      } else if (key === keys.left) {
-        const next = focused - 1;
-
-        if (next < 1) {
-          this.prev();
-          this.focused = Calendar.daysInMonth(this.year, this.month - 1);
-        } else {
-          this.focused = next;
-        }
-      } else if (key === keys.right) {
-        const next = focused + 1;
-        const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
-
-        if (next > daysInMonth) {
-          this.next();
-          this.focused = 1;
-        } else {
-          this.focused = next;
-        }
-      } else if (key === keys.up) {
-        const next = focused - 7;
-        if (next < 1) {
-          this.prev();
-          this.focused = Calendar.daysInMonth(this.year, this.month - 1) + next;
-        } else {
-          this.focused = next;
-        }
-      } else if (key === keys.escape) {
-        this.focused = 0;
-      } else if (key === keys.enter || key === keys.space) {
-        const day = focused;
-        const month = this.month;
-        const year = this.year;
-        emit(this, 'select', {
-          detail: { day, month, year },
-        });
-      }
-    },
-    mouseover() {
-      this.focused = 0;
-    },
-  },
-  properties: {
-    a11y: prop.string(),
     btnNext: prop.string({
       attribute: true,
       default: '\u2192',
@@ -135,7 +63,7 @@ export default define('ak-calendar', {
       attribute: true,
       default: 0,
       set(elem, data) {
-        elem.a11y = data.newValue ? `Focused ${elem.year}-${elem.month}-${data.newValue}` : '';
+        elem[$a11y] = data.newValue ? `Focused ${elem.year}-${elem.month}-${data.newValue}` : '';
       },
     }),
     highlighted: prop.array(),
@@ -159,7 +87,77 @@ export default define('ak-calendar', {
     }),
   },
   prototype: {
-    prev() {
+    [$loseFocus]() {
+      this.focused = 0;
+    },
+    [$navigateWithKeyboard](e) {
+      const key = e.keyCode;
+      const focused = this.focused;
+      const isArrowKey = [keys.down, keys.left, keys.right, keys.up].indexOf(key) > -1;
+      const isInitialArrowKeyPress = !focused && isArrowKey;
+
+      if (isInitialArrowKeyPress) {
+        this.focused = 1;
+        return;
+      }
+
+      if (key === keys.down) {
+        const next = focused + 7;
+        const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
+
+        if (next > daysInMonth) {
+          this[$next]();
+          this.focused = next - daysInMonth;
+        } else {
+          this.focused = next;
+        }
+      } else if (key === keys.left) {
+        const next = focused - 1;
+
+        if (next < 1) {
+          this[$prev]();
+          this.focused = Calendar.daysInMonth(this.year, this.month - 1);
+        } else {
+          this.focused = next;
+        }
+      } else if (key === keys.right) {
+        const next = focused + 1;
+        const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
+
+        if (next > daysInMonth) {
+          this[$next]();
+          this.focused = 1;
+        } else {
+          this.focused = next;
+        }
+      } else if (key === keys.up) {
+        const next = focused - 7;
+        if (next < 1) {
+          this[$prev]();
+          this.focused = Calendar.daysInMonth(this.year, this.month - 1) + next;
+        } else {
+          this.focused = next;
+        }
+      } else if (key === keys.escape) {
+        this.focused = 0;
+      } else if (key === keys.enter || key === keys.space) {
+        const day = focused;
+        const month = this.month;
+        const year = this.year;
+        emit(this, 'select', {
+          detail: { day, month, year },
+        });
+      }
+    },
+    [$next]() {
+      if (this.month === 12) {
+        this.month = 1;
+        this.year++;
+      } else {
+        this.month++;
+      }
+    },
+    [$prev]() {
       if (this.month === 1) {
         this.month = 12;
         this.year--;
@@ -167,12 +165,26 @@ export default define('ak-calendar', {
         this.month--;
       }
     },
-    next() {
-      if (this.month === 12) {
-        this.month = 1;
-        this.year++;
+    [$selectDay](e) {
+      const day = Number(e.currentTarget.getAttribute('data-day'));
+      const month = this.month;
+      const year = this.year;
+      emit(this, 'select', {
+        detail: { day, month, year },
+      });
+    },
+    [$selectHandler](e) {
+      const d = e.detail;
+      const s = `${d.year}-${d.month}-${d.day}`;
+      const i = this.highlighted.indexOf(s);
+
+      if (i > -1) {
+        this.highlighted.splice(i, 1);
+        this.highlighted = this.highlighted;
+        this[$a11y] = `Un-highlighted ${new Date(d.year, d.month - 1, d.day)}`;
       } else {
-        this.month++;
+        this.highlighted = this.highlighted.concat(s);
+        this[$a11y] = `Highlighted ${new Date(d.year, d.month - 1, d.day)}`;
       }
     },
   },
@@ -190,20 +202,8 @@ export default define('ak-calendar', {
       elem.setAttribute('aria-label', elem.getAttribute('title') || 'Calendar');
     }
 
-    elem.addEventListener('select', function select(e) {
-      const d = e.detail;
-      const s = `${d.year}-${d.month}-${d.day}`;
-      const i = this.highlighted.indexOf(s);
-
-      if (i > -1) {
-        this.highlighted.splice(i, 1);
-        this.highlighted = this.highlighted;
-        this.a11y = `Un-highlighted ${new Date(d.year, d.month - 1, d.day)}`;
-      } else {
-        this.highlighted = this.highlighted.concat(s);
-        this.a11y = `Highlighted ${new Date(d.year, d.month - 1, d.day)}`;
-      }
-    });
+    elem.addEventListener('blur', elem[$loseFocus]);
+    elem.addEventListener('select', elem[$selectHandler]);
   },
   render(elem) {
     const calendar = calendars.get(elem).getCalendar(elem.year, elem.month - 1);
@@ -306,15 +306,16 @@ export default define('ak-calendar', {
             [css.today]: isToday,
           })}
           data-day={date.day.toString()}
+          onClick={elem[$selectDay]}
         >{date.day}</td>
       );
     });
 
     return [
-      <Announcer>{elem.a11y}</Announcer>,
-      <table>
+      <Announcer>{elem[$a11y]}</Announcer>,
+      <table onMouseover={elem[$loseFocus]}>
         <caption class={classnames(css.caption)}>
-          <button class={classnames(css.prev)}>
+          <button class={classnames(css.prev)} onClick={elem[$prev]}>
             {elem.btnPrev}
           </button>
           <span class={classnames(css.month)}>
@@ -324,7 +325,7 @@ export default define('ak-calendar', {
           <span class={classnames(css.year)}>
             {elem.year}
           </span>
-          <button class={classnames(css.next)} onClick={this.next}>
+          <button class={classnames(css.next)} onClick={elem[$next]}>
             {elem.btnNext}
           </button>
         </caption>

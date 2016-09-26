@@ -27,7 +27,7 @@ const i18n = {
 };
 
 function getI18n(elem) {
-  return i18n[elem.i18n];
+  return i18n[elem.i18n || 'en-au'];
 }
 
 export function getDayName(elem, i) {

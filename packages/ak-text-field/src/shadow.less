@@ -44,6 +44,7 @@
   border-radius: 3px;
   box-sizing: border-box;
   font-size: unit(@input-font-size, px);
+  height: unit(@input-height, px);
   line-height: @input-line-height;
   transition: background-color @input-style-transition-duration ease-in-out,
   border-color @input-style-transition-duration ease-in-out;
@@ -67,6 +68,15 @@
   border-color: @ak-color-N20A;
   color: @ak-color-N60;
   cursor: not-allowed;
+};
+
+@compactInputStyle: {
+  .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-compact-height);
+  height: unit(@input-compact-height, px);
+};
+
+@compactFocusInputStyle: {
+  .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-compact-height);
 };
 
 // Label style
@@ -102,10 +112,10 @@
 
 :host([compact]) {
   ::slotted(input) {
-    .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-compact-height);
+    @compactInputStyle();
   }
   ::slotted(input:focus) {
-    .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-compact-height);
+    @compactFocusInputStyle();
   }
 }
 
@@ -127,9 +137,9 @@
 }
 
 .default-slot-element.compact > input {
-  .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-compact-height);
+  @compactInputStyle();
 
   &:focus {
-    .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-compact-height);
+    @compactFocusInputStyle();
   }
 }

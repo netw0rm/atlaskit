@@ -1,6 +1,6 @@
 import { Component } from 'skatejs';
 import chai from 'chai';
-import camelcase from 'camelcase';
+import iconNameToComponentName from '../src/iconNameToComponentName';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
 import fileToScope from '../src/fileToScope';
@@ -83,7 +83,7 @@ describe(name, () => {
 
     it('are properly defined in bundle', () => {
       // This could be any component, the important thing is the fixed named export
-      const { bitbucketLogo: BitbucketLogoIcon } = bundle;
+      const { BitbucketLogoIcon } = bundle;
       (new BitbucketLogoIcon).should.be.instanceof(Component);
 
       const bundleKeys = Object.keys(bundle);
@@ -91,7 +91,7 @@ describe(name, () => {
       bundleKeys.should.be.deep.equal(Object
             .keys(components)
             .map(pathToDashed)
-            .map((x) => camelcase(x)));
+            .map((x) => iconNameToComponentName(x)));
 
       bundleKeys.forEach((key) => (new (bundle[key])).should.be.instanceof(Component));
     });

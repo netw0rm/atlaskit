@@ -2,14 +2,17 @@
 
 const glob = require('glob');
 const path = require('path');
-const camelcase = require('camelcase');
 const fileToScope = require('../src/fileToScope');
 const pathToDashed = require('../src/pathToDashed');
+const iconNameToComponentName = require('../src/iconNameToComponentName');
 
-const pathToSymbol = (p) => camelcase(pathToDashed(fileToScope(p, '../tmp/')));
+const tempFolder = '../tmp/';
+const sourceFolder = path.join(__dirname, '..', 'src');
 
-glob('../tmp/**/*.js', {
-  cwd: path.join(__dirname, '..', 'src'),
+const pathToExport = (p) => iconNameToComponentName(pathToDashed(fileToScope(p, tempFolder)));
+
+glob(`${tempFolder}**/*.js`, {
+  cwd: sourceFolder,
 }, (err, files) => {
   if (err) {
     throw err;
@@ -18,11 +21,11 @@ glob('../tmp/**/*.js', {
   console.log('// NOTE: This file is generated from the glyphs found inside this Component');
   console.log('//       DO NOT MODIFY THIS FILE AS YOUR CHANGES WILL BE OVERRIDDEN');
 
-  const prefix = 'tmp';
   files.forEach((file) => {
-    const pathToFile = pathToSymbol(file);
+    const componentName = pathToExport(file);
+    const tmpComponentName = `tmp${componentName}`;
     console.log();
-    console.log(`import ${prefix}${pathToFile} from '${file}';`);
-    console.log(`export const ${pathToFile} = ${prefix}${pathToFile};`);
+    console.log(`import ${tmpComponentName} from '${file}';`);
+    console.log(`export const ${componentName} = ${tmpComponentName};`);
   });
 });

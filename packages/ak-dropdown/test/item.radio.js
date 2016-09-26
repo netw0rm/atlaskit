@@ -12,7 +12,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-dropdown-item', () => {
+describe('ak-dropdown-item-radio', () => {
   let itemContainer;
 
   beforeEach(() => {

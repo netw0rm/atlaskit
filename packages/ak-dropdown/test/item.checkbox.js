@@ -15,7 +15,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-dropdown-item', () => {
+describe('ak-dropdown-item-checkbox', () => {
   let itemContainer;
 
   beforeEach(() => {
@@ -44,14 +44,14 @@ describe('ak-dropdown-item', () => {
       expect(getShadowRoot(component).firstChild).to.be.defined;
     });
 
-    // it('click on a selected component should emit `unselected` event', () => {
-    //   const clickSpy = sinon.spy();
-    //   itemContainer.addEventListener('unselected', clickSpy);
-    //   props(component, { selected: true });
-    //   getShadowRoot(component).firstChild.click();
-    //
-    //   expect(clickSpy.called).to.equal(true);
-    // });
+    it('click on a selected component should emit `unselected` event', () => {
+      const clickSpy = sinon.spy();
+      itemContainer.addEventListener(dropdownEvents.unselected, clickSpy);
+      props(component, { selected: true });
+      getShadowRoot(component).firstChild.click();
+
+      expect(clickSpy.called).to.equal(true);
+    });
   });
 
   describe('sizing for an item', () => {
@@ -129,7 +129,7 @@ describe('ak-dropdown-item', () => {
       itemContainer.addEventListener(dropdownEvents.unselected, calledSpy);
       props(component, { selected: true });
       getShadowRoot(component).firstChild.dispatchEvent(event);
-      // expect(calledSpy.called).to.equal(true);
+      expect(calledSpy.called).to.equal(true);
     });
   });
 });

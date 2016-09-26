@@ -1,5 +1,7 @@
-import { vdom, define, props } from 'skatejs';
+import { vdom, define, props, emit } from 'skatejs';
 import shadowItemStyles from './less/shadow-item.less';
+import { unselected as unselectedEvent } from './internal/events';
+import keyCode from 'keycode';
 
 import DefaultItem, { BaseProps } from './index.item';
 import Checkbox from 'ak-icon/glyph/checkbox';
@@ -16,8 +18,8 @@ export default define('ak-dropdown-item-checkbox',
         <Item
           {...props(elem)}
           ref={el => (elem.elemDom = el)}
-          onkeydown={elem.handleKeyDown(elem)}
-          onclick={elem.selectItem(elem)}
+          onkeydown={elem.handleKeyDownCheckbox(elem)}
+          onclick={elem.toggleItem(elem)}
           classes={classes}
         >
           <style>{shadowItemStyles.toString()}</style>
@@ -29,5 +31,34 @@ export default define('ak-dropdown-item-checkbox',
           </DefaultItemContainer>
         </Item>
       );
+    },
+    prototype: {
+      toggleItem(elem) {
+        return () => {
+          if (elem.selected) {
+            elem.unselectItem(elem)();
+          } else {
+            elem.selectItem(elem)();
+          }
+        };
+      },
+      unselectItem(elem) {
+        return () => {
+          if (elem.disabled) return;
+          emit(elem, unselectedEvent, {
+            detail: { item: elem },
+          });
+        };
+      },
+      handleKeyDownCheckbox(elem) {
+        return (event) => {
+          if (elem.selected &&
+            (event.keyCode === keyCode('space') || event.keyCode === keyCode('enter'))) {
+            elem.unselectItem(elem)(event);
+          } else {
+            elem.handleKeyDown(elem)(event);
+          }
+        };
+      },
     },
   }));

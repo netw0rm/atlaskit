@@ -108,6 +108,10 @@ function selectItem(elem, event) {
   }
 }
 
+function unselectItem(elem, event) {
+  event.detail.item.selected = false;
+}
+
 function isDescendantOf(child, parent) {
   if (child.parentNode === parent) {
     return true;
@@ -160,6 +164,7 @@ export default define('ak-dropdown', {
   attached(elem) {
     elem.addEventListener(events.trigger.activated, () => toggleDialog(elem));
     elem.addEventListener(events.selected, (e) => selectItem(elem, e));
+    elem.addEventListener(events.unselected, (e) => unselectItem(elem, e));
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
     elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));

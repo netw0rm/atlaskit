@@ -36,7 +36,7 @@ export const BaseProps = {
     attribute: true,
   }),
   /**
-   * @description is this item is first in the list of items
+   * @description is this item is the first in the list of items
    * @memberof Dropdown
    * @default false
    * @type {Boolean}
@@ -49,7 +49,7 @@ export const BaseProps = {
     attribute: true,
   }),
   /**
-   * @description is this item is last in the list of items
+   * @description is this item is the last in the list of items
    * @memberof Dropdown
    * @default false
    * @type {Boolean}

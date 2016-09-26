@@ -41,6 +41,7 @@ export default define('ak-text-field', {
      * @memberof TextField
      * @instance
      * @type {Boolean}
+     * @default false
      */
     compact: prop.boolean({ attribute: true }),
     /**
@@ -55,6 +56,7 @@ export default define('ak-text-field', {
      * @memberof TextField
      * @instance
      * @type {Boolean}
+     * @default false
      */
     required: prop.boolean({ attribute: true }),
   },

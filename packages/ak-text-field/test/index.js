@@ -53,7 +53,7 @@ describe('ak-text-field', () => {
       component.label = labelText;
       const labelIsCorrect = () => (label.innerText === labelText);
 
-      return waitUntil(labelIsCorrect).should.be.fulfilled.then(() => {
+      return waitUntil(labelIsCorrect).then(() => {
         const labelFocused = () => (focusSpy.calledOnce);
         expect(labelFocused()).to.equal(false);
         label.click();

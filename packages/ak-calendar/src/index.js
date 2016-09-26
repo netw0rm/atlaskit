@@ -209,6 +209,7 @@ export default define('ak-calendar', {
 
     elem[$next] = elem[$next].bind(elem);
     elem[$prev] = elem[$prev].bind(elem);
+    elem[$selectDay] = elem[$selectDay].bind(elem);
   },
   render(elem) {
     const calendar = calendars.get(elem).getCalendar(elem.year, elem.month - 1);

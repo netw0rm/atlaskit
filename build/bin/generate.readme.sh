@@ -27,9 +27,9 @@ if [[ -z `find ./src -name "*.js" -print -quit` ]]; then
 else
   set +e
   DOCS="$($JSDOC2MD_LOC \
+    --verbose \
     --src "src/**/*.js" \
     --plugin akutil-dmd-plugin \
-    --src $file \
     --member-index-format list \
     --name-format)"
   FAILED=$? # Order is important here, this needs to come right after the jsdoc2m sub command

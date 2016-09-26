@@ -24,73 +24,76 @@ describe('Facade Input', () => {
     expect((elem as HTMLInputElement)).to.have.property('value', 'foo');
   });
 
-  it('should call the sync function when theres a user input', (done) => {
+  it('should call the sync function when theres a user input', () => {
     const fInput = new FacadeInput(target(), {
       initialValue: 'foo',
       classList: ['facade-input'],
     });
 
-    let syncedVal = '';
-    fInput.onSync = (val) => {
-      syncedVal = val;
-    }
+    const promise = new Promise(
+      (resolve) => {
+        fInput.onSync = (val) => {
+          resolve(val);
+        }
+      }
+    );
 
     const elem = document.querySelector('.facade-input');
     (elem as HTMLInputElement).value = 'barbaz';
 
-    setTimeout(() => {
-      expect(syncedVal).to.equal('barbaz');
-      done();
-    }, 34);
+    return promise.then((val) => {
+      expect(val).to.equal('barbaz');
+    });
   });
 
-  it('should be removed when marked for removal', (done) => {
+  it('should be removed when marked for removal', () => {
     const fInput = new FacadeInput(target(), {
       initialValue: 'foo',
       classList: ['facade-input'],
     });
 
-    let willRemove = false;
-    fInput.onSync = (val, r) => {
-      willRemove = r
-    }
+    const promise = new Promise(
+      (resolve) => {
+        fInput.onSync = (val, willRemove) => {
+          resolve(willRemove);
+        }
+      }
+    );
 
     fInput.markForRemoval();
-    setTimeout(() => {
+    return promise.then((willRemove) => {
       expect(willRemove).to.be.true;
       expect(fInput.removed).to.be.true;
       expect(document.querySelector('.facade-input')).to.be.null;
-      done();
-    }, 34);
+    });
   });
 
-  it('should be possible to attach mulitple sync functions', (done) => {
+  it('should be possible to attach mulitple sync functions', () => {
     const fInput = new FacadeInput(target(), {
       initialValue: 'foo',
       classList: ['facade-input'],
     });
 
-    let syncedVal1 = '';
-    let syncCallCount = 0;
-    fInput.onSync = (val) => {
-      syncedVal1 = val;
-      syncCallCount++;
-    }
+    const promise = new Promise(
+      (resolve) => {
+        let callCount = 0;
 
-    let syncedVal2 = '';
-    fInput.onSync = (val) => {
-      syncedVal2 = val;
-      syncCallCount++;
-    }
+        fInput.onSync = () => {
+          callCount++;
+        }
+
+        fInput.onSync = () => {
+          callCount++;
+          resolve(callCount);
+        }
+      }
+    );
 
     const elem = document.querySelector('.facade-input');
     (elem as HTMLInputElement).value = 'barbaz';
 
-    setTimeout(() => {
-      expect(syncedVal1).to.equal('barbaz');
-      expect(syncedVal2).to.equal('barbaz');
-      expect(syncCallCount).to.equal(2);
-      done();
-    }, 34);
+    return promise.then((callCount) => {
+      expect(callCount).to.equal(2);
+    });
   });
 });

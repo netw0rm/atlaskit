@@ -21,11 +21,7 @@ const navigationSlot = Symbol('navigationSlot');
 export default define('ak-page', {
   render(elem) {
     return (
-      <div
-        className={classNames({
-          [shadowStyles.locals.navigationOpen]: elem.navigationOpen,
-        })}
-      >
+      <div>
         {/* This is required for elements in the shadow root to be styled.
            This is wrapped in the <div /> because you can't have more than one
            root element.

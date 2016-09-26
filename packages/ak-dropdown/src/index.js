@@ -240,6 +240,7 @@ export default define('ak-dropdown', {
           <div
             className={shadowListStyles.locals.list}
             style={{ minWidth: getDropdownMinwidth(target, elem) }}
+            role="menu"
           >
             <style>{shadowListStyles.toString()}</style>
             <slot />

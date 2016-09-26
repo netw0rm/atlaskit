@@ -21,6 +21,8 @@ export default define('ak-dropdown-item-checkbox',
           onkeydown={elem.handleKeyDownCheckbox(elem)}
           onclick={elem.toggleItem(elem)}
           classes={classes}
+          aria-checked={elem.selected}
+          role="menuitemcheckbox"
         >
           <style>{shadowItemStyles.toString()}</style>
           <IconContainer>

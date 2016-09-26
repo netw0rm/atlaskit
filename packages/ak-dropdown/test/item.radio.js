@@ -4,6 +4,7 @@ import Item from '../src/index.item.radio';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot, afterMutations, getRootNode } from 'akutil-common-test';
 import shadowItemStyles from '../src/less/shadow-item.less';
+import { props } from 'skatejs';
 
 const defaultHeight = 30;
 const defaultGap = 10;
@@ -39,6 +40,22 @@ describe('ak-dropdown-item-radio', () => {
       // (in case some breaking changes in it affect rendering)
       expect(getShadowRoot(component)).to.be.defined;
       expect(getShadowRoot(component).firstChild).to.be.defined;
+    });
+
+    it('should have menuitemradio role', () => {
+      expect(getRootNode(component).getAttribute('role')).to.equal('menuitemradio');
+    });
+
+    it('should have `aria-checked` when selected', () => {
+      expect(getRootNode(component).getAttribute('aria-checked')).to.equal(null);
+      props(component, { selected: true });
+      expect(getRootNode(component).getAttribute('aria-checked')).to.equal('true');
+    });
+
+    it('should have `aria-disabled` when disabled', () => {
+      expect(getRootNode(component).getAttribute('aria-disabled')).to.equal(null);
+      props(component, { disabled: true });
+      expect(getRootNode(component).getAttribute('aria-disabled')).to.equal('true');
     });
   });
 

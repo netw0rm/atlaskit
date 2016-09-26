@@ -52,6 +52,22 @@ describe('ak-dropdown-item-checkbox', () => {
 
       expect(clickSpy.called).to.equal(true);
     });
+
+    it('should have menuitemcheckbox role', () => {
+      expect(getRootNode(component).getAttribute('role')).to.equal('menuitemcheckbox');
+    });
+
+    it('should have `aria-checked` when selected', () => {
+      expect(getRootNode(component).getAttribute('aria-checked')).to.equal(null);
+      props(component, { selected: true });
+      expect(getRootNode(component).getAttribute('aria-checked')).to.equal('true');
+    });
+
+    it('should have `aria-disabled` when disabled', () => {
+      expect(getRootNode(component).getAttribute('aria-disabled')).to.equal(null);
+      props(component, { disabled: true });
+      expect(getRootNode(component).getAttribute('aria-disabled')).to.equal('true');
+    });
   });
 
   describe('sizing for an item', () => {

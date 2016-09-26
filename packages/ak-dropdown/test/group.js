@@ -54,4 +54,13 @@ describe('general behavior', () => {
     const heading = getShadowRoot(component).querySelector(`.${shadowGroupStyles.locals.heading}`);
     expect(heading.innerHTML).to.equal(headingText);
   });
+
+  it('should have correct aria and role attributes', () => {
+    const headingText = 'test heading';
+    props(component, { heading: headingText });
+    const heading = getShadowRoot(component).querySelector(`.${shadowGroupStyles.locals.heading}`);
+    expect(heading.getAttribute('aria-label')).to.equal(headingText);
+    expect(heading.getAttribute('aria-role')).to.equal('presentation');
+    expect(getShadowRoot(component).firstChild.getAttribute('role')).to.equal('group');
+  });
 });

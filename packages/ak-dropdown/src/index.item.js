@@ -89,6 +89,7 @@ export default define('ak-dropdown-item', {
         ref={el => (elem.elemDom = el)}
         onkeydown={elem.handleKeyDown(elem)}
         onclick={elem.selectItem(elem)}
+        role="menuitem"
       >
         <style>{shadowItemStyles.toString()}</style>
         {childrenHaveSlot(elem.childNodes, 'left') ?

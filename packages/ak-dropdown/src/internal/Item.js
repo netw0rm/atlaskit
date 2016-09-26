@@ -21,6 +21,7 @@ export default (props, children) => {
     <Item
       tabindex={tabIndex}
       className={classes}
+      aria-disabled={props.disabled}
       {...props}
     >
       {children()}

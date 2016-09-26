@@ -9,20 +9,24 @@ import * as keys from './keys';
 import calendars from './calendars';
 import classnames from 'classnames';
 
-const Announcer = define('ak-announcer', {
-  attached(elem) {
-    elem.setAttribute('aria-live', 'assertive');
-    elem.setAttribute('aria-relevant', 'text');
-    elem.style.border = '0';
-    elem.style.clip = 'rect(0 0 0 0)';
-    elem.style.height = '1px';
-    elem.style.margin = '-1px';
-    elem.style.overflow = 'hidden';
-    elem.style.padding = '0';
-    elem.style.position = 'absolute';
-    elem.style.width = '1px';
-  },
-});
+const Announcer = () => (
+  <div
+    ref={(e) => {
+      e.setAttribute('aria-live', 'assertive');
+      e.setAttribute('aria-relevant', 'text');
+      Object.assign(e.style, {
+        border: '0',
+        clip: 'rect(0 0 0 0)',
+        height: '1px',
+        margin: '-1px',
+        overflow: 'hidden',
+        padding: '0',
+        position: 'absolute',
+        width: '1px',
+      });
+    }}
+  />
+);
 
 /**
  * @description Create instances of the component programmatically, or using markup.

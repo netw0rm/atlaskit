@@ -5,6 +5,7 @@
 @ak-navigation-container-color: @ak-color-N20;
 @ak-navigation-container-name-color: @ak-color-N500;
 
+@global-z-index: 2;
 @global-primary-item-margin: 25px;
 @global-secondary-item-margin: 10px;
 @global-secondary-item-size: 30px;
@@ -37,7 +38,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    z-index: 1; //needed so that child dropdowns can trump the container nav links
+    z-index: @global-z-index;
 
     .global-primary {
       margin: @global-primary-item-margin auto;
@@ -74,7 +75,8 @@
 
   .container {
     padding: 20px 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     width: 100%;
   }
 
@@ -87,7 +89,7 @@
     height: @container-logo-size;
     border-radius: @container-logo-border-radius;
     margin-right: 10px;
-    
+
     &:not([src]) {
       visibility: hidden;
     }

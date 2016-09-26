@@ -1,7 +1,7 @@
 {
   "name": "ak-editor-shared-styles",
-  "version": "0.0.1",
-  "description": "Shared styles for fabric editor components",
+  "version": "1.0.0",
+  "description": "Shared styles for Atlassian Editor components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",

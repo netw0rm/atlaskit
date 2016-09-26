@@ -1,14 +1,11 @@
 import { Component } from 'skatejs';
 import chai from 'chai';
+import iconNameToComponentName from '../src/iconNameToComponentName';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
 import fileToScope from '../src/fileToScope';
 import pathToDashed from '../src/pathToDashed';
-
-// This is an anti-pattern and a special case here as we auto-generate the exports
-// and need to make sure that the single ones align to the bundled ones.
-// DO NOT COPY TO OTHER COMPONENTS!
-import bundle from '../dist/bundle';
+import * as bundle from '../src';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -71,10 +68,32 @@ describe(name, () => {
           'radio',
           'search',
         ]);
+        // If you find yourself here and wonder why this list is not auto-generated, then bear in
+        // mind that tests are supposed to tell you when a piece of software breaks.
+        // As the sole purpose of this component is providing icons:
+        //
+        // * changing an icon is a patch
+        // * adding an icon is a feature
+        // * removing an icon is breaking change
+        // * renaming an icon is a breaking change
+        //
+        // If we were to auto-generate this list, then renaming, adding or removing would NOT
+        // break any tests and thus not hint the developer at what kind of change he/she is making
     });
 
     it('are properly defined in bundle', () => {
-      Object.keys(bundle).should.be.deep.equal(Object.keys(components));
+      // This could be any component, the important thing is the fixed named export
+      const { BitbucketLogoIcon } = bundle;
+      (new BitbucketLogoIcon).should.be.instanceof(Component);
+
+      const bundleKeys = Object.keys(bundle);
+
+      bundleKeys.should.be.deep.equal(Object
+            .keys(components)
+            .map(pathToDashed)
+            .map((x) => iconNameToComponentName(x)));
+
+      bundleKeys.forEach((key) => (new (bundle[key])).should.be.instanceof(Component));
     });
   });
 

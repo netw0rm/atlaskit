@@ -14,6 +14,10 @@ const {
   HIPCHAT_DESIGN_PLATFORM_ROOM_ID: ROOM_ID,
   CDN_URL_SCOPE,
   CDN_URL_BASE,
+  BITBUCKET_REPO_OWNER: REPO_OWNER,
+  BITBUCKET_REPO_SLUG: REPO_SLUG,
+  BITBUCKET_COMMIT: COMMIT,
+  BITBUCKET_BRANCH: BRANCH,
 } = process.env;
 
 if (!AUTH_TOKEN || !ROOM_ID || !CDN_URL_SCOPE || !CDN_URL_BASE) {
@@ -59,7 +63,10 @@ const changedPackages = releasesFileContents
                           .split('\n')
                           .map((line) => line.split('@'));
 
-const message = `<table>
+const buildLink = `https://bitbucket.org/${REPO_OWNER}/${REPO_SLUG}/commits/${COMMIT}?at=${BRANCH}`;
+const message = `
+Commit <a href="${buildLink}">${COMMIT}</a> gave us some fresh components:<br/>
+<table>
   <tr>
     <th>Component</th>
     <th>Version</th>

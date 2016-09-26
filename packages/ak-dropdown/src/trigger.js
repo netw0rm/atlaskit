@@ -100,7 +100,7 @@ export const DropdownTriggerButton = define('ak-dropdown-trigger-button',
        * Example: See `DropdownTriggerArrow` subclass
        **/
       getContent() {
-        vdom.element('ak-icon', { slot: 'after', glyph: 'expand' });
+        vdom.element('ak-icon-expand', { slot: 'after' });
         vdom.element('slot');
       },
     },
@@ -111,7 +111,7 @@ export const DropdownTriggerArrow = define('ak-dropdown-trigger-arrow',
   DropdownTriggerButton.extend({
     prototype: {
       getContent() {
-        vdom.element('ak-icon', { glyph: 'expand' });
+        vdom.element('ak-icon-expand');
       },
     },
   }));

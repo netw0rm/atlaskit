@@ -6,10 +6,10 @@ import { style } from 'akutil-common';
 import { getDayName, getMonthName, makeArrayFromNumber } from './util';
 import * as events from './index.events';
 import * as keys from './keys';
-import calendars from './calendars';
 import classnames from 'classnames';
 
 const $a11y = Symbol();
+const $calendars = Symbol();
 const $loseFocus = Symbol();
 const $navigateWithKeyboard = Symbol();
 const $next = Symbol();
@@ -189,10 +189,10 @@ export default define('ak-calendar', {
     },
   },
   created(elem) {
-    calendars.set(elem, new Calendar({
+    elem[$calendars] = new Calendar({
       siblingMonths: true,
       weekNumbers: true,
-    }));
+    });
 
     if (!elem.hasAttribute('tabindex')) {
       elem.setAttribute('tabindex', 0);
@@ -212,7 +212,7 @@ export default define('ak-calendar', {
     elem[$selectDay] = elem[$selectDay].bind(elem);
   },
   render(elem) {
-    const calendar = calendars.get(elem).getCalendar(elem.year, elem.month - 1);
+    const calendar = elem[$calendars].getCalendar(elem.year, elem.month - 1);
     const now = new Date();
     const weeks = [];
     const css = style(vdom, {

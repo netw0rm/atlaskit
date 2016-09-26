@@ -8,6 +8,7 @@ import IconContainer from './internal/LeftSlotContainer';
 import DefaultSlotContainer from './internal/DefaultSlotContainer';
 import childrenHaveSlot from './internal/childrenHaveSlot';
 
+export const elemDom = Symbol();
 export const BaseProps = {
   /**
    * @description disabled state of a dropdown's item
@@ -75,7 +76,7 @@ export const BaseProps = {
     attribute: true,
     set(elem, data) {
       if (data.newValue) {
-        setTimeout(() => elem.elemDom.focus());
+        setTimeout(() => elem[elemDom].focus());
       }
     },
   }),
@@ -86,7 +87,7 @@ export default define('ak-dropdown-item', {
     return (
       <Item
         {...props(elem)}
-        ref={el => (elem.elemDom = el)}
+        ref={el => (elem[elemDom] = el)}
         onkeydown={elem.handleKeyDown(elem)}
         onclick={elem.selectItem(elem)}
       >

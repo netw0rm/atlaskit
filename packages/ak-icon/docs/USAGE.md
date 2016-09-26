@@ -63,13 +63,15 @@ You can control the icon color via CSS:
 </span>
 ```
 
-#### bundle.js
+## Use the bundle (all icons)
 
 This package provides all icons bundled in one export but unless your build tool supports tree shaking, you should import only a single icon instead of the bundled version.
 
+### bundle.js
+
 ```js
 import * as icons from 'ak-icon';
-const { bitbucketLogo: BitbucketLogo } = icons;
+const { BitbucketLogo } = icons;
 
 // old-school
 const icon = new BitbucketLogo();
@@ -82,7 +84,7 @@ const x = (<BitbucketLogo />);
 Import a single icon:
 
 ```js
-import bitbucketLogo as BitbucketLogo from 'ak-icon';
+import BitbucketLogo from 'ak-icon';
 
 // old-school
 const icon = new BitbucketLogo();
@@ -92,7 +94,7 @@ document.body.appendChild(icon);
 const x = (<BitbucketLogo />);
 ```
 
-#### index.html
+### index.html
 
 ```html
 <!-- ... -->

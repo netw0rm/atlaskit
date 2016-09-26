@@ -43,11 +43,11 @@
 };
 
 @slot-margin-left: {
-  margin-right: @side-slot-margin;
+  margin-left: @side-slot-margin;
 };
 
-.select-slot-children('before', 'before-slot', @slot-margin-left);
-.select-slot-children('after', 'after-slot', @slot-margin-right);
+.select-slot-children('before', 'before-slot', @slot-margin-right);
+.select-slot-children('after', 'after-slot', @slot-margin-left);
 
 :host .before-slot-wrapper {
   align-self: center;

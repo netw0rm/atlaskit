@@ -22,7 +22,7 @@ export default class FacadeInput {
   private classList: string[];
   private prevValue: string;
   private shouldRemove: boolean;
-  private syncInterval: number;
+  private syncRequest: number;
   private syncFuncs: syncer[];
 
   constructor(target: HTMLElement, options: facadeOptions) {
@@ -49,7 +49,7 @@ export default class FacadeInput {
 
     // start syncing when the first event handler is attached
     if (this.syncFuncs.length === 1) {
-      this.syncInterval = window.setInterval(this.sync.bind(this), 50);
+      this.syncRequest = window.requestAnimationFrame(this.sync.bind(this));
     }
   }
 
@@ -70,7 +70,7 @@ export default class FacadeInput {
       el.style[style as any] = computedStyles.getPropertyValue(style);
     }
 
-    const fontSize: number = parseInt(computedStyles['font-size'], 10);
+    const fontSize: number = parseInt(computedStyles['font-size' as any], 10);
 
     // set positioning
     const rect = target.getBoundingClientRect();
@@ -100,7 +100,7 @@ export default class FacadeInput {
     if (el.parentNode) {
       el.parentNode.removeChild(el);
     }
-    window.clearInterval(this.syncInterval);
+    window.cancelAnimationFrame(this.syncRequest);
     this.removed = true;
   }
 
@@ -111,6 +111,9 @@ export default class FacadeInput {
   }
 
   private sync() {
+    // Upon entering sync, request for another animation frame.
+    this.syncRequest = window.requestAnimationFrame(this.sync.bind(this));
+
     // If the target element is no longer in the DOM,
     // remove the facade.
     const target = this.target;
@@ -125,7 +128,7 @@ export default class FacadeInput {
     if (curValue === this.prevValue) {
       if (this.shouldRemove) {
         this.callSyncFuncs(curValue, this.shouldRemove);
-        return this.remove();
+        this.remove();
       }
       return;
     }

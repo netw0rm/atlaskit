@@ -32,7 +32,7 @@ import 'ak-tag';
 import 'ak-tag-group';
 ```
 
-Now we can use the defined tag in our HTML markup, e.g.:
+Now you can use the defined layer in your HTML markup:
 
 #### index.html
 

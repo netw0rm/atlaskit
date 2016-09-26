@@ -68,13 +68,11 @@ function toggleDialog(elem, value) {
 
 function selectSimpleItem(elem, event) {
   const list = elem.querySelectorAll('ak-dropdown-item');
-  const l = list.length;
-  for (let i = 0; i < l; i++) {
-    const item = list[i];
-    if (item.selected) {
-      item.selected = false;
+  [...list].forEach((val) => {
+    if (val.selected) {
+      val.selected = false;
     }
-  }
+  });
 
   event.detail.item.selected = true;
   toggleDialog(elem, false);
@@ -84,9 +82,23 @@ function selectCheckboxItem(elem, event) {
   event.detail.item.selected = !event.detail.item.selected;
 }
 
+function selectRadioItem(elem, event) {
+  const radioGroupItems = event.detail.item.parentNode.children;
+
+  [...radioGroupItems].forEach((val) => {
+    if (val.radio && val.selected) {
+      val.selected = false;
+    }
+  });
+
+  event.detail.item.selected = true;
+}
+
 function selectItem(elem, event) {
   if (event.detail.item.checkbox) {
     selectCheckboxItem(elem, event);
+  } else if (event.detail.item.radio) {
+    selectRadioItem(elem, event);
   } else {
     selectSimpleItem(elem, event);
   }

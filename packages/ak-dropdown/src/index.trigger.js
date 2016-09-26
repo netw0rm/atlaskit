@@ -10,7 +10,9 @@ function handleKeyDown(elem) {
       keyCode('down'),
       keyCode('space'),
       keyCode('enter')].indexOf(e.keyCode) > -1) {
-      emit(elem, triggerEvents.activated);
+      emit(elem, triggerEvents.activated, {
+        detail: { eventType: 'keyDown' },
+      });
     }
   };
 }
@@ -18,7 +20,9 @@ function handleKeyDown(elem) {
 function handleClick(elem) {
   return () => {
     if (!elem.disabled) {
-      emit(elem, triggerEvents.activated);
+      emit(elem, triggerEvents.activated, {
+        detail: { eventType: 'click' },
+      });
     }
   };
 }

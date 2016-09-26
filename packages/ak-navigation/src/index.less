@@ -74,7 +74,8 @@
 
   .container {
     padding: 20px 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     width: 100%;
   }
 
@@ -87,7 +88,7 @@
     height: @container-logo-size;
     border-radius: @container-logo-border-radius;
     margin-right: 10px;
-    
+
     &:not([src]) {
       visibility: hidden;
     }

@@ -10,34 +10,84 @@
   text-decoration: none;
 
   &:not(.disabled) {
-    color: @ak-dropdown-font-main;
+    color: @ak-dropdown-font-main-color;
     cursor: pointer;
 
     &:hover {
-      background-color: @ak-dropdown-background-hover;
+      background-color: @ak-dropdown-background-hover-color;
+
+      .itemLeftPosition {
+        color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+        fill: transparent;
+      }
+
+      &.selectedWithIcon {
+        .itemLeftPosition {
+          color: @ak-color-B50;
+          fill: @ak-color-N700;
+        }
+      }
     }
 
     &:active {
-      background-color: @ak-dropdown-background-active;
-      color: @ak-dropdown-font-active;
+      background-color: @ak-dropdown-background-active-color;
+      color: @ak-dropdown-font-active-color;
+
+      .itemLeftPosition {
+        color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+        fill: transparent;
+      }
+
+      &.selectedWithIcon {
+        .itemLeftPosition {
+          color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+          fill: @ak-color-N700;
+        }
+      }
+    }
+
+    .itemLeftPosition {
+      color: @ak-color-N400;
+      fill: @ak-color-N400;
+    }
+
+    &.selectedWithIcon {
+      .itemLeftPosition {
+        color: @ak-color-B50;
+        fill: @ak-color-N700;
+      }
+    }
+  }
+
+  &.disabled {
+    .itemLeftPosition {
+      color: @ak-color-N600;
+      fill: transparent;
+    }
+
+    &.selectedWithIcon {
+      .itemLeftPosition {
+        color: @ak-color-N600;
+        fill: @ak-color-N700;
+      }
     }
   }
 
   &:focus {
-    box-shadow: 0 0 0 2px @ak-dropdown-focused-outline;
+    box-shadow: 0 0 0 2px @ak-dropdown-focused-outline-color;
     outline: none;
-    position: relative; //making shadow on top of others
+    position: relative; // prevents bgcolor from obfuscating focus ring of focused elements
   }
 }
 
 .selected {
-  background-color: @ak-dropdown-background-selected;
-  color: @ak-dropdown-font-main;
+  background-color: @ak-dropdown-background-selected-color;
+  color: @ak-dropdown-font-main-color;
 }
 
 .disabled {
-  background-color: @ak-dropdown-background-disabled;
-  color: @ak-dropdown-font-disabled;
+  background-color: @ak-dropdown-background-disabled-color;
+  color: @ak-dropdown-font-disabled-color;
   cursor: not-allowed;
 }
 
@@ -52,3 +102,4 @@
   white-space: nowrap;
   padding:8px 0;
 }
+

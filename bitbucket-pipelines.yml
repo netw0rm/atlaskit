@@ -10,6 +10,8 @@ pipelines:
             - npm install
             - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "build/install/cdn-tools"
             - npm run test/integration
+            - npm run release/check/is-workspace-clean --silent
+            - npm run release/check/can-ff --silent || exit 0
             - npm run release
             - run-p -ln "release/registry" "release/storybooks"
             - npm run release/announce

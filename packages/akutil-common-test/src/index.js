@@ -5,6 +5,9 @@ import { keydown, keyup } from './user-interaction';
 import { checkVisibility, checkInvisibility } from './visibility';
 import getShadowRoot from './getShadowRoot';
 import locateWebComponent from './index.locateWebComponent';
+import createTemporaryComponent from './createTemporaryComponent';
+import getRootNode from './getRootNode';
+import tearDownComponent from './tearDownComponent';
 
 export {
   afterMutations,
@@ -16,4 +19,7 @@ export {
   locateWebComponent,
   checkVisibility,
   checkInvisibility,
+  createTemporaryComponent,
+  getRootNode,
+  tearDownComponent,
 };

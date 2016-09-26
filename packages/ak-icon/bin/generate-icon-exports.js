@@ -2,6 +2,7 @@
 
 const webpack = require('webpack');
 const webpackConf = require('./webpack.config.js');
+const componentTemplate = require('./componentTemplate');
 const path = require('path');
 const glob = require('glob');
 const fs = require('fs');
@@ -120,24 +121,13 @@ ${result.info.height} > ${maxHeight}`);
           log.debug(`"${iconRelativePathToSrc}": generating export`);
 
           const iconRelativePathDashed = iconRelativePathToSrcNoExt.split(path.sep).join('-');
-          const template =
-`import { define, vdom } from 'skatejs';
-
-// eslint-disable-next-line max-len, react/jsx-space-before-closing
-const Glyph = () => (${svgData});
-
-export default define('${name}-${iconRelativePathDashed}', {
-  render() {
-    return (
-      <div style={{ display: 'flex', width: '${defaultWidth}px', height: '${defaultHeight}px' }}>
-        <div style={{ margin: 'auto' }}>
-          <Glyph />
-        </div>
-      </div>
-    );
-  },
-});
-`;
+          const iconName = `${name}-${iconRelativePathDashed}`;
+          const template = componentTemplate({
+            iconName,
+            svgData,
+            width: defaultWidth,
+            height: defaultHeight,
+          });
           cb(null, template);
         },
         function createDirs(contents, cb) {

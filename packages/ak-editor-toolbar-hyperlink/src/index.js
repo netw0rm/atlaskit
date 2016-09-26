@@ -51,6 +51,7 @@ export default define('ak-editor-toolbar-hyperlink', {
         {linkButton = LinkButton()}
 
         <Popup
+          class="popup"
           target={linkButton}
           open={elem.open}
           on-activate={elem.openHyperlink}
@@ -74,16 +75,16 @@ export default define('ak-editor-toolbar-hyperlink', {
     },
   },
   props: {
-    disabled: prop.boolean({ attribute: true }),
     /**
-     * @description Controls visibility of an popup. Dialog is invisible by default.
+     * @description Controls disablily of an popup.
      * @memberof Popup
      * @instance
      * @default false
      * @type Boolean
-     * @example @html <ak-editor-popup open></ak-editor-popup>
-     * @example @js dialog.open = true;
+     * @example @html <ak-editor-popup disabled></ak-editor-popup>
+     * @example @js dialog.disabled = true;
      */
+    disabled: prop.boolean({ attribute: true }),
     open: prop.boolean({ attribute: true }),
     active: prop.boolean({ attribute: true }),
   },

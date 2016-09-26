@@ -203,7 +203,12 @@ export default define('ak-calendar', {
     }
 
     elem.addEventListener('blur', elem[$loseFocus]);
+    elem.addEventListener('keydown', elem[$navigateWithKeyboard]);
+    elem.addEventListener('mouseover', elem[$loseFocus]);
     elem.addEventListener('select', elem[$selectHandler]);
+
+    elem[$next] = elem[$next].bind(elem);
+    elem[$prev] = elem[$prev].bind(elem);
   },
   render(elem) {
     const calendar = calendars.get(elem).getCalendar(elem.year, elem.month - 1);
@@ -313,7 +318,7 @@ export default define('ak-calendar', {
 
     return [
       <Announcer>{elem[$a11y]}</Announcer>,
-      <table onMouseover={elem[$loseFocus]}>
+      <table>
         <caption class={classnames(css.caption)}>
           <button class={classnames(css.prev)} onClick={elem[$prev]}>
             {elem.btnPrev}

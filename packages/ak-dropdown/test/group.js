@@ -1,9 +1,10 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { Group } from '../src';
-import { Component } from 'skatejs';
+import { Component, props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
+import shadowGroupStyles from '../src/shadow-group.less';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -45,5 +46,12 @@ describe('general behavior', () => {
     // (in case some breaking changes in it that affect rendering)
     expect(getShadowRoot(component)).to.be.defined;
     expect(getShadowRoot(component).firstChild).to.be.defined;
+  });
+
+  it('should have headings', () => {
+    const headingText = 'test heading';
+    props(component, { heading: headingText });
+    const heading = getShadowRoot(component).querySelector(`.${shadowGroupStyles.locals.heading}`);
+    expect(heading.innerHTML).to.equal(headingText);
   });
 });

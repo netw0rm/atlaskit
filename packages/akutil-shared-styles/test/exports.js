@@ -12,7 +12,7 @@ describe('exports', () => {
   it('should have well-defined exports', () => {
     // If you find yourself here and wonder why this list is not auto-generated, then bear in
     // mind that tests are supposed to tell you when a piece of software breaks.
-    // As the sole purpose of this component is providing icons:
+    // As the sole purpose of this component is providing shared style variables:
     //
     // * changing a variable is a patch
     // * adding a variable is a feature

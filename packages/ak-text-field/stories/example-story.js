@@ -11,15 +11,7 @@ const formTestUrl = 'https://www.w3schools.com/html/action_page.php';
 
 function generateInput(opts) {
   return (
-    <ReactField label={opts.label || 'Example label'}>
-      <input
-        type={opts.type || 'text'}
-        id={opts.id}
-        name={opts.id}
-        disabled={opts.disabled}
-        placeholder={opts.placeholder}
-      />
-    </ReactField>
+    <ReactField label={opts.label || 'Example label'} {...opts} />
   );
 }
 
@@ -29,7 +21,7 @@ function generateFormWithInput(opts) {
       action={formTestUrl}
       method="post"
       style={{
-        'background-color': 'white',
+        backgroundColor: 'white',
         padding: '40px',
         width: '500px',
       }}
@@ -52,7 +44,7 @@ function submitTestForm(useNativeSubmitBtn) {
       <form
         action={formTestUrl}
         method="get"
-        style={{ 'background-color': 'white', padding: '40px', width: '500px' }}
+        style={{ backgroundColor: 'white', padding: '40px', width: '500px' }}
         target="myFrame"
       >
         <h2>Submit test</h2>
@@ -71,7 +63,14 @@ function submitTestForm(useNativeSubmitBtn) {
 
 storiesOf(name, module)
   .add('standard ak-text-field', () => (
-    generateFormWithInput({ placeholder: 'Oh wow, such input' })
+    generateFormWithInput({ placeholder: 'Oh wow, such input', editing: true, editable: true })
+  ))
+  .add('Editable fields', () => (
+    <div style={{ backgroundColor: 'white', padding: '40px', width: '500px' }}>
+      <ReactField label="Not Editable" value="Foo1" />
+      <ReactField label="Editable Not Editing" value="Foo2" editable />
+      <ReactField label="Editable Editing" value="Foo3" editable editing />
+    </div>
   ))
   .add('standard ak-text-field [type=email]', () => (
     generateFormWithInput({ type: 'email', placeholder: 'Enter your email' })
@@ -93,7 +92,7 @@ storiesOf(name, module)
       action={formTestUrl}
       method="post"
       style={{
-        'background-color': 'white',
+        backgroundColor: 'white',
         padding: '40px',
       }}
     >

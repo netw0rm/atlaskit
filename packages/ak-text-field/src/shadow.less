@@ -85,7 +85,7 @@
 }
 
 // Styles for polyfilled shadow DOM
-.default-slot-element > input {
+.edit-mode-slot > input {
   @baseInputStyle();
 
   &:hover {
@@ -99,4 +99,12 @@
   &[disabled] {
     @disabledInputStyle();
   }
+}
+
+.edit-mode-slot-wrapper {
+
+}
+
+.view-mode-wrapper {
+  .borders-and-padding(0, @input-horizontal-padding, @input-vertical-padding);
 }

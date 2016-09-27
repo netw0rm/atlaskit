@@ -1,14 +1,13 @@
 {
   "name": "ak-editor-icon",
-  "version": "2.4.2",
-  "description": "",
+  "version": "2.4.3",
+  "description": "Editor Icon web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd .. && npm run prepublish/single ak-editor-icon",
-    "compress": "find . -name *.svg -exec svgo {} {} \\;",
-    "pre-release": "lerna-semantic-release pre"
+    "compress": "find . -name *.svg -exec svgo {} {} \\;"
   },
   "files": [
     "dist"
@@ -20,7 +19,7 @@
   ],
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.2.5",
+    "skatejs": "^1.4.1",
     "uid": "^0.0.2"
   },
   "devDependencies": {

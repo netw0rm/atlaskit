@@ -6,9 +6,6 @@ import { trigger as triggerEvents } from './internal/events';
 
 function handleKeyDown(elem) {
   return (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
     if (!elem.disabled && [
       keyCode('down'),
       keyCode('space'),
@@ -19,9 +16,7 @@ function handleKeyDown(elem) {
 }
 
 function handleClick(elem) {
-  return (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  return () => {
     if (!elem.disabled) {
       emit(elem, triggerEvents.activated);
     }
@@ -105,7 +100,7 @@ export const DropdownTriggerButton = define('ak-dropdown-trigger-button',
        * Example: See `DropdownTriggerArrow` subclass
        **/
       getContent() {
-        vdom.element('ak-icon', { slot: 'after', glyph: 'expand' });
+        vdom.element('ak-icon-expand', { slot: 'after' });
         vdom.element('slot');
       },
     },
@@ -116,7 +111,7 @@ export const DropdownTriggerArrow = define('ak-dropdown-trigger-arrow',
   DropdownTriggerButton.extend({
     prototype: {
       getContent() {
-        vdom.element('ak-icon', { glyph: 'expand' });
+        vdom.element('ak-icon-expand');
       },
     },
   }));

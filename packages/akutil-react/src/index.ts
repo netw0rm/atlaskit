@@ -9,13 +9,8 @@ import reactify from 'skatejs-react-integration';
  */
 
 interface Options {
-  React: any;
-  ReactDOM: any;
+  React?: any;
+  ReactDOM?: any;
 }
 
-const defaultOptions: Options = {
-  React: (window as any).React,
-  ReactDOM: (window as any).ReactDOM,
-};
-
-export default (webComponent: any, options: Options = defaultOptions): any => reactify(webComponent, options);
+export default (webComponent: any, options?: Options): any => reactify(webComponent, options);

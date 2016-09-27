@@ -1,10 +1,9 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { symbols } from 'skatejs';
 import AkBadge, { events } from '../src';
 const { change: changeEvent } = events;
 import styles from '../src/shadow.less';
-import { afterMutations } from 'akutil-common-test';
+import { afterMutations, getShadowRoot } from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -12,7 +11,7 @@ const expect = chai.expect; // eslint-disable-line no-unused-vars
 const valueSelector = `.${styles.locals.value}`;
 const fixture = document.createElement('div');
 let component;
-const value = () => component[symbols.shadowRoot].querySelector(valueSelector);
+const value = () => getShadowRoot(component).querySelector(valueSelector);
 
 describe('ak-badge', () => {
   beforeEach(() => {

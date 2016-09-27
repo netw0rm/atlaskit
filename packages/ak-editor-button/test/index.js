@@ -2,9 +2,9 @@ import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkEditorButton from '../src';
-import { symbols, props } from 'skatejs';
+import { props } from 'skatejs';
 import shadowStyles from '../src/shadow.less';
-import { afterMutations } from 'akutil-common-test';
+import { afterMutations, getShadowRoot } from 'akutil-common-test';
 
 const classKeys = shadowStyles.locals;
 
@@ -15,7 +15,7 @@ const expect = chai.expect;
 describe('ak-editor-button', () => {
   let component;
   const shadowDomQuery = (elem, selector) =>
-    elem[symbols.shadowRoot].querySelector(selector);
+    getShadowRoot(elem).querySelector(selector);
 
   const getShadowButtonElem = (elem) =>
     shadowDomQuery(elem, `.${classKeys.root} button`);

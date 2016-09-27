@@ -1,5 +1,5 @@
 import 'style!./host.less';
-import { vdom, define, prop, emit, symbols } from 'skatejs';
+import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
 import Icon from 'ak-editor-icon';
@@ -10,7 +10,7 @@ function toggle(elem, input) {
   elem.open = !elem.open;
 
   if (elem.open) {
-    const textInput = input || elem[symbols.shadowRoot].querySelector('.text-input');
+    const textInput = input || elem.shadowRoot.querySelector('.text-input');
 
     // todo: fix the hack
     setTimeout(() => textInput.focus(), 5);
@@ -40,7 +40,7 @@ export default define('ak-editor-toolbar-hyperlink', {
       <div
         onKeyup={event => {
           if (event.keyCode === 13) {
-            const textInput = elem[symbols.shadowRoot].querySelector('.text-input');
+            const textInput = elem.shadowRoot.querySelector('.text-input');
             toggle(elem, textInput);
             emit(elem, 'save', { detail: { value: textInput.value } });
             textInput.value = '';
@@ -52,6 +52,7 @@ export default define('ak-editor-toolbar-hyperlink', {
         {linkButton = LinkButton()}
 
         <Popup
+          class="popup"
           target={linkButton}
           open={elem.open}
           on-activate={() => toggle(elem)}
@@ -62,16 +63,16 @@ export default define('ak-editor-toolbar-hyperlink', {
     );
   },
   props: {
-    disabled: prop.boolean({ attribute: true }),
     /**
-     * @description Controls visibility of an popup. Dialog is invisible by default.
+     * @description Controls disablily of an popup.
      * @memberof Popup
      * @instance
      * @default false
      * @type Boolean
-     * @example @html <ak-editor-popup open></ak-editor-popup>
-     * @example @js dialog.open = true;
+     * @example @html <ak-editor-popup disabled></ak-editor-popup>
+     * @example @js dialog.disabled = true;
      */
+    disabled: prop.boolean({ attribute: true }),
     open: prop.boolean({ attribute: true }),
     active: prop.boolean({ attribute: true }),
   },

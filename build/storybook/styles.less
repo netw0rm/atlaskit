@@ -5,6 +5,8 @@
 html {
   font-family: @ak-font-family;
   font-size: @ak-font-size-default;
+  // height: 100% is required so that the html actually has a height
+  height: 100%;
 }
 
 @grid-line-size: 1px;
@@ -14,6 +16,17 @@ html {
 
 body {
   background-color: rgba(0, 0, 0, 0.03);
-  background-image: repeating-linear-gradient(0deg, transparent, transparent @grid-minus-one, rgba(0, 0, 0, @grid-line-opacity) @grid-line-size, transparent @ak-grid-size), repeating-linear-gradient(90deg, transparent, transparent @grid-minus-one, rgba(0, 0, 0, @grid-line-opacity) @grid-line-size, transparent @ak-grid-size);
+  // creates the hatched grid pattern in storybook
+  background-image: repeating-linear-gradient(0deg,
+    transparent, transparent @grid-minus-one,
+    rgba(0, 0, 0, @grid-line-opacity) @grid-line-size,
+    transparent @ak-grid-size),
+    repeating-linear-gradient(90deg, transparent,
+    transparent @grid-minus-one,
+    rgba(0, 0, 0, @grid-line-opacity) @grid-line-size,
+    transparent @ak-grid-size);
   background-size: @ak-grid-size @ak-grid-size;
+  // height: 100% is required so that the body actually has a height
+  height: 100%;
+  margin: 0;
 }

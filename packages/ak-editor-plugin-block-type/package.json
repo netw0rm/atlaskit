@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-block-type",
-  "version": "2.0.1",
+  "version": "3.0.1",
   "description": "A block type plugin for ProseMirror",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

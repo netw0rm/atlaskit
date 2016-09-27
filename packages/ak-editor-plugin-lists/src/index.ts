@@ -24,7 +24,7 @@ const DEFAULT_STATE: ListsState = {
 };
 
 function canChangeToList(pm: ProseMirror, listsTypes: ListType[]): boolean {
-  return listsTypes.some((type) => commands.setBlockType(pm.schema.nodes[type as string])(pm, false));
+  return listsTypes.some((type) => commands.wrapInList(pm.schema.nodes[type as string])(pm, false));
 }
 
 function isNodeListable(proseMirrorInstance: ProseMirror, node: Node): boolean {
@@ -147,7 +147,8 @@ export default new Plugin(class ListsPlugin {
     return commands.wrapInList(pm.schema.nodes[type as string] as Node)(pm);
   }
 
-  onChange(cb: StateChangeHandler) {
+  subscribe(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
+    cb(this.getState());
   }
 });

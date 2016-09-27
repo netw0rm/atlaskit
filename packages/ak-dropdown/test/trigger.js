@@ -8,7 +8,7 @@ import {
 } from '../src';
 const { trigger: triggerEvents } = dropdownEvents;
 import keyCode from 'keycode';
-import { symbols } from 'skatejs';
+import { getShadowRoot } from 'akutil-common-test';
 import 'custom-event-polyfill';
 
 chai.use(chaiAsPromised);
@@ -34,8 +34,7 @@ describe('ak-dropdown-trigger-button', () => {
       const clickSpy = sinon.spy();
       triggerContainer.appendChild(component);
       triggerContainer.addEventListener(triggerEvents.activated, clickSpy);
-
-      setTimeout(() => component[symbols.shadowRoot].firstChild.click());
+      setTimeout(() => getShadowRoot(component).firstChild.click());
       setTimeout(() => expect(clickSpy.called).to.equal(true));
       setTimeout(done);
     });
@@ -71,7 +70,7 @@ describe('ak-dropdown-trigger-button', () => {
         const called = sinon.spy();
         itemContainer.addEventListener(eventsMap[key], called);
         setTimeout(() => {
-          component[symbols.shadowRoot].firstChild.dispatchEvent(event);
+          getShadowRoot(component).firstChild.dispatchEvent(event);
         });
         setTimeout(() => expect(called.called).to.be.true);
         setTimeout(() => done());
@@ -83,7 +82,7 @@ describe('ak-dropdown-trigger-button', () => {
         const called = sinon.spy();
         itemContainer.addEventListener(eventsMap[key], called);
         setTimeout(() => {
-          component[symbols.shadowRoot].firstChild.dispatchEvent(event);
+          getShadowRoot(component).firstChild.dispatchEvent(event);
         });
         setTimeout(() => expect(called.called).to.be.false);
         setTimeout(() => done());
@@ -115,8 +114,8 @@ describe('sanity checking', () => {
         // testing to see that skate did its job as expected
         // (in case some breaking changes in it that affect rendering)
         setTimeout(() => {
-          expect(component[symbols.shadowRoot]).to.be.defined;
-          expect(component[symbols.shadowRoot].firstChild).to.be.defined;
+          expect(getShadowRoot(component)).to.be.defined;
+          expect(getShadowRoot(component).firstChild).to.be.defined;
         });
         setTimeout(done);
       });

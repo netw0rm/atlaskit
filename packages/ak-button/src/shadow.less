@@ -1,4 +1,5 @@
 @import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/mixins/select-slot-children.less';
 
 @base-font: inherit;
 @em: 14;
@@ -37,31 +38,16 @@
 // Disabled button Colors
 @disabledColor: @ak-color-N40;
 
-::slotted([slot="before"]) > {
+@slot-margin-right: {
   margin-right: @side-slot-margin;
-}
+};
 
-::slotted([slot="after"]) > {
+@slot-margin-left: {
   margin-left: @side-slot-margin;
-}
+};
 
-// todo: get rid of v0 support once browserstack chrome stable is v53
-::content > [slot="before"] {
-  margin-right: @side-slot-margin;
-}
-
-::content > [slot="after"] {
-  margin-left: @side-slot-margin;
-}
-
-.before-slot > * {
-  margin-right: @side-slot-margin;
-}
-
-.after-slot > * {
-  margin-left: @side-slot-margin;
-}
-
+.select-slot-children('before', 'before-slot', @slot-margin-right);
+.select-slot-children('after', 'after-slot', @slot-margin-left);
 
 :host .before-slot-wrapper {
   align-self: center;
@@ -72,9 +58,6 @@
   display: flex;
 }
 
-_shadow_root_ {
-  display: inline-block;
-}
 .button-content {
   align-items: baseline;
   display: inline-flex;

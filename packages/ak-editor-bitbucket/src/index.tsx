@@ -17,9 +17,7 @@ import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
 import schema from 'ak-editor-schema';
 import { buildKeymap } from './keymap';
-import { markdownParser } from './markdown-parser';
-import { markdownSerializer } from './markdown-serializer';
-import { markdownTransformer } from './paste-handlers';
+import markdownSerializer from './markdown-serializer';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 
@@ -99,6 +97,8 @@ class AkEditorBitbucket extends Component {
   _hyperLinkElement: HTMLElement | undefined;
   _hyperLinkActive: boolean;
   _canLinkHyperlink: boolean;
+  _bulletlistDisabled: boolean;
+  _numberlistDisabled: boolean;
   _bulletListActive: boolean;
   _numberListActive: boolean;
 
@@ -143,6 +143,8 @@ class AkEditorBitbucket extends Component {
       _hyperLinkElement: {},
       _hyperLinkActive: prop.boolean(),
       _canLinkHyperlink: prop.boolean(),
+      _bulletlistDisabled: prop.boolean(),
+      _numberlistDisabled: prop.boolean(),
       _bulletListActive: prop.boolean(),
       _numberListActive: prop.boolean(),
     };
@@ -157,8 +159,7 @@ class AkEditorBitbucket extends Component {
   }
 
   static rendered(elem: AkEditorBitbucket) : void {
-    if (elem.expanded && elem._justToggledExpansion) {
-      elem._justToggledExpansion = false;
+    if (elem.expanded) {
       elem._initEditor();
       if (!elem._ready) {
         emit(elem, 'ready');
@@ -166,6 +167,8 @@ class AkEditorBitbucket extends Component {
       }
 
       elem.focus();
+    } else {
+      elem._pm = null;
     }
   }
 
@@ -202,6 +205,8 @@ class AkEditorBitbucket extends Component {
           onSave={elem._addHyperLink}
         />
         <ToolbarLists
+          bulletlistDisabled={elem._bulletlistDisabled}
+          numberlistDisabled={elem._numberlistDisabled}
           bulletlistActive={elem._bulletListActive}
           numberlistActive={elem._numberListActive}
           on-toggle-number-list={() => elem._toggleList('ordered_list')}
@@ -228,8 +233,8 @@ class AkEditorBitbucket extends Component {
       }
       <Footer
         openTop
-        onSave={elem._toggleExpansion}
-        onCancel={elem._toggleExpansion}
+        onSave={elem._collapse}
+        onCancel={elem._collapse}
         onInsertimage={elem._insertImage}
         onInsertmention={elem._insertMention}
       />
@@ -249,7 +254,7 @@ class AkEditorBitbucket extends Component {
           :
           <input
             placeholder={elem.placeholder}
-            onclick={elem._toggleExpansion}
+            onclick={elem._expand}
             className={fakeInputClassNames}
           />
         }
@@ -292,6 +297,14 @@ class AkEditorBitbucket extends Component {
    */
   get ready(): boolean {
     return this._ready || false;
+  }
+
+  _expand(): void {
+    this.expanded = true;
+  }
+
+  _collapse(): void {
+    this.expanded = false;
   }
 
   _onContentClick(e: MouseEvent): void {
@@ -364,21 +377,23 @@ class AkEditorBitbucket extends Component {
     }
   }
 
-  _toggleExpansion() {
-    this.expanded = !this.expanded;
-    this._justToggledExpansion = true;
-  }
-
   _initEditor() {
+    if (this._pm) {
+      return;
+    }
+
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
 
     schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
     schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
 
+    const div = document.createElement('div');
+    div.innerHTML = this.defaultValue;
+
     const pm = new ProseMirror({
       place: this._wrapper,
-      doc: markdownParser(schema).parse(this.defaultValue),
+      doc: schema.parseDOM(div),
       plugins: [
         MarkdownInputRulesPlugin,
         HyperlinkPlugin,
@@ -391,7 +406,7 @@ class AkEditorBitbucket extends Component {
     });
 
     // Hyperlink plugin wiring
-    HyperlinkPlugin.get(pm).onChange(state => {
+    HyperlinkPlugin.get(pm).subscribe(state => {
       this._canLinkHyperlink = state.enabled as boolean;
       this._hyperLinkActive = state.active as boolean;
       this._hyperLinkElement = state.element as HTMLElement;
@@ -405,20 +420,23 @@ class AkEditorBitbucket extends Component {
     ImageUploadPlugin.get(pm).pasteAdapter.add(handler);
 
     // Block type plugin wiring
-    BlockTypePlugin.get(pm).onChange(state => {
+    BlockTypePlugin.get(pm).subscribe(state => {
       const blockType = state.selectedBlockType;
       this._selectedBlockType = getBlockType({ blockType }, this._blockTypes);
       this._canChangeBlockType = state.enabled as boolean;
     });
 
     // Lists
-    ListsPlugin.get(pm).onChange(state => {
+    ListsPlugin.get(pm).subscribe(state => {
       this._bulletListActive = Boolean(state.active && state.type === 'bullet_list');
       this._numberListActive = Boolean(state.active && state.type === 'ordered_list');
+
+      this._bulletlistDisabled = !Boolean(state.enabled);
+      this._numberlistDisabled = !Boolean(state.enabled);
     });
 
     // Text formatting
-    TextFormattingPlugin.get(pm).onChange(state => {
+    TextFormattingPlugin.get(pm).subscribe(state => {
       this._strongActive = state.strongActive;
       this._emActive = state.emActive;
       this._underlineActive = state.underlineActive;
@@ -436,9 +454,6 @@ class AkEditorBitbucket extends Component {
 
     // add the keymap
     pm.addKeymap(buildKeymap(pm.schema));
-
-    // add paste handlers
-    pm.on.transformPasted.add(slice => markdownTransformer(pm.schema, slice));
 
     // 'change' event is public API
     pm.on.change.add(() => emit(this, 'change'));

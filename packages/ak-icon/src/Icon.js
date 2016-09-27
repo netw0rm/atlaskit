@@ -32,17 +32,9 @@ class Icon extends Component {
     };
   }
 
-  /**
-  * This method has to be implemented by sublcasses and must return a template function
-  * @return {Function} a template function
-  */
-  [getGlyphFnSymbol]() {
-    throw new NotImplementedError('Subclasses need to provide an implementation');
-  }
-
-  render(elem) {
-    const { title } = elem;
-    const Glyph = this[getGlyphFnSymbol]();
+  static render(elem) {
+    const { title, [getGlyphFnSymbol]: getGlyph } = elem;
+    const Glyph = getGlyph();
 
     return (
       <div style={{ display: 'flex', width, height }}>
@@ -51,6 +43,14 @@ class Icon extends Component {
         </div>
       </div>
     );
+  }
+
+  /**
+  * This method has to be implemented by sublcasses and must return a template function
+  * @return {Function} a template function
+  */
+  [getGlyphFnSymbol]() {
+    throw new NotImplementedError('Subclasses need to provide an implementation');
   }
 }
 

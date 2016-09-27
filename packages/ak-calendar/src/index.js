@@ -8,6 +8,12 @@ import * as events from './index.events';
 import * as keys from './keys';
 import classnames from 'classnames';
 
+// TODO formalize this helper
+const attr = Object.keys(prop).reduce((prev, curr) => {
+  prev[curr] = prop[curr].bind(null, { attribute: true });
+  return prev;
+}, {});
+
 const $a11y = Symbol();
 const $calendars = Symbol();
 const $loseFocus = Symbol();
@@ -45,46 +51,17 @@ const Announcer = () => (
 export default define('ak-calendar', {
   props: {
     [$a11y]: prop.string(),
-
-    btnNext: prop.string({
-      attribute: true,
-      default: '\u2192',
-    }),
-    btnPrev: prop.string({
-      attribute: true,
-      default: '\u2190',
-    }),
-    day: prop.number({
-      attribute: true,
-      default: new Date().getDate(),
-    }),
-    disabled: prop.array(),
-    focused: prop.number({
-      attribute: true,
-      default: 0,
-      set(elem, data) {
-        elem[$a11y] = data.newValue ? `Focused ${elem.year}-${elem.month}-${data.newValue}` : '';
-      },
-    }),
-    highlighted: prop.array(),
-    i18n: prop.string({
-      attribute: true,
-      default: 'en-au',
-    }),
-    max: {
-      attribute: true,
-    },
-    min: {
-      attribute: true,
-    },
-    month: prop.number({
-      attribute: true,
-      default: new Date().getMonth() + 1,
-    }),
-    year: prop.number({
-      attribute: true,
-      default: new Date().getFullYear(),
-    }),
+    btnNext: attr.string({ default: '\u2192' }),
+    btnPrev: attr.string({ default: '\u2190' }),
+    day: attr.number({ default: new Date().getDate() }),
+    disabled: attr.array(),
+    focused: attr.number({ default: 0 }),
+    highlighted: attr.array(),
+    i18n: attr.string({ default: 'en-au' }),
+    max: attr.number(),
+    min: attr.number(),
+    month: attr.number({ default: new Date().getMonth() + 1 }),
+    year: attr.number({ default: new Date().getFullYear() }),
   },
   prototype: {
     [$loseFocus]() {
@@ -181,10 +158,8 @@ export default define('ak-calendar', {
       if (i > -1) {
         this.highlighted.splice(i, 1);
         this.highlighted = this.highlighted;
-        this[$a11y] = `Un-highlighted ${new Date(d.year, d.month - 1, d.day)}`;
       } else {
         this.highlighted = this.highlighted.concat(s);
-        this[$a11y] = `Highlighted ${new Date(d.year, d.month - 1, d.day)}`;
       }
     },
   },
@@ -318,7 +293,7 @@ export default define('ak-calendar', {
     });
 
     return [
-      <Announcer>{elem[$a11y]}</Announcer>,
+      <Announcer>{new Date(elem.year, elem.month, elem.day).toString()}</Announcer>,
       <table>
         <caption class={classnames(css.caption)}>
           <button class={classnames(css.prev)} onClick={elem[$prev]}>
@@ -327,7 +302,7 @@ export default define('ak-calendar', {
           <span class={classnames(css.month)}>
             {getMonthName(elem, elem.month)}
           </span>
-          &nbsp;
+          {' '}
           <span class={classnames(css.year)}>
             {elem.year}
           </span>

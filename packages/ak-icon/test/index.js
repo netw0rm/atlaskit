@@ -3,20 +3,14 @@ import chai from 'chai';
 import iconNameToComponentName from '../src/iconNameToComponentName';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
-import fileToScope from '../src/fileToScope';
 import pathToDashed from '../src/pathToDashed';
 import * as bundle from '../src';
+import { getGlyphs } from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.should();
 
-// NOTE context change (../glyph) is a breaking change, as the exports change
-const req = require.context('../glyph', true, /^.*\.js/);
-const components = req.keys().reduce((prev, file) => {
-  prev[fileToScope(file)] = req(file).default;
-  return prev;
-}, {});
-
+const components = getGlyphs();
 
 describe(name, () => {
   describe('exports', () => {

@@ -11,7 +11,7 @@ const { expect } = chai;
 function activateEditorByClicking(editor: AkEditorBitbucket) : void {
   const inputEl = getShadowRoot(editor).querySelector('input');
   expect(inputEl).to.not.be.null;
-  emit(inputEl, 'click');
+  emit(inputEl, 'mousedown');
 }
 
 function buildExpandedEditor(fixture : any) : Promise<AkEditorBitbucket> {

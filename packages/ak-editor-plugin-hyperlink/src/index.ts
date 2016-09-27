@@ -25,7 +25,7 @@ export const DISABLED_GROUP = 'unlinkable';
 
 const DEFAULT_STATE: HyperLinkState = {
   active: false,
-  enabled: true,
+  enabled: false,
   element: null,
   href: '',
   rel: '',

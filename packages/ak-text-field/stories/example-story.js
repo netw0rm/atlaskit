@@ -10,20 +10,9 @@ const ReactButton = reactify(ButtonWC);
 const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
 
 function generateInput(opts) {
+  const props = Object.assign({ label: 'Example label' }, opts);
   return (
-    <ReactField
-      label={opts.label || 'Example label'}
-      compact={opts.compact}
-      required={opts.required}
-    >
-      <input
-        type={opts.type || 'text'}
-        id={opts.id}
-        name={opts.id}
-        disabled={opts.disabled}
-        placeholder={opts.placeholder}
-      />
-    </ReactField>
+    <ReactField {...props} />
   );
 }
 

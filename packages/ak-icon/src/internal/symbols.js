@@ -1,0 +1,1 @@
+export const getGlyphFnSymbol = Symbol();

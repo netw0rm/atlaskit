@@ -10,7 +10,9 @@ const callbackOnDefinedFill = require('../plugins/callbackOnDefinedFill');
 * @return {SVGO} an SVGO instance
 */
 module.exports = (fillCallback) => {
+  // TODO find out how to do this at runtime: https://github.com/svg/svgo/issues/604
   callbackOnDefinedFill.params.callback = fillCallback;
+
   const svgo = new SVGO({
     full: true,
     plugins: [

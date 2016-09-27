@@ -23,8 +23,6 @@ if (process.env.CLI) {
 minilog.enable();
 
 const fileEnding = '.svg';
-const defaultWidth = 20;
-const defaultHeight = 20;
 
 const maxWidth = 20;
 const maxHeight = 20;
@@ -95,8 +93,7 @@ async.waterfall([
             iconName,
             unprefixedIconName: iconRelativePathDashed,
             svgData,
-            width: defaultWidth,
-            height: defaultHeight,
+            iconRelativePathToSrc,
           });
           cb(null, template);
         },

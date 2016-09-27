@@ -7,17 +7,19 @@ import AkIcon from 'ak-icon';
 import AkComment from '../src/index';
 import React from 'react';
 import { name } from '../package.json';
+import transparentAvatarUrl from 'url!./face-w-transparency.png';
+import hostStyles from '../src/host.less';
 
 const Comment = reactify(AkComment);
 const Avatar = reactify(AkAvatar);
 const Button = reactify(AkButton);
 const ButtonGroup = reactify(AkButtonGroup);
 const Icon = reactify(AkIcon);
-const transparentAvatarUrl = require('url!./face-w-transparency.png');
+const commentClass = hostStyles.locals.akComment;
 
 storiesOf(name, module)
   .add('a simple ak-comment', () => (
-    <Comment>
+    <Comment className={commentClass}>
       <Avatar slot="avatar" src={transparentAvatarUrl} label="Ross" />
       <a is slot="author" href="#">Ross Somebody</a>
       <time is slot="time" datetime="2016-09-20T19:00">5 minutes ago</time>

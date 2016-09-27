@@ -1,15 +1,15 @@
 @import 'shared-variables.less';
 
-@grid: 4;
+@grid: 8;
 
 .container {
   display: flex;
-  padding: unit(@grid * 2, px) 0;
+  padding: unit(@grid, px) 0;
 }
 .avatarSlotWrapper {
   align-self: stretch;
   height: 100%;
-  padding: 0 unit(@grid * 2, px) 0 0;
+  padding: 0 unit(@grid, px) 0 0;
   width: 30px; // medium avatar size
 }
 .content {
@@ -22,22 +22,22 @@
   width: 100%;
 }
 .authorSlotWrapper {
-  margin-top: unit(@grid * 3, px);
-  padding: 0 unit(@grid * 2, px) 0 0;
+  margin-top: unit(@grid * 1.5, px);
+  padding: 0 unit(@grid, px) 0 0;
 }
 .timeSlotWrapper {
   color: @ak-color-N600;
   display: flex;
   flex: 1 0 auto;
-  margin-top: unit(@grid * 3, px);
+  margin-top: unit(@grid * 1.5, px);
 
   &::before {
-    content: "\b7\a0";
+    content: "\b7\a0"; // middot character
   }
 }
 .actionSlotWrapper {
-  margin-top: unit(@grid * 3, px);
+  margin-top: unit(@grid * 1.5, px);
 }
 .replySlotWrapper {
-  margin-top: unit(@grid * 3, px);
+  margin-top: unit(@grid * 1.5, px);
 }

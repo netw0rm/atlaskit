@@ -35,9 +35,12 @@ describe('ak-comment', () => {
     afterMutations(
       () => getSlots(component),
       (slots) => {
-        for (let i = 0, l = slots.length; i < l; i++) {
-          expect(slots[i].assignedNodes().length).to.not.equal(0);
-        }
+        const expectedSlots = ['avatar', null, 'author', 'time', 'actions', 'reply'];
+        Array.from(slots).map((slot) => slot.getAttribute('name')).should.deep.equal(expectedSlots);
+        return slots;
+      },
+      (slots) => {
+        Array.from(slots).forEach((slot) => expect(slot.assignedNodes().length).to.not.equal(0));
       },
       done
     );

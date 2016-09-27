@@ -1,4 +1,4 @@
-import { vdom } from 'skatejs';
+import { vdom, define } from 'skatejs';
 import { createTemporaryComponent, tearDownComponent, getShadowRoot } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
@@ -17,7 +17,7 @@ describe('getRootNode', () => {
 
   afterEach(() => tearDownComponent(component, target));
 
-  it('should be possible to create a component', () => createTemporaryComponent(definition)
+  it('should be possible to create a component', () => createTemporaryComponent(define, definition)
     .then(newComponent => {
       component = newComponent;
       expect(component.tagName).to.match(new RegExp('^x-', 'i'));
@@ -29,7 +29,7 @@ describe('getRootNode', () => {
   it('should be possible to use target element', () => {
     target = document.createElement('div');
     document.body.appendChild(target);
-    return createTemporaryComponent(definition, target).then(newComponent => {
+    return createTemporaryComponent(define, definition, target).then(newComponent => {
       component = newComponent;
       expect(target.firstChild).to.equal(component);
       document.body.removeChild(target);

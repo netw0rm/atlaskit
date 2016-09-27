@@ -1,6 +1,5 @@
 import { Component, vdom } from 'skatejs';
 import { NotImplementedError } from './internal/exceptions';
-import { getGlyphFnSymbol } from './internal/symbols';
 import { width, height } from './internal/defaults';
 
 /**
@@ -33,7 +32,7 @@ class Icon extends Component {
   }
 
   static render(elem) {
-    const { title, [getGlyphFnSymbol]: getGlyph } = elem;
+    const { title, getGlyphFn: getGlyph } = elem;
     const Glyph = getGlyph();
 
     return (
@@ -49,7 +48,7 @@ class Icon extends Component {
   * This method has to be implemented by sublcasses and must return a template function
   * @return {Function} a template function
   */
-  [getGlyphFnSymbol]() {
+  getGlyphFn() {
     throw new NotImplementedError('Subclasses need to provide an implementation');
   }
 }

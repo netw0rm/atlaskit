@@ -11,7 +11,6 @@ module.exports = ({ iconName, svgData, unprefixedIconName, iconRelativePathToSrc
   return `
 import { define, vdom } from 'skatejs';
 import Icon from '${relativePathToSrc}/Icon';
-import { getGlyphFnSymbol } from '${relativePathToSrc}/internal/symbols';
 
 /**
  * @description Create an instance of the ${iconName} programmatically, or by using markup.
@@ -24,7 +23,14 @@ import { getGlyphFnSymbol } from '${relativePathToSrc}/internal/symbols';
  * document.body.appendChild(icon);
  */
 class ${componentName} extends Icon {
-  [getGlyphFnSymbol]() {
+
+  /**
+  * Returns the template function for the ${unprefixedIconName} icon
+  *
+  * @class ${componentName}
+  * @return {Function} The template function with the glyph
+  */
+  getGlyphFn() {
     return (props) => {
       const { title, description } = props;
       delete props.title;

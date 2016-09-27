@@ -98,9 +98,8 @@ describe(name, () => {
   });
 
   it('should be possible to create the components', () => {
-    Object.keys(components).forEach((scope) => {
+    Object.entries(components).forEach(([scope, Icon]) => {
       const iconName = pathToDashed(scope);
-      const Icon = components[scope];
       const component = new Icon();
 
       component.should.be.instanceof(Component);

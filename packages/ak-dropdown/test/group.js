@@ -53,7 +53,7 @@ describe('general behavior', () => {
     const headingText = 'test heading';
     props(component, { heading: headingText });
     const heading = getShadowRoot(component).querySelector(`.${shadowGroupStyles.locals.heading}`);
-    expect(heading.getAttribute('aria-role')).to.equal('presentation');
+    expect(heading.getAttribute('aria-hidden')).to.equal('true');
     expect(getShadowRoot(component).firstChild.getAttribute('role')).to.equal('group');
     expect(getShadowRoot(component).firstChild.getAttribute('aria-label')).to.equal(headingText);
   });

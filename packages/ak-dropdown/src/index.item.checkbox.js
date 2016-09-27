@@ -8,6 +8,7 @@ import Checkbox from 'ak-icon/glyph/checkbox';
 import Item from './internal/Item';
 import IconContainer from './internal/LeftSlotContainer';
 import DefaultItemContainer from './internal/DefaultSlotContainer';
+import supportsVoiceOver from './internal/supportsVoiceOver';
 
 export default define('ak-dropdown-item-checkbox',
   DefaultItem.extend({
@@ -22,7 +23,7 @@ export default define('ak-dropdown-item-checkbox',
           onclick={elem.toggleItem(elem)}
           classes={classes}
           aria-checked={elem.selected}
-          role="menuitemcheckbox"
+          role={supportsVoiceOver ? 'menuitemcheckbox' : 'checkbox'}
         >
           <style>{shadowItemStyles.toString()}</style>
           <IconContainer>

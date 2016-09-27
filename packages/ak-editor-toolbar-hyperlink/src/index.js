@@ -21,13 +21,15 @@ export default define('ak-editor-toolbar-hyperlink', {
     document.removeEventListener('click', elem.closeHyperlink, true);
   },
   render(elem) {
+    const active = elem.active || elem.open;
+
     const LinkButton = (<EditorButton
       className="link-button"
       onClick={elem.onLinkButtonClick}
-      active={elem.active || elem.open}
+      active={active}
       disabled={elem.disabled}
     >
-      <Icon glyph="link" {...((elem.active || elem.open) ? { fill: 'white' } : {})} />
+      <Icon glyph="link" {...((active) ? { fill: 'white' } : {})} />
     </EditorButton>);
 
     let linkButton;
@@ -64,9 +66,12 @@ export default define('ak-editor-toolbar-hyperlink', {
   },
   prototype: {
     onLinkButtonClick() {
-      if (!this.disabled) {
-        this.openHyperlink();
+      if (this.disabled || this.active) {
+        this.closeHyperlink();
+        return;
       }
+
+      this.openHyperlink();
     },
     onPopupClick() {
       this.openHyperlink();

@@ -11,9 +11,6 @@ chai.should();
 describe('ak-text-field', () => {
   function setupComponent(opts = {}) {
     const component = new Component();
-    const input = document.createElement('input');
-    input.type = 'text';
-    component.appendChild(input);
     Object.keys(opts).forEach((key) => {
       component[key] = opts[key];
     });
@@ -27,6 +24,20 @@ describe('ak-text-field', () => {
   function tearDownComponent(component) {
     document.body.removeChild(component);
   }
+
+  describe('disabled', () => {
+    let component;
+
+    beforeEach(() => setupComponent({ disabled: true }).then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should apply the disabled property to the input', () => {
+      const input = component.querySelector('input');
+      expect(input.disabled).to.equal(true);
+    });
+  });
 
   describe('label', () => {
     let component;
@@ -69,6 +80,36 @@ describe('ak-text-field', () => {
     });
   });
 
+  describe('name', () => {
+    let component;
+    const expectedName = 'fname';
+
+    beforeEach(() => setupComponent({ name: expectedName }).then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should apply the name property to the input', () => {
+      const input = component.querySelector('input');
+      expect(input.name).to.equal(expectedName);
+    });
+  });
+
+  describe('placeholder', () => {
+    let component;
+    const expectedPlaceholder = 'Placeholder text';
+
+    beforeEach(() => setupComponent({ placeholder: expectedPlaceholder }).then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should apply the placeholder property to the input', () => {
+      const input = component.querySelector('input');
+      expect(input.placeholder).to.equal(expectedPlaceholder);
+    });
+  });
+
   describe('required', () => {
     let component;
     let shadowRoot;
@@ -84,6 +125,21 @@ describe('ak-text-field', () => {
       const requiredIsCorrect = () => (required.innerText === '*');
 
       return waitUntil(requiredIsCorrect).should.be.fulfilled;
+    });
+  });
+
+  describe('type', () => {
+    let component;
+    const expectedType = 'password';
+
+    beforeEach(() => setupComponent({ type: expectedType }).then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should apply the type property to the input', () => {
+      const input = component.querySelector('input');
+      expect(input.type).to.equal(expectedType);
     });
   });
 

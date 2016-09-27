@@ -53,7 +53,7 @@ const component = new BitbucketLogo();
 document.body.appendChild(component);
 ```
 
-##Controlling the icon color
+## Controlling the icon color
 
 You can control the icon color via CSS:
 

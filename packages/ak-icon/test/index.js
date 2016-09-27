@@ -27,6 +27,8 @@ describe(name, () => {
       Object
         .keys(components)
         .should.be.deep.equal([
+          'atlassian',
+
           'bitbucket/admin',
           'bitbucket/branches',
           'bitbucket/builds',

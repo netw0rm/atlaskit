@@ -1,7 +1,7 @@
-import { vdom, prop } from 'skatejs';
+import { vdom, prop, define } from 'skatejs';
 import shadowGroupStyles from './less/shadow-group.less';
 
-export default {
+export default define('ak-dropdown-group', {
   render(elem) {
     return (
       <div className={shadowGroupStyles.locals.group}>
@@ -16,4 +16,4 @@ export default {
       attribute: true,
     }),
   },
-};
+});

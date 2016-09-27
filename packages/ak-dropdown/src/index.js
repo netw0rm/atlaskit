@@ -3,11 +3,10 @@ import 'style!./less/host.less';
 import shadowListStyles from './less/shadow-list.less';
 import { vdom, define, prop, props, emit, ready } from 'skatejs';
 import './index.trigger';
-import './index.item';
-import './index.item.checkbox';
-import './index.item.radio';
-
-import GroupDefinition from './index.group';
+import Item from './index.item';
+import CheckboxItem from './index.item.checkbox';
+import RadioItem from './index.item.radio';
+import './index.group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
@@ -20,17 +19,21 @@ const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
 const offset = '0 2';
-// tagnames of the possible dropdown items
-const itemsList = 'ak-dropdown-item, ak-dropdown-item-checkbox, ak-dropdown-item-radio';
 const activatedFrom = Symbol();
 
 function getTriggerElement(elem) {
   return elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
 }
 
+function getAllItems(elem) {
+  return Array
+    .from(elem.querySelectorAll('*[defined]'))
+    .filter((node) => node instanceof Item);
+}
+
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
-  const list = elem.querySelectorAll(itemsList);
+  const list = getAllItems(elem);
 
   if ((elem.open !== isOpen)) {
     elem.open = isOpen;
@@ -76,7 +79,12 @@ function toggleDialog(elem, value) {
 }
 
 function selectSimpleItem(elem, event) {
-  const list = elem.querySelectorAll('ak-dropdown-item');
+  const list = Array
+    .from(elem.querySelectorAll('*[defined]'))
+    .filter((node) => (
+      node instanceof Item && !(node instanceof RadioItem) && !(node instanceof CheckboxItem)
+    ));
+
   [...list].forEach((val) => {
     if (val.selected) {
       val.selected = false;
@@ -93,7 +101,7 @@ function selectCheckboxItem(item) {
 function selectRadioItem(elem, event) {
   const radioGroupItems = event.detail.item.parentNode.children;
   [...radioGroupItems].forEach((val) => {
-    if (val.selected && val.tagName === 'AK-DROPDOWN-ITEM-RADIO') {
+    if (val.selected && val instanceof RadioItem) {
       val.selected = false;
     }
   });
@@ -102,10 +110,9 @@ function selectRadioItem(elem, event) {
 }
 
 function selectItem(elem, event) {
-  // TODO: change this to a Symbol once this PR is merged https://github.com/skatejs/skatejs/pull/795
-  if (event.detail.item.tagName === 'AK-DROPDOWN-ITEM-CHECKBOX') {
+  if (event.detail.item instanceof CheckboxItem) {
     selectCheckboxItem(event.detail.item);
-  } else if (event.detail.item.tagName === 'AK-DROPDOWN-ITEM-RADIO') {
+  } else if (event.detail.item instanceof RadioItem) {
     selectRadioItem(elem, event);
   } else {
     selectSimpleItem(elem, event);
@@ -127,7 +134,8 @@ function isDescendantOf(child, parent) {
 }
 
 function changeFocus(elem, type) {
-  const list = elem.querySelectorAll(itemsList);
+  const list = getAllItems(elem);
+
   const l = list.length;
 
   for (let i = 0; i < l; i++) {
@@ -154,8 +162,6 @@ function getDropdownMinwidth(target, dropdown) {
   target.getBoundingClientRect().width + diffBetweenDropdownAndTrigger : dropdownMinWidth;
   return `${minWidth}px`;
 }
-
-export const Group = define('ak-dropdown-group', GroupDefinition);
 
 /**
  * @description The definition for the Dropdown component.

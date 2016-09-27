@@ -14,6 +14,7 @@ const { name } = require('../package.json');
 const log = minilog('ak-icon/gen-js');
 const defaultSvgo = require('./svgo/transformations/default');
 const customSvgo = require('./svgo/transformations/custom');
+const { glyphFolderName } = require('./constants');
 
 if (process.env.CLI) {
   minilog.suggest.defaultResult = false;
@@ -30,7 +31,7 @@ const maxHeight = 20;
 const rootFolder = path.join(__dirname, '..');
 const srcFolder = path.join(rootFolder, 'src', 'icons');
 const tmpFolder = path.join(rootFolder, 'tmp');
-const destFolder = path.join(rootFolder, 'glyph');
+const destFolder = path.join(rootFolder, glyphFolderName);
 
 async.waterfall([
   function cleanTmpDir(cb) {

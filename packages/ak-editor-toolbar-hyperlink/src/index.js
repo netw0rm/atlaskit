@@ -8,6 +8,8 @@ import TextInput from 'ak-editor-popup-text-input';
 
 export default define('ak-editor-toolbar-hyperlink', {
   created(elem) {
+    elem.onClick = elem.onClick.bind(elem);
+    elem.onKeyup = elem.onKeyup.bind(elem);
     elem.openHyperlink = elem.openHyperlink.bind(elem);
     elem.closeHyperlink = elem.closeHyperlink.bind(elem);
   },
@@ -20,11 +22,7 @@ export default define('ak-editor-toolbar-hyperlink', {
   render(elem) {
     const LinkButton = (<EditorButton
       className="link-button"
-      onClick={() => {
-        if (!elem.disabled) {
-          elem.openHyperlink();
-        }
-      }}
+      onClick={elem.onClick}
       active={elem.active || elem.open}
       disabled={elem.disabled}
     >
@@ -37,14 +35,7 @@ export default define('ak-editor-toolbar-hyperlink', {
     /* eslint-disable new-cap  */
     return (
       <div
-        onKeyup={event => {
-          if (event.keyCode === 13) {
-            const textInput = elem.shadowRoot.querySelector('.text-input');
-            elem.closeHyperlink();
-            emit(elem, 'save', { detail: { value: textInput.value } });
-            textInput.value = '';
-          }
-        }}
+        onKeyup={elem.onKeyup}
       >
         <style>{shadowStyles.toString()}</style>
 
@@ -70,6 +61,19 @@ export default define('ak-editor-toolbar-hyperlink', {
     }
   },
   prototype: {
+    onClick() {
+      if (!this.disabled) {
+        this.openHyperlink();
+      }
+    },
+    onKeyup(event) {
+      if (event.keyCode === 13) {
+        const textInput = this.shadowRoot.querySelector('.text-input');
+        this.closeHyperlink();
+        emit(this, 'save', { detail: { value: textInput.value } });
+        textInput.value = '';
+      }
+    },
     openHyperlink() {
       this.open = true;
       this.justOpenedHyperlink = true;

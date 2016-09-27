@@ -71,7 +71,6 @@ describe('ak-dropdown', () => {
     it('should have an sub-components exports', () => {
       (new exports.DropdownTrigger).should.be.an.instanceof(Component);
       (new exports.DropdownTriggerButton).should.be.an.instanceof(Component);
-      (new exports.Group).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {

@@ -1,7 +1,11 @@
 import 'style!./host.less';
-import { vdom, define, prop } from 'skatejs';
+import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
+
+import * as events from './internal/index.events';
+
+const focusHandlers = Symbol();
 
 function handleLabelClick(elem) {
   return () => {
@@ -10,6 +14,14 @@ function handleLabelClick(elem) {
       firstInput.focus();
     }
   };
+}
+
+function setupFocusHandlers(inputSlot) {
+  if (!inputSlot[focusHandlers]) {
+    inputSlot.addEventListener('focus', () => emit(inputSlot, events.focus), true);
+    inputSlot.addEventListener('blur', () => emit(inputSlot, events.blur), true);
+    inputSlot[focusHandlers] = true;
+  }
 }
 
 /**
@@ -36,6 +48,7 @@ export default define('ak-text-field', {
             className={classNames(shadowStyles.locals.defaultSlotElement, {
               [shadowStyles.locals.compact]: elem.compact,
             })}
+            ref={(el) => (setupFocusHandlers(el))}
           />
         </label>
       </div>
@@ -114,3 +127,5 @@ export default define('ak-text-field', {
     }),
   },
 });
+
+export { events };

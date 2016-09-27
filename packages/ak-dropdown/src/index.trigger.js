@@ -26,7 +26,6 @@ export const DropdownTrigger = define('ak-dropdown-trigger', {
   render(elem) {
     return (
       <div
-        tabIndex={elem.tabIndex}
         onclick={handleClick(elem)}
         onkeydown={handleKeyDown(elem)}
       >
@@ -61,20 +60,6 @@ export const DropdownTrigger = define('ak-dropdown-trigger', {
     opened: prop.boolean({
       attribute: true,
     }),
-    /**
-     * @description tabIndex of the dropdown's trigger
-     * @memberof Dropdown
-     * @default 0
-     * @type {Number}
-     * @example @html <ak-dropdown>
-     *   <ak-dropdown-trigger tab-index="1">Dropdown trigger</ak-dropdown-trigger>
-     * </ak-dropdown>
-     * @example @js dropdown.childNodes[0].tabIndex = 1;
-     */
-    tabIndex: prop.number({
-      attribute: true,
-      default: 0,
-    }),
   },
 });
 
@@ -83,7 +68,6 @@ export const DropdownTriggerButton = define('ak-dropdown-trigger-button',
     render(elem) {
       return (
         <ak-button
-          tabIndex={elem.tabIndex}
           onclick={handleClick(elem)}
           onkeydown={handleKeyDown(elem)}
           selected={elem.opened}

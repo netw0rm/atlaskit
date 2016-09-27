@@ -53,7 +53,9 @@ storiesOf(`${name} component`, module)
   .add('simple dropdown', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+          Dropdown-button
+        </ak-dropdown-trigger-button>
         <ak-dropdown-item>text1</ak-dropdown-item>
         <ak-dropdown-item>text2</ak-dropdown-item>
         <ak-dropdown-item>some text here</ak-dropdown-item>
@@ -77,7 +79,9 @@ storiesOf(`${name} component`, module)
   .add('dropdown with radio items', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger">Dropdown</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+          Dropdown
+        </ak-dropdown-trigger-button>
         <ak-dropdown-group heading="Radio title">
           <ak-dropdown-item-radio>text1</ak-dropdown-item-radio>
           <ak-dropdown-item-radio disabled>text2</ak-dropdown-item-radio>
@@ -90,7 +94,9 @@ storiesOf(`${name} component`, module)
   .add('dropdown with radio items inside different groups', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger">Dropdown</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+          Dropdown
+        </ak-dropdown-trigger-button>
         <ak-dropdown-group heading="One title">
           <ak-dropdown-item-radio>one</ak-dropdown-item-radio>
           <ak-dropdown-item-radio>two</ak-dropdown-item-radio>
@@ -112,7 +118,9 @@ storiesOf(`${name} component`, module)
   .add('dropdown with avatars', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger">People list</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+          People list
+        </ak-dropdown-trigger-button>
         <ak-dropdown-item>
           <ak-avatar slot="left" src={avatarUrl} size="small" />
           Adam Smith
@@ -144,7 +152,7 @@ storiesOf(`${name} component`, module)
   .add('dropdown with grouping', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
+        <ak-dropdown-trigger slot="trigger" tab-index="1">Dropdown-button</ak-dropdown-trigger>
         <ak-dropdown-item>some text here</ak-dropdown-item>
         <ak-dropdown-item>some text here</ak-dropdown-item>
         <ak-dropdown-group heading="title one">
@@ -165,7 +173,7 @@ storiesOf(`${name} component`, module)
   .add('dropdown with grouping without headers', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
+        <ak-dropdown-trigger slot="trigger" tab-index="1">Dropdown-button</ak-dropdown-trigger>
         <ak-dropdown-item>some text here</ak-dropdown-item>
         <ak-dropdown-item>some text here</ak-dropdown-item>
         <ak-dropdown-group>
@@ -186,7 +194,7 @@ storiesOf(`${name} component`, module)
   .add('dropdown with a buttonless trigger', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent>
-        <ak-dropdown-trigger slot="trigger">
+        <ak-dropdown-trigger slot="trigger" tab-index="1">
           <ak-avatar src={avatarUrl} size="small" />
         </ak-dropdown-trigger>
         <ak-dropdown-item>Joscha</ak-dropdown-item>
@@ -199,11 +207,11 @@ storiesOf(`${name} component`, module)
   .add('two dropdowns', () => (
     <div>
       <DropdownReactComponent>
-        <ak-dropdown-trigger-button slot="trigger">A</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">A</ak-dropdown-trigger-button>
         <ak-dropdown-item>A</ak-dropdown-item>
       </DropdownReactComponent>
       <DropdownReactComponent>
-        <ak-dropdown-trigger-button slot="trigger">B</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">B</ak-dropdown-trigger-button>
         <ak-dropdown-item>B</ak-dropdown-item>
       </DropdownReactComponent>
     </div>
@@ -211,7 +219,9 @@ storiesOf(`${name} component`, module)
   .add('dropdown with a link that opens in a new tab', () => (
     <div>
       <DropdownReactComponent>
-        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+          Dropdown-button
+        </ak-dropdown-trigger-button>
         <ak-dropdown-item href="http://atlassian.design" target="_blank">New tab</ak-dropdown-item>
         <ak-dropdown-item href="http://atlassian.design">Same tab</ak-dropdown-item>
       </DropdownReactComponent>
@@ -220,7 +230,7 @@ storiesOf(`${name} component`, module)
   .add('dropdown with icon only button trigger', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent>
-        <ak-dropdown-trigger-arrow slot="trigger"></ak-dropdown-trigger-arrow>
+        <ak-dropdown-trigger-arrow slot="trigger" tab-index="1"></ak-dropdown-trigger-arrow>
         <ak-dropdown-item>Joscha</ak-dropdown-item>
         <ak-dropdown-item>Wuz</ak-dropdown-item>
         <ak-dropdown-item>Here</ak-dropdown-item>

@@ -3,7 +3,7 @@ import shadowItemStyles from './less/shadow-item.less';
 import { unselected as unselectedEvent } from './internal/events';
 import keyCode from 'keycode';
 
-import DefaultItem, { BaseProps } from './index.item';
+import DefaultItem, { BaseProps, elemDom } from './index.item';
 import Checkbox from 'ak-icon/glyph/checkbox';
 import Item from './internal/Item';
 import IconContainer from './internal/LeftSlotContainer';
@@ -17,7 +17,7 @@ export default define('ak-dropdown-item-checkbox',
       return (
         <Item
           {...props(elem)}
-          ref={el => (elem.elemDom = el)}
+          ref={el => (elem[elemDom] = el)}
           onkeydown={elem.handleKeyDownCheckbox(elem)}
           onclick={elem.toggleItem(elem)}
           classes={classes}

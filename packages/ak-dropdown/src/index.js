@@ -22,6 +22,7 @@ const dropdownMinWidth = 150;
 const offset = '0 2';
 // tagnames of the possible dropdown items
 const itemsList = 'ak-dropdown-item, ak-dropdown-item-checkbox, ak-dropdown-item-radio';
+const activatedFrom = Symbol();
 
 function getTriggerElement(elem) {
   return elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
@@ -48,7 +49,10 @@ function toggleDialog(elem, value) {
   // properties 'first' and 'last' should be set (TBD: change to :first-child and :last-child)
   // when it's closed everything should be cleared
   if (isOpen) {
-    list[0].focused = true;
+    // if dropdown has been opened by the keyDown event, then the first element should be focused
+    if (elem[activatedFrom] === 'keyDown') {
+      list[0].focused = true;
+    }
     list[0].first = true;
     list[list.length - 1].last = true;
     elem.reposition();
@@ -162,7 +166,12 @@ export const Group = define('ak-dropdown-group', GroupDefinition);
  */
 export default define('ak-dropdown', {
   attached(elem) {
-    elem.addEventListener(events.trigger.activated, () => toggleDialog(elem));
+    elem.addEventListener(events.trigger.activated, (e) => {
+      if (e.detail) {
+        elem[activatedFrom] = e.detail.eventType;
+      }
+      toggleDialog(elem);
+    });
     elem.addEventListener(events.selected, (e) => selectItem(elem, e));
     elem.addEventListener(events.unselected, (e) => unselectItem(elem, e));
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));

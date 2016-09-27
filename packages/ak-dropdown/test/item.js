@@ -182,62 +182,6 @@ describe('ak-dropdown-item', () => {
     });
   });
 
-
-  // describe('sizing for an item with checkboxes or radio', () => {
-  //   let component;
-  //   let componentDomElem;
-  //   let iconDomElem;
-  //   let defaultDomElem;
-  //   const iconClass = `.${shadowItemStyles.locals.itemLeftPosition}`;
-  //
-  //   ['checkbox', 'radio'].forEach((type) => {
-  //     beforeEach(() => {
-  //       component = `<ak-dropdown-item ${type}>some text</ak-dropdown-item>`;
-  //       itemContainer.innerHTML = component;
-  //
-  //       // wait until the component is rendered
-  //       return waitUntil(() =>
-  //         itemContainer.firstChild.getAttribute('defined') !== null
-  //       ).then(() => {
-  //         component = itemContainer.firstChild;
-  //         componentDomElem = getShadowRoot(component).firstChild;
-  //         iconDomElem = getShadowRoot(component).querySelector(iconClass);
-  //         defaultDomElem = getShadowRoot(component).querySelector('slot,content').parentNode;
-  //       });
-  //     });
-  //
-  //     it(`${type}: height should be equal ${defaultHeight}`, (done) => {
-  //       afterMutations(
-  //         () => componentDomElem.getBoundingClientRect().height,
-  //         (height) => (expect(Math.round(height)).to.equal(defaultHeight)),
-  //         done
-  //       );
-  //     });
-  //
-  //   it(`gap between ${type} and left edge of the component should be ${defaultGap}`, (done) => {
-  //       const rectComponent = componentDomElem.getBoundingClientRect();
-  //       const rectIcon = iconDomElem.getBoundingClientRect();
-  //       const gap = rectIcon.left - rectComponent.left;
-  //
-  //       afterMutations(
-  //         () => (expect(Math.round(gap)).to.equal(defaultGap)),
-  //         done
-  //       );
-  //     });
-  //
-  //     it(`gap between ${type} and default slot should be ${defaultGap}`, (done) => {
-  //       const rectDefault = defaultDomElem.getBoundingClientRect();
-  //       const rectIcon = iconDomElem.getBoundingClientRect();
-  //       const gap = rectDefault.left - rectIcon.left - rectIcon.width;
-  //
-  //       afterMutations(
-  //         () => (expect(Math.round(gap)).to.equal(defaultGap)),
-  //         done
-  //       );
-  //     });
-  //   });
-  // });
-
   describe('keyboard events', () => {
     const eventsMap = {
       up: dropdownEvents.item.up,
@@ -293,14 +237,5 @@ describe('ak-dropdown-item', () => {
 
       expect(calledSpy.called).to.equal(false);
     });
-
-    // it('selected event SHOULD be emitted on a selected checkbox element', () => {
-    //   event.keyCode = keyCode('enter');
-    //   itemContainer.addEventListener(eventsMap.enter, calledSpy);
-    //   props(component, { checkbox: true });
-    //   props(component, { selected: true });
-    //   getShadowRoot(component).firstChild.dispatchEvent(event);
-    //   expect(calledSpy.called).to.equal(true);
-    // });
   });
 });

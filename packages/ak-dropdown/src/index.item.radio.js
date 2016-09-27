@@ -1,7 +1,7 @@
 import { vdom, define, props } from 'skatejs';
 import shadowItemStyles from './less/shadow-item.less';
 
-import DefaultItem, { BaseProps } from './index.item';
+import DefaultItem, { BaseProps, elemDom } from './index.item';
 import Radio from 'ak-icon/glyph/radio';
 import Item from './internal/Item';
 import IconContainer from './internal/LeftSlotContainer';
@@ -15,7 +15,7 @@ export default define('ak-dropdown-item-radio',
       return (
         <Item
           {...props(elem)}
-          ref={el => (elem.elemDom = el)}
+          ref={el => (elem[elemDom] = el)}
           onkeydown={elem.handleKeyDown(elem)}
           onclick={elem.selectItem(elem)}
           classes={classes}

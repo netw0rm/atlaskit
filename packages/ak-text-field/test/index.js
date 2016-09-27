@@ -87,7 +87,7 @@ describe('ak-text-field', () => {
     });
   });
 
-  describe('compact', () => {
+  describe('sizing', () => {
     let component;
 
     beforeEach(() => setupComponent().then(newComponent => {
@@ -95,20 +95,21 @@ describe('ak-text-field', () => {
     }));
     afterEach(() => tearDownComponent(component));
 
-    function getInputHeight() {
-      return component.querySelector('input').getBoundingClientRect().height;
+    function inputHeightCorrect(expectedHeight) {
+      return () => {
+        const height = component.querySelector('input').getBoundingClientRect().height;
+        // IE11 will sometimes be a fraction of a pixel off, so accept a close-enough height
+        return height === expectedHeight || Math.abs(height - expectedHeight) < 1;
+      };
     }
 
-    it('input should be 40px high by default', () => {
-      const inputHasCorrectHeight = () => getInputHeight() === 40;
-      return waitUntil(inputHasCorrectHeight).should.be.fulfilled;
-    });
+    it('should be 40px high by default', () =>
+      waitUntil(inputHeightCorrect(40)).should.be.fulfilled
+    );
 
-    it('input should be 32px high when compact', () => {
+    it('should be 32px high when compact', () => {
       component.compact = true;
-
-      const inputHasCorrectHeight = () => getInputHeight() === 32;
-      return waitUntil(inputHasCorrectHeight).should.be.fulfilled;
+      return waitUntil(inputHeightCorrect(32)).should.be.fulfilled;
     });
   });
 });

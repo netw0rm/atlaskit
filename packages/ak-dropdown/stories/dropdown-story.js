@@ -243,17 +243,19 @@ storiesOf(`${name} component`, module)
       <input type="text" placeholder="item before" />
       <DropdownReactComponent>
         <ak-dropdown-trigger-button slot="trigger" tab-index="1">Text</ak-dropdown-trigger-button>
-        <ak-dropdown-group heading="heading one">
+        <ak-dropdown-group heading="People">
           <ak-dropdown-item href="http://atlassian.com" target="_blank">Joscha</ak-dropdown-item>
-          <ak-dropdown-item>Wuz</ak-dropdown-item>
+          <ak-dropdown-item href="http://google.com" target="_blank">Jennifer</ak-dropdown-item>
         </ak-dropdown-group>
-        <ak-dropdown-group heading="heading two">
-          <ak-dropdown-item-checkbox>Joscha</ak-dropdown-item-checkbox>
-          <ak-dropdown-item-checkbox>Wuz</ak-dropdown-item-checkbox>
+        <ak-dropdown-group heading="Gender">
+          <ak-dropdown-item-checkbox selected>Female</ak-dropdown-item-checkbox>
+          <ak-dropdown-item-checkbox>Male</ak-dropdown-item-checkbox>
         </ak-dropdown-group>
-        <ak-dropdown-group heading="heading three">
-          <ak-dropdown-item-radio>Joscha</ak-dropdown-item-radio>
-          <ak-dropdown-item-radio>Wuz</ak-dropdown-item-radio>
+        <ak-dropdown-group heading="Favourites">
+          <ak-dropdown-item-radio>jQuery</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio selected>React</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio selected>Web components</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>Vanilla JS</ak-dropdown-item-radio>
         </ak-dropdown-group>
       </DropdownReactComponent>
       <a href="#">link after</a>

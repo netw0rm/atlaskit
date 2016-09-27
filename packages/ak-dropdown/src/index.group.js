@@ -13,7 +13,7 @@ export default {
         {elem.heading ?
           <div
             className={shadowGroupStyles.locals.heading}
-            aria-role="presentation"
+            aria-hidden="true"
           >
               {elem.heading}
           </div> : null}

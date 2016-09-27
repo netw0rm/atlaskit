@@ -1,4 +1,5 @@
 const SVGO = require('svgo');
+const removeNamespacedAttributes = require('../plugins/removeNamespacedAttributes');
 
 module.exports = new SVGO({
   multipass: true,
@@ -21,16 +22,7 @@ module.exports = new SVGO({
       removeXMLNS: true,
     },
     {
-      removePrefixedAttributes: {
-        type: 'perItem',
-        fn: (item) => {
-          item.eachAttr((attr) => {
-            if (attr.prefix && attr.local) {
-              item.removeAttr(attr.name);
-            }
-          });
-        },
-      },
+      removeNamespacedAttributes,
     },
   ],
 });

@@ -1,7 +1,11 @@
 import { define, vdom, Component } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { getRootNode } from 'akutil-common-test';
+import {
+  getRootNode,
+  createTemporaryComponent,
+  tearDownComponent,
+} from 'akutil-common-test';
 
 import { name } from '../package.json';
 import Icon, { NotImplementedError } from '../src/Icon';
@@ -12,11 +16,7 @@ chai.should();
 describe(name, () => {
   let component;
 
-  afterEach(() => {
-    if (component && component.parentNode === document.body) {
-      document.body.removeChild(component);
-    }
-  });
+  afterEach(() => tearDownComponent(component));
 
   describe('Icon', () => {
     it('should be a SkateJS component definition', () => {
@@ -38,14 +38,16 @@ describe(name, () => {
 
     it('should be possible to create an Icon via a subclass', () => {
       const secret = 'secret';
-      const MyIconComponent = define('x-my-icon', class extends Icon {
+      class MyIcon extends Icon {
         getGlyphFn() {
           return () => (<div>{secret}</div>);
         }
-      });
-      component = new MyIconComponent();
-      document.body.appendChild(component);
-      getRootNode(component).innerHTML.should.match(new RegExp(secret));
+      }
+      return createTemporaryComponent(define, MyIcon)
+        .then(newComponent => {
+          component = newComponent;
+          getRootNode(component).innerHTML.should.match(new RegExp(secret));
+        }).should.be.fulfilled;
     });
   });
 });

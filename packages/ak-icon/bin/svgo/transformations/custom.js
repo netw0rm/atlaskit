@@ -3,6 +3,13 @@ const addPresentationAttribute = require('../plugins/addPresentationAttribute');
 const callbackOnDefinedFill = require('../plugins/callbackOnDefinedFill');
 const addAriaLabel = require('../plugins/addAriaLabel');
 
+const addAriaLabelPlugin = Object.assign({}, addAriaLabel, {
+  params: {
+    title: '{title}',
+    description: '{description}',
+  },
+});
+
 /**
 * Runs custom transformations on an SVG
 *
@@ -10,13 +17,6 @@ const addAriaLabel = require('../plugins/addAriaLabel');
 * @return {SVGO} an SVGO instance
 */
 module.exports = (fillCallback) => {
-  const addAriaLabelPlugin = Object.assign({}, addAriaLabel, {
-    params: {
-      title: '{title}',
-      description: '{description}',
-    },
-  });
-
   const callbackOnDefinedFillPlugin = Object.assign({}, callbackOnDefinedFill, {
     params: Object.assign({}, callbackOnDefinedFill.params, {
       callback: fillCallback,
@@ -42,6 +42,5 @@ module.exports = (fillCallback) => {
       },
     ],
   });
-  addAriaLabelPlugin.fn = addAriaLabelPlugin.fn.bind(svgo);
   return svgo;
 };

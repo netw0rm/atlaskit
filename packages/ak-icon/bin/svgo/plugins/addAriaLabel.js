@@ -28,12 +28,12 @@ exports.fn = function addAriaLabel(item, params) {
     });
 
     // TODO: we expect that the description has been removed already
-    item.spliceContent(0, 0, this.createContentItem({
+    item.spliceContent(0, 0, new item.constructor({
       elem: 'desc',
       local: 'desc',
       prefix: '',
-      content: [this.createContentItem({ text: params.description })],
-      attrs: [this.createContentItem({
+      content: [new item.constructor({ text: params.description })],
+      attrs: [new item.constructor({
         name: 'id',
         local: 'id',
         prefix: '',
@@ -42,12 +42,12 @@ exports.fn = function addAriaLabel(item, params) {
     }));
 
     // TODO: we expect that the title has been removed already
-    item.spliceContent(0, 0, this.createContentItem({
+    item.spliceContent(0, 0, new item.constructor({
       elem: 'title',
       local: 'title',
       prefix: '',
-      content: [this.createContentItem({ text: params.title })],
-      attrs: [this.createContentItem({
+      content: [new item.constructor({ text: params.title })],
+      attrs: [new item.constructor({
         name: 'id',
         local: 'id',
         prefix: '',

@@ -118,7 +118,7 @@ export default define('ak-text-field', {
      * @memberof TextField
      * @instance
      * @type {string}
-     * @default input
+     * @default text
      */
     // TODO: Document valid values for this prop
     type: prop.string({

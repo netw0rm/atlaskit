@@ -36,4 +36,12 @@ describe('ak-editor-plugin-mentions - input rules', () => {
     const cursorFocus: ResolvedPos = pm.selection.$to;
     expect(cursorFocus.nodeBefore).not.to.be.of.nodeType(Mention);
   });
+
+  it('should replace "@" at the start of the content', () => {
+    const pm = makeEditor();
+    pm.input.insertText(0, 0, '@');
+
+    const cursorFocus: ResolvedPos = pm.selection.$to;
+    expect(cursorFocus.nodeBefore).to.be.of.nodeType(Mention);
+  });
 });

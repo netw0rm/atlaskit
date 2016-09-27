@@ -152,6 +152,7 @@ export default new Plugin(class HyperlinkPlugin {
         active: true,
         element: getDomElement(pm, getBoundariesWithin($head)),
         text: activeNode.textContent,
+        enabled: true,
       });
     } else if (
       empty ||
@@ -163,7 +164,9 @@ export default new Plugin(class HyperlinkPlugin {
         }
       );
     } else {
-      this.setState();
+      this.setState({
+        enabled: true,
+      });
     }
 
     if (!isShallowObjectEqual(oldState, this.state)) {

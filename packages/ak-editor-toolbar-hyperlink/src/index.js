@@ -61,14 +61,18 @@ export default define('ak-editor-toolbar-hyperlink', {
       </div>
     );
   },
+  rendered(elem) {
+    if (elem.justOpenedHyperlink) {
+      const textInput = elem.shadowRoot.querySelector('.text-input');
+      // next tick
+      setTimeout(() => textInput.focus());
+      elem.justOpenedHyperlink = false;
+    }
+  },
   prototype: {
     openHyperlink() {
       this.open = true;
-
-      const textInput = this.shadowRoot.querySelector('.text-input');
-
-      // todo: fix the hack
-      setTimeout(() => textInput.focus(), 5);
+      this.justOpenedHyperlink = true;
     },
     closeHyperlink() {
       this.open = false;

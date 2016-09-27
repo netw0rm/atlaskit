@@ -23,6 +23,7 @@ const $prev = Symbol();
 const $selectDay = Symbol();
 const $selectHandler = Symbol();
 
+// TODO find out if there is a better way. If not formalise this.
 const Announcer = () => (
   <div
     ref={(e) => {

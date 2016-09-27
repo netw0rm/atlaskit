@@ -238,4 +238,25 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
+  .add('dropdown with everything for the screenreaders test', () => (
+    <div style={{ padding: '40px' }}>
+      <input type="text" placeholder="item before" />
+      <DropdownReactComponent>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">Text</ak-dropdown-trigger-button>
+        <ak-dropdown-group heading="heading one">
+          <ak-dropdown-item href="http://atlassian.com" target="_blank">Joscha</ak-dropdown-item>
+          <ak-dropdown-item>Wuz</ak-dropdown-item>
+        </ak-dropdown-group>
+        <ak-dropdown-group heading="heading two">
+          <ak-dropdown-item-checkbox>Joscha</ak-dropdown-item-checkbox>
+          <ak-dropdown-item-checkbox>Wuz</ak-dropdown-item-checkbox>
+        </ak-dropdown-group>
+        <ak-dropdown-group heading="heading three">
+          <ak-dropdown-item-radio>Joscha</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>Wuz</ak-dropdown-item-radio>
+        </ak-dropdown-group>
+      </DropdownReactComponent>
+      <a href="#">link after</a>
+    </div>
+  ))
 ;

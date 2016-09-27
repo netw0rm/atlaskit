@@ -46,6 +46,8 @@ class Icon extends Component {
 
   /**
   * This method has to be implemented by sublcasses and must return a template function
+  *
+  * @throws {NotImplementedError} throws an error if the subclass does not override this method
   * @return {Function} a template function
   */
   getGlyphFn() {

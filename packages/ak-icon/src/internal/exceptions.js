@@ -1,12 +1,11 @@
 import createError from 'create-error';
 
 /**
- * This exception gets thrown if a {@link Tag} is removed that is not removable.
+ * This exception gets thrown if an {@link Icon} implementation has not implemented the method
+ * to get glyphs.
  *
- * @class NotRemovableError
+ * @class NotImplementedError
  * @implements {Error}
  * @public
  */
-const NotRemovableError = createError('NotRemovableError');
-
-export { NotRemovableError };
+export const NotImplementedError = createError('NotImplementedError');

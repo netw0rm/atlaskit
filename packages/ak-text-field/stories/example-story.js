@@ -7,11 +7,15 @@ import { name } from '../package.json';
 
 const ReactField = reactify(WebComponent);
 const ReactButton = reactify(ButtonWC);
-const formTestUrl = 'https://www.w3schools.com/html/action_page.php';
+const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
 
 function generateInput(opts) {
   return (
-    <ReactField label={opts.label || 'Example label'}>
+    <ReactField
+      label={opts.label || 'Example label'}
+      compact={opts.compact}
+      required={opts.required}
+    >
       <input
         type={opts.type || 'text'}
         id={opts.id}
@@ -56,6 +60,7 @@ function submitTestForm(useNativeSubmitBtn) {
         target="myFrame"
       >
         <h2>Submit test</h2>
+        <p>Note: Ensure that you are not using HTTPS for this story.</p>
         {generateInput({ label: 'First name', id: 'fname' })}
         {generateInput({ label: 'Last name', id: 'lname' })}
         {generateInput({ type: 'email', label: 'Email', id: 'email' })}
@@ -76,8 +81,22 @@ storiesOf(name, module)
   .add('standard ak-text-field [type=email]', () => (
     generateFormWithInput({ type: 'email', placeholder: 'Enter your email' })
   ))
+  .add('required password ak-text-field', () => (
+    generateFormWithInput({ type: 'password', required: true })
+  ))
   .add('disabled ak-text-field with placeholder', () => (
     generateFormWithInput({ disabled: true, placeholder: 'Such input, very uneditable' })
+  ))
+  .add('compact ak-text-field', () => (
+    generateFormWithInput({ compact: true, placeholder: 'Oh wow, such input' })
+  ))
+  .add('ak-text-field with all options', () => (
+    generateFormWithInput({
+      compact: true,
+      disabled: true,
+      required: true,
+      placeholder: 'Such input, very uneditable',
+    })
   ))
   .add('ak-text-field with really long label', () => (
     generateFormWithInput({ label: 'Example label with a realllly reallly reallly reallly reallly long label that goes past the edge of the input!' }) // eslint-disable-line max-len

@@ -1,5 +1,5 @@
 import { Component, vdom } from 'skatejs';
-import { NotImplementedError } from './internal/exceptions';
+import * as exceptions from './internal/exceptions';
 import { width, height } from './internal/defaults';
 
 /**
@@ -51,8 +51,9 @@ class Icon extends Component {
   * @return {Function} a template function
   */
   getGlyphFn() {
-    throw new NotImplementedError('Subclasses need to provide an implementation');
+    throw new exceptions.NotImplementedError('Subclasses need to provide an implementation');
   }
 }
 
 export default Icon;
+export const NotImplementedError = exceptions.NotImplementedError;

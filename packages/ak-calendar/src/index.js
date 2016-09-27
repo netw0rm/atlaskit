@@ -4,9 +4,20 @@ import { Calendar } from 'calendar-base';
 import { define, emit, h, prop, vdom } from 'skatejs';
 import { style } from 'akutil-common';
 import { getDayName, getMonthName, makeArrayFromNumber } from './util';
+import {
+  akColorB50,
+  akColorB100,
+  akColorN80,
+  akColorN400,
+  akColorN600,
+  akColorN700,
+  akColorN900,
+} from 'akutil-shared-styles';
 import * as events from './index.events';
 import * as keys from './keys';
 import classnames from 'classnames';
+
+const akColorWhite = '#fff';
 
 // TODO formalize this helper
 const attr = Object.keys(prop).reduce((prev, curr) => {
@@ -22,6 +33,7 @@ const $next = Symbol();
 const $prev = Symbol();
 const $selectDay = Symbol();
 const $selectHandler = Symbol();
+const $selecting = Symbol();
 
 // TODO find out if there is a better way. If not formalise this.
 const Announcer = () => (
@@ -52,12 +64,11 @@ const Announcer = () => (
 export default define('ak-calendar', {
   props: {
     [$a11y]: prop.string(),
-    btnNext: attr.string({ default: '\u2192' }),
-    btnPrev: attr.string({ default: '\u2190' }),
+    [$selecting]: prop.number(),
     day: attr.number({ default: new Date().getDate() }),
     disabled: attr.array(),
     focused: attr.number({ default: 0 }),
-    highlighted: attr.array(),
+    selected: attr.array(),
     i18n: attr.string({ default: 'en-au' }),
     max: attr.number(),
     min: attr.number(),
@@ -154,13 +165,13 @@ export default define('ak-calendar', {
     [$selectHandler](e) {
       const d = e.detail;
       const s = `${d.year}-${d.month}-${d.day}`;
-      const i = this.highlighted.indexOf(s);
+      const i = this.selected.indexOf(s);
 
       if (i > -1) {
-        this.highlighted.splice(i, 1);
-        this.highlighted = this.highlighted;
+        this.selected.splice(i, 1);
+        this.selected = this.selected;
       } else {
-        this.highlighted = this.highlighted.concat(s);
+        this.selected = this.selected.concat(s);
       }
     },
   },
@@ -192,70 +203,66 @@ export default define('ak-calendar', {
     const now = new Date();
     const weeks = [];
     const css = style(vdom, {
-      td: {
-        cursor: 'pointer',
-        padding: '3px 6px',
+      ':host': {
+        'background-color': akColorN700,
+        color: akColorWhite,
+        display: 'inline-block',
+        padding: '10px',
       },
-      caption: {
-        'font-size': '20px',
+
+      monthAndYear: {
+        color: akColorWhite,
         padding: '6px 12px',
       },
 
-      // TODO reuse styles
-      disabled: {
-        color: '#ccc',
-      },
-      sibling: {
-        color: '#ccc',
-      },
-
-      // TODO reuse styles
-      'disabled:hover': {
+      // buttons
+      btn: {
         'background-color': 'transparent',
-        cursor: 'default',
+        border: 'none',
+        color: akColorN80,
       },
-      'sibling:hover': {
-        'background-color': 'transparent',
-        cursor: 'default',
+      btnPrev: {
+        float: 'left',
       },
-
-      current: {
-        'background-color': '#eee',
-      },
-
-      // TODO reuse styles
-      'td:hover': {
-        'background-color': '#ddd',
-      },
-      focused: {
-        'background-color': '#ddd',
-      },
-
-      highlighted: {
-        'background-color': '#ccc',
-      },
-
-      next: {
-        cursor: 'pointer',
+      btnNext: {
         float: 'right',
       },
 
-      prev: {
+      // days
+      day: {
+        border: '2px solid transparent',
+        'border-radius': '4px',
         cursor: 'pointer',
-        float: 'left',
+        padding: '4px',
+        'text-align': 'center',
+        '&:hover': {
+          'background-color': akColorN900,
+        },
       },
-
+      dayOfWeek: {
+        color: akColorN80,
+        'text-transform': 'uppercase',
+      },
+      disabled: {
+        color: akColorN400,
+      },
+      focused: {
+        'background-color': akColorN900,
+        'border-color': akColorB100,
+      },
       selected: {
-        'background-color': '#ddd',
+        'background-color': akColorWhite,
+        color: akColorN600,
       },
-
+      selecting: {
+        'background-color': akColorB50,
+        color: akColorN600,
+      },
+      sibling: {
+        color: akColorN80,
+      },
       today: {
-        'background-color': '#000',
-        color: '#fff',
-      },
-
-      'today:hover': {
-        'background-color': '#666',
+        color: akColorB50,
       },
     });
 
@@ -267,10 +274,10 @@ export default define('ak-calendar', {
         weeks.push(week);
       }
 
-      const isCurrent = date.day === elem.day;
       const isDisabled = elem.disabled.indexOf(dateAsString) > -1;
       const isFocused = elem.focused === date.day && !date.siblingMonth;
-      const isHighlighted = elem.highlighted.indexOf(dateAsString) > -1;
+      const isSelected = elem.selected.indexOf(dateAsString) > -1;
+      const isSelecting = elem[$selecting] === Number(date.day);
       const isSiblingMonth = date.siblingMonth;
       const isToday = date.day === now.getDate() &&
         date.month === now.getMonth() &&
@@ -279,16 +286,18 @@ export default define('ak-calendar', {
       week.push(
         <td
           aria-live={isFocused ? 'polite' : ''}
-          class={classnames(css.day, css.td, {
-            [css.current]: isCurrent,
+          class={classnames(css.day, {
             [css.disabled]: isDisabled,
             [css.focused]: isFocused,
-            [css.highlighted]: isHighlighted,
+            [css.selected]: isSelected,
+            [css.selecting]: isSelecting,
             [css.sibling]: isSiblingMonth,
             [css.today]: isToday,
           })}
           data-day={date.day.toString()}
           onClick={elem[$selectDay]}
+          onMousedown={() => (elem[$selecting] = date.day)}
+          onMouseup={() => (elem[$selecting] = null)}
         >{date.day}</td>
       );
     });
@@ -296,24 +305,18 @@ export default define('ak-calendar', {
     return [
       <Announcer>{new Date(elem.year, elem.month, elem.day).toString()}</Announcer>,
       <table>
-        <caption class={classnames(css.caption)}>
-          <button class={classnames(css.prev)} onClick={elem[$prev]}>
-            {elem.btnPrev}
-          </button>
-          <span class={classnames(css.month)}>
-            {getMonthName(elem, elem.month)}
+        <caption>
+          <button class={classnames(css.btn, css.btnPrev)} onClick={elem[$prev]}>p</button>
+          <span class={css.monthAndYear}>
+            <span>{getMonthName(elem, elem.month)}</span>
+            {' '}
+            <span>{elem.year}</span>
           </span>
-          {' '}
-          <span class={classnames(css.year)}>
-            {elem.year}
-          </span>
-          <button class={classnames(css.next)} onClick={elem[$next]}>
-            {elem.btnNext}
-          </button>
+          <button class={classnames(css.btn, css.btnNext)} onClick={elem[$next]}>n</button>
         </caption>
         <thead>
           <tr>
-            {makeArrayFromNumber(7).map(i => <th>{getDayName(elem, i)}</th>)}
+            {makeArrayFromNumber(7).map(i => <th class={css.dayOfWeek}>{getDayName(elem, i)}</th>)}
           </tr>
         </thead>
         <tbody>

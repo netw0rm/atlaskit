@@ -30,8 +30,8 @@ export default define('ak-navigation-link', {
     style(vdom, {
       [`.${shadowStyles.locals.icon}::slotted(*)`]: {
         display: 'inline-block',
-        'margin-left': '10px', // TODO get this from ./shared-variables.less
-        'margin-right': '20px', // TODO same as above
+        'margin-left': '10px',
+        'margin-right': '20px',
         position: 'relative',
         width: '20px',
       },

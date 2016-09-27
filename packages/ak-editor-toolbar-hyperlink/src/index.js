@@ -8,7 +8,8 @@ import TextInput from 'ak-editor-popup-text-input';
 
 export default define('ak-editor-toolbar-hyperlink', {
   created(elem) {
-    elem.onClick = elem.onClick.bind(elem);
+    elem.onLinkButtonClick = elem.onLinkButtonClick.bind(elem);
+    elem.onPopupClick = elem.onPopupClick.bind(elem);
     elem.onKeyup = elem.onKeyup.bind(elem);
     elem.openHyperlink = elem.openHyperlink.bind(elem);
     elem.closeHyperlink = elem.closeHyperlink.bind(elem);
@@ -22,7 +23,7 @@ export default define('ak-editor-toolbar-hyperlink', {
   render(elem) {
     const LinkButton = (<EditorButton
       className="link-button"
-      onClick={elem.onClick}
+      onClick={elem.onLinkButtonClick}
       active={elem.active || elem.open}
       disabled={elem.disabled}
     >
@@ -46,6 +47,7 @@ export default define('ak-editor-toolbar-hyperlink', {
           target={linkButton}
           open={elem.open}
           on-activate={elem.openHyperlink}
+          onclick={elem.onPopupClick}
         >
           <TextInput className="text-input" placeholder="Paste link" />
         </Popup>
@@ -61,10 +63,13 @@ export default define('ak-editor-toolbar-hyperlink', {
     }
   },
   prototype: {
-    onClick() {
+    onLinkButtonClick() {
       if (!this.disabled) {
         this.openHyperlink();
       }
+    },
+    onPopupClick() {
+      this.openHyperlink();
     },
     onKeyup(event) {
       if (event.keyCode === 13) {

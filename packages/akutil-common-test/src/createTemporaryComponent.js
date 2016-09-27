@@ -1,5 +1,7 @@
-import { waitUntil } from './waitUntil';
-import { getShadowRoot } from './getShadowRoot';
+
+import waitUntil from './waitUntil';
+
+import getShadowRoot from './getShadowRoot';
 import uid from 'uid';
 
 /**

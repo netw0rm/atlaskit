@@ -34,7 +34,7 @@ storiesOf('ak-editor-bitbucket', module)
       imageUploader={imageUploader}
     />
   ))
-  .add('Mentions', () => {
+  .add('Mentions (insert dummy when typed @)', () => {
     type Props = {};
     type State = {};
     class EditorWithMentions extends Component<Props, State> {

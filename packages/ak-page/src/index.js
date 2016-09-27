@@ -77,7 +77,7 @@ export default define('ak-page', {
      * @memberof Page
      * @instance
      * @type {integer}
-     * @example @js navigation.navigationWidth = 80;
+     * @example @js page.navigationWidth = 80;
      * @example @html <ak-page navigation-width="80" />;
      */
     navigationWidth: prop.number({

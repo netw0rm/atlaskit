@@ -10,7 +10,6 @@ import React from 'react';
 const Avatar = reactify(AkAvatar);
 
 const avatarClass = hostStyles.akAvatar;
-const avatarUrl = require('url!./doge.jpg');
 const transparentAvatarUrl = require('url!./face-w-transparency.png');
 const tickUrl = require('url!./tick.svg');
 const tickWithBackgroundUrl = require('url!./tick.png');
@@ -19,7 +18,6 @@ const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 const storybookExampleClass = avatarStoryStyles.example;
 
 const DefaultAvatar = (props) => <Avatar
-  src={avatarUrl}
   style={{ marginLeft: '10px' }}
   className={avatarClass}
   {...props}
@@ -209,6 +207,5 @@ storiesOf(name, module)
           around it and also an alt text.
       </div>
       <a href="#"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
-      <a href="#"><DefaultAvatar size="xlarge" label="This is an avatar!" src="" /></a>
     </div>
   ));

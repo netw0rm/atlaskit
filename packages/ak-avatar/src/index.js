@@ -8,6 +8,7 @@ import { enumeration } from 'akutil-common';
 import { vdom, define, prop, props } from 'skatejs';
 import shadowStyles from './shadow.less';
 import Presence from './Presence';
+import Image from './Image';
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
@@ -57,14 +58,12 @@ const definition = {
         <style>{shadowStyles.toString()}</style>
         <div className={sizeClasses}>
           <div className={imgWrapperClasses} aria-label={elem.label}>
-            {
-              elem.src ? <img
-                alt={elem.label}
-                src={elem.src}
-                className={shadowStyles.locals.img}
-                onload={imageLoadedHandler(elem)}
-              /> : ''
-            }
+            <Image
+              alt={elem.label}
+              src={elem.src}
+              className={shadowStyles.locals.img}
+              onload={imageLoadedHandler(elem)}
+            />
           </div>
           <div className={slotWrapperClasses}>
             <slot className={shadowStyles.locals.defaultSlotElement}>

@@ -1,5 +1,8 @@
-import 'custom-event-polyfill';
-import { createTemporaryComponent, tearDownComponent, getShadowRoot } from 'akutil-common-test'; // eslint-disable-line  max-len
+import {
+  createTemporaryComponent,
+  tearDownComponent,
+  getShadowRoot,
+} from 'akutil-common-test';
 import { vdom, define } from 'skatejs';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
@@ -30,30 +33,20 @@ describe('ak-avatar', () => {
 
     afterEach(() => tearDownComponent(component));
 
-    const testCases = [{
-      props: {
-        src: oneByOnePixel,
-      },
-      shouldRenderImg: true,
-    }, {
-      props: {
-        src: null,
-      },
-      shouldRenderImg: false,
-    }];
-
-    testCases.forEach(test => {
-      // eslint-disable-next-line  max-len
-      it(`should ${test.shouldRenderImg ? '' : 'not'} render an img when the src prop="${test.props.src}"`, () => {
-        const imgRendered = () => (getShadowRoot(component).querySelector('img') !== undefined);
-        const definition = createDefinition({ src: oneByOnePixel });
+    const renderImgTest = (name, src, shouldRenderImg) => {
+      it(name, () => {
+        const imgRendered = () => (typeof getShadowRoot(component).querySelector('img') !== 'undefined'); // eslint-disable-line  max-len
+        const definition = createDefinition({ src });
         return createTemporaryComponent(define, definition)
           .then(newComponent => {
             component = newComponent;
-            expect(imgRendered()).to.equal(true);
+            expect(imgRendered()).to.equal(shouldRenderImg);
           });
       });
-    });
+    };
+
+    renderImgTest('should render an img when the src is set"', oneByOnePixel, true);
+    renderImgTest('should not render an img when src is not set', null, false);
 
     it('should pass on all props to the rendered img', () => {
       const props = {

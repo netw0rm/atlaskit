@@ -17,10 +17,7 @@ const presences = {
 
 /* eslint-disable react/prop-types */
 export default (props) => {
-  let PresenceToDisplay = () => null;
-  if (Object.keys(presences).indexOf(props.presence) !== -1) {
-    PresenceToDisplay = presences[props.presence];
-  }
+  const PresenceToDisplay = presences[props.presence] || (() => null);
 
   return (<PresenceToDisplay />);
 };

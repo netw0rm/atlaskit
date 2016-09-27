@@ -1,4 +1,3 @@
-import 'custom-event-polyfill';
 import { createTemporaryComponent, tearDownComponent, getShadowRoot } from 'akutil-common-test'; // eslint-disable-line  max-len
 import { vdom, define } from 'skatejs';
 import chai from 'chai';

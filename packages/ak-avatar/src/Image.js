@@ -4,7 +4,7 @@ const DefaultAvatar = () => (<svg width="100%" height="100%" viewBox="0 0 100 10
 
 /* eslint-disable react/prop-types */
 export default (props) => {
-  if (!props.src) {
+  if (!props.src || props.error) {
     return (<DefaultAvatar {...props} />);
   }
 

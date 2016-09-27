@@ -27,7 +27,19 @@ const PRESENCE_ATTRIBUTE_ENUM = {
 
 function imageLoadedHandler(elem) {
   return () => {
-    props(elem, { __loading: false });
+    props(elem, {
+      __loading: false,
+      __error: false,
+    });
+  };
+}
+
+function imageErrorHandler(elem) {
+  return () => {
+    props(elem, {
+      __error: false,
+      __loading: false,
+    });
   };
 }
 
@@ -63,6 +75,8 @@ const definition = {
               src={elem.src}
               className={shadowStyles.locals.img}
               onload={imageLoadedHandler(elem)}
+              onerror={imageErrorHandler(elem)}
+              error={elem._error}
             />
           </div>
           <div className={slotWrapperClasses}>
@@ -140,6 +154,9 @@ const definition = {
 
     // TODO replace with Symbol as soon as Skate supports it
     __loading: prop.boolean({
+      initial: false,
+    }),
+    __error: prop.boolean({
       initial: false,
     }),
   },

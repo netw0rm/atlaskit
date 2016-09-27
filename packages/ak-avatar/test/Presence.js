@@ -52,5 +52,14 @@ describe('ak-avatar', () => {
           });
       });
     });
+
+    it('should not render content if error prop is true passed in', () => {
+      const definition = createDefinition({ __error: true });
+      return createTemporaryComponent(define, definition)
+        .then(newComponent => {
+          component = newComponent;
+          expect(getShadowRoot(component).children.length).to.equal(0);
+        });
+    });
   });
 });

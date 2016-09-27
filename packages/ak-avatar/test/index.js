@@ -220,7 +220,7 @@ describe('ak-avatar', () => {
         .should.be.fulfilled;
     });
 
-    it('should not apply .loaded class when img does not load successfully', () => {
+    it('should also apply .loaded class when img does not load successfully', () => {
       const loadedClassRendered = () => hasClass(imgWrapper, loadedClass);
 
       // Again, we set up a successfully loaded image (that should have the .loaded class)
@@ -231,16 +231,10 @@ describe('ak-avatar', () => {
           component.src = 'http://not.a.valid.url';
           return waitUntil(() => !loadedClassRendered());
         })
-        .then(() => {
-          // now we setup a short timer to make sure the .loaded class has not been reapplied
-          let timerExpired = false;
-          setTimeout(() => (timerExpired = true), 10);
-          return waitUntil(() => (timerExpired === true));
-        })
-        .then(() => {
-          // assert that the .loaded class is definitely not applied again, just in case
-          expect(loadedClassRendered()).to.be.false;
-        })
+        // now wait for it to be applied again. This has the potential to be flakey if the image
+        // ever manages to fail to load before the first re-render happens, but we can refactor that
+        // if it comes down to that.
+        .then(() => waitUntil(loadedClassRendered))
         .should.be.fulfilled;
     });
   });

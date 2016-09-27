@@ -1,4 +1,4 @@
-import { getShadowRoot } from './';
+import getShadowRoot from './getShadowRoot';
 
 /**
 * Returns the root node of the passed component

@@ -26,8 +26,7 @@
     "akutil-common-test": "^2.0.0",
     "akutil-react": "^1.0.0",
     "custom-event-polyfill": "^0.3.0",
-    "keycode": "^2.1.4",
-    "uid": "^0.0.2"
+    "keycode": "^2.1.4"
   },
   "repository": {
     "type": "git",

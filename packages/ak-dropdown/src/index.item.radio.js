@@ -20,8 +20,8 @@ export default define('ak-dropdown-item-radio',
           onkeydown={elem.handleKeyDown(elem)}
           onclick={elem.selectItem(elem)}
           classes={classes}
-          aria-checked={elem.selected}
-          role={supportsVoiceOver ? 'menuitemradio' : 'radio'}
+          aria-checked={elem.selected ? 'true' : 'false'}
+          role={!supportsVoiceOver ? 'menuitemradio' : 'radio'}
         >
           <style>{shadowItemStyles.toString()}</style>
           <IconContainer>

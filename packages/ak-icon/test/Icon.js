@@ -24,11 +24,12 @@ describe(name, () => {
     });
 
     it('should throw if not subclassed', (done) => {
-      sinon.stub(window, 'onerror', (message, source, lineno, colno, error) => {
+      const orig = window.onerror;
+      window.onerror = (message, source, lineno, colno, error) => {
         error.should.be.instanceof(NotImplementedError);
-        window.onerror.restore();
+        window.onerror = orig;
         done();
-      });
+      };
 
       const IconComponent = define('x-icon', Icon);
       component = new IconComponent();

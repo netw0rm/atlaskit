@@ -1,4 +1,4 @@
-import { vdom } from 'skatejs';
+import { vdom, define } from 'skatejs';
 import { createTemporaryComponent, tearDownComponent } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
@@ -15,7 +15,7 @@ describe('getRootNode', () => {
     },
   };
 
-  it('should be possible to remove a component', () => createTemporaryComponent(definition)
+  it('should be possible to remove a component', () => createTemporaryComponent(define, definition)
     .then(newComponent => {
       component = newComponent;
       tearDownComponent(component);
@@ -27,7 +27,7 @@ describe('getRootNode', () => {
   it('should be possible to remove a component from target', () => {
     target = document.createElement('div');
     document.body.appendChild(target);
-    return createTemporaryComponent(definition, target).then(newComponent => {
+    return createTemporaryComponent(define, definition, target).then(newComponent => {
       component = newComponent;
       tearDownComponent(component, target);
       expect(component.parentNode).to.equal(null);

@@ -19,12 +19,12 @@ const avatarSizes = {
   large: 50,
   xlarge: 100,
 };
-const presenceClass = `.${shadowStyles.locals.presence}`;
 const imgWrapperClass = `.${shadowStyles.locals.imgWrapper}`;
+const slotClass = `.${shadowStyles.locals.defaultSlotElement}`;
 
 // Helper functions for getting various parts of the shadowDOM
 const getImgWrapper = (component) => (getShadowRoot(component).querySelector(imgWrapperClass));
-const getPresence = (component) => (getShadowRoot(component).querySelector(presenceClass));
+const getSlot = (component) => (getShadowRoot(component).querySelector(slotClass));
 const getImage = (component) => (getShadowRoot(component).querySelector('img'));
 
 // Helper functions for checking that certain elements are rendered
@@ -134,30 +134,37 @@ describe('ak-avatar', () => {
 
   describe('presence property', () => {
     it('should not be visible when set to "none"', () => {
-      const presence = getPresence(component);
-      const presenceIsNotVisible = () => (getComputedStyle(presence).display === 'none');
+      const presenceIsVisible = () => (getSlot(component).children.length > 0);
 
-      component.presence = 'none';
-
-      return waitUntil(presenceIsNotVisible).should.be.fulfilled;
+      // need to set up the negative case first, so we set presence to online and wait until we
+      // have a presence element
+      component.presence = 'online';
+      return waitUntil(presenceIsVisible).then(() => {
+        // now we can check that the presence disappears when we set presence to 'none'
+        component.presence = 'none';
+        return waitUntil(() => !presenceIsVisible());
+      }).should.be.fulfilled;
     });
 
     it('should be visible when presence is set to \'online\'', () => {
-      const presence = getPresence(component);
-      const presenceIsVisible = () => (getComputedStyle(presence).display !== 'none');
+      const presenceIsVisible = () => (getSlot(component).children.length > 0);
 
+      expect(presenceIsVisible()).to.be.false;
       component.presence = 'online';
 
       return waitUntil(presenceIsVisible).should.be.fulfilled;
     });
 
     it('should default to none when set to an invalid value', () => {
-      const presence = getPresence(component);
-      const presenceIsNotVisible = () => (getComputedStyle(presence).display === 'none');
+      const presenceIsVisible = () => (getSlot(component).children.length > 0);
 
-      component.presence = 'spooky';
-
-      return waitUntil(presenceIsNotVisible).should.be.fulfilled;
+      // set up the negative case again
+      component.presence = 'online';
+      return waitUntil(presenceIsVisible).then(() => {
+        // now we can check that the presence disappears when we set presence to 'none'
+        component.presence = 'spooky';
+        return waitUntil(() => !presenceIsVisible());
+      }).should.be.fulfilled;
     });
   });
 

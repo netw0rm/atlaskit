@@ -4,9 +4,10 @@
 import 'style!./host.less';
 
 import classNames from 'classnames';
-import shadowStyles from './shadow.less';
 import { enumeration } from 'akutil-common';
 import { vdom, define, prop, props } from 'skatejs';
+import shadowStyles from './shadow.less';
+import Presence from './Presence';
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
@@ -39,10 +40,6 @@ function imageLoadedHandler(elem) {
  */
 const definition = {
   render(elem) {
-    const presenceClasses = classNames([
-      shadowStyles.locals.presence,
-      shadowStyles.locals[elem.presence],
-    ]);
     const sizeClasses = classNames([
       shadowStyles.locals[elem.size],
       shadowStyles.locals.size,
@@ -71,7 +68,7 @@ const definition = {
           </div>
           <div className={slotWrapperClasses}>
             <slot className={shadowStyles.locals.defaultSlotElement}>
-              <div class={presenceClasses}></div>
+              <Presence presence={elem.presence} className={shadowStyles.locals.presence} />
             </slot>
           </div>
         </div>

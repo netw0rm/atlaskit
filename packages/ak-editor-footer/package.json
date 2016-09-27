@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-footer",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Editor Footer web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

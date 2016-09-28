@@ -171,7 +171,6 @@ const definition = {
       attribute: true,
     }),
 
-    // private state, so we hide them with symbols and don't document
     [loading]: prop.boolean({
       initial: false,
     }),

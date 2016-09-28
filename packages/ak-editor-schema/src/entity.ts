@@ -5,6 +5,12 @@ interface EntityAttributes {
   entityType: any;
 }
 
+interface MentionAttributes {
+  id: any;
+  entityType: any;
+  displayName: any;
+}
+
 interface ParseSpec {
   [index: string]: (dom: Element) => EntityAttributes;
 }
@@ -32,18 +38,20 @@ export class Entity extends Inline {
 }
 
 export class Mention extends Entity {
-  get attrs(): EntityAttributes {
+  get attrs(): MentionAttributes {
     return {
       id: new Attribute({default: ''}),
       entityType: new Attribute({default: 'mention'}),
+      displayName: new Attribute({default: ''}),
     };
   }
 
   get matchDOMTag(): ParseSpec {
-    return { 'span[editor-entity-type=mention]': (dom: Element): EntityAttributes => {
+    return { 'span[editor-entity-type=mention]': (dom: Element): MentionAttributes => {
       return {
         id: dom.getAttribute('editor-entity-id'),
         entityType: dom.getAttribute('editor-entity-type'),
+        displayName: dom.getAttribute('editor-mention-display-name'),
       };
     }};
   }

@@ -1,9 +1,10 @@
-import { waitUntil, hasClass, getShadowRoot } from 'akutil-common-test';
+import { waitUntil, getShadowRoot, hasClass } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
 import AKAvatar from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
+import { loading } from '../src/internal/symbols';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -21,6 +22,7 @@ const avatarSizes = {
 };
 const imgWrapperClass = `.${shadowStyles.locals.imgWrapper}`;
 const slotClass = `.${shadowStyles.locals.defaultSlotElement}`;
+const loadedClass = shadowStyles.locals.loaded;
 
 // Helper functions for getting various parts of the shadowDOM
 const getImgWrapper = (component) => (getShadowRoot(component).querySelector(imgWrapperClass));
@@ -202,40 +204,31 @@ describe('ak-avatar', () => {
 
   describe('loading behaviour', () => {
     let imgWrapper;
-    const loadedClass = shadowStyles.locals.loaded;
 
-    beforeEach(() => setupAvatar().then(() => {
-      imgWrapper = getImgWrapper(component);
-    }));
+    beforeEach(() => (imgWrapper = getImgWrapper(component)));
 
-    it('should apply .loaded class when img loads successfully', () => {
-      const loadedClassRendered = () => hasClass(imgWrapper, loadedClass);
+    it('should not apply the .loaded class when loading', () => {
+      const loadedClassApplied = () => hasClass(imgWrapper, loadedClass);
 
-      component.src = oneByOnePixel;
-
-      // component will remove the .loaded class so we wait for that
-      return waitUntil(() => !loadedClassRendered())
-        // now, eventually that class should be added back, so we just wait for that
-        .then(waitUntil(loadedClassRendered))
-        .should.be.fulfilled;
+      expect(loadedClassApplied()).to.be.true;
+      // this would normally be a hidden/internal prop but we can access it here for unit testing
+      component[loading] = true;
+      return waitUntil(() => !loadedClassApplied()).should.be.fulfilled;
     });
 
-    it('should also apply .loaded class when img does not load successfully', () => {
-      const loadedClassRendered = () => hasClass(imgWrapper, loadedClass);
+    it('should apply the .loaded class when loading', () => {
+      const loadedClassApplied = () => hasClass(imgWrapper, loadedClass);
 
-      // Again, we set up a successfully loaded image (that should have the .loaded class)
-      component.src = oneByOnePixel;
-      return waitUntil(loadedClassRendered)
+      // we'll set up the negative case by copying the previous test
+      expect(loadedClassApplied()).to.be.true;
+      // this would normally be a hidden/internal prop but we can access it here for unit testing
+      component[loading] = true;
+      return waitUntil(() => !loadedClassApplied())
         .then(() => {
-          // now we set it to something invalid (and expect the .loaded class to be removed)
-          component.src = 'http://not.a.valid.url';
-          return waitUntil(() => !loadedClassRendered());
-        })
-        // now wait for it to be applied again. This has the potential to be flakey if the image
-        // ever manages to fail to load before the first re-render happens, but we can refactor that
-        // if it comes down to that.
-        .then(() => waitUntil(loadedClassRendered))
-        .should.be.fulfilled;
+          component[loading] = false;
+
+          return waitUntil(loadedClassApplied);
+        }).should.be.fulfilled;
     });
   });
 });

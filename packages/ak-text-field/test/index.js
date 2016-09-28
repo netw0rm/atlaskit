@@ -143,6 +143,30 @@ describe('ak-text-field', () => {
     });
   });
 
+  describe('value', () => {
+    let component;
+    const expectedValue = 'my value';
+
+    beforeEach(() => setupComponent().then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('gets the value from the input', () => {
+      const input = component.querySelector('input');
+      input.value = expectedValue;
+      expect(input.value).to.equal(expectedValue);
+      expect(component.value).to.equal(expectedValue);
+    });
+
+    it('setting the value updates the input value', () => {
+      const input = component.querySelector('input');
+      component.value = expectedValue;
+      expect(input.value).to.equal(expectedValue);
+      expect(component.value).to.equal(expectedValue);
+    });
+  });
+
   describe('sizing', () => {
     let component;
 

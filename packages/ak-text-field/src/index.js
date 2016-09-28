@@ -5,6 +5,7 @@ import classNames from 'classnames';
 
 import * as events from './internal/index.events';
 
+const inputSlot = Symbol();
 const focusHandlers = Symbol();
 
 function handleLabelClick(elem) {
@@ -16,13 +17,19 @@ function handleLabelClick(elem) {
   };
 }
 
-function setupFocusHandlers(inputSlot) {
-  if (!inputSlot[focusHandlers]) {
-    inputSlot.addEventListener('focus', () => emit(inputSlot, events.focus), true);
-    inputSlot.addEventListener('blur', () => emit(inputSlot, events.blur), true);
-    inputSlot[focusHandlers] = true;
+function setupFocusHandlers(el) {
+  if (!el[focusHandlers]) {
+    el.addEventListener('focus', () => emit(el, events.focus), true);
+    el.addEventListener('blur', () => emit(el, events.blur), true);
+    el[focusHandlers] = true;
   }
 }
+
+function getInputNode(elem) {
+  const nodes = elem[inputSlot] ? elem[inputSlot].assignedNodes() : null;
+  return nodes ? nodes[0] : null;
+}
+
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -48,7 +55,10 @@ export default define('ak-text-field', {
             className={classNames(shadowStyles.locals.defaultSlotElement, {
               [shadowStyles.locals.compact]: elem.compact,
             })}
-            ref={(el) => (setupFocusHandlers(el))}
+            ref={(el) => {
+              elem[inputSlot] = el;
+              setupFocusHandlers(el);
+            }}
           />
         </label>
       </div>
@@ -125,6 +135,24 @@ export default define('ak-text-field', {
       attribute: true,
       default: 'text',
     }),
+    /**
+     * @description The value of the field.
+     * @memberof TextField
+     * @instance
+     * @type {string}
+     */
+    value: {
+      get(elem) {
+        const inputNode = getInputNode(elem);
+        return inputNode ? inputNode.value : null;
+      },
+      set(elem, data) {
+        const inputNode = getInputNode(elem);
+        if (inputNode) {
+          inputNode.value = data.newValue;
+        }
+      },
+    },
   },
 });
 

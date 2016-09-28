@@ -5,8 +5,10 @@ const DefaultAvatar = () => (<svg width="100%" height="100%" viewBox="0 0 100 10
 
 /* eslint-disable react/prop-types */
 export default (props) => {
-  if (!props.src || props.error) {
-    return (<DefaultAvatar {...props} />);
+  if (!props.loading) {
+    if (!props.src || props.error) {
+      return (<DefaultAvatar {...props} />);
+    }
   }
 
   // we deliberately insert the alt prop knowing it will get overwritten by ...props because all

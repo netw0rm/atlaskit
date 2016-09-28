@@ -23,7 +23,7 @@ export default define('ak-dropdown-item-checkbox',
           onclick={elem.toggleItem(elem)}
           classes={classes}
           aria-checked={elem.selected ? 'true' : 'false'}
-          role={!supportsVoiceOver ? 'menuitemcheckbox' : 'checkbox'}
+          role={supportsVoiceOver ? 'checkbox' : 'menuitemcheckbox'}
         >
           <style>{shadowItemStyles.toString()}</style>
           <IconContainer>

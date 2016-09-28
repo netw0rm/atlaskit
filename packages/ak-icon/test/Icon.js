@@ -25,11 +25,14 @@ describe(name, () => {
 
     it('should throw if not subclassed', (done) => {
       const orig = window.onerror;
-      window.onerror = (message, source, lineno, colno, error) => {
+      const assert = (error) => {
         error.should.be.instanceof(NotImplementedError);
         window.onerror = orig;
         done();
       };
+
+      window.onerror = (message, source, lineno, colno, error) => assert(error);
+      window.addEventListener('error', (e) => assert(e.error)); // IE11 on Windows 7
 
       const IconComponent = define('x-icon', Icon);
       component = new IconComponent();

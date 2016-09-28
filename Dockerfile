@@ -1,5 +1,6 @@
 FROM openjdk:8-jre-alpine
 
+ARG LERNA_VERSION
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
@@ -60,10 +61,7 @@ RUN echo "Installing node & npm" \
 #### </node>
 
 #### <atlaskit-tools>
-ADD ./lerna.json .
 RUN echo "Installing atlaskit tools" \
-&& LERNA_VERSION=$(node -e "console.log(require('./lerna.json').lerna)") \
-&& echo "LERNA_VERSION is ${LERNA_VERSION}" \
 && npm install -g \
   cloudfront-invalidate-cli@1.0.3 \
   marky-markdown@8.1.0 \

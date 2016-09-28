@@ -4,6 +4,7 @@ set -e
 CURRENT_DATE=$(date +'%Y-%m-%d')
 TAG="atlassianlabs/atlaskit:$CURRENT_DATE"
 PREBAKE_VERSION=0.22.0
+LERNA_VERSION=$(node -e "console.log(require('./lerna.json').lerna)")
 
 echo "Deleting old prebake-distributor-runner"
 rm -f prebake-distributor-runner.jar
@@ -17,7 +18,7 @@ mvn -q -B dependency:copy \
   -DoutputDirectory=.
 
 echo "Building image"
-docker build -t "$TAG" .
+docker build --build-arg LERNA_VERSION="$LERNA_VERSION" -t "$TAG" .
 
 
 echo "Let's make sure we have everything"

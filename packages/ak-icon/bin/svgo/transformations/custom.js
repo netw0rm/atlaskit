@@ -1,7 +1,14 @@
 const SVGO = require('svgo');
-const uid = require('uid');
 const addPresentationAttribute = require('../plugins/addPresentationAttribute');
 const callbackOnDefinedFill = require('../plugins/callbackOnDefinedFill');
+const addAriaLabel = require('../plugins/addAriaLabel');
+
+const addAriaLabelPlugin = Object.assign({}, addAriaLabel, {
+  params: {
+    title: '{title}',
+    description: '{description}',
+  },
+});
 
 /**
 * Runs custom transformations on an SVG
@@ -10,8 +17,11 @@ const callbackOnDefinedFill = require('../plugins/callbackOnDefinedFill');
 * @return {SVGO} an SVGO instance
 */
 module.exports = (fillCallback) => {
-  // TODO find out how to do this at runtime: https://github.com/svg/svgo/issues/604
-  callbackOnDefinedFill.params.callback = fillCallback;
+  const callbackOnDefinedFillPlugin = Object.assign({}, callbackOnDefinedFill, {
+    params: Object.assign({}, callbackOnDefinedFill.params, {
+      callback: fillCallback,
+    }),
+  });
 
   const svgo = new SVGO({
     full: true,
@@ -25,57 +35,10 @@ module.exports = (fillCallback) => {
         addPresentationAttribute,
       },
       {
-        callbackOnDefinedFill,
+        callbackOnDefinedFillPlugin,
       },
       {
-        injectTitleAndDescription: {
-          type: 'perItem',
-          fn: (item) => {
-            if (item.isElem('svg')) {
-              const u = uid();
-              const descId = `svg-d-${u}`;
-              const titleId = `svg-t-${u}`;
-
-              if (item.hasAttr('aria-labelledby')) {
-                item.removeAttr('aria-labelledby');
-              }
-              item.addAttr({
-                name: 'aria-labelledby',
-                local: 'aria-labelledby',
-                prefix: '',
-                value: `${descId} ${titleId}`,
-              });
-
-              // TODO: we expect that the description has been removed already
-              item.spliceContent(0, 0, svgo.createContentItem({
-                elem: 'desc',
-                local: 'desc',
-                prefix: '',
-                content: [svgo.createContentItem({ text: '{description}' })],
-                attrs: [svgo.createContentItem({
-                  name: 'id',
-                  local: 'id',
-                  prefix: '',
-                  value: descId,
-                })],
-              }));
-
-              // TODO: we expect that the title has been removed already
-              item.spliceContent(0, 0, svgo.createContentItem({
-                elem: 'title',
-                local: 'title',
-                prefix: '',
-                content: [svgo.createContentItem({ text: '{title}' })],
-                attrs: [svgo.createContentItem({
-                  name: 'id',
-                  local: 'id',
-                  prefix: '',
-                  value: titleId,
-                })],
-              }));
-            }
-          },
-        },
+        addAriaLabelPlugin,
       },
     ],
   });

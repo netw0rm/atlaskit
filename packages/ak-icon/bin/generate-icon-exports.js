@@ -64,18 +64,18 @@ async.waterfall([
 
           fs.readFile(file, 'utf8', cb);
         },
-        function optimizeSvg(data, cb) {
+        function optimizeSvg(rawSvg, cb) {
           log.debug(`"${iconRelativePathToSrc}": optimizing SVG`);
 
-          defaultSvgo.optimize(data, (result) => {
-            const { width, height } = result.info;
+          defaultSvgo.optimize(rawSvg, ({ info, data }) => {
+            const { width, height } = info;
             if (width > maxWidth) {
               log.warn(`"${iconRelativePathToSrc}": too wide: ${width} > ${maxWidth}`);
             }
             if (height > maxHeight) {
               log.warn(`"${iconRelativePathToSrc}": too high: ${height} > ${maxHeight}`);
             }
-            cb(null, result.data);
+            cb(null, data);
           });
         },
         function runCustomTransformations(svgData, cb) {

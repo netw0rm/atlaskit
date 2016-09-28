@@ -23,20 +23,19 @@ describe(name, () => {
       Icon.prototype.should.be.instanceof(Component);
     });
 
-    it('should throw if not subclassed', (done) => {
+    it('should throw if not subclassed', function skippableWindowOnErrorTest(done) {
       const orig = window.onerror;
-      const assert = (error) => {
+      window.onerror = (message, source, lineno, colno, error) => {
         error.should.be.instanceof(NotImplementedError);
         window.onerror = orig;
         done();
       };
 
-      window.onerror = (message, source, lineno, colno, error) => assert(error);
-      window.addEventListener('error', (e) => assert(e.error)); // IE11 on Windows 7
-
       const IconComponent = define('x-icon', Icon);
       component = new IconComponent();
       document.body.appendChild(component);
+      // for browsers that don't support window.onerror (IE11 on Windows 7)
+      setTimeout(() => this.skip(), 500);
     });
 
     it('should be possible to create an Icon via a subclass', () => {

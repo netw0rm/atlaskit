@@ -6,6 +6,7 @@ import Radio from 'ak-icon/glyph/radio';
 import Item from './internal/Item';
 import IconContainer from './internal/LeftSlotContainer';
 import DefaultItemContainer from './internal/DefaultSlotContainer';
+import supportsVoiceOver from './internal/supportsVoiceOver';
 
 export default define('ak-dropdown-item-radio',
   DefaultItem.extend({
@@ -19,6 +20,8 @@ export default define('ak-dropdown-item-radio',
           onkeydown={elem.handleKeyDown(elem)}
           onclick={elem.selectItem(elem)}
           classes={classes}
+          aria-checked={elem.selected ? 'true' : 'false'}
+          role={supportsVoiceOver ? 'radio' : 'menuitemradio'}
         >
           <style>{shadowItemStyles.toString()}</style>
           <IconContainer>

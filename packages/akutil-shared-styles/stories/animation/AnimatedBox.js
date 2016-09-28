@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import storyStyles from 'style!./stories.less';
+import storyStyles from './animation-story.less';
 
 import React from 'react';
 const { Component } = React;

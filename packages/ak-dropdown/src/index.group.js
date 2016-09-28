@@ -4,9 +4,19 @@ import shadowGroupStyles from './less/shadow-group.less';
 export default define('ak-dropdown-group', {
   render(elem) {
     return (
-      <div className={shadowGroupStyles.locals.group}>
+      <div
+        className={shadowGroupStyles.locals.group}
+        role="group"
+        aria-label={elem.heading}
+      >
         <style>{shadowGroupStyles.toString()}</style>
-        {elem.heading ? <h4 className={shadowGroupStyles.locals.heading}>{elem.heading}</h4> : null}
+        {elem.heading ?
+          <div
+            className={shadowGroupStyles.locals.heading}
+            aria-hidden="true"
+          >
+              {elem.heading}
+          </div> : null}
         <slot />
       </div>
     );

@@ -19,8 +19,10 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
+    "akutil-react": "^1.3.0",
     "classnames": "^2.2.5",
-    "less-vars-loader": "^1.0.2"
+    "less-vars-loader": "^1.0.2",
+    "skatejs": "^1.5.1"
   },
   "dependencies": {
     "babel-runtime": "^6.11.6"

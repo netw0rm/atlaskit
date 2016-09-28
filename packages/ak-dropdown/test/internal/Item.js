@@ -82,6 +82,12 @@ describe('Item', () => {
     expect(getRootNode(component).getAttribute('tabindex')).to.equal('1');
   });
 
+  it('should have `aria-disabled` when disabled', () => {
+    expect(getRootNode(component).getAttribute('aria-disabled')).to.equal(null);
+    props(component, { disabled: true });
+    expect(getRootNode(component).getAttribute('aria-disabled')).to.equal('true');
+  });
+
   it('should not have any untested properties', () => {
     const properties = ['tabindex', 'class', 'href', 'target'].sort();
     const propsExisted = [];

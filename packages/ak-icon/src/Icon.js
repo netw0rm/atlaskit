@@ -3,7 +3,7 @@ import * as exceptions from './internal/exceptions';
 import { width, height } from './internal/defaults';
 
 /**
- * @description Base class for an Icon
+ * @description Icon interface. All icons follow this structure.
  * @class Icon
  */
 class Icon extends Component {
@@ -45,9 +45,11 @@ class Icon extends Component {
   }
 
   /**
-  * This method has to be implemented by sublcasses and must return a template function
+  * This method has to be implemented by subclasses and must return a template function.
+  * This method should not be used directly.
   *
   * @throws {NotImplementedError} throws an error if the subclass does not override this method
+  * @private
   * @return {Function} a template function
   */
   getGlyphFn() {

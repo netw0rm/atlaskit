@@ -13,7 +13,6 @@ export default define('ak-editor-toolbar-hyperlink', {
     elem.onKeyup = elem.onKeyup.bind(elem);
     elem.openHyperlink = elem.openHyperlink.bind(elem);
     elem.closeHyperlink = elem.closeHyperlink.bind(elem);
-    elem.toggleHyperlink = elem.toggleHyperlink.bind(elem);
   },
   attached(elem) {
     document.addEventListener('click', elem.closeHyperlink, true);
@@ -27,7 +26,7 @@ export default define('ak-editor-toolbar-hyperlink', {
     const LinkButton = (
       <EditorButton
         className="link-button"
-        onClick={elem.toggleHyperlink}
+        onClick={elem.onLinkButtonClick}
         active={active}
         disabled={elem.disabled}
       >
@@ -69,7 +68,7 @@ export default define('ak-editor-toolbar-hyperlink', {
   },
   prototype: {
     onLinkButtonClick() {
-      if (this.disabled || this.active) {
+      if (this.disabled || this.active || this.wasOpen) {
         this.closeHyperlink();
         return;
       }
@@ -94,13 +93,6 @@ export default define('ak-editor-toolbar-hyperlink', {
     closeHyperlink() {
       this.wasOpen = this.open;
       this.open = false;
-    },
-    toggleHyperlink() {
-      if (this.wasOpen) {
-        this.closeHyperlink();
-      } else {
-        this.openHyperlink();
-      }
     },
   },
   props: {

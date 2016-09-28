@@ -6,7 +6,12 @@ LERNA_LOC="`npm bin`/lerna"
 CHALK="`npm bin`/chalk"
 
 $CHALK blue "Lerna bootstrap..."
-$LERNA_LOC bootstrap
+if [[ -z "$BITBUCKET_COMMIT" ]]; then
+  $LERNA_LOC bootstrap
+else
+  # piping to cat is used to put stdout in a non-TTY mode (hides the progress bar in lerna)
+  $LERNA_LOC bootstrap | cat
+fi
 
 $CHALK blue "Installing hooks..."
 node $BASEDIR/pre-commit.install.js

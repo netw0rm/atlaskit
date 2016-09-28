@@ -19,6 +19,7 @@ RUN echo "Installing general tools" \
   ca-certificates \
   python \
   make \
+  zip \
 && rm -rf /var/cache/apk/*
 #### </general-tools>
 

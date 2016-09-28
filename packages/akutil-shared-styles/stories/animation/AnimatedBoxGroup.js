@@ -1,4 +1,4 @@
-import storyStyles from 'style!./stories.less';
+import storyStyles from './animation-story.less';
 import AnimatedBox from './AnimatedBox.js';
 
 import React from 'react';

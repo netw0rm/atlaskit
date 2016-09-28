@@ -202,7 +202,7 @@ describe('ak-avatar', () => {
     });
   });
 
-  describe('loading behaviour', () => {
+  describe.skip('loading behaviour', () => {
     let imgWrapper;
 
     beforeEach(() => (imgWrapper = getImgWrapper(component)));

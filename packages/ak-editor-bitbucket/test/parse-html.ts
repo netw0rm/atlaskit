@@ -110,7 +110,7 @@ describe('Parse Bitbucket rendered HTML', () => {
   });
 
   describe('lists', () => {
-    it('that are ordered should be parsed', () => {
+    it('that are unordered should be parsed', () => {
       expect(parse(
         '<ul>' +
           '<li>foo</li>' +
@@ -126,7 +126,7 @@ describe('Parse Bitbucket rendered HTML', () => {
       );
     });
 
-    it('that are unordered should be parsed', () => {
+    it('that are ordered should be parsed', () => {
       expect(parse(
         '<ol>' +
           '<li>foo</li>' +

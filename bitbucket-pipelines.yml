@@ -20,4 +20,4 @@ pipelines:
         script:
           - ./build/bin/setup.sh
           - npm install
-          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/artifacts"
+          - npm run test/integration

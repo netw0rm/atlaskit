@@ -32,13 +32,13 @@ class Icon extends Component {
   }
 
   static render(elem) {
-    const { title, getGlyphFn: getGlyph } = elem;
+    const { label, getGlyphFn: getGlyph } = elem;
     const Glyph = getGlyph();
 
     return (
       <div style={{ display: 'flex', width, height }}>
         <div style={{ margin: 'auto' }}>
-          <Glyph role="img" title={title} />
+          <Glyph role="img" title={label} />
         </div>
       </div>
     );

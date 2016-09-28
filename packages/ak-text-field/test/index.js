@@ -2,7 +2,7 @@ import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
-import Component from '../src';
+import Component, { events } from '../src';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -190,6 +190,37 @@ describe('ak-text-field', () => {
     it('should be 32px high when compact', () => {
       component.compact = true;
       return waitUntil(inputHeightCorrect(32)).should.be.fulfilled;
+    });
+  });
+
+  describe('events', () => {
+    let component;
+
+    beforeEach(() => setupComponent().then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should emit the akFocus and akBlur events on focus and blur', () => {
+      const focusSpy = sinon.spy();
+      const blurSpy = sinon.spy();
+
+      component.addEventListener(events.focus, focusSpy);
+      component.addEventListener(events.blur, blurSpy);
+
+      const focusEventEmitted = () => focusSpy.calledOnce;
+      const blurEventEmitted = () => blurSpy.calledOnce;
+
+      expect(focusEventEmitted()).to.equal(false);
+      expect(blurEventEmitted()).to.equal(false);
+
+      const input = component.querySelector('input');
+      input.focus();
+
+      return waitUntil(focusEventEmitted).then(() => {
+        input.blur();
+        return waitUntil(blurEventEmitted).should.be.fulfilled;
+      });
     });
   });
 });

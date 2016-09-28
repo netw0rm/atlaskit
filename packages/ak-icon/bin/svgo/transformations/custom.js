@@ -6,7 +6,6 @@ const addAriaLabel = require('../plugins/addAriaLabel');
 const addAriaLabelPlugin = Object.assign({}, addAriaLabel, {
   params: {
     title: '{title}',
-    description: '{description}',
   },
 });
 

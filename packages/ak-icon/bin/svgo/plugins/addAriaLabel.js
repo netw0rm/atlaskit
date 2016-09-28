@@ -8,51 +8,45 @@ exports.description = 'Adds an aria-labelledby and a referenced <title> and <des
 
 exports.params = {
   title: '',
-  description: '',
+  desc: '',
 };
 
 exports.fn = function addAriaLabel(item, params) {
   if (item.isElem('svg')) {
+    const ids = [];
     const u = uid();
-    const descId = `svg-d-${u}`;
-    const titleId = `svg-t-${u}`;
 
-    if (item.hasAttr('aria-labelledby')) {
-      item.removeAttr('aria-labelledby');
-    }
-    item.addAttr({
-      name: 'aria-labelledby',
-      local: 'aria-labelledby',
-      prefix: '',
-      value: `${descId} ${titleId}`,
+    ['desc', 'title'].forEach((elem) => {
+      const value = params[elem];
+      if (value) {
+        const id = `${elem}-${u}`;
+        ids.push(id);
+        // TODO: we expect that the old element of the same type has been removed already
+        item.spliceContent(0, 0, new item.constructor({
+          elem,
+          local: elem,
+          prefix: '',
+          content: [new item.constructor({ text: value })],
+          attrs: [new item.constructor({
+            name: 'id',
+            local: 'id',
+            prefix: '',
+            value: id,
+          })],
+        }));
+      }
     });
 
-    // TODO: we expect that the description has been removed already
-    item.spliceContent(0, 0, new item.constructor({
-      elem: 'desc',
-      local: 'desc',
-      prefix: '',
-      content: [new item.constructor({ text: params.description })],
-      attrs: [new item.constructor({
-        name: 'id',
-        local: 'id',
+    if (ids.length) {
+      if (item.hasAttr('aria-labelledby')) {
+        item.removeAttr('aria-labelledby');
+      }
+      item.addAttr({
+        name: 'aria-labelledby',
+        local: 'aria-labelledby',
         prefix: '',
-        value: descId,
-      })],
-    }));
-
-    // TODO: we expect that the title has been removed already
-    item.spliceContent(0, 0, new item.constructor({
-      elem: 'title',
-      local: 'title',
-      prefix: '',
-      content: [new item.constructor({ text: params.title })],
-      attrs: [new item.constructor({
-        name: 'id',
-        local: 'id',
-        prefix: '',
-        value: titleId,
-      })],
-    }));
+        value: ids.join(' '),
+      });
+    }
   }
 };

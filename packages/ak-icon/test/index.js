@@ -6,9 +6,17 @@ import { name } from '../package.json';
 import pathToDashed from '../src/pathToDashed';
 import * as bundle from '../src';
 import { getGlyphs } from './_helpers';
+import {
+  tearDownComponent,
+  getRootNode,
+  afterMutations,
+} from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();
+
+// This could be any component, the important thing is the fixed named export
+const { BitbucketLogoIcon } = bundle;
 
 const components = getGlyphs();
 
@@ -78,8 +86,6 @@ describe(name, () => {
     });
 
     it('are properly defined in bundle', () => {
-      // This could be any component, the important thing is the fixed named export
-      const { BitbucketLogoIcon } = bundle;
       (new BitbucketLogoIcon).should.be.instanceof(Component);
 
       const bundleKeys = Object.keys(bundle);
@@ -100,6 +106,42 @@ describe(name, () => {
 
       component.should.be.instanceof(Component);
       component.tagName.should.match(new RegExp(`^${name}-${iconName}`, 'i'));
+    });
+  });
+
+  describe('component structure', () => {
+    let component;
+
+    afterEach(() => tearDownComponent(component));
+
+    it('should have role="img"', (done) => {
+      component = new BitbucketLogoIcon();
+      document.body.appendChild(component);
+      afterMutations(
+        () => getRootNode(component),
+        (rootNode) => rootNode.querySelector('[role="img"]').tagName.should.match(/svg/i),
+        done
+      );
+    });
+
+    it('should accept a label', (done) => {
+      const label = '123abc';
+      component = new BitbucketLogoIcon();
+      component.label = label;
+      document.body.appendChild(component);
+      afterMutations(
+        () => getRootNode(component),
+        (rootNode) => rootNode.querySelector('svg'),
+        (svg) => {
+          svg.hasAttribute('aria-labelledby').should.be.true;
+          const labelledBy = svg.getAttribute('aria-labelledby');
+          const ids = labelledBy.split(/\s+/);
+          ids.length.should.be.at.least(1, 'The labelled-by attribute must reference some node');
+          const labels = ids.map((id) => svg.getElementById(id).textContent);
+          labels.should.contain(label);
+        },
+        done
+      );
     });
   });
 });

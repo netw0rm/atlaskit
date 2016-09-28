@@ -9,8 +9,10 @@ echo "Lerna bootstrap..."
 printf "\033[0m"
 $LERNA_LOC bootstrap
 
-printf "\033[34m"
-echo "Installing hooks..."
-printf "\033[0m"
-node $BASEDIR/pre-commit.install.js
-validate-commit-msg
+if [[ -z "$BITBUCKET_COMMIT" ]]; then
+  printf "\033[34m"
+  echo "Installing hooks..."
+  printf "\033[0m"
+  node $BASEDIR/pre-commit.install.js
+  validate-commit-msg
+fi

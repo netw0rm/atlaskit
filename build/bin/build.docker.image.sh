@@ -21,17 +21,18 @@ docker build -t "$TAG" .
 
 
 echo "Let's make sure we have everything"
-set -x
+printf "Node: "
 docker run "$TAG" node --version
+printf "npm: "
 docker run "$TAG" npm -v
 docker run "$TAG" ruby -v
 docker run "$TAG" bundler -v
+printf "Lerna: "
 docker run "$TAG" lerna --version
 docker run "$TAG" curl --version
 docker run "$TAG" python --version
 docker run "$TAG" git --version
 docker run "$TAG" java -version
-set +x
 
 echo
 echo "Successfully created image '$TAG'"

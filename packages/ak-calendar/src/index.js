@@ -18,6 +18,7 @@ import * as keys from './keys';
 import classnames from 'classnames';
 
 const akColorWhite = '#fff';
+const daysPerWeek = 7;
 
 // TODO formalize this helper
 const attr = Object.keys(prop).reduce((prev, curr) => {
@@ -90,6 +91,7 @@ export default define('ak-calendar', {
         return;
       }
 
+      // TODO break this down into separate functions.
       if (key === keys.down) {
         const next = focused + 7;
         const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
@@ -120,7 +122,7 @@ export default define('ak-calendar', {
           this.focused = next;
         }
       } else if (key === keys.up) {
-        const next = focused - 7;
+        const next = focused - daysPerWeek;
         if (next < 1) {
           this[$prev]();
           this.focused = Calendar.daysInMonth(this.year, this.month - 1) + next;

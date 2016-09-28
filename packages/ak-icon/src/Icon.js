@@ -38,7 +38,7 @@ class Icon extends Component {
     return (
       <div style={{ display: 'flex', width, height }}>
         <div style={{ margin: 'auto' }}>
-          <Glyph role="img" title={label} />
+          <Glyph role="img" label={label} />
         </div>
       </div>
     );

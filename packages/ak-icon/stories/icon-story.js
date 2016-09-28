@@ -30,7 +30,7 @@ const AllIcons = (props) => (
   <div {...props} className={classnames(styles.container, props.className)}>
     {Object
       .entries(reactifiedComponents)
-      .map(([key, Icon]) => <Icon title={`${key}.svg`} key={key} />)}
+      .map(([key, Icon]) => <Icon label={`${key} icon`} title={`${key}.svg`} key={key} />)}
   </div>
 );
 

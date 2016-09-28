@@ -53,9 +53,8 @@ class ${componentName} extends Icon {
   */
   getGlyphTemplate() {
     return (props) => {
-      const { title, description } = props;
-      delete props.title;
-      delete props.description;
+      const { label: title } = props;
+      delete props.label;
 
       // eslint-disable-next-line max-len, react/jsx-space-before-closing
       return (${svgData});

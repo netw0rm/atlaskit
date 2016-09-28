@@ -3,11 +3,10 @@ set -e
 
 pushd ../.. > /dev/null
 JSDOC2MD_LOC="`npm bin`/jsdoc2md"
+CHALK="`npm bin`/chalk"
 popd > /dev/null
 
-printf "\033[34m"
-printf "Generating README.md..."
-printf "\033[0m"
+$CHALK blue "Generating README.md..."
 
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
@@ -21,9 +20,7 @@ fi
 # Generate API docs
 if [[ -z `find ./src -name "*.js" -print -quit` ]]; then
   API=""
-  printf "\033[34m"
-  echo " Nothing found that can be documented."
-  printf "\033[0m"
+  $CHALK blue " Nothing found that can be documented."
 else
   set +e
   DOCS="$($JSDOC2MD_LOC \
@@ -37,18 +34,12 @@ else
 
   if [ "$FAILED" -eq "1" ]; then
     # Remove this branch once jsdoc understands es6: https://github.com/jsdoc3/jsdoc/issues/1030
-    printf "\033[31m"
-    echo "^ jsdoc2md died (Most likely due to unrecognized ES6 code, see error above)."
-    printf "\033[0m"
+    $CHALK red "^ jsdoc2md died (Most likely due to unrecognized ES6 code, see error above)."
   elif [[ $DOCS == *"ERROR, Cannot find class"* ]]; then
-    printf "\033[34m"
-    echo " Could not find a class."
-    printf "\033[0m"
+    $CHALK red " Could not find a class."
   else
     API="\n$DOCS"
-    printf "\033[34m"
-    echo " done!"
-    printf "\033[0m"
+    $CHALK blue " done!"
   fi
 fi
 

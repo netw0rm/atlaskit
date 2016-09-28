@@ -9,11 +9,15 @@ shift || true
 PKG=$($BASEDIR/_get_package_name.sh)
 VERSION=$($BASEDIR/_get_package_version.sh)
 
+pushd ../.. > /dev/null
+CHALK="`npm bin`/chalk"
+popd > /dev/null
+
 if [ -d "stories" ]; then
-    echo "$PKG: Generating storybook"
+    $CHALK blue "$PKG: Generating storybook"
     cd ../..
     mkdir -p stories/$PKG/$VERSION
     npm run storybook/static/single $PKG -- -o stories/$PKG/$VERSION
 else
-    echo "$PKG: Skipping storybook generation since no stories/ dir"
+    $CHALK blue "$PKG: Skipping storybook generation since no stories/ dir"
 fi

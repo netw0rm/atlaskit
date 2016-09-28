@@ -242,6 +242,11 @@
       "from": "arr-diff@>=2.0.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/arr-diff/-/arr-diff-2.0.0.tgz"
     },
+    "arr-exclude": {
+      "version": "1.0.0",
+      "from": "arr-exclude@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/arr-exclude/-/arr-exclude-1.0.0.tgz"
+    },
     "arr-flatten": {
       "version": "1.0.1",
       "from": "arr-flatten@>=1.0.1 <2.0.0",
@@ -1170,6 +1175,18 @@
           "version": "2.0.0",
           "from": "supports-color@>=2.0.0 <3.0.0",
           "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-2.0.0.tgz"
+        }
+      }
+    },
+    "chalk-cli": {
+      "version": "3.0.0",
+      "from": "chalk-cli@latest",
+      "resolved": "https://registry.npmjs.org/chalk-cli/-/chalk-cli-3.0.0.tgz",
+      "dependencies": {
+        "get-stdin": {
+          "version": "5.0.1",
+          "from": "get-stdin@>=5.0.1 <6.0.0",
+          "resolved": "https://registry.npmjs.org/get-stdin/-/get-stdin-5.0.1.tgz"
         }
       }
     },

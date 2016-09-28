@@ -3,16 +3,17 @@ set -e
 
 BASEDIR=$(dirname $0)
 
+pushd ../.. > /dev/null
+CHALK="`npm bin`/chalk"
+popd > /dev/null
+
 $BASEDIR/generate.readme.sh
-printf "\033[34m"
-echo "Generating UMD bundle..."
-printf "\033[0m"
+
+$CHALK blue "Generating UMD bundle..."
 webpack --config ../../build/webpack/production.js $@
-printf "\033[34m"
-echo "Generating CJS bundle..."
-printf "\033[0m"
+
+$CHALK blue "Generating CJS bundle..."
 webpack --config ../../build/webpack/production-cjs.js $@
-printf "\033[34m"
-echo "Generating bundle with dependencies..."
-printf "\033[0m"
+
+$CHALK blue "Generating bundle with dependencies..."
 webpack --config ../../build/webpack/production-with-deps.js $@

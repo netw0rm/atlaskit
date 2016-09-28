@@ -4,9 +4,16 @@ set -e
 BASEDIR=$(dirname $0)
 PKG=$($BASEDIR/_get_package_name.sh)
 
+pushd ../.. > /dev/null
+CHALK="`npm bin`/chalk"
+PROTRACTOR_LOC="`npm bin`/protractor"
+popd > /dev/null
+
 if [ -d "cucumber" ]; then
-    echo "$PKG: Running integration tests on BrowserStack"
-    PKG=$PKG PATH="../../node_modules/.bin:$PATH" BASE_URL="http://localhost:9001" protractor ../../build/protractor/browserstack.js
+    $CHALK blue "$PKG: Running integration tests on BrowserStack"
+    PKG=$PKG \
+    BASE_URL="http://localhost:9001" \
+    $PROTRACTOR_LOC ../../build/protractor/browserstack.js
 else
-    echo "$PKG: Skipping integration tests since no cucumber/ dir"
+    $CHALK blue "$PKG: Skipping integration tests since no cucumber/ dir"
 fi

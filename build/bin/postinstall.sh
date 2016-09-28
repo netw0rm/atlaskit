@@ -3,14 +3,11 @@ set -e
 
 BASEDIR=$(dirname $0)
 LERNA_LOC="`npm bin`/lerna"
+CHALK="`npm bin`/chalk"
 
-printf "\033[34m"
-echo "Lerna bootstrap..."
-printf "\033[0m"
+$CHALK blue "Lerna bootstrap..."
 $LERNA_LOC bootstrap
 
-printf "\033[34m"
-echo "Installing hooks..."
-printf "\033[0m"
+$CHALK blue "Installing hooks..."
 node $BASEDIR/pre-commit.install.js
 validate-commit-msg

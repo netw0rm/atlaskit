@@ -35,9 +35,7 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </head>
 <body>
   <!-- ... -->
-  <ak-text-field label="First name">
-    <input type="text" name="fname" required />
-  </ak-text-field>
+  <ak-text-field label="First name" required></ak-text-field>
 </body>
 ```
 
@@ -48,9 +46,7 @@ import TextField from 'ak-text-field';
 
 const textField = new TextField();
 textField.label = 'First name';
-
-const textInput = document.createElement('input');
-textField.appendChild(textInput);
+textField.required = true;
 
 document.body.appendChild(textInput);
 ```

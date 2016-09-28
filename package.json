@@ -128,7 +128,7 @@
     "release/registry": "./build/bin/release.registry.sh",
     "release/storybooks": "./build/bin/release.storybooks.sh",
     "shrinkwrap/update": "npm run clean && rm -f npm-shrinkwrap.json && npm install && npm shrinkwrap",
-    "storybook": "start-storybook -p 9001 -c ./build/storybook",
+    "storybook": "start-storybook -h 0.0.0.0 -p 9001 -c ./build/storybook",
     "storybook/single": "./build/bin/storybook.single.sh",
     "storybook/static": "build-storybook -c ./build/storybook",
     "storybook/static/single": "./build/bin/storybook.static.single.sh",

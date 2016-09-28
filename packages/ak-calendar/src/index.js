@@ -13,7 +13,6 @@ import {
   akColorN700,
   akColorN900,
 } from 'akutil-shared-styles';
-import AkIconArrowRight from 'ak-icon/glyph/arrow-right';
 import * as events from './index.events';
 import * as keys from './keys';
 import classnames from 'classnames';

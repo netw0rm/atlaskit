@@ -237,8 +237,6 @@ AtlasKit uses Bitbucket Pipelines for it's continuous integration. The build scr
 ### AtlasKit Docker image
 Bitbucket pipelines works using a Docker image. This contains the initial setup required to run the build. If you need to make changes to `Dockerfile`, you will need to push them to Dockerhub:
 
-* Build the new Docker image: `docker build -t atlaskit .`
-* Create the new Docker tag: `docker tag <IMAGE_ID> atlassianlabs/atlaskit:<TAG>`
-* Push new image to Dockerhub: `docker push <YOUR-USER>/atlaskit:<TAG>`
+* Build the new Docker image: `npm run build/docker/image`
 
 **Note:** Make sure you also update the `bitbucket-pipelines.yml` file with the name of your new image!

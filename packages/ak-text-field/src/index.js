@@ -5,22 +5,28 @@ import classNames from 'classnames';
 
 import * as events from './internal/index.events';
 
+const inputSlot = Symbol();
 const focusHandlers = Symbol();
+
+function getInput(elem) {
+  return elem.querySelector('[slot=input]');
+}
 
 function handleLabelClick(elem) {
   return () => {
-    const firstInput = elem.querySelector('input');
-    if (firstInput) {
-      firstInput.focus();
+    const input = getInput(elem);
+    if (input) {
+      input.focus();
     }
   };
 }
 
-function setupFocusHandlers(inputSlot) {
-  if (!inputSlot[focusHandlers]) {
-    inputSlot.addEventListener('focus', () => emit(inputSlot, events.focus), true);
-    inputSlot.addEventListener('blur', () => emit(inputSlot, events.blur), true);
-    inputSlot[focusHandlers] = true;
+function setupFocusHandlers(elem) {
+  const slot = elem[inputSlot];
+  if (!slot[focusHandlers]) {
+    slot.addEventListener('focus', () => emit(elem, events.focus), true);
+    slot.addEventListener('blur', () => emit(elem, events.blur), true);
+    slot[focusHandlers] = true;
   }
 }
 
@@ -48,14 +54,17 @@ export default define('ak-text-field', {
             className={classNames(shadowStyles.locals.defaultSlotElement, {
               [shadowStyles.locals.compact]: elem.compact,
             })}
-            ref={(el) => (setupFocusHandlers(el))}
+            ref={(el) => {
+              elem[inputSlot] = el;
+              setupFocusHandlers(elem);
+            }}
           />
         </label>
       </div>
     );
   },
   rendered(elem) {
-    let input = elem.querySelector('[slot=input]');
+    let input = getInput(elem);
     if (!input) {
       input = document.createElement('input');
       input.slot = 'input';
@@ -125,6 +134,24 @@ export default define('ak-text-field', {
       attribute: true,
       default: 'text',
     }),
+    /**
+     * @description The value of the field.
+     * @memberof TextField
+     * @instance
+     * @type {string}
+     */
+    value: {
+      get(elem) {
+        const input = getInput(elem);
+        return input ? input.value : null;
+      },
+      set(elem, data) {
+        const input = getInput(elem);
+        if (input) {
+          input.value = data.newValue;
+        }
+      },
+    },
   },
 });
 

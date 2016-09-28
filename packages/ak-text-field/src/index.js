@@ -8,11 +8,15 @@ import * as events from './internal/index.events';
 const inputSlot = Symbol();
 const focusHandlers = Symbol();
 
+function getInput(elem) {
+  return elem.querySelector('[slot=input]');
+}
+
 function handleLabelClick(elem) {
   return () => {
-    const firstInput = elem.querySelector('input');
-    if (firstInput) {
-      firstInput.focus();
+    const input = getInput(elem);
+    if (input) {
+      input.focus();
     }
   };
 }
@@ -24,12 +28,6 @@ function setupFocusHandlers(el) {
     el[focusHandlers] = true;
   }
 }
-
-function getInputNode(elem) {
-  const nodes = elem[inputSlot] ? elem[inputSlot].assignedNodes() : null;
-  return nodes ? nodes[0] : null;
-}
-
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -65,7 +63,7 @@ export default define('ak-text-field', {
     );
   },
   rendered(elem) {
-    let input = elem.querySelector('[slot=input]');
+    let input = getInput(elem);
     if (!input) {
       input = document.createElement('input');
       input.slot = 'input';
@@ -143,13 +141,13 @@ export default define('ak-text-field', {
      */
     value: {
       get(elem) {
-        const inputNode = getInputNode(elem);
-        return inputNode ? inputNode.value : null;
+        const input = getInput(elem);
+        return input ? input.value : null;
       },
       set(elem, data) {
-        const inputNode = getInputNode(elem);
-        if (inputNode) {
-          inputNode.value = data.newValue;
+        const input = getInput(elem);
+        if (input) {
+          input.value = data.newValue;
         }
       },
     },

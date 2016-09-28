@@ -17,13 +17,13 @@ chai.should();
 describe('ak-validator', () => {
   describe('exports', () => {
     it('should export a function', () => {
-      (defineValidator).should.be.a('function');
+      expect(defineValidator).to.be.a('function');
     });
 
     it('should export validator components for min length, max length, and required', () => {
-      (new ValidatorMinLength).should.be.an.instanceof(Component);
-      (new ValidatorMaxLength).should.be.an.instanceof(Component);
-      (new ValidatorRequired).should.be.an.instanceof(Component);
+      expect(new ValidatorMinLength).to.be.an.instanceof(Component);
+      expect(new ValidatorMaxLength).to.be.an.instanceof(Component);
+      expect(new ValidatorRequired).to.be.an.instanceof(Component);
     });
   });
 
@@ -31,8 +31,9 @@ describe('ak-validator', () => {
     it('should be able to define a new validator component from the exported function', () => {
       const NewValidator = defineValidator('new-validator', () => false);
       const newValidator = new NewValidator();
-      (newValidator).should.be.an.instanceof(Component);
-      (newValidator.validate).should.be.a('function');
+
+      expect(newValidator).to.be.an.instanceof(Component);
+      expect(newValidator.validate).to.be.a('function');
     });
   });
 });

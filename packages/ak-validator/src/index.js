@@ -3,12 +3,7 @@ import { define, prop } from 'skatejs';
 
 const prefix = 'ak-validator-';
 
-const baseDefinition = {
-  props: {
-    val: {},
-  },
-  message: prop.string({}),
-};
+const baseProps = { message: prop.string({}) };
 
 /**
  * The validator function should take the value of the input and return whether it is valid or not.
@@ -25,10 +20,10 @@ const baseDefinition = {
  * @returns {*}
  */
 const defineValidator = (tagName, validatorFunction, props = {}) => {
-  const newDefinition = Object.assign({
-    props,
+  const newDefinition = {
+    props: Object.assign(baseProps, props),
     prototype: { validate: validatorFunction },
-  }, baseDefinition);
+  };
 
   return define(tagName, newDefinition);
 };
@@ -40,7 +35,7 @@ const defineValidator = (tagName, validatorFunction, props = {}) => {
  * const myValidator = new ValidatorMinLength();
  */
 const ValidatorMinLength = defineValidator(`${prefix}min-length`,
-  (value) => (value.length > this.minLength),
+  function validate(value) { return value.length >= this.minLength; },
   { minLength: prop.number({}) }
 );
 /**
@@ -50,7 +45,7 @@ const ValidatorMinLength = defineValidator(`${prefix}min-length`,
  * const myValidator = new ValidatorMaxLength();
  */
 const ValidatorMaxLength = defineValidator(`${prefix}max-length`,
-  (value) => (value.length > this.maxLength),
+  function validate(value) { return value.length <= this.maxLength; },
   { maxLength: prop.number({}) }
 );
 /**
@@ -59,7 +54,9 @@ const ValidatorMaxLength = defineValidator(`${prefix}max-length`,
  * @example @js import ValidatorRequired from 'ak-validator';
  * const myValidator = new ValidatorRequired();
  */
-const ValidatorRequired = defineValidator(`${prefix}required`, {}, (value) => !!value);
+const ValidatorRequired = defineValidator(`${prefix}required`,
+  (value) => !!value
+);
 
 export default defineValidator;
 

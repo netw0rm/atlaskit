@@ -22,6 +22,8 @@ RUN echo "Installing general tools" \
   make \
   zip \
   unzip \
+  tar \
+  gzip \
 && rm -rf /var/cache/apk/*
 #### </general-tools>
 

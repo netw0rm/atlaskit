@@ -1,4 +1,4 @@
-image: atlassianlabs/atlaskit:alpine
+image: atlassianlabs/atlaskit:2016-09-28
 pipelines:
   branches:
     master:
@@ -8,7 +8,7 @@ pipelines:
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - npm install
-            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "build/install/cdn-tools"
+            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci"
             - npm run test/integration
             - npm run release/check/is-workspace-clean --silent
             - npm run release/check/can-ff --silent || exit 0

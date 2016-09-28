@@ -1,4 +1,11 @@
-FROM maven:3-jdk-8-alpine
+FROM openjdk:8-jre-alpine
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+#### <s3-uploader>
+ADD ./prebake-distributor-runner.jar ..
+#### </s3-uploader>
 
 #### <general-tools>
 RUN echo "Installing general tools" \
@@ -35,7 +42,8 @@ RUN bundle config build.nokogiri --use-system-libraries
 ENV TIMEZONE Australia/Sydney
 
 ENV NODE_VERSION 6.2.0-r0
-ENV NPM_VERSION 3.10.8
+# TODO: We can't use 3.10.8 yet: https://github.com/npm/npm/issues/14042
+ENV NPM_VERSION 3.10.7
 
 RUN echo "Installing node & npm" \
   apk update && \
@@ -64,9 +72,6 @@ RUN echo "Installing atlaskit tools" \
   lerna-semantic-release@8.0.2 \
 && npm cache clean -f
 #### </atlaskit-tools>
-
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
 
 ONBUILD COPY .npmrc /usr/src/app/
 ONBUILD COPY npm-shrinkwrap.json /usr/src/app/

@@ -6,13 +6,15 @@ const componentTemplate = require('./componentTemplate');
 const path = require('path');
 const glob = require('glob');
 const fs = require('fs');
-const SVGO = require('svgo');
 const async = require('async');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 const minilog = require('minilog');
 const { name } = require('../package.json');
 const log = minilog('ak-icon/gen-js');
+const defaultSvgo = require('./svgo/transformations/default');
+const customSvgo = require('./svgo/transformations/custom');
+const { glyphFolderName, tmpFolderName } = require('./constants');
 
 if (process.env.CLI) {
   minilog.suggest.defaultResult = false;
@@ -22,16 +24,14 @@ if (process.env.CLI) {
 minilog.enable();
 
 const fileEnding = '.svg';
-const defaultWidth = 20;
-const defaultHeight = 20;
 
 const maxWidth = 20;
 const maxHeight = 20;
 
 const rootFolder = path.join(__dirname, '..');
 const srcFolder = path.join(rootFolder, 'src', 'icons');
-const tmpFolder = path.join(rootFolder, 'tmp');
-const destFolder = path.join(rootFolder, 'glyph');
+const tmpFolder = path.join(rootFolder, 'src', tmpFolderName);
+const destFolder = path.join(rootFolder, glyphFolderName);
 
 async.waterfall([
   function cleanTmpDir(cb) {
@@ -64,69 +64,38 @@ async.waterfall([
 
           fs.readFile(file, 'utf8', cb);
         },
-        function optimizeSvg(data, cb) {
+        function optimizeSvg(rawSvg, cb) {
           log.debug(`"${iconRelativePathToSrc}": optimizing SVG`);
 
-          const knownItems = [];
-          const svgo = new SVGO({
-            multipass: true,
-            plugins: [
-              'removeTitle',
-              'cleanupIDs',
-              'collapseGroups',
-              {
-                rewriteXmlnsLink: {
-                  type: 'perItem',
-                  fn: (item) => {
-                    item.eachAttr((attr) => {
-                      if (attr.prefix && attr.local) {
-                        item.removeAttr(attr.name);
-                      }
-                    });
-                  },
-                },
-              },
-              {
-                warnOnDefinedFill: {
-                  type: 'perItem',
-                  fn: (item) => {
-                    if (item.hasAttr('fill')) {
-                      const { value: fill } = item.attr('fill');
-                      if (knownItems.indexOf(fill) !== -1) {
-                        return;
-                      }
-                      knownItems.push(fill);
-                      if (fill !== 'currentColor' && fill !== 'none') {
-                        log.warn(`"${iconRelativePathToSrc}": has a fill of "${fill}"`);
-                      }
-                    }
-                  },
-                },
-              },
-            ],
-          });
-
-          svgo.optimize(data, (result) => {
-            if (result.info.width > maxWidth) {
-              log.warn(`"${iconRelativePathToSrc}": too wide: ${result.info.width} > ${maxWidth}`);
+          defaultSvgo.optimize(rawSvg, ({ info, data }) => {
+            const { width, height } = info;
+            if (width > maxWidth) {
+              log.warn(`"${iconRelativePathToSrc}": too wide: ${width} > ${maxWidth}`);
             }
-            if (result.info.height > maxHeight) {
-              log.warn(`"${iconRelativePathToSrc}": too high: \
-${result.info.height} > ${maxHeight}`);
+            if (height > maxHeight) {
+              log.warn(`"${iconRelativePathToSrc}": too high: ${height} > ${maxHeight}`);
             }
-            cb(null, result);
+            cb(null, data);
           });
         },
-        function generateExport({ data: svgData }, cb) {
+        function runCustomTransformations(svgData, cb) {
+          const fillCallback = (fill) =>
+            log.warn(`"${iconRelativePathToSrc}": has a fill of "${fill}"`);
+
+          const svgo = customSvgo(fillCallback);
+          svgo.optimize(svgData, (result) => cb(null, result.data));
+        },
+        function generateExport(svgData, cb) {
           log.debug(`"${iconRelativePathToSrc}": generating export`);
 
           const iconRelativePathDashed = iconRelativePathToSrcNoExt.split(path.sep).join('-');
           const iconName = `${name}-${iconRelativePathDashed}`;
           const template = componentTemplate({
             iconName,
+            unprefixedIconName: iconRelativePathDashed,
             svgData,
-            width: defaultWidth,
-            height: defaultHeight,
+            iconRelativePathToSrc,
+            iconRelativePathToSrcNoExt,
           });
           cb(null, template);
         },
@@ -163,12 +132,8 @@ ${result.info.height} > ${maxHeight}`);
     }, {});
     const compiler = webpack(webpackConf(destFolder, entry));
     compiler.run((err, stats) => {
-      if (err) {
-        cb(err);
-        return;
-      }
-      if (stats.compilation.errors.length) {
-        cb(stats.compilation.errors);
+      if (err || stats.compilation.errors.length) {
+        cb(err || stats.compilation.errors);
         return;
       }
       cb();

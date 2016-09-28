@@ -141,6 +141,20 @@ storiesOf(name, module)
       </div>
     </AkPage>
   ))
+  .add('with text-only links', () => (
+    <AkPage navigationOpen>
+      <AkNavigation
+        slot="navigation"
+        open
+        {...sharedProps}
+      >
+        <ak-navigation-link selected>I am selected</ak-navigation-link>
+        <ak-navigation-link>But I am not</ak-navigation-link>
+        <ak-navigation-link>I will overflow because of all my </ak-navigation-link>
+
+      </AkNavigation>
+    </AkPage>
+  ))
   .add('with a long container name', () => (
     <AkNavigation collapsible open containerName="Antidisestablishmentterianism" />
   ))

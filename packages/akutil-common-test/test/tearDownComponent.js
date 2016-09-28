@@ -1,10 +1,13 @@
-import { vdom } from 'skatejs';
+import { vdom, define } from 'skatejs';
 import { createTemporaryComponent, tearDownComponent } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
+import chaiAsPromised from 'chai-as-promised';
+
 chai.should();
 chai.use(sinonChai);
-
+chai.use(chaiAsPromised);
+const { expect } = chai;
 
 describe('getRootNode', () => {
   let component;
@@ -15,7 +18,7 @@ describe('getRootNode', () => {
     },
   };
 
-  it('should be possible to remove a component', () => createTemporaryComponent(definition)
+  it('should be possible to remove a component', () => createTemporaryComponent(define, definition)
     .then(newComponent => {
       component = newComponent;
       tearDownComponent(component);
@@ -27,7 +30,7 @@ describe('getRootNode', () => {
   it('should be possible to remove a component from target', () => {
     target = document.createElement('div');
     document.body.appendChild(target);
-    return createTemporaryComponent(definition, target).then(newComponent => {
+    return createTemporaryComponent(define, definition, target).then(newComponent => {
       component = newComponent;
       tearDownComponent(component, target);
       expect(component.parentNode).to.equal(null);
@@ -35,4 +38,8 @@ describe('getRootNode', () => {
       document.body.removeChild(target);
     });
   });
+
+  it('should not die if the component was not found in the target', () =>
+    expect(() => tearDownComponent(document.createElement('div'))).to.not.throw()
+  );
 });

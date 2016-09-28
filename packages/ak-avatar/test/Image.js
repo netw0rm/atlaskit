@@ -35,7 +35,7 @@ describe('ak-avatar', () => {
 
     const renderImgTest = (name, src, shouldRenderImg) => {
       it(name, () => {
-        const imgRendered = () => (typeof getShadowRoot(component).querySelector('img') !== 'undefined'); // eslint-disable-line  max-len
+        const imgRendered = () => (getShadowRoot(component).querySelector('img') !== null);
         const definition = createDefinition({ src });
         return createTemporaryComponent(define, definition)
           .then(newComponent => {

@@ -409,14 +409,23 @@ declare module 'prosemirror/dist/markdown' {
 
 declare module 'prosemirror/dist/markdown/to_markdown' {
     export class MarkdownSerializer {
+        protected nodes: any;
+        protected marks: any;
         constructor(nodes: any, marks: any);
         serialize(content: any, options?: Object): any;
     }
     export const defaultMarkdownSerializer: MarkdownSerializer;
     export class MarkdownSerializerState {
-        out: string;
-        closed: boolean;
-        constructor(nodes: any, marks: any, options: any);
+      out: string;
+      closed: boolean;
+      marks: {
+        [markTypeName: string] : {
+          open: String | Function,
+          close: String | Function,
+          mixable?: boolean
+        }
+      };
+      constructor(nodes: any, marks: any, options: any);
         flushClose(size: any): void;
         wrapBlock(delim: any, firstDelim: any, node: any, f: any): void;
         atBlank(): boolean;

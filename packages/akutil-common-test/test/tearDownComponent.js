@@ -2,9 +2,12 @@ import { vdom, define } from 'skatejs';
 import { createTemporaryComponent, tearDownComponent } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
+import chaiAsPromised from 'chai-as-promised';
+
 chai.should();
 chai.use(sinonChai);
-
+chai.use(chaiAsPromised);
+const { expect } = chai;
 
 describe('getRootNode', () => {
   let component;
@@ -35,4 +38,8 @@ describe('getRootNode', () => {
       document.body.removeChild(target);
     });
   });
+
+  it('should not die if the component was not found in the target', () =>
+    expect(() => tearDownComponent(document.createElement('div'))).to.not.throw()
+  );
 });

@@ -1,10 +1,10 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Group } from '../src';
-import { Component, props } from 'skatejs';
+import { props } from 'skatejs';
+import Group from '../src/index.group';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
-import shadowGroupStyles from '../src/shadow-group.less';
+import shadowGroupStyles from '../src/less/shadow-group.less';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -26,12 +26,6 @@ function setupComponent() {
 function tearDownComponent(component) {
   document.body.removeChild(component);
 }
-
-describe('exports', () => {
-  it('should export a base component', () => {
-    (new Group).should.be.an.instanceof(Component);
-  });
-});
 
 describe('general behavior', () => {
   let component;

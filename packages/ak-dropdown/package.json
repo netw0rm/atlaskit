@@ -1,6 +1,6 @@
 {
   "name": "ak-dropdown",
-  "version": "4.1.0",
+  "version": "5.0.0",
   "description": "ak-dropdown webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -28,7 +28,7 @@
     "akutil-react": "^1.0.0",
     "custom-event-polyfill": "^0.3.0",
     "ak-avatar": "^2.0.1",
-    "akutil-common-test": "^1.5.0"
+    "akutil-common-test": "^2.0.0"
   },
   "repository": {
     "type": "git",

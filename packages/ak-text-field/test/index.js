@@ -2,7 +2,7 @@ import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
-import Component from '../src';
+import Component, { events } from '../src';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -11,9 +11,6 @@ chai.should();
 describe('ak-text-field', () => {
   function setupComponent(opts = {}) {
     const component = new Component();
-    const input = document.createElement('input');
-    input.type = 'text';
-    component.appendChild(input);
     Object.keys(opts).forEach((key) => {
       component[key] = opts[key];
     });
@@ -27,6 +24,20 @@ describe('ak-text-field', () => {
   function tearDownComponent(component) {
     document.body.removeChild(component);
   }
+
+  describe('disabled', () => {
+    let component;
+
+    beforeEach(() => setupComponent({ disabled: true }).then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should apply the disabled property to the input', () => {
+      const input = component.querySelector('input');
+      expect(input.disabled).to.equal(true);
+    });
+  });
 
   describe('label', () => {
     let component;
@@ -69,6 +80,36 @@ describe('ak-text-field', () => {
     });
   });
 
+  describe('name', () => {
+    let component;
+    const expectedName = 'fname';
+
+    beforeEach(() => setupComponent({ name: expectedName }).then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should apply the name property to the input', () => {
+      const input = component.querySelector('input');
+      expect(input.name).to.equal(expectedName);
+    });
+  });
+
+  describe('placeholder', () => {
+    let component;
+    const expectedPlaceholder = 'Placeholder text';
+
+    beforeEach(() => setupComponent({ placeholder: expectedPlaceholder }).then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should apply the placeholder property to the input', () => {
+      const input = component.querySelector('input');
+      expect(input.placeholder).to.equal(expectedPlaceholder);
+    });
+  });
+
   describe('required', () => {
     let component;
     let shadowRoot;
@@ -84,6 +125,45 @@ describe('ak-text-field', () => {
       const requiredIsCorrect = () => (required.innerText === '*');
 
       return waitUntil(requiredIsCorrect).should.be.fulfilled;
+    });
+  });
+
+  describe('type', () => {
+    let component;
+    const expectedType = 'password';
+
+    beforeEach(() => setupComponent({ type: expectedType }).then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should apply the type property to the input', () => {
+      const input = component.querySelector('input');
+      expect(input.type).to.equal(expectedType);
+    });
+  });
+
+  describe('value', () => {
+    let component;
+    const expectedValue = 'my value';
+
+    beforeEach(() => setupComponent().then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('gets the value from the input', () => {
+      const input = component.querySelector('input');
+      input.value = expectedValue;
+      expect(input.value).to.equal(expectedValue);
+      expect(component.value).to.equal(expectedValue);
+    });
+
+    it('setting the value updates the input value', () => {
+      const input = component.querySelector('input');
+      component.value = expectedValue;
+      expect(input.value).to.equal(expectedValue);
+      expect(component.value).to.equal(expectedValue);
     });
   });
 
@@ -110,6 +190,37 @@ describe('ak-text-field', () => {
     it('should be 32px high when compact', () => {
       component.compact = true;
       return waitUntil(inputHeightCorrect(32)).should.be.fulfilled;
+    });
+  });
+
+  describe('events', () => {
+    let component;
+
+    beforeEach(() => setupComponent().then(newComponent => {
+      component = newComponent;
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should emit the akFocus and akBlur events on focus and blur', () => {
+      const focusSpy = sinon.spy();
+      const blurSpy = sinon.spy();
+
+      component.addEventListener(events.focus, focusSpy);
+      component.addEventListener(events.blur, blurSpy);
+
+      const focusEventEmitted = () => focusSpy.calledOnce;
+      const blurEventEmitted = () => blurSpy.calledOnce;
+
+      expect(focusEventEmitted()).to.equal(false);
+      expect(blurEventEmitted()).to.equal(false);
+
+      const input = component.querySelector('input');
+      input.focus();
+
+      return waitUntil(focusEventEmitted).then(() => {
+        input.blur();
+        return waitUntil(blurEventEmitted).should.be.fulfilled;
+      });
     });
   });
 });

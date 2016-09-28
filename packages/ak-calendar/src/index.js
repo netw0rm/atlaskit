@@ -19,6 +19,7 @@ import classnames from 'classnames';
 
 const akColorWhite = '#fff';
 const daysPerWeek = 7;
+const monthsPerYear = 12;
 
 // TODO formalize this helper
 const attr = Object.keys(prop).reduce((prev, curr) => {
@@ -93,7 +94,7 @@ export default define('ak-calendar', {
 
       // TODO break this down into separate functions.
       if (key === keys.down) {
-        const next = focused + 7;
+        const next = focused + daysPerWeek;
         const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
 
         if (next > daysInMonth) {
@@ -141,7 +142,7 @@ export default define('ak-calendar', {
       }
     },
     [$next]() {
-      if (this.month === 12) {
+      if (this.month === monthsPerYear) {
         this.month = 1;
         this.year++;
       } else {
@@ -150,7 +151,7 @@ export default define('ak-calendar', {
     },
     [$prev]() {
       if (this.month === 1) {
-        this.month = 12;
+        this.month = monthsPerYear;
         this.year--;
       } else {
         this.month--;
@@ -318,7 +319,9 @@ export default define('ak-calendar', {
         </caption>
         <thead>
           <tr>
-            {makeArrayFromNumber(7).map(i => <th class={css.dayOfWeek}>{getDayName(elem, i)}</th>)}
+            {makeArrayFromNumber(daysPerWeek).map(i =>
+              <th class={css.dayOfWeek}>{getDayName(elem, i)}</th>
+            )}
           </tr>
         </thead>
         <tbody>

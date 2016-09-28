@@ -32,8 +32,8 @@ class Icon extends Component {
   }
 
   static render(elem) {
-    const { label, getGlyphFn: getGlyph } = elem;
-    const Glyph = getGlyph();
+    const { label, getGlyphTemplate } = elem;
+    const Glyph = getGlyphTemplate();
 
     return (
       <div style={{ display: 'flex', width, height }}>
@@ -52,7 +52,7 @@ class Icon extends Component {
   * @private
   * @return {Function} a template function
   */
-  getGlyphFn() {
+  getGlyphTemplate() {
     throw new exceptions.NotImplementedError('Subclasses need to provide an implementation');
   }
 }

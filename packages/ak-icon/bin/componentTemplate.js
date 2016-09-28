@@ -51,7 +51,7 @@ class ${componentName} extends Icon {
   * @private
   * @return {Function} The template function with the glyph
   */
-  getGlyphFn() {
+  getGlyphTemplate() {
     return (props) => {
       const { title, description } = props;
       delete props.title;

@@ -7,7 +7,9 @@ import { props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot, afterMutations, getRootNode } from 'akutil-common-test';
 import shadowItemStyles from '../src/less/shadow-item.less';
+import supportsVoiceOver from '../src/internal/supportsVoiceOver';
 
+const role = !supportsVoiceOver ? 'menuitemcheckbox' : 'checkbox';
 const defaultHeight = 30;
 const defaultGap = 10;
 
@@ -54,11 +56,11 @@ describe('ak-dropdown-item-checkbox', () => {
     });
 
     it('should have menuitemcheckbox role', () => {
-      expect(getRootNode(component).getAttribute('role')).to.equal('menuitemcheckbox');
+      expect(getRootNode(component).getAttribute('role')).to.equal(role);
     });
 
     it('should have `aria-checked` when selected', () => {
-      expect(getRootNode(component).getAttribute('aria-checked')).to.equal(null);
+      expect(getRootNode(component).getAttribute('aria-checked')).to.equal('false');
       props(component, { selected: true });
       expect(getRootNode(component).getAttribute('aria-checked')).to.equal('true');
     });

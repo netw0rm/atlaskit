@@ -5,7 +5,9 @@ import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot, afterMutations, getRootNode } from 'akutil-common-test';
 import shadowItemStyles from '../src/less/shadow-item.less';
 import { props } from 'skatejs';
+import supportsVoiceOver from '../src/internal/supportsVoiceOver';
 
+const role = !supportsVoiceOver ? 'menuitemradio' : 'radio';
 const defaultHeight = 30;
 const defaultGap = 10;
 
@@ -43,11 +45,11 @@ describe('ak-dropdown-item-radio', () => {
     });
 
     it('should have menuitemradio role', () => {
-      expect(getRootNode(component).getAttribute('role')).to.equal('menuitemradio');
+      expect(getRootNode(component).getAttribute('role')).to.equal(role);
     });
 
     it('should have `aria-checked` when selected', () => {
-      expect(getRootNode(component).getAttribute('aria-checked')).to.equal(null);
+      expect(getRootNode(component).getAttribute('aria-checked')).to.equal('false');
       props(component, { selected: true });
       expect(getRootNode(component).getAttribute('aria-checked')).to.equal('true');
     });

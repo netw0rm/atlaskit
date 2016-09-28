@@ -6,5 +6,10 @@
  * needs to be removed
  */
 export default function tearDownComponent(component, target = document.body) {
-  target.removeChild(component);
+  if (component && component.parentNode === target) {
+    target.removeChild(component);
+  } else if (component) {
+    // eslint-disable-next-line no-console
+    console.warn('Could not find component', component, 'in given target');
+  }
 }

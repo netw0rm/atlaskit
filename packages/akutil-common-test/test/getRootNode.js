@@ -1,4 +1,4 @@
-import { vdom } from 'skatejs';
+import { vdom, define } from 'skatejs';
 import { createTemporaryComponent, tearDownComponent, getRootNode } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
@@ -18,7 +18,7 @@ describe('getRootNode', () => {
   afterEach(() => tearDownComponent(component));
 
   it('should return the rootNode of a component if it has one', () =>
-    createTemporaryComponent(definition)
+    createTemporaryComponent(define, definition)
       .then(newComponent => {
         component = newComponent;
         rootNode = getRootNode(component);

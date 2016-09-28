@@ -20,6 +20,5 @@ pipelines:
         script:
           - ./build/bin/setup.sh
           - hostname
-          - echo $HOSTNAME
           - npm install
           - npm run test/integration

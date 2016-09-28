@@ -2,24 +2,15 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
 import keyCode from 'keycode';
-import { props, emit, Component, define, vdom } from 'skatejs';
+import { props, emit, Component } from 'skatejs';
 import { name } from '../package.json';
 import { afterMutations, getShadowRoot, checkVisibility, waitUntil } from 'akutil-common-test';
 import { selected as selectedEvent,
-  unselected as unselectedEvent, afterOpen } from '../src/internal/events';
+  unselected as unselectedEvent } from '../src/internal/events';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
-
-const TriggerTest = define('trigger-test', {
-  props: {
-    opened: { attribute: true, default: false },
-  },
-  render() {
-    vdom.element('div', () => (vdom.text('test')));
-  },
-});
 
 function initComponent(setup) {
   const component = new Dropdown();
@@ -188,28 +179,6 @@ describe('ak-dropdown', () => {
         () => (component.position = 'top left'),
         () => (expect(layer.position).to.equal('top left')),
         done
-      );
-    });
-  });
-
-  describe('trigger', () => {
-    let triggerTest;
-
-    describe('external', () => {
-      let eventSpy;
-
-      beforeEach(() =>
-        (initComponent(comp => {
-          eventSpy = sinon.spy();
-          props(comp, { open: true, target: triggerTest });
-          triggerTest = new TriggerTest();
-          comp.addEventListener(afterOpen, eventSpy);
-          comp.appendChild(document.createElement('ak-dropdown-item'));
-        }))
-      );
-
-      it('dropdown should be open', () =>
-        expect(eventSpy).to.have.been.called
       );
     });
   });

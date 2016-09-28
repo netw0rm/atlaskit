@@ -1,0 +1,34 @@
+{
+  "name": "ak-field",
+  "version": "1.0.0",
+  "description": "ak-field webcomponent",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-field"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "ak-validator": "*",
+    "ak-text-field": "*",
+    "ak-icon": "^7.1.0",
+    "ak-inline-dialog": "^71.0.8",
+    "akutil-shared-styles": "^33.1.0",
+    "babel-runtime": "^6.11.6",
+    "classnames": "^2.2.5",
+    "skatejs": "^1.2.5"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "akutil-common-test": "^1.0.0",
+    "akutil-react": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

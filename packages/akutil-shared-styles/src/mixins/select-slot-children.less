@@ -22,7 +22,7 @@
 .select-slot-children(@className, @rules) {
   @escapedClassName: e(@className);
   // V1
-  ::slotted(:not([slot])) > * {
+  ::slotted(:not([slot])) {
     @rules();
   }
 

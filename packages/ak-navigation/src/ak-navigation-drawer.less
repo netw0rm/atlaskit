@@ -17,11 +17,7 @@
   height: 100%;
   box-shadow: @ak-navigation-drawer-box-shadow;
   padding: 62px 0 0 0;
-
-  // TODO: this can be removed if we change the order in the shadow DOM, but there's a bug with
-  // having named slots after the default slot that makes this approach fail.
-
-  z-index: 1;
+  z-index: @drawer-z-index;
 
   &.open {
     width: 220px;

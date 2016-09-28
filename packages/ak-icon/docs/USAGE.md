@@ -1,14 +1,14 @@
 # Icons
 
-This package contains the AtlasKit icons. All icons can (and should be) be consumed separately.
+This package contains the AtlasKit icons. All icons should be consumed separately unless your build tool supports tree shaking.
 
-> Please note the license of this package is the Atlassian Design Guidelines - please see LICENSE for more information.
+> This packages is licensed under the Atlassian Design Guidelines - please check the LICENSE file for more information.
 
 ## Try it out
 
-Go to [the ak-icon Storybook](https://aui-cdn.atlassian.com/atlaskit/stories/ak-icon/@VERSION@/) to try for yourself.
+Interact with a [live demo of the ak-icon component.](https://aui-cdn.atlassian.com/atlaskit/stories/ak-icon/@VERSION@/)
 
-## Setting up and installing
+## Installation
 
 ```sh
 npm install ak-icon
@@ -55,7 +55,7 @@ document.body.appendChild(component);
 
 ## Controlling the icon color
 
-The fill color of an icon can be controlled via CSS:
+You can control the icon color via CSS:
 
 ```html
 <span style="color: red;">
@@ -63,12 +63,33 @@ The fill color of an icon can be controlled via CSS:
 </span>
 ```
 
-### This package also provides all icons bundled in one export via:
-
 #### bundle.js
 
+This package provides all icons bundled in one export but unless your build tool supports tree shaking, you should import only a single icon instead of the bundled version.
+
 ```js
-import 'ak-icon';
+import * as icons from 'ak-icon';
+const { bitbucketLogo: BitbucketLogo } = icons;
+
+// old-school
+const icon = new BitbucketLogo();
+document.body.appendChild(icon);
+
+// or JSX
+const x = (<BitbucketLogo />);
+```
+
+Import a single icon:
+
+```js
+import bitbucketLogo as BitbucketLogo from 'ak-icon';
+
+// old-school
+const icon = new BitbucketLogo();
+document.body.appendChild(icon);
+
+// or JSX
+const x = (<BitbucketLogo />);
 ```
 
 #### index.html
@@ -78,7 +99,7 @@ import 'ak-icon';
 <ak-icon-home></ak-icon-home>
 <ak-icon-bitbucket-logo></ak-icon-bitbucket-logo>
 ```
-however keep in mind that this will pull in *all* icons, not only the ones you use, so it should mainly only be used for prototyping.
+This should only be used for prototyping. Keep in mind that this will pull in *all* icons, not only the ones you use.
 
 ### React
 

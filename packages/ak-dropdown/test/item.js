@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Item, events as dropdownEvents } from '../src';
+import { events as dropdownEvents } from '../src';
+import Item from '../src/index.item';
 import keyCode from 'keycode';
 import { props } from 'skatejs';
 import 'custom-event-polyfill';
@@ -181,48 +182,6 @@ describe('ak-dropdown-item', () => {
     });
   });
 
-
-  describe('sizing for an item with checkboxes', () => {
-    let component;
-    let componentDomElem;
-    let iconDomElem;
-    let defaultDomElem;
-
-    beforeEach(() => {
-      component = '<ak-dropdown-item checkbox>some text</ak-dropdown-item>';
-      itemContainer.innerHTML = component;
-
-      // wait until the component is rendered
-      return waitUntil(() =>
-        itemContainer.firstChild.getAttribute('defined') !== null
-      ).then(() => {
-        component = itemContainer.firstChild;
-        componentDomElem = getShadowRoot(component).firstChild;
-        iconDomElem = getShadowRoot(component).querySelector('ak-icon');
-        defaultDomElem = getShadowRoot(component).querySelector('slot,content').parentNode;
-      });
-    });
-
-    it(`height should be equal ${defaultHeight}`, () => {
-      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(defaultHeight);
-    });
-
-    it(`gap between checkbox and left edge of the component should be ${defaultGap}`, () => {
-      const rectComponent = componentDomElem.getBoundingClientRect();
-      const rectIcon = iconDomElem.getBoundingClientRect();
-      const gap = rectIcon.left - rectComponent.left;
-
-      expect(Math.round(gap)).to.equal(defaultGap);
-    });
-
-    it(`gap between checkbox and default slot should be ${defaultGap}`, () => {
-      const rectDefault = defaultDomElem.getBoundingClientRect();
-      const rectIcon = iconDomElem.getBoundingClientRect();
-      const gap = rectDefault.left - rectIcon.left - rectIcon.width;
-      expect(Math.round(gap)).to.equal(defaultGap);
-    });
-  });
-
   describe('keyboard events', () => {
     const eventsMap = {
       up: dropdownEvents.item.up,
@@ -277,15 +236,6 @@ describe('ak-dropdown-item', () => {
       getShadowRoot(component).firstChild.dispatchEvent(event);
 
       expect(calledSpy.called).to.equal(false);
-    });
-
-    it('selected event SHOULD be emitted on a selected checkbox element', () => {
-      event.keyCode = keyCode('enter');
-      itemContainer.addEventListener(eventsMap.enter, calledSpy);
-      props(component, { checkbox: true });
-      props(component, { selected: true });
-      getShadowRoot(component).firstChild.dispatchEvent(event);
-      expect(calledSpy.called).to.equal(true);
     });
   });
 });

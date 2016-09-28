@@ -13,7 +13,7 @@ export {
   doc, p, blockquote, pre,
   h1, h2, h3, h4, h5, h6,
   li, ul, ol, br, img, hr, em, strong, code, del, a,
-  text, fragment, slice
+  text, fragment, slice, mention, emoji
 } from './schema-builder';
 export { fromHTML, toHTML } from './html-helpers';
 

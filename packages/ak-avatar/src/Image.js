@@ -9,6 +9,8 @@ export default (props) => {
     return (<DefaultAvatar {...props} />);
   }
 
+  // we deliberately insert the alt prop knowing it will get overwritten by ...props because all
+  // img tags should either have an alt or role="presentation"
   return (<img alt={props.alt} {...props} />);
 };
 

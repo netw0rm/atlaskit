@@ -23,7 +23,7 @@
     "web-animations-js": "^2.2.1"
   },
   "devDependencies": {
-    "akutil-common-test": "^1.0.0",
+    "akutil-common-test": "^2.0.0",
     "akutil-react": "^1.0.0",
     "custom-event-polyfill": "^0.3.0"
   },

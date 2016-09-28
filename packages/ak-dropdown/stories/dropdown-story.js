@@ -53,7 +53,9 @@ storiesOf(`${name} component`, module)
   .add('simple dropdown', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+          Dropdown-button
+        </ak-dropdown-trigger-button>
         <ak-dropdown-item>text1</ak-dropdown-item>
         <ak-dropdown-item>text2</ak-dropdown-item>
         <ak-dropdown-item>some text here</ak-dropdown-item>
@@ -66,10 +68,10 @@ storiesOf(`${name} component`, module)
       <DropdownReactComponent open>
         <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
         <ak-dropdown-group heading="Checkboxes title">
-          <ak-dropdown-item checkbox>text1</ak-dropdown-item>
-          <ak-dropdown-item checkbox disabled>text2</ak-dropdown-item>
-          <ak-dropdown-item checkbox>some text here</ak-dropdown-item>
-          <ak-dropdown-item checkbox>another text</ak-dropdown-item>
+          <ak-dropdown-item-checkbox>text1</ak-dropdown-item-checkbox>
+          <ak-dropdown-item-checkbox disabled>text2</ak-dropdown-item-checkbox>
+          <ak-dropdown-item-checkbox>some text here</ak-dropdown-item-checkbox>
+          <ak-dropdown-item-checkbox>another text</ak-dropdown-item-checkbox>
         </ak-dropdown-group>
       </DropdownReactComponent>
     </div>
@@ -77,12 +79,14 @@ storiesOf(`${name} component`, module)
   .add('dropdown with radio items', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger">Dropdown</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+          Dropdown
+        </ak-dropdown-trigger-button>
         <ak-dropdown-group heading="Radio title">
-          <ak-dropdown-item radio>text1</ak-dropdown-item>
-          <ak-dropdown-item radio disabled>text2</ak-dropdown-item>
-          <ak-dropdown-item radio>some text here</ak-dropdown-item>
-          <ak-dropdown-item radio>another text</ak-dropdown-item>
+          <ak-dropdown-item-radio>text1</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio disabled>text2</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>some text here</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>another text</ak-dropdown-item-radio>
         </ak-dropdown-group>
       </DropdownReactComponent>
     </div>
@@ -90,18 +94,20 @@ storiesOf(`${name} component`, module)
   .add('dropdown with radio items inside different groups', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger">Dropdown</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+          Dropdown
+        </ak-dropdown-trigger-button>
         <ak-dropdown-group heading="One title">
-          <ak-dropdown-item radio>one</ak-dropdown-item>
-          <ak-dropdown-item radio>two</ak-dropdown-item>
+          <ak-dropdown-item-radio>one</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>two</ak-dropdown-item-radio>
         </ak-dropdown-group>
         <ak-dropdown-group heading="Two title">
-          <ak-dropdown-item radio>three</ak-dropdown-item>
-          <ak-dropdown-item radio>four</ak-dropdown-item>
+          <ak-dropdown-item-radio>three</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>four</ak-dropdown-item-radio>
         </ak-dropdown-group>
         <ak-dropdown-group>
-          <ak-dropdown-item radio>this is a titleless group</ak-dropdown-item>
-          <ak-dropdown-item radio>separate group</ak-dropdown-item>
+          <ak-dropdown-item-radio>this is a titleless group</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>separate group</ak-dropdown-item-radio>
         </ak-dropdown-group>
       </DropdownReactComponent>
     </div>
@@ -112,7 +118,9 @@ storiesOf(`${name} component`, module)
   .add('dropdown with avatars', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger">People list</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+          People list
+        </ak-dropdown-trigger-button>
         <ak-dropdown-item>
           <ak-avatar slot="left" src={avatarUrl} size="small" />
           Adam Smith
@@ -144,7 +152,7 @@ storiesOf(`${name} component`, module)
   .add('dropdown with grouping', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
+        <ak-dropdown-trigger slot="trigger" tab-index="1">Dropdown-button</ak-dropdown-trigger>
         <ak-dropdown-item>some text here</ak-dropdown-item>
         <ak-dropdown-item>some text here</ak-dropdown-item>
         <ak-dropdown-group heading="title one">
@@ -165,7 +173,7 @@ storiesOf(`${name} component`, module)
   .add('dropdown with grouping without headers', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open>
-        <ak-dropdown-trigger slot="trigger">Dropdown-button</ak-dropdown-trigger>
+        <ak-dropdown-trigger slot="trigger" tab-index="1">Dropdown-button</ak-dropdown-trigger>
         <ak-dropdown-item>some text here</ak-dropdown-item>
         <ak-dropdown-item>some text here</ak-dropdown-item>
         <ak-dropdown-group>
@@ -183,29 +191,10 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
-  .add('dropdown with everything', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
-        <ak-dropdown-group>
-          <ak-dropdown-item>text1</ak-dropdown-item>
-          <ak-dropdown-item selected>text2</ak-dropdown-item>
-          <ak-dropdown-item disabled>some text here</ak-dropdown-item>
-          <ak-dropdown-item>another text</ak-dropdown-item>
-          <ak-dropdown-item>such long text for such small dropdown isn't it?</ak-dropdown-item>
-          <ak-dropdown-item href="http://atlassian.com">This is a clickable link</ak-dropdown-item>
-        </ak-dropdown-group>
-        <ak-dropdown-group heading="some group">
-          <ak-dropdown-item>this is a group</ak-dropdown-item>
-          <ak-dropdown-item>another text</ak-dropdown-item>
-        </ak-dropdown-group>
-      </DropdownReactComponent>
-    </div>
-  ))
   .add('dropdown with a buttonless trigger', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent>
-        <ak-dropdown-trigger slot="trigger">
+        <ak-dropdown-trigger slot="trigger" tab-index="1">
           <ak-avatar src={avatarUrl} size="small" />
         </ak-dropdown-trigger>
         <ak-dropdown-item>Joscha</ak-dropdown-item>
@@ -218,11 +207,11 @@ storiesOf(`${name} component`, module)
   .add('two dropdowns', () => (
     <div>
       <DropdownReactComponent>
-        <ak-dropdown-trigger-button slot="trigger">A</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">A</ak-dropdown-trigger-button>
         <ak-dropdown-item>A</ak-dropdown-item>
       </DropdownReactComponent>
       <DropdownReactComponent>
-        <ak-dropdown-trigger-button slot="trigger">B</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">B</ak-dropdown-trigger-button>
         <ak-dropdown-item>B</ak-dropdown-item>
       </DropdownReactComponent>
     </div>
@@ -230,7 +219,9 @@ storiesOf(`${name} component`, module)
   .add('dropdown with a link that opens in a new tab', () => (
     <div>
       <DropdownReactComponent>
-        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+          Dropdown-button
+        </ak-dropdown-trigger-button>
         <ak-dropdown-item href="http://atlassian.design" target="_blank">New tab</ak-dropdown-item>
         <ak-dropdown-item href="http://atlassian.design">Same tab</ak-dropdown-item>
       </DropdownReactComponent>
@@ -239,12 +230,35 @@ storiesOf(`${name} component`, module)
   .add('dropdown with icon only button trigger', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent>
-        <ak-dropdown-trigger-arrow slot="trigger"></ak-dropdown-trigger-arrow>
+        <ak-dropdown-trigger-arrow slot="trigger" tab-index="1"></ak-dropdown-trigger-arrow>
         <ak-dropdown-item>Joscha</ak-dropdown-item>
         <ak-dropdown-item>Wuz</ak-dropdown-item>
         <ak-dropdown-item>Here</ak-dropdown-item>
         <ak-dropdown-item>2016</ak-dropdown-item>
       </DropdownReactComponent>
+    </div>
+  ))
+  .add('dropdown with everything for the screenreaders test', () => (
+    <div style={{ padding: '40px' }}>
+      <input type="text" placeholder="item before" />
+      <DropdownReactComponent>
+        <ak-dropdown-trigger-button slot="trigger" tab-index="1">Text</ak-dropdown-trigger-button>
+        <ak-dropdown-group heading="People">
+          <ak-dropdown-item href="http://atlassian.com" target="_blank">Joscha</ak-dropdown-item>
+          <ak-dropdown-item href="http://google.com" target="_blank">Jennifer</ak-dropdown-item>
+        </ak-dropdown-group>
+        <ak-dropdown-group heading="Gender">
+          <ak-dropdown-item-checkbox selected>Female</ak-dropdown-item-checkbox>
+          <ak-dropdown-item-checkbox>Male</ak-dropdown-item-checkbox>
+        </ak-dropdown-group>
+        <ak-dropdown-group heading="Favourites">
+          <ak-dropdown-item-radio>jQuery</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio selected>React</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio selected>Web components</ak-dropdown-item-radio>
+          <ak-dropdown-item-radio>Vanilla JS</ak-dropdown-item-radio>
+        </ak-dropdown-group>
+      </DropdownReactComponent>
+      <a href="#">link after</a>
     </div>
   ))
 ;

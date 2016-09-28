@@ -40,6 +40,7 @@ describe(name, () => {
       timeout = setTimeout(() => {
         window.onerror = orig;
         this.skip();
+        done();
       }, 500);
     });
 

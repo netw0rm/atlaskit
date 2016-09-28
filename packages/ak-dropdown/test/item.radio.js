@@ -7,7 +7,7 @@ import shadowItemStyles from '../src/less/shadow-item.less';
 import { props } from 'skatejs';
 import supportsVoiceOver from '../src/internal/supportsVoiceOver';
 
-const role = !supportsVoiceOver ? 'menuitemradio' : 'radio';
+const role = supportsVoiceOver ? 'radio' : 'menuitemradio';
 const defaultHeight = 30;
 const defaultGap = 10;
 

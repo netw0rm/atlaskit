@@ -9,7 +9,7 @@ import { waitUntil, getShadowRoot, afterMutations, getRootNode } from 'akutil-co
 import shadowItemStyles from '../src/less/shadow-item.less';
 import supportsVoiceOver from '../src/internal/supportsVoiceOver';
 
-const role = !supportsVoiceOver ? 'menuitemcheckbox' : 'checkbox';
+const role = supportsVoiceOver ? 'checkbox' : 'menuitemcheckbox';
 const defaultHeight = 30;
 const defaultGap = 10;
 

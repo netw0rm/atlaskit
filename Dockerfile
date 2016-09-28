@@ -21,6 +21,7 @@ RUN echo "Installing general tools" \
   python \
   make \
   zip \
+  unzip \
 && rm -rf /var/cache/apk/*
 #### </general-tools>
 

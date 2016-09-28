@@ -13,6 +13,7 @@ import {
   akColorN700,
   akColorN900,
 } from 'akutil-shared-styles';
+import AkIconArrowRight from 'ak-icon/glyph/arrow-right';
 import * as events from './index.events';
 import * as keys from './keys';
 import classnames from 'classnames';
@@ -211,14 +212,18 @@ export default define('ak-calendar', {
         color: akColorWhite,
         display: 'inline-block',
         padding: '10px',
+        'text-align': 'center',
       },
 
+      heading: {
+        display: 'flex',
+      },
       monthAndYear: {
         color: akColorWhite,
-        padding: '6px 12px',
+        'flex-basis': '100%',
+        'font-size': '16px',
+        padding: '5px 0 10px 0',
       },
-
-      // buttons
       btn: {
         'background-color': 'transparent',
         border: 'none',
@@ -236,14 +241,15 @@ export default define('ak-calendar', {
         border: '2px solid transparent',
         'border-radius': '4px',
         cursor: 'pointer',
-        padding: '4px',
-        'text-align': 'center',
+        'font-size': '14px',
+        padding: '5px',
         '&:hover': {
           'background-color': akColorN900,
         },
       },
       dayOfWeek: {
         color: akColorN80,
+        'font-size': '10px',
         'text-transform': 'uppercase',
       },
       disabled: {
@@ -309,13 +315,15 @@ export default define('ak-calendar', {
       <Announcer>{new Date(elem.year, elem.month, elem.day).toString()}</Announcer>,
       <table>
         <caption>
-          <button class={classnames(css.btn, css.btnPrev)} onClick={elem[$prev]}>p</button>
-          <span class={css.monthAndYear}>
-            <span>{getMonthName(elem, elem.month)}</span>
-            {' '}
-            <span>{elem.year}</span>
-          </span>
-          <button class={classnames(css.btn, css.btnNext)} onClick={elem[$next]}>n</button>
+          <div class={css.heading}>
+            <button class={classnames(css.btn, css.btnPrev)} onClick={elem[$prev]}>p</button>
+            <div class={css.monthAndYear}>
+              <span>{getMonthName(elem, elem.month)}</span>
+              {' '}
+              <span>{elem.year}</span>
+            </div>
+            <button class={classnames(css.btn, css.btnNext)} onClick={elem[$next]}>n</button>
+          </div>
         </caption>
         <thead>
           <tr>

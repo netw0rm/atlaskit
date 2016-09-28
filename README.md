@@ -220,7 +220,7 @@ Releasing components is completely automated. The process of releasing will begi
 * Linting is run
 * Tests will be run in Browserstack
 * Component dist is built
-* Semantic Relase will bump the versions for any component that has changed
+* [semantic-release](https://github.com/atlassian/lerna-semantic-release) will bump the versions for any component that has changed
 * Change log is generated automatically from commit messages
 * Component will be published to npm
 
@@ -238,7 +238,7 @@ AtlasKit uses Bitbucket Pipelines for it's continuous integration. The build scr
 Bitbucket pipelines works using a Docker image. This contains the initial setup required to run the build. If you need to make changes to `Dockerfile`, you will need to push them to Dockerhub:
 
 * Build the new Docker image: `docker build -t atlaskit .`
-* Create the new Docker tag: `docker tag <IMAGE_ID> <YOUR-USER>/atlaskit:latest`
-* Push new image to Dockerhub: `docker push <YOUR-USER>/atlaskit`
+* Create the new Docker tag: `docker tag <IMAGE_ID> atlassianlabs/atlaskit:<TAG>`
+* Push new image to Dockerhub: `docker push <YOUR-USER>/atlaskit:<TAG>`
 
 **Note:** Make sure you also update the `bitbucket-pipelines.yml` file with the name of your new image!

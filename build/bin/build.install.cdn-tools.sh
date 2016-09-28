@@ -12,6 +12,3 @@ fi
 # Install CDN upload tool from Maven
 echo "Installing S3 uploader (this can take a few minutes)"
 mvn -q -B dependency:copy -Dartifact=com.atlassian.scripts.prebake.distributor:prebake-distributor-runner:0.22.0 -Dmdep.stripClassifier=true -Dmdep.stripVersion=true -Dsilent=true -DoutputDirectory=..
-
-echo "Installing cloudfront-invalidate-cli"
-npm install -g cloudfront-invalidate-cli@1.0.3

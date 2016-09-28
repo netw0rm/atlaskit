@@ -25,9 +25,6 @@ bbuild \
 --url "$BUILD_URL" \
 --state "INPROGRESS"
 
-echo "Installing marky-markdown"
-npm install -g marky-markdown@8.1.0
-
 echo "Generating docs HTML output from README.md files..."
 
 rm -rf ../atlaskit-docs

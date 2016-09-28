@@ -21,11 +21,12 @@ function handleLabelClick(elem) {
   };
 }
 
-function setupFocusHandlers(el) {
-  if (!el[focusHandlers]) {
-    el.addEventListener('focus', () => emit(el, events.focus), true);
-    el.addEventListener('blur', () => emit(el, events.blur), true);
-    el[focusHandlers] = true;
+function setupFocusHandlers(elem) {
+  const slot = elem[inputSlot];
+  if (!slot[focusHandlers]) {
+    slot.addEventListener('focus', () => emit(elem, events.focus), true);
+    slot.addEventListener('blur', () => emit(elem, events.blur), true);
+    slot[focusHandlers] = true;
   }
 }
 
@@ -55,7 +56,7 @@ export default define('ak-text-field', {
             })}
             ref={(el) => {
               elem[inputSlot] = el;
-              setupFocusHandlers(el);
+              setupFocusHandlers(elem);
             }}
           />
         </label>

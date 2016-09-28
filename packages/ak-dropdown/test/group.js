@@ -1,10 +1,10 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Group } from '../src';
-import { Component, props } from 'skatejs';
+import { props } from 'skatejs';
+import Group from '../src/index.group';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
-import shadowGroupStyles from '../src/shadow-group.less';
+import shadowGroupStyles from '../src/less/shadow-group.less';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -27,12 +27,6 @@ function tearDownComponent(component) {
   document.body.removeChild(component);
 }
 
-describe('exports', () => {
-  it('should export a base component', () => {
-    (new Group).should.be.an.instanceof(Component);
-  });
-});
-
 describe('general behavior', () => {
   let component;
 
@@ -53,5 +47,14 @@ describe('general behavior', () => {
     props(component, { heading: headingText });
     const heading = getShadowRoot(component).querySelector(`.${shadowGroupStyles.locals.heading}`);
     expect(heading.innerHTML).to.equal(headingText);
+  });
+
+  it('should have correct aria and role attributes', () => {
+    const headingText = 'test heading';
+    props(component, { heading: headingText });
+    const heading = getShadowRoot(component).querySelector(`.${shadowGroupStyles.locals.heading}`);
+    expect(heading.getAttribute('aria-hidden')).to.equal('true');
+    expect(getShadowRoot(component).firstChild.getAttribute('role')).to.equal('group');
+    expect(getShadowRoot(component).firstChild.getAttribute('aria-label')).to.equal(headingText);
   });
 });

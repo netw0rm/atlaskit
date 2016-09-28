@@ -1,6 +1,6 @@
 # Tabs
 
-They're a simple graphical element that allow multiple panels to be contained within a single window and provide an easy way to switch between views of similar content.
+A tab is a simple graphical element that allows to contain multiple panels within a single window, and provides an easy way to switch between panels of similar content.
 
 ![Example tabs](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tabs/docs/tabs.gif)
 

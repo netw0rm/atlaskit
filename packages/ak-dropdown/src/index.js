@@ -1,10 +1,12 @@
 /** @jsx vdom */
-import 'style!./host.less';
-import shadowListStyles from './shadow-list.less';
+import 'style!./less/host.less';
+import shadowListStyles from './less/shadow-list.less';
 import { vdom, define, prop, props, emit, ready } from 'skatejs';
-import ItemDefinition from './item';
-import './trigger';
-import GroupDefinition from './group';
+import './index.trigger';
+import Item from './index.item';
+import CheckboxItem from './index.item.checkbox';
+import RadioItem from './index.item.radio';
+import './index.group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
@@ -17,14 +19,21 @@ const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
 const offset = '0 2';
+const activatedFrom = Symbol();
 
 function getTriggerElement(elem) {
   return elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
 }
 
+function getAllItems(elem) {
+  return Array
+    .from(elem.querySelectorAll('*[defined]'))
+    .filter((node) => node instanceof Item);
+}
+
 function toggleDialog(elem, value) {
   const isOpen = value === undefined ? !elem.open : value;
-  const list = elem.querySelectorAll('ak-dropdown-item');
+  const list = getAllItems(elem);
 
   if ((elem.open !== isOpen)) {
     elem.open = isOpen;
@@ -43,7 +52,10 @@ function toggleDialog(elem, value) {
   // properties 'first' and 'last' should be set (TBD: change to :first-child and :last-child)
   // when it's closed everything should be cleared
   if (isOpen) {
-    list[0].focused = true;
+    // if dropdown has been opened by the keyDown event, then the first element should be focused
+    if (elem[activatedFrom] === 'keyDown') {
+      list[0].focused = true;
+    }
     list[0].first = true;
     list[list.length - 1].last = true;
     elem.reposition();
@@ -67,26 +79,29 @@ function toggleDialog(elem, value) {
 }
 
 function selectSimpleItem(elem, event) {
-  const list = elem.querySelectorAll('ak-dropdown-item');
+  const list = Array
+    .from(elem.querySelectorAll('*[defined]'))
+    .filter((node) => (
+      node instanceof Item && !(node instanceof RadioItem) && !(node instanceof CheckboxItem)
+    ));
+
   [...list].forEach((val) => {
     if (val.selected) {
       val.selected = false;
     }
   });
-
   event.detail.item.selected = true;
   toggleDialog(elem, false);
 }
 
-function selectCheckboxItem(elem, event) {
-  event.detail.item.selected = !event.detail.item.selected;
+function selectCheckboxItem(item) {
+  item.selected = !item.selected;
 }
 
 function selectRadioItem(elem, event) {
   const radioGroupItems = event.detail.item.parentNode.children;
-
   [...radioGroupItems].forEach((val) => {
-    if (val.radio && val.selected) {
+    if (val.selected && val instanceof RadioItem) {
       val.selected = false;
     }
   });
@@ -95,13 +110,17 @@ function selectRadioItem(elem, event) {
 }
 
 function selectItem(elem, event) {
-  if (event.detail.item.checkbox) {
-    selectCheckboxItem(elem, event);
-  } else if (event.detail.item.radio) {
+  if (event.detail.item instanceof CheckboxItem) {
+    selectCheckboxItem(event.detail.item);
+  } else if (event.detail.item instanceof RadioItem) {
     selectRadioItem(elem, event);
   } else {
     selectSimpleItem(elem, event);
   }
+}
+
+function unselectItem(elem, event) {
+  event.detail.item.selected = false;
 }
 
 function isDescendantOf(child, parent) {
@@ -115,7 +134,8 @@ function isDescendantOf(child, parent) {
 }
 
 function changeFocus(elem, type) {
-  const list = elem.querySelectorAll('ak-dropdown-item');
+  const list = getAllItems(elem);
+
   const l = list.length;
 
   for (let i = 0; i < l; i++) {
@@ -135,18 +155,13 @@ function changeFocus(elem, type) {
 // min width of a dropdown should be more than width of the trigger (by design)
 // max-width is controlled by css, everything that's exceeding its limit
 // is ellipsed (by design, controlled by css)
-function getDropdownStyles(target, dropdown) {
+function getDropdownMinwidth(target, dropdown) {
   const dropdownPositionedToSide =
     dropdown.position.indexOf('left') === 0 || dropdown.position.indexOf('right') === 0;
-  const minWidth = dropdownPositionedToSide ?
+  const minWidth = !dropdownPositionedToSide ?
   target.getBoundingClientRect().width + diffBetweenDropdownAndTrigger : dropdownMinWidth;
-  return {
-    minWidth: `${minWidth}px`,
-  };
+  return `${minWidth}px`;
 }
-
-export const Item = define('ak-dropdown-item', ItemDefinition);
-export const Group = define('ak-dropdown-group', GroupDefinition);
 
 /**
  * @description The definition for the Dropdown component.
@@ -157,8 +172,14 @@ export const Group = define('ak-dropdown-group', GroupDefinition);
  */
 export default define('ak-dropdown', {
   attached(elem) {
-    elem.addEventListener(events.trigger.activated, () => toggleDialog(elem));
+    elem.addEventListener(events.trigger.activated, (e) => {
+      if (e.detail) {
+        elem[activatedFrom] = e.detail.eventType;
+      }
+      toggleDialog(elem);
+    });
     elem.addEventListener(events.selected, (e) => selectItem(elem, e));
+    elem.addEventListener(events.unselected, (e) => unselectItem(elem, e));
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
     elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
@@ -192,16 +213,12 @@ export default define('ak-dropdown', {
   },
   render(elem) {
     let target = elem.target;
-    let styles;
-
     return (
       <div>
         {!elem.target ?
           <div
             ref={(el) => {
               target = el;
-              // width of the dropdown depends on the width of the trigger
-              styles = getDropdownStyles(target, elem);
             }}
           >
             <slot
@@ -235,7 +252,10 @@ export default define('ak-dropdown', {
           }
         }
         >
-          <div className={shadowListStyles.locals.list} style={styles}>
+          <div
+            className={shadowListStyles.locals.list}
+            style={{ minWidth: getDropdownMinwidth(target, elem) }}
+          >
             <style>{shadowListStyles.toString()}</style>
             <slot />
           </div>
@@ -277,4 +297,4 @@ export default define('ak-dropdown', {
 });
 
 export { events };
-export { DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow } from './trigger';
+export { DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow } from './index.trigger';

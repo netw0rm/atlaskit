@@ -744,7 +744,8 @@ declare module 'prosemirror/dist/model/schema' {
     import { Node, TextNode } from 'prosemirror/dist/model/node';
     import { OrderedMap } from 'prosemirror/dist/util/orderedmap';
     export class NodeType {
-        constructor(name: any, schema: any);
+        constructor(name: string, schema: Schema);
+        name: string;
         isBlock: boolean;
         isTextblock: boolean;
         isInline: boolean;
@@ -783,6 +784,7 @@ declare module 'prosemirror/dist/model/schema' {
     export class MarkType {
         constructor(name: any, rank: any, schema: any);
         name: string;
+        get attrs(): { [name: string]: Attribute };
         schema: Schema;
         inclusiveRight: boolean;
         create(attrs: any): any;
@@ -1175,7 +1177,7 @@ declare module 'prosemirror/dist/util/orderedmap' {
         addToStart(key: any, value: any): OrderedMap;
         addToEnd(key: any, value: any): OrderedMap;
         addBefore(place: any, key: any, value: any): OrderedMap;
-        forEach(f: any): void;
+        forEach(f: (key: any, value: any) => void): void;
         prepend(map: any): OrderedMap;
         append(map: any): OrderedMap;
         subtract(map: any): this;

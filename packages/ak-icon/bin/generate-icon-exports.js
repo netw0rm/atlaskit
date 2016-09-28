@@ -131,12 +131,8 @@ async.waterfall([
     }, {});
     const compiler = webpack(webpackConf(destFolder, entry));
     compiler.run((err, stats) => {
-      if (err) {
-        cb(err);
-        return;
-      }
-      if (stats.compilation.errors.length) {
-        cb(stats.compilation.errors);
+      if (err || stats.compilation.errors.length) {
+        cb(err || stats.compilation.errors);
         return;
       }
       cb();

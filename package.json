@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@atlassian/gremlins.js": "^0.1.0",
-    "@kadira/storybook": "^2.12.1",
+    "@kadira/storybook": "^2.20.1",
     "akutil-common-test": "^2.0.0",
     "akutil-cucumber": "^1.0.0",
     "akutil-dmd-plugin": "^2.0.0",

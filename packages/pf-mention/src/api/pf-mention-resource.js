@@ -139,7 +139,7 @@ class MentionResource extends AbstractMentionResource {
 
   /**
    *
-   * @param config = {
+   * @param {Object} config = {
    *   url: string (required), // the base url of the mentions service
    *   securityProvider: function (required),
    *   a function returning an object with headers and/or params, e.g.
@@ -181,10 +181,6 @@ class MentionResource extends AbstractMentionResource {
         debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
       }
     };
-
-    // const notifyErr = (error) => {
-    //   this._notifyErrorListeners(error);
-    // }
 
     if (!query) {
       this._initialState().then(notify, (error) => this._notifyErrorListeners(error));

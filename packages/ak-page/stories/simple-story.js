@@ -1,20 +1,15 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import webComponent from '../src/index';
-const { React, ReactDOM } = window;
+import React from 'react';
 import { name } from '../package.json';
+import 'ak-icon';
 
 import AkNavigation from 'ak-navigation';
 
-const Component = reactify(webComponent, {
-  React,
-  ReactDOM,
-});
+const Component = reactify(webComponent);
 
-const Navigation = reactify(AkNavigation, {
-  React,
-  ReactDOM,
-});
+const Navigation = reactify(AkNavigation);
 
 storiesOf(name, module)
 .add('a simple ak-page', () => (
@@ -23,9 +18,36 @@ storiesOf(name, module)
     <div>Main</div>
   </Component>
   ))
-  .add('a simple ak-page with navigation', () => (
+  .add('with navigation', () => (
     <Component>
       <Navigation slot="navigation" open />
       <div>Content</div>
+    </Component>
+  ))
+  .add('with containerless navigation', () => (
+    <Component>
+      <Navigation slot="navigation" container-hidden />
+      <div>Content</div>
+    </Component>
+  ))
+  .add('with navigation that has layering', () => (
+    <Component>
+      <style>{`
+        .z-index-content {
+          z-index: 500;
+          background: rgba(0,0,0,0.5);
+          height: 300px;
+          position: relative;
+        }
+      `}</style>
+      <Navigation slot="navigation" open>
+        <ak-icon-search slot="global-search" />
+        <ak-icon-bitbucket-create slot="global-create" />
+      </Navigation>
+      <div>
+        <div className="z-index-content">
+          When you open search, it should be in front of this div
+        </div>
+      </div>
     </Component>
   ));

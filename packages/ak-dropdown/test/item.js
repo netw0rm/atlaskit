@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Item, events as dropdownEvents } from '../src';
+import { events as dropdownEvents } from '../src';
+import Item from '../src/index.item';
 import keyCode from 'keycode';
 import { props } from 'skatejs';
 import 'custom-event-polyfill';
@@ -66,6 +67,33 @@ describe('ak-dropdown-item', () => {
       getShadowRoot(component).firstChild.click();
 
       expect(clickSpy.called).to.equal(false);
+    });
+  });
+
+  describe('links', () => {
+    let component;
+    let componentDomElem;
+
+    beforeEach(() => {
+      component = `<ak-dropdown-item href="#foo" target="_blank">
+        <div>some text</div>
+      </ak-dropdown-item>`;
+      itemContainer.innerHTML = component;
+
+      return waitUntil(() =>
+        itemContainer.firstChild.getAttribute('defined') !== null
+      ).then(() => {
+        component = itemContainer.firstChild;
+        componentDomElem = getShadowRoot(component).firstChild;
+      });
+    });
+
+    it('href is matched on the link', () => {
+      expect(componentDomElem.getAttribute('href')).to.equal('#foo');
+    });
+
+    it('target is matched on the link', () => {
+      expect(componentDomElem.getAttribute('target')).to.equal('_blank');
     });
   });
 
@@ -173,9 +201,13 @@ describe('ak-dropdown-item', () => {
         bubbles: true,
         cancelable: true,
       });
-      document.body.appendChild(itemContainer);
+
       calledSpy = sinon.spy();
       return waitUntil(() => getShadowRoot(component));
+    });
+
+    afterEach(() => {
+      calledSpy.reset();
     });
 
     Object.keys(eventsMap).forEach((key) => {
@@ -186,24 +218,24 @@ describe('ak-dropdown-item', () => {
 
         expect(calledSpy.called).to.equal(true);
       });
+    });
 
-      it('selected event should not be emitted on a disabled element', () => {
-        event.keyCode = keyCode('enter');
-        itemContainer.addEventListener(eventsMap[key], calledSpy);
-        props(component, { disabled: true });
-        getShadowRoot(component).firstChild.dispatchEvent(event);
+    it('selected event should not be emitted on a disabled element', () => {
+      event.keyCode = keyCode('enter');
+      itemContainer.addEventListener(eventsMap.enter, calledSpy);
+      props(component, { disabled: true });
+      getShadowRoot(component).firstChild.dispatchEvent(event);
 
-        expect(calledSpy.called).to.equal(false);
-      });
+      expect(calledSpy.called).to.equal(false);
+    });
 
-      it('selected event should not be emitted on a selected element', () => {
-        event.keyCode = keyCode('enter');
-        itemContainer.addEventListener(eventsMap[key], calledSpy);
-        props(component, { selected: true });
-        getShadowRoot(component).firstChild.dispatchEvent(event);
+    it('selected event should not be emitted on a selected element', () => {
+      event.keyCode = keyCode('enter');
+      itemContainer.addEventListener(eventsMap.enter, calledSpy);
+      props(component, { selected: true });
+      getShadowRoot(component).firstChild.dispatchEvent(event);
 
-        expect(calledSpy.called).to.equal(false);
-      });
+      expect(calledSpy.called).to.equal(false);
     });
   });
 });

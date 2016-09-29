@@ -3,12 +3,12 @@ import assign from 'object-assign';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
-import { symbols, props } from 'skatejs';
+import { props } from 'skatejs';
 import AkButton, { APPEARANCE } from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
 import hostStyles from '../src/host.less';
 import { name } from '../package.json';
-import { hasClass, waitUntil } from 'akutil-common-test';
+import { hasClass, waitUntil, getShadowRoot } from 'akutil-common-test';
 const classKeys = shadowStyles.locals;
 import { akGridSize } from 'akutil-shared-styles';
 
@@ -19,7 +19,7 @@ const expect = chai.expect;
 describe('ak-button', () => {
   let component;
   const shadowDomQuery = (elem, selector) =>
-    elem[symbols.shadowRoot].querySelector(selector);
+    getShadowRoot(elem).querySelector(selector);
 
   const getShadowButtonElem = (elem) =>
     shadowDomQuery(elem, `.${classKeys.button}`);
@@ -43,7 +43,7 @@ describe('ak-button', () => {
     component = new AkButton();
     props(component, { className: hostStyles.locals.akButton });
     document.body.appendChild(component);
-    return waitUntil(() => component[symbols.shadowRoot] !== null);
+    return waitUntil(() => getShadowRoot(component) !== null);
   });
 
   afterEach(() => document.body.removeChild(component));

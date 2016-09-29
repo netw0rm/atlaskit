@@ -1,13 +1,12 @@
 {
   "name": "ak-editor-toolbar",
-  "version": "2.4.2",
-  "description": "",
+  "version": "2.4.5",
+  "description": "Editor Toolbar web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-toolbar",
-    "pre-release": "lerna-semantic-release pre"
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-toolbar"
   },
   "files": [
     "dist"
@@ -16,9 +15,9 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-prosemirror": "^2.0.0",
-    "akutil-shared-styles": "^33.1.0",
+    "ak-editor-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.2.5"
+    "skatejs": "^1.4.1"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",

@@ -1,15 +1,14 @@
+const path = require('path');
 const karmaConf = require('./base.js');
 
-const base = 'packages/*/test';
-const files = `${base}/**/*.+(js|ts)`;
-const exclude = `${base}/_*.+(js|ts)`;
+
+const file = path.join(__dirname, 'all.entry.js');
 
 module.exports = (config) => {
   Object.assign(config, {
-    exclude: [exclude],
-    files: [files],
+    files: [file],
     preprocessors: {
-      [files]: ['webpack', 'sourcemap'],
+      [file]: ['webpack', 'sourcemap'],
     },
   });
   karmaConf(config);

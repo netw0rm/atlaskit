@@ -8,7 +8,7 @@ export default define('ak-editor-toolbar-block-type-option', {
       <div>
         <style>{styles.toString()}</style>
         <a
-          onClick={() => emit(elem, 'selectFont', { detail: { font: elem.font } })}
+          onClick={() => emit(elem, 'selectBlockType', { detail: { blockType: elem.blockType } })}
           onMousedown={/* don't blur the prose mirror editor */e => e.preventDefault()}
           className={classnames(
             styles.locals.selectOptions, {
@@ -21,6 +21,6 @@ export default define('ak-editor-toolbar-block-type-option', {
   },
   props: {
     active: prop.boolean({ attribute: true }),
-    font: { attribute: true },
+    blockType: { attribute: true },
   },
 });

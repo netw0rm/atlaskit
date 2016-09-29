@@ -1,4 +1,4 @@
-@import 'shared-variables.less';
+@import '~ak-editor-shared-styles/src/index';
 
 .root {
   border: 1px solid @ak-editor-subtle-accent;
@@ -32,7 +32,7 @@
   .button-mixin();
   background: @ak-editor-primary-button;
   border: 1px solid @ak-editor-primary-button;
-  border-radius: 3px;
+  border-radius: @ak-border-radius;
   color: white;
   padding: 5px 15px;
 }

@@ -2,13 +2,13 @@ import { storiesOf } from '@kadira/storybook';
 import ToolbarComponent from '../src';
 import TextFormattingComponent from 'ak-editor-toolbar-text-formatting';
 import ContentComponent from 'ak-editor-content';
-const { React, ReactDOM } = window;
+import React from 'react';
 import reactify from 'akutil-react';
 import { ProseMirror, commands, schema } from 'ak-editor-prosemirror';
 
-const Toolbar = reactify(ToolbarComponent, { React, ReactDOM });
-const TextFormatting = reactify(TextFormattingComponent, { React, ReactDOM });
-const Content = reactify(ContentComponent, { React, ReactDOM });
+const Toolbar = reactify(ToolbarComponent);
+const TextFormatting = reactify(TextFormattingComponent);
+const Content = reactify(ContentComponent);
 
 storiesOf('ak-editor-toolbar', module)
   .add('ProseMirror', () => {

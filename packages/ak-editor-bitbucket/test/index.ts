@@ -1,16 +1,46 @@
 import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
-import { afterMutations } from 'akutil-common-test';
+import { afterMutations, waitUntil, getShadowRoot  } from 'akutil-common-test';
+import { symbols, emit } from 'skatejs';
+import { fixtures, RewireSpy } from 'ak-editor-test';
+import sinonChai from 'sinon-chai';
 
+chai.use(sinonChai);
 const { expect } = chai;
 
+function activateEditorByClicking(editor: AkEditorBitbucket) : void {
+  const inputEl = getShadowRoot(editor).querySelector('input');
+  expect(inputEl).to.not.be.null;
+  emit(inputEl, 'click');
+}
+
+function buildExpandedEditor(fixture : any) : Promise<AkEditorBitbucket> {
+  return new Promise(function(resolve, reject) {
+    const successFn = () => {
+      clearTimeout(failTimer);
+      resolve(fixture.firstChild);
+    };
+
+    const failTimer = setTimeout(() => {
+      fixture.removeEventListener('ready', successFn);
+      reject('the editor didn\'t become ready in 1.5s');
+    }, 1500);
+
+    fixture.addEventListener('ready', successFn, { once: true });
+    fixture.innerHTML = `<ak-editor-bitbucket expanded></ak-editor-bitbucket>`;
+  });
+}
+
 describe('ak-editor-bitbucket', () => {
+  const fixture = fixtures();
+  const rewireSpy = RewireSpy();
+
   it('is possible to create a component', () => {
-    let component: any;
+    let editor: any;
     expect(() => {
-      component = new AkEditorBitbucket();
+      editor = new AkEditorBitbucket();
     }).not.to.throw(Error);
-    expect(component.tagName).to.match(/^ak-editor-bitbucket/i);
+    expect(editor.tagName).to.match(/^ak-editor-bitbucket/i);
   });
 
   it('does not be ready when instantiated outside the DOM', () => {
@@ -18,9 +48,48 @@ describe('ak-editor-bitbucket', () => {
     expect(editor.ready).to.be.false;
   });
 
-  it('does not be expanded by default', () => {
+  it('is not expanded by default', () => {
     const editor = new AkEditorBitbucket();
     expect(editor.expanded).to.be.false;
+  });
+
+  it('should not initialise ProseMirror by default', (done) => {
+    const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
+    const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
+
+    afterMutations(
+      () => {
+        expect(spy).to.have.not.been.called;
+      },
+      done
+    );
+  });
+
+  it('should initialise ProseMirror when expanded', (done) => {
+    const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
+    const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
+
+    afterMutations(
+      () => { editor.expanded = true; },
+      () => {
+        expect(spy).to.have.been.callCount(1);
+      },
+      done
+    );
+  });
+
+  it('should destroy ProseMirror when collapsed', (done) => {
+    const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
+    const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
+
+    afterMutations(
+      () => { editor.expanded = true; },
+      () => { editor.expanded = false; },
+      () => {
+        expect(spy).to.have.been.callCount(1);
+      },
+      done
+    );
   });
 
   describe('.value', () => {
@@ -33,6 +102,84 @@ describe('ak-editor-bitbucket', () => {
       const editor = new AkEditorBitbucket();
       editor.defaultValue = 'foo';
       expect(editor.value).to.equal('foo');
+    });
+
+    it('should honour default value', (done) => {
+      const content = 'foo';
+      const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
+      const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
+
+      editor.defaultValue = content;
+
+      afterMutations(
+        () => { editor.expanded = true; },
+        () => {
+          const opts = spy.firstCall.args[0];
+          expect(opts.doc).has.property('textContent', content);
+        },
+        done
+      );
+    });
+  });
+
+  describe('collapsed editor', () => {
+    let tmpContainer: any;
+    let editor: any;
+
+    beforeEach((done) => {
+      tmpContainer = fixture();
+      tmpContainer.innerHTML = `<ak-editor-bitbucket></ak-editor-bitbucket>`;
+
+      afterMutations(
+        () => (editor = tmpContainer.firstChild),
+        done
+      );
+    });
+
+    it('should not be expanded by default', () => {
+      expect(editor.expanded).to.be.false;
+    });
+
+    it('should expand after clicking the input element', () => {
+      activateEditorByClicking(editor);
+      expect(editor.expanded).to.be.true;
+    });
+  });
+
+  describe('editor toolbar', () => {
+    it('should have all default elements', () => {
+      return buildExpandedEditor(fixture()).then((editor) => {
+        [
+          'ak-editor-toolbar',
+          'ak-editor-toolbar-block-type',
+          'ak-editor-toolbar-lists',
+          'ak-editor-toolbar-hyperlink',
+          'ak-editor-toolbar-text-formatting'
+        ].forEach((selector) => {
+          expect(getShadowRoot(editor).querySelector(selector)).to.not.be.null;
+        });
+      });
+    });
+
+    it('should have options in block type dropdown', () => {
+      return buildExpandedEditor(fixture()).then((editor) => {
+        const bt = getShadowRoot(editor).querySelector('ak-editor-toolbar-block-type');
+        expect(bt).to.not.be.null;
+
+        // on browsers without native ShadowDOM (i.e. Firefox, Safari), shadowRoot is not available right away
+        return waitUntil(() => {
+          return !!getShadowRoot(bt);
+        }).then(() => {
+          const fs = getShadowRoot(bt).querySelector('ak-editor-toolbar-block-type-select');
+          expect(fs).to.not.be.null;
+
+          const btShadowRoot = getShadowRoot(bt);
+          return waitUntil(() => {
+            // it takes roughly 3 iterations to render all elements and attach them to <ul>
+            return btShadowRoot.querySelectorAll('ak-editor-toolbar-block-type-option').length >= 2;
+          });
+        });
+      });
     });
   });
 });

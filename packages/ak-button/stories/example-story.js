@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkButtonTemplate, { APPEARANCE } from '../src/index';
-const { React, ReactDOM } = window;
+import React from 'react';
 import hostStyles from '../src/host.less';
 import buttonStatesExample from './AkButtonStates';
 import { name } from '../package.json';
@@ -9,15 +9,9 @@ import IconTemplate from 'ak-icon';
 
 const buttonClass = hostStyles.locals.akButton;
 
-const AkButton = reactify(AkButtonTemplate, {
-  React,
-  ReactDOM,
-});
+const AkButton = reactify(AkButtonTemplate);
 
-const Icon = reactify(IconTemplate, {
-  React,
-  ReactDOM,
-});
+const Icon = reactify(IconTemplate);
 
 const GLYPHS = [
   'calendar',

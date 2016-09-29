@@ -1,13 +1,12 @@
 {
   "name": "ak-editor-toolbar-text-formatting",
-  "version": "2.4.1",
-  "description": "",
+  "version": "2.4.3",
+  "description": "Editor Toolbar Text Formatting web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-toolbar-text-formatting",
-    "pre-release": "lerna-semantic-release pre"
+    "prepublish": "cd .. && npm run prepublish/single ak-editor-toolbar-text-formatting"
   },
   "files": [
     "dist"
@@ -17,9 +16,9 @@
   "dependencies": {
     "ak-editor-button": "^2.3.0",
     "ak-editor-icon": "^2.4.1",
-    "akutil-shared-styles": "^33.1.0",
+    "ak-editor-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.2.5"
+    "skatejs": "^1.4.1"
   },
   "devDependencies": {
     "ak-editor-prosemirror": "^2.0.0",

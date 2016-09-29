@@ -1,7 +1,8 @@
 // For styles that are shared between shadow and host (Variable definitions ONLY)
 
 @import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/borders.less';
 
 @no-dialog-container-border-color: @ak-color-N40; // This has not been confirmed by the ADG yet
-@no-dialog-container-border-radius: 3px;
-@no-dialog-container-box-shadow:0 3px 6px rgba(0, 0, 0, 0.2);
+@no-dialog-container-border-radius: @ak-border-radius;
+@no-dialog-container-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);

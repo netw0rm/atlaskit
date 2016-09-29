@@ -16,7 +16,6 @@ export default (props, children) => {
   const classNames = classnames({
     [shadowStyles.locals.chrome]: true,
     [shadowStyles.locals.markedForRemoval]: props.markedForRemoval,
-    [shadowStyles.locals.isLinked]: props.isLinked,
     [shadowStyles.locals.isRemovable]: props.isRemovable,
   });
 

@@ -2,19 +2,13 @@ import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import ToolbarComponent from 'ak-editor-toolbar';
 import EditorkitLinkButton from '../src/index';
-const { React, ReactDOM } = window;
+import React from 'react';
 import { name } from '../package.json';
 import 'style!./../src/host.less';
 
-const Component = reactify(EditorkitLinkButton, {
-  React,
-  ReactDOM,
-});
+const Component = reactify(EditorkitLinkButton);
 
-const Toolbar = reactify(ToolbarComponent, {
-  React,
-  ReactDOM,
-});
+const Toolbar = reactify(ToolbarComponent);
 
 storiesOf(name, module)
   .add('a simple ak-editor-hyperlink-popup-button', () => (
@@ -36,5 +30,8 @@ storiesOf(name, module)
     />
   ))
   .add('with some margin', () => (
-    <Component style={{ position: 'absolute', marginLeft: 200 }} />
+    <Component
+      style={{ position: 'absolute', marginLeft: 200 }}
+      onsave={(e) => action('You just entered: ')(e.detail.value)}
+    />
   ));

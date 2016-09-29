@@ -7,9 +7,9 @@
 
 @global-primary-item-margin: 25px;
 @global-secondary-item-margin: 10px;
-@global-secondary-item-height: 30px;
+@global-secondary-item-size: 30px;
 @container-logo-size: 40px;
-@container-logo-border-radius: 3px;
+@container-logo-border-radius: @ak-border-radius;
 
 @font-size: 14px;
 
@@ -37,6 +37,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    z-index: @global-z-index;
 
     .global-primary {
       margin: @global-primary-item-margin auto;
@@ -48,9 +49,21 @@
     }
 
     .global-secondary-item {
+      &:hover {
+        background-color: rgba(0,0,0,0.2);
+      }
+      &:active {
+        background: @ak-color-B50;
+      }
+      border-radius: 50%;
+      line-height: 0px;
+      width: 30px;
+      height: @global-secondary-item-size;
+      cursor: pointer;
       margin: 10px auto;
-      height: @global-secondary-item-height;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .global-bottom {
@@ -61,8 +74,13 @@
 
   .container {
     padding: 20px 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     width: 100%;
+  }
+
+  .container-hidden {
+    display: none;
   }
 
   .container-logo {
@@ -70,14 +88,13 @@
     height: @container-logo-size;
     border-radius: @container-logo-border-radius;
     margin-right: 10px;
-    
+
     &:not([src]) {
       visibility: hidden;
     }
   }
 
   .container-name {
-    color: @ak-navigation-container-name-color;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -85,12 +102,17 @@
   }
 
   .container-name-text {
+    color: @ak-navigation-container-name-color;
     width: @container-link-text-expanded-width;
     font-size: @font-size;
     line-height: @font-size;
     max-height: @font-size * 2;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .container-links {

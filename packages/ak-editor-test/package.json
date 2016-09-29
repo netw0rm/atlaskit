@@ -1,7 +1,7 @@
 {
   "name": "ak-editor-test",
-  "version": "2.0.1",
-  "description": "",
+  "version": "2.3.1",
+  "description": "Editor Test web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.ts",
@@ -16,6 +16,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "ak-editor-prosemirror": "^2.0.0",
+    "ak-editor-schema": "^2.0.0",
     "babel-runtime": "^6.11.6"
   },
   "repository": {

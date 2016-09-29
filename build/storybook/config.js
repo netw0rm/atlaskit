@@ -4,13 +4,8 @@ import MonitoredStory from './MonitoredStory.js';
 import MonkeyTestStory from './MonkeyTestStory.js';
 import SwappedDirectionStory from './SwappedDirectionStory.js';
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import 'style!./styles.less';
-
-// Utilities for stories
-window.React = React;
-window.ReactDOM = ReactDOM;
 
 function loadStories() {
   // Use a webpack loader to dynamically require stories.

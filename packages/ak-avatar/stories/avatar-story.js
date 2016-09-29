@@ -5,15 +5,11 @@ import avatarStoryStyles from 'style!./stories.less';
 import { name } from '../package.json';
 import hostStyles from 'style!./../src/host.less';
 
-const { React, ReactDOM } = window;
+import React from 'react';
 
-const Avatar = reactify(AkAvatar, {
-  React,
-  ReactDOM,
-});
+const Avatar = reactify(AkAvatar);
 
 const avatarClass = hostStyles.akAvatar;
-const avatarUrl = require('url!./doge.jpg');
 const transparentAvatarUrl = require('url!./face-w-transparency.png');
 const tickUrl = require('url!./tick.svg');
 const tickWithBackgroundUrl = require('url!./tick.png');
@@ -22,7 +18,6 @@ const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 const storybookExampleClass = avatarStoryStyles.example;
 
 const DefaultAvatar = (props) => <Avatar
-  src={avatarUrl}
   style={{ marginLeft: '10px' }}
   className={avatarClass}
   {...props}
@@ -205,6 +200,39 @@ storiesOf(name, module)
       </div>
     </div>
   ))
+  .add('Avatar loaded from external source', () => {
+    const inputStyles = {
+      marginTop: '10px',
+    };
+    const loadImage = () => {
+      const url = document.querySelector('input[type=text]').value;
+      if (url) {
+        // we'll append a random string to the end of the url to make sure we dont cache
+        document.querySelector('#customAvatar').src = '';
+        document.querySelector('#customAvatar').src = `${url}?at=${+(new Date())}`;
+      }
+    };
+    return (
+      <div className={avatarRowClass}>
+        <div>
+          Try loading an image from an external source to see the loading behaviour.
+        </div>
+        <div>
+          <label>
+            <span>URL:</span>
+            <input
+              type="text"
+              id="avatarUrl"
+              style={inputStyles}
+              defaultValue="https://design.atlassian.com/images/brand/logo-02.png"
+            />
+            <input type="button" value="Load Image" onClick={loadImage} />
+          </label>
+        </div>
+        <DefaultAvatar size="xlarge" label="This is an avatar!" id="customAvatar" />
+      </div>
+    );
+  })
   .add('Avatar with a label', () => (
     <div className={avatarRowClass}>
       <div>
@@ -212,6 +240,5 @@ storiesOf(name, module)
           around it and also an alt text.
       </div>
       <a href="#"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
-      <a href="#"><DefaultAvatar size="xlarge" label="This is an avatar!" src="" /></a>
     </div>
   ));

@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-mentions",
-  "version": "2.0.2",
+  "version": "3.0.1",
   "description": "This plugin provides mentions node type and related behaviors to Atlassian Editor",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

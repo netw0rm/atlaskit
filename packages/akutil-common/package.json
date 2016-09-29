@@ -1,7 +1,7 @@
 {
   "name": "akutil-common",
-  "version": "2.4.3",
-  "description": "",
+  "version": "2.6.0",
+  "description": "Utilities shared by AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
@@ -16,11 +16,13 @@
   "dependencies": {
     "babel-runtime": "^6.11.6",
     "create-error": "^0.3.1",
+    "jss": "^5.4.0",
     "keycode": "^2.1.2"
   },
   "devDependencies": {
-    "akutil-common-test": "^1.5.1",
-    "custom-event-polyfill": "^0.3.0"
+    "akutil-common-test": "^2.0.0",
+    "custom-event-polyfill": "^0.3.0",
+    "skatejs": "^1.2.5"
   },
   "repository": {
     "type": "git",

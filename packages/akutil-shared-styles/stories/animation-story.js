@@ -1,12 +1,13 @@
+import React from 'react';
 import classNames from 'classnames';
 import { storiesOf } from '@kadira/storybook';
-import storyStyles from 'style!./stories.less';
+import storyStyles from './animation/animation-story.less';
 import { name } from '../package.json';
 
 const containerClass = classNames(storyStyles.container);
 
-import AnimatedBox from './AnimatedBox.js';
-import AnimatedBoxGroup from './AnimatedBoxGroup.js';
+import AnimatedBox from './animation/AnimatedBox.js';
+import AnimatedBoxGroup from './animation/AnimatedBoxGroup.js';
 
 storiesOf(name, module)
   .add('Bold, Optimistic and Combined curves', () => (

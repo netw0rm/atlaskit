@@ -165,8 +165,6 @@ class AkEditorBitbucket extends Component {
         emit(elem, 'ready');
         elem._ready = true;
       }
-
-      elem.focus();
     } else {
       elem._pm = null;
     }
@@ -540,6 +538,7 @@ class AkEditorBitbucket extends Component {
     pm.on.change.add(() => emit(this, 'change'));
 
     this._pm = pm;
+    this.focus();
   }
 }
 

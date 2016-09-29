@@ -35,7 +35,7 @@ describe(name, () => {
       { event: 'insertimage', selector: `.${shadowStyles.locals.iconButton}:nth-child(2)` },
     ].forEach(data =>
       describe('should trigger', () => {
-        it(`${data.event} event`, () => {
+        it(`${data.event} event on click`, () => {
           const spy = sinon.spy();
           component.addEventListener(data.event, spy);
           const button = getShadowRoot(component).querySelector(data.selector);

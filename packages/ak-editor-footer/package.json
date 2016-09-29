@@ -14,11 +14,11 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
+    "ak-button": "^1.3.3",
+    "ak-button-group": "^1.0.16",
     "ak-editor-icon": "^2.0.1",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.4.1",
-    "ak-button": "^1.3.3",
-    "ak-button-group": "^1.0.16"
+    "skatejs": "^1.4.1"
   },
   "devDependencies": {
     "akutil-common-test": "^2.0.0",

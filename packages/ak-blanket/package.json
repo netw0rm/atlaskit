@@ -1,6 +1,6 @@
 {
   "name": "ak-blanket",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "ak-blanket webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

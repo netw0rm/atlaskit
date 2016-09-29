@@ -23,7 +23,7 @@ services:
     logging:
       driver: none
   dev-server:
-    image: atlassianlabs/atlaskit:2016-09-28
+    image: atlassianlabs/atlaskit:2016-09-29
     volumes:
       - .:/usr/src/app/
     ports:
@@ -36,7 +36,7 @@ services:
               && npm run storybook/single \"$SCOPE\"
             "'
   cucumber:
-    image: atlassianlabs/atlaskit:2016-09-28
+    image: atlassianlabs/atlaskit:2016-09-29
     volumes:
       - .:/usr/src/app/
     depends_on:

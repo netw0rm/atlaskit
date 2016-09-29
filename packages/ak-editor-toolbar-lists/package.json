@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar-lists",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Editor Toolbar Lists web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -16,7 +16,7 @@
   "dependencies": {
     "ak-editor-button": "^2.3.0",
     "ak-editor-icon": "^2.4.1",
-    "akutil-shared-styles": "^33.1.0",
+    "ak-editor-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "skatejs": "^1.4.1"
   },

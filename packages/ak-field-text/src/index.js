@@ -33,10 +33,10 @@ function setupFocusHandlers(elem) {
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class TextField
- * @example @js import TextField from 'ak-text-field';
+ * @example @js import TextField from 'ak-field-text';
  * const component = new TextField();
  */
-export default define('ak-text-field', {
+export default define('ak-field-text', {
   render(elem) {
     return (
       <div>

@@ -2,11 +2,12 @@
 
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/fonts.less';
+@import '~akutil-shared-styles/src/borders.less';
 
 @grid: 4;
 @item-spacing: unit(@grid * 2, px);
 
-@ak-dropdown-border-radius: 3px;
+@ak-dropdown-border-radius: @ak-border-radius;
 @ak-dropdown-background-main-color: @ak-color-N700;
 @ak-dropdown-background-active-color: @ak-color-B50;
 @ak-dropdown-background-selected-color: @ak-color-N900;

@@ -261,4 +261,31 @@ storiesOf(`${name} component`, module)
       <a href="#">link after</a>
     </div>
   ))
+  .add('dropdown with lots of items', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent>
+        <ak-dropdown-trigger-arrow slot="trigger" tab-index="1"></ak-dropdown-trigger-arrow>
+        <ak-dropdown-item>Joscha</ak-dropdown-item>
+        <ak-dropdown-item>Wuz</ak-dropdown-item>
+        <ak-dropdown-item>Here</ak-dropdown-item>
+        <ak-dropdown-item>2016</ak-dropdown-item>
+        <ak-dropdown-item>text1</ak-dropdown-item>
+        <ak-dropdown-item disabled>text2</ak-dropdown-item>
+        <ak-dropdown-item>some text here</ak-dropdown-item>
+        <ak-dropdown-item>another text</ak-dropdown-item>
+        <ak-dropdown-item>text1</ak-dropdown-item>
+        <ak-dropdown-item>text2</ak-dropdown-item>
+        <ak-dropdown-item>some text here</ak-dropdown-item>
+        <ak-dropdown-item>another text</ak-dropdown-item>
+        <ak-dropdown-item>text1</ak-dropdown-item>
+        <ak-dropdown-item disabled>text2</ak-dropdown-item>
+        <ak-dropdown-item>some text here</ak-dropdown-item>
+        <ak-dropdown-item>another text</ak-dropdown-item>
+        <ak-dropdown-item>text1</ak-dropdown-item>
+        <ak-dropdown-item disabled>text2</ak-dropdown-item>
+        <ak-dropdown-item>some text here</ak-dropdown-item>
+        <ak-dropdown-item>another text</ak-dropdown-item>
+      </DropdownReactComponent>
+    </div>
+  ))
 ;

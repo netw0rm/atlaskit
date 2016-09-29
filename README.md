@@ -1,5 +1,4 @@
 # AtlasKit
-[![master build](https://bitbucket-badges.atlassian.io/badge/atlassian/atlaskit.svg)](https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()

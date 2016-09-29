@@ -8,7 +8,7 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
 
-describe('ak-text-field', () => {
+describe('ak-field-text', () => {
   function setupComponent(opts = {}) {
     const component = new Component();
     Object.keys(opts).forEach((key) => {

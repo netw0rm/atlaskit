@@ -64,22 +64,22 @@ function submitTestForm(useNativeSubmitBtn) {
 }
 
 storiesOf(name, module)
-  .add('standard ak-text-field', () => (
+  .add('standard ak-field-text', () => (
     generateFormWithInput({ placeholder: 'Oh wow, such input' })
   ))
-  .add('standard ak-text-field [type=email]', () => (
+  .add('standard ak-field-text [type=email]', () => (
     generateFormWithInput({ type: 'email', placeholder: 'Enter your email' })
   ))
-  .add('required password ak-text-field', () => (
+  .add('required password ak-field-text', () => (
     generateFormWithInput({ type: 'password', required: true })
   ))
-  .add('disabled ak-text-field with placeholder', () => (
+  .add('disabled ak-field-text with placeholder', () => (
     generateFormWithInput({ disabled: true, placeholder: 'Such input, very uneditable' })
   ))
-  .add('compact ak-text-field', () => (
+  .add('compact ak-field-text', () => (
     generateFormWithInput({ compact: true, placeholder: 'Oh wow, such input' })
   ))
-  .add('ak-text-field with all options', () => (
+  .add('ak-field-text with all options', () => (
     generateFormWithInput({
       compact: true,
       disabled: true,
@@ -87,16 +87,16 @@ storiesOf(name, module)
       placeholder: 'Such input, very uneditable',
     })
   ))
-  .add('ak-text-field with really long label', () => (
+  .add('ak-field-text with really long label', () => (
     generateFormWithInput({ label: 'Example label with a realllly reallly reallly reallly reallly long label that goes past the edge of the input!' }) // eslint-disable-line max-len
   ))
-  .add('ak-text-field with multiline label string', () => (
+  .add('ak-field-text with multiline label string', () => (
     generateFormWithInput({ label: `Example\nlabel` })
   ))
-  .add('ak-text-field with label string containing HTML', () => (
+  .add('ak-field-text with label string containing HTML', () => (
     generateFormWithInput({ label: 'Example <marquee>label</marquee>' })
   ))
-  .add('ak-text-fields for autofill test', () => (
+  .add('ak-field-text for autofill test', () => (
     <form
       action={formTestUrl}
       method="post"
@@ -115,9 +115,9 @@ storiesOf(name, module)
       </p>
     </form>
   ))
-  .add('ak-text-fields submission test (native submit button)', () => (
+  .add('ak-field-text submission test (native submit button)', () => (
     submitTestForm(true)
   ))
-  .add('ak-text-fields submission test (ak-button submit button)', () => (
+  .add('ak-field-text submission test (ak-button submit button)', () => (
     submitTestForm(false)
   ));

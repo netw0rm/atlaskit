@@ -148,9 +148,9 @@
       "resolved": "https://registry.npmjs.org/ajv-keywords/-/ajv-keywords-1.1.1.tgz"
     },
     "akutil-common-test": {
-      "version": "2.0.1",
-      "from": "akutil-common-test@>=2.0.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/akutil-common-test/-/akutil-common-test-2.0.1.tgz"
+      "version": "3.0.0",
+      "from": "akutil-common-test@>=3.0.0 <4.0.0",
+      "resolved": "https://registry.npmjs.org/akutil-common-test/-/akutil-common-test-3.0.0.tgz"
     },
     "akutil-cucumber": {
       "version": "1.0.0",
@@ -168,9 +168,9 @@
       "resolved": "https://registry.npmjs.org/akutil-polyfills/-/akutil-polyfills-2.2.1.tgz"
     },
     "akutil-shared-styles": {
-      "version": "33.12.1",
-      "from": "akutil-shared-styles@>=33.3.0 <34.0.0",
-      "resolved": "https://registry.npmjs.org/akutil-shared-styles/-/akutil-shared-styles-33.12.1.tgz"
+      "version": "34.0.1",
+      "from": "akutil-shared-styles@>=34.0.1 <35.0.0",
+      "resolved": "https://registry.npmjs.org/akutil-shared-styles/-/akutil-shared-styles-34.0.1.tgz"
     },
     "align-text": {
       "version": "0.1.4",

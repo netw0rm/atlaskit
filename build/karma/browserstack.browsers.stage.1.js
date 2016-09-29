@@ -13,13 +13,13 @@ const browserStackBrowsers = {
     os: 'OS X',
     os_version: 'El Capitan',
   },
-  
+
   sierra_safari_10: {
     browser: 'safari',
     os: 'macOS',
     os_version: 'Sierra',
     browser_version: '10',
-  }
+  },
 };
 
 module.exports = browserStackBrowsers;

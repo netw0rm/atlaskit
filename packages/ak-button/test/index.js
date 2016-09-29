@@ -10,7 +10,11 @@ import hostStyles from '../src/host.less';
 import { name } from '../package.json';
 import { hasClass, waitUntil, getShadowRoot } from 'akutil-common-test';
 const classKeys = shadowStyles.locals;
-import { akGridSize } from 'akutil-shared-styles';
+
+// TODO revert this to:
+// import { akGridSize } from 'akutil-shared-styles';
+// once we fixed the src/ exports (see AK-477)
+const akGridSize = '8px';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

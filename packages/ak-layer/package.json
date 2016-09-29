@@ -1,6 +1,6 @@
 {
   "name": "ak-layer",
-  "version": "57.7.2",
+  "version": "57.7.4",
   "description": "A layer component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -15,8 +15,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "akutil-common": "^2.0.0",
-    "akutil-common-test": "^2.0.0",
-    "akutil-shared-styles": "^33.1.0",
+    "akutil-common-test": "^3.0.0",
+    "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
     "object-assign": "^4.1.0",
     "popper.js": "https://github.com/FezVrasta/popper.js#27069a2ed604a962d18e0e11b916ac9a1529e14a",

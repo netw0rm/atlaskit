@@ -10,7 +10,7 @@ popd > /dev/null
 $BASEDIR/generate.readme.sh
 
 $CHALK blue "Generating UMD bundle..."
-webpack --config ../../build/webpack/production.js $@
+webpack --config ../../build/webpack/production-umd.js $@
 
 $CHALK blue "Generating CJS bundle..."
 webpack --config ../../build/webpack/production-cjs.js $@

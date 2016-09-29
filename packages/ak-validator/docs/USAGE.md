@@ -40,7 +40,7 @@ Now you can use the defined tag in your HTML markup:
   <body>
     <ak-field>
       <ak-validator-min-length min-length="5" slot="validator"></ak-validator-min-length>
-      <ak-text-field></ak-text-field>
+      <ak-field-text></ak-field-text>
     </ak-field>
   </body>
 </html>
@@ -90,7 +90,7 @@ const ValidatorIsEven = defineValidator('x-validator-is-even',
   <body>
     <ak-field>
       <x-validator-is-even slot="validator"></x-validator-is-even>
-      <ak-text-field></ak-text-field>
+      <ak-field-text></ak-field-text>
     </ak-field>
   </body>
 </html>

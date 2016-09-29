@@ -16,7 +16,7 @@
   "dependencies": {
     "ak-blanket": "^3.0.0",
     "ak-editor-button": "^2.0.1",
-    "ak-editor-shared-styles": "^1.0.0",
+    "ak-editor-shared-styles": "^1.0.3",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "skatejs": "^1.4.1"
@@ -27,7 +27,7 @@
     "ak-editor-prosemirror": "^2.0.0",
     "ak-editor-test": "^2.3.0",
     "ak-editor-toolbar": "^2.0.0",
-    "akutil-common-test": "^2.0.0",
+    "akutil-common-test": "^3.0.0",
     "akutil-react": "^1.0.0",
     "lodash.invert": "^4.2.0"
   },

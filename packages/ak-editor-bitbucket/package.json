@@ -40,7 +40,7 @@
     "skatejs": "^1.4.1"
   },
   "devDependencies": {
-    "ak-editor-test": "^2.2.0",
+    "ak-editor-test": "2.3.1",
     "akutil-common-test": "^2.0.0",
     "akutil-react": "^1.0.0",
     "akutil-shared-styles": "^33.1.0"

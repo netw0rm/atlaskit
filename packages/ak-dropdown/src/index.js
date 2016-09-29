@@ -20,6 +20,7 @@ const dropdownMinWidth = 150;
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
 const offset = '0 2';
 const activatedFrom = Symbol();
+const keyDownOnceOnOpen = Symbol();
 
 function getTriggerElement(elem) {
   return elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
@@ -31,50 +32,60 @@ function getAllItems(elem) {
     .filter((node) => node instanceof Item);
 }
 
-function toggleDialog(elem, value) {
-  const isOpen = value === undefined ? !elem.open : value;
+function openDialog(elem) {
   const list = getAllItems(elem);
-
-  if ((elem.open !== isOpen)) {
-    elem.open = isOpen;
-  }
-  if (!list || !list.length) {
-    return;
-  }
-
   const trigger = getTriggerElement(elem);
 
-  if (trigger) {
-    props(trigger, { opened: isOpen });
+  elem[keyDownOnceOnOpen] = false;
+  if (!elem.open) {
+    elem.open = true;
   }
 
-  // when the dialog is open the first item element should be focused,
-  // properties 'first' and 'last' should be set (TBD: change to :first-child and :last-child)
-  // when it's closed everything should be cleared
-  if (isOpen) {
-    // if dropdown has been opened by the keyDown event, then the first element should be focused
+  if (trigger) {
+    props(trigger, { opened: true });
+  }
+  if (list && list.length) {
     if (elem[activatedFrom] === 'keyDown') {
       list[0].focused = true;
     }
     list[0].first = true;
     list[list.length - 1].last = true;
-    elem.reposition();
-    document.addEventListener('click', elem._handleClickOutside);
-    document.addEventListener('keydown', elem._handleKeyDown);
-    emit(elem, events.afterOpen);
+  }
+
+  elem.reposition();
+  emit(elem, events.afterOpen);
+}
+
+function closeDialog(elem) {
+  const list = getAllItems(elem);
+  const trigger = getTriggerElement(elem);
+
+  if (elem.open) {
+    elem.open = false;
+  }
+
+  if (trigger) {
+    props(trigger, { opened: false });
+  }
+
+  [...list].forEach((item) => {
+    item.focused = false;
+    if (item.first) {
+      item.first = false;
+    }
+    if (item.last) {
+      item.last = false;
+    }
+  });
+
+  emit(elem, events.afterClose);
+}
+
+function toggleDialog(elem) {
+  if (elem.open) {
+    closeDialog(elem);
   } else {
-    [...list].forEach((item) => {
-      item.focused = false;
-      if (item.first) {
-        item.first = false;
-      }
-      if (item.last) {
-        item.last = false;
-      }
-    });
-    document.removeEventListener('click', elem._handleClickOutside);
-    document.removeEventListener('keydown', elem._handleKeyDown);
-    emit(elem, events.afterClose);
+    openDialog(elem);
   }
 }
 
@@ -91,7 +102,7 @@ function selectSimpleItem(elem, event) {
     }
   });
   event.detail.item.selected = true;
-  toggleDialog(elem, false);
+  closeDialog(elem);
 }
 
 function selectCheckboxItem(item) {
@@ -185,14 +196,26 @@ export default define('ak-dropdown', {
     elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
     elem._handleClickOutside = (e) => {
       if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem)) {
-        toggleDialog(elem, false);
+        closeDialog(elem);
       }
     };
     elem._handleKeyDown = (e) => {
-      if (elem.open && e.keyCode === keyCode('escape')) {
-        toggleDialog(elem, false);
+      if (elem.open) {
+        if (e.keyCode === keyCode('escape')) {
+          closeDialog(elem);
+        } else if (!elem[keyDownOnceOnOpen] && e.keyCode === keyCode('down')) {
+          elem[keyDownOnceOnOpen] = true;
+          getAllItems(elem)[0].focused = true;
+        }
       }
     };
+
+    document.addEventListener('click', elem._handleClickOutside);
+    document.addEventListener('keydown', elem._handleKeyDown);
+  },
+  detached(elem) {
+    document.removeEventListener('click', elem._handleClickOutside);
+    document.removeEventListener('keydown', elem._handleKeyDown);
   },
   prototype: {
     reposition() {
@@ -204,12 +227,6 @@ export default define('ak-dropdown', {
 
       return this;
     },
-  },
-  rendered(elem) {
-    const trigger = getTriggerElement(elem) || {};
-    if (trigger.opened !== elem.open) {
-      toggleDialog(elem, elem.open);
-    }
   },
   render(elem) {
     let target = elem.target;
@@ -275,6 +292,13 @@ export default define('ak-dropdown', {
      */
     open: prop.boolean({
       attribute: true,
+      set(elem, data) {
+        if (data.newValue) {
+          openDialog(elem);
+        } else {
+          closeDialog(elem);
+        }
+      },
     }),
     /**
      * @description Position of the dropdown. See the documentation of ak-layer for more details.

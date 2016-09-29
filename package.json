@@ -10,11 +10,11 @@
   "dependencies": {
     "@atlassian/gremlins.js": "^0.1.0",
     "@kadira/storybook": "^2.20.1",
-    "akutil-common-test": "^2.0.0",
+    "akutil-common-test": "^3.0.0",
     "akutil-cucumber": "^1.0.0",
     "akutil-dmd-plugin": "^2.0.0",
     "akutil-polyfills": "^2.0.0",
-    "akutil-shared-styles": "^33.3.0",
+    "akutil-shared-styles": "^34.0.1",
     "autoprefixer": "^6.3.7",
     "babel-core": "^6.13.2",
     "babel-loader": "^6.2.4",

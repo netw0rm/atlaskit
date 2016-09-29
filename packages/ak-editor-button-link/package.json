@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-button-link",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Editor Button Link web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

@@ -39,7 +39,7 @@ $LERNA_LOC exec -- ../../build/bin/generate.readme.html.sh
 
 echo "Generating docs index..."
 pushd $OUTDIR > /dev/null
-$INDEXIFIER_LOC . > index.html
+$INDEXIFIER_LOC --html . > index.html
 popd > /dev/null
 
 ZIP_FILE="../ak-docs-cdn.zip"

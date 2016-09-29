@@ -35,7 +35,7 @@ $LERNA_LOC exec -- ../../build/bin/pr.stats.single.sh
 
 echo "Generating stats index..."
 pushd $OUTDIR > /dev/null
-$INDEXIFIER_LOC . > index.html
+$INDEXIFIER_LOC --html . > index.html
 popd > /dev/null
 
 ZIP_FILE="../ak-stats-cdn.zip"

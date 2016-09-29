@@ -5,7 +5,8 @@ import Dropdown, * as exports from '../src';
 import { props, emit, Component, define, vdom } from 'skatejs';
 import { name } from '../package.json';
 import { afterMutations, getShadowRoot, checkVisibility, waitUntil } from 'akutil-common-test';
-import { selected as selectedEvent, afterOpen } from '../src/internal/events';
+import { selected as selectedEvent,
+  unselected as unselectedEvent, afterOpen } from '../src/internal/events';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -68,14 +69,12 @@ describe('ak-dropdown', () => {
     });
 
     it('should have an sub-components exports', () => {
-      (new exports.Item).should.be.an.instanceof(Component);
       (new exports.DropdownTrigger).should.be.an.instanceof(Component);
       (new exports.DropdownTriggerButton).should.be.an.instanceof(Component);
-      (new exports.Group).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
-      const eventsArray = ['selected', 'afterOpen', 'afterClose', 'item', 'trigger'];
+      const eventsArray = ['selected', 'unselected', 'afterOpen', 'afterClose', 'item', 'trigger'];
       exports.events.should.be.defined;
       Object.keys(exports.events).should.be.deep.equal(eventsArray);
       Object.keys(exports.events.item).should.be.deep.equal(['up', 'down', 'tab']);
@@ -235,19 +234,43 @@ describe('ak-dropdown', () => {
         done
       );
     });
+  });
+
+  describe('select checkbox items', () => {
+    let component;
+    let items;
+    const html = `<ak-dropdown-item-checkbox>first</ak-dropdown-item-checkbox>
+                  <ak-dropdown-item-checkbox>second</ak-dropdown-item-checkbox>
+                  <ak-dropdown-item-checkbox>third</ak-dropdown-item-checkbox>`;
+    beforeEach(() => setupComponentExample(html).then(newComponent => {
+      component = newComponent;
+      props(component, { open: true });
+      items = component.querySelectorAll('ak-dropdown-item-checkbox');
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should be possible to select an item', (done) => {
+      const item = items[0];
+
+      // mock the event from the item
+      emit(item, selectedEvent, { detail: { item } });
+
+      afterMutations(
+        () => expect(items[0].selected).to.equal(true),
+        done
+      );
+    });
 
     it('any checkbox item can be selected and unselected simultaneously', (done) => {
-      [...items].forEach(item => (props(item, { checkbox: true })));
-
       // mock the event from the item
       emit(items[0], selectedEvent, { detail: { item: items[0] } });
       emit(items[2], selectedEvent, { detail: { item: items[2] } });
 
       afterMutations(
         () => checkSelectedItems(items, 0, 2),
-        () => emit(items[0], selectedEvent, { detail: { item: items[0] } }),
-        () => checkSelectedItems(items, 2),
-        () => emit(items[0], selectedEvent, { detail: { item: items[2] } }),
+        () => emit(items[2], unselectedEvent, { detail: { item: items[2] } }),
+        () => checkSelectedItems(items, 0),
+        () => emit(items[0], unselectedEvent, { detail: { item: items[0] } }),
         () => checkSelectedItems(items),
         done
       );
@@ -260,14 +283,14 @@ describe('ak-dropdown', () => {
     let group2;
     let groups;
     const html = `<ak-dropdown-group>
-                    <ak-dropdown-item radio>first</ak-dropdown-item>
-                    <ak-dropdown-item radio>second</ak-dropdown-item>
-                    <ak-dropdown-item radio>third</ak-dropdown-item>
+                    <ak-dropdown-item-radio>first</ak-dropdown-item-radio>
+                    <ak-dropdown-item-radio>second</ak-dropdown-item-radio>
+                    <ak-dropdown-item-radio>third</ak-dropdown-item-radio>
                   </ak-dropdown-group>
                   <ak-dropdown-group>
-                    <ak-dropdown-item radio>first</ak-dropdown-item>
-                    <ak-dropdown-item radio>second</ak-dropdown-item>
-                    <ak-dropdown-item radio>third</ak-dropdown-item>
+                    <ak-dropdown-item-radio>first</ak-dropdown-item-radio>
+                    <ak-dropdown-item-radio>second</ak-dropdown-item-radio>
+                    <ak-dropdown-item-radio>third</ak-dropdown-item-radio>
                   </ak-dropdown-group>`;
     beforeEach(() => setupComponentExample(html).then(newComponent => {
       component = newComponent;
@@ -278,7 +301,7 @@ describe('ak-dropdown', () => {
     }));
     afterEach(() => tearDownComponent(component));
 
-    it('should be possible to select a radio item', (done) => {
+    it('should be possible to select an item', (done) => {
       const item = group1[0];
 
       // mock the event from the item

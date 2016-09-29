@@ -187,6 +187,8 @@ export const ul = nodeFactory("bullet_list", {});
 export const ol = nodeFactory("ordered_list", {});
 export const br = schema.node("hard_break");
 export const img = (attrs: { src: string, alt?: string, title?: string }) => schema.node("image", attrs);
+export const emoji = (attrs: { id: string }) => schema.node("emoji", attrs);
+export const mention = (attrs: { id: string, displayName?: string }) => schema.node("mention", attrs);
 export const hr = schema.node("horizontal_rule");
 export const em = markFactory("em", {});
 export const strong = markFactory("strong", {});

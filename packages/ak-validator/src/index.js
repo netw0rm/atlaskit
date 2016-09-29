@@ -16,7 +16,7 @@ const baseProps = { message: prop.string({}) };
  * Define a new validator component.
  * @param {string} tagName The tag name of the new validator component
  * @param {validatorFunction} validatorFunction The validator function
- * @param {Object=} props Properties that should be defined on the validator component
+ * @param {Object=} props The properties that should be defined on the validator component
  * @returns {*}
  */
 const defineValidator = (tagName, validatorFunction, props = {}) => {
@@ -33,26 +33,59 @@ const defineValidator = (tagName, validatorFunction, props = {}) => {
  * @class ValidatorMinLength
  * @example @js import ValidatorMinLength from 'ak-validator';
  * const myValidator = new ValidatorMinLength();
+ * @example @js
+ * <ak-validator-min-length
+ *   min-length="5"
+ *   message="Must have at least 5 characters"
+ *   slot="validator"
+ * ></ak-validator-min-length>
  */
 const ValidatorMinLength = defineValidator(`${prefix}min-length`,
   function validate(value) { return value.length >= this.minLength; },
-  { minLength: prop.number({}) }
+  {
+    /**
+     * @description The minimum length of the value
+     * @memberof ValidatorMinLength
+     * @instance
+     * @type {number}
+     */
+    minLength: prop.number({}),
+  }
 );
 /**
  * @description Maximum length validator.
  * @class ValidatorMaxLength
  * @example @js import ValidatorMaxLength from 'ak-validator';
  * const myValidator = new ValidatorMaxLength();
+ * @example @js
+ * <ak-validator-max-length
+ *   min-length="10"
+ *   message="Must have at most 10 characters"
+ *   slot="validator"
+ * ></ak-validator-max-length>
  */
 const ValidatorMaxLength = defineValidator(`${prefix}max-length`,
   function validate(value) { return value.length <= this.maxLength; },
-  { maxLength: prop.number({}) }
+  {
+    /**
+     * @description The maximum length of the value
+     * @memberof ValidatorMaxLength
+     * @instance
+     * @type {number}
+     */
+    maxLength: prop.number({}),
+  }
 );
 /**
  * @description Required validator.
  * @class ValidatorRequired
  * @example @js import ValidatorRequired from 'ak-validator';
  * const myValidator = new ValidatorRequired();
+ * @example @js
+ * <ak-validator-required
+ *   message="This field is required"
+ *   slot="validator"
+ * ></ak-validator-required>
  */
 const ValidatorRequired = defineValidator(`${prefix}required`,
   (value) => !!value

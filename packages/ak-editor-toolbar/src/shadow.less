@@ -1,10 +1,10 @@
-@import 'shared-variables.less';
+@import '~ak-editor-shared-styles/src/index';
 
 .root {
   border: 1px solid @ak-editor-subtle-accent;
   box-sizing: border-box;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-left-radius: @ak-border-radius;
+  border-top-right-radius: @ak-border-radius;
   height: 40px;
 
   &, & > slot {

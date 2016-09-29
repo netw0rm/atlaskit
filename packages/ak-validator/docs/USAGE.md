@@ -1,13 +1,6 @@
 # Validator
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
-
-
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-componentname/docs/insertyourimagehere.png)
-
-##Try it out
-
-Interact with a [live demo of the ak-validator component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-validator/@VERSION@/).
+Validator components are used to define validation rules that should be applied to an `ak-field` component.
 
 ## Installation
 
@@ -15,18 +8,24 @@ Interact with a [live demo of the ak-validator component](https://aui-cdn.atlass
 npm install ak-validator
 ```
 
-## Using the component
+## Using default validators
+
+The `ak-validator` package exports the several predefined validator [Skate](https://github.com/skatejs/skatejs) components.
+
+There are default validators for:
+
+* Min length
+* Max length
+* Required fields
 
 ### HTML
-
-The `ak-validator` package exports the Validator [Skate](https://github.com/skatejs/skatejs) component.
 
 Import the component in your JS resource:
 
 #### bundle.js
 
 ```js
-import 'ak-validator';
+import { ValidatorMinLength } 'ak-validator';
 ```
 
 Now you can use the defined tag in your HTML markup:
@@ -39,8 +38,10 @@ Now you can use the defined tag in your HTML markup:
     <script src="bundle.js"></script>
   </head>
   <body>
-    <!-- ... -->
-    <ak-validator></ak-validator>
+    <ak-field>
+      <ak-validator-min-length min-length="5" slot="validator"></ak-validator-min-length>
+      <ak-field-text></ak-field-text>
+    </ak-field>
   </body>
 </html>
 ```
@@ -48,9 +49,9 @@ Now you can use the defined tag in your HTML markup:
 You can also use it from within another JavaScript resource:
 
 ```js
-import Validator from 'ak-validator';
+import ValidatorMinLength from 'ak-validator';
 
-const component = new Validator();
+const component = new ValidatorMinLength();
 document.body.appendChild(component);
 ```
 
@@ -59,10 +60,38 @@ document.body.appendChild(component);
 This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```js
-import Validator from 'ak-validator';
+import { ValidatorMinLength } from 'ak-validator';
 import reactify from 'skatejs-react-integration';
 
-const ReactComponent = reactify(Validator, {});
+const ReactComponent = reactify(ValidatorMinLength, {});
 
 ReactDOM.render(<ReactComponent />, container);
+```
+
+## Defining a custom validator
+
+This package exports a factory method for defining custom validators.
+
+```js
+import defineValidator from 'ak-validator';
+
+const ValidatorIsEven = defineValidator('x-validator-is-even', 
+  function validate(value) {
+    return value %% 2 === 0;
+  }
+);
+```
+
+```html
+<html>
+  <head>
+    <script src="bundle.js"></script>
+  </head>
+  <body>
+    <ak-field>
+      <x-validator-is-even slot="validator"></x-validator-is-even>
+      <ak-field-text></ak-field-text>
+    </ak-field>
+  </body>
+</html>
 ```

@@ -33,5 +33,6 @@ standardConfig.plugins.push(new webpack.DefinePlugin({
   },
 }));
 
+standardConfig.plugins.push(new webpack.optimize.DedupePlugin());
 
 module.exports = standardConfig;

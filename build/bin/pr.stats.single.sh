@@ -8,4 +8,5 @@ popd > /dev/null
 PKG=$($BASEDIR/_get_package_name.sh)
 
 mkdir -p ../../$OUTDIR/$PKG
-find ./ -name '*.html' -exec cp -prv '{}' "../../$OUTDIR/$PKG" ';'
+cd ./stats
+find ./ -name '*.html' -exec cp -prv '{}' "../../../$OUTDIR/$PKG" ';'

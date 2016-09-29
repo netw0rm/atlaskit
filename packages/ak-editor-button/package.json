@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-button",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "Editor Button web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "akutil-shared-styles": "^33.1.0",
+    "ak-editor-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "skatejs": "^1.4.1"

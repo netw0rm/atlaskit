@@ -79,7 +79,8 @@
     "validate-commit-message": "^3.0.1",
     "wait-on": "^1.5.3",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "webpack-visualizer-plugin": "^0.1.5"
   },
   "engines": {
     "npm": ">=3.8",
@@ -116,9 +117,10 @@
     "docs/single": "./build/bin/docs.single.sh",
     "postinstall": "./build/bin/postinstall.sh",
     "lint": "eslint --color --format 'node_modules/eslint-friendly-formatter' . --ext .js,.jsx",
-    "pr/artifacts": "npm-run-all -ln 'build/install/cdn-tools' --parallel 'pr/docs' 'pr/storybook'",
+    "pr/artifacts": "npm-run-all -ln 'build/install/cdn-tools' --parallel 'pr/docs' 'pr/storybook' 'pr/stats'",
     "pr/docs": "./build/bin/generate.readme.html.pr.sh",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
+    "pr/stats": "./build/bin/pr.stats.sh",
     "prepublish/single": "./build/bin/prepublish.single.sh",
     "prune": "./node_modules/.bin/lerna exec -- npm prune && npm prune",
     "release": "lerna-semantic-release pre && lerna-semantic-release post && lerna-semantic-release perform",

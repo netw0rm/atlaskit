@@ -7,7 +7,7 @@ $BASEDIR/generate.readme.sh
 printf "\033[34m"
 echo "Generating UMD bundle..."
 printf "\033[0m"
-webpack --config ../../build/webpack/production.js $@
+webpack --config ../../build/webpack/production-umd.js $@
 printf "\033[34m"
 echo "Generating CJS bundle..."
 printf "\033[0m"

@@ -24,9 +24,9 @@
     "skatejs": "^1.5.1"
   },
   "devDependencies": {
-    "akutil-common-test": "^2.0.0",
+    "akutil-common-test": "^3.0.0",
     "akutil-react": "^1.0.0",
-    "akutil-shared-styles": "^33.11.1",
+    "akutil-shared-styles": "^34.0.1",
     "async": "^2.0.1",
     "classnames": "^2.2.5",
     "glob": "^7.0.5",

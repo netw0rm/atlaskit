@@ -50,7 +50,7 @@ echo "Uploading stats to CDN..."
 java \
 -jar \
 -Dlog4j.configurationFile=build/bin/logger.xml \
-../prebake-distributor-runner.jar \
+./prebake-distributor-runner.jar \
 --step=resources \
 --s3-bucket=$S3_BUCKET \
 --s3-key-prefix="$S3_KEY_PREFIX/$CDN_PREFIX" \

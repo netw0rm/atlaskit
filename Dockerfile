@@ -1,8 +1,6 @@
 FROM openjdk:8-jre-alpine
 
 ARG LERNA_VERSION
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
 
 #### <s3-uploader>
 COPY ./prebake-distributor-runner.jar .

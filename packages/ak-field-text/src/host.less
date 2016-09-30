@@ -1,0 +1,10 @@
+// we define a class here in order to re-use it in the storybook
+// (because in storybook the component name is randomly generated)
+.ak-field-text,
+ak-field-text {
+  display: block;
+
+  &:not([defined]) {
+    display: none;
+  }
+}

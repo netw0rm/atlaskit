@@ -500,6 +500,9 @@ class AkEditorBitbucket extends Component {
         return
       }
 
+      const offset = elem.getAttribute('pm-offset') || '';
+      const pos = posFromDOM(elem, parseInt(offset, 10)).pos;
+
       const username = (entityId as string).substring(1).trim(); // remove the @ symbol and trailing whitespace
       const matchingMention = this.getMentionsList().find((m: any) => m.username === username);
 
@@ -514,11 +517,24 @@ class AkEditorBitbucket extends Component {
           color: #3572b0;
           padding: 0 3px;
         `;
-        elem.innerHTML = `<a href="${link}" target="_blank" style="${styles}" rel="nofollow" title="${username}" class="mention">${displayName}</a>`;
+        const mentionEl = document.createElement('a');
+        mentionEl.setAttribute('target', "_blank");
+        mentionEl.setAttribute('rel', "nofollow");
+        mentionEl.setAttribute('class', "mention");
+        mentionEl.setAttribute('style', styles);
+        mentionEl.setAttribute('title', username);
+        mentionEl.innerText = displayName;
+
+        elem.appendChild(mentionEl);
+
+        // If there's no text after the mention,
+        // add a whitespace so it is possible to click and focus after the mention.
+        const nodeAfter = pm.doc.nodeAt(pos+1);
+        if (!nodeAfter) {
+          pm.tr.insertText(pos+1, ' ').apply();
+        }
       } else {
-        const offset = elem.getAttribute('pm-offset');
         if (offset && offset.length) {
-          const pos = posFromDOM(elem, parseInt(offset, 10)).pos;
           const node = schema.text(entityId);
           pm.tr.replaceWith(pos, pos+1, node).apply();
         }

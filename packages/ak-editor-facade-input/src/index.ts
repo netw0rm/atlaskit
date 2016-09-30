@@ -114,10 +114,10 @@ export default class FacadeInput {
     // Upon entering sync, request for another animation frame.
     this.syncRequest = window.requestAnimationFrame(this.sync.bind(this));
 
-    // If the target element is no longer in the DOM,
+    // If the target element is no longer in current viewport,
     // remove the facade.
     const target = this.target;
-    if (!target.parentNode) {
+    if (!target.parentNode || target.parentNode.getBoundingClientRect().height < 1) {
       return this.remove();
     }
 

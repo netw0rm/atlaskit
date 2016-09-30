@@ -15,10 +15,12 @@ import dropdownPositionedToSide from './internal/dropdownPositionedToSide';
 // Width of a dropdown should be at least width of it's trigger + 10px
 const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
-const dropdownMaxHeight = (30 * 9.5); // ( item height * 9.5 items)
+const grid = 4;
+const itemHeight = grid * 7;
+const dropdownMaxHeight = (itemHeight * 9.5); // ( item height * 9.5 items) - by design
 
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
-const offset = '0 2';
+const offset = '0 4';
 const activatedFrom = Symbol();
 const keyDownOnceOnOpen = Symbol();
 const handleClickOutside = Symbol();

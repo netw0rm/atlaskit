@@ -16,7 +16,7 @@ import dropdownPositionedToSide from './internal/dropdownPositionedToSide';
 const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
 const grid = 4;
-export const itemHeight = grid * 7;
+const itemHeight = grid * 7;
 const dropdownMaxHeight = (itemHeight * 9.5); // ( item height * 9.5 items) - by design
 
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"

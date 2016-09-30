@@ -1,19 +1,34 @@
 import 'style!./host.less';
-import { prop, vdom, define } from 'skatejs';
+import { prop, props, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import Navigation, { events as navigationEvents } from 'ak-navigation';
 const {
   widthChanged: widthChangedEvent,
+  resizeStart: resizeStartEvent,
+  resizeEnd: resizeEndEvent,
 } = navigationEvents;
 
 const navigationPadding = 20;
 const shouldAnimateThreshold = 100; // ms
+const isResizing = Symbol('isResizing');
 
 function handleWidthChanged(e, elem) {
   if (e.target instanceof Navigation) {
     elem.navigationWidth = e.detail.newWidth;
   }
+}
+
+function handleResizeStart(e, elem) {
+  props(elem, {
+    [isResizing]: true,
+  });
+}
+
+function handleResizeEnd(e, elem) {
+  props(elem, {
+    [isResizing]: false,
+  });
 }
 
 const navigationSlot = Symbol('navigationSlot');
@@ -30,7 +45,11 @@ const navigationSlot = Symbol('navigationSlot');
 export default define('ak-page', {
   render(elem) {
     return (
-      <div>
+      <div
+        className={classNames({
+          [shadowStyles.locals.resizing]: elem[isResizing],
+        })}
+      >
         {/* This is required for elements in the shadow root to be styled.
            This is wrapped in the <div /> because you can't have more than one
            root element.
@@ -61,6 +80,7 @@ export default define('ak-page', {
     );
   },
   props: {
+    [isResizing]: prop.boolean(),
     /**
      * @description Whether the component should display animations.
      * `shouldAnimate` is turned on after page load.
@@ -86,6 +106,8 @@ export default define('ak-page', {
   },
   created(elem) {
     elem.addEventListener(widthChangedEvent, (e) => handleWidthChanged(e, elem));
+    elem.addEventListener(resizeStartEvent, (e) => handleResizeStart(e, elem));
+    elem.addEventListener(resizeEndEvent, (e) => handleResizeEnd(e, elem));
   },
   attached(elem) {
     setTimeout(() => {

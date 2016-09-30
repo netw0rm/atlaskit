@@ -16,13 +16,18 @@ ak-dropdown-item {
 }
 
 .ak-dropdown-trigger,
-ak-dropdown-trigger {
-  display: inline-block;
-}
-
+ak-dropdown-trigger,
 .ak-dropdown-trigger-button,
-ak-dropdown-trigger-button {
+ak-dropdown-trigger-button,
+.ak-dropdown-trigger-arrow,
+ak-dropdown-trigger-arrow {
   display: inline-block;
+
+  // first group element shouldn't have any empty space above it
+  & + .ak-dropdown-group,
+  & + ak-dropdown-group {
+    margin-top: 0;
+  }
 }
 
 .ak-dropdown-list,
@@ -38,10 +43,5 @@ ak-dropdown-list {
 .ak-dropdown-group,
 ak-dropdown-group {
   display: block;
-
-  // first group element shouldn't have any empty space above it
-  & + .ak-dropdown-group,
-  & + ak-dropdown-group {
-    margin-top: @ak-dropdown-group-margin;
-  }
+  margin-top: unit(@grid * 2, px);
 }

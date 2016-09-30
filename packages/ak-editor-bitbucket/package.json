@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "3.2.3",
+  "version": "3.3.3",
   "description": "Editor web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -28,6 +28,7 @@
     "ak-editor-plugin-text-formatting": "^3.0.0",
     "ak-editor-prosemirror": "^2.0.0",
     "ak-editor-schema": "^2.0.0",
+    "ak-editor-shared-styles": "^1.0.3",
     "ak-editor-toolbar": "^2.0.2",
     "ak-editor-toolbar-block-type": "^2.0.1",
     "ak-editor-toolbar-hyperlink": "^14.0.0",
@@ -41,9 +42,9 @@
   },
   "devDependencies": {
     "ak-editor-test": "2.3.1",
-    "akutil-common-test": "^2.0.0",
+    "akutil-common-test": "^3.0.0",
     "akutil-react": "^1.0.0",
-    "akutil-shared-styles": "^33.1.0"
+    "akutil-shared-styles": "^34.0.1"
   },
   "repository": {
     "type": "git",

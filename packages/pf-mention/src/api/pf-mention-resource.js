@@ -1,5 +1,10 @@
 import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
-require('es6-promise').polyfill();
+
+// 'whatwg-fetch' needs a Promise polyfill
+import Promise from 'babel-runtime/core-js/promise';
+if (!window.Promise) {
+  window.Promise = Promise;
+}
 import 'whatwg-fetch';
 import debug from '../util/logger';
 

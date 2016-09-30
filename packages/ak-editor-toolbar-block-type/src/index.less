@@ -1,3 +1,5 @@
+@import '~ak-editor-shared-styles/src/index';
+
 .blockTypeSelect {
   position: relative;
 }
@@ -5,7 +7,7 @@
 .dropdown-content {
   list-style-type: none;
   padding: 0;
-  border-radius: 0 3px 3px 3px;
+  border-radius: 0 @ak-border-radius @ak-border-radius @ak-border-radius;
   box-shadow: 0 0 0 0.5px rgba(0,0,0,0.05), 0 3px 10px -4px rgba(0,0,0,0.4);
   overflow: hidden;
   display: none;

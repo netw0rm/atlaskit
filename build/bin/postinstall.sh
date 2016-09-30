@@ -7,7 +7,12 @@ LERNA_LOC="`npm bin`/lerna"
 printf "\033[34m"
 echo "Lerna bootstrap..."
 printf "\033[0m"
-$LERNA_LOC bootstrap
+if [[ -z "$BITBUCKET_COMMIT" ]]; then
+  $LERNA_LOC bootstrap
+else
+  # piping to cat is used to put stdout in a non-TTY mode (hides the progress bar in lerna)
+  $LERNA_LOC bootstrap | cat
+fi
 
 printf "\033[34m"
 echo "Installing hooks..."

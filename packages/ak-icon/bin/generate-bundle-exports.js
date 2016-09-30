@@ -5,8 +5,9 @@ const path = require('path');
 const fileToScope = require('../src/fileToScope');
 const pathToDashed = require('../src/pathToDashed');
 const iconNameToComponentName = require('../src/iconNameToComponentName');
+const { tmpFolderName } = require('./constants');
 
-const tempFolder = '../tmp/';
+const tempFolder = `../src/${tmpFolderName}/`;
 const sourceFolder = path.join(__dirname, '..', 'src');
 
 const pathToExport = (p) => iconNameToComponentName(pathToDashed(fileToScope(p, tempFolder)));

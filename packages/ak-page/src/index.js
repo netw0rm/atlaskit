@@ -18,6 +18,15 @@ function handleWidthChanged(e, elem) {
 
 const navigationSlot = Symbol('navigationSlot');
 
+/**
+ * @description Create instances of the component programmatically, or using markup.
+ * @class Page
+ * @example @html <ak-page/>
+ * @example @js import Page from 'ak-page';
+ *
+ * const page = new Page();
+ * document.body.appendChild(page);
+ */
 export default define('ak-page', {
   render(elem) {
     return (
@@ -52,7 +61,25 @@ export default define('ak-page', {
     );
   },
   props: {
+    /**
+     * @description Whether the component should display animations.
+     * `shouldAnimate` is turned on after page load.
+     * @memberof Page
+     * @instance
+     * @type {boolean}
+     * @example @js page.shouldAnimate = true;
+     */
     shouldAnimate: prop.boolean(),
+
+    /**
+     * @description The current width of the navigation part of the page.
+     * This is updated by Page when it listens to a Navigation#widthChanged event.
+     * @memberof Page
+     * @instance
+     * @type {integer}
+     * @example @js page.navigationWidth = 80;
+     * @example @html <ak-page navigation-width="80" />;
+     */
     navigationWidth: prop.number({
       attribute: true,
     }),

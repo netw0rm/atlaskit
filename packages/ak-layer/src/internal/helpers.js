@@ -1,10 +1,14 @@
 import Alignment from './Alignment';
-import 'core-js/fn/array/find';
 
 function popperPositionToAlignmentPosition(position) {
   const positionMap = Alignment.attachmentMap;
-  const alignmentPosition = Object.keys(positionMap)
-    .find(positionKey => positionMap[positionKey].position === position);
+  let alignmentPosition;
+
+  Object.keys(positionMap).forEach((positionKey) => {
+    if (positionMap[positionKey].position === position) {
+      alignmentPosition = positionMap[positionKey].position;
+    }
+  });
 
   return alignmentPosition;
 }

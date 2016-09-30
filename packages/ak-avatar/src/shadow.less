@@ -26,6 +26,10 @@
 @ak-avatar-presence-color-busy: @ak-color-Y500;
 @ak-avatar-presence-color-offline: @ak-color-N40;
 
+// Presence icon styles
+@ak-avatar-presence-border-width: 2px;
+@ak-avatar-presence-border-color: white;
+
 // We wrap these rules in :host so that polyfilled browsers will ignore everything inside it
 :host {
   .small {
@@ -43,7 +47,7 @@
 
   .default-slot-wrapper {
     align-content: center;
-    border: 2px solid white;
+    border: @ak-avatar-presence-border-width solid @ak-avatar-presence-border-color;
     border-radius: 100%;
     align-items: middle;
     display: flex;
@@ -70,7 +74,7 @@
 
 .default-slot-element {
   align-content: center;
-  border: 2px solid white;
+  border: @ak-avatar-presence-border-width solid @ak-avatar-presence-border-color;
   border-radius: 100%;
   align-items: middle;
   display: flex;

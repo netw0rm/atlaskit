@@ -1,74 +1,19 @@
 /** @jsx vdom */
 import 'style!./host.less';
 
-import { vdom, define, prop } from 'skatejs';
+import { vdom, define, prop, props } from 'skatejs';
 import shadowStyles from './shadow.less';
-import classNames from 'classnames';
-import { enumeration } from 'akutil-common';
+import { appearance, type } from './enumeratedProperties';
+import Slot from './Slot';
+import Button from './Button';
+import Root from './Root';
 
 const classKeys = shadowStyles.locals;
 
-const attributeValuesToEnumObject = values =>
-  values.reduce((acum, val) => {
-    acum[val.toUpperCase()] = val;
-    return acum;
-  }, {});
+const APPEARANCE = appearance.values;
+const TYPE = type.values;
 
-const getClasses = elem => ({
-  [classKeys.button]: true,
-  [classKeys.compact]: elem.compact,
-  [classKeys.disabled]: elem.disabled,
-  [classKeys.selected]: elem.selected && !elem.disabled,
-  [classKeys.primary]: elem.appearance === 'primary' && !elem.disabled && !elem.selected,
-  [classKeys.subtle]: elem.appearance === 'subtle' && !elem.disabled && !elem.selected,
-  [classKeys.link]: elem.appearance === 'link' && !elem.selected,
-});
-
-const getSlotName = side => side || 'default';
-
-const getSlot = side => (
-  <span className={classKeys[`${getSlotName(side)}SlotWrapper`]}>
-    <slot
-      name={side}
-      className={classKeys[`${getSlotName(side)}Slot`]}
-    />
-  </span>
-);
-
-const getContent = () => (
-  <span className={classKeys.buttonContent}>
-    {getSlot('before')}
-    {getSlot()}
-    {getSlot('after')}
-  </span>
-);
-
-const APPEARANCE_VALUES = [
-  'primary',
-  'standard',
-  'subtle',
-  'link',
-];
-const TYPE_VALUES = [
-  'button',
-  'submit',
-];
-
-export const APPEARANCE = attributeValuesToEnumObject(APPEARANCE_VALUES);
-export const TYPE = attributeValuesToEnumObject(TYPE_VALUES);
-
-const appearancePropertyValues = {
-  attribute: 'appearance',
-  values: APPEARANCE_VALUES,
-  invalidDefault: APPEARANCE.STANDARD,
-};
-
-const typePropertyValues = {
-  attribute: 'type',
-  values: TYPE_VALUES,
-  missingDefault: 'button',
-  invalidDefault: 'button',
-};
+export { APPEARANCE, TYPE };
 
 const definition = {
   props: {
@@ -81,9 +26,7 @@ const definition = {
      * @example @html <ak-button appearance="primary"></ak-button>
      * @example @js button.appearance = 'primary';
      */
-    appearance: enumeration(appearancePropertyValues)({
-      attribute: true,
-    }),
+    appearance: appearance.enumeration,
     /**
      * @description Type of the ak-button. One of:
      * 'button', 'submit'.
@@ -93,9 +36,7 @@ const definition = {
      * @example @html <ak-button type="submit"></ak-button>
      * @example @js button.type = 'submit';
      */
-    type: enumeration(typePropertyValues)({
-      attribute: true,
-    }),
+    type: type.enumeration,
     /**
      * @description Option to disable button and every click event
      * @memberof Button
@@ -126,17 +67,15 @@ const definition = {
   },
   render(elem) {
     return (
-      <span className={classKeys.root}>
-        <style>{shadowStyles.toString()}</style>
-        <button
-          className={classNames(getClasses(elem))}
-          type={elem.type}
-          disabled={elem.disabled}
-          onmousedown={e => e.preventDefault()}
-        >
-          {getContent()}
-        </button>
-      </span>
+      <Root>
+        <Button {...props(elem)} >
+          <span className={classKeys.buttonContent}>
+            <Slot name="before" />
+            <Slot />
+            <Slot name="after" />
+          </span>
+        </Button>
+      </Root>
     );
   },
 };

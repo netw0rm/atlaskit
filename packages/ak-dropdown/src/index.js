@@ -151,6 +151,7 @@ function isDescendantOf(child, parent) {
 }
 
 function isInPath(path, elem) {
+  if (!path) return false;
   const length = path.length;
   for (let i = 0; i < length; i++) {
     if (path[i] === elem) {

@@ -4,7 +4,7 @@ import { emit, prop, vdom, define } from 'skatejs';
 import shadowStyles from './index.less';
 import 'ak-blanket';
 import './ak-navigation-drawer';
-import './index.ak-navigation-link';
+import NavigationLink from './index.ak-navigation-link';
 import classNames from 'classnames';
 import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './internal/touch';
 import {
@@ -381,4 +381,4 @@ export default define('ak-navigation', {
   },
 });
 
-export { events };
+export { events, NavigationLink };

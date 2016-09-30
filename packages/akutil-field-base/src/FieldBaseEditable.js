@@ -1,4 +1,4 @@
-import 'style!./host.less';
+import 'style!./styles/FieldBaseEditableHost.less';
 import { vdom, define, prop, props } from 'skatejs';
 import FieldBase from './FieldBase';
 import Editing from './Editing';

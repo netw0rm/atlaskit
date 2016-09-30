@@ -9,6 +9,7 @@ const FieldBase = reactify(FieldBaseWC);
 const FieldBaseEditable = reactify(FieldBaseEditableWC);
 const Textfield = reactify(TextfieldWC);
 
+
 storiesOf(name, module)
   .add('a simple ak-field-base', () => (
     <FieldBase label="Label for FieldBase">
@@ -18,10 +19,10 @@ storiesOf(name, module)
   .add('a simple ak-field-base-editable', () => (
     <div>
       <FieldBaseEditable label="Label for FieldBase (not editing by default)">
-        <div is="" slot="viewmode">
+        <div is slot="viewmode">
           <b>Some slotted content in an ak-field-base-editable!</b>
         </div>
-        <div is="" slot="editmode">
+        <div is slot="editmode">
           <input type="text" defaultValue="sdfsd" />
         </div>
       </FieldBaseEditable>
@@ -29,7 +30,10 @@ storiesOf(name, module)
       <br /><br />
 
       <FieldBaseEditable label="Label for second FieldBase (editing by default)" editing>
-        <div is="" slot="editmode">
+        <div is slot="viewmode">
+          <b>Some slotted content in an ak-field-base-editable!</b>
+        </div>
+        <div is slot="editmode">
           <input type="text" defaultValue="sdfsd" />
         </div>
       </FieldBaseEditable>

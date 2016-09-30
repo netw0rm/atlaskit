@@ -1,5 +1,6 @@
-import 'style!./host.less';
+import 'style!./styles/FieldBaseHost.less';
 import { vdom, define, prop } from 'skatejs';
+// import shadowStyles from './styles/FieldBase.less';
 import Root from './Root';
 import Label from './Label';
 

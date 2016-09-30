@@ -1,7 +1,5 @@
 import { vdom } from 'skatejs';
-
-import 'style!./host.less';
-import shadowStyles from './shadow.less';
+import shadowStyles from './styles/Viewing.less';
 
 // Viewing simply renders a default slot.
 

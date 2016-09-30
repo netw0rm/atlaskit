@@ -1,33 +1,32 @@
 # Pfmention
 
-The AkPage component wraps the whole page and should be the first child of the body. It contains slots for different layout styles and for the navigation component.
+The pf-mention is the new shared mentions component. Use it to mention people or rooms.
 
-![Example avatars](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-page/docs/page.png)
+![Example avatars](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/pf-mention/docs/pfmention.png)
 
 ##Try it out
 
 Interact with a [live demo of the pfmention component](https://aui-cdn.atlassian.com/atlaskit/stories/pfmention/@VERSION@/).
 
-Although the ak-page component can be used by itself, it works best in conjunction with the [ak-navigation](https://www.npmjs.com/package/ak-navigation) component.
 
 ## Installation
 
 ```sh
-npm install ak-page
+npm install pf-mention
 ```
 
 ## Using the component
 
 ### HTML
 
-The `ak-page` package exports the AkPage [Skate](https://github.com/skatejs/skatejs) component.
+The `pf-mention` package exports the Pfmention [Skate](https://github.com/skatejs/skatejs) component.
 
 Import the component in your JS resource:
 
 #### bundle.js
 
 ```js
-import 'ak-page';
+import 'pf-mention';
 ```
 
 Now you can use the defined tag in your HTML markup:

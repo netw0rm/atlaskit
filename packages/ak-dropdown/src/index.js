@@ -10,20 +10,26 @@ import './index.group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
-
-// TODO dangling to Symbol once this is supported: https://github.com/skatejs/skatejs/issues/687
-/* eslint-disable no-underscore-dangle */
+import dropdownPositionedToSide from './internal/dropdownPositionedToSide';
 
 // Width of a dropdown should be at least width of it's trigger + 10px
 const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
+const grid = 4;
+const itemHeight = grid * 7;
+const dropdownMaxHeight = (itemHeight * 9.5); // ( item height * 9.5 items) - by design
+
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
-const offset = '0 2';
+const offset = '0 4';
 const activatedFrom = Symbol();
 const keyDownOnceOnOpen = Symbol();
+const handleClickOutside = Symbol();
+const handleKeyDown = Symbol();
+const triggerSlot = Symbol();
+const layerElem = Symbol();
 
 function getTriggerElement(elem) {
-  return elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
+  return elem[triggerSlot] && elem[triggerSlot].assignedNodes()[0];
 }
 
 function getAllItems(elem) {
@@ -167,11 +173,13 @@ function changeFocus(elem, type) {
 // max-width is controlled by css, everything that's exceeding its limit
 // is ellipsed (by design, controlled by css)
 function getDropdownMinwidth(target, dropdown) {
-  const dropdownPositionedToSide =
-    dropdown.position.indexOf('left') === 0 || dropdown.position.indexOf('right') === 0;
-  const minWidth = !dropdownPositionedToSide ?
-  target.getBoundingClientRect().width + diffBetweenDropdownAndTrigger : dropdownMinWidth;
+  const minWidth = dropdownPositionedToSide(dropdown) ? dropdownMinWidth :
+    target.getBoundingClientRect().width + diffBetweenDropdownAndTrigger;
   return `${minWidth}px`;
+}
+
+function getDropdownMaxheight(dropdown) {
+  return dropdownPositionedToSide(dropdown) ? 'auto' : `${dropdownMaxHeight}px`;
 }
 
 /**
@@ -194,12 +202,12 @@ export default define('ak-dropdown', {
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
     elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
-    elem._handleClickOutside = (e) => {
+    elem[handleClickOutside] = (e) => {
       if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem)) {
         closeDialog(elem);
       }
     };
-    elem._handleKeyDown = (e) => {
+    elem[handleKeyDown] = (e) => {
       if (elem.open) {
         if (e.keyCode === keyCode('escape')) {
           closeDialog(elem);
@@ -210,18 +218,18 @@ export default define('ak-dropdown', {
       }
     };
 
-    document.addEventListener('click', elem._handleClickOutside);
-    document.addEventListener('keydown', elem._handleKeyDown);
+    document.addEventListener('click', elem[handleClickOutside]);
+    document.addEventListener('keydown', elem[handleKeyDown]);
   },
   detached(elem) {
-    document.removeEventListener('click', elem._handleClickOutside);
-    document.removeEventListener('keydown', elem._handleKeyDown);
+    document.removeEventListener('click', elem[handleClickOutside]);
+    document.removeEventListener('keydown', elem[handleKeyDown]);
   },
   prototype: {
     reposition() {
-      if (this._layer) {
-        ready(this._layer, () => {
-          this._layer.reposition();
+      if (this[layerElem]) {
+        ready(this[layerElem], () => {
+          this[layerElem].reposition();
         });
       }
 
@@ -240,7 +248,7 @@ export default define('ak-dropdown', {
           >
             <slot
               name="trigger"
-              ref={el => (elem.triggerSlot = el)}
+              ref={el => (elem[triggerSlot] = el)}
             />
           </div>
           : null
@@ -255,7 +263,7 @@ export default define('ak-dropdown', {
           // See AK-343
           style={{ display: elem.open ? 'block' : 'none' }}
           ref={(layer) => {
-            elem._layer = layer;
+            elem[layerElem] = layer;
             setTimeout(() => {
               if (elem.open && layer.alignment) {
                   // by default dropdown has opacity 0
@@ -271,7 +279,10 @@ export default define('ak-dropdown', {
         >
           <div
             className={shadowListStyles.locals.list}
-            style={{ minWidth: getDropdownMinwidth(target, elem) }}
+            style={{
+              minWidth: getDropdownMinwidth(target, elem),
+              maxHeight: getDropdownMaxheight(elem),
+            }}
             role="menu"
           >
             <style>{shadowListStyles.toString()}</style>

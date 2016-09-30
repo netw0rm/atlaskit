@@ -1,10 +1,14 @@
 # Comment
 
-## Synopsis
+Comments enable discussions on an entity such as a page, blog post, issue or pull request. Depending on the context, discussions can be between any combination of authors, contributors and readers.
 
-Comments enable a discussion on an entity such as a page, blog post, issue or pull request. Depending on the context, discussions can be between any combination of authors, contributors and readers.
+![Example avatars](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-comment/docs/comment.png)
 
-## Setup and install
+## Try it out
+
+Interact with a [live demo of the ak-comment component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-comment/@VERSION@/).
+
+## Installation
 
 ```
 npm install ak-comment
@@ -20,11 +24,11 @@ Import the component in your JS resource:
 
 #### bundle.js
 
-```
+```javascript
 import Comment from 'ak-comment';
 ```
 
-Now we can use the defined tag in our HTML markup, e.g.:
+Now you can use the defined tag in your HTML markup:
 
 #### index.html
 
@@ -52,6 +56,8 @@ Now we can use the defined tag in our HTML markup, e.g.:
 ```
 
 ### React
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
+
 
 ```
 import Comment from 'ak-comment';

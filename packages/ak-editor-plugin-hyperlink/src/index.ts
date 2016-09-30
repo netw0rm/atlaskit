@@ -63,8 +63,8 @@ function getDomElement(
 
 function isNodeLinkable(pm: ProseMirror, node: Node): boolean {
   const nodeType = node.type.name;
-  const nodeSpecOrderedMap = pm.schema.nodeSpec;
-  return nodeSpecOrderedMap.get(nodeType).group.split(' ').indexOf(DISABLED_GROUP) === -1;
+  const nodes = pm.schema.nodes;
+  return nodes[nodeType].group.split(' ').indexOf(DISABLED_GROUP) === -1;
 }
 
 function isCursorOnLink(

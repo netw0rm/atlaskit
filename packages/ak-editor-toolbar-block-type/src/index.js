@@ -4,15 +4,10 @@ import styles from './index.less';
 import Select from './block-type-select';
 import Option from './option';
 
-function toggle(elem) {
-  if (!elem.disabled || elem.dropdownOpen) {
-    elem.dropdownOpen = !elem.dropdownOpen;
-  }
-}
-
 export default define('ak-editor-toolbar-block-type', {
   created(elem) {
     elem.closeBlockTypeDropdown = elem.closeBlockTypeDropdown.bind(elem);
+    elem.toggleDropDown = elem.toggleDropDown.bind(elem);
   },
   attached(elem) {
     document.addEventListener('click', elem.closeBlockTypeDropdown, true);
@@ -32,7 +27,7 @@ export default define('ak-editor-toolbar-block-type', {
           disabled={elem.disabled}
           className={styles.locals.blockTypeSelect}
           selectedReadableName={selectedBlockType.display}
-          onToggleDropdown={() => toggle(elem)}
+          onToggleDropdown={elem.toggleDropDown}
           active={elem.dropdownOpen}
         >
           <ul
@@ -54,7 +49,16 @@ export default define('ak-editor-toolbar-block-type', {
   },
   prototype: {
     closeBlockTypeDropdown() {
+      this.wasOpen = this.dropdownOpen;
       this.dropdownOpen = false;
+    },
+    toggleDropDown() {
+      if (this.disabled || this.dropdownOpen || this.wasOpen) {
+        this.closeBlockTypeDropdown();
+        return;
+      }
+
+      this.dropdownOpen = true;
     },
   },
   props: {

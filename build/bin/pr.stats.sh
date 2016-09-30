@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-LERNA_LOC="`npm bin`/lerna"
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CDN_PREFIX="pr/stats"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
@@ -30,7 +29,7 @@ echo "Gathering stats files..."
 rm -rf ../atlaskit-stats
 OUTDIR="../atlaskit-stats/resources/$BITBUCKET_COMMIT";
 export OUTDIR="$OUTDIR"
-$LERNA_LOC exec -- ../../build/bin/pr.stats.single.sh
+lerna exec -- ../../build/bin/pr.stats.single.sh
 
 echo "Generating stats index..."
 pushd $OUTDIR > /dev/null

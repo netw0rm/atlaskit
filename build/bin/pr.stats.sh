@@ -44,11 +44,10 @@ zip -0 -r -T $ZIP_FILE ../atlaskit-stats/resources
 
 echo "Uploading stats to CDN..."
 prebake-distributor-runner \
---s3-bucket=$S3_BUCKET \
+--s3-bucket="$S3_BUCKET" \
 --s3-key-prefix="$S3_KEY_PREFIX/$CDN_PREFIX" \
 --s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/$CDN_PREFIX" \
---compress=css,js,svg,ttf,html,json,ico,eot,otf \
-$ZIP_FILE
+"$ZIP_FILE"
 
 # Invalidate CDN caches
 echo "CDN invalidation (stats) starting now (this may take some time)"

@@ -43,16 +43,12 @@ rm -f $ZIP_FILE
 zip -0 -r -T $ZIP_FILE ../atlaskit-stats/resources
 
 echo "Uploading stats to CDN..."
-java \
--jar \
--Dlog4j.configurationFile=build/bin/logger.xml \
-./prebake-distributor-runner.jar \
---step=resources \
+prebake-distributor-runner \
 --s3-bucket=$S3_BUCKET \
 --s3-key-prefix="$S3_KEY_PREFIX/$CDN_PREFIX" \
 --s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/$CDN_PREFIX" \
 --compress=css,js,svg,ttf,html,json,ico,eot,otf \
---pre-bake-bundle=$ZIP_FILE
+$ZIP_FILE
 
 # Invalidate CDN caches
 echo "CDN invalidation (stats) starting now (this may take some time)"

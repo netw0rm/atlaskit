@@ -2,10 +2,6 @@ FROM openjdk:8-jre-alpine
 
 ARG LERNA_VERSION
 
-#### <s3-uploader>
-COPY ./prebake-distributor-runner.jar .
-#### </s3-uploader>
-
 #### <general-tools>
 RUN echo "Installing general tools" \
 && apk --update add \
@@ -62,7 +58,7 @@ RUN echo "Installing node & npm" \
 #### </node>
 
 #### <atlaskit-tools>
-RUN echo "Installing atlaskit tools" \
+RUN echo "Installing AtlasKit tools" \
 && npm install -g \
   cloudfront-invalidate-cli@1.0.3 \
   marky-markdown@8.1.0 \
@@ -71,6 +67,7 @@ RUN echo "Installing atlaskit tools" \
   lerna@"${LERNA_VERSION}" \
   lerna-semantic-release@8.0.2 \
   indexifier@2.0.0 \
+  @atlassian/prebake-distributor-runner@1.0.0 \
 && npm cache clean -f
 #### </atlaskit-tools>
 

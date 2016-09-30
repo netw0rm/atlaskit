@@ -5,7 +5,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 #### <s3-uploader>
-ADD ./prebake-distributor-runner.jar .
+COPY ./prebake-distributor-runner.jar .
 #### </s3-uploader>
 
 #### <general-tools>

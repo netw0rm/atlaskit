@@ -2,7 +2,6 @@
 set -e
 
 LERNA_LOC="`npm bin`/lerna"
-INDEXIFIER_LOC="`npm bin`/indexifier"
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CDN_PREFIX="pr/stats"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
@@ -35,7 +34,7 @@ $LERNA_LOC exec -- ../../build/bin/pr.stats.single.sh
 
 echo "Generating stats index..."
 pushd $OUTDIR > /dev/null
-$INDEXIFIER_LOC --html . > index.html
+indexifier --html . > index.html
 popd > /dev/null
 
 ZIP_FILE="../ak-stats-cdn.zip"

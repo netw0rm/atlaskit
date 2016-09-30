@@ -72,6 +72,7 @@ RUN echo "Installing atlaskit tools" \
   npm-run-all@3.1.0 \
   lerna@"${LERNA_VERSION}" \
   lerna-semantic-release@8.0.2 \
+  indexifier@2.0.0 \
 && npm cache clean -f
 #### </atlaskit-tools>
 

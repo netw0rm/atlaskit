@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-LERNA_LOC="`npm bin`/lerna"
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CDN_PREFIX="pr/docs"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
@@ -31,7 +30,7 @@ rm -rf ../atlaskit-docs
 OUTDIR="../atlaskit-docs/resources/$BITBUCKET_COMMIT";
 mkdir -p $OUTDIR
 export OUTDIR="$OUTDIR"
-$LERNA_LOC exec -- ../../build/bin/generate.readme.html.sh
+lerna exec -- ../../build/bin/generate.readme.html.sh
 
 echo "Generating docs index..."
 pushd $OUTDIR > /dev/null

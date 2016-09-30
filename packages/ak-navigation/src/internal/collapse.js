@@ -1,11 +1,13 @@
-const globalCollapsedWidth = 60; // px this is duplicated in shared-variables.less
-const containerCollapsedWidth = 60; // px this is duplicated in shared-variables.less
-const expandedWidth = 280; // px this is duplicated in shared-variables.less
+import {
+  globalCollapsedWidth,
+  containerCollapsedWidth,
+  expandedWidth,
+  containerPaddingExpanded,
+} from '../shared-variables.js';
 
 const intermediateWidth = globalCollapsedWidth + containerCollapsedWidth;
 const collapsedWidth = globalCollapsedWidth;
 
-const containerPaddingExpanded = 20; // px this is duplicated in shared-variables.less
 const containerPaddingCollapsed = 10;
 // start collapsing the padding 16px out
 const containerPaddingCollapseStart = intermediateWidth + 16;

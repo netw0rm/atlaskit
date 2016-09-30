@@ -3,10 +3,12 @@ import 'style!./host.less';
 import { emit, prop, vdom, define } from 'skatejs';
 import shadowStyles from './index.less';
 import 'ak-blanket';
-import './ak-navigation-drawer';
+import './internal/ak-navigation-drawer';
+import './internal/ak-navigation-drag';
 import './index.ak-navigation-link';
 import classNames from 'classnames';
 import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './internal/touch';
+import resizer from './internal/resizer';
 import {
   getContainerPadding,
   getNavigationWidth,
@@ -27,6 +29,7 @@ const {
 } = events;
 
 const shouldAnimateThreshold = 100; // ms
+const resizerSymbol = Symbol('resizer');
 
 // TODO: keyboard interaction
 const searchDrawer = el => el.addEventListener('click', () => {
@@ -45,45 +48,6 @@ function isDrawerOpen(elem) {
   return elem.createDrawerOpen || elem.searchDrawerOpen;
 }
 
-const startMouseX = Symbol('startMouseX');
-const startNavigationWidth = Symbol('startNavigationWidth');
-const currentMouseX = Symbol('currentMouseX');
-const isDragging = Symbol('isDragging');
-
-function bindDragHandlers(resizer, navigation) {
-  function drag(e) {
-    navigation[currentMouseX] = e.screenX;
-  }
-
-  function updateNavigationWidth() {
-    const delta = navigation[currentMouseX] - navigation[startMouseX];
-    navigation.width = navigation[startNavigationWidth] + delta;
-  }
-
-  function updateNavigationWidthWhileResizing() {
-    updateNavigationWidth();
-    if (navigation[isDragging]) {
-      window.requestAnimationFrame(updateNavigationWidthWhileResizing);
-    }
-  }
-
-  resizer.addEventListener('mousedown', (e) => {
-    if (navigation[isDragging]) {
-      return;
-    }
-    navigation[startMouseX] = e.screenX;
-    navigation[startNavigationWidth] = navigation.width;
-    navigation[isDragging] = true;
-    document.body.addEventListener('mousemove', drag);
-
-    window.requestAnimationFrame(updateNavigationWidthWhileResizing);
-  });
-
-  resizer.addEventListener('mouseup', () => {
-    navigation[isDragging] = false;
-    document.body.removeEventListener('mousemove', drag);
-  });
-}
 function emitWidthChangedEvent(elem, oldWidth, newWidth) {
   emit(elem, widthChangedEvent, {
     detail: {
@@ -110,7 +74,8 @@ function recomputeWidth(elem) {
  * @fires Navigation#open
  * @fires Navigation#close
  * @fires Navigation#widthChanged
- * @fires Navigation#openStateChanged
+ * @fires Navigation#resizeStart
+ * @fires Navigation#resizeEnd
  * @example @html <ak-navigation open collapsible />
  * @example @js import Navigation from 'ak-navigation';
  *
@@ -196,9 +161,10 @@ export default define('ak-navigation', {
               <slot />
             </div>
           </div>
-          <div
-            ref={(resizer) => bindDragHandlers(resizer, elem)}
-            className={shadowStyles.locals.resize}
+          <ak-navigation-drag
+            startDragCallback={elem[resizerSymbol].start}
+            dragCallback={elem[resizerSymbol].resize}
+            endDragCallback={elem[resizerSymbol].end}
           />
         </div>
       </div>
@@ -395,6 +361,7 @@ export default define('ak-navigation', {
     document.removeEventListener('keyup', elem.toggleHandler);
   },
   created(elem) {
+    elem[resizerSymbol] = resizer(elem);
     elem.addEventListener(createDrawerSelectedEvent, () => {
       elem.createDrawerOpen = !elem.createDrawerOpen;
     });

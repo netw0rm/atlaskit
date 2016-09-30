@@ -1,5 +1,6 @@
 import Alignment from './Alignment';
-import 'core-js/fn/array/find';
+// https://github.com/babel/babel/issues/892
+import 'babel-runtime/core-js/array/find';
 
 function popperPositionToAlignmentPosition(position) {
   const positionMap = Alignment.attachmentMap;

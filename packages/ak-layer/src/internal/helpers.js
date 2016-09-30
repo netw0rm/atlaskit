@@ -4,13 +4,8 @@ import 'babel-runtime/core-js/array/find';
 
 function popperPositionToAlignmentPosition(position) {
   const positionMap = Alignment.attachmentMap;
-  let alignmentPosition;
-
-  Object.keys(positionMap).forEach((positionKey) => {
-    if (positionMap[positionKey].position === position) {
-      alignmentPosition = positionMap[positionKey].position;
-    }
-  });
+  const alignmentPosition = Object.keys(positionMap)
+    .find(positionKey => positionMap[positionKey].position === position);
 
   return alignmentPosition;
 }

@@ -1,4 +1,5 @@
 import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
+require('es6-promise').polyfill();
 import 'whatwg-fetch';
 import debug from '../util/logger';
 

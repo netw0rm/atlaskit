@@ -162,7 +162,7 @@ class AkEditorBitbucket extends Component {
       }
 
       elem.focus();
-    } else {
+    } else if (!elem.expanded) {
       elem._pm = null;
     }
   }

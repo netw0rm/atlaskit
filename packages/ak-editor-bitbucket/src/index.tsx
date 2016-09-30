@@ -154,7 +154,7 @@ class AkEditorBitbucket extends Component {
   }
 
   static rendered(elem: AkEditorBitbucket) : void {
-    if (elem.expanded) {
+    if (elem.expanded && !elem._pm) {
       elem._initEditor();
       if (!elem._ready) {
         emit(elem, 'ready');
@@ -364,10 +364,6 @@ class AkEditorBitbucket extends Component {
   }
 
   _initEditor() {
-    if (this._pm) {
-      return;
-    }
-
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
 

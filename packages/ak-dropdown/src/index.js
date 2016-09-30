@@ -150,18 +150,6 @@ function isDescendantOf(child, parent) {
   return isDescendantOf(child.parentNode, parent);
 }
 
-function isInPath(path, elem) {
-  if (!path) return false;
-  const length = path.length;
-  for (let i = 0; i < length; i++) {
-    if (path[i] === elem) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 function changeFocus(elem, type) {
   const list = getAllItems(elem);
 
@@ -216,7 +204,7 @@ export default define('ak-dropdown', {
     elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
     elem[handleClickOutside] = (e) => {
       if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem) &&
-        !isInPath(e.path, elem)) {
+        !(e.path && e.path.indexOf(elem) > -1)) {
         closeDialog(elem);
       }
     };

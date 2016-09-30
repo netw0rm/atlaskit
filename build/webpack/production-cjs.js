@@ -1,3 +1,4 @@
+const Visualizer = require('webpack-visualizer-plugin');
 const productionConfig = require('./production.js');
 
 productionConfig.entry = {
@@ -6,5 +7,9 @@ productionConfig.entry = {
 };
 
 productionConfig.output.libraryTarget = 'commonjs2';
+
+productionConfig.plugins.push(new Visualizer({
+  filename: './stats/cjs.html',
+}));
 
 module.exports = productionConfig;

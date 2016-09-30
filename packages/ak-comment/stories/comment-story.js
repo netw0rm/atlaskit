@@ -17,27 +17,32 @@ const ButtonGroup = reactify(AkButtonGroup);
 const Icon = reactify(AkIcon);
 const commentClass = hostStyles.locals.akComment;
 
+/* eslint-disable react/prop-types */
+const MyComment = (props) => (
+  <Comment className={commentClass} {...props}>
+    <Avatar slot="avatar" src={transparentAvatarUrl} label="Ross" />
+    <a is slot="author" href="#">{props.name}</a>
+    <time is slot="time" datetime="2016-09-20T19:00">{props.time}</time>
+    <ButtonGroup slot="actions">
+      <Button appearance="subtle" compact><Icon glyph="teams" /></Button>
+      <Button appearance="subtle" compact><Icon glyph="create" /></Button>
+      <Button appearance="subtle" compact><Icon glyph="snippets" /></Button>
+    </ButtonGroup>
+    {props.children}
+  </Comment>
+);
+
 storiesOf(name, module)
   .add('a simple ak-comment', () => (
-    <Comment className={commentClass}>
-      <Avatar slot="avatar" src={transparentAvatarUrl} label="Ross" />
-      <a is slot="author" href="#">Ross Somebody</a>
-      <time is slot="time" datetime="2016-09-20T19:00">5 minutes ago</time>
-      <ButtonGroup slot="actions">
-        <Button appearance="subtle" compact><Icon glyph="teams" /></Button>
-        <Button appearance="subtle" compact><Icon glyph="create" /></Button>
-        <Button appearance="subtle" compact><Icon glyph="snippets" /></Button>
-      </ButtonGroup>
-      <p>Hello world!</p>
-      <p>There would obviously <a href="#">be lots of content</a> in here</p>
-      <ul>
-        <li>Lists of stuff helps readability</li>
-      </ul>
-      <div is slot="reply">
-        <p>
-          Nest the ak-comments in here. We might need a comment-group component for expand/collapse
-          and maybe for border separators?
-        </p>
-      </div>
-    </Comment>
+    <MyComment name="John Smith" time="15 minutes ago">
+      <p>Hey <a href="#">Barry</a>, how are you going?</p>
+    </MyComment>
+  ))
+  .add('nested', () => (
+    <MyComment name="John Smith" time="15 minutes ago">
+      <p>Hey <a href="#">Barry</a>, how are you going?</p>
+      <MyComment slot="reply" name="Barry Smith" time="3 minutes ago">
+        <p>Pretty good now that I've seen these ak-comment components!</p>
+      </MyComment>
+    </MyComment>
   ));

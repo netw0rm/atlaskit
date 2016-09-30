@@ -1,5 +1,4 @@
 # AtlasKit
-[![master build](https://bitbucket-badges.atlassian.io/badge/atlassian/atlaskit.svg)](https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
@@ -44,7 +43,9 @@ Once you made some changes, stage them and then commit them using `npm run commi
 # How do I...
 
 ## Generate a new component skeleton
-```npm run create my-component-name```
+```
+npm run create my-component-name
+```
 
 Will create a new templated component under `packages/my-component-name` with everything you need to get started.
 

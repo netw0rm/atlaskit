@@ -1,5 +1,6 @@
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/mixins/select-slot-children.less';
+@import '~akutil-shared-styles/src/borders.less';
 
 @base-font: inherit;
 @em: 14;
@@ -10,7 +11,7 @@
 @buttonHeight: unit(@grid * 4 / @em, em);
 @compactButtonHeight: unit(@grid * 3 / @em, em);
 
-@base-radius: 3px;
+@base-radius: @ak-border-radius;
 @side-slot-margin: unit(@grid, px);
 
 // Default Button Colors

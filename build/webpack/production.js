@@ -2,10 +2,6 @@ const webpack = require('webpack');
 const standardConfig = require('./base.js');
 const externalsMatcher = require('./externalsMatcher.js');
 
-Object.assign(standardConfig.entry, {
-  'dist/bundle.min.js': standardConfig.entry['dist/bundle.js'],
-});
-
 standardConfig.externals = [externalsMatcher];
 
 standardConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
@@ -33,5 +29,6 @@ standardConfig.plugins.push(new webpack.DefinePlugin({
   },
 }));
 
+standardConfig.plugins.push(new webpack.optimize.DedupePlugin());
 
 module.exports = standardConfig;

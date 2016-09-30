@@ -19,7 +19,7 @@
     "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
     "object-assign": "^4.1.0",
-    "popper.js": "v1.0.0-alpha.3",
+    "popper.js": "1.0.0-alpha.3",
     "skatejs": "^1.2.5"
   },
   "repository": {

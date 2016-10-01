@@ -63,9 +63,10 @@ storiesOf(`${name} component`, module)
           Dropdown-button
         </ak-dropdown-trigger-button>
         <ak-dropdown-item>text1</ak-dropdown-item>
-        <ak-dropdown-item>text2</ak-dropdown-item>
+        <ak-dropdown-item hidden>hidden item</ak-dropdown-item>
         <ak-dropdown-item>some text here</ak-dropdown-item>
         <ak-dropdown-item>another text</ak-dropdown-item>
+        <ak-dropdown-item>text2</ak-dropdown-item>
       </DropdownReactComponent>
     </div>
   ))

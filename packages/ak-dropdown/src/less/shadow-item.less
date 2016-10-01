@@ -78,6 +78,10 @@
     outline: none;
     position: relative; // prevents bgcolor from obfuscating focus ring of focused elements
   }
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .selected {
@@ -104,6 +108,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding:unit(@grid, px) 0;
+  padding: unit(@grid, px) 0;
 }
 

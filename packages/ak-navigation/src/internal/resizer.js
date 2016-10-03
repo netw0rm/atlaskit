@@ -29,13 +29,13 @@ function getClosestBreakpoint(x) {
 
 
 function getStickyBreakpoint(x) {
-  const threshold = 10;
+  const threshold = 25;
   const closestBreakpoint = getClosestBreakpoint(x);
   if (closestBreakpoint.distance > threshold) {
     return x;
   }
   const percentThrough = closestBreakpoint.distance / threshold;
-  const stickyDistance = threshold * Math.pow(percentThrough, 2);
+  const stickyDistance = threshold * Math.pow(percentThrough, 1.5);
   if (closestBreakpoint.breakpoint < x) {
     return closestBreakpoint.breakpoint + stickyDistance;
   }

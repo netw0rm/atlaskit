@@ -153,8 +153,7 @@ function isDescendantOf(child, parent) {
 function focusNext(list, i) {
   if (list[i + 1]) {
     if (!list[i + 1].hidden) {
-      // list[i + 1].focused = true;
-      props(list[i + 1], { focused: true });
+      list[i + 1].focused = true;
     } else {
       focusNext(list, i + 1);
     }

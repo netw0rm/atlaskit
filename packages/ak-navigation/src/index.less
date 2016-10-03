@@ -17,6 +17,16 @@
   display: none;
 }
 
+.navigation, .spacer {
+  &.should-animate {
+    transition: width 250ms, transform 250ms;
+  }
+}
+
+.spacer {
+  height: 0;
+}
+
 .navigation {
   background-color: @ak-navigation-container-color;
   top: 0;
@@ -24,10 +34,6 @@
   position: fixed;
   height: 100%;
   display: flex;
-
-  &.should-animate {
-    transition: width 250ms, transform 250ms;
-  }
 
   .global {
     display: flex;
@@ -120,21 +126,3 @@
   }
 }
 
-.resize {
-  height: 100%;
-  right: -4px;
-  width: 8px;
-  cursor: ew-resize;
-  position: absolute;
-  
-  &::after {
-    content: '';
-    width: 2px;
-    left: 3px;
-    height: 100%;
-    position: absolute;
-  }
-  &:hover:after {
-    background-color: @ak-color-B200;
-  }
-}

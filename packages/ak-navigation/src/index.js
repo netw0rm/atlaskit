@@ -86,6 +86,21 @@ export default define('ak-navigation', {
   render(elem) {
     return (
       <div>
+        <style>{`
+          .${shadowStyles.locals.navigation} {
+            width: ${getNavigationWidth(elem)}px;
+            transform: translateX(${getNavigationXOffset(elem)}px);
+          }
+          
+          .${shadowStyles.locals.spacer} {
+            width: ${getNavigationWidth(elem) + getNavigationXOffset(elem)}px;
+          }
+
+          .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
+            transform: translateX(${getContainerPadding(elem.width)}px);
+          }
+      `}</style>
+        <style>{shadowStyles.toString()}</style>
         <ak-blanket
           onActivate={() => closeAllDrawers(elem)}
           clickable={isDrawerOpen(elem)}
@@ -93,23 +108,13 @@ export default define('ak-navigation', {
             [shadowStyles.locals.blanketActive]: isDrawerOpen(elem),
           })}
         />
+        <div className={classNames(shadowStyles.locals.spacer)} />
         <div
           className={classNames(shadowStyles.locals.navigation, {
             [shadowStyles.locals.open]: elem.open,
             [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
           })}
         >
-          <style>{`
-            .${shadowStyles.locals.navigation} {
-              width: ${getNavigationWidth(elem)}px;
-              transform: translateX(${getNavigationXOffset(elem)}px);
-            }
-
-            .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
-              transform: translateX(${getContainerPadding(elem.width)}px);
-            }
-          `}</style>
-          <style>{shadowStyles.toString()}</style>
           <div className={shadowStyles.locals.global}>
             <div className={shadowStyles.locals.globalPrimary}>
               <a href={elem.productHref || false}>

@@ -2,32 +2,23 @@ import 'style!./host.less';
 import { prop, props, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
-import Navigation, { events as navigationEvents } from 'ak-navigation';
+import { events as navigationEvents } from 'ak-navigation';
 const {
-  widthChanged: widthChangedEvent,
   resizeStart: resizeStartEvent,
   resizeEnd: resizeEndEvent,
 } = navigationEvents;
 
-const navigationPadding = 20;
 const shouldAnimateThreshold = 100; // ms
-const isResizing = Symbol('isResizing');
-
-function handleWidthChanged(e, elem) {
-  if (e.target instanceof Navigation) {
-    elem.navigationWidth = e.detail.newWidth;
-  }
-}
 
 function handleResizeStart(e, elem) {
   props(elem, {
-    [isResizing]: true,
+    __isResizing: true,
   });
 }
 
 function handleResizeEnd(e, elem) {
   props(elem, {
-    [isResizing]: false,
+    __isResizing: false,
   });
 }
 
@@ -46,8 +37,9 @@ export default define('ak-page', {
   render(elem) {
     return (
       <div
-        className={classNames({
-          [shadowStyles.locals.resizing]: elem[isResizing],
+        className={classNames(shadowStyles.locals.page, {
+          // eslint-disable-next-line no-underscore-dangle
+          [shadowStyles.locals.resizing]: elem.__isResizing,
         })}
       >
         {/* This is required for elements in the shadow root to be styled.
@@ -55,11 +47,6 @@ export default define('ak-page', {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
-        <style>{`
-            .${shadowStyles.locals.main} {
-              margin-left: ${elem.navigationWidth + navigationPadding}px;
-            }
-          `}</style>
         <div className={shadowStyles.locals.navigation}>
           <slot
             ref={(el) => { elem[navigationSlot] = el; }}
@@ -80,7 +67,7 @@ export default define('ak-page', {
     );
   },
   props: {
-    [isResizing]: prop.boolean(),
+    __isResizing: prop.boolean(),
     /**
      * @description Whether the component should display animations.
      * `shouldAnimate` is turned on after page load.
@@ -90,22 +77,8 @@ export default define('ak-page', {
      * @example @js page.shouldAnimate = true;
      */
     shouldAnimate: prop.boolean(),
-
-    /**
-     * @description The current width of the navigation part of the page.
-     * This is updated by Page when it listens to a Navigation#widthChanged event.
-     * @memberof Page
-     * @instance
-     * @type {integer}
-     * @example @js page.navigationWidth = 80;
-     * @example @html <ak-page navigation-width="80" />;
-     */
-    navigationWidth: prop.number({
-      attribute: true,
-    }),
   },
   created(elem) {
-    elem.addEventListener(widthChangedEvent, (e) => handleWidthChanged(e, elem));
     elem.addEventListener(resizeStartEvent, (e) => handleResizeStart(e, elem));
     elem.addEventListener(resizeEndEvent, (e) => handleResizeEnd(e, elem));
   },
@@ -117,6 +90,5 @@ export default define('ak-page', {
     if (!navigation) {
       return;
     }
-    elem.navigationWidth = navigation.width;
   },
 });

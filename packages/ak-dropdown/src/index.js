@@ -150,20 +150,38 @@ function isDescendantOf(child, parent) {
   return isDescendantOf(child.parentNode, parent);
 }
 
+function focusNext(list, i) {
+  if (list[i + 1]) {
+    if (!list[i + 1].hidden) {
+      list[i + 1].focused = true;
+    } else {
+      focusNext(list, i + 1);
+    }
+  }
+}
+
+function focusPrev(list, i) {
+  if (list[i - 1]) {
+    if (!list[i - 1].hidden) {
+      list[i - 1].focused = true;
+    } else {
+      focusPrev(list, i - 1);
+    }
+  }
+}
+
 function changeFocus(elem, type) {
   const list = getAllItems(elem);
-
   const l = list.length;
-
   for (let i = 0; i < l; i++) {
     const item = list[i];
     if (type === 'prev' && item.focused && !item.first) {
       item.focused = false;
-      list[i - 1].focused = true;
+      focusPrev(list, i);
       break;
     } else if (type === 'next' && item.focused && !item.last) {
       item.focused = false;
-      list[i + 1].focused = true;
+      focusNext(list, i);
       break;
     }
   }

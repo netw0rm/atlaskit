@@ -22,6 +22,9 @@
     "popper.js": "1.0.0-alpha.3",
     "skatejs": "^1.2.5"
   },
+  "peerDependencies": {
+    "core-js": "*"
+  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"

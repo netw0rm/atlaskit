@@ -1,14 +1,11 @@
 import Alignment from './Alignment';
+// https://github.com/babel/babel/issues/892
+import 'core-js/fn/array/find';
 
 function popperPositionToAlignmentPosition(position) {
   const positionMap = Alignment.attachmentMap;
-  let alignmentPosition;
-
-  Object.keys(positionMap).forEach((positionKey) => {
-    if (positionMap[positionKey].position === position) {
-      alignmentPosition = positionMap[positionKey].position;
-    }
-  });
+  const alignmentPosition = Object.keys(positionMap)
+    .find(positionKey => positionMap[positionKey].position === position);
 
   return alignmentPosition;
 }

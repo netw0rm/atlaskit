@@ -8,7 +8,7 @@ CHALK="`npm bin`/chalk"
 
 if [[ $# -eq 0 || "$1" == "" ]]
   then
-    $CHALK white "Usage: npm run create component_name"
+    $CHALK --no-stdin -t "{white Usage: npm run create component_name}"
     exit 1
 fi
 
@@ -22,7 +22,7 @@ CAMEL_CASE=$(./build/bin/camel.case.js "$COMP_NAME")
 # Check that a component of the same name doesn't exist
 if [ -d "packages/$COMP_NAME" ]
   then
-    $CHALK red "Error: a component with that name already exists"
+    $CHALK --no-stdin -t "{red Error: a component with that name already exists}"
     exit 1
 fi
 
@@ -51,5 +51,5 @@ npm install
 
 npm run docs/single "$COMP_NAME"
 
-$CHALK green "New component '$COMP_NAME' created (v1.0.0)"
+$CHALK --no-stdin -t "{green New component '$COMP_NAME' created (v1.0.0)}"
 $CHALK white bold "Hint: Please leave the version at 1.0.0+, as otherwise caret dependencies work differently"

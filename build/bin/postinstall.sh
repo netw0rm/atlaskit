@@ -5,7 +5,7 @@ BASEDIR=$(dirname $0)
 LERNA_LOC="`npm bin`/lerna"
 CHALK="`npm bin`/chalk"
 
-$CHALK blue "Lerna bootstrap..."
+$CHALK --no-stdin -t "{blue Lerna bootstrap...}"
 if [[ -z "$BITBUCKET_COMMIT" ]]; then
   $LERNA_LOC bootstrap
 else
@@ -13,6 +13,6 @@ else
   $LERNA_LOC bootstrap | cat
 fi
 
-$CHALK blue "Installing hooks..."
+$CHALK --no-stdin -t "{blue Installing hooks...}"
 node $BASEDIR/pre-commit.install.js
 validate-commit-msg

@@ -10,10 +10,10 @@ PROTRACTOR_LOC="`npm bin`/protractor"
 popd > /dev/null
 
 if [ -d "cucumber" ]; then
-    $CHALK blue "$PKG: Running integration tests on BrowserStack"
+    $CHALK --no-stdin -t "{blue $PKG: Running integration tests on BrowserStack}"
     PKG=$PKG \
     BASE_URL="http://localhost:9001" \
     $PROTRACTOR_LOC ../../build/protractor/browserstack.js
 else
-    $CHALK blue "$PKG: Skipping integration tests since no cucumber/ dir"
+    $CHALK --no-stdin -t "{blue $PKG: Skipping integration tests since no cucumber/ dir}"
 fi

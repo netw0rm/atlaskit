@@ -10,7 +10,7 @@ BUILD_KEY="REGISTRY-$GITHEAD_SHORT"
 BUILD_NAME="Registry"
 BUILD_DESCRIPTION="The component registry"
 
-$CHALK blue "Post build in progress status"
+$CHALK --no-stdin -t "{blue Post build in progress status}"
 bbuild \
 --commit "$BITBUCKET_COMMIT" \
 --repo "$BITBUCKET_REPO_SLUG" \
@@ -26,7 +26,7 @@ bbuild \
 # Note: unfortunately @atlassian scope is used on the public and private
 # npm registries, which is why we need to disable the .npmrc file
 # temporarily here.
-$CHALK blue "Installing atlaskit-registry from Atlassian private npm"
+$CHALK --no-stdin -t "{blue Installing atlaskit-registry from Atlassian private npm}"
 mv .npmrc ._npmrc
 npm config set progress false
 npm set loglevel warn
@@ -36,7 +36,7 @@ npm install @atlassian/atlaskit-registry@^1.3.1
 mv ._npmrc .npmrc
 
 # Build website using jekyll
-$CHALK blue "Building registry"
+$CHALK --no-stdin -t "{blue Building registry}"
 TARGET_PATH_RELATIVE=../atlaskit-registry/resources
 mkdir -p $TARGET_PATH_RELATIVE
 pushd $TARGET_PATH_RELATIVE > /dev/null
@@ -53,7 +53,7 @@ rm -f ../ak-registry-cdn.zip
 zip -0 -r -T ../ak-registry-cdn.zip ../atlaskit-registry/resources
 
 # Upload to CDN
-$CHALK blue "Uploading registry to CDN..."
+$CHALK --no-stdin -t "{blue Uploading registry to CDN...}"
 java \
 -jar \
 -Dlog4j.configurationFile=build/bin/logger.xml \
@@ -66,12 +66,12 @@ java \
 --pre-bake-bundle=../ak-registry-cdn.zip
 
 # Invalidate CDN caches
-$CHALK blue "CDN invalidation (registry) starting now (this may take some time)"
+$CHALK --no-stdin -t "{blue CDN invalidation (registry) starting now (this may take some time)}"
 AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
 AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
 cf-invalidate -- $CLOUDFRONT_DISTRIBUTION '/atlaskit/registry/*'
 
-$CHALK blue "Post registry build completion status"
+$CHALK --no-stdin -t "{blue Post registry build completion status}"
 bbuild \
 --commit "$BITBUCKET_COMMIT" \
 --repo "$BITBUCKET_REPO_SLUG" \

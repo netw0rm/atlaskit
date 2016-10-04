@@ -9,11 +9,11 @@ popd > /dev/null
 
 $BASEDIR/generate.readme.sh
 
-$CHALK blue "Generating UMD bundle..."
+$CHALK --no-stdin -t "{blue Generating UMD bundle...}"
 webpack --config ../../build/webpack/production-umd.js $@
 
-$CHALK blue "Generating CJS bundle..."
+$CHALK --no-stdin -t "{blue Generating CJS bundle...}"
 webpack --config ../../build/webpack/production-cjs.js $@
 
-$CHALK blue "Generating bundle with dependencies..."
+$CHALK --no-stdin -t "{blue Generating bundle with dependencies...}"
 webpack --config ../../build/webpack/production-with-deps.js $@

@@ -14,10 +14,10 @@ CHALK="`npm bin`/chalk"
 popd > /dev/null
 
 if [ -d "stories" ]; then
-    $CHALK blue "$PKG: Generating storybook"
+    $CHALK --no-stdin -t "{blue $PKG: Generating storybook}"
     cd ../..
     mkdir -p stories/$PKG/$VERSION
     npm run storybook/static/single $PKG -- -o stories/$PKG/$VERSION
 else
-    $CHALK blue "$PKG: Skipping storybook generation since no stories/ dir"
+    $CHALK --no-stdin -t "{blue $PKG: Skipping storybook generation since no stories/ dir}"
 fi

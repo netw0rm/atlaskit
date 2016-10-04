@@ -6,13 +6,13 @@ CHALK="`npm bin`/chalk"
 
 if [[ $# -eq 0 || "$1" == "" ]]
   then
-    $CHALK red "No scope given"
+    $CHALK --no-stdin -t "{red No scope given}"
     exit 1
 fi
 
 if [[ $# -eq 1 || "$1" == "" ]]
   then
-    $CHALK red "No command given"
+    $CHALK --no-stdin -t "{red No command given}"
     exit 1
 fi
 package=$1

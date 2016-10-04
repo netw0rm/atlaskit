@@ -14,6 +14,7 @@ export default (props, children) => {
     [shadowItemStyles.locals.item, Object.assign({
       [shadowItemStyles.locals.disabled]: props.disabled,
       [shadowItemStyles.locals.selected]: props.selected,
+      [shadowItemStyles.locals.hidden]: props.hidden,
     }), props.classes]
   );
 
@@ -22,6 +23,7 @@ export default (props, children) => {
       tabindex={tabIndex}
       className={classes}
       aria-disabled={props.disabled}
+      aria-hidden={props.hidden}
       {...props}
     >
       {children()}

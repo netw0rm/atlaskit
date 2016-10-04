@@ -21,13 +21,17 @@ module.exports = function runWithTunnel(opts) {
     };
     if (opts.tunnelId) tunnelOptions.localIdentifier = opts.tunnelId;
     browserStackTunnel.start(tunnelOptions, startError => {
-      if (startError) handleError(startError);
+      if (startError) {
+        handleError(startError);
+        return;
+      }
       tunnelStateChanged('started');
 
       try {
         opts.runFn();
       } catch (execError) {
         handleError(execError);
+        return;
       }
 
       // Stop the tunnel and exit successfully

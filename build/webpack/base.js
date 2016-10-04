@@ -147,7 +147,7 @@ const standardConfig = {
     autoprefixer({
       // have a look here: https://confluence.atlassian.com/display/Cloud/Supported+browsers
       // "not Opera" w/o version qualifier is not valid, so I chose a really high version number
-      browsers: 'last 1 version, ie 11, Android > 4, not Opera < 1000',
+      browsers: 'last 1 version, ie 10, Android > 4, not Opera < 1000',
     }),
   ],
   plugins: [],

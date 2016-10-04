@@ -1,7 +1,6 @@
 import * as events from './index.events';
 import {
   globalCollapsedWidth,
-  containerCollapsedWidth,
   expandedWidth,
 } from '../shared-variables.js';
 import { emit } from 'skatejs';
@@ -13,7 +12,6 @@ const {
 
 export const breakpoints = [
   globalCollapsedWidth,
-  globalCollapsedWidth + containerCollapsedWidth,
   expandedWidth,
 ];
 
@@ -25,21 +23,6 @@ function getClosestBreakpoint(x) {
   .reduce((a, b) => (
     a.distance < b.distance ? a : b
   ));
-}
-
-
-function getStickyBreakpoint(x) {
-  const threshold = 25;
-  const closestBreakpoint = getClosestBreakpoint(x);
-  if (closestBreakpoint.distance > threshold) {
-    return x;
-  }
-  const percentThrough = closestBreakpoint.distance / threshold;
-  const stickyDistance = threshold * Math.pow(percentThrough, 2);
-  if (closestBreakpoint.breakpoint < x) {
-    return closestBreakpoint.breakpoint + stickyDistance;
-  }
-  return closestBreakpoint.breakpoint - stickyDistance;
 }
 
 function getBounded(x) {
@@ -54,7 +37,6 @@ export default function resizer(navigation) {
   let startNavigationWidth;
   return {
     start(event) {
-      navigation.__isDragging = true; // eslint-disable-line no-underscore-dangle
       navigation.shouldAnimate = false;
       startScreenX = event.screenX;
       startNavigationWidth = navigation.width;
@@ -63,13 +45,11 @@ export default function resizer(navigation) {
     resize(event) {
       const delta = event.screenX - startScreenX;
       const currentWidth = startNavigationWidth + delta;
-      const stickyWidth = getStickyBreakpoint(currentWidth);
-      const boundedStickyWidth = getBounded(stickyWidth);
-      navigation.width = Math.round(boundedStickyWidth);
+      const boundedWidth = getBounded(currentWidth);
+      navigation.width = Math.round(boundedWidth);
     },
     end() {
       const closestBreakpoint = getClosestBreakpoint(navigation.width);
-      navigation.__isDragging = false; // eslint-disable-line no-underscore-dangle
       navigation.shouldAnimate = true;
       navigation.width = closestBreakpoint.breakpoint;
       emit(navigation, resizeEndEvent);

@@ -110,10 +110,7 @@ export default define('ak-navigation', {
           })}
         />
         <div
-          className={classNames(shadowStyles.locals.spacer, {
-            // eslint-disable-next-line no-underscore-dangle
-            [shadowStyles.locals.shouldAnimate]: elem.__isDragging,
-          })}
+          className={classNames(shadowStyles.locals.spacer)}
         />
         <div
           className={classNames(shadowStyles.locals.navigation, {
@@ -181,7 +178,6 @@ export default define('ak-navigation', {
     );
   },
   props: {
-    __isDragging: prop.boolean(),
     /**
      * @description Whether the component should display animations.
      * `shouldAnimate` is turned on after page load.

@@ -21,4 +21,4 @@ pipelines:
           - pwd
           - ls -la .
           - ls -la ..
-          - DEBUG=* npm run pr/docs
+          - npm run pr/docs

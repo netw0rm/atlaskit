@@ -1,4 +1,16 @@
-import * as colors from 'akutil-shared-styles';
+import {
+  akBorderRadius,
+  akColorN20,
+  akColorN30,
+  akColorB200,
+  akColorB50,
+  akColorN500,
+  akColorB400,
+  akColorB500,
+  akColorB300,
+  akColorN700,
+  akColorN40,
+} from 'akutil-shared-styles';
 
 const baseFont = 'inherit';
 const em = 14;
@@ -9,33 +21,33 @@ const buttonLineHeight = lineHeight / em;
 const buttonHeight = `${grid * 4 / em}em`;
 const compactButtonHeight = `${grid * 3 / em}em`;
 
-const baseRadius = colors.akBorderRadius;
+const baseRadius = akBorderRadius;
 const sideSlotMargin = `${grid}px`;
 
 // Default Button Colors
-const defaultBackgroundColor = colors.akColorN20;
-const defaultBackgroundColorHover = colors.akColorN30;
-const defaultBackgroundColorFocus = colors.akColorB200;
-const defaultBackgroundColorActive = colors.akColorB50;
-const defaultColor = colors.akColorN500;
+const defaultBackgroundColor = akColorN20;
+const defaultBackgroundColorHover = akColorN30;
+const defaultBackgroundColorFocus = akColorB200;
+const defaultBackgroundColorActive = akColorB50;
+const defaultColor = akColorN500;
 
 // Primary Button Colors
-const primaryBackgroundColor = colors.akColorB400;
-const primaryBackgroundColorHover = colors.akColorB500;
-const primaryBackgroundColorActive = colors.akColorB300;
-const primaryColor = colors.akColorN20;
+const primaryBackgroundColor = akColorB400;
+const primaryBackgroundColorHover = akColorB500;
+const primaryBackgroundColorActive = akColorB300;
+const primaryColor = akColorN20;
 
 // Selected Button Colors
-const selectedBackgroundColor = colors.akColorN700;
-const selectedColor = colors.akColorN20;
+const selectedBackgroundColor = akColorN700;
+const selectedColor = akColorN20;
 
 // Link Button Colors
-const linkColor = colors.akColorB400;
-const linkColorHover = colors.akColorB300;
+const linkColor = akColorB400;
+const linkColorHover = akColorB300;
 const linkColorActive = linkColorHover;
 
 // Disabled button Colors
-const disabledColor = colors.akColorN40;
+const disabledColor = akColorN40;
 
 export default {
   '::slotted([slot="before"])': {

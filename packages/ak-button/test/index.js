@@ -6,14 +6,10 @@ import sinonChai from 'sinon-chai';
 import { props } from 'skatejs';
 import AkButton, { APPEARANCE } from '../src/index.js';
 import { stylesKey } from '../src/symbols';
+import { akGridSize } from 'akutil-shared-styles';
 import hostStyles from '../src/host.less';
 import { name } from '../package.json';
 import { hasClass, waitUntil, getShadowRoot } from 'akutil-common-test';
-
-// TODO revert this to:
-// import { akGridSize } from 'akutil-shared-styles';
-// once we fixed the src/ exports (see AK-477)
-const akGridSize = '8px';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

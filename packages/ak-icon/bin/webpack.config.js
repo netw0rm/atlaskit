@@ -29,6 +29,10 @@ module.exports = (tmpFolder, entry) => ({
   module: {
     loaders: [
       {
+        test: /\.less$/,
+        loader: 'css?camelCase=true&modules=true&importLoaders=1!less',
+      },
+      {
         loader: 'babel',
         test: /\.js$/,
         query: {

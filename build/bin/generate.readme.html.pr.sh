@@ -3,6 +3,7 @@ set -e
 
 LERNA_LOC="`npm bin`/lerna"
 CHALK="`npm bin`/chalk"
+INDEXIFIER_LOC="`npm bin`/indexifier"
 
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CDN_PREFIX="pr/docs"
@@ -39,12 +40,8 @@ export OUTDIR="$OUTDIR"
 $LERNA_LOC exec -- ../../build/bin/generate.readme.html.sh
 
 $CHALK blue "Generating docs index..."
-
-INDEX_FILE="index.html"
-echo "<html><ul>" > $INDEX_FILE
 pushd $OUTDIR > /dev/null
-find . -type f \( -name "*.html" ! -name "$INDEX_FILE" \) -exec echo "<li><a href=\"{}\">{}</a></li>" ";" > $INDEX_FILE
-echo "</ul></html>" >> $INDEX_FILE
+$INDEXIFIER_LOC --html . > index.html
 popd > /dev/null
 
 ZIP_FILE="../ak-docs-cdn.zip"

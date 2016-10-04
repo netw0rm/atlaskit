@@ -22,9 +22,3 @@ pipelines:
           - npm install
           - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/artifacts"
           - npm run test/integration
-  AK-366-and-AK-408:
-    - step:
-        script:
-          - pwd
-          - ls -la .
-          - ls -la ..

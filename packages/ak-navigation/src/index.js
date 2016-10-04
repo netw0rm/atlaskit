@@ -7,14 +7,15 @@ import './internal/ak-navigation-drawer';
 import './internal/ak-navigation-drag';
 import './index.ak-navigation-link';
 import classNames from 'classnames';
-import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './internal/touch';
 import resizer from './internal/resizer';
+import addTouchHandlers from './internal/touch';
 import {
   getContainerPadding,
   getNavigationWidth,
   getNavigationXOffset,
   getExpandedWidth,
   getCollapsedWidth,
+  getSpacerWidth,
 } from './internal/collapse';
 import keycode from 'keycode';
 import 'custom-event-polyfill';
@@ -93,7 +94,7 @@ export default define('ak-navigation', {
           }
           
           .${shadowStyles.locals.spacer} {
-            width: ${getNavigationWidth(elem) + getNavigationXOffset(elem)}px;
+            width: ${getSpacerWidth(elem)}px;
           }
 
           .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
@@ -108,10 +109,14 @@ export default define('ak-navigation', {
             [shadowStyles.locals.blanketActive]: isDrawerOpen(elem),
           })}
         />
-        <div className={classNames(shadowStyles.locals.spacer)} />
+        <div
+          className={classNames(shadowStyles.locals.spacer, {
+            // eslint-disable-next-line no-underscore-dangle
+            [shadowStyles.locals.shouldAnimate]: elem.__isDragging,
+          })}
+        />
         <div
           className={classNames(shadowStyles.locals.navigation, {
-            [shadowStyles.locals.open]: elem.open,
             [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
           })}
         >
@@ -166,16 +171,17 @@ export default define('ak-navigation', {
               <slot />
             </div>
           </div>
-          <ak-navigation-drag
+          {elem.collapsible ? <ak-navigation-drag
             startDragCallback={elem[resizerSymbol].start}
             dragCallback={elem[resizerSymbol].resize}
             endDragCallback={elem[resizerSymbol].end}
-          />
+          /> : null}
         </div>
       </div>
     );
   },
   props: {
+    __isDragging: prop.boolean(),
     /**
      * @description Whether the component should display animations.
      * `shouldAnimate` is turned on after page load.
@@ -378,21 +384,7 @@ export default define('ak-navigation', {
       containerLinks.forEach((child) => { child.selected = false; });
       event.target.selected = true;
     });
-    elem.addEventListener('touchstart', (event) => {
-      elem.touchstart = event;
-    });
-    elem.addEventListener('touchend', (event) => {
-      const swipeType = getSwipeType(elem.touchstart, event);
-      if (swipeType === noSwipe) {
-        return;
-      }
-
-      if (swipeType === swipeLeft) {
-        elem.open = true;
-      } else if (swipeType === swipeRight) {
-        elem.open = false;
-      }
-    });
+    addTouchHandlers(elem);
   },
 });
 

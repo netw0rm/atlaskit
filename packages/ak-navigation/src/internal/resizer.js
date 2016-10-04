@@ -11,7 +11,7 @@ const {
 } = events;
 
 
-const breakpoints = [
+export const breakpoints = [
   globalCollapsedWidth,
   globalCollapsedWidth + containerCollapsedWidth,
   expandedWidth,
@@ -35,7 +35,7 @@ function getStickyBreakpoint(x) {
     return x;
   }
   const percentThrough = closestBreakpoint.distance / threshold;
-  const stickyDistance = threshold * Math.pow(percentThrough, 1.5);
+  const stickyDistance = threshold * Math.pow(percentThrough, 2);
   if (closestBreakpoint.breakpoint < x) {
     return closestBreakpoint.breakpoint + stickyDistance;
   }
@@ -54,6 +54,7 @@ export default function resizer(navigation) {
   let startNavigationWidth;
   return {
     start(event) {
+      navigation.__isDragging = true; // eslint-disable-line no-underscore-dangle
       navigation.shouldAnimate = false;
       startScreenX = event.screenX;
       startNavigationWidth = navigation.width;
@@ -68,6 +69,7 @@ export default function resizer(navigation) {
     },
     end() {
       const closestBreakpoint = getClosestBreakpoint(navigation.width);
+      navigation.__isDragging = false; // eslint-disable-line no-underscore-dangle
       navigation.shouldAnimate = true;
       navigation.width = closestBreakpoint.breakpoint;
       emit(navigation, resizeEndEvent);

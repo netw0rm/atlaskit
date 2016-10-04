@@ -5,6 +5,8 @@ import {
   containerPaddingExpanded,
 } from '../shared-variables.js';
 
+import { breakpoints } from './resizer';
+
 const intermediateWidth = globalCollapsedWidth + containerCollapsedWidth;
 const collapsedWidth = globalCollapsedWidth;
 
@@ -43,4 +45,11 @@ export function getExpandedWidth(elem) {
 
 export function getCollapsedWidth() {
   return collapsedWidth;
+}
+
+export function getSpacerWidth(elem) {
+  const navigationVisibleWidth = getNavigationWidth(elem) + getNavigationXOffset(elem);
+  return breakpoints.filter((breakpoint) => (
+    breakpoint >= navigationVisibleWidth
+  )).reduce((a, b) => (a < b ? a : b));
 }

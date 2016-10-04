@@ -18,6 +18,8 @@ module.exports = function runWithTunnel(opts) {
       key: process.env.BROWSERSTACK_KEY,
       forcelocal: true,
       force: true,
+      v: true,
+      logfile: '/tmp/browserstack.log',
     };
     if (opts.tunnelId) tunnelOptions.localIdentifier = opts.tunnelId;
     browserStackTunnel.start(tunnelOptions, startError => {

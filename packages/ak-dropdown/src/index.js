@@ -6,7 +6,7 @@ import './index.trigger';
 import Item from './index.item';
 import CheckboxItem from './index.item.checkbox';
 import RadioItem from './index.item.radio';
-import './index.group';
+import Group from './index.group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
@@ -368,8 +368,10 @@ export default define('ak-dropdown', {
      * should be set to `true` in order for the Dropdown to be able to step outside the container
      * @memberof Dropdown
      * @instance
-     * @type HTMLElement
-     * @example @js dropdown.boundariesElement = document.body.querySelector('#container');
+     * @default false
+     * @type Boolean
+     * @example @html <ak-dropdown step-outside></ak-dropdown>
+     * @example @js dropdown.stepOutside = true;
      */
     stepOutside: prop.boolean({
       attribute: true,
@@ -377,5 +379,5 @@ export default define('ak-dropdown', {
   },
 });
 
-export { events };
+export { events, Item, CheckboxItem, RadioItem, Group };
 export { DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow } from './index.trigger';

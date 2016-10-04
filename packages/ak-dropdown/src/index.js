@@ -221,7 +221,8 @@ export default define('ak-dropdown', {
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
     elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
     elem[handleClickOutside] = (e) => {
-      if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem)) {
+      if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem) &&
+        !(e.path && e.path.indexOf(elem) > -1)) {
         closeDialog(elem);
       }
     };

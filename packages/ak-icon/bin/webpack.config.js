@@ -30,7 +30,7 @@ module.exports = (tmpFolder, entry) => ({
     loaders: [
       {
         test: /\.less$/,
-        loader: 'css?camelCase=true&modules=true&importLoaders=1!less',
+        loader: 'css?camelCase=true&modules=true!less',
       },
       {
         loader: 'babel',

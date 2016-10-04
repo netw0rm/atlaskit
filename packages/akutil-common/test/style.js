@@ -142,4 +142,17 @@ describe('style', () => {
       done
     );
   });
+
+  it('nested rule', done => {
+    elem.css = {
+      foo: {
+        '&:hover': {},
+      },
+    };
+
+    afterMutations(
+      () => expect(classes.foo).to.match(/^foo-/),
+      done
+    );
+  });
 });

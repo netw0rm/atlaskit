@@ -6,7 +6,7 @@ import './index.trigger';
 import Item from './index.item';
 import CheckboxItem from './index.item.checkbox';
 import RadioItem from './index.item.radio';
-import './index.group';
+import Group from './index.group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
@@ -15,10 +15,12 @@ import dropdownPositionedToSide from './internal/dropdownPositionedToSide';
 // Width of a dropdown should be at least width of it's trigger + 10px
 const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
-const dropdownMaxHeight = (30 * 9.5); // ( item height * 9.5 items)
+const grid = 4;
+const itemHeight = grid * 7;
+const dropdownMaxHeight = (itemHeight * 9.5); // ( item height * 9.5 items) - by design
 
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
-const offset = '0 2';
+const offset = '0 4';
 const activatedFrom = Symbol();
 const keyDownOnceOnOpen = Symbol();
 const handleClickOutside = Symbol();
@@ -148,20 +150,38 @@ function isDescendantOf(child, parent) {
   return isDescendantOf(child.parentNode, parent);
 }
 
+function focusNext(list, i) {
+  if (list[i + 1]) {
+    if (!list[i + 1].hidden) {
+      list[i + 1].focused = true;
+    } else {
+      focusNext(list, i + 1);
+    }
+  }
+}
+
+function focusPrev(list, i) {
+  if (list[i - 1]) {
+    if (!list[i - 1].hidden) {
+      list[i - 1].focused = true;
+    } else {
+      focusPrev(list, i - 1);
+    }
+  }
+}
+
 function changeFocus(elem, type) {
   const list = getAllItems(elem);
-
   const l = list.length;
-
   for (let i = 0; i < l; i++) {
     const item = list[i];
     if (type === 'prev' && item.focused && !item.first) {
       item.focused = false;
-      list[i - 1].focused = true;
+      focusPrev(list, i);
       break;
     } else if (type === 'next' && item.focused && !item.last) {
       item.focused = false;
-      list[i + 1].focused = true;
+      focusNext(list, i);
       break;
     }
   }
@@ -201,7 +221,8 @@ export default define('ak-dropdown', {
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
     elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
     elem[handleClickOutside] = (e) => {
-      if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem)) {
+      if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem) &&
+        !(e.path && e.path.indexOf(elem) > -1)) {
         closeDialog(elem);
       }
     };
@@ -330,5 +351,5 @@ export default define('ak-dropdown', {
   },
 });
 
-export { events };
+export { events, Item, CheckboxItem, RadioItem, Group };
 export { DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow } from './index.trigger';

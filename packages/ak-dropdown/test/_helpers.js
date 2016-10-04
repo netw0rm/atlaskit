@@ -13,4 +13,8 @@ function tearDownComponent(component) {
   document.body.removeChild(component);
 }
 
+export const itemHeight = 28;
+export const itemLeftGap = 12;
+export const itemLeftToDefaultGap = 8;
+
 export { createTemporaryComponent, tearDownComponent };

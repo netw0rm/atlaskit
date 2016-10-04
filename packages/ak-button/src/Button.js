@@ -2,7 +2,6 @@ import { vdom } from 'skatejs';
 import classNames from 'classnames';
 import { appearance } from './enumeratedProperties';
 
-// const classKeys = shadowStyles.locals;
 const { PRIMARY, SUBTLE, LINK } = appearance.values;
 
 const getClasses = (styles, props) => ({

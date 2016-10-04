@@ -1,4 +1,5 @@
 import * as colors from 'akutil-shared-styles';
+
 const baseFont = 'inherit';
 const em = 14;
 const grid = 8;
@@ -36,50 +37,6 @@ const linkColorActive = linkColorHover;
 // Disabled button Colors
 const disabledColor = colors.akColorN40;
 
-const defaultButton = {
-  'box-sizing': 'border-box',
-  background: `${defaultBackgroundColor}`,
-  'border-width': '0',
-  'border-radius': `${baseRadius}`,
-  color: `${defaultColor}`,
-  display: 'inline-block',
-  'font-style': 'normal',
-  'font-size': `${baseFont}`,
-  height: `${buttonHeight}`,
-  'line-height': `${buttonLineHeight}`,
-  margin: '0',
-  outline: 'none',
-  padding: `${grid * 0.75}px ${grid}px`,
-  'text-align': 'center',
-  transition: 'background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)',
-  'user-select': 'none',
-
-  '&::-moz-focus-inner': {
-    margin: 0,
-    padding: 0,
-    border: 0,
-  },
-
-  '&:hover': {
-    background: `${defaultBackgroundColorHover}`,
-    cursor: 'pointer',
-    transition: 'background 0.2s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)',
-  },
-
-  '&:active': {
-    background: `${defaultBackgroundColorActive}`,
-    'transition-duration': '0s',
-  },
-
-  '&:focus': {
-    'box-shadow': `0 0 0 2px ${defaultBackgroundColorFocus}`,
-    'transition-duration': '0s, 0.2s',
-  },
-  // '&:active:focus': {
-  //   'box-shadow': `0 0 0 0 ${defaultBackgroundColorFocus}`,
-  // },
-};
-
 export default {
   '::slotted([slot="before"])': {
     'margin-right': `${sideSlotMargin}`,
@@ -116,7 +73,49 @@ export default {
   root: {
     display: 'inline-block',
   },
-  button: defaultButton,
+  button: {
+    'box-sizing': 'border-box',
+    background: `${defaultBackgroundColor}`,
+    'border-width': '0',
+    'border-radius': `${baseRadius}`,
+    color: `${defaultColor}`,
+    display: 'inline-block',
+    'font-style': 'normal',
+    'font-size': `${baseFont}`,
+    height: `${buttonHeight}`,
+    'line-height': `${buttonLineHeight}`,
+    margin: '0',
+    outline: 'none',
+    padding: `${grid * 0.75}px ${grid}px`,
+    'text-align': 'center',
+    transition: 'background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)',
+    'user-select': 'none',
+
+    '&::-moz-focus-inner': {
+      margin: 0,
+      padding: 0,
+      border: 0,
+    },
+
+    '&:hover': {
+      background: `${defaultBackgroundColorHover}`,
+      cursor: 'pointer',
+      transition: 'background 0.2s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)',
+    },
+
+    '&:active': {
+      background: `${defaultBackgroundColorActive}`,
+      'transition-duration': '0s',
+    },
+
+    '&:focus': {
+      'box-shadow': `0 0 0 2px ${defaultBackgroundColorFocus}`,
+      'transition-duration': '0s, 0.2s',
+    },
+    '&:focus:active': {
+      'box-shadow': `0 0 0 0 ${defaultBackgroundColorFocus}`,
+    },
+  },
   primary: {
     background: `${primaryBackgroundColor}`,
     color: `${primaryColor}`,
@@ -129,17 +128,14 @@ export default {
       background: `${primaryBackgroundColorActive}`,
     },
   },
-
   subtle: {
     background: 'none',
   },
-  //
   disabled: {
     color: `${disabledColor}`,
     '::slotted(*)': { 'pointer-events': 'none' },
     cursor: 'not-allowed',
   },
-  //
   selected: {
     background: `${selectedBackgroundColor}`,
     color: `${selectedColor}`,
@@ -148,7 +144,6 @@ export default {
       transition: 'none',
     },
   },
-  //
   link: {
     background: 'none',
     color: `${linkColor}`,
@@ -170,7 +165,6 @@ export default {
       background: 'none',
     },
   },
-  //
   compact: {
     height: `${compactButtonHeight}`,
     'padding-top': `${grid / 4}px`,

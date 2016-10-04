@@ -1,1 +1,1 @@
-export const stylesKey = Symbol('styles');
+export const stylesKey = Symbol('ak-button-styles');

@@ -30,3 +30,5 @@ npm install -g bitbucket-build-status@1.0.1
 
 echo "Installing npm-run-all"
 npm install -g npm-run-all@3.1.0
+
+export FORCE_COLOR="true"

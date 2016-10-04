@@ -9,27 +9,17 @@ const {
   resizeEnd: resizeEndEvent,
 } = events;
 
-
-export const breakpoints = [
-  globalCollapsedWidth,
-  expandedWidth,
-];
+const minBreakpoint = globalCollapsedWidth;
+const maxBreakpoint = expandedWidth;
 
 function getClosestBreakpoint(x) {
-  return breakpoints.map((breakpoint) => ({
-    breakpoint,
-    distance: Math.abs(x - breakpoint),
-  }))
-  .reduce((a, b) => (
-    a.distance < b.distance ? a : b
-  ));
+  const minBreakpointDistance = Math.abs(minBreakpoint - x);
+  const maxBreakpointDistance = Math.abs(maxBreakpoint - x);
+  return minBreakpointDistance < maxBreakpointDistance ? minBreakpoint : maxBreakpoint;
 }
 
 function getBounded(x) {
-  const sortedBreakpoints = breakpoints.sort((a, b) => (a > b ? -1 : 1));
-  const maxWidth = sortedBreakpoints[0];
-  const minWidth = sortedBreakpoints.reverse()[0];
-  return Math.min(Math.max(x, minWidth), maxWidth);
+  return Math.min(Math.max(x, minBreakpoint), maxBreakpoint);
 }
 
 export default function resizer(navigation) {
@@ -51,7 +41,7 @@ export default function resizer(navigation) {
     end() {
       const closestBreakpoint = getClosestBreakpoint(navigation.width);
       navigation.shouldAnimate = true;
-      navigation.width = closestBreakpoint.breakpoint;
+      navigation.width = closestBreakpoint;
       emit(navigation, resizeEndEvent);
     },
   };

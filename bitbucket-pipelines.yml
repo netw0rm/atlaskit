@@ -20,5 +20,5 @@ pipelines:
         script:
           - pwd
           - ls -la .
-          - ls -la ..
+          - ls -la /usr/src/app
           - npm run pr/docs

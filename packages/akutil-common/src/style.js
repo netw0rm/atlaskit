@@ -1,4 +1,5 @@
 import jss from 'jss';
+import nested from 'jss-nested';
 
 const { HTMLContentElement, HTMLSlotElement, ShadowRoot } = window;
 const native = fn => (fn || '').toString().indexOf('[native code]') > -1;
@@ -6,13 +7,19 @@ const supportsShadowDOM = native(ShadowRoot);
 const supportsShadowDOMV0 = supportsShadowDOM && HTMLContentElement;
 const supportsShadowDOMV1 = supportsShadowDOM && HTMLSlotElement;
 
+// Fallback to selectorText because jss-nested seems to remove name.
+const getRuleSelector = rule => rule.name || rule.selectorText;
+
+jss.use(nested());
+
 // Polyfill :host
 // --------------
 
 jss.use(rule => {
-  if (rule.name.indexOf(':host') === 0) {
+  const selector = getRuleSelector(rule);
+  if (selector.indexOf(':host') === 0) {
     if (supportsShadowDOM) {
-      rule.selectorText = rule.name;
+      rule.selectorText = selector;
     } else {
       const match = rule.selectorText.match(/:host\((.*)\)/);
       const matchSelector = match && match[1] || '';
@@ -25,12 +32,13 @@ jss.use(rule => {
 // ------------------
 
 jss.use(rule => {
-  if (rule.name.indexOf('::slotted') > -1) {
-    const match = rule.name.match(/(.*)::slotted\((.*)\)/);
+  const selector = getRuleSelector(rule);
+  if (selector.indexOf('::slotted') > -1) {
+    const match = selector.match(/(.*)::slotted\((.*)\)/);
     const matchSlot = match && match[1] || '';
     const matchSelector = match && match[2] || '';
     if (supportsShadowDOMV1) {
-      rule.selectorText = rule.name;
+      rule.selectorText = selector;
     } else if (supportsShadowDOMV0) {
       rule.selectorText = `${matchSlot}::content > ${matchSelector}`;
     } else {

@@ -7,14 +7,16 @@ const supportsShadowDOM = native(ShadowRoot);
 const supportsShadowDOMV0 = supportsShadowDOM && HTMLContentElement;
 const supportsShadowDOMV1 = supportsShadowDOM && HTMLSlotElement;
 
+// Fallback to selectorText because jss-nested seems to remove name.
+const getRuleSelector = rule => rule.name || rule.selectorText;
+
 jss.use(nested());
 
 // Polyfill :host
 // --------------
 
 jss.use(rule => {
-  // Fallback to selectorText because jss-nested seems to remove name.
-  const selector = rule.name || rule.selectorText;
+  const selector = getRuleSelector(rule);
   if (selector.indexOf(':host') === 0) {
     if (supportsShadowDOM) {
       rule.selectorText = selector;
@@ -30,7 +32,7 @@ jss.use(rule => {
 // ------------------
 
 jss.use(rule => {
-  const selector = rule.name || rule.selectorText;
+  const selector = getRuleSelector(rule);
   if (selector.indexOf('::slotted') > -1) {
     const match = selector.match(/(.*)::slotted\((.*)\)/);
     const matchSlot = match && match[1] || '';

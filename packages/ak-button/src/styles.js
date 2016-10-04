@@ -62,10 +62,10 @@ export default {
   },
   // shadow DOM styles
   '::slotted([slot="before"])': {
-    'margin-right': `${sideSlotMargin}`,
+    'margin-right': sideSlotMargin,
   },
   '::slotted([slot="after"])': {
-    'margin-left': `${sideSlotMargin}`,
+    'margin-left': sideSlotMargin,
   },
   ':host .before-slot-wrapper': {
     'align-self': 'center',
@@ -98,15 +98,15 @@ export default {
   },
   button: {
     'box-sizing': 'border-box',
-    background: `${defaultBackgroundColor}`,
+    background: defaultBackgroundColor,
     'border-width': '0',
-    'border-radius': `${baseRadius}`,
-    color: `${defaultColor}`,
+    'border-radius': baseRadius,
+    color: defaultColor,
     display: 'inline-block',
     'font-style': 'normal',
-    'font-size': `${baseFont}`,
-    height: `${buttonHeight}`,
-    'line-height': `${buttonLineHeight}`,
+    'font-size': baseFont,
+    height: buttonHeight,
+    'line-height': buttonLineHeight,
     margin: '0',
     outline: 'none',
     padding: `${grid * 0.75}px ${grid}px`,
@@ -121,13 +121,13 @@ export default {
     },
 
     '&:hover': {
-      background: `${defaultBackgroundColorHover}`,
+      background: defaultBackgroundColorHover,
       cursor: 'pointer',
       transition: 'background 0.2s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)',
     },
 
     '&:active': {
-      background: `${defaultBackgroundColorActive}`,
+      background: defaultBackgroundColorActive,
       'transition-duration': '0s',
     },
 
@@ -140,56 +140,56 @@ export default {
     },
   },
   primary: {
-    background: `${primaryBackgroundColor}`,
-    color: `${primaryColor}`,
+    background: primaryBackgroundColor,
+    color: primaryColor,
 
     '&:hover': {
-      background: `${primaryBackgroundColorHover}`,
+      background: primaryBackgroundColorHover,
     },
 
     '&:active': {
-      background: `${primaryBackgroundColorActive}`,
+      background: primaryBackgroundColorActive,
     },
   },
   subtle: {
     background: 'none',
   },
   disabled: {
-    color: `${disabledColor}`,
+    color: disabledColor,
     '::slotted(*)': { 'pointer-events': 'none' },
     cursor: 'not-allowed',
   },
   selected: {
-    background: `${selectedBackgroundColor}`,
-    color: `${selectedColor}`,
+    background: selectedBackgroundColor,
+    color: selectedColor,
     '&:hover': {
-      background: `${selectedBackgroundColor}`,
+      background: selectedBackgroundColor,
       transition: 'none',
     },
   },
   link: {
     background: 'none',
-    color: `${linkColor}`,
+    color: linkColor,
     transition: 'color 0.1s ease-out',
 
     '&:hover': {
       background: 'none',
-      color: `${linkColorHover}`,
+      color: linkColorHover,
       'text-decoration': 'underline',
     },
 
     '&:active': {
-      color: `${linkColorActive}`,
+      color: linkColorActive,
       'text-decoration': 'none',
     },
 
     '&.disabled': {
-      color: `${disabledColor}`,
+      color: disabledColor,
       background: 'none',
     },
   },
   compact: {
-    height: `${compactButtonHeight}`,
+    height: compactButtonHeight,
     'padding-top': `${grid / 4}px`,
     'padding-bottom': `${grid / 4}px`,
   },

@@ -6,7 +6,7 @@ import './index.trigger';
 import Item from './index.item';
 import CheckboxItem from './index.item.checkbox';
 import RadioItem from './index.item.radio';
-import './index.group';
+import Group from './index.group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
@@ -351,5 +351,5 @@ export default define('ak-dropdown', {
   },
 });
 
-export { events };
+export { events, Item, CheckboxItem, RadioItem, Group };
 export { DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow } from './index.trigger';

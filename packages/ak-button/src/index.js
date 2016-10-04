@@ -1,5 +1,4 @@
 /** @jsx vdom */
-import 'style!./host.less';
 
 import { vdom, define, prop, props } from 'skatejs';
 import { themeable } from 'ak-theme';
@@ -8,7 +7,7 @@ import { appearance, type } from './enumeratedProperties';
 import Slot from './Slot';
 import Button from './Button';
 import { stylesKey } from './symbols';
-import css from './shadow';
+import css from './styles';
 
 const APPEARANCE = appearance.values;
 const TYPE = type.values;

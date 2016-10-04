@@ -50,6 +50,17 @@ const linkColorActive = linkColorHover;
 const disabledColor = akColorN40;
 
 export default {
+  // light DOM styles
+  ':host': {
+    display: 'inline-flex',
+  },
+  ':host(> _shadow_root_)': {
+    display: 'inline-block',
+  },
+  ':host([disabled])': {
+    'pointer-events': 'none',
+  },
+  // shadow DOM styles
   '::slotted([slot="before"])': {
     'margin-right': `${sideSlotMargin}`,
   },

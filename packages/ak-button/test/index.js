@@ -7,7 +7,6 @@ import { props } from 'skatejs';
 import AkButton, { APPEARANCE } from '../src/index.js';
 import { stylesKey } from '../src/symbols';
 import { akGridSize } from 'akutil-shared-styles';
-import hostStyles from '../src/host.less';
 import { name } from '../package.json';
 import { hasClass, waitUntil, getShadowRoot } from 'akutil-common-test';
 
@@ -41,7 +40,6 @@ describe('ak-button', () => {
 
   beforeEach(() => {
     component = new AkButton();
-    props(component, { className: hostStyles.locals.akButton });
     document.body.appendChild(component);
     return waitUntil(() => getShadowRoot(component) !== null)
       .then(() => (classKeys = component[stylesKey]));

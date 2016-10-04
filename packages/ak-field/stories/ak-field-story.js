@@ -4,7 +4,7 @@ import WebComponent from '../src';
 import React from 'react';
 import { name } from '../package.json';
 import { ValidatorMinLength, ValidatorMaxLength } from 'ak-validator';
-import TextField from 'ak-text-field';
+import TextField from 'ak-field-text';
 
 const Component = reactify(WebComponent);
 const ReactValidatorMinLength = reactify(ValidatorMinLength);
@@ -21,6 +21,11 @@ storiesOf(name, module)
           is slot="validator"
           minLength={5}
           message="Must have at least 5 characters"
+        />
+        <ReactValidatorMinLength
+          is slot="validator"
+          minLength={3}
+          message="Must have at least 3 characters"
         />
         <ReactValidatorMaxLength
           is slot="validator"

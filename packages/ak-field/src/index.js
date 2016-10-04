@@ -2,42 +2,45 @@ import 'style!./host.less';
 import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 
-import { events } from 'ak-text-field';
+import { events } from 'ak-field-text';
 const { focus, blur } = events;
 import InlineDialog from 'ak-inline-dialog';
-import * as icons from 'ak-icon';
-const { QuestionIcon } = icons;
 
 const inputSlot = Symbol();
 const validatorSlot = Symbol();
-const helpIcon = Symbol();
 const helpDialog = Symbol();
 
 // Props
-const errors = Symbol();
-const helpOpen = Symbol();
-
+const errors = Symbol('errors');
+const helpOpen = Symbol('helpOpen');
 
 function getValidators(elem) {
   return elem[validatorSlot].assignedNodes().filter(el => el.validate);
 }
 
-function getInputValue(elem) {
+function getInput(elem) {
   if (!elem || !elem[inputSlot]) {
     return null;
   }
-  return elem[inputSlot].assignedNodes()[0].value;
+  return elem[inputSlot].assignedNodes()[0];
+}
+
+function getInputValue(elem) {
+  const input = getInput(elem);
+  return input ? input.value : null;
 }
 
 function validate(elem) {
   const foundErrors = [];
   const value = getInputValue(elem);
 
-  getValidators(elem).forEach((validator) => {
-    if (!validator.validate(value)) {
-      foundErrors.push(validator.message);
-    }
-  });
+  if (value) {
+    getValidators(elem).forEach((validator) => {
+      if (!validator.validate(value)) {
+        foundErrors.push(validator.message);
+      }
+    });
+  }
 
   return foundErrors;
 }
@@ -52,7 +55,12 @@ export default define('ak-field', {
   created(elem) {
     // Listen for changes to the input, and then validate everything
     elem.addEventListener('input', () => (elem[errors] = validate(elem)));
-    elem.addEventListener(focus, () => (elem[helpOpen] = true));
+    elem.addEventListener('change', () => (elem[errors] = validate(elem)));
+
+    elem.addEventListener(focus, () => {
+      elem[errors] = validate(elem);
+      elem[helpOpen] = true;
+    });
     elem.addEventListener(blur, () => (elem[helpOpen] = false));
   },
   render(elem) {
@@ -67,34 +75,27 @@ export default define('ak-field', {
           <slot
             name="input"
             ref={el => (elem[inputSlot] = el)}
+            onSlotchange={() => (elem[helpDialog].target = elem.querySelector('input'))}
           />
         </div>
-        <div className={shadowStyles.locals.rightSlot}>
-          <QuestionIcon
-            ref={el => (elem[helpIcon] = el)}
-            onClick={() => (elem[helpOpen] = !elem[helpOpen])}
-          />
-        </div>
+        <div className={shadowStyles.locals.rightSlot}></div>
+        <InlineDialog
+          open={elem[helpOpen] && elem[errors].length}
+          hasBlanket={false}
+          padding="3px"
+          position="right middle"
+          ref={el => (elem[helpDialog] = el)}
+        >
+          <ul class={shadowStyles.locals.errorList}>
+            {elem[errors] && elem[errors].map(msg =>
+              <li>{msg}</li>
+            )}
+          </ul>
+        </InlineDialog>
       </div>,
-      <InlineDialog
-        open={elem[helpOpen]}
-        position="right middle"
-        hasBlanket={false}
-        ref={el => {
-          elem[helpDialog] = el;
-          el.target = elem[helpIcon];
-        }}
-      >
-        <ul>
-          {elem[errors].map(msg =>
-            <li>{msg}</li>
-          )}
-        </ul>
-      </InlineDialog>,
     ]);
   },
   props: {
-    helpIcon: prop.boolean({ attribute: true }),
     [helpOpen]: prop.boolean({}),
     [errors]: prop.array({}),
   },

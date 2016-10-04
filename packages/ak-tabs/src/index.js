@@ -13,7 +13,7 @@ const { tabChange: tabChangeEvent } = events;
 import * as i18n from './internal/i18n';
 import Tab from './index.tab';
 import Icon from 'ak-icon';
-import Dropdown from 'ak-dropdown';
+import Dropdown, { Item as DropdownItem, DropdownTrigger } from 'ak-dropdown';
 
 import { buttonContainer, labelsContainer } from './internal/symbols';
 const resizeListener = Symbol();
@@ -82,19 +82,19 @@ export default define('ak-tabs', {
               ref={el => (elem[buttonContainer] = el)}
             >
               <Dropdown>
-                <ak-dropdown-trigger slot="trigger">
+                <DropdownTrigger slot="trigger">
                   <a className={shadowStyles.locals.akTabsButton}>
                     <span>{i18n.more}</span>
                     <Icon glyph="expand" />
                   </a>
-                </ak-dropdown-trigger>
+                </DropdownTrigger>
                 {
                   allTabs && allTabs.map(tab => (
-                    <ak-dropdown-item
+                    <DropdownItem
                       selected={false}
                       onSelected={handlers.labelSelectedHandler(tab)}
                       ref={handlers.dropdownItemRef(tab)}
-                    >{tab.label}</ak-dropdown-item>
+                    >{tab.label}</DropdownItem>
                   ))
                 }
               </Dropdown>

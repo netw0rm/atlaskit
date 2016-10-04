@@ -2,13 +2,13 @@
 import 'style!./host.less';
 
 import { vdom, define, prop, props } from 'skatejs';
-import shadowStyles from './shadow.less';
+import { themeable } from 'ak-theme';
+import { style } from 'akutil-common';
 import { appearance, type } from './enumeratedProperties';
 import Slot from './Slot';
 import Button from './Button';
-import Root from './Root';
-
-const classKeys = shadowStyles.locals;
+import { stylesKey } from './symbols';
+import css from './shadow';
 
 const APPEARANCE = appearance.values;
 const TYPE = type.values;
@@ -64,21 +64,19 @@ const definition = {
      * @example @js button.selected = true;
      */
     selected: prop.boolean({ attribute: true }),
+    [stylesKey]: { attribute: false },
   },
   render(elem) {
+    const styles = elem[stylesKey] = style(vdom, css);
     return (
-      <Root>
-        <Button {...props(elem)} >
-          <span className={classKeys.buttonContent}>
-            <Slot name="before" />
-            <Slot />
-            <Slot name="after" />
-          </span>
-        </Button>
-      </Root>
+      <Button {...props(elem)} styles={styles}>
+        <Slot styles={styles} name="before" />
+        <Slot styles={styles} />
+        <Slot styles={styles} name="after" />
+      </Button>
     );
   },
 };
 
-const AkButton = define('ak-button', definition);
+const AkButton = define('ak-button', themeable(definition));
 export default AkButton;

@@ -5,11 +5,10 @@ import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import { props } from 'skatejs';
 import AkButton, { APPEARANCE } from '../src/index.js';
-import shadowStyles from '../src/shadow.less';
+import { stylesKey } from '../src/symbols';
 import hostStyles from '../src/host.less';
 import { name } from '../package.json';
 import { hasClass, waitUntil, getShadowRoot } from 'akutil-common-test';
-const classKeys = shadowStyles.locals;
 
 // TODO revert this to:
 // import { akGridSize } from 'akutil-shared-styles';
@@ -22,6 +21,7 @@ const expect = chai.expect;
 
 describe('ak-button', () => {
   let component;
+  let classKeys;
   const shadowDomQuery = (elem, selector) =>
     getShadowRoot(elem).querySelector(selector);
 
@@ -47,7 +47,8 @@ describe('ak-button', () => {
     component = new AkButton();
     props(component, { className: hostStyles.locals.akButton });
     document.body.appendChild(component);
-    return waitUntil(() => getShadowRoot(component) !== null);
+    return waitUntil(() => getShadowRoot(component) !== null)
+      .then(() => (classKeys = component[stylesKey]));
   });
 
   afterEach(() => document.body.removeChild(component));
@@ -117,10 +118,11 @@ describe('ak-button', () => {
 
       [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE, APPEARANCE.LINK].forEach(appearanceName => {
         describe(appearanceName, () => {
-          const selector = `.${classKeys.button}.${classKeys[appearanceName]}`;
-          beforeEach(() =>
-            props(component, { appearance: appearanceName })
-          );
+          let selector;
+          beforeEach(() => {
+            props(component, { appearance: appearanceName });
+            selector = `.${classKeys.button}.${classKeys[appearanceName]}`;
+          });
 
           it(`button should have ${appearanceName} class`, () =>
             expect(shadowDomQuery(component, selector)).not.to.be.null
@@ -135,10 +137,11 @@ describe('ak-button', () => {
     });
 
     describe('compact', () => {
-      const selector = `.${classKeys.button}.${classKeys.compact}`;
-      beforeEach(() =>
-        props(component, { compact: true })
-      );
+      let selector;
+      beforeEach(() => {
+        props(component, { compact: true });
+        selector = `.${classKeys.button}.${classKeys.compact}`;
+      });
 
       it('button should have compact class', () =>
         expect(shadowDomQuery(component, selector)).not.to.be.null
@@ -180,10 +183,11 @@ describe('ak-button', () => {
     });
 
     describe('selected', () => {
-      const selector = `.${classKeys.button}.${classKeys.selected}`;
-      beforeEach(() =>
-        props(component, { selected: true })
-      );
+      let selector;
+      beforeEach(() => {
+        props(component, { selected: true });
+        selector = `.${classKeys.button}.${classKeys.selected}`;
+      });
 
       it('button should have selected class', () =>
         expect(shadowDomQuery(component, selector)).not.to.be.null
@@ -204,10 +208,11 @@ describe('ak-button', () => {
     });
 
     describe('disabled', () => {
-      const selector = `.${classKeys.button}[disabled]`;
-      beforeEach(() =>
-        props(component, { disabled: true })
-      );
+      let selector;
+      beforeEach(() => {
+        props(component, { disabled: true });
+        selector = `.${classKeys.button}[disabled]`;
+      });
 
       it('button should have disabled attribute', () =>
         expect(shadowDomQuery(component, selector)).not.to.be.null

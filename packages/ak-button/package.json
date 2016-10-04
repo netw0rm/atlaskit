@@ -14,6 +14,7 @@
   "dependencies": {
     "akutil-common": "^2.0.0",
     "akutil-shared-styles": "^34.0.1",
+    "ak-theme": "^2.0.3",
     "babel-runtime": "^6.11.6",
     "skatejs": "^1.2.5"
   },

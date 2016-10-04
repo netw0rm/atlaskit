@@ -20,5 +20,5 @@ pipelines:
         script:
           - ./build/bin/setup.sh
           - npm install
-          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/artifacts"
+          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/artifacts" || (cat /tmp/browserstack.log && exit 1)
           - npm run test/integration

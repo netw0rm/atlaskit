@@ -52,4 +52,4 @@ npm install
 npm run docs/single "$COMP_NAME"
 
 $CHALK --no-stdin -t "{green New component '$COMP_NAME' created (v1.0.0)}"
-$CHALK white bold "Hint: Please leave the version at 1.0.0+, as otherwise caret dependencies work differently"
+$CHALK --no-stdin -t "{white.bold Hint: Please leave the version at 1.0.0+, as otherwise caret dependencies work differently}"

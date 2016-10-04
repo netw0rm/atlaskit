@@ -39,6 +39,7 @@
     "lodash.sample": "^4.2.1",
     "mkdirp": "^0.5.1",
     "pascal-case": "^2.0.0",
+    "postcss-loader": "*",
     "rimraf": "^2.5.4",
     "style-loader": "*",
     "svgo": "^0.7.0",

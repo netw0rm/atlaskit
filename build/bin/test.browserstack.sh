@@ -9,7 +9,9 @@ CHALK="`npm bin`/chalk"
 # Run the Browserstack tests
 for STAGE in 1 2 3
 do
-  $CHALK --no-stdin -t "{blue \nRunning browserstack test of stage $STAGE\n}"
+  echo
+  $CHALK --no-stdin -t "{blue Running browserstack test of stage $STAGE}"
+  echo
 
   GITHEAD_SHORT="$GITHEAD_SHORT" \
   CURRENT_BRANCH="$CURRENT_BRANCH" \

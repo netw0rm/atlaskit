@@ -1,0 +1,34 @@
+{
+  "name": "ak-multi-select",
+  "version": "1.0.0",
+  "description": "ak-multi-select webcomponent",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-multi-select"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "akutil-shared-styles": "^35.0.1",
+    "babel-runtime": "^6.11.6",
+    "classnames": "^2.2.5",
+    "skatejs": "^4.0.0",
+    "ak-dropdown": "^9.0.2",
+    "ak-tag": "^2.3.2",
+    "ak-tag-group": "^2.1.1",
+    "ak-avatar": "^3.1.2"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "akutil-common-test": "^3.0.0",
+    "akutil-react": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

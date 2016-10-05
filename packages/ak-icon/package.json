@@ -29,22 +29,14 @@
     "akutil-react": "^1.0.0",
     "akutil-shared-styles": "^34.0.1",
     "async": "^2.0.1",
-    "babel-plugin-incremental-dom": "*",
-    "babel-preset-es2015": "*",
-    "babel-preset-stage-0": "*",
     "classnames": "^2.2.5",
-    "css-loader": "*",
     "glob": "^7.0.5",
-    "less-loader": "*",
     "lodash.sample": "^4.2.1",
     "mkdirp": "^0.5.1",
     "pascal-case": "^2.0.0",
-    "postcss-loader": "*",
     "rimraf": "^2.5.4",
-    "style-loader": "*",
     "svgo": "^0.7.0",
-    "uid": "^0.0.2",
-    "webpack": "*"
+    "uid": "^0.0.2"
   },
   "repository": {
     "type": "git",

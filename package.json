@@ -45,7 +45,6 @@
     "glob": "^7.0.5",
     "glob-loader": "^0.3.0",
     "hipchat-msg": "^0.1.0",
-    "indexifier": "^2.0.0",
     "jsdoc-to-markdown": "^1.3.6",
     "json-loader": "^0.5.4",
     "karma": "^1.2.0",
@@ -110,7 +109,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "scripts": {
-    "build/install/cdn-tools": "./build/bin/build.install.cdn-tools.sh",
+    "build/docker/image": "build/bin/build.docker.image.sh",
     "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",
     "commit": "git-cz -n",
     "create": "./build/bin/create.new.component.sh",
@@ -119,7 +118,7 @@
     "docs/single": "./build/bin/docs.single.sh",
     "postinstall": "./build/bin/postinstall.sh",
     "lint": "eslint --color --format 'node_modules/eslint-friendly-formatter' . --ext .js,.jsx",
-    "pr/artifacts": "npm-run-all -ln 'build/install/cdn-tools' --parallel 'pr/docs' 'pr/storybook' 'pr/stats'",
+    "pr/artifacts": "run-p -ln 'pr/docs' 'pr/storybook' 'pr/stats'",
     "pr/docs": "./build/bin/generate.readme.html.pr.sh",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "pr/stats": "./build/bin/pr.stats.sh",

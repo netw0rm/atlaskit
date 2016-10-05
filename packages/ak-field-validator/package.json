@@ -1,12 +1,12 @@
 {
-  "name": "ak-validator",
+  "name": "ak-field-validator",
   "version": "1.0.0",
-  "description": "ak-validator webcomponent",
+  "description": "ak-field-validator webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-validator"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-field-validator"
   },
   "files": [
     "dist"

@@ -5,12 +5,12 @@ Validator components are used to define validation rules that should be applied 
 ## Installation
 
 ```sh
-npm install ak-validator
+npm install ak-field-validator
 ```
 
 ## Using default validators
 
-The `ak-validator` package exports the several predefined validator [Skate](https://github.com/skatejs/skatejs) components.
+The `ak-field-validator` package exports several predefined [Skate](https://github.com/skatejs/skatejs) components for validation.
 
 There are default validators for:
 
@@ -25,7 +25,7 @@ Import the component in your JS resource:
 #### bundle.js
 
 ```js
-import { ValidatorMinLength } from 'ak-validator';
+import { ValidatorMinlength } from 'ak-field-validator';
 ```
 
 Now you can use the defined tag in your HTML markup:
@@ -39,7 +39,7 @@ Now you can use the defined tag in your HTML markup:
   </head>
   <body>
     <ak-field>
-      <ak-validator-min-length min-length="5" slot="validator"></ak-validator-min-length>
+      <ak-field-validator-minlength minlength="5" slot="validator"></ak-field-validator-minlength>
       <ak-field-text slot="input"></ak-field-text>
     </ak-field>
   </body>
@@ -49,9 +49,9 @@ Now you can use the defined tag in your HTML markup:
 You can also use it from within another JavaScript resource:
 
 ```js
-import ValidatorMinLength from 'ak-validator';
+import ValidatorMinlength from 'ak-field-validator';
 
-const component = new ValidatorMinLength();
+const component = new ValidatorMinlength();
 document.body.appendChild(component);
 ```
 
@@ -60,26 +60,29 @@ document.body.appendChild(component);
 This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```js
-import { ValidatorMinLength } from 'ak-validator';
+import { ValidatorMinlength } from 'ak-field-validator';
 import reactify from 'skatejs-react-integration';
 
-const ReactComponent = reactify(ValidatorMinLength, {});
+const ReactComponent = reactify(ValidatorMinlength, {});
 
 ReactDOM.render(<ReactComponent />, container);
 ```
 
 ## Defining a custom validator
 
-This package exports a factory method for defining custom validators.
+This package exports a base class, which can be extended to add any custom validator behaviour.
 
 ```js
-import defineValidator from 'ak-validator';
+import { define } from 'skatejs';
+import { ValidatorBase }from 'ak-field-validator';
 
-const ValidatorIsEven = defineValidator('x-validator-is-even', 
-  function validate(value) {
-    return value %% 2 === 0;
-  }
-);
+const ValidatorIsEven = define('x-validator-is-even', ValidatorBase.extend({
+  prototype: {
+    validate(value) {
+      return value %% 2 === 0;
+    },
+  },
+});
 ```
 
 ```html
@@ -89,8 +92,8 @@ const ValidatorIsEven = defineValidator('x-validator-is-even',
   </head>
   <body>
     <ak-field>
-      <x-validator-is-even slot="validator"></x-validator-is-even>
-      <ak-field-text></ak-field-text>
+      <x-validator-is-even slot="validator">Value must be even</x-validator-is-even>
+      <ak-field-text slot="input"></ak-field-text>
     </ak-field>
   </body>
 </html>

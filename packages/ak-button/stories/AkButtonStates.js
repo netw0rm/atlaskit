@@ -1,7 +1,7 @@
 import { action } from '@kadira/storybook';
 
 export default function buttonStatesExample(dependencies) {
-  const { React, AkButton, buttonClass, APPEARANCE, Icon, GLYPHS } = dependencies;
+  const { React, AkButton, APPEARANCE, Icon, GLYPHS } = dependencies;
 
   class Example extends React.Component {
     constructor(props) {
@@ -106,7 +106,6 @@ export default function buttonStatesExample(dependencies) {
               selected={this.state.selected}
               compact={this.state.compact}
               appearance={this.state.appearance}
-              className={buttonClass}
               onclick={action('clicking the WebComponent')}
             >
               {this.createIcon('before')}

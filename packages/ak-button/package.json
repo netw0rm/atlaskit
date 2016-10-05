@@ -12,10 +12,11 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^2.0.0",
+    "akutil-common": "^2.6.3",
     "akutil-shared-styles": "^34.0.1",
+    "ak-theme": "^2.0.3",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.2.5"
+    "skatejs": "^1.5.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

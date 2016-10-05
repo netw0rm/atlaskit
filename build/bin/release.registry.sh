@@ -54,16 +54,11 @@ zip -0 -r -T ../ak-registry-cdn.zip ../atlaskit-registry/resources
 
 # Upload to CDN
 $CHALK --no-stdin -t "{blue Uploading registry to CDN...}"
-java \
--jar \
--Dlog4j.configurationFile=build/bin/logger.xml \
-../prebake-distributor-runner.jar \
---step=resources \
---s3-bucket=$S3_BUCKET \
+prebake-distributor-runner \
+--s3-bucket="$S3_BUCKET" \
 --s3-key-prefix="$S3_KEY_PREFIX/registry" \
 --s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/registry" \
---compress=css,js,svg,ttf,html,json,ico,eot,otf \
---pre-bake-bundle=../ak-registry-cdn.zip
+"../ak-registry-cdn.zip"
 
 # Invalidate CDN caches
 $CHALK --no-stdin -t "{blue CDN invalidation (registry) starting now (this may take some time)}"

@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-LERNA_LOC="`npm bin`/lerna"
-INDEXIFIER_LOC="`npm bin`/indexifier"
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CDN_PREFIX="pr/stats"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
@@ -31,11 +29,11 @@ echo "Gathering stats files..."
 rm -rf ../atlaskit-stats
 OUTDIR="../atlaskit-stats/resources/$BITBUCKET_COMMIT";
 export OUTDIR="$OUTDIR"
-$LERNA_LOC exec -- ../../build/bin/pr.stats.single.sh
+lerna exec -- ../../build/bin/pr.stats.single.sh
 
 echo "Generating stats index..."
 pushd $OUTDIR > /dev/null
-$INDEXIFIER_LOC --html . > index.html
+indexifier --html . > index.html
 popd > /dev/null
 
 ZIP_FILE="../ak-stats-cdn.zip"
@@ -44,16 +42,11 @@ rm -f $ZIP_FILE
 zip -0 -r -T $ZIP_FILE ../atlaskit-stats/resources
 
 echo "Uploading stats to CDN..."
-java \
--jar \
--Dlog4j.configurationFile=build/bin/logger.xml \
-../prebake-distributor-runner.jar \
---step=resources \
---s3-bucket=$S3_BUCKET \
+prebake-distributor-runner \
+--s3-bucket="$S3_BUCKET" \
 --s3-key-prefix="$S3_KEY_PREFIX/$CDN_PREFIX" \
 --s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/$CDN_PREFIX" \
---compress=css,js,svg,ttf,html,json,ico,eot,otf \
---pre-bake-bundle=$ZIP_FILE
+"$ZIP_FILE"
 
 # Invalidate CDN caches
 echo "CDN invalidation (stats) starting now (this may take some time)"

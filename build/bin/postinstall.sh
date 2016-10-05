@@ -13,6 +13,8 @@ else
   $LERNA_LOC bootstrap | cat
 fi
 
-$CHALK --no-stdin -t "{blue Installing hooks...}"
-node $BASEDIR/pre-commit.install.js
-validate-commit-msg
+if [[ -z "$BITBUCKET_COMMIT" ]]; then
+  $CHALK --no-stdin -t "{blue Installing hooks...}"
+  node $BASEDIR/pre-commit.install.js
+  validate-commit-msg
+fi

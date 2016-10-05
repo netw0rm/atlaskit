@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-LERNA_LOC="`npm bin`/lerna"
 CHALK="`npm bin`/chalk"
-INDEXIFIER_LOC="`npm bin`/indexifier"
-
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CDN_PREFIX="pr/docs"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
@@ -28,20 +25,16 @@ bbuild \
 --url "$BUILD_URL" \
 --state "INPROGRESS"
 
-echo "Installing marky-markdown"
-npm install -g marky-markdown@8.1.0
-
 $CHALK --no-stdin -t "{blue Generating docs HTML output from README.md files...}"
-
 rm -rf ../atlaskit-docs
 OUTDIR="../atlaskit-docs/resources/$BITBUCKET_COMMIT";
 mkdir -p $OUTDIR
 export OUTDIR="$OUTDIR"
-$LERNA_LOC exec -- ../../build/bin/generate.readme.html.sh
+lerna exec -- ../../build/bin/generate.readme.html.sh
 
 $CHALK --no-stdin -t "{blue Generating docs index...}"
 pushd $OUTDIR > /dev/null
-$INDEXIFIER_LOC --html . > index.html
+indexifier --html . > index.html
 popd > /dev/null
 
 ZIP_FILE="../ak-docs-cdn.zip"
@@ -50,16 +43,11 @@ rm -f $ZIP_FILE
 zip -0 -r -T $ZIP_FILE ../atlaskit-docs/resources
 
 $CHALK --no-stdin -t "{blue Uploading docs to CDN...}"
-java \
--jar \
--Dlog4j.configurationFile=build/bin/logger.xml \
-../prebake-distributor-runner.jar \
---step=resources \
---s3-bucket=$S3_BUCKET \
+prebake-distributor-runner \
+--s3-bucket="$S3_BUCKET" \
 --s3-key-prefix="$S3_KEY_PREFIX/$CDN_PREFIX" \
 --s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/$CDN_PREFIX" \
---compress=css,js,svg,ttf,html,json,ico,eot,otf \
---pre-bake-bundle=$ZIP_FILE
+"$ZIP_FILE"
 
 # Invalidate CDN caches
 $CHALK --no-stdin -t "{blue CDN invalidation (docs) starting now (this may take some time)}"

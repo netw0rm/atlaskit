@@ -4,7 +4,7 @@ ARG LERNA_VERSION
 
 #### <general-tools>
 RUN echo "Installing general tools" \
-&& apk --update add \
+&& apk --no-cache add \
   build-base \
   bash \
   git \
@@ -17,20 +17,17 @@ RUN echo "Installing general tools" \
   zip \
   unzip \
   tar \
-  gzip \
-&& rm -rf /var/cache/apk/*
+  gzip
 #### </general-tools>
 
 #### <ruby>
 # Copied from https://github.com/andrius/alpine-ruby/blob/master/Dockerfile
 # required until we switch atlaskit-registry from jekyll to metalsmith
 RUN echo "Installing Ruby & bundler" \
-&& apk --update add \
+&& apk --no-cache add \
   ruby \
   ruby-dev \
-  ruby-bundler \
-&& apk del ruby-dev \
-&& rm -rf /var/cache/apk/*
+  ruby-bundler
 
 ENV NOKOGIRI_USE_SYSTEM_LIBRARIES=1
 RUN bundle config build.nokogiri --use-system-libraries
@@ -45,16 +42,13 @@ ENV NODE_VERSION 6.2.0-r0
 ENV NPM_VERSION 3.10.7
 
 RUN echo "Installing node & npm" \
-  apk update && \
-  apk upgrade && \
-  apk add --update tzdata && \
+  apk --no-cache add tzdata && \
   cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone && \
-  apk add --update nodejs="${NODE_VERSION}" && \
+  apk --no-cache add nodejs="${NODE_VERSION}" && \
   npm install -g npm@"${NPM_VERSION}" && \
   npm cache clean -f && \
-  apk del tzdata && \
-  rm -rf /var/cache/apk/*
+  apk del tzdata
 #### </node>
 
 #### <atlaskit-tools>

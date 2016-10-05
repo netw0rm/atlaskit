@@ -14,72 +14,72 @@ const ValidatorBase = Component.extend({
 
 /**
  * @description Minimum length validator.
- * @class ValidatorMinLength
- * @example @js import ValidatorMinLength from 'ak-validator';
- * const myValidator = new ValidatorMinLength();
+ * @class ValidatorMinlength
+ * @example @js import ValidatorMinlength from 'ak-validator';
+ * const myValidator = new ValidatorMinlength();
  * @example @js
- * <ak-validator-min-length min-length="5" slot="validator">
+ * <ak-validator-minlength minlength="5" slot="validator">
  *   Must have at least 5 characters
- * </ak-validator-min-length>
+ * </ak-validator-minlength>
  */
-const ValidatorMinLength = define(`${prefix}min-length`, ValidatorBase.extend({
+const ValidatorMinlength = define(`${prefix}minlength`, ValidatorBase.extend({
   prototype: {
     validate(value) {
-      return value.length >= this.minLength;
+      return value.length >= this.minlength;
     },
   },
   props: {
     /**
      * @description The minimum length of the value
-     * @memberof ValidatorMinLength
+     * @memberof ValidatorMinlength
      * @instance
      * @type {number}
      * @default 1
      */
-    minLength: prop.number({
+    minlength: prop.number({
       attribute: true,
       default: 1,
     }),
   },
   render(elem) {
     return (<slot>
-      Field should have at least {elem.minLength} character{elem.minLength > 1 && 's'}
+      Field should have at least {elem.minlength} character{elem.minlength > 1 && 's'}
     </slot>);
   },
 }));
 
 /**
  * @description Maximum length validator.
- * @class ValidatorMaxLength
- * @example @js import ValidatorMaxLength from 'ak-validator';
- * const myValidator = new ValidatorMaxLength();
+ * @class ValidatorMaxlength
+ * @example @js import ValidatorMaxlength from 'ak-validator';
+ * const myValidator = new ValidatorMaxlength();
  * @example @js
- * <ak-validator-max-length min-length="10" slot="validator">
+ * <ak-validator-maxlength maxlength="10" slot="validator">
  *   Must have at most 10 characters
- * </ak-validator-max-length>
+ * </ak-validator-maxlength>
  */
-const ValidatorMaxLength = define(`${prefix}max-length`, ValidatorBase.extend({
+const ValidatorMaxlength = define(`${prefix}maxlength`, ValidatorBase.extend({
   prototype: {
     validate(value) {
-      return value.length <= this.maxLength;
+      return value.length <= this.maxlength;
     },
   },
   props: {
     /**
      * @description The maximum length of the value
-     * @memberof ValidatorMaxLength
+     * @memberof ValidatorMaxlength
      * @instance
      * @type {number}
      * @default 10
      */
-    maxLength: prop.number({
+    maxlength: prop.number({
       attribute: true,
       default: 10,
     }),
   },
   render(elem) {
     return (<slot>
-      Field should have at most {elem.maxLength} character{elem.maxLength > 1 && 's'}
+      Field should have at most {elem.maxlength} character{elem.maxlength > 1 && 's'}
     </slot>);
   },
 }));
@@ -109,7 +109,7 @@ const ValidatorRequired = define(`${prefix}required`, ValidatorBase.extend({
 
 export {
   ValidatorBase,
-  ValidatorMinLength,
-  ValidatorMaxLength,
+  ValidatorMinlength,
+  ValidatorMaxlength,
   ValidatorRequired,
 };

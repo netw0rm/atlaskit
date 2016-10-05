@@ -5,8 +5,8 @@ import { Component } from 'skatejs';
 
 import {
   ValidatorBase,
-  ValidatorMinLength,
-  ValidatorMaxLength,
+  ValidatorMinlength,
+  ValidatorMaxlength,
   ValidatorRequired,
 } from '../src';
 
@@ -22,8 +22,8 @@ describe('ak-validator', () => {
     });
 
     it('should export validator components for min length, max length, and required', () => {
-      expect(new ValidatorMinLength).to.be.an.instanceof(Component);
-      expect(new ValidatorMaxLength).to.be.an.instanceof(Component);
+      expect(new ValidatorMinlength).to.be.an.instanceof(Component);
+      expect(new ValidatorMaxlength).to.be.an.instanceof(Component);
       expect(new ValidatorRequired).to.be.an.instanceof(Component);
     });
   });

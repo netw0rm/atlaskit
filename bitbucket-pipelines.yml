@@ -4,6 +4,7 @@ pipelines:
     master:
       - step:
           script:
+            - export FORCE_COLOR=1
             - ./build/bin/last_commit_has_changes.sh || exit 0
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
@@ -18,6 +19,7 @@ pipelines:
   default:
     - step:
         script:
+          - export FORCE_COLOR=1
           - ./build/bin/setup.sh
           - npm install
           - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/artifacts"

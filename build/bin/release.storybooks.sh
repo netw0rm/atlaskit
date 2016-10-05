@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+CHALK="`npm bin`/chalk"
+
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 
 BUILD_URL="$CDN_URL_BASE/$CDN_URL_SCOPE/registry/"
@@ -8,7 +10,7 @@ BUILD_KEY="SBOOKS-$GITHEAD_SHORT"
 BUILD_NAME="Storybooks"
 BUILD_DESCRIPTION="The component storybooks"
 
-echo "Post build in progress status"
+$CHALK --no-stdin -t "{blue Post build in progress status}"
 bbuild \
 --commit "$BITBUCKET_COMMIT" \
 --repo "$BITBUCKET_REPO_SLUG" \
@@ -21,14 +23,14 @@ bbuild \
 --url "$BUILD_URL" \
 --state "INPROGRESS"
 
-echo "Building storybooks"
+$CHALK --no-stdin -t "{blue Building storybooks}"
 mkdir -p ../atlaskit-stories
 npm run storybook/static/registry
 mv ./stories ../atlaskit-stories/resources
 rm -f ../ak-storybooks-cdn.zip
 zip -0 -r -T ../ak-storybooks-cdn.zip ../atlaskit-stories/resources
 
-echo "Uploading storybooks to CDN..."
+$CHALK --no-stdin -t "{blue Uploading storybooks to CDN...}"
 prebake-distributor-runner \
 --s3-bucket="$S3_BUCKET" \
 --s3-key-prefix="$S3_KEY_PREFIX/stories" \
@@ -36,14 +38,12 @@ prebake-distributor-runner \
 "../ak-storybooks-cdn.zip"
 
 # Invalidate CDN caches
-echo "CDN invalidation (storybooks) starting now (this may take some time)"
-
+$CHALK --no-stdin -t "{blue CDN invalidation (storybooks) starting now (this may take some time)}"
 AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
 AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
 cf-invalidate -- $CLOUDFRONT_DISTRIBUTION '/atlaskit/stories/*'
-echo "CDN invalidation (storybooks) finished."
 
-echo "Post build success status"
+$CHALK --no-stdin -t "{blue Post storybooks build success status}"
 bbuild \
 --commit "$BITBUCKET_COMMIT" \
 --repo "$BITBUCKET_REPO_SLUG" \

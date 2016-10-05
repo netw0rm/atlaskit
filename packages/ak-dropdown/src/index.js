@@ -258,7 +258,9 @@ export default define('ak-dropdown', {
   render(elem) {
     let target = elem.target;
     return (
-      <div>
+      <div
+        style={{ position: elem.stepOutside || elem.boundariesElement ? 'static' : 'relative' }}
+      >
         {!elem.target ?
           <div
             ref={(el) => {
@@ -281,6 +283,7 @@ export default define('ak-dropdown', {
           // Needs to be rewritten to conditionally render the <slot />
           // See AK-343
           style={{ display: elem.open ? 'block' : 'none' }}
+          boundariesElement={elem.boundariesElement}
           ref={(layer) => {
             elem[layerElem] = layer;
             setTimeout(() => {
@@ -348,6 +351,31 @@ export default define('ak-dropdown', {
      * @example @js dropdown.target = document.getElementById("target");
      */
     target: {},
+    /**
+     * @description Element to act as a boundary for the Dropdown.
+     * The Dropdown will not sit outside this element if it can help it.
+     * If, through it's normal positioning, it would end up outside the boundary the Dropdown
+     * will flip positions.
+     * If not set the boundary will be the current viewport.
+     * @memberof Layer
+     * @instance
+     * @type HTMLElement
+     * @example @js dropdown.boundariesElement = document.body.querySelector('#container');
+     */
+    boundariesElement: {},
+    /**
+     * @description If the dropdown is placed inside an element with overflow:hidden, this property
+     * should be set to `true` in order for the Dropdown to be able to step outside the container
+     * @memberof Dropdown
+     * @instance
+     * @default false
+     * @type Boolean
+     * @example @html <ak-dropdown step-outside></ak-dropdown>
+     * @example @js dropdown.stepOutside = true;
+     */
+    stepOutside: prop.boolean({
+      attribute: true,
+    }),
   },
 });
 

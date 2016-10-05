@@ -3,10 +3,9 @@ set -e
 
 BASEDIR=$(dirname $0)
 LERNA_LOC="`npm bin`/lerna"
+CHALK="`npm bin`/chalk"
 
-printf "\033[34m"
-echo "Lerna bootstrap..."
-printf "\033[0m"
+$CHALK --no-stdin -t "{blue Lerna bootstrap...}"
 if [[ -z "$BITBUCKET_COMMIT" ]]; then
   $LERNA_LOC bootstrap
 else
@@ -15,9 +14,7 @@ else
 fi
 
 if [[ -z "$BITBUCKET_COMMIT" ]]; then
-  printf "\033[34m"
-  echo "Installing hooks..."
-  printf "\033[0m"
+  $CHALK --no-stdin -t "{blue Installing hooks...}"
   node $BASEDIR/pre-commit.install.js
   validate-commit-msg
 fi

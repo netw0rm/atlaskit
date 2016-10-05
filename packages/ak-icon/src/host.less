@@ -1,0 +1,14 @@
+// we define a class here in order to re-use it in the storybook
+// (because in storybook the component name is randomly generated)
+.ak-icon,
+ak-icon {
+  display: inline-flex;
+
+  &:not([defined]) {
+    display: none;
+  }
+
+  & > _shadow_root_ {
+    display: inline-flex;
+  }
+}

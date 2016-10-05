@@ -1,6 +1,6 @@
 {
   "name": "ak-page",
-  "version": "4.0.6",
+  "version": "5.0.0",
   "description": "ak-page webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

@@ -1,5 +1,4 @@
-/** @jsx vdom */
-
+import merge from 'lodash.merge';
 import { vdom, define, prop, props } from 'skatejs';
 import { themeable } from 'ak-theme';
 import { style } from 'akutil-common';
@@ -7,7 +6,8 @@ import { appearance, type } from './enumeratedProperties';
 import Slot from './Slot';
 import Button from './Button';
 import { stylesKey } from './symbols';
-import css from './styles';
+import createStyles from './styles';
+import variables from './styles/variables';
 
 const APPEARANCE = appearance.values;
 const TYPE = type.values;
@@ -72,6 +72,9 @@ const definition = {
     [stylesKey]: { attribute: false },
   },
   render(elem) {
+    const themeVars = elem.themeProps || {};
+    const vars = merge(JSON.parse(JSON.stringify(variables)), themeVars);
+    const css = createStyles(vars);
     const styles = elem[stylesKey] = style(vdom, css);
     return (
       <Button {...props(elem)} styles={styles}>

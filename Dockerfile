@@ -27,13 +27,13 @@ ENV GLIBC_VERSION 2.23-r3
 
 RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub \
 &&  wget "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-$GLIBC_VERSION.apk" \
-&&  apk add "glibc-$GLIBC_VERSION.apk" \
+&&  apk --no-cache add "glibc-$GLIBC_VERSION.apk" \
 &&  rm "glibc-$GLIBC_VERSION.apk" \
 &&  wget "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-bin-$GLIBC_VERSION.apk" \
-&&  apk add "glibc-bin-$GLIBC_VERSION.apk" \
+&&  apk --no-cache add "glibc-bin-$GLIBC_VERSION.apk" \
 &&  rm "glibc-bin-$GLIBC_VERSION.apk" \
 &&  wget "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-i18n-$GLIBC_VERSION.apk" \
-&&  apk add "glibc-i18n-$GLIBC_VERSION.apk" \
+&&  apk --no-cache add "glibc-i18n-$GLIBC_VERSION.apk" \
 &&  rm "glibc-i18n-$GLIBC_VERSION.apk"
 
 RUN wget -q https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip \
@@ -63,13 +63,16 @@ ENV NODE_VERSION 6.2.0-r0
 ENV NPM_VERSION 3.10.7
 
 RUN echo "Installing node & npm" \
-  apk --no-cache add tzdata && \
+  apk update && \
+  apk upgrade && \
+  apk add --update tzdata && \
   cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone && \
   apk --no-cache add nodejs="${NODE_VERSION}" && \
   npm install -g npm@"${NPM_VERSION}" && \
   npm cache clean -f && \
-  apk del tzdata
+  apk del tzdata && \
+  rm -rf /var/cache/apk/*
 #### </node>
 
 #### <atlaskit-tools>

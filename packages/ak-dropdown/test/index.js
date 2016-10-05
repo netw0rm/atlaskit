@@ -6,7 +6,7 @@ import { props, emit, Component } from 'skatejs';
 import { name } from '../package.json';
 import { afterMutations, getShadowRoot, checkVisibility, waitUntil } from 'akutil-common-test';
 import { selected as selectedEvent,
-  unselected as unselectedEvent } from '../src/internal/events';
+  unselected as unselectedEvent, item as itemEvents } from '../src/internal/events';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -344,6 +344,74 @@ describe('ak-dropdown', () => {
         () => checkSelectedItems(group2, 0),
         done
       );
+    });
+  });
+
+  describe('focus behavior', () => {
+    let component;
+    const html = `<ak-dropdown-item>first</ak-dropdown-item>
+                  <ak-dropdown-item>second</ak-dropdown-item>
+                  <ak-dropdown-item>third</ak-dropdown-item>
+                  <ak-dropdown-item hidden>first</ak-dropdown-item>
+                  <ak-dropdown-item hidden>second</ak-dropdown-item>
+                  <ak-dropdown-item>third</ak-dropdown-item>`;
+    beforeEach(() => setupComponentExample(html).then(newComponent => {
+      component = newComponent;
+      pressDropdownTrigger(component);
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should be possible to focus next item', () => {
+      expect(component.children[1].focused).to.equal(true);
+
+      emit(component, itemEvents.down);
+      expect(component.children[1].focused).to.equal(false);
+      expect(component.children[2].focused).to.equal(true);
+
+      emit(component, itemEvents.down);
+      expect(component.children[1].focused).to.equal(false);
+      expect(component.children[2].focused).to.equal(false);
+      expect(component.children[3].focused).to.equal(true);
+    });
+
+    it('should be possible to focus previous item', () => {
+      emit(component, itemEvents.down);
+      emit(component, itemEvents.down);
+      emit(component, itemEvents.up);
+      expect(component.children[3].focused).to.equal(false);
+      expect(component.children[2].focused).to.equal(true);
+      emit(component, itemEvents.up);
+      expect(component.children[3].focused).to.equal(false);
+      expect(component.children[2].focused).to.equal(false);
+      expect(component.children[1].focused).to.equal(true);
+    });
+
+    it('if there are no previous items the focus should stay on the first item', () => {
+      emit(component, itemEvents.down);
+      emit(component, itemEvents.up);
+      emit(component, itemEvents.up);
+      emit(component, itemEvents.up);
+      expect(component.children[1].focused).to.equal(true);
+      expect(component.children[1].first).to.equal(true);
+    });
+
+    it('if there are no next items the focus should stay on the last item', () => {
+      props(component.children[1], { focused: false });
+      props(component.children[6], { focused: true });
+      emit(component, itemEvents.down);
+      emit(component, itemEvents.down);
+      expect(component.children[6].focused).to.equal(true);
+      expect(component.children[6].last).to.equal(true);
+    });
+
+    it('all the focus movements should skip hidden items', () => {
+      props(component.children[1], { focused: false });
+      props(component.children[3], { focused: true });
+      emit(component, itemEvents.down);
+      expect(component.children[6].focused).to.equal(true);
+      emit(component, itemEvents.up);
+      expect(component.children[6].focused).to.equal(false);
+      expect(component.children[3].focused).to.equal(true);
     });
   });
 });

@@ -242,6 +242,11 @@
       "from": "arr-diff@>=2.0.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/arr-diff/-/arr-diff-2.0.0.tgz"
     },
+    "arr-exclude": {
+      "version": "1.0.0",
+      "from": "arr-exclude@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/arr-exclude/-/arr-exclude-1.0.0.tgz"
+    },
     "arr-flatten": {
       "version": "1.0.1",
       "from": "arr-flatten@>=1.0.1 <2.0.0",
@@ -1198,6 +1203,18 @@
         }
       }
     },
+    "chalk-cli": {
+      "version": "3.0.0",
+      "from": "chalk-cli@latest",
+      "resolved": "https://registry.npmjs.org/chalk-cli/-/chalk-cli-3.0.0.tgz",
+      "dependencies": {
+        "get-stdin": {
+          "version": "5.0.1",
+          "from": "get-stdin@>=5.0.1 <6.0.0",
+          "resolved": "https://registry.npmjs.org/get-stdin/-/get-stdin-5.0.1.tgz"
+        }
+      }
+    },
     "chokidar": {
       "version": "1.6.0",
       "from": "chokidar@>=1.0.0 <2.0.0",
@@ -1567,6 +1584,11 @@
       "from": "create-ecdh@>=4.0.0 <5.0.0",
       "resolved": "https://registry.npmjs.org/create-ecdh/-/create-ecdh-4.0.0.tgz"
     },
+    "create-error": {
+      "version": "0.3.1",
+      "from": "create-error@>=0.3.1 <0.4.0",
+      "resolved": "https://registry.npmjs.org/create-error/-/create-error-0.3.1.tgz"
+    },
     "create-error-class": {
       "version": "3.0.2",
       "from": "create-error-class@>=3.0.1 <4.0.0",
@@ -1872,6 +1894,11 @@
       "version": "5.0.2",
       "from": "diffie-hellman@>=5.0.0 <6.0.0",
       "resolved": "https://registry.npmjs.org/diffie-hellman/-/diffie-hellman-5.0.2.tgz"
+    },
+    "directory-tree": {
+      "version": "1.1.1",
+      "from": "directory-tree@>=1.1.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/directory-tree/-/directory-tree-1.1.1.tgz"
     },
     "dmd": {
       "version": "1.4.2",
@@ -3595,6 +3622,11 @@
       "version": "1.0.1",
       "from": "indexes-of@>=1.0.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/indexes-of/-/indexes-of-1.0.1.tgz"
+    },
+    "indexifier": {
+      "version": "2.0.0",
+      "from": "indexifier@>=2.0.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/indexifier/-/indexifier-2.0.0.tgz"
     },
     "indexof": {
       "version": "0.0.1",

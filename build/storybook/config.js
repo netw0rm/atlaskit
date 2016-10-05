@@ -3,6 +3,7 @@ import 'akutil-polyfills';
 import MonitoredStory from './MonitoredStory.js';
 import MonkeyTestStory from './MonkeyTestStory.js';
 import SwappedDirectionStory from './SwappedDirectionStory.js';
+import BaselineAlignmentStory from './BaselineAlignmentStory.js';
 import React from 'react';
 
 import 'style!./styles.less';
@@ -39,6 +40,14 @@ setAddon({
       <SwappedDirectionStory>
         {storyFn(context)}
       </SwappedDirectionStory>
+    ));
+  },
+
+  addBaselineAligned(storyName, storyFn) {
+    this.add(storyName, (context) => (
+      <BaselineAlignmentStory>
+        {storyFn(context)}
+      </BaselineAlignmentStory>
     ));
   },
 });

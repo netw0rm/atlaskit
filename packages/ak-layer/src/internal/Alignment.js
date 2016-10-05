@@ -38,7 +38,16 @@ export default class Alignment {
       };
     }
 
-    if (!options.enableFlip) {
+    if (options.enableFlip) {
+      popperOptions.modifiers.preventOverflow = {
+        enabled: true,
+        moveWithTarget: true,
+      };
+      popperOptions.modifiers.flip = {
+        enabled: true,
+        flipVariations: true,
+      };
+    } else {
       popperOptions.modifiers.preventOverflow = {
         enabled: false,
       };

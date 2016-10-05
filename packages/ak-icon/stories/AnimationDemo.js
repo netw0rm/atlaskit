@@ -2,6 +2,7 @@ import { vdom } from 'skatejs';
 import sample from 'lodash.sample';
 import React from 'react';
 import styles from './styles.less';
+import componentStyles from 'style!./../src/host.less';
 
 export default class AnimationDemo extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class AnimationDemo extends React.Component {
 
   randomIcon() {
     const Icon = sample(this.props.components);
-    return <Icon />;
+    return <Icon className={componentStyles.akIcon} />;
   }
 
   startAnimating() {

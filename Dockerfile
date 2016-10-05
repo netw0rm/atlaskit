@@ -20,6 +20,27 @@ RUN echo "Installing general tools" \
   gzip
 #### </general-tools>
 
+#### <browserstack>
+# Copied from https://github.com/sgerrand/alpine-pkg-glibc
+
+ENV GLIBC_VERSION 2.23-r3
+
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub \
+&&  wget "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-$GLIBC_VERSION.apk" \
+&&  apk add "glibc-$GLIBC_VERSION.apk" \
+&&  rm "glibc-$GLIBC_VERSION.apk" \
+&&  wget "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-bin-$GLIBC_VERSION.apk" \
+&&  apk add "glibc-bin-$GLIBC_VERSION.apk" \
+&&  rm "glibc-bin-$GLIBC_VERSION.apk" \
+&&  wget "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-i18n-$GLIBC_VERSION.apk" \
+&&  apk add "glibc-i18n-$GLIBC_VERSION.apk"
+&&  rm "glibc-i18n-$GLIBC_VERSION.apk"
+
+RUN wget -q https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip \
+&&  unzip BrowserStackLocal-linux-x64.zip \
+&&  rm BrowserStackLocal-linux-x64.zip
+#### </browserstack>
+
 #### <ruby>
 # Copied from https://github.com/andrius/alpine-ruby/blob/master/Dockerfile
 # required until we switch atlaskit-registry from jekyll to metalsmith

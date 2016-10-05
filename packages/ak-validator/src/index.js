@@ -1,13 +1,10 @@
 import 'style!./host.less';
-import { define, prop } from 'skatejs';
+import { define, vdom, prop } from 'skatejs';
 
 const prefix = 'ak-validator-';
 
-const baseProps = { message: prop.string({}) };
-
 /**
  * The validator function should take the value of the input and return whether it is valid or not.
- *
  * @callback validatorFunction
  * @param value The input value to be validated
  */
@@ -17,16 +14,22 @@ const baseProps = { message: prop.string({}) };
  * @param {string} tagName The tag name of the new validator component
  * @param {validatorFunction} validatorFunction The validator function
  * @param {Object=} props The properties that should be defined on the validator component
- * @returns {*}
  */
-const defineValidator = (tagName, validatorFunction, props = {}) => {
+function defineValidator(tagName, validatorFunction, props = {}) {
   const newDefinition = {
-    props: Object.assign(baseProps, props),
+    props,
     prototype: { validate: validatorFunction },
+    render() {
+      return (
+        <li>
+          <slot />
+        </li>
+      );
+    },
   };
 
   return define(tagName, newDefinition);
-};
+}
 
 /**
  * @description Minimum length validator.
@@ -34,11 +37,9 @@ const defineValidator = (tagName, validatorFunction, props = {}) => {
  * @example @js import ValidatorMinLength from 'ak-validator';
  * const myValidator = new ValidatorMinLength();
  * @example @js
- * <ak-validator-min-length
- *   min-length="5"
- *   message="Must have at least 5 characters"
- *   slot="validator"
- * ></ak-validator-min-length>
+ * <ak-validator-min-length min-length="5" slot="validator">
+ *   Must have at least 5 characters
+ * </ak-validator-min-length>
  */
 const ValidatorMinLength = defineValidator(`${prefix}min-length`,
   function validate(value) { return value.length >= this.minLength; },
@@ -58,11 +59,9 @@ const ValidatorMinLength = defineValidator(`${prefix}min-length`,
  * @example @js import ValidatorMaxLength from 'ak-validator';
  * const myValidator = new ValidatorMaxLength();
  * @example @js
- * <ak-validator-max-length
- *   min-length="10"
- *   message="Must have at most 10 characters"
- *   slot="validator"
- * ></ak-validator-max-length>
+ * <ak-validator-max-length min-length="10" slot="validator">
+ *   Must have at most 10 characters
+ * </ak-validator-max-length>
  */
 const ValidatorMaxLength = defineValidator(`${prefix}max-length`,
   function validate(value) { return value.length <= this.maxLength; },
@@ -82,10 +81,9 @@ const ValidatorMaxLength = defineValidator(`${prefix}max-length`,
  * @example @js import ValidatorRequired from 'ak-validator';
  * const myValidator = new ValidatorRequired();
  * @example @js
- * <ak-validator-required
- *   message="This field is required"
- *   slot="validator"
- * ></ak-validator-required>
+ * <ak-validator-required slot="validator">
+ *   This field is required
+ * </ak-validator-required>
  */
 const ValidatorRequired = defineValidator(`${prefix}required`,
   (value) => !!value

@@ -13,8 +13,8 @@ function fixSafari() {
         const nextSibling = target.nextSibling;
         const parent = target.parentNode;
 
-        // We actually have to remove and subsequently append rather than doing insertBefore() as
-        // it seems that doesn't trigger a recalc.
+        // We actually have to remove and subsequently re-insert rather than doing insertBefore()
+        // as it seems that doesn't trigger a recalc.
         parent.removeChild(target);
         parent.insertBefore(target, nextSibling);
       }

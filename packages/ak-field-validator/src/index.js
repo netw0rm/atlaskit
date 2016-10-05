@@ -1,7 +1,7 @@
 import 'style!./host.less';
 import { define, vdom, prop, Component } from 'skatejs';
 
-const prefix = 'ak-validator-';
+const prefix = 'ak-field-validator-';
 
 /**
  * The base class definition for a validator component.
@@ -15,12 +15,12 @@ const ValidatorBase = Component.extend({
 /**
  * @description Minimum length validator.
  * @class ValidatorMinlength
- * @example @js import ValidatorMinlength from 'ak-validator';
+ * @example @js import ValidatorMinlength from 'ak-field-validator';
  * const myValidator = new ValidatorMinlength();
  * @example @js
- * <ak-validator-minlength minlength="5" slot="validator">
+ * <ak-field-validator-minlength minlength="5" slot="validator">
  *   Must have at least 5 characters
- * </ak-validator-minlength>
+ * </ak-field-validator-minlength>
  */
 const ValidatorMinlength = define(`${prefix}minlength`, ValidatorBase.extend({
   prototype: {
@@ -51,12 +51,12 @@ const ValidatorMinlength = define(`${prefix}minlength`, ValidatorBase.extend({
 /**
  * @description Maximum length validator.
  * @class ValidatorMaxlength
- * @example @js import ValidatorMaxlength from 'ak-validator';
+ * @example @js import ValidatorMaxlength from 'ak-field-validator';
  * const myValidator = new ValidatorMaxlength();
  * @example @js
- * <ak-validator-maxlength maxlength="10" slot="validator">
+ * <ak-field-validator-maxlength maxlength="10" slot="validator">
  *   Must have at most 10 characters
- * </ak-validator-maxlength>
+ * </ak-field-validator-maxlength>
  */
 const ValidatorMaxlength = define(`${prefix}maxlength`, ValidatorBase.extend({
   prototype: {
@@ -87,12 +87,12 @@ const ValidatorMaxlength = define(`${prefix}maxlength`, ValidatorBase.extend({
 /**
  * @description Required validator.
  * @class ValidatorRequired
- * @example @js import ValidatorRequired from 'ak-validator';
+ * @example @js import ValidatorRequired from 'ak-field-validator';
  * const myValidator = new ValidatorRequired();
  * @example @js
- * <ak-validator-required slot="validator">
+ * <ak-field-validator-required slot="validator">
  *   This field is required
- * </ak-validator-required>
+ * </ak-field-validator-required>
  */
 const ValidatorRequired = define(`${prefix}required`, ValidatorBase.extend({
   prototype: {

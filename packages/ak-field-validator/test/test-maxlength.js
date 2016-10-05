@@ -3,7 +3,7 @@ import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import { Component } from 'skatejs';
 
-import { ValidatorMinlength } from '../src';
+import { ValidatorMaxlength } from '../src';
 import { setupComponent, tearDownComponent } from './_helpers';
 
 chai.use(sinonChai);
@@ -11,17 +11,17 @@ chai.use(chaiAsPromised);
 chai.should();
 
 
-describe('ak-validator-min-length', () => {
+describe('ak-field-validator-maxlength', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new ValidatorMinlength).should.be.an.instanceof(Component);
+      (new ValidatorMaxlength).should.be.an.instanceof(Component);
     });
   });
 
   describe('behaviour', () => {
     let component;
 
-    beforeEach(() => (component = setupComponent(ValidatorMinlength)));
+    beforeEach(() => (component = setupComponent(ValidatorMaxlength)));
     afterEach(() => tearDownComponent(component));
 
     it('should define a validator function', () => {
@@ -29,20 +29,20 @@ describe('ak-validator-min-length', () => {
     });
 
     it('should correctly validate values', () => {
-      component.minlength = 1;
-      expect(component.validate('')).to.equal(false);
+      component.maxlength = 1;
+      expect(component.validate('')).to.equal(true);
+      expect(component.validate('h')).to.equal(true);
+      expect(component.validate('he')).to.equal(false);
+
+      component.maxlength = 2;
       expect(component.validate('h')).to.equal(true);
       expect(component.validate('he')).to.equal(true);
+      expect(component.validate('hel')).to.equal(false);
 
-      component.minlength = 2;
-      expect(component.validate('h')).to.equal(false);
-      expect(component.validate('he')).to.equal(true);
-      expect(component.validate('hel')).to.equal(true);
-
-      component.minlength = 10;
-      expect(component.validate('hello wor')).to.equal(false);
+      component.maxlength = 10;
+      expect(component.validate('hello wor')).to.equal(true);
       expect(component.validate('hello worl')).to.equal(true);
-      expect(component.validate('hello world')).to.equal(true);
+      expect(component.validate('hello world')).to.equal(false);
     });
   });
 });

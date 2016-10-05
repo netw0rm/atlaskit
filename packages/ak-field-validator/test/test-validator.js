@@ -15,7 +15,7 @@ chai.use(chaiAsPromised);
 chai.should();
 
 
-describe('ak-validator', () => {
+describe('ak-field-validator', () => {
   describe('exports', () => {
     it('should export the base class', () => {
       expect(ValidatorBase).to.be.a('function');

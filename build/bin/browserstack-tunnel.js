@@ -1,5 +1,3 @@
-const path = require('path');
-
 const log = require('minilog')('BrowserStack');
 require('minilog').enable();
 const browserstack = require('browserstack-local');
@@ -25,7 +23,7 @@ module.exports = function runWithTunnel(opts) {
     };
 
     if (process.env.BITBUCKET_COMMIT) {
-      tunnelOptions.binarypath = path.join(__dirname, '..', '..', 'BrowserStackLocal-linux-x64');
+      tunnelOptions.binarypath = '/BrowserStackLocal';
       log.info(`We are in CI and have a pre-downloaded binary: "${tunnelOptions.binarypath}"`);
     }
 

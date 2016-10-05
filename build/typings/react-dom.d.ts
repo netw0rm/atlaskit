@@ -1,1 +1,1 @@
-declare module "skatejs-react-integration";
+declare module "react-dom"

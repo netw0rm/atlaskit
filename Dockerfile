@@ -48,7 +48,9 @@ RUN echo "Installing Ruby & bundler" \
 && apk --no-cache add \
   ruby \
   ruby-dev \
-  ruby-bundler
+  ruby-bundler \
+  libffi-dev \
+&& gem install ffi --no-document
 
 ENV NOKOGIRI_USE_SYSTEM_LIBRARIES=1
 RUN bundle config build.nokogiri --use-system-libraries

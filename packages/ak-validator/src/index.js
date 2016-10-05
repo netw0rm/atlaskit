@@ -41,6 +41,11 @@ const ValidatorMinLength = define(`${prefix}min-length`, ValidatorBase.extend({
       default: 1,
     }),
   },
+  render(elem) {
+    return (<slot>
+      Field should have at least {elem.minLength} character{elem.minLength > 1 && 's'}
+    </slot>);
+  },
 }));
 
 /**
@@ -72,6 +77,11 @@ const ValidatorMaxLength = define(`${prefix}max-length`, ValidatorBase.extend({
       default: 10,
     }),
   },
+  render(elem) {
+    return (<slot>
+      Field should have at most {elem.maxLength} character{elem.maxLength > 1 && 's'}
+    </slot>);
+  },
 }));
 
 /**
@@ -89,6 +99,11 @@ const ValidatorRequired = define(`${prefix}required`, ValidatorBase.extend({
     validate(value) {
       return !!value;
     },
+  },
+  render() {
+    return (<slot>
+      Field is required
+    </slot>);
   },
 }));
 

@@ -12,18 +12,23 @@ const ReactValidatorMaxLength = reactify(ValidatorMaxLength);
 const ReactValidatorRequired = reactify(ValidatorRequired);
 
 storiesOf(name, module)
-  .add('min-length validator', () => (
-    <ReactValidatorMinLength minLength="10">
-      Must have at most 10 characters
-    </ReactValidatorMinLength>
+  .add('pre-defined validators with default content', () => (
+    <div>
+      <div><ReactValidatorMinLength minLength="1" /></div>
+      <div><ReactValidatorMaxLength maxLength="10" /></div>
+      <div><ReactValidatorRequired /></div>
+    </div>
   ))
-  .add('max-length validator', () => (
-    <ReactValidatorMaxLength maxLength="10">
-      Must have at least 10 characters
-    </ReactValidatorMaxLength>
-  ))
-  .add('required validator', () => (
-    <ReactValidatorRequired>
-      Field is required
-    </ReactValidatorRequired>
+  .add('pre-defined validators with custom mesages', () => (
+    <div>
+      <div><ReactValidatorMinLength minLength="10">
+        Custom message for min-length validator
+      </ReactValidatorMinLength></div>
+      <div><ReactValidatorMaxLength maxLength="10">
+        Custom message for max-length validator
+      </ReactValidatorMaxLength></div>
+      <div><ReactValidatorRequired>
+        Custom message for required validator
+      </ReactValidatorRequired></div>
+    </div>
   ));

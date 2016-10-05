@@ -28,11 +28,11 @@
   flex-direction: row;
 
   &:hover {
-    .nooutline();
+    .no-focus-ring();
     background-color: @ak-color-N30;
 
     .button {
-      .nooutline();
+      .focus-ring();
     }
   }
 
@@ -95,7 +95,7 @@
 }
 
 .button {
-  .outline(@ak-color-R300);
+  .focus-ring(@color: @ak-color-R300);
   appearance: none;
   background: none;
   border: none;

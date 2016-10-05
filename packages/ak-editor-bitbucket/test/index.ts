@@ -6,7 +6,7 @@ import { fixtures, RewireSpy } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 
 chai.use(sinonChai);
-const { expect } = chai;
+const { expect, assert } = chai;
 
 function activateEditorByClicking(editor: typeof AkEditorBitbucket) : void {
   const inputEl = getShadowRoot(editor).querySelector('input');
@@ -28,6 +28,20 @@ function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> 
 
     fixture.addEventListener('ready', successFn, { once: true });
     fixture.innerHTML = `<ak-editor-bitbucket expanded></ak-editor-bitbucket>`;
+  });
+}
+
+/**
+ * @returns The ProseMirror container element (usually a <div>)
+ */
+function waitUntilPMReady(editor: AkEditorBitbucket) : Promise<HTMLElement> {
+  return waitUntil(() => {
+    return !!getShadowRoot(editor) &&
+      !!getShadowRoot(editor).querySelector('ak-editor-content') &&
+      !!getShadowRoot(editor).querySelector('ak-editor-content').querySelector('[pm-container=true]')
+    ;
+  }).then(() => {
+    return getShadowRoot(editor).querySelector('ak-editor-content').querySelector('[pm-container=true]');
   });
 }
 
@@ -178,6 +192,38 @@ describe('ak-editor-bitbucket', () => {
             // it takes roughly 3 iterations to render all elements and attach them to <ul>
             return btShadowRoot.querySelectorAll('ak-editor-toolbar-block-type-option').length >= 2;
           });
+        });
+      });
+    });
+  });
+
+  /**
+   * @issue FAB-1045
+   */
+  it('should prevent bubbling of keyboard events outside of the editor', () => {
+    const outer : HTMLElement = fixture();
+    const inner : HTMLElement = document.createElement('div');
+    const keyEventsStopped = ['keydown', 'keyup', 'keypress'];
+
+    outer.appendChild(inner);
+
+    return buildExpandedEditor(inner).then((editor) => {
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        keyEventsStopped.forEach((eventName) => {
+          const spy = sinon.spy();
+          const event = new KeyboardEvent(eventName, {
+            view: window,
+            key: 'Enter',
+            keyCode: 13,
+            bubbles: true,
+            cancellable: true,
+          });
+
+          outer.addEventListener(eventName, spy);
+          PMContainer.dispatchEvent(event);
+          editor.dispatchEvent(event);
+          outer.removeEventListener(eventName, spy);
+          assert.isFalse(spy.called, `Event "${eventName}" should not bubble outside of the editor`);
         });
       });
     });

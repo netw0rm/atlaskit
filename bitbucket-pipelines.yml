@@ -4,21 +4,23 @@ pipelines:
     master:
       - step:
           script:
+            - export FORCE_COLOR=1
             - ./build/bin/last_commit_has_changes.sh || exit 0
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - npm install
-            - FORCE_COLOR=1 run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci"
+            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci"
             - npm run test/integration
             - npm run release/check/is-workspace-clean --silent
             - npm run release/check/can-ff --silent || exit 0
             - npm run release
-            - FORCE_COLOR=1 run-p -ln "release/registry" "release/storybooks"
+            - run-p -ln "release/registry" "release/storybooks"
             - npm run release/announce
   default:
     - step:
         script:
+          - export FORCE_COLOR=1
           - ./build/bin/setup.sh
           - npm install
-          - FORCE_COLOR=1 run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/artifacts"
+          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/artifacts"
           - npm run test/integration

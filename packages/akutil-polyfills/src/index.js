@@ -11,13 +11,12 @@ function fixSafari() {
     muts.forEach((mut) => {
       const { target } = mut;
       if (target.tagName === 'STYLE') {
-        const nextSibling = target.nextSibling;
-        const parent = target.parentNode;
+        const { nextSibling, parentNode } = target;
 
         // We actually have to remove and subsequently re-insert rather than doing insertBefore()
         // as it seems that doesn't trigger a recalc.
-        parent.removeChild(target);
-        parent.insertBefore(target, nextSibling);
+        parentNode.removeChild(target);
+        parentNode.insertBefore(target, nextSibling);
       }
     });
   });

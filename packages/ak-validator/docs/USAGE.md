@@ -25,7 +25,7 @@ Import the component in your JS resource:
 #### bundle.js
 
 ```js
-import { ValidatorMinLength } 'ak-validator';
+import { ValidatorMinLength } from 'ak-validator';
 ```
 
 Now you can use the defined tag in your HTML markup:
@@ -40,7 +40,7 @@ Now you can use the defined tag in your HTML markup:
   <body>
     <ak-field>
       <ak-validator-min-length min-length="5" slot="validator"></ak-validator-min-length>
-      <ak-field-text></ak-field-text>
+      <ak-field-text slot="input"></ak-field-text>
     </ak-field>
   </body>
 </html>

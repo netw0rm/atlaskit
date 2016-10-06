@@ -18,7 +18,15 @@ module.exports = function runWithTunnel(opts) {
       key: process.env.BROWSERSTACK_KEY,
       forcelocal: true,
       force: true,
+      v: true,
+      logfile: '/tmp/browserstack.log',
     };
+
+    if (process.env.BITBUCKET_COMMIT) {
+      tunnelOptions.binarypath = '/BrowserStackLocal';
+      log.info(`We are in CI and have a pre-downloaded binary: "${tunnelOptions.binarypath}"`);
+    }
+
     if (opts.tunnelId) tunnelOptions.localIdentifier = opts.tunnelId;
     browserStackTunnel.start(tunnelOptions, startError => {
       if (startError) {

@@ -1,16 +1,8 @@
 import 'style!./host.less';
-import { define, vdom, prop, Component } from 'skatejs';
+import { prop } from 'skatejs';
+import defineValidator from './index.define-validator';
 
 const prefix = 'ak-field-validator-';
-
-/**
- * The base class definition for a validator component.
- */
-const ValidatorBase = Component.extend({
-  render() {
-    return (<slot />);
-  },
-});
 
 /**
  * @description Minimum length validator.
@@ -22,13 +14,9 @@ const ValidatorBase = Component.extend({
  *   Must have at least 5 characters
  * </ak-field-validator-minlength>
  */
-const ValidatorMinlength = define(`${prefix}minlength`, ValidatorBase.extend({
-  prototype: {
-    validate(value) {
-      return value.length >= this.minlength;
-    },
-  },
-  props: {
+const ValidatorMinlength = defineValidator(`${prefix}minlength`,
+  (value, elem) => value.length >= elem.minlength,
+  {
     /**
      * @description The minimum length of the value
      * @memberof ValidatorMinlength
@@ -41,12 +29,8 @@ const ValidatorMinlength = define(`${prefix}minlength`, ValidatorBase.extend({
       default: 1,
     }),
   },
-  render(elem) {
-    return (<slot>
-      Field should have at least {elem.minlength} character{elem.minlength > 1 && 's'}
-    </slot>);
-  },
-}));
+  (elem) => `Field should have at least ${elem.minlength} character${elem.minlength > 1 ? 's' : ''}`
+);
 
 /**
  * @description Maximum length validator.
@@ -58,13 +42,9 @@ const ValidatorMinlength = define(`${prefix}minlength`, ValidatorBase.extend({
  *   Must have at most 10 characters
  * </ak-field-validator-maxlength>
  */
-const ValidatorMaxlength = define(`${prefix}maxlength`, ValidatorBase.extend({
-  prototype: {
-    validate(value) {
-      return value.length <= this.maxlength;
-    },
-  },
-  props: {
+const ValidatorMaxlength = defineValidator(`${prefix}maxlength`,
+  (value, elem) => value.length <= elem.maxlength,
+  {
     /**
      * @description The maximum length of the value
      * @memberof ValidatorMaxlength
@@ -77,12 +57,8 @@ const ValidatorMaxlength = define(`${prefix}maxlength`, ValidatorBase.extend({
       default: 10,
     }),
   },
-  render(elem) {
-    return (<slot>
-      Field should have at most {elem.maxlength} character{elem.maxlength > 1 && 's'}
-    </slot>);
-  },
-}));
+  (elem) => `Field should have at most ${elem.maxlength} character${elem.maxlength > 1 ? 's' : ''}`
+);
 
 /**
  * @description Required validator.
@@ -94,21 +70,14 @@ const ValidatorMaxlength = define(`${prefix}maxlength`, ValidatorBase.extend({
  *   This field is required
  * </ak-field-validator-required>
  */
-const ValidatorRequired = define(`${prefix}required`, ValidatorBase.extend({
-  prototype: {
-    validate(value) {
-      return !!value;
-    },
-  },
-  render() {
-    return (<slot>
-      Field is required
-    </slot>);
-  },
-}));
+const ValidatorRequired = defineValidator(`${prefix}required`,
+  (value) => !!value,
+  {},
+  () => 'Field is required'
+);
 
 export {
-  ValidatorBase,
+  defineValidator,
   ValidatorMinlength,
   ValidatorMaxlength,
   ValidatorRequired,

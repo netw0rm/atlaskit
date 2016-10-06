@@ -1,0 +1,21 @@
+@import '../shared-variables.less';
+
+.resize {
+  height: 100%;
+  right: -6px;
+  width: 12px;
+  cursor: ew-resize;
+  position: absolute;
+  
+  &::after {
+    content: '';
+    width: 2px;
+    left: 3px;
+    height: 100%;
+    position: absolute;
+  }
+  &:hover:after {
+    width: 2px;
+    background-color: @ak-color-B200;
+  }
+}

@@ -3,16 +3,19 @@ import 'style!./host.less';
 import { emit, prop, vdom, define } from 'skatejs';
 import shadowStyles from './index.less';
 import 'ak-blanket';
-import './ak-navigation-drawer';
+import './internal/ak-navigation-drawer';
+import './internal/ak-navigation-drag';
 import './index.ak-navigation-link';
 import classNames from 'classnames';
-import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './internal/touch';
+import resizer from './internal/resizer';
+import addTouchHandlers from './internal/touch';
 import {
   getContainerPadding,
   getNavigationWidth,
   getNavigationXOffset,
   getExpandedWidth,
   getCollapsedWidth,
+  getSpacerWidth,
 } from './internal/collapse';
 import keycode from 'keycode';
 import 'custom-event-polyfill';
@@ -27,6 +30,7 @@ const {
 } = events;
 
 const shouldAnimateThreshold = 100; // ms
+const resizerSymbol = Symbol('resizer');
 
 // TODO: keyboard interaction
 const searchDrawer = el => el.addEventListener('click', () => {
@@ -71,7 +75,8 @@ function recomputeWidth(elem) {
  * @fires Navigation#open
  * @fires Navigation#close
  * @fires Navigation#widthChanged
- * @fires Navigation#openStateChanged
+ * @fires Navigation#resizeStart
+ * @fires Navigation#resizeEnd
  * @example @html <ak-navigation open collapsible />
  * @example @js import Navigation from 'ak-navigation';
  *
@@ -82,6 +87,21 @@ export default define('ak-navigation', {
   render(elem) {
     return (
       <div>
+        <style>{`
+          .${shadowStyles.locals.navigation} {
+            width: ${getNavigationWidth(elem)}px;
+            transform: translateX(${getNavigationXOffset(elem)}px);
+          }
+          
+          .${shadowStyles.locals.spacer} {
+            width: ${getSpacerWidth(elem)}px;
+          }
+
+          .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
+            transform: translateX(${getContainerPadding(elem.width)}px);
+          }
+      `}</style>
+        <style>{shadowStyles.toString()}</style>
         <ak-blanket
           onActivate={() => closeAllDrawers(elem)}
           clickable={isDrawerOpen(elem)}
@@ -90,22 +110,13 @@ export default define('ak-navigation', {
           })}
         />
         <div
+          className={classNames(shadowStyles.locals.spacer)}
+        />
+        <div
           className={classNames(shadowStyles.locals.navigation, {
-            [shadowStyles.locals.open]: elem.open,
             [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
           })}
         >
-          <style>{`
-            .${shadowStyles.locals.navigation} {
-              width: ${getNavigationWidth(elem)}px;
-              transform: translateX(${getNavigationXOffset(elem)}px);
-            }
-
-            .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
-              transform: translateX(${getContainerPadding(elem.width)}px);
-            }
-          `}</style>
-          <style>{shadowStyles.toString()}</style>
           <div className={shadowStyles.locals.global}>
             <div className={shadowStyles.locals.globalPrimary}>
               <a href={elem.productHref || false}>
@@ -157,6 +168,11 @@ export default define('ak-navigation', {
               <slot />
             </div>
           </div>
+          {elem.collapsible ? <ak-navigation-drag
+            startDragCallback={elem[resizerSymbol].start}
+            dragCallback={elem[resizerSymbol].resize}
+            endDragCallback={elem[resizerSymbol].end}
+          /> : null}
         </div>
       </div>
     );
@@ -352,6 +368,7 @@ export default define('ak-navigation', {
     document.removeEventListener('keyup', elem.toggleHandler);
   },
   created(elem) {
+    elem[resizerSymbol] = resizer(elem);
     elem.addEventListener(createDrawerSelectedEvent, () => {
       elem.createDrawerOpen = !elem.createDrawerOpen;
     });
@@ -363,21 +380,7 @@ export default define('ak-navigation', {
       containerLinks.forEach((child) => { child.selected = false; });
       event.target.selected = true;
     });
-    elem.addEventListener('touchstart', (event) => {
-      elem.touchstart = event;
-    });
-    elem.addEventListener('touchend', (event) => {
-      const swipeType = getSwipeType(elem.touchstart, event);
-      if (swipeType === noSwipe) {
-        return;
-      }
-
-      if (swipeType === swipeLeft) {
-        elem.open = true;
-      } else if (swipeType === swipeRight) {
-        elem.open = false;
-      }
-    });
+    addTouchHandlers(elem);
   },
 });
 

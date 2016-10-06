@@ -1,8 +1,8 @@
-import 'style!./host.less';
+import './host.less';
 
 import { vdom, define, prop, emit } from 'skatejs';
 import { style } from 'akutil-common';
-import shadowStyles from './ak-navigation-link.less';
+import shadowStyles from './index.ak-navigation-link.less';
 import classNames from 'classnames';
 import keycode from 'keycode';
 import { linkSelected as linkSelectedEvent } from './internal/index.events';

@@ -2,12 +2,17 @@
 
 @navigation-z-index: 2;
 @content-z-index: 1;
+@navigation-padding: 32px;
+
+.page {
+  display: flex;
+}
 
 .navigation {
-  position: fixed;
   top: 0;
   left: 0;
   z-index: @navigation-z-index;
+  margin-right: @navigation-padding;
 }
 
 .main {
@@ -31,4 +36,7 @@
   z-index: @navigation-z-index;
 };
 .select-slot-children('main-slot', @main-slot-direct-children);
-.select-slot-children('navigation-slot', @navigation-slot-direct-children);
+.select-slot-children('navigation', 'navigation-slot', @navigation-slot-direct-children);
+.resizing {
+  user-select: none;
+}

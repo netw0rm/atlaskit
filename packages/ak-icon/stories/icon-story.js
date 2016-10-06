@@ -7,20 +7,31 @@ import { name } from '../package.json';
 import styles from 'style!./styles.less';
 import ToggleIcons from './ToggleIcons';
 import classnames from 'classnames';
-import fileToScope from '../src/fileToScope';
 import pathToDashed from '../src/pathToDashed';
+import { getGlyphs } from '../test/_helpers';
+import componentStyles from 'style!./../src/host.less';
+import AkButtonWc from 'ak-button';
 
-const req = require.context('../glyph', true, /^.*\.js/);
-const reactifiedComponents = req.keys().reduce((prev, file) => {
-  const Icon = req(file).default;
+const AkButton = reactify(AkButtonWc);
+
+const twoColorIcons = ['checkbox', 'radio'];
+
+const components = getGlyphs();
+const reactifiedComponents = Object.entries(components).reduce((prev, [key, Icon]) => {
   const ReactIcon = reactify(Icon);
-  prev[file] = ReactIcon;
+  prev[key] = ReactIcon;
   return prev;
 }, {});
 
+const CharlieIcon = reactifiedComponents.atlassian;
+if (!CharlieIcon) {
+  throw new Error('Atlassian icon was removed, but is needed to display stories properly');
+}
+
+
 const toggleableIcons = Object
   .keys(reactifiedComponents)
-  .filter((key) => (key === './checkbox.js' || key === './radio.js'))
+  .filter((key) => twoColorIcons.indexOf(key) !== -1)
   .map((key) => [key, reactifiedComponents[key]]);
 
 const AllIcons = (props) => (
@@ -28,7 +39,13 @@ const AllIcons = (props) => (
   <div {...props} className={classnames(styles.container, props.className)}>
     {Object
       .entries(reactifiedComponents)
-      .map(([key, Icon]) => <Icon title={`${fileToScope(key)}.svg`} key={key} />)}
+      .map(([key, Icon]) =>
+        <Icon
+          className={componentStyles.akIcon}
+          label={`${key} icon`}
+          title={`${key}.svg`}
+          key={key}
+        />)}
   </div>
 );
 
@@ -52,19 +69,20 @@ storiesOf('ak-icon', module)
         </tr>
       </thead>
       <tbody>
-        {Object.keys(reactifiedComponents).map((file) => {
-          const Icon = reactifiedComponents[file];
-          const fileBase = fileToScope(file);
-          const importName = `${name}/glyph/${fileBase}`;
-          const tagName = `${name}-${pathToDashed(fileBase)}`;
-          return (
-            <tr key={file}>
-              <td><Icon /></td>
-              <td><pre>import '{importName}';</pre></td>
-              <td><pre>&lt;{tagName}/&gt;</pre></td>
-            </tr>
-          );
-        })}
+        {Object
+          .entries(reactifiedComponents)
+          .map(([key, Icon]) => {
+            const importName = `${name}/glyph/${key}`;
+            const tagName = `${name}-${pathToDashed(key)}`;
+            return (
+              <tr key={key}>
+                <td><Icon /></td>
+                <td><pre>import '{importName}';</pre></td>
+                <td><pre>&lt;{tagName}/&gt;</pre></td>
+              </tr>
+            );
+          })
+        }
       </tbody>
     </table>
   ))
@@ -90,4 +108,13 @@ storiesOf('ak-icon', module)
     </div>
   ))
   .add('Two-color icons', () => <ToggleIcons icons={toggleableIcons} />)
-  .add('Animated', () => <AnimationDemo components={reactifiedComponents} />);
+  .add('Animated', () => <AnimationDemo components={reactifiedComponents} />)
+  .addBaselineAligned('baseline alignment', () => (
+    <CharlieIcon className={componentStyles.akIcon} />
+  ))
+  .add('Inside a button', () => (
+    <AkButton>
+      <CharlieIcon slot="before" />
+      Button
+    </AkButton>
+  ));

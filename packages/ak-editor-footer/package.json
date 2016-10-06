@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-footer",
-  "version": "1.2.5",
+  "version": "1.2.8",
   "description": "Editor Footer web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -19,9 +19,10 @@
     "skatejs": "^1.4.1"
   },
   "devDependencies": {
-    "akutil-common-test": "^2.0.0",
-    "akutil-shared-styles": "^33.1.0",
-    "akutil-react": "^1.0.0"
+    "akutil-common-test": "^3.0.0",
+    "akutil-shared-styles": "^34.0.1",
+    "akutil-react": "^1.0.0",
+    "ak-editor-shared-styles": "^1.0.3"
   },
   "repository": {
     "type": "git",

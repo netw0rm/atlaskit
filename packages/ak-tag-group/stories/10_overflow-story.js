@@ -5,7 +5,7 @@ import AkTagWebComponent from 'ak-tag';
 import React from 'react';
 import { name } from '../package.json';
 import styles from 'style!./../src/host.less';
-import tagStyles from 'style!ak-tag/src/host.less';
+import tagStyles from 'style!./tagStyles.less';
 import tagNames from './tagNames';
 
 const Group = reactify(WebComponent);

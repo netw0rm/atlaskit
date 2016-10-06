@@ -1,6 +1,6 @@
 {
   "name": "ak-navigation",
-  "version": "11.0.0",
+  "version": "11.0.2",
   "description": "ak-navigation webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -15,7 +15,6 @@
     "ak-blanket": "^3.0.0",
     "ak-dropdown": "^5.5.0",
     "ak-icon": "2.0.0",
-    "ak-page": "^5.0.0",
     "akutil-common": "^2.6.0",
     "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
@@ -28,6 +27,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-avatar": "^2.1.0",
+    "ak-page": "^5.0.0",
     "akutil-common-test": "^3.0.0",
     "akutil-react": "^1.0.0",
     "react-lorem-component": "^0.10.0"

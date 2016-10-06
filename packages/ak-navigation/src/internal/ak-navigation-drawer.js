@@ -1,4 +1,3 @@
-import 'style!./host.less';
 import shadowStyles from './ak-navigation-drawer.less';
 
 import { vdom, define, prop } from 'skatejs';

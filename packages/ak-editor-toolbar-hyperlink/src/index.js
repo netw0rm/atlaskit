@@ -6,19 +6,30 @@ import Icon from 'ak-editor-icon';
 import Popup from 'ak-editor-popup';
 import TextInput from 'ak-editor-popup-text-input';
 
+// todo: we will use a common helper function when it's ready.
+// https://ecosystem.atlassian.net/browse/AK-513
+function isDescendantOf(child, parent) {
+  if (child.parentNode === parent) {
+    return true;
+  } else if (child.parentNode === null) {
+    return false;
+  }
+
+  return isDescendantOf(child.parentNode, parent);
+}
+
 export default define('ak-editor-toolbar-hyperlink', {
   created(elem) {
-    elem.onLinkButtonClick = elem.onLinkButtonClick.bind(elem);
-    elem.onPopupClick = elem.onPopupClick.bind(elem);
+    elem.toggleHyperlink = elem.toggleHyperlink.bind(elem);
     elem.onKeyup = elem.onKeyup.bind(elem);
     elem.openHyperlink = elem.openHyperlink.bind(elem);
-    elem.closeHyperlink = elem.closeHyperlink.bind(elem);
+    elem.handleClickOutside = elem.handleClickOutside.bind(elem);
   },
   attached(elem) {
-    document.addEventListener('click', elem.closeHyperlink, true);
+    document.addEventListener('click', elem.handleClickOutside);
   },
   detached(elem) {
-    document.removeEventListener('click', elem.closeHyperlink, true);
+    document.removeEventListener('click', elem.handleClickOutside);
   },
   render(elem) {
     const active = elem.active || elem.open;
@@ -26,7 +37,7 @@ export default define('ak-editor-toolbar-hyperlink', {
     const LinkButton = (
       <EditorButton
         className="link-button"
-        onClick={elem.onLinkButtonClick}
+        onClick={elem.toggleHyperlink}
         active={active}
         disabled={elem.disabled}
       >
@@ -51,7 +62,6 @@ export default define('ak-editor-toolbar-hyperlink', {
           target={linkButton}
           open={elem.open}
           on-activate={elem.openHyperlink}
-          onclick={elem.onPopupClick}
         >
           <TextInput className="text-input" placeholder="Paste link" />
         </Popup>
@@ -59,40 +69,49 @@ export default define('ak-editor-toolbar-hyperlink', {
     );
   },
   rendered(elem) {
+    // `elem.justOpenedHyperlink` is for focusing on the input
+    // if we just opened hyperlink, we want to focus on the input straight away
+    // else, don't auto fucos on it
     if (elem.justOpenedHyperlink) {
       const textInput = elem.shadowRoot.querySelector('.text-input');
       // next tick
+      // because dom is rendered asyn but the API is not,
+      // `textInput` is only availale on dom in the next tick
       setTimeout(() => textInput.focus());
       elem.justOpenedHyperlink = false;
     }
   },
   prototype: {
-    onLinkButtonClick() {
-      if (this.disabled || this.active || this.wasOpen) {
-        this.closeHyperlink();
-        return;
-      }
-
-      this.openHyperlink();
-    },
-    onPopupClick() {
-      this.openHyperlink();
-    },
-    onKeyup(event) {
-      if (event.keyCode === 13) {
-        const textInput = this.shadowRoot.querySelector('.text-input');
-        this.closeHyperlink();
-        emit(this, 'save', { detail: { value: textInput.value } });
-        textInput.value = '';
-      }
-    },
     openHyperlink() {
       this.open = true;
       this.justOpenedHyperlink = true;
     },
-    closeHyperlink() {
-      this.wasOpen = this.open;
-      this.open = false;
+    handleClickOutside(e) {
+      // todo: we will use a common helper function when it's ready.
+      // https://ecosystem.atlassian.net/browse/AK-513
+      if (this.open && e.target !== this && !isDescendantOf(e.target, this) &&
+        !(e.path && e.path.indexOf(this) > -1)) {
+        this.open = false;
+      }
+    },
+    toggleHyperlink() {
+      if (this.disabled) {
+        return;
+      }
+
+      if (this.open) {
+        this.open = false;
+      } else {
+        this.openHyperlink();
+      }
+    },
+    onKeyup(event) {
+      if (event.keyCode === 13) {
+        const textInput = this.shadowRoot.querySelector('.text-input');
+        this.open = false;
+        emit(this, 'save', { detail: { value: textInput.value } });
+        textInput.value = '';
+      }
     },
   },
   props: {

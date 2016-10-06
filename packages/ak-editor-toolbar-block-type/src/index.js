@@ -4,6 +4,8 @@ import styles from './index.less';
 import Select from './block-type-select';
 import Option from './option';
 
+// todo: we will use a common helper function when it's ready.
+// https://ecosystem.atlassian.net/browse/AK-513
 function isDescendantOf(child, parent) {
   if (child.parentNode === parent) {
     return true;
@@ -21,10 +23,10 @@ export default define('ak-editor-toolbar-block-type', {
     elem.toggleDropdown = elem.toggleDropdown.bind(elem);
   },
   attached(elem) {
-    document.addEventListener('click', elem.handleClickOutside, true);
+    document.addEventListener('click', elem.handleClickOutside);
   },
   detached(elem) {
-    document.removeEventListener('click', elem.handleClickOutside, true);
+    document.removeEventListener('click', elem.handleClickOutside);
   },
   render(elem) {
     const selectedBlockType = elem.selectedBlockType || elem.blockTypes[0] || {};

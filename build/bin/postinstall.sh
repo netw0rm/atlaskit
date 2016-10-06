@@ -2,27 +2,20 @@
 set -e
 
 LERNA_LOC="`npm bin`/lerna"
+CHALK="`npm bin`/chalk"
+VALIDATE_COMMIT_MSG_LOC="`npm bin`/validate-commit-msg"
+BASEDIR=$(dirname $0)
 
-if [ -z "$BITBUCKET_COMMIT" ]; then
+if [[ -z "$BITBUCKET_COMMIT" ]]; then
   # we are in a local env
-
-  BASEDIR=$(dirname $0)
-  VALIDATE_COMMIT_MSG_LOC="`npm bin`/validate-commit-msg"
-  printf "\033[34m"
-  echo "Lerna bootstrap..."
-  printf "\033[0m"
+  $CHALK --no-stdin -t "{blue Lerna bootstrap...}"
   $LERNA_LOC bootstrap
 
-  printf "\033[34m"
-  echo "Installing hooks..."
-  printf "\033[0m"
+  $CHALK --no-stdin -t "{blue Installing hooks...}"
   node $BASEDIR/pre-commit.install.js
   $VALIDATE_COMMIT_MSG_LOC
 else
   # we are running in CI (do not link, as we can't guarantee that cross-dependencies still work)
-
-  printf "\033[34m"
-  echo "Installing packages..."
-  printf "\033[0m"
+  $CHALK --no-stdin -t "{blue Installing packages...}"
   $LERNA_LOC exec -- npm install
 fi

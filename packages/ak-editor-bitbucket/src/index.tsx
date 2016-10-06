@@ -17,7 +17,7 @@ import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
 import schema from 'ak-editor-schema';
 import { buildKeymap } from './keymap';
-import { markdownSerializer } from './markdown-serializer';
+import markdownSerializer from './markdown-serializer';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 
@@ -94,6 +94,8 @@ class AkEditorBitbucket extends Component {
   _hyperLinkElement: HTMLElement | undefined;
   _hyperLinkActive: boolean;
   _canLinkHyperlink: boolean;
+  _bulletlistDisabled: boolean;
+  _numberlistDisabled: boolean;
   _bulletListActive: boolean;
   _numberListActive: boolean;
 
@@ -136,6 +138,8 @@ class AkEditorBitbucket extends Component {
       _hyperLinkElement: {},
       _hyperLinkActive: prop.boolean(),
       _canLinkHyperlink: prop.boolean(),
+      _bulletlistDisabled: prop.boolean(),
+      _numberlistDisabled: prop.boolean(),
       _bulletListActive: prop.boolean(),
       _numberListActive: prop.boolean(),
     };
@@ -196,6 +200,8 @@ class AkEditorBitbucket extends Component {
           onSave={elem._addHyperLink}
         />
         <ToolbarLists
+          bulletlistDisabled={elem._bulletlistDisabled}
+          numberlistDisabled={elem._numberlistDisabled}
           bulletlistActive={elem._bulletListActive}
           numberlistActive={elem._numberListActive}
           on-toggle-number-list={() => elem._toggleList('ordered_list')}
@@ -410,6 +416,9 @@ class AkEditorBitbucket extends Component {
     ListsPlugin.get(pm).subscribe(state => {
       this._bulletListActive = Boolean(state.active && state.type === 'bullet_list');
       this._numberListActive = Boolean(state.active && state.type === 'ordered_list');
+
+      this._bulletlistDisabled = !Boolean(state.enabled);
+      this._numberlistDisabled = !Boolean(state.enabled);
     });
 
     // Text formatting

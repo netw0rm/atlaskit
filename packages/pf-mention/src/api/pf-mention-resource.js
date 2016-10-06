@@ -1,5 +1,10 @@
 import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
-require('es6-promise').polyfill();
+
+// 'whatwg-fetch' needs a Promise polyfill
+import Promise from 'babel-runtime/core-js/promise';
+if (!window.Promise) {
+  window.Promise = Promise;
+}
 import 'whatwg-fetch';
 import debug from '../util/logger';
 
@@ -139,7 +144,7 @@ class MentionResource extends AbstractMentionResource {
 
   /**
    *
-   * @param config = {
+   * @param {Object} config = {
    *   url: string (required), // the base url of the mentions service
    *   securityProvider: function (required),
    *   a function returning an object with headers and/or params, e.g.

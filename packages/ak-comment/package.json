@@ -1,0 +1,32 @@
+{
+  "name": "ak-comment",
+  "version": "1.0.3",
+  "description": "ak-comment webcomponent",
+  "main": "dist/bundle.js",
+  "webpack": "src/index.js",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-comment"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "akutil-common": "^1.0.0",
+    "akutil-shared-styles": "^34.0.1",
+    "skatejs": "^1.0.0"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "ak-avatar": "^2.3.1",
+    "ak-button": "^1.3.1",
+    "ak-button-group": "^1.0.15",
+    "ak-icon": "2.0.0",
+    "akutil-common-test": "^3.0.0",
+    "akutil-react": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

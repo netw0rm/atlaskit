@@ -1,0 +1,7 @@
+/**
+ * Takes a filename and replaces forward slashes with dashes.
+ *
+ * @param {string} file Path to an icon in the form 'path/to/icon'
+ * @return {string} the path with forward slashes replaced with dashes, e.g 'path-to-icon'
+ */
+module.exports = (file) => file.split('/').join('-');

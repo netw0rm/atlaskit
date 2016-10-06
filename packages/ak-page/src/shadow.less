@@ -1,19 +1,42 @@
+@import '~akutil-shared-styles/src/mixins/select-slot-children.less';
+
+@navigation-z-index: 2;
+@content-z-index: 1;
+@navigation-padding: 32px;
+
+.page {
+  display: flex;
+}
+
 .navigation {
-  position: fixed;
   top: 0;
   left: 0;
+  z-index: @navigation-z-index;
+  margin-right: @navigation-padding;
 }
 
 .main {
-  margin-left: 80px;
-  transition: margin-left 200ms;
+  z-index: @content-z-index;
 
-  .navigation-open & {
-    margin-left: 300px;
+  &.should-animate {
+    transition: margin-left 200ms;
   }
 
   .main-fixed {
     max-width: 1280px;
     margin: auto;
   }
+}
+@main-slot-direct-children: {
+  position: relative;
+  z-index: @content-z-index;
+};
+@navigation-slot-direct-children: {
+  position: relative;
+  z-index: @navigation-z-index;
+};
+.select-slot-children('main-slot', @main-slot-direct-children);
+.select-slot-children('navigation', 'navigation-slot', @navigation-slot-direct-children);
+.resizing {
+  user-select: none;
 }

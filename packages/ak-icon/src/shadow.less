@@ -1,10 +1,19 @@
-.root {
-  display: flex;
-  width: 20px;
-  height: 20px;
-}
+@import 'shared-variables.less';
 
 .icon {
-  margin: auto; // the svg's themselves may not be exactly 20px, so we smooth it out here
+  box-sizing: border-box;
+  display: inline-flex;
+  line-height: 1;
+  vertical-align: baseline;
+  width: 20px; // duplicated in ../bin/constants.js
+  height: 20px; // duplicated in ../bin/constants.js
 }
 
+.content {
+  margin: auto;
+  display: inline-block;
+
+  & > svg {
+    vertical-align: bottom; 
+  }
+}

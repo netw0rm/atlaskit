@@ -1,16 +1,17 @@
 # Tag
 
 
-This component displays as a tag with an optional link and/or button to remove the given tag.
+This component is displayed as a tag with an optional link and/or button to remove it.
+
+![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tag/docs/overview.png)
 
 Although the `ak-tag` component can be used by itself, it works best in conjunction with the
 [`ak-tag-group`](https://www.npmjs.com/package/ak-tag-group) component.
 
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tag/docs/overview.png)
-
 ## Try it out
 
-Interact with a [live demo of the ak-avatar component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tag/@VERSION@/).
+Interact with a [live demo of the ak-tag component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tag/@VERSION@/).
+
 
 ## Installation
 
@@ -33,7 +34,6 @@ import 'ak-tag';
 ```
 
 Now you can use the defined tag in your HTML markup:
-
 #### index.html
 
 ```html
@@ -48,7 +48,7 @@ Now you can use the defined tag in your HTML markup:
 </html>
 ```
 
-or within another JS resource:
+You can also use it within another JS resource:
 
 #### index.js
 ```javascript

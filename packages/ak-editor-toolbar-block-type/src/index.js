@@ -4,16 +4,27 @@ import styles from './index.less';
 import Select from './block-type-select';
 import Option from './option';
 
+function isDescendantOf(child, parent) {
+  if (child.parentNode === parent) {
+    return true;
+  } else if (child.parentNode === null) {
+    return false;
+  }
+
+  return isDescendantOf(child.parentNode, parent);
+}
+
 export default define('ak-editor-toolbar-block-type', {
   created(elem) {
+    elem.handleClickOutside = elem.handleClickOutside.bind(elem);
     elem.closeBlockTypeDropdown = elem.closeBlockTypeDropdown.bind(elem);
-    elem.toggleDropDown = elem.toggleDropDown.bind(elem);
+    elem.toggleDropdown = elem.toggleDropdown.bind(elem);
   },
   attached(elem) {
-    document.addEventListener('click', elem.closeBlockTypeDropdown, true);
+    document.addEventListener('click', elem.handleClickOutside, true);
   },
   detached(elem) {
-    document.removeEventListener('click', elem.closeBlockTypeDropdown, true);
+    document.removeEventListener('click', elem.handleClickOutside, true);
   },
   render(elem) {
     const selectedBlockType = elem.selectedBlockType || elem.blockTypes[0] || {};
@@ -27,7 +38,8 @@ export default define('ak-editor-toolbar-block-type', {
           disabled={elem.disabled}
           className={styles.locals.blockTypeSelect}
           selectedReadableName={selectedBlockType.display}
-          onToggleDropdown={elem.toggleDropDown}
+          onToggleDropdown={elem.toggleDropdown}
+          onSelectBlockType={elem.closeBlockTypeDropdown}
           active={elem.dropdownOpen}
         >
           <ul
@@ -48,17 +60,23 @@ export default define('ak-editor-toolbar-block-type', {
     );
   },
   prototype: {
+    handleClickOutside(e) {
+      // todo: we will use a common helper function when it's ready.
+      // https://ecosystem.atlassian.net/browse/AK-513
+      if (this.dropdownOpen && e.target !== this && !isDescendantOf(e.target, this) &&
+        !(e.path && e.path.indexOf(this) > -1)) {
+        this.closeBlockTypeDropdown();
+      }
+    },
     closeBlockTypeDropdown() {
-      this.wasOpen = this.dropdownOpen;
       this.dropdownOpen = false;
     },
-    toggleDropDown() {
-      if (this.disabled || this.dropdownOpen || this.wasOpen) {
+    toggleDropdown() {
+      if (!this.disabled && this.dropdownOpen) {
         this.closeBlockTypeDropdown();
-        return;
+      } else {
+        this.dropdownOpen = true;
       }
-
-      this.dropdownOpen = true;
     },
   },
   props: {

@@ -18,7 +18,7 @@ else
 fi
 
 # Generate API docs
-if [[ -z `find ./src -name "*.js" -print -quit` ]]; then
+if [[ -z `find ./src -name "*.js" -print || true` ]]; then
   API=""
   $CHALK --no-stdin -t "{blue  Nothing found that can be documented.}"
 else

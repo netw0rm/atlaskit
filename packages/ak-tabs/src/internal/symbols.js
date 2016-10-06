@@ -3,8 +3,8 @@
 const buttonContainer = Symbol();
 const focusOnRender = Symbol();
 const labelsContainer = Symbol();
-const labelProp = Symbol();
-const selectedProp = Symbol();
+const labelProp = Symbol('labels');
+const selectedProp = Symbol('selected');
 
 // ak-tabs-tab symbols
 

@@ -4,11 +4,11 @@ Provides a standard way to create a text-based form input with an associated lab
 
 When the label is clicked, the input will receive focus as expected.
 
-![Example avatars](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-textfield/docs/textfield.gif)
+![Example avatars](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-field-text/docs/textfield.gif)
 
 ## Try it out
 
-Interact with a [live demo of the ak-textfield component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-textfield/@VERSION@/).
+Interact with a [live demo of the ak-field-text component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-field-text/@VERSION@/).
 
 ## Installation
 

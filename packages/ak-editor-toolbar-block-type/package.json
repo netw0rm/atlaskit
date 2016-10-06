@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar-block-type",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "An block type dropdown selector",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

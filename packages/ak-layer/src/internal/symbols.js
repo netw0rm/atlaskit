@@ -1,1 +1,1 @@
-export const flippedSymbol = Symbol();
+export const flippedSymbol = Symbol('isFlipped');

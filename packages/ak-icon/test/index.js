@@ -1,25 +1,24 @@
 import { Component } from 'skatejs';
 import chai from 'chai';
+import iconNameToComponentName from '../src/iconNameToComponentName';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
-import fileToScope from '../src/fileToScope';
 import pathToDashed from '../src/pathToDashed';
-
-// This is an anti-pattern and a special case here as we auto-generate the exports
-// and need to make sure that the single ones align to the bundled ones.
-// DO NOT COPY TO OTHER COMPONENTS!
-import bundle from '../dist/bundle';
+import * as bundle from '../src';
+import { getGlyphs } from './_helpers';
+import {
+  tearDownComponent,
+  getRootNode,
+  afterMutations,
+} from 'akutil-common-test';
 
 chai.use(chaiAsPromised);
 chai.should();
 
-// NOTE context change (../glyph) is a breaking change, as the exports change
-const req = require.context('../glyph', true, /^.*\.js/);
-const components = req.keys().reduce((prev, file) => {
-  prev[fileToScope(file)] = req(file).default;
-  return prev;
-}, {});
+// This could be any component, the important thing is the fixed named export
+const { BitbucketLogoIcon } = bundle;
 
+const components = getGlyphs();
 
 describe(name, () => {
   describe('exports', () => {
@@ -30,6 +29,8 @@ describe(name, () => {
       Object
         .keys(components)
         .should.be.deep.equal([
+          'atlassian',
+
           'bitbucket/admin',
           'bitbucket/branches',
           'bitbucket/builds',
@@ -63,6 +64,19 @@ describe(name, () => {
           'confluence/quote',
 
           'dashboard',
+
+          'editor/bold',
+          'editor/code',
+          'editor/image',
+          'editor/italic',
+          'editor/link',
+          'editor/list/bullet',
+          'editor/list/number',
+          'editor/mention',
+          'editor/open',
+          'editor/underline',
+          'editor/unlink',
+
           'expand',
           'home',
           'jira/logo',
@@ -71,21 +85,76 @@ describe(name, () => {
           'radio',
           'search',
         ]);
+        // If you find yourself here and wonder why this list is not auto-generated, then bear in
+        // mind that tests are supposed to tell you when a piece of software breaks.
+        // As the sole purpose of this component is providing icons:
+        //
+        // * changing an icon is a patch
+        // * adding an icon is a feature
+        // * removing an icon is breaking change
+        // * renaming an icon is a breaking change
+        //
+        // If we were to auto-generate this list, then renaming, adding or removing would NOT
+        // break any tests and thus not hint the developer at what kind of change he/she is making
     });
 
     it('are properly defined in bundle', () => {
-      Object.keys(bundle).should.be.deep.equal(Object.keys(components));
+      (new BitbucketLogoIcon).should.be.instanceof(Component);
+
+      const bundleKeys = Object.keys(bundle);
+
+      bundleKeys.should.be.deep.equal(Object
+            .keys(components)
+            .map(pathToDashed)
+            .map((x) => iconNameToComponentName(x)));
+
+      bundleKeys.forEach((key) => (new (bundle[key])).should.be.instanceof(Component));
     });
   });
 
   it('should be possible to create the components', () => {
-    Object.keys(components).forEach((scope) => {
+    Object.entries(components).forEach(([scope, Icon]) => {
       const iconName = pathToDashed(scope);
-      const Icon = components[scope];
       const component = new Icon();
 
       component.should.be.instanceof(Component);
       component.tagName.should.match(new RegExp(`^${name}-${iconName}`, 'i'));
+    });
+  });
+
+  describe('component structure', () => {
+    let component;
+
+    afterEach(() => tearDownComponent(component));
+
+    it('should have role="img"', (done) => {
+      component = new BitbucketLogoIcon();
+      document.body.appendChild(component);
+      afterMutations(
+        () => getRootNode(component),
+        (rootNode) => rootNode.querySelector('[role="img"]').tagName.should.match(/svg/i),
+        done
+      );
+    });
+
+    it('should accept a label', (done) => {
+      const label = '123abc';
+      component = new BitbucketLogoIcon();
+      component.label = label;
+      document.body.appendChild(component);
+      afterMutations(
+        () => getRootNode(component),
+        (rootNode) => rootNode.querySelector('svg'),
+        (svg) => {
+          svg.hasAttribute('aria-labelledby').should.be.true;
+          const labelledBy = svg.getAttribute('aria-labelledby');
+          const ids = labelledBy.split(/\s+/);
+          ids.length.should.be.at.least(1, 'The labelled-by attribute must reference some node');
+          const labels = ids.map((id) => svg.getElementById(id).textContent);
+          labels.should.contain(label);
+        },
+        done
+      );
     });
   });
 });

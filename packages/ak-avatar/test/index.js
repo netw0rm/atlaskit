@@ -1,9 +1,10 @@
-import { waitUntil, hasClass, getShadowRoot } from 'akutil-common-test';
+import { waitUntil, getShadowRoot, hasClass } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
 import AKAvatar from '../src/index.js';
 import shadowStyles from '../src/shadow.less';
+import { loading } from '../src/internal/symbols';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -19,12 +20,13 @@ const avatarSizes = {
   large: 50,
   xlarge: 100,
 };
-const presenceClass = `.${shadowStyles.locals.presence}`;
 const imgWrapperClass = `.${shadowStyles.locals.imgWrapper}`;
+const slotClass = `.${shadowStyles.locals.defaultSlotElement}`;
+const loadedClass = shadowStyles.locals.loaded;
 
 // Helper functions for getting various parts of the shadowDOM
 const getImgWrapper = (component) => (getShadowRoot(component).querySelector(imgWrapperClass));
-const getPresence = (component) => (getShadowRoot(component).querySelector(presenceClass));
+const getSlot = (component) => (getShadowRoot(component).querySelector(slotClass));
 const getImage = (component) => (getShadowRoot(component).querySelector('img'));
 
 // Helper functions for checking that certain elements are rendered
@@ -134,30 +136,37 @@ describe('ak-avatar', () => {
 
   describe('presence property', () => {
     it('should not be visible when set to "none"', () => {
-      const presence = getPresence(component);
-      const presenceIsNotVisible = () => (getComputedStyle(presence).display === 'none');
+      const presenceIsVisible = () => (getSlot(component).children.length > 0);
 
-      component.presence = 'none';
-
-      return waitUntil(presenceIsNotVisible).should.be.fulfilled;
+      // need to set up the negative case first, so we set presence to online and wait until we
+      // have a presence element
+      component.presence = 'online';
+      return waitUntil(presenceIsVisible).then(() => {
+        // now we can check that the presence disappears when we set presence to 'none'
+        component.presence = 'none';
+        return waitUntil(() => !presenceIsVisible());
+      }).should.be.fulfilled;
     });
 
     it('should be visible when presence is set to \'online\'', () => {
-      const presence = getPresence(component);
-      const presenceIsVisible = () => (getComputedStyle(presence).display !== 'none');
+      const presenceIsVisible = () => (getSlot(component).children.length > 0);
 
+      expect(presenceIsVisible()).to.be.false;
       component.presence = 'online';
 
       return waitUntil(presenceIsVisible).should.be.fulfilled;
     });
 
     it('should default to none when set to an invalid value', () => {
-      const presence = getPresence(component);
-      const presenceIsNotVisible = () => (getComputedStyle(presence).display === 'none');
+      const presenceIsVisible = () => (getSlot(component).children.length > 0);
 
-      component.presence = 'spooky';
-
-      return waitUntil(presenceIsNotVisible).should.be.fulfilled;
+      // set up the negative case again
+      component.presence = 'online';
+      return waitUntil(presenceIsVisible).then(() => {
+        // now we can check that the presence disappears when we set presence to 'none'
+        component.presence = 'spooky';
+        return waitUntil(() => !presenceIsVisible());
+      }).should.be.fulfilled;
     });
   });
 
@@ -193,48 +202,33 @@ describe('ak-avatar', () => {
     });
   });
 
-  describe('loading behaviour', () => {
+  describe.skip('loading behaviour', () => {
     let imgWrapper;
-    const loadedClass = shadowStyles.locals.loaded;
 
-    beforeEach(() => setupAvatar().then(() => {
-      imgWrapper = getImgWrapper(component);
-    }));
+    beforeEach(() => (imgWrapper = getImgWrapper(component)));
 
-    it('should apply .loaded class when img loads successfully', () => {
-      const loadedClassRendered = () => hasClass(imgWrapper, loadedClass);
+    it('should not apply the .loaded class when loading', () => {
+      const loadedClassApplied = () => hasClass(imgWrapper, loadedClass);
 
-      component.src = oneByOnePixel;
-
-      // component will remove the .loaded class so we wait for that
-      return waitUntil(() => !loadedClassRendered())
-        // now, eventually that class should be added back, so we just wait for that
-        .then(waitUntil(loadedClassRendered))
-        .should.be.fulfilled;
+      expect(loadedClassApplied()).to.be.true;
+      // this would normally be a hidden/internal prop but we can access it here for unit testing
+      component[loading] = true;
+      return waitUntil(() => !loadedClassApplied()).should.be.fulfilled;
     });
 
-    it('should not apply .loaded class when img does not load successfully', () => {
-      const loadedClassRendered = () => hasClass(imgWrapper, loadedClass);
+    it('should apply the .loaded class when loading', () => {
+      const loadedClassApplied = () => hasClass(imgWrapper, loadedClass);
 
-      // Again, we set up a successfully loaded image (that should have the .loaded class)
-      component.src = oneByOnePixel;
-      return waitUntil(loadedClassRendered)
+      // we'll set up the negative case by copying the previous test
+      expect(loadedClassApplied()).to.be.true;
+      // this would normally be a hidden/internal prop but we can access it here for unit testing
+      component[loading] = true;
+      return waitUntil(() => !loadedClassApplied())
         .then(() => {
-          // now we set it to something invalid (and expect the .loaded class to be removed)
-          component.src = 'http://not.a.valid.url';
-          return waitUntil(() => !loadedClassRendered());
-        })
-        .then(() => {
-          // now we setup a short timer to make sure the .loaded class has not been reapplied
-          let timerExpired = false;
-          setTimeout(() => (timerExpired = true), 10);
-          return waitUntil(() => (timerExpired === true));
-        })
-        .then(() => {
-          // assert that the .loaded class is definitely not applied again, just in case
-          expect(loadedClassRendered()).to.be.false;
-        })
-        .should.be.fulfilled;
+          component[loading] = false;
+
+          return waitUntil(loadedClassApplied);
+        }).should.be.fulfilled;
     });
   });
 });

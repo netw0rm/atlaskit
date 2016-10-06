@@ -1,5 +1,5 @@
 @import 'shared-variables.less';
-@import 'ak-navigation-link.less';
+@import 'index.ak-navigation-link.less';
 
 @ak-navigation-global-color: @ak-color-B500;
 @ak-navigation-container-color: @ak-color-N20;
@@ -18,16 +18,22 @@
 }
 
 .navigation {
+  &.should-animate {
+    transition: width 250ms, transform 250ms;
+  }
+}
+
+.spacer {
+  height: 0;
+}
+
+.navigation {
   background-color: @ak-navigation-container-color;
   top: 0;
   left: 0;
   position: fixed;
   height: 100%;
   display: flex;
-
-  &.should-animate {
-    transition: width 250ms, transform 250ms;
-  }
 
   .global {
     display: flex;
@@ -37,7 +43,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    z-index: 1; //needed so that child dropdowns can trump the container nav links
+    z-index: @global-z-index;
 
     .global-primary {
       margin: @global-primary-item-margin auto;
@@ -74,7 +80,8 @@
 
   .container {
     padding: 20px 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     width: 100%;
   }
 
@@ -87,7 +94,7 @@
     height: @container-logo-size;
     border-radius: @container-logo-border-radius;
     margin-right: 10px;
-    
+
     &:not([src]) {
       visibility: hidden;
     }
@@ -118,3 +125,4 @@
     font-size: @font-size;
   }
 }
+

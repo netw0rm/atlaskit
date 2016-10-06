@@ -2,7 +2,7 @@
 
 The Avatars represent users that are collaborating within the same application. You can use an avatar for projects, repositories and spaces within the Atlassian applications.
 
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-avatar/docs/avatar.png)
+![Example avatars](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-avatar/docs/avatar.png)
 
 ## Try it out
 

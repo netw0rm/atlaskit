@@ -3,20 +3,23 @@ import 'style!./host.less';
 import { emit, prop, vdom, define } from 'skatejs';
 import shadowStyles from './index.less';
 import 'ak-blanket';
-import './ak-navigation-drawer';
-import './ak-navigation-link';
+import './internal/ak-navigation-drawer';
+import './internal/ak-navigation-drag';
+import './index.ak-navigation-link';
 import classNames from 'classnames';
-import getSwipeType, { swipeLeft, swipeRight, noSwipe } from './internal/touch';
+import resizer from './internal/resizer';
+import addTouchHandlers from './internal/touch';
 import {
   getContainerPadding,
   getNavigationWidth,
   getNavigationXOffset,
   getExpandedWidth,
   getCollapsedWidth,
+  getSpacerWidth,
 } from './internal/collapse';
 import keycode from 'keycode';
 import 'custom-event-polyfill';
-import * as events from './internal/events';
+import * as events from './internal/index.events';
 const {
   linkSelected: linkSelectedEvent,
   createDrawerSelected: createDrawerSelectedEvent,
@@ -27,6 +30,7 @@ const {
 } = events;
 
 const shouldAnimateThreshold = 100; // ms
+const resizerSymbol = Symbol('resizer');
 
 // TODO: keyboard interaction
 const searchDrawer = el => el.addEventListener('click', () => {
@@ -63,10 +67,41 @@ function recomputeWidth(elem) {
   }
 }
 
+/**
+ * @description Create instances of the component programmatically, or using markup.
+ * @class Navigation
+ * @fires Navigation#createDrawerSelected
+ * @fires Navigation#searchDrawerSelected
+ * @fires Navigation#open
+ * @fires Navigation#close
+ * @fires Navigation#widthChanged
+ * @fires Navigation#resizeStart
+ * @fires Navigation#resizeEnd
+ * @example @html <ak-navigation open collapsible />
+ * @example @js import Navigation from 'ak-navigation';
+ *
+ * const navigation = new Navigation();
+ * document.body.appendChild(navigation);
+ */
 export default define('ak-navigation', {
   render(elem) {
     return (
       <div>
+        <style>{`
+          .${shadowStyles.locals.navigation} {
+            width: ${getNavigationWidth(elem)}px;
+            transform: translateX(${getNavigationXOffset(elem)}px);
+          }
+          
+          .${shadowStyles.locals.spacer} {
+            width: ${getSpacerWidth(elem)}px;
+          }
+
+          .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
+            transform: translateX(${getContainerPadding(elem.width)}px);
+          }
+      `}</style>
+        <style>{shadowStyles.toString()}</style>
         <ak-blanket
           onActivate={() => closeAllDrawers(elem)}
           clickable={isDrawerOpen(elem)}
@@ -75,22 +110,13 @@ export default define('ak-navigation', {
           })}
         />
         <div
+          className={classNames(shadowStyles.locals.spacer)}
+        />
+        <div
           className={classNames(shadowStyles.locals.navigation, {
-            [shadowStyles.locals.open]: elem.open,
             [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
           })}
         >
-          <style>{`
-            .${shadowStyles.locals.navigation} {
-              width: ${getNavigationWidth(elem)}px;
-              transform: translateX(${getNavigationXOffset(elem)}px);
-            }
-
-            .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
-              transform: translateX(${getContainerPadding(elem.width)}px);
-            }
-          `}</style>
-          <style>{shadowStyles.toString()}</style>
           <div className={shadowStyles.locals.global}>
             <div className={shadowStyles.locals.globalPrimary}>
               <a href={elem.productHref || false}>
@@ -142,16 +168,44 @@ export default define('ak-navigation', {
               <slot />
             </div>
           </div>
+          {elem.collapsible ? <ak-navigation-drag
+            startDragCallback={elem[resizerSymbol].start}
+            dragCallback={elem[resizerSymbol].resize}
+            endDragCallback={elem[resizerSymbol].end}
+          /> : null}
         </div>
       </div>
     );
   },
   props: {
-    /** TODO: make these private, see https://github.com/skatejs/skatejs/issues/687 **/
+    /**
+     * @description Whether the component should display animations.
+     * `shouldAnimate` is turned on after page load.
+     * @memberof Navigation
+     * @instance
+     * @type {boolean}
+     * @example @js navigation.shouldAnimate = true;
+     */
     shouldAnimate: prop.boolean(),
+    /**
+     * @description The current width of the navigation component, in pixels
+     * @memberof Navigation
+     * @instance
+     * @type {integer}
+     * @example @js navigation.width = 80;
+     * @example @html <ak-navigation width="80"/>;
+     */
     width: prop.number({
       default: (elem) => getCollapsedWidth(elem),
     }),
+    /**
+     * @description The handler for the sidebar toggling behaviour.
+     * The handler is bound on attach, and unbound on detach.
+     * @memberof Navigation
+     * @instance
+     * @type {function}
+     * @example @js navigation.toggleHandler = function() {};
+     */
     toggleHandler: {
       default: (elem) => function toggleHandler(event) {
         if (!elem.collapsible) {
@@ -162,7 +216,16 @@ export default define('ak-navigation', {
         }
       },
     },
-
+    /**
+     * @description Whether the sidebar is in the `open` state.
+     * Note that setting this to `false` will set both `navigation.createDrawerOpen` and
+     * `navigation.searchDrawerOpen` to `false`, and may recompute the `navigation.width`.
+     * @memberof Navigation
+     * @instance
+     * @type {boolean}
+     * @example @js navigation.open = false;
+     * @example @html <ak-navigation open="false"/>;
+     */
     open: prop.boolean({
       attribute: true,
       set(elem, data) {
@@ -176,30 +239,100 @@ export default define('ak-navigation', {
         recomputeWidth(elem);
       },
     }),
+    /**
+     * @description The name of the navigation container, displayed next to the container logo.
+     * @memberof Navigation
+     * @instance
+     * @type {string}
+     * @example @js navigation.containerName = 'Dashboard';
+     * @example @html <ak-navigation container-name="Dashboard"/>;
+     */
     containerName: prop.string({
       attribute: true,
     }),
+    /**
+     * @description The logo for the navigation container, displayed next to the container name.
+     * @memberof Navigation
+     * @instance
+     * @type {string}
+     * @example @js navigation.containerLogo = 'http://example.com/img.jpg';
+     * @example @html <ak-navigation container-logo="http://example.com/img.jpg"/>;
+     */
     containerLogo: prop.string({
       attribute: true,
     }),
+    /**
+     * @description The link that the container name and logo will reference.
+     * @memberof Navigation
+     * @instance
+     * @type {string}
+     * @example @js navigation.containerHref = 'http://example.com';
+     * @example @html <ak-navigation container-href="http://example.com"/>;
+     */
     containerHref: prop.string({
       attribute: true,
     }),
+    /**
+     * @description The name of the product glyph, to be placed in the global navigation.
+     * See the ak-icon#glyph docs for more details.
+     * @memberof Navigation
+     * @instance
+     * @type {string}
+     * @example @js navigation.productLogo = 'bitbucket';
+     * @example @html <ak-navigation product-logo="bitbucket"/>;
+     */
     productLogo: prop.string({
       attribute: true,
     }),
+    /**
+     * @description The link that the product logo will reference
+     * @memberof Navigation
+     * @instance
+     * @type {boolean}
+     * @example @js navigation.productHref = 'http://example.com';
+     * @example @html <ak-navigation product-href="http://example.com"/>;
+     */
     productHref: prop.string({
       attribute: true,
     }),
+    /**
+     * @description Whether the navigation's container should be hidden at all times.
+     * Note that this takes precedence over `navigation.open` – regardless of whether
+     * `navigation.open` is `true`, the container will be hidden.
+     * @memberof Navigation
+     * @instance
+     * @type {boolean}
+     * @example @js navigation.containerHidden = true;
+     * @example @html <ak-navigation container-hidden/>;
+     */
     containerHidden: prop.boolean({
       attribute: true,
       set(elem) {
         recomputeWidth(elem);
       },
     }),
+    /**
+     * @description Whether the navigation is collapsible by the user.
+     * If `navigation.collapsible === false`, it does not prevent direct
+     *  manipulation of `navigation.open`.
+     * @memberof Navigation
+     * @instance
+     * @type {string}
+     * @example @js navigation.collapsible = 'http://example.com';
+     * @example @html <ak-navigation collapsible/>;
+     */
     collapsible: prop.boolean({
       attribute: true,
     }),
+    /**
+     * @description Whether the search drawer is open.
+     * Note that setting this to `true` will set `navigation.createDrawerOpen` to `false`.
+     * @memberof Navigation
+     * @instance
+     * @type {string}
+     * @example @js navigation.searchDrawerOpen = true;
+     * @example @html <ak-navigation search-drawer-open/>;
+     */
     searchDrawerOpen: prop.boolean({
       set(elem, data) {
         if (data.newValue) {
@@ -207,6 +340,15 @@ export default define('ak-navigation', {
         }
       },
     }),
+    /**
+     * @description Whether the create drawer is open.
+     * Note that setting this to `true` will set `navigation.createDrawerOpen` to `false`.
+     * @memberof Navigation
+     * @instance
+     * @type {string}
+     * @example @js navigation.createDrawerOpen = true;
+     * @example @html <ak-navigation create-drawer-open/>;
+     */
     createDrawerOpen: prop.boolean({
       set(elem, data) {
         if (data.newValue) {
@@ -226,6 +368,7 @@ export default define('ak-navigation', {
     document.removeEventListener('keyup', elem.toggleHandler);
   },
   created(elem) {
+    elem[resizerSymbol] = resizer(elem);
     elem.addEventListener(createDrawerSelectedEvent, () => {
       elem.createDrawerOpen = !elem.createDrawerOpen;
     });
@@ -237,21 +380,7 @@ export default define('ak-navigation', {
       containerLinks.forEach((child) => { child.selected = false; });
       event.target.selected = true;
     });
-    elem.addEventListener('touchstart', (event) => {
-      elem.touchstart = event;
-    });
-    elem.addEventListener('touchend', (event) => {
-      const swipeType = getSwipeType(elem.touchstart, event);
-      if (swipeType === noSwipe) {
-        return;
-      }
-
-      if (swipeType === swipeLeft) {
-        elem.open = true;
-      } else if (swipeType === swipeRight) {
-        elem.open = false;
-      }
-    });
+    addTouchHandlers(elem);
   },
 });
 

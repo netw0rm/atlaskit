@@ -4,14 +4,13 @@ set -e
 MAX_RETRIES=2
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+CHALK="`npm bin`/chalk"
 
 # Run the Browserstack tests
 for STAGE in 1 2 3
 do
   echo
-  printf "\033[34m"
-  printf "Running browserstack test of stage $STAGE"
-  printf "\033[0m"
+  $CHALK --no-stdin -t "{blue Running browserstack test of stage $STAGE}"
   echo
 
   GITHEAD_SHORT="$GITHEAD_SHORT" \

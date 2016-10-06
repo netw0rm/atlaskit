@@ -1,26 +1,45 @@
 import 'style!./host.less';
-import { prop, vdom, define } from 'skatejs';
+import { prop, props, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
-import Navigation, { events as navigationEvents } from 'ak-navigation';
+import { events as navigationEvents } from 'ak-navigation';
 const {
-  widthChanged: widthChangedEvent,
+  resizeStart: resizeStartEvent,
+  resizeEnd: resizeEndEvent,
 } = navigationEvents;
 
-const navigationPadding = 20;
+const shouldAnimateThreshold = 100; // ms
 
-function handleWidthChanged(e, elem) {
-  if (e.target instanceof Navigation) {
-    elem.navigationWidth = e.detail.newWidth;
-  }
+function handleResizeStart(e, elem) {
+  props(elem, {
+    __isResizing: true,
+  });
 }
 
+function handleResizeEnd(e, elem) {
+  props(elem, {
+    __isResizing: false,
+  });
+}
+
+const navigationSlot = Symbol('navigationSlot');
+
+/**
+ * @description Create instances of the component programmatically, or using markup.
+ * @class Page
+ * @example @html <ak-page/>
+ * @example @js import Page from 'ak-page';
+ *
+ * const page = new Page();
+ * document.body.appendChild(page);
+ */
 export default define('ak-page', {
   render(elem) {
     return (
       <div
-        className={classNames({
-          [shadowStyles.locals.navigationOpen]: elem.navigationOpen,
+        className={classNames(shadowStyles.locals.page, {
+          // eslint-disable-next-line no-underscore-dangle
+          [shadowStyles.locals.resizing]: elem.__isResizing,
         })}
       >
         {/* This is required for elements in the shadow root to be styled.
@@ -28,29 +47,48 @@ export default define('ak-page', {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
-        <style>{`
-            .${shadowStyles.locals.main} {
-              margin-left: ${elem.navigationWidth + navigationPadding}px;
-            }
-          `}</style>
         <div className={shadowStyles.locals.navigation}>
-          <slot name="navigation" />
+          <slot
+            ref={(el) => { elem[navigationSlot] = el; }}
+            className={shadowStyles.locals.navigationSlot}
+            name="navigation"
+          />
         </div>
-        <div className={shadowStyles.locals.main}>
+        <div
+          className={classNames(shadowStyles.locals.main, {
+            [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
+          })}
+        >
           <div className={shadowStyles.locals.mainFixed}>
-            <slot />
+            <slot className={shadowStyles.locals.mainSlot} />
           </div>
         </div>
       </div>
     );
   },
   props: {
-    navigationWidth: prop.number({
-      attribute: true,
-      default: 0,
-    }),
+    __isResizing: prop.boolean(),
+    /**
+     * @description Whether the component should display animations.
+     * `shouldAnimate` is turned on after page load.
+     * @memberof Page
+     * @instance
+     * @type {boolean}
+     * @example @js page.shouldAnimate = true;
+     */
+    shouldAnimate: prop.boolean(),
   },
   created(elem) {
-    elem.addEventListener(widthChangedEvent, (e) => handleWidthChanged(e, elem));
+    elem.addEventListener(resizeStartEvent, (e) => handleResizeStart(e, elem));
+    elem.addEventListener(resizeEndEvent, (e) => handleResizeEnd(e, elem));
+  },
+  attached(elem) {
+    setTimeout(() => {
+      elem.shouldAnimate = true;
+    }, shouldAnimateThreshold);
+    const navigation = elem[navigationSlot].assignedNodes()[0];
+    if (!navigation) {
+      return;
+    }
   },
 });

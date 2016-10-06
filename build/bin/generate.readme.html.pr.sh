@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-LERNA_LOC="`npm bin`/lerna"
+CHALK="`npm bin`/chalk"
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CDN_PREFIX="pr/docs"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
@@ -12,7 +12,7 @@ BUILD_KEY="DOCS-$GITHEAD_SHORT"
 BUILD_NAME="Docs"
 BUILD_DESCRIPTION="The docs for this pull request"
 
-echo "Post build in progress status"
+$CHALK --no-stdin -t "{blue Post build in progress status}"
 bbuild \
 --commit "$BITBUCKET_COMMIT" \
 --repo "$BITBUCKET_REPO_SLUG" \
@@ -25,52 +25,37 @@ bbuild \
 --url "$BUILD_URL" \
 --state "INPROGRESS"
 
-echo "Installing marky-markdown"
-npm install -g marky-markdown@8.1.0
-
-echo "Generating docs HTML output from README.md files..."
-
+$CHALK --no-stdin -t "{blue Generating docs HTML output from README.md files...}"
 rm -rf ../atlaskit-docs
 OUTDIR="../atlaskit-docs/resources/$BITBUCKET_COMMIT";
 mkdir -p $OUTDIR
 export OUTDIR="$OUTDIR"
-$LERNA_LOC exec -- ../../build/bin/generate.readme.html.sh
+lerna exec -- ../../build/bin/generate.readme.html.sh
 
-echo "Generating docs index..."
-
-INDEX_FILE="index.html"
-echo "<html><ul>" > $INDEX_FILE
+$CHALK --no-stdin -t "{blue Generating docs index...}"
 pushd $OUTDIR > /dev/null
-find . -type f \( ! -name ".html" \) -exec echo "<li><a href=\"{}\">{}</a></li>" ";" > $INDEX_FILE
-echo "</ul></html>" >> $INDEX_FILE
+indexifier --html . > index.html
 popd > /dev/null
 
 ZIP_FILE="../ak-docs-cdn.zip"
-echo "Packaging docs"
+$CHALK --no-stdin -t "{blue Packaging docs}"
 rm -f $ZIP_FILE
 zip -0 -r -T $ZIP_FILE ../atlaskit-docs/resources
 
-echo "Uploading docs to CDN..."
-java \
--jar \
--Dlog4j.configurationFile=build/bin/logger.xml \
-../prebake-distributor-runner.jar \
---step=resources \
---s3-bucket=$S3_BUCKET \
+$CHALK --no-stdin -t "{blue Uploading docs to CDN...}"
+prebake-distributor-runner \
+--s3-bucket="$S3_BUCKET" \
 --s3-key-prefix="$S3_KEY_PREFIX/$CDN_PREFIX" \
 --s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/$CDN_PREFIX" \
---compress=css,js,svg,ttf,html,json,ico,eot,otf \
---pre-bake-bundle=$ZIP_FILE
+"$ZIP_FILE"
 
 # Invalidate CDN caches
-echo "CDN invalidation (docs) starting now (this may take some time)"
+$CHALK --no-stdin -t "{blue CDN invalidation (docs) starting now (this may take some time)}"
 AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
 AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
 cf-invalidate -- $CLOUDFRONT_DISTRIBUTION "/$AK_PATH_SHA/*"
-echo "CDN invalidation (docs) finished."
 
-echo "Post docs URL to build"
-
+$CHALK --no-stdin -t "{blue Post docs URL to build}"
 bbuild \
 --commit "$BITBUCKET_COMMIT" \
 --repo "$BITBUCKET_REPO_SLUG" \

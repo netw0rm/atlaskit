@@ -409,14 +409,23 @@ declare module 'prosemirror/dist/markdown' {
 
 declare module 'prosemirror/dist/markdown/to_markdown' {
     export class MarkdownSerializer {
+        protected nodes: any;
+        protected marks: any;
         constructor(nodes: any, marks: any);
         serialize(content: any, options?: Object): any;
     }
     export const defaultMarkdownSerializer: MarkdownSerializer;
     export class MarkdownSerializerState {
-        out: string;
-        closed: boolean;
-        constructor(nodes: any, marks: any, options: any);
+      out: string;
+      closed: boolean;
+      marks: {
+        [markTypeName: string] : {
+          open: String | Function,
+          close: String | Function,
+          mixable?: boolean
+        }
+      };
+      constructor(nodes: any, marks: any, options: any);
         flushClose(size: any): void;
         wrapBlock(delim: any, firstDelim: any, node: any, f: any): void;
         atBlank(): boolean;
@@ -744,7 +753,8 @@ declare module 'prosemirror/dist/model/schema' {
     import { Node, TextNode } from 'prosemirror/dist/model/node';
     import { OrderedMap } from 'prosemirror/dist/util/orderedmap';
     export class NodeType {
-        constructor(name: any, schema: any);
+        constructor(name: string, schema: Schema);
+        name: string;
         isBlock: boolean;
         isTextblock: boolean;
         isInline: boolean;
@@ -783,6 +793,7 @@ declare module 'prosemirror/dist/model/schema' {
     export class MarkType {
         constructor(name: any, rank: any, schema: any);
         name: string;
+        get attrs(): { [name: string]: Attribute };
         schema: Schema;
         inclusiveRight: boolean;
         create(attrs: any): any;
@@ -1175,7 +1186,7 @@ declare module 'prosemirror/dist/util/orderedmap' {
         addToStart(key: any, value: any): OrderedMap;
         addToEnd(key: any, value: any): OrderedMap;
         addBefore(place: any, key: any, value: any): OrderedMap;
-        forEach(f: any): void;
+        forEach(f: (key: any, value: any) => void): void;
         prepend(map: any): OrderedMap;
         append(map: any): OrderedMap;
         subtract(map: any): this;

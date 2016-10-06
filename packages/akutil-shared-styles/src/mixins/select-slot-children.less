@@ -1,0 +1,33 @@
+// Match direct children of the slot with
+// name @slotName, and class name @className
+.select-slot-children(@slotName, @className, @rules) {
+  @escapedClassName: e(@className);
+  // V0 TODO: get rid of v0 support once browserstack chrome stable is v53
+  ::content > [slot=~"@{slotName}"] {
+    @rules();
+  }
+
+  // V1
+  ::slotted([slot=~"@{slotName}"]) > {
+    @rules();
+  }
+
+  // Polyfilled
+  .@{escapedClassName} > * {
+    @rules();
+  }
+}
+
+// Match direct children of the default slot, with class name @className
+.select-slot-children(@className, @rules) {
+  @escapedClassName: e(@className);
+  // V1
+  ::slotted(:not([slot])) {
+    @rules();
+  }
+
+  // Polyfilled
+  .@{escapedClassName} > * {
+    @rules();
+  }
+}

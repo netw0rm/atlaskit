@@ -1,0 +1,20 @@
+@import '../../src/mixins/select-slot-children.less';
+
+.red-slot-class {}
+.blue-slot-class {}
+.default-slot-class {}
+
+@red: {
+  background: red;
+};
+@green: {
+  background: green;
+};
+@blue: {
+  background: blue;
+  color: white;
+};
+
+.select-slot-children('red', 'red-slot-class', @red);
+.select-slot-children('blue', 'blue-slot-class', @blue);
+.select-slot-children('default-slot-class', @green);

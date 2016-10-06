@@ -65,12 +65,12 @@ const GlobalHelp = () => <ak-dropdown position="right bottom" slot="global-help"
   <ak-dropdown-trigger slot="trigger">
     <ak-icon glyph="help" />
   </ak-dropdown-trigger>
-  <ak-dropdown-group title="Bitbucket">
+  <ak-dropdown-group heading="Bitbucket">
     <ak-dropdown-item>View profile</ak-dropdown-item>
     <ak-dropdown-item>Bitbucket settings</ak-dropdown-item>
     <ak-dropdown-item>Integration</ak-dropdown-item>
   </ak-dropdown-group>
-  <ak-dropdown-group title="Missile silo">
+  <ak-dropdown-group heading="Missile silo">
     <ak-dropdown-item>Launch missiles</ak-dropdown-item>
   </ak-dropdown-group>
 </ak-dropdown>;
@@ -139,6 +139,20 @@ storiesOf(name, module)
       <div>
         <Lorem count="30" />
       </div>
+    </AkPage>
+  ))
+  .add('with text-only links', () => (
+    <AkPage navigationOpen>
+      <AkNavigation
+        slot="navigation"
+        open
+        {...sharedProps}
+      >
+        <ak-navigation-link selected>I am selected</ak-navigation-link>
+        <ak-navigation-link>But I am not</ak-navigation-link>
+        <ak-navigation-link>I will overflow because of all my </ak-navigation-link>
+
+      </AkNavigation>
     </AkPage>
   ))
   .add('with a long container name', () => (

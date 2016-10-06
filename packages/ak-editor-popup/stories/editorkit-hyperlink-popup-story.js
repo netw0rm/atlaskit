@@ -66,11 +66,10 @@ storiesOf(name, module)
 
       render() {
         return (
-          <div>
+          <div onClick={this.handleClick}>
             <Toolbar>
               <EditorButton
                 className="link-button"
-                onClick={this.handleClick}
                 style={{ position: 'absolute', left: 200 }}
               ><Icon glyph="link" /></EditorButton>
             </Toolbar>

@@ -1,13 +1,12 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Item, events as dropdownEvents } from '../src';
+import { events as dropdownEvents } from '../src';
+import Item from '../src/index.item';
 import keyCode from 'keycode';
 import { props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
-
-const defaultHeight = 30;
-const defaultGap = 10;
+import { itemHeight, itemLeftToDefaultGap, itemLeftGap } from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -112,33 +111,33 @@ describe('ak-dropdown-item', () => {
       });
     });
 
-    it(`height should be equal ${defaultHeight}`, () => {
-      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(defaultHeight);
+    it(`height should be equal ${itemHeight}`, () => {
+      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(itemHeight);
     });
 
-    it(`height should be equal ${defaultHeight} even if the content is very long`, () => {
+    it(`height should be equal ${itemHeight} even if the content is very long`, () => {
       component.innerHTML = `test text test texttest texttest texttest texttest
        texttest texttest texttest texttest texttest texttest text`;
 
-      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(defaultHeight);
+      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(itemHeight);
     });
 
-    it(`gap between default slot and left edge of the component should be ${defaultGap}`, () => {
+    it(`gap between default slot and left edge of the component should be ${itemLeftGap}`, () => {
       const rectComponent = getShadowRoot(component).firstChild.getBoundingClientRect();
       const rectDiv = component.childNodes[0].getBoundingClientRect();
       const gapLeft = rectDiv.left - rectComponent.left;
 
-      expect(Math.round(gapLeft)).to.equal(defaultGap);
+      expect(Math.round(gapLeft)).to.equal(itemLeftGap);
     });
 
-    it(`gap between default slot and right edge should be at least ${defaultGap}`, () => {
+    it(`gap between default slot and right edge should be at least ${itemLeftGap}`, () => {
       component.innerHTML = `<div>test text test texttest texttest texttest texttest
       texttest texttest texttest texttest texttest texttest text</div>`;
       const rectComponent = getShadowRoot(component).firstChild.getBoundingClientRect();
       const rectDiv = component.childNodes[0].getBoundingClientRect();
       const gapRight = rectComponent.left + rectComponent.width - rectDiv.left - rectDiv.width;
 
-      expect(Math.round(gapRight)).to.equal(defaultGap);
+      expect(Math.round(gapRight)).to.equal(itemLeftGap);
     });
   });
 
@@ -147,7 +146,7 @@ describe('ak-dropdown-item', () => {
     let componentDomElem;
 
     beforeEach(() => {
-      const html = '<div slot="left" style="height:30px;width:30px;"></div><div>some text</div>';
+      const html = '<div slot="left" style="height:20px;width:20px;"></div><div>some text</div>';
       component = `<ak-dropdown-item>${html}</ak-dropdown-item>`;
       itemContainer.innerHTML = component;
 
@@ -160,66 +159,24 @@ describe('ak-dropdown-item', () => {
       });
     });
 
-    it(`height should be equal ${defaultHeight} even if the left slot is not empty`, () => {
-      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(defaultHeight);
+    it(`height should be equal ${itemHeight} even if the left slot is not empty`, () => {
+      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(itemHeight);
     });
 
-    it(`gap between left slot and left edge of the component should be ${defaultGap}`, () => {
+    it(`gap between left slot and left edge of the component should be ${itemLeftGap}`, () => {
       const rectComponent = getShadowRoot(component).firstChild.getBoundingClientRect();
       const rectDiv = component.firstChild.getBoundingClientRect();
       const gap = rectDiv.left - rectComponent.left;
 
-      expect(Math.round(gap)).to.equal(defaultGap);
+      expect(Math.round(gap)).to.equal(itemLeftGap);
     });
 
-    it(`gap between left slot and default slot should be ${defaultGap}`, () => {
+    it(`gap between left slot and default slot should be ${itemLeftToDefaultGap}`, () => {
       const rectSlot = component.childNodes[0].getBoundingClientRect();
       const rectDefault = component.childNodes[1].getBoundingClientRect();
       const gap = rectDefault.left - rectSlot.left - rectSlot.width;
 
-      expect(Math.round(gap)).to.equal(defaultGap);
-    });
-  });
-
-
-  describe('sizing for an item with checkboxes', () => {
-    let component;
-    let componentDomElem;
-    let iconDomElem;
-    let defaultDomElem;
-
-    beforeEach(() => {
-      component = '<ak-dropdown-item checkbox>some text</ak-dropdown-item>';
-      itemContainer.innerHTML = component;
-
-      // wait until the component is rendered
-      return waitUntil(() =>
-        itemContainer.firstChild.getAttribute('defined') !== null
-      ).then(() => {
-        component = itemContainer.firstChild;
-        componentDomElem = getShadowRoot(component).firstChild;
-        iconDomElem = getShadowRoot(component).querySelector('ak-icon');
-        defaultDomElem = getShadowRoot(component).querySelector('slot,content').parentNode;
-      });
-    });
-
-    it(`height should be equal ${defaultHeight}`, () => {
-      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(defaultHeight);
-    });
-
-    it(`gap between checkbox and left edge of the component should be ${defaultGap}`, () => {
-      const rectComponent = componentDomElem.getBoundingClientRect();
-      const rectIcon = iconDomElem.getBoundingClientRect();
-      const gap = rectIcon.left - rectComponent.left;
-
-      expect(Math.round(gap)).to.equal(defaultGap);
-    });
-
-    it(`gap between checkbox and default slot should be ${defaultGap}`, () => {
-      const rectDefault = defaultDomElem.getBoundingClientRect();
-      const rectIcon = iconDomElem.getBoundingClientRect();
-      const gap = rectDefault.left - rectIcon.left - rectIcon.width;
-      expect(Math.round(gap)).to.equal(defaultGap);
+      expect(Math.round(gap)).to.equal(itemLeftToDefaultGap);
     });
   });
 
@@ -277,15 +234,6 @@ describe('ak-dropdown-item', () => {
       getShadowRoot(component).firstChild.dispatchEvent(event);
 
       expect(calledSpy.called).to.equal(false);
-    });
-
-    it('selected event SHOULD be emitted on a selected checkbox element', () => {
-      event.keyCode = keyCode('enter');
-      itemContainer.addEventListener(eventsMap.enter, calledSpy);
-      props(component, { checkbox: true });
-      props(component, { selected: true });
-      getShadowRoot(component).firstChild.dispatchEvent(event);
-      expect(calledSpy.called).to.equal(true);
     });
   });
 });

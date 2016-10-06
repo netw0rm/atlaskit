@@ -1,17 +1,17 @@
 # Dropdown
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+Dropdown creates a dropdown menu, with optional sections, headings, icons, checkbox items, radio group items and disabled items.
 
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-dropdown/docs/dropdown.gif)
+![Example dropdown](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-dropdown/docs/dropdown.gif)
 
 
 ## Try it out
 
 Interact with a [live demo of the ak-dropdown component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-dropdown/@VERSION@/).
 
-## Setting up and install
+## Installation
 
-```
+```sh
 npm install ak-dropdown
 ```
 
@@ -25,7 +25,7 @@ Import the component in your JS resource:
  
 #### bundle.js
 
-```
+```javascript
 import Dropdown from 'ak-dropdown';
 ```
 
@@ -33,7 +33,7 @@ Now you can use the defined tag in your HTML markup:
 
 #### index.html
 
-```
+```html
 <html>
 <head>
   <script src="bundle.js"></script>
@@ -44,7 +44,9 @@ Now you can use the defined tag in your HTML markup:
 </body>
 ```
 
-For the dropdown to work it has to include trigger and list of elements. Simple example of a dropdown:
+The dropdown must include a trigger and a list of elements.
+
+Example:
 
 ```
 <ak-dropdown>
@@ -55,9 +57,10 @@ For the dropdown to work it has to include trigger and list of elements. Simple 
 </ak-dropdown>
 ```
 
-Trigger by default is not styled. Any html element could be used as the trigger (button, tab item, etc):
+The trigger is not styled by default. Any html element can be used as the trigger such as a button or a tab item.
+Example:
 
-```
+```html
 <ak-dropdown>
   <ak-dropdown-trigger slot="trigger"><ak-trigger-button>Button as the trigger</ak-trigger-button></ak-dropdown-trigger>
   <ak-dropdown-item>first item</ak-dropdown-item>

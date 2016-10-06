@@ -1,5 +1,4 @@
 # AtlasKit
-[![master build](https://bitbucket-badges.atlassian.io/badge/atlassian/atlaskit.svg)](https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
@@ -44,7 +43,9 @@ Once you made some changes, stage them and then commit them using `npm run commi
 # How do I...
 
 ## Generate a new component skeleton
-```npm run create my-component-name```
+```
+npm run create my-component-name
+```
 
 Will create a new templated component under `packages/my-component-name` with everything you need to get started.
 
@@ -220,7 +221,7 @@ Releasing components is completely automated. The process of releasing will begi
 * Linting is run
 * Tests will be run in Browserstack
 * Component dist is built
-* Semantic Relase will bump the versions for any component that has changed
+* [semantic-release](https://github.com/atlassian/lerna-semantic-release) will bump the versions for any component that has changed
 * Change log is generated automatically from commit messages
 * Component will be published to npm
 
@@ -237,8 +238,6 @@ AtlasKit uses Bitbucket Pipelines for it's continuous integration. The build scr
 ### AtlasKit Docker image
 Bitbucket pipelines works using a Docker image. This contains the initial setup required to run the build. If you need to make changes to `Dockerfile`, you will need to push them to Dockerhub:
 
-* Build the new Docker image: `docker build -t atlaskit .`
-* Create the new Docker tag: `docker tag <IMAGE_ID> <YOUR-USER>/atlaskit:latest`
-* Push new image to Dockerhub: `docker push <YOUR-USER>/atlaskit`
+* Build the new Docker image: `npm run build/docker/image`
 
 **Note:** Make sure you also update the `bitbucket-pipelines.yml` file with the name of your new image!

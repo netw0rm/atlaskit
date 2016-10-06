@@ -61,6 +61,30 @@ describe('Bitbucket markdown serializer: ', () => {
         pre(),
       ]))).to.eq('    ');
     });
+
+    it('via indentation with backticks is not escaped', () => {
+      expect(markdownSerializer.serialize(doc([
+        pre(text('`foo`\n````bar\nbaz\n`````')),
+      ]))).to.eq('    `foo`\n    ````bar\n    baz\n    `````');
+    });
+
+    it('via backticks that includes backticks is properly fenced', () => {
+      expect(markdownSerializer.serialize(doc([
+        pre(text('```js\nfoo\n```'), 'css')
+      ]))).to.eq('````css\n```js\nfoo\n```\n````', 'Balanced fencing');
+
+      expect(markdownSerializer.serialize(doc([
+        pre(text('````js\nfoo\n```'), 'css')
+      ]))).to.eq('`````css\n````js\nfoo\n```\n`````', 'Unbalanced fencing in the code block' );
+
+      expect(markdownSerializer.serialize(doc([
+        pre(text('````'), 'css')
+      ]))).to.eq('`````css\n````\n`````', 'Unmatched backtick fence');
+
+      expect(markdownSerializer.serialize(doc([
+        pre(text('````js'), 'css')
+      ]))).to.eq('`````css\n````js\n`````', 'Unmatched backtick fence with language definition');
+    });
   });
 
   it('should serialize headings (level 1 - 6)', () => {
@@ -451,6 +475,24 @@ describe('Bitbucket markdown serializer: ', () => {
         )))).to.eq('foo `bar baz` foo');
       });
 
+      describe('inline code', () => {
+        it('containing backticks should be fenced properly', () => {
+          expect(markdownSerializer.serialize(doc(p(
+            text('foo '),
+            code(text('bar ` ` baz')),
+            text(' foo'),
+          )))).to.eq('foo ``bar ` ` baz`` foo');
+        });
+
+        it('containing backticks on the edges of a fence should be fenced properly', () => {
+          expect(markdownSerializer.serialize(doc(p(
+            text('foo '),
+            code(text('`bar`  ``baz``')),
+            text(' foo'),
+          )))).to.eq('foo ``` `bar`  ``baz`` ``` foo');
+        });
+      });
+
       describe('links', () => {
         it('with no text to be ignored', () => {
           let link = a({ href: 'http://example.com' });
@@ -638,5 +680,4 @@ describe('Bitbucket markdown serializer: ', () => {
         });
       });
     });
-
 });

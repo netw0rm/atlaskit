@@ -1,13 +1,12 @@
 {
   "name": "ak-editor-shared-styles",
-  "version": "0.0.1",
-  "description": "Shared styles for fabric editor components",
+  "version": "1.0.5",
+  "description": "Shared styles for Atlassian Editor components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "gen-js": "node ./bin/generate-vars-export.js > src/index.js",
-    "prepublish": "npm run gen-js && cd ../.. && npm run prepublish/single ak-editor-shared-styles"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-shared-styles"
   },
   "files": [
     "dist",
@@ -23,10 +22,13 @@
     "camelcase": "^3.0.0",
     "classnames": "^2.2.5",
     "glob": "^7.0.5",
-    "less-vars-to-js": "^1.1.1"
+    "akutil-shared-styles": "^34.0.1",
+    "less-vars-loader": "^1.0.2"
   },
   "dependencies": {
-    "babel-runtime": "^6.11.6",
-    "akutil-shared-styles": "^33.11.1"
+    "babel-runtime": "^6.11.6"
+  },
+  "peerDependencies": {
+    "akutil-shared-styles": "*"
   }
 }

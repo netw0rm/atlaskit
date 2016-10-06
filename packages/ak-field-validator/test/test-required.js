@@ -30,9 +30,9 @@ describe('ak-field-validator-maxlength', () => {
 
     it('should correctly validate values', () => {
       expect(component.validate('')).to.equal(false);
-      expect(component.valid).to.equal(false);
+      expect(component.invalid).to.equal(true);
       expect(component.validate('hello world')).to.equal(true);
-      expect(component.valid).to.equal(true);
+      expect(component.invalid).to.equal(false);
     });
   });
 });

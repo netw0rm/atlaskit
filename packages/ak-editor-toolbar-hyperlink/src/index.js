@@ -86,12 +86,18 @@ export default define('ak-editor-toolbar-hyperlink', {
       this.open = true;
       this.justOpenedHyperlink = true;
     },
+    save() {
+      const textInput = this.shadowRoot.querySelector('.text-input');
+      this.open = false;
+      emit(this, 'save', { detail: { value: textInput.value } });
+      textInput.value = '';
+    },
     handleClickOutside(e) {
       // todo: we will use a common helper function when it's ready.
       // https://ecosystem.atlassian.net/browse/AK-513
       if (this.open && e.target !== this && !isDescendantOf(e.target, this) &&
         !(e.path && e.path.indexOf(this) > -1)) {
-        this.open = false;
+        this.save();
       }
     },
     toggleHyperlink() {
@@ -107,10 +113,9 @@ export default define('ak-editor-toolbar-hyperlink', {
     },
     onKeyup(event) {
       if (event.keyCode === 13) {
-        const textInput = this.shadowRoot.querySelector('.text-input');
+        this.save();
+      } else if (event.keyCode === 27) {
         this.open = false;
-        emit(this, 'save', { detail: { value: textInput.value } });
-        textInput.value = '';
       }
     },
   },

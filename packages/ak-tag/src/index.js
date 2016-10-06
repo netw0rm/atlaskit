@@ -15,8 +15,8 @@ const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = event
 import { name } from '../package.json';
 import logger from './internal/logger';
 
-const buttonHoverSymbol = Symbol();
-const isRemovingSymbol = Symbol();
+const buttonHoverSymbol = Symbol('hovering');
+const isRemovingSymbol = Symbol('removing');
 
 
 /**

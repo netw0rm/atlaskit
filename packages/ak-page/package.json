@@ -18,13 +18,13 @@
     "skatejs": "^1.5.2"
   },
   "peerDependencies": {
-    "ak-navigation": "^10.0.0"
+    "ak-navigation": ">=10"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-icon": "^4.1.0",
-    "ak-navigation": "^10.0.0",
+    "ak-navigation": ">=10",
     "akutil-common-test": "^3.0.0",
     "akutil-react": "^1.0.0"
   },

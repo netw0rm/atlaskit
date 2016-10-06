@@ -31,27 +31,27 @@ describe('ak-field-validator-minlength', () => {
     it('should correctly validate values', () => {
       component.minlength = 1;
       expect(component.validate('')).to.equal(false);
-      expect(component.valid).to.equal(false);
+      expect(component.invalid).to.equal(true);
       expect(component.validate('h')).to.equal(true);
-      expect(component.valid).to.equal(true);
+      expect(component.invalid).to.equal(false);
       expect(component.validate('he')).to.equal(true);
-      expect(component.valid).to.equal(true);
+      expect(component.invalid).to.equal(false);
 
       component.minlength = 2;
       expect(component.validate('h')).to.equal(false);
-      expect(component.valid).to.equal(false);
+      expect(component.invalid).to.equal(true);
       expect(component.validate('he')).to.equal(true);
-      expect(component.valid).to.equal(true);
+      expect(component.invalid).to.equal(false);
       expect(component.validate('hel')).to.equal(true);
-      expect(component.valid).to.equal(true);
+      expect(component.invalid).to.equal(false);
 
       component.minlength = 10;
       expect(component.validate('hello wor')).to.equal(false);
-      expect(component.valid).to.equal(false);
+      expect(component.invalid).to.equal(true);
       expect(component.validate('hello worl')).to.equal(true);
-      expect(component.valid).to.equal(true);
+      expect(component.invalid).to.equal(false);
       expect(component.validate('hello world')).to.equal(true);
-      expect(component.valid).to.equal(true);
+      expect(component.invalid).to.equal(false);
     });
   });
 });

@@ -1,4 +1,17 @@
-.ak-field-validator,
-ak-field-validator {
+.ak-field-validator-minlength,
+.ak-field-validator-maxlength,
+.ak-field-validator-required,
+ak-field-validator-minlength,
+ak-field-validator-maxlength,
+ak-field-validator-required {
+  display: inline-block;
+}
+
+ak-field-validator-minlength:not([defined]),
+ak-field-validator-minlength:not([valid]),
+ak-field-validator-maxlength:not([defined]),
+ak-field-validator-maxlength:not([valid]),
+ak-field-validator-required:not([defined]),
+ak-field-validator-required:not([valid]) {
   display: none;
 }

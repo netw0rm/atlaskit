@@ -14,20 +14,20 @@ const ReactValidatorRequired = reactify(ValidatorRequired);
 storiesOf(name, module)
   .add('pre-defined validators with default content', () => (
     <div>
-      <div><ReactValidatorMinlength minlength="1" /></div>
-      <div><ReactValidatorMaxlength maxlength="10" /></div>
-      <div><ReactValidatorRequired /></div>
+      <div><ReactValidatorMinlength minlength="1" valid /></div>
+      <div><ReactValidatorMaxlength maxlength="10" valid /></div>
+      <div><ReactValidatorRequired valid /></div>
     </div>
   ))
   .add('pre-defined validators with custom mesages', () => (
     <div>
-      <div><ReactValidatorMinlength minlength="10">
+      <div><ReactValidatorMinlength minlength="10" valid>
         Custom message for minlength validator
       </ReactValidatorMinlength></div>
-      <div><ReactValidatorMaxlength maxlength="10">
+      <div><ReactValidatorMaxlength maxlength="10" valid>
         Custom message for maxlength validator
       </ReactValidatorMaxlength></div>
-      <div><ReactValidatorRequired>
+      <div><ReactValidatorRequired valid>
         Custom message for required validator
       </ReactValidatorRequired></div>
     </div>

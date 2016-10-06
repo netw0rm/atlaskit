@@ -31,18 +31,27 @@ describe('ak-field-validator-maxlength', () => {
     it('should correctly validate values', () => {
       component.maxlength = 1;
       expect(component.validate('')).to.equal(true);
+      expect(component.valid).to.equal(true);
       expect(component.validate('h')).to.equal(true);
+      expect(component.valid).to.equal(true);
       expect(component.validate('he')).to.equal(false);
+      expect(component.valid).to.equal(false);
 
       component.maxlength = 2;
       expect(component.validate('h')).to.equal(true);
+      expect(component.valid).to.equal(true);
       expect(component.validate('he')).to.equal(true);
+      expect(component.valid).to.equal(true);
       expect(component.validate('hel')).to.equal(false);
+      expect(component.valid).to.equal(false);
 
       component.maxlength = 10;
       expect(component.validate('hello wor')).to.equal(true);
+      expect(component.valid).to.equal(true);
       expect(component.validate('hello worl')).to.equal(true);
+      expect(component.valid).to.equal(true);
       expect(component.validate('hello world')).to.equal(false);
+      expect(component.valid).to.equal(false);
     });
   });
 });

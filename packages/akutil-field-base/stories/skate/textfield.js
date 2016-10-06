@@ -1,19 +1,19 @@
 import { vdom, define, prop } from 'skatejs';
-import FieldBaseEditable from '../../src/FieldBaseEditable';
+import FieldBase from '../../src/';
 
-/* This is an example of how to extend FieldBaseEditable. We are creating the simple text field  */
+/* This is an example of how to extend FieldBase. We are creating the simple text field  */
 
 export default define('ak-textfield', {
   render(elem) {
     return (
-      <FieldBaseEditable label={elem.label}>
+      <FieldBase label={elem.label}>
         <div is="" slot="viewmode">
           <b>{elem.value}</b>
         </div>
         <div is="" slot="editmode">
           <input type="text" defaultValue={elem.value} />
         </div>
-      </FieldBaseEditable>
+      </FieldBase>
     );
   },
   props: {
@@ -25,6 +25,7 @@ export default define('ak-textfield', {
      */
     label: prop.string({ attribute: true }),
     editing: prop.boolean({ attribute: true }),
+    editable: prop.boolean({ attribute: true }),
     value: prop.string({ attribute: true }),
   },
 });

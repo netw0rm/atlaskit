@@ -1,43 +1,20 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import reactify from 'akutil-react';
-import { FieldBaseWC, FieldBaseEditableWC } from '../src';
+import FieldBaseWC from '../src';
 import { name } from '../package.json';
 import TextfieldWC from './skate/textfield';
 
 const FieldBase = reactify(FieldBaseWC);
-const FieldBaseEditable = reactify(FieldBaseEditableWC);
 const Textfield = reactify(TextfieldWC);
 
 
 storiesOf(name, module)
   .add('a simple ak-field-base', () => (
     <FieldBase label="Label for FieldBase">
-      <b>Some slotted content in an ak-field-base!</b>
+      <div is slot="editmode">This content is in the Editing slot!</div>
+      <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
     </FieldBase>
-  ))
-  .add('a simple ak-field-base-editable', () => (
-    <div>
-      <FieldBaseEditable label="Label for FieldBase (not editing by default)">
-        <div is slot="viewmode">
-          <b>Some slotted content in an ak-field-base-editable!</b>
-        </div>
-        <div is slot="editmode">
-          <input type="text" defaultValue="sdfsd" />
-        </div>
-      </FieldBaseEditable>
-
-      <br /><br />
-
-      <FieldBaseEditable label="Label for second FieldBase (editing by default)" editing>
-        <div is slot="viewmode">
-          <b>Some slotted content in an ak-field-base-editable!</b>
-        </div>
-        <div is slot="editmode">
-          <input type="text" defaultValue="sdfsd" />
-        </div>
-      </FieldBaseEditable>
-    </div>
   ))
   .add('a simple ak-textfield', () => (
     <div>
@@ -45,4 +22,22 @@ storiesOf(name, module)
       <br /><br />
       <Textfield label="This is a label" value="This is my value" editing />
     </div>
-  ));
+  ))
+  .add('a simple form with text fields', () => {
+    const formStyle = {
+      padding: '20px',
+      backgroundColor: 'white',
+      width: '300px',
+    };
+
+    return (
+      <div>
+        <form action="" style={formStyle}>
+          <h2>My Form</h2>
+          <Textfield label="This is a label" value="This is my value" editing />
+          <Textfield label="This is a label" value="This is my value" editing />
+          <Textfield label="This is a label" value="This is my value" editing />
+        </form>
+      </div>
+    );
+  });

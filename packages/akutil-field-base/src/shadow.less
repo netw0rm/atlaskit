@@ -1,0 +1,69 @@
+@import './shared-variables.less';
+
+//Base grid
+@grid: 4;
+
+// some base variables
+@base-horizontal-padding: @grid * 2; // 8px
+@base-height: @grid * 8; // 32px
+@base-inner-height: @grid * 5; // 20px
+
+// Label margins
+@label-top-spacing: unit(@grid * 5, px);
+@label-bottom-spacing: unit(@grid * 3, px);
+
+// Label sizing
+@label-inner-height: @grid * 4; // effectively 16px
+@label-font-size: 12;
+@label-line-height: @label-inner-height / @label-font-size;
+@label-required-padding: 7px;
+
+// viewmode variables
+@viewmode-border-width: 0;
+
+
+
+// Mixin to redistribute spacing between border and padding
+.borders-and-padding (@border, @x-spacing, @height) {
+  border-width: unit(@border, px);
+  padding: unit((@height - (2 * @border) - @base-inner-height) / 2, px) unit((@x-spacing - @border), px);
+}
+
+// Label style
+.label {
+  color: @ak-color-N200;
+  display: block;
+}
+
+.label-text {
+  font-size: unit(@label-font-size, px);
+  line-height: @label-line-height;
+  padding: @label-top-spacing 0 @label-bottom-spacing 0;
+}
+
+.label-required {
+  color: @ak-color-R400;
+  padding-left: @label-required-padding;
+}
+
+// view mode styles
+.view-mode-wrapper {
+  .borders-and-padding(@viewmode-border-width, @base-horizontal-padding, @base-height);
+  color:red;
+  display: inline-block;
+
+  &:hover {
+    background-color: @ak-color-N20;
+    border-color: @ak-color-N20;
+  }
+}
+
+
+// edit mode styles
+.edit-mode-slot-wrapper {
+  color: red;
+}
+
+.edit-mode-slot {
+  color: red;
+}

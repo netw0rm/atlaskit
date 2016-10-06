@@ -28,7 +28,7 @@ import ValidatorBase from './internal/validator-base';
 function defineValidator(tagName, validatorFunction, props = {}, defaultMessage) {
   return define(tagName, class extends ValidatorBase {
     validate(value) {
-      return (this.valid = validatorFunction(value, this));
+      return (this.invalid = validatorFunction(value, this));
     }
     static get props() {
       return Object.assign(super.props, props || {});

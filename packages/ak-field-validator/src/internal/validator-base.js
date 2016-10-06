@@ -5,7 +5,7 @@ import { vdom, prop, Component } from 'skatejs';
  */
 class ValidatorBase extends Component {
   static get props() {
-    return { valid: prop.boolean({ attribute: true }) };
+    return { invalid: prop.boolean({ attribute: true }) };
   }
   static render() {
     return (<slot />);

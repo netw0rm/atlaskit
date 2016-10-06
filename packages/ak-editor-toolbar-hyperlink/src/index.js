@@ -71,11 +71,11 @@ export default define('ak-editor-toolbar-hyperlink', {
   rendered(elem) {
     // `elem.justOpenedHyperlink` is for focusing on the input
     // if we just opened hyperlink, we want to focus on the input straight away
-    // else, don't auto fucos on it
+    // else, don't auto focus on it
     if (elem.justOpenedHyperlink) {
       const textInput = elem.shadowRoot.querySelector('.text-input');
       // next tick
-      // because dom is rendered asyn but the API is not,
+      // because dom is rendered async but the API is not,
       // `textInput` is only availale on dom in the next tick
       setTimeout(() => textInput.focus());
       elem.justOpenedHyperlink = false;

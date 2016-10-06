@@ -74,7 +74,11 @@ export default define('ak-editor-toolbar-block-type', {
       this.dropdownOpen = false;
     },
     toggleDropdown() {
-      if (!this.disabled && this.dropdownOpen) {
+      if (this.disabled) {
+        return;
+      }
+
+      if (this.dropdownOpen) {
         this.closeBlockTypeDropdown();
       } else {
         this.dropdownOpen = true;

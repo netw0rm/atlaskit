@@ -1,9 +1,9 @@
 import { vdom } from 'skatejs';
-import shadowStyles from './styles/Label.less';
+import shadowStyles from './shadow.less';
 
 /* eslint-disable react/prop-types */
 export default (props, children) => (
-  <label {...props}>
+  <label {...props} className={shadowStyles.locals.label}>
     <div className={shadowStyles.locals.labelText}>{props.label}</div>
     {children()}
   </label>

@@ -1,5 +1,5 @@
 import { vdom } from 'skatejs';
-import shadowStyles from './styles/Editing.less';
+import shadowStyles from './shadow.less';
 
 /* eslint-disable react/prop-types */
 export default (props) => (

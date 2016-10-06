@@ -3,35 +3,30 @@ import reactify from 'akutil-react';
 import WebComponent from '../src';
 import React from 'react';
 import { name } from '../package.json';
-import { ValidatorMinLength, ValidatorMaxLength } from 'ak-validator';
+import { ValidatorMinlength, ValidatorMaxlength } from 'ak-field-validator';
 import TextField from 'ak-field-text';
 
 const Component = reactify(WebComponent);
-const ReactValidatorMinLength = reactify(ValidatorMinLength);
-const ReactValidatorMaxLength = reactify(ValidatorMaxLength);
+const ReactValidatorMinlength = reactify(ValidatorMinlength);
+const ReactValidatorMaxlength = reactify(ValidatorMaxlength);
 const ReactTextField = reactify(TextField);
 
 storiesOf(name, module)
   .add('a simple ak-field', () => (
     <form style={{ width: '500px' }}>
-      <Component
-        helpIcon
-      >
-        <ReactValidatorMinLength
+      <Component>
+        <ReactValidatorMinlength
           is slot="validator"
-          minLength={5}
-          message="Must have at least 5 characters"
-        />
-        <ReactValidatorMinLength
+          minlength="5"
+        >Must have at least 5 characters</ReactValidatorMinlength>
+        <ReactValidatorMinlength
           is slot="validator"
-          minLength={3}
-          message="Must have at least 3 characters"
-        />
-        <ReactValidatorMaxLength
+          minlength="3"
+        >Must have at least 3 characters</ReactValidatorMinlength>
+        <ReactValidatorMaxlength
           is slot="validator"
-          maxLength={10}
-          message="Must have 10 or less characters"
-        />
+          maxlength="10"
+        >Must have 10 or less characters</ReactValidatorMaxlength>
         <ReactTextField is slot="input" label="My text field" />
       </Component>
     </form>

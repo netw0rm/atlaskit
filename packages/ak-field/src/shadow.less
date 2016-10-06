@@ -1,13 +1,5 @@
-// These styles will be inserted into a style tag inside
-// the shadow dom of each instance of the component
-
-// Only do class selectors in here, anything else leaks to the rest of the page in
-// browsers that do not support shadow DOM
 @import 'shared-variables.less';
-
-.my-class-name {
-  color: @ak-example-variable;
-}
+@import '~akutil-shared-styles/src/mixins/select-slot-children.less';
 
 .content-slot,
 .right-slot {
@@ -26,6 +18,12 @@
 slot[name="validator"] {
   display: none;
 }
+
+@validator-item: {
+  display: list-item;
+};
+
+.select-slot-children('validator', 'validator-slot', @validator-item);
 
 .error-list {
   padding-left: calc(~'1em + 10px');

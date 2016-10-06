@@ -31,18 +31,18 @@ function getInputValue(elem) {
 }
 
 function validate(elem) {
-  const foundErrors = [];
   const value = getInputValue(elem);
+  let hasError = false;
 
   if (value) {
     getValidators(elem).forEach((validator) => {
       if (!validator.validate(value)) {
-        foundErrors.push(validator.message);
+        hasError = true;
       }
     });
   }
 
-  return foundErrors;
+  return hasError;
 }
 
 /**
@@ -66,10 +66,6 @@ export default define('ak-field', {
   render(elem) {
     return ([
       <style>{shadowStyles.toString()}</style>,
-      <slot
-        name="validator"
-        ref={el => (elem[validatorSlot] = el)}
-      />,
       <div>
         <div className={shadowStyles.locals.contentSlot}>
           <slot
@@ -80,16 +76,18 @@ export default define('ak-field', {
         </div>
         <div className={shadowStyles.locals.rightSlot}></div>
         <InlineDialog
-          open={elem[helpOpen] && elem[errors].length}
+          open={elem[helpOpen] && elem[errors]}
           hasBlanket={false}
           padding="3px"
           position="right middle"
           ref={el => (elem[helpDialog] = el)}
         >
           <ul class={shadowStyles.locals.errorList}>
-            {elem[errors] && elem[errors].map(msg =>
-              <li>{msg}</li>
-            )}
+            <slot
+              class={shadowStyles.locals.validatorSlot}
+              name="validator"
+              ref={el => (elem[validatorSlot] = el)}
+            />
           </ul>
         </InlineDialog>
       </div>,
@@ -97,6 +95,12 @@ export default define('ak-field', {
   },
   props: {
     [helpOpen]: prop.boolean({}),
-    [errors]: prop.array({}),
+    [errors]: prop.boolean({
+      set(elem) {
+        if (elem[helpOpen]) {
+          elem[helpDialog].reposition();
+        }
+      },
+    }),
   },
 });

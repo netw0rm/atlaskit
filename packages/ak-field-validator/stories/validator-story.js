@@ -1,6 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import {
+  defineValidator,
   ValidatorMinlength,
   ValidatorMaxlength,
   ValidatorRequired,
@@ -10,6 +11,20 @@ import React from 'react';
 const ReactValidatorMinlength = reactify(ValidatorMinlength);
 const ReactValidatorMaxlength = reactify(ValidatorMaxlength);
 const ReactValidatorRequired = reactify(ValidatorRequired);
+
+// Custom validator
+const ValidatorStartsWith = defineValidator('x-validator-starts-with',
+  (value, elem) => value.startsWith(elem.start),
+  {
+    start: {
+      attribute: true,
+      default: '',
+    },
+  },
+  (elem) => (`Field value must start with ${elem.start}`)
+);
+const ReactValidatorStartsWith = reactify(ValidatorStartsWith);
+
 
 storiesOf(name, module)
   .add('pre-defined validators with default content', () => (
@@ -31,4 +46,10 @@ storiesOf(name, module)
         Custom message for required validator
       </ReactValidatorRequired></div>
     </div>
+  ))
+  .add('custom validator', () => (
+    <div>
+      <ReactValidatorStartsWith start="foo" valid />
+    </div>
   ));
+

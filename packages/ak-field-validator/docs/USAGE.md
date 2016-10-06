@@ -70,19 +70,16 @@ ReactDOM.render(<ReactComponent />, container);
 
 ## Defining a custom validator
 
-This package exports a base class, which can be extended to add any custom validator behaviour.
+This package exports a factory function, which will define and return a new validator component.
 
 ```js
-import { define } from 'skatejs';
-import { ValidatorBase }from 'ak-field-validator';
+import { defineValidator } from 'ak-field-validator';
 
-const ValidatorIsEven = define('x-validator-is-even', ValidatorBase.extend({
-  prototype: {
-    validate(value) {
-      return value %% 2 === 0;
-    },
-  },
-});
+const ValidatorIsEven = defineValidator('x-validator-even-length', 
+  function(value) {
+    return value.length %% 2 === 0;
+  }
+);
 ```
 
 ```html
@@ -92,7 +89,39 @@ const ValidatorIsEven = define('x-validator-is-even', ValidatorBase.extend({
   </head>
   <body>
     <ak-field>
-      <x-validator-is-even slot="validator">Value must be even</x-validator-is-even>
+      <x-validator-even-length slot="validator">Field value must be even</x-validator-even-length>
+      <ak-field-text slot="input"></ak-field-text>
+    </ak-field>
+  </body>
+</html>
+```
+
+### More complex custom validators
+
+More complex validators can be constructed by specifying properties and the default error message.
+
+```js
+import { defineValidator } from 'ak-field-validator';
+
+defineValidator('x-validator-starts-with',
+  (value, elem) => value.startsWith(elem.start),
+  {
+    start: {
+      attribute: true
+    }
+  },
+  (elem) => (`Field value must start with ${elem.start}`)
+);
+```
+
+```html
+<html>
+  <head>
+    <script src="bundle.js"></script>
+  </head>
+  <body>
+    <ak-field>
+      <x-validator-starts-with starts-with="foo" slot="validator"></x-validator-starts-with>
       <ak-field-text slot="input"></ak-field-text>
     </ak-field>
   </body>

@@ -24,7 +24,6 @@ import ValidatorBase from './internal/validator-base';
  * @param {Object=} props Any additional properties that should be available to the component.
  * See https://github.com/skatejs/skatejs#props for more information.
  * @param {defaultMessageFunction=} defaultMessage A function that returns the default message
- * @returns {*}
  */
 function defineValidator(tagName, validatorFunction, props = {}, defaultMessage) {
   return define(tagName, class extends ValidatorBase {

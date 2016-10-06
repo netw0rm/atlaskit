@@ -9,6 +9,10 @@ import ToggleIcons from './ToggleIcons';
 import classnames from 'classnames';
 import pathToDashed from '../src/pathToDashed';
 import { getGlyphs } from '../test/_helpers';
+import componentStyles from 'style!./../src/host.less';
+import AkButtonWc from 'ak-button';
+
+const AkButton = reactify(AkButtonWc);
 
 const twoColorIcons = ['checkbox', 'radio'];
 
@@ -18,6 +22,11 @@ const reactifiedComponents = Object.entries(components).reduce((prev, [key, Icon
   prev[key] = ReactIcon;
   return prev;
 }, {});
+
+const CharlieIcon = reactifiedComponents.atlassian;
+if (!CharlieIcon) {
+  throw new Error('Atlassian icon was removed, but is needed to display stories properly');
+}
 
 
 const toggleableIcons = Object
@@ -30,7 +39,13 @@ const AllIcons = (props) => (
   <div {...props} className={classnames(styles.container, props.className)}>
     {Object
       .entries(reactifiedComponents)
-      .map(([key, Icon]) => <Icon label={`${key} icon`} title={`${key}.svg`} key={key} />)}
+      .map(([key, Icon]) =>
+        <Icon
+          className={componentStyles.akIcon}
+          label={`${key} icon`}
+          title={`${key}.svg`}
+          key={key}
+        />)}
   </div>
 );
 
@@ -93,4 +108,13 @@ storiesOf('ak-icon', module)
     </div>
   ))
   .add('Two-color icons', () => <ToggleIcons icons={toggleableIcons} />)
-  .add('Animated', () => <AnimationDemo components={reactifiedComponents} />);
+  .add('Animated', () => <AnimationDemo components={reactifiedComponents} />)
+  .addBaselineAligned('baseline alignment', () => (
+    <CharlieIcon className={componentStyles.akIcon} />
+  ))
+  .add('Inside a button', () => (
+    <AkButton>
+      <CharlieIcon slot="before" />
+      Button
+    </AkButton>
+  ));

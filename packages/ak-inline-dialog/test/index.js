@@ -94,6 +94,7 @@ describe('ak-inline-dialog', () => {
         target: { value: '#test', attr: 'target' },
         constrain: { value: 'scrollParent', attr: 'constrain' },
         boxShadow: { value: 'none', attr: 'box-shadow' },
+        borderColor: { value: 'red', attr: 'border-color' },
         borderRadius: { value: '2px', attr: 'border-radius' },
         padding: { value: '2px', attr: 'padding' },
       };

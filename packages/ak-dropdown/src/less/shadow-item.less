@@ -5,8 +5,8 @@
   box-sizing: border-box;
   font-size: 14px;
   font-weight: normal;
-  line-height: 1;
-  padding: 0 10px;
+  line-height: 20/14;
+  padding: 0 unit(@grid * 2, px);
   text-decoration: none;
 
   &:not(.disabled) {
@@ -78,6 +78,10 @@
     outline: none;
     position: relative; // prevents bgcolor from obfuscating focus ring of focused elements
   }
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .selected {
@@ -96,14 +100,14 @@
 }
 
 .itemLeftPosition {
-  margin-right: 10px;
-  min-width: 20px;
+  margin: 0 unit(@grid, px);
+  min-width: unit(@grid * 5, px);
 }
 
 .itemDefaultPosition {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding:8px 0;
+  margin: unit(@grid, px);
 }
 

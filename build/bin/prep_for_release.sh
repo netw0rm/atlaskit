@@ -18,8 +18,3 @@ $DEBUG git fetch --tags
 $DEBUG git fsck --full
 
 $DEBUG npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-
-LERNA_VERSION=$(node -e "console.log(require('./lerna.json').lerna)")
-
-$DEBUG npm install -g lerna@$LERNA_VERSION
-$DEBUG npm install -g lerna-semantic-release@8.0.2

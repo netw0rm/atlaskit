@@ -22,10 +22,10 @@ export default (props) => {
         />
       </div>
       <div className={shadowStyles.locals.confirmationButtons}>
-        <Button compact>
+        <Button compact appearance="subtle" onclick={props.onConfirm}>
           ✓
         </Button>
-        <Button compact>
+        <Button compact appearance="subtle" onclick={props.onCancel}>
           x
         </Button>
       </div>

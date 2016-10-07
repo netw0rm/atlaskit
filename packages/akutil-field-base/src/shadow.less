@@ -5,7 +5,7 @@
 
 // some base variables
 @base-horizontal-padding: @grid * 2; // 8px
-@base-height: @grid * 8; // 32px
+@base-height: @grid * 10; // 40px
 @base-inner-height: @grid * 5; // 20px
 @base-border-radius: 3px;
 
@@ -17,7 +17,7 @@
 @label-inner-height: @grid * 4; // effectively 16px
 @label-font-size: 12;
 @label-line-height: @label-inner-height / @label-font-size;
-@label-required-padding: 7px;
+@label-padding-left: 10px; // hardcoded for now till I find a better way
 
 // viewmode variables
 @viewmode-border-width: 0;
@@ -50,12 +50,11 @@
 .label-text {
   font-size: unit(@label-font-size, px);
   line-height: @label-line-height;
-  padding: @label-top-spacing 0 @label-bottom-spacing 0;
+  padding: @label-top-spacing 0 @label-bottom-spacing @label-padding-left;
 }
 
 .label-required {
   color: @ak-color-R400;
-  padding-left: @label-required-padding;
 }
 
 // view mode styles

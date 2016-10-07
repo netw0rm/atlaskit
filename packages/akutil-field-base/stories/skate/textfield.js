@@ -1,10 +1,19 @@
-import { vdom, define, prop } from 'skatejs';
+import { vdom, define, prop, props } from 'skatejs';
 import FieldBase from '../../src/';
-import { showEditingView } from '../../src/internal/events';
+import { showEditingView, showViewingView } from '../../src/internal/events';
 
-function handleViewSwitch(elem) {
+function handleEditingViewSwitch(elem) {
   if (elem.inputField) {
     elem.inputField.focus();
+  }
+}
+
+function handleViewingViewSwitch(elem, e) {
+  if (!e.detail.canceled) {
+    props(elem, { value: elem.inputField.value });
+  } else {
+    // if the event was cancelled, we'll put the old value back in the field
+    elem.inputField.value = elem.value;
   }
 }
 
@@ -31,7 +40,7 @@ export default define('ak-textfield', {
         </style>
         <FieldBase label={elem.label}>
           <div is="" slot="viewmode">
-            <b>{elem.value}</b>
+            {elem.value}
           </div>
           <div is="" slot="editmode">
             <input
@@ -58,6 +67,7 @@ export default define('ak-textfield', {
     value: prop.string({ attribute: true }),
   },
   attached(elem) {
-    elem.addEventListener(showEditingView, () => handleViewSwitch(elem));
+    elem.addEventListener(showEditingView, (e) => handleEditingViewSwitch(elem, e));
+    elem.addEventListener(showViewingView, (e) => handleViewingViewSwitch(elem, e));
   },
 });

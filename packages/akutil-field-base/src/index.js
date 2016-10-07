@@ -2,7 +2,7 @@ import { vdom, define, prop, props, emit } from 'skatejs';
 import 'style!./host.less';
 // import shadowStyles from './shadow.less';
 import { focused } from './internal/symbols';
-import { showEditingView } from './internal/events';
+import { showEditingView, showViewingView } from './internal/events';
 import Editing from './Editing';
 import Viewing from './Viewing';
 import Label from './Label';
@@ -34,13 +34,33 @@ function switchToEditing(elem) {
 // }
 
 function handleFocus(elem) {
-  // console.log(`focus`);
   props(elem, { [focused]: true });
 }
 
 function handleBlur(elem) {
-  // console.log(`blur`);
   props(elem, { [focused]: false });
+}
+
+function handleEditConfirmation(elem) {
+  emit(elem, showViewingView, {
+    bubbles: true,
+    cancelable: true,
+    detail: {
+      canceled: false,
+    },
+  });
+  props(elem, { editing: false });
+}
+
+function handleEditCancel(elem) {
+  emit(elem, showViewingView, {
+    bubbles: true,
+    cancelable: true,
+    detail: {
+      canceled: true,
+    },
+  });
+  props(elem, { editing: false });
 }
 
 export default define('ak-field-base', {
@@ -54,13 +74,13 @@ export default define('ak-field-base', {
           label={elem.label}
           onClick={() => switchToEditing(elem)}
         >
-          <ViewingView
-            onClick={() => switchToEditing(elem)}
-          />
-          <EditingView
-            focused={elem[focused]}
-          />
+          <ViewingView />
         </Label>
+        <EditingView
+          focused={elem[focused]}
+          onConfirm={() => handleEditConfirmation(elem)}
+          onCancel={() => handleEditCancel(elem)}
+        />
       </Root>
     );
   },

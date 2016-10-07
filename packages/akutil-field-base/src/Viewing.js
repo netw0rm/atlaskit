@@ -11,10 +11,9 @@ function handleMouseLeave() {
 }
 
 /* eslint-disable react/prop-types */
-export default (props) => (
+export default () => (
   <div
     className={shadowStyles.locals.viewModeWrapper}
-    onclick={() => (props.onClick())}
     onmouseenter={() => handleMouseEnter()}
     onmouseleave={() => handleMouseLeave()}
   >

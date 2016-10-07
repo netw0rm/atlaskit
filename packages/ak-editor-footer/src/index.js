@@ -11,7 +11,7 @@ const icons = {
 
 function insert() {
   return Object.entries(icons)
-    .map(({ iconName, Icon }) => (
+    .map(([iconName, Icon]) => (
       <button
         className={shadowStyles.locals.iconButton}
         onclick={(event) => emit(event.currentTarget, `insert${iconName}`)}

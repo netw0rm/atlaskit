@@ -8,10 +8,10 @@ import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
 const { expect } = chai;
 
-function activateEditorByClicking(editor: AkEditorBitbucket) : void {
+function activateEditor(editor: AkEditorBitbucket) : void {
   const inputEl = getShadowRoot(editor).querySelector('input');
   expect(inputEl).to.not.be.null;
-  emit(inputEl, 'mousedown');
+  emit(inputEl, 'focus');
 }
 
 function buildExpandedEditor(fixture : any) : Promise<AkEditorBitbucket> {
@@ -141,7 +141,7 @@ describe('ak-editor-bitbucket', () => {
     });
 
     it('should expand after clicking the input element', () => {
-      activateEditorByClicking(editor);
+      activateEditor(editor);
       expect(editor.expanded).to.be.true;
     });
   });

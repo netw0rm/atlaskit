@@ -248,7 +248,7 @@ class AkEditorBitbucket extends Component {
           :
           <input
             placeholder={elem.placeholder}
-            onmousedown={elem._expand}
+            onfocus={elem._expand}
             className={fakeInputClassNames}
           />
         }

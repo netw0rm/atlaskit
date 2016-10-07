@@ -4,7 +4,7 @@ Provides a standard way to create a text-based form input with an associated lab
 
 When the label is clicked, the input will receive focus as expected.
 
-![Example avatars](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-field-text/docs/textfield.gif)
+![Example textfield](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-field-text/docs/textfield.gif)
 
 ## Try it out
 

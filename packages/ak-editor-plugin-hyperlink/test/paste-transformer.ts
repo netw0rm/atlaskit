@@ -1,12 +1,13 @@
 import HyperlinkPlugin from '../src';
 import { Slice, ProseMirror } from 'ak-editor-prosemirror';
-import { chaiPlugin, makeEditor, a, code, doc, p, pre, slice, text } from 'ak-editor-test';
+import { chaiPlugin, code_block, makeEditor, a, code, doc, p, slice, text } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
 chai.use(chaiPlugin);
 
 describe('ak-editor-plugin-hyperlink paste transformer', () => {
+  const pre = code_block({});
   const editor = () => makeEditor({
     doc: doc(p()),
     plugin: HyperlinkPlugin,

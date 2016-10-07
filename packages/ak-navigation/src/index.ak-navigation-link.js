@@ -52,17 +52,21 @@ export default define('ak-navigation-link', {
         })}
       >
         <style>{shadowStyles.toString()}</style>
-        <slot
-          name="icon"
-          className={shadowStyles.locals.icon}
-        />
         <a
-          className={classNames(shadowStyles.locals.text, shadowStyles.locals.link)}
+          className={classNames(shadowStyles.locals.link)}
           href={elem.href}
           ref={(a) => { elem[anchorElement] = a; }}
           tabindex="0"
         >
-          <slot />
+          <slot
+            name="icon"
+            className={shadowStyles.locals.icon}
+          />
+          <div
+            className={classNames(shadowStyles.locals.text)}
+          >
+            <slot />
+          </div>
         </a>
       </div>
     );

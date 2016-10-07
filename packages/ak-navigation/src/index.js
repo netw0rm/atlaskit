@@ -86,7 +86,11 @@ function recomputeWidth(elem) {
 export default define('ak-navigation', {
   render(elem) {
     return (
-      <div>
+      <div
+        className={classNames({
+          [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
+        })}
+      >
         <style>{`
           .${shadowStyles.locals.navigation} {
             width: ${getNavigationWidth(elem)}px;
@@ -113,9 +117,7 @@ export default define('ak-navigation', {
           className={classNames(shadowStyles.locals.spacer)}
         />
         <div
-          className={classNames(shadowStyles.locals.navigation, {
-            [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
-          })}
+          className={classNames(shadowStyles.locals.navigation)}
         >
           <div className={shadowStyles.locals.global}>
             <div className={shadowStyles.locals.globalPrimary}>

@@ -15,16 +15,17 @@
   margin-right: @navigation-padding;
 }
 
-.main {
+.main-outer {
+  width: 100%;
   z-index: @content-z-index;
 
-  &.should-animate {
-    transition: margin-left 200ms;
-  }
-
-  .main-fixed {
+  .main-inner {
     max-width: 1280px;
     margin: auto;
+
+    &.fluid {
+      max-width: 100%;
+    }
   }
 }
 @main-slot-direct-children: {

@@ -1,8 +1,8 @@
 import parse from '../src/parse-html';
 import { Schema } from 'ak-editor-prosemirror';
 import {
-  chaiPlugin, doc, text, code, strong, a,
-  h1, h2, h3, h4, h5, h6, hr, img, pre, blockquote, ul, ol, li, p, mention, emoji
+  chaiPlugin, code_block, doc, text, code, strong, a,
+  h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention, emoji
 } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
@@ -11,6 +11,7 @@ import schema from 'ak-editor-schema';
 chai.use(chaiPlugin);
 
 const createMark = (mark: string, attrs?: {}) => schema.marks[mark].create(attrs);
+const pre = code_block({});
 
 // Based on https://bitbucket.org/tutorials/markdowndemo
 describe('Parse Bitbucket rendered HTML', () => {

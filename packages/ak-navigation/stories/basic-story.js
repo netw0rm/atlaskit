@@ -3,7 +3,18 @@ import reactify from 'akutil-react';
 import akNavigation from '../src';
 import TogglingSidebar from './TogglingSidebar';
 import akPage from 'ak-page';
-import 'ak-icon';
+import CalendarIcon from 'ak-icon/glyph/confluence/calendar';
+import CanvasIcon from 'ak-icon/glyph/confluence/canvas';
+import PageIcon from 'ak-icon/glyph/confluence/page';
+import PersonIcon from 'ak-icon/glyph/confluence/person';
+import QuoteIcon from 'ak-icon/glyph/confluence/quote';
+import OverviewIcon from 'ak-icon/glyph/bitbucket/overview';
+import BitbucketIcon from 'ak-icon/glyph/bitbucket/logo';
+import HelpIcon from 'ak-icon/glyph/bitbucket/help';
+import QuestionIcon from 'ak-icon/glyph/question';
+import SearchIcon from 'ak-icon/glyph/search';
+import JiraIcon from 'ak-icon/glyph/jira/logo';
+import CreateIcon from 'ak-icon/glyph/bitbucket/create';
 import 'ak-avatar';
 import 'ak-dropdown';
 import React from 'react';
@@ -28,28 +39,28 @@ const sharedProps = {
 
 const NavigationLinks = () => <div>
   <ak-navigation-link selected>
-    <ak-icon slot="icon" glyph="calendar" /> Calendar
+    <CalendarIcon slot="icon" /> Calendar
   </ak-navigation-link>
   <ak-navigation-link href="http://atlassian.design" >
-    <ak-icon slot="icon" glyph="overview" /> Atlassian design
+    <OverviewIcon slot="icon" /> Atlassian design
   </ak-navigation-link>
   <ak-navigation-link>
-    <ak-icon slot="icon" glyph="canvas" /> Canvas
+    <CanvasIcon slot="icon" /> Canvas
   </ak-navigation-link>
   <ak-navigation-link>
-    <ak-icon slot="icon" glyph="page" /> Page
+    <PageIcon slot="icon" /> Page
   </ak-navigation-link>
   <ak-navigation-link>
-    <ak-icon slot="icon" glyph="person" /> Person
+    <PersonIcon slot="icon" /> Person
   </ak-navigation-link>
   <ak-navigation-link>
-    <ak-icon slot="icon" glyph="question" /> Question
+    <QuestionIcon slot="icon" /> Question
   </ak-navigation-link>
   <ak-navigation-link>
-    <ak-icon slot="icon" glyph="quote" /> Quote
+    <QuoteIcon slot="icon" /> Quote
   </ak-navigation-link>
   <ak-navigation-link>
-    <ak-icon slot="icon" glyph="quote" /> Reaaaaaaaaaaaaaaaaaaaaaaaaally long
+    <QuoteIcon slot="icon" /> Reaaaaaaaaaaaaaaaaaaaaaaaaally long
   </ak-navigation-link>
 </div>;
 
@@ -63,7 +74,7 @@ const GlobalProfile = () => <ak-dropdown position="right bottom" slot="global-pr
 
 const GlobalHelp = () => <ak-dropdown position="right bottom" slot="global-help">
   <ak-dropdown-trigger slot="trigger">
-    <ak-icon glyph="help" />
+    <HelpIcon />
   </ak-dropdown-trigger>
   <ak-dropdown-group heading="Bitbucket">
     <ak-dropdown-item>View profile</ak-dropdown-item>
@@ -89,9 +100,9 @@ storiesOf(name, module)
         open
         {...sharedProps}
       >
-        <ak-icon slot="global-home" glyph="bitbucket" />
-        <ak-icon slot="global-search" glyph="search" />
-        <ak-icon slot="global-create" glyph="create" />
+        <BitbucketIcon slot="global-home" />
+        <SearchIcon slot="global-search" />
+        <CreateIcon slot="global-create" />
 
         <GlobalProfile />
         <GlobalHelp />
@@ -117,9 +128,9 @@ storiesOf(name, module)
         open
         {...sharedProps}
       >
-        <ak-icon slot="global-home" glyph="bitbucket" />
-        <ak-icon slot="global-search" glyph="search" />
-        <ak-icon slot="global-create" glyph="create" />
+        <BitbucketIcon slot="global-home" />
+        <SearchIcon slot="global-search" />
+        <CreateIcon slot="global-create" />
 
         <GlobalProfile />
         <GlobalHelp />
@@ -172,9 +183,9 @@ storiesOf(name, module)
         open
         containerName="Electron"
       >
-        <ak-icon slot="global-home" glyph="bitbucket" />
-        <ak-icon slot="global-search" glyph="search" />
-        <ak-icon slot="global-create" glyph="create" />
+        <BitbucketIcon slot="global-home" />
+        <SearchIcon slot="global-search" />
+        <CreateIcon slot="global-create" />
         <GlobalProfile />
         <GlobalHelp />
         <div is slot="global-search-drawer">
@@ -198,9 +209,9 @@ storiesOf(name, module)
         collapsible
         open
       >
-        <ak-icon slot="global-home" glyph="bitbucket" />
-        <ak-icon slot="global-search" glyph="search" />
-        <ak-icon slot="global-create" glyph="create" />
+        <BitbucketIcon slot="global-home" />
+        <SearchIcon slot="global-search" />
+        <CreateIcon slot="global-create" />
         <GlobalProfile />
         <GlobalHelp />
         <div is slot="global-search-drawer">
@@ -224,9 +235,9 @@ storiesOf(name, module)
         collapsible
         {...sharedProps}
       >
-        <ak-icon slot="global-home" glyph="jira" />
-        <ak-icon slot="global-search" glyph="search" />
-        <ak-icon slot="global-create" glyph="create" />
+        <JiraIcon slot="global-home" />
+        <SearchIcon slot="global-search" />
+        <CreateIcon slot="global-create" />
         <NavigationLinks />
       </AkNavigation>
       <div>
@@ -241,9 +252,9 @@ storiesOf(name, module)
         containerHidden
         {...sharedProps}
       >
-        <ak-icon slot="global-home" glyph="jira" />
-        <ak-icon slot="global-search" glyph="search" />
-        <ak-icon slot="global-create" glyph="create" />
+        <JiraIcon slot="global-home" />
+        <SearchIcon slot="global-search" />
+        <CreateIcon slot="global-create" />
         <NavigationLinks />
       </AkNavigation>
       <div>
@@ -289,9 +300,9 @@ storiesOf(name, module)
         propToToggle="open"
         {...sharedProps}
       >
-        <ak-icon slot="global-home" glyph="jira" />
-        <ak-icon slot="global-search" glyph="search" />
-        <ak-icon slot="global-create" glyph="create" />
+        <JiraIcon slot="global-home" />
+        <SearchIcon slot="global-search" />
+        <CreateIcon slot="global-create" />
         <NavigationLinks />
       </TogglingSidebar>
       <div>
@@ -306,9 +317,9 @@ storiesOf(name, module)
         propToToggle="containerHidden"
         {...sharedProps}
       >
-        <ak-icon slot="global-home" glyph="jira" />
-        <ak-icon slot="global-search" glyph="search" />
-        <ak-icon slot="global-create" glyph="create" />
+        <JiraIcon slot="global-home" />
+        <SearchIcon slot="global-search" />
+        <CreateIcon slot="global-create" />
         <NavigationLinks />
       </TogglingSidebar>
       <div>

@@ -1,11 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
 import ButtonComponent from '../src';
-import IconComponent from 'ak-editor-icon';
+import EditorBoldIcon from 'ak-icon/glyph/editor/bold';
 import reactify from 'akutil-react';
 import React from 'react';
 
 const Button = reactify(ButtonComponent);
-const Icon = reactify(IconComponent);
+const BoldIcon = reactify(EditorBoldIcon);
 
 storiesOf('ak-editor-button', module)
   .add('Empty', () => (
@@ -24,14 +24,14 @@ storiesOf('ak-editor-button', module)
     <Button active disabled>B</Button>
   ))
   .add('Icon', () => (
-    <Button><Icon glyph="bold" /></Button>
+    <Button><BoldIcon /></Button>
   ))
   .add('Icon (active)', () => (
-    <Button active><Icon glyph="bold" fill="white" /></Button>
+    <Button active><BoldIcon style={{ color: 'white' }} /></Button>
   ))
   .add('Icon (disabled)', () => (
-    <Button disabled><Icon glyph="bold" /></Button>
+    <Button disabled><BoldIcon /></Button>
   ))
   .add('Icon (active + disabled)', () => (
-    <Button active disabled><Icon glyph="bold" fill="white" /></Button>
+    <Button active disabled><BoldIcon style={{ color: 'white' }} /></Button>
   ));

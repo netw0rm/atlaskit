@@ -49,7 +49,8 @@ describe('exports', () => {
       'open',
       'close',
       'widthChanged',
-      'openStateChanged',
+      'resizeStart',
+      'resizeEnd',
     ]);
   });
 });

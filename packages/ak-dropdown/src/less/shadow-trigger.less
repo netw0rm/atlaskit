@@ -19,6 +19,12 @@ ak-dropdown-trigger-arrow {
   &:not([defined]) {
     display: none;
   }
+
+  // first group element shouldn't have any empty space above it
+  & + .ak-dropdown-group,
+  & + ak-dropdown-group {
+    margin-top: 0;
+  }
 }
 
 :host {

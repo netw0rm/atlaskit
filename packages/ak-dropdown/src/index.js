@@ -255,6 +255,11 @@ export default define('ak-dropdown', {
     },
   },
   render(elem) {
+    // groups have top margin by default
+    // but if the group is the very first item after the trigger, the margin is suppose to be 0
+    if (elem.childNodes && elem.childNodes[1] && elem.childNodes[1] instanceof Group) {
+      elem.childNodes[1].style.marginTop = '0';
+    }
     let target = elem.target;
     return (
       <div

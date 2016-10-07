@@ -6,10 +6,6 @@
 // that do not support shadow DOM
 .host-styles() {
   display: block;
-
-  > _shadow_root_ {
-    display: block;
-  }
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -21,6 +17,10 @@ ak-dropdown-item-radio,
 .ak-dropdown-item-checkbox,
 ak-dropdown-item-checkbox {
   .host-styles();
+
+  > _shadow_root_ {
+    display: block;
+  }
 
   &:not([defined]) {
     display: none;

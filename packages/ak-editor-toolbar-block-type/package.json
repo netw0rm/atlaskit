@@ -26,7 +26,7 @@
     "ak-editor-content": "^2.0.0",
     "ak-editor-plugin-block-type": "^2.0.0",
     "ak-editor-prosemirror": "^2.0.0",
-    "ak-editor-test": "^2.3.0",
+    "ak-editor-test": "^3.0.0",
     "ak-editor-toolbar": "^2.0.0",
     "akutil-common-test": "^3.0.0",
     "akutil-react": "^1.0.0",

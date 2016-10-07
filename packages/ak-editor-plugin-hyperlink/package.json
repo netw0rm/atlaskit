@@ -18,7 +18,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-editor-test": "*"
+    "ak-editor-test": "^3.0.0"
   },
   "repository": {
     "type": "git",

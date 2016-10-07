@@ -1,18 +1,24 @@
 import { define, vdom, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import 'style!./host.less';
-import Icon from 'ak-editor-icon';
 import AkButton, { APPEARANCE } from 'ak-button';
 import AkButtonGroup from 'ak-button-group';
+import MentionIcon from 'ak-icon/glyph/editor/mention';
+import ImageIcon from 'ak-icon/glyph/editor/image';
+
+const icons = {
+  mention: MentionIcon,
+  image: ImageIcon,
+};
 
 function insert() {
-  return ['mention', 'image']
-    .map((icon) => (
+  return Object.entries(icons)
+    .map(([iconName, Icon]) => (
       <button
         className={shadowStyles.locals.iconButton}
-        onclick={(event) => emit(event.currentTarget, `insert${icon}`)}
+        onclick={(event) => emit(event.currentTarget, `insert${iconName}`)}
       >
-        <Icon glyph={icon} />
+        <Icon />
       </button>
   ));
 }

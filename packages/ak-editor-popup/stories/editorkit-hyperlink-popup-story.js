@@ -5,14 +5,18 @@ import React from 'react';
 import { name } from '../package.json';
 import 'style!./../src/host.less';
 import EditorButtonComponent from 'ak-editor-button';
-import IconComponent from 'ak-editor-icon';
+import LinkEditorIcon from 'ak-icon/glyph/editor/link';
+import UnlinkEditorIcon from 'ak-icon/glyph/editor/unlink';
+import OpenEditorIcon from 'ak-icon/glyph/editor/open';
 import ToolbarComponent from 'ak-editor-toolbar';
 
 const Component = reactify(Popup);
 
 const EditorButton = reactify(EditorButtonComponent);
 
-const Icon = reactify(IconComponent);
+const LinkIcon = reactify(LinkEditorIcon);
+const UnlinkIcon = reactify(UnlinkEditorIcon);
+const OpenIcon = reactify(OpenEditorIcon);
 
 const Toolbar = reactify(ToolbarComponent);
 
@@ -24,26 +28,26 @@ storiesOf(name, module)
   ))
   .add('with one button', () => (
     <Component open>
-      <EditorButton><Icon glyph="unlink" fill="white" /></EditorButton>
+      <EditorButton><LinkIcon style={{ color: 'white' }} /></EditorButton>
     </Component>
   ))
   .add('with two buttons', () => (
     <Component open>
-      <EditorButton><Icon glyph="unlink" fill="white" /></EditorButton>
-      <EditorButton><Icon glyph="open" fill="white" /></EditorButton>
+      <EditorButton><UnlinkIcon style={{ color: 'white' }} /></EditorButton>
+      <EditorButton><OpenIcon style={{ color: 'white' }} /></EditorButton>
     </Component>
   ))
   .add('with two buttons and a input', () => (
     <Component open>
-      <EditorButton><Icon glyph="unlink" fill="white" /></EditorButton>
-      <EditorButton><Icon glyph="open" fill="white" /></EditorButton>
+      <EditorButton><UnlinkIcon style={{ color: 'white' }} /></EditorButton>
+      <EditorButton><OpenIcon style={{ color: 'white' }} /></EditorButton>
       <input />
     </Component>
   ))
   .add('a "real" editor popup', () => (
     <Component open>
-      <EditorButton><Icon glyph="unlink" fill="white" style={{ marginLeft }} /></EditorButton>
-      <EditorButton><Icon glyph="open" fill="white" style={{ marginLeft }} /></EditorButton>
+      <EditorButton><UnlinkIcon style={{ marginLeft, color: 'white' }} /></EditorButton>
+      <EditorButton><OpenIcon style={{ marginLeft, color: 'white' }} /></EditorButton>
       <div style={{ height: '100%', width: 1, background: 'lightgrey', marginLeft }} />
       <input style={{ marginLeft }} />
     </Component>
@@ -71,7 +75,7 @@ storiesOf(name, module)
               <EditorButton
                 className="link-button"
                 style={{ position: 'absolute', left: 200 }}
-              ><Icon glyph="link" /></EditorButton>
+              ><LinkIcon /></EditorButton>
             </Toolbar>
             <Component
               target=".link-button"
@@ -79,10 +83,10 @@ storiesOf(name, module)
               className="ak-editor-popup"
             >
               <EditorButton>
-                <Icon glyph="unlink" fill="white" style={{ marginLeft }} />
+                <UnlinkIcon fill="white" style={{ marginLeft, color: 'white' }} />
               </EditorButton>
               <EditorButton>
-                <Icon glyph="open" fill="white" style={{ marginLeft }} />
+                <OpenIcon fill="white" style={{ marginLeft }} />
               </EditorButton>
               <div style={{ height: '100%', width: 1, background: 'lightgrey', marginLeft }} />
               <input style={{ marginLeft }} />

@@ -1,22 +1,12 @@
 @import 'shared-variables.less';
+@import '~akutil-shared-styles/src/mixins/focus-ring.less';
 @import '~akutil-shared-styles/src/mixins/animations.less';
 
 // Attention: The animation name removeAnimation is referenced in the JS AnimationWrapper
 .createBoldAnimation(@remove-animation, 'removeAnimation');
 
-.outline(@color) {
-  &:focus {
-    outline: none;
-    box-shadow: 0px 0px 0px @outline-width @color;
-  }
-}
-
-.nooutline() {
-  box-shadow: none;
-}
-
 .chrome {
-  .outline(@ak-color-B100);
+  .focus-ring();
   cursor:default;
   background-color: @ak-color-N20;
   padding: 0;
@@ -28,11 +18,11 @@
   flex-direction: row;
 
   &:hover {
-    .nooutline();
+    .no-focus-ring();
     background-color: @ak-color-N30;
 
     .button {
-      .nooutline();
+      .focus-ring();
     }
   }
 
@@ -97,7 +87,7 @@
 }
 
 .button {
-  .outline(@ak-color-R300);
+  .focus-ring(@color: @ak-color-R300);
   appearance: none;
   background: none;
   border: none;

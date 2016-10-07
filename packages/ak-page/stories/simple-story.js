@@ -2,6 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import webComponent from '../src/index';
 import React from 'react';
+import Lorem from 'react-lorem-component';
 import { name } from '../package.json';
 import 'ak-icon';
 
@@ -22,6 +23,18 @@ storiesOf(name, module)
     <Component>
       <Navigation slot="navigation" open />
       <div>Content</div>
+    </Component>
+  ))
+  .add('with navigation and fixed layout', () => (
+    <Component>
+      <Navigation slot="navigation" collapsible open />
+      <Lorem count="30" />
+    </Component>
+  ))
+  .add('with navigation and fluid layout', () => (
+    <Component layout="fluid">
+      <Navigation slot="navigation" collapsible open />
+      <Lorem count="30" />
     </Component>
   ))
   .add('with containerless navigation', () => (

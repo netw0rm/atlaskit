@@ -3,7 +3,9 @@ import reactify from 'akutil-react';
 import AkAvatar from 'ak-avatar';
 import AkButton from 'ak-button';
 import AkButtonGroup from 'ak-button-group';
-import AkIcon from 'ak-icon';
+import BitbucketTeamsIcon from 'ak-icon/glyph/bitbucket/teams';
+import BitbucketCreateIcon from 'ak-icon/glyph/bitbucket/create';
+import BitbucketSnippetsIcon from 'ak-icon/glyph/bitbucket/snippets';
 import AkComment from '../src/index';
 import React from 'react';
 import { name } from '../package.json';
@@ -14,7 +16,9 @@ const Comment = reactify(AkComment);
 const Avatar = reactify(AkAvatar);
 const Button = reactify(AkButton);
 const ButtonGroup = reactify(AkButtonGroup);
-const Icon = reactify(AkIcon);
+const TeamsIcon = reactify(BitbucketTeamsIcon);
+const CreateIcon = reactify(BitbucketCreateIcon);
+const SnippetsIcon = reactify(BitbucketSnippetsIcon);
 const commentClass = hostStyles.locals.akComment;
 
 /* eslint-disable react/prop-types */
@@ -24,9 +28,9 @@ const MyComment = (props) => (
     <a is slot="author" href="#">{props.name}</a>
     <time is slot="time" datetime="2016-09-20T19:00">{props.time}</time>
     <ButtonGroup slot="actions">
-      <Button appearance="subtle" compact><Icon glyph="teams" /></Button>
-      <Button appearance="subtle" compact><Icon glyph="create" /></Button>
-      <Button appearance="subtle" compact><Icon glyph="snippets" /></Button>
+      <Button appearance="subtle" compact><TeamsIcon /></Button>
+      <Button appearance="subtle" compact><CreateIcon /></Button>
+      <Button appearance="subtle" compact><SnippetsIcon /></Button>
     </ButtonGroup>
     {props.children}
   </Comment>

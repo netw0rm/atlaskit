@@ -6,7 +6,10 @@ JSDOC2MD_LOC="`npm bin`/jsdoc2md"
 CHALK="`npm bin`/chalk"
 popd > /dev/null
 
-$CHALK --no-stdin -t "{blue Generating README.md...}"
+PKG=$(node -e 'console.log(require("./package.json").name)')
+PREFIX="{white.bold [$PKG]}"
+
+$CHALK --no-stdin -t "{blue $PREFIX Generating README.md...}"
 
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
@@ -18,9 +21,9 @@ else
 fi
 
 # Generate API docs
-if [[ -z `find ./src -name "*.js" -print -quit` ]]; then
+if [[ -z `find ./src -name "*.js" -print || true` ]]; then
   API=""
-  $CHALK --no-stdin -t "{blue  Nothing found that can be documented.}"
+  $CHALK --no-stdin -t "{blue $PREFIX Nothing found that can be documented.}"
 else
   set +e
   DOCS="$($JSDOC2MD_LOC \
@@ -34,12 +37,12 @@ else
 
   if [ "$FAILED" -eq "1" ]; then
     # Remove this branch once jsdoc understands es6: https://github.com/jsdoc3/jsdoc/issues/1030
-    $CHALK --no-stdin -t "{red ^ jsdoc2md died (Most likely due to unrecognized ES6 code, see error above).}"
+    $CHALK --no-stdin -t "{red $PREFIX ^ jsdoc2md died (Most likely due to unrecognized ES6 code, see error above).}"
   elif [[ $DOCS == *"ERROR, Cannot find class"* ]]; then
-    $CHALK --no-stdin -t "{red  Could not find a class.}"
+    $CHALK --no-stdin -t "{red $PREFIX Could not find a class.}"
   else
     API="\n$DOCS"
-    $CHALK --no-stdin -t "{blue  done!}"
+    $CHALK --no-stdin -t "{blue $PREFIX done!}"
   fi
 fi
 

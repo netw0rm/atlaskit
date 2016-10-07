@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-BASEDIR=$(dirname $0)
-
 pushd ../.. > /dev/null
 CHALK="`npm bin`/chalk"
 popd > /dev/null
-
-$BASEDIR/generate.readme.sh
 
 $CHALK --no-stdin -t "{blue Generating UMD bundle...}"
 webpack --config ../../build/webpack/production-umd.js $@

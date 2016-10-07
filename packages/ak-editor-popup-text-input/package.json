@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-popup-text-input",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Editor Popup Text Input web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -15,6 +15,7 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-shared-styles": "^1.0.3",
+    "akutil-shared-styles": "^34.2.0",
     "babel-runtime": "^6.11.6",
     "skatejs": "^1.4.1"
   },

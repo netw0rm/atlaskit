@@ -1,6 +1,6 @@
 {
   "name": "ak-page",
-  "version": "5.0.3",
+  "version": "5.1.0",
   "description": "ak-page webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -26,7 +26,8 @@
     "ak-icon": "^4.1.0",
     "ak-navigation": "^11.0.0",
     "akutil-common-test": "^3.0.0",
-    "akutil-react": "^1.0.0"
+    "akutil-react": "^1.0.0",
+    "react-lorem-component": "^0.10.1"
   },
   "repository": {
     "type": "git",

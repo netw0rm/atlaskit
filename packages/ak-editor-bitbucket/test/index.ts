@@ -8,13 +8,13 @@ import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
 const { expect } = chai;
 
-function activateEditor(editor: AkEditorBitbucket) : void {
+function activateEditor(editor: typeof AkEditorBitbucket) : void {
   const inputEl = getShadowRoot(editor).querySelector('input');
   expect(inputEl).to.not.be.null;
   emit(inputEl, 'focus');
 }
 
-function buildExpandedEditor(fixture : any) : Promise<AkEditorBitbucket> {
+function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> {
   return new Promise(function(resolve, reject) {
     const successFn = () => {
       clearTimeout(failTimer);

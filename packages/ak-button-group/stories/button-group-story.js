@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkButton from 'ak-button';
 import Dropdown from 'ak-dropdown';
-import Icon from 'ak-icon';
+import CharlieIcon from 'ak-icon/glyph/atlassian';
 import AkButtonGroup from '../src/index';
 import React from 'react';
 import { name } from '../package.json';
@@ -10,7 +10,7 @@ import { name } from '../package.json';
 
 const ReactAkButtonGroup = reactify(AkButtonGroup);
 const ReactAkButton = reactify(AkButton);
-const ReactIcon = reactify(Icon);
+const ReactIcon = reactify(CharlieIcon);
 const ReactDropdown = reactify(Dropdown);
 
 storiesOf(name, module)
@@ -73,7 +73,7 @@ storiesOf(name, module)
     <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
       <ReactAkButton>Edit</ReactAkButton>
       <ReactAkButton>
-        <ReactIcon glyph="question" />
+        <ReactIcon />
       </ReactAkButton>
     </ReactAkButtonGroup>
   ))

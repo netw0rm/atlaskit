@@ -137,7 +137,7 @@
     "storybook/static": "build-storybook -c ./build/storybook",
     "storybook/static/single": "./build/bin/storybook.static.single.sh",
     "storybook/static/registry": "rm -rf ./stories && ./node_modules/.bin/lerna exec --concurrency=1 -- ../../build/bin/storybook.static.registry.sh",
-    "storybook/wait": "wait-on -d 20000 -i 500 -t 120000 http-get://0.0.0.0:9001/",
+    "storybook/wait": "wait-on -d 20000 -i 500 -t 300000 http-get://0.0.0.0:9001/",
     "test": "karma start ./build/karma/all.js --single-run --no-auto-watch --reporters=dots",
     "test/watch": "karma start ./build/karma/all.js --reporters=dots",
     "test/base": "mocha --colors",

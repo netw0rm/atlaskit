@@ -1,6 +1,6 @@
 import reactify from 'akutil-react';
-import groupStyles from 'style!./../src/host.less';
-import tagStyles from 'style!ak-tag/src/host.less';
+import groupStyles from '../src/shadow.less';
+import tagStyles from 'ak-tag/src/shadow.less';
 import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = tagEvents;
 import WebComponent from '../src/index';

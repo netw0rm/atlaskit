@@ -1,10 +1,10 @@
 import React from 'react';
 const { Component } = React;
-import hostStyles from 'style!./../src/less/host.less';
 import reactify from 'akutil-react';
 import Dropdown, { DropdownTrigger, DropdownTriggerButton, Group, Item } from '../src/index';
+import styles from '../src/less/shadow-list.less';
 
-const dropdownClass = hostStyles.akDropdown;
+const dropdownClass = styles.akDropdown;
 const DropdownReactComponent = reactify(Dropdown);
 const avatarUrl = require('url!./doge.jpg');
 

@@ -4,8 +4,8 @@ import WebComponent from '../src/index';
 import AkTagWebComponent from 'ak-tag';
 import React from 'react';
 import { name } from '../package.json';
-import styles from 'style!./../src/host.less';
-import tagStyles from 'style!ak-tag/src/host.less';
+import styles from '../src/shadow.less';
+import tagStyles from 'ak-tag/src/shadow.less';
 
 const Group = reactify(WebComponent);
 

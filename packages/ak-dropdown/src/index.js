@@ -1,5 +1,4 @@
 /** @jsx vdom */
-import 'style!./less/host.less';
 import shadowListStyles from './less/shadow-list.less';
 import { vdom, define, prop, props, emit, ready } from 'skatejs';
 import './index.trigger';

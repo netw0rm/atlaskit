@@ -8,14 +8,14 @@ import AkComment from '../src/index';
 import React from 'react';
 import { name } from '../package.json';
 import transparentAvatarUrl from 'url!./face-w-transparency.png';
-import hostStyles from '../src/host.less';
+import styles from '../src/shadow.less';
 
 const Comment = reactify(AkComment);
 const Avatar = reactify(AkAvatar);
 const Button = reactify(AkButton);
 const ButtonGroup = reactify(AkButtonGroup);
 const Icon = reactify(AkIcon);
-const commentClass = hostStyles.locals.akComment;
+const commentClass = styles.locals.akComment;
 
 /* eslint-disable react/prop-types */
 const MyComment = (props) => (

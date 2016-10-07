@@ -9,7 +9,7 @@ import ToggleIcons from './ToggleIcons';
 import classnames from 'classnames';
 import pathToDashed from '../src/pathToDashed';
 import { getGlyphs } from '../test/_helpers';
-import componentStyles from 'style!./../src/host.less';
+import componentStyles from '../src/shadow.less';
 import AkButtonWc from 'ak-button';
 
 const AkButton = reactify(AkButtonWc);

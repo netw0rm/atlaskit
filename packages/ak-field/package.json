@@ -15,7 +15,7 @@
     "ak-field-validator": "^1.0.0",
     "ak-field-text": "^2.0.0",
     "ak-icon": "^7.1.0",
-    "ak-inline-dialog": "^71.0.8",
+    "ak-inline-dialog": "^71.1.0",
     "akutil-shared-styles": "^34.2.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",

@@ -14,6 +14,8 @@ const helpDialog = Symbol();
 const errors = Symbol('errors');
 const helpOpen = Symbol('helpOpen');
 
+const dialogBorderColor = '#D93A35'; // R400
+
 function getValidators(elem) {
   return elem[validatorSlot].assignedNodes().filter(el => el.validate);
 }
@@ -76,6 +78,7 @@ export default define('ak-field', {
         </div>
         <div className={shadowStyles.locals.rightSlot}></div>
         <InlineDialog
+          borderColor={dialogBorderColor}
           open={elem[helpOpen] && elem[errors]}
           hasBlanket={false}
           padding="3px"

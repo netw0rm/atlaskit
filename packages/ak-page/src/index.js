@@ -54,12 +54,12 @@ export default define('ak-page', {
             name="navigation"
           />
         </div>
-        <div
-          className={classNames(shadowStyles.locals.main, {
-            [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
-          })}
-        >
-          <div className={shadowStyles.locals.mainFixed}>
+        <div className={classNames(shadowStyles.locals.mainOuter)}>
+          <div
+            className={classNames(shadowStyles.locals.mainInner, {
+              [shadowStyles.locals.fluid]: (elem.layout === 'fluid'),
+            })}
+          >
             <slot className={shadowStyles.locals.mainSlot} />
           </div>
         </div>
@@ -77,6 +77,20 @@ export default define('ak-page', {
      * @example @js page.shouldAnimate = true;
      */
     shouldAnimate: prop.boolean(),
+    /**
+     * @description Defines the size of the page.
+     * Allowed values: 'fixed', 'fluid'.
+     * @memberof Page
+     * @instance
+     * @default fixed
+     * @type {string}
+     * @example @html <ak-page layout="fluid"></ak-page>
+     * @example @js page.layout = 'fluid';
+     */
+    layout: prop.string({
+      attribute: true,
+      default: 'fixed',
+    }),
   },
   created(elem) {
     elem.addEventListener(resizeStartEvent, (e) => handleResizeStart(e, elem));

@@ -89,7 +89,6 @@ storiesOf('ak-editor-bitbucket', module)
       componentDidMount() {
         const outerContainer = ReactDOM.findDOMNode(this);
         const innerContainer = outerContainer.lastChild;
-        const editorContainer = innerContainer.lastChild;
 
         [
           'ready', 'keydown', 'keyup', 'keypress', 'click', 'touchstart', 'touchend'

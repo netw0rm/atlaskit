@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
-import { afterMutations, waitUntil, getShadowRoot  } from 'akutil-common-test';
+import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
@@ -203,28 +203,25 @@ describe('ak-editor-bitbucket', () => {
   it('should prevent bubbling of keyboard events outside of the editor', () => {
     const outer : HTMLElement = fixture();
     const inner : HTMLElement = document.createElement('div');
-    const keyEventsStopped = ['keydown', 'keyup', 'keypress'];
 
     outer.appendChild(inner);
 
     return buildExpandedEditor(inner).then((editor) => {
       return waitUntilPMReady(editor).then((PMContainer) => {
-        keyEventsStopped.forEach((eventName) => {
-          const spy = sinon.spy();
-          const event = new KeyboardEvent(eventName, {
-            view: window,
-            key: 'Enter',
-            keyCode: 13,
-            bubbles: true,
-            cancellable: true,
-          });
-
-          outer.addEventListener(eventName, spy);
-          PMContainer.dispatchEvent(event);
-          editor.dispatchEvent(event);
-          outer.removeEventListener(eventName, spy);
-          assert.isFalse(spy.called, `Event "${eventName}" should not bubble outside of the editor`);
-        });
+        const spy = sinon.spy();
+        outer.addEventListener('keydown', spy);
+        outer.addEventListener('keyup', spy);
+        outer.addEventListener('keypress', spy);
+        keydown('enter', PMContainer);
+        keypress('enter', PMContainer);
+        keyup('enter', PMContainer);
+        keydown('enter', editor);
+        keypress('enter', editor);
+        keyup('enter', editor);
+        outer.removeEventListener('keydown', spy);
+        outer.removeEventListener('keyup', spy);
+        outer.removeEventListener('keypress', spy);
+        expect(spy.called).to.be.false;
       });
     });
   });

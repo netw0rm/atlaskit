@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",
-    "ak-editor-icon": "^2.0.1",
+    "ak-icon": "^7.0.3",
     "akutil-common-test": "^3.0.0"
   },
   "repository": {

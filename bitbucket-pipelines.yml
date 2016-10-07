@@ -9,7 +9,6 @@ pipelines:
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - npm install
-            - export BROWSERSTACK_TUNNEL="$BITBUCKET_COMMIT"
             - /BrowserStackLocal --key $BROWSERSTACK_KEY --local-identifier $BITBUCKET_COMMIT --force --force-local --only-automate --parallel-runs 5 --daemon start
             - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack"
             - npm run test/integration
@@ -25,7 +24,6 @@ pipelines:
           - export FORCE_COLOR=1
           - ./build/bin/setup.sh
           - npm install
-          - export BROWSERSTACK_TUNNEL="$BITBUCKET_COMMIT"
           - /BrowserStackLocal --key $BROWSERSTACK_KEY --local-identifier $BITBUCKET_COMMIT --force --force-local --only-automate --parallel-runs 5 --daemon start
           - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/artifacts"
           - npm run test/integration

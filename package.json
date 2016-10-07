@@ -109,7 +109,7 @@
   },
   "scripts": {
     "build/docker/image": "build/bin/build.docker.image.sh",
-    "browserstack/tunnel/start": "/BrowserStackLocal --key $BROWSERSTACK_KEY --local-identifier $BITBUCKET_COMMIT --force --force-local --only-automate --parallel-runs 5 --daemon start",
+    "browserstack/tunnel/start": "/BrowserStackLocal --key $BROWSERSTACK_KEY --local-identifier $BITBUCKET_COMMIT --force --force-local --parallel-runs 5 --daemon start",
     "browserstack/tunnel/stop": "/BrowserStackLocal --key $BROWSERSTACK_KEY --local-identifier $BITBUCKET_COMMIT --daemon stop",
     "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",
     "commit": "git-cz -n",

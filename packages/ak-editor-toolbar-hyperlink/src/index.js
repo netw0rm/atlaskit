@@ -2,7 +2,7 @@ import 'style!./host.less';
 import { vdom, define, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
-import Icon from 'ak-editor-icon';
+import LinkIcon from 'ak-icon/glyph/editor/link';
 import Popup from 'ak-editor-popup';
 import TextInput from 'ak-editor-popup-text-input';
 
@@ -41,7 +41,7 @@ export default define('ak-editor-toolbar-hyperlink', {
         active={active}
         disabled={elem.disabled}
       >
-        <Icon glyph="link" {...((active) ? { fill: 'white' } : {})} />
+        <LinkIcon {...((active) ? { style: { color: 'white' } } : {})} />
       </EditorButton>
     );
 

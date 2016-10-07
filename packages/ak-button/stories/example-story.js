@@ -1,30 +1,23 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import AkButtonTemplate, { APPEARANCE } from '../src/index';
+import AkButtonTemplate, { APPEARANCE } from '../src';
 import React from 'react';
-import buttonStatesExample from './AkButtonStates';
+import AkButtonStates from './AkButtonStates';
 import { name } from '../package.json';
-import IconTemplate from 'ak-icon';
+import CalendarIcon from 'ak-icon/glyph/confluence/calendar';
+import PageIcon from 'ak-icon/glyph/confluence/page';
+import QuestionIcon from 'ak-icon/glyph/question';
+import ExpandIcon from 'ak-icon/glyph/expand';
+
 
 const AkButton = reactify(AkButtonTemplate);
 
-const Icon = reactify(IconTemplate);
-
-const GLYPHS = [
-  'calendar',
-  'question',
-  'person',
-  'page',
-  'expand',
+const ICONS = [
+  reactify(CalendarIcon),
+  reactify(QuestionIcon),
+  reactify(PageIcon),
+  reactify(ExpandIcon),
 ];
-
-const AkButtonStates = buttonStatesExample({
-  React,
-  AkButton,
-  APPEARANCE,
-  Icon,
-  GLYPHS: [false].concat(GLYPHS),
-});
 
 const buttonStyles = { 'margin-right': '10px', display: 'inline-flex' };
 
@@ -106,9 +99,9 @@ storiesOf(name, module)
   .add('an ak-button with only icons', () => (
     <div>
       {
-        GLYPHS.map(glyph =>
+        ICONS.map(Icon =>
           (<AkButton style={buttonStyles}>
-            <Icon key={glyph} glyph={glyph} />
+            <Icon />
           </AkButton>)
         )
       }
@@ -117,9 +110,8 @@ storiesOf(name, module)
   .add('an ak-button with icon + text', () =>
     (<div style={{ display: 'flex', flexDirection: 'column' }}>
       {
-        GLYPHS.map(glyph =>
+        ICONS.map(Icon =>
           (<div className="icons-container">
-              {<h1>{glyph}</h1>}
               {[APPEARANCE.STANDARD, APPEARANCE.PRIMARY, APPEARANCE.SUBTLE]
                 .map(appearance => (
                   <AkButton
@@ -127,19 +119,20 @@ storiesOf(name, module)
                     style={buttonStyles}
                     onclick={action('clicking the WebComponent')}
                     appearance={appearance}
+                    key={appearance}
                   >
-                    <Icon slot="before" key={glyph} glyph={glyph} />
+                    <Icon slot="before" />
                       Button
                   </AkButton>
                   )
                 )
                 .concat([
                   <AkButton style={buttonStyles} selected>
-                    <Icon slot="before" key={glyph} glyph={glyph} />
+                    <Icon slot="before" />
                     Button
                   </AkButton>,
                   <AkButton style={buttonStyles} disabled>
-                    <Icon slot="before" key={glyph} glyph={glyph} />
+                    <Icon slot="before" />
                       Button
                   </AkButton>,
                 ])
@@ -149,6 +142,6 @@ storiesOf(name, module)
     }
     </div>)
   )
-  .add('a button that can change its attributes', () =>
-    <AkButtonStates />
-  );
+  .add('a button that can change its attributes', () => (
+    <AkButtonStates icons={[() => null].concat(ICONS)} />
+  ));

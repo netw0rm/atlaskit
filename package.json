@@ -142,7 +142,7 @@
     "test/watch": "karma start ./build/karma/all.js --reporters=dots",
     "test/base": "mocha --colors",
     "test/browserstack": "./build/bin/test.browserstack.sh",
-    "test/browserstack/ci": "./build/bin/test.browserstack.ci.sh || (cat /tmp/browserstack.log; exit 1)",
+    "test/browserstack/ci": "./build/bin/test.browserstack.ci.sh",
     "test/integration": "./build/bin/test.integration.sh",
     "test/integration/browserstack": "node ./build/bin/test.integration.browserstack.js",
     "test/integration/browserstack/wait": "npm run storybook/wait && npm run test/integration/browserstack",

@@ -8,10 +8,6 @@
 // that do not support shadow DOM
 .host-styles() {
   display: block;
-
-  &:not([defined]) {
-    display: none;
-  }
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -19,10 +15,18 @@
 .ak-comment,
 ak-comment {
   .host-styles();
+
+  &:not([defined]) {
+    display: none;
+  }
 }
 
 :host {
   .host-styles();
+
+  &(:not([defined])) {
+    display: none;
+  }
 }
 
 .container {

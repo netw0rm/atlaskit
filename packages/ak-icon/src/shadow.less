@@ -6,14 +6,6 @@
 // that do not support shadow DOM
 .host-styles() {
   display: inline-flex;
-
-  &:not([defined]) {
-    display: none;
-  }
-
-  & > _shadow_root_ {
-    display: inline-flex;
-  }
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -21,10 +13,22 @@
 .ak-icon,
 ak-icon {
   .host-styles();
+
+  & > _shadow_root_ {
+    display: inline-flex;
+  }
+
+  &:not([defined]) {
+    display: none;
+  }
 }
 
 :host {
   .host-styles();
+
+  &(:not([defined])) {
+    display: none;
+  }
 }
 
 .icon {

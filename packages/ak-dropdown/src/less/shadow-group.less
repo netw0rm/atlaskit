@@ -7,10 +7,6 @@
 .host-styles() {
   display: block;
   margin-top: unit(@grid * 2, px);
-
-  &:not([defined]) {
-    display: none;
-  }
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -18,10 +14,18 @@
 .ak-dropdown-group,
 ak-dropdown-group {
   .host-styles();
+
+  &:not([defined]) {
+    display: none;
+  }
 }
 
 :host {
   .host-styles();
+
+  &(:not([defined])) {
+    display: none;
+  }
 }
 
 .group {

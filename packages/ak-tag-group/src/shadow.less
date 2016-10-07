@@ -6,14 +6,6 @@
 // that do not support shadow DOM
 .host-styles() {
   display: flex;
-
-  &:not([defined]) {
-    display: none;
-  }
-
-  > _shadow_root_ {
-    width: 100%;
-  }
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -21,10 +13,23 @@
 .ak-tag-group,
 ak-tag-group {
   .host-styles();
+
+  > _shadow_root_ {
+    width: 100%;
+  }
+
+  &:not([defined]) {
+    display: none;
+  }
+
 }
 
 :host {
   .host-styles();
+
+  &(:not([defined])) {
+    display: none;
+  }
 }
 
 .flex() {

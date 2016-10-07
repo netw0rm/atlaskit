@@ -37,10 +37,6 @@
 .host-styles() {
   display: inline-block;
   position: relative;
-
-  &:not([defined]) {
-    display: none;
-  }
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -48,10 +44,18 @@
 .ak-avatar,
 ak-avatar {
   .host-styles();
+
+  &:not([defined]) {
+    display: none;
+  }
 }
 
 :host {
   .host-styles();
+
+  &(:not([defined])) {
+    display: none;
+  }
 }
 
 // We wrap these rules in :host so that polyfilled browsers will ignore everything inside it

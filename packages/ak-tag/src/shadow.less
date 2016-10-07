@@ -11,10 +11,6 @@
 // that do not support shadow DOM
 .host-styles() {
   display: inline-block;
-
-  &:not([defined]) {
-    display: none;
-  }
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -22,9 +18,19 @@
 .ak-tag,
 ak-tag {
   .host-styles();
+
+  &:not([defined]) {
+    display: none;
+  }
 }
 
+:host {
+  .host-styles();
 
+  &(:not([defined])) {
+    display: none;
+  }
+}
 .chrome {
   .focus-ring();
   cursor:default;

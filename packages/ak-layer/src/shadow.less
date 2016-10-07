@@ -5,9 +5,7 @@
 // Also we should style the tag name with the same styles because of the browsers
 // that do not support shadow DOM
 .host-styles() {
-  &:not([defined]) {
-    display: none;
-  }
+
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -15,8 +13,16 @@
 .ak-layer,
 ak-layer {
   .host-styles();
+
+  &:not([defined]) {
+    display: none;
+  }
 }
 
 :host {
   .host-styles();
+
+  &(:not([defined])) {
+    display: none;
+  }
 }

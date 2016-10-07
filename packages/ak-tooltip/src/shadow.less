@@ -25,9 +25,6 @@
   pointer-events: none;
   display: inline-block;
 
-  &:not([defined]) {
-    display: none;
-  }
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -35,10 +32,18 @@
 .ak-tooltip,
 ak-tooltip {
   .host-styles();
+
+  &:not([defined]) {
+    display: none;
+  }
 }
 
 :host {
   .host-styles();
+
+  &(:not([defined])) {
+    display: none;
+  }
 }
 
 // Putting these styles in host.less with :not([visible]) causes a slight flash when moving the

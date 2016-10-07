@@ -4,7 +4,7 @@ import reactify from 'akutil-react';
 import Dropdown, { DropdownTrigger, DropdownTriggerButton, Group, Item } from '../src/index';
 import styles from '../src/less/shadow-list.less';
 
-const dropdownClass = styles.akDropdown;
+const dropdownClass = styles.locals.akDropdown;
 const DropdownReactComponent = reactify(Dropdown);
 const avatarUrl = require('url!./doge.jpg');
 

@@ -10,11 +10,7 @@
 // that do not support shadow DOM
 .host-styles() {
   display: inline-block;
-
   width: 100%;
-  &:not([defined]) {
-    display: none;
-  }
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -22,10 +18,18 @@
 .ak-navigation-link,
 ak-navigation-link {
   .host-styles();
+
+  &:not([defined]) {
+    display: none;
+  }
 }
 
 :host {
   .host-styles();
+
+  &(:not([defined])) {
+    display: none;
+  }
 }
 
 .wrapper {

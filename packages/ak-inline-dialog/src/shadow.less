@@ -6,10 +6,6 @@
 // that do not support shadow DOM
 .host-styles() {
   display: none;
-
-  &[open] {
-    display:block;
-  }
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -17,10 +13,18 @@
 .ak-inline-dialog,
 ak-inline-dialog {
   .host-styles();
+
+  &[open] {
+    display:block;
+  }
 }
 
 :host {
   .host-styles();
+
+  &([open]) {
+    display:block;
+  }
 }
 
 .inlineDialogContainer {

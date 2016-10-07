@@ -10,10 +10,6 @@
   > _shadow_root_ {
     display: block;
   }
-
-  &:not([defined]) {
-    display: none;
-  }
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -25,10 +21,18 @@ ak-dropdown-item-radio,
 .ak-dropdown-item-checkbox,
 ak-dropdown-item-checkbox {
   .host-styles();
+
+  &:not([defined]) {
+    display: none;
+  }
 }
 
 :host {
   .host-styles();
+
+  &(:not([defined])) {
+    display: none;
+  }
 }
 
 .item {

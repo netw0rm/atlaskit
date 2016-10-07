@@ -1,12 +1,18 @@
 # Button
 
-## Synopsis
+Buttons are used as triggers for actions. They are used in forms, toolbars, dialog footers and as stand-alone action triggers.
 
-A button implementation to handle user events.
+![Example buttons](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-button/docs/button_1.png)
 
-## Setup and install
+![Example buttons](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-button/docs/button_2.png)
 
-```
+## Try it out
+
+Interact with a [live demo of the ak-button component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-button/@VERSION@/).
+
+## Installation
+
+```sh
 npm install ak-button
 ```
 
@@ -18,15 +24,15 @@ Import the component in your JS resource:
 
 #### bundle.js
 
-```
+```javascript
 import AkButton from 'ak-button';
 ```
 
-Now we can use the defined tag in our HTML markup, e.g.:
+Now you can use the defined tag in your HTML markup:
 
 #### index.html
 
-```
+```html
 <html>
 <head>
   <script src="bundle.js"></script>
@@ -37,28 +43,17 @@ Now we can use the defined tag in our HTML markup, e.g.:
 </body>
 ```
 
-### React
-
-```
-import AkButton from 'ak-button';
-import reactify from 'skatejs-react-integration';
-
-const ReactComponent = reactify(AkButton, {});
-
-ReactDOM.render(<ReactComponent />, container);
-```
-
 ### Vanilla JS
 It can be used as a Constructor:
 
-```
+```javascript
 import AkButton from 'ak-button';
 const myButton = new AkButton();
 myButton.innerHTML = 'testing' // renders <ak-button>testing</ak-button>
 document.body.appendChild(myButton) // Needed to be attached to the DOM to be rendered
 ```
 
-Or nested inside skate elements, e.g.:
+Or nested inside skate elements. For example:
 
 ```
 import 'ak-button';
@@ -75,3 +70,14 @@ const MyButton = define('my-elem', {
 
 document.body.appendChild(new MyButton())  // renders <ak-button>My Button</ak-button>
 ```
+### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
+
+```
+import AkButton from 'ak-button';
+import reactify from 'skatejs-react-integration';
+
+const ReactComponent = reactify(AkButton, {});
+
+ReactDOM.render(<ReactComponent />, container);

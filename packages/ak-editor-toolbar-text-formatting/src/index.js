@@ -2,20 +2,42 @@ import { define, vdom, prop, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
 import 'style!./host.less';
 import Button from 'ak-editor-button';
-import Icon from 'ak-editor-icon';
+
+import BoldIcon from 'ak-icon/glyph/editor/bold';
+import ItalicIcon from 'ak-icon/glyph/editor/italic';
+import UnderlineIcon from 'ak-icon/glyph/editor/underline';
+import CodeIcon from 'ak-icon/glyph/editor/code';
+
+const FORMATTING_BOLD = 'bold';
+const FORMATTING_ITALIC = 'italic';
+const FORMATTING_UNDERLINE = 'underline';
+const FORMATTING_CODE = 'code';
+
+const formattingIcons = {
+  [FORMATTING_BOLD]: BoldIcon,
+  [FORMATTING_ITALIC]: ItalicIcon,
+  [FORMATTING_UNDERLINE]: UnderlineIcon,
+  [FORMATTING_CODE]: CodeIcon,
+};
 
 /* eslint-disable react/prop-types */
-const ToggleButton = (props) => (
-  <Button
-    onClick={() => !props.disabled
-    && props.emit('toggletextformatting', { detail: { mark: props.name } })}
-    className={shadowStyles.locals.button + (props.hidden ? ` ${shadowStyles.locals.hidden}` : '')}
-    active={props.active}
-    disabled={props.disabled}
-  >
-    <Icon glyph={props.name} {...(props.active ? { fill: 'white' } : {})} />
-  </Button>
-);
+const ToggleButton = (props) => {
+  const Icon = formattingIcons[props.name];
+  return (
+    <Button
+      onClick={() => !props.disabled
+      && props.emit('toggletextformatting', { detail: { mark: props.name } })}
+      className={
+        // TODO replace this string concat with classnames package
+        shadowStyles.locals.button + (props.hidden ? ` ${shadowStyles.locals.hidden}` : '')
+      }
+      active={props.active}
+      disabled={props.disabled}
+    >
+      <Icon {...(props.active ? { style: { color: 'white' } } : {})} />
+    </Button>
+  );
+};
 /* eslint-enable react/prop-types */
 
 export default define('ak-editor-toolbar-text-formatting', {
@@ -25,28 +47,28 @@ export default define('ak-editor-toolbar-text-formatting', {
       <div className={shadowStyles.locals.root}>
         <style>{shadowStyles.toString()}</style>
         <ToggleButton
-          name="bold"
+          name={FORMATTING_BOLD}
           emit={boundEmit}
           active={elem.boldActive}
           hidden={elem.boldHidden}
           disabled={elem.boldDisabled}
         />
         <ToggleButton
-          name="italic"
+          name={FORMATTING_ITALIC}
           emit={boundEmit}
           active={elem.italicActive}
           hidden={elem.italicHidden}
           disabled={elem.italicDisabled}
         />
         <ToggleButton
-          name="underline"
+          name={FORMATTING_UNDERLINE}
           emit={boundEmit}
           active={elem.underlineActive}
           hidden={elem.underlineHidden}
           disabled={elem.underlineDisabled}
         />
         <ToggleButton
-          name="code"
+          name={FORMATTING_CODE}
           emit={boundEmit}
           active={elem.codeActive}
           hidden={elem.codeHidden}

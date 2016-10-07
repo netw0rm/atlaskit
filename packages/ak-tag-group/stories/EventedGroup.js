@@ -58,11 +58,11 @@ class EventedGroup extends React.Component {
         />
         <label htmlFor="allow-remove">Allow tag removal</label>
         <hr />
-        <Group className={groupStyles.akTagGroup} alignment={this.state.alignment}>
+        <Group className={groupStyles.locals.akTagGroup} alignment={this.state.alignment}>
           {this.state.tags.map((text) => (<Tag
             text={text}
             key={text}
-            className={tagStyles.akTag}
+            className={tagStyles.locals.akTag}
             remove-button-text="Remove me"
           />))}
         </Group>

@@ -12,7 +12,7 @@ export default class AnimationDemo extends React.Component {
 
   randomIcon() {
     const Icon = sample(this.props.components);
-    return <Icon className={componentStyles.akIcon} />;
+    return <Icon className={componentStyles.locals.akIcon} />;
   }
 
   startAnimating() {

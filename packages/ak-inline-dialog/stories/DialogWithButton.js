@@ -49,7 +49,7 @@ class DialogWithButton extends Component {
           {this.props.position}
         </button>
         <Dialog
-          className={styles.akInlineDialog}
+          className={styles.locals.akInlineDialog}
           open={this.state.open}
           target="#target"
           attachment={this.props.attachTo}

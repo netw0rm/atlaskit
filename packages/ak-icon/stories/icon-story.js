@@ -41,7 +41,7 @@ const AllIcons = (props) => (
       .entries(reactifiedComponents)
       .map(([key, Icon]) =>
         <Icon
-          className={componentStyles.akIcon}
+          className={componentStyles.locals.akIcon}
           label={`${key} icon`}
           title={`${key}.svg`}
           key={key}

@@ -53,7 +53,7 @@ class DialogWithInput extends Component {
             width: '100%', boxSizing: 'border-box' }}
         />
         <Dialog
-          className={styles.akInlineDialog}
+          className={styles.locals.akInlineDialog}
           open={this.state.open}
           target="#target"
           position="top left"

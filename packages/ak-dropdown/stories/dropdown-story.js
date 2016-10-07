@@ -9,7 +9,7 @@ import { name } from '../package.json';
 import 'ak-avatar';
 import styles from '../src/less/shadow-list.less';
 
-const dropdownClass = styles.akDropdown;
+const dropdownClass = styles.locals.akDropdown;
 const DropdownReactComponent = reactify(Dropdown);
 const DropdownTriggerReact = reactify(DropdownTrigger);
 const DropdownTriggerButtonReact = reactify(DropdownTriggerButton);

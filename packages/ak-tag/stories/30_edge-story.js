@@ -9,14 +9,14 @@ const Component = reactify(Tag);
 
 storiesOf(name, module)
   .add('edge case: a simple ak-tag (should warn that no text was given in dev)', () => (
-    <Component className={styles.akTag} />
+    <Component className={styles.locals.akTag} />
   ))
   .add('edge case: a removable ak-tag (should warn that no text was given in dev)', () => (
-    <Component className={styles.akTag} remove-button-text="Remove me" />
+    <Component className={styles.locals.akTag} remove-button-text="Remove me" />
   ))
   .add('edge case: special characters (must not alert)', () => (
     <Component
-      className={styles.akTag}
+      className={styles.locals.akTag}
       text="<script>alert('must not alert');</script>"
     />
   ))
@@ -27,7 +27,7 @@ storiesOf(name, module)
       }
       e.innerHTML = '';
       const tag = new Tag();
-      tag.className = styles.akTag;
+      tag.className = styles.locals.akTag;
       tag.text = '<script>alert(\'must not alert either!\');</script>';
       e.appendChild(tag);
     };

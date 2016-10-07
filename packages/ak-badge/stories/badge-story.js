@@ -7,7 +7,7 @@ import styles from '../src/shadow.less';
 
 const Badge = reactify(AkBadge);
 
-const badgeClass = styles.akBadge;
+const badgeClass = styles.locals.akBadge;
 
 storiesOf(name, module)
   .add('with a value', () => (

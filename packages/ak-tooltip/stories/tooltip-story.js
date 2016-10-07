@@ -14,7 +14,7 @@ const TooltipTrigger = reactify(TooltipTriggerWC);
 
 const Container = reactify(ContainerWC);
 
-const tooltipClass = styles.akTooltip;
+const tooltipClass = styles.locals.akTooltip;
 
 const DefaultTooltip = (props) => <Tooltip className={tooltipClass} {...props} />;
 

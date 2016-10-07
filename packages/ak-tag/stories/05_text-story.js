@@ -9,7 +9,7 @@ const Tag = reactify(TagWc);
 
 const MyTag = (props) => (
   <Tag
-    className={styles.akTag}
+    className={styles.locals.akTag}
     {...props}
   />
 );

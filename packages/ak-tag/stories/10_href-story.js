@@ -10,7 +10,7 @@ const Component = reactify(Tag);
 storiesOf(name, module)
   .add('href: custom link', () => (
     <Component
-      className={styles.akTag}
+      className={styles.locals.akTag}
       href="https://www.atlassian.com/search?query=Carrot%20cake"
       text="Carrot cake"
     />

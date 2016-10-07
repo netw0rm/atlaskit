@@ -14,10 +14,10 @@ const Tag = reactify(AkTagWebComponent);
 
 const overflowStory = () => (
   <div style={{ border: '1px solid black' }}>
-    <Group className={styles.akTagGroup}>
+    <Group className={styles.locals.akTagGroup}>
       {tagNames.map((sweet, i) => (
         <Tag
-          className={tagStyles.akTag}
+          className={tagStyles.locals.akTag}
           href="http://www.cupcakeipsum.com/"
           key={i}
           text={sweet}

@@ -6,7 +6,7 @@ import { name } from '../package.json';
 import styles from '../src/shadow.less';
 
 const Lozenge = reactify(AkLozenge);
-const lozengeClass = styles.akLozenge;
+const lozengeClass = styles.locals.akLozenge;
 
 storiesOf(name, module)
   .add('standard and bold lozenges', () => (

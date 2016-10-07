@@ -14,7 +14,7 @@ const Tag = reactify(AkTagWebComponent);
 const RemovableComponent = (props) => (
   <Tag
     {...props}
-    className={tagStyles.akTag}
+    className={tagStyles.locals.akTag}
     href="http://www.cupcakeipsum.com/"
     remove-button-text="No sweets for you!"
   />
@@ -24,7 +24,7 @@ const story = () => (
   <div>
     Try tabbing :)
     <hr />
-    <Group className={styles.akTagGroup}>
+    <Group className={styles.locals.akTagGroup}>
       <RemovableComponent text="Danish chocolate" />
       <RemovableComponent text="Jelly beans" />
       <RemovableComponent text="Cheesecake" />

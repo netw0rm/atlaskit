@@ -51,7 +51,7 @@ class DialogWithBlanket extends Component {
           test button
         </button>
         <Dialog
-          className={styles.akInlineDialog}
+          className={styles.locals.akInlineDialog}
           open={this.state.open}
           target="#target"
           attachment={this.props.attachTo}

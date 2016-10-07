@@ -74,8 +74,16 @@ function renderItems(elem) {
 
     elem._items = {};
 
+    const height = elem.mentions.length * 48;
+
     return (
-      <div>
+      <div className="animated-height">
+        <style>{`
+          .animated-height {
+            transition: height 200ms;
+            height: ${height}px;
+          }
+        `}</style>
         {elem.mentions.map(mention => {
           const selected = elem.selectedKey === mention.id;
           const currentIdx = idx;

@@ -9,8 +9,11 @@ pipelines:
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - npm install
-            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci"
+            - export BROWSERSTACK_TUNNEL="$BITBUCKET_COMMIT"
+            - /BrowserStackLocal --key $BROWSERSTACK_KEY --local-identifier $BITBUCKET_COMMIT --force --force-local --only-automate --parallel-runs 5 --daemon start
+            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack"
             - npm run test/integration
+            - /BrowserStackLocal --key $BROWSERSTACK_KEY --local-identifier $BITBUCKET_COMMIT --daemon stop
             - npm run release/check/is-workspace-clean --silent
             - npm run release/check/can-ff --silent || exit 0
             - npm run release

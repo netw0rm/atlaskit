@@ -1,12 +1,34 @@
 import { vdom } from 'skatejs';
+import classNames from 'classnames';
 import shadowStyles from './shadow.less';
+import Button from 'ak-button';
+import 'ak-icon/glyph/bitbucket/create';
+import 'ak-icon/glyph/bitbucket/optout';
+
 
 /* eslint-disable react/prop-types */
-export default (props) => (
-  <div className={shadowStyles.locals.editModeSlotWrapper} onblur={() => props.onBlur()}>
-    <slot
-      className={shadowStyles.locals.editModeSlot}
-      name="editmode"
-    />
-  </div>
-);
+export default (props) => {
+  const slotWrapperClasses = classNames(shadowStyles.locals.editModeSlotWrapper, {
+    [shadowStyles.locals.focused]: props.focused,
+  });
+  return (
+    <div>
+      <div
+        className={slotWrapperClasses}
+      >
+        <slot
+          className={shadowStyles.locals.editModeSlot}
+          name="editmode"
+        />
+      </div>
+      <div className={shadowStyles.locals.confirmationButtons}>
+        <Button compact>
+          ✓
+        </Button>
+        <Button compact>
+          x
+        </Button>
+      </div>
+    </div>
+  );
+};

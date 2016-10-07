@@ -1,10 +1,13 @@
-import { vdom, define, prop, props } from 'skatejs';
+import { vdom, define, prop, props, emit } from 'skatejs';
 import 'style!./host.less';
 // import shadowStyles from './shadow.less';
+import { focused } from './internal/symbols';
+import { showEditingView } from './internal/events';
 import Editing from './Editing';
 import Viewing from './Viewing';
 import Label from './Label';
 import Root from './Root';
+
 
 /* By default, ak-field-base will display the view mode, that is to say, the content in its
    default slot.  */
@@ -12,14 +15,33 @@ import Root from './Root';
 function switchToEditing(elem) {
   if (!elem.editing) {
     props(elem, { editing: true });
+
+    emit(elem, showEditingView, {
+      bubbles: true,
+      cancelable: true,
+    });
   }
 }
 
-function switchToViewing(elem) {
-  // console.log(`Switchign to viewing`);
-  props(elem, { editing: false });
+// function switchToViewing(elem) {
+//   // console.log(`Switchign to viewing`);
+
+//   props(elem, { editing: false });
+//   emit(elem, showViewingView, {
+//     bubbles: true,
+//     cancelable: true,
+//   });
+// }
+
+function handleFocus(elem) {
+  // console.log(`focus`);
+  props(elem, { [focused]: true });
 }
 
+function handleBlur(elem) {
+  // console.log(`blur`);
+  props(elem, { [focused]: false });
+}
 
 export default define('ak-field-base', {
   render(elem) {
@@ -28,12 +50,15 @@ export default define('ak-field-base', {
 
     return (
       <Root>
-        <Label label={elem.label}>
+        <Label
+          label={elem.label}
+          onClick={() => switchToEditing(elem)}
+        >
           <ViewingView
             onClick={() => switchToEditing(elem)}
           />
           <EditingView
-            onBlur={() => switchToViewing(elem)}
+            focused={elem[focused]}
           />
         </Label>
       </Root>
@@ -48,5 +73,10 @@ export default define('ak-field-base', {
      */
     label: prop.string({ attribute: true }),
     editing: prop.boolean({ attribute: true }),
+    [focused]: prop.boolean(),
+  },
+  attached(elem) {
+    elem.addEventListener('focus', () => handleFocus(elem), true);
+    elem.addEventListener('blur', () => handleBlur(elem), true);
   },
 });

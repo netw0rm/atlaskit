@@ -7,6 +7,7 @@
 @base-horizontal-padding: @grid * 2; // 8px
 @base-height: @grid * 8; // 32px
 @base-inner-height: @grid * 5; // 20px
+@base-border-radius: 3px;
 
 // Label margins
 @label-top-spacing: unit(@grid * 5, px);
@@ -20,6 +21,17 @@
 
 // viewmode variables
 @viewmode-border-width: 0;
+
+// editmode variables
+@editmode-border-width: 1;
+@editmode-border-color: @ak-color-N20;
+@editmode-background-color:  @ak-color-N10A;
+
+// editmode with focus variables
+@editmode-border-width-focused: 2;
+@editmode-border-color-focused: @ak-color-B100;
+@editmode-background-color-focused:  white;
+
 
 
 
@@ -49,19 +61,49 @@
 // view mode styles
 .view-mode-wrapper {
   .borders-and-padding(@viewmode-border-width, @base-horizontal-padding, @base-height);
-  color:red;
-  display: inline-block;
+
+  display: inline-flex;
+  border-radius: @base-border-radius;
 
   &:hover {
     background-color: @ak-color-N20;
     border-color: @ak-color-N20;
+
+    & .editIcon {
+      display: initial;
+    }
+  }
+
+  & .editIcon {
+    display: none;
+    padding-left: 10px;
   }
 }
 
 
 // edit mode styles
 .edit-mode-slot-wrapper {
-  color: red;
+  .borders-and-padding(@editmode-border-width, @base-horizontal-padding, @base-height);
+  border-style: solid;
+  border-radius: @base-border-radius;
+  display: inline-flex;
+  margin-right: unit(@grid, px);
+  border-color: @editmode-border-color;
+  background-color: @editmode-background-color;
+
+  &.focused {
+    .borders-and-padding(@editmode-border-width-focused, @base-horizontal-padding, @base-height);
+    border-color: @editmode-border-color-focused;
+    background-color: @editmode-background-color-focused;
+  }
+}
+
+.confirmation-buttons {
+  display: inline-flex;
+
+  & > * {
+    padding-left: unit(@grid, px);
+  }
 }
 
 .edit-mode-slot {

@@ -1,19 +1,48 @@
 import { vdom, define, prop } from 'skatejs';
 import FieldBase from '../../src/';
+import { showEditingView } from '../../src/internal/events';
+
+function handleViewSwitch(elem) {
+  if (elem.inputField) {
+    elem.inputField.focus();
+  }
+}
+
 
 /* This is an example of how to extend FieldBase. We are creating the simple text field  */
-
 export default define('ak-textfield', {
   render(elem) {
+    const inputStyles = {
+      border: '0px',
+      fontSize: '14px',
+      outline: 0,
+    };
     return (
-      <FieldBase label={elem.label}>
-        <div is="" slot="viewmode">
-          <b>{elem.value}</b>
-        </div>
-        <div is="" slot="editmode">
-          <input type="text" defaultValue={elem.value} />
-        </div>
-      </FieldBase>
+      <div>
+        <style>
+          {`
+            input {
+              background-color: #f7f8f9;
+            }
+            input:focus {
+              background-color: white;
+            }
+          `}
+        </style>
+        <FieldBase label={elem.label}>
+          <div is="" slot="viewmode">
+            <b>{elem.value}</b>
+          </div>
+          <div is="" slot="editmode">
+            <input
+              type="text"
+              defaultValue={elem.value}
+              style={inputStyles}
+              ref={ref => (elem.inputField = ref)}
+            />
+          </div>
+        </FieldBase>
+      </div>
     );
   },
   props: {
@@ -27,5 +56,8 @@ export default define('ak-textfield', {
     editing: prop.boolean({ attribute: true }),
     editable: prop.boolean({ attribute: true }),
     value: prop.string({ attribute: true }),
+  },
+  attached(elem) {
+    elem.addEventListener(showEditingView, () => handleViewSwitch(elem));
   },
 });

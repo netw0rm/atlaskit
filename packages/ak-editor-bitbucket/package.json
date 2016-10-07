@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "3.3.4",
+  "version": "3.3.5",
   "description": "Editor web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -42,7 +42,7 @@
     "skatejs": "^1.4.1"
   },
   "devDependencies": {
-    "ak-editor-test": "*",
+    "ak-editor-test": "^3.0.0",
     "akutil-common-test": "^3.0.0",
     "akutil-react": "^1.0.0"
   },

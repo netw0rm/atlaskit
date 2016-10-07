@@ -15,6 +15,13 @@ storiesOf(name, module)
   .add('a simple ak-field', () => (
     <form style={{ width: '500px' }}>
       <Component>
+        <ReactTextField is slot="input" label="My text field" />
+      </Component>
+    </form>
+  ))
+  .add('ak-field with validation for a text field', () => (
+    <form style={{ width: '500px' }}>
+      <Component>
         <ReactValidatorMinlength
           is slot="validator"
           minlength="5"
@@ -27,7 +34,7 @@ storiesOf(name, module)
           is slot="validator"
           maxlength="10"
         >Must have 10 or less characters</ReactValidatorMaxlength>
-        <ReactTextField is slot="input" label="My text field" />
+        <ReactTextField is slot="input" label="Text field with validation" />
       </Component>
     </form>
   ));

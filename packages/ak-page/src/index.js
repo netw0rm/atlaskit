@@ -78,9 +78,9 @@ export default define('ak-page', {
      */
     shouldAnimate: prop.boolean(),
     /**
-     * @description Defines the size of the avatar.
+     * @description Defines the size of the page.
      * Allowed values: 'fixed', 'fluid'.
-     * @memberof Avatar
+     * @memberof Page
      * @instance
      * @default fixed
      * @type {string}

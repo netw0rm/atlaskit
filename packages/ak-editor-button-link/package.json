@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",
-    "ak-icon": "^7.0.3"
+    "ak-icon": "^7.4.0"
   },
   "repository": {
     "type": "git",

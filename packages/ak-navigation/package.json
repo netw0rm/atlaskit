@@ -26,7 +26,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-avatar": "^2.1.0",
-    "ak-icon": "^7.0.3",
+    "ak-icon": "^7.4.0",
     "ak-page": "^5.0.0",
     "akutil-common-test": "^3.0.0",
     "akutil-react": "^1.0.0",

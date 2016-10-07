@@ -7,17 +7,16 @@ CHALK="`npm bin`/chalk"
 popd > /dev/null
 
 PKG=$(node -e 'console.log(require("./package.json").name)')
+VERSION=$(node -e 'console.log(require("./package.json").version)')
 PREFIX="{white.bold [$PKG]}"
 
 $CHALK --no-stdin -t "{blue $PREFIX Generating README.md...}"
 
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
-  VERSION=$(node -e 'console.log(require("./package.json").version)')
   USAGE=$(cat ./docs/USAGE.md | sed "s/@VERSION@/$VERSION/g")
-  USAGE="$USAGE\n"
 else
-  USAGE=""
+  USAGE="# $PKG"
 fi
 
 # Generate API docs
@@ -41,15 +40,21 @@ else
   elif [[ $DOCS == *"ERROR, Cannot find class"* ]]; then
     $CHALK --no-stdin -t "{red $PREFIX Could not find a class.}"
   else
-    API="\n$DOCS"
+    API="$DOCS"
     $CHALK --no-stdin -t "{blue $PREFIX done!}"
   fi
 fi
 
-# Concatenate USAGE docs and JSDoc output
-if [ -n "$USAGE" ] || [ -n "$API" ]; then
-  (
-    printf "$USAGE"
-    printf "$API"
-  ) > README.md
-fi
+BUTTONS=$(cat ../../build/docs/templates/BUTTONS.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
+SUPPORT=$(cat ../../build/docs/templates/SUPPORT.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
+
+(
+  echo "$BUTTONS"
+  echo
+  echo "$USAGE"
+  echo
+  echo "$SUPPORT"
+  echo
+  echo "$API"
+  echo
+) > README.md

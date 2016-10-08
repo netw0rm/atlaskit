@@ -10,6 +10,12 @@ module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line n
   storybookBaseConfig.module.loaders = webpackConfig.module.loaders;
   storybookBaseConfig.postcss = webpackConfig.postcss;
 
+  storybookBaseConfig.webpackMiddleware = {
+    stats: {
+      chunks: false,
+    },
+  };
+
   storybookBaseConfig.resolve = Object.assign(
     webpackConfig.resolve,
     storybookBaseConfig.resolve || {});

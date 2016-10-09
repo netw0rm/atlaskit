@@ -7,9 +7,9 @@ import Dropdown, {
 import React from 'react';
 import { name } from '../package.json';
 import 'ak-avatar';
-import hostStyles from 'style!./../src/less/host.less';
+import styles from '../src/less/shadow-list.less';
 
-const dropdownClass = hostStyles.akDropdown;
+const dropdownClass = styles.locals.akDropdown;
 const DropdownReactComponent = reactify(Dropdown);
 const DropdownTriggerReact = reactify(DropdownTrigger);
 const DropdownTriggerButtonReact = reactify(DropdownTriggerButton);

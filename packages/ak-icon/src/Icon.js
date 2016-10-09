@@ -1,6 +1,5 @@
 import { Component, vdom } from 'skatejs';
 import * as exceptions from './internal/exceptions';
-import 'style!./host.less';
 import shadowStyles from './shadow.less';
 
 /**

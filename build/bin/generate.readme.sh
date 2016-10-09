@@ -47,6 +47,7 @@ fi
 
 BUTTONS=$(cat ../../build/docs/templates/BUTTONS.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
 SUPPORT=$(cat ../../build/docs/templates/SUPPORT.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
+API=$(echo "$API" | sed "s/@BITBUCKET_COMMIT@/$BITBUCKET_COMMIT/g")
 
 (
   echo "$BUTTONS"

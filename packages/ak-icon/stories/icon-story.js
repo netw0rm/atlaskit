@@ -78,7 +78,7 @@ storiesOf('ak-icon', module)
               <tr key={key}>
                 <td><Icon /></td>
                 <td><pre>import '{importName}';</pre></td>
-                <td><pre>&lt;{tagName}/&gt;</pre></td>
+                <td><pre>&lt;{tagName} /&gt;</pre></td>
               </tr>
             );
           })

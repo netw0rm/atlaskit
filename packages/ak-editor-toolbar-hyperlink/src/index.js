@@ -97,7 +97,7 @@ export default define('ak-editor-toolbar-hyperlink', {
       // https://ecosystem.atlassian.net/browse/AK-513
       if (this.open && e.target !== this && !isDescendantOf(e.target, this) &&
         !(e.path && e.path.indexOf(this) > -1)) {
-        this.addHyperlink();
+        this.open = false;
       }
     },
     toggleHyperlink() {

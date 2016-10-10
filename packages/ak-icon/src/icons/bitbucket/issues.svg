@@ -4,7 +4,7 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="issues" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Layer_1" fill="#000000">
+        <g id="Layer_1" fill="currentColor">
             <g id="Boards" transform="translate(1.000000, 1.000000)">
                 <g id="Group">
                     <path d="M16,0 L2,0 C0.9,0 0,0.9 0,2 L0,9 C0,10.1 0.9,11 2,11 L16,11 C17.1,11 18,10.1 18,9 L18,2 C18,0.9 17.1,0 16,0 L16,0 Z M16,9 L2,9 L2,2 L16,2 L16,9 L16,9 Z" id="Shape"></path>

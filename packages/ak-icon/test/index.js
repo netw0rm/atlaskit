@@ -64,6 +64,21 @@ describe(name, () => {
           'confluence/quote',
 
           'dashboard',
+          'edit',
+
+          'editor/bold',
+          'editor/code',
+          'editor/image',
+          'editor/italic',
+          'editor/link',
+          'editor/list/bullet',
+          'editor/list/number',
+          'editor/mention',
+          'editor/open',
+          'editor/underline',
+          'editor/unlink',
+
+          'error',
           'expand',
           'home',
           'jira/logo',

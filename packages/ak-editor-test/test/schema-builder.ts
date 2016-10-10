@@ -1,4 +1,4 @@
-import { p, text, nodeFactory, markFactory, sequence, RefsTrackingNode } from '../src/schema-builder';
+import { p, text, nodeFactory, markFactory, sequence, RefsTracker } from '../src/schema-builder';
 import { expect } from 'chai';
 
 describe('ak-editor-test schema-builder', () => {
@@ -8,21 +8,21 @@ describe('ak-editor-test schema-builder', () => {
     it('returns a refs tracking node for an empty string', () => {
       const nodes = text('');
 
-      expect(nodes).to.be.an.instanceOf(RefsTrackingNode);
+      expect(nodes).to.be.an.instanceOf(RefsTracker);
       expect(nodes.refs).to.deep.equal({});
     });
 
     it('returns a refs tracking node for a string with a single ref only', () => {
       const nodes = text('{a}');
 
-      expect(nodes).to.be.an.instanceOf(RefsTrackingNode);
+      expect(nodes).to.be.an.instanceOf(RefsTracker);
       expect(nodes.refs).to.deep.equal({ a: 0 });
     });
 
     it('returns a refs tracking node for a string with multiple refs only', () => {
       const nodes = text('{a}{b}');
 
-      expect(nodes).to.be.an.instanceOf(RefsTrackingNode);
+      expect(nodes).to.be.an.instanceOf(RefsTracker);
       expect(nodes.refs).to.deep.equal({ a: 0, b: 0 });
     });
 
@@ -137,10 +137,23 @@ describe('ak-editor-test schema-builder', () => {
       expect(em()).to.be.an.instanceOf(Array);
     });
 
-    it('corrects calculates refs', () => {
+    it('correctly calculates refs', () => {
       const node = p(em('t{a}ex{b}t'));
       const { a, b } = node.refs;
       expect(node.textBetween(a, b)).to.equal('ex');
+    });
+
+    it('supports being composed with text() and maintaining refs', () => {
+      const node = p(em(text('t{a}ex{b}t')));
+      const { a, b } = node.refs;
+      expect(node.textBetween(a, b)).to.equal('ex');
+    });
+
+    it('supports being composed with multiple text() and maintaining refs', () => {
+      const node = p(em(text('t{a}ex{b}t'), text('t{c}ex{d}t')));
+      const { a, b, c, d } = node.refs;
+      expect(node.textBetween(a, b)).to.equal('ex');
+      expect(node.textBetween(c, d)).to.equal('ex');
     });
   });
 

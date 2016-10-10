@@ -1,5 +1,4 @@
 /* eslint no-underscore-dangle: 0 */
-import 'style!./host.less';
 import classNames from 'classnames';
 import debounce from 'debounce';
 import { vdom, define, prop } from 'skatejs';
@@ -12,7 +11,7 @@ import * as events from './internal/index.events';
 const { tabChange: tabChangeEvent } = events;
 import * as i18n from './internal/i18n';
 import Tab from './index.tab';
-import Icon from 'ak-icon';
+import ExpandIcon from 'ak-icon/glyph/expand';
 import Dropdown, { Item as DropdownItem, DropdownTrigger } from 'ak-dropdown';
 
 import { buttonContainer, labelsContainer } from './internal/symbols';
@@ -85,7 +84,7 @@ export default define('ak-tabs', {
                 <DropdownTrigger slot="trigger">
                   <a className={shadowStyles.locals.akTabsButton}>
                     <span>{i18n.more}</span>
-                    <Icon glyph="expand" />
+                    <ExpandIcon />
                   </a>
                 </DropdownTrigger>
                 {

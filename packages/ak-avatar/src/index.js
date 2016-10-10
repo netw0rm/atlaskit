@@ -1,8 +1,6 @@
 /** @jsx vdom */
 /* The no-underscore-dangle line can be removed once we can use symbols for prop names */
 /* eslint-disable no-underscore-dangle */
-import 'style!./host.less';
-
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
 import { vdom, define, prop, props, Component } from 'skatejs';

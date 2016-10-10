@@ -64,6 +64,7 @@ describe(name, () => {
           'confluence/quote',
 
           'dashboard',
+          'edit',
 
           'editor/bold',
           'editor/code',

@@ -10,7 +10,7 @@ import AkComment from '../src/index';
 import React from 'react';
 import { name } from '../package.json';
 import transparentAvatarUrl from 'url!./face-w-transparency.png';
-import hostStyles from '../src/host.less';
+import styles from '../src/shadow.less';
 
 const Comment = reactify(AkComment);
 const Avatar = reactify(AkAvatar);
@@ -19,7 +19,7 @@ const ButtonGroup = reactify(AkButtonGroup);
 const TeamsIcon = reactify(BitbucketTeamsIcon);
 const CreateIcon = reactify(BitbucketCreateIcon);
 const SnippetsIcon = reactify(BitbucketSnippetsIcon);
-const commentClass = hostStyles.locals.akComment;
+const commentClass = styles.locals.akComment;
 
 /* eslint-disable react/prop-types */
 const MyComment = (props) => (

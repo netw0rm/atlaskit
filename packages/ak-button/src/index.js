@@ -14,6 +14,12 @@ const TYPE = type.values;
 
 export { APPEARANCE, TYPE };
 
+/**
+ * @description Creates instances of ak-button programmatically, or using markup.
+ * @class Button
+ * @example @js import Button from 'ak-button';
+ * const button = new Button();
+ */
 const definition = {
   props: {
     /**
@@ -30,7 +36,7 @@ const definition = {
      * @description Type of the ak-button. One of:
      * 'button', 'submit'.
      * @memberof Button
-     * @default 'button'
+     * @default button
      * @type {string}
      * @example @html <ak-button type="submit"></ak-button>
      * @example @js button.type = 'submit';

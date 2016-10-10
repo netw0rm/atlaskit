@@ -1,4 +1,4 @@
-image: atlassianlabs/atlaskit:2016-10-05
+image: atlassianlabs/atlaskit:2016-10-07
 pipelines:
   branches:
     master:
@@ -9,8 +9,10 @@ pipelines:
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - npm install
-            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci"
+            - npm run browserstack/tunnel/start
+            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack"
             - npm run test/integration
+            - npm run browserstack/tunnel/stop
             - npm run release/check/is-workspace-clean --silent
             - npm run release/check/can-ff --silent || exit 0
             - npm run release
@@ -22,5 +24,7 @@ pipelines:
           - export FORCE_COLOR=1
           - ./build/bin/setup.sh
           - npm install
-          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/ci" "pr/artifacts"
+          - npm run browserstack/tunnel/start
+          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack" "pr/artifacts"
           - npm run test/integration
+          - npm run browserstack/tunnel/stop

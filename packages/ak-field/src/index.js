@@ -20,12 +20,12 @@ import { SuccessIcon, ErrorIcon } from 'ak-icon';
 const dialogBorderColor = '#D93A35'; // R400
 
 function getValidators(elem) {
-  const nodes = elem[validatorSlot] && elem[validatorSlot].assignedNodes();
-  return nodes ? nodes.filter(el => el.validate) : null;
+  const nodes = elem[validatorSlot] && elem[validatorSlot].assignedNodes() || [];
+  return nodes.filter(el => el.validate);
 }
 
 function hasValidators(elem) {
-  return !!getValidators(elem);
+  return !!getValidators(elem).length;
 }
 
 function getInput(elem) {

@@ -56,8 +56,10 @@ function openDialog(elem) {
     list[0].first = true;
     list[list.length - 1].last = true;
   }
-
-  elem.reposition();
+  // hacky solution until AK-343 is fixed
+  setTimeout(() => {
+    elem.reposition();
+  });
   emit(elem, events.afterOpen);
 }
 
@@ -290,16 +292,7 @@ export default define('ak-dropdown', {
           boundariesElement={elem.boundariesElement}
           ref={(layer) => {
             elem[layerElem] = layer;
-            setTimeout(() => {
-              if (elem.open && layer.alignment) {
-                  // by default dropdown has opacity 0
-                  // and only with attribute 'positioned' it has opacity 1
-                  // this behavior is to avoid 'flashing' of dropdown
-                  // when it's initially positioning itself on a page
-                elem.setAttribute('positioned', true);
-                layer.reposition();
-              }
-            });
+            elem[layerElem].reposition();
           }
         }
         >

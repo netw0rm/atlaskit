@@ -3,13 +3,13 @@ import reactify from 'akutil-react';
 import AkAvatar from '../src/index';
 import avatarStoryStyles from 'style!./stories.less';
 import { name } from '../package.json';
-import hostStyles from 'style!./../src/host.less';
+import styles from '../src/shadow.less';
 
 import React from 'react';
 
 const Avatar = reactify(AkAvatar);
 
-const avatarClass = hostStyles.akAvatar;
+const avatarClass = styles.locals.akAvatar;
 const transparentAvatarUrl = require('url!./face-w-transparency.png');
 const tickUrl = require('url!./tick.svg');
 const tickWithBackgroundUrl = require('url!./tick.png');

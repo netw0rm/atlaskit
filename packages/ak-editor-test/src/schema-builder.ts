@@ -2,19 +2,69 @@ import { Fragment, Node, Slice } from 'ak-editor-prosemirror';
 import schema from 'ak-editor-schema';
 import matches from './matches';
 
+/**
+ * Represents a ProseMirror "position" in a document.
+ */
 type position = number;
-export type Refs = {[name: string]: position};
-export type BuilderContent = string | Node | Node[];
-type RefsContent = RefsNode | RefsNode[];
 
 /**
- * ProseMirror doesn't support empty text nodes, so this class provides a way to
- * insert refs into the builder without needing to actually insert a node.
+ * A useful feature of the builder is being able to declaratively mark positions
+ * in content using the curly braces e.g. `{<>}`.
+ *
+ * These positions are called "refs" (inspired by React), and are tracked on
+ * every node in the tree that has a ref on any of its descendants.
  */
-export class RefsTrackingNode extends Node {
+export type Refs = { [name: string]: position };
+
+/**
+ * Content that contains refs information.
+ */
+type RefsContentItem = RefsNode | RefsTracker;
+
+/**
+ * Content node or mark builders can consume, e.g.
+ *
+ *     const builder = nodeFactory('p');
+ *     builder('string');
+ *     builder(aNode);
+ *     builder(aRefsNode);
+ *     builder(aRefsTracker);
+ *     builder([aNode, aRefsNode, aRefsTracker]);
+ */
+export type BuilderContent = string | Node | RefsContentItem | (Node | RefsContentItem)[];
+
+/**
+ * ProseMirror doesn't support empty text nodes, which can be quite
+ * inconvenient when you want to capture a position ref without introducing
+ * text.
+ *
+ * Take a couple of examples:
+ *
+ *     p('{<>}')
+ *     p('Hello ', '{<>}', 'world!')
+ *
+ * After the ref syntax is stripped you're left with:
+ *
+ *     p('')
+ *     p('Hello ', '', 'world!')
+ *
+ * This violates the rule of text nodes being non-empty. This class solves the
+ * problem by providing an alternative data structure that *only* stores refs,
+ * and can be used in scenarios where an empty text would be forbidden.
+ *
+ * This is done under the hood when using `text()` factory, and instead of
+ * always returning a text node, it'll instead return one of two things:
+ *
+ * - a text node -- when given a non-empty string
+ * - a refs tracker -- when given a string that *only* contains refs.
+ */
+export class RefsTracker {
   refs: Refs;
 }
 
+/**
+ * A standard ProseMirror Node that also tracks refs.
+ */
 export interface RefsNode extends Node {
   refs: Refs;
 }
@@ -23,9 +73,10 @@ export interface RefsNode extends Node {
  * Create a text node.
  *
  * Special markers called "refs" can be put in the text. Refs provide a way to
- * get a reference to the position in text after the node has been constructed.
+ * declaratively describe a position within some text, and then access the
+ * position in the resulting node.
  */
-export function text(value: string): RefsNode | RefsTrackingNode {
+export function text(value: string): RefsContentItem {
   let stripped = "";
   let textIndex = 0;
   let refs: Refs = {};
@@ -40,7 +91,7 @@ export function text(value: string): RefsNode | RefsTrackingNode {
   stripped += value.slice(textIndex);
 
   const node = stripped === ""
-    ? new RefsTrackingNode()
+    ? new RefsTracker()
     : schema.text(stripped) as RefsNode;
 
   node.refs = refs;
@@ -62,18 +113,18 @@ export function offsetRefs(refs: Refs, offset: number): Refs {
  * Given a collection of nodes, sequence them in an array and return the result
  * along with the updated refs.
  */
-export function sequence(...content: (RefsNode | RefsTrackingNode)[]) {
+export function sequence(...content: RefsContentItem[]) {
   let position = 0;
   const refs = {} as Refs;
   const nodes = [] as RefsNode[];
 
   // It's bizarre that this is necessary. An if/else in the for...of should have
   // sufficient but it did not work at the time of writing.
-  const isRefsTrackingNode = (n: any): n is RefsTrackingNode => n instanceof RefsTrackingNode;
-  const isRefsNode = (n: any): n is RefsNode => !isRefsTrackingNode(n);
+  const isRefsTracker = (n: any): n is RefsTracker => n instanceof RefsTracker;
+  const isRefsNode = (n: any): n is RefsNode => !isRefsTracker(n);
 
   for (const node of content) {
-    if (isRefsTrackingNode(node)) {
+    if (isRefsTracker(node)) {
       Object.assign(refs, offsetRefs(node.refs, position));
     }
     if (isRefsNode(node)) {
@@ -108,7 +159,7 @@ export function coerce(content: BuilderContent[]) {
   const refsContent = content
     .map(item => typeof item === 'string'
       ? text(item)
-      : item) as RefsContent[];
+      : item) as (RefsContentItem | RefsContentItem[])[];
   return sequence(...flatten(refsContent));
 }
 
@@ -124,33 +175,6 @@ export function nodeFactory(type: string, attrs = {}) {
     node.refs = refs;
     return node;
   }
-}
-
-/**
- * Build a <pre> code block node with
- *
- * @param {Node|undefined} textContent  Code block text (defaults to empty)
- * @param {String|null} params          Optional params, used primarily for hinting the language code was written in
- * @returns {RefsNode}
- */
-export function pre(textContent?: Node, params? : String|null) : RefsNode {
-  let node: RefsNode;
-
-  // Normalize params because we depend on the value in serializers
-  if (!params) {
-    params = null;
-  }
-
-  if (textContent) {
-    // textContent = text(''); // schema allows code block with empty text
-    const { nodes, refs } = coerce([textContent]);
-    node = schema.nodes['code_block'].create({ params }, nodes);
-    node.refs = refs;
-  } else {
-    node = schema.nodes['code_block'].create({ params });
-  }
-
-  return node;
 }
 
 /**
@@ -186,6 +210,7 @@ export const li = nodeFactory("list_item", {});
 export const ul = nodeFactory("bullet_list", {});
 export const ol = nodeFactory("ordered_list", {});
 export const br = schema.node("hard_break");
+export const code_block = (attrs: {}) => nodeFactory("code_block", attrs);
 export const img = (attrs: { src: string, alt?: string, title?: string }) => schema.node("image", attrs);
 export const emoji = (attrs: { id: string }) => schema.node("emoji", attrs);
 export const mention = (attrs: { id: string, displayName?: string }) => schema.node("mention", attrs);

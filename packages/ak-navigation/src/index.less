@@ -13,12 +13,40 @@
 
 @font-size: 14px;
 
+// Because of the shadow DOM boundries we can not style the host element the usual way
+// To do this the ':host' pseudo-class should be used
+// Also we should style the tag name with the same styles because of the browsers
+// that do not support shadow DOM
+.host-styles() {
+  display: inline-block;
+  width: 100%;
+}
+
+// we define a class here in order to re-use it in the storybook
+// (because in storybook the component name is randomly generated)
+.ak-navigation,
+ak-navigation {
+  .host-styles();
+
+  &:not([defined]) {
+    display: none;
+  }
+}
+
+:host {
+  .host-styles();
+
+  &(:not([defined])) {
+    display: none;
+  }
+}
+
 .blanket:not(.blanket-active) {
   display: none;
 }
 
-.navigation {
-  &.should-animate {
+.should-animate {
+  .spacer, .navigation {
     transition: width 250ms, transform 250ms;
   }
 }

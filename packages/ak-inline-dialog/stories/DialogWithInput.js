@@ -1,6 +1,6 @@
 import reactify from 'akutil-react';
 import AkInlineDialog from '../src/index';
-import styles from 'style!./../src/host.less';
+import styles from '../src/shadow.less';
 
 import React from 'react';
 const { Component } = React;
@@ -53,7 +53,7 @@ class DialogWithInput extends Component {
             width: '100%', boxSizing: 'border-box' }}
         />
         <Dialog
-          className={styles.akInlineDialog}
+          className={styles.locals.akInlineDialog}
           open={this.state.open}
           target="#target"
           position="top left"

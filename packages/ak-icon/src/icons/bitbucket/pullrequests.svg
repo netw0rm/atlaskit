@@ -1,31 +1,15 @@
 
-<svg width="19px" height="18px" viewBox="90 246 19 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="22px" height="22px" viewBox="-1 -1 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
     <desc>Created with Sketch.</desc>
-    <defs>
-        <ellipse id="path-1" cx="6.11860795" cy="13.1029412" rx="1.10294118" ry="1.11860795"></ellipse>
-        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-2" y="-2" width="6.20588235" height="6.23721591">
-            <rect x="3.01566678" y="9.98433322" width="6.20588235" height="6.23721591" fill="white"></rect>
-            <use xlink:href="#path-1" fill="black"></use>
-        </mask>
-        <ellipse id="path-3" cx="1.88419118" cy="1.47691761" rx="1.10294118" ry="1.11860795"></ellipse>
-        <mask id="mask-4" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-2" y="-2" width="6.20588235" height="6.23721591">
-            <rect x="-1.21875" y="-1.64169034" width="6.20588235" height="6.23721591" fill="white"></rect>
-            <use xlink:href="#path-3" fill="black"></use>
-        </mask>
-    </defs>
-    <g id="l0020_pull-request-new-20-copy-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(92.000000, 247.000000)">
-        <g id="Group-38" stroke="currentColor">
-            <g id="Group-37" transform="translate(7.000000, 0.000000)">
-                <g id="Group-36">
-                    <path d="M6.05721507,11.6445312 L6.05721507,4.47746088 C6.05721507,3.37259134 5.15599375,2.47691761 4.05597464,2.47691761 L0.599556446,2.47691761" id="Path-221" stroke-width="2"></path>
-                    <polygon id="Path-37-Copy" stroke-linejoin="round" fill="currentColor" points="0.811135465 0.753774168 4.48760605 0.753774168 4.48760605 1.4995128 1.54642958 1.4995128 1.54642958 4.48246735 0.811135465 4.48246735"></polygon>
-                    <use id="Oval-18-Copy" mask="url(#mask-2)" stroke-width="4" transform="translate(6.118608, 13.102941) rotate(-90.000000) translate(-6.118608, -13.102941) " xlink:href="#path-1"></use>
+    <defs></defs>
+    <g id="pullrequests" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" fill="#505F79">
+            <g id="Boards" transform="translate(2.000000, 1.000000)">
+                <g id="Group">
+                    <path d="M14,12.2 L14,8 C14,6.3 12.7,5 11,5 L9.1,5 L9.9,4.2 C10.2,3.9 10.2,3.4 9.9,3.1 C9.6,2.8 9.1,2.8 8.8,3.1 L6.5,5.4 C6.2,5.8 6.2,6.3 6.5,6.6 L8.8,8.9 C9,9.1 9.1,9.1 9.3,9.1 C9.5,9.1 9.7,9 9.9,8.8 C10.2,8.5 10.2,8 9.9,7.7 L9.2,7 L11,7 C11.6,7 12,7.4 12,8 L12,12.2 C10.8,12.6 10,13.7 10,15 C10,16.7 11.3,18 13,18 C14.7,18 16,16.7 16,15 C16,13.7 15.2,12.6 14,12.2 L14,12.2 Z M13,16 C12.4,16 12,15.6 12,15 C12,14.4 12.4,14 13,14 C13.6,14 14,14.4 14,15 C14,15.6 13.6,16 13,16 L13,16 Z" id="Shape"></path>
+                    <path d="M3,0 C1.4,0 0,1.3 0,3 C0,4.3 0.8,5.4 2,5.8 L2,17 C2,17.6 2.4,18 3,18 C3.6,18 4,17.6 4,17 L4,5.8 C5.2,5.4 6,4.3 6,3 C6,1.3 4.7,0 3,0 L3,0 Z M3,4 C2.5,4 2,3.6 2,3 C2,2.4 2.4,2 3,2 C3.6,2 4,2.4 4,3 C4,3.6 3.6,4 3,4 L3,4 Z" id="Shape"></path>
                 </g>
-            </g>
-            <g id="Group-40" transform="translate(0.000000, 1.000000)">
-                <path d="M7.85605022,8.97708129 L-2.12103108,8.97708133" id="Line" stroke-width="2" stroke-linecap="round" transform="translate(2.378969, 9.477081) rotate(-90.000000) translate(-2.378969, -9.477081) "></path>
-                <use id="Oval-18" mask="url(#mask-4)" stroke-width="4" transform="translate(1.884191, 1.476918) rotate(-90.000000) translate(-1.884191, -1.476918) " xlink:href="#path-3"></use>
             </g>
         </g>
     </g>

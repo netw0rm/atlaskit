@@ -1,21 +1,21 @@
 import 'style!./host.less';
 import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
+import {
+  inputSlot,
+  validatorSlot,
+  helpDialog,
+  dialogTarget,
+  errors,
+  showIcon,
+  helpOpen,
+} from './internal/symbols';
 
 import { events } from 'ak-field-text';
 const { focus, blur } = events;
 import InlineDialog from 'ak-inline-dialog';
 import { SuccessIcon, ErrorIcon } from 'ak-icon';
 
-const inputSlot = Symbol();
-const validatorSlot = Symbol();
-const helpDialog = Symbol();
-const dialogTarget = Symbol();
-
-// Props
-const errors = Symbol('errors');
-const showIcon = Symbol('showIcon');
-const helpOpen = Symbol('helpOpen');
 
 const dialogBorderColor = '#D93A35'; // R400
 

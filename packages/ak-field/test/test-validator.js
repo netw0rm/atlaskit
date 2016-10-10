@@ -40,10 +40,6 @@ describe('ak-field', () => {
         const noIcon = () => (!hasErrorIcon(akField) && !hasSuccessIcon(akField));
         return waitUntil(noIcon).should.be.fulfilled;
       });
-
-      it('should not show the error dialog', () => {
-
-      });
     });
 
     describe('with a valid value entered', () => {
@@ -56,10 +52,6 @@ describe('ak-field', () => {
         const successIcon = () => (!hasErrorIcon(akField) && hasSuccessIcon(akField));
         return waitUntil(successIcon).should.be.fulfilled;
       });
-
-      it('should not show the error dialog', () => {
-
-      });
     });
 
     describe('with an invalid value entered', () => {
@@ -71,10 +63,6 @@ describe('ak-field', () => {
       it('should show the error icon only', () => {
         const errorIcon = () => hasErrorIcon(akField) && !hasSuccessIcon(akField);
         return waitUntil(errorIcon).should.be.fulfilled;
-      });
-
-      it('should show the error dialog', () => {
-
       });
     });
   });

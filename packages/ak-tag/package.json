@@ -18,7 +18,7 @@
     "classnames": "^2.2.5",
     "create-error": "^0.3.1",
     "debug": "^2.2.0",
-    "skatejs": "^1.5.1"
+    "skatejs": "^2.0.4"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

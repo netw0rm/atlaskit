@@ -6,7 +6,6 @@ import CharlieIcon from 'ak-icon/glyph/atlassian';
 import AkButtonGroup from '../src/index';
 import React from 'react';
 import { name } from '../package.json';
-// import styles from 'style!./../src/host.less';
 
 const ReactAkButtonGroup = reactify(AkButtonGroup);
 const ReactAkButton = reactify(AkButton);

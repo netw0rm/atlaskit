@@ -1,5 +1,4 @@
 /* eslint no-underscore-dangle: 0 */
-import 'style!./host.less';
 import classNames from 'classnames';
 import debounce from 'debounce';
 import { vdom, define, prop } from 'skatejs';

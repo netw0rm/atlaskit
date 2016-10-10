@@ -64,6 +64,7 @@ describe(name, () => {
 
           'create',
           'dashboard',
+          'edit',
 
           'editor/bold',
           'editor/code',

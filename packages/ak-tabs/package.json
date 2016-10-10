@@ -1,6 +1,6 @@
 {
   "name": "ak-tabs",
-  "version": "2.1.0",
+  "version": "2.1.4",
   "description": "Tabs web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

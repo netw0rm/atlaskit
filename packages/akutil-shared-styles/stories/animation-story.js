@@ -4,7 +4,7 @@ import { storiesOf } from '@kadira/storybook';
 import storyStyles from './animation/animation-story.less';
 import { name } from '../package.json';
 
-const containerClass = classNames(storyStyles.container);
+const containerClass = classNames(storyStyles.locals.container);
 
 import AnimatedBox from './animation/AnimatedBox.js';
 import AnimatedBoxGroup from './animation/AnimatedBoxGroup.js';

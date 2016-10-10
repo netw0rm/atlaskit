@@ -9,7 +9,7 @@ import ToggleIcons from './ToggleIcons';
 import classnames from 'classnames';
 import pathToDashed from '../src/pathToDashed';
 import { getGlyphs } from '../test/_helpers';
-import componentStyles from 'style!./../src/host.less';
+import componentStyles from '../src/shadow.less';
 import AkButtonWc from 'ak-button';
 
 const AkButton = reactify(AkButtonWc);
@@ -41,7 +41,7 @@ const AllIcons = (props) => (
       .entries(reactifiedComponents)
       .map(([key, Icon]) =>
         <Icon
-          className={componentStyles.akIcon}
+          className={componentStyles.locals.akIcon}
           label={`${key} icon`}
           title={`${key}.svg`}
           key={key}
@@ -78,7 +78,7 @@ storiesOf('ak-icon', module)
               <tr key={key}>
                 <td><Icon /></td>
                 <td><pre>import '{importName}';</pre></td>
-                <td><pre>&lt;{tagName}/&gt;</pre></td>
+                <td><pre>&lt;{tagName} /&gt;</pre></td>
               </tr>
             );
           })

@@ -5,10 +5,12 @@ import shadowStyles from './shadow.less';
 import { events } from 'ak-field-text';
 const { focus, blur } = events;
 import InlineDialog from 'ak-inline-dialog';
+import { SuccessIcon, ErrorIcon } from 'ak-icon';
 
 const inputSlot = Symbol();
 const validatorSlot = Symbol();
 const helpDialog = Symbol();
+const dialogTarget = Symbol();
 
 // Props
 const errors = Symbol('errors');
@@ -17,7 +19,12 @@ const helpOpen = Symbol('helpOpen');
 const dialogBorderColor = '#D93A35'; // R400
 
 function getValidators(elem) {
-  return elem[validatorSlot].assignedNodes().filter(el => el.validate);
+  const nodes = elem[validatorSlot] && elem[validatorSlot].assignedNodes();
+  return nodes ? nodes.filter(el => el.validate) : null;
+}
+
+function hasValidators(elem) {
+  return !!getValidators(elem);
 }
 
 function getInput(elem) {
@@ -73,17 +80,36 @@ export default define('ak-field', {
           <slot
             name="input"
             ref={el => (elem[inputSlot] = el)}
-            onSlotchange={() => (elem[helpDialog].target = elem.querySelector('input'))}
           />
         </div>
-        <div className={shadowStyles.locals.rightSlot}></div>
+        <div className={shadowStyles.locals.rightSlot}>
+          {(() => {
+            // Use an IIFE here to ensure that the icon is rendered in the correct place.
+            if (getInputValue(elem) && hasValidators(elem)) {
+              return elem[errors] ?
+                <ErrorIcon
+                  class={shadowStyles.locals.errorIcon}
+                  ref={el => (elem[dialogTarget] = el)}
+                />
+              :
+                <SuccessIcon
+                  class={shadowStyles.locals.successIcon}
+                  ref={el => (elem[dialogTarget] = el)}
+                />;
+            }
+            return null;
+          })()}
+        </div>
         <InlineDialog
           borderColor={dialogBorderColor}
           open={elem[helpOpen] && elem[errors]}
           hasBlanket={false}
           padding="3px"
           position="right middle"
-          ref={el => (elem[helpDialog] = el)}
+          ref={el => {
+            elem[helpDialog] = el;
+            el.target = elem[dialogTarget];
+          }}
         >
           <ul class={shadowStyles.locals.errorList}>
             <slot

@@ -80,6 +80,7 @@ describe(name, () => {
 
           'error',
           'expand',
+          'feedback',
           'help',
           'home',
           'jira/logo',

@@ -1,5 +1,4 @@
 /** @jsx vdom */
-import 'style!./host.less';
 import { enumeration, KeyPressHandler } from 'akutil-common';
 import { vdom, prop, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';

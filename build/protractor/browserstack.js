@@ -15,6 +15,7 @@ Object.assign(protractorConf, {
     'browserstack.key': process.env.BROWSERSTACK_KEY,
     'browserstack.debug': 'true',
     'browserstack.local': 'true',
+    'browserstack.localIdentifier': process.env.BITBUCKET_COMMIT,
   },
 });
 

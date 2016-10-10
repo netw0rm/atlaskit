@@ -3,13 +3,13 @@ import reactify from 'akutil-react';
 import TagWc from '../src/index';
 import React from 'react';
 import { name } from '../package.json';
-import styles from 'style!./../src/host.less';
+import styles from '../src/shadow.less';
 
 const Tag = reactify(TagWc);
 
 const MyTag = (props) => (
   <Tag
-    className={styles.akTag}
+    className={styles.locals.akTag}
     {...props}
   />
 );

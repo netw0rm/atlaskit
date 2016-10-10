@@ -3,6 +3,7 @@ import 'ak-button';
 import 'ak-icon';
 import keyCode from 'keycode';
 import { trigger as triggerEvents } from './internal/events';
+import shadowTriggerStyles from './less/shadow-trigger.less';
 
 function handleKeyDown(elem) {
   return (e) => {
@@ -33,6 +34,7 @@ export const DropdownTrigger = define('ak-dropdown-trigger', {
         onclick={handleClick(elem)}
         onkeydown={handleKeyDown(elem)}
       >
+        <style>{shadowTriggerStyles.toString()}</style>
         <slot />
       </div>
     );
@@ -77,6 +79,7 @@ export const DropdownTriggerButton = define('ak-dropdown-trigger-button',
           selected={elem.opened}
           disabled={elem.disabled}
         >
+          <style>{shadowTriggerStyles.toString()}</style>
           {elem.getContent()}
         </ak-button>
       );

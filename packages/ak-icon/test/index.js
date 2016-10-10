@@ -38,7 +38,6 @@ describe(name, () => {
           'bitbucket/commits',
           'bitbucket/dashboard',
           'bitbucket/downloads',
-          'bitbucket/feedback',
           'bitbucket/followers',
           'bitbucket/following',
           'bitbucket/issues',

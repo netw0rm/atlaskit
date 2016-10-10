@@ -23,7 +23,7 @@ module.exports = (fillCallback, styleCallback) => {
     }),
   });
   const callbackOnStyleElementPlugin = Object.assign({}, callbackOnStyleElement, {
-    params: Object.assign({}, callbackOnDefinedFill.params, {
+    params: Object.assign({}, callbackOnStyleElement.params, {
       callback: styleCallback,
     }),
   });

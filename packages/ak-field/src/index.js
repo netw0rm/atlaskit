@@ -14,6 +14,7 @@ const dialogTarget = Symbol();
 
 // Props
 const errors = Symbol('errors');
+const showIcon = Symbol('showIcon');
 const helpOpen = Symbol('helpOpen');
 
 const dialogBorderColor = '#D93A35'; // R400
@@ -39,21 +40,6 @@ function getInputValue(elem) {
   return input ? input.value : null;
 }
 
-function validate(elem) {
-  const value = getInputValue(elem);
-  let hasError = false;
-
-  if (value) {
-    getValidators(elem).forEach((validator) => {
-      if (!validator.validate(value)) {
-        hasError = true;
-      }
-    });
-  }
-
-  return hasError;
-}
-
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class Field
@@ -63,11 +49,11 @@ function validate(elem) {
 export default define('ak-field', {
   created(elem) {
     // Listen for changes to the input, and then validate everything
-    elem.addEventListener('input', () => (elem[errors] = validate(elem)));
-    elem.addEventListener('change', () => (elem[errors] = validate(elem)));
+    elem.addEventListener('input', () => (elem.validate()));
+    elem.addEventListener('change', () => (elem.validate()));
 
     elem.addEventListener(focus, () => {
-      elem[errors] = validate(elem);
+      elem.validate();
       elem[helpOpen] = true;
     });
     elem.addEventListener(blur, () => (elem[helpOpen] = false));
@@ -85,7 +71,7 @@ export default define('ak-field', {
         <div className={shadowStyles.locals.rightSlot}>
           {(() => {
             // Use an IIFE here to ensure that the icon is rendered in the correct place.
-            if (getInputValue(elem) && hasValidators(elem)) {
+            if (elem[showIcon]) {
               return elem[errors] ?
                 <ErrorIcon
                   class={shadowStyles.locals.errorIcon}
@@ -131,5 +117,23 @@ export default define('ak-field', {
         }
       },
     }),
+    [showIcon]: prop.boolean({}),
+  },
+  prototype: {
+    validate() {
+      const value = getInputValue(this);
+      let hasError = false;
+
+      if (value) {
+        getValidators(this).forEach((validator) => {
+          if (!validator.validate(value)) {
+            hasError = true;
+          }
+        });
+      }
+
+      this[errors] = hasError;
+      this[showIcon] = getInputValue(this) && hasValidators(this);
+    },
   },
 });

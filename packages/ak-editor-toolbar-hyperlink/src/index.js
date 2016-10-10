@@ -86,10 +86,10 @@ export default define('ak-editor-toolbar-hyperlink', {
       this.open = true;
       this.justOpenedHyperlink = true;
     },
-    save() {
+    addHyperlink() {
       const textInput = this.shadowRoot.querySelector('.text-input');
       this.open = false;
-      emit(this, 'save', { detail: { value: textInput.value } });
+      emit(this, 'addHyperlink', { detail: { value: textInput.value } });
       textInput.value = '';
     },
     handleClickOutside(e) {
@@ -97,7 +97,7 @@ export default define('ak-editor-toolbar-hyperlink', {
       // https://ecosystem.atlassian.net/browse/AK-513
       if (this.open && e.target !== this && !isDescendantOf(e.target, this) &&
         !(e.path && e.path.indexOf(this) > -1)) {
-        this.save();
+        this.addHyperlink();
       }
     },
     toggleHyperlink() {
@@ -113,7 +113,7 @@ export default define('ak-editor-toolbar-hyperlink', {
     },
     onKeyup(event) {
       if (event.keyCode === 13) {
-        this.save();
+        this.addHyperlink();
       } else if (event.keyCode === 27) {
         this.open = false;
       }

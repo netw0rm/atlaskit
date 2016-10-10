@@ -197,7 +197,7 @@ class AkEditorBitbucket extends Component {
         <ToolbarHyperlink
           active={elem._hyperLinkActive}
           disabled={!elem._canLinkHyperlink}
-          onSave={elem._addHyperLink}
+          onAddHyperlink={elem._addHyperLink}
         />
         <ToolbarLists
           bulletlistDisabled={elem._bulletlistDisabled}

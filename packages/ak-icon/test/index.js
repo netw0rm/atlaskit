@@ -86,6 +86,7 @@ describe(name, () => {
           'question',
           'radio',
           'search',
+          'success',
         ]);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in
         // mind that tests are supposed to tell you when a piece of software breaks.

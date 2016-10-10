@@ -1,6 +1,7 @@
 import { Component, vdom } from 'skatejs';
 import * as exceptions from './internal/exceptions';
-import { width, height } from './internal/defaults';
+import 'style!./host.less';
+import shadowStyles from './shadow.less';
 
 /**
  * @description Icon interface. All icons follow this structure.
@@ -36,11 +37,12 @@ class Icon extends Component {
     const Glyph = getGlyphTemplate();
 
     return (
-      <div style={{ display: 'flex', width, height }}>
-        <div style={{ margin: 'auto' }}>
+      <span className={shadowStyles.locals.icon}>
+        <style>{shadowStyles.toString()}</style>
+        <span className={shadowStyles.locals.content}>
           <Glyph role="img" label={label} />
-        </div>
-      </div>
+        </span>
+      </span>
     );
   }
 

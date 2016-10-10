@@ -3,27 +3,26 @@ set -e
 
 pushd ../.. > /dev/null
 JSDOC2MD_LOC="`npm bin`/jsdoc2md"
+CHALK="`npm bin`/chalk"
 popd > /dev/null
 
-printf "\033[34m"
-printf "Generating README.md..."
-printf "\033[0m"
+PKG=$(node -e 'console.log(require("./package.json").name)')
+VERSION=$(node -e 'console.log(require("./package.json").version)')
+PREFIX="{white.bold [$PKG]}"
+
+$CHALK --no-stdin -t "{blue $PREFIX Generating README.md...}"
 
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
-  VERSION=$(node -e 'console.log(require("./package.json").version)')
   USAGE=$(cat ./docs/USAGE.md | sed "s/@VERSION@/$VERSION/g")
-  USAGE="$USAGE\n"
 else
-  USAGE=""
+  USAGE="# $PKG"
 fi
 
 # Generate API docs
-if [[ -z `find ./src -name "*.js" -print -quit` ]]; then
+if [[ -z `find ./src -name "*.js" -print || true` ]]; then
   API=""
-  printf "\033[34m"
-  echo " Nothing found that can be documented."
-  printf "\033[0m"
+  $CHALK --no-stdin -t "{blue $PREFIX Nothing found that can be documented.}"
 else
   set +e
   DOCS="$($JSDOC2MD_LOC \
@@ -37,25 +36,25 @@ else
 
   if [ "$FAILED" -eq "1" ]; then
     # Remove this branch once jsdoc understands es6: https://github.com/jsdoc3/jsdoc/issues/1030
-    printf "\033[31m"
-    echo "^ jsdoc2md died (Most likely due to unrecognized ES6 code, see error above)."
-    printf "\033[0m"
+    $CHALK --no-stdin -t "{red $PREFIX ^ jsdoc2md died (Most likely due to unrecognized ES6 code, see error above).}"
   elif [[ $DOCS == *"ERROR, Cannot find class"* ]]; then
-    printf "\033[34m"
-    echo " Could not find a class."
-    printf "\033[0m"
+    $CHALK --no-stdin -t "{red $PREFIX Could not find a class.}"
   else
-    API="\n$DOCS"
-    printf "\033[34m"
-    echo " done!"
-    printf "\033[0m"
+    API="$DOCS"
+    $CHALK --no-stdin -t "{blue $PREFIX done!}"
   fi
 fi
 
-# Concatenate USAGE docs and JSDoc output
-if [ -n "$USAGE" ] || [ -n "$API" ]; then
-  (
-    printf "$USAGE"
-    printf "$API"
-  ) > README.md
-fi
+BUTTONS=$(cat ../../build/docs/templates/BUTTONS.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
+SUPPORT=$(cat ../../build/docs/templates/SUPPORT.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
+
+(
+  echo "$BUTTONS"
+  echo
+  echo "$USAGE"
+  echo
+  echo "$SUPPORT"
+  echo
+  echo "$API"
+  echo
+) > README.md

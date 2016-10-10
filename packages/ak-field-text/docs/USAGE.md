@@ -4,7 +4,13 @@ Provides a standard way to create a text-based form input with an associated lab
 
 When the label is clicked, the input will receive focus as expected.
 
-## Setup and install
+![Example textfield](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-field-text/docs/textfield.gif)
+
+## Try it out
+
+Interact with a [live demo of the ak-field-text component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-field-text/@VERSION@/).
+
+## Installation
 
 ```sh
 npm install ak-field-text
@@ -24,7 +30,7 @@ Import the component in your JS resource:
 import 'ak-field-text';
 ```
 
-Now we can use the defined tag in our HTML markup, e.g.:
+Now you can use the defined tag in your HTML markup:
 
 #### index.html
 
@@ -52,6 +58,8 @@ document.body.appendChild(textInput);
 ```
 
 ### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```js
 import TextField from 'ak-field-text';

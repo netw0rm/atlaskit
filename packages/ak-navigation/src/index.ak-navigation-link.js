@@ -1,8 +1,8 @@
-import 'style!./host.less';
+import './host.less';
 
 import { vdom, define, prop, emit } from 'skatejs';
 import { style } from 'akutil-common';
-import shadowStyles from './ak-navigation-link.less';
+import shadowStyles from './index.ak-navigation-link.less';
 import classNames from 'classnames';
 import keycode from 'keycode';
 import { linkSelected as linkSelectedEvent } from './internal/index.events';
@@ -52,17 +52,21 @@ export default define('ak-navigation-link', {
         })}
       >
         <style>{shadowStyles.toString()}</style>
-        <slot
-          name="icon"
-          className={shadowStyles.locals.icon}
-        />
         <a
-          className={classNames(shadowStyles.locals.text, shadowStyles.locals.link)}
+          className={classNames(shadowStyles.locals.link)}
           href={elem.href}
           ref={(a) => { elem[anchorElement] = a; }}
           tabindex="0"
         >
-          <slot />
+          <slot
+            name="icon"
+            className={shadowStyles.locals.icon}
+          />
+          <div
+            className={classNames(shadowStyles.locals.text)}
+          >
+            <slot />
+          </div>
         </a>
       </div>
     );

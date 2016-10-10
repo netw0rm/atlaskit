@@ -1,5 +1,5 @@
 @import 'shared-variables.less';
-@import 'ak-navigation-link.less';
+@import 'index.ak-navigation-link.less';
 
 @ak-navigation-global-color: @ak-color-B500;
 @ak-navigation-container-color: @ak-color-N20;
@@ -17,6 +17,16 @@
   display: none;
 }
 
+.should-animate {
+  .spacer, .navigation {
+    transition: width 250ms, transform 250ms;
+  }
+}
+
+.spacer {
+  height: 0;
+}
+
 .navigation {
   background-color: @ak-navigation-container-color;
   top: 0;
@@ -24,10 +34,6 @@
   position: fixed;
   height: 100%;
   display: flex;
-
-  &.should-animate {
-    transition: width 250ms, transform 250ms;
-  }
 
   .global {
     display: flex;
@@ -119,3 +125,4 @@
     font-size: @font-size;
   }
 }
+

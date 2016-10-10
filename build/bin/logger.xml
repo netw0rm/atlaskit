@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Configuration>
-  <Loggers>
-    <Logger name="com.amazonaws.http.impl.client.SdkHttpClient" level="ERROR"/>
-    <Logger name="com.amazonaws.requestId" level="ERROR"/>
-    <Logger name="com.amazonaws.internal.SdkSSLSocket" level="ERROR"/>
-  </Loggers>
-</Configuration>

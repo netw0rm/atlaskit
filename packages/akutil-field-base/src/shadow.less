@@ -11,7 +11,7 @@
 
 // Label margins
 @label-top-spacing: unit(@grid * 5, px);
-@label-bottom-spacing: unit(@grid * 3, px);
+@label-bottom-spacing: unit(@grid, px);
 
 // Label sizing
 @label-inner-height: @grid * 4; // effectively 16px
@@ -43,12 +43,13 @@
 
 // Label style
 .label {
-  color: @ak-color-N200;
   display: block;
 }
 
 .label-text {
+  color: @ak-color-N200;
   font-size: unit(@label-font-size, px);
+  font-weight: 600;
   line-height: @label-line-height;
   padding: @label-top-spacing 0 @label-bottom-spacing @label-padding-left;
 }

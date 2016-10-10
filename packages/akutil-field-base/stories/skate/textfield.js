@@ -9,11 +9,12 @@ function handleEditingViewSwitch(elem) {
 }
 
 function handleViewingViewSwitch(elem, e) {
-  if (!e.detail.canceled) {
-    props(elem, { value: elem.inputField.value });
-  } else {
+  if (e.detail.canceled) {
     // if the event was cancelled, we'll put the old value back in the field
     elem.inputField.value = elem.value;
+  } else {
+    // otherwise, reflect the value into our component, ready for viewmode
+    props(elem, { value: elem.inputField.value });
   }
 }
 
@@ -65,6 +66,7 @@ export default define('ak-textfield', {
     editing: prop.boolean({ attribute: true }),
     editable: prop.boolean({ attribute: true }),
     value: prop.string({ attribute: true }),
+    onConfirm: {},
   },
   attached(elem) {
     elem.addEventListener(showEditingView, (e) => handleEditingViewSwitch(elem, e));

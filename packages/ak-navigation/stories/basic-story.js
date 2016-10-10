@@ -1,20 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import akNavigation from '../src';
+import icons from './icons';
 import TogglingSidebar from './TogglingSidebar';
 import akPage from 'ak-page';
-import CalendarIcon from 'ak-icon/glyph/confluence/calendar';
-import CanvasIcon from 'ak-icon/glyph/confluence/canvas';
-import PageIcon from 'ak-icon/glyph/confluence/page';
-import PersonIcon from 'ak-icon/glyph/confluence/person';
-import QuoteIcon from 'ak-icon/glyph/confluence/quote';
-import OverviewIcon from 'ak-icon/glyph/bitbucket/overview';
-import BitbucketIcon from 'ak-icon/glyph/bitbucket/logo';
-import HelpIcon from 'ak-icon/glyph/bitbucket/help';
-import QuestionIcon from 'ak-icon/glyph/question';
-import SearchIcon from 'ak-icon/glyph/search';
-import JiraIcon from 'ak-icon/glyph/jira/logo';
-import CreateIcon from 'ak-icon/glyph/bitbucket/create';
 import 'ak-avatar';
 import 'ak-dropdown';
 import React from 'react';
@@ -22,9 +11,21 @@ import { name } from '../package.json';
 import Lorem from 'react-lorem-component';
 
 const AkNavigation = reactify(akNavigation);
-
 const AkPage = reactify(akPage);
-
+const {
+  CalendarIcon,
+  CanvasIcon,
+  PageIcon,
+  PersonIcon,
+  QuoteIcon,
+  OverviewIcon,
+  BitbucketIcon,
+  HelpIcon,
+  QuestionIcon,
+  CreateIcon,
+  SearchIcon,
+  JiraIcon,
+} = icons;
 
 const containerLogo = require('url!./nucleus.png');
 const userAvatar = require('url!./emma.jpg');

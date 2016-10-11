@@ -292,7 +292,9 @@ export default define('ak-dropdown', {
           boundariesElement={elem.boundariesElement}
           ref={(layer) => {
             elem[layerElem] = layer;
-            elem[layerElem].reposition();
+            if (layer && layer.reposition) {
+              layer.reposition();
+            }
           }
         }
         >

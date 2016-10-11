@@ -42,8 +42,9 @@ function openDialog(elem) {
   const trigger = getTriggerElement(elem);
 
   elem[keyDownOnceOnOpen] = false;
+
   if (!elem.open) {
-    elem.open = true;
+    props(elem, { open: true });
   }
 
   if (trigger) {
@@ -64,7 +65,7 @@ function closeDialog(elem) {
   const trigger = getTriggerElement(elem);
 
   if (elem.open) {
-    elem.open = false;
+    props(elem, { open: false });
   }
 
   if (trigger) {
@@ -216,7 +217,7 @@ export default define('ak-dropdown', {
     elem.addEventListener(events.unselected, (e) => unselectItem(elem, e));
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
-    elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
+    elem.addEventListener(events.item.tab, () => closeDialog(elem));
     elem[handleClickOutside] = (e) => {
       if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem) &&
         !(e.path && e.path.indexOf(elem) > -1)) {
@@ -259,6 +260,7 @@ export default define('ak-dropdown', {
       elem.childNodes[1].style.marginTop = '0';
     }
     let target = elem.target;
+
     return (
       <div
         style={{ position: elem.stepOutside || elem.boundariesElement ? 'static' : 'relative' }}
@@ -271,7 +273,9 @@ export default define('ak-dropdown', {
           >
             <slot
               name="trigger"
-              ref={el => (elem[triggerSlot] = el)}
+              ref={el => {
+                elem[triggerSlot] = el;
+              }}
             />
           </div>
           : null
@@ -297,10 +301,16 @@ export default define('ak-dropdown', {
           <div
             className={shadowListStyles.locals.list}
             style={{
-              minWidth: getDropdownMinwidth(target, elem),
               maxHeight: getDropdownMaxheight(elem),
             }}
             role="menu"
+            ref={(el) => {
+              // hack for the AK-577 until someone think of a better solution
+              el.style.minWidth = getDropdownMinwidth(target, elem);
+              setTimeout(() => {
+                el.style.minWidth = getDropdownMinwidth(target, elem);
+              });
+            }}
           >
             <style>{shadowListStyles.toString()}</style>
             <slot />
@@ -310,6 +320,12 @@ export default define('ak-dropdown', {
     );
   },
   rendered(elem) {
+    // syncronize openess if the dialog was opened via open property's set
+    if (elem.open) {
+      openDialog(elem);
+    } else {
+      closeDialog(elem);
+    }
     elem.reposition();
   },
   props: {
@@ -323,13 +339,6 @@ export default define('ak-dropdown', {
      */
     open: prop.boolean({
       attribute: true,
-      set(elem, data) {
-        if (data.newValue) {
-          openDialog(elem);
-        } else {
-          closeDialog(elem);
-        }
-      },
     }),
     /**
      * @description Position of the dropdown. See the documentation of ak-layer for more details.

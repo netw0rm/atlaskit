@@ -23,51 +23,56 @@ function handleViewingViewSwitch(elem, e) {
 /* This is an example of how to extend FieldBase. We are creating the simple text field  */
 export default define('ak-textfield', {
   render(elem) {
-    const inputStyles = {
-      border: '0px',
-      fontSize: '14px',
-      outline: 0,
-    };
     return (
       <div>
-        <style>
-          {`
-            input {
-              background-color: #f7f8f9;
-            }
-            input:focus {
-              background-color: white;
-            }
-          `}
-        </style>
         <FieldBase label={elem.label}>
           <div is="" slot="viewmode">
             {elem.value}
           </div>
           <div is="" slot="editmode">
-            <input
-              type="text"
-              defaultValue={elem.value}
-              style={inputStyles}
-              ref={ref => (elem.inputField = ref)}
-            />
+            <slot />
           </div>
         </FieldBase>
       </div>
     );
   },
   props: {
-    /**
-     * @description The label to be rendered next to the supplied text input.
-     * @memberof FieldBase
-     * @instance
-     * @type {string}
-     */
     label: prop.string({ attribute: true }),
     editing: prop.boolean({ attribute: true }),
     editable: prop.boolean({ attribute: true }),
-    value: prop.string({ attribute: true }),
-    onConfirm: {},
+    value: prop.string({
+      attribute: true,
+      set(elem, data) {
+        if (data.newValue !== data.oldValue) {
+          elem.inputField.value = data.newValue;
+        }
+      },
+    }),
+  },
+  rendered(elem) {
+    // This logic needs to live in rendered so that the input field is inserted as lightDOM
+    // and can be picked up by forms, pw managers, etc
+    if (!elem.inputField) {
+      const inputStyles = `
+        input {
+          background-color: #f7f8f9;
+          border: 0px;
+          font-size: 14px;
+          outline: 0;
+        }
+        input:focus {
+          background-color: white;
+        }
+      `;
+      const styleTag = document.createElement('style');
+      const inputField = document.createElement('input');
+      styleTag.innerHTML = inputStyles;
+      inputField.type = 'text';
+      inputField.value = elem.value;
+      elem.inputField = inputField;
+      elem.appendChild(styleTag);
+      elem.appendChild(inputField);
+    }
   },
   attached(elem) {
     elem.addEventListener(showEditingView, (e) => handleEditingViewSwitch(elem, e));

@@ -44,6 +44,18 @@ function handleEditCancel(elem) {
   props(elem, { editing: false });
 }
 
+/**
+ * @description Create instances of the component programmatically, or using markup.
+ * @class FieldBase
+ * @fires FieldBase#cancelEditPressed
+ * @fires FieldBase#confirmEditPressed
+ * @example @html <ak-field-base label="Email" />
+ * @example @js import FieldBase from 'akutil-field-base';
+ *
+ * const field = new FieldBase();
+ * field.label = 'Email';
+ * document.body.appendChild(field);
+ */
 export default define('ak-field-base', {
   render(elem) {
     const ViewingView = !elem.editing ? Viewing : () => null;
@@ -69,13 +81,32 @@ export default define('ak-field-base', {
   },
   props: {
     /**
-     * @description The label to be rendered next to the supplied text input.
+     * @description The label to be rendered above the form field.
      * @memberof FieldBase
      * @instance
      * @type {string}
      */
     label: prop.string({ attribute: true }),
+     /**
+     * @description Whether the editing mode or viewing mode should be shown.
+     * Defaults to false.
+     * @memberof FieldBase
+     * @instance
+     * @type {boolean}
+     * @example @html <ak-field-base editing></ak-field-base>
+     * @example @js field.editing = true;
+     */
     editing: prop.boolean({ attribute: true }),
+     /**
+     * @description Whether the field should show it's focus ring. This would usually be controlled
+     * by a component extending FieldBase and setting this when needed.
+     * Defaults to false.
+     * @memberof FieldBase
+     * @instance
+     * @type {boolean}
+     * @example @html <ak-field-base focused></ak-field-base>
+     * @example @js field.focused = true;
+     */
     focused: prop.boolean({ attribute: true }),
   },
 });

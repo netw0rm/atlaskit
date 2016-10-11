@@ -56,10 +56,6 @@ function openDialog(elem) {
     list[0].first = true;
     list[list.length - 1].last = true;
   }
-  // hacky solution until AK-343 is fixed
-  setTimeout(() => {
-    elem.reposition();
-  });
   emit(elem, events.afterOpen);
 }
 
@@ -312,6 +308,9 @@ export default define('ak-dropdown', {
         </Layer>
       </div>
     );
+  },
+  rendered(elem) {
+    elem.reposition();
   },
   props: {
     /**

@@ -60,7 +60,7 @@ export default define('ak-field-base', {
           />
         </Label>
         <EditingView
-          focus={elem.focus}
+          focused={elem.focused}
           onConfirm={() => handleEditConfirmation(elem)}
           onCancel={() => handleEditCancel(elem)}
         />
@@ -76,6 +76,6 @@ export default define('ak-field-base', {
      */
     label: prop.string({ attribute: true }),
     editing: prop.boolean({ attribute: true }),
-    focus: prop.boolean({ attribute: true }),
+    focused: prop.boolean({ attribute: true }),
   },
 });

@@ -3,10 +3,12 @@
 //Base grid
 @grid: 4;
 
-// some base variables
+// some base variables (shared between both views)
 @base-horizontal-padding: @grid * 2; // 8px
 @base-height: @grid * 10; // 40px
+@base-font-size: 14;
 @base-inner-height: @grid * 5; // 20px
+@base-line-height: @base-inner-height / @base-font-size;
 @base-border-radius: 3px;
 
 // Label margins
@@ -64,6 +66,8 @@
 
   display: inline-flex;
   border-radius: @base-border-radius;
+  font-size: unit(@base-font-size, px);
+  line-height: @base-line-height;
 
   &:hover {
     background-color: @ak-color-N20;
@@ -77,6 +81,8 @@
   & .editIcon {
     display: none;
     padding-left: 10px;
+    line-height: 1;
+    color: @ak-color-N500;
   }
 }
 
@@ -90,6 +96,9 @@
   margin-right: unit(@grid, px);
   border-color: @editmode-border-color;
   background-color: @editmode-background-color;
+  font-size: unit(@base-font-size, px);
+  line-height: @base-line-height;
+
 
   &.focused {
     .borders-and-padding(@editmode-border-width-focused, @base-horizontal-padding, @base-height);

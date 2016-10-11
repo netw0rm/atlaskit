@@ -15,7 +15,7 @@ import ExpandIcon from 'ak-icon/glyph/expand';
 import Dropdown, { Item as DropdownItem, DropdownTrigger } from 'ak-dropdown';
 
 import { buttonContainer, labelsContainer, labelProp, selectedProp } from './internal/symbols';
-const resizeListener = Symbol();
+const resizeListener = Symbol('resize-listener');
 
 /**
  * @description The Tabs element. Container to manage and display Tab elements.

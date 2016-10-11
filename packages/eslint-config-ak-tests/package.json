@@ -6,9 +6,9 @@
   "main": ".eslintrc",
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "eslint": "^2.0.0",
+    "eslint": "^3.7.1",
     "eslint-config-ak-base": "*",
-    "eslint-plugin-mocha": "^3.0.0"
+    "eslint-plugin-mocha": "^4.6.0"
   },
   "repository": {
     "type": "git",

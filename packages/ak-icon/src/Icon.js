@@ -83,7 +83,7 @@ class Icon extends Component {
     const Glyph = getGlyphTemplate();
 
     return (
-      <Root>
+      <Root size={elem.size}>
         <Content>
           <Glyph role="img" label={label} />
         </Content>

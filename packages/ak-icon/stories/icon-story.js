@@ -9,7 +9,7 @@ import ToggleIcons from './ToggleIcons';
 import classnames from 'classnames';
 import pathToDashed from '../src/pathToDashed';
 import { getGlyphs } from '../test/_helpers';
-import componentStyles from '../src/shadow.less';
+import componentStyles from 'style!../src/shadow.less';
 import AkButtonWc from 'ak-button';
 import { size } from '../src/Icon';
 
@@ -45,7 +45,7 @@ const AllIcons = (props) => (
       .entries(reactifiedComponents)
       .map(([key, Icon]) =>
         <Icon
-          className={componentStyles.locals.akIcon}
+          className={componentStyles.akIcon}
           label={`${key} icon`}
           title={`${key}.svg`}
           key={key}
@@ -114,11 +114,11 @@ storiesOf('ak-icon', module)
   .add('Two-color icons', () => <ToggleIcons icons={toggleableIcons} />)
   .add('Animated', () => <AnimationDemo components={reactifiedComponents} />)
   .addBaselineAligned('baseline alignment', () => (
-    <AtlassianIcon className={componentStyles.locals.akIcon} />
+    <AtlassianIcon className={componentStyles.akIcon} />
   ))
   .add('Inside a button', () => (
     <AkButton>
-      <AtlassianIcon className={componentStyles.locals.akIcon} slot="before" />
+      <AtlassianIcon className={componentStyles.akIcon} slot="before" />
       Button
     </AkButton>
   ))
@@ -134,7 +134,7 @@ storiesOf('ak-icon', module)
       {iconSizes.map((s) => (
         <tr key={s}>
           <td><pre>&lt;ak-icon-{sampleIconName} size="{s}" /&gt;</pre></td>
-          <td><AtlassianIcon className={componentStyles.locals.akIcon} size={s} /></td>
+          <td><AtlassianIcon className={componentStyles.akIcon} size={s} /></td>
         </tr>
       ))}
       </tbody>

@@ -196,7 +196,8 @@ describe(name, () => {
           component.size = sizeLabel;
           document.body.appendChild(component);
           afterMutations(
-            () => component.getBoundingClientRect(),
+            () => getRootNode(component),
+            (rootNode) => rootNode.getBoundingClientRect(),
             ({ width, height }) => {
               width.should.be.equal(expectedSize);
               height.should.be.equal(expectedSize);

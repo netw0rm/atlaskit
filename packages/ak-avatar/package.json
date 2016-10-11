@@ -18,7 +18,7 @@
     "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^2.0.4"
+    "skatejs": "^3.0.0"
   },
   "devDependencies": {
     "akutil-common-test": "^3.0.0",

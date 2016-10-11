@@ -1,2 +1,33 @@
-@max-width: 20px;
-@max-height: 20px;
+@size-small: 20px;
+@size-medium: 30px;
+@size-large: 50px;
+@size-xlarge: 100px;
+@size-default: @size-small;
+
+
+.sizeMixin(@size) {
+  // We build the names of the variables we will use for size
+  @height: "size-@{size}";
+  @width: "size-@{size}";
+
+  .icon {
+    width: @@width;
+    height: @@height;
+  }
+  .content > svg {
+    width: @@width;
+    height: @@height;
+  }
+}
+
+.scopedSizeMixin(@size) {
+  &[size="@{size}"] {
+    .sizeMixin(@size);
+  }
+}
+
+.hostSizeMixin(@size) {
+  :host([size="@{size}"]) {
+    .sizeMixin(@size);
+  }
+}

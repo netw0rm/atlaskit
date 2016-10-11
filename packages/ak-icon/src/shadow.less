@@ -14,6 +14,11 @@
 ak-icon {
   .host-styles();
 
+  .scopedSizeMixin(small);
+  .scopedSizeMixin(medium);
+  .scopedSizeMixin(large);
+  .scopedSizeMixin(xlarge);
+
   & > _shadow_root_ {
     display: inline-flex;
   }
@@ -31,13 +36,18 @@ ak-icon {
   }
 }
 
+.hostSizeMixin(small);
+.hostSizeMixin(medium);
+.hostSizeMixin(large);
+.hostSizeMixin(xlarge);
+
 .icon {
   box-sizing: border-box;
   display: inline-flex;
   line-height: 1;
   vertical-align: baseline;
-  width: 20px; // duplicated in ../bin/constants.js
-  height: 20px; // duplicated in ../bin/constants.js
+  width: @size-default;
+  height: @size-default;
 }
 
 .content {

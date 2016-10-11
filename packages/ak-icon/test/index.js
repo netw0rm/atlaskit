@@ -5,6 +5,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
 import pathToDashed from '../src/pathToDashed';
 import * as bundle from '../src';
+import { size } from '../src/Icon';
 import { getGlyphs } from './_helpers';
 import {
   tearDownComponent,
@@ -14,9 +15,6 @@ import {
 
 chai.use(chaiAsPromised);
 chai.should();
-
-// This could be any component, the important thing is the fixed named export
-const { BitbucketLogoIcon } = bundle;
 
 const components = getGlyphs();
 
@@ -104,17 +102,26 @@ describe(name, () => {
         // break any tests and thus not hint the developer at what kind of change he/she is making
     });
 
-    it('are properly defined in bundle', () => {
-      (new BitbucketLogoIcon).should.be.instanceof(Component);
+    describe('bundle', () => {
+      it('has size export', () => bundle.size.should.be.deep.equal(size));
 
-      const bundleKeys = Object.keys(bundle);
+      it('exports the component constructors', () => {
+        const { AtlassianIcon } = bundle;
+        (new AtlassianIcon).should.be.instanceof(Component);
+      });
 
-      bundleKeys.should.be.deep.equal(Object
-            .keys(components)
-            .map(pathToDashed)
-            .map((x) => iconNameToComponentName(x)));
+      it('icons are properly defined in bundle', () => {
+        const bundleKeys = Object
+          .keys(bundle)
+          .filter((key) => key !== 'size');
 
-      bundleKeys.forEach((key) => (new (bundle[key])).should.be.instanceof(Component));
+        bundleKeys.should.be.deep.equal(Object
+              .keys(components)
+              .map(pathToDashed)
+              .map((x) => iconNameToComponentName(x)));
+
+        bundleKeys.forEach((key) => (new (bundle[key])).should.be.instanceof(Component));
+      });
     });
   });
 
@@ -129,12 +136,13 @@ describe(name, () => {
   });
 
   describe('component structure', () => {
+    const { AtlassianIcon } = bundle;
     let component;
 
     afterEach(() => tearDownComponent(component));
 
     it('should have role="img"', (done) => {
-      component = new BitbucketLogoIcon();
+      component = new AtlassianIcon();
       document.body.appendChild(component);
       afterMutations(
         () => getRootNode(component),
@@ -143,24 +151,60 @@ describe(name, () => {
       );
     });
 
-    it('should accept a label', (done) => {
-      const label = '123abc';
-      component = new BitbucketLogoIcon();
-      component.label = label;
-      document.body.appendChild(component);
-      afterMutations(
-        () => getRootNode(component),
-        (rootNode) => rootNode.querySelector('svg'),
-        (svg) => {
-          svg.hasAttribute('aria-labelledby').should.be.true;
-          const labelledBy = svg.getAttribute('aria-labelledby');
-          const ids = labelledBy.split(/\s+/);
-          ids.length.should.be.at.least(1, 'The labelled-by attribute must reference some node');
-          const labels = ids.map((id) => svg.getElementById(id).textContent);
-          labels.should.contain(label);
-        },
-        done
+    describe('label attribute', () => {
+      it('should accept a label', (done) => {
+        const label = '123abc';
+        component = new AtlassianIcon();
+        component.label = label;
+        document.body.appendChild(component);
+        afterMutations(
+          () => getRootNode(component),
+          (rootNode) => rootNode.querySelector('svg'),
+          (svg) => {
+            svg.hasAttribute('aria-labelledby').should.be.true;
+            const labelledBy = svg.getAttribute('aria-labelledby');
+            const ids = labelledBy.split(/\s+/);
+            ids.length.should.be.at.least(1, 'The labelled-by attribute must reference some node');
+            const labels = ids.map((id) => svg.getElementById(id).textContent);
+            labels.should.contain(label);
+          },
+          done
+        );
+      });
+    });
+
+    describe('size attribute', () => {
+      const labelToDimensionFixture = {
+        [size.small]: 20,
+        [size.medium]: 30,
+        [size.large]: 50,
+        [size.xlarge]: 100,
+      };
+
+      before(() => Object.keys(labelToDimensionFixture).should.be.deep.equal(
+        Object.keys(size),
+        'Update the label -> dimension fixture if you add/remove size labels'
+      ));
+
+      it('should have a predefined set of sizes', () =>
+        Object.values(size).should.deep.equal(['small', 'medium', 'large', 'xlarge'])
       );
+
+      Object.entries(labelToDimensionFixture).forEach(([sizeLabel, expectedSize]) => {
+        it(`should accept size="${sizeLabel}"`, (done) => {
+          component = new AtlassianIcon();
+          component.size = sizeLabel;
+          document.body.appendChild(component);
+          afterMutations(
+            () => component.getBoundingClientRect(),
+            ({ width, height }) => {
+              width.should.be.equal(expectedSize);
+              height.should.be.equal(expectedSize);
+            },
+            done
+          );
+        });
+      });
     });
   });
 });

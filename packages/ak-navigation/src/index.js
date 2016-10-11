@@ -83,27 +83,20 @@ export default define('ak-navigation', {
     if (!prevProps) {
       return true;
     }
-    const everythingExceptWidthSame = Object.keys(prevProps).map((key) => {
-      const isTheSame = (key === 'width') ? true : prevProps[key] === elem[key];
-      if (!isTheSame) {
-        console.log(`different: prev ${key} is ${prevProps[key]}, new is ${elem[key]}`);
-      }
-      return isTheSame;
-    }).reduce((a, b) => a && b);
+    const everythingExceptWidthSame = Object.keys(prevProps).map((key) =>
+      ((key === 'width') ? true : prevProps[key] === elem[key])
+    ).reduce((a, b) => a && b);
     if (!everythingExceptWidthSame) {
       return true;
     }
     if (elem.width !== prevProps.width) {
       elem.styles.innerHTML = collapseStyles(elem);
-      console.log(`skipping rendering pipeline at ${performance.now()}`);
-      return false; // skip rendering pipeline
+      return false; // skip rendering pipeline completely
     }
     return true;
   },
   render(elem) {
-    console.log(`render called at ${performance.now()} with width = ${elem.width}`);
-    const renderStart = performance.now();
-    const ret = (
+    return (
       <div
         className={classNames({
           [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
@@ -189,8 +182,6 @@ export default define('ak-navigation', {
         </div>
       </div>
     );
-    console.log(`render finished in ${performance.now() - renderStart}ms`);
-    return ret;
   },
   props: {
     /**
@@ -208,11 +199,9 @@ export default define('ak-navigation', {
      * @instance
      * @type {integer}
      * @example @js navigation.width = 80;
-     * @example @html <ak-navigation width="80"/>;
      */
     width: prop.number({
       default: (elem) => getCollapsedWidth(elem),
-      attribute: false,
     }),
     /**
      * @description The handler for the sidebar toggling behaviour.

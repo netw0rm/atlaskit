@@ -4,12 +4,7 @@ import classNames from 'classnames';
 
 export default define('ak-navigation-drag', {
   created(elem) {
-    let lastDrag = performance.now();
-    const onDrag = (mouseMoveEvent) => {
-      console.log(`${performance.now() - lastDrag}ms since last drag`);
-      lastDrag = performance.now();
-      elem.dragCallback(mouseMoveEvent);
-    };
+    const onDrag = (mouseMoveEvent) => { elem.dragCallback(mouseMoveEvent); };
     const throttledDrag = onDrag;
     const onMouseUp = (mouseUpEvent) => {
       elem.isDragging = false;

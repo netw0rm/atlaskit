@@ -29,6 +29,7 @@ export default function resizer(navigation) {
   let startNavigationWidth;
   return {
     start(event) {
+      console.log(`start resizing at ${performance.now()}`);
       navigation.shouldAnimate = false;
       startScreenX = event.screenX;
       startNavigationWidth = navigation.width;
@@ -43,6 +44,7 @@ export default function resizer(navigation) {
       }));
     },
     end() {
+      console.log(`end resizing at ${performance.now()}`);
       const closestBreakpoint = getClosestBreakpoint(navigation.width);
       navigation.shouldAnimate = true;
       navigation.width = closestBreakpoint;

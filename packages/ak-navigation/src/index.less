@@ -45,7 +45,7 @@ ak-navigation {
 }
 
 .should-animate {
-  .spacer, .navigation {
+  .spacer, .navigation, .navigation-wrapper {
     transition: width 250ms, transform 250ms;
   }
 }
@@ -54,11 +54,17 @@ ak-navigation {
   height: 0;
 }
 
-.navigation {
-  background-color: @ak-navigation-container-color;
+.navigation-wrapper {
+  overflow: hidden;
+  height: 100%;
+  width: @expanded-width;
   top: 0;
   left: 0;
   position: fixed;
+}
+
+.navigation {
+  background-color: @ak-navigation-container-color;
   height: 100%;
   display: flex;
 

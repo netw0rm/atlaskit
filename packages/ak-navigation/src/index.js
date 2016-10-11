@@ -3,7 +3,7 @@ import shadowStyles from './index.less';
 import 'ak-blanket';
 import './internal/ak-navigation-drawer';
 import './internal/ak-navigation-drag';
-import AkNavigationStyles from './internal/ak-navigation-styles';
+import collapseStyles from './internal/collapse-styles';
 import './index.ak-navigation-link';
 import classNames from 'classnames';
 import resizer from './internal/resizer';
@@ -83,8 +83,20 @@ export default define('ak-navigation', {
     if (!prevProps) {
       return true;
     }
-    if (prevProps.width !== elem.width) {
-      console.log(`width updated at ${performance.now()} with width = ${elem.width}`);
+    const everythingExceptWidthSame = Object.keys(prevProps).map((key) => {
+      const isTheSame = (key === 'width') ? true : prevProps[key] === elem[key];
+      if (!isTheSame) {
+        console.log(`different: prev ${key} is ${prevProps[key]}, new is ${elem[key]}`);
+      }
+      return isTheSame;
+    }).reduce((a, b) => a && b);
+    if (!everythingExceptWidthSame) {
+      return true;
+    }
+    if (elem.width !== prevProps.width) {
+      elem.styles.innerHTML = collapseStyles(elem);
+      console.log(`skipping rendering pipeline at ${performance.now()}`);
+      return false; // skip rendering pipeline
     }
     return true;
   },
@@ -97,7 +109,9 @@ export default define('ak-navigation', {
           [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
         })}
       >
-        <AkNavigationStyles navigation={elem} />
+        <style ref={(styles) => { elem.styles = styles; }}>
+          {collapseStyles(elem)}
+        </style>
         <style>{shadowStyles.toString()}</style>
         <ak-blanket
           onActivate={() => closeAllDrawers(elem)}
@@ -110,57 +124,61 @@ export default define('ak-navigation', {
           className={classNames(shadowStyles.locals.spacer)}
         />
         <div
-          className={classNames(shadowStyles.locals.navigation)}
+          className={classNames(shadowStyles.locals.navigationWrapper)}
         >
-          <div className={shadowStyles.locals.global}>
-            <div className={shadowStyles.locals.globalPrimary}>
-              <a href={elem.productHref || false}>
-                <slot name="global-home" />
-              </a>
-            </div>
-            <div className={shadowStyles.locals.globalSecondary}>
-              <div ref={searchDrawer} className={shadowStyles.locals.globalSecondaryItem}>
-                <slot name="global-search" />
-              </div>
-              <div ref={createDrawer} className={shadowStyles.locals.globalSecondaryItem}>
-                <slot name="global-create" />
-              </div>
-            </div>
-            <div className={shadowStyles.locals.globalBottom}>
-              <div className={shadowStyles.locals.globalSecondaryItem}>
-                <slot name="global-help" />
-              </div>
-              <div className={shadowStyles.locals.globalSecondaryItem}>
-                <slot name="global-profile" />
-              </div>
-            </div>
-          </div>
-          <ak-navigation-drawer large open={elem.searchDrawerOpen}>
-            <slot name="global-search-drawer" />
-          </ak-navigation-drawer>
-          <ak-navigation-drawer open={elem.createDrawerOpen}>
-            <slot name="global-create-drawer" />
-          </ak-navigation-drawer>
-
           <div
-            className={classNames(shadowStyles.locals.container, {
-              [shadowStyles.locals.containerHidden]: elem.containerHidden,
-            })}
+            className={classNames(shadowStyles.locals.navigation)}
           >
-            {elem.containerName ? <div className={shadowStyles.locals.containerName}>
-              <a href={elem.containerHref}>
-                <img
-                  className={shadowStyles.locals.containerLogo}
-                  alt={elem.containerName}
-                  src={elem.containerLogo || false}
-                />
-              </a>
-              <a href={elem.containerHref} className={shadowStyles.locals.containerNameText}>
-                {elem.containerName}
-              </a>
-            </div> : ''}
-            <div className={shadowStyles.locals.containerLinks}>
-              <slot />
+            <div className={shadowStyles.locals.global}>
+              <div className={shadowStyles.locals.globalPrimary}>
+                <a href={elem.productHref || false}>
+                  <slot name="global-home" />
+                </a>
+              </div>
+              <div className={shadowStyles.locals.globalSecondary}>
+                <div ref={searchDrawer} className={shadowStyles.locals.globalSecondaryItem}>
+                  <slot name="global-search" />
+                </div>
+                <div ref={createDrawer} className={shadowStyles.locals.globalSecondaryItem}>
+                  <slot name="global-create" />
+                </div>
+              </div>
+              <div className={shadowStyles.locals.globalBottom}>
+                <div className={shadowStyles.locals.globalSecondaryItem}>
+                  <slot name="global-help" />
+                </div>
+                <div className={shadowStyles.locals.globalSecondaryItem}>
+                  <slot name="global-profile" />
+                </div>
+              </div>
+            </div>
+            <ak-navigation-drawer large open={elem.searchDrawerOpen}>
+              <slot name="global-search-drawer" />
+            </ak-navigation-drawer>
+            <ak-navigation-drawer open={elem.createDrawerOpen}>
+              <slot name="global-create-drawer" />
+            </ak-navigation-drawer>
+
+            <div
+              className={classNames(shadowStyles.locals.container, {
+                [shadowStyles.locals.containerHidden]: elem.containerHidden,
+              })}
+            >
+              {elem.containerName ? <div className={shadowStyles.locals.containerName}>
+                <a href={elem.containerHref}>
+                  <img
+                    className={shadowStyles.locals.containerLogo}
+                    alt={elem.containerName}
+                    src={elem.containerLogo || false}
+                  />
+                </a>
+                <a href={elem.containerHref} className={shadowStyles.locals.containerNameText}>
+                  {elem.containerName}
+                </a>
+              </div> : ''}
+              <div className={shadowStyles.locals.containerLinks}>
+                <slot />
+              </div>
             </div>
           </div>
           {elem.collapsible ? <ak-navigation-drag

@@ -1,6 +1,6 @@
 {
   "name": "ak-dropdown",
-  "version": "5.7.3",
+  "version": "5.7.4",
   "description": "ak-dropdown webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

@@ -39,9 +39,9 @@ storiesOf(name, module)
     <div>
       <form action="" style={formStyle()}>
         <h2>My Form</h2>
-        <Textfield label="This is a label" value="Yo! If you had..." editing />
-        <Textfield label="This is a label" value="This is my value" editing />
-        <Textfield label="I am not inline editable" value="This is my value" editing />
+        <Textfield label="Viewmode by default" value="Yo! If you had..." />
+        <Textfield label="Editmode by default" value="One shot..." editing />
+        <Textfield label="I am not inline editable" value="One opportunity..." editing />
       </form>
     </div>
   ));

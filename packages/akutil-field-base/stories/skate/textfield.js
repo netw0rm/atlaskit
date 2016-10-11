@@ -20,19 +20,22 @@ function handleViewingViewSwitch(elem, e) {
 }
 
 function handleInputFocus(elem) {
-  props(elem.fieldBase, { focus: true });
+  props(elem.fieldBase, { focused: true });
 }
 
 function handleInputBlur(elem) {
-  props(elem.fieldBase, { focus: false });
+  props(elem.fieldBase, { focused: false });
 }
 
 /* This is an example of how to extend FieldBase. We are creating the simple text field  */
 export default define('ak-textfield', {
   render(elem) {
+    // we use null instead of false so that when we pass it as an attribute to FieldBase it doesnt
+    // get rendered as editing=""
+    const isEditing = elem.editing || null;
     return (
       <div>
-        <FieldBase label={elem.label} ref={ref => (elem.fieldBase = ref)}>
+        <FieldBase label={elem.label} ref={ref => (elem.fieldBase = ref)} editing={isEditing}>
           <div is="" slot="viewmode">
             {elem.value}
           </div>

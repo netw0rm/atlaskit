@@ -3,17 +3,14 @@ import shadowStyles from './index.less';
 import 'ak-blanket';
 import './internal/ak-navigation-drawer';
 import './internal/ak-navigation-drag';
+import AkNavigationStyles from './internal/ak-navigation-styles';
 import './index.ak-navigation-link';
 import classNames from 'classnames';
 import resizer from './internal/resizer';
 import addTouchHandlers from './internal/touch';
 import {
-  getContainerPadding,
-  getNavigationWidth,
-  getNavigationXOffset,
   getExpandedWidth,
   getCollapsedWidth,
-  getSpacerWidth,
 } from './internal/collapse';
 import keycode from 'keycode';
 import 'custom-event-polyfill';
@@ -82,27 +79,25 @@ function recomputeWidth(elem) {
  * document.body.appendChild(navigation);
  */
 export default define('ak-navigation', {
+  updated(elem, prevProps) {
+    if (!prevProps) {
+      return true;
+    }
+    if (prevProps.width !== elem.width) {
+      console.log(`width updated at ${performance.now()} with width = ${elem.width}`);
+    }
+    return true;
+  },
   render(elem) {
-    return (
+    console.log(`render called at ${performance.now()} with width = ${elem.width}`);
+    const renderStart = performance.now();
+    const ret = (
       <div
         className={classNames({
           [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
         })}
       >
-        <style>{`
-          .${shadowStyles.locals.navigation} {
-            width: ${getNavigationWidth(elem)}px;
-            transform: translateX(${getNavigationXOffset(elem)}px);
-          }
-
-          .${shadowStyles.locals.spacer} {
-            width: ${getSpacerWidth(elem)}px;
-          }
-
-          .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
-            transform: translateX(${getContainerPadding(elem.width)}px);
-          }
-      `}</style>
+        <AkNavigationStyles navigation={elem} />
         <style>{shadowStyles.toString()}</style>
         <ak-blanket
           onActivate={() => closeAllDrawers(elem)}
@@ -176,6 +171,8 @@ export default define('ak-navigation', {
         </div>
       </div>
     );
+    console.log(`render finished in ${performance.now() - renderStart}ms`);
+    return ret;
   },
   props: {
     /**
@@ -197,6 +194,7 @@ export default define('ak-navigation', {
      */
     width: prop.number({
       default: (elem) => getCollapsedWidth(elem),
+      attribute: false,
     }),
     /**
      * @description The handler for the sidebar toggling behaviour.

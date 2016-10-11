@@ -3,7 +3,9 @@ import {
   globalCollapsedWidth,
   expandedWidth,
 } from '../shared-variables.js';
-import { emit } from 'skatejs';
+import { props, emit } from 'skatejs';
+import throttle from 'throttle-debounce/throttle';
+
 const {
   resizeStart: resizeStartEvent,
   resizeEnd: resizeEndEvent,
@@ -36,7 +38,9 @@ export default function resizer(navigation) {
       const delta = event.screenX - startScreenX;
       const currentWidth = startNavigationWidth + delta;
       const boundedWidth = getBounded(currentWidth);
-      navigation.width = Math.round(boundedWidth);
+      throttle(20, props(navigation, {
+        width: Math.round(boundedWidth),
+      }));
     },
     end() {
       const closestBreakpoint = getClosestBreakpoint(navigation.width);

@@ -155,9 +155,9 @@
       "resolved": "https://registry.npmjs.org/akutil-cucumber/-/akutil-cucumber-1.0.0.tgz"
     },
     "akutil-dmd-plugin": {
-      "version": "2.0.0",
+      "version": "2.0.1",
       "from": "akutil-dmd-plugin@>=2.0.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/akutil-dmd-plugin/-/akutil-dmd-plugin-2.0.0.tgz"
+      "resolved": "https://registry.npmjs.org/akutil-dmd-plugin/-/akutil-dmd-plugin-2.0.1.tgz"
     },
     "akutil-polyfills": {
       "version": "2.2.1",
@@ -1153,9 +1153,9 @@
       }
     },
     "caniuse-db": {
-      "version": "1.0.30000551",
+      "version": "1.0.30000553",
       "from": "caniuse-db@>=1.0.30000540 <2.0.0",
-      "resolved": "https://registry.npmjs.org/caniuse-db/-/caniuse-db-1.0.30000551.tgz"
+      "resolved": "https://registry.npmjs.org/caniuse-db/-/caniuse-db-1.0.30000553.tgz"
     },
     "capture-stack-trace": {
       "version": "1.0.0",
@@ -1782,6 +1782,11 @@
       "version": "0.1.4",
       "from": "date-now@>=0.1.4 <0.2.0",
       "resolved": "https://registry.npmjs.org/date-now/-/date-now-0.1.4.tgz"
+    },
+    "ddata": {
+      "version": "0.1.28",
+      "from": "ddata@>=0.1.28 <0.2.0",
+      "resolved": "https://registry.npmjs.org/ddata/-/ddata-0.1.28.tgz"
     },
     "debounce": {
       "version": "1.0.0",
@@ -3370,7 +3375,7 @@
     },
     "handlebars": {
       "version": "3.0.3",
-      "from": "handlebars@3.0.3",
+      "from": "handlebars@>=3.0.3 <4.0.0",
       "resolved": "https://registry.npmjs.org/handlebars/-/handlebars-3.0.3.tgz",
       "dependencies": {
         "async": {
@@ -6124,6 +6129,11 @@
       "from": "string-template@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/string-template/-/string-template-1.0.0.tgz"
     },
+    "string-tools": {
+      "version": "1.0.0",
+      "from": "string-tools@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/string-tools/-/string-tools-1.0.0.tgz"
+    },
     "string-width": {
       "version": "1.0.2",
       "from": "string-width@>=1.0.1 <2.0.0",
@@ -6180,9 +6190,9 @@
       "resolved": "https://registry.npmjs.org/svgo/-/svgo-0.7.1.tgz"
     },
     "symbol-observable": {
-      "version": "1.0.2",
+      "version": "1.0.3",
       "from": "symbol-observable@>=1.0.2 <2.0.0",
-      "resolved": "https://registry.npmjs.org/symbol-observable/-/symbol-observable-1.0.2.tgz"
+      "resolved": "https://registry.npmjs.org/symbol-observable/-/symbol-observable-1.0.3.tgz"
     },
     "sync-exec": {
       "version": "0.6.2",

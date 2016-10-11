@@ -9,7 +9,7 @@ import 'ak-icon/glyph/bitbucket/optout';
 /* eslint-disable react/prop-types */
 export default (props) => {
   const slotWrapperClasses = classNames(shadowStyles.locals.editModeSlotWrapper, {
-    [shadowStyles.locals.focused]: props.focused,
+    [shadowStyles.locals.focused]: props.focus,
   });
   return (
     <div>

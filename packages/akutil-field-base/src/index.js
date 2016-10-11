@@ -1,7 +1,6 @@
 import { vdom, define, prop, props, emit } from 'skatejs';
 import 'style!./host.less';
 // import shadowStyles from './shadow.less';
-import { focused } from './internal/symbols';
 import { showEditingView, showViewingView } from './internal/events';
 import Editing from './Editing';
 import Viewing from './Viewing';
@@ -20,28 +19,6 @@ function switchToEditing(elem) {
       bubbles: true,
       cancelable: true,
     });
-  }
-}
-
-// function switchToViewing(elem) {
-//   // console.log(`Switchign to viewing`);
-
-//   props(elem, { editing: false });
-//   emit(elem, showViewingView, {
-//     bubbles: true,
-//     cancelable: true,
-//   });
-// }
-
-function handleFocus(elem, e) {
-  if (e.target !== elem) {
-    props(elem, { [focused]: true });
-  }
-}
-
-function handleBlur(elem, e) {
-  if (e.target !== elem) {
-    props(elem, { [focused]: false });
   }
 }
 
@@ -78,10 +55,12 @@ export default define('ak-field-base', {
           label={elem.label}
           onClick={() => switchToEditing(elem)}
         >
-          <ViewingView />
+          <ViewingView
+            switchToEditingCallback={() => switchToEditing(elem)}
+          />
         </Label>
         <EditingView
-          focused={elem[focused]}
+          focus={elem.focus}
           onConfirm={() => handleEditConfirmation(elem)}
           onCancel={() => handleEditCancel(elem)}
         />
@@ -97,10 +76,6 @@ export default define('ak-field-base', {
      */
     label: prop.string({ attribute: true }),
     editing: prop.boolean({ attribute: true }),
-    [focused]: prop.boolean(),
-  },
-  attached(elem) {
-    elem.addEventListener('focus', (e) => handleFocus(elem, e), true);
-    elem.addEventListener('blur', (e) => handleBlur(elem, e), true);
+    focus: prop.boolean({ attribute: true }),
   },
 });

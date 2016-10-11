@@ -19,13 +19,20 @@ function handleViewingViewSwitch(elem, e) {
   }
 }
 
+function handleInputFocus(elem) {
+  props(elem.fieldBase, { focus: true });
+}
+
+function handleInputBlur(elem) {
+  props(elem.fieldBase, { focus: false });
+}
 
 /* This is an example of how to extend FieldBase. We are creating the simple text field  */
 export default define('ak-textfield', {
   render(elem) {
     return (
       <div>
-        <FieldBase label={elem.label}>
+        <FieldBase label={elem.label} ref={ref => (elem.fieldBase = ref)}>
           <div is="" slot="viewmode">
             {elem.value}
           </div>
@@ -44,7 +51,11 @@ export default define('ak-textfield', {
       attribute: true,
       set(elem, data) {
         if (data.newValue !== data.oldValue) {
-          elem.inputField.value = data.newValue;
+          // we have to do this check because React-wrapped components using the polyfill will
+          // have their props set *before* render/rendered are called
+          if (elem.inputField) {
+            elem.inputField.value = data.newValue;
+          }
         }
       },
     }),
@@ -67,8 +78,12 @@ export default define('ak-textfield', {
       const styleTag = document.createElement('style');
       const inputField = document.createElement('input');
       styleTag.innerHTML = inputStyles;
+
       inputField.type = 'text';
       inputField.value = elem.value;
+      inputField.addEventListener('focus', (e) => handleInputFocus(elem, e));
+      inputField.addEventListener('blur', (e) => handleInputBlur(elem, e));
+
       elem.inputField = inputField;
       elem.appendChild(styleTag);
       elem.appendChild(inputField);

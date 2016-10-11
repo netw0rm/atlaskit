@@ -1,6 +1,6 @@
 import { vdom } from 'skatejs';
 import shadowStyles from './shadow.less';
-import 'ak-icon/glyph/bitbucket/admin';
+import 'ak-icon/glyph/edit';
 
 function handleMouseEnter() {
   // console.log('Mouse entered');
@@ -18,6 +18,6 @@ export default () => (
     onmouseleave={() => handleMouseLeave()}
   >
     <slot name="viewmode" />
-    <ak-icon-bitbucket-admin className={shadowStyles.locals.editIcon} />
+    <ak-icon-edit className={shadowStyles.locals.editIcon} />
   </div>
 );

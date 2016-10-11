@@ -2,9 +2,10 @@ import classNames from 'classnames';
 import { emit, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import * as events from './internal/events';
-const { announceName: announceNameEvent } = events;
+const { announceName: announceNameEvent, announceClick } = events;
 
 const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
+const handleClick = Symbol();
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -13,6 +14,17 @@ const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
  * const component = new AkUtilComponentTemplate();
  */
 export default define('akutil-component-template', {
+  create(elem) {
+    elem[handleClick] = () => {
+      // We want to emit the elem in the detail because of the shadow boundries and retargeting
+      // https://www.w3.org/TR/shadow-dom/#event-retargeting
+      emit(elem, announceClick, {
+        detail: {
+          item: elem,
+        },
+      });
+    };
+  },
   render(elem) {
     const paragraphClasses = classNames({
       [shadowStyles.locals.myClassName]: true,
@@ -27,7 +39,10 @@ export default define('akutil-component-template', {
            root element.
         */}
         <style>{shadowStyles.toString()}</style>
-        <Paragraph className={paragraphClasses}>My name is {elem.name}!</Paragraph>
+        <Paragraph
+          className={paragraphClasses}
+          onclick={elem[handleClick]}
+        >My name is {elem.name}!</Paragraph>
       </div>
     );
   },

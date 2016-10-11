@@ -5,7 +5,6 @@ import { style } from 'akutil-common';
 import { appearance, type } from './enumeratedProperties';
 import Slot from './Slot';
 import Button from './Button';
-import { stylesKey } from './symbols';
 import createStyles from './styles';
 import variables from './styles/variables';
 
@@ -69,13 +68,12 @@ const definition = {
      * @example @js button.selected = true;
      */
     selected: prop.boolean({ attribute: true }),
-    [stylesKey]: { attribute: false },
   },
   render(elem) {
     const themeVars = elem.themeProps || {};
     const vars = merge(JSON.parse(JSON.stringify(variables)), themeVars);
     const css = createStyles(vars);
-    const styles = elem[stylesKey] = style(vdom, css);
+    const styles = style(vdom, css);
     return (
       <Button {...props(elem)} styles={styles}>
         <Slot styles={styles} name="before" />

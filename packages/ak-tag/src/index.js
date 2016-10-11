@@ -48,6 +48,9 @@ export default define(name, {
       emit(elem, afterRemoveEvent, {
         bubbles: true,
         cancelable: false,
+        detail: {
+          item: elem,
+        },
       });
     };
 
@@ -152,7 +155,11 @@ export default define(name, {
       if (!this.isRemovable()) {
         throw new NotRemovableError('Tag is not removable');
       } else {
-        if (emit(this, beforeRemoveEvent)) {
+        if (emit(this, beforeRemoveEvent, {
+          detail: {
+            item: this,
+          },
+        })) {
           props(this, {
             [isRemovingSymbol]: true,
           });

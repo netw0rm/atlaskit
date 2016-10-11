@@ -24,6 +24,7 @@ describe('akutil-component-template', () => {
       events.should.be.defined;
       Object.keys(events).should.be.deep.equal([
         'announceName',
+        'announceClick',
       ]);
     });
   });

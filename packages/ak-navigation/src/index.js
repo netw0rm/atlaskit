@@ -1,5 +1,3 @@
-import 'style!./host.less';
-
 import { emit, prop, vdom, define } from 'skatejs';
 import shadowStyles from './index.less';
 import 'ak-blanket';
@@ -96,7 +94,7 @@ export default define('ak-navigation', {
             width: ${getNavigationWidth(elem)}px;
             transform: translateX(${getNavigationXOffset(elem)}px);
           }
-          
+
           .${shadowStyles.locals.spacer} {
             width: ${getSpacerWidth(elem)}px;
           }

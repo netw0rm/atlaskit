@@ -235,6 +235,10 @@ Releasing components is completely automated. The process of releasing will begi
 ## Make changes to the Pipelines build
 AtlasKit uses Bitbucket Pipelines for it's continuous integration. The build scripts are defined in `bitbucket-pipelines.yml`.
 
+### CloudFront caching
+
+If you ever need to purge the CF cache for AtlasKit (Storybooks, Registry, PR artifacts) you can use the `invalidate-atlaskit-cache` branch. Just rerun the last build or merge `master` into it.
+
 ### AtlasKit Docker image
 Bitbucket pipelines works using a Docker image. This contains the initial setup required to run the build. If you need to make changes to `Dockerfile`, you will need to push them to Dockerhub:
 

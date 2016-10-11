@@ -19,7 +19,7 @@
     "ak-editor-shared-styles": "^1.0.3",
     "akutil-shared-styles": "^34.2.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.4.1"
+    "skatejs": "^2.0.4"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

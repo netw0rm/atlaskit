@@ -16,7 +16,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.2.5",
+    "skatejs": "^2.0.4",
     "custom-event-polyfill": "^0.3.0",
     "keycode": "^2.1.4",
     "uid": "^0.0.2"

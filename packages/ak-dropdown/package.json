@@ -18,7 +18,7 @@
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "keycode": "^2.1.2",
-    "skatejs": "^1.5.2",
+    "skatejs": "^2.0.4",
     "ak-icon": "~7.5.0",
     "ak-button": "^1.3.2"
   },

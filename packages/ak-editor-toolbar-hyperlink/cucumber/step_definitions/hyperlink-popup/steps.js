@@ -1,6 +1,10 @@
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const sinon = require('sinon');
+const sinonChai = require('sinon-chai');
+
 chai.use(chaiAsPromised);
+chai.use(sinonChai);
 const expect = chai.expect; // eslint-disable-line no-unused-vars
 
 module.exports = function steps() {
@@ -12,5 +16,33 @@ module.exports = function steps() {
   this.When(
     /^I click outside$/,
     () => element(by.tagName('body')).click()
+  );
+
+  this.When(
+    /^I register a "([^"]*)" eventListener on "([^"]*)"$/,
+    (event, name) => {
+      const cb = this[`${event}CallbackOn${name}`] = sinon.spy();
+
+      element(by.css(name)).on(event, cb);
+    }
+  );
+
+  this.When(
+    /^I enter "([^"]*)" key on the "([^"]*)" component$/,
+    (key, name) => element(by.webComponentNamePrefix(name)).sendKeys(protractor.Key[key])
+  );
+
+  this.When(
+    /^I should receive a "([^"]*)" event on "([^"]*)"$/,
+    (event, name) => {
+      expect(this[`${event}CallbackOn${name}`]).to.have.been.callCount(1);
+    }
+  );
+
+  this.When(
+    /^I should not receive a "([^"]*)" event on "([^"]*)"$/,
+    (event, name) => {
+      expect(this[`${event}CallbackOn${name}`]).to.have.been.callCount(0);
+    }
   );
 };

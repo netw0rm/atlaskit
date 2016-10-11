@@ -6,21 +6,23 @@ JSDOC2MD_LOC="`npm bin`/jsdoc2md"
 CHALK="`npm bin`/chalk"
 popd > /dev/null
 
-$CHALK --no-stdin -t "{blue Generating README.md...}"
+PKG=$(node -e 'console.log(require("./package.json").name)')
+VERSION=$(node -e 'console.log(require("./package.json").version)')
+PREFIX="{white.bold [$PKG]}"
+
+$CHALK --no-stdin -t "{blue $PREFIX Generating README.md...}"
 
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
-  VERSION=$(node -e 'console.log(require("./package.json").version)')
   USAGE=$(cat ./docs/USAGE.md | sed "s/@VERSION@/$VERSION/g")
-  USAGE="$USAGE\n"
 else
-  USAGE=""
+  USAGE="# $PKG"
 fi
 
 # Generate API docs
 if [[ -z `find ./src -name "*.js" -print || true` ]]; then
   API=""
-  $CHALK --no-stdin -t "{blue  Nothing found that can be documented.}"
+  $CHALK --no-stdin -t "{blue $PREFIX Nothing found that can be documented.}"
 else
   set +e
   DOCS="$($JSDOC2MD_LOC \
@@ -34,19 +36,25 @@ else
 
   if [ "$FAILED" -eq "1" ]; then
     # Remove this branch once jsdoc understands es6: https://github.com/jsdoc3/jsdoc/issues/1030
-    $CHALK --no-stdin -t "{red ^ jsdoc2md died (Most likely due to unrecognized ES6 code, see error above).}"
+    $CHALK --no-stdin -t "{red $PREFIX ^ jsdoc2md died (Most likely due to unrecognized ES6 code, see error above).}"
   elif [[ $DOCS == *"ERROR, Cannot find class"* ]]; then
-    $CHALK --no-stdin -t "{red  Could not find a class.}"
+    $CHALK --no-stdin -t "{red $PREFIX Could not find a class.}"
   else
-    API="\n$DOCS"
-    $CHALK --no-stdin -t "{blue  done!}"
+    API="$DOCS"
+    $CHALK --no-stdin -t "{blue $PREFIX done!}"
   fi
 fi
 
-# Concatenate USAGE docs and JSDoc output
-if [ -n "$USAGE" ] || [ -n "$API" ]; then
-  (
-    printf "$USAGE"
-    printf "$API"
-  ) > README.md
-fi
+BUTTONS=$(cat ../../build/docs/templates/BUTTONS.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
+SUPPORT=$(cat ../../build/docs/templates/SUPPORT.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
+
+(
+  echo "$BUTTONS"
+  echo
+  echo "$USAGE"
+  echo
+  echo "$SUPPORT"
+  echo
+  echo "$API"
+  echo
+) > README.md

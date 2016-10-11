@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>Error</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="currentColor" fill-rule="evenodd">
+        <g id="Error">
+            <path d="M6,0 C2.6865,0 0,2.6865 0,6 C0,9.3135 2.6865,12 6,12 C9.3135,12 12,9.3135 12,6 C12,2.6865 9.3135,0 6,0 L6,0 Z" id="Error-Icon" fill="inherit"></path>
+            <path d="M8.6505,7.59075 C8.94375,7.884 8.94375,8.358 8.6505,8.65125 C8.50425,8.7975 8.31225,8.871 8.12025,8.871 C7.92825,8.871 7.73625,8.7975 7.59,8.65125 L5.99925,7.0605 L4.40775,8.65125 C4.2615,8.7975 4.0695,8.871 3.8775,8.871 C3.6855,8.871 3.49425,8.7975 3.34725,8.65125 C3.05475,8.358 3.05475,7.884 3.34725,7.59075 L4.938,6 L3.34725,4.40925 C3.05475,4.116 3.05475,3.64125 3.34725,3.34875 C3.6405,3.0555 4.11525,3.0555 4.40775,3.34875 L5.99925,4.9395 L7.59,3.34875 C7.88325,3.0555 8.35725,3.0555 8.6505,3.34875 C8.94375,3.64125 8.94375,4.116 8.6505,4.40925 L7.05975,6 L8.6505,7.59075 Z" id="Path" fill="white"></path>
+        </g>
+    </g>
+</svg>

@@ -31,25 +31,24 @@ describe(name, () => {
         .should.be.deep.equal([
           'atlassian',
 
+          'bitbucket/addons',
           'bitbucket/admin',
           'bitbucket/branches',
           'bitbucket/builds',
           'bitbucket/commits',
-          'bitbucket/create',
+          'bitbucket/dashboard',
           'bitbucket/downloads',
-          'bitbucket/feedback',
           'bitbucket/followers',
           'bitbucket/following',
-          'bitbucket/help',
           'bitbucket/issues',
           'bitbucket/logo',
+          'bitbucket/members',
           'bitbucket/optout',
-          'bitbucket/overview',
           'bitbucket/pipelines',
+          'bitbucket/projects',
           'bitbucket/pullrequests',
           'bitbucket/repos',
           'bitbucket/repositories',
-          'bitbucket/settings',
           'bitbucket/snippets',
           'bitbucket/source',
           'bitbucket/teams',
@@ -63,6 +62,7 @@ describe(name, () => {
           'confluence/person',
           'confluence/quote',
 
+          'create',
           'dashboard',
           'edit',
 
@@ -80,12 +80,15 @@ describe(name, () => {
 
           'error',
           'expand',
+          'feedback',
+          'help',
           'home',
           'jira/logo',
           'projects',
           'question',
           'radio',
           'search',
+          'settings',
           'success',
         ]);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in

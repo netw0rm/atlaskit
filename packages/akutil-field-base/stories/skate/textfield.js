@@ -5,6 +5,7 @@ import { showEditingView, showViewingView } from '../../src/internal/events';
 function handleEditingViewSwitch(elem) {
   if (elem.inputField) {
     elem.inputField.focus();
+    elem.inputField.setSelectionRange(0, elem.inputField.value.length || 0);
   }
 }
 

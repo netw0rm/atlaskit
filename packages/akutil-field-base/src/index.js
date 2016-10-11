@@ -33,12 +33,16 @@ function switchToEditing(elem) {
 //   });
 // }
 
-function handleFocus(elem) {
-  props(elem, { [focused]: true });
+function handleFocus(elem, e) {
+  if (e.target !== elem) {
+    props(elem, { [focused]: true });
+  }
 }
 
-function handleBlur(elem) {
-  props(elem, { [focused]: false });
+function handleBlur(elem, e) {
+  if (e.target !== elem) {
+    props(elem, { [focused]: false });
+  }
 }
 
 function handleEditConfirmation(elem) {
@@ -96,7 +100,7 @@ export default define('ak-field-base', {
     [focused]: prop.boolean(),
   },
   attached(elem) {
-    elem.addEventListener('focus', () => handleFocus(elem), true);
-    elem.addEventListener('blur', () => handleBlur(elem), true);
+    elem.addEventListener('focus', (e) => handleFocus(elem, e), true);
+    elem.addEventListener('blur', (e) => handleBlur(elem, e), true);
   },
 });

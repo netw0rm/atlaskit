@@ -87,7 +87,7 @@ export default define('ak-field', {
           })()}
         </div>
         <InlineDialog
-          borderColor={dialogBorderColor}
+          border-color={dialogBorderColor}
           open={elem[helpOpen] && elem[errors]}
           hasBlanket={false}
           padding="3px"

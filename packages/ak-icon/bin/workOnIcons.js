@@ -55,8 +55,10 @@ function workOnIcons(iconPaths, finishIconWork) {
       function runCustomTransformations(svgData, cb) {
         const fillCallback = (fill) =>
           log.warn(`"${iconRelativePathToSrc}": has a fill of "${fill}"`);
+        const styleCallback = () =>
+          log.warn(`"${iconRelativePathToSrc}": has a <style> element which will be stripped`);
 
-        const svgo = customSvgo(fillCallback);
+        const svgo = customSvgo(fillCallback, styleCallback);
         svgo.optimize(svgData, (result) => cb(null, result.data));
       },
       function generateExport(svgData, cb) {

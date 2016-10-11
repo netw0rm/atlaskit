@@ -11,13 +11,10 @@ import {
   helpOpen,
 } from './internal/symbols';
 
-import { events } from 'ak-field-text';
-const { focus, blur } = events;
+import { events as fieldEvents } from 'ak-field-text';
 import InlineDialog from 'ak-inline-dialog';
 import { SuccessIcon, ErrorIcon } from 'ak-icon';
-
-
-const dialogBorderColor = '#D93A35'; // R400
+import { akColorR400 } from 'akutil-shared-styles';
 
 function getValidators(elem) {
   const nodes = elem[validatorSlot] && elem[validatorSlot].assignedNodes() || [];
@@ -52,11 +49,11 @@ export default define('ak-field', {
     elem.addEventListener('input', () => (elem.validate()));
     elem.addEventListener('change', () => (elem.validate()));
 
-    elem.addEventListener(focus, () => {
+    elem.addEventListener(fieldEvents.focus, () => {
       elem.validate();
       elem[helpOpen] = true;
     });
-    elem.addEventListener(blur, () => (elem[helpOpen] = false));
+    elem.addEventListener(fieldEvents.blur, () => (elem[helpOpen] = false));
   },
   render(elem) {
     return ([
@@ -87,7 +84,7 @@ export default define('ak-field', {
           })()}
         </div>
         <InlineDialog
-          border-color={dialogBorderColor}
+          border-color={akColorR400}
           open={elem[helpOpen] && elem[errors]}
           hasBlanket={false}
           padding="3px"

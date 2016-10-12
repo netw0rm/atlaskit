@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",
-    "ak-icon": "~7.5.0",
+    "ak-icon": "^8.0.0",
     "akutil-common-test": "^3.0.0"
   },
   "repository": {

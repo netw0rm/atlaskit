@@ -15,11 +15,11 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-button": "^2.3.0",
-    "ak-icon": "~7.5.0",
     "ak-editor-shared-styles": "^1.0.3",
+    "ak-icon": "~7.5.0",
     "akutil-shared-styles": "^34.2.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.4.1"
+    "skatejs": "^3.0.0"
   },
   "devDependencies": {
     "ak-editor-prosemirror": "^2.0.0",

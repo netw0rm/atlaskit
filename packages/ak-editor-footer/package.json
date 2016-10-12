@@ -18,7 +18,7 @@
     "ak-button-group": "^1.0.16",
     "ak-icon": "~7.5.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.4.1"
+    "skatejs": "^3.0.0"
   },
   "devDependencies": {
     "akutil-common-test": "^3.0.0",

@@ -11,7 +11,6 @@ exports.description = 'Adds an aria-labelledby and a referenced <title> and <des
 exports.params = {
   title: '',
   desc: '',
-  idFn: (elem) => `${elem}-${uid()}`;
 };
 
 exports.fn = function addAriaLabel(item, params) {
@@ -21,7 +20,12 @@ exports.fn = function addAriaLabel(item, params) {
     ['desc', 'title'].forEach((elem) => {
       const value = params[elem];
       if (value) {
-        const id = params.idFn(elem);
+        let id;
+        if (typeof params.idFn === 'function') {
+          id = params.idFn(elem);
+        } else {
+          id = `${elem}-${uid()}`;
+        }
         ids.push(id);
 
         let pos = 0;

@@ -5,9 +5,9 @@ const callbackOnStyleElement = require('../plugins/callbackOnStyleElement');
 const addAriaLabels = require('../plugins/addAriaLabels');
 
 const addAriaLabelsPlugin = Object.assign({}, addAriaLabels, {
-  params: Object.assign({}, addAriaLabels.params, {
+  params: {
     title: '{title}',
-  }),
+  },
 });
 
 /**

@@ -62,7 +62,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
           ],
         });
 
-        BlockTypePlugin.get(this.pm).onChange(state => {
+        BlockTypePlugin.get(this.pm).onChange((state) => {
           const name = state.selectedBlockType;
           const blockType = prosemirrorBlockToToolbarMap[name];
 
@@ -75,7 +75,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
 
       render() {
         return (
-          <div ref={(elem) => elem && (this.editorElement = elem.firstChild.nextSibling)}>
+          <div ref={elem => elem && (this.editorElement = elem.firstChild.nextSibling)}>
             <Toolbar>
               <BlockType
                 disabled={!this.state.canChangeBlockType}

@@ -83,7 +83,7 @@ const MentionTextInput = React.createClass({
     const searchInput = (
       <SearchTextInput
         label={label}
-        onChange={(query) => this._updateSearch(query)}
+        onChange={query => this._updateSearch(query)}
         onUp={() => this._mentionListRef.selectPrevious()}
         onDown={() => this._mentionListRef.selectNext()}
         onEnter={() => this._mentionListRef.chooseCurrentSelection()}

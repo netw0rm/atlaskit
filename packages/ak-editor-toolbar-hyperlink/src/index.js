@@ -38,7 +38,7 @@ export default define('ak-editor-toolbar-hyperlink', {
     /* eslint-disable new-cap  */
     return (
       <div
-        onKeyup={event => {
+        onKeyup={(event) => {
           if (event.keyCode === 13) {
             const textInput = elem.shadowRoot.querySelector('.text-input');
             toggle(elem, textInput);

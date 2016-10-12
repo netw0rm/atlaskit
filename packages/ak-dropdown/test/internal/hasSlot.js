@@ -15,12 +15,12 @@ describe('childrenHaveSlot', () => {
 
   const definition = {
     render() {
-      return (<div><div></div><div slot="test"></div><div slot="lostslot"></div></div>);
+      return (<div><div /><div slot="test" /><div slot="lostslot" /></div>);
     },
   };
 
   beforeEach(() => createTemporaryComponent(definition)
-    .then(newComponent => {
+    .then((newComponent) => {
       component = newComponent;
       rootNode = getRootNode(component);
     }));

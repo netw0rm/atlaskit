@@ -93,7 +93,7 @@ export default define('pf-resourced-mention-list', {
         <MentionList
           mentions={elem._mentions}
           showError={elem._showError}
-          ref={ref => { elem._mentionListRef = ref; }}
+          ref={(ref) => { elem._mentionListRef = ref; }}
         />
       </div>
     );

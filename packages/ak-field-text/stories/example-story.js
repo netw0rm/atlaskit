@@ -39,7 +39,7 @@ function generateFormWithInput(opts) {
 function submitTestForm(useNativeSubmitBtn) {
   const submitBtn = useNativeSubmitBtn ?
     <input type="submit" /> :
-    <ReactButton type="submit" appearance="primary">Submit</ReactButton>;
+      <ReactButton type="submit" appearance="primary">Submit</ReactButton>;
   return (
     <div>
       <form
@@ -58,7 +58,7 @@ function submitTestForm(useNativeSubmitBtn) {
           {submitBtn}
         </p>
       </form>
-      <iframe src="" name="myFrame" style={{ width: '50%', height: '300px' }}></iframe>
+      <iframe src="" name="myFrame" style={{ width: '50%', height: '300px' }} />
     </div>
   );
 }

@@ -82,7 +82,7 @@ describe('LESS module exports', () => {
     'akFontSizeDefault',
     'akGridSize',
     'default',
-  ].forEach(key => {
+  ].forEach((key) => {
     it(`should have an item called "${key}"`, () => {
       expect(lessVars).to.contain.all.keys(key);
     });

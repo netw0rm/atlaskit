@@ -46,7 +46,7 @@ describe('ak-tooltip-trigger', () => {
   }));
   afterEach(() => tearDownComponent(tooltip, trigger));
 
-  ['focus', 'mouseenter'].forEach(event => {
+  ['focus', 'mouseenter'].forEach((event) => {
     it(`should open a tooltip when ${event} event fired`, () => {
       const tooltipIsOpen = () => (tooltip.visible);
 
@@ -61,7 +61,7 @@ describe('ak-tooltip-trigger', () => {
     blur: 'focus',
     mouseleave: 'mouseenter',
   };
-  Object.keys(tooltipEvents).forEach(event => {
+  Object.keys(tooltipEvents).forEach((event) => {
     it(`should close a tooltip when ${event} event fired`, () => {
       const tooltipIsOpen = () => (tooltip.visible);
 

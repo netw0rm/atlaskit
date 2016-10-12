@@ -25,7 +25,7 @@ storiesOf(name, module)
     <Component id="myComponent" onClick={action('clicking the WebComponent')} />
   ))
   .add('an akutil-component-template that removes itself when being clicked', () => {
-    const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
+    const removeMe = e => e.currentTarget.parentNode.removeChild(e.currentTarget);
     const cls = styles.locals.akutilComponentTemplate;
     return (<Component id="myComponent" className={cls} onClick={removeMe} />);
   })

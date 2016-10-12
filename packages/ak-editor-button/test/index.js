@@ -17,10 +17,10 @@ describe('ak-editor-button', () => {
   const shadowDomQuery = (elem, selector) =>
     getShadowRoot(elem).querySelector(selector);
 
-  const getShadowButtonElem = (elem) =>
+  const getShadowButtonElem = elem =>
     shadowDomQuery(elem, `.${classKeys.root} button`);
 
-  beforeEach(done => {
+  beforeEach((done) => {
     component = new AkEditorButton();
     document.body.appendChild(component);
     afterMutations(done);

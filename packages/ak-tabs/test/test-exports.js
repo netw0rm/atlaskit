@@ -18,11 +18,11 @@ describe(name, () => {
 
     it('should export a base component', () => {
       Tabs.should.be.equals(exports.default);
-      (new Tabs).should.be.an.instanceof(Component);
+      (new Tabs()).should.be.an.instanceof(Component);
     });
 
     it('should export a Tab component', () => {
-      (new exports.Tab).should.be.an.instanceof(Component);
+      (new exports.Tab()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {

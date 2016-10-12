@@ -27,7 +27,7 @@ const testDropdownItems = `
 `;
 
 function setupComponentExample(content = testDropdownItems) {
-  return initComponent(component => {
+  return initComponent((component) => {
     component.innerHTML = `
       <ak-dropdown-trigger-button slot="trigger">test</ak-dropdown-trigger-button>
       ${content}
@@ -65,12 +65,12 @@ function checkSelectedItems(items, ...index) {
 describe('ak-dropdown', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new Dropdown).should.be.an.instanceof(Component);
+      (new Dropdown()).should.be.an.instanceof(Component);
     });
 
     it('should have an sub-components exports', () => {
-      (new exports.DropdownTrigger).should.be.an.instanceof(Component);
-      (new exports.DropdownTriggerButton).should.be.an.instanceof(Component);
+      (new exports.DropdownTrigger()).should.be.an.instanceof(Component);
+      (new exports.DropdownTriggerButton()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
@@ -91,7 +91,7 @@ describe('ak-dropdown', () => {
     let component;
     let shadowRoot;
 
-    beforeEach(() => setupComponentExample().then(newComponent => {
+    beforeEach(() => setupComponentExample().then((newComponent) => {
       component = newComponent;
       shadowRoot = getShadowRoot(component);
     }));
@@ -215,7 +215,7 @@ describe('ak-dropdown', () => {
     const html = `<ak-dropdown-item>first</ak-dropdown-item>
                   <ak-dropdown-item>second</ak-dropdown-item>
                   <ak-dropdown-item>third</ak-dropdown-item>`;
-    beforeEach(() => setupComponentExample(html).then(newComponent => {
+    beforeEach(() => setupComponentExample(html).then((newComponent) => {
       component = newComponent;
       props(component, { open: true });
       items = component.querySelectorAll('ak-dropdown-item');
@@ -252,7 +252,7 @@ describe('ak-dropdown', () => {
     const html = `<ak-dropdown-item-checkbox>first</ak-dropdown-item-checkbox>
                   <ak-dropdown-item-checkbox>second</ak-dropdown-item-checkbox>
                   <ak-dropdown-item-checkbox>third</ak-dropdown-item-checkbox>`;
-    beforeEach(() => setupComponentExample(html).then(newComponent => {
+    beforeEach(() => setupComponentExample(html).then((newComponent) => {
       component = newComponent;
       props(component, { open: true });
       items = component.querySelectorAll('ak-dropdown-item-checkbox');
@@ -302,7 +302,7 @@ describe('ak-dropdown', () => {
                     <ak-dropdown-item-radio>second</ak-dropdown-item-radio>
                     <ak-dropdown-item-radio>third</ak-dropdown-item-radio>
                   </ak-dropdown-group>`;
-    beforeEach(() => setupComponentExample(html).then(newComponent => {
+    beforeEach(() => setupComponentExample(html).then((newComponent) => {
       component = newComponent;
       props(component, { open: true });
       groups = component.querySelectorAll('ak-dropdown-group');
@@ -355,7 +355,7 @@ describe('ak-dropdown', () => {
                   <ak-dropdown-item hidden>first</ak-dropdown-item>
                   <ak-dropdown-item hidden>second</ak-dropdown-item>
                   <ak-dropdown-item>third</ak-dropdown-item>`;
-    beforeEach(() => setupComponentExample(html).then(newComponent => {
+    beforeEach(() => setupComponentExample(html).then((newComponent) => {
       component = newComponent;
       pressDropdownTrigger(component);
     }));

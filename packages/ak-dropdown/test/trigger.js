@@ -99,7 +99,7 @@ describe('sanity checking', () => {
     DropdownTrigger,
     DropdownTriggerButton,
     DropdownTriggerArrow,
-  ].forEach(constructor => {
+  ].forEach((constructor) => {
     describe(`${constructor.name}`, () => {
       beforeEach(() => {
         component = new constructor();

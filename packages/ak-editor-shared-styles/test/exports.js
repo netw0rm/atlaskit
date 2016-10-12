@@ -34,7 +34,7 @@ describe('LESS module exports', () => {
     'akEditorCodeBackground',
     'akEditorCodeBlockPadding',
     'akEditorCodeInlinePadding',
-  ].forEach(key => {
+  ].forEach((key) => {
     it(`should have an item called "${key}"`, () => {
       expect(lessVars).to.contain.all.keys(key);
     });

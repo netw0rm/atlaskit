@@ -21,7 +21,7 @@ describe('DefaultSlotContainer', () => {
   };
 
   beforeEach(() => createTemporaryComponent(definition)
-    .then(newComponent => {
+    .then((newComponent) => {
       component = newComponent;
       rootNode = getRootNode(component);
     }));

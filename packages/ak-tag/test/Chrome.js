@@ -29,7 +29,7 @@ describe('ak-tag', () => {
       };
 
       beforeEach(() => createTemporary(definition)
-        .then(newComponent => {
+        .then((newComponent) => {
           component = newComponent;
           rootNode = getRootNode(component);
         }));
@@ -63,7 +63,7 @@ describe('ak-tag', () => {
       };
 
       beforeEach(() => createTemporary(definition)
-        .then(newComponent => {
+        .then((newComponent) => {
           component = newComponent;
           rootNode = getRootNode(component);
         }));
@@ -72,7 +72,7 @@ describe('ak-tag', () => {
         expect(rootNode.tabIndex).to.equal(0);
       });
 
-      ['SPACE', 'ENTER'].forEach((keyName) =>
+      ['SPACE', 'ENTER'].forEach(keyName =>
         it(`should be possible to activate the link via "${keyName}"`, () => {
           const keyPressEvent = new CustomEvent('keydown');
           keyPressEvent.keyCode = keyCode(keyName);

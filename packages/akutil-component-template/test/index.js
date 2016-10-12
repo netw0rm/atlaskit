@@ -17,7 +17,7 @@ const expect = chai.expect;
 describe('akutil-component-template', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new MyComponent).should.be.an.instanceof(Component);
+      (new MyComponent()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
@@ -33,7 +33,7 @@ describe('akutil-component-template', () => {
     let component;
     let shadowRoot;
 
-    beforeEach(() => setupComponent(MyComponent).then(newComponent => {
+    beforeEach(() => setupComponent(MyComponent).then((newComponent) => {
       component = newComponent;
       shadowRoot = getShadowRoot(component);
     }));

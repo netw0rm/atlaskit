@@ -28,7 +28,7 @@ function setupTabs(opts) {
   tabsElement.classList.add(tabsStyles.akTabs);
 
   if (opts.tabs) {
-    opts.tabs.forEach(tabOptions => {
+    opts.tabs.forEach((tabOptions) => {
       const newTab = new AkTabsTab();
       tabElements.push(newTab);
 

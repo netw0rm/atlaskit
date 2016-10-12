@@ -15,7 +15,7 @@ jss.use(nested());
 // Polyfill :host
 // --------------
 
-jss.use(rule => {
+jss.use((rule) => {
   const selector = getRuleSelector(rule);
   if (selector.indexOf(':host') === 0) {
     if (supportsShadowDOM) {
@@ -31,7 +31,7 @@ jss.use(rule => {
 // Polyfill ::slotted
 // ------------------
 
-jss.use(rule => {
+jss.use((rule) => {
   const selector = getRuleSelector(rule);
   if (selector.indexOf('::slotted') > -1) {
     const match = selector.match(/(.*)::slotted\((.*)\)/);

@@ -10,7 +10,7 @@ const { tmpFolderName } = require('./constants');
 const tempFolder = `../src/${tmpFolderName}/`;
 const sourceFolder = path.join(__dirname, '..', 'src');
 
-const pathToExport = (p) => iconNameToComponentName(pathToDashed(fileToScope(p, tempFolder)));
+const pathToExport = p => iconNameToComponentName(pathToDashed(fileToScope(p, tempFolder)));
 
 glob(`${tempFolder}**/*.js`, {
   cwd: sourceFolder,

@@ -32,6 +32,6 @@ storiesOf(name, module)
   .add('with some margin', () => (
     <Component
       style={{ position: 'absolute', marginLeft: 200 }}
-      onsave={(e) => action('You just entered: ')(e.detail.value)}
+      onsave={e => action('You just entered: ')(e.detail.value)}
     />
   ));

@@ -51,7 +51,7 @@ export default define('ak-tabs', {
           ref={el => (elem[labelsContainer] = el)}
         >
           {allTabs && allTabs.map(
-            tab => {
+            (tab) => {
               const ariaSelected = `${!!tab.selected}`;
               const tabIndex = tab.selected ? '0' : '-1';
               const classes = classNames(shadowStyles.locals.akTabLabel, {

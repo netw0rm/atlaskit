@@ -20,7 +20,7 @@ const definition = {
     return (
       <span class={classes} bold={elem.bold}>
         <style>{shadowStyles.toString()}</style>
-        <span className={shadowStyles.locals.content}><slot></slot></span>
+        <span className={shadowStyles.locals.content}><slot /></span>
       </span>
     );
   },

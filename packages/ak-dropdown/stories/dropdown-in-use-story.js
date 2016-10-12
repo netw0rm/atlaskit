@@ -136,7 +136,7 @@ storiesOf(`${name} with different parents`, module)
         width: '400px',
         height: '400px',
       }}
-      ref={(el) => (setParent(el))}
+      ref={el => (setParent(el))}
     >
       <div
         style={{

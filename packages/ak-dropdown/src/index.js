@@ -34,7 +34,7 @@ function getTriggerElement(elem) {
 function getAllItems(elem) {
   return Array
     .from(elem.querySelectorAll('*[defined]'))
-    .filter((node) => node instanceof Item);
+    .filter(node => node instanceof Item);
 }
 
 function openDialog(elem) {
@@ -95,7 +95,7 @@ function toggleDialog(elem) {
 function selectSimpleItem(elem, event) {
   const list = Array
     .from(elem.querySelectorAll('*[defined]'))
-    .filter((node) => (
+    .filter(node => (
       node instanceof Item && !(node instanceof RadioItem) && !(node instanceof CheckboxItem)
     ));
 
@@ -212,8 +212,8 @@ export default define('ak-dropdown', {
       }
       toggleDialog(elem);
     });
-    elem.addEventListener(events.selected, (e) => selectItem(elem, e));
-    elem.addEventListener(events.unselected, (e) => unselectItem(elem, e));
+    elem.addEventListener(events.selected, e => selectItem(elem, e));
+    elem.addEventListener(events.unselected, e => unselectItem(elem, e));
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
     elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));

@@ -64,7 +64,7 @@ const SearchTextInput = React.createClass({
           {...other}
           type="text"
           onKeyDown={this._handleKeyDown}
-          ref={(ref) => this._inputRefUpdate(ref)}
+          ref={ref => this._inputRefUpdate(ref)}
           style={{
             height: '20px',
             marginLeft: '10px',

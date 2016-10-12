@@ -20,7 +20,7 @@ describe('Href', () => {
   };
 
   beforeEach(() => createTemporaryComponent(definition)
-    .then(newComponent => {
+    .then((newComponent) => {
       component = newComponent;
       rootNode = getRootNode(component);
     }));

@@ -69,7 +69,7 @@ export default define(name, {
           >
             <Label href={elem.href}>{elem.text}</Label>
             <Button
-              onHoverStateChange={(isHovering) => props(elem, { [buttonHoverSymbol]: isHovering })}
+              onHoverStateChange={isHovering => props(elem, { [buttonHoverSymbol]: isHovering })}
               onActivation={() => elem.remove()}
               text={elem['remove-button-text']}
             />

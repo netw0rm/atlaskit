@@ -105,16 +105,16 @@ describe(name, () => {
     });
 
     it('are properly defined in bundle', () => {
-      (new BitbucketLogoIcon).should.be.instanceof(Component);
+      (new BitbucketLogoIcon()).should.be.instanceof(Component);
 
       const bundleKeys = Object.keys(bundle);
 
       bundleKeys.should.be.deep.equal(Object
             .keys(components)
             .map(pathToDashed)
-            .map((x) => iconNameToComponentName(x)));
+            .map(x => iconNameToComponentName(x)));
 
-      bundleKeys.forEach((key) => (new (bundle[key])).should.be.instanceof(Component));
+      bundleKeys.forEach(key => (new (bundle[key])()).should.be.instanceof(Component));
     });
   });
 
@@ -138,7 +138,7 @@ describe(name, () => {
       document.body.appendChild(component);
       afterMutations(
         () => getRootNode(component),
-        (rootNode) => rootNode.querySelector('[role="img"]').tagName.should.match(/svg/i),
+        rootNode => rootNode.querySelector('[role="img"]').tagName.should.match(/svg/i),
         done
       );
     });
@@ -150,13 +150,13 @@ describe(name, () => {
       document.body.appendChild(component);
       afterMutations(
         () => getRootNode(component),
-        (rootNode) => rootNode.querySelector('svg'),
+        rootNode => rootNode.querySelector('svg'),
         (svg) => {
           svg.hasAttribute('aria-labelledby').should.be.true;
           const labelledBy = svg.getAttribute('aria-labelledby');
           const ids = labelledBy.split(/\s+/);
           ids.length.should.be.at.least(1, 'The labelled-by attribute must reference some node');
-          const labels = ids.map((id) => svg.getElementById(id).textContent);
+          const labels = ids.map(id => svg.getElementById(id).textContent);
           labels.should.contain(label);
         },
         done

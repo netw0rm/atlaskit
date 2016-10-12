@@ -26,7 +26,7 @@ describe('Item', () => {
   };
 
   beforeEach(() => createTemporaryComponent(definition)
-    .then(newComponent => {
+    .then((newComponent) => {
       component = newComponent;
     }));
   afterEach(() => tearDownComponent(component));

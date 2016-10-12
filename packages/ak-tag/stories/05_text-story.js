@@ -7,7 +7,7 @@ import styles from '../src/shadow.less';
 
 const Tag = reactify(TagWc);
 
-const MyTag = (props) => (
+const MyTag = props => (
   <Tag
     className={styles.locals.akTag}
     {...props}

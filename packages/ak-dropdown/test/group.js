@@ -30,7 +30,7 @@ function tearDownComponent(component) {
 describe('general behavior', () => {
   let component;
 
-  beforeEach(() => setupComponent().then(newComponent => {
+  beforeEach(() => setupComponent().then((newComponent) => {
     component = newComponent;
   }));
   afterEach(() => tearDownComponent(component));

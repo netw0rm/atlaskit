@@ -20,7 +20,7 @@ function loadStories() {
 
 setAddon({
   addMonitored(storyName, storyFn, rafFn) {
-    this.add(storyName, (context) => (
+    this.add(storyName, context => (
       <MonitoredStory rafFn={rafFn}>
         {storyFn(context)}
       </MonitoredStory>
@@ -28,7 +28,7 @@ setAddon({
   },
 
   addMonkeyTest(storyName, storyFn) {
-    this.add(storyName, (context) => (
+    this.add(storyName, context => (
       <MonkeyTestStory>
         {storyFn(context)}
       </MonkeyTestStory>
@@ -36,7 +36,7 @@ setAddon({
   },
 
   addSwapped(storyName, storyFn) {
-    this.add(storyName, (context) => (
+    this.add(storyName, context => (
       <SwappedDirectionStory>
         {storyFn(context)}
       </SwappedDirectionStory>
@@ -44,7 +44,7 @@ setAddon({
   },
 
   addBaselineAligned(storyName, storyFn) {
-    this.add(storyName, (context) => (
+    this.add(storyName, context => (
       <BaselineAlignmentStory>
         {storyFn(context)}
       </BaselineAlignmentStory>

@@ -40,7 +40,7 @@ storiesOf('ak-editor-toolbar-lists', module)
               <input
                 type="checkbox"
                 checked={!this.state.bulletlistDisabled}
-                onChange={(e) => this.setState({ bulletlistDisabled: !e.target.checked })}
+                onChange={e => this.setState({ bulletlistDisabled: !e.target.checked })}
               />
               <ul><li
                 tabIndex="-1"
@@ -51,7 +51,7 @@ storiesOf('ak-editor-toolbar-lists', module)
               <input
                 type="checkbox"
                 checked={!this.state.numberlistDisabled}
-                onChange={(e) => this.setState({ numberlistDisabled: !e.target.checked })}
+                onChange={e => this.setState({ numberlistDisabled: !e.target.checked })}
               />
               <ol><li
                 tabIndex="-1"

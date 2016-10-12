@@ -57,7 +57,7 @@ storiesOf('ak-editor-toolbar', module)
 
       render() {
         return (
-          <div ref={(elem) => elem && (this.editorElement = elem.firstChild.nextSibling)}>
+          <div ref={elem => elem && (this.editorElement = elem.firstChild.nextSibling)}>
             <Toolbar>
               <TextFormatting
                 boldActive={this.state.boldActive}

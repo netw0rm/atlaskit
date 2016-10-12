@@ -10,7 +10,7 @@ chai.should();
 describe(name, () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new MentionPicker).should.be.an.instanceof(Component);
+      (new MentionPicker()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {

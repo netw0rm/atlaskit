@@ -1,7 +1,7 @@
 import shadowStyles from '../shadow.less';
 import { buttonContainer, labelsContainer, tabDropdownItem, tabLabel } from './symbols';
 
-const getAllTabs = (tabsEl) => (Array.from(tabsEl.children).filter(el => el.label));
+const getAllTabs = tabsEl => (Array.from(tabsEl.children).filter(el => el.label));
 
 function getNextOrPrevTab(tabsEl, tab, isNext) {
   const all = getAllTabs(tabsEl);
@@ -45,13 +45,13 @@ const calculateVisibleTabs = (tabsEl) => {
 
   let widthRemaining = tabLabelsContainer.getBoundingClientRect().width;
   const tabWidths = new Map();
-  allTabs.forEach(tab => {
+  allTabs.forEach((tab) => {
     tabWidths.set(tab, getLabelForTab(tab).getBoundingClientRect().width);
   });
 
   // If all the tabs fit, then just display them all.
   let totalWidth = 0;
-  tabWidths.forEach((value) => (totalWidth += value));
+  tabWidths.forEach(value => (totalWidth += value));
   if (totalWidth <= widthRemaining) {
     return allTabs;
   }
@@ -102,11 +102,11 @@ function showVisibleTabs(tabsEl) {
   const visibleTabs = calculateVisibleTabs(tabsEl);
 
   // Only show visible tabs
-  allTabs.forEach(el => {
+  allTabs.forEach((el) => {
     el[tabLabel].classList.add(shadowStyles.locals.akTabLabelHidden);
     el[tabDropdownItem].classList.remove(shadowStyles.locals.akTabDdItemHidden);
   });
-  visibleTabs.forEach(el => {
+  visibleTabs.forEach((el) => {
     el[tabLabel].classList.remove(shadowStyles.locals.akTabLabelHidden);
     el[tabDropdownItem].classList.add(shadowStyles.locals.akTabDdItemHidden);
   });

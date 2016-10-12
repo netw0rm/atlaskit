@@ -22,7 +22,7 @@ const SnippetsIcon = reactify(BitbucketSnippetsIcon);
 const commentClass = styles.locals.akComment;
 
 /* eslint-disable react/prop-types */
-const MyComment = (props) => (
+const MyComment = props => (
   <Comment className={commentClass} {...props}>
     <Avatar slot="avatar" src={transparentAvatarUrl} label="Ross" />
     <a is slot="author" href="#">{props.name}</a>

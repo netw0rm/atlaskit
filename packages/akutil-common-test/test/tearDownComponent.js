@@ -19,7 +19,7 @@ describe('getRootNode', () => {
   };
 
   it('should be possible to remove a component', () => createTemporaryComponent(define, definition)
-    .then(newComponent => {
+    .then((newComponent) => {
       component = newComponent;
       tearDownComponent(component);
       expect(component.parentNode).to.equal(null);
@@ -30,7 +30,7 @@ describe('getRootNode', () => {
   it('should be possible to remove a component from target', () => {
     target = document.createElement('div');
     document.body.appendChild(target);
-    return createTemporaryComponent(define, definition, target).then(newComponent => {
+    return createTemporaryComponent(define, definition, target).then((newComponent) => {
       component = newComponent;
       tearDownComponent(component, target);
       expect(component.parentNode).to.equal(null);

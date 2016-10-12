@@ -68,7 +68,7 @@ storiesOf('ak-editor-hyperlink-edit', module)
             <style>{styles.toString()}</style>
             <p contentEditable>Lorem ipsum <span
               className={styles.locals.hyperlink}
-              onClick={(e) => this.editLink(e.target)}
+              onClick={e => this.editLink(e.target)}
             >epsum</span> lopsom gibson.</p>
           </div>
         );

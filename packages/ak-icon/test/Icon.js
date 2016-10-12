@@ -47,7 +47,7 @@ describe(name, () => {
         }
       }
       return createTemporaryComponent(define, MyIcon)
-        .then(newComponent => {
+        .then((newComponent) => {
           component = newComponent;
           getRootNode(component).innerHTML.should.match(new RegExp(secret));
         }).should.be.fulfilled;

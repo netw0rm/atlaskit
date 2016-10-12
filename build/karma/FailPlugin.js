@@ -13,7 +13,7 @@ class FailPlugin {
 
   apply(compiler) {
     if (this.karmaConfig.singleRun) {
-      compiler.plugin('done', stats => {
+      compiler.plugin('done', (stats) => {
         if (stats.hasErrors()) {
           for (const error of stats.toJson({ errors: true }).errors) {
             // eslint-disable-next-line

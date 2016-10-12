@@ -5,7 +5,7 @@ import reactify from 'akutil-react';
 
 import React from 'react';
 const TextInput = reactify(TextInputComponent);
-const Container = (props) => (
+const Container = props => (
   <div style={{ backgroundColor: '#545454', padding: '5px 10px' }}>
     {props.children}
   </div>

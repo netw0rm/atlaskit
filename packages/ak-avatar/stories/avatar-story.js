@@ -17,13 +17,13 @@ const tickWithBackgroundUrl = require('url!./tick.png');
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 const storybookExampleClass = avatarStoryStyles.example;
 
-const DefaultAvatar = (props) => <Avatar
+const DefaultAvatar = props => <Avatar
   style={{ marginLeft: '10px' }}
   className={avatarClass}
   {...props}
 />;
 
-const AllAvatarSizes = (props) => <div className={avatarRowClass}>
+const AllAvatarSizes = props => <div className={avatarRowClass}>
   <DefaultAvatar size="small" {...props} />
   <DefaultAvatar size="medium" {...props} />
   <DefaultAvatar size="large" {...props} />
@@ -193,8 +193,7 @@ storiesOf(name, module)
                 left: '20%',
                 transform: 'rotate(50deg)',
               }}
-            >
-            </div>
+            />
           </div>
         </AllAvatarSizes>
       </div>

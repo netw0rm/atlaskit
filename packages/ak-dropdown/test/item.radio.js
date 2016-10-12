@@ -81,7 +81,7 @@ describe('ak-dropdown-item-radio', () => {
     it(`height should be equal ${itemHeight}`, (done) => {
       afterMutations(
         () => getRootNode(component).getBoundingClientRect().height,
-        (height) => (expect(Math.round(height)).to.equal(itemHeight)),
+        height => (expect(Math.round(height)).to.equal(itemHeight)),
         done
       );
     });

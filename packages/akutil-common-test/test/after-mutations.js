@@ -25,7 +25,7 @@ describe('afterMutations', () => {
         n.should.be.equal(1);
         return n + 2;
       },
-      (n) => (n.should.be.equal(3)),
+      n => (n.should.be.equal(3)),
       done
     );
   });

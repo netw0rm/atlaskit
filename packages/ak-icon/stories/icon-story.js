@@ -31,10 +31,10 @@ if (!CharlieIcon) {
 
 const toggleableIcons = Object
   .keys(reactifiedComponents)
-  .filter((key) => twoColorIcons.indexOf(key) !== -1)
-  .map((key) => [key, reactifiedComponents[key]]);
+  .filter(key => twoColorIcons.indexOf(key) !== -1)
+  .map(key => [key, reactifiedComponents[key]]);
 
-const AllIcons = (props) => (
+const AllIcons = props => (
   // eslint-disable-next-line react/prop-types
   <div {...props} className={classnames(styles.container, props.className)}>
     {Object
@@ -49,7 +49,7 @@ const AllIcons = (props) => (
   </div>
 );
 
-const AbsoluteAllIcons = (props) => (
+const AbsoluteAllIcons = props => (
   <AllIcons
     {...props}
     // eslint-disable-next-line react/prop-types

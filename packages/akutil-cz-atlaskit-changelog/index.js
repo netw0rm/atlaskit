@@ -4,7 +4,7 @@ const czLernaChangelog = require('cz-lerna-changelog');
 
 function check(script, shouldShowStderr, cb) {
   const spawned = spawn('npm', ['run', script, '--silent'], { stdio: 'inherit' });
-  spawned.on('exit', code => {
+  spawned.on('exit', (code) => {
     if (code === 0) {
       cb(code);
     }

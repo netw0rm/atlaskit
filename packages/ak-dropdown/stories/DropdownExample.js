@@ -30,9 +30,9 @@ export default class DropdownExample extends Component { // eslint-disable-line 
               size="small"
             />
           </DropdownTriggerReact> :
-          <DropdownTriggerButtonReact slot="trigger" tab-index="1">
+            <DropdownTriggerButtonReact slot="trigger" tab-index="1">
             Dropdown
-          </DropdownTriggerButtonReact>
+            </DropdownTriggerButtonReact>
         }
         <GroupReact heading="Australia">
           <ItemReact>Sydney</ItemReact>

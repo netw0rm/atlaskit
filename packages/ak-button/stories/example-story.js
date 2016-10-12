@@ -112,7 +112,7 @@ storiesOf(name, module)
       {
         ICONS.map(Icon =>
           (<div className="icons-container">
-              {[APPEARANCE.STANDARD, APPEARANCE.PRIMARY, APPEARANCE.SUBTLE]
+            {[APPEARANCE.STANDARD, APPEARANCE.PRIMARY, APPEARANCE.SUBTLE]
                 .map(appearance => (
                   <AkButton
 
@@ -131,7 +131,7 @@ storiesOf(name, module)
                     <Icon slot="before" />
                     Button
                   </AkButton>,
-                  <AkButton style={buttonStyles} disabled>
+              <AkButton style={buttonStyles} disabled>
                     <Icon slot="before" />
                       Button
                   </AkButton>,

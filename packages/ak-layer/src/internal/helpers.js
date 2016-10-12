@@ -32,7 +32,7 @@ function createNewAlignment(elem) {
     position: elem.position,
     enableFlip: elem.enableFlip,
     offset: elem.offset,
-    onUpdate: (data) => handlePopperUpdate(elem, data),
+    onUpdate: data => handlePopperUpdate(elem, data),
   };
 
   if (elem.boundariesElement) {

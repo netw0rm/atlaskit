@@ -19,7 +19,7 @@ describe('getRootNode', () => {
 
   it('should return the rootNode of a component if it has one', () =>
     createTemporaryComponent(define, definition)
-      .then(newComponent => {
+      .then((newComponent) => {
         component = newComponent;
         rootNode = getRootNode(component);
         expect(rootNode).not.to.equal(undefined);

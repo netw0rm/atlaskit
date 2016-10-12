@@ -189,7 +189,7 @@ export default define('ak-layer', {
     }
 
     return (
-      <div ref={(el) => (elem.positionedDOM = el)}>
+      <div ref={el => (elem.positionedDOM = el)}>
         <slot />
       </div>
     );

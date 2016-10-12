@@ -47,7 +47,7 @@ export default class AnimationDemo extends React.Component {
           type="checkbox"
           id="animate"
           onChange={this.toggleAnimation}
-          ref={(elem) => (this.checkbox = elem)}
+          ref={elem => (this.checkbox = elem)}
         /> <label htmlFor="animate">Animate</label>
         <hr />
         <div className={styles.locals.container}>

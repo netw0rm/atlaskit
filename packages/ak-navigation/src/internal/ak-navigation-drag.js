@@ -6,7 +6,7 @@ export default define('ak-navigation-drag', {
   created(elem) {
     elem.addEventListener('mousedown', (mouseDownEvent) => {
       elem.startDragCallback(mouseDownEvent);
-      const onDrag = (mouseMoveEvent) => elem.dragCallback(mouseMoveEvent);
+      const onDrag = mouseMoveEvent => elem.dragCallback(mouseMoveEvent);
       const onMouseUp = (mouseUpEvent) => {
         elem.endDragCallback(mouseUpEvent);
         document.body.removeEventListener('mousemove', onDrag);

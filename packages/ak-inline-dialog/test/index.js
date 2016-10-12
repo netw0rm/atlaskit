@@ -18,7 +18,7 @@ const defaultPosition = 'right middle';
 describe('ak-inline-dialog', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new AkInlineDialog).should.be.an.instanceof(Component);
+      (new AkInlineDialog()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
@@ -123,7 +123,7 @@ describe('ak-inline-dialog', () => {
     let component;
     let target;
 
-    beforeEach(done => {
+    beforeEach((done) => {
       target = document.createElement('div');
       target.setAttribute('id', 'target');
       target.style.width = '100px';
@@ -148,7 +148,7 @@ describe('ak-inline-dialog', () => {
       expect(checkInvisibility(component.childNodes[0])).to.equal(true);
     });
 
-    it('should be open when property `open` is set to true', done => {
+    it('should be open when property `open` is set to true', (done) => {
       component.open = true;
       setTimeout(() => {
         expect(checkVisibility(component.childNodes[0])).to.equal(true);
@@ -157,12 +157,12 @@ describe('ak-inline-dialog', () => {
     });
 
     describe('if open', () => {
-      beforeEach(done => {
+      beforeEach((done) => {
         component.open = true;
         setTimeout(done);
       });
 
-      it('should be closed when property `open` is set to false', done => {
+      it('should be closed when property `open` is set to false', (done) => {
         setTimeout(() => expect(checkVisibility(component.childNodes[0])).to.equal(true));
         setTimeout(() => (component.open = false));
         setTimeout(() => expect(checkInvisibility(component.childNodes[0])).to.equal(true));

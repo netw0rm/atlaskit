@@ -1,7 +1,7 @@
 import EventedGroup from './EventedGroup.js';
 import React from 'react';
 
-const AlignedStory = (props) => (<EventedGroup
+const AlignedStory = props => (<EventedGroup
   alignment={props.alignment}
   initialTags={props.initialTags}
   onRemove={props.onRemove}

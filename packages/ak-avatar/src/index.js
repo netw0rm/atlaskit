@@ -60,7 +60,7 @@ const definition = {
 
     const symbolsToCheck = [loading, error];
     const curState = props(elem);
-    symbolsToCheck.forEach(symbol => {
+    symbolsToCheck.forEach((symbol) => {
       if (curState[symbol] !== prev[symbol]) {
         hasChanged = true;
       }

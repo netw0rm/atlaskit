@@ -43,23 +43,23 @@ class EventedGroup extends React.Component {
 
   afterRemoveCallback(e) {
     this.onRemove(e.target.text);
-    const tags = this.state.tags.filter((text) => text !== e.target.text);
+    const tags = this.state.tags.filter(text => text !== e.target.text);
     this.setState({ tags });
   }
 
   render() {
     return (
-      <div ref={(g) => (this.group = g)}>
+      <div ref={g => (this.group = g)}>
         <input
           id="allow-remove"
           type="checkbox"
           defaultChecked={this.state.allowRemoval}
-          onChange={(e) => (this.setState({ allowRemoval: e.target.checked }))}
+          onChange={e => (this.setState({ allowRemoval: e.target.checked }))}
         />
         <label htmlFor="allow-remove">Allow tag removal</label>
         <hr />
         <Group className={groupStyles.locals.akTagGroup} alignment={this.state.alignment}>
-          {this.state.tags.map((text) => (<Tag
+          {this.state.tags.map(text => (<Tag
             text={text}
             key={text}
             className={tagStyles.locals.akTag}

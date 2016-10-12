@@ -31,8 +31,7 @@ export default define('ak-blanket', {
           onClick={handleActivation(elem)}
           onTouch={handleActivation(elem)}
           className={classes}
-        >
-        </div>
+        />
       </div>
     );
   },

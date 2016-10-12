@@ -70,8 +70,8 @@ export default define('ak-tooltip', {
           <Layer
             target={elem.target}
             position={positionToPopperPosition(elem.position)}
-            onUpdate={(data) => updateCallback(elem, data)}
-            ref={(ref) => (elem.layer = ref)}
+            onUpdate={data => updateCallback(elem, data)}
+            ref={ref => (elem.layer = ref)}
             enableFlip
             boundariesElement={document.body}
           >

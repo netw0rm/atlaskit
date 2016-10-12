@@ -33,7 +33,7 @@ storiesOf(name, module)
           position: 'relative',
           padding: '0',
         }}
-      ></div>
+      />
       <DialogWithButton
         event="click"
         position="top left"
@@ -354,7 +354,7 @@ storiesOf(name, module)
             height: '100px',
             border: '1px solid red',
           }}
-        ></div>
+        />
         <Dialog
           open
           enableFlip

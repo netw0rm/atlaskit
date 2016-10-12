@@ -10,7 +10,7 @@ chai.use(chaiAsPromised);
 chai.use(sinonChai);
 chai.should();
 
-const getSlots = (component) => getShadowRoot(component).querySelectorAll('slot,content');
+const getSlots = component => getShadowRoot(component).querySelectorAll('slot,content');
 
 describe('ak-tag-group', () => {
   let component;
@@ -27,7 +27,7 @@ describe('ak-tag-group', () => {
 
   describe('exports', () => {
     it('should export a base component', () => {
-      (new TagGroup).should.be.an.instanceof(Component);
+      (new TagGroup()).should.be.an.instanceof(Component);
     });
 
     it('should have an alignment export with defined alignment values', () => {
@@ -61,9 +61,9 @@ describe('ak-tag-group', () => {
       });
 
     afterMutations(
-      () => tags.forEach((tag) => component.appendChild(tag)),
+      () => tags.forEach(tag => component.appendChild(tag)),
       () => getSlots(component)[0].assignedNodes(),
-      (assignedNodes) => assignedNodes.should.be.deep.equal(tags),
+      assignedNodes => assignedNodes.should.be.deep.equal(tags),
       done
     );
   });

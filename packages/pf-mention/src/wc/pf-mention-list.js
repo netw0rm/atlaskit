@@ -76,7 +76,7 @@ function renderItems(elem) {
 
     return (
       <div>
-        {elem.mentions.map(mention => {
+        {elem.mentions.map((mention) => {
           const selected = elem.selectedKey === mention.id;
           const currentIdx = idx;
           const key = mention.id;

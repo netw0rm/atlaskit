@@ -80,7 +80,7 @@ storiesOf(name, module)
     <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
       <ReactAkButton>Edit</ReactAkButton>
       <ReactDropdown>
-        <ak-dropdown-trigger-arrow slot="trigger"></ak-dropdown-trigger-arrow>
+        <ak-dropdown-trigger-arrow slot="trigger" />
         <ak-dropdown-item>Foo</ak-dropdown-item>
         <ak-dropdown-item>Bar</ak-dropdown-item>
         <ak-dropdown-item>Baz</ak-dropdown-item>

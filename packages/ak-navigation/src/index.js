@@ -196,7 +196,7 @@ export default define('ak-navigation', {
      * @example @html <ak-navigation width="80"/>;
      */
     width: prop.number({
-      default: (elem) => getCollapsedWidth(elem),
+      default: elem => getCollapsedWidth(elem),
     }),
     /**
      * @description The handler for the sidebar toggling behaviour.
@@ -207,7 +207,7 @@ export default define('ak-navigation', {
      * @example @js navigation.toggleHandler = function() {};
      */
     toggleHandler: {
-      default: (elem) => function toggleHandler(event) {
+      default: elem => function toggleHandler(event) {
         if (!elem.collapsible) {
           return;
         }

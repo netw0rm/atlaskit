@@ -31,7 +31,7 @@ describe('createTemporaryComponent', () => {
   );
 
   it('should be possible to create a component', () => createTemporaryComponent(define, definition)
-    .then(newComponent => {
+    .then((newComponent) => {
       component = newComponent;
       expect(component.tagName).to.match(new RegExp('^x-', 'i'));
       expect(getShadowRoot(component)).to.be.defined;
@@ -48,7 +48,7 @@ describe('createTemporaryComponent', () => {
     }
 
     return createTemporaryComponent(define, MyComponent)
-      .then(newComponent => {
+      .then((newComponent) => {
         component = newComponent;
         expect(component).to.be.instanceof(MyComponent);
       });
@@ -57,7 +57,7 @@ describe('createTemporaryComponent', () => {
   it('should be possible to use target element', () => {
     target = document.createElement('div');
     document.body.appendChild(target);
-    return createTemporaryComponent(define, definition, target).then(newComponent => {
+    return createTemporaryComponent(define, definition, target).then((newComponent) => {
       component = newComponent;
       expect(target.firstChild).to.equal(component);
       document.body.removeChild(target);

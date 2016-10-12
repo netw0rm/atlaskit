@@ -26,7 +26,7 @@ export default define('ak-editor-popup', {
           open={elem.open}
           position="bottom center"
           target={elem.target}
-          onRender={layer => {
+          onRender={(layer) => {
             if (elem.open && layer.alignment) {
               elem.positioned = true;
             }

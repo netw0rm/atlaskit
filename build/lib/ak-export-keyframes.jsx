@@ -1,4 +1,4 @@
-﻿/* Need to disable some eslint rules as this files is not babel-ified */
+/* Need to disable some eslint rules as this files is not babel-ified */
 /* eslint-disable no-alert, no-var, prefer-template, prefer-arrow-callback, object-shorthand */
 /* global app */
 /*

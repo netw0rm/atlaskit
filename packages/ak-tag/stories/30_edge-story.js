@@ -32,5 +32,5 @@ storiesOf(name, module)
       e.appendChild(tag);
     };
 
-    return (<div ref={attachTag}></div>);
+    return (<div ref={attachTag} />);
   });

@@ -11,7 +11,7 @@ const expect = chai.expect;
 describe('ak-blanket', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new AkBlanket).should.be.an.instanceof(Component);
+      (new AkBlanket()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {

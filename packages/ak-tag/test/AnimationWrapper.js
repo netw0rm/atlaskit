@@ -25,11 +25,11 @@ describe('ak-tag', () => {
       };
 
       return createTemporary(definition)
-        .then(newComponent => {
+        .then((newComponent) => {
           component = newComponent;
           return getShadowRoot(component);
         })
-        .then(shadowRoot => {
+        .then((shadowRoot) => {
           shadowRoot.should.be.defined;
         }).should.be.fulfilled;
     });
@@ -40,7 +40,7 @@ describe('ak-tag', () => {
           return (
             <Root>
               <AnimationWrapper isRemoving afterAnimation={sinon.spy(done)}>
-                <div style="width: 200px; height: 20px; background-color: red;"></div>
+                <div style="width: 200px; height: 20px; background-color: red;" />
               </AnimationWrapper>
             </Root>
           );

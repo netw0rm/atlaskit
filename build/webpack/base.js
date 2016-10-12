@@ -24,7 +24,7 @@ function defaultPackageMains() {
  *
  *       'loader1?{}!loader2?{}'
  */
-const loaderChain = (spec) => Object.keys(spec)
+const loaderChain = spec => Object.keys(spec)
   .map(key => `${key}?${JSON.stringify(spec[key])}`)
   .join('!');
 

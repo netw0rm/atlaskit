@@ -11,7 +11,7 @@ const Group = reactify(WebComponent);
 
 const Tag = reactify(AkTagWebComponent);
 
-const RemovableComponent = (props) => (
+const RemovableComponent = props => (
   <Tag
     {...props}
     className={tagStyles.locals.akTag}

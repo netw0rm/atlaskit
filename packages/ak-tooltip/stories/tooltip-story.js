@@ -16,7 +16,7 @@ const Container = reactify(ContainerWC);
 
 const tooltipClass = styles.locals.akTooltip;
 
-const DefaultTooltip = (props) => <Tooltip className={tooltipClass} {...props} />;
+const DefaultTooltip = props => <Tooltip className={tooltipClass} {...props} />;
 
 const buttonStyles = {
   backgroundColor: 'orange',

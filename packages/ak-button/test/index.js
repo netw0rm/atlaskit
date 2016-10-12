@@ -20,7 +20,7 @@ describe('ak-button', () => {
   const shadowDomQuery = (elem, selector) =>
     getShadowRoot(elem).querySelector(selector);
 
-  const getShadowButtonElem = (elem) =>
+  const getShadowButtonElem = elem =>
     shadowDomQuery(elem, `.${classKeys.button}`);
 
   const expectButtonToHaveClasses = (testComponent, expectClassCount, ...classes) => {
@@ -29,7 +29,7 @@ describe('ak-button', () => {
     expect(hasClass(button, ...classes)).to.be.true;
   };
 
-  const createDivTest = config => {
+  const createDivTest = (config) => {
     const div = document.createElement('div');
     div.innerText = 'test';
     if (config.slotName) {
@@ -101,7 +101,7 @@ describe('ak-button', () => {
           message: 'when invalid appearance provided',
           appearance: 'invalid',
         },
-      ].forEach(testCase => {
+      ].forEach((testCase) => {
         describe(testCase.message, () => {
           it('button should only have .button class', () => {
             props(component, { appearance: testCase.appearance });
@@ -110,7 +110,7 @@ describe('ak-button', () => {
         });
       });
 
-      [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE, APPEARANCE.LINK].forEach(appearanceName => {
+      [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE, APPEARANCE.LINK].forEach((appearanceName) => {
         describe(appearanceName, () => {
           let selector;
           beforeEach(() => {
@@ -159,7 +159,7 @@ describe('ak-button', () => {
             setup: { appearance: APPEARANCE.SUBTLE },
             expectedClass: 'subtle',
           },
-        ].forEach(testCase => {
+        ].forEach((testCase) => {
           describe(`and is also ${JSON.stringify(testCase.setup)}`, () => {
             beforeEach(() =>
               (props(component, assign({ compact: true }, testCase.setup)))
@@ -251,7 +251,7 @@ describe('ak-button', () => {
       );
 
       describe('when button has slotted elements', () => {
-        const addSlottedElement = slotName => {
+        const addSlottedElement = (slotName) => {
           const div = createDivTest({ slot: slotName });
           component.appendChild(div);
           return div;

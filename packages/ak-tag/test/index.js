@@ -32,7 +32,7 @@ describe('ak-tag', () => {
 
   describe('exports', () => {
     it('should export a base component', () => {
-      (new Tag).should.be.an.instanceof(Component);
+      (new Tag()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {

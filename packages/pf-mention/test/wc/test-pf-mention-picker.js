@@ -76,9 +76,9 @@ describe('pf-mention-picker', () => {
           component.query = 'error';
           waitUntil(mentionErrorShown).should.be.fulfilled.then(() => {
             resolve();
-          }, (reason) => reject(reason));
-        }, (reason) => reject(reason));
-      }, (reason) => reject(reason));
+          }, reason => reject(reason));
+        }, reason => reject(reason));
+      }, reason => reject(reason));
     });
   });
 
@@ -100,8 +100,8 @@ describe('pf-mention-picker', () => {
           } catch (err) {
             reject(err);
           }
-        }, (reason) => reject(reason));
-      }, (reason) => reject(reason));
+        }, reason => reject(reason));
+      }, reason => reject(reason));
     });
   });
 
@@ -117,8 +117,8 @@ describe('pf-mention-picker', () => {
         component.selectNext();
         waitUntil(secondItemSelected).should.be.fulfilled.then(() => {
           resolve();
-        }, (reason) => reject(reason));
-      }, (reason) => reject(reason));
+        }, reason => reject(reason));
+      }, reason => reject(reason));
     });
   });
 
@@ -134,8 +134,8 @@ describe('pf-mention-picker', () => {
         component.selectPrevious();
         waitUntil(lastItemSelected).should.be.fulfilled.then(() => {
           resolve();
-        }, (reason) => reject(reason));
-      }, (reason) => reject(reason));
+        }, reason => reject(reason));
+      }, reason => reject(reason));
     });
   });
 
@@ -157,9 +157,9 @@ describe('pf-mention-picker', () => {
           component.chooseCurrentSelection();
           waitUntil(chooseSecondItem).should.be.fulfilled.then(() => {
             resolve();
-          }, (reason) => reject(reason));
-        }, (reason) => reject(reason));
-      }, (reason) => reject(reason));
+          }, reason => reject(reason));
+        }, reason => reject(reason));
+      }, reason => reject(reason));
     });
   });
 
@@ -179,8 +179,8 @@ describe('pf-mention-picker', () => {
         item.dispatchEvent(newMouseDownEvent());
         waitUntil(chooseThirdItem).should.be.fulfilled.then(() => {
           resolve();
-        }, (reason) => reject(reason));
-      }, (reason) => reject(reason));
+        }, reason => reject(reason));
+      }, reason => reject(reason));
     });
   });
 });

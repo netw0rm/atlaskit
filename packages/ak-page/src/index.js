@@ -92,8 +92,8 @@ export default define('ak-page', {
     }),
   },
   created(elem) {
-    elem.addEventListener(resizeStartEvent, (e) => handleResizeStart(e, elem));
-    elem.addEventListener(resizeEndEvent, (e) => handleResizeEnd(e, elem));
+    elem.addEventListener(resizeStartEvent, e => handleResizeStart(e, elem));
+    elem.addEventListener(resizeEndEvent, e => handleResizeEnd(e, elem));
   },
   attached(elem) {
     setTimeout(() => {

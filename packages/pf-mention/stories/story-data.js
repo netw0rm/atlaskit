@@ -101,7 +101,7 @@ export class MockPresenceProvider {
   }
 
   _getTimeout() {
-    return this._minTimeout + (this._maxTimeout - this._minTimeout) * Math.random();
+    return this._minTimeout + ((this._maxTimeout - this._minTimeout) * Math.random());
   }
 
   _getStatus() {
@@ -112,7 +112,7 @@ export class MockPresenceProvider {
     const minFormat = new Intl.NumberFormat('us-EN', { minimumIntegerDigits: 2 });
     let time;
     if (Math.random() > 0.5) {
-      const hour = Math.floor(Math.random() * 12 + 1);
+      const hour = Math.floor(Math.random() * 12) + 1;
       const min = minFormat.format(new Date().getMinutes());
       const ampm = ['am', 'pm'][Math.floor(Math.random() * 2)];
       time = `${hour}:${min}${ampm}`;

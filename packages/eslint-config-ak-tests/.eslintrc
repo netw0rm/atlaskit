@@ -16,7 +16,8 @@
   "rules": {
     "no-unused-expressions": 0,
     "mocha/no-exclusive-tests": 2,
-    "mocha/handle-done-callback": 2
+    "mocha/handle-done-callback": 2,
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
   },
   "plugins": [
     "eslint-plugin-mocha"

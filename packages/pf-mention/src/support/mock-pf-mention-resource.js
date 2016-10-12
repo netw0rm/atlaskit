@@ -1,7 +1,8 @@
+import { Search } from 'js-search';
+
 import debug from '../../src/util/logger';
 import { AbstractMentionResource } from '../../src/api/pf-mention-resource';
 import mentionData from './mention-data';
-import { Search } from 'js-search';
 
 const search = new Search('id');
 search.addIndex('name');
@@ -36,7 +37,7 @@ class MentionResource extends AbstractMentionResource {
 
     const minWait = this._config.minWait || 0;
     const randomTime = (this._config.maxWait || 0) - minWait;
-    const waitTime = Math.random() * randomTime + minWait;
+    const waitTime = (Math.random() * randomTime) + minWait;
     setTimeout(() => {
       let mentions;
       if (query === 'error') {

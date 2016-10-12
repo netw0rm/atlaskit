@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import { Component } from 'skatejs';
 import MentionPicker, * as other from '../src';
 import { name } from '../package.json';
-import { Component } from 'skatejs';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -29,9 +29,9 @@ describe(name, () => {
         'default',
       ]);
 
-      (new other.MentionList).should.be.an.instanceof(Component);
-      (new other.ResourcedMentionList).should.be.an.instanceof(Component);
-      (new other.MentionPicker).should.be.an.instanceof(Component);
+      (new other.MentionList()).should.be.an.instanceof(Component);
+      (new other.ResourcedMentionList()).should.be.an.instanceof(Component);
+      (new other.MentionPicker()).should.be.an.instanceof(Component);
 
       other.default.should.be.equals(MentionPicker);
     });

@@ -4,6 +4,8 @@ const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 const idomBabelPlugin = ['incremental-dom', {
   components: true,
   hoist: true,
@@ -27,6 +29,18 @@ function defaultPackageMains() {
 const loaderChain = (spec) => Object.keys(spec)
   .map(key => `${key}?${JSON.stringify(spec[key])}`)
   .join('!');
+
+const css = {
+  camelCase: true,
+  importLoaders: 1,
+  mergeRules: false,
+  modules: true,
+};
+
+if (isDevelopment) {
+  css['-minimize'] = true;
+}
+
 
 const standardConfig = {
   entry: {
@@ -53,12 +67,7 @@ const standardConfig = {
       {
         test: /\.less$/,
         loader: loaderChain({
-          css: {
-            camelCase: true,
-            importLoaders: 1,
-            mergeRules: false,
-            modules: true,
-          },
+          css,
           postcss: {},
           less: {},
         }),

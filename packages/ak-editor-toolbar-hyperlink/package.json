@@ -12,7 +12,7 @@
     "dist"
   ],
   "dependencies": {
-    "ak-editor-button": "^2.0.0",
+    "ak-editor-button": "^2.3.10",
     "ak-editor-popup": "^2.0.1",
     "ak-editor-popup-text-input": "^1.0.0",
     "ak-editor-shared-styles": "^1.0.3",

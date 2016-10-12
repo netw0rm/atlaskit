@@ -9,16 +9,7 @@ Feature: ak-editor-toolbar-hyperlink
     When I click the "ak-editor-toolbar-hyperlink" component
     Then I should see a "ak-editor-popup" component
 
-  Scenario: Click outside of ak-editor-popup
-    Given I should see a "ak-editor-popup" component
-    Then I click outside
-    Then I should not see a "ak-editor-popup" component
 
-  Scenario: Click ak-editor-toolbar-hyperlink again to dismiss ak-editor-popup
-    Given I should see a "ak-editor-toolbar-hyperlink" component
-    And I should see a "ak-editor-popup" component
-    When I click the "ak-editor-toolbar-hyperlink" component
-    Then I should not see a "ak-editor-popup" component
 
   Scenario: Click ak-editor-popup and it should not be dismissed
     Given I should see a "ak-editor-toolbar-hyperlink" component

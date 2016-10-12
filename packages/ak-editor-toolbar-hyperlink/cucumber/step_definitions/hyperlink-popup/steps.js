@@ -8,9 +8,30 @@ chai.use(sinonChai);
 const expect = chai.expect; // eslint-disable-line no-unused-vars
 
 module.exports = function steps() {
+  this.Then(
+    /^I should see a "([^"]*)" component$/,
+    (name) => {
+      return element(by.tagName('body')).getAttribute('innerHTML')
+        .then((html) => {
+          console.log(html);
+          console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+          // console.log(by.tagName('body').getHTML());
+          return browser.isElementPresent(by.webComponentNamePrefix(name));
+        });
+    }
+  );
+
   this.When(
     /^I click the "([^"]*)" component$/,
-    (name) => element(by.webComponentNamePrefix(name)).click()
+    (name) => {
+      return element(by.tagName('body')).getAttribute('innerHTML')
+        .then((html) => {
+          console.log(html);
+          console.log('=============================================');
+          // console.log(by.tagName('body').getHTML());
+          return element(by.webComponentNamePrefix(name)).click();
+        });
+    }
   );
 
   this.When(

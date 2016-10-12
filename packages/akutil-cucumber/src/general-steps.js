@@ -14,11 +14,6 @@ module.exports = function steps() {
       return browser.get(url);
     });
 
-  this.Then(
-    /^I should see a "([^"]*)" component$/,
-    (name) => browser.isElementPresent(by.webComponentNamePrefix(name))
-  );
-
   this.Then(/^I should not see a "([^"]*)" component$/, (name, next) => {
     expect(browser.isElementPresent(by.webComponentNamePrefix(name)))
       .to.eventually.equal(false)

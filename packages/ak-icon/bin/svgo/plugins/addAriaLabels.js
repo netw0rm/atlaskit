@@ -1,3 +1,5 @@
+// TODO Replace with https://github.com/svg/svgo/pull/612 once merged
+
 const uid = require('uid');
 
 exports.type = 'perItem';
@@ -9,20 +11,28 @@ exports.description = 'Adds an aria-labelledby and a referenced <title> and <des
 exports.params = {
   title: '',
   desc: '',
+  idFn: (elem) => `${elem}-${uid()}`;
 };
 
 exports.fn = function addAriaLabel(item, params) {
   if (item.isElem('svg')) {
     const ids = [];
-    const u = uid();
 
     ['desc', 'title'].forEach((elem) => {
       const value = params[elem];
       if (value) {
-        const id = `${elem}-${u}`;
+        const id = params.idFn(elem);
         ids.push(id);
-        // TODO: we expect that the old element of the same type has been removed already
-        item.spliceContent(0, 0, new item.constructor({
+
+        let pos = 0;
+        let replace = 0;
+        item.content.forEach(function (subItem, index) {
+            if (subItem.isElem(elem)) {
+                pos = index;
+                replace = 1;
+            }
+        });
+        item.spliceContent(pos, replace, new item.constructor({
           elem,
           local: elem,
           prefix: '',

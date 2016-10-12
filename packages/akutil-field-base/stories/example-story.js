@@ -28,13 +28,38 @@ storiesOf(name, module)
       </form>
     </div>
   ))
-  .add('a simple form with text fields', () => (
+  .add('some field-bases in various states', () => (
     <div>
-      <form action="" style={formStyle()}>
-        <h2>My Form</h2>
-        <Textfield label="Viewmode by default" value="Yo! If you had..." />
-        <Textfield label="Editmode by default" value="One shot..." editing />
-        <Textfield label="I am not inline editable" value="One opportunity..." editing />
+      <form action="" style={formStyle(500)}>
+        <FieldBase label="A default field-base">
+          <div is slot="editmode">This content is in the Editing slot!</div>
+          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
+        </FieldBase>
+        <FieldBase label="In edit mode" editing>
+          <div is slot="editmode">This content is in the Editing slot!</div>
+          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
+        </FieldBase>
+        <FieldBase label="In edit mode, focused" editing focused>
+          <div is slot="editmode">This content is in the Editing slot!</div>
+          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
+        </FieldBase>
+        <FieldBase label="In edit mode, waiting" editing waiting>
+          <div is slot="editmode">This content is in the Editing slot!</div>
+          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
+        </FieldBase>
+        <FieldBase label="In edit mode, waiting, focused" editing waiting focused>
+          <div is slot="editmode">This content is in the Editing slot!</div>
+          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
+        </FieldBase>
+        <FieldBase
+          label="In edit mode, with a max-width css style"
+          editing
+          style={{ maxWidth: '100px' }}
+        >
+          <div is slot="editmode">This content is in the Editing slot!</div>
+          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
+        </FieldBase>
+
       </form>
     </div>
   ))
@@ -57,4 +82,15 @@ storiesOf(name, module)
         </form>
       </div>
     );
-  });
+  })
+  .add('a simple form with text fields', () => (
+    <div>
+      <form action="" style={formStyle()}>
+        <h2>My Form</h2>
+        <Textfield label="Viewmode by default" value="Yo! If you had..." />
+        <Textfield label="Editmode by default" value="One shot..." editing />
+        <Textfield label="I am not inline editable" value="One opportunity..." editing />
+      </form>
+    </div>
+  ))
+  ;

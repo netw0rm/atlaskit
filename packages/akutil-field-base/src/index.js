@@ -77,6 +77,7 @@ export default define('ak-field-base', {
           onConfirm={() => handleEditConfirmation(elem)}
           onCancel={() => handleEditCancel(elem)}
           waiting={elem.waiting}
+          invalid={elem.invalid}
         />
       </Root>
     );

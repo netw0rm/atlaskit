@@ -12,9 +12,9 @@
     "dist"
   ],
   "dependencies": {
-    "ak-editor-button": "^2.0.0",
-    "ak-editor-popup": "^2.0.1",
-    "ak-editor-popup-text-input": "^1.0.0",
+    "ak-editor-button": "^2.3.9",
+    "ak-editor-popup": "^2.0.9",
+    "ak-editor-popup-text-input": "^1.2.8",
     "ak-editor-shared-styles": "^1.0.3",
     "ak-icon": "~7.5.0",
     "akutil-shared-styles": "^34.2.0",
@@ -25,7 +25,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "akutil-react": "^1.0.0",
-    "ak-editor-toolbar": "^2.0.0"
+    "ak-editor-toolbar": "^2.4.10"
   },
   "repository": {
     "type": "git",

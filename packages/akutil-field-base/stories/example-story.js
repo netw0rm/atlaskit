@@ -94,6 +94,12 @@ storiesOf(name, module)
     const longTextNoSpaces = '3.1415926535897932384626433832795028841971693993751058209749445923' +
       '07816406286208998628034825342117067982148086513282306647093844609550582231725359408128481' +
       '11745028410270193852110555964462294895493038196442881097566593344612847564';
+    const smallBoxStyles = {
+      height: '5px',
+      width: '5px',
+      border: '1px solid',
+      boxSizing: 'border-box',
+    };
     return (
       <div>
         <form action="" style={formStyle(500)}>
@@ -109,6 +115,10 @@ storiesOf(name, module)
           <FieldBase label="No content">
             <div is slot="editmode"></div>
             <div is slot="viewmode"></div>
+          </FieldBase>
+          <FieldBase label="Small non-textual content (5x5 div)">
+            <div is slot="editmode"><div style={smallBoxStyles}></div></div>
+            <div is slot="viewmode"><div style={smallBoxStyles}></div></div>
           </FieldBase>
         </form>
       </div>

@@ -140,5 +140,18 @@ export default define('ak-field-base', {
      * field.hideLabel = true;
      */
     waiting: prop.boolean({ attribute: true }),
+    /**
+     * @description Whether or not a field should show a validation error.
+     * This is shown to the user through a red border currently but will also include error messages
+     * in a future release.
+     * This prop only applies to a field without the `dirty` prop set.
+     * This prop is ignored if `editing` is not set to true.
+     * @memberof FieldBase
+     * @instance
+     * @type {boolean}
+     * @example @html <ak-field-base invalid></ak-field-base>
+     * @example @js field.invalid = true;
+     */
+    invalid: prop.boolean({ attribute: true }),
   },
 });

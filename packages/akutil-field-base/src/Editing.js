@@ -29,6 +29,7 @@ const RightGutter = (props) => {
 export default (props) => {
   const slotWrapperClasses = classNames(shadowStyles.locals.editModeSlotWrapper, {
     [shadowStyles.locals.focused]: props.focused,
+    [shadowStyles.locals.invalid]: props.invalid && !props.focused,
   });
   return (
     <div className={shadowStyles.locals.editModeWrapper}>

@@ -51,6 +51,14 @@ storiesOf(name, module)
           <div is slot="editmode">This content is in the Editing slot!</div>
           <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
         </FieldBase>
+        <FieldBase label="In edit mode, invalid" editing invalid>
+          <div is slot="editmode">This content is in the Editing slot!</div>
+          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
+        </FieldBase>
+        <FieldBase label="In edit mode, invalid, focused" editing invalid focused>
+          <div is slot="editmode">This content is in the Editing slot!</div>
+          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
+        </FieldBase>
         <FieldBase
           label="In edit mode, with a max-width css style"
           editing

@@ -34,5 +34,5 @@ export function keyup(key, target) {
  * @param target – a DOM element to trigger the event on. If undefined, triggered on the document.
  */
 export function keypress(key, target) {
-  sendKeyEvent(key, target, 'keyup');
+  sendKeyEvent(key, target, 'keypress');
 }

@@ -1,7 +1,9 @@
 import classNames from 'classnames';
 import { emit, vdom, define } from 'skatejs';
+
 import shadowStyles from './shadow.less';
 import * as events from './internal/events';
+
 const { announceName: announceNameEvent, announceClick } = events;
 
 const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;

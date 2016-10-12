@@ -17,7 +17,7 @@
     "no-unused-expressions": 0,
     "mocha/no-exclusive-tests": 2,
     "mocha/handle-done-callback": 2,
-    "import/no-extraneous-dependencies": 0,
+    "import/no-extraneous-dependencies": [0],
   },
   "plugins": [
     "eslint-plugin-mocha"

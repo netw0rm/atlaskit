@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { Component } from 'skatejs';
-import MentionPicker, * as other from '../src';
+import Picker, * as other from '../src';
 import { name } from '../package.json';
 
 chai.use(chaiAsPromised);
@@ -10,7 +10,7 @@ chai.should();
 describe(name, () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new MentionPicker()).should.be.an.instanceof(Component);
+      (new Picker()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
@@ -33,7 +33,7 @@ describe(name, () => {
       (new other.ResourcedMentionList()).should.be.an.instanceof(Component);
       (new other.MentionPicker()).should.be.an.instanceof(Component);
 
-      other.default.should.be.equals(MentionPicker);
+      other.default.should.be.equals(Picker);
     });
   });
 });

@@ -1,6 +1,7 @@
-import 'style!../host.less'; // eslint-disable-line import/no-unresolved import/no-duplicates
-import shadowStyles from './pf-mention-list-shadow.less';
 import { define, emit, prop, props, vdom } from 'skatejs';
+
+import 'style!../host.less';
+import shadowStyles from './pf-mention-list-shadow.less';
 import Item from './pf-mention-item';
 import Scrollable from './pf-scrollable';
 import { whoopsUri } from './icons';

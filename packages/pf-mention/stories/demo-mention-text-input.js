@@ -16,8 +16,8 @@ const MentionTextInput = React.createClass({
   propTypes: {
     label: PropTypes.string,
     onSelection: PropTypes.func.isRequired,
-    resourceProvider: PropTypes.object.isRequired,
-    presenceProvider: PropTypes.object,
+    resourceProvider: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    presenceProvider: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     relativePosition: PropTypes.string,
   },
 

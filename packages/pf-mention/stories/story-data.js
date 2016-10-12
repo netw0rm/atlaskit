@@ -108,6 +108,7 @@ export class MockPresenceProvider {
     return this._statuses[Math.floor(Math.random() * this._statuses.length)];
   }
 
+  // eslint-disable-next-line class-methods-use-this
   _getTime() {
     const minFormat = new Intl.NumberFormat('us-EN', { minimumIntegerDigits: 2 });
     let time;

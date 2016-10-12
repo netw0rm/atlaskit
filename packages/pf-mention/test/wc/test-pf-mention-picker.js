@@ -6,7 +6,7 @@ import mentionData, { mentionDataSize } from '../../src/support/mention-data';
 import MentionResource from '../../src/support/mock-pf-mention-resource';
 import MentionPicker from '../../src/wc/pf-mention-picker';
 import { getMentionItems, getError, getMentionList,
-  isMentionItemSelected, getMentionItemById } from '../../src/support/pf-selectors';
+  isMentionItemSelected, getMentionItemById } from '../_pf-selectors';
 
 chai.use(chaiAsPromised);
 chai.should();

@@ -1,9 +1,9 @@
 import classNames from 'classnames';
+import React from 'react';
+
 import storyStyles from './animation-story.less';
 
-import React from 'react';
 const { Component } = React;
-
 const boxClass = storyStyles.box;
 
 /* This is a simple component used to consume an animation from shared-styles */

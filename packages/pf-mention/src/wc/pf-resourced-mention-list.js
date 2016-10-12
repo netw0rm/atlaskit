@@ -1,6 +1,7 @@
+import { define, vdom, prop } from 'skatejs';
+
 import 'style!../host.less';
 import shadowStyles from './pf-resourced-mention-list-shadow.less';
-import { define, vdom, prop } from 'skatejs';
 import MentionList from './pf-mention-list';
 import debug from '../util/logger';
 import hasChanges from '../util/has-changes';

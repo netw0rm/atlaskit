@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom';
 
+// eslint-disable-next-line import/prefer-default-export
 export function getWebComponent(reactComponent) {
   if (!reactComponent) {
     return null;

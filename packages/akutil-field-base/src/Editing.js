@@ -12,10 +12,8 @@ export default (props) => {
     [shadowStyles.locals.focused]: props.focused,
   });
   return (
-    <div>
-      <div
-        className={slotWrapperClasses}
-      >
+    <div className={shadowStyles.locals.editModeWrapper}>
+      <div className={slotWrapperClasses}>
         <slot
           className={shadowStyles.locals.editModeSlot}
           name="editmode"

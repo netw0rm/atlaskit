@@ -88,13 +88,19 @@
     padding-left: 10px;
     line-height: 1;
     color: @ak-color-N500;
+    align-self: center;
   }
 }
 
 
 // edit mode styles
+.edit-mode-wrapper {
+  display: flex;
+}
+
 .edit-mode-slot-wrapper {
   .borders-and-padding(@editmode-border-width, @base-horizontal-padding, @base-height);
+  flex: 1 0 auto;
   border-style: solid;
   border-radius: @base-border-radius;
   display: inline-flex;

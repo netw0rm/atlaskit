@@ -4,6 +4,13 @@ const relativePathToIcon = path.join('..', 'src', 'Icon');
 const pathToIcon = path.join(__dirname, relativePathToIcon);
 const baseIconChunkName = require('./constants').baseIconChunkName;
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+let cssOptions = '?camelCase=true&modules=true';
+if (isDevelopment) {
+  cssOptions += '&-minimize';
+}
+
+
 module.exports = (tmpFolder, entry) => ({
   entry: Object.assign({
     [baseIconChunkName]: [pathToIcon],
@@ -30,7 +37,7 @@ module.exports = (tmpFolder, entry) => ({
     loaders: [
       {
         test: /\.less$/,
-        loader: 'css?camelCase=true&modules=true!less',
+        loader: `css${cssOptions}!less`,
       },
       {
         loader: 'babel',

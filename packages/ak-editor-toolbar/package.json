@@ -24,7 +24,7 @@
     "akutil-react": "^1.0.0",
     "ak-editor-button": "*",
     "ak-editor-content": "^2.0.0",
-    "ak-icon": "^7.4.0",
+    "ak-icon": "^8.0.0",
     "ak-editor-toolbar-text-formatting": "*"
   },
   "repository": {

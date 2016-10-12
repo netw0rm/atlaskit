@@ -1,4 +1,3 @@
-import merge from 'lodash.merge';
 import { vdom, define, prop, props } from 'skatejs';
 import { themeable } from 'ak-theme';
 import { style } from 'akutil-common';
@@ -70,10 +69,7 @@ const definition = {
     selected: prop.boolean({ attribute: true }),
   },
   render(elem) {
-    const themeVars = elem.themeProps || {};
-    const vars = merge(JSON.parse(JSON.stringify(variables)), themeVars);
-    const css = createStyles(vars);
-    const styles = style(vdom, css);
+    const styles = style(vdom, createStyles(variables(elem.themeProps)));
     return (
       <Button {...props(elem)} styles={styles}>
         <Slot styles={styles} name="before" />

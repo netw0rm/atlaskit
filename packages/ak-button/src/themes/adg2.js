@@ -5,9 +5,8 @@ export default define('ak-button-adg2', {
   render() {
     return (
       <Theme id="ak-button-adg2">
-        <Prop name="button.baseRadius" value="3.01px" />
-        <Prop name="button.border" value="1px solid #ccc" />
         <Prop name="button.padding" value="4px 10px" />
+        <Prop name="button.border" value="1px solid #ccc" />
         <Prop name="button.transition" value="none" />
         <Prop name="button.standard.background" value="#f5f5f5" />
         <Prop name="button.standard.color" value="#333" />

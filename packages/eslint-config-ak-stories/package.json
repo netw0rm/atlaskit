@@ -1,14 +1,14 @@
 {
   "name": "eslint-config-ak-stories",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "eslint": "^2.0.0",
+    "eslint": "^3.7.1",
     "eslint-config-ak-base": "*",
-    "eslint-plugin-react": "^5.1.1"
+    "eslint-plugin-react": "^6.4.1"
   },
   "repository": {
     "type": "git",

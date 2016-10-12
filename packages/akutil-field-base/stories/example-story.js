@@ -18,9 +18,25 @@ storiesOf(name, module)
   .add('a simple ak-field-base', () => (
     <div>
       <form action="" style={formStyle(500)}>
-        <div>This shows the base functionality provided by ak-field-base. It has two slots; editmode
-        and viewmode. Hovering over the field whilst in view mode should show the edit icon and
-        clicking should enter edit mode. Edit mode will display whatever content is in.</div>
+        <div>
+          <p>
+            This shows the base functionality provided by ak-field-base. It has two slots; editmode
+            and viewmode. Hovering over the field whilst in view mode should show the edit icon and
+            clicking should enter edit mode. Edit mode will display whatever content is in.
+          </p>
+          <p>
+            Feel free to use your browsers inspector to modify different properties to see how they
+            work.
+          </p>
+          <ul>
+            <li>label (any string)</li>
+            <li>editing (true or false)</li>
+            <li>focused (true or false)</li>
+            <li>waiting (true or false)</li>
+            <li>invalid (true or false)</li>
+            <li>hideLabel (true or false)</li>
+          </ul>
+        </div>
         <FieldBase label="Label for FieldBase">
           <div is slot="editmode">This content is in the Editing slot!</div>
           <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
@@ -93,8 +109,11 @@ storiesOf(name, module)
   })
   .add('a simple form with text fields', () => (
     <div>
-      <form action="" style={formStyle()}>
+      <form action="" style={formStyle(400)}>
         <h2>My Form</h2>
+        <div>
+          This form shows actual TextField components that are created by extending FieldBase.
+        </div>
         <Textfield label="Viewmode by default" value="Yo! If you had..." />
         <Textfield label="Editmode by default" value="One shot..." editing />
         <Textfield label="I am not inline editable" value="One opportunity..." editing />

@@ -29,6 +29,7 @@ pipelines:
             - npm install yarn -g
             - alias npm=yarn
             - npm install
+            - npm run postinstall # Remove when https://github.com/yarnpkg/yarn/pull/800 is released
   default:
     - step:
         script:

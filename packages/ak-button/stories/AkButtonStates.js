@@ -64,7 +64,7 @@ class AkButtonStates extends React.Component {
   render() {
     return (
       <div>
-        <style>{"label {margin-right: 10px;}"}</style>
+        <style>{'label {margin-right: 10px;}'}</style>
         <form>
           <label><strong>Boolean Attributes</strong></label>
           <br />

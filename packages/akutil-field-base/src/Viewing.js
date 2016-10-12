@@ -23,7 +23,9 @@ export default (props) => (
     onClick={props.switchToEditingCallback}
     tabIndex="0"
   >
-    <slot name="viewmode" />
+    <div className={shadowStyles.locals.viewModeSlotWrapper}>
+      <slot name="viewmode" />
+    </div>
     <ak-icon-edit className={shadowStyles.locals.editIcon} />
   </div>
 );

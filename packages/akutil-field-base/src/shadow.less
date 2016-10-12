@@ -23,6 +23,8 @@
 
 // viewmode variables
 @viewmode-border-width: 0;
+ // TODO: confirm this value
+@viewmode-min-width: 120px;
 
 // editmode variables
 @editmode-border-width: 1;
@@ -74,6 +76,7 @@
   font-size: unit(@base-font-size, px);
   line-height: @base-line-height;
 
+
   &:focus,
   &:hover {
     background-color: @ak-color-N20;
@@ -93,6 +96,10 @@
   }
 }
 
+.view-mode-slot-wrapper {
+  min-height: unit(@base-inner-height, px);
+  min-width: @viewmode-min-width;
+}
 
 // edit mode styles
 .edit-mode-wrapper {
@@ -110,6 +117,7 @@
   background-color: @editmode-background-color;
   font-size: unit(@base-font-size, px);
   line-height: @base-line-height;
+  min-height: unit(@base-inner-height, px);
 
   // note: .focused not :focus
   &.focused {

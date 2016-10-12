@@ -22,6 +22,13 @@ pipelines:
       - step:
           script:
             - ./build/bin/cloudfront_invalidate.sh
+    yarnify:
+      - step:
+          script:
+            - export FORCE_COLOR=1
+            - npm install yarn -g
+            - alias npm=yarn
+            - npm install
   default:
     - step:
         script:

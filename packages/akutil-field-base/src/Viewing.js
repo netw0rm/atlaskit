@@ -20,6 +20,7 @@ export default (props) => (
   <div
     className={shadowStyles.locals.viewModeWrapper}
     ref={ref => addKeyHandlers(props.switchToEditingCallback, ref)}
+    onClick={props.switchToEditingCallback}
     tabIndex="0"
   >
     <slot name="viewmode" />

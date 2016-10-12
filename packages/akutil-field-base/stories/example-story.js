@@ -44,4 +44,24 @@ storiesOf(name, module)
         <Textfield label="I am not inline editable" value="One opportunity..." editing />
       </form>
     </div>
-  ));
+  ))
+  .add('fieldbase with the labels hidden', () => {
+    const noMarginStyle = {
+      margin: '0px',
+    };
+    return (
+      <div>
+        <form action="" style={formStyle(500)}>
+          <h2>My Label-less Form</h2>
+          <FieldBase label="Label for bold FieldBase" hideLabel>
+            <div is slot="editmode">I'm in editing mode but I don't have a label!</div>
+            <div is slot="viewmode"><b>I'm in view mode but I don't have a label!</b></div>
+          </FieldBase>
+          <FieldBase label="Label for h1 FieldBase" hideLabel>
+            <div is slot="editmode"><h1 style={noMarginStyle}>Edit mode, no label</h1></div>
+            <div is slot="viewmode"><h1 style={noMarginStyle}>View mode, no label</h1></div>
+          </FieldBase>
+        </form>
+      </div>
+    );
+  });

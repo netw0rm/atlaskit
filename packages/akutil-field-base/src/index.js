@@ -65,7 +65,8 @@ export default define('ak-field-base', {
       <Root>
         <Label
           label={elem.label}
-          onClick={() => switchToEditing(elem)}
+          switchToEditingCallback={() => switchToEditing(elem)}
+          hideLabel={elem.hideLabel}
         >
           <ViewingView
             switchToEditingCallback={() => switchToEditing(elem)}
@@ -81,7 +82,9 @@ export default define('ak-field-base', {
   },
   props: {
     /**
-     * @description The label to be rendered above the form field.
+     * @description The label to be rendered above the form field. This props is still required,
+     * even if the hideLabel prop is set as the label is also used to make the field accessible
+     * for screen readers.
      * @memberof FieldBase
      * @instance
      * @type {string}
@@ -108,5 +111,20 @@ export default define('ak-field-base', {
      * @example @js field.focused = true;
      */
     focused: prop.boolean({ attribute: true }),
+    /**
+     * @description Whether the field should show a label above it. If set to true no label will be
+     * shown and no space will be reserved for it.
+     *
+     * **Note**: You must still provide a label for the component regardless of this prop. The label
+     * is also used to make the field accessible to screen readers.
+     * Defaults to false.
+     * @memberof FieldBase
+     * @instance
+     * @type {boolean}
+     * @example @html <ak-field-base label="First Name" hideLabel></ak-field-base>
+     * @example @js field.label = 'First Name';
+     * field.hideLabel = true;
+     */
+    hideLabel: prop.boolean({ attribute: true }),
   },
 });

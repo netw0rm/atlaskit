@@ -28,13 +28,6 @@ storiesOf(name, module)
       </form>
     </div>
   ))
-  .add('a simple ak-textfield', () => (
-    <div>
-      <div>This is a simply implemented textfield component to show how to extend EditableBase</div>
-      <br /><br />
-      <Textfield label="This is a label" value="This is my value" editing />
-    </div>
-  ))
   .add('a simple form with text fields', () => (
     <div>
       <form action="" style={formStyle()}>

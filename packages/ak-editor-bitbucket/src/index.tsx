@@ -20,6 +20,7 @@ import { buildKeymap } from './keymap';
 import markdownSerializer from './markdown-serializer';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
+import parseHtml from './parse-html';
 
 import {
   default as ListsPlugin,
@@ -293,6 +294,28 @@ class AkEditorBitbucket extends Component {
     return this._ready || false;
   }
 
+  /**
+   * Set the value from HTML string
+   */
+  setFromHtml(html: string): void {
+    if (!this._pm || !this._pm.doc) {
+      throw 'Unable to set from HTML before the editor is initialized';
+    }
+
+    this._pm.setDoc(parseHtml(html.trim()), null);
+  }
+
+  /**
+   * Check if the current editor's value is empty - an empty value includes one or more empty paragraphs.
+   */
+  isEmpty(): boolean {
+    if (!this._pm || !this._pm.doc) {
+      throw 'Unable to check if editor is empty before it is initialized';
+    }
+
+    return !this._pm.doc.textContent;
+  }
+
   _expand(): void {
     this.expanded = true;
   }
@@ -370,12 +393,9 @@ class AkEditorBitbucket extends Component {
     schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
     schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
 
-    const div = document.createElement('div');
-    div.innerHTML = this.defaultValue;
-
     const pm = new ProseMirror({
       place: this._wrapper,
-      doc: schema.parseDOM(div),
+      doc: parseHtml(this.defaultValue),
       plugins: [
         MarkdownInputRulesPlugin,
         HyperlinkPlugin,

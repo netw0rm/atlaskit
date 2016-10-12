@@ -1,12 +1,16 @@
 import * as chai from 'chai';
+import { expect } from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations, waitUntil, getShadowRoot  } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
-import { fixtures, RewireSpy } from 'ak-editor-test';
+import { fixtures, RewireSpy, chaiPlugin, doc, text, code, strong, a,
+  h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention, emoji } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 
+chai.use(chaiPlugin);
 chai.use(sinonChai);
-const { expect } = chai;
+
+const fixture = fixtures();
 
 function activateEditor(editor: typeof AkEditorBitbucket) : void {
   const inputEl = getShadowRoot(editor).querySelector('input');
@@ -32,7 +36,6 @@ function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> 
 }
 
 describe('ak-editor-bitbucket', () => {
-  const fixture = fixtures();
   const rewireSpy = RewireSpy();
 
   it('is possible to create a component', () => {
@@ -179,6 +182,50 @@ describe('ak-editor-bitbucket', () => {
             return btShadowRoot.querySelectorAll('ak-editor-toolbar-block-type-option').length >= 2;
           });
         });
+      });
+    });
+  });
+
+  describe('setting from html', () => {
+    it('should accept empty strings', () => {
+      return buildExpandedEditor(fixture()).then((editor) => {
+        editor.setFromHtml('');
+        expect(editor._pm.doc).to.deep.equal(doc(p()));
+
+        editor.setFromHtml('     \t \n  \r  \n');
+        expect(editor._pm.doc).to.deep.equal(doc(p()));
+      });
+    });
+
+    it('should accept simple markup', () => {
+      return buildExpandedEditor(fixture()).then((editor) => {
+        editor.setFromHtml('<h1>foo</h1>');
+        expect(editor._pm.doc).to.deep.equal(doc(h1('foo')));
+
+        editor.setFromHtml('<p>foo <strong>bar</strong></p>');
+        expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), strong(text('bar')))));
+      });
+    });
+  });
+
+  describe('checking if empty', () => {
+    it('should return true for default empty value', () => {
+      return buildExpandedEditor(fixture()).then((editor) => {
+        expect(editor.isEmpty()).to.be.true;
+      });
+    });
+
+    it('should return false non empty document', () => {
+      return buildExpandedEditor(fixture()).then((editor) => {
+        editor.setFromHtml('<h1>foo</h1>');
+        expect(editor.isEmpty()).to.be.false;
+      })
+    });
+
+    it('should return true for document with a few empty paragraphs', () => {
+      return buildExpandedEditor(fixture()).then((editor) => {
+        editor.setFromHtml('<p></p><p></p><p></p><p></p>');
+        expect(editor.isEmpty()).to.be.true;
       });
     });
   });

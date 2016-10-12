@@ -1,15 +1,10 @@
 import { vdom, define, prop, props, emit } from 'skatejs';
 import 'style!./host.less';
-// import shadowStyles from './shadow.less';
 import { showEditingView, showViewingView } from './internal/events';
 import Editing from './Editing';
 import Viewing from './Viewing';
 import Label from './Label';
 import Root from './Root';
-
-
-/* By default, ak-field-base will display the view mode, that is to say, the content in its
-   default slot.  */
 
 function switchToEditing(elem) {
   if (!elem.editing) {

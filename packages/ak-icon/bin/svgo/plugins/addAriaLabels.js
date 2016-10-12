@@ -30,11 +30,11 @@ exports.fn = function addAriaLabel(item, params) {
 
         let pos = 0;
         let replace = 0;
-        item.content.forEach(function (subItem, index) {
-            if (subItem.isElem(elem)) {
-                pos = index;
-                replace = 1;
-            }
+        item.content.forEach((subItem, index) => {
+          if (subItem.isElem(elem)) {
+            pos = index;
+            replace = 1;
+          }
         });
         item.spliceContent(pos, replace, new item.constructor({
           elem,

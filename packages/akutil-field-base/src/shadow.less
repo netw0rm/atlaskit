@@ -28,6 +28,7 @@
 @editmode-border-width: 1;
 @editmode-border-color: @ak-color-N20;
 @editmode-background-color:  @ak-color-N10A;
+@editmode-right-gutter-width:  60px;
 
 // editmode with focus variables
 @editmode-border-width-focused: 2;
@@ -118,15 +119,29 @@
   }
 }
 
-.confirmation-buttons {
+.right-gutter {
   display: inline-flex;
+  width: @editmode-right-gutter-width;
 
   & > * {
     padding-left: unit(@grid, px);
     align-self: center;
   }
+
+  .waiting-spinner {
+    // placeholder styles so we wont worry about these magic numbers
+    color: @ak-color-B400;
+    // extra 4 pixels is for the left margin
+    transform-origin: ~"calc(50% + 4px) 50%";
+    animation: spin 1s Infinite linear;
+  }
 }
 
-.edit-mode-slot {
-  color: red;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

@@ -76,6 +76,7 @@ export default define('ak-field-base', {
           focused={elem.focused}
           onConfirm={() => handleEditConfirmation(elem)}
           onCancel={() => handleEditCancel(elem)}
+          waiting={elem.waiting}
         />
       </Root>
     );
@@ -126,5 +127,18 @@ export default define('ak-field-base', {
      * field.hideLabel = true;
      */
     hideLabel: prop.boolean({ attribute: true }),
+    /**
+     * @description Whether or not to display a loading spinner next to the field. This is usually
+     * used when you need to do some sort of async validation. Note that whilst the editing spinner
+     * is visible a user will not be able to click the confirm or cancel buttons from edit mode.
+     * The spinner is only shown when the editing prop is true and will be ignored otherwise.
+     * @memberof FieldBase
+     * @instance
+     * @type {boolean}
+     * @example @html <ak-field-base label="First Name" hideLabel></ak-field-base>
+     * @example @js field.label = 'First Name';
+     * field.hideLabel = true;
+     */
+    waiting: prop.boolean({ attribute: true }),
   },
 });

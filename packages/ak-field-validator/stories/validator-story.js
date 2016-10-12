@@ -27,29 +27,31 @@ const ReactValidatorStartsWith = reactify(ValidatorStartsWith);
 
 
 storiesOf(name, module)
-  .add('pre-defined validators with default content', () => (
+  .add('pre-defined validators with error messages', () => (
     <div>
-      <div><ReactValidatorMinlength minlength="1" invalid /></div>
+      <div><ReactValidatorMinlength minlength="10" invalid>
+        Custom message for <i>minlength validator</i>
+      </ReactValidatorMinlength></div>
+      <div><ReactValidatorMaxlength maxlength="10" invalid>
+        Custom message for <u>maxlength validator</u>
+      </ReactValidatorMaxlength></div>
+      <div><ReactValidatorRequired invalid>
+        Custom message for <b>required validator</b> and a <a href="#">link</a>
+      </ReactValidatorRequired></div>
+    </div>
+  ))
+  .add('pre-defined validators with no error messages', () => (
+    <div>
+      <div><ReactValidatorMinlength minlength="10" invalid /></div>
       <div><ReactValidatorMaxlength maxlength="10" invalid /></div>
       <div><ReactValidatorRequired invalid /></div>
     </div>
   ))
-  .add('pre-defined validators with custom mesages', () => (
-    <div>
-      <div><ReactValidatorMinlength minlength="10" invalid>
-        Custom message for minlength validator
-      </ReactValidatorMinlength></div>
-      <div><ReactValidatorMaxlength maxlength="10" invalid>
-        Custom message for maxlength validator
-      </ReactValidatorMaxlength></div>
-      <div><ReactValidatorRequired invalid>
-        Custom message for required validator
-      </ReactValidatorRequired></div>
-    </div>
-  ))
   .add('custom validator', () => (
     <div>
-      <ReactValidatorStartsWith start="foo" invalid />
+      <ReactValidatorStartsWith start="foo" invalid>
+        Error message for my <b>custom validator</b>
+      </ReactValidatorStartsWith>
     </div>
   ));
 

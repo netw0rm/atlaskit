@@ -28,8 +28,7 @@ const ValidatorMinlength = defineValidator(`${prefix}minlength`,
       attribute: true,
       default: 1,
     }),
-  },
-  (elem) => `Field should have at least ${elem.minlength} character${elem.minlength > 1 ? 's' : ''}`
+  }
 );
 
 /**
@@ -56,8 +55,7 @@ const ValidatorMaxlength = defineValidator(`${prefix}maxlength`,
       attribute: true,
       default: 10,
     }),
-  },
-  (elem) => `Field should have at most ${elem.maxlength} character${elem.maxlength > 1 ? 's' : ''}`
+  }
 );
 
 /**
@@ -70,11 +68,7 @@ const ValidatorMaxlength = defineValidator(`${prefix}maxlength`,
  *   This field is required
  * </ak-field-validator-required>
  */
-const ValidatorRequired = defineValidator(`${prefix}required`,
-  (value) => !!value,
-  {},
-  () => 'Field is required'
-);
+const ValidatorRequired = defineValidator(`${prefix}required`, (value) => !!value);
 
 export {
   defineValidator,

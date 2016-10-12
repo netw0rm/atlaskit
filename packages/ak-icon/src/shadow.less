@@ -8,6 +8,18 @@
   display: inline-flex;
 }
 
+.onlySize(@size) {
+  @height: "size-@{size}";
+  @width: "size-@{size}";
+
+  .@{size} {
+    .icon, .content {
+      width: @@width;
+      height: @@height;
+    }
+  }
+}
+
 // we define a class here in order to re-use it in the storybook
 // (because in storybook the component name is randomly generated)
 .ak-icon,
@@ -15,7 +27,7 @@ ak-icon {
   .host-styles();
 
   & > _shadow_root_ {
-    display: inline-flex;
+    .host-styles();
   }
 
   &:not([defined]) {
@@ -36,9 +48,12 @@ ak-icon {
   display: inline-flex;
   line-height: 1;
   vertical-align: baseline;
-  width: 20px; // duplicated in ../bin/constants.js
-  height: 20px; // duplicated in ../bin/constants.js
 }
+
+.onlySize(small);
+.onlySize(medium);
+.onlySize(large);
+.onlySize(xlarge);
 
 .content {
   margin: auto;

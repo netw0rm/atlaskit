@@ -77,7 +77,7 @@ import { defineValidator } from 'ak-field-validator';
 
 const ValidatorIsEven = defineValidator('x-validator-even-length', 
   function(value) {
-    return value.length %% 2 === 0;
+    return value.length % 2 === 0;
   }
 );
 ```
@@ -89,7 +89,7 @@ const ValidatorIsEven = defineValidator('x-validator-even-length',
   </head>
   <body>
     <ak-field>
-      <x-validator-even-length slot="validator">Field value must be even</x-validator-even-length>
+      <x-validator-even-length slot="validator">Field length must be even</x-validator-even-length>
       <ak-field-text slot="input"></ak-field-text>
     </ak-field>
   </body>

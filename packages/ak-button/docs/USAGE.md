@@ -55,7 +55,7 @@ document.body.appendChild(myButton) // Needed to be attached to the DOM to be re
 
 Or nested inside skate elements. For example:
 
-```
+```js
 import 'ak-button';
 const { vdom, define } = skate;
 const { element } = vdom;
@@ -74,10 +74,11 @@ document.body.appendChild(new MyButton())  // renders <ak-button>My Button</ak-b
 
 This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
-```
+```js
 import AkButton from 'ak-button';
 import reactify from 'skatejs-react-integration';
 
 const ReactComponent = reactify(AkButton, {});
 
 ReactDOM.render(<ReactComponent />, container);
+```

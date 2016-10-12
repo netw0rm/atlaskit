@@ -42,9 +42,6 @@ function openDialog(elem) {
   const trigger = getTriggerElement(elem);
 
   elem[keyDownOnceOnOpen] = false;
-  if (!elem.open) {
-    elem.open = true;
-  }
 
   if (trigger) {
     props(trigger, { opened: true });
@@ -56,18 +53,12 @@ function openDialog(elem) {
     list[0].first = true;
     list[list.length - 1].last = true;
   }
-
-  elem.reposition();
   emit(elem, events.afterOpen);
 }
 
 function closeDialog(elem) {
   const list = getAllItems(elem);
   const trigger = getTriggerElement(elem);
-
-  if (elem.open) {
-    elem.open = false;
-  }
 
   if (trigger) {
     props(trigger, { opened: false });
@@ -88,9 +79,9 @@ function closeDialog(elem) {
 
 function toggleDialog(elem) {
   if (elem.open) {
-    closeDialog(elem);
+    props(elem, { open: false });
   } else {
-    openDialog(elem);
+    props(elem, { open: true });
   }
 }
 
@@ -107,7 +98,7 @@ function selectSimpleItem(elem, event) {
     }
   });
   event.detail.item.selected = true;
-  closeDialog(elem);
+  props(elem, { open: false });
 }
 
 function selectCheckboxItem(item) {
@@ -218,17 +209,17 @@ export default define('ak-dropdown', {
     elem.addEventListener(events.unselected, (e) => unselectItem(elem, e));
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
-    elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
+    elem.addEventListener(events.item.tab, () => props(elem, { open: false }));
     elem[handleClickOutside] = (e) => {
       if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem) &&
         !(e.path && e.path.indexOf(elem) > -1)) {
-        closeDialog(elem);
+        props(elem, { open: false });
       }
     };
     elem[handleKeyDown] = (e) => {
       if (elem.open) {
         if (e.keyCode === keyCode('escape')) {
-          closeDialog(elem);
+          props(elem, { open: false });
         } else if (!elem[keyDownOnceOnOpen] && e.keyCode === keyCode('down')) {
           elem[keyDownOnceOnOpen] = true;
           getAllItems(elem)[0].focused = true;
@@ -261,6 +252,7 @@ export default define('ak-dropdown', {
       elem.childNodes[1].style.marginTop = '0';
     }
     let target = elem.target;
+
     return (
       <div
         style={{ position: elem.stepOutside || elem.boundariesElement ? 'static' : 'relative' }}
@@ -273,7 +265,9 @@ export default define('ak-dropdown', {
           >
             <slot
               name="trigger"
-              ref={el => (elem[triggerSlot] = el)}
+              ref={el => {
+                elem[triggerSlot] = el;
+              }}
             />
           </div>
           : null
@@ -290,26 +284,25 @@ export default define('ak-dropdown', {
           boundariesElement={elem.boundariesElement}
           ref={(layer) => {
             elem[layerElem] = layer;
-            setTimeout(() => {
-              if (elem.open && layer.alignment) {
-                  // by default dropdown has opacity 0
-                  // and only with attribute 'positioned' it has opacity 1
-                  // this behavior is to avoid 'flashing' of dropdown
-                  // when it's initially positioning itself on a page
-                elem.setAttribute('positioned', true);
-                layer.reposition();
-              }
-            });
+            if (layer && layer.reposition) {
+              layer.reposition();
+            }
           }
         }
         >
           <div
             className={shadowListStyles.locals.list}
             style={{
-              minWidth: getDropdownMinwidth(target, elem),
               maxHeight: getDropdownMaxheight(elem),
             }}
             role="menu"
+            ref={(el) => {
+              // hack for the AK-577 until someone think of a better solution
+              el.style.minWidth = getDropdownMinwidth(target, elem);
+              setTimeout(() => {
+                el.style.minWidth = getDropdownMinwidth(target, elem);
+              });
+            }}
           >
             <style>{shadowListStyles.toString()}</style>
             <slot />
@@ -317,6 +310,9 @@ export default define('ak-dropdown', {
         </Layer>
       </div>
     );
+  },
+  rendered(elem) {
+    elem.reposition();
   },
   props: {
     /**
@@ -330,10 +326,12 @@ export default define('ak-dropdown', {
     open: prop.boolean({
       attribute: true,
       set(elem, data) {
-        if (data.newValue) {
-          openDialog(elem);
-        } else {
-          closeDialog(elem);
+        if (data.newValue !== data.oldValue) {
+          if (data.newValue) {
+            openDialog(elem);
+          } else {
+            closeDialog(elem);
+          }
         }
       },
     }),

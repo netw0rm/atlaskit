@@ -18,6 +18,10 @@ pipelines:
             - npm run release
             - run-p -ln "release/registry" "release/storybooks"
             - npm run release/announce
+    invalidate-atlaskit-cache:
+      - step:
+          script:
+            - ./build/bin/cloudfront_invalidate.sh
   default:
     - step:
         script:

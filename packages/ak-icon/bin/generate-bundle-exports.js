@@ -21,6 +21,9 @@ glob(`${tempFolder}**/*.js`, {
   /* eslint-disable no-console */
   console.log('// NOTE: This file is generated from the glyphs found inside this Component');
   console.log('//       DO NOT MODIFY THIS FILE AS YOUR CHANGES WILL BE OVERRIDDEN');
+  console.log();
+  console.log("import { size } from './Icon';");
+  console.log('export { size };');
 
   files.forEach((file) => {
     const componentName = pathToExport(file);

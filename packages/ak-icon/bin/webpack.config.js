@@ -5,7 +5,7 @@ const pathToIcon = path.join(__dirname, relativePathToIcon);
 const baseIconChunkName = require('./constants').baseIconChunkName;
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-let cssOptions = '?camelCase=true&modules=true';
+let cssOptions = '?camelCase=true&modules=true&mergeRules=false';
 if (isDevelopment) {
   cssOptions += '&-minimize';
 }

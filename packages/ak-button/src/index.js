@@ -5,7 +5,6 @@ import { appearance, type } from './enumeratedProperties';
 import Slot from './Slot';
 import Button from './Button';
 import createStyles from './styles';
-import variables from './styles/variables';
 
 const APPEARANCE = appearance.values;
 const TYPE = type.values;
@@ -69,7 +68,7 @@ const definition = {
     selected: prop.boolean({ attribute: true }),
   },
   render(elem) {
-    const styles = style(vdom, createStyles(variables(elem.themeProps)));
+    const styles = style(vdom, createStyles(elem.themeProps));
     return (
       <Button {...props(elem)} styles={styles}>
         <Slot styles={styles} name="before" />

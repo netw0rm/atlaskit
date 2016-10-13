@@ -23,10 +23,9 @@ const transitionValue = `
   box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)
 `;
 
-const calc = (vars, path, defaultValue) => _get(vars, path) || defaultValue;
-
-export default vars => (
-  {
+export default vars => {
+  const val = _get.bind(null, vars);
+  return {
     // light DOM styles
     ':host': {
       display: 'inline-block',
@@ -71,22 +70,22 @@ export default vars => (
     },
     button: {
       'box-sizing': 'border-box',
-      background: calc(vars, 'standard.background', akColorN20),
+      background: val('standard.background', akColorN20),
       'border-width': '0',
-      'border-radius': calc(vars, 'button.baseRadius', akBorderRadius),
-      color: calc(vars, 'standard.color', akColorN500),
+      'border-radius': val('button.baseRadius', akBorderRadius),
+      color: val('standard.color', akColorN500),
       display: 'inline-block',
       'font-style': 'normal',
       'font-size': 'inherit',
-      height: calc(vars, 'button.height', `${grid * 4 / em}em`),
-      'line-height': calc(vars, 'button.lineHeight', lineHeight / em),
+      height: val('button.height', `${grid * 4 / em}em`),
+      'line-height': val('button.lineHeight', lineHeight / em),
       margin: '0',
       outline: 'none',
-      padding: calc(vars, 'button.padding', `${grid * 0.75}px ${grid}px`),
+      padding: val('button.padding', `${grid * 0.75}px ${grid}px`),
       'text-align': 'center',
-      transition: calc(vars, 'button.transition', transitionValue),
+      transition: val('button.transition', transitionValue),
       'user-select': 'none',
-      border: calc(vars, 'button.border', 'none'),
+      border: val('button.border', 'none'),
 
       '&::-moz-focus-inner': {
         margin: 0,
@@ -95,90 +94,91 @@ export default vars => (
       },
 
       '&:hover': {
-        background: calc(vars, 'standard.hover.background', akColorN30),
+        background: val('standard.hover.background', akColorN30),
         cursor: 'pointer',
-        'border-color': calc(vars, 'standard.hover.borderColor'),
+        'border-color': val('standard.hover.borderColor'),
       },
 
       '&:active': {
-        background: calc(vars, 'standard.active.background', akColorB50),
-        'box-shadow': calc(vars, 'standard.active.boxShadow'),
-        'transition-duration': calc(vars, 'standard.active.transitionDuration', '0s'),
+        background: val('standard.active.background', akColorB50),
+        'box-shadow': val('standard.active.boxShadow'),
+        'transition-duration': val('standard.active.transitionDuration', '0s'),
       },
 
       '&:focus': {
-        'box-shadow': `0 0 0 2px ${calc(vars, 'standard.focus.background', akColorB200)}`,
-        'transition-duration': calc(vars, 'standard.focus.transitionDuration', '0s, 0.2s'),
+        'box-shadow': `0 0 0 2px ${val('standard.focus.background', akColorB200)}`,
+        'transition-duration': val('standard.focus.transitionDuration', '0s, 0.2s'),
       },
     },
     primary: {
-      background: calc(vars, 'primary.background', akColorB400),
-      color: calc(vars, 'primary.color', akColorN20),
-      'border-color': calc(vars, 'primary.borderColor'),
+      background: val('primary.background', akColorB400),
+      color: val('primary.color', akColorN20),
+      'border-color': val('primary.borderColor'),
 
       '&:hover': {
-        background: calc(vars, 'primary.hover.background', akColorB500),
-        'border-color': calc(vars, 'primary.borderColor'),
+        background: val('primary.hover.background', akColorB500),
+        'border-color': val('primary.borderColor'),
       },
 
       '&:active': {
-        background: calc(vars, 'primary.active.background', akColorB300),
+        background: val('primary.active.background', akColorB300),
       },
     },
     subtle: {
       background: 'none',
-      color: calc(vars, 'subtle.color'),
-      'border-color': calc(vars, 'subtle.borderColor'),
+      color: val('subtle.color'),
+      'border-color': val('subtle.borderColor'),
       '&:hover': {
-        color: calc(vars, 'subtle.hover.color'),
+        color: val('subtle.hover.color'),
       },
     },
     disabled: {
-      color: calc(vars, 'disabled.color', akColorN40),
+      color: val('disabled.color', akColorN40),
       '::slotted(*)': { 'pointer-events': 'none' },
       cursor: 'not-allowed',
-      background: calc(vars, 'disabled.background'),
-      'border-color': calc(vars, 'disabled.borderColor'),
-      'box-shadow': calc(vars, 'disabled.boxShadow'),
+      background: val('disabled.background'),
+      'border-color': val('disabled.borderColor'),
+      'box-shadow': val('disabled.boxShadow'),
     },
     selected: {
-      background: calc(vars, 'selected.background', akColorN700),
-      color: calc(vars, 'selected.color', akColorN20),
-      'box-shadow': calc(vars, 'selected.boxShadow'),
+      background: val('selected.background', akColorN700),
+      color: val('selected.color', akColorN20),
+      'box-shadow': val('selected.boxShadow'),
       '&:hover': {
-        background: calc(vars, 'selected.hover.background', akColorN700),
-        'border-color': calc(vars, 'selected.hover.borderColor'),
+        background: val('selected.hover.background', akColorN700),
+        'border-color': val('selected.hover.borderColor'),
         transition: 'none',
       },
     },
     link: {
       background: 'none',
-      color: calc(vars, 'link.color', akColorB400),
+      color: val('link.color', akColorB400),
       transition: 'color 0.1s ease-out',
-      'box-shadow': calc(vars, 'link.boxShadow'),
-      'border-color': calc(vars, 'link.borderColor'),
+      'box-shadow': val('link.boxShadow'),
+      'border-color': val('link.borderColor'),
 
       '&:hover': {
         background: 'none',
-        color: calc(vars, 'link.hover.color', akColorB300),
+        color: val('link.hover.color', akColorB300),
         'text-decoration': 'underline',
-        'border-color': calc(vars, 'link.hover.borderColor'),
+        'border-color': val('link.hover.borderColor'),
       },
 
       '&:active': {
-        color: calc(vars, 'link.active.color', akColorB300),
-        'box-shadow': calc(vars, 'link.active.boxShadow'),
+        color: val('link.active.color', akColorB300),
+        'box-shadow': val('link.active.boxShadow'),
         'text-decoration': 'none',
       },
 
       '&.disabled': {
-        color: calc(vars, 'disabled.color', akColorN40),
+        color: val('disabled.color', akColorN40),
         background: 'none',
       },
     },
     compact: {
-      height: calc(vars, 'compact.height', `${grid * 3 / em}em`),
-      'padding-top': calc(vars, 'compact.paddingTop', `${grid / 3}px`),
-      'padding-bottom': calc(vars, 'compact.paddingBottom', `${grid / 3}px`),
+      height: val('compact.height', `${grid * 3 / em}em`),
+      'padding-top': val('compact.paddingTop', `${grid / 3}px`),
+      'padding-bottom': val('compact.paddingBottom', `${grid / 3}px`),
     },
-  });
+  };
+};

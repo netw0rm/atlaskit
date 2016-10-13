@@ -10,6 +10,17 @@ if (!window.Promise) {
 import 'whatwg-fetch';
 /* eslint-enable import/imports-first */
 
+/**
+ * @ignore
+ * @param  {string} baseUrl
+ * @param  {string} path
+ * @param  {object} data
+ * @param  {string} data.cloudId
+ * @param  {string} data.accountId
+ * @param  {boolean} data.expand
+ * @param  {function} secOptions  Not implemented yet
+ * @return {string}
+ */
 const buildUrl = (baseUrl, path, data, secOptions) => {
   const searchParam = new URLSearchParams();
   // remove undefined keys from data object
@@ -42,6 +53,11 @@ const buildUrl = (baseUrl, path, data, secOptions) => {
   return `${baseUrl}${seperator}${path}?${searchParam.toString()}`;
 };
 
+/**
+ * @ignore
+ * @param  {function} secOptions
+ * @return {headers}
+ */
 const buildHeaders = (secOptions) => {
   const headers = new Headers();
   if (secOptions && secOptions.headers) {
@@ -62,7 +78,17 @@ const buildHeaders = (secOptions) => {
   return headers;
 };
 
-// Returns a Promise containing the json response
+/**
+ * @ignore
+ * @param  {string} baseUrl         API base url
+ * @param  {string} path            API resource
+ * @param  {object} data
+ * @param  {string} data.cloudId
+ * @param  {string} data.accountId
+ * @param  {boolean} data.expand
+ * @param  {object} secOptions      Not implemented yet
+ * @return {promise}
+ */
 const requestService = (baseUrl, path, data, secOptions) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
@@ -86,7 +112,13 @@ const requestService = (baseUrl, path, data, secOptions) => {
     });
 };
 
-class ProfileCardResource {
+class ProfilecardClient {
+  /**
+   * @ignore
+   * @param {object} config
+   * @param {string} config.url
+   * @param {function} config.securityProvider
+   */
   constructor(config) {
     if (!config.url) {
       throw new Error('config.url is a required parameter');
@@ -95,6 +127,14 @@ class ProfileCardResource {
     this._config = config;
   }
 
+  /**
+   * @ignore
+   * @param {object} options
+   * @param  {string} options.cloudId
+   * @param  {string} options.accountId
+   * @param  {boolean} options.expand
+   * @return {promise}
+   */
   _get(options) {
     const secOptions = this._config.securityProvider();
 
@@ -102,4 +142,4 @@ class ProfileCardResource {
   }
 }
 
-export default ProfileCardResource;
+export default ProfilecardClient;

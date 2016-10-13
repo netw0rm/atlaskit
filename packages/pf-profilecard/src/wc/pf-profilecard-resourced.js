@@ -5,7 +5,7 @@ import ProfileCard from './pf-profilecard';
 import ProfileSpinner from './pf-spinner';
 import WarningIcon from './WarningIcon';
 import { getTimestampWithOffset } from '../util/datetime';
-import events from '../internal/events';
+import { success as successEvent, error as errorEvent } from '../internal/events';
 import {
   data,
   loading,
@@ -22,6 +22,8 @@ const styles = shadowStyles.locals;
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class ProfilecardResourced
+ * @fires Profilecard#success
+ * @fires Profilecard#error
  * @example @html <pf-profilecard-resourced/></pf-profilecard-resourced>
  * @example @js import ProfilecardResourced from 'pf-profilecard';
  * const component = new ProfilecardResourced();
@@ -54,7 +56,7 @@ export default define('pf-profilecard-resourced', {
         [failed]: false,
       });
 
-      emit(this, events.success);
+      emit(this, successEvent);
     },
 
     [fnReject](err) {
@@ -63,7 +65,7 @@ export default define('pf-profilecard-resourced', {
         [failed]: true,
       });
 
-      emit(this, events.error, {
+      emit(this, errorEvent, {
         detail: err,
       });
     },
@@ -129,6 +131,12 @@ export default define('pf-profilecard-resourced', {
   },
 
   props: {
+    /**
+     * @description ResourceProvider
+     * @memberof ProfilecardResourced
+     * @type {object}
+     * @instance
+     */
     resourceProvider: {},
 
     /**
@@ -153,14 +161,21 @@ export default define('pf-profilecard-resourced', {
 
     /**
      * @description Defining the action buttons on the card.
-     * Array of one or more action objects with `label` and `event` keys.
-     * `label` defines the button text while `event` is returned as detail in
-     * the emitted `action` event in case the button is clicked.
-     * [Will be passed to ProfileCard]
-     * @memberof ProfilecardResourced
+     * object.label - the action buttons text
+     * object.event - identifier emitted on click in `action` event
+     * @memberof Profilecard
      * @instance
-     * @type {array}
-     * @example [{label: 'Chat', event: 'ev_chat'}, {label: 'View', event: 'ev_view'}]
+     * @type {object[]}
+     * @example [
+     *   {
+     *     label: 'Chat',
+     *     event: 'ev_chat'
+     *   },
+     *   {
+     *     label: 'View',
+     *     event: 'ev_view'
+     *   }
+     * ]
      */
     actions: prop.array({
       attribute: true,

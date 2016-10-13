@@ -5,7 +5,7 @@ import AkButton from 'ak-button';
 
 import 'style!../host.less';
 import IconLabel from './IconLabel';
-import events from '../internal/events';
+import { action as actionEvent } from '../internal/events';
 import { getTimeLabel } from '../util/datetime';
 import shadowStyles from './pf-profilecard-shadow.less';
 
@@ -28,6 +28,7 @@ const PRESENCE_STRINGS = {
 /**
  * @description Definition of the Profilecard component.
  * @class Profilecard
+ * @fires Profilecard#action
  * @example @html <pf-profilecard></pf-profilecard>
  * @example @js import Profilecard from 'pf-profilecard';
  * const myProfilecard = new Profilecard();
@@ -40,7 +41,7 @@ export default define('pf-profilecard', {
       <AkButton
         appearance="link"
         compact
-        onclick={() => emit(elem, events.action, {
+        onclick={() => emit(elem, actionEvent, {
           detail: {
             action: action.event,
           },
@@ -120,6 +121,8 @@ export default define('pf-profilecard', {
     location: prop.string({ attribute: true }),
 
     /**
+     * @description Allowed values: `online`, `offline`, `busy` or `none`
+     * @default none
      * @memberof Profilecard
      * @instance
      * @type {string}
@@ -128,13 +131,21 @@ export default define('pf-profilecard', {
 
     /**
      * @description Defining the action buttons on the card.
-     * Array of one or more action objects with `label` and `event` keys.
-     * `label` defines the button text while `event` is returned as detail in
-     * the emitted `action` event in case the button is clicked.
+     * object.label - the action buttons text
+     * object.event - identifier emitted on click in `action` event
      * @memberof Profilecard
      * @instance
-     * @type {array}
-     * @example [{label: 'Chat', event: 'ev_chat'}, {label: 'View', event: 'ev_view'}]
+     * @type {object[]}
+     * @example [
+     *   {
+     *     label: 'Chat',
+     *     event: 'ev_chat'
+     *   },
+     *   {
+     *     label: 'View',
+     *     event: 'ev_view'
+     *   }
+     * ]
      */
     actions: prop.array({ attribute: true }),
 

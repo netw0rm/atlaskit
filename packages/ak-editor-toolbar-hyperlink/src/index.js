@@ -6,31 +6,44 @@ import LinkIcon from 'ak-icon/glyph/editor/link';
 import Popup from 'ak-editor-popup';
 import TextInput from 'ak-editor-popup-text-input';
 
-function toggle(elem, input) {
-  elem.open = !elem.open;
-
-  if (elem.open) {
-    const textInput = input || elem.shadowRoot.querySelector('.text-input');
-
-    // todo: fix the hack
-    setTimeout(() => textInput.focus(), 5);
+// todo: we will use a common helper function when it's ready.
+// https://ecosystem.atlassian.net/browse/AK-513
+function isDescendantOf(child, parent) {
+  if (child.parentNode === parent) {
+    return true;
+  } else if (child.parentNode === null) {
+    return false;
   }
+
+  return isDescendantOf(child.parentNode, parent);
 }
 
 export default define('ak-editor-toolbar-hyperlink', {
+  created(elem) {
+    elem.toggleHyperlink = elem.toggleHyperlink.bind(elem);
+    elem.onKeyup = elem.onKeyup.bind(elem);
+    elem.openHyperlink = elem.openHyperlink.bind(elem);
+    elem.handleClickOutside = elem.handleClickOutside.bind(elem);
+  },
+  attached(elem) {
+    document.addEventListener('click', elem.handleClickOutside);
+  },
+  detached(elem) {
+    document.removeEventListener('click', elem.handleClickOutside);
+  },
   render(elem) {
-    const LinkButton = (<EditorButton
-      className="link-button"
-      onClick={() => {
-        if (!elem.disabled) {
-          toggle(elem);
-        }
-      }}
-      active={elem.active || elem.open}
-      disabled={elem.disabled}
-    >
-      <LinkIcon {...((elem.active || elem.open) ? { style: { color: 'white' } } : {})} />
-    </EditorButton>);
+    const active = elem.active || elem.open;
+
+    const LinkButton = (
+      <EditorButton
+        className="link-button"
+        onClick={elem.toggleHyperlink}
+        active={active}
+        disabled={elem.disabled}
+      >
+        <LinkIcon {...((active) ? { style: { color: 'white' } } : {})} />
+      </EditorButton>
+    );
 
     let linkButton;
 
@@ -38,14 +51,7 @@ export default define('ak-editor-toolbar-hyperlink', {
     /* eslint-disable new-cap  */
     return (
       <div
-        onKeyup={event => {
-          if (event.keyCode === 13) {
-            const textInput = elem.shadowRoot.querySelector('.text-input');
-            toggle(elem, textInput);
-            emit(elem, 'save', { detail: { value: textInput.value } });
-            textInput.value = '';
-          }
-        }}
+        onKeyup={elem.onKeyup}
       >
         <style>{shadowStyles.toString()}</style>
 
@@ -55,12 +61,63 @@ export default define('ak-editor-toolbar-hyperlink', {
           class="popup"
           target={linkButton}
           open={elem.open}
-          on-activate={() => toggle(elem)}
+          on-activate={elem.openHyperlink}
         >
           <TextInput className="text-input" placeholder="Paste link" />
         </Popup>
       </div>
     );
+  },
+  rendered(elem) {
+    // `elem.justOpenedHyperlink` is for focusing on the input
+    // if we just opened hyperlink, we want to focus on the input straight away
+    // else, don't auto focus on it
+    if (elem.justOpenedHyperlink) {
+      const textInput = elem.shadowRoot.querySelector('.text-input');
+      // next tick
+      // because dom is rendered async but the API is not,
+      // `textInput` is only availale on dom in the next tick
+      setTimeout(() => textInput.focus());
+      elem.justOpenedHyperlink = false;
+    }
+  },
+  prototype: {
+    openHyperlink() {
+      this.open = true;
+      this.justOpenedHyperlink = true;
+    },
+    addHyperlink() {
+      const textInput = this.shadowRoot.querySelector('.text-input');
+      this.open = false;
+      emit(this, 'addHyperlink', { detail: { value: textInput.value } });
+      textInput.value = '';
+    },
+    handleClickOutside(e) {
+      // todo: we will use a common helper function when it's ready.
+      // https://ecosystem.atlassian.net/browse/AK-513
+      if (this.open && e.target !== this && !isDescendantOf(e.target, this) &&
+        !(e.path && e.path.indexOf(this) > -1)) {
+        this.open = false;
+      }
+    },
+    toggleHyperlink() {
+      if (this.disabled) {
+        return;
+      }
+
+      if (this.open) {
+        this.open = false;
+      } else {
+        this.openHyperlink();
+      }
+    },
+    onKeyup(event) {
+      if (event.keyCode === 13) {
+        this.addHyperlink();
+      } else if (event.keyCode === 27) {
+        this.open = false;
+      }
+    },
   },
   props: {
     /**

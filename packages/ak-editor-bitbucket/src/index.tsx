@@ -159,7 +159,7 @@ class AkEditorBitbucket extends Component {
   }
 
   static rendered(elem: AkEditorBitbucket) : void {
-    if (elem.expanded) {
+    if (elem.expanded && !elem._pm) {
       elem._initEditor();
       if (!elem._ready) {
         emit(elem, 'ready');
@@ -167,7 +167,7 @@ class AkEditorBitbucket extends Component {
       }
 
       elem.focus();
-    } else {
+    } else if (!elem.expanded) {
       elem._pm = null;
     }
   }
@@ -215,7 +215,7 @@ class AkEditorBitbucket extends Component {
         <ToolbarHyperlink
           active={elem._hyperLinkActive}
           disabled={!elem._canLinkHyperlink}
-          onSave={elem._addHyperLink}
+          onAddHyperlink={elem._addHyperLink}
         />
         <ToolbarLists
           bulletlistDisabled={elem._bulletlistDisabled}
@@ -266,7 +266,7 @@ class AkEditorBitbucket extends Component {
           :
           <input
             placeholder={elem.placeholder}
-            onclick={elem._expand}
+            onfocus={elem._expand}
             className={fakeInputClassNames}
           />
         }
@@ -404,10 +404,6 @@ class AkEditorBitbucket extends Component {
   }
 
   _initEditor() {
-    if (this._pm) {
-      return;
-    }
-
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
 

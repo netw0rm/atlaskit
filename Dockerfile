@@ -61,20 +61,20 @@ RUN bundle config build.nokogiri --use-system-libraries
 ENV TIMEZONE Australia/Sydney
 
 ENV NODE_VERSION 6.2.0-r0
-ENV YARN_VERSION 0.15.1
 
-RUN echo "Installing node & npm" \
+RUN echo "Installing node" \
   apk update && \
   apk upgrade && \
   apk add --update tzdata && \
   cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone && \
   apk --no-cache add nodejs="${NODE_VERSION}" && \
-  npm install -g yarn@"${YARN_VERSION}" && \
-  npm cache clean -f && \
   npm uninstall npm -g && \
   apk del tzdata && \
   rm -rf /var/cache/apk/*
+
+RUN echo "Installing yarn" \
+  curl -o- -L https://yarnpkg.com/install.sh | bash
 #### </node>
 
 #### <atlaskit-tools>

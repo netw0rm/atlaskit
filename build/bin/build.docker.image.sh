@@ -12,8 +12,8 @@ docker build --build-arg LERNA_VERSION="$LERNA_VERSION" -t "$TAG" . $@
 echo "Let's make sure we have everything"
 printf "Node: "
 docker run "$TAG" node --version
-printf "npm: "
-docker run "$TAG" npm -v
+printf "Yarn: "
+docker run "$TAG" yarn --version
 docker run "$TAG" ruby -v
 docker run "$TAG" bundler -v
 printf "Lerna: "

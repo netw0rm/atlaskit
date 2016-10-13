@@ -25,7 +25,7 @@ export const DISABLED_GROUP = 'unlinkable';
 
 const DEFAULT_STATE: HyperLinkState = {
   active: false,
-  enabled: true,
+  enabled: false,
   element: null,
   href: '',
   rel: '',
@@ -63,8 +63,10 @@ function getDomElement(
 
 function isNodeLinkable(pm: ProseMirror, node: Node): boolean {
   const nodeType = node.type.name;
-  const nodeSpecOrderedMap = pm.schema.nodeSpec;
-  return nodeSpecOrderedMap.get(nodeType).group.split(' ').indexOf(DISABLED_GROUP) === -1;
+  const nodes = pm.schema.nodes;
+  const group = nodes[nodeType].group;
+
+  return group ? group.split(' ').indexOf(DISABLED_GROUP) === -1 : true;
 }
 
 function isCursorOnLink(
@@ -152,6 +154,7 @@ export default new Plugin(class HyperlinkPlugin {
         active: true,
         element: getDomElement(pm, getBoundariesWithin($head)),
         text: activeNode.textContent,
+        enabled: true,
       });
     } else if (
       empty ||
@@ -163,7 +166,9 @@ export default new Plugin(class HyperlinkPlugin {
         }
       );
     } else {
-      this.setState();
+      this.setState({
+        enabled: true,
+      });
     }
 
     if (!isShallowObjectEqual(oldState, this.state)) {

@@ -12,10 +12,10 @@ const { expect, assert } = chai;
 
 const fixture = fixtures();
 
-function activateEditorByClicking(editor: typeof AkEditorBitbucket) : void {
+function activateEditor(editor: typeof AkEditorBitbucket) : void {
   const inputEl = getShadowRoot(editor).querySelector('input');
   expect(inputEl).to.not.be.null;
-  emit(inputEl, 'click');
+  emit(inputEl, 'focus');
 }
 
 function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> {
@@ -158,7 +158,7 @@ describe('ak-editor-bitbucket', () => {
     });
 
     it('should expand after clicking the input element', () => {
-      activateEditorByClicking(editor);
+      activateEditor(editor);
       expect(editor.expanded).to.be.true;
     });
   });

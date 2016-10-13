@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-popup",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "ak-editor-popup webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -24,7 +24,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "akutil-react": "^1.0.0",
-    "ak-icon": "^8.0.0",
+    "ak-icon": "^8.1.2",
     "ak-editor-button": "^2.3.10",
     "ak-editor-toolbar": "^2.0.0"
   },

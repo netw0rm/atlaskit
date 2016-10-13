@@ -4,7 +4,7 @@ Use this component to display extra information about an element by displaying a
 
 You can use the tooltip alone, but it is reccomended to use it in conjunction with `ak-tooltip-trigger` , which is exported from this same package and will take care of all the event handling/binding.
 
-![Example tooltip](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tooltip/docs/exampleTooltip.gif)
+![Example tooltip](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-tooltip/docs/exampleTooltip.gif)
 
 ##### Some Tips
 * You can have multiple tooltips on the page but it's generally advised to have one tooltip

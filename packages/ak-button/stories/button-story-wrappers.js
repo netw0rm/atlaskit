@@ -15,7 +15,7 @@ export const DefaultWrapper = define('default-wrapper', {
 export const Adg2ThemeWrapper = define('adg-2theme-wrapper', {
   attached(elem) {
     elem.querySelectorAll('ak-button').forEach(button => {
-      props(button, { themeName: 'ak-button-adg2' });
+      props(button, { themeName: 'ak-button-theme-adg2' });
     });
   },
   render() {

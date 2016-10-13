@@ -5,11 +5,12 @@ import { appearance, type } from './enumeratedProperties';
 import Slot from './Slot';
 import Button from './Button';
 import createStyles from './styles';
+import AkButtonThemeAdg2 from './themes/adg2';
 
 const APPEARANCE = appearance.values;
 const TYPE = type.values;
 
-export { APPEARANCE, TYPE };
+export { APPEARANCE, TYPE, AkButtonThemeAdg2 };
 
 /**
  * @description Creates instances of ak-button programmatically, or using markup.

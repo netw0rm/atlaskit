@@ -1,10 +1,10 @@
 import { vdom, define } from 'skatejs';
 import Theme, { Prop } from 'ak-theme';
 
-export default define('ak-button-adg2', {
+export default define('ak-button-theme-adg2', {
   render() {
     return (
-      <Theme id="ak-button-adg2">
+      <Theme id="ak-button-theme-adg2">
         <Prop name="button.padding" value="4px 10px" />
         <Prop name="button.border" value="1px solid #ccc" />
         <Prop name="button.transition" value="none" />

@@ -3,11 +3,8 @@ import { props } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
-import AkButton from '../src/index.js';
 import { akGridSize } from 'akutil-shared-styles';
-import { name } from '../package.json';
-import { waitUntil, getShadowRoot } from 'akutil-common-test';
-import { getShadowButtonElem, createDivTest } from './_helpers';
+import { getShadowButtonElem, createDivTest, setup, tearDownComponent } from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -15,22 +12,9 @@ const expect = chai.expect;
 
 describe('ak-button/default-behaviour', () => {
   let component;
-  beforeEach(() => {
-    component = new AkButton();
-    document.body.appendChild(component);
-    return waitUntil(() => getShadowRoot(component) !== null);
-  });
+  beforeEach(() => setup().then(c => (component = c)));
 
-  afterEach(() => document.body.removeChild(component));
-
-  it('should not throws when component is instanciated', () =>
-    expect(() => (new AkButton())).not.to.throw(Error)
-  );
-
-  it('should be possible to create a component', () => {
-    expect(getShadowButtonElem(component)).to.be.defined;
-    expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
-  });
+  afterEach(() => tearDownComponent(component));
 
   it('should call preventDefault when onmousedown event is triggered', () => {
     const button = getShadowButtonElem(component);

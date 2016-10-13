@@ -108,7 +108,7 @@ To fix the styles we can either set them through javascript or pass in a `<style
 </akutil-field-base>
 ```
 
-```js
+```javascript
 inputField.style.background = 'transparent';
 inputField.style.border = '0';
 inputField.style.outline = 'none';
@@ -116,7 +116,7 @@ inputField.style.outline = 'none';
 
 To fix the focus styling we can set up event listers on the input that can set the `focused` prop on FieldBase.
 
-```js
+```javascript
 inputField.addEventListener('focus', () => {
   fieldBase.focused = true;
 });
@@ -125,3 +125,44 @@ inputField.addEventListener('blur', () => {
 });
 ```
 
+#### Validation
+
+Performing validation is as easy listening for the `show-viewing-view` event and responding appropriately.
+
+If the validation can be performed client-side, simply check the value, if it is invalid cancel the event
+and set the `invalid` prop on fieldBase.
+
+```javascript
+fieldBase.addEventListener(events.showViewingView, (e) => {
+  if (!e.detail.canceled) {
+    if (inputField.value.length % 2 !== 0) {
+      // error! the field only accepts strings that have an even number of characters!
+      e.cancel();
+      fieldBase.invalid = true;
+    }
+  }
+});
+```
+
+To perform async validation it is reccomended that you use the `waiting` prop whilst you wait.
+
+```javascript
+fieldBase.addEventListener(events.showViewingView, (e) => {
+  if (!e.detail.canceled) {
+    // we'll cancel the event so that we don't go to viewmode yet
+    e.cancel();
+    // now we'll call some long running validation function
+    validateValueOnServer(inputField.value).then(isValid => {
+      if (isValid) {
+        // the value was valid, remove the waiting prop and the editing prop to send us back to viewingmode
+        fieldBase.waiting = false;
+        fieldBase.editing = false;
+      } else {
+        // the value wasn't valid, we'll mark fieldBase as invalid and let the user handle that
+        fieldBase.waiting = false;
+        fieldBase.invalid = true;
+      }
+    });
+  }
+})
+```

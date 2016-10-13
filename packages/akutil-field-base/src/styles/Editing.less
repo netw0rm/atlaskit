@@ -40,8 +40,8 @@
   font-size: unit(@base-font-size, px);
 
   min-height: unit(@base-inner-height, px);
-
   max-width: ~"calc(100% - @{editmode-right-gutter-width} - @{editmode-gutter-left-padding})";
+  word-wrap: break-word;
 
   // note: .focused not :focus
   &.focused {

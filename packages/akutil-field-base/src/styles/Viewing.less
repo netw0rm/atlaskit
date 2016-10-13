@@ -1,9 +1,13 @@
 @import './shared-variables.less';
 
 @viewmode-border-width: 0;
- // TODO: confirm this value
-@viewmode-min-width: 120px;
 
+// EXTERNAL CONSTANTS
+// These are values that should be pulled in from ak-button but we are repeating them here for now
+@ak-icon-size-small: 20px;
+
+// the maximum width the slot wrapper can take up. Parents width - iconSize
+@viewmode-slot-wrapper-max-width: ~"calc(100% - @{ak-icon-size-small})";
 
 .view-mode-wrapper {
   .borders-and-padding(@viewmode-border-width, @base-horizontal-padding, @base-height);
@@ -12,6 +16,7 @@
   border-radius: @base-border-radius;
   font-size: unit(@base-font-size, px);
   line-height: @base-line-height;
+  max-width: ~"calc(100% - 2 * @{base-horizontal-padding}px)";
 
   &:hover {
     background-color: @ak-color-N20;
@@ -25,7 +30,8 @@
 
 .view-mode-slot-wrapper {
   min-height: unit(@base-inner-height, px);
-  max-width: 100%;
+  word-wrap: break-word;
+  max-width: @viewmode-slot-wrapper-max-width;
 }
 
 .edit-button-focused {

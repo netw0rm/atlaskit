@@ -1,7 +1,15 @@
 # FieldBase
 
-This component contains all the common behaviour of fields across Atlaskit. Sizing, labels, hover states, inline-editablability, etc.
-FieldBase's *will* work by themselves but are really meant to be extended into a full `ak-field-X` component.
+This component contains all the common behaviour and styles for fields
+
+FieldBase provides an ADG3 compatible implementation for:
+* Labels: spacing, margins, accessibility and click-to-focus functionality
+* Fields: sizing, borders, colors, wrapping behaviour, hover/focus states
+* InlineEdit pattern: view switching, edit/confirm/cancel buttons, focus handling
+* Validation: styles, waiting states (built in validation coming soon!)
+* Keyboard navigation: view switching, confirm/cancel behaviour with associated focus styles
+
+FieldBase's *will* work by themselves but are really meant to be extended into a full field component.
 
 ## Try it out
 
@@ -13,120 +21,107 @@ Interact with a [live demo of the akutil-field-base component](https://aui-cdn.a
 npm install akutil-field-base
 ```
 
+
 ## Using the component
 
-As stated above, although this component is consumable by itself, it is a lot more useful to extend it.
-FieldBase is library agnostic and you can extend it any way you like.
+FieldBase makes no assumptions about libraries or frameworks and can be extended any way you like; Skatejs, React or even Vanilla JS.
 
-To extend FieldBase you should:
-* Pass a `label` prop to FieldBase (probably from your components own props).
-* Pass an `editing` prop to FieldBase (probably from your components own props).
-* Pass in two children with the appropriate slotnames (`editmode` and `viewmode` respectively).
-* Add and remove the `focused` prop of FieldBase where appropriate.
-* Respond to the `cancelEditPressed` and `confirmEditPressed` events fired from FieldBase appropriately.
+#### Creating your views
 
-We'll look at two such ways of doing this below using [Skatejs](https://github.com/skatejs/skatejs) and [React](https://facebook.github.io/react/).
+FieldBase works using two 'views' for your component `editmode` and `viewmode`.
+To set these up, simply pass them as children to your FieldBase with the appropriate `slot` attribute.
 
-### Skatejs
+```html
+<akutil-field-base label="My awesome field" id="myCustomField">
+  <div slot="viewmode">
+    <span id="viewModeValue">Your text here</span>
+  </div>
+  <div slot="editmode">
+    <input type="text" id="inputField" value="Your text here" />
+  </div>
+</akutil-field-base>
+```
 
-This is a very simple `text-field` component that extends `FieldBase` using composition.
+**Note**: It is very important to pass in the `label` attribute even if you are hiding it using the
+`hideLabel` attribute as the label is used to make your field accessible for screen readers.
+
+At this point you will already have a component that can switch between views, handle keyboard navigation and set aside an appropriate amount of space.
+
+However, this isn't particularly useful because our changes aren't saved!
+
+#### Updating views
+
+To keep our two views in sync, we'll need to set up some event handlers to tell us when a user is switching views.
+
+The two events for this are `show-editing-view` and `show-viewing-view` respectively.
+
+We'll simply listen for the `show-viewing-view` event and if a user clicked confirm, we'll update our `viewmode`.
+If they click cancel we'll take their last value and put that back into the input field so that the next time they enter `editmode` it has the correct value.
 
 ```javascript
-import { vdom, define, prop, props } from 'skatejs';
-import FieldBase, { events } from 'akutil-field-base';
+// import the custom event from the FieldBase package
+import { events } from 'akutil-field-base';
 
-const { showEditingView, showViewingView } = events;
+const fieldBase = document.getElementById('myCustomField');
+const inputField = document.getElementById('inputField');
+const viewModeSpan = document.getElementById('viewModeValue');
 
-// when switching to editing view, focus on our input field.
-function handleEditingViewSwitch(elem) {
-  if (elem.inputField) {
-    elem.inputField.focus();
+// We'll need to keep track of the value of our field
+let fieldValue = inputField.value;
+
+// now set up our event listener
+fieldBase.addEventListener(events.showViewingView, (e) => {
+  // we can check if the change was caused by hitting cancel or not
+  if (e.detail.canceled) {
+    // we'll reset the value to the last one before the cancel
+    inputField.value = fieldValue;
+  } else {
+    // we'll update our state and reflect it into the viewmode
+    fieldValue = inputField.value;
+    viewModeSpan.innerHTML = fieldValue;
   }
-}
+})
+```
 
-// when switching to the viewing view, we'll check if we are switching because of a cancel event or not
-// if we are, just do nothing, otherwise we'll set our value prop to the value of the input field
-function handleViewingViewSwitch(elem, e) {
-  if (!e.detail.canceled) {
-    props(elem, { value: elem.inputField.value });
-  }
-}
+#### Styling content
 
-// we have disabled the focus styles on the input element, for that reason, we need to pass the focused
-// prop down to FieldBase
-function handleInputFocus(elem) {
-  props(elem.fieldBase, { focused: true });
-}
+You'll almost definitely want to apply some styles to your views so that they blend in with the ADG3 theme.
 
-// and then remove it if the text field is blurred.
-function handleInputBlur(elem) {
-  props(elem.fieldBase, { focused: false });
-}
+In our example above for example, you would want to:
+* Remove default focus styles from the input
+* Remove borders and background-color from the input
+* Reflect the inputs focus onto fieldBase (so that we get the correct focus styles in editmode)
 
-export default define('simple-textfield', {
-  render(elem) {
-    // we use null instead of false so that when we pass it as an attribute to FieldBase it doesnt
-    // get rendered as editing=""
-    const isEditing = elem.editing || null;
-    return (
-      <div>
-        <FieldBase label={elem.label} ref={ref => (elem.fieldBase = ref)} editing={isEditing} >
-          <div is slot="viewmode">
-            {elem.value}
-          </div>
-          <div is slot="editmode">
-            <style>
-              input { background-color: #f7f8f9; border: 0px; font-size: 14px; outline: 0; }
-              input:focus { background-color: white; }
-            </style>
-            <input
-              type="text"
-              defaultValue={elem.value}
-              onfocus={() => handleInputFocus(elem)}
-              onblur={() => handleInputBlur(elem)}
-              ref={ref => elem.inputField = ref}
-            >
-          </div>
-        </FieldBase>
-      </div>
-    );
-  },
-  props: {
-    // we expose label and editing props that we can pass to FieldBase
-    label: prop.string({ attribute: true }),
-    editing: prop.boolean({ attribute: true }),
-    // and introduce the value prop that will reflect the value from out input field
-    value: prop.string({ attribute: true }),
-  },
-  attached(elem) {
-    // we'll need event handlers to be able to react to the FieldBase telling us to switch views
-    elem.addEventListener(showEditingView, (e) => handleEditingViewSwitch(elem));
-    elem.addEventListener(showViewingView, (e) => handleViewingViewSwitch(elem, e));
-  },
+To fix the styles we can either set them through javascript or pass in a `<style>` tag to `editmode`.
+
+```html
+<akutil-field-base label="My awesome field" id="myCustomField">
+  <div slot="viewmode">
+    <span id="viewModeValue">Your text here</span>
+  </div>
+  <div slot="editmode">
+    <style>
+      input { background: transparent; border: 0; outline: 0; }
+    </style>
+    <input type="text" id="inputField" value="Your text here" />
+  </div>
+</akutil-field-base>
+```
+
+```js
+inputField.style.background = 'transparent';
+inputField.style.border = '0';
+inputField.style.outline = 'none';
+```
+
+To fix the focus styling we can set up event listers on the input that can set the `focused` prop on FieldBase.
+
+```js
+inputField.addEventListener('focus', () => {
+  fieldBase.focused = true;
+});
+inputField.addEventListener('blur', () => {
+  fieldBase.focused = false;
 });
 ```
 
-Keep in mind, this is a **very** simplified version of textfield that is just meant to show the bare minimum to get started extending FieldBase.
-For more in depth examples, check out some of the `ak-field` components in the Atlaskit repo.
-
-Here are the main things we are doing in this code:
-* Reflecting `label` and `editing` props into `FieldBase`.
-* Exposing a `value` prop and reflecting it in the DOM.
-* Listening for the `showEditingView` event so that we can focus on our input.
-* Listening for the `showViewingView` event so that we can update our `value` prop.
-* Inserting an element with `slot="viewmode"` to display our components value.
-* Inserting an element with `slot="editmode"` to allow users to edit a value.
-  * We insert a style tag so that the background colors, font sizes, etc match. Also to remove the normal focus styles.
-  * Add focus and blur handlers to the input so that we can pass a `focused` prop to `FieldBase` to apply our styles.
-
-Some notes:
-* In the real world, you would not be able to use an input in the shadowDOM to reflect our values.
-You would need to insert them as lightDOM using a `<slot />` (see examples of this in Atlaskit).
-
-
-
-### React
-
-```js
-/* React example coming soon! */
-```

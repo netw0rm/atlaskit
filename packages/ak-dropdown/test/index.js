@@ -414,4 +414,35 @@ describe('ak-dropdown', () => {
       expect(component.children[3].focused).to.equal(true);
     });
   });
+
+  describe('prototype', () => {
+    let component;
+    const html = `<ak-dropdown-item>first</ak-dropdown-item>
+                  <ak-dropdown-group>
+                  <ak-dropdown-item>first</ak-dropdown-item>
+                  <ak-dropdown-item>second</ak-dropdown-item>
+                  </ak-dropdown-group>
+                  <ak-dropdown-group>
+                  <ak-dropdown-item-radio>third</ak-dropdown-item-radio>
+                  <ak-dropdown-item-radio hidden>first</ak-dropdown-item-radio>
+                  </ak-dropdown-group>
+                  <ak-dropdown-group>
+                  <ak-dropdown-item-checkbox hidden>second</ak-dropdown-item-checkbox>
+                  <ak-dropdown-item-checkbox>third</ak-dropdown-item-checkbox>
+                  </ak-dropdown-group>`;
+    beforeEach(() => setupComponentExample(html).then(newComponent => {
+      component = newComponent;
+      props(component, { open: true });
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should have getItemsList in the prototype', () => {
+      expect(typeof component.getItemsList).to.equal('function');
+    });
+
+    it('should return the items list', () => {
+      const list = component.getItemsList();
+      expect(list.length).to.equal(7);
+    });
+  });
 });

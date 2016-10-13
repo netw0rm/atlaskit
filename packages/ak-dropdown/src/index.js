@@ -9,6 +9,7 @@ import Group from './index.group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
+import getItemsList from './internal/getItemsList';
 import dropdownPositionedToSide from './internal/dropdownPositionedToSide';
 
 // Width of a dropdown should be at least width of it's trigger + 10px
@@ -31,14 +32,9 @@ function getTriggerElement(elem) {
   return elem[triggerSlot] && elem[triggerSlot].assignedNodes()[0];
 }
 
-function getAllItems(elem) {
-  return Array
-    .from(elem.querySelectorAll('*[defined]'))
-    .filter((node) => node instanceof Item);
-}
 
 function openDialog(elem) {
-  const list = getAllItems(elem);
+  const list = getItemsList(elem.childNodes);
   const trigger = getTriggerElement(elem);
 
   elem[keyDownOnceOnOpen] = false;
@@ -57,7 +53,7 @@ function openDialog(elem) {
 }
 
 function closeDialog(elem) {
-  const list = getAllItems(elem);
+  const list = getItemsList(elem.childNodes);
   const trigger = getTriggerElement(elem);
 
   if (trigger) {
@@ -161,7 +157,7 @@ function focusPrev(list, i) {
 }
 
 function changeFocus(elem, type) {
-  const list = getAllItems(elem);
+  const list = getItemsList(elem.childNodes);
   const l = list.length;
   for (let i = 0; i < l; i++) {
     const item = list[i];
@@ -222,7 +218,7 @@ export default define('ak-dropdown', {
           props(elem, { open: false });
         } else if (!elem[keyDownOnceOnOpen] && e.keyCode === keyCode('down')) {
           elem[keyDownOnceOnOpen] = true;
-          getAllItems(elem)[0].focused = true;
+          getItemsList(elem.childNodes)[0].focused = true;
         }
       }
     };
@@ -243,6 +239,19 @@ export default define('ak-dropdown', {
       }
 
       return this;
+    },
+    /**
+     * @description Returns the full list of the dropdown's items regardless of their type
+     *  (item, checkbox item, radio item)
+     *
+     * @memberof Dropdown
+     * @function
+     * @instance
+     * @return {Array} List of the dropdown's items
+     * @example @js const list = dropdown.getItemsList();
+     */
+    getItemsList() {
+      return getItemsList(this.childNodes);
     },
   },
   render(elem) {

@@ -55,7 +55,7 @@ storiesOf(name, module)
       `}</style>
       <Navigation slot="navigation" open>
         <ak-icon-search slot="global-search" />
-        <ak-icon-bitbucket-create slot="global-create" />
+        <ak-icon-create slot="global-create" />
       </Navigation>
       <div>
         <div className="z-index-content">

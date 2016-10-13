@@ -3,10 +3,10 @@ import reactify from 'akutil-react';
 import AkAvatar from 'ak-avatar';
 import AkButton from 'ak-button';
 import AkButtonGroup from 'ak-button-group';
-import BitbucketTeamsIcon from 'ak-icon/glyph/bitbucket/teams';
-import BitbucketCreateIcon from 'ak-icon/glyph/bitbucket/create';
-import BitbucketSnippetsIcon from 'ak-icon/glyph/bitbucket/snippets';
+import AkBitbucketTeamsIcon from 'ak-icon/glyph/bitbucket/teams';
+import AkBitbucketSnippetsIcon from 'ak-icon/glyph/bitbucket/snippets';
 import AkComment from '../src/index';
+import AkCreateIcon from 'ak-icon/glyph/create';
 import React from 'react';
 import { name } from '../package.json';
 import transparentAvatarUrl from 'url!./face-w-transparency.png';
@@ -16,9 +16,9 @@ const Comment = reactify(AkComment);
 const Avatar = reactify(AkAvatar);
 const Button = reactify(AkButton);
 const ButtonGroup = reactify(AkButtonGroup);
-const TeamsIcon = reactify(BitbucketTeamsIcon);
-const CreateIcon = reactify(BitbucketCreateIcon);
-const SnippetsIcon = reactify(BitbucketSnippetsIcon);
+const TeamsIcon = reactify(AkBitbucketTeamsIcon);
+const SnippetsIcon = reactify(AkBitbucketSnippetsIcon);
+const CreateIcon = reactify(AkCreateIcon);
 const commentClass = styles.locals.akComment;
 
 /* eslint-disable react/prop-types */

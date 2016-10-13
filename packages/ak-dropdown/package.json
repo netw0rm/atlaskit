@@ -1,6 +1,6 @@
 {
   "name": "ak-dropdown",
-  "version": "5.7.4",
+  "version": "5.7.6",
   "description": "ak-dropdown webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -18,8 +18,8 @@
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "keycode": "^2.1.2",
-    "skatejs": "^1.5.2",
-    "ak-icon": "~7.5.0",
+    "skatejs": "^3.0.0",
+    "ak-icon": "^8.1.2",
     "ak-button": "^1.3.2"
   },
   "author": "Atlassian Pty Ltd",

@@ -140,7 +140,7 @@
     "storybook/static/registry": "rm -rf ./stories && ./node_modules/.bin/lerna exec --concurrency=1 -- ../../build/bin/storybook.static.registry.sh",
     "storybook/wait": "wait-on -d 20000 -i 500 -t 300000 http-get://0.0.0.0:9001/",
     "test": "karma start ./build/karma/all.js --single-run --no-auto-watch --reporters=dots",
-    "test/watch": "karma start ./build/karma/all.js --reporters=dots",
+    "test/watch": "NODE_ENV=development karma start ./build/karma/all.js --reporters=dots",
     "test/base": "mocha --colors",
     "test/browserstack": "./build/bin/test.browserstack.sh",
     "test/integration": "./build/bin/test.integration.sh",
@@ -150,7 +150,7 @@
     "test/single/integration": "./build/bin/test.single.integration.sh",
     "test/single/integration/browserstack": "./build/bin/test.single.integration.browserstack.sh",
     "test/single/browserstack": "./build/bin/test.single.browserstack.sh",
-    "test/single/watch": "./build/bin/test.single.watch.sh",
+    "test/single/watch": "NODE_ENV=development ./build/bin/test.single.watch.sh",
     "validate": "npm ls >/dev/null && ./node_modules/.bin/lerna exec -- npm ls >/dev/null",
     "validate/lint-changed": "./build/bin/lint-changed.sh",
     "validate/package.json": "pjv -q && ./node_modules/.bin/lerna exec -- pjv -q"

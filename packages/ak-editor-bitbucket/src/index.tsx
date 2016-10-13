@@ -63,6 +63,10 @@ function getBlockType({ blockType, blockName }: getBlockTypeType, blockTypes: bl
   }
 }
 
+function stopEventPropagation(event: Event) : void {
+  event.stopPropagation();
+}
+
 interface formattingMap {
   [propName: string]: MarkType;
 }
@@ -155,7 +159,7 @@ class AkEditorBitbucket extends Component {
   }
 
   static rendered(elem: AkEditorBitbucket) : void {
-    if (elem.expanded) {
+    if (elem.expanded && !elem._pm) {
       elem._initEditor();
       if (!elem._ready) {
         emit(elem, 'ready');
@@ -163,9 +167,22 @@ class AkEditorBitbucket extends Component {
       }
 
       elem.focus();
-    } else {
+    } else if (!elem.expanded) {
       elem._pm = null;
     }
+  }
+
+  static attached(elem: AkEditorBitbucket) : void {
+    // Prevent any keyboard events from bubbling outside of the editor chrome
+    elem.addEventListener('keydown', stopEventPropagation);
+    elem.addEventListener('keyup', stopEventPropagation);
+    elem.addEventListener('keypress', stopEventPropagation);
+  }
+
+  static detached(elem: AkEditorBitbucket) : void {
+    elem.removeEventListener('keydown', stopEventPropagation);
+    elem.removeEventListener('keyup', stopEventPropagation);
+    elem.removeEventListener('keypress', stopEventPropagation);
   }
 
   static render(elem: AkEditorBitbucket) {
@@ -176,7 +193,7 @@ class AkEditorBitbucket extends Component {
     }
 
     const fullEditor: any = (<div>
-      <Toolbar>
+      <Toolbar className={shadowStyles.locals['toolbar']}>
         <ToolbarBlockType
           disabled={!elem._canChangeBlockType}
           selectedBlockType={elem._selectedBlockType}
@@ -198,7 +215,7 @@ class AkEditorBitbucket extends Component {
         <ToolbarHyperlink
           active={elem._hyperLinkActive}
           disabled={!elem._canLinkHyperlink}
-          onSave={elem._addHyperLink}
+          onAddHyperlink={elem._addHyperLink}
         />
         <ToolbarLists
           bulletlistDisabled={elem._bulletlistDisabled}
@@ -249,7 +266,7 @@ class AkEditorBitbucket extends Component {
           :
           <input
             placeholder={elem.placeholder}
-            onclick={elem._expand}
+            onfocus={elem._expand}
             className={fakeInputClassNames}
           />
         }
@@ -387,10 +404,6 @@ class AkEditorBitbucket extends Component {
   }
 
   _initEditor() {
-    if (this._pm) {
-      return;
-    }
-
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
 

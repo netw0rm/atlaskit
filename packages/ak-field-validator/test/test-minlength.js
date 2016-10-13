@@ -28,30 +28,47 @@ describe('ak-field-validator-minlength', () => {
       expect(component.validate).to.be.a('function');
     });
 
-    it('should correctly validate values', () => {
-      component.minlength = 1;
-      expect(component.validate('')).to.equal(false);
-      expect(component.invalid).to.equal(true);
-      expect(component.validate('h')).to.equal(true);
-      expect(component.invalid).to.equal(false);
-      expect(component.validate('he')).to.equal(true);
-      expect(component.invalid).to.equal(false);
+    describe('should correctly validate', () => {
+      const testsForLength = [
+        {
+          minlength: 1,
+          tests: [
+            { value: '', valid: false },
+            { value: 'h', valid: true },
+            { value: 'he', valid: true },
+          ],
+        },
+        {
+          minlength: 2,
+          tests: [
+            { value: 'h', valid: false },
+            { value: 'he', valid: true },
+            { value: 'hel', valid: true },
+          ],
+        },
+        {
+          minlength: 10,
+          tests: [
+            { value: 'hello wor', valid: false },
+            { value: 'hello worl', valid: true },
+            { value: 'hello world', valid: true },
+          ],
+        },
+      ];
 
-      component.minlength = 2;
-      expect(component.validate('h')).to.equal(false);
-      expect(component.invalid).to.equal(true);
-      expect(component.validate('he')).to.equal(true);
-      expect(component.invalid).to.equal(false);
-      expect(component.validate('hel')).to.equal(true);
-      expect(component.invalid).to.equal(false);
-
-      component.minlength = 10;
-      expect(component.validate('hello wor')).to.equal(false);
-      expect(component.invalid).to.equal(true);
-      expect(component.validate('hello worl')).to.equal(true);
-      expect(component.invalid).to.equal(false);
-      expect(component.validate('hello world')).to.equal(true);
-      expect(component.invalid).to.equal(false);
+      testsForLength.forEach(testForLength => {
+        describe(`with minlength of ${testForLength.minlength}`, () => {
+          testForLength.tests.forEach(test => {
+            it(`and value of ${test.value}`, () => {
+              component.minlength = testForLength.minlength;
+              return component.validate(test.value).then(isValid => {
+                expect(isValid).to.equal(test.valid);
+                expect(component.invalid).to.equal(!test.valid);
+              });
+            });
+          });
+        });
+      });
     });
   });
 });

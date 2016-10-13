@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
 chai.should();
 
 
-describe('ak-field-validator-maxlength', () => {
+describe('ak-field-validator-required', () => {
   describe('exports', () => {
     it('should export a base component', () => {
       (new ValidatorRequired).should.be.an.instanceof(Component);
@@ -28,11 +28,20 @@ describe('ak-field-validator-maxlength', () => {
       expect(component.validate).to.be.a('function');
     });
 
-    it('should correctly validate values', () => {
-      expect(component.validate('')).to.equal(false);
-      expect(component.invalid).to.equal(true);
-      expect(component.validate('hello world')).to.equal(true);
-      expect(component.invalid).to.equal(false);
+    describe('should correctly validate', () => {
+      const tests = [
+        { value: '', valid: false },
+        { value: 'hello world', valid: true },
+      ];
+
+      tests.forEach(test => {
+        it(`with value of ${test.value}`, () =>
+          component.validate(test.value).then(isValid => {
+            expect(isValid).to.equal(test.valid);
+            expect(component.invalid).to.equal(!test.valid);
+          })
+        );
+      });
     });
   });
 });

@@ -28,30 +28,47 @@ describe('ak-field-validator-maxlength', () => {
       expect(component.validate).to.be.a('function');
     });
 
-    it('should correctly validate values', () => {
-      component.maxlength = 1;
-      expect(component.validate('')).to.equal(true);
-      expect(component.invalid).to.equal(false);
-      expect(component.validate('h')).to.equal(true);
-      expect(component.invalid).to.equal(false);
-      expect(component.validate('he')).to.equal(false);
-      expect(component.invalid).to.equal(true);
+    describe('should correctly validate', () => {
+      const testsForLength = [
+        {
+          maxlength: 1,
+          tests: [
+            { value: '', valid: true },
+            { value: 'h', valid: true },
+            { value: 'he', valid: false },
+          ],
+        },
+        {
+          maxlength: 2,
+          tests: [
+            { value: 'h', valid: true },
+            { value: 'he', valid: true },
+            { value: 'hel', valid: false },
+          ],
+        },
+        {
+          maxlength: 10,
+          tests: [
+            { value: 'hello wor', valid: true },
+            { value: 'hello worl', valid: true },
+            { value: 'hello world', valid: false },
+          ],
+        },
+      ];
 
-      component.maxlength = 2;
-      expect(component.validate('h')).to.equal(true);
-      expect(component.invalid).to.equal(false);
-      expect(component.validate('he')).to.equal(true);
-      expect(component.invalid).to.equal(false);
-      expect(component.validate('hel')).to.equal(false);
-      expect(component.invalid).to.equal(true);
-
-      component.maxlength = 10;
-      expect(component.validate('hello wor')).to.equal(true);
-      expect(component.invalid).to.equal(false);
-      expect(component.validate('hello worl')).to.equal(true);
-      expect(component.invalid).to.equal(false);
-      expect(component.validate('hello world')).to.equal(false);
-      expect(component.invalid).to.equal(true);
+      testsForLength.forEach(testForLength => {
+        describe(`with maxlength of ${testForLength.maxlength}`, () => {
+          testForLength.tests.forEach(test => {
+            it(`and value of ${test.value}`, () => {
+              component.maxlength = testForLength.maxlength;
+              return component.validate(test.value).then(isValid => {
+                expect(isValid).to.equal(test.valid);
+                expect(component.invalid).to.equal(!test.valid);
+              });
+            });
+          });
+        });
+      });
     });
   });
 });

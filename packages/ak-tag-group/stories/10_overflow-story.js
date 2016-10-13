@@ -5,7 +5,7 @@ import AkTagWebComponent from 'ak-tag';
 import React from 'react';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
-import tagStyles from 'ak-tag/src/shadow.less';
+import tagStyles from 'style!./tagStyles.less';
 import tagNames from './tagNames';
 
 const Group = reactify(WebComponent);
@@ -17,7 +17,7 @@ const overflowStory = () => (
     <Group className={styles.locals.akTagGroup}>
       {tagNames.map((sweet, i) => (
         <Tag
-          className={tagStyles.locals.akTag}
+          className={tagStyles.akTag}
           href="http://www.cupcakeipsum.com/"
           key={i}
           text={sweet}

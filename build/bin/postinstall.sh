@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
 set -e
 
-BASEDIR=$(dirname $0)
 LERNA_LOC="`npm bin`/lerna"
 CHALK="`npm bin`/chalk"
+VALIDATE_COMMIT_MSG_LOC="`npm bin`/validate-commit-msg"
+BASEDIR=$(dirname $0)
 
-$CHALK --no-stdin -t "{blue Lerna bootstrap...}"
-if [[ -z "$BITBUCKET_COMMIT" ]]; then
-  $LERNA_LOC bootstrap
-else
-  # piping to cat is used to put stdout in a non-TTY mode (hides the progress bar in lerna)
-  $LERNA_LOC bootstrap | cat
-fi
+$CHALK --no-stdin -t "{blue Installing packages...}"
+$LERNA_LOC exec -- ../../build/bin/postinstall.single.sh
 
 if [[ -z "$BITBUCKET_COMMIT" ]]; then
+  # we are in a local env
   $CHALK --no-stdin -t "{blue Installing hooks...}"
   node $BASEDIR/pre-commit.install.js
-  validate-commit-msg
+
+  $CHALK --no-stdin -t "{blue Installing commit message validator...}"
+  $VALIDATE_COMMIT_MSG_LOC
 fi

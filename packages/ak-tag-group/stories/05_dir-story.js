@@ -5,7 +5,7 @@ import AkTagWebComponent from 'ak-tag';
 import React from 'react';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
-import tagStyles from 'ak-tag/src/shadow.less';
+import tagStyles from 'style!./tagStyles.less';
 
 const Group = reactify(WebComponent);
 
@@ -14,7 +14,7 @@ const Tag = reactify(AkTagWebComponent);
 const RemovableComponent = (props) => (
   <Tag
     {...props}
-    className={tagStyles.locals.akTag}
+    className={tagStyles.akTag}
     href="http://www.cupcakeipsum.com/"
     remove-button-text="No sweets for you!"
   />

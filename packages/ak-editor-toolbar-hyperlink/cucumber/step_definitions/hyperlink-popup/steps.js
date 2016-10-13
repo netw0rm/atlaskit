@@ -19,30 +19,28 @@ module.exports = function steps() {
   );
 
   this.When(
-    /^I register a "([^"]*)" eventListener on "([^"]*)"$/,
-    (event, name) => {
-      const cb = this[`${event}CallbackOn${name}`] = sinon.spy();
-
-      element(by.css(name)).on(event, cb);
-    }
-  );
-
-  this.When(
     /^I enter "([^"]*)" key on the "([^"]*)" component$/,
     (key, name) => element(by.webComponentNamePrefix(name)).sendKeys(protractor.Key[key])
   );
 
-  this.When(
-    /^I should receive a "([^"]*)" event on "([^"]*)"$/,
-    (event, name) => {
-      expect(this[`${event}CallbackOn${name}`]).to.have.been.callCount(1);
-    }
-  );
+  
+  //TODO to be removed
 
-  this.When(
-    /^I should not receive a "([^"]*)" event on "([^"]*)"$/,
-    (event, name) => {
-      expect(this[`${event}CallbackOn${name}`]).to.have.been.callCount(0);
-    }
-  );
+  this.Then(/^I should see a "([^"]*)" component$/, (name, next) => {
+    expect(
+      browser.isElementPresent(by.webComponentNamePrefix(name)),
+      `expected ${name} component to be visible but not`
+    )
+      .to.eventually.equal(true)
+      .and.notify(next)
+  });
+
+  this.Then(/^I should not see a "([^"]*)" component$/, (name, next) => {
+    expect(
+      browser.isElementPresent(by.webComponentNamePrefix(name)),
+      `expected ${name} component not to be visible but is present`
+    )
+      .to.eventually.equal(false)
+      .and.notify(next);
+  });
 };

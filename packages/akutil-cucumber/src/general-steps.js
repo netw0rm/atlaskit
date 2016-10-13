@@ -14,13 +14,20 @@ module.exports = function steps() {
       return browser.get(url);
     });
 
-  this.Then(
-    /^I should see a "([^"]*)" component$/,
-    (name) => browser.isElementPresent(by.webComponentNamePrefix(name))
-  );
+  this.Then(/^I should see a "([^"]*)" component$/, (name, next) => {
+    expect(
+      browser.isElementPresent(by.webComponentNamePrefix(name)),
+      `expected ${name} component to be visible but not`
+    )
+      .to.eventually.equal(true)
+      .and.notify(next)
+  });
 
   this.Then(/^I should not see a "([^"]*)" component$/, (name, next) => {
-    expect(browser.isElementPresent(by.webComponentNamePrefix(name)))
+    expect(
+      browser.isElementPresent(by.webComponentNamePrefix(name)),
+      `expected ${name} component not to be visible but is present`
+    )
       .to.eventually.equal(false)
       .and.notify(next);
   });

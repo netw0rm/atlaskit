@@ -8,7 +8,8 @@
  * @param {Node} [parentElement] The parent element to search in. Will use document if omitted.
  * @return {Node[]} An array of DOM elements
  */
-function locateWebComponent(componentNamePrefix, parentElement) {
+
+function locateComponent(componentNamePrefix, parentElement) {
   const using = parentElement || document;
   const tagMatcher = new RegExp(`^${componentNamePrefix}`, 'i');
 
@@ -18,4 +19,16 @@ function locateWebComponent(componentNamePrefix, parentElement) {
 }
 
 // Note: no es6 export here, as it needs to be loaded by protractor
-module.exports = locateWebComponent;
+// It only found the top level shadow dom matches
+module.exports = function locateShadowDOM(componentNamePrefix, parentElement) {
+  const foundElements = locateComponent(componentNamePrefix, parentElement);
+  console.log(parentElement,'-----------------------');
+
+  if (foundElements.length > 0) {
+    return foundElements;
+  }
+
+  if (parentElement.shadowRoot) {
+    return locateShadowDOM(componentNamePrefix, parentElement.shadowRoot);
+  }
+};

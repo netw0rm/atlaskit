@@ -57,7 +57,7 @@ Now you can use the defined tag in your HTML markup:
         <!-- Slots for global actions -->
         <ak-icon-bitbucket-logo slot="global-home" />
         <ak-icon-search slot="global-search" />
-        <ak-icon-bitbucket-create slot="global-create" />
+        <ak-icon-create slot="global-create" />
 
         <!-- Slots for global help / account -->
         <ak-dropdown position="right bottom" slot="global-profile">
@@ -69,7 +69,7 @@ Now you can use the defined tag in your HTML markup:
         </ak-dropdown>
         <ak-dropdown position="right bottom" slot="global-help">
           <ak-dropdown-trigger slot="trigger">
-            <ak-icon-bitbucket-help />
+            <ak-icon-help />
           </ak-dropdown-trigger>
           <ak-dropdown-item>AtlasKit is great</ak-dropdown-item>
           <ak-dropdown-item>Tell your friends</ak-dropdown-item>

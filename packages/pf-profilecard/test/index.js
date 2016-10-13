@@ -96,7 +96,7 @@ describe('pf-profilecard', () => {
     ['', 'gone', 'unavailable', 'here'].forEach((presence) => {
       it(`should revert to default value on invalid values (presence = ${presence})`, () => {
         const presenceAttributeIsSet = () => (
-          component.getAttribute('presence') === 'offline'
+          component.getAttribute('presence') === 'none'
         );
         props(component, { presence });
 

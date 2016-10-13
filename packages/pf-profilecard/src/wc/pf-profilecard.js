@@ -16,7 +16,7 @@ const PRESENCE_ATTRIBUTE_ENUM = {
   attribute: 'presence',
   values: ['none', 'online', 'busy', 'offline'],
   missingDefault: 'none',
-  invalidDefault: 'offline',
+  invalidDefault: 'none',
 };
 
 const PRESENCE_STRINGS = {

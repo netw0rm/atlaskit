@@ -1,0 +1,161 @@
+@import './shared-variables.less';
+
+//Base grid
+@grid: 4;
+
+// some base variables (shared between both views)
+@base-horizontal-padding: @grid * 2; // 8px
+@base-height: @grid * 10; // 40px
+@base-font-size: 14;
+@base-inner-height: @grid * 5; // 20px
+@base-line-height: @base-inner-height / @base-font-size;
+@base-border-radius: 3px;
+
+// Label margins
+@label-top-spacing: unit(@grid * 5, px);
+@label-bottom-spacing: unit(@grid, px);
+
+// Label sizing
+@label-inner-height: @grid * 4; // effectively 16px
+@label-font-size: 12;
+@label-line-height: @label-inner-height / @label-font-size;
+@label-padding-left: 10px; // hardcoded for now till I find a better way
+
+// viewmode variables
+@viewmode-border-width: 0;
+ // TODO: confirm this value
+@viewmode-min-width: 120px;
+
+// editmode variables
+@editmode-border-width: 1;
+@editmode-border-color: @ak-color-N20;
+@editmode-background-color:  @ak-color-N10A;
+@editmode-right-gutter-width:  60px;
+
+// editmode with focus variables
+@editmode-border-width-focused: 2;
+@editmode-border-color-focused: @ak-color-B100;
+@editmode-background-color-focused:  white;
+
+
+
+
+// Mixin to redistribute spacing between border and padding
+.borders-and-padding (@border, @x-spacing, @height) {
+  border-width: unit(@border, px);
+  padding: unit((@height - (2 * @border) - @base-inner-height) / 2, px) unit((@x-spacing - @border), px);
+}
+
+// Label style
+.label {
+  display: block;
+}
+
+.label-text {
+  color: @ak-color-N200;
+  font-size: unit(@label-font-size, px);
+  font-weight: 600;
+  line-height: @label-line-height;
+  padding: @label-top-spacing 0 @label-bottom-spacing @label-padding-left;
+}
+
+.label-required {
+  color: @ak-color-R400;
+}
+
+.hidden {
+  display: none;
+}
+
+// view mode styles
+.view-mode-wrapper {
+  .borders-and-padding(@viewmode-border-width, @base-horizontal-padding, @base-height);
+
+  display: inline-flex;
+  border-radius: @base-border-radius;
+  font-size: unit(@base-font-size, px);
+  line-height: @base-line-height;
+
+
+  &:focus,
+  &:hover {
+    background-color: @ak-color-N20;
+    border-color: @ak-color-N20;
+
+    & .editIcon {
+      display: initial;
+    }
+  }
+
+  & .editIcon {
+    display: none;
+    padding-left: 10px;
+    line-height: 1;
+    color: @ak-color-N500;
+    align-self: center;
+  }
+}
+
+.view-mode-slot-wrapper {
+  min-height: unit(@base-inner-height, px);
+  min-width: @viewmode-min-width;
+}
+
+// edit mode styles
+.edit-mode-wrapper {
+  display: flex;
+}
+
+.edit-mode-slot-wrapper {
+  .borders-and-padding(@editmode-border-width, @base-horizontal-padding, @base-height);
+  flex: 1 0 auto;
+  border-style: solid;
+  border-radius: @base-border-radius;
+  display: inline-flex;
+  margin-right: unit(@grid, px);
+  border-color: @editmode-border-color;
+  background-color: @editmode-background-color;
+  font-size: unit(@base-font-size, px);
+  line-height: @base-line-height;
+  min-height: unit(@base-inner-height, px);
+
+  // note: .focused not :focus
+  &.focused {
+    .borders-and-padding(@editmode-border-width-focused, @base-horizontal-padding, @base-height);
+    border-color: @editmode-border-color-focused;
+    background-color: @editmode-background-color-focused;
+  }
+
+  &.invalid {
+    // we run this mixin so that we get a border the same thickness as the focus style
+    .borders-and-padding(@editmode-border-width-focused, @base-horizontal-padding, @base-height);
+    border-color: @ak-color-R300;
+  }
+}
+
+.right-gutter {
+  display: inline-flex;
+  width: @editmode-right-gutter-width;
+
+  & > * {
+    padding-left: unit(@grid, px);
+    align-self: center;
+  }
+
+  .waiting-spinner {
+    // placeholder styles so we wont worry about these magic numbers
+    color: @ak-color-B400;
+    // extra 4 pixels is for the left margin
+    transform-origin: ~"calc(50% + 4px) 50%";
+    animation: spin 1s Infinite linear;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -100,6 +100,7 @@ export default define('ak-navigation', {
       <div
         className={classNames({
           [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
+          [shadowStyles.locals.drawersOpen]: elem.searchDrawerOpen || elem.createDrawerOpen,
         })}
       >
         <style ref={(styles) => { elem.styles = styles; }}>

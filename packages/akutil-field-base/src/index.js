@@ -39,6 +39,12 @@ function handleEditCancel(elem) {
   props(elem, { editing: false });
 }
 
+// we use this so that we can pass a function down to the EditingView so that it can update the
+// focus prop.
+function setFocus(elem, focus) {
+  props(elem, { focused: focus });
+}
+
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class FieldBase
@@ -65,11 +71,7 @@ export default define('ak-field-base', {
         >
           <ViewingView
             switchToEditingCallback={() => switchToEditing(elem)}
-            setFocus={(focus) => {
-              props(elem, {
-                focused: focus,
-              });
-            }}
+            setFocus={(focus) => setFocus(elem, focus)}
             focused={elem.focused}
           />
         </Label>

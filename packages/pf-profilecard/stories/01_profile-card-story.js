@@ -50,7 +50,6 @@ storiesOf('Profile Card', module)
     <div style={canvasStyle}>
       <ProfileCard
         fullname={data.fullname}
-        email={data.email}
         presence={data.presence}
         actions={data.actions}
         onAction={handleActionClick}
@@ -65,7 +64,6 @@ storiesOf('Profile Card', module)
       <ProfileCard
         avatarUrl={data.avatarUrl}
         fullname={data.fullname}
-        email={data.email}
         presence={data.presence}
         actions={data.actions}
         onAction={handleActionClick}

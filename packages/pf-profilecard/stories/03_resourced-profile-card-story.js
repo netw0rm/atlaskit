@@ -18,12 +18,10 @@ const actions = [
   {
     event: 'view',
     label: 'View',
-    cb: (e) => action('Clicked "View"')(e),
   },
   {
     event: 'chat',
     label: 'Chat',
-    cb: (e) => action('Clicked "Chat"')(e),
   },
 ];
 

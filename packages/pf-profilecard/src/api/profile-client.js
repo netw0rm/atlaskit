@@ -91,9 +91,6 @@ class ProfileCardResource {
     if (!config.url) {
       throw new Error('config.url is a required parameter');
     }
-    if (!config.securityProvider) {
-      throw new Error('config.securityProvider is a required parameter');
-    }
 
     this._config = config;
   }

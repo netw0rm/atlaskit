@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-hyperlink-edit",
-  "version": "14.1.8",
+  "version": "14.1.9",
   "description": "Editor Hyperlink Edit web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -14,12 +14,12 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-button": "^2.0.0",
+    "ak-editor-button": "^2.3.10",
     "ak-editor-button-link": "^1.0.0",
     "ak-editor-popup": "^2.0.1",
     "ak-editor-popup-text-input": "^1.0.0",
     "ak-editor-shared-styles": "^1.0.3",
-    "ak-icon": "~7.5.0",
+    "ak-icon": "^8.0.0",
     "akutil-shared-styles": "^34.2.0",
     "babel-runtime": "^6.11.6",
     "skatejs": "^3.0.0"

@@ -1,0 +1,343 @@
+@import '../shared-variables.less';
+
+@ERROR_COLOR: @ak-color-N800;
+@ERROR_SUB_COLOR: @ak-color-N90;
+
+.pf-profilecard-resourced {
+  -webkit-font-smoothing: antialiased;
+  width: 360px;
+  height: 185px;
+  background: @CARD_BG;
+  box-shadow: @CARD_SHADOW;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.pf-spinner-container {
+  position: relative;
+  min-height: 185px;
+}
+
+.pf-card-request-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 185px;
+
+  p {
+    color: @ERROR_COLOR;
+    text-align: center;
+    line-height: 1.5em;
+
+    svg {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 0.5em auto;
+    }
+
+    span {
+      color: @ERROR_SUB_COLOR;
+    }
+  }
+}
+
+/* Spinner CSS */
+
+.pf-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+
+  .pf-spinner-blades {
+    position: absolute;
+    top: -1px;
+    opacity: 0.25;
+
+    div {
+      position: absolute;
+      width: 5px;
+      height: 2.5px;
+      background: rgb(37, 56, 88);
+      box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px;
+      transform-origin: left center 0px;
+      border-radius: 1px;
+    }
+  }
+
+  .pf-spinner-blade1 {
+    animation: pf-spinner-anim-1-11 0.666667s linear infinite;
+
+    div {
+      transform: rotate(0deg) translate(10px, 0px);
+    }
+  }
+  .pf-spinner-blade2 {
+    animation: pf-spinner-anim-2-11 0.666667s linear infinite;
+
+    div {
+      transform: rotate(32deg) translate(10px, 0px);
+    }
+  }
+  .pf-spinner-blade3 {
+    animation: pf-spinner-anim-3-11 0.666667s linear infinite;
+
+    div {
+      transform: rotate(65deg) translate(10px, 0px);
+    }
+  }
+  .pf-spinner-blade4 {
+    animation: pf-spinner-anim-4-11 0.666667s linear infinite;
+
+    div {
+      transform: rotate(98deg) translate(10px, 0px);
+    }
+  }
+  .pf-spinner-blade5 {
+    animation: pf-spinner-anim-5-11 0.666667s linear infinite;
+
+    div {
+      transform: rotate(130deg) translate(10px, 0px);
+    }
+  }
+  .pf-spinner-blade6 {
+    animation: pf-spinner-anim-6-11 0.666667s linear infinite;
+
+    div {
+      transform: rotate(163deg) translate(10px, 0px);
+    }
+  }
+  .pf-spinner-blade7 {
+    animation: pf-spinner-anim-7-11 0.666667s linear infinite;
+
+    div {
+      transform: rotate(196deg) translate(10px, 0px);
+    }
+  }
+  .pf-spinner-blade8 {
+    animation: pf-spinner-anim-8-11 0.666667s linear infinite;
+
+    div {
+      transform: rotate(229deg) translate(10px, 0px);
+    }
+  }
+  .pf-spinner-blade9 {
+    animation: pf-spinner-anim-9-11 0.666667s linear infinite;
+
+    div {
+      transform: rotate(261deg) translate(10px, 0px);
+    }
+  }
+  .pf-spinner-blade10 {
+    animation: pf-spinner-anim-10-11 0.666667s linear infinite;
+
+    div {
+      transform: rotate(294deg) translate(10px, 0px);
+    }
+  }
+  .pf-spinner-blade11 {
+    animation: pf-spinner-anim-11-11 0.666667s linear infinite;
+
+    div {
+      transform: rotate(327deg) translate(10px, 0px);
+    }
+  }
+}
+
+@keyframes pf-spinner-anim-1-11 {
+  0% {
+    opacity: 0.25;
+  }
+  0.01% {
+    opacity: 0.25;
+  }
+  0.02% {
+    opacity: 1;
+  }
+  30.01% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes pf-spinner-anim-2-11 {
+  0% {
+    opacity: 0.25;
+  }
+  9.10091% {
+    opacity: 0.25;
+  }
+  9.11091% {
+    opacity: 1;
+  }
+  39.1009% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes pf-spinner-anim-3-11 {
+  0% {
+    opacity: 0.25;
+  }
+  18.1918% {
+    opacity: 0.25;
+  }
+  18.2018% {
+    opacity: 1;
+  }
+  48.1918% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes pf-spinner-anim-4-11 {
+  0% {
+    opacity: 0.25;
+  }
+  27.2827% {
+    opacity: 0.25;
+  }
+  27.2927% {
+    opacity: 1;
+  }
+  57.2827% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes pf-spinner-anim-5-11 {
+  0% {
+    opacity: 0.25;
+  }
+  36.3736% {
+    opacity: 0.25;
+  }
+  36.3836% {
+    opacity: 1;
+  }
+  66.3736% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes pf-spinner-anim-6-11 {
+  0% {
+    opacity: 0.25;
+  }
+  45.4645% {
+    opacity: 0.25;
+  }
+  45.4745% {
+    opacity: 1;
+  }
+  75.4645% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes pf-spinner-anim-7-11 {
+  0% {
+    opacity: 0.25;
+  }
+  54.5555% {
+    opacity: 0.25;
+  }
+  54.5655% {
+    opacity: 1;
+  }
+  84.5555% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes pf-spinner-anim-8-11 {
+  0% {
+    opacity: 0.25;
+  }
+  63.6464% {
+    opacity: 0.25;
+  }
+  63.6564% {
+    opacity: 1;
+  }
+  93.6464% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes pf-spinner-anim-9-11 {
+  0% {
+    opacity: 0.318432;
+  }
+  72.7373% {
+    opacity: 0.25;
+  }
+  72.7473% {
+    opacity: 1;
+  }
+  2.73727% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.318432;
+  }
+}
+
+@keyframes pf-spinner-anim-10-11 {
+  0% {
+    opacity: 0.545705;
+  }
+  81.8282% {
+    opacity: 0.25;
+  }
+  81.8382% {
+    opacity: 1;
+  }
+  11.8282% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.545705;
+  }
+}
+
+@keyframes pf-spinner-anim-11-11 {
+  0% {
+    opacity: 0.772977;
+  }
+  90.9191% {
+    opacity: 0.25;
+  }
+  90.9291% {
+    opacity: 1;
+  }
+  20.9191% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0.772977;
+  }
+}

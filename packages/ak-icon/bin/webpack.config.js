@@ -48,6 +48,7 @@ module.exports = (tmpFolder, entry) => ({
             'stage-0',
           ],
           plugins: [
+            'transform-runtime',
             ['incremental-dom', {
               components: true,
               hoist: true,

@@ -14,19 +14,8 @@
 @ACTION_HOVER_COLOR: @ak-color-N800;
 
 .pf-profilecard {
-  -webkit-font-smoothing: antialiased;
-  display: inline-block;
-  min-width: 360px;
-  min-height: 185px;
-  border-radius: 3px;
-  box-shadow: @CARD_SHADOW;
-  padding: 0;
-  background-color: @CARD_BG;
-  overflow: hidden;
-
+  .base-card-style();
   position: relative;
-  width: 360px;
-  min-height: 185px;
   background: linear-gradient(
     to bottom,
     @ak-color-B500 0%,

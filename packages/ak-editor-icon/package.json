@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.4.1",
+    "skatejs": "^3.0.0",
     "uid": "^0.0.2"
   },
   "devDependencies": {

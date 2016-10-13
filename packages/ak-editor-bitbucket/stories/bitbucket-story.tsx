@@ -3,6 +3,7 @@ import BitbucketComponent from '../src';
 import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-test';
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 const Bitbucket = reactify(BitbucketComponent);
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
@@ -81,6 +82,53 @@ storiesOf('ak-editor-bitbucket', module)
       onCancel={action('cancel')}
     />
   ))
+  .add('Event Bubbling', () => {
+    type Props = {};
+    type State = {};
+    class EditorInContainers extends Component<Props, State> {
+      componentDidMount() {
+        const outerContainer = ReactDOM.findDOMNode(this);
+        const innerContainer = outerContainer.lastChild;
+
+        [
+          'ready', 'keydown', 'keyup', 'keypress', 'click', 'touchstart', 'touchend'
+        ].forEach(eventName => {
+          outerContainer.addEventListener(eventName, (e: any) => {
+            action(`Outer container received "${eventName}" event`)(e);
+            console.log('outer container event', e);
+          });
+
+          innerContainer.addEventListener(eventName, (e: any) => {
+            action(`Inner container received "${eventName}" event`)(e);
+            console.log('inner container event', e);
+          });
+        });
+      }
+
+      render() {
+        const outerStyle = { padding: 25, background: '#6C64A6' };
+        const innerStyle = { padding: 25, background: '#48CC8C' };
+        const pStyle = { color: 'white', fontWeight: 600 };
+        const taStyle = { width: '100%', height: 30, fontSize: 15, padding: 10 };
+
+        action('⚠ Try clicking inside editor container and using your keyboard.')();
+
+        return (
+          <div style={ outerStyle }>
+            <p style={ pStyle }>Outer container</p>
+            <div style={ innerStyle }>
+              <p style={ pStyle }>Inner container</p>
+              <Bitbucket expanded />
+              <hr />
+              <textarea style={ taStyle } placeholder="ordinary textarea"></textarea>
+            </div>
+          </div>
+        )
+      }
+    }
+
+    return <EditorInContainers />;
+  })
   .add('Markdown preview', () => {
     type Props = {};
     type State = { markdown: string };

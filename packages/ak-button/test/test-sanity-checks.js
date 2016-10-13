@@ -1,10 +1,11 @@
 import { name } from '../package.json';
 import chai from 'chai';
-import AkButton, { AkButtonThemeAdg2 } from '../src';
+import AkButton, { themes } from '../src';
 import { getShadowButtonElem, setup } from './_helpers';
 import { tearDownComponent } from 'akutil-common-test';
 
 const expect = chai.expect;
+const Adg2Theme = themes.adg2;
 
 describe('sanity-check', () => {
   let component;
@@ -25,7 +26,7 @@ describe('sanity-check', () => {
 
   describe('ak-button/adg2-theme-sanity-check', () => {
     it('should be possible to create a component', () =>
-      expect(() => (new AkButtonThemeAdg2())).to.not.throw(Error)
+      expect(() => (new Adg2Theme())).to.not.throw(Error)
     );
   });
 });

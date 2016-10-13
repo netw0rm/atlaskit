@@ -1,4 +1,5 @@
-import Adg2Theme from '../src/themes/adg2';
+import { themes } from '../src';
+const Adg2Theme = themes.adg2;
 import { define, vdom, props } from 'skatejs';
 const { element } = vdom;
 

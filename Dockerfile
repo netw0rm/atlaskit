@@ -61,8 +61,7 @@ RUN bundle config build.nokogiri --use-system-libraries
 ENV TIMEZONE Australia/Sydney
 
 ENV NODE_VERSION 6.2.0-r0
-# TODO: We can't use 3.10.8 yet: https://github.com/npm/npm/issues/14042
-ENV NPM_VERSION 3.10.7
+ENV YARN_VERSION 0.15.1
 
 RUN echo "Installing node & npm" \
   apk update && \
@@ -71,15 +70,16 @@ RUN echo "Installing node & npm" \
   cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone && \
   apk --no-cache add nodejs="${NODE_VERSION}" && \
-  npm install -g npm@"${NPM_VERSION}" && \
+  npm install -g yarn@"${YARN_VERSION}" && \
   npm cache clean -f && \
+  npm uninstall npm -g && \
   apk del tzdata && \
   rm -rf /var/cache/apk/*
 #### </node>
 
 #### <atlaskit-tools>
 RUN echo "Installing AtlasKit tools" \
-&& npm install -g \
+&& yarn global add \
   cloudfront-invalidate-cli@1.0.3 \
   marky-markdown@8.1.0 \
   bitbucket-build-status@1.0.1 \
@@ -88,7 +88,7 @@ RUN echo "Installing AtlasKit tools" \
   lerna-semantic-release@8.0.2 \
   indexifier@2.0.0 \
   @atlassian/prebake-distributor-runner@1.0.2 \
-&& npm cache clean -f
+&& yarn cache clean
 #### </atlaskit-tools>
 
 #### <ssh-keys>

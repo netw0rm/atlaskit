@@ -2,7 +2,7 @@
 set -e
 
 CURRENT_DATE=$(date +'%Y-%m-%d')
-TAG="atlassianlabs/atlaskit:$CURRENT_DATE"
+TAG="atlassianlabs/atlaskit:$CURRENT_DATE-yarn"
 LERNA_VERSION=$(node -e "console.log(require('./lerna.json').lerna)")
 
 echo "Building image"

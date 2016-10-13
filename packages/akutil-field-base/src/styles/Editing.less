@@ -1,0 +1,100 @@
+@import './shared-variables.less';
+
+// EXTERNAL CONSTANTS
+// These are values that should be pulled in from ak-button but we are repeating them here for now
+@ak-icon-size-small: 20px;
+@ak-icon-horizontal-padding: 8px;
+
+// editmode variables
+@editmode-border-width: 1;
+@editmode-border-color: @ak-color-N20;
+@editmode-background-color:  @ak-color-N10A;
+@editmode-gutter-left-padding: unit(@grid * 2, px); // gap between the field and the buttons/spinner
+@editmode-cancel-button-left-margin: unit(@grid, px); // gap between the confirm and cancel buttons
+
+@editmode-button-icon-size: @ak-icon-size-small;
+@editmode-button-size: unit(@grid * 7, px); // 28px -> 16px for icon, 6px+6px for padding
+
+// total button width is the width of the icon + 2x the padding [ 20 + 2 * 8 = 32px ]
+@editmode-total-button-width: @editmode-button-icon-size + (2 * @ak-icon-horizontal-padding);
+// total gutter width is 2*button width + margin between buttons [ 2 * 36 + 4 = 76px ]
+@editmode-right-gutter-width: (2 * @editmode-total-button-width) + @editmode-cancel-button-left-margin;
+
+
+
+.edit-mode-wrapper {
+  display: flex;
+}
+
+.edit-mode-slot-wrapper {
+  .borders-and-padding(@editmode-border-width, @base-horizontal-padding, @base-height);
+  flex: 1 0 auto;
+  box-sizing: border-box;
+
+  border-style: solid;
+  border-radius: @base-border-radius;
+  border-color: @editmode-border-color;
+  background-color: @editmode-background-color;
+
+  line-height: @base-line-height;
+  font-size: unit(@base-font-size, px);
+
+  min-height: unit(@base-inner-height, px);
+
+  max-width: ~"calc(100% - @{editmode-right-gutter-width} - @{editmode-gutter-left-padding})";
+
+  // note: .focused not :focus
+  &.focused {
+    .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
+    border-color: @base-border-color-focused;
+    background-color: @base-background-color-focused;
+  }
+
+  &.invalid {
+    // we run this mixin so that we get a border the same thickness as the focus style
+    .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
+    border-color: @ak-color-R300;
+  }
+}
+
+.right-gutter {
+  display: inline-flex;
+  padding-left: @editmode-gutter-left-padding;
+
+  // matching either the confirm/cancel buttons or the spinner
+  > * {
+    align-self: center;
+  }
+}
+
+.edit-cancel {
+  margin-left: @editmode-cancel-button-left-margin;
+}
+
+// this is temporary until we have icons to use, so we are just styling a span to work like an icon
+.fake-icon {
+  height: @editmode-button-icon-size;
+  width: @editmode-button-icon-size;
+  line-height: @editmode-button-icon-size;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.waiting-spinner {
+  // placeholder styles so we wont worry about these magic numbers
+  color: @ak-color-B400;
+  // extra 4 pixels is for the left margin
+  transform-origin: ~"calc(50% + 4px) 50%";
+  animation: spin 1s Infinite linear;
+  height: 20px;
+  width: 20px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

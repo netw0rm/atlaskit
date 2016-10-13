@@ -15,11 +15,19 @@ const RightGutter = (props) => {
   }
   return (
     <div className={shadowStyles.locals.rightGutter}>
-      <Button compact appearance="subtle" onclick={props.onConfirm}>
-        ✓
+      <Button
+        appearance="subtle"
+        onclick={props.onConfirm}
+        className={shadowStyles.locals.editConfirm}
+      >
+        <div className={shadowStyles.locals.fakeIcon}>✔</div>
       </Button>
-      <Button compact appearance="subtle" onclick={props.onCancel}>
-        x
+      <Button
+        appearance="subtle"
+        onclick={props.onCancel}
+        className={shadowStyles.locals.editCancel}
+      >
+        <div className={shadowStyles.locals.fakeIcon}>✖</div>
       </Button>
     </div>
   );

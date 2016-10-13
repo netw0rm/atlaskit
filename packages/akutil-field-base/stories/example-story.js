@@ -90,7 +90,7 @@ storiesOf(name, module)
         <FieldBase
           label="In edit mode, with a max-width css style"
           editing
-          style={{ maxWidth: '100px' }}
+          style={{ maxWidth: '200px' }}
           className={styles.locals.akutilFieldBase}
         >
           <div is slot="editmode">This content is in the Editing slot!</div>
@@ -104,6 +104,8 @@ storiesOf(name, module)
     const longTextWithSpaces = `According to all known laws of aviation, there is no way a bee
       should be able to fly. Its wings are too small to get its fat little body off the ground.
       The bee, of course, flies anyway because bees don't care what humans think is impossible.`;
+    const shorterLongTextWithSpaces = `According to all known laws of aviation, there is no way a
+      bee should`;
     const longTextNoSpaces = '3.1415926535897932384626433832795028841971693993751058209749445923' +
       '07816406286208998628034825342117067982148086513282306647093844609550582231725359408128481' +
       '11745028410270193852110555964462294895493038196442881097566593344612847564';
@@ -120,6 +122,10 @@ storiesOf(name, module)
           <FieldBase label="Lots of text (with whitespace)">
             <div is slot="editmode">{longTextWithSpaces}</div>
             <div is slot="viewmode">{longTextWithSpaces}</div>
+          </FieldBase>
+          <FieldBase label="Lots of text (with whitespace) that only wraps in edit mode">
+            <div is slot="editmode">{shorterLongTextWithSpaces}</div>
+            <div is slot="viewmode">{shorterLongTextWithSpaces}</div>
           </FieldBase>
           <FieldBase label="Lots of text (no whitespace)">
             <div is slot="editmode">{longTextNoSpaces}</div>

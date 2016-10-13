@@ -48,8 +48,8 @@ function setFocus(elem, focus) {
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class FieldBase
- * @fires FieldBase#cancelEditPressed
- * @fires FieldBase#confirmEditPressed
+ * @fires FieldBase#showEditingView
+ * @fires FieldBase#showViewingView
  * @example @html <ak-field-base label="Email" />
  * @example @js import FieldBase from 'akutil-field-base';
  *
@@ -161,3 +161,8 @@ export default define('ak-field-base', {
     invalid: prop.boolean({ attribute: true }),
   },
 });
+
+export const events = {
+  showEditingView,
+  showViewingView,
+};

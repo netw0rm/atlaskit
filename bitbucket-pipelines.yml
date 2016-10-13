@@ -31,6 +31,10 @@ pipelines:
             - ln -s /usr/bin/yarn /usr/bin/npm # make npm bin a yarn bin
             - npm install
             - npm run postinstall # Remove when https://github.com/yarnpkg/yarn/pull/800 is released
+            - npm run browserstack/tunnel/start
+            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack" "pr/artifacts"
+            - npm run test/integration
+            - npm run browserstack/tunnel/stop
   default:
     - step:
         script:

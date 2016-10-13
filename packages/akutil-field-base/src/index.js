@@ -65,6 +65,12 @@ export default define('ak-field-base', {
         >
           <ViewingView
             switchToEditingCallback={() => switchToEditing(elem)}
+            setFocus={(focus) => {
+              props(elem, {
+                focused: focus,
+              });
+            }}
+            focused={elem.focused}
           />
         </Label>
         <EditingView

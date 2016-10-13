@@ -4,6 +4,7 @@ import reactify from 'akutil-react';
 import FieldBaseWC from '../src';
 import { name } from '../package.json';
 import TextfieldWC from './skate/textfield';
+import styles from '../src/host.less';
 
 const FieldBase = reactify(FieldBaseWC);
 const Textfield = reactify(TextfieldWC);
@@ -13,6 +14,7 @@ const formStyle = (width = 300) => ({
   backgroundColor: 'white',
   width: `${width}px`,
 });
+
 
 storiesOf(name, module)
   .add('a simple ak-field-base', () => (
@@ -37,9 +39,19 @@ storiesOf(name, module)
             <li>hideLabel (true or false)</li>
           </ul>
         </div>
-        <FieldBase label="Label for FieldBase">
+        <FieldBase className={styles.locals.akutilFieldBase} label="Label for FieldBase">
           <div is slot="editmode">This content is in the Editing slot!</div>
           <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
+        </FieldBase>
+        <FieldBase className={styles.locals.akutilFieldBase} label="Multiline content">
+          <div is slot="editmode">This content is in the Editing slot!</div>
+          <div is slot="viewmode">
+            <b>This content is in the Viewing slot!</b>
+            <br />
+            asdf
+            <br />
+            <b>This content is in the Viewing slot!</b>
+          </div>
         </FieldBase>
       </form>
     </div>
@@ -79,6 +91,7 @@ storiesOf(name, module)
           label="In edit mode, with a max-width css style"
           editing
           style={{ maxWidth: '100px' }}
+          className={styles.locals.akutilFieldBase}
         >
           <div is slot="editmode">This content is in the Editing slot!</div>
           <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>

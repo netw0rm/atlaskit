@@ -1,4 +1,5 @@
 import { vdom } from 'skatejs';
+import classNames from 'classnames';
 import { KeyPressHandler } from 'akutil-common';
 import shadowStyles from './shadow.less';
 import 'ak-icon/glyph/edit';
@@ -15,17 +16,29 @@ function addKeyHandlers(callback, elem) {
   const handler = new KeyPressHandler('SPACE', safeCallback, elem);
 }
 
+
 /* eslint-disable react/prop-types */
-export default (props) => (
-  <div
-    className={shadowStyles.locals.viewModeWrapper}
-    ref={ref => addKeyHandlers(props.switchToEditingCallback, ref)}
-    onClick={props.switchToEditingCallback}
-    tabIndex="0"
-  >
-    <div className={shadowStyles.locals.viewModeSlotWrapper}>
-      <slot name="viewmode" />
+export default (props) => {
+  const viewModeWrapperClasses = classNames(shadowStyles.locals.viewModeWrapper, {
+    [shadowStyles.locals.editButtonFocused]: props.focused,
+  });
+  return (
+    <div
+      className={viewModeWrapperClasses}
+      ref={ref => addKeyHandlers(props.switchToEditingCallback, ref)}
+      onClick={props.switchToEditingCallback}
+    >
+      <div className={shadowStyles.locals.viewModeSlotWrapper}>
+        <slot name="viewmode" />
+      </div>
+      <button
+        type="button"
+        className={shadowStyles.locals.editButton}
+        onFocus={() => props.setFocus(true)}
+        onBlur={() => props.setFocus(false)}
+      >
+        <ak-icon-edit className={shadowStyles.locals.editIcon} />
+      </button>
     </div>
-    <ak-icon-edit className={shadowStyles.locals.editIcon} />
-  </div>
-);
+  );
+};

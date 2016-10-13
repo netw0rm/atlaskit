@@ -20,8 +20,13 @@ import ValidatorBase from './internal/validator-base';
 function defineValidator(tagName, validatorFunction = (() => true), props = {}) {
   return define(tagName, class extends ValidatorBase {
     validate(value) {
-      return new Promise((resolve) => {
-        resolve(!(this.invalid = !validatorFunction(value, this)));
+      return new Promise((resolve, reject) => {
+        try {
+          this.invalid = !validatorFunction(value, this);
+          resolve(!this.invalid);
+        } catch (e) {
+          reject(e);
+        }
       });
     }
     static get props() {

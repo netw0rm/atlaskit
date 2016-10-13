@@ -18,7 +18,7 @@ const {
   PageIcon,
   PersonIcon,
   QuoteIcon,
-  OverviewIcon,
+  DashboardIcon,
   BitbucketIcon,
   HelpIcon,
   QuestionIcon,
@@ -43,7 +43,7 @@ const NavigationLinks = () => <div>
     <CalendarIcon slot="icon" /> Calendar
   </ak-navigation-link>
   <ak-navigation-link href="http://atlassian.design" >
-    <OverviewIcon slot="icon" /> Atlassian design
+    <DashboardIcon slot="icon" /> Atlassian design
   </ak-navigation-link>
   <ak-navigation-link>
     <CanvasIcon slot="icon" /> Canvas

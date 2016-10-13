@@ -52,8 +52,8 @@ API=$(echo "$API" | sed "s/@BITBUCKET_COMMIT@/$BITBUCKET_COMMIT/g")
   echo
   echo "$USAGE"
   echo
-  echo "$SUPPORT"
-  echo
   echo "$API"
+  echo
+  echo "$SUPPORT"
   echo
 ) > README.md

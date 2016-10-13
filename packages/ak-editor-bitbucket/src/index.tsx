@@ -63,6 +63,10 @@ function getBlockType({ blockType, blockName }: getBlockTypeType, blockTypes: bl
   }
 }
 
+function stopEventPropagation(event: Event) : void {
+  event.stopPropagation();
+}
+
 interface formattingMap {
   [propName: string]: MarkType;
 }
@@ -166,6 +170,19 @@ class AkEditorBitbucket extends Component {
     } else if (!elem.expanded) {
       elem._pm = null;
     }
+  }
+
+  static attached(elem: AkEditorBitbucket) : void {
+    // Prevent any keyboard events from bubbling outside of the editor chrome
+    elem.addEventListener('keydown', stopEventPropagation);
+    elem.addEventListener('keyup', stopEventPropagation);
+    elem.addEventListener('keypress', stopEventPropagation);
+  }
+
+  static detached(elem: AkEditorBitbucket) : void {
+    elem.removeEventListener('keydown', stopEventPropagation);
+    elem.removeEventListener('keyup', stopEventPropagation);
+    elem.removeEventListener('keypress', stopEventPropagation);
   }
 
   static render(elem: AkEditorBitbucket) {

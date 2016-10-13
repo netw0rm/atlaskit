@@ -1,7 +1,6 @@
 import * as chai from 'chai';
-import { expect } from 'chai';
 import AkEditorBitbucket from '../src';
-import { afterMutations, waitUntil, getShadowRoot  } from 'akutil-common-test';
+import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy, chaiPlugin, doc, text, code, strong, a,
   h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention, emoji } from 'ak-editor-test';
@@ -9,6 +8,7 @@ import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);
+const { expect, assert } = chai;
 
 const fixture = fixtures();
 
@@ -32,6 +32,20 @@ function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> 
 
     fixture.addEventListener('ready', successFn, { once: true });
     fixture.innerHTML = `<ak-editor-bitbucket expanded></ak-editor-bitbucket>`;
+  });
+}
+
+/**
+ * @returns The ProseMirror container element (usually a <div>)
+ */
+function waitUntilPMReady(editor: typeof AkEditorBitbucket) : Promise<HTMLElement> {
+  return waitUntil(() => {
+    return !!getShadowRoot(editor) &&
+      !!getShadowRoot(editor).querySelector('ak-editor-content') &&
+      !!getShadowRoot(editor).querySelector('ak-editor-content').querySelector('[pm-container=true]')
+    ;
+  }).then(() => {
+    return getShadowRoot(editor).querySelector('ak-editor-content').querySelector('[pm-container=true]');
   });
 }
 
@@ -226,6 +240,35 @@ describe('ak-editor-bitbucket', () => {
       return buildExpandedEditor(fixture()).then((editor) => {
         editor.setFromHtml('<p></p><p></p><p></p><p></p>');
         expect(editor.isEmpty()).to.be.true;
+      });
+    });
+  });
+
+  /**
+   * @issue FAB-1045
+   */
+  it('should prevent bubbling of keyboard events outside of the editor', () => {
+    const outer : HTMLElement = fixture();
+    const inner : HTMLElement = document.createElement('div');
+
+    outer.appendChild(inner);
+
+    return buildExpandedEditor(inner).then((editor) => {
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        const spy = sinon.spy();
+        outer.addEventListener('keydown', spy);
+        outer.addEventListener('keyup', spy);
+        outer.addEventListener('keypress', spy);
+        keydown('enter', PMContainer);
+        keypress('enter', PMContainer);
+        keyup('enter', PMContainer);
+        keydown('enter', editor);
+        keypress('enter', editor);
+        keyup('enter', editor);
+        outer.removeEventListener('keydown', spy);
+        outer.removeEventListener('keyup', spy);
+        outer.removeEventListener('keypress', spy);
+        expect(spy.called).to.be.false;
       });
     });
   });

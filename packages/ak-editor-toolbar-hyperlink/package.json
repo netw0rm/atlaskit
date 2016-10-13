@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar-hyperlink",
-  "version": "14.0.8",
+  "version": "14.0.9",
   "description": "ak-editor-toolbar-hyperlink webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -12,11 +12,11 @@
     "dist"
   ],
   "dependencies": {
-    "ak-editor-button": "^2.0.0",
+    "ak-editor-button": "^2.3.10",
     "ak-editor-popup": "^2.0.1",
     "ak-editor-popup-text-input": "^1.0.0",
     "ak-editor-shared-styles": "^1.0.3",
-    "ak-icon": "~7.5.0",
+    "ak-icon": "^8.0.0",
     "akutil-shared-styles": "^34.2.0",
     "babel-runtime": "^6.11.6",
     "skatejs": "^3.0.0"

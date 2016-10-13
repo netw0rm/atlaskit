@@ -23,7 +23,7 @@ const size = {
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
-  values: Object.values(size),
+  values: [size.small, size.medium, size.large, size.xlarge],
   missingDefault: '',
   invalidDefault: '',
 };

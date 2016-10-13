@@ -176,7 +176,7 @@ class AkEditorBitbucket extends Component {
     }
 
     const fullEditor: any = (<div>
-      <Toolbar>
+      <Toolbar className={shadowStyles.locals['toolbar']}>
         <ToolbarBlockType
           disabled={!elem._canChangeBlockType}
           selectedBlockType={elem._selectedBlockType}

@@ -38,7 +38,7 @@ function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> 
 /**
  * @returns The ProseMirror container element (usually a <div>)
  */
-function waitUntilPMReady(editor: AkEditorBitbucket) : Promise<HTMLElement> {
+function waitUntilPMReady(editor: typeof AkEditorBitbucket) : Promise<HTMLElement> {
   return waitUntil(() => {
     return !!getShadowRoot(editor) &&
       !!getShadowRoot(editor).querySelector('ak-editor-content') &&

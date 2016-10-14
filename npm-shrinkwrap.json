@@ -2198,24 +2198,24 @@
       "resolved": "https://registry.npmjs.org/eslint-config-airbnb-base/-/eslint-config-airbnb-base-8.0.0.tgz"
     },
     "eslint-config-ak-base": {
-      "version": "2.0.0",
-      "from": "eslint-config-ak-base@>=2.0.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/eslint-config-ak-base/-/eslint-config-ak-base-2.0.0.tgz"
+      "version": "2.0.1",
+      "from": "eslint-config-ak-base@>=2.0.1 <3.0.0",
+      "resolved": "https://registry.npmjs.org/eslint-config-ak-base/-/eslint-config-ak-base-2.0.1.tgz"
     },
     "eslint-config-ak-cucumber": {
-      "version": "2.0.0",
-      "from": "eslint-config-ak-cucumber@>=2.0.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/eslint-config-ak-cucumber/-/eslint-config-ak-cucumber-2.0.0.tgz"
+      "version": "2.0.1",
+      "from": "eslint-config-ak-cucumber@>=2.0.1 <3.0.0",
+      "resolved": "https://registry.npmjs.org/eslint-config-ak-cucumber/-/eslint-config-ak-cucumber-2.0.1.tgz"
     },
     "eslint-config-ak-stories": {
-      "version": "3.0.0",
-      "from": "eslint-config-ak-stories@>=3.0.0 <4.0.0",
-      "resolved": "https://registry.npmjs.org/eslint-config-ak-stories/-/eslint-config-ak-stories-3.0.0.tgz"
+      "version": "3.0.1",
+      "from": "eslint-config-ak-stories@>=3.0.1 <4.0.0",
+      "resolved": "https://registry.npmjs.org/eslint-config-ak-stories/-/eslint-config-ak-stories-3.0.1.tgz"
     },
     "eslint-config-ak-tests": {
-      "version": "2.0.0",
-      "from": "eslint-config-ak-tests@>=2.0.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/eslint-config-ak-tests/-/eslint-config-ak-tests-2.0.0.tgz"
+      "version": "2.0.1",
+      "from": "eslint-config-ak-tests@>=2.0.1 <3.0.0",
+      "resolved": "https://registry.npmjs.org/eslint-config-ak-tests/-/eslint-config-ak-tests-2.0.1.tgz"
     },
     "eslint-friendly-formatter": {
       "version": "2.0.6",

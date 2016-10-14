@@ -7,36 +7,27 @@ import Label from './Label';
 import Root from './Root';
 
 function switchToEditing(elem) {
-  if (!elem.editing) {
+  // a user may choose to cancel the event to prevent the switch
+  const cancelled = !emit(elem, showEditingView, {
+    bubbles: true,
+    cancelable: true,
+  });
+  if (!cancelled) {
     props(elem, { editing: true });
-
-    emit(elem, showEditingView, {
-      bubbles: true,
-      cancelable: true,
-    });
   }
 }
 
-function handleEditConfirmation(elem) {
-  emit(elem, showViewingView, {
+function switchToViewing(elem, cancelPressed) {
+  const cancelled = !emit(elem, showViewingView, {
     bubbles: true,
     cancelable: true,
     detail: {
-      canceled: false,
+      cancelButtonPressed: cancelPressed,
     },
   });
-  props(elem, { editing: false });
-}
-
-function handleEditCancel(elem) {
-  emit(elem, showViewingView, {
-    bubbles: true,
-    cancelable: true,
-    detail: {
-      canceled: true,
-    },
-  });
-  props(elem, { editing: false });
+  if (!cancelled) {
+    props(elem, { editing: false });
+  }
 }
 
 // we use this so that we can pass a function down to the EditingView so that it can update the
@@ -77,8 +68,8 @@ export default define('ak-field-base', {
         </Label>
         <EditingView
           focused={elem.focused}
-          onConfirm={() => handleEditConfirmation(elem)}
-          onCancel={() => handleEditCancel(elem)}
+          onConfirm={() => switchToViewing(elem, false)}
+          onCancel={() => switchToViewing(elem, true)}
           waiting={elem.waiting}
           invalid={elem.invalid}
         />

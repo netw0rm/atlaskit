@@ -60,7 +60,7 @@ function closeDialog(elem) {
     props(trigger, { opened: false });
   }
 
-  [...list].forEach((item) => {
+  list.forEach((item) => {
     item.focused = false;
     if (item.first) {
       item.first = false;
@@ -82,13 +82,11 @@ function toggleDialog(elem) {
 }
 
 function selectSimpleItem(elem, event) {
-  const list = Array
-    .from(elem.querySelectorAll('*[defined]'))
-    .filter((node) => (
+  const list = getItemsList(elem.childNodes).filter((node) => (
       node instanceof Item && !(node instanceof RadioItem) && !(node instanceof CheckboxItem)
     ));
 
-  [...list].forEach((val) => {
+  list.forEach((val) => {
     if (val.selected) {
       val.selected = false;
     }
@@ -239,19 +237,6 @@ export default define('ak-dropdown', {
       }
 
       return this;
-    },
-    /**
-     * @description Returns the full list of the dropdown's items regardless of their type
-     *  (item, checkbox item, radio item)
-     *
-     * @memberof Dropdown
-     * @function
-     * @instance
-     * @return {Array} List of the dropdown's items
-     * @example @js const list = dropdown.getItemsList();
-     */
-    getItemsList() {
-      return getItemsList(this.childNodes);
     },
   },
   render(elem) {

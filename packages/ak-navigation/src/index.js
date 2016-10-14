@@ -3,7 +3,7 @@ import shadowStyles from './index.less';
 import 'ak-blanket';
 import './internal/ak-navigation-drawer';
 import './internal/ak-navigation-drag';
-import './index.ak-navigation-link';
+import NavigationLink from './index.ak-navigation-link';
 import classNames from 'classnames';
 import resizer from './internal/resizer';
 import addTouchHandlers from './internal/touch';
@@ -384,4 +384,4 @@ export default define('ak-navigation', {
   },
 });
 
-export { events };
+export { events, NavigationLink };

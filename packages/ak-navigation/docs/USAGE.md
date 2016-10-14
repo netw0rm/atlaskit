@@ -34,7 +34,7 @@ import 'ak-navigation';
 import 'ak-icon/glyph/search';
 import 'ak-icon/glyph/create';
 import 'ak-icon/glyph/bitbucket/logo';
-import 'ak-icon/glyph/bitbucket/overview';
+import 'ak-icon/glyph/bitbucket/dashboard';
 import 'ak-icon/glyph/confluence/calendar';
 import 'ak-icon/glyph/confluence/canvas';
 ```

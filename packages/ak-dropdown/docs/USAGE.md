@@ -2,7 +2,7 @@
 
 Dropdown creates a dropdown menu, with optional sections, headings, icons, checkbox items, radio group items and disabled items.
 
-![Example dropdown](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-dropdown/docs/dropdown.gif)
+![Example dropdown](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-dropdown/docs/dropdown.gif)
 
 
 ## Try it out

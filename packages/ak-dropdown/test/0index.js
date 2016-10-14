@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
 import keyCode from 'keycode';
-import { props, emit, Component } from '../node_modules/skatejs/dist/index';
+import { props, emit, Component } from 'skatejs';
 import { name } from '../package.json';
 import { afterMutations, getShadowRoot, checkVisibility, waitUntil } from 'akutil-common-test';
 import { selected as selectedEvent,

@@ -22,7 +22,12 @@ const story = () => (
         </p>
       </div>
       <br />
-      <ReactField value="foo" waiting={false} editing={false} label="Label for our ReactField" />
+      <ReactField
+        value="Atlaskit"
+        waiting={false}
+        editing={false}
+        label="Even length strings only!"
+      />
     </form>
   </div>
 );

@@ -161,21 +161,4 @@ storiesOf(name, module)
       </div>
     );
   })
-  .add('extending fieldBase with vanilla JS', () => (
-    <div>
-      <form action="" style={formStyle(400)}>
-        <h2>My Form</h2>
-        <div>
-          This component is made using nothing but vanilla JavaScript.
-        </div>
-        <br />
-        <FieldBase label="Label for h1 FieldBase" hideLabel>
-          <div is slot="editmode">
-            <input type="text" id="editmodeInput" defaultValue="This is edit mode" />
-          </div>
-          <div is slot="viewmode"><span id="viewmodeValue">This is viewmode</span></div>
-        </FieldBase>
-      </form>
-    </div>
-  ))
   ;

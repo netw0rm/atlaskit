@@ -1,6 +1,6 @@
 # Profilecard
 
-![Example profilecard](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/pf-profilecard/docs/profilecard.png)
+![Example profilecard](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/pf-profilecard/docs/profilecard.png)
 
 ## Installation
 

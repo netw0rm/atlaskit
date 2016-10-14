@@ -1,12 +1,13 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import webComponent from '../src/index';
 import React from 'react';
 import Lorem from 'react-lorem-component';
-import { name } from '../package.json';
+import AkNavigation from 'ak-navigation';
 import 'ak-icon';
 
-import AkNavigation from 'ak-navigation';
+import webComponent from '../src';
+import { name } from '../package.json';
+
 
 const Component = reactify(webComponent);
 

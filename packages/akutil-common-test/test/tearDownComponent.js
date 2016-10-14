@@ -1,8 +1,10 @@
 import { vdom, define } from 'skatejs';
-import { createTemporaryComponent, tearDownComponent } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
+
+import { createTemporaryComponent, tearDownComponent } from '../src';
+
 
 chai.should();
 chai.use(sinonChai);

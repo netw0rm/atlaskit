@@ -1,9 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import WebComponent from '../src/index';
 import ButtonWC from 'ak-button';
 import React from 'react';
+
+import WebComponent from '../src';
 import { name } from '../package.json';
+
 
 const ReactField = reactify(WebComponent);
 const ReactButton = reactify(ButtonWC);

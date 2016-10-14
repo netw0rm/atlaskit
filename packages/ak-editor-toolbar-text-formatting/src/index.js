@@ -1,12 +1,14 @@
 import { define, vdom, prop, emit } from 'skatejs';
-import shadowStyles from './shadow.less';
-import 'style!./host.less';
 import Button from 'ak-editor-button';
-
 import BoldIcon from 'ak-icon/glyph/editor/bold';
 import ItalicIcon from 'ak-icon/glyph/editor/italic';
 import UnderlineIcon from 'ak-icon/glyph/editor/underline';
 import CodeIcon from 'ak-icon/glyph/editor/code';
+
+import 'style!./host.less';
+
+import shadowStyles from './shadow.less';
+
 
 const FORMATTING_BOLD = 'bold';
 const FORMATTING_ITALIC = 'italic';

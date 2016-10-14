@@ -1,8 +1,10 @@
+import { Component } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+
 import AkBlanket, { events } from '../src';
 import { name } from '../package.json';
-import { Component } from 'skatejs';
+
 
 chai.use(chaiAsPromised);
 chai.should();

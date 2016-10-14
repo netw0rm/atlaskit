@@ -2,8 +2,8 @@ import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
-import mentionData, { mentionDataSize } from '../../src/support/mention-data';
-import MentionResource from '../../src/support/mock-pf-mention-resource';
+import mentionData, { mentionDataSize } from '../_mention-data';
+import MentionResource from '../_mock-pf-mention-resource';
 import MentionPicker from '../../src/wc/pf-mention-picker';
 import { getMentionItems, getError, getMentionList,
   isMentionItemSelected, getMentionItemById } from '../_pf-selectors';

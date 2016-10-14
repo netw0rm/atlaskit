@@ -25,7 +25,7 @@ function afterMutations(...fns) {
       afterMutations.ret = isLastFn ? fn() : fn(afterMutations.ret);
     }
     if (!isLastFn) {
-      afterMutations.apply(null, fns);
+      afterMutations(...fns);
     }
   }, 1);
 }

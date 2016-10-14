@@ -1,15 +1,18 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import keyCode from 'keycode';
+import { getShadowRoot } from 'akutil-common-test';
+import 'custom-event-polyfill';
+
 import {
   DropdownTrigger,
   DropdownTriggerButton,
   DropdownTriggerArrow,
   events as dropdownEvents,
 } from '../src';
+
+
 const { trigger: triggerEvents } = dropdownEvents;
-import keyCode from 'keycode';
-import { getShadowRoot } from 'akutil-common-test';
-import 'custom-event-polyfill';
 
 chai.use(chaiAsPromised);
 chai.should();

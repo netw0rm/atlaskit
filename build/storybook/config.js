@@ -1,12 +1,14 @@
 import { configure, setAddon } from '@kadira/storybook';
 import 'akutil-polyfills';
-import MonitoredStory from './MonitoredStory.js';
-import MonkeyTestStory from './MonkeyTestStory.js';
-import SwappedDirectionStory from './SwappedDirectionStory.js';
-import BaselineAlignmentStory from './BaselineAlignmentStory.js';
 import React from 'react';
 
 import 'style!./styles.less';
+
+import MonitoredStory from './MonitoredStory';
+import MonkeyTestStory from './MonkeyTestStory';
+import SwappedDirectionStory from './SwappedDirectionStory';
+import BaselineAlignmentStory from './BaselineAlignmentStory';
+
 
 function loadStories() {
   // Use a webpack loader to dynamically require stories.

@@ -1,7 +1,9 @@
-import shadowStyles from './shadow.less';
 import { define, prop, vdom } from 'skatejs';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
+
+import shadowStyles from './shadow.less';
+
 
 const APPEARANCE_ENUM = {
   values: ['default', 'success', 'removed', 'inprogress', 'new', 'moved'],

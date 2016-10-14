@@ -2,7 +2,7 @@ import { waitUntil, getShadowRoot, hasClass } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
-import AKAvatar from '../src/index.js';
+import AKAvatar from '../src';
 import shadowStyles from '../src/shadow.less';
 import { loading } from '../src/internal/symbols';
 

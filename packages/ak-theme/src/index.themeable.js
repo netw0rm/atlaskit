@@ -1,7 +1,7 @@
 import { change } from './index.events';
 import { themeNameFromNode } from './util';
 
-const $themeHandler = Symbol();
+const $themeHandler = Symbol('themeHandler');
 
 function applyTheme(elem, data) {
   const { newValue } = data;

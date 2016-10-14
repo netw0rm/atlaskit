@@ -1,9 +1,12 @@
-import { name } from '../package.json';
 import { keyup, afterMutations, getShadowRoot, waitUntil } from 'akutil-common-test';
 import { Component, emit } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+
+import { name } from '../package.json';
 import AkNavigation, { events as navigationEvents } from '../src';
+
+
 const {
   open: navigationOpenEvent,
   close: navigationCloseEvent,
@@ -58,7 +61,7 @@ describe('ak-navigation detached', () => {
   });
   describe('when it becomes attached', () => {
     const component = new AkNavigation();
-    it('fires an "${widthChangedEvent}" event when attached', (done) => {
+    it(`fires an "${widthChangedEvent}" event when attached`, (done) => {
       let called = false;
       component.addEventListener(widthChangedEvent, (e) => {
         expect(e.detail.oldWidth).to.equal(null);

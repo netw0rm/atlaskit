@@ -3,9 +3,11 @@ import reactify from 'akutil-react';
 import AkButton from 'ak-button';
 import Dropdown from 'ak-dropdown';
 import CharlieIcon from 'ak-icon/glyph/atlassian';
-import AkButtonGroup from '../src/index';
 import React from 'react';
+
+import AkButtonGroup from '../src';
 import { name } from '../package.json';
+
 
 const ReactAkButtonGroup = reactify(AkButtonGroup);
 const ReactAkButton = reactify(AkButton);

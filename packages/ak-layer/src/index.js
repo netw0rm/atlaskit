@@ -1,6 +1,8 @@
 import { vdom, define, prop } from 'skatejs';
-import { reCreateAlignmentIfNeeded, createNewAlignment } from './internal/helpers';
 import { enumeration } from 'akutil-common';
+
+import { reCreateAlignmentIfNeeded, createNewAlignment } from './internal/helpers';
+
 
 export const POSITION_ATTRIBUTE_ENUM = {
   attribute: 'position',

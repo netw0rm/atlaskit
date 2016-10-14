@@ -1,11 +1,13 @@
 import { storiesOf } from '@kadira/storybook';
+import React from 'react';
 import reactify from 'akutil-react';
-import { name } from '../package.json';
-import styles from '../src/shadow.less';
-import AkAvatar from '../src/index';
+
 import avatarStoryStyles from 'style!./stories.less';
 
-import React from 'react';
+import { name } from '../package.json';
+import styles from '../src/shadow.less';
+import AkAvatar from '../src';
+
 
 const Avatar = reactify(AkAvatar);
 
@@ -112,8 +114,8 @@ storiesOf(name, module)
       </div>
       <div className={storybookExampleClass} >
         <div>
-          These avatars have an image in their default slot and have been styled with "height: 100%;
-          width: 100%;"
+          These avatars have an image in their default slot and have been styled
+          with &quot;height: 100%; width: 100%;&quot;
         </div>
         <AllAvatarSizes>
           <img
@@ -217,7 +219,7 @@ storiesOf(name, module)
           Try loading an image from an external source to see the loading behaviour.
         </div>
         <div>
-          <label>
+          <label htmlFor="avatarUrl">
             <span>URL:</span>
             <input
               type="text"
@@ -238,6 +240,6 @@ storiesOf(name, module)
         This image should have an aria-label that should be read out when tabbing to the link
           around it and also an alt text.
       </div>
-      <a href="#"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
+      <a href="http://www.atlassian.com"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
     </div>
   ));

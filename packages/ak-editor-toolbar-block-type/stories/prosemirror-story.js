@@ -1,13 +1,14 @@
 import { storiesOf } from '@kadira/storybook';
 import ToolbarComponent from 'ak-editor-toolbar';
-import BlockTypeComponent from '../src';
 import ContentComponent from 'ak-editor-content';
 import React from 'react';
 import reactify from 'akutil-react';
 import invert from 'lodash.invert';
-
 import { ProseMirror, schema } from 'ak-editor-prosemirror';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
+
+import BlockTypeComponent from '../src';
+
 
 const Toolbar = reactify(ToolbarComponent);
 const BlockType = reactify(BlockTypeComponent);

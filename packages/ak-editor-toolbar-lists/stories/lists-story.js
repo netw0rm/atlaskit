@@ -1,7 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
-import ListsComponent from '../src';
 import React from 'react';
 import reactify from 'akutil-react';
+
+import ListsComponent from '../src';
+
 
 const Lists = reactify(ListsComponent);
 

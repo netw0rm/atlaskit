@@ -1,10 +1,12 @@
-import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkEditorButton from '../src';
 import { props } from 'skatejs';
-import shadowStyles from '../src/shadow.less';
 import { afterMutations, getShadowRoot } from 'akutil-common-test';
+
+import { name } from '../package.json';
+import AkEditorButton from '../src';
+import shadowStyles from '../src/shadow.less';
+
 
 const classKeys = shadowStyles.locals;
 

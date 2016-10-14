@@ -1,13 +1,14 @@
-const componentTemplate = require('./componentTemplate');
 const path = require('path');
 const fs = require('fs');
 const async = require('async');
 const mkdirp = require('mkdirp');
+
+const componentTemplate = require('./componentTemplate');
 const { name } = require('../package.json');
 const defaultSvgo = require('./svgo/transformations/default');
 const customSvgo = require('./svgo/transformations/custom');
-
 const { maxWidth, maxHeight, fileEnding } = require('./constants');
+
 
 /**
 * Generates a method that processes list of icons

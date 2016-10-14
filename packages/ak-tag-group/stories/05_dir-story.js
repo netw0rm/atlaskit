@@ -1,11 +1,13 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import WebComponent from '../src/index';
-import AkTagWebComponent from 'ak-tag';
 import React from 'react';
+import reactify from 'akutil-react';
+import AkTagWebComponent from 'ak-tag';
+import tagStyles from 'ak-tag/src/shadow.less';
+
+import WebComponent from '../src';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
-import tagStyles from 'ak-tag/src/shadow.less';
+
 
 const Group = reactify(WebComponent);
 

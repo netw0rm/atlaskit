@@ -1,15 +1,17 @@
 /** @jsx vdom */
-import shadowListStyles from './less/shadow-list.less';
 import { vdom, define, prop, props, emit, ready } from 'skatejs';
+import keyCode from 'keycode';
+import Layer from 'ak-layer';
+
+import shadowListStyles from './less/shadow-list.less';
 import './index.trigger';
 import Item from './index.item';
 import CheckboxItem from './index.item.checkbox';
 import RadioItem from './index.item.radio';
 import Group from './index.group';
-import keyCode from 'keycode';
-import Layer from 'ak-layer';
 import * as events from './internal/events';
 import dropdownPositionedToSide from './internal/dropdownPositionedToSide';
+
 
 // Width of a dropdown should be at least width of it's trigger + 10px
 const diffBetweenDropdownAndTrigger = 10;
@@ -20,12 +22,12 @@ const dropdownMaxHeight = (itemHeight * 9.5); // ( item height * 9.5 items) - by
 
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
 const offset = '0 4';
-const activatedFrom = Symbol();
-const keyDownOnceOnOpen = Symbol();
-const handleClickOutside = Symbol();
-const handleKeyDown = Symbol();
-const triggerSlot = Symbol();
-const layerElem = Symbol();
+const activatedFrom = Symbol('activatedFrom');
+const keyDownOnceOnOpen = Symbol('keyDownOnceOnOpen');
+const handleClickOutside = Symbol('handleClickOutside');
+const handleKeyDown = Symbol('handleKeyDown');
+const triggerSlot = Symbol('triggerSlot');
+const layerElem = Symbol('layerElem');
 
 function getTriggerElement(elem) {
   return elem[triggerSlot] && elem[triggerSlot].assignedNodes()[0];
@@ -265,7 +267,7 @@ export default define('ak-dropdown', {
           >
             <slot
               name="trigger"
-              ref={el => {
+              ref={(el) => {
                 elem[triggerSlot] = el;
               }}
             />

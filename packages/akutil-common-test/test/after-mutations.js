@@ -1,9 +1,11 @@
-import { afterMutations } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
+
+import { afterMutations } from '../src';
+
+
 chai.should();
 chai.use(sinonChai);
-
 
 describe('afterMutations', () => {
   it('should respond to prop changes', (done) => {

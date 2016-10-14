@@ -1,6 +1,8 @@
 import { vdom } from 'skatejs';
 import classNames from 'classnames';
+
 import { appearance } from './enumeratedProperties';
+
 
 const { PRIMARY, SUBTLE, LINK } = appearance.values;
 

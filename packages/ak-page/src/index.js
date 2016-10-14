@@ -1,7 +1,10 @@
 import { prop, props, vdom, define } from 'skatejs';
-import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { events as navigationEvents } from 'ak-navigation';
+
+import shadowStyles from './shadow.less';
+
+
 const {
   resizeStart: resizeStartEvent,
   resizeEnd: resizeEndEvent,

@@ -54,11 +54,13 @@ describe('ak-tag', () => {
       const clickSpy = sinon.spy();
       const definition = {
         render() {
+          /* eslint-disable jsx-a11y/href-no-hash */
           return (
             <Chrome isLinked>
               <a onClick={clickSpy} href="#">link</a>
             </Chrome>
           );
+          /* eslint-enable jsx-a11y/href-no-hash */
         },
       };
 

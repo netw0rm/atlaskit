@@ -1,5 +1,7 @@
-import EventedGroup from './EventedGroup.js';
 import React from 'react';
+
+import EventedGroup from './EventedGroup';
+
 
 const AlignedStory = props => (<EventedGroup
   alignment={props.alignment}
@@ -9,7 +11,7 @@ const AlignedStory = props => (<EventedGroup
 
 AlignedStory.propTypes = {
   alignment: React.PropTypes.string,
-  initialTags: React.PropTypes.array.isRequired,
+  initialTags: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   onRemove: React.PropTypes.func,
 };
 

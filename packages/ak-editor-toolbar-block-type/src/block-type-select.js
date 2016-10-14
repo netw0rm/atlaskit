@@ -1,6 +1,8 @@
 import { vdom, define, prop, emit } from 'skatejs';
-import styles from './block-type-select.less';
 import Button from 'ak-editor-button';
+
+import styles from './block-type-select.less';
+
 
 export default define('ak-editor-toolbar-block-type-select', {
   render(elem) {

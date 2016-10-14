@@ -40,7 +40,7 @@ describe('ak-tag', () => {
           return (
             <Root>
               <AnimationWrapper isRemoving afterAnimation={sinon.spy(done)}>
-                <div style="width: 200px; height: 20px; background-color: red;" />
+                <div style={{ width: '200px', height: '20px', backgroundColor: 'red' }} />
               </AnimationWrapper>
             </Root>
           );

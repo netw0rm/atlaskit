@@ -42,6 +42,7 @@ describe(name, () => {
     it('should be possible to create an Icon via a subclass', () => {
       const secret = 'secret';
       class MyIcon extends Icon {
+        // eslint-disable-next-line class-methods-use-this
         getGlyphTemplate() {
           return () => (<div>{secret}</div>);
         }

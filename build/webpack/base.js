@@ -1,5 +1,6 @@
 const camelCase = require('camelcase');
 const path = require('path');
+// eslint-disable-next-line import/no-dynamic-require
 const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');

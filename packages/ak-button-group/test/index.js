@@ -1,9 +1,11 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { Component } from 'skatejs';
-import ButtonGroup from '../src';
 import Button from 'ak-button';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
+
+import ButtonGroup from '../src';
+
 
 chai.use(chaiAsPromised);
 chai.should();

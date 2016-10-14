@@ -3,8 +3,10 @@ import { afterMutations, getShadowRoot, waitUntil } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
-import TagGroup, { alignment } from '../src';
 import Tag from 'ak-tag';
+
+import TagGroup, { alignment } from '../src';
+
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

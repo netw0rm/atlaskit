@@ -1,10 +1,12 @@
+import { emit } from 'skatejs';
 import { getShadowRoot, waitUntil } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
+
 import Tooltip, { TooltipTrigger } from '../src';
 import { handleMouseEnter, handleMouseLeave } from '../src/internal/event-handlers';
-import { emit } from 'skatejs';
+
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);

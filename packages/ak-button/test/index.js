@@ -4,11 +4,13 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import { props } from 'skatejs';
-import AkButton, { APPEARANCE } from '../src/index.js';
-import { stylesKey } from '../src/symbols';
 import { akGridSize } from 'akutil-shared-styles';
-import { name } from '../package.json';
 import { hasClass, waitUntil, getShadowRoot } from 'akutil-common-test';
+
+import AkButton, { APPEARANCE } from '../src';
+import { stylesKey } from '../src/symbols';
+import { name } from '../package.json';
+
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

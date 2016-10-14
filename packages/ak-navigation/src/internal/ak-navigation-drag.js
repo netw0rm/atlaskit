@@ -1,5 +1,6 @@
-import shadowStyles from './ak-navigation-drag.less';
 import { vdom, define } from 'skatejs';
+
+import shadowStyles from './ak-navigation-drag.less';
 
 
 export default define('ak-navigation-drag', {
@@ -35,4 +36,3 @@ export default define('ak-navigation-drag', {
     },
   },
 });
-

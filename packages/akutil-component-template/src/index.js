@@ -4,10 +4,11 @@ import { emit, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import * as events from './internal/events';
 
+
 const { announceName: announceNameEvent, announceClick } = events;
 
 const Paragraph = (props, chren) => <p {...props}>{chren()}</p>;
-const handleClick = Symbol();
+const handleClick = Symbol('handleClick');
 
 /**
  * @description Create instances of the component programmatically, or using markup.

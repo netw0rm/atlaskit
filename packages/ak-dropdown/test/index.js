@@ -1,12 +1,17 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import Dropdown, * as exports from '../src';
 import keyCode from 'keycode';
 import { props, emit, Component } from 'skatejs';
-import { name } from '../package.json';
 import { afterMutations, getShadowRoot, checkVisibility, waitUntil } from 'akutil-common-test';
-import { selected as selectedEvent,
-  unselected as unselectedEvent, item as itemEvents } from '../src/internal/events';
+
+import Dropdown, * as exports from '../src';
+import { name } from '../package.json';
+import {
+  selected as selectedEvent,
+  unselected as unselectedEvent,
+  item as itemEvents,
+} from '../src/internal/events';
+
 
 chai.use(chaiAsPromised);
 chai.should();

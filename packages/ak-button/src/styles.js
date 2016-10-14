@@ -18,8 +18,8 @@ const grid = 8;
 const lineHeight = 20;
 
 const buttonLineHeight = lineHeight / em;
-const buttonHeight = `${grid * 4 / em}em`;
-const compactButtonHeight = `${grid * 3 / em}em`;
+const buttonHeight = `${(grid * 4) / em}em`;
+const compactButtonHeight = `${(grid * 3) / em}em`;
 
 const baseRadius = akBorderRadius;
 const sideSlotMargin = `${grid}px`;

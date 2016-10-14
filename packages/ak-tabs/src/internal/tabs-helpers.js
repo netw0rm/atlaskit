@@ -17,7 +17,7 @@ function getNextOrPrevTab(tabsEl, tab, isNext) {
 
 function getSelectedTab(tabsEl) {
   const all = getAllTabs(tabsEl);
-  return all.length && all.filter(el => el.selected)[0] || null;
+  return all.length ? (all.filter(el => el.selected)[0] || null) : null;
 }
 
 function getLabelForTab(tab) {

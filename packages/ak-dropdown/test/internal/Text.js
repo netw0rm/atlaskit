@@ -1,10 +1,11 @@
 import { vdom } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import { getRootNode } from 'akutil-common-test';
 
 import { createTemporaryComponent, tearDownComponent } from '../_helpers';
-import { getRootNode } from 'akutil-common-test';
 import Text from '../../src/internal/Text';
+
 
 chai.use(chaiAsPromised);
 chai.should();

@@ -2,20 +2,21 @@
 import classNames from 'classnames';
 import debounce from 'debounce';
 import { vdom, define, prop } from 'skatejs';
-import shadowStyles from './shadow.less';
+import ExpandIcon from 'ak-icon/glyph/expand';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
+import Dropdown, { Item as DropdownItem, DropdownTrigger } from 'ak-dropdown';
 
+import shadowStyles from './shadow.less';
 import * as helpers from './internal/tabs-helpers';
 import * as handlers from './internal/tabs-handlers';
 import * as events from './internal/index.events';
-const { tabChange: tabChangeEvent } = events;
 import * as i18n from './internal/i18n';
 import Tab from './index.tab';
-import ExpandIcon from 'ak-icon/glyph/expand';
-import Dropdown, { Item as DropdownItem, DropdownTrigger } from 'ak-dropdown';
-
 import { buttonContainer, labelsContainer } from './internal/symbols';
-const resizeListener = Symbol();
+
+
+const { tabChange: tabChangeEvent } = events;
+const resizeListener = Symbol('resizeListener');
 
 /**
  * @description The Tabs element. Container to manage and display Tab elements.
@@ -57,8 +58,8 @@ export default define('ak-tabs', {
               const classes = classNames(shadowStyles.locals.akTabLabel, {
                 [shadowStyles.locals.akTabLabelSelected]: tab.selected,
               });
-              return (
-                <li
+              const li = (
+                <li // eslint-disable-line jsx-a11y/role-supports-aria-props, jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions, max-len
                   className={classes}
                   tabIndex={tabIndex}
                   onkeydown={handlers.labelKeydownHandler(elem, tab)}
@@ -66,13 +67,15 @@ export default define('ak-tabs', {
                   onclick={handlers.labelSelectedHandler(tab)}
                   aria-selected={ariaSelected}
                   aria-setsize={allTabs.length}
-                  aria-posinset={pos++}
+                  aria-posinset={pos}
                   role="tab"
                   ref={handlers.labelRef(elem, tab)}
                 >
                   <span>{tab.label}</span>
                 </li>
               );
+              pos++;
+              return li;
             }
           ).concat(
             <li

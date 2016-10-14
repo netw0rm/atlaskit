@@ -1,7 +1,9 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import Tabs, * as exports from '../src';
 import { Component } from 'skatejs';
+
+import Tabs, * as exports from '../src';
+
 
 chai.use(chaiAsPromised);
 chai.should();

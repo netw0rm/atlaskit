@@ -1,10 +1,13 @@
-import reactify from 'akutil-react';
-import groupStyles from '../src/shadow.less';
-import tagStyles from 'ak-tag/src/shadow.less';
-import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
-const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = tagEvents;
-import WebComponent from '../src/index';
 import React from 'react';
+import reactify from 'akutil-react';
+import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
+import tagStyles from 'ak-tag/src/shadow.less';
+
+import groupStyles from '../src/shadow.less';
+import WebComponent from '../src';
+
+
+const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = tagEvents;
 
 const Group = reactify(WebComponent);
 
@@ -74,7 +77,7 @@ class EventedGroup extends React.Component {
 EventedGroup.displayName = 'EventedGroup';
 EventedGroup.propTypes = {
   alignment: React.PropTypes.string,
-  initialTags: React.PropTypes.array.isRequired,
+  initialTags: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   onRemove: React.PropTypes.func,
 };
 

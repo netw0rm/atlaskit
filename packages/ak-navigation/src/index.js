@@ -1,10 +1,13 @@
 import { emit, prop, vdom, define } from 'skatejs';
-import shadowStyles from './index.less';
 import 'ak-blanket';
+import classNames from 'classnames';
+import keycode from 'keycode';
+import 'custom-event-polyfill';
+
 import './internal/ak-navigation-drawer';
 import './internal/ak-navigation-drag';
 import './index.ak-navigation-link';
-import classNames from 'classnames';
+import shadowStyles from './index.less';
 import resizer from './internal/resizer';
 import addTouchHandlers from './internal/touch';
 import {
@@ -15,9 +18,9 @@ import {
   getCollapsedWidth,
   getSpacerWidth,
 } from './internal/collapse';
-import keycode from 'keycode';
-import 'custom-event-polyfill';
 import * as events from './internal/index.events';
+
+
 const {
   linkSelected: linkSelectedEvent,
   createDrawerSelected: createDrawerSelectedEvent,

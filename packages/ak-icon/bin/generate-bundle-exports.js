@@ -2,9 +2,9 @@
 
 const glob = require('glob');
 const path = require('path');
-const fileToScope = require('../src/fileToScope');
-const pathToDashed = require('../src/pathToDashed');
-const iconNameToComponentName = require('../src/iconNameToComponentName');
+const fileToScope = require('./fileToScope');
+const pathToDashed = require('./pathToDashed');
+const iconNameToComponentName = require('./iconNameToComponentName');
 const { tmpFolderName } = require('./constants');
 
 const tempFolder = `../src/${tmpFolderName}/`;
@@ -23,13 +23,21 @@ glob(`${tempFolder}**/*.js`, {
   console.log('//       DO NOT MODIFY THIS FILE AS YOUR CHANGES WILL BE OVERRIDDEN');
   console.log();
   console.log("import { size } from './Icon';");
-  console.log('export { size };');
 
   files.forEach((file) => {
     const componentName = pathToExport(file);
     const tmpComponentName = `tmp${componentName}`;
-    console.log();
-    console.log(`import ${tmpComponentName} from '${file}';`);
+    const fileWithoutJs = file.substring(0, file.length - 3);
+    console.log(`import ${tmpComponentName} from '${fileWithoutJs}';`);
+  });
+
+  console.log();
+
+  files.forEach((file) => {
+    const componentName = pathToExport(file);
+    const tmpComponentName = `tmp${componentName}`;
     console.log(`export const ${componentName} = ${tmpComponentName};`);
   });
+
+  console.log('export { size };');
 });

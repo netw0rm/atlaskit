@@ -1,8 +1,8 @@
 import { Search } from 'js-search';
 
-import debug from '../../src/util/logger';
-import { AbstractMentionResource } from '../../src/api/pf-mention-resource';
-import mentionData from './mention-data';
+import debug from '../src/util/logger';
+import { AbstractMentionResource } from '../src/api/pf-mention-resource';
+import mentionData from './_mention-data';
 
 const search = new Search('id');
 search.addIndex('name');

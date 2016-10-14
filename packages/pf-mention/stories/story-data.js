@@ -1,4 +1,4 @@
-import MentionResource from '../src/support/mock-pf-mention-resource';
+import MentionResource from '../test/_mock-pf-mention-resource';
 import debug, { enableLogger } from '../src/util/logger';
 
 enableLogger(true);

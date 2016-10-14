@@ -1,15 +1,17 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkInlineDialog, { events } from '../src';
-const { afterOpen: afterOpenEvent, afterClose: afterCloseEvent } = events;
 import 'custom-event-polyfill';
-import { name } from '../package.json';
 import { events as blanketEvents } from 'ak-blanket';
-const { activate: activateBlanketEvent } = blanketEvents;
 import { afterMutations, getShadowRoot, checkVisibility, checkInvisibility }
   from 'akutil-common-test';
 import { Component } from 'skatejs';
 
+import AkInlineDialog, { events } from '../src';
+import { name } from '../package.json';
+
+
+const { activate: activateBlanketEvent } = blanketEvents;
+const { afterOpen: afterOpenEvent, afterClose: afterCloseEvent } = events;
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;

@@ -1,10 +1,12 @@
-import { configure, setAddon } from '@kadira/storybook';
+import { configure, setAddon, addDecorator } from '@kadira/storybook';
 import 'akutil-polyfills';
+import { withKnobs, text, boolean, number } from '@kadira/storybook-addon-knobs';
 import MonitoredStory from './MonitoredStory.js';
 import MonkeyTestStory from './MonkeyTestStory.js';
 import SwappedDirectionStory from './SwappedDirectionStory.js';
 import BaselineAlignmentStory from './BaselineAlignmentStory.js';
 import React from 'react';
+
 
 import 'style!./styles.less';
 
@@ -17,6 +19,8 @@ function loadStories() {
   // support for symlink cycles from `require.context()`.
   require('./requireStories!./empty'); // eslint-disable-line global-require
 }
+
+addDecorator(withKnobs);
 
 setAddon({
   addMonitored(storyName, storyFn, rafFn) {

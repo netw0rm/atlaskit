@@ -120,7 +120,7 @@
     "docs/single": "./build/bin/docs.single.sh",
     "postinstall": "./build/bin/postinstall.sh",
     "lint": "eslint --color --format 'node_modules/eslint-friendly-formatter' . --ext .js,.jsx",
-    "pr/artifacts": "run-p -ln 'pr/docs' 'pr/storybook' 'pr/stats'",
+    "pr/artifacts": "npm-run-all -ln dist --parallel 'pr/docs' 'pr/storybook' 'pr/stats'",
     "pr/docs": "npm run docs && ./build/bin/generate.readme.html.pr.sh",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "pr/stats": "./build/bin/pr.stats.sh",

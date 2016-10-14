@@ -3,10 +3,10 @@ import reactify from 'akutil-react';
 import AkLozenge from '../src/index';
 import React from 'react';
 import { name } from '../package.json';
-import hostStyles from 'style!./../src/host.less';
+import styles from '../src/shadow.less';
 
 const Lozenge = reactify(AkLozenge);
-const lozengeClass = hostStyles.akLozenge;
+const lozengeClass = styles.locals.akLozenge;
 
 storiesOf(name, module)
   .add('standard and bold lozenges', () => (
@@ -27,19 +27,8 @@ storiesOf(name, module)
       <p><Lozenge className={lozengeClass} bold appearance="moved">moved</Lozenge></p>
     </div>
   ))
-  .add('baseline alignment', () => (
-    <div>
-      <h1>H1 <Lozenge className={lozengeClass} bold appearance="new">lozenge</Lozenge> testing</h1>
-      <h2>H2 <Lozenge className={lozengeClass} bold appearance="new">lozenge</Lozenge> testing</h2>
-      <h3>H3 <Lozenge className={lozengeClass} bold appearance="new">lozenge</Lozenge> testing</h3>
-      <h4>H4 <Lozenge className={lozengeClass} bold appearance="new">lozenge</Lozenge> testing</h4>
-      <h5>H5 <Lozenge className={lozengeClass} bold appearance="new">lozenge</Lozenge> testing</h5>
-      <h6>H6 <Lozenge className={lozengeClass} bold appearance="new">lozenge</Lozenge> testing</h6>
-      <p>
-        Content <Lozenge className={lozengeClass} bold appearance="new">lozenge</Lozenge>
-        and another <Lozenge className={lozengeClass} bold appearance="moved">lozenge</Lozenge>
-      </p>
-    </div>
+  .addBaselineAligned('baseline alignment', () => (
+    <Lozenge className={lozengeClass} bold appearance="new">lozenge</Lozenge>
   ))
   .add('truncation when too wide', () => (
     <div>

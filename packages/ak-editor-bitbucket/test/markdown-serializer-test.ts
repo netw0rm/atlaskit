@@ -1,11 +1,13 @@
 import markdownSerializer from '../src/markdown-serializer';
 import {
-  doc, text, p, pre, img, code, strong, blockquote, hr,
+  code_block, doc, text, p, img, code, strong, blockquote, hr,
   h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, del
 } from 'ak-editor-test';
 import { expect } from 'chai';
 
 describe('Bitbucket markdown serializer: ', () => {
+  const pre = code_block({});
+
   it('should serialize paragraphs', () => {
     expect(markdownSerializer.serialize(doc(p(text('foo'))))).to.eq('foo');
     expect(markdownSerializer.serialize(doc([
@@ -39,12 +41,13 @@ describe('Bitbucket markdown serializer: ', () => {
     });
 
     it('with attributes uses backtick notation and preserves attributes', () => {
+      const js = code_block({ params: 'js' });
       expect(markdownSerializer.serialize(doc([
-        pre(text('foo'), 'js'),
+        js(text('foo')),
       ]))).to.eq('```js\nfoo\n```');
 
       expect(markdownSerializer.serialize(doc([
-        pre(text('foo\nbar'), 'js'),
+        js(text('foo\nbar')),
       ]))).to.eq('```js\nfoo\nbar\n```');
     });
 
@@ -60,6 +63,32 @@ describe('Bitbucket markdown serializer: ', () => {
       expect(markdownSerializer.serialize(doc([
         pre(),
       ]))).to.eq('    ');
+    });
+
+    it('via indentation with backticks is not escaped', () => {
+      expect(markdownSerializer.serialize(doc([
+        pre(text('`foo`\n````bar\nbaz\n`````')),
+      ]))).to.eq('    `foo`\n    ````bar\n    baz\n    `````');
+    });
+
+    it('via backticks that includes backticks is properly fenced', () => {
+      const css = code_block({ params: 'css' });
+
+      expect(markdownSerializer.serialize(doc([
+        css(text('```js\nfoo\n```'))
+      ]))).to.eq('````css\n```js\nfoo\n```\n````', 'Balanced fencing');
+
+      expect(markdownSerializer.serialize(doc([
+        css(text('````js\nfoo\n```'))
+      ]))).to.eq('`````css\n````js\nfoo\n```\n`````', 'Unbalanced fencing in the code block' );
+
+      expect(markdownSerializer.serialize(doc([
+        css(text('````'))
+      ]))).to.eq('`````css\n````\n`````', 'Unmatched backtick fence');
+
+      expect(markdownSerializer.serialize(doc([
+        css(text('````js'))
+      ]))).to.eq('`````css\n````js\n`````', 'Unmatched backtick fence with language definition');
     });
   });
 
@@ -451,6 +480,24 @@ describe('Bitbucket markdown serializer: ', () => {
         )))).to.eq('foo `bar baz` foo');
       });
 
+      describe('inline code', () => {
+        it('containing backticks should be fenced properly', () => {
+          expect(markdownSerializer.serialize(doc(p(
+            text('foo '),
+            code(text('bar ` ` baz')),
+            text(' foo'),
+          )))).to.eq('foo ``bar ` ` baz`` foo');
+        });
+
+        it('containing backticks on the edges of a fence should be fenced properly', () => {
+          expect(markdownSerializer.serialize(doc(p(
+            text('foo '),
+            code(text('`bar`  ``baz``')),
+            text(' foo'),
+          )))).to.eq('foo ``` `bar`  ``baz`` ``` foo');
+        });
+      });
+
       describe('links', () => {
         it('with no text to be ignored', () => {
           let link = a({ href: 'http://example.com' });
@@ -638,5 +685,4 @@ describe('Bitbucket markdown serializer: ', () => {
         });
       });
     });
-
 });

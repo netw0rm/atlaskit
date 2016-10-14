@@ -1,25 +1,16 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import Dropdown, * as exports from '../src';
-
-import { props, emit, Component, define, vdom } from 'skatejs';
+import keyCode from 'keycode';
+import { props, emit, Component } from 'skatejs';
 import { name } from '../package.json';
 import { afterMutations, getShadowRoot, checkVisibility, waitUntil } from 'akutil-common-test';
 import { selected as selectedEvent,
-  unselected as unselectedEvent, afterOpen } from '../src/internal/events';
+  unselected as unselectedEvent, item as itemEvents } from '../src/internal/events';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
-
-const TriggerTest = define('trigger-test', {
-  props: {
-    opened: { attribute: true, default: false },
-  },
-  render() {
-    vdom.element('div', () => (vdom.text('test')));
-  },
-});
 
 function initComponent(setup) {
   const component = new Dropdown();
@@ -50,6 +41,15 @@ function tearDownComponent(component) {
 
 function clickDropdownTrigger(component) {
   getShadowRoot(component.querySelector('[slot="trigger"]')).firstChild.click();
+}
+
+function pressDropdownTrigger(component) {
+  const event = new CustomEvent('keydown', {
+    bubbles: true,
+    cancelable: true,
+  });
+  event.keyCode = keyCode('enter');
+  getShadowRoot(component.querySelector('[slot="trigger"]')).firstChild.dispatchEvent(event);
 }
 
 function checkSelectedItems(items, ...index) {
@@ -112,12 +112,60 @@ describe('ak-dropdown', () => {
       expect(checkVisibility(component.children[0])).to.equal(true);
     });
 
+    it('click on the dropdown should open it', () => {
+      clickDropdownTrigger(component);
+      expect(component.open).to.equal(true);
+    });
+
+    it('keypress on the dropdown should open it', () => {
+      pressDropdownTrigger(component);
+      expect(component.open).to.equal(true);
+    });
+
+    it('when the dropdown is open all the elements should have correct properties', () => {
+      props(component, { open: true });
+      expect(component.children[1].first).to.equal(true);
+      expect(component.children[2].last).to.equal(true);
+    });
+
+    it('trigger item should in sync when the dropdown`s open state', () => {
+      props(component, { open: true });
+      expect(component.children[0].opened).to.equal(true);
+      props(component, { open: false });
+      expect(component.children[0].opened).to.equal(false);
+      clickDropdownTrigger(component);
+      expect(component.children[0].opened).to.equal(true);
+      clickDropdownTrigger(component);
+      expect(component.children[0].opened).to.equal(false);
+      pressDropdownTrigger(component);
+      expect(component.children[0].opened).to.equal(true);
+      pressDropdownTrigger(component);
+      expect(component.children[0].opened).to.equal(false);
+    });
+
+    it('if the dropdown was open via click the first element should be not focused', () => {
+      clickDropdownTrigger(component);
+      expect(component.children[1].focused).to.equal(false);
+    });
+
+    it('if the dropdown was open via keydown the first element should be focused', () => {
+      pressDropdownTrigger(component);
+      expect(component.children[1].focused).to.equal(true);
+    });
+
     it('three clicks leaves the dropdown open with items in it', () => {
       props(component, { open: true });
       props(component, { open: false });
       props(component, { open: true });
       expect(component.open).to.equal(true);
       expect(checkVisibility(component.children[1])).to.equal(true);
+    });
+
+    it('click outside of the dropdown should close it', () => {
+      props(component, { open: true });
+      expect(component.open).to.equal(true);
+      document.body.click();
+      expect(component.open).to.equal(false);
     });
 
     it('position is reflected to inner layer', (done) => {
@@ -131,44 +179,6 @@ describe('ak-dropdown', () => {
         () => (component.position = 'top left'),
         () => (expect(layer.position).to.equal('top left')),
         done
-      );
-    });
-  });
-
-  describe('trigger', () => {
-    let triggerTest;
-
-    describe('slotted', () => {
-      beforeEach(() =>
-        (initComponent(comp => {
-          props(comp, { open: true });
-          triggerTest = new TriggerTest();
-          props(triggerTest, { slot: 'trigger', opened: false });
-          comp.appendChild(triggerTest);
-          comp.appendChild(document.createElement('ak-dropdown-item'));
-        }))
-      );
-
-      it('should set opened attribute in trigger element to true', () =>
-        expect(triggerTest.opened).to.be.true
-      );
-    });
-
-    describe('external', () => {
-      let eventSpy;
-
-      beforeEach(() =>
-        (initComponent(comp => {
-          eventSpy = sinon.spy();
-          props(comp, { open: true, target: triggerTest });
-          triggerTest = new TriggerTest();
-          comp.addEventListener(afterOpen, eventSpy);
-          comp.appendChild(document.createElement('ak-dropdown-item'));
-        }))
-      );
-
-      it('dropdown should be open', () =>
-        expect(eventSpy).to.have.been.called
       );
     });
   });
@@ -334,6 +344,74 @@ describe('ak-dropdown', () => {
         () => checkSelectedItems(group2, 0),
         done
       );
+    });
+  });
+
+  describe('focus behavior', () => {
+    let component;
+    const html = `<ak-dropdown-item>first</ak-dropdown-item>
+                  <ak-dropdown-item>second</ak-dropdown-item>
+                  <ak-dropdown-item>third</ak-dropdown-item>
+                  <ak-dropdown-item hidden>first</ak-dropdown-item>
+                  <ak-dropdown-item hidden>second</ak-dropdown-item>
+                  <ak-dropdown-item>third</ak-dropdown-item>`;
+    beforeEach(() => setupComponentExample(html).then(newComponent => {
+      component = newComponent;
+      pressDropdownTrigger(component);
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should be possible to focus next item', () => {
+      expect(component.children[1].focused).to.equal(true);
+
+      emit(component, itemEvents.down);
+      expect(component.children[1].focused).to.equal(false);
+      expect(component.children[2].focused).to.equal(true);
+
+      emit(component, itemEvents.down);
+      expect(component.children[1].focused).to.equal(false);
+      expect(component.children[2].focused).to.equal(false);
+      expect(component.children[3].focused).to.equal(true);
+    });
+
+    it('should be possible to focus previous item', () => {
+      emit(component, itemEvents.down);
+      emit(component, itemEvents.down);
+      emit(component, itemEvents.up);
+      expect(component.children[3].focused).to.equal(false);
+      expect(component.children[2].focused).to.equal(true);
+      emit(component, itemEvents.up);
+      expect(component.children[3].focused).to.equal(false);
+      expect(component.children[2].focused).to.equal(false);
+      expect(component.children[1].focused).to.equal(true);
+    });
+
+    it('if there are no previous items the focus should stay on the first item', () => {
+      emit(component, itemEvents.down);
+      emit(component, itemEvents.up);
+      emit(component, itemEvents.up);
+      emit(component, itemEvents.up);
+      expect(component.children[1].focused).to.equal(true);
+      expect(component.children[1].first).to.equal(true);
+    });
+
+    it('if there are no next items the focus should stay on the last item', () => {
+      props(component.children[1], { focused: false });
+      props(component.children[6], { focused: true });
+      emit(component, itemEvents.down);
+      emit(component, itemEvents.down);
+      expect(component.children[6].focused).to.equal(true);
+      expect(component.children[6].last).to.equal(true);
+    });
+
+    it('all the focus movements should skip hidden items', () => {
+      props(component.children[1], { focused: false });
+      props(component.children[3], { focused: true });
+      emit(component, itemEvents.down);
+      expect(component.children[6].focused).to.equal(true);
+      emit(component, itemEvents.up);
+      expect(component.children[6].focused).to.equal(false);
+      expect(component.children[3].focused).to.equal(true);
     });
   });
 });

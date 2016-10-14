@@ -3,7 +3,10 @@ import { keyup, afterMutations, getShadowRoot, waitUntil } from 'akutil-common-t
 import { Component, emit } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkNavigation, { events as navigationEvents } from '../src';
+import AkNavigation, {
+  NavigationLink as AkNavigationLink,
+  events as navigationEvents,
+} from '../src';
 const {
   open: navigationOpenEvent,
   close: navigationCloseEvent,
@@ -33,6 +36,10 @@ describe('exports', () => {
     (new AkNavigation).should.be.an.instanceof(Component);
   });
 
+  it('should export a navigation link component', () => {
+    (new AkNavigationLink).should.be.an.instanceof(Component);
+  });
+
   it('should have an events export with defined events', () => {
     navigationEvents.should.be.defined;
     Object.keys(navigationEvents).should.be.deep.equal([
@@ -42,7 +49,8 @@ describe('exports', () => {
       'open',
       'close',
       'widthChanged',
-      'openStateChanged',
+      'resizeStart',
+      'resizeEnd',
     ]);
   });
 });

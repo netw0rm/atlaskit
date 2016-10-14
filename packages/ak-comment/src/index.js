@@ -1,6 +1,17 @@
-import 'style!./host.less';
 import { vdom, define } from 'skatejs';
-import shadowStyles from './shadow.less';
+
+
+// component parts
+import Root from './Root';
+import Content from './Content';
+import Metadata from './Metadata';
+
+import AvatarSlot from './slots/Avatar';
+import DefaultSlot from './slots/Default';
+import AuthorSlot from './slots/Author';
+import TimeSlot from './slots/Time';
+import ActionsSlot from './slots/Actions';
+import ReplySlot from './slots/Reply';
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -11,33 +22,18 @@ import shadowStyles from './shadow.less';
 export default define('ak-comment', {
   render() {
     return (
-      <div>
-        <style>{shadowStyles.toString()}</style>
-        <div className={shadowStyles.locals.container}>
-          <div className={shadowStyles.locals.avatarSlotWrapper}>
-            <slot name="avatar" className={shadowStyles.locals.avatarSlot}></slot>
-          </div>
-          <div className={shadowStyles.locals.content}>
-            <div className={shadowStyles.locals.contentSlotWrapper}>
-              <slot className={shadowStyles.locals.contentSlot}></slot>
-            </div>
-            <div className={shadowStyles.locals.metadata}>
-              <div className={shadowStyles.locals.authorSlotWrapper}>
-                <slot name="author" className={shadowStyles.locals.authorSlot}></slot>
-              </div>
-              <div className={shadowStyles.locals.timeSlotWrapper}>
-                <slot name="time" className={shadowStyles.locals.timeSlot}></slot>
-              </div>
-              <div className={shadowStyles.locals.actionSlotWrapper}>
-                <slot name="actions" className={shadowStyles.locals.actionSlot}></slot>
-              </div>
-            </div>
-            <div className={shadowStyles.locals.replySlotWrapper}>
-              <slot name="reply" className={shadowStyles.locals.replySlot}></slot>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Root>
+        <AvatarSlot />
+        <Content>
+          <DefaultSlot />
+          <Metadata>
+            <AuthorSlot />
+            <TimeSlot />
+            <ActionsSlot />
+          </Metadata>
+          <ReplySlot />
+        </Content>
+      </Root>
     );
   },
 });

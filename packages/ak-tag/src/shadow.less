@@ -1,22 +1,38 @@
 @import 'shared-variables.less';
+@import '~akutil-shared-styles/src/mixins/focus-ring.less';
 @import '~akutil-shared-styles/src/mixins/animations.less';
 
 // Attention: The animation name removeAnimation is referenced in the JS AnimationWrapper
 .createBoldAnimation(@remove-animation, 'removeAnimation');
 
-.outline(@color) {
-  &:focus {
-    outline: none;
-    box-shadow: 0px 0px 0px @outline-width @color;
+// Because of the shadow DOM boundries we can not style the host element the usual way
+// To do this the ':host' pseudo-class should be used
+// Also we should style the tag name with the same styles because of the browsers
+// that do not support shadow DOM
+.host-styles() {
+  display: inline-block;
+}
+
+// we define a class here in order to re-use it in the storybook
+// (because in storybook the component name is randomly generated)
+.ak-tag,
+ak-tag {
+  .host-styles();
+
+  &:not([defined]) {
+    display: none;
   }
 }
 
-.nooutline() {
-  box-shadow: none;
-}
+:host {
+  .host-styles();
 
+  &(:not([defined])) {
+    display: none;
+  }
+}
 .chrome {
-  .outline(@ak-color-B100);
+  .focus-ring();
   cursor:default;
   background-color: @ak-color-N20;
   padding: 0;
@@ -28,11 +44,11 @@
   flex-direction: row;
 
   &:hover {
-    .nooutline();
+    .no-focus-ring();
     background-color: @ak-color-N30;
 
     .button {
-      .nooutline();
+      .focus-ring();
     }
   }
 
@@ -73,6 +89,8 @@
 .text {
   color: @ak-color-N700;
   font-size: @font-size;
+  font-weight: normal;
+  line-height: 1;
   margin-left: @distance;
   margin-right: @distance;
   align-self: flex-start;
@@ -95,7 +113,7 @@
 }
 
 .button {
-  .outline(@ak-color-R300);
+  .focus-ring(@color: @ak-color-R300);
   appearance: none;
   background: none;
   border: none;

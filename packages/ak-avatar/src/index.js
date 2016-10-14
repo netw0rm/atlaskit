@@ -1,12 +1,13 @@
 /** @jsx vdom */
 /* The no-underscore-dangle line can be removed once we can use symbols for prop names */
 /* eslint-disable no-underscore-dangle */
-import 'style!./host.less';
-
 import classNames from 'classnames';
-import shadowStyles from './shadow.less';
 import { enumeration } from 'akutil-common';
-import { vdom, define, prop, props } from 'skatejs';
+import { vdom, define, prop, props, Component } from 'skatejs';
+import { loading, error } from './internal/symbols';
+import shadowStyles from './shadow.less';
+import Presence from './Presence';
+import Image from './Image';
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
@@ -22,10 +23,21 @@ const PRESENCE_ATTRIBUTE_ENUM = {
   invalidDefault: 'none',
 };
 
-
 function imageLoadedHandler(elem) {
   return () => {
-    props(elem, { __loading: false });
+    props(elem, {
+      [loading]: false,
+      [error]: false,
+    });
+  };
+}
+
+function imageErrorHandler(elem) {
+  return () => {
+    props(elem, {
+      [error]: true,
+      [loading]: false,
+    });
   };
 }
 
@@ -38,17 +50,31 @@ function imageLoadedHandler(elem) {
  *
  */
 const definition = {
+  // Have to override the updated function to manually check the symbols until the bug is fixed in
+  // skate https://github.com/skatejs/skatejs/issues/820
+  updated(elem, prev) {
+    let hasChanged = Component.updated(elem, prev);
+    if (hasChanged) {
+      return true;
+    }
+
+    const symbolsToCheck = [loading, error];
+    const curState = props(elem);
+    symbolsToCheck.forEach(symbol => {
+      if (curState[symbol] !== prev[symbol]) {
+        hasChanged = true;
+      }
+    });
+
+    return hasChanged;
+  },
   render(elem) {
-    const presenceClasses = classNames([
-      shadowStyles.locals.presence,
-      shadowStyles.locals[elem.presence],
-    ]);
     const sizeClasses = classNames([
       shadowStyles.locals[elem.size],
       shadowStyles.locals.size,
     ]);
     const imgWrapperClasses = classNames({
-      [shadowStyles.locals.loaded]: !elem.__loading,
+      [shadowStyles.locals.loaded]: !elem[loading],
     }, shadowStyles.locals.imgWrapper);
     const slotWrapperClasses = classNames({
       // hide the slot if no presence and no slotted content to hide the border of the presence
@@ -60,18 +86,19 @@ const definition = {
         <style>{shadowStyles.toString()}</style>
         <div className={sizeClasses}>
           <div className={imgWrapperClasses} aria-label={elem.label}>
-            {
-              elem.src ? <img
-                alt={elem.label}
-                src={elem.src}
-                className={shadowStyles.locals.img}
-                onload={imageLoadedHandler(elem)}
-              /> : ''
-            }
+            <Image
+              alt={elem.label}
+              src={elem.src}
+              className={shadowStyles.locals.img}
+              onload={imageLoadedHandler(elem)}
+              onerror={imageErrorHandler(elem)}
+              error={elem[error]}
+              loading={elem[loading]}
+            />
           </div>
           <div className={slotWrapperClasses}>
             <slot className={shadowStyles.locals.defaultSlotElement}>
-              <div class={presenceClasses}></div>
+              <Presence presence={elem.presence} className={shadowStyles.locals.presence} />
             </slot>
           </div>
         </div>
@@ -121,10 +148,10 @@ const definition = {
       attribute: true,
       set(elem, data) {
         // Check that we are setting an actual value and that its's not the same value as before
-        // otherwise no onLoad event will be fired from the img and therefore __loading will never
+        // otherwise no onLoad event will be fired from the img and therefore [loading] will never
         // be set back to false.
         if (data.newValue && data.oldValue !== data.newValue) {
-          props(elem, { __loading: true });
+          props(elem, { [loading]: true });
         }
       },
     }),
@@ -142,8 +169,10 @@ const definition = {
       attribute: true,
     }),
 
-    // TODO replace with Symbol as soon as Skate supports it
-    __loading: prop.boolean({
+    [loading]: prop.boolean({
+      initial: false,
+    }),
+    [error]: prop.boolean({
       initial: false,
     }),
   },

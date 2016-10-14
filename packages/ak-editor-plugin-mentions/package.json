@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-mentions",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "This plugin provides mentions node type and related behaviors to Atlassian Editor",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -18,7 +18,7 @@
     "ak-editor-prosemirror": "^2.0.0"
   },
   "devDependencies": {
-    "ak-editor-test": "^2.0.0",
+    "ak-editor-test": "^3.0.0",
     "ak-editor-schema": "^2.0.0"
   },
   "repository": {

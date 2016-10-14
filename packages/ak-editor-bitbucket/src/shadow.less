@@ -1,4 +1,4 @@
-@import 'shared-variables.less';
+@import '~ak-editor-shared-styles/src/index';
 
 .root {
   display: block;
@@ -10,22 +10,23 @@
 
     blockquote {
       padding-left: 1em;
-      border-left: 3px solid #eee;
+      border-left: 3px solid @ak-color-N40;
       margin-left: 0;
       margin-right: 0;
     }
 
     code {
-      font-family: @code-font;
-      background: @code-bgcolor;
-      padding: 2px 5px;
-      border-radius: 5px;
+      font-family: @ak-editor-code-font-family;
+      background: @ak-editor-code-background;
+      padding: @ak-editor-code-inline-padding;
+      border-radius: @ak-border-radius;
     }
 
     pre {
-      font-family: @code-font;
-      background: @code-bgcolor;
-      padding: 5px;
+      font-family: @ak-editor-code-font-family;
+      background: @ak-editor-code-background;
+      padding: @ak-editor-code-block-padding;
+      border-radius: @ak-border-radius;
     }
   }
 }
@@ -34,6 +35,7 @@
   width: 100%;
   display: block;
   height: 50px;
+  padding-left: 20px;
   &.comment {
     height: 30px;
   }
@@ -41,6 +43,7 @@
     font-size: 14px;
     padding: 20px;
     color: black;
+    padding-left: 0;
   }
 }
 
@@ -50,9 +53,13 @@
 
 .focused {
   box-shadow: 0 0 0 2px @ak-editor-focus;
-  border-radius: 2px;
+  border-radius: @ak-border-radius;
 }
 
 :global(.ProseMirror-drop-target) {
   display: none;
+}
+
+.toolbar {
+  color: @ak-editor-inactive-foreground;
 }

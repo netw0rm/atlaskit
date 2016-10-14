@@ -1,28 +1,34 @@
 /** @jsx vdom */
-import 'style!./less/host.less';
 import shadowListStyles from './less/shadow-list.less';
 import { vdom, define, prop, props, emit, ready } from 'skatejs';
 import './index.trigger';
 import Item from './index.item';
 import CheckboxItem from './index.item.checkbox';
 import RadioItem from './index.item.radio';
-import './index.group';
+import Group from './index.group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
-
-// TODO dangling to Symbol once this is supported: https://github.com/skatejs/skatejs/issues/687
-/* eslint-disable no-underscore-dangle */
+import dropdownPositionedToSide from './internal/dropdownPositionedToSide';
 
 // Width of a dropdown should be at least width of it's trigger + 10px
 const diffBetweenDropdownAndTrigger = 10;
 const dropdownMinWidth = 150;
+const grid = 4;
+const itemHeight = grid * 7;
+const dropdownMaxHeight = (itemHeight * 9.5); // ( item height * 9.5 items) - by design
+
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
-const offset = '0 2';
+const offset = '0 4';
 const activatedFrom = Symbol();
+const keyDownOnceOnOpen = Symbol();
+const handleClickOutside = Symbol();
+const handleKeyDown = Symbol();
+const triggerSlot = Symbol();
+const layerElem = Symbol();
 
 function getTriggerElement(elem) {
-  return elem.triggerSlot && elem.triggerSlot.assignedNodes()[0];
+  return elem[triggerSlot] && elem[triggerSlot].assignedNodes()[0];
 }
 
 function getAllItems(elem) {
@@ -31,50 +37,51 @@ function getAllItems(elem) {
     .filter((node) => node instanceof Item);
 }
 
-function toggleDialog(elem, value) {
-  const isOpen = value === undefined ? !elem.open : value;
+function openDialog(elem) {
   const list = getAllItems(elem);
-
-  if ((elem.open !== isOpen)) {
-    elem.open = isOpen;
-  }
-  if (!list || !list.length) {
-    return;
-  }
-
   const trigger = getTriggerElement(elem);
 
-  if (trigger) {
-    props(trigger, { opened: isOpen });
-  }
+  elem[keyDownOnceOnOpen] = false;
 
-  // when the dialog is open the first item element should be focused,
-  // properties 'first' and 'last' should be set (TBD: change to :first-child and :last-child)
-  // when it's closed everything should be cleared
-  if (isOpen) {
-    // if dropdown has been opened by the keyDown event, then the first element should be focused
+  if (trigger) {
+    props(trigger, { opened: true });
+  }
+  if (list && list.length) {
     if (elem[activatedFrom] === 'keyDown') {
       list[0].focused = true;
     }
     list[0].first = true;
     list[list.length - 1].last = true;
-    elem.reposition();
-    document.addEventListener('click', elem._handleClickOutside);
-    document.addEventListener('keydown', elem._handleKeyDown);
-    emit(elem, events.afterOpen);
+  }
+  emit(elem, events.afterOpen);
+}
+
+function closeDialog(elem) {
+  const list = getAllItems(elem);
+  const trigger = getTriggerElement(elem);
+
+  if (trigger) {
+    props(trigger, { opened: false });
+  }
+
+  [...list].forEach((item) => {
+    item.focused = false;
+    if (item.first) {
+      item.first = false;
+    }
+    if (item.last) {
+      item.last = false;
+    }
+  });
+
+  emit(elem, events.afterClose);
+}
+
+function toggleDialog(elem) {
+  if (elem.open) {
+    props(elem, { open: false });
   } else {
-    [...list].forEach((item) => {
-      item.focused = false;
-      if (item.first) {
-        item.first = false;
-      }
-      if (item.last) {
-        item.last = false;
-      }
-    });
-    document.removeEventListener('click', elem._handleClickOutside);
-    document.removeEventListener('keydown', elem._handleKeyDown);
-    emit(elem, events.afterClose);
+    props(elem, { open: true });
   }
 }
 
@@ -91,7 +98,7 @@ function selectSimpleItem(elem, event) {
     }
   });
   event.detail.item.selected = true;
-  toggleDialog(elem, false);
+  props(elem, { open: false });
 }
 
 function selectCheckboxItem(item) {
@@ -133,20 +140,38 @@ function isDescendantOf(child, parent) {
   return isDescendantOf(child.parentNode, parent);
 }
 
+function focusNext(list, i) {
+  if (list[i + 1]) {
+    if (!list[i + 1].hidden) {
+      list[i + 1].focused = true;
+    } else {
+      focusNext(list, i + 1);
+    }
+  }
+}
+
+function focusPrev(list, i) {
+  if (list[i - 1]) {
+    if (!list[i - 1].hidden) {
+      list[i - 1].focused = true;
+    } else {
+      focusPrev(list, i - 1);
+    }
+  }
+}
+
 function changeFocus(elem, type) {
   const list = getAllItems(elem);
-
   const l = list.length;
-
   for (let i = 0; i < l; i++) {
     const item = list[i];
     if (type === 'prev' && item.focused && !item.first) {
       item.focused = false;
-      list[i - 1].focused = true;
+      focusPrev(list, i);
       break;
     } else if (type === 'next' && item.focused && !item.last) {
       item.focused = false;
-      list[i + 1].focused = true;
+      focusNext(list, i);
       break;
     }
   }
@@ -156,11 +181,13 @@ function changeFocus(elem, type) {
 // max-width is controlled by css, everything that's exceeding its limit
 // is ellipsed (by design, controlled by css)
 function getDropdownMinwidth(target, dropdown) {
-  const dropdownPositionedToSide =
-    dropdown.position.indexOf('left') === 0 || dropdown.position.indexOf('right') === 0;
-  const minWidth = !dropdownPositionedToSide ?
-  target.getBoundingClientRect().width + diffBetweenDropdownAndTrigger : dropdownMinWidth;
+  const minWidth = dropdownPositionedToSide(dropdown) ? dropdownMinWidth :
+    target.getBoundingClientRect().width + diffBetweenDropdownAndTrigger;
   return `${minWidth}px`;
+}
+
+function getDropdownMaxheight(dropdown) {
+  return dropdownPositionedToSide(dropdown) ? 'auto' : `${dropdownMaxHeight}px`;
 }
 
 /**
@@ -182,39 +209,54 @@ export default define('ak-dropdown', {
     elem.addEventListener(events.unselected, (e) => unselectItem(elem, e));
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
-    elem.addEventListener(events.item.tab, () => toggleDialog(elem, false));
-    elem._handleClickOutside = (e) => {
-      if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem)) {
-        toggleDialog(elem, false);
+    elem.addEventListener(events.item.tab, () => props(elem, { open: false }));
+    elem[handleClickOutside] = (e) => {
+      if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem) &&
+        !(e.path && e.path.indexOf(elem) > -1)) {
+        props(elem, { open: false });
       }
     };
-    elem._handleKeyDown = (e) => {
-      if (elem.open && e.keyCode === keyCode('escape')) {
-        toggleDialog(elem, false);
+    elem[handleKeyDown] = (e) => {
+      if (elem.open) {
+        if (e.keyCode === keyCode('escape')) {
+          props(elem, { open: false });
+        } else if (!elem[keyDownOnceOnOpen] && e.keyCode === keyCode('down')) {
+          elem[keyDownOnceOnOpen] = true;
+          getAllItems(elem)[0].focused = true;
+        }
       }
     };
+
+    document.addEventListener('click', elem[handleClickOutside]);
+    document.addEventListener('keydown', elem[handleKeyDown]);
+  },
+  detached(elem) {
+    document.removeEventListener('click', elem[handleClickOutside]);
+    document.removeEventListener('keydown', elem[handleKeyDown]);
   },
   prototype: {
     reposition() {
-      if (this._layer) {
-        ready(this._layer, () => {
-          this._layer.reposition();
+      if (this[layerElem]) {
+        ready(this[layerElem], () => {
+          this[layerElem].reposition();
         });
       }
 
       return this;
     },
   },
-  rendered(elem) {
-    const trigger = getTriggerElement(elem) || {};
-    if (trigger.opened !== elem.open) {
-      toggleDialog(elem, elem.open);
-    }
-  },
   render(elem) {
+    // groups have top margin by default
+    // but if the group is the very first item after the trigger, the margin is suppose to be 0
+    if (elem.childNodes && elem.childNodes[1] && elem.childNodes[1] instanceof Group) {
+      elem.childNodes[1].style.marginTop = '0';
+    }
     let target = elem.target;
+
     return (
-      <div>
+      <div
+        style={{ position: elem.stepOutside || elem.boundariesElement ? 'static' : 'relative' }}
+      >
         {!elem.target ?
           <div
             ref={(el) => {
@@ -223,7 +265,9 @@ export default define('ak-dropdown', {
           >
             <slot
               name="trigger"
-              ref={el => (elem.triggerSlot = el)}
+              ref={el => {
+                elem[triggerSlot] = el;
+              }}
             />
           </div>
           : null
@@ -237,25 +281,28 @@ export default define('ak-dropdown', {
           // Needs to be rewritten to conditionally render the <slot />
           // See AK-343
           style={{ display: elem.open ? 'block' : 'none' }}
+          boundariesElement={elem.boundariesElement}
           ref={(layer) => {
-            elem._layer = layer;
-            setTimeout(() => {
-              if (elem.open && layer.alignment) {
-                  // by default dropdown has opacity 0
-                  // and only with attribute 'positioned' it has opacity 1
-                  // this behavior is to avoid 'flashing' of dropdown
-                  // when it's initially positioning itself on a page
-                elem.setAttribute('positioned', true);
-                layer.reposition();
-              }
-            });
+            elem[layerElem] = layer;
+            if (layer && layer.reposition) {
+              layer.reposition();
+            }
           }
         }
         >
           <div
             className={shadowListStyles.locals.list}
-            style={{ minWidth: getDropdownMinwidth(target, elem) }}
+            style={{
+              maxHeight: getDropdownMaxheight(elem),
+            }}
             role="menu"
+            ref={(el) => {
+              // hack for the AK-577 until someone think of a better solution
+              el.style.minWidth = getDropdownMinwidth(target, elem);
+              setTimeout(() => {
+                el.style.minWidth = getDropdownMinwidth(target, elem);
+              });
+            }}
           >
             <style>{shadowListStyles.toString()}</style>
             <slot />
@@ -263,6 +310,9 @@ export default define('ak-dropdown', {
         </Layer>
       </div>
     );
+  },
+  rendered(elem) {
+    elem.reposition();
   },
   props: {
     /**
@@ -275,6 +325,15 @@ export default define('ak-dropdown', {
      */
     open: prop.boolean({
       attribute: true,
+      set(elem, data) {
+        if (data.newValue !== data.oldValue) {
+          if (data.newValue) {
+            openDialog(elem);
+          } else {
+            closeDialog(elem);
+          }
+        }
+      },
     }),
     /**
      * @description Position of the dropdown. See the documentation of ak-layer for more details.
@@ -294,8 +353,33 @@ export default define('ak-dropdown', {
      * @example @js dropdown.target = document.getElementById("target");
      */
     target: {},
+    /**
+     * @description Element to act as a boundary for the Dropdown.
+     * The Dropdown will not sit outside this element if it can help it.
+     * If, through it's normal positioning, it would end up outside the boundary the Dropdown
+     * will flip positions.
+     * If not set the boundary will be the current viewport.
+     * @memberof Layer
+     * @instance
+     * @type HTMLElement
+     * @example @js dropdown.boundariesElement = document.body.querySelector('#container');
+     */
+    boundariesElement: {},
+    /**
+     * @description If the dropdown is placed inside an element with overflow:hidden, this property
+     * should be set to `true` in order for the Dropdown to be able to step outside the container
+     * @memberof Dropdown
+     * @instance
+     * @default false
+     * @type Boolean
+     * @example @html <ak-dropdown step-outside></ak-dropdown>
+     * @example @js dropdown.stepOutside = true;
+     */
+    stepOutside: prop.boolean({
+      attribute: true,
+    }),
   },
 });
 
-export { events };
+export { events, Item, CheckboxItem, RadioItem, Group };
 export { DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow } from './index.trigger';

@@ -80,6 +80,19 @@ export const BaseProps = {
       }
     },
   }),
+  /**
+   * @description defines whether the item is invisible
+   * @memberof Dropdown
+   * @default false
+   * @type {Boolean}
+   * @example @html <ak-dropdown>
+   *   <ak-dropdown-item hidden>some content</ak-dropdown-item>
+   * </ak-dropdown>
+   * @example @js dropdown.childNodes[0].hidden = true;
+   */
+  hidden: prop.boolean({
+    attribute: true,
+  }),
 };
 
 export default define('ak-dropdown-item', {

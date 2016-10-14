@@ -1,19 +1,18 @@
-const swipeLeft = Symbol();
-const swipeRight = Symbol();
-const noSwipe = Symbol();
-const touchThreshold = 20;
+import resizerFactory from './resizer';
 
-export default function getSwipeType(touchstart, touchend) {
-  const startTouch = touchstart.targetTouches[0];
-  const endTouch = touchend.changedTouches[0];
-  const delta = startTouch.screenX - endTouch.screenX;
-  if (delta > touchThreshold) {
-    return swipeRight;
-  } else if (delta < -touchThreshold) {
-    return swipeLeft;
-  }
-
-  return noSwipe;
+export default function addTouchHandlers(navigation) {
+  const resizer = resizerFactory(navigation);
+  navigation.addEventListener('touchstart', (event) => {
+    resizer.start({
+      screenX: event.targetTouches[0].screenX,
+    });
+  });
+  navigation.addEventListener('touchmove', (event) => {
+    resizer.resize({
+      screenX: event.targetTouches[0].screenX,
+    });
+  });
+  navigation.addEventListener('touchend', () => {
+    resizer.end();
+  });
 }
-
-export { swipeLeft, swipeRight, noSwipe };

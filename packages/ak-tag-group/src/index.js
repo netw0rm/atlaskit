@@ -1,4 +1,3 @@
-import 'style!./host.less';
 import { vdom, define } from 'skatejs';
 import { enumeration } from 'akutil-common';
 import shadowStyles from './shadow.less';
@@ -19,7 +18,7 @@ const alignment = {
 
 const ALIGNMENT_ATTRIBUTE_ENUM = {
   attribute: 'alignment',
-  values: [alignment.start, alignment.end],
+  values: Object.values(alignment),
   missingDefault: '',
   invalidDefault: '',
 };
@@ -59,7 +58,7 @@ export default define('ak-tag-group', {
      * @description (Optional) A group alignment.
      *
      * Defaults to an empty string (which means it uses the text direction to determine
-     * the alignment).
+     * the alignment (same as start)).
      *
      * This setting also controls the animation direction on tag removal,
      * e.g. start alignment means that the tags list moves to the text-start on removal
@@ -70,6 +69,7 @@ export default define('ak-tag-group', {
      * @memberof TagGroup
      * @instance
      * @type {alignment}
+     * @default start
      * @example @html <ak-tag-group alignment="end">
      *   <ak-tag text="Cupcake"/ >
      *   <ak-tag text="Cheesecake"/ >

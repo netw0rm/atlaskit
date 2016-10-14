@@ -1,5 +1,4 @@
 /** @jsx vdom */
-import 'style!./host.less';
 import { enumeration, KeyPressHandler } from 'akutil-common';
 import { vdom, prop, define, emit } from 'skatejs';
 import shadowStyles from './shadow.less';
@@ -59,6 +58,9 @@ export default define('ak-inline-dialog', {
     }
     if (elem.padding) {
       styles.padding = elem.padding;
+    }
+    if (elem.borderColor) {
+      styles.borderColor = elem.borderColor;
     }
     if (elem.borderRadius) {
       styles.borderRadius = elem.borderRadius;
@@ -172,6 +174,17 @@ export default define('ak-inline-dialog', {
      * @example @js dialog.boxShadow = '0 0 10px 10px #f0f0f0'
      */
     boxShadow: prop.string({
+      attribute: true,
+    }),
+    /**
+     * @description Border-color style for the inline-dialog
+     * @memberof InlineDialog
+     * @instance
+     * @type String
+     * @example @html <ak-inline-dialog border-color="red"></ak-inline-dialog>
+     * @example @js dialog.borderColor = 'red'
+     */
+    borderColor: prop.string({
       attribute: true,
     }),
     /**

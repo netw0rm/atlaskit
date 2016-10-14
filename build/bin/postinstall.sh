@@ -7,10 +7,10 @@ CHALK="`npm bin`/chalk"
 
 $CHALK --no-stdin -t "{blue Lerna bootstrap...}"
 if [[ -z "$BITBUCKET_COMMIT" ]]; then
-  $LERNA_LOC bootstrap
+  RUN_DURING_INSTALL=1 $LERNA_LOC bootstrap
 else
   # piping to cat is used to put stdout in a non-TTY mode (hides the progress bar in lerna)
-  $LERNA_LOC bootstrap | cat
+  RUN_DURING_INSTALL=1 $LERNA_LOC bootstrap | cat
 fi
 
 if [[ -z "$BITBUCKET_COMMIT" ]]; then

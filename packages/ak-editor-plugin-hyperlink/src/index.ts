@@ -71,9 +71,12 @@ function isNodeLinkable(pm: ProseMirror, node: Node): boolean {
 
 function isCursorOnLink(
   proseMirrorInstance: ProseMirror,
-  pos: number
+  fromPos: number,
+  toPos: number,
 ) : Mark {
-  const marks = proseMirrorInstance.doc.marksAt(pos);
+  const doc = proseMirrorInstance.doc;
+  const marks = doc.marksAt(fromPos + 1).concat(doc.marksAt(toPos - 1));
+
   return marks.reduce(
     (found: boolean, m: Mark) => found || (m.type.name === 'link' && m),
     null
@@ -138,16 +141,18 @@ export default new Plugin(class HyperlinkPlugin {
     const pm = this.pm;
     const {
       $head,
+      $from,
       $to,
       empty
     } = pm.selection;
+
     const oldState = this.getState();
 
     const $resolvedPos: ResolvedPos = $head || $to;
 
     // because $resolvedPos.pos - 1 is actually the correct position
     const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
-    const isLink = isCursorOnLink(pm, $resolvedPos.pos);
+    const isLink = isCursorOnLink(pm, $from.pos, $to.pos);
 
     if (isLink && activeNode) {
       this.setState(isLink.attrs, {
@@ -193,7 +198,7 @@ export default new Plugin(class HyperlinkPlugin {
 
     const $resolvedPos: ResolvedPos = $head || $to;
 
-    const isLink = isCursorOnLink(pm, $resolvedPos.pos);
+    const isLink = isCursorOnLink(pm, $from.pos, $to.pos);
 
     const { enabled } = this.getState();
 
@@ -218,15 +223,16 @@ export default new Plugin(class HyperlinkPlugin {
     const {
       $anchor,
       $from,
+      $to,
       $head,
     } = selection;
-    const isLink = isCursorOnLink(pm, $head.pos);
+    const isLink = isCursorOnLink(pm, $from.pos, $to.pos);
 
     if (!isLink) {
       return false;
     }
 
-    const node = pm.doc.nodeAt($from.pos);
+    const node = pm.doc.nodeAt($from.pos - 1);
 
     // start captures the start of the node position based on depth
     // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
@@ -234,11 +240,9 @@ export default new Plugin(class HyperlinkPlugin {
     // need to go inside one level deeper
     // why - 1 ?
     // we want to capture the start of the node instead of the inside of the node
-    const currentNodeOffset = $anchor.start($anchor.depth + 1) - 1;
+    const markerTo = $anchor.end($anchor.depth);
 
-    const markerFrom = currentNodeOffset;
-    const markerTo = markerFrom + node.nodeSize;
-
+    const markerFrom = markerTo - node.nodeSize;
     pm.tr.removeMark(markerFrom, markerTo, isLink).apply();
 
     if (forceTextSelection) {

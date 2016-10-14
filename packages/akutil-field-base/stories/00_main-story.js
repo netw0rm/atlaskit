@@ -3,11 +3,9 @@ import React from 'react';
 import reactify from 'akutil-react';
 import FieldBaseWC from '../src';
 import { name } from '../package.json';
-import TextfieldWC from './skate/textfield';
 import styles from '../src/host.less';
 
 const FieldBase = reactify(FieldBaseWC);
-const Textfield = reactify(TextfieldWC);
 
 const formStyle = (width = 300) => ({
   padding: '20px',
@@ -163,16 +161,20 @@ storiesOf(name, module)
       </div>
     );
   })
-  .add('a simple form with text fields', () => (
+  .add('extending fieldBase with vanilla JS', () => (
     <div>
       <form action="" style={formStyle(400)}>
         <h2>My Form</h2>
         <div>
-          This form shows actual TextField components that are created by extending FieldBase.
+          This component is made using nothing but vanilla JavaScript.
         </div>
-        <Textfield label="Viewmode by default" value="Yo! If you had..." />
-        <Textfield label="Editmode by default" value="One shot..." editing />
-        <Textfield label="I am not inline editable" value="One opportunity..." editing />
+        <br />
+        <FieldBase label="Label for h1 FieldBase" hideLabel>
+          <div is slot="editmode">
+            <input type="text" id="editmodeInput" defaultValue="This is edit mode" />
+          </div>
+          <div is slot="viewmode"><span id="viewmodeValue">This is viewmode</span></div>
+        </FieldBase>
       </form>
     </div>
   ))

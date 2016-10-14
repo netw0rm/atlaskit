@@ -1,16 +1,16 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
 import React from 'react';
 import Lorem from 'react-lorem-component';
+import reactify from 'akutil-react';
+import 'ak-icon/glyph/search';
+import 'ak-icon/glyph/create';
 import AkNavigation from 'ak-navigation';
-import 'ak-icon';
 
 import webComponent from '../src';
 import { name } from '../package.json';
 
 
 const Component = reactify(webComponent);
-
 const Navigation = reactify(AkNavigation);
 
 storiesOf(name, module)

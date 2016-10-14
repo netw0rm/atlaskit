@@ -1,18 +1,17 @@
-/** @jsx vdom */
-
 import { vdom, define, prop, props } from 'skatejs';
 import { themeable } from 'ak-theme';
 import { style } from 'akutil-common';
 import { appearance, type } from './enumeratedProperties';
 import Slot from './Slot';
 import Button from './Button';
-import { stylesKey } from './symbols';
-import css from './styles';
+import createStyles from './styles';
+import adg2 from './themes/adg2';
 
 const APPEARANCE = appearance.values;
 const TYPE = type.values;
 
 export { APPEARANCE, TYPE };
+export const themes = { adg2 };
 
 /**
  * @description Creates instances of ak-button programmatically, or using markup.
@@ -69,10 +68,9 @@ const definition = {
      * @example @js button.selected = true;
      */
     selected: prop.boolean({ attribute: true }),
-    [stylesKey]: { attribute: false },
   },
   render(elem) {
-    const styles = elem[stylesKey] = style(vdom, css);
+    const styles = style(vdom, createStyles(elem.themeProps));
     return (
       <Button {...props(elem)} styles={styles}>
         <Slot styles={styles} name="before" />

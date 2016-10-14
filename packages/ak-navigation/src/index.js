@@ -6,8 +6,8 @@ import 'custom-event-polyfill';
 
 import './internal/ak-navigation-drawer';
 import './internal/ak-navigation-drag';
-import './index.ak-navigation-link';
 import shadowStyles from './index.less';
+import NavigationLink from './index.ak-navigation-link';
 import resizer from './internal/resizer';
 import addTouchHandlers from './internal/touch';
 import {
@@ -387,4 +387,4 @@ export default define('ak-navigation', {
   },
 });
 
-export { events };
+export { events, NavigationLink };

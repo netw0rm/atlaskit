@@ -1,20 +1,8 @@
 import { vdom } from 'skatejs';
 import classNames from 'classnames';
 
-import { appearance } from './enumeratedProperties';
+import getClasses from './internal/getButtonClasses';
 
-
-const { PRIMARY, SUBTLE, LINK } = appearance.values;
-
-const getClasses = (styles, props) => ({
-  [styles.button]: true,
-  [styles.compact]: props.compact,
-  [styles.disabled]: props.disabled,
-  [styles.selected]: props.selected && !props.disabled,
-  [styles.primary]: props.appearance === PRIMARY && !props.disabled && !props.selected,
-  [styles.subtle]: props.appearance === SUBTLE && !props.disabled && !props.selected,
-  [styles.link]: props.appearance === LINK && !props.selected,
-});
 
 /* eslint-disable react/prop-types */
 export default (props, children) => (

@@ -3,8 +3,10 @@ import { Component, emit } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
-import { name } from '../package.json';
-import AkNavigation, { events as navigationEvents } from '../src';
+import AkNavigation, {
+  NavigationLink as AkNavigationLink,
+  events as navigationEvents,
+} from '../src';
 
 
 const {
@@ -34,6 +36,10 @@ function tearDownComponent(component) {
 describe('exports', () => {
   it('should export a base component', () => {
     (new AkNavigation()).should.be.an.instanceof(Component);
+  });
+
+  it('should export a navigation link component', () => {
+    (new AkNavigationLink()).should.be.an.instanceof(Component);
   });
 
   it('should have an events export with defined events', () => {

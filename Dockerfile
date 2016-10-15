@@ -83,7 +83,7 @@ RUN echo "Installing AtlasKit tools" \
   cloudfront-invalidate-cli@1.0.3 \
   marky-markdown@8.1.0 \
   bitbucket-build-status@1.0.1 \
-  npm-run-all@3.1.0 \
+  npm-run-all@3.1.1 \
   lerna@"${LERNA_VERSION}" \
   lerna-semantic-release@8.0.2 \
   indexifier@2.0.0 \

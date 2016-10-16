@@ -73,7 +73,7 @@ function isCursorOnLink(
   proseMirrorInstance: ProseMirror,
   pos: number
 ) : Mark {
-  const marks = proseMirrorInstance.doc.marksAt(pos);
+  const marks = proseMirrorInstance.doc.nodeAt(pos - 1).marks;
   return marks.reduce(
     (found: boolean, m: Mark) => found || (m.type.name === 'link' && m),
     null

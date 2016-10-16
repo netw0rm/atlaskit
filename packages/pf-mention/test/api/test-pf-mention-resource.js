@@ -1,13 +1,15 @@
-// 'fetch-mock' needs a Promise polyfill
 import Promise from 'babel-runtime/core-js/promise';
+// 'fetch-mock' needs a Promise polyfill
+/* eslint-disable import/imports-first */
+if (!window.Promise) {
+  window.Promise = Promise;
+}
+
 import fetchMock from 'fetch-mock';
 
 import MentionResource from '../../src/api/pf-mention-resource';
 import { resultC, resultCraig } from '../_mention-data';
-
-if (!window.Promise) {
-  window.Promise = Promise;
-}
+/* eslint-enable import/imports-first */
 
 const baseUrl = 'https://bogus/';
 

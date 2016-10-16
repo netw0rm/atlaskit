@@ -1,6 +1,6 @@
 {
   "name": "ak-navigation",
-  "version": "11.0.9",
+  "version": "11.1.0",
   "description": "ak-navigation webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

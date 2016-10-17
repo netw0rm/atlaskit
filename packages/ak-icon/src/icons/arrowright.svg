@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="6px" height="11px" viewBox="245 20 6 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
-  <desc>Created with Sketch.</desc>
-  <defs></defs>
-  <path d="M243.349218,24.7592838 L246.849218,27.7592838 C247.223707,28.080275 247.776311,28.080275 248.1508,27.7592838 L251.6508,24.7592838 C252.070126,24.3998616 252.118688,23.7685617 251.759266,23.3492358 C251.399844,22.92991 250.768544,22.8813484 250.349218,23.2407706 L246.849218,26.2407706 L248.1508,26.2407706 L244.6508,23.2407706 C244.231475,22.8813484 243.600175,22.92991 243.240752,23.3492358 C242.88133,23.7685617 242.929892,24.3998616 243.349218,24.7592838 L243.349218,24.7592838 Z" id="Path-112-Copy-10" stroke="none" fill="currentColor" fill-rule="evenodd" transform="translate(247.500009, 25.500018) rotate(-90.000000) translate(-247.500009, -25.500018) "></path>
+<svg width="20px" height="20px" viewBox="0 0 9 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>right-chevron</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="right-chevron" transform="translate(4.000000, 8.000000) rotate(180.000000) translate(-4.000000, -8.000000) translate(-1.000000, 0.000000)" fill="#243759">
+            <path d="M2.4139,8.0013 L8.7089,1.7063 C9.0979,1.3173 9.0979,0.6803 8.7089,0.2913 C8.3209,-0.0977 7.6839,-0.0977 7.2949,0.2913 L0.2989,7.2883 C0.2959,7.2903 0.2939,7.2913 0.2919,7.2933 C0.0969,7.4873 -0.0001,7.7443 -0.0001,8.0013 C-0.0001,8.2583 0.0969,8.5153 0.2919,8.7093 C0.2939,8.7113 0.2969,8.7123 0.2989,8.7143 L7.2929,15.7083 C7.6819,16.0973 8.3179,16.0973 8.7069,15.7083 C9.0959,15.3193 9.0959,14.6833 8.7069,14.2943 L2.4139,8.0013 Z" id="Fill-1"></path>
+        </g>
+    </g>
 </svg>

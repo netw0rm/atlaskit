@@ -1,12 +1,12 @@
 {
   "name": "ak-editor-button",
-  "version": "2.3.9",
+  "version": "2.3.11",
   "description": "Editor Button web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-button"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-button"
   },
   "files": [
     "dist"
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",
-    "ak-icon": "~7.5.0",
+    "ak-icon": "^8.1.2",
     "akutil-common-test": "^3.0.0"
   },
   "repository": {

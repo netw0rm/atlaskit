@@ -1,10 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import webComponent from '../src/index';
 import React from 'react';
 import Lorem from 'react-lorem-component';
+import reactify from 'akutil-react';
+import 'ak-icon/glyph/search';
+import 'ak-icon/glyph/create';
+
+import webComponent from '../src/index';
 import { name } from '../package.json';
-import 'ak-icon';
 
 import AkNavigation from 'ak-navigation';
 
@@ -55,7 +57,7 @@ storiesOf(name, module)
       `}</style>
       <Navigation slot="navigation" open>
         <ak-icon-search slot="global-search" />
-        <ak-icon-bitbucket-create slot="global-create" />
+        <ak-icon-create slot="global-create" />
       </Navigation>
       <div>
         <div className="z-index-content">

@@ -3,7 +3,7 @@
 This is a template for AtlasKit components. Update this file with usage instructions and examples.
 
 
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-componentname/docs/insertyourimagehere.png)
+![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-componentname/docs/insertyourimagehere.png)
 
 ##Try it out
 

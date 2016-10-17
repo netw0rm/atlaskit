@@ -9,6 +9,7 @@ import Group from './index.group';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 import * as events from './internal/events';
+import getItemsList from './internal/getItemsList';
 import dropdownPositionedToSide from './internal/dropdownPositionedToSide';
 
 // Width of a dropdown should be at least width of it's trigger + 10px
@@ -31,14 +32,9 @@ function getTriggerElement(elem) {
   return elem[triggerSlot] && elem[triggerSlot].assignedNodes()[0];
 }
 
-function getAllItems(elem) {
-  return Array
-    .from(elem.querySelectorAll('*[defined]'))
-    .filter((node) => node instanceof Item);
-}
 
 function openDialog(elem) {
-  const list = getAllItems(elem);
+  const list = getItemsList(elem.childNodes);
   const trigger = getTriggerElement(elem);
 
   elem[keyDownOnceOnOpen] = false;
@@ -57,14 +53,14 @@ function openDialog(elem) {
 }
 
 function closeDialog(elem) {
-  const list = getAllItems(elem);
+  const list = getItemsList(elem.childNodes);
   const trigger = getTriggerElement(elem);
 
   if (trigger) {
     props(trigger, { opened: false });
   }
 
-  [...list].forEach((item) => {
+  list.forEach((item) => {
     item.focused = false;
     if (item.first) {
       item.first = false;
@@ -86,13 +82,11 @@ function toggleDialog(elem) {
 }
 
 function selectSimpleItem(elem, event) {
-  const list = Array
-    .from(elem.querySelectorAll('*[defined]'))
-    .filter((node) => (
+  const list = getItemsList(elem.childNodes).filter((node) => (
       node instanceof Item && !(node instanceof RadioItem) && !(node instanceof CheckboxItem)
     ));
 
-  [...list].forEach((val) => {
+  list.forEach((val) => {
     if (val.selected) {
       val.selected = false;
     }
@@ -161,7 +155,7 @@ function focusPrev(list, i) {
 }
 
 function changeFocus(elem, type) {
-  const list = getAllItems(elem);
+  const list = getItemsList(elem.childNodes);
   const l = list.length;
   for (let i = 0; i < l; i++) {
     const item = list[i];
@@ -222,7 +216,7 @@ export default define('ak-dropdown', {
           props(elem, { open: false });
         } else if (!elem[keyDownOnceOnOpen] && e.keyCode === keyCode('down')) {
           elem[keyDownOnceOnOpen] = true;
-          getAllItems(elem)[0].focused = true;
+          getItemsList(elem.childNodes)[0].focused = true;
         }
       }
     };

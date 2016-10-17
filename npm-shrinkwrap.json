@@ -6327,9 +6327,16 @@
       "resolved": "https://registry.npmjs.org/tryit/-/tryit-1.0.2.tgz"
     },
     "ts-loader": {
-      "version": "0.9.3",
+      "version": "0.9.0",
       "from": "ts-loader@>=0.9.0 <0.10.0",
-      "resolved": "https://registry.npmjs.org/ts-loader/-/ts-loader-0.9.3.tgz"
+      "resolved": "https://registry.npmjs.org/ts-loader/-/ts-loader-0.9.0.tgz",
+      "dependencies": {
+        "object-assign": {
+          "version": "2.1.1",
+          "from": "object-assign@>=2.0.0 <3.0.0",
+          "resolved": "http://registry.npmjs.org/object-assign/-/object-assign-2.1.1.tgz"
+        }
+      }
     },
     "tty-browserify": {
       "version": "0.0.0",
@@ -6367,9 +6374,9 @@
       "resolved": "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
     },
     "typescript": {
-      "version": "2.1.0-dev.20161016",
+      "version": "2.1.0-dev.20161010",
       "from": "typescript@>=2.1.0-dev.20160826 <3.0.0",
-      "resolved": "https://registry.npmjs.org/typescript/-/typescript-2.1.0-dev.20161016.tgz"
+      "resolved": "https://registry.npmjs.org/typescript/-/typescript-2.1.0-dev.20161010.tgz"
     },
     "typical": {
       "version": "2.6.0",

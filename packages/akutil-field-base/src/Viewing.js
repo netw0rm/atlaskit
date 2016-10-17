@@ -19,7 +19,9 @@ function addKeyHandlers(callback, elem) {
 
 /* eslint-disable react/prop-types */
 export default (props) => {
-  const viewModeWrapperClasses = classNames(shadowStyles.locals.viewModeWrapper, {
+  const viewModeWrapperClasses = classNames({
+    [shadowStyles.locals.viewModeWrapper]: !props.hideViewing,
+    [shadowStyles.locals.hidden]: props.hideViewing,
     [shadowStyles.locals.editButtonFocused]: props.focused,
   });
   return (

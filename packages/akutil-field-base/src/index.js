@@ -1,8 +1,8 @@
 import { vdom, define, prop, props, emit } from 'skatejs';
 import 'style!./host.less';
 import { showEditingView, showViewingView } from './internal/events';
-import Editing from './Editing';
-import Viewing from './Viewing';
+import EditingView from './Editing';
+import ViewingView from './Viewing';
 import Label from './Label';
 import Root from './Root';
 
@@ -50,8 +50,8 @@ function setFocus(elem, focus) {
  */
 export default define('ak-field-base', {
   render(elem) {
-    const ViewingView = !elem.editing ? Viewing : () => null;
-    const EditingView = elem.editing ? Editing : () => null;
+    const hideViewingView = elem.editing;
+    const hideEditingView = !elem.editing;
 
     return (
       <Root>
@@ -64,6 +64,7 @@ export default define('ak-field-base', {
             switchToEditingCallback={() => switchToEditing(elem)}
             setFocus={(focus) => setFocus(elem, focus)}
             focused={elem.focused}
+            hideViewing={hideViewingView}
           />
         </Label>
         <EditingView
@@ -72,6 +73,7 @@ export default define('ak-field-base', {
           onCancel={() => switchToViewing(elem, true)}
           waiting={elem.waiting}
           invalid={elem.invalid}
+          hideEditing={hideEditingView}
         />
       </Root>
     );

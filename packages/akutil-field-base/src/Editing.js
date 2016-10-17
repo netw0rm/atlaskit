@@ -39,8 +39,12 @@ export default (props) => {
     [shadowStyles.locals.focused]: props.focused,
     [shadowStyles.locals.invalid]: props.invalid && !props.focused,
   });
+  const editWrapperClasses = classNames({
+    [shadowStyles.locals.editModeWrapper]: !props.hideEditing,
+    [shadowStyles.locals.hidden]: props.hideEditing,
+  });
   return (
-    <div className={shadowStyles.locals.editModeWrapper}>
+    <div className={editWrapperClasses}>
       <div className={slotWrapperClasses}>
         <slot
           className={shadowStyles.locals.editModeSlot}

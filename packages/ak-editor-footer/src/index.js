@@ -60,7 +60,6 @@ export default define('ak-editor-footer', {
       </div>
     );
   },
-  foo() {},
 
   props: {
     hideButtons: prop.boolean({ attribute: true, default: false }),

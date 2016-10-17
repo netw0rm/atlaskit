@@ -5,7 +5,7 @@ if [ "" != "$msha" ]; then
   exit 0
 fi
 
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 
 $CHALK --no-stdin -t "{blue Checking for testable changes...}"
 changed_files=$(git diff-tree --no-commit-id --name-only -r HEAD | grep -v ".md")

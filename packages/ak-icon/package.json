@@ -6,11 +6,11 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.js",
-    "generate-icon-exports": "node ./bin/generate-icon-exports.js",
-    "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
-    "prepublish": "CLI=1 npm run gen-js && cd ../.. && npm run prepublish/single ak-icon",
-    "pretest": "npm run gen-js"
+    "generate-bundle-exports": "./bin/generate-bundle-exports.js > ./src/index.js",
+    "generate-icon-exports": "./bin/generate-icon-exports.js",
+    "gen-js": "yarn run generate-icon-exports && yarn run generate-bundle-exports",
+    "prepublish": "CLI=1 yarn run gen-js && cd ../.. && yarn run prepublish/single ak-icon",
+    "pretest": "yarn run gen-js"
   },
   "files": [
     "dist",

@@ -51,9 +51,9 @@ services:
     command: 'bash -c
             "
               echo \"waiting for hub\"
-              && `npm bin`/wait-on tcp:hub:4444
+              && `yarn bin`/wait-on tcp:hub:4444
               && echo \"waiting for dev\"
-              && `npm bin`/wait-on -d 20000 -i 500 http-get://dev:9001/
+              && `yarn bin`/wait-on -d 20000 -i 500 http-get://dev:9001/
               && echo \"running tests\"
               && npm run test/single/integration \"$SCOPE\"
              "'

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-LERNA_LOC="`npm bin`/lerna"
-CHALK="`npm bin`/chalk"
-VALIDATE_COMMIT_MSG_LOC="`npm bin`/validate-commit-msg"
+LERNA_LOC="`yarn bin`/lerna"
+CHALK="`yarn bin`/chalk"
+VALIDATE_COMMIT_MSG_LOC="`yarn bin`/validate-commit-msg"
 BASEDIR=$(dirname $0)
 
 $CHALK --no-stdin -t "{blue Installing packages...}"

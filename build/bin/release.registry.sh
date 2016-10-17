@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 
@@ -24,15 +24,15 @@ bbuild \
 --state "INPROGRESS"
 
 # Note: unfortunately @atlassian scope is used on the public and private
-# npm registries, which is why we need to disable the .npmrc file
+# yarn registries, which is why we need to disable the .npmrc file
 # temporarily here.
 $CHALK --no-stdin -t "{blue Installing atlaskit-registry from Atlassian private npm}"
 mv .npmrc ._npmrc
-npm config set progress false
-npm set loglevel warn
-npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
-npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
-npm install @atlassian/atlaskit-registry@^1.3.1
+yarn config set progress false
+yarn set loglevel warn
+yarn set @atlassian:registry https://npm-private-proxy.atlassian.io/
+yarn set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
+yarn install @atlassian/atlaskit-registry@^1.3.1
 mv ._npmrc .npmrc
 
 # Build website using jekyll
@@ -42,8 +42,8 @@ mkdir -p $TARGET_PATH_RELATIVE
 pushd $TARGET_PATH_RELATIVE > /dev/null
 TARGET_PATH=`pwd`
 popd > /dev/null
-REGISTRY_BIN=`npm bin`/ak-registry
-REGISTRY_PATH=`npm root`/@atlassian/atlaskit-registry
+REGISTRY_BIN=`yarn bin`/ak-registry
+REGISTRY_PATH=`yarn root`/@atlassian/atlaskit-registry
 pushd $REGISTRY_PATH > /dev/null
 BITBUCKET_PASS=$BITBUCKET_PW_READONLY $REGISTRY_BIN --destination $TARGET_PATH
 popd > /dev/null

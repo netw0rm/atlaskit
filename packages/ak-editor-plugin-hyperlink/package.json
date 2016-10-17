@@ -7,7 +7,7 @@
   "ak:webpack:raw": "src/index.ts",
   "typings": "src/index.ts",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-plugin-hyperlink"
+    "prepublish": "cd ../.. && yarn run prepublish/single ak-editor-plugin-hyperlink"
   },
   "files": [
     "dist"

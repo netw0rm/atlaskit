@@ -7,7 +7,7 @@
   "ak:webpack:raw": "src/index.ts",
   "typings": "src/index.ts",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single akutil-react"
+    "prepublish": "cd ../.. && yarn run prepublish/single akutil-react"
   },
   "files": [
     "dist"

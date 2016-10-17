@@ -6,7 +6,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-toolbar-lists"
+    "prepublish": "cd ../.. && yarn run prepublish/single ak-editor-toolbar-lists"
   },
   "files": [
     "dist"

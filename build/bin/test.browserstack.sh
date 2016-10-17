@@ -4,7 +4,9 @@ set -e
 MAX_RETRIES=2
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
+KARMA="`yarn bin`/karma"
+RETRY="`yarn bin`/retry"
 
 # Run the Browserstack tests
 for STAGE in 1 2 3
@@ -16,9 +18,9 @@ do
   GITHEAD_SHORT="$GITHEAD_SHORT" \
   CURRENT_BRANCH="$CURRENT_BRANCH" \
   BROWSERSTACK_STAGE=$STAGE \
-  retry \
+  $RETRY \
   --retries=$MAX_RETRIES \
   -- \
-  karma start \
+  $KARMA start \
   ./build/karma/browserstack.js
 done

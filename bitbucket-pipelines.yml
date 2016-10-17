@@ -8,39 +8,29 @@ pipelines:
             - ./build/bin/last_commit_has_changes.sh || exit 0
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
-            - npm install
-            - npm run browserstack/tunnel/start
+            - yarn install
+            - yarn run postinstall # Remove when https://github.com/yarnpkg/yarn/pull/800 is released
+            - yarn run browserstack/tunnel/start
             - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack"
-            # AK-628 - npm run test/integration
-            - npm run browserstack/tunnel/stop
-            - npm run release/check/is-workspace-clean --silent
-            - npm run release/check/can-ff --silent || exit 0
-            - npm run release
+            # AK-628 - yarn run test/integration
+            - yarn run browserstack/tunnel/stop
+            - yarn run release/check/is-workspace-clean --silent
+            - yarn run release/check/can-ff --silent || exit 0
+            - yarn run release
             - run-p -ln "release/registry" "release/storybooks"
-            - npm run release/announce
+            - yarn run release/announce
     invalidate-atlaskit-cache:
       - step:
           script:
             - ./build/bin/cloudfront_invalidate.sh
-    yarnify:
-      - step:
-          script:
-            - export FORCE_COLOR=1
-            - ln -s /root/.yarn/bin/yarn /usr/bin/npm # make npm bin a yarn bin
-            - npm install
-            - npm run postinstall # Remove when https://github.com/yarnpkg/yarn/pull/800 is released
-            - npm run dist # When the sub-components are initialized, prepublish is not run there by yarn for some reason
-            - npm run browserstack/tunnel/start
-            - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack" "pr/artifacts"
-            - npm run test/integration
-            - npm run browserstack/tunnel/stop
   default:
     - step:
         script:
           - export FORCE_COLOR=1
           - ./build/bin/setup.sh
-          - npm install
-          - npm run browserstack/tunnel/start
+          - yarn install
+          - yarn run postinstall # Remove when https://github.com/yarnpkg/yarn/pull/800 is released
+          - yarn run browserstack/tunnel/start
           - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack" "pr/artifacts"
-          # AK-628 - npm run test/integration
-          - npm run browserstack/tunnel/stop
+          # AK-628 - yarn run test/integration
+          - yarn run browserstack/tunnel/stop

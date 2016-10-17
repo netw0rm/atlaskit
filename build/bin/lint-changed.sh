@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 
 function lint () {
     $CHALK --no-stdin -t "{blue Gathering files to lint...}"

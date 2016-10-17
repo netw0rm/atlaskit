@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 
@@ -25,7 +25,7 @@ bbuild \
 
 $CHALK --no-stdin -t "{blue Building storybooks}"
 mkdir -p ../atlaskit-stories
-npm run storybook/static/registry
+yarn run storybook/static/registry
 mv ./stories ../atlaskit-stories/resources
 rm -f ../ak-storybooks-cdn.zip
 zip -0 -r -T ../ak-storybooks-cdn.zip ../atlaskit-stories/resources

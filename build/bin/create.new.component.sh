@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # Creates a new component under the packages directory using a template
-# This is assumed to only be run from the `npm run create` command from the root directory
+# This is assumed to only be run from the `yarn run create` command from the root directory
 
 set -e
 
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 
 if [[ $# -eq 0 || "$1" == "" ]]
   then
-    $CHALK --no-stdin -t "{white Usage: npm run create component_name}"
+    $CHALK --no-stdin -t "{white Usage: yarn run create component_name}"
     exit 1
 fi
 
@@ -47,9 +47,9 @@ rm -f CHANGELOG.md
 popd > /dev/null
 
 # Install dependencies and link internal packages
-npm install
+yarn install
 
-npm run docs/single "$COMP_NAME"
+yarn run docs/single "$COMP_NAME"
 
 $CHALK --no-stdin -t "{green New component '$COMP_NAME' created (v1.0.0)}"
 $CHALK --no-stdin -t "{white.bold Hint: Please leave the version at 1.0.0+, as otherwise caret dependencies work differently}"

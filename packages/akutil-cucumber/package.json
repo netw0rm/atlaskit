@@ -6,7 +6,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/general-steps.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single akutil-cucumber"
+    "prepublish": "cd ../.. && yarn run prepublish/single akutil-cucumber"
   },
   "files": [
     "dist"

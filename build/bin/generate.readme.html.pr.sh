@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CDN_PREFIX="pr/docs"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"

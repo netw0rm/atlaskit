@@ -42,7 +42,7 @@ function setFocus(elem, focus) {
  * @fires FieldBase#showEditingView
  * @fires FieldBase#showViewingView
  * @example @html <ak-field-base label="Email" />
- * @example @js import FieldBase from 'akutil-field-base';
+ * @example @js import FieldBase from 'ak-field-base';
  *
  * const field = new FieldBase();
  * field.label = 'Email';

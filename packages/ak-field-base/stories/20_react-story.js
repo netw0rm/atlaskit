@@ -15,7 +15,7 @@ const story = () => (
       <h2>My Form</h2>
       <div>
         <p>
-          This component is made using nothing but vanilla JavaScript.
+          This component is made by extending FieldBase using react.
         </p>
         <p>
           It's very similar to what is descibed in the readme file for FieldBase.

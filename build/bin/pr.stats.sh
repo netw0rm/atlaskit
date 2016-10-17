@@ -4,7 +4,8 @@ set -e
 CDN_PREFIX="pr/stats"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
 AK_PATH_SHA="$AK_PATH/$BITBUCKET_COMMIT"
-. ./_build_status.sh
+BASEDIR=$(dirname $0)
+. $BASEDIR/_build_status.sh
 
 function stats_build_status() {
   build_status \

@@ -2,7 +2,8 @@
 set -e
 
 CHALK="`npm bin`/chalk"
-. ./_build_status.sh
+BASEDIR=$(dirname $0)
+. $BASEDIR/_build_status.sh
 
 function storybooks_build_status() {
   build_status \

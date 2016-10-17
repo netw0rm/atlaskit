@@ -3,7 +3,8 @@ set -e
 
 export PATH="`npm bin`:$PATH"
 NODE_MODULES=`npm root`
-. ./_build_status.sh
+BASEDIR=$(dirname $0)
+. $BASEDIR/_build_status.sh
 
 function lint_build_status() {
   build_status \

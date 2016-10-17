@@ -1,6 +1,6 @@
 {
   "name": "ak-badge",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "ak-badge webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -16,7 +16,7 @@
     "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^3.0.0"
+    "skatejs": "3.1.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

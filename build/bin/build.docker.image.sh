@@ -8,12 +8,13 @@ LERNA_VERSION=$(node -e "console.log(require('./lerna.json').lerna)")
 echo "Building image"
 docker build --build-arg LERNA_VERSION="$LERNA_VERSION" -t "$TAG" . $@
 
+echo "Built image with tag '$TAG'"
 
 echo "Let's make sure we have everything"
 printf "Node: "
 docker run "$TAG" node --version
 printf "Yarn: "
-docker run "$TAG" yarn --version
+docker run "$TAG" bash -c 'PATH="$HOME/.yarn/bin:$PATH" yarn --version'
 docker run "$TAG" ruby -v
 docker run "$TAG" bundler -v
 printf "Lerna: "

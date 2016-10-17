@@ -75,7 +75,7 @@ RUN echo "Installing node" \
 RUN echo "Installing yarn" \
 && touch ~/.bashrc \
 && curl -o- -L https://yarnpkg.com/install.sh | bash \
-&& export PATH="~/.yarn/bin:$PATH"
+&& echo 'export PATH="$HOME/.yarn/bin:$PATH"' > ~/.profile
 #### </node>
 
 #### <atlaskit-tools>
@@ -84,6 +84,7 @@ RUN echo "Installing AtlasKit tools" \
   @atlassian/prebake-distributor-runner@1.0.2 \
 && npm cache clean -f \
 && npm uninstall npm -g \
+&& export PATH="$HOME/.yarn/bin:$PATH" \
 && yarn global add \
   cloudfront-invalidate-cli@1.0.3 \
   marky-markdown@8.1.0 \
@@ -91,8 +92,7 @@ RUN echo "Installing AtlasKit tools" \
   npm-run-all@3.1.1 \
   lerna@"${LERNA_VERSION}" \
   lerna-semantic-release@8.0.2 \
-  indexifier@2.0.0 \
-&& yarn cache clean
+  indexifier@2.0.0
 #### </atlaskit-tools>
 
 #### <ssh-keys>

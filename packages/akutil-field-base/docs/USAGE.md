@@ -13,12 +13,12 @@ FieldBase's *will* work by themselves but are really meant to be extended into a
 
 ## Try it out
 
-Interact with a [live demo of the akutil-field-base component](https://aui-cdn.atlassian.com/atlaskit/stories/akutil-field-base/@VERSION@/).
+Interact with a [live demo of the ak-field-base component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-field-base/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install akutil-field-base
+npm install ak-field-base
 ```
 
 
@@ -32,14 +32,14 @@ FieldBase works using two 'views' for your component `editmode` and `viewmode`.
 To set these up, simply pass them as children to your FieldBase with the appropriate `slot` attribute.
 
 ```html
-<akutil-field-base label="My awesome field" id="myCustomField">
+<ak-field-base label="My awesome field" id="myCustomField">
   <div slot="viewmode">
     <span id="viewModeValue">Your text here</span>
   </div>
   <div slot="editmode">
     <input type="text" id="inputField" value="Your text here" />
   </div>
-</akutil-field-base>
+</ak-field-base>
 ```
 
 **Note**: It is very important to pass in the `label` attribute even if you are hiding it using the
@@ -60,7 +60,7 @@ If they click cancel we'll take their last value and put that back into the inpu
 
 ```javascript
 // import the custom event from the FieldBase package
-import { events } from 'akutil-field-base';
+import { events } from 'ak-field-base';
 
 const fieldBase = document.getElementById('myCustomField');
 const inputField = document.getElementById('inputField');
@@ -92,10 +92,12 @@ In our example above for example, you would want to:
 * Remove borders and background-color from the input
 * Reflect the inputs focus onto fieldBase (so that we get the correct focus styles in editmode)
 
-To fix the styles we can either set them through javascript or pass in a `<style>` tag to `editmode`.
+To fix the styles we can either set them through javascript/regular css **or**
+if you are using webcomponents, you can pass in a `<style>` tag to `editmode`
+(it's reccomended that you namespace your rules in case an end user is using a shadowDOM polyfill).
 
 ```html
-<akutil-field-base label="My awesome field" id="myCustomField">
+<ak-field-base label="My awesome field" id="myCustomField">
   <div slot="viewmode">
     <span id="viewModeValue">Your text here</span>
   </div>
@@ -105,7 +107,7 @@ To fix the styles we can either set them through javascript or pass in a `<style
     </style>
     <input type="text" id="inputField" value="Your text here" />
   </div>
-</akutil-field-base>
+</ak-field-base>
 ```
 
 ```javascript

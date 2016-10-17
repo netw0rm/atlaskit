@@ -1,4 +1,3 @@
-import 'style!./host.less';
 import { prop, props, vdom, define } from 'skatejs';
 import shadowStyles from './shadow.less';
 import classNames from 'classnames';
@@ -22,8 +21,6 @@ function handleResizeEnd(e, elem) {
   });
 }
 
-const navigationSlot = Symbol('navigationSlot');
-
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class Page
@@ -42,14 +39,9 @@ export default define('ak-page', {
           [shadowStyles.locals.resizing]: elem.__isResizing,
         })}
       >
-        {/* This is required for elements in the shadow root to be styled.
-           This is wrapped in the <div /> because you can't have more than one
-           root element.
-        */}
         <style>{shadowStyles.toString()}</style>
         <div className={shadowStyles.locals.navigation}>
           <slot
-            ref={(el) => { elem[navigationSlot] = el; }}
             className={shadowStyles.locals.navigationSlot}
             name="navigation"
           />
@@ -100,9 +92,5 @@ export default define('ak-page', {
     setTimeout(() => {
       elem.shouldAnimate = true;
     }, shouldAnimateThreshold);
-    const navigation = elem[navigationSlot].assignedNodes()[0];
-    if (!navigation) {
-      return;
-    }
   },
 });

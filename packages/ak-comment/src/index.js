@@ -13,8 +13,6 @@ import TimeSlot from './slots/Time';
 import ActionsSlot from './slots/Actions';
 import ReplySlot from './slots/Reply';
 
-import 'style!./host.less';
-
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class AkComment

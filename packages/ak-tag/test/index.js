@@ -113,5 +113,24 @@ describe('ak-tag', () => {
         // we can't add `done` here, as it will be invoked on animation end (~250ms)
       );
     });
+
+    it('should emit the component as a detail before and after it was removed', (done) => {
+      let detailBefore;
+      component.addEventListener(beforeRemoveEvent, (e) => {
+        detailBefore = e.detail.item;
+      });
+      component.addEventListener(afterRemoveEvent, (e) => {
+        expect(e.detail.item).to.equal(component);
+        done();
+      });
+
+      afterMutations(
+        () => (component['remove-button-text'] = 'x'),
+        () => component.isRemovable().should.be.true,
+        () => (component.remove()),
+        () => (expect(detailBefore).to.equal(component))
+        // we can't add `done` here, as it will be invoked on animation end (~250ms)
+      );
+    });
   });
 });

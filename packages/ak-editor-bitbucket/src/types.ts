@@ -8,6 +8,7 @@ declare module "classnames";
 declare module "ak-editor-content";
 declare module "ak-editor-footer";
 declare module "ak-editor-hyperlink-edit";
+declare module "ak-editor-shared-styles";
 declare module "ak-editor-toolbar";
 declare module "ak-editor-toolbar-block-type";
 declare module "ak-editor-toolbar-hyperlink";

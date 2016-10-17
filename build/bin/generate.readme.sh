@@ -6,17 +6,25 @@ JSDOC2MD_LOC="`npm bin`/jsdoc2md"
 CHALK="`npm bin`/chalk"
 popd > /dev/null
 
-PKG=$(node -e 'console.log(require("./package.json").name)')
+NAME=$(node -e 'console.log(require("./package.json").name)')
 VERSION=$(node -e 'console.log(require("./package.json").version)')
-PREFIX="{white.bold [$PKG]}"
+PREFIX="{white.bold [$NAME]}"
 
 $CHALK --no-stdin -t "{blue $PREFIX Generating README.md...}"
 
+replacevars () {
+    echo "$1" | \
+    sed "s/@VERSION@/$VERSION/g" | \
+    sed "s/@NAME@/$NAME/g" | \
+    sed "s/@BITBUCKET_COMMIT@/$BITBUCKET_COMMIT/g"
+}
+
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
-  USAGE=$(cat ./docs/USAGE.md | sed "s/@VERSION@/$VERSION/g")
+  USAGE=$(cat ./docs/USAGE.md)
+  USAGE=$(replacevars "$USAGE")
 else
-  USAGE="# $PKG"
+  USAGE="# $NAME"
 fi
 
 # Generate API docs
@@ -26,11 +34,9 @@ if [[ -z `find ./src -name "*.js" -print || true` ]]; then
 else
   set +e
   DOCS="$($JSDOC2MD_LOC \
-    --verbose \
-    --src "src/**/*.js" \
+    --files "src/**/*.js" \
     --plugin akutil-dmd-plugin \
-    --member-index-format list \
-    --name-format)"
+    --member-index-format list)"
   FAILED=$? # Order is important here, this needs to come right after the jsdoc2m sub command
   set -e
 
@@ -40,21 +46,23 @@ else
   elif [[ $DOCS == *"ERROR, Cannot find class"* ]]; then
     $CHALK --no-stdin -t "{red $PREFIX Could not find a class.}"
   else
-    API="$DOCS"
+    API=$(replacevars "$DOCS")
     $CHALK --no-stdin -t "{blue $PREFIX done!}"
   fi
 fi
 
-BUTTONS=$(cat ../../build/docs/templates/BUTTONS.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
-SUPPORT=$(cat ../../build/docs/templates/SUPPORT.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
+BUTTONS=$(cat ../../build/docs/templates/BUTTONS.md)
+BUTTONS=$(replacevars "$BUTTONS")
+SUPPORT=$(cat ../../build/docs/templates/SUPPORT.md)
+SUPPORT=$(replacevars "$SUPPORT")
 
 (
   echo "$BUTTONS"
   echo
   echo "$USAGE"
   echo
-  echo "$SUPPORT"
-  echo
   echo "$API"
+  echo
+  echo "$SUPPORT"
   echo
 ) > README.md

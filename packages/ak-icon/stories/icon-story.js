@@ -9,8 +9,11 @@ import ToggleIcons from './ToggleIcons';
 import classnames from 'classnames';
 import pathToDashed from '../src/pathToDashed';
 import { getGlyphs } from '../test/_helpers';
-import componentStyles from 'style!./../src/host.less';
+import componentStyles from 'style!../src/shadow.less';
 import AkButtonWc from 'ak-button';
+import { size } from '../src/Icon';
+
+const iconSizes = Object.values(size);
 
 const AkButton = reactify(AkButtonWc);
 
@@ -23,8 +26,9 @@ const reactifiedComponents = Object.entries(components).reduce((prev, [key, Icon
   return prev;
 }, {});
 
-const CharlieIcon = reactifiedComponents.atlassian;
-if (!CharlieIcon) {
+const sampleIconName = 'atlassian';
+const AtlassianIcon = reactifiedComponents[sampleIconName];
+if (!AtlassianIcon) {
   throw new Error('Atlassian icon was removed, but is needed to display stories properly');
 }
 
@@ -78,7 +82,7 @@ storiesOf('ak-icon', module)
               <tr key={key}>
                 <td><Icon /></td>
                 <td><pre>import '{importName}';</pre></td>
-                <td><pre>&lt;{tagName}/&gt;</pre></td>
+                <td><pre>&lt;{tagName} /&gt;</pre></td>
               </tr>
             );
           })
@@ -110,11 +114,29 @@ storiesOf('ak-icon', module)
   .add('Two-color icons', () => <ToggleIcons icons={toggleableIcons} />)
   .add('Animated', () => <AnimationDemo components={reactifiedComponents} />)
   .addBaselineAligned('baseline alignment', () => (
-    <CharlieIcon className={componentStyles.akIcon} />
+    <AtlassianIcon className={componentStyles.akIcon} />
   ))
   .add('Inside a button', () => (
     <AkButton>
-      <CharlieIcon slot="before" />
+      <AtlassianIcon className={componentStyles.akIcon} slot="before" />
       Button
     </AkButton>
+  ))
+  .add('Different sizes', () => (
+    <table>
+      <thead>
+        <tr>
+          <th>Usage</th>
+          <th>Icon</th>
+        </tr>
+      </thead>
+      <tbody>
+      {iconSizes.map((s) => (
+        <tr key={s}>
+          <td><pre>&lt;ak-icon-{sampleIconName} size="{s}" /&gt;</pre></td>
+          <td><AtlassianIcon className={componentStyles.akIcon} size={s} /></td>
+        </tr>
+      ))}
+      </tbody>
+    </table>
   ));

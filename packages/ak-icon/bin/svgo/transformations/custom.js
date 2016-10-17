@@ -1,9 +1,10 @@
 const SVGO = require('svgo');
 const addPresentationAttribute = require('../plugins/addPresentationAttribute');
 const callbackOnDefinedFill = require('../plugins/callbackOnDefinedFill');
-const addAriaLabel = require('../plugins/addAriaLabel');
+const callbackOnStyleElement = require('../plugins/callbackOnStyleElement');
+const addAriaLabels = require('../plugins/addAriaLabels');
 
-const addAriaLabelPlugin = Object.assign({}, addAriaLabel, {
+const addAriaLabelsPlugin = Object.assign({}, addAriaLabels, {
   params: {
     title: '{title}',
   },
@@ -15,10 +16,15 @@ const addAriaLabelPlugin = Object.assign({}, addAriaLabel, {
 * @param {Function} fillCallback A callback that gets invoked if a defined fill color has been found
 * @return {SVGO} an SVGO instance
 */
-module.exports = (fillCallback) => {
+module.exports = (fillCallback, styleCallback) => {
   const callbackOnDefinedFillPlugin = Object.assign({}, callbackOnDefinedFill, {
     params: Object.assign({}, callbackOnDefinedFill.params, {
       callback: fillCallback,
+    }),
+  });
+  const callbackOnStyleElementPlugin = Object.assign({}, callbackOnStyleElement, {
+    params: Object.assign({}, callbackOnStyleElement.params, {
+      callback: styleCallback,
     }),
   });
 
@@ -37,7 +43,13 @@ module.exports = (fillCallback) => {
         callbackOnDefinedFillPlugin,
       },
       {
-        addAriaLabelPlugin,
+        callbackOnStyleElementPlugin,
+      },
+      {
+        removeStyleElement: true,
+      },
+      {
+        addAriaLabelsPlugin,
       },
     ],
   });

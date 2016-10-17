@@ -171,19 +171,12 @@ export default define('ak-layer', {
       return !!this._isFlipped; // eslint-disable-line no-underscore-dangle
     },
   },
-  attached(elem) {
-    elem.alignment = createNewAlignment(elem);
-  },
   detached(elem) {
     if (elem.alignment) {
       elem.alignment.destroy();
     }
   },
   render(elem) {
-    if (elem.alignment) {
-      elem.alignment.reposition();
-    }
-
     if (elem.onRender) {
       elem.onRender(elem);
     }
@@ -193,5 +186,12 @@ export default define('ak-layer', {
         <slot />
       </div>
     );
+  },
+  rendered(elem) {
+    if (elem.alignment) {
+      elem.alignment.reposition();
+    } else {
+      elem.alignment = createNewAlignment(elem);
+    }
   },
 });

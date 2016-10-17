@@ -1,4 +1,3 @@
-import 'style!./host.less';
 import shadowStyles from './shadow.less';
 import { define, prop, vdom } from 'skatejs';
 import classNames from 'classnames';

@@ -1,0 +1,143 @@
+@import '../shared-variables.less';
+
+@OFFLINE: @ak-color-N80;
+@ONLINE: @ak-color-G300;
+@BUSY: @ak-color-Y500;
+
+@DETAILS_NAME_COLOR: #FFFFFF;
+@DETAILS_META_COLOR: #88A8D6;
+
+@ICON_FILL: @ak-color-N40;
+@DETAILS_TEXT: @ak-color-N800;
+
+@ACTION_COLOR: @ak-color-B400;
+@ACTION_HOVER_COLOR: @ak-color-N800;
+
+.pf-profilecard {
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  min-width: 360px;
+  min-height: 185px;
+  border-radius: 3px;
+  box-shadow: @CARD_SHADOW;
+  padding: 0;
+  background-color: @CARD_BG;
+  overflow: hidden;
+
+  position: relative;
+  width: 360px;
+  min-height: 185px;
+  background: linear-gradient(
+    to bottom,
+    @ak-color-B500 0%,
+    @ak-color-B500 90px,
+    @CARD_BG 90px,
+    @CARD_BG 100%
+  );
+}
+
+.pf-card-left {
+  width: 140px;
+}
+
+.pf-card-right {
+  display: flex;
+  flex-direction: column;
+  min-height: 155px;
+  padding-top: 30px;
+  position: relative;
+  left: 140px;
+  width: 220px;
+}
+
+.pf-card-flex-spacer {
+  flex: 1 0 auto;
+}
+
+.pf-card-avatar {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+}
+
+.pf-card-icon-label {
+  line-height: 20px;
+  font-size: 12px;
+  margin: 18px 0 3px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 210px;
+
+  .pf-icon {
+    display: inline-block;
+    color: @ICON_FILL;
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &.pf-card-presence {
+    .pf-icon {
+      width: 12px;
+      height: 12px;
+      line-height: 12px;
+      padding: 4px;
+    }
+
+    svg {
+      // fix for presence svgs not being a perfect circle
+      border-radius: 100%;
+    }
+  }
+
+  span {
+    color: @DETAILS_TEXT;
+    padding-left: 5px;
+  }
+}
+
+.pf-card-icon-label + .pf-card-icon-label {
+  margin-top: 3px;
+}
+
+.pf-card-fullname {
+  width: 210px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 18px;
+  color: @DETAILS_NAME_COLOR;
+  margin: 0;
+  line-height: 21px;
+  height: 25px;
+}
+
+.pf-card-meta {
+  width: 210px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 14px;
+  color: @DETAILS_META_COLOR;
+  margin: 0;
+  line-height: 20px;
+  height: 35px;
+}
+
+.pf-card-actions {
+  user-select: none;
+  margin: 19px 25px 25px 0;
+  text-align: right;
+
+  ak-button {
+    display: inline-block;
+  }
+}

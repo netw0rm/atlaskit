@@ -23,7 +23,10 @@ import Icon from '${relativePathToSrc}/Icon';
 /**
  * @description Create an instance of the ${iconName} programmatically, or by using markup.
  *
+ * It looks like this: <img src="https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-icon/src/icons/${iconRelativePathToSrc}">
+ *
  * @class ${componentName}
+ * @extends Icon
  * @example @html <${iconName} label="My label" />
  * @example @js import ${componentName} from 'ak-icon/${glyphFolderName}/${iconRelativePathToSrcNoExt}';
  *

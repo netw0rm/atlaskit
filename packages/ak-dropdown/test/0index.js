@@ -436,7 +436,7 @@ describe('ak-dropdown', () => {
                   <ak-dropdown-item-checkbox hidden>second</ak-dropdown-item-checkbox>
                   <ak-dropdown-item-checkbox>third</ak-dropdown-item-checkbox>
                   </ak-dropdown-group>`;
-    beforeEach(() => setupComponentExample(html).then(newComponent => {
+    beforeEach(() => setupComponentExample(html).then((newComponent) => {
       component = newComponent;
       props(component, { open: true });
     }));

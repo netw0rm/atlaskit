@@ -26,16 +26,18 @@ export default class DropdownExample extends Component { // eslint-disable-line 
         stepOutside={this.props.stepOutside}
         position={this.props.position}
       >
-        {this.props.avatarTarget ?
+        {this.props.avatarTarget ? (
           <DropdownTriggerReact slot="trigger" tab-index="1">
             <Avatar
               src={avatarUrl}
               size="small"
             />
-          </DropdownTriggerReact> :
+          </DropdownTriggerReact>
+        ) : (
           <DropdownTriggerButtonReact slot="trigger" tab-index="1">
-          Dropdown
+            Dropdown
           </DropdownTriggerButtonReact>
+          )
         }
         <GroupReact heading="Australia">
           <ItemReact>Sydney</ItemReact>

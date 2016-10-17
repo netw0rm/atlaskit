@@ -39,9 +39,9 @@ function generateFormWithInput(opts) {
 }
 
 function submitTestForm(useNativeSubmitBtn) {
-  const submitBtn = useNativeSubmitBtn ?
-    <input type="submit" /> :
-    <ReactButton type="submit" appearance="primary">Submit</ReactButton>;
+  const submitBtn = useNativeSubmitBtn ? <input type="submit" /> : (
+    <ReactButton type="submit" appearance="primary">Submit</ReactButton>
+  );
   return (
     <div>
       <form

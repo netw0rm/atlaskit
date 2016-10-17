@@ -1,28 +1,21 @@
 #!/usr/bin/env bash
 set -e
 
-GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CDN_PREFIX="pr/stats"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
 AK_PATH_SHA="$AK_PATH/$BITBUCKET_COMMIT"
+. ./_build_status.sh
 
-BUILD_URL="$CDN_URL_BASE/$AK_PATH_SHA/"
-BUILD_KEY="STATS-$GITHEAD_SHORT"
-BUILD_NAME="Stats"
-BUILD_DESCRIPTION="The stats for this pull request"
+function stats_build_status() {
+  build_status \
+    "STATS" \
+    "Statistics" \
+    "The bundle statistics for this pull request" \
+    "$1" \
+    "$CDN_URL_BASE/$AK_PATH_SHA/"
+}
 
-echo "Post build in progress status"
-bbuild \
---commit "$BITBUCKET_COMMIT" \
---repo "$BITBUCKET_REPO_SLUG" \
---owner "$BITBUCKET_REPO_OWNER" \
---username "$BITBUCKET_USER" \
---password "$BITBUCKET_PASSWORD" \
---key "$BUILD_KEY" \
---name "$BUILD_NAME" \
---description "$BUILD_DESCRIPTION" \
---url "$BUILD_URL" \
---state "INPROGRESS"
+stats_build_status "INPROGRESS"
 
 echo "Gathering stats files..."
 
@@ -57,14 +50,4 @@ echo "CDN invalidation (stats) finished."
 
 echo "Post stats URL to build"
 
-bbuild \
---commit "$BITBUCKET_COMMIT" \
---repo "$BITBUCKET_REPO_SLUG" \
---owner "$BITBUCKET_REPO_OWNER" \
---username "$BITBUCKET_USER" \
---password "$BITBUCKET_PASSWORD" \
---key "$BUILD_KEY" \
---name "$BUILD_NAME" \
---description "$BUILD_DESCRIPTION" \
---url "$BUILD_URL" \
---state "SUCCESSFUL"
+stats_build_status "SUCCESSFUL"

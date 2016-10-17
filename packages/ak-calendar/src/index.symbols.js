@@ -1,0 +1,9 @@
+export const $a11y = Symbol();
+export const $calendars = Symbol();
+export const $loseFocus = Symbol();
+export const $navigateWithKeyboard = Symbol();
+export const $next = Symbol();
+export const $prev = Symbol();
+export const $selectDay = Symbol();
+export const $selectHandler = Symbol();
+export const $selecting = Symbol();

@@ -1,59 +1,50 @@
-import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
-import sinonChai from 'sinon-chai';
+import AkCalendar from '../src';
 import chaiAsPromised from 'chai-as-promised';
-import { Component } from 'skatejs';
+import { setupComponent, tearDownComponent, stylesWrapperConstructor } from './_helpers';
+import { getShadowRoot } from 'akutil-common-test';
+import { getMonthName } from '../src/util';
 
-import MyComponent, { events } from '../src';
-import { setupComponent, tearDownComponent } from './_helpers';
+const now = new Date();
+const clock = sinon.useFakeTimers(now.getTime(), 'Date');
 
-chai.use(sinonChai);
 chai.use(chaiAsPromised);
-chai.should();
-
 const expect = chai.expect;
 
+const Component = stylesWrapperConstructor(AkCalendar);
+
+function shadowDomQuery(component, selector) {
+  const result = Array.from(getShadowRoot(component).querySelectorAll(selector));
+  return result && result.length === 1 ? result[0] : result;
+}
 
 describe('ak-calendar', () => {
-  describe('exports', () => {
-    it('should export a base component', () => {
-      (new MyComponent).should.be.an.instanceof(Component);
-    });
+  let component;
+  let css;
 
-    it('should have an events export with defined events', () => {
-      events.should.be.defined;
-      Object.keys(events).should.be.deep.equal([
-        'announceName',
-      ]);
-    });
+  beforeEach(() =>
+    setupComponent(Component)
+      .then(c => {
+        component = c;
+        css = c.css;
+      })
+  );
+
+  afterEach(() => {
+    tearDownComponent(component);
+    clock.restore();
   });
 
   describe('logic', () => {
-    let component;
-    let shadowRoot;
-
-    beforeEach(() => setupComponent(MyComponent).then(newComponent => {
-      component = newComponent;
-      shadowRoot = getShadowRoot(component);
-    }));
-    afterEach(() => tearDownComponent(component));
-
-    it('should be possible to create a component', () => {
-      expect(shadowRoot.innerHTML).to.match(/My name is .+?!/);
-    });
-
-    describe('name prop', () => {
-      it('should modify the rendered name', () => {
-        const newName = 'InigoMontoya';
-        const expectedInnerHTML = `My name is ${newName}!`;
-        const paragraph = shadowRoot.querySelector('p');
-
-        const nameHasBeenModifiedCorrectly = () => (paragraph.innerHTML === expectedInnerHTML);
-
-        component.name = newName;
-
-        // here we can wrap our assertions in promises and just check that the promise was fulfilled
-        return waitUntil(nameHasBeenModifiedCorrectly).should.be.fulfilled;
+    describe('initialisation', () => {
+      describe('with no attributes', () => {
+        it('should highlight current date', () => {
+          expect(shadowDomQuery(component, `.${css.monthAndYear} span`)
+            .map(span => span.innerHTML))
+            .to.include(getMonthName(component, now.getMonth() + 1), now.getYear());
+          expect(shadowDomQuery(component, `.${css.today}`).innerHTML)
+            .to.equal(now.getDate().toString());
+        });
       });
     });
   });

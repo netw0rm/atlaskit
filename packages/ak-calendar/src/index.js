@@ -4,20 +4,22 @@ import { Calendar } from 'calendar-base';
 import { define, emit, h, prop, vdom } from 'skatejs';
 import { style } from 'akutil-common';
 import { getDayName, getMonthName, makeArrayFromNumber } from './util';
-import {
-  akColorB50,
-  akColorB100,
-  akColorN80,
-  akColorN400,
-  akColorN600,
-  akColorN700,
-  akColorN900,
-} from 'akutil-shared-styles';
 import * as events from './index.events';
 import * as keys from './keys';
 import classnames from 'classnames';
+import styles from './styles';
+import {
+  $a11y,
+  $calendars,
+  $loseFocus,
+  $navigateWithKeyboard,
+  $next,
+  $prev,
+  $selectDay,
+  $selectHandler,
+  $selecting,
+} from './index.symbols';
 
-const akColorWhite = '#fff';
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
@@ -26,16 +28,6 @@ const attr = Object.keys(prop).reduce((prev, curr) => {
   prev[curr] = prop[curr].bind(null, { attribute: true });
   return prev;
 }, {});
-
-const $a11y = Symbol();
-const $calendars = Symbol();
-const $loseFocus = Symbol();
-const $navigateWithKeyboard = Symbol();
-const $next = Symbol();
-const $prev = Symbol();
-const $selectDay = Symbol();
-const $selectHandler = Symbol();
-const $selecting = Symbol();
 
 // TODO find out if there is a better way. If not formalise this.
 const Announcer = () => (
@@ -205,74 +197,8 @@ export default define('ak-calendar', {
     const calendar = elem[$calendars].getCalendar(elem.year, elem.month - 1);
     const now = new Date();
     const weeks = [];
-    const css = style(vdom, {
-      ':host': {
-        'background-color': akColorN700,
-        color: akColorWhite,
-        display: 'inline-block',
-        padding: '10px',
-        'text-align': 'center',
-      },
 
-      heading: {
-        display: 'flex',
-      },
-      monthAndYear: {
-        color: akColorWhite,
-        'flex-basis': '100%',
-        'font-size': '16px',
-        padding: '5px 0 10px 0',
-      },
-      btn: {
-        'background-color': 'transparent',
-        border: 'none',
-        color: akColorN80,
-      },
-      btnPrev: {
-        float: 'left',
-      },
-      btnNext: {
-        float: 'right',
-      },
-
-      // days
-      day: {
-        border: '2px solid transparent',
-        'border-radius': '4px',
-        cursor: 'pointer',
-        'font-size': '14px',
-        padding: '5px',
-        '&:hover': {
-          'background-color': akColorN900,
-        },
-      },
-      dayOfWeek: {
-        color: akColorN80,
-        'font-size': '10px',
-        'text-transform': 'uppercase',
-      },
-      disabled: {
-        color: akColorN400,
-      },
-      focused: {
-        'background-color': akColorN900,
-        'border-color': akColorB100,
-      },
-      selected: {
-        'background-color': akColorWhite,
-        color: akColorN600,
-      },
-      selecting: {
-        'background-color': akColorB50,
-        color: akColorN600,
-      },
-      sibling: {
-        color: akColorN80,
-      },
-      today: {
-        color: akColorB50,
-      },
-    });
+    const css = style(vdom, styles);
 
     calendar.forEach((date) => {
       const dateAsString = `${elem.year}-${elem.month}-${date.day}`;

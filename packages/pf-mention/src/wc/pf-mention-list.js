@@ -48,7 +48,6 @@ function selectIndex(elem, index) {
     selectedIndex: index,
     selectedKey: elem.mentions[index].id,
   });
-  revealItem(elem, elem.mentions[index].id);
 }
 
 function adjustSelection(elem) {
@@ -205,6 +204,9 @@ export default define('pf-mention-list', {
   },
 
   rendered(elem) {
+    if (elem.mentions && elem.mentions[elem.selectedIndex]) {
+      revealItem(elem, elem.mentions[elem.selectedIndex].id);
+    }
     emit(elem, mentionListRenderedEvent);
   },
 

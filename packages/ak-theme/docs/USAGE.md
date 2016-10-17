@@ -2,7 +2,7 @@
 
 The `ak-theme` component allows you to define theme variables for components that can affect how they look and feel.
 
-![Example theme](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-theme/docs/theme.png)
+![Example theme](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-theme/docs/theme.png)
 
 ## Try it out
 

@@ -8,8 +8,11 @@ productionConfig.entry = {
 
 productionConfig.output.libraryTarget = 'commonjs2';
 
-productionConfig.plugins.push(new Visualizer({
-  filename: './stats/cjs.html',
-}));
+if (process.env.BITBUCKET_COMMIT) {
+  // only generate stats when we are in CI
+  productionConfig.plugins.push(new Visualizer({
+    filename: './stats/cjs.html',
+  }));
+}
 
 module.exports = productionConfig;

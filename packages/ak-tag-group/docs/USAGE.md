@@ -5,7 +5,7 @@ This component displays an arbitrary number of [`ak-tag`](https://www.npmjs.com/
 in a grouped manner.
 The group manages spacing and animation direction and allows for some alignment options.
 
-![Example tag group](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tag-group/docs/animation.gif)
+![Example tag group](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-tag-group/docs/animation.gif)
 
 ## Try it out
 

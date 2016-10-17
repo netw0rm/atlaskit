@@ -1,6 +1,6 @@
 {
   "name": "ak-field-text",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "ak-field-text webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -15,7 +15,7 @@
     "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^1.4.1"
+    "skatejs": "3.1.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

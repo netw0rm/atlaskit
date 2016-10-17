@@ -1,6 +1,6 @@
 {
   "name": "akutil-polyfills",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "main": "dist/bundle.js",
   "files": [
     "dist"
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "skatejs-web-components": "^1.2.1"
+    "skatejs-web-components": "^1.2.5"
   },
   "repository": {
     "type": "git",

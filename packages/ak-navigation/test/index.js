@@ -3,7 +3,10 @@ import { keyup, afterMutations, getShadowRoot, waitUntil } from 'akutil-common-t
 import { Component, emit } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkNavigation, { events as navigationEvents } from '../src';
+import AkNavigation, {
+  NavigationLink as AkNavigationLink,
+  events as navigationEvents,
+} from '../src';
 const {
   open: navigationOpenEvent,
   close: navigationCloseEvent,
@@ -31,6 +34,10 @@ function tearDownComponent(component) {
 describe('exports', () => {
   it('should export a base component', () => {
     (new AkNavigation).should.be.an.instanceof(Component);
+  });
+
+  it('should export a navigation link component', () => {
+    (new AkNavigationLink).should.be.an.instanceof(Component);
   });
 
   it('should have an events export with defined events', () => {
@@ -208,9 +215,6 @@ describe('ak-navigation', () => {
   });
 
   describe('sidebar link items', () => {
-    afterEach(() => {
-      window.location.hash = '';
-    });
     it('are mutually exclusively selectable via enter', (done) => {
       component.innerHTML = `
         <ak-navigation-link selected></ak-navigation-link>
@@ -226,16 +230,6 @@ describe('ak-navigation', () => {
         expect(component.children[1].selected).to.equal(true);
         expect(component.children[2].selected).to.equal(false);
       }, done);
-    });
-    it('selecting an item activates the link', (done) => {
-      component.innerHTML = `
-        <ak-navigation-link href="#link"></ak-navigation-link>
-      `;
-      afterMutations(
-        () => keyup('enter', component.children[0]),
-        () => expect(window.location.hash).to.equal('#link'),
-        done
-      );
     });
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "akutil-common-test",
-  "version": "3.0.0",
+  "version": "3.2.0",
   "description": "Shared tests used by AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

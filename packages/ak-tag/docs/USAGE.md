@@ -3,7 +3,7 @@
 
 This component is displayed as a tag with an optional link and/or button to remove it.
 
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tag/docs/overview.png)
+![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-tag/docs/overview.png)
 
 Although the `ak-tag` component can be used by itself, it works best in conjunction with the
 [`ak-tag-group`](https://www.npmjs.com/package/ak-tag-group) component.

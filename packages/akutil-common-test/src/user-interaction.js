@@ -27,3 +27,12 @@ export function keydown(key, target) {
 export function keyup(key, target) {
   sendKeyEvent(key, target, 'keyup');
 }
+
+/**
+ * Simulate a user's keypress input
+ * @param key – the key to press, will be passed to keycode
+ * @param target – a DOM element to trigger the event on. If undefined, triggered on the document.
+ */
+export function keypress(key, target) {
+  sendKeyEvent(key, target, 'keypress');
+}

@@ -73,6 +73,9 @@ function isCursorOnLink(
   proseMirrorInstance: ProseMirror,
   pos: number
 ) : Mark {
+  // why - 1?
+  // because of `exclusiveRight`, we need to get the node "left to"
+  // the current cursor
   const marks = proseMirrorInstance.doc.nodeAt(pos - 1).marks;
   return marks.reduce(
     (found: boolean, m: Mark) => found || (m.type.name === 'link' && m),
@@ -158,7 +161,9 @@ export default new Plugin(class HyperlinkPlugin {
 
     const $resolvedPos: ResolvedPos = $head || $to;
 
-    // because $resolvedPos.pos - 1 is actually the correct position
+    // why - 1?
+    // because of `exclusiveRight`, we need to get the node "left to"
+    // the current cursor
     const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
     const isLink = isCursorOnLink(pm, $resolvedPos.pos);
 
@@ -237,10 +242,13 @@ export default new Plugin(class HyperlinkPlugin {
       return false;
     }
 
+    // why - 1?
+    // because of `exclusiveRight`, we need to get the node "left to"
+    // the current cursor
     const node = pm.doc.nodeAt($head.pos - 1);
 
     // we have to build our custom `getNodeOffset`
-    // because the built-in one doesn't handle exclusiveRight
+    // because the built-in one doesn't handle `exclusiveRight`
     // to our needs
     const currentNodeOffset = getNodeOffset(pm.doc, $head);
 

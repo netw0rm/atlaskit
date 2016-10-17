@@ -1,10 +1,9 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkButton from 'ak-button';
-import WebComponent, { events } from '../src';
+import WebComponent from '../src';
 import React from 'react';
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
 import Lorem from 'react-lorem-component';
 
 const ReactModal = reactify(WebComponent);

@@ -1,8 +1,6 @@
-import classNames from 'classnames';
-import { emit, vdom, define, prop } from 'skatejs';
+import { vdom, define, prop } from 'skatejs';
 import shadowStyles from './shadow.less';
 import * as events from './internal/events';
-const { announceName: announceNameEvent, announceClick } = events;
 import AkBlanket from 'ak-blanket';
 
 /**

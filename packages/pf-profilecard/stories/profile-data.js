@@ -1,9 +1,9 @@
-const avatar1 = require('file!./data/f1.jpg');
-const avatar2 = require('file!./data/f2.jpg');
-const avatar3 = require('file!./data/f3.jpg');
-const avatar4 = require('file!./data/m1.jpg');
-const avatar5 = require('file!./data/m2.jpg');
-const avatar6 = require('file!./data/m3.jpg');
+const avatar1 = require('file!./data/1.jpg');
+const avatar2 = require('file!./data/2.jpg');
+const avatar3 = require('file!./data/3.jpg');
+const avatar4 = require('file!./data/4.jpg');
+const avatar5 = require('file!./data/5.jpg');
+const avatar6 = require('file!./data/6.jpg');
 
 const avatarImages = [
   avatar1,

@@ -11,12 +11,9 @@ import styles from './styles';
 import {
   $a11y,
   $calendars,
-  $loseFocus,
-  $navigateWithKeyboard,
   $next,
   $prev,
   $selectDay,
-  $selectHandler,
   $selecting,
 } from './index.symbols';
 
@@ -70,10 +67,10 @@ export default define('ak-calendar', {
     year: attr.number({ default: new Date().getFullYear() }),
   },
   prototype: {
-    [$loseFocus]() {
+    loseFocus() {
       this.focused = 0;
     },
-    [$navigateWithKeyboard](e) {
+    navigateWithKeyboard(e) {
       const key = e.keyCode;
       const focused = this.focused;
       const isArrowKey = [keys.down, keys.left, keys.right, keys.up].indexOf(key) > -1;
@@ -133,7 +130,7 @@ export default define('ak-calendar', {
         });
       }
     },
-    [$next]() {
+    next() {
       if (this.month === monthsPerYear) {
         this.month = 1;
         this.year++;
@@ -141,7 +138,7 @@ export default define('ak-calendar', {
         this.month++;
       }
     },
-    [$prev]() {
+    prev() {
       if (this.month === 1) {
         this.month = monthsPerYear;
         this.year--;
@@ -149,7 +146,7 @@ export default define('ak-calendar', {
         this.month--;
       }
     },
-    [$selectDay](e) {
+    selectDay(e) {
       const day = Number(e.currentTarget.getAttribute('data-day'));
       const month = this.month;
       const year = this.year;
@@ -157,7 +154,7 @@ export default define('ak-calendar', {
         detail: { day, month, year },
       });
     },
-    [$selectHandler](e) {
+    selectHandler(e) {
       const d = e.detail;
       const s = `${d.year}-${d.month}-${d.day}`;
       const i = this.selected.indexOf(s);
@@ -184,14 +181,14 @@ export default define('ak-calendar', {
       elem.setAttribute('aria-label', elem.getAttribute('title') || 'Calendar');
     }
 
-    elem.addEventListener('blur', elem[$loseFocus]);
-    elem.addEventListener('keydown', elem[$navigateWithKeyboard]);
-    elem.addEventListener('mouseover', elem[$loseFocus]);
-    elem.addEventListener('select', elem[$selectHandler]);
+    elem.addEventListener('blur', elem.loseFocus);
+    elem.addEventListener('keydown', elem.navigateWithKeyboard);
+    elem.addEventListener('mouseover', elem.loseFocus);
+    elem.addEventListener('select', elem.selectHandler);
 
-    elem[$next] = elem[$next].bind(elem);
-    elem[$prev] = elem[$prev].bind(elem);
-    elem[$selectDay] = elem[$selectDay].bind(elem);
+    elem[$next] = elem.next.bind(elem);
+    elem[$prev] = elem.prev.bind(elem);
+    elem[$selectDay] = elem.selectDay.bind(elem);
   },
   render(elem) {
     const calendar = elem[$calendars].getCalendar(elem.year, elem.month - 1);

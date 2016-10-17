@@ -5,7 +5,8 @@
     "plugin:protractor/recommended"
   ],
   "rules": {
-    "new-cap": ["error", { "capIsNewExceptions": ["When", "Then", "Given", "After"] }]
+    "new-cap": ["error", { "capIsNewExceptions": ["When", "Then", "Given", "After"] }],
+    "import/no-extraneous-dependencies": 0
   },
   "env": {
     "protractor": true

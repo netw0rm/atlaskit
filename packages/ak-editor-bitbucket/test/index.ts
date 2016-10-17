@@ -109,6 +109,19 @@ describe('ak-editor-bitbucket', () => {
     );
   });
 
+  it('has its shadow root container "positioned" so that popups are positioned based on the container rather than viewport', (done) => {
+    const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
+
+    afterMutations(
+      () => {
+        const container = editor.shadowRoot.firstChild;
+        const child = container.appendChild(document.createElement('div'));
+        expect(child.offsetParent).to.equal(container);
+      },
+      done
+    );
+  });
+
   describe('.value', () => {
     it('returns an empty string by default', () => {
       const editor = new AkEditorBitbucket();

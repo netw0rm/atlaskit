@@ -36,7 +36,7 @@ function replaceWithMark(
       marks,
     )
   ).apply();
-  
+
   pm.removeActiveMark(markType);
 
   return true;

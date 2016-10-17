@@ -69,16 +69,21 @@ RUN echo "Installing node" \
   cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
   echo "${TIMEZONE}" > /etc/timezone && \
   apk --no-cache add nodejs="${NODE_VERSION}" && \
-  npm uninstall npm -g && \
   apk del tzdata && \
   rm -rf /var/cache/apk/*
 
 RUN echo "Installing yarn" \
-  curl -o- -L https://yarnpkg.com/install.sh | bash
+&& touch ~/.bashrc \
+&& curl -o- -L https://yarnpkg.com/install.sh | bash \
+&& export PATH="~/.yarn/bin:$PATH"
 #### </node>
 
 #### <atlaskit-tools>
 RUN echo "Installing AtlasKit tools" \
+&& npm install -g \
+  @atlassian/prebake-distributor-runner@1.0.2 \
+&& npm cache clean -f \
+&& npm uninstall npm -g \
 && yarn global add \
   cloudfront-invalidate-cli@1.0.3 \
   marky-markdown@8.1.0 \
@@ -87,7 +92,6 @@ RUN echo "Installing AtlasKit tools" \
   lerna@"${LERNA_VERSION}" \
   lerna-semantic-release@8.0.2 \
   indexifier@2.0.0 \
-  @atlassian/prebake-distributor-runner@1.0.2 \
 && yarn cache clean
 #### </atlaskit-tools>
 

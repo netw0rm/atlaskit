@@ -45,6 +45,15 @@ describe('ak-layer: logic', () => {
     return waitUntil(alignmentObjectAttached).should.be.fulfilled;
   });
 
+  it('Popper.js should be initialized', () => {
+    const div = getShadowRoot(fixture).firstChild;
+
+    // those are the attibutes that Popper applies to the element when it's initialized
+    expect(div.getAttribute('x-placement')).to.equal('right');
+    expect(window.getComputedStyle(div).position).to.equal('fixed');
+  });
+
+
   describe('.isFlipped getter', () => {
     it('should be true if the layer does not have enough space', () => {
       // we'll test this by manually calling the handlePopperUpdate function, testing actual spaces

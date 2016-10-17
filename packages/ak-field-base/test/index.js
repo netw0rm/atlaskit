@@ -201,6 +201,7 @@ describe('ak-field-base', () => {
     describe(`${button} button`, () => {
       let firingButton;
       const firingButtonClass = editModeButtons[button];
+      const shouldPassCancelledFlag = button === 'cancel';
 
       beforeEach(() => {
         // set up some references
@@ -213,6 +214,19 @@ describe('ak-field-base', () => {
       it('should fire showViewingView when clicked', () => {
         const callbackSpy = sinon.spy();
         const clickEvent = new CustomEvent('click');
+
+        document.body.addEventListener(events.showViewingView, callbackSpy);
+        firingButton.dispatchEvent(clickEvent);
+        expect(callbackSpy).to.be.calledOnce;
+        document.body.removeEventListener(events.showViewingView, callbackSpy);
+      });
+
+      it(`should ${shouldPassCancelledFlag ? '' : ' not '} pass cancelled when clicked`, () => {
+        const clickEvent = new CustomEvent('click');
+        const callback = (e) => {
+          expect(!!e.detail.cancelButtonPressed).to.equal(shouldPassCancelledFlag);
+        };
+        const callbackSpy = sinon.spy(callback);
 
         document.body.addEventListener(events.showViewingView, callbackSpy);
         firingButton.dispatchEvent(clickEvent);

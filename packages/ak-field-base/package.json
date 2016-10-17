@@ -1,12 +1,12 @@
 {
-  "name": "akutil-field-base",
+  "name": "ak-field-base",
   "version": "1.0.0",
-  "description": "akutil-field-base webcomponent",
+  "description": "A base component to build inline-editable fields in the ADG3 style",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single akutil-field-base"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-field-base"
   },
   "files": [
     "dist"

@@ -83,7 +83,7 @@ function isCursorOnLink(
   );
 }
 
-function getNodeOffset(doc: any, $anchor: any) {
+function getNodeOffset(doc: Node, $anchor: ResolvedPos) {
   // start captures the start of the node position based on depth
   // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
   // depth positions are based on the parent not the node itself so we

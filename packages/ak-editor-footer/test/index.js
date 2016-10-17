@@ -45,4 +45,17 @@ describe(name, () => {
       })
     )
   );
+
+  it('should hide buttons when hideButtons === true', () => {
+    component.hideButtons = true;
+    const shadowRoot = getShadowRoot(component);
+
+    waitUntil(
+      () => !!shadowRoot.querySelector('ak-editor-button-group')
+    ).then(() => {
+      const fs = shadowRoot.querySelector('ak-editor-button-group');
+      expect(fs).to.not.be.null;
+      expect(fs.style.visibility).to.be.equal('hidden');
+    });
+  });
 });

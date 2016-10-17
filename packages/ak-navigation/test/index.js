@@ -215,9 +215,6 @@ describe('ak-navigation', () => {
   });
 
   describe('sidebar link items', () => {
-    afterEach(() => {
-      window.location.hash = '';
-    });
     it('are mutually exclusively selectable via enter', (done) => {
       component.innerHTML = `
         <ak-navigation-link selected></ak-navigation-link>
@@ -233,16 +230,6 @@ describe('ak-navigation', () => {
         expect(component.children[1].selected).to.equal(true);
         expect(component.children[2].selected).to.equal(false);
       }, done);
-    });
-    it('selecting an item activates the link', (done) => {
-      component.innerHTML = `
-        <ak-navigation-link href="#link"></ak-navigation-link>
-      `;
-      afterMutations(
-        () => keyup('enter', component.children[0]),
-        () => expect(window.location.hash).to.equal('#link'),
-        done
-      );
     });
   });
 });

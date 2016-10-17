@@ -80,6 +80,19 @@ function isCursorOnLink(
   );
 }
 
+function getNodeOffset(doc: any, $anchor: any) {
+  // start captures the start of the node position based on depth
+  // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
+  // depth positions are based on the parent not the node itself so we
+  // need to go inside one level deeper
+  // why - 1 ?
+  // we want to capture the start of the node instead of the inside of the node
+  const path = doc.resolve($anchor.pos - 1).path;
+  const depth = $anchor.resolveDepth($anchor.depth + 1);
+
+  return depth == 0 ? 0 : path[depth * 3 - 1];
+}
+
 function isShallowObjectEqual(
   oldObject: HyperLinkState,
   newObject: HyperLinkState
@@ -216,8 +229,6 @@ export default new Plugin(class HyperlinkPlugin {
     const pm = this.pm;
     const selection = pm.selection;
     const {
-      $anchor,
-      $from,
       $head,
     } = selection;
     const isLink = isCursorOnLink(pm, $head.pos);
@@ -226,15 +237,12 @@ export default new Plugin(class HyperlinkPlugin {
       return false;
     }
 
-    const node = pm.doc.nodeAt($from.pos);
+    const node = pm.doc.nodeAt($head.pos - 1);
 
-    // start captures the start of the node position based on depth
-    // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
-    // depth positions are based on the parent not the node itself so we
-    // need to go inside one level deeper
-    // why - 1 ?
-    // we want to capture the start of the node instead of the inside of the node
-    const currentNodeOffset = $anchor.start($anchor.depth + 1) - 1;
+    // we have to build our custom `getNodeOffset`
+    // because the built-in one doesn't handle exclusiveRight
+    // to our needs
+    const currentNodeOffset = getNodeOffset(pm.doc, $head);
 
     const markerFrom = currentNodeOffset;
     const markerTo = markerFrom + node.nodeSize;

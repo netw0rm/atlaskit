@@ -72,7 +72,7 @@ let fieldValue = inputField.value;
 // now set up our event listener
 fieldBase.addEventListener(events.showViewingView, (e) => {
   // we can check if the change was caused by hitting cancel or not
-  if (e.detail.canceled) {
+  if (e.detail.cancelButtonPressed) {
     // we'll reset the value to the last one before the cancel
     inputField.value = fieldValue;
   } else {

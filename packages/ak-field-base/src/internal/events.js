@@ -18,13 +18,14 @@ export const showEditingView = 'show-editing-view';
  *
  * You might also choose to perform validation of the users value.
  *
- * You can check if the user clicked the cancel button through the `e.detail.canceled` value.
+ * You can check if the user clicked the cancel button through the `e.detail.cancelButtonPressed`
+ * value.
  *
  * @event FieldBase#showViewingView
  * @example @js import { events } from 'ak-field-base';
  *
  * field.addEventListener(events.showViewingView, (e) => {
- *   if (e.detail.canceled) {
+ *   if (e.detail.cancelButtonPressed) {
  *     // the user hit cancel
  *   } else {
  *    // the user hit confirm: perform validation, update view mode, etc

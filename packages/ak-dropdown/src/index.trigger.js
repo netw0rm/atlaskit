@@ -29,6 +29,7 @@ function handleClick(elem) {
     }
   };
 }
+
 export const DropdownTrigger = define('ak-dropdown-trigger', {
   render(elem) {
     return (

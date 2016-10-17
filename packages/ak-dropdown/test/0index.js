@@ -11,6 +11,7 @@ import {
   unselected as unselectedEvent,
   item as itemEvents,
 } from '../src/internal/events';
+import getItemsList from '../src/internal/getItemsList';
 
 
 chai.use(chaiAsPromised);
@@ -417,6 +418,37 @@ describe('ak-dropdown', () => {
       emit(component, itemEvents.up);
       expect(component.children[6].focused).to.equal(false);
       expect(component.children[3].focused).to.equal(true);
+    });
+  });
+
+  describe('getItemsList', () => {
+    let component;
+    const html = `<ak-dropdown-item>first</ak-dropdown-item>
+                  <ak-dropdown-group>
+                  <ak-dropdown-item>first</ak-dropdown-item>
+                  <ak-dropdown-item>second</ak-dropdown-item>
+                  </ak-dropdown-group>
+                  <ak-dropdown-group>
+                  <ak-dropdown-item-radio>third</ak-dropdown-item-radio>
+                  <ak-dropdown-item-radio hidden>first</ak-dropdown-item-radio>
+                  </ak-dropdown-group>
+                  <ak-dropdown-group>
+                  <ak-dropdown-item-checkbox hidden>second</ak-dropdown-item-checkbox>
+                  <ak-dropdown-item-checkbox>third</ak-dropdown-item-checkbox>
+                  </ak-dropdown-group>`;
+    beforeEach(() => setupComponentExample(html).then(newComponent => {
+      component = newComponent;
+      props(component, { open: true });
+    }));
+    afterEach(() => tearDownComponent(component));
+
+    it('should return the items list', () => {
+      const list = getItemsList(component.children);
+      expect(list.length).to.equal(7);
+      expect(component.children[1]).to.equal(list[0]);
+      expect(component.children[2].children[0]).to.equal(list[1]);
+      expect(component.children[3].children[0]).to.equal(list[3]);
+      expect(component.children[4].children[0]).to.equal(list[5]);
     });
   });
 });

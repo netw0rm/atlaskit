@@ -1,4 +1,4 @@
-image: atlassianlabs/atlaskit:2016-10-07
+image: atlassianlabs/atlaskit:2016-10-17-yarn
 pipelines:
   branches:
     master:
@@ -26,9 +26,7 @@ pipelines:
       - step:
           script:
             - export FORCE_COLOR=1
-            - npm install yarn -g
-            - npm uninstall npm -g
-            - ln -s /usr/bin/yarn /usr/bin/npm # make npm bin a yarn bin
+            - ln -s /root/.yarn/bin/yarn /usr/bin/npm # make npm bin a yarn bin
             - npm install
             - npm run postinstall # Remove when https://github.com/yarnpkg/yarn/pull/800 is released
             - npm run browserstack/tunnel/start

@@ -9,6 +9,10 @@ function build_status() {
     BUILD_DESCRIPTION="$3"
     STATE="$4"
     BUILD_URL="$5"
+    URL_PARAM=""
+    if [[ -n "$BUILD_URL" ]]; then
+      URL_PARAM="--url \"$BUILD_URL\""
+    fi
 
     CHALK="`npm bin`/chalk"
     $CHALK --no-stdin -t "{blue Post build in '$STATE' status}"
@@ -22,7 +26,7 @@ function build_status() {
     --key "$BUILD_KEY" \
     --name "$BUILD_NAME" \
     --description "$BUILD_DESCRIPTION" \
-    --url "$BUILD_URL" \
+    $URL_PARAM \
     --state "$STATE"
 
     if [[ "$STATE" == "FAILED" ]]; then

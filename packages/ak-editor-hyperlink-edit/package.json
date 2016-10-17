@@ -22,7 +22,7 @@
     "ak-icon": "^8.1.2",
     "akutil-shared-styles": "^34.2.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^3.0.0"
+    "skatejs": "3.1.0"
   },
   "devDependencies": {
     "ak-editor-content": "^2.0.0",

@@ -29,6 +29,7 @@ pipelines:
             - ln -s /root/.yarn/bin/yarn /usr/bin/npm # make npm bin a yarn bin
             - npm install
             - npm run postinstall # Remove when https://github.com/yarnpkg/yarn/pull/800 is released
+            - npm run dist # When the sub-components are initialized, prepublish is not run there by yarn for some reason
             - npm run browserstack/tunnel/start
             - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack" "pr/artifacts"
             - npm run test/integration

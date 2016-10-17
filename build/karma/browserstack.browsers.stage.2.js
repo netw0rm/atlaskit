@@ -1,3 +1,5 @@
+// Check out the configurator: https://www.browserstack.com/automate/node#setting-os-and-browser
+
 const browserStackBrowsers = {
   // iOS
   iphone: {

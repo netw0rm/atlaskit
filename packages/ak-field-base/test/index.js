@@ -244,14 +244,11 @@ describe('ak-field-base', () => {
       // TODO: spying on this callback is not working. WHWY!!!!
       it('should not switch to viewing mode if cancelled', () => {
         const clickEvent = new CustomEvent('click');
-        // checks if the event was cancelled
-        // const callbackSpy = sinon.spy(clickEvent, 'preventDefault');
         // cancels any event passed to it
         const preventDefault = (e) => (e.preventDefault());
 
         document.body.addEventListener(events.showViewingView, preventDefault);
         firingButton.dispatchEvent(clickEvent);
-        // expect(callbackSpy).to.have.been.calledOnce;
         document.body.removeEventListener(events.showViewingView, preventDefault);
 
         // we'll wait on second to check if the viewing mode becomes visible

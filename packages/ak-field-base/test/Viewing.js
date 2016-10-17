@@ -130,17 +130,20 @@ describe('ak-field-base', () => {
 
       it('should be called with `true` when button is focused on', () => {
         const editButton = shadowRoot.querySelector(`.${editButtonClass}`);
+        const focusEvent = new CustomEvent('focus');
 
-        editButton.focus();
+        editButton.dispatchEvent(focusEvent);
         expect(setFocusCallback).to.be.calledWith(true);
       });
 
       it('should be called with `false` when button is blur\'d', () => {
         const editButton = shadowRoot.querySelector(`.${editButtonClass}`);
+        const focusEvent = new CustomEvent('focus');
+        const blurEvent = new CustomEvent('blur');
 
-        editButton.focus();
+        editButton.dispatchEvent(focusEvent);
         expect(setFocusCallback).to.be.calledWith(true);
-        editButton.blur();
+        editButton.dispatchEvent(blurEvent);
         expect(setFocusCallback).to.be.calledWith(false);
       });
     });

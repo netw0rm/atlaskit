@@ -1,6 +1,6 @@
 {
   "name": "pf-profilecard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "pf-profilecard webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -20,7 +20,7 @@
     "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^3.0.0",
+    "skatejs": "3.1.0",
     "url-search-params": "^0.5.0",
     "whatwg-fetch": "^1.0.0"
   },

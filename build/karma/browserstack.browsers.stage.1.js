@@ -8,6 +8,13 @@ const browserStackBrowsers = {
   },
 
   // One with native WC support
+  chrome_beta_osx: {
+    browser: 'chrome',
+    os: 'OS X',
+    os_version: 'El Capitan',
+    browser_version: '54 Beta',
+  },
+  
   chrome_latest_osx: {
     browser: 'chrome',
     os: 'OS X',

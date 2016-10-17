@@ -4,7 +4,7 @@ import Promise from 'babel-runtime/core-js/promise';
 if (!window.Promise) {
   window.Promise = Promise;
 }
-
+import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
 import MentionResource from '../../src/api/pf-mention-resource';

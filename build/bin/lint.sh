@@ -11,7 +11,8 @@ BUILD_DESCRIPTION="The docs for this pull request"
 
 function build_status () {
   if [[ -n "$BITBUCKET_COMMIT" ]]; then
-    $CHALK --no-stdin -t "{blue Post build in '$1' status}"
+    STATE="$1"
+    $CHALK --no-stdin -t "{blue Post build in '$STATE' status}"
 
     bbuild \
     --commit "$BITBUCKET_COMMIT" \
@@ -22,7 +23,11 @@ function build_status () {
     --key "$BUILD_KEY" \
     --name "$BUILD_NAME" \
     --description "$BUILD_DESCRIPTION" \
-    --state "$1"
+    --state "$STATE"
+
+    if [[ "$STATE" == "FAILED" ]]; then
+      exit 1
+    fi
   fi
 }
 

@@ -4,9 +4,9 @@ set -e
 NODE_MODULES=`npm root`
 CHALK="`npm bin`/chalk"
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
-BUILD_KEY="DOCS-$GITHEAD_SHORT"
-BUILD_NAME="Docs"
-BUILD_DESCRIPTION="The docs for this pull request"
+BUILD_KEY="LINT-$GITHEAD_SHORT"
+BUILD_NAME="Lint"
+BUILD_DESCRIPTION="The linting result of this PR"
 
 
 function build_status () {

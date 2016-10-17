@@ -11,7 +11,7 @@ function build_status() {
     BUILD_URL="$5"
     URL_PARAM=""
     if [[ -n "$BUILD_URL" ]]; then
-      URL_PARAM="--url \"$BUILD_URL\""
+      URL_PARAM="--url $BUILD_URL"
     fi
 
     CHALK="`npm bin`/chalk"

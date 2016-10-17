@@ -23,7 +23,7 @@ export const getTimestampWithOffset = (timeZoneOffset) => {
 export const formatWeekdayString = (timestamp) => {
   const now = new Date(timestamp * 1000);
 
-  if (now.getDay() === new Date().getDay()) {
+  if (now.toDateString() === new Date().toDateString()) {
     return null;
   }
 

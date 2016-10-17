@@ -37,11 +37,11 @@ storiesOf(name, module)
             <li>hideLabel (true or false)</li>
           </ul>
         </div>
-        <FieldBase className={styles.locals.akutilFieldBase} label="Label for FieldBase">
+        <FieldBase className={styles.locals.akFieldBase} label="Label for FieldBase">
           <div is slot="editmode">This content is in the Editing slot!</div>
           <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
         </FieldBase>
-        <FieldBase className={styles.locals.akutilFieldBase} label="Multiline content">
+        <FieldBase className={styles.locals.akFieldBase} label="Multiline content">
           <div is slot="editmode">This content is in the Editing slot!</div>
           <div is slot="viewmode">
             <b>This content is in the Viewing slot!</b>
@@ -89,7 +89,7 @@ storiesOf(name, module)
           label="In edit mode, with a max-width css style"
           editing
           style={{ maxWidth: '200px' }}
-          className={styles.locals.akutilFieldBase}
+          className={styles.locals.akFieldBase}
         >
           <div is slot="editmode">This content is in the Editing slot!</div>
           <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>

@@ -4,7 +4,7 @@
  * viewmode, fetch data for your editmode or even cancel the event to prevent the change completely.
  *
  * @event FieldBase#showEditingView
- * @example @js import { events } from 'akutil-field-base';
+ * @example @js import { events } from 'ak-field-base';
  *
  * field.addEventListener(events.showEditingView, (e) => {
  *   // perform your tasks here

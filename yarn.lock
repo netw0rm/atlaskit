@@ -2265,7 +2265,7 @@ cz-conventional-changelog@^1.2.0, cz-conventional-changelog@1.2.0:
     right-pad "^1.0.1"
     word-wrap "^1.0.3"
 
-"cz-conventional-changelog@github:jpnelson/cz-conventional-changelog#a9a5468d":
+cz-conventional-changelog@jpnelson/cz-conventional-changelog#a9a5468d:
   version "0.0.0-semantically-released.0"
   resolved "https://codeload.github.com/jpnelson/cz-conventional-changelog/tar.gz/a9a5468d"
   dependencies:
@@ -7125,15 +7125,15 @@ tryit@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/tryit/-/tryit-1.0.2.tgz#c196b0073e6b1c595d93c9c830855b7acc32a453"
 
-ts-loader@^0.9.0:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-0.9.1.tgz#ff560bf73fba7beada492996eae6cf17287130b6"
+ts-loader@0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-0.9.0.tgz#14efda4516e3fcb11b5d1a526a1b4376fe554d11"
   dependencies:
     arrify "^1.0.0"
     colors "^1.0.3"
     enhanced-resolve "^0.9.0"
     loader-utils "^0.2.6"
-    object-assign "^4.1.0"
+    object-assign "^2.0.0"
     semver "^5.0.1"
 
 tty-browserify@0.0.0:
@@ -7177,9 +7177,9 @@ typescript@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.0.3.tgz#33dec9eae86b8eee327dd419ca050c853cabd514"
 
-typescript@^2.1.0-dev.20160826:
-  version "2.1.0-dev.20161012"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.0-dev.20161012.tgz#f03053419a0d6528217f8112087b404e3290a2dd"
+typescript@2.1.0-dev.20161010:
+  version "2.1.0-dev.20161010"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.0-dev.20161010.tgz#8786e1e14650cc4c7be019e1759b131453cee363"
 
 typical@^2.3.0, typical@^2.4.2, typical@^2.5.0, typical@^2.6.0:
   version "2.6.0"

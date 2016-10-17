@@ -48,7 +48,7 @@ export default define('ak-navigation-link', {
         <a
           className={classNames(shadowStyles.locals.link)}
           href={elem.href || false}
-          ref={(a) => { a.addEventListener('mouseup', () => a.blur()); }}
+          onmousedown={e => e.preventDefault()}
           tabindex="0"
         >
           <slot

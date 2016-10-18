@@ -21,7 +21,7 @@
     "css-element-queries": "^0.3.2",
     "debounce": "^1.0.0",
     "keycode": "^2.1.4",
-    "skatejs": "^2.0.4"
+    "skatejs": "^3.0.0"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",

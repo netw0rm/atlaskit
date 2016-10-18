@@ -22,6 +22,6 @@ body {
                     repeating-linear-gradient(90deg, @grid-color, @grid-color 1px, white 1px, white);
   background-size: @ak-grid-size @ak-grid-size;
   // height: 100% is required so that the body actually has a height
-  height: 100%;
+  height: calc(100% - @ak-grid-size * 2);
   margin: (@ak-grid-size * 2);
 }

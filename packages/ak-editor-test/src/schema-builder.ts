@@ -210,7 +210,7 @@ export const li = nodeFactory("list_item", {});
 export const ul = nodeFactory("bullet_list", {});
 export const ol = nodeFactory("ordered_list", {});
 export const br = schema.node("hard_break");
-export const code_block = (attrs?: {}) => nodeFactory("code_block", attrs);
+export const code_block = (attrs: {} = {}) => nodeFactory("code_block", attrs);
 export const img = (attrs: { src: string, alt?: string, title?: string }) => schema.node("image", attrs);
 export const emoji = (attrs: { id: string }) => schema.node("emoji", attrs);
 export const mention = (attrs: { id: string, displayName?: string }) => schema.node("mention", attrs);

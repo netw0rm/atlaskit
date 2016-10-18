@@ -11,7 +11,7 @@ import schema from 'ak-editor-schema';
 chai.use(chaiPlugin);
 
 const createMark = (mark: string, attrs?: {}) => schema.marks[mark].create(attrs);
-const pre = code_block({});
+const pre = code_block();
 
 // Based on https://bitbucket.org/tutorials/markdowndemo
 describe('Parse Bitbucket rendered HTML', () => {

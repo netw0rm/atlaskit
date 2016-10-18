@@ -1,7 +1,6 @@
-const path = require('path'); // eslint-disable-line import/newline-after-import
-const webComponentLocator = require( // eslint-disable-line import/no-dynamic-require
-  path.join('akutil-common-test', 'src', 'index.locateWebComponent.js')
-);
+const path = require('path');
+const webComponentLocator = require('akutil-common-test/src/index.locateWebComponent.js');
+
 
 const rq = [
   require.resolve('akutil-cucumber'),

@@ -106,7 +106,7 @@ export default define('ak-navigation', {
           [shadowStyles.locals.drawersOpen]: elem.searchDrawerOpen || elem.createDrawerOpen,
         })}
       >
-        <style ref={(styles) => { elem.styles = styles; }}>
+        <style ref={styles => (elem.styles = styles)}>
           {collapseStyles(elem)}
         </style>
         <style>{shadowStyles.toString()}</style>

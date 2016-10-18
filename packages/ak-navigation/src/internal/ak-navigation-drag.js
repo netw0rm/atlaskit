@@ -5,17 +5,16 @@ import shadowStyles from './ak-navigation-drag.less';
 export default define('ak-navigation-drag', {
   created(elem) {
     const onDrag = (mouseMoveEvent) => { elem.dragCallback(mouseMoveEvent); };
-    const throttledDrag = onDrag;
     const onMouseUp = (mouseUpEvent) => {
       elem.isDragging = false;
       elem.endDragCallback(mouseUpEvent);
-      document.removeEventListener('mousemove', throttledDrag);
+      document.removeEventListener('mousemove', onDrag);
       document.removeEventListener('mouseup', onMouseUp);
     };
     elem.addEventListener('mousedown', (mouseDownEvent) => {
       elem.isDragging = true;
       elem.startDragCallback(mouseDownEvent);
-      document.addEventListener('mousemove', throttledDrag);
+      document.addEventListener('mousemove', onDrag);
       document.addEventListener('mouseup', onMouseUp);
     });
   },

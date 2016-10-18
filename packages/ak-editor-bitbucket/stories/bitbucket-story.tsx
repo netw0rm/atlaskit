@@ -4,7 +4,11 @@ import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-test';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import AkTabs from 'ak-tabs';
+import { Tab as AkTab} from 'ak-tabs';
 
+const Tabs = reactify(AkTabs);
+const Tab = reactify(AkTab);
 const Bitbucket = reactify(BitbucketComponent);
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
@@ -161,4 +165,32 @@ storiesOf('ak-editor-bitbucket', module)
     }
 
     return <Demo />;
+  })
+  .add('Contexts', () => {
+    type Props = {};
+    type State = {};
+    class Demo extends Component<Props, State> {
+      render() {
+        return (
+          <div ref="root">
+            <Tabs>
+              <Tab selected label="(default)">
+                <Bitbucket expanded/>
+              </Tab>
+              <Tab selected label="comment">
+                <Bitbucket expanded context="comment"/>
+              </Tab>
+              <Tab selected label="pr">
+                <Bitbucket expanded context="pr"/>
+              </Tab>
+            </Tabs>
+          </div>
+        );
+      }
+    }
+
+    return <Demo />;
   });
+
+;
+

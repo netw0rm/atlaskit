@@ -285,4 +285,27 @@ describe('ak-editor-bitbucket', () => {
       });
     });
   });
+
+  describe('footer', () => {
+    it('should not show action buttons in "pr" context', () => {
+      return buildExpandedEditor(fixture()).then((editor) => {
+        const bt = getShadowRoot(editor).querySelector('ak-editor-footer');
+        expect(bt).to.not.be.null;
+
+        // on browsers without native ShadowDOM (i.e. Firefox, Safari), shadowRoot is not available right away
+        return waitUntil(() => {
+          return !!getShadowRoot(bt);
+        }).then(() => {
+          const shadowRoot = getShadowRoot(bt);
+
+          return waitUntil(() => {
+            return !!shadowRoot.querySelector('ak-editor-button-group');
+          }).then(() => {
+            const fs = shadowRoot.querySelector('ak-editor-button-group');
+            expect(fs.style.visibility).to.be.equal('hidden');
+          });
+        });
+      });
+    });
+  });
 });

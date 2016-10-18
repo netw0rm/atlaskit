@@ -246,6 +246,7 @@ class AkEditorBitbucket extends Component {
       }
       <Footer
         openTop
+        hideButtons={elem.context == 'pr'}
         onSave={elem._collapse}
         onCancel={elem._collapse}
         onInsertimage={elem._insertImage}

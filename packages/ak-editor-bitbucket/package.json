@@ -17,7 +17,7 @@
   "dependencies": {
     "ak-blanket": "^3.0.0",
     "ak-editor-content": "^2.0.1",
-    "ak-editor-footer": "^1.0.0",
+    "ak-editor-footer": "^1.2.14",
     "ak-editor-hyperlink-edit": "^14.1.9",
     "ak-editor-plugin-block-type": "^3.0.0",
     "ak-editor-plugin-hyperlink": "^3.0.0",
@@ -45,7 +45,8 @@
     "ak-editor-test": "^3.0.0",
     "akutil-common-test": "^3.1.0",
     "akutil-react": "^1.0.0",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "ak-tabs": "^2.1.5"
   },
   "repository": {
     "type": "git",

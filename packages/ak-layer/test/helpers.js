@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { handlePopperUpdate } from '../src/internal/helpers';
+import { flippedSymbol } from '../src/internal/symbols';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -14,38 +15,38 @@ describe('ak-layer helpers', () => {
   beforeEach(() => {
     fakeElem = {
       someState: 'blah',
-      _isFlipped: false,
+      [flippedSymbol]: false,
     };
   });
 
   describe('handlePopperUpdate', () => {
-    it('should set the _isFlipped property to true if popper returns flipped state', () => {
+    it('should set the flipped property to true if popper returns flipped state', () => {
       const fakePopperUpdate = {
         flipped: true,
       };
 
       handlePopperUpdate(fakeElem, fakePopperUpdate);
 
-      expect(fakeElem._isFlipped).to.be.true; // eslint-disable-line no-underscore-dangle
+      expect(fakeElem[flippedSymbol]).to.be.true;
     });
 
-    it('should set the _isFipped property to false when popper returns false for isFlipped', () => {
+    it('should set the flipped property to false when popper returns false for isFlipped', () => {
       const fakePopperUpdate = {
         flipped: false,
       };
 
       handlePopperUpdate(fakeElem, fakePopperUpdate);
 
-      expect(fakeElem._isFlipped).to.be.false; // eslint-disable-line no-underscore-dangle
+      expect(fakeElem[flippedSymbol]).to.be.false;
     });
 
-    it('should set the _isFipped property to false when popper returns undefined for flipped', () => { // eslint-disable-line  max-len
+    it('should set the flipped property to false when popper returns undefined for flipped', () => {
       // popper doesnt always send the 'flipped' attribute
       const fakePopperUpdate = {};
 
       handlePopperUpdate(fakeElem, fakePopperUpdate);
 
-      expect(fakeElem._isFlipped).to.be.false; // eslint-disable-line no-underscore-dangle
+      expect(fakeElem[flippedSymbol]).to.be.false;
     });
   });
 });

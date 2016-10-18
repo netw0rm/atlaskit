@@ -4,6 +4,7 @@ import Layer from 'ak-layer';
 
 import shadowStyles from './shadow.less';
 import TooltipTrigger from './index.tooltip-trigger';
+import { flippedSymbol } from './internal/symbols';
 
 const defaultTooltipPosition = 'bottom';
 
@@ -35,13 +36,13 @@ function getAnimationClass(elem, position) {
     right: 'left',
   };
   // if the tooltip has been flipped we need to apply the opposite animation
-  const actualPosition = elem._isFlipped ? flippedAnimations[position] : position; // eslint-disable-line no-underscore-dangle, max-len
+  const actualPosition = elem[flippedSymbol] ? flippedAnimations[position] : position;
   return animationMapping[actualPosition] ? animationMapping[actualPosition] : undefined;
 }
 
 function updateCallback(elem, data) {
   props(elem, {
-    _isFlipped: data.isFlipped,
+    [flippedSymbol]: data.isFlipped,
   });
 }
 
@@ -129,8 +130,7 @@ export default define('ak-tooltip', {
     visible: prop.boolean({
       attribute: true,
     }),
-    // TODO replace with symbol once supported by skate.
-    _isFlipped: prop.boolean(),
+    [flippedSymbol]: prop.boolean(),
   },
 });
 

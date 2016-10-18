@@ -78,6 +78,7 @@ class ReactField extends React.Component {
           waiting={this.state.waiting}
           editing={this.state.editing}
           invalid={this.state.invalid}
+          focused={this.state.focused}
           ref={ref => (this.fieldBase = ref)}
         >
           <div is slot="editmode">
@@ -87,6 +88,8 @@ class ReactField extends React.Component {
               defaultValue={this.state.value}
               style={inputStyles}
               ref={ref => (this.inputField = ref)}
+              onFocus={() => this.setState({ focused: true })}
+              onBlur={() => this.setState({ focused: false })}
             />
           </div>
           <div is slot="viewmode">

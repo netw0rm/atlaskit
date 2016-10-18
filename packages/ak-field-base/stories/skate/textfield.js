@@ -69,13 +69,11 @@ export default define('ak-textfield', {
     if (!elem.inputField) {
       const inputStyles = `
         input {
-          background-color: #f7f8f9;
+          background: transparent;
           border: 0px;
           font-size: 14px;
           outline: 0;
-        }
-        input:focus {
-          background-color: white;
+          width: 100%;
         }
       `;
       const styleTag = document.createElement('style');

@@ -1,11 +1,14 @@
-import React from 'react';
-const { Component } = React;
+import React, { Component } from 'react';
 import reactify from 'akutil-react';
-import Dropdown, { DropdownTrigger, DropdownTriggerButton, Group, Item } from '../src/index';
+import AvatarWc from 'ak-avatar';
+
+import Dropdown, { DropdownTrigger, DropdownTriggerButton, Group, Item } from '../src';
 import styles from '../src/less/shadow-list.less';
+
 
 const dropdownClass = styles.locals.akDropdown;
 const DropdownReactComponent = reactify(Dropdown);
+const Avatar = reactify(AvatarWc);
 const avatarUrl = require('url!./doge.jpg');
 
 const DropdownTriggerReact = reactify(DropdownTrigger);
@@ -23,16 +26,18 @@ export default class DropdownExample extends Component { // eslint-disable-line 
         stepOutside={this.props.stepOutside}
         position={this.props.position}
       >
-        {this.props.avatarTarget ?
+        {this.props.avatarTarget ? (
           <DropdownTriggerReact slot="trigger" tab-index="1">
-            <ak-avatar
+            <Avatar
               src={avatarUrl}
               size="small"
             />
-          </DropdownTriggerReact> :
+          </DropdownTriggerReact>
+        ) : (
           <DropdownTriggerButtonReact slot="trigger" tab-index="1">
             Dropdown
           </DropdownTriggerButtonReact>
+          )
         }
         <GroupReact heading="Australia">
           <ItemReact>Sydney</ItemReact>
@@ -47,7 +52,7 @@ export default class DropdownExample extends Component { // eslint-disable-line 
 }
 
 DropdownExample.propTypes = {
-  parent: React.PropTypes.object,
+  parent: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   stepOutside: React.PropTypes.bool,
   position: React.PropTypes.string,
   avatarTarget: React.PropTypes.bool,

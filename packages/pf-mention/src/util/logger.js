@@ -17,6 +17,6 @@ export function logStacktrace() {
 
 export default function debug(...args) {
   if (debugEnabled) {
-    console.log.apply(console, args); // eslint-disable-line no-console
+    console.log(...args); // eslint-disable-line no-console
   }
 }

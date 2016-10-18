@@ -20,6 +20,6 @@ export default (props, children) => {
     className={animationWrapperClasses}
     onAnimationend={onAnimationend}
   >
-      {children()}
+    {children()}
   </div>);
 };

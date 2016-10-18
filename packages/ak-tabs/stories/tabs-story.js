@@ -1,10 +1,12 @@
 import { storiesOf, action } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import AkTabs, { events, Tab as AkTab } from '../src';
-const { tabChange: tabChangeEvent } = events;
 import React from 'react';
+import reactify from 'akutil-react';
+
+import AkTabs, { events, Tab as AkTab } from '../src';
 import { name } from '../package.json';
 
+
+const { tabChange: tabChangeEvent } = events;
 const Component = reactify(AkTabs);
 
 function changeHandler(e) {
@@ -213,12 +215,12 @@ storiesOf(name, module)
     <Component>
       <ak-tabs-tab selected label="Tab 1">
         <h1>Tab 1</h1>
-        <p>Some text here with a <a href="#">link</a>.</p>
+        <p>Some text here with a <a href="http://www.atlassian.com">link</a>.</p>
       </ak-tabs-tab>
       <ak-tabs-tab selected label="Tab 2">
         <h1>Tab 2</h1>
-        <p>Some more text here with a <a href="#">link</a>.</p>
-        <p>Another <a href="#">link</a>.</p>
+        <p>Some more text here with a <a href="http://www.atlassian.com">link</a>.</p>
+        <p>Another <a href="http://www.atlassian.com">link</a>.</p>
       </ak-tabs-tab>
     </Component>
   ))
@@ -232,7 +234,7 @@ storiesOf(name, module)
         horizontal space and force the ak-tabs component to handle it."
       >
         <h1>Tab 1</h1>
-        <p>Some text here with a <a href="#">link</a>.</p>
+        <p>Some text here with a <a href="http://www.atlassian.com">link</a>.</p>
       </ak-tabs-tab>
     </Component>
   ))
@@ -246,7 +248,7 @@ storiesOf(name, module)
         horizontal space and force the ak-tabs component to handle it."
       >
         <h1>Tab 1</h1>
-        <p>Some text here with a <a href="#">link</a>.</p>
+        <p>Some text here with a <a href="http://www.atlassian.com">link</a>.</p>
       </ak-tabs-tab>
       <ak-tabs-tab
         selected
@@ -255,7 +257,7 @@ storiesOf(name, module)
         the page."
       >
         <h1>Tab 2</h1>
-        <p>Some text here with a <a href="#">link</a>.</p>
+        <p>Some text here with a <a href="http://www.atlassian.com">link</a>.</p>
       </ak-tabs-tab>
     </Component>
   ))

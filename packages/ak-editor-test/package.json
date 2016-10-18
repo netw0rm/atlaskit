@@ -17,7 +17,9 @@
   "dependencies": {
     "ak-editor-prosemirror": "^2.0.0",
     "ak-editor-schema": "^2.0.0",
-    "babel-runtime": "^6.11.6"
+    "babel-runtime": "^6.11.6",
+    "browserkeymap": "^2.0.1",
+    "string.prototype.repeat": "^0.2.0"
   },
   "repository": {
     "type": "git",

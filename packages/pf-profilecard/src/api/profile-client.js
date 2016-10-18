@@ -1,12 +1,14 @@
 // IE, Safari, Mobile Chrome, Mobile Safari
 // import URLSearchParams from 'url-search-params';
 
-// 'whatwg-fetch' needs a Promise polyfill
 import Promise from 'babel-runtime/core-js/promise';
+// 'whatwg-fetch' needs a Promise polyfill
+/* eslint-disable import/imports-first */
 if (!window.Promise) {
   window.Promise = Promise;
 }
 import 'whatwg-fetch';
+/* eslint-enable import/imports-first */
 
 const buildUrl = (baseUrl, path, data, secOptions) => {
   const searchParam = new URLSearchParams();
@@ -15,13 +17,13 @@ const buildUrl = (baseUrl, path, data, secOptions) => {
     data[key] === undefined && delete data[key]
   );
   for (const key in data) { // eslint-disable-line no-restricted-syntax
-    if (data.hasOwnProperty(key)) {
+    if ({}.hasOwnProperty.call(data, key)) {
       searchParam.append(key, data[key]);
     }
   }
   if (secOptions && secOptions.params) {
     for (const key in secOptions.params) { // eslint-disable-line no-restricted-syntax
-      if (secOptions.params.hasOwnProperty(key)) {
+      if ({}.hasOwnProperty.call(secOptions.params, key)) {
         const values = secOptions.params[key];
         if (Array.isArray(values)) {
           for (let i = 0; i < values.length; i++) {
@@ -44,7 +46,7 @@ const buildHeaders = (secOptions) => {
   const headers = new Headers();
   if (secOptions && secOptions.headers) {
     for (const key in secOptions.headers) { // eslint-disable-line no-restricted-syntax
-      if (secOptions.headers.hasOwnProperty(key)) {
+      if ({}.hasOwnProperty.call(secOptions.headers, key)) {
         const values = secOptions.headers[key];
         if (Array.isArray(values)) {
           for (let i = 0; i < values.length; i++) {
@@ -65,7 +67,7 @@ const requestService = (baseUrl, path, data, secOptions) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
   return fetch(new Request(url, { headers }))
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
         return Promise.reject({
           code: response.status,

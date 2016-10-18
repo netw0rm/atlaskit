@@ -1,6 +1,9 @@
-import { keydown, keyup, keypress } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
+
+import { keydown, keyup, keypress } from '../src';
+
+
 chai.should();
 chai.use(sinonChai);
 

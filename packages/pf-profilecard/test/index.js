@@ -3,7 +3,7 @@ import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
-import ProfileCard from '../src/index';
+import { ProfileCard } from '../src';
 import {
   // getTimestampWithOffset,
   // formatWeekdayString,
@@ -36,7 +36,7 @@ const cardActions = [
 ];
 
 // Helper functions
-const getActionButtons = (component) => (getShadowRoot(component).querySelectorAll('ak-button'));
+const getActionButtons = component => (getShadowRoot(component).querySelectorAll('ak-button'));
 
 /* Create profile card in div, append to body and return reference to both.
    Ensure the component has been rendered before tests start */

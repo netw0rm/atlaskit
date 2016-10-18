@@ -1,6 +1,8 @@
 const path = require('path');
-const iconNameToComponentName = require('../src/iconNameToComponentName');
+
+const iconNameToComponentName = require('../bin/iconNameToComponentName');
 const { tmpFolderName, glyphFolderName } = require('./constants');
+
 
 module.exports = ({
   iconName,

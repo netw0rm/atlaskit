@@ -1,24 +1,25 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkInlineDialog, { events } from '../src';
-const { afterOpen: afterOpenEvent, afterClose: afterCloseEvent } = events;
 import 'custom-event-polyfill';
-import { name } from '../package.json';
 import { events as blanketEvents } from 'ak-blanket';
-const { activate: activateBlanketEvent } = blanketEvents;
 import { afterMutations, getShadowRoot, checkVisibility, checkInvisibility }
   from 'akutil-common-test';
 import { Component } from 'skatejs';
 
+import AkInlineDialog, { events } from '../src';
+import { name } from '../package.json';
+
+
+const { activate: activateBlanketEvent } = blanketEvents;
+const { afterOpen: afterOpenEvent, afterClose: afterCloseEvent } = events;
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
-const defaultPosition = 'right middle';
 
 describe('ak-inline-dialog', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new AkInlineDialog).should.be.an.instanceof(Component);
+      (new AkInlineDialog()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
@@ -35,8 +36,14 @@ describe('ak-inline-dialog', () => {
   describe('general behaviour', () => {
     let component;
 
-    beforeEach(() => {
+    beforeEach((done) => {
       component = new AkInlineDialog();
+      document.body.appendChild(component);
+      done();
+    });
+
+    afterEach(() => {
+      document.body.removeChild(component);
     });
 
     // TODO consider changing as this is overlapping quite a bit with Skate
@@ -71,51 +78,6 @@ describe('ak-inline-dialog', () => {
       button.dispatchEvent(event);
       expect(clicked).to.equal(true);
     });
-
-    // TODO consider changing as this is overlapping quite a bit with Skate
-    // behaviour that is already tested.
-    it('should have all the default properties after creation', () => {
-      expect(component.position).not.to.equal(null);
-      expect(component.position).to.equal(defaultPosition);
-
-      expect(component.constrain).not.to.equal(null);
-      expect(component.constrain).to.equal('window');
-
-      expect(component.open).not.to.equal(null);
-      expect(component.open).to.equal(false);
-    });
-
-    // TODO consider changing as this is overlapping quite a bit with Skate
-    // behaviour that is already tested.
-    it('all the properties should be attributes', () => {
-      const props = {
-        position: { value: 'top left', attr: 'position' },
-        open: { value: true, attr: 'open' },
-        target: { value: '#test', attr: 'target' },
-        constrain: { value: 'scrollParent', attr: 'constrain' },
-        boxShadow: { value: 'none', attr: 'box-shadow' },
-        borderColor: { value: 'red', attr: 'border-color' },
-        borderRadius: { value: '2px', attr: 'border-radius' },
-        padding: { value: '2px', attr: 'padding' },
-      };
-
-      Object.keys(props).forEach((key) => {
-        component[key] = props[key].value;
-        expect(component[key]).not.to.equal(null);
-        expect(component[key]).to.equal(props[key].value);
-
-        const attr = component.getAttribute(props[key].attr);
-        if (typeof props[key].value === 'boolean') {
-          if (props[key].value === false) {
-            expect(attr).to.equal(null);
-          } else {
-            expect(attr).to.equal('');
-          }
-        } else {
-          expect(attr).to.equal(props[key].value);
-        }
-      });
-    });
   });
 
   describe('visibility', () => {
@@ -123,7 +85,7 @@ describe('ak-inline-dialog', () => {
     let component;
     let target;
 
-    beforeEach(done => {
+    beforeEach((done) => {
       target = document.createElement('div');
       target.setAttribute('id', 'target');
       target.style.width = '100px';
@@ -148,7 +110,7 @@ describe('ak-inline-dialog', () => {
       expect(checkInvisibility(component.childNodes[0])).to.equal(true);
     });
 
-    it('should be open when property `open` is set to true', done => {
+    it('should be open when property `open` is set to true', (done) => {
       component.open = true;
       setTimeout(() => {
         expect(checkVisibility(component.childNodes[0])).to.equal(true);
@@ -157,12 +119,12 @@ describe('ak-inline-dialog', () => {
     });
 
     describe('if open', () => {
-      beforeEach(done => {
+      beforeEach((done) => {
         component.open = true;
         setTimeout(done);
       });
 
-      it('should be closed when property `open` is set to false', done => {
+      it('should be closed when property `open` is set to false', (done) => {
         setTimeout(() => expect(checkVisibility(component.childNodes[0])).to.equal(true));
         setTimeout(() => (component.open = false));
         setTimeout(() => expect(checkInvisibility(component.childNodes[0])).to.equal(true));

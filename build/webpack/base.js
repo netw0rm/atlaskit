@@ -1,5 +1,6 @@
 const camelCase = require('camelcase');
 const path = require('path');
+// eslint-disable-next-line import/no-dynamic-require
 const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
@@ -26,7 +27,7 @@ function defaultPackageMains() {
  *
  *       'loader1?{}!loader2?{}'
  */
-const loaderChain = (spec) => Object.keys(spec)
+const loaderChain = spec => Object.keys(spec)
   .map(key => `${key}?${JSON.stringify(spec[key])}`)
   .join('!');
 

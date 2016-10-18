@@ -1,6 +1,9 @@
 import { vdom } from 'skatejs';
 import classNames from 'classnames';
+
 import shadowStyles from './pf-profilecard-resourced-shadow.less';
+
+
 const styles = shadowStyles.locals;
 
 const bladeClasses = [
@@ -19,7 +22,7 @@ const bladeClasses = [
 
 export default () => (
   <div className={styles.pfSpinner} role="progressbar">
-    {bladeClasses.map((blade) => (
+    {bladeClasses.map(blade => (
       <div
         className={
           classNames({
@@ -27,7 +30,7 @@ export default () => (
             [styles[blade]]: true,
           })
         }
-      ><div></div></div>
+      ><div /></div>
     ))}
   </div>
 );

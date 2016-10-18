@@ -1,7 +1,8 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import '../src';
 import { waitUntil } from 'akutil-common-test';
+
+import '../src';
 import {
   setupTabs,
   cleanupTabs,
@@ -11,6 +12,7 @@ import {
   keyboardNavLeft,
   keyboardNavRight,
 } from './_helpers';
+
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -64,16 +66,6 @@ describe('ak-tabs behaviour -', () => {
       const newLabelText = 'New tab label';
 
       tab.label = newLabelText;
-
-      return waitUntil(() => (label.textContent === newLabelText)).should.be.fulfilled;
-    });
-
-    it('updates the label correctly when the attribute is set', () => {
-      const tab = getSelectedTab(fixtures.tabs);
-      const label = getLabelForTab(tab);
-      const newLabelText = 'New tab label';
-
-      tab.setAttribute('label', newLabelText);
 
       return waitUntil(() => (label.textContent === newLabelText)).should.be.fulfilled;
     });

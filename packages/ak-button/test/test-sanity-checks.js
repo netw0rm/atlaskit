@@ -1,8 +1,10 @@
-import { name } from '../package.json';
 import chai from 'chai';
+import { tearDownComponent } from 'akutil-common-test';
+
+import { name } from '../package.json';
 import AkButton, { themes } from '../src';
 import { getShadowButtonElem, setup } from './_helpers';
-import { tearDownComponent } from 'akutil-common-test';
+
 
 const expect = chai.expect;
 const Adg2Theme = themes.adg2;

@@ -53,9 +53,9 @@ However, this isn't particularly useful because our changes aren't saved!
 
 To keep our two views in sync, we'll need to set up some event handlers to tell us when a user is switching views.
 
-The two events for this are `exit-viewing-view` and `exit-editing-view` respectively.
+The two events for this are `exitViewingView` and `exitEditingView` respectively.
 
-We'll simply listen for the `exit-editing-view` event and if a user clicked confirm, we'll update our `viewmode`.
+We'll simply listen for the `exitEditingView` event and if a user clicked confirm, we'll update our `viewmode`.
 If they click cancel we'll take their last value and put that back into the input field so that the next time they enter `editmode` it has the correct value.
 
 ```javascript
@@ -125,7 +125,7 @@ inputField.addEventListener('blur', () => {
 
 #### Validation
 
-Performing validation is as easy listening for the `exit-editing-view` event and responding appropriately.
+Performing validation is as easy listening for the `exitEditingView` event and responding appropriately.
 
 If the validation can be performed client-side, simply check the value, if it is invalid cancel the event
 and set the `invalid` prop on fieldBase.

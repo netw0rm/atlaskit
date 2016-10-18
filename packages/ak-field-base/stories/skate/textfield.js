@@ -28,14 +28,11 @@ function handleInputBlur(elem) {
 }
 
 /* This is an example of how to extend FieldBase. We are creating the simple text field  */
-export default define('ak-textfield', {
+export default define('x-editable-field', {
   render(elem) {
-    // we use null instead of false so that when we pass it as an attribute to FieldBase it doesnt
-    // get rendered as editing=""
-    const isEditing = elem.editing || null;
     return (
       <div>
-        <FieldBase label={elem.label} ref={ref => (elem.fieldBase = ref)} editing={isEditing}>
+        <FieldBase label={elem.label} ref={ref => (elem.fieldBase = ref)} editing={elem.editing}>
           <div is="" slot="viewmode">
             {elem.value}
           </div>
@@ -49,7 +46,6 @@ export default define('ak-textfield', {
   props: {
     label: prop.string({ attribute: true }),
     editing: prop.boolean({ attribute: true }),
-    editable: prop.boolean({ attribute: true }),
     value: prop.string({
       attribute: true,
       set(elem, data) {

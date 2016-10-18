@@ -119,7 +119,7 @@
     "docs": "./node_modules/.bin/lerna exec -- ../../build/bin/generate.readme.sh",
     "docs/single": "./build/bin/docs.single.sh",
     "postinstall": "./build/bin/postinstall.sh",
-    "lint": "eslint --color --format 'node_modules/eslint-friendly-formatter' . --ext .js,.jsx",
+    "lint": "./build/bin/lint.sh",
     "pr/artifacts": "run-p -ln 'pr/docs' 'pr/storybook' 'pr/stats'",
     "pr/docs": "npm run docs && ./build/bin/generate.readme.html.pr.sh",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",

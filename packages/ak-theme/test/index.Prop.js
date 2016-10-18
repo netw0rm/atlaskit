@@ -5,6 +5,11 @@ describe('ak-theme-prop', () => {
 
   beforeEach(() => {
     elem = new Prop();
+    document.body.appendChild(elem);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(elem);
   });
 
   describe('props', () => {

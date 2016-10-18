@@ -1,3 +1,4 @@
+import { props } from 'skatejs';
 import { afterMutations, checkInvisibility } from 'akutil-common-test';
 import Theme, { events, Prop } from '../src';
 
@@ -81,9 +82,11 @@ describe('ak-theme', () => {
 
   it('id should be an attribute', () => {
     const theme = createTheme();
-    expect(theme.hasAttribute('id')).to.equal(false);
-    theme.id = 'theme';
+    body.appendChild(theme);
+    expect(theme.getAttribute('id')).to.equal('');
+    props(theme, { id: 'theme' });
     expect(theme.getAttribute('id')).to.equal('theme');
+    body.removeChild(theme);
   });
 
   it('mixin should be a string', () => {
@@ -92,9 +95,11 @@ describe('ak-theme', () => {
 
   it('mixin should be an attribute', () => {
     const theme = createTheme();
-    expect(theme.hasAttribute('mixin')).to.equal(false);
+    body.appendChild(theme);
+    expect(theme.getAttribute('mixin')).to.equal('');
     theme.mixin = 'theme1 theme2 theme3';
     expect(theme.getAttribute('mixin')).to.equal('theme1 theme2 theme3');
+    body.removeChild(theme);
   });
 
   it('ownVars should be an object', () => {
@@ -205,10 +210,10 @@ describe('ak-theme', () => {
       document.body.appendChild(theme);
       afterMutations(
         () => {
-          const props = theme.ownVars;
-          expect(props.mykey1).to.equal('mykey1');
-          expect(props.my.key2).to.equal('mykey2');
-          expect(props.my.key[3]).to.equal('mykey3');
+          const vars = theme.ownVars;
+          expect(vars.mykey1).to.equal('mykey1');
+          expect(vars.my.key2).to.equal('mykey2');
+          expect(vars.my.key[3]).to.equal('mykey3');
         },
         done
       );

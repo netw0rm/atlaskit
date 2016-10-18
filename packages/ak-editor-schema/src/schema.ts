@@ -1,9 +1,10 @@
 import {
   Block, Text, Doc, BlockQuote, OrderedList, BulletList, Schema,
   ListItem, HorizontalRule, Heading, Paragraph, Image, HardBreak, EmMark,
-  StrongMark, LinkMark, CodeMark,
+  StrongMark, CodeMark,
 } from 'ak-editor-prosemirror';
 
+import LinkMarkExclusiveRight from './link-mark-exclusive-right';
 import { Mention, Emoji } from './entity';
 import { CodeBlock } from './code-block';
 import { DelMark } from './del-mark';
@@ -32,7 +33,7 @@ const schemaSpec = {
 
   // Note: Marks are applied in the order they are defined.
   marks: {
-    link: LinkMark,
+    link: LinkMarkExclusiveRight,
     em: EmMark,
     strong: StrongMark,
     code: CodeMark,

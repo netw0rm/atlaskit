@@ -12,6 +12,7 @@ import {
   $a11y,
   $calendars,
   $next,
+  $now,
   $prev,
   $selectDay,
   $selecting,
@@ -54,6 +55,7 @@ const Announcer = () => (
  */
 export default define('ak-calendar', {
   props: {
+    [$now]: { default: new Date() },
     [$a11y]: prop.string(),
     [$selecting]: prop.string(),
     day: attr.number({ default: new Date().getDate() }),
@@ -148,7 +150,7 @@ export default define('ak-calendar', {
     },
     selectDay(e) {
       const day = Number(e.currentTarget.getAttribute('data-day'));
-      const month = this.month;
+      const month = Number(e.currentTarget.getAttribute('data-month'));
       const year = this.year;
       emit(this, 'select', {
         detail: { day, month, year },
@@ -158,6 +160,8 @@ export default define('ak-calendar', {
       const d = e.detail;
       const s = `${d.year}-${d.month}-${d.day}`;
       const i = this.selected.indexOf(s);
+
+      this.month = d.month;
 
       if (i > -1) {
         this.selected.splice(i, 1);
@@ -192,7 +196,7 @@ export default define('ak-calendar', {
   },
   render(elem) {
     const calendar = elem[$calendars].getCalendar(elem.year, elem.month - 1);
-    const now = new Date();
+    const now = elem[$now];
     const weeks = [];
 
     const css = style(vdom, styles);
@@ -226,6 +230,7 @@ export default define('ak-calendar', {
             [css.today]: isToday,
           })}
           data-day={date.day.toString()}
+          data-month={(date.month + 1).toString()}
           onClick={elem[$selectDay]}
           onMousedown={() => (elem[$selecting] = dateToString(date))}
           onMouseup={() => (elem[$selecting] = '')}

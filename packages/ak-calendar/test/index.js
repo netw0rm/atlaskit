@@ -6,11 +6,9 @@ import { setupComponent, tearDownComponent, stylesWrapperConstructor } from './_
 import { getShadowRoot } from 'akutil-common-test';
 import { getMonthName } from '../src/util';
 
-const now = new Date();
-const clock = sinon.useFakeTimers(now.getTime(), 'Date');
-
 chai.use(chaiAsPromised);
 const expect = chai.expect;
+const now = new Date(2016, 9, 18);
 
 const Component = stylesWrapperConstructor(AkCalendar);
 
@@ -23,7 +21,7 @@ describe('ak-calendar', () => {
   let css;
 
   beforeEach(() =>
-    setupComponent(Component)
+    setupComponent(Component, { now })
       .then(c => {
         component = c;
         css = c.css;
@@ -32,7 +30,6 @@ describe('ak-calendar', () => {
 
   afterEach(() => {
     tearDownComponent(component);
-    clock.restore();
   });
 
   describe('logic', () => {
@@ -80,6 +77,28 @@ describe('ak-calendar', () => {
             setTimeout(() => {
               expect(shadowDomQuery(component, `[data-day="1"].${css.selected}`))
                 .to.have.lengthOf(1);
+              done();
+            });
+          });
+        });
+
+        describe('when a date in the previous month is clicked', () => {
+          it('calendar moves to the previous month', (done) => {
+            const prevMonthDate = shadowDomQuery(component, `[data-day="30"].${css.sibling}`)[0];
+            prevMonthDate.click();
+            setTimeout(() => {
+              expect(component.month).to.equal(now.getMonth());
+              done();
+            });
+          });
+
+          it('the date is selected', (done) => {
+            const prevMonthDate = shadowDomQuery(component, '[data-day="30"][data-month="9"]')[0];
+            prevMonthDate.click();
+            setTimeout(() => {
+              expect(
+                shadowDomQuery(component, `[data-day="30"][data-month="9"].${css.selected}`).length
+              ).to.equal(1);
               done();
             });
           });

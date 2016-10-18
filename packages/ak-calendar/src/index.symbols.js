@@ -3,6 +3,7 @@ export const $calendars = Symbol();
 export const $loseFocus = Symbol();
 export const $navigateWithKeyboard = Symbol();
 export const $next = Symbol();
+export const $now = Symbol();
 export const $prev = Symbol();
 export const $selectDay = Symbol();
 export const $selectHandler = Symbol();

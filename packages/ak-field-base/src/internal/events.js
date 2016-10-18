@@ -12,7 +12,7 @@
  *   // e.preventDefault(); will prevent the switch
  * });
  */
-export const exitViewingView = 'exit-viewing-view';
+export const exitViewingView = 'exitViewingView';
 /**
  * This event gets emitted when a field is about to switch away from it's `editmode` view.
  *
@@ -37,4 +37,4 @@ export const exitViewingView = 'exit-viewing-view';
  *   }
  * });
  */
-export const exitEditingView = 'exit-editing-view';
+export const exitEditingView = 'exitEditingView';

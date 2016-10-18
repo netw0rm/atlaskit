@@ -1,13 +1,13 @@
 import { getShadowRoot, waitUntil, tearDownComponent } from 'akutil-common-test';
+
 import AkButton from '../src';
 
-export const shadowDomQuery = (elem, selector) =>
-  getShadowRoot(elem).querySelector(selector);
 
-export const getShadowButtonElem = (elem) =>
-  shadowDomQuery(elem, 'button');
+export const shadowDomQuery = (elem, selector) => getShadowRoot(elem).querySelector(selector);
 
-export const createDivTest = config => {
+export const getShadowButtonElem = elem => shadowDomQuery(elem, 'button');
+
+export const createDivTest = (config) => {
   const div = document.createElement('div');
   div.innerText = 'test';
   if (config.slotName) {

@@ -1,4 +1,4 @@
-﻿/* Need to disable some eslint rules as this files is not babel-ified */
+/* Need to disable some eslint rules as this files is not babel-ified */
 /* eslint-disable no-alert, no-var, prefer-template, prefer-arrow-callback, object-shorthand */
 /* global app */
 /*
@@ -155,6 +155,7 @@ function getJSKeyframes(aeKeyFrames, selectedProperty) {
 
     avSpeed = Math.abs(val2 - val1) / (t2 - t1);
 
+    /* eslint-disable no-mixed-operators */
     if (val1 < val2) {
       x1 = aeKeyFrames[i].outTemporalEaseInfluence;
       y1 = x1 * aeKeyFrames[i].outTemporalEaseSpeed / avSpeed;

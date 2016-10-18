@@ -1,10 +1,13 @@
 import { emit, prop, vdom, define } from 'skatejs';
-import shadowStyles from './index.less';
 import 'ak-blanket';
+import classNames from 'classnames';
+import keycode from 'keycode';
+import 'custom-event-polyfill';
+
 import './internal/ak-navigation-drawer';
 import './internal/ak-navigation-drag';
+import shadowStyles from './index.less';
 import NavigationLink from './index.ak-navigation-link';
-import classNames from 'classnames';
 import resizer from './internal/resizer';
 import addTouchHandlers from './internal/touch';
 import {
@@ -15,9 +18,9 @@ import {
   getCollapsedWidth,
   getSpacerWidth,
 } from './internal/collapse';
-import keycode from 'keycode';
-import 'custom-event-polyfill';
 import * as events from './internal/index.events';
+
+
 const {
   linkSelected: linkSelectedEvent,
   createDrawerSelected: createDrawerSelectedEvent,
@@ -196,7 +199,7 @@ export default define('ak-navigation', {
      * @example @html <ak-navigation width="80"/>;
      */
     width: prop.number({
-      default: (elem) => getCollapsedWidth(elem),
+      default: elem => getCollapsedWidth(elem),
     }),
     /**
      * @description The handler for the sidebar toggling behaviour.
@@ -207,7 +210,7 @@ export default define('ak-navigation', {
      * @example @js navigation.toggleHandler = function() {};
      */
     toggleHandler: {
-      default: (elem) => function toggleHandler(event) {
+      default: elem => function toggleHandler(event) {
         if (!elem.collapsible) {
           return;
         }

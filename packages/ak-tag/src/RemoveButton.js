@@ -16,10 +16,10 @@ export default (props) => {
     {...props}
     className={shadowStyles.locals.button}
     aria-label={props.text}
-    onmousedown={(e) => (e.preventDefault())}
+    onmousedown={e => (e.preventDefault())}
     onmouseover={() => props.onHoverStateChange(true)}
     onmouseout={() => props.onHoverStateChange(false)}
-    ref={(el) => (keyHandler(el, removeAction))}
+    ref={el => (keyHandler(el, removeAction))}
     onclick={removeAction}
   >
     <RemoveIcon />

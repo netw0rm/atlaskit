@@ -6,7 +6,7 @@
  *
  *       'loader1?{}!loader2?{}'
  */
-module.exports.encode = (spec) => Object.keys(spec)
+module.exports.encode = spec => Object.keys(spec)
   .map(key => `${key}?${JSON.stringify(spec[key])}`)
   .join('!');
 
@@ -21,9 +21,9 @@ module.exports.encode = (spec) => Object.keys(spec)
  *         loader2: {}
  *       }
  */
-module.exports.decode = (url) => url
+module.exports.decode = url => url
   .split('!')
-  .map(loader => {
+  .map((loader) => {
     const [name, params] = loader.split('?');
     return {
       [name]: JSON.parse(params),

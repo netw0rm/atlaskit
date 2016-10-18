@@ -73,7 +73,10 @@ function isCursorOnLink(
   proseMirrorInstance: ProseMirror,
   pos: number
 ) : Mark {
-  const marks = proseMirrorInstance.doc.marksAt(pos);
+  // why - 1?
+  // because of `exclusiveRight`, we need to get the node "left to"
+  // the current cursor
+  const marks = proseMirrorInstance.doc.nodeAt(pos - 1).marks;
   return marks.reduce(
     (found: boolean, m: Mark) => found || (m.type.name === 'link' && m),
     null
@@ -145,7 +148,9 @@ export default new Plugin(class HyperlinkPlugin {
 
     const $resolvedPos: ResolvedPos = $head || $to;
 
-    // because $resolvedPos.pos - 1 is actually the correct position
+    // why - 1?
+    // because of `exclusiveRight`, we need to get the node "left to"
+    // the current cursor
     const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
     const isLink = isCursorOnLink(pm, $resolvedPos.pos);
 
@@ -216,8 +221,6 @@ export default new Plugin(class HyperlinkPlugin {
     const pm = this.pm;
     const selection = pm.selection;
     const {
-      $anchor,
-      $from,
       $head,
     } = selection;
     const isLink = isCursorOnLink(pm, $head.pos);
@@ -226,15 +229,23 @@ export default new Plugin(class HyperlinkPlugin {
       return false;
     }
 
-    const node = pm.doc.nodeAt($from.pos);
+    // why - 1?
+    // because of `exclusiveRight`, we need to get the node "left to"
+    // the current cursor
+    const node = pm.doc.nodeAt($head.pos - 1);
 
     // start captures the start of the node position based on depth
+    // why - 1 ?
+    // we want to capture the start of the node instead of the inside of the node
+    const path = pm.doc.resolve($head.pos - 1).path;
+
     // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
     // depth positions are based on the parent not the node itself so we
     // need to go inside one level deeper
-    // why - 1 ?
-    // we want to capture the start of the node instead of the inside of the node
-    const currentNodeOffset = $anchor.start($anchor.depth + 1) - 1;
+    const depth = $head.resolveDepth($head.depth + 1);
+
+    // See `ResolvedPos.prototype.start` method prosemirror/src/model/resolvedpos
+    const currentNodeOffset = depth == 0 ? 0 : path[depth * 3 - 1];
 
     const markerFrom = currentNodeOffset;
     const markerTo = markerFrom + node.nodeSize;

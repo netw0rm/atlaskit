@@ -4,14 +4,13 @@ import Lorem from 'react-lorem-component';
 import reactify from 'akutil-react';
 import 'ak-icon/glyph/search';
 import 'ak-icon/glyph/create';
-
-import webComponent from '../src/index';
-import { name } from '../package.json';
-
 import AkNavigation from 'ak-navigation';
 
-const Component = reactify(webComponent);
+import webComponent from '../src';
+import { name } from '../package.json';
 
+
+const Component = reactify(webComponent);
 const Navigation = reactify(AkNavigation);
 
 storiesOf(name, module)

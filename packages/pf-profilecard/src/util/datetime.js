@@ -36,11 +36,9 @@ export const formatTimeString = (timestamp, use24h) => {
 
   let timeHours = now.getHours();
   let timeMinutes = now.getMinutes();
-  let timeSeconds = now.getSeconds();
   let timePeriod = '';
 
   timeMinutes = leadWithZero(timeMinutes, 10);
-  timeSeconds = leadWithZero(timeSeconds, 10);
 
   if (use24h) {
     timeHours = leadWithZero(timeHours, 10);

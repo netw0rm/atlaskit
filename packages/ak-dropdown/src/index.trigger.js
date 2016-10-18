@@ -2,8 +2,10 @@ import { emit, vdom, prop, define } from 'skatejs';
 import 'ak-button';
 import 'ak-icon/glyph/expand';
 import keyCode from 'keycode';
+
 import { trigger as triggerEvents } from './internal/events';
 import shadowTriggerStyles from './less/shadow-trigger.less';
+
 
 function handleKeyDown(elem) {
   return (e) => {
@@ -31,7 +33,7 @@ function handleClick(elem) {
 export const DropdownTrigger = define('ak-dropdown-trigger', {
   render(elem) {
     return (
-      <div
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
         onclick={handleClick(elem)}
         onkeydown={handleKeyDown(elem)}
       >

@@ -1,10 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
-import { name } from '../package.json';
 import { define, vdom } from 'skatejs';
 import { style } from 'akutil-common';
 import React from 'react';
 import reactify from 'akutil-react';
+
+import { name } from '../package.json';
 import Theme, { Prop, themeable } from '../src';
+
 
 const ReactTheme = reactify(Theme);
 const ReactThemeProp = reactify(Prop);

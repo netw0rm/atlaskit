@@ -1,6 +1,8 @@
-import { waitUntil } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
+
+import { waitUntil } from '../src';
+
 chai.should();
 chai.use(sinonChai);
 

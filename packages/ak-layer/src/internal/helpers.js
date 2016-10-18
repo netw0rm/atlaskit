@@ -1,6 +1,8 @@
-import Alignment from './Alignment';
 // https://github.com/babel/babel/issues/892
 import 'core-js/fn/array/find';
+
+import Alignment from './Alignment';
+
 
 function popperPositionToAlignmentPosition(position) {
   const positionMap = Alignment.attachmentMap;
@@ -32,7 +34,7 @@ function createNewAlignment(elem) {
     position: elem.position,
     enableFlip: elem.enableFlip,
     offset: elem.offset,
-    onUpdate: (data) => handlePopperUpdate(elem, data),
+    onUpdate: data => handlePopperUpdate(elem, data),
   };
 
   if (elem.boundariesElement) {

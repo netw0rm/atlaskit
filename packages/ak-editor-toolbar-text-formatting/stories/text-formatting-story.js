@@ -1,7 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
-import TextFormattingComponent from '../src';
 import React from 'react';
 import reactify from 'akutil-react';
+
+import TextFormattingComponent from '../src';
+
 
 const TextFormatting = reactify(TextFormattingComponent);
 
@@ -49,7 +51,7 @@ storiesOf('ak-editor-toolbar-text-formatting', module)
               <input
                 type="checkbox"
                 checked={!this.state.boldDisabled}
-                onChange={(e) => this.setState({ boldDisabled: !e.target.checked })}
+                onChange={e => this.setState({ boldDisabled: !e.target.checked })}
               />
               <b
                 tabIndex="-1"
@@ -60,7 +62,7 @@ storiesOf('ak-editor-toolbar-text-formatting', module)
               <input
                 type="checkbox"
                 checked={!this.state.italicDisabled}
-                onChange={(e) => this.setState({ italicDisabled: !e.target.checked })}
+                onChange={e => this.setState({ italicDisabled: !e.target.checked })}
               />
               <i
                 tabIndex="-1"
@@ -71,7 +73,7 @@ storiesOf('ak-editor-toolbar-text-formatting', module)
               <input
                 type="checkbox"
                 checked={!this.state.underlineDisabled}
-                onChange={(e) => this.setState({ underlineDisabled: !e.target.checked })}
+                onChange={e => this.setState({ underlineDisabled: !e.target.checked })}
               />
               <u
                 tabIndex="-1"
@@ -82,7 +84,7 @@ storiesOf('ak-editor-toolbar-text-formatting', module)
               <input
                 type="checkbox"
                 checked={!this.state.codeDisabled}
-                onChange={(e) => this.setState({ codeDisabled: !e.target.checked })}
+                onChange={e => this.setState({ codeDisabled: !e.target.checked })}
               />
               <u
                 tabIndex="-1"

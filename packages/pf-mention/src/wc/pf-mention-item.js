@@ -1,7 +1,8 @@
-import 'style!../host.less';
-import shadowStyles from './pf-mention-item-shadow.less';
 import { define, vdom, prop } from 'skatejs';
 import Avatar from 'ak-avatar';
+
+import 'style!../host.less';
+import shadowStyles from './pf-mention-item-shadow.less';
 
 const styles = shadowStyles.locals;
 
@@ -43,7 +44,7 @@ function renderHighlight(className, value, highlights, prefix) {
   return (
     <span className={className}>
       {prefixText}
-      {parts.map(part => {
+      {parts.map((part) => {
         if (part.m) {
           return <b>{part.v}</b>;
         }

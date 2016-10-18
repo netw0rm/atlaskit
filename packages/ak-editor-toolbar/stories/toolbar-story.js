@@ -1,10 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
-import ToolbarComponent from '../src';
 import ToolbarButtonComponent from 'ak-editor-button';
 import TextFormattingComponent from 'ak-editor-toolbar-text-formatting';
 import BoldEditorIcon from 'ak-icon/glyph/editor/bold';
 import React from 'react';
 import reactify from 'akutil-react';
+
+import ToolbarComponent from '../src';
+
 
 const Toolbar = reactify(ToolbarComponent);
 const ToolbarButton = reactify(ToolbarButtonComponent);

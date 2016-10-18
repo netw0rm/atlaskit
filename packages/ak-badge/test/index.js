@@ -1,9 +1,12 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import AkBadge, { events } from '../src';
-const { change: changeEvent } = events;
-import styles from '../src/shadow.less';
 import { afterMutations, getShadowRoot } from 'akutil-common-test';
+
+import AkBadge, { events } from '../src';
+import styles from '../src/shadow.less';
+
+
+const { change: changeEvent } = events;
 
 chai.use(chaiAsPromised);
 chai.should();

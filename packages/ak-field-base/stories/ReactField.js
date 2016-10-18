@@ -63,6 +63,13 @@ class ReactField extends React.Component {
   }
 
   render() {
+    const inputStyles = {
+      background: 'transparent',
+      border: '0',
+      outline: '0',
+      width: '100%',
+      fontSize: '14px',
+    };
     return (
       <div ref={ref => (this.wrapper = ref)}>
         <FieldBase
@@ -73,19 +80,11 @@ class ReactField extends React.Component {
           ref={ref => (this.fieldBase = ref)}
         >
           <div is slot="editmode">
-            <style>
-              {`input {
-                background: transparent;
-                border: 0;
-                outline: 0;
-                width: 100%;
-                font-size: 14px;
-              }`}
-            </style>
             <input
               type="text"
               id="editmodeInput"
               defaultValue={this.state.value}
+              style={inputStyles}
               ref={ref => (this.inputField = ref)}
             />
           </div>

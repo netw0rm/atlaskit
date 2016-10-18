@@ -52,7 +52,7 @@ describe(name, () => {
     component.hideButtons = true;
     const shadowRoot = getShadowRoot(component);
 
-    waitUntil(
+    return waitUntil(
       () => !!shadowRoot.querySelector('ak-editor-button-group')
     ).then(() => {
       const buttonGroup = shadowRoot.querySelector('ak-editor-button-group');

@@ -83,19 +83,6 @@ function isCursorOnLink(
   );
 }
 
-function getNodeOffset(doc: Node, $anchor: ResolvedPos) {
-  // start captures the start of the node position based on depth
-  // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
-  // depth positions are based on the parent not the node itself so we
-  // need to go inside one level deeper
-  // why - 1 ?
-  // we want to capture the start of the node instead of the inside of the node
-  const path = doc.resolve($anchor.pos - 1).path;
-  const depth = $anchor.resolveDepth($anchor.depth + 1);
-
-  return depth == 0 ? 0 : path[depth * 3 - 1];
-}
-
 function isShallowObjectEqual(
   oldObject: HyperLinkState,
   newObject: HyperLinkState
@@ -247,10 +234,18 @@ export default new Plugin(class HyperlinkPlugin {
     // the current cursor
     const node = pm.doc.nodeAt($head.pos - 1);
 
-    // we have to build our custom `getNodeOffset`
-    // because the built-in one doesn't handle `exclusiveRight`
-    // to our needs
-    const currentNodeOffset = getNodeOffset(pm.doc, $head);
+    // start captures the start of the node position based on depth
+    // why - 1 ?
+    // we want to capture the start of the node instead of the inside of the node
+    const path = pm.doc.resolve($head.pos - 1).path;
+
+    // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
+    // depth positions are based on the parent not the node itself so we
+    // need to go inside one level deeper
+    const depth = $head.resolveDepth($head.depth + 1);
+
+    // See `ResolvedPos.prototype.start` method prosemirror/src/model/resolvedpos
+    const currentNodeOffset = depth == 0 ? 0 : path[depth * 3 - 1];
 
     const markerFrom = currentNodeOffset;
     const markerTo = markerFrom + node.nodeSize;

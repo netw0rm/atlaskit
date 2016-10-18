@@ -139,7 +139,7 @@ fieldBase.addEventListener(events.showViewingView, (e) => {
   if (!e.detail.cancelButtonPressed) {
     if (inputField.value.length % 2 !== 0) {
       // error! the field only accepts strings that have an even number of characters!
-      e.cancel();
+      e.preventDefault();
       fieldBase.invalid = true;
     }
   }

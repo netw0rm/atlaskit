@@ -95,4 +95,11 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
     pm.input.insertText(pm.selection.from, pm.selection.from, 'm');
     expect(pm.doc).to.deep.equal(doc(p(em('italic'), 'm')));
   });
+
+  it('should keep current marks when converting from markdown', () => {
+    const { pm, sel } = editor(doc(p(strong('This is bold {<>}'))));
+
+    pm.input.insertText(sel, sel, '*italic*');
+    expect(pm.doc).to.deep.equal(doc(p(strong('This is bold '), em(strong('italic')))));    
+  });
 });

@@ -8,4 +8,5 @@
  *   console.log(`The {e.target.label} tab was changed.`);
  * });
  */
+// eslint-disable-next-line import/prefer-default-export
 export const tabChange = 'tabChange';

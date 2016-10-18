@@ -18,7 +18,7 @@ describe('ak-theme', () => {
   let theme2;
   let theme3;
 
-  beforeEach(done => {
+  beforeEach((done) => {
     body = document.body;
 
     theme1 = createTheme('theme1', {
@@ -40,7 +40,7 @@ describe('ak-theme', () => {
     afterMutations(done);
   });
 
-  afterEach(done => {
+  afterEach((done) => {
     body.removeChild(theme1);
     body.removeChild(theme2);
     body.removeChild(theme3);
@@ -114,7 +114,7 @@ describe('ak-theme', () => {
     expect(theme1.ownVars).to.deep.equal(ownVars);
   });
 
-  it('should emit an event when attached', done => {
+  it('should emit an event when attached', (done) => {
     const theme = createTheme('test', { key: 'val' });
     const spy = sinon.spy();
     document.addEventListener(events.change, spy);
@@ -130,7 +130,7 @@ describe('ak-theme', () => {
     );
   });
 
-  it('should emit an event when detached', done => {
+  it('should emit an event when detached', (done) => {
     const theme = createTheme('test', { key: 'val' });
     const spy = sinon.spy();
     body.appendChild(theme);
@@ -146,7 +146,7 @@ describe('ak-theme', () => {
     );
   });
 
-  it('should emit an event when attached again after being detached', done => {
+  it('should emit an event when attached again after being detached', (done) => {
     const theme = createTheme('test', { key: 'val' });
     const spy = sinon.spy();
     document.addEventListener(events.change, spy);
@@ -180,7 +180,7 @@ describe('ak-theme', () => {
     expect(Theme.updated(theme1, null)).to.equal(true);
   });
 
-  it('should not error when a theme prop does not have a name', done => {
+  it('should not error when a theme prop does not have a name', (done) => {
     const theme = new Theme();
     theme.appendChild(Object.assign(new Prop(), { value: 'test' }));
 
@@ -196,7 +196,7 @@ describe('ak-theme', () => {
   });
 
   describe('dot-notation', () => {
-    it('should support dot-notation', done => {
+    it('should support dot-notation', (done) => {
       const theme = createTheme('theme', {
         mykey1: 'mykey1',
         'my.key2': 'mykey2',
@@ -214,7 +214,7 @@ describe('ak-theme', () => {
       );
     });
 
-    it('should overwrite namespaces', done => {
+    it('should overwrite namespaces', (done) => {
       const theme = createTheme('theme', {
         my: 'my',
         'my.key': 'mykey',

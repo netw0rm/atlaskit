@@ -1,12 +1,13 @@
-import shadowStyles from './ak-navigation-drag.less';
 import { vdom, define } from 'skatejs';
+
+import shadowStyles from './ak-navigation-drag.less';
 
 
 export default define('ak-navigation-drag', {
   created(elem) {
     elem.addEventListener('mousedown', (mouseDownEvent) => {
       elem.startDragCallback(mouseDownEvent);
-      const onDrag = (mouseMoveEvent) => elem.dragCallback(mouseMoveEvent);
+      const onDrag = mouseMoveEvent => elem.dragCallback(mouseMoveEvent);
       const onMouseUp = (mouseUpEvent) => {
         elem.endDragCallback(mouseUpEvent);
         document.body.removeEventListener('mousemove', onDrag);
@@ -35,4 +36,3 @@ export default define('ak-navigation-drag', {
     },
   },
 });
-

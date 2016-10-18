@@ -29,7 +29,7 @@ describe('ak-tag', () => {
       };
 
       beforeEach(() => createTemporary(definition)
-        .then(newComponent => {
+        .then((newComponent) => {
           component = newComponent;
           rootNode = getRootNode(component);
         }));
@@ -54,16 +54,18 @@ describe('ak-tag', () => {
       const clickSpy = sinon.spy();
       const definition = {
         render() {
+          /* eslint-disable jsx-a11y/href-no-hash */
           return (
             <Chrome isLinked>
               <a onClick={clickSpy} href="#">link</a>
             </Chrome>
           );
+          /* eslint-enable jsx-a11y/href-no-hash */
         },
       };
 
       beforeEach(() => createTemporary(definition)
-        .then(newComponent => {
+        .then((newComponent) => {
           component = newComponent;
           rootNode = getRootNode(component);
         }));
@@ -72,7 +74,7 @@ describe('ak-tag', () => {
         expect(rootNode.tabIndex).to.equal(0);
       });
 
-      ['SPACE', 'ENTER'].forEach((keyName) =>
+      ['SPACE', 'ENTER'].forEach(keyName =>
         it(`should be possible to activate the link via "${keyName}"`, () => {
           const keyPressEvent = new CustomEvent('keydown');
           keyPressEvent.keyCode = keyCode(keyName);

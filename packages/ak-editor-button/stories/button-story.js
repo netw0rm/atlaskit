@@ -1,8 +1,10 @@
 import { storiesOf } from '@kadira/storybook';
-import ButtonComponent from '../src';
 import EditorBoldIcon from 'ak-icon/glyph/editor/bold';
 import reactify from 'akutil-react';
 import React from 'react';
+
+import ButtonComponent from '../src';
+
 
 const Button = reactify(ButtonComponent);
 const BoldIcon = reactify(EditorBoldIcon);

@@ -1,6 +1,8 @@
 import { vdom, define, prop } from 'skatejs';
-import { reCreateAlignmentIfNeeded, createNewAlignment } from './internal/helpers';
 import { enumeration } from 'akutil-common';
+
+import { reCreateAlignmentIfNeeded, createNewAlignment } from './internal/helpers';
+
 
 export const POSITION_ATTRIBUTE_ENUM = {
   attribute: 'position',
@@ -182,7 +184,7 @@ export default define('ak-layer', {
     }
 
     return (
-      <div ref={(el) => (elem.positionedDOM = el)}>
+      <div ref={el => (elem.positionedDOM = el)}>
         <slot />
       </div>
     );

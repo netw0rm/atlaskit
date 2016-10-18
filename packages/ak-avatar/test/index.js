@@ -2,7 +2,7 @@ import { waitUntil, getShadowRoot, hasClass } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
-import AKAvatar from '../src/index.js';
+import AKAvatar from '../src';
 import shadowStyles from '../src/shadow.less';
 import { loading } from '../src/internal/symbols';
 
@@ -25,13 +25,13 @@ const slotClass = `.${shadowStyles.locals.defaultSlotElement}`;
 const loadedClass = shadowStyles.locals.loaded;
 
 // Helper functions for getting various parts of the shadowDOM
-const getImgWrapper = (component) => (getShadowRoot(component).querySelector(imgWrapperClass));
-const getSlot = (component) => (getShadowRoot(component).querySelector(slotClass));
-const getImage = (component) => (getShadowRoot(component).querySelector('img'));
+const getImgWrapper = component => (getShadowRoot(component).querySelector(imgWrapperClass));
+const getSlot = component => (getShadowRoot(component).querySelector(slotClass));
+const getImage = component => (getShadowRoot(component).querySelector('img'));
 
 // Helper functions for checking that certain elements are rendered
 
-const imgIsRendered = (component) => !!getImage(component);
+const imgIsRendered = component => !!getImage(component);
 
 /* Creates a default avatar in a div, appends it to the body and returns a reference to both.
    Appending to the body ensures the component has been redered before we start the test */

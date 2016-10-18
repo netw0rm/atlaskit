@@ -1,14 +1,17 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import Popup from '../src/index';
 import React from 'react';
-import { name } from '../package.json';
-import 'style!./../src/host.less';
 import EditorButtonComponent from 'ak-editor-button';
 import LinkEditorIcon from 'ak-icon/glyph/editor/link';
 import UnlinkEditorIcon from 'ak-icon/glyph/editor/unlink';
 import OpenEditorIcon from 'ak-icon/glyph/editor/open';
 import ToolbarComponent from 'ak-editor-toolbar';
+
+import 'style!./../src/host.less';
+
+import Popup from '../src';
+import { name } from '../package.json';
+
 
 const Component = reactify(Popup);
 
@@ -70,6 +73,7 @@ storiesOf(name, module)
 
       render() {
         return (
+          // eslint-disable-next-line jsx-a11y/no-static-element-interactions
           <div onClick={this.handleClick}>
             <Toolbar>
               <EditorButton

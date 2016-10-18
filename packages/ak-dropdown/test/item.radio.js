@@ -1,12 +1,14 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import Item from '../src/index.item.radio';
+import { props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot, afterMutations, getRootNode } from 'akutil-common-test';
+
+import Item from '../src/index.item.radio';
 import shadowItemStyles from '../src/less/shadow-item.less';
-import { props } from 'skatejs';
 import supportsVoiceOver from '../src/internal/supportsVoiceOver';
 import { itemHeight, itemLeftToDefaultGap, itemLeftGap } from './_helpers';
+
 
 const role = supportsVoiceOver ? 'radio' : 'menuitemradio';
 
@@ -81,7 +83,7 @@ describe('ak-dropdown-item-radio', () => {
     it(`height should be equal ${itemHeight}`, (done) => {
       afterMutations(
         () => getRootNode(component).getBoundingClientRect().height,
-        (height) => (expect(Math.round(height)).to.equal(itemHeight)),
+        height => (expect(Math.round(height)).to.equal(itemHeight)),
         done
       );
     });

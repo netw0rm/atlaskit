@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 const pascalCase = require('pascal-case');
+
+
 const args = process.argv.slice(2);
 
 function logPascalCase(arg) {

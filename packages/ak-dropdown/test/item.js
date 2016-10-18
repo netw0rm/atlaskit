@@ -1,12 +1,14 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { events as dropdownEvents } from '../src';
-import Item from '../src/index.item';
 import keyCode from 'keycode';
 import { props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
+
+import { events as dropdownEvents } from '../src';
+import Item from '../src/index.item';
 import { itemHeight, itemLeftToDefaultGap, itemLeftGap } from './_helpers';
+
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -127,7 +129,7 @@ describe('ak-dropdown-item', () => {
       texttest texttest texttest texttest texttest texttest text</div>`;
       const rectComponent = getShadowRoot(component).firstChild.getBoundingClientRect();
       const rectDiv = component.childNodes[0].getBoundingClientRect();
-      const gapRight = rectComponent.left + rectComponent.width - rectDiv.left - rectDiv.width;
+      const gapRight = (rectComponent.left + rectComponent.width) - rectDiv.left - rectDiv.width;
 
       expect(Math.round(gapRight)).to.equal(itemLeftGap);
     });

@@ -202,7 +202,7 @@ export default new Plugin(class HyperlinkPlugin {
 
     const { enabled } = this.getState();
 
-    if (!enabled || empty || isLink) {
+    if (!enabled || empty || isLink || !options) {
       return false;
     }
 

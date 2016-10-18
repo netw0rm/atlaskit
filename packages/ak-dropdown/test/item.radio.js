@@ -47,9 +47,9 @@ describe('ak-dropdown-item-radio', () => {
       expect(getRootNode(component).getAttribute('role')).to.equal(role);
     });
 
-    it('should have `aria-checked` when selected', () => {
+    it('should have `aria-checked` when checked', () => {
       expect(getRootNode(component).getAttribute('aria-checked')).to.equal('false');
-      props(component, { selected: true });
+      props(component, { checked: true });
       expect(getRootNode(component).getAttribute('aria-checked')).to.equal('true');
     });
 

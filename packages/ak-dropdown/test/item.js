@@ -41,31 +41,23 @@ describe('ak-dropdown-item', () => {
       expect(getShadowRoot(component).firstChild).to.be.defined;
     });
 
-    it('click on a component should emit `selected` event', () => {
+    it(`click on a component should emit ${dropdownEvents.item.activated} event`, () => {
       const clickSpy = sinon.spy();
-      itemContainer.addEventListener('selected', clickSpy);
+      itemContainer.addEventListener(dropdownEvents.item.activated, clickSpy);
       getShadowRoot(component).firstChild.click();
 
       expect(clickSpy.called).to.equal(true);
     });
 
-    it('click on a disabled component should NOT emit `selected` event', () => {
-      const clickSpy = sinon.spy();
-      itemContainer.addEventListener('selected', clickSpy);
-      props(component, { disabled: true });
-      getShadowRoot(component).firstChild.click();
+    it(`click on a disabled component should NOT emit ${dropdownEvents.item.activated} event`,
+      () => {
+        const clickSpy = sinon.spy();
+        itemContainer.addEventListener(dropdownEvents.item.activated, clickSpy);
+        props(component, { disabled: true });
+        getShadowRoot(component).firstChild.click();
 
-      expect(clickSpy.called).to.equal(false);
-    });
-
-    it('click on a selected component should NOT emit `selected` event', () => {
-      const clickSpy = sinon.spy();
-      itemContainer.addEventListener('selected', clickSpy);
-      props(component, { selected: true });
-      getShadowRoot(component).firstChild.click();
-
-      expect(clickSpy.called).to.equal(false);
-    });
+        expect(clickSpy.called).to.equal(false);
+      });
   });
 
   describe('links', () => {
@@ -184,8 +176,8 @@ describe('ak-dropdown-item', () => {
     const eventsMap = {
       up: dropdownEvents.item.up,
       down: dropdownEvents.item.down,
-      space: dropdownEvents.selected,
-      enter: dropdownEvents.selected,
+      space: dropdownEvents.item.activated,
+      enter: dropdownEvents.item.activated,
       tab: dropdownEvents.item.tab,
     };
     let component;
@@ -218,19 +210,10 @@ describe('ak-dropdown-item', () => {
       });
     });
 
-    it('selected event should not be emitted on a disabled element', () => {
+    it(`${dropdownEvents.item.activated} event should not be emitted on a disabled element`, () => {
       event.keyCode = keyCode('enter');
       itemContainer.addEventListener(eventsMap.enter, calledSpy);
       props(component, { disabled: true });
-      getShadowRoot(component).firstChild.dispatchEvent(event);
-
-      expect(calledSpy.called).to.equal(false);
-    });
-
-    it('selected event should not be emitted on a selected element', () => {
-      event.keyCode = keyCode('enter');
-      itemContainer.addEventListener(eventsMap.enter, calledSpy);
-      props(component, { selected: true });
       getShadowRoot(component).firstChild.dispatchEvent(event);
 
       expect(calledSpy.called).to.equal(false);

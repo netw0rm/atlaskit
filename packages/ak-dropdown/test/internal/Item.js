@@ -20,7 +20,7 @@ describe('Item', () => {
       href: prop.string({ attribute: true }),
       target: prop.string({ attribute: true }),
       disabled: prop.boolean({ attribute: true }),
-      selected: prop.boolean({ attribute: true }),
+      active: prop.boolean({ attribute: true }),
       test: prop.boolean({ attribute: true }),
     },
   };
@@ -51,10 +51,10 @@ describe('Item', () => {
     expect(getRootNode(component).getAttribute('class')).to.equal(classes);
   });
 
-  it(`should have ${shadowItemStyles.locals.item} and ${shadowItemStyles.locals.selected} classes
-      if item is 'selected'`, () => {
-    props(component, { selected: true });
-    const classes = `${shadowItemStyles.locals.item} ${shadowItemStyles.locals.selected}`;
+  it(`should have ${shadowItemStyles.locals.item} and ${shadowItemStyles.locals.active} classes
+      if item is 'active'`, () => {
+    props(component, { active: true });
+    const classes = `${shadowItemStyles.locals.item} ${shadowItemStyles.locals.active}`;
     expect(getRootNode(component).getAttribute('class')).to.equal(classes);
   });
 
@@ -74,12 +74,6 @@ describe('Item', () => {
 
   it('should have `tabindex` property by default', () => {
     expect(getRootNode(component).getAttribute('class')).to.equal(shadowItemStyles.locals.item);
-  });
-
-  it('for the `selected` Item `tabindex` should be equal 1, otherwise 0', () => {
-    expect(getRootNode(component).getAttribute('tabindex')).to.equal('0');
-    props(component, { selected: true });
-    expect(getRootNode(component).getAttribute('tabindex')).to.equal('1');
   });
 
   it('should have `aria-disabled` when disabled', () => {

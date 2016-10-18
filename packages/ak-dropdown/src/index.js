@@ -1,7 +1,7 @@
 /** @jsx vdom */
 import shadowListStyles from './less/shadow-list.less';
 import { vdom, define, prop, props, emit, ready } from 'skatejs';
-import './index.trigger';
+import { DropdownTriggerButton, DropdownTriggerArrow } from './index.trigger';
 import Item from './index.item';
 import CheckboxItem from './index.item.checkbox';
 import RadioItem from './index.item.radio';
@@ -28,19 +28,22 @@ const handleKeyDown = Symbol();
 const triggerSlot = Symbol();
 const layerElem = Symbol();
 
-function getTriggerElement(elem) {
-  return elem[triggerSlot] && elem[triggerSlot].assignedNodes()[0];
+function getTriggerButton(elem) {
+  const child = elem.children[0];
+  if (child && (child instanceof DropdownTriggerButton || child instanceof DropdownTriggerArrow)) {
+    return child;
+  }
+  return undefined;
 }
 
-
 function openDialog(elem) {
-  const list = getItemsList(elem.childNodes);
-  const trigger = getTriggerElement(elem);
+  const list = getItemsList(elem.children);
+  const triggerButton = getTriggerButton(elem);
 
   elem[keyDownOnceOnOpen] = false;
 
-  if (trigger) {
-    props(trigger, { opened: true });
+  if (triggerButton) {
+    props(triggerButton, { opened: true });
   }
   if (list && list.length) {
     if (elem[activatedFrom] === 'keyDown') {
@@ -53,11 +56,11 @@ function openDialog(elem) {
 }
 
 function closeDialog(elem) {
-  const list = getItemsList(elem.childNodes);
-  const trigger = getTriggerElement(elem);
+  const list = getItemsList(elem.children);
+  const triggerButton = getTriggerButton(elem);
 
-  if (trigger) {
-    props(trigger, { opened: false });
+  if (triggerButton) {
+    props(triggerButton, { opened: false });
   }
 
   list.forEach((item) => {
@@ -81,36 +84,26 @@ function toggleDialog(elem) {
   }
 }
 
-function selectSimpleItem(elem, event) {
-  const list = getItemsList(elem.childNodes).filter((node) => (
-      node instanceof Item && !(node instanceof RadioItem) && !(node instanceof CheckboxItem)
-    ));
-
-  list.forEach((val) => {
-    if (val.selected) {
-      val.selected = false;
-    }
-  });
-  event.detail.item.selected = true;
+function selectSimpleItem(elem) {
   props(elem, { open: false });
 }
 
 function selectCheckboxItem(item) {
-  item.selected = !item.selected;
+  item.checked = !item.checked;
 }
 
 function selectRadioItem(elem, event) {
   const radioGroupItems = event.detail.item.parentNode.children;
   [...radioGroupItems].forEach((val) => {
-    if (val.selected && val instanceof RadioItem) {
-      val.selected = false;
+    if (val.checked && val instanceof RadioItem) {
+      val.checked = false;
     }
   });
 
-  event.detail.item.selected = true;
+  event.detail.item.checked = true;
 }
 
-function selectItem(elem, event) {
+function handleItemActivation(elem, event) {
   if (event.detail.item instanceof CheckboxItem) {
     selectCheckboxItem(event.detail.item);
   } else if (event.detail.item instanceof RadioItem) {
@@ -118,10 +111,6 @@ function selectItem(elem, event) {
   } else {
     selectSimpleItem(elem, event);
   }
-}
-
-function unselectItem(elem, event) {
-  event.detail.item.selected = false;
 }
 
 function isDescendantOf(child, parent) {
@@ -155,7 +144,7 @@ function focusPrev(list, i) {
 }
 
 function changeFocus(elem, type) {
-  const list = getItemsList(elem.childNodes);
+  const list = getItemsList(elem.children);
   const l = list.length;
   for (let i = 0; i < l; i++) {
     const item = list[i];
@@ -192,18 +181,32 @@ function getDropdownMaxheight(dropdown) {
  * const dropdown = new Dropdown();
  */
 export default define('ak-dropdown', {
-  attached(elem) {
+  created(elem) {
     elem.addEventListener(events.trigger.activated, (e) => {
       if (e.detail) {
         elem[activatedFrom] = e.detail.eventType;
       }
       toggleDialog(elem);
     });
-    elem.addEventListener(events.selected, (e) => selectItem(elem, e));
-    elem.addEventListener(events.unselected, (e) => unselectItem(elem, e));
+    elem.addEventListener(events.item.activated, (e) => {
+      if (emit(elem, events.changeBefore, {
+        detail: e.detail.item,
+        bubbles: true,
+        cancelable: true,
+      })) {
+        handleItemActivation(elem, e);
+        emit(elem, events.changeAfter, {
+          detail: e.detail.item,
+          bubbles: true,
+          cancelable: false,
+        });
+      }
+    });
+
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
     elem.addEventListener(events.item.tab, () => props(elem, { open: false }));
+
     elem[handleClickOutside] = (e) => {
       if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem) &&
         !(e.path && e.path.indexOf(elem) > -1)) {
@@ -216,11 +219,12 @@ export default define('ak-dropdown', {
           props(elem, { open: false });
         } else if (!elem[keyDownOnceOnOpen] && e.keyCode === keyCode('down')) {
           elem[keyDownOnceOnOpen] = true;
-          getItemsList(elem.childNodes)[0].focused = true;
+          getItemsList(elem.children)[0].focused = true;
         }
       }
     };
-
+  },
+  attached(elem) {
     document.addEventListener('click', elem[handleClickOutside]);
     document.addEventListener('keydown', elem[handleKeyDown]);
   },
@@ -242,8 +246,8 @@ export default define('ak-dropdown', {
   render(elem) {
     // groups have top margin by default
     // but if the group is the very first item after the trigger, the margin is suppose to be 0
-    if (elem.childNodes && elem.childNodes[1] && elem.childNodes[1] instanceof Group) {
-      elem.childNodes[1].style.marginTop = '0';
+    if (elem.children && elem.children[1] && elem.children[1] instanceof Group) {
+      elem.children[1].style.marginTop = '0';
     }
     let target = elem.target;
 
@@ -251,21 +255,9 @@ export default define('ak-dropdown', {
       <div
         style={{ position: elem.stepOutside || elem.boundariesElement ? 'static' : 'relative' }}
       >
-        {!elem.target ?
-          <div
-            ref={(el) => {
-              target = el;
-            }}
-          >
-            <slot
-              name="trigger"
-              ref={el => {
-                elem[triggerSlot] = el;
-              }}
-            />
-          </div>
-          : null
-        }
+        <div ref={(el) => (target = el)}>
+          <slot name="trigger" ref={el => (elem[triggerSlot] = el)} />
+        </div>
         <Layer
           position={elem.position}
           target={target}
@@ -291,7 +283,7 @@ export default define('ak-dropdown', {
             }}
             role="menu"
             ref={(el) => {
-              // hack for the AK-577 until someone think of a better solution
+              // hack for the AK-577 until someone thinks of a better solution
               el.style.minWidth = getDropdownMinwidth(target, elem);
               setTimeout(() => {
                 el.style.minWidth = getDropdownMinwidth(target, elem);
@@ -306,6 +298,7 @@ export default define('ak-dropdown', {
     );
   },
   rendered(elem) {
+    // remove when the AK-343 is fixed
     elem.reposition();
   },
   props: {

@@ -1,8 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { events as dropdownEvents } from '../src';
 import Item from '../src/index.item.checkbox';
-import keyCode from 'keycode';
 import { props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot, afterMutations, getRootNode } from 'akutil-common-test';
@@ -44,22 +42,13 @@ describe('ak-dropdown-item-checkbox', () => {
       expect(getShadowRoot(component).firstChild).to.be.defined;
     });
 
-    it('click on a selected component should emit `unselected` event', () => {
-      const clickSpy = sinon.spy();
-      itemContainer.addEventListener(dropdownEvents.unselected, clickSpy);
-      props(component, { selected: true });
-      getShadowRoot(component).firstChild.click();
-
-      expect(clickSpy.called).to.equal(true);
-    });
-
     it('should have menuitemcheckbox role', () => {
       expect(getRootNode(component).getAttribute('role')).to.equal(role);
     });
 
-    it('should have `aria-checked` when selected', () => {
+    it('should have `aria-checked` when checked', () => {
       expect(getRootNode(component).getAttribute('aria-checked')).to.equal('false');
-      props(component, { selected: true });
+      props(component, { checked: true });
       expect(getRootNode(component).getAttribute('aria-checked')).to.equal('true');
     });
 
@@ -116,36 +105,6 @@ describe('ak-dropdown-item-checkbox', () => {
         () => (expect(Math.round(gap)).to.equal(itemLeftToDefaultGap)),
         done
       );
-    });
-  });
-
-  describe('keyboard events', () => {
-    let component;
-    let event;
-    let calledSpy;
-
-    beforeEach(() => {
-      component = new Item();
-      itemContainer.appendChild(component);
-      event = new CustomEvent('keydown', {
-        bubbles: true,
-        cancelable: true,
-      });
-
-      calledSpy = sinon.spy();
-      return waitUntil(() => getShadowRoot(component));
-    });
-
-    afterEach(() => {
-      calledSpy.reset();
-    });
-
-    it('unselected event should be emitted on a selected checkbox element', () => {
-      event.keyCode = keyCode('enter');
-      itemContainer.addEventListener(dropdownEvents.unselected, calledSpy);
-      props(component, { selected: true });
-      getShadowRoot(component).firstChild.dispatchEvent(event);
-      expect(calledSpy.called).to.equal(true);
     });
   });
 });

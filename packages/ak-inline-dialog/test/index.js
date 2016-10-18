@@ -37,8 +37,14 @@ describe('ak-inline-dialog', () => {
   describe('general behaviour', () => {
     let component;
 
-    beforeEach(() => {
+    beforeEach((done) => {
       component = new AkInlineDialog();
+      document.body.appendChild(component);
+      done();
+    });
+
+    afterEach(() => {
+      document.body.removeChild(component);
     });
 
     // TODO consider changing as this is overlapping quite a bit with Skate

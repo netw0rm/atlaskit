@@ -153,12 +153,16 @@ fieldBase.addEventListener(events.showViewingView, (e) => {
   if (!e.detail.cancelButtonPressed) {
     // we'll cancel the event so that we don't go to viewmode yet
     e.preventDefault();
+    fieldBase.waiting = true;
     // now we'll call some long running validation function
     validateValueOnServer(inputField.value).then(isValid => {
       if (isValid) {
-        // the value was valid, remove the waiting prop and the editing prop to send us back to viewingmode
+        // the value was valid, remove the waiting, editing and invalid props
         fieldBase.waiting = false;
         fieldBase.editing = false;
+        fieldBase.invalid = false;
+        // and update our state
+        fieldValue = inputField.value;
       } else {
         // the value wasn't valid, we'll mark fieldBase as invalid and let the user handle that
         fieldBase.waiting = false;

@@ -151,7 +151,7 @@ export default define('ak-calendar', {
     selectDay(e) {
       const day = Number(e.currentTarget.getAttribute('data-day'));
       const month = Number(e.currentTarget.getAttribute('data-month'));
-      const year = this.year;
+      const year = Number(e.currentTarget.getAttribute('data-year'));
       emit(this, 'select', {
         detail: { day, month, year },
       });
@@ -162,6 +162,7 @@ export default define('ak-calendar', {
       const i = this.selected.indexOf(s);
 
       this.month = d.month;
+      this.year = d.year;
 
       if (i > -1) {
         this.selected.splice(i, 1);
@@ -231,6 +232,7 @@ export default define('ak-calendar', {
           })}
           data-day={date.day.toString()}
           data-month={(date.month + 1).toString()}
+          data-year={(date.year).toString()}
           onClick={elem[$selectDay]}
           onMousedown={() => (elem[$selecting] = dateToString(date))}
           onMouseup={() => (elem[$selecting] = '')}

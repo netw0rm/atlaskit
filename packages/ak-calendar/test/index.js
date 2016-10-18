@@ -8,7 +8,6 @@ import { getMonthName } from '../src/util';
 
 chai.use(chaiAsPromised);
 const expect = chai.expect;
-const now = new Date(2016, 9, 18);
 
 const Component = stylesWrapperConstructor(AkCalendar);
 
@@ -19,6 +18,7 @@ function shadowDomQuery(component, selector) {
 describe('ak-calendar', () => {
   let component;
   let css;
+  let now = new Date(2016, 9, 18);
 
   beforeEach(() =>
     setupComponent(Component, { now })
@@ -83,21 +83,23 @@ describe('ak-calendar', () => {
         });
 
         describe('when a date in the previous month is clicked', () => {
-          it('calendar moves to the previous month', (done) => {
-            const prevMonthDate = shadowDomQuery(component, `[data-day="30"].${css.sibling}`)[0];
+          now = new Date(2016, 0, 1);
+          it('calendar moves to the previous month and year', (done) => {
+            const prevMonthDate = shadowDomQuery(component, '[data-day="31"][data-month="12"]')[0];
             prevMonthDate.click();
             setTimeout(() => {
-              expect(component.month).to.equal(now.getMonth());
+              expect(component.month).to.equal(12);
+              expect(component.year).to.equal(2015);
               done();
             });
           });
 
           it('the date is selected', (done) => {
-            const prevMonthDate = shadowDomQuery(component, '[data-day="30"][data-month="9"]')[0];
+            const prevMonthDate = shadowDomQuery(component, '[data-day="31"][data-month="12"]')[0];
             prevMonthDate.click();
             setTimeout(() => {
               expect(
-                shadowDomQuery(component, `[data-day="30"][data-month="9"].${css.selected}`).length
+                shadowDomQuery(component, `[data-day="31"][data-month="12"].${css.selected}`).length
               ).to.equal(1);
               done();
             });

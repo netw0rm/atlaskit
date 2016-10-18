@@ -6,26 +6,23 @@ import { name } from '../package.json';
 
 const Textfield = reactify(TextFieldWC);
 
-const formStyle = (width = 300) => ({
+const formStyle = {
   padding: '20px',
   backgroundColor: 'white',
-  width: `${width}px`,
-});
-
-const story = () => (
-  <div>
-    <form action="" style={formStyle(400)}>
-      <h2>My Form</h2>
-      <div>
-        This form shows actual TextField components that are created by extending FieldBase using
-        Skatejs.
-      </div>
-      <Textfield label="Viewmode by default" value="Webcomponents are Awesome!" />
-      <Textfield label="Editmode by default" value="Webcomponents are Awesome!" editing />
-    </form>
-  </div>
-);
+  width: '500px',
+};
 
 storiesOf(name, module)
-  .add('extending fieldBase as a webcomponent', story)
-;
+  .add('extending fieldBase as a webcomponent', () => (
+    <div>
+      <form action="" style={formStyle}>
+        <h2>My Form</h2>
+        <div>
+          This form shows actual TextField components that are created by extending FieldBase using
+          Skatejs.
+        </div>
+        <Textfield label="Viewmode by default" value="Webcomponents are Awesome!" />
+        <Textfield label="Editmode by default" value="Webcomponents are Awesome!" editing />
+      </form>
+    </div>
+  ));

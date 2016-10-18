@@ -7,17 +7,25 @@ import styles from '../src/shadow.less';
 
 const FieldBase = reactify(FieldBaseWC);
 
-const formStyle = (width = 300) => ({
+const formStyle = {
   padding: '20px',
   backgroundColor: 'white',
-  width: `${width}px`,
-});
+  width: '500px',
+};
 
+const GenericFieldBase = (props) => (<FieldBase
+  className={styles.locals.akFieldBase}
+  label="Label for FieldBase"
+  {...props}
+>
+  <div is slot="editmode">This content is in the Editing slot!</div>
+  <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
+</FieldBase>);
 
 storiesOf(name, module)
   .add('a simple ak-field-base', () => (
     <div>
-      <form action="" style={formStyle(500)}>
+      <form action="" style={formStyle}>
         <div>
           <p>
             This shows the base functionality provided by ak-field-base. It has two slots; editmode
@@ -37,10 +45,7 @@ storiesOf(name, module)
             <li>hideLabel (true or false)</li>
           </ul>
         </div>
-        <FieldBase className={styles.locals.akFieldBase} label="Label for FieldBase">
-          <div is slot="editmode">This content is in the Editing slot!</div>
-          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
-        </FieldBase>
+        <GenericFieldBase />
         <FieldBase className={styles.locals.akFieldBase} label="Multiline content">
           <div is slot="editmode">This content is in the Editing slot!</div>
           <div is slot="viewmode">
@@ -56,45 +61,19 @@ storiesOf(name, module)
   ))
   .add('some field-bases in various states', () => (
     <div>
-      <form action="" style={formStyle(500)}>
-        <FieldBase label="A default field-base">
-          <div is slot="editmode">This content is in the Editing slot!</div>
-          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
-        </FieldBase>
-        <FieldBase label="In edit mode" editing>
-          <div is slot="editmode">This content is in the Editing slot!</div>
-          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
-        </FieldBase>
-        <FieldBase label="In edit mode, focused" editing focused>
-          <div is slot="editmode">This content is in the Editing slot!</div>
-          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
-        </FieldBase>
-        <FieldBase label="In edit mode, waiting" editing waiting>
-          <div is slot="editmode">This content is in the Editing slot!</div>
-          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
-        </FieldBase>
-        <FieldBase label="In edit mode, waiting, focused" editing waiting focused>
-          <div is slot="editmode">This content is in the Editing slot!</div>
-          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
-        </FieldBase>
-        <FieldBase label="In edit mode, invalid" editing invalid>
-          <div is slot="editmode">This content is in the Editing slot!</div>
-          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
-        </FieldBase>
-        <FieldBase label="In edit mode, invalid, focused" editing invalid focused>
-          <div is slot="editmode">This content is in the Editing slot!</div>
-          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
-        </FieldBase>
-        <FieldBase
+      <form action="" style={formStyle}>
+        <GenericFieldBase label="A default field-base" />
+        <GenericFieldBase label="In edit mode" editing />
+        <GenericFieldBase label="In edit mode, focused" editing focused />
+        <GenericFieldBase label="In edit mode, waiting" editing waiting />
+        <GenericFieldBase label="In edit mode, waiting, focused" editing waiting focused />
+        <GenericFieldBase label="In edit mode, invalid" editing invalid />
+        <GenericFieldBase label="In edit mode, invalid, focused" editing invalid focused />
+        <GenericFieldBase
           label="In edit mode, with a max-width css style"
           editing
           style={{ maxWidth: '200px' }}
-          className={styles.locals.akFieldBase}
-        >
-          <div is slot="editmode">This content is in the Editing slot!</div>
-          <div is slot="viewmode"><b>This content is in the Viewing slot!</b></div>
-        </FieldBase>
-
+        />
       </form>
     </div>
   ))
@@ -115,7 +94,7 @@ storiesOf(name, module)
     };
     return (
       <div>
-        <form action="" style={formStyle(500)}>
+        <form action="" style={formStyle}>
           <h2>My Form</h2>
           <FieldBase label="Lots of text (with whitespace)">
             <div is slot="editmode">{longTextWithSpaces}</div>
@@ -147,7 +126,7 @@ storiesOf(name, module)
     };
     return (
       <div>
-        <form action="" style={formStyle(500)}>
+        <form action="" style={formStyle}>
           <h2>My Label-less Form</h2>
           <FieldBase label="Label for bold FieldBase" hideLabel>
             <div is slot="editmode">I'm in editing mode but I don't have a label!</div>

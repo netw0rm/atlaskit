@@ -3,7 +3,7 @@ import shadowStyles from './shadow.less';
 
 /* eslint-disable react/prop-types */
 export default (props, children) => (
-  <div {...props}>
+  <div>
     <style>{shadowStyles.toString()}</style>
     {children()}
   </div>

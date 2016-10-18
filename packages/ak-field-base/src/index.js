@@ -48,8 +48,8 @@ function setFocus(elem, focus) {
  */
 export default define('ak-field-base', {
   render(elem) {
-    const hideViewingView = elem.editing;
-    const hideEditingView = !elem.editing;
+    const viewingViewHidden = elem.editing;
+    const editingViewHidden = !elem.editing;
 
     return (
       <Root>
@@ -62,7 +62,7 @@ export default define('ak-field-base', {
             switchToEditingCallback={() => switchToEditing(elem)}
             setFocus={(focus) => setFocus(elem, focus)}
             focused={elem.focused}
-            hideViewing={hideViewingView}
+            hideViewing={viewingViewHidden}
           />
         </Label>
         <EditingView
@@ -71,7 +71,7 @@ export default define('ak-field-base', {
           onCancel={() => switchToViewing(elem, true)}
           waiting={elem.waiting}
           invalid={elem.invalid}
-          hideEditing={hideEditingView}
+          hideEditing={editingViewHidden}
         />
       </Root>
     );

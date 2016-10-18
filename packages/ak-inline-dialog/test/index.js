@@ -36,10 +36,9 @@ describe('ak-inline-dialog', () => {
   describe('general behaviour', () => {
     let component;
 
-    beforeEach((done) => {
+    beforeEach(() => {
       component = new AkInlineDialog();
       document.body.appendChild(component);
-      done();
     });
 
     afterEach(() => {

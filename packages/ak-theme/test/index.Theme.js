@@ -1,4 +1,3 @@
-import { props } from 'skatejs';
 import { afterMutations, checkInvisibility } from 'akutil-common-test';
 import Theme, { events, Prop } from '../src';
 
@@ -80,26 +79,37 @@ describe('ak-theme', () => {
     expect(createTheme().id).to.be.a('string');
   });
 
-  it('id should be an attribute', () => {
+  it('id should be an attribute', (done) => {
     const theme = createTheme();
     body.appendChild(theme);
-    expect(theme.getAttribute('id')).to.equal('');
-    props(theme, { id: 'theme' });
-    expect(theme.getAttribute('id')).to.equal('theme');
-    body.removeChild(theme);
+    expect(!!theme.getAttribute('id')).to.equal(false);
+    theme.id = 'theme';
+
+    afterMutations(
+      () => {
+        expect(theme.getAttribute('id')).to.equal('theme');
+        body.removeChild(theme);
+      },
+      done
+    );
   });
 
   it('mixin should be a string', () => {
     expect(createTheme().mixin).to.be.a('string');
   });
 
-  it('mixin should be an attribute', () => {
+  it('mixin should be an attribute', (done) => {
     const theme = createTheme();
     body.appendChild(theme);
-    expect(theme.getAttribute('mixin')).to.equal('');
+    expect(!!theme.getAttribute('mixin')).to.equal(false);
     theme.mixin = 'theme1 theme2 theme3';
-    expect(theme.getAttribute('mixin')).to.equal('theme1 theme2 theme3');
-    body.removeChild(theme);
+    afterMutations(
+      () => {
+        expect(theme.getAttribute('mixin')).to.equal('theme1 theme2 theme3');
+        body.removeChild(theme);
+      },
+      done
+    );
   });
 
   it('ownVars should be an object', () => {

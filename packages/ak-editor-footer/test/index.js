@@ -53,9 +53,9 @@ describe(name, () => {
     waitUntil(
       () => !!shadowRoot.querySelector('ak-editor-button-group')
     ).then(() => {
-      const fs = shadowRoot.querySelector('ak-editor-button-group');
-      expect(fs).to.not.be.null;
-      expect(fs.style.visibility).to.be.equal('hidden');
+      const buttonGroup = shadowRoot.querySelector('ak-editor-button-group');
+      expect(buttonGroup).to.not.be.null;
+      expect(buttonGroup.style.visibility).to.equal('hidden');
     });
   });
 });

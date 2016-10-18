@@ -1,14 +1,17 @@
 import { storiesOf } from '@kadira/storybook';
-import HyperlinkEdit from '../src';
 import ContentComponent from 'ak-editor-content';
-import { vdom } from 'skatejs';
+import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import React from 'react';
-import styles from './styles.less';
 import reactify from 'akutil-react';
 import { ProseMirror, DOMFromPos, schema } from 'ak-editor-prosemirror';
 
+import HyperlinkEdit from '../src';
+import styles from './styles.less';
+
+
 const Content = reactify(ContentComponent);
 
+/* eslint-disable react/prop-types */
 class PoppedDemo extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +27,7 @@ class PoppedDemo extends React.Component {
       this.hyperlinkEdit.parentNode.removeChild(this.hyperlinkEdit);
       this.setState({ unlinked: true });
     });
-    this.refs.container.appendChild(this.hyperlinkEdit);
+    this.container.appendChild(this.hyperlinkEdit);
   }
 
   componentWillUnmount() {
@@ -35,7 +38,7 @@ class PoppedDemo extends React.Component {
 
   render() {
     return (
-      <div ref="container">
+      <div ref={n => (this.container = n)}>
         <style>{styles.toString()}</style>
         <p contentEditable>Lorem ipsum ipsum ipsum ipsum ipsum ipsum <span
           className={this.state.unlinked ? null : styles.locals.hyperlink}
@@ -45,6 +48,7 @@ class PoppedDemo extends React.Component {
     );
   }
 }
+/* eslint-enable react/prop-types */
 
 PoppedDemo.defaultProps = {
   href: 'https://example.com',
@@ -54,21 +58,21 @@ PoppedDemo.defaultProps = {
 
 storiesOf('ak-editor-hyperlink-edit', module)
   .add('Default', () => {
-    class Demo extends React.Component {
+    class Demo extends React.Component { // eslint-disable-line react/no-multi-comp
       editLink(target) {
         this.hyperlinkEdit = new HyperlinkEdit();
         this.hyperlinkEdit.href = 'https://example.com';
         this.hyperlinkEdit.attachTo = target;
-        this.refs.container.appendChild(this.hyperlinkEdit);
+        this.container.appendChild(this.hyperlinkEdit);
       }
 
       render() {
         return (
-          <div ref="container">
+          <div ref={n => (this.container = n)}>
             <style>{styles.toString()}</style>
-            <p contentEditable>Lorem ipsum <span
+            <p contentEditable>Lorem ipsum <span // eslint-disable-line jsx-a11y/no-static-element-interactions, max-len
               className={styles.locals.hyperlink}
-              onClick={(e) => this.editLink(e.target)}
+              onClick={e => this.editLink(e.target)}
             >epsum</span> lopsom gibson.</p>
           </div>
         );
@@ -89,31 +93,7 @@ storiesOf('ak-editor-hyperlink-edit', module)
       return nodeFactory.childNodes[offset];
     };
 
-    class Demo extends React.Component {
-      hyperlinkEditor(elem, onUnlink) {
-        const href = elem.getAttribute('href');
-        const popup = new HyperlinkEdit();
-        popup.href = href;
-        popup.textInputPlaceholder = 'Give link a title';
-        popup.textInputValue = href;
-        popup.attachTo = elem;
-        popup.addEventListener('unlink', onUnlink);
-        return {
-          element: popup,
-          dismiss: () => {
-            popup.removeEventListener(onUnlink);
-            if (popup.parentNode) {
-              popup.parentNode.removeChild(popup);
-            }
-          },
-        };
-      }
-
-      componentWillUnmount() {
-        if (this.popup) {
-          this.popup.dismiss();
-        }
-      }
+    class Demo extends React.Component { // eslint-disable-line react/no-multi-comp
 
       componentDidMount() {
         const doc = schema.node('doc', null,
@@ -165,21 +145,6 @@ storiesOf('ak-editor-hyperlink-edit', module)
         });
       }
 
-      render() {
-        return (
-          <div
-            ref={(div) => {
-              if (div) {
-                this.container = div;
-                this.editorElement = div.firstChild;
-              }
-            }}
-          >
-            <Content />
-          </div>
-        );
-      }
-
       componentWillUpdate(nextProps, nextState) {
         if (this.state.selectedLink !== nextState.selectedLink) {
           if (this.popup) {
@@ -200,6 +165,47 @@ storiesOf('ak-editor-hyperlink-edit', module)
             this.container.appendChild(this.popup);
           }
         }
+      }
+
+      componentWillUnmount() {
+        if (this.popup) {
+          this.popup.dismiss();
+        }
+      }
+
+      // eslint-disable-next-line class-methods-use-this
+      hyperlinkEditor(elem, onUnlink) {
+        const href = elem.getAttribute('href');
+        const popup = new HyperlinkEdit();
+        popup.href = href;
+        popup.textInputPlaceholder = 'Give link a title';
+        popup.textInputValue = href;
+        popup.attachTo = elem;
+        popup.addEventListener('unlink', onUnlink);
+        return {
+          element: popup,
+          dismiss: () => {
+            popup.removeEventListener(onUnlink);
+            if (popup.parentNode) {
+              popup.parentNode.removeChild(popup);
+            }
+          },
+        };
+      }
+
+      render() {
+        return (
+          <div
+            ref={(div) => {
+              if (div) {
+                this.container = div;
+                this.editorElement = div.firstChild;
+              }
+            }}
+          >
+            <Content />
+          </div>
+        );
       }
     }
 

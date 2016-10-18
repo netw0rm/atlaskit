@@ -29,8 +29,8 @@
   "devDependencies": {
     "akutil-common-test": "^3.0.0",
     "akutil-react": "^1.2.0",
-    "idomizer": "^0.5.3",
-    "loader-utils": "^0.2.16"
+    "loader-utils": "^0.2.16",
+    "uid": "^0.0.2"
   },
   "repository": {
     "type": "git",

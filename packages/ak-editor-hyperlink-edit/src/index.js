@@ -5,8 +5,11 @@ import OpenIcon from 'ak-icon/glyph/editor/open';
 import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import Popup from 'ak-editor-popup';
 import TextInput from 'ak-editor-popup-text-input';
-import shadowStyles from './shadow.less';
+
 import 'style!./host.less';
+
+import shadowStyles from './shadow.less';
+
 
 const onUnlinkSymbol = '__onUnlink__';
 function If(props, chren) {

@@ -1,5 +1,5 @@
 import { getShadowRoot } from 'akutil-common-test';
-import mentionListShadowStyles from '../../src/wc/pf-mention-list-shadow.less';
+import mentionListShadowStyles from '../src/wc/pf-mention-list-shadow.less';
 
 
 /* WC structure:

@@ -27,7 +27,8 @@
     "akutil-react": "^1.0.0",
     "custom-event-polyfill": "^0.3.0",
     "object-assign": "^4.1.0",
-    "ak-icon": "^8.1.2"
+    "ak-icon": "^8.1.2",
+    "uid": "^0.0.2"
   },
   "repository": {
     "type": "git",

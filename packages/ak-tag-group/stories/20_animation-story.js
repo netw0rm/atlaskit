@@ -1,17 +1,20 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import { name } from '../package.json';
-import AlignedStory from './AlignedStory.js';
-import tagNames from './tagNames';
-import { locateWebComponent } from 'akutil-common-test';
 import sample from 'lodash.sample';
+import { locateWebComponent } from 'akutil-common-test';
+
+import { name } from '../package.json';
+import AlignedStory from './AlignedStory';
+import tagNames from './tagNames';
 import { alignment } from '../src';
+
+
 const { start, end } = alignment;
 
 const tags = ['Candy canes', 'Tiramisu', 'Gummi bears', 'Wagon Wheels', 'Chupa Chups'];
-const onRemove = (text) => action('Removing tag')(text);
+const onRemove = text => action('Removing tag')(text);
 
-const alignmentStory = (dir) => (<AlignedStory
+const alignmentStory = dir => (<AlignedStory
   onRemove={onRemove}
   initialTags={tags}
   alignment={dir}

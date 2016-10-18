@@ -1,14 +1,16 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import akNavigation from '../src';
-import icons from './icons';
-import TogglingSidebar from './TogglingSidebar';
 import akPage from 'ak-page';
 import 'ak-avatar';
 import 'ak-dropdown';
 import React from 'react';
-import { name } from '../package.json';
 import Lorem from 'react-lorem-component';
+
+import akNavigation from '../src';
+import icons from './icons';
+import TogglingSidebar from './TogglingSidebar';
+import { name } from '../package.json';
+
 
 const AkNavigation = reactify(akNavigation);
 const AkPage = reactify(akPage);

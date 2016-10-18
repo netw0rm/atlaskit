@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import keycode from 'keycode';
 import 'custom-event-polyfill';
 
-import './internal/ak-navigation-drawer';
-import './internal/ak-navigation-drag';
+import Drawer from './internal/ak-navigation-drawer';
+import Drag from './internal/ak-navigation-drag';
 import collapseStyles from './internal/collapse-styles';
 import NavigationLink from './index.ak-navigation-link';
 import shadowStyles from './index.less';
@@ -149,12 +149,12 @@ export default define('ak-navigation', {
                 </div>
               </div>
             </div>
-            <ak-navigation-drawer large open={elem.searchDrawerOpen}>
+            <Drawer large open={elem.searchDrawerOpen}>
               <slot name="global-search-drawer" />
-            </ak-navigation-drawer>
-            <ak-navigation-drawer open={elem.createDrawerOpen}>
+            </Drawer>
+            <Drawer open={elem.createDrawerOpen}>
               <slot name="global-create-drawer" />
-            </ak-navigation-drawer>
+            </Drawer>
 
             <div
               className={classNames(shadowStyles.locals.container, {
@@ -178,7 +178,7 @@ export default define('ak-navigation', {
               </div>
             </div>
           </div>
-          {elem.collapsible ? <ak-navigation-drag
+          {elem.collapsible ? <Drag
             startDragCallback={elem[resizerSymbol].start}
             dragCallback={elem[resizerSymbol].resize}
             endDragCallback={elem[resizerSymbol].end}

@@ -10,7 +10,6 @@ import * as exceptions from './internal/index.exceptions';
 import { name } from '../package.json';
 import logger from './internal/logger';
 
-
 const { NotRemovableError } = exceptions;
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
 const buttonHoverSymbol = Symbol('buttonHoverSymbol');

@@ -168,6 +168,42 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(pm.doc).to.deep.equal(doc(p(a({ href: href })(text))));
     });
 
+    it('should not be a part of the link when typing before it', () => {
+      const { pm, plugin } = editor(doc(p('a{<}text{>}')));
+      const href = 'http://example.com';
+      const text = 'foo';
+      const bar = 'bar';
+
+      plugin.addLink({ href, text });
+      pm.tr.insertText(2, bar).apply();
+
+      expect(pm.doc).to.deep.equal(doc(p(`a${bar}`, a({ href: href })(text))));
+    });
+
+    it('should be a part of the link when typing on it', () => {
+      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+      const href = 'http://example.com';
+      const text = 'for';
+      const bar = 'oba';
+
+      plugin.addLink({ href, text });
+      pm.tr.insertText(3, bar).apply();
+
+      expect(pm.doc).to.deep.equal(doc(p(a({ href: href })('foobar'))));
+    });
+
+    it('should not be a part of the link when typing after it', () => {
+      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+      const href = 'http://example.com';
+      const text = 'foo';
+      const bar = 'bar';
+
+      plugin.addLink({ href, text });
+      pm.tr.insertText(4, bar).apply();
+
+      expect(pm.doc).to.deep.equal(doc(p(a({ href: href })(text), bar)));
+    });
+
     it('should not be able to link if selection is empty', () => {
       const { pm, plugin } = editor(doc(p('{<}text{>}')));
       pm.setTextSelection(1);

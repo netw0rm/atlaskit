@@ -38,7 +38,10 @@ export default define('ak-editor-footer', {
     return (
       <div className={classNames}>
         <style>{shadowStyles.toString()}</style>
-        <AkButtonGroup className={shadowStyles.locals.actions}>
+        <AkButtonGroup
+          className={shadowStyles.locals.actions}
+          style={(elem.hideButtons ? { visibility: 'hidden' } : '')}
+        >
           <AkButton
             className={shadowStyles.locals.saveButton}
             appearance={APPEARANCE.PRIMARY}
@@ -62,6 +65,7 @@ export default define('ak-editor-footer', {
   },
 
   props: {
+    hideButtons: prop.boolean({ attribute: true, default: false }),
     openTop: prop.boolean({ attribute: true, default: false }),
   },
 });

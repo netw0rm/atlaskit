@@ -62,6 +62,9 @@ describe('ak-field-base', () => {
 
       beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
         .then(setupLocalVariables));
+      afterEach(() => {
+        callbackSpy.reset();
+      });
 
       it('should be called if inner span is clicked', () => {
         const innerSpan = shadowRoot.querySelector('div span');

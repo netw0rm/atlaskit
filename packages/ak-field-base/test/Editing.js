@@ -44,7 +44,7 @@ describe('ak-field-base', () => {
       beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
         .then(setupLocalVariables));
 
-      it('should be possible to create a Root', () => {
+      it('should be possible to create an Editing', () => {
         shadowRoot.should.not.be.undefined;
       });
 

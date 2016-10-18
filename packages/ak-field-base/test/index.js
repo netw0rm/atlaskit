@@ -241,7 +241,6 @@ describe('ak-field-base', () => {
         return waitUntil(inViewmodeView).should.be.fulfilled;
       });
 
-      // TODO: spying on this callback is not working. WHWY!!!!
       it('should not switch to viewing mode if cancelled', () => {
         const clickEvent = new CustomEvent('click');
         // cancels any event passed to it

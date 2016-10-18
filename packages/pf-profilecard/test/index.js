@@ -4,14 +4,6 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
 import { ProfileCard } from '../src';
-import {
-  // getTimestampWithOffset,
-  // formatWeekdayString,
-  // formatTimeString,
-  getTimeLabel,
-} from '../src/util/datetime';
-// import shadowStyles from '../src/wc/pf-profilecard-shadow.less';
-// const styles = shadowStyles.locals;
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -190,28 +182,6 @@ describe('pf-profilecard', () => {
         expect(buttons.length).to.equal(2);
         expect(buttons[0].textContent).to.equal(cardActions[0].label);
         expect(buttons[1].textContent).to.equal(cardActions[1].label);
-      });
-    });
-  });
-
-  describe('datetime.js helpers', () => {
-    describe('#getTimeLabel()', () => {
-      it('should return only time when timestamp matches current day', () => {
-        const now = new Date();
-        now.setHours(0);
-        now.setMinutes(0);
-
-        const ts = Math.floor(now.getTime() / 1000);
-        expect(getTimeLabel(ts, true)).to.equal('00:00');
-        expect(getTimeLabel(ts, false)).to.equal('12:00am');
-      });
-
-      it('should return weekday and time when timestamp does not match current day', () => {
-        const now = new Date(2016, 4, 1, 8, 0, 0);
-
-        const ts = Math.floor(now.getTime() / 1000);
-        expect(getTimeLabel(ts, true)).to.equal('Sun 08:00');
-        expect(getTimeLabel(ts, false)).to.equal('Sun 8:00am');
       });
     });
   });

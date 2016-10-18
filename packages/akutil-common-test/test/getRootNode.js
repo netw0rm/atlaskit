@@ -1,7 +1,10 @@
 import { vdom, define } from 'skatejs';
-import { createTemporaryComponent, tearDownComponent, getRootNode } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
+
+import { createTemporaryComponent, tearDownComponent, getRootNode } from '../src';
+
+
 chai.should();
 chai.use(sinonChai);
 
@@ -19,7 +22,7 @@ describe('getRootNode', () => {
 
   it('should return the rootNode of a component if it has one', () =>
     createTemporaryComponent(define, definition)
-      .then(newComponent => {
+      .then((newComponent) => {
         component = newComponent;
         rootNode = getRootNode(component);
         expect(rootNode).not.to.equal(undefined);

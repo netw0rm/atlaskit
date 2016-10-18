@@ -41,7 +41,7 @@ describe('aui/internal/attributes', () => {
 
     it('returns true for non-null falsy values', () => {
       const nonNullFalsyValues = FALSY_VALUES.filter(value => value !== null);
-      nonNullFalsyValues.forEach(value => {
+      nonNullFalsyValues.forEach((value) => {
         expect(computeBooleanValue(value)).to.equal(true, describeValue(value));
       });
     });
@@ -56,7 +56,7 @@ describe('aui/internal/attributes', () => {
   describe('computeBooleanValue for attr present', () => {
     const nonNullValues = TRUTHY_VALUES.concat(FALSY_VALUES).filter(value => value !== null);
 
-    nonNullValues.forEach(value => {
+    nonNullValues.forEach((value) => {
       beforeEach(() => {
         el.setAttribute(ATTRIBUTE, value);
         setAttributeSpy.reset();
@@ -70,7 +70,7 @@ describe('aui/internal/attributes', () => {
   });
 
   function itRemovesTheBooleanAttributeWhenPropertySetToBeFalsy() {
-    FALSY_VALUES.forEach(value => {
+    FALSY_VALUES.forEach((value) => {
       it(`removes the attr for falsy values (${describeValue(value)})`, () => {
         setBooleanAttribute(el, ATTRIBUTE, value);
         expect(el.hasAttribute(ATTRIBUTE)).to.equal(false, 'hasAttribute');
@@ -80,7 +80,7 @@ describe('aui/internal/attributes', () => {
   }
 
   function itSetsTheAttributeToEmptyWhenPropertySetToTruthy() {
-    TRUTHY_VALUES.forEach(value => {
+    TRUTHY_VALUES.forEach((value) => {
       it(`adds the attr for truthy values (${describeValue(value)})`, () => {
         setBooleanAttribute(el, ATTRIBUTE, value);
         expect(el.getAttribute(ATTRIBUTE)).to.equal('', 'getAttribute');
@@ -113,7 +113,7 @@ describe('aui/internal/attributes', () => {
 
     itRemovesTheBooleanAttributeWhenPropertySetToBeFalsy();
 
-    TRUTHY_VALUES.forEach(value => {
+    TRUTHY_VALUES.forEach((value) => {
       it(`normalizes the attr for truthy values (${describeValue(value)})`, () => {
         setBooleanAttribute(el, ATTRIBUTE, value);
         expect(el.getAttribute(ATTRIBUTE)).to.equal('', 'getAttribute');
@@ -124,7 +124,7 @@ describe('aui/internal/attributes', () => {
 
   function computeEnumValueMatchesValuesCaseInsensitive(enumOptions) {
     it('matches values case-insensitive', () => {
-      enumOptions.values.forEach(value => {
+      enumOptions.values.forEach((value) => {
         const computedValue = computeEnumValue(enumOptions, value.toUpperCase());
         expect(computedValue).to.equal(value, describeValue(value));
       });
@@ -144,7 +144,7 @@ describe('aui/internal/attributes', () => {
     });
 
     it('setEnumAttribute sets the value as-is, even if there is a case-insensitive match', () => {
-      ENUM_OPTIONS.values.forEach(value => {
+      ENUM_OPTIONS.values.forEach((value) => {
         const upperCasedValue = value.toUpperCase();
         setEnumAttribute(el, ENUM_OPTIONS, upperCasedValue);
         expect(el.getAttribute(ENUM_OPTIONS.attribute)).to.equal(upperCasedValue,
@@ -162,7 +162,7 @@ describe('aui/internal/attributes', () => {
     });
 
     it('setEnumAttribute passes the new value verbatim to setAttribute', () => {
-      FALSY_VALUES.forEach(value => {
+      FALSY_VALUES.forEach((value) => {
         setAttributeSpy.reset();
 
         setEnumAttribute(el, ENUM_OPTIONS, value);

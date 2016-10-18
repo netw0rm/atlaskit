@@ -2,26 +2,19 @@
 set -e
 
 CHALK="`npm bin`/chalk"
+BASEDIR=$(dirname $0)
+. $BASEDIR/_build_status.sh
 
-GITHEAD_SHORT=$(git rev-parse --short HEAD)
+function storybook_build_status() {
+  build_status \
+    "STORYBOOK" \
+    "Storybook" \
+    "The storybook for this pull request" \
+    "$1" \
+    "$CDN_URL_BASE/atlaskit/pr/stories/$BITBUCKET_COMMIT/"
+}
 
-BUILD_URL="$CDN_URL_BASE/atlaskit/pr/stories/$BITBUCKET_COMMIT/"
-BUILD_KEY="STORYBOOK-$GITHEAD_SHORT"
-BUILD_NAME="Storybook"
-BUILD_DESCRIPTION="The storybook for this pull request"
-
-$CHALK --no-stdin -t "{blue Post build in progress status}"
-bbuild \
---commit "$BITBUCKET_COMMIT" \
---repo "$BITBUCKET_REPO_SLUG" \
---owner "$BITBUCKET_REPO_OWNER" \
---username "$BITBUCKET_USER" \
---password "$BITBUCKET_PASSWORD" \
---key "$BUILD_KEY" \
---name "$BUILD_NAME" \
---description "$BUILD_DESCRIPTION" \
---url "$BUILD_URL" \
---state "INPROGRESS"
+storybook_build_status "INPROGRESS"
 
 $CHALK --no-stdin -t "{blue Building storybook (PR)}"
 mkdir -p ../atlaskit-stories
@@ -43,15 +36,4 @@ AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
 AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
 cf-invalidate -- $CLOUDFRONT_DISTRIBUTION "/atlaskit/pr/stories/$BITBUCKET_COMMIT/*"
 
-$CHALK --no-stdin -t "{blue Post storybook (PR) URL to build}"
-bbuild \
---commit "$BITBUCKET_COMMIT" \
---repo "$BITBUCKET_REPO_SLUG" \
---owner "$BITBUCKET_REPO_OWNER" \
---username "$BITBUCKET_USER" \
---password "$BITBUCKET_PASSWORD" \
---key "$BUILD_KEY" \
---name "$BUILD_NAME" \
---description "$BUILD_DESCRIPTION" \
---url "$BUILD_URL" \
---state "SUCCESSFUL"
+storybook_build_status "SUCCESSFUL"

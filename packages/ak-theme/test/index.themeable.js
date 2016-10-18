@@ -15,8 +15,8 @@ describe('ak-theme, { themeable }', () => {
     let elemTheme;
     let elemThemeProp;
 
-    beforeEach(done => {
-      elem = new (define('x-test', themeable({})));
+    beforeEach((done) => {
+      elem = new (define('x-test', themeable({})))();
       body.appendChild(elem);
 
       elemTheme = new Theme();
@@ -31,7 +31,7 @@ describe('ak-theme, { themeable }', () => {
       afterMutations(done);
     });
 
-    afterEach(done => {
+    afterEach((done) => {
       body.removeChild(elem);
       afterMutations(done);
     });
@@ -69,7 +69,7 @@ describe('ak-theme, { themeable }', () => {
           spyRemoveEventListener.restore();
         });
 
-        it('should have a listener bound when attached', done => {
+        it('should have a listener bound when attached', (done) => {
           // To check if listeners were added, we have to manually add it so that
           // the spies are registered before we add it to the document.
           const elemAfterSpies = document.createElement(themeNameFromNode(elem));
@@ -81,7 +81,7 @@ describe('ak-theme, { themeable }', () => {
           );
         });
 
-        it('should have listener unbound when detached', done => {
+        it('should have listener unbound when detached', (done) => {
           // To check if listeners were removed we have to manually add it and
           // then remove it so we can check it after it's removed.
           const elemAfterSpies = document.createElement(themeNameFromNode(elem));
@@ -111,7 +111,7 @@ describe('ak-theme, { themeable }', () => {
         expect(elem.themeProps).to.be.an('object');
       });
 
-      it('should be an empty object if no theme exists', done => {
+      it('should be an empty object if no theme exists', (done) => {
         elem.themeName = 'non-existent-theme';
         afterMutations(
           () => expect(Object.keys(elem.themeProps).length).to.equal(0),
@@ -130,7 +130,7 @@ describe('ak-theme, { themeable }', () => {
         expect(elem.themeProps.test).to.equal(true);
       });
 
-      it('should update when the themeName is changed', done => {
+      it('should update when the themeName is changed', (done) => {
         elemTheme.id = 'sadoijfioasdjfioadsoifjioafd';
         afterMutations(
           () => (elem.themeName = 'sadoijfioasdjfioadsoifjioafd'),
@@ -139,7 +139,7 @@ describe('ak-theme, { themeable }', () => {
         );
       });
 
-      it('should be empty when changed to a theme that does not exist', done => {
+      it('should be empty when changed to a theme that does not exist', (done) => {
         elem.themeName = '';
         afterMutations(
           () => expect(Object.keys(elem.themeProps).length).to.equal(0),
@@ -151,12 +151,12 @@ describe('ak-theme, { themeable }', () => {
 
   describe('lifecycle', () => {
     function createElement(opts, props = {}) {
-      const e = new (define('x-test', themeable(opts)));
+      const e = new (define('x-test', themeable(opts)))();
       document.body.appendChild(Object.assign(e, props));
       return e;
     }
 
-    it('should call overridden attached', done => {
+    it('should call overridden attached', (done) => {
       const theme = Object.assign(new Theme(), { id: 'foo' });
       theme.appendChild(Object.assign(new Prop(), { name: 'myprop', value: 'myvalue' }));
       document.body.appendChild(theme);
@@ -169,7 +169,7 @@ describe('ak-theme, { themeable }', () => {
       }, { themeName: 'foo' });
     });
 
-    it('should call overridden detached', done => {
+    it('should call overridden detached', (done) => {
       const theme = Object.assign(new Theme(), { id: 'foo' });
       theme.appendChild(Object.assign(new Prop(), { name: 'myprop', value: 'myvalue' }));
       document.body.appendChild(theme);
@@ -184,7 +184,7 @@ describe('ak-theme, { themeable }', () => {
 
   describe('creation order', () => {
     function createElement(name) {
-      return new (define(name, themeable({})));
+      return new (define(name, themeable({})))();
     }
 
     function createTheme(name) {
@@ -199,7 +199,7 @@ describe('ak-theme, { themeable }', () => {
       return eTheme;
     }
 
-    it('theme before element', done => {
+    it('theme before element', (done) => {
       const name = 'x-test-theme-before-element';
       const elem = createElement(name);
       const theme = createTheme(name);
@@ -215,7 +215,7 @@ describe('ak-theme, { themeable }', () => {
       );
     });
 
-    it('theme after element', done => {
+    it('theme after element', (done) => {
       const name = 'x-test-theme-after-element';
       const elem = createElement(name);
       const theme = createTheme(name);

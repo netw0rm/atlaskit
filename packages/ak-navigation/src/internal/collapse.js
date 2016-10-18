@@ -3,7 +3,7 @@ import {
   containerCollapsedWidth,
   expandedWidth,
   containerPaddingExpanded,
-} from '../shared-variables.js';
+} from '../shared-variables';
 
 const intermediateWidth = globalCollapsedWidth + containerCollapsedWidth;
 const collapsedWidth = globalCollapsedWidth;
@@ -15,7 +15,7 @@ const containerPaddingCollapseStart = intermediateWidth + 16;
 export function getContainerPadding(width) {
   const paddingDelta = containerPaddingExpanded - containerPaddingCollapsed;
   const gradient = paddingDelta / (containerPaddingCollapseStart - intermediateWidth);
-  const padding = gradient * width + (paddingDelta - gradient * intermediateWidth);
+  const padding = (gradient * width) + (paddingDelta - (gradient * intermediateWidth));
 
   return Math.min(containerPaddingExpanded, Math.max(containerPaddingCollapsed, padding));
 }

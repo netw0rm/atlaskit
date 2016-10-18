@@ -4,7 +4,7 @@ const style = {
   borderBottom: '1px solid red',
 };
 
-const BaselineAlignmentStory = (props) => (
+const BaselineAlignmentStory = props => (
   <div>
     <h1 style={style}>H1 {props.children} testing</h1>
     <h2 style={style}>H2 {props.children} testing</h2>

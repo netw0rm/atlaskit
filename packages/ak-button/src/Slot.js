@@ -3,7 +3,7 @@ import { vdom } from 'skatejs';
 /* eslint-disable react/prop-types */
 const getSlotName = side => side || 'default';
 
-export default props => {
+export default (props) => {
   const name = props.name;
   const styles = props.styles;
   return (

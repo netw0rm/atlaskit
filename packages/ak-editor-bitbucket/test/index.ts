@@ -19,7 +19,7 @@ function activateEditor(editor: typeof AkEditorBitbucket) : void {
   emit(inputEl, 'focus');
 }
 
-function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> {
+function buildExpandedEditor(fixture : any, defaultValue = '') : Promise<typeof AkEditorBitbucket> {
   return new Promise(function(resolve, reject) {
     const successFn = () => {
       clearTimeout(failTimer);
@@ -28,11 +28,15 @@ function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> 
 
     const failTimer = setTimeout(() => {
       fixture.removeEventListener('ready', successFn);
-      reject('the editor didn\'t become ready in 1.5s');
+      reject(new Error('the editor didn\'t become ready in 1.5s'));
     }, 1500);
 
     fixture.addEventListener('ready', successFn, { once: true });
     fixture.innerHTML = `<ak-editor-bitbucket expanded></ak-editor-bitbucket>`;
+
+    if (defaultValue) {
+      fixture.firstChild.setAttribute('default-value', defaultValue);
+    }
   });
 }
 
@@ -121,8 +125,10 @@ describe('ak-editor-bitbucket', () => {
       editor.defaultValue = 'foo';
       expect(editor.value).to.equal('foo');
     });
+  });
 
-    it('should honour default value', (done) => {
+  describe('default value', () => {
+    it('should initialize Prosemirror with correct value', (done) => {
       const content = 'foo';
       const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
       const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
@@ -137,6 +143,13 @@ describe('ak-editor-bitbucket', () => {
         },
         done
       );
+    });
+
+    it('should be converted to a proper Prosemirror document after rendering', () => {
+      return buildExpandedEditor(fixture(), '<p>foo <strong>bar</strong></p>')
+        .then((editor) => {
+          expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), strong(text('bar')))));
+        });
     });
   });
 

@@ -1,13 +1,15 @@
 import { action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import AkButtonTemplate, { APPEARANCE } from '../src';
 import React from 'react';
-import AkButtonStates from './AkButtonStates';
 import CalendarIcon from 'ak-icon/glyph/confluence/calendar';
 import PageIcon from 'ak-icon/glyph/confluence/page';
 import QuestionIcon from 'ak-icon/glyph/question';
 import ExpandIcon from 'ak-icon/glyph/expand';
+
+import AkButtonTemplate, { APPEARANCE } from '../src';
+import AkButtonStates from './AkButtonStates';
 import { DefaultWrapper } from './button-story-wrappers';
+
 
 const AkButton = reactify(AkButtonTemplate);
 
@@ -126,7 +128,7 @@ export default function addStories(storiesBuilder, Wrapper = DefaultWrapperReact
         {
           ICONS.map(Icon =>
             (<div className="icons-container">
-                {[APPEARANCE.STANDARD, APPEARANCE.PRIMARY, APPEARANCE.SUBTLE]
+              {[APPEARANCE.STANDARD, APPEARANCE.PRIMARY, APPEARANCE.SUBTLE]
                   .map(appearance => (
                     <AkButton
 
@@ -141,16 +143,16 @@ export default function addStories(storiesBuilder, Wrapper = DefaultWrapperReact
                     )
                   )
                   .concat([
-                    <AkButton style={buttonStyles} selected>
+                    (<AkButton style={buttonStyles} selected>
                       <Icon slot="before" />
                       Button
-                    </AkButton>,
-                    <AkButton style={buttonStyles} disabled>
+                    </AkButton>),
+                    (<AkButton style={buttonStyles} disabled>
                       <Icon slot="before" />
                         Button
-                    </AkButton>,
+                    </AkButton>),
                   ])
-                }
+              }
             </div>)
           )
       }

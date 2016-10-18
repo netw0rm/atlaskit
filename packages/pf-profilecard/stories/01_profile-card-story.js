@@ -1,9 +1,10 @@
+import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
+
 import pfProfileCard from '../src/wc/pf-profilecard';
 import profiles from './profile-data';
 
-import React from 'react';
 
 const ProfileCard = reactify(pfProfileCard);
 
@@ -28,7 +29,7 @@ const fakeProfileData = {
   ],
 };
 
-const fakeData = (data) => Object.assign(
+const fakeData = data => Object.assign(
   {},
   fakeProfileData,
   {
@@ -40,7 +41,7 @@ const fakeData = (data) => Object.assign(
 // have some more space around the profilecard
 const canvasStyle = { margin: '30px' };
 
-const handleActionClick = (ev) => action('Card action clicked')(JSON.stringify(ev.detail));
+const handleActionClick = ev => action('Card action clicked')(JSON.stringify(ev.detail));
 
 storiesOf('Profile Card', module)
 .add('worst case card', () => {

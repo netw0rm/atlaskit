@@ -2,10 +2,10 @@
 
 This component contains all the common behaviour and styles for fields
 
-FieldBase provides an ADG3 compatible implementation for:
+FieldBase provides an Atlassian Design Guidelines compatible implementation for:
 * Labels: spacing, margins, accessibility and click-to-focus functionality
 * Fields: sizing, borders, colors, wrapping behaviour, hover/focus states
-* InlineEdit pattern: view switching, edit/confirm/cancel buttons, focus handling
+* Inline edit pattern: view switching, edit/confirm/cancel buttons, focus handling
 * Validation: styles, waiting states (built in validation coming soon!)
 * Keyboard navigation: view switching, confirm/cancel behaviour with associated focus styles
 
@@ -42,8 +42,8 @@ To set these up, simply pass them as children to your FieldBase with the appropr
 </ak-field-base>
 ```
 
-**Note**: It is very important to pass in the `label` attribute even if you are hiding it using the
-`hideLabel` attribute as the label is used to make your field accessible for screen readers.
+**Note**: It is very important to pass in the `label` prop even if you are hiding it using the
+`hideLabel` prop as the label is used to make your field accessible for screen readers.
 
 At this point you will already have a component that can switch between views, handle keyboard navigation and set aside an appropriate amount of space.
 
@@ -85,7 +85,7 @@ fieldBase.addEventListener(events.exitEditingView, (e) => {
 
 #### Styling content
 
-You'll almost definitely want to apply some styles to your views so that they blend in with the ADG3 theme.
+You'll almost definitely want to apply some styles to your views so that they blend in with the Atlassian Design Guidelines theme.
 
 In our example above for example, you would want to:
 * Remove default focus styles from the input

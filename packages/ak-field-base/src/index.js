@@ -6,7 +6,6 @@ import Label from './Label';
 import Root from './Root';
 
 function switchToEditing(elem) {
-  // a user may choose to cancel the event to prevent the switch
   const cancelled = !emit(elem, exitViewingView, {
     bubbles: true,
     cancelable: true,

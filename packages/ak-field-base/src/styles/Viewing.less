@@ -4,6 +4,7 @@
 
 // EXTERNAL CONSTANTS
 // These are values that should be pulled in from ak-button but we are repeating them here for now
+// TODO: pull this from ak-button (AK-640)
 @ak-icon-size-small: 20px;
 
 // the maximum width the slot wrapper can take up. Parents width - iconSize
@@ -41,6 +42,8 @@
   border-style: solid;
 }
 
+// the vendor prefixes here are deliberate. 'appearance' does not seem to get picked up by postcss,
+// eslint or even Chrome for some reason. :/
 .edit-button {
   -webkit-appearance: none;
   -moz-appearance: none;

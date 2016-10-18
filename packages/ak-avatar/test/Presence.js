@@ -29,11 +29,11 @@ describe('ak-avatar', () => {
 
     // each of these should cause no presence to be rendered
     const invalidPresences = [null, 'none', 'spooky'];
-    invalidPresences.forEach(presence => {
+    invalidPresences.forEach((presence) => {
       it(`should not render content if presence="${presence}"`, () => {
         const definition = createDefinition(presence);
         return createTemporaryComponent(define, definition)
-          .then(newComponent => {
+          .then((newComponent) => {
             component = newComponent;
             expect(getShadowRoot(component).children.length).to.equal(0);
           });
@@ -41,11 +41,11 @@ describe('ak-avatar', () => {
     });
 
     const validPresences = ['online', 'offline', 'busy'];
-    validPresences.forEach(presence => {
+    validPresences.forEach((presence) => {
       it(`should render content anything if presence="${presence}"`, () => {
         const definition = createDefinition(presence);
         return createTemporaryComponent(define, definition)
-          .then(newComponent => {
+          .then((newComponent) => {
             component = newComponent;
             expect(getShadowRoot(component).children.length).to.equal(1);
           });

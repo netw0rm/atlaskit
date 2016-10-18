@@ -1,17 +1,19 @@
 import { Component } from 'skatejs';
 import chai from 'chai';
-import iconNameToComponentName from '../src/iconNameToComponentName';
 import chaiAsPromised from 'chai-as-promised';
-import { name } from '../package.json';
-import pathToDashed from '../src/pathToDashed';
-import * as bundle from '../src';
-import { size } from '../src/Icon';
-import { getGlyphs } from './_helpers';
 import {
   tearDownComponent,
   getRootNode,
   afterMutations,
 } from 'akutil-common-test';
+
+import iconNameToComponentName from '../bin/iconNameToComponentName';
+import { name } from '../package.json';
+import pathToDashed from '../bin/pathToDashed';
+import * as bundle from '../src';
+import { size } from '../src/Icon';
+import { getGlyphs } from './_helpers';
+
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -107,20 +109,20 @@ describe(name, () => {
 
       it('exports the component constructors', () => {
         const { AtlassianIcon } = bundle;
-        (new AtlassianIcon).should.be.instanceof(Component);
+        (new AtlassianIcon()).should.be.instanceof(Component);
       });
 
       it('icons are properly defined in bundle', () => {
         const bundleKeys = Object
           .keys(bundle)
-          .filter((key) => key !== 'size');
+          .filter(key => key !== 'size');
 
         bundleKeys.should.be.deep.equal(Object
               .keys(components)
               .map(pathToDashed)
-              .map((x) => iconNameToComponentName(x)));
+              .map(x => iconNameToComponentName(x)));
 
-        bundleKeys.forEach((key) => (new (bundle[key])).should.be.instanceof(Component));
+        bundleKeys.forEach(key => (new (bundle[key])()).should.be.instanceof(Component));
       });
     });
   });
@@ -146,7 +148,7 @@ describe(name, () => {
       document.body.appendChild(component);
       afterMutations(
         () => getRootNode(component),
-        (rootNode) => rootNode.querySelector('[role="img"]').tagName.should.match(/svg/i),
+        rootNode => rootNode.querySelector('[role="img"]').tagName.should.match(/svg/i),
         done
       );
     });
@@ -159,13 +161,13 @@ describe(name, () => {
         document.body.appendChild(component);
         afterMutations(
           () => getRootNode(component),
-          (rootNode) => rootNode.querySelector('svg'),
+          rootNode => rootNode.querySelector('svg'),
           (svg) => {
             svg.hasAttribute('aria-labelledby').should.be.true;
             const labelledBy = svg.getAttribute('aria-labelledby');
             const ids = labelledBy.split(/\s+/);
             ids.length.should.be.at.least(1, 'The labelled-by attribute must reference some node');
-            const labels = ids.map((id) => svg.getElementById(id).textContent);
+            const labels = ids.map(id => svg.getElementById(id).textContent);
             labels.should.contain(label);
           },
           done
@@ -197,7 +199,7 @@ describe(name, () => {
           document.body.appendChild(component);
           afterMutations(
             () => getRootNode(component),
-            (rootNode) => rootNode.getBoundingClientRect(),
+            rootNode => rootNode.getBoundingClientRect(),
             ({ width, height }) => {
               width.should.be.equal(expectedSize);
               height.should.be.equal(expectedSize);

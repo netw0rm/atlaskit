@@ -23,7 +23,7 @@ const transitionValue = `
   box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)
 `;
 
-export default vars => {
+export default (vars) => {
   const val = _get.bind(null, vars);
   return {
     // light DOM styles
@@ -77,7 +77,7 @@ export default vars => {
       display: 'inline-block',
       'font-style': 'normal',
       'font-size': 'inherit',
-      height: val('button.height', `${grid * 4 / em}em`),
+      height: val('button.height', `${(grid * 4) / em}em`),
       'line-height': val('button.lineHeight', lineHeight / em),
       margin: '0',
       outline: 'none',
@@ -176,7 +176,7 @@ export default vars => {
       },
     },
     compact: {
-      height: val('compact.height', `${grid * 3 / em}em`),
+      height: val('compact.height', `${(grid * 3) / em}em`),
       'padding-top': val('compact.paddingTop', `${grid / 3}px`),
       'padding-bottom': val('compact.paddingBottom', `${grid / 3}px`),
     },

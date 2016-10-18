@@ -1,8 +1,11 @@
 import { define, vdom, prop } from 'skatejs';
-import shadowStyles from './shadow.less';
-import 'style!./host.less';
-import icons from './pack-svgs!./';
 import uid from 'uid';
+
+import 'style!./host.less';
+
+import shadowStyles from './shadow.less';
+import icons from './pack-svgs!./';
+
 
 export default define('ak-editor-icon', {
   render: (elem) => {

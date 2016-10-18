@@ -1,16 +1,16 @@
 import reactify from 'akutil-react';
-import AkInlineDialog from '../src/index';
 import { storiesOf } from '@kadira/storybook';
-import { name } from '../package.json';
-
 import React from 'react';
 
-const Dialog = reactify(AkInlineDialog);
+import AkInlineDialog from '../src';
+import { name } from '../package.json';
+import DialogWithInput from './DialogWithInput';
+import DialogWithButton from './DialogWithButton';
+import DialogWithBlanket from './DialogWithBlanket';
+import ToggleDemo from './DialogRemoveDom';
 
-import DialogWithInput from './DialogWithInput.js';
-import DialogWithButton from './DialogWithButton.js';
-import DialogWithBlanket from './DialogWithBlanket.js';
-import ToggleDemo from './DialogRemoveDom.js';
+
+const Dialog = reactify(AkInlineDialog);
 
 storiesOf(name, module)
   .add('All dialogs together, open on click', () => (
@@ -33,7 +33,7 @@ storiesOf(name, module)
           position: 'relative',
           padding: '0',
         }}
-      ></div>
+      />
       <DialogWithButton
         event="click"
         position="top left"
@@ -354,7 +354,7 @@ storiesOf(name, module)
             height: '100px',
             border: '1px solid red',
           }}
-        ></div>
+        />
         <Dialog
           open
           enableFlip

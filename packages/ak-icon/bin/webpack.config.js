@@ -1,8 +1,10 @@
 const webpack = require('webpack');
 const path = require('path');
+const baseIconChunkName = require('./constants').baseIconChunkName;
+
+
 const relativePathToIcon = path.join('..', 'src', 'Icon');
 const pathToIcon = path.join(__dirname, relativePathToIcon);
-const baseIconChunkName = require('./constants').baseIconChunkName;
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 let cssOptions = '?camelCase=true&modules=true&mergeRules=false';

@@ -1,6 +1,9 @@
-import { themes } from '../src';
-const Adg2Theme = themes.adg2;
 import { define, vdom, props } from 'skatejs';
+
+import { themes } from '../src';
+
+
+const Adg2Theme = themes.adg2;
 const { element } = vdom;
 
 export const DefaultWrapper = define('default-wrapper', {
@@ -15,7 +18,7 @@ export const DefaultWrapper = define('default-wrapper', {
 
 export const Adg2ThemeWrapper = define('adg-2theme-wrapper', {
   attached(elem) {
-    elem.querySelectorAll('ak-button').forEach(button => {
+    elem.querySelectorAll('ak-button').forEach((button) => {
       props(button, { themeName: 'ak-button-theme-adg2' });
     });
   },

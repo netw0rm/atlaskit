@@ -1,17 +1,20 @@
 import { storiesOf } from '@kadira/storybook';
-import { vdom } from 'skatejs';
-import AnimationDemo from './AnimationDemo';
-import React from 'react'; // eslint-disable-line no-unused-vars
+import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
+import React from 'react';
 import reactify from 'akutil-react';
-import { name } from '../package.json';
-import styles from 'style!./styles.less';
-import ToggleIcons from './ToggleIcons';
 import classnames from 'classnames';
-import pathToDashed from '../src/pathToDashed';
-import { getGlyphs } from '../test/_helpers';
-import componentStyles from 'style!../src/shadow.less';
 import AkButtonWc from 'ak-button';
+
+import componentStyles from 'style!../src/shadow.less';
+import styles from 'style!./styles.less';
+
+import AnimationDemo from './AnimationDemo';
+import { name } from '../package.json';
+import ToggleIcons from './ToggleIcons';
+import pathToDashed from '../bin/pathToDashed';
+import { getGlyphs } from '../test/_helpers';
 import { size } from '../src/Icon';
+
 
 const iconSizes = Object.values(size);
 
@@ -35,10 +38,10 @@ if (!AtlassianIcon) {
 
 const toggleableIcons = Object
   .keys(reactifiedComponents)
-  .filter((key) => twoColorIcons.indexOf(key) !== -1)
-  .map((key) => [key, reactifiedComponents[key]]);
+  .filter(key => twoColorIcons.indexOf(key) !== -1)
+  .map(key => [key, reactifiedComponents[key]]);
 
-const AllIcons = (props) => (
+const AllIcons = props => (
   // eslint-disable-next-line react/prop-types
   <div {...props} className={classnames(styles.container, props.className)}>
     {Object
@@ -53,7 +56,7 @@ const AllIcons = (props) => (
   </div>
 );
 
-const AbsoluteAllIcons = (props) => (
+const AbsoluteAllIcons = props => (
   <AllIcons
     {...props}
     // eslint-disable-next-line react/prop-types
@@ -81,7 +84,7 @@ storiesOf('ak-icon', module)
             return (
               <tr key={key}>
                 <td><Icon /></td>
-                <td><pre>import '{importName}';</pre></td>
+                <td><pre>import &#39;{importName}&#39;;</pre></td>
                 <td><pre>&lt;{tagName} /&gt;</pre></td>
               </tr>
             );
@@ -131,11 +134,11 @@ storiesOf('ak-icon', module)
         </tr>
       </thead>
       <tbody>
-      {iconSizes.map((s) => (
-        <tr key={s}>
-          <td><pre>&lt;ak-icon-{sampleIconName} size="{s}" /&gt;</pre></td>
-          <td><AtlassianIcon className={componentStyles.akIcon} size={s} /></td>
-        </tr>
+        {iconSizes.map(s => (
+          <tr key={s}>
+            <td><pre>&lt;ak-icon-{sampleIconName} size=&quot;{s}&quot; /&gt;</pre></td>
+            <td><AtlassianIcon className={componentStyles.akIcon} size={s} /></td>
+          </tr>
       ))}
       </tbody>
     </table>

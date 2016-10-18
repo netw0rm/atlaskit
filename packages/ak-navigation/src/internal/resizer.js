@@ -3,7 +3,7 @@ import * as events from './index.events';
 import {
   globalCollapsedWidth,
   expandedWidth,
-} from '../shared-variables.js';
+} from '../shared-variables';
 
 
 const {

@@ -15,7 +15,7 @@ export default define('ak-dropdown-group', {
             className={shadowGroupStyles.locals.heading}
             aria-hidden="true"
           >
-              {elem.heading}
+            {elem.heading}
           </div> : null}
         <slot />
       </div>

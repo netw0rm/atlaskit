@@ -1,9 +1,9 @@
 import classNames from 'classnames';
+import React from 'react';
+
 import storyStyles from './animation-story.less';
 
-import React from 'react';
 const { Component } = React;
-
 const boxClass = storyStyles.box;
 
 /* This is a simple component used to consume an animation from shared-styles */
@@ -17,11 +17,11 @@ class AnimatedBox extends Component {
     this.animationDone = this.animationDone.bind(this);
   }
   componentDidMount() {
-    const elem = this.refs.animated;
+    const elem = this.animated;
     elem.addEventListener('animationend', this.animationDone);
   }
   componentWillUnmount() {
-    const elem = this.refs.animated;
+    const elem = this.animated;
     elem.removeEventListener('animationend', this.animationDone);
   }
   handleClick() {
@@ -39,7 +39,8 @@ class AnimatedBox extends Component {
       [storyStyles[this.props.animationClass]]: this.state.animating,
     });
     return (
-      <div className={className} onClick={this.handleClick} ref="animated">
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div className={className} onClick={this.handleClick} ref={n => (this.animated = n)}>
         <span>{this.props.children}</span>
       </div>
     );

@@ -1,3 +1,4 @@
+import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 
@@ -5,8 +6,6 @@ import pfMentionList from '../src/wc/pf-mention-list';
 import { mentions } from './story-data';
 import { getWebComponent } from './util';
 import debug from '../src/util/logger';
-
-import React from 'react';
 
 const MentionList = reactify(pfMentionList);
 

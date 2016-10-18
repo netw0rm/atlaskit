@@ -61,7 +61,7 @@ eslint-config-ak-base@1.1.2
 */
 const changedPackages = releasesFileContents
                           .split('\n')
-                          .map((line) => line.split('@'));
+                          .map(line => line.split('@'));
 
 const buildLink = `https://bitbucket.org/${REPO_OWNER}/${REPO_SLUG}/commits/${COMMIT}?at=${BRANCH}`;
 const message = `

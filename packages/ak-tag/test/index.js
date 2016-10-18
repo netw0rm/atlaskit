@@ -3,10 +3,13 @@ import { waitUntil, afterMutations, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
+
 import Tag, { exceptions, events } from '../src';
+import { getRootNode } from './_helpers';
+
+
 const { NotRemovableError } = exceptions;
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
-import { getRootNode } from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -32,7 +35,7 @@ describe('ak-tag', () => {
 
   describe('exports', () => {
     it('should export a base component', () => {
-      (new Tag).should.be.an.instanceof(Component);
+      (new Tag()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {

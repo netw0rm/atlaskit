@@ -7,7 +7,7 @@ export default define('ak-editor-toolbar-block-type-option', {
     return (
       <div>
         <style>{styles.toString()}</style>
-        <a
+        <a // eslint-disable-line jsx-a11y/no-static-element-interactions
           onClick={() => emit(elem, 'selectBlockType', { detail: { blockType: elem.blockType } })}
           onMousedown={/* don't blur the prose mirror editor */e => e.preventDefault()}
           className={classnames(

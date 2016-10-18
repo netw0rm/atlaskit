@@ -23,13 +23,13 @@ function tearDownComponent(component) {
 
 describe('exports', () => {
   it('should export a base component', () => {
-    (new AkNavigationLink).should.be.an.instanceof(Component);
+    (new AkNavigationLink()).should.be.an.instanceof(Component);
   });
 });
 describe('ak-navigation-link', () => {
   let component;
   let shadowRoot;
-  beforeEach(() => setupComponent().then(newComponent => {
+  beforeEach(() => setupComponent().then((newComponent) => {
     component = newComponent;
     shadowRoot = getShadowRoot(component);
   }));

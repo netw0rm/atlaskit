@@ -1,9 +1,11 @@
 import { storiesOf, action } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import WebComponent, { events } from '../src';
 import React from 'react';
+import reactify from 'akutil-react';
+
+import WebComponent, { events } from '../src';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
+
 
 const Component = reactify(WebComponent);
 
@@ -25,7 +27,7 @@ storiesOf(name, module)
     <Component id="myComponent" onClick={action('clicking the WebComponent')} />
   ))
   .add('an akutil-component-template that removes itself when being clicked', () => {
-    const removeMe = (e) => e.currentTarget.parentNode.removeChild(e.currentTarget);
+    const removeMe = e => e.currentTarget.parentNode.removeChild(e.currentTarget);
     const cls = styles.locals.akutilComponentTemplate;
     return (<Component id="myComponent" className={cls} onClick={removeMe} />);
   })

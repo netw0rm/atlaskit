@@ -14,10 +14,12 @@
 @navigation-link-icon-margin-right: 20px;
 @navigation-link-icon-size: 20px;
 
+@container-width: @expanded-width - @global-bar-width;
 // From left to right: subtract all expanded widths to figure out how much space we have left
 @container-link-text-expanded-width:
-  @expanded-width - @global-bar-width - @container-padding-expanded -
+  @container-width - @container-padding-expanded -
   @navigation-link-icon-margin-left - @navigation-link-icon-size - @navigation-link-icon-margin-right;
+
 
 @global-z-index: 2;
 @drawer-z-index: 1;

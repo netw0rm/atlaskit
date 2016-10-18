@@ -86,7 +86,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(spy).to.have.been.calledWith({
         active: false,
         element: null,
-        enabled: true,
+        enabled: false,
         href: "",
         rel: "",
         target: "",
@@ -173,7 +173,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       pm.setTextSelection(1);
       const { enabled } = plugin.getState();
 
-      expect(enabled).to.equal(false);
+      expect(enabled).to.be.false;
     });
 
     it('should not be able to unlink a node that has no link', () => {

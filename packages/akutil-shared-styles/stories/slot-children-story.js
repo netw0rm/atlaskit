@@ -1,8 +1,10 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
+import reactify from 'akutil-react';
+
 import { name } from '../package.json';
 import slotComponent from './slot-children/slot-component';
-import reactify from 'akutil-react';
+
 
 const SlotComponent = reactify(slotComponent, {});
 

@@ -1,23 +1,24 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import WebComponent from '../src/index';
-import AkTagWebComponent from 'ak-tag';
 import React from 'react';
+import reactify from 'akutil-react';
+import AkTagWebComponent from 'ak-tag';
+import tagStyles from 'ak-tag/src/shadow.less';
+
+import WebComponent from '../src';
 import { name } from '../package.json';
-import styles from 'style!./../src/host.less';
-import tagStyles from 'style!ak-tag/src/host.less';
+import styles from '../src/shadow.less';
 import tagNames from './tagNames';
 
-const Group = reactify(WebComponent);
 
+const Group = reactify(WebComponent);
 const Tag = reactify(AkTagWebComponent);
 
 const overflowStory = () => (
   <div style={{ border: '1px solid black' }}>
-    <Group className={styles.akTagGroup}>
+    <Group className={styles.locals.akTagGroup}>
       {tagNames.map((sweet, i) => (
         <Tag
-          className={tagStyles.akTag}
+          className={tagStyles.locals.akTag}
           href="http://www.cupcakeipsum.com/"
           key={i}
           text={sweet}

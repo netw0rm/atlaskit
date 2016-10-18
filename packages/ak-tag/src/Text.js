@@ -8,6 +8,6 @@ export default (props, children) => (
     {...props}
     className={shadowStyles.locals.text}
   >
-      {children()}
+    {children()}
   </span>
 );

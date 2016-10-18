@@ -1,1 +1,2 @@
-export const flippedSymbol = Symbol();
+// eslint-disable-next-line import/prefer-default-export
+export const flippedSymbol = Symbol('flippedSymbol');

@@ -1,10 +1,12 @@
 /** @jsx vdom */
 /* eslint react/no-unknown-property: 0 */
-import hostStyle from './host.less';
 import { vdom, prop, define } from 'skatejs';
 import cx from 'classnames';
-import shadowStyles from './shadow.less';
 import Layer from 'ak-layer';
+
+import hostStyle from './host.less';
+import shadowStyles from './shadow.less';
+
 
 /**
  * @description The definition for the Popup component.
@@ -26,7 +28,7 @@ export default define('ak-editor-popup', {
           open={elem.open}
           position="bottom center"
           target={elem.target}
-          onRender={layer => {
+          onRender={(layer) => {
             if (elem.open && layer.alignment) {
               elem.positioned = true;
             }

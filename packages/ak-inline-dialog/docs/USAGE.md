@@ -2,7 +2,7 @@
 
 The Inline Dialog is a container for secondary content and controls that are displayed on user request.
 
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-inline_dialog/docs/inline_dialog.gif)
+![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-inline_dialog/docs/inline_dialog.gif)
 
 ## Try it out
 

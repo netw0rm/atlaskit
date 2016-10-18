@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import { vdom, define, prop, props } from 'skatejs';
 import Layer from 'ak-layer';
 
-import 'style!./host.less';
 import shadowStyles from './shadow.less';
 import TooltipTrigger from './index.tooltip-trigger';
 import { flippedSymbol } from './internal/symbols';
@@ -72,8 +71,8 @@ export default define('ak-tooltip', {
           <Layer
             target={elem.target}
             position={positionToPopperPosition(elem.position)}
-            onUpdate={(data) => updateCallback(elem, data)}
-            ref={(ref) => (elem.layer = ref)}
+            onUpdate={data => updateCallback(elem, data)}
+            ref={ref => (elem.layer = ref)}
             enableFlip
             boundariesElement={document.body}
           >

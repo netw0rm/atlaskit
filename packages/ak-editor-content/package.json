@@ -1,12 +1,12 @@
 {
   "name": "ak-editor-content",
-  "version": "2.3.5",
+  "version": "2.3.8",
   "description": "Editor Content web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-content"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-content"
   },
   "files": [
     "dist"
@@ -15,8 +15,9 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-shared-styles": "^1.0.3",
+    "akutil-shared-styles": "^34.2.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.4.1"
+    "skatejs": "^3.0.0"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0"

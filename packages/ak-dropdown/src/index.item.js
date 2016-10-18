@@ -1,14 +1,15 @@
 import { emit, vdom, prop, define, props } from 'skatejs';
-import { selected as selectedEvent, item as itemEvents } from './internal/events';
-import shadowItemStyles from './less/shadow-item.less';
 import keyCode from 'keycode';
 
+import { selected as selectedEvent, item as itemEvents } from './internal/events';
+import shadowItemStyles from './less/shadow-item.less';
 import Item from './internal/Item';
 import IconContainer from './internal/LeftSlotContainer';
 import DefaultSlotContainer from './internal/DefaultSlotContainer';
 import childrenHaveSlot from './internal/childrenHaveSlot';
 
-export const elemDom = Symbol();
+
+export const elemDom = Symbol('elemDom');
 export const BaseProps = {
   /**
    * @description disabled state of a dropdown's item

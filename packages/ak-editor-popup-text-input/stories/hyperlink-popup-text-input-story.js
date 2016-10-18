@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 import { storiesOf } from '@kadira/storybook';
-import TextInputComponent from '../src';
+import React from 'react';
 import reactify from 'akutil-react';
 
-import React from 'react';
+import TextInputComponent from '../src';
+
+
 const TextInput = reactify(TextInputComponent);
-const Container = (props) => (
+const Container = props => (
   <div style={{ backgroundColor: '#545454', padding: '5px 10px' }}>
     {props.children}
   </div>

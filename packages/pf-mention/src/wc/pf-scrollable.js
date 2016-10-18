@@ -1,5 +1,6 @@
-import 'style!../host.less';
 import { define, vdom } from 'skatejs';
+
+import 'style!../host.less';
 
 export default define('pf-scrollable', {
   prototype: {

@@ -3,7 +3,7 @@ import React from 'react';
 import reactify from 'akutil-react';
 import FieldBaseWC from '../src';
 import { name } from '../package.json';
-import styles from '../src/host.less';
+import styles from '../src/shadow.less';
 
 const FieldBase = reactify(FieldBaseWC);
 

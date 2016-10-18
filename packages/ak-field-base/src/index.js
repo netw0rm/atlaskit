@@ -1,5 +1,4 @@
 import { vdom, define, prop, props, emit } from 'skatejs';
-import 'style!./host.less';
 import { exitViewingView, exitEditingView } from './internal/events';
 import EditingView from './Editing';
 import ViewingView from './Viewing';

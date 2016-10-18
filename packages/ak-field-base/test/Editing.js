@@ -27,14 +27,16 @@ describe('ak-field-base', () => {
       shadowRoot = getShadowRoot(newComponent);
     };
 
-    const editModeWrapperClass = shadowStyles.locals.editModeWrapper;
-    const slotWrapperClass = shadowStyles.locals.editModeSlotWrapper;
-    const confirmButtonClass = shadowStyles.locals.editConfirm;
-    const cancelButtonClass = shadowStyles.locals.editCancel;
-    const spinnerClass = shadowStyles.locals.waitingSpinner;
-    const hiddenClass = shadowStyles.locals.hidden;
-    const focusedClass = shadowStyles.locals.focused;
-    const invalidClass = shadowStyles.locals.invalid;
+    const {
+      editModeWrapper: editModeWrapperClass,
+      editModeSlotWrapper: slotWrapperClass,
+      editConfirm: confirmButtonClass,
+      editCancel: cancelButtonClass,
+      waitingSpinner: spinnerClass,
+      hidden: hiddenClass,
+      focused: focusedClass,
+      invalid: invalidClass,
+    } = shadowStyles.locals;
 
     afterEach(() => tearDownComponent(component));
 

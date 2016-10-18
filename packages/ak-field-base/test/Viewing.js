@@ -27,11 +27,12 @@ describe('ak-field-base', () => {
       component = newComponent;
       shadowRoot = getShadowRoot(newComponent);
     };
-
-    const viewModeWrapperClass = shadowStyles.locals.viewModeWrapper;
-    const hiddenClass = shadowStyles.locals.hidden;
-    const focusedClass = shadowStyles.locals.editButtonFocused;
-    const editButtonClass = shadowStyles.locals.editButton;
+    const {
+      viewModeWrapper: viewModeWrapperClass,
+      hidden: hiddenClass,
+      editButtonFocused: focusedClass,
+      editButton: editButtonClass,
+    } = shadowStyles.locals;
 
     afterEach(() => tearDownComponent(component));
 

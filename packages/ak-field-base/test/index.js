@@ -31,18 +31,20 @@ describe('ak-field-base', () => {
   let component;
   let shadowRoot;
 
-  const editModeWrapperClass = shadowStyles.locals.editModeWrapper;
-  const viewModeWrapperClass = shadowStyles.locals.viewModeWrapper;
-  const confirmButtonClass = shadowStyles.locals.editConfirm;
-  const cancelButtonClass = shadowStyles.locals.editCancel;
-  const labelClass = shadowStyles.locals.label;
-  const labelTextClass = shadowStyles.locals.labelText;
-  const hiddenClass = shadowStyles.locals.hidden;
-  const editmodeFocusClass = shadowStyles.locals.editButtonFocused;
-  const viewmodeFocusClass = shadowStyles.locals.focused;
-  const spinnerClass = shadowStyles.locals.waitingSpinner;
-  const invalidClass = shadowStyles.locals.invalid;
-  const editButtonClass = shadowStyles.locals.editButton;
+  const {
+    editModeWrapper: editModeWrapperClass,
+    viewModeWrapper: viewModeWrapperClass,
+    editConfirm: confirmButtonClass,
+    editCancel: cancelButtonClass,
+    label: labelClass,
+    labelText: labelTextClass,
+    hidden: hiddenClass,
+    editButtonFocused: editmodeFocusClass,
+    focused: viewmodeFocusClass,
+    waitingSpinner: spinnerClass,
+    invalid: invalidClass,
+    editButton: editButtonClass,
+  } = shadowStyles.locals;
 
   const inEditmodeView = () => (shadowRoot.querySelector(`.${editModeWrapperClass}`) !== null);
   const inViewmodeView = () => (shadowRoot.querySelector(`.${viewModeWrapperClass}`) !== null);

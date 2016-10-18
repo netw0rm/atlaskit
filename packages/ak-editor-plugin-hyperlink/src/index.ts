@@ -202,7 +202,7 @@ export default new Plugin(class HyperlinkPlugin {
 
     const { enabled } = this.getState();
 
-    if (!enabled || empty || isLink || !options) {
+    if (!enabled || empty || isLink || !options || !(options.href as String).trim()) {
       return false;
     }
 
@@ -261,7 +261,7 @@ export default new Plugin(class HyperlinkPlugin {
   }
 
   updateLink(options?: HyperLinkOptions) : boolean {
-    if (!options || !this.removeLink(true)) {
+    if (!options || !(options.href as String).trim() || !(options.text as String).trim() || !this.removeLink(true)) {
       return false;
     }
 

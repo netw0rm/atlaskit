@@ -373,10 +373,9 @@ class AkEditorBitbucket extends Component {
 
   _addHyperLink(event: CustomEvent): void {
     const href = event.detail.value;
-    if (href.trim()) {
-      for (const pm of maybe(this._pm)) {
-        HyperlinkPlugin.get(pm).addLink({ href });
-      }
+
+    for (const pm of maybe(this._pm)) {
+      HyperlinkPlugin.get(pm).addLink({ href });
     }
   }
 
@@ -395,13 +394,12 @@ class AkEditorBitbucket extends Component {
 
   _changeHyperLinkValue(event: Event) {
     const newLink = (event.target as any).value;
-    if (newLink.trim()) {
-      for (const pm of maybe(this._pm)) {
-        HyperlinkPlugin.get(pm).updateLink({
-          href: newLink,
-          text: newLink,
-        });
-      }
+
+    for (const pm of maybe(this._pm)) {
+      HyperlinkPlugin.get(pm).updateLink({
+        href: newLink,
+        text: newLink,
+      });
     }
   }
 

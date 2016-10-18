@@ -92,9 +92,7 @@ In our example above for example, you would want to:
 * Remove borders and background-color from the input
 * Reflect the inputs focus onto fieldBase (so that we get the correct focus styles in editmode)
 
-To fix the styles we can either set them through javascript/regular css **or**
-if you are using webcomponents, you can pass in a `<style>` tag to `editmode`
-(it's reccomended that you namespace your rules in case an end user is using a shadowDOM polyfill).
+To fix the styles we can either set them through javascript/regular css or just use inline styles.
 
 ```html
 <ak-field-base label="My awesome field" id="myCustomField">
@@ -102,10 +100,7 @@ if you are using webcomponents, you can pass in a `<style>` tag to `editmode`
     <span id="viewModeValue">Your text here</span>
   </div>
   <div slot="editmode">
-    <style>
-      input { background: transparent; border: 0; outline: 0; }
-    </style>
-    <input type="text" id="inputField" value="Your text here" />
+    <input type="text" id="inputField" value="Your text here" style="background: transparent; border: 0; outline: 0; width: 100%;" />
   </div>
 </ak-field-base>
 ```
@@ -114,6 +109,7 @@ if you are using webcomponents, you can pass in a `<style>` tag to `editmode`
 inputField.style.background = 'transparent';
 inputField.style.border = '0';
 inputField.style.outline = 'none';
+inputField.style.width = '100%';
 ```
 
 To fix the focus styling we can set up event listers on the input that can set the `focused` prop on FieldBase.

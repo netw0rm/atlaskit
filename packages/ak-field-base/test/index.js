@@ -186,7 +186,7 @@ describe('ak-field-base', () => {
 
       // we'll wait on second to check if the editing mode becomes visible
       let timeIsUp = false;
-      setTimeout(() => (timeIsUp = true), 1000);
+      setTimeout(() => (timeIsUp = true), 100);
 
       return waitUntil(() => timeIsUp).then(() => {
         // now make sure we arent in viewmode
@@ -254,7 +254,7 @@ describe('ak-field-base', () => {
 
         // we'll wait on second to check if the viewing mode becomes visible
         let timeIsUp = false;
-        setTimeout(() => (timeIsUp = true), 1000);
+        setTimeout(() => (timeIsUp = true), 100);
 
         return waitUntil(() => timeIsUp).then(() => {
           // now make sure we arent in viewmode

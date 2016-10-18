@@ -155,7 +155,7 @@ storiesOf('ak-editor-bitbucket', module)
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>Markdown</legend>
-              <pre>{this.state.markdown}</pre>
+              <pre dangerouslySetInnerHTML={{__html: this.state.markdown}} />
             </fieldset>
           </div>
         );

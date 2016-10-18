@@ -22,6 +22,14 @@ describe('Bitbucket markdown serializer: ', () => {
     ]))).to.eq(`${longText}\n\n${longText}`);
   });
 
+  it('should preserve multiple blank lines using zero-non-width', () => {
+    expect(markdownSerializer.serialize(doc([
+      p(text('foo')),
+      p(),
+      p(text('bar'))
+    ]))).to.eq('foo\n\n&zwnj;\n\nbar');
+  });
+
   describe('code block', () => {
     it('with simple text should be serialized', () => {
       expect(markdownSerializer.serialize(doc(pre(text('foo'))))).to.eq('    foo');

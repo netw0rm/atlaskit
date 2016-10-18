@@ -130,6 +130,14 @@ const marks = {
 export class MarkdownSerializer extends PMMarkdownSerializer {
   serialize(content: any, options?: Object) : string{
     let state = new MarkdownSerializerState(this.nodes, this.marks, options);
+
+    // Don't do anything if editor is empty
+    if (content.childCount === 1 && 
+        content.firstChild.type.name === 'paragraph' && 
+        content.firstChild.childCount === 0) {
+      return state.out;
+    }
+
     state.renderContent(content);
     return state.out;
   }
@@ -146,6 +154,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
    */
   renderInline(parent: Node) : void {
     let active: Mark[] = [];
+    let prev: Node | null = null;
 
     let progress = (node: Node | null) => {
       let marks = node ? node.marks : [];
@@ -190,7 +199,6 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
       if (node) {
         if (!code || !node.isText) {
           this.render(node);
-
         } else if (node.text) {
           // Generate valid inline code, fenced with series of backticks longer that backtick series inside it.
           let text = node.text;
@@ -207,7 +215,11 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
           this.text(backticks + text + backticks, false);
         }
+      } else if (prev === null) {
+        this.text('&zwnj;', false); // zero-width-non-joiner
       }
+
+      prev = node;
     };
 
     parent.forEach(progress);

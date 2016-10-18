@@ -1,7 +1,11 @@
 import React from 'react';
 import reactify from 'akutil-react';
 import { action } from '@kadira/storybook';
+import uid from 'uid';
+
 import AkButtonTemplate, { APPEARANCE } from '../src';
+
+
 const AkButton = reactify(AkButtonTemplate);
 
 class AkButtonStates extends React.Component {
@@ -18,9 +22,11 @@ class AkButtonStates extends React.Component {
   }
 
   createCheckboxBooleanAttribute(attribute) {
+    const id = `label-${uid()}`;
     return (
-      <label>
+      <label htmlFor={id}>
         <input
+          id={id}
           type="checkbox"
           onChange={() => this.setState({ [attribute]: !this.state[attribute] })}
           checked={this.state[attribute]}
@@ -31,9 +37,11 @@ class AkButtonStates extends React.Component {
   }
 
   createRadioAppearanceAttribute(attribute) {
+    const id = `label-${uid()}`;
     return (
-      <label>
+      <label htmlFor={id}>
         <input
+          id={id}
           type="radio"
           onChange={() => this.setState({ appearance: attribute })}
           checked={this.state.appearance === attribute}
@@ -44,9 +52,11 @@ class AkButtonStates extends React.Component {
   }
 
   createRadioIconOption(Icon, side) {
+    const id = `label-${uid()}`;
     return (
-      <label>
+      <label htmlFor={id}>
         <input
+          id={id}
           type="radio"
           onChange={() => this.setState({ [side]: Icon })}
           checked={this.state[side] === Icon}
@@ -66,7 +76,7 @@ class AkButtonStates extends React.Component {
       <div>
         <style>{'label {margin-right: 10px;}'}</style>
         <form>
-          <label><strong>Boolean Attributes</strong></label>
+          <strong>Boolean Attributes</strong>
           <br />
           {this.createCheckboxBooleanAttribute('disabled')}
           {this.createCheckboxBooleanAttribute('selected')}
@@ -74,7 +84,7 @@ class AkButtonStates extends React.Component {
         </form>
         <br />
         <form>
-          <label><strong>Appearances</strong></label>
+          <strong>Appearances</strong>
           <br />
           {this.createRadioAppearanceAttribute(APPEARANCE.STANDARD)}
           {this.createRadioAppearanceAttribute(APPEARANCE.PRIMARY)}
@@ -83,7 +93,7 @@ class AkButtonStates extends React.Component {
         </form>
         <br />
         <form>
-          <label><strong>Left Icons</strong></label>
+          <strong>Left Icons</strong>
           <br />
           {
             this.props.icons.map(Icon => this.createRadioIconOption(Icon, 'before'))
@@ -91,7 +101,7 @@ class AkButtonStates extends React.Component {
         </form>
         <br />
         <form>
-          <label><strong>Right Icons</strong></label>
+          <strong>Right Icons</strong>
           <br />
           {
             this.props.icons.map(Icon => this.createRadioIconOption(Icon, 'after'))
@@ -119,6 +129,6 @@ class AkButtonStates extends React.Component {
 
 AkButtonStates.displayName = 'AkButtonStates';
 AkButtonStates.propTypes = {
-  icons: React.PropTypes.array.isRequired,
+  icons: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 export default AkButtonStates;

@@ -1,10 +1,13 @@
-import 'style!./host.less';
 import { vdom, define, prop, emit } from 'skatejs';
-import shadowStyles from './shadow.less';
 import EditorButton from 'ak-editor-button';
 import LinkIcon from 'ak-icon/glyph/editor/link';
 import Popup from 'ak-editor-popup';
 import TextInput from 'ak-editor-popup-text-input';
+
+import 'style!./host.less';
+
+import shadowStyles from './shadow.less';
+
 
 // todo: we will use a common helper function when it's ready.
 // https://ecosystem.atlassian.net/browse/AK-513
@@ -50,7 +53,7 @@ export default define('ak-editor-toolbar-hyperlink', {
     /* eslint-disable no-return-assign  */
     /* eslint-disable new-cap  */
     return (
-      <div
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
         onKeyup={elem.onKeyup}
       >
         <style>{shadowStyles.toString()}</style>

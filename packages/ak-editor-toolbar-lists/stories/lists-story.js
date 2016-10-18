@@ -1,7 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
-import ListsComponent from '../src';
 import React from 'react';
 import reactify from 'akutil-react';
+
+import ListsComponent from '../src';
+
 
 const Lists = reactify(ListsComponent);
 
@@ -40,7 +42,7 @@ storiesOf('ak-editor-toolbar-lists', module)
               <input
                 type="checkbox"
                 checked={!this.state.bulletlistDisabled}
-                onChange={(e) => this.setState({ bulletlistDisabled: !e.target.checked })}
+                onChange={e => this.setState({ bulletlistDisabled: !e.target.checked })}
               />
               <ul><li
                 tabIndex="-1"
@@ -51,7 +53,7 @@ storiesOf('ak-editor-toolbar-lists', module)
               <input
                 type="checkbox"
                 checked={!this.state.numberlistDisabled}
-                onChange={(e) => this.setState({ numberlistDisabled: !e.target.checked })}
+                onChange={e => this.setState({ numberlistDisabled: !e.target.checked })}
               />
               <ol><li
                 tabIndex="-1"

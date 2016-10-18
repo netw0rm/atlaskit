@@ -1,4 +1,6 @@
 import { appearance } from '../enumeratedProperties';
+
+
 const { PRIMARY, SUBTLE, LINK } = appearance.values;
 
 export default (classKeys, props) => ({

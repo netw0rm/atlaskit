@@ -16,8 +16,8 @@ const MentionTextInput = React.createClass({
   propTypes: {
     label: PropTypes.string,
     onSelection: PropTypes.func.isRequired,
-    resourceProvider: PropTypes.object.isRequired,
-    presenceProvider: PropTypes.object,
+    resourceProvider: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    presenceProvider: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     relativePosition: PropTypes.string,
   },
 
@@ -83,7 +83,7 @@ const MentionTextInput = React.createClass({
     const searchInput = (
       <SearchTextInput
         label={label}
-        onChange={(query) => this._updateSearch(query)}
+        onChange={query => this._updateSearch(query)}
         onUp={() => this._mentionListRef.selectPrevious()}
         onDown={() => this._mentionListRef.selectNext()}
         onEnter={() => this._mentionListRef.chooseCurrentSelection()}

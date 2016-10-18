@@ -1,9 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import WebComponent from '../src/index';
 import ButtonWC from 'ak-button';
 import React from 'react';
+
+import WebComponent from '../src';
 import { name } from '../package.json';
+
 
 const ReactField = reactify(WebComponent);
 const ReactButton = reactify(ButtonWC);
@@ -37,9 +39,9 @@ function generateFormWithInput(opts) {
 }
 
 function submitTestForm(useNativeSubmitBtn) {
-  const submitBtn = useNativeSubmitBtn ?
-    <input type="submit" /> :
-    <ReactButton type="submit" appearance="primary">Submit</ReactButton>;
+  const submitBtn = useNativeSubmitBtn ? <input type="submit" /> : (
+    <ReactButton type="submit" appearance="primary">Submit</ReactButton>
+  );
   return (
     <div>
       <form
@@ -58,7 +60,7 @@ function submitTestForm(useNativeSubmitBtn) {
           {submitBtn}
         </p>
       </form>
-      <iframe src="" name="myFrame" style={{ width: '50%', height: '300px' }}></iframe>
+      <iframe src="" name="myFrame" style={{ width: '50%', height: '300px' }} />
     </div>
   );
 }

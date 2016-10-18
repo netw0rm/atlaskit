@@ -1,7 +1,10 @@
-import { getShadowRoot, waitUntil } from '../src';
 import Avatar from 'ak-avatar';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
+
+import { getShadowRoot, waitUntil } from '../src';
+
+
 chai.should();
 chai.use(sinonChai);
 

@@ -1,10 +1,11 @@
 import { vdom } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import { getRootNode } from 'akutil-common-test';
 
 import { createTemporaryComponent, tearDownComponent } from '../_helpers';
-import { getRootNode } from 'akutil-common-test';
 import childrenHaveSlot from '../../src/internal/childrenHaveSlot';
+
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -15,12 +16,12 @@ describe('childrenHaveSlot', () => {
 
   const definition = {
     render() {
-      return (<div><div></div><div slot="test"></div><div slot="lostslot"></div></div>);
+      return (<div><div /><div slot="test" /><div slot="lostslot" /></div>);
     },
   };
 
   beforeEach(() => createTemporaryComponent(definition)
-    .then(newComponent => {
+    .then((newComponent) => {
       component = newComponent;
       rootNode = getRootNode(component);
     }));

@@ -1,6 +1,9 @@
-const constructStorybookUrl = require('./constructStorybookUrl.js');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+
+const constructStorybookUrl = require('./constructStorybookUrl.js');
+
+
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
@@ -16,7 +19,7 @@ module.exports = function steps() {
 
   this.Then(
     /^I should see a "([^"]*)" component$/,
-    (name) => browser.isElementPresent(by.webComponentNamePrefix(name))
+    name => browser.isElementPresent(by.webComponentNamePrefix(name))
   );
 
   this.Then(/^I should not see a "([^"]*)" component$/, (name, next) => {

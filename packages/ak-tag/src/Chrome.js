@@ -31,7 +31,7 @@ export default (props, children) => {
       {...targetProps}
       tabindex={props.isLinked ? 0 : -1}
       className={classNames}
-      onmousedown={(e) => (e.preventDefault())}
+      onmousedown={e => (e.preventDefault())}
     >
       {children()}
     </span>

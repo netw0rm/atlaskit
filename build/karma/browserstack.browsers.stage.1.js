@@ -7,7 +7,7 @@ const browserStackBrowsers = {
     browser_version: '11',
   },
   chrome_beta_osx: {
-    browserName: 'Chrome',
+    browser: 'Chrome',
     browser_version: '54.0 beta',
     os: 'OS X',
     os_version: 'El Capitan',

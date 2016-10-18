@@ -78,8 +78,8 @@ export default define('x-editable-field', {
 
       inputField.type = 'text';
       inputField.value = elem.value;
-      inputField.addEventListener('focus', (e) => handleInputFocus(elem, e));
-      inputField.addEventListener('blur', (e) => handleInputBlur(elem, e));
+      inputField.addEventListener('focus', e => handleInputFocus(elem, e));
+      inputField.addEventListener('blur', e => handleInputBlur(elem, e));
 
       elem.inputField = inputField;
       elem.appendChild(styleTag);
@@ -87,7 +87,7 @@ export default define('x-editable-field', {
     }
   },
   attached(elem) {
-    elem.addEventListener(exitViewingView, (e) => handleEditingViewSwitch(elem, e));
-    elem.addEventListener(exitEditingView, (e) => handleViewingViewSwitch(elem, e));
+    elem.addEventListener(exitViewingView, e => handleEditingViewSwitch(elem, e));
+    elem.addEventListener(exitEditingView, e => handleViewingViewSwitch(elem, e));
   },
 });

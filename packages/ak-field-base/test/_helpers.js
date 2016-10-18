@@ -1,7 +1,7 @@
-const createDefinition = (dom) => ({
+const createDefinition = dom => ({
   render() {
     return dom;
   },
 });
 
-export { createDefinition };
+export { createDefinition }; // eslint-disable-line import/prefer-default-export

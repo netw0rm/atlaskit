@@ -49,7 +49,7 @@ describe('ak-field-base', () => {
   const inEditmodeView = () => (shadowRoot.querySelector(`.${editModeWrapperClass}`) !== null);
   const inViewmodeView = () => (shadowRoot.querySelector(`.${viewModeWrapperClass}`) !== null);
 
-  beforeEach(() => setupComponent().then(newComponent => {
+  beforeEach(() => setupComponent().then((newComponent) => {
     component = newComponent;
     shadowRoot = getShadowRoot(component);
   }));
@@ -57,7 +57,7 @@ describe('ak-field-base', () => {
 
   describe('exports', () => {
     it('should export a base component', () => {
-      (new FieldBase).should.be.an.instanceof(Component);
+      (new FieldBase()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
@@ -178,7 +178,7 @@ describe('ak-field-base', () => {
 
     it('should not switch to editmode if cancelled', () => {
       const clickEvent = new CustomEvent('click', { bubbles: true });
-      const preventDefault = (e) => (e.preventDefault());
+      const preventDefault = e => (e.preventDefault());
 
       document.body.addEventListener(events.exitViewingView, preventDefault);
       editButton.dispatchEvent(clickEvent);
@@ -199,7 +199,7 @@ describe('ak-field-base', () => {
     confirm: confirmButtonClass,
     cancel: cancelButtonClass,
   };
-  Object.keys(editModeButtons).forEach(button => {
+  Object.keys(editModeButtons).forEach((button) => {
     describe(`${button} button`, () => {
       let firingButton;
       const firingButtonClass = editModeButtons[button];
@@ -246,7 +246,7 @@ describe('ak-field-base', () => {
       it('should not switch to viewing mode if cancelled', () => {
         const clickEvent = new CustomEvent('click');
         // cancels any event passed to it
-        const preventDefault = (e) => (e.preventDefault());
+        const preventDefault = e => (e.preventDefault());
 
         document.body.addEventListener(events.exitEditingView, preventDefault);
         firingButton.dispatchEvent(clickEvent);

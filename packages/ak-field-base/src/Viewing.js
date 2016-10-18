@@ -1,8 +1,10 @@
 import { vdom } from 'skatejs';
 import classNames from 'classnames';
 import { KeyPressHandler } from 'akutil-common';
-import shadowStyles from './shadow.less';
 import 'ak-icon/glyph/edit';
+
+
+import shadowStyles from './shadow.less';
 
 
 function addKeyHandlers(callback, elem) {
@@ -25,6 +27,7 @@ export default (props) => {
     [shadowStyles.locals.editButtonFocused]: props.focused,
   });
   return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className={viewModeWrapperClasses}
       ref={ref => addKeyHandlers(props.switchToEditingCallback, ref)}

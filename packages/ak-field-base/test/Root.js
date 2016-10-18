@@ -26,7 +26,7 @@ describe('ak-field-base', () => {
     };
 
     beforeEach(() => createTemporary(define, definition)
-      .then(newComponent => {
+      .then((newComponent) => {
         component = newComponent;
         shadowRoot = getShadowRoot(component);
       }));

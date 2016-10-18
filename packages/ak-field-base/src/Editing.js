@@ -1,8 +1,10 @@
 import { vdom } from 'skatejs';
 import classNames from 'classnames';
-import shadowStyles from './shadow.less';
 import Button from 'ak-button';
 import 'ak-icon/glyph/bitbucket/pipelines';
+
+
+import shadowStyles from './shadow.less';
 
 /* eslint-disable react/prop-types */
 const RightGutter = (props) => {

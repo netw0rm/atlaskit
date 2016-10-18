@@ -1,6 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
-import ReactField from './ReactField';
 import React from 'react';
+import ReactField from './ReactField';
+
 import { name } from '../package.json';
 
 const formStyle = {
@@ -20,7 +21,7 @@ storiesOf(name, module)
             This component is made by extending FieldBase using React.
           </p>
           <p>
-            It's very similar to what is described in the readme file for FieldBase.
+            It&#39;s very similar to what is described in the readme file for FieldBase.
           </p>
         </div>
         <br />

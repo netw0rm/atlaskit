@@ -1,8 +1,13 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import FieldBaseWC, { events } from '../src';
 import React from 'react';
+
+
+import FieldBaseWC, { events } from '../src';
 import { name } from '../package.json';
+
+/* eslint-disable jsx-a11y/label-has-for */
+
 
 const FieldBase = reactify(FieldBaseWC);
 
@@ -33,22 +38,18 @@ storiesOf(name, module)
         if (isChecked('editCancel')) {
           e.preventDefault();
         }
-      } else {
-        if (isChecked('editConfirm')) {
-          e.preventDefault();
-        }
+      } else if (isChecked('editConfirm')) {
+        e.preventDefault();
       }
     };
-    const bindEventHandler = storyBody => {
+    const bindEventHandler = (storyBody) => {
       if (storyBody) {
         storyBodyRef = storyBody;
         storyBody.addEventListener(events.exitViewingView, exitViewingViewHandler);
         storyBody.addEventListener(events.exitEditingView, exitEditingViewHandler);
-      } else {
-        if (storyBodyRef) {
-          storyBodyRef.removeEventListener(events.exitViewingView, exitViewingViewHandler);
-          storyBodyRef.removeEventListener(events.exitEditingView, exitEditingViewHandler);
-        }
+      } else if (storyBodyRef) {
+        storyBodyRef.removeEventListener(events.exitViewingView, exitViewingViewHandler);
+        storyBodyRef.removeEventListener(events.exitEditingView, exitEditingViewHandler);
       }
     };
     return (
@@ -74,10 +75,11 @@ storiesOf(name, module)
             </label>
           </div>
           <FieldBase label="Label for bold FieldBase">
-            <div is slot="editmode">I'm in editing mode</div>
-            <div is slot="viewmode"><b>I'm in view mode</b></div>
+            <div is slot="editmode">I&#39;m in editing mode</div>
+            <div is slot="viewmode"><b>I&#39;m in view mode</b></div>
           </FieldBase>
         </form>
       </div>
     );
   });
+/* eslint-enable jsx-a11y/label-has-for */

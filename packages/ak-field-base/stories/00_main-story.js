@@ -13,7 +13,7 @@ const formStyle = {
   width: '500px',
 };
 
-const GenericFieldBase = (props) => (<FieldBase
+const GenericFieldBase = props => (<FieldBase
   className={styles.locals.akFieldBase}
   label="Label for FieldBase"
   {...props}
@@ -109,12 +109,12 @@ storiesOf(name, module)
             <div is slot="viewmode">{longTextNoSpaces}</div>
           </FieldBase>
           <FieldBase label="No content">
-            <div is slot="editmode"></div>
-            <div is slot="viewmode"></div>
+            <div is slot="editmode" />
+            <div is slot="viewmode" />
           </FieldBase>
           <FieldBase label="Small non-textual content (5x5 div)">
-            <div is slot="editmode"><div style={smallBoxStyles}></div></div>
-            <div is slot="viewmode"><div style={smallBoxStyles}></div></div>
+            <div is slot="editmode"><div style={smallBoxStyles} /></div>
+            <div is slot="viewmode"><div style={smallBoxStyles} /></div>
           </FieldBase>
         </form>
       </div>
@@ -129,8 +129,8 @@ storiesOf(name, module)
         <form action="" style={formStyle}>
           <h2>My Label-less Form</h2>
           <FieldBase label="Label for bold FieldBase" hideLabel>
-            <div is slot="editmode">I'm in editing mode but I don't have a label!</div>
-            <div is slot="viewmode"><b>I'm in view mode but I don't have a label!</b></div>
+            <div is slot="editmode">I&#39;m in editing mode but I don&#39;t have a label!</div>
+            <div is slot="viewmode"><b>I&#39;m in view mode but I don&#39;t have a label!</b></div>
           </FieldBase>
           <FieldBase label="Label for h1 FieldBase" hideLabel>
             <div is slot="editmode"><h1 style={noMarginStyle}>Edit mode, no label</h1></div>

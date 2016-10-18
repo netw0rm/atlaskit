@@ -2,7 +2,9 @@ import { vdom } from 'skatejs';
 import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 
-/* eslint-disable react/prop-types */
+/*
+  eslint-disable react/prop-types, jsx-a11y/label-has-for, jsx-a11y/no-static-element-interactions
+ */
 export default (props, children) => {
   const labelClasses = classNames(shadowStyles.locals.labelText, {
     [shadowStyles.locals.hidden]: props.hideLabel,

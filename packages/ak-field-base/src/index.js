@@ -60,7 +60,7 @@ export default define('ak-field-base', {
         >
           <ViewingView
             switchToEditingCallback={() => switchToEditing(elem)}
-            setFocus={(focus) => setFocus(elem, focus)}
+            setFocus={focus => setFocus(elem, focus)}
             focused={elem.focused}
             hideViewing={viewingViewHidden}
           />

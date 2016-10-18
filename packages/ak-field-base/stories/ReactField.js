@@ -1,6 +1,8 @@
 import reactify from 'akutil-react';
-import WebComponent, { events } from '../src/index';
 import React from 'react';
+
+
+import WebComponent, { events } from '../src/index';
 
 const FieldBase = reactify(WebComponent);
 

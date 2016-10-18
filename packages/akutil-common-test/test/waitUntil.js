@@ -12,7 +12,7 @@ describe('waitUntil', () => {
     // Change the value of val in 10ms time
     setTimeout(() => (val += 1), 10);
     // now wait until val = 1;
-    waitUntil(() => (val === 1)).then(() => {
+    waitUntil(() => val === 1).then(() => {
       expect(val).to.equal(1);
       done();
     });

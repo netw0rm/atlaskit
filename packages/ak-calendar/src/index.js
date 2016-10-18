@@ -3,7 +3,7 @@
 import { Calendar } from 'calendar-base';
 import { define, emit, h, prop, vdom } from 'skatejs';
 import { style } from 'akutil-common';
-import { getDayName, getMonthName, makeArrayFromNumber } from './util';
+import { dateToString, getDayName, getMonthName, makeArrayFromNumber } from './util';
 import * as events from './index.events';
 import * as keys from './keys';
 import classnames from 'classnames';
@@ -55,7 +55,7 @@ const Announcer = () => (
 export default define('ak-calendar', {
   props: {
     [$a11y]: prop.string(),
-    [$selecting]: prop.number(),
+    [$selecting]: prop.string(),
     day: attr.number({ default: new Date().getDate() }),
     disabled: attr.array(),
     focused: attr.number({ default: 0 }),
@@ -198,7 +198,7 @@ export default define('ak-calendar', {
     const css = style(vdom, styles);
 
     calendar.forEach((date) => {
-      const dateAsString = `${elem.year}-${elem.month}-${date.day}`;
+      const dateAsString = dateToString(date);
       const week = date.weekDay === 0 ? [] : weeks[weeks.length - 1];
 
       if (!week.length) {
@@ -208,7 +208,7 @@ export default define('ak-calendar', {
       const isDisabled = elem.disabled.indexOf(dateAsString) > -1;
       const isFocused = elem.focused === date.day && !date.siblingMonth;
       const isSelected = elem.selected.indexOf(dateAsString) > -1;
-      const isSelecting = elem[$selecting] === Number(date.day);
+      const isSelecting = elem[$selecting] === (dateAsString);
       const isSiblingMonth = date.siblingMonth;
       const isToday = date.day === now.getDate() &&
         date.month === now.getMonth() &&
@@ -227,8 +227,8 @@ export default define('ak-calendar', {
           })}
           data-day={date.day.toString()}
           onClick={elem[$selectDay]}
-          onMousedown={() => (elem[$selecting] = date.day)}
-          onMouseup={() => (elem[$selecting] = null)}
+          onMousedown={() => (elem[$selecting] = dateToString(date))}
+          onMouseup={() => (elem[$selecting] = '')}
         >{date.day}</td>
       );
     });

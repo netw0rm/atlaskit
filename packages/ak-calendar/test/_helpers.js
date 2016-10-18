@@ -21,7 +21,7 @@ function tearDownComponent() {
 
 function stylesWrapperConstructor(Constructor) {
   // Wrapper to set computed shadow dom css in the component
-  return define(`${Constructor.name}-styles-wrapper-constructo`, class extends Constructor {
+  return define(`${Constructor.name}-styles-wrapper-constructor`, class extends Constructor {
     static render(elem) {
       elem.css = style(vdom, styles);
       return super.render(elem);

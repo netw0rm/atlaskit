@@ -1,4 +1,5 @@
 import chai from 'chai';
+import 'custom-event-polyfill';
 import AkCalendar from '../src';
 import chaiAsPromised from 'chai-as-promised';
 import { setupComponent, tearDownComponent, stylesWrapperConstructor } from './_helpers';
@@ -14,8 +15,7 @@ const expect = chai.expect;
 const Component = stylesWrapperConstructor(AkCalendar);
 
 function shadowDomQuery(component, selector) {
-  const result = Array.from(getShadowRoot(component).querySelectorAll(selector));
-  return result && result.length === 1 ? result[0] : result;
+  return Array.from(getShadowRoot(component).querySelectorAll(selector));
 }
 
 describe('ak-calendar', () => {
@@ -42,8 +42,47 @@ describe('ak-calendar', () => {
           expect(shadowDomQuery(component, `.${css.monthAndYear} span`)
             .map(span => span.innerHTML))
             .to.include(getMonthName(component, now.getMonth() + 1), now.getYear());
-          expect(shadowDomQuery(component, `.${css.today}`).innerHTML)
+          expect(shadowDomQuery(component, `.${css.today}`)[0].innerHTML)
             .to.equal(now.getDate().toString());
+        });
+      });
+    });
+
+    describe('selection', () => {
+      describe('selecting state', () => {
+        it('should not set selecting state on siblings', (done) => {
+          const firstDay = shadowDomQuery(component, `[data-day="1"]:not(.${css.sibling})`)[0];
+          const event = new CustomEvent('mousedown', {});
+          firstDay.dispatchEvent(event);
+          setTimeout(() => {
+            expect(shadowDomQuery(component, `.${css.selecting}`)).to.have.lengthOf(1);
+            done();
+          });
+        });
+      });
+
+      describe('selected state', () => {
+        it('selected days should have selected class', (done) => {
+          const tenthDay = shadowDomQuery(component, '[data-day="10"]')[0];
+          const eleventhDay = shadowDomQuery(component, '[data-day="11"]')[0];
+          tenthDay.click();
+          eleventhDay.click();
+          setTimeout(() => {
+            expect(shadowDomQuery(component, `.${css.selected}`)).to.have.lengthOf(2);
+            done();
+          });
+        });
+
+        describe('when first day of month is selected', () => {
+          it('siblings should not be selected', (done) => {
+            const firstDay = shadowDomQuery(component, `[data-day="1"]:not(.${css.sibling})`)[0];
+            firstDay.click();
+            setTimeout(() => {
+              expect(shadowDomQuery(component, `[data-day="1"].${css.selected}`))
+                .to.have.lengthOf(1);
+              done();
+            });
+          });
         });
       });
     });

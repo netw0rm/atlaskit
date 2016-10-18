@@ -136,7 +136,7 @@ and set the `invalid` prop on fieldBase.
 
 ```javascript
 fieldBase.addEventListener(events.showViewingView, (e) => {
-  if (!e.detail.canceled) {
+  if (!e.detail.cancelButtonPressed) {
     if (inputField.value.length % 2 !== 0) {
       // error! the field only accepts strings that have an even number of characters!
       e.cancel();
@@ -150,9 +150,9 @@ To perform async validation it is reccomended that you use the `waiting` prop wh
 
 ```javascript
 fieldBase.addEventListener(events.showViewingView, (e) => {
-  if (!e.detail.canceled) {
+  if (!e.detail.cancelButtonPressed) {
     // we'll cancel the event so that we don't go to viewmode yet
-    e.cancel();
+    e.preventDefault();
     // now we'll call some long running validation function
     validateValueOnServer(inputField.value).then(isValid => {
       if (isValid) {

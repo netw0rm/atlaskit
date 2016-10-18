@@ -19,22 +19,23 @@ class ReactField extends React.Component {
       waiting: this.props.waiting,
       invalid: this.props.invalid,
       label: this.props.label,
+      focused: false,
     };
-    this.showViewingViewHandler = this.showViewingViewHandler.bind(this);
-    this.showEditingViewHandler = this.showEditingViewHandler.bind(this);
+    this.exitEditingViewHandler = this.exitEditingViewHandler.bind(this);
+    this.exitViewingViewHandler = this.exitViewingViewHandler.bind(this);
   }
 
   componentDidMount() {
-    this.wrapper.addEventListener(events.showViewingView, this.showViewingViewHandler);
-    this.wrapper.addEventListener(events.showEditingView, this.showEditingViewHandler);
+    this.wrapper.addEventListener(events.exitEditingView, this.exitEditingViewHandler);
+    this.wrapper.addEventListener(events.exitViewingView, this.exitViewingViewHandler);
   }
 
   componentWillUnmount() {
-    this.wrapper.removeEventListener(events.showViewingView, this.showViewingViewHandler);
-    this.wrapper.removeEventListener(events.showEditingView, this.showEditingViewHandler);
+    this.wrapper.removeEventListener(events.exitEditingView, this.exitEditingViewHandler);
+    this.wrapper.removeEventListener(events.exitViewingView, this.exitViewingViewHandler);
   }
 
-  showViewingViewHandler(e) {
+  exitEditingViewHandler(e) {
     if (!e.detail.cancelButtonPressed) {
       // lets perform some fake async validation
       this.setState({ waiting: true });
@@ -58,7 +59,7 @@ class ReactField extends React.Component {
     }
   }
 
-  showEditingViewHandler() {
+  exitViewingViewHandler() {
     this.setState({ editing: true });
   }
 

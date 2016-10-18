@@ -22,12 +22,12 @@ const story = () => {
     display: 'block',
   };
   const isChecked = inputId => (document.body.querySelector(`#${inputId}`).checked);
-  const showEditingViewHandler = (e) => {
+  const exitViewingViewHandler = (e) => {
     if (isChecked('viewSwitch')) {
       e.preventDefault();
     }
   };
-  const showViewingViewHandler = (e) => {
+  const exitEditingViewHandler = (e) => {
     if (e.detail.cancelButtonPressed) {
       if (isChecked('editCancel')) {
         e.preventDefault();
@@ -41,12 +41,12 @@ const story = () => {
   const bindEventHandler = storyBody => {
     if (storyBody) {
       storyBodyRef = storyBody;
-      storyBody.addEventListener(events.showEditingView, showEditingViewHandler);
-      storyBody.addEventListener(events.showViewingView, showViewingViewHandler);
+      storyBody.addEventListener(events.exitViewingView, exitViewingViewHandler);
+      storyBody.addEventListener(events.exitEditingView, exitEditingViewHandler);
     } else {
       if (storyBodyRef) {
-        storyBodyRef.removeEventListener(events.showEditingView, showEditingViewHandler);
-        storyBodyRef.removeEventListener(events.showViewingView, showViewingViewHandler);
+        storyBodyRef.removeEventListener(events.exitViewingView, exitViewingViewHandler);
+        storyBodyRef.removeEventListener(events.exitEditingView, exitEditingViewHandler);
       }
     }
   };

@@ -1,6 +1,6 @@
 import { vdom, define, prop, props } from 'skatejs';
 import FieldBase from '../../src/';
-import { showEditingView, showViewingView } from '../../src/internal/events';
+import { exitViewingView, exitEditingView } from '../../src/internal/events';
 
 function handleEditingViewSwitch(elem) {
   if (elem.inputField) {
@@ -93,7 +93,7 @@ export default define('ak-textfield', {
     }
   },
   attached(elem) {
-    elem.addEventListener(showEditingView, (e) => handleEditingViewSwitch(elem, e));
-    elem.addEventListener(showViewingView, (e) => handleViewingViewSwitch(elem, e));
+    elem.addEventListener(exitViewingView, (e) => handleEditingViewSwitch(elem, e));
+    elem.addEventListener(exitEditingView, (e) => handleViewingViewSwitch(elem, e));
   },
 });

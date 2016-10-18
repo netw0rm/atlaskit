@@ -1,6 +1,6 @@
 import { vdom, define, prop, props, emit } from 'skatejs';
 import 'style!./host.less';
-import { showEditingView, showViewingView } from './internal/events';
+import { exitViewingView, exitEditingView } from './internal/events';
 import EditingView from './Editing';
 import ViewingView from './Viewing';
 import Label from './Label';
@@ -8,7 +8,7 @@ import Root from './Root';
 
 function switchToEditing(elem) {
   // a user may choose to cancel the event to prevent the switch
-  const cancelled = !emit(elem, showEditingView, {
+  const cancelled = !emit(elem, exitViewingView, {
     bubbles: true,
     cancelable: true,
   });
@@ -18,7 +18,7 @@ function switchToEditing(elem) {
 }
 
 function switchToViewing(elem, cancelPressed) {
-  const cancelled = !emit(elem, showViewingView, {
+  const cancelled = !emit(elem, exitEditingView, {
     bubbles: true,
     cancelable: true,
     detail: {
@@ -39,8 +39,8 @@ function setFocus(elem, focus) {
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class FieldBase
- * @fires FieldBase#showEditingView
- * @fires FieldBase#showViewingView
+ * @fires FieldBase#exitViewingView
+ * @fires FieldBase#exitEditingView
  * @example @html <ak-field-base label="Email" />
  * @example @js import FieldBase from 'ak-field-base';
  *
@@ -157,7 +157,7 @@ export default define('ak-field-base', {
      * @memberof FieldBase
      * @instance
      * @type {boolean}
-     * @example @html <ak-field-base invalid></ak-field-base>
+     * @example @html <ak-field-base editing invalid></ak-field-base>
      * @example @js field.invalid = true;
      */
     invalid: prop.boolean({ attribute: true }),
@@ -165,6 +165,6 @@ export default define('ak-field-base', {
 });
 
 export const events = {
-  showEditingView,
-  showViewingView,
+  exitViewingView,
+  exitEditingView,
 };

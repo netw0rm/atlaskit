@@ -61,8 +61,8 @@ describe('ak-field-base', () => {
     it('should have an events export with defined events', () => {
       events.should.be.defined;
       Object.keys(events).should.be.deep.equal([
-        'showEditingView',
-        'showViewingView',
+        'exitViewingView',
+        'exitEditingView',
       ]);
     });
   });
@@ -155,14 +155,14 @@ describe('ak-field-base', () => {
       editButton = shadowRoot.querySelector(`.${editButtonClass}`);
     });
 
-    it('should fire the showEditingView event when clicked', () => {
+    it('should fire the exitViewingView event when clicked', () => {
       const callbackSpy = sinon.spy();
       const clickEvent = new CustomEvent('click', { bubbles: true });
 
-      document.body.addEventListener(events.showEditingView, callbackSpy);
+      document.body.addEventListener(events.exitViewingView, callbackSpy);
       editButton.dispatchEvent(clickEvent);
       expect(callbackSpy).to.be.calledOnce;
-      document.body.removeEventListener(events.showEditingView, callbackSpy);
+      document.body.removeEventListener(events.exitViewingView, callbackSpy);
     });
 
     it('should switch to editmode if not cancelled', () => {
@@ -178,9 +178,9 @@ describe('ak-field-base', () => {
       const clickEvent = new CustomEvent('click', { bubbles: true });
       const preventDefault = (e) => (e.preventDefault());
 
-      document.body.addEventListener(events.showEditingView, preventDefault);
+      document.body.addEventListener(events.exitViewingView, preventDefault);
       editButton.dispatchEvent(clickEvent);
-      document.body.removeEventListener(events.showEditingView, preventDefault);
+      document.body.removeEventListener(events.exitViewingView, preventDefault);
 
       // we'll wait on second to check if the editing mode becomes visible
       let timeIsUp = false;
@@ -211,14 +211,14 @@ describe('ak-field-base', () => {
         return waitUntil(inEditmodeView);
       });
 
-      it('should fire showViewingView when clicked', () => {
+      it('should fire exitEditingView when clicked', () => {
         const callbackSpy = sinon.spy();
         const clickEvent = new CustomEvent('click');
 
-        document.body.addEventListener(events.showViewingView, callbackSpy);
+        document.body.addEventListener(events.exitEditingView, callbackSpy);
         firingButton.dispatchEvent(clickEvent);
         expect(callbackSpy).to.be.calledOnce;
-        document.body.removeEventListener(events.showViewingView, callbackSpy);
+        document.body.removeEventListener(events.exitEditingView, callbackSpy);
       });
 
       it(`should ${shouldPassCancelledFlag ? '' : ' not '} pass cancelled when clicked`, () => {
@@ -228,10 +228,10 @@ describe('ak-field-base', () => {
         };
         const callbackSpy = sinon.spy(callback);
 
-        document.body.addEventListener(events.showViewingView, callbackSpy);
+        document.body.addEventListener(events.exitEditingView, callbackSpy);
         firingButton.dispatchEvent(clickEvent);
         expect(callbackSpy).to.be.calledOnce;
-        document.body.removeEventListener(events.showViewingView, callbackSpy);
+        document.body.removeEventListener(events.exitEditingView, callbackSpy);
       });
 
       it('should switch to viewing mode if not cancelled', () => {
@@ -247,9 +247,9 @@ describe('ak-field-base', () => {
         // cancels any event passed to it
         const preventDefault = (e) => (e.preventDefault());
 
-        document.body.addEventListener(events.showViewingView, preventDefault);
+        document.body.addEventListener(events.exitEditingView, preventDefault);
         firingButton.dispatchEvent(clickEvent);
-        document.body.removeEventListener(events.showViewingView, preventDefault);
+        document.body.removeEventListener(events.exitEditingView, preventDefault);
 
         // we'll wait on second to check if the viewing mode becomes visible
         let timeIsUp = false;

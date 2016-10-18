@@ -1,20 +1,20 @@
 /**
- * This event gets emitted when a field is about to switch to its `editmode` view.
+ * This event gets emitted when a field is about to switch away from it's `viewmode` view.
  *
  * You might choose to use this event to update your editmode content to be in sync with your
  * viewmode, fetch data for your editmode or even cancel the event to prevent the change completely.
  *
- * @event FieldBase#showEditingView
+ * @event FieldBase#exitViewingView
  * @example @js import { events } from 'ak-field-base';
  *
- * field.addEventListener(events.showEditingView, (e) => {
+ * field.addEventListener(events.exitViewingView, (e) => {
  *   // perform your tasks here
  *   // e.preventDefault(); will prevent the switch
  * });
  */
-export const showEditingView = 'show-editing-view';
+export const exitViewingView = 'exit-viewing-view';
 /**
- * This event gets emitted when a field is about to switch to it's `viewmode` view.
+ * This event gets emitted when a field is about to switch away from it's `editmode` view.
  *
  * Here you could choose to update your viewmode content to match the users input or reset the value
  * shown in the `editmode` if the user hit cancel for example.
@@ -25,10 +25,10 @@ export const showEditingView = 'show-editing-view';
  * You can check if the user clicked the cancel button through the `e.detail.cancelButtonPressed`
  * value.
  *
- * @event FieldBase#showViewingView
+ * @event FieldBase#exitEditingView
  * @example @js import { events } from 'ak-field-base';
  *
- * field.addEventListener(events.showViewingView, (e) => {
+ * field.addEventListener(events.exitEditingView, (e) => {
  *   if (e.detail.cancelButtonPressed) {
  *     // the user hit cancel
  *   } else {
@@ -37,4 +37,4 @@ export const showEditingView = 'show-editing-view';
  *   }
  * });
  */
-export const showViewingView = 'show-viewing-view';
+export const exitEditingView = 'exit-editing-view';

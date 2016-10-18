@@ -53,9 +53,9 @@ However, this isn't particularly useful because our changes aren't saved!
 
 To keep our two views in sync, we'll need to set up some event handlers to tell us when a user is switching views.
 
-The two events for this are `show-editing-view` and `show-viewing-view` respectively.
+The two events for this are `exit-viewing-view` and `exit-editing-view` respectively.
 
-We'll simply listen for the `show-viewing-view` event and if a user clicked confirm, we'll update our `viewmode`.
+We'll simply listen for the `exit-editing-view` event and if a user clicked confirm, we'll update our `viewmode`.
 If they click cancel we'll take their last value and put that back into the input field so that the next time they enter `editmode` it has the correct value.
 
 ```javascript
@@ -70,7 +70,7 @@ const viewModeSpan = document.getElementById('viewModeValue');
 let fieldValue = inputField.value;
 
 // now set up our event listener
-fieldBase.addEventListener(events.showViewingView, (e) => {
+fieldBase.addEventListener(events.exitEditingView, (e) => {
   // we can check if the change was caused by hitting cancel or not
   if (e.detail.cancelButtonPressed) {
     // we'll reset the value to the last one before the cancel
@@ -129,13 +129,13 @@ inputField.addEventListener('blur', () => {
 
 #### Validation
 
-Performing validation is as easy listening for the `show-viewing-view` event and responding appropriately.
+Performing validation is as easy listening for the `exit-editing-view` event and responding appropriately.
 
 If the validation can be performed client-side, simply check the value, if it is invalid cancel the event
 and set the `invalid` prop on fieldBase.
 
 ```javascript
-fieldBase.addEventListener(events.showViewingView, (e) => {
+fieldBase.addEventListener(events.exitEditingView, (e) => {
   if (!e.detail.cancelButtonPressed) {
     if (inputField.value.length % 2 !== 0) {
       // error! the field only accepts strings that have an even number of characters!
@@ -149,7 +149,7 @@ fieldBase.addEventListener(events.showViewingView, (e) => {
 To perform async validation it is reccomended that you use the `waiting` prop whilst you wait.
 
 ```javascript
-fieldBase.addEventListener(events.showViewingView, (e) => {
+fieldBase.addEventListener(events.exitEditingView, (e) => {
   if (!e.detail.cancelButtonPressed) {
     // we'll cancel the event so that we don't go to viewmode yet
     e.preventDefault();

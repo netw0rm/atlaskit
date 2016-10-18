@@ -1,9 +1,11 @@
 import { vdom, define, prop, emit } from 'skatejs';
 import { style } from 'akutil-common';
-import shadowStyles from './index.ak-navigation-link.less';
 import classNames from 'classnames';
 import keycode from 'keycode';
+
+import shadowStyles from './index.ak-navigation-link.less';
 import { linkSelected as linkSelectedEvent } from './internal/index.events';
+
 
 function select(elem) {
   emit(elem, linkSelectedEvent);
@@ -48,7 +50,7 @@ export default define('ak-navigation-link', {
         <a
           className={classNames(shadowStyles.locals.link)}
           href={elem.href || false}
-          ref={(a) => { a.addEventListener('mouseup', () => a.blur()); }}
+          onmousedown={e => e.preventDefault()}
           tabindex="0"
         >
           <slot

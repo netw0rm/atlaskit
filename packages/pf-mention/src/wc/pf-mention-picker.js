@@ -1,7 +1,8 @@
-import 'style!../host.less';
-import shadowStyles from './pf-mention-picker-shadow.less';
 import { define, vdom, prop } from 'skatejs';
 import InlineDialog from 'ak-inline-dialog';
+
+import 'style!../host.less';
+import shadowStyles from './pf-mention-picker-shadow.less';
 import ResourcedMentionList from './pf-resourced-mention-list';
 import debug from '../util/logger';
 import hasChanges from '../util/has-changes';

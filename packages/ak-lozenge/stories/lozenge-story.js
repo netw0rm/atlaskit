@@ -1,9 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import AkLozenge from '../src/index';
 import React from 'react';
+import reactify from 'akutil-react';
+
+import AkLozenge from '../src';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
+
 
 const Lozenge = reactify(AkLozenge);
 const lozengeClass = styles.locals.akLozenge;

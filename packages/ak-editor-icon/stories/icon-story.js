@@ -52,6 +52,7 @@ storiesOf('ak-editor-icon', module)
         }
       }
 
+      // eslint-disable-next-line class-methods-use-this
       randomIcon() {
         const icons = [
           'bold',

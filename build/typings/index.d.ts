@@ -7,3 +7,4 @@
 /// <reference path="jsx.d.ts" />
 /// <reference path="skatejs.d.ts" />
 /// <reference path="skatejs-react-integration.d.ts" />
+/// <reference path="react-dom.d.ts" />

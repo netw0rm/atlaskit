@@ -1,9 +1,10 @@
+import { props, emit } from 'skatejs';
 import * as events from './index.events';
 import {
   globalCollapsedWidth,
   expandedWidth,
 } from '../shared-variables.js';
-import { props, emit } from 'skatejs';
+
 
 const {
   resizeStart: resizeStartEvent,

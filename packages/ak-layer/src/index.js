@@ -1,6 +1,8 @@
 import { vdom, define, prop } from 'skatejs';
-import { reCreateAlignmentIfNeeded, createNewAlignment } from './internal/helpers';
 import { enumeration } from 'akutil-common';
+
+import { reCreateAlignmentIfNeeded, createNewAlignment } from './internal/helpers';
+
 
 export const POSITION_ATTRIBUTE_ENUM = {
   attribute: 'position',
@@ -171,27 +173,27 @@ export default define('ak-layer', {
       return !!this._isFlipped; // eslint-disable-line no-underscore-dangle
     },
   },
-  attached(elem) {
-    elem.alignment = createNewAlignment(elem);
-  },
   detached(elem) {
     if (elem.alignment) {
       elem.alignment.destroy();
     }
   },
   render(elem) {
-    if (elem.alignment) {
-      elem.alignment.reposition();
-    }
-
     if (elem.onRender) {
       elem.onRender(elem);
     }
 
     return (
-      <div ref={(el) => (elem.positionedDOM = el)}>
+      <div ref={el => (elem.positionedDOM = el)}>
         <slot />
       </div>
     );
+  },
+  rendered(elem) {
+    if (elem.alignment) {
+      elem.alignment.reposition();
+    } else {
+      elem.alignment = createNewAlignment(elem);
+    }
   },
 });

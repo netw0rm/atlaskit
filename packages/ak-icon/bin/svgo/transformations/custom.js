@@ -1,10 +1,12 @@
 const SVGO = require('svgo');
+
 const addPresentationAttribute = require('../plugins/addPresentationAttribute');
 const callbackOnDefinedFill = require('../plugins/callbackOnDefinedFill');
 const callbackOnStyleElement = require('../plugins/callbackOnStyleElement');
-const addAriaLabel = require('../plugins/addAriaLabel');
+const addAriaLabels = require('../plugins/addAriaLabels');
 
-const addAriaLabelPlugin = Object.assign({}, addAriaLabel, {
+
+const addAriaLabelsPlugin = Object.assign({}, addAriaLabels, {
   params: {
     title: '{title}',
   },
@@ -49,7 +51,7 @@ module.exports = (fillCallback, styleCallback) => {
         removeStyleElement: true,
       },
       {
-        addAriaLabelPlugin,
+        addAriaLabelsPlugin,
       },
     ],
   });

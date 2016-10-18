@@ -4,6 +4,6 @@ export default (props, children) => (
   <span
     {...props}
   >
-      {children()}
+    {children()}
   </span>
 );

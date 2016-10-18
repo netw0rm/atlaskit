@@ -1,6 +1,9 @@
-import { keydown, keyup } from '../src';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
+
+import { keydown, keyup, keypress } from '../src';
+
+
 chai.should();
 chai.use(sinonChai);
 
@@ -20,6 +23,16 @@ describe('keyup', () => {
     document.addEventListener('keyup', spy);
     keyup('[');
     document.removeEventListener('keyup', spy);
+    spy.should.have.been.calledOnce;
+  });
+});
+
+describe('keypress', () => {
+  it('fire keypress events', () => {
+    const spy = sinon.spy();
+    document.addEventListener('keypress', spy);
+    keypress('[');
+    document.removeEventListener('keypress', spy);
     spy.should.have.been.calledOnce;
   });
 });

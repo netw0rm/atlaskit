@@ -1,12 +1,12 @@
 {
   "name": "pf-mention",
-  "version": "2.1.7",
+  "version": "2.1.9",
   "description": "pf-mention webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single pf-mention"
+    "prepublish": "cd ../.. && npm run prepublish/single pf-mention"
   },
   "files": [
     "dist"

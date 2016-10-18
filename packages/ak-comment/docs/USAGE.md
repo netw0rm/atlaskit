@@ -2,7 +2,7 @@
 
 Comments enable discussions on an entity such as a page, blog post, issue or pull request. Depending on the context, discussions can be between any combination of authors, contributors and readers.
 
-![Example avatars](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-comment/docs/comment.png)
+![Example avatars](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-comment/docs/comment.png)
 
 ## Try it out
 

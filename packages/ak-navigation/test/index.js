@@ -3,6 +3,7 @@ import { Component, emit } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
+import { name } from '../package.json';
 import AkNavigation, {
   NavigationLink as AkNavigationLink,
   events as navigationEvents,

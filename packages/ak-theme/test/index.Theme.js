@@ -79,22 +79,37 @@ describe('ak-theme', () => {
     expect(createTheme().id).to.be.a('string');
   });
 
-  it('id should be an attribute', () => {
+  it('id should be an attribute', (done) => {
     const theme = createTheme();
-    expect(theme.hasAttribute('id')).to.equal(false);
+    body.appendChild(theme);
+    expect(!!theme.getAttribute('id')).to.equal(false);
     theme.id = 'theme';
-    expect(theme.getAttribute('id')).to.equal('theme');
+
+    afterMutations(
+      () => {
+        expect(theme.getAttribute('id')).to.equal('theme');
+        body.removeChild(theme);
+      },
+      done
+    );
   });
 
   it('mixin should be a string', () => {
     expect(createTheme().mixin).to.be.a('string');
   });
 
-  it('mixin should be an attribute', () => {
+  it('mixin should be an attribute', (done) => {
     const theme = createTheme();
-    expect(theme.hasAttribute('mixin')).to.equal(false);
+    body.appendChild(theme);
+    expect(!!theme.getAttribute('mixin')).to.equal(false);
     theme.mixin = 'theme1 theme2 theme3';
-    expect(theme.getAttribute('mixin')).to.equal('theme1 theme2 theme3');
+    afterMutations(
+      () => {
+        expect(theme.getAttribute('mixin')).to.equal('theme1 theme2 theme3');
+        body.removeChild(theme);
+      },
+      done
+    );
   });
 
   it('ownVars should be an object', () => {
@@ -205,10 +220,10 @@ describe('ak-theme', () => {
       document.body.appendChild(theme);
       afterMutations(
         () => {
-          const props = theme.ownVars;
-          expect(props.mykey1).to.equal('mykey1');
-          expect(props.my.key2).to.equal('mykey2');
-          expect(props.my.key[3]).to.equal('mykey3');
+          const vars = theme.ownVars;
+          expect(vars.mykey1).to.equal('mykey1');
+          expect(vars.my.key2).to.equal('mykey2');
+          expect(vars.my.key[3]).to.equal('mykey3');
         },
         done
       );

@@ -1,4 +1,5 @@
 import { waitUntil, getShadowRoot, hasClass } from 'akutil-common-test';
+import { props } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
@@ -127,8 +128,7 @@ describe('ak-avatar', () => {
       component.src = oneByOnePixel;
 
       return waitUntil(() => imgIsRendered(component)).then(() => {
-        component.label = label;
-
+        props(component, { label });
         return waitUntil(imgHasCorrectLabel);
       }).should.be.fulfilled;
     });
@@ -174,9 +174,10 @@ describe('ak-avatar', () => {
     it('should set the src property on the internal img', () => {
       const srcPropertyIsSet = () => (getImage(component).src === oneByOnePixel);
 
-      component.src = oneByOnePixel;
-
-      return waitUntil(srcPropertyIsSet).should.be.fulfilled;
+      // set the src so that we have a rendered img
+      props(component, { src: oneByOnePixel });
+      return waitUntil(() => imgIsRendered(component)).then(() =>
+        waitUntil(srcPropertyIsSet)).should.be.fulfilled;
     });
 
     it('should render an img tag when src is set', () => {

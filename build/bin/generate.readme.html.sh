@@ -12,9 +12,8 @@ if [ -e "README.md" ]; then
   echo "<head><link ref=\"stylesheet\" href=\"https://www.npmjs.com/static/css/index.css\"></style></head>"\
     "<body><div class=\"container\">" >> ../../$OUTDIR/$PKG.html 
   
-  marky-markdown README.md > ../../$OUTDIR/$PKG.html
+  marky-markdown README.md >> ../../$OUTDIR/$PKG.html
   
   # close off the html
   echo "</div></body>" >> ../../$OUTDIR/$PKG.html
-  ec
 fi

@@ -1,5 +1,5 @@
 import { emit, prop, vdom, define } from 'skatejs';
-import 'ak-blanket';
+import Blanket from 'ak-blanket';
 import classNames from 'classnames';
 import keycode from 'keycode';
 import 'custom-event-polyfill';
@@ -110,7 +110,7 @@ export default define('ak-navigation', {
           {collapseStyles(elem)}
         </style>
         <style>{shadowStyles.toString()}</style>
-        <ak-blanket
+        <Blanket
           onActivate={() => closeAllDrawers(elem)}
           clickable={isDrawerOpen(elem)}
           className={classNames(shadowStyles.locals.blanket, {

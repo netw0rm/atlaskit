@@ -1,12 +1,13 @@
 import { vdom, define, props, prop } from 'skatejs';
-import shadowItemStyles from './less/shadow-item.less';
-
-import DefaultItem, { BaseProps, elemDom } from './index.item';
 import Checkbox from 'ak-icon/glyph/checkbox';
+
+import shadowItemStyles from './less/shadow-item.less';
+import DefaultItem, { BaseProps, elemDom } from './index.item';
 import Item from './internal/Item';
 import IconContainer from './internal/LeftSlotContainer';
 import DefaultItemContainer from './internal/DefaultSlotContainer';
 import supportsVoiceOver from './internal/supportsVoiceOver';
+
 
 export default define('ak-dropdown-item-checkbox',
   DefaultItem.extend({

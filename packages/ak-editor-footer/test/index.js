@@ -49,15 +49,18 @@ describe(name, () => {
   );
 
   it('should hide buttons when hideButtons === true', () => {
-    component.hideButtons = true;
     const shadowRoot = getShadowRoot(component);
+    let buttonGroup;
 
-    waitUntil(
-      () => !!shadowRoot.querySelector('ak-editor-button-group')
-    ).then(() => {
-      const buttonGroup = shadowRoot.querySelector('ak-editor-button-group');
-      expect(buttonGroup).to.not.be.null;
-      expect(buttonGroup.style.visibility).to.equal('hidden');
+    // Note: On Firefox, changing .hideButtons property is reflected in the skateJS component only
+    //       after next "tick", so that buttons are theoretically visible for a short moment.
+    component.hideButtons = true;
+
+    return waitUntil(
+      () => (buttonGroup = shadowRoot.querySelector('ak-button-group')) &&
+             buttonGroup.style.visibility === 'hidden'
+    ).catch(() => {
+      throw new Error('The button group did not become hidden');
     });
   });
 });

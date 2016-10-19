@@ -1,12 +1,8 @@
+import { storiesOf, action } from '@kadira/storybook';
+import React from 'react';
+
 import MentionTextInput from './demo-mention-text-input';
 import { resourceProvider, slowResourceProvider, MockPresenceProvider } from './story-data';
-import { storiesOf, action } from '@kadira/storybook';
-// import reactify from 'akutil-react';
-// import { define } from 'skatejs';
-// import { definition } from '../src/wc/pf-mention-list';
-// import { mentions } from './story-data';
-
-import React from 'react';
 
 const bottomStyle = {
   position: 'absolute',

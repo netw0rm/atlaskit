@@ -1,6 +1,6 @@
 {
   "name": "pf-mention",
-  "version": "2.1.8",
+  "version": "2.2.1",
   "description": "pf-mention webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -17,7 +17,7 @@
     "akutil-common": "^2.5.0",
     "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
-    "skatejs": "3.1.0",
+    "skatejs": "^3.0.0",
     "uid": "^0.0.2",
     "url-search-params": "^0.5.0",
     "whatwg-fetch": "^1.0.0"

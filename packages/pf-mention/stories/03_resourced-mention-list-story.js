@@ -1,3 +1,4 @@
+import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 
@@ -5,8 +6,6 @@ import pfResourcedMentionList from '../src/wc/pf-resourced-mention-list';
 import SearchTextInput from './demo-search-text-input';
 import { resourceProvider } from './story-data';
 import { getWebComponent } from './util';
-
-import React from 'react';
 
 const ResourcedMentionList = reactify(pfResourcedMentionList);
 

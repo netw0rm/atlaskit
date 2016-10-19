@@ -1,14 +1,17 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { events as dropdownEvents } from '../src';
-import Item from '../src/index.item.checkbox';
 import keyCode from 'keycode';
 import { props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot, afterMutations, getRootNode } from 'akutil-common-test';
+
+import { events as dropdownEvents } from '../src';
+import Item from '../src/index.item.checkbox';
 import shadowItemStyles from '../src/less/shadow-item.less';
 import supportsVoiceOver from '../src/internal/supportsVoiceOver';
 import { itemHeight, itemLeftToDefaultGap, itemLeftGap } from './_helpers';
+
+
 const role = supportsVoiceOver ? 'checkbox' : 'menuitemcheckbox';
 
 chai.use(chaiAsPromised);
@@ -91,7 +94,7 @@ describe('ak-dropdown-item-checkbox', () => {
     it(`height should be equal ${itemHeight}`, (done) => {
       afterMutations(
         () => getRootNode(component).getBoundingClientRect().height,
-        (height) => (expect(Math.round(height)).to.equal(itemHeight)),
+        height => (expect(Math.round(height)).to.equal(itemHeight)),
         done
       );
     });

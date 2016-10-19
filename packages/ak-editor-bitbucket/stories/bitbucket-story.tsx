@@ -1,11 +1,12 @@
 import { storiesOf, action } from '@kadira/storybook';
-import BitbucketComponent from '../src';
 import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-test';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import AkTabs from 'ak-tabs';
 import { Tab as AkTab} from 'ak-tabs';
+import BitbucketComponent from '../src';
+
 
 const Tabs = reactify(AkTabs);
 const Tab = reactify(AkTab);

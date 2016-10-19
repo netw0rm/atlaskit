@@ -5,6 +5,6 @@ export default (props, children) => (
   <a
     {...props}
   >
-      {children()}
+    {children()}
   </a>
 );

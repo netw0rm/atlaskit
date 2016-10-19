@@ -1,10 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
-import ToolbarComponent from '../src';
 import TextFormattingComponent from 'ak-editor-toolbar-text-formatting';
 import ContentComponent from 'ak-editor-content';
 import React from 'react';
 import reactify from 'akutil-react';
 import { ProseMirror, commands, schema } from 'ak-editor-prosemirror';
+
+import ToolbarComponent from '../src';
+
 
 const Toolbar = reactify(ToolbarComponent);
 const TextFormatting = reactify(TextFormattingComponent);
@@ -57,7 +59,7 @@ storiesOf('ak-editor-toolbar', module)
 
       render() {
         return (
-          <div ref={(elem) => elem && (this.editorElement = elem.firstChild.nextSibling)}>
+          <div ref={elem => elem && (this.editorElement = elem.firstChild.nextSibling)}>
             <Toolbar>
               <TextFormatting
                 boldActive={this.state.boldActive}

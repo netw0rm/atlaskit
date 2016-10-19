@@ -1,25 +1,19 @@
 import { vdom, define, prop, props, emit } from 'skatejs';
 
-
-// component parts
 import Chrome from './Chrome';
 import Label from './Label';
 import Root from './Root';
 import RemoveButton from './RemoveButton';
 import AnimationWrapper from './AnimationWrapper';
-
 import * as events from './internal/index.events';
 import * as exceptions from './internal/index.exceptions';
-const { NotRemovableError } = exceptions;
-const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
 import { name } from '../package.json';
 import logger from './internal/logger';
 
-// TODO replace with es6 Symbols as soon as Skate supports it
-const buttonHoverSymbol = '__removeButtonHover';
-// TODO replace with es6 Symbols as soon as Skate supports it
-const isRemovingSymbol = '__isRemoving';
-
+const { NotRemovableError } = exceptions;
+const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
+const buttonHoverSymbol = Symbol('buttonHoverSymbol');
+const isRemovingSymbol = Symbol('isRemovingSymbol');
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -69,7 +63,7 @@ export default define(name, {
           >
             <Label href={elem.href}>{elem.text}</Label>
             <Button
-              onHoverStateChange={(isHovering) => props(elem, { [buttonHoverSymbol]: isHovering })}
+              onHoverStateChange={isHovering => props(elem, { [buttonHoverSymbol]: isHovering })}
               onActivation={() => elem.remove()}
               text={elem['remove-button-text']}
             />
@@ -156,18 +150,16 @@ export default define(name, {
     remove() {
       if (!this.isRemovable()) {
         throw new NotRemovableError('Tag is not removable');
+      } else if (emit(this, beforeRemoveEvent, {
+        detail: {
+          item: this,
+        },
+      })) {
+        props(this, {
+          [isRemovingSymbol]: true,
+        });
       } else {
-        if (emit(this, beforeRemoveEvent, {
-          detail: {
-            item: this,
-          },
-        })) {
-          props(this, {
-            [isRemovingSymbol]: true,
-          });
-        } else {
-          logger.log(`Cancelled ${beforeRemoveEvent} event for tag "${this.text}"`);
-        }
+        logger.log(`Cancelled ${beforeRemoveEvent} event for tag "${this.text}"`);
       }
     },
   },

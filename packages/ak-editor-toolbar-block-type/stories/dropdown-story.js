@@ -1,10 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
+import React from 'react';
 import reactify from 'akutil-react';
-import BlockType from '../src/index';
 import ToolbarComponent from 'ak-editor-toolbar';
+
+import BlockType from '../src';
 import { name } from '../package.json';
 
-import React from 'react';
+
 const Component = reactify(BlockType);
 const Toolbar = reactify(ToolbarComponent);
 

@@ -1,7 +1,9 @@
-import storyStyles from './animation-story.less';
-import AnimatedBox from './AnimatedBox.js';
-
 import React from 'react';
+
+import storyStyles from './animation-story.less';
+import AnimatedBox from './AnimatedBox';
+
+
 const { Component } = React;
 
 /* This component simply renders three AnimatedBoxes with a button underneath
@@ -12,32 +14,32 @@ class AnimatedBoxGroup extends Component {
     this.clickAll = this.clickAll.bind(this);
   }
   clickAll() {
-    this.refs.boldBox.handleClick();
-    this.refs.optimisticBox.handleClick();
-    this.refs.combinedBox.handleClick();
+    this.boldBox.handleClick();
+    this.optimisticBox.handleClick();
+    this.combinedBox.handleClick();
   }
 
   render() {
     return (
-      <div className={storyStyles.container}>
+      <div className={storyStyles.locals.container}>
         <div>
           <AnimatedBox
             boxStyle="bold"
             animationClass="boldBounce"
-            ref="boldBox"
+            ref={n => (this.boldBox = n)}
           >Bold</AnimatedBox>
           <AnimatedBox
             boxStyle="optimistic"
             animationClass="optimisticBounce"
-            ref="optimisticBox"
+            ref={n => (this.optimisticBox = n)}
           >Optimistic</AnimatedBox>
           <AnimatedBox
             boxStyle="combined"
             animationClass="combinedBounce"
-            ref="combinedBox"
+            ref={n => (this.combinedBox = n)}
           >Combined</AnimatedBox>
         </div>
-        <div className={storyStyles.centerContent}>
+        <div className={storyStyles.locals.centerContent}>
           <button onClick={this.clickAll}>All</button>
         </div>
       </div>

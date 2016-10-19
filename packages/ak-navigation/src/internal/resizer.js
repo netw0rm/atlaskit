@@ -1,9 +1,11 @@
+import { props, emit } from 'skatejs';
 import * as events from './index.events';
 import {
   globalCollapsedWidth,
   expandedWidth,
-} from '../shared-variables.js';
-import { emit } from 'skatejs';
+} from '../shared-variables';
+
+
 const {
   resizeStart: resizeStartEvent,
   resizeEnd: resizeEndEvent,
@@ -36,7 +38,9 @@ export default function resizer(navigation) {
       const delta = event.screenX - startScreenX;
       const currentWidth = startNavigationWidth + delta;
       const boundedWidth = getBounded(currentWidth);
-      navigation.width = Math.round(boundedWidth);
+      props(navigation, {
+        width: Math.round(boundedWidth),
+      });
     },
     end() {
       const closestBreakpoint = getClosestBreakpoint(navigation.width);

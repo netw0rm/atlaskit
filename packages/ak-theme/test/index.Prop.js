@@ -1,3 +1,4 @@
+import { afterMutations } from 'akutil-common-test';
 import { events, Prop } from '../src';
 
 describe('ak-theme-prop', () => {
@@ -5,13 +6,21 @@ describe('ak-theme-prop', () => {
 
   beforeEach(() => {
     elem = new Prop();
+    document.body.appendChild(elem);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(elem);
   });
 
   describe('props', () => {
     describe('name', () => {
-      it('should be an attribute', () => {
+      it('should be an attribute', (done) => {
         elem.name = 0;
-        expect(elem.hasAttribute('name')).to.equal(true);
+        afterMutations(
+          () => expect(elem.hasAttribute('name')).to.equal(true),
+          done
+        );
       });
 
       it('should be a string', () => {
@@ -21,9 +30,12 @@ describe('ak-theme-prop', () => {
     });
 
     describe('value', () => {
-      it('should be an attribute', () => {
+      it('should be an attribute', (done) => {
         elem.value = 0;
-        expect(elem.hasAttribute('value')).to.equal(true);
+        afterMutations(
+          () => expect(elem.hasAttribute('value')).to.equal(true),
+          done
+        );
       });
 
       it('should be a string', () => {

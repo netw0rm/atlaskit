@@ -1,10 +1,13 @@
 import { define, vdom, prop, emit } from 'skatejs';
-import shadowStyles from './shadow.less';
-import 'style!./host.less';
 import AkButton, { APPEARANCE } from 'ak-button';
 import AkButtonGroup from 'ak-button-group';
 import MentionIcon from 'ak-icon/glyph/editor/mention';
 import ImageIcon from 'ak-icon/glyph/editor/image';
+
+import 'style!./host.less';
+
+import shadowStyles from './shadow.less';
+
 
 const icons = {
   mention: MentionIcon,
@@ -16,7 +19,7 @@ function insert() {
     .map(([iconName, Icon]) => (
       <button
         className={shadowStyles.locals.iconButton}
-        onclick={(event) => emit(event.currentTarget, `insert${iconName}`)}
+        onclick={event => emit(event.currentTarget, `insert${iconName}`)}
       >
         <Icon />
       </button>

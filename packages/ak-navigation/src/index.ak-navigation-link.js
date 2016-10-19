@@ -1,9 +1,11 @@
 import { vdom, define, prop, emit } from 'skatejs';
 import { style } from 'akutil-common';
-import shadowStyles from './index.ak-navigation-link.less';
 import classNames from 'classnames';
 import keycode from 'keycode';
+
+import shadowStyles from './index.ak-navigation-link.less';
 import { linkSelected as linkSelectedEvent } from './internal/index.events';
+
 
 function select(elem) {
   emit(elem, linkSelectedEvent);

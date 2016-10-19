@@ -1,13 +1,15 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import TagWc from '../src/index';
 import React from 'react';
+import reactify from 'akutil-react';
+
+import TagWc from '../src/index';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
 
+
 const Tag = reactify(TagWc);
 
-const MyTag = (props) => (
+const MyTag = props => (
   <Tag
     className={styles.locals.akTag}
     {...props}

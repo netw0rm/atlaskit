@@ -14,7 +14,7 @@ function parseExample(text) {
 
 function hasApi(type, options) {
   const d = ddata.descendants.bind(this)(options);
-  return d && d.some((el) => el.kind === type);
+  return d && d.some(el => el.kind === type);
 }
 
 exports.parseExample = parseExample;

@@ -14,7 +14,7 @@ function locateWebComponent(componentNamePrefix, parentElement) {
 
   return Array
     .from(using.querySelectorAll('*[defined]'))
-    .filter((node) => tagMatcher.test(node.tagName));
+    .filter(node => tagMatcher.test(node.tagName));
 }
 
 // Note: no es6 export here, as it needs to be loaded by protractor

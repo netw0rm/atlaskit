@@ -1,7 +1,6 @@
 // any file prefixed with _ will be ignored by Karma when picking up test files
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import { define, vdom, props } from 'skatejs';
-import styles from '../src/styles';
 import { style } from 'akutil-common';
 import { $now } from '../src/index.symbols';
 
@@ -27,7 +26,7 @@ function tearDownComponent() {
   document.body.removeChild(div);
 }
 
-function stylesWrapperConstructor(Constructor) {
+function stylesWrapperConstructor(Constructor, styles) {
   // Wrapper to set computed shadow dom css in the component
   return define(`${Constructor.name}-styles-wrapper-constructor`, class extends Constructor {
     static render(elem) {

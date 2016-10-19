@@ -1,15 +1,16 @@
 import chai from 'chai';
+import { getShadowRoot } from 'akutil-common-test';
+import chaiAsPromised from 'chai-as-promised';
 import 'custom-event-polyfill';
 import AkCalendar from '../src';
-import chaiAsPromised from 'chai-as-promised';
+import styles from '../src/styles';
 import { setupComponent, tearDownComponent, stylesWrapperConstructor } from './_helpers';
-import { getShadowRoot } from 'akutil-common-test';
 import { getMonthName } from '../src/util';
 
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
-const Component = stylesWrapperConstructor(AkCalendar);
+const Component = stylesWrapperConstructor(AkCalendar, styles);
 
 function shadowDomQuery(component, selector) {
   return Array.from(getShadowRoot(component).querySelectorAll(selector));
@@ -22,7 +23,7 @@ describe('ak-calendar', () => {
 
   beforeEach(() =>
     setupComponent(Component, { now })
-      .then(c => {
+      .then((c) => {
         component = c;
         css = c.css;
       })

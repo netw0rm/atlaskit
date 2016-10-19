@@ -40,8 +40,7 @@ describe('ak-calendar', () => {
           expect(shadowDomQuery(component, `.${css.monthAndYear} span`)
             .map(span => span.innerHTML))
             .to.include(getMonthName(component, now.getMonth() + 1), now.getYear());
-          expect(shadowDomQuery(component, `.${css.today}`)[0].innerHTML)
-            .to.equal(now.getDate().toString());
+          expect(shadowDomQuery(component, '[today]')[0].day).to.equal(now.getDate());
         });
       });
     });
@@ -49,11 +48,11 @@ describe('ak-calendar', () => {
     describe('selection', () => {
       describe('selecting state', () => {
         it('should not set selecting state on siblings', (done) => {
-          const firstDay = shadowDomQuery(component, `[data-day="1"]:not(.${css.sibling})`)[0];
+          const firstDay = shadowDomQuery(component, '[day="1"]:not([sibling])')[0];
           const event = new CustomEvent('mousedown', {});
           firstDay.dispatchEvent(event);
           setTimeout(() => {
-            expect(shadowDomQuery(component, `.${css.selecting}`)).to.have.lengthOf(1);
+            expect(shadowDomQuery(component, '[selecting]')).to.have.lengthOf(1);
             done();
           });
         });
@@ -61,23 +60,22 @@ describe('ak-calendar', () => {
 
       describe('selected state', () => {
         it('selected days should have selected class', (done) => {
-          const tenthDay = shadowDomQuery(component, '[data-day="10"]')[0];
-          const eleventhDay = shadowDomQuery(component, '[data-day="11"]')[0];
+          const tenthDay = shadowDomQuery(component, '[day="10"]')[0];
+          const eleventhDay = shadowDomQuery(component, '[day="11"]')[0];
           tenthDay.click();
           eleventhDay.click();
           setTimeout(() => {
-            expect(shadowDomQuery(component, `.${css.selected}`)).to.have.lengthOf(2);
+            expect(shadowDomQuery(component, '[selected]')).to.have.lengthOf(2);
             done();
           });
         });
 
         describe('when first day of month is selected', () => {
           it('siblings should not be selected', (done) => {
-            const firstDay = shadowDomQuery(component, `[data-day="1"]:not(.${css.sibling})`)[0];
+            const firstDay = shadowDomQuery(component, '[day="1"]:not([sibling])')[0];
             firstDay.click();
             setTimeout(() => {
-              expect(shadowDomQuery(component, `[data-day="1"].${css.selected}`))
-                .to.have.lengthOf(1);
+              expect(shadowDomQuery(component, '[day="1"][selected]')).to.have.lengthOf(1);
               done();
             });
           });
@@ -86,7 +84,7 @@ describe('ak-calendar', () => {
         describe('when a date in the previous month is clicked', () => {
           now = new Date(2016, 0, 1);
           it('calendar moves to the previous month and year', (done) => {
-            const prevMonthDate = shadowDomQuery(component, '[data-day="31"][data-month="12"]')[0];
+            const prevMonthDate = shadowDomQuery(component, '[day="31"][month="12"]')[0];
             prevMonthDate.click();
             setTimeout(() => {
               expect(component.month).to.equal(12);
@@ -96,12 +94,15 @@ describe('ak-calendar', () => {
           });
 
           it('the date is selected', (done) => {
-            const prevMonthDate = shadowDomQuery(component, '[data-day="31"][data-month="12"]')[0];
+            const prevMonthDate = shadowDomQuery(component, '[day="31"][month="12"]')[0];
+
             prevMonthDate.click();
             setTimeout(() => {
-              expect(
-                shadowDomQuery(component, `[data-day="31"][data-month="12"].${css.selected}`).length
-              ).to.equal(1);
+              const selected = shadowDomQuery(component, '[selected]');
+              expect(selected.length).to.equal(1);
+              expect(selected[0].day).to.equal(31);
+              expect(selected[0].month).to.equal(12);
+              expect(selected[0].year).to.equal(2015);
               done();
             });
           });

@@ -1,12 +1,13 @@
 /** @jsx h */
 
 import { Calendar } from 'calendar-base';
+import classnames from 'classnames';
 import { define, emit, h, prop, vdom } from 'skatejs';
 import { style } from 'akutil-common';
 import { dateToString, getDayName, getMonthName, makeArrayFromNumber } from './util';
 import * as events from './index.events';
 import * as keys from './keys';
-import classnames from 'classnames';
+import DateComponent from './internal/date-component';
 import styles from './styles';
 import {
   $a11y,
@@ -149,9 +150,9 @@ export default define('ak-calendar', {
       }
     },
     selectDay(e) {
-      const day = Number(e.currentTarget.getAttribute('data-day'));
-      const month = Number(e.currentTarget.getAttribute('data-month'));
-      const year = Number(e.currentTarget.getAttribute('data-year'));
+      const day = e.currentTarget.day;
+      const month = e.currentTarget.month;
+      const year = e.currentTarget.year;
       emit(this, 'select', {
         detail: { day, month, year },
       });
@@ -220,23 +221,21 @@ export default define('ak-calendar', {
         date.year === now.getFullYear();
 
       week.push(
-        <td
+        <DateComponent
           aria-live={isFocused ? 'polite' : ''}
-          class={classnames(css.day, {
-            [css.disabled]: isDisabled,
-            [css.focused]: isFocused,
-            [css.selected]: isSelected,
-            [css.selecting]: isSelecting,
-            [css.sibling]: isSiblingMonth,
-            [css.today]: isToday,
-          })}
-          data-day={date.day.toString()}
-          data-month={(date.month + 1).toString()}
-          data-year={(date.year).toString()}
+          disabled={isDisabled}
+          focused={isFocused}
+          selected={isSelected}
+          selecting={isSelecting}
+          sibling={isSiblingMonth}
+          today={isToday}
+          day={date.day.toString()}
+          month={(date.month + 1).toString()}
+          year={(date.year).toString()}
           onClick={elem[$selectDay]}
           onMousedown={() => (elem[$selecting] = dateToString(date))}
           onMouseup={() => (elem[$selecting] = '')}
-        >{date.day}</td>
+        />
       );
     });
 

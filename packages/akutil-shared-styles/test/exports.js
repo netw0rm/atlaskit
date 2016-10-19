@@ -61,6 +61,7 @@ describe('LESS module exports', () => {
     'akColorP300',
     'akColorP400',
     'akColorP500',
+    'akColorN0',
     'akColorN10',
     'akColorN20',
     'akColorN30',

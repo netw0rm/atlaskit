@@ -69,16 +69,6 @@ describe('ak-tabs behaviour -', () => {
 
       return waitUntil(() => (label.textContent === newLabelText)).should.be.fulfilled;
     });
-
-    it('updates the label correctly when the attribute is set', () => {
-      const tab = getSelectedTab(fixtures.tabs);
-      const label = getLabelForTab(tab);
-      const newLabelText = 'New tab label';
-
-      tab.setAttribute('label', newLabelText);
-
-      return waitUntil(() => (label.textContent === newLabelText)).should.be.fulfilled;
-    });
   });
 
   describe('with three children and no overflow, with the second selected', () => {

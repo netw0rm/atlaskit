@@ -156,15 +156,15 @@ describe('ak-tabs initialisation -', () => {
           );
         });
 
-        it('displays the label for the selected tab', () =>
+        it('displays the label for the selected tab', () => {
           waitUntil(() =>
             !isHidden(getLabelForTab(getSelectedTab(fixtures.tabs)))
-          ).should.be.fulfilled
-        );
+          ).should.be.fulfilled;
+        });
 
-        it('shows the More dropdown', () =>
-          waitUntil(() => hasVisibleDropdown(fixtures.el)).should.be.fulfilled
-        );
+        it('shows the More dropdown', () => {
+          waitUntil(() => hasVisibleDropdown(fixtures.el)).should.be.fulfilled;
+        });
 
         it('pulls some labels into the dropdown menu', () => {
           const numVisibleTabs = getTabLabels(fixtures.el).filter(el => !isHidden(el)).length;

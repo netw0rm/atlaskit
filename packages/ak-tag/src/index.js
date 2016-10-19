@@ -10,15 +10,10 @@ import * as exceptions from './internal/index.exceptions';
 import { name } from '../package.json';
 import logger from './internal/logger';
 
-
 const { NotRemovableError } = exceptions;
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
-
-// TODO replace with es6 Symbols as soon as Skate supports it
-const buttonHoverSymbol = '__removeButtonHover';
-// TODO replace with es6 Symbols as soon as Skate supports it
-const isRemovingSymbol = '__isRemoving';
-
+const buttonHoverSymbol = Symbol('buttonHoverSymbol');
+const isRemovingSymbol = Symbol('isRemovingSymbol');
 
 /**
  * @description Create instances of the component programmatically, or using markup.

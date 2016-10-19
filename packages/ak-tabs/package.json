@@ -1,6 +1,6 @@
 {
   "name": "ak-tabs",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "Tabs web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -21,7 +21,7 @@
     "css-element-queries": "^0.3.2",
     "debounce": "^1.0.0",
     "keycode": "^2.1.4",
-    "skatejs": "^1.2.1"
+    "skatejs": "^3.1.2"
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",

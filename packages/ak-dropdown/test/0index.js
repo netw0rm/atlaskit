@@ -1,10 +1,11 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import Dropdown, * as exports from '../src';
 import keyCode from 'keycode';
+import chaiAsPromised from 'chai-as-promised';
 import { props, emit, Component } from 'skatejs';
-import { name } from '../package.json';
 import { afterMutations, getShadowRoot, checkVisibility, waitUntil } from 'akutil-common-test';
+
+import Dropdown, * as exports from '../src';
+import { name } from '../package.json';
 import { item as itemEvents } from '../src/internal/events';
 import getItemsList from '../src/internal/getItemsList';
 
@@ -27,7 +28,7 @@ const testDropdownItems = `
 `;
 
 function setupComponentExample(content = testDropdownItems) {
-  return initComponent(component => {
+  return initComponent((component) => {
     component.innerHTML = `
       <ak-dropdown-trigger-button slot="trigger">test</ak-dropdown-trigger-button>
       ${content}
@@ -65,16 +66,16 @@ function pressDropdownTrigger(component) {
 describe('ak-dropdown', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new Dropdown).should.be.an.instanceof(Component);
+      (new Dropdown()).should.be.an.instanceof(Component);
     });
 
     it('should have an sub-components exports', () => {
-      (new exports.DropdownTrigger).should.be.an.instanceof(Component);
-      (new exports.DropdownTriggerButton).should.be.an.instanceof(Component);
+      (new exports.DropdownTrigger()).should.be.an.instanceof(Component);
+      (new exports.DropdownTriggerButton()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
-      const evArr = ['changeBefore', 'changeAfter', 'afterOpen', 'afterClose', 'item', 'trigger'];
+      const evArr = ['changeBefore', 'changeAfter', 'openBefore', 'openAfter', 'closeBefore', 'closeAfter', 'item', 'trigger'];
       exports.events.should.be.defined;
       Object.keys(exports.events).should.be.deep.equal(evArr);
       Object.keys(exports.events.item).should.be.deep.equal(['up', 'down', 'tab', 'activated']);
@@ -91,7 +92,7 @@ describe('ak-dropdown', () => {
     let component;
     let shadowRoot;
 
-    beforeEach(() => setupComponentExample().then(newComponent => {
+    beforeEach(() => setupComponentExample().then((newComponent) => {
       component = newComponent;
       shadowRoot = getShadowRoot(component);
     }));
@@ -255,7 +256,7 @@ describe('ak-dropdown', () => {
                   <ak-dropdown-item hidden>first</ak-dropdown-item>
                   <ak-dropdown-item hidden>second</ak-dropdown-item>
                   <ak-dropdown-item>third</ak-dropdown-item>`;
-    beforeEach(() => setupComponentExample(html).then(newComponent => {
+    beforeEach(() => setupComponentExample(html).then((newComponent) => {
       component = newComponent;
       pressDropdownTrigger(component);
     }));
@@ -330,7 +331,7 @@ describe('ak-dropdown', () => {
                   <ak-dropdown-item-checkbox hidden>second</ak-dropdown-item-checkbox>
                   <ak-dropdown-item-checkbox>third</ak-dropdown-item-checkbox>
                   </ak-dropdown-group>`;
-    beforeEach(() => setupComponentExample(html).then(newComponent => {
+    beforeEach(() => setupComponentExample(html).then((newComponent) => {
       component = newComponent;
       props(component, { open: true });
     }));

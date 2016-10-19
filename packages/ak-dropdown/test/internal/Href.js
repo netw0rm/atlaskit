@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { getRootNode } from 'akutil-common-test';
 
 import { createTemporaryComponent, tearDownComponent } from '../_helpers';
-import Href from '../../src/internal/Href';
+import Href from '../../src/templates/Href';
 
 
 chai.use(chaiAsPromised);

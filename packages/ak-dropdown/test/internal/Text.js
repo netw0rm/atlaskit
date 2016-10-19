@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { getRootNode } from 'akutil-common-test';
 
 import { createTemporaryComponent, tearDownComponent } from '../_helpers';
-import Text from '../../src/internal/Text';
+import Text from '../../src/templates/Text';
 
 
 chai.use(chaiAsPromised);

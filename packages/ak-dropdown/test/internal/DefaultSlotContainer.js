@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { getRootNode } from 'akutil-common-test';
 
 import { createTemporaryComponent, tearDownComponent } from '../_helpers';
-import DefaultSlotContainer from '../../src/internal/DefaultSlotContainer';
+import DefaultSlotContainer from '../../src/templates/DefaultSlotContainer';
 import shadowItemStyles from '../../src/less/shadow-item.less';
 
 

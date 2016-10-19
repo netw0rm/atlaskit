@@ -115,7 +115,7 @@ export function buildKeymap(schema, mapKeys) {
           pm.tr.typeText("\n").applyAndScroll();
         }
 
-        return true
+        return true;
       });
     }
 

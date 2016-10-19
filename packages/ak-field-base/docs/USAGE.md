@@ -87,10 +87,10 @@ fieldBase.addEventListener(events.exitEditingView, (e) => {
 
 You'll almost definitely want to apply some styles to your views so that they blend in with the Atlassian Design Guidelines theme.
 
-In our example above for example, you would want to:
+In our example above, you would want to:
 * Remove default focus styles from the input
 * Remove borders and background-color from the input
-* Reflect the inputs focus onto fieldBase (so that we get the correct focus styles in editmode)
+* Reflect the input's focus state onto fieldBase (so that we get the correct focus styles in editmode)
 
 To fix the styles we can either set them through javascript/regular css or just use inline styles.
 
@@ -112,7 +112,7 @@ inputField.style.outline = 'none';
 inputField.style.width = '100%';
 ```
 
-To fix the focus styling we can set up event listers on the input that can set the `focused` prop on FieldBase.
+To fix the focus styling we can set up event listeners on the input that can set the `focused` prop on FieldBase.
 
 ```javascript
 inputField.addEventListener('focus', () => {
@@ -142,7 +142,7 @@ fieldBase.addEventListener(events.exitEditingView, (e) => {
 });
 ```
 
-To perform async validation it is reccomended that you use the `waiting` prop whilst you wait.
+To perform async validation it is recommended that you use the `waiting` prop whilst you wait.
 
 ```javascript
 fieldBase.addEventListener(events.exitEditingView, (e) => {

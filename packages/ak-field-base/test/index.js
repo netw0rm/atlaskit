@@ -184,7 +184,7 @@ describe('ak-field-base', () => {
       editButton.dispatchEvent(clickEvent);
       document.body.removeEventListener(events.exitViewingView, preventDefault);
 
-      // we'll wait on second to check if the editing mode becomes visible
+      // we'll wait to check if the editing mode becomes visible
       let timeIsUp = false;
       setTimeout(() => (timeIsUp = true), 100);
 
@@ -252,7 +252,7 @@ describe('ak-field-base', () => {
         firingButton.dispatchEvent(clickEvent);
         document.body.removeEventListener(events.exitEditingView, preventDefault);
 
-        // we'll wait on second to check if the viewing mode becomes visible
+        // we'll wait to check if the viewing mode becomes visible
         let timeIsUp = false;
         setTimeout(() => (timeIsUp = true), 100);
 

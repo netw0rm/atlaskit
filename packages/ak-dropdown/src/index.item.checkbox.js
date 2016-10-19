@@ -3,9 +3,9 @@ import Checkbox from 'ak-icon/glyph/checkbox';
 
 import shadowItemStyles from './less/shadow-item.less';
 import DefaultItem, { BaseProps, elemDom } from './index.item';
-import Item from './internal/Item';
-import IconContainer from './internal/LeftSlotContainer';
-import DefaultItemContainer from './internal/DefaultSlotContainer';
+import Item from './templates/Item';
+import IconContainer from './templates/LeftSlotContainer';
+import DefaultItemContainer from './templates/DefaultSlotContainer';
 import supportsVoiceOver from './internal/supportsVoiceOver';
 
 

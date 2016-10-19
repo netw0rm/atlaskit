@@ -3,9 +3,9 @@ import keyCode from 'keycode';
 import { emit, vdom, prop, define, props } from 'skatejs';
 import { item as itemEvents } from './internal/events';
 import shadowItemStyles from './less/shadow-item.less';
-import Item from './internal/Item';
-import IconContainer from './internal/LeftSlotContainer';
-import DefaultSlotContainer from './internal/DefaultSlotContainer';
+import Item from './templates/Item';
+import IconContainer from './templates/LeftSlotContainer';
+import DefaultSlotContainer from './templates/DefaultSlotContainer';
 import childrenHaveSlot from './internal/childrenHaveSlot';
 
 

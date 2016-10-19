@@ -1,25 +1,26 @@
 /** @jsx vdom */
-import { vdom, define, prop, props, emit, ready } from 'skatejs';
+import { vdom, define, prop, props, ready } from 'skatejs';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
 
+// styles
 import shadowListStyles from './less/shadow-list.less';
-import { DropdownTriggerButton, DropdownTriggerArrow } from './index.trigger';
+
+// templates
 import Item from './index.item';
 import CheckboxItem from './index.item.checkbox';
 import RadioItem from './index.item.radio';
 import Group from './index.group';
+
+// internal functions
 import * as events from './internal/events';
 import getItemsList from './internal/getItemsList';
-import dropdownPositionedToSide from './internal/dropdownPositionedToSide';
-
-
-// Width of a dropdown should be at least width of it's trigger + 10px
-const diffBetweenDropdownAndTrigger = 10;
-const dropdownMinWidth = 150;
-const grid = 4;
-const itemHeight = grid * 7;
-const dropdownMaxHeight = (itemHeight * 9.5); // ( item height * 9.5 items) - by design
+import showDropdown from './internal/showDropdown';
+import hideDropdown from './internal/hideDropdown';
+import sendCancellableEvents from './internal/sendCancellableEvents';
+import isDescendantOf from './internal/isDescendantOf';
+import getDropdownMinwidth from './internal/getDropdownMinwidth';
+import getDropdownMaxheight from './internal/getDropdownMaxheight';
 
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
 const offset = '0 4';
@@ -30,64 +31,45 @@ const handleKeyDown = Symbol('handleKeyDown');
 const triggerSlot = Symbol('triggerSlot');
 const layerElem = Symbol('layerElem');
 
-function getTriggerButton(elem) {
-  const child = elem.children[0];
-  if (child && (child instanceof DropdownTriggerButton || child instanceof DropdownTriggerArrow)) {
-    return child;
-  }
-  return undefined;
-}
 
 function openDialog(elem) {
-  const list = getItemsList(elem.children);
-  const triggerButton = getTriggerButton(elem);
-
-  elem[keyDownOnceOnOpen] = false;
-
-  if (triggerButton) {
-    props(triggerButton, { opened: true });
-  }
-  if (list && list.length) {
-    if (elem[activatedFrom] === 'keyDown') {
-      list[0].focused = true;
+  sendCancellableEvents(
+    events.openBefore,
+    events.openAfter,
+    elem,
+    elem,
+    () => {
+      if (!elem.open) {
+        props(elem, { open: true });
+      }
     }
-    list[0].first = true;
-    list[list.length - 1].last = true;
-  }
-  emit(elem, events.afterOpen);
+  );
 }
 
 function closeDialog(elem) {
-  const list = getItemsList(elem.children);
-  const triggerButton = getTriggerButton(elem);
-
-  if (triggerButton) {
-    props(triggerButton, { opened: false });
-  }
-
-  list.forEach((item) => {
-    item.focused = false;
-    if (item.first) {
-      item.first = false;
+  sendCancellableEvents(
+    events.closeBefore,
+    events.closeAfter,
+    elem,
+    elem,
+    () => {
+      if (elem.open) {
+        props(elem, { open: false });
+      }
     }
-    if (item.last) {
-      item.last = false;
-    }
-  });
-
-  emit(elem, events.afterClose);
+  );
 }
 
-function toggleDialog(elem) {
+function toggleDialog(elem, e) {
   if (elem.open) {
-    props(elem, { open: false });
+    closeDialog(elem, e);
   } else {
-    props(elem, { open: true });
+    openDialog(elem, e);
   }
 }
 
 function selectSimpleItem(elem) {
-  props(elem, { open: false });
+  closeDialog(elem);
 }
 
 function selectCheckboxItem(item) {
@@ -113,16 +95,6 @@ function handleItemActivation(elem, event) {
   } else {
     selectSimpleItem(elem, event);
   }
-}
-
-function isDescendantOf(child, parent) {
-  if (child.parentNode === parent) {
-    return true;
-  } else if (child.parentNode === null) {
-    return false;
-  }
-
-  return isDescendantOf(child.parentNode, parent);
 }
 
 function focusNext(list, i) {
@@ -162,19 +134,6 @@ function changeFocus(elem, type) {
   }
 }
 
-// min width of a dropdown should be more than width of the trigger (by design)
-// max-width is controlled by css, everything that's exceeding its limit
-// is ellipsed (by design, controlled by css)
-function getDropdownMinwidth(target, dropdown) {
-  const minWidth = dropdownPositionedToSide(dropdown) ? dropdownMinWidth :
-    target.getBoundingClientRect().width + diffBetweenDropdownAndTrigger;
-  return `${minWidth}px`;
-}
-
-function getDropdownMaxheight(dropdown) {
-  return dropdownPositionedToSide(dropdown) ? 'auto' : `${dropdownMaxHeight}px`;
-}
-
 /**
  * @description The definition for the Dropdown component.
  * @class Dropdown
@@ -188,37 +147,34 @@ export default define('ak-dropdown', {
       if (e.detail) {
         elem[activatedFrom] = e.detail.eventType;
       }
-      toggleDialog(elem);
+      toggleDialog(elem, e);
     });
     elem.addEventListener(events.item.activated, (e) => {
-      if (emit(elem, events.changeBefore, {
-        detail: e.detail.item,
-        bubbles: true,
-        cancelable: true,
-      })) {
-        handleItemActivation(elem, e);
-        emit(elem, events.changeAfter, {
-          detail: e.detail.item,
-          bubbles: true,
-          cancelable: false,
-        });
-      }
+      sendCancellableEvents(
+        events.changeBefore,
+        events.changeAfter,
+        elem,
+        e.detail.item,
+        () => {
+          handleItemActivation(elem, e);
+        }
+      );
     });
 
     elem.addEventListener(events.item.up, () => changeFocus(elem, 'prev'));
     elem.addEventListener(events.item.down, () => changeFocus(elem, 'next'));
-    elem.addEventListener(events.item.tab, () => props(elem, { open: false }));
+    elem.addEventListener(events.item.tab, () => closeDialog(elem));
 
     elem[handleClickOutside] = (e) => {
       if (elem.open && e.target !== elem && !isDescendantOf(e.target, elem) &&
         !(e.path && e.path.indexOf(elem) > -1)) {
-        props(elem, { open: false });
+        closeDialog(elem);
       }
     };
     elem[handleKeyDown] = (e) => {
       if (elem.open) {
         if (e.keyCode === keyCode('escape')) {
-          props(elem, { open: false });
+          closeDialog(elem);
         } else if (!elem[keyDownOnceOnOpen] && e.keyCode === keyCode('down')) {
           elem[keyDownOnceOnOpen] = true;
           getItemsList(elem.children)[0].focused = true;
@@ -317,9 +273,9 @@ export default define('ak-dropdown', {
       set(elem, data) {
         if (data.newValue !== data.oldValue) {
           if (data.newValue) {
-            openDialog(elem);
+            showDropdown(elem, keyDownOnceOnOpen, activatedFrom);
           } else {
-            closeDialog(elem);
+            hideDropdown(elem, keyDownOnceOnOpen, activatedFrom);
           }
         }
       },

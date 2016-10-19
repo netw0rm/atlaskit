@@ -1,9 +1,9 @@
 import { vdom, define, prop, props } from 'skatejs';
 import { themeable } from 'ak-theme';
+import classNames from 'classnames';
 import { style } from 'akutil-common';
 import { appearance, type } from './enumeratedProperties';
-import Slot from './Slot';
-import Button from './Button';
+import getClasses from './internal/getButtonClasses';
 import createStyles from './styles';
 import adg2 from './themes/adg2';
 
@@ -72,11 +72,21 @@ const definition = {
   render(elem) {
     const styles = style(vdom, createStyles(elem.themeProps));
     return (
-      <Button {...props(elem)} styles={styles}>
-        <Slot styles={styles} name="before" />
-        <Slot styles={styles} />
-        <Slot styles={styles} name="after" />
-      </Button>
+      <span className={styles.root}>
+        <button
+          className={classNames(getClasses(styles, props(elem)))}
+          type={elem.type}
+          disabled={elem.disabled}
+          onmousedown={e => e.preventDefault()}
+        >
+          <span className={styles['button-content']}>
+            <slot
+              name={name}
+              className={styles.slot}
+            />
+          </span>
+        </button>
+      </span>
     );
   },
 };

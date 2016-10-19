@@ -43,27 +43,17 @@ export default (vars) => {
     '::slotted([slot="after"])': {
       'margin-left': `${grid}px`,
     },
-    'before-slot-wrapper': {
-      'align-self': 'center',
-      display: 'flex',
-    },
-    'after-slot-wrapper': {
-      'align-self': 'center',
-      display: 'flex',
-    },
     'button-content': {
-      'align-items': 'baseline',
-      display: 'inline-flex',
+      'align-items': 'center',
+      display: 'flex',
       'flex-wrap': 'nowrap',
+      'justify-content': 'space-around',
+      'flex-grow': '1',
     },
-    'before-slot': {
+    slot: {
       display: 'inline-flex',
-    },
-    'after-slot': {
-      display: 'inline-flex',
-    },
-    'default-slot': {
-      display: 'inline-flex',
+      'align-content': 'space-around',
+      'flex-flow': 'row wrap',
     },
     root: {
       display: 'inline-block',

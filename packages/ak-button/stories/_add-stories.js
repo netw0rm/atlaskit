@@ -137,18 +137,18 @@ export default function addStories(storiesBuilder, Wrapper = DefaultWrapperReact
                       appearance={appearance}
                       key={appearance}
                     >
-                      <Icon slot="before" />
+                      <Icon />
                         Button
                     </AkButton>
                     )
                   )
                   .concat([
                     (<AkButton style={buttonStyles} selected>
-                      <Icon slot="before" />
+                      <Icon />
                       Button
                     </AkButton>),
                     (<AkButton style={buttonStyles} disabled>
-                      <Icon slot="before" />
+                      <Icon />
                         Button
                     </AkButton>),
                   ])

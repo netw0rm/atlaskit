@@ -68,7 +68,7 @@ class AkButtonStates extends React.Component {
 
   createIcon(side) {
     const Icon = this.state[side] || (() => null);
-    return (<Icon slot={side} />);
+    return (<Icon />);
   }
 
   render() {
@@ -118,8 +118,8 @@ class AkButtonStates extends React.Component {
             onclick={action('clicking the WebComponent')}
           >
             {this.createIcon('before')}
-            {this.createIcon('after')}
             Button
+            {this.createIcon('after')}
           </AkButton>
         </p>
       </div>

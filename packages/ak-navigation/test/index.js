@@ -175,6 +175,16 @@ describe('ak-navigation', () => {
     });
   });
 
+  describe('resizing', () => {
+    it('navigation.width can be set to a number and that is respected', (done) => {
+      afterMutations(
+        () => props(component, { width: 101 }),
+        () => expect(component.width).to.equal(101),
+        done
+      );
+    });
+  });
+
   describe('with collapsible set', () => {
     beforeEach(() => {
       component.collapsible = true;

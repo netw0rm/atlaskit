@@ -15,14 +15,14 @@ jss.use(nested());
 // Polyfill :host
 // --------------
 
-jss.use(rule => {
+jss.use((rule) => {
   const selector = getRuleSelector(rule);
   if (selector.indexOf(':host') === 0) {
     if (supportsShadowDOM) {
       rule.selectorText = selector;
     } else {
       const match = rule.selectorText.match(/:host\((.*)\)/);
-      const matchSelector = match && match[1] || '';
+      const matchSelector = match ? match[1] : '';
       rule.selectorText = rule.options.sheet.options.elem.tagName.toLowerCase() + matchSelector;
     }
   }
@@ -31,12 +31,12 @@ jss.use(rule => {
 // Polyfill ::slotted
 // ------------------
 
-jss.use(rule => {
+jss.use((rule) => {
   const selector = getRuleSelector(rule);
   if (selector.indexOf('::slotted') > -1) {
     const match = selector.match(/(.*)::slotted\((.*)\)/);
-    const matchSlot = match && match[1] || '';
-    const matchSelector = match && match[2] || '';
+    const matchSlot = match ? match[1] : '';
+    const matchSelector = match ? match[2] : '';
     if (supportsShadowDOMV1) {
       rule.selectorText = selector;
     } else if (supportsShadowDOMV0) {

@@ -1,21 +1,21 @@
-/* eslint no-underscore-dangle: 0 */
 import classNames from 'classnames';
 import debounce from 'debounce';
 import { vdom, define, prop } from 'skatejs';
-import shadowStyles from './shadow.less';
+import ExpandIcon from 'ak-icon/glyph/expand';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
+import Dropdown, { Item as DropdownItem, DropdownTrigger } from 'ak-dropdown';
 
+import shadowStyles from './shadow.less';
 import * as helpers from './internal/tabs-helpers';
 import * as handlers from './internal/tabs-handlers';
 import * as events from './internal/index.events';
-const { tabChange: tabChangeEvent } = events;
 import * as i18n from './internal/i18n';
 import Tab from './index.tab';
-import ExpandIcon from 'ak-icon/glyph/expand';
-import Dropdown, { Item as DropdownItem, DropdownTrigger } from 'ak-dropdown';
+import { buttonContainer, labelsContainer, labelProp, selectedProp } from './internal/symbols';
 
-import { buttonContainer, labelsContainer } from './internal/symbols';
-const resizeListener = Symbol();
+
+const { tabChange: tabChangeEvent } = events;
+const resizeListener = Symbol('resizeListener');
 
 /**
  * @description The Tabs element. Container to manage and display Tab elements.
@@ -51,14 +51,14 @@ export default define('ak-tabs', {
           ref={el => (elem[labelsContainer] = el)}
         >
           {allTabs && allTabs.map(
-            tab => {
+            (tab) => {
               const ariaSelected = `${!!tab.selected}`;
               const tabIndex = tab.selected ? '0' : '-1';
               const classes = classNames(shadowStyles.locals.akTabLabel, {
                 [shadowStyles.locals.akTabLabelSelected]: tab.selected,
               });
-              return (
-                <li
+              const li = (
+                <li // eslint-disable-line jsx-a11y/role-supports-aria-props, jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions, max-len
                   className={classes}
                   tabIndex={tabIndex}
                   onkeydown={handlers.labelKeydownHandler(elem, tab)}
@@ -66,13 +66,15 @@ export default define('ak-tabs', {
                   onclick={handlers.labelSelectedHandler(tab)}
                   aria-selected={ariaSelected}
                   aria-setsize={allTabs.length}
-                  aria-posinset={pos++}
+                  aria-posinset={pos}
                   role="tab"
                   ref={handlers.labelRef(elem, tab)}
                 >
                   <span>{tab.label}</span>
                 </li>
               );
+              pos++;
+              return li;
             }
           ).concat(
             <li
@@ -107,9 +109,8 @@ export default define('ak-tabs', {
   },
   rendered: helpers.showVisibleTabs,
   props: {
-    /** TODO: Use Symbol once supported in skate */
-    _labels: prop.array({}),
-    _selected: prop.array({}),
+    [labelProp]: prop.array({}),
+    [selectedProp]: prop.array({}),
   },
 });
 

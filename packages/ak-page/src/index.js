@@ -1,7 +1,10 @@
 import { prop, props, vdom, define } from 'skatejs';
-import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { events as navigationEvents } from 'ak-navigation';
+
+import shadowStyles from './shadow.less';
+
+
 const {
   resizeStart: resizeStartEvent,
   resizeEnd: resizeEndEvent,
@@ -85,8 +88,8 @@ export default define('ak-page', {
     }),
   },
   created(elem) {
-    elem.addEventListener(resizeStartEvent, (e) => handleResizeStart(e, elem));
-    elem.addEventListener(resizeEndEvent, (e) => handleResizeEnd(e, elem));
+    elem.addEventListener(resizeStartEvent, e => handleResizeStart(e, elem));
+    elem.addEventListener(resizeEndEvent, e => handleResizeEnd(e, elem));
   },
   attached(elem) {
     setTimeout(() => {

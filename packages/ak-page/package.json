@@ -1,6 +1,6 @@
 {
   "name": "ak-page",
-  "version": "5.1.6",
+  "version": "5.2.0",
   "description": "ak-page webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -15,7 +15,7 @@
     "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "3.1.0"
+    "skatejs": "^3.0.0"
   },
   "peerDependencies": {
     "ak-navigation": "^11.0.0"

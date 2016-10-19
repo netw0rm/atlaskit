@@ -1,10 +1,13 @@
 import { storiesOf } from '@kadira/storybook';
-import ContentComponent from '../src';
 import React from 'react';
 import reactify from 'akutil-react';
 
+import ContentComponent from '../src';
+
+
 const Content = reactify(ContentComponent);
 
+/* eslint-disable react/no-danger */
 storiesOf('ak-editor-content', module)
   .add('Empty', () => (
     <Content />

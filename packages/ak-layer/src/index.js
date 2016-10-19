@@ -1,6 +1,9 @@
 import { vdom, define, prop } from 'skatejs';
-import { reCreateAlignmentIfNeeded, createNewAlignment } from './internal/helpers';
 import { enumeration } from 'akutil-common';
+import { flippedSymbol } from './internal/symbols';
+
+import { reCreateAlignmentIfNeeded, createNewAlignment } from './internal/helpers';
+
 
 export const POSITION_ATTRIBUTE_ENUM = {
   attribute: 'position',
@@ -140,7 +143,7 @@ export default define('ak-layer', {
       initial: undefined,
     },
     // internal property, no docs required
-    _isFlipped: prop.boolean(),
+    [flippedSymbol]: prop.boolean(),
   },
   prototype: {
     /**
@@ -168,7 +171,7 @@ export default define('ak-layer', {
      * @example @js const isFlipped = elem.isFlipped;
     */
     get isFlipped() {
-      return !!this._isFlipped; // eslint-disable-line no-underscore-dangle
+      return !!this[flippedSymbol];
     },
   },
   detached(elem) {
@@ -182,7 +185,7 @@ export default define('ak-layer', {
     }
 
     return (
-      <div ref={(el) => (elem.positionedDOM = el)}>
+      <div ref={el => (elem.positionedDOM = el)}>
         <slot />
       </div>
     );

@@ -1,6 +1,8 @@
 import assign from 'object-assign';
-import { APPEARANCE } from '../src/index.js';
+
+import { APPEARANCE } from '../src';
 import getClasses from '../src/internal/getButtonClasses';
+
 
 const classKeys = {
   button: 'button',
@@ -35,7 +37,7 @@ describe('ak-button/get-button-classes', () => {
         message: 'when invalid appearance provided',
         appearance: 'invalid',
       },
-    ].forEach(testCase => {
+    ].forEach((testCase) => {
       describe(testCase.message, () =>
         it('button should only have .button class', () =>
           expectKeys(
@@ -47,7 +49,7 @@ describe('ak-button/get-button-classes', () => {
       );
     });
 
-    [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE, APPEARANCE.LINK].forEach(appearanceName => {
+    [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE, APPEARANCE.LINK].forEach((appearanceName) => {
       describe(appearanceName, () => {
         let classes;
         beforeEach(() => (classes = getClasses(classKeys, { appearance: appearanceName })));
@@ -85,7 +87,7 @@ describe('ak-button/get-button-classes', () => {
           setup: { appearance: APPEARANCE.SUBTLE },
           expectedClass: 'subtle',
         },
-      ].forEach(testCase => {
+      ].forEach((testCase) => {
         describe(`and also ${JSON.stringify(testCase.setup)} is set`, () => {
           beforeEach(() => (
             classes = getClasses(classKeys, assign({ compact: true }, testCase.setup))

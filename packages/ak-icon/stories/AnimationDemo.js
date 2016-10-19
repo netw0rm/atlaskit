@@ -1,13 +1,24 @@
-import { vdom } from 'skatejs';
+import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import sample from 'lodash.sample';
 import React from 'react';
+
 import styles from './styles.less';
 import componentStyles from '../src/shadow.less';
 
-export default class AnimationDemo extends React.Component {
+
+class AnimationDemo extends React.Component {
   constructor(props) {
     super(props);
     this.toggleAnimation = this.toggleAnimation.bind(this);
+  }
+
+  componentDidMount() {
+    this.startAnimating();
+    this.checkbox.checked = true;
+  }
+
+  componentWillUnmount() {
+    this.stopAnimating();
   }
 
   randomIcon() {
@@ -31,15 +42,6 @@ export default class AnimationDemo extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.startAnimating();
-    this.checkbox.checked = true;
-  }
-
-  componentWillUnmount() {
-    this.stopAnimating();
-  }
-
   render() {
     return (
       <div>
@@ -47,7 +49,7 @@ export default class AnimationDemo extends React.Component {
           type="checkbox"
           id="animate"
           onChange={this.toggleAnimation}
-          ref={(elem) => (this.checkbox = elem)}
+          ref={elem => (this.checkbox = elem)}
         /> <label htmlFor="animate">Animate</label>
         <hr />
         <div className={styles.locals.container}>
@@ -64,3 +66,8 @@ export default class AnimationDemo extends React.Component {
     );
   }
 }
+AnimationDemo.displayName = 'AnimationDemo';
+AnimationDemo.propTypes = {
+  components: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+export default AnimationDemo;

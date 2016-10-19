@@ -1,11 +1,13 @@
-import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import { emit } from 'skatejs';
+import { waitUntil, getShadowRoot } from 'akutil-common-test';
+
+import { name } from '../package.json';
 import Component from '../src';
 import shadowStyles from '../src/shadow.less';
-import { waitUntil, getShadowRoot } from 'akutil-common-test';
+
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -45,4 +47,20 @@ describe(name, () => {
       })
     )
   );
+
+  it('should hide buttons when hideButtons === true', () => {
+    const shadowRoot = getShadowRoot(component);
+    let buttonGroup;
+
+    // Note: On Firefox, changing .hideButtons property is reflected in the skateJS component only
+    //       after next "tick", so that buttons are theoretically visible for a short moment.
+    component.hideButtons = true;
+
+    return waitUntil(
+      () => (buttonGroup = shadowRoot.querySelector('ak-button-group')) &&
+             buttonGroup.style.visibility === 'hidden'
+    ).catch(() => {
+      throw new Error('The button group did not become hidden');
+    });
+  });
 });

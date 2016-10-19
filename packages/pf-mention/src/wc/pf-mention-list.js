@@ -1,6 +1,7 @@
-import 'style!../host.less'; // eslint-disable-line import/no-unresolved import/no-duplicates
-import shadowStyles from './pf-mention-list-shadow.less';
 import { define, emit, prop, props, vdom } from 'skatejs';
+
+import 'style!../host.less';
+import shadowStyles from './pf-mention-list-shadow.less';
 import Item from './pf-mention-item';
 import Scrollable from './pf-scrollable';
 import { whoopsUri } from './icons';
@@ -56,6 +57,7 @@ function adjustSelection(elem) {
   }
   for (let i = 0; i < elem.mentions.length; i++) {
     if (elem.selectedKey === elem.mentions[i].id) {
+      elem.selectedIndex = i;
       return;
     }
   }
@@ -75,7 +77,7 @@ function renderItems(elem) {
 
     return (
       <div>
-        {elem.mentions.map(mention => {
+        {elem.mentions.map((mention) => {
           const selected = elem.selectedKey === mention.id;
           const currentIdx = idx;
           const key = mention.id;

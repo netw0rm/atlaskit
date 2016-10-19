@@ -1,10 +1,12 @@
-import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import Component from '../src';
-import BlockTypeSelect from '../src/block-type-select';
 import { fixtures } from 'ak-editor-test';
 import { afterMutations } from 'akutil-common-test';
+
+import { name } from '../package.json';
+import Component from '../src';
+import BlockTypeSelect from '../src/block-type-select';
+
 
 chai.use(chaiAsPromised);
 chai.should();

@@ -1,9 +1,11 @@
 import { storiesOf, action } from '@kadira/storybook';
-import BitbucketComponent from '../src';
 import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-test';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+
+import BitbucketComponent from '../src';
+
 
 const Bitbucket = reactify(BitbucketComponent);
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;

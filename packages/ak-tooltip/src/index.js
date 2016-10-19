@@ -9,16 +9,16 @@ const defaultTooltipPosition = 'bottom';
 
 
 function positionToPopperPosition(position) {
-  const allowedPostions = {
+  const allowedPositions = {
     top: 'top center',
     bottom: 'bottom center',
     left: 'left middle',
     right: 'right middle',
   };
-  if (allowedPostions[position]) {
-    return allowedPostions[position];
+  if (allowedPositions[position]) {
+    return allowedPositions[position];
   }
-  return allowedPostions[defaultTooltipPosition];
+  return allowedPositions[defaultTooltipPosition];
 }
 
 function getAnimationClass(elem, position) {

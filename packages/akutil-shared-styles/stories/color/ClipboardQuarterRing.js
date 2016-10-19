@@ -9,7 +9,6 @@ import styles from './ring.less';
 class ClipboardQuarterRing extends React.Component {
 
   componentDidMount() {
-    console.log(this.quarterRing);
     if (this.quarterRing) {
       this.clipboard = new Clipboard(this.quarterRing);
       const copyAction = action('copied color to clipboard');

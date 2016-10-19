@@ -261,7 +261,7 @@ export default new Plugin(class HyperlinkPlugin {
   }
 
   updateLink(options?: HyperLinkOptions) : boolean {
-    if (!options || !(options.href as String).trim() || !(options.text as String).trim() || !this.removeLink(true)) {
+    if (!options || !(options.href as String).trim() || !this.removeLink(true)) {
       return false;
     }
 

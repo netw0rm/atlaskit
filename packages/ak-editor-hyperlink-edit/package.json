@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-hyperlink-edit",
-  "version": "14.1.11",
+  "version": "14.2.0",
   "description": "Editor Hyperlink Edit web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

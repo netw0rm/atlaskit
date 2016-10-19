@@ -64,6 +64,29 @@ const AbsoluteAllIcons = props => (
   />
 );
 
+const AllIconsSizeChecked = props => (
+  // eslint-disable-next-line react/prop-types
+  <div {...props} className={classnames(styles.container, props.className)}>
+    {Object
+      .entries(reactifiedComponents)
+      .map(([key, Icon]) =>
+        <div className={styles.compareIconContainer}>
+          <Icon
+            className={classnames(componentStyles.akIcon, styles.original)}
+            label={`${key} icon`}
+            title={`${key}.svg`}
+            key={`${key}-original`}
+          />
+          <Icon
+            className={classnames(componentStyles.akIcon, styles.constrained)}
+            label={`${key} icon`}
+            title={`${key}.svg`}
+            key={`${key}-costrained`}
+          />
+        </div>)}
+  </div>
+);
+
 storiesOf('ak-icon', module)
   .add('All icons', () => <AllIcons />)
   .add('All icons (usage)', () => (
@@ -110,9 +133,9 @@ storiesOf('ak-icon', module)
   .add('Icons that are too big (red parts)', () => (
     <div>
       <style>{'body { background: white; }'}</style>
-      <AbsoluteAllIcons className={styles.colored} />
-      <AbsoluteAllIcons className={styles.boxes} />
+      <AllIconsSizeChecked />
     </div>
+
   ))
   .add('Two-color icons', () => <ToggleIcons icons={toggleableIcons} />)
   .add('Animated', () => <AnimationDemo components={reactifiedComponents} />)

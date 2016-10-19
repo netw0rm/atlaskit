@@ -1,7 +1,9 @@
-import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import Component from '../src/index.js';
+
+import { name } from '../package.json';
+import Component from '../src';
+
 
 chai.use(chaiAsPromised);
 chai.should();

@@ -1,4 +1,4 @@
-import MentionResource from '../src/support/mock-pf-mention-resource';
+import MentionResource from '../test/_mock-pf-mention-resource';
 import debug, { enableLogger } from '../src/util/logger';
 
 enableLogger(true);
@@ -101,18 +101,19 @@ export class MockPresenceProvider {
   }
 
   _getTimeout() {
-    return this._minTimeout + (this._maxTimeout - this._minTimeout) * Math.random();
+    return this._minTimeout + ((this._maxTimeout - this._minTimeout) * Math.random());
   }
 
   _getStatus() {
     return this._statuses[Math.floor(Math.random() * this._statuses.length)];
   }
 
+  // eslint-disable-next-line class-methods-use-this
   _getTime() {
     const minFormat = new Intl.NumberFormat('us-EN', { minimumIntegerDigits: 2 });
     let time;
     if (Math.random() > 0.5) {
-      const hour = Math.floor(Math.random() * 12 + 1);
+      const hour = Math.floor(Math.random() * 12) + 1;
       const min = minFormat.format(new Date().getMinutes());
       const ampm = ['am', 'pm'][Math.floor(Math.random() * 2)];
       time = `${hour}:${min}${ampm}`;

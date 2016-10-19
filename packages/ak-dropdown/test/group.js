@@ -1,10 +1,12 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { props } from 'skatejs';
-import Group from '../src/index.group';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
+
+import Group from '../src/index.group';
 import shadowGroupStyles from '../src/less/shadow-group.less';
+
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -30,7 +32,7 @@ function tearDownComponent(component) {
 describe('general behavior', () => {
   let component;
 
-  beforeEach(() => setupComponent().then(newComponent => {
+  beforeEach(() => setupComponent().then((newComponent) => {
     component = newComponent;
   }));
   afterEach(() => tearDownComponent(component));

@@ -39,7 +39,7 @@ describe('ak-button/default-behaviour', () => {
       );
 
       describe('when button has slotted elements', () => {
-        const addSlottedElement = slotName => {
+        const addSlottedElement = (slotName) => {
           const div = createDivTest({ slot: slotName });
           component.appendChild(div);
           return div;

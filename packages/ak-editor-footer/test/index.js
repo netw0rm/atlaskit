@@ -1,11 +1,13 @@
-import { name } from '../package.json';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import { emit } from 'skatejs';
+import { waitUntil, getShadowRoot } from 'akutil-common-test';
+
+import { name } from '../package.json';
 import Component from '../src';
 import shadowStyles from '../src/shadow.less';
-import { waitUntil, getShadowRoot } from 'akutil-common-test';
+
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -45,4 +47,17 @@ describe(name, () => {
       })
     )
   );
+
+  it('should hide buttons when hideButtons === true', () => {
+    component.hideButtons = true;
+    const shadowRoot = getShadowRoot(component);
+
+    waitUntil(
+      () => !!shadowRoot.querySelector('ak-editor-button-group')
+    ).then(() => {
+      const buttonGroup = shadowRoot.querySelector('ak-editor-button-group');
+      expect(buttonGroup).to.not.be.null;
+      expect(buttonGroup.style.visibility).to.equal('hidden');
+    });
+  });
 });

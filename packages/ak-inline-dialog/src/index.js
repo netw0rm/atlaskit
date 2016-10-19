@@ -1,13 +1,15 @@
 /** @jsx vdom */
 import { enumeration, KeyPressHandler } from 'akutil-common';
 import { vdom, prop, define, emit } from 'skatejs';
-import shadowStyles from './shadow.less';
 import Layer, { POSITION_ATTRIBUTE_ENUM, CONSTRAIN_ATTRIBUTE_ENUM } from 'ak-layer';
 import Blanket from 'ak-blanket';
+
+import shadowStyles from './shadow.less';
 import * as events from './internal/events';
 
-const closeHandlerSymbol = Symbol();
-const keyPressHandlerSymbol = Symbol();
+
+const closeHandlerSymbol = Symbol('closeHandlerSymbol');
+const keyPressHandlerSymbol = Symbol('keyPressHandlerSymbol');
 
 function renderBlanketIfNeeded(elem) {
   if (elem.hasBlanket) {

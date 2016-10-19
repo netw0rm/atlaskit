@@ -1,12 +1,15 @@
-import { name } from '../package.json';
 import { keyup, afterMutations, getShadowRoot, waitUntil } from 'akutil-common-test';
-import { Component, emit } from 'skatejs';
+import { Component, emit, props } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+
+import { name } from '../package.json';
 import AkNavigation, {
   NavigationLink as AkNavigationLink,
   events as navigationEvents,
 } from '../src';
+
+
 const {
   open: navigationOpenEvent,
   close: navigationCloseEvent,
@@ -33,11 +36,11 @@ function tearDownComponent(component) {
 }
 describe('exports', () => {
   it('should export a base component', () => {
-    (new AkNavigation).should.be.an.instanceof(Component);
+    (new AkNavigation()).should.be.an.instanceof(Component);
   });
 
   it('should export a navigation link component', () => {
-    (new AkNavigationLink).should.be.an.instanceof(Component);
+    (new AkNavigationLink()).should.be.an.instanceof(Component);
   });
 
   it('should have an events export with defined events', () => {
@@ -65,7 +68,7 @@ describe('ak-navigation detached', () => {
   });
   describe('when it becomes attached', () => {
     const component = new AkNavigation();
-    it('fires an "${widthChangedEvent}" event when attached', (done) => {
+    it(`fires an "${widthChangedEvent}" event when attached`, (done) => {
       let called = false;
       component.addEventListener(widthChangedEvent, (e) => {
         expect(e.detail.oldWidth).to.equal(null);
@@ -88,7 +91,7 @@ describe('ak-navigation', () => {
   let component;
   let shadowRoot;
 
-  beforeEach(() => setupComponent().then(newComponent => {
+  beforeEach(() => setupComponent().then((newComponent) => {
     component = newComponent;
     shadowRoot = getShadowRoot(component);
   }));
@@ -99,35 +102,39 @@ describe('ak-navigation', () => {
     expect(shadowRoot.innerHTML).to.not.equal('');
   });
 
-  it(`fires an "${navigationOpenEvent}" event when opening`, () => {
+  it(`fires an "${navigationOpenEvent}" event when opening`, (done) => {
     component.open = false;
     let called = false;
     component.addEventListener(navigationOpenEvent, () => {
       called = true;
     });
     component.open = true;
-    expect(called).to.equal(true);
+    afterMutations(() => {
+      expect(called).to.equal(true);
+    }, done);
   });
 
-  it(`fires an "${navigationCloseEvent}" event when closing`, () => {
+  it(`fires an "${navigationCloseEvent}" event when closing`, (done) => {
     component.open = true;
     let called = false;
     component.addEventListener(navigationCloseEvent, () => {
       called = true;
     });
     component.open = false;
-    expect(called).to.equal(true);
+    afterMutations(() => {
+      expect(called).to.equal(true);
+    }, done);
   });
 
   it(`fires an "${widthChangedEvent}" event when closing`, (done) => {
-    component.open = true;
+    props(component, { open: true });
     const originalWidth = component.width;
     component.addEventListener(widthChangedEvent, (e) => {
       expect(e.detail.oldWidth).to.equal(originalWidth);
       expect(e.detail.newWidth).to.equal(component.width);
       done();
     });
-    component.open = false;
+    props(component, { open: false });
   });
 
   it(`fires an "${widthChangedEvent}" event when containerHidden changes`, (done) => {
@@ -150,9 +157,9 @@ describe('ak-navigation', () => {
   });
 
   it('changing the open state changes the width', () => {
-    component.open = true;
+    props(component, { open: true });
     const originalWidth = component.width;
-    component.open = false;
+    props(component, { open: false });
     expect(component.width).to.not.equal(originalWidth);
   });
 

@@ -1,4 +1,5 @@
 const baseConfig = require('./all.js');
+// eslint-disable-next-line import/no-dynamic-require
 const launchers = require(`./browserstack.browsers.stage.${process.env.BROWSERSTACK_STAGE}.js`);
 
 const browsers = Object.keys(launchers);

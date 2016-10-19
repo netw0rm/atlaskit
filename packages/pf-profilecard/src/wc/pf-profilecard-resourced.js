@@ -1,8 +1,9 @@
-import 'style!../host.less';
 import { emit, vdom, define, prop, props } from 'skatejs';
-import ProfileCard from './pf-profilecard.js';
-import ProfileSpinner from './pf-spinner.js';
-import WarningIcon from './WarningIcon.js';
+
+import 'style!../host.less';
+import ProfileCard from './pf-profilecard';
+import ProfileSpinner from './pf-spinner';
+import WarningIcon from './WarningIcon';
 import { getTimestampWithOffset } from '../util/datetime';
 import events from '../internal/events';
 import {
@@ -14,6 +15,8 @@ import {
   fnReject,
 } from '../internal/symbols';
 import shadowStyles from './pf-profilecard-resourced-shadow.less';
+
+
 const styles = shadowStyles.locals;
 
 /**
@@ -39,8 +42,8 @@ export default define('pf-profilecard-resourced', {
       };
       this.resourceProvider._get(options)
       .then(
-        (res) => this[fnResolve](res),
-        (err) => this[fnReject](err)
+        res => this[fnResolve](res),
+        err => this[fnReject](err)
       );
     },
 
@@ -106,7 +109,7 @@ export default define('pf-profilecard-resourced', {
                 <br />
                 Something went wrong
                 <br />
-                <span>We couldn't get this person's profile.</span>
+                <span>We couldn&#39;t get this person&#39;s profile.</span>
               </p>
             </div>
           </div>

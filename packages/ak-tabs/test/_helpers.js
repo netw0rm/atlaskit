@@ -1,11 +1,14 @@
 import keycode from 'keycode';
-import AkTabs, { events, Tab as AkTabsTab } from '../src';
-const { tabChange: tabChangeEvent } = events;
-import { buttonContainer, labelsContainer, tabLabel } from '../src/internal/symbols';
-import tabsStyles from '../src/shadow.less';
-import tabStyles from '../src/tab-shadow.less';
 import { getShadowRoot, waitUntil } from 'akutil-common-test';
 
+import tabsStyles from 'style!../src/shadow.less';
+import tabStyles from 'style!../src/tab-shadow.less';
+
+import AkTabs, { events, Tab as AkTabsTab } from '../src';
+import { buttonContainer, labelsContainer, tabLabel } from '../src/internal/symbols';
+
+
+const { tabChange: tabChangeEvent } = events;
 const defaultLabel = 'Default tab label';
 const defaultContent = '<p>Default tab content</p>';
 const defaultWidth = '';
@@ -28,7 +31,7 @@ function setupTabs(opts) {
   tabsElement.classList.add(tabsStyles.akTabs);
 
   if (opts.tabs) {
-    opts.tabs.forEach(tabOptions => {
+    opts.tabs.forEach((tabOptions) => {
       const newTab = new AkTabsTab();
       tabElements.push(newTab);
 

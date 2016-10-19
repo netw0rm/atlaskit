@@ -3,7 +3,6 @@ import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-test';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { MarkdownSerializer } from 'ak-editor-prosemirror';
 
 import BitbucketComponent from '../src';
 
@@ -24,19 +23,6 @@ const imageUploader = (e: any, fn: any) => {
       src: 'https://design.atlassian.com/images/brand/logo-21.png'
     });
   }
-};
-
-const escapeHtml = (str: string): string => {
-  const htmlEscapes: any = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#x27;',
-    '/': '&#x2F;'
-  };
-
-  return ('' + str).replace(/[&<>"'\/]/g, (match: string) => htmlEscapes[match]);
 };
 
 storiesOf('ak-editor-bitbucket', module)
@@ -156,8 +142,7 @@ storiesOf('ak-editor-bitbucket', module)
       }
 
       updateMarkdown(e: any) {
-        let markdown = escapeHtml(e.target.value).replace(/\&amp;zwnj;/g, '&zwnj;'); // Allow zero-width-non-join;
-        this.setState({ markdown });
+        this.setState({ markdown: e.target.value });
       }
 
       render() {
@@ -170,7 +155,7 @@ storiesOf('ak-editor-bitbucket', module)
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>Markdown</legend>
-              <pre dangerouslySetInnerHTML={{__html: this.state.markdown}} />
+              <pre>{this.state.markdown}</pre>
             </fieldset>
           </div>
         );

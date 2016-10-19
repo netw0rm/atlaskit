@@ -53,15 +53,15 @@ const nodes = {
   },
   code_block(state: MarkdownSerializerState, node: Node) {
     if (node.attrs.params == null) {
-      state.wrapBlock("    ", null, node, () => state.text(node.textContent, false))
+      state.wrapBlock("    ", null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false))
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
 
       state.write(backticks + node.attrs.params + '\n');
-      state.text(node.textContent, false);
+      state.text(node.textContent ? node.textContent : '\u200c', false);
       state.ensureNewLine();
       state.write(backticks);
-      state.closeBlock(node)
+      state.closeBlock(node);
     }
   },
   heading(state: MarkdownSerializerState, node: Node) {
@@ -100,7 +100,7 @@ const nodes = {
                 (node.attrs.title ? ` "${node.attrs.title}"` : "") + ")")
   },
   hard_break(state: any) {
-    state.write("\n");
+    state.write("  \n");
   },
   text(state: MarkdownSerializerState, node: any) {
     let lines = node.text.split("\n");
@@ -111,6 +111,10 @@ const nodes = {
       if (i != lines.length - 1) state.out += "\n"
     }
   },
+  empty_line(state: MarkdownSerializerState, node: Node) {
+    state.write('\u200c'); // zero-width-non-joiner
+    state.closeBlock(node);
+  }
 };
 
 const marks = {
@@ -131,19 +135,27 @@ export class MarkdownSerializer extends PMMarkdownSerializer {
   serialize(content: any, options?: Object) : string{
     let state = new MarkdownSerializerState(this.nodes, this.marks, options);
 
-    // Don't do anything if editor is empty
-    if (content.childCount === 1 && 
-        content.firstChild.type.name === 'paragraph' && 
-        content.firstChild.childCount === 0) {
-      return state.out;
-    }
-
     state.renderContent(content);
-    return state.out;
+    return state.out === '\u200c' ? '' : state.out; // Return empty string if editor only contains a zero-non-width character
   }
 }
 
 export class MarkdownSerializerState extends PMMarkdownSerializerState {
+
+  renderContent(parent: Node) : void {
+    parent.forEach((child: Node) => {
+      if (
+        // If child is an empty Textblock we need to insert a zwnj-character in order to preserve that line in markdown  
+        (child.isTextblock && !child.textContent) &&
+        // If child is a Codeblock we need to handle this seperately as we want to preserve empty code blocks 
+        !child.type.isCode
+      ) {
+        return nodes.empty_line(this, child);
+      }
+      return this.render(child);
+    });
+  }
+
   /**
    * This method override will properly escape backticks in text nodes with "code" mark enabled.
    * Bitbucket uses python-markdown which does not honor escaped backtick escape sequences \`
@@ -154,7 +166,6 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
    */
   renderInline(parent: Node) : void {
     let active: Mark[] = [];
-    let prev: Node | null = null;
 
     let progress = (node: Node | null) => {
       let marks = node ? node.marks : [];
@@ -215,11 +226,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
           this.text(backticks + text + backticks, false);
         }
-      } else if (prev === null) {
-        this.text('&zwnj;', false); // zero-width-non-joiner
       }
-
-      prev = node;
     };
 
     parent.forEach(progress);

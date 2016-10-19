@@ -27,7 +27,38 @@ describe('Bitbucket markdown serializer: ', () => {
       p(text('foo')),
       p(),
       p(text('bar'))
-    ]))).to.eq('foo\n\n&zwnj;\n\nbar');
+    ]))).to.eq('foo\n\n\u200c\n\nbar');
+
+    expect(markdownSerializer.serialize(doc([
+      p(text('foo')),
+      p(),
+      p(),
+      p(text('bar'))
+    ]))).to.eq('foo\n\n\u200c\n\n\u200c\n\nbar');
+  });
+
+  it('should preserve leading and traling blank lines suing zero-non-width', () => {
+    expect(markdownSerializer.serialize(doc([
+      p(),
+      p(text('bar'))
+    ]))).to.eq('\u200c\n\nbar');
+
+    expect(markdownSerializer.serialize(doc([
+      p(),
+      p(),
+      p(text('bar'))
+    ]))).to.eq('\u200c\n\n\u200c\n\nbar');
+
+    expect(markdownSerializer.serialize(doc([
+      p(text('foo')),
+      p()
+    ]))).to.eq('foo\n\n\u200c');
+
+    expect(markdownSerializer.serialize(doc([
+      p(text('foo')),
+      p(),
+      p()
+    ]))).to.eq('foo\n\n\u200c\n\n\u200c');
   });
 
   describe('code block', () => {
@@ -62,15 +93,15 @@ describe('Bitbucket markdown serializer: ', () => {
     it('with no text is preserved', () => {
       expect(markdownSerializer.serialize(doc([
         pre(text('')),
-      ]))).to.eq('    ');
+      ]))).to.eq('    \u200c');
 
       expect(markdownSerializer.serialize(doc([
         pre(),
-      ]))).to.eq('    ');
+      ]))).to.eq('    \u200c');
 
       expect(markdownSerializer.serialize(doc([
         pre(),
-      ]))).to.eq('    ');
+      ]))).to.eq('    \u200c');
     });
 
     it('via indentation with backticks is not escaped', () => {
@@ -420,7 +451,7 @@ describe('Bitbucket markdown serializer: ', () => {
   it('should serialize hard_break to newline', () => {
     expect(markdownSerializer.serialize(doc(
       p([text('foo '), br, text('bar')])
-    ))).to.eq('foo \nbar');
+    ))).to.eq('foo   \nbar');
   });
 
   describe('blockquotes', () => {

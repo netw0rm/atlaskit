@@ -86,7 +86,7 @@ export default define('ak-navigation', {
     if (!prevProps) {
       return true;
     }
-    const everythingExceptWidthSame = Object.keys(prevProps).map((key) =>
+    const everythingExceptWidthSame = Object.keys(prevProps).map(key =>
       ((key === 'width') ? true : prevProps[key] === elem[key])
     ).reduce((a, b) => a && b);
     if (!everythingExceptWidthSame) {

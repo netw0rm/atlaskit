@@ -4,6 +4,10 @@ import {
   globalCollapsedWidth,
   expandedWidth,
 } from '../shared-variables';
+import calculateCollapseProperties from './collapse-properties';
+import {
+  resizeDelta,
+} from './symbols';
 
 
 const {
@@ -11,41 +15,41 @@ const {
   resizeEnd: resizeEndEvent,
 } = events;
 
-const minBreakpoint = globalCollapsedWidth;
-const maxBreakpoint = expandedWidth;
-
-function getClosestBreakpoint(x) {
-  const minBreakpointDistance = Math.abs(minBreakpoint - x);
-  const maxBreakpointDistance = Math.abs(maxBreakpoint - x);
-  return minBreakpointDistance < maxBreakpointDistance ? minBreakpoint : maxBreakpoint;
-}
-
-function getBounded(x) {
-  return Math.min(Math.max(x, minBreakpoint), maxBreakpoint);
+function shouldBeOpen(navigation) {
+  const { visibleWidth } = calculateCollapseProperties({
+    open: navigation.open,
+    containerHidden: navigation.containerHidden,
+    resizeDelta: navigation[resizeDelta],
+  });
+  const closedDistance = Math.abs(globalCollapsedWidth - visibleWidth);
+  const openDistance = Math.abs(expandedWidth - visibleWidth);
+  return openDistance < closedDistance;
 }
 
 export default function resizer(navigation) {
   let startScreenX;
-  let startNavigationWidth;
   return {
     start(event) {
       navigation.shouldAnimate = false;
       startScreenX = event.screenX;
-      startNavigationWidth = navigation.width;
+      props(navigation, {
+        [resizeDelta]: 0,
+      });
       emit(navigation, resizeStartEvent);
     },
     resize(event) {
-      const delta = event.screenX - startScreenX;
-      const currentWidth = startNavigationWidth + delta;
-      const boundedWidth = getBounded(currentWidth);
       props(navigation, {
-        width: Math.round(boundedWidth),
+        [resizeDelta]: event.screenX - startScreenX,
       });
     },
     end() {
-      const closestBreakpoint = getClosestBreakpoint(navigation.width);
+      // const closestBreakpoint = getClosestBreakpoint(navigation.width);
       navigation.shouldAnimate = true;
-      navigation.width = closestBreakpoint;
+      // navigation.width = closestBreakpoint;
+      props(navigation, {
+        [resizeDelta]: 0,
+        open: shouldBeOpen(navigation),
+      });
       emit(navigation, resizeEndEvent);
     },
   };

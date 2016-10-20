@@ -69,26 +69,6 @@ export const open = 'open';
 export const close = 'close';
 
 /**
- * This event gets emitted after the width of the navigation changes.
- * Note that this will also be emitted one time at the start,
- * with `e.detail.oldWidth` set to `null`.
- * @event NavigationLink#widthChanged
- * @example @html <ak-navigation
- *   onWidthChanged={(e) => console.log(`Navigation width changed.
- *      Old width was ${e.detail.oldWidth}, new width is ${e.detail.newWidth},
- *      which matches ${elem.width}`)}
- * ></ak-navigation>
- * @example @js import { events } from 'ak-navigation';
- *
- * navigation.addEventListener(events.widthChanged, (e) => {
- *   console.log(`Navigation width changed.
- *      Old width was ${e.detail.oldWidth}, new width is ${e.detail.newWidth},
- *      which matches ${elem.width}`)
- * });
- */
-export const widthChanged = 'widthChanged';
-
-/**
  * This event gets emitted when a user begins resizing the navigation by dragging with mouse.
  * @event NavigationLink#resizeStart
  * @example @html <ak-navigation

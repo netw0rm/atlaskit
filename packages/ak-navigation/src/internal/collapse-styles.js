@@ -1,14 +1,20 @@
 import shadowStyles from '../index.less';
-import {
-  getContainerPadding,
-  getNavigationWidth,
-  getNavigationXOffset,
-  getSpacerWidth,
-} from './collapse';
+import calculateCollapseProperties from './collapse-properties';
+import { resizeDelta } from './symbols';
 
 export default (navigation) => {
-  const innerTranslateX = 280 - getNavigationWidth(navigation);
-  const outerTranslateX = -innerTranslateX + getNavigationXOffset(navigation);
+  const {
+    visibleWidth,
+    totalWidth,
+    containerPadding,
+    xOffset,
+  } = calculateCollapseProperties({
+    open: navigation.open,
+    containerHidden: navigation.containerHidden,
+    resizeDelta: navigation[resizeDelta],
+  });
+  const innerTranslateX = 280 - totalWidth;
+  const outerTranslateX = -innerTranslateX + xOffset;
   return `
     .${shadowStyles.locals.navigationWrapper} {
       transform: translateX(${outerTranslateX}px);
@@ -20,10 +26,10 @@ export default (navigation) => {
     }
 
     .${shadowStyles.locals.spacer} {
-      width: ${getSpacerWidth(navigation)}px;
+      width: ${visibleWidth}px;
     }
 
     .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
-      transform: translateX(${getContainerPadding(navigation.width)}px);
+      transform: translateX(${containerPadding}px);
     }`;
 };

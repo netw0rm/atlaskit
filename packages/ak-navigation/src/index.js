@@ -12,11 +12,9 @@ import shadowStyles from './index.less';
 import resizer from './internal/resizer';
 import addTouchHandlers from './internal/touch';
 import {
-  getExpandedWidth,
-  getCollapsedWidth,
-} from './internal/collapse';
+  resizeDelta,
+} from './internal/symbols';
 import * as events from './internal/index.events';
-
 
 const {
   linkSelected: linkSelectedEvent,
@@ -24,7 +22,6 @@ const {
   searchDrawerSelected: searchDrawerSelectedEvent,
   close: closeEvent,
   open: openEvent,
-  widthChanged: widthChangedEvent,
 } = events;
 
 const shouldAnimateThreshold = 100; // ms
@@ -45,24 +42,6 @@ function closeAllDrawers(elem) {
 
 function isDrawerOpen(elem) {
   return elem.createDrawerOpen || elem.searchDrawerOpen;
-}
-
-function emitWidthChangedEvent(elem, oldWidth, newWidth) {
-  emit(elem, widthChangedEvent, {
-    detail: {
-      oldWidth,
-      newWidth,
-    },
-  });
-}
-
-function recomputeWidth(elem, isOpen) {
-  const newWidth = isOpen ? getExpandedWidth(elem) : getCollapsedWidth(elem);
-  const oldWidth = elem.width;
-  if (newWidth !== oldWidth) {
-    elem.width = newWidth;
-    emitWidthChangedEvent(elem, oldWidth, newWidth);
-  }
 }
 
 /**
@@ -188,6 +167,7 @@ export default define('ak-navigation', {
     );
   },
   props: {
+    [resizeDelta]: prop.number(),
     /**
      * @description Whether the component should display animations.
      * `shouldAnimate` is turned on after page load.
@@ -197,16 +177,6 @@ export default define('ak-navigation', {
      * @example @js navigation.shouldAnimate = true;
      */
     shouldAnimate: prop.boolean(),
-    /**
-     * @description The current width of the navigation component, in pixels
-     * @memberof Navigation
-     * @instance
-     * @type {integer}
-     * @example @js navigation.width = 80;
-     */
-    width: prop.number({
-      default: elem => getCollapsedWidth(elem),
-    }),
     /**
      * @description The handler for the sidebar toggling behaviour.
      * The handler is bound on attach, and unbound on detach.
@@ -245,7 +215,6 @@ export default define('ak-navigation', {
         }
         elem.createDrawerOpen = elem.open && elem.createDrawerOpen;
         elem.searchDrawerOpen = elem.open && elem.searchDrawerOpen;
-        recomputeWidth(elem, data.newValue);
       },
     }),
     /**
@@ -316,9 +285,6 @@ export default define('ak-navigation', {
      */
     containerHidden: prop.boolean({
       attribute: true,
-      set(elem) {
-        recomputeWidth(elem, elem.open);
-      },
     }),
     /**
      * @description Whether the navigation is collapsible by the user.
@@ -371,7 +337,6 @@ export default define('ak-navigation', {
       elem.shouldAnimate = true;
     }, shouldAnimateThreshold);
     document.addEventListener('keyup', elem.toggleHandler);
-    emitWidthChangedEvent(elem, null, elem.width);
   },
   detached(elem) {
     document.removeEventListener('keyup', elem.toggleHandler);

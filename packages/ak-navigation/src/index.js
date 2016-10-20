@@ -6,6 +6,7 @@ import 'custom-event-polyfill';
 
 import Drawer from './internal/ak-navigation-drawer';
 import Drag from './internal/ak-navigation-drag';
+import GlobalItem from './internal/ak-navigation-global-item';
 import collapseStyles from './internal/collapse-styles';
 import NavigationLink from './index.ak-navigation-link';
 import shadowStyles from './index.less';
@@ -112,20 +113,20 @@ export default define('ak-navigation', {
                 </a>
               </div>
               <div className={shadowStyles.locals.globalSecondary}>
-                <div ref={searchDrawer} className={shadowStyles.locals.globalSecondaryItem}>
+                <GlobalItem ref={searchDrawer}>
                   <slot name="global-search" />
-                </div>
-                <div ref={createDrawer} className={shadowStyles.locals.globalSecondaryItem}>
+                </GlobalItem>
+                <GlobalItem ref={createDrawer}>
                   <slot name="global-create" />
-                </div>
+                </GlobalItem>
               </div>
               <div className={shadowStyles.locals.globalBottom}>
-                <div className={shadowStyles.locals.globalSecondaryItem}>
+                <GlobalItem>
                   <slot name="global-help" />
-                </div>
-                <div className={shadowStyles.locals.globalSecondaryItem}>
+                </GlobalItem>
+                <GlobalItem>
                   <slot name="global-profile" />
-                </div>
+                </GlobalItem>
               </div>
             </div>
             <Drawer large open={elem.searchDrawerOpen}>

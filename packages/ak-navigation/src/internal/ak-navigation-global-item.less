@@ -1,0 +1,19 @@
+@import '../shared-variables.less';
+
+.global-item {
+  &:hover {
+    background-color: rgba(0,0,0,0.2);
+  }
+  &:active {
+    background: @ak-color-B50;
+  }
+  border-radius: 50%;
+  line-height: 0;
+  width: 30px;
+  height: @global-secondary-item-size;
+  cursor: pointer;
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

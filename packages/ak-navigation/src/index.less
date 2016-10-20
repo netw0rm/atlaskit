@@ -1,16 +1,6 @@
 @import 'shared-variables.less';
 @import 'index.ak-navigation-link.less';
 
-@ak-navigation-global-color: @ak-color-B500;
-@ak-navigation-container-color: @ak-color-N20;
-@ak-navigation-container-name-color: @ak-color-N500;
-
-@global-primary-item-margin: 25px;
-@global-secondary-item-margin: 10px;
-@global-secondary-item-size: 30px;
-@container-logo-size: 40px;
-@container-logo-border-radius: @ak-border-radius;
-
 @font-size: 14px;
 
 // Because of the shadow DOM boundries we can not style the host element the usual way
@@ -89,24 +79,6 @@ ak-navigation {
       a {
         color: currentColor;
       }
-    }
-
-    .global-secondary-item {
-      &:hover {
-        background-color: rgba(0,0,0,0.2);
-      }
-      &:active {
-        background: @ak-color-B50;
-      }
-      border-radius: 50%;
-      line-height: 0;
-      width: 30px;
-      height: @global-secondary-item-size;
-      cursor: pointer;
-      margin: 10px auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
     .global-bottom {

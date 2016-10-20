@@ -44,6 +44,22 @@ ak-navigation {
   height: 0;
 }
 
+.container-hidden {
+    .navigation-wrapper {
+      overflow: visible;
+    }
+    .navigation {
+      background-color: transparent;
+      pointer-events: none;
+      .global {
+        pointer-events: auto;
+      }
+      .container {
+        display: none;
+      }
+    }
+  }
+
 .navigation-wrapper {
   overflow: hidden;
   height: 100%;
@@ -92,10 +108,6 @@ ak-navigation {
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
-  }
-
-  .container-hidden {
-    display: none;
   }
 
   .container-logo {

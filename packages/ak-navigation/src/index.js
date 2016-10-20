@@ -83,7 +83,8 @@ export default define('ak-navigation', {
       <div
         className={classNames({
           [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
-          [shadowStyles.locals.drawersOpen]: elem.searchDrawerOpen || elem.createDrawerOpen,
+          [shadowStyles.locals.drawersOpen]: isDrawerOpen(elem),
+          [shadowStyles.locals.containerHidden]: elem.containerHidden,
         })}
       >
         <style ref={styles => (elem.styles = styles)}>
@@ -137,9 +138,7 @@ export default define('ak-navigation', {
             </Drawer>
 
             <div
-              className={classNames(shadowStyles.locals.container, {
-                [shadowStyles.locals.containerHidden]: elem.containerHidden,
-              })}
+              className={classNames(shadowStyles.locals.container)}
             >
               {elem.containerName ? <div className={shadowStyles.locals.containerName}>
                 <a href={elem.containerHref}>
@@ -158,7 +157,7 @@ export default define('ak-navigation', {
               </div>
             </div>
           </div>
-          {elem.collapsible ? <Drag
+          {(elem.collapsible && !elem.containerHidden && !isDrawerOpen(elem)) ? <Drag
             startDragCallback={elem[resizerSymbol].start}
             dragCallback={elem[resizerSymbol].resize}
             endDragCallback={elem[resizerSymbol].end}

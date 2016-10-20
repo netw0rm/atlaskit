@@ -56,8 +56,8 @@ function emitWidthChangedEvent(elem, oldWidth, newWidth) {
   });
 }
 
-function recomputeWidth(elem) {
-  const newWidth = elem.open ? getExpandedWidth(elem) : getCollapsedWidth(elem);
+function recomputeWidth(elem, isOpen) {
+  const newWidth = isOpen ? getExpandedWidth(elem) : getCollapsedWidth(elem);
   const oldWidth = elem.width;
   if (newWidth !== oldWidth) {
     elem.width = newWidth;
@@ -187,9 +187,6 @@ export default define('ak-navigation', {
       </div>
     );
   },
-  rendered(elem) {
-    recomputeWidth(elem);
-  },
   props: {
     /**
      * @description Whether the component should display animations.
@@ -248,6 +245,7 @@ export default define('ak-navigation', {
         }
         elem.createDrawerOpen = elem.open && elem.createDrawerOpen;
         elem.searchDrawerOpen = elem.open && elem.searchDrawerOpen;
+        recomputeWidth(elem, data.newValue);
       },
     }),
     /**
@@ -318,6 +316,9 @@ export default define('ak-navigation', {
      */
     containerHidden: prop.boolean({
       attribute: true,
+      set(elem) {
+        recomputeWidth(elem, elem.open);
+      },
     }),
     /**
      * @description Whether the navigation is collapsible by the user.

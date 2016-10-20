@@ -11,7 +11,7 @@ import schema from 'ak-editor-schema';
 chai.use(chaiPlugin);
 
 const createMark = (mark: string, attrs?: {}) => schema.marks[mark].create(attrs);
-const pre = code_block({});
+const pre = code_block();
 
 // Based on https://bitbucket.org/tutorials/markdowndemo
 describe('Parse Bitbucket rendered HTML', () => {
@@ -27,6 +27,10 @@ describe('Parse Bitbucket rendered HTML', () => {
 
     it('should support paragraphs', () => {
       expect(parse('<p>text</p>')).to.deep.equal(doc(p('text')));
+    });
+
+    it('should remove all zero-with-non-joiners', () => {
+      expect(parse('<p>foo</p><p>&zwnj;</p><p>&zwnj;</p><p>bar</p>')).to.deep.equal(doc(p('foo'), p(''), p(''), p('bar')));
     });
 
     it('should support horizontal rules', () => {

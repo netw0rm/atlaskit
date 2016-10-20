@@ -29,6 +29,10 @@ describe('Parse Bitbucket rendered HTML', () => {
       expect(parse('<p>text</p>')).to.deep.equal(doc(p('text')));
     });
 
+    it('should remove all zero-with-non-joiners', () => {
+      expect(parse('<p>foo</p><p>&zwnj;</p><p>&zwnj;</p><p>bar</p>')).to.deep.equal(doc(p('foo'), p(''), p(''), p('bar')));
+    });
+
     it('should support horizontal rules', () => {
       expect(parse('<hr>')).to.deep.equal(doc(hr));
     });

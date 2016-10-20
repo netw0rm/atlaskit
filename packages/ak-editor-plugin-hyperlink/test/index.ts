@@ -204,7 +204,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(pm.doc).to.deep.equal(doc(p(a({ href })(text), bar)));
     });
 
-    it('should not be able to create a link if href is empty', () => {
+    it('should not allow creating a link if href is empty', () => {
       const { pm, plugin } = editor(doc(p('{<}text{>}')));
       const href = '';
 
@@ -212,7 +212,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(pm.doc).to.deep.equal(doc(p('text')));
     });
 
-    it('should not be able to create a link if href is whitespaces only', () => {
+    it('should not allow creating a link if href is whitespaces only', () => {
       const { pm, plugin } = editor(doc(p('{<}text{>}')));
       const href = ' \t';
 
@@ -252,7 +252,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://example.com' })('foo'))));
     });
 
-    it('should not be able to update if new href is empty', () => {
+    it('should not allow updating a link if new href is empty', () => {
       const { pm, plugin } = editor(doc(p(a({ href: 'http://example.com' })('{<}text{>}'))));
 
       expect(plugin.updateLink({
@@ -262,7 +262,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://example.com' })('text'))));
     });
 
-    it('should not be able to update if new href is whitespaces only', () => {
+    it('should not allow updating a link if new href is whitespaces only', () => {
       const { pm, plugin } = editor(doc(p(a({ href: 'http://example.com' })('{<}text{>}'))));
 
       expect(plugin.updateLink({

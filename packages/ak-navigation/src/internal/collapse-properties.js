@@ -3,12 +3,12 @@ import {
   containerCollapsedWidth,
   expandedWidth,
   containerPaddingExpanded,
+  containerPaddingCollapsed,
 } from '../shared-variables';
 
 const intermediateWidth = globalCollapsedWidth + containerCollapsedWidth;
 const collapsedWidth = globalCollapsedWidth;
 
-const containerPaddingCollapsed = 10;
 // start collapsing the padding 16px out
 const containerPaddingCollapseStart = intermediateWidth + 16;
 

@@ -1,7 +1,7 @@
 import shadowStyles from '../index.less';
 import calculateCollapseProperties from './collapse-properties';
 import { resizeDelta } from './symbols';
-
+import { expandedWidth } from '../shared-variables';
 export default (navigation) => {
   const {
     visibleWidth,
@@ -13,7 +13,7 @@ export default (navigation) => {
     containerHidden: navigation.containerHidden,
     resizeDelta: navigation[resizeDelta],
   });
-  const innerTranslateX = 280 - totalWidth;
+  const innerTranslateX = expandedWidth - totalWidth;
   const outerTranslateX = -innerTranslateX + xOffset;
   return `
     .${shadowStyles.locals.navigationWrapper} {

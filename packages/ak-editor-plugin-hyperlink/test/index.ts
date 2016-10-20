@@ -209,6 +209,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       const href = '';
 
       expect(plugin.addLink({ href })).to.be.false;
+      expect(pm.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should not be able to create a link if href is whitespaces only', () => {
@@ -216,6 +217,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       const href = ' \t';
 
       expect(plugin.addLink({ href })).to.be.false;
+      expect(pm.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should not be able to link if selection is empty', () => {

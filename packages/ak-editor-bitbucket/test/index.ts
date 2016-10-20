@@ -351,7 +351,7 @@ describe('ak-editor-bitbucket', () => {
   });
 
   describe('footer', () => {
-    it.only('should not show action buttons in "pr" context', () => {
+    it('should not show action buttons in "pr" context', () => {
       return buildExpandedEditor(fixture(), '', 'pr').then((editor) => {
         let buttonGroup, shadowRoot;
         const footer = getShadowRoot(editor).querySelector('ak-editor-footer');

@@ -6,7 +6,7 @@ import {
 import { expect } from 'chai';
 
 describe('Bitbucket markdown serializer: ', () => {
-  const pre = code_block({});
+  const pre = code_block();
 
   it('should serialize paragraphs', () => {
     expect(markdownSerializer.serialize(doc(p(text('foo'))))).to.eq('foo');

@@ -3,7 +3,8 @@ import AkEditorBitbucket from '../src';
 import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy, chaiPlugin, doc, text, code, strong, a,
-  h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention, emoji } from 'ak-editor-test';
+  h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
+  emoji, code_block } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
@@ -282,6 +283,61 @@ describe('ak-editor-bitbucket', () => {
         outer.removeEventListener('keyup', spy);
         outer.removeEventListener('keypress', spy);
         expect(spy.called).to.be.false;
+      });
+    });
+  });
+
+  it('should create a newline in code block when cursor is at the beginning and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('\nvar code;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when there is paragraph and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<p>text</p><pre>var code;</pre>');
+      editor._pm.setTextSelection(7)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(p('text'), code_block()('\nvar code;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when in the middle of code block and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+      editor._pm.setTextSelection(5)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var \ncode;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when in the end of code block and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+      editor._pm.setTextSelection(10)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;\n')));
       });
     });
   });

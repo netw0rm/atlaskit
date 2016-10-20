@@ -100,6 +100,23 @@ export function buildKeymap(schema, mapKeys) {
 
     if (name === "code_block") {
       bind("Shift-Ctrl-\\", setBlockType(node));
+      // https://github.com/ProseMirror/prosemirror/issues/419
+      bind("Enter", (pm, apply) => {
+        let {$from, $to, node} = pm.selection;
+        if (node) {
+          return false;
+        }
+
+        if (!$from.parent.type.isCode) {
+          return false;
+        }
+
+        if (apply !== false) {
+          pm.tr.typeText("\n").applyAndScroll();
+        }
+
+        return true;
+      });
     }
 
     if (name === "heading") {

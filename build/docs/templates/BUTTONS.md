@@ -1,5 +1,3 @@
-[![Atlassian Desgin Guidelines](https://img.shields.io/badge/Style-guidelines-FF5230.svg)](http://beta.atlassian.design/guidelines/product/index.html)
-
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://Commitizen.github.io/cz-cli/)
 [![semantic-release](https://img.shields.io/badge/GitHub-semantic_release-ffab00.svg)](https://github.com/semantic-release/semantic-release)
 [![Report an issue](https://img.shields.io/badge/Report-an_issue-6554C0.svg)](https://ecosystem.atlassian.net/browse/AK)

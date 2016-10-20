@@ -8,14 +8,13 @@ import AkNavigation, {
   NavigationLink as AkNavigationLink,
   events as navigationEvents,
 } from '../src';
-
+import calculateCollapseProperties from '../src/internal/collapse-properties';
 
 const {
   open: navigationOpenEvent,
   close: navigationCloseEvent,
   searchDrawerSelected: searchDrawerSelectedEvent,
   createDrawerSelected: createDrawerSelectedEvent,
-  widthChanged: widthChangedEvent,
 } = navigationEvents;
 
 chai.use(chaiAsPromised);
@@ -34,6 +33,11 @@ function setupComponent() {
 function tearDownComponent(component) {
   document.body.removeChild(component);
 }
+
+function getWidth(component) {
+  return calculateCollapseProperties(component).visibleWidth;
+}
+
 describe('exports', () => {
   it('should export a base component', () => {
     (new AkNavigation()).should.be.an.instanceof(Component);
@@ -51,7 +55,6 @@ describe('exports', () => {
       'searchDrawerSelected',
       'open',
       'close',
-      'widthChanged',
       'resizeStart',
       'resizeEnd',
     ]);
@@ -65,25 +68,6 @@ describe('ak-navigation detached', () => {
       keyup('[');
       expect(component.open).to.equal(false);
     }, done);
-  });
-  describe('when it becomes attached', () => {
-    const component = new AkNavigation();
-    it(`fires an "${widthChangedEvent}" event when attached`, (done) => {
-      let called = false;
-      component.addEventListener(widthChangedEvent, (e) => {
-        expect(e.detail.oldWidth).to.equal(null);
-        expect(e.detail.newWidth).to.equal(component.width);
-        called = true;
-      });
-      document.body.appendChild(component);
-      afterMutations(() => {
-        expect(called).to.equal(true);
-      }, done);
-    });
-
-    afterEach(() => {
-      document.body.removeChild(component);
-    });
   });
 });
 
@@ -126,28 +110,6 @@ describe('ak-navigation', () => {
     }, done);
   });
 
-  it(`fires an "${widthChangedEvent}" event when closing`, (done) => {
-    props(component, { open: true });
-    const originalWidth = component.width;
-    component.addEventListener(widthChangedEvent, (e) => {
-      expect(e.detail.oldWidth).to.equal(originalWidth);
-      expect(e.detail.newWidth).to.equal(component.width);
-      done();
-    });
-    props(component, { open: false });
-  });
-
-  it(`fires an "${widthChangedEvent}" event when containerHidden changes`, (done) => {
-    component.open = true;
-    component.containerHidden = true;
-    const originalWidth = component.width;
-    component.addEventListener(widthChangedEvent, (e) => {
-      expect(e.detail.newWidth).to.not.equal(originalWidth);
-      done();
-    });
-    component.containerHidden = false;
-  });
-
   it('toggling does nothing by default while attached', (done) => {
     expect(component.open).to.equal(false);
     afterMutations(() => {
@@ -158,9 +120,9 @@ describe('ak-navigation', () => {
 
   it('changing the open state changes the width', () => {
     props(component, { open: true });
-    const originalWidth = component.width;
+    const originalWidth = getWidth(component);
     props(component, { open: false });
-    expect(component.width).to.not.equal(originalWidth);
+    expect(getWidth(component)).to.not.equal(originalWidth);
   });
 
   describe('width containerHidden set', () => {
@@ -169,19 +131,9 @@ describe('ak-navigation', () => {
     });
     it('changing the open state does not change the width', () => {
       component.open = true;
-      const originalWidth = component.width;
+      const originalWidth = getWidth(component);
       component.open = false;
-      expect(component.width).to.equal(originalWidth);
-    });
-  });
-
-  describe('resizing', () => {
-    it('navigation.width can be set to a number and that is respected', (done) => {
-      afterMutations(
-        () => props(component, { width: 101 }),
-        () => expect(component.width).to.equal(101),
-        done
-      );
+      expect(getWidth(component)).to.equal(originalWidth);
     });
   });
 

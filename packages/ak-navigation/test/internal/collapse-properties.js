@@ -111,7 +111,7 @@ describe('collapse-properties', () => {
     expect(pad2 <= containerPaddingExpanded).to.equal(true);
     expect(pad3 <= containerPaddingExpanded).to.equal(true);
   });
-  it('total width is bounded by ${globalCollapsedWidth}', () => {
+  it(`total width is bounded by ${globalCollapsedWidth}`, () => {
     const { totalWidth } = calculateCollapseProperties({
       open: true,
       resizeDelta: -999,
@@ -120,7 +120,7 @@ describe('collapse-properties', () => {
 
     expect(totalWidth >= globalCollapsedWidth).to.equal(true);
   });
-  it('total width is bounded by ${expandedWidth}', () => {
+  it(`total width is bounded by ${expandedWidth}`, () => {
     const { totalWidth } = calculateCollapseProperties({
       open: true,
       resizeDelta: 999,

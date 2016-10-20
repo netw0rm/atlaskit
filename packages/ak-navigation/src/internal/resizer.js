@@ -43,9 +43,7 @@ export default function resizer(navigation) {
       });
     },
     end() {
-      // const closestBreakpoint = getClosestBreakpoint(navigation.width);
       navigation.shouldAnimate = true;
-      // navigation.width = closestBreakpoint;
       props(navigation, {
         [resizeDelta]: 0,
         open: shouldBeOpen(navigation),

@@ -162,9 +162,11 @@ describe('ak-theme, { themeable }', () => {
       document.body.appendChild(theme);
       createElement({
         attached(e) {
-          expect(e.themeProps).to.deep.equal({ myprop: 'myvalue' });
-          body.removeChild(e);
-          done();
+          afterMutations(() => {
+            expect(e.themeProps).to.deep.equal({ myprop: 'myvalue' });
+            body.removeChild(e);
+          },
+          done);
         },
       }, { themeName: 'foo' });
     });
@@ -173,12 +175,14 @@ describe('ak-theme, { themeable }', () => {
       const theme = Object.assign(new Theme(), { id: 'foo' });
       theme.appendChild(Object.assign(new Prop(), { name: 'myprop', value: 'myvalue' }));
       document.body.appendChild(theme);
-      body.removeChild(createElement({
+      const child = createElement({
         detached(e) {
           expect(e.themeProps).to.deep.equal({ myprop: 'myvalue' });
           done();
         },
-      }, { themeName: 'foo' }));
+      }, { themeName: 'foo' });
+
+      afterMutations(() => document.body.removeChild(child));
     });
   });
 

@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle: 0 */
 import classNames from 'classnames';
 import debounce from 'debounce';
 import { vdom, define, prop } from 'skatejs';
@@ -12,7 +11,7 @@ import * as handlers from './internal/tabs-handlers';
 import * as events from './internal/index.events';
 import * as i18n from './internal/i18n';
 import Tab from './index.tab';
-import { buttonContainer, labelsContainer } from './internal/symbols';
+import { buttonContainer, labelsContainer, labelProp, selectedProp } from './internal/symbols';
 
 
 const { tabChange: tabChangeEvent } = events;
@@ -110,9 +109,8 @@ export default define('ak-tabs', {
   },
   rendered: helpers.showVisibleTabs,
   props: {
-    /** TODO: Use Symbol once supported in skate */
-    _labels: prop.array({}),
-    _selected: prop.array({}),
+    [labelProp]: prop.array({}),
+    [selectedProp]: prop.array({}),
   },
 });
 

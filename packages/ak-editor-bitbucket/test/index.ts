@@ -287,7 +287,7 @@ describe('ak-editor-bitbucket', () => {
     });
   });
 
-  it('should create a newline in code block when enter is pressed', () => {
+  it('should create a newline in code block when cursor is at the beginning and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
 
@@ -296,6 +296,48 @@ describe('ak-editor-bitbucket', () => {
         keydown('enter', PMContainer);
 
         expect(editor._pm.doc).to.deep.equal(doc(code_block()('\nvar code;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when there is paragraph and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<p>text</p><pre>var code;</pre>');
+      editor._pm.setTextSelection(7)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(p('text'), code_block()('\nvar code;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when in the middle of code block and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+      editor._pm.setTextSelection(5)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var \ncode;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when in the end of code block and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+      editor._pm.setTextSelection(10)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;\n')));
       });
     });
   });

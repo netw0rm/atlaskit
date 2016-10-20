@@ -21,7 +21,7 @@ class AnimatedBoxGroup extends Component {
 
   render() {
     return (
-      <div className={storyStyles.container}>
+      <div className={storyStyles.locals.container}>
         <div>
           <AnimatedBox
             boxStyle="bold"
@@ -39,7 +39,7 @@ class AnimatedBoxGroup extends Component {
             ref={n => (this.combinedBox = n)}
           >Combined</AnimatedBox>
         </div>
-        <div className={storyStyles.centerContent}>
+        <div className={storyStyles.locals.centerContent}>
           <button onClick={this.clickAll}>All</button>
         </div>
       </div>

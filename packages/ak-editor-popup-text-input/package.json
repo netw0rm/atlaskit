@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-popup-text-input",
-  "version": "1.2.9",
+  "version": "1.3.0",
   "description": "Editor Popup Text Input web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

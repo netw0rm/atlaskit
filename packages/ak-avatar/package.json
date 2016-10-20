@@ -21,7 +21,7 @@
     "skatejs": "^3.1.2"
   },
   "devDependencies": {
-    "akutil-common-test": "^3.0.0",
+    "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0"
   },
   "repository": {

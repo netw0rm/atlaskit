@@ -18,7 +18,11 @@ function activateEditor(editor: typeof AkEditorBitbucket) : void {
   emit(inputEl, 'focus');
 }
 
-function buildExpandedEditor(fixture : any, defaultValue = '') : Promise<typeof AkEditorBitbucket> {
+function buildExpandedEditor(
+  fixture : any,
+  defaultValue = '',
+  context = ''
+) : Promise<typeof AkEditorBitbucket> {
   return new Promise(function(resolve, reject) {
     const successFn = () => {
       clearTimeout(failTimer);
@@ -35,6 +39,10 @@ function buildExpandedEditor(fixture : any, defaultValue = '') : Promise<typeof 
 
     if (defaultValue) {
       fixture.firstChild.setAttribute('default-value', defaultValue);
+    }
+
+    if (context) {
+      fixture.firstChild.setAttribute('context', context);
     }
   });
 }
@@ -287,23 +295,23 @@ describe('ak-editor-bitbucket', () => {
   });
 
   describe('footer', () => {
-    it('should not show action buttons in "pr" context', () => {
-      return buildExpandedEditor(fixture()).then((editor) => {
-        const bt = getShadowRoot(editor).querySelector('ak-editor-footer');
-        expect(bt).to.not.be.null;
+    it.only('should not show action buttons in "pr" context', () => {
+      return buildExpandedEditor(fixture(), '', 'pr').then((editor) => {
+        let buttonGroup, shadowRoot;
+        const footer = getShadowRoot(editor).querySelector('ak-editor-footer');
+        expect(footer).to.not.be.null;
 
-        // on browsers without native ShadowDOM (i.e. Firefox, Safari), shadowRoot is not available right away
-        return waitUntil(() => {
-          return !!getShadowRoot(bt);
-        }).then(() => {
-          const shadowRoot = getShadowRoot(bt);
-
-          return waitUntil(() => {
-            return !!shadowRoot.querySelector('ak-editor-button-group');
-          }).then(() => {
-            const fs = shadowRoot.querySelector('ak-editor-button-group');
-            expect(fs.style.visibility).to.be.equal('hidden');
-          });
+        // Note: On non-native-custom-elements browsers (like Firefox), the 'pr' context attribute
+        //       isn't set synchronously, which means it doesn't propagate sync to ak-editor-footer
+        //       fast enough. The buttons are supposed to be hidden but for a brief moment they
+        //       are still visible.
+        // TODO: There must be a better way to do it...
+        return waitUntil(
+          () => (shadowRoot = getShadowRoot(footer)) &&
+                (buttonGroup = shadowRoot.querySelector('ak-button-group')) &&
+                 buttonGroup.style.visibility === 'hidden'
+        ).catch(() => {
+          throw new Error('The button group did not become hidden');
         });
       });
     });

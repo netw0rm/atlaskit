@@ -1,25 +1,13 @@
-import { afterMutations, getShadowRoot, waitUntil } from 'akutil-common-test';
+import { afterMutations, getShadowRoot } from 'akutil-common-test';
 import { Component } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import AkNavigationLink from '../src/index.ak-navigation-link';
+import { setupComponent, tearDownComponent } from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
-
-function setupComponent() {
-  const component = new AkNavigationLink();
-  const componentHasShadowRoot = () => !!getShadowRoot(component);
-
-  document.body.appendChild(component);
-
-  return waitUntil(componentHasShadowRoot).then(() => component);
-}
-
-function tearDownComponent(component) {
-  document.body.removeChild(component);
-}
 
 describe('exports', () => {
   it('should export a base component', () => {
@@ -29,7 +17,7 @@ describe('exports', () => {
 describe('ak-navigation-link', () => {
   let component;
   let shadowRoot;
-  beforeEach(() => setupComponent().then((newComponent) => {
+  beforeEach(() => setupComponent(AkNavigationLink).then((newComponent) => {
     component = newComponent;
     shadowRoot = getShadowRoot(component);
   }));

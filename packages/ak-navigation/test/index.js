@@ -1,4 +1,4 @@
-import { keyup, afterMutations, getShadowRoot, waitUntil } from 'akutil-common-test';
+import { keyup, afterMutations, getShadowRoot } from 'akutil-common-test';
 import { Component, emit, props } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -9,6 +9,7 @@ import AkNavigation, {
   events as navigationEvents,
 } from '../src';
 import calculateCollapseProperties from '../src/internal/collapse-properties';
+import { setupComponent, tearDownComponent } from './_helpers';
 
 const {
   open: navigationOpenEvent,
@@ -20,19 +21,6 @@ const {
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
-
-function setupComponent() {
-  const component = new AkNavigation();
-  const componentHasShadowRoot = () => !!getShadowRoot(component);
-
-  document.body.appendChild(component);
-
-  return waitUntil(componentHasShadowRoot).then(() => component);
-}
-
-function tearDownComponent(component) {
-  document.body.removeChild(component);
-}
 
 function getWidth(component) {
   return calculateCollapseProperties(component).visibleWidth;
@@ -75,7 +63,7 @@ describe('ak-navigation', () => {
   let component;
   let shadowRoot;
 
-  beforeEach(() => setupComponent().then((newComponent) => {
+  beforeEach(() => setupComponent(AkNavigation).then((newComponent) => {
     component = newComponent;
     shadowRoot = getShadowRoot(component);
   }));

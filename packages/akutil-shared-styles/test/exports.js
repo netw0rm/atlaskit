@@ -2,11 +2,12 @@ import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 
+import * as lessVars from '../src';
+
+
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
-
-import * as lessVars from '../src';
 
 describe('LESS module exports', () => {
   // If you find yourself here and wonder why this list is not auto-generated, then bear in
@@ -60,6 +61,7 @@ describe('LESS module exports', () => {
     'akColorP300',
     'akColorP400',
     'akColorP500',
+    'akColorN0',
     'akColorN10',
     'akColorN20',
     'akColorN30',
@@ -82,7 +84,7 @@ describe('LESS module exports', () => {
     'akFontSizeDefault',
     'akGridSize',
     'default',
-  ].forEach(key => {
+  ].forEach((key) => {
     it(`should have an item called "${key}"`, () => {
       expect(lessVars).to.contain.all.keys(key);
     });

@@ -17,20 +17,20 @@ function setBooleanAttribute(el, attr, newValue) {
 function computeEnumValue(enumOptions, value) {
   const matchesEnumValue = enumValue => enumValue.toLowerCase() === value.toLowerCase();
 
-  const isMissing = (value === null) || (value === undefined);
+  const isMissing = (value === null) || (typeof value === 'undefined');
   const isInvalid = !isMissing && !enumOptions.values.filter(matchesEnumValue).length;
 
   if (isMissing) {
-    if (enumOptions.hasOwnProperty('missingDefault')) {
+    if ({}.hasOwnProperty.call(enumOptions, 'missingDefault')) {
       return enumOptions.missingDefault;
     }
     return null;
   }
 
   if (isInvalid) {
-    if (enumOptions.hasOwnProperty('invalidDefault')) {
+    if ({}.hasOwnProperty.call(enumOptions, 'invalidDefault')) {
       return enumOptions.invalidDefault;
-    } else if (enumOptions.hasOwnProperty('missingDefault')) {
+    } else if ({}.hasOwnProperty.call(enumOptions, 'missingDefault')) {
       return enumOptions.missingDefault;
     }
     return null;

@@ -18,7 +18,7 @@ describe('ak-theme', () => {
   let theme2;
   let theme3;
 
-  beforeEach(done => {
+  beforeEach((done) => {
     body = document.body;
 
     theme1 = createTheme('theme1', {
@@ -40,7 +40,7 @@ describe('ak-theme', () => {
     afterMutations(done);
   });
 
-  afterEach(done => {
+  afterEach((done) => {
     body.removeChild(theme1);
     body.removeChild(theme2);
     body.removeChild(theme3);
@@ -79,22 +79,37 @@ describe('ak-theme', () => {
     expect(createTheme().id).to.be.a('string');
   });
 
-  it('id should be an attribute', () => {
+  it('id should be an attribute', (done) => {
     const theme = createTheme();
-    expect(theme.hasAttribute('id')).to.equal(false);
+    body.appendChild(theme);
+    expect(!!theme.getAttribute('id')).to.equal(false);
     theme.id = 'theme';
-    expect(theme.getAttribute('id')).to.equal('theme');
+
+    afterMutations(
+      () => {
+        expect(theme.getAttribute('id')).to.equal('theme');
+        body.removeChild(theme);
+      },
+      done
+    );
   });
 
   it('mixin should be a string', () => {
     expect(createTheme().mixin).to.be.a('string');
   });
 
-  it('mixin should be an attribute', () => {
+  it('mixin should be an attribute', (done) => {
     const theme = createTheme();
-    expect(theme.hasAttribute('mixin')).to.equal(false);
+    body.appendChild(theme);
+    expect(!!theme.getAttribute('mixin')).to.equal(false);
     theme.mixin = 'theme1 theme2 theme3';
-    expect(theme.getAttribute('mixin')).to.equal('theme1 theme2 theme3');
+    afterMutations(
+      () => {
+        expect(theme.getAttribute('mixin')).to.equal('theme1 theme2 theme3');
+        body.removeChild(theme);
+      },
+      done
+    );
   });
 
   it('ownVars should be an object', () => {
@@ -114,7 +129,7 @@ describe('ak-theme', () => {
     expect(theme1.ownVars).to.deep.equal(ownVars);
   });
 
-  it('should emit an event when attached', done => {
+  it('should emit an event when attached', (done) => {
     const theme = createTheme('test', { key: 'val' });
     const spy = sinon.spy();
     document.addEventListener(events.change, spy);
@@ -130,7 +145,7 @@ describe('ak-theme', () => {
     );
   });
 
-  it('should emit an event when detached', done => {
+  it('should emit an event when detached', (done) => {
     const theme = createTheme('test', { key: 'val' });
     const spy = sinon.spy();
     body.appendChild(theme);
@@ -146,7 +161,7 @@ describe('ak-theme', () => {
     );
   });
 
-  it('should emit an event when attached again after being detached', done => {
+  it('should emit an event when attached again after being detached', (done) => {
     const theme = createTheme('test', { key: 'val' });
     const spy = sinon.spy();
     document.addEventListener(events.change, spy);
@@ -180,7 +195,7 @@ describe('ak-theme', () => {
     expect(Theme.updated(theme1, null)).to.equal(true);
   });
 
-  it('should not error when a theme prop does not have a name', done => {
+  it('should not error when a theme prop does not have a name', (done) => {
     const theme = new Theme();
     theme.appendChild(Object.assign(new Prop(), { value: 'test' }));
 
@@ -196,7 +211,7 @@ describe('ak-theme', () => {
   });
 
   describe('dot-notation', () => {
-    it('should support dot-notation', done => {
+    it('should support dot-notation', (done) => {
       const theme = createTheme('theme', {
         mykey1: 'mykey1',
         'my.key2': 'mykey2',
@@ -205,16 +220,16 @@ describe('ak-theme', () => {
       document.body.appendChild(theme);
       afterMutations(
         () => {
-          const props = theme.ownVars;
-          expect(props.mykey1).to.equal('mykey1');
-          expect(props.my.key2).to.equal('mykey2');
-          expect(props.my.key[3]).to.equal('mykey3');
+          const vars = theme.ownVars;
+          expect(vars.mykey1).to.equal('mykey1');
+          expect(vars.my.key2).to.equal('mykey2');
+          expect(vars.my.key[3]).to.equal('mykey3');
         },
         done
       );
     });
 
-    it('should overwrite namespaces', done => {
+    it('should overwrite namespaces', (done) => {
       const theme = createTheme('theme', {
         my: 'my',
         'my.key': 'mykey',

@@ -3,9 +3,11 @@ import reactify from 'akutil-react';
 import AkButton from 'ak-button';
 import Dropdown from 'ak-dropdown';
 import CharlieIcon from 'ak-icon/glyph/atlassian';
-import AkButtonGroup from '../src/index';
 import React from 'react';
+
+import AkButtonGroup from '../src';
 import { name } from '../package.json';
+
 
 const ReactAkButtonGroup = reactify(AkButtonGroup);
 const ReactAkButton = reactify(AkButton);
@@ -80,7 +82,7 @@ storiesOf(name, module)
     <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
       <ReactAkButton>Edit</ReactAkButton>
       <ReactDropdown>
-        <ak-dropdown-trigger-arrow slot="trigger"></ak-dropdown-trigger-arrow>
+        <ak-dropdown-trigger-arrow slot="trigger" />
         <ak-dropdown-item>Foo</ak-dropdown-item>
         <ak-dropdown-item>Bar</ak-dropdown-item>
         <ak-dropdown-item>Baz</ak-dropdown-item>

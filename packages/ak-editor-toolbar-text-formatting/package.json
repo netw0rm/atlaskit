@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar-text-formatting",
-  "version": "2.4.10",
+  "version": "2.5.0",
   "description": "Editor Toolbar Text Formatting web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

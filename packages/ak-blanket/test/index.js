@@ -1,8 +1,10 @@
+import { Component } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+
 import AkBlanket, { events } from '../src';
 import { name } from '../package.json';
-import { Component } from 'skatejs';
+
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -11,7 +13,7 @@ const expect = chai.expect;
 describe('ak-blanket', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new AkBlanket).should.be.an.instanceof(Component);
+      (new AkBlanket()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {

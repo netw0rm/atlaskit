@@ -1,6 +1,8 @@
-import reactify from 'akutil-react';
-import TooltipTriggerWC from '../src/index.tooltip-trigger';
 import React, { Component } from 'react';
+import reactify from 'akutil-react';
+
+import TooltipTriggerWC from '../src/index.tooltip-trigger';
+
 
 const TooltipTrigger = reactify(TooltipTriggerWC);
 
@@ -31,13 +33,13 @@ class FourDirectionTooltipTrigger extends Component {
     return (
       <div>
         <TooltipTrigger position={this.state.direction} description={description}>
-          <span
+          <button
             style={buttonStyles}
             aria-describedby="ak-tooltip"
             onClick={this.handleClick}
           >
             Click me ({this.state.direction})
-          </span>
+          </button>
         </TooltipTrigger>
       </div>
     );

@@ -1,9 +1,9 @@
 import reactify from 'akutil-react';
+import React, { Component } from 'react';
+
 import AkInlineDialog from '../src/index';
 import styles from '../src/shadow.less';
 
-import React from 'react';
-const { Component } = React;
 
 const Dialog = reactify(AkInlineDialog);
 
@@ -74,9 +74,8 @@ class DialogWithBlanket extends Component {
 }
 
 DialogWithBlanket.propTypes = {
-  event: React.PropTypes.string,
   position: React.PropTypes.string,
-  style: React.PropTypes.object,
+  style: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   attachTo: React.PropTypes.string,
   hasBlanket: React.PropTypes.bool,
   blanketTinted: React.PropTypes.bool,

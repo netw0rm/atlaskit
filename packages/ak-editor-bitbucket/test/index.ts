@@ -3,7 +3,8 @@ import AkEditorBitbucket from '../src';
 import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy, chaiPlugin, doc, text, code, strong, a,
-  h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention, emoji } from 'ak-editor-test';
+  h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
+  emoji, code_block } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
@@ -18,7 +19,7 @@ function activateEditor(editor: typeof AkEditorBitbucket) : void {
   emit(inputEl, 'focus');
 }
 
-function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> {
+function buildExpandedEditor(fixture : any, defaultValue = '') : Promise<typeof AkEditorBitbucket> {
   return new Promise(function(resolve, reject) {
     const successFn = () => {
       clearTimeout(failTimer);
@@ -27,11 +28,15 @@ function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> 
 
     const failTimer = setTimeout(() => {
       fixture.removeEventListener('ready', successFn);
-      reject('the editor didn\'t become ready in 1.5s');
+      reject(new Error('the editor didn\'t become ready in 1.5s'));
     }, 1500);
 
     fixture.addEventListener('ready', successFn, { once: true });
     fixture.innerHTML = `<ak-editor-bitbucket expanded></ak-editor-bitbucket>`;
+
+    if (defaultValue) {
+      fixture.firstChild.setAttribute('default-value', defaultValue);
+    }
   });
 }
 
@@ -120,8 +125,10 @@ describe('ak-editor-bitbucket', () => {
       editor.defaultValue = 'foo';
       expect(editor.value).to.equal('foo');
     });
+  });
 
-    it('should honour default value', (done) => {
+  describe('default value', () => {
+    it('should initialize Prosemirror with correct value', (done) => {
       const content = 'foo';
       const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
       const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
@@ -136,6 +143,13 @@ describe('ak-editor-bitbucket', () => {
         },
         done
       );
+    });
+
+    it('should be converted to a proper Prosemirror document after rendering', () => {
+      return buildExpandedEditor(fixture(), '<p>foo <strong>bar</strong></p>')
+        .then((editor) => {
+          expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), strong(text('bar')))));
+        });
     });
   });
 
@@ -269,6 +283,61 @@ describe('ak-editor-bitbucket', () => {
         outer.removeEventListener('keyup', spy);
         outer.removeEventListener('keypress', spy);
         expect(spy.called).to.be.false;
+      });
+    });
+  });
+
+  it('should create a newline in code block when cursor is at the beginning and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('\nvar code;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when there is paragraph and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<p>text</p><pre>var code;</pre>');
+      editor._pm.setTextSelection(7)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(p('text'), code_block()('\nvar code;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when in the middle of code block and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+      editor._pm.setTextSelection(5)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var \ncode;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when in the end of code block and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+      editor._pm.setTextSelection(10)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;\n')));
       });
     });
   });

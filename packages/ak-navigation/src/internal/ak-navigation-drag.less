@@ -6,6 +6,7 @@
   width: 12px;
   cursor: ew-resize;
   position: absolute;
+  top: 0;
   
   &::after {
     content: '';
@@ -14,7 +15,7 @@
     height: 100%;
     position: absolute;
   }
-  &:hover:after {
+  &:hover:after, &.isDragging:after {
     width: 2px;
     background-color: @ak-color-B200;
   }

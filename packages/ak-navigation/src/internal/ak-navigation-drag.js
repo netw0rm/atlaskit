@@ -1,29 +1,34 @@
+import { vdom, define, prop } from 'skatejs';
+import classNames from 'classnames';
 import shadowStyles from './ak-navigation-drag.less';
-import { vdom, define } from 'skatejs';
-
 
 export default define('ak-navigation-drag', {
   created(elem) {
+    const onDrag = (mouseMoveEvent) => { elem.dragCallback(mouseMoveEvent); };
+    const onMouseUp = (mouseUpEvent) => {
+      elem.isDragging = false;
+      elem.endDragCallback(mouseUpEvent);
+      document.removeEventListener('mousemove', onDrag);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
     elem.addEventListener('mousedown', (mouseDownEvent) => {
+      elem.isDragging = true;
       elem.startDragCallback(mouseDownEvent);
-      const onDrag = (mouseMoveEvent) => elem.dragCallback(mouseMoveEvent);
-      const onMouseUp = (mouseUpEvent) => {
-        elem.endDragCallback(mouseUpEvent);
-        document.body.removeEventListener('mousemove', onDrag);
-        document.body.removeEventListener('mouseup', onMouseUp);
-      };
-      document.body.addEventListener('mousemove', onDrag);
-      document.body.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('mousemove', onDrag);
+      document.addEventListener('mouseup', onMouseUp);
     });
   },
-  render() {
+  render(elem) {
     return (<div
-      className={shadowStyles.locals.resize}
+      className={classNames(shadowStyles.locals.resize, {
+        [shadowStyles.locals.isDragging]: elem.isDragging,
+      })}
     >
       <style>{shadowStyles.toString()}</style>
     </div>);
   },
   props: {
+    isDragging: prop.boolean({}),
     startDragCallback: {
       default: () => {},
     },
@@ -35,4 +40,3 @@ export default define('ak-navigation-drag', {
     },
   },
 });
-

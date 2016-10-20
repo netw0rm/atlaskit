@@ -1,12 +1,15 @@
-import 'style!../host.less';
 import { emit, vdom, define, prop } from 'skatejs';
 import { enumeration } from 'akutil-common';
 import AkAvatar from 'ak-avatar';
 import AkButton from 'ak-button';
+
+import 'style!../host.less';
 import IconLabel from './IconLabel';
 import events from '../internal/events';
 import { getTimeLabel } from '../util/datetime';
 import shadowStyles from './pf-profilecard-shadow.less';
+
+
 const styles = shadowStyles.locals;
 
 const PRESENCE_ATTRIBUTE_ENUM = {
@@ -33,7 +36,7 @@ const PRESENCE_STRINGS = {
 export default define('pf-profilecard', {
   render(elem) {
     const labelTime = getTimeLabel(elem.timestamp, elem.use24h);
-    const actions = (elem.actions || []).map((action) => (
+    const actions = (elem.actions || []).map(action => (
       <AkButton
         appearance="link"
         compact
@@ -63,9 +66,9 @@ export default define('pf-profilecard', {
             {elem.nickname ? <IconLabel icon="mention" label={`@${elem.nickname}`} /> : null}
             {elem.location ? <IconLabel icon="location" label={elem.location} /> : null}
             {labelTime ? <IconLabel icon="time" label={labelTime} /> : null}
-            <div className={styles.pfCardFlexSpacer}></div>
+            <div className={styles.pfCardFlexSpacer} />
             <div className={styles.pfCardActions}>
-            {actions}
+              {actions}
             </div>
           </div>
         </div>

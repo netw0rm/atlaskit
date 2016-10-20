@@ -1,7 +1,6 @@
 const path = require('path');
-const webComponentLocator = require(
-  path.join('akutil-common-test', 'src', 'index.locateWebComponent.js')
-);
+const webComponentLocator = require('akutil-common-test/src/index.locateWebComponent.js');
+
 
 const rq = [
   require.resolve('akutil-cucumber'),

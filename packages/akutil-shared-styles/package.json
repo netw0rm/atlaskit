@@ -1,6 +1,6 @@
 {
   "name": "akutil-shared-styles",
-  "version": "34.2.2",
+  "version": "34.4.0",
   "description": "Shared styles for AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -19,10 +19,14 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
+    "ak-tooltip": "^2.1.0",
     "akutil-react": "^1.3.0",
+    "camelcase": "^3.0.0",
     "classnames": "^2.2.5",
-    "less-vars-loader": "^1.0.2",
-    "skatejs": "^3.0.0"
+    "clipboard": "^1.5.13",
+    "less-vars-loader": "^1.1.0",
+    "skatejs": "^3.0.0",
+    "uid": "0.0.2"
   },
   "dependencies": {
     "babel-runtime": "^6.11.6"

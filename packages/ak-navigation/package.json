@@ -1,12 +1,12 @@
 {
   "name": "jonelson-tmp-navigation",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ak-navigation webcomponent (temporary)",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-navigation"
+    "prepublish": "cd ../.. && npm run prepublish/single jonelson-tmp-navigation"
   },
   "files": [
     "dist"

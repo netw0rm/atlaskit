@@ -1,15 +1,13 @@
 # FieldBase
 
-This component contains all the common behaviour and styles for fields
+This component contains all the common behaviour and styles for fields and it provides you with an implementation of the Atlassian Design Guidelines, compatible with the following elements:
+* *Labels*: spacing, margins, accessibility and click-to-focus functionality.
+* *Fields*: sizing, borders, colors, wrapping behaviour, hover/focus states.
+* *Inline edit pattern*: view switching, edit/confirm/cancel buttons, focus handling
+* *Validation*: styles, waiting states (built in validation coming soon!).
+* *Keyboard navigation*: view switching, confirm/cancel behaviour with associated focus styles.
 
-FieldBase provides an Atlassian Design Guidelines compatible implementation for:
-* Labels: spacing, margins, accessibility and click-to-focus functionality
-* Fields: sizing, borders, colors, wrapping behaviour, hover/focus states
-* Inline edit pattern: view switching, edit/confirm/cancel buttons, focus handling
-* Validation: styles, waiting states (built in validation coming soon!)
-* Keyboard navigation: view switching, confirm/cancel behaviour with associated focus styles
-
-FieldBase's *will* work by themselves but are really meant to be extended into a full field component.
+![Example ak-field-base ](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-field-base /docs/ak-field-base.png)
 
 ## Try it out
 
@@ -24,12 +22,13 @@ npm install ak-field-base
 
 ## Using the component
 
-FieldBase makes no assumptions about libraries or frameworks and can be extended any way you like; Skatejs, React or even Vanilla JS.
+FieldBase is library and framework-agnositc and can be extended any way you like using Skatejs, React or even Vanilla JS.
 
-#### Creating your views
+#### How to create your views
 
 FieldBase works using two 'views' for your component `editmode` and `viewmode`.
-To set these up, simply pass them as children to your FieldBase with the appropriate `slot` attribute.
+Set these views by passing them as children to your FieldBase with the appropriate `slot` attribute.
+For example:
 
 ```html
 <ak-field-base label="My awesome field" id="myCustomField">
@@ -42,14 +41,14 @@ To set these up, simply pass them as children to your FieldBase with the appropr
 </ak-field-base>
 ```
 
-**Note**: It is very important to pass in the `label` prop even if you are hiding it using the
-`hideLabel` prop as the label is used to make your field accessible for screen readers.
+Remember to pass in the `label` prop even if you are hiding it using the
+`hideLabel` prop since the `label` is used to make your field accessible for screen readers.
 
 At this point you will already have a component that can switch between views, handle keyboard navigation and set aside an appropriate amount of space.
 
 However, this isn't particularly useful because our changes aren't saved!
 
-#### Updating views
+#### How to update views
 
 To keep our two views in sync, we'll need to set up some event handlers to tell us when a user is switching views.
 
@@ -83,9 +82,9 @@ fieldBase.addEventListener(events.exitEditingView, (e) => {
 })
 ```
 
-#### Styling content
+#### How to style content
 
-You'll almost definitely want to apply some styles to your views so that they blend in with the Atlassian Design Guidelines theme.
+You can apply the ADG (Atlassian Desgin Guidelines) styles.
 
 In our example above, you would want to:
 * Remove default focus styles from the input
@@ -112,7 +111,7 @@ inputField.style.outline = 'none';
 inputField.style.width = '100%';
 ```
 
-To fix the focus styling we can set up event listeners on the input that can set the `focused` prop on FieldBase.
+To fix the focus styling, you can set up event listeners on the input that can set the `focused` prop on FieldBase.
 
 ```javascript
 inputField.addEventListener('focus', () => {
@@ -123,12 +122,14 @@ inputField.addEventListener('blur', () => {
 });
 ```
 
-#### Validation
+#### How to perform a validation
 
 Performing validation is as easy listening for the `exitEditingView` event and responding appropriately.
 
-If the validation can be performed client-side, simply check the value, if it is invalid cancel the event
+If the validation can be performed client-side, check the value and if it's invalid,  cancel the event
 and set the `invalid` prop on fieldBase.
+
+For example:
 
 ```javascript
 fieldBase.addEventListener(events.exitEditingView, (e) => {
@@ -142,7 +143,7 @@ fieldBase.addEventListener(events.exitEditingView, (e) => {
 });
 ```
 
-To perform async validation it is recommended that you use the `waiting` prop whilst you wait.
+To perform async validation it's recommended that you use the `waiting` prop whilst you wait.
 
 ```javascript
 fieldBase.addEventListener(events.exitEditingView, (e) => {
@@ -168,3 +169,17 @@ fieldBase.addEventListener(events.exitEditingView, (e) => {
   }
 })
 ```
+### React
+
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
+
+
+```
+import fieldBase from 'ak-field-base';
+import reactify from 'skatejs-react-integration';
+
+const ReactComponent = reactify(ak-field-base, {});
+
+ReactDOM.render(<ReactComponent />, container);
+```
+

@@ -1,7 +1,7 @@
 {
-  "name": "ak-page",
-  "version": "5.1.6",
-  "description": "ak-page webcomponent",
+  "name": "jonelson-tmp-page",
+  "version": "0.0.1",
+  "description": "ak-page webcomponent (temporary)",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
@@ -18,7 +18,7 @@
     "skatejs": "^3.0.0"
   },
   "peerDependencies": {
-    "ak-navigation": "^11.0.0"
+    "jonelson-tmp-navigation": "^0.0.3"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

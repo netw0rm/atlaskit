@@ -1,6 +1,6 @@
 import { prop, props, vdom, define } from 'skatejs';
 import classNames from 'classnames';
-import { events as navigationEvents } from 'ak-navigation';
+import { events as navigationEvents } from 'jonelson-tmp-navigation';
 
 import shadowStyles from './shadow.less';
 

@@ -10,7 +10,7 @@
   "dependencies": {
     "@atlassian/gremlins.js": "^0.1.0",
     "@kadira/storybook": "^2.24.0",
-    "akutil-common-test": "^3.0.0",
+    "akutil-common-test": "^4.0.0",
     "akutil-cucumber": "^1.0.0",
     "akutil-dmd-plugin": "^2.0.2",
     "akutil-polyfills": "^2.2.1",
@@ -70,6 +70,7 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "retry-cli": "^0.4.0",
+    "skatejs": "^3.0.0",
     "stats.js": "^0.16.0",
     "style-loader": "^0.13.1",
     "ts-loader": "^0.9.0",

@@ -58,4 +58,33 @@ export const blockTypes : any = {
     display   : 'Code block',
     schemaName: 'code_block',
   }],
+
+  pr: [{
+    name      : 'normalText',
+    display   : 'Normal text',
+    schemaName: 'paragraph',
+  }, {
+    name      : 'heading1',
+    display   : 'Heading 1',
+    schemaName: 'heading',
+    level     : 2,
+  }, {
+    name      : 'heading2',
+    display   : 'Heading 2',
+    schemaName: 'heading',
+    level     : 3,
+  }, {
+    name      : 'heading3',
+    display   : 'Heading 3',
+    schemaName: 'heading',
+    level     : 4,
+  }, {
+    name      : 'blockQuote',
+    display   : 'Block quote',
+    schemaName: 'blockquote',
+  }, {
+    name      : 'codeBlock',
+    display   : 'Code block',
+    schemaName: 'code_block',
+  }],
 };

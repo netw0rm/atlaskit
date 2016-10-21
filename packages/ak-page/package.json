@@ -25,7 +25,7 @@
   "devDependencies": {
     "ak-icon": "^8.1.2",
     "ak-navigation": "^11.0.0",
-    "akutil-common-test": "^3.0.0",
+    "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0",
     "react-lorem-component": "^0.10.1"
   },

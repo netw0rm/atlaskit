@@ -29,7 +29,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "akutil-common-test": "^3.0.0",
+    "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.2.0",
     "fetch-mock": "^5.0.5",
     "js-search": "^1.3.2"

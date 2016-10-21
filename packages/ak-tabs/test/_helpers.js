@@ -100,7 +100,6 @@ function click(el) {
 }
 
 /* Keyboard nav helpers */
-
 function getTabs(tabsEl) {
   return Array.from(tabsEl.children).filter(el => el.label);
 }

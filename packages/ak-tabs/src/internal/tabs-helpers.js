@@ -120,7 +120,11 @@ function showVisibleTabs(tabsEl) {
 
   // Hide the More dropdown if there are no children
   const showDropdown = visibleTabs.length < allTabs.length;
-  tabsEl[buttonContainer].classList.toggle(shadowStyles.locals.akTabLabelHidden, !showDropdown);
+  if (showDropdown) {
+    tabsEl[buttonContainer].classList.remove(shadowStyles.locals.akTabLabelHidden);
+  } else {
+    tabsEl[buttonContainer].classList.add(shadowStyles.locals.akTabLabelHidden);
+  }
 
   // Truncate the label if there is only a single tab
   if (visibleTabs.length) {

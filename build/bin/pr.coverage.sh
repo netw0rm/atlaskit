@@ -19,7 +19,7 @@ function stats_build_status() {
 
 stats_build_status "INPROGRESS"
 
-$CHALK --no-stdin -t "{Coverage statistics for this PR:}"
+$CHALK --no-stdin -t "{blue Coverage statistics for this PR:}"
 cat ./coverage/coverage.txt
 
 $CHALK --no-stdin -t "{blue Gathering coverage files...}"

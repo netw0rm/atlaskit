@@ -7,7 +7,7 @@ import { expect } from 'chai';
 chai.use(chaiPlugin);
 
 describe('ak-editor-plugin-hyperlink paste transformer', () => {
-  const pre = code_block({});
+  const pre = code_block();
   const editor = () => makeEditor({
     doc: doc(p()),
     plugin: HyperlinkPlugin,

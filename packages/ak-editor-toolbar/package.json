@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar",
-  "version": "2.4.12",
+  "version": "2.5.0",
   "description": "Editor Toolbar web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

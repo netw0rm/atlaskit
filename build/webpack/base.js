@@ -5,13 +5,10 @@ const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
-const isDevelopment = process.env.NODE_ENV === 'development';
+const moduleBabelQuery = require('./moduleBabelQuery');
 
-const idomBabelPlugin = ['incremental-dom', {
-  components: true,
-  hoist: true,
-  prefix: 'vdom',
-}];
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 function defaultPackageMains() {
   const options = new webpack.WebpackOptionsDefaulter();
@@ -81,15 +78,7 @@ const standardConfig = {
         {
           test: /\/stories\/.*\.tsx?$/,
           loader: loaderChain({
-            babel: {
-              presets: [
-                'es2015',
-                'react',
-              ],
-              plugins: [
-                'transform-runtime',
-              ],
-            },
+            babel: moduleBabelQuery,
             ts: {},
           }),
         },
@@ -100,13 +89,7 @@ const standardConfig = {
         {
           test: /\.tsx?$/,
           loader: loaderChain({
-            babel: {
-              presets: 'es2015',
-              plugins: [
-                'transform-runtime',
-                idomBabelPlugin,
-              ],
-            },
+            babel: moduleBabelQuery,
             ts: {},
           }),
         },
@@ -139,16 +122,7 @@ const standardConfig = {
           loader: 'babel',
           test: /\.jsx?$/,
           exclude: /node_modules|bower_components/,
-          query: {
-            presets: [
-              'es2015',
-              'stage-0',
-            ],
-            plugins: [
-              'transform-runtime',
-              idomBabelPlugin,
-            ],
-          },
+          query: moduleBabelQuery,
         },
       ],
     ],

@@ -1,12 +1,25 @@
-const baseConfig = require('./all.js');
-// eslint-disable-next-line import/no-dynamic-require
-const launchers = require(`./browserstack.browsers.stage.${process.env.BROWSERSTACK_STAGE}.js`);
+const allConfig = require('./all.js');
+const coverageConfig = require('./coverage.js');
+const stage1 = require('./browserstack.browsers.stage.1');
+const stage2 = require('./browserstack.browsers.stage.2');
+const stage3 = require('./browserstack.browsers.stage.3');
+
+const stages = [
+  null,
+  stage1,
+  stage2,
+  stage3,
+];
+
+const launchers = stages[+process.env.BROWSERSTACK_STAGE];
 
 const browsers = Object.keys(launchers);
 browsers.forEach((key) => {
   launchers[key].base = 'BrowserStack';
 });
 
+// Only generate coverage report for first stage
+const baseConfig = (process.env.BROWSERSTACK_STAGE === '1') ? coverageConfig : allConfig;
 
 module.exports = (config) => {
   baseConfig(config);

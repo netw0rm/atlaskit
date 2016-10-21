@@ -11,7 +11,8 @@ const stages = [
   stage3,
 ];
 
-const launchers = stages[+process.env.BROWSERSTACK_STAGE];
+const currentStage = +process.env.BROWSERSTACK_STAGE;
+const launchers = stages[currentStage];
 
 const browsers = Object.keys(launchers);
 browsers.forEach((key) => {
@@ -19,7 +20,8 @@ browsers.forEach((key) => {
 });
 
 // Only generate coverage report for first stage
-const baseConfig = (process.env.BROWSERSTACK_STAGE === '1') ? coverageConfig : allConfig;
+const isCoverage = currentStage === 1;
+const baseConfig = isCoverage ? coverageConfig : allConfig;
 
 module.exports = (config) => {
   baseConfig(config);
@@ -44,4 +46,7 @@ module.exports = (config) => {
     customLaunchers: launchers,
     browsers,
   });
+  if (isCoverage) {
+    config.reporters.push('coverage');
+  }
 };

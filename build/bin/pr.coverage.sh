@@ -27,8 +27,8 @@ $CHALK --no-stdin -t "{blue Gathering coverage files...}"
 TEMP_DIR="../atlaskit-stats"
 rm -rf $TEMP_DIR
 OUTDIR="$TEMP_DIR/resources/$BITBUCKET_COMMIT";
-ls -la ./coverage
-mv -f ./coverage/html/ $OUTDIR
+mkdir -p "$TEMP_DIR/resources/"
+mv -f ./coverage/html $OUTDIR
 
 ZIP_FILE="../ak-coverage-cdn.zip"
 $CHALK --no-stdin -t "{blue Packaging coverage}"

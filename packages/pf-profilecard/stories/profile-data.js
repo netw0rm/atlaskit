@@ -1,9 +1,10 @@
-const avatar1 = require('file!./data/1.jpg');
-const avatar2 = require('file!./data/2.jpg');
-const avatar3 = require('file!./data/3.jpg');
-const avatar4 = require('file!./data/4.jpg');
-const avatar5 = require('file!./data/5.jpg');
-const avatar6 = require('file!./data/6.jpg');
+import sample from 'lodash.sample';
+import avatar1 from 'file!./data/1.jpg';
+import avatar2 from 'file!./data/2.jpg';
+import avatar3 from 'file!./data/3.jpg';
+import avatar4 from 'file!./data/4.jpg';
+import avatar5 from 'file!./data/5.jpg';
+import avatar6 from 'file!./data/6.jpg';
 
 const avatarImages = [
   avatar1,
@@ -15,7 +16,7 @@ const avatarImages = [
   '', // to test invalid img src
 ];
 
-const getAvatar = () => avatarImages[Math.floor(Math.random() * 6)];
+const getAvatar = () => sample(avatarImages);
 
 const profiles = [
   {

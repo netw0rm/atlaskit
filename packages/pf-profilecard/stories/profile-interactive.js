@@ -1,10 +1,7 @@
+import avatarImage from 'file!./data/2.jpg';
 import { action } from '@kadira/storybook';
 import uid from 'uid';
 import { getTimestampWithOffset } from '../src/util/datetime';
-
-// TODO use img-loader
-// eslint-disable-next-line max-len
-const avatarImage = require('file!./data/2.jpg');
 
 const handleActionClick = ev => action('Card action clicked')(JSON.stringify(ev.detail));
 

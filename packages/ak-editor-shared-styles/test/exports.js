@@ -21,23 +21,23 @@ describe('LESS module exports', () => {
   //
   // If we were to auto-generate this list, then renaming, adding or removing would NOT
   // break any tests and thus not hint the developer at what kind of change he/she is making
-  [
-    'akEditorCodeFontFamily',
-    'akEditorInactiveForeground',
-    'akEditorFocus',
-    'akEditorSubtleAccent',
-    'akEditorActiveBackground',
-    'akEditorActiveForeground',
-    'akEditorDropdownActiveBackground',
-    'akEditorPopupBackground',
-    'akEditorPopupText',
-    'akEditorPrimaryButton',
-    'akEditorCodeBackground',
-    'akEditorCodeBlockPadding',
-    'akEditorCodeInlinePadding',
-  ].forEach((key) => {
-    it(`should have an item called "${key}"`, () => {
-      expect(lessVars).to.contain.all.keys(key);
-    });
+
+  it('should have well-defined exports', () => {
+    Object.keys(lessVars).should.be.deep.equal([
+      'akEditorCodeFontFamily',
+      'akEditorInactiveForeground',
+      'akEditorFocus',
+      'akEditorSubtleAccent',
+      'akEditorActiveBackground',
+      'akEditorActiveForeground',
+      'akEditorDropdownActiveBackground',
+      'akEditorPopupBackground',
+      'akEditorPopupText',
+      'akEditorPrimaryButton',
+      'akEditorCodeBackground',
+      'akEditorCodeBlockPadding',
+      'akEditorCodeInlinePadding',
+      'default',
+    ]);
   });
 });

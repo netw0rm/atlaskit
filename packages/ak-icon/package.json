@@ -1,6 +1,6 @@
 {
   "name": "ak-icon",
-  "version": "8.1.3",
+  "version": "8.3.2",
   "description": "Icon web components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "ak-button": "^1.4.3",
-    "akutil-common-test": "^3.0.0",
+    "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0",
     "akutil-shared-styles": "^34.0.1",
     "async": "^2.0.1",

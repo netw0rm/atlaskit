@@ -50,7 +50,10 @@ fetchMock
       mentions: resultC,
     }),
   })
-  .mock(/\/mentions\/search\?.*query=broken(&|$)/, 500);
+  .mock(/\/mentions\/search\?.*query=broken(&|$)/, 500)
+  .mock(/\/mentions\/record\?selectedUserId=\d+$/, {
+    body: '',
+  }, { name: 'record' });
 
 describe('MentionResource', function () {
   const defaultFetch = global.fetch;
@@ -90,6 +93,7 @@ describe('MentionResource', function () {
       });
       resource.filter('craig');
     });
+
     it('multiple subscriptions should receive updates', function (done) {
       const resource = new MentionResource(apiConfig);
       let count = 0;
@@ -110,6 +114,7 @@ describe('MentionResource', function () {
       resource.filter('craig');
     });
   });
+
   describe('#unsubscribe', function () {
     it('subscriber should no longer called', function (done) {
       const resource = new MentionResource(apiConfig);
@@ -124,6 +129,7 @@ describe('MentionResource', function () {
       }, 500);
     });
   });
+
   describe('#filter', function () {
     it('in order responses', function (done) {
       const resource = new MentionResource(apiConfig);
@@ -141,6 +147,7 @@ describe('MentionResource', function () {
         resource.filter('craig');
       }, 100);
     });
+
     it('out of order responses', function (done) {
       const resource = new MentionResource(apiConfig);
       const results = [];
@@ -160,6 +167,7 @@ describe('MentionResource', function () {
         resource.filter('craig');
       }, 50);
     });
+
     it('error response', function (done) {
       const resource = new MentionResource(apiConfig);
       resource.subscribe('test1', function () {
@@ -168,6 +176,19 @@ describe('MentionResource', function () {
         done();
       });
       resource.filter('broken');
+    });
+  });
+
+  describe('#recordMentionSelection', function () {
+    it('should call record endpoint', function (done) {
+      const resource = new MentionResource(apiConfig);
+
+      resource.recordMentionSelection({
+        id: 666,
+      }).then(function () {
+        expect(fetchMock.called('record')).to.be.true;
+        done();
+      });
     });
   });
 });

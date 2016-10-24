@@ -104,7 +104,7 @@ class AbstractMentionResource {
     throw new Error(`not yet implemented.\nParams: query=${query}`);
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
   recordMentionSelection(mention) {
     // Do nothing
   }

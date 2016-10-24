@@ -6,9 +6,6 @@ import MentionList from './pf-mention-list';
 import debug from '../util/logger';
 import hasChanges from '../util/has-changes';
 import uniqueId from '../util/id';
-import {
-  selected as selectedEvent,
-} from '../internal/index.events';
 
 function applyPresence(mentions, presences) {
   const updatedMentions = [];

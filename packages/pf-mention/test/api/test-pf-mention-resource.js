@@ -52,7 +52,7 @@ fetchMock
   })
   .mock(/\/mentions\/search\?.*query=broken(&|$)/, 500)
   .mock(/\/mentions\/record\?selectedUserId=\d+$/, {
-    body: ''
+    body: '',
   }, { name: 'record' });
 
 describe('MentionResource', function () {
@@ -174,23 +174,21 @@ describe('MentionResource', function () {
         assert.fail('Should not be called');
       }, function () {
         done();
-      });``
+      });
       resource.filter('broken');
     });
   });
 
   describe('#recordMentionSelection', function () {
-
     it('should call record endpoint', function (done) {
       const resource = new MentionResource(apiConfig);
 
       resource.recordMentionSelection({
-        id: 666
-      }).then(function() {
+        id: 666,
+      }).then(function () {
         expect(fetchMock.called('record')).to.be.true;
         done();
       });
     });
-
   });
 });

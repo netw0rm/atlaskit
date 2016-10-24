@@ -106,7 +106,7 @@ class AbstractMentionResource {
 
   // eslint-disable-next-line class-methods-use-this
   recordMentionSelection(mention) {
-    throw new Error(`not yet implemented.\nParams: selectedUserId=${mention.id}`);
+    // Do nothing
   }
 
   _notifyListeners(mentions) {
@@ -205,7 +205,7 @@ class MentionResource extends AbstractMentionResource {
   }
 
   recordMentionSelection(mention) {
-    this._recordSelection(mention).then(() => {}, error => debug(`error recording mention selection: ${error}`, error));
+    return this._recordSelection(mention).then(() => {}, error => debug(`error recording mention selection: ${error}`, error));
   }
 
   /**

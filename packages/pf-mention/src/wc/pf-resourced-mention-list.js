@@ -93,14 +93,6 @@ export default define('pf-resourced-mention-list', {
     elem._showError = false;
   },
 
-  attached(elem) {
-    elem.addEventListener(selectedEvent, elem._notifySelection);
-  },
-
-  detached(elem) {
-    elem.removeEventListener(selectedEvent, elem._notifySelection);
-  },
-
   render(elem) {
     debug('pf-resourced-mention-list.render', elem._mentions.length);
 
@@ -110,6 +102,7 @@ export default define('pf-resourced-mention-list', {
         <MentionList
           mentions={elem._mentions}
           showError={elem._showError}
+          onSelected={elem._notifySelection}
           ref={(ref) => { elem._mentionListRef = ref; }}
         />
       </div>

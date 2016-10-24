@@ -7,7 +7,7 @@ import debug from '../util/logger';
 import hasChanges from '../util/has-changes';
 import uniqueId from '../util/id';
 import {
-  selected as selectedEvent
+  selected as selectedEvent,
 } from '../internal/index.events';
 
 function applyPresence(mentions, presences) {
@@ -81,7 +81,7 @@ export default define('pf-resourced-mention-list', {
 
     _notifySelection(event) {
       this.resourceProvider.recordMentionSelection(event.detail);
-    }
+    },
   },
 
   created(elem) {
@@ -98,7 +98,6 @@ export default define('pf-resourced-mention-list', {
   },
 
   detached(elem) {
-    
     elem.removeEventListener(selectedEvent, elem._notifySelection);
   },
 

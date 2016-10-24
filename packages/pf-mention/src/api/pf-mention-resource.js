@@ -65,9 +65,9 @@ const buildHeaders = (secOptions) => {
 const requestService = (baseUrl, path, data, opts, secOptions) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
-  const options = Object.assign({}, opts, {headers});
+  const options = Object.assign({}, opts, { headers });
   return fetch(new Request(url, options))
-    .then(response => {
+    .then((response) => {
       if (response.ok) {
         return response.json();
       }
@@ -104,6 +104,7 @@ class AbstractMentionResource {
     throw new Error(`not yet implemented.\nParams: query=${query}`);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   recordMentionSelection(mention) {
     throw new Error(`not yet implemented.\nParams: selectedUserId=${mention.id}`);
   }
@@ -204,7 +205,7 @@ class MentionResource extends AbstractMentionResource {
   }
 
   recordMentionSelection(mention) {
-    this._recordSelection(mention).then(() => {}, (error) => debug(`error recording mention selection: ${error}`, error));
+    this._recordSelection(mention).then(() => {}, error => debug(`error recording mention selection: ${error}`, error));
   }
 
   /**
@@ -243,8 +244,8 @@ class MentionResource extends AbstractMentionResource {
       selectedUserId: mention.id,
     };
     const options = {
-      method: 'POST'
-    }
+      method: 'POST',
+    };
     return requestService(this._config.url, 'mentions/record', data, options, secOptions);
   }
 }

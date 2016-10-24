@@ -15,10 +15,10 @@ const browserStackBrowsers = {
   },
 
   sierra_safari_10: {
-    browser: 'safari',
-    os: 'macOS',
+    browser: 'Safari',
+    os: 'OS X',
     os_version: 'Sierra',
-    browser_version: '10',
+    browser_version: '10.0',
   },
 };
 

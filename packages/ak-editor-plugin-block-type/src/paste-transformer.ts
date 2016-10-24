@@ -14,7 +14,7 @@ function persistNewLines(
   // which would create a new code block (don't do anything)
 
   // when copying with multiple lines from a code block and paste into a code block with some text, `node.type.name` is `text`
-  // which would strip the newlines (add the newlines back)
+  // which would strip the newlines (add the newlines back) (Looks like the problem is fixed in the latest prosemirror)
 
   // when copying from text (except for <pre> tag) and paste into an empty code block `node.type.name` is the original type
   // when would remove the code block (convert to code block)
@@ -49,11 +49,36 @@ function persistNewLines(
 }
 
 export default function(pm: ProseMirror, slice: Slice): Slice {
-  var nodeType = pm.selection.$from.node(1).type;
+  debugger
+  var nodeType = pm.selection.$head.node(1).type;
 
   if (nodeType.name === 'code_block') {
-    const nodes = slice.content.content
-      .map((node: Node) => persistNewLines(pm, node));
+    const text = slice.content.content
+      .reduce((pre: string, node: Node, currentIndex: number, { length }: Node[]) => {
+        const nodeText = node.content.content.reduce((pre: string, node: Node, currentIndex: number, { length }: Node[]) => {
+          if (!node.text) {
+            return pre;
+          }
+
+          const text = `${pre}${node.text}`;
+          if (currentIndex === length - 1) {
+            return text;
+          } else {
+            return `${text}\n`;
+          }
+        }, '');
+
+        const text = `${pre}${nodeText}`
+        if (currentIndex === length - 1) {
+          return text;
+        } else {
+          return `${text}\n\n`;
+        }
+      }, '');
+
+    const textNode = pm.schema.nodes.text.create({}, nodeText);
+    const node = pm.schema.nodes.code_block.create({}, textNode);
+    const nodes = [node];
 
     return new Slice(Fragment.fromArray(nodes), 0, 0);
   }

@@ -86,6 +86,7 @@ describe(name, () => {
           'help',
           'home',
           'jira/logo',
+          'moreoptions',
           'projects',
           'question',
           'radio',

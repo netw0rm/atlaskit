@@ -27,9 +27,10 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "^3.0.0",
+    "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.2.0",
     "loader-utils": "^0.2.16",
+    "lodash.sample": "^4.2.1",
     "uid": "^0.0.2"
   },
   "repository": {

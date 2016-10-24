@@ -1,20 +1,18 @@
 #!/usr/bin/env node
 
 const webpack = require('webpack');
-const webpackConf = require('./webpack.config.js');
-const componentTemplate = require('./componentTemplate');
 const path = require('path');
 const glob = require('glob');
-const fs = require('fs');
 const async = require('async');
-const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 const minilog = require('minilog');
-const { name } = require('../package.json');
+
+const webpackConf = require('./webpack.config.js');
+const { glyphFolderName, tmpFolderName, fileEnding } = require('./constants');
+const workOnIcons = require('./workOnIcons');
+
+
 const log = minilog('ak-icon/gen-js');
-const defaultSvgo = require('./svgo/transformations/default');
-const customSvgo = require('./svgo/transformations/custom');
-const { glyphFolderName, tmpFolderName } = require('./constants');
 
 if (process.env.CLI) {
   minilog.suggest.defaultResult = false;
@@ -22,11 +20,6 @@ if (process.env.CLI) {
 }
 
 minilog.enable();
-
-const fileEnding = '.svg';
-
-const maxWidth = 20;
-const maxHeight = 20;
 
 const rootFolder = path.join(__dirname, '..');
 const srcFolder = path.join(rootFolder, 'src', 'icons');
@@ -51,76 +44,7 @@ async.waterfall([
       cwd: srcFolder,
     }, cb);
   },
-  function workOnIcons(iconPaths, finishIconWork) {
-    log.debug('starting work on icons');
-
-    async.eachSeries(iconPaths, (iconRelativePathToSrc, callback) => {
-      const iconRelativePathToSrcNoExt = iconRelativePathToSrc
-        .replace(new RegExp(`\\${fileEnding}$`), '');
-      async.waterfall([
-        function readSvg(cb) {
-          const file = path.join(srcFolder, iconRelativePathToSrc);
-          log.debug(`"${iconRelativePathToSrc}": reading file`);
-
-          fs.readFile(file, 'utf8', cb);
-        },
-        function optimizeSvg(rawSvg, cb) {
-          log.debug(`"${iconRelativePathToSrc}": optimizing SVG`);
-
-          defaultSvgo.optimize(rawSvg, ({ info, data }) => {
-            const { width, height } = info;
-            if (width > maxWidth) {
-              log.warn(`"${iconRelativePathToSrc}": too wide: ${width} > ${maxWidth}`);
-            }
-            if (height > maxHeight) {
-              log.warn(`"${iconRelativePathToSrc}": too high: ${height} > ${maxHeight}`);
-            }
-            cb(null, data);
-          });
-        },
-        function runCustomTransformations(svgData, cb) {
-          const fillCallback = (fill) =>
-            log.warn(`"${iconRelativePathToSrc}": has a fill of "${fill}"`);
-
-          const svgo = customSvgo(fillCallback);
-          svgo.optimize(svgData, (result) => cb(null, result.data));
-        },
-        function generateExport(svgData, cb) {
-          log.debug(`"${iconRelativePathToSrc}": generating export`);
-
-          const iconRelativePathDashed = iconRelativePathToSrcNoExt.split(path.sep).join('-');
-          const iconName = `${name}-${iconRelativePathDashed}`;
-          const template = componentTemplate({
-            iconName,
-            unprefixedIconName: iconRelativePathDashed,
-            svgData,
-            iconRelativePathToSrc,
-            iconRelativePathToSrcNoExt,
-          });
-          cb(null, template);
-        },
-        function createDirs(contents, cb) {
-          log.debug(`"${iconRelativePathToSrc}": creating intermediate directories`);
-
-          const targetFile = path.join(tmpFolder, `${iconRelativePathToSrcNoExt}.js`);
-          mkdirp(path.dirname(targetFile), (err) => cb(err, {
-            targetFile,
-            contents,
-          }));
-        },
-        function writeFile({ contents, targetFile }, cb) {
-          log.debug(`"${iconRelativePathToSrc}": writing generated code to memory`);
-
-          fs.writeFile(targetFile, contents, cb);
-        },
-        function done(cb) {
-          log.info(`"${iconRelativePathToSrc}" transformed successfully`);
-
-          cb();
-        },
-      ], callback);
-    }, (err) => finishIconWork(err, iconPaths));
-  },
+  workOnIcons(log, srcFolder, tmpFolder),
 
   function webpackify(iconPaths, cb) {
     log.info('Transforming icons via webpack');

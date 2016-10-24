@@ -9,4 +9,5 @@ import createError from 'create-error';
  */
 const NotRemovableError = createError('NotRemovableError');
 
+// eslint-disable-next-line import/prefer-default-export
 export { NotRemovableError };

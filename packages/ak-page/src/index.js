@@ -1,22 +1,28 @@
-import 'style!./host.less';
-import { prop, vdom, define } from 'skatejs';
-import shadowStyles from './shadow.less';
+import { prop, props, vdom, define } from 'skatejs';
 import classNames from 'classnames';
-import Navigation, { events as navigationEvents } from 'ak-navigation';
+import { events as navigationEvents } from 'ak-navigation';
+
+import shadowStyles from './shadow.less';
+
+
 const {
-  widthChanged: widthChangedEvent,
+  resizeStart: resizeStartEvent,
+  resizeEnd: resizeEndEvent,
 } = navigationEvents;
 
-const navigationPadding = 20;
 const shouldAnimateThreshold = 100; // ms
 
-function handleWidthChanged(e, elem) {
-  if (e.target instanceof Navigation) {
-    elem.navigationWidth = e.detail.newWidth;
-  }
+function handleResizeStart(e, elem) {
+  props(elem, {
+    __isResizing: true,
+  });
 }
 
-const navigationSlot = Symbol('navigationSlot');
+function handleResizeEnd(e, elem) {
+  props(elem, {
+    __isResizing: false,
+  });
+}
 
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -30,30 +36,25 @@ const navigationSlot = Symbol('navigationSlot');
 export default define('ak-page', {
   render(elem) {
     return (
-      <div>
-        {/* This is required for elements in the shadow root to be styled.
-           This is wrapped in the <div /> because you can't have more than one
-           root element.
-        */}
+      <div
+        className={classNames(shadowStyles.locals.page, {
+          // eslint-disable-next-line no-underscore-dangle
+          [shadowStyles.locals.resizing]: elem.__isResizing,
+        })}
+      >
         <style>{shadowStyles.toString()}</style>
-        <style>{`
-            .${shadowStyles.locals.main} {
-              margin-left: ${elem.navigationWidth + navigationPadding}px;
-            }
-          `}</style>
         <div className={shadowStyles.locals.navigation}>
           <slot
-            ref={(el) => { elem[navigationSlot] = el; }}
             className={shadowStyles.locals.navigationSlot}
             name="navigation"
           />
         </div>
-        <div
-          className={classNames(shadowStyles.locals.main, {
-            [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
-          })}
-        >
-          <div className={shadowStyles.locals.mainFixed}>
+        <div className={classNames(shadowStyles.locals.mainOuter)}>
+          <div
+            className={classNames(shadowStyles.locals.mainInner, {
+              [shadowStyles.locals.fluid]: (elem.layout === 'fluid'),
+            })}
+          >
             <slot className={shadowStyles.locals.mainSlot} />
           </div>
         </div>
@@ -61,6 +62,7 @@ export default define('ak-page', {
     );
   },
   props: {
+    __isResizing: prop.boolean(),
     /**
      * @description Whether the component should display animations.
      * `shouldAnimate` is turned on after page load.
@@ -70,31 +72,28 @@ export default define('ak-page', {
      * @example @js page.shouldAnimate = true;
      */
     shouldAnimate: prop.boolean(),
-
     /**
-     * @description The current width of the navigation part of the page.
-     * This is updated by Page when it listens to a Navigation#widthChanged event.
+     * @description Defines the size of the page.
+     * Allowed values: 'fixed', 'fluid'.
      * @memberof Page
      * @instance
-     * @type {integer}
-     * @example @js page.navigationWidth = 80;
-     * @example @html <ak-page navigation-width="80" />;
+     * @default fixed
+     * @type {string}
+     * @example @html <ak-page layout="fluid"></ak-page>
+     * @example @js page.layout = 'fluid';
      */
-    navigationWidth: prop.number({
+    layout: prop.string({
       attribute: true,
+      default: 'fixed',
     }),
   },
   created(elem) {
-    elem.addEventListener(widthChangedEvent, (e) => handleWidthChanged(e, elem));
+    elem.addEventListener(resizeStartEvent, e => handleResizeStart(e, elem));
+    elem.addEventListener(resizeEndEvent, e => handleResizeEnd(e, elem));
   },
   attached(elem) {
     setTimeout(() => {
       elem.shouldAnimate = true;
     }, shouldAnimateThreshold);
-    const navigation = elem[navigationSlot].assignedNodes()[0];
-    if (!navigation) {
-      return;
-    }
-    elem.navigationWidth = navigation.width;
   },
 });

@@ -4,7 +4,7 @@
 @import '~akutil-shared-styles/src/fonts.less';
 @import '~akutil-shared-styles/src/borders.less';
 
-// this is duplicated in index.js
+// this is duplicated in shared-variables.js
 @global-bar-width: 60px;
 @container-collapsed-width: 60px;
 @expanded-width: 280px;
@@ -14,10 +14,12 @@
 @navigation-link-icon-margin-right: 20px;
 @navigation-link-icon-size: 20px;
 
+@container-width: @expanded-width - @global-bar-width;
 // From left to right: subtract all expanded widths to figure out how much space we have left
 @container-link-text-expanded-width:
-  @expanded-width - @global-bar-width - @container-padding-expanded -
+  @container-width - @container-padding-expanded -
   @navigation-link-icon-margin-left - @navigation-link-icon-size - @navigation-link-icon-margin-right;
+
 
 @global-z-index: 2;
 @drawer-z-index: 1;

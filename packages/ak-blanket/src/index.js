@@ -1,10 +1,10 @@
 /** @jsx vdom */
-import 'style!./host.less';
-
 import { prop, vdom, define, emit } from 'skatejs';
-import shadowStyles from './shadow.less';
 import classNames from 'classnames';
+
+import shadowStyles from './shadow.less';
 import * as events from './internal/index.events';
+
 
 function handleActivation(elem) {
   return () => {
@@ -26,15 +26,15 @@ export default define('ak-blanket', {
       [shadowStyles.locals.blanket, { [`${shadowStyles.locals.tinted}`]: elem.tinted }]
     );
 
+    // TODO make sure that the div onclick is accessible
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <div
+        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
           onClick={handleActivation(elem)}
           onTouch={handleActivation(elem)}
           className={classes}
-        >
-        </div>
+        />
       </div>
     );
   },

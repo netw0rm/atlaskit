@@ -38,7 +38,7 @@ describe('ak-avatar', () => {
         const imgRendered = () => (getShadowRoot(component).querySelector('img') !== null);
         const definition = createDefinition({ src });
         return createTemporaryComponent(define, definition)
-          .then(newComponent => {
+          .then((newComponent) => {
             component = newComponent;
             expect(imgRendered()).to.equal(shouldRenderImg);
           });
@@ -57,7 +57,7 @@ describe('ak-avatar', () => {
       const definition = createDefinition(props);
 
       return createTemporaryComponent(define, definition)
-        .then(newComponent => {
+        .then((newComponent) => {
           component = newComponent;
           const img = getShadowRoot(component).querySelector('img');
 

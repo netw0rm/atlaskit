@@ -1,21 +1,25 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import Tag from '../src/index';
 import React from 'react';
-import { name } from '../package.json';
-import styles from 'style!./../src/host.less';
+import reactify from 'akutil-react';
 
-const Component = reactify(Tag);
+import TagWc from '../src/index';
+import { name } from '../package.json';
+import styles from '../src/shadow.less';
+
+
+const Tag = reactify(TagWc);
+
+const MyTag = props => (
+  <Tag
+    className={styles.locals.akTag}
+    {...props}
+  />
+);
 
 const cupcakeipsum = 'Croissant topping tiramisu gummi bears. Bonbon chocolate bar danish soufflé';
 
 storiesOf(name, module)
-  .add('text: simple', () => (
-    <Component
-      className={styles.akTag}
-      text="Marshmallow"
-    />
-  ))
+  .add('text: simple', () => <MyTag text="Marshmallow" />)
   .add('text: maximum length (ellipsis)', () => (
     <table>
       <tbody>
@@ -26,17 +30,13 @@ storiesOf(name, module)
         <tr>
           <th>Text</th>
           <td>
-            <Component
-              className={styles.akTag}
-              text={cupcakeipsum}
-            />
+            <MyTag text={cupcakeipsum} />
           </td>
         </tr>
         <tr>
           <th>Linked</th>
           <td>
-            <Component
-              className={styles.akTag}
+            <MyTag
               text={cupcakeipsum}
               href="http://www.cupcakeipsum.com/"
             />
@@ -45,8 +45,7 @@ storiesOf(name, module)
         <tr>
           <th>Removable</th>
           <td>
-            <Component
-              className={styles.akTag}
+            <MyTag
               text={cupcakeipsum}
               remove-button-text="No sweets for you!"
             />
@@ -55,8 +54,7 @@ storiesOf(name, module)
         <tr>
           <th>Removable & linked</th>
           <td>
-            <Component
-              className={styles.akTag}
+            <MyTag
               text={cupcakeipsum}
               remove-button-text="No sweets for you!"
               href="http://www.cupcakeipsum.com/"
@@ -65,4 +63,11 @@ storiesOf(name, module)
         </tr>
       </tbody>
     </table>
+  ))
+  .addBaselineAligned('baseline alignment', () => (
+    <MyTag
+      text={cupcakeipsum}
+      remove-button-text="No sweets for you!"
+      href="http://www.cupcakeipsum.com/"
+    />
   ));

@@ -1,6 +1,11 @@
 # Navigation
 
-This component is displayed as a sidebar – it contains two sections, "global" and "container", both used for navigating through different views and containers in a product.
+This component is displayed as a sidebar and it contains two sections: "global" and "container". Both sections are used for navigating through different views and containers in a product.
+
+![Example navigation](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-navigation/docs/navigation.gif)
+
+Although the ak-navigation component can be used by itself, it works best in conjunction with the [ak-page](https://www.npmjs.com/package/ak-page) component.
+
 
 ##Try it out
 
@@ -26,6 +31,12 @@ Import the component in your JS resource:
 
 ```js
 import 'ak-navigation';
+import 'ak-icon/glyph/search';
+import 'ak-icon/glyph/create';
+import 'ak-icon/glyph/bitbucket/logo';
+import 'ak-icon/glyph/bitbucket/dashboard';
+import 'ak-icon/glyph/confluence/calendar';
+import 'ak-icon/glyph/confluence/canvas';
 ```
 
 Now you can use the defined tag in your HTML markup:
@@ -42,16 +53,16 @@ Now you can use the defined tag in your HTML markup:
     <ak-navigation
         slot="navigation"
         open
-        containe-name="Nucleus"
+        container-name="Nucleus"
         container-href="http://example.com"
         container-logo="http://example.com/img.jpg"
         product-href="http://atlassian.design"
         collapsible
       >
         <!-- Slots for global actions -->
-        <ak-icon slot="global-home" glyph="bitbucket" />
-        <ak-icon slot="global-search" glyph="search" />
-        <ak-icon slot="global-create" glyph="create" />
+        <ak-icon-bitbucket-logo slot="global-home" />
+        <ak-icon-search slot="global-search" />
+        <ak-icon-create slot="global-create" />
 
         <!-- Slots for global help / account -->
         <ak-dropdown position="right bottom" slot="global-profile">
@@ -63,7 +74,7 @@ Now you can use the defined tag in your HTML markup:
         </ak-dropdown>
         <ak-dropdown position="right bottom" slot="global-help">
           <ak-dropdown-trigger slot="trigger">
-            <ak-icon glyph="help" />
+            <ak-icon-help />
           </ak-dropdown-trigger>
           <ak-dropdown-item>AtlasKit is great</ak-dropdown-item>
           <ak-dropdown-item>Tell your friends</ak-dropdown-item>
@@ -79,13 +90,13 @@ Now you can use the defined tag in your HTML markup:
 
         <!-- Default slot is the container -->
         <ak-navigation-link selected>
-          <ak-icon slot="icon" glyph="calendar" /> Calendar
+          <ak-icon-confluence-calendar slot="icon" /> Calendar
         </ak-navigation-link>
         <ak-navigation-link href="http://atlassian.design" >
-          <ak-icon slot="icon" glyph="overview" /> Atlassian design
+          <ak-icon-bitbucket-overview slot="icon" /> Atlassian design
         </ak-navigation-link>
         <ak-navigation-link>
-          <ak-icon slot="icon" glyph="canvas" /> Canvas
+          <ak-icon-confluence-canvas slot="icon" /> Canvas
         </ak-navigation-link>
         <ak-navigation-link>
       </ak-navigation>

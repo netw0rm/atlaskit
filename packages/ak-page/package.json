@@ -1,6 +1,6 @@
 {
   "name": "ak-page",
-  "version": "4.0.4",
+  "version": "5.2.0",
   "description": "ak-page webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -15,18 +15,19 @@
     "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^1.2.5"
+    "skatejs": "^3.0.0"
   },
   "peerDependencies": {
-    "ak-navigation": "^10.0.0"
+    "ak-navigation": "^11.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-icon": "^4.1.0",
-    "ak-navigation": "^10.0.0",
-    "akutil-common-test": "^3.0.0",
-    "akutil-react": "^1.0.0"
+    "ak-icon": "^8.1.2",
+    "ak-navigation": "^11.0.0",
+    "akutil-common-test": "^4.0.0",
+    "akutil-react": "^1.0.0",
+    "react-lorem-component": "^0.10.1"
   },
   "repository": {
     "type": "git",

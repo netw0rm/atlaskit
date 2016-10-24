@@ -12,21 +12,17 @@ html {
 @grid-line-size: 1px;
 @grid-minus-one: @ak-grid-size - @grid-line-size;
 @grid-line-opacity: 0.1;
+@grid-color: @ak-color-N40;
+@margin: @ak-grid-size * 2;
 
 
 body {
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: white;
   // creates the hatched grid pattern in storybook
-  background-image: repeating-linear-gradient(0deg,
-    transparent, transparent @grid-minus-one,
-    rgba(0, 0, 0, @grid-line-opacity) @grid-line-size,
-    transparent @ak-grid-size),
-    repeating-linear-gradient(90deg, transparent,
-    transparent @grid-minus-one,
-    rgba(0, 0, 0, @grid-line-opacity) @grid-line-size,
-    transparent @ak-grid-size);
+  background-image: repeating-linear-gradient(0deg, white, white 7px, transparent 7px, transparent),
+                    repeating-linear-gradient(90deg, @grid-color, @grid-color 1px, white 1px, white);
   background-size: @ak-grid-size @ak-grid-size;
   // height: 100% is required so that the body actually has a height
-  height: 100%;
-  margin: 0;
+  height: ~"calc(100% - @{margin}*2)";
+  margin: @margin;
 }

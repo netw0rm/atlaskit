@@ -3,10 +3,13 @@ import { waitUntil, afterMutations, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
+
 import Tag, { exceptions, events } from '../src';
+import { getRootNode } from './_helpers';
+
+
 const { NotRemovableError } = exceptions;
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
-import { getRootNode } from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -32,7 +35,7 @@ describe('ak-tag', () => {
 
   describe('exports', () => {
     it('should export a base component', () => {
-      (new Tag).should.be.an.instanceof(Component);
+      (new Tag()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
@@ -110,6 +113,25 @@ describe('ak-tag', () => {
           component.remove();
           beforeRemoveEventSpy.should.have.been.calledOnce;
         }
+        // we can't add `done` here, as it will be invoked on animation end (~250ms)
+      );
+    });
+
+    it('should emit the component as a detail before and after it was removed', (done) => {
+      let detailBefore;
+      component.addEventListener(beforeRemoveEvent, (e) => {
+        detailBefore = e.detail.item;
+      });
+      component.addEventListener(afterRemoveEvent, (e) => {
+        expect(e.detail.item).to.equal(component);
+        done();
+      });
+
+      afterMutations(
+        () => (component['remove-button-text'] = 'x'),
+        () => component.isRemovable().should.be.true,
+        () => (component.remove()),
+        () => (expect(detailBefore).to.equal(component))
         // we can't add `done` here, as it will be invoked on animation end (~250ms)
       );
     });

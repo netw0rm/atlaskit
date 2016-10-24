@@ -23,7 +23,7 @@ services:
     logging:
       driver: none
   dev-server:
-    image: atlassianlabs/atlaskit:latest
+    build: .
     volumes:
       - .:/usr/src/app/
     ports:
@@ -32,11 +32,10 @@ services:
       SCOPE:
     command: 'bash -c
             "
-              npm run postinstall
-              && npm run storybook/single \"$SCOPE\"
+              npm run storybook/single \"$SCOPE\"
             "'
   cucumber:
-    image: atlassianlabs/atlaskit:latest
+    build: .
     volumes:
       - .:/usr/src/app/
     depends_on:
@@ -54,7 +53,7 @@ services:
               echo \"waiting for hub\"
               && `npm bin`/wait-on tcp:hub:4444
               && echo \"waiting for dev\"
-              && `npm bin`/wait-on http://dev:9001/static/preview.bundle.js
+              && `npm bin`/wait-on -d 20000 -i 500 http-get://dev:9001/
               && echo \"running tests\"
               && npm run test/single/integration \"$SCOPE\"
              "'

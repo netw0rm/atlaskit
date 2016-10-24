@@ -1,11 +1,14 @@
 import { configure, setAddon } from '@kadira/storybook';
 import 'akutil-polyfills';
-import MonitoredStory from './MonitoredStory.js';
-import MonkeyTestStory from './MonkeyTestStory.js';
-import SwappedDirectionStory from './SwappedDirectionStory.js';
 import React from 'react';
 
 import 'style!./styles.less';
+
+import MonitoredStory from './MonitoredStory';
+import MonkeyTestStory from './MonkeyTestStory';
+import SwappedDirectionStory from './SwappedDirectionStory';
+import BaselineAlignmentStory from './BaselineAlignmentStory';
+
 
 function loadStories() {
   // Use a webpack loader to dynamically require stories.
@@ -19,7 +22,7 @@ function loadStories() {
 
 setAddon({
   addMonitored(storyName, storyFn, rafFn) {
-    this.add(storyName, (context) => (
+    this.add(storyName, context => (
       <MonitoredStory rafFn={rafFn}>
         {storyFn(context)}
       </MonitoredStory>
@@ -27,7 +30,7 @@ setAddon({
   },
 
   addMonkeyTest(storyName, storyFn) {
-    this.add(storyName, (context) => (
+    this.add(storyName, context => (
       <MonkeyTestStory>
         {storyFn(context)}
       </MonkeyTestStory>
@@ -35,10 +38,18 @@ setAddon({
   },
 
   addSwapped(storyName, storyFn) {
-    this.add(storyName, (context) => (
+    this.add(storyName, context => (
       <SwappedDirectionStory>
         {storyFn(context)}
       </SwappedDirectionStory>
+    ));
+  },
+
+  addBaselineAligned(storyName, storyFn) {
+    this.add(storyName, context => (
+      <BaselineAlignmentStory>
+        {storyFn(context)}
+      </BaselineAlignmentStory>
     ));
   },
 });

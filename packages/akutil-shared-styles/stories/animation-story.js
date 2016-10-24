@@ -1,13 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 import { storiesOf } from '@kadira/storybook';
-import storyStyles from './animation/animation-story.less';
+
+import storyStyles from 'style!./animation/animation-story.less';
 import { name } from '../package.json';
+import AnimatedBox from './animation/AnimatedBox';
+import AnimatedBoxGroup from './animation/AnimatedBoxGroup';
+
 
 const containerClass = classNames(storyStyles.container);
-
-import AnimatedBox from './animation/AnimatedBox.js';
-import AnimatedBoxGroup from './animation/AnimatedBoxGroup.js';
 
 storiesOf(name, module)
   .add('Bold, Optimistic and Combined curves', () => (
@@ -26,7 +27,7 @@ storiesOf(name, module)
       <p>Bold animations should be used to focus attentions on a certain element on a page and only
         one such animation should ever be present at a time.
       </p>
-      <p>It follows an 80/20 rule where it will do 80% of it's motion in the first 20% of
+      <p>It follows an 80/20 rule where it will do 80% of it&#39;s motion in the first 20% of
         the time
       </p>
       <div className={containerClass}>

@@ -1,7 +1,10 @@
-import { getShadowRoot, waitUntil } from '../src';
-import Avatar from 'ak-avatar';
+import Button from 'ak-button';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
+
+import { getShadowRoot, waitUntil } from '../src';
+
+
 chai.should();
 chai.use(sinonChai);
 
@@ -9,7 +12,7 @@ chai.use(sinonChai);
 describe('getShadowRoot', () => {
   let component;
   beforeEach(() => {
-    component = new Avatar();
+    component = new Button();
     document.body.appendChild(component);
   });
   afterEach(() => {

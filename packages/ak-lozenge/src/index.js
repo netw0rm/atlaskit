@@ -1,8 +1,9 @@
-import 'style!./host.less';
-import shadowStyles from './shadow.less';
 import { define, prop, vdom } from 'skatejs';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
+
+import shadowStyles from './shadow.less';
+
 
 const APPEARANCE_ENUM = {
   values: ['default', 'success', 'removed', 'inprogress', 'new', 'moved'],
@@ -21,7 +22,7 @@ const definition = {
     return (
       <span class={classes} bold={elem.bold}>
         <style>{shadowStyles.toString()}</style>
-        <span className={shadowStyles.locals.content}><slot></slot></span>
+        <span className={shadowStyles.locals.content}><slot /></span>
       </span>
     );
   },

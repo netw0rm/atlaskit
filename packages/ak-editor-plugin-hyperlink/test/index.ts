@@ -77,7 +77,7 @@ describe('ak-editor-plugin-hyperlink', () => {
     });
 
     it('should get current state immediately once subscribed', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: '' })('text'))));
+      const { pm, plugin } = editor(doc(p('{<}text{>}')));
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
@@ -87,16 +87,16 @@ describe('ak-editor-plugin-hyperlink', () => {
         active: false,
         element: null,
         enabled: true,
-        href: "",
-        rel: "",
-        target: "",
-        text: "",
-        title: "",
+        href: '',
+        rel: '',
+        target: '',
+        text: '',
+        title: '',
       });
     });
 
     it('should be able to register handlers for state change events', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: '' })('te{pos}xt'))));
+      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('te{pos}xt'))));
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
@@ -106,7 +106,7 @@ describe('ak-editor-plugin-hyperlink', () => {
     });
 
     it('does not emit `change` multiple times when the selection moves within a link', () => {
-      const { pm, plugin } = editor(doc(p('{<>}text', a({ href: '' })('l{pos1}i{pos2}nk'))));
+      const { pm, plugin } = editor(doc(p('{<>}text', a({ href: 'http://www.atlassian.com' })('l{pos1}i{pos2}nk'))));
       const spy = sinon.spy();
       const { pos1, pos2 } = pm.doc.refs;
       plugin.subscribe(spy);
@@ -121,7 +121,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       const { pm, plugin } = editor(doc(p('te{textPos}xt {<>}')));
       const { textPos } = pm.doc.refs;
       const spy = sinon.spy();
-      const { linkPos } = insert(pm, a({ href: '' })('li{linkPos}nk'));
+      const { linkPos } = insert(pm, a({ href: 'http://www.atlassian.com' })('li{linkPos}nk'));
       pm.setTextSelection(linkPos);
 
       plugin.subscribe(spy);
@@ -133,22 +133,22 @@ describe('ak-editor-plugin-hyperlink', () => {
     it('does not permit adding a link to a collapsed selection', () => {
       const { pm, plugin } = editor(doc(p('{<>}')));
 
-      expect(plugin.addLink({ href: '' })).to.be.false;
+      expect(plugin.addLink({ href: 'http://www.atlassian.com' })).to.be.false;
       expect(pm.doc).to.deep.equal(doc(p()));
     });
 
     it('does not permit adding a link to an existing link', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: '' })('{<}link{>}'))));
+      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{<}link{>}'))));
 
-      expect(plugin.addLink({ href: '' })).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p(a({ href: '' })('link'))));
+      expect(plugin.addLink({ href: 'http://www.example.com' })).to.be.false;
+      expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://www.atlassian.com' })('link'))));
     });
 
     it('does not permit adding a link when in the disabled state', () => {
       const { pm, plugin } = editor(doc(p('{<}text{>}')));
       plugin.setState({ enabled: false });
 
-      expect(plugin.addLink({ href: '' })).to.be.false;
+      expect(plugin.addLink({ href: 'http://www.atlassian.com' })).to.be.false;
       expect(pm.doc).to.deep.equal(doc(p('text')));
     });
 
@@ -165,7 +165,59 @@ describe('ak-editor-plugin-hyperlink', () => {
       const text = 'foo';
 
       expect(plugin.addLink({ href, text })).to.be.true;
-      expect(pm.doc).to.deep.equal(doc(p(a({ href: href })(text))));
+      expect(pm.doc).to.deep.equal(doc(p(a({ href })(text))));
+    });
+
+    it('should not be a part of the link when typing before it', () => {
+      const { pm, plugin } = editor(doc(p('a{<}text{>}')));
+      const href = 'http://example.com';
+      const text = 'foo';
+      const bar = 'bar';
+
+      plugin.addLink({ href, text });
+      pm.tr.insertText(2, bar).apply();
+
+      expect(pm.doc).to.deep.equal(doc(p(`a${bar}`, a({ href })(text))));
+    });
+
+    it('should be a part of the link when typing on it', () => {
+      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+      const href = 'http://example.com';
+      const text = 'for';
+      const bar = 'oba';
+
+      plugin.addLink({ href, text });
+      pm.tr.insertText(3, bar).apply();
+
+      expect(pm.doc).to.deep.equal(doc(p(a({ href })('foobar'))));
+    });
+
+    it('should not be a part of the link when typing after it', () => {
+      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+      const href = 'http://example.com';
+      const text = 'foo';
+      const bar = 'bar';
+
+      plugin.addLink({ href, text });
+      pm.tr.insertText(4, bar).apply();
+
+      expect(pm.doc).to.deep.equal(doc(p(a({ href })(text), bar)));
+    });
+
+    it('should not allow creating a link if href is empty', () => {
+      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+      const href = '';
+
+      expect(plugin.addLink({ href })).to.be.false;
+      expect(pm.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('should not allow creating a link if href is whitespaces only', () => {
+      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+      const href = ' \t';
+
+      expect(plugin.addLink({ href })).to.be.false;
+      expect(pm.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should not be able to link if selection is empty', () => {
@@ -173,7 +225,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       pm.setTextSelection(1);
       const { enabled } = plugin.getState();
 
-      expect(enabled).to.equal(false);
+      expect(enabled).to.be.false;
     });
 
     it('should not be able to unlink a node that has no link', () => {
@@ -184,20 +236,40 @@ describe('ak-editor-plugin-hyperlink', () => {
     });
 
     it('should be able to unlink an existing link', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: '' })('{<}text{>}'))));
+      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
 
       expect(plugin.removeLink()).to.be.true;
       expect(pm.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should be able to update existing links with HyperLinkOptions', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: '' })('{<}text{>}'))));
+      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
 
       expect(plugin.updateLink({
         href: 'http://example.com',
         text: 'foo'
       })).to.be.true;
       expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://example.com' })('foo'))));
+    });
+
+    it('should not allow updating a link if new href is empty', () => {
+      const { pm, plugin } = editor(doc(p(a({ href: 'http://example.com' })('{<}text{>}'))));
+
+      expect(plugin.updateLink({
+        href: '',
+        text: 'example/foo'
+      })).to.be.false;
+      expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://example.com' })('text'))));
+    });
+
+    it('should not allow updating a link if new href is whitespaces only', () => {
+      const { pm, plugin } = editor(doc(p(a({ href: 'http://example.com' })('{<}text{>}'))));
+
+      expect(plugin.updateLink({
+        href: ' \n',
+        text: 'example/foo'
+      })).to.be.false;
+      expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://example.com' })('text'))));
     });
 
     it('should not be able to update when not in a link', () => {
@@ -211,10 +283,10 @@ describe('ak-editor-plugin-hyperlink', () => {
     });
 
     it('requires options when updating a link', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: '' })('{<}text{>}'))));
+      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
 
       expect(plugin.updateLink()).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p(a({ href: '' })('text'))));
+      expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://www.atlassian.com' })('text'))));
     });
   });
 });

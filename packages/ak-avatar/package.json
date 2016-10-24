@@ -1,6 +1,6 @@
 {
   "name": "ak-avatar",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Avatar web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -18,10 +18,10 @@
     "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^1.2.5"
+    "skatejs": "^3.1.2"
   },
   "devDependencies": {
-    "akutil-common-test": "^3.0.0",
+    "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0"
   },
   "repository": {

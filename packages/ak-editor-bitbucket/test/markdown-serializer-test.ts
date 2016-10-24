@@ -1,11 +1,13 @@
 import markdownSerializer from '../src/markdown-serializer';
 import {
-  doc, text, p, pre, img, code, strong, blockquote, hr,
+  code_block, doc, text, p, img, code, strong, blockquote, hr,
   h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, del
 } from 'ak-editor-test';
 import { expect } from 'chai';
 
 describe('Bitbucket markdown serializer: ', () => {
+  const pre = code_block();
+
   it('should serialize paragraphs', () => {
     expect(markdownSerializer.serialize(doc(p(text('foo'))))).to.eq('foo');
     expect(markdownSerializer.serialize(doc([
@@ -18,6 +20,45 @@ describe('Bitbucket markdown serializer: ', () => {
       p(text(longText)),
       p(text(longText))
     ]))).to.eq(`${longText}\n\n${longText}`);
+  });
+
+  it('should preserve multiple blank lines using zero-non-width', () => {
+    expect(markdownSerializer.serialize(doc([
+      p(text('foo')),
+      p(),
+      p(text('bar'))
+    ]))).to.eq('foo\n\n\u200c\n\nbar');
+
+    expect(markdownSerializer.serialize(doc([
+      p(text('foo')),
+      p(),
+      p(),
+      p(text('bar'))
+    ]))).to.eq('foo\n\n\u200c\n\n\u200c\n\nbar');
+  });
+
+  it('should preserve leading and traling blank lines suing zero-non-width', () => {
+    expect(markdownSerializer.serialize(doc([
+      p(),
+      p(text('bar'))
+    ]))).to.eq('\u200c\n\nbar');
+
+    expect(markdownSerializer.serialize(doc([
+      p(),
+      p(),
+      p(text('bar'))
+    ]))).to.eq('\u200c\n\n\u200c\n\nbar');
+
+    expect(markdownSerializer.serialize(doc([
+      p(text('foo')),
+      p()
+    ]))).to.eq('foo\n\n\u200c');
+
+    expect(markdownSerializer.serialize(doc([
+      p(text('foo')),
+      p(),
+      p()
+    ]))).to.eq('foo\n\n\u200c\n\n\u200c');
   });
 
   describe('code block', () => {
@@ -39,27 +80,28 @@ describe('Bitbucket markdown serializer: ', () => {
     });
 
     it('with attributes uses backtick notation and preserves attributes', () => {
+      const js = code_block({ params: 'js' });
       expect(markdownSerializer.serialize(doc([
-        pre(text('foo'), 'js'),
+        js(text('foo')),
       ]))).to.eq('```js\nfoo\n```');
 
       expect(markdownSerializer.serialize(doc([
-        pre(text('foo\nbar'), 'js'),
+        js(text('foo\nbar')),
       ]))).to.eq('```js\nfoo\nbar\n```');
     });
 
     it('with no text is preserved', () => {
       expect(markdownSerializer.serialize(doc([
         pre(text('')),
-      ]))).to.eq('    ');
+      ]))).to.eq('    \u200c');
 
       expect(markdownSerializer.serialize(doc([
         pre(),
-      ]))).to.eq('    ');
+      ]))).to.eq('    \u200c');
 
       expect(markdownSerializer.serialize(doc([
         pre(),
-      ]))).to.eq('    ');
+      ]))).to.eq('    \u200c');
     });
 
     it('via indentation with backticks is not escaped', () => {
@@ -69,20 +111,22 @@ describe('Bitbucket markdown serializer: ', () => {
     });
 
     it('via backticks that includes backticks is properly fenced', () => {
+      const css = code_block({ params: 'css' });
+
       expect(markdownSerializer.serialize(doc([
-        pre(text('```js\nfoo\n```'), 'css')
+        css(text('```js\nfoo\n```'))
       ]))).to.eq('````css\n```js\nfoo\n```\n````', 'Balanced fencing');
 
       expect(markdownSerializer.serialize(doc([
-        pre(text('````js\nfoo\n```'), 'css')
+        css(text('````js\nfoo\n```'))
       ]))).to.eq('`````css\n````js\nfoo\n```\n`````', 'Unbalanced fencing in the code block' );
 
       expect(markdownSerializer.serialize(doc([
-        pre(text('````'), 'css')
+        css(text('````'))
       ]))).to.eq('`````css\n````\n`````', 'Unmatched backtick fence');
 
       expect(markdownSerializer.serialize(doc([
-        pre(text('````js'), 'css')
+        css(text('````js'))
       ]))).to.eq('`````css\n````js\n`````', 'Unmatched backtick fence with language definition');
     });
   });
@@ -407,7 +451,7 @@ describe('Bitbucket markdown serializer: ', () => {
   it('should serialize hard_break to newline', () => {
     expect(markdownSerializer.serialize(doc(
       p([text('foo '), br, text('bar')])
-    ))).to.eq('foo \nbar');
+    ))).to.eq('foo   \nbar');
   });
 
   describe('blockquotes', () => {

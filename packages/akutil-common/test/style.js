@@ -6,7 +6,7 @@ describe('style', () => {
   let classes;
   let elem;
 
-  beforeEach(done => {
+  beforeEach((done) => {
     const Elem = define('x-test', {
       props: {
         css: {},
@@ -21,13 +21,13 @@ describe('style', () => {
     afterMutations(done);
   });
 
-  afterEach(done => {
+  afterEach((done) => {
     document.body.removeChild(elem);
     afterMutations(done);
   });
 
   describe(':host', () => {
-    it('no selectors', done => {
+    it('no selectors', (done) => {
       elem.css = { ':host': { display: 'none' } };
       afterMutations(
         () => expect(window.getComputedStyle(elem).display).to.equal('none'),
@@ -35,7 +35,7 @@ describe('style', () => {
       );
     });
 
-    it('selectors', done => {
+    it('selectors', (done) => {
       elem.css = { ':host([test])': { display: 'none' } };
       afterMutations(
         () => expect(window.getComputedStyle(elem).display).to.equal('inline'),
@@ -49,7 +49,7 @@ describe('style', () => {
   });
 
   describe('::slotted', () => {
-    it('(*)', done => {
+    it('(*)', (done) => {
       const span = document.createElement('span');
       elem.appendChild(span);
       afterMutations(
@@ -60,7 +60,7 @@ describe('style', () => {
       );
     });
 
-    it('(selector)', done => {
+    it('(selector)', (done) => {
       const span = document.createElement('span');
       elem.appendChild(span);
       afterMutations(
@@ -78,7 +78,7 @@ describe('style', () => {
     // This is only necessary for polyfilled slots. We need to make sure that
     // styles only target slots within the current, polyfilled shadow root.
     describe('unscoped', () => {
-      it('(*)', done => {
+      it('(*)', (done) => {
         const descendantSlot = document.createElement('slot');
         const descendantSlotParent = document.createElement('span');
         const descendantSlotChild = document.createElement('span');
@@ -100,7 +100,7 @@ describe('style', () => {
         );
       });
 
-      it('(selector)', done => {
+      it('(selector)', (done) => {
         const descendantSlot = document.createElement('slot');
         const descendantSlotParent = document.createElement('span');
         const descendantSlotChild = document.createElement('span');
@@ -125,7 +125,7 @@ describe('style', () => {
     });
   });
 
-  it('classes', done => {
+  it('classes', (done) => {
     elem.css = {
       ':host': {},
       '::slotted(*)': {},
@@ -139,6 +139,19 @@ describe('style', () => {
       () => expect(classes['some .selector']).to.match(/^some \.selector-/),
       () => expect(classes['.some selector']).to.match(/^\.some selector-/),
       () => expect(classes['.some .selector']).to.match(/^\.some \.selector-/),
+      done
+    );
+  });
+
+  it('nested rule', (done) => {
+    elem.css = {
+      foo: {
+        '&:hover': {},
+      },
+    };
+
+    afterMutations(
+      () => expect(classes.foo).to.match(/^foo-/),
       done
     );
   });

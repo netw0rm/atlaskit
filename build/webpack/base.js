@@ -1,14 +1,14 @@
 const camelCase = require('camelcase');
 const path = require('path');
+// eslint-disable-next-line import/no-dynamic-require
 const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
-const idomBabelPlugin = ['incremental-dom', {
-  components: true,
-  hoist: true,
-  prefix: 'vdom',
-}];
+const moduleBabelQuery = require('./moduleBabelQuery');
+
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 function defaultPackageMains() {
   const options = new webpack.WebpackOptionsDefaulter();
@@ -24,9 +24,21 @@ function defaultPackageMains() {
  *
  *       'loader1?{}!loader2?{}'
  */
-const loaderChain = (spec) => Object.keys(spec)
+const loaderChain = spec => Object.keys(spec)
   .map(key => `${key}?${JSON.stringify(spec[key])}`)
   .join('!');
+
+const css = {
+  camelCase: true,
+  importLoaders: 1,
+  mergeRules: false,
+  modules: true,
+};
+
+if (isDevelopment) {
+  css['-minimize'] = true;
+}
+
 
 const standardConfig = {
   entry: {
@@ -53,12 +65,7 @@ const standardConfig = {
       {
         test: /\.less$/,
         loader: loaderChain({
-          css: {
-            camelCase: true,
-            importLoaders: 1,
-            mergeRules: false,
-            modules: true,
-          },
+          css,
           postcss: {},
           less: {},
         }),
@@ -71,15 +78,7 @@ const standardConfig = {
         {
           test: /\/stories\/.*\.tsx?$/,
           loader: loaderChain({
-            babel: {
-              presets: [
-                'es2015',
-                'react',
-              ],
-              plugins: [
-                'transform-runtime',
-              ],
-            },
+            babel: moduleBabelQuery,
             ts: {},
           }),
         },
@@ -90,13 +89,7 @@ const standardConfig = {
         {
           test: /\.tsx?$/,
           loader: loaderChain({
-            babel: {
-              presets: 'es2015',
-              plugins: [
-                'transform-runtime',
-                idomBabelPlugin,
-              ],
-            },
+            babel: moduleBabelQuery,
             ts: {},
           }),
         },
@@ -129,16 +122,7 @@ const standardConfig = {
           loader: 'babel',
           test: /\.jsx?$/,
           exclude: /node_modules|bower_components/,
-          query: {
-            presets: [
-              'es2015',
-              'stage-0',
-            ],
-            plugins: [
-              'transform-runtime',
-              idomBabelPlugin,
-            ],
-          },
+          query: moduleBabelQuery,
         },
       ],
     ],
@@ -147,7 +131,8 @@ const standardConfig = {
     autoprefixer({
       // have a look here: https://confluence.atlassian.com/display/Cloud/Supported+browsers
       // "not Opera" w/o version qualifier is not valid, so I chose a really high version number
-      browsers: 'last 1 version, ie 11, Android > 4, not Opera < 1000',
+      // TODO: Remove IE10 once Confluence stop supporting it (IE 10 is not tested in CI) https://ecosystem.atlassian.net/browse/AK-542
+      browsers: 'last 1 version, ie 10, Android > 4, not Opera < 1000',
     }),
   ],
   plugins: [],

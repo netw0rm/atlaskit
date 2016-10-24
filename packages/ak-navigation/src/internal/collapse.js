@@ -1,11 +1,13 @@
-const globalCollapsedWidth = 60; // px this is duplicated in shared-variables.less
-const containerCollapsedWidth = 60; // px this is duplicated in shared-variables.less
-const expandedWidth = 280; // px this is duplicated in shared-variables.less
+import {
+  globalCollapsedWidth,
+  containerCollapsedWidth,
+  expandedWidth,
+  containerPaddingExpanded,
+} from '../shared-variables';
 
 const intermediateWidth = globalCollapsedWidth + containerCollapsedWidth;
 const collapsedWidth = globalCollapsedWidth;
 
-const containerPaddingExpanded = 20; // px this is duplicated in shared-variables.less
 const containerPaddingCollapsed = 10;
 // start collapsing the padding 16px out
 const containerPaddingCollapseStart = intermediateWidth + 16;
@@ -13,7 +15,7 @@ const containerPaddingCollapseStart = intermediateWidth + 16;
 export function getContainerPadding(width) {
   const paddingDelta = containerPaddingExpanded - containerPaddingCollapsed;
   const gradient = paddingDelta / (containerPaddingCollapseStart - intermediateWidth);
-  const padding = gradient * width + (paddingDelta - gradient * intermediateWidth);
+  const padding = (gradient * width) + (paddingDelta - (gradient * intermediateWidth));
 
   return Math.min(containerPaddingExpanded, Math.max(containerPaddingCollapsed, padding));
 }
@@ -41,4 +43,9 @@ export function getExpandedWidth(elem) {
 
 export function getCollapsedWidth() {
   return collapsedWidth;
+}
+
+export function getSpacerWidth(elem) {
+  const navigationVisibleWidth = getNavigationWidth(elem) + getNavigationXOffset(elem);
+  return navigationVisibleWidth;
 }

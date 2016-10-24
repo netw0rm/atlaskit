@@ -1,264 +1,339 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import Dropdown from '../src/index';
 import React from 'react';
-const { Component } = React;
+import reactify from 'akutil-react';
+import AvatarWc from 'ak-avatar';
+
+import avatarUrl from 'url!./doge.jpg';
+
+import Dropdown, {
+  DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow,
+  Group, Item, CheckboxItem, RadioItem,
+} from '../src';
 import { name } from '../package.json';
-import 'ak-avatar';
+import styles from '../src/less/shadow-list.less';
 
+
+const dropdownClass = styles.locals.akDropdown;
 const DropdownReactComponent = reactify(Dropdown);
-
-const avatarUrl = require('url!./doge.jpg');
-
-class DropdownWithOutsideTrigger extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false,
-    };
-
-    // Bind callback methods to make `this` the correct context.
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    this.setState({ open: true });
-  }
-
-  render() {
-    return (
-      <div style={{ padding: '40px' }}>
-        <ak-avatar
-          src={avatarUrl}
-          size="small"
-          ref={(el) => {
-            if (el && !this.state.target) {
-              this.setState({ target: el });
-            }
-          }}
-          onClick={this.handleClick}
-        />
-        <DropdownReactComponent target={this.state.target} open={this.state.open}>
-          <ak-dropdown-item>text1</ak-dropdown-item>
-          <ak-dropdown-item>text2</ak-dropdown-item>
-          <ak-dropdown-item>some text here</ak-dropdown-item>
-          <ak-dropdown-item>another text</ak-dropdown-item>
-        </DropdownReactComponent>
-      </div>
-    );
-  }
-}
+const DropdownTriggerReact = reactify(DropdownTrigger);
+const DropdownTriggerButtonReact = reactify(DropdownTriggerButton);
+const DropdownTriggerArrowReact = reactify(DropdownTriggerArrow);
+const GroupReact = reactify(Group);
+const ItemReact = reactify(Item);
+const CheckboxItemReact = reactify(CheckboxItem);
+const RadioItemReact = reactify(RadioItem);
+const Avatar = reactify(AvatarWc);
 
 storiesOf(`${name} component`, module)
   .add('simple dropdown', () => (
     <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+      <DropdownReactComponent open className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
           Dropdown-button
-        </ak-dropdown-trigger-button>
-        <ak-dropdown-item>text1</ak-dropdown-item>
-        <ak-dropdown-item>text2</ak-dropdown-item>
-        <ak-dropdown-item>some text here</ak-dropdown-item>
-        <ak-dropdown-item>another text</ak-dropdown-item>
+        </DropdownTriggerButtonReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact hidden>hidden ItemReact</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text2</ItemReact>
       </DropdownReactComponent>
     </div>
   ))
-  .add('dropdown with checkbox items', () => (
+  .addSwapped('simple dropdown (swapped)', () => (
     <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger">Dropdown-button</ak-dropdown-trigger-button>
-        <ak-dropdown-group heading="Checkboxes title">
-          <ak-dropdown-item-checkbox>text1</ak-dropdown-item-checkbox>
-          <ak-dropdown-item-checkbox disabled>text2</ak-dropdown-item-checkbox>
-          <ak-dropdown-item-checkbox>some text here</ak-dropdown-item-checkbox>
-          <ak-dropdown-item-checkbox>another text</ak-dropdown-item-checkbox>
-        </ak-dropdown-group>
+      <DropdownReactComponent open className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
+          Dropdown-button
+        </DropdownTriggerButtonReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact hidden>hidden ItemReact</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text2</ItemReact>
       </DropdownReactComponent>
     </div>
   ))
-  .add('dropdown with radio items', () => (
+  .add('dropdown with checkbox ItemReacts', () => (
     <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+      <DropdownReactComponent open className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger">Dropdown-button</DropdownTriggerButtonReact>
+        <GroupReact heading="Checkboxes title">
+          <CheckboxItemReact>text1</CheckboxItemReact>
+          <CheckboxItemReact disabled>text2</CheckboxItemReact>
+          <CheckboxItemReact>some text here</CheckboxItemReact>
+          <CheckboxItemReact>another text</CheckboxItemReact>
+        </GroupReact>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .addSwapped('dropdown with checkbox ItemReacts (swapped)', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent open className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger">Dropdown-button</DropdownTriggerButtonReact>
+        <GroupReact heading="Checkboxes title">
+          <CheckboxItemReact>text1</CheckboxItemReact>
+          <CheckboxItemReact disabled>text2</CheckboxItemReact>
+          <CheckboxItemReact>some text here</CheckboxItemReact>
+          <CheckboxItemReact>another text</CheckboxItemReact>
+        </GroupReact>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('dropdown with radio ItemReacts', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent open className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
           Dropdown
-        </ak-dropdown-trigger-button>
-        <ak-dropdown-group heading="Radio title">
-          <ak-dropdown-item-radio>text1</ak-dropdown-item-radio>
-          <ak-dropdown-item-radio disabled>text2</ak-dropdown-item-radio>
-          <ak-dropdown-item-radio>some text here</ak-dropdown-item-radio>
-          <ak-dropdown-item-radio>another text</ak-dropdown-item-radio>
-        </ak-dropdown-group>
+        </DropdownTriggerButtonReact>
+        <GroupReact heading="Radio title">
+          <RadioItemReact>text1</RadioItemReact>
+          <RadioItemReact disabled>text2</RadioItemReact>
+          <RadioItemReact>some text here</RadioItemReact>
+          <RadioItemReact>another text</RadioItemReact>
+        </GroupReact>
       </DropdownReactComponent>
     </div>
   ))
-  .add('dropdown with radio items inside different groups', () => (
+  .addSwapped('dropdown with radio ItemReacts (swapped)', () => (
     <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+      <DropdownReactComponent open className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
           Dropdown
-        </ak-dropdown-trigger-button>
-        <ak-dropdown-group heading="One title">
-          <ak-dropdown-item-radio>one</ak-dropdown-item-radio>
-          <ak-dropdown-item-radio>two</ak-dropdown-item-radio>
-        </ak-dropdown-group>
-        <ak-dropdown-group heading="Two title">
-          <ak-dropdown-item-radio>three</ak-dropdown-item-radio>
-          <ak-dropdown-item-radio>four</ak-dropdown-item-radio>
-        </ak-dropdown-group>
-        <ak-dropdown-group>
-          <ak-dropdown-item-radio>this is a titleless group</ak-dropdown-item-radio>
-          <ak-dropdown-item-radio>separate group</ak-dropdown-item-radio>
-        </ak-dropdown-group>
+        </DropdownTriggerButtonReact>
+        <GroupReact heading="Radio title">
+          <RadioItemReact>text1</RadioItemReact>
+          <RadioItemReact disabled>text2</RadioItemReact>
+          <RadioItemReact>some text here</RadioItemReact>
+          <RadioItemReact>another text</RadioItemReact>
+        </GroupReact>
       </DropdownReactComponent>
     </div>
   ))
-  .add('simple dropdown with outside trigger', () => (
-    <DropdownWithOutsideTrigger />
+  .add('dropdown with radio ItemReacts inside different groups', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent open className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
+          Dropdown
+        </DropdownTriggerButtonReact>
+        <GroupReact heading="One title">
+          <RadioItemReact>one</RadioItemReact>
+          <RadioItemReact>two</RadioItemReact>
+        </GroupReact>
+        <GroupReact heading="Two title">
+          <RadioItemReact>three</RadioItemReact>
+          <RadioItemReact>four</RadioItemReact>
+        </GroupReact>
+        <GroupReact>
+          <RadioItemReact>this is a titleless group</RadioItemReact>
+          <RadioItemReact>separate group</RadioItemReact>
+        </GroupReact>
+      </DropdownReactComponent>
+    </div>
   ))
   .add('dropdown with avatars', () => (
     <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open>
-        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+      <DropdownReactComponent open className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
           People list
-        </ak-dropdown-trigger-button>
-        <ak-dropdown-item>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+        </DropdownTriggerButtonReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Adam Smith
-        </ak-dropdown-item>
-        <ak-dropdown-item>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+        </ItemReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Eva Smith
-        </ak-dropdown-item>
-        <ak-dropdown-item>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+        </ItemReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Ivan Ivanov
-        </ak-dropdown-item>
-        <ak-dropdown-item>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+        </ItemReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Jane Black
-        </ak-dropdown-item>
-        <ak-dropdown-item>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+        </ItemReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Mike Cannon-Brookes
-        </ak-dropdown-item>
-        <ak-dropdown-item>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+        </ItemReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Some very long name very long name very long
           name very long name very long name very long name
-        </ak-dropdown-item>
+        </ItemReact>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .addSwapped('dropdown with avatars (swapped)', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent open className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
+          People list
+        </DropdownTriggerButtonReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
+          Adam Smith
+        </ItemReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
+          Eva Smith
+        </ItemReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
+          Ivan Ivanov
+        </ItemReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
+          Jane Black
+        </ItemReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
+          Mike Cannon-Brookes
+        </ItemReact>
+        <ItemReact>
+          <Avatar slot="left" src={avatarUrl} size="small" />
+          Some very long name very long name very long
+          name very long name very long name very long name
+        </ItemReact>
       </DropdownReactComponent>
     </div>
   ))
   .add('dropdown with grouping', () => (
     <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open>
-        <ak-dropdown-trigger slot="trigger" tab-index="1">Dropdown-button</ak-dropdown-trigger>
-        <ak-dropdown-item>some text here</ak-dropdown-item>
-        <ak-dropdown-item>some text here</ak-dropdown-item>
-        <ak-dropdown-group heading="title one">
-          <ak-dropdown-item>text1</ak-dropdown-item>
-          <ak-dropdown-item selected>text2</ak-dropdown-item>
-        </ak-dropdown-group>
-        <ak-dropdown-group heading="title two">
-          <ak-dropdown-item disabled>some text here</ak-dropdown-item>
-          <ak-dropdown-item>another text</ak-dropdown-item>
-        </ak-dropdown-group>
-        <ak-dropdown-group>
-          <ak-dropdown-item>this is a group</ak-dropdown-item>
-          <ak-dropdown-item>without any title</ak-dropdown-item>
-        </ak-dropdown-group>
+      <DropdownReactComponent open className={dropdownClass}>
+        <DropdownTriggerReact slot="trigger" tab-index="1">Dropdown-button</DropdownTriggerReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <GroupReact heading="title one">
+          <ItemReact>text1</ItemReact>
+          <ItemReact selected>text2</ItemReact>
+        </GroupReact>
+        <GroupReact heading="title two">
+          <ItemReact disabled>some text here</ItemReact>
+          <ItemReact>another text</ItemReact>
+        </GroupReact>
+        <GroupReact>
+          <ItemReact>this is a group</ItemReact>
+          <ItemReact>without any title</ItemReact>
+        </GroupReact>
       </DropdownReactComponent>
     </div>
   ))
   .add('dropdown with grouping without headers', () => (
     <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open>
-        <ak-dropdown-trigger slot="trigger" tab-index="1">Dropdown-button</ak-dropdown-trigger>
-        <ak-dropdown-item>some text here</ak-dropdown-item>
-        <ak-dropdown-item>some text here</ak-dropdown-item>
-        <ak-dropdown-group>
-          <ak-dropdown-item>text1</ak-dropdown-item>
-          <ak-dropdown-item>text2</ak-dropdown-item>
-        </ak-dropdown-group>
-        <ak-dropdown-group>
-          <ak-dropdown-item disabled>some text here</ak-dropdown-item>
-          <ak-dropdown-item>another text</ak-dropdown-item>
-        </ak-dropdown-group>
-        <ak-dropdown-group>
-          <ak-dropdown-item>this is a group</ak-dropdown-item>
-          <ak-dropdown-item>without any title</ak-dropdown-item>
-        </ak-dropdown-group>
+      <DropdownReactComponent open className={dropdownClass}>
+        <DropdownTriggerReact slot="trigger" tab-index="1">Dropdown-button</DropdownTriggerReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <GroupReact>
+          <ItemReact>text1</ItemReact>
+          <ItemReact>text2</ItemReact>
+        </GroupReact>
+        <GroupReact>
+          <ItemReact disabled>some text here</ItemReact>
+          <ItemReact>another text</ItemReact>
+        </GroupReact>
+        <GroupReact>
+          <ItemReact>this is a group</ItemReact>
+          <ItemReact>without any title</ItemReact>
+        </GroupReact>
       </DropdownReactComponent>
     </div>
   ))
   .add('dropdown with a buttonless trigger', () => (
     <div style={{ padding: '40px' }}>
-      <DropdownReactComponent>
-        <ak-dropdown-trigger slot="trigger" tab-index="1">
-          <ak-avatar src={avatarUrl} size="small" />
-        </ak-dropdown-trigger>
-        <ak-dropdown-item>Joscha</ak-dropdown-item>
-        <ak-dropdown-item>Wuz</ak-dropdown-item>
-        <ak-dropdown-item>Here</ak-dropdown-item>
-        <ak-dropdown-item>2016</ak-dropdown-item>
+      <DropdownReactComponent className={dropdownClass}>
+        <DropdownTriggerReact slot="trigger" tab-index="1">
+          <Avatar src={avatarUrl} size="small" />
+        </DropdownTriggerReact>
+        <ItemReact>Joscha</ItemReact>
+        <ItemReact>Wuz</ItemReact>
+        <ItemReact>Here</ItemReact>
+        <ItemReact>2016</ItemReact>
       </DropdownReactComponent>
     </div>
   ))
   .add('two dropdowns', () => (
     <div>
-      <DropdownReactComponent>
-        <ak-dropdown-trigger-button slot="trigger" tab-index="1">A</ak-dropdown-trigger-button>
-        <ak-dropdown-item>A</ak-dropdown-item>
+      <DropdownReactComponent className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger" tab-index="1">A</DropdownTriggerButtonReact>
+        <ItemReact>A</ItemReact>
       </DropdownReactComponent>
-      <DropdownReactComponent>
-        <ak-dropdown-trigger-button slot="trigger" tab-index="1">B</ak-dropdown-trigger-button>
-        <ak-dropdown-item>B</ak-dropdown-item>
+      <DropdownReactComponent className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger" tab-index="1">B</DropdownTriggerButtonReact>
+        <ItemReact>B</ItemReact>
       </DropdownReactComponent>
     </div>
   ))
   .add('dropdown with a link that opens in a new tab', () => (
     <div>
-      <DropdownReactComponent>
-        <ak-dropdown-trigger-button slot="trigger" tab-index="1">
+      <DropdownReactComponent className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
           Dropdown-button
-        </ak-dropdown-trigger-button>
-        <ak-dropdown-item href="http://atlassian.design" target="_blank">New tab</ak-dropdown-item>
-        <ak-dropdown-item href="http://atlassian.design">Same tab</ak-dropdown-item>
+        </DropdownTriggerButtonReact>
+        <ItemReact href="http://atlassian.design" target="_blank">New tab</ItemReact>
+        <ItemReact href="http://atlassian.design">Same tab</ItemReact>
       </DropdownReactComponent>
     </div>
   ))
   .add('dropdown with icon only button trigger', () => (
     <div style={{ padding: '40px' }}>
-      <DropdownReactComponent>
-        <ak-dropdown-trigger-arrow slot="trigger" tab-index="1"></ak-dropdown-trigger-arrow>
-        <ak-dropdown-item>Joscha</ak-dropdown-item>
-        <ak-dropdown-item>Wuz</ak-dropdown-item>
-        <ak-dropdown-item>Here</ak-dropdown-item>
-        <ak-dropdown-item>2016</ak-dropdown-item>
+      <DropdownReactComponent className={dropdownClass}>
+        <DropdownTriggerArrowReact slot="trigger" tab-index="1" />
+        <ItemReact>Joscha</ItemReact>
+        <ItemReact>Wuz</ItemReact>
+        <ItemReact>Here</ItemReact>
+        <ItemReact>2016</ItemReact>
       </DropdownReactComponent>
     </div>
   ))
   .add('dropdown with everything for the screenreaders test', () => (
     <div style={{ padding: '40px' }}>
-      <input type="text" placeholder="item before" />
-      <DropdownReactComponent>
-        <ak-dropdown-trigger-button slot="trigger" tab-index="1">Text</ak-dropdown-trigger-button>
-        <ak-dropdown-group heading="People">
-          <ak-dropdown-item href="http://atlassian.com" target="_blank">Joscha</ak-dropdown-item>
-          <ak-dropdown-item href="http://google.com" target="_blank">Jennifer</ak-dropdown-item>
-        </ak-dropdown-group>
-        <ak-dropdown-group heading="Gender">
-          <ak-dropdown-item-checkbox selected>Female</ak-dropdown-item-checkbox>
-          <ak-dropdown-item-checkbox>Male</ak-dropdown-item-checkbox>
-        </ak-dropdown-group>
-        <ak-dropdown-group heading="Favourites">
-          <ak-dropdown-item-radio>jQuery</ak-dropdown-item-radio>
-          <ak-dropdown-item-radio selected>React</ak-dropdown-item-radio>
-          <ak-dropdown-item-radio selected>Web components</ak-dropdown-item-radio>
-          <ak-dropdown-item-radio>Vanilla JS</ak-dropdown-item-radio>
-        </ak-dropdown-group>
+      <input type="text" placeholder="ItemReact before" />
+      <DropdownReactComponent className={dropdownClass}>
+        <DropdownTriggerButtonReact slot="trigger" tab-index="1">Text</DropdownTriggerButtonReact>
+        <GroupReact heading="People">
+          <ItemReact href="http://atlassian.com" target="_blank">Joscha</ItemReact>
+          <ItemReact href="http://google.com" target="_blank">Jennifer</ItemReact>
+        </GroupReact>
+        <GroupReact heading="Gender">
+          <CheckboxItemReact selected>Female</CheckboxItemReact>
+          <CheckboxItemReact>Male</CheckboxItemReact>
+        </GroupReact>
+        <GroupReact heading="Favourites">
+          <RadioItemReact>jQuery</RadioItemReact>
+          <RadioItemReact selected>React</RadioItemReact>
+          <RadioItemReact selected>Web components</RadioItemReact>
+          <RadioItemReact>Vanilla JS</RadioItemReact>
+        </GroupReact>
       </DropdownReactComponent>
-      <a href="#">link after</a>
+      <a href="http://www.atlassian.com">link after</a>
     </div>
   ))
-;
+  .add('dropdown with lots of ItemReacts', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent className={dropdownClass}>
+        <DropdownTriggerArrowReact slot="trigger" tab-index="1" />
+        <ItemReact>Joscha</ItemReact>
+        <ItemReact>Wuz</ItemReact>
+        <ItemReact>Here</ItemReact>
+        <ItemReact>2016</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+      </DropdownReactComponent>
+    </div>
+  ));

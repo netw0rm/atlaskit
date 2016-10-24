@@ -1,17 +1,18 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { events as dropdownEvents } from '../src';
-import Item from '../src/index.item.checkbox';
 import keyCode from 'keycode';
 import { props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot, afterMutations, getRootNode } from 'akutil-common-test';
+
+import { events as dropdownEvents } from '../src';
+import Item from '../src/index.item.checkbox';
 import shadowItemStyles from '../src/less/shadow-item.less';
 import supportsVoiceOver from '../src/internal/supportsVoiceOver';
+import { itemHeight, itemLeftToDefaultGap, itemLeftGap } from './_helpers';
+
 
 const role = supportsVoiceOver ? 'checkbox' : 'menuitemcheckbox';
-const defaultHeight = 30;
-const defaultGap = 10;
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -90,32 +91,32 @@ describe('ak-dropdown-item-checkbox', () => {
       });
     });
 
-    it(`height should be equal ${defaultHeight}`, (done) => {
+    it(`height should be equal ${itemHeight}`, (done) => {
       afterMutations(
         () => getRootNode(component).getBoundingClientRect().height,
-        (height) => (expect(Math.round(height)).to.equal(defaultHeight)),
+        height => (expect(Math.round(height)).to.equal(itemHeight)),
         done
       );
     });
 
-    it(`gap between checkbox and left edge of the component should be ${defaultGap}`, (done) => {
+    it(`gap between checkbox and left edge of the component should be ${itemLeftGap}`, (done) => {
       const rectComponent = getRootNode(component).getBoundingClientRect();
       const rectIcon = iconDomElem.getBoundingClientRect();
       const gap = rectIcon.left - rectComponent.left;
 
       afterMutations(
-        () => (expect(Math.round(gap)).to.equal(defaultGap)),
+        () => (expect(Math.round(gap)).to.equal(itemLeftGap)),
         done
       );
     });
 
-    it(`gap between checkbox and default slot should be ${defaultGap}`, (done) => {
+    it(`gap between checkbox and default slot should be ${itemLeftToDefaultGap}`, (done) => {
       const rectDefault = defaultDomElem.getBoundingClientRect();
       const rectIcon = iconDomElem.getBoundingClientRect();
       const gap = rectDefault.left - rectIcon.left - rectIcon.width;
 
       afterMutations(
-        () => (expect(Math.round(gap)).to.equal(defaultGap)),
+        () => (expect(Math.round(gap)).to.equal(itemLeftToDefaultGap)),
         done
       );
     });

@@ -1,3 +1,4 @@
+const Visualizer = require('webpack-visualizer-plugin');
 const productionConfig = require('./production.js');
 
 productionConfig.entry = {
@@ -6,5 +7,12 @@ productionConfig.entry = {
 };
 
 productionConfig.output.libraryTarget = 'commonjs2';
+
+if (process.env.BITBUCKET_COMMIT) {
+  // only generate stats when we are in CI
+  productionConfig.plugins.push(new Visualizer({
+    filename: './stats/cjs.html',
+  }));
+}
 
 module.exports = productionConfig;

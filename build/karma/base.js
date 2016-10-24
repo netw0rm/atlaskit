@@ -1,5 +1,6 @@
 const webpackConfig = require('../webpack/karma.js');
 const addPolyFills = require('./addPolyFills.js');
+const FailPlugin = require('./FailPlugin');
 
 module.exports = (config) => {
   Object.assign(config, {
@@ -37,7 +38,13 @@ module.exports = (config) => {
     singleRun: false,
 
     concurrency: Infinity,
+
+    mochaReporter: {
+      showDiff: true,
+    },
   });
+
+  config.webpack.plugins.push(new FailPlugin(config));
 
   // add the polyfill file to the test run
   addPolyFills(config);

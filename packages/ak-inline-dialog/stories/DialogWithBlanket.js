@@ -1,9 +1,9 @@
 import reactify from 'akutil-react';
-import AkInlineDialog from '../src/index';
-import styles from 'style!./../src/host.less';
+import React, { Component } from 'react';
 
-import React from 'react';
-const { Component } = React;
+import AkInlineDialog from '../src/index';
+import styles from '../src/shadow.less';
+
 
 const Dialog = reactify(AkInlineDialog);
 
@@ -51,7 +51,7 @@ class DialogWithBlanket extends Component {
           test button
         </button>
         <Dialog
-          className={styles.akInlineDialog}
+          className={styles.locals.akInlineDialog}
           open={this.state.open}
           target="#target"
           attachment={this.props.attachTo}
@@ -74,9 +74,8 @@ class DialogWithBlanket extends Component {
 }
 
 DialogWithBlanket.propTypes = {
-  event: React.PropTypes.string,
   position: React.PropTypes.string,
-  style: React.PropTypes.object,
+  style: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   attachTo: React.PropTypes.string,
   hasBlanket: React.PropTypes.bool,
   blanketTinted: React.PropTypes.bool,

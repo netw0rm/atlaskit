@@ -1,12 +1,14 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
+import React from 'react';
+
 import TooltipWC from '../src/index';
 import TooltipTriggerWC from '../src/index.tooltip-trigger';
 import ContainerWC from './skate/container';
 import FourDirectionTooltipTrigger from './four-direction-tooltip-trigger';
-import React from 'react';
 import { name } from '../package.json';
-import styles from 'style!./../src/host.less';
+import styles from '../src/shadow.less';
+
 
 const Tooltip = reactify(TooltipWC);
 
@@ -14,9 +16,9 @@ const TooltipTrigger = reactify(TooltipTriggerWC);
 
 const Container = reactify(ContainerWC);
 
-const tooltipClass = styles.akTooltip;
+const tooltipClass = styles.locals.akTooltip;
 
-const DefaultTooltip = (props) => <Tooltip className={tooltipClass} {...props} />;
+const DefaultTooltip = props => <Tooltip className={tooltipClass} {...props} />;
 
 const buttonStyles = {
   backgroundColor: 'orange',
@@ -72,7 +74,7 @@ storiesOf(name, module)
   .add('a tooltip binding to elements in shadowDOM', () => (
     <div>
       <div>
-        We can bind tooltips to items in the shadowDOM easily as we don't rely on looking
+        We can bind tooltips to items in the shadowDOM easily as we don&#39;t rely on looking
         elements up by ID.
         <br />
         (This funcitonality broke in Chrome 53 and will be investigated)
@@ -132,7 +134,7 @@ storiesOf(name, module)
     <div>
       <div style={containerStyle}>
         <TooltipTrigger position="bottom" description="I am describing a focusable element!">
-          <a href="#" style={buttonStyles} aria-describedby="ak-tooltip">Focus on me!</a>
+          <button style={buttonStyles} aria-describedby="ak-tooltip">Focus on me!</button>
         </TooltipTrigger>
       </div>
 

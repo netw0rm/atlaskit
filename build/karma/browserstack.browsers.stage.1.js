@@ -6,7 +6,16 @@ const browserStackBrowsers = {
     os_version: '8.1',
     browser_version: '11',
   },
-
+  // TODO re-enable once BS has 55.0 beta out.
+  // Look here: https://www.browserstack.com/list-of-browsers-and-platforms?product=automate
+  /*
+  chrome_beta_osx: {
+    browser: 'Chrome',
+    browser_version: '55.0 beta',
+    os: 'OS X',
+    os_version: 'El Capitan',
+  },
+  */
   // One with native WC support
   chrome_latest_osx: {
     browser: 'chrome',

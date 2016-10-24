@@ -1,4 +1,4 @@
-const req = require.context('!less-vars-loader?camelCase!./', false, /\.less$/);
+const req = require.context('!less-vars-loader?camelCase&resolveVariables!./', false, /\.less$/);
 
 export default req.keys().reduce((prev, file) => {
   const vars = req(file);

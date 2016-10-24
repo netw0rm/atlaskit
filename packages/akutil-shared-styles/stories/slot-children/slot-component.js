@@ -1,7 +1,9 @@
 /** @jsx h */
 import { h, define } from 'skatejs';
-import shadowStyles from './slot-component.less';
 import classNames from 'classnames';
+
+import shadowStyles from './slot-component.less';
+
 
 export default define('x-slot-component', {
   render() {

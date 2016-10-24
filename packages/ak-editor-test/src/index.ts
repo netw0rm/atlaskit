@@ -1,4 +1,5 @@
-import './polyfill-string-repeat';
+import 'string.prototype.repeat';
+
 import * as base64fileconverter from './base64fileconverter';
 import { offsetRefs, BuilderContent, coerce } from './schema-builder';
 import { ProseMirror } from 'ak-editor-prosemirror';
@@ -10,7 +11,7 @@ export { default as makeEditor } from './make-editor';
 export { default as fixtures } from './fixtures';
 export { default as RewireSpy } from './rewire-spy';
 export {
-  doc, p, blockquote, pre,
+  doc, p, blockquote, code_block,
   h1, h2, h3, h4, h5, h6,
   li, ul, ol, br, img, hr, em, strong, code, del, a,
   text, fragment, slice, mention, emoji

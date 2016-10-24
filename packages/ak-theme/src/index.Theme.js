@@ -12,7 +12,7 @@ function ensureObject(potentialObj) {
 
 function varsFromChildren(host) {
   return [...host.children].reduce((prev, curr) => {
-    const [key, val] = [curr.getAttribute('name'), curr.getAttribute('value')];
+    const [key, val] = [curr.getAttribute('name'), curr.getAttribute('val')];
 
     if (!key) {
       return prev;

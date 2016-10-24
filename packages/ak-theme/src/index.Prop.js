@@ -4,11 +4,11 @@ import { prop as eProp } from '../src/index.events';
 export default define('ak-theme-prop', {
   props: {
     name: prop.string({ attribute: true }),
-    value: prop.string({ attribute: true }),
+    val: prop.string({ attribute: true }),
   },
   updated(elem, prev) {
     if (Component.updated(elem, prev)) {
-      emit(elem, eProp.change, { detail: { [elem.name]: elem.value } });
+      emit(elem, eProp.change, { detail: { [elem.name]: elem.val } });
     }
   },
 });

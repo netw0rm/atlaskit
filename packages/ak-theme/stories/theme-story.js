@@ -12,18 +12,18 @@ const ReactTheme = reactify(Theme);
 const ReactThemeProp = reactify(Prop);
 const TestTheme1 = () => (
   <ReactTheme id="x-btn-base">
-    <ReactThemeProp name="background" value="blue" />
-    <ReactThemeProp name="text" value="white" />
+    <ReactThemeProp name="background" val="blue" />
+    <ReactThemeProp name="text" val="white" />
   </ReactTheme>
 );
 const TestTheme2 = () => (
   <ReactTheme id="x-btn" mixin="x-btn-base">
-    <ReactThemeProp name="background" value="red" />
+    <ReactThemeProp name="background" val="red" />
   </ReactTheme>
 );
 const TestTheme3 = () => (
   <ReactTheme id="x-btn-super" mixin="x-btn">
-    <ReactThemeProp name="background" value="orange" />
+    <ReactThemeProp name="background" val="orange" />
   </ReactTheme>
 );
 const Btn = reactify(define('x-btn', themeable({

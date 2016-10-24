@@ -29,38 +29,38 @@ describe('ak-theme-prop', () => {
       });
     });
 
-    describe('value', () => {
+    describe('val', () => {
       it('should be an attribute', (done) => {
-        elem.value = 0;
+        elem.val = 0;
         afterMutations(
-          () => expect(elem.hasAttribute('value')).to.equal(true),
+          () => expect(elem.hasAttribute('val')).to.equal(true),
           done
         );
       });
 
       it('should be a string', () => {
-        elem.value = 0;
-        expect(elem.value).to.equal('0');
+        elem.val = 0;
+        expect(elem.val).to.equal('0');
       });
     });
   });
 
   describe('updated', () => {
-    it('should not emit an event if values did not change', () => {
+    it('should not emit an event if vals did not change', () => {
       const spy = sinon.spy();
       elem.name = 'same';
-      elem.value = 'same';
+      elem.val = 'same';
       elem.addEventListener(events.prop.change, spy);
-      Prop.updated(elem, { name: 'same', value: 'same' });
+      Prop.updated(elem, { name: 'same', val: 'same' });
       expect(spy.callCount).to.equal(0);
     });
 
-    it('should emit an event if values did change', () => {
+    it('should emit an event if vals did change', () => {
       const spy = sinon.spy();
       elem.name = 'same';
-      elem.value = 'diff';
+      elem.val = 'diff';
       elem.addEventListener(events.prop.change, spy);
-      Prop.updated(elem, { name: 'same', value: 'same' });
+      Prop.updated(elem, { name: 'same', val: 'same' });
       expect(spy.callCount).to.equal(1);
     });
   });

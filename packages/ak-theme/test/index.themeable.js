@@ -25,7 +25,7 @@ describe('ak-theme, { themeable }', () => {
 
       elemThemeProp = new Prop();
       elemThemeProp.name = 'testname';
-      elemThemeProp.value = 'testvalue';
+      elemThemeProp.val = 'testvalue';
       elemTheme.appendChild(elemThemeProp);
 
       afterMutations(done);
@@ -158,7 +158,7 @@ describe('ak-theme, { themeable }', () => {
 
     it('should call overridden attached', (done) => {
       const theme = Object.assign(new Theme(), { id: 'foo' });
-      theme.appendChild(Object.assign(new Prop(), { name: 'myprop', value: 'myvalue' }));
+      theme.appendChild(Object.assign(new Prop(), { name: 'myprop', val: 'myvalue' }));
       document.body.appendChild(theme);
       createElement({
         attached(e) {
@@ -173,7 +173,7 @@ describe('ak-theme, { themeable }', () => {
 
     it('should call overridden detached', (done) => {
       const theme = Object.assign(new Theme(), { id: 'foo' });
-      theme.appendChild(Object.assign(new Prop(), { name: 'myprop', value: 'myvalue' }));
+      theme.appendChild(Object.assign(new Prop(), { name: 'myprop', val: 'myvalue' }));
       document.body.appendChild(theme);
       const child = createElement({
         detached(e) {
@@ -197,7 +197,7 @@ describe('ak-theme, { themeable }', () => {
 
       const eThemeProp = new Prop();
       eThemeProp.name = 'testname';
-      eThemeProp.value = 'testvalue';
+      eThemeProp.val = 'testvalue';
       eTheme.appendChild(eThemeProp);
 
       return eTheme;

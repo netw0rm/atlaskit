@@ -7,7 +7,7 @@ function createTheme(id = '', ownVars = {}) {
     theme.id = id;
   }
   Object.keys(ownVars).forEach(name => (
-    theme.appendChild(Object.assign(new Prop(), { name, value: ownVars[name] }))
+    theme.appendChild(Object.assign(new Prop(), { name, val: ownVars[name] }))
   ));
   return theme;
 }
@@ -197,7 +197,7 @@ describe('ak-theme', () => {
 
   it('should not error when a theme prop does not have a name', (done) => {
     const theme = new Theme();
-    theme.appendChild(Object.assign(new Prop(), { value: 'test' }));
+    theme.appendChild(Object.assign(new Prop(), { val: 'test' }));
 
     // This causes the theme to try and get the vars from its children. The
     // code that does this needs to guard against null names.

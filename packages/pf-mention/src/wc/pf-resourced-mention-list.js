@@ -6,6 +6,9 @@ import MentionList from './pf-mention-list';
 import debug from '../util/logger';
 import hasChanges from '../util/has-changes';
 import uniqueId from '../util/id';
+import {
+  selected as selectedEvent
+} from '../internal/index.events';
 
 function applyPresence(mentions, presences) {
   const updatedMentions = [];
@@ -75,6 +78,10 @@ export default define('pf-resourced-mention-list', {
         this.presenceProvider.refreshPresence(ids);
       }
     },
+
+    _notifySelection(event) {
+      this.resourceProvider.recordMentionSelection(event.detail);
+    }
   },
 
   created(elem) {
@@ -82,7 +89,17 @@ export default define('pf-resourced-mention-list', {
     elem._filterChange = elem._filterChange.bind(elem);
     elem._filterError = elem._filterError.bind(elem);
     elem._presenceUpdate = elem._presenceUpdate.bind(elem);
+    elem._notifySelection = elem._notifySelection.bind(elem);
     elem._showError = false;
+  },
+
+  attached(elem) {
+    elem.addEventListener(selectedEvent, elem._notifySelection);
+  },
+
+  detached(elem) {
+    
+    elem.removeEventListener(selectedEvent, elem._notifySelection);
   },
 
   render(elem) {

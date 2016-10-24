@@ -53,6 +53,10 @@ class MentionResource extends AbstractMentionResource {
       });
     }, waitTime + 1);
   }
+
+  recordMentionSelection(mention) {
+    debug(`Record mention selection ${mention.id}`);
+  }
 }
 
 export default MentionResource;

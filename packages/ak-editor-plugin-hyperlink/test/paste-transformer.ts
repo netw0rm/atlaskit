@@ -63,7 +63,7 @@ describe('ak-editor-plugin-hyperlink paste transformer', () => {
     expect(actual).to.deep.equal(expected);
   });
 
-  it('Should not convert links inside code blocks', () => {
+  it('Should not convert links inside code marks', () => {
     const { pm } = editor();
     const content = slice(pre(code('http://a.com/')));
     expect(pasted(pm, content)).to.deep.equal(content);

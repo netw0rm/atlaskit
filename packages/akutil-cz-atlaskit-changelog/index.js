@@ -44,7 +44,7 @@ module.exports = {
       console.log('✗ Linting failed');
       console.log('Do you want to try fixing automatically? (y/n): ');
       getYN(() => {
-        check('validate/lint-fix-changed', true, () => {
+        check('validate/lint-changed/fix', true, () => {
           console.log('✓ Autofix ok');
           console.log('Try again by adding the changes and recommitting');
           process.exit(0);

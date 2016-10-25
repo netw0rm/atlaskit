@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 CHALK="`npm bin`/chalk"
+BASEDIR=$(dirname $0)
 
 function fix () {
     $CHALK --no-stdin -t "{blue Gathering files to fix...}"
-    diff=$(git diff --cached --name-only --diff-filter=ACM | grep -E '(\.jsx?)$')
+    diff=$($BASEDIR/_get_changed.sh)
     if [ "" == "$diff" ]; then
         $CHALK --no-stdin -t "{blue ...no JS changes found. Done.}"
         exit 0

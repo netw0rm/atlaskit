@@ -58,7 +58,6 @@ describe('ak-editor-plugin-block-type paste transformer', () => {
     expect(actual).to.deep.equal(expected);
   });
 
-
   it('should convert to text if with multinodes in code block to continue in the same node', () => {
     const { pm } = editor();
     const actual = pasted(pm, slice(text('foo'), h1('bar')));

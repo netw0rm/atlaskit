@@ -4,7 +4,7 @@ import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } fr
 import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy, chaiPlugin, doc, text, code, strong, a,
   h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
-  emoji, code_block } from 'ak-editor-test';
+  emoji, code_block, isBrokenEnvironment } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
@@ -63,6 +63,10 @@ function waitUntilPMReady(editor: typeof AkEditorBitbucket) : Promise<HTMLElemen
 }
 
 describe('ak-editor-bitbucket', () => {
+  beforeEach(function () {
+    if (isBrokenEnvironment) this.skip();
+  });
+
   const rewireSpy = RewireSpy();
 
   it('is possible to create a component', () => {

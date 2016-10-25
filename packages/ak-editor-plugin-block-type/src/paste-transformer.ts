@@ -1,32 +1,36 @@
 import { ProseMirror, Node, Mark, Slice, Fragment, Transform } from 'ak-editor-prosemirror';
 
+function generateTextFromNodes(pre: string, node: Node, currentIndex: number, { length }: Node[]): string {
+  // fallback to `node.text` if this is a text node
+  const nodeText: string = node.content.content.reduce(generateTextFromNode, '') || node.text;
+
+  const text = `${pre}${nodeText}`
+  if (currentIndex === length - 1) {
+    return text;
+  } else {
+    return `${text}\n\n`;
+  }
+}
+
+function generateTextFromNode(pre: string, node: Node, currentIndex: number, { length }: Node[]): string {
+  if (!node.text) {
+    return pre;
+  }
+
+  const text = `${pre}${node.text}`;
+  if (currentIndex === length - 1) {
+    return text;
+  } else {
+    return `${text}\n`;
+  }
+}
+
 export default function(pm: ProseMirror, slice: Slice): Slice {
   const node = pm.selection.$head.node(1);
 
   if (node.type.name === 'code_block') {
     const text: string = slice.content.content
-      .reduce((pre: string, node: Node, currentIndex: number, { length }: Node[]) => {
-        const nodeText: string = node.content.content.reduce((pre: string, node: Node, currentIndex: number, { length }: Node[]) => {
-          if (!node.text) {
-            return pre;
-          }
-
-          const text = `${pre}${node.text}`;
-          if (currentIndex === length - 1) {
-            return text;
-          } else {
-            return `${text}\n`;
-          }
-          // fallback to `node.text` if this is a text node
-        }, '') || node.text;
-
-        const text = `${pre}${nodeText}`
-        if (currentIndex === length - 1) {
-          return text;
-        } else {
-          return `${text}\n\n`;
-        }
-      }, '');
+      .reduce(generateTextFromNodes, '');
 
     let newNode = pm.schema.nodes.text.create({}, text);
 

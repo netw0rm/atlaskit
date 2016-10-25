@@ -81,7 +81,7 @@ document.body.appendChild(icon);
 const x = (<BitbucketLogo />);
 ```
 
-Import a single icon:
+Importing a single icon (this will still bundle **all** of the icons in your final bundle):
 
 ```js
 import BitbucketLogo from 'ak-icon';

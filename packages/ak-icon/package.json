@@ -9,7 +9,8 @@
     "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.js",
     "generate-icon-exports": "node ./bin/generate-icon-exports.js",
     "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
-    "prepublish": "CLI=1 npm run gen-js && cd ../.. && npm run prepublish/single ak-icon",
+    "gen-docs": "node ./bin/generate-docs.js > ./docs/USAGE.md",
+    "prepublish": "CLI=1 npm run gen-js && npm run gen-docs && cd ../.. && npm run prepublish/single ak-icon",
     "pretest": "npm run gen-js"
   },
   "files": [
@@ -31,6 +32,7 @@
     "akutil-react": "^1.0.0",
     "akutil-shared-styles": "^34.0.1",
     "async": "^2.0.1",
+    "fs": "0.0.1-security",
     "glob": "^7.0.5",
     "lodash.sample": "^4.2.1",
     "mkdirp": "^0.5.1",

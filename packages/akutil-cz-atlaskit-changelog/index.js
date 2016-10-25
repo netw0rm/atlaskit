@@ -51,7 +51,7 @@ module.exports = {
         }, () => {
           console.log('✗ Autofix failed');
           console.log('Please resolve the linting problems manually');
-          process.exit(0);
+          process.exit(1);
         });
       }, () => process.exit(0));
     });

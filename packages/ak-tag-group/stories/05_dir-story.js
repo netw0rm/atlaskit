@@ -22,19 +22,15 @@ const RemovableComponent = props => (
   />
 );
 
-const story = () => (
-  <div>
-    Try tabbing :)
-    <hr />
-    <Group className={styles.locals.akTagGroup}>
-      <RemovableComponent text="Danish chocolate" />
-      <RemovableComponent text="Jelly beans" />
-      <RemovableComponent text="Cheesecake" />
-    </Group>
-  </div>
-);
-
 storiesOf(name, module)
-  .add('text direction', story)
-  .addSwapped('text direction (swapped)', story)
-;
+  .add('text direction', () => (
+    <div>
+      Try tabbing :)
+      <hr />
+      <Group className={styles.locals.akTagGroup}>
+        <RemovableComponent text="Danish chocolate" />
+        <RemovableComponent text="Jelly beans" />
+        <RemovableComponent text="Cheesecake" />
+      </Group>
+    </div>
+  ));

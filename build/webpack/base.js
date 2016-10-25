@@ -5,7 +5,8 @@ const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
-const moduleBabelQuery = require('./moduleBabelQuery');
+const moduleBabelQuery = require('./babel.query.module');
+const storybookBabelQuery = require('./babel.query.storybook');
 const loaderChain = require('./loader-chain').encode;
 
 
@@ -67,16 +68,7 @@ const standardConfig = {
         {
           test: /\/stories\/.*\.tsx?$/,
           loader: loaderChain({
-            babel: {
-              presets: [
-                'es2015',
-                'react', // required by react-storybook
-                'stage-0',
-              ],
-              plugins: [
-                'transform-runtime',
-              ],
-            },
+            babel: storybookBabelQuery,
             ts: {},
           }),
         },
@@ -100,16 +92,7 @@ const standardConfig = {
           test: /\.jsx?$/,
           include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
           exclude: /stories\/skate\/.*\.js/,
-          query: {
-            presets: [
-              'es2015',
-              'react', // required by react-storybook
-              'stage-0',
-            ],
-            plugins: [
-              'transform-runtime',
-            ],
-          },
+          query: storybookBabelQuery,
         },
         //
         // JAVASCRIPT

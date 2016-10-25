@@ -4,7 +4,7 @@ function generateTextFromNodes(pre: string, node: Node, currentIndex: number, { 
   // fallback to `node.text` if this is a text node
   const nodeText: string = node.content.content.reduce(generateTextFromNode, '') || node.text;
 
-  const text = `${pre}${nodeText}`
+  const text = `${pre}${nodeText}`;
   if (currentIndex === length - 1) {
     return text;
   } else {

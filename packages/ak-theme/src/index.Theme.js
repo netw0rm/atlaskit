@@ -12,6 +12,9 @@ function ensureObject(potentialObj) {
 
 function varsFromChildren(host) {
   return [...host.children].reduce((prev, curr) => {
+    // Getting the props instead of getting attribute values to prevent problems
+    // with browsers using Custom Elements v1 polyfill.
+    // In this case, `value` is not defined as an attribute but it is as a property.
     const { name, value } = props(curr);
 
     if (!name) {

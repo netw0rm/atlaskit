@@ -60,7 +60,7 @@ const SearchTextInput = React.createClass({
       labelComponent = <label htmlFor={id}>{label}</label>;
     }
     return (
-      <div className="pf-search-text-input">
+      <div id="search-text" className="pf-search-text-input">
         {labelComponent}
         <input
           {...other}

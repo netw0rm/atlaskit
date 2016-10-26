@@ -1,4 +1,4 @@
-import { Component, emit, prop, vdom, define } from 'skatejs';
+import { Component, emit, prop, vdom, define, props } from 'skatejs';
 import { style } from 'akutil-common';
 import { change } from './index.events';
 
@@ -12,14 +12,17 @@ function ensureObject(potentialObj) {
 
 function varsFromChildren(host) {
   return [...host.children].reduce((prev, curr) => {
-    const [key, val] = [curr.getAttribute('name'), curr.getAttribute('value')];
+    // Getting the props instead of getting attribute values to prevent problems
+    // with browsers using Custom Elements v1 polyfill.
+    // In this case, `value` is not defined as an attribute but it is as a property.
+    const { name, value } = props(curr);
 
-    if (!key) {
+    if (!name) {
       return prev;
     }
 
-    if (key.indexOf('.') > -1) {
-      const keys = key.split('.');
+    if (name.indexOf('.') > -1) {
+      const keys = name.split('.');
       const last = keys.pop();
 
       // We use obj to nest the object values because we need to return prev.
@@ -33,9 +36,9 @@ function varsFromChildren(host) {
 
       // This will be the inner-most object, so we set the last part of the key
       // to the theme var value.
-      obj[last] = val;
+      obj[last] = value;
     } else {
-      prev[key] = val;
+      prev[name] = value;
     }
 
     return prev;

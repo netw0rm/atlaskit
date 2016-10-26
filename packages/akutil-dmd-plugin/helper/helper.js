@@ -1,13 +1,24 @@
+/* eslint-disable */
+
 const ddata = require('ddata');
+
+function stripTags(str, tags) {
+  let stripped = str;
+  tags.forEach(function(tag) {
+    const re = new RegExp(`*\s*@${tag}\s*`);
+    stripped = str.replace(re, '');
+  });
+  return stripped;
+}
 
 function parseExample(text) {
   if (text) {
     if (text.match(/@html/)) {
-      return `**HTML Example**\n${text.replace(/.*@html\s*/g, '')}`;
+      return `**HTML Example**\n${stripTags(text, ['html', 'playground'])}`;
     } else if (text.match(/@js/)) {
-      return `**JS Example**\n${text.replace(/.*@js\s*/g, '')}`;
+      return `**JS Example**\n${stripTags(text, ['js', 'playground'])}`;
     }
-    return `**Example**\n${text}`;
+    return `**Example**\n${stripTags(text, ['playground'])}`;
   }
   return text;
 }

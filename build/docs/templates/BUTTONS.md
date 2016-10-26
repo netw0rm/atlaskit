@@ -1,4 +1,4 @@
-[![Components registry](https://img.shields.io/badge/Atlaskit-components-FF5230.svg)](http://aui-cdn.atlassian.com/atlaskit/registry/)
+[![Components registry](https://img.shields.io/badge/AtlasKit-components-FF5230.svg)](http://aui-cdn.atlassian.com/atlaskit/registry/)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://Commitizen.github.io/cz-cli/)
 [![semantic-release](https://img.shields.io/badge/GitHub-semantic_release-ffab00.svg)](https://github.com/semantic-release/semantic-release)
 [![Report an issue](https://img.shields.io/badge/Report-an_issue-6554C0.svg)](https://ecosystem.atlassian.net/browse/AK)

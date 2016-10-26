@@ -31,11 +31,13 @@ replacefiles () {
   # we use a `here string` (the <<<) here so that the while loop doesnt happen in a subshell
   # (which means we keep the variable changes that happen inside of it)
   while read -r LINE ; do
-    FILE_PATH="./docs/$LINE"
-    # for each file link line replace it with the contents of that file
-    # the `r`` command in sed reads a file
-    # the `d` command deletes the matching pattern
-    USAGE=$(echo "$USAGE" | sed -e "/$LINE/r $FILE_PATH" -e "/$LINE/d")
+    if [ ! -z "$line" ]; then
+      FILE_PATH="./docs/$LINE"
+      # for each file link line replace it with the contents of that file
+      # the `r`` command in sed reads a file
+      # the `d` command deletes the matching pattern
+      USAGE=$(echo "$USAGE" | sed -e "/$LINE/r $FILE_PATH" -e "/$LINE/d")
+    fi
   done <<< "$(echo "$FILE_LINKS")"
 
   echo "$USAGE"

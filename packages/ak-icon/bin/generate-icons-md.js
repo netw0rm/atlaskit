@@ -6,7 +6,7 @@ const fileToScope = require('./fileToScope');
 const getAllIconsPaths = require('./getAllIconsPaths');
 const pathToDashed = require('./pathToDashed');
 
-const bytebucketIconPath = 'https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-icon';
+const bytebucketIconPath = 'https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-icon';
 const tmpFolder = `${path.join('..', 'src', tmpFolderName)}${path.sep}`;
 const allIconPaths = getAllIconsPaths();
 

@@ -105,11 +105,6 @@ ${changedPackages.map(([name, version]) => `
   </tr>`).join('')}
 </table>`;
 
-const subscribedMentions = changedPackages.map(pkg => `@${pkg.name}`).join(', ');
-const subscribersMessage = `
-${subscribedMentions}: A component you are watching released an update
-`;
-
 try {
   const client = new HipChatNotifier({
     room: ROOM_ID,
@@ -118,10 +113,6 @@ try {
 
   client.message(message, {
     color: 'green',
-  });
-  client.message(subscribersMessage, {
-    color: 'green',
-    message_format: 'text',
   });
   log.info('Successfully notified of the new releases');
 } catch (e) {

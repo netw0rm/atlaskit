@@ -34,3 +34,4 @@ allIconPaths.forEach((file) => {
 });
 
 console.log('export { size };');
+/* eslint-enable no-console */

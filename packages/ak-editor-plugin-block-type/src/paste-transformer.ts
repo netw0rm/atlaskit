@@ -26,6 +26,7 @@ function generateTextFromNodes(pre: string, node: Node, currentIndex: number, { 
 }
 
 export default function(pm: ProseMirror, slice: Slice): Slice {
+  debugger
   const node = pm.selection.$head.node(1);
 
   if (node.type.name === 'code_block') {

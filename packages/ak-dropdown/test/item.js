@@ -7,7 +7,6 @@ import { waitUntil, getShadowRoot } from 'akutil-common-test';
 
 import { events as dropdownEvents } from '../src';
 import Item from '../src/index.item';
-import { itemHeight, itemLeftToDefaultGap, itemLeftGap } from './_helpers';
 
 
 chai.use(chaiAsPromised);
@@ -86,91 +85,6 @@ describe('ak-dropdown-item', () => {
 
     it('target is matched on the link', () => {
       expect(componentDomElem.getAttribute('target')).to.equal('_blank');
-    });
-  });
-
-  describe('sizing for a simple item:', () => {
-    let component;
-    let componentDomElem;
-
-    beforeEach(() => {
-      component = '<ak-dropdown-item><div>some text</div></ak-dropdown-item>';
-      itemContainer.innerHTML = component;
-
-      return waitUntil(() =>
-        itemContainer.firstChild.getAttribute('defined') !== null
-      ).then(() => {
-        component = itemContainer.firstChild;
-        componentDomElem = getShadowRoot(component).firstChild;
-      });
-    });
-
-    it(`height should be equal ${itemHeight}`, () => {
-      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(itemHeight);
-    });
-
-    it(`height should be equal ${itemHeight} even if the content is very long`, () => {
-      component.innerHTML = `test text test texttest texttest texttest texttest
-       texttest texttest texttest texttest texttest texttest text`;
-
-      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(itemHeight);
-    });
-
-    it(`gap between default slot and left edge of the component should be ${itemLeftGap}`, () => {
-      const rectComponent = getShadowRoot(component).firstChild.getBoundingClientRect();
-      const rectDiv = component.childNodes[0].getBoundingClientRect();
-      const gapLeft = rectDiv.left - rectComponent.left;
-
-      expect(Math.round(gapLeft)).to.equal(itemLeftGap);
-    });
-
-    it(`gap between default slot and right edge should be at least ${itemLeftGap}`, () => {
-      component.innerHTML = `<div>test text test texttest texttest texttest texttest
-      texttest texttest texttest texttest texttest texttest text</div>`;
-      const rectComponent = getShadowRoot(component).firstChild.getBoundingClientRect();
-      const rectDiv = component.childNodes[0].getBoundingClientRect();
-      const gapRight = (rectComponent.left + rectComponent.width) - rectDiv.left - rectDiv.width;
-
-      expect(Math.round(gapRight)).to.equal(itemLeftGap);
-    });
-  });
-
-  describe('sizing for an item with slotted left (like avatars)', () => {
-    let component;
-    let componentDomElem;
-
-    beforeEach(() => {
-      const html = '<div slot="left" style="height:20px;width:20px;"></div><div>some text</div>';
-      component = `<ak-dropdown-item>${html}</ak-dropdown-item>`;
-      itemContainer.innerHTML = component;
-
-      // wait until the component is rendered
-      return waitUntil(() =>
-        itemContainer.firstChild.getAttribute('defined') !== null
-      ).then(() => {
-        component = itemContainer.firstChild;
-        componentDomElem = getShadowRoot(component).firstChild;
-      });
-    });
-
-    it(`height should be equal ${itemHeight} even if the left slot is not empty`, () => {
-      expect(Math.round(componentDomElem.getBoundingClientRect().height)).to.equal(itemHeight);
-    });
-
-    it(`gap between left slot and left edge of the component should be ${itemLeftGap}`, () => {
-      const rectComponent = getShadowRoot(component).firstChild.getBoundingClientRect();
-      const rectDiv = component.firstChild.getBoundingClientRect();
-      const gap = rectDiv.left - rectComponent.left;
-
-      expect(Math.round(gap)).to.equal(itemLeftGap);
-    });
-
-    it(`gap between left slot and default slot should be ${itemLeftToDefaultGap}`, () => {
-      const rectSlot = component.childNodes[0].getBoundingClientRect();
-      const rectDefault = component.childNodes[1].getBoundingClientRect();
-      const gap = rectDefault.left - rectSlot.left - rectSlot.width;
-
-      expect(Math.round(gap)).to.equal(itemLeftToDefaultGap);
     });
   });
 

@@ -19,7 +19,7 @@ function tearDownComponent(component) {
 function createTemplate(options) {
   return options.map((opt) => {
     const elem = new exports[opt.id]();
-    elem.textContent = opt.value || opt.id;
+    elem.innerHTML = opt.value || opt.id;
     if (elem instanceof exports.DropdownTrigger) {
       elem.setAttribute('slot', 'trigger');
     }
@@ -69,9 +69,30 @@ function pressDropdownTrigger(component, key = 'enter') {
   getShadowRoot(component.querySelector('[slot="trigger"]')).firstChild.dispatchEvent(event);
 }
 
+function getCalculations(item) {
+  const itemCalc = item.getBoundingClientRect();
+  return {
+    height: itemCalc.height,
+    width: itemCalc.width,
+  };
+}
+
+function getPaddings(item1, item2) {
+  const item1Calc = item1.getBoundingClientRect();
+  const item2Calc = item2.getBoundingClientRect();
+
+  return {
+    left: Math.round(item2Calc.left - item1Calc.left),
+    top: Math.round(item2Calc.top - item1Calc.top),
+    bottom: Math.round(item1Calc.bottom - item2Calc.bottom),
+    right: Math.round(item1Calc.right - item2Calc.right),
+    between: Math.round(item2Calc.left - item1Calc.left - item1Calc.width),
+  };
+}
+
 export const itemHeight = 28;
 export const itemLeftGap = 12;
 export const itemLeftToDefaultGap = 8;
 
 export { createTemporaryComponent, tearDownComponent, initDropdown, clickDropdownTrigger,
-  pressDropdownTrigger };
+  pressDropdownTrigger, getCalculations, getPaddings };

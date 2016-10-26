@@ -1,5 +1,5 @@
 const karmaConf = require('./all.js');
-const moduleBabelQuery = require('../webpack/moduleBabelQuery');
+const moduleBabelQuery = require('../webpack/babel.query.module');
 
 module.exports = (config) => {
   Object.assign(config, {

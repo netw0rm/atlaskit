@@ -5,7 +5,9 @@ const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
-const moduleBabelQuery = require('./moduleBabelQuery');
+const moduleBabelQuery = require('./babel.query.module');
+const storybookBabelQuery = require('./babel.query.storybook');
+const loaderChain = require('./loader-chain').encode;
 
 
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -15,18 +17,6 @@ function defaultPackageMains() {
   options.process({});
   return options.defaults.resolve.packageMains;
 }
-
-/**
- * Build a loader chain.
- *
- * @param {Object} spec -- {loader2: {}, loader1: {}, ...}
- *   The order of definition is significant. The prior example would return:
- *
- *       'loader1?{}!loader2?{}'
- */
-const loaderChain = spec => Object.keys(spec)
-  .map(key => `${key}?${JSON.stringify(spec[key])}`)
-  .join('!');
 
 const css = {
   camelCase: true,
@@ -78,7 +68,7 @@ const standardConfig = {
         {
           test: /\/stories\/.*\.tsx?$/,
           loader: loaderChain({
-            babel: moduleBabelQuery,
+            babel: storybookBabelQuery,
             ts: {},
           }),
         },
@@ -102,16 +92,7 @@ const standardConfig = {
           test: /\.jsx?$/,
           include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
           exclude: /stories\/skate\/.*\.js/,
-          query: {
-            presets: [
-              'es2015',
-              'react', // required by react-storybook
-              'stage-0',
-            ],
-            plugins: [
-              'transform-runtime',
-            ],
-          },
+          query: storybookBabelQuery,
         },
         //
         // JAVASCRIPT

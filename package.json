@@ -160,6 +160,7 @@
     "test/single/watch": "NODE_ENV=development ./build/bin/test.single.watch.sh",
     "validate": "npm ls >/dev/null && ./node_modules/.bin/lerna exec -- npm ls >/dev/null",
     "validate/lint-changed": "./build/bin/lint-changed.sh",
+    "validate/lint-changed/fix": "./build/bin/lint-changed-fix.sh",
     "validate/package.json": "pjv -q && ./node_modules/.bin/lerna exec -- pjv -q"
   }
 }

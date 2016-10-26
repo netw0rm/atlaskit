@@ -22,7 +22,7 @@
   "devDependencies": {
     "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0",
-    "ak-button": "^0.5.0"
+    "ak-button": "^1.6.1"
   },
   "repository": {
     "type": "git",

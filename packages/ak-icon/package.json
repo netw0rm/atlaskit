@@ -9,8 +9,8 @@
     "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.js",
     "generate-icon-exports": "node ./bin/generate-icon-exports.js",
     "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
-    "gen-usage-md": "node ./bin/generate-docs.js > ./docs/USAGE.md",
-    "prepublish": "CLI=1 npm run gen-js && npm run gen-usage-md && cd ../.. && npm run prepublish/single ak-icon",
+    "gen-icons-md": "node ./bin/generate-icons-md.js > ./docs/Icons.md",
+    "prepublish": "CLI=1 npm run gen-js && npm run gen-icons-md && cd ../.. && npm run prepublish/single ak-icon",
     "pretest": "npm run gen-js"
   },
   "files": [

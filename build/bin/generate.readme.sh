@@ -10,6 +10,10 @@ NAME=$(node -e 'console.log(require("./package.json").name)')
 VERSION=$(node -e 'console.log(require("./package.json").version)')
 PREFIX="{white.bold [$NAME]}"
 
+if [ -z "$BITBUCKET_COMMIT" ]; then
+  BITBUCKET_COMMIT="master"
+fi
+
 $CHALK --no-stdin -t "{blue $PREFIX Generating README.md...}"
 
 replacevars () {
@@ -31,7 +35,7 @@ replacefiles () {
   # we use a `here string` (the <<<) here so that the while loop doesnt happen in a subshell
   # (which means we keep the variable changes that happen inside of it)
   while read -r LINE ; do
-    if [ ! -z "$line" ]; then
+    if [ ! -z "$LINE" ]; then
       FILE_PATH="./docs/$LINE"
       # for each file link line replace it with the contents of that file
       # the `r`` command in sed reads a file
@@ -46,8 +50,8 @@ replacefiles () {
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
   USAGE=$(cat ./docs/USAGE.md)
-  USAGE=$(replacevars "$USAGE")
   USAGE=$(replacefiles "$USAGE")
+  USAGE=$(replacevars "$USAGE")
 else
   USAGE="# $NAME"
 fi

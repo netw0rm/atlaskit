@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const glob = require('glob');
 const path = require('path');
 

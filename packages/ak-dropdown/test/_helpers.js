@@ -69,14 +69,6 @@ function pressDropdownTrigger(component, key = 'enter') {
   getShadowRoot(component.querySelector('[slot="trigger"]')).firstChild.dispatchEvent(event);
 }
 
-function getCalculations(item) {
-  const itemCalc = item.getBoundingClientRect();
-  return {
-    height: itemCalc.height,
-    width: itemCalc.width,
-  };
-}
-
 function getPaddings(item1, item2) {
   const item1Calc = item1.getBoundingClientRect();
   const item2Calc = item2.getBoundingClientRect();
@@ -95,4 +87,4 @@ export const itemLeftGap = 12;
 export const itemLeftToDefaultGap = 8;
 
 export { createTemporaryComponent, tearDownComponent, initDropdown, clickDropdownTrigger,
-  pressDropdownTrigger, getCalculations, getPaddings };
+  pressDropdownTrigger, getPaddings };

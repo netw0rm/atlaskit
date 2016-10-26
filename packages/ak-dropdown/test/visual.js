@@ -4,7 +4,7 @@ import { props } from 'skatejs';
 import { tearDownComponent } from 'akutil-common-test';
 
 import { initDropdown,
-  itemHeight, itemLeftToDefaultGap, itemLeftGap, getCalculations, getPaddings } from './_helpers';
+  itemHeight, itemLeftToDefaultGap, itemLeftGap, getPaddings } from './_helpers';
 import shadowItemStyles from '../src/less/shadow-item.less';
 
 const defaultClass = shadowItemStyles.locals.itemDefaultPosition;
@@ -28,14 +28,14 @@ describe('sizes, paddings and margins', () => {
       afterEach(() => tearDownComponent(component));
 
       it(`height should be equal ${itemHeight}`, () => {
-        expect(getCalculations(item).height).to.equal(itemHeight);
+        expect(item.getBoundingClientRect().height).to.equal(itemHeight);
       });
 
       it(`height should be equal ${itemHeight} even if the content is very long`, () => {
         item.innerHTML = `test text test texttest texttest texttest texttest
        texttest texttest texttest texttest texttest texttest text`;
 
-        expect(getCalculations(item).height).to.equal(itemHeight);
+        expect(item.getBoundingClientRect().height).to.equal(itemHeight);
       });
 
       it(`gap between default slot and left edge of the component should be ${itemLeftGap}`, () => {
@@ -65,7 +65,7 @@ describe('sizes, paddings and margins', () => {
       afterEach(() => tearDownComponent(component));
 
       it(`height should be equal ${itemHeight} even if the left slot is not empty`, () => {
-        getCalculations(item, { height: itemHeight });
+        expect(item.getBoundingClientRect().height).to.equal(itemHeight);
       });
 
       it(`gap between left slot and left edge of the component should be ${itemLeftGap}`, () => {

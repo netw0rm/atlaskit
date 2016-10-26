@@ -16,11 +16,15 @@ const expect = chai.expect;
 
 describe('util/datetime.js', () => {
   describe('#zeroPadLeft()', () => {
-    it('should prepend input with zeros until length `n` is met', () => {
+    it('should return base 10 numbers prefixed with zeros until length `n` is met', () => {
       expect(zeroPadLeft(1, 2)).to.equal('01');
-      expect(zeroPadLeft('4', 3)).to.equal('004');
-      expect(zeroPadLeft('04', 3)).to.equal('004');
-      expect(zeroPadLeft(-21, 5)).to.equal('-00021');
+      expect(zeroPadLeft(-21, 5)).to.equal('00021');
+      expect(zeroPadLeft(0x40, 5)).to.equal('00064');
+    });
+
+    it('should throw if input is not a number', () => {
+      expect(() => zeroPadLeft('4', 3)).to.throw();
+      expect(() => zeroPadLeft('foobar', 5)).to.throw();
     });
   });
 
@@ -74,19 +78,19 @@ describe('util/datetime.js', () => {
     it('should return 12h clock hours when not using 24 hour clock', () => {
       const date = new Date(2016, 4, 1, 6, 21, 43);
 
-      expect(getHours(date, false)).to.equal(6);
+      expect(getHours(date, false)).to.equal('6');
     });
 
     it('should return correct hour strings when not using 24 hour clock', () => {
       const date = new Date(2016, 4, 1, 13, 21, 43);
 
-      expect(getHours(date, false)).to.equal(1);
+      expect(getHours(date, false)).to.equal('1');
 
       date.setHours(18);
-      expect(getHours(date, false)).to.equal(6);
+      expect(getHours(date, false)).to.equal('6');
 
       date.setHours(23);
-      expect(getHours(date, false)).to.equal(11);
+      expect(getHours(date, false)).to.equal('11');
     });
   });
 

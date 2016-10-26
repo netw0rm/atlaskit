@@ -3,21 +3,24 @@ const meridiem = ['am', 'pm'];
 const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 /**
- * Add leading zeros to given number to match given targetLength
+ * Return absolute base 10 number as zero padded string
  * @ignore
  * @param {number} number
  * @param {number} targetLength
- * @return {string}
+ * @return {string} absolute base 10 number of `number` as zero padded string
  */
 export const zeroPadLeft = (number, targetLength) => {
-  targetLength = targetLength || 0;
-  number = parseInt(number, 10);
+  if (isNaN(number) || typeof number !== 'number') {
+    throw new Error('zeroPadLeft expects first argument to be a number');
+  }
 
-  const sign = number < 0 ? '-' : '';
-  const numStr = Math.abs(number).toString();
-  const padding = new Array((targetLength - numStr.length) + 1).join('0');
+  let numStr = Math.abs(parseInt(number, 10)).toString();
 
-  return `${sign}${padding}${numStr}`;
+  while (numStr.length < targetLength) {
+    numStr = `0${numStr}`;
+  }
+
+  return numStr;
 };
 
 /**
@@ -34,7 +37,7 @@ export const startOfDay = (date) => {
 };
 
 /**
- * Check if the two dates given are on the same day
+ * Returns true if two date objects are on the same day ignoring time.
  * @ignore
  * @param  {date}  firstDate
  * @param  {date}  secondDate
@@ -44,11 +47,11 @@ export const isSameDay = (firstDate, secondDate) =>
   startOfDay(firstDate).getTime() === startOfDay(secondDate).getTime();
 
 /**
- * Return hours from given date
+ * Return hours as string from given date object
  * @ignore
  * @param  {date} date
  * @param  {boolean} use24h
- * @return {string|number}
+ * @return {string}
  */
 export const getHours = (date, use24h) => {
   const hours = date.getHours();
@@ -56,19 +59,21 @@ export const getHours = (date, use24h) => {
   if (use24h) {
     return zeroPadLeft(hours, 2);
   } else if (hours === 0) {
-    return 12;
+    return '12';
   } else if (hours > 12) {
-    return hours % 12;
+    return (hours % 12).toString();
   }
 
-  return hours;
+  return hours.toString();
 };
 
 /**
- * Return meridiem string for given hours
+ * Return AM/PM suffix for given hours to use in 12h clock display
  * @ignore
  * @param  {number} hours
  * @return {string}
+ * @example getMeridiem(3) -> 'am'
+ * getMeridiem(15) -> 'pm'
  */
 export const getMeridiem = hours => ((hours / 12) >= 1 ? meridiem[1] : meridiem[0]);
 

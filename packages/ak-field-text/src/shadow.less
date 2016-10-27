@@ -33,7 +33,7 @@ ak-field-text {
 
 // Label margins
 @label-top-spacing: unit(@grid * 5, px);
-@label-bottom-spacing: unit(@grid * 3, px);
+@label-bottom-spacing: unit(@grid, px);
 
 // Input border width
 @input-border-width: 1;
@@ -54,7 +54,7 @@ ak-field-text {
 @label-inner-height: @grid * 4; // effectively 16px
 @label-font-size: 12;
 @label-line-height: @label-inner-height / @label-font-size;
-@label-required-padding: 7px;
+@label-required-padding: unit(@grid / 2, px);
 
 // Mixin to redistribute spacing between border and padding
 .borders-and-padding (@border, @x-spacing, @height) {
@@ -114,6 +114,7 @@ ak-field-text {
 
 .label-text {
   font-size: unit(@label-font-size, px);
+  font-weight: 600;
   line-height: @label-line-height;
   padding: @label-top-spacing 0 @label-bottom-spacing 0;
 }

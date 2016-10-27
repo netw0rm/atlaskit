@@ -81,7 +81,7 @@ export default (vars) => {
       'line-height': val('button.lineHeight', lineHeight / em),
       margin: '0',
       outline: 'none',
-      padding: val('button.padding', `${grid * 0.75}px ${grid}px`),
+      padding: val('button.padding', `${grid * 0.75}px ${grid * 1.5}px`),
       'text-align': 'center',
       transition: val('button.transition', transitionValue),
       'user-select': 'none',
@@ -114,6 +114,7 @@ export default (vars) => {
       background: val('primary.background', akColorB400),
       color: val('primary.color', akColorN20),
       'border-color': val('primary.borderColor'),
+      'font-weight': 600,
 
       '&:hover': {
         background: val('primary.hover.background', akColorB500),

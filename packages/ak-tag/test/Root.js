@@ -21,7 +21,7 @@ describe('ak-tag', () => {
     };
 
     beforeEach(() => createTemporary(definition)
-      .then(newComponent => {
+      .then((newComponent) => {
         component = newComponent;
         rootNode = getRootNode(component);
       }));

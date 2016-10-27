@@ -1,9 +1,15 @@
 import { storiesOf, action } from '@kadira/storybook';
-import BitbucketComponent from '../src';
 import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-test';
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import AkTabs from 'ak-tabs';
+import { Tab as AkTab} from 'ak-tabs';
+import BitbucketComponent from '../src';
 
+
+const Tabs = reactify(AkTabs);
+const Tab = reactify(AkTab);
 const Bitbucket = reactify(BitbucketComponent);
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
@@ -81,6 +87,53 @@ storiesOf('ak-editor-bitbucket', module)
       onCancel={action('cancel')}
     />
   ))
+  .add('Event Bubbling', () => {
+    type Props = {};
+    type State = {};
+    class EditorInContainers extends Component<Props, State> {
+      componentDidMount() {
+        const outerContainer = ReactDOM.findDOMNode(this);
+        const innerContainer = outerContainer.lastChild;
+
+        [
+          'ready', 'keydown', 'keyup', 'keypress', 'click', 'touchstart', 'touchend'
+        ].forEach(eventName => {
+          outerContainer.addEventListener(eventName, (e: any) => {
+            action(`Outer container received "${eventName}" event`)(e);
+            console.log('outer container event', e);
+          });
+
+          innerContainer.addEventListener(eventName, (e: any) => {
+            action(`Inner container received "${eventName}" event`)(e);
+            console.log('inner container event', e);
+          });
+        });
+      }
+
+      render() {
+        const outerStyle = { padding: 25, background: '#6C64A6' };
+        const innerStyle = { padding: 25, background: '#48CC8C' };
+        const pStyle = { color: 'white', fontWeight: 600 };
+        const taStyle = { width: '100%', height: 30, fontSize: 15, padding: 10 };
+
+        action('⚠ Try clicking inside editor container and using your keyboard.')();
+
+        return (
+          <div style={ outerStyle }>
+            <p style={ pStyle }>Outer container</p>
+            <div style={ innerStyle }>
+              <p style={ pStyle }>Inner container</p>
+              <Bitbucket expanded />
+              <hr />
+              <textarea style={ taStyle } placeholder="ordinary textarea"></textarea>
+            </div>
+          </div>
+        )
+      }
+    }
+
+    return <EditorInContainers />;
+  })
   .add('Markdown preview', () => {
     type Props = {};
     type State = { markdown: string };
@@ -113,4 +166,32 @@ storiesOf('ak-editor-bitbucket', module)
     }
 
     return <Demo />;
+  })
+  .add('Contexts', () => {
+    type Props = {};
+    type State = {};
+    class Demo extends Component<Props, State> {
+      render() {
+        return (
+          <div ref="root">
+            <Tabs>
+              <Tab selected label="(default)">
+                <Bitbucket expanded/>
+              </Tab>
+              <Tab selected label="comment">
+                <Bitbucket expanded context="comment"/>
+              </Tab>
+              <Tab selected label="pr">
+                <Bitbucket expanded context="pr"/>
+              </Tab>
+            </Tabs>
+          </div>
+        );
+      }
+    }
+
+    return <Demo />;
   });
+
+;
+

@@ -20,6 +20,7 @@ import { buildKeymap } from './keymap';
 import markdownSerializer from './markdown-serializer';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
+import parseHtml from './parse-html';
 
 import {
   default as ListsPlugin,
@@ -60,6 +61,10 @@ function getBlockType({ blockType, blockName }: getBlockTypeType, blockTypes: bl
       return bt;
     }
   }
+}
+
+function stopEventPropagation(event: Event) : void {
+  event.stopPropagation();
 }
 
 interface formattingMap {
@@ -154,7 +159,7 @@ class AkEditorBitbucket extends Component {
   }
 
   static rendered(elem: AkEditorBitbucket) : void {
-    if (elem.expanded) {
+    if (elem.expanded && !elem._pm) {
       elem._initEditor();
       if (!elem._ready) {
         emit(elem, 'ready');
@@ -162,9 +167,22 @@ class AkEditorBitbucket extends Component {
       }
 
       elem.focus();
-    } else {
+    } else if (!elem.expanded) {
       elem._pm = null;
     }
+  }
+
+  static attached(elem: AkEditorBitbucket) : void {
+    // Prevent any keyboard events from bubbling outside of the editor chrome
+    elem.addEventListener('keydown', stopEventPropagation);
+    elem.addEventListener('keyup', stopEventPropagation);
+    elem.addEventListener('keypress', stopEventPropagation);
+  }
+
+  static detached(elem: AkEditorBitbucket) : void {
+    elem.removeEventListener('keydown', stopEventPropagation);
+    elem.removeEventListener('keyup', stopEventPropagation);
+    elem.removeEventListener('keypress', stopEventPropagation);
   }
 
   static render(elem: AkEditorBitbucket) {
@@ -175,7 +193,7 @@ class AkEditorBitbucket extends Component {
     }
 
     const fullEditor: any = (<div>
-      <Toolbar>
+      <Toolbar className={shadowStyles.locals['toolbar']}>
         <ToolbarBlockType
           disabled={!elem._canChangeBlockType}
           selectedBlockType={elem._selectedBlockType}
@@ -197,7 +215,7 @@ class AkEditorBitbucket extends Component {
         <ToolbarHyperlink
           active={elem._hyperLinkActive}
           disabled={!elem._canLinkHyperlink}
-          onSave={elem._addHyperLink}
+          onAddHyperlink={elem._addHyperLink}
         />
         <ToolbarLists
           bulletlistDisabled={elem._bulletlistDisabled}
@@ -228,6 +246,7 @@ class AkEditorBitbucket extends Component {
       }
       <Footer
         openTop
+        hide-buttons={elem.context === 'pr'}
         onSave={elem._collapse}
         onCancel={elem._collapse}
         onInsertimage={elem._insertImage}
@@ -248,7 +267,7 @@ class AkEditorBitbucket extends Component {
           :
           <input
             placeholder={elem.placeholder}
-            onclick={elem._expand}
+            onfocus={elem._expand}
             className={fakeInputClassNames}
           />
         }
@@ -293,6 +312,28 @@ class AkEditorBitbucket extends Component {
     return this._ready || false;
   }
 
+  /**
+   * Set the value from HTML string
+   */
+  setFromHtml(html: string): void {
+    if (!this._pm || !this._pm.doc) {
+      throw 'Unable to set from HTML before the editor is initialized';
+    }
+
+    this._pm.setDoc(parseHtml(html.trim()), null);
+  }
+
+  /**
+   * Check if the current editor's value is empty - an empty value includes one or more empty paragraphs.
+   */
+  isEmpty(): boolean {
+    if (!this._pm || !this._pm.doc) {
+      throw 'Unable to check if editor is empty before it is initialized';
+    }
+
+    return !this._pm.doc.textContent;
+  }
+
   _expand(): void {
     this.expanded = true;
   }
@@ -333,6 +374,7 @@ class AkEditorBitbucket extends Component {
 
   _addHyperLink(event: CustomEvent): void {
     const href = event.detail.value;
+
     for (const pm of maybe(this._pm)) {
       HyperlinkPlugin.get(pm).addLink({ href });
     }
@@ -353,33 +395,25 @@ class AkEditorBitbucket extends Component {
 
   _changeHyperLinkValue(event: Event) {
     const newLink = (event.target as any).value;
-    if (newLink) {
-      for (const pm of maybe(this._pm)) {
-        HyperlinkPlugin.get(pm).updateLink({
-          href: newLink,
-          text: newLink,
-        });
-      }
+
+    for (const pm of maybe(this._pm)) {
+      HyperlinkPlugin.get(pm).updateLink({
+        href: newLink,
+        text: newLink,
+      });
     }
   }
 
   _initEditor() {
-    if (this._pm) {
-      return;
-    }
-
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
 
     schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
     schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
 
-    const div = document.createElement('div');
-    div.innerHTML = this.defaultValue;
-
     const pm = new ProseMirror({
       place: this._wrapper,
-      doc: schema.parseDOM(div),
+      doc: parseHtml(this.defaultValue),
       plugins: [
         MarkdownInputRulesPlugin,
         HyperlinkPlugin,

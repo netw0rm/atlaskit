@@ -1,7 +1,34 @@
 import { Component, vdom } from 'skatejs';
+import { enumeration } from 'akutil-common';
+
 import * as exceptions from './internal/exceptions';
-import 'style!./host.less';
-import shadowStyles from './shadow.less';
+import Root from './Root';
+import Content from './Content';
+
+
+/**
+ * Icon size values.
+ *
+ * @exports size
+ * @enum {string}
+ */
+const size = {
+  /** small icon */
+  small: 'small',
+  /** medium icon */
+  medium: 'medium',
+  /** large icon */
+  large: 'large',
+  /** xlarge icon */
+  xlarge: 'xlarge',
+};
+
+const SIZE_ATTRIBUTE_ENUM = {
+  attribute: 'size',
+  values: [size.small, size.medium, size.large, size.xlarge],
+  missingDefault: '',
+  invalidDefault: '',
+};
 
 /**
  * @description Icon interface. All icons follow this structure.
@@ -22,13 +49,34 @@ class Icon extends Component {
        * @instance
        * @type {string}
        * @example @html <ak-icon-* label="Accessible description of the icon" />
-       * @example @js const icon = new Icon();
+       * @example @js import SomeIcon from 'ak-icon/glyph/some';
+       * const icon = new SomeIcon();
        * icon.label = 'Accessible description of the icon';
        * document.body.appendChild(icon);
        */
       label: {
         attribute: true,
       },
+
+      /**
+       * @description (Optional) An icon size.
+       *
+       * Defaults to an empty string (which means it uses the default size).
+       *
+       * @memberof Icon
+       * @instance
+       * @type {size}
+       * @default small
+       * @example @html <ak-icon-* size="medium">
+       * @example @js import SomeIcon from 'ak-icon/glyph/some';
+       * const icon = new SomeIcon();
+       * icon.size = 'medium';
+       * document.body.appendChild(icon);
+       */
+      size: enumeration(SIZE_ATTRIBUTE_ENUM)({
+        attribute: true,
+      }),
+
     };
   }
 
@@ -37,12 +85,11 @@ class Icon extends Component {
     const Glyph = getGlyphTemplate();
 
     return (
-      <span className={shadowStyles.locals.icon}>
-        <style>{shadowStyles.toString()}</style>
-        <span className={shadowStyles.locals.content}>
+      <Root size={elem.size}>
+        <Content>
           <Glyph role="img" label={label} />
-        </span>
-      </span>
+        </Content>
+      </Root>
     );
   }
 
@@ -54,6 +101,7 @@ class Icon extends Component {
   * @private
   * @return {Function} a template function
   */
+  // eslint-disable-next-line class-methods-use-this
   getGlyphTemplate() {
     throw new exceptions.NotImplementedError('Subclasses need to provide an implementation');
   }
@@ -61,3 +109,4 @@ class Icon extends Component {
 
 export default Icon;
 export const NotImplementedError = exceptions.NotImplementedError;
+export { size };

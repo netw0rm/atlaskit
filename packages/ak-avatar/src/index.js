@@ -1,8 +1,4 @@
 /** @jsx vdom */
-/* The no-underscore-dangle line can be removed once we can use symbols for prop names */
-/* eslint-disable no-underscore-dangle */
-import 'style!./host.less';
-
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
 import { vdom, define, prop, props, Component } from 'skatejs';
@@ -62,7 +58,7 @@ const definition = {
 
     const symbolsToCheck = [loading, error];
     const curState = props(elem);
-    symbolsToCheck.forEach(symbol => {
+    symbolsToCheck.forEach((symbol) => {
       if (curState[symbol] !== prev[symbol]) {
         hasChanged = true;
       }

@@ -1,4 +1,3 @@
-import 'style!./tab-host.less';
 import classNames from 'classnames';
 import { emit, vdom, define, prop, Component } from 'skatejs';
 import shadowStyles from './tab-shadow.less';

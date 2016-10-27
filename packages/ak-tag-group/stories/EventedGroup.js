@@ -1,10 +1,14 @@
-import reactify from 'akutil-react';
-import groupStyles from 'style!./../src/host.less';
-import tagStyles from 'style!./tagStyles.less';
-import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
-const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = tagEvents;
-import WebComponent from '../src/index';
 import React from 'react';
+import reactify from 'akutil-react';
+import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
+
+import tagStyles from 'style!./tagStyles.less';
+
+import groupStyles from '../src/shadow.less';
+import WebComponent from '../src';
+
+
+const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = tagEvents;
 
 const Group = reactify(WebComponent);
 
@@ -43,26 +47,26 @@ class EventedGroup extends React.Component {
 
   afterRemoveCallback(e) {
     this.onRemove(e.target.text);
-    const tags = this.state.tags.filter((text) => text !== e.target.text);
+    const tags = this.state.tags.filter(text => text !== e.target.text);
     this.setState({ tags });
   }
 
   render() {
     return (
-      <div ref={(g) => (this.group = g)}>
+      <div ref={g => (this.group = g)}>
         <input
           id="allow-remove"
           type="checkbox"
           defaultChecked={this.state.allowRemoval}
-          onChange={(e) => (this.setState({ allowRemoval: e.target.checked }))}
+          onChange={e => (this.setState({ allowRemoval: e.target.checked }))}
         />
         <label htmlFor="allow-remove">Allow tag removal</label>
         <hr />
-        <Group className={groupStyles.akTagGroup} alignment={this.state.alignment}>
-          {this.state.tags.map((text) => (<Tag
+        <Group className={groupStyles.locals.akTagGroup} alignment={this.state.alignment}>
+          {this.state.tags.map(text => (<Tag
             text={text}
             key={text}
-            className={tagStyles.akTag}
+            className={tagStyles.locals.akTag}
             remove-button-text="Remove me"
           />))}
         </Group>
@@ -74,7 +78,7 @@ class EventedGroup extends React.Component {
 EventedGroup.displayName = 'EventedGroup';
 EventedGroup.propTypes = {
   alignment: React.PropTypes.string,
-  initialTags: React.PropTypes.array.isRequired,
+  initialTags: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   onRemove: React.PropTypes.func,
 };
 

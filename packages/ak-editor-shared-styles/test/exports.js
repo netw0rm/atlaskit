@@ -2,11 +2,12 @@ import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 
+import * as lessVars from '../src';
+
+
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
-
-import * as lessVars from '../src';
 
 describe('LESS module exports', () => {
   // If you find yourself here and wonder why this list is not auto-generated, then bear in
@@ -20,23 +21,23 @@ describe('LESS module exports', () => {
   //
   // If we were to auto-generate this list, then renaming, adding or removing would NOT
   // break any tests and thus not hint the developer at what kind of change he/she is making
-  [
-    'akEditorCodeFontFamily',
-    'akEditorInactiveForeground',
-    'akEditorFocus',
-    'akEditorSubtleAccent',
-    'akEditorActiveBackground',
-    'akEditorActiveForeground',
-    'akEditorDropdownActiveBackground',
-    'akEditorPopupBackground',
-    'akEditorPopupText',
-    'akEditorPrimaryButton',
-    'akEditorCodeBackground',
-    'akEditorCodeBlockPadding',
-    'akEditorCodeInlinePadding',
-  ].forEach(key => {
-    it(`should have an item called "${key}"`, () => {
-      expect(lessVars).to.contain.all.keys(key);
-    });
+
+  it('should have well-defined exports', () => {
+    Object.keys(lessVars).should.be.deep.equal([
+      'akEditorCodeFontFamily',
+      'akEditorInactiveForeground',
+      'akEditorFocus',
+      'akEditorSubtleAccent',
+      'akEditorActiveBackground',
+      'akEditorActiveForeground',
+      'akEditorDropdownActiveBackground',
+      'akEditorPopupBackground',
+      'akEditorPopupText',
+      'akEditorPrimaryButton',
+      'akEditorCodeBackground',
+      'akEditorCodeBlockPadding',
+      'akEditorCodeInlinePadding',
+      'default',
+    ]);
   });
 });

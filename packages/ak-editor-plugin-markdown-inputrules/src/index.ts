@@ -26,13 +26,14 @@ function replaceWithMark(
   const to = pos;
   const from = pos - match[1].length;
   const markType: Mark = schema.mark(mark);
+  const marks: Mark[] = [...pm.tr.doc.marksAt(pos), markType];
 
   pm.tr.replaceWith(
     from,
     to,
     schema.text(
       match[2],
-      markType
+      marks,
     )
   ).apply();
 

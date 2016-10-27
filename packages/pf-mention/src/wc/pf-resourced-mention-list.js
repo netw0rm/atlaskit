@@ -1,6 +1,7 @@
+import { define, vdom, prop } from 'skatejs';
+
 import 'style!../host.less';
 import shadowStyles from './pf-resourced-mention-list-shadow.less';
-import { define, vdom, prop } from 'skatejs';
 import MentionList from './pf-mention-list';
 import debug from '../util/logger';
 import hasChanges from '../util/has-changes';
@@ -74,6 +75,10 @@ export default define('pf-resourced-mention-list', {
         this.presenceProvider.refreshPresence(ids);
       }
     },
+
+    _notifySelection(event) {
+      this.resourceProvider.recordMentionSelection(event.detail);
+    },
   },
 
   created(elem) {
@@ -81,6 +86,7 @@ export default define('pf-resourced-mention-list', {
     elem._filterChange = elem._filterChange.bind(elem);
     elem._filterError = elem._filterError.bind(elem);
     elem._presenceUpdate = elem._presenceUpdate.bind(elem);
+    elem._notifySelection = elem._notifySelection.bind(elem);
     elem._showError = false;
   },
 
@@ -93,7 +99,8 @@ export default define('pf-resourced-mention-list', {
         <MentionList
           mentions={elem._mentions}
           showError={elem._showError}
-          ref={ref => { elem._mentionListRef = ref; }}
+          onSelected={elem._notifySelection}
+          ref={(ref) => { elem._mentionListRef = ref; }}
         />
       </div>
     );

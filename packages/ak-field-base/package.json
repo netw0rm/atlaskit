@@ -1,0 +1,35 @@
+{
+  "name": "ak-field-base",
+  "version": "1.0.1",
+  "description": "A base component to build inline-editable fields in the Atlassian Design Guidelines style",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-field-base"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "akutil-shared-styles": "^34.0.1",
+    "akutil-common": "^2.0.0",
+    "ak-button": "^1.4.0",
+    "ak-icon": "^8.4.0",
+    "babel-runtime": "^6.11.6",
+    "classnames": "^2.2.5",
+    "skatejs": "^3.0.0"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "akutil-common-test": "^4.0.0",
+    "akutil-react": "^1.0.0",
+    "custom-event-polyfill": "^0.3.0",
+    "keycode": "^2.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

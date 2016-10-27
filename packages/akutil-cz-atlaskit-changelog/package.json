@@ -1,6 +1,6 @@
 {
   "name": "akutil-cz-atlaskit-changelog",
-  "version": "0.4.0",
+  "version": "0.6.0",
   "description": "A utility for managing the changelog of atlaskit",
   "main": "index.js",
   "author": "Atlassian Pty Ltd",

@@ -12,9 +12,9 @@ const expect = chai.expect;
 
 describe('ak-tabs calculate visible tabs -', () => {
   function setUpTest(labelWidth, opts = {}) {
-    return setupTabs(opts).then(fixtures => {
+    return setupTabs(opts).then((fixtures) => {
       const children = Array.from(fixtures.el[labelsContainer].children);
-      children.forEach(el => {
+      children.forEach((el) => {
         el.style.maxWidth = el.style.minWidth = labelWidth;
         el.style.paddingLeft = el.style.paddingRight = 0;
       });
@@ -32,7 +32,7 @@ describe('ak-tabs calculate visible tabs -', () => {
     const tabs = [{ selected: true }, {}, {}, {}, {}, {}, {}, {}, {}, {}];
 
     it('displays all the labels in a 1000px container', () =>
-      setUpTest(`${labelWidth}px`, { width: '1000px', tabs }).then(fixtures => {
+      setUpTest(`${labelWidth}px`, { width: '1000px', tabs }).then((fixtures) => {
         expect(calculateVisibleTabs(fixtures.el).length).to.equal(10, 'All tabs should be visible');
         cleanUpTest(fixtures);
       })
@@ -47,9 +47,9 @@ describe('ak-tabs calculate visible tabs -', () => {
         }
         return 1; // There should always be one visible label.
       }
-      widths.forEach(width => {
+      widths.forEach((width) => {
         it(`with ${width}px width`, () =>
-          setUpTest(`${labelWidth}px`, { width: `${width}px`, tabs }).then(fixtures => {
+          setUpTest(`${labelWidth}px`, { width: `${width}px`, tabs }).then((fixtures) => {
             const numExpected = numVisibleForWidth(width, fixtures.moreWidth);
             expect(calculateVisibleTabs(fixtures.el).length).to.equal(numExpected,
               `Should display ${numExpected} number of labels`

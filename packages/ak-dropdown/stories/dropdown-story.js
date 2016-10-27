@@ -1,15 +1,19 @@
 import { storiesOf } from '@kadira/storybook';
+import React from 'react';
 import reactify from 'akutil-react';
+import AvatarWc from 'ak-avatar';
+
+import avatarUrl from 'url!./doge.jpg';
+
 import Dropdown, {
   DropdownTrigger, DropdownTriggerButton, DropdownTriggerArrow,
   Group, Item, CheckboxItem, RadioItem,
-} from '../src/index';
-import React from 'react';
+} from '../src';
 import { name } from '../package.json';
-import 'ak-avatar';
-import hostStyles from 'style!./../src/less/host.less';
+import styles from '../src/less/shadow-list.less';
 
-const dropdownClass = hostStyles.akDropdown;
+
+const dropdownClass = styles.locals.akDropdown;
 const DropdownReactComponent = reactify(Dropdown);
 const DropdownTriggerReact = reactify(DropdownTrigger);
 const DropdownTriggerButtonReact = reactify(DropdownTriggerButton);
@@ -18,25 +22,10 @@ const GroupReact = reactify(Group);
 const ItemReact = reactify(Item);
 const CheckboxItemReact = reactify(CheckboxItem);
 const RadioItemReact = reactify(RadioItem);
-
-const avatarUrl = require('url!./doge.jpg');
+const Avatar = reactify(AvatarWc);
 
 storiesOf(`${name} component`, module)
   .add('simple dropdown', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
-          Dropdown-button
-        </DropdownTriggerButtonReact>
-        <ItemReact>text1</ItemReact>
-        <ItemReact hidden>hidden ItemReact</ItemReact>
-        <ItemReact>some text here</ItemReact>
-        <ItemReact>another text</ItemReact>
-        <ItemReact>text2</ItemReact>
-      </DropdownReactComponent>
-    </div>
-  ))
-  .addSwapped('simple dropdown (swapped)', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">
@@ -63,35 +52,7 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
-  .addSwapped('dropdown with checkbox ItemReacts (swapped)', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger">Dropdown-button</DropdownTriggerButtonReact>
-        <GroupReact heading="Checkboxes title">
-          <CheckboxItemReact>text1</CheckboxItemReact>
-          <CheckboxItemReact disabled>text2</CheckboxItemReact>
-          <CheckboxItemReact>some text here</CheckboxItemReact>
-          <CheckboxItemReact>another text</CheckboxItemReact>
-        </GroupReact>
-      </DropdownReactComponent>
-    </div>
-  ))
   .add('dropdown with radio ItemReacts', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
-          Dropdown
-        </DropdownTriggerButtonReact>
-        <GroupReact heading="Radio title">
-          <RadioItemReact>text1</RadioItemReact>
-          <RadioItemReact disabled>text2</RadioItemReact>
-          <RadioItemReact>some text here</RadioItemReact>
-          <RadioItemReact>another text</RadioItemReact>
-        </GroupReact>
-      </DropdownReactComponent>
-    </div>
-  ))
-  .addSwapped('dropdown with radio ItemReacts (swapped)', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">
@@ -134,61 +95,27 @@ storiesOf(`${name} component`, module)
           People list
         </DropdownTriggerButtonReact>
         <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Adam Smith
         </ItemReact>
         <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Eva Smith
         </ItemReact>
         <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Ivan Ivanov
         </ItemReact>
         <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Jane Black
         </ItemReact>
         <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Mike Cannon-Brookes
         </ItemReact>
         <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
-          Some very long name very long name very long
-          name very long name very long name very long name
-        </ItemReact>
-      </DropdownReactComponent>
-    </div>
-  ))
-  .addSwapped('dropdown with avatars (swapped)', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
-          People list
-        </DropdownTriggerButtonReact>
-        <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
-          Adam Smith
-        </ItemReact>
-        <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
-          Eva Smith
-        </ItemReact>
-        <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
-          Ivan Ivanov
-        </ItemReact>
-        <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
-          Jane Black
-        </ItemReact>
-        <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
-          Mike Cannon-Brookes
-        </ItemReact>
-        <ItemReact>
-          <ak-avatar slot="left" src={avatarUrl} size="small" />
+          <Avatar slot="left" src={avatarUrl} size="small" />
           Some very long name very long name very long
           name very long name very long name very long name
         </ItemReact>
@@ -241,7 +168,7 @@ storiesOf(`${name} component`, module)
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent className={dropdownClass}>
         <DropdownTriggerReact slot="trigger" tab-index="1">
-          <ak-avatar src={avatarUrl} size="small" />
+          <Avatar src={avatarUrl} size="small" />
         </DropdownTriggerReact>
         <ItemReact>Joscha</ItemReact>
         <ItemReact>Wuz</ItemReact>
@@ -304,7 +231,7 @@ storiesOf(`${name} component`, module)
           <RadioItemReact>Vanilla JS</RadioItemReact>
         </GroupReact>
       </DropdownReactComponent>
-      <a href="#">link after</a>
+      <a href="http://www.atlassian.com">link after</a>
     </div>
   ))
   .add('dropdown with lots of ItemReacts', () => (

@@ -6,18 +6,54 @@ JSDOC2MD_LOC="`npm bin`/jsdoc2md"
 CHALK="`npm bin`/chalk"
 popd > /dev/null
 
-PKG=$(node -e 'console.log(require("./package.json").name)')
-PREFIX="{white.bold [$PKG]}"
+NAME=$(node -e 'console.log(require("./package.json").name)')
+VERSION=$(node -e 'console.log(require("./package.json").version)')
+PREFIX="{white.bold [$NAME]}"
+
+if [ -z "$BITBUCKET_COMMIT" ]; then
+  BITBUCKET_COMMIT="master"
+fi
 
 $CHALK --no-stdin -t "{blue $PREFIX Generating README.md...}"
 
+replacevars () {
+    echo "$1" | \
+    sed "s/@VERSION@/$VERSION/g" | \
+    sed "s/@NAME@/$NAME/g" | \
+    sed "s/@BITBUCKET_COMMIT@/$BITBUCKET_COMMIT/g"
+}
+
+replacefiles () {
+  USAGE="$1"
+  # get each line that matchs the @FILE: XXXX@ pattern
+  # then remove the prefix and suffix, leaving the XXXX part
+  FILE_LINKS=$(echo "$USAGE" | \
+    grep "^@FILE: .*@$" | \
+    sed "s/@FILE://g" | \
+    sed "s/@$//g" )
+
+  # we use a `here string` (the <<<) here so that the while loop doesnt happen in a subshell
+  # (which means we keep the variable changes that happen inside of it)
+  while read -r LINE ; do
+    if [ ! -z "$LINE" ]; then
+      FILE_PATH="./docs/$LINE"
+      # for each file link line replace it with the contents of that file
+      # the `r`` command in sed reads a file
+      # the `d` command deletes the matching pattern
+      USAGE=$(echo "$USAGE" | sed -e "/$LINE/r $FILE_PATH" -e "/$LINE/d")
+    fi
+  done <<< "$(echo "$FILE_LINKS")"
+
+  echo "$USAGE"
+}
+
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
-  VERSION=$(node -e 'console.log(require("./package.json").version)')
-  USAGE=$(cat ./docs/USAGE.md | sed "s/@VERSION@/$VERSION/g")
-  USAGE="$USAGE\n"
+  USAGE=$(cat ./docs/USAGE.md)
+  USAGE=$(replacefiles "$USAGE")
+  USAGE=$(replacevars "$USAGE")
 else
-  USAGE=""
+  USAGE="# $NAME"
 fi
 
 # Generate API docs
@@ -27,11 +63,9 @@ if [[ -z `find ./src -name "*.js" -print || true` ]]; then
 else
   set +e
   DOCS="$($JSDOC2MD_LOC \
-    --verbose \
-    --src "src/**/*.js" \
+    --files "src/**/*.js" \
     --plugin akutil-dmd-plugin \
-    --member-index-format list \
-    --name-format)"
+    --member-index-format list)"
   FAILED=$? # Order is important here, this needs to come right after the jsdoc2m sub command
   set -e
 
@@ -41,15 +75,23 @@ else
   elif [[ $DOCS == *"ERROR, Cannot find class"* ]]; then
     $CHALK --no-stdin -t "{red $PREFIX Could not find a class.}"
   else
-    API="\n$DOCS"
+    API=$(replacevars "$DOCS")
     $CHALK --no-stdin -t "{blue $PREFIX done!}"
   fi
 fi
 
-# Concatenate USAGE docs and JSDoc output
-if [ -n "$USAGE" ] || [ -n "$API" ]; then
-  (
-    printf "$USAGE"
-    printf "$API"
-  ) > README.md
-fi
+BUTTONS=$(cat ../../build/docs/templates/BUTTONS.md)
+BUTTONS=$(replacevars "$BUTTONS")
+SUPPORT=$(cat ../../build/docs/templates/SUPPORT.md)
+SUPPORT=$(replacevars "$SUPPORT")
+
+(
+  echo "$BUTTONS"
+  echo
+  echo "$USAGE"
+  echo
+  echo "$API"
+  echo
+  echo "$SUPPORT"
+  echo
+) > README.md

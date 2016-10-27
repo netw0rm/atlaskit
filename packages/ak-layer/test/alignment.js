@@ -12,7 +12,7 @@ describe('alignment', () => {
       [
         'top left', 'top center', 'top right', 'right top', 'right middle', 'right bottom',
         'bottom left', 'bottom center', 'bottom right', 'left top', 'left middle', 'left bottom',
-      ].forEach((val) =>
+      ].forEach(val =>
         expect(Alignment.attachmentMap[val]).not.to.equal(undefined)
       );
     });

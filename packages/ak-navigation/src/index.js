@@ -1,25 +1,23 @@
-import 'style!./host.less';
-
 import { emit, prop, vdom, define } from 'skatejs';
-import shadowStyles from './index.less';
-import 'ak-blanket';
-import './internal/ak-navigation-drawer';
-import './internal/ak-navigation-drag';
-import './index.ak-navigation-link';
+import Blanket from 'ak-blanket';
 import classNames from 'classnames';
+import keycode from 'keycode';
+import 'custom-event-polyfill';
+
+import Drawer from './internal/ak-navigation-drawer';
+import Drag from './internal/ak-navigation-drag';
+import collapseStyles from './internal/collapse-styles';
+import NavigationLink from './index.ak-navigation-link';
+import shadowStyles from './index.less';
 import resizer from './internal/resizer';
 import addTouchHandlers from './internal/touch';
 import {
-  getContainerPadding,
-  getNavigationWidth,
-  getNavigationXOffset,
   getExpandedWidth,
   getCollapsedWidth,
-  getSpacerWidth,
 } from './internal/collapse';
-import keycode from 'keycode';
-import 'custom-event-polyfill';
 import * as events from './internal/index.events';
+
+
 const {
   linkSelected: linkSelectedEvent,
   createDrawerSelected: createDrawerSelectedEvent,
@@ -58,11 +56,11 @@ function emitWidthChangedEvent(elem, oldWidth, newWidth) {
   });
 }
 
-function recomputeWidth(elem) {
-  const newWidth = elem.open ? getExpandedWidth(elem) : getCollapsedWidth(elem);
+function recomputeWidth(elem, isOpen) {
+  const newWidth = isOpen ? getExpandedWidth(elem) : getCollapsedWidth(elem);
   const oldWidth = elem.width;
-  elem.width = newWidth;
   if (newWidth !== oldWidth) {
+    elem.width = newWidth;
     emitWidthChangedEvent(elem, oldWidth, newWidth);
   }
 }
@@ -84,29 +82,35 @@ function recomputeWidth(elem) {
  * document.body.appendChild(navigation);
  */
 export default define('ak-navigation', {
+  updated(elem, prevProps) {
+    if (!prevProps) {
+      return true;
+    }
+    const everythingExceptWidthSame = Object.keys(prevProps).map(key =>
+      ((key === 'width') ? true : prevProps[key] === elem[key])
+    ).reduce((a, b) => a && b);
+    if (!everythingExceptWidthSame) {
+      return true;
+    }
+    if (elem.width !== prevProps.width) {
+      elem.styles.innerHTML = collapseStyles(elem);
+      return false; // skip rendering pipeline completely
+    }
+    return true;
+  },
   render(elem) {
     return (
       <div
         className={classNames({
           [shadowStyles.locals.shouldAnimate]: elem.shouldAnimate,
+          [shadowStyles.locals.drawersOpen]: elem.searchDrawerOpen || elem.createDrawerOpen,
         })}
       >
-        <style>{`
-          .${shadowStyles.locals.navigation} {
-            width: ${getNavigationWidth(elem)}px;
-            transform: translateX(${getNavigationXOffset(elem)}px);
-          }
-          
-          .${shadowStyles.locals.spacer} {
-            width: ${getSpacerWidth(elem)}px;
-          }
-
-          .${shadowStyles.locals.containerName}, .${shadowStyles.locals.containerLinks} {
-            transform: translateX(${getContainerPadding(elem.width)}px);
-          }
-      `}</style>
+        <style ref={styles => (elem.styles = styles)}>
+          {collapseStyles(elem)}
+        </style>
         <style>{shadowStyles.toString()}</style>
-        <ak-blanket
+        <Blanket
           onActivate={() => closeAllDrawers(elem)}
           clickable={isDrawerOpen(elem)}
           className={classNames(shadowStyles.locals.blanket, {
@@ -117,60 +121,64 @@ export default define('ak-navigation', {
           className={classNames(shadowStyles.locals.spacer)}
         />
         <div
-          className={classNames(shadowStyles.locals.navigation)}
+          className={classNames(shadowStyles.locals.navigationWrapper)}
         >
-          <div className={shadowStyles.locals.global}>
-            <div className={shadowStyles.locals.globalPrimary}>
-              <a href={elem.productHref || false}>
-                <slot name="global-home" />
-              </a>
-            </div>
-            <div className={shadowStyles.locals.globalSecondary}>
-              <div ref={searchDrawer} className={shadowStyles.locals.globalSecondaryItem}>
-                <slot name="global-search" />
-              </div>
-              <div ref={createDrawer} className={shadowStyles.locals.globalSecondaryItem}>
-                <slot name="global-create" />
-              </div>
-            </div>
-            <div className={shadowStyles.locals.globalBottom}>
-              <div className={shadowStyles.locals.globalSecondaryItem}>
-                <slot name="global-help" />
-              </div>
-              <div className={shadowStyles.locals.globalSecondaryItem}>
-                <slot name="global-profile" />
-              </div>
-            </div>
-          </div>
-          <ak-navigation-drawer large open={elem.searchDrawerOpen}>
-            <slot name="global-search-drawer" />
-          </ak-navigation-drawer>
-          <ak-navigation-drawer open={elem.createDrawerOpen}>
-            <slot name="global-create-drawer" />
-          </ak-navigation-drawer>
-
           <div
-            className={classNames(shadowStyles.locals.container, {
-              [shadowStyles.locals.containerHidden]: elem.containerHidden,
-            })}
+            className={classNames(shadowStyles.locals.navigation)}
           >
-            {elem.containerName ? <div className={shadowStyles.locals.containerName}>
-              <a href={elem.containerHref}>
-                <img
-                  className={shadowStyles.locals.containerLogo}
-                  alt={elem.containerName}
-                  src={elem.containerLogo || false}
-                />
-              </a>
-              <a href={elem.containerHref} className={shadowStyles.locals.containerNameText}>
-                {elem.containerName}
-              </a>
-            </div> : ''}
-            <div className={shadowStyles.locals.containerLinks}>
-              <slot />
+            <div className={shadowStyles.locals.global}>
+              <div className={shadowStyles.locals.globalPrimary}>
+                <a href={elem.productHref || false}>
+                  <slot name="global-home" />
+                </a>
+              </div>
+              <div className={shadowStyles.locals.globalSecondary}>
+                <div ref={searchDrawer} className={shadowStyles.locals.globalSecondaryItem}>
+                  <slot name="global-search" />
+                </div>
+                <div ref={createDrawer} className={shadowStyles.locals.globalSecondaryItem}>
+                  <slot name="global-create" />
+                </div>
+              </div>
+              <div className={shadowStyles.locals.globalBottom}>
+                <div className={shadowStyles.locals.globalSecondaryItem}>
+                  <slot name="global-help" />
+                </div>
+                <div className={shadowStyles.locals.globalSecondaryItem}>
+                  <slot name="global-profile" />
+                </div>
+              </div>
+            </div>
+            <Drawer large open={elem.searchDrawerOpen}>
+              <slot name="global-search-drawer" />
+            </Drawer>
+            <Drawer open={elem.createDrawerOpen}>
+              <slot name="global-create-drawer" />
+            </Drawer>
+
+            <div
+              className={classNames(shadowStyles.locals.container, {
+                [shadowStyles.locals.containerHidden]: elem.containerHidden,
+              })}
+            >
+              {elem.containerName ? <div className={shadowStyles.locals.containerName}>
+                <a href={elem.containerHref}>
+                  <img
+                    className={shadowStyles.locals.containerLogo}
+                    alt={elem.containerName}
+                    src={elem.containerLogo || false}
+                  />
+                </a>
+                <a href={elem.containerHref} className={shadowStyles.locals.containerNameText}>
+                  {elem.containerName}
+                </a>
+              </div> : ''}
+              <div className={shadowStyles.locals.containerLinks}>
+                <slot />
+              </div>
             </div>
           </div>
-          {elem.collapsible ? <ak-navigation-drag
+          {elem.collapsible ? <Drag
             startDragCallback={elem[resizerSymbol].start}
             dragCallback={elem[resizerSymbol].resize}
             endDragCallback={elem[resizerSymbol].end}
@@ -195,10 +203,9 @@ export default define('ak-navigation', {
      * @instance
      * @type {integer}
      * @example @js navigation.width = 80;
-     * @example @html <ak-navigation width="80"/>;
      */
     width: prop.number({
-      default: (elem) => getCollapsedWidth(elem),
+      default: elem => getCollapsedWidth(elem),
     }),
     /**
      * @description The handler for the sidebar toggling behaviour.
@@ -209,7 +216,7 @@ export default define('ak-navigation', {
      * @example @js navigation.toggleHandler = function() {};
      */
     toggleHandler: {
-      default: (elem) => function toggleHandler(event) {
+      default: elem => function toggleHandler(event) {
         if (!elem.collapsible) {
           return;
         }
@@ -238,7 +245,7 @@ export default define('ak-navigation', {
         }
         elem.createDrawerOpen = elem.open && elem.createDrawerOpen;
         elem.searchDrawerOpen = elem.open && elem.searchDrawerOpen;
-        recomputeWidth(elem);
+        recomputeWidth(elem, data.newValue);
       },
     }),
     /**
@@ -310,7 +317,7 @@ export default define('ak-navigation', {
     containerHidden: prop.boolean({
       attribute: true,
       set(elem) {
-        recomputeWidth(elem);
+        recomputeWidth(elem, elem.open);
       },
     }),
     /**
@@ -386,4 +393,4 @@ export default define('ak-navigation', {
   },
 });
 
-export { events };
+export { events, NavigationLink };

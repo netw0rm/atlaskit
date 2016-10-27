@@ -1,14 +1,15 @@
 import { vdom, define, props, emit } from 'skatejs';
+import keyCode from 'keycode';
+import Checkbox from 'ak-icon/glyph/checkbox';
+
 import shadowItemStyles from './less/shadow-item.less';
 import { unselected as unselectedEvent } from './internal/events';
-import keyCode from 'keycode';
-
 import DefaultItem, { BaseProps, elemDom } from './index.item';
-import Checkbox from 'ak-icon/glyph/checkbox';
 import Item from './internal/Item';
 import IconContainer from './internal/LeftSlotContainer';
 import DefaultItemContainer from './internal/DefaultSlotContainer';
 import supportsVoiceOver from './internal/supportsVoiceOver';
+
 
 export default define('ak-dropdown-item-checkbox',
   DefaultItem.extend({

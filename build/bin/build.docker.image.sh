@@ -6,7 +6,7 @@ TAG="atlassianlabs/atlaskit:$CURRENT_DATE"
 LERNA_VERSION=$(node -e "console.log(require('./lerna.json').lerna)")
 
 echo "Building image"
-docker build --build-arg LERNA_VERSION="$LERNA_VERSION" -t "$TAG" .
+docker build --build-arg LERNA_VERSION="$LERNA_VERSION" -t "$TAG" . $@
 
 
 echo "Let's make sure we have everything"
@@ -22,9 +22,12 @@ docker run "$TAG" curl --version
 docker run "$TAG" python --version
 docker run "$TAG" git --version
 docker run "$TAG" java -version
+docker run "$TAG"  /BrowserStackLocal -version 2>1 /dev/null
 
 echo
 echo "Successfully created image '$TAG'"
+echo "You can test it via:"
+echo "docker run -it \"$TAG\" bash"
 
 echo
 read -p "Do you want to publish this image? " -n 1 -r

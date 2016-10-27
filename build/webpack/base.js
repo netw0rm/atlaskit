@@ -1,14 +1,16 @@
 const camelCase = require('camelcase');
 const path = require('path');
+// eslint-disable-next-line import/no-dynamic-require
 const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
-const idomBabelPlugin = ['incremental-dom', {
-  components: true,
-  hoist: true,
-  prefix: 'vdom',
-}];
+const moduleBabelQuery = require('./babel.query.module');
+const storybookBabelQuery = require('./babel.query.storybook');
+const loaderChain = require('./loader-chain').encode;
+
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 function defaultPackageMains() {
   const options = new webpack.WebpackOptionsDefaulter();
@@ -16,17 +18,17 @@ function defaultPackageMains() {
   return options.defaults.resolve.packageMains;
 }
 
-/**
- * Build a loader chain.
- *
- * @param {Object} spec -- {loader2: {}, loader1: {}, ...}
- *   The order of definition is significant. The prior example would return:
- *
- *       'loader1?{}!loader2?{}'
- */
-const loaderChain = (spec) => Object.keys(spec)
-  .map(key => `${key}?${JSON.stringify(spec[key])}`)
-  .join('!');
+const css = {
+  camelCase: true,
+  importLoaders: 1,
+  mergeRules: false,
+  modules: true,
+};
+
+if (isDevelopment) {
+  css['-minimize'] = true;
+}
+
 
 const standardConfig = {
   entry: {
@@ -53,12 +55,7 @@ const standardConfig = {
       {
         test: /\.less$/,
         loader: loaderChain({
-          css: {
-            camelCase: true,
-            importLoaders: 1,
-            mergeRules: false,
-            modules: true,
-          },
+          css,
           postcss: {},
           less: {},
         }),
@@ -71,15 +68,7 @@ const standardConfig = {
         {
           test: /\/stories\/.*\.tsx?$/,
           loader: loaderChain({
-            babel: {
-              presets: [
-                'es2015',
-                'react',
-              ],
-              plugins: [
-                'transform-runtime',
-              ],
-            },
+            babel: storybookBabelQuery,
             ts: {},
           }),
         },
@@ -90,13 +79,7 @@ const standardConfig = {
         {
           test: /\.tsx?$/,
           loader: loaderChain({
-            babel: {
-              presets: 'es2015',
-              plugins: [
-                'transform-runtime',
-                idomBabelPlugin,
-              ],
-            },
+            babel: moduleBabelQuery,
             ts: {},
           }),
         },
@@ -109,16 +92,7 @@ const standardConfig = {
           test: /\.jsx?$/,
           include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
           exclude: /stories\/skate\/.*\.js/,
-          query: {
-            presets: [
-              'es2015',
-              'react', // required by react-storybook
-              'stage-0',
-            ],
-            plugins: [
-              'transform-runtime',
-            ],
-          },
+          query: storybookBabelQuery,
         },
         //
         // JAVASCRIPT
@@ -129,16 +103,7 @@ const standardConfig = {
           loader: 'babel',
           test: /\.jsx?$/,
           exclude: /node_modules|bower_components/,
-          query: {
-            presets: [
-              'es2015',
-              'stage-0',
-            ],
-            plugins: [
-              'transform-runtime',
-              idomBabelPlugin,
-            ],
-          },
+          query: moduleBabelQuery,
         },
       ],
     ],

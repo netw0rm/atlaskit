@@ -1,7 +1,11 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
-import {
+import * as colors from '../src';
+import { name } from '../package.json';
+import Ring from './color/Ring';
+
+const {
   akColorPrimary1,
   akColorPrimary2,
   akColorPrimary3,
@@ -11,10 +15,20 @@ import {
   akColorSecondary2,
   akColorSecondary3,
   akColorSecondary4,
-} from '../src';
-import { name } from '../package.json';
-import Ring from './color/Ring';
+} = colors;
 
+
+function getColorsBySwatch(swatchLetter) {
+  const swatchRgx = new RegExp(`^akColor${swatchLetter.toUpperCase()}`);
+  const ret = {};
+  Object
+    .keys(colors)
+    .filter(key => swatchRgx.test(key))
+    .forEach((key) => {
+      ret[key.replace(swatchRgx, swatchLetter)] = colors[key];
+    });
+  return ret;
+}
 
 storiesOf(name, module)
   .add('Colors: Primary', () => (
@@ -38,4 +52,16 @@ storiesOf(name, module)
         bottomRightColor={akColorSecondary4}
       />
     </div>
+  ))
+  .add('Colors: Neutrals', () => (
+    <table>
+      <tbody>
+        {Object.entries(getColorsBySwatch('N')).map(([colorName, colorValue]) => (
+          <tr style={{ backgroundColor: colorValue }}>
+            <td>{colorName}</td>
+            <td>{colorValue}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   ));

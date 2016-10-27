@@ -1,7 +1,5 @@
 import { action } from '@kadira/storybook';
 
-import { events } from '../src';
-
 export const handlers = {
   changeBefore(e) {
     e.preventDefault(e);
@@ -30,7 +28,5 @@ export const handlers = {
 };
 
 export function removeAllTheListeners() {
-  Object.keys(handlers).forEach((key) => {
-    window.removeEventListener(events[key], handlers[key]);
-  });
+  Object.entries(handlers).forEach(entry => window.removeEventListener(...entry));
 }

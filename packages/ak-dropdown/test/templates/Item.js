@@ -1,9 +1,8 @@
-import { vdom, props, prop } from 'skatejs';
+import { vdom, props, prop, define } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { getRootNode } from 'akutil-common-test';
+import { getRootNode, createTemporaryComponent, tearDownComponent } from 'akutil-common-test';
 
-import { createTemporaryComponent, tearDownComponent } from '../_helpers';
 import Item from '../../src/templates/Item';
 import shadowItemStyles from '../../src/less/shadow-item.less';
 
@@ -26,7 +25,7 @@ describe('Item', () => {
     },
   };
 
-  beforeEach(() => createTemporaryComponent(definition)
+  beforeEach(() => createTemporaryComponent(define, definition)
     .then((newComponent) => {
       component = newComponent;
     }));

@@ -1,20 +1,7 @@
-import { define } from 'skatejs';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import keyCode from 'keycode';
 
 import Dropdown, * as exports from '../src';
-
-function createTemporaryComponent(definition) {
-  const TemporaryWebComponent = define('x-test', definition);
-  const component = new TemporaryWebComponent();
-  const componentHasShadowRoot = () => !!getShadowRoot(component);
-  document.body.appendChild(component);
-  return waitUntil(componentHasShadowRoot).then(() => component);
-}
-
-function tearDownComponent(component) {
-  document.body.removeChild(component);
-}
 
 function createTemplate(options) {
   return options.map((opt) => {
@@ -86,5 +73,4 @@ export const itemHeight = 28;
 export const itemLeftGap = 12;
 export const itemLeftToDefaultGap = 8;
 
-export { createTemporaryComponent, tearDownComponent, initDropdown, clickDropdownTrigger,
-  pressDropdownTrigger, getPaddings };
+export { initDropdown, clickDropdownTrigger, pressDropdownTrigger, getPaddings };

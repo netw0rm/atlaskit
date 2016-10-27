@@ -37,7 +37,7 @@ export default function(pm: ProseMirror, slice: Slice): Slice {
     // TODO: pasting multiple lines doesn't work as expected
     // if pasting from code block, newlines from original block will disappear
     // if pasting from non code block, it will create another new code block
-    if (slice.content.content[0].type.name !== 'text') {
+    if (!slice.content.content[0].isText) {
       newNode = pm.schema.nodes.code_block.create({}, newNode);
     }
 

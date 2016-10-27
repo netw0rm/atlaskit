@@ -72,5 +72,12 @@ describe('ak-editor-plugin-block-type paste transformer', () => {
       const expected = doc(code_block()('foo\n\nbar'));
       expect(pm.doc).to.deep.equal(expected);
     });
+
+    it('should preserve existing code block content when pasting multiple block types and multilines', () => {
+      const { pm } = editor('{<>}');
+      dispatchPasteEvent(pm, { html: '<h1>foo</h1><h2>bar<br>baz</h2>' });
+      const expected = doc(code_block()('foo\n\nbar\nbaz'));
+      expect(pm.doc).to.deep.equal(expected);
+    });
   });
 });

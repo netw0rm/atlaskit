@@ -2,13 +2,15 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { props } from 'skatejs';
 import 'custom-event-polyfill';
-import { waitUntil, getShadowRoot, afterMutations, getRootNode } from 'akutil-common-test';
+import { waitUntil, getShadowRoot, getRootNode } from 'akutil-common-test';
+import Radio from 'ak-icon/glyph/radio';
 
+import ItemOriginal from '../src/index.item';
 import Item from '../src/index.item.radio';
-import shadowItemStyles from '../src/less/shadow-item.less';
 import supportsVoiceOver from '../src/internal/supportsVoiceOver';
-import { itemHeight, itemLeftToDefaultGap, itemLeftGap } from './_helpers';
+import shadowItemStyles from '../src/less/shadow-item.less';
 
+const leftPositionClass = shadowItemStyles.locals.itemLeftPosition;
 
 const role = supportsVoiceOver ? 'radio' : 'menuitemradio';
 
@@ -45,13 +47,17 @@ describe('ak-dropdown-item-radio', () => {
       expect(getShadowRoot(component).firstChild).to.be.defined;
     });
 
+    it('should be an instance of the dropdown-item component', () => {
+      expect(component instanceof ItemOriginal).to.equal(true);
+    });
+
     it('should have menuitemradio role', () => {
       expect(getRootNode(component).getAttribute('role')).to.equal(role);
     });
 
-    it('should have `aria-checked` when selected', () => {
+    it('should have `aria-checked` when checked', () => {
       expect(getRootNode(component).getAttribute('aria-checked')).to.equal('false');
-      props(component, { selected: true });
+      props(component, { checked: true });
       expect(getRootNode(component).getAttribute('aria-checked')).to.equal('true');
     });
 
@@ -60,54 +66,11 @@ describe('ak-dropdown-item-radio', () => {
       props(component, { disabled: true });
       expect(getRootNode(component).getAttribute('aria-disabled')).to.equal('true');
     });
-  });
 
-  describe('sizing for an item', () => {
-    let component;
-    let iconDomElem;
-    let defaultDomElem;
-    const iconClass = `.${shadowItemStyles.locals.itemLeftPosition}`;
-
-    beforeEach(() => {
-      component = new Item();
-      itemContainer.appendChild(component);
-      component.innerHTML = 'test';
-
-      // wait until the component is rendered
-      return waitUntil(() => getShadowRoot(component)).then(() => {
-        iconDomElem = getShadowRoot(component).querySelector(iconClass);
-        defaultDomElem = getShadowRoot(component).querySelector('slot,content').parentNode;
-      });
-    });
-
-    it(`height should be equal ${itemHeight}`, (done) => {
-      afterMutations(
-        () => getRootNode(component).getBoundingClientRect().height,
-        height => (expect(Math.round(height)).to.equal(itemHeight)),
-        done
-      );
-    });
-
-    it(`gap between radio and left edge of the component should be ${itemLeftGap}`, (done) => {
-      const rectComponent = getRootNode(component).getBoundingClientRect();
-      const rectIcon = iconDomElem.getBoundingClientRect();
-      const gap = rectIcon.left - rectComponent.left;
-
-      afterMutations(
-        () => (expect(Math.round(gap)).to.equal(itemLeftGap)),
-        done
-      );
-    });
-
-    it(`gap between radio and default slot should be ${itemLeftToDefaultGap}`, (done) => {
-      const rectDefault = defaultDomElem.getBoundingClientRect();
-      const rectIcon = iconDomElem.getBoundingClientRect();
-      const gap = rectDefault.left - rectIcon.left - rectIcon.width;
-
-      afterMutations(
-        () => (expect(Math.round(gap)).to.equal(itemLeftToDefaultGap)),
-        done
-      );
+    it('should render radio icon', () => {
+      const icon = component.shadowRoot.querySelector(`.${leftPositionClass}`).firstChild;
+      expect(icon).to.not.be.null;
+      expect(icon instanceof Radio).to.equal(true);
     });
   });
 });

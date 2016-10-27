@@ -23,6 +23,6 @@ describe('getDropdownMaxheight', () => {
   });
 
   it('should return height in pixels when dropdown is positioned normally', () => {
-    expect(/^[0-9]*px/.test(getDropdownMaxheight(component))).to.equal(true);
+    expect(/^[0-9]+px/.test(getDropdownMaxheight(component))).to.equal(true);
   });
 });

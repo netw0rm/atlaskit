@@ -5,5 +5,5 @@ export default (elem) => {
   if (child && (child instanceof DropdownTriggerButton || child instanceof DropdownTriggerArrow)) {
     return child;
   }
-  return undefined;
+  return null;
 };

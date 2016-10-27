@@ -202,11 +202,6 @@ export default define('ak-dropdown', {
     },
   },
   render(elem) {
-    // groups have top margin by default
-    // but if the group is the very first item after the trigger, the margin is suppose to be 0
-    if (elem.children && elem.children[1] && elem.children[1] instanceof Group) {
-      elem.children[1].style.marginTop = '0';
-    }
     let target = elem.target;
 
     return (
@@ -241,11 +236,8 @@ export default define('ak-dropdown', {
             }}
             role="menu"
             ref={(el) => {
-              // hack for the AK-577 until someone thinks of a better solution
+              // TODO: refactor it out to the rendered function
               el.style.minWidth = getDropdownMinwidth(target, elem);
-              setTimeout(() => {
-                el.style.minWidth = getDropdownMinwidth(target, elem);
-              });
             }}
           >
             <style>{shadowListStyles.toString()}</style>
@@ -256,7 +248,13 @@ export default define('ak-dropdown', {
     );
   },
   rendered(elem) {
-    // remove when the AK-343 is fixed
+    // groups have top margin by default
+    // but if the group is the very first item after the trigger, the margin is suppose to be 0
+    if (elem.children && elem.children[1] && elem.children[1] instanceof Group) {
+      elem.children[1].style.marginTop = '0';
+    }
+
+    // TODO: remove when the AK-343 is fixed
     elem.reposition();
   },
   props: {

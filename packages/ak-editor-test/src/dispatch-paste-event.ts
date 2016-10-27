@@ -20,7 +20,7 @@ interface PasteContent {
 export default (pm: ProseMirror, content: PasteContent) => {
   const event = createEvent('paste');
 
-  event.clipboardData = {
+  const clipboardData = {
     getData(type: string) {
        if (type === 'text/plain') {
          return content.plain;
@@ -29,8 +29,11 @@ export default (pm: ProseMirror, content: PasteContent) => {
          return content.html;
        }
     },
-    types: []
+    types: [],
   };
+
+  Object.defineProperty(event, 'clipboardData', { value: clipboardData });
+
   // ProseMirror must be focused, else it does not attempt to handle pasted content.
   focusAndSelect(pm.content);
 

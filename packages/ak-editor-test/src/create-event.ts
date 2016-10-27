@@ -9,30 +9,30 @@ const supportsEvent = ((TheEvent) => {
   return true;
 })(Event);
 
-interface OptsType {
+interface Options {
   bubbles?: boolean;
   cancelable?: boolean;
   composed?: boolean;
 }
 
-export default (name: string, opts: OptsType = {}) => {
+export default (name: string, options: Options = {}) => {
   let event;
 
-  if (opts.bubbles === undefined) {
-    opts.bubbles = true;
+  if (options.bubbles === undefined) {
+    options.bubbles = true;
   }
-  if (opts.cancelable === undefined) {
-    opts.cancelable = true;
+  if (options.cancelable === undefined) {
+    options.cancelable = true;
   }
-  if (opts.composed === undefined) {
-    opts.composed = true;
+  if (options.composed === undefined) {
+    options.composed = true;
   }
 
   if (supportsEvent) {
-    event = new Event(name, opts) as any;
+    event = new Event(name, options) as any;
   } else {
     event = document.createEvent('Event');
-    event.initEvent(name, opts.bubbles, opts.cancelable);
+    event.initEvent(name, options.bubbles, options.cancelable);
   }
 
   return event;

@@ -196,32 +196,32 @@ class AkEditorBitbucket extends Component {
       <Toolbar className={shadowStyles.locals['toolbar']}>
         <ToolbarBlockType
           disabled={!elem._canChangeBlockType}
-          selectedBlockType={elem._selectedBlockType}
-          blockTypes={elem._blockTypes}
-          onSelectBlockType={elem._selectBlockType}
+          selected-block-type={elem._selectedBlockType}
+          block-types={elem._blockTypes}
+          on-select-block-type={elem._selectBlockType}
         />
         <ToolbarTextFormatting
-          boldActive={elem._strongActive}
-          italicActive={elem._emActive}
-          underlineActive={elem._underlineActive}
-          codeActive={elem._codeActive}
-          boldDisabled={!elem._canChangeTextFormatting}
-          italicDisabled={!elem._canChangeTextFormatting}
-          underlineDisabled={!elem._canChangeTextFormatting}
-          codeDisabled={!elem._canChangeTextFormatting}
+          bold-active={elem._strongActive}
+          italic-active={elem._emActive}
+          underline-active={elem._underlineActive}
+          code-active={elem._codeActive}
+          bold-disabled={!elem._canChangeTextFormatting}
+          italic-disabled={!elem._canChangeTextFormatting}
+          underline-disabled={!elem._canChangeTextFormatting}
+          code-disabled={!elem._canChangeTextFormatting}
           underlineHidden
-          onToggletextformatting={elem._toggleMark}
+          on-toggletextformatting={elem._toggleMark}
         />
         <ToolbarHyperlink
           active={elem._hyperLinkActive}
           disabled={!elem._canLinkHyperlink}
-          onAddHyperlink={elem._addHyperLink}
+          on-add-hyperlink={elem._addHyperLink}
         />
         <ToolbarLists
-          bulletlistDisabled={elem._bulletlistDisabled}
-          numberlistDisabled={elem._numberlistDisabled}
-          bulletlistActive={elem._bulletListActive}
-          numberlistActive={elem._numberListActive}
+          bulletlist-disabled={elem._bulletlistDisabled}
+          numberlist-disabled={elem._numberlistDisabled}
+          bulletlist-active={elem._bulletListActive}
+          numberlist-active={elem._numberListActive}
           on-toggle-number-list={() => elem._toggleList('ordered_list')}
           on-toggle-bullet-list={() => elem._toggleList('bullet_list')}
         />
@@ -230,25 +230,25 @@ class AkEditorBitbucket extends Component {
         className={shadowStyles.locals.content}
         onclick={elem._onContentClick}
         ref={(wrapper: HTMLElement) => { elem._wrapper = wrapper; }}
-        openTop
-        openBottom
+        open-top
+        open-bottom
         skip
       />
       {elem._hyperLinkActive ?
         <HyperLink
           href={elem._hyperLinkHref}
-          textInputValue={elem._hyperLinkHref}
-          attachTo={elem._hyperLinkElement}
-          onUnlink={elem._unlink}
-          onchange={elem._changeHyperLinkValue}
+          textInput-value={elem._hyperLinkHref}
+          attach-to={elem._hyperLinkElement}
+          on-unlink={elem._unlink}
+          on-change={elem._changeHyperLinkValue}
         />
         : null
       }
       <Footer
-        openTop
-        onSave={elem._collapse}
-        onCancel={elem._collapse}
-        onInsertimage={elem._insertImage}
+        open-top
+        on-save={elem._collapse}
+        on-cancel={elem._collapse}
+        on-insertimage={elem._insertImage}
       />
     </div>);
 
@@ -266,7 +266,7 @@ class AkEditorBitbucket extends Component {
           :
           <input
             placeholder={elem.placeholder}
-            onfocus={elem._expand}
+            on-focus={elem._expand}
             className={fakeInputClassNames}
           />
         }

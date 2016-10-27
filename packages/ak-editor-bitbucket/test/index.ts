@@ -192,7 +192,7 @@ describe('ak-editor-bitbucket', () => {
       });
     });
 
-    it('should have options in block type dropdown', () => {
+    it.only('should have options in block type dropdown', () => {
       return buildExpandedEditor(fixture()).then((editor) => {
         const bt = getShadowRoot(editor).querySelector('ak-editor-toolbar-block-type');
         expect(bt).to.not.be.null;
@@ -208,6 +208,8 @@ describe('ak-editor-bitbucket', () => {
           return waitUntil(() => {
             // it takes roughly 3 iterations to render all elements and attach them to <ul>
             return btShadowRoot.querySelectorAll('ak-editor-toolbar-block-type-option').length >= 2;
+          }).catch(() => {
+            return new Error('The editor block type dropdown does not have any options ...');
           });
         });
       });

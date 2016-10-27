@@ -49,7 +49,7 @@ describe('sizes, paddings and margins', () => {
            texttest texttest texttest texttest texttest texttest text</div>`;
         const parentContainer = item.shadowRoot.firstChild;
         const testedContainer = item.shadowRoot.querySelector(`.${defaultClass}`);
-        expect(getPaddings(parentContainer, testedContainer).right).to.equal(itemLeftGap);
+        expect(getPaddings(parentContainer, testedContainer).right >= itemLeftGap).to.equal(true);
       });
     });
 

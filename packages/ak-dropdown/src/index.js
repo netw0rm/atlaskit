@@ -30,7 +30,8 @@ const handleClickOutside = Symbol('handleClickOutside');
 const handleKeyDown = Symbol('handleKeyDown');
 const triggerSlot = Symbol('triggerSlot');
 const layerElem = Symbol('layerElem');
-
+const target = Symbol('target');
+const dropList = Symbol('dropList');
 
 function openDialog(elem) {
   sendCancellableEvents(
@@ -202,18 +203,16 @@ export default define('ak-dropdown', {
     },
   },
   render(elem) {
-    let target = elem.target;
-
     return (
       <div
         style={{ position: elem.stepOutside || elem.boundariesElement ? 'static' : 'relative' }}
       >
-        <div ref={el => (target = el)}>
+        <div ref={el => (elem[target] = el)}>
           <slot name="trigger" ref={el => (elem[triggerSlot] = el)} />
         </div>
         <Layer
           position={elem.position}
-          target={target}
+          target={elem[target]}
           enableFlip
           offset={offset}
           // TODO: this causes a positioning bug.
@@ -236,8 +235,7 @@ export default define('ak-dropdown', {
             }}
             role="menu"
             ref={(el) => {
-              // TODO: refactor it out to the rendered function
-              el.style.minWidth = getDropdownMinwidth(target, elem);
+              elem[dropList] = el;
             }}
           >
             <style>{shadowListStyles.toString()}</style>
@@ -253,6 +251,8 @@ export default define('ak-dropdown', {
     if (elem.children && elem.children[1] && elem.children[1] instanceof Group) {
       elem.children[1].style.marginTop = '0';
     }
+
+    elem[dropList].style.minWidth = getDropdownMinwidth(elem[target], elem);
 
     // TODO: remove when the AK-343 is fixed
     elem.reposition();
@@ -294,18 +294,6 @@ export default define('ak-dropdown', {
      * @description Link to the target element
      * @memberof Dropdown
      * @example @js dropdown.target = document.getElementById("target");
-     */
-    target: {},
-    /**
-     * @description Element to act as a boundary for the Dropdown.
-     * The Dropdown will not sit outside this element if it can help it.
-     * If, through it's normal positioning, it would end up outside the boundary the Dropdown
-     * will flip positions.
-     * If not set the boundary will be the current viewport.
-     * @memberof Layer
-     * @instance
-     * @type HTMLElement
-     * @example @js dropdown.boundariesElement = document.body.querySelector('#container');
      */
     boundariesElement: {},
     /**

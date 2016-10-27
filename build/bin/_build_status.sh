@@ -27,7 +27,7 @@ function build_status() {
     --name "$BUILD_NAME" \
     --description "$BUILD_DESCRIPTION" \
     $URL_PARAM \
-    --state "$STATE"
+    --state "$STATE" 1> /dev/null
 
     if [[ "$STATE" == "FAILED" ]]; then
       exit 1

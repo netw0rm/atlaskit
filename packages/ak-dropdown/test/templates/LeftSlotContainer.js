@@ -4,19 +4,20 @@ import chaiAsPromised from 'chai-as-promised';
 import { getRootNode } from 'akutil-common-test';
 
 import { createTemporaryComponent, tearDownComponent } from '../_helpers';
-import Href from '../../src/internal/Href';
+import LeftSlotContainer from '../../src/templates/LeftSlotContainer';
+import shadowItemStyles from '../../src/less/shadow-item.less';
 
 
 chai.use(chaiAsPromised);
 chai.should();
 
-describe('Href', () => {
+describe('LeftSlotContainer', () => {
   let component;
   let rootNode;
 
   const definition = {
     render() {
-      return (<Href test test2="test">children</Href>);
+      return (<LeftSlotContainer test test2="test">children</LeftSlotContainer>);
     },
   };
 
@@ -27,8 +28,8 @@ describe('Href', () => {
     }));
   afterEach(() => tearDownComponent(component));
 
-  it('should be possible to create a Href', () => {
-    rootNode.tagName.should.equal('A');
+  it('should be possible to create a LeftSlotContainer', () => {
+    rootNode.tagName.should.equal('DIV');
   });
 
   it('all the external props should be attached', () => {
@@ -40,8 +41,12 @@ describe('Href', () => {
     expect(rootNode.textContent).to.equal('children');
   });
 
+  it(`should have ${shadowItemStyles.locals.itemLeftPosition} class by default`, () => {
+    expect(rootNode.getAttribute('class')).to.equal(shadowItemStyles.locals.itemLeftPosition);
+  });
+
   it('should not have any untested properties', () => {
-    const properties = ['test', 'test2'].sort();
+    const properties = ['test', 'test2', 'class'].sort();
     const propsExisted = [];
     [...getRootNode(component).attributes].forEach((attr) => {
       propsExisted.push(attr.name);

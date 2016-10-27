@@ -1,9 +1,8 @@
-import { vdom } from 'skatejs';
+import { vdom, define } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { getRootNode } from 'akutil-common-test';
+import { createTemporaryComponent, tearDownComponent } from 'akutil-common-test';
 
-import { createTemporaryComponent, tearDownComponent } from '../_helpers';
 import childrenHaveSlot from '../../src/internal/childrenHaveSlot';
 
 
@@ -20,10 +19,10 @@ describe('childrenHaveSlot', () => {
     },
   };
 
-  beforeEach(() => createTemporaryComponent(definition)
+  beforeEach(() => createTemporaryComponent(define, definition)
     .then((newComponent) => {
       component = newComponent;
-      rootNode = getRootNode(component);
+      rootNode = component.shadowRoot.firstChild;
     }));
   afterEach(() => tearDownComponent(component));
 

@@ -1,11 +1,11 @@
-import { emit, vdom, prop, define, props } from 'skatejs';
 import keyCode from 'keycode';
 
-import { selected as selectedEvent, item as itemEvents } from './internal/events';
+import { emit, vdom, prop, define, props } from 'skatejs';
+import { item as itemEvents } from './internal/events';
 import shadowItemStyles from './less/shadow-item.less';
-import Item from './internal/Item';
-import IconContainer from './internal/LeftSlotContainer';
-import DefaultSlotContainer from './internal/DefaultSlotContainer';
+import Item from './templates/Item';
+import IconContainer from './templates/LeftSlotContainer';
+import DefaultSlotContainer from './templates/DefaultSlotContainer';
 import childrenHaveSlot from './internal/childrenHaveSlot';
 
 
@@ -19,22 +19,9 @@ export const BaseProps = {
    * @example @html <ak-dropdown>
    *   <ak-dropdown-item disabled>some content</ak-dropdown-item>
    * </ak-dropdown>
-   * @example @js dropdown.childNodes[0].disabled = true;
+   * @example @js dropdownItem.disabled = true;
    */
   disabled: prop.boolean({
-    attribute: true,
-  }),
-  /**
-   * @description selected state of a dropdown's item
-   * @memberof Dropdown
-   * @default false
-   * @type {Boolean}
-   * @example @html <ak-dropdown>
-   *   <ak-dropdown-item selected>some content</ak-dropdown-item>
-   * </ak-dropdown>
-   * @example @js dropdown.childNodes[0].selected = true;
-   */
-  selected: prop.boolean({
     attribute: true,
   }),
   /**
@@ -45,7 +32,7 @@ export const BaseProps = {
    * @example @html <ak-dropdown>
    *   <ak-dropdown-item first>some content</ak-dropdown-item>
    * </ak-dropdown>
-   * @example @js dropdown.childNodes[0].first = true;
+   * @example @js dropdownItem.first = true;
    */
   first: prop.boolean({
     attribute: true,
@@ -58,7 +45,7 @@ export const BaseProps = {
    * @example @html <ak-dropdown>
    *   <ak-dropdown-item last>some content</ak-dropdown-item>
    * </ak-dropdown>
-   * @example @js dropdown.childNodes[0].last = true;
+   * @example @js dropdownItem.last = true;
    */
   last: prop.boolean({
     attribute: true,
@@ -71,7 +58,7 @@ export const BaseProps = {
    * @example @html <ak-dropdown>
    *   <ak-dropdown-item focused>some content</ak-dropdown-item>
    * </ak-dropdown>
-   * @example @js dropdown.childNodes[0].focused = true;
+   * @example @js dropdownItem.focused = true;
    */
   focused: prop.boolean({
     attribute: true,
@@ -89,7 +76,7 @@ export const BaseProps = {
    * @example @html <ak-dropdown>
    *   <ak-dropdown-item hidden>some content</ak-dropdown-item>
    * </ak-dropdown>
-   * @example @js dropdown.childNodes[0].hidden = true;
+   * @example @js dropdownItem.hidden = true;
    */
   hidden: prop.boolean({
     attribute: true,
@@ -103,7 +90,7 @@ export default define('ak-dropdown-item', {
         {...props(elem)}
         ref={el => (elem[elemDom] = el)}
         onkeydown={elem.handleKeyDown(elem)}
-        onclick={elem.selectItem(elem)}
+        onclick={elem.activateItem(elem)}
         role="menuitem"
       >
         <style>{shadowItemStyles.toString()}</style>
@@ -119,10 +106,10 @@ export default define('ak-dropdown-item', {
     );
   },
   prototype: {
-    selectItem(elem) {
+    activateItem(elem) {
       return () => {
-        if (elem.disabled || elem.selected) return;
-        emit(elem, selectedEvent, {
+        if (elem.disabled) return;
+        emit(elem, itemEvents.activated, {
           detail: { item: elem },
         });
       };
@@ -144,7 +131,7 @@ export default define('ak-dropdown-item', {
             break;
           case keyCode('space'):
           case keyCode('enter'):
-            elem.selectItem(elem)();
+            elem.activateItem(elem)();
             break;
           default:
             break;
@@ -177,6 +164,20 @@ export default define('ak-dropdown-item', {
      * @example @js dropdownItem._target = '_blank';
      */
     target: prop.string({
+      attribute: true,
+    }),
+    /**
+     * @description active state of a dropdown's item.
+     * Set this to true if for some reason you want this particular item to be highlighted
+     * @memberof Dropdown
+     * @default false
+     * @type {Boolean}
+     * @example @html <ak-dropdown>
+     *   <ak-dropdown-item active>some content</ak-dropdown-item>
+     * </ak-dropdown>
+     * @example @js dropdownItem.active = true;
+     */
+    active: prop.boolean({
       attribute: true,
     }),
   }, BaseProps),

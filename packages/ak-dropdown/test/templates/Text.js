@@ -4,20 +4,19 @@ import chaiAsPromised from 'chai-as-promised';
 import { getRootNode } from 'akutil-common-test';
 
 import { createTemporaryComponent, tearDownComponent } from '../_helpers';
-import LeftSlotContainer from '../../src/internal/LeftSlotContainer';
-import shadowItemStyles from '../../src/less/shadow-item.less';
+import Text from '../../src/templates/Text';
 
 
 chai.use(chaiAsPromised);
 chai.should();
 
-describe('LeftSlotContainer', () => {
+describe('Text', () => {
   let component;
   let rootNode;
 
   const definition = {
     render() {
-      return (<LeftSlotContainer test test2="test">children</LeftSlotContainer>);
+      return (<Text test test2="test">children</Text>);
     },
   };
 
@@ -28,8 +27,8 @@ describe('LeftSlotContainer', () => {
     }));
   afterEach(() => tearDownComponent(component));
 
-  it('should be possible to create a LeftSlotContainer', () => {
-    rootNode.tagName.should.equal('DIV');
+  it('should be possible to create a Text', () => {
+    rootNode.tagName.should.equal('SPAN');
   });
 
   it('all the external props should be attached', () => {
@@ -41,12 +40,8 @@ describe('LeftSlotContainer', () => {
     expect(rootNode.textContent).to.equal('children');
   });
 
-  it(`should have ${shadowItemStyles.locals.itemLeftPosition} class by default`, () => {
-    expect(rootNode.getAttribute('class')).to.equal(shadowItemStyles.locals.itemLeftPosition);
-  });
-
   it('should not have any untested properties', () => {
-    const properties = ['test', 'test2', 'class'].sort();
+    const properties = ['test', 'test2'].sort();
     const propsExisted = [];
     [...getRootNode(component).attributes].forEach((attr) => {
       propsExisted.push(attr.name);

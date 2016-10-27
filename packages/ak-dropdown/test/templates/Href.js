@@ -4,20 +4,19 @@ import chaiAsPromised from 'chai-as-promised';
 import { getRootNode } from 'akutil-common-test';
 
 import { createTemporaryComponent, tearDownComponent } from '../_helpers';
-import DefaultSlotContainer from '../../src/internal/DefaultSlotContainer';
-import shadowItemStyles from '../../src/less/shadow-item.less';
+import Href from '../../src/templates/Href';
 
 
 chai.use(chaiAsPromised);
 chai.should();
 
-describe('DefaultSlotContainer', () => {
+describe('Href', () => {
   let component;
   let rootNode;
 
   const definition = {
     render() {
-      return (<DefaultSlotContainer test test2="test">children</DefaultSlotContainer>);
+      return (<Href test test2="test">children</Href>);
     },
   };
 
@@ -28,13 +27,8 @@ describe('DefaultSlotContainer', () => {
     }));
   afterEach(() => tearDownComponent(component));
 
-  it('should be possible to create a DefaultSlotContainer', () => {
-    rootNode.tagName.should.equal('DIV');
-  });
-
-  it('all the external props should be attached', () => {
-    expect(rootNode.getAttribute('test')).to.equal('true');
-    expect(rootNode.getAttribute('test2')).to.equal('test');
+  it('should be possible to create a Href', () => {
+    rootNode.tagName.should.equal('A');
   });
 
   it('all the external props should be attached', () => {
@@ -46,12 +40,8 @@ describe('DefaultSlotContainer', () => {
     expect(rootNode.textContent).to.equal('children');
   });
 
-  it(`should have ${shadowItemStyles.locals.itemDefaultPosition} class by default`, () => {
-    expect(rootNode.getAttribute('class')).to.equal(shadowItemStyles.locals.itemDefaultPosition);
-  });
-
   it('should not have any untested properties', () => {
-    const properties = ['test', 'test2', 'class'].sort();
+    const properties = ['test', 'test2'].sort();
     const propsExisted = [];
     [...getRootNode(component).attributes].forEach((attr) => {
       propsExisted.push(attr.name);

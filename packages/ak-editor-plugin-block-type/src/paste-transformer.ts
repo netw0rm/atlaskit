@@ -1,11 +1,11 @@
 import { ProseMirror, Node, Mark, Slice, Fragment, Transform } from 'ak-editor-prosemirror';
 
-function generateTextFromNode(pre: string, node: Node, currentIndex: number, { length }: Node[]): string {
+function generateTextFromNode(previousValue: string, node: Node, currentIndex: number, { length }: Node[]): string {
   if (!node.text) {
-    return pre;
+    return previousValue;
   }
 
-  const text = `${pre}${node.text}`;
+  const text = `${previousValue}${node.text}`;
   if (currentIndex === length - 1) {
     return text;
   } else {
@@ -13,11 +13,11 @@ function generateTextFromNode(pre: string, node: Node, currentIndex: number, { l
   }
 }
 
-function generateTextFromNodes(pre: string, node: Node, currentIndex: number, { length }: Node[]): string {
+function generateTextFromNodes(previousValue: string, node: Node, currentIndex: number, { length }: Node[]): string {
   // fallback to `node.text` if this is a text node
   const nodeText: string = node.content.content.reduce(generateTextFromNode, '') || node.text;
 
-  const text = `${pre}${nodeText}`;
+  const text = `${previousValue}${nodeText}`;
   if (currentIndex === length - 1) {
     return text;
   } else {

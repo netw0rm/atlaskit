@@ -46,10 +46,10 @@ describe('ak-field-base', () => {
 
       it('should render a slotwrapper and a slot element', () => {
         const slotWrapper = shadowRoot.querySelector(`.${slotWrapperClass}`);
-        const editmodeSlot = shadowRoot.querySelector('slot[name=input-slot]');
+        const contentSlot = shadowRoot.querySelector('slot[name=input-slot]');
 
         expect(slotWrapper).to.not.be.null;
-        expect(editmodeSlot).to.not.be.null;
+        expect(contentSlot).to.not.be.null;
       });
     });
 

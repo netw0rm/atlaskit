@@ -4,8 +4,8 @@ import Root from './Root';
 import Content from './Content';
 import { focused } from './internal/symbols';
 
-// we use this so that we can pass a function down to the EditingView so that it can update the
-// focused prop.
+// we use this so that we can pass a function down to Content so that it can update the
+// [focused] prop.
 function setFocused(elem, focus) {
   props(elem, { [focused]: focus });
 }
@@ -13,8 +13,6 @@ function setFocused(elem, focus) {
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class FieldBase
- * @fires FieldBase#exitViewingView
- * @fires FieldBase#exitEditingView
  * @example @html <ak-field-base label="Email" />
  * @example @js import FieldBase from 'ak-field-base';
  *

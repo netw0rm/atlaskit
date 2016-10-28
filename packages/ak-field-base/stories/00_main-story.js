@@ -66,11 +66,7 @@ storiesOf(name, module)
     <div>
       <form action="" style={formStyle}>
         <InputFieldBase label="A default field-base" />
-        <InputFieldBase label="In edit mode, focused" invalid />
-        <InputFieldBase
-          label="In edit mode, with a max-width css style"
-          style={{ maxWidth: '200px' }}
-        />
+        <InputFieldBase label="Invalid state" invalid />
       </form>
     </div>
   ))
@@ -100,6 +96,10 @@ storiesOf(name, module)
           <FieldBase label="Small non-textual content (5x5 div)">
             <div is slot="input-slot"><div style={smallBoxStyles} /></div>
           </FieldBase>
+          <InputFieldBase
+            label="With a max-width css style"
+            style={{ maxWidth: '200px' }}
+          />
         </form>
       </div>
     );

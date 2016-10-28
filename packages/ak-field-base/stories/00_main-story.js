@@ -114,9 +114,9 @@ storiesOf(name, module)
   ));
 
 InputFieldBase.propTypes = {
-  text: React.Proptypes.string,
+  text: React.PropTypes.string,
 };
 
 DivFieldBase.propTypes = {
-  text: React.Proptypes.string,
+  text: React.PropTypes.string,
 };

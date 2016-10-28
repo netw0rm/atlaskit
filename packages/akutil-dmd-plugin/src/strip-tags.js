@@ -1,3 +1,9 @@
+/**
+ * Strip '@'-prefixed tags from a string
+ * @param {string} The string
+ * @param {string[]} The tags to strip.
+ * @example stripTags('@example My example', ['example']);
+ */
 function stripTags(str, tags) {
   let stripped = str;
   // eslint-disable-next-line prefer-arrow-callback

@@ -30,6 +30,11 @@ describe('akutil-dmd-plugin', () => {
         tags: ['js', 'playground'],
         expected: 'console.log(\'abc\');',
       },
+      {
+        string: 'words before tags @js @playground words after tags',
+        tags: ['js', 'playground'],
+        expected: 'words before tagswords after tags',
+      },
     ];
 
     tests.forEach((test) => {

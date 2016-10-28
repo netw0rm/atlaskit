@@ -22,7 +22,8 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "akutil-common-test": "^4.0.0",
-    "akutil-react": "^1.0.0"
+    "akutil-react": "^1.0.0",
+    "custom-event-polyfill": "^0.3.0"
   },
   "repository": {
     "type": "git",

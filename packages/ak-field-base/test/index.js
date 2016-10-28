@@ -1,3 +1,4 @@
+import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
@@ -34,6 +35,7 @@ describe('ak-field-base', () => {
     label: labelClass,
     labelText: labelTextClass,
     hidden: hiddenClass,
+    focused: focusedClass,
     invalid: invalidClass,
   } = shadowStyles.locals;
 
@@ -81,6 +83,44 @@ describe('ak-field-base', () => {
 
       component.invalid = true;
       return waitUntil(invalidReflected).should.be.fulfilled;
+    });
+  });
+
+  describe('focus behaviour', () => {
+    let inputChild;
+    const focusEvent = new CustomEvent('focus');
+
+    beforeEach(() => {
+      inputChild = document.createElement('input');
+      inputChild.type = 'text';
+      inputChild.slot = 'input-slot';
+      component.appendChild(inputChild);
+    });
+    afterEach(() => {
+      component.removeChild(inputChild);
+    });
+
+    it('should apply focus styles when slotted child is focused', () => {
+      const focusApplied = () => (shadowRoot.querySelector(`.${focusedClass}`) !== null);
+
+      expect(focusApplied()).to.be.false;
+      inputChild.dispatchEvent(focusEvent);
+
+      return waitUntil(focusApplied).should.be.fulfilled;
+    });
+
+    it('should remove focus styles when slotted child is blurred', () => {
+      const focusApplied = () => (shadowRoot.querySelector(`.${focusedClass}`) !== null);
+      const blurEvent = new CustomEvent('blur');
+
+      // focus first so that we can blur
+      inputChild.dispatchEvent(focusEvent);
+
+      return waitUntil(focusApplied).then(() => {
+        inputChild.dispatchEvent(blurEvent);
+
+        return waitUntil(() => !focusApplied());
+      }).should.be.fulfilled;
     });
   });
 });

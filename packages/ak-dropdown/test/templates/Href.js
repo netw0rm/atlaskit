@@ -1,9 +1,8 @@
-import { vdom } from 'skatejs';
+import { vdom, define } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { getRootNode } from 'akutil-common-test';
+import { getRootNode, createTemporaryComponent, tearDownComponent } from 'akutil-common-test';
 
-import { createTemporaryComponent, tearDownComponent } from '../_helpers';
 import Href from '../../src/templates/Href';
 
 
@@ -20,7 +19,7 @@ describe('Href', () => {
     },
   };
 
-  beforeEach(() => createTemporaryComponent(definition)
+  beforeEach(() => createTemporaryComponent(define, definition)
     .then((newComponent) => {
       component = newComponent;
       rootNode = getRootNode(component);

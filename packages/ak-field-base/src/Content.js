@@ -17,10 +17,7 @@ export default (props) => {
   });
   return (
     <div className={slotWrapperClasses} ref={ref => addEventHandlers(ref, props)}>
-      <slot
-        className={shadowStyles.locals.editModeSlot}
-        name="input-slot"
-      />
+      <slot name="input-slot" />
     </div>
   );
 };

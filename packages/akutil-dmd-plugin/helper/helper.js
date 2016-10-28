@@ -1,15 +1,5 @@
-/* eslint-disable */
-
 const ddata = require('ddata');
-
-function stripTags(str, tags) {
-  let stripped = str;
-  tags.forEach(function(tag) {
-    const re = new RegExp(`*\s*@${tag}\s*`);
-    stripped = str.replace(re, '');
-  });
-  return stripped;
-}
+const stripTags = require('../src/strip-tags.js');
 
 function parseExample(text) {
   if (text) {

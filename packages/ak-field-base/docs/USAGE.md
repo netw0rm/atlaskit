@@ -58,6 +58,7 @@ input.styledInput {
   border: 0;
   outline: 0;
   width: 100%;
+  box-sizing: border-box;
 }
 ```
 
@@ -68,4 +69,5 @@ inputField.style.background = 'transparent';
 inputField.style.border = '0';
 inputField.style.outline = 'none';
 inputField.style.width = '100%';
+inputField.style.boxSizing = 'border-box';
 ```

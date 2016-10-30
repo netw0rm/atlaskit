@@ -98,7 +98,7 @@ storiesOf(name, module)
           </FieldBase>
           <InputFieldBase
             label="With a max-width css style"
-            style={{ maxWidth: '200px' }}
+            style={{ maxWidth: '200em' }}
           />
         </form>
       </div>

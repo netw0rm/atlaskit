@@ -167,7 +167,7 @@ class AkEditorBitbucket extends Component {
 
       elem.focus();
     } else if (!elem.expanded) {
-      delete elem._pm;
+      elem._pm = undefined;
     }
   }
 

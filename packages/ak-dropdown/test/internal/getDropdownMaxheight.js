@@ -1,8 +1,9 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { props } from 'skatejs';
+import { tearDownComponent } from 'akutil-common-test';
 
-import { initDropdown, tearDownComponent } from '../_helpers';
+import { initDropdown } from '../_helpers';
 import getDropdownMaxheight from '../../src/internal/getDropdownMaxheight';
 
 

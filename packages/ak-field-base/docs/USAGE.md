@@ -21,7 +21,7 @@ npm install ak-field-base
 
 #### Using the component
 
-The typical use-case for an `ak-field-base` is to create a new component. It makes not assumptions about libraries or tools and can be extended
+The typical use-case for an `ak-field-base` is to create a new component. It makes no assumptions about libraries or tools and can be extended
 however you like (React, Skatejs, Vanilla JS, etc).
 
 Usually you will want some form of input for the extended component. You can add that to fieldBase using the `input-slot` slot like so:

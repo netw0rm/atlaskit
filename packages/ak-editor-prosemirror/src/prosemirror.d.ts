@@ -1041,6 +1041,7 @@ declare module 'prosemirror/dist/transform/transform' {
       insertInline(pos: number, node: Node) : this;
       doc: Node;
       lift(range: NodeRange, target: number): this;
+      map(pos: number, bias?: number): number;
     }
     export interface TransformError {}
 }

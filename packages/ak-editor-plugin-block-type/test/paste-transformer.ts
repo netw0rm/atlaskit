@@ -37,10 +37,31 @@ describe('ak-editor-plugin-block-type paste transformer', () => {
       expect(pm.doc).to.deep.equal(expected);
     });
 
+    it('should preserve existing code block content when pasting heading with multilines', function () {
+      const { pm } = editor('foo{<>}');
+      maybeDispatchPasteEvent(pm, { html: '<h1>bar<br>baz</h1>' }, this);
+      const expected = doc(code_block()('foobar\nbaz'));
+      expect(pm.doc).to.deep.equal(expected);
+    });
+
     it('should preserve existing code block content when pasting code block', function () {
       const { pm } = editor('foo{<>}');
       maybeDispatchPasteEvent(pm, { html: '<pre>bar</pre>' }, this);
       const expected = doc(code_block()('foobar'));
+      expect(pm.doc).to.deep.equal(expected);
+    });
+
+    it('should preserve existing code block content when pasting multiple block types', function () {
+      const { pm } = editor('foo{<>}');
+      maybeDispatchPasteEvent(pm, { html: '<h1>bar</h1><h2>baz</h2>' }, this);
+      const expected = doc(code_block()('foobar\n\nbaz'));
+      expect(pm.doc).to.deep.equal(expected);
+    });
+
+    it('should preserve existing code block content when pasting multiple block types and multilines', function () {
+      const { pm } = editor('foo{<>}');
+      maybeDispatchPasteEvent(pm, { html: '<h1>bar</h1><h2>foo<br>baz</h2>' }, this);
+      const expected = doc(code_block()('foobar\n\nfoo\nbaz'));
       expect(pm.doc).to.deep.equal(expected);
     });
   });

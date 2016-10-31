@@ -1,36 +1,60 @@
-/* eslint-disable */
 import Promise from 'babel-runtime/core-js/promise';
+import profiles from './profile-data';
+import { modifyResponse } from '../src/api/profile-client';
+
 if (!window.Promise) {
   window.Promise = Promise;
 }
-import ProfileCardResource from '../src/api/profile-client';
-import profiles from './profile-data';
+
+const random = int => Math.floor(Math.random() * (int + 1));
+
+const getWeekday = () => {
+  const array = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const index = random(6);
+
+  return {
+    index,
+    string: array[index],
+  };
+};
+
+const getTimeString = () => {
+  const minFormat = new Intl.NumberFormat('us-EN', { minimumIntegerDigits: 2 });
+  const hours = random(23);
+  const minutes = random(59);
+  const meridiem = ['am', 'pm'][Math.floor(hours / 12)];
+
+  return `${hours === 0 ? 12 : hours % 12}:${minFormat.format(minutes)}${meridiem}`;
+};
 
 const requestService = (fail) => {
-  const timeout = Math.floor(Math.random() * 500) + 500;
+  const timeout = random(500) + 500;
+
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (fail) {
-        return reject(new Error('Not Found'));
+        return reject(new Error('mock request failed'));
       }
 
-      const id = Math.floor(Math.random() * 10);
-      const data = Object.assign({}, profiles[id], {
-        "accountId": "00665c7e-ec7e-466f-9165-ef05e9970be7",
-        "cloudId": "749a3acb-3eb9-4957-9c36-784af09aed0b",
-      })
+      const id = random(10);
+      const weekday = getWeekday();
+
+      const data = Object.assign({}, profiles[id]);
+
+      data.remoteTimeString = getTimeString();
+      data.remoteWeekdayIndex = weekday.index;
+      data.remoteWeekdayString = weekday.string;
+
       const result = {
-        "debugMeta": {
-          "count": 1,
-          "scannedCount": 634,
-          "requestTimeMS": 34
+        data: {
+          User: data,
         },
-        "values": [ data ]
       };
-      resolve(result.values[0]);
-    }, timeout)
+
+      return resolve(modifyResponse(result.data.User));
+    }, timeout);
   });
-}
+};
 
 class MockProfileCardResource {
   constructor(config) {
@@ -39,11 +63,11 @@ class MockProfileCardResource {
 
   _get(options) {
     let fail = false;
-    if (options.accountId === '404') {
+    if (options.userId === '404') {
       fail = true;
     }
-    return requestService(fail);
+    return requestService(fail, this._config);
   }
 }
 
-export const resourceProvider = new MockProfileCardResource({});
+export default new MockProfileCardResource({});

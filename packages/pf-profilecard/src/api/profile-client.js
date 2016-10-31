@@ -1,6 +1,3 @@
-// IE, Safari, Mobile Chrome, Mobile Safari
-// import URLSearchParams from 'url-search-params';
-
 import Promise from 'babel-runtime/core-js/promise';
 // 'whatwg-fetch' needs a Promise polyfill
 /* eslint-disable import/imports-first */
@@ -10,40 +7,37 @@ if (!window.Promise) {
 import 'whatwg-fetch';
 /* eslint-enable import/imports-first */
 
-const buildUrl = (baseUrl, path, data, secOptions) => {
-  const searchParam = new URLSearchParams();
-  // remove undefined keys from data object
-  Object.keys(data).forEach(key =>
-    data[key] === undefined && delete data[key]
-  );
-  for (const key in data) { // eslint-disable-line no-restricted-syntax
-    if ({}.hasOwnProperty.call(data, key)) {
-      searchParam.append(key, data[key]);
-    }
+
+/**
+ * Transform response from GraphQL
+ * - Prefix `timestring` with `remoteWeekdayString` depending on `remoteWeekdayIndex`
+ * - Remove properties which will be not used later
+ * @ignore
+ * @param  {obejct} data
+ * @return {object}
+ */
+export const modifyResponse = (data) => {
+  const localWeekdayIndex = new Date().getDay().toString();
+
+  if (data.remoteWeekdayIndex && data.remoteWeekdayIndex !== localWeekdayIndex) {
+    data.remoteTimeString = `${data.remoteWeekdayString} ${data.remoteTimeString}`;
   }
-  if (secOptions && secOptions.params) {
-    for (const key in secOptions.params) { // eslint-disable-line no-restricted-syntax
-      if ({}.hasOwnProperty.call(secOptions.params, key)) {
-        const values = secOptions.params[key];
-        if (Array.isArray(values)) {
-          for (let i = 0; i < values.length; i++) {
-            searchParam.append(key, values[i]);
-          }
-        } else {
-          searchParam.append(key, values);
-        }
-      }
-    }
-  }
-  let seperator = '';
-  if (baseUrl.substr(-1) !== '/') {
-    seperator = '/';
-  }
-  return `${baseUrl}${seperator}${path}?${searchParam.toString()}`;
+
+  data.timestring = data.remoteTimeString;
+
+  delete data.remoteWeekdayIndex;
+  delete data.remoteWeekdayString;
+  delete data.remoteTimeString;
+  delete data.id;
+
+  return data;
 };
 
 const buildHeaders = (secOptions) => {
   const headers = new Headers();
+
+  headers.append('Content-Type', 'application/json');
+
   if (secOptions && secOptions.headers) {
     for (const key in secOptions.headers) { // eslint-disable-line no-restricted-syntax
       if ({}.hasOwnProperty.call(secOptions.headers, key)) {
@@ -62,28 +56,57 @@ const buildHeaders = (secOptions) => {
   return headers;
 };
 
-// Returns a Promise containing the json response
-const requestService = (baseUrl, path, data, secOptions) => {
-  const url = buildUrl(baseUrl, path, data, secOptions);
+/**
+ * Build query string for GraphQL
+ * @ignore
+ * @param  {string} userId
+ * @param  {string} [timeformat='h:MMa']
+ * @return {string}
+ */
+const buildQueryString = (userId, timeformat = 'h:MMa') => {
+  const fields = [
+    'id',
+    'fullName',
+    'nickname',
+    'email',
+    'meta: position',
+    'location',
+    'companyName',
+    'avatarUrl(size: 100)',
+    'remoteWeekdayIndex: localTime(format: "d")',
+    'remoteWeekdayString: localTime(format: "ddd")',
+    `remoteTimeString: localTime(format: "${timeformat}")`,
+  ];
+
+  return `{User(id: "${userId}") {${fields.join(', ')}}}`;
+};
+
+const requestService = (baseUrl, options, secOptions) => {
   const headers = buildHeaders(secOptions);
-  return fetch(new Request(url, { headers }))
-    .then((response) => {
-      if (!response.ok) {
+  const query = buildQueryString(options.userId, options.timeformat);
+
+  return fetch(new Request(baseUrl, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ query }),
+  }))
+  .then((response) => {
+    if (!response.ok) {
+      return Promise.reject({
+        code: response.status,
+        reason: response.statusText,
+      });
+    }
+    return response.json().then((json) => {
+      if (json.errors) {
         return Promise.reject({
-          code: response.status,
-          reason: response.statusText,
+          reason: json.errors[0],
         });
       }
-      return response.json().then((json) => {
-        if (!json.values.length) {
-          return Promise.reject({
-            code: 404,
-            reason: 'Not found',
-          });
-        }
-        return json.values[0];
-      });
+
+      return modifyResponse(json.data.User);
     });
+  });
 };
 
 class ProfileCardResource {
@@ -101,7 +124,7 @@ class ProfileCardResource {
   _get(options) {
     const secOptions = this._config.securityProvider();
 
-    return requestService(this._config.url, 'user', options, secOptions);
+    return requestService(this._config.url, options, secOptions);
   }
 }
 

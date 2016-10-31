@@ -5,17 +5,16 @@ import reactify from 'akutil-react';
 import pfProfileCard from '../src/wc/pf-profilecard';
 import profiles from './profile-data';
 
-
 const ProfileCard = reactify(pfProfileCard);
 
 const fakeProfileData = {
   avatarUrl: profiles[6].avatarUrl,
-  fullname: profiles[6].fullname,
-  nickname: profiles[6].nickname,
+  fullname: profiles[6].fullName,
+  nickname: profiles[6].nickName,
   email: profiles[6].email,
   location: 'Sydney, Australia',
-  timestamp: 0, // is set to current time in #fakeData()
-  meta: profiles[6].role,
+  timestring: '9:00am',
+  meta: profiles[6].meta,
   presence: 'online',
   actions: [
     {
@@ -32,9 +31,6 @@ const fakeProfileData = {
 const fakeData = data => Object.assign(
   {},
   fakeProfileData,
-  {
-    timestamp: Math.floor(new Date().getTime() / 1000),
-  },
   data || {}
 );
 
@@ -73,47 +69,8 @@ storiesOf('Profile Card', module)
     </div>
   );
 })
-.add('w/ 24h display', () => {
-  const data = fakeData({ use24h: true });
-  return (
-    <div style={canvasStyle}>
-      <ProfileCard
-        {...data}
-        onAction={handleActionClick}
-      />
-    </div>
-  );
-})
-.add('w/ weekday display', () => {
-  const now = new Date();
-  now.setDate(now.getDate() - 1);
-  const ts = Math.floor(now.getTime() / 1000);
-  const data = fakeData({ timestamp: ts });
-  return (
-    <div style={canvasStyle}>
-      <ProfileCard
-        {...data}
-        onAction={handleActionClick}
-      />
-    </div>
-  );
-})
-.add('w/ weekday & 24h display', () => {
-  const now = new Date();
-  now.setDate(now.getDate() - 1);
-  const ts = Math.floor(now.getTime() / 1000);
-  const data = fakeData({ timestamp: ts, use24h: true });
-  return (
-    <div style={canvasStyle}>
-      <ProfileCard
-        {...data}
-        onAction={handleActionClick}
-      />
-    </div>
-  );
-})
-.add('w/o presence', () => {
-  const data = fakeData({ presence: null });
+.add('w/ all details', () => {
+  const data = fakeData();
   return (
     <div style={canvasStyle}>
       <ProfileCard
@@ -134,7 +91,7 @@ storiesOf('Profile Card', module)
     </div>
   );
 })
-.add('custom actions', () => {
+.add('w/ custom actions', () => {
   const actions = [
     { label: 'Foo', event: 'foo_action' },
     { label: 'Bar', event: 'bar_action' },

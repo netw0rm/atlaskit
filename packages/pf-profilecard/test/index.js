@@ -5,15 +5,11 @@ import chaiAsPromised from 'chai-as-promised';
 
 import { name } from '../package.json';
 import { ProfileCard } from '../src';
-import {
-  // getTimestampWithOffset,
-  // formatWeekdayString,
-  // formatTimeString,
-  getTimeLabel,
-} from '../src/util/datetime';
+import { modifyResponse } from '../src/api/profile-client';
 import shadowStyles from '../src/wc/pf-profilecard-shadow.less';
 
 const styles = shadowStyles.locals;
+
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -38,7 +34,11 @@ const cardActions = [
 ];
 
 // Helper functions
-const getActionButtons = component => (getShadowRoot(component).querySelector(`.${styles.pfCardActions}`).children);
+const getActionButtons = component => (
+  getShadowRoot(component)
+  .querySelector(`.${styles.pfCardActions}`)
+  .children
+);
 
 /* Create profile card in div, append to body and return reference to both.
    Ensure the component has been rendered before tests start */
@@ -74,11 +74,9 @@ describe('pf-profilecard', () => {
     const newComponent = new ProfileCard();
 
     expect(newComponent.presence).to.equal('none', 'presence');
-    expect(newComponent.timestamp).to.equal(0, 'timestamp');
-    expect(newComponent.use24h).to.equal(false, 'use24');
     expect(newComponent.actions).to.be.empty;
 
-    ['avatarUrl', 'fullname', 'meta', 'nickname', 'location'].forEach((key) => {
+    ['avatarUrl', 'fullname', 'meta', 'nickname', 'location', 'timestring'].forEach((key) => {
       expect(newComponent[key]).to.equal('', key);
     });
   });
@@ -98,7 +96,7 @@ describe('pf-profilecard', () => {
     ['', 'gone', 'unavailable', 'here'].forEach((presence) => {
       it(`should revert to default value on invalid values (presence = ${presence})`, () => {
         const presenceAttributeIsSet = () => (
-          component.getAttribute('presence') === 'offline'
+          component.getAttribute('presence') === 'none'
         );
         props(component, { presence });
 
@@ -155,25 +153,18 @@ describe('pf-profilecard', () => {
     });
   });
 
-  describe('timestamp property', () => {
-    it('should accept number and number strings as number', () => {
-      ['100', 200].forEach((timestamp) => {
-        props(component, { timestamp });
-        expect(component.timestamp).to.equal(parseInt(timestamp, 10));
+  describe('timestring property', () => {
+    it('should accept truthy values as strings', () => {
+      ['foo', 'bar', 12].forEach((timestring) => {
+        props(component, { timestring });
+        expect(component.timestring).to.equal(timestring.toString());
       });
     });
 
-    it('should default to 0 on falsy values', () => {
-      [undefined, null, false].forEach((timestamp) => {
-        props(component, { timestamp });
-        expect(component.timestamp).to.equal(0);
-      });
-    });
-
-    it('should reject other values as undefined', () => {
-      ['foo', [1, 2], NaN].forEach((timestamp) => {
-        props(component, { timestamp });
-        expect(component.timestamp).to.equal(undefined);
+    it('should default to empty string on falsy values', () => {
+      [undefined, null].forEach((timestring) => {
+        props(component, { timestring });
+        expect(component.timestring).to.equal('');
       });
     });
   });
@@ -194,24 +185,56 @@ describe('pf-profilecard', () => {
     });
   });
 
-  describe('datetime.js helpers', () => {
-    describe('#getTimeLabel()', () => {
-      it('should return only time when timestamp matches current day', () => {
-        const now = new Date();
-        now.setHours(0);
-        now.setMinutes(0);
+  describe('profile-client', () => {
+    describe('#modifyResponse', () => {
+      it('should remove certain properties from the data object', () => {
+        const data = {
+          remoteWeekdayIndex: 'shouldberemoved',
+          remoteWeekdayString: 'shouldberemoved',
+          remoteTimeString: 'shouldberemoved',
+          id: 'shouldberemoved',
+        };
 
-        const ts = Math.floor(now.getTime() / 1000);
-        expect(getTimeLabel(ts, true)).to.equal('00:00');
-        expect(getTimeLabel(ts, false)).to.equal('12:00am');
+        const result = modifyResponse(data);
+
+        expect(result.remoteWeekdayIndex).to.be.undefined;
+        expect(result.remoteWeekdayString).to.be.undefined;
+        expect(result.remoteTimeString).to.be.undefined;
+        expect(result.id).to.be.undefined;
       });
 
-      it('should return weekday and time when timestamp does not match current day', () => {
-        const now = new Date(2016, 4, 1, 8, 0, 0);
+      it('should rename "remoteTimeString" property to "timestring"', () => {
+        const data = {
+          remoteTimeString: '10:23am',
+        };
 
-        const ts = Math.floor(now.getTime() / 1000);
-        expect(getTimeLabel(ts, true)).to.equal('Sun 08:00');
-        expect(getTimeLabel(ts, false)).to.equal('Sun 8:00am');
+        const result = modifyResponse(data);
+
+        expect(result.timestring).to.equal('10:23am');
+      });
+
+      it('should not modify "timestring" property if remote and local date share the same weekday index', () => {
+        const data = {
+          remoteTimeString: '0:00pm',
+          remoteWeekdayString: 'Mon',
+          remoteWeekdayIndex: new Date().getDay().toString(),
+        };
+
+        const result = modifyResponse(data);
+
+        expect(result.timestring).to.equal('0:00pm');
+      });
+
+      it('should prefix "timestring" property with weekday if local dates weekday index is different', () => {
+        const data = {
+          remoteTimeString: '0:00pm',
+          remoteWeekdayString: 'Mon',
+          remoteWeekdayIndex: 12,
+        };
+
+        const result = modifyResponse(data);
+
+        expect(result.timestring).to.equal('Mon 0:00pm');
       });
     });
   });

@@ -1,3 +1,7 @@
 {
-  "extends": "ak-stories"
+  "extends": "ak-stories",
+  "rules": {
+    "no-underscore-dangle": 0,
+    "react/prefer-es6-class": 0,
+  }
 }

@@ -6,9 +6,7 @@ import AkButton from 'ak-button';
 import 'style!../host.less';
 import IconLabel from './IconLabel';
 import events from '../internal/events';
-import { getTimeLabel } from '../util/datetime';
 import shadowStyles from './pf-profilecard-shadow.less';
-
 
 const styles = shadowStyles.locals;
 
@@ -16,7 +14,7 @@ const PRESENCE_ATTRIBUTE_ENUM = {
   attribute: 'presence',
   values: ['none', 'online', 'busy', 'offline'],
   missingDefault: 'none',
-  invalidDefault: 'offline',
+  invalidDefault: 'none',
 };
 
 const PRESENCE_STRINGS = {
@@ -35,7 +33,6 @@ const PRESENCE_STRINGS = {
  */
 export default define('pf-profilecard', {
   render(elem) {
-    const labelTime = getTimeLabel(elem.timestamp, elem.use24h);
     const actions = (elem.actions || []).map(action => (
       <AkButton
         appearance="link"
@@ -63,9 +60,9 @@ export default define('pf-profilecard', {
                 label={PRESENCE_STRINGS[elem.presence]}
               /> : null
             }
-            {elem.nickname ? <IconLabel icon="mention" label={`@${elem.nickname}`} /> : null}
+            {elem.nickname ? <IconLabel icon="mention" label={elem.nickname} /> : null}
             {elem.location ? <IconLabel icon="location" label={elem.location} /> : null}
-            {labelTime ? <IconLabel icon="time" label={labelTime} /> : null}
+            {elem.timestring ? <IconLabel icon="time" label={elem.timestring} /> : null}
             <div className={styles.pfCardFlexSpacer} />
             <div className={styles.pfCardActions}>
               {actions}
@@ -108,20 +105,24 @@ export default define('pf-profilecard', {
     /**
      * @memberof Profilecard
      * @instance
-     * @type {number}
-     */
-    timestamp: prop.number({ attribute: true }),
-
-    /**
-     * @memberof Profilecard
-     * @instance
      * @type {string}
      */
     location: prop.string({ attribute: true }),
 
     /**
+     * @description The date string displayed as users local time
      * @memberof Profilecard
      * @instance
+     * @type {string}
+     */
+    timestring: prop.string({ attribute: true }),
+
+    /**
+     * @description Indicates the users online status by showing a small icon
+     * Allowed values: 'online', 'offline', 'busy' or 'none'
+     * @memberof Profilecard
+     * @instance
+     * @default none
      * @type {string}
      */
     presence: enumeration(PRESENCE_ATTRIBUTE_ENUM)({ attribute: true }),
@@ -137,13 +138,5 @@ export default define('pf-profilecard', {
      * @example [{label: 'Chat', event: 'ev_chat'}, {label: 'View', event: 'ev_view'}]
      */
     actions: prop.array({ attribute: true }),
-
-    /**
-     * @description Use 24h clock instead of the default 12h clock.
-     * @memberof Profilecard
-     * @instance
-     * @type {boolean}
-     */
-    use24h: prop.boolean({ attribute: true }),
   },
 });

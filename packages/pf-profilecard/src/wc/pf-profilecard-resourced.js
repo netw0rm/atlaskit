@@ -4,7 +4,6 @@ import 'style!../host.less';
 import ProfileCard from './pf-profilecard';
 import ProfileSpinner from './pf-spinner';
 import WarningIcon from './WarningIcon';
-import { getTimestampWithOffset } from '../util/datetime';
 import events from '../internal/events';
 import {
   data,
@@ -15,7 +14,6 @@ import {
   fnReject,
 } from '../internal/symbols';
 import shadowStyles from './pf-profilecard-resourced-shadow.less';
-
 
 const styles = shadowStyles.locals;
 
@@ -36,9 +34,7 @@ export default define('pf-profilecard-resourced', {
         [failed]: false,
       });
       const options = {
-        cloudId: this['data-cloud-id'],
-        accountId: this['data-account-id'],
-        expand: true,
+        userId: this['data-user-id'],
       };
       this.resourceProvider._get(options)
       .then(
@@ -71,15 +67,15 @@ export default define('pf-profilecard-resourced', {
 
   updated(elem, prevProps = {}) {
     // Immediately show failed card if no account-id is given
-    if (!elem['data-account-id']) {
+    if (!elem['data-user-id']) {
       props(elem, {
         [loading]: false,
         [failed]: true,
       });
     }
 
-    // check for `data-account-id` attribute changes to load new data
-    if (prevProps['data-account-id'] !== elem['data-account-id']) {
+    // check for `data-user-id` attribute changes to load new data
+    if (prevProps['data-user-id'] !== elem['data-user-id']) {
       elem[fnRequest]();
     }
 
@@ -120,9 +116,6 @@ export default define('pf-profilecard-resourced', {
     return (
       <ProfileCard
         {...elem[data]}
-        timestamp={getTimestampWithOffset(elem[data].utcOffset)}
-        meta={elem[data].role}
-        use24h={elem.use24h}
         actions={elem.actions}
       />
     );
@@ -136,17 +129,7 @@ export default define('pf-profilecard-resourced', {
      * @instance
      * @type {string}
      */
-    'data-account-id': prop.string({
-      attribute: true,
-      default: () => null,
-    }),
-
-    /**
-     * @memberof ProfilecardResourced
-     * @instance
-     * @type {string}
-     */
-    'data-cloud-id': prop.string({
+    'data-user-id': prop.string({
       attribute: true,
       default: () => null,
     }),
@@ -163,17 +146,6 @@ export default define('pf-profilecard-resourced', {
      * @example [{label: 'Chat', event: 'ev_chat'}, {label: 'View', event: 'ev_view'}]
      */
     actions: prop.array({
-      attribute: true,
-    }),
-
-    /**
-     * @description Use 24h clock instead of the default 12h clock.
-     * [Will be passed to ProfileCard]
-     * @memberof ProfilecardResourced
-     * @instance
-     * @type {boolean}
-     */
-    use24h: prop.boolean({
       attribute: true,
     }),
 

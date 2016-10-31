@@ -150,14 +150,6 @@ class AkEditorBitbucket extends Component {
     };
   }
 
-  static created(elem: AkEditorBitbucket) : void {
-    if (blockTypes[elem.context]) {
-      elem._blockTypes = blockTypes[elem.context];
-    } else {
-      elem._blockTypes = blockTypes._defaultContext;
-    }
-  }
-
   static rendered(elem: AkEditorBitbucket) : void {
     if (elem.expanded && !elem._pm) {
       elem._initEditor();
@@ -190,6 +182,12 @@ class AkEditorBitbucket extends Component {
 
     if (elem.context === 'comment') {
       fakeInputClassNames += ` ${shadowStyles.locals.comment}`;
+    }
+
+    if (elem.context && blockTypes[elem.context]) {
+      elem._blockTypes = blockTypes[elem.context];
+    } else {
+      elem._blockTypes = blockTypes._defaultContext;
     }
 
     const fullEditor: any = (<div>

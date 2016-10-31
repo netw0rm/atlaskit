@@ -15,7 +15,7 @@ export type blockTypesType = blockTypeType[];
  */
 export const blockTypes : any = {
   // Those block types are used when no "context" has been provided.
-  _defaultContext: [{
+  "_defaultContext": [{
     name      : 'normalText',
     display   : 'Normal text',
     schemaName: 'paragraph',
@@ -59,7 +59,7 @@ export const blockTypes : any = {
     schemaName: 'code_block',
   }],
 
-  pr: [{
+  "pr": [{
     name      : 'normalText',
     display   : 'Normal text',
     schemaName: 'paragraph',

@@ -1,5 +1,3 @@
-# Icons
-
 This package contains the AtlasKit icons. All icons should be consumed separately unless your build tool supports tree shaking.
 
 > This packages is licensed under the Atlassian Design Guidelines - please check the LICENSE file for more information.
@@ -81,7 +79,7 @@ document.body.appendChild(icon);
 const x = (<BitbucketLogo />);
 ```
 
-Import a single icon:
+Importing a single icon (this will still bundle **all** of the icons in your final bundle if you don't use tree shaking):
 
 ```js
 import BitbucketLogo from 'ak-icon';
@@ -138,3 +136,5 @@ Some things to look for:
   * adding an icon is a feature
   * removing an icon is breaking change
   * renaming an icon is a breaking change
+
+@FILE: Icons.md@

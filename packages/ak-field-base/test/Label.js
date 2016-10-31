@@ -1,4 +1,3 @@
-import 'custom-event-polyfill';
 import { vdom, define } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -53,25 +52,6 @@ describe('ak-field-base', () => {
       it('should be reflected in the label element', () => {
         const label = shadowRoot.querySelector('label');
         expect(label.textContent).to.match(/This is a label/);
-      });
-    });
-
-    describe('switchToEditingCallback prop', () => {
-      const callbackSpy = sinon.spy();
-      const tmpDefinition = (<Label switchToEditingCallback={callbackSpy} />);
-
-      beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
-        .then(setupLocalVariables));
-      afterEach(() => {
-        callbackSpy.reset();
-      });
-
-      it('should be called if inner span is clicked', () => {
-        const innerSpan = shadowRoot.querySelector('div span');
-        const clickEvent = new CustomEvent('click', {});
-        innerSpan.dispatchEvent(clickEvent);
-
-        expect(callbackSpy).to.have.been.calledOnce;
       });
     });
 

@@ -10,6 +10,14 @@ export default function(html: string): Node {
   const el = document.createElement('div');
   el.innerHTML = html;
 
+  // Remove zero-width-non-joiner
+  Array.from(el.querySelectorAll('p')).forEach((p: HTMLParagraphElement) => {
+    const zwnj = /\u200c/g;
+    if (p.textContent && zwnj.test(p.textContent)) {
+      p.textContent = p.textContent.replace(zwnj, '');
+    }
+  });
+
   // Convert "codehilite" containers to <pre>
   Array.from(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
     const pre = document.createElement('pre');

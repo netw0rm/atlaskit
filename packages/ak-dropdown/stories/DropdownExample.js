@@ -20,7 +20,7 @@ export default class DropdownExample extends Component { // eslint-disable-line 
   render() {
     return (
       <DropdownReactComponent
-        open
+        open={!this.props.close}
         className={dropdownClass}
         boundariesElement={this.props.parent}
         stepOutside={this.props.stepOutside}
@@ -56,4 +56,5 @@ DropdownExample.propTypes = {
   stepOutside: React.PropTypes.bool,
   position: React.PropTypes.string,
   avatarTarget: React.PropTypes.bool,
+  close: React.PropTypes.bool,
 };

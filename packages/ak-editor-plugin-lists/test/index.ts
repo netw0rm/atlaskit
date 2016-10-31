@@ -135,5 +135,162 @@ describe('ak-editor-plugin-lists', () => {
         type: null
       });
     });
+
+    describe('untoggling a list', () => {
+      const expectedOutput = doc(ol(li(p('One'))),p('Two'),p('Three'),ol(li(p('Four'))));
+
+      it('should allow untoggling part of a list based on selection', () => {
+        const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('{<}Two')),li(p('Three{>}')),li(p('Four')))));
+
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutput);
+      });
+
+      it('should allow untoggling part of a list based on selection that starts at the end of previous line', () => {
+        const { pm, plugin } = editor(doc(ol(li(p('One{<}')),li(p('Two')),li(p('Three{>}')),li(p('Four'))))); // When selection starts on previous (empty) node
+
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutput);
+      });
+    });
+
+    describe('converting a list', () => {
+      it('should allow converting part of a list based on selection', () => {
+        const expectedOutput = doc(ol(li(p('One'))),ul(li(p('Two')),li(p('Three'))),ol((li(p('Four')))));
+        const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('{<}Two')),li(p('Three{>}')),li(p('Four')))));
+
+        plugin.toggleList('bullet_list');
+        expect(pm.doc).to.deep.equal(expectedOutput);
+      });
+
+      it('should allow converting part of a list based on selection that starts at the end of previous line', () => {
+        const expectedOutput = doc(ol(li(p('One'))),ul(li(p('Two')),li(p('Three'))),ol((li(p('Four')))));
+        const { pm, plugin } = editor(doc(ol(li(p('One{<}')),li(p('Two')),li(p('Three{>}')),li(p('Four'))))); // When selection starts on previous (empty) node
+ 
+        plugin.toggleList('bullet_list');
+        expect(pm.doc).to.deep.equal(expectedOutput);
+      });
+
+      it('should convert selection to a list when the selection starts with a paragraph and ends inside a list', () => {
+        const expectedOutput = doc(ol(li(p('One')),li(p('Two')),li(p('Three')),li(p('Four'))));
+        const { pm, plugin } = editor(doc(p('{<}One'),ol(li(p('Two{>}')),li(p('Three')),li(p('Four')))));
+        
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutput);
+      });
+
+      it('should convert selection to a list when the selection contains a list but starts and end with paragraphs', () => {
+        const expectedOutput = doc(ol(li(p('One')),li(p('Two')),li(p('Three')),li(p('Four'))));
+        const { pm, plugin } = editor(doc(p('{<}One'),ol(li(p('Two')),li(p('Three'))),p('Four{>}')));
+        
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutput);
+      });
+
+      it('should convert selection to a list when the selection starts inside a list and ends with a paragraph', () => {
+        const expectedOutput = doc(ol(li(p('One')),li(p('Two')),li(p('Three')),li(p('Four'))));
+        const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('{<}Two')),li(p('Three'))),(p('Four{>}'))));
+        
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutput);
+      });
+    });
+
+    describe('joining lists', () => {
+      const expectedOutputForPreviousList = doc(ol(li(p('One')),li(p('Two')),li(p('Three')),li(p('Four')),li(p('Five'))),p('Six'));
+      const expectedOutputForNextList = doc(p('One'),ol(li(p('Two')),li(p('Three')),li(p('Four')),li(p('Five')),li(p('Six'))));
+      const expectedOutputForPreviousAndNextList = doc(ol(li(p('One')),li(p('Two')),li(p('Three')),li(p('Four')),li(p('Five')),li(p('Six'))));
+
+      it('should join with previous list if it\'s of the same type', () => {
+        const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two')),li(p('Three'))),p('{<}Four'),p('Five{>}'),p('Six')));
+
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutputForPreviousList);
+      });
+
+      it('should join with previous list if it\'s of the same type and selection starts at the end of previous line', () => {
+        const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two')),li(p('Three{<}'))),p('Four'),p('Five{>}'),p('Six'))); // When selection starts on previous (empty) node
+        
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutputForPreviousList);
+      });
+
+      it('should not join with previous list if it\'s not of the same type', () => {
+        const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two')),li(p('Three'))),p('{<}Four'),p('Five{>}'),p('Six')));
+
+        plugin.toggleList('bullet_list');
+        expect(pm.doc).not.to.deep.equal(expectedOutputForPreviousList);
+        expect(pm.doc).to.deep.equal(doc(ol(li(p('One')),li(p('Two')),li(p('Three'))),ul(li(p('{<}Four')),li(p('Five'))),p('Six')));
+      });
+
+      it('should not join with previous list if it\'s not of the same type and selection starts at the end of previous line', () => {
+        const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two')),li(p('Three{<}'))),p('Four'),p('Five{>}'),p('Six'))); // When selection starts on previous (empty) node
+
+        plugin.toggleList('bullet_list');
+        expect(pm.doc).not.to.deep.equal(expectedOutputForPreviousList);
+        expect(pm.doc).to.deep.equal(doc(ol(li(p('One')),li(p('Two')),li(p('Three'))),ul(li(p('{<}Four')),li(p('Five'))),p('Six')));
+      });
+
+      it('should join with next list if it\'s of the same type', () => {
+        const { pm, plugin } = editor(doc(p('One'),p('{<}Two'),p('Three{>}'),ol(li(p('Four')),li(p('Five')),li(p('Six')))));
+
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutputForNextList);
+      });
+
+      it('should join with next list if it\'s of the same type and selection starts at the end of previous line', () => {
+        const { pm, plugin } = editor(doc(p('One{<}'),p('Two'),p('Three{>}'),ol(li(p('Four')),li(p('Five')),li(p('Six')))));
+        
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutputForNextList);
+      });
+
+      it('should not join with next list if it isn\'t of the same type', () => {
+        const { pm, plugin } = editor(doc(p('One'),p('{<}Two'),p('Three{>}'),ol(li(p('Four')),li(p('Five')),li(p('Six')))));
+
+        plugin.toggleList('bullet_list');
+        expect(pm.doc).not.to.deep.equal(expectedOutputForNextList);
+        expect(pm.doc).to.deep.equal(doc(p('One'), ul(li(p('Two')), li(p('Three'))), ol(li(p('Four')), li(p('Five')), li(p('Six')))));
+      });
+
+      it('should not join with next list if it isn\'t of the same type and selection starts at the end of previous line', () => {
+        const { pm, plugin } = editor(doc(p('One{<}'),p('Two'),p('Three{>}'),ol(li(p('Four')),li(p('Five')),li(p('Six')))));
+
+        plugin.toggleList('bullet_list');
+        expect(pm.doc).not.to.deep.equal(expectedOutputForNextList);
+        expect(pm.doc).to.deep.equal(doc(p('One'), ul(li(p('Two')), li(p('Three'))), ol(li(p('Four')), li(p('Five')), li(p('Six')))));
+      });
+
+      it('should join with previous and next list if they\'re of the same type', () => {
+        const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two'))),p('{<}Three'),p('Four{>}'),ol(li(p('Five')),li(p('Six')))));
+
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutputForPreviousAndNextList);
+      });
+
+      it('should join with previous and next list if they\'re of the same type and selection starts at the end of previous line', () => {
+        const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two{<}'))),p('Three'),p('Four{>}'),ol(li(p('Five')),li(p('Six')))));
+        
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutputForPreviousAndNextList);
+      });
+
+      it('should not join with previous and next list if they\'re not of the same type', () => {
+        const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two'))),p('{<}Three'),p('Four{>}'),ol(li(p('Five')),li(p('Six')))));
+
+        plugin.toggleList('bullet_list');
+        expect(pm.doc).not.to.deep.equal(expectedOutputForPreviousAndNextList);
+        expect(pm.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two'))), ul(li(p('Three')), li(p('Four'))), ol(li(p('Five')), li(p('Six')))))
+      });
+
+      it('should not join with previous and next list if they\'re not of the same type and selectoin starts at the end of previous line', () => {
+        const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two{<}'))),p('Three'),p('Four{>}'),ol(li(p('Five')),li(p('Six')))));
+
+        plugin.toggleList('bullet_list');
+        expect(pm.doc).not.to.deep.equal(expectedOutputForPreviousAndNextList);
+        expect(pm.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two'))), ul(li(p('Three')), li(p('Four'))), ol(li(p('Five')), li(p('Six')))))
+      });
+    });
+
   });
 });

@@ -1,5 +1,5 @@
 import { commands, Plugin, ProseMirror, Selection, UpdateScheduler } from 'ak-editor-prosemirror';
-import pasteTransformer from './paste-transformer';
+import { transformPasted, transformPastedText, transformPastedHTML } from './paste-transformer';
 
 export interface BlockTypeState {
   selectedBlockType?: string;
@@ -29,7 +29,9 @@ export default new Plugin(class BlockTypePlugin {
     this.changeHandlers = [];
 
     // add paste handler
-    pm.on.transformPasted.add(pasteTransformer.bind(pasteTransformer, pm));
+    pm.on.transformPasted.add(transformPasted.bind(transformPasted, pm));
+    pm.on.transformPastedText.add(transformPastedText.bind(transformPastedText, pm));
+    pm.on.transformPastedHTML.add(transformPastedHTML.bind(transformPastedHTML, pm));
 
     this.updater = pm.updateScheduler([
       pm.on.selectionChange,

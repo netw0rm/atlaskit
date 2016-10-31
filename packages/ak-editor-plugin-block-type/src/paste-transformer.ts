@@ -25,18 +25,19 @@ function generateTextFromNodes(previousValue: string, node: Node, currentIndex: 
   }
 }
 
-export default function(pm: ProseMirror, slice: Slice): Slice {
+function isInCodeBlock(pm: ProseMirror): boolean {
   const node = pm.selection.$head.node(1);
 
-  if (node.type.name === 'code_block') {
+  return node.type.name === 'code_block';
+}
+
+export function transformPasted(pm: ProseMirror, slice: Slice): Slice {
+  if (isInCodeBlock(pm)) {
     const text: string = slice.content.content
       .reduce(generateTextFromNodes, '');
 
-    let newNode = pm.schema.nodes.text.create({}, text);
+    let newNode = pm.schema.nodes.text.create({}, text.replace(/\u200c/g, '\n'));
 
-    // TODO: pasting multiple lines doesn't work as expected
-    // if pasting from code block, newlines from original block will disappear
-    // if pasting from non code block, it will create another new code block
     if (!slice.content.content[0].isText) {
       newNode = pm.schema.nodes.code_block.create({}, newNode);
     }
@@ -47,4 +48,20 @@ export default function(pm: ProseMirror, slice: Slice): Slice {
   }
 
   return slice;
+}
+
+export function transformPastedText(pm: ProseMirror, txt: string): string {
+  if (isInCodeBlock(pm)) {
+    return txt.replace(/\n/g, '\u200c');
+  }
+
+  return txt;
+}
+
+export function transformPastedHTML(pm: ProseMirror, html: string): string {
+  if (isInCodeBlock(pm)) {
+    return html.replace(/\n/g, '<br>').replace(/<br>/g, '\u200c');
+  }
+
+  return html;
 }

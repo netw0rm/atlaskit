@@ -1,5 +1,5 @@
 const ddata = require('ddata');
-const stripTags = require('../src/strip-tags.js');
+const stripTags = require('../src/strip-tags');
 
 /**
  * Parse an example annotation, add a title, and strip out @html, @js, and @playground tags.

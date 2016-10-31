@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { stripTags } from '../src/strip-tags';
 
+const stripTags = require('../src/strip-tags.js');
 
 chai.use(chaiAsPromised);
 chai.should();

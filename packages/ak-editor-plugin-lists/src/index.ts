@@ -248,16 +248,20 @@ export default new Plugin(class ListsPlugin {
       }
     }
 
-    let node: Node = this.pm.doc.nodeAt(startPos); 
-    while(!node || (node && !node.isText)) {
-      startPos++;
-      node = this.pm.doc.nodeAt(startPos);
+    if(!($from.parent && $from.parent.isTextblock && !$from.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
+      let node: Node = this.pm.doc.nodeAt(startPos); 
+      while(!node || (node && !node.isText)) {
+        startPos++;
+        node = this.pm.doc.nodeAt(startPos);
+      }
     }
 
-    node = this.pm.doc.nodeAt(endPos); 
-    while(!node || (node && !node.isText)) {
-      endPos--;
-      node = this.pm.doc.nodeAt(endPos);
+    if(!($to.parent && $to.parent.isTextblock && !$to.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
+      let node = this.pm.doc.nodeAt(endPos); 
+      while(!node || (node && !node.isText)) {
+        endPos--;
+        node = this.pm.doc.nodeAt(endPos);
+      }
     }
 
     if (endPos === startPos) {

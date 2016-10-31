@@ -127,8 +127,8 @@ export default new Plugin(class ListsPlugin {
     }
   }
 
-  // Returns all "root-nodes" between $from and $to
-  rootNodesBetween($from: ResolvedPos, $to: ResolvedPos): Node[] {
+  // Returns all block-nodes between $from and $to
+  blockNodesBetween($from: ResolvedPos, $to: ResolvedPos): Node[] {
     let current = this.pm.doc.resolve($from.start(1));
     let nodes = Array<Node>(); 
 
@@ -146,28 +146,31 @@ export default new Plugin(class ListsPlugin {
     return nodes;
   }
 
-  // Step through root-nodes between $from and $to and returns false if a node is
+  // Step through block-nodes between $from and $to and returns false if a node is
   // found that isn't of the specified type  
   isRangeOfType($from: ResolvedPos, $to: ResolvedPos, type: ListType): boolean {
-    return !this.rootNodesBetween($from, $to).find(node => node.type.name !== type);
+    return this.blockNodesBetween($from, $to).filter(node => node.type.name !== type).length === 0;
   }
 
-  // Step through root-nodes between $from and $to and return true if a node is a
+  // Step through block-nodes between $from and $to and return true if a node is a
   // bullet_list or ordered_list
   rangeContainsList($from: ResolvedPos, $to: ResolvedPos): boolean {
-    return !!this.rootNodesBetween($from, $to).find(node => this.listTypes.indexOf(node.type.name) !== -1);
+    return this.blockNodesBetween($from, $to).filter(node => this.listTypes.indexOf(node.type.name) !== -1).length !== 0;
   }
 
   // Takes a selection $from and $to and lift all text nodes from their parents to document-level
   liftSelection($from: ResolvedPos, $to: ResolvedPos): EditorTransform {
     const tr = this.pm.tr;
-    let startPos = $from.pos;
-    let endPos = $to.pos === $from.pos ? $to.pos + 1 : $to.pos;
+    let startPos = $from.start($from.depth);
+    let endPos = $to.end($to.depth);
 
     tr.doc.nodesBetween(startPos, endPos, (node: Node, pos: number) => {
-      if (node.isText) {
+      if (
+        node.isText ||                          // Text node
+        (node.isTextblock && !node.textContent) // Empty paragraph
+      ) {
         const res = tr.doc.resolve(tr.map(pos));
-        const sel = new TextSelection(res);
+        const sel = new NodeSelection(res);
         const range = sel.$from.blockRange(sel.$to);
         const target = liftTarget(range);
         tr.lift(range, target);
@@ -200,11 +203,17 @@ export default new Plugin(class ListsPlugin {
   // a line. This isn't obvious by looking at the editor and it's likely not what the
   // user intended - so we need to adjust the seletion a bit in scenarios like that.
   adjustSelection(selection: TextSelection): TextSelection {
-    const { $from, $to } = selection;
+    let { $from, $to } = selection;
+
+    const isSameLine = $from.pos === $to.pos;
+
+    if (isSameLine) {
+      $from = this.pm.doc.resolve($from.start($from.depth)); 
+      $to = this.pm.doc.resolve($from.end($from.depth));
+    }
 
     let startPos = $from.pos;
     let endPos = $to.pos;
-    const isSameLine = startPos === endPos;
 
     if (isSameLine && startPos === this.pm.doc.content.size - 1) { // Line is empty, don't do anything
       return selection;
@@ -246,7 +255,7 @@ export default new Plugin(class ListsPlugin {
     }
 
     node = this.pm.doc.nodeAt(endPos); 
-    while(node && !node.isText) {
+    while(!node || (node && !node.isText)) {
       endPos--;
       node = this.pm.doc.nodeAt(endPos);
     }
@@ -271,16 +280,17 @@ export default new Plugin(class ListsPlugin {
   toggleList(type: ListType): boolean {
     const pm = this.pm;
     let { $from, $to } = pm.selection;
+    const adjustedSelection = this.adjustSelection(pm.selection);
 
     if ($from === $to) {
-      pm.setSelection(this.adjustSelection(pm.selection));
+      pm.setSelection(adjustedSelection);
       $from = pm.selection.$from;
       $to = pm.selection.$to;
     }
 
     const rootNode = $from.node(1);
     const isList = this.listTypes.indexOf(rootNode.type.name) !== -1;
-    const isRangeOfType = this.isRangeOfType($from, $to, type);
+    const isRangeOfType = this.isRangeOfType(adjustedSelection.$from, adjustedSelection.$to, type);
     const shouldUntoggle = isRangeOfType;
     const rangeContainsList = this.rangeContainsList($from, $to);
     const shouldConvertToType = !isRangeOfType && (isList || rangeContainsList); 
@@ -290,12 +300,10 @@ export default new Plugin(class ListsPlugin {
         return commands.lift(pm, true);
       }
 
-      const adjustedSelection = this.adjustSelection(pm.selection);
       this.liftSelection(adjustedSelection.$from, adjustedSelection.$to).applyAndScroll();
       this.resetSelection();
       return true;
     } else if (shouldConvertToType) {
-      const adjustedSelection = this.adjustSelection(pm.selection);
       const tr = this.liftSelection(adjustedSelection.$from, adjustedSelection.$to).applyAndScroll();
       pm.setSelection(tr.selection);
       commands.wrapInList(tr.pm.schema.nodes[type as string] as Node)(tr.pm);

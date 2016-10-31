@@ -152,6 +152,13 @@ describe('ak-editor-plugin-lists', () => {
         plugin.toggleList('ordered_list');
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
+
+      it('should untoggle empty paragraphs in a list', () => {
+        const { pm, plugin } = editor(doc(ol(li(p('{<}One')),li(p('Two')),li(p()),li(p('Three{>}')))));
+
+        plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(doc(p('One'),p('Two'),p(),p('Three')));
+      });
     });
 
     describe('converting a list', () => {
@@ -192,6 +199,14 @@ describe('ak-editor-plugin-lists', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('{<}Two')),li(p('Three'))),(p('Four{>}'))));
         
         plugin.toggleList('ordered_list');
+        expect(pm.doc).to.deep.equal(expectedOutput);
+      });
+
+      it('shoould convert selection to a list and keep empty paragraphs', () => {
+        const expectedOutput = doc(ul(li(p('One')),li(p('Two')),li(p()),li(p('Three'))));
+        const { pm, plugin } = editor(doc(ol(li(p('{<}One')),li(p('Two')),li(p()),li(p('Three{>}')))));
+
+        plugin.toggleList('bullet_list');
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
     });

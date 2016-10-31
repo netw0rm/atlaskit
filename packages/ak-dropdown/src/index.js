@@ -2,6 +2,7 @@
 import { vdom, define, prop, props, ready } from 'skatejs';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';
+import { enumeration } from 'akutil-common';
 
 // styles
 import shadowListStyles from './less/shadow-list.less';
@@ -19,19 +20,13 @@ import showDropdown from './internal/showDropdown';
 import hideDropdown from './internal/hideDropdown';
 import sendCancellableEvents from './internal/sendCancellableEvents';
 import isDescendantOf from './internal/isDescendantOf';
-import getDropdownMinwidth from './internal/getDropdownMinwidth';
-import getDropdownMaxheight from './internal/getDropdownMaxheight';
+import getDropdownMaxWidth from './internal/getDropdownMaxWidth';
+import getDropdownMaxHeight from './internal/getDropdownMaxHeight';
+import getDropdownMinWidth from './internal/getDropdownMinWidth';
+import { offset, dropdownWidthOptions, dropdownHeightOptions } from './internal/consts';
+import { activatedFrom, keyDownOnceOnOpen, handleClickOutside, handleKeyDown, triggerSlot,
+  layerElem, triggerContainer, dropList } from './internal/symbols';
 
-// offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
-const offset = '0 4';
-const activatedFrom = Symbol('activatedFrom');
-const keyDownOnceOnOpen = Symbol('keyDownOnceOnOpen');
-const handleClickOutside = Symbol('handleClickOutside');
-const handleKeyDown = Symbol('handleKeyDown');
-const triggerSlot = Symbol('triggerSlot');
-const layerElem = Symbol('layerElem');
-const target = Symbol('target');
-const dropList = Symbol('dropList');
 
 function openDialog(elem) {
   sendCancellableEvents(
@@ -207,12 +202,15 @@ export default define('ak-dropdown', {
       <div
         style={{ position: elem.stepOutside || elem.boundariesElement ? 'static' : 'relative' }}
       >
-        <div ref={el => (elem[target] = el)}>
+        <div
+          ref={el => (elem[triggerContainer] = el)}
+          className={shadowListStyles.locals.triggerContainer}
+        >
           <slot name="trigger" ref={el => (elem[triggerSlot] = el)} />
         </div>
         <Layer
           position={elem.position}
-          target={elem[target]}
+          target={elem[triggerContainer]}
           enableFlip
           offset={offset}
           // TODO: this causes a positioning bug.
@@ -230,9 +228,6 @@ export default define('ak-dropdown', {
         >
           <div
             className={shadowListStyles.locals.list}
-            style={{
-              maxHeight: getDropdownMaxheight(elem),
-            }}
             role="menu"
             ref={(el) => {
               elem[dropList] = el;
@@ -252,7 +247,11 @@ export default define('ak-dropdown', {
       elem.children[1].style.marginTop = '0';
     }
 
-    elem[dropList].style.minWidth = getDropdownMinwidth(elem[target], elem);
+    setTimeout(() => {
+      elem[dropList].style.minWidth = getDropdownMinWidth(elem);
+      elem[dropList].style.maxWidth = getDropdownMaxWidth(elem);
+      elem[dropList].style.maxHeight = getDropdownMaxHeight(elem);
+    });
 
     // TODO: remove when the AK-343 is fixed
     elem.reposition();
@@ -307,6 +306,34 @@ export default define('ak-dropdown', {
      * @example @js dropdown.stepOutside = true;
      */
     stepOutside: prop.boolean({
+      attribute: true,
+    }),
+    /**
+     * @description Defines the width of the dropdown.
+     * Allowed values: 'standart', 'fit'. Width of the dropdown with the 'fit' property will always
+     * be in sync with the width of its trigger.
+     * @memberof Dropdown
+     * @instance
+     * @default standart
+     * @type {string}
+     * @example @html <ak-dropdown drop-width="fit"></ak-dropdown>
+     * @example @js dropdown.dropWidth = 'fit';
+     */
+    dropWidth: enumeration(dropdownWidthOptions)({
+      attribute: true,
+    }),
+    /**
+     * @description Defines the height of the dropdown.
+     * Allowed values: 'standart', 'tall'. Dropdown with the 'tall' property doesn't have any
+     * restrictions on its height.
+     * @memberof Dropdown
+     * @instance
+     * @default standart
+     * @type {string}
+     * @example @html <ak-dropdown drop-width="fit"></ak-dropdown>
+     * @example @js dropdown.dropWidth = 'fit';
+     */
+    dropHeight: enumeration(dropdownHeightOptions)({
       attribute: true,
     }),
   },

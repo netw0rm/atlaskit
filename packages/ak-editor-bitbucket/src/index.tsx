@@ -209,7 +209,7 @@ class AkEditorBitbucket extends Component {
           italic-disabled={!elem._canChangeTextFormatting}
           underline-disabled={!elem._canChangeTextFormatting}
           code-disabled={!elem._canChangeTextFormatting}
-          underlineHidden
+          underline-hidden
           on-toggletextformatting={elem._toggleMark}
         />
         <ToolbarHyperlink
@@ -237,7 +237,7 @@ class AkEditorBitbucket extends Component {
       {elem._hyperLinkActive ?
         <HyperLink
           href={elem._hyperLinkHref}
-          textInput-value={elem._hyperLinkHref}
+          text-input-value={elem._hyperLinkHref}
           attach-to={elem._hyperLinkElement}
           on-unlink={elem._unlink}
           on-change={elem._changeHyperLinkValue}

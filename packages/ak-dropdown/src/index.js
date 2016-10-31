@@ -23,9 +23,22 @@ import isDescendantOf from './internal/isDescendantOf';
 import getDropdownMaxWidth from './internal/getDropdownMaxWidth';
 import getDropdownMaxHeight from './internal/getDropdownMaxHeight';
 import getDropdownMinWidth from './internal/getDropdownMinWidth';
-import { offset, dropdownWidthOptions, dropdownHeightOptions } from './internal/consts';
-import { activatedFrom, keyDownOnceOnOpen, handleClickOutside, handleKeyDown, triggerSlot,
-  layerElem, triggerContainer, dropList } from './internal/symbols';
+
+import {
+  offset,
+  dropdownModeOptions,
+} from './internal/consts';
+
+import {
+  activatedFrom,
+  keyDownOnceOnOpen,
+  handleClickOutside,
+  handleKeyDown,
+  triggerSlot,
+  layerElem,
+  triggerContainer,
+  dropList,
+} from './internal/symbols';
 
 
 function openDialog(elem) {
@@ -309,31 +322,18 @@ export default define('ak-dropdown', {
       attribute: true,
     }),
     /**
-     * @description Defines the width of the dropdown.
-     * Allowed values: 'standart', 'fit'. Width of the dropdown with the 'fit' property will always
-     * be in sync with the width of its trigger.
+     * @description Defines the mode of the dropdown.
+     * Allowed values: 'standart', 'fit', 'tall'.
+     * Width of the 'fit' dropdown will always be in sync with the width of its trigger.
+     * 'tall' dropdown doesn't have the maximum height restriction
      * @memberof Dropdown
      * @instance
      * @default standart
      * @type {string}
-     * @example @html <ak-dropdown drop-width="fit"></ak-dropdown>
-     * @example @js dropdown.dropWidth = 'fit';
+     * @example @html <ak-dropdown mode="fit"></ak-dropdown>
+     * @example @js dropdown.mode = 'fit';
      */
-    dropWidth: enumeration(dropdownWidthOptions)({
-      attribute: true,
-    }),
-    /**
-     * @description Defines the height of the dropdown.
-     * Allowed values: 'standart', 'tall'. Dropdown with the 'tall' property doesn't have any
-     * restrictions on its height.
-     * @memberof Dropdown
-     * @instance
-     * @default standart
-     * @type {string}
-     * @example @html <ak-dropdown drop-width="fit"></ak-dropdown>
-     * @example @js dropdown.dropWidth = 'fit';
-     */
-    dropHeight: enumeration(dropdownHeightOptions)({
+    mode: enumeration(dropdownModeOptions)({
       attribute: true,
     }),
   },

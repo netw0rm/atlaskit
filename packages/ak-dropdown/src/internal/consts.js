@@ -7,16 +7,9 @@ export const dropdownMaxWidth = 300;
 // offset of dropdown from the trigger in pixels "[x-offset] [y-offset]"
 export const offset = '0 4';
 
-export const dropdownWidthOptions = {
+export const dropdownModeOptions = {
   attribute: 'dropWidth',
-  values: ['standart', 'fit'],
-  missingDefault: 'standart',
-  invalidDefault: 'standart',
-};
-
-export const dropdownHeightOptions = {
-  attribute: 'dropHeight',
-  values: ['standart', 'tall'],
+  values: ['standart', 'fit', 'tall'],
   missingDefault: 'standart',
   invalidDefault: 'standart',
 };

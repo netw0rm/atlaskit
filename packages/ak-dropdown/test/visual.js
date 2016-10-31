@@ -185,7 +185,7 @@ describe('sizes, paddings and margins', () => {
           ...generateBunchOfItems(11),
         ]).then((newComponent) => {
           component = newComponent;
-          props(component, { open: true, dropHeight: 'tall' });
+          props(component, { open: true, mode: 'tall' });
           const dropContainer = component.shadowRoot.firstChild.children[1].shadowRoot.firstChild;
           let height;
           afterMutations(
@@ -206,7 +206,7 @@ describe('sizes, paddings and margins', () => {
           { id: 'Item', value: 'item' },
         ]).then((newComponent) => {
           component = newComponent;
-          props(component, { open: true, dropWidth: 'fit' });
+          props(component, { open: true, mode: 'fit' });
           const dropItem = component.children[1];
           afterMutations(
             () =>

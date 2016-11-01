@@ -38,6 +38,29 @@ function generatePackageUrl(pkg, version) {
   return `${CDN_URL_BASE}/${CDN_URL_SCOPE}/registry/${pkg}/${version}/`;
 }
 
+/**
+* Generates a URL to a package in npm, such as:
+* https://www.npmjs.com/package/ak-avatar
+*
+* @param {String} pkg The package name
+* @return {String} the URL to the package on npmjs.com
+*/
+function generateNpmUrl(pkg) {
+  return `https://www.npmjs.com/package/${pkg}`;
+}
+
+/**
+* Generates a URL to the storybook of a package at a specific version.
+* https://aui-cdn.atlassian.com/atlaskit/stories/ak-avatar/2.3.1/
+*
+* @param {String} pkg The package name
+* @param {String} version The package version
+* @return {String} the URL to the storybook of the package on the registry
+*/
+function generateStorybookUrl(pkg, version) {
+  return `${CDN_URL_BASE}/${CDN_URL_SCOPE}/stories/${pkg}/${version}/`;
+}
+
 let releasesFileContents = '';
 
 if (fs.existsSync(RELEASED_PACKAGES_FILE)) {
@@ -70,11 +93,15 @@ Commit <a href="${buildLink}">${COMMIT}</a> gave us some fresh components:<br/>
   <tr>
     <th>Component</th>
     <th>Version</th>
+    <th>Storybook</th>
+    <th>NPM</th>
   </tr>
 ${changedPackages.map(([name, version]) => `
   <tr>
     <td><a href="${generatePackageUrl(name, version)}">${name}</a></td>
     <td>${version}</td>
+    <td><a href="${generateStorybookUrl(name, version)}">storybook</a></td>
+    <td><a href="${generateNpmUrl(name)}">npm</a></td>
   </tr>`).join('')}
 </table>`;
 

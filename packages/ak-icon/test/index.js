@@ -29,6 +29,8 @@ describe(name, () => {
       Object
         .keys(components)
         .should.be.deep.equal([
+          'arrowleft',
+          'arrowright',
           'atlassian',
 
           'bitbucket/addons',
@@ -84,6 +86,7 @@ describe(name, () => {
           'help',
           'home',
           'jira/logo',
+          'moreoptions',
           'projects',
           'question',
           'radio',

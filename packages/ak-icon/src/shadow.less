@@ -16,6 +16,11 @@
     .icon, .content {
       width: @@width;
       height: @@height;
+
+      & > svg when not(@size=small) {
+        width: @@width;
+        height: @@height;
+      }
     }
   }
 }

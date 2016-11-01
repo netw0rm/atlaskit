@@ -1,4 +1,5 @@
 /// <reference path="commonjs.d.ts" />
+/// <reference path="shadow-dom.d.ts" />
 /// <reference path="globals/chai/index.d.ts" />
 /// <reference path="globals/mocha/index.d.ts" />
 /// <reference path="globals/react/index.d.ts" />

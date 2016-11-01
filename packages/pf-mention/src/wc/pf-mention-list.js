@@ -57,6 +57,7 @@ function adjustSelection(elem) {
   }
   for (let i = 0; i < elem.mentions.length; i++) {
     if (elem.selectedKey === elem.mentions[i].id) {
+      elem.selectedIndex = i;
       return;
     }
   }

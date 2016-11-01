@@ -50,14 +50,14 @@ const standardConfig = {
     loaders: [
       {
         test: /\.json$/,
-        loader: 'json',
+        loader: 'json-loader',
       },
       {
         test: /\.less$/,
         loader: loaderChain({
-          css,
-          postcss: {},
-          less: {},
+          'css-loader': css,
+          'postcss-loader': {},
+          'less-loader': {},
         }),
       },
       [ // exclusive configs for babel (first one that matches will be used)
@@ -68,8 +68,8 @@ const standardConfig = {
         {
           test: /\/stories\/.*\.tsx?$/,
           loader: loaderChain({
-            babel: storybookBabelQuery,
-            ts: {},
+            'babel-loader': storybookBabelQuery,
+            'ts-loader': {},
           }),
         },
         //
@@ -79,8 +79,8 @@ const standardConfig = {
         {
           test: /\.tsx?$/,
           loader: loaderChain({
-            babel: moduleBabelQuery,
-            ts: {},
+            'babel-loader': moduleBabelQuery,
+            'ts-loader': {},
           }),
         },
         //
@@ -88,7 +88,7 @@ const standardConfig = {
         // Support react/jsx in stories, react/ directory, or react-*.js files
         //
         {
-          loader: 'babel',
+          loader: 'babel-loader',
           test: /\.jsx?$/,
           include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
           exclude: /stories\/skate\/.*\.js/,
@@ -100,7 +100,7 @@ const standardConfig = {
         // Make sure vdom is imported from skatejs where jsx is used
         //
         {
-          loader: 'babel',
+          loader: 'babel-loader',
           test: /\.jsx?$/,
           exclude: /node_modules|bower_components/,
           query: moduleBabelQuery,

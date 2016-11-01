@@ -210,6 +210,7 @@ declare module 'prosemirror/dist/edit/main' {
         doc: any;
         sel: any;
         content: HTMLElement;
+        root: HTMLElement;
         wrapper: HTMLElement;
         getOption(name: any): any;
         selection: any;

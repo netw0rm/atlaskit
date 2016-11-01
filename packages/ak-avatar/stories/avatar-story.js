@@ -225,7 +225,7 @@ storiesOf(name, module)
               type="text"
               id="avatarUrl"
               style={inputStyles}
-              defaultValue="https://design.atlassian.com/images/brand/logo-02.png"
+              defaultValue="https://bytebucket.org/atlassian/atlaskit/raw/8d45a00c570fa08e54ab2ef3610fa5d794479ece/packages/ak-icon/src/icons/atlassian.svg"
             />
             <input type="button" value="Load Image" onClick={loadImage} />
           </label>

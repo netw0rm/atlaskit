@@ -22,7 +22,7 @@ docker run "$TAG" curl --version
 docker run "$TAG" python --version
 docker run "$TAG" git --version
 docker run "$TAG" java -version
-docker run "$TAG"  /BrowserStackLocal -version 2>1 /dev/null
+docker run "$TAG"  /BrowserStackLocal -version 2> /dev/null
 
 echo
 echo "Successfully created image '$TAG'"

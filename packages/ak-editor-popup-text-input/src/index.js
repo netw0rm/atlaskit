@@ -1,11 +1,11 @@
 import { define, vdom, prop } from 'skatejs';
-
 import 'style!./host.less';
-
 import shadowStyles from './shadow.less';
 
-
 export default define('ak-editor-popup-text-input', {
+  created(elem) {
+    elem.handleInput = elem.handleInput.bind(elem);
+  },
   render(elem) {
     return (
       <div className={shadowStyles.locals.container}>
@@ -15,7 +15,7 @@ export default define('ak-editor-popup-text-input', {
           className={shadowStyles.locals.textInput}
           placeholder={elem.placeholder}
           value={elem.value}
-          onInput={(e) => { elem.value = e.target.value; }}
+          onInput={elem.handleInput}
         />
       </div>
     );
@@ -23,6 +23,9 @@ export default define('ak-editor-popup-text-input', {
   prototype: {
     focus() {
       this.shadowRoot.querySelector(`.${shadowStyles.locals.textInput}`).focus();
+    },
+    handleInput(e) {
+      this.value = e.target.value;
     },
   },
   props: {

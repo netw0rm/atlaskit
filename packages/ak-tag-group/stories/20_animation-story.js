@@ -34,9 +34,7 @@ const removeTag = () => setTimeout(() => {
 
 storiesOf(name, module)
   .add('animation (text-start alignment)', () => alignmentStory(start))
-  .addSwapped('animation (text-start alignment) (swapped)', () => alignmentStory(start))
   .add('animation (text-end alignment)', () => alignmentStory(end))
-  .addSwapped('animation (text-end alignment) (swapped)', () => alignmentStory(end))
   .addMonitored('animation (auto-remove)', () => {
     removeTag();
     return (<AlignedStory onRemove={removeTag} initialTags={tagNames} />);

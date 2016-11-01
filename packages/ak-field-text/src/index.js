@@ -1,33 +1,12 @@
-import { vdom, define, prop, emit } from 'skatejs';
-import classNames from 'classnames';
+import { vdom, define, prop } from 'skatejs';
+import FieldBase from 'ak-field-base';
 
 import shadowStyles from './shadow.less';
 import * as events from './internal/index.events';
 
 
-const inputSlot = Symbol('inputSlot');
-const focusHandlers = Symbol('focusHandlers');
-
 function getInput(elem) {
   return elem.querySelector('[slot=input]');
-}
-
-function handleLabelClick(elem) {
-  return () => {
-    const input = getInput(elem);
-    if (input) {
-      input.focus();
-    }
-  };
-}
-
-function setupFocusHandlers(elem) {
-  const slot = elem[inputSlot];
-  if (!slot[focusHandlers]) {
-    slot.addEventListener('focus', () => emit(elem, events.focus), true);
-    slot.addEventListener('blur', () => emit(elem, events.blur), true);
-    slot[focusHandlers] = true;
-  }
 }
 
 /**
@@ -37,44 +16,23 @@ function setupFocusHandlers(elem) {
  * const component = new TextField();
  */
 export default define('ak-field-text', {
+
   render(elem) {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <label // eslint-disable-line jsx-a11y/no-static-element-interactions, jsx-a11y/label-has-for, max-len
-          onclick={handleLabelClick(elem)}
-          className={shadowStyles.locals.label}
-        >
-          <div className={shadowStyles.locals.labelText}>
-            {elem.label}
-            {elem.required && <span class={shadowStyles.locals.labelRequired}>*</span>}
-          </div>
-          <slot
-            name="input"
-            className={classNames(shadowStyles.locals.defaultSlotElement, {
-              [shadowStyles.locals.compact]: elem.compact,
-            })}
-            ref={(el) => {
-              elem[inputSlot] = el;
-              setupFocusHandlers(elem);
-            }}
+        <FieldBase label={elem.label}>
+          <input
+            disabled={elem.disabled}
+            name={elem.name}
+            placeholder={elem.placeholder}
+            slot="input-slot"
+            className={shadowStyles.locals.input}
+            type={elem.type}
           />
-        </label>
+        </FieldBase>
       </div>
     );
-  },
-  rendered(elem) {
-    let input = getInput(elem);
-    if (!input) {
-      input = document.createElement('input');
-      input.slot = 'input';
-      elem.appendChild(input);
-    }
-    ['disabled', 'name', 'placeholder', 'type'].forEach((propName) => {
-      if (elem[propName]) {
-        input[propName] = elem[propName];
-      }
-    });
   },
   props: {
     /**
@@ -84,6 +42,7 @@ export default define('ak-field-text', {
      * @type {Boolean}
      * @default false
      */
+     // TODO: Compact styles in ak-field-base
     compact: prop.boolean({ attribute: true }),
     /**
      * @description Whether the field is disabled.
@@ -92,6 +51,7 @@ export default define('ak-field-text', {
      * @type {Boolean}
      * @default false
      */
+     // TODO: Styles in ak-field-base
     disabled: prop.boolean({ attribute: true }),
     /**
      * @description The label to be rendered next to the supplied text input.
@@ -121,6 +81,7 @@ export default define('ak-field-text', {
      * @type {Boolean}
      * @default false
      */
+     // TODO: Show '*' in ak-field-base
     required: prop.boolean({ attribute: true }),
     /**
      * @description The type of control to display.

@@ -183,13 +183,15 @@ describe('ak-field-text', () => {
       };
     }
 
-    it('should be 40px high by default', () =>
-      waitUntil(inputHeightCorrect(40)).should.be.fulfilled
+    const defaultHeight = 40;
+    it(`should be ${defaultHeight}px high by default`, () =>
+      waitUntil(inputHeightCorrect(defaultHeight)).should.be.fulfilled
     );
 
-    it('should be 32px high when compact', () => {
+    const compactHeight = 32;
+    it(`should be ${compactHeight}px high when compact`, () => {
       component.compact = true;
-      return waitUntil(inputHeightCorrect(32)).should.be.fulfilled;
+      return waitUntil(inputHeightCorrect(compactHeight)).should.be.fulfilled;
     });
   });
 

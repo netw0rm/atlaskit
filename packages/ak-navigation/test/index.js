@@ -197,6 +197,43 @@ describe('ak-navigation', () => {
       }, done);
     });
 
+    describe('with an input', () => {
+      let input;
+      beforeEach(() => {
+        input = document.createElement('input');
+        document.body.appendChild(input);
+        input.focus();
+      });
+
+      afterEach(() => document.body.removeChild(input));
+
+      it('toggling does not work when triggered on the input', (done) => {
+        expect(component.open).to.equal(false);
+        afterMutations(() => {
+          keyup('[', input);
+          expect(component.open).to.equal(false);
+        }, done);
+      });
+    });
+
+    describe('with a textarea', () => {
+      let textarea;
+      beforeEach(() => {
+        textarea = document.createElement('textarea');
+        document.body.appendChild(textarea);
+      });
+
+      afterEach(() => document.body.removeChild(textarea));
+
+      it('toggling does not work when triggered on the textarea', (done) => {
+        expect(component.open).to.equal(false);
+        afterMutations(() => {
+          keyup('[', textarea);
+          expect(component.open).to.equal(false);
+        }, done);
+      });
+    });
+
     it('toggling does not work after detached', (done) => {
       afterMutations(
         () => document.body.removeChild(component),

@@ -28,7 +28,8 @@ export default new Plugin(class BlockTypePlugin {
     this.state = DEFAULT_STATE;
     this.changeHandlers = [];
 
-    // add paste handler
+    // add paste listener to overwrite the prosemirror's
+    // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers
     codeBlockPasteListener(this.pm);
 
     this.updater = pm.updateScheduler([

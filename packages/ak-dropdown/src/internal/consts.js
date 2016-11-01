@@ -9,7 +9,7 @@ export const offset = '0 4';
 
 export const dropdownModeOptions = {
   attribute: 'dropWidth',
-  values: ['standart', 'fit', 'tall'],
-  missingDefault: 'standart',
-  invalidDefault: 'standart',
+  values: ['standard', 'fit', 'tall'],
+  missingDefault: 'standard',
+  invalidDefault: 'standard',
 };

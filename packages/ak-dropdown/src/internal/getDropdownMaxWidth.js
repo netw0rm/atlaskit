@@ -1,3 +1,3 @@
 import { dropdownMaxWidth } from './consts';
 
-export default dropdown => (dropdown.mode === 'standart' ? `${dropdownMaxWidth}px` : 'none');
+export default dropdown => (dropdown.mode === 'standard' ? `${dropdownMaxWidth}px` : 'none');

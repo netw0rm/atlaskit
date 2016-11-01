@@ -260,7 +260,7 @@ export default define('ak-dropdown', {
       elem.children[1].style.marginTop = '0';
     }
 
-    setTimeout(() => {
+    window.requestAnimationFrame(() => {
       elem[dropList].style.minWidth = getDropdownMinWidth(elem);
       elem[dropList].style.maxWidth = getDropdownMaxWidth(elem);
       elem[dropList].style.maxHeight = getDropdownMaxHeight(elem);
@@ -323,12 +323,12 @@ export default define('ak-dropdown', {
     }),
     /**
      * @description Defines the mode of the dropdown.
-     * Allowed values: 'standart', 'fit', 'tall'.
+     * Allowed values: 'standard', 'fit', 'tall'.
      * Width of the 'fit' dropdown will always be in sync with the width of its trigger.
-     * 'tall' dropdown doesn't have the maximum height restriction
+     * A 'tall' dropdown doesn't have the maximum height restriction
      * @memberof Dropdown
      * @instance
-     * @default standart
+     * @default standard
      * @type {string}
      * @example @html <ak-dropdown mode="fit"></ak-dropdown>
      * @example @js dropdown.mode = 'fit';

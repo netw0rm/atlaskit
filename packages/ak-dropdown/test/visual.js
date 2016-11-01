@@ -94,7 +94,7 @@ describe('sizes, paddings and margins', () => {
     });
 
     describe('sizes of the dropdown depending on the number and size of items', () => {
-      it('width of the standart dropdown with the button trigger should be at least the button width + 10px', (done) => {
+      it('width of the standard dropdown with the button trigger should be at least the button width + 10px', (done) => {
         initDropdown([
           { id: 'DropdownTriggerButton', value: 'Trigger test' },
           { id: 'Item', value: 'Item 1' },
@@ -112,7 +112,7 @@ describe('sizes, paddings and margins', () => {
         });
       });
 
-      it(`width of the standart dropdown with the button trigger should not exceed ${dropdownMaxWidth}`, (done) => {
+      it(`width of the standard dropdown with the button trigger should not exceed ${dropdownMaxWidth}`, (done) => {
         initDropdown([
           { id: 'DropdownTriggerButton', value: 'Trigger test' },
           { id: 'Item', value: 'very long itemvery long itemvery long itemvery long itemvery long itemvery long itemvery long item' },
@@ -128,7 +128,7 @@ describe('sizes, paddings and margins', () => {
         });
       });
 
-      it(`width of the standart dropdown with the buttonless trigger should be at least ${dropdownMinWidth}`, (done) => {
+      it(`width of the standard dropdown with the buttonless trigger should be at least ${dropdownMinWidth}`, (done) => {
         initDropdown([
           { id: 'DropdownTrigger', value: 'Trigger test' },
           { id: 'Item', value: 'Item 1' },
@@ -144,7 +144,7 @@ describe('sizes, paddings and margins', () => {
         });
       });
 
-      it(`width of the standart dropdown with the buttonless trigger should not exceed ${dropdownMaxWidth}`, (done) => {
+      it(`width of the standard dropdown with the buttonless trigger should not exceed ${dropdownMaxWidth}`, (done) => {
         initDropdown([
           { id: 'DropdownTrigger', value: 'Trigger test' },
           { id: 'Item', value: 'very long itemvery long itemvery long itemvery long itemvery long itemvery long itemvery long item' },
@@ -160,7 +160,7 @@ describe('sizes, paddings and margins', () => {
         });
       });
 
-      it(`height of the standart dropdown should not exceed ${dropdownMaxHeight}`, (done) => {
+      it(`height of the standard dropdown should not exceed ${dropdownMaxHeight}`, (done) => {
         initDropdown([
           { id: 'DropdownTrigger', value: 'Trigger test' },
           ...generateBunchOfItems(11),

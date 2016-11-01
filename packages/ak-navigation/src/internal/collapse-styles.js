@@ -2,6 +2,7 @@ import shadowStyles from '../index.less';
 import calculateCollapseProperties from './collapse-properties';
 import { resizeDelta } from './symbols';
 import { expandedWidth } from '../shared-variables';
+
 export default (navigation) => {
   const {
     visibleWidth,

@@ -1,12 +1,15 @@
 import { vdom, define } from 'skatejs';
 import Theme, { Prop } from 'ak-theme';
+import { em, grid } from '../shared-variables';
 
 export default define('ak-button-theme-adg2', {
   render() {
+    const lineHeight = `${((grid * 4) - 2) / em}em`;
+    const compactLineHeight = `${((grid * 3) - 2) / em}em`;
     return (
       <Theme id="ak-button-theme-adg2">
-        <Prop name="button.padding" value="4px 10px" />
         <Prop name="button.border" value="1px solid #ccc" />
+        <Prop name="button.lineHeight" value={lineHeight} />
         <Prop name="button.transition" value="none" />
         <Prop name="standard.background" value="#f5f5f5" />
         <Prop name="standard.color" value="#333" />
@@ -37,6 +40,7 @@ export default define('ak-button-theme-adg2', {
         <Prop name="link.boxShadow" value="none" />
         <Prop name="link.hover.borderColor" value="transparent" />
         <Prop name="link.active.boxShadow" value="none" />
+        <Prop name="compact.lineHeight" value={compactLineHeight} />
       </Theme>
     );
   },

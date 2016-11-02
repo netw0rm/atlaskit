@@ -12,9 +12,9 @@ import AkAvatar from '../src';
 const Avatar = reactify(AkAvatar);
 
 const avatarClass = styles.locals.akAvatar;
-const transparentAvatarUrl = require('url!./face-w-transparency.png');
-const tickUrl = require('url!./tick.svg');
-const tickWithBackgroundUrl = require('url!./tick.png');
+const transparentAvatarUrl = require('url-loader!./face-w-transparency.png');
+const tickUrl = require('url-loader!./tick.svg');
+const tickWithBackgroundUrl = require('url-loader!./tick.png');
 
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 const storybookExampleClass = avatarStoryStyles.example;

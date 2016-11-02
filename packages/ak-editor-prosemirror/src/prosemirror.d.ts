@@ -121,8 +121,12 @@ declare module 'prosemirror/dist/edit/selection' {
     from: number;
     to: number;
   }
-  export class TextSelection extends Selection {}
-  export class NodeSelection extends Selection {}
+  export class TextSelection extends Selection {
+      constructor($anchor: ResolvedPos, $head: ResolvedPos = $anchor)
+  }
+  export class NodeSelection extends Selection {
+      constructor($from: ResolvedPos)
+  }
 }
 
 declare module 'prosemirror/dist/edit/range' {
@@ -288,6 +292,7 @@ declare module 'prosemirror/dist/edit/transform' {
         replaceSelection(node: any, inheritMarks: any): this;
         deleteSelection(): any;
         typeText(text: any): this;
+        pm: ProseMirror;
     }
 }
 
@@ -732,7 +737,7 @@ declare module 'prosemirror/dist/model/resolvedpos' {
         nodeAfter: any;
         nodeBefore: any;
         sameDepth(other: any): number;
-        blockRange(other: this, pred: any): any;
+        blockRange(other: this = this, pred?: any): NodeRange;
         sameParent(other: any): boolean;
         toString(): string;
         plusOne(): ResolvedPos;
@@ -1023,6 +1028,7 @@ declare module 'prosemirror/dist/transform/transform' {
     import { Mark } from 'prosemirror/dist/model/mark';
     import { Slice } from 'prosemirror/dist/model/replace';
     import { MarkType } from 'prosemirror/dist/model/schema';
+    import { NodeRange } from 'prosemirror/dist/model/resolvedpos';
     export class Transform {
       constructor(doc: Node)
       addMark(from: number, to: number, mark: Mark|MarkType): this;
@@ -1034,6 +1040,8 @@ declare module 'prosemirror/dist/transform/transform' {
       insertText(pos: number, text: string) : this;
       insertInline(pos: number, node: Node) : this;
       doc: Node;
+      lift(range: NodeRange, target: number): this;
+      map(pos: number, bias?: number): number;
     }
     export interface TransformError {}
 }

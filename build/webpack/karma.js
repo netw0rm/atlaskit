@@ -5,7 +5,7 @@ const { encode, decode } = require('./loader-chain');
 delete standardConfig.entry;
 
 const tsxLoader = decode(standardConfig.module.loaders[2][1].loader);
-tsxLoader.babel.plugins.push('rewire');
+tsxLoader['babel-loader'].plugins.push('rewire');
 
 standardConfig.module.loaders[2][1].loader = encode(tsxLoader);
 

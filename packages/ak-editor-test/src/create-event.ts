@@ -3,7 +3,7 @@ const supportsEvent = ((TheEvent) => {
     try {
       new TheEvent('emit-init');
     } catch (e) {
-      return undefined;
+      return false;
     }
   }
   return true;

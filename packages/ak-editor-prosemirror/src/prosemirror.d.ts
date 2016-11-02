@@ -1028,12 +1028,11 @@ declare module 'prosemirror/dist/transform/transform' {
     import { Node } from 'prosemirror/dist/model/node';
     import { Mark } from 'prosemirror/dist/model/mark';
     import { Slice } from 'prosemirror/dist/model/replace';
-    import { MarkType, NodeType } from 'prosemirror/dist/model/schema';
+    import { MarkType } from 'prosemirror/dist/model/schema';
     import { NodeRange } from 'prosemirror/dist/model/resolvedpos';
     export class Transform {
       constructor(doc: Node)
       addMark(from: number, to: number, mark: Mark|MarkType): this;
-      setBlockType(from: number, to?: number, type: NodeType, attrs?: any): this;
       removeMark(from: number, to: number, mark?: Mark|MarkType): this;
       delete(from: number, to: number): this;
       replace(from: number, to: number, slice: Slice): this;

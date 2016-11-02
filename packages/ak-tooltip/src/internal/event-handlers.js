@@ -1,31 +1,23 @@
+import getTooltipElement from './getTooltipElement';
+
 function handleMouseEnter() {
   const trigger = this;
-  const tooltipBoundTo = trigger.slotElem.assignedNodes()[0];
-  if (!tooltipBoundTo) {
-    return;
-  }
-  const tooltipId = tooltipBoundTo.getAttribute('aria-describedby');
-  if (tooltipId) {
-    const tooltip = document.getElementById(tooltipId);
-    if (tooltip) {
-      tooltip.setAttribute('aria-label', trigger.description);
-      tooltip.target = tooltipBoundTo;
-      tooltip.description = trigger.description;
-      tooltip.position = trigger.position;
-      tooltip.visible = true;
-    }
+  const tooltip = getTooltipElement(trigger.slotElem.assignedNodes());
+  if (tooltip) {
+    tooltip.setAttribute('aria-label', trigger.description);
+    // TODO this can potentially create leaks
+    tooltip.target = tooltip;
+    tooltip.description = trigger.description;
+    tooltip.position = trigger.position;
+    tooltip.visible = true;
   }
 }
 
 function handleMouseLeave() {
   const trigger = this;
-  const tooltipBoundTo = trigger.slotElem.assignedNodes()[0];
-  const tooltipId = tooltipBoundTo.getAttribute('aria-describedby');
-  if (tooltipId) {
-    const tooltip = document.getElementById(tooltipId);
-    if (tooltip) {
-      tooltip.visible = false;
-    }
+  const tooltip = getTooltipElement(trigger.slotElem.assignedNodes());
+  if (tooltip) {
+    tooltip.visible = false;
   }
 }
 

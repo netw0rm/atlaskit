@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import rgba from 'rgba-convert';
 
 import * as lessVars from '../src';
-import Prism from '../src/Prism';
+import Prism from './_Prism';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);

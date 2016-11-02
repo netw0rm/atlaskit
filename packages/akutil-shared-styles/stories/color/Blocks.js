@@ -13,7 +13,7 @@ import Prism, {
   SWATCH_PRIMARY,
   SWATCH_SECONDARY,
   tintRgx,
-} from '../../src/Prism';
+} from '../../test/_Prism';
 
 
 const {

@@ -22,7 +22,10 @@ class Block extends React.Component {
 
   render() {
     return (
-      <AkTooltipTrigger description={this.props.backgroundColor}>
+      <AkTooltipTrigger
+        description={this.props.backgroundColor}
+        className={styles.Trigger}
+      >
         <div
           data-clipboard-text={this.props.backgroundColor}
           ref={n => (this.block = n)}

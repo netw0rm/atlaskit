@@ -13,7 +13,7 @@ import Prism, {
   SWATCH_GREEN,
   SWATCH_YELLOW,
   SWATCH_BLUE,
-} from '../src/Prism';
+} from '../test/_Prism';
 import Blocks from './color/Blocks';
 
 

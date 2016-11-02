@@ -1,7 +1,12 @@
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
-import Prism from '../src/Prism';
+import Prism, {
+  SWATCH_TEAL,
+  SWATCH_PURPLE,
+  InvalidSwatchError,
+  InvalidColorError,
+} from './_Prism';
 
 
 chai.use(sinonChai);
@@ -22,7 +27,8 @@ describe('Prism', () => {
       Prism.getSwatchFromColorName('akColorSecondary1').should.be.equal('Secondary');
       Prism.getSwatchFromColorName('akColorT75').should.be.equal('T');
       Prism.getSwatchFromColorName('akColorN100A').should.be.equal('N');
-      expect(() => Prism.getSwatchFromColorName('xyz')).to.throw(/not a color/);
+      expect(() => Prism.getSwatchFromColorName('xyz')).to.throw(InvalidColorError);
+      expect(() => Prism.getSwatchFromColorName('akColorBLA200')).to.throw(InvalidSwatchError);
     });
   });
 
@@ -31,7 +37,7 @@ describe('Prism', () => {
       Prism.getColorNumberFromColorName('akColorSecondary1').should.be.equal('1');
       Prism.getColorNumberFromColorName('akColorT75').should.be.equal('75');
       Prism.getColorNumberFromColorName('akColorN100A').should.be.equal('100A');
-      expect(() => Prism.getColorNumberFromColorName('xyz')).to.throw(/not a color/);
+      expect(() => Prism.getColorNumberFromColorName('xyz')).to.throw(InvalidColorError);
     });
   });
 
@@ -40,7 +46,7 @@ describe('Prism', () => {
       Prism.getNameFromSwatch('Primary').should.be.equal('Primary');
       Prism.getNameFromSwatch('Secondary').should.be.equal('Secondary');
       Prism.getNameFromSwatch('N').should.be.equal('Neutral');
-      expect(Prism.getNameFromSwatch('unknown')).to.be.null;
+      expect(() => Prism.getNameFromSwatch('unknown')).to.throw(InvalidSwatchError);
     });
   });
 
@@ -69,19 +75,23 @@ describe('Prism', () => {
   });
 
   describe('getColorsBySwatch', () => {
+    it('should yell at us if we pass an incorrect swatch', () => {
+      expect(() => new Prism({}).getColorsBySwatch('incorrect')).to.throw(InvalidSwatchError);
+    });
+
     it('should be possible to get a filtered color object by swatch', () => {
       const prism = new Prism({
-        akColorX1: 1,
-        akColorX2: 2,
-        akColorX3: 3,
-        akColorY4: 4,
-        akColorY5: 5,
+        [`akColor${SWATCH_TEAL}1`]: 1,
+        [`akColor${SWATCH_TEAL}2`]: 2,
+        [`akColor${SWATCH_TEAL}3`]: 3,
+        [`akColor${SWATCH_PURPLE}4`]: 4,
+        [`akColor${SWATCH_PURPLE}5`]: 5,
       });
 
-      prism.getColorsBySwatch('X').should.be.deep.equal({
-        akColorX1: 1,
-        akColorX2: 2,
-        akColorX3: 3,
+      prism.getColorsBySwatch(SWATCH_TEAL).should.be.deep.equal({
+        [`akColor${SWATCH_TEAL}1`]: 1,
+        [`akColor${SWATCH_TEAL}2`]: 2,
+        [`akColor${SWATCH_TEAL}3`]: 3,
       });
     });
   });

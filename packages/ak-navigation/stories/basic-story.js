@@ -29,8 +29,8 @@ const {
   JiraIcon,
 } = icons;
 
-const containerLogo = require('url!./nucleus.png');
-const userAvatar = require('url!./emma.jpg');
+const containerLogo = require('url-loader!./nucleus.png');
+const userAvatar = require('url-loader!./emma.jpg');
 
 const sharedProps = {
   containerName: 'Nucleus',

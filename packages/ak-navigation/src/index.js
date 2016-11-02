@@ -224,7 +224,7 @@ export default define('ak-navigation', {
           return;
         }
         const target = event.target;
-        if ((target && target.matches) && (target.matches('input') || target.matches('textarea'))) {
+        if ((target && target.tagName) && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
           return;
         }
         if (event.keyCode === keycode('[')) {

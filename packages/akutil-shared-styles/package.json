@@ -34,5 +34,9 @@
   },
   "dependencies": {
     "babel-runtime": "^6.11.6"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

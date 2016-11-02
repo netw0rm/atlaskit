@@ -30,5 +30,9 @@
   },
   "peerDependencies": {
     "akutil-shared-styles": "*"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

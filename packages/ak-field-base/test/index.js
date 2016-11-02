@@ -97,16 +97,6 @@ describe('ak-field-base', () => {
     });
   });
 
-  describe('required prop', () => {
-    it('should be reflected', () => {
-      const requiredReflected = () => (shadowRoot.querySelector(`.${disabledClass}`) !== null);
-      expect(requiredReflected()).to.be.false;
-
-      component.required = true;
-      return waitUntil(requiredReflected).should.be.fulfilled;
-    });
-  });
-
   describe('focus behaviour', () => {
     let inputChild;
     const focusEvent = new CustomEvent('focus');

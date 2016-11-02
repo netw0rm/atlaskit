@@ -90,6 +90,7 @@ export default define('ak-field-base', {
      * @type {boolean}
      * @default false
      * @example @html <ak-field-base label="First Name" required"></ak-field-base>
+     * @example @js field.required = true;
      */
     required: prop.boolean({ attribute: true }),
     /**
@@ -101,6 +102,7 @@ export default define('ak-field-base', {
      * @type {boolean}
      * @default false
      * @example @html <ak-field-base disabled></ak-field-base>
+     * @example @js field.disabled = true;
      */
     disabled: prop.boolean({ attribute: true }),
   },

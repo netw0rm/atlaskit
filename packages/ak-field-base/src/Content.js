@@ -12,6 +12,7 @@ function addEventHandlers(ref, props) {
 /* eslint-disable react/prop-types */
 export default (props) => {
   const slotWrapperClasses = classNames(shadowStyles.locals.slotWrapper, {
+    [shadowStyles.locals.disabled]: props.disabled,
     [shadowStyles.locals.focused]: props.focused,
     [shadowStyles.locals.invalid]: props.invalid && !props.focused,
   });

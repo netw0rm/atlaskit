@@ -14,11 +14,13 @@ const formStyle = {
 };
 
 const slottedInputStyle = {
-  width: '100%',
   border: '0px',
   background: 'transparent',
+  color: 'inherit',
+  cursor: 'inherit',
   fontSize: '14px',
   outline: 0,
+  width: '100%',
 };
 
 const InputFieldBase = props => (<FieldBase
@@ -32,6 +34,7 @@ const InputFieldBase = props => (<FieldBase
     type="text"
     style={slottedInputStyle}
     defaultValue={props.text || 'A slotted input'}
+    disabled={props.disabled}
   />
 </FieldBase>);
 
@@ -67,7 +70,8 @@ storiesOf(name, module)
       <form action="" style={formStyle}>
         <InputFieldBase label="A default field-base" />
         <InputFieldBase label="Invalid state" invalid />
-        <InputFieldBase label="Required field" required />
+        <InputFieldBase label="Required state" required />
+        <InputFieldBase label="Disabled state" disabled />
       </form>
     </div>
   ))
@@ -116,6 +120,7 @@ storiesOf(name, module)
 
 InputFieldBase.propTypes = {
   text: React.PropTypes.string,
+  disabled: React.PropTypes.bool,
 };
 
 DivFieldBase.propTypes = {

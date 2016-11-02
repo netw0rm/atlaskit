@@ -49,6 +49,7 @@ In general you'll want to fix the following:
 * Remove default focus styles (these are handled by `field-base`)
 * Remove borders and background-color.
 * Set the width to 100%.
+* Inherit cursor and color styles from `field-base`.
 
 This would look something like this in CSS
 
@@ -56,9 +57,11 @@ This would look something like this in CSS
 input.styledInput {
   background: transparent;
   border: 0;
+  box-sizing: border-box;
+  color: inherit;
+  cursor: inherit;
   outline: 0;
   width: 100%;
-  box-sizing: border-box;
 }
 ```
 
@@ -67,7 +70,9 @@ or in JavaScript
 ```javascript
 inputField.style.background = 'transparent';
 inputField.style.border = '0';
+inputField.style.boxSizing = 'border-box';
+inputField.style.color = 'inherit';
+inputField.style.cursor = 'inherit';
 inputField.style.outline = 'none';
 inputField.style.width = '100%';
-inputField.style.boxSizing = 'border-box';
 ```

@@ -32,6 +32,7 @@ export default define('ak-field-base', {
           <Content
             setFocused={focus => setFocused(elem, focus)}
             focused={elem[focused]}
+            disabled={elem.disabled}
             invalid={elem.invalid}
           />
         </Label>
@@ -74,6 +75,7 @@ export default define('ak-field-base', {
      * @memberof FieldBase
      * @instance
      * @type {boolean}
+     * @default false
      * @example @html <ak-field-base invalid></ak-field-base>
      * @example @js field.invalid = true;
      */
@@ -90,5 +92,16 @@ export default define('ak-field-base', {
      * @example @html <ak-field-base label="First Name" required"></ak-field-base>
      */
     required: prop.boolean({ attribute: true }),
+    /**
+     * @description Whether or not a field is disabled.
+     *
+     * This is shown to the user through a disabled cursor icon when hovering over the field.
+     * @memberof FieldBase
+     * @instance
+     * @type {boolean}
+     * @default false
+     * @example @html <ak-field-base disabled></ak-field-base>
+     */
+    disabled: prop.boolean({ attribute: true }),
   },
 });

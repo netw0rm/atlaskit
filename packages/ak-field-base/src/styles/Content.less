@@ -11,13 +11,17 @@
 @base-border-width: 1;
 @base-border-width-focused: 2;
 @base-border-color: @ak-color-N20;
+@base-border-color-disabled: @ak-color-N20A;
 @base-border-color-focused: @ak-color-B100;
 @base-border-color-hover: @ak-color-N20;
 @base-border-color-invalid: @ak-color-B100;
 
 @base-background-color: @ak-color-N10A;
+@base-background-color-disabled: @ak-color-N20;
 @base-background-color-hover: @ak-color-N20;
 @base-background-color-focused: white;
+
+@base-color-disabled: @ak-color-N60;
 
 @base-transition-duration: 0.2s; // Transition speed
 
@@ -52,6 +56,13 @@
   &:hover {
     background-color: @base-background-color-hover;
     border-color: @base-border-color-hover;
+  }
+
+  &.disabled {
+    background-color: @base-background-color-disabled;
+    border-color: @base-border-color-disabled;
+    color: @base-color-disabled;
+    cursor: not-allowed;
   }
 
   &.focused {

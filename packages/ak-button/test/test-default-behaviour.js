@@ -4,11 +4,17 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import { akGridSize } from 'akutil-shared-styles';
-import { getShadowButtonElem, createDivTest, setup, tearDownComponent } from './_helpers';
+import {
+  getShadowButtonElem,
+  createDivTest,
+  setup,
+  tearDownComponent,
+} from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 const expect = chai.expect;
+
 
 describe('ak-button/default-behaviour', () => {
   let component;
@@ -30,6 +36,14 @@ describe('ak-button/default-behaviour', () => {
         expect(getShadowButtonElem(component).type).to.equal('button')
       )
     );
+
+    describe('target set and href not set', () => {
+      beforeEach(() => (props(component, { target: 'something' })));
+
+      it('button should not have target attribute set', () =>
+        expect(getShadowButtonElem(component).getAttribute('target')).to.not.be.defined
+      );
+    });
 
     describe('disabled', () => {
       beforeEach(() => (props(component, { disabled: true })));

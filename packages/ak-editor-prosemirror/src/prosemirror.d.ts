@@ -127,6 +127,8 @@ declare module 'prosemirror/dist/edit/selection' {
   export class NodeSelection extends Selection {
       constructor($from: ResolvedPos)
   }
+
+  export function findSelectionNear($pos: ResolvedPos, bias: number): Selection;
 }
 
 declare module 'prosemirror/dist/edit/range' {

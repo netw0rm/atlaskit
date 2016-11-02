@@ -1,4 +1,5 @@
-import { ProseMirror } from 'ak-editor-prosemirror';
+import { ProseMirror, findSelectionNear } from 'ak-editor-prosemirror';
+
 export default (pm: ProseMirror) => {
   pm.root.addEventListener('paste', (event: ClipboardEvent) => {
     if (pm.selection.$head.node(1).type.name !== 'code_block') {
@@ -12,8 +13,10 @@ export default (pm: ProseMirror) => {
 
     const textNode = pm.schema.nodes.text.create({}, text);
 
-    pm.tr.replaceWith(pm.selection.$from.pos, pm.selection.$to.pos, textNode).apply();
-    pm.tr.applyAndScroll();
+    const sel = pm.selection;
+    const tr = pm.tr.replaceWith(sel.$from.pos, sel.$to.pos, textNode);
+    tr.setSelection(findSelectionNear(tr.doc.resolve(tr.map(sel.$to.pos)), -1))
+    tr.applyAndScroll();
 
     event.preventDefault();
     event.stopPropagation();

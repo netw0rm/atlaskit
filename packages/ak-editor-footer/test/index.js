@@ -55,9 +55,8 @@ describe(name, () => {
     // Note: On Firefox, changing .hideButtons property is reflected in the skateJS component only
     //       after next "tick", so that buttons are theoretically visible for a short moment.
     component.hideButtons = true;
-
     return waitUntil(
-      () => (buttonGroup = shadowRoot.querySelector('ak-button-group')) &&
+      () => (buttonGroup = shadowRoot.firstChild.children[1]) &&
              buttonGroup.style.visibility === 'hidden'
     ).catch(() => {
       throw new Error('The button group did not become hidden');

@@ -50,6 +50,15 @@ describe('ak-editor-plugin-block-type paste listener', () => {
       const expected = doc(code_block()('foobar\n\nfoo\nbaz'));
       expect(pm.doc).to.deep.equal(expected);
     });
+
+    it('should be at the right position after pasting', function () {
+      const { pm } = editor('foo{<}bar{>}');
+      maybeDispatchPasteEvent(pm, { plain: 'barbaz' }, this);
+      const expected = doc(code_block()('foobarbaz'));
+      expect(pm.doc).to.deep.equal(expected);
+      expect(pm.selection.$from.pos).to.deep.equal(10);
+      expect(pm.selection.$to.pos).to.deep.equal(10);
+    });
   });
 
   describe('empty code block', () => {

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import getClasses from './internal/getButtonClasses';
 
 /* eslint-disable react/prop-types */
-const HtmlTag = (props, children) => {
+const Element = (props, children) => {
   const commonProps = {
     className: classNames(getClasses(props.styles, props)),
     disabled: props.disabled,
@@ -21,10 +21,10 @@ const HtmlTag = (props, children) => {
 
 export default (props, children) => (
   <span className={props.styles.root}>
-    <HtmlTag {...props}>
+    <Element {...props}>
       <span className={props.styles['button-content']}>
         {children()}
       </span>
-    </HtmlTag>
+    </Element>
   </span>
 );

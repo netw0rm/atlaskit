@@ -59,13 +59,56 @@ export default function addStories(storiesBuilder, Wrapper = DefaultWrapperReact
         </AkButton>
       </Wrapper>
     )
-    .add('a link button', () =>
+    .add('a link button (appearance)', () =>
       <Wrapper>
         <AkButton appearance={APPEARANCE.LINK}>
           Button
         </AkButton>
       </Wrapper>
     )
+    .add('a button with href and target', () =>
+      <Wrapper>
+        <AkButton style={buttonStyles} href="http://www.atlassian.com" target="_blank">
+          Button
+        </AkButton>
+      </Wrapper>
+    )
+    .add('a button with href', () => {
+      const Icon = ICONS[0];
+      const url = 'http://www.atlassian.com';
+      return (<Wrapper>
+        <AkButton style={buttonStyles} href={url}>
+          Button
+        </AkButton>
+        <AkButton style={buttonStyles} disabled href={url}>
+          Button
+        </AkButton>
+        <AkButton style={buttonStyles} appearance={APPEARANCE.LINK} href={url}>
+          Button
+        </AkButton>
+        <AkButton style={buttonStyles} appearance={APPEARANCE.SUBTLE} href={url}>
+          Button
+        </AkButton>
+        <AkButton style={buttonStyles} href={url}>
+          <Icon slot="before" />
+          Button
+        </AkButton>
+        <AkButton style={buttonStyles} href={url}>
+          <Icon />
+        </AkButton>
+        <AkButton style={buttonStyles} disabled href={url}>
+          <Icon slot="before" />
+          Button
+        </AkButton>
+        <AkButton style={buttonStyles} disabled href={url}>
+          <Icon />
+        </AkButton>
+        <AkButton style={buttonStyles} appearance={APPEARANCE.SUBTLE} href={url}>
+          <Icon slot="before" />
+          Button
+        </AkButton>
+      </Wrapper>);
+    })
     .add('an ak-button that emits an action when it is clicked', () => (
       <Wrapper>
         <p>

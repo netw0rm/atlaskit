@@ -62,6 +62,8 @@ ENV TIMEZONE Australia/Sydney
 
 ENV NODE_VERSION 6.2.0-r0
 # TODO: We can't use 3.10.8 yet: https://github.com/npm/npm/issues/14042
+# Update 2016-10-27: still broken in 3.10.9 and won't be fixed in 3.x at all as 3.x was put in maintenance
+# TODO: Update to npm v4: https://ecosystem.atlassian.net/browse/AK-706
 ENV NPM_VERSION 3.10.7
 
 RUN echo "Installing node & npm" \
@@ -80,10 +82,10 @@ RUN echo "Installing node & npm" \
 #### <atlaskit-tools>
 RUN echo "Installing AtlasKit tools" \
 && npm install -g \
-  cloudfront-invalidate-cli@1.0.3 \
+  cloudfront-invalidate-cli@1.2.0 \
   marky-markdown@8.1.0 \
-  bitbucket-build-status@1.0.1 \
-  npm-run-all@3.1.0 \
+  bitbucket-build-status@1.0.2 \
+  npm-run-all@3.1.1 \
   lerna@"${LERNA_VERSION}" \
   lerna-semantic-release@8.0.2 \
   indexifier@2.0.0 \

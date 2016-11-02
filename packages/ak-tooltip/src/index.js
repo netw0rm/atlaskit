@@ -97,15 +97,15 @@ export default define('ak-tooltip', {
       attribute: true,
     },
     /**
-     * @description Either an id or a reference to an element that the tooltip is bound to.
+     * @description A reference to an element that the tooltip is bound to.
      * This is usually set by an ak-tooltip-trigger.
      * @memberof Tooltip
      * @instance
-     * @type {string|Node}
+     * @type {Node}
      * @default none
     */
     target: {
-      attribute: true,
+      attribute: false,
     },
     /**
      * @description The text to display in the tooltip when a user hovers or focuses on the

@@ -39,20 +39,6 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
-  .addSwapped('simple dropdown (swapped)', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
-          Dropdown-button
-        </DropdownTriggerButtonReact>
-        <ItemReact>text1</ItemReact>
-        <ItemReact hidden>hidden ItemReact</ItemReact>
-        <ItemReact>some text here</ItemReact>
-        <ItemReact>another text</ItemReact>
-        <ItemReact>text2</ItemReact>
-      </DropdownReactComponent>
-    </div>
-  ))
   .add('dropdown with checkbox ItemReacts', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
@@ -66,35 +52,7 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
-  .addSwapped('dropdown with checkbox ItemReacts (swapped)', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger">Dropdown-button</DropdownTriggerButtonReact>
-        <GroupReact heading="Checkboxes title">
-          <CheckboxItemReact>text1</CheckboxItemReact>
-          <CheckboxItemReact disabled>text2</CheckboxItemReact>
-          <CheckboxItemReact>some text here</CheckboxItemReact>
-          <CheckboxItemReact>another text</CheckboxItemReact>
-        </GroupReact>
-      </DropdownReactComponent>
-    </div>
-  ))
   .add('dropdown with radio ItemReacts', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
-          Dropdown
-        </DropdownTriggerButtonReact>
-        <GroupReact heading="Radio title">
-          <RadioItemReact>text1</RadioItemReact>
-          <RadioItemReact disabled>text2</RadioItemReact>
-          <RadioItemReact>some text here</RadioItemReact>
-          <RadioItemReact>another text</RadioItemReact>
-        </GroupReact>
-      </DropdownReactComponent>
-    </div>
-  ))
-  .addSwapped('dropdown with radio ItemReacts (swapped)', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">
@@ -131,40 +89,6 @@ storiesOf(`${name} component`, module)
     </div>
   ))
   .add('dropdown with avatars', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
-          People list
-        </DropdownTriggerButtonReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Adam Smith
-        </ItemReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Eva Smith
-        </ItemReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Ivan Ivanov
-        </ItemReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Jane Black
-        </ItemReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Mike Cannon-Brookes
-        </ItemReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Some very long name very long name very long
-          name very long name very long name very long name
-        </ItemReact>
-      </DropdownReactComponent>
-    </div>
-  ))
-  .addSwapped('dropdown with avatars (swapped)', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">

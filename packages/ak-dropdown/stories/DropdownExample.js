@@ -9,7 +9,7 @@ import styles from '../src/less/shadow-list.less';
 const dropdownClass = styles.locals.akDropdown;
 const DropdownReactComponent = reactify(Dropdown);
 const Avatar = reactify(AvatarWc);
-const avatarUrl = require('url!./doge.jpg');
+const avatarUrl = require('url-loader!./doge.jpg');
 
 const DropdownTriggerReact = reactify(DropdownTrigger);
 const DropdownTriggerButtonReact = reactify(DropdownTriggerButton);
@@ -20,7 +20,7 @@ export default class DropdownExample extends Component { // eslint-disable-line 
   render() {
     return (
       <DropdownReactComponent
-        open
+        open={!this.props.close}
         className={dropdownClass}
         boundariesElement={this.props.parent}
         stepOutside={this.props.stepOutside}
@@ -56,4 +56,5 @@ DropdownExample.propTypes = {
   stepOutside: React.PropTypes.bool,
   position: React.PropTypes.string,
   avatarTarget: React.PropTypes.bool,
+  close: React.PropTypes.bool,
 };

@@ -64,7 +64,7 @@
     "mocha": "^3.1.2",
     "package-json-validator": "^0.6.1",
     "pascal-case": "^2.0.0",
-    "postcss-loader": "^0.13.0",
+    "postcss-loader": "^1.0.0",
     "protractor": "^4.0.9",
     "protractor-console": "^2.0.1",
     "protractor-cucumber-framework": "^0.6.0",
@@ -74,6 +74,7 @@
     "retry-cli": "^0.4.0",
     "skatejs": "^3.0.0",
     "stats.js": "^0.16.0",
+    "storybook-addon-i18n-tools": "^1.0.0",
     "style-loader": "^0.13.1",
     "ts-loader": "^0.9.0",
     "typescript": "^2.1.0-dev.20160826",
@@ -159,6 +160,7 @@
     "test/single/watch": "NODE_ENV=development ./build/bin/test.single.watch.sh",
     "validate": "npm ls >/dev/null && ./node_modules/.bin/lerna exec -- npm ls >/dev/null",
     "validate/lint-changed": "./build/bin/lint-changed.sh",
+    "validate/lint-changed/fix": "./build/bin/lint-changed-fix.sh",
     "validate/package.json": "pjv -q && ./node_modules/.bin/lerna exec -- pjv -q"
   }
 }

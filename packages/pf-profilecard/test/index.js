@@ -11,8 +11,9 @@ import {
   // formatTimeString,
   getTimeLabel,
 } from '../src/util/datetime';
-// import shadowStyles from '../src/wc/pf-profilecard-shadow.less';
-// const styles = shadowStyles.locals;
+import shadowStyles from '../src/wc/pf-profilecard-shadow.less';
+
+const styles = shadowStyles.locals;
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -37,7 +38,7 @@ const cardActions = [
 ];
 
 // Helper functions
-const getActionButtons = component => (getShadowRoot(component).querySelectorAll('[type=button]'));
+const getActionButtons = component => (getShadowRoot(component).querySelector(`.${styles.pfCardActions}`).children);
 
 /* Create profile card in div, append to body and return reference to both.
    Ensure the component has been rendered before tests start */
@@ -186,7 +187,6 @@ describe('pf-profilecard', () => {
       props(component, { actions: cardActions });
       return waitUntil(ComponentIsRendered).then(() => {
         const buttons = getActionButtons(component);
-
         expect(buttons.length).to.equal(2);
         expect(buttons[0].textContent).to.equal(cardActions[0].label);
         expect(buttons[1].textContent).to.equal(cardActions[1].label);

@@ -104,9 +104,7 @@ export default define('ak-tooltip', {
      * @type {Node}
      * @default none
     */
-    target: {
-      attribute: false,
-    },
+    target: {},
     /**
      * @description The text to display in the tooltip when a user hovers or focuses on the
      * wrapped element.

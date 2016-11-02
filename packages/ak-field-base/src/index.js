@@ -27,6 +27,7 @@ export default define('ak-field-base', {
         <Label
           label={elem.label}
           hideLabel={elem.hideLabel}
+          required={elem.required}
         >
           <Content
             setFocused={focus => setFocused(elem, focus)}
@@ -78,5 +79,16 @@ export default define('ak-field-base', {
      */
     invalid: prop.boolean({ attribute: true }),
     [focused]: prop.boolean(),
+    /**
+     * @description Whether or not the field is required.
+     *
+     * If set to true, an asterisk will be appended to the label text.
+     * @memberof FieldBase
+     * @instance
+     * @type {boolean}
+     * @default false
+     * @example @html <ak-field-base label="First Name" required"></ak-field-base>
+     */
+    required: prop.boolean({ attribute: true }),
   },
 });

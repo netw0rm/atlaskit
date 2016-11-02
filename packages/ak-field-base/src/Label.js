@@ -16,6 +16,7 @@ export default (props, children) => {
     <label className={shadowStyles.locals.label}>
       <div className={labelClasses}>
         <span>{props.label}</span>
+        {props.required ? <span class={shadowStyles.locals.required}>*</span> : null}
       </div>
       {children()}
     </label>

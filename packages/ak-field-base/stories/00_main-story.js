@@ -67,6 +67,7 @@ storiesOf(name, module)
       <form action="" style={formStyle}>
         <InputFieldBase label="A default field-base" />
         <InputFieldBase label="Invalid state" invalid />
+        <InputFieldBase label="Required field" required />
       </form>
     </div>
   ))

@@ -12,10 +12,13 @@
 @base-border-width-focused: 2;
 @base-border-color: @ak-color-N20;
 @base-border-color-focused: @ak-color-B100;
+@base-border-color-hover: @ak-color-N20;
 @base-border-color-invalid: @ak-color-B100;
 
-@base-background-color:  @ak-color-N10A;
-@base-background-color-focused:  white;
+@base-background-color: @ak-color-N10A;
+@base-background-color-hover: @ak-color-N20;
+@base-background-color-focused: white;
+
 
 // Mixin to redistribute spacing between border and padding
 .borders-and-padding (@border, @x-spacing, @height) {
@@ -46,6 +49,11 @@
     .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
     border-color: @base-border-color-focused;
     background-color: @base-background-color-focused;
+  }
+
+  &:hover {
+    background-color: @base-background-color-hover;
+    border-color: @base-border-color-hover;
   }
 
   &.invalid {

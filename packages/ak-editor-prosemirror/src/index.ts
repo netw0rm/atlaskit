@@ -30,10 +30,6 @@ export {
 } from 'prosemirror/dist/edit';
 
 export {
-  findSelectionNear
-} from 'prosemirror/dist/edit/selection';
-
-export {
   EditorTransform
 } from 'prosemirror/dist/edit/transform';
 

@@ -19,6 +19,8 @@
 @base-background-color-hover: @ak-color-N20;
 @base-background-color-focused: white;
 
+@base-transition-duration: 0.2s; // Transition speed
+
 
 // Mixin to redistribute spacing between border and padding
 .borders-and-padding (@border, @x-spacing, @height) {
@@ -36,6 +38,8 @@
   border-radius: @base-border-radius;
   border-color: @base-border-color;
   background-color: @base-background-color;
+  transition: background-color @base-transition-duration ease-in-out,
+              border-color @base-transition-duration ease-in-out;
 
   line-height: @base-line-height;
   font-size: unit(@base-font-size, px);
@@ -45,15 +49,15 @@
   word-wrap: break-word;
 
   // note: .focused not :focus as CSS wont know that slotted content is focused
+  &:hover {
+    background-color: @base-background-color-hover;
+    border-color: @base-border-color-hover;
+  }
+
   &.focused {
     .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
     border-color: @base-border-color-focused;
     background-color: @base-background-color-focused;
-  }
-
-  &:hover {
-    background-color: @base-background-color-hover;
-    border-color: @base-border-color-hover;
   }
 
   &.invalid {

@@ -15,8 +15,8 @@ export default (pm: ProseMirror) => {
     const textNode = pm.schema.nodes.text.create({}, text);
 
     const tr = pm.tr.replaceWith(sel.$from.pos, sel.$to.pos, textNode);
-    const posAftePaste = tr.map(sel.$to.pos);
-    tr.setSelection(new TextSelection(tr.doc.resolve(posAftePaste)));
+    const posAfterPaste = tr.map(sel.$to.pos);
+    tr.setSelection(new TextSelection(tr.doc.resolve(posAfterPaste)));
     tr.applyAndScroll();
 
     event.preventDefault();

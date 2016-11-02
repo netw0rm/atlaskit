@@ -3,7 +3,7 @@ import { triggerContainer } from './symbols';
 import { dropdownMinWidth } from './consts';
 
 export default (dropdown) => {
-  if (dropdown.mode === 'fit') {
+  if (dropdown.appearance === 'fitwidth') {
     const trigger = dropdown[triggerContainer];
     return `${trigger.getBoundingClientRect().width}px`;
   }

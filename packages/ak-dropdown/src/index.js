@@ -26,7 +26,7 @@ import getDropdownMinWidth from './internal/getDropdownMinWidth';
 
 import {
   offset,
-  dropdownModeOptions,
+  dropdownAppearanceOptions,
 } from './internal/consts';
 
 import {
@@ -322,18 +322,18 @@ export default define('ak-dropdown', {
       attribute: true,
     }),
     /**
-     * @description Defines the mode of the dropdown.
-     * Allowed values: 'standard', 'fit', 'tall'.
-     * Width of the 'fit' dropdown will always be in sync with the width of its trigger.
+     * @description Defines the appearance of the dropdown.
+     * Allowed values: 'standard', 'fitwidth', 'tall'.
+     * Width of the 'fitwidth' dropdown will always be in sync with the width of its trigger.
      * A 'tall' dropdown doesn't have the maximum height restriction
      * @memberof Dropdown
      * @instance
      * @default standard
      * @type {string}
-     * @example @html <ak-dropdown mode="fit"></ak-dropdown>
-     * @example @js dropdown.mode = 'fit';
+     * @example @html <ak-dropdown appearance="fitwidth"></ak-dropdown>
+     * @example @js dropdown.appearance = 'fitwidth';
      */
-    mode: enumeration(dropdownModeOptions)({
+    appearance: enumeration(dropdownAppearanceOptions)({
       attribute: true,
     }),
   },

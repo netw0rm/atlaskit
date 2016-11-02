@@ -8,22 +8,17 @@ import { dropdownMinWidth, dropdownMaxWidth, dropdownMaxHeight } from '../src/in
 import { initDropdown,
   itemHeight, itemLeftToDefaultGap, itemLeftGap, getPaddings } from './_helpers';
 import shadowItemStyles from '../src/less/shadow-item.less';
+import shadowListStyles from '../src/less/shadow-list.less';
 
 const defaultClass = shadowItemStyles.locals.itemDefaultPosition;
 const leftPositionClass = shadowItemStyles.locals.itemLeftPosition;
+const dropClass = shadowListStyles.locals.list;
 
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-function generateBunchOfItems(num) {
-  const res = [];
-  for (let i = 0; i < num; i++) {
-    res.push({ id: 'Item', value: 'item1' });
-  }
-
-  return res;
-}
+const generateBunchOfItems = num => new Array(num).fill({ id: 'Item', value: 'item1' });
 
 describe('sizes, paddings and margins', () => {
   describe('dropdown item', () => {
@@ -167,7 +162,7 @@ describe('sizes, paddings and margins', () => {
         ]).then((newComponent) => {
           component = newComponent;
           props(component, { open: true });
-          const dropContainer = component.shadowRoot.firstChild.children[1].shadowRoot.firstChild;
+          const dropContainer = component.shadowRoot.querySelector(`.${dropClass}`);
           let height;
 
           window.requestAnimationFrame(() => {
@@ -184,8 +179,8 @@ describe('sizes, paddings and margins', () => {
           ...generateBunchOfItems(11),
         ]).then((newComponent) => {
           component = newComponent;
-          props(component, { open: true, mode: 'tall' });
-          const dropContainer = component.shadowRoot.firstChild.children[1].shadowRoot.firstChild;
+          props(component, { open: true, appearance: 'tall' });
+          const dropContainer = component.shadowRoot.querySelector(`.${dropClass}`);
           let height;
 
           window.requestAnimationFrame(() => {
@@ -196,7 +191,7 @@ describe('sizes, paddings and margins', () => {
         });
       });
 
-      it('width of the fit dropdown should be in sync with its target', (done) => {
+      it('width of the fitwidth dropdown should be in sync with its target', (done) => {
         const triggerWidth = 500;
         initDropdown([
           { id: 'DropdownTrigger',
@@ -204,7 +199,7 @@ describe('sizes, paddings and margins', () => {
           { id: 'Item', value: 'item' },
         ]).then((newComponent) => {
           component = newComponent;
-          props(component, { open: true, mode: 'fit' });
+          props(component, { open: true, appearance: 'fitwidth' });
           const dropItem = component.children[1];
           window.requestAnimationFrame(() => {
             expect(Math.round(dropItem.getBoundingClientRect().width)).to.equal(triggerWidth);

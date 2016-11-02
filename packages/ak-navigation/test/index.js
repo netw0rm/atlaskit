@@ -196,41 +196,31 @@ describe('ak-navigation', () => {
         expect(component.open).to.equal(true);
       }, done);
     });
-
-    describe('with an input', () => {
-      let input;
-      beforeEach(() => {
-        input = document.createElement('input');
-        document.body.appendChild(input);
-        input.focus();
-      });
-
-      afterEach(() => document.body.removeChild(input));
-
-      it('toggling does not work when triggered on the input', (done) => {
+    it('toggling does not work with shift key held', (done) => {
+      expect(component.open).to.equal(false);
+      afterMutations(() => {
+        keyup('[', { eventProperties: { shiftKey: true } });
         expect(component.open).to.equal(false);
-        afterMutations(() => {
-          keyup('[', input);
-          expect(component.open).to.equal(false);
-        }, done);
-      });
+      }, done);
     });
 
-    describe('with a textarea', () => {
-      let textarea;
-      beforeEach(() => {
-        textarea = document.createElement('textarea');
-        document.body.appendChild(textarea);
-      });
+    ['textarea', 'input'].forEach((elementName) => {
+      describe(`with an ${elementName}`, () => {
+        let el;
+        beforeEach(() => {
+          el = document.createElement(elementName);
+          document.body.appendChild(el);
+        });
 
-      afterEach(() => document.body.removeChild(textarea));
+        afterEach(() => document.body.removeChild(el));
 
-      it('toggling does not work when triggered on the textarea', (done) => {
-        expect(component.open).to.equal(false);
-        afterMutations(() => {
-          keyup('[', textarea);
+        it(`toggling does not work when triggered on the ${elementName}`, (done) => {
           expect(component.open).to.equal(false);
-        }, done);
+          afterMutations(() => {
+            keyup('[', { target: el });
+            expect(component.open).to.equal(false);
+          }, done);
+        });
       });
     });
 
@@ -279,7 +269,7 @@ describe('ak-navigation', () => {
         expect(component.children[0].selected).to.equal(true);
         expect(component.children[1].selected).to.equal(false);
         expect(component.children[2].selected).to.equal(false);
-        keyup('enter', component.children[1]);
+        keyup('enter', { target: component.children[1] });
         expect(component.children[0].selected).to.equal(false);
         expect(component.children[1].selected).to.equal(true);
         expect(component.children[2].selected).to.equal(false);

@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { props } from 'skatejs';
-import { tearDownComponent, afterMutations } from 'akutil-common-test';
+import { tearDownComponent } from 'akutil-common-test';
 
 import { dropdownMinWidth, dropdownMaxWidth, dropdownMaxHeight } from '../src/internal/consts';
 
@@ -103,12 +103,12 @@ describe('sizes, paddings and margins', () => {
           props(component, { open: true });
           const trigger = component.firstChild;
           const dropItem = component.children[1];
-          afterMutations(
-            () =>
-              expect(Math.round(trigger.getBoundingClientRect().width)).to.equal(
-                Math.round(dropItem.getBoundingClientRect().width) - 10),
-            done
-          );
+
+          window.requestAnimationFrame(() => {
+            expect(Math.round(trigger.getBoundingClientRect().width)).to.equal(
+              Math.round(dropItem.getBoundingClientRect().width) - 10);
+            done();
+          });
         });
       });
 
@@ -120,11 +120,11 @@ describe('sizes, paddings and margins', () => {
           component = newComponent;
           props(component, { open: true });
           const dropItem = component.children[1];
-          afterMutations(
-            () =>
-              expect(Math.round(dropItem.getBoundingClientRect().width)).to.equal(dropdownMaxWidth),
-            done
-          );
+
+          window.requestAnimationFrame(() => {
+            expect(Math.round(dropItem.getBoundingClientRect().width)).to.equal(dropdownMaxWidth);
+            done();
+          });
         });
       });
 
@@ -136,11 +136,11 @@ describe('sizes, paddings and margins', () => {
           component = newComponent;
           props(component, { open: true });
           const dropItem = component.children[1];
-          afterMutations(
-            () =>
-              expect(Math.round(dropItem.getBoundingClientRect().width)).to.equal(dropdownMinWidth),
-            done
-          );
+
+          window.requestAnimationFrame(() => {
+            expect(Math.round(dropItem.getBoundingClientRect().width)).to.equal(dropdownMinWidth);
+            done();
+          });
         });
       });
 
@@ -152,11 +152,11 @@ describe('sizes, paddings and margins', () => {
           component = newComponent;
           props(component, { open: true });
           const dropItem = component.children[1];
-          afterMutations(
-            () =>
-              expect(Math.round(dropItem.getBoundingClientRect().width)).to.equal(dropdownMaxWidth),
-            done
-          );
+
+          window.requestAnimationFrame(() => {
+            expect(Math.round(dropItem.getBoundingClientRect().width)).to.equal(dropdownMaxWidth);
+            done();
+          });
         });
       });
 
@@ -169,13 +169,12 @@ describe('sizes, paddings and margins', () => {
           props(component, { open: true });
           const dropContainer = component.shadowRoot.firstChild.children[1].shadowRoot.firstChild;
           let height;
-          afterMutations(
-            () => {
-              height = dropContainer.getBoundingClientRect().height;
-              expect(Math.round(height)).to.equal(dropdownMaxHeight);
-            },
-            done
-          );
+
+          window.requestAnimationFrame(() => {
+            height = dropContainer.getBoundingClientRect().height;
+            expect(Math.round(height)).to.equal(dropdownMaxHeight);
+            done();
+          });
         });
       });
 
@@ -188,13 +187,12 @@ describe('sizes, paddings and margins', () => {
           props(component, { open: true, mode: 'tall' });
           const dropContainer = component.shadowRoot.firstChild.children[1].shadowRoot.firstChild;
           let height;
-          afterMutations(
-            () => {
-              height = dropContainer.getBoundingClientRect().height;
-              expect(Math.round(height) > dropdownMaxHeight).to.equal(true);
-            },
-            done
-          );
+
+          window.requestAnimationFrame(() => {
+            height = dropContainer.getBoundingClientRect().height;
+            expect(Math.round(height) > dropdownMaxHeight).to.equal(true);
+            done();
+          });
         });
       });
 
@@ -208,11 +206,10 @@ describe('sizes, paddings and margins', () => {
           component = newComponent;
           props(component, { open: true, mode: 'fit' });
           const dropItem = component.children[1];
-          afterMutations(
-            () =>
-              expect(Math.round(dropItem.getBoundingClientRect().width)).to.equal(triggerWidth),
-            done
-          );
+          window.requestAnimationFrame(() => {
+            expect(Math.round(dropItem.getBoundingClientRect().width)).to.equal(triggerWidth);
+            done();
+          });
         });
       });
     });

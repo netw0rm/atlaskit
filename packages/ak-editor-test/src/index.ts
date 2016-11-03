@@ -1,14 +1,17 @@
-import './polyfill-string-repeat';
+import 'string.prototype.repeat';
+
 import * as base64fileconverter from './base64fileconverter';
 import { offsetRefs, BuilderContent, coerce } from './schema-builder';
 import { ProseMirror } from 'ak-editor-prosemirror';
 
 export { base64fileconverter };
 export { default as chaiPlugin } from './chai';
+export { default as dispatchPasteEvent } from './dispatch-paste-event';
 export { default as SyncPlugin } from './sync-plugin';
 export { default as makeEditor } from './make-editor';
 export { default as fixtures } from './fixtures';
 export { default as RewireSpy } from './rewire-spy';
+export { default as isBrokenEnvironment } from './broken-environment';
 export {
   doc, p, blockquote, code_block,
   h1, h2, h3, h4, h5, h6,

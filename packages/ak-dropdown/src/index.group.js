@@ -1,5 +1,7 @@
 import { vdom, prop, define } from 'skatejs';
+
 import shadowGroupStyles from './less/shadow-group.less';
+
 
 export default define('ak-dropdown-group', {
   render(elem) {
@@ -15,7 +17,7 @@ export default define('ak-dropdown-group', {
             className={shadowGroupStyles.locals.heading}
             aria-hidden="true"
           >
-              {elem.heading}
+            {elem.heading}
           </div> : null}
         <slot />
       </div>

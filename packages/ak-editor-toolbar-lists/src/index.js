@@ -1,9 +1,12 @@
 import { define, vdom, prop, emit } from 'skatejs';
-import shadowStyles from './shadow.less';
-import 'style!./host.less';
 import Button from 'ak-editor-button';
 import NumberListIcon from 'ak-icon/glyph/editor/list/number';
 import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
+
+import 'style!./host.less';
+
+import shadowStyles from './shadow.less';
+
 
 const LIST_NUMBER = 'number-list';
 const LIST_BULLET = 'bullet-list';

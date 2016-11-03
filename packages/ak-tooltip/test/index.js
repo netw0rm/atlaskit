@@ -33,7 +33,7 @@ describe('ak-tooltip', () => {
   let tooltip;
   let layer;
 
-  beforeEach(() => setupComponent().then(newComponent => {
+  beforeEach(() => setupComponent().then((newComponent) => {
     component = newComponent;
     shadowRoot = getShadowRoot(component);
     // a reference the the rendered tooltip (the part that contains the description)

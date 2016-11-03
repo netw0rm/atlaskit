@@ -1,24 +1,31 @@
 import * as chai from 'chai';
-import { expect } from 'chai';
 import AkEditorBitbucket from '../src';
-import { afterMutations, waitUntil, getShadowRoot  } from 'akutil-common-test';
+import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy, chaiPlugin, doc, text, code, strong, a,
-  h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention, emoji } from 'ak-editor-test';
+  h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
+  emoji, code_block } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
+
+import shadowStyles from './shadow.less';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);
+const { expect, assert } = chai;
 
 const fixture = fixtures();
 
-function activateEditorByClicking(editor: typeof AkEditorBitbucket) : void {
+function activateEditor(editor: typeof AkEditorBitbucket) : void {
   const inputEl = getShadowRoot(editor).querySelector('input');
   expect(inputEl).to.not.be.null;
-  emit(inputEl, 'click');
+  emit(inputEl, 'focus');
 }
 
-function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> {
+function buildExpandedEditor(
+  fixture : any,
+  defaultValue = '',
+  context = ''
+) : Promise<typeof AkEditorBitbucket> {
   return new Promise(function(resolve, reject) {
     const successFn = () => {
       clearTimeout(failTimer);
@@ -27,11 +34,33 @@ function buildExpandedEditor(fixture : any) : Promise<typeof AkEditorBitbucket> 
 
     const failTimer = setTimeout(() => {
       fixture.removeEventListener('ready', successFn);
-      reject('the editor didn\'t become ready in 1.5s');
+      reject(new Error('the editor didn\'t become ready in 1.5s'));
     }, 1500);
 
     fixture.addEventListener('ready', successFn, { once: true });
     fixture.innerHTML = `<ak-editor-bitbucket expanded></ak-editor-bitbucket>`;
+
+    if (defaultValue) {
+      fixture.firstChild.setAttribute('default-value', defaultValue);
+    }
+
+    if (context) {
+      fixture.firstChild.setAttribute('context', context);
+    }
+  });
+}
+
+/**
+ * @returns The ProseMirror container element (usually a <div>)
+ */
+function waitUntilPMReady(editor: typeof AkEditorBitbucket) : Promise<HTMLElement> {
+  return waitUntil(() => {
+    return !!getShadowRoot(editor) &&
+      !!getShadowRoot(editor).firstChild.children[1].children[1] &&
+      !!getShadowRoot(editor).firstChild.children[1].children[1].querySelector('[pm-container=true]')
+    ;
+  }).then(() => {
+    return getShadowRoot(editor).firstChild.children[1].children[1].querySelector('[pm-container=true]');
   });
 }
 
@@ -106,8 +135,10 @@ describe('ak-editor-bitbucket', () => {
       editor.defaultValue = 'foo';
       expect(editor.value).to.equal('foo');
     });
+  });
 
-    it('should honour default value', (done) => {
+  describe('default value', () => {
+    it('should initialize Prosemirror with correct value', (done) => {
       const content = 'foo';
       const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
       const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
@@ -122,6 +153,13 @@ describe('ak-editor-bitbucket', () => {
         },
         done
       );
+    });
+
+    it('should be converted to a proper Prosemirror document after rendering', () => {
+      return buildExpandedEditor(fixture(), '<p>foo <strong>bar</strong></p>')
+        .then((editor) => {
+          expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), strong(text('bar')))));
+        });
     });
   });
 
@@ -144,7 +182,7 @@ describe('ak-editor-bitbucket', () => {
     });
 
     it('should expand after clicking the input element', () => {
-      activateEditorByClicking(editor);
+      activateEditor(editor);
       expect(editor.expanded).to.be.true;
     });
   });
@@ -226,6 +264,113 @@ describe('ak-editor-bitbucket', () => {
       return buildExpandedEditor(fixture()).then((editor) => {
         editor.setFromHtml('<p></p><p></p><p></p><p></p>');
         expect(editor.isEmpty()).to.be.true;
+      });
+    });
+  });
+
+  /**
+   * @issue FAB-1045
+   */
+  it('should prevent bubbling of keyboard events outside of the editor', () => {
+    const outer : HTMLElement = fixture();
+    const inner : HTMLElement = document.createElement('div');
+
+    outer.appendChild(inner);
+
+    return buildExpandedEditor(inner).then((editor) => {
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        const spy = sinon.spy();
+        outer.addEventListener('keydown', spy);
+        outer.addEventListener('keyup', spy);
+        outer.addEventListener('keypress', spy);
+        keydown('enter', PMContainer);
+        keypress('enter', PMContainer);
+        keyup('enter', PMContainer);
+        keydown('enter', editor);
+        keypress('enter', editor);
+        keyup('enter', editor);
+        outer.removeEventListener('keydown', spy);
+        outer.removeEventListener('keyup', spy);
+        outer.removeEventListener('keypress', spy);
+        expect(spy.called).to.be.false;
+      });
+    });
+  });
+
+  it('should create a newline in code block when cursor is at the beginning and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('\nvar code;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when there is paragraph and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<p>text</p><pre>var code;</pre>');
+      editor._pm.setTextSelection(7)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(p('text'), code_block()('\nvar code;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when in the middle of code block and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+      editor._pm.setTextSelection(5)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var \ncode;')));
+      });
+    });
+  });
+
+  it('should create a newline in code block when in the end of code block and enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+      editor._pm.setTextSelection(10)
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', PMContainer);
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;\n')));
+      });
+    });
+  });
+
+  describe('footer', () => {
+    it('should not show action buttons in "pr" context', () => {
+      return buildExpandedEditor(fixture(), '', 'pr').then((editor) => {
+        let buttonGroup, shadowRoot;
+        const footer = getShadowRoot(editor).querySelector('ak-editor-footer');
+        expect(footer).to.not.be.null;
+
+        // Note: On non-native-custom-elements browsers (like Firefox), the 'pr' context attribute
+        //       isn't set synchronously, which means it doesn't propagate sync to ak-editor-footer
+        //       fast enough. The buttons are supposed to be hidden but for a brief moment they
+        //       are still visible.
+        // TODO: There must be a better way to do it...
+        return waitUntil(
+          () => (shadowRoot = getShadowRoot(footer)) &&
+          (buttonGroup = shadowRoot.firstChild.children[1]) &&
+          buttonGroup.style.visibility === 'hidden'
+        ).catch(() => {
+          throw new Error('The button group did not become hidden');
+        });
       });
     });
   });

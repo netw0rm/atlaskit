@@ -6,17 +6,54 @@ JSDOC2MD_LOC="`npm bin`/jsdoc2md"
 CHALK="`npm bin`/chalk"
 popd > /dev/null
 
-PKG=$(node -e 'console.log(require("./package.json").name)')
+NAME=$(node -e 'console.log(require("./package.json").name)')
 VERSION=$(node -e 'console.log(require("./package.json").version)')
-PREFIX="{white.bold [$PKG]}"
+PREFIX="{white.bold [$NAME]}"
+
+if [ -z "$BITBUCKET_COMMIT" ]; then
+  BITBUCKET_COMMIT="master"
+fi
 
 $CHALK --no-stdin -t "{blue $PREFIX Generating README.md...}"
 
+replacevars () {
+    echo "$1" | \
+    sed "s/@VERSION@/$VERSION/g" | \
+    sed "s/@NAME@/$NAME/g" | \
+    sed "s/@BITBUCKET_COMMIT@/$BITBUCKET_COMMIT/g"
+}
+
+replacefiles () {
+  USAGE="$1"
+  # get each line that matchs the @FILE: XXXX@ pattern
+  # then remove the prefix and suffix, leaving the XXXX part
+  FILE_LINKS=$(echo "$USAGE" | \
+    grep "^@FILE: .*@$" | \
+    sed "s/@FILE://g" | \
+    sed "s/@$//g" )
+
+  # we use a `here string` (the <<<) here so that the while loop doesnt happen in a subshell
+  # (which means we keep the variable changes that happen inside of it)
+  while read -r LINE ; do
+    if [ ! -z "$LINE" ]; then
+      FILE_PATH="./docs/$LINE"
+      # for each file link line replace it with the contents of that file
+      # the `r`` command in sed reads a file
+      # the `d` command deletes the matching pattern
+      USAGE=$(echo "$USAGE" | sed -e "/$LINE/r $FILE_PATH" -e "/$LINE/d")
+    fi
+  done <<< "$(echo "$FILE_LINKS")"
+
+  echo "$USAGE"
+}
+
 # Get usage docs
 if compgen -G "docs/USAGE\.md" > /dev/null; then
-  USAGE=$(cat ./docs/USAGE.md | sed "s/@VERSION@/$VERSION/g")
+  USAGE=$(cat ./docs/USAGE.md)
+  USAGE=$(replacefiles "$USAGE")
+  USAGE=$(replacevars "$USAGE")
 else
-  USAGE="# $PKG"
+  USAGE="# $NAME"
 fi
 
 # Generate API docs
@@ -38,22 +75,23 @@ else
   elif [[ $DOCS == *"ERROR, Cannot find class"* ]]; then
     $CHALK --no-stdin -t "{red $PREFIX Could not find a class.}"
   else
-    API="$DOCS"
+    API=$(replacevars "$DOCS")
     $CHALK --no-stdin -t "{blue $PREFIX done!}"
   fi
 fi
 
-BUTTONS=$(cat ../../build/docs/templates/BUTTONS.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
-SUPPORT=$(cat ../../build/docs/templates/SUPPORT.md | sed "s/@VERSION@/$VERSION/g" | sed "s/@NAME@/$PKG/g")
-API=$(echo "$API" | sed "s/@BITBUCKET_COMMIT@/$BITBUCKET_COMMIT/g")
+BUTTONS=$(cat ../../build/docs/templates/BUTTONS.md)
+BUTTONS=$(replacevars "$BUTTONS")
+SUPPORT=$(cat ../../build/docs/templates/SUPPORT.md)
+SUPPORT=$(replacevars "$SUPPORT")
 
 (
   echo "$BUTTONS"
   echo
   echo "$USAGE"
   echo
-  echo "$SUPPORT"
-  echo
   echo "$API"
+  echo
+  echo "$SUPPORT"
   echo
 ) > README.md

@@ -1,17 +1,14 @@
 import { vdom, define, prop, emit } from 'skatejs';
 import { style } from 'akutil-common';
-import shadowStyles from './index.ak-navigation-link.less';
 import classNames from 'classnames';
 import keycode from 'keycode';
+
+import shadowStyles from './index.ak-navigation-link.less';
 import { linkSelected as linkSelectedEvent } from './internal/index.events';
 
-const anchorElement = Symbol('anchor');
 
 function select(elem) {
   emit(elem, linkSelectedEvent);
-  if (elem.href) {
-    elem[anchorElement].click();
-  }
 }
 
 /**
@@ -52,8 +49,8 @@ export default define('ak-navigation-link', {
         <style>{shadowStyles.toString()}</style>
         <a
           className={classNames(shadowStyles.locals.link)}
-          href={elem.href}
-          ref={(a) => { elem[anchorElement] = a; }}
+          href={elem.href || false}
+          onmousedown={e => e.preventDefault()}
           tabindex="0"
         >
           <slot

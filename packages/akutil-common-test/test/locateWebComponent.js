@@ -1,8 +1,11 @@
-import locateWebComponent from '../src/index.locateWebComponent';
-import { getShadowRoot, waitUntil } from '../src';
 import { define } from 'skatejs';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
+
+import locateWebComponent from '../src/index.locateWebComponent';
+import { getShadowRoot, waitUntil } from '../src';
+
+
 chai.should();
 chai.use(sinonChai);
 
@@ -37,13 +40,16 @@ describe('locateWebComponent', () => {
     locateWebComponent('not-existent').should.be.deep.equal([]);
   });
 
-  it('should be possible to locate a webcomponent by its prefix', () => {
+  it('should be possible to locate a webcomponent by its prefix', (done) => {
     locateWebComponent('x-f').should.be.deep.equal([component]);
     const Foo2 = registerFooComponent();
     const component2 = new Foo2();
     container.appendChild(component2);
     component2.tagName.should.not.be.equal('x-foo');
-    locateWebComponent('x-foo').should.be.deep.equal([component, component2]);
+    setTimeout(() => {
+      locateWebComponent('x-foo').should.be.deep.equal([component, component2]);
+      done();
+    });
   });
 
   it('should be possible to locate a webcomponent by its prefix in a given parent element', () => {

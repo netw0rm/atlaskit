@@ -1,5 +1,8 @@
-import { name } from '../../package.json';
 import debug from 'debug';
+
+import { name } from '../../package.json';
+
+
 if (process.env.NODE_ENV === 'development') {
   localStorage.debug = `${name}:*`;
 }

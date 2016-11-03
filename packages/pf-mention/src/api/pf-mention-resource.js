@@ -1,23 +1,26 @@
 import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
-
-// 'whatwg-fetch' needs a Promise polyfill
 import Promise from 'babel-runtime/core-js/promise';
+// 'whatwg-fetch' needs a Promise polyfill
+/* eslint-disable import/imports-first */
 if (!window.Promise) {
   window.Promise = Promise;
 }
 import 'whatwg-fetch';
+
 import debug from '../util/logger';
+/* eslint-enable import/imports-first */
+
 
 const buildUrl = (baseUrl, path, data, secOptions) => {
   const searchParam = new URLSearchParams();
   for (const key in data) { // eslint-disable-line no-restricted-syntax
-    if (data.hasOwnProperty(key)) {
+    if ({}.hasOwnProperty.call(data, key)) {
       searchParam.append(key, data[key]);
     }
   }
   if (secOptions && secOptions.params) {
     for (const key in secOptions.params) { // eslint-disable-line no-restricted-syntax
-      if (secOptions.params.hasOwnProperty(key)) {
+      if ({}.hasOwnProperty.call(secOptions.params, key)) {
         const values = secOptions.params[key];
         if (Array.isArray(values)) {
           for (let i = 0; i < values.length; i++) {
@@ -40,7 +43,7 @@ const buildHeaders = (secOptions) => {
   const headers = new Headers();
   if (secOptions && secOptions.headers) {
     for (const key in secOptions.headers) { // eslint-disable-line no-restricted-syntax
-      if (secOptions.headers.hasOwnProperty(key)) {
+      if ({}.hasOwnProperty.call(secOptions.headers, key)) {
         const values = secOptions.headers[key];
         if (Array.isArray(values)) {
           for (let i = 0; i < values.length; i++) {
@@ -59,11 +62,12 @@ const buildHeaders = (secOptions) => {
 /**
  * @returns Promise containing the json response
  */
-const requestService = (baseUrl, path, data, secOptions) => {
+const requestService = (baseUrl, path, data, opts, secOptions) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
-  return fetch(new Request(url, { headers }))
-    .then(response => {
+  const options = Object.assign({}, opts, { headers });
+  return fetch(new Request(url, options))
+    .then((response) => {
       if (response.ok) {
         return response.json();
       }
@@ -95,8 +99,14 @@ class AbstractMentionResource {
     this._errListeners.delete(key);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   filter(query) {
     throw new Error(`not yet implemented.\nParams: query=${query}`);
+  }
+
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  recordMentionSelection(mention) {
+    // Do nothing
   }
 
   _notifyListeners(mentions) {
@@ -188,10 +198,14 @@ class MentionResource extends AbstractMentionResource {
     };
 
     if (!query) {
-      this._initialState().then(notify, (error) => this._notifyErrorListeners(error));
+      this._initialState().then(notify, error => this._notifyErrorListeners(error));
     } else {
-      this._search(query).then(notify, (error) => this._notifyErrorListeners(error));
+      this._search(query).then(notify, error => this._notifyErrorListeners(error));
     }
+  }
+
+  recordMentionSelection(mention) {
+    return this._recordSelection(mention).then(() => {}, error => debug(`error recording mention selection: ${error}`, error));
   }
 
   /**
@@ -203,23 +217,36 @@ class MentionResource extends AbstractMentionResource {
    */
   _initialState() {
     const secOptions = this._config.securityProvider();
+    const data = {};
     const options = {};
 
     if (this._config.containerId) {
-      options.containerId = this._config.containerId;
+      data.containerId = this._config.containerId;
     }
-    return requestService(this._config.url, 'mentions/bootstrap', options, secOptions);
+    return requestService(this._config.url, 'mentions/bootstrap', data, options, secOptions);
   }
 
   _search(query) {
     const secOptions = this._config.securityProvider();
-    const options = {
+    const data = {
       query,
     };
+    const options = {};
     if (this._config.containerId) {
-      options.containerId = this._config.containerId;
+      data.containerId = this._config.containerId;
     }
-    return requestService(this._config.url, 'mentions/search', options, secOptions);
+    return requestService(this._config.url, 'mentions/search', data, options, secOptions);
+  }
+
+  _recordSelection(mention) {
+    const secOptions = this._config.securityProvider();
+    const data = {
+      selectedUserId: mention.id,
+    };
+    const options = {
+      method: 'POST',
+    };
+    return requestService(this._config.url, 'mentions/record', data, options, secOptions);
   }
 }
 

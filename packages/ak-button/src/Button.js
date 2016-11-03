@@ -1,31 +1,30 @@
 import { vdom } from 'skatejs';
 import classNames from 'classnames';
-import { appearance } from './enumeratedProperties';
 
-const { PRIMARY, SUBTLE, LINK } = appearance.values;
-
-const getClasses = (styles, props) => ({
-  [styles.button]: true,
-  [styles.compact]: props.compact,
-  [styles.disabled]: props.disabled,
-  [styles.selected]: props.selected && !props.disabled,
-  [styles.primary]: props.appearance === PRIMARY && !props.disabled && !props.selected,
-  [styles.subtle]: props.appearance === SUBTLE && !props.disabled && !props.selected,
-  [styles.link]: props.appearance === LINK && !props.selected,
-});
+import getClasses from './internal/getButtonClasses';
 
 /* eslint-disable react/prop-types */
+const Element = (props, children) => {
+  const commonProps = {
+    className: classNames(getClasses(props.styles, props)),
+    disabled: props.disabled,
+    onmousedown: e => e.preventDefault(),
+  };
+  if (props.href) {
+    if (props.disabled) {
+      return (<span {...commonProps}>{children()}</span>);
+    }
+    return (<a href={props.href} target={props.target} {...commonProps}>{children()}</a>);
+  }
+  return (<button type={props.type} {...commonProps}>{children()}</button>);
+};
+
 export default (props, children) => (
   <span className={props.styles.root}>
-    <button
-      className={classNames(getClasses(props.styles, props))}
-      type={props.type}
-      disabled={props.disabled}
-      onmousedown={e => e.preventDefault()}
-    >
+    <Element {...props}>
       <span className={props.styles['button-content']}>
         {children()}
       </span>
-    </button>
+    </Element>
   </span>
 );

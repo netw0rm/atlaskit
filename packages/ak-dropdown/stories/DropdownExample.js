@@ -1,12 +1,15 @@
-import React from 'react';
-const { Component } = React;
+import React, { Component } from 'react';
 import reactify from 'akutil-react';
-import Dropdown, { DropdownTrigger, DropdownTriggerButton, Group, Item } from '../src/index';
+import AvatarWc from 'ak-avatar';
+
+import Dropdown, { DropdownTrigger, DropdownTriggerButton, Group, Item } from '../src';
 import styles from '../src/less/shadow-list.less';
+
 
 const dropdownClass = styles.locals.akDropdown;
 const DropdownReactComponent = reactify(Dropdown);
-const avatarUrl = require('url!./doge.jpg');
+const Avatar = reactify(AvatarWc);
+const avatarUrl = require('url-loader!./doge.jpg');
 
 const DropdownTriggerReact = reactify(DropdownTrigger);
 const DropdownTriggerButtonReact = reactify(DropdownTriggerButton);
@@ -17,22 +20,25 @@ export default class DropdownExample extends Component { // eslint-disable-line 
   render() {
     return (
       <DropdownReactComponent
-        open
+        open={!this.props.close}
         className={dropdownClass}
         boundariesElement={this.props.parent}
         stepOutside={this.props.stepOutside}
         position={this.props.position}
+        appearance={this.props.appearance}
       >
-        {this.props.avatarTarget ?
+        {this.props.avatarTarget ? (
           <DropdownTriggerReact slot="trigger" tab-index="1">
-            <ak-avatar
+            <Avatar
               src={avatarUrl}
               size="small"
             />
-          </DropdownTriggerReact> :
+          </DropdownTriggerReact>
+        ) : (
           <DropdownTriggerButtonReact slot="trigger" tab-index="1">
             Dropdown
           </DropdownTriggerButtonReact>
+          )
         }
         <GroupReact heading="Australia">
           <ItemReact>Sydney</ItemReact>
@@ -47,8 +53,10 @@ export default class DropdownExample extends Component { // eslint-disable-line 
 }
 
 DropdownExample.propTypes = {
-  parent: React.PropTypes.object,
+  parent: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   stepOutside: React.PropTypes.bool,
   position: React.PropTypes.string,
   avatarTarget: React.PropTypes.bool,
+  close: React.PropTypes.bool,
+  appearance: React.PropTypes.string,
 };

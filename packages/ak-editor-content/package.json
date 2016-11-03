@@ -1,12 +1,12 @@
 {
   "name": "ak-editor-content",
-  "version": "2.3.7",
+  "version": "2.4.0",
   "description": "Editor Content web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-content"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-content"
   },
   "files": [
     "dist"
@@ -25,5 +25,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

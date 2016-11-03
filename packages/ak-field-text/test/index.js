@@ -28,7 +28,7 @@ describe('ak-field-text', () => {
   describe('disabled', () => {
     let component;
 
-    beforeEach(() => setupComponent({ disabled: true }).then(newComponent => {
+    beforeEach(() => setupComponent({ disabled: true }).then((newComponent) => {
       component = newComponent;
     }));
     afterEach(() => tearDownComponent(component));
@@ -44,7 +44,7 @@ describe('ak-field-text', () => {
     let shadowRoot;
     const expectedLabel = 'My new label';
 
-    beforeEach(() => setupComponent({ label: expectedLabel }).then(newComponent => {
+    beforeEach(() => setupComponent({ label: expectedLabel }).then((newComponent) => {
       component = newComponent;
       shadowRoot = getShadowRoot(component);
     }));
@@ -84,7 +84,7 @@ describe('ak-field-text', () => {
     let component;
     const expectedName = 'fname';
 
-    beforeEach(() => setupComponent({ name: expectedName }).then(newComponent => {
+    beforeEach(() => setupComponent({ name: expectedName }).then((newComponent) => {
       component = newComponent;
     }));
     afterEach(() => tearDownComponent(component));
@@ -99,7 +99,7 @@ describe('ak-field-text', () => {
     let component;
     const expectedPlaceholder = 'Placeholder text';
 
-    beforeEach(() => setupComponent({ placeholder: expectedPlaceholder }).then(newComponent => {
+    beforeEach(() => setupComponent({ placeholder: expectedPlaceholder }).then((newComponent) => {
       component = newComponent;
     }));
     afterEach(() => tearDownComponent(component));
@@ -114,7 +114,7 @@ describe('ak-field-text', () => {
     let component;
     let shadowRoot;
 
-    beforeEach(() => setupComponent({ required: true }).then(newComponent => {
+    beforeEach(() => setupComponent({ required: true }).then((newComponent) => {
       component = newComponent;
       shadowRoot = getShadowRoot(component);
     }));
@@ -132,7 +132,7 @@ describe('ak-field-text', () => {
     let component;
     const expectedType = 'password';
 
-    beforeEach(() => setupComponent({ type: expectedType }).then(newComponent => {
+    beforeEach(() => setupComponent({ type: expectedType }).then((newComponent) => {
       component = newComponent;
     }));
     afterEach(() => tearDownComponent(component));
@@ -147,7 +147,7 @@ describe('ak-field-text', () => {
     let component;
     const expectedValue = 'my value';
 
-    beforeEach(() => setupComponent().then(newComponent => {
+    beforeEach(() => setupComponent().then((newComponent) => {
       component = newComponent;
     }));
     afterEach(() => tearDownComponent(component));
@@ -170,7 +170,7 @@ describe('ak-field-text', () => {
   describe('sizing', () => {
     let component;
 
-    beforeEach(() => setupComponent().then(newComponent => {
+    beforeEach(() => setupComponent().then((newComponent) => {
       component = newComponent;
     }));
     afterEach(() => tearDownComponent(component));
@@ -196,7 +196,7 @@ describe('ak-field-text', () => {
   describe('events', () => {
     let component;
 
-    beforeEach(() => setupComponent().then(newComponent => {
+    beforeEach(() => setupComponent().then((newComponent) => {
       component = newComponent;
     }));
     afterEach(() => tearDownComponent(component));

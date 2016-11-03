@@ -11,6 +11,6 @@ export default (props, children) => (
     className={shadowStyles.locals.href}
     href={props.href}
   >
-      {children()}
+    {children()}
   </a>
 );

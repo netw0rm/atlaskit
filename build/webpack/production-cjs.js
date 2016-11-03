@@ -1,5 +1,8 @@
-const Visualizer = require('webpack-visualizer-plugin');
+const path = require('path');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const productionConfig = require('./production.js');
+
 
 productionConfig.entry = {
   'dist/bundle-cjs.js': productionConfig.entry['dist/bundle.js'],
@@ -8,8 +11,12 @@ productionConfig.entry = {
 
 productionConfig.output.libraryTarget = 'commonjs2';
 
-productionConfig.plugins.push(new Visualizer({
-  filename: './stats/cjs.html',
-}));
+if (process.env.BITBUCKET_COMMIT) {
+  // only generate stats when we are in CI
+  productionConfig.plugins.push(new BundleAnalyzerPlugin({
+    analyzerMode: 'static',
+    reportFilename: path.resolve('./stats/cjs.html'),
+  }));
+}
 
 module.exports = productionConfig;

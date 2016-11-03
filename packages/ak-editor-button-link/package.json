@@ -1,12 +1,12 @@
 {
   "name": "ak-editor-button-link",
-  "version": "1.3.8",
+  "version": "1.4.0",
   "description": "Editor Button Link web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-button-link"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-button-link"
   },
   "files": [
     "dist"
@@ -21,10 +21,14 @@
   },
   "devDependencies": {
     "akutil-react": "^1.0.0",
-    "ak-icon": "^7.4.0"
+    "ak-icon": "^8.1.2"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

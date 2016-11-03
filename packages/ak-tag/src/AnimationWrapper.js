@@ -7,6 +7,7 @@ export default (props, children) => {
   const animationWrapperClasses = classnames({
     [shadowStyles.locals.animationWrapper]: true,
     [shadowStyles.locals.isRemoving]: props.isRemoving,
+    [shadowStyles.locals.isRemoved]: props.isRemoved,
   });
 
   const onAnimationend = (e) => {
@@ -20,6 +21,6 @@ export default (props, children) => {
     className={animationWrapperClasses}
     onAnimationend={onAnimationend}
   >
-      {children()}
+    {children()}
   </div>);
 };

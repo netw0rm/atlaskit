@@ -1,7 +1,9 @@
+import classnames from 'classnames';
 import { vdom, define } from 'skatejs';
 import { enumeration } from 'akutil-common';
+
 import shadowStyles from './shadow.less';
-import classnames from 'classnames';
+
 
 /**
  * Group alignment values. Based on the text-direction.

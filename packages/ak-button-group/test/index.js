@@ -1,9 +1,11 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { Component } from 'skatejs';
-import ButtonGroup from '../src';
 import Button from 'ak-button';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
+
+import ButtonGroup from '../src';
+
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -32,7 +34,7 @@ describe('ak-button-group', () => {
   afterEach(tearDownContainer);
 
   it('should be possible to create a component', () => {
-    (new ButtonGroup).should.be.instanceof(Component);
+    (new ButtonGroup()).should.be.instanceof(Component);
   });
 
   it('group that x-overflows its container should stay on same line i.e. same height', (done) => {

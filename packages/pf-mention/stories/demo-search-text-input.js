@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import uid from 'uid';
 
 const SearchTextInput = React.createClass({
 
@@ -54,17 +55,19 @@ const SearchTextInput = React.createClass({
     /* eslint no-unused-vars: 0 */
     const { onUp, onDown, onEnter, onEscape, label, inputRef, ...other } = this.props;
     let labelComponent;
+    const id = uid();
     if (label) {
-      labelComponent = <label>{label}</label>;
+      labelComponent = <label htmlFor={id}>{label}</label>;
     }
     return (
-      <div className="pf-search-text-input">
+      <div id="search-text" className="pf-search-text-input">
         {labelComponent}
         <input
           {...other}
+          id={id}
           type="text"
           onKeyDown={this._handleKeyDown}
-          ref={(ref) => this._inputRefUpdate(ref)}
+          ref={ref => this._inputRefUpdate(ref)}
           style={{
             height: '20px',
             marginLeft: '10px',

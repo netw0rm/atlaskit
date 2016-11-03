@@ -2,7 +2,7 @@
 
 The AkPage component wraps the whole page and should be the first child of the body. It contains slots for different layout styles and for the navigation component.
 
-![Example avatars](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-page/docs/page.png)
+![Example avatars](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-page/docs/page.png)
 
 ##Try it out
 

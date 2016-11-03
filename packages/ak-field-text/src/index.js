@@ -10,10 +10,13 @@ function getInput(elem) {
 }
 
 /**
- * @description Create instances of the component programmatically, or using markup.
+ * @description A text based form field with an associated label.
  * @class TextField
  * @example @js import TextField from 'ak-field-text';
  * const component = new TextField();
+ * @example @html @playground <form>
+ *   <ak-field-text label="My form field"></ak-field-text>
+ * </form>
  */
 export default define('ak-field-text', {
   render(elem) {
@@ -44,6 +47,7 @@ export default define('ak-field-text', {
      * @instance
      * @type {Boolean}
      * @default false
+     * @example @html <ak-field-text compact></ak-field-text>
      */
     compact: prop.boolean({ attribute: true }),
     /**
@@ -52,6 +56,7 @@ export default define('ak-field-text', {
      * @instance
      * @type {Boolean}
      * @default false
+     * @example @html <ak-field-text disabled></ak-field-text>
      */
     disabled: prop.boolean({ attribute: true }),
     /**
@@ -59,6 +64,7 @@ export default define('ak-field-text', {
      * @memberof TextField
      * @instance
      * @type {string}
+     * @example @html <ak-field-text label="First name"></ak-field-text>
      */
     label: prop.string({ attribute: true }),
     /**
@@ -66,6 +72,7 @@ export default define('ak-field-text', {
      * @memberof TextField
      * @instance
      * @type {string}
+     * @example @html <ak-field-text name="fname"></ak-field-text>
      */
     name: prop.string({ attribute: true }),
     /**
@@ -73,6 +80,7 @@ export default define('ak-field-text', {
      * @memberof TextField
      * @instance
      * @type {string}
+     * @example @html <ak-field-text placeholder="e.g. Your name"></ak-field-text>
      */
     placeholder: prop.string({ attribute: true }),
     /**
@@ -81,6 +89,7 @@ export default define('ak-field-text', {
      * @instance
      * @type {Boolean}
      * @default false
+     * @example @html <ak-field-text required></ak-field-text>
      */
     required: prop.boolean({ attribute: true }),
     /**
@@ -89,6 +98,7 @@ export default define('ak-field-text', {
      * @instance
      * @type {string}
      * @default text
+     * @example @html <ak-field-text type="password"></ak-field-text>
      */
     // TODO: Document valid values for this prop
     type: prop.string({
@@ -100,6 +110,7 @@ export default define('ak-field-text', {
      * @memberof TextField
      * @instance
      * @type {string}
+     * @example @js field.value = 'My new text field value';
      */
     value: {
       get(elem) {

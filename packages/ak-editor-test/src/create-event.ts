@@ -1,13 +1,7 @@
 /**
  * Test if we could use `new Event()` to create an event
  *
- * In IE, doing `new Event()` would throw.
- * we'd have to the following API:
- *
- * ```
- * event = document.createEvent('Event');
- * event.initEvent(name, options.bubbles, options.cancelable);
- * ```
+ * In IE, doing `new Event()` would throw an error.
  */
 const supportsEvent = ((TheEvent) => {
   if (TheEvent) {
@@ -29,9 +23,8 @@ interface Options {
 /**
  * Build an event object in a cross-browser manner
  *
- * ```
- * const event = createEvent('paste', options);
- * ```
+ * Usage:
+ *    const event = createEvent('paste', options);
  */
 export default (name: string, options: Options = {}) => {
   let event;

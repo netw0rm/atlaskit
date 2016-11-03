@@ -20,11 +20,10 @@ export interface PasteContent {
 /**
  * Dispatch a paste event on the given ProseMirror instance
  *
- * ```
- * dispatchPasteEvent(pm, {
- *   plain: 'copied text'
- * });
- * ```
+ * Usage:
+ *     dispatchPasteEvent(pm, {
+ *         plain: 'copied text'
+ *     });
  */
 export default (pm: ProseMirror, content: PasteContent) => {
   const event = createEvent('paste');

@@ -83,8 +83,8 @@
     "validate-commit-message": "^3.0.1",
     "wait-on": "^1.5.3",
     "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.2",
-    "webpack-visualizer-plugin": "^0.1.5"
+    "webpack-bundle-analyzer": "^1.4.1",
+    "webpack-dev-server": "^1.16.2"
   },
   "engines": {
     "npm": ">=3.8",

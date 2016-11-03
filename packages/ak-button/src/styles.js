@@ -124,7 +124,7 @@ export default (vars) => {
       background: val('primary.background', akColorB400),
       color: val('primary.color', akColorN20),
       'border-color': val('primary.borderColor'),
-      'font-weight': 600,
+      'font-weight': val('primary.fontWeight', 'normal'),
 
       '&:hover': {
         background: val('primary.hover.background', akColorB500),

@@ -16,6 +16,14 @@ export default new Plugin(class SyncPlugin {
         forceSync();
         return slice;
       },
+      transformPastedText(text: string) {
+        forceSync();
+        return text;
+      },
+      transformPastedHTML(html: string) {
+        forceSync();
+        return html;
+      },
     };
 
     const defaultHandler = () => { forceSync(); };

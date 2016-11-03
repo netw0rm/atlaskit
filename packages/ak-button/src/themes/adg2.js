@@ -20,7 +20,7 @@ export default define('ak-button-theme-adg2', {
         <Prop name="primary.background" value="#3572b0" />
         <Prop name="primary.borderColor" value="transparent" />
         <Prop name="primary.color" value="#fff" />
-        <Prop name="primary.fontWeight" value="700" />
+        <Prop name="primary.fontWeight" value="bold" />
         <Prop name="primary.hover.background" value="#2a67a5" />
         <Prop name="primary.hover.borderColor" value="transparent" />
         <Prop name="primary.active.background" value="#3572b0" />

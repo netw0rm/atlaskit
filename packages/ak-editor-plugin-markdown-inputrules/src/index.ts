@@ -9,11 +9,11 @@ import {
   headingRule
 } from 'ak-editor-prosemirror';
 
-const buildBlockRules = (nodes: any): Array<InputRule> => {
+const buildBlockRules = (schema: Schema): Array<InputRule> => {
   const rules = Array<InputRule>();
 
-  if (nodes.heading) {
-    rules.push(headingRule(nodes.heading, 3));
+  if (schema.nodes.heading) {
+    rules.push(headingRule(schema.nodes.heading, 3));
   }
 
   return rules;
@@ -157,7 +157,7 @@ export default new Plugin(class MarkdownInputRulesPlugin {
   inputRules: InputRule[];
 
   constructor(pm: ProseMirror) {
-    const blockRules = buildBlockRules(pm.schema.nodes);
+    const blockRules = buildBlockRules(pm.schema);
 
     this.inputRules = [
       strongRule1,

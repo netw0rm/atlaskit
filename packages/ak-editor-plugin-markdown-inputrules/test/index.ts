@@ -107,16 +107,14 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
     const { pm, sel } = editor(doc(p('{<>}')));
 
     pm.input.insertText(sel, sel, '# ');
-    pm.input.insertText(sel, sel, 'Text');
-    expect(pm.doc).to.deep.equal(doc(h1('Text')));
+    expect(pm.doc).to.deep.equal(doc(h1()));
   });
 
   it('should convert "## " to heading 2', () => {
     const { pm, sel } = editor(doc(p('{<>}')));
 
     pm.input.insertText(sel, sel, '## ');
-    pm.input.insertText(sel, sel, 'Text');
-    expect(pm.doc).to.deep.equal(doc(h2('Text')));
+    expect(pm.doc).to.deep.equal(doc(h2()));
   });
 
 
@@ -124,7 +122,6 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
     const { pm, sel } = editor(doc(p('{<>}')));
 
     pm.input.insertText(sel, sel, '### ');
-    pm.input.insertText(sel, sel, 'Text');
-    expect(pm.doc).to.deep.equal(doc(h3('Text')));
+    expect(pm.doc).to.deep.equal(doc(h3()));
   });
 });

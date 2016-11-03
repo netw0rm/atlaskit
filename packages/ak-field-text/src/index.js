@@ -3,10 +3,10 @@ import FieldBase from 'ak-field-base';
 
 import shadowStyles from './shadow.less';
 import * as events from './internal/index.events';
-
+import { inputEl } from './internal/symbols';
 
 function getInput(elem) {
-  return elem.querySelector('[slot=input]');
+  return elem[inputEl];
 }
 
 /**
@@ -26,6 +26,7 @@ export default define('ak-field-text', {
         required={elem.required}
       >
         <input
+          ref={el => (elem[inputEl] = el)}
           slot="input-slot"
           className={shadowStyles.locals.input}
           disabled={elem.disabled}
@@ -103,7 +104,7 @@ export default define('ak-field-text', {
     value: {
       get(elem) {
         const input = getInput(elem);
-        return input ? input.value : null;
+        return input ? input.value : '';
       },
       set(elem, data) {
         const input = getInput(elem);

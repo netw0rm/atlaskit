@@ -30,6 +30,7 @@ describe('ak-field-base', () => {
       slotWrapper: slotWrapperClass,
       invalid: invalidClass,
       focused: focusedClass,
+      compact: compactClass,
     } = shadowStyles.locals;
 
     afterEach(() => tearDownComponent(component));
@@ -74,8 +75,8 @@ describe('ak-field-base', () => {
 
       it('should render the slotwrapper with the .invalid class', () => {
         const invalidSlotWrapperClassSelector = `.${slotWrapperClass}.${invalidClass}`;
-        const focusedSlotWrapper = shadowRoot.querySelector(invalidSlotWrapperClassSelector);
-        expect(focusedSlotWrapper).to.not.be.null;
+        const invalidSlotWrapper = shadowRoot.querySelector(invalidSlotWrapperClassSelector);
+        expect(invalidSlotWrapper).to.not.be.null;
       });
     });
 
@@ -90,6 +91,21 @@ describe('ak-field-base', () => {
         const invalidElement = shadowRoot.querySelector(`.${invalidClass}`);
         expect(focusedElement).to.not.be.null;
         expect(invalidElement).to.be.null;
+      });
+    });
+
+    describe('appearance', () => {
+      describe('compact', () => {
+        const tmpDefinition = (<Content appearance="compact" />);
+
+        beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
+          .then(setupLocalVariables));
+
+        it('should render the slotwrapper with the .compact class', () => {
+          const compactSlotWrapperClassSelector = `.${slotWrapperClass}.${compactClass}`;
+          const compactSlotWrapper = shadowRoot.querySelector(compactSlotWrapperClassSelector);
+          expect(compactSlotWrapper).to.not.be.null;
+        });
       });
     });
   });

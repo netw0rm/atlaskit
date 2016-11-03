@@ -12,7 +12,7 @@
     "@kadira/storybook": "^2.24.0",
     "akutil-common-test": "^4.0.0",
     "akutil-cucumber": "^1.0.0",
-    "akutil-dmd-plugin": "^2.0.2",
+    "akutil-dmd-plugin": "^2.2.0",
     "akutil-polyfills": "^2.2.1",
     "akutil-shared-styles": "^34.2.2",
     "autoprefixer": "^6.5.0",

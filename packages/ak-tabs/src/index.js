@@ -20,8 +20,17 @@ const resizeListener = Symbol('resizeListener');
 /**
  * @description The Tabs element. Container to manage and display Tab elements.
  * @class Tabs
- * @example @js import Tabs from 'ak-tabs';
- * const myTabs = new Tabs();
+ * @example @js @playground import Tabs from 'ak-tabs';
+ * @example @html @playground <ak-tabs>
+ *   <ak-tabs-tab label="Introduction" selected>
+ *     <h1>Hello world</h1>
+ *     <p>This is my first tab. Click the 'Content' label above to view the second tab.</p>
+ *   </ak-tabs-tab>
+ *   <ak-tabs-tab label="Content">
+ *     <h1>Tab 2</h1>
+ *     <p>This is my second tab.</p>
+ *   </ak-tabs-tab>
+ * </ak-tabs>
  */
 export default define('ak-tabs', {
   created(elem) {

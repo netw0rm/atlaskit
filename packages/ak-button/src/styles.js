@@ -80,7 +80,7 @@ export default (vars) => {
       'border-width': '0',
       'border-radius': val('button.baseRadius', akBorderRadius),
       color: val('standard.color', akColorN500),
-      display: 'inline-block',
+      display: 'inline-flex',
       'font-style': 'normal',
       'font-size': 'inherit',
       height: val('button.height', `${(grid * 4) / em}em`),
@@ -95,6 +95,7 @@ export default (vars) => {
       'user-select': 'none',
       border: val('button.border', 'none'),
       'vertical-align': 'middle',
+      'align-items': 'center',
 
       '&::-moz-focus-inner': {
         margin: 0,
@@ -159,6 +160,9 @@ export default (vars) => {
         'border-color': val('selected.hover.borderColor'),
         transition: 'none',
       },
+    },
+    href: {
+      'text-decoration': 'none',
     },
     link: {
       background: 'none',

@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "3.5.3",
+  "version": "3.5.4",
   "description": "Editor web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -51,5 +51,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

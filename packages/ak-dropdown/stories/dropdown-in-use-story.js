@@ -160,7 +160,7 @@ storiesOf(`${name} with different parents`, module)
           left: '20px',
         }}
       >
-        <DropdownExample position="right bottom" avatarTarget />
+        <DropdownExample position="right bottom" avatarTarget appearance="tall" />
       </div>
     </div>
   ))

@@ -25,6 +25,7 @@ export default class DropdownExample extends Component { // eslint-disable-line 
         boundariesElement={this.props.parent}
         stepOutside={this.props.stepOutside}
         position={this.props.position}
+        appearance={this.props.appearance}
       >
         {this.props.avatarTarget ? (
           <DropdownTriggerReact slot="trigger" tab-index="1">
@@ -57,4 +58,5 @@ DropdownExample.propTypes = {
   position: React.PropTypes.string,
   avatarTarget: React.PropTypes.bool,
   close: React.PropTypes.bool,
+  appearance: React.PropTypes.string,
 };

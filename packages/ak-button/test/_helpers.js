@@ -6,6 +6,7 @@ import AkButton from '../src';
 export const shadowDomQuery = (elem, selector) => getShadowRoot(elem).querySelector(selector);
 
 export const getShadowButtonElem = elem => shadowDomQuery(elem, 'button');
+export const getShadowAnchorElem = elem => shadowDomQuery(elem, 'a');
 
 export const createDivTest = (config) => {
   const div = document.createElement('div');

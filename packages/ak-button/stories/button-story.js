@@ -14,7 +14,7 @@ const css = {
   container: {
     display: 'flex',
     'flex-direction': 'column',
-    width: '50%',
+    width: '70%',
   },
   '::slotted(.sample)': {
     display: 'flex',

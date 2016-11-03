@@ -14,7 +14,7 @@
     "akutil-cucumber": "^1.0.0",
     "akutil-dmd-plugin": "^2.2.0",
     "akutil-polyfills": "^2.2.1",
-    "akutil-shared-styles": "^34.2.2",
+    "akutil-shared-styles": "^35.0.1",
     "autoprefixer": "^6.5.0",
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.5",

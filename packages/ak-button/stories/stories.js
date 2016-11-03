@@ -21,21 +21,21 @@ const buildStory = (props, Wrapper) => (
     <Wrapper>
       <div className="sample">
         <AkButton {...props}>
-          Button
+          Create Issue
         </AkButton>
         <span>no extra attrs</span>
       </div>
 
       <div className="sample">
         <AkButton {...props} href="http://www.atlassian.com">
-          Button
+          Create Issue
         </AkButton>
         <span>with href attribute</span>
       </div>
 
       <div className="sample">
         <AkButton {...props} href="http://www.atlassian.com">
-          Button
+          Create Issue
         </AkButton>
         <span>with href attribute + target blank</span>
       </div>
@@ -44,7 +44,7 @@ const buildStory = (props, Wrapper) => (
         <span>
           text
           <AkButton {...props} onClick={action('clicking the WebComponent')}>
-            Button
+            Create Issue
           </AkButton>
           text
         </span>
@@ -53,7 +53,7 @@ const buildStory = (props, Wrapper) => (
 
       <div className="sample">
         <AkButton {...props} disabled onClick={action('clicking the WebComponent')}>
-          Button
+          Disabled Option
         </AkButton>
         <span>disabled</span>
       </div>
@@ -66,14 +66,14 @@ const buildStory = (props, Wrapper) => (
           href="http://www.atlassian.com"
           target="_blank"
         >
-          Button
+          Go to Site
         </AkButton>
         <span>disabled + href + target</span>
       </div>
 
       <div className="sample">
         <AkButton {...props} selected>
-          Button
+          Selected
         </AkButton>
         <span>selected</span>
       </div>
@@ -81,14 +81,38 @@ const buildStory = (props, Wrapper) => (
       <div className="sample">
         <AkButton {...props}>
           <Page slot="before" />
-          Button
+          Comment
         </AkButton>
         <span>button + text with page icon</span>
       </div>
 
       <div className="sample">
+        <span>
+          text
+          <AkButton {...props}>
+            <Question slot="before" />
+            Info
+          </AkButton>
+          text
+        </span>
+        <span>button + text with question icon + text alignment check</span>
+      </div>
+
+      <div className="sample">
+        <span>
+          text
+          <AkButton {...props} selected>
+            <Calendar slot="after" />
+            Pick Date
+          </AkButton>
+          text
+        </span>
+        <span>button + text with calendar icon + text alignment check + selected</span>
+      </div>
+
+      <div className="sample">
         <AkButton {...props}>
-          Button
+          Show Options
           <Expand slot="after" />
         </AkButton>
         <span>button + text with expand icon</span>
@@ -109,36 +133,40 @@ const buildStory = (props, Wrapper) => (
       </div>
 
       <div className="sample">
-        <AkButton {...props}>
-          <Calendar />
-        </AkButton>
-        <span>button with Calendar icon</span>
+        <span>
+          text
+          <AkButton {...props}>
+            <Calendar />
+          </AkButton>
+          text
+        </span>
+        <span>button with Calendar icon + text alignment check</span>
       </div>
 
       <div className="sample">
-        <AkButton {...props}>
+        <AkButton {...props} selected>
           <Question />
         </AkButton>
-        <span>button with Question icon</span>
+        <span>button with Question icon + selected</span>
       </div>
 
       <div className="sample">
         <AkButton {...props} compact>
-          Button
+          Create Issue
         </AkButton>
         <span>compact</span>
       </div>
 
       <div className="sample">
         <AkButton {...props} onClick={action('clicking the WebComponent')} compact disabled>
-          Button
+          Disabled Option
         </AkButton>
         <span>compact + disabled</span>
       </div>
 
       <div className="sample">
         <AkButton {...props} compact selected>
-          Button
+          Selected Option
         </AkButton>
         <span>compact + selected</span>
       </div>

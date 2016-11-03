@@ -21,13 +21,18 @@ export default define('ak-field-text', {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <FieldBase label={elem.label}>
+        <FieldBase
+          appearance={elem.compact ? 'compact' : 'standard'}
+          disabled={elem.disabled}
+          label={elem.label}
+          required={elem.required}
+        >
           <input
+            slot="input-slot"
+            className={shadowStyles.locals.input}
             disabled={elem.disabled}
             name={elem.name}
             placeholder={elem.placeholder}
-            slot="input-slot"
-            className={shadowStyles.locals.input}
             type={elem.type}
           />
         </FieldBase>
@@ -42,7 +47,6 @@ export default define('ak-field-text', {
      * @type {Boolean}
      * @default false
      */
-     // TODO: Compact styles in ak-field-base
     compact: prop.boolean({ attribute: true }),
     /**
      * @description Whether the field is disabled.
@@ -51,7 +55,6 @@ export default define('ak-field-text', {
      * @type {Boolean}
      * @default false
      */
-     // TODO: Styles in ak-field-base
     disabled: prop.boolean({ attribute: true }),
     /**
      * @description The label to be rendered next to the supplied text input.
@@ -81,7 +84,6 @@ export default define('ak-field-text', {
      * @type {Boolean}
      * @default false
      */
-     // TODO: Show '*' in ak-field-base
     required: prop.boolean({ attribute: true }),
     /**
      * @description The type of control to display.

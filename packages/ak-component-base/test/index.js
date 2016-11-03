@@ -1,11 +1,11 @@
-import { waitUntil, getShadowRoot } from 'akutil-common-test';
+import { waitUntil, getShadowRoot, tearDownComponent } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import { Component, prop, define, vdom } from 'skatejs';
 
 import Base from '../src';
-import { setupComponent, tearDownComponent } from './_helpers';
+import { setupComponent } from './_helpers';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);

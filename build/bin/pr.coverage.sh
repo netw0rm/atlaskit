@@ -7,6 +7,7 @@ AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
 AK_PATH_SHA="$AK_PATH/$BITBUCKET_COMMIT"
 BASEDIR=$(dirname $0)
 . $BASEDIR/_build_status.sh
+. $BASEDIR/_cf_invalidate.sh
 
 function stats_build_status() {
   build_status \
@@ -35,6 +36,8 @@ $CHALK --no-stdin -t "{blue Packaging coverage}"
 rm -f $ZIP_FILE
 zip -0 -r -T $ZIP_FILE $TEMP_DIR/resources
 
+URL_EXISTED=$(url_exists "$AK_PATH_SHA/")
+
 $CHALK --no-stdin -t "{blue Uploading coverage to CDN...}"
 prebake-distributor-runner \
 --s3-bucket="$S3_BUCKET" \
@@ -42,10 +45,8 @@ prebake-distributor-runner \
 --s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/$CDN_PREFIX" \
 "$ZIP_FILE"
 
-# Invalidate CDN caches
-$CHALK --no-stdin -t  "{blue CDN invalidation (coverage) starting now (this may take some time)}"
-AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
-AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
-cf-invalidate -- $CLOUDFRONT_DISTRIBUTION "/$AK_PATH_SHA/*"
+if [ "$URL_EXISTED" == "1" ]; then
+  cf_invalidate "/$AK_PATH_SHA/*"
+fi
 
 stats_build_status "SUCCESSFUL"

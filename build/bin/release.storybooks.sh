@@ -4,6 +4,7 @@ set -e
 CHALK="`npm bin`/chalk"
 BASEDIR=$(dirname $0)
 . $BASEDIR/_build_status.sh
+. $BASEDIR/_cf_invalidate.sh
 
 function storybooks_build_status() {
   build_status \
@@ -30,10 +31,7 @@ prebake-distributor-runner \
 --s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/stories" \
 "../ak-storybooks-cdn.zip"
 
-# Invalidate CDN caches
-$CHALK --no-stdin -t "{blue CDN invalidation (storybooks) starting now (this may take some time)}"
-AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
-AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
-cf-invalidate -- $CLOUDFRONT_DISTRIBUTION '/atlaskit/stories/*'
+# Invalidate CDN cache
+cf_invalidate "/atlaskit/stories/*"
 
 storybooks_build_status "SUCCESSFUL"

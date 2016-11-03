@@ -45,6 +45,7 @@ export {
   inputRules,
   InputRule,
   allInputRules,
+  headingRule
 } from 'prosemirror/dist/inputrules';
 
 export {

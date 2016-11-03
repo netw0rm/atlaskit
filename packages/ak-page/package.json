@@ -1,6 +1,6 @@
 {
   "name": "ak-page",
-  "version": "5.1.6",
+  "version": "5.2.0",
   "description": "ak-page webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -25,12 +25,16 @@
   "devDependencies": {
     "ak-icon": "^8.1.2",
     "ak-navigation": "^11.0.0",
-    "akutil-common-test": "^3.0.0",
+    "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0",
     "react-lorem-component": "^0.10.1"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

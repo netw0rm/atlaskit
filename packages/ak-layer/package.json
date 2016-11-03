@@ -1,6 +1,6 @@
 {
   "name": "ak-layer",
-  "version": "57.9.4",
+  "version": "57.10.1",
   "description": "A layer component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -15,12 +15,14 @@
   "license": "Apache-2.0",
   "dependencies": {
     "akutil-common": "^2.0.0",
-    "akutil-common-test": "^3.0.0",
     "akutil-shared-styles": "^34.0.1",
     "babel-runtime": "^6.11.6",
     "object-assign": "^4.1.0",
     "popper.js": "1.0.0-alpha.3",
     "skatejs": "^3.0.0"
+  },
+  "devDependencies": {
+    "akutil-common-test": "^4.0.0"
   },
   "peerDependencies": {
     "core-js": "*"
@@ -28,5 +30,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

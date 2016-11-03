@@ -38,6 +38,10 @@ module.exports = (config) => {
     singleRun: false,
 
     concurrency: Infinity,
+
+    mochaReporter: {
+      showDiff: true,
+    },
   });
 
   config.webpack.plugins.push(new FailPlugin(config));

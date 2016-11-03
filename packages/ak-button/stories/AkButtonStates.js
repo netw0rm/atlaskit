@@ -16,9 +16,25 @@ class AkButtonStates extends React.Component {
       selected: false,
       compact: false,
       appearance: APPEARANCE.STANDARD,
+      href: false,
       before: false,
       after: false,
     };
+  }
+
+  createCheckboxHrefAttribute() {
+    const id = `label-${uid()}`;
+    return (
+      <label htmlFor={id}>
+        <input
+          id={id}
+          type="checkbox"
+          onChange={() => this.setState({ href: (this.state.href) ? false : 'http://www.atlassian.com' })}
+          checked={this.state.href}
+        />
+        href
+      </label>
+    );
   }
 
   createCheckboxBooleanAttribute(attribute) {
@@ -76,6 +92,12 @@ class AkButtonStates extends React.Component {
       <div>
         <style>{'label {margin-right: 10px;}'}</style>
         <form>
+          <strong>Href Attribute</strong>
+          <br />
+          {this.createCheckboxHrefAttribute()}
+        </form>
+        <br />
+        <form>
           <strong>Boolean Attributes</strong>
           <br />
           {this.createCheckboxBooleanAttribute('disabled')}
@@ -111,6 +133,7 @@ class AkButtonStates extends React.Component {
         <p>
           Baseline alignment check
           <AkButton
+            href={this.state.href}
             disabled={this.state.disabled}
             selected={this.state.selected}
             compact={this.state.compact}

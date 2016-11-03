@@ -6,4 +6,4 @@ import addStories from './_add-stories';
 import { Adg2ThemeWrapper } from './button-story-wrappers';
 
 
-addStories(storiesOf(`${name} with adg2 theme`, module), reactify(Adg2ThemeWrapper));
+addStories(storiesOf(`${name} (adg2 theme)`, module), reactify(Adg2ThemeWrapper));

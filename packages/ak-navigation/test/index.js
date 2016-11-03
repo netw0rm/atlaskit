@@ -175,6 +175,16 @@ describe('ak-navigation', () => {
     });
   });
 
+  describe('resizing', () => {
+    it('navigation.width can be set to a number and that is respected', (done) => {
+      afterMutations(
+        () => props(component, { width: 101 }),
+        () => expect(component.width).to.equal(101),
+        done
+      );
+    });
+  });
+
   describe('with collapsible set', () => {
     beforeEach(() => {
       component.collapsible = true;
@@ -185,6 +195,35 @@ describe('ak-navigation', () => {
         keyup('[');
         expect(component.open).to.equal(true);
       }, done);
+    });
+    ['shiftKey', 'metaKey', 'ctrlKey', 'altKey'].forEach((key) => {
+      it(`toggling does not work with ${key} held`, (done) => {
+        expect(component.open).to.equal(false);
+        afterMutations(() => {
+          keyup('[', { eventProperties: { [key]: true } });
+          expect(component.open).to.equal(false);
+        }, done);
+      });
+    });
+
+    ['textarea', 'input'].forEach((elementName) => {
+      describe(`with an ${elementName}`, () => {
+        let el;
+        beforeEach(() => {
+          el = document.createElement(elementName);
+          document.body.appendChild(el);
+        });
+
+        afterEach(() => document.body.removeChild(el));
+
+        it(`toggling does not work when triggered on the ${elementName}`, (done) => {
+          expect(component.open).to.equal(false);
+          afterMutations(() => {
+            keyup('[', { target: el });
+            expect(component.open).to.equal(false);
+          }, done);
+        });
+      });
     });
 
     it('toggling does not work after detached', (done) => {
@@ -232,7 +271,7 @@ describe('ak-navigation', () => {
         expect(component.children[0].selected).to.equal(true);
         expect(component.children[1].selected).to.equal(false);
         expect(component.children[2].selected).to.equal(false);
-        keyup('enter', component.children[1]);
+        keyup('enter', { target: component.children[1] });
         expect(component.children[0].selected).to.equal(false);
         expect(component.children[1].selected).to.equal(true);
         expect(component.children[2].selected).to.equal(false);

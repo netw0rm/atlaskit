@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-footer",
-  "version": "1.2.13",
+  "version": "1.4.1",
   "description": "Editor Footer web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -21,7 +21,7 @@
     "skatejs": "^3.0.0"
   },
   "devDependencies": {
-    "akutil-common-test": "^3.0.0",
+    "akutil-common-test": "^4.0.0",
     "akutil-shared-styles": "^34.0.1",
     "akutil-react": "^1.0.0",
     "ak-editor-shared-styles": "^1.0.3"
@@ -29,5 +29,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

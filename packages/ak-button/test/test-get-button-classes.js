@@ -12,6 +12,7 @@ const classKeys = {
   primary: 'primary',
   subtle: 'subtle',
   link: 'link',
+  href: 'href',
 };
 
 const expectKeys = (classes, expectedCount, ...expectedClasses) => {
@@ -104,11 +105,20 @@ describe('ak-button/get-button-classes', () => {
     });
   });
 
+  describe('href', () => {
+    let classes;
+    beforeEach(() => (classes = getClasses(classKeys, { href: true })));
+
+    it('classes should include href', () =>
+      expectKeys(classes, 2, classKeys.button, classKeys.href)
+    );
+  });
+
   describe('selected', () => {
     let classes;
     beforeEach(() => (classes = getClasses(classKeys, { selected: true })));
 
-    it('clases should include selected', () =>
+    it('classes should include selected', () =>
       expectKeys(classes, 2, classKeys.button, classKeys.selected)
     );
 
@@ -128,6 +138,7 @@ describe('ak-button/get-button-classes', () => {
 
     [
       { selected: true },
+      { href: 'www.atlassian.com' },
       { appearance: APPEARANCE.PRIMARY },
       { appearance: APPEARANCE.SUBTLE },
     ].forEach(setup =>

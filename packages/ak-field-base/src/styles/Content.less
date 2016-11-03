@@ -2,6 +2,7 @@
 
 @base-horizontal-padding: @grid * 2;
 @base-height: @grid * 10;
+@base-height-compact: @grid * 8;
 
 @base-font-size: 14;
 @base-inner-height: @grid * 5;
@@ -32,7 +33,6 @@
   padding: unit((@height - (2 * @border) - @base-inner-height) / 2, px) unit((@x-spacing - @border), px);
 }
 
-
 .slot-wrapper {
   .borders-and-padding(@base-border-width, @base-horizontal-padding, @base-height);
   flex: 1 0 auto;
@@ -52,6 +52,10 @@
   max-width: 100%;
   word-wrap: break-word;
 
+  &.compact {
+    .borders-and-padding(@base-border-width, @base-horizontal-padding, @base-height-compact);
+  }
+
   // note: .focused not :focus as CSS wont know that slotted content is focused
   &:hover {
     background-color: @base-background-color-hover;
@@ -69,11 +73,19 @@
     .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
     border-color: @base-border-color-focused;
     background-color: @base-background-color-focused;
+
+    &.compact {
+      .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height-compact);
+    }
   }
 
   &.invalid {
     // we run this mixin so that we get a border the same thickness as the focus style
     .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
     border-color: @ak-color-R300;
+
+    &.compact {
+      .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height-compact);
+    }
   }
 }

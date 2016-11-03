@@ -30,7 +30,7 @@
     "ak-button": "^1.4.3",
     "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0",
-    "akutil-shared-styles": "^34.0.1",
+    "akutil-shared-styles": "^35.0.1",
     "async": "^2.0.1",
     "glob": "^7.0.5",
     "lodash.sample": "^4.2.1",

@@ -172,9 +172,9 @@
       "resolved": "https://registry.npmjs.org/akutil-polyfills/-/akutil-polyfills-2.3.0.tgz"
     },
     "akutil-shared-styles": {
-      "version": "34.5.0",
-      "from": "akutil-shared-styles@>=34.2.2 <35.0.0",
-      "resolved": "https://registry.npmjs.org/akutil-shared-styles/-/akutil-shared-styles-34.5.0.tgz"
+      "version": "35.0.1",
+      "from": "akutil-shared-styles@>=35.0.1 <36.0.0",
+      "resolved": "https://registry.npmjs.org/akutil-shared-styles/-/akutil-shared-styles-35.0.1.tgz"
     },
     "align-text": {
       "version": "0.1.4",

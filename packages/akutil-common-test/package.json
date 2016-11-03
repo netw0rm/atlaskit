@@ -1,6 +1,6 @@
 {
   "name": "akutil-common-test",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Shared tests used by AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -25,7 +25,7 @@
     "skatejs": "^3.1.2"
   },
   "peerDependencies": {
-    "skatejs": "^3.1.2"
+    "skatejs": "^3.x || 4.x"
   },
   "repository": {
     "type": "git",

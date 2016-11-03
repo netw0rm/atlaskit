@@ -1,4 +1,4 @@
-import { name } from '../';
+import { name } from '../package.json';
 import * as exports from '../src';
 import {
     computeBooleanValue, setBooleanAttribute,

@@ -4,7 +4,7 @@ import keyCode from 'keycode';
 import { getShadowRoot } from 'akutil-common-test';
 import 'custom-event-polyfill';
 
-import { name } from '../';
+import { name } from '../package.json';
 import {
   DropdownTrigger,
   DropdownTriggerButton,

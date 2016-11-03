@@ -5,7 +5,7 @@ import { props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
 
-import { name } from '../';
+import { name } from '../package.json';
 import { events as dropdownEvents } from '../src';
 import Item from '../src/index.item';
 

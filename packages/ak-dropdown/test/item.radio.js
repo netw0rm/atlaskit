@@ -5,7 +5,7 @@ import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot, getRootNode } from 'akutil-common-test';
 import Radio from 'ak-icon/glyph/radio';
 
-import { name } from '../';
+import { name } from '../package.json';
 import ItemOriginal from '../src/index.item';
 import Item from '../src/index.item.radio';
 import supportsVoiceOver from '../src/internal/supportsVoiceOver';

@@ -2,7 +2,7 @@ import keyCode from 'keycode';
 import 'custom-event-polyfill';
 import { afterMutations } from 'akutil-common-test';
 
-import { name } from '../';
+import { name } from '../package.json';
 import KeyPressHandler,
       { KeyInvalidError, CallbackInvalidError } from '../src/index.KeyPressHandler';
 

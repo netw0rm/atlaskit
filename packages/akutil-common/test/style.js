@@ -1,7 +1,7 @@
 import { define, vdom } from 'skatejs';
 import { afterMutations } from 'akutil-common-test';
 
-import { name } from '../';
+import { name } from '../package.json';
 import { style } from '../src';
 
 describe(name, () => {

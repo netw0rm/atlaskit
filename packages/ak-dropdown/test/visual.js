@@ -3,7 +3,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { props } from 'skatejs';
 import { tearDownComponent } from 'akutil-common-test';
 
-import { name } from '../';
+import { name } from '../package.json';
 import { dropdownMinWidth, dropdownMaxWidth, dropdownMaxHeight } from '../src/internal/consts';
 
 import { initDropdown,

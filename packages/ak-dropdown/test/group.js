@@ -4,7 +4,7 @@ import { props } from 'skatejs';
 import 'custom-event-polyfill';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
 
-import { name } from '../';
+import { name } from '../package.json';
 import Group from '../src/index.group';
 import shadowGroupStyles from '../src/less/shadow-group.less';
 

@@ -1,5 +1,5 @@
 import { commands, Plugin, ProseMirror, Selection, UpdateScheduler } from 'ak-editor-prosemirror';
-import codeBlockPasteListener from './code-block-paste-listener';
+import CodeBlockPasteListener from './code-block-paste-listener';
 
 export interface BlockTypeState {
   selectedBlockType?: string;
@@ -30,7 +30,7 @@ export default new Plugin(class BlockTypePlugin {
 
     // add paste listener to overwrite the prosemirror's
     // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers
-    codeBlockPasteListener(this.pm);
+    pm.root.addEventListener('paste', new CodeBlockPasteListener(pm), true);
 
     this.updater = pm.updateScheduler([
       pm.on.selectionChange,

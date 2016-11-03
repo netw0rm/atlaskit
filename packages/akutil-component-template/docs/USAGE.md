@@ -3,9 +3,9 @@
 This is a template for AtlasKit components. Update this file with usage instructions and examples.
 
 
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-componentname/docs/insertyourimagehere.png)
+![Example akutil-component-template](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/akutil-component-template/docs/screencast.gif)
 
-##Try it out
+## Try it out
 
 Interact with a [live demo of the akutil-component-template component](https://aui-cdn.atlassian.com/atlaskit/stories/akutil-component-template/@VERSION@/).
 

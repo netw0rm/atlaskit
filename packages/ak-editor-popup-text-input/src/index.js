@@ -8,9 +8,7 @@ export default define('ak-editor-popup-text-input', {
   },
   render(elem) {
     return (
-      <div
-        className={shadowStyles.locals.container}
-      >
+      <div className={shadowStyles.locals.container}>
         <style>{shadowStyles.toString()}</style>
         <input
           type="text"

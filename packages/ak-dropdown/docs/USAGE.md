@@ -1,8 +1,8 @@
 # Dropdown
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+Dropdown creates a dropdown menu, with optional sections, headings, icons, checkbox items, radio group items and disabled items.
 
-![Example dropdown](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-dropdown/docs/dropdown.gif)
+![Example dropdown](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-dropdown/docs/dropdown.gif)
 
 
 ## Try it out
@@ -57,8 +57,7 @@ Example:
 </ak-dropdown>
 ```
 
-The trigger is not styled by default. Any html element can be used as the trigger, for example, button, tab item and so on
-
+The trigger is not styled by default. Any html element can be used as the trigger such as a button or a tab item.
 Example:
 
 ```html

@@ -1,13 +1,14 @@
-const componentTemplate = require('./componentTemplate');
 const path = require('path');
 const fs = require('fs');
 const async = require('async');
 const mkdirp = require('mkdirp');
+
+const componentTemplate = require('./componentTemplate');
 const { name } = require('../package.json');
 const defaultSvgo = require('./svgo/transformations/default');
 const customSvgo = require('./svgo/transformations/custom');
-
 const { maxWidth, maxHeight, fileEnding } = require('./constants');
+
 
 /**
 * Generates a method that processes list of icons
@@ -53,11 +54,13 @@ function workOnIcons(iconPaths, finishIconWork) {
         });
       },
       function runCustomTransformations(svgData, cb) {
-        const fillCallback = (fill) =>
+        const fillCallback = fill =>
           log.warn(`"${iconRelativePathToSrc}": has a fill of "${fill}"`);
+        const styleCallback = () =>
+          log.warn(`"${iconRelativePathToSrc}": has a <style> element which will be stripped`);
 
-        const svgo = customSvgo(fillCallback);
-        svgo.optimize(svgData, (result) => cb(null, result.data));
+        const svgo = customSvgo(fillCallback, styleCallback);
+        svgo.optimize(svgData, result => cb(null, result.data));
       },
       function generateExport(svgData, cb) {
         log.debug(`"${iconRelativePathToSrc}": generating export`);
@@ -77,7 +80,7 @@ function workOnIcons(iconPaths, finishIconWork) {
         log.debug(`"${iconRelativePathToSrc}": creating intermediate directories`);
 
         const targetFile = path.join(tmpFolder, `${iconRelativePathToSrcNoExt}.js`);
-        mkdirp(path.dirname(targetFile), (err) => cb(err, {
+        mkdirp(path.dirname(targetFile), err => cb(err, {
           targetFile,
           contents,
         }));
@@ -93,5 +96,5 @@ function workOnIcons(iconPaths, finishIconWork) {
         cb();
       },
     ], callback);
-  }, (err) => finishIconWork(err, iconPaths));
+  }, err => finishIconWork(err, iconPaths));
 };

@@ -38,6 +38,10 @@ export function getMonthName(elem, i) {
   return getI18n(elem).months[i - 1];
 }
 
+export function dateToString(date) {
+  return date ? `${date.year}-${date.month + 1}-${date.day}` : '';
+}
+
 export function makeArrayFromNumber(i) {
   const arr = [];
   const num = Math.ceil(i);

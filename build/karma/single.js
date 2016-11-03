@@ -13,4 +13,5 @@ module.exports = (config) => {
     },
   });
   karmaConf(config);
+  config.singleRun = true;
 };

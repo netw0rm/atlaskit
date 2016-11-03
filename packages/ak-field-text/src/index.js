@@ -1,12 +1,12 @@
-import 'style!./host.less';
 import { vdom, define, prop, emit } from 'skatejs';
-import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 
+import shadowStyles from './shadow.less';
 import * as events from './internal/index.events';
 
-const inputSlot = Symbol();
-const focusHandlers = Symbol();
+
+const inputSlot = Symbol('inputSlot');
+const focusHandlers = Symbol('focusHandlers');
 
 function getInput(elem) {
   return elem.querySelector('[slot=input]');
@@ -41,7 +41,7 @@ export default define('ak-field-text', {
     return (
       <div>
         <style>{shadowStyles.toString()}</style>
-        <label
+        <label // eslint-disable-line jsx-a11y/no-static-element-interactions, jsx-a11y/label-has-for, max-len
           onclick={handleLabelClick(elem)}
           className={shadowStyles.locals.label}
         >

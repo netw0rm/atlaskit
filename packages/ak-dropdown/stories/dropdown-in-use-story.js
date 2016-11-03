@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+
 import { name } from '../package.json';
-import 'ak-avatar';
 import DropdownExample from './DropdownExample';
 
 storiesOf(`${name} with different parents`, module)
@@ -136,7 +136,7 @@ storiesOf(`${name} with different parents`, module)
         width: '400px',
         height: '400px',
       }}
-      ref={(el) => (setParent(el))}
+      ref={el => (setParent(el))}
     >
       <div
         style={{

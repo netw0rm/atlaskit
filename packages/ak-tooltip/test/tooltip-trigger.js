@@ -1,10 +1,12 @@
+import { emit } from 'skatejs';
 import { getShadowRoot, waitUntil } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
+
 import Tooltip, { TooltipTrigger } from '../src';
 import { handleMouseEnter, handleMouseLeave } from '../src/internal/event-handlers';
-import { emit } from 'skatejs';
+
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -46,7 +48,7 @@ describe('ak-tooltip-trigger', () => {
   }));
   afterEach(() => tearDownComponent(tooltip, trigger));
 
-  ['focus', 'mouseenter'].forEach(event => {
+  ['focus', 'mouseenter'].forEach((event) => {
     it(`should open a tooltip when ${event} event fired`, () => {
       const tooltipIsOpen = () => (tooltip.visible);
 
@@ -61,7 +63,7 @@ describe('ak-tooltip-trigger', () => {
     blur: 'focus',
     mouseleave: 'mouseenter',
   };
-  Object.keys(tooltipEvents).forEach(event => {
+  Object.keys(tooltipEvents).forEach((event) => {
     it(`should close a tooltip when ${event} event fired`, () => {
       const tooltipIsOpen = () => (tooltip.visible);
 

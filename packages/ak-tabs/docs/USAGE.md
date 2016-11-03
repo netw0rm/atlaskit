@@ -2,7 +2,7 @@
 
 A tab is a simple graphical element that allows to contain multiple panels within a single window, and provides an easy way to switch between panels of similar content.
 
-![Example tabs](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-tabs/docs/tabs.gif)
+![Example tabs](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-tabs/docs/tabs.gif)
 
 ## Try it out
 

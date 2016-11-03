@@ -1,15 +1,18 @@
 #!/usr/bin/env node
 
 const webpack = require('webpack');
-const webpackConf = require('./webpack.config.js');
 const path = require('path');
 const glob = require('glob');
 const async = require('async');
 const rimraf = require('rimraf');
 const minilog = require('minilog');
-const log = minilog('ak-icon/gen-js');
+
+const webpackConf = require('./webpack.config.js');
 const { glyphFolderName, tmpFolderName, fileEnding } = require('./constants');
 const workOnIcons = require('./workOnIcons');
+
+
+const log = minilog('ak-icon/gen-js');
 
 if (process.env.CLI) {
   minilog.suggest.defaultResult = false;

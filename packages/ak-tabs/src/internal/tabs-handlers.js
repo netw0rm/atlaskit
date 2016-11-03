@@ -12,7 +12,7 @@ function labelSelectedHandler(tab) {
 }
 
 function labelKeydownHandler(tabsEl, tab) {
-  return e => {
+  return (e) => {
     let tabToSelect;
     if (e.keyCode === keycode('left')) {
       tabToSelect = getPrevTab(tabsEl, tab);
@@ -27,7 +27,7 @@ function labelKeydownHandler(tabsEl, tab) {
 }
 
 function labelRef(tabsEl, tab) {
-  return el => {
+  return (el) => {
     tab[tabLabel] = el;
     if (tab.selected) {
       if (tabsEl[focusOnRender]) {

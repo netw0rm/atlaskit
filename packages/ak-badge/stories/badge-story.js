@@ -1,13 +1,15 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import AkBadge from '../src/index';
 import React from 'react';
+
+import AkBadge from '../src';
 import { name } from '../package.json';
-import hostStyles from 'style!./../src/host.less';
+import styles from '../src/shadow.less';
+
 
 const Badge = reactify(AkBadge);
 
-const badgeClass = hostStyles.akBadge;
+const badgeClass = styles.locals.akBadge;
 
 storiesOf(name, module)
   .add('with a value', () => (

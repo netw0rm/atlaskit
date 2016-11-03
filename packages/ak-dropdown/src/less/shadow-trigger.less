@@ -1,0 +1,36 @@
+// Because of the shadow DOM boundries we can not style the host element the usual way
+// To do this the ':host' pseudo-class should be used
+// Also we should style the tag name with the same styles because of the browsers
+// that do not support shadow DOM
+.host-styles() {
+  display: inline-block;
+}
+
+// we define a class here in order to re-use it in the storybook
+// (because in storybook the component name is randomly generated)
+.ak-dropdown-trigger,
+ak-dropdown-trigger,
+.ak-dropdown-trigger-button,
+ak-dropdown-trigger-button,
+.ak-dropdown-trigger-arrow,
+ak-dropdown-trigger-arrow {
+  .host-styles();
+
+  &:not([defined]) {
+    display: none;
+  }
+
+  // first group element shouldn't have any empty space above it
+  & + .ak-dropdown-group,
+  & + ak-dropdown-group {
+    margin-top: 0;
+  }
+}
+
+:host {
+  .host-styles();
+
+  &(:not([defined])) {
+    display: none;
+  }
+}

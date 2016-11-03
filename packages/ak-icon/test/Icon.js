@@ -42,12 +42,13 @@ describe(name, () => {
     it('should be possible to create an Icon via a subclass', () => {
       const secret = 'secret';
       class MyIcon extends Icon {
+        // eslint-disable-next-line class-methods-use-this
         getGlyphTemplate() {
           return () => (<div>{secret}</div>);
         }
       }
       return createTemporaryComponent(define, MyIcon)
-        .then(newComponent => {
+        .then((newComponent) => {
           component = newComponent;
           getRootNode(component).innerHTML.should.match(new RegExp(secret));
         }).should.be.fulfilled;

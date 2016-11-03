@@ -1,23 +1,26 @@
 import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
-
-// 'whatwg-fetch' needs a Promise polyfill
 import Promise from 'babel-runtime/core-js/promise';
+// 'whatwg-fetch' needs a Promise polyfill
+/* eslint-disable import/imports-first */
 if (!window.Promise) {
   window.Promise = Promise;
 }
 import 'whatwg-fetch';
+
 import debug from '../util/logger';
+/* eslint-enable import/imports-first */
+
 
 const buildUrl = (baseUrl, path, data, secOptions) => {
   const searchParam = new URLSearchParams();
   for (const key in data) { // eslint-disable-line no-restricted-syntax
-    if (data.hasOwnProperty(key)) {
+    if ({}.hasOwnProperty.call(data, key)) {
       searchParam.append(key, data[key]);
     }
   }
   if (secOptions && secOptions.params) {
     for (const key in secOptions.params) { // eslint-disable-line no-restricted-syntax
-      if (secOptions.params.hasOwnProperty(key)) {
+      if ({}.hasOwnProperty.call(secOptions.params, key)) {
         const values = secOptions.params[key];
         if (Array.isArray(values)) {
           for (let i = 0; i < values.length; i++) {
@@ -40,7 +43,7 @@ const buildHeaders = (secOptions) => {
   const headers = new Headers();
   if (secOptions && secOptions.headers) {
     for (const key in secOptions.headers) { // eslint-disable-line no-restricted-syntax
-      if (secOptions.headers.hasOwnProperty(key)) {
+      if ({}.hasOwnProperty.call(secOptions.headers, key)) {
         const values = secOptions.headers[key];
         if (Array.isArray(values)) {
           for (let i = 0; i < values.length; i++) {
@@ -63,7 +66,7 @@ const requestService = (baseUrl, path, data, secOptions) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
   return fetch(new Request(url, { headers }))
-    .then(response => {
+    .then((response) => {
       if (response.ok) {
         return response.json();
       }
@@ -95,6 +98,7 @@ class AbstractMentionResource {
     this._errListeners.delete(key);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   filter(query) {
     throw new Error(`not yet implemented.\nParams: query=${query}`);
   }
@@ -188,9 +192,9 @@ class MentionResource extends AbstractMentionResource {
     };
 
     if (!query) {
-      this._initialState().then(notify, (error) => this._notifyErrorListeners(error));
+      this._initialState().then(notify, error => this._notifyErrorListeners(error));
     } else {
-      this._search(query).then(notify, (error) => this._notifyErrorListeners(error));
+      this._search(query).then(notify, error => this._notifyErrorListeners(error));
     }
   }
 

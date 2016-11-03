@@ -4,21 +4,29 @@ import styles from './index.less';
 import Select from './block-type-select';
 import Option from './option';
 
-function toggle(elem) {
-  if (!elem.disabled || elem.dropdownOpen) {
-    elem.dropdownOpen = !elem.dropdownOpen;
+// todo: we will use a common helper function when it's ready.
+// https://ecosystem.atlassian.net/browse/AK-513
+function isDescendantOf(child, parent) {
+  if (child.parentNode === parent) {
+    return true;
+  } else if (child.parentNode === null) {
+    return false;
   }
+
+  return isDescendantOf(child.parentNode, parent);
 }
 
 export default define('ak-editor-toolbar-block-type', {
   created(elem) {
+    elem.handleClickOutside = elem.handleClickOutside.bind(elem);
     elem.closeBlockTypeDropdown = elem.closeBlockTypeDropdown.bind(elem);
+    elem.toggleDropdown = elem.toggleDropdown.bind(elem);
   },
   attached(elem) {
-    document.addEventListener('click', elem.closeBlockTypeDropdown, true);
+    document.addEventListener('click', elem.handleClickOutside);
   },
   detached(elem) {
-    document.removeEventListener('click', elem.closeBlockTypeDropdown, true);
+    document.removeEventListener('click', elem.handleClickOutside);
   },
   render(elem) {
     const selectedBlockType = elem.selectedBlockType || elem.blockTypes[0] || {};
@@ -32,7 +40,8 @@ export default define('ak-editor-toolbar-block-type', {
           disabled={elem.disabled}
           className={styles.locals.blockTypeSelect}
           selectedReadableName={selectedBlockType.display}
-          onToggleDropdown={() => toggle(elem)}
+          onToggleDropdown={elem.toggleDropdown}
+          onSelectBlockType={elem.closeBlockTypeDropdown}
           active={elem.dropdownOpen}
         >
           <ul
@@ -53,8 +62,27 @@ export default define('ak-editor-toolbar-block-type', {
     );
   },
   prototype: {
+    handleClickOutside(e) {
+      // todo: we will use a common helper function when it's ready.
+      // https://ecosystem.atlassian.net/browse/AK-513
+      if (this.dropdownOpen && e.target !== this && !isDescendantOf(e.target, this) &&
+        !(e.path && e.path.indexOf(this) > -1)) {
+        this.closeBlockTypeDropdown();
+      }
+    },
     closeBlockTypeDropdown() {
       this.dropdownOpen = false;
+    },
+    toggleDropdown() {
+      if (this.disabled) {
+        return;
+      }
+
+      if (this.dropdownOpen) {
+        this.closeBlockTypeDropdown();
+      } else {
+        this.dropdownOpen = true;
+      }
     },
   },
   props: {

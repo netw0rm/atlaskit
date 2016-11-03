@@ -12,10 +12,7 @@ import {
   akColorN700,
   akColorN40,
 } from 'akutil-shared-styles';
-
-const lineHeight = 20;
-const em = 14;
-const grid = 8;
+import { em, grid } from './shared-variables';
 
 const transitionValue = `
   background 0.1s
@@ -28,23 +25,31 @@ export default (vars) => {
   return {
     // light DOM styles
     ':host': {
-      display: 'inline-block',
+      display: 'inline-flex',
     },
     ':host(> _shadow_root_)': {
-      display: 'inline-block',
+      display: 'inline-flex',
     },
     ':host([disabled])': {
       'pointer-events': 'none',
     },
     // shadow DOM styles
     '::slotted([slot="before"])': {
+      'line-height': '0',
       'margin-right': `${grid}px`,
     },
+    '::slotted(:not([slot]))': {
+      'line-height': '0',
+    },
     '::slotted([slot="after"])': {
+      'line-height': '0',
       'margin-left': `${grid}px`,
     },
     'before-slot-wrapper': {
       'align-self': 'center',
+      display: 'flex',
+    },
+    'default-slot-wrapper': {
       display: 'flex',
     },
     'after-slot-wrapper': {
@@ -53,8 +58,9 @@ export default (vars) => {
     },
     'button-content': {
       'align-items': 'baseline',
-      display: 'inline-flex',
+      display: 'flex',
       'flex-wrap': 'nowrap',
+      'pointer-events': 'none',
     },
     'before-slot': {
       display: 'inline-flex',
@@ -74,18 +80,22 @@ export default (vars) => {
       'border-width': '0',
       'border-radius': val('button.baseRadius', akBorderRadius),
       color: val('standard.color', akColorN500),
-      display: 'inline-block',
+      display: 'inline-flex',
       'font-style': 'normal',
       'font-size': 'inherit',
       height: val('button.height', `${(grid * 4) / em}em`),
-      'line-height': val('button.lineHeight', lineHeight / em),
+      'line-height': val('button.lineHeight', `${(grid * 4) / em}em`),
       margin: '0',
       outline: 'none',
       padding: val('button.padding', `${grid * 0.75}px ${grid * 1.5}px`),
+      'padding-top': 0,
+      'padding-bottom': 0,
       'text-align': 'center',
       transition: val('button.transition', transitionValue),
       'user-select': 'none',
       border: val('button.border', 'none'),
+      'vertical-align': 'middle',
+      'align-items': 'center',
 
       '&::-moz-focus-inner': {
         margin: 0,
@@ -151,6 +161,9 @@ export default (vars) => {
         transition: 'none',
       },
     },
+    href: {
+      'text-decoration': 'none',
+    },
     link: {
       background: 'none',
       color: val('link.color', akColorB400),
@@ -178,8 +191,7 @@ export default (vars) => {
     },
     compact: {
       height: val('compact.height', `${(grid * 3) / em}em`),
-      'padding-top': val('compact.paddingTop', `${grid / 3}px`),
-      'padding-bottom': val('compact.paddingBottom', `${grid / 3}px`),
+      'line-height': val('compact.lineHeight', `${(grid * 3) / em}em`),
     },
   };
 };

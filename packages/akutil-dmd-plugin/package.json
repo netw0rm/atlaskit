@@ -11,5 +11,9 @@
   },
   "dependencies": {
     "ddata": "^0.1.28"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

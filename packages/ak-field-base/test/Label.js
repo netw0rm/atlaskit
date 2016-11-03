@@ -55,7 +55,20 @@ describe('ak-field-base', () => {
       });
     });
 
-    describe('.chidren', () => {
+    describe('required', () => {
+      const tmpDefinition = (<Label label="This is a label" required />);
+
+      beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
+        .then(setupLocalVariables));
+
+      it('should append an asterisk to the content', () => {
+        const label = shadowRoot.querySelector('label');
+        expect(label.textContent).to.match(/^This is a label/);
+        expect(label.textContent).to.match(/\*$/);
+      });
+    });
+
+    describe('.children', () => {
       const tmpDefinition = (<Label>
         <div className="foo">Here is some child content!</div>
       </Label>);

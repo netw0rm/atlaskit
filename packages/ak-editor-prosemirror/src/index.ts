@@ -13,6 +13,7 @@ export {
   NodeType,
   MarkType,
   ResolvedPos,
+  NodeRange,
   Slice,
   Schema,
   Text,
@@ -27,6 +28,10 @@ export {
   Selection,
   TextSelection,
 } from 'prosemirror/dist/edit';
+
+export {
+  EditorTransform
+} from 'prosemirror/dist/edit/transform';
 
 export {
   DOMFromPos
@@ -44,6 +49,8 @@ export {
 
 export {
   Transform,
+  liftTarget,
+  joinPoint
 } from 'prosemirror/dist/transform';
 
 export {

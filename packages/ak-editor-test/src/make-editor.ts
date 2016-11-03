@@ -3,6 +3,12 @@ import SyncPlugin from './sync-plugin';
 import { RefsNode } from './schema-builder';
 import schema from 'ak-editor-schema';
 
+interface Options {
+  doc: RefsNode;
+  plugin: Plugin<any>;
+  place?: HTMLElement;
+}
+
 /**
  * Build a ProseMirror instance.
  *
@@ -11,9 +17,10 @@ import schema from 'ak-editor-schema';
  * - `<>` -- a collapsed text selection
  * - `<` and `>` -- a range text selection (`<` is from, `>` is to).
  */
-export default (options: { doc: RefsNode, plugin: Plugin<any>}) => {
+export default (options: Options) => {
   const pm = new ProseMirror({
     doc: options.doc,
+    place: options.place,
     schema: schema,
     plugins: [
       options.plugin,

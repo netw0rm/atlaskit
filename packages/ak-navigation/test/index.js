@@ -196,12 +196,14 @@ describe('ak-navigation', () => {
         expect(component.open).to.equal(true);
       }, done);
     });
-    it('toggling does not work with shift key held', (done) => {
-      expect(component.open).to.equal(false);
-      afterMutations(() => {
-        keyup('[', { eventProperties: { shiftKey: true } });
+    ['shiftKey', 'metaKey', 'ctrlKey', 'altKey'].forEach((key) => {
+      it(`toggling does not work with ${key} held`, (done) => {
         expect(component.open).to.equal(false);
-      }, done);
+        afterMutations(() => {
+          keyup('[', { eventProperties: { [key]: true } });
+          expect(component.open).to.equal(false);
+        }, done);
+      });
     });
 
     ['textarea', 'input'].forEach((elementName) => {

@@ -1,6 +1,6 @@
 {
   "name": "akutil-shared-styles",
-  "version": "34.5.0",
+  "version": "35.0.0",
   "description": "Shared styles for AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -24,11 +24,19 @@
     "camelcase": "^3.0.0",
     "classnames": "^2.2.5",
     "clipboard": "^1.5.13",
+    "create-error": "^0.3.1",
+    "javascript-natural-sort": "^0.7.1",
     "less-vars-loader": "^1.1.0",
-    "skatejs": "^3.0.0",
-    "uid": "0.0.2"
+    "rgba-convert": "^0.3.0",
+    "skatejs": "^4.0.0",
+    "uid": "0.0.2",
+    "wcag-contrast": "^0.1.0"
   },
   "dependencies": {
     "babel-runtime": "^6.11.6"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

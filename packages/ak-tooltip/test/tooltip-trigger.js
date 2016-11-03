@@ -23,7 +23,7 @@ function setupComponent() {
   tooltip.id = 'myTooltip';
   trigger.position = 'top';
   trigger.description = 'This is a tooltip';
-  trigger.innerHTML = '<a aria-describedby="myTooltip" href="#">Hover over me!</a>';
+  trigger.innerHTML = 'some<a aria-describedby="myTooltip" href="#">Hover over me!</a>text';
   document.body.appendChild(tooltip);
   document.body.appendChild(trigger);
 

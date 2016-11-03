@@ -4,4 +4,4 @@ import { name } from '../package.json';
 import addStories from './_add-stories';
 
 
-addStories(storiesOf(`${name} component`, module));
+addStories(storiesOf(name, module));

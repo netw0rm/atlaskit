@@ -1,5 +1,8 @@
-const Visualizer = require('webpack-visualizer-plugin');
+const path = require('path');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer');
+
 const productionConfig = require('./production.js');
+
 
 delete productionConfig.externals;
 
@@ -10,8 +13,9 @@ productionConfig.entry = {
 
 if (process.env.BITBUCKET_COMMIT) {
   // only generate stats when we are in CI
-  productionConfig.plugins.push(new Visualizer({
-    filename: './stats/with-deps.html',
+  productionConfig.plugins.push(new BundleAnalyzerPlugin({
+    analyzerMode: 'static',
+    reportFilename: path.resolve('./stats/with-deps.html'),
   }));
 }
 

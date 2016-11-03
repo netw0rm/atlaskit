@@ -41,7 +41,7 @@ export default define(name, {
 
     const Button = isRemovable ? RemoveButton : () => null;
 
-    const emitRemoveEvent = () => {
+    const afterAnimation = () => {
       elem[isRemovedSymbol] = true;
       elem[isRemovingSymbol] = false;
 
@@ -59,7 +59,7 @@ export default define(name, {
         <AnimationWrapper
           isRemoving={isRemoving}
           isRemoved={isRemoved}
-          afterAnimation={emitRemoveEvent}
+          afterAnimation={afterAnimation}
         >
           <Chrome
             isLinked={isLinked}

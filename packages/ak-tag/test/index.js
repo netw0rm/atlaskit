@@ -5,6 +5,7 @@ import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 
 import Tag, { exceptions, events } from '../src';
+import shadowStyles from '../src/shadow.less';
 import { getRootNode } from './_helpers';
 
 
@@ -132,6 +133,36 @@ describe('ak-tag', () => {
         () => component.isRemovable().should.be.true,
         () => (component.remove()),
         () => (expect(detailBefore).to.equal(component))
+        // we can't add `done` here, as it will be invoked on animation end (~250ms)
+      );
+    });
+
+    it('should have `isremoving` attribute when being removed' +
+      'and `isremoved` after', (done) => {
+      let wrapper;
+      component.addEventListener(beforeRemoveEvent, (e) => {
+        wrapper = e.detail.item.shadowRoot.querySelector(`.${shadowStyles.locals.animationWrapper}`);
+        expect(wrapper.hasAttribute('isremoving')).to.equal(false);
+      });
+      component.addEventListener(afterRemoveEvent, () => {
+        window.requestAnimationFrame(() => {
+          expect(wrapper.hasAttribute('isremoving')).to.equal(false);
+          expect(wrapper.hasAttribute('isremoved')).to.equal(true);
+          done();
+        });
+      });
+
+      afterMutations(
+        () => (component['remove-button-text'] = 'x'),
+        () => component.isRemovable().should.be.true,
+        () => {
+          window.requestAnimationFrame(() => {
+            component.remove();
+          });
+          window.requestAnimationFrame(() => {
+            expect(wrapper.hasAttribute('isremoving')).to.equal(true);
+          });
+        },
         // we can't add `done` here, as it will be invoked on animation end (~250ms)
       );
     });

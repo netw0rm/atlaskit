@@ -1,6 +1,6 @@
 {
   "name": "ak-theme",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "ak-theme webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

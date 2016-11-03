@@ -75,7 +75,7 @@ This package exports a factory function, which will define and return a new vali
 ```js
 import { defineValidator } from 'ak-field-validator';
 
-const ValidatorIsEven = defineValidator('x-validator-even-length', 
+const ValidatorIsEven = defineValidator('x-validator-even-length',
   function(value) {
     return value.length % 2 === 0;
   }
@@ -88,10 +88,11 @@ const ValidatorIsEven = defineValidator('x-validator-even-length',
     <script src="bundle.js"></script>
   </head>
   <body>
-    <ak-field>
-      <x-validator-even-length slot="validator">Field length must be even</x-validator-even-length>
-      <ak-field-text slot="input"></ak-field-text>
-    </ak-field>
+    <form>
+      <ak-field-text>
+        <x-validator-even-length slot="validator">Field length must be even</x-validator-even-length>
+      </ak-field-text>
+    </form>
   </body>
 </html>
 ```
@@ -120,10 +121,11 @@ defineValidator('x-validator-starts-with',
     <script src="bundle.js"></script>
   </head>
   <body>
-    <ak-field>
-      <x-validator-starts-with starts-with="foo" slot="validator"></x-validator-starts-with>
-      <ak-field-text slot="input"></ak-field-text>
-    </ak-field>
+    <form>
+      <ak-field-text>
+        <x-validator-starts-with starts-with="foo" slot="validator"></x-validator-starts-with>
+      </ak-field-text>
+    </form>
   </body>
 </html>
 ```

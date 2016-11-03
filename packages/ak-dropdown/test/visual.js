@@ -18,7 +18,14 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-const generateBunchOfItems = num => new Array(num).fill({ id: 'Item', value: 'item1' });
+function generateBunchOfItems(num) {
+  const res = [];
+  for (let i = 0; i < num; i++) {
+    res.push({ id: 'Item', value: 'item1' });
+  }
+
+  return res;
+}
 
 describe('sizes, paddings and margins', () => {
   describe('dropdown item', () => {

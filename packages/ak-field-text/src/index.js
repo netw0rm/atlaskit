@@ -2,7 +2,6 @@ import { vdom, define, prop } from 'skatejs';
 import FieldBase from 'ak-field-base';
 
 import shadowStyles from './shadow.less';
-import * as events from './internal/index.events';
 import { inputEl } from './internal/symbols';
 
 function getInput(elem) {
@@ -126,5 +125,3 @@ export default define('ak-field-text', {
     },
   },
 });
-
-export { events };

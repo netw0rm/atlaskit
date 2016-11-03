@@ -7,7 +7,7 @@ import QuestionIcon from 'ak-icon/glyph/question';
 import ExpandIcon from 'ak-icon/glyph/expand';
 
 import AkButtonTemplate, { APPEARANCE } from '../src';
-import AkButtonStates from './AkButtonStates';
+import ButtonBuilderExample from './button-builder-example';
 
 const AkButton = reactify(AkButtonTemplate);
 
@@ -153,9 +153,9 @@ export default function addStories(storiesBuilder, Wrapper) {
     .add('primary ak-button', buildStory({ appearance: APPEARANCE.PRIMARY }, Wrapper))
     .add('subtle ak-button', buildStory({ appearance: APPEARANCE.SUBTLE }, Wrapper))
     .add('link ak-button', buildStory({ appearance: APPEARANCE.LINK }, Wrapper))
-    .add('a button that can change its attributes', () => (
+    .add('button builder example', () => (
       <Wrapper>
-        <AkButtonStates icons={[() => null].concat([Page, Question, Calendar, Expand])} />
+        <ButtonBuilderExample icons={[() => null].concat([Page, Question, Calendar, Expand])} />
       </Wrapper>
     ));
 }

@@ -53,7 +53,7 @@ const Counter = define('x-counter', Base.extend({
 }));
 ```
 
-As you can see, one count will increment every milisecond and the other, every second. The main things to notice
+As you can see, one count will increment every millisecond and the other, every second. The main things to notice
 here are the `Base.extend(` around the object literal definition,  the `Object.assign(` around the props and the `Base.updated` call from the updated callback.
 
 The `Object.assign` is because when extending a component usign the Object literal syntax, we will **override** base component, so we join them.
@@ -71,14 +71,14 @@ const Counter = define('x-counter', class extends Base {
     return Object.assign({}, {
       count1: prop.number({ default: 1 }),
       count2: prop.number({ default: 2 })
-    }, Base.props);
+    }, super.props);
   }
   static attached (elem) {
     setInterval(() => (++elem.count1), 1);
     setInterval(() => (++elem.count2), 1000);
   }
   static updated (elem, prev) {
-    return Base.updated(elem, prev)
+    return super.updated(elem, prev)
   }
   static render (elem) {
     return [
@@ -94,7 +94,7 @@ By extending `ak-component-base` the Counter component now also has the `overrid
 #### App Component
 
 To show the useage of the `override` prop, we'll create another component to control part of the state.
-Our App component will let Counter do whatever it likes with `count2` but will override `count1` to only update every 500 miliseconds and also count up by two.
+Our App component will let Counter do whatever it likes with `count2` but will override `count1` to only update every 500 milliseconds and also count up by two.
 
 ```js
 import { define, vdom, prop, Component } from 'skatejs';
@@ -117,4 +117,4 @@ const App = define('x-app', class extends Component {
 ```
 
 You'll notice that App keeps track of the `count1` state itself (in its `count` prop) but instead of passing it into the `count1` prop of Counter, it is passed in via `override`.
-Had it passed it in via `count1` the Counter would have continued to increment it every milisecond.
+Had it passed it in via `count1` the Counter would have continued to increment it every millisecond.

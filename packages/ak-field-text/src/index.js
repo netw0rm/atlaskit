@@ -16,28 +16,25 @@ function getInput(elem) {
  * const component = new TextField();
  */
 export default define('ak-field-text', {
-
   render(elem) {
-    return (
-      <div>
-        <style>{shadowStyles.toString()}</style>
-        <FieldBase
-          appearance={elem.compact ? 'compact' : 'standard'}
+    return ([
+      <style>{shadowStyles.toString()}</style>,
+      <FieldBase
+        appearance={elem.compact ? 'compact' : 'standard'}
+        disabled={elem.disabled}
+        label={elem.label}
+        required={elem.required}
+      >
+        <input
+          slot="input-slot"
+          className={shadowStyles.locals.input}
           disabled={elem.disabled}
-          label={elem.label}
-          required={elem.required}
-        >
-          <input
-            slot="input-slot"
-            className={shadowStyles.locals.input}
-            disabled={elem.disabled}
-            name={elem.name}
-            placeholder={elem.placeholder}
-            type={elem.type}
-          />
-        </FieldBase>
-      </div>
-    );
+          name={elem.name}
+          placeholder={elem.placeholder}
+          type={elem.type}
+        />
+      </FieldBase>,
+    ]);
   },
   props: {
     /**

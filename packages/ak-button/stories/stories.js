@@ -80,7 +80,7 @@ const buildStory = (props, Wrapper) => (
 
       <div className="sample">
         <AkButton {...props}>
-          <Page slot="before" />
+          <Page slot="before" title="page icon" />
           Comment
         </AkButton>
         <span>button + text with page icon</span>
@@ -90,7 +90,7 @@ const buildStory = (props, Wrapper) => (
         <span>
           text
           <AkButton {...props}>
-            <Question slot="before" />
+            <Question slot="before">Question</Question>
             Info
           </AkButton>
           text
@@ -102,7 +102,7 @@ const buildStory = (props, Wrapper) => (
         <span>
           text
           <AkButton {...props} selected>
-            <Calendar slot="after" />
+            <Calendar slot="after" title="calendar icon" />
             Pick Date
           </AkButton>
           text
@@ -113,21 +113,21 @@ const buildStory = (props, Wrapper) => (
       <div className="sample">
         <AkButton {...props}>
           Show Options
-          <Expand slot="after" />
+          <Expand slot="after" title="expand icon" />
         </AkButton>
         <span>button + text with expand icon</span>
       </div>
 
       <div className="sample">
         <AkButton {...props} href="http://www.atlassian.com">
-          <Page />
+          <Page title="page icon" />
         </AkButton>
         <span>button with Page icon + href</span>
       </div>
 
       <div className="sample">
         <AkButton {...props} href="http://www.atlassian.com" target="_blank">
-          <Expand />
+          <Expand title="expand icon" />
         </AkButton>
         <span>button with icons + href + target</span>
       </div>
@@ -136,7 +136,7 @@ const buildStory = (props, Wrapper) => (
         <span>
           text
           <AkButton {...props}>
-            <Calendar />
+            <Calendar title="calendar icon" />
           </AkButton>
           text
         </span>
@@ -145,7 +145,7 @@ const buildStory = (props, Wrapper) => (
 
       <div className="sample">
         <AkButton {...props} selected>
-          <Question />
+          <Question>Question</Question>
         </AkButton>
         <span>button with Question icon + selected</span>
       </div>

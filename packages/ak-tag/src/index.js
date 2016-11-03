@@ -14,7 +14,7 @@ const { NotRemovableError } = exceptions;
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
 const buttonHoverSymbol = Symbol('buttonHoverSymbol');
 const isRemovingSymbol = Symbol('isRemovingSymbol');
-
+const isRemovedSymbol = Symbol('isRemovedSymbol');
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class Tag
@@ -37,10 +37,14 @@ export default define(name, {
     const isLinked = elem.isLinked();
     const isRemovable = elem.isRemovable();
     const isRemoving = elem[isRemovingSymbol];
+    const isRemoved = elem[isRemovedSymbol];
 
     const Button = isRemovable ? RemoveButton : () => null;
 
     const emitRemoveEvent = () => {
+      elem[isRemovedSymbol] = true;
+      elem[isRemovingSymbol] = false;
+
       emit(elem, afterRemoveEvent, {
         bubbles: true,
         cancelable: false,
@@ -54,6 +58,7 @@ export default define(name, {
       <Root>
         <AnimationWrapper
           isRemoving={isRemoving}
+          isRemoved={isRemoved}
           afterAnimation={emitRemoveEvent}
         >
           <Chrome
@@ -232,6 +237,9 @@ export default define(name, {
     }),
 
     [isRemovingSymbol]: prop.boolean({
+      initial: false,
+    }),
+    [isRemovedSymbol]: prop.boolean({
       initial: false,
     }),
   },

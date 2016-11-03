@@ -412,7 +412,11 @@ class AkEditorBitbucket extends Component {
   }
 
   _closeHyperlinkPanel() {
-    this._hyperlinkActive = false;
+    if (this._pm) {
+      const pm = this._pm;
+      this._hyperlinkActive = false;
+      pm.setTextSelection(pm.selection.$to.pos);
+    }
   }
 
   _initEditor() {

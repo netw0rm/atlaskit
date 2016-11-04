@@ -29,8 +29,8 @@ const {
   JiraIcon,
 } = icons;
 
-const containerLogo = require('url!./nucleus.png');
-const userAvatar = require('url!./emma.jpg');
+const containerLogo = require('url-loader!./nucleus.png');
+const userAvatar = require('url-loader!./emma.jpg');
 
 const sharedProps = {
   containerName: 'Nucleus',
@@ -167,6 +167,23 @@ storiesOf(name, module)
         <ak-navigation-link>I will overflow because of all my </ak-navigation-link>
 
       </AkNavigation>
+    </AkPage>
+  ))
+  .add('with an input and textarea', () => (
+    <AkPage navigationOpen>
+      <AkNavigation
+        slot="navigation"
+        open
+        collapsible
+        {...sharedProps}
+      >
+        <NavigationLinks />
+      </AkNavigation>
+      <div>
+        <input placeholder="input" />
+        <input type="button" />
+        <textarea placeholder="textarea" />
+      </div>
     </AkPage>
   ))
   .add('with a long container name', () => (

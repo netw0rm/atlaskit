@@ -11,11 +11,12 @@ export default (props, children) => {
   });
   // we render the label in a span that is in a div so that the label itself will be display: block
   // but we can put the click handler on the span so that clicking white space after the label
-  // doesnt call the switchToEditingCallback
+  // doesnt call anything
   return (
     <label className={shadowStyles.locals.label}>
       <div className={labelClasses}>
-        <span onClick={props.switchToEditingCallback}>{props.label}</span>
+        <span>{props.label}</span>
+        {props.required ? <span class={shadowStyles.locals.required}>*</span> : null}
       </div>
       {children()}
     </label>

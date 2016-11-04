@@ -62,6 +62,7 @@ export default define('ak-calendar', {
     day: attr.number({ default: new Date().getDate() }),
     disabled: attr.array(),
     focused: attr.number({ default: 0 }),
+    previouslySelected: attr.array(),
     selected: attr.array(),
     i18n: attr.string({ default: 'en-au' }),
     max: attr.number(),
@@ -201,7 +202,6 @@ export default define('ak-calendar', {
     const calendar = elem[$calendars].getCalendar(elem.year, elem.month - 1);
     const now = elem[$now];
     const weeks = [];
-
     const css = style(vdom, styles);
 
     calendar.forEach((date) => {
@@ -214,6 +214,7 @@ export default define('ak-calendar', {
 
       const isDisabled = elem.disabled.indexOf(dateAsString) > -1;
       const isFocused = elem.focused === date.day && !date.siblingMonth;
+      const isPreviouslySelected = elem.selected.indexOf(dateAsString) > -1;
       const isSelected = elem.selected.indexOf(dateAsString) > -1;
       const isSelecting = elem[$selecting] === (dateAsString);
       const isSiblingMonth = date.siblingMonth;
@@ -226,6 +227,7 @@ export default define('ak-calendar', {
           aria-live={isFocused ? 'polite' : ''}
           disabled={isDisabled}
           focused={isFocused}
+          previouslySelected={isPreviouslySelected}
           selected={isSelected}
           selecting={isSelecting}
           sibling={isSiblingMonth}

@@ -1,6 +1,6 @@
 import {
   akColorN900,
-  akColorB50,
+  akColorB75,
   akColorB100,
   akColorN80,
   akColorN400,
@@ -10,14 +10,12 @@ import {
 const akColorWhite = '#fff';
 
 export default {
-  ':host': {
-    display: 'table-cell',
-    'font-size': 'inherit',
-  },
   day: {
     border: '2px solid transparent',
     'border-radius': '4px',
     cursor: 'pointer',
+    display: 'table-cell',
+    'font-size': 'inherit',
     'font-weight': 'lighter',
     padding: '5px',
     '&:hover': {
@@ -31,12 +29,12 @@ export default {
     'background-color': akColorN900,
     'border-color': akColorB100,
   },
-  selected: {
-    'background-color': akColorWhite,
+  previouslySelected: {
+    'background-color': akColorB75,
     color: akColorN600,
   },
-  selecting: {
-    'background-color': akColorB50,
+  selected: {
+    'background-color': akColorWhite,
     color: akColorN600,
   },
   sibling: {
@@ -44,8 +42,8 @@ export default {
   },
   today: {
     'background-color': akColorN900,
-    'border-bottom': `1px solid ${akColorB50}`,
-    color: akColorB50,
+    'border-bottom': `1px solid ${akColorB75}`,
+    color: akColorB75,
     'font-weight': 'normal',
   },
 };

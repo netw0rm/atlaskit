@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import { Component, prop, define, vdom } from 'skatejs';
 
-import Base from '../src';
+import base from '../src';
 import { setupComponent } from './_helpers';
 
 chai.use(sinonChai);
@@ -12,6 +12,7 @@ chai.use(chaiAsPromised);
 chai.should();
 
 const expect = chai.expect;
+const Base = base({ Component, prop });
 
 // We'll make a quick component that extends base so that we can test it. We'll use the .increment
 // function to simulate a component attempting to update it's own props
@@ -20,7 +21,7 @@ const Extended = define('x-extended', class extends Base {
     return Object.assign({}, {
       value1: prop.number({ default: 1 }),
       value2: prop.number({ default: 1 }),
-    }, Base.props);
+    }, super.props);
   }
   static attached(elem) {
     elem.increment = () => {
@@ -48,7 +49,8 @@ const Controller = define('x-controller', class extends Component {
 describe('ak-component-base', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new Base()).should.be.an.instanceof(Component);
+      // cant instantiate this class, so we'll check its prototype
+      (Base.prototype).should.be.an.instanceof(Component);
     });
   });
 

@@ -193,5 +193,10 @@ export default (vars) => {
       height: val('compact.height', `${(grid * 3) / em}em`),
       'line-height': val('compact.lineHeight', `${(grid * 3) / em}em`),
     },
+    nospacing: {
+      height: 'inherit',
+      'line-height': 'inherit',
+      padding: 0,
+    },
   };
 };

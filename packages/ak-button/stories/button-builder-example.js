@@ -3,7 +3,7 @@ import reactify from 'akutil-react';
 import { action } from '@kadira/storybook';
 import uid from 'uid';
 
-import AkButtonTemplate, { APPEARANCE } from '../src';
+import AkButtonTemplate, { APPEARANCE, SPACING } from '../src';
 
 
 const AkButton = reactify(AkButtonTemplate);
@@ -14,7 +14,7 @@ class ButtonBuilderExample extends React.Component {
     this.state = {
       disabled: false,
       selected: false,
-      compact: false,
+      spacing: SPACING.NORMAL,
       appearance: APPEARANCE.STANDARD,
       href: false,
       before: false,
@@ -22,13 +22,13 @@ class ButtonBuilderExample extends React.Component {
     };
   }
 
-  createCheckboxStringAttribute({ name, value }) {
+  createCheckboxStringAttribute({ name, value }, type = 'checkbox') {
     const id = `label-${uid()}`;
     return (
       <label htmlFor={id}>
         <input
           id={id}
-          type="checkbox"
+          type={type}
           onChange={() => this.setState({ [name]: (this.state[name]) ? false : value })}
           checked={this.state[name]}
         />
@@ -52,17 +52,17 @@ class ButtonBuilderExample extends React.Component {
     );
   }
 
-  createRadioAppearanceAttribute(attribute) {
+  createRadioStringAttribute({ name, value }) {
     const id = `label-${uid()}`;
     return (
       <label htmlFor={id}>
         <input
           id={id}
           type="radio"
-          onChange={() => this.setState({ appearance: attribute })}
-          checked={this.state.appearance === attribute}
+          onChange={() => this.setState({ [name]: value })}
+          checked={this.state[name] === value}
         />
-        {attribute}
+        {value}
       </label>
     );
   }
@@ -91,9 +91,9 @@ class ButtonBuilderExample extends React.Component {
     const props = {
       disabled: this.state.disabled,
       selected: this.state.selected,
-      compact: this.state.compact,
       appearance: this.state.appearance,
       onclick: action('clicking the WebComponent'),
+      spacing: this.state.spacing,
     };
 
     if (this.state.href) {
@@ -119,20 +119,27 @@ class ButtonBuilderExample extends React.Component {
         </form>
         <br />
         <form>
+          <strong>Spacing Attribute</strong>
+          <br />
+          {this.createRadioStringAttribute({ name: 'spacing', value: 'normal' })}
+          {this.createRadioStringAttribute({ name: 'spacing', value: 'none' })}
+          {this.createRadioStringAttribute({ name: 'spacing', value: 'compact' })}
+        </form>
+        <br />
+        <form>
           <strong>Boolean Attributes</strong>
           <br />
           {this.createCheckboxBooleanAttribute('disabled')}
           {this.createCheckboxBooleanAttribute('selected')}
-          {this.createCheckboxBooleanAttribute('compact')}
         </form>
         <br />
         <form>
           <strong>Appearances</strong>
           <br />
-          {this.createRadioAppearanceAttribute(APPEARANCE.STANDARD)}
-          {this.createRadioAppearanceAttribute(APPEARANCE.PRIMARY)}
-          {this.createRadioAppearanceAttribute(APPEARANCE.SUBTLE)}
-          {this.createRadioAppearanceAttribute(APPEARANCE.LINK)}
+          {this.createRadioStringAttribute({ name: 'appearance', value: APPEARANCE.STANDARD })}
+          {this.createRadioStringAttribute({ name: 'appearance', value: APPEARANCE.PRIMARY })}
+          {this.createRadioStringAttribute({ name: 'appearance', value: APPEARANCE.SUBTLE })}
+          {this.createRadioStringAttribute({ name: 'appearance', value: APPEARANCE.LINK })}
         </form>
         <br />
         <form>

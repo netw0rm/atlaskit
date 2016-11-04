@@ -32,8 +32,8 @@ URL_EXISTED=$(url_exists "$AK_PATH_SHA/")
 $CHALK --no-stdin -t "{blue Uploading storybook (PR) to CDN...}"
 prebake-distributor-runner \
 --s3-bucket="$S3_BUCKET" \
---s3-key-prefix="$S3_KEY_PREFIX/pr/stories" \
---s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/pr/stories" \
+--s3-key-prefix="$S3_KEY_PREFIX/$CDN_PREFIX" \
+--s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/$CDN_PREFIX" \
 "../ak-storybooks-cdn.zip"
 
 if [ "$URL_EXISTED" == "1" ]; then

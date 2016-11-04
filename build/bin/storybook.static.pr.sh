@@ -5,9 +5,9 @@ CHALK="`npm bin`/chalk"
 BASEDIR=$(dirname $0)
 CDN_PREFIX="pr/stories"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
-AK_PATH_SHA="$AK_PATH/$BITBUCKET_COMMIT"
+BUILD_SPECIFIC_URL_PART="$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME"
+AK_PATH_SHA="$AK_PATH/$BUILD_SPECIFIC_URL_PART"
 . $BASEDIR/_build_status.sh
-. $BASEDIR/_cf_invalidate.sh
 
 function storybook_build_status() {
   build_status \
@@ -22,12 +22,10 @@ storybook_build_status "INPROGRESS"
 
 $CHALK --no-stdin -t "{blue Building storybook (PR)}"
 mkdir -p ../atlaskit-stories
-npm run storybook/static -- -o stories/$BITBUCKET_COMMIT
+npm run storybook/static -- -o stories/$BUILD_SPECIFIC_URL_PART
 mv ./stories ../atlaskit-stories/resources
 rm -f ../ak-storybooks-cdn.zip
 zip -0 -r -T ../ak-storybooks-cdn.zip ../atlaskit-stories/resources
-
-URL_EXISTED=$(url_exists "$AK_PATH_SHA/")
 
 $CHALK --no-stdin -t "{blue Uploading storybook (PR) to CDN...}"
 prebake-distributor-runner \
@@ -35,9 +33,5 @@ prebake-distributor-runner \
 --s3-key-prefix="$S3_KEY_PREFIX/$CDN_PREFIX" \
 --s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/$CDN_PREFIX" \
 "../ak-storybooks-cdn.zip"
-
-if [ "$URL_EXISTED" == "1" ]; then
-  cf_invalidate "/$AK_PATH_SHA/*"
-fi
 
 storybook_build_status "SUCCESSFUL"

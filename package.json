@@ -72,7 +72,7 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "retry-cli": "^0.4.0",
-    "skatejs": "^4.0.0",
+    "skatejs": "^4.0.4",
     "stats.js": "^0.16.0",
     "storybook-addon-i18n-tools": "^1.0.0",
     "style-loader": "^0.13.1",

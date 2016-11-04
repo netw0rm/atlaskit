@@ -20,11 +20,11 @@
     "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^4.0.0"
+    "skatejs": "^4.0.4"
   },
   "devDependencies": {
     "ak-editor-content": "^2.0.0",
-    "ak-editor-plugin-block-type": "^2.0.0",
+    "ak-editor-plugin-block-type": "^3.0.2",
     "ak-editor-prosemirror": "^2.0.0",
     "ak-editor-test": "^3.0.0",
     "ak-editor-toolbar": "^2.0.0",

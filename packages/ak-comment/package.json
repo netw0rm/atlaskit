@@ -12,9 +12,9 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^1.0.0",
+    "akutil-common": "^2.8.0",
     "akutil-shared-styles": "^35.0.1",
-    "skatejs": "^4.0.0"
+    "skatejs": "^4.0.4"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

@@ -1,12 +1,13 @@
+/* eslint-disable jsx-a11y/href-no-hash */
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
+import React from 'react';
 import {
   defineValidator,
   ValidatorMinlength,
   ValidatorMaxlength,
   ValidatorRequired,
 } from '../src';
-import React from 'react';
 
 const ReactValidatorMinlength = reactify(ValidatorMinlength);
 const ReactValidatorMaxlength = reactify(ValidatorMaxlength);
@@ -21,13 +22,13 @@ const ValidatorStartsWith = defineValidator('x-validator-starts-with',
       default: '',
     },
   },
-  (elem) => (`Field value must start with ${elem.start}`)
+  elem => (`Field value must start with ${elem.start}`)
 );
 const ReactValidatorStartsWith = reactify(ValidatorStartsWith);
 
 
 storiesOf(name, module)
-  .add('pre-defined validators with error messages', () => (
+  .add('pre-defined validators (invalid)', () => (
     <div>
       <div><ReactValidatorMinlength minlength="10" invalid>
         Custom message for <i>minlength validator</i>
@@ -40,11 +41,12 @@ storiesOf(name, module)
       </ReactValidatorRequired></div>
     </div>
   ))
-  .add('pre-defined validators with no error messages', () => (
+  .add('pre-defined validators (valid))', () => (
     <div>
-      <div><ReactValidatorMinlength minlength="10" invalid /></div>
-      <div><ReactValidatorMaxlength maxlength="10" invalid /></div>
-      <div><ReactValidatorRequired invalid /></div>
+      <p>These validators are valid, so they should be hidden</p>
+      <div><ReactValidatorMinlength minlength="10" /></div>
+      <div><ReactValidatorMaxlength maxlength="10" /></div>
+      <div><ReactValidatorRequired /></div>
     </div>
   ))
   .add('custom validator', () => (
@@ -54,4 +56,3 @@ storiesOf(name, module)
       </ReactValidatorStartsWith>
     </div>
   ));
-

@@ -7,7 +7,9 @@ CDN_PREFIX="pr/stories"
 AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
 BUILD_SPECIFIC_URL_PART="$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME"
 AK_PATH_SHA="$AK_PATH/$BUILD_SPECIFIC_URL_PART"
+OUTDIR=$(mktemp -d)
 . $BASEDIR/_build_status.sh
+. $BASEDIR/_cdn_publish_folder.sh
 
 function storybook_build_status() {
   build_status \
@@ -18,20 +20,14 @@ function storybook_build_status() {
     "$CDN_URL_BASE/$AK_PATH_SHA/"
 }
 
+function build_storybook() {
+  local TARGET_PATH="$1"
+
+  $CHALK --no-stdin -t "{blue Building storybook (PR)}"
+  npm run storybook/static -- -o "$TARGET_PATH"
+}
+
 storybook_build_status "INPROGRESS"
-
-$CHALK --no-stdin -t "{blue Building storybook (PR)}"
-mkdir -p ../atlaskit-stories
-npm run storybook/static -- -o stories/$BUILD_SPECIFIC_URL_PART
-mv ./stories ../atlaskit-stories/resources
-rm -f ../ak-storybooks-cdn.zip
-zip -0 -r -T ../ak-storybooks-cdn.zip ../atlaskit-stories/resources
-
-$CHALK --no-stdin -t "{blue Uploading storybook (PR) to CDN...}"
-prebake-distributor-runner \
---s3-bucket="$S3_BUCKET" \
---s3-key-prefix="$S3_KEY_PREFIX/$CDN_PREFIX" \
---s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/$CDN_PREFIX" \
-"../ak-storybooks-cdn.zip"
-
+build_storybook "$OUTDIR"
+cdn_publish_folder "$OUTDIR" "$CDN_PREFIX/$BUILD_SPECIFIC_URL_PART"
 storybook_build_status "SUCCESSFUL"

@@ -179,14 +179,6 @@ export default define('ak-calendar', {
       weekNumbers: true,
     });
 
-    if (!elem.hasAttribute('tabindex')) {
-      elem.setAttribute('tabindex', 0);
-    }
-
-    if (!elem.hasAttribute('aria-label')) {
-      elem.setAttribute('aria-label', elem.getAttribute('title') || 'Calendar');
-    }
-
     elem.addEventListener('blur', elem.loseFocus);
     elem.addEventListener('keydown', elem.navigateWithKeyboard);
     elem.addEventListener('mouseover', elem.loseFocus);
@@ -195,6 +187,15 @@ export default define('ak-calendar', {
     elem[$next] = elem.next.bind(elem);
     elem[$prev] = elem.prev.bind(elem);
     elem[$selectDay] = elem.selectDay.bind(elem);
+  },
+  attached(elem) {
+    if (!elem.hasAttribute('tabindex')) {
+      elem.setAttribute('tabindex', 0);
+    }
+
+    if (!elem.hasAttribute('aria-label')) {
+      elem.setAttribute('aria-label', elem.getAttribute('title') || 'Calendar');
+    }
   },
   render(elem) {
     const calendar = elem[$calendars].getCalendar(elem.year, elem.month - 1);

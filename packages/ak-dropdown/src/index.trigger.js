@@ -36,6 +36,7 @@ export const DropdownTrigger = define('ak-dropdown-trigger', {
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
         onclick={handleClick(elem)}
         onkeydown={handleKeyDown(elem)}
+        className={shadowTriggerStyles.locals.triggerContainer}
       >
         <style>{shadowTriggerStyles.toString()}</style>
         <slot />

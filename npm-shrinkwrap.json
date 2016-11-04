@@ -6540,9 +6540,9 @@
       "resolved": "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
     },
     "typescript": {
-      "version": "2.1.0-dev.20160826",
-      "from": "typescript@2.1.0-dev.20160826",
-      "resolved": "https://registry.npmjs.org/typescript/-/typescript-2.1.0-dev.20160826.tgz"
+      "version": "2.1.0-dev.20161010",
+      "from": "typescript@>=2.1.0-dev.20160826 <3.0.0",
+      "resolved": "https://registry.npmjs.org/typescript/-/typescript-2.1.0-dev.20161010.tgz"
     },
     "typical": {
       "version": "2.6.0",

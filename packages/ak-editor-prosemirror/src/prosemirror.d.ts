@@ -290,7 +290,7 @@ declare module 'prosemirror/dist/edit/transform' {
         applyAndScroll(): any;
         selection: any;
         setSelection(selection: any): this;
-        replaceSelection(node: any, inheritMarks: any): this;
+        replaceSelection(node: any, inheritMarks?: any): this;
         deleteSelection(): any;
         typeText(text: any): this;
         pm: ProseMirror;

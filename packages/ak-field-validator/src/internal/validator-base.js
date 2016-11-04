@@ -1,4 +1,5 @@
 import { vdom, prop, Component } from 'skatejs';
+import shadowStyles from '../shadow.less';
 
 /**
  * The base class definition for a validator component.
@@ -8,7 +9,10 @@ class ValidatorBase extends Component {
     return { invalid: prop.boolean({ attribute: true }) };
   }
   static render() {
-    return (<slot />);
+    return ([
+      <style>{shadowStyles.toString()}</style>,
+      <slot />,
+    ]);
   }
 }
 

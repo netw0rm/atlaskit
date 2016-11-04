@@ -1,6 +1,5 @@
-import 'style!./host.less';
 import { prop } from 'skatejs';
-import defineValidator from './index.define-validator';
+import defineValidator from './define-validator';
 
 const prefix = 'ak-field-validator-';
 
@@ -68,7 +67,7 @@ const ValidatorMaxlength = defineValidator(`${prefix}maxlength`,
  *   This field is required
  * </ak-field-validator-required>
  */
-const ValidatorRequired = defineValidator(`${prefix}required`, (value) => !!value);
+const ValidatorRequired = defineValidator(`${prefix}required`, value => !!value);
 
 export {
   defineValidator,

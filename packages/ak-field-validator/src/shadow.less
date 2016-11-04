@@ -4,10 +4,7 @@
 // that do not support shadow DOM
 
 .host-styles() {
-  &:not([defined]),
-  &:not([invalid]) {
-    display: none;
-  }
+  display: inline-block;
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -19,8 +16,18 @@ ak-field-validator-minlength,
 ak-field-validator-maxlength,
 ak-field-validator-required {
   .host-styles();
+
+  &:not([defined]),
+  &:not([invalid]) {
+    display: none;
+  }
 }
 
 :host {
   .host-styles();
+
+  &(:not([defined])),
+  &(:not([invalid])) {
+    display: none;
+  }
 }

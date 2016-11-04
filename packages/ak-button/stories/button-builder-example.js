@@ -8,7 +8,7 @@ import AkButtonTemplate, { APPEARANCE } from '../src';
 
 const AkButton = reactify(AkButtonTemplate);
 
-class AkButtonStates extends React.Component {
+class ButtonBuilderExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,17 +22,17 @@ class AkButtonStates extends React.Component {
     };
   }
 
-  createCheckboxHrefAttribute() {
+  createCheckboxStringAttribute({ name, value }) {
     const id = `label-${uid()}`;
     return (
       <label htmlFor={id}>
         <input
           id={id}
           type="checkbox"
-          onChange={() => this.setState({ href: (this.state.href) ? false : 'http://www.atlassian.com' })}
-          checked={this.state.href}
+          onChange={() => this.setState({ [name]: (this.state[name]) ? false : value })}
+          checked={this.state[name]}
         />
-        href
+        {name}
       </label>
     );
   }
@@ -88,13 +88,34 @@ class AkButtonStates extends React.Component {
   }
 
   render() {
+    const props = {
+      disabled: this.state.disabled,
+      selected: this.state.selected,
+      compact: this.state.compact,
+      appearance: this.state.appearance,
+      onclick: action('clicking the WebComponent'),
+    };
+
+    if (this.state.href) {
+      props.href = this.state.href;
+      if (this.state.target) {
+        props.target = this.state.target;
+      }
+    }
+
     return (
       <div>
         <style>{'label {margin-right: 10px;}'}</style>
         <form>
           <strong>Href Attribute</strong>
           <br />
-          {this.createCheckboxHrefAttribute()}
+          {this.createCheckboxStringAttribute({ name: 'href', value: 'http://www.atlassian.com' })}
+        </form>
+        <br />
+        <form>
+          <strong>Target Attribute</strong>
+          <br />
+          {this.createCheckboxStringAttribute({ name: 'target', value: '_blank' })}
         </form>
         <br />
         <form>
@@ -133,12 +154,7 @@ class AkButtonStates extends React.Component {
         <p>
           Baseline alignment check
           <AkButton
-            href={this.state.href}
-            disabled={this.state.disabled}
-            selected={this.state.selected}
-            compact={this.state.compact}
-            appearance={this.state.appearance}
-            onclick={action('clicking the WebComponent')}
+            {...props}
           >
             {this.createIcon('before')}
             {this.createIcon('after')}
@@ -150,8 +166,8 @@ class AkButtonStates extends React.Component {
   }
 }
 
-AkButtonStates.displayName = 'AkButtonStates';
-AkButtonStates.propTypes = {
+ButtonBuilderExample.displayName = 'ButtonBuilderExample';
+ButtonBuilderExample.propTypes = {
   icons: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
-export default AkButtonStates;
+export default ButtonBuilderExample;

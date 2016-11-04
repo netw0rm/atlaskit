@@ -177,10 +177,10 @@ const buildStory = (props, Wrapper) => (
 
 export default function addStories(storiesBuilder, Wrapper) {
   storiesBuilder
-    .add('standard ak-button', buildStory({ appearance: APPEARANCE.STANDARD }, Wrapper))
-    .add('primary ak-button', buildStory({ appearance: APPEARANCE.PRIMARY }, Wrapper))
-    .add('subtle ak-button', buildStory({ appearance: APPEARANCE.SUBTLE }, Wrapper))
-    .add('link ak-button', buildStory({ appearance: APPEARANCE.LINK }, Wrapper))
+    .add('standard ak-button states', buildStory({ appearance: APPEARANCE.STANDARD }, Wrapper))
+    .add('primary ak-button states', buildStory({ appearance: APPEARANCE.PRIMARY }, Wrapper))
+    .add('subtle ak-button states', buildStory({ appearance: APPEARANCE.SUBTLE }, Wrapper))
+    .add('link ak-button states', buildStory({ appearance: APPEARANCE.LINK }, Wrapper))
     .add('button builder example', () => (
       <Wrapper>
         <ButtonBuilderExample icons={[() => null].concat([Page, Question, Calendar, Expand])} />

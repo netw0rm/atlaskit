@@ -27,13 +27,12 @@ function buildExpandedEditor(
   context = ''
 ) : Promise<typeof AkEditorBitbucket> {
   return new Promise(function(resolve, reject) {
-    let failTimer;
     const successFn = () => {
       clearTimeout(failTimer);
       resolve(fixture.firstChild);
     };
 
-    failTimer = setTimeout(() => {
+    let failTimer = setTimeout(() => {
       fixture.removeEventListener('ready', successFn);
       reject(new Error('the editor didn\'t become ready in 1.5s'));
     }, 1500);

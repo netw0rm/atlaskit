@@ -25,13 +25,7 @@ function print_coverage() {
   cat ./coverage/coverage.txt
 }
 
-function gather_coverage() {
-  $CHALK --no-stdin -t "{blue Gathering coverage files...}"
-  mv -f ./coverage/html "$1"
-}
-
 stats_build_status "INPROGRESS"
 print_coverage
-gather_coverage "$OUTDIR"
-cdn_publish_folder "$OUTDIR" "$CDN_PREFIX/$BUILD_SPECIFIC_URL_PART"
+cdn_publish_folder "./coverage/html" "$CDN_PREFIX/$BUILD_SPECIFIC_URL_PART"
 stats_build_status "SUCCESSFUL"

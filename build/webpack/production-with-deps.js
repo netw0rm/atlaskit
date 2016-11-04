@@ -16,6 +16,7 @@ if (process.env.BITBUCKET_COMMIT) {
   productionConfig.plugins.push(new BundleAnalyzerPlugin({
     analyzerMode: 'static',
     reportFilename: path.resolve('./stats/with-deps.html'),
+    openAnalyzer: false,
   }));
 }
 

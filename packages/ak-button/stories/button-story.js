@@ -19,8 +19,10 @@ const css = {
   '::slotted(.sample)': {
     display: 'flex',
     'justify-content': 'space-between',
-    'margin-bottom': '10px',
     'align-items': 'baseline',
+    'border-bottom': '1px solid',
+    'padding-bottom': '10px',
+    'padding-top': '10px',
   },
 };
 

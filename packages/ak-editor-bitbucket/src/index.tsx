@@ -278,6 +278,7 @@ class AkEditorBitbucket extends Component {
    */
   focus(): void {
     for (const pm of maybe(this._pm)) {
+      this._focused = true;
       pm.focus();
     }
   }

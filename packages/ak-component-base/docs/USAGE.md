@@ -22,7 +22,16 @@ npm install ak-component-base
 
 ## Using the component
 
-This component is meant as a base for other components to extend. The following example shows how you can do this with Skatejs.
+This component is meant as a base for other components to extend. To build the base component, you will need to inject the `Component` and `prop` dependencies like so:
+
+```
+import { Component, prop } from 'skatejs'
+import base from 'ak-component-base'
+
+const Base = base({ Component, prop });
+```
+
+Now you can extend `Base`.
 
 #### Counter Component
 
@@ -30,7 +39,6 @@ This component simply keeps track of two numbers (both exposed as props) and inc
 
 ```js
 import { define, vdom, prop } from 'skatejs';
-import Base from 'ak-component-base';
 
 const Counter = define('x-counter', Base.extend({
   props: Object.assign({}, {
@@ -64,7 +72,6 @@ The equivalent in the ES6 Classes syntax would be:
 
 ```js
 import { define, vdom, prop } from 'skatejs';
-import Base from 'ak-component-base';
 
 const Counter = define('x-counter', class extends Base {
   static get props () {

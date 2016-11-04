@@ -2,10 +2,7 @@
 set -e
 
 CHALK="`npm bin`/chalk"
-CDN_PREFIX="pr/docs"
-AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
-BUILD_SPECIFIC_URL_PART="$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME"
-AK_PATH_SHA="$AK_PATH/$BUILD_SPECIFIC_URL_PART"
+BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/docs"
 BASEDIR=$(dirname $0)
 OUTDIR=$(mktemp -d)
 export OUTDIR="$OUTDIR"
@@ -18,7 +15,7 @@ function docs_build_status() {
     "Documentation" \
     "The docs for this pull request" \
     "$1" \
-    "$CDN_URL_BASE/$AK_PATH_SHA/"
+    "$CDN_URL_BASE/$CDN_URL_SCOPE/$BUILD_SPECIFIC_URL_PART/"
 }
 
 function generate_docs() {
@@ -33,5 +30,5 @@ function generate_docs() {
 
 docs_build_status "INPROGRESS"
 generate_docs
-cdn_publish_folder "$OUTDIR" "$CDN_PREFIX/$BUILD_SPECIFIC_URL_PART"
+cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
 docs_build_status "SUCCESSFUL"

@@ -3,10 +3,7 @@ set -e
 
 CHALK="`npm bin`/chalk"
 BASEDIR=$(dirname $0)
-CDN_PREFIX="pr/stories"
-AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
-BUILD_SPECIFIC_URL_PART="$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME"
-AK_PATH_SHA="$AK_PATH/$BUILD_SPECIFIC_URL_PART"
+BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/storybook"
 OUTDIR=$(mktemp -d)
 . $BASEDIR/_build_status.sh
 . $BASEDIR/_cdn_publish_folder.sh
@@ -17,7 +14,7 @@ function storybook_build_status() {
     "Storybook" \
     "The storybook for this pull request" \
     "$1" \
-    "$CDN_URL_BASE/$AK_PATH_SHA/"
+    "$CDN_URL_BASE/$CDN_URL_SCOPE/$BUILD_SPECIFIC_URL_PART/"
 }
 
 function build_storybook() {
@@ -29,5 +26,5 @@ function build_storybook() {
 
 storybook_build_status "INPROGRESS"
 build_storybook "$OUTDIR"
-cdn_publish_folder "$OUTDIR" "$CDN_PREFIX/$BUILD_SPECIFIC_URL_PART"
+cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
 storybook_build_status "SUCCESSFUL"

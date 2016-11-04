@@ -2,10 +2,7 @@
 set -e
 
 CHALK="`npm bin`/chalk"
-CDN_PREFIX="pr/stats"
-AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
-BUILD_SPECIFIC_URL_PART="$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME"
-AK_PATH_SHA="$AK_PATH/$BUILD_SPECIFIC_URL_PART"
+BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/stats"
 BASEDIR=$(dirname $0)
 OUTDIR=$(mktemp -d)
 export OUTDIR="$OUTDIR"
@@ -18,7 +15,7 @@ function stats_build_status() {
     "Statistics" \
     "The bundle statistics for this pull request" \
     "$1" \
-    "$CDN_URL_BASE/$AK_PATH_SHA/"
+    "$CDN_URL_BASE/$CDN_URL_SCOPE/$BUILD_SPECIFIC_URL_PART/"
 }
 
 function gather_stats() {
@@ -33,5 +30,5 @@ function gather_stats() {
 
 stats_build_status "INPROGRESS"
 gather_stats
-cdn_publish_folder "$OUTDIR" "$CDN_PREFIX/$BUILD_SPECIFIC_URL_PART"
+cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
 stats_build_status "SUCCESSFUL"

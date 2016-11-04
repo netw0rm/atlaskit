@@ -2,10 +2,7 @@
 set -e
 
 CHALK="`npm bin`/chalk"
-CDN_PREFIX="pr/coverage"
-AK_PATH="$CDN_URL_SCOPE/$CDN_PREFIX"
-BUILD_SPECIFIC_URL_PART="$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME"
-AK_PATH_SHA="$AK_PATH/$BUILD_SPECIFIC_URL_PART"
+BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/coverage"
 BASEDIR=$(dirname $0)
 OUTDIR=$(mktemp -d)
 . $BASEDIR/_build_status.sh
@@ -17,7 +14,7 @@ function stats_build_status() {
     "Coverage" \
     "The test coverage for this pull request" \
     "$1" \
-    "$CDN_URL_BASE/$AK_PATH_SHA/"
+    "$CDN_URL_BASE/$CDN_URL_SCOPE/$BUILD_SPECIFIC_URL_PART/"
 }
 
 function print_coverage() {
@@ -27,5 +24,5 @@ function print_coverage() {
 
 stats_build_status "INPROGRESS"
 print_coverage
-cdn_publish_folder "./coverage/html" "$CDN_PREFIX/$BUILD_SPECIFIC_URL_PART"
+cdn_publish_folder "./coverage/html" "$BUILD_SPECIFIC_URL_PART"
 stats_build_status "SUCCESSFUL"

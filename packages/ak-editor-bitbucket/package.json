@@ -39,7 +39,7 @@
     "babel-runtime": "^6.11.6",
     "browserkeymap": "^2.0.1",
     "markdown-it": "^8.0.0",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.0"
   },
   "devDependencies": {
     "ak-editor-test": "^3.0.0",

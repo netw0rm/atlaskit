@@ -15,7 +15,7 @@
     "ak-field-base": "^2.2.0",
     "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

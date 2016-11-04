@@ -17,7 +17,7 @@
     "classnames": "^2.2.5",
     "debounce": "^1.0.0",
     "ak-layer": "^57.0.0",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

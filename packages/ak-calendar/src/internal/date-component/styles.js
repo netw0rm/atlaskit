@@ -18,6 +18,7 @@ export default {
     border: '2px solid transparent',
     'border-radius': '4px',
     cursor: 'pointer',
+    'font-weight': 'lighter',
     padding: '5px',
     '&:hover': {
       'background-color': akColorN900,
@@ -42,6 +43,9 @@ export default {
     color: akColorN80,
   },
   today: {
+    'background-color': akColorN900,
+    'border-bottom': `1px solid ${akColorB50}`,
     color: akColorB50,
+    'font-weight': 'normal',
   },
 };

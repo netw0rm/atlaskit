@@ -1,6 +1,6 @@
 {
   "name": "ak-dropdown",
-  "version": "7.0.0",
+  "version": "9.0.3",
   "description": "ak-dropdown webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -14,11 +14,11 @@
   "dependencies": {
     "ak-layer": "^57.0.0",
     "akutil-common": "^2.2.0",
-    "akutil-shared-styles": "^34.0.1",
+    "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "keycode": "^2.1.2",
-    "skatejs": "^3.0.0",
+    "skatejs": "^4.0.0",
     "ak-icon": "^8.1.2",
     "ak-button": "^1.3.2"
   },
@@ -33,5 +33,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "3.5.2",
+  "version": "3.5.5",
   "description": "Editor web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -29,7 +29,7 @@
     "ak-editor-prosemirror": "^2.0.0",
     "ak-editor-schema": "^2.0.0",
     "ak-editor-shared-styles": "^1.0.3",
-    "akutil-shared-styles": "^34.0.1",
+    "akutil-shared-styles": "^35.0.1",
     "ak-editor-toolbar": "^2.0.2",
     "ak-editor-toolbar-block-type": "^2.1.9",
     "ak-editor-toolbar-hyperlink": "^14.0.9",
@@ -51,5 +51,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

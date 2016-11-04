@@ -12,9 +12,9 @@
     "@kadira/storybook": "^2.24.0",
     "akutil-common-test": "^4.0.0",
     "akutil-cucumber": "^1.0.0",
-    "akutil-dmd-plugin": "^2.0.2",
+    "akutil-dmd-plugin": "^2.2.0",
     "akutil-polyfills": "^2.2.1",
-    "akutil-shared-styles": "^34.2.2",
+    "akutil-shared-styles": "^35.0.1",
     "autoprefixer": "^6.5.0",
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.5",
@@ -83,8 +83,8 @@
     "validate-commit-message": "^3.0.1",
     "wait-on": "^1.5.3",
     "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.2",
-    "webpack-visualizer-plugin": "^0.1.5"
+    "webpack-bundle-analyzer": "^1.4.1",
+    "webpack-dev-server": "^1.16.2"
   },
   "engines": {
     "npm": ">=3.8",

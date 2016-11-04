@@ -1,6 +1,6 @@
 {
   "name": "ak-avatar",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "Avatar web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -15,7 +15,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "akutil-common": "^2.0.0",
-    "akutil-shared-styles": "^34.0.1",
+    "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "skatejs": "^3.1.2"
@@ -27,5 +27,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

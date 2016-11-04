@@ -1,13 +1,8 @@
-export default (text: string, regexp: RegExp): Iterable<RegExpExecArray> => ({
-  [Symbol.iterator]() {
-    return {
-      next(): IteratorResult<RegExpExecArray> {
-        let match = regexp.exec(text);
-        return {
-          done: match === null,
-          value: match as any,
-        };
-      }
-    };
-  }
-});
+export default (text: string, regexp: RegExp) => {
+  const results: Array<RegExpExecArray> = [];
+  let match: RegExpExecArray | null;
+  while (match = regexp.exec(text)) {
+    results.push(match);
+   }
+  return results;
+};

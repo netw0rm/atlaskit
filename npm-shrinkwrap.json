@@ -15,14 +15,7 @@
     "@kadira/storybook": {
       "version": "2.29.3",
       "from": "@kadira/storybook@>=2.24.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/@kadira/storybook/-/storybook-2.29.3.tgz",
-      "dependencies": {
-        "postcss-loader": {
-          "version": "0.13.0",
-          "from": "postcss-loader@0.13.0",
-          "resolved": "https://registry.npmjs.org/postcss-loader/-/postcss-loader-0.13.0.tgz"
-        }
-      }
+      "resolved": "https://registry.npmjs.org/@kadira/storybook/-/storybook-2.29.3.tgz"
     },
     "@kadira/storybook-addon-actions": {
       "version": "1.1.1",
@@ -223,7 +216,7 @@
     },
     "any-promise": {
       "version": "1.3.0",
-      "from": "any-promise@>=1.3.0 <2.0.0",
+      "from": "any-promise@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/any-promise/-/any-promise-1.3.0.tgz"
     },
     "anymatch": {
@@ -502,9 +495,9 @@
       "resolved": "https://registry.npmjs.org/babel-plugin-incremental-dom/-/babel-plugin-incremental-dom-3.4.0.tgz"
     },
     "babel-plugin-react-docgen": {
-      "version": "1.4.0",
-      "from": "babel-plugin-react-docgen@>=1.4.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/babel-plugin-react-docgen/-/babel-plugin-react-docgen-1.4.0.tgz"
+      "version": "1.4.1",
+      "from": "babel-plugin-react-docgen@>=1.4.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/babel-plugin-react-docgen/-/babel-plugin-react-docgen-1.4.1.tgz"
     },
     "babel-plugin-rewire": {
       "version": "1.0.0",
@@ -1150,9 +1143,9 @@
       }
     },
     "caniuse-db": {
-      "version": "1.0.30000573",
+      "version": "1.0.30000574",
       "from": "caniuse-db@>=1.0.30000554 <2.0.0",
-      "resolved": "https://registry.npmjs.org/caniuse-db/-/caniuse-db-1.0.30000573.tgz"
+      "resolved": "https://registry.npmjs.org/caniuse-db/-/caniuse-db-1.0.30000574.tgz"
     },
     "capture-stack-trace": {
       "version": "1.0.0",
@@ -1273,11 +1266,6 @@
         }
       }
     },
-    "cli-truncate": {
-      "version": "0.2.1",
-      "from": "cli-truncate@>=0.2.1 <0.3.0",
-      "resolved": "https://registry.npmjs.org/cli-truncate/-/cli-truncate-0.2.1.tgz"
-    },
     "cli-width": {
       "version": "2.1.0",
       "from": "cli-width@>=2.0.0 <3.0.0",
@@ -1316,9 +1304,9 @@
       "resolved": "https://registry.npmjs.org/coa/-/coa-1.0.1.tgz"
     },
     "code-point-at": {
-      "version": "1.0.1",
+      "version": "1.1.0",
       "from": "code-point-at@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/code-point-at/-/code-point-at-1.0.1.tgz"
+      "resolved": "https://registry.npmjs.org/code-point-at/-/code-point-at-1.1.0.tgz"
     },
     "collect-all": {
       "version": "1.0.2",
@@ -1944,11 +1932,6 @@
       "version": "2.5.2",
       "from": "ejs@>=2.5.2 <3.0.0",
       "resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.2.tgz"
-    },
-    "elegant-spinner": {
-      "version": "1.0.1",
-      "from": "elegant-spinner@>=1.0.1 <2.0.0",
-      "resolved": "https://registry.npmjs.org/elegant-spinner/-/elegant-spinner-1.0.1.tgz"
     },
     "element-class": {
       "version": "0.2.2",
@@ -4090,9 +4073,9 @@
       "resolved": "https://registry.npmjs.org/jsdoc-to-markdown/-/jsdoc-to-markdown-2.0.1.tgz"
     },
     "jsdoc2md-stats": {
-      "version": "1.0.4",
+      "version": "1.0.5",
       "from": "jsdoc2md-stats@>=1.0.3 <2.0.0",
-      "resolved": "https://registry.npmjs.org/jsdoc2md-stats/-/jsdoc2md-stats-1.0.4.tgz"
+      "resolved": "https://registry.npmjs.org/jsdoc2md-stats/-/jsdoc2md-stats-1.0.5.tgz"
     },
     "jsesc": {
       "version": "1.3.0",
@@ -4481,11 +4464,6 @@
       "version": "3.2.0",
       "from": "lodash.words@>=3.0.0 <4.0.0",
       "resolved": "https://registry.npmjs.org/lodash.words/-/lodash.words-3.2.0.tgz"
-    },
-    "log-update": {
-      "version": "1.0.2",
-      "from": "log-update@>=1.0.2 <2.0.0",
-      "resolved": "https://registry.npmjs.org/log-update/-/log-update-1.0.2.tgz"
     },
     "log4js": {
       "version": "0.6.38",
@@ -5433,7 +5411,7 @@
     },
     "promise-finally": {
       "version": "2.2.1",
-      "from": "promise-finally@>=2.2.1 <3.0.0",
+      "from": "promise-finally@>=2.0.1 <3.0.0",
       "resolved": "https://registry.npmjs.org/promise-finally/-/promise-finally-2.2.1.tgz"
     },
     "protractor": {
@@ -5830,9 +5808,9 @@
       "resolved": "https://registry.npmjs.org/req-then/-/req-then-0.5.1.tgz"
     },
     "request": {
-      "version": "2.76.0",
+      "version": "2.78.0",
       "from": "request@>=2.74.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/request/-/request-2.76.0.tgz"
+      "resolved": "https://registry.npmjs.org/request/-/request-2.78.0.tgz"
     },
     "require-from-string": {
       "version": "1.2.1",
@@ -6515,7 +6493,7 @@
     },
     "ts-loader": {
       "version": "0.9.0",
-      "from": "ts-loader@https://registry.npmjs.org/ts-loader/-/ts-loader-0.9.0.tgz",
+      "from": "ts-loader@0.9.0",
       "resolved": "https://registry.npmjs.org/ts-loader/-/ts-loader-0.9.0.tgz",
       "dependencies": {
         "object-assign": {
@@ -6562,9 +6540,9 @@
       "resolved": "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
     },
     "typescript": {
-      "version": "2.1.0-dev.20161010",
-      "from": "typescript@>=2.1.0-dev.20160826 <3.0.0",
-      "resolved": "https://registry.npmjs.org/typescript/-/typescript-2.1.0-dev.20161010.tgz"
+      "version": "2.1.0-dev.20160826",
+      "from": "typescript@2.1.0-dev.20160826",
+      "resolved": "https://registry.npmjs.org/typescript/-/typescript-2.1.0-dev.20160826.tgz"
     },
     "typical": {
       "version": "2.6.0",
@@ -6572,9 +6550,9 @@
       "resolved": "https://registry.npmjs.org/typical/-/typical-2.6.0.tgz"
     },
     "typings": {
-      "version": "1.5.0",
-      "from": "typings@>=1.4.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/typings/-/typings-1.5.0.tgz",
+      "version": "1.4.0",
+      "from": "typings@1.4.0",
+      "resolved": "https://registry.npmjs.org/typings/-/typings-1.4.0.tgz",
       "dependencies": {
         "minimist": {
           "version": "1.2.0",
@@ -6590,13 +6568,13 @@
     },
     "typings-core": {
       "version": "1.6.1",
-      "from": "typings-core@>=1.6.1 <2.0.0",
+      "from": "typings-core@>=1.5.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/typings-core/-/typings-core-1.6.1.tgz",
       "dependencies": {
         "typescript": {
-          "version": "2.0.6",
+          "version": "2.0.7",
           "from": "typescript@>=2.0.3 <3.0.0",
-          "resolved": "https://registry.npmjs.org/typescript/-/typescript-2.0.6.tgz"
+          "resolved": "https://registry.npmjs.org/typescript/-/typescript-2.0.7.tgz"
         }
       }
     },

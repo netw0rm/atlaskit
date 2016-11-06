@@ -206,6 +206,17 @@ export default define('ak-calendar', {
     const now = elem[$now];
     const weeks = [];
     const css = style(vdom, styles);
+    const shouldDisplaySixthWeek = calendar.length % 6;
+
+    if (shouldDisplaySixthWeek) {
+      const lastDayIsSibling = calendar[calendar.length - 1].siblingMonth;
+      const sliceStart = lastDayIsSibling ? 7 : 0;
+      calendar.push(
+        ...elem[$calendars].getCalendar(elem.year, elem.month)
+          .slice(sliceStart, sliceStart + 7)
+          .map(e => Object.assign({}, e, { siblingMonth: true }))
+      );
+    }
 
     calendar.forEach((date) => {
       const dateAsString = dateToString(date);

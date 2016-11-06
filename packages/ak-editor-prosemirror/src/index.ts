@@ -20,6 +20,10 @@ export {
 } from 'prosemirror/dist/model';
 
 export {
+  TextNode
+} from 'prosemirror/dist/model/node';
+
+export {
   commands,
   MarkedRange,
   NodeSelection,

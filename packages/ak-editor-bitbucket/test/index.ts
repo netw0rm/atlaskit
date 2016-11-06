@@ -365,9 +365,11 @@ describe('ak-editor-bitbucket', () => {
         //       are still visible.
         // TODO: There must be a better way to do it...
         return waitUntil(
-          () => (shadowRoot = getShadowRoot(footer)) &&
+          () => ((shadowRoot = getShadowRoot(footer)) &&
           (buttonGroup = shadowRoot.firstChild.children[1]) &&
-          buttonGroup.style.visibility === 'hidden'
+          buttonGroup.style.visibility === 'hidden'),
+          1000,
+          50
         ).catch(() => {
           throw new Error('The button group did not become hidden');
         });

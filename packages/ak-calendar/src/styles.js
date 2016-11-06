@@ -27,6 +27,7 @@ export default {
     'background-color': 'transparent',
     border: 'none',
     color: akColorN80,
+    cursor: 'pointer',
   },
   btnPrev: {
     float: 'left',

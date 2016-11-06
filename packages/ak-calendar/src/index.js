@@ -1,9 +1,12 @@
 /** @jsx h */
 
 import { Calendar } from 'calendar-base';
-import classnames from 'classnames';
 import { define, emit, h, prop, vdom } from 'skatejs';
 import { style } from 'akutil-common';
+import classnames from 'classnames';
+import AkIconArrowLeft from 'ak-icon/glyph/arrowleft';
+import AkIconArrowRight from 'ak-icon/glyph/arrowright';
+
 import { dateToString, getDayName, getMonthName, makeArrayFromNumber } from './util';
 import * as events from './index.events';
 import * as keys from './keys';
@@ -247,13 +250,17 @@ export default define('ak-calendar', {
       <table>
         <caption>
           <div class={css.heading}>
-            <button class={classnames(css.btn, css.btnPrev)} onClick={elem[$prev]}>p</button>
+            <button class={classnames(css.btn, css.btnPrev)} onClick={elem[$prev]}>
+              <AkIconArrowLeft />
+            </button>
             <div class={css.monthAndYear}>
               <span>{getMonthName(elem, elem.month)}</span>
               {' '}
               <span>{elem.year}</span>
             </div>
-            <button class={classnames(css.btn, css.btnNext)} onClick={elem[$next]}>n</button>
+            <button class={classnames(css.btn, css.btnNext)} onClick={elem[$next]}>
+              <AkIconArrowRight />
+            </button>
           </div>
         </caption>
         <thead>

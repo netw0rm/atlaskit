@@ -1,6 +1,6 @@
 import BlockTypePlugin from '../src';
-import { Slice, ProseMirror } from 'ak-editor-prosemirror';
-import { chaiPlugin, code_block, fixtures, makeEditor, h1, doc, h2, slice, text, dispatchPasteEvent } from 'ak-editor-test';
+import { ProseMirror } from 'ak-editor-prosemirror';
+import { chaiPlugin, code_block, fixtures, makeEditor, blockquote, p, doc, dispatchPasteEvent } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { PasteContent } from 'ak-editor-test/src/dispatch-paste-event';
@@ -58,6 +58,20 @@ describe('ak-editor-plugin-block-type paste listener', () => {
       expect(pm.doc).to.deep.equal(expected);
       expect(pm.selection.$from.pos).to.deep.equal(10);
       expect(pm.selection.$to.pos).to.deep.equal(10);
+    });
+
+    it('should use our custom paste listener if the selected text block is inside of a blockquote', function () {
+      const { pm } = makeEditor({
+        doc: doc(blockquote(p('p'), code_block()('foo{<}bar{>}'))),
+        plugin: BlockTypePlugin,
+        place: fixture(),
+      });
+
+      maybeDispatchPasteEvent(pm, { plain: 'baz' }, this);
+      const expected = doc(blockquote(p('p'), code_block()('foobaz')));
+      expect(pm.doc).to.deep.equal(expected);
+      expect(pm.selection.$from.pos).to.deep.equal(11);
+      expect(pm.selection.$to.pos).to.deep.equal(11);
     });
   });
 

@@ -260,4 +260,71 @@ storiesOf(`${name} component`, module)
         <ItemReact>another text</ItemReact>
       </DropdownReactComponent>
     </div>
+  ))
+  .add('appearance: tall', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent className={dropdownClass} appearance="tall">
+        <DropdownTriggerArrowReact slot="trigger" tab-index="1" />
+        <ItemReact>Joscha</ItemReact>
+        <ItemReact>Wuz</ItemReact>
+        <ItemReact>Here</ItemReact>
+        <ItemReact>2016</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('appearance: fitwidth', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent
+        className={dropdownClass}
+        appearance="fitwidth"
+        style={{ width: '500px' }}
+      >
+        <DropdownTriggerReact slot="trigger" tab-index="1">
+          <div
+            style={{
+              border: '3px solid #ddd',
+              borderRadius: '3px',
+              padding: '10px',
+              width: '100%',
+            }}
+          >trigger</div>
+        </DropdownTriggerReact>
+        <ItemReact>Joscha</ItemReact>
+        <ItemReact>Wuz</ItemReact>
+        <ItemReact>Here</ItemReact>
+        <ItemReact>2016</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+      </DropdownReactComponent>
+    </div>
   ));

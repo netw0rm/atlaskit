@@ -32,7 +32,7 @@ function buildExpandedEditor(
       resolve(fixture.firstChild);
     };
 
-    const failTimer = setTimeout(() => {
+    let failTimer = setTimeout(() => {
       fixture.removeEventListener('ready', successFn);
       reject(new Error('the editor didn\'t become ready in 1.5s'));
     }, 1500);

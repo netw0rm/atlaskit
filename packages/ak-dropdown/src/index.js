@@ -213,7 +213,11 @@ export default define('ak-dropdown', {
   render(elem) {
     return (
       <div
-        style={{ position: elem.stepOutside || elem.boundariesElement ? 'static' : 'relative' }}
+        style={{
+          position: elem.stepOutside || elem.boundariesElement ? 'static' : 'relative',
+          display: 'flex',
+          width: '100%',
+        }}
       >
         <div
           ref={el => (elem[triggerContainer] = el)}

@@ -25,6 +25,7 @@ pipelines:
     - step:
         script:
           - export FORCE_COLOR=1
+          - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - ./build/bin/setup.sh
           - npm install
           - npm run browserstack/tunnel/start

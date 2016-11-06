@@ -1,7 +1,7 @@
 import MarkdownInputRulesPlugin from '../src';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { chaiPlugin, makeEditor, doc, a, p, em, strong, code, hr, img, h1, h2, h3 } from 'ak-editor-test';
+import { chaiPlugin, makeEditor, doc, a, p, em, strong, code, hr, img, h1, h2, h3, ul, li } from 'ak-editor-test';
 
 chai.use(chaiPlugin);
 
@@ -117,11 +117,33 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
     expect(pm.doc).to.deep.equal(doc(h2()));
   });
 
-
   it('should convert "### " to heading 3', () => {
     const { pm, sel } = editor(doc(p('{<>}')));
 
     pm.input.insertText(sel, sel, '### ');
     expect(pm.doc).to.deep.equal(doc(h3()));
+  });
+
+  it('should convert "* " to a bullet list item', () => {
+    const { pm, sel } = editor(doc(p('{<>}')));
+
+    pm.input.insertText(sel, sel, '* ');
+    expect(pm.doc).to.deep.equal(doc(ul(li(p()))));
+  });
+
+
+  it('should convert "+ " to a bullet list item', () => {
+    const { pm, sel } = editor(doc(p('{<>}')));
+
+    pm.input.insertText(sel, sel, '+ ');
+    expect(pm.doc).to.deep.equal(doc(ul(li(p()))));
+  });
+
+
+  it('should convert "- " to a bullet list item', () => {
+    const { pm, sel } = editor(doc(p('{<>}')));
+
+    pm.input.insertText(sel, sel, '- ');
+    expect(pm.doc).to.deep.equal(doc(ul(li(p()))));
   });
 });

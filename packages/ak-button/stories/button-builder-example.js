@@ -39,7 +39,7 @@ class ButtonBuilderExample extends React.Component {
   }
 
   createCheckboxAttribute(attribute, desc, onChange) {
-    return this.createInputAttribute({ type: 'checkbox', name, desc: attribute, onChange });
+    return this.createInputAttribute({ type: 'checkbox', name, desc: desc || attribute, onChange });
   }
 
   createBooleanCheckboxAttribute(attribute, desc) {

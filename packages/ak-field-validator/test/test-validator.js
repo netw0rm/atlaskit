@@ -22,9 +22,9 @@ describe('ak-field-validator', () => {
     });
 
     it('should export validator components for min length, max length, and required', () => {
-      expect(new ValidatorMinlength).to.be.an.instanceof(Component);
-      expect(new ValidatorMaxlength).to.be.an.instanceof(Component);
-      expect(new ValidatorRequired).to.be.an.instanceof(Component);
+      expect(new ValidatorMinlength()).to.be.an.instanceof(Component);
+      expect(new ValidatorMaxlength()).to.be.an.instanceof(Component);
+      expect(new ValidatorRequired()).to.be.an.instanceof(Component);
     });
   });
 });

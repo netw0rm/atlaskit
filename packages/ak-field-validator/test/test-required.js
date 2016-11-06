@@ -14,7 +14,7 @@ chai.should();
 describe('ak-field-validator-maxlength', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new ValidatorRequired).should.be.an.instanceof(Component);
+      (new ValidatorRequired()).should.be.an.instanceof(Component);
     });
   });
 

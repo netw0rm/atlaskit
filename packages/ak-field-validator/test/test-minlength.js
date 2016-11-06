@@ -14,7 +14,7 @@ chai.should();
 describe('ak-field-validator-minlength', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new ValidatorMinlength).should.be.an.instanceof(Component);
+      (new ValidatorMinlength()).should.be.an.instanceof(Component);
     });
   });
 

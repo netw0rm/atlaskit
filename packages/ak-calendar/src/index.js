@@ -259,7 +259,7 @@ export default define('ak-calendar', {
       <style>{css.toString()}</style>,
       <style>{cssDate.toString()}</style>,
       <Announcer>{new Date(elem.year, elem.month, elem.day).toString()}</Announcer>,
-      <table>
+      <table class={locals.calendar}>
         <caption>
           <div class={locals.heading}>
             {elem.disableNavigation ? '' : <button class={classnames(locals.btn, locals.btnPrev)} onClick={elem[$prev]}>

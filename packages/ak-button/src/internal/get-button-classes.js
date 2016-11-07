@@ -1,11 +1,13 @@
-import { appearance } from '../enumeratedProperties';
+import { appearance, spacing } from './enumerated-properties';
 
 
 const { PRIMARY, SUBTLE, LINK } = appearance.values;
+const { COMPACT, NONE } = spacing.values;
 
 export default (classKeys, props) => ({
   [classKeys.button]: true,
-  [classKeys.compact]: props.compact,
+  [classKeys.compact]: props.spacing === COMPACT,
+  [classKeys.nospacing]: props.spacing === NONE,
   [classKeys.disabled]: props.disabled,
   [classKeys.selected]: props.selected && !props.disabled,
   [classKeys.primary]: props.appearance === PRIMARY && !props.disabled && !props.selected,

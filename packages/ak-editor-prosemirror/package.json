@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-prosemirror",
-  "version": "2.5.0",
+  "version": "4.0.0",
   "description": "A proxy for ProseMirror, a peerDependencies compatible approach for Lerna.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

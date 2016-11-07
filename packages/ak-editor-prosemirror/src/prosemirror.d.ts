@@ -562,30 +562,31 @@ declare module 'prosemirror/dist/model/diff' {
 }
 
 declare module 'prosemirror/dist/model/fragment' {
+    import { Node } from 'prosemirror/dist/model';
     export class Fragment {
         constructor(content: any, size?: any);
         toString(): string;
         toStringInner(): any;
-        nodesBetween(from: any, to: any, f: any, nodeStart: any, parent: any): void;
-        textBetween(from: any, to: any, separator: any): string;
-        cut(from: any, to: any): Fragment;
-        cutByIndex(from: any, to: any): any;
-        append(other: any): any;
-        replaceChild(index: any, node: any): Fragment;
-        addToStart(node: any): Fragment;
-        addToEnd(node: any): Fragment;
+        nodesBetween(from: number, to: number, f: any, nodeStart: any, parent: any): void;
+        textBetween(from: number, to: number, separator: any): string;
+        cut(from: number, to: number): Fragment;
+        cutByIndex(from: number, to: number): any;
+        append(other: Fragment): Fragment;
+        replaceChild(index: number, node: Node): Fragment;
+        addToStart(node: Node): Fragment;
+        addToEnd(node: Node): Fragment;
         toJSON(): any;
-        static fromJSON(schema: any, value: any): any;
-        static fromArray(array: any): any;
+        static fromJSON(schema: any, value: any): Fragment;
+        static fromArray(array: any): Fragment;
         eq(other: any): boolean;
-        static from(nodes: any): any;
-        firstChild: any;
-        lastChild: any;
-        childCount: any;
-        child(index: any): any;
-        offsetAt(index: any): number;
-        maybeChild(index: any): any;
-        forEach(f: any): void;
+        static from(nodes: any): Fragment;
+        firstChild: Node | null;
+        lastChild: Node | null;
+        childCount: number;
+        child(index: number): Node;
+        offsetAt(index: number): number;
+        maybeChild(index: number): Node | undefined;
+        forEach(f: (node: Node, offset?: number, index?: number) => any): void;
         findDiffStart(other: any, pos?: number): any;
         findDiffEnd(other: any, pos?: any, otherPos?: any): any;
         findIndex(pos: any, round?: number): {
@@ -630,16 +631,16 @@ declare module 'prosemirror/dist/model' {
 declare module 'prosemirror/dist/model/mark' {
     import { MarkType } from 'prosemirror/dist/model/schema';
     export class Mark {
-        constructor(type: any, attrs: any);
+        constructor(type: MarkType, attrs: any);
         toJSON(): {
             _: any;
         };
         type: MarkType;
         attrs: any;
-        addToSet(set: any): any;
-        removeFromSet(set: any): any;
-        isInSet(set: any): boolean;
-        eq(other: any): boolean;
+        addToSet(set: Mark[]): Mark[];
+        removeFromSet(set: Mark[]): Mark[];
+        isInSet(set: Mark[]): boolean;
+        eq(other: Mark): boolean;
         static sameSet(a: any, b: any): boolean;
         static setFrom(marks: any): any;
     }
@@ -647,11 +648,12 @@ declare module 'prosemirror/dist/model/mark' {
 
 declare module 'prosemirror/dist/model/node' {
     import { ResolvedPos } from 'prosemirror/dist/model/resolvedpos';
+    import { Mark, Fragment } from 'prosemirror/dist/model';
     export class Node {
         constructor(type?: any, attrs?: any, content?: any, marks?: any);
-        content: any;
+        content: Fragment;
         nodeSize: number;
-        childCount: any;
+        childCount: number;
         child(index: any): any;
         maybeChild(index: any): any;
         forEach(f: any): void;
@@ -662,11 +664,11 @@ declare module 'prosemirror/dist/model/node' {
         sameMarkup(other: any): boolean;
         hasMarkup(type: any, attrs: any, marks: any): boolean;
         copy(content?: any): any;
-        mark(marks: any): any;
-        cut(from: any, to: any): any;
-        slice(from: any, to?: any): any;
-        replace(from: any, to: any, slice: any): any;
-        nodeAt(pos: any): this;
+        mark(marks: Mark[]): this;
+        cut(from: number, to: number): any;
+        slice(from: number, to?: number): any;
+        replace(from: number, to: number, slice: any): any;
+        nodeAt(pos: number): this;
         childAfter(pos: any): {
             node: any;
             index: any;
@@ -758,9 +760,11 @@ declare module 'prosemirror/dist/model/resolvedpos' {
 declare module 'prosemirror/dist/model/schema' {
     import { Node, TextNode } from 'prosemirror/dist/model/node';
     import { OrderedMap } from 'prosemirror/dist/util/orderedmap';
+    import { Mark, Schema } from 'prosemirror/dist/model';
     export class NodeType {
         constructor(name: string, schema: Schema);
         name: string;
+        schema: Schema;
         isBlock: boolean;
         isTextblock: boolean;
         isInline: boolean;
@@ -771,10 +775,10 @@ declare module 'prosemirror/dist/model/schema' {
         hasRequiredAttrs(ignore: any): boolean;
         compatibleContent(other: any): any;
         computeAttrs(attrs: any): any;
-        create(attrs: any, content: any, marks: any): Node;
-        createChecked(attrs: any, content: any, marks: any): Node;
-        createAndFill(attrs: any, content: any, marks: any): Node;
-        validContent(content: any, attrs: any): any;
+        create(attrs?: any, content?: any, marks?: any): Node;
+        createChecked(attrs?: any, content?: any, marks?: any): Node;
+        createAndFill(attrs?: any, content?: any, marks?: any): Node;
+        validContent(content: any, attrs?: any): boolean;
         static compile(nodes: any, schema: any): any;
         toDOM(node?: Node): any[];
         get matchDOMTag(): any;
@@ -797,12 +801,12 @@ declare module 'prosemirror/dist/model/schema' {
         get isRequired(): boolean;
     }
     export class MarkType {
-        constructor(name: any, rank: any, schema: any);
+        constructor(name: string, rank: number, schema: Schema);
         name: string;
         get attrs(): { [name: string]: Attribute };
         schema: Schema;
         inclusiveRight: boolean;
-        create(attrs: any): any;
+        create(attrs?: { [name: string]: any }): Mark;
         static compile(marks: any, schema: any): any;
         removeFromSet(set: any): any;
         isInSet(set: this[]): this | undefined;

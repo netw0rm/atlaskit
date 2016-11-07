@@ -2,225 +2,163 @@ import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
-import Component, { events } from '../src';
+import FieldText from '../src';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
 
+function setupComponent() {
+  const component = new FieldText();
+  const componentHasShadowRoot = () => getShadowRoot(component);
+
+  document.body.appendChild(component);
+
+  return waitUntil(componentHasShadowRoot).then(() => component);
+}
+
+function tearDownComponent(component) {
+  document.body.removeChild(component);
+}
+
 describe('ak-field-text', () => {
-  function setupComponent(opts = {}) {
-    const component = new Component();
-    Object.keys(opts).forEach((key) => {
-      component[key] = opts[key];
-    });
-    const componentHasShadowRoot = () => !!getShadowRoot(component);
+  let component;
+  let shadowRoot;
 
-    document.body.appendChild(component);
+  beforeEach(() => setupComponent().then((newComponent) => {
+    component = newComponent;
+    shadowRoot = getShadowRoot(component);
+  }));
+  afterEach(() => tearDownComponent(component));
 
-    return waitUntil(componentHasShadowRoot).then(() => component);
-  }
+  describe('compact prop', () => {
+    it('should be reflected', () => {
+      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const reflected = () => (fieldBase.appearance === 'compact');
+      // check the negative case first
+      expect(reflected()).to.be.false;
 
-  function tearDownComponent(component) {
-    document.body.removeChild(component);
-  }
+      component.compact = true;
 
-  describe('disabled', () => {
-    let component;
-
-    beforeEach(() => setupComponent({ disabled: true }).then((newComponent) => {
-      component = newComponent;
-    }));
-    afterEach(() => tearDownComponent(component));
-
-    it('should apply the disabled property to the input', () => {
-      const input = component.querySelector('input');
-      expect(input.disabled).to.equal(true);
+      return waitUntil(reflected).should.be.fulfilled;
     });
   });
 
-  describe('label', () => {
-    let component;
-    let shadowRoot;
-    const expectedLabel = 'My new label';
+  describe('disabled prop', () => {
+    it('should be reflected', () => {
+      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const input = fieldBase.querySelector('input');
+      const reflected = () => (!!fieldBase.disabled && !!input.disabled);
+      // check the negative case first
+      expect(reflected()).to.be.false;
 
-    beforeEach(() => setupComponent({ label: expectedLabel }).then((newComponent) => {
-      component = newComponent;
-      shadowRoot = getShadowRoot(component);
-    }));
-    afterEach(() => tearDownComponent(component));
-    it('should render the supplied label', () => {
-      const label = shadowRoot.querySelector('label > div');
-      const labelIsCorrect = () => (label.innerText === expectedLabel);
+      component.disabled = true;
 
-      return waitUntil(labelIsCorrect).should.be.fulfilled;
-    });
-
-    it('should focus input when label clicked', () => {
-      const focusSpy = sinon.spy();
-      const input = component.querySelector('input');
-      input.addEventListener('focus', focusSpy);
-
-      const labelText = 'My other label';
-      const label = shadowRoot.querySelector('label > div');
-      component.label = labelText;
-      const labelIsCorrect = () => (label.innerText === labelText);
-
-      return waitUntil(labelIsCorrect).then(() => {
-        const labelFocused = () => (focusSpy.calledOnce);
-        expect(labelFocused()).to.equal(false);
-        label.click();
-        return waitUntil(labelFocused).should.be.fulfilled;
-      });
-    });
-
-    it('should not throw error when label clicked with no input', () => {
-      const label = shadowRoot.querySelector('label');
-      expect(() => (label.click())).to.not.throw(Error);
+      return waitUntil(reflected).should.be.fulfilled;
     });
   });
 
-  describe('name', () => {
-    let component;
-    const expectedName = 'fname';
+  describe('label prop', () => {
+    it('should be reflected', () => {
+      const newValue = 'new label';
+      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const reflected = () => (fieldBase.label === newValue);
+      // check the negative case first
+      expect(reflected()).to.be.false;
 
-    beforeEach(() => setupComponent({ name: expectedName }).then((newComponent) => {
-      component = newComponent;
-    }));
-    afterEach(() => tearDownComponent(component));
+      component.label = newValue;
 
-    it('should apply the name property to the input', () => {
-      const input = component.querySelector('input');
-      expect(input.name).to.equal(expectedName);
+      return waitUntil(reflected).should.be.fulfilled;
     });
   });
 
-  describe('placeholder', () => {
-    let component;
-    const expectedPlaceholder = 'Placeholder text';
+  describe('name prop', () => {
+    it('should be reflected', () => {
+      const newValue = 'new name';
+      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const input = fieldBase.querySelector('input');
+      const reflected = () => (input.name === newValue);
+      // check the negative case first
+      expect(reflected()).to.be.false;
 
-    beforeEach(() => setupComponent({ placeholder: expectedPlaceholder }).then((newComponent) => {
-      component = newComponent;
-    }));
-    afterEach(() => tearDownComponent(component));
+      component.name = newValue;
 
-    it('should apply the placeholder property to the input', () => {
-      const input = component.querySelector('input');
-      expect(input.placeholder).to.equal(expectedPlaceholder);
+      return waitUntil(reflected).should.be.fulfilled;
     });
   });
 
-  describe('required', () => {
-    let component;
-    let shadowRoot;
+  describe('placeholder prop', () => {
+    it('should be reflected', () => {
+      const newValue = 'new placeholder';
+      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const input = fieldBase.querySelector('input');
+      const reflected = () => (input.placeholder === newValue);
+      // check the negative case first
+      expect(reflected()).to.be.false;
 
-    beforeEach(() => setupComponent({ required: true }).then((newComponent) => {
-      component = newComponent;
-      shadowRoot = getShadowRoot(component);
-    }));
-    afterEach(() => tearDownComponent(component));
+      component.placeholder = newValue;
 
-    it('should render the supplied label with required field', () => {
-      const required = shadowRoot.querySelector('label > div > span');
-      const requiredIsCorrect = () => (required.innerText === '*');
-
-      return waitUntil(requiredIsCorrect).should.be.fulfilled;
+      return waitUntil(reflected).should.be.fulfilled;
     });
   });
 
-  describe('type', () => {
-    let component;
-    const expectedType = 'password';
+  describe('required prop', () => {
+    it('should be reflected', () => {
+      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const reflected = () => (!!fieldBase.required);
+      // check the negative case first
+      expect(reflected()).to.be.false;
 
-    beforeEach(() => setupComponent({ type: expectedType }).then((newComponent) => {
-      component = newComponent;
-    }));
-    afterEach(() => tearDownComponent(component));
+      component.required = true;
 
-    it('should apply the type property to the input', () => {
-      const input = component.querySelector('input');
-      expect(input.type).to.equal(expectedType);
+      return waitUntil(reflected).should.be.fulfilled;
+    });
+  });
+
+  describe('type prop', () => {
+    it('should be reflected', () => {
+      const newValue = 'email';
+      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const input = fieldBase.querySelector('input');
+      const reflected = () => (input.type === newValue);
+      // check the negative case first
+      expect(reflected()).to.be.false;
+
+      component.type = newValue;
+
+      return waitUntil(reflected).should.be.fulfilled;
     });
   });
 
   describe('value', () => {
-    let component;
-    const expectedValue = 'my value';
+    it('sets the value of the internal input', () => {
+      const newValue = 'new value';
+      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const input = fieldBase.querySelector('input');
 
-    beforeEach(() => setupComponent().then((newComponent) => {
-      component = newComponent;
-    }));
-    afterEach(() => tearDownComponent(component));
+      expect(input.value).to.equal('', 'initial');
 
-    it('gets the value from the input', () => {
-      const input = component.querySelector('input');
-      input.value = expectedValue;
-      expect(input.value).to.equal(expectedValue);
-      expect(component.value).to.equal(expectedValue);
+      const setsInternalValue = () => (input.value === newValue);
+
+      expect(setsInternalValue()).to.be.false;
+
+      component.value = newValue;
+
+      return waitUntil(setsInternalValue).should.be.fulfilled;
     });
 
-    it('setting the value updates the input value', () => {
-      const input = component.querySelector('input');
-      component.value = expectedValue;
-      expect(input.value).to.equal(expectedValue);
-      expect(component.value).to.equal(expectedValue);
-    });
-  });
+    it('gets the value from the internal input', () => {
+      const newValue = 'new value';
+      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const input = fieldBase.querySelector('input');
 
-  describe('sizing', () => {
-    let component;
+      expect(component.value).to.equal('', 'initial');
 
-    beforeEach(() => setupComponent().then((newComponent) => {
-      component = newComponent;
-    }));
-    afterEach(() => tearDownComponent(component));
+      const getsInternalValue = () => (component.value === newValue);
 
-    function inputHeightCorrect(expectedHeight) {
-      return () => {
-        const height = component.querySelector('input').getBoundingClientRect().height;
-        // IE11 will sometimes be a fraction of a pixel off, so accept a close-enough height
-        return height === expectedHeight || Math.abs(height - expectedHeight) < 1;
-      };
-    }
+      input.value = newValue;
 
-    it('should be 40px high by default', () =>
-      waitUntil(inputHeightCorrect(40)).should.be.fulfilled
-    );
-
-    it('should be 32px high when compact', () => {
-      component.compact = true;
-      return waitUntil(inputHeightCorrect(32)).should.be.fulfilled;
-    });
-  });
-
-  describe('events', () => {
-    let component;
-
-    beforeEach(() => setupComponent().then((newComponent) => {
-      component = newComponent;
-    }));
-    afterEach(() => tearDownComponent(component));
-
-    it('should emit the akFocus and akBlur events on focus and blur', () => {
-      const focusSpy = sinon.spy();
-      const blurSpy = sinon.spy();
-
-      component.addEventListener(events.focus, focusSpy);
-      component.addEventListener(events.blur, blurSpy);
-
-      const focusEventEmitted = () => focusSpy.calledOnce;
-      const blurEventEmitted = () => blurSpy.calledOnce;
-
-      expect(focusEventEmitted()).to.equal(false);
-      expect(blurEventEmitted()).to.equal(false);
-
-      const input = component.querySelector('input');
-      input.focus();
-
-      return waitUntil(focusEventEmitted).then(() => {
-        input.blur();
-        return waitUntil(blurEventEmitted).should.be.fulfilled;
-      });
+      return waitUntil(getsInternalValue).should.be.fulfilled;
     });
   });
 });

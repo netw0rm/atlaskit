@@ -4,6 +4,7 @@ import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import { Component } from 'skatejs';
 
+import { name } from '../package.json';
 import MyComponent, { events } from '../src';
 import { setupComponent, tearDownComponent } from './_helpers';
 
@@ -11,10 +12,10 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
 
-const expect = chai.expect;
+const { expect } = chai;
 
 
-describe('akutil-component-template', () => {
+describe(name, () => {
   describe('exports', () => {
     it('should export a base component', () => {
       (new MyComponent()).should.be.an.instanceof(Component);

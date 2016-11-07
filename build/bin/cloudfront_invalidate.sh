@@ -8,5 +8,10 @@ echo "Invalidating CloudFront cache for distribution '$CLOUDFRONT_DISTRIBUTION' 
 
 AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
 AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
-cf-invalidate --wait -- $CLOUDFRONT_DISTRIBUTION "$CLOUDFRONT_INVALIDATION_PATTERN"
+cf-invalidate \
+--wait \
+-- \
+$CLOUDFRONT_DISTRIBUTION \
+"$CLOUDFRONT_INVALIDATION_PATTERN"
+
 echo "Invalidation successful!"

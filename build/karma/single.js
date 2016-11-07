@@ -1,8 +1,8 @@
 const karmaConf = require('./base.js');
 
 const base = 'test';
-const files = `${base}/**/*.+(js|ts)`;
-const exclude = `${base}/_*.+(js|ts)`;
+const files = `${base}/**/*.+(js|ts|jsx|tsx)`;
+const exclude = `${base}/_*.+(js|ts|jsx|tsx)`;
 
 module.exports = (config) => {
   Object.assign(config, {

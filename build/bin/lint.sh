@@ -19,6 +19,11 @@ chalk --no-stdin -t "{blue Start linting...}"
 lint_build_status "INPROGRESS"
 
 set +e
-(eslint --color --format "$NODE_MODULES/eslint-friendly-formatter" . --ext .js,.jsx \
+(eslint \
+  --color \
+  --format \
+  "$NODE_MODULES/eslint-friendly-formatter" \
+  . \
+  --ext .js,.jsx $@\
 && lint_build_status "SUCCESSFUL") \
 || lint_build_status "FAILED"

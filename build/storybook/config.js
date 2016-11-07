@@ -1,12 +1,12 @@
 import { configure, setAddon } from '@kadira/storybook';
 import 'akutil-polyfills';
 import React from 'react';
+import 'storybook-addon-i18n-tools';
 
 import 'style!./styles.less';
 
 import MonitoredStory from './MonitoredStory';
 import MonkeyTestStory from './MonkeyTestStory';
-import SwappedDirectionStory from './SwappedDirectionStory';
 import BaselineAlignmentStory from './BaselineAlignmentStory';
 
 
@@ -34,14 +34,6 @@ setAddon({
       <MonkeyTestStory>
         {storyFn(context)}
       </MonkeyTestStory>
-    ));
-  },
-
-  addSwapped(storyName, storyFn) {
-    this.add(storyName, context => (
-      <SwappedDirectionStory>
-        {storyFn(context)}
-      </SwappedDirectionStory>
     ));
   },
 

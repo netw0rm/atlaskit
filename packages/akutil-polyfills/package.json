@@ -1,6 +1,6 @@
 {
   "name": "akutil-polyfills",
-  "version": "2.3.0",
+  "version": "3.1.0",
   "main": "dist/bundle.js",
   "files": [
     "dist"
@@ -14,10 +14,14 @@
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "skatejs-web-components": "^1.2.5"
+    "skatejs-web-components": "^3.0.0"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

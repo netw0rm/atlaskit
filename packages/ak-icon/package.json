@@ -1,6 +1,6 @@
 {
   "name": "ak-icon",
-  "version": "8.2.0",
+  "version": "8.4.2",
   "description": "Icon web components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -9,7 +9,8 @@
     "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.js",
     "generate-icon-exports": "node ./bin/generate-icon-exports.js",
     "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
-    "prepublish": "CLI=1 npm run gen-js && cd ../.. && npm run prepublish/single ak-icon",
+    "gen-icons-md": "node ./bin/generate-icons-md.js > ./docs/Icons.md",
+    "prepublish": "CLI=1 npm run gen-js && npm run gen-icons-md && cd ../.. && npm run prepublish/single ak-icon",
     "pretest": "npm run gen-js"
   },
   "files": [
@@ -27,9 +28,9 @@
   },
   "devDependencies": {
     "ak-button": "^1.4.3",
-    "akutil-common-test": "^3.0.0",
+    "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0",
-    "akutil-shared-styles": "^34.0.1",
+    "akutil-shared-styles": "^35.0.1",
     "async": "^2.0.1",
     "glob": "^7.0.5",
     "lodash.sample": "^4.2.1",
@@ -42,5 +43,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

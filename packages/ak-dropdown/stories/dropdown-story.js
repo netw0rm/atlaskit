@@ -39,21 +39,7 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
-  .addSwapped('simple dropdown (swapped)', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
-          Dropdown-button
-        </DropdownTriggerButtonReact>
-        <ItemReact>text1</ItemReact>
-        <ItemReact hidden>hidden ItemReact</ItemReact>
-        <ItemReact>some text here</ItemReact>
-        <ItemReact>another text</ItemReact>
-        <ItemReact>text2</ItemReact>
-      </DropdownReactComponent>
-    </div>
-  ))
-  .add('dropdown with checkbox ItemReacts', () => (
+  .add('dropdown with checkbox items', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger">Dropdown-button</DropdownTriggerButtonReact>
@@ -66,20 +52,7 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
-  .addSwapped('dropdown with checkbox ItemReacts (swapped)', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger">Dropdown-button</DropdownTriggerButtonReact>
-        <GroupReact heading="Checkboxes title">
-          <CheckboxItemReact>text1</CheckboxItemReact>
-          <CheckboxItemReact disabled>text2</CheckboxItemReact>
-          <CheckboxItemReact>some text here</CheckboxItemReact>
-          <CheckboxItemReact>another text</CheckboxItemReact>
-        </GroupReact>
-      </DropdownReactComponent>
-    </div>
-  ))
-  .add('dropdown with radio ItemReacts', () => (
+  .add('dropdown with radio items', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">
@@ -94,22 +67,7 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
-  .addSwapped('dropdown with radio ItemReacts (swapped)', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
-          Dropdown
-        </DropdownTriggerButtonReact>
-        <GroupReact heading="Radio title">
-          <RadioItemReact>text1</RadioItemReact>
-          <RadioItemReact disabled>text2</RadioItemReact>
-          <RadioItemReact>some text here</RadioItemReact>
-          <RadioItemReact>another text</RadioItemReact>
-        </GroupReact>
-      </DropdownReactComponent>
-    </div>
-  ))
-  .add('dropdown with radio ItemReacts inside different groups', () => (
+  .add('dropdown with radio items inside different groups', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">
@@ -131,40 +89,6 @@ storiesOf(`${name} component`, module)
     </div>
   ))
   .add('dropdown with avatars', () => (
-    <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
-        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
-          People list
-        </DropdownTriggerButtonReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Adam Smith
-        </ItemReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Eva Smith
-        </ItemReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Ivan Ivanov
-        </ItemReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Jane Black
-        </ItemReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Mike Cannon-Brookes
-        </ItemReact>
-        <ItemReact>
-          <Avatar slot="left" src={avatarUrl} size="small" />
-          Some very long name very long name very long
-          name very long name very long name very long name
-        </ItemReact>
-      </DropdownReactComponent>
-    </div>
-  ))
-  .addSwapped('dropdown with avatars (swapped)', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">
@@ -289,7 +213,7 @@ storiesOf(`${name} component`, module)
   ))
   .add('dropdown with everything for the screenreaders test', () => (
     <div style={{ padding: '40px' }}>
-      <input type="text" placeholder="ItemReact before" />
+      <input type="text" placeholder="item before" />
       <DropdownReactComponent className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">Text</DropdownTriggerButtonReact>
         <GroupReact heading="People">
@@ -310,10 +234,77 @@ storiesOf(`${name} component`, module)
       <a href="http://www.atlassian.com">link after</a>
     </div>
   ))
-  .add('dropdown with lots of ItemReacts', () => (
+  .add('dropdown with lots of items', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent className={dropdownClass}>
         <DropdownTriggerArrowReact slot="trigger" tab-index="1" />
+        <ItemReact>Joscha</ItemReact>
+        <ItemReact>Wuz</ItemReact>
+        <ItemReact>Here</ItemReact>
+        <ItemReact>2016</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('appearance: tall', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent className={dropdownClass} appearance="tall">
+        <DropdownTriggerArrowReact slot="trigger" tab-index="1" />
+        <ItemReact>Joscha</ItemReact>
+        <ItemReact>Wuz</ItemReact>
+        <ItemReact>Here</ItemReact>
+        <ItemReact>2016</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('appearance: fitwidth', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent
+        className={dropdownClass}
+        appearance="fitwidth"
+        style={{ width: '500px' }}
+      >
+        <DropdownTriggerReact slot="trigger" tab-index="1">
+          <div
+            style={{
+              border: '3px solid #ddd',
+              borderRadius: '3px',
+              padding: '10px',
+              width: '100%',
+            }}
+          >trigger</div>
+        </DropdownTriggerReact>
         <ItemReact>Joscha</ItemReact>
         <ItemReact>Wuz</ItemReact>
         <ItemReact>Here</ItemReact>

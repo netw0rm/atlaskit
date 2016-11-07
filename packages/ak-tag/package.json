@@ -1,6 +1,6 @@
 {
   "name": "ak-tag",
-  "version": "2.2.0",
+  "version": "2.3.2",
   "description": "This component displays as a tag with an optional link and/or button to remove the given tag.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "akutil-common": "^2.0.0",
-    "akutil-shared-styles": "^34.0.1",
+    "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "create-error": "^0.3.1",
@@ -23,7 +23,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "^3.0.0",
+    "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0",
     "custom-event-polyfill": "^0.3.0",
     "keycode": "^2.1.4"
@@ -31,5 +31,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

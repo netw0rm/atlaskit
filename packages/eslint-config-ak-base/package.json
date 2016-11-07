@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-ak-base",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "main": ".eslintrc",

@@ -175,4 +175,11 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
     pm.input.insertText(sel, sel, '* ');
     expect(pm.doc).to.deep.equal(doc(code_block()('* ')));
   });
+
+  it('should not convert "* " to a bullet list item when inside a heading', () => {
+    const { pm, sel } = editor(doc(h1('{<>}'));
+
+    pm.input.insertText(sel, sel, '* ');
+    expect(pm.doc).to.deep.equal(doc(h1('* ')));
+  });
 });

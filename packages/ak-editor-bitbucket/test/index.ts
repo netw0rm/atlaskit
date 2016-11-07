@@ -283,12 +283,12 @@ describe('ak-editor-bitbucket', () => {
         outer.addEventListener('keydown', spy);
         outer.addEventListener('keyup', spy);
         outer.addEventListener('keypress', spy);
-        keydown('enter', PMContainer);
-        keypress('enter', PMContainer);
-        keyup('enter', PMContainer);
-        keydown('enter', editor);
-        keypress('enter', editor);
-        keyup('enter', editor);
+        keydown('enter', { target: PMContainer });
+        keypress('enter', { target: PMContainer });
+        keyup('enter', { target: PMContainer });
+        keydown('enter', { target: editor });
+        keypress('enter', { target: editor });
+        keyup('enter', { target: editor });
         outer.removeEventListener('keydown', spy);
         outer.removeEventListener('keyup', spy);
         outer.removeEventListener('keypress', spy);
@@ -303,7 +303,7 @@ describe('ak-editor-bitbucket', () => {
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
-        keydown('enter', PMContainer);
+        keydown('enter', { target: PMContainer });
 
         expect(editor._pm.doc).to.deep.equal(doc(code_block()('\nvar code;')));
       });
@@ -317,7 +317,7 @@ describe('ak-editor-bitbucket', () => {
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
-        keydown('enter', PMContainer);
+        keydown('enter', { target: PMContainer });
 
         expect(editor._pm.doc).to.deep.equal(doc(p('text'), code_block()('\nvar code;')));
       });
@@ -331,7 +331,7 @@ describe('ak-editor-bitbucket', () => {
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
-        keydown('enter', PMContainer);
+        keydown('enter', { target: PMContainer });
 
         expect(editor._pm.doc).to.deep.equal(doc(code_block()('var \ncode;')));
       });
@@ -345,7 +345,7 @@ describe('ak-editor-bitbucket', () => {
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
-        keydown('enter', PMContainer);
+        keydown('enter', { target: PMContainer });
 
         expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;\n')));
       });

@@ -19,10 +19,10 @@
     "babel-runtime": "^6.11.6",
     "object-assign": "^4.1.0",
     "popper.js": "1.0.0-alpha.3",
-    "skatejs": "^4.0.0"
+    "skatejs": "^4.0.4"
   },
   "devDependencies": {
-    "akutil-common-test": "^4.0.0"
+    "akutil-common-test": "^5.0.2"
   },
   "peerDependencies": {
     "core-js": "*"

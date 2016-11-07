@@ -14,12 +14,12 @@
   "dependencies": {
     "akutil-common": "^2.4.0",
     "akutil-shared-styles": "^35.0.1",
-    "skatejs": "^4.0.0"
+    "skatejs": "^4.0.4"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "^4.0.0",
+    "akutil-common-test": "^5.0.2",
     "akutil-react": "^1.0.0"
   },
   "repository": {

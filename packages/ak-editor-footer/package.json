@@ -18,10 +18,10 @@
     "ak-button-group": "^1.0.16",
     "ak-icon": "^8.1.2",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^4.0.0"
+    "skatejs": "^4.0.4"
   },
   "devDependencies": {
-    "akutil-common-test": "^4.0.0",
+    "akutil-common-test": "^5.0.2",
     "akutil-shared-styles": "^35.0.1",
     "akutil-react": "^1.0.0",
     "ak-editor-shared-styles": "^1.0.3"

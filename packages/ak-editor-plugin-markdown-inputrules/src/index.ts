@@ -1,6 +1,28 @@
 import {
-  Plugin, ProseMirror, Mark, Schema, InputRule, inputRules, allInputRules
+  Plugin,
+  ProseMirror,
+  Mark,
+  Schema,
+  InputRule,
+  inputRules,
+  allInputRules,
+  headingRule,
+  bulletListRule
 } from 'ak-editor-prosemirror';
+
+const buildBlockRules = (schema: Schema): Array<InputRule> => {
+  const rules = Array<InputRule>();
+
+  if (schema.nodes.heading) {
+    rules.push(headingRule(schema.nodes.heading, 3));
+  }
+
+  if (schema.nodes.bullet_list) {
+    rules.push(bulletListRule(schema.nodes.bullet_list));
+  }
+
+  return rules;
+}
 
 function replaceWithNode(
   pm: ProseMirror,
@@ -140,6 +162,8 @@ export default new Plugin(class MarkdownInputRulesPlugin {
   inputRules: InputRule[];
 
   constructor(pm: ProseMirror) {
+    const blockRules = buildBlockRules(pm.schema);
+
     this.inputRules = [
       strongRule1,
       strongRule2,
@@ -150,7 +174,9 @@ export default new Plugin(class MarkdownInputRulesPlugin {
       linkRule,
       hrRule1,
       hrRule2,
-    ].concat(allInputRules);
+      ...allInputRules,
+      ...blockRules
+    ];
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.addRule(rule));

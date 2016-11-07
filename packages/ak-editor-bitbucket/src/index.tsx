@@ -423,8 +423,8 @@ class AkEditorBitbucket extends Component {
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
 
-    schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
-    schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
+    (schema.nodes.code_block as any).group += ` ${HyperlinkPluginDisabledGroup}`;
+    (schema.nodes.code_block as any).group += ` ${ImageUploadPluginDisabledGroup}`;
 
     const pm = new ProseMirror({
       place: this._wrapper,

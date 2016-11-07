@@ -3,7 +3,8 @@
 // Also we should style the tag name with the same styles because of the browsers
 // that do not support shadow DOM
 .host-styles() {
-  display: inline-block;
+  display: flex;
+  width: 100%;
 }
 
 // we define a class here in order to re-use it in the storybook
@@ -33,4 +34,9 @@ ak-dropdown-trigger-arrow {
   &(:not([defined])) {
     display: none;
   }
+}
+
+.triggerContainer {
+  display: flex;
+  width: 100%;
 }

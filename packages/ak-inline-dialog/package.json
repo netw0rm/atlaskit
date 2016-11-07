@@ -1,6 +1,6 @@
 {
   "name": "ak-inline-dialog",
-  "version": "71.2.1",
+  "version": "73.0.0",
   "description": "An inline dialog UI component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
-import { fixtures, RewireSpy, chaiPlugin, createEvent } from 'ak-editor-test';
+import { fixtures, RewireSpy, chaiPlugin, text } from 'ak-editor-test';
 import { doc, code, strong, a,
   h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
   emoji, code_block } from './_schema-builder';
@@ -261,9 +261,8 @@ describe('ak-editor-bitbucket', () => {
             afterMutations(
               () => {
                 const input = getHyperlinkTextInput(editor);
-                input.value = bitbucket;
-                // create enter event
-                expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), a({ href: bitbucket })(text('bar')))));
+                emit(input, 'enterKeyup', { detail: { value: bitbucket } });
+                expect(input.value).to.equal(bitbucket);
               },
               done
             );

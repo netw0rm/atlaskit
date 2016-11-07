@@ -1,7 +1,10 @@
 import MarkdownInputRulesPlugin from '../src';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { chaiPlugin, makeEditor, doc, a, p, em, strong, code, hr, img, h1, h2, h3 } from 'ak-editor-test';
+import {
+  chaiPlugin, makeEditor, doc, a, p, em, strong, code, 
+  hr,img, h1, h2, h3, ul, li, blockquote, code_block
+} from 'ak-editor-test';
 
 chai.use(chaiPlugin);
 
@@ -117,11 +120,66 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
     expect(pm.doc).to.deep.equal(doc(h2()));
   });
 
-
   it('should convert "### " to heading 3', () => {
     const { pm, sel } = editor(doc(p('{<>}')));
 
     pm.input.insertText(sel, sel, '### ');
     expect(pm.doc).to.deep.equal(doc(h3()));
+  });
+
+  it('should convert "* " to a bullet list item', () => {
+    const { pm, sel } = editor(doc(p('{<>}')));
+
+    pm.input.insertText(sel, sel, '* ');
+    expect(pm.doc).to.deep.equal(doc(ul(li(p()))));
+  });
+
+  it('should convert "+ " to a bullet list item', () => {
+    const { pm, sel } = editor(doc(p('{<>}')));
+
+    pm.input.insertText(sel, sel, '+ ');
+    expect(pm.doc).to.deep.equal(doc(ul(li(p()))));
+  });
+
+  it('should convert "- " to a bullet list item', () => {
+    const { pm, sel } = editor(doc(p('{<>}')));
+
+    pm.input.insertText(sel, sel, '- ');
+    expect(pm.doc).to.deep.equal(doc(ul(li(p()))));
+  });
+
+  it('should not convert "** " to a nested bullet list item', () => {
+    const { pm, sel } = editor(doc(p('{<>}')));
+
+    pm.input.insertText(sel, sel, '** ');
+    expect(pm.doc).to.deep.equal(doc(p('** ')));
+  });
+
+  it('should not convert "* " to a bullet list item when already inside a list', () => {
+    const { pm, sel } = editor(doc(ul(li(p('{<>}')))));
+
+    pm.input.insertText(sel, sel, '* ');
+    expect(pm.doc).to.deep.equal(doc(ul(li(p('* ')))));
+  });
+
+  it('should convert "* " to a bullet list item when inside a blockquote', () => {
+    const { pm, sel } = editor(doc(blockquote(p('{<>}'))));
+
+    pm.input.insertText(sel, sel, '* ');
+    expect(pm.doc).to.deep.equal(doc(blockquote(ul(li(p())))));
+  });
+
+  it('should not convert "* " to a bullet list item when inside a codeblock', () => {
+    const { pm, sel } = editor(doc(code_block()('{<>}')));
+
+    pm.input.insertText(sel, sel, '* ');
+    expect(pm.doc).to.deep.equal(doc(code_block()('* ')));
+  });
+
+  it('should not convert "* " to a bullet list item when inside a heading', () => {
+    const { pm, sel } = editor(doc(h1('{<>}')));
+
+    pm.input.insertText(sel, sel, '* ');
+    expect(pm.doc).to.deep.equal(doc(h1('* ')));
   });
 });

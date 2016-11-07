@@ -3,7 +3,7 @@ import reactify from 'akutil-react';
 import { action } from '@kadira/storybook';
 import uid from 'uid';
 
-import AkButtonTemplate, { APPEARANCE } from '../src';
+import AkButtonTemplate, { APPEARANCE, SPACING } from '../src';
 
 
 const AkButton = reactify(AkButtonTemplate);
@@ -14,72 +14,52 @@ class ButtonBuilderExample extends React.Component {
     this.state = {
       disabled: false,
       selected: false,
-      compact: false,
+      spacing: SPACING.NORMAL,
       appearance: APPEARANCE.STANDARD,
-      href: false,
+      href: undefined,
+      target: undefined,
       before: false,
       after: false,
     };
   }
 
-  createCheckboxStringAttribute({ name, value }) {
+  createInputAttribute(data) {
     const id = `label-${uid()}`;
     return (
       <label htmlFor={id}>
         <input
           id={id}
-          type="checkbox"
-          onChange={() => this.setState({ [name]: (this.state[name]) ? false : value })}
-          checked={this.state[name]}
+          type={data.type}
+          onChange={data.onChange || (() => (this.setState({ [data.name]: data.value })))}
+          checked={data.value ? this.state[data.name] === data.value : this.state[data.name]}
         />
-        {name}
+        {data.desc || data.value}
       </label>
     );
   }
 
-  createCheckboxBooleanAttribute(attribute) {
-    const id = `label-${uid()}`;
-    return (
-      <label htmlFor={id}>
-        <input
-          id={id}
-          type="checkbox"
-          onChange={() => this.setState({ [attribute]: !this.state[attribute] })}
-          checked={this.state[attribute]}
-        />
-        {attribute}
-      </label>
+  createCheckboxAttribute(attribute, desc, onChange) {
+    return this.createInputAttribute({ type: 'checkbox', name, desc: desc || attribute, onChange });
+  }
+
+  createBooleanCheckboxAttribute(attribute, desc) {
+    return this.createCheckboxAttribute(
+      attribute,
+      desc,
+      () => this.setState({ [attribute]: !this.state[attribute] })
     );
   }
 
-  createRadioAppearanceAttribute(attribute) {
-    const id = `label-${uid()}`;
-    return (
-      <label htmlFor={id}>
-        <input
-          id={id}
-          type="radio"
-          onChange={() => this.setState({ appearance: attribute })}
-          checked={this.state.appearance === attribute}
-        />
-        {attribute}
-      </label>
+  createStringCheckboxAttribute(attribute, defaultValue, desc) {
+    return this.createCheckboxAttribute(
+      attribute,
+      desc,
+      () => this.setState({ [attribute]: (this.state[attribute]) ? undefined : defaultValue })
     );
   }
 
-  createRadioIconOption(Icon, side) {
-    const id = `label-${uid()}`;
-    return (
-      <label htmlFor={id}>
-        <input
-          id={id}
-          type="radio"
-          onChange={() => this.setState({ [side]: Icon })}
-          checked={this.state[side] === Icon}
-        />
-        <Icon />
-      </label>
-    );
+  createRadioAttribute(name, value, desc) {
+    return this.createInputAttribute({ type: 'radio', name, value, desc });
   }
 
   createIcon(side) {
@@ -91,17 +71,12 @@ class ButtonBuilderExample extends React.Component {
     const props = {
       disabled: this.state.disabled,
       selected: this.state.selected,
-      compact: this.state.compact,
       appearance: this.state.appearance,
       onclick: action('clicking the WebComponent'),
+      spacing: this.state.spacing,
+      href: this.state.href,
+      target: this.state.target,
     };
-
-    if (this.state.href) {
-      props.href = this.state.href;
-      if (this.state.target) {
-        props.target = this.state.target;
-      }
-    }
 
     return (
       <div>
@@ -109,37 +84,44 @@ class ButtonBuilderExample extends React.Component {
         <form>
           <strong>Href Attribute</strong>
           <br />
-          {this.createCheckboxStringAttribute({ name: 'href', value: 'http://www.atlassian.com' })}
+          {this.createStringCheckboxAttribute('href', 'http://www.atlassian.com', 'link to "http://www.atlassian.com"')}
         </form>
         <br />
         <form>
           <strong>Target Attribute</strong>
           <br />
-          {this.createCheckboxStringAttribute({ name: 'target', value: '_blank' })}
+          {this.createStringCheckboxAttribute('target', '_blank', 'target="_blank"')}
+        </form>
+        <br />
+        <form>
+          <strong>Spacing Attribute</strong>
+          <br />
+          {this.createRadioAttribute('spacing', 'normal')}
+          {this.createRadioAttribute('spacing', 'none')}
+          {this.createRadioAttribute('spacing', 'compact')}
         </form>
         <br />
         <form>
           <strong>Boolean Attributes</strong>
           <br />
-          {this.createCheckboxBooleanAttribute('disabled')}
-          {this.createCheckboxBooleanAttribute('selected')}
-          {this.createCheckboxBooleanAttribute('compact')}
+          {this.createBooleanCheckboxAttribute('disabled')}
+          {this.createBooleanCheckboxAttribute('selected')}
         </form>
         <br />
         <form>
           <strong>Appearances</strong>
           <br />
-          {this.createRadioAppearanceAttribute(APPEARANCE.STANDARD)}
-          {this.createRadioAppearanceAttribute(APPEARANCE.PRIMARY)}
-          {this.createRadioAppearanceAttribute(APPEARANCE.SUBTLE)}
-          {this.createRadioAppearanceAttribute(APPEARANCE.LINK)}
+          {this.createRadioAttribute('appearance', APPEARANCE.STANDARD)}
+          {this.createRadioAttribute('appearance', APPEARANCE.PRIMARY)}
+          {this.createRadioAttribute('appearance', APPEARANCE.SUBTLE)}
+          {this.createRadioAttribute('appearance', APPEARANCE.LINK)}
         </form>
         <br />
         <form>
           <strong>Left Icons</strong>
           <br />
           {
-            this.props.icons.map(Icon => this.createRadioIconOption(Icon, 'before'))
+            this.props.icons.map(Icon => this.createRadioAttribute('before', Icon, <Icon />))
           }
         </form>
         <br />
@@ -147,7 +129,7 @@ class ButtonBuilderExample extends React.Component {
           <strong>Right Icons</strong>
           <br />
           {
-            this.props.icons.map(Icon => this.createRadioIconOption(Icon, 'after'))
+            this.props.icons.map(Icon => this.createRadioAttribute('after', Icon, <Icon />))
           }
         </form>
         <br />

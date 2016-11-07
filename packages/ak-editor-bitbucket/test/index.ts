@@ -4,7 +4,7 @@ import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } fr
 import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy, chaiPlugin, doc, text, code, strong, a,
   h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
-  emoji, code_block } from 'ak-editor-test';
+  emoji, code_block, createEvent } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 
 import shadowStyles from './shadow.less';
@@ -224,6 +224,53 @@ describe('ak-editor-bitbucket', () => {
     });
   });
 
+  describe('editor hyperlink popup panel', () => {
+    function getHyperlinkTextInput(editor: typeof AkEditorBitbucket) {
+      return editor.shadowRoot.querySelector('ak-editor-hyperlink-edit')
+        .shadowRoot.querySelector('ak-editor-popup-text-input')
+        .shadowRoot.querySelector('input');
+    }
+
+    it.only('should contain the right href value', (done) => {
+      const href = 'https://www.atlassian.com';
+      buildExpandedEditor(fixture(), `<p>foo <a href="${href}">bar</a></p>`)
+        .then((editor) => {
+          editor._pm.setTextSelection(7);
+
+          return waitUntilPMReady(editor).then(() => {
+            setTimeout(
+              () => {
+                const input = getHyperlinkTextInput(editor);
+                debugger
+                expect(input.value).to.equal(href);
+                done()
+              }, 500
+            );
+          });
+        });
+    });
+
+    it('should change the href on enter', (done) => {
+      const href = 'https://www.atlassian.com';
+      const bitbucket = 'https://bitbucket.org';
+      buildExpandedEditor(fixture(), `<p>foo <a href="${href}">bar</a></p>`)
+        .then((editor) => {
+          editor._pm.setTextSelection(7);
+
+          return waitUntilPMReady(editor).then(() => {
+            afterMutations(
+              () => {
+                const input = getHyperlinkTextInput(editor);
+                input.value = bitbucket;
+                expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), a({ href: bitbucket })(text('bar')))));
+              },
+              done
+            );
+          });
+        });
+    });
+  });
+
   describe('setting from html', () => {
     it('should accept empty strings', () => {
       return buildExpandedEditor(fixture()).then((editor) => {
@@ -313,7 +360,7 @@ describe('ak-editor-bitbucket', () => {
   it('should create a newline in code block when there is paragraph and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<p>text</p><pre>var code;</pre>');
-      editor._pm.setTextSelection(7)
+      editor._pm.setTextSelection(7);
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
@@ -327,7 +374,7 @@ describe('ak-editor-bitbucket', () => {
   it('should create a newline in code block when in the middle of code block and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
-      editor._pm.setTextSelection(5)
+      editor._pm.setTextSelection(5);
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
@@ -341,7 +388,7 @@ describe('ak-editor-bitbucket', () => {
   it('should create a newline in code block when in the end of code block and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
-      editor._pm.setTextSelection(10)
+      editor._pm.setTextSelection(10);
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();

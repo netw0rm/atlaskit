@@ -9,7 +9,7 @@ import shadowStyles from './shadow.less';
 import Content from 'ak-editor-content';
 import Footer from 'ak-editor-footer';
 import Toolbar from 'ak-editor-toolbar';
-import Hyperlink from 'ak-editor-hyperlink-edit';
+import HyperlinkEdit from 'ak-editor-hyperlink-edit';
 import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
@@ -232,7 +232,7 @@ class AkEditorBitbucket extends Component {
         skip
       />
       {elem._hyperlinkActive ?
-        <Hyperlink
+        <HyperlinkEdit
           href={elem._hyperlinkHref}
           textInputValue={elem._hyperlinkHref}
           attachTo={elem._hyperlinkElement}

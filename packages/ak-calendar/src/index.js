@@ -1,8 +1,5 @@
-/** @jsx h */
-
 import { Calendar } from 'calendar-base';
-import { define, emit, h, prop, vdom } from 'skatejs';
-import { style } from 'akutil-common';
+import { define, emit, prop, vdom } from 'skatejs';
 import classnames from 'classnames';
 import AkIconArrowLeft from 'ak-icon/glyph/arrowleft';
 import AkIconArrowRight from 'ak-icon/glyph/arrowright';
@@ -10,8 +7,9 @@ import AkIconArrowRight from 'ak-icon/glyph/arrowright';
 import { dateToString, getDayName, getMonthName, makeArrayFromNumber } from './util';
 import * as events from './index.events';
 import * as keys from './keys';
+import css from './index.less';
+import cssDate from './internal/date-component/index.less';
 import DateComponent from './internal/date-component';
-import styles from './styles';
 import {
   $a11y,
   $calendars,
@@ -22,6 +20,7 @@ import {
   $selecting,
 } from './index.symbols';
 
+const { locals } = css;
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
@@ -206,7 +205,6 @@ export default define('ak-calendar', {
     const calendar = elem[$calendars].getCalendar(elem.year, elem.month - 1);
     const now = elem[$now];
     const weeks = [];
-    const css = style(vdom, styles);
     const shouldDisplaySixthWeek = calendar.length % 6;
 
     if (shouldDisplaySixthWeek) {
@@ -258,19 +256,21 @@ export default define('ak-calendar', {
     });
 
     return [
+      <style>{css.toString()}</style>,
+      <style>{cssDate.toString()}</style>,
       <Announcer>{new Date(elem.year, elem.month, elem.day).toString()}</Announcer>,
       <table>
         <caption>
-          <div class={css.heading}>
-            {elem.disableNavigation ? '' : <button class={classnames(css.btn, css.btnPrev)} onClick={elem[$prev]}>
+          <div class={locals.heading}>
+            {elem.disableNavigation ? '' : <button class={classnames(locals.btn, locals.btnPrev)} onClick={elem[$prev]}>
               <AkIconArrowLeft />
             </button>}
-            <div class={css.monthAndYear}>
+            <div class={locals.monthAndYear}>
               <span>{getMonthName(elem, elem.month)}</span>
               {' '}
               <span>{elem.year}</span>
             </div>
-            {elem.disableNavigation ? '' : <button class={classnames(css.btn, css.btnNext)} onClick={elem[$next]}>
+            {elem.disableNavigation ? '' : <button class={classnames(locals.btn, locals.btnNext)} onClick={elem[$next]}>
               <AkIconArrowRight />
             </button>}
           </div>
@@ -278,7 +278,7 @@ export default define('ak-calendar', {
         <thead>
           <tr>
             {makeArrayFromNumber(daysPerWeek).map(i =>
-              <th class={css.dayOfWeek}>{getDayName(elem, i)}</th>
+              <th class={locals.dayOfWeek}>{getDayName(elem, i)}</th>
             )}
           </tr>
         </thead>

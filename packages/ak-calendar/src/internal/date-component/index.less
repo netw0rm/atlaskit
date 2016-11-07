@@ -1,0 +1,40 @@
+@import '~akutil-shared-styles/src/colors.less';
+
+@ak-color-white: #fff;
+
+.day {
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  display: table-cell;
+  font-size: 12px;
+  font-weight: lighter;
+  padding: 2px 5px;
+}
+.day:hover {
+  background-color: @ak-color-N900;
+}
+.disabled {
+  color: @ak-color-N400;
+}
+.focused {
+  background-color: @ak-color-N900;
+  border-color: @ak-color-B100;
+}
+.previouslySelected {
+  background-color: @ak-color-B75;
+  color: @ak-color-N600;
+}
+.selected {
+  background-color: @ak-color-white;
+  color: @ak-color-N600;
+}
+.sibling {
+  color: @ak-color-N80;
+}
+.today {
+  background-color: @ak-color-N900;
+  border-bottom: 1px solid @ak-color-B75;
+  color: @ak-color-B75;
+  font-weight: normal;
+}

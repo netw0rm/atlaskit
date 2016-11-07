@@ -1,0 +1,43 @@
+@import '~akutil-shared-styles/src/colors.less';
+
+@ak-color-white: #fff;
+
+:host {
+  background-color: @ak-color-N700;
+  color: @ak-color-white;
+  display: inline-block;
+  padding: 10px;
+  text-align: center;
+}
+
+.heading {
+  display: flex;
+}
+
+.monthAndYear {
+  color: @ak-color-white;
+  flex-basis: 100%;
+  font-size: 14px;
+  padding: 5px 0 10px 0;
+}
+
+.btn {
+  background-color: transparent;
+  border: none;
+  color: @ak-color-N80;
+  cursor: pointer;
+}
+
+.btnPrev {
+  float: left;
+}
+
+.btnNext {
+  float: right;
+}
+
+.dayOfWeek {
+  color: @ak-color-N80;
+  font-size: 8px;
+  text-transform: uppercase;
+}

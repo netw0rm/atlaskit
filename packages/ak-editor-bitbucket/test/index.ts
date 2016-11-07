@@ -2,9 +2,10 @@ import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
-import { fixtures, RewireSpy, chaiPlugin, doc, text, code, strong, a,
+import { fixtures, RewireSpy, chaiPlugin } from 'ak-editor-test';
+import { doc, code, strong, a,
   h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
-  emoji, code_block } from 'ak-editor-test';
+  emoji, code_block } from './_schema-builder';
 import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
@@ -156,7 +157,7 @@ describe('ak-editor-bitbucket', () => {
     it('should be converted to a proper Prosemirror document after rendering', () => {
       return buildExpandedEditor(fixture(), '<p>foo <strong>bar</strong></p>')
         .then((editor) => {
-          expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), strong(text('bar')))));
+          expect(editor._pm.doc).to.deep.equal(doc(p('foo ', strong('bar'))));
         });
     });
   });
@@ -239,7 +240,7 @@ describe('ak-editor-bitbucket', () => {
         expect(editor._pm.doc).to.deep.equal(doc(h1('foo')));
 
         editor.setFromHtml('<p>foo <strong>bar</strong></p>');
-        expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), strong(text('bar')))));
+        expect(editor._pm.doc).to.deep.equal(doc(p('foo ', strong('bar'))));
       });
     });
   });

@@ -15,9 +15,9 @@ export default {
     'border-radius': '4px',
     cursor: 'pointer',
     display: 'table-cell',
-    'font-size': 'inherit',
+    'font-size': '12px',
     'font-weight': 'lighter',
-    padding: '5px',
+    padding: '2px 5px',
     '&:hover': {
       'background-color': akColorN900,
     },

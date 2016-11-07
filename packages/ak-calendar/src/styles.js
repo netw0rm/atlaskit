@@ -20,7 +20,7 @@ export default {
   monthAndYear: {
     color: akColorWhite,
     'flex-basis': '100%',
-    'font-size': '16px',
+    'font-size': '14px',
     padding: '5px 0 10px 0',
   },
   btn: {
@@ -38,7 +38,7 @@ export default {
 
   dayOfWeek: {
     color: akColorN80,
-    'font-size': '10px',
+    'font-size': '8px',
     'text-transform': 'uppercase',
   },
 };

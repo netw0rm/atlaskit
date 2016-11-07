@@ -15,7 +15,6 @@ export default function (props) {
         [locals.focused]: props.focused,
         [locals.previouslySelected]: props.previouslySelected,
         [locals.selected]: props.selected,
-        [locals.selecting]: props.selecting,
         [locals.sibling]: props.sibling,
         [locals.today]: props.today,
       })}

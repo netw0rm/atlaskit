@@ -26,16 +26,16 @@ const i18n = {
   },
 };
 
-function getI18n(elem) {
-  return i18n[elem.i18n || 'en-au'];
+function getI18n() {
+  return i18n['en-au'];
 }
 
 export function getDayName(elem, i) {
-  return getI18n(elem).weekdays[i].substring(0, 3);
+  return getI18n().weekdays[i].substring(0, 3);
 }
 
 export function getMonthName(elem, i) {
-  return getI18n(elem).months[i - 1];
+  return getI18n().months[i - 1];
 }
 
 export function dateToString(date) {

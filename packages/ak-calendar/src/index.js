@@ -17,19 +17,19 @@ import {
   $now,
   $prev,
   $selectDay,
-  $selecting,
 } from './index.symbols';
 
 const { locals } = css;
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
-// TODO formalize this helper
+// TODO formalize this helper.
 const attr = Object.keys(prop).reduce((prev, curr) => {
   prev[curr] = prop[curr].bind(null, { attribute: true });
   return prev;
 }, {});
 
+// TODO this doesn't seem to be announcing right now. Needs fixing.
 // TODO find out if there is a better way. If not formalise this.
 const Announcer = () => (
   <div
@@ -60,16 +60,11 @@ export default define('ak-calendar', {
   props: {
     [$now]: { default: new Date() },
     [$a11y]: prop.string(),
-    [$selecting]: prop.string(),
-    day: attr.number({ default: new Date().getDate() }),
     disabled: attr.array(),
     disableNavigation: attr.boolean(),
     focused: attr.number({ default: 0 }),
     previouslySelected: attr.array(),
     selected: attr.array(),
-    i18n: attr.string({ default: 'en-au' }),
-    max: attr.number(),
-    min: attr.number(),
     month: attr.number({ default: new Date().getMonth() + 1 }),
     year: attr.number({ default: new Date().getFullYear() }),
   },
@@ -132,7 +127,7 @@ export default define('ak-calendar', {
         const day = focused;
         const month = this.month;
         const year = this.year;
-        emit(this, 'select', {
+        emit(this, events.select, {
           detail: { day, month, year },
         });
       }
@@ -157,24 +152,9 @@ export default define('ak-calendar', {
       const day = e.currentTarget.day;
       const month = e.currentTarget.month;
       const year = e.currentTarget.year;
-      emit(this, 'select', {
+      emit(this, events.select, {
         detail: { day, month, year },
       });
-    },
-    selectHandler(e) {
-      const d = e.detail;
-      const s = `${d.year}-${d.month}-${d.day}`;
-      const i = this.selected.indexOf(s);
-
-      this.month = d.month;
-      this.year = d.year;
-
-      if (i > -1) {
-        this.selected.splice(i, 1);
-        this.selected = this.selected;
-      } else {
-        this.selected = this.selected.concat(s);
-      }
     },
   },
   created(elem) {
@@ -185,8 +165,6 @@ export default define('ak-calendar', {
 
     elem.addEventListener('blur', elem.loseFocus);
     elem.addEventListener('keydown', elem.navigateWithKeyboard);
-    elem.addEventListener('mouseover', elem.loseFocus);
-    elem.addEventListener('select', elem.selectHandler);
 
     elem[$next] = elem.next.bind(elem);
     elem[$prev] = elem.prev.bind(elem);
@@ -209,10 +187,10 @@ export default define('ak-calendar', {
 
     if (shouldDisplaySixthWeek) {
       const lastDayIsSibling = calendar[calendar.length - 1].siblingMonth;
-      const sliceStart = lastDayIsSibling ? 7 : 0;
+      const sliceStart = lastDayIsSibling ? daysPerWeek : 0;
       calendar.push(
         ...elem[$calendars].getCalendar(elem.year, elem.month)
-          .slice(sliceStart, sliceStart + 7)
+          .slice(sliceStart, sliceStart + daysPerWeek)
           .map(e => Object.assign({}, e, { siblingMonth: true }))
       );
     }
@@ -227,9 +205,8 @@ export default define('ak-calendar', {
 
       const isDisabled = elem.disabled.indexOf(dateAsString) > -1;
       const isFocused = elem.focused === date.day && !date.siblingMonth;
-      const isPreviouslySelected = elem.selected.indexOf(dateAsString) > -1;
+      const isPreviouslySelected = elem.previouslySelected.indexOf(dateAsString) > -1;
       const isSelected = elem.selected.indexOf(dateAsString) > -1;
-      const isSelecting = elem[$selecting] === (dateAsString);
       const isSiblingMonth = date.siblingMonth;
       const isToday = date.day === now.getDate() &&
         date.month === now.getMonth() &&
@@ -242,15 +219,12 @@ export default define('ak-calendar', {
           focused={isFocused}
           previouslySelected={isPreviouslySelected}
           selected={isSelected}
-          selecting={isSelecting}
           sibling={isSiblingMonth}
           today={isToday}
           day={date.day.toString()}
           month={(date.month + 1).toString()}
           year={(date.year).toString()}
           onClick={elem[$selectDay]}
-          onMousedown={() => (elem[$selecting] = dateToString(date))}
-          onMouseup={() => (elem[$selecting] = '')}
         />
       );
     });
@@ -258,7 +232,7 @@ export default define('ak-calendar', {
     return [
       <style>{css.toString()}</style>,
       <style>{cssDate.toString()}</style>,
-      <Announcer>{new Date(elem.year, elem.month, elem.day).toString()}</Announcer>,
+      <Announcer>{new Date(elem.year, elem.month, elem.focused).toString()}</Announcer>,
       <table className={locals.calendar}>
         <caption>
           <div className={locals.heading}>

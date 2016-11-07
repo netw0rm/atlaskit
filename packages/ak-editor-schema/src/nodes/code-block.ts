@@ -5,16 +5,27 @@ interface EntityAttributes {
 }
 
 export class CodeBlockNodeType extends Block {
-  get attrs():EntityAttributes {
-    return  {
-      params: new Attribute({ default : null})
+  get attrs(): EntityAttributes {
+    return {
+      params: new Attribute({ default: null })
     };
   }
-  get isCode() { return true; }
-  get matchDOMTag() { return { pre: [null, { preserveWhitespace: true }] }; }
-  toDOM() { return ['pre', 0]; }
+
+  get isCode() {
+    return true;
+  }
+
+  get matchDOMTag() {
+    return {
+      pre: [null, { preserveWhitespace: true }]
+    };
+  }
+
+  toDOM() {
+    return ['pre', 0];
+  }
 }
 
 export interface CodeBlockNode extends Node {
-	type: CodeBlockNodeType;
+  type: CodeBlockNodeType;
 }

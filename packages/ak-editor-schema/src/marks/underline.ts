@@ -14,9 +14,9 @@ export class UnderlineMarkType extends MarkType {
   get matchDOMStyle() {
     return {
       "text-decoration": (value: string) => {
-          if (value === "underline") {
-              return null;
-          }
+        if (value === "underline") {
+          return null;
+        }
       }
     };
   }
@@ -27,5 +27,5 @@ export class UnderlineMarkType extends MarkType {
 }
 
 export interface UnderlineMark extends Mark {
-	type: UnderlineMarkType;
+  type: UnderlineMarkType;
 }

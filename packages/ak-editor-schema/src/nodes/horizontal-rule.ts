@@ -3,5 +3,5 @@ import { HorizontalRule as HorizontalRuleNodeType, Node } from 'ak-editor-prosem
 export { HorizontalRuleNodeType };
 
 export interface HorizontalRuleNode extends Node {
-	type: HorizontalRuleNodeType;
+  type: HorizontalRuleNodeType;
 }

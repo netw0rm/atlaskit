@@ -7,5 +7,5 @@ export class LinkMarkType extends BaseLinkMark {
 }
 
 export interface LinkMark extends Mark {
-	type: LinkMarkType;
+  type: LinkMarkType;
 }

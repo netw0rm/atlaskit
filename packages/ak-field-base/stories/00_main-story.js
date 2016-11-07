@@ -70,6 +70,8 @@ storiesOf(name, module)
       <form action="" style={formStyle}>
         <InputFieldBase label="A default field-base" />
         <InputFieldBase label="Invalid state" invalid />
+        <InputFieldBase label="Focused state" focused />
+        <InputFieldBase label="Focused state (using override)" override={{ focused: true }} />
         <InputFieldBase label="Required state" required />
         <InputFieldBase label="Disabled state" disabled />
         <InputFieldBase label="Compact state" appearance="compact" />

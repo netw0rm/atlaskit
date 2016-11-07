@@ -760,7 +760,7 @@ declare module 'prosemirror/dist/model/resolvedpos' {
 declare module 'prosemirror/dist/model/schema' {
     import { Node, TextNode } from 'prosemirror/dist/model/node';
     import { OrderedMap } from 'prosemirror/dist/util/orderedmap';
-    import { Mark } from 'prosemirror/dist/model';
+    import { Mark, Schema } from 'prosemirror/dist/model';
     export class NodeType {
         constructor(name: string, schema: Schema);
         name: string;
@@ -801,7 +801,7 @@ declare module 'prosemirror/dist/model/schema' {
         get isRequired(): boolean;
     }
     export class MarkType {
-        constructor(name: any, rank: any, schema: any);
+        constructor(name: string, rank: number, schema: Schema);
         name: string;
         get attrs(): { [name: string]: Attribute };
         schema: Schema;

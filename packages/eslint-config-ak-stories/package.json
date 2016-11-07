@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-ak-stories",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "main": ".eslintrc",

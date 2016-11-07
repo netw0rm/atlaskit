@@ -15,7 +15,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "ak-editor-prosemirror": "^2.0.0",
+    "ak-editor-prosemirror": "^4.0.0",
     "ak-editor-schema": "^2.0.0",
     "babel-runtime": "^6.11.6",
     "browserkeymap": "^2.0.1",

@@ -23,9 +23,9 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "akutil-react": "*",
-    "ak-icon": "^8.1.2",
-    "ak-editor-button": "^2.3.10",
-    "ak-editor-toolbar": "^2.0.0"
+    "ak-icon": "*",
+    "ak-editor-button": "*",
+    "ak-editor-toolbar": "*"
   },
   "repository": {
     "type": "git",

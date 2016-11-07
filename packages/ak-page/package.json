@@ -23,7 +23,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-icon": "^8.1.2",
+    "ak-icon": "^10.0.0",
     "ak-navigation": "^13.0.0",
     "akutil-common-test": "*",
     "akutil-react": "*",

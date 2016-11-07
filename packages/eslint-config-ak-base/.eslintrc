@@ -11,7 +11,13 @@
     "no-plusplus": 0,
     "no-param-reassign": ["error", { "props": false }],
     "react/no-unknown-property": [0],
-    "react/jsx-filename-extension": 0
+    "react/jsx-filename-extension": 0,
+    "import/extensions": ["error", "always", {
+      "js": "never",
+      "jsx": "never",
+      "ts": "never",
+      "tsx": "never"
+    }]
   },
   "settings": {
     "react": {

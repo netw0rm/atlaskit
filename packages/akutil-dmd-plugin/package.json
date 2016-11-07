@@ -1,6 +1,6 @@
 {
   "name": "akutil-dmd-plugin",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "A dmd plugin for AtlasKit documentation",
   "main": "./lib/akutil-dmd-plugin.js",
   "author": "Atlassian Pty Ltd",

@@ -1,12 +1,11 @@
 import { vdom, define, prop } from 'skatejs';
 import FieldBase from 'ak-field-base';
 
+import SlotWrapper from './SlotWrapper';
 import shadowStyles from './shadow.less';
-import { inputEl } from './internal/symbols';
+import createWrappedInput from './internal/create-wrapped-input';
+import getInput from './internal/get-input';
 
-function getInput(elem) {
-  return elem[inputEl];
-}
 
 /**
  * @description A text based form field with an associated label.
@@ -27,18 +26,11 @@ export default define('ak-field-text', {
         label={elem.label}
         required={elem.required}
       >
-        <input
-          ref={el => (elem[inputEl] = el)}
-          slot="input-slot"
-          className={shadowStyles.locals.input}
-          disabled={elem.disabled}
-          name={elem.name}
-          placeholder={elem.placeholder}
-          type={elem.type}
-        />
+        <SlotWrapper />
       </FieldBase>,
     ]);
   },
+  rendered: createWrappedInput,
   props: {
     /**
      * @description Whether to use compact sizing for the field.

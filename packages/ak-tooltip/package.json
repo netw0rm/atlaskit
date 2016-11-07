@@ -1,6 +1,6 @@
 {
   "name": "ak-tooltip",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "This component is used to display extra information to a user about an element by displaying a floating description.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

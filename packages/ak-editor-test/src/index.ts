@@ -16,7 +16,8 @@ export {
   doc, p, blockquote, code_block,
   h1, h2, h3, h4, h5, h6,
   li, ul, ol, br, img, hr, em, strong, code, del, a,
-  text, fragment, slice, mention, emoji
+  text, fragment, slice, mention, emoji,
+  nodeFactory, markFactory
 } from './schema-builder';
 export { fromHTML, toHTML } from './html-helpers';
 
@@ -28,7 +29,7 @@ export { fromHTML, toHTML } from './html-helpers';
  */
 export const insert = (pm: ProseMirror, ...content: BuilderContent[]) => {
   const { from, to } = pm.selection;
-  const { nodes, refs } = coerce(content);
+  const { nodes, refs } = coerce(content, pm.schema);
   pm.tr.replaceWith(from, to, nodes).apply();
   return offsetRefs(refs, from);
 };

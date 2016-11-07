@@ -1,7 +1,8 @@
 /**
  * This event gets emitted before a field-base changes it's own `focused` prop.
  * (e.g. when a child element receives focus, field-base will set it's own focused prop).
- * It is cancelable. If it gets cancelled, the change is aborted.
+ *
+ *  It is cancelable. If it gets cancelled, the change is aborted.
  *
  * It will not get called if the prop change came from somewhere else.
  *

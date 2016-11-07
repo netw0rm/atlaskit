@@ -19,6 +19,9 @@ export default function (props) {
         [locals.sibling]: props.sibling,
         [locals.today]: props.today,
       })}
-    >{props.day}</div>
+    >
+      {props.day}
+      <div className={locals.underline} />
+    </div>
   );
 }

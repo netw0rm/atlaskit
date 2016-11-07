@@ -259,18 +259,18 @@ export default define('ak-calendar', {
       <style>{css.toString()}</style>,
       <style>{cssDate.toString()}</style>,
       <Announcer>{new Date(elem.year, elem.month, elem.day).toString()}</Announcer>,
-      <table class={locals.calendar}>
+      <table className={locals.calendar}>
         <caption>
-          <div class={locals.heading}>
-            {elem.disableNavigation ? '' : <button class={classnames(locals.btn, locals.btnPrev)} onClick={elem[$prev]}>
+          <div className={locals.heading}>
+            {elem.disableNavigation ? '' : <button className={classnames(locals.btn, locals.btnPrev)} onClick={elem[$prev]}>
               <AkIconArrowLeft />
             </button>}
-            <div class={locals.monthAndYear}>
+            <div className={locals.monthAndYear}>
               <span>{getMonthName(elem, elem.month)}</span>
               {' '}
               <span>{elem.year}</span>
             </div>
-            {elem.disableNavigation ? '' : <button class={classnames(locals.btn, locals.btnNext)} onClick={elem[$next]}>
+            {elem.disableNavigation ? '' : <button className={classnames(locals.btn, locals.btnNext)} onClick={elem[$next]}>
               <AkIconArrowRight />
             </button>}
           </div>
@@ -278,7 +278,7 @@ export default define('ak-calendar', {
         <thead>
           <tr>
             {makeArrayFromNumber(daysPerWeek).map(i =>
-              <th class={locals.dayOfWeek}>{getDayName(elem, i)}</th>
+              <th className={locals.dayOfWeek}>{getDayName(elem, i)}</th>
             )}
           </tr>
         </thead>

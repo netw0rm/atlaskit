@@ -1,4 +1,4 @@
-import { waitUntil, getShadowRoot } from 'akutil-common-test';
+import { waitUntil, getShadowRoot, locateWebComponent } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -25,6 +25,10 @@ describe('ak-field-text', () => {
   let component;
   let shadowRoot;
 
+  function getFieldBase() {
+    return locateWebComponent('ak-field-base', shadowRoot)[0];
+  }
+
   beforeEach(() => setupComponent().then((newComponent) => {
     component = newComponent;
     shadowRoot = getShadowRoot(component);
@@ -33,7 +37,7 @@ describe('ak-field-text', () => {
 
   describe('compact prop', () => {
     it('should be reflected', () => {
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const fieldBase = getFieldBase();
       const reflected = () => (fieldBase.appearance === 'compact');
       // check the negative case first
       expect(reflected()).to.be.false;
@@ -46,7 +50,7 @@ describe('ak-field-text', () => {
 
   describe('disabled prop', () => {
     it('should be reflected', () => {
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const fieldBase = getFieldBase();
       const input = fieldBase.querySelector('input');
       const reflected = () => (!!fieldBase.disabled && !!input.disabled);
       // check the negative case first
@@ -61,7 +65,7 @@ describe('ak-field-text', () => {
   describe('label prop', () => {
     it('should be reflected', () => {
       const newValue = 'new label';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const fieldBase = getFieldBase();
       const reflected = () => (fieldBase.label === newValue);
       // check the negative case first
       expect(reflected()).to.be.false;
@@ -75,7 +79,7 @@ describe('ak-field-text', () => {
   describe('name prop', () => {
     it('should be reflected', () => {
       const newValue = 'new name';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const fieldBase = getFieldBase();
       const input = fieldBase.querySelector('input');
       const reflected = () => (input.name === newValue);
       // check the negative case first
@@ -90,7 +94,7 @@ describe('ak-field-text', () => {
   describe('placeholder prop', () => {
     it('should be reflected', () => {
       const newValue = 'new placeholder';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const fieldBase = getFieldBase();
       const input = fieldBase.querySelector('input');
       const reflected = () => (input.placeholder === newValue);
       // check the negative case first
@@ -104,7 +108,7 @@ describe('ak-field-text', () => {
 
   describe('required prop', () => {
     it('should be reflected', () => {
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const fieldBase = getFieldBase();
       const reflected = () => (!!fieldBase.required);
       // check the negative case first
       expect(reflected()).to.be.false;
@@ -118,7 +122,7 @@ describe('ak-field-text', () => {
   describe('type prop', () => {
     it('should be reflected', () => {
       const newValue = 'email';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const fieldBase = getFieldBase();
       const input = fieldBase.querySelector('input');
       const reflected = () => (input.type === newValue);
       // check the negative case first
@@ -133,7 +137,7 @@ describe('ak-field-text', () => {
   describe('value', () => {
     it('sets the value of the internal input', () => {
       const newValue = 'new value';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const fieldBase = getFieldBase();
       const input = fieldBase.querySelector('input');
 
       expect(input.value).to.equal('', 'initial');
@@ -149,7 +153,7 @@ describe('ak-field-text', () => {
 
     it('gets the value from the internal input', () => {
       const newValue = 'new value';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
+      const fieldBase = getFieldBase();
       const input = fieldBase.querySelector('input');
 
       expect(component.value).to.equal('', 'initial');

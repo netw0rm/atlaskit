@@ -27,7 +27,7 @@
     "ak-avatar": "^3.1.0",
     "ak-dropdown": "^5.5.0",
     "ak-icon": "^8.1.2",
-    "ak-page": "^5.0.0",
+    "ak-page": "^7.0.0",
     "akutil-common-test": "^5.0.0",
     "akutil-react": "^1.0.0",
     "react-lorem-component": "^0.10.0"

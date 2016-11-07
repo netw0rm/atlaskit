@@ -231,20 +231,19 @@ describe('ak-editor-bitbucket', () => {
         .shadowRoot.querySelector('input');
     }
 
-    it.only('should contain the right href value', (done) => {
+    it('should contain the right href value', (done) => {
       const href = 'https://www.atlassian.com';
       buildExpandedEditor(fixture(), `<p>foo <a href="${href}">bar</a></p>`)
         .then((editor) => {
           editor._pm.setTextSelection(7);
 
           return waitUntilPMReady(editor).then(() => {
-            setTimeout(
+            afterMutations(
               () => {
                 const input = getHyperlinkTextInput(editor);
-                debugger
                 expect(input.value).to.equal(href);
-                done()
-              }, 500
+              },
+              done
             );
           });
         });
@@ -262,6 +261,7 @@ describe('ak-editor-bitbucket', () => {
               () => {
                 const input = getHyperlinkTextInput(editor);
                 input.value = bitbucket;
+                // create enter event
                 expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), a({ href: bitbucket })(text('bar')))));
               },
               done

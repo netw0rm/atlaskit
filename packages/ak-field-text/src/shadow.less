@@ -28,145 +28,15 @@ ak-field-text {
   }
 }
 
-// Base grid
-@grid: 4;
-
-// Label margins
-@label-top-spacing: unit(@grid * 5, px);
-@label-bottom-spacing: unit(@grid * 3, px);
-
-// Input border width
-@input-border-width: 1;
-@focused-border-width: 2;
-
-// Input sizing
-@input-horizontal-padding: @grid * 2;
-@input-height: @grid * 10;  // Standard text fields are 40px high.
-@input-compact-height: @grid * 8;  // Compact text fields are 32px high.
-@input-inner-height: @grid * 5; // effectively 20px
 @input-font-size: 14;
-@input-line-height: @input-inner-height / @input-font-size;
 
-// Transition speed
-@input-style-transition-duration: 0.2s;
-
-// Label sizing
-@label-inner-height: @grid * 4; // effectively 16px
-@label-font-size: 12;
-@label-line-height: @label-inner-height / @label-font-size;
-@label-required-padding: 7px;
-
-// Mixin to redistribute spacing between border and padding
-.borders-and-padding (@border, @x-spacing, @height) {
-  border-width: unit(@border, px);
-  padding: unit((@height - (2 * @border) - @input-inner-height) / 2, px) unit((@x-spacing - @border), px);
-}
-
-// State definitions
-@baseInputStyle: {
-  .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-height);
-  background-color: @ak-color-N10A;
-  border-color: @ak-color-N30A;
-  border-style: solid;
-  border-radius: 3px;
+.input {
+  background: transparent;
+  border: 0;
   box-sizing: border-box;
+  color: inherit;
+  cursor: inherit;
   font-size: unit(@input-font-size, px);
-  height: unit(@input-height, px);
-  line-height: @input-line-height;
-  transition: background-color @input-style-transition-duration ease-in-out,
-  border-color @input-style-transition-duration ease-in-out;
-  width: 100%;
-};
-
-@hoverInputStyle: {
-  background-color: @ak-color-N20;
-  border-color: @ak-color-N20;
-};
-
-@focusInputStyle: {
-  .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-height);
-  background-color: white;
-  border-color: @ak-color-B100;
   outline: none;
-};
-
-@disabledInputStyle: {
-  background-color: @ak-color-N20A;
-  border-color: @ak-color-N20A;
-  color: @ak-color-N60;
-  cursor: not-allowed;
-};
-
-@compactInputStyle: {
-  .borders-and-padding(@input-border-width, @input-horizontal-padding, @input-compact-height);
-  height: unit(@input-compact-height, px);
-};
-
-@compactFocusInputStyle: {
-  .borders-and-padding(@focused-border-width, @input-horizontal-padding, @input-compact-height);
-};
-
-// Label style
-.label {
-  color: @ak-color-N200;
-  display: block;
-}
-
-.label-text {
-  font-size: unit(@label-font-size, px);
-  line-height: @label-line-height;
-  padding: @label-top-spacing 0 @label-bottom-spacing 0;
-}
-
-.label-required {
-  color: @ak-color-R400;
-  padding-left: @label-required-padding;
-}
-
-// Styles for native shadow DOM browsers
-::slotted(input) {
-  @baseInputStyle();
-}
-::slotted(input:hover) {
-  @hoverInputStyle();
-}
-::slotted(input:focus) {
-  @focusInputStyle();
-}
-::slotted(input[disabled]) {
-  @disabledInputStyle();
-}
-
-:host([compact]) {
-  ::slotted(input) {
-    @compactInputStyle();
-  }
-  ::slotted(input:focus) {
-    @compactFocusInputStyle();
-  }
-}
-
-// Styles for polyfilled shadow DOM
-.default-slot-element > input {
-  @baseInputStyle();
-
-  &:hover {
-    @hoverInputStyle();
-  }
-
-  &:focus {
-    @focusInputStyle();
-  }
-
-  &[disabled] {
-    @disabledInputStyle();
-  }
-}
-
-.default-slot-element.compact > input {
-  @compactInputStyle();
-
-  &:focus {
-    @compactFocusInputStyle();
-  }
+  width: 100%;
 }

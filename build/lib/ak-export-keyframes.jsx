@@ -209,7 +209,7 @@ function getJSKeyframes(aeKeyFrames, selectedProperty) {
     return value;
   }, 4);
   stringified = stringified.replace(/"/g, '\'') /* Replace double quotes with quotes */
-    .replace(/'(\[.+\])'/g, '$1'); /* Remove the quotes around the arrays */
+    .replace(/'(\[.+])'/g, '$1'); /* Remove the quotes around the arrays */
 
   alert(selectedProperty.name + '\n' + stringified);
 }

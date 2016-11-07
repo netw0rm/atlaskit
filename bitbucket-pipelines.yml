@@ -1,11 +1,10 @@
-image: atlassianlabs/atlaskit:2016-10-07
+image: atlassianlabs/atlaskit:2016-10-27
 pipelines:
   branches:
     master:
       - step:
           script:
             - export FORCE_COLOR=1
-            - ./build/bin/last_commit_has_changes.sh || exit 0
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - npm install
@@ -26,6 +25,7 @@ pipelines:
     - step:
         script:
           - export FORCE_COLOR=1
+          - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - ./build/bin/setup.sh
           - npm install
           - npm run browserstack/tunnel/start

@@ -11,4 +11,5 @@ export default (classKeys, props) => ({
   [classKeys.primary]: props.appearance === PRIMARY && !props.disabled && !props.selected,
   [classKeys.subtle]: props.appearance === SUBTLE && !props.disabled && !props.selected,
   [classKeys.link]: props.appearance === LINK && !props.selected,
+  [classKeys.href]: props.href && !props.disabled,
 });

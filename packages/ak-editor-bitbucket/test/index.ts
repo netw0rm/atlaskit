@@ -7,6 +7,8 @@ import { fixtures, RewireSpy, chaiPlugin, doc, text, code, strong, a,
   emoji, code_block } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 
+import shadowStyles from './shadow.less';
+
 chai.use(chaiPlugin);
 chai.use(sinonChai);
 const { expect, assert } = chai;
@@ -30,7 +32,7 @@ function buildExpandedEditor(
       resolve(fixture.firstChild);
     };
 
-    const failTimer = setTimeout(() => {
+    let failTimer = setTimeout(() => {
       fixture.removeEventListener('ready', successFn);
       reject(new Error('the editor didn\'t become ready in 1.5s'));
     }, 1500);
@@ -54,11 +56,11 @@ function buildExpandedEditor(
 function waitUntilPMReady(editor: typeof AkEditorBitbucket) : Promise<HTMLElement> {
   return waitUntil(() => {
     return !!getShadowRoot(editor) &&
-      !!getShadowRoot(editor).querySelector('ak-editor-content') &&
-      !!getShadowRoot(editor).querySelector('ak-editor-content').querySelector('[pm-container=true]')
+      !!getShadowRoot(editor).firstChild.children[1].children[1] &&
+      !!getShadowRoot(editor).firstChild.children[1].children[1].querySelector('[pm-container=true]')
     ;
   }).then(() => {
-    return getShadowRoot(editor).querySelector('ak-editor-content').querySelector('[pm-container=true]');
+    return getShadowRoot(editor).firstChild.children[1].children[1].querySelector('[pm-container=true]');
   });
 }
 
@@ -364,7 +366,7 @@ describe('ak-editor-bitbucket', () => {
         // TODO: There must be a better way to do it...
         return waitUntil(
           () => (shadowRoot = getShadowRoot(footer)) &&
-          (buttonGroup = shadowRoot.querySelector('ak-button-group')) &&
+          (buttonGroup = shadowRoot.firstChild.children[1]) &&
           buttonGroup.style.visibility === 'hidden'
         ).catch(() => {
           throw new Error('The button group did not become hidden');

@@ -42,6 +42,24 @@ const definition = {
      */
     type: type.enumeration,
     /**
+     * @description href of the ak-button.
+     * If href is set, button will redirect to href url when clicked.
+     * @memberof Button
+     * @default button
+     * @type {string}
+     * @example @html <ak-button href="www.atlassian.com"></ak-button>
+     * @example @js button.href = 'www.atlassian.com';
+     */
+    href: prop.string({ attribute: true }),
+    /**
+     * @description Standard target attribute for hyperlinks
+     * @memberof Button
+     * @type {string}
+     * @example @html <ak-button target="_blank"></ak-button>
+     * @example @js button.target = '_blank';
+     */
+    target: prop.string({ attribute: true }),
+    /**
      * @description Option to disable button and every click event
      * @memberof Button
      * @default false

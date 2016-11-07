@@ -1,6 +1,6 @@
 {
   "name": "ak-field-text",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "ak-field-text webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -12,9 +12,9 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^34.0.1",
+    "ak-field-base": "^2.2.0",
+    "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5",
     "skatejs": "^3.0.0"
   },
   "author": "Atlassian Pty Ltd",
@@ -27,5 +27,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

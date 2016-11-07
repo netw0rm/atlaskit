@@ -1,4 +1,3 @@
-import 'custom-event-polyfill';
 import { vdom, define } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -56,26 +55,20 @@ describe('ak-field-base', () => {
       });
     });
 
-    describe('switchToEditingCallback prop', () => {
-      const callbackSpy = sinon.spy();
-      const tmpDefinition = (<Label switchToEditingCallback={callbackSpy} />);
+    describe('required', () => {
+      const tmpDefinition = (<Label label="This is a label" required />);
 
       beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
         .then(setupLocalVariables));
-      afterEach(() => {
-        callbackSpy.reset();
-      });
 
-      it('should be called if inner span is clicked', () => {
-        const innerSpan = shadowRoot.querySelector('div span');
-        const clickEvent = new CustomEvent('click', {});
-        innerSpan.dispatchEvent(clickEvent);
-
-        expect(callbackSpy).to.have.been.calledOnce;
+      it('should append an asterisk to the content', () => {
+        const label = shadowRoot.querySelector('label');
+        expect(label.textContent).to.match(/^This is a label/);
+        expect(label.textContent).to.match(/\*$/);
       });
     });
 
-    describe('.chidren', () => {
+    describe('.children', () => {
       const tmpDefinition = (<Label>
         <div className="foo">Here is some child content!</div>
       </Label>);

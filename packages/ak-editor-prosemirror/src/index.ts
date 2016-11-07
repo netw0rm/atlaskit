@@ -13,6 +13,7 @@ export {
   NodeType,
   MarkType,
   ResolvedPos,
+  NodeRange,
   Slice,
   Schema,
   Text,
@@ -29,6 +30,10 @@ export {
 } from 'prosemirror/dist/edit';
 
 export {
+  EditorTransform
+} from 'prosemirror/dist/edit/transform';
+
+export {
   DOMFromPos
 } from 'prosemirror/dist/edit/dompos';
 
@@ -40,10 +45,14 @@ export {
   inputRules,
   InputRule,
   allInputRules,
+  headingRule,
+  bulletListRule
 } from 'prosemirror/dist/inputrules';
 
 export {
   Transform,
+  liftTarget,
+  joinPoint
 } from 'prosemirror/dist/transform';
 
 export {

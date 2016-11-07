@@ -1,12 +1,17 @@
-export const selected = 'selected';
-export const unselected = 'unselected';
-export const afterOpen = 'after-open';
-export const afterClose = 'after-close';
+export const changeBefore = 'changeBefore';
+export const changeAfter = 'changeAfter';
+export const openBefore = 'openBefore';
+export const openAfter = 'openAfter';
+export const closeBefore = 'closeBefore';
+export const closeAfter = 'closeAfter';
+
 export const item = Object.freeze({
   up: 'up',
   down: 'down',
   tab: 'tab',
+  activated: 'activatedItem',
 });
+
 export const trigger = Object.freeze({
-  activated: 'activated',
+  activated: 'activatedTrigger',
 });

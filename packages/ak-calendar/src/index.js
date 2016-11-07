@@ -61,7 +61,6 @@ export default define('ak-calendar', {
     [$now]: { default: new Date() },
     [$a11y]: prop.string(),
     disabled: attr.array(),
-    disableNavigation: attr.boolean(),
     focused: attr.number({ default: 0 }),
     previouslySelected: attr.array(),
     selected: attr.array(),
@@ -236,17 +235,17 @@ export default define('ak-calendar', {
       <table className={locals.calendar}>
         <caption>
           <div className={locals.heading}>
-            {elem.disableNavigation ? '' : <button className={classnames(locals.btn, locals.btnPrev)} onClick={elem[$prev]}>
+            <button className={classnames(locals.btn, locals.btnPrev)} onClick={elem[$prev]}>
               <AkIconArrowLeft />
-            </button>}
+            </button>
             <div className={locals.monthAndYear}>
               <span>{getMonthName(elem, elem.month)}</span>
               {' '}
               <span>{elem.year}</span>
             </div>
-            {elem.disableNavigation ? '' : <button className={classnames(locals.btn, locals.btnNext)} onClick={elem[$next]}>
+            <button className={classnames(locals.btn, locals.btnNext)} onClick={elem[$next]}>
               <AkIconArrowRight />
-            </button>}
+            </button>
           </div>
         </caption>
         <thead>

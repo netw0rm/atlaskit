@@ -17,9 +17,6 @@ storiesOf(name, module)
   .add("disabled: ['2016-11-8', '2016-11-10']", () => (
     <ReactComponent disabled={['2016-11-8', '2016-11-10']} />
   ))
-  .add('disableNavigation: true', () => (
-    <ReactComponent disableNavigation />
-  ))
   .add('focused: 8', () => (
     <ReactComponent focused="8" />
   ))

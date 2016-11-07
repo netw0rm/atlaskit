@@ -1,7 +1,8 @@
 import React from 'react';
 import reactify from 'akutil-react';
 import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
-import tagStyles from 'ak-tag/src/shadow.less';
+
+import tagStyles from 'style!./tagStyles.less';
 
 import groupStyles from '../src/shadow.less';
 import WebComponent from '../src';

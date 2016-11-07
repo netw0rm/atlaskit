@@ -1,8 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkTagWebComponent from 'ak-tag';
-import tagStyles from 'ak-tag/src/shadow.less';
 import React from 'react';
+
+import tagStyles from 'style!./tagStyles.less';
 
 import WebComponent from '../src';
 import { name } from '../package.json';

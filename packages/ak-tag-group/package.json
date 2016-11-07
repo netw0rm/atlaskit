@@ -21,14 +21,14 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-tag": "^2.0.0",
+    "ak-tag": "^4.0.0",
     "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0",
     "lodash.sample": "^4.2.1",
     "lodash.uniq": "^4.5.0"
   },
   "peerDependencies": {
-    "ak-tag": "^2.0.0"
+    "ak-tag": ">= 2.x"
   },
   "repository": {
     "type": "git",

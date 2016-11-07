@@ -1,6 +1,6 @@
 {
   "name": "akutil-polyfills",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "main": "dist/bundle.js",
   "files": [
     "dist"

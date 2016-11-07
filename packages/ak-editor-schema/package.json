@@ -22,7 +22,7 @@
     "ak-editor-bitbucket": "^3.2.2",
     "ak-editor-test": "^3.0.0",
     "ak-tabs": "^2.0.0",
-    "akutil-react": "^1.0.0",
+    "akutil-react": "*",
     "highlight.js": "^9.6.0"
   },
   "repository": {

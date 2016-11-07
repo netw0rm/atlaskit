@@ -22,8 +22,8 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-tag": "^2.0.0",
-    "akutil-common-test": "^4.0.0",
-    "akutil-react": "^1.0.0",
+    "akutil-common-test": "*",
+    "akutil-react": "*",
     "lodash.sample": "^4.2.1",
     "lodash.uniq": "^4.5.0"
   },

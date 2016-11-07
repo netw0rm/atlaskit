@@ -23,7 +23,7 @@
     "uid": "^0.0.2"
   },
   "devDependencies": {
-    "akutil-react": "^1.0.0",
+    "akutil-react": "*",
     "idomizer": "^0.5.2",
     "loader-utils": "^0.2.15",
     "svgo": "^0.6.6"

@@ -25,10 +25,10 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "^1.0.0",
+    "akutil-react": "*",
     "custom-event-polyfill": "^0.3.0",
     "ak-avatar": "^3.1.0",
-    "akutil-common-test": "^4.0.0"
+    "akutil-common-test": "*"
   },
   "repository": {
     "type": "git",

@@ -28,8 +28,8 @@
   },
   "devDependencies": {
     "ak-button": "^1.4.3",
-    "akutil-common-test": "^4.0.0",
-    "akutil-react": "^1.0.0",
+    "akutil-common-test": "*",
+    "akutil-react": "*",
     "akutil-shared-styles": "^35.0.1",
     "async": "^2.0.1",
     "glob": "^7.0.5",

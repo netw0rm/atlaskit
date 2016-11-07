@@ -27,7 +27,7 @@
   "devDependencies": {
     "ak-editor-content": "^2.0.0",
     "ak-editor-prosemirror": "^2.0.0",
-    "akutil-react": "^1.0.0"
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",

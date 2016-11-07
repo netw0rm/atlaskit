@@ -21,7 +21,7 @@
     "skatejs": "^3.0.0"
   },
   "devDependencies": {
-    "akutil-react": "^1.0.0",
+    "akutil-react": "*",
     "ak-editor-button": "*",
     "ak-editor-content": "^2.0.0",
     "ak-icon": "^8.1.2",

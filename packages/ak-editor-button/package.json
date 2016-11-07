@@ -21,9 +21,9 @@
     "skatejs": "^3.0.0"
   },
   "devDependencies": {
-    "akutil-react": "^1.0.0",
+    "akutil-react": "*",
     "ak-icon": "^8.1.2",
-    "akutil-common-test": "^4.0.0"
+    "akutil-common-test": "*"
   },
   "repository": {
     "type": "git",

@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "ak-editor-test": "*",
-    "ak-editor-schema": "^2.0.0"
+    "ak-editor-schema": "*"
   },
   "repository": {
     "type": "git",

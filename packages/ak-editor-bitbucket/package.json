@@ -27,7 +27,7 @@
     "ak-editor-plugin-mentions": "^3.0.0",
     "ak-editor-plugin-text-formatting": "^3.0.0",
     "ak-editor-prosemirror": "^4.0.0",
-    "ak-editor-schema": "^2.0.0",
+    "ak-editor-schema": "^4.0.0",
     "ak-editor-shared-styles": "^1.0.3",
     "akutil-shared-styles": "^35.0.1",
     "ak-editor-toolbar": "^2.0.2",

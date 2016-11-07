@@ -8,7 +8,7 @@ import { fromHTML, toHTML } from 'ak-editor-test';
 chai.use(chaiPlugin);
 
 describe('Del mark - parsing from DOM', () => {
-  const del = schema.marks['del'].create({});
+  const del = schema.marks.del.create();
 
   it('supports <del> tag', () => {
     const doc = fromHTML(`
@@ -41,7 +41,7 @@ describe('Del mark - parsing from DOM', () => {
 
 describe('Del mark - serializing to DOM', () => {
   it('should render a <del> tag', () => {
-    const node = schema.text('foo', [ schema.marks['del'].create({}) ] );
+    const node = schema.text('foo', [ schema.marks.del.create() ] );
     expect(toHTML(node)).to.equal('<del>foo</del>');
   });
 });

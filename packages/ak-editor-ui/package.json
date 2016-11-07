@@ -5,11 +5,13 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
+  "types": "src/index.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-ui"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts"
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",

@@ -39,6 +39,10 @@ module.exports = (config) => {
 
     concurrency: Infinity,
 
+    browserDisconnectTimeout: 60000,
+    browserDisconnectTolerance: 1,
+    browserNoActivityTimeout: 60000,
+
     mochaReporter: {
       showDiff: true,
     },

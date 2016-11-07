@@ -353,7 +353,8 @@ describe('ak-editor-bitbucket', () => {
   });
 
   describe('footer', () => {
-    it('should not show action buttons in "pr" context', () => {
+    it.only('should not show action buttons in "pr" context', function() {
+      this.timeout(30000);
       return buildExpandedEditor(fixture(), '', 'pr').then((editor) => {
         let buttonGroup, shadowRoot;
         const footer = getShadowRoot(editor).querySelector('ak-editor-footer');
@@ -365,9 +366,12 @@ describe('ak-editor-bitbucket', () => {
         //       are still visible.
         // TODO: There must be a better way to do it...
         return waitUntil(
-          () => ((shadowRoot = getShadowRoot(footer)) &&
-          (buttonGroup = shadowRoot.firstChild.children[1]) &&
-          buttonGroup.style.visibility === 'hidden'),
+          () => {
+            debugger;
+            return ((shadowRoot = getShadowRoot(footer)) &&
+            (buttonGroup = shadowRoot.firstChild.children[1]) &&
+            buttonGroup.style.visibility === 'hidden');
+          },
           1000,
           50
         ).catch(() => {

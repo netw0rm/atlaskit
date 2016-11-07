@@ -1,6 +1,6 @@
-import { MarkType } from 'ak-editor-prosemirror';
+import { MarkType, Mark } from 'ak-editor-prosemirror';
 
-export class DelMark extends MarkType {
+export class DelMarkType extends MarkType {
   get matchDOMTag() { return {"del": null, "s": null, "strike": null} }
   get matchDOMStyle() {
     return {
@@ -8,4 +8,8 @@ export class DelMark extends MarkType {
     }
   }
   toDOM() { return ['del']; }
+}
+
+export interface DelMark extends Mark {
+	type: DelMarkType;
 }

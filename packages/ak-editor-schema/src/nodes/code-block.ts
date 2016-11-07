@@ -1,10 +1,10 @@
-import { Block, Attribute } from 'ak-editor-prosemirror';
+import { Block, Attribute, Node } from 'ak-editor-prosemirror';
 
 interface EntityAttributes {
   params: Attribute
 }
 
-export class CodeBlock extends Block {
+export class CodeBlockNodeType extends Block {
   get attrs():EntityAttributes {
     return  {
       params: new Attribute({ default : null})
@@ -13,4 +13,8 @@ export class CodeBlock extends Block {
   get isCode() { return true; }
   get matchDOMTag() { return { pre: [null, { preserveWhitespace: true }] }; }
   toDOM() { return ['pre', 0]; }
+}
+
+export interface CodeBlockNode extends Node {
+	type: CodeBlockNodeType;
 }

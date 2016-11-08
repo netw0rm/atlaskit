@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "ak-button": "^3.0.0",
-    "skatejs": "^3.1.2"
+    "skatejs": "^4.0.6"
   },
   "peerDependencies": {
     "skatejs": "^3.x || 4.x"

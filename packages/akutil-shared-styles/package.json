@@ -19,7 +19,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "ak-tooltip": "^3.0.0",
+    "ak-tooltip": "^5.0.0",
     "akutil-react": "*",
     "camelcase": "^3.0.0",
     "classnames": "^2.2.5",

@@ -2,6 +2,7 @@
 
 .root {
   display: block;
+  position: relative;
   background: white;
 
   [contenteditable] {
@@ -36,6 +37,8 @@
   display: block;
   height: 50px;
   padding-left: 20px;
+  box-sizing: border-box;
+
   &.comment {
     height: 30px;
   }

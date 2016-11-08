@@ -1,9 +1,9 @@
-import { waitUntil, getShadowRoot } from 'akutil-common-test';
+import { waitUntil, getShadowRoot, locateWebComponent } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import FieldText from '../src';
-import getInput from '../src/internal/get-input';
+import { getInput } from '../src/internal/helpers';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -28,10 +28,14 @@ describe('ak-field-text', () => {
   let fieldBase;
   let input;
 
+  function getFieldBase() {
+    return locateWebComponent('ak-field-base', shadowRoot)[0];
+  }
+
   beforeEach(() => setupComponent().then((newComponent) => {
     component = newComponent;
     shadowRoot = getShadowRoot(component);
-    fieldBase = shadowRoot.querySelector('ak-field-base');
+    fieldBase = getFieldBase();
     input = getInput(component);
   }));
   afterEach(() => tearDownComponent(component));

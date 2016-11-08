@@ -260,9 +260,31 @@ describe('ak-editor-bitbucket', () => {
           return waitUntilPMReady(editor).then(() => {
             afterMutations(
               () => {
-                const input = getHyperlinkTextInput(editor);
                 emit(input, 'enterKeyup', { detail: { value: bitbucket } });
-                expect(input.value).to.equal(bitbucket);
+                const input = getHyperlinkTextInput(editor);
+                expect(input).to.be.null;
+                expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), a({ href: bitbucket })(text('bar')))));
+              },
+              done
+            );
+          });
+        });
+    });
+
+    it('should dismiss the hyperlink edit panel on ESC', (done) => {
+      const href = 'https://www.atlassian.com';
+      const bitbucket = 'https://bitbucket.org';
+      buildExpandedEditor(fixture(), `<p>foo <a href="${href}">bar</a></p>`)
+        .then((editor) => {
+          editor._pm.setTextSelection(7);
+
+          return waitUntilPMReady(editor).then(() => {
+            afterMutations(
+              () => {
+                emit(input, 'escKeyup');
+                const input = getHyperlinkTextInput(editor);
+                expect(input).to.be.null;
+                expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), a({ href })(text('bar')))));
               },
               done
             );

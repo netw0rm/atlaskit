@@ -37,6 +37,20 @@ class ValidatorBase extends Component {
       <slot />,
     ]);
   }
+  /**
+   * Perform validation on a value based on the supplied validator function.
+   * @param value The value to validate
+   */
+  validate(value) {
+    return !(this.invalid = !this.validatorFunction(value, this));
+  }
+  /**
+   * The validator function that should be overriden when this class is extended.
+   * @param value The value to validate
+   */
+  validatorFunction(value) {  // eslint-disable-line class-methods-use-this,no-unused-vars
+    return false;
+  }
 }
 
 export default ValidatorBase;

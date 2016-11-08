@@ -1,5 +1,5 @@
-import { prop } from 'skatejs';
-import defineValidator from './define-validator';
+import { define, prop } from 'skatejs';
+import ValidatorBase from './internal/validator-base';
 
 const prefix = 'ak-field-validator-';
 
@@ -9,26 +9,30 @@ const prefix = 'ak-field-validator-';
  * @example @js import ValidatorMinlength from 'ak-field-validator';
  * const myValidator = new ValidatorMinlength();
  * @example @js
- * <ak-field-validator-minlength minlength="5" slot="validator">
+ * <ak-field-validator-minlength minlength="5" slot="validator-slot">
  *   Must have at least 5 characters
  * </ak-field-validator-minlength>
  */
-const ValidatorMinlength = defineValidator(`${prefix}minlength`,
-  (value, elem) => value.length >= elem.minlength,
-  {
-    /**
-     * @description The minimum length of the value
-     * @memberof ValidatorMinlength
-     * @instance
-     * @type {number}
-     * @default 1
-     */
-    minlength: prop.number({
-      attribute: true,
-      default: 1,
-    }),
+const ValidatorMinlength = define(`${prefix}minlength`, class extends ValidatorBase {
+  static get props() {
+    return Object.assign(super.props, {
+      /**
+       * @description The minimum length of the value
+       * @memberof ValidatorMinlength
+       * @instance
+       * @type {number}
+       * @default 1
+       */
+      minlength: prop.number({
+        attribute: true,
+        default: 1,
+      }),
+    });
   }
-);
+  validatorFunction(value) {
+    return value.length >= this.minlength;
+  }
+});
 
 /**
  * @description Maximum length validator.
@@ -36,26 +40,30 @@ const ValidatorMinlength = defineValidator(`${prefix}minlength`,
  * @example @js import ValidatorMaxlength from 'ak-field-validator';
  * const myValidator = new ValidatorMaxlength();
  * @example @js
- * <ak-field-validator-maxlength maxlength="10" slot="validator">
+ * <ak-field-validator-maxlength maxlength="10" slot="validator-slot">
  *   Must have at most 10 characters
  * </ak-field-validator-maxlength>
  */
-const ValidatorMaxlength = defineValidator(`${prefix}maxlength`,
-  (value, elem) => value.length <= elem.maxlength,
-  {
-    /**
-     * @description The maximum length of the value
-     * @memberof ValidatorMaxlength
-     * @instance
-     * @type {number}
-     * @default 10
-     */
-    maxlength: prop.number({
-      attribute: true,
-      default: 10,
-    }),
+const ValidatorMaxlength = define(`${prefix}maxlength`, class extends ValidatorBase {
+  static get props() {
+    return Object.assign(super.props, {
+      /**
+       * @description The maximum length of the value
+       * @memberof ValidatorMaxlength
+       * @instance
+       * @type {number}
+       * @default 10
+       */
+      maxlength: prop.number({
+        attribute: true,
+        default: 10,
+      }),
+    });
   }
-);
+  validatorFunction(value) {
+    return value.length <= this.maxlength;
+  }
+});
 
 /**
  * @description Required validator.
@@ -63,14 +71,18 @@ const ValidatorMaxlength = defineValidator(`${prefix}maxlength`,
  * @example @js import ValidatorRequired from 'ak-field-validator';
  * const myValidator = new ValidatorRequired();
  * @example @js
- * <ak-field-validator-required slot="validator">
+ * <ak-field-validator-required slot="validator-slot">
  *   This field is required
  * </ak-field-validator-required>
  */
-const ValidatorRequired = defineValidator(`${prefix}required`, value => !!value);
+const ValidatorRequired = define(`${prefix}required`, class extends ValidatorBase {
+  validatorFunction(value) { // eslint-disable-line class-methods-use-this
+    return !!value;
+  }
+});
 
 export {
-  defineValidator,
+  ValidatorBase,
   ValidatorMinlength,
   ValidatorMaxlength,
   ValidatorRequired,

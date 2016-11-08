@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { Component } from 'skatejs';
 
 import {
-  defineValidator,
+  ValidatorBase,
   ValidatorMinlength,
   ValidatorMaxlength,
   ValidatorRequired,
@@ -17,8 +17,8 @@ chai.should();
 
 describe('ak-field-validator', () => {
   describe('exports', () => {
-    it('should export a factory function', () => {
-      expect(defineValidator).to.be.a('function');
+    it('should export the ValidatorBase base class', () => {
+      expect(ValidatorBase).to.not.be.null;
     });
 
     it('should export validator components for min length, max length, and required', () => {

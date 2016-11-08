@@ -283,10 +283,6 @@ describe('ak-editor-bitbucket', () => {
                 emit(input, 'enterKeyup', { detail: { value: bitbucket } });
                 expect(editor._pm.doc).to.deep.equal(doc(p('foo ', a({ href: bitbucket })('bar'))));
               },
-              () => {
-                const input = getHyperlinkTextInput(editor);
-                expect(input).to.be.null;
-              },
               done
             );
           });

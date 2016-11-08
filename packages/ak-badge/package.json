@@ -1,6 +1,6 @@
 {
   "name": "ak-badge",
-  "version": "0.5.1",
+  "version": "1.0.0",
   "description": "ak-badge webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -21,8 +21,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "^4.0.0",
-    "akutil-react": "^1.0.0"
+    "akutil-common-test": "*",
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",

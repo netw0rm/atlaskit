@@ -1,6 +1,6 @@
 {
   "name": "ak-dropdown",
-  "version": "9.0.1",
+  "version": "10.0.0",
   "description": "ak-dropdown webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -19,16 +19,16 @@
     "classnames": "^2.2.5",
     "keycode": "^2.1.2",
     "skatejs": "^4.0.0",
-    "ak-icon": "^8.1.2",
-    "ak-button": "^1.3.2"
+    "ak-icon": "^10.0.0",
+    "ak-button": "^3.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "^1.0.0",
+    "akutil-react": "*",
     "custom-event-polyfill": "^0.3.0",
     "ak-avatar": "^3.1.0",
-    "akutil-common-test": "^4.0.0"
+    "akutil-common-test": "*"
   },
   "repository": {
     "type": "git",

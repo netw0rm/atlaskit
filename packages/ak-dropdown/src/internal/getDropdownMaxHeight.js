@@ -1,3 +1,3 @@
 import { dropdownMaxHeight } from './consts';
 
-export default dropdown => (dropdown.appearance === 'standard' ? `${dropdownMaxHeight}px` : 'none');
+export default dropdown => (dropdown.appearance !== 'tall' ? `${dropdownMaxHeight}px` : 'none');

@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress, locateWebComponent } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
-import { fixtures, RewireSpy, chaiPlugin, text } from 'ak-editor-test';
+import { fixtures, RewireSpy, chaiPlugin } from 'ak-editor-test';
 import { doc, code, strong, a,
   h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
   emoji, code_block } from './_schema-builder';
@@ -227,7 +227,13 @@ describe('ak-editor-bitbucket', () => {
 
   describe('editor hyperlink popup panel', () => {
     function getHyperlinkTextInput(editor: typeof AkEditorBitbucket) {
-      return editor.shadowRoot.querySelector('ak-editor-hyperlink-edit')
+      const edit = editor.shadowRoot.querySelector('ak-editor-hyperlink-edit');
+
+      if (!edit) {
+        return null;
+      }
+
+      return edit
         .shadowRoot.querySelector('ak-editor-popup-text-input')
         .shadowRoot.querySelector('input');
     }
@@ -260,10 +266,13 @@ describe('ak-editor-bitbucket', () => {
           return waitUntilPMReady(editor).then(() => {
             afterMutations(
               () => {
+                const input = getHyperlinkTextInput(editor);
                 emit(input, 'enterKeyup', { detail: { value: bitbucket } });
+                expect(editor._pm.doc).to.deep.equal(doc(p('foo ', a({ href: bitbucket })('bar'))));
+              },
+              () => {
                 const input = getHyperlinkTextInput(editor);
                 expect(input).to.be.null;
-                expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), a({ href: bitbucket })(text('bar')))));
               },
               done
             );
@@ -281,10 +290,13 @@ describe('ak-editor-bitbucket', () => {
           return waitUntilPMReady(editor).then(() => {
             afterMutations(
               () => {
+                const input = getHyperlinkTextInput(editor);
                 emit(input, 'escKeyup');
+                expect(editor._pm.doc).to.deep.equal(doc(p('foo ', a({ href })('bar'))));
+              },
+              () => {
                 const input = getHyperlinkTextInput(editor);
                 expect(input).to.be.null;
-                expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), a({ href })(text('bar')))));
               },
               done
             );

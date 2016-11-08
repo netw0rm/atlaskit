@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import { emit } from 'skatejs';
-import { waitUntil, getShadowRoot } from 'akutil-common-test';
+import { waitUntil, locateWebComponent } from 'akutil-common-test';
 import Footer from '../src/Footer';
 import shadowStyles from '../src/Footer/shadow.less';
 
@@ -17,7 +17,7 @@ describe('ak-editor-ui Footer', () => {
   beforeEach(() => {
     component = new Footer();
     document.body.appendChild(component);
-    return waitUntil(() => getShadowRoot(component) !== null);
+    return waitUntil(() => component.shadowRoot !== null);
   });
 
   afterEach(() => document.body.removeChild(component));
@@ -37,7 +37,7 @@ describe('ak-editor-ui Footer', () => {
         it(`${data.event} event on click`, () => {
           const spy = sinon.spy();
           component.addEventListener(data.event, spy);
-          const button = getShadowRoot(component).querySelector(data.selector);
+          const button = component.shadowRoot.querySelector(data.selector);
           emit(button, 'click');
           expect(spy).to.have.been.called;
         });
@@ -46,16 +46,20 @@ describe('ak-editor-ui Footer', () => {
   );
 
   it('should hide buttons when hideButtons === true', () => {
-    const shadowRoot = getShadowRoot(component);
+    const shadowRoot = component.shadowRoot;
 
     // Note: On Firefox, changing .hideButtons property is reflected in the skateJS component only
     //       after next "tick", so that buttons are theoretically visible for a short moment.
     component.hideButtons = true;
 
     return waitUntil(() => {
-      const buttonGroup = shadowRoot.querySelector('ak-button-group');
-      return buttonGroup instanceof HTMLElement &&
-        buttonGroup.style.visibility === 'hidden';
+      const matches = locateWebComponent('ak-button-group', shadowRoot);
+      if (matches.length > 0) {
+        const buttonGroup = matches[0];
+        return buttonGroup instanceof HTMLElement &&
+          buttonGroup.style.visibility === 'hidden';
+      }
+      return false;
     })
     .catch(() => {
       throw new Error('The button group did not become hidden');

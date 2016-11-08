@@ -20,7 +20,7 @@
     "skatejs": "^3.0.0"
   },
   "devDependencies": {
-    "akutil-react": "^1.0.0"
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",

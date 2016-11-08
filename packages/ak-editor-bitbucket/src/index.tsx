@@ -14,7 +14,7 @@ import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
-import schema from 'ak-editor-schema';
+import schema from './schema';
 import { buildKeymap } from './keymap';
 import markdownSerializer from './markdown-serializer';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
@@ -28,11 +28,9 @@ import {
 import MarkdownInputRulesPlugin from 'ak-editor-plugin-markdown-inputrules';
 import {
   default as HyperlinkPlugin,
-  DISABLED_GROUP as HyperlinkPluginDisabledGroup
 } from 'ak-editor-plugin-hyperlink';
 import {
   default as ImageUploadPlugin,
-  DISABLED_GROUP as ImageUploadPluginDisabledGroup,
   ImageUploadOptions
 } from 'ak-editor-plugin-image-upload';
 import {
@@ -244,8 +242,6 @@ class AkEditorBitbucket extends Component {
       <Footer
         openTop
         hide-buttons={elem.context === 'pr'}
-        onSave={elem._collapse}
-        onCancel={elem._collapse}
         onInsertimage={elem._insertImage}
       />
     </div>);
@@ -277,6 +273,7 @@ class AkEditorBitbucket extends Component {
    */
   focus(): void {
     if (this._pm) {
+      this._focused = true;
       this._pm.focus();
     }
   }
@@ -405,9 +402,6 @@ class AkEditorBitbucket extends Component {
   _initEditor() {
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
-
-    schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
-    schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
 
     const pm = new ProseMirror({
       place: this._wrapper,

@@ -5,8 +5,10 @@ import CalendarIcon from 'ak-icon/glyph/confluence/calendar';
 import PageIcon from 'ak-icon/glyph/confluence/page';
 import QuestionIcon from 'ak-icon/glyph/question';
 import ExpandIcon from 'ak-icon/glyph/expand';
+import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
+import OpenIcon from 'ak-icon/glyph/editor/open';
 
-import AkButtonTemplate, { APPEARANCE } from '../src';
+import AkButtonTemplate, { APPEARANCE, SPACING } from '../src';
 import ButtonBuilderExample from './button-builder-example';
 
 const AkButton = reactify(AkButtonTemplate);
@@ -15,6 +17,8 @@ const Calendar = reactify(CalendarIcon);
 const Question = reactify(QuestionIcon);
 const Page = reactify(PageIcon);
 const Expand = reactify(ExpandIcon);
+const Unlink = reactify(UnlinkIcon);
+const Open = reactify(OpenIcon);
 
 const buildStory = (props, Wrapper) => (
   () => (
@@ -151,21 +155,40 @@ const buildStory = (props, Wrapper) => (
       </div>
 
       <div className="sample">
-        <AkButton {...props} compact>
+        <div>
+          <style>{'ak-button { margin-right: 5px }'}</style>
+          <AkButton {...props} spacing={SPACING.NONE}>
+            <Unlink>unlink</Unlink>
+          </AkButton>
+          <AkButton {...props} spacing={SPACING.NONE} selected>
+            <Unlink>unlink selected</Unlink>
+          </AkButton>
+          <AkButton {...props} spacing={SPACING.NONE}>
+            <Open>open</Open>
+          </AkButton>
+          <AkButton {...props} spacing={SPACING.NONE} selected>
+            <Open>open selected</Open>
+          </AkButton>
+        </div>
+        <span>button with icons, no spacing & selected</span>
+      </div>
+
+      <div className="sample">
+        <AkButton {...props} spacing={SPACING.COMPACT}>
           Create Issue
         </AkButton>
         <span>compact</span>
       </div>
 
       <div className="sample">
-        <AkButton {...props} onClick={action('clicking the WebComponent')} compact disabled>
+        <AkButton {...props} onClick={action('clicking the WebComponent')} spacing={SPACING.COMPACT} disabled>
           Disabled Option
         </AkButton>
         <span>compact + disabled</span>
       </div>
 
       <div className="sample">
-        <AkButton {...props} compact selected>
+        <AkButton {...props} spacing={SPACING.COMPACT} selected>
           Selected Option
         </AkButton>
         <span>compact + selected</span>

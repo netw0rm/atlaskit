@@ -20,6 +20,10 @@ export {
 } from 'prosemirror/dist/model';
 
 export {
+  TextNode
+} from 'prosemirror/dist/model/node';
+
+export {
   commands,
   MarkedRange,
   NodeSelection,
@@ -46,7 +50,8 @@ export {
   InputRule,
   allInputRules,
   headingRule,
-  bulletListRule
+  bulletListRule,
+  wrappingInputRule
 } from 'prosemirror/dist/inputrules';
 
 export {

@@ -6,7 +6,8 @@ import {
   InputRule,
   inputRules,
   allInputRules,
-  headingRule
+  headingRule,
+  bulletListRule
 } from 'ak-editor-prosemirror';
 
 const buildBlockRules = (schema: Schema): Array<InputRule> => {
@@ -14,6 +15,10 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
 
   if (schema.nodes.heading) {
     rules.push(headingRule(schema.nodes.heading, 3));
+  }
+
+  if (schema.nodes.bullet_list) {
+    rules.push(bulletListRule(schema.nodes.bullet_list));
   }
 
   return rules;

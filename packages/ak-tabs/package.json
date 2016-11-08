@@ -1,6 +1,6 @@
 {
   "name": "ak-tabs",
-  "version": "2.2.2",
+  "version": "4.0.2",
   "description": "Tabs web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -14,18 +14,18 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "ak-dropdown": "^5.5.0",
-    "ak-icon": "^8.1.2",
+    "ak-dropdown": "^9.0.1",
+    "ak-icon": "^10.0.0",
     "akutil-shared-styles": "^35.0.1",
     "classnames": "^2.2.5",
     "css-element-queries": "^0.3.2",
     "debounce": "^1.0.0",
     "keycode": "^2.1.4",
-    "skatejs": "^3.1.2"
+    "skatejs": "^4.0.4"
   },
   "devDependencies": {
-    "akutil-react": "^1.0.0",
-    "akutil-common-test": "^4.0.0"
+    "akutil-react": "*",
+    "akutil-common-test": "*"
   },
   "repository": {
     "type": "git",

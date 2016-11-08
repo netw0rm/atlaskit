@@ -175,9 +175,9 @@
       "resolved": "https://registry.npmjs.org/akutil-dmd-plugin/-/akutil-dmd-plugin-4.0.0.tgz"
     },
     "akutil-polyfills": {
-      "version": "5.0.0",
-      "from": "akutil-polyfills@>=5.0.0 <6.0.0",
-      "resolved": "https://registry.npmjs.org/akutil-polyfills/-/akutil-polyfills-5.0.0.tgz"
+      "version": "3.1.0",
+      "from": "akutil-polyfills@>=3.0.1 <4.0.0",
+      "resolved": "https://registry.npmjs.org/akutil-polyfills/-/akutil-polyfills-3.1.0.tgz"
     },
     "akutil-shared-styles": {
       "version": "37.0.0",
@@ -2248,7 +2248,7 @@
       "dependencies": {
         "minimist": {
           "version": "1.2.0",
-          "from": "minimist@^1.2.0",
+          "from": "minimist@>=1.2.0 <2.0.0",
           "resolved": "https://registry.npmjs.org/minimist/-/minimist-1.2.0.tgz"
         }
       }
@@ -2674,9 +2674,9 @@
       "resolved": "https://registry.npmjs.org/forever-agent/-/forever-agent-0.6.1.tgz"
     },
     "form-data": {
-      "version": "2.1.1",
+      "version": "2.1.2",
       "from": "form-data@>=2.1.1 <2.2.0",
-      "resolved": "https://registry.npmjs.org/form-data/-/form-data-2.1.1.tgz"
+      "resolved": "https://registry.npmjs.org/form-data/-/form-data-2.1.2.tgz"
     },
     "formatio": {
       "version": "1.1.1",
@@ -4297,7 +4297,7 @@
         },
         "source-map": {
           "version": "0.1.43",
-          "from": "source-map@^0.1.41",
+          "from": "source-map@>=0.1.41 <0.2.0",
           "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.1.43.tgz"
         }
       }
@@ -4344,8 +4344,8 @@
         },
         "run-async": {
           "version": "0.1.0",
-          "from": "run-async@^0.1.0",
-          "resolved": "http://registry.npmjs.org/run-async/-/run-async-0.1.0.tgz"
+          "from": "run-async@>=0.1.0 <0.2.0",
+          "resolved": "https://registry.npmjs.org/run-async/-/run-async-0.1.0.tgz"
         },
         "signal-exit": {
           "version": "2.1.2",
@@ -4940,9 +4940,9 @@
       "resolved": "https://registry.npmjs.org/normalize-range/-/normalize-range-0.1.2.tgz"
     },
     "normalize-url": {
-      "version": "1.7.0",
+      "version": "1.8.0",
       "from": "normalize-url@>=1.4.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/normalize-url/-/normalize-url-1.7.0.tgz"
+      "resolved": "https://registry.npmjs.org/normalize-url/-/normalize-url-1.8.0.tgz"
     },
     "null-check": {
       "version": "1.0.0",

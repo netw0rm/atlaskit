@@ -13,7 +13,7 @@
     "akutil-common-test": "^7.0.0",
     "akutil-cucumber": "^3.0.0",
     "akutil-dmd-plugin": "^4.0.0",
-    "akutil-polyfills": "^5.0.0",
+    "akutil-polyfills": "^3.0.1",
     "akutil-shared-styles": "^37.0.0",
     "autoprefixer": "^6.5.0",
     "babel-core": "^6.17.0",

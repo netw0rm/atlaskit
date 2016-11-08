@@ -27,9 +27,9 @@
     "skatejs": "^4.0.4"
   },
   "devDependencies": {
-    "ak-button": "^1.4.3",
-    "akutil-common-test": "^5.0.2",
-    "akutil-react": "^1.0.0",
+    "ak-button": "^3.0.0",
+    "akutil-common-test": "*",
+    "akutil-react": "*",
     "akutil-shared-styles": "^35.0.1",
     "async": "^2.0.1",
     "glob": "^7.0.5",

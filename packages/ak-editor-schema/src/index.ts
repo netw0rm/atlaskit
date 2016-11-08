@@ -4,6 +4,7 @@ export { CodeMark, CodeMarkType } from './marks/code';
 export { DelMark, DelMarkType } from './marks/del';
 export { EmMark, EmMarkType } from './marks/em';
 export { LinkMark, LinkMarkType } from './marks/link';
+export { StrikeMark, StrikeMarkType } from './marks/strike';
 export { StrongMark, StrongMarkType } from './marks/strong';
 export { SubSupMark, SubSupMarkType } from './marks/subsup';
 export { UnderlineMark, UnderlineMarkType } from './marks/underline';

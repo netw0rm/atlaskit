@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import reactify from 'akutil-react';
 
@@ -42,4 +42,10 @@ storiesOf(name, module)
     const now = new Date();
     const today = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
     return <ReactComponent disabled={today} />;
-  });
+  })
+  .add('events', () => (
+    <ReactComponent onSelect={action('select')} />
+  ))
+  .add('selecting a day', () => (
+    <ReactComponent onSelect={({ detail, target }) => (target.selected = `${detail.year}-${detail.month}-${detail.day}`)} />
+  ));

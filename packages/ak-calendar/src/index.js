@@ -148,9 +148,8 @@ export default define('ak-calendar', {
       }
     },
     selectDay(e) {
-      const day = e.currentTarget.day;
-      const month = e.currentTarget.month;
-      const year = e.currentTarget.year;
+      const { month, year } = this;
+      const day = e.currentTarget.getAttribute('day');
       emit(this, events.select, {
         detail: { day, month, year },
       });
@@ -221,8 +220,6 @@ export default define('ak-calendar', {
           sibling={isSiblingMonth}
           today={isToday}
           day={date.day.toString()}
-          month={(date.month + 1).toString()}
-          year={(date.year).toString()}
           onClick={elem[$selectDay]}
         />
       );

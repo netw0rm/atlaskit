@@ -1,6 +1,6 @@
 {
   "name": "ak-tabs",
-  "version": "2.2.1",
+  "version": "4.0.0",
   "description": "Tabs web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -16,7 +16,7 @@
   "dependencies": {
     "ak-dropdown": "^5.5.0",
     "ak-icon": "^8.1.2",
-    "akutil-shared-styles": "^34.0.1",
+    "akutil-shared-styles": "^35.0.1",
     "classnames": "^2.2.5",
     "css-element-queries": "^0.3.2",
     "debounce": "^1.0.0",

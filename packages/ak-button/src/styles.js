@@ -26,6 +26,7 @@ export default (vars) => {
     // light DOM styles
     ':host': {
       display: 'inline-flex',
+      'white-space': 'nowrap',
     },
     ':host(> _shadow_root_)': {
       display: 'inline-flex',
@@ -40,6 +41,7 @@ export default (vars) => {
     },
     '::slotted(:not([slot]))': {
       'line-height': '0',
+      'white-space': 'nowrap',
     },
     '::slotted([slot="after"])': {
       'line-height': '0',
@@ -70,6 +72,7 @@ export default (vars) => {
     },
     'default-slot': {
       display: 'inline-flex',
+      'flex-wrap': 'nowrap',
     },
     root: {
       display: 'inline-block',
@@ -192,6 +195,11 @@ export default (vars) => {
     compact: {
       height: val('compact.height', `${(grid * 3) / em}em`),
       'line-height': val('compact.lineHeight', `${(grid * 3) / em}em`),
+    },
+    nospacing: {
+      height: 'initial',
+      'line-height': 'initial',
+      padding: 0,
     },
   };
 };

@@ -1,20 +1,20 @@
 import parse from '../src/parse-html';
 import { Schema } from 'ak-editor-prosemirror';
+import { chaiPlugin } from 'ak-editor-test';
 import {
-  chaiPlugin, code_block, doc, text, code, strong, a,
-  h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention, emoji
-} from 'ak-editor-test';
+  a, blockquote, code, code_block, doc, emoji, strong,
+  h1, h2, h3, h4, h5, h6, hr, img, ul, ol, li, p, mention
+} from './_schema-builder';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import schema from 'ak-editor-schema';
+import schema from '../src/schema';
 
 chai.use(chaiPlugin);
 
-const createMark = (mark: string, attrs?: {}) => schema.marks[mark].create(attrs);
 const pre = code_block();
 
 // Based on https://bitbucket.org/tutorials/markdowndemo
-describe('Parse Bitbucket rendered HTML', () => {
+describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
   describe('block elements', () => {
     it('should support level 1 to 6 headings', () => {
       expect(parse('<h1>text</h1>')).to.deep.equal(doc(h1('text')));
@@ -45,34 +45,34 @@ describe('Parse Bitbucket rendered HTML', () => {
 
   describe('inline elements', () => {
     it('should support emphasis', () => {
-      const em = createMark('em');
+      const em = schema.marks.em.create();
       expect(parse('<p><em>text</em></p>')).to.have.textWithMarks('text', [ em ]);
     });
 
     it('should support strong', () => {
-      const strongMark = createMark('strong');
-      expect(parse('<p><strong>text</strong></p>')).to.have.textWithMarks('text', [ strongMark ]);
+      const strong = schema.marks.strong.create();
+      expect(parse('<p><strong>text</strong></p>')).to.have.textWithMarks('text', [ strong ]);
     });
 
     it('should support strikethrough', () => {
-      const del = createMark('del');
+      const del = schema.marks.del.create();
       expect(parse('<p><del>text</del></p>')).to.have.textWithMarks('text', [ del ]);
     });
 
     it('should support inline preformatted code', () => {
-      const code = createMark('code');
+      const code = schema.marks.code.create();
       expect(parse('<p><code>text</code></p>')).to.have.textWithMarks('text', [ code ]);
     });
 
     it('should support links', () => {
-      const link = createMark('link', { href: 'http://example.com' });
+      const link = schema.marks.link.create({ href: 'http://example.com' });
       expect(parse('<p><a href="http://example.com">example link</a></p>')).to.have.textWithMarks('example link', [ link ]);
     });
 
     it('should support both strong and em', () => {
-      const em = createMark('em');
-      const strongMark = createMark('strong');
-      expect(parse('<p><strong><em>text</em></strong></p>')).to.have.textWithMarks('text', [em, strongMark]);
+      const em = schema.marks.em.create();
+      const strong = schema.marks.strong.create();
+      expect(parse('<p><strong><em>text</em></strong></p>')).to.have.textWithMarks('text', [em, strong]);
     });
   });
 
@@ -104,10 +104,10 @@ describe('Parse Bitbucket rendered HTML', () => {
           blockquote(
             p('foo'),
             ul(
-              li(p(text('bar'))),
-              li(p(text('baz'))),
+              li(p('bar')),
+              li(p('baz')),
             ),
-            h1(text('boo'))
+            h1('boo')
           )
         )
       );
@@ -124,8 +124,8 @@ describe('Parse Bitbucket rendered HTML', () => {
       )).to.deep.equal(
         doc(
           ul(
-            li(p(text('foo'))),
-            li(p(text('bar'))),
+            li(p('foo')),
+            li(p('bar')),
           ),
         )
       );
@@ -140,8 +140,8 @@ describe('Parse Bitbucket rendered HTML', () => {
       )).to.deep.equal(
         doc(
           ol(
-            li(p(text('foo'))),
-            li(p(text('bar'))),
+            li(p('foo')),
+            li(p('bar')),
           ),
         )
       );
@@ -160,11 +160,11 @@ describe('Parse Bitbucket rendered HTML', () => {
       )).to.deep.equal(
         doc(
           ol(
-            li(p(text('foo'))),
+            li(p('foo')),
             li(
-              p(text('bar')),
+              p('bar'),
               ol(
-                li(p(text('baz'))),
+                li(p('baz')),
               ),
             ),
           ),
@@ -183,11 +183,11 @@ describe('Parse Bitbucket rendered HTML', () => {
       )).to.deep.equal(
         doc(
           ul(
-            li(p(text('foo'))),
+            li(p('foo')),
             li(
-              p(text('bar')),
+              p('bar'),
               ul(
-                li(p(text('baz'))),
+                li(p('baz')),
               ),
             ),
           ),
@@ -208,11 +208,11 @@ describe('Parse Bitbucket rendered HTML', () => {
       )).to.deep.equal(
         doc(
           ul(
-            li(p(text('foo'))),
+            li(p('foo')),
             li(
-              p(text('bar')),
+              p('bar'),
               ol(
-                li(p(text('baz'))),
+                li(p('baz')),
               ),
             ),
           ),
@@ -236,12 +236,12 @@ describe('Parse Bitbucket rendered HTML', () => {
         doc(
           ul(
             li(
-              p(text('foo')),
-              p(text('bar')),
+              p('foo'),
+              p('bar'),
               ol(
-                li(p(text('nested foo'))),
+                li(p('nested foo')),
               ),
-              p(text('baz')),
+              p('baz'),
             ),
           ),
         )
@@ -265,12 +265,12 @@ describe('Parse Bitbucket rendered HTML', () => {
         doc(
           ul(
             li(
-              p(text('foo')),
+              p('foo'),
               blockquote(
-                p(text('bar'))
+                p('bar')
               ),
             ),
-            li(p(text('baz')))
+            li(p('baz'))
           ),
         )
       );
@@ -294,13 +294,13 @@ describe('Parse Bitbucket rendered HTML', () => {
         doc(
           ul(
             li(
-              p(text('foo')),
-              p(text('bar')),
+              p('foo'),
+              p('bar'),
               pre(
-                text('import schema from \'ak-editor-schema\';')
+                'import schema from \'ak-editor-schema\';'
               ),
             ),
-            li(p(text('baz')))
+            li(p('baz'))
           ),
         )
       );
@@ -309,7 +309,6 @@ describe('Parse Bitbucket rendered HTML', () => {
 
   describe('tables', () => {
     it('with header, multiple rows and columns should be converted into paragraphs', () => {
-      // const strong = createMark('strong');
       expect(parse(
         '<table>' +
           '<thead>' +
@@ -333,9 +332,9 @@ describe('Parse Bitbucket rendered HTML', () => {
           '</tbody>' +
         '</table>'
       )).to.deep.equal(doc(
-        p(strong(text('First Header, Second Header, Third Header'))),
-        p(text('Content Cell, Content Cell, Content Cell')),
-        p(text('Content Cell, Content Cell, Content Cell')),
+        p(strong('First Header, Second Header, Third Header')),
+        p('Content Cell, Content Cell, Content Cell'),
+        p('Content Cell, Content Cell, Content Cell'),
       ));
     });
 
@@ -362,9 +361,9 @@ describe('Parse Bitbucket rendered HTML', () => {
       );
 
       expect(result).to.deep.equal(doc(
-        p(strong(text('First Header'))),
-        p(text('Content Cell')),
-        p(text('Content Cell')),
+        p(strong('First Header')),
+        p('Content Cell'),
+        p('Content Cell'),
       ));
     });
   });
@@ -374,7 +373,7 @@ describe('Parse Bitbucket rendered HTML', () => {
       expect(parse(
         '<p>foo <code>bar </code>baz</p>'
       )).to.deep.equal(doc(
-        p(text('foo '), code(text('bar ')), text('baz'))
+        p('foo ', code('bar '), 'baz')
       ));
     });
 
@@ -383,8 +382,8 @@ describe('Parse Bitbucket rendered HTML', () => {
         '<p>foo</p>' +
         '<div class="codehilite"><pre><span></span>    bar\n       baz\n</pre></div>'
       )).to.deep.equal(doc(
-        p(text('foo')),
-        pre(text('    bar\n       baz\n'))
+        p('foo'),
+        pre('    bar\n       baz\n')
       ));
     });
 
@@ -403,9 +402,9 @@ describe('Parse Bitbucket rendered HTML', () => {
         '</p>'
       )).to.deep.equal(doc(
         p(
-          text('foo '),
+          'foo ',
           mention({displayName: 'Artur Bodera', id: 'abodera'}),
-          text(' bar')
+          ' bar'
         )
       ));
     });
@@ -426,9 +425,9 @@ describe('Parse Bitbucket rendered HTML', () => {
           '</p>'
         )).to.deep.equal(doc(
           p(
-            text('foo '),
+            'foo ',
             emoji({id: 'diamond_shape_with_a_dot_inside'}),
-            text(' bar')
+            ' bar'
           )
         ));
     });
@@ -450,9 +449,9 @@ describe('Parse Bitbucket rendered HTML', () => {
         '</p>'
       )).to.deep.equal(doc(
         p(
-          text('foo '),
-          link(text('Atlassian')),
-          text(' baz')
+          'foo ',
+          link('Atlassian'),
+          ' baz'
         )
       ));
     });
@@ -475,9 +474,9 @@ describe('Parse Bitbucket rendered HTML', () => {
         '</p>'
       )).to.deep.equal(doc(
         p(
-          text('foo '),
-          link(text('bar')),
-          text(' baz')
+          'foo ',
+          link('bar'),
+          ' baz'
         )
       ));
     });
@@ -498,9 +497,9 @@ describe('Parse Bitbucket rendered HTML', () => {
         '</p>'
       )).to.deep.equal(doc(
         p(
-          text('foo '),
-          link(text('Atlassian')),
-          text(' baz')
+          'foo ',
+          link('Atlassian'),
+          ' baz'
         )
       ));
     });

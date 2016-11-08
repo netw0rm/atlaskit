@@ -1,6 +1,6 @@
 {
   "name": "akutil-common",
-  "version": "4.0.0",
+  "version": "4.0.2",
   "description": "Utilities shared by AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

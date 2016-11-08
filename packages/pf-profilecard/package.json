@@ -1,6 +1,6 @@
 {
   "name": "pf-profilecard",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "pf-profilecard webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",

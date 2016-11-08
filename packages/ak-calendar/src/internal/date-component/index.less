@@ -38,6 +38,8 @@
 .sibling {
   color: @ak-color-N80;
 }
+
+// Today
 .today {
   color: @ak-color-B75;
   font-weight: normal;
@@ -48,4 +50,12 @@
   left: -25%;
   width: 150%;
   top: 4px; 
+}
+
+// Today (disabled)
+.today.disabled {
+  color: @ak-color-N400;
+}
+.today.disabled .underline {
+  border-bottom-color: @ak-color-N400;
 }

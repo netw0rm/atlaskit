@@ -37,4 +37,9 @@ storiesOf(name, module)
   ))
   .add('year: 1984', () => (
     <ReactComponent year="1984" />
-  ));
+  ))
+  .add('today + disabled', () => {
+    const now = new Date();
+    const today = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+    return <ReactComponent disabled={today} />;
+  });

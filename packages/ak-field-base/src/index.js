@@ -8,10 +8,10 @@ import shadowStyles from './shadow.less';
 import { focused } from './internal/symbols';
 import { standard as standardAppearance } from './internal/appearance';
 
-const validatorSlot = Symbol('validatorSlot');
 const inputSlot = Symbol('inputSlot');
-const errorDialog = Symbol('errorDialog');
+const validatorSlot = Symbol('validatorSlot');
 const inputWrapper = Symbol('inputWrapper');
+const hasError = Symbol('hasError');
 
 // we use this so that we can pass a function down to Content so that it can update the
 // [focused] prop.
@@ -49,7 +49,7 @@ function validate(elem) {
     });
   }
 
-  elem.invalid = !inputValid;
+  elem.invalid = elem[hasError] = !inputValid;
 }
 
 /**
@@ -96,13 +96,10 @@ export default define('ak-field-base', {
         <ValidatorDialog
           border-color={akColorR400}
           hasBlanket={false}
-          open={elem.invalid}
+          open={elem[hasError]}
           padding="3px"
           position="right middle"
-          ref={(el) => {
-            elem[errorDialog] = el;
-            el.target = elem[inputWrapper];
-          }}
+          ref={el => (el.target = elem[inputWrapper])}
         >
           <slot
             className={shadowStyles.locals.validatorSlot}

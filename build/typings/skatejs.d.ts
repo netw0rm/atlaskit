@@ -5,7 +5,6 @@ declare module "skatejs" {
   export const define: any;
 
   interface Symbols {
-    shadowRoot: string;
   }
 
   export const symbols: Symbols;

@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "akutil-shared-styles": "^35.0.1",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.4"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
@@ -22,7 +22,7 @@
     "akutil-react": "*",
     "ak-button": "^3.0.0",
     "ak-icon": "^10.0.0",
-    "ak-dropdown": "^5.5.0"
+    "ak-dropdown": "^9.0.0"
   },
   "repository": {
     "type": "git",

@@ -3,6 +3,7 @@ import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import FieldText from '../src';
+import getInput from '../src/internal/get-input';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -24,36 +25,35 @@ function tearDownComponent(component) {
 describe('ak-field-text', () => {
   let component;
   let shadowRoot;
+  let fieldBase;
+  let input;
 
   beforeEach(() => setupComponent().then((newComponent) => {
     component = newComponent;
     shadowRoot = getShadowRoot(component);
+    fieldBase = shadowRoot.querySelector('ak-field-base');
+    input = getInput(component);
   }));
   afterEach(() => tearDownComponent(component));
 
   describe('compact prop', () => {
     it('should be reflected', () => {
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
       const reflected = () => (fieldBase.appearance === 'compact');
       // check the negative case first
       expect(reflected()).to.be.false;
 
       component.compact = true;
-
       return waitUntil(reflected).should.be.fulfilled;
     });
   });
 
   describe('disabled prop', () => {
     it('should be reflected', () => {
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
-      const input = fieldBase.querySelector('input');
       const reflected = () => (!!fieldBase.disabled && !!input.disabled);
       // check the negative case first
       expect(reflected()).to.be.false;
 
       component.disabled = true;
-
       return waitUntil(reflected).should.be.fulfilled;
     });
   });
@@ -61,7 +61,6 @@ describe('ak-field-text', () => {
   describe('label prop', () => {
     it('should be reflected', () => {
       const newValue = 'new label';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
       const reflected = () => (fieldBase.label === newValue);
       // check the negative case first
       expect(reflected()).to.be.false;
@@ -75,8 +74,6 @@ describe('ak-field-text', () => {
   describe('name prop', () => {
     it('should be reflected', () => {
       const newValue = 'new name';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
-      const input = fieldBase.querySelector('input');
       const reflected = () => (input.name === newValue);
       // check the negative case first
       expect(reflected()).to.be.false;
@@ -90,27 +87,22 @@ describe('ak-field-text', () => {
   describe('placeholder prop', () => {
     it('should be reflected', () => {
       const newValue = 'new placeholder';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
-      const input = fieldBase.querySelector('input');
       const reflected = () => (input.placeholder === newValue);
       // check the negative case first
       expect(reflected()).to.be.false;
 
       component.placeholder = newValue;
-
       return waitUntil(reflected).should.be.fulfilled;
     });
   });
 
   describe('required prop', () => {
     it('should be reflected', () => {
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
       const reflected = () => (!!fieldBase.required);
       // check the negative case first
       expect(reflected()).to.be.false;
 
       component.required = true;
-
       return waitUntil(reflected).should.be.fulfilled;
     });
   });
@@ -118,14 +110,11 @@ describe('ak-field-text', () => {
   describe('type prop', () => {
     it('should be reflected', () => {
       const newValue = 'email';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
-      const input = fieldBase.querySelector('input');
       const reflected = () => (input.type === newValue);
       // check the negative case first
       expect(reflected()).to.be.false;
 
       component.type = newValue;
-
       return waitUntil(reflected).should.be.fulfilled;
     });
   });
@@ -133,31 +122,25 @@ describe('ak-field-text', () => {
   describe('value', () => {
     it('sets the value of the internal input', () => {
       const newValue = 'new value';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
-      const input = fieldBase.querySelector('input');
 
       expect(input.value).to.equal('', 'initial');
 
       const setsInternalValue = () => (input.value === newValue);
-
       expect(setsInternalValue()).to.be.false;
 
       component.value = newValue;
-
       return waitUntil(setsInternalValue).should.be.fulfilled;
     });
 
     it('gets the value from the internal input', () => {
       const newValue = 'new value';
-      const fieldBase = shadowRoot.querySelector('ak-field-base');
-      const input = fieldBase.querySelector('input');
 
       expect(component.value).to.equal('', 'initial');
 
       const getsInternalValue = () => (component.value === newValue);
+      expect(getsInternalValue()).to.be.false;
 
       input.value = newValue;
-
       return waitUntil(getsInternalValue).should.be.fulfilled;
     });
   });

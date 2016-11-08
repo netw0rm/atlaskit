@@ -1,15 +1,53 @@
+//
+// THIS FILE IS DEPRECATED AND WILL BE REMOVED IN THE FUTURE.
+//
 import {
   Block, Text, Doc, BlockQuote, OrderedList, BulletList, Schema,
   ListItem, HorizontalRule, Heading, Paragraph, Image, HardBreak, EmMark,
-  StrongMark, CodeMark,
+  StrongMark, CodeMark, NodeType, MarkType
 } from 'ak-editor-prosemirror';
 
-import LinkMarkExclusiveRight from './link-mark-exclusive-right';
+import { DelMarkType } from './marks/del';
+import { LinkMarkType } from './marks/link';
 import { Mention, Emoji } from './entity';
-import { CodeBlock } from './code-block';
-import { DelMark } from './del-mark';
+import { CodeBlockNodeType } from './nodes/code-block';
 
-const schemaSpec = {
+interface AtlassianEditorSchema extends Schema {
+  nodes: {
+    [name: string]: NodeType;
+
+    doc: Doc;
+
+    paragraph: Paragraph;
+    blockquote: BlockQuote;
+    ordered_list: OrderedList;
+    bullet_list: BulletList;
+    horizontal_rule: HorizontalRule;
+    heading: Heading;
+
+    list_item: ListItem;
+
+    text: Text;
+    image: Image;
+    hard_break: HardBreak;
+
+    code_block: CodeBlockNodeType;
+    mention: Mention;
+    emoji: Emoji;
+  }
+
+  marks: {
+    [name: string]: MarkType;
+
+    link: LinkMarkType;
+    em: EmMark;
+    strong: StrongMark;
+    code: CodeMark;
+    del: DelMarkType;
+  }
+}
+
+export const schema = new Schema({
   nodes: {
     doc: { type: Doc, content: 'block+' },
 
@@ -26,18 +64,17 @@ const schemaSpec = {
     image: { type: Image, group: 'inline' },
     hard_break: { type: HardBreak, group: 'inline' },
 
-    code_block: { type: CodeBlock, content: 'text*', group: 'block' },
+    code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
     mention: { type: Mention, group: 'inline' },
     emoji: { type: Emoji, group: 'inline' },
   },
 
   // Note: Marks are applied in the order they are defined.
   marks: {
-    link: LinkMarkExclusiveRight,
+    link: LinkMarkType,
     em: EmMark,
     strong: StrongMark,
     code: CodeMark,
-    del: DelMark,
+    del: DelMarkType,
   },
-};
-export const schema = new Schema(schemaSpec);
+}) as AtlassianEditorSchema;

@@ -1,4 +1,4 @@
-import schema from 'ak-editor-schema';
+import schema from './schema';
 import { Node } from 'ak-editor-prosemirror';
 
 /**

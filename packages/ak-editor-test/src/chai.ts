@@ -1,17 +1,27 @@
 /// <reference path="./chai.d.ts"/>
 import { Fragment, Node, Mark, Text, Slice, NodeType } from 'ak-editor-prosemirror';
-import schema from 'ak-editor-schema';
+
+function isNodeOrFragment(thing: any): thing is Node | Fragment {
+  // Using a simple `instanceof` check is intentionally avoided here to make
+  // this code agnostic to a specific instance of a Schema.
+  return thing && typeof thing.eq === 'function';
+}
+
+function isSlice(thing: any): thing is Slice {
+  return typeof thing.openLeft === 'number' &&
+    typeof thing.openRight === 'number' &&
+    isNodeOrFragment(thing.content);
+}
 
 export default (chai: any) => {
   const { Assertion, util } = chai;
 
-  // Node
+  // Node and Fragment
   Assertion.overwriteMethod('equal', (_super: Function) => {
     return function (right: any) {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
-      if (deep && right instanceof Node) {
-        new Assertion(left).instanceOf(Node);
+      if (deep && isNodeOrFragment(left) && isNodeOrFragment(right)) {
         this.assert(left.eq(right),
           "expected #{exp} to equal #{act}",
           "expected #{exp} to not equal #{act}",
@@ -23,31 +33,12 @@ export default (chai: any) => {
     };
   });
 
-  // Fragment
-  Assertion.overwriteMethod('equal', (_super: Function) => {
-    return function (right: any) {
-      const left: any = this._obj;
-      const deep = util.flag(this, 'deep');
-      if (deep && right instanceof Fragment) {
-        new Assertion(left).instanceOf(Fragment);
-        this.assert(left.eq(right),
-          "expected #{exp} to equal #{act}",
-          "expected #{exp} to not equal #{act}",
-          left.toString(),
-          right.toString());
-      } else {
-        _super.apply(this, arguments);
-      }
-    };
-  });
-
   // Slice
   Assertion.overwriteMethod('equal', (_super: Function) => {
     return function (right: any) {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
-      if (deep && right instanceof Slice) {
-        new Assertion(left).instanceOf(Slice);
+      if (deep && isSlice(left) && isSlice(right)) {
         this.assert(left.content.eq(right.content),
           "expected left's fragment #{exp} to equal right's fragment #{act}",
           "expected left's fragment #{exp} to not equal right's fragment #{act}",
@@ -85,7 +76,7 @@ export default (chai: any) => {
 
     let matched = false;
     obj.descendants((node: Node, pos: number) => {
-      if (node.type instanceof Text && node.text === text) {
+      if (node.isText && node.text === text) {
         if (Mark.sameSet(node.marks, marks)) {
           matched = true;
         }

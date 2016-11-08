@@ -1,0 +1,6 @@
+{
+  "extends": "ak-stories",
+  "rules": {
+    "react/no-danger": 0
+  }
+}

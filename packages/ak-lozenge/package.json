@@ -1,6 +1,6 @@
 {
   "name": "ak-lozenge",
-  "version": "4.0.0",
+  "version": "4.0.2",
   "description": "ak-lozenge webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

@@ -1,2 +1,2 @@
-export const announceName = 'announce-name';
-export const select = 'select';
+/* eslint import/prefer-default-export: 0 */
+export const select = 'akCalendarSelect';

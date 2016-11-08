@@ -44,8 +44,11 @@ storiesOf(name, module)
     return <ReactComponent disabled={today} />;
   })
   .add('events', () => (
-    <ReactComponent onSelect={action('select')} />
+    <ReactComponent onAkCalendarSelect={action('select')} />
   ))
   .add('selecting a day', () => (
-    <ReactComponent onSelect={({ detail, target }) => (target.selected = `${detail.year}-${detail.month}-${detail.day}`)} />
+    <ReactComponent onAkCalendarSelect={({ detail, target }) => (target.selected = `${detail.year}-${detail.month}-${detail.day}`)} />
+  ))
+  .add('selecting multiple days', () => (
+    <ReactComponent onAkCalendarSelect={({ detail, target }) => (target.selected = target.selected.concat(`${detail.year}-${detail.month}-${detail.day}`))} />
   ));

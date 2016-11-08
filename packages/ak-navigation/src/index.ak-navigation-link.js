@@ -1,5 +1,4 @@
 import { vdom, define, prop, emit } from 'skatejs';
-import { style } from 'akutil-common';
 import classNames from 'classnames';
 import keycode from 'keycode';
 
@@ -30,6 +29,8 @@ export default define('ak-navigation-link', {
     });
   },
   render(elem) {
+    // FIXME: refactor this block into "normal" CSS
+    /*
     style(vdom, {
       [`.${shadowStyles.locals.icon}::slotted(*)`]: {
         display: 'inline-block',
@@ -39,6 +40,7 @@ export default define('ak-navigation-link', {
         width: '20px',
       },
     });
+    */
 
     return (
       <div

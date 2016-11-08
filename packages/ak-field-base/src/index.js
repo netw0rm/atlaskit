@@ -3,6 +3,7 @@ import Label from './Label';
 import Root from './Root';
 import Content from './Content';
 import { focused } from './internal/symbols';
+import { standard as standardAppearance } from './internal/appearance';
 
 // we use this so that we can pass a function down to Content so that it can update the
 // [focused] prop.
@@ -27,10 +28,13 @@ export default define('ak-field-base', {
         <Label
           label={elem.label}
           hideLabel={elem.hideLabel}
+          required={elem.required}
         >
           <Content
             setFocused={focus => setFocused(elem, focus)}
+            appearance={elem.appearance}
             focused={elem[focused]}
+            disabled={elem.disabled}
             invalid={elem.invalid}
           />
         </Label>
@@ -38,6 +42,21 @@ export default define('ak-field-base', {
     );
   },
   props: {
+    /**
+     * @description The appearance of the field.
+     *
+     * Valid values for this property are: 'standard' (default), 'compact'.
+     * @memberof FieldBase
+     * @instance
+     * @type {string}
+     * @default standard
+     * @example @html <ak-field-base appearance="compact"></ak-field-base>
+     * @example @js field.appearance = 'compact';
+     */
+    appearance: prop.string({
+      attribute: true,
+      default: standardAppearance,
+    }),
     /**
      * @description The label to be rendered above the form field.
      *
@@ -73,10 +92,35 @@ export default define('ak-field-base', {
      * @memberof FieldBase
      * @instance
      * @type {boolean}
+     * @default false
      * @example @html <ak-field-base invalid></ak-field-base>
      * @example @js field.invalid = true;
      */
     invalid: prop.boolean({ attribute: true }),
     [focused]: prop.boolean(),
+    /**
+     * @description Whether or not the field is required.
+     *
+     * If set to true, an asterisk will be appended to the label text.
+     * @memberof FieldBase
+     * @instance
+     * @type {boolean}
+     * @default false
+     * @example @html <ak-field-base label="First Name" required"></ak-field-base>
+     * @example @js field.required = true;
+     */
+    required: prop.boolean({ attribute: true }),
+    /**
+     * @description Whether or not a field is disabled.
+     *
+     * This is shown to the user through a disabled cursor icon when hovering over the field.
+     * @memberof FieldBase
+     * @instance
+     * @type {boolean}
+     * @default false
+     * @example @html <ak-field-base disabled></ak-field-base>
+     * @example @js field.disabled = true;
+     */
+    disabled: prop.boolean({ attribute: true }),
   },
 });

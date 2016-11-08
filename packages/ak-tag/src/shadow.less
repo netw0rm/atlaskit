@@ -33,15 +33,14 @@ ak-tag {
 }
 .chrome {
   .focus-ring();
-  cursor:default;
   background-color: @ak-color-N20;
-  padding: 0;
-  margin: @spacing;
   border-radius: @border-radius;
+  cursor:default;
   display: flex;
-  height: @max-height;
-  max-height: @max-height;
   flex-direction: row;
+  line-height: 1;
+  margin: @spacing;
+  padding: 0;
 
   &:hover {
     .no-focus-ring();
@@ -84,6 +83,15 @@ ak-tag {
       overflow: hidden;
     }
   }
+
+  &.isRemoved {
+    width:0;
+    visibility:hidden;
+
+    .chrome {
+      overflow: hidden;
+    }
+  }
 }
 
 .text {
@@ -93,14 +101,13 @@ ak-tag {
   line-height: 1;
   margin-left: @distance;
   margin-right: @distance;
-  align-self: flex-start;
-  height: 100%;
+  padding: 2px 0;
 
   // text truncation
   max-width: @max-text-width;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .href {
@@ -114,19 +121,17 @@ ak-tag {
 
 .button {
   .focus-ring(@color: @ak-color-R300);
+  align-items: center;
   appearance: none;
   background: none;
   border: none;
-  padding: 0;
-  margin: 0;
   border-radius: @border-radius;
-  align-self: flex-end;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: @button-width;
   color: @ak-color-N500;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: @button-width;
 
   &:hover {
     color: @ak-color-R500;

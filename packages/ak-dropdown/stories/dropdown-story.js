@@ -39,7 +39,7 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
-  .add('dropdown with checkbox ItemReacts', () => (
+  .add('dropdown with checkbox items', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger">Dropdown-button</DropdownTriggerButtonReact>
@@ -52,7 +52,7 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
-  .add('dropdown with radio ItemReacts', () => (
+  .add('dropdown with radio items', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">
@@ -67,7 +67,7 @@ storiesOf(`${name} component`, module)
       </DropdownReactComponent>
     </div>
   ))
-  .add('dropdown with radio ItemReacts inside different groups', () => (
+  .add('dropdown with radio items inside different groups', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent open className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">
@@ -213,7 +213,7 @@ storiesOf(`${name} component`, module)
   ))
   .add('dropdown with everything for the screenreaders test', () => (
     <div style={{ padding: '40px' }}>
-      <input type="text" placeholder="ItemReact before" />
+      <input type="text" placeholder="item before" />
       <DropdownReactComponent className={dropdownClass}>
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">Text</DropdownTriggerButtonReact>
         <GroupReact heading="People">
@@ -234,10 +234,77 @@ storiesOf(`${name} component`, module)
       <a href="http://www.atlassian.com">link after</a>
     </div>
   ))
-  .add('dropdown with lots of ItemReacts', () => (
+  .add('dropdown with lots of items', () => (
     <div style={{ padding: '40px' }}>
       <DropdownReactComponent className={dropdownClass}>
         <DropdownTriggerArrowReact slot="trigger" tab-index="1" />
+        <ItemReact>Joscha</ItemReact>
+        <ItemReact>Wuz</ItemReact>
+        <ItemReact>Here</ItemReact>
+        <ItemReact>2016</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('appearance: tall', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent className={dropdownClass} appearance="tall">
+        <DropdownTriggerArrowReact slot="trigger" tab-index="1" />
+        <ItemReact>Joscha</ItemReact>
+        <ItemReact>Wuz</ItemReact>
+        <ItemReact>Here</ItemReact>
+        <ItemReact>2016</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+        <ItemReact>text1</ItemReact>
+        <ItemReact disabled>text2</ItemReact>
+        <ItemReact>some text here</ItemReact>
+        <ItemReact>another text</ItemReact>
+      </DropdownReactComponent>
+    </div>
+  ))
+  .add('appearance: fitwidth', () => (
+    <div style={{ padding: '40px' }}>
+      <DropdownReactComponent
+        className={dropdownClass}
+        appearance="fitwidth"
+        style={{ width: '500px' }}
+      >
+        <DropdownTriggerReact slot="trigger" tab-index="1">
+          <div
+            style={{
+              border: '3px solid #ddd',
+              borderRadius: '3px',
+              padding: '10px',
+              width: '100%',
+            }}
+          >trigger</div>
+        </DropdownTriggerReact>
         <ItemReact>Joscha</ItemReact>
         <ItemReact>Wuz</ItemReact>
         <ItemReact>Here</ItemReact>

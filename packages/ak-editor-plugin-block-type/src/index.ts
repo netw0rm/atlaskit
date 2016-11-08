@@ -1,4 +1,5 @@
 import { commands, Plugin, ProseMirror, Selection, UpdateScheduler } from 'ak-editor-prosemirror';
+import CodeBlockPasteListener from './code-block-paste-listener';
 
 export interface BlockTypeState {
   selectedBlockType?: string;
@@ -14,10 +15,6 @@ function isShallowObjectEqual(oldObject: BlockTypeState, newObject: BlockTypeSta
   return JSON.stringify(oldObject) === JSON.stringify(newObject);
 }
 
-function getSelectionNode(selection: Selection) {
-  return selection.$from.node(1);
-}
-
 export type StateChangeHandler = (state: BlockTypeState) => any;
 
 export default new Plugin(class BlockTypePlugin {
@@ -30,6 +27,10 @@ export default new Plugin(class BlockTypePlugin {
     this.pm = pm;
     this.state = DEFAULT_STATE;
     this.changeHandlers = [];
+
+    // add paste listener to overwrite the prosemirror's
+    // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers
+    pm.root.addEventListener('paste', new CodeBlockPasteListener(pm), true);
 
     this.updater = pm.updateScheduler([
       pm.on.selectionChange,
@@ -54,7 +55,7 @@ export default new Plugin(class BlockTypePlugin {
 
   update() {
     const pm = this.pm;
-    const node = getSelectionNode(pm.selection);
+    const node = pm.selection.$from.node(1);
     const oldState = this.getState();
     let blockType = node.type.name + (node.attrs.level ? node.attrs.level : '');
 

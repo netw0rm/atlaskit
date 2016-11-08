@@ -49,6 +49,9 @@ export {
   inputRules,
   InputRule,
   allInputRules,
+  headingRule,
+  bulletListRule,
+  wrappingInputRule
 } from 'prosemirror/dist/inputrules';
 
 export {

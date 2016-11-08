@@ -26,6 +26,7 @@ export default (vars) => {
     // light DOM styles
     ':host': {
       display: 'inline-flex',
+      'white-space': 'nowrap',
     },
     ':host(> _shadow_root_)': {
       display: 'inline-flex',
@@ -40,6 +41,7 @@ export default (vars) => {
     },
     '::slotted(:not([slot]))': {
       'line-height': '0',
+      'white-space': 'nowrap',
     },
     '::slotted([slot="after"])': {
       'line-height': '0',
@@ -70,6 +72,7 @@ export default (vars) => {
     },
     'default-slot': {
       display: 'inline-flex',
+      'flex-wrap': 'nowrap',
     },
     root: {
       display: 'inline-block',
@@ -80,7 +83,7 @@ export default (vars) => {
       'border-width': '0',
       'border-radius': val('button.baseRadius', akBorderRadius),
       color: val('standard.color', akColorN500),
-      display: 'inline-block',
+      display: 'inline-flex',
       'font-style': 'normal',
       'font-size': 'inherit',
       height: val('button.height', `${(grid * 4) / em}em`),
@@ -95,6 +98,7 @@ export default (vars) => {
       'user-select': 'none',
       border: val('button.border', 'none'),
       'vertical-align': 'middle',
+      'align-items': 'center',
 
       '&::-moz-focus-inner': {
         margin: 0,
@@ -123,7 +127,7 @@ export default (vars) => {
       background: val('primary.background', akColorB400),
       color: val('primary.color', akColorN20),
       'border-color': val('primary.borderColor'),
-      'font-weight': 600,
+      'font-weight': val('primary.fontWeight', 'normal'),
 
       '&:hover': {
         background: val('primary.hover.background', akColorB500),
@@ -160,6 +164,9 @@ export default (vars) => {
         transition: 'none',
       },
     },
+    href: {
+      'text-decoration': 'none',
+    },
     link: {
       background: 'none',
       color: val('link.color', akColorB400),
@@ -188,6 +195,11 @@ export default (vars) => {
     compact: {
       height: val('compact.height', `${(grid * 3) / em}em`),
       'line-height': val('compact.lineHeight', `${(grid * 3) / em}em`),
+    },
+    nospacing: {
+      height: 'initial',
+      'line-height': 'initial',
+      padding: 0,
     },
   };
 };

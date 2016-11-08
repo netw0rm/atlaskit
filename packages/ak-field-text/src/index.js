@@ -3,9 +3,7 @@ import FieldBase from 'ak-field-base';
 
 import SlotWrapper from './SlotWrapper';
 import shadowStyles from './shadow.less';
-import createWrappedInput from './internal/create-wrapped-input';
-import getInput from './internal/get-input';
-
+import { getInput, updateInput } from './internal/helpers';
 
 /**
  * @description A text based form field with an associated label.
@@ -30,7 +28,7 @@ export default define('ak-field-text', {
       </FieldBase>,
     ]);
   },
-  rendered: createWrappedInput,
+  rendered: updateInput,
   props: {
     /**
      * @description Whether to use compact sizing for the field.

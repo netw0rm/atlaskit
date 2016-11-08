@@ -23,7 +23,7 @@
   "devDependencies": {
     "akutil-common-test": "*",
     "custom-event-polyfill": "^0.3.0",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.4"
   },
   "repository": {
     "type": "git",

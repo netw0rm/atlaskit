@@ -25,8 +25,8 @@ npm install ak-component-base
 This component is meant as a base for other components to extend. To build the base component, you will need to inject the `Component` and `prop` dependencies like so:
 
 ```
-import { Component, prop } from 'skatejs'
-import base from 'ak-component-base'
+import { Component, prop } from 'skatejs';
+import base from 'ak-component-base';
 
 const Base = base({ Component, prop });
 ```
@@ -38,27 +38,32 @@ Now you can extend `Base`.
 This component simply keeps track of two numbers (both exposed as props) and increments them itself.
 
 ```js
-import { define, vdom, prop } from 'skatejs';
+import { Component, prop } from 'skatejs';
+import base from 'ak-component-base';
 
-const Counter = define('x-counter', Base.extend({
-  props: Object.assign({}, {
-    count1: prop.number({ default: 1 }),
-    count2: prop.number({ default: 2 }),
-  }, Base.props),
+const Base = base({ Component, prop });
+
+/* eslint-disable class-methods-use-this */
+class Counter extends Base {
+  get props() {
+    return Object.assign({}, {
+      count1: prop.number({ default: 1 }),
+      count2: prop.number({ default: 2 }),
+    }, Base.props);
+  }
+
   attached(elem) {
     setInterval(() => (++elem.count1), 1);
     setInterval(() => (++elem.count2), 1000);
-  },
-  updated(elem, prev) {
-    return Base.updated(elem, prev);
-  },
+  }
+
   render(elem) {
     return [
       <div>Count1: {elem.count1}</div>,
       <div>Count2: {elem.count2}</div>,
     ];
-  },
-}));
+  }
+}
 ```
 
 As you can see, one count will increment every millisecond and the other, every second. The main things to notice

@@ -41,42 +41,8 @@ This component simply keeps track of two numbers (both exposed as props) and inc
 import { Component, prop } from 'skatejs';
 import base from 'ak-component-base';
 
+// we inject our Component and prop dependencies
 const Base = base({ Component, prop });
-
-/* eslint-disable class-methods-use-this */
-class Counter extends Base {
-  get props() {
-    return Object.assign({}, {
-      count1: prop.number({ default: 1 }),
-      count2: prop.number({ default: 2 }),
-    }, Base.props);
-  }
-
-  attached(elem) {
-    setInterval(() => (++elem.count1), 1);
-    setInterval(() => (++elem.count2), 1000);
-  }
-
-  render(elem) {
-    return [
-      <div>Count1: {elem.count1}</div>,
-      <div>Count2: {elem.count2}</div>,
-    ];
-  }
-}
-```
-
-As you can see, one count will increment every millisecond and the other, every second. The main things to notice
-here are the `Base.extend(` around the object literal definition,  the `Object.assign(` around the props and the `Base.updated` call from the updated callback.
-
-The `Object.assign` is because when extending a component usign the Object literal syntax, we will **override** base component, so we join them.
-
-The `Base.updated` is not strictly required unless you are writing your own `updated` logic, in which case it is **vitally** important that you call it.
-
-The equivalent in the ES6 Classes syntax would be:
-
-```js
-import { define, vdom, prop } from 'skatejs';
 
 const Counter = define('x-counter', class extends Base {
   static get props () {
@@ -101,7 +67,13 @@ const Counter = define('x-counter', class extends Base {
 });
 ```
 
-By extending `ak-component-base` the Counter component now also has the `override` prop.
+As you can see, one count will increment every millisecond and the other, every second. The main things to notice here are:
+* Injecting the `Component` and `prop` dependencies
+* `class extends Base`
+* Using `Object.assign` with `super.props` so that we don't override the `Base` component's props
+* Using `super.updated`, technically only required if you have an `updated` callback already, otherwise this will be called for you anyway.
+
+By doing this the `Counter` component now also has the `override` prop.
 
 #### App Component
 

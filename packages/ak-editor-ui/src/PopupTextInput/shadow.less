@@ -1,0 +1,23 @@
+@import '~ak-editor-shared-styles/src/index';
+
+.container {
+  display: flex;
+}
+
+.textInput {
+  background: transparent;
+  border: 0;
+  color: @ak-editor-popup-text;
+  flex-grow: 1;
+  font-size: 13px;
+  line-height: 20px;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: @ak-editor-popup-text;
+    opacity: 0.5;
+  }
+}

@@ -21,7 +21,7 @@
     "keycode": "^2.1.2"
   },
   "devDependencies": {
-    "akutil-common-test": "^4.0.0",
+    "akutil-common-test": "*",
     "custom-event-polyfill": "^0.3.0",
     "skatejs": "^3.0.0"
   },

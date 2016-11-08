@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-button-link",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Editor Button Link web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -17,7 +17,7 @@
     "ak-editor-shared-styles": "^1.0.3",
     "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.4"
   },
   "devDependencies": {
     "akutil-react": "*",

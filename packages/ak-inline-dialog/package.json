@@ -1,6 +1,6 @@
 {
   "name": "ak-inline-dialog",
-  "version": "73.0.0",
+  "version": "73.0.2",
   "description": "An inline dialog UI component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -19,7 +19,7 @@
     "akutil-common": "^2.0.0",
     "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^3.1.2",
+    "skatejs": "^4.0.4",
     "web-animations-js": "^2.2.1"
   },
   "devDependencies": {

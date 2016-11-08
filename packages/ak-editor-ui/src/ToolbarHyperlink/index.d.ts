@@ -1,2 +1,2 @@
 import { Component } from 'skatejs';
-export class extends Component {}
+export default class extends Component {}

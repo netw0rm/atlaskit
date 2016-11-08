@@ -1,6 +1,6 @@
 {
   "name": "ak-navigation",
-  "version": "13.0.0",
+  "version": "13.0.2",
   "description": "ak-navigation webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -19,13 +19,13 @@
     "classnames": "^2.2.5",
     "custom-event-polyfill": "^0.3.0",
     "keycode": "^2.1.2",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.4"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-avatar": "^3.1.0",
-    "ak-dropdown": "^5.5.0",
+    "ak-dropdown": "^9.0.1",
     "ak-icon": "^10.0.0",
     "ak-page": "^7.0.0",
     "akutil-common-test": "*",

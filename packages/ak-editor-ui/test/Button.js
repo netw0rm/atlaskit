@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { props } from 'skatejs';
-import { afterMutations, getShadowRoot } from 'akutil-common-test';
+import { afterMutations } from 'akutil-common-test';
 import Button from '../src/Button';
 import shadowStyles from '../src/Button/shadow.less';
 
@@ -9,11 +9,8 @@ const { expect } = chai;
 
 describe('ak-editor-ui Button', () => {
   let component;
-  const shadowDomQuery = (elem, selector) =>
-    getShadowRoot(elem).querySelector(selector);
-
   const getShadowButtonElem = elem =>
-    shadowDomQuery(elem, `.${classKeys.root} button`);
+    elem.shadowRoot.querySelector(`.${classKeys.root} button`);
 
   beforeEach((done) => {
     component = new Button();
@@ -26,7 +23,7 @@ describe('ak-editor-ui Button', () => {
   );
 
   it('should be possible to create a component', () => {
-    expect(shadowDomQuery(component, `.${classKeys.root}`)).to.not.be.undefined;
+    expect(component.shadowRoot.querySelector(`.${classKeys.root}`)).to.not.be.undefined;
     expect(component.tagName).to.match(new RegExp('^ak-editor-ui-button', 'i'));
   });
 
@@ -44,12 +41,12 @@ describe('ak-editor-ui Button', () => {
     describe('default attributes', () => {
       it('should not have active class', () => {
         const selector = `.${classKeys.root}.${classKeys.active}`;
-        expect(shadowDomQuery(component, selector)).to.be.null;
+        expect(component.shadowRoot.querySelector(selector)).to.be.null;
       });
 
       it('should not have button disabled', () => {
         const selector = `.${classKeys.root} button[disabled]`;
-        expect(shadowDomQuery(component, selector)).to.be.null;
+        expect(component.shadowRoot.querySelector(selector)).to.be.null;
       });
     });
 
@@ -60,12 +57,12 @@ describe('ak-editor-ui Button', () => {
       );
 
       it('container should have active class', () =>
-        expect(shadowDomQuery(component, selector)).not.to.be.null
+        expect(component.shadowRoot.querySelector(selector)).not.to.be.null
       );
 
       it('container should not have active class after it is removed', () => {
         props(component, { active: false });
-        expect(shadowDomQuery(component, selector)).to.be.null;
+        expect(component.shadowRoot.querySelector(selector)).to.be.null;
       });
     });
 
@@ -76,12 +73,12 @@ describe('ak-editor-ui Button', () => {
       );
 
       it('button should have disabled attribute', () =>
-        expect(shadowDomQuery(component, selector)).not.to.be.null
+        expect(component.shadowRoot.querySelector(selector)).not.to.be.null
       );
 
       it('button should not have disabled attribute after it is removed', () => {
         props(component, { disabled: false });
-        expect(shadowDomQuery(component, selector)).to.be.null;
+        expect(component.shadowRoot.querySelector(selector)).to.be.null;
       });
     });
   });

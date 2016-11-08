@@ -242,8 +242,6 @@ class AkEditorBitbucket extends Component {
       <Footer
         openTop
         hide-buttons={elem.context === 'pr'}
-        onSave={elem._collapse}
-        onCancel={elem._collapse}
         onInsertimage={elem._insertImage}
       />
     </div>);
@@ -275,6 +273,7 @@ class AkEditorBitbucket extends Component {
    */
   focus(): void {
     if (this._pm) {
+      this._focused = true;
       this._pm.focus();
     }
   }

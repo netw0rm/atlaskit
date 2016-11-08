@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const fs = require('fs');
 const webpack = require('webpack');
 const path = require('path');
 const glob = require('glob');
@@ -60,8 +61,23 @@ async.waterfall([
         cb(err || stats.compilation.errors);
         return;
       }
-      cb();
+      cb(null, { entry });
     });
+  },
+  function writeTypeScriptDefinitions({ entry }, cb) {
+    log.debug('"Writing TypeScript definitions');
+
+    const contents = `
+import { Component } from 'skatejs';
+export default class extends Component {}
+`;
+    const tasks = Object
+      .keys(entry)
+      .map(item =>
+         cb_ => fs.writeFile(path.join(destFolder, `${item}.d.ts`), contents, cb_)
+      );
+
+    async.waterfall(tasks, cb);
   },
 ], (err) => {
   if (err) {

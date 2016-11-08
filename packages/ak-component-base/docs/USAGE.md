@@ -38,7 +38,7 @@ Now you can extend `Base`.
 This component simply keeps track of two numbers (both exposed as props) and increments them itself.
 
 ```js
-import { Component, prop } from 'skatejs';
+import { define, vdom, Component, prop } from 'skatejs';
 import base from 'ak-component-base';
 
 // we inject our Component and prop dependencies

@@ -1,193 +1,193 @@
 import markdownSerializer from '../src/markdown-serializer';
 import {
-  code_block, doc, text, p, img, code, strong, blockquote, hr,
+  code_block, doc, p, img, code, strong, blockquote, hr,
   h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, del
-} from 'ak-editor-test';
+} from './_schema-builder';
 import { expect } from 'chai';
 
 describe('Bitbucket markdown serializer: ', () => {
   const pre = code_block();
 
   it('should serialize paragraphs', () => {
-    expect(markdownSerializer.serialize(doc(p(text('foo'))))).to.eq('foo');
-    expect(markdownSerializer.serialize(doc([
-      p(text('foo')),
-      p(text('bar')),
-    ]))).to.eq('foo\n\nbar');
+    expect(markdownSerializer.serialize(doc(p('foo')))).to.eq('foo');
+    expect(markdownSerializer.serialize(doc(
+      p('foo'),
+      p('bar'),
+    ))).to.eq('foo\n\nbar');
 
     const longText = 'foo '.repeat(100);
-    expect(markdownSerializer.serialize(doc([
-      p(text(longText)),
-      p(text(longText))
-    ]))).to.eq(`${longText}\n\n${longText}`);
+    expect(markdownSerializer.serialize(doc(
+      p(longText),
+      p(longText)
+    ))).to.eq(`${longText}\n\n${longText}`);
   });
 
   it('should preserve multiple blank lines using zero-non-width', () => {
-    expect(markdownSerializer.serialize(doc([
-      p(text('foo')),
+    expect(markdownSerializer.serialize(doc(
+      p('foo'),
       p(),
-      p(text('bar'))
-    ]))).to.eq('foo\n\n\u200c\n\nbar');
+      p('bar')
+    ))).to.eq('foo\n\n\u200c\n\nbar');
 
-    expect(markdownSerializer.serialize(doc([
-      p(text('foo')),
+    expect(markdownSerializer.serialize(doc(
+      p('foo'),
       p(),
       p(),
-      p(text('bar'))
-    ]))).to.eq('foo\n\n\u200c\n\n\u200c\n\nbar');
+      p('bar')
+    ))).to.eq('foo\n\n\u200c\n\n\u200c\n\nbar');
   });
 
   it('should preserve leading and traling blank lines suing zero-non-width', () => {
-    expect(markdownSerializer.serialize(doc([
+    expect(markdownSerializer.serialize(doc(
       p(),
-      p(text('bar'))
-    ]))).to.eq('\u200c\n\nbar');
+      p('bar')
+    ))).to.eq('\u200c\n\nbar');
 
-    expect(markdownSerializer.serialize(doc([
+    expect(markdownSerializer.serialize(doc(
       p(),
       p(),
-      p(text('bar'))
-    ]))).to.eq('\u200c\n\n\u200c\n\nbar');
+      p('bar')
+    ))).to.eq('\u200c\n\n\u200c\n\nbar');
 
-    expect(markdownSerializer.serialize(doc([
-      p(text('foo')),
+    expect(markdownSerializer.serialize(doc(
+      p('foo'),
       p()
-    ]))).to.eq('foo\n\n\u200c');
+    ))).to.eq('foo\n\n\u200c');
 
-    expect(markdownSerializer.serialize(doc([
-      p(text('foo')),
+    expect(markdownSerializer.serialize(doc(
+      p('foo'),
       p(),
       p()
-    ]))).to.eq('foo\n\n\u200c\n\n\u200c');
+    ))).to.eq('foo\n\n\u200c\n\n\u200c');
   });
 
   describe('code block', () => {
     it('with simple text should be serialized', () => {
-      expect(markdownSerializer.serialize(doc(pre(text('foo'))))).to.eq('    foo');
+      expect(markdownSerializer.serialize(doc(pre('foo')))).to.eq('    foo');
     });
 
     it('with newlines preserves newlines in markdown', () => {
-      expect(markdownSerializer.serialize(doc([
-        pre(text('foo\nbar')),
-      ]))).to.eq('    foo\n    bar');
+      expect(markdownSerializer.serialize(doc(
+        pre('foo\nbar'),
+      ))).to.eq('    foo\n    bar');
     });
 
     it('with adjacent code block keeps empty space between', () => {
-      expect(markdownSerializer.serialize(doc([
-        pre(text('foo')),
-        pre(text('bar')),
-      ]))).to.eq('    foo\n\n    bar');
+      expect(markdownSerializer.serialize(doc(
+        pre('foo'),
+        pre('bar'),
+      ))).to.eq('    foo\n\n    bar');
     });
 
     it('with attributes uses backtick notation and preserves attributes', () => {
       const js = code_block({ params: 'js' });
-      expect(markdownSerializer.serialize(doc([
-        js(text('foo')),
-      ]))).to.eq('```js\nfoo\n```');
+      expect(markdownSerializer.serialize(doc(
+        js('foo'),
+      ))).to.eq('```js\nfoo\n```');
 
-      expect(markdownSerializer.serialize(doc([
-        js(text('foo\nbar')),
-      ]))).to.eq('```js\nfoo\nbar\n```');
+      expect(markdownSerializer.serialize(doc(
+        js('foo\nbar'),
+      ))).to.eq('```js\nfoo\nbar\n```');
     });
 
     it('with no text is preserved', () => {
-      expect(markdownSerializer.serialize(doc([
-        pre(text('')),
-      ]))).to.eq('    \u200c');
+      expect(markdownSerializer.serialize(doc(
+        pre(''),
+      ))).to.eq('    \u200c');
 
-      expect(markdownSerializer.serialize(doc([
+      expect(markdownSerializer.serialize(doc(
         pre(),
-      ]))).to.eq('    \u200c');
+      ))).to.eq('    \u200c');
 
-      expect(markdownSerializer.serialize(doc([
+      expect(markdownSerializer.serialize(doc(
         pre(),
-      ]))).to.eq('    \u200c');
+      ))).to.eq('    \u200c');
     });
 
     it('via indentation with backticks is not escaped', () => {
-      expect(markdownSerializer.serialize(doc([
-        pre(text('`foo`\n````bar\nbaz\n`````')),
-      ]))).to.eq('    `foo`\n    ````bar\n    baz\n    `````');
+      expect(markdownSerializer.serialize(doc(
+        pre('`foo`\n````bar\nbaz\n`````'),
+      ))).to.eq('    `foo`\n    ````bar\n    baz\n    `````');
     });
 
     it('via backticks that includes backticks is properly fenced', () => {
       const css = code_block({ params: 'css' });
 
-      expect(markdownSerializer.serialize(doc([
-        css(text('```js\nfoo\n```'))
-      ]))).to.eq('````css\n```js\nfoo\n```\n````', 'Balanced fencing');
+      expect(markdownSerializer.serialize(doc(
+        css('```js\nfoo\n```')
+      ))).to.eq('````css\n```js\nfoo\n```\n````', 'Balanced fencing');
 
-      expect(markdownSerializer.serialize(doc([
-        css(text('````js\nfoo\n```'))
-      ]))).to.eq('`````css\n````js\nfoo\n```\n`````', 'Unbalanced fencing in the code block' );
+      expect(markdownSerializer.serialize(doc(
+        css('````js\nfoo\n```')
+      ))).to.eq('`````css\n````js\nfoo\n```\n`````', 'Unbalanced fencing in the code block' );
 
-      expect(markdownSerializer.serialize(doc([
-        css(text('````'))
-      ]))).to.eq('`````css\n````\n`````', 'Unmatched backtick fence');
+      expect(markdownSerializer.serialize(doc(
+        css('````')
+      ))).to.eq('`````css\n````\n`````', 'Unmatched backtick fence');
 
-      expect(markdownSerializer.serialize(doc([
-        css(text('````js'))
-      ]))).to.eq('`````css\n````js\n`````', 'Unmatched backtick fence with language definition');
+      expect(markdownSerializer.serialize(doc(
+        css('````js')
+      ))).to.eq('`````css\n````js\n`````', 'Unmatched backtick fence with language definition');
     });
   });
 
   it('should serialize headings (level 1 - 6)', () => {
-    expect(markdownSerializer.serialize(doc(h1(text('level 1'))))).to.eq('# level 1');
-    expect(markdownSerializer.serialize(doc(h2(text('level 2'))))).to.eq('## level 2');
-    expect(markdownSerializer.serialize(doc(h3(text('level 3'))))).to.eq('### level 3');
-    expect(markdownSerializer.serialize(doc(h4(text('level 4'))))).to.eq('#### level 4');
-    expect(markdownSerializer.serialize(doc(h5(text('level 5'))))).to.eq('##### level 5');
-    expect(markdownSerializer.serialize(doc(h6(text('level 6'))))).to.eq('###### level 6');
+    expect(markdownSerializer.serialize(doc(h1('level 1')))).to.eq('# level 1');
+    expect(markdownSerializer.serialize(doc(h2('level 2')))).to.eq('## level 2');
+    expect(markdownSerializer.serialize(doc(h3('level 3')))).to.eq('### level 3');
+    expect(markdownSerializer.serialize(doc(h4('level 4')))).to.eq('#### level 4');
+    expect(markdownSerializer.serialize(doc(h5('level 5')))).to.eq('##### level 5');
+    expect(markdownSerializer.serialize(doc(h6('level 6')))).to.eq('###### level 6');
 
-    expect(markdownSerializer.serialize(doc([
-      h1(text('foo')),
-      h2(text('bar')),
-      p(text('baz')),
-    ]))).to.eq(`# foo\n\n## bar\n\nbaz`);
+    expect(markdownSerializer.serialize(doc(
+      h1('foo'),
+      h2('bar'),
+      p('baz'),
+    ))).to.eq(`# foo\n\n## bar\n\nbaz`);
   });
 
   it('should serialize horizontal_rule', () => {
     expect(markdownSerializer.serialize(doc(hr))).to.eq('---');
-    expect(markdownSerializer.serialize(doc([
-      p(text('foo')),
+    expect(markdownSerializer.serialize(doc(
+      p('foo'),
       hr,
-      p(text('bar')),
-    ]))).to.eq('foo\n\n---\n\nbar');
+      p('bar'),
+    ))).to.eq('foo\n\n---\n\nbar');
   });
 
   describe('bullet list', () => {
     it('with elements should serialize', () => {
-      expect(markdownSerializer.serialize(doc(ul([
-        li(p(text('foo'))),
-        li(p(text('bar'))),
-        li(p(text('baz'))),
-      ])))).to.eq('* foo\n* bar\n* baz');
+      expect(markdownSerializer.serialize(doc(ul(
+        li(p('foo')),
+        li(p('bar')),
+        li(p('baz')),
+      )))).to.eq('* foo\n* bar\n* baz');
     });
 
     it('surrounded with other block elements keeps empty line between', () => {
-      expect(markdownSerializer.serialize(doc([
-        p(text('para')),
-        ul([
-          li(p(text('foo'))),
-          li(p(text('bar'))),
-        ]),
-        p(text('baz')),
-      ]))).to.eq('para\n\n* foo\n* bar\n\nbaz');
+      expect(markdownSerializer.serialize(doc(
+        p('para'),
+        ul(
+          li(p('foo')),
+          li(p('bar')),
+        ),
+        p('baz'),
+      ))).to.eq('para\n\n* foo\n* bar\n\nbaz');
     });
 
     it('with code block preserves indentation', () => {
-      expect(markdownSerializer.serialize(doc([
-        ul([
-          li([
+      expect(markdownSerializer.serialize(doc(
+        ul(
+          li(
             p('item'),
-            pre(text('code\nblock')),
-          ])
-        ])
-      ]))).to.eq('* item\n\n      code\n      block');
+            pre('code\nblock'),
+          )
+        )
+      ))).to.eq('* item\n\n      code\n      block');
     });
 
     it('with one empty element is preserved', () => {
-      expect(markdownSerializer.serialize(doc(ul([li()])))).to.eq('* ');
+      expect(markdownSerializer.serialize(doc(ul(li())))).to.eq('* ');
     });
 
     it('with nesting should serialize', () => {
@@ -223,52 +223,52 @@ describe('Bitbucket markdown serializer: ', () => {
 
   describe('ordered list', () => {
     it('with elements should serialize', () => {
-      expect(markdownSerializer.serialize(doc(ol([
-        li(p(text('foo'))),
-        li(p(text('bar'))),
-        li(p(text('baz'))),
-      ])))).to.eq('1. foo\n2. bar\n3. baz');
+      expect(markdownSerializer.serialize(doc(ol(
+        li(p('foo')),
+        li(p('bar')),
+        li(p('baz')),
+      )))).to.eq('1. foo\n2. bar\n3. baz');
     });
 
     it('surrounded with other block elements keeps empty line between', () => {
-      expect(markdownSerializer.serialize(doc([
-        p(text('para')),
-        ol([
-          li(p(text('foo'))),
-          li(p(text('bar'))),
-        ]),
-        p(text('baz')),
-      ]))).to.eq('para\n\n1. foo\n2. bar\n\nbaz');
+      expect(markdownSerializer.serialize(doc(
+        p('para'),
+        ol(
+          li(p('foo')),
+          li(p('bar')),
+        ),
+        p('baz'),
+      ))).to.eq('para\n\n1. foo\n2. bar\n\nbaz');
     });
 
     it('with 10+ elements aligns numbers to right', () => {
-      expect(markdownSerializer.serialize(doc(ol([
-        li(p(text('item'))),
-        li(p(text('item'))),
-        li(p(text('item'))),
-        li(p(text('item'))),
-        li(p(text('item'))),
-        li(p(text('item'))),
-        li(p(text('item'))),
-        li(p(text('item'))),
-        li(p(text('item'))),
-        li(p(text('item'))),
-      ])))).to.eq(' 1. item\n 2. item\n 3. item\n 4. item\n 5. item\n 6. item\n 7. item\n 8. item\n 9. item\n10. item');
+      expect(markdownSerializer.serialize(doc(ol(
+        li(p('item')),
+        li(p('item')),
+        li(p('item')),
+        li(p('item')),
+        li(p('item')),
+        li(p('item')),
+        li(p('item')),
+        li(p('item')),
+        li(p('item')),
+        li(p('item')),
+      )))).to.eq(' 1. item\n 2. item\n 3. item\n 4. item\n 5. item\n 6. item\n 7. item\n 8. item\n 9. item\n10. item');
     });
 
     it('with code block preserves indentation', () => {
-      expect(markdownSerializer.serialize(doc([
-        ol([
-          li([
+      expect(markdownSerializer.serialize(doc(
+        ol(
+          li(
             p('item'),
-            pre(text('code\nblock')),
-          ])
-        ])
-      ]))).to.eq('1. item\n\n       code\n       block');
+            pre('code\nblock'),
+          )
+        )
+      ))).to.eq('1. item\n\n       code\n       block');
     });
 
     it('with one empty element is preserved', () => {
-      expect(markdownSerializer.serialize(doc(ol([li()])))).to.eq('1. ');
+      expect(markdownSerializer.serialize(doc(ol(li())))).to.eq('1. ');
     });
 
     it('with nesting should serialize', () => {
@@ -404,135 +404,135 @@ describe('Bitbucket markdown serializer: ', () => {
     });
 
     it('inline with text to serialize', () => {
-      expect(markdownSerializer.serialize(doc([
-        p([
-          text('foo '),
+      expect(markdownSerializer.serialize(doc(
+        p(
+          'foo ',
           img({
             src: 'http://example.com',
             alt: 'an image',
             title: 'a title'
           }),
-          text(' bar'),
-        ])
-      ]))).to.eq('foo ![an image](http://example.com "a title") bar');
+          ' bar',
+        )
+      ))).to.eq('foo ![an image](http://example.com "a title") bar');
     });
 
     it('in blockquote to serialize', () => {
-      expect(markdownSerializer.serialize(doc([
-        blockquote([
-          p([
+      expect(markdownSerializer.serialize(doc(
+        blockquote(
+          p(
             img({
               src: 'http://example.com',
               alt: 'an image',
               title: 'a title'
             }),
-            text(' foo')
-          ])
-        ])
-      ]))).to.eq('> ![an image](http://example.com "a title") foo');
+            ' foo'
+          )
+        )
+      ))).to.eq('> ![an image](http://example.com "a title") foo');
 
-      expect(markdownSerializer.serialize(doc([
-        blockquote([
-          blockquote([
-            p([
+      expect(markdownSerializer.serialize(doc(
+        blockquote(
+          blockquote(
+            p(
               img({
                 src: 'http://example.com',
                 alt: 'an image',
                 title: 'a title'
               }),
-              text(' foo')
-            ])
-          ])
-        ])
-      ]))).to.eq('> > ![an image](http://example.com "a title") foo');
+              ' foo'
+            )
+          )
+        )
+      ))).to.eq('> > ![an image](http://example.com "a title") foo');
     });
   });
 
   it('should serialize hard_break to newline', () => {
     expect(markdownSerializer.serialize(doc(
-      p([text('foo '), br, text('bar')])
+      p('foo ', br, 'bar')
     ))).to.eq('foo   \nbar');
   });
 
   describe('blockquotes', () => {
     it('of any level should serialized', () => {
-      expect(markdownSerializer.serialize(doc(blockquote(p(text('foo')))))).to.eq('> foo');
-      expect(markdownSerializer.serialize(doc(blockquote(blockquote(p(text('foo'))))))).to.eq('> > foo');
-      expect(markdownSerializer.serialize(doc([
-        blockquote(p(text('foo'))),
-        blockquote(blockquote(p(text('bar')))),
-        blockquote(blockquote(blockquote(p(text('baz'))))),
-        blockquote(p(text('bar'))),
-      ]))).to.eq('> foo\n\n> > bar\n\n> > > baz\n\n> bar');
+      expect(markdownSerializer.serialize(doc(blockquote(p('foo'))))).to.eq('> foo');
+      expect(markdownSerializer.serialize(doc(blockquote(blockquote(p('foo')))))).to.eq('> > foo');
+      expect(markdownSerializer.serialize(doc(
+        blockquote(p('foo')),
+        blockquote(blockquote(p('bar'))),
+        blockquote(blockquote(blockquote(p('baz')))),
+        blockquote(p('bar')),
+      ))).to.eq('> foo\n\n> > bar\n\n> > > baz\n\n> bar');
     });
 
     it('containing other elements should serialize', () => {
       expect(markdownSerializer.serialize(doc(blockquote(hr)))).to.eq('> ---');
-      expect(markdownSerializer.serialize(doc([
-        blockquote([
+      expect(markdownSerializer.serialize(doc(
+        blockquote(
           p('foo'),
           hr,
           h2('bar'),
-          blockquote([
+          blockquote(
             hr,
             p('baz')
-          ])
-        ]),
-      ]))).to.eq('> foo\n>\n> ---\n>\n> ## bar\n>\n> > ---\n> >\n> > baz');
+          )
+        ),
+      ))).to.eq('> foo\n>\n> ---\n>\n> ## bar\n>\n> > ---\n> >\n> > baz');
     });
   });
 
   describe('marks -', () => {
       it('should serialize em', () => {
-        expect(markdownSerializer.serialize(doc(p(em(text('foo')))))).to.eq('*foo*');
+        expect(markdownSerializer.serialize(doc(p(em('foo'))))).to.eq('*foo*');
         expect(markdownSerializer.serialize(doc(p(
-          text('foo '),
-          em(text('bar')),
-          text(' baz'),
+          'foo ',
+          em('bar'),
+          ' baz',
         )))).to.eq('foo *bar* baz');
       });
 
       it('should serialize strong', () => {
-        expect(markdownSerializer.serialize(doc(p(strong(text('foo')))))).to.eq('**foo**');
+        expect(markdownSerializer.serialize(doc(p(strong('foo'))))).to.eq('**foo**');
         expect(markdownSerializer.serialize(doc(p(
-          text('foo '),
-          strong(text('bar bar')),
-          text(' baz'),
+          'foo ',
+          strong('bar bar'),
+          ' baz',
         )))).to.eq('foo **bar bar** baz');
       });
 
       it('should serialize strikethrough', () => {
-        expect(markdownSerializer.serialize(doc(p(del(text('foo')))))).to.eq('~~foo~~');
+        expect(markdownSerializer.serialize(doc(p(del('foo'))))).to.eq('~~foo~~');
         expect(markdownSerializer.serialize(doc(p(
-          text('foo '),
-          del(text('bar bar')),
-          text(' baz'),
+          'foo ',
+          del('bar bar'),
+          ' baz',
         )))).to.eq('foo ~~bar bar~~ baz');
       });
 
       it('should serialize inline code', () => {
-        expect(markdownSerializer.serialize(doc(p(code(text('foo')))))).to.eq('`foo`');
+        expect(markdownSerializer.serialize(doc(p(code('foo'))))).to.eq('`foo`');
         expect(markdownSerializer.serialize(doc(p(
-          text('foo '),
-          code(text('bar baz')),
-          text(' foo'),
+          'foo ',
+          code('bar baz'),
+          ' foo',
         )))).to.eq('foo `bar baz` foo');
       });
 
       describe('inline code', () => {
         it('containing backticks should be fenced properly', () => {
           expect(markdownSerializer.serialize(doc(p(
-            text('foo '),
-            code(text('bar ` ` baz')),
-            text(' foo'),
+            'foo ',
+            code('bar ` ` baz'),
+            ' foo',
           )))).to.eq('foo ``bar ` ` baz`` foo');
         });
 
         it('containing backticks on the edges of a fence should be fenced properly', () => {
           expect(markdownSerializer.serialize(doc(p(
-            text('foo '),
-            code(text('`bar`  ``baz``')),
-            text(' foo'),
+            'foo ',
+            code('`bar`  ``baz``'),
+            ' foo',
           )))).to.eq('foo ``` `bar`  ``baz`` ``` foo');
         });
       });
@@ -542,7 +542,7 @@ describe('Bitbucket markdown serializer: ', () => {
           let link = a({ href: 'http://example.com' });
 
           expect(markdownSerializer.serialize(doc(p(
-            link(text('')),
+            link(''),
           )))).to.eq('');
         });
 
@@ -550,7 +550,7 @@ describe('Bitbucket markdown serializer: ', () => {
           let link = a({ href: 'http://example.com' });
 
           expect(markdownSerializer.serialize(doc(p(
-            link(text('foo')),
+            link('foo'),
           )))).to.eq('[foo](http://example.com)');
         });
 
@@ -561,7 +561,7 @@ describe('Bitbucket markdown serializer: ', () => {
           });
 
           expect(markdownSerializer.serialize(doc(p(
-            link(text('foo')),
+            link('foo'),
           )))).to.eq('[foo](http://example.com "title")');
         });
 
@@ -572,66 +572,66 @@ describe('Bitbucket markdown serializer: ', () => {
           });
 
           expect(markdownSerializer.serialize(doc(p(
-            link(text('foo')),
+            link('foo'),
           )))).to.eq('[foo](http://example.com "some " "title"")');
         });
 
         it('in blockquote to serialize', () => {
-          expect(markdownSerializer.serialize(doc([
-            blockquote([
-              p([
+          expect(markdownSerializer.serialize(doc(
+            blockquote(
+              p(
                 img({
                   src: 'http://example.com',
                   alt: 'an image',
                   title: 'a title'
                 }),
-                text(' foo')
-              ])
-            ])
-          ]))).to.eq('> ![an image](http://example.com "a title") foo');
+                ' foo'
+              )
+            )
+          ))).to.eq('> ![an image](http://example.com "a title") foo');
 
-          expect(markdownSerializer.serialize(doc([
-            blockquote([
-              blockquote([
-                p([
+          expect(markdownSerializer.serialize(doc(
+            blockquote(
+              blockquote(
+                p(
                   img({
                     src: 'http://example.com',
                     alt: 'an image',
                     title: 'a title'
                   }),
-                  text(' foo')
-                ])
-              ])
-            ])
-          ]))).to.eq('> > ![an image](http://example.com "a title") foo');
+                  ' foo'
+                )
+              )
+            )
+          ))).to.eq('> > ![an image](http://example.com "a title") foo');
         });
 
         it('in heading to serialize', () => {
-          expect(markdownSerializer.serialize(doc([
-            h1([
-              p([
+          expect(markdownSerializer.serialize(doc(
+            h1(
+              p(
                 img({
                   src: 'http://example.com',
                   alt: 'an image',
                   title: 'a title'
                 }),
-                text(' foo')
-              ])
-            ])
-          ]))).to.eq('# ![an image](http://example.com "a title") foo');
+                ' foo'
+              )
+            )
+          ))).to.eq('# ![an image](http://example.com "a title") foo');
 
-          expect(markdownSerializer.serialize(doc([
-            h2([
-              p([
+          expect(markdownSerializer.serialize(doc(
+            h2(
+              p(
                 img({
                   src: 'http://example.com',
                   alt: 'an image',
                   title: 'a title'
                 }),
-                text(' foo')
-              ])
-            ])
-          ]))).to.eq('## ![an image](http://example.com "a title") foo');
+                ' foo'
+              )
+            )
+          ))).to.eq('## ![an image](http://example.com "a title") foo');
         });
 
         it('with space in url to serialize', () => {
@@ -640,7 +640,7 @@ describe('Bitbucket markdown serializer: ', () => {
           });
 
           expect(markdownSerializer.serialize(doc(p(
-            link(text('foo')),
+            link('foo'),
           )))).to.eq('[foo](/url with space)');
         });
 
@@ -651,7 +651,7 @@ describe('Bitbucket markdown serializer: ', () => {
           });
 
           expect(markdownSerializer.serialize(doc(p(
-            link(text('foo')),
+            link('foo'),
           )))).to.eq('[foo](/url with space "title")');
         });
       });
@@ -659,67 +659,67 @@ describe('Bitbucket markdown serializer: ', () => {
       describe('emphasis -', () => {
         it('asterisk within strings should be escaped', () => {
           expect(markdownSerializer.serialize(doc(p(
-            text('*foo bar*'),
+            '*foo bar*',
           )))).to.eq('\\*foo bar\\*');
 
           expect(markdownSerializer.serialize(doc(p(
-            text('**foo bar**'),
+            '**foo bar**',
           )))).to.eq('\\*\\*foo bar\\*\\*');
 
           expect(markdownSerializer.serialize(doc(p(
-            text('***foo bar***'),
+            '***foo bar***',
           )))).to.eq('\\*\\*\\*foo bar\\*\\*\\*');
         });
 
         it('underscore within strings should be escaped', () => {
           expect(markdownSerializer.serialize(doc(p(
-            text('_foo bar_'),
+            '_foo bar_',
           )))).to.eq('\\_foo bar\\_');
 
           expect(markdownSerializer.serialize(doc(p(
-            text('__foo bar__'),
+            '__foo bar__',
           )))).to.eq('\\_\\_foo bar\\_\\_');
 
           expect(markdownSerializer.serialize(doc(p(
-            text('___foo bar___'),
+            '___foo bar___',
           )))).to.eq('\\_\\_\\_foo bar\\_\\_\\_');
         });
 
         it('"strong em" should be escaped in its entirety', () => {
           expect(markdownSerializer.serialize(doc(p(
-            text('***strong**em*')
+            '***strong**em*'
           )))).to.eq('\\*\\*\\*strong\\*\\*em\\*');
         });
 
         it('"smart em" should be escaped in its entirety', () => {
           expect(markdownSerializer.serialize(doc(p(
-            text('_smart_emphasis_')
+            '_smart_emphasis_'
           )))).to.eq('\\_smart\\_emphasis\\_');
         });
 
         it('combinations should be properly serialized', () => {
           expect(markdownSerializer.serialize(doc(p(
-            em('hi'), text('**there*'),
+            em('hi'), '**there*',
           )))).to.eq('*hi*\\*\\*there\\*');
 
           expect(markdownSerializer.serialize(doc(p(
-            del(strong(text('foo bar baz')))
+            del(strong('foo bar baz'))
           )))).to.eq('**~~foo bar baz~~**');
 
           expect(markdownSerializer.serialize(doc(p(
-            strong(del(text('foo bar')), text(' baz')),
+            strong(del('foo bar'), ' baz'),
           )))).to.eq('**~~foo bar~~ baz**');
 
           expect(markdownSerializer.serialize(doc(p(
-            em(del(text('foo bar')), text(' baz')),
+            em(del('foo bar'), ' baz'),
           )))).to.eq('*~~foo bar~~ baz*');
 
           expect(markdownSerializer.serialize(doc(p(
-            code(text('**bar baz**')),
+            code('**bar baz**'),
           )))).to.eq('`**bar baz**`');
 
           expect(markdownSerializer.serialize(doc(p(
-            code(text('__bar_baz__')),
+            code('__bar_baz__'),
           )))).to.eq('`__bar_baz__`');
         });
       });

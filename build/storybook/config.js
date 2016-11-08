@@ -1,7 +1,8 @@
-import { configure, setAddon } from '@kadira/storybook';
+import { configure, setAddon, addDecorator } from '@kadira/storybook';
 import 'akutil-polyfills';
 import React from 'react';
 import 'storybook-addon-i18n-tools';
+import { checkA11y } from 'storybook-addon-a11y/dist';
 
 import 'style!./styles.less';
 
@@ -19,6 +20,8 @@ function loadStories() {
   // support for symlink cycles from `require.context()`.
   require('./requireStories!./empty'); // eslint-disable-line global-require
 }
+
+addDecorator(checkA11y);
 
 setAddon({
   addMonitored(storyName, storyFn, rafFn) {

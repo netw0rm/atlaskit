@@ -275,6 +275,7 @@ class AkEditorBitbucket extends Component {
    */
   focus(): void {
     if (this._pm) {
+      this._focused = true;
       this._pm.focus();
     }
   }

@@ -1,4 +1,4 @@
-import { getShadowRoot, waitUntil, hasClass } from 'akutil-common-test';
+import { getShadowRoot, waitUntil, hasClass, locateWebComponent } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -33,12 +33,16 @@ describe('ak-tooltip', () => {
   let tooltip;
   let layer;
 
+  function getLayer() {
+    return locateWebComponent('ak-layer', shadowRoot)[0] || null;
+  }
+
   beforeEach(() => setupComponent().then((newComponent) => {
     component = newComponent;
     shadowRoot = getShadowRoot(component);
     // a reference the the rendered tooltip (the part that contains the description)
     tooltip = shadowRoot.querySelector(tooltipClass);
-    layer = shadowRoot.querySelector('ak-layer');
+    layer = getLayer();
   }));
   afterEach(() => tearDownComponent(component));
 
@@ -93,7 +97,7 @@ describe('ak-tooltip', () => {
     it('should apply an animation class when visible=true', () => {
       const slideRightAnimationClass = shadowStyles.locals.slideRightAnimation;
       const animationClassApplied = () => hasClass(tooltip, slideRightAnimationClass);
-      const layerRendered = () => shadowRoot.querySelector('ak-layer') !== null;
+      const layerRendered = () => getLayer() !== null;
 
       // we'll set up the negative case first by setting visible = false
       expect(layerRendered()).to.be.true;
@@ -110,7 +114,7 @@ describe('ak-tooltip', () => {
     });
 
     it('should render Layer when visible=true', () => {
-      const layerRendered = () => shadowRoot.querySelector('ak-layer') !== null;
+      const layerRendered = () => getLayer() !== null;
 
       // need to set up the negative case first
       component.visible = false;

@@ -1,6 +1,6 @@
 {
   "name": "ak-tag-group",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "ak-tag-group webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

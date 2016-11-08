@@ -1,11 +1,16 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import reactify from 'akutil-react';
+import { ValidatorMinlength, ValidatorMaxlength } from 'ak-field-validator';
+
 import FieldBaseWC from '../src';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
 
+
 const FieldBase = reactify(FieldBaseWC);
+const ReactValidatorMin = reactify(ValidatorMinlength);
+const ReactValidatorMax = reactify(ValidatorMaxlength);
 
 const formStyle = {
   padding: '20px',
@@ -23,20 +28,24 @@ const slottedInputStyle = {
   width: '100%',
 };
 
-const InputFieldBase = props => (<FieldBase
-  className={styles.locals.akFieldBase}
-  label="Label for FieldBase"
-  {...props}
->
-  <input
-    is
-    slot="input-slot"
-    type="text"
-    style={slottedInputStyle}
-    defaultValue={props.text || 'A slotted input'}
-    disabled={props.disabled}
-  />
-</FieldBase>);
+const InputFieldBase = props =>
+   (
+     <FieldBase
+       className={styles.locals.akFieldBase}
+       label="Label for FieldBase"
+       {...props}
+     >
+       <input
+         is
+         slot="input-slot"
+         type="text"
+         style={slottedInputStyle}
+         defaultValue={props.text || 'A slotted input'}
+         disabled={props.disabled}
+       />
+       {props.children}
+     </FieldBase>
+);
 
 const DivFieldBase = props => (<FieldBase
   className={styles.locals.akFieldBase}
@@ -117,11 +126,32 @@ storiesOf(name, module)
         <InputFieldBase label="Slotted input" hideLabel text="A slotted input with no label" />
       </form>
     </div>
-  ));
+  ))
+  .add('fieldbase with validator', () =>
+    <div>
+      <form action="" style={formStyle}>
+        <div>
+          <p>This ak-field-base must be 5 - 10 characters long.</p>
+        </div>
+        <InputFieldBase
+          label="Slotted input"
+          text=""
+        >
+          <ReactValidatorMin minlength="5" slot="validator-slot">
+            Must have at least 5 characters
+          </ReactValidatorMin>
+          <ReactValidatorMax maxlength="10" slot="validator-slot">
+            Must have at most 10 characters
+          </ReactValidatorMax>
+        </InputFieldBase>
+      </form>
+    </div>
+  );
 
 InputFieldBase.propTypes = {
-  text: React.PropTypes.string,
+  children: React.PropTypes.arrayOf(React.PropTypes.element),
   disabled: React.PropTypes.bool,
+  text: React.PropTypes.string,
 };
 
 DivFieldBase.propTypes = {

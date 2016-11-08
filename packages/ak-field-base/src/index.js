@@ -1,14 +1,55 @@
 import { vdom, define, prop, props } from 'skatejs';
+import { akColorR400 } from 'akutil-shared-styles';
 import Label from './Label';
 import Root from './Root';
 import Content from './Content';
+import ValidatorDialog from './ValidatorDialog';
+import shadowStyles from './shadow.less';
 import { focused } from './internal/symbols';
 import { standard as standardAppearance } from './internal/appearance';
+
+const validatorSlot = Symbol('validatorSlot');
+const inputSlot = Symbol('inputSlot');
+const errorDialog = Symbol('errorDialog');
+const inputWrapper = Symbol('inputWrapper');
 
 // we use this so that we can pass a function down to Content so that it can update the
 // [focused] prop.
 function setFocused(elem, focus) {
   props(elem, { [focused]: focus });
+}
+
+function getValidators(elem) {
+  const nodes = elem[validatorSlot] ? elem[validatorSlot].assignedNodes() : [];
+  return nodes.filter(el => el.validate);
+}
+
+function getInput(elem) {
+  if (!elem || !elem[inputSlot]) {
+    return null;
+  }
+  return elem[inputSlot].assignedNodes()[0];
+}
+
+function getInputValue(elem) {
+  const input = getInput(elem);
+  return input ? input.value : null;
+}
+
+// TODO: Ensure that dialog repositions correctly when the number of valid validators changes.
+function validate(elem) {
+  const value = getInputValue(elem);
+  let inputValid = true;
+
+  if (value) {
+    getValidators(elem).forEach((validator) => {
+      if (!validator.validate(value)) {
+        inputValid = false;
+      }
+    });
+  }
+
+  elem.invalid = !inputValid;
 }
 
 /**
@@ -23,7 +64,7 @@ function setFocused(elem, focus) {
  */
 export default define('ak-field-base', {
   render(elem) {
-    return (
+    return ([
       <Root>
         <Label
           label={elem.label}
@@ -31,15 +72,46 @@ export default define('ak-field-base', {
           required={elem.required}
         >
           <Content
-            setFocused={focus => setFocused(elem, focus)}
             appearance={elem.appearance}
             focused={elem[focused]}
             disabled={elem.disabled}
             invalid={elem.invalid}
-          />
+            ref={el => (elem[inputWrapper] = el)}
+            onInput={() => (elem.validate())}
+            onFocus={() => {
+              elem.validate();
+              setFocused(elem, true);
+            }}
+            onBlur={() => {
+              elem.validate();
+              setFocused(elem, false);
+            }}
+          >
+            <slot
+              name="input-slot"
+              ref={el => (elem[inputSlot] = el)}
+            />
+          </Content>
         </Label>
-      </Root>
-    );
+        <ValidatorDialog
+          border-color={akColorR400}
+          hasBlanket={false}
+          open={elem.invalid}
+          padding="3px"
+          position="right middle"
+          ref={(el) => {
+            elem[errorDialog] = el;
+            el.target = elem[inputWrapper];
+          }}
+        >
+          <slot
+            className={shadowStyles.locals.validatorSlot}
+            name="validator-slot"
+            ref={el => (elem[validatorSlot] = el)}
+          />
+        </ValidatorDialog>
+      </Root>,
+    ]);
   },
   props: {
     /**
@@ -97,7 +169,6 @@ export default define('ak-field-base', {
      * @example @js field.invalid = true;
      */
     invalid: prop.boolean({ attribute: true }),
-    [focused]: prop.boolean(),
     /**
      * @description Whether or not the field is required.
      *
@@ -122,5 +193,11 @@ export default define('ak-field-base', {
      * @example @js field.disabled = true;
      */
     disabled: prop.boolean({ attribute: true }),
+    [focused]: prop.boolean(),
+  },
+  prototype: {
+    validate() {
+      validate(this);
+    },
   },
 });

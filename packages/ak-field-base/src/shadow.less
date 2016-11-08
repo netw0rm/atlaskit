@@ -1,3 +1,4 @@
+@import '~akutil-shared-styles/src/mixins/select-slot-children.less';
 @import './styles/shared-variables.less';
 @import './styles/Content.less';
 @import './styles/Label.less';
@@ -27,4 +28,10 @@ ak-field-base {
   &(:not([defined])) {
     display: none;
   }
+}
+
+/* Validator dialog */
+.error-list {
+  padding-left: calc(~'1em + 10px');
+  padding-right: 10px;
 }

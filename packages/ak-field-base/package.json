@@ -12,7 +12,8 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^35.0.1",
+    "ak-inline-dialog": "^71.2.1",
+    "akutil-shared-styles": "^37.0.0",
     "akutil-common": "^2.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
@@ -21,6 +22,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
+    "ak-field-validator": "^1.0.0",
     "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0",
     "custom-event-polyfill": "^0.3.0"

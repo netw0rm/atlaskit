@@ -36,7 +36,7 @@ describe('ak-field-base', () => {
     afterEach(() => tearDownComponent(component));
 
     describe('by default', () => {
-      const tmpDefinition = (<Content />);
+      const tmpDefinition = (<Content><div id="child" /></Content>);
 
       beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
         .then(setupLocalVariables));
@@ -45,12 +45,12 @@ describe('ak-field-base', () => {
         shadowRoot.should.not.be.undefined;
       });
 
-      it('should render a slotwrapper and a slot element', () => {
+      it('should render a slotwrapper and any children', () => {
         const slotWrapper = shadowRoot.querySelector(`.${slotWrapperClass}`);
-        const contentSlot = shadowRoot.querySelector('slot[name=input-slot]');
+        const children = shadowRoot.querySelector('#child');
 
         expect(slotWrapper).to.not.be.null;
-        expect(contentSlot).to.not.be.null;
+        expect(children).to.not.be.null;
       });
     });
 

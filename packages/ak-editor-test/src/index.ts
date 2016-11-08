@@ -6,6 +6,7 @@ import { ProseMirror } from 'ak-editor-prosemirror';
 
 export { base64fileconverter };
 export { default as chaiPlugin } from './chai';
+export { default as dispatchPasteEvent } from './dispatch-paste-event';
 export { default as SyncPlugin } from './sync-plugin';
 export { default as makeEditor } from './make-editor';
 export { default as fixtures } from './fixtures';

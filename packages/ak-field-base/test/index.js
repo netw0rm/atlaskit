@@ -34,8 +34,10 @@ describe('ak-field-base', () => {
   const {
     label: labelClass,
     labelText: labelTextClass,
-    hidden: hiddenClass,
+    compact: compactClass,
+    disabled: disabledClass,
     focused: focusedClass,
+    hidden: hiddenClass,
     invalid: invalidClass,
   } = shadowStyles.locals;
 
@@ -83,6 +85,28 @@ describe('ak-field-base', () => {
 
       component.invalid = true;
       return waitUntil(invalidReflected).should.be.fulfilled;
+    });
+  });
+
+  describe('disabled prop', () => {
+    it('should be reflected', () => {
+      const disabledReflected = () => (shadowRoot.querySelector(`.${disabledClass}`) !== null);
+      expect(disabledReflected()).to.be.false;
+
+      component.disabled = true;
+      return waitUntil(disabledReflected).should.be.fulfilled;
+    });
+  });
+
+  describe('appearance prop', () => {
+    describe('with value of compact', () => {
+      it('should be reflected', () => {
+        const compactReflected = () => (shadowRoot.querySelector(`.${compactClass}`) !== null);
+        expect(compactReflected()).to.be.false;
+
+        component.appearance = 'compact';
+        return waitUntil(compactReflected).should.be.fulfilled;
+      });
     });
   });
 

@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-popup-text-input",
-  "version": "1.3.0",
+  "version": "3.0.0",
   "description": "Editor Popup Text Input web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -15,15 +15,19 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-shared-styles": "^1.0.3",
-    "akutil-shared-styles": "^34.2.0",
+    "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
     "skatejs": "^3.0.0"
   },
   "devDependencies": {
-    "akutil-react": "^1.0.0"
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

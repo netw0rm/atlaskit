@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar",
-  "version": "2.5.0",
+  "version": "4.0.0",
   "description": "Editor Toolbar web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -14,21 +14,25 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-prosemirror": "^2.0.0",
+    "ak-editor-prosemirror": "^4.0.0",
     "ak-editor-shared-styles": "^1.0.3",
-    "akutil-shared-styles": "^34.2.0",
+    "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
     "skatejs": "^3.0.0"
   },
   "devDependencies": {
-    "akutil-react": "^1.0.0",
+    "akutil-react": "*",
     "ak-editor-button": "*",
     "ak-editor-content": "^2.0.0",
-    "ak-icon": "^8.1.2",
+    "ak-icon": "^10.0.0",
     "ak-editor-toolbar-text-formatting": "*"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

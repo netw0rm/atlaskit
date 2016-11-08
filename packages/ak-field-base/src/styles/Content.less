@@ -2,6 +2,7 @@
 
 @base-horizontal-padding: @grid * 2;
 @base-height: @grid * 10;
+@base-height-compact: @grid * 8;
 
 @base-font-size: 14;
 @base-inner-height: @grid * 5;
@@ -11,18 +12,26 @@
 @base-border-width: 1;
 @base-border-width-focused: 2;
 @base-border-color: @ak-color-N20;
+@base-border-color-disabled: @ak-color-N20A;
 @base-border-color-focused: @ak-color-B100;
+@base-border-color-hover: @ak-color-N20;
 @base-border-color-invalid: @ak-color-B100;
 
-@base-background-color:  @ak-color-N10A;
-@base-background-color-focused:  white;
+@base-background-color: @ak-color-N10A;
+@base-background-color-disabled: @ak-color-N20;
+@base-background-color-hover: @ak-color-N20;
+@base-background-color-focused: @ak-color-N0;
+
+@base-color-disabled: @ak-color-N60;
+
+@base-transition-duration: 0.2s; // Transition speed
+
 
 // Mixin to redistribute spacing between border and padding
 .borders-and-padding (@border, @x-spacing, @height) {
   border-width: unit(@border, px);
   padding: unit((@height - (2 * @border) - @base-inner-height) / 2, px) unit((@x-spacing - @border), px);
 }
-
 
 .slot-wrapper {
   .borders-and-padding(@base-border-width, @base-horizontal-padding, @base-height);
@@ -33,6 +42,8 @@
   border-radius: @base-border-radius;
   border-color: @base-border-color;
   background-color: @base-background-color;
+  transition: background-color @base-transition-duration ease-in-out,
+              border-color @base-transition-duration ease-in-out;
 
   line-height: @base-line-height;
   font-size: unit(@base-font-size, px);
@@ -41,16 +52,40 @@
   max-width: 100%;
   word-wrap: break-word;
 
+  &.compact {
+    .borders-and-padding(@base-border-width, @base-horizontal-padding, @base-height-compact);
+  }
+
   // note: .focused not :focus as CSS wont know that slotted content is focused
+  &:hover {
+    background-color: @base-background-color-hover;
+    border-color: @base-border-color-hover;
+  }
+
+  &.disabled {
+    background-color: @base-background-color-disabled;
+    border-color: @base-border-color-disabled;
+    color: @base-color-disabled;
+    cursor: not-allowed;
+  }
+
   &.focused {
     .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
     border-color: @base-border-color-focused;
     background-color: @base-background-color-focused;
+
+    &.compact {
+      .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height-compact);
+    }
   }
 
   &.invalid {
     // we run this mixin so that we get a border the same thickness as the focus style
     .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
     border-color: @ak-color-R300;
+
+    &.compact {
+      .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height-compact);
+    }
   }
 }

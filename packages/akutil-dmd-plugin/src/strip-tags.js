@@ -1,7 +1,7 @@
 /**
  * Strip '@'-prefixed tags from a string
- * @param {string} The string
- * @param {string[]} The tags to strip.
+ * @param {string} str The string
+ * @param {string[]} tags The tags to strip.
  * @example stripTags('@example My example', ['example']);
  */
 function stripTags(str, tags) {

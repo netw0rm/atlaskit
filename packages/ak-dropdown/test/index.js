@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-dropdown', () => {
+describe(name, () => {
   describe('basic defaults', () => {
     it('should export a base component', () => {
       (new Dropdown()).should.be.an.instanceof(Component);

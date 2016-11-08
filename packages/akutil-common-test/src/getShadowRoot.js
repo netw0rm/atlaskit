@@ -5,10 +5,6 @@
  *  const sr = getShadowRoot(elem);
  */
 function getShadowRoot(component) {
-  // Note: we can't use the the symbol exported from Skate,
-  // because the symbol exported from the skate version in this file might differ to the one used
-  // in another component and as we run all components in one single test suite, we can't guarantee
-  // which version will be used.
   return component.shadowRoot;
 }
 

@@ -43,6 +43,7 @@ storiesOf(name, module)
         <InputFieldBase label="Required state" required />
         <InputFieldBase label="Disabled state" disabled />
         <InputFieldBase label="Compact state" appearance="compact" />
+        <InputFieldBase label="Subtle state" appearance="subtle" />
       </form>
     </div>
   ))

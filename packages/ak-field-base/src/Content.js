@@ -2,7 +2,10 @@ import { vdom } from 'skatejs';
 import classNames from 'classnames';
 
 import shadowStyles from './shadow.less';
-import { compact as compactAppearance } from './internal/appearance';
+import {
+  compact as compactAppearance,
+  subtle as subtleAppearance,
+} from './internal/appearance';
 
 // We have to create this function outside the statelss functions scope so that the reference we,
 // pass to ref is the same each time (and our event handlers only get applied once).
@@ -17,6 +20,7 @@ function addEventHandlers(ref) {
 export default (props) => {
   const slotWrapperClasses = classNames(shadowStyles.locals.slotWrapper, {
     [shadowStyles.locals.compact]: props.appearance === compactAppearance,
+    [shadowStyles.locals.subtle]: props.appearance === subtleAppearance,
     [shadowStyles.locals.disabled]: props.disabled,
     [shadowStyles.locals.focused]: props.focused,
     [shadowStyles.locals.invalid]: props.invalid && !props.focused,

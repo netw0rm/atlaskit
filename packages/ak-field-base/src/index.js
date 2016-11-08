@@ -51,7 +51,10 @@ export default define('ak-field-base', Base.extend({
     /**
      * @description The appearance of the field.
      *
-     * Valid values for this property are: 'standard' (default), 'compact'.
+     * Valid values for this property are: 'standard' (default), 'compact' and 'subtle'.
+     *
+     * Compact will make the field have less padding and subtle will remove the background/border
+     * until a user hovers over it.
      * @memberof FieldBase
      * @instance
      * @type {string}

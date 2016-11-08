@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "ak-editor-test": "^5.1.0",
-    "akutil-react": "^1.0.0"
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",

@@ -15,11 +15,11 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "ak-editor-prosemirror": "^2.0.0"
+    "ak-editor-prosemirror": "^4.0.0"
   },
   "devDependencies": {
-    "ak-editor-test": "^3.0.0",
-    "ak-editor-schema": "^2.0.0"
+    "ak-editor-test": "*",
+    "ak-editor-schema": "*"
   },
   "repository": {
     "type": "git",

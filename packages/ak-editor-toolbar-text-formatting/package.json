@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar-text-formatting",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Editor Toolbar Text Formatting web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -16,14 +16,14 @@
   "dependencies": {
     "ak-editor-button": "^2.3.10",
     "ak-editor-shared-styles": "^1.0.3",
-    "ak-icon": "^8.1.2",
+    "ak-icon": "^10.0.0",
     "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.4"
   },
   "devDependencies": {
-    "ak-editor-prosemirror": "^2.0.0",
-    "akutil-react": "^1.0.0"
+    "ak-editor-prosemirror": "^4.0.0",
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",

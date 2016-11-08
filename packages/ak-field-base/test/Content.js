@@ -31,6 +31,7 @@ describe('ak-field-base', () => {
       invalid: invalidClass,
       focused: focusedClass,
       compact: compactClass,
+      subtle: subtleClass,
     } = shadowStyles.locals;
 
     afterEach(() => tearDownComponent(component));
@@ -105,6 +106,19 @@ describe('ak-field-base', () => {
           const compactSlotWrapperClassSelector = `.${slotWrapperClass}.${compactClass}`;
           const compactSlotWrapper = shadowRoot.querySelector(compactSlotWrapperClassSelector);
           expect(compactSlotWrapper).to.not.be.null;
+        });
+      });
+
+      describe('subtle', () => {
+        const tmpDefinition = (<Content appearance="subtle" />);
+
+        beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
+          .then(setupLocalVariables));
+
+        it('should render the slotwrapper with the .subtle class', () => {
+          const subtleSlotWrapperClassSelector = `.${slotWrapperClass}.${subtleClass}`;
+          const subtleSlotWrapper = shadowRoot.querySelector(subtleSlotWrapperClassSelector);
+          expect(subtleSlotWrapper).to.not.be.null;
         });
       });
     });

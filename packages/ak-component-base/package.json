@@ -1,6 +1,6 @@
 {
   "name": "ak-component-base",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ak-component-base webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -17,8 +17,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "^5.0.0",
-    "akutil-react": "^1.0.0",
+    "akutil-common-test": "*",
+    "akutil-react": "*",
     "skatejs": "^4.0.0"
   },
   "repository": {

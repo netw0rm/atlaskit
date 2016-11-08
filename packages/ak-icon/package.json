@@ -1,6 +1,6 @@
 {
   "name": "ak-icon",
-  "version": "10.0.0",
+  "version": "10.0.2",
   "description": "Icon web components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -24,12 +24,12 @@
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "create-error": "^0.3.1",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.4"
   },
   "devDependencies": {
-    "ak-button": "^1.4.3",
-    "akutil-common-test": "^4.0.0",
-    "akutil-react": "^1.0.0",
+    "ak-button": "^3.0.0",
+    "akutil-common-test": "*",
+    "akutil-react": "*",
     "akutil-shared-styles": "^35.0.1",
     "async": "^2.0.1",
     "glob": "^7.0.5",

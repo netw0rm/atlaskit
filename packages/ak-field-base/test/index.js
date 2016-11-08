@@ -36,6 +36,7 @@ describe('ak-field-base', () => {
     label: labelClass,
     labelText: labelTextClass,
     compact: compactClass,
+    subtle: subtleClass,
     disabled: disabledClass,
     focused: focusedClass,
     hidden: hiddenClass,
@@ -110,6 +111,16 @@ describe('ak-field-base', () => {
 
         component.appearance = 'compact';
         return waitUntil(compactReflected).should.be.fulfilled;
+      });
+    });
+
+    describe('with value of subtle', () => {
+      it('should be reflected', () => {
+        const subtleReflected = () => (shadowRoot.querySelector(`.${subtleClass}`) !== null);
+        expect(subtleReflected()).to.be.false;
+
+        component.appearance = 'subtle';
+        return waitUntil(subtleReflected).should.be.fulfilled;
       });
     });
   });

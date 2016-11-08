@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
-import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } from 'akutil-common-test';
+import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress, locateWebComponent } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy, chaiPlugin, doc, text, code, strong, a,
   h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
@@ -204,20 +204,20 @@ describe('ak-editor-bitbucket', () => {
 
     it('should have options in block type dropdown', () => {
       return buildExpandedEditor(fixture()).then((editor) => {
-        const bt = getShadowRoot(editor).querySelector('ak-editor-toolbar-block-type');
+        const bt = locateWebComponent('ak-editor-toolbar-block-type', getShadowRoot(editor))[0];
         expect(bt).to.not.be.null;
 
         // on browsers without native ShadowDOM (i.e. Firefox, Safari), shadowRoot is not available right away
         return waitUntil(() => {
           return !!getShadowRoot(bt);
         }).then(() => {
-          const fs = getShadowRoot(bt).querySelector('ak-editor-toolbar-block-type-select');
+          const fs = locateWebComponent('ak-editor-toolbar-block-type-select', getShadowRoot(bt));
           expect(fs).to.not.be.null;
 
           const btShadowRoot = getShadowRoot(bt);
           return waitUntil(() => {
             // it takes roughly 3 iterations to render all elements and attach them to <ul>
-            return btShadowRoot.querySelectorAll('ak-editor-toolbar-block-type-option').length >= 2;
+            return locateWebComponent('ak-editor-toolbar-block-type-option', btShadowRoot).length >= 2;
           });
         });
       });

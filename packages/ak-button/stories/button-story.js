@@ -45,16 +45,16 @@ const buildBackgroundStory = () => {
       <div>
         <style>{'ak-button { margin: 5px }'}</style>
         <AkButton appearance={defaultAppearance}>
-          Create Issue
+          Default
         </AkButton>
         <AkButton appearance={subtleAppearance} >
-          Create Issue
+          Subtle
         </AkButton>
         <AkButton appearance={defaultAppearance} selected>
-          Create Issue
+          Selected
         </AkButton>
         <AkButton appearance={defaultAppearance} disabled>
-          Create Issue
+          Disabled
         </AkButton>
         <AkButton appearance={defaultAppearance}>
           <Question />

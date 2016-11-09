@@ -10,7 +10,7 @@ pipelines:
             - npm install
             - npm run browserstack/tunnel/start
             - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack"
-            # AK-628 - npm run test/integration
+            - npm run test/integration
             - npm run browserstack/tunnel/stop
             - npm run release/check/is-workspace-clean --silent
             - npm run release/check/can-ff --silent || exit 0
@@ -30,5 +30,5 @@ pipelines:
           - npm install
           - npm run browserstack/tunnel/start
           - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/pr" "pr/artifacts"
-          # AK-628 - npm run test/integration
+          - npm run test/integration
           - npm run browserstack/tunnel/stop

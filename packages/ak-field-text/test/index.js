@@ -126,7 +126,6 @@ describe('ak-field-text', () => {
   describe('value', () => {
     it('sets the value of the internal input', () => {
       const newValue = 'new value';
-
       expect(input.value).to.equal('', 'initial');
 
       const setsInternalValue = () => (input.value === newValue);
@@ -138,7 +137,6 @@ describe('ak-field-text', () => {
 
     it('gets the value from the internal input', () => {
       const newValue = 'new value';
-
       expect(component.value).to.equal('', 'initial');
 
       const getsInternalValue = () => (component.value === newValue);

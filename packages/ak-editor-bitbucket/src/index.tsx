@@ -187,25 +187,28 @@ class AkEditorBitbucket extends Component {
       elem._blockTypes = blockTypes._defaultContext;
     }
 
+    let inner = null;
+
+    let innerDIV = null;
+    if (elem.innerCheck) {
+      innerDIV = <div>inner DIV!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</div>
+    }
+
+    if (elem.outterCheck) {
+      inner = <div>
+      <input type="checkbox" onChange={(event) => {
+        elem.innerCheck = !elem.innerCheck;
+      }} />
+      {innerDIV}
+    </div>
+    }
+
     return (
       <div>
         <input type="checkbox" onChange={(event) => {
           elem.outterCheck = !elem.outterCheck;
         }} />
-        {elem.outterCheck ?
-          <div>
-            <input type="checkbox" onChange={(event) => {
-              elem.innerCheck = !elem.innerCheck;
-            }} />
-            {elem.innerCheck ?
-              <div>inner DIV!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</div>
-              :
-              null
-            }
-          </div>
-          :
-          null
-        }
+        {inner}
       </div>
     );
   }

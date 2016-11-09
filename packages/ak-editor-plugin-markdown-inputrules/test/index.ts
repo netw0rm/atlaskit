@@ -228,4 +228,27 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
       expect(pm.doc).to.deep.equal(doc(code_block()('1. ')));
     });
   });
+
+  describe('blockquote rule', () => {
+    it('should convert "> " to a blockquote', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '> ');
+      expect(pm.doc).to.deep.equal(doc(blockquote(p())));
+    });
+
+    it('should convert "> " to a blockquote when inside another blockquote (nesting)', () => {
+      const { pm, sel } = editor(doc(blockquote(p('{<>}'))));
+
+      pm.input.insertText(sel, sel, '> ');
+      expect(pm.doc).to.deep.equal(doc(blockquote(blockquote(p()))));
+    });
+
+    it('should not convert "> " to a blockquote when inside a list', () => {
+      const { pm, sel } = editor(doc(ul(li(p('{<>}')))));
+
+      pm.input.insertText(sel, sel, '> ');
+      expect(pm.doc).to.deep.equal(doc(ul(li(p('> ')))));
+    });
+  });
 });

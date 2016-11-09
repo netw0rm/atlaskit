@@ -8,6 +8,7 @@ import {
   allInputRules,
   headingRule,
   bulletListRule,
+  blockQuoteRule,
   wrappingInputRule,
   NodeType,
   Node
@@ -35,6 +36,10 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
 
   if (schema.nodes.ordered_list) {
     rules.push(orderedListRule(schema.nodes.ordered_list));
+  }
+
+  if (schema.nodes.blockquote) {
+    rules.push(blockQuoteRule(schema.nodes.blockquote));
   }
 
   return rules;

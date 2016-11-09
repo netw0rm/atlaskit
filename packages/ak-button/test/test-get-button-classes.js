@@ -15,6 +15,8 @@ const classKeys = {
   subtle: 'subtle',
   link: 'link',
   href: 'href',
+  dark: 'dark',
+  subtledark: 'subtledark',
 };
 
 const expectKeys = (classes, expectedCount, ...expectedClasses) => {
@@ -52,7 +54,13 @@ describe('ak-button/get-button-classes', () => {
       );
     });
 
-    [APPEARANCE.PRIMARY, APPEARANCE.SUBTLE, APPEARANCE.LINK].forEach((appearanceName) => {
+    [
+      APPEARANCE.PRIMARY,
+      APPEARANCE.SUBTLE,
+      APPEARANCE.LINK,
+      APPEARANCE.DARK,
+      APPEARANCE.SUBTLEDARK,
+    ].forEach((appearanceName) => {
       describe(appearanceName, () => {
         let classes;
         beforeEach(() => (classes = getClasses(classKeys, { appearance: appearanceName })));
@@ -100,6 +108,14 @@ describe('ak-button/get-button-classes', () => {
             {
               setup: { appearance: APPEARANCE.SUBTLE },
               expectedClass: 'subtle',
+            },
+            {
+              setup: { appearance: APPEARANCE.DARK },
+              expectedClass: 'dark',
+            },
+            {
+              setup: { appearance: APPEARANCE.SUBTLEDARK },
+              expectedClass: 'subtledark',
             },
           ].forEach((testCase) => {
             describe(`and also ${JSON.stringify(testCase.setup)} is set`, () => {

@@ -76,3 +76,35 @@ inputField.style.cursor = 'inherit';
 inputField.style.outline = 'none';
 inputField.style.width = '100%';
 ```
+
+#### Override Behaviour
+
+Components that extend `BaseComponent` (such as this one) support the `override` prop which can be used to take finer control of a prop.
+
+In cases where a component modifies it's own props (such as `ak-field-base` setting and removing `focused`), you may want to prevent this like so:
+
+```js
+// React
+render(){
+  return <ak-field-base override={{ focused: getMyFocusedState() }} />;
+}
+```
+
+```js
+// vanilla-JS
+fieldBase.override = { focused: getMyFocusedState() };
+```
+
+Essentially, just pass in the props you need more control of into override rather than the prop itself and the component will never overwrite your value.
+
+This means you'll also be responsible for setting it when neccessary. This usually involves listening to events like so:
+
+```js
+let myFocusState = false;
+/* ... */
+render() {
+  return <ak-field-base override={{ focused: myFocusState }} onBeforeFocusedChange={e => myFocusState = e.detail.focused}/>
+}
+```
+
+This way, the component will tell you when it **wants** to update its props, without actually changing them.

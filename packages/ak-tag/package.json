@@ -1,6 +1,6 @@
 {
   "name": "ak-tag",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "This component displays as a tag with an optional link and/or button to remove the given tag.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

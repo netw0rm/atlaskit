@@ -1,6 +1,6 @@
 {
   "name": "ak-field-base",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "description": "A base component fields in the Atlassian Design Guidelines style",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

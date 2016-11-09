@@ -1,0 +1,241 @@
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/borders.less';
+
+@em: 14;
+@grid: 8;
+
+@buttonHeight: unit(@grid * 4 / @em, em);
+@compactButtonHeight: unit(@grid * 3 / @em, em);
+
+@side-slot-margin: unit(@grid, px);
+
+// Default Button Colors
+@defaultBackgroundColor: @ak-color-N20;
+@defaultBackgroundColorHover: @ak-color-N30;
+@defaultBackgroundColorFocus: @ak-color-B200;
+@defaultBackgroundColorActive: @ak-color-B50;
+@defaultColor: @ak-color-N500;
+
+// Primary Button Colors
+@primaryBackgroundColor: @ak-color-B400;
+@primaryBackgroundColorHover: @ak-color-B500;
+@primaryBackgroundColorActive: @ak-color-B300;
+@primaryColor: @ak-color-N20;
+
+// Selected Button Colors
+@selectedBackgroundColor: @ak-color-N700;
+@selectedColor: @ak-color-N20;
+
+// Link Button Colors
+@linkColor: @ak-color-B400;
+@linkColorHover: @ak-color-B300;
+@linkColorActive: @linkColorHover;
+
+// Disabled button Colors
+@disabledColor: @ak-color-N40;
+
+
+.ak-button,
+ak-button {
+  display: inline-flex;
+  white-space: nowrap;
+
+  & > _shadow_root_ {
+    display: inline-flex;
+  }
+
+  &[disabled] {
+    pointer-events: none;
+  }
+}
+
+:host {
+  display: inline-flex;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+:host(> _shadow_root_) {
+  display: inline-flex;
+}
+
+:host([disabled]) {
+  pointer-events: none;
+}
+
+::slotted([slot="before"]) {
+  line-height: 0;
+  margin-right: @side-slot-margin;
+}
+::slotted(:not([slot])) {
+  line-height: 0;
+  white-space: nowrap;
+}
+::slotted([slot="after"]) {
+  line-height: 0;
+  margin-left: @side-slot-margin;
+}
+
+.beforeSlot > * {
+  line-height: 0;
+  margin-right: @side-slot-margin;
+}
+.defaultSlot > * {
+  line-height: 0;
+  white-space: nowrap;
+}
+.afterSlot > * {
+  line-height: 0;
+  margin-left: @side-slot-margin;
+}
+
+.beforeSlotWrapper {
+  align-self: center;
+  display: flex;
+}
+.defaultSlotWrapper {
+  display: flex;
+}
+.afterSlotWrapper {
+  align-self: center;
+  display: flex;
+}
+
+.buttonContent {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: nowrap;
+  pointer-events: none;
+}
+.beforeSlot {
+  display: inline-flex;
+}
+.afterSlot {
+  display: inline-flex;
+}
+
+.defaultSlot {
+  display: inline-flex;
+  flex-wrap: nowrap;
+}
+.root {
+  display: inline-block;
+}
+
+.button {
+  align-items: center;
+  box-sizing: border-box;
+  background: @defaultBackgroundColor;
+  border-width: 0;
+  border-radius: @ak-border-radius;
+  color: @defaultColor;
+  display: inline-flex;
+  font-style: normal;
+  font-size: inherit;
+  height: @buttonHeight;
+  line-height: @buttonHeight;
+  margin: 0;
+  outline: none;
+  padding: unit((@grid * 0.75), px) unit(@grid * 1.5, px);
+  padding-top: 0;
+  padding-bottom: 0;
+  text-align: center;
+  transition: background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+  user-select: none;
+  vertical-align: middle;
+
+  &::-moz-focus-inner {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  &:hover {
+    background: @defaultBackgroundColorHover;
+    cursor: pointer;
+    transition: background 0.2s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+  }
+
+  &:active {
+    background: @defaultBackgroundColorActive;
+    transition-duration: 0s;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px @defaultBackgroundColorFocus;
+    transition-duration: 0s, 0.2s;
+  }
+}
+
+.primary {
+  background: @primaryBackgroundColor;
+  color: @primaryColor;
+
+  &:hover {
+    background: @primaryBackgroundColorHover;
+  }
+
+  &:active {
+    background: @primaryBackgroundColorActive;
+  }
+}
+
+.subtle:not(:hover):not(:focus):not(:active) {
+  background: none;
+}
+
+.disabled {
+  color: @disabledColor;
+  ::slotted(*) {
+    pointer-events: none
+  };
+  cursor: not-allowed;
+
+  &:hover {
+    cursor: not-allowed;
+  }
+}
+
+.selected {
+  background: @selectedBackgroundColor;
+  color: @selectedColor;
+  &:hover {
+    background: @selectedBackgroundColor,
+  }
+}
+
+.href {
+  text-decoration: none;
+}
+
+.link {
+  background: none;
+  color: @linkColor;
+  transition: color 0.1s ease-out;
+
+  &:hover {
+    color: @linkColorHover;
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: @linkColorActive;
+    text-decoration: none;
+  }
+
+  &.disabled {
+    color: @disabledColor;
+    background: none;
+  }
+}
+
+.compact {
+  height: @compactButtonHeight;
+  line-height: @compactButtonHeight;
+}
+
+.nospacing {
+  height: initial;
+  line-height: initial;
+  padding: 0;
+}

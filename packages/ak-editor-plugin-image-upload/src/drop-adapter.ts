@@ -17,7 +17,10 @@ export default class DropAdapter {
     this.pm = pm;
     this.handlers = [];
     this.__dropHandler__ = this.__dropHandler__.bind(this);
-    pm.content.parentNode.addEventListener('drop', this.__dropHandler__, true);
+    const parent = pm.content.parentNode;
+    if (parent) {
+      parent.addEventListener('drop', this.__dropHandler__, true);
+    }
   }
 
   add(handler: ImageUploadDropHandler) {
@@ -39,7 +42,10 @@ export default class DropAdapter {
 
   detach() {
     this.handlers = [];
-    this.pm.content.parentNode.removeEventListener('drop', this.__dropHandler__);
+    const parent = this.pm.content.parentNode;
+    if (parent) {
+      parent.removeEventListener('drop', this.__dropHandler__);
+    }
   }
 
   __dropHandler__(e: DragEvent) {

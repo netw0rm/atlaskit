@@ -21,7 +21,7 @@ function getOrCreateInput(elem) {
 // Update the input element.
 function updateInput(elem) {
   const input = getOrCreateInput(elem);
-  input.style = inputStyles;
+  input.style.cssText = inputStyles;
   input.disabled = elem.disabled;
   input.name = elem.name;
   input.placeholder = elem.placeholder;

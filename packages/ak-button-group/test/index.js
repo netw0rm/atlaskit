@@ -3,9 +3,9 @@ import chaiAsPromised from 'chai-as-promised';
 import { Component } from 'skatejs';
 import Button from 'ak-button';
 import { waitUntil, getShadowRoot } from 'akutil-common-test';
+import shadowStyles from '../src/shadow.less';
 
 import ButtonGroup from '../src';
-
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -37,29 +37,35 @@ describe('ak-button-group', () => {
     (new ButtonGroup()).should.be.instanceof(Component);
   });
 
-  it('group that x-overflows its container should stay on same line i.e. same height', (done) => {
+  it('group that x-overflows its container should stay on same line i.e. same height', () => {
+    let initialHeight;
     const addBtn = () => {
       const newBtn = new Button();
       newBtn.innerText = 'Hello';
       btnGroup.appendChild(newBtn);
-    };
-    addBtn();
-
-    btnGroup.parentElement.style.width = '200px';
-    setTimeout(() => {
-      const initialHeight = btnGroup.offsetHeight;
-
-      addBtn();
-      addBtn();
-      addBtn();
-      addBtn();
-      addBtn();
-      addBtn();
-
-      setTimeout(() => {
-        btnGroup.offsetHeight.should.equal(initialHeight);
-        done();
+      return waitUntil(() => {
+        const slot = getShadowRoot(btnGroup)
+          .querySelector(`.${shadowStyles.locals.defaultSlotElement}`);
+        return slot.assignedNodes().indexOf(newBtn) > -1;
       });
-    });
+    };
+    return addBtn()
+      .then(() => {
+        initialHeight = btnGroup.offsetHeight;
+        btnGroup.parentElement.style.width = '200px';
+        return new Promise(resolve => (setTimeout(resolve)));
+      })
+      .then(() => {
+        initialHeight = btnGroup.offsetHeight;
+        return Promise.all([
+          addBtn(),
+          addBtn(),
+          addBtn(),
+          addBtn(),
+          addBtn(),
+          addBtn(),
+        ]);
+      })
+      .then(() => waitUntil(() => btnGroup.offsetHeight === initialHeight)).should.be.fulfilled;
   });
 });

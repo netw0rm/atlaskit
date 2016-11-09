@@ -12,10 +12,10 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^35.0.1",
+    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^4.0.4"
+    "skatejs": "^4.0.6"
   },
   "peerDependencies": {
     "ak-navigation": ">=11.x"
@@ -27,7 +27,7 @@
     "ak-navigation": ">=11.x",
     "akutil-common-test": "*",
     "akutil-react": "*",
-    "react-lorem-component": "^0.10.1"
+    "react-lorem-component": "^0.11.0"
   },
   "repository": {
     "type": "git",

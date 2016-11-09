@@ -22,10 +22,10 @@
   },
   "devDependencies": {
     "ak-button": "^3.0.0",
-    "skatejs": "^4.0.4"
+    "skatejs": "^4.0.6"
   },
   "peerDependencies": {
-    "skatejs": ">= 3.x"
+    "skatejs": ">=3.x"
   },
   "repository": {
     "type": "git",

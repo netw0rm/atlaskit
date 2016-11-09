@@ -13,8 +13,8 @@
   ],
   "dependencies": {
     "ak-component-base": "^1.0.0",
-    "akutil-shared-styles": "^35.0.1",
-    "akutil-common": "^2.0.0",
+    "akutil-shared-styles": "^37.0.0",
+    "akutil-common": "^5.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "camelcase": "^3.0.0",

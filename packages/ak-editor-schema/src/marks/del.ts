@@ -21,3 +21,7 @@ export class DelMarkType extends MarkType {
 export interface DelMark extends Mark {
   type: DelMarkType;
 }
+
+export function isDelMark(mark: Mark): mark is DelMark {
+  return mark.type instanceof DelMarkType;
+}

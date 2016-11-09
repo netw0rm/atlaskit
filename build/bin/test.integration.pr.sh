@@ -14,5 +14,4 @@ function integration_build_status() {
 }
 
 integration_build_status "INPROGRESS"
-npm run test/integration || integration_build_status "FAILED"
-integration_build_status "SUCCESSFUL"
+(npm run test/integration && integration_build_status "SUCCESSFUL") || integration_build_status "FAILED"

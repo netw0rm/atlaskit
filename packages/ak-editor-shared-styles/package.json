@@ -19,7 +19,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "camelcase": "^4.0.0",
+    "camelcase": "^3.0.0",
     "classnames": "^2.2.5",
     "glob": "^7.0.5",
     "akutil-shared-styles": "^37.0.0",

@@ -34,7 +34,7 @@
     "ak-editor-prosemirror": "*",
     "ak-editor-test": "^5.1.0",
     "ak-tabs": "^4.0.2",
-    "akutil-common-test": "^*",
+    "akutil-common-test": "*",
     "akutil-react": "*",
     "lodash.invert": "^4.3.0",
     "react-dom": "^15.3.2"

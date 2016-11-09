@@ -150,28 +150,10 @@ class AkEditorBitbucket extends Component {
   static rendered(elem: AkEditorBitbucket) : void {
     if (elem.outterCheck && !elem._pm) {
       elem._initEditor();
-      if (!elem._ready) {
-        emit(elem, 'ready');
-        elem._ready = true;
-      }
-
-      elem.focus();
+      (elem._pm as any).focus();
     } else if (!elem.outterCheck) {
       elem._pm = undefined;
     }
-  }
-
-  static attached(elem: AkEditorBitbucket) : void {
-    // Prevent any keyboard events from bubbling outside of the editor chrome
-    elem.addEventListener('keydown', stopEventPropagation);
-    elem.addEventListener('keyup', stopEventPropagation);
-    elem.addEventListener('keypress', stopEventPropagation);
-  }
-
-  static detached(elem: AkEditorBitbucket) : void {
-    elem.removeEventListener('keydown', stopEventPropagation);
-    elem.removeEventListener('keyup', stopEventPropagation);
-    elem.removeEventListener('keypress', stopEventPropagation);
   }
 
   static render(elem: AkEditorBitbucket) {
@@ -213,153 +195,6 @@ class AkEditorBitbucket extends Component {
     );
   }
 
-  /**
-   * Focus the content region of the editor.
-   */
-  focus(): void {
-    if (this._pm) {
-      this._focused = true;
-      this._pm.focus();
-    }
-  }
-
-  /**
-   * Clear the content of the editor, making it an empty document.
-   */
-  clear(): void {
-    if (this._pm) {
-      this._pm.tr.delete(0, this._pm.doc.content.size).apply();
-    }
-  }
-
-  /**
-   * Return the current markdown value from the editor.
-   * @returns {string}
-   */
-  get value(): string {
-    if (this._pm) {
-      return markdownSerializer.serialize(this._pm.doc);
-    }
-    return this.defaultValue;
-  }
-
-  /**
-   * Returns true if the editor has been initialised and is ready for
-   * interaction.
-   */
-  get ready(): boolean {
-    return this._ready || false;
-  }
-
-  /**
-   * Set the value from HTML string
-   */
-  setFromHtml(html: string): void {
-    if (!this._pm || !this._pm.doc) {
-      throw 'Unable to set from HTML before the editor is initialized';
-    }
-
-    this._pm.setDoc(parseHtml(html.trim()), null);
-  }
-
-  /**
-   * Check if the current editor's value is empty - an empty value includes one or more empty paragraphs.
-   */
-  isEmpty(): boolean {
-    if (!this._pm || !this._pm.doc) {
-      throw 'Unable to check if editor is empty before it is initialized';
-    }
-
-    return !this._pm.doc.textContent;
-  }
-
-  _expand(): void {
-    this.outterCheck = true;
-  }
-
-  _collapse(): void {
-    this.outterCheck = false;
-  }
-
-  _onContentClick(e: MouseEvent): void {
-    if (e.target === e.currentTarget) {
-      this.focus();
-    }
-  }
-
-  _selectBlockType(event: CustomEvent): void {
-    const blockType = event.detail.blockType;
-    const schemaName = blockType.schemaName;
-    const level = blockType.level;
-
-    if (this._pm) {
-      BlockTypePlugin.get(this._pm).changeBlockType(schemaName, { level });
-    }
-  }
-
-  _toggleMark(event: CustomEvent): void {
-    const mark: MarkType = formattingToProseMirrorMark[event.detail.mark];
-
-    if (this._pm) {
-      TextFormattingPlugin.get(this._pm).toggleMark(mark);
-    }
-  }
-
-  _toggleList(name: ListType): void {
-    if (this._pm) {
-      ListsPlugin.get(this._pm).toggleList(name);
-    }
-  }
-
-  _addHyperlink(event: CustomEvent): void {
-    const href = event.detail.value;
-
-    if (this._pm) {
-      HyperlinkPlugin.get(this._pm).addLink({ href });
-    }
-  }
-
-  _insertImage(): void {
-    this.imageUploader(false, (attr: ImageUploadOptions) => {
-      if (this._pm) {
-        ImageUploadPlugin.get(this._pm).addImage(attr);
-      }
-    });
-  }
-
-  _unlink(): void {
-    if (this._pm) {
-      HyperlinkPlugin.get(this._pm).removeLink();
-    }
-  }
-
-  _handleEnterKeyup(event: CustomEvent) {
-    this._updateHyperlinkValue(event);
-    this._closeHyperlinkPanel();
-  }
-
-  _handleEscKeyup() {
-    this._closeHyperlinkPanel();
-  }
-
-  _updateHyperlinkValue(event: CustomEvent) {
-    const newLink = event.detail.value;
-
-    if (this._pm) {
-      HyperlinkPlugin.get(this._pm).updateLink({
-        href: newLink,
-      });
-    }
-  }
-
-  _closeHyperlinkPanel() {
-    if (this._pm) {
-      const pm = this._pm;
-      this.innerCheck = false;
-      pm.setTextSelection(pm.selection.$to.pos);
-    }
-  }
-
   _initEditor() {
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
@@ -377,64 +212,6 @@ class AkEditorBitbucket extends Component {
         MentionsPlugin,
       ],
     });
-
-    // Hyperlink plugin wiring
-    HyperlinkPlugin.get(pm).subscribe(state => {
-      this._canLinkHyperlink = state.enabled as boolean;
-      this.innerCheck = state.active as boolean;
-      this._hyperlinkElement = state.element as HTMLElement;
-      this._hyperlinkHref = state.href as string;
-    });
-
-    // Image upload plugin wiring
-    const insertImage = (attr: ImageUploadOptions) => ImageUploadPlugin.get(pm).addImage(attr);
-    const handler = (_: any, e: any) => this.imageUploader(e, insertImage);
-    ImageUploadPlugin.get(pm).dropAdapter.add(handler);
-    ImageUploadPlugin.get(pm).pasteAdapter.add(handler);
-
-    // Block type plugin wiring
-    BlockTypePlugin.get(pm).subscribe(state => {
-      const blockType = state.selectedBlockType;
-      this._selectedBlockType = getBlockType({ blockType }, this._blockTypes);
-      this._canChangeBlockType = state.enabled as boolean;
-    });
-
-    // Lists
-    ListsPlugin.get(pm).subscribe(state => {
-      this._bulletListActive = Boolean(state.active && state.type === 'bullet_list');
-      this._numberListActive = Boolean(state.active && state.type === 'ordered_list');
-
-      this._bulletlistDisabled = !Boolean(state.enabled);
-      this._numberlistDisabled = !Boolean(state.enabled);
-    });
-
-    // Text formatting
-    TextFormattingPlugin.get(pm).subscribe(state => {
-      this._strongActive = state.strongActive;
-      this._emActive = state.emActive;
-      this._underlineActive = state.underlineActive;
-      this._codeActive = state.codeActive;
-      this._canChangeTextFormatting = !state.disabled;
-    });
-
-    // Mentions wiring
-    const emitMentionEvent = (ev: string) => {
-      return (el: HTMLElement, pm: ProseMirror) => emit(this, ev, {
-        detail: { el, pm }
-      });
-    }
-    MentionsPlugin.get(pm).renderHandler = emitMentionEvent('mentionrender');
-    MentionsPlugin.get(pm).autocompleteHandler = emitMentionEvent('mentionautocomplete');
-
-    // avoid invoking keyboard shortcuts in BB
-    pm.wrapper.addEventListener('keypress', e => e.stopPropagation());
-    pm.wrapper.addEventListener('keydown', e => e.stopPropagation());
-
-    // add the keymap
-    pm.addKeymap(buildKeymap(pm.schema));
-
-    // 'change' event is public API
-    pm.on.change.add(() => emit(this, 'change'));
 
     this._pm = pm;
   }

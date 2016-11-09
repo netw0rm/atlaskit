@@ -7,6 +7,7 @@ import QuestionIcon from 'ak-icon/glyph/question';
 import ExpandIcon from 'ak-icon/glyph/expand';
 import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import OpenIcon from 'ak-icon/glyph/editor/open';
+import { akColorN20 } from 'akutil-shared-styles';
 import { name } from '../package.json';
 
 import AkButtonTemplate, { APPEARANCE, SPACING } from '../src';
@@ -37,10 +38,55 @@ const css = `
   }
 `;
 
+const buildBackgroundStory = () => {
+  const createSample = backgroundColor => (
+    <div className="sample" style={{ 'background-color': backgroundColor }}>
+      <div>
+        <style>{'ak-button { margin: 5px }'}</style>
+        <AkButton>
+          Create Issue
+        </AkButton>
+        <AkButton appearance={APPEARANCE.SUBTLE} >
+          Create Issue
+        </AkButton>
+        <AkButton selected>
+          Create Issue
+        </AkButton>
+        <AkButton disabled>
+          Create Issue
+        </AkButton>
+        <AkButton>
+          <Question />
+        </AkButton>
+        <AkButton appearance={APPEARANCE.SUBTLE}>
+          <Page />
+        </AkButton>
+        <AkButton selected>
+          <Expand />
+        </AkButton>
+        <AkButton disabled>
+          <Calendar />
+        </AkButton>
+      </div>
+      <span>White Background</span>
+    </div>
+  );
+
+  return (
+    <div>
+      <style>{css}</style>
+      <div className="container">
+        {createSample('white')}
+        {createSample(akColorN20)}
+      </div>
+    </div>
+  );
+};
 const buildStory = props => (
   () => (
     <div>
       <style>{css}</style>
+      <style>{'ak-button { background-color: white }'}</style>
       <div className="container">
         <div className="sample">
           <AkButton {...props}>
@@ -223,6 +269,7 @@ storiesOf(name, module)
     .add('primary ak-button states', buildStory({ appearance: APPEARANCE.PRIMARY }))
     .add('subtle ak-button states', buildStory({ appearance: APPEARANCE.SUBTLE }))
     .add('link ak-button states', buildStory({ appearance: APPEARANCE.LINK }))
+    .add('different backgrounds', buildBackgroundStory)
     .add('button builder example', () =>
       <ButtonBuilderExample icons={[() => null].concat([Page, Question, Calendar, Expand])} />
     );

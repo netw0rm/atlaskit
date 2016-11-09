@@ -10,10 +10,10 @@
 @side-slot-margin: unit(@grid, px);
 
 // Default Button Colors
-@defaultBackgroundColor: @ak-color-N20;
-@defaultBackgroundColorHover: @ak-color-N30;
-@defaultBackgroundColorFocus: @ak-color-B200;
-@defaultBackgroundColorActive: @ak-color-B50;
+@defaultBackgroundColor: @ak-color-N20A;
+@defaultBackgroundColorHover: @ak-color-N30A;
+@defaultBackgroundColorFocus: fade(@ak-color-B200, 60%);
+@defaultBackgroundColorActive: fade(@ak-color-B50, 60%);
 @defaultColor: @ak-color-N500;
 
 // Primary Button Colors
@@ -23,7 +23,7 @@
 @primaryColor: @ak-color-N20;
 
 // Selected Button Colors
-@selectedBackgroundColor: @ak-color-N700;
+@selectedBackgroundColor: @ak-color-N700A;
 @selectedColor: @ak-color-N20;
 
 // Link Button Colors
@@ -32,7 +32,7 @@
 @linkColorActive: @linkColorHover;
 
 // Disabled button Colors
-@disabledColor: @ak-color-N40;
+@disabledColor: @ak-color-N40A;
 
 
 .ak-button,
@@ -215,6 +215,7 @@ ak-button {
 
   &:hover {
     color: @linkColorHover;
+    background: none;
     text-decoration: underline;
   }
 

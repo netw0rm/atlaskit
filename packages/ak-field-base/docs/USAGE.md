@@ -35,7 +35,7 @@ Usually you will want some form of input for the extended component. You can add
 **Note**: React consumers will need to use the `is` prop to tell React to treat the input as a Custom Element, otherwise it will not recognise the `slot` attribute.
 ```html
 <ak-field-base label="A slotted input">
- <input is slot="input-slot" type="text" defaultValue="I am slotted in a field-base!" />
+  <input is slot="input-slot" type="text" defaultValue="I am slotted in a field-base!" />
 </ak-field-base>
 ```
 
@@ -76,6 +76,22 @@ inputField.style.cursor = 'inherit';
 inputField.style.outline = 'none';
 inputField.style.width = '100%';
 ```
+
+#### Validation
+
+The `ak-field-base` component comes with validation built-in. In order to use the built-in validation, simply provide one or more [`ak-field-validator`](https://www.npmjs.com/package/ak-field-validator) components in the `"validator-slot"` slot.
+
+```html
+<ak-field-base label="A slotted input">
+  <ak-field-validator-minlength minlength="5" slot="validator-slot">This field must be at least 5 characters long.</ak-field-validator-minlength>
+</ak-field-base>
+```
+
+Validation will happen automatically on the following events:
+
+* `input`
+* `focus`
+* `blur`
 
 #### Override Behaviour
 

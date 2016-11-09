@@ -1,12 +1,12 @@
 import { vdom } from 'skatejs';
 import classNames from 'classnames';
-
+import shadowStyles from './shadow.less';
 import getClasses from './internal/get-button-classes';
 
 /* eslint-disable react/prop-types */
 const Element = (props, children) => {
   const commonProps = {
-    className: classNames(getClasses(props.styles, props)),
+    className: classNames(getClasses(shadowStyles.locals, props)),
     disabled: props.disabled,
     onmousedown: e => e.preventDefault(),
   };
@@ -20,9 +20,10 @@ const Element = (props, children) => {
 };
 
 export default (props, children) => (
-  <span className={props.styles.root}>
+  <span className={shadowStyles.locals.root}>
+    <style>{shadowStyles.toString()}</style>
     <Element {...props}>
-      <span className={props.styles['button-content']}>
+      <span className={shadowStyles.locals.buttonContent}>
         {children()}
       </span>
     </Element>

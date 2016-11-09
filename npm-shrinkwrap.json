@@ -6710,7 +6710,7 @@
     },
     "typescript": {
       "version": "2.1.1",
-      "from": "typescript@>=2.1.0-dev.20161108 <3.0.0",
+      "from": "typescript@>=2.1.1 <3.0.0",
       "resolved": "https://registry.npmjs.org/typescript/-/typescript-2.1.1.tgz"
     },
     "typical": {

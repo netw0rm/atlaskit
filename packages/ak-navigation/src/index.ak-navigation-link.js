@@ -29,19 +29,6 @@ export default define('ak-navigation-link', {
     });
   },
   render(elem) {
-    // FIXME: refactor this block into "normal" CSS
-    /*
-    style(vdom, {
-      [`.${shadowStyles.locals.icon}::slotted(*)`]: {
-        display: 'inline-block',
-        'margin-left': '10px',
-        'margin-right': '20px',
-        position: 'relative',
-        width: '20px',
-      },
-    });
-    */
-
     return (
       <div
         className={classNames(shadowStyles.locals.wrapper, {
@@ -50,14 +37,14 @@ export default define('ak-navigation-link', {
       >
         <style>{shadowStyles.toString()}</style>
         <a
-          className={classNames(shadowStyles.locals.link)}
+          className={classNames(shadowStyles.locals.link, shadowStyles.locals.iconSlotWrapper)}
           href={elem.href || false}
           onmousedown={e => e.preventDefault()}
           tabindex="0"
         >
           <slot
             name="icon"
-            className={shadowStyles.locals.icon}
+            className={shadowStyles.locals.iconSlotElement}
           />
           <div
             className={classNames(shadowStyles.locals.text)}

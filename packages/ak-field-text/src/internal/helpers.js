@@ -26,10 +26,8 @@ function updateInput(elem) {
   input.name = elem.name;
   input.placeholder = elem.placeholder;
   input.type = elem.type;
+  input.value = elem.value;
   input.slot = 'input-slot';
 }
 
-export {
-  getInput,
-  updateInput,
-};
+export { updateInput }; // eslint-disable-line import/prefer-default-export

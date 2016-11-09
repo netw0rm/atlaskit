@@ -3,7 +3,7 @@ import FieldBase from 'ak-field-base';
 
 import SlotWrapper from './SlotWrapper';
 import shadowStyles from './shadow.less';
-import { getInput, updateInput } from './internal/helpers';
+import { updateInput } from './internal/helpers';
 
 /**
  * @description A text based form field with an associated label.
@@ -101,17 +101,6 @@ export default define('ak-field-text', {
      * @type {string}
      * @example @js field.value = 'My new text field value';
      */
-    value: {
-      get(elem) {
-        const input = getInput(elem);
-        return input ? input.value : '';
-      },
-      set(elem, data) {
-        const input = getInput(elem);
-        if (input) {
-          input.value = data.newValue;
-        }
-      },
-    },
+    value: prop.string(),
   },
 });

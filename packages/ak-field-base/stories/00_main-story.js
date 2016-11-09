@@ -97,7 +97,7 @@ storiesOf(name, module)
     <div>
       <form action="" style={formStyle}>
         <div>
-          <p>This ak-field-base must be 5 - 10 characters long.</p>
+          <p>This ak-field-base must be 3 - 10 characters long.</p>
         </div>
         <InputFieldBase
           label="Slotted input"

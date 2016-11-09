@@ -1,5 +1,4 @@
 import base from 'ak-component-base';
-import { akColorR400 } from 'akutil-shared-styles';
 import { vdom, define, prop, Component } from 'skatejs';
 
 import Label from './Label';
@@ -18,6 +17,7 @@ const Base = base({ Component, prop });
 const inputSlot = Symbol('inputSlot');
 const validatorSlot = Symbol('validatorSlot');
 const inputWrapper = Symbol('inputWrapper');
+const errorDialog = Symbol('errorDialog');
 const hasError = Symbol('hasError');
 
 // we use this so that we can pass a function down to Content so that it can update the
@@ -57,6 +57,7 @@ function validate(elem) {
   }
 
   elem.invalid = elem[hasError] = !inputValid;
+  elem[errorDialog].reposition();
 }
 
 /**
@@ -102,12 +103,11 @@ export default define('ak-field-base', Base.extend({
           </Content>
         </Label>
         <ValidatorDialog
-          border-color={akColorR400}
-          hasBlanket={false}
           open={elem[hasError]}
-          padding="3px"
-          position="right middle"
-          ref={el => (el.target = elem[inputWrapper])}
+          ref={(el) => {
+            elem[errorDialog] = el;
+            el.target = elem[inputWrapper];
+          }}
         >
           <slot
             className={shadowStyles.locals.validatorSlot}

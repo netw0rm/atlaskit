@@ -103,6 +103,9 @@ storiesOf(name, module)
           label="Slotted input"
           text=""
         >
+          <ReactValidatorMin minlength="3" slot="validator-slot">
+            Must have at least 3 characters
+          </ReactValidatorMin>
           <ReactValidatorMin minlength="5" slot="validator-slot">
             Must have at least 5 characters
           </ReactValidatorMin>

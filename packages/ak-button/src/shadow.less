@@ -13,7 +13,8 @@
 @defaultBackgroundColor: @ak-color-N20A;
 @defaultBackgroundColorHover: @ak-color-N30A;
 @defaultBackgroundColorFocus: fade(@ak-color-B200, 60%);
-@defaultBackgroundColorActive: fade(@ak-color-B50, 60%);
+@defaultBackgroundColorActive: fade(@ak-color-B75, 60%);
+@defaultColorActive: @ak-color-B400;
 @defaultColor: @ak-color-N500;
 
 // Primary Button Colors
@@ -153,11 +154,12 @@ ak-button {
   &:hover {
     background: @defaultBackgroundColorHover;
     cursor: pointer;
-    transition: background 0.2s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+    transition: background 0s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)
   }
 
   &:active {
     background: @defaultBackgroundColorActive;
+    color: @defaultColorActive;
     transition-duration: 0s;
   }
 

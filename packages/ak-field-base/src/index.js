@@ -4,7 +4,7 @@ import { vdom, define, prop, Component } from 'skatejs';
 import Label from './Label';
 import Root from './Root';
 import Content from './Content';
-import ValidatorDialog from './ValidatorDialog';
+import Dialog from './Dialog';
 import shadowStyles from './shadow.less';
 
 import { standard as standardAppearance } from './internal/appearance';
@@ -71,7 +71,7 @@ export default define('ak-field-base', Base.extend({
             />
           </Content>
         </Label>
-        <ValidatorDialog
+        <Dialog
           open={elem[hasError]}
           ref={(el) => {
             elem[errorDialog] = el;
@@ -83,7 +83,7 @@ export default define('ak-field-base', Base.extend({
             name="validator-slot"
             ref={el => (elem[validatorSlot] = el)}
           />
-        </ValidatorDialog>
+        </Dialog>
       </Root>,
     ]);
   },

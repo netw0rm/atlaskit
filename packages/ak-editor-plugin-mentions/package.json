@@ -10,7 +10,8 @@
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-plugin-mentions"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

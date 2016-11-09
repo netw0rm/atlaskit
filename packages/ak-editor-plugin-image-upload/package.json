@@ -10,7 +10,8 @@
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-plugin-image-upload"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts"
   ],
   "dependencies": {
     "ak-editor-prosemirror": "^4.0.0"

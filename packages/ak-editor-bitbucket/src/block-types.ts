@@ -23,17 +23,17 @@ export const blockTypes : any = {
     name      : 'heading1',
     display   : 'Heading 1',
     schemaName: 'heading',
-    level     : 2,
+    level     : 1,
   }, {
     name      : 'heading2',
     display   : 'Heading 2',
     schemaName: 'heading',
-    level     : 3,
+    level     : 2,
   }, {
     name      : 'heading3',
     display   : 'Heading 3',
     schemaName: 'heading',
-    level     : 4,
+    level     : 3,
   }, {
     name      : 'blockQuote',
     display   : 'Block quote',
@@ -67,17 +67,17 @@ export const blockTypes : any = {
     name      : 'heading1',
     display   : 'Heading 1',
     schemaName: 'heading',
-    level     : 2,
+    level     : 1,
   }, {
     name      : 'heading2',
     display   : 'Heading 2',
     schemaName: 'heading',
-    level     : 3,
+    level     : 2,
   }, {
     name      : 'heading3',
     display   : 'Heading 3',
     schemaName: 'heading',
-    level     : 4,
+    level     : 3,
   }, {
     name      : 'blockQuote',
     display   : 'Block quote',

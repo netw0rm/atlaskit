@@ -27,6 +27,11 @@
 @selectedBackgroundColor: @ak-color-N700A;
 @selectedColor: @ak-color-N20;
 
+// Dark Button Colors
+@darkBackgroundColor: @ak-color-N50A;
+@darkColor: @ak-color-N20;
+
+
 // Link Button Colors
 @linkColor: @ak-color-B400;
 @linkColorHover: @ak-color-B300;
@@ -182,6 +187,42 @@ ak-button {
   }
 }
 
+.dark {
+  background: @darkBackgroundColor;
+  color: @darkColor;
+
+  &:hover {
+    background: @ak-color-N70A;
+  }
+
+  &:active {
+    background: @defaultBackgroundColorActive;
+    color: @darkColor;
+  }
+
+  &.selected {
+    background: @darkColor;
+    color: @selectedBackgroundColor;
+
+    &:hover {
+      background: @darkColor;
+    }
+
+    &:active {
+      color: @selectedBackgroundColor;
+    }
+  }
+
+  &.disabled {
+    color: @darkBackgroundColor;
+  }
+}
+
+.subtledark {
+  .dark();
+  background: none;
+}
+
 .subtle:not(:hover):not(:focus):not(:active) {
   background: none;
 }
@@ -203,6 +244,9 @@ ak-button {
   color: @selectedColor;
   &:hover {
     background: @selectedBackgroundColor,
+  }
+  &:active {
+    color: @selectedColor;
   }
 }
 

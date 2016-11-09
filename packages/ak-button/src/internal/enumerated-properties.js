@@ -37,6 +37,8 @@ export const appearance = createEnumeration('appearance', [
   'primary',
   'standard',
   'subtle',
+  'dark',
+  'subtledark',
   'link',
 ]);
 

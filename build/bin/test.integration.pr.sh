@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+BASEDIR=$(dirname $0)
+. $BASEDIR/_build_status.sh
+
 function integration_build_status() {
   build_status \
     "INTGR" \

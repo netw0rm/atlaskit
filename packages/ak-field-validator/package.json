@@ -1,32 +1,25 @@
 {
-  "name": "ak-button",
-  "version": "3.0.2",
-  "description": "ak-button webcomponent",
+  "name": "ak-field-validator",
+  "version": "1.0.0",
+  "description": "ak-field-validator webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-button"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-field-validator"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^2.6.3",
-    "akutil-shared-styles": "^35.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^4.0.6"
+    "skatejs": "^4.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "*",
-    "akutil-react": "*",
-    "custom-event-polyfill": "^0.3.0",
-    "object-assign": "^4.1.0",
-    "ak-icon": "^10.0.0",
-    "uid": "^0.0.2"
+    "akutil-react": "^1.0.0"
   },
   "repository": {
     "type": "git",

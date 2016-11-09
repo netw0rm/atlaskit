@@ -30,7 +30,6 @@ export default function(html: string): Node {
   // Convert mention containers, i.e.:
   //   <a href="/abodera/" rel="nofollow" title="@abodera" class="mention mention-me">Artur Bodera</a>
   Array.from(el.querySelectorAll('a.mention')).forEach((a: HTMLLinkElement) => {
-    const parent = a.parentNode as HTMLElement;
     const span = document.createElement('span');
     span.setAttribute('contenteditable', 'false');
     span.setAttribute('editor-mention-display-name', a.textContent ? a.textContent : '');
@@ -45,13 +44,12 @@ export default function(html: string): Node {
       }
     }
 
-    parent.insertBefore(span, a);
-    parent.removeChild(a);
+    a.parentNode!.insertBefore(span, a);
+    a.parentNode!.removeChild(a);
   });
 
   // Simplify <table>s into paragraphs
   Array.from(el.querySelectorAll('table')).forEach((table: HTMLTableElement) => {
-    const parent = table.parentNode as HTMLElement;
     const thead = table.querySelector('thead');
     const tbody = table.querySelector('tbody');
 
@@ -66,7 +64,7 @@ export default function(html: string): Node {
         .join(', ')
       ;
       p.appendChild(strong);
-      parent.insertBefore(p, table);
+      table.parentNode!.insertBefore(p, table);
     }
 
     // Convert <tr> into a paragraphs of comma-separated phrases.
@@ -78,17 +76,16 @@ export default function(html: string): Node {
           .filter((v) => (!!v))   // skip zombie cells
           .join(', ')
         ;
-        parent.insertBefore(p, table);
+        table.parentNode!.insertBefore(p, table);
       });
     }
 
-    parent.removeChild(table);
+    table.parentNode!.removeChild(table);
   });
 
   // Parse emojis i.e.
   //     <img src="https://d301sr5gafysq2.cloudfront.net/207268dc597d/emoji/img/diamond_shape_with_a_dot_inside.svg" alt="diamond shape with a dot inside" title="diamond shape with a dot inside" class="emoji">
   Array.from(el.querySelectorAll('img.emoji')).forEach((img: HTMLImageElement) => {
-    const parent = img.parentNode as HTMLElement;
     const src = img.getAttribute('src');
     const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
 
@@ -97,18 +94,17 @@ export default function(html: string): Node {
       span.setAttribute('editor-entity-type', 'emoji');
       span.setAttribute('editor-entity-id', idMatch[1]);
       span.setAttribute('contenteditable', 'false');
-      parent.insertBefore(span, img);
+      img.parentNode!.insertBefore(span, img);
     }
 
-    parent.removeChild(img);
+    img.parentNode!.removeChild(img);
   });
 
   // Convert all automatic links to plain text, because they will be re-created on render by the server
   Array.from(el.querySelectorAll('a[rel="nofollow"]')).forEach((a: HTMLLinkElement) => {
-    const parent = a.parentNode as HTMLElement;
     const text = document.createTextNode(a.innerText);
-    parent.insertBefore(text, a);
-    parent.removeChild(a);
+    a.parentNode!.insertBefore(text, a);
+    a.parentNode!.removeChild(a);
   });
 
   return schema.parseDOM(el);

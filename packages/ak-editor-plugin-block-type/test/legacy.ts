@@ -7,7 +7,7 @@ import sinonChai from 'sinon-chai';
 chai.use(chaiPlugin);
 chai.use(sinonChai);
 
-describe('ak-editor-plugin-block-type', () => {
+describe('ak-editor-plugin-block-type (legacy)', () => {
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: BlockTypePlugin });
     return { pm, plugin, sel: pm.doc.refs['<>'] };

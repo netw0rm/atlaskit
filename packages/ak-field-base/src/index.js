@@ -17,7 +17,11 @@ import {
   errorDialog,
   hasError,
 } from './internal/symbols';
-import validate from './internal/validate';
+import {
+  getInputValue,
+  getValidators,
+  validate,
+} from './internal/validate';
 
 
 // need to inject Component and prop to create the base Component;
@@ -27,6 +31,12 @@ const Base = base({ Component, prop });
 // [focused] prop.
 function setFocused(elem, focus) {
   safeProps(elem, { focused: focus });
+}
+
+function performValidation(elem) {
+  const valid = validate(getInputValue(elem), getValidators(elem));
+  elem.invalid = elem[hasError] = !valid;
+  elem[errorDialog].reposition(); // Ensure that the dialog is correctly positioned.
 }
 
 /**
@@ -55,13 +65,13 @@ export default define('ak-field-base', Base.extend({
             disabled={elem.disabled}
             invalid={elem.invalid}
             ref={el => (elem[inputWrapper] = el)}
-            onInput={() => (elem.validate())}
+            onInput={() => (performValidation(elem))}
             onFocus={() => {
-              elem.validate();
+              performValidation(elem);
               setFocused(elem, true);
             }}
             onBlur={() => {
-              elem.validate();
+              performValidation(elem);
               setFocused(elem, false);
             }}
           >
@@ -188,11 +198,6 @@ export default define('ak-field-base', Base.extend({
      */
     disabled: prop.boolean({ attribute: true }),
   }, Base.props),
-  prototype: {
-    validate() {
-      validate(this);
-    },
-  },
 }));
 
 export const events = { beforeFocusedChange };

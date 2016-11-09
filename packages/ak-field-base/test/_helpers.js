@@ -1,3 +1,6 @@
+import { define } from 'skatejs';
+import { ValidatorBase } from 'ak-field-validator';
+
 const createDefinition = dom => ({
   render() {
     return dom;
@@ -15,4 +18,12 @@ const insertLightDomInput = (component) => {
   return inputChild;
 };
 
-export { createDefinition, insertLightDomInput };
+const createTestValidator = (tagName, cb) => (
+  define(tagName, class extends ValidatorBase {
+    validatorFunction(value) {  // eslint-disable-line class-methods-use-this
+      return cb(value);
+    }
+  })
+);
+
+export { createDefinition, insertLightDomInput, createTestValidator };

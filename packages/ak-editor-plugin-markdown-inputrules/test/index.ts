@@ -251,4 +251,20 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
       expect(pm.doc).to.deep.equal(doc(ul(li(p('> ')))));
     });
   });
+
+  describe('codeblock rule', () => {
+    it('should convert "```" to a code block', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '```');
+      expect(pm.doc).to.deep.equal(doc(code_block()()));
+    });
+
+    it('should not convert "```" to a code block when inside a list', () => {
+      const { pm, sel } = editor(doc(ul(li(p('{<>}')))));
+
+      pm.input.insertText(sel, sel, '```');
+      expect(pm.doc).to.deep.equal(doc(ul(li(p('```')))));
+    });
+  });
 });

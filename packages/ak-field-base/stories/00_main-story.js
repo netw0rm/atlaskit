@@ -3,9 +3,9 @@ import React from 'react';
 import reactify from 'akutil-react';
 import { ValidatorMinlength, ValidatorMaxlength } from 'ak-field-validator';
 
-import FieldBaseWC from '../src';
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
+import FieldBaseWC from '../src';
+import { InputFieldBase, DivFieldBase } from './shared-components';
 
 
 const FieldBase = reactify(FieldBaseWC);
@@ -17,43 +17,6 @@ const formStyle = {
   backgroundColor: 'white',
   width: '500px',
 };
-
-const slottedInputStyle = {
-  border: '0px',
-  background: 'transparent',
-  color: 'inherit',
-  cursor: 'inherit',
-  fontSize: '14px',
-  outline: 0,
-  width: '100%',
-};
-
-const InputFieldBase = props =>
-   (
-     <FieldBase
-       className={styles.locals.akFieldBase}
-       label="Label for FieldBase"
-       {...props}
-     >
-       <input
-         is
-         slot="input-slot"
-         type="text"
-         style={slottedInputStyle}
-         defaultValue={props.text || 'A slotted input'}
-         disabled={props.disabled}
-       />
-       {props.children}
-     </FieldBase>
-);
-
-const DivFieldBase = props => (<FieldBase
-  className={styles.locals.akFieldBase}
-  label="Label for FieldBase"
-  {...props}
->
-  <div is slot="input-slot">{props.text || 'This content is in the input-slot'}</div>
-</FieldBase>);
 
 storiesOf(name, module)
   .add('a simple ak-field-base', () => (
@@ -79,9 +42,12 @@ storiesOf(name, module)
       <form action="" style={formStyle}>
         <InputFieldBase label="A default field-base" />
         <InputFieldBase label="Invalid state" invalid />
+        <InputFieldBase label="Focused state" focused />
+        <InputFieldBase label="Focused state (using override)" override={{ focused: true }} />
         <InputFieldBase label="Required state" required />
         <InputFieldBase label="Disabled state" disabled />
         <InputFieldBase label="Compact state" appearance="compact" />
+        <InputFieldBase label="Subtle state" appearance="subtle" />
       </form>
     </div>
   ))
@@ -127,7 +93,7 @@ storiesOf(name, module)
       </form>
     </div>
   ))
-  .add('fieldbase with validator', () =>
+  .add('fieldbase with validator', () => (
     <div>
       <form action="" style={formStyle}>
         <div>
@@ -146,14 +112,4 @@ storiesOf(name, module)
         </InputFieldBase>
       </form>
     </div>
-  );
-
-InputFieldBase.propTypes = {
-  children: React.PropTypes.arrayOf(React.PropTypes.element),
-  disabled: React.PropTypes.bool,
-  text: React.PropTypes.string,
-};
-
-DivFieldBase.propTypes = {
-  text: React.PropTypes.string,
-};
+  ));

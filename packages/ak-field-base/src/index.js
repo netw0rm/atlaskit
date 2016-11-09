@@ -1,12 +1,19 @@
-import { vdom, define, prop, props } from 'skatejs';
+import base from 'ak-component-base';
 import { akColorR400 } from 'akutil-shared-styles';
+import { vdom, define, prop, Component } from 'skatejs';
+
 import Label from './Label';
 import Root from './Root';
 import Content from './Content';
 import ValidatorDialog from './ValidatorDialog';
 import shadowStyles from './shadow.less';
-import { focused } from './internal/symbols';
+
 import { standard as standardAppearance } from './internal/appearance';
+import { beforeFocusedChange } from './internal/events';
+import safeProps from './internal/safeProps';
+
+// need to inject Component and prop to create the base Component;
+const Base = base({ Component, prop });
 
 const inputSlot = Symbol('inputSlot');
 const validatorSlot = Symbol('validatorSlot');
@@ -16,7 +23,7 @@ const hasError = Symbol('hasError');
 // we use this so that we can pass a function down to Content so that it can update the
 // [focused] prop.
 function setFocused(elem, focus) {
-  props(elem, { [focused]: focus });
+  safeProps(elem, { focused: focus });
 }
 
 function getValidators(elem) {
@@ -55,6 +62,7 @@ function validate(elem) {
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class FieldBase
+ * @extends ComponentBase
  * @example @html <ak-field-base label="Email" />
  * @example @js import FieldBase from 'ak-field-base';
  *
@@ -62,7 +70,7 @@ function validate(elem) {
  * field.label = 'Email';
  * document.body.appendChild(field);
  */
-export default define('ak-field-base', {
+export default define('ak-field-base', Base.extend({
   render(elem) {
     return ([
       <Root>
@@ -73,7 +81,7 @@ export default define('ak-field-base', {
         >
           <Content
             appearance={elem.appearance}
-            focused={elem[focused]}
+            focused={elem.focused}
             disabled={elem.disabled}
             invalid={elem.invalid}
             ref={el => (elem[inputWrapper] = el)}
@@ -110,11 +118,14 @@ export default define('ak-field-base', {
       </Root>,
     ]);
   },
-  props: {
+  props: Object.assign({}, {
     /**
      * @description The appearance of the field.
      *
-     * Valid values for this property are: 'standard' (default), 'compact'.
+     * Valid values for this property are: 'standard' (default), 'compact' and 'subtle'.
+     *
+     * Compact will make the field have less padding and subtle will remove the background/border
+     * until a user hovers over it.
      * @memberof FieldBase
      * @instance
      * @type {string}
@@ -167,6 +178,23 @@ export default define('ak-field-base', {
      */
     invalid: prop.boolean({ attribute: true }),
     /**
+     * @description Whether or not a field should show it's focused styles.
+     *
+     * By default, this component will automatically add and remove this prop if itself or any child
+     * of it receives focus or blur events. You can override this behaviour by using the override
+     * prop.
+     *
+     * See [Override behaviour](#override-behaviour) for more information.
+     *
+     * @memberof FieldBase
+     * @instance
+     * @type {boolean}
+     * @default false
+     * @example @html <ak-field-base invalid></ak-field-base>
+     * @example @js field.invalid = true;
+     */
+    focused: prop.boolean(),
+    /**
      * @description Whether or not the field is required.
      *
      * If set to true, an asterisk will be appended to the label text.
@@ -190,11 +218,12 @@ export default define('ak-field-base', {
      * @example @js field.disabled = true;
      */
     disabled: prop.boolean({ attribute: true }),
-    [focused]: prop.boolean(),
-  },
+  }, Base.props),
   prototype: {
     validate() {
       validate(this);
     },
   },
-});
+}));
+
+export const events = { beforeFocusedChange };

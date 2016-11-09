@@ -17,7 +17,7 @@ const ReactValidatorRequired = reactify(ValidatorRequired);
 // Custom validator
 const ValidatorStartsWith = define('x-validator-starts-with', class extends ValidatorBase {
   static get props() {
-    return Object.assign(super.props, {
+    return Object.assign({}, super.props, {
       start: {
         attribute: true,
         default: '',

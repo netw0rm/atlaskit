@@ -15,7 +15,7 @@ const prefix = 'ak-field-validator-';
  */
 const ValidatorMinlength = define(`${prefix}minlength`, class extends ValidatorBase {
   static get props() {
-    return Object.assign(super.props, {
+    return Object.assign({}, super.props, {
       /**
        * @description The minimum length of the value
        * @memberof ValidatorMinlength
@@ -46,7 +46,7 @@ const ValidatorMinlength = define(`${prefix}minlength`, class extends ValidatorB
  */
 const ValidatorMaxlength = define(`${prefix}maxlength`, class extends ValidatorBase {
   static get props() {
-    return Object.assign(super.props, {
+    return Object.assign({}, super.props, {
       /**
        * @description The maximum length of the value
        * @memberof ValidatorMaxlength

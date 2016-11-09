@@ -2,7 +2,10 @@ import { vdom } from 'skatejs';
 import classNames from 'classnames';
 
 import shadowStyles from './shadow.less';
-import { compact as compactAppearance } from './internal/appearance';
+import {
+  compact as compactAppearance,
+  subtle as subtleAppearance,
+} from './internal/appearance';
 
 const eventHandlers = Symbol('eventHandlers');
 
@@ -18,7 +21,7 @@ function cleanUpEventHandlers(ref) {
 
 // TODO: We may not need to remove and re-add handlers if they already exist, but instead just avoid
 // setting them up more than once.
-function setUpEventHandlers(ref, props) {
+function setupEventHandlers(ref, props) {
   cleanUpEventHandlers(ref);
   ref[eventHandlers] = {
     focus: {
@@ -45,6 +48,7 @@ function setUpEventHandlers(ref, props) {
 export default (props, children) => {
   const slotWrapperClasses = classNames(shadowStyles.locals.slotWrapper, {
     [shadowStyles.locals.compact]: props.appearance === compactAppearance,
+    [shadowStyles.locals.subtle]: props.appearance === subtleAppearance,
     [shadowStyles.locals.disabled]: props.disabled,
     [shadowStyles.locals.focused]: props.focused,
     [shadowStyles.locals.invalid]: props.invalid && !props.focused,
@@ -53,7 +57,7 @@ export default (props, children) => {
     <div
       className={slotWrapperClasses}
       ref={(ref) => {
-        setUpEventHandlers(ref, props);
+        setupEventHandlers(ref, props);
         if (props.ref) {
           props.ref(ref);
         }

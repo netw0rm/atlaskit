@@ -10,54 +10,23 @@ import shadowStyles from './shadow.less';
 import { standard as standardAppearance } from './internal/appearance';
 import { beforeFocusedChange } from './internal/events';
 import safeProps from './internal/safeProps';
+import {
+  inputSlot,
+  validatorSlot,
+  inputWrapper,
+  errorDialog,
+  hasError,
+} from './internal/symbols';
+import validate from './internal/validate';
+
 
 // need to inject Component and prop to create the base Component;
 const Base = base({ Component, prop });
-
-const inputSlot = Symbol('inputSlot');
-const validatorSlot = Symbol('validatorSlot');
-const inputWrapper = Symbol('inputWrapper');
-const errorDialog = Symbol('errorDialog');
-const hasError = Symbol('hasError');
 
 // we use this so that we can pass a function down to Content so that it can update the
 // [focused] prop.
 function setFocused(elem, focus) {
   safeProps(elem, { focused: focus });
-}
-
-function getValidators(elem) {
-  const nodes = elem[validatorSlot] ? elem[validatorSlot].assignedNodes() : [];
-  return nodes.filter(el => el.validate);
-}
-
-function getInput(elem) {
-  if (!elem || !elem[inputSlot]) {
-    return null;
-  }
-  return elem[inputSlot].assignedNodes()[0];
-}
-
-function getInputValue(elem) {
-  const input = getInput(elem);
-  return input ? input.value : null;
-}
-
-// TODO: Ensure that dialog repositions correctly when the number of valid validators changes.
-function validate(elem) {
-  const value = getInputValue(elem);
-  let inputValid = true;
-
-  if (value) {
-    getValidators(elem).forEach((validator) => {
-      if (!validator.validate(value)) {
-        inputValid = false;
-      }
-    });
-  }
-
-  elem.invalid = elem[hasError] = !inputValid;
-  elem[errorDialog].reposition();
 }
 
 /**
@@ -190,8 +159,8 @@ export default define('ak-field-base', Base.extend({
      * @instance
      * @type {boolean}
      * @default false
-     * @example @html <ak-field-base invalid></ak-field-base>
-     * @example @js field.invalid = true;
+     * @example @html <ak-field-base focused></ak-field-base>
+     * @example @js field.focused = true;
      */
     focused: prop.boolean(),
     /**

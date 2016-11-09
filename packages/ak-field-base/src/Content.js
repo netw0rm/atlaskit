@@ -19,8 +19,7 @@ function cleanUpEventHandlers(ref) {
   ref[eventHandlers] = null;
 }
 
-// TODO: We may not need to remove and re-add handlers if they already exist, but instead just avoid
-// setting them up more than once.
+// Clean up any existing handlers before re-attaching them to avoid having multiple handlers
 function setupEventHandlers(ref, props) {
   cleanUpEventHandlers(ref);
   ref[eventHandlers] = {

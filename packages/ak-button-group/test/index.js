@@ -7,7 +7,6 @@ import shadowStyles from '../src/shadow.less';
 
 import ButtonGroup from '../src';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 
@@ -54,7 +53,7 @@ describe('ak-button-group', () => {
       .then(() => {
         initialHeight = btnGroup.offsetHeight;
         btnGroup.parentElement.style.width = '200px';
-        return waitUntil(() => btnGroup.offsetHeight !== initialHeight);
+        return new Promise(resolve => (setTimeout(resolve)));
       })
       .then(() => {
         initialHeight = btnGroup.offsetHeight;
@@ -67,6 +66,6 @@ describe('ak-button-group', () => {
           addBtn(),
         ]);
       })
-      .then(() => (btnGroup.offsetHeight.should.equal(initialHeight)));
+      .then(() => waitUntil(() => btnGroup.offsetHeight === initialHeight)).should.be.fulfilled;
   });
 });

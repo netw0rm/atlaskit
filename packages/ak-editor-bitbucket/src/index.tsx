@@ -81,7 +81,7 @@ class AkEditorBitbucket extends Component {
   placeholder: string;
   imageUploader: Function;
   context: string;
-  expanded: boolean;
+  outterCheck: boolean;
 
   // private state
   _focused: boolean;
@@ -94,7 +94,7 @@ class AkEditorBitbucket extends Component {
   _hyperlinkHref: string;
   _selectedBlockType: any;
   _hyperlinkElement: HTMLElement | undefined;
-  _hyperlinkActive: boolean;
+  innerCheck: boolean;
   _canLinkHyperlink: boolean;
   _bulletlistDisabled: boolean;
   _numberlistDisabled: boolean;
@@ -122,7 +122,7 @@ class AkEditorBitbucket extends Component {
       placeholder: prop.string({ attribute: true }),
       imageUploader: functionProp(),
       context: prop.string({ attribute: true }),
-      expanded: prop.boolean({ attribute: true }),
+      outterCheck: prop.boolean({ attribute: true }),
 
       /**
        * True if the editor has focus.
@@ -138,7 +138,7 @@ class AkEditorBitbucket extends Component {
       _hyperlinkHref: prop.string(),
       _selectedBlockType: {},
       _hyperlinkElement: {},
-      _hyperlinkActive: prop.boolean(),
+      innerCheck: prop.boolean(),
       _canLinkHyperlink: prop.boolean(),
       _bulletlistDisabled: prop.boolean(),
       _numberlistDisabled: prop.boolean(),
@@ -148,7 +148,7 @@ class AkEditorBitbucket extends Component {
   }
 
   static rendered(elem: AkEditorBitbucket) : void {
-    if (elem.expanded && !elem._pm) {
+    if (elem.outterCheck && !elem._pm) {
       elem._initEditor();
       if (!elem._ready) {
         emit(elem, 'ready');
@@ -156,7 +156,7 @@ class AkEditorBitbucket extends Component {
       }
 
       elem.focus();
-    } else if (!elem.expanded) {
+    } else if (!elem.outterCheck) {
       elem._pm = undefined;
     }
   }
@@ -187,83 +187,24 @@ class AkEditorBitbucket extends Component {
       elem._blockTypes = blockTypes._defaultContext;
     }
 
-    const fullEditor: any = (<div>
-      <Toolbar className={shadowStyles.locals['toolbar']}>
-        <ToolbarBlockType
-          disabled={!elem._canChangeBlockType}
-          selectedBlockType={elem._selectedBlockType}
-          blockTypes={elem._blockTypes}
-          onSelectBlockType={elem._selectBlockType}
-        />
-        <ToolbarTextFormatting
-          boldActive={elem._strongActive}
-          italicActive={elem._emActive}
-          underlineActive={elem._underlineActive}
-          codeActive={elem._codeActive}
-          boldDisabled={!elem._canChangeTextFormatting}
-          italicDisabled={!elem._canChangeTextFormatting}
-          underlineDisabled={!elem._canChangeTextFormatting}
-          codeDisabled={!elem._canChangeTextFormatting}
-          underlineHidden
-          onToggletextformatting={elem._toggleMark}
-        />
-        <ToolbarHyperlink
-          active={elem._hyperlinkActive}
-          disabled={!elem._canLinkHyperlink}
-          onAddHyperlink={elem._addHyperlink}
-        />
-        <ToolbarLists
-          bulletlistDisabled={elem._bulletlistDisabled}
-          numberlistDisabled={elem._numberlistDisabled}
-          bulletlistActive={elem._bulletListActive}
-          numberlistActive={elem._numberListActive}
-          on-toggle-number-list={() => elem._toggleList('ordered_list')}
-          on-toggle-bullet-list={() => elem._toggleList('bullet_list')}
-        />
-      </Toolbar>
-      <Content
-        className={shadowStyles.locals['content']}
-        onclick={elem._onContentClick}
-        ref={(wrapper: HTMLElement) => { elem._wrapper = wrapper; }}
-        openTop
-        openBottom
-        skip
-      />
-      {elem._hyperlinkActive ?
-        <HyperlinkEdit
-          href={elem._hyperlinkHref}
-          textInputValue={elem._hyperlinkHref}
-          attachTo={elem._hyperlinkElement}
-          onUnlink={elem._unlink}
-          onEnterKeyup={elem._handleEnterKeyup}
-          onEscKeyup={elem._handleEscKeyup}
-        />
-        : null
-      }
-      <Footer
-        openTop
-        hide-buttons={elem.context === 'pr'}
-        onInsertimage={elem._insertImage}
-      />
-    </div>);
-
     return (
-      <div
-        className={
-          cx(shadowStyles.locals['root'], {
-            [shadowStyles.locals['focused']]: elem._focused,
-          })
-        }
-      >
-        <style>{shadowStyles.toString()}</style>
-        {elem.expanded ?
-          fullEditor
+      <div>
+        <input type="checkbox" onChange={(event) => {
+          elem.outterCheck = !elem.outterCheck;
+        }} />
+        {elem.outterCheck ?
+          <div>
+            <input type="checkbox" onChange={(event) => {
+              elem.innerCheck = !elem.innerCheck;
+            }} />
+            {elem.innerCheck ?
+              <div>inner DIV!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</div>
+              :
+              null
+            }
+          </div>
           :
-          <input
-            placeholder={elem.placeholder}
-            onfocus={elem._expand}
-            className={fakeInputClassNames}
-          />
+          null
         }
       </div>
     );
@@ -330,11 +271,11 @@ class AkEditorBitbucket extends Component {
   }
 
   _expand(): void {
-    this.expanded = true;
+    this.outterCheck = true;
   }
 
   _collapse(): void {
-    this.expanded = false;
+    this.outterCheck = false;
   }
 
   _onContentClick(e: MouseEvent): void {
@@ -411,7 +352,7 @@ class AkEditorBitbucket extends Component {
   _closeHyperlinkPanel() {
     if (this._pm) {
       const pm = this._pm;
-      this._hyperlinkActive = false;
+      this.innerCheck = false;
       pm.setTextSelection(pm.selection.$to.pos);
     }
   }
@@ -437,7 +378,7 @@ class AkEditorBitbucket extends Component {
     // Hyperlink plugin wiring
     HyperlinkPlugin.get(pm).subscribe(state => {
       this._canLinkHyperlink = state.enabled as boolean;
-      this._hyperlinkActive = state.active as boolean;
+      this.innerCheck = state.active as boolean;
       this._hyperlinkElement = state.element as HTMLElement;
       this._hyperlinkHref = state.href as string;
     });

@@ -7,8 +7,21 @@ import {
   inputRules,
   allInputRules,
   headingRule,
-  bulletListRule
+  bulletListRule,
+  blockQuoteRule,
+  wrappingInputRule,
+  NodeType,
+  Node
 } from 'ak-editor-prosemirror';
+
+// NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
+// input rule will allow for a list to start at any given number, which isn't allowed in
+// markdown (where a ordered list will always start on 1). This is a slightly modified
+// version of that input rule. 
+function orderedListRule(nodeType: NodeType): InputRule {
+  return wrappingInputRule(/^(\d+)\. $/, " ", nodeType, (match: RegExpMatchArray) => ({}),
+                           (match: RegExpMatchArray, node: Node) => node.childCount);
+}
 
 const buildBlockRules = (schema: Schema): Array<InputRule> => {
   const rules = Array<InputRule>();
@@ -19,6 +32,14 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
 
   if (schema.nodes.bullet_list) {
     rules.push(bulletListRule(schema.nodes.bullet_list));
+  }
+
+  if (schema.nodes.ordered_list) {
+    rules.push(orderedListRule(schema.nodes.ordered_list));
+  }
+
+  if (schema.nodes.blockquote) {
+    rules.push(blockQuoteRule(schema.nodes.blockquote));
   }
 
   return rules;

@@ -11,6 +11,7 @@
 @base-border-radius: 3px;
 @base-border-width: 1;
 @base-border-width-focused: 2;
+@base-border-width-subtle: 0;
 @base-border-color: @ak-color-N20;
 @base-border-color-disabled: @ak-color-N20A;
 @base-border-color-focused: @ak-color-B100;
@@ -21,6 +22,7 @@
 @base-background-color-disabled: @ak-color-N20;
 @base-background-color-hover: @ak-color-N20;
 @base-background-color-focused: @ak-color-N0;
+@base-background-color-subtle: transparent;
 
 @base-color-disabled: @ak-color-N60;
 
@@ -56,7 +58,11 @@
     .borders-and-padding(@base-border-width, @base-horizontal-padding, @base-height-compact);
   }
 
-  // note: .focused not :focus as CSS wont know that slotted content is focused
+  &.subtle {
+    .borders-and-padding(@base-border-width-subtle, @base-horizontal-padding, @base-height);
+    background-color: @base-background-color-subtle;
+  }
+
   &:hover {
     background-color: @base-background-color-hover;
     border-color: @base-border-color-hover;
@@ -69,6 +75,7 @@
     cursor: not-allowed;
   }
 
+  // note: .focused not :focus as CSS wont know that slotted content is focused
   &.focused {
     .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
     border-color: @base-border-color-focused;

@@ -9,6 +9,7 @@ import {
   headingRule,
   bulletListRule,
   blockQuoteRule,
+  codeBlockRule,
   wrappingInputRule,
   NodeType,
   Node
@@ -40,6 +41,10 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
 
   if (schema.nodes.blockquote) {
     rules.push(blockQuoteRule(schema.nodes.blockquote));
+  }
+
+  if (schema.nodes.code_block) {
+    rules.push(codeBlockRule(schema.nodes.code_block));
   }
 
   return rules;

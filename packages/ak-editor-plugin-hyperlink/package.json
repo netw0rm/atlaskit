@@ -1,16 +1,17 @@
 {
   "name": "ak-editor-plugin-hyperlink",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A hyperlink plugin for ProseMirror",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.ts",
-  "typings": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-plugin-hyperlink"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts"
   ],
   "dependencies": {
     "ak-editor-prosemirror": "^4.0.0"

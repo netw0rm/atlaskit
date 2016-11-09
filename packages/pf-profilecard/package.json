@@ -14,14 +14,14 @@
     "dist"
   ],
   "dependencies": {
-    "ak-avatar": "^3.0.0",
+    "ak-avatar": "^4.0.0",
     "ak-button": "^3.0.0",
-    "akutil-common": "^2.5.0",
-    "akutil-shared-styles": "^35.0.1",
+    "akutil-common": "^5.0.0",
+    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^4.0.4",
-    "url-search-params": "^0.5.0",
+    "skatejs": "^4.0.6",
+    "url-search-params": "^0.6.1",
     "whatwg-fetch": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",

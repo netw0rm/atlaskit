@@ -204,15 +204,12 @@ describe('ak-editor-bitbucket', () => {
   describe('editor toolbar', () => {
     it('should have all default elements', () => {
       return buildExpandedEditor(fixture()).then((editor) => {
-        [
-          'ak-editor-toolbar',
-          'ak-editor-toolbar-block-type',
-          'ak-editor-toolbar-lists',
-          'ak-editor-toolbar-hyperlink',
-          'ak-editor-toolbar-text-formatting'
-        ].forEach((selector) => {
-          expect(getShadowRoot(editor).querySelector(selector)).to.not.be.null;
-        });
+        const editorShadowRoot = getShadowRoot(editor);
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-block-type')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-text-formatting')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-hyperlink')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-lists')).to.be.ok;
       });
     });
 

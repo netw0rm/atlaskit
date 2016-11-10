@@ -150,7 +150,9 @@ class AkEditorBitbucket extends Component {
   static rendered(elem: AkEditorBitbucket) : void {
     if (elem.outterCheck && !elem._pm) {
       elem._initEditor();
-      (elem._pm as any).focus();
+      setTimeout(() => {
+        (elem._pm as any).focus();
+      });
     } else if (!elem.outterCheck) {
       elem._pm = undefined;
     }

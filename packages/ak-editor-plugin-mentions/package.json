@@ -15,12 +15,13 @@
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
-  "dependencies": {
+  "peerDependencies": {
     "ak-editor-prosemirror": "^4.0.0"
   },
   "devDependencies": {
-    "ak-editor-test": "*",
-    "ak-editor-schema": "*"
+    "ak-editor-prosemirror": "^4.0.0",
+    "ak-editor-schema": "*",
+    "ak-editor-test": "*"
   },
   "repository": {
     "type": "git",

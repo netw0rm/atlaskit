@@ -13,8 +13,10 @@
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
+  "peerDependencies": {
+    "ak-editor-prosemirror": "^4.0.0"
+  },
   "dependencies": {
-    "ak-editor-prosemirror": "^4.0.0",
     "ak-editor-shared-styles": "^3.0.0",
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
@@ -25,6 +27,7 @@
     "ak-editor-button": "*",
     "ak-editor-content": "^4.0.0",
     "ak-icon": "^10.0.0",
+    "ak-editor-prosemirror": "^4.0.0",
     "ak-editor-toolbar-text-formatting": "*"
   },
   "repository": {

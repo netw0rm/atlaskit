@@ -8,8 +8,7 @@ import { dateToString, getDayName, getMonthName, makeArrayFromNumber, makeEventD
 import * as events from './index.events';
 import * as keys from './keys';
 import css from './index.less';
-import cssDate from './internal/date-component/index.less';
-import DateComponent from './internal/date-component';
+import DateComponent from './internal/date';
 import {
   $a11y,
   $calendars,
@@ -232,7 +231,6 @@ export default define('ak-calendar', {
 
     return [
       <style>{css.toString()}</style>,
-      <style>{cssDate.toString()}</style>,
       <Announcer>{new Date(elem.year, elem.month, elem.focused).toString()}</Announcer>,
       <table className={locals.calendar}>
         <caption>

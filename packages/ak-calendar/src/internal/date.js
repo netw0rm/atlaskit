@@ -2,7 +2,7 @@
 
 import { vdom } from 'skatejs';
 import classnames from 'classnames';
-import css from './index.less';
+import css from '../index.less';
 
 const { locals } = css;
 

@@ -7,7 +7,7 @@ import QuestionIcon from 'ak-icon/glyph/question';
 import ExpandIcon from 'ak-icon/glyph/expand';
 import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import OpenIcon from 'ak-icon/glyph/editor/open';
-import { akColorN20, akColorN500 } from 'akutil-shared-styles';
+import { akColorN20, akColorN700 } from 'akutil-shared-styles';
 import { name } from '../package.json';
 
 import AkButtonTemplate, { APPEARANCE, SPACING } from '../src';
@@ -40,54 +40,120 @@ const css = `
 
 /* eslint-disable react/prop-types */
 const buildBackgroundStory = () => {
-  const createSample = ({ label, backgroundColor, defaultAppearance, subtleAppearance }) => (
-    <div className="sample" style={{ 'background-color': backgroundColor }}>
-      <div>
-        <style>{'ak-button { margin: 5px }'}</style>
-        <AkButton appearance={defaultAppearance}>
-          Default
-        </AkButton>
-        <AkButton appearance={subtleAppearance} >
-          Subtle
-        </AkButton>
-        <AkButton appearance={defaultAppearance} selected>
-          Selected
-        </AkButton>
-        <AkButton appearance={defaultAppearance} disabled>
-          Disabled
-        </AkButton>
-        <AkButton appearance={defaultAppearance}>
-          <Question />
-        </AkButton>
-        <AkButton appearance={subtleAppearance}>
-          <Page />
-        </AkButton>
-        <AkButton appearance={defaultAppearance} selected>
-          <Expand />
-        </AkButton>
-        <AkButton appearance={defaultAppearance} disabled>
-          <Calendar />
-        </AkButton>
-        <AkButton appearance={defaultAppearance} spacing={SPACING.NONE}>
-          <Unlink />
-        </AkButton>
-        <AkButton appearance={defaultAppearance} spacing={SPACING.NONE} selected>
-          <Unlink />
-        </AkButton>
-        <AkButton appearance={subtleAppearance} spacing={SPACING.NONE}>
-          <Unlink />
-        </AkButton>
-        <AkButton appearance={defaultAppearance} spacing={SPACING.NONE}>
-          <Open />
-        </AkButton>
-        <AkButton appearance={defaultAppearance} spacing={SPACING.NONE} selected>
-          <Open />
-        </AkButton>
-        <AkButton appearance={subtleAppearance} spacing={SPACING.NONE}>
-          <Open />
-        </AkButton>
+  const createSample = ({ backgroundColor, extraProps = { onClick: action('clicking the WebComponent') } }) => (
+    <div style={{ 'margin-bottom': '30px' }}>
+      <style>{'ak-button { margin: 5px }'}</style>
+      <div className="sample" style={{ 'background-color': backgroundColor }}>
+        <div>
+          <AkButton {...extraProps}>
+            Default
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.PRIMARY}>
+            Primary
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.LINK}>
+            Link
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.SUBTLE} >
+            Subtle
+          </AkButton>
+          <AkButton {...extraProps} selected>
+            Selected
+          </AkButton>
+        </div>
+        <span> Normal States </span>
       </div>
-      <span>{`${label} Background`}</span>
+      <div className="sample" style={{ 'background-color': backgroundColor }}>
+        <div>
+          <AkButton {...extraProps}>
+            Default
+            <Question slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.PRIMARY}>
+            Primary
+            <Calendar slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.LINK}>
+            Link
+            <Page slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.SUBTLE} >
+            Subtle
+            <Expand slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} selected>
+            Selected
+            <Open slot="after" />
+          </AkButton>
+        </div>
+        <span> Normal States + icons</span>
+      </div>
+      <div className="sample" style={{ 'background-color': backgroundColor }}>
+        <div>
+          <AkButton {...extraProps} disabled>
+            Default Disabled
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.PRIMARY} disabled>
+            Primary Disabled
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.LINK} disabled>
+            Link Disabled
+          </AkButton>
+        </div>
+        <span> Disabled variations </span>
+      </div>
+      <div className="sample" style={{ 'background-color': backgroundColor }}>
+        <div>
+          <AkButton {...extraProps} disabled>
+            Default Disabled
+            <Page slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.PRIMARY} disabled>
+            Primary Disabled
+            <Question slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.LINK} disabled>
+            Link Disabled
+            <Calendar slot="after" />
+          </AkButton>
+        </div>
+        <span> Disabled variations + icons</span>
+      </div>
+      <div className="sample" style={{ 'background-color': backgroundColor }}>
+        <div>
+          <AkButton {...extraProps} spacing={SPACING.NONE}>
+            <Unlink />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} selected>
+            <Unlink />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} appearance={APPEARANCE.PRIMARY}>
+            <Unlink />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} disabled>
+            <Unlink />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.SUBTLE} spacing={SPACING.NONE}>
+            <Unlink />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE}>
+            <Open />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} selected>
+            <Open />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} appearance={APPEARANCE.PRIMARY}>
+            <Open />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} disabled>
+            <Open />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.SUBTLE} spacing={SPACING.NONE}>
+            <Open />
+          </AkButton>
+        </div>
+        <span> No spacing buttons with only icons </span>
+      </div>
     </div>
   );
 
@@ -97,26 +163,18 @@ const buildBackgroundStory = () => {
       <div className="container" style={{ width: '100%' }}>
         {
           createSample({
-            label: 'white',
             backgroundColor: 'white',
-            subtleAppearance: APPEARANCE.SUBTLE,
-            defaultAppearance: APPEARANCE.standard,
           })
         }
         {
           createSample({
-            label: 'grey',
             backgroundColor: akColorN20,
-            subtleAppearance: APPEARANCE.SUBTLE,
-            defaultAppearance: APPEARANCE.standard,
           })
         }
         {
           createSample({
-            label: 'dark',
-            backgroundColor: akColorN500,
-            subtleAppearance: APPEARANCE.SUBTLEDARK,
-            defaultAppearance: APPEARANCE.DARK,
+            backgroundColor: akColorN700,
+            extraProps: { theme: 'dark', onClick: action('clicking the WebComponent') },
           })
         }
       </div>

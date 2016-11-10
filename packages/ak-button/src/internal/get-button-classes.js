@@ -1,19 +1,21 @@
-import { appearance, spacing } from './enumerated-properties';
+import { appearance, spacing, theme } from './enumerated-properties';
 
 
-const { PRIMARY, SUBTLE, LINK, DARK, SUBTLEDARK } = appearance.values;
+const { PRIMARY, SUBTLE, LINK } = appearance.values;
+const { DARK } = theme.values;
 const { COMPACT, NONE } = spacing.values;
 
 export default (classKeys, props) => ({
   [classKeys.button]: true,
-  [classKeys.compact]: props.spacing === COMPACT,
-  [classKeys.nospacing]: props.spacing === NONE,
+  [classKeys.appearanceDefault]: props.appearance === appearance.values.DEFAULT,
+  [classKeys.appearancePrimary]: props.appearance === PRIMARY && !props.selected,
+  [classKeys.appearanceSubtle]: props.appearance === SUBTLE && !props.disabled && !props.selected,
+  [classKeys.appearanceLink]: props.appearance === LINK && !props.selected,
+  [classKeys.spacingCompact]: props.spacing === COMPACT,
+  [classKeys.spacingNone]: props.spacing === NONE,
   [classKeys.disabled]: props.disabled,
   [classKeys.selected]: props.selected && !props.disabled,
-  [classKeys.primary]: props.appearance === PRIMARY && !props.disabled && !props.selected,
-  [classKeys.subtle]: props.appearance === SUBTLE && !props.disabled && !props.selected,
-  [classKeys.dark]: props.appearance === DARK,
-  [classKeys.subtledark]: props.appearance === SUBTLEDARK,
-  [classKeys.link]: props.appearance === LINK && !props.selected,
   [classKeys.href]: props.href && !props.disabled,
+  [classKeys.themeDefault]: props.theme === theme.values.DEFAULT,
+  [classKeys.themeDark]: props.theme === DARK,
 });

@@ -35,19 +35,22 @@ const createEnumeration = (name, values, opts = {}) => {
 
 export const appearance = createEnumeration('appearance', [
   'primary',
-  'standard',
+  'default',
   'subtle',
-  'dark',
-  'subtledark',
   'link',
-]);
+], { missingDefault: 'default', invalidDefault: 'default' });
 
 export const type = createEnumeration('type', ['button', 'submit'], {
   missingDefault: 'button',
   invalidDefault: 'button',
 });
 
-export const spacing = createEnumeration('spacing', ['normal', 'compact', 'none'], {
-  missingDefault: 'normal',
-  invalidDefault: 'normal',
+export const spacing = createEnumeration('spacing', ['default', 'compact', 'none'], {
+  missingDefault: 'default',
+  invalidDefault: 'default',
+});
+
+export const theme = createEnumeration('theme', ['default', 'dark'], {
+  missingDefault: 'default',
+  invalidDefault: 'default',
 });

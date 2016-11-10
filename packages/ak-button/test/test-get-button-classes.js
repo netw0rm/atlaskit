@@ -6,18 +6,21 @@ import getClasses from '../src/internal/get-button-classes';
 
 const classKeys = {
   button: 'button',
-  compact: 'compact',
-  nospacing: 'nospacing',
-  none: 'nospacing',
+  appearanceDefault: 'appearanceDefault',
+  appearancePrimary: 'appearancePrimary',
+  appearanceSubtle: 'appearanceSubtle',
+  appearanceLink: 'appearanceLink',
+  spacingCompact: 'spacingCompact',
+  spacingNone: 'spacingNone',
+  spacingDefault: 'spacingDefault',
   disabled: 'disabled',
   selected: 'selected',
-  primary: 'primary',
-  subtle: 'subtle',
-  link: 'link',
   href: 'href',
-  dark: 'dark',
-  subtledark: 'subtledark',
+  themeDefault: 'themeDefault',
+  themeDark: 'themeDark',
 };
+
+const capitalize = s => s[0].toUpperCase() + s.slice(1);
 
 const expectKeys = (classes, expectedCount, ...expectedClasses) => {
   const filteredClasses = Object.entries(classes).reduce((acum, [key, value]) => {
@@ -33,40 +36,26 @@ const expectKeys = (classes, expectedCount, ...expectedClasses) => {
 
 describe('ak-button/get-button-classes', () => {
   describe('appearance', () => {
-    [
-      {
-        message: 'standard',
-        appearance: APPEARANCE.STANDARD,
-      },
-      {
-        message: 'when invalid appearance provided',
-        appearance: 'invalid',
-      },
-    ].forEach((testCase) => {
-      describe(testCase.message, () =>
-        it('button should only have .button class', () =>
-          expectKeys(
-            getClasses(classKeys, { appearance: testCase.appearance }),
-            1,
-            classKeys.button
-          )
-        )
-      );
-    });
+    it('button should only have default classes', () =>
+      expectKeys(
+        getClasses(classKeys, { appearance: APPEARANCE.DEFAULT }),
+        2,
+        classKeys.button,
+        classKeys.appearanceDefault
+      )
+    );
 
     [
       APPEARANCE.PRIMARY,
       APPEARANCE.SUBTLE,
       APPEARANCE.LINK,
-      APPEARANCE.DARK,
-      APPEARANCE.SUBTLEDARK,
     ].forEach((appearanceName) => {
       describe(appearanceName, () => {
         let classes;
         beforeEach(() => (classes = getClasses(classKeys, { appearance: appearanceName })));
 
         it(`button should have ${appearanceName} class`, () =>
-          expectKeys(classes, 2, classKeys.button, classKeys[appearanceName])
+          expectKeys(classes, 2, classKeys.button, classKeys[`appearance${capitalize(appearanceName)}`])
         );
       });
     });
@@ -76,7 +65,7 @@ describe('ak-button/get-button-classes', () => {
     let classes;
 
     describe('normal', () => {
-      beforeEach(() => (classes = getClasses(classKeys, { spacing: SPACING.NORMAL })));
+      beforeEach(() => (classes = getClasses(classKeys, { spacing: SPACING.DEFAULT })));
 
       it('should not set any class', () =>
         expectKeys(classes, 1, classKeys.button)
@@ -88,7 +77,7 @@ describe('ak-button/get-button-classes', () => {
         beforeEach(() => (classes = getClasses(classKeys, { spacing: name })));
 
         it(`should include class ${classKeys[name]}`, () =>
-          expectKeys(classes, 2, classKeys.button, classKeys[name])
+          expectKeys(classes, 2, classKeys.button, classKeys[`spacing${capitalize(name)}`])
         );
 
         describe(`when spacing=${name} attribute is set`, () => {
@@ -103,19 +92,11 @@ describe('ak-button/get-button-classes', () => {
             },
             {
               setup: { appearance: APPEARANCE.PRIMARY },
-              expectedClass: 'primary',
+              expectedClass: 'appearancePrimary',
             },
             {
               setup: { appearance: APPEARANCE.SUBTLE },
-              expectedClass: 'subtle',
-            },
-            {
-              setup: { appearance: APPEARANCE.DARK },
-              expectedClass: 'dark',
-            },
-            {
-              setup: { appearance: APPEARANCE.SUBTLEDARK },
-              expectedClass: 'subtledark',
+              expectedClass: 'appearanceSubtle',
             },
           ].forEach((testCase) => {
             describe(`and also ${JSON.stringify(testCase.setup)} is set`, () => {
@@ -125,7 +106,7 @@ describe('ak-button/get-button-classes', () => {
               it(`should also contain ${testCase.expectedClass} class`, () =>
                 expectKeys(classes, 3,
                   classKeys.button,
-                  classKeys[name],
+                  classKeys[`spacing${capitalize(name)}`],
                   classKeys[testCase.expectedClass]
                 )
               );
@@ -134,15 +115,6 @@ describe('ak-button/get-button-classes', () => {
         });
       });
     });
-  });
-
-  describe('href', () => {
-    let classes;
-    beforeEach(() => (classes = getClasses(classKeys, { href: true })));
-
-    it('classes should include href', () =>
-      expectKeys(classes, 2, classKeys.button, classKeys.href)
-    );
   });
 
   describe('selected', () => {
@@ -170,7 +142,6 @@ describe('ak-button/get-button-classes', () => {
     [
       { selected: true },
       { href: 'www.atlassian.com' },
-      { appearance: APPEARANCE.PRIMARY },
       { appearance: APPEARANCE.SUBTLE },
     ].forEach(setup =>
       describe(`when also ${setup} is set`, () => {
@@ -182,14 +153,22 @@ describe('ak-button/get-button-classes', () => {
       })
     );
 
-    describe('when attribute appearance link is also set', () => {
-      beforeEach(() => (
-        classes = getClasses(classKeys, { appearance: APPEARANCE.LINK, disabled: true })
-      ));
+    [
+      APPEARANCE.LINK,
+      APPEARANCE.PRIMARY,
+    ].forEach(appearance =>
+      describe(`when attribute appearance ${appearance} is also set`, () => {
+        beforeEach(() => (
+          classes = getClasses(classKeys, { appearance, disabled: true })
+        ));
 
-      it('should have both disabled and link classes', () =>
-        expectKeys(classes, 3, classKeys.button, classKeys.disabled, classKeys.link)
-      );
-    });
+        it('should have both disabled and link classes', () =>
+          expectKeys(classes, 3,
+            classKeys.button,
+            classKeys.disabled,
+            classKeys[`appearance${capitalize(appearance)}`])
+        );
+      })
+    );
   });
 });

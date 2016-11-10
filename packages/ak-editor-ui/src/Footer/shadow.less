@@ -1,0 +1,50 @@
+@import '~ak-editor-shared-styles/src/index';
+
+.root {
+  border: 1px solid @ak-editor-subtle-accent;
+  font-size: 14px;
+  padding: 20px;
+
+  .childContent() { margin: 20px; }
+  > slot > * { .childContent(); }
+  > ::content > * { .childContent(); }
+  > ::slotted(*) { .childContent(); }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+}
+
+.actions {
+  flex-grow: 1;
+}
+
+.insert {
+}
+
+.button-mixin() {
+  cursor: pointer;
+  font-size: inherit;
+}
+
+.save-button {
+  .button-mixin()
+}
+
+.cancel-button {
+  .button-mixin()
+}
+
+.icon-button {
+  .button-mixin();
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.openTop {
+  border-top: 0;
+}

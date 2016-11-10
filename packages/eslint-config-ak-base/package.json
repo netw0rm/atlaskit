@@ -1,15 +1,15 @@
 {
   "name": "eslint-config-ak-base",
-  "version": "4.0.1",
+  "version": "4.0.4",
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {
     "babel-runtime": "^6.11.6",
     "eslint": "^3.7.1",
-    "eslint-config-airbnb": "^12.0.0",
-    "eslint-plugin-import": "^1.16.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.1",
     "eslint-plugin-react": "^6.4.1"
   },
   "repository": {

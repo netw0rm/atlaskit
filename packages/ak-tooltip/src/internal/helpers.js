@@ -1,4 +1,4 @@
-import Tooltip from '../';
+import Tooltip from '../index';
 
 const TARGET_ATTRIBUTE = 'aria-describedby';
 

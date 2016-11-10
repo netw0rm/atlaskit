@@ -20,10 +20,11 @@ export default function(html: string): Node {
 
   // Convert "codehilite" containers to <pre>
   Array.from(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
+    const parent = div.parentNode as HTMLElement;
     const pre = document.createElement('pre');
     pre.textContent = div.textContent;
-    div.parentNode.insertBefore(pre, div);
-    div.parentNode.removeChild(div);
+    parent.insertBefore(pre, div);
+    parent.removeChild(div);
   });
 
   // Convert mention containers, i.e.:
@@ -43,8 +44,8 @@ export default function(html: string): Node {
       }
     }
 
-    a.parentNode.insertBefore(span, a);
-    a.parentNode.removeChild(a);
+    a.parentNode!.insertBefore(span, a);
+    a.parentNode!.removeChild(a);
   });
 
   // Simplify <table>s into paragraphs
@@ -63,7 +64,7 @@ export default function(html: string): Node {
         .join(', ')
       ;
       p.appendChild(strong);
-      table.parentNode.insertBefore(p, table);
+      table.parentNode!.insertBefore(p, table);
     }
 
     // Convert <tr> into a paragraphs of comma-separated phrases.
@@ -75,11 +76,11 @@ export default function(html: string): Node {
           .filter((v) => (!!v))   // skip zombie cells
           .join(', ')
         ;
-        table.parentNode.insertBefore(p, table);
+        table.parentNode!.insertBefore(p, table);
       });
     }
 
-    table.parentNode.removeChild(table);
+    table.parentNode!.removeChild(table);
   });
 
   // Parse emojis i.e.
@@ -93,17 +94,17 @@ export default function(html: string): Node {
       span.setAttribute('editor-entity-type', 'emoji');
       span.setAttribute('editor-entity-id', idMatch[1]);
       span.setAttribute('contenteditable', 'false');
-      img.parentNode.insertBefore(span, img);
+      img.parentNode!.insertBefore(span, img);
     }
 
-    img.parentNode.removeChild(img);
+    img.parentNode!.removeChild(img);
   });
 
   // Convert all automatic links to plain text, because they will be re-created on render by the server
   Array.from(el.querySelectorAll('a[rel="nofollow"]')).forEach((a: HTMLLinkElement) => {
     const text = document.createTextNode(a.innerText);
-    a.parentNode.insertBefore(text, a);
-    a.parentNode.removeChild(a);
+    a.parentNode!.insertBefore(text, a);
+    a.parentNode!.removeChild(a);
   });
 
   return schema.parseDOM(el);

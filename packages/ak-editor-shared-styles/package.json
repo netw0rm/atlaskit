@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-shared-styles",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Shared styles for Atlassian Editor components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -22,7 +22,7 @@
     "camelcase": "^3.0.0",
     "classnames": "^2.2.5",
     "glob": "^7.0.5",
-    "akutil-shared-styles": "^35.0.1",
+    "akutil-shared-styles": "^37.0.0",
     "less-vars-loader": "^1.0.2"
   },
   "dependencies": {

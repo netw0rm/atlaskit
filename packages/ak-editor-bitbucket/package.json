@@ -1,11 +1,11 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "4.1.2",
+  "version": "4.1.4",
   "description": "Editor web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.tsx",
-  "typings": "src/index.tsx",
+  "types": "src/index.tsx",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-bitbucket"
   },
@@ -39,7 +39,7 @@
     "babel-runtime": "^6.11.6",
     "browserkeymap": "^2.0.1",
     "markdown-it": "^8.0.0",
-    "skatejs": "^4.0.4"
+    "skatejs": "^4.0.6"
   },
   "devDependencies": {
     "ak-editor-test": "*",

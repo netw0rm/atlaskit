@@ -3,7 +3,7 @@ import { MarkType, Mark, Schema } from 'ak-editor-prosemirror';
 export class StrikeMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {
     if (name !== 'strike') {
-      throw new Error("StrikeMark must be named 'strike'.")
+      throw new Error("StrikeMarkType must be named 'strike'.")
     }
     super(name, rank, schema);
   }
@@ -27,4 +27,8 @@ export class StrikeMarkType extends MarkType {
 
 export interface StrikeMark extends Mark {
   type: StrikeMarkType;
+}
+
+export function isStrikeMark(mark: Mark): mark is StrikeMark {
+  return mark.type instanceof StrikeMarkType;
 }

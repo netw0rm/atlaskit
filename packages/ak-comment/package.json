@@ -1,6 +1,6 @@
 {
   "name": "ak-comment",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "ak-comment webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -12,14 +12,14 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^2.8.0",
-    "akutil-shared-styles": "^35.0.1",
-    "skatejs": "^4.0.4"
+    "akutil-common": "^5.0.0",
+    "akutil-shared-styles": "^37.0.0",
+    "skatejs": "^4.0.6"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-avatar": "^3.1.0",
+    "ak-avatar": "^4.0.0",
     "ak-button": "^3.0.0",
     "ak-button-group": "^2.0.0",
     "ak-icon": "^10.0.0",

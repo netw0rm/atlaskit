@@ -81,9 +81,9 @@ class AkEditorBitbucket extends Component {
   placeholder: string;
   imageUploader: Function;
   context: string;
-  expanded: boolean;
 
   // private state
+  _expanded: boolean;
   _focused: boolean;
   _canChangeBlockType: boolean;
   _strongActive: boolean;
@@ -273,8 +273,9 @@ class AkEditorBitbucket extends Component {
    * Focus the content region of the editor.
    */
   focus(): void {
+    this._focused = true;
+
     if (this._pm) {
-      this._focused = true;
       this._pm.focus();
     }
   }
@@ -305,6 +306,18 @@ class AkEditorBitbucket extends Component {
    */
   get ready(): boolean {
     return this._ready || false;
+  }
+
+  set expanded(isExpanded: boolean) {
+    this._expanded = isExpanded;
+
+    if (!isExpanded) {
+      this._focused = false;
+    }
+  }
+
+  get expanded(): boolean {
+    return this._expanded;
   }
 
   /**
@@ -491,6 +504,11 @@ class AkEditorBitbucket extends Component {
 
     // 'change' event is public API
     pm.on.change.add(() => emit(this, 'change'));
+
+    // Focus on the PM content area if necessary
+    if (this._focused) {
+      pm.focus();
+    }
 
     this._pm = pm;
   }

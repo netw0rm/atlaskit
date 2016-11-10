@@ -20,6 +20,9 @@ export default () => {
   });
 
   afterEach(() => {
+    if (fixture.parentNode !== document.body) {
+      throw new Error('fixture.parentNode changed');
+    }
     document.body.removeChild(fixture);
   });
 

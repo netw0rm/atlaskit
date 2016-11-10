@@ -1,4 +1,4 @@
-import { Fragment, Node, Slice } from 'ak-editor-prosemirror';
+import { Fragment, Node, Slice, Schema, MarkType, NodeType } from 'ak-editor-prosemirror';
 import schema from 'ak-editor-schema';
 import matches from './matches';
 
@@ -76,7 +76,7 @@ export interface RefsNode extends Node {
  * declaratively describe a position within some text, and then access the
  * position in the resulting node.
  */
-export function text(value: string): RefsContentItem {
+export function text(value: string, _schema: Schema = schema): RefsContentItem {
   let stripped = "";
   let textIndex = 0;
   let refs: Refs = {};
@@ -92,7 +92,7 @@ export function text(value: string): RefsContentItem {
 
   const node = stripped === ""
     ? new RefsTracker()
-    : schema.text(stripped) as RefsNode;
+    : _schema.text(stripped) as RefsNode;
 
   node.refs = refs;
   return node;
@@ -155,10 +155,10 @@ export function flatten<T>(deep: (T | T[])[]): T[] {
 /**
  * Coerce builder content into ref nodes.
  */
-export function coerce(content: BuilderContent[]) {
+export function coerce(content: BuilderContent[], schema: Schema) {
   const refsContent = content
     .map(item => typeof item === 'string'
-      ? text(item)
+      ? text(item, schema)
       : item) as (RefsContentItem | RefsContentItem[])[];
   return sequence(...flatten(refsContent));
 }
@@ -166,24 +166,22 @@ export function coerce(content: BuilderContent[]) {
 /**
  * Create a factory for nodes.
  */
-export function nodeFactory(type: string, attrs = {}) {
-  const nodeType = schema.nodes[type];
-
+export function nodeFactory(type: NodeType, attrs = {}) {
   return function(...content: BuilderContent[]): RefsNode {
-    const { nodes, refs } = coerce(content);
-    const node = nodeType.create(attrs, nodes) as RefsNode;
+    const { nodes, refs } = coerce(content, type.schema);
+    const node = type.create(attrs, nodes) as RefsNode;
     node.refs = refs;
     return node;
-  }
+  };
 }
 
 /**
  * Create a factory for marks.
  */
-export function markFactory(type: string, attrs = {}) {
-  const mark = schema.mark(type, attrs);
+export function markFactory(type: MarkType, attrs = {}) {
+  const mark = type.create(attrs);
   return (...content: BuilderContent[]) : RefsNode[] => {
-    const { nodes } = coerce(content);
+    const { nodes } = coerce(content, type.schema);
     return nodes
       .map(node => {
         if (mark.type.isInSet(node.marks)) {
@@ -195,30 +193,30 @@ export function markFactory(type: string, attrs = {}) {
         }
       });
   };
-}
+};
 
-export const doc = nodeFactory("doc", {});
-export const p = nodeFactory("paragraph", {});
-export const blockquote = nodeFactory("blockquote", {});
-export const h1 = nodeFactory("heading", {level: 1});
-export const h2 = nodeFactory("heading", {level: 2});
-export const h3 = nodeFactory("heading", {level: 3});
-export const h4 = nodeFactory("heading", {level: 4});
-export const h5 = nodeFactory("heading", {level: 5});
-export const h6 = nodeFactory("heading", {level: 6});
-export const li = nodeFactory("list_item", {});
-export const ul = nodeFactory("bullet_list", {});
-export const ol = nodeFactory("ordered_list", {});
-export const br = schema.node("hard_break");
-export const code_block = (attrs: {} = {}) => nodeFactory("code_block", attrs);
-export const img = (attrs: { src: string, alt?: string, title?: string }) => schema.node("image", attrs);
-export const emoji = (attrs: { id: string }) => schema.node("emoji", attrs);
-export const mention = (attrs: { id: string, displayName?: string }) => schema.node("mention", attrs);
-export const hr = schema.node("horizontal_rule");
-export const em = markFactory("em", {});
-export const strong = markFactory("strong", {});
-export const code = markFactory("code", {});
-export const del = markFactory("del", {});
-export const a = (attrs: { href: string, title?: string }) => markFactory("link", attrs);
+export const doc = nodeFactory(schema.nodes.doc, {});
+export const p = nodeFactory(schema.nodes.paragraph, {});
+export const blockquote = nodeFactory(schema.nodes.blockquote, {});
+export const h1 = nodeFactory(schema.nodes.heading, {level: 1});
+export const h2 = nodeFactory(schema.nodes.heading, {level: 2});
+export const h3 = nodeFactory(schema.nodes.heading, {level: 3});
+export const h4 = nodeFactory(schema.nodes.heading, {level: 4});
+export const h5 = nodeFactory(schema.nodes.heading, {level: 5});
+export const h6 = nodeFactory(schema.nodes.heading, {level: 6});
+export const li = nodeFactory(schema.nodes.list_item, {});
+export const ul = nodeFactory(schema.nodes.bullet_list, {});
+export const ol = nodeFactory(schema.nodes.ordered_list, {});
+export const br = schema.nodes.hard_break.createChecked();
+export const code_block = (attrs: {} = {}) => nodeFactory(schema.nodes.code_block, attrs);
+export const img = (attrs: { src: string, alt?: string, title?: string }) => schema.nodes.image.createChecked(attrs);
+export const emoji = (attrs: { id: string }) => schema.nodes.emoji.createChecked(attrs);
+export const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.mention.createChecked(attrs);
+export const hr = schema.nodes.horizontal_rule.createChecked();
+export const em = markFactory(schema.marks.em, {});
+export const strong = markFactory(schema.marks.strong, {});
+export const code = markFactory(schema.marks.code, {});
+export const del = markFactory(schema.marks.del, {});
+export const a = (attrs: { href: string, title?: string }) => markFactory(schema.marks.link, attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(new Fragment(flatten<BuilderContent>(content)), 0, 0);

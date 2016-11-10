@@ -1,28 +1,33 @@
 {
   "name": "ak-editor-plugin-mentions",
-  "version": "3.0.2",
+  "version": "5.0.1",
   "description": "This plugin provides mentions node type and related behaviors to Atlassian Editor",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.ts",
-  "typings": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-plugin-mentions"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "ak-editor-prosemirror": "^2.0.0"
+    "ak-editor-prosemirror": "^4.0.0"
   },
   "devDependencies": {
-    "ak-editor-test": "^3.0.0",
-    "ak-editor-schema": "^2.0.0"
+    "ak-editor-test": "*",
+    "ak-editor-schema": "*"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

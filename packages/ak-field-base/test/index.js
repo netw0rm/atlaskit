@@ -5,8 +5,9 @@ import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import { Component } from 'skatejs';
 
-import FieldBase from '../src';
+import FieldBase, { events } from '../src';
 import shadowStyles from '../src/shadow.less';
+import { insertLightDomInput } from './_helpers';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -34,8 +35,11 @@ describe('ak-field-base', () => {
   const {
     label: labelClass,
     labelText: labelTextClass,
-    hidden: hiddenClass,
+    compact: compactClass,
+    subtle: subtleClass,
+    disabled: disabledClass,
     focused: focusedClass,
+    hidden: hiddenClass,
     invalid: invalidClass,
   } = shadowStyles.locals;
 
@@ -48,6 +52,9 @@ describe('ak-field-base', () => {
   describe('exports', () => {
     it('should export a base component', () => {
       (new FieldBase()).should.be.an.instanceof(Component);
+    });
+    it('should export a beforeFocusedChange event', () => {
+      expect(events.beforeFocusedChange).to.be.defined;
     });
   });
 
@@ -86,15 +93,44 @@ describe('ak-field-base', () => {
     });
   });
 
-  describe('focus behaviour', () => {
+  describe('disabled prop', () => {
+    it('should be reflected', () => {
+      const disabledReflected = () => (shadowRoot.querySelector(`.${disabledClass}`) !== null);
+      expect(disabledReflected()).to.be.false;
+
+      component.disabled = true;
+      return waitUntil(disabledReflected).should.be.fulfilled;
+    });
+  });
+
+  describe('appearance prop', () => {
+    describe('with value of compact', () => {
+      it('should be reflected', () => {
+        const compactReflected = () => (shadowRoot.querySelector(`.${compactClass}`) !== null);
+        expect(compactReflected()).to.be.false;
+
+        component.appearance = 'compact';
+        return waitUntil(compactReflected).should.be.fulfilled;
+      });
+    });
+
+    describe('with value of subtle', () => {
+      it('should be reflected', () => {
+        const subtleReflected = () => (shadowRoot.querySelector(`.${subtleClass}`) !== null);
+        expect(subtleReflected()).to.be.false;
+
+        component.appearance = 'subtle';
+        return waitUntil(subtleReflected).should.be.fulfilled;
+      });
+    });
+  });
+
+  describe('focus behaviour without override', () => {
     let inputChild;
     const focusEvent = new CustomEvent('focus');
 
     beforeEach(() => {
-      inputChild = document.createElement('input');
-      inputChild.type = 'text';
-      inputChild.slot = 'input-slot';
-      component.appendChild(inputChild);
+      inputChild = insertLightDomInput(component);
     });
     afterEach(() => {
       component.removeChild(inputChild);
@@ -120,6 +156,74 @@ describe('ak-field-base', () => {
         inputChild.dispatchEvent(blurEvent);
 
         return waitUntil(() => !focusApplied());
+      }).should.be.fulfilled;
+    });
+  });
+
+  describe('focus behaviour with override set', () => {
+    let inputChild;
+    const focusEvent = new CustomEvent('focus');
+
+    beforeEach(() => {
+      inputChild = insertLightDomInput(component);
+      component.override = { focused: false };
+    });
+    afterEach(() => {
+      component.removeChild(inputChild);
+    });
+
+    it('should NOT apply focus styles when slotted child is focused', () => {
+      const focusApplied = () => (shadowRoot.querySelector(`.${focusedClass}`) !== null);
+      let timerExpired = false;
+      // checks if the timer is finished
+      const checkTimer = () => (timerExpired);
+
+      expect(focusApplied()).to.be.false;
+      inputChild.dispatchEvent(focusEvent);
+      setTimeout(() => {
+        timerExpired = true;
+      }, 10);
+
+      // wait 10ms then check if the focus styles are applied
+      return waitUntil(checkTimer).then(() => {
+        expect(focusApplied()).to.be.false;
+      }).should.be.fulfilled;
+    });
+  });
+
+  describe('beforeFocusedChange event', () => {
+    let inputChild;
+    const spy = sinon.spy();
+    const focusEvent = new CustomEvent('focus');
+    const blurEvent = new CustomEvent('blur');
+
+    beforeEach(() => {
+      inputChild = insertLightDomInput(component);
+      component.addEventListener(events.beforeFocusedChange, spy);
+    });
+    afterEach(() => {
+      component.removeChild(inputChild);
+      component.removeEventListener(events.beforeFocusedChange, spy);
+      spy.reset();
+    });
+
+    it('should fire when input receives focus and blur events', () => {
+      const focusApplied = () => (shadowRoot.querySelector(`.${focusedClass}`) !== null);
+
+      inputChild.dispatchEvent(focusEvent);
+
+      return waitUntil(focusApplied).then(() => {
+        spy.should.have.been.calledOnce;
+        // check that the call had the correct focused value passed in too.
+        expect(spy.args[0][0].detail.focused).to.be.true;
+
+        // now fire the blur event
+        inputChild.dispatchEvent(blurEvent);
+
+        return waitUntil(() => !focusApplied());
+      }).then(() => {
+        spy.should.have.been.calledTwice;
+        expect(spy.args[1][0].detail.focused).to.be.false;
       }).should.be.fulfilled;
     });
   });

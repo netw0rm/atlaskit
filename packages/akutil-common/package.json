@@ -1,6 +1,6 @@
 {
   "name": "akutil-common",
-  "version": "2.8.0",
+  "version": "5.0.1",
   "description": "Utilities shared by AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -16,17 +16,19 @@
   "dependencies": {
     "babel-runtime": "^6.11.6",
     "create-error": "^0.3.1",
-    "jss": "^5.4.0",
-    "jss-nested": "^2.4.2",
     "keycode": "^2.1.2"
   },
   "devDependencies": {
-    "akutil-common-test": "^4.0.0",
+    "akutil-common-test": "*",
     "custom-event-polyfill": "^0.3.0",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.6"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

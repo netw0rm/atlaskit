@@ -1,27 +1,32 @@
 {
   "name": "ak-editor-plugin-image-upload",
-  "version": "3.0.1",
+  "version": "5.0.1",
   "description": "An image upload plugin for ProseMirror",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.ts",
-  "typings": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-plugin-image-upload"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts"
   ],
   "dependencies": {
-    "ak-editor-prosemirror": "^2.0.0"
+    "ak-editor-prosemirror": "^4.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-editor-test": "^3.0.0"
+    "ak-editor-test": "*"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

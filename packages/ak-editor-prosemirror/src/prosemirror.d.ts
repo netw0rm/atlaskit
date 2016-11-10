@@ -122,7 +122,9 @@ declare module 'prosemirror/dist/edit/selection' {
     to: number;
   }
   export class TextSelection extends Selection {
-      constructor($anchor: ResolvedPos, $head: ResolvedPos = $anchor)
+      constructor($anchor: ResolvedPos, $head?: ResolvedPos);
+      $anchor: ResolvedPos;
+      $head: ResolvedPos;
   }
   export class NodeSelection extends Selection {
       constructor($from: ResolvedPos)
@@ -130,11 +132,8 @@ declare module 'prosemirror/dist/edit/selection' {
 }
 
 declare module 'prosemirror/dist/edit/range' {
-  export interface Selection {}
-  export interface TextSelection {}
-  export interface NodeSelection {}
   export interface MarkedRange {}
-  export interface MarkedRange {}
+  export interface RangeStore {}
 }
 
 declare module 'prosemirror/dist/edit' {
@@ -151,7 +150,7 @@ declare module 'prosemirror/dist/edit/input' {
     export class Input {
         constructor(pm: ProseMirror);
         dispatchKey(name: any, e: any): boolean;
-        insertText(from: any, to: any, text: any, findSelection: any): void;
+        insertText(from: number, to: number, text: any, findSelection: any): void;
         composing: any;
         startComposition(dataLen: any, realStart: any): void;
         applyComposition(andFlush: any): void;
@@ -163,6 +162,7 @@ declare module 'prosemirror/dist/edit/main' {
     import { EditorTransform } from 'prosemirror/dist/edit/transform';
     import { UpdateScheduler } from 'prosemirror/dist/edit/update';
     import { Schema } from 'prosemirror/dist/model/schema';
+    import { Selection } from 'prosemirror/dist/edit/selection';
     import { Slice } from 'prosemirror/dist/model';
 
     interface Subscription<Handler> {
@@ -214,6 +214,7 @@ declare module 'prosemirror/dist/edit/main' {
         doc: any;
         sel: any;
         content: HTMLElement;
+        root: HTMLElement;
         wrapper: HTMLElement;
         getOption(name: any): any;
         selection: any;
@@ -231,7 +232,7 @@ declare module 'prosemirror/dist/edit/main' {
         flush(): boolean;
         addKeymap(map: any, priority?: number): void;
         removeKeymap(map: any): boolean;
-        markRange(from: any, to: any, options: any): MarkedRange;
+        markRange(from: number, to: number, options: any): MarkedRange;
         removeRange(range: any): void;
         activeMarks(): any;
         addActiveMark(mark: any): void;
@@ -250,7 +251,7 @@ declare module 'prosemirror/dist/edit/main' {
             right: any;
         };
         scrollIntoView(pos?: any): void;
-        markRangeDirty(from: any, to: any, doc?: any): void;
+        markRangeDirty(from: number, to: number, doc?: any): void;
         markAllDirty(): void;
         translate(string: any): any;
         scheduleDOMUpdate(f: any): void;
@@ -289,7 +290,7 @@ declare module 'prosemirror/dist/edit/transform' {
         applyAndScroll(): any;
         selection: any;
         setSelection(selection: any): this;
-        replaceSelection(node: any, inheritMarks: any): this;
+        replaceSelection(node: any, inheritMarks?: any): this;
         deleteSelection(): any;
         typeText(text: any): this;
         pm: ProseMirror;
@@ -344,7 +345,7 @@ declare module 'prosemirror/dist/history' {
         undoDepth: any;
         redoDepth: any;
         cut(): void;
-        shift(from: any, to: any): any;
+        shift(from: number, to: number): any;
         applyIgnoring(transform: any, selection: any): void;
         getVersion(): any;
         isAtVersion(version: any): boolean;
@@ -561,30 +562,31 @@ declare module 'prosemirror/dist/model/diff' {
 }
 
 declare module 'prosemirror/dist/model/fragment' {
+    import { Node } from 'prosemirror/dist/model';
     export class Fragment {
         constructor(content: any, size?: any);
         toString(): string;
         toStringInner(): any;
-        nodesBetween(from: any, to: any, f: any, nodeStart: any, parent: any): void;
-        textBetween(from: any, to: any, separator: any): string;
-        cut(from: any, to: any): Fragment;
-        cutByIndex(from: any, to: any): any;
-        append(other: any): any;
-        replaceChild(index: any, node: any): Fragment;
-        addToStart(node: any): Fragment;
-        addToEnd(node: any): Fragment;
+        nodesBetween(from: number, to: number, f: any, nodeStart: any, parent: any): void;
+        textBetween(from: number, to: number, separator: any): string;
+        cut(from: number, to: number): Fragment;
+        cutByIndex(from: number, to: number): any;
+        append(other: Fragment): Fragment;
+        replaceChild(index: number, node: Node): Fragment;
+        addToStart(node: Node): Fragment;
+        addToEnd(node: Node): Fragment;
         toJSON(): any;
-        static fromJSON(schema: any, value: any): any;
-        static fromArray(array: any): any;
+        static fromJSON(schema: any, value: any): Fragment;
+        static fromArray(array: any): Fragment;
         eq(other: any): boolean;
-        static from(nodes: any): any;
-        firstChild: any;
-        lastChild: any;
-        childCount: any;
-        child(index: any): any;
-        offsetAt(index: any): number;
-        maybeChild(index: any): any;
-        forEach(f: any): void;
+        static from(nodes: any): Fragment;
+        firstChild: Node | null;
+        lastChild: Node | null;
+        childCount: number;
+        child(index: number): Node;
+        offsetAt(index: number): number;
+        maybeChild(index: number): Node | undefined;
+        forEach(f: (node: Node, offset?: number, index?: number) => any): void;
         findDiffStart(other: any, pos?: number): any;
         findDiffEnd(other: any, pos?: any, otherPos?: any): any;
         findIndex(pos: any, round?: number): {
@@ -629,16 +631,16 @@ declare module 'prosemirror/dist/model' {
 declare module 'prosemirror/dist/model/mark' {
     import { MarkType } from 'prosemirror/dist/model/schema';
     export class Mark {
-        constructor(type: any, attrs: any);
+        constructor(type: MarkType, attrs: any);
         toJSON(): {
             _: any;
         };
         type: MarkType;
         attrs: any;
-        addToSet(set: any): any;
-        removeFromSet(set: any): any;
-        isInSet(set: any): boolean;
-        eq(other: any): boolean;
+        addToSet(set: Mark[]): Mark[];
+        removeFromSet(set: Mark[]): Mark[];
+        isInSet(set: Mark[]): boolean;
+        eq(other: Mark): boolean;
         static sameSet(a: any, b: any): boolean;
         static setFrom(marks: any): any;
     }
@@ -646,11 +648,13 @@ declare module 'prosemirror/dist/model/mark' {
 
 declare module 'prosemirror/dist/model/node' {
     import { ResolvedPos } from 'prosemirror/dist/model/resolvedpos';
+    import { Mark, Fragment } from 'prosemirror/dist/model';
+    import { NodeType } from 'prosemirror/dist/model';
     export class Node {
         constructor(type?: any, attrs?: any, content?: any, marks?: any);
-        content: any;
+        content: Fragment;
         nodeSize: number;
-        childCount: any;
+        childCount: number;
         child(index: any): any;
         maybeChild(index: any): any;
         forEach(f: any): void;
@@ -661,11 +665,11 @@ declare module 'prosemirror/dist/model/node' {
         sameMarkup(other: any): boolean;
         hasMarkup(type: any, attrs: any, marks: any): boolean;
         copy(content?: any): any;
-        mark(marks: any): any;
-        cut(from: any, to: any): any;
-        slice(from: any, to?: any): any;
-        replace(from: any, to: any, slice: any): any;
-        nodeAt(pos: any): this;
+        mark(marks: Mark[]): this;
+        cut(from: number, to: number): any;
+        slice(from: number, to?: number): any;
+        replace(from: number, to: number, slice: any): any;
+        nodeAt(pos: number): this;
         childAfter(pos: any): {
             node: any;
             index: any;
@@ -676,25 +680,25 @@ declare module 'prosemirror/dist/model/node' {
             index: any;
             offset: any;
         };
-        nodesBetween(from: any, to: any, f: any, pos?: number): void;
+        nodesBetween(from: number, to: number, f: any, pos?: number): void;
         descendants(f: any): void;
         resolve(pos: any): any;
         resolveNoCache(pos: any): ResolvedPos;
         marksAt(pos: any): any;
-        rangeHasMark(from: any, to: any, type: any): boolean;
-        isBlock: any;
-        isTextblock: any;
-        isInline: any;
-        isText: any;
-        toString(): any;
-        type: any;
+        rangeHasMark(from: number, to: number, type: any): boolean;
+        isBlock: boolean;
+        isTextblock: boolean;
+        isInline: boolean;
+        isText: boolean;
+        toString(): string;
+        type: NodeType;
         attrs: any;
         marks: any;
         textContent: string;
         text?: string;
         contentMatchAt(index: any): any;
-        canReplace(from: any, to: any, replacement: any, start: any, end: any): any;
-        canReplaceWith(from: any, to: any, type: any, attrs: any, marks: any): any;
+        canReplace(from: number, to: number, replacement: any, start: any, end: any): any;
+        canReplaceWith(from: number, to: number, type: any, attrs: any, marks: any): any;
         canAppend(other: any): any;
         defaultContentType(at: any): any;
         toJSON(): {
@@ -707,7 +711,7 @@ declare module 'prosemirror/dist/model/node' {
         constructor(type: any, attrs: any, content: any, marks: any);
         toString(): any;
         textContent: any;
-        textBetween(from: any, to: any): any;
+        textBetween(from: number, to: number): any;
         nodeSize: any;
         mark(marks: any): TextNode;
         cut(from?: number, to?: any): any;
@@ -719,33 +723,34 @@ declare module 'prosemirror/dist/model/node' {
 }
 
 declare module 'prosemirror/dist/model/resolvedpos' {
+    import { Node } from 'prosemirror/dist/model';
     export class ResolvedPos {
-        constructor(pos: any, path: any, parentOffset: any);
+        constructor(pos: number, path: any, parentOffset: any);
         depth: number;
         pos: number;
         parentOffset: number;
         resolveDepth(val: any): any;
         parent: any;
-        node(depth: any): any;
-        index(depth: any): any;
-        indexAfter(depth: any): any;
-        start(depth: any): any;
-        end(depth: any): any;
-        before(depth: any): any;
-        after(depth: any): any;
+        node(depth: number): Node;
+        index(depth?: number): number;
+        indexAfter(depth?: number): number;
+        start(depth?: number): number;
+        end(depth?: number): number;
+        before(depth?: number): number;
+        after(depth?: number): number;
         atNodeBoundary: boolean;
-        nodeAfter: any;
-        nodeBefore: any;
-        sameDepth(other: any): number;
+        nodeAfter: Node | null;
+        nodeBefore: Node | null;
+        sameDepth(other: ResolvedPos): number;
         blockRange(other: this = this, pred?: any): NodeRange;
-        sameParent(other: any): boolean;
+        sameParent(other: ResolvedPos): boolean;
         toString(): string;
         plusOne(): ResolvedPos;
-        static resolve(doc: any, pos: any): ResolvedPos;
-        static resolveCached(doc: any, pos: any): any;
+        static resolve(doc: Node, pos: number): ResolvedPos;
+        static resolveCached(doc: Node, pos: number): any;
     }
     export class NodeRange {
-        constructor($from: any, $to: any, depth: any);
+        constructor($from: any, $to: any, depth: number);
         start: any;
         end: any;
         parent: any;
@@ -757,9 +762,11 @@ declare module 'prosemirror/dist/model/resolvedpos' {
 declare module 'prosemirror/dist/model/schema' {
     import { Node, TextNode } from 'prosemirror/dist/model/node';
     import { OrderedMap } from 'prosemirror/dist/util/orderedmap';
+    import { Mark, Schema } from 'prosemirror/dist/model';
     export class NodeType {
         constructor(name: string, schema: Schema);
         name: string;
+        schema: Schema;
         isBlock: boolean;
         isTextblock: boolean;
         isInline: boolean;
@@ -770,10 +777,10 @@ declare module 'prosemirror/dist/model/schema' {
         hasRequiredAttrs(ignore: any): boolean;
         compatibleContent(other: any): any;
         computeAttrs(attrs: any): any;
-        create(attrs: any, content: any, marks: any): Node;
-        createChecked(attrs: any, content: any, marks: any): Node;
-        createAndFill(attrs: any, content: any, marks: any): Node;
-        validContent(content: any, attrs: any): any;
+        create(attrs?: any, content?: any, marks?: any): Node;
+        createChecked(attrs?: any, content?: any, marks?: any): Node;
+        createAndFill(attrs?: any, content?: any, marks?: any): Node;
+        validContent(content: any, attrs?: any): boolean;
         static compile(nodes: any, schema: any): any;
         toDOM(node?: Node): any[];
         get matchDOMTag(): any;
@@ -796,12 +803,12 @@ declare module 'prosemirror/dist/model/schema' {
         get isRequired(): boolean;
     }
     export class MarkType {
-        constructor(name: any, rank: any, schema: any);
+        constructor(name: string, rank: number, schema: Schema);
         name: string;
         get attrs(): { [name: string]: Attribute };
         schema: Schema;
         inclusiveRight: boolean;
-        create(attrs: any): any;
+        create(attrs?: { [name: string]: any }): Mark;
         static compile(marks: any, schema: any): any;
         removeFromSet(set: any): any;
         isInSet(set: this[]): this | undefined;
@@ -1095,7 +1102,7 @@ declare module 'prosemirror/dist/transform/replace_step' {
     import { Step, StepResult } from 'prosemirror/dist/transform/step';
     import { PosMap } from 'prosemirror/dist/transform/map';
     export class ReplaceStep extends Step {
-        constructor(from: any, to: any, slice: any, structure: any);
+        constructor(from: number, to: number, slice: any, structure: any);
         apply(doc: any): StepResult;
         posMap(): PosMap;
         invert(doc: any): any;
@@ -1103,7 +1110,7 @@ declare module 'prosemirror/dist/transform/replace_step' {
         static fromJSON(schema: any, json: any): any;
     }
     export class ReplaceAroundStep extends Step {
-        constructor(from: any, to: any, gapFrom: any, gapTo: any, slice: any, insert: any, structure: any);
+        constructor(from: number, to: number, gapFrom: any, gapTo: any, slice: any, insert: any, structure: any);
         apply(doc: any): StepResult;
         posMap(): PosMap;
         invert(doc: any): ReplaceAroundStep;
@@ -1132,7 +1139,7 @@ declare module 'prosemirror/dist/transform/step' {
         constructor(doc: any, failed: any);
         static ok(doc: any): StepResult;
         static fail(message: any): StepResult;
-        static fromReplace(doc: any, from: any, to: any, slice: any): StepResult;
+        static fromReplace(doc: any, from: number, to: number, slice: any): StepResult;
     }
 }
 

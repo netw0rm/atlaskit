@@ -22,8 +22,8 @@ interface DOMAttributes {
 export class Entity extends Inline {
   get attrs(): EntityAttributes {
     return {
-      id: new Attribute({default: ''}),
-      entityType: new Attribute({default: 'entity'})
+      id: new Attribute({ default: '' }),
+      entityType: new Attribute({ default: 'entity' })
     };
   }
 
@@ -40,37 +40,41 @@ export class Entity extends Inline {
 export class Mention extends Entity {
   get attrs(): MentionAttributes {
     return {
-      id: new Attribute({default: ''}),
-      entityType: new Attribute({default: 'mention'}),
-      displayName: new Attribute({default: ''}),
+      id: new Attribute({ default: '' }),
+      entityType: new Attribute({ default: 'mention' }),
+      displayName: new Attribute({ default: '' }),
     };
   }
 
   get matchDOMTag(): ParseSpec {
-    return { 'span[editor-entity-type=mention]': (dom: Element): MentionAttributes => {
-      return {
-        id: dom.getAttribute('editor-entity-id'),
-        entityType: dom.getAttribute('editor-entity-type'),
-        displayName: dom.getAttribute('editor-mention-display-name'),
-      };
-    }};
+    return {
+      'span[editor-entity-type=mention]': (dom: Element): MentionAttributes => {
+        return {
+          id: dom.getAttribute('editor-entity-id'),
+          entityType: dom.getAttribute('editor-entity-type'),
+          displayName: dom.getAttribute('editor-mention-display-name'),
+        };
+      }
+    };
   }
 }
 
 export class Emoji extends Entity {
   get attrs(): EntityAttributes {
     return {
-      id: new Attribute({default: ''}),
-      entityType: new Attribute({default: 'emoji'}),
+      id: new Attribute({ default: '' }),
+      entityType: new Attribute({ default: 'emoji' }),
     };
   }
 
   get matchDOMTag(): ParseSpec {
-    return { 'span[editor-entity-type=emoji]': (dom: Element): EntityAttributes => {
-      return {
-        id: dom.getAttribute('editor-entity-id'),
-        entityType: dom.getAttribute('editor-entity-type'),
-      };
-    }};
+    return {
+      'span[editor-entity-type=emoji]': (dom: Element): EntityAttributes => {
+        return {
+          id: dom.getAttribute('editor-entity-id'),
+          entityType: dom.getAttribute('editor-entity-type'),
+        };
+      }
+    };
   }
 }

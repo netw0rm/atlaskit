@@ -30,6 +30,8 @@ describe('ak-field-base', () => {
       slotWrapper: slotWrapperClass,
       invalid: invalidClass,
       focused: focusedClass,
+      compact: compactClass,
+      subtle: subtleClass,
     } = shadowStyles.locals;
 
     afterEach(() => tearDownComponent(component));
@@ -74,8 +76,8 @@ describe('ak-field-base', () => {
 
       it('should render the slotwrapper with the .invalid class', () => {
         const invalidSlotWrapperClassSelector = `.${slotWrapperClass}.${invalidClass}`;
-        const focusedSlotWrapper = shadowRoot.querySelector(invalidSlotWrapperClassSelector);
-        expect(focusedSlotWrapper).to.not.be.null;
+        const invalidSlotWrapper = shadowRoot.querySelector(invalidSlotWrapperClassSelector);
+        expect(invalidSlotWrapper).to.not.be.null;
       });
     });
 
@@ -90,6 +92,34 @@ describe('ak-field-base', () => {
         const invalidElement = shadowRoot.querySelector(`.${invalidClass}`);
         expect(focusedElement).to.not.be.null;
         expect(invalidElement).to.be.null;
+      });
+    });
+
+    describe('appearance', () => {
+      describe('compact', () => {
+        const tmpDefinition = (<Content appearance="compact" />);
+
+        beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
+          .then(setupLocalVariables));
+
+        it('should render the slotwrapper with the .compact class', () => {
+          const compactSlotWrapperClassSelector = `.${slotWrapperClass}.${compactClass}`;
+          const compactSlotWrapper = shadowRoot.querySelector(compactSlotWrapperClassSelector);
+          expect(compactSlotWrapper).to.not.be.null;
+        });
+      });
+
+      describe('subtle', () => {
+        const tmpDefinition = (<Content appearance="subtle" />);
+
+        beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
+          .then(setupLocalVariables));
+
+        it('should render the slotwrapper with the .subtle class', () => {
+          const subtleSlotWrapperClassSelector = `.${slotWrapperClass}.${subtleClass}`;
+          const subtleSlotWrapper = shadowRoot.querySelector(subtleSlotWrapperClassSelector);
+          expect(subtleSlotWrapper).to.not.be.null;
+        });
       });
     });
   });

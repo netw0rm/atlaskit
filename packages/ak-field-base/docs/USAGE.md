@@ -49,6 +49,7 @@ In general you'll want to fix the following:
 * Remove default focus styles (these are handled by `field-base`)
 * Remove borders and background-color.
 * Set the width to 100%.
+* Inherit cursor and color styles from `field-base`.
 
 This would look something like this in CSS
 
@@ -56,9 +57,11 @@ This would look something like this in CSS
 input.styledInput {
   background: transparent;
   border: 0;
+  box-sizing: border-box;
+  color: inherit;
+  cursor: inherit;
   outline: 0;
   width: 100%;
-  box-sizing: border-box;
 }
 ```
 
@@ -67,7 +70,41 @@ or in JavaScript
 ```javascript
 inputField.style.background = 'transparent';
 inputField.style.border = '0';
+inputField.style.boxSizing = 'border-box';
+inputField.style.color = 'inherit';
+inputField.style.cursor = 'inherit';
 inputField.style.outline = 'none';
 inputField.style.width = '100%';
-inputField.style.boxSizing = 'border-box';
 ```
+
+#### Override Behaviour
+
+Components that extend `BaseComponent` (such as this one) support the `override` prop which can be used to take finer control of a prop.
+
+In cases where a component modifies it's own props (such as `ak-field-base` setting and removing `focused`), you may want to prevent this like so:
+
+```js
+// React
+render(){
+  return <ak-field-base override={{ focused: getMyFocusedState() }} />;
+}
+```
+
+```js
+// vanilla-JS
+fieldBase.override = { focused: getMyFocusedState() };
+```
+
+Essentially, just pass in the props you need more control of into override rather than the prop itself and the component will never overwrite your value.
+
+This means you'll also be responsible for setting it when neccessary. This usually involves listening to events like so:
+
+```js
+let myFocusState = false;
+/* ... */
+render() {
+  return <ak-field-base override={{ focused: myFocusState }} onBeforeFocusedChange={e => myFocusState = e.detail.focused}/>
+}
+```
+
+This way, the component will tell you when it **wants** to update its props, without actually changing them.

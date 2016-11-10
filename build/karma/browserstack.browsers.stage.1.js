@@ -16,6 +16,12 @@ const browserStackBrowsers = {
     os_version: 'El Capitan',
   },
   */
+  firefox_beta_osx: {
+    browser: 'Firefox',
+    browser_version: '50.0 beta',
+    os: 'OS X',
+    os_version: 'El Capitan',
+  },
   // One with native WC support
   chrome_latest_osx: {
     browser: 'chrome',

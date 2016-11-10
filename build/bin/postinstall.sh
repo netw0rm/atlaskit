@@ -2,8 +2,10 @@
 set -e
 
 BASEDIR=$(dirname $0)
-LERNA_LOC="`npm bin`/lerna"
-CHALK="`npm bin`/chalk"
+BIN_PATH=$(npm bin)
+LERNA_LOC="$BIN_PATH/lerna"
+CHALK="$BIN_PATH/chalk"
+VALIDATE_LOC="$BIN_PATH/validate-commit-msg"
 
 $CHALK --no-stdin -t "{blue Lerna bootstrap...}"
 if [[ -z "$BITBUCKET_COMMIT" ]]; then
@@ -16,5 +18,5 @@ fi
 if [[ -z "$BITBUCKET_COMMIT" ]]; then
   $CHALK --no-stdin -t "{blue Installing hooks...}"
   node $BASEDIR/pre-commit.install.js
-  validate-commit-msg
+  $VALIDATE_LOC
 fi

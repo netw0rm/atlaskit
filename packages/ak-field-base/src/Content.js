@@ -20,7 +20,7 @@ function cleanUpEventHandlers(ref) {
 }
 
 // Clean up any existing handlers before re-attaching them to avoid having multiple handlers
-function setupEventHandlers(ref, props) {
+function setupFocusEventHandlers(ref, props) {
   cleanUpEventHandlers(ref);
   ref[eventHandlers] = {
     focus: {
@@ -30,10 +30,6 @@ function setupEventHandlers(ref, props) {
     blur: {
       listener: props.onBlur,
       useCapture: true,
-    },
-    input: {
-      listener: props.onInput,
-      useCapture: false,
     },
   };
 
@@ -56,11 +52,12 @@ export default (props, children) => {
     <div
       className={slotWrapperClasses}
       ref={(ref) => {
-        setupEventHandlers(ref, props);
+        setupFocusEventHandlers(ref, props);
         if (props.ref) {
           props.ref(ref);
         }
       }}
+      {...props.eventHandlers}
     >
       {children()}
     </div>

@@ -39,6 +39,15 @@ function performValidation(elem) {
   elem[errorDialog].reposition(); // Ensure that the dialog is correctly positioned.
 }
 
+function getValidationEventHandlers(elem) {
+  // Strip out focus and blur, as they are special cases
+  const events = elem.validateOn.filter(e => (e !== 'focus' && e !== 'blur'));
+  return events.reduce((val, next) => {
+    val[`on-${next}`] = () => (performValidation(elem));
+    return val;
+  }, {});
+}
+
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class FieldBase
@@ -52,6 +61,9 @@ function performValidation(elem) {
  */
 export default define('ak-field-base', Base.extend({
   render(elem) {
+    const validateOnFocus = elem.validateOn.indexOf('focus') > -1;
+    const validateOnBlur = elem.validateOn.indexOf('blur') > -1;
+    const validationEventHandlers = getValidationEventHandlers(elem);
     return ([
       <Root>
         <Label
@@ -65,15 +77,19 @@ export default define('ak-field-base', Base.extend({
             disabled={elem.disabled}
             invalid={elem.invalid}
             ref={el => (elem[inputWrapper] = el)}
-            onInput={() => (performValidation(elem))}
             onFocus={() => {
-              performValidation(elem);
               setFocused(elem, true);
+              if (validateOnFocus) {
+                performValidation(elem);
+              }
             }}
             onBlur={() => {
-              performValidation(elem);
               setFocused(elem, false);
+              if (validateOnBlur) {
+                performValidation(elem);
+              }
             }}
+            eventHandlers={validationEventHandlers}
           >
             <slot
               name="input-slot"
@@ -197,6 +213,34 @@ export default define('ak-field-base', Base.extend({
      * @example @js field.disabled = true;
      */
     disabled: prop.boolean({ attribute: true }),
+    /**
+     * @description A list of events which should trigger validation on the field.
+     *
+     * You may supply an array of strings containing the event names for events that should trigger
+     * validation on the field. Alternatively, you may supply the event names as space-separated
+     * values in the matching attribute.
+     *
+     * **Note**: You may also bind validation to custom events. In this case, ensure that your
+     * custom event bubbles, and that it is dispatched from the internal input element, e.g.:
+     * ```js
+     * const myCustomEvent = new CustomEvent('my-custom-event', { bubbles: true });
+     * field.validateOn = ['my-custom-event'];
+     * field.querySelector('input').dispatchEvent(myCustomEvent);
+     * ```
+     * @memberof FieldBase
+     * @instance
+     * @type {string[]}
+     * @default false
+     * @example @html <ak-field-base validate-on="input blur"></ak-field-base>
+     * @example @js field.validateOn = ['input', 'blur'];
+     */
+    validateOn: {
+      attribute: true,
+      coerce: val => (Array.isArray(val) ? val : [val]),
+      default: ['blur'],
+      deserialize: val => val.split(' '),
+      serialize: val => val.join(' '),
+    },
   }, Base.props),
 }));
 

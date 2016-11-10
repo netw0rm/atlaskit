@@ -17,23 +17,26 @@ const slottedInputStyle = {
   width: '100%',
 };
 
-const InputFieldBase = props => (
-  <FieldBase
-    className={styles.locals.akFieldBase}
-    label="Label for FieldBase"
-    {...props}
-  >
-    <input
-      is
-      slot="input-slot"
-      type="text"
-      style={slottedInputStyle}
-      defaultValue={props.text || 'A slotted input'}
-      disabled={props.disabled}
-    />
-    {props.children}
-  </FieldBase>
-);
+const InputFieldBase = (props) => {
+  const defaultValue = props.text === '' ? props.text : (props.text || 'A slotted input');
+  return (
+    <FieldBase
+      className={styles.locals.akFieldBase}
+      label="Label for FieldBase"
+      {...props}
+    >
+      <input
+        is
+        slot="input-slot"
+        type="text"
+        style={slottedInputStyle}
+        defaultValue={defaultValue}
+        disabled={props.disabled}
+      />
+      {props.children}
+    </FieldBase>
+  );
+};
 
 const DivFieldBase = props => (<FieldBase
   className={styles.locals.akFieldBase}
@@ -44,7 +47,10 @@ const DivFieldBase = props => (<FieldBase
 </FieldBase>);
 
 InputFieldBase.propTypes = {
-  children: React.PropTypes.arrayOf(React.PropTypes.element),
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.element,
+    React.PropTypes.arrayOf(React.PropTypes.element),
+  ]),
   disabled: React.PropTypes.bool,
   text: React.PropTypes.string,
 };

@@ -24,6 +24,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
+    "ak-button": "^3.0.3",
     "ak-field-validator": "^1.0.0",
     "akutil-common-test": "*",
     "akutil-react": "*",

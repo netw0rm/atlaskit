@@ -1,7 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import reactify from 'akutil-react';
-import { ValidatorMinlength, ValidatorMaxlength } from 'ak-field-validator';
 
 import { name } from '../package.json';
 import FieldBaseWC from '../src';
@@ -9,8 +8,6 @@ import { InputFieldBase, DivFieldBase } from './shared-components';
 
 
 const FieldBase = reactify(FieldBaseWC);
-const ReactValidatorMin = reactify(ValidatorMinlength);
-const ReactValidatorMax = reactify(ValidatorMaxlength);
 
 const formStyle = {
   padding: '20px',
@@ -90,29 +87,6 @@ storiesOf(name, module)
       <form action="" style={formStyle}>
         <h2>My Label-less Form</h2>
         <InputFieldBase label="Slotted input" hideLabel text="A slotted input with no label" />
-      </form>
-    </div>
-  ))
-  .add('fieldbase with validator', () => (
-    <div>
-      <form action="" style={formStyle}>
-        <div>
-          <p>This ak-field-base must be 3 - 10 characters long.</p>
-        </div>
-        <InputFieldBase
-          label="Slotted input"
-          text=""
-        >
-          <ReactValidatorMin minlength="3" slot="validator-slot">
-            Must have at least 3 characters
-          </ReactValidatorMin>
-          <ReactValidatorMin minlength="5" slot="validator-slot">
-            Must have at least 5 characters
-          </ReactValidatorMin>
-          <ReactValidatorMax maxlength="10" slot="validator-slot">
-            Must have at most 10 characters
-          </ReactValidatorMax>
-        </InputFieldBase>
       </form>
     </div>
   ));

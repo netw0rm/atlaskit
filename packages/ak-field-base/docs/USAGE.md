@@ -87,11 +87,26 @@ The `ak-field-base` component comes with validation built-in. In order to use th
 </ak-field-base>
 ```
 
-Validation will happen automatically on the following events:
+By default, validation will occur when the field loses focus. You may specify events that should trigger validation via JS using the `validateOn` property.
 
-* `input`
-* `focus`
-* `blur`
+```js
+field.validateOn=['focus', 'blur'];
+```
+
+Alternatively, you may use the markup API to specify a space-separated list of event names.
+
+```html
+<ak-field-base validate-on="focus blur"></ak-field-base>
+```
+
+You may also bind validation to custom events. In this case, you must ensure that your custom event bubbles, and that it is dispatched from the
+internal input element, e.g.:
+
+```js
+const myCustomEvent = new CustomEvent('my-custom-event', { bubbles: true });
+field.validateOn = ['my-custom-event'];
+field.querySelector('input').dispatchEvent(myCustomEvent);
+```
 
 #### Override Behaviour
 

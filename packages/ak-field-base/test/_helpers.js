@@ -18,7 +18,7 @@ const insertLightDomInput = (component) => {
   return inputChild;
 };
 
-const createTestValidator = (tagName, cb) => (
+const defineTestValidator = (tagName, cb) => (
   define(tagName, class extends ValidatorBase {
     validatorFunction(value) {  // eslint-disable-line class-methods-use-this
       return cb(value);
@@ -26,4 +26,11 @@ const createTestValidator = (tagName, cb) => (
   })
 );
 
-export { createDefinition, insertLightDomInput, createTestValidator };
+const insertValidator = (component, validator) => {
+  validator.slot = 'validator-slot';
+  component.appendChild(validator);
+
+  return validator;
+};
+
+export { createDefinition, insertLightDomInput, defineTestValidator, insertValidator };

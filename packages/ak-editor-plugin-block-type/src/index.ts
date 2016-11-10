@@ -17,7 +17,7 @@ function isShallowObjectEqual(oldObject: BlockTypeState, newObject: BlockTypeSta
 
 export type StateChangeHandler = (state: BlockTypeState) => any;
 
-export default new Plugin(class BlockTypePlugin {
+class BlockTypePlugin {
   changeHandlers: StateChangeHandler[];
   pm: ProseMirror;
   state: BlockTypeState;
@@ -103,4 +103,9 @@ export default new Plugin(class BlockTypePlugin {
     this.changeHandlers.push(cb);
     cb(this.getState());
   }
-});
+}
+
+// IE11 + multiple prosemirror fix.
+Object.defineProperty(BlockTypePlugin, 'name', { value: 'BlockTypePlugin' });
+
+export default new Plugin(BlockTypePlugin);

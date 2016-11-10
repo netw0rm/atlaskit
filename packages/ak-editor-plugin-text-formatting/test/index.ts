@@ -10,6 +10,11 @@ chai.use(sinonChai);
 describe('ak-editor-plugin-text-formatting', () => {
   const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin });
 
+  it('defines a name for use by the ProseMirror plugin registry ', () => {
+    const Plugin = TextFormattingPlugin as any; // .State is not public API.
+    expect(Plugin.State.name).is.be.a('string');
+  });
+
   describe('em button', () => {
     it('should be able to toggle em', () => {
       const { pm, plugin } = editor(doc(p('{<}t{>}ext')));

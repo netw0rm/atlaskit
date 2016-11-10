@@ -90,7 +90,7 @@ function isShallowObjectEqual(
   return JSON.stringify(oldObject) === JSON.stringify(newObject);
 }
 
-export default new Plugin(class HyperlinkPlugin {
+class HyperlinkPlugin {
   changeHandlers: StateChangeHandler[];
   inputRules: InputRule[];
   pm: ProseMirror;
@@ -272,4 +272,9 @@ export default new Plugin(class HyperlinkPlugin {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
-});
+}
+
+// IE11 + multiple prosemirror fix.
+Object.defineProperty(HyperlinkPlugin, 'name', { value: 'HyperlinkPlugin' });
+
+export default new Plugin(HyperlinkPlugin);

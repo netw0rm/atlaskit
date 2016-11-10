@@ -13,6 +13,11 @@ describe('ak-editor-plugin-block-type', () => {
     return { pm, plugin, sel: pm.doc.refs['<>'] };
   };
 
+  it('defines a name for use by the ProseMirror plugin registry ', () => {
+    const Plugin = BlockTypePlugin as any; // .State is not public API.
+    expect(Plugin.State.name).is.be.a('string');
+  });
+
   it('should be able to change to heading1', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 

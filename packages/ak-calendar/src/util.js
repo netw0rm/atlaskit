@@ -30,6 +30,10 @@ function getI18n() {
   return i18n['en-au'];
 }
 
+function pad(num) {
+  return num < 10 ? `0${num}` : num;
+}
+
 export function getDayName(elem, i) {
   return getI18n().weekdays[i].substring(0, 3);
 }
@@ -38,8 +42,8 @@ export function getMonthName(elem, i) {
   return getI18n().months[i - 1];
 }
 
-export function dateToString(date) {
-  return date ? `${date.year}-${date.month + 1}-${date.day}` : '';
+export function dateToString(date, { fixMonth } = {}) {
+  return date ? `${date.year}-${pad(date.month + (fixMonth ? 1 : 0))}-${pad(date.day)}` : '';
 }
 
 export function makeArrayFromNumber(i) {
@@ -49,4 +53,14 @@ export function makeArrayFromNumber(i) {
     arr.push(a);
   }
   return arr;
+}
+
+export function makeEventDetail(date) {
+  const detail = {
+    day: Number(date.day),
+    month: Number(date.month),
+    year: Number(date.year),
+  };
+  detail.date = dateToString(detail);
+  return detail;
 }

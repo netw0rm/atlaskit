@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import AkIconArrowLeft from 'ak-icon/glyph/arrowleft';
 import AkIconArrowRight from 'ak-icon/glyph/arrowright';
 
-import { dateToString, getDayName, getMonthName, makeArrayFromNumber } from './util';
+import { dateToString, getDayName, getMonthName, makeArrayFromNumber, makeEventDetail } from './util';
 import * as events from './index.events';
 import * as keys from './keys';
 import css from './index.less';
@@ -123,11 +123,12 @@ export default define('ak-calendar', {
       } else if (key === keys.escape) {
         this.focused = 0;
       } else if (key === keys.enter || key === keys.space) {
-        const day = focused;
-        const month = this.month;
-        const year = this.year;
         emit(this, events.select, {
-          detail: { day, month, year },
+          detail: makeEventDetail({
+            year: this.year,
+            month: this.month,
+            day: this.focused,
+          }),
         });
       }
     },
@@ -148,11 +149,12 @@ export default define('ak-calendar', {
       }
     },
     selectDay(e) {
-      const day = e.currentTarget.getAttribute('day');
-      const month = e.currentTarget.getAttribute('month');
-      const year = e.currentTarget.getAttribute('year');
       emit(this, events.select, {
-        detail: { day, month, year },
+        detail: makeEventDetail({
+          year: e.currentTarget.getAttribute('year'),
+          month: e.currentTarget.getAttribute('month'),
+          day: e.currentTarget.getAttribute('day'),
+        }),
       });
     },
   },
@@ -195,7 +197,7 @@ export default define('ak-calendar', {
     }
 
     calendar.forEach((date) => {
-      const dateAsString = dateToString(date);
+      const dateAsString = dateToString(date, { fixMonth: true });
       const week = date.weekDay === 0 ? [] : weeks[weeks.length - 1];
 
       if (!week.length) {

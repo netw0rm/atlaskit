@@ -29,8 +29,11 @@
     "classnames": "^2.2.5",
     "skatejs": "^4.0.6"
   },
+  "peerDependencies": {
+    "ak-editor-plugin-block-type": "^5.0.0"
+  },
   "devDependencies": {
-    "ak-editor-plugin-block-type": "^5.0.0",
+    "ak-editor-plugin-block-type": "*",
     "ak-editor-prosemirror": "*",
     "ak-editor-test": "^5.1.0",
     "ak-tabs": "^4.0.2",

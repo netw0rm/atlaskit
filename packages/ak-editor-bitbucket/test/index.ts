@@ -195,9 +195,28 @@ describe('ak-editor-bitbucket', () => {
       expect(editor.expanded).to.be.false;
     });
 
+    it('should be focused even if not yet rendered', () => {
+      expect(editor._focused).to.be.false;
+      editor.focus();
+      expect(editor._focused).to.be.true;
+    });
+
     it('should expand after clicking the input element', () => {
       activateEditor(editor);
       expect(editor.expanded).to.be.true;
+    });
+
+    it('should stop being focused after collapsing', (done) => {
+      activateEditor(editor);
+      afterMutations(
+        () => {
+          expect(editor._focused).to.be.true;
+          expect(editor.expanded).to.be.true;
+          editor.expanded = false;
+          expect(editor.expanded).to.be.false;
+          done();
+        }
+      );
     });
   });
 

@@ -155,7 +155,11 @@ class AkEditorBitbucket extends Component {
         elem._ready = true;
       }
 
-      elem.focus();
+      // In IE 11, the polyfill will have race condition with
+      // prosemirror.focus() and nested ternary render
+      setTimeout(() => {
+        elem.focus();
+      });
     } else if (!elem.expanded) {
       elem._pm = undefined;
     }

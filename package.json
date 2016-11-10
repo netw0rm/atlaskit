@@ -153,6 +153,7 @@
     "test/browserstack": "./build/bin/test.browserstack.sh",
     "test/browserstack/pr": "run-s -ln 'test/browserstack' 'pr/coverage'",
     "test/integration": "./build/bin/test.integration.sh",
+    "test/integration/pr": "./build/bin/test.integration.pr.sh",
     "test/integration/browserstack": "./node_modules/.bin/lerna exec --concurrency 1 -- ../../build/bin/test.integration.browserstack.sh",
     "test/integration/browserstack/wait": "npm run storybook/wait && npm run test/integration/browserstack",
     "test/single": "./build/bin/test.single.sh",

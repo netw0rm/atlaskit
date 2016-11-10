@@ -87,6 +87,21 @@
       "from": "@types/selenium-webdriver@>=2.53.31 <2.54.0",
       "resolved": "https://registry.npmjs.org/@types/selenium-webdriver/-/selenium-webdriver-2.53.35.tgz"
     },
+    "@webcomponents/custom-elements": {
+      "version": "1.0.0-alpha.3",
+      "from": "https://github.com/webcomponents/custom-elements/archive/a0f55ecbb17eee97aab877cfda9ac3a16b3b14ac.tar.gz",
+      "resolved": "https://github.com/webcomponents/custom-elements/archive/a0f55ecbb17eee97aab877cfda9ac3a16b3b14ac.tar.gz"
+    },
+    "@webcomponents/shadycss": {
+      "version": "0.0.1",
+      "from": "https://github.com/webcomponents/shadycss/archive/3002ac1fc9d59893f50dfad922dd503bca64300c.tar.gz",
+      "resolved": "https://github.com/webcomponents/shadycss/archive/3002ac1fc9d59893f50dfad922dd503bca64300c.tar.gz"
+    },
+    "@webcomponents/shadydom": {
+      "version": "0.0.1",
+      "from": "https://github.com/webcomponents/shadydom/archive/e4a8be7b4dceb94b79de10ee450848a339ad1a58.tar.gz",
+      "resolved": "https://github.com/webcomponents/shadydom/archive/e4a8be7b4dceb94b79de10ee450848a339ad1a58.tar.gz"
+    },
     "abbrev": {
       "version": "1.0.9",
       "from": "abbrev@>=1.0.0 <1.1.0",
@@ -160,9 +175,9 @@
       "resolved": "https://registry.npmjs.org/akutil-dmd-plugin/-/akutil-dmd-plugin-4.0.0.tgz"
     },
     "akutil-polyfills": {
-      "version": "3.0.1",
-      "from": "akutil-polyfills@3.0.1",
-      "resolved": "https://registry.npmjs.org/akutil-polyfills/-/akutil-polyfills-3.0.1.tgz"
+      "version": "5.0.0",
+      "from": "akutil-polyfills@>=5.0.0 <6.0.0",
+      "resolved": "https://registry.npmjs.org/akutil-polyfills/-/akutil-polyfills-5.0.0.tgz"
     },
     "akutil-shared-styles": {
       "version": "37.0.3",
@@ -1794,18 +1809,6 @@
       "version": "0.1.28",
       "from": "ddata@>=0.1.28 <0.2.0",
       "resolved": "https://registry.npmjs.org/ddata/-/ddata-0.1.28.tgz"
-    },
-    "debounce": {
-      "version": "1.0.0",
-      "from": "debounce@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/debounce/-/debounce-1.0.0.tgz",
-      "dependencies": {
-        "date-now": {
-          "version": "1.0.1",
-          "from": "date-now@1.0.1",
-          "resolved": "https://registry.npmjs.org/date-now/-/date-now-1.0.1.tgz"
-        }
-      }
     },
     "debug": {
       "version": "2.3.2",
@@ -4797,9 +4800,9 @@
       "resolved": "https://registry.npmjs.org/modular-log/-/modular-log-0.3.10.tgz"
     },
     "moment": {
-      "version": "2.15.2",
+      "version": "2.16.0",
       "from": "moment@>=2.14.1 <3.0.0",
-      "resolved": "https://registry.npmjs.org/moment/-/moment-2.15.2.tgz"
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.16.0.tgz"
     },
     "ms": {
       "version": "0.7.2",
@@ -6138,15 +6141,10 @@
       "from": "skatejs@>=4.0.4 <5.0.0",
       "resolved": "https://registry.npmjs.org/skatejs/-/skatejs-4.0.6.tgz"
     },
-    "skatejs-named-slots": {
-      "version": "2.0.4",
-      "from": "skatejs-named-slots@2.0.4",
-      "resolved": "https://registry.npmjs.org/skatejs-named-slots/-/skatejs-named-slots-2.0.4.tgz"
-    },
     "skatejs-web-components": {
-      "version": "2.0.2",
-      "from": "skatejs-web-components@>=2.0.2 <3.0.0",
-      "resolved": "https://registry.npmjs.org/skatejs-web-components/-/skatejs-web-components-2.0.2.tgz"
+      "version": "3.0.0",
+      "from": "skatejs-web-components@>=3.0.0 <4.0.0",
+      "resolved": "https://registry.npmjs.org/skatejs-web-components/-/skatejs-web-components-3.0.0.tgz"
     },
     "slash": {
       "version": "1.0.0",
@@ -7333,11 +7331,6 @@
       "version": "1.0.1",
       "from": "wcwidth@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/wcwidth/-/wcwidth-1.0.1.tgz"
-    },
-    "weak-map": {
-      "version": "1.0.5",
-      "from": "weak-map@>=1.0.5 <2.0.0",
-      "resolved": "https://registry.npmjs.org/weak-map/-/weak-map-1.0.5.tgz"
     },
     "webpack": {
       "version": "1.13.3",

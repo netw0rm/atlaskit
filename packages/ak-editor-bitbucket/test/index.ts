@@ -258,6 +258,9 @@ describe('ak-editor-bitbucket', () => {
           return waitUntilPMReady(editor).then(() => {
             afterMutations(
               () => {
+                // IE 11 needs one more tick to render
+              },
+              () => {
                 const input = getHyperlinkTextInput(editor);
                 expect(input.value).to.equal(href);
               },
@@ -276,6 +279,9 @@ describe('ak-editor-bitbucket', () => {
 
           return waitUntilPMReady(editor).then(() => {
             afterMutations(
+              () => {
+                // IE 11 needs one more tick to render
+              },
               () => {
                 const input = getHyperlinkTextInput(editor);
                 emit(input, 'enterKeyup', { detail: { value: bitbucket } });
@@ -296,6 +302,9 @@ describe('ak-editor-bitbucket', () => {
 
           return waitUntilPMReady(editor).then(() => {
             afterMutations(
+              () => {
+                // IE 11 needs one more tick to render
+              },
               () => {
                 const input = getHyperlinkTextInput(editor);
                 emit(input, 'escKeyup');

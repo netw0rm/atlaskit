@@ -2341,12 +2341,7 @@ declare namespace __React {
 }
 
 declare module "react" {
-    // MODIFIED BY ATLASSIAN START
-    // export = __React;
-    export default __React;
-    const { Component } = __React;
-    export { Component };
-    // MODIFIED BY ATLASSIAN END
+    export = __React;
 }
 
 declare namespace JSX {

@@ -25,6 +25,13 @@ const makeEditor = (container: Node) => {
 
 const container = fixtures();
 
+describe('ak-editor-plugin-mentions', () => {
+  it('defines a name for use by the ProseMirror plugin registry ', () => {
+    const Plugin = plugin as any; // .State is not public API.
+    expect(Plugin.State.name).is.be.a('string');
+  });
+});
+
 describe('ak-editor-plugin-mentions - on flush', () => {
   it('should hydrate nodes', () => {
     const pm = makeEditor(container());

@@ -10,6 +10,11 @@ chai.use(sinonChai);
 describe('ak-editor-plugin-lists', () => {
   const editor = (doc: any) => makeEditor({ doc: doc, plugin: ListsPlugin });
 
+  it('defines a name for use by the ProseMirror plugin registry ', () => {
+    const Plugin = ListsPlugin as any; // .State is not public API.
+    expect(Plugin.State.name).is.be.a('string');
+  });
+
   describe('API', () => {
     it('should allow a change handler to be attached', () => {
       const { plugin } = editor(doc(p()));

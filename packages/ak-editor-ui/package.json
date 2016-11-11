@@ -35,8 +35,8 @@
   "devDependencies": {
     "ak-editor-plugin-block-type": "*",
     "ak-editor-prosemirror": "*",
-    "ak-editor-test": "^5.1.0",
-    "ak-tabs": "^4.0.2",
+    "ak-editor-test": "*",
+    "ak-tabs": "*",
     "akutil-common-test": "*",
     "akutil-react": "*",
     "lodash.invert": "^4.3.0",

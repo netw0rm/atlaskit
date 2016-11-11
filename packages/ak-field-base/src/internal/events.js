@@ -2,7 +2,7 @@
  * This event gets emitted before a field-base changes it's own `focused` prop.
  * (e.g. when a child element receives focus, field-base will set it's own focused prop).
  *
- *  It is cancelable. If it gets cancelled, the change is aborted.
+ * It is cancelable. If it gets cancelled, the change is aborted.
  *
  * It will not get called if the prop change came from somewhere else.
  *
@@ -17,4 +17,24 @@
  *   // e.preventDefault(); // this would stop change
  * });
  */
-export const beforeFocusedChange = 'beforeFocusedChange'; // eslint-disable-line import/prefer-default-export, max-len
+const beforeFocusedChange = 'beforeFocusedChange'; // eslint-disable-line import/prefer-default-export, max-len
+
+/**
+ * This event gets emitted when the field-base label is clicked.
+ *
+ * @event FieldBase#labelClick
+ * @example @html <ak-field-base
+ *   onLabelClick={(e) => console.log('The label was clicked.')}
+ * ></ak-tag>
+ * @example @js import { events } from 'ak-field-base';
+ *
+ * field.addEventListener(events.labelClick, (e) => {
+ *   console.log('The label was clicked.');
+ * });
+ */
+const labelClick = 'labelClick';
+
+export {
+  beforeFocusedChange,
+  labelClick,
+};

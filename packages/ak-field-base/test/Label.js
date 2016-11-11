@@ -5,11 +5,14 @@ import {
   createTemporaryComponent as createTemporary,
   tearDownComponent,
   getShadowRoot,
+  waitUntil,
 } from 'akutil-common-test';
 
-
 import Label from '../src/Label';
+import { events } from '../src';
 import { createDefinition } from './_helpers';
+
+const { labelClick } = events;
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -55,7 +58,7 @@ describe('ak-field-base', () => {
       });
     });
 
-    describe('required', () => {
+    describe('required prop', () => {
       const tmpDefinition = (<Label label="This is a label" required />);
 
       beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
@@ -65,6 +68,28 @@ describe('ak-field-base', () => {
         const label = shadowRoot.querySelector('label');
         expect(label.textContent).to.match(/^This is a label/);
         expect(label.textContent).to.match(/\*$/);
+      });
+    });
+
+    describe('onLabelClick prop', () => {
+      const tmpDefinition = (<Label />);
+
+      beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
+        .then(setupLocalVariables));
+
+      it('should fire labelClick when the span is clicked', () => {
+        let eventFired = false;
+        component.addEventListener(labelClick, () => {
+          eventFired = true;
+        });
+
+        const labelClickEventFired = () => eventFired;
+        expect(labelClickEventFired()).to.be.false;
+
+        const span = shadowRoot.querySelector('span');
+        span.click();
+
+        return waitUntil(labelClickEventFired).should.be.fulfilled;
       });
     });
 

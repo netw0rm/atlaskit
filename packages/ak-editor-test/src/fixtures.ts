@@ -13,7 +13,7 @@
  * @returns {() => HTMLElement}
  */
 export default () => {
-  let fixture = null;
+  let fixture: HTMLElement;
 
   beforeEach(() => {
     fixture = document.createElement('div');
@@ -23,7 +23,6 @@ export default () => {
   afterEach(() => {
     if (fixture && fixture.parentNode === document.body) {
       document.body.removeChild(fixture);
-      fixture = null;
     }
   });
 

@@ -63,22 +63,25 @@ ak-modal-dialog {
   width: 600px;
   margin: 0 auto;
   padding-top: @topBottomHeight;
-  height: ~"calc(100% - @{topBottomHeight} - @{topBottomHeight})";
+  max-height: ~"calc(100% - @{topBottomHeight} - @{topBottomHeight})";
+  display: flex;
+  flex-direction: column;
+
+  & > * {
+    flex: 1 1 auto;
+  }
 
   .header-flex {
     .panel-background(@grid, 0);
-    height: @topBottomHeight;
   }
 
   .content-flex {
     .panel-background();
-    max-height: ~"calc(100% - @{topBottomHeight} - @{topBottomHeight})";
     overflow: auto;
   }
 
   .footer-flex {
     .panel-background(0, @grid);
-    height: @topBottomHeight;
   }
 }
 

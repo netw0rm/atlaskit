@@ -1,15 +1,19 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import AkButton from 'ak-button';
-import WebComponent from '../src';
 import React from 'react';
-import { name } from '../package.json';
 import Lorem from 'react-lorem-component';
+import WebComponent from '../src';
+import { name } from '../package.json';
+import ModalDemo from './ModalDemo';
+import SubmitDemo from './SubmitDemo';
 
-const ReactModal = reactify(WebComponent);
 const ReactButton = reactify(AkButton);
+const ReactModal = reactify(WebComponent);
 
 storiesOf(name, module)
+  .add('demo with button', () => <ModalDemo />)
+  .add('demo with form submission', () => <SubmitDemo />)
   .add('simple modal', () => (
     <ReactModal open>
       <div is slot="header">New issue</div>
@@ -26,6 +30,21 @@ storiesOf(name, module)
       <div is slot="header">New issue</div>
       <div is slot="footer">
         <ReactButton appearance="primary">Create issue</ReactButton>
+      </div>
+      <div>
+        <Lorem count="15" />
+      </div>
+    </ReactModal>
+  ))
+  .add('with footer that is taller than usual', () => (
+    <ReactModal open>
+      <div is slot="header">New issue</div>
+      <div is slot="footer">
+        <ReactButton appearance="primary">Create issue</ReactButton>
+        <br />
+        <ReactButton>Why am i down here</ReactButton>
+        <br />
+        <ReactButton>I really should be on one line</ReactButton>
       </div>
       <div>
         <Lorem count="15" />

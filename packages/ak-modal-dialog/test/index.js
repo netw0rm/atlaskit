@@ -1,67 +1,59 @@
-// import { waitUntil, getShadowRoot } from 'akutil-common-test';
+import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
-// import { Component } from 'skatejs';
+import { Component } from 'skatejs';
 
-// import MyComponent, { events } from '../src';
-// import { setupComponent, tearDownComponent } from './_helpers';
+import ModalDialog, { events } from '../src';
+import { setupComponent, tearDownComponent } from './_helpers';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
 
-// const expect = chai.expect;
-
-
 describe('ak-modal-dialog', () => {
-  it('should pass', () => {
-    (true).should.equal(true);
-  });
-
-  /*
   describe('exports', () => {
     it('should export a base component', () => {
-      (new MyComponent).should.be.an.instanceof(Component);
+      (new ModalDialog()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
       events.should.be.defined;
       Object.keys(events).should.be.deep.equal([
-        'announceName',
-        'announceClick',
+        'willClose',
       ]);
     });
   });
 
-  describe('logic', () => {
+  describe('props', () => {
     let component;
     let shadowRoot;
+    let dialogIsVisible;
+    let dialogIsNotVisible;
 
-    beforeEach(() => setupComponent(MyComponent).then(newComponent => {
+    beforeEach(() => setupComponent(ModalDialog).then((newComponent) => {
       component = newComponent;
       shadowRoot = getShadowRoot(component);
+      dialogIsVisible = () => (shadowRoot.innerHTML !== '');
+      dialogIsNotVisible = () => (shadowRoot.innerHTML === '');
     }));
     afterEach(() => tearDownComponent(component));
 
-    it('should be possible to create a component', () => {
-      expect(shadowRoot.innerHTML).to.match(/My name is .+?!/);
-    });
-
-    describe('name prop', () => {
-      it('should modify the rendered name', () => {
-        const newName = 'InigoMontoya';
-        const expectedInnerHTML = `My name is ${newName}!`;
-        const paragraph = shadowRoot.querySelector('p');
-
-        const nameHasBeenModifiedCorrectly = () => (paragraph.innerHTML === expectedInnerHTML);
-
-        component.name = newName;
-
-        // here we can wrap our assertions in promises and just check that the promise was fulfilled
-        return waitUntil(nameHasBeenModifiedCorrectly).should.be.fulfilled;
+    describe('open prop', () => {
+      it('should be hidden by default', () => {
+        dialogIsVisible().should.equal(false);
+      });
+      it('should be visible when open = true', () => {
+        component.open = true;
+        return waitUntil(dialogIsVisible).should.be.fulfilled;
+      });
+      it('should become hidden when open changed from true -> false', () => {
+        component.open = true;
+        return waitUntil(dialogIsVisible)
+        .then(() => { component.open = false; })
+        .then(waitUntil.bind(null, dialogIsNotVisible))
+        .should.be.fulfilled;
       });
     });
   });
-  */
 });

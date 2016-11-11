@@ -46,4 +46,7 @@ class MentionsPluginState {
   }
 }
 
+// IE11 + multiple prosemirror fix.
+Object.defineProperty(MentionsPluginState, 'name', { value: 'MentionsPluginState' });
+
 export default new Plugin(MentionsPluginState);

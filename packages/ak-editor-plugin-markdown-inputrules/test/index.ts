@@ -14,6 +14,11 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
     return { pm, plugin, sel: pm.doc.refs['<>'] };
   }
 
+  it('defines a name for use by the ProseMirror plugin registry ', () => {
+    const Plugin = MarkdownInputRulesPlugin as any; // .State is not public API.
+    expect(Plugin.State.name).is.be.a('string');
+  });
+
   describe('strong rule', () => {
     it('should convert "**text**" to strong', () => {
       const { pm, sel } = editor(doc(p('{<>}')));

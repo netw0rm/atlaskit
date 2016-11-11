@@ -158,15 +158,13 @@ describe('ak-editor-bitbucket', () => {
       const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
 
       editor.defaultValue = content;
+      editor.expanded = true;
 
-      afterMutations(
-        () => { editor.expanded = true; },
-        () => {
-          const opts = spy.firstCall.args[0];
-          expect(opts.doc).has.property('textContent', content);
-        },
-        done
-      );
+      afterMutations(() => {
+        const opts = spy.firstCall.args[0];
+        expect(opts.doc).has.property('textContent', content);
+        done();
+      });
     });
 
     it('should be converted to a proper Prosemirror document after rendering', () => {

@@ -52,7 +52,7 @@ module.exports = (config) => {
   config.set({
     client: {
       mocha: {
-        timeout: 10000, // avoid timeout on tests in VMs
+        timeout: 6000, // avoid timeout on tests in VMs
       },
     },
   });

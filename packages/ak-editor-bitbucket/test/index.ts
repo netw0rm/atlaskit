@@ -280,7 +280,7 @@ describe('ak-editor-bitbucket', () => {
               const input = getHyperlinkTextInput(editor);
               expect(input.value).to.equal(href);
               done();
-            }, 100);
+            }, 1000);
           });
         });
     });

@@ -2,8 +2,9 @@
  * A helper for creating fixtures in tests.
  *
  * A function is returned that when called in the context of a test, will return
- * a reference to an element in the DOM. Clean-up of the element is handled
- * automatically.
+ * a reference to an element in the DOM.
+ * If called outside the context of a test, it will return null.
+ * Clean-up of the element is handled automatically.
  *
  * @example @js const fixture = fixtures();
  * it('should have a fixture', () => {
@@ -12,7 +13,7 @@
  * @returns {() => HTMLElement}
  */
 export default () => {
-  let fixture = document.createElement('div');
+  let fixture = null;
 
   beforeEach(() => {
     fixture = document.createElement('div');
@@ -20,7 +21,10 @@ export default () => {
   });
 
   afterEach(() => {
-    document.body.removeChild(fixture);
+    if (fixture && fixture.parentNode === document.body) {
+      document.body.removeChild(fixture);
+      fixture = null;
+    }
   });
 
   return () => fixture;

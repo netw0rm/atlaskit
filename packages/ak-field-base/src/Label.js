@@ -20,7 +20,7 @@ export default (props, children) => {
   return (
     <label className={shadowStyles.locals.label}>
       <div className={labelClasses}>
-        <span onClick={e => (emitLabelClickEvent(e))}>{props.label}</span>
+        <span onClick={emitLabelClickEvent}>{props.label}</span>
         {props.required ? <span class={shadowStyles.locals.required}>*</span> : null}
       </div>
       {children()}

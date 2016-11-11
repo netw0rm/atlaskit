@@ -1,14 +1,8 @@
 import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
-import Promise from 'babel-runtime/core-js/promise';
-// 'whatwg-fetch' needs a Promise polyfill
-/* eslint-disable import/imports-first */
-if (!window.Promise) {
-  window.Promise = Promise;
-}
+import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 
 import debug from '../util/logger';
-/* eslint-enable import/imports-first */
 
 
 const buildUrl = (baseUrl, path, data, secOptions) => {

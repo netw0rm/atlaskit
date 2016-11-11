@@ -20,7 +20,7 @@
     "skatejs": "^4.0.6"
   },
   "devDependencies": {
-    "ak-editor-test": "^5.1.0",
+    "ak-editor-test": "*",
     "akutil-react": "*"
   },
   "repository": {

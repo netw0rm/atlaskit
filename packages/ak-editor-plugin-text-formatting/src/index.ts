@@ -39,7 +39,7 @@ function markActive(pm: ProseMirror, type: MarkType): boolean {
   return pm.doc.rangeHasMark(from, to, markType);
 };
 
-export default new Plugin(class TextFormattingPlugin {
+class TextFormattingPlugin {
   changeHandlers: StateChangeHandler[];
   name: string;
   pm: ProseMirror;
@@ -108,4 +108,9 @@ export default new Plugin(class TextFormattingPlugin {
     this.changeHandlers.push(cb);
     cb(this.getState());
   }
-});
+}
+
+// IE11 + multiple prosemirror fix.
+Object.defineProperty(TextFormattingPlugin, 'name', { value: 'TextFormattingPlugin' });
+
+export default new Plugin(TextFormattingPlugin);

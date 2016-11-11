@@ -5,6 +5,13 @@ import SlotWrapper from './SlotWrapper';
 import shadowStyles from './shadow.less';
 import { getInput, updateInput } from './internal/helpers';
 
+function focusInput(elem) {
+  const input = getInput(elem);
+  if (input) {
+    input.focus();
+  }
+}
+
 /**
  * @description A text based form field with an associated label.
  * @class TextField
@@ -23,6 +30,7 @@ export default define('ak-field-text', {
         disabled={elem.disabled}
         label={elem.label}
         required={elem.required}
+        onLabelClick={() => (focusInput(elem))}
       >
         <SlotWrapper />
       </FieldBase>,

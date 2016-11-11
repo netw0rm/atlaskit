@@ -275,16 +275,12 @@ describe('ak-editor-bitbucket', () => {
           editor._pm.setTextSelection(7);
 
           return waitUntilPMReady(editor).then(() => {
-            afterMutations(
-              () => {
-                // IE 11 needs one more tick to render
-              },
-              () => {
-                const input = getHyperlinkTextInput(editor);
-                expect(input.value).to.equal(href);
-              },
-              done
-            );
+            // IE and Chrome on Windows need more time until input is rendered
+            setTimeout(() => {
+              const input = getHyperlinkTextInput(editor);
+              expect(input.value).to.equal(href);
+              done();
+            }, 100);
           });
         });
     });

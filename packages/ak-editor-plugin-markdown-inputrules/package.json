@@ -1,16 +1,17 @@
 {
   "name": "ak-editor-plugin-markdown-inputrules",
-  "version": "5.2.0",
+  "version": "5.4.1",
   "description": "A markdown inputrules plugin for ProseMirror",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.ts",
-  "typings": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-plugin-markdown-inputrules"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts"
   ],
   "dependencies": {
     "ak-editor-prosemirror": "^4.0.0"

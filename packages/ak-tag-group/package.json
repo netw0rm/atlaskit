@@ -1,6 +1,6 @@
 {
   "name": "ak-tag-group",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "ak-tag-group webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -12,11 +12,11 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^2.0.0",
-    "akutil-shared-styles": "^35.0.1",
+    "akutil-common": "^5.0.0",
+    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^4.0.4"
+    "skatejs": "^4.0.6"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

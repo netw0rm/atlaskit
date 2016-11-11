@@ -195,9 +195,28 @@ describe('ak-editor-bitbucket', () => {
       expect(editor.expanded).to.be.false;
     });
 
+    it('should be focused even if not yet rendered', () => {
+      expect(editor._focused).to.be.false;
+      editor.focus();
+      expect(editor._focused).to.be.true;
+    });
+
     it('should expand after clicking the input element', () => {
       activateEditor(editor);
       expect(editor.expanded).to.be.true;
+    });
+
+    it('should stop being focused after collapsing', (done) => {
+      activateEditor(editor);
+      afterMutations(
+        () => {
+          expect(editor._focused).to.be.true;
+          expect(editor.expanded).to.be.true;
+          editor.expanded = false;
+          expect(editor.expanded).to.be.false;
+          done();
+        }
+      );
     });
   });
 
@@ -218,21 +237,22 @@ describe('ak-editor-bitbucket', () => {
 
     it('should have options in block type dropdown', () => {
       return buildExpandedEditor(fixture()).then((editor) => {
-        const bt = locateWebComponent('ak-editor-toolbar-block-type', getShadowRoot(editor))[0];
-        expect(bt).to.not.be.null;
+        let bt: HTMLElement;
+        let btShadowRoot: HTMLElement;
 
-        // on browsers without native ShadowDOM (i.e. Firefox, Safari), shadowRoot is not available right away
-        return waitUntil(() => {
-          return !!getShadowRoot(bt);
-        }).then(() => {
-          const fs = locateWebComponent('ak-editor-toolbar-block-type-select', getShadowRoot(bt));
+        // On polyfilled ShadowDOM the root is not available right away (i.e. in FF and IE)
+        return waitUntil(
+          () =>
+            (bt = locateWebComponent('ak-editor-toolbar-block-type', getShadowRoot(editor))[0]) &&
+            (btShadowRoot = getShadowRoot(bt))
+        ).then(() => {
+          const fs = locateWebComponent('ak-editor-toolbar-block-type-select', btShadowRoot);
           expect(fs).to.not.be.null;
 
-          const btShadowRoot = getShadowRoot(bt);
-          return waitUntil(() => {
-            // it takes roughly 3 iterations to render all elements and attach them to <ul>
-            return locateWebComponent('ak-editor-toolbar-block-type-option', btShadowRoot).length >= 2;
-          });
+          // it takes roughly 3 iterations to render all elements and attach them to <ul>
+          return waitUntil(
+            () => locateWebComponent('ak-editor-toolbar-block-type-option', btShadowRoot).length >= 2
+          );
         });
       });
     });

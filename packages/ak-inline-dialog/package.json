@@ -1,6 +1,6 @@
 {
   "name": "ak-inline-dialog",
-  "version": "73.0.2",
+  "version": "73.0.3",
   "description": "An inline dialog UI component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -14,12 +14,12 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "ak-blanket": "^3.0.0",
-    "ak-layer": "^57.0.0",
-    "akutil-common": "^2.0.0",
-    "akutil-shared-styles": "^35.0.1",
+    "ak-blanket": "^4.0.0",
+    "ak-layer": "^60.0.0",
+    "akutil-common": "^5.0.0",
+    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^4.0.4",
+    "skatejs": "^4.0.6",
     "web-animations-js": "^2.2.1"
   },
   "devDependencies": {

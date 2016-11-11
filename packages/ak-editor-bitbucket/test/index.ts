@@ -257,15 +257,14 @@ describe('ak-editor-bitbucket', () => {
 
   describe('editor hyperlink popup panel', () => {
     function getHyperlinkTextInput(editor: typeof AkEditorBitbucket) {
-      const edit = editor.shadowRoot.querySelector('ak-editor-hyperlink-edit');
+      const edit = locateWebComponent('ak-editor-hyperlink-edit', editor.shadowRoot)[0];
 
       if (!edit) {
         return null;
       }
 
-      return edit
-        .shadowRoot.querySelector('ak-editor-popup-text-input')
-        .shadowRoot.querySelector('input');
+      const textInput = locateWebComponent('ak-editor-popup-text-input', edit.shadowRoot)[0]
+      return textInput.shadowRoot.querySelector('input');
     }
 
     it('should contain the right href value', (done) => {
@@ -275,12 +274,16 @@ describe('ak-editor-bitbucket', () => {
           editor._pm.setTextSelection(7);
 
           return waitUntilPMReady(editor).then(() => {
-            // IE and Chrome on Windows need more time until input is rendered
-            setTimeout(() => {
-              const input = getHyperlinkTextInput(editor);
-              expect(input.value).to.equal(href);
-              done();
-            }, 1000);
+            afterMutations(
+              () => {
+                // IE 11 needs one more tick to render
+              },
+              () => {
+                const input = getHyperlinkTextInput(editor);
+                expect(input.value).to.equal(href);
+              },
+              done
+            );
           });
         });
     });

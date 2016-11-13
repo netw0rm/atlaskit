@@ -1,14 +1,5 @@
 # MultiSelect
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
-
-
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-componentname/docs/insertyourimagehere.png)
-
-##Try it out
-
-Interact with a [live demo of the ak-multi-select component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-multi-select/@VERSION@/).
-
 ## Installation
 
 ```sh

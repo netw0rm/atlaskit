@@ -1,12 +1,12 @@
 {
   "name": "ak-editor-toolbar-text-formatting",
-  "version": "2.4.8",
+  "version": "4.0.2",
   "description": "Editor Toolbar Text Formatting web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-toolbar-text-formatting"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-toolbar-text-formatting"
   },
   "files": [
     "dist"
@@ -14,19 +14,23 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-button": "^2.3.0",
-    "ak-editor-shared-styles": "^1.0.3",
-    "ak-icon": "^8.0.0",
-    "akutil-shared-styles": "^34.2.0",
+    "ak-editor-button": "^4.0.0",
+    "ak-editor-shared-styles": "^3.0.0",
+    "ak-icon": "^10.0.0",
+    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.6"
   },
   "devDependencies": {
-    "ak-editor-prosemirror": "^2.0.0",
-    "akutil-react": "^1.0.0"
+    "ak-editor-prosemirror": "^4.0.0",
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

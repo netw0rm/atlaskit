@@ -1,9 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import WebComponent from '../src/index';
 import ButtonWC from 'ak-button';
 import React from 'react';
+
+import WebComponent from '../src';
 import { name } from '../package.json';
+
 
 const ReactField = reactify(WebComponent);
 const ReactButton = reactify(ButtonWC);
@@ -22,7 +24,7 @@ function generateFormWithInput(opts) {
       action={formTestUrl}
       method="post"
       style={{
-        'background-color': 'white',
+        backgroundColor: 'white',
         padding: '40px',
         width: '500px',
       }}
@@ -37,28 +39,29 @@ function generateFormWithInput(opts) {
 }
 
 function submitTestForm(useNativeSubmitBtn) {
-  const submitBtn = useNativeSubmitBtn ?
-    <input type="submit" /> :
-    <ReactButton type="submit" appearance="primary">Submit</ReactButton>;
+  const submitBtn = useNativeSubmitBtn ? <input type="submit" /> : (
+  <ReactButton type="submit" appearance="primary">Submit</ReactButton>
+  );
   return (
     <div>
       <form
         action={formTestUrl}
         method="get"
-        style={{ 'background-color': 'white', padding: '40px', width: '500px' }}
+        style={{ backgroundColor: 'white', padding: '40px', width: '500px' }}
         target="myFrame"
       >
         <h2>Submit test</h2>
         <p>Note: Ensure that you are not using HTTPS for this story.</p>
-        {generateInput({ label: 'First name', id: 'fname' })}
-        {generateInput({ label: 'Last name', id: 'lname' })}
-        {generateInput({ type: 'email', label: 'Email', id: 'email' })}
-        {generateInput({ label: 'Full name', id: 'name' })}
+        {generateInput({ label: 'First name', name: 'fname' })}
+        {generateInput({ label: 'Last name', name: 'lname' })}
+        {generateInput({ type: 'email', label: 'Email', name: 'email' })}
+        {generateInput({ label: 'Full name', name: 'name' })}
         <p>
           {submitBtn}
         </p>
       </form>
-      <iframe src="" name="myFrame" style={{ width: '50%', height: '300px' }}></iframe>
+      <p>The data submitted by the form will appear below:</p>
+      <iframe src="" name="myFrame" style={{ width: '50%', height: '300px' }} />
     </div>
   );
 }
@@ -101,15 +104,15 @@ storiesOf(name, module)
       action={formTestUrl}
       method="post"
       style={{
-        'background-color': 'white',
+        backgroundColor: 'white',
         padding: '40px',
       }}
     >
       <h2>Autofill test</h2>
-      {generateInput({ label: 'First name', id: 'fname' })}
-      {generateInput({ label: 'Last name', id: 'lname' })}
-      {generateInput({ type: 'email', label: 'Email', id: 'email' })}
-      {generateInput({ label: 'Full name', id: 'name' })}
+      {generateInput({ label: 'First name', name: 'fname' })}
+      {generateInput({ label: 'Last name', name: 'lname' })}
+      {generateInput({ type: 'email', label: 'Email', name: 'email' })}
+      {generateInput({ label: 'Full name', name: 'name' })}
       <p>
         <ReactButton type="submit" appearance="primary">Submit</ReactButton>
       </p>

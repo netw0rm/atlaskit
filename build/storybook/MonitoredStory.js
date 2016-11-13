@@ -11,7 +11,7 @@ class MonitoredStory extends React.Component {
   componentDidMount() {
     const stats = new Stats();
     stats.showPanel(0);
-    this.refs.stats.appendChild(stats.dom);
+    this.stats.appendChild(stats.dom);
 
     const animate = () => {
       stats.begin();
@@ -28,7 +28,7 @@ class MonitoredStory extends React.Component {
 
   render() {
     return (
-      <div ref="stats">
+      <div ref={n => (this.stats = n)}>
         {this.props.children}
       </div>
     );

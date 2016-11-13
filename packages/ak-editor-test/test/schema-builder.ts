@@ -1,4 +1,5 @@
 import { p, text, nodeFactory, markFactory, sequence, RefsTracker } from '../src/schema-builder';
+import schema from 'ak-editor-schema';
 import { expect } from 'chai';
 
 describe('ak-editor-test schema-builder', () => {
@@ -6,71 +7,71 @@ describe('ak-editor-test schema-builder', () => {
 
   describe('text', () => {
     it('returns a refs tracking node for an empty string', () => {
-      const nodes = text('');
+      const nodes = text('', schema);
 
       expect(nodes).to.be.an.instanceOf(RefsTracker);
       expect(nodes.refs).to.deep.equal({});
     });
 
     it('returns a refs tracking node for a string with a single ref only', () => {
-      const nodes = text('{a}');
+      const nodes = text('{a}', schema);
 
       expect(nodes).to.be.an.instanceOf(RefsTracker);
       expect(nodes.refs).to.deep.equal({ a: 0 });
     });
 
     it('returns a refs tracking node for a string with multiple refs only', () => {
-      const nodes = text('{a}{b}');
+      const nodes = text('{a}{b}', schema);
 
       expect(nodes).to.be.an.instanceOf(RefsTracker);
       expect(nodes.refs).to.deep.equal({ a: 0, b: 0 });
     });
 
     it('returns a single text node for a non-empty string', () => {
-      const nodes = text('0');
+      const nodes = text('0', schema);
 
       expect(nodes).to.be.not.null;
     });
 
     it('adds a refs object to the return node', () => {
-      const node = text('0');
+      const node = text('0', schema);
 
       expect(node).to.have.property('refs');
       expect(node.refs).to.deep.equal({});
     });
 
     it('supports refs at the start of a string', () => {
-      const node = text('{a}0');
+      const node = text('{a}0', schema);
 
       expect(node.refs).to.deep.equal({ a: 0 });
     });
 
     it('supports multiple refs at the start of a string', () => {
-      const node = text('{a}{b}0');
+      const node = text('{a}{b}0', schema);
 
       expect(node.refs).to.deep.equal({ a: 0, b: 0 });
     });
 
     it('supports ref in the middle of a string', () => {
-      const node = text('0{a}1');
+      const node = text('0{a}1', schema);
 
       expect(node.refs).to.deep.equal({ a: 1 });
     });
 
     it('supports multiple refs in the middle of a string', () => {
-      const node = text('0{a}{b}1');
+      const node = text('0{a}{b}1', schema);
 
       expect(node.refs).to.deep.equal({ a: 1, b: 1 });
     });
 
     it('supports a ref at the end of a string', () => {
-      const node = text('0{a}');
+      const node = text('0{a}', schema);
 
       expect(node.refs).to.deep.equal({ a: 1 });
     });
 
     it('supports text with no refs', () => {
-      const node = text('0');
+      const node = text('0', schema);
 
       expect(Object.keys(node.refs)).to.be.empty;
     });
@@ -78,17 +79,17 @@ describe('ak-editor-test schema-builder', () => {
 
   describe('nodeFactory', () => {
     it('returns a function', () => {
-      expect(nodeFactory('paragraph', {})).to.be.an.instanceOf(Function);
+      expect(nodeFactory(schema.nodes.paragraph, {})).to.be.an.instanceOf(Function);
     });
 
     it('returns a factory that returns ref\'d nodes', () => {
-      const p = nodeFactory('paragraph', {});
+      const p = nodeFactory(schema.nodes.paragraph, {});
 
       expect(p()).to.have.property('refs');
     });
 
     it('correctly calculates flat node ref positions', () => {
-      const p = nodeFactory('paragraph', {});
+      const p = nodeFactory(schema.nodes.paragraph, {});
       const node = p('t{a}ex{b}t');
       const { a, b } = node.refs;
 
@@ -96,7 +97,7 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('correctly calculates flat node ref positions with refs tracking node', () => {
-      const p = nodeFactory('paragraph', {});
+      const p = nodeFactory(schema.nodes.paragraph, {});
       const node = p('{a}', 'text', '{b}');
       const { a, b } = node.refs;
 
@@ -104,7 +105,7 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('correctly calculates single nested node ref positions', () => {
-      const p = nodeFactory('paragraph', {});
+      const p = nodeFactory(schema.nodes.paragraph, {});
       const node = p(p('t{a}ex{b}t'));
       const { a, b } = node.refs;
 
@@ -112,7 +113,7 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('correctly calculates twice nested node ref positions', () => {
-      const p = nodeFactory('paragraph', {});
+      const p = nodeFactory(schema.nodes.paragraph, {});
       const node = p(p(p('t{a}ex{b}t')));
       const { a, b } = node.refs;
 
@@ -120,17 +121,17 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('supports a < ref', () => {
-      const node = text('{<}0');
+      const node = text('{<}0', schema);
 
       expect(node.refs).to.deep.equal({ '<': 0 });
     });
   });
 
   describe('markFactory', () => {
-    const em = markFactory('em', {});
+    const em = markFactory(schema.marks.em, {});
 
     it('returns a function', () => {
-      expect(markFactory('em', {})).to.be.an.instanceOf(Function);
+      expect(markFactory(schema.marks.em, {})).to.be.an.instanceOf(Function);
     });
 
     it('returns a builder that returns an array', () => {
@@ -144,13 +145,13 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('supports being composed with text() and maintaining refs', () => {
-      const node = p(em(text('t{a}ex{b}t')));
+      const node = p(em(text('t{a}ex{b}t', schema)));
       const { a, b } = node.refs;
       expect(node.textBetween(a, b)).to.equal('ex');
     });
 
     it('supports being composed with multiple text() and maintaining refs', () => {
-      const node = p(em(text('t{a}ex{b}t'), text('t{c}ex{d}t')));
+      const node = p(em(text('t{a}ex{b}t', schema), text('t{c}ex{d}t', schema)));
       const { a, b, c, d } = node.refs;
       expect(node.textBetween(a, b)).to.equal('ex');
       expect(node.textBetween(c, d)).to.equal('ex');
@@ -159,8 +160,8 @@ describe('ak-editor-test schema-builder', () => {
 
   describe('sequence', () => {
     it('makes no changes to nodes with no refs', () => {
-      const a = text('0');
-      const b = text('0');
+      const a = text('0', schema);
+      const b = text('0', schema);
       const arefsSnapshot = clone(a.refs);
       const brefsSnapshot = clone(b.refs);
 
@@ -170,8 +171,8 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('makes no changes to nodes with refs', () => {
-      const a = text('0{a}');
-      const b = text('0{a}');
+      const a = text('0{a}', schema);
+      const b = text('0{a}', schema);
       const arefsSnapshot = clone(a.refs);
       const brefsSnapshot = clone(b.refs);
 
@@ -181,27 +182,27 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('returns an array of the nodes', () => {
-      const a = text('0{a}');
-      const b = text('0{b}');
-      const c = text('0{c}');
+      const a = text('0{a}', schema);
+      const b = text('0{b}', schema);
+      const c = text('0{c}', schema);
 
       const { nodes } = sequence(a, b, c);
       expect(nodes).to.deep.equal([a, b, c]);
     });
 
     it('returns refs with keys for each ref in the children node refs', () => {
-      const a = text('0{a}');
-      const b = text('0{b}');
-      const c = text('0{c}');
+      const a = text('0{a}', schema);
+      const b = text('0{b}', schema);
+      const c = text('0{c}', schema);
 
       const { refs } = sequence(a, b, c);
       expect(Object.keys(refs)).to.deep.equal(['a', 'b', 'c']);
     });
 
     it('returns refs with correct positions for text nodes', () => {
-      const a = text('0{a}');
-      const b = text('0{b}');
-      const c = text('0{c}');
+      const a = text('0{a}', schema);
+      const b = text('0{b}', schema);
+      const c = text('0{c}', schema);
 
       const { refs } = sequence(a, b, c);
       expect(refs['a']).to.equal(1);
@@ -210,9 +211,9 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('returns refs with correct positions for refs tracking nodes', () => {
-      const a = text('{a}');
-      const b = text('b');
-      const c = text('{c}');
+      const a = text('{a}', schema);
+      const b = text('b', schema);
+      const c = text('{c}', schema);
 
       const { refs } = sequence(a, b, c);
       expect(refs['a']).to.equal(0);
@@ -220,9 +221,9 @@ describe('ak-editor-test schema-builder', () => {
     });
 
     it('returns refs with correct positions for mixed nodes', () => {
-      const a = text('0{a}');
+      const a = text('0{a}', schema);
       const b = p('0{b}');
-      const c = text('0{c}');
+      const c = text('0{c}', schema);
 
       const { refs } = sequence(a, b, c);
       expect(refs['a']).to.equal(1);

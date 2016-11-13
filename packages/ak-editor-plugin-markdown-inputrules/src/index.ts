@@ -1,6 +1,54 @@
 import {
-  Plugin, ProseMirror, Mark, Schema, InputRule, inputRules, allInputRules
+  Plugin,
+  ProseMirror,
+  Mark,
+  Schema,
+  InputRule,
+  inputRules,
+  allInputRules,
+  headingRule,
+  bulletListRule,
+  blockQuoteRule,
+  codeBlockRule,
+  wrappingInputRule,
+  NodeType,
+  Node
 } from 'ak-editor-prosemirror';
+
+// NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
+// input rule will allow for a list to start at any given number, which isn't allowed in
+// markdown (where a ordered list will always start on 1). This is a slightly modified
+// version of that input rule.
+function orderedListRule(nodeType: NodeType): InputRule {
+  return wrappingInputRule(/^(\d+)\. $/, " ", nodeType, (match: RegExpMatchArray) => ({}),
+                           (match: RegExpMatchArray, node: Node) => node.childCount);
+}
+
+const buildBlockRules = (schema: Schema): Array<InputRule> => {
+  const rules = Array<InputRule>();
+
+  if (schema.nodes.heading) {
+    rules.push(headingRule(schema.nodes.heading, 3));
+  }
+
+  if (schema.nodes.bullet_list) {
+    rules.push(bulletListRule(schema.nodes.bullet_list));
+  }
+
+  if (schema.nodes.ordered_list) {
+    rules.push(orderedListRule(schema.nodes.ordered_list));
+  }
+
+  if (schema.nodes.blockquote) {
+    rules.push(blockQuoteRule(schema.nodes.blockquote));
+  }
+
+  if (schema.nodes.code_block) {
+    rules.push(codeBlockRule(schema.nodes.code_block));
+  }
+
+  return rules;
+}
 
 function replaceWithNode(
   pm: ProseMirror,
@@ -26,13 +74,14 @@ function replaceWithMark(
   const to = pos;
   const from = pos - match[1].length;
   const markType: Mark = schema.mark(mark);
+  const marks: Mark[] = [...pm.tr.doc.marksAt(pos), markType];
 
   pm.tr.replaceWith(
     from,
     to,
     schema.text(
       match[2],
-      markType
+      marks,
     )
   ).apply();
 
@@ -135,10 +184,12 @@ const hrRule2 = new InputRule(/^\-\-\-$/, '-', (
   pos: number
 ) => replaceWithNode(pm, match, pos, pm.schema.nodes.horizontal_rule.create()));
 
-export default new Plugin(class MarkdownInputRulesPlugin {
+class MarkdownInputRulesPlugin {
   inputRules: InputRule[];
 
   constructor(pm: ProseMirror) {
+    const blockRules = buildBlockRules(pm.schema);
+
     this.inputRules = [
       strongRule1,
       strongRule2,
@@ -149,7 +200,9 @@ export default new Plugin(class MarkdownInputRulesPlugin {
       linkRule,
       hrRule1,
       hrRule2,
-    ].concat(allInputRules);
+      ...allInputRules,
+      ...blockRules
+    ];
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.addRule(rule));
@@ -159,4 +212,9 @@ export default new Plugin(class MarkdownInputRulesPlugin {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
-});
+}
+
+// IE11 + multiple prosemirror fix.
+Object.defineProperty(MarkdownInputRulesPlugin, 'name', { value: 'MarkdownInputRulesPlugin' });
+
+export default new Plugin(MarkdownInputRulesPlugin);

@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+
 import { name } from '../package.json';
-import 'ak-avatar';
 import DropdownExample from './DropdownExample';
 
 storiesOf(`${name} with different parents`, module)
@@ -9,7 +9,7 @@ storiesOf(`${name} with different parents`, module)
     <div
       style={{
         padding: '40px',
-        margin: '100px 0',
+        margin: '100px 0 0 0',
         border: '1px solid black',
       }}
     >
@@ -20,7 +20,6 @@ storiesOf(`${name} with different parents`, module)
     <div
       style={{
         padding: '40px',
-        margin: '40px',
         border: '1px solid black',
         position: 'relative',
       }}
@@ -32,7 +31,6 @@ storiesOf(`${name} with different parents`, module)
     <div
       style={{
         padding: '40px',
-        margin: '40px',
         border: '1px solid black',
         position: 'absolute',
         top: '40px',
@@ -46,7 +44,6 @@ storiesOf(`${name} with different parents`, module)
     <div
       style={{
         padding: '40px',
-        margin: '40px',
         border: '1px solid black',
         position: 'absolute',
         top: '0px',
@@ -61,7 +58,6 @@ storiesOf(`${name} with different parents`, module)
     <div
       style={{
         padding: '0px',
-        margin: '0px',
         border: '1px solid black',
         position: 'fixed',
         top: '0px',
@@ -77,7 +73,6 @@ storiesOf(`${name} with different parents`, module)
     <div
       style={{
         padding: '40px',
-        margin: '40px',
         border: '1px solid black',
         position: 'relative',
       }}
@@ -136,7 +131,7 @@ storiesOf(`${name} with different parents`, module)
         width: '400px',
         height: '400px',
       }}
-      ref={(el) => (setParent(el))}
+      ref={el => (setParent(el))}
     >
       <div
         style={{
@@ -165,7 +160,7 @@ storiesOf(`${name} with different parents`, module)
           left: '20px',
         }}
       >
-        <DropdownExample position="right bottom" avatarTarget />
+        <DropdownExample position="right bottom" avatarTarget appearance="tall" />
       </div>
     </div>
   ))

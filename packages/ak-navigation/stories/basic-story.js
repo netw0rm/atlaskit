@@ -1,14 +1,16 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import akNavigation from '../src';
-import icons from './icons';
-import TogglingSidebar from './TogglingSidebar';
 import akPage from 'ak-page';
 import 'ak-avatar';
 import 'ak-dropdown';
 import React from 'react';
-import { name } from '../package.json';
 import Lorem from 'react-lorem-component';
+
+import akNavigation from '../src';
+import icons from './icons';
+import TogglingSidebar from './TogglingSidebar';
+import { name } from '../package.json';
+
 
 const AkNavigation = reactify(akNavigation);
 const AkPage = reactify(akPage);
@@ -27,8 +29,8 @@ const {
   JiraIcon,
 } = icons;
 
-const containerLogo = require('url!./nucleus.png');
-const userAvatar = require('url!./emma.jpg');
+const containerLogo = require('url-loader!./nucleus.png');
+const userAvatar = require('url-loader!./emma.jpg');
 
 const sharedProps = {
   containerName: 'Nucleus',
@@ -165,6 +167,23 @@ storiesOf(name, module)
         <ak-navigation-link>I will overflow because of all my </ak-navigation-link>
 
       </AkNavigation>
+    </AkPage>
+  ))
+  .add('with an input and textarea', () => (
+    <AkPage navigationOpen>
+      <AkNavigation
+        slot="navigation"
+        open
+        collapsible
+        {...sharedProps}
+      >
+        <NavigationLinks />
+      </AkNavigation>
+      <div>
+        <input placeholder="input" />
+        <input type="button" />
+        <textarea placeholder="textarea" />
+      </div>
     </AkPage>
   ))
   .add('with a long container name', () => (

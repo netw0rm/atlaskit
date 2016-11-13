@@ -1,12 +1,12 @@
 {
   "name": "ak-editor-button",
-  "version": "2.3.10",
+  "version": "4.0.2",
   "description": "Editor Button web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd .. && npm run prepublish/single ak-editor-button"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-button"
   },
   "files": [
     "dist"
@@ -14,19 +14,23 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-shared-styles": "^1.0.3",
-    "akutil-shared-styles": "^34.2.0",
+    "ak-editor-shared-styles": "^3.0.0",
+    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.6"
   },
   "devDependencies": {
-    "akutil-react": "^1.0.0",
-    "ak-icon": "^8.0.0",
-    "akutil-common-test": "^3.0.0"
+    "akutil-react": "*",
+    "ak-icon": "^10.0.0",
+    "akutil-common-test": "*"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

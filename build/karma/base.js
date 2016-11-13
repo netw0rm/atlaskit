@@ -38,10 +38,22 @@ module.exports = (config) => {
     singleRun: false,
 
     concurrency: Infinity,
+
+    mochaReporter: {
+      showDiff: true,
+    },
   });
 
   config.webpack.plugins.push(new FailPlugin(config));
 
   // add the polyfill file to the test run
   addPolyFills(config);
+
+  config.set({
+    client: {
+      mocha: {
+        timeout: 6000, // avoid timeout on tests in VMs
+      },
+    },
+  });
 };

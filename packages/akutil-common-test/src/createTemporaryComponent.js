@@ -1,8 +1,8 @@
+import uid from 'uid';
 
 import waitUntil from './waitUntil';
-
 import getShadowRoot from './getShadowRoot';
-import uid from 'uid';
+
 
 /**
 * Creates a temporary component from a SkateJS module definition

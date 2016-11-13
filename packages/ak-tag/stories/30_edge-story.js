@@ -1,9 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import Tag from '../src/index';
 import React from 'react';
+
+import Tag from '../src';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
+
 
 const Component = reactify(Tag);
 
@@ -32,5 +34,5 @@ storiesOf(name, module)
       e.appendChild(tag);
     };
 
-    return (<div ref={attachTag}></div>);
+    return (<div ref={attachTag} />);
   });

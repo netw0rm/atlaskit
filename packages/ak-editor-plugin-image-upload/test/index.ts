@@ -15,6 +15,11 @@ describe('ak-editor-plugin-image-upload', () => {
     return { pm, plugin, sel: pm.doc.refs['<>'] };
   };
 
+  it('defines a name for use by the ProseMirror plugin registry ', () => {
+    const Plugin = ImageUploadPlugin as any; // .State is not public API.
+    expect(Plugin.State.name).is.be.a('string');
+  });
+
   it('allows change handler to be registered', () => {
     const { plugin } = editor(doc(p('')));
 

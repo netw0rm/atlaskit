@@ -14,7 +14,7 @@ chai.should();
 describe('ak-field-validator-minlength', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new ValidatorMinlength).should.be.an.instanceof(Component);
+      (new ValidatorMinlength()).should.be.an.instanceof(Component);
     });
   });
 
@@ -56,12 +56,12 @@ describe('ak-field-validator-minlength', () => {
         },
       ];
 
-      testsForLength.forEach(testForLength => {
+      testsForLength.forEach((testForLength) => {
         describe(`with minlength of ${testForLength.minlength}`, () => {
-          testForLength.tests.forEach(test => {
+          testForLength.tests.forEach((test) => {
             it(`and value of ${test.value}`, () => {
               component.minlength = testForLength.minlength;
-              return component.validate(test.value).then(isValid => {
+              return component.validate(test.value).then((isValid) => {
                 expect(isValid).to.equal(test.valid);
                 expect(component.invalid).to.equal(!test.valid);
               });

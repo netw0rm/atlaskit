@@ -1,6 +1,6 @@
 {
   "name": "akutil-common-test",
-  "version": "3.1.0",
+  "version": "7.0.3",
   "description": "Shared tests used by AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -16,16 +16,23 @@
   "license": "Apache-2.0",
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "skatejs": "^1.2.5",
     "custom-event-polyfill": "^0.3.0",
     "keycode": "^2.1.4",
     "uid": "^0.0.2"
   },
   "devDependencies": {
-    "ak-avatar": "^2.1.0"
+    "ak-button": "^3.0.0",
+    "skatejs": "^4.0.6"
+  },
+  "peerDependencies": {
+    "skatejs": ">=3.x"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

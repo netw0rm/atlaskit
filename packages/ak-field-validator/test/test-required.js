@@ -14,7 +14,7 @@ chai.should();
 describe('ak-field-validator-required', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new ValidatorRequired).should.be.an.instanceof(Component);
+      (new ValidatorRequired()).should.be.an.instanceof(Component);
     });
   });
 
@@ -34,9 +34,9 @@ describe('ak-field-validator-required', () => {
         { value: 'hello world', valid: true },
       ];
 
-      tests.forEach(test => {
+      tests.forEach((test) => {
         it(`with value of ${test.value}`, () =>
-          component.validate(test.value).then(isValid => {
+          component.validate(test.value).then((isValid) => {
             expect(isValid).to.equal(test.valid);
             expect(component.invalid).to.equal(!test.valid);
           })

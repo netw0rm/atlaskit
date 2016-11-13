@@ -1,80 +1,34 @@
-import { vdom, define, prop, emit } from 'skatejs';
+import { vdom, define, prop } from 'skatejs';
+import FieldBase from 'ak-field-base';
+
+import SlotWrapper from './SlotWrapper';
 import shadowStyles from './shadow.less';
-import classNames from 'classnames';
-
-import * as events from './internal/index.events';
-
-const inputSlot = Symbol();
-const focusHandlers = Symbol();
-
-function getInput(elem) {
-  return elem.querySelector('[slot=input]');
-}
-
-function handleLabelClick(elem) {
-  return () => {
-    const input = getInput(elem);
-    if (input) {
-      input.focus();
-    }
-  };
-}
-
-function setupFocusHandlers(elem) {
-  const slot = elem[inputSlot];
-  if (!slot[focusHandlers]) {
-    slot.addEventListener('focus', () => emit(elem, events.focus), true);
-    slot.addEventListener('blur', () => emit(elem, events.blur), true);
-    slot[focusHandlers] = true;
-  }
-}
+import { getInput, updateInput } from './internal/helpers';
 
 /**
- * @description Create instances of the component programmatically, or using markup.
+ * @description A text based form field with an associated label.
  * @class TextField
  * @example @js import TextField from 'ak-field-text';
  * const component = new TextField();
+ * @example @html @playground <form>
+ *   <ak-field-text label="My form field"></ak-field-text>
+ * </form>
  */
 export default define('ak-field-text', {
   render(elem) {
-    return (
-      <div>
-        <style>{shadowStyles.toString()}</style>
-        <label
-          onclick={handleLabelClick(elem)}
-          className={shadowStyles.locals.label}
-        >
-          <div className={shadowStyles.locals.labelText}>
-            {elem.label}
-            {elem.required && <span class={shadowStyles.locals.labelRequired}>*</span>}
-          </div>
-          <slot
-            name="input"
-            className={classNames(shadowStyles.locals.defaultSlotElement, {
-              [shadowStyles.locals.compact]: elem.compact,
-            })}
-            ref={(el) => {
-              elem[inputSlot] = el;
-              setupFocusHandlers(elem);
-            }}
-          />
-        </label>
-      </div>
-    );
+    return ([
+      <style>{shadowStyles.toString()}</style>,
+      <FieldBase
+        appearance={elem.compact ? 'compact' : 'standard'}
+        disabled={elem.disabled}
+        label={elem.label}
+        required={elem.required}
+      >
+        <SlotWrapper />
+      </FieldBase>,
+    ]);
   },
-  rendered(elem) {
-    let input = getInput(elem);
-    if (!input) {
-      input = document.createElement('input');
-      input.slot = 'input';
-      elem.appendChild(input);
-    }
-    ['disabled', 'name', 'placeholder', 'type'].forEach((propName) => {
-      if (elem[propName]) {
-        input[propName] = elem[propName];
-      }
-    });
-  },
+  rendered: updateInput,
   props: {
     /**
      * @description Whether to use compact sizing for the field.
@@ -82,6 +36,7 @@ export default define('ak-field-text', {
      * @instance
      * @type {Boolean}
      * @default false
+     * @example @html <ak-field-text compact></ak-field-text>
      */
     compact: prop.boolean({ attribute: true }),
     /**
@@ -90,6 +45,7 @@ export default define('ak-field-text', {
      * @instance
      * @type {Boolean}
      * @default false
+     * @example @html <ak-field-text disabled></ak-field-text>
      */
     disabled: prop.boolean({ attribute: true }),
     /**
@@ -97,6 +53,7 @@ export default define('ak-field-text', {
      * @memberof TextField
      * @instance
      * @type {string}
+     * @example @html <ak-field-text label="First name"></ak-field-text>
      */
     label: prop.string({ attribute: true }),
     /**
@@ -104,6 +61,7 @@ export default define('ak-field-text', {
      * @memberof TextField
      * @instance
      * @type {string}
+     * @example @html <ak-field-text name="fname"></ak-field-text>
      */
     name: prop.string({ attribute: true }),
     /**
@@ -111,6 +69,7 @@ export default define('ak-field-text', {
      * @memberof TextField
      * @instance
      * @type {string}
+     * @example @html <ak-field-text placeholder="e.g. Your name"></ak-field-text>
      */
     placeholder: prop.string({ attribute: true }),
     /**
@@ -119,6 +78,7 @@ export default define('ak-field-text', {
      * @instance
      * @type {Boolean}
      * @default false
+     * @example @html <ak-field-text required></ak-field-text>
      */
     required: prop.boolean({ attribute: true }),
     /**
@@ -127,6 +87,7 @@ export default define('ak-field-text', {
      * @instance
      * @type {string}
      * @default text
+     * @example @html <ak-field-text type="password"></ak-field-text>
      */
     // TODO: Document valid values for this prop
     type: prop.string({
@@ -138,11 +99,12 @@ export default define('ak-field-text', {
      * @memberof TextField
      * @instance
      * @type {string}
+     * @example @js field.value = 'My new text field value';
      */
     value: {
       get(elem) {
         const input = getInput(elem);
-        return input ? input.value : null;
+        return input ? input.value : '';
       },
       set(elem, data) {
         const input = getInput(elem);
@@ -153,5 +115,3 @@ export default define('ak-field-text', {
     },
   },
 });
-
-export { events };

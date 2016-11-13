@@ -1,5 +1,6 @@
 @import 'shared-variables.less';
 @import '~akutil-shared-styles/src/mixins/focus-ring.less';
+@import 'slotted-mixin.less';
 
 @ak-navigation-link-color: @ak-color-N500;
 @ak-navigation-selected-link-color: @ak-color-B500;
@@ -77,11 +78,16 @@ ak-navigation-link {
   width: @container-link-text-expanded-width;
 }
 
-.icon {
-  position: relative;
-  display: flex;
-}
-
 .selected {
   color: @ak-navigation-selected-link-color;
 }
+
+// Styles for slotted icons. Uses a mixing for native/polyfill support.
+@slottedIconStyle: {
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 20px;
+  position: relative;
+  width: 20px;
+};
+.slot(icon, {}, @slottedIconStyle);

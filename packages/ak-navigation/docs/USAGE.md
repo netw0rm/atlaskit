@@ -2,7 +2,7 @@
 
 This component is displayed as a sidebar and it contains two sections: "global" and "container". Both sections are used for navigating through different views and containers in a product.
 
-![Example navigation](https://bytebucket.org/atlassian/atlaskit/raw/master/packages/ak-navigation/docs/navigation.gif)
+![Example navigation](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-navigation/docs/navigation.gif)
 
 Although the ak-navigation component can be used by itself, it works best in conjunction with the [ak-page](https://www.npmjs.com/package/ak-page) component.
 
@@ -31,7 +31,12 @@ Import the component in your JS resource:
 
 ```js
 import 'ak-navigation';
-import 'ak-icon';
+import 'ak-icon/glyph/search';
+import 'ak-icon/glyph/create';
+import 'ak-icon/glyph/bitbucket/logo';
+import 'ak-icon/glyph/bitbucket/dashboard';
+import 'ak-icon/glyph/confluence/calendar';
+import 'ak-icon/glyph/confluence/canvas';
 ```
 
 Now you can use the defined tag in your HTML markup:

@@ -1,0 +1,31 @@
+@import './shared-variables.less';
+
+// Label margins
+@label-top-spacing: unit(@grid * 5, px);
+@label-bottom-spacing: unit(@grid, px);
+@label-padding-left: 10px;
+
+// Label sizing
+@label-inner-height: @grid * 4;
+@label-font-size: 12;
+@label-line-height: @label-inner-height / @label-font-size;
+
+.label {
+  display: block;
+}
+
+.label-text {
+  color: @ak-color-N200;
+  font-size: unit(@label-font-size, px);
+  font-weight: 600;
+  line-height: @label-line-height;
+  padding: @label-top-spacing 0 @label-bottom-spacing @label-padding-left;
+}
+
+.hidden {
+  display: none;
+}
+
+.required {
+  padding-left: 2px;
+}

@@ -1,13 +1,14 @@
 import { storiesOf } from '@kadira/storybook';
 import ToolbarComponent from 'ak-editor-toolbar';
-import BlockTypeComponent from '../src';
 import ContentComponent from 'ak-editor-content';
 import React from 'react';
 import reactify from 'akutil-react';
 import invert from 'lodash.invert';
-
 import { ProseMirror, schema } from 'ak-editor-prosemirror';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
+
+import BlockTypeComponent from '../src';
+
 
 const Toolbar = reactify(ToolbarComponent);
 const BlockType = reactify(BlockTypeComponent);
@@ -43,12 +44,12 @@ storiesOf('ak-editor-toolbar-block-type', module)
             schema.text('Title')
           ),
 
-          schema.node('paragraph',
+            schema.node('paragraph',
             null,
             schema.text('Normal text')
           ),
 
-          schema.node('code_block',
+            schema.node('code_block',
             null,
             schema.text('var a = 1;')
           )]
@@ -62,7 +63,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
           ],
         });
 
-        BlockTypePlugin.get(this.pm).onChange(state => {
+        BlockTypePlugin.get(this.pm).onChange((state) => {
           const name = state.selectedBlockType;
           const blockType = prosemirrorBlockToToolbarMap[name];
 
@@ -75,7 +76,7 @@ storiesOf('ak-editor-toolbar-block-type', module)
 
       render() {
         return (
-          <div ref={(elem) => elem && (this.editorElement = elem.firstChild.nextSibling)}>
+          <div ref={elem => elem && (this.editorElement = elem.firstChild.nextSibling)}>
             <Toolbar>
               <BlockType
                 disabled={!this.state.canChangeBlockType}

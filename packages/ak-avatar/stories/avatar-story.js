@@ -1,29 +1,31 @@
 import { storiesOf } from '@kadira/storybook';
+import React from 'react';
 import reactify from 'akutil-react';
-import AkAvatar from '../src/index';
+
 import avatarStoryStyles from 'style!./stories.less';
+
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
+import AkAvatar from '../src';
 
-import React from 'react';
 
 const Avatar = reactify(AkAvatar);
 
 const avatarClass = styles.locals.akAvatar;
-const transparentAvatarUrl = require('url!./face-w-transparency.png');
-const tickUrl = require('url!./tick.svg');
-const tickWithBackgroundUrl = require('url!./tick.png');
+const transparentAvatarUrl = require('url-loader!./face-w-transparency.png');
+const tickUrl = require('url-loader!./tick.svg');
+const tickWithBackgroundUrl = require('url-loader!./tick.png');
 
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 const storybookExampleClass = avatarStoryStyles.example;
 
-const DefaultAvatar = (props) => <Avatar
+const DefaultAvatar = props => <Avatar
   style={{ marginLeft: '10px' }}
   className={avatarClass}
   {...props}
 />;
 
-const AllAvatarSizes = (props) => <div className={avatarRowClass}>
+const AllAvatarSizes = props => <div className={avatarRowClass}>
   <DefaultAvatar size="small" {...props} />
   <DefaultAvatar size="medium" {...props} />
   <DefaultAvatar size="large" {...props} />
@@ -112,8 +114,8 @@ storiesOf(name, module)
       </div>
       <div className={storybookExampleClass} >
         <div>
-          These avatars have an image in their default slot and have been styled with "height: 100%;
-          width: 100%;"
+          These avatars have an image in their default slot and have been styled
+          with &quot;height: 100%; width: 100%;&quot;
         </div>
         <AllAvatarSizes>
           <img
@@ -193,8 +195,7 @@ storiesOf(name, module)
                 left: '20%',
                 transform: 'rotate(50deg)',
               }}
-            >
-            </div>
+            />
           </div>
         </AllAvatarSizes>
       </div>
@@ -218,13 +219,13 @@ storiesOf(name, module)
           Try loading an image from an external source to see the loading behaviour.
         </div>
         <div>
-          <label>
+          <label htmlFor="avatarUrl">
             <span>URL:</span>
             <input
               type="text"
               id="avatarUrl"
               style={inputStyles}
-              defaultValue="https://design.atlassian.com/images/brand/logo-02.png"
+              defaultValue="https://bytebucket.org/atlassian/atlaskit/raw/8d45a00c570fa08e54ab2ef3610fa5d794479ece/packages/ak-icon/src/icons/atlassian.svg"
             />
             <input type="button" value="Load Image" onClick={loadImage} />
           </label>
@@ -239,6 +240,6 @@ storiesOf(name, module)
         This image should have an aria-label that should be read out when tabbing to the link
           around it and also an alt text.
       </div>
-      <a href="#"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
+      <a href="http://www.atlassian.com"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
     </div>
   ));

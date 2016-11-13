@@ -1,8 +1,10 @@
 import { Component, vdom } from 'skatejs';
-import * as exceptions from './internal/exceptions';
 import { enumeration } from 'akutil-common';
+
+import * as exceptions from './internal/exceptions';
 import Root from './Root';
 import Content from './Content';
+
 
 /**
  * Icon size values.
@@ -23,7 +25,7 @@ const size = {
 
 const SIZE_ATTRIBUTE_ENUM = {
   attribute: 'size',
-  values: Object.values(size),
+  values: [size.small, size.medium, size.large, size.xlarge],
   missingDefault: '',
   invalidDefault: '',
 };
@@ -99,6 +101,7 @@ class Icon extends Component {
   * @private
   * @return {Function} a template function
   */
+  // eslint-disable-next-line class-methods-use-this
   getGlyphTemplate() {
     throw new exceptions.NotImplementedError('Subclasses need to provide an implementation');
   }

@@ -14,7 +14,7 @@ chai.should();
 describe('ak-field-validator-maxlength', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new ValidatorMaxlength).should.be.an.instanceof(Component);
+      (new ValidatorMaxlength()).should.be.an.instanceof(Component);
     });
   });
 
@@ -56,12 +56,12 @@ describe('ak-field-validator-maxlength', () => {
         },
       ];
 
-      testsForLength.forEach(testForLength => {
+      testsForLength.forEach((testForLength) => {
         describe(`with maxlength of ${testForLength.maxlength}`, () => {
-          testForLength.tests.forEach(test => {
+          testForLength.tests.forEach((test) => {
             it(`and value of ${test.value}`, () => {
               component.maxlength = testForLength.maxlength;
-              return component.validate(test.value).then(isValid => {
+              return component.validate(test.value).then((isValid) => {
                 expect(isValid).to.equal(test.valid);
                 expect(component.invalid).to.equal(!test.valid);
               });

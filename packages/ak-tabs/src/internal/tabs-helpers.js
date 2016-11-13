@@ -1,7 +1,14 @@
 import shadowStyles from '../shadow.less';
-import { buttonContainer, labelsContainer, tabDropdownItem, tabLabel } from './symbols';
+import {
+  buttonContainer,
+  labelsContainer,
+  tabDropdownItem,
+  tabLabel,
+  labelProp,
+  selectedProp,
+} from './symbols';
 
-const getAllTabs = (tabsEl) => (Array.from(tabsEl.children).filter(el => el.label));
+const getAllTabs = tabsEl => (Array.from(tabsEl.children).filter(el => el.label));
 
 function getNextOrPrevTab(tabsEl, tab, isNext) {
   const all = getAllTabs(tabsEl);
@@ -17,7 +24,7 @@ function getNextOrPrevTab(tabsEl, tab, isNext) {
 
 function getSelectedTab(tabsEl) {
   const all = getAllTabs(tabsEl);
-  return all.length && all.filter(el => el.selected)[0] || null;
+  return all.length ? (all.filter(el => el.selected)[0] || null) : null;
 }
 
 function getLabelForTab(tab) {
@@ -45,13 +52,13 @@ const calculateVisibleTabs = (tabsEl) => {
 
   let widthRemaining = tabLabelsContainer.getBoundingClientRect().width;
   const tabWidths = new Map();
-  allTabs.forEach(tab => {
+  allTabs.forEach((tab) => {
     tabWidths.set(tab, getLabelForTab(tab).getBoundingClientRect().width);
   });
 
   // If all the tabs fit, then just display them all.
   let totalWidth = 0;
-  tabWidths.forEach((value) => (totalWidth += value));
+  tabWidths.forEach(value => (totalWidth += value));
   if (totalWidth <= widthRemaining) {
     return allTabs;
   }
@@ -102,23 +109,31 @@ function showVisibleTabs(tabsEl) {
   const visibleTabs = calculateVisibleTabs(tabsEl);
 
   // Only show visible tabs
-  allTabs.forEach(el => {
+  allTabs.forEach((el) => {
     el[tabLabel].classList.add(shadowStyles.locals.akTabLabelHidden);
     el[tabDropdownItem].classList.remove(shadowStyles.locals.akTabDdItemHidden);
   });
-  visibleTabs.forEach(el => {
+  visibleTabs.forEach((el) => {
     el[tabLabel].classList.remove(shadowStyles.locals.akTabLabelHidden);
     el[tabDropdownItem].classList.add(shadowStyles.locals.akTabDdItemHidden);
   });
 
   // Hide the More dropdown if there are no children
   const showDropdown = visibleTabs.length < allTabs.length;
-  tabsEl[buttonContainer].classList.toggle(shadowStyles.locals.akTabLabelHidden, !showDropdown);
+  if (showDropdown) {
+    tabsEl[buttonContainer].classList.remove(shadowStyles.locals.akTabLabelHidden);
+  } else {
+    tabsEl[buttonContainer].classList.add(shadowStyles.locals.akTabLabelHidden);
+  }
 
   // Truncate the label if there is only a single tab
   if (visibleTabs.length) {
     const isSingleTab = visibleTabs.length === 1;
-    visibleTabs[0][tabLabel].classList.toggle(shadowStyles.locals.akTabLabelSingle, isSingleTab);
+    if (isSingleTab) {
+      visibleTabs[0][tabLabel].classList.add(shadowStyles.locals.akTabLabelSingle);
+    } else {
+      visibleTabs[0][tabLabel].classList.remove(shadowStyles.locals.akTabLabelSingle);
+    }
   }
 }
 
@@ -135,8 +150,8 @@ const getTabsVisibility = (tabsEl) => {
 
 const updateProps = (tabsEl) => {
   const allTabs = getAllTabs(tabsEl);
-  tabsEl._selected = allTabs.map(el => el.selected); // eslint-disable-line no-underscore-dangle
-  tabsEl._labels = allTabs.map(el => el.label); // eslint-disable-line no-underscore-dangle
+  tabsEl[selectedProp] = allTabs.map(el => el.selected);
+  tabsEl[labelProp] = allTabs.map(el => el.label);
 };
 
 export {

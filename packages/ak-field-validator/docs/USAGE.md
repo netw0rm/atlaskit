@@ -38,10 +38,9 @@ Now you can use the defined tag in your HTML markup:
     <script src="bundle.js"></script>
   </head>
   <body>
-    <ak-field>
-      <ak-field-validator-minlength minlength="5" slot="validator"></ak-field-validator-minlength>
-      <ak-field-text slot="input"></ak-field-text>
-    </ak-field>
+    <ak-field-text>
+      <ak-field-validator-minlength minlength="5" slot="validator-slot"></ak-field-validator-minlength>
+    </ak-field-text>
   </body>
 </html>
 ```
@@ -51,8 +50,9 @@ You can also use it from within another JavaScript resource:
 ```js
 import ValidatorMinlength from 'ak-field-validator';
 
-const component = new ValidatorMinlength();
-document.body.appendChild(component);
+const validator = new ValidatorMinlength();
+validator.minlength = 5;
+document.body.appendChild(validator);
 ```
 
 ### React
@@ -70,16 +70,28 @@ ReactDOM.render(<ReactComponent />, container);
 
 ## Defining a custom validator
 
-This package exports a factory function, which will define and return a new validator component.
+This package exports the `ValidatorBase` class, which can be extended in order to define a new validator component.
+
+You may simply define a new component by extending the base class and providing a `validatorFunction`
+which takes a value and returns a boolean value representing whether the value is valid or not.
+
+The `validatorFunction` takes one arguments:
+
+* `value`: The value to be validated.
+
+You may also refer to the validator element itself using `this`.
 
 ```js
-import { defineValidator } from 'ak-field-validator';
+import { define } from 'skatejs';
+import { ValidatorBase } from 'ak-field-validator';
 
-const ValidatorIsEven = defineValidator('x-validator-even-length', 
-  function(value) {
+const ValidatorIsEven = define('x-validator-even-length', class extends ValidatorBase {
+  validatorFunction(value) {
+    // value: The value to be validated.
+    // this: The <x-validator-even-length> element.
     return value.length % 2 === 0;
   }
-);
+});
 ```
 
 ```html
@@ -88,30 +100,36 @@ const ValidatorIsEven = defineValidator('x-validator-even-length',
     <script src="bundle.js"></script>
   </head>
   <body>
-    <ak-field>
-      <x-validator-even-length slot="validator">Field length must be even</x-validator-even-length>
-      <ak-field-text slot="input"></ak-field-text>
-    </ak-field>
+    <form>
+      <ak-field-text>
+        <x-validator-even-length slot="validator-slot">Field length must be even</x-validator-even-length>
+      </ak-field-text>
+    </form>
   </body>
 </html>
 ```
 
 ### More complex custom validators
 
-More complex validators can be constructed by specifying properties and the default error message.
+More complex validators can be constructed by specifying custom properties and using them in the `validatorFunction`.
+
+*Note*: If you are defining additional properties, it is important to not overwrite the `invalid` property
+(which is defined by `ValidatorBase`), e.g. by using `Object.assign`.
 
 ```js
-import { defineValidator } from 'ak-field-validator';
+import { define } from 'skatejs';
+import { ValidatorBase } from 'ak-field-validator';
 
-defineValidator('x-validator-starts-with',
-  (value, elem) => value.startsWith(elem.start),
-  {
-    start: {
-      attribute: true
-    }
-  },
-  (elem) => (`Field value must start with ${elem.start}`)
-);
+const ValidatorStartsWith = define('x-validator-starts-with', class extends ValidatorBase {
+  static get props() {
+    return Object.assign({}, super.props, {
+      start: { attribute: true }
+    });
+  }
+  validatorFunction(value) {
+    return value.startsWith(this.start);
+  }
+});
 ```
 
 ```html
@@ -120,10 +138,11 @@ defineValidator('x-validator-starts-with',
     <script src="bundle.js"></script>
   </head>
   <body>
-    <ak-field>
-      <x-validator-starts-with starts-with="foo" slot="validator"></x-validator-starts-with>
-      <ak-field-text slot="input"></ak-field-text>
-    </ak-field>
+    <form>
+      <ak-field-text>
+        <x-validator-starts-with start="foo" slot="validator-slot"></x-validator-starts-with>
+      </ak-field-text>
+    </form>
   </body>
 </html>
 ```

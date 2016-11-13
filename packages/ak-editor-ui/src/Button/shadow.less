@@ -1,0 +1,54 @@
+@import '~ak-editor-shared-styles/src/index';
+
+.root {
+  display: inline-block;
+
+  > button {
+    background: transparent;
+    border: 0 solid transparent;
+    border-radius: @ak-border-radius;
+    display: flex;
+    margin: 0;
+    padding: 0;
+
+    > slot {
+      display: flex;
+    }
+
+    &:not([disabled]) {
+      cursor: pointer;
+    }
+
+    &:active:focus {
+      background: @ak-editor-active-background;
+      box-shadow: none;
+    }
+
+    .active& {
+      background: @ak-editor-active-background;
+
+      &:not([disabled]):hover {
+        background: darken(@ak-editor-active-background, 10%);
+      }
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px @ak-editor-focus;
+      outline: none;
+    }
+
+    &:not([disabled]):hover {
+      background: @ak-editor-subtle-accent;
+    }
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+
+    // Firefox applies a 2px left & right padding to buttons.
+    &::-moz-focus-inner {
+      padding: 0;
+      border: 0
+    }
+  }
+}

@@ -1,9 +1,11 @@
 /** @jsx vdom */
 import { Component, define, emit, prop, vdom } from 'skatejs';
-import shadowStyles from './shadow.less';
 import classNames from 'classnames';
 import { enumeration } from 'akutil-common';
+
+import shadowStyles from './shadow.less';
 import * as events from './internal/events';
+
 
 const APPEARANCE_ENUM = {
   values: ['default', 'primary', 'important', 'added', 'removed'],

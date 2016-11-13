@@ -2,56 +2,29 @@
 set -e
 
 CHALK="`npm bin`/chalk"
+BASEDIR=$(dirname $0)
+BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/storybook"
+OUTDIR=$(mktemp -d)
+. $BASEDIR/_build_status.sh
+. $BASEDIR/_cdn_publish_folder.sh
 
-GITHEAD_SHORT=$(git rev-parse --short HEAD)
+function storybook_build_status() {
+  build_status \
+    "STORYBOOK" \
+    "Storybook" \
+    "The storybook for this pull request" \
+    "$1" \
+    "$CDN_URL_BASE/$CDN_URL_SCOPE/$BUILD_SPECIFIC_URL_PART/"
+}
 
-BUILD_URL="$CDN_URL_BASE/atlaskit/pr/stories/$BITBUCKET_COMMIT/"
-BUILD_KEY="STORYBOOK-$GITHEAD_SHORT"
-BUILD_NAME="Storybook"
-BUILD_DESCRIPTION="The storybook for this pull request"
+function build_storybook() {
+  local TARGET_PATH="$1"
 
-$CHALK --no-stdin -t "{blue Post build in progress status}"
-bbuild \
---commit "$BITBUCKET_COMMIT" \
---repo "$BITBUCKET_REPO_SLUG" \
---owner "$BITBUCKET_REPO_OWNER" \
---username "$BITBUCKET_USER" \
---password "$BITBUCKET_PASSWORD" \
---key "$BUILD_KEY" \
---name "$BUILD_NAME" \
---description "$BUILD_DESCRIPTION" \
---url "$BUILD_URL" \
---state "INPROGRESS"
+  $CHALK --no-stdin -t "{blue Building storybook (PR)}"
+  npm run storybook/static -- -o "$TARGET_PATH"
+}
 
-$CHALK --no-stdin -t "{blue Building storybook (PR)}"
-mkdir -p ../atlaskit-stories
-npm run storybook/static -- -o stories/$BITBUCKET_COMMIT
-mv ./stories ../atlaskit-stories/resources
-rm -f ../ak-storybooks-cdn.zip
-zip -0 -r -T ../ak-storybooks-cdn.zip ../atlaskit-stories/resources
-
-$CHALK --no-stdin -t "{blue Uploading storybook (PR) to CDN...}"
-prebake-distributor-runner \
---s3-bucket="$S3_BUCKET" \
---s3-key-prefix="$S3_KEY_PREFIX/pr/stories" \
---s3-gz-key-prefix="$S3_GZ_KEY_PREFIX/pr/stories" \
-"../ak-storybooks-cdn.zip"
-
-# Invalidate CDN caches
-$CHALK --no-stdin -t "{blue CDN invalidation (storybook) starting now (this may take some time)}"
-AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY" \
-AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY" \
-cf-invalidate -- $CLOUDFRONT_DISTRIBUTION "/atlaskit/pr/stories/$BITBUCKET_COMMIT/*"
-
-$CHALK --no-stdin -t "{blue Post storybook (PR) URL to build}"
-bbuild \
---commit "$BITBUCKET_COMMIT" \
---repo "$BITBUCKET_REPO_SLUG" \
---owner "$BITBUCKET_REPO_OWNER" \
---username "$BITBUCKET_USER" \
---password "$BITBUCKET_PASSWORD" \
---key "$BUILD_KEY" \
---name "$BUILD_NAME" \
---description "$BUILD_DESCRIPTION" \
---url "$BUILD_URL" \
---state "SUCCESSFUL"
+storybook_build_status "INPROGRESS"
+build_storybook "$OUTDIR"
+cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
+storybook_build_status "SUCCESSFUL"

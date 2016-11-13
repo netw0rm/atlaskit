@@ -29,8 +29,17 @@
   fill: @ak-color-N700;
 }
 
-.boxes {
-  & > * {
+.compare-icon-container {
+  position: relative;
+  padding: 0 @size-default @size-default 0;
+
+  .original {
+    position: absolute;
+    color: @ak-color-R500;
+  }
+
+  .constrained {
+    position: absolute;
     width: @size-default;
     height: @size-default;
     background: white;

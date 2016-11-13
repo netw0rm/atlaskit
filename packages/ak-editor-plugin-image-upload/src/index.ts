@@ -79,7 +79,7 @@ function isShallowObjectEqual(
   return JSON.stringify(oldObject) === JSON.stringify(newObject);
 }
 
-export default new Plugin(class ImageUploadPlugin {
+class ImageUploadPlugin {
   changeHandlers: StateChangeHandler[];
   name: string;
   pasteAdapter: PasteAdapter;
@@ -222,4 +222,9 @@ export default new Plugin(class ImageUploadPlugin {
 
     return this.addImage(options);
   }
-});
+}
+
+// IE11 + multiple prosemirror fix.
+Object.defineProperty(ImageUploadPlugin, 'name', { value: 'ImageUploadPlugin' });
+
+export default new Plugin(ImageUploadPlugin);

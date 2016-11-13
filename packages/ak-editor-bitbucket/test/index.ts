@@ -1,10 +1,11 @@
 import * as chai from 'chai';
 import AkEditorBitbucket from '../src';
-import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } from 'akutil-common-test';
+import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress, locateWebComponent } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
-import { fixtures, RewireSpy, chaiPlugin, doc, text, code, strong, a,
+import { fixtures, RewireSpy, chaiPlugin } from 'ak-editor-test';
+import { doc, code, strong, a,
   h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
-  emoji, code_block } from 'ak-editor-test';
+  emoji, code_block } from './_schema-builder';
 import sinonChai from 'sinon-chai';
 
 import shadowStyles from './shadow.less';
@@ -124,6 +125,19 @@ describe('ak-editor-bitbucket', () => {
     );
   });
 
+  it('has its shadow root container "positioned" so that popups are positioned based on the container rather than viewport', (done) => {
+    const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
+
+    afterMutations(
+      () => {
+        const container = editor.shadowRoot.firstChild;
+        const child = container.appendChild(document.createElement('div'));
+        expect(child.offsetParent).to.equal(container);
+      },
+      done
+    );
+  });
+
   describe('.value', () => {
     it('returns an empty string by default', () => {
       const editor = new AkEditorBitbucket();
@@ -144,21 +158,19 @@ describe('ak-editor-bitbucket', () => {
       const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
 
       editor.defaultValue = content;
+      editor.expanded = true;
 
-      afterMutations(
-        () => { editor.expanded = true; },
-        () => {
-          const opts = spy.firstCall.args[0];
-          expect(opts.doc).has.property('textContent', content);
-        },
-        done
-      );
+      afterMutations(() => {
+        const opts = spy.firstCall.args[0];
+        expect(opts.doc).has.property('textContent', content);
+        done();
+      });
     });
 
     it('should be converted to a proper Prosemirror document after rendering', () => {
       return buildExpandedEditor(fixture(), '<p>foo <strong>bar</strong></p>')
         .then((editor) => {
-          expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), strong(text('bar')))));
+          expect(editor._pm.doc).to.deep.equal(doc(p('foo ', strong('bar'))));
         });
     });
   });
@@ -181,9 +193,28 @@ describe('ak-editor-bitbucket', () => {
       expect(editor.expanded).to.be.false;
     });
 
+    it('should be focused even if not yet rendered', () => {
+      expect(editor._focused).to.be.false;
+      editor.focus();
+      expect(editor._focused).to.be.true;
+    });
+
     it('should expand after clicking the input element', () => {
       activateEditor(editor);
       expect(editor.expanded).to.be.true;
+    });
+
+    it('should stop being focused after collapsing', (done) => {
+      activateEditor(editor);
+      afterMutations(
+        () => {
+          expect(editor._focused).to.be.true;
+          expect(editor.expanded).to.be.true;
+          editor.expanded = false;
+          expect(editor.expanded).to.be.false;
+          done();
+        }
+      );
     });
   });
 
@@ -204,21 +235,22 @@ describe('ak-editor-bitbucket', () => {
 
     it('should have options in block type dropdown', () => {
       return buildExpandedEditor(fixture()).then((editor) => {
-        const bt = getShadowRoot(editor).querySelector('ak-editor-toolbar-block-type');
-        expect(bt).to.not.be.null;
+        let bt: HTMLElement;
+        let btShadowRoot: HTMLElement;
 
-        // on browsers without native ShadowDOM (i.e. Firefox, Safari), shadowRoot is not available right away
-        return waitUntil(() => {
-          return !!getShadowRoot(bt);
-        }).then(() => {
-          const fs = getShadowRoot(bt).querySelector('ak-editor-toolbar-block-type-select');
+        // On polyfilled ShadowDOM the root is not available right away (i.e. in FF and IE)
+        return waitUntil(
+          () =>
+            (bt = locateWebComponent('ak-editor-toolbar-block-type', getShadowRoot(editor))[0]) &&
+            (btShadowRoot = getShadowRoot(bt))
+        ).then(() => {
+          const fs = locateWebComponent('ak-editor-toolbar-block-type-select', btShadowRoot);
           expect(fs).to.not.be.null;
 
-          const btShadowRoot = getShadowRoot(bt);
-          return waitUntil(() => {
-            // it takes roughly 3 iterations to render all elements and attach them to <ul>
-            return btShadowRoot.querySelectorAll('ak-editor-toolbar-block-type-option').length >= 2;
-          });
+          // it takes roughly 3 iterations to render all elements and attach them to <ul>
+          return waitUntil(
+            () => locateWebComponent('ak-editor-toolbar-block-type-option', btShadowRoot).length >= 2
+          );
         });
       });
     });
@@ -241,7 +273,7 @@ describe('ak-editor-bitbucket', () => {
         expect(editor._pm.doc).to.deep.equal(doc(h1('foo')));
 
         editor.setFromHtml('<p>foo <strong>bar</strong></p>');
-        expect(editor._pm.doc).to.deep.equal(doc(p(text('foo '), strong(text('bar')))));
+        expect(editor._pm.doc).to.deep.equal(doc(p('foo ', strong('bar'))));
       });
     });
   });
@@ -283,12 +315,12 @@ describe('ak-editor-bitbucket', () => {
         outer.addEventListener('keydown', spy);
         outer.addEventListener('keyup', spy);
         outer.addEventListener('keypress', spy);
-        keydown('enter', PMContainer);
-        keypress('enter', PMContainer);
-        keyup('enter', PMContainer);
-        keydown('enter', editor);
-        keypress('enter', editor);
-        keyup('enter', editor);
+        keydown('enter', { target: PMContainer });
+        keypress('enter', { target: PMContainer });
+        keyup('enter', { target: PMContainer });
+        keydown('enter', { target: editor });
+        keypress('enter', { target: editor });
+        keyup('enter', { target: editor });
         outer.removeEventListener('keydown', spy);
         outer.removeEventListener('keyup', spy);
         outer.removeEventListener('keypress', spy);
@@ -303,7 +335,7 @@ describe('ak-editor-bitbucket', () => {
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
-        keydown('enter', PMContainer);
+        keydown('enter', { target: PMContainer });
 
         expect(editor._pm.doc).to.deep.equal(doc(code_block()('\nvar code;')));
       });
@@ -317,7 +349,7 @@ describe('ak-editor-bitbucket', () => {
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
-        keydown('enter', PMContainer);
+        keydown('enter', { target: PMContainer });
 
         expect(editor._pm.doc).to.deep.equal(doc(p('text'), code_block()('\nvar code;')));
       });
@@ -331,7 +363,7 @@ describe('ak-editor-bitbucket', () => {
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
-        keydown('enter', PMContainer);
+        keydown('enter', { target: PMContainer });
 
         expect(editor._pm.doc).to.deep.equal(doc(code_block()('var \ncode;')));
       });
@@ -345,7 +377,7 @@ describe('ak-editor-bitbucket', () => {
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
-        keydown('enter', PMContainer);
+        keydown('enter', { target: PMContainer });
 
         expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;\n')));
       });

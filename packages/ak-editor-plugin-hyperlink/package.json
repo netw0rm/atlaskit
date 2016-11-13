@@ -1,24 +1,25 @@
 {
   "name": "ak-editor-plugin-hyperlink",
-  "version": "5.0.0",
+  "version": "5.0.2",
   "description": "A hyperlink plugin for ProseMirror",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.ts",
-  "typings": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-plugin-hyperlink"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts"
   ],
   "dependencies": {
-    "ak-editor-prosemirror": "^2.0.0"
+    "ak-editor-prosemirror": "^4.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-editor-test": "^3.0.0"
+    "ak-editor-test": "*"
   },
   "repository": {
     "type": "git",

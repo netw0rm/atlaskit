@@ -14,7 +14,7 @@ import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
-import schema from 'ak-editor-schema';
+import schema from './schema';
 import { buildKeymap } from './keymap';
 import markdownSerializer from './markdown-serializer';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
@@ -28,11 +28,9 @@ import {
 import MarkdownInputRulesPlugin from 'ak-editor-plugin-markdown-inputrules';
 import {
   default as HyperlinkPlugin,
-  DISABLED_GROUP as HyperlinkPluginDisabledGroup
 } from 'ak-editor-plugin-hyperlink';
 import {
   default as ImageUploadPlugin,
-  DISABLED_GROUP as ImageUploadPluginDisabledGroup,
   ImageUploadOptions
 } from 'ak-editor-plugin-image-upload';
 import {
@@ -83,9 +81,9 @@ class AkEditorBitbucket extends Component {
   placeholder: string;
   imageUploader: Function;
   context: string;
-  expanded: boolean;
 
   // private state
+  _expanded: boolean;
   _focused: boolean;
   _canChangeBlockType: boolean;
   _strongActive: boolean;
@@ -244,8 +242,6 @@ class AkEditorBitbucket extends Component {
       <Footer
         openTop
         hide-buttons={elem.context === 'pr'}
-        onSave={elem._collapse}
-        onCancel={elem._collapse}
         onInsertimage={elem._insertImage}
       />
     </div>);
@@ -276,6 +272,8 @@ class AkEditorBitbucket extends Component {
    * Focus the content region of the editor.
    */
   focus(): void {
+    this._focused = true;
+
     if (this._pm) {
       this._pm.focus();
     }
@@ -307,6 +305,18 @@ class AkEditorBitbucket extends Component {
    */
   get ready(): boolean {
     return this._ready || false;
+  }
+
+  set expanded(isExpanded: boolean) {
+    this._expanded = isExpanded;
+
+    if (!isExpanded) {
+      this._focused = false;
+    }
+  }
+
+  get expanded(): boolean {
+    return this._expanded;
   }
 
   /**
@@ -406,9 +416,6 @@ class AkEditorBitbucket extends Component {
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
 
-    (schema.nodes.code_block as any).group += ` ${HyperlinkPluginDisabledGroup}`;
-    (schema.nodes.code_block as any).group += ` ${ImageUploadPluginDisabledGroup}`;
-
     const pm = new ProseMirror({
       place: this._wrapper,
       doc: parseHtml(this.defaultValue),
@@ -480,6 +487,11 @@ class AkEditorBitbucket extends Component {
 
     // 'change' event is public API
     pm.on.change.add(() => emit(this, 'change'));
+
+    // Focus on the PM content area if necessary
+    if (this._focused) {
+      pm.focus();
+    }
 
     this._pm = pm;
   }

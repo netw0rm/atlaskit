@@ -204,8 +204,8 @@ describe(name, () => {
             () => getRootNode(component),
             rootNode => rootNode.getBoundingClientRect(),
             ({ width, height }) => {
-              width.should.be.equal(expectedSize);
-              height.should.be.equal(expectedSize);
+              Math.round(width).should.be.equal(expectedSize);
+              Math.round(height).should.be.equal(expectedSize);
             },
             done
           );

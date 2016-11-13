@@ -13,6 +13,11 @@ import {
   EditorTransform
 } from 'ak-editor-prosemirror';
 
+import {
+  isBulletListNode,
+  isOrderedListNode
+} from 'ak-editor-schema'
+
 export type ListType = 'bullet_list' | 'ordered_list' | null;
 
 export interface ListsOptions {
@@ -48,7 +53,11 @@ function isShallowObjectEqual(oldObject: ListsState, newObject: ListsState): boo
   return JSON.stringify(oldObject) === JSON.stringify(newObject);
 }
 
-export default new Plugin(class ListsPlugin {
+function isListNode(node: Node) {
+  return isBulletListNode(node) || isOrderedListNode(node);
+}
+
+class ListsPlugin {
   changeHandlers: StateChangeHandler[];
   pm: ProseMirror;
   state: ListsState;
@@ -106,14 +115,13 @@ export default new Plugin(class ListsPlugin {
     const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
 
     const rootNode: Node = $from.node(1);
-    const isList: boolean = this.listTypes.indexOf(rootNode.type.name) !== -1;
     const isListable = activeNode ? isNodeListable(pm, activeNode) : oldState.enabled;
     const canChange = canChangeToList(pm, this.listTypes);
 
-    if (isList && activeNode) {
+    if (isListNode(rootNode) && activeNode) {
       this.setState({
         active: true,
-        type: rootNode.type.name,
+        type: rootNode.type.name as ListType,
         enabled: true
       });
     } else if (!isListable || !canChange) {
@@ -130,7 +138,7 @@ export default new Plugin(class ListsPlugin {
   // Returns all block-nodes between $from and $to
   blockNodesBetween($from: ResolvedPos, $to: ResolvedPos): Node[] {
     let current = this.pm.doc.resolve($from.start(1));
-    let nodes = Array<Node>(); 
+    let nodes = Array<Node>();
 
     while (current.pos <= $to.start(1)) {
       nodes.push(current.node(1));
@@ -147,7 +155,7 @@ export default new Plugin(class ListsPlugin {
   }
 
   // Step through block-nodes between $from and $to and returns false if a node is
-  // found that isn't of the specified type  
+  // found that isn't of the specified type
   isRangeOfType($from: ResolvedPos, $to: ResolvedPos, type: ListType): boolean {
     return this.blockNodesBetween($from, $to).filter(node => node.type.name !== type).length === 0;
   }
@@ -155,7 +163,7 @@ export default new Plugin(class ListsPlugin {
   // Step through block-nodes between $from and $to and return true if a node is a
   // bullet_list or ordered_list
   rangeContainsList($from: ResolvedPos, $to: ResolvedPos): boolean {
-    return this.blockNodesBetween($from, $to).filter(node => this.listTypes.indexOf(node.type.name) !== -1).length !== 0;
+    return this.blockNodesBetween($from, $to).some(isListNode);
   }
 
   // Takes a selection $from and $to and lift all text nodes from their parents to document-level
@@ -208,7 +216,7 @@ export default new Plugin(class ListsPlugin {
     const isSameLine = $from.pos === $to.pos;
 
     if (isSameLine) {
-      $from = this.pm.doc.resolve($from.start($from.depth)); 
+      $from = this.pm.doc.resolve($from.start($from.depth));
       $to = this.pm.doc.resolve($from.end($from.depth));
     }
 
@@ -249,7 +257,7 @@ export default new Plugin(class ListsPlugin {
     }
 
     if(!($from.parent && $from.parent.isTextblock && !$from.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
-      let node: Node = this.pm.doc.nodeAt(startPos); 
+      let node: Node = this.pm.doc.nodeAt(startPos);
       while(!node || (node && !node.isText)) {
         startPos++;
         node = this.pm.doc.nodeAt(startPos);
@@ -257,7 +265,7 @@ export default new Plugin(class ListsPlugin {
     }
 
     if(!($to.parent && $to.parent.isTextblock && !$to.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
-      let node = this.pm.doc.nodeAt(endPos); 
+      let node = this.pm.doc.nodeAt(endPos);
       while(!node || (node && !node.isText)) {
         endPos--;
         node = this.pm.doc.nodeAt(endPos);
@@ -265,7 +273,7 @@ export default new Plugin(class ListsPlugin {
     }
 
     if (endPos === startPos) {
-      return new TextSelection(this.pm.doc.resolve(startPos)); 
+      return new TextSelection(this.pm.doc.resolve(startPos));
     }
 
     return new TextSelection(this.pm.doc.resolve(startPos), this.pm.doc.resolve(endPos));
@@ -280,7 +288,7 @@ export default new Plugin(class ListsPlugin {
   // the list type for that selection.
   // In any other case it will try to apply the specified list type to the seletion,
   // either by converting existing lists to the new type or just apply the list type
-  // if there's no list in the selection. 
+  // if there's no list in the selection.
   toggleList(type: ListType): boolean {
     const pm = this.pm;
     let { $from, $to } = pm.selection;
@@ -297,7 +305,7 @@ export default new Plugin(class ListsPlugin {
     const isRangeOfType = this.isRangeOfType(adjustedSelection.$from, adjustedSelection.$to, type);
     const shouldUntoggle = isRangeOfType;
     const rangeContainsList = this.rangeContainsList($from, $to);
-    const shouldConvertToType = !isRangeOfType && (isList || rangeContainsList); 
+    const shouldConvertToType = !isRangeOfType && (isList || rangeContainsList);
 
     if (shouldUntoggle) {
       if ($from.parent === $to.parent) {
@@ -331,11 +339,11 @@ export default new Plugin(class ListsPlugin {
       }
 
       if (this.shouldJoinDown(pm.selection, pm.doc, type)) {
-        /* 
-         * joinDown expects the selection to be from the end of our last node to 
+        /*
+         * joinDown expects the selection to be from the end of our last node to
          * the beginning of the next. So we need to adjust our selection a bit.
          * */
-        pm.setSelection(new TextSelection(pm.selection.$to, pm.doc.resolve(pm.selection.$to.after(1)))); 
+        pm.setSelection(new TextSelection(pm.selection.$to, pm.doc.resolve(pm.selection.$to.after(1))));
         commands.joinDown(pm, true);
       }
 
@@ -348,4 +356,9 @@ export default new Plugin(class ListsPlugin {
     this.changeHandlers.push(cb);
     cb(this.getState());
   }
-});
+}
+
+// IE11 + multiple prosemirror fix.
+Object.defineProperty(ListsPlugin, 'name', { value: 'ListsPlugin' });
+
+export default new Plugin(ListsPlugin);

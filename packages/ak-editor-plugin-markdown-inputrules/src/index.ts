@@ -6,14 +6,45 @@ import {
   InputRule,
   inputRules,
   allInputRules,
-  headingRule
+  headingRule,
+  bulletListRule,
+  blockQuoteRule,
+  codeBlockRule,
+  wrappingInputRule,
+  NodeType,
+  Node
 } from 'ak-editor-prosemirror';
+
+// NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
+// input rule will allow for a list to start at any given number, which isn't allowed in
+// markdown (where a ordered list will always start on 1). This is a slightly modified
+// version of that input rule.
+function orderedListRule(nodeType: NodeType): InputRule {
+  return wrappingInputRule(/^(\d+)\. $/, " ", nodeType, (match: RegExpMatchArray) => ({}),
+                           (match: RegExpMatchArray, node: Node) => node.childCount);
+}
 
 const buildBlockRules = (schema: Schema): Array<InputRule> => {
   const rules = Array<InputRule>();
 
   if (schema.nodes.heading) {
     rules.push(headingRule(schema.nodes.heading, 3));
+  }
+
+  if (schema.nodes.bullet_list) {
+    rules.push(bulletListRule(schema.nodes.bullet_list));
+  }
+
+  if (schema.nodes.ordered_list) {
+    rules.push(orderedListRule(schema.nodes.ordered_list));
+  }
+
+  if (schema.nodes.blockquote) {
+    rules.push(blockQuoteRule(schema.nodes.blockquote));
+  }
+
+  if (schema.nodes.code_block) {
+    rules.push(codeBlockRule(schema.nodes.code_block));
   }
 
   return rules;
@@ -153,7 +184,7 @@ const hrRule2 = new InputRule(/^\-\-\-$/, '-', (
   pos: number
 ) => replaceWithNode(pm, match, pos, pm.schema.nodes.horizontal_rule.create()));
 
-export default new Plugin(class MarkdownInputRulesPlugin {
+class MarkdownInputRulesPlugin {
   inputRules: InputRule[];
 
   constructor(pm: ProseMirror) {
@@ -181,4 +212,9 @@ export default new Plugin(class MarkdownInputRulesPlugin {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
-});
+}
+
+// IE11 + multiple prosemirror fix.
+Object.defineProperty(MarkdownInputRulesPlugin, 'name', { value: 'MarkdownInputRulesPlugin' });
+
+export default new Plugin(MarkdownInputRulesPlugin);

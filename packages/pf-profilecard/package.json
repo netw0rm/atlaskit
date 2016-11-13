@@ -1,6 +1,6 @@
 {
   "name": "pf-profilecard",
-  "version": "3.0.0",
+  "version": "3.0.3",
   "description": "pf-profilecard webcomponent",
   "main": "dist/bundle.js",
   "webpack": "src/index.js",
@@ -14,21 +14,22 @@
     "dist"
   ],
   "dependencies": {
-    "ak-avatar": "^3.0.0",
-    "ak-button": "^1.4.0",
-    "akutil-common": "^2.5.0",
-    "akutil-shared-styles": "^35.0.1",
+    "ak-avatar": "^4.0.0",
+    "ak-button": "^3.0.0",
+    "akutil-common": "^5.0.0",
+    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
+    "es6-promise": "^4.0.5",
     "classnames": "^2.2.5",
-    "skatejs": "^3.0.0",
-    "url-search-params": "^0.5.0",
+    "skatejs": "^4.0.6",
+    "url-search-params": "^0.6.1",
     "whatwg-fetch": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "^4.0.0",
-    "akutil-react": "^1.2.0",
+    "akutil-common-test": "*",
+    "akutil-react": "*",
     "loader-utils": "^0.2.16",
     "lodash.sample": "^4.2.1",
     "uid": "^0.0.2"

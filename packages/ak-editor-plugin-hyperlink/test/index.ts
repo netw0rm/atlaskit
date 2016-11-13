@@ -13,6 +13,11 @@ describe('ak-editor-plugin-hyperlink', () => {
     return { pm, plugin, sel: pm.doc.refs['<>'] };
   };
 
+  it('defines a name for use by the ProseMirror plugin registry ', () => {
+    const Plugin = HyperlinkPlugin as any; // .State is not public API.
+    expect(Plugin.State.name).is.be.a('string');
+  });
+
   describe('input rules', () => {
     it('should convert "www.atlassian.com " to hyperlink', () => {
       const { pm, sel } = editor(doc(p('{<>}')));

@@ -52,10 +52,6 @@ describe('ak-button/link-behaviour', () => {
       const selector = 'span[disabled].button';
       beforeEach(() => (props(component, { disabled: true })));
 
-      it('component should have pointer-events: none css attribute', () =>
-        expect(window.getComputedStyle(component).pointerEvents).to.equal('none')
-      );
-
       describe('shadow dom element', () => {
         it('should be a span', () =>
           expect(shadowDomQuery(component, selector)).to.be.defined

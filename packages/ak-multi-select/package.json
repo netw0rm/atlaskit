@@ -12,20 +12,23 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^35.0.1",
+    "akutil-shared-styles": "^37.0.1",
     "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5",
-    "skatejs": "^4.0.0",
-    "ak-dropdown": "^9.0.2",
-    "ak-tag": "^2.3.2",
-    "ak-tag-group": "^2.1.1",
-    "ak-avatar": "^3.1.2"
+    "skatejs": "^4.0.6",
+    "ak-dropdown": "^10.0.2",
+    "ak-tag": "^4.0.4",
+    "ak-tag-group": "^4.0.4"
+  },
+  "peerDependencies": {
+    "ak-tag": ">=4.x",
+    "ak-tag-group": ">=4.x",
+    "ak-dropdown": ">=10.x"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "^3.0.0",
-    "akutil-react": "^1.0.0"
+    "akutil-common-test": "*",
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",

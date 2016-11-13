@@ -1,8 +1,8 @@
 import { vdom, define, prop } from 'skatejs';
-import { events as eventsTag } from 'ak-tag';
+import { events as tagEvents } from 'ak-tag';
 import Dropdown,
 {
-  Item as DropdownItem, Group as DropdownGroup, events as eventsDropdown,
+  Item as DropdownItem, Group as DropdownGroup, events as dropdownEvents,
 } from 'ak-dropdown';
 
 import * as events from './internal/events';
@@ -22,11 +22,11 @@ import {
 
 export default define('ak-multi-select', {
   created(elem) {
-    elem.addEventListener(eventsTag.afterRemove, (e) => {
+    elem.addEventListener(tagEvents.afterRemove, (e) => {
       removeSelectedItem(elem, e.detail.item);
     });
 
-    elem.addEventListener(eventsDropdown.changeBefore, (e) => {
+    elem.addEventListener(dropdownEvents.changeBefore, (e) => {
       selectItem(elem, e.detail);
     });
   },

@@ -2,6 +2,7 @@
 @import '~akutil-shared-styles/src/borders.less';
 @import 'theme-default.less';
 @import 'theme-dark.less';
+@import 'button-mixin.less';
 
 @em: 14;
 @grid: 8;
@@ -168,9 +169,11 @@ ak-button {
 }
 
 .theme-default {
-  .default-theme-styles();
+  .default-rulesets();
+  .button-mixin();
 }
 
 .theme-dark {
-  .dark-theme-styles();
+  .dark-rulesets();
+  .button-mixin();
 }

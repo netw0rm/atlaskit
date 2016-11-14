@@ -1,6 +1,4 @@
-@import 'theme-shared.less';
-
-.default-theme-styles {
+.default-rulesets {
   @default: {
     .default-styles {
       background: @ak-color-N20A;
@@ -96,6 +94,7 @@
       text-decoration: underline;
     }
     .active-styles {
+      text-decoration: none;
       background: none;
       color: @ak-color-B500;
     }
@@ -114,6 +113,4 @@
       color: @ak-color-N70;
     }
   };
-
-  @theme-styles();
-}
+};

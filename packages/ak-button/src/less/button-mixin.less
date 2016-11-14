@@ -1,6 +1,6 @@
-@theme-styles: {
-  .button-style (@mixins) {
-    @mixins();
+.button-mixin() {
+  .button-style (@rulesets) {
+    @rulesets();
 
     .default-styles();
     text-decoration: none;
@@ -16,7 +16,7 @@
     &:focus {
       box-shadow: 0 0 0 2px @ak-color-B200A;
     }
-  }
+  };
 
   &.appearance-default {
     .button-style(@default)
@@ -50,4 +50,4 @@
       .button-style(@link-disabled);
     }
   }
-};
+}

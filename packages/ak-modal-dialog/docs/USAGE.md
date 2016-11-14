@@ -1,9 +1,8 @@
 # ModalDialog
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+This component presents content in a layer above all other page content. The rest of the page cannot be interacted with until the modal dialog is closed.
 
-
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-componentname/docs/insertyourimagehere.png)
+![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-modal-dialog/docs/simple.png)
 
 ##Try it out
 
@@ -20,6 +19,8 @@ npm install ak-modal-dialog
 ### HTML
 
 The `ak-modal-dialog` package exports the ModalDialog [Skate](https://github.com/skatejs/skatejs) component.
+
+Each modal dialog has a `header` and `footer` slot which you can insert content into. The default slot is used for your main content (e.g. a `<form>` element). See below for a combined example with all three slots used.
 
 Import the component in your JS resource:
 
@@ -39,8 +40,15 @@ Now you can use the defined tag in your HTML markup:
     <script src="bundle.js"></script>
   </head>
   <body>
-    <!-- ... -->
-    <ak-modal-dialog></ak-modal-dialog>
+    <ak-modal-dialog>
+      <h2 slot="header">My heading</h2>
+      <form id="my-form">
+        <!-- form content... -->
+      </form>
+      <footer slot="footer">
+        <ak-button appearance="primary" form="my-form">Create issue</ak-button>
+      </footer>
+    </ak-modal-dialog>
   </body>
 </html>
 ```

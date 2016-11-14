@@ -1,11 +1,10 @@
-image: atlassianlabs/atlaskit:2016-10-20-yarn
+image: atlassianlabs/atlaskit:2016-11-14-yarn
 pipelines:
   branches:
     master:
       - step:
           script:
             - export FORCE_COLOR=1
-            - ./build/bin/last_commit_has_changes.sh || exit 0
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - yarn install
@@ -27,10 +26,11 @@ pipelines:
     - step:
         script:
           - export FORCE_COLOR=1
+          - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - ./build/bin/setup.sh
           - yarn install
           - yarn run postinstall # Remove when https://github.com/yarnpkg/yarn/pull/800 is released
           - yarn run browserstack/tunnel/start
-          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack" "pr/artifacts"
+          - run-p -ln "validate/package.json" "lint" "test/base" "test/browserstack/pr" "pr/artifacts"
           # AK-628 - yarn run test/integration
           - yarn run browserstack/tunnel/stop

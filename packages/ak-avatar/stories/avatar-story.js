@@ -12,9 +12,9 @@ import AkAvatar from '../src';
 const Avatar = reactify(AkAvatar);
 
 const avatarClass = styles.locals.akAvatar;
-const transparentAvatarUrl = require('url!./face-w-transparency.png');
-const tickUrl = require('url!./tick.svg');
-const tickWithBackgroundUrl = require('url!./tick.png');
+const transparentAvatarUrl = require('url-loader!./face-w-transparency.png');
+const tickUrl = require('url-loader!./tick.svg');
+const tickWithBackgroundUrl = require('url-loader!./tick.png');
 
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 const storybookExampleClass = avatarStoryStyles.example;
@@ -225,7 +225,7 @@ storiesOf(name, module)
               type="text"
               id="avatarUrl"
               style={inputStyles}
-              defaultValue="https://design.atlassian.com/images/brand/logo-02.png"
+              defaultValue="https://bytebucket.org/atlassian/atlaskit/raw/8d45a00c570fa08e54ab2ef3610fa5d794479ece/packages/ak-icon/src/icons/atlassian.svg"
             />
             <input type="button" value="Load Image" onClick={loadImage} />
           </label>

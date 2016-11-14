@@ -1,7 +1,7 @@
 const path = require('path');
 
 const iconNameToComponentName = require('../bin/iconNameToComponentName');
-const { tmpFolderName, glyphFolderName } = require('./constants');
+const { tmpFolderName } = require('./constants');
 
 
 module.exports = ({
@@ -9,7 +9,6 @@ module.exports = ({
   svgData,
   unprefixedIconName,
   iconRelativePathToSrc,
-  iconRelativePathToSrcNoExt,
 }) => {
   const componentName = iconNameToComponentName(unprefixedIconName);
 
@@ -22,40 +21,7 @@ module.exports = ({
 import { define, vdom } from 'skatejs';
 import Icon from '${relativePathToSrc}/Icon';
 
-/**
- * @description Create an instance of the ${iconName} programmatically, or by using markup.
- *
- * It looks like this: <img src="https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-icon/src/icons/${iconRelativePathToSrc}">
- *
- * @class ${componentName}
- * @extends Icon
- * @example @html <${iconName} label="My label" />
- * @example @js import ${componentName} from 'ak-icon/${glyphFolderName}/${iconRelativePathToSrcNoExt}';
- *
- * const icon = new ${componentName}();
- * icon.label = 'My label';
- * document.body.appendChild(icon);
- *
- * // or via JSX
- * const ret = (<${iconName} label="My label" />);
- * @example @js // only do this if you have tree-shaking enabled in your build
- * import { ${componentName} } from 'ak-icon';
- *
- * const icon = new ${componentName}();
- * icon.label = 'My label';
- * document.body.appendChild(icon);
- */
 class ${componentName} extends Icon {
-
-  /**
-  * Returns the template function for the ${unprefixedIconName} icon
-  *
-  * @memberof ${componentName}
-  * @function
-  * @instance
-  * @private
-  * @return {Function} The template function with the glyph
-  */
   getGlyphTemplate() {
     return (props) => {
       const { label: title } = props;

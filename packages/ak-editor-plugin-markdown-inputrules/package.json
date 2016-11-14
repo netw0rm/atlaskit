@@ -1,27 +1,32 @@
 {
   "name": "ak-editor-plugin-markdown-inputrules",
-  "version": "3.1.0",
+  "version": "5.4.1",
   "description": "A markdown inputrules plugin for ProseMirror",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.ts",
-  "typings": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "prepublish": "cd ../.. && yarn run prepublish/single ak-editor-plugin-markdown-inputrules"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts"
   ],
   "dependencies": {
-    "ak-editor-prosemirror": "^2.0.0"
+    "ak-editor-prosemirror": "^4.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-editor-test": "^3.0.0"
+    "ak-editor-test": "*"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

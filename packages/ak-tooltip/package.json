@@ -1,6 +1,6 @@
 {
   "name": "ak-tooltip",
-  "version": "2.1.0",
+  "version": "5.0.3",
   "description": "This component is used to display extra information to a user about an element by displaying a floating description.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -12,21 +12,25 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^34.0.1",
+    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "debounce": "^1.0.0",
-    "ak-layer": "^57.0.0",
-    "skatejs": "^3.0.0"
+    "ak-layer": "^60.0.0",
+    "skatejs": "^4.0.6"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "^3.0.0",
-    "akutil-react": "^1.0.0"
+    "akutil-common-test": "*",
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

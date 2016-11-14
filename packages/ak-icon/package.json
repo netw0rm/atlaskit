@@ -1,15 +1,16 @@
 {
   "name": "ak-icon",
-  "version": "8.3.1",
+  "version": "10.1.0",
   "description": "Icon web components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "generate-bundle-exports": "./bin/generate-bundle-exports.js > ./src/index.js",
-    "generate-icon-exports": "./bin/generate-icon-exports.js",
+    "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.js",
+    "generate-icon-exports": "node ./bin/generate-icon-exports.js",
     "gen-js": "yarn run generate-icon-exports && yarn run generate-bundle-exports",
-    "prepublish": "CLI=1 yarn run gen-js && cd ../.. && yarn run prepublish/single ak-icon",
+    "gen-icons-md": "node ./bin/generate-icons-md.js > ./docs/Icons.md",
+    "prepublish": "CLI=1 yarn run gen-js && yarn run gen-icons-md && cd ../.. && yarn run prepublish/single ak-icon",
     "pretest": "yarn run gen-js"
   },
   "files": [
@@ -19,17 +20,17 @@
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "akutil-common": "^2.6.3",
+    "akutil-common": "^5.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "create-error": "^0.3.1",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.6"
   },
   "devDependencies": {
-    "ak-button": "^1.4.3",
-    "akutil-common-test": "^3.0.0",
-    "akutil-react": "^1.0.0",
-    "akutil-shared-styles": "^34.0.1",
+    "ak-button": "^3.0.0",
+    "akutil-common-test": "*",
+    "akutil-react": "*",
+    "akutil-shared-styles": "^37.0.0",
     "async": "^2.0.1",
     "glob": "^7.0.5",
     "lodash.sample": "^4.2.1",
@@ -42,5 +43,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

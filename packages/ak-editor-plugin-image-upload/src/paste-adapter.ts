@@ -16,7 +16,10 @@ export default class PasteAdapter {
     this.pm = pm;
     this.handlers = [];
     this.__onPaste__ = this.__onPaste__.bind(this);
-    pm.content.parentNode.addEventListener('paste', this.__onPaste__, true);
+    const parent = pm.content.parentNode;
+    if (parent) {
+      parent.addEventListener('paste', this.__onPaste__, true);
+    }
   }
 
   add(handler: ImageUploadPasteHandler) {
@@ -38,7 +41,10 @@ export default class PasteAdapter {
 
   detach() {
     this.handlers = [];
-    this.pm.content.parentNode.removeEventListener('drop', this.__onPaste__);
+    const parent = this.pm.content.parentNode;
+    if (parent) {
+      parent.removeEventListener('drop', this.__onPaste__);
+    }
   }
 
   __onPaste__(e: ClipboardEvent) {

@@ -1,14 +1,8 @@
 import URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
-import Promise from 'babel-runtime/core-js/promise';
-// 'whatwg-fetch' needs a Promise polyfill
-/* eslint-disable import/imports-first */
-if (!window.Promise) {
-  window.Promise = Promise;
-}
+import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 
 import debug from '../util/logger';
-/* eslint-enable import/imports-first */
 
 
 const buildUrl = (baseUrl, path, data, secOptions) => {
@@ -62,10 +56,11 @@ const buildHeaders = (secOptions) => {
 /**
  * @returns Promise containing the json response
  */
-const requestService = (baseUrl, path, data, secOptions) => {
+const requestService = (baseUrl, path, data, opts, secOptions) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
-  return fetch(new Request(url, { headers }))
+  const options = Object.assign({}, opts, { headers });
+  return fetch(new Request(url, options))
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -101,6 +96,11 @@ class AbstractMentionResource {
   // eslint-disable-next-line class-methods-use-this
   filter(query) {
     throw new Error(`not yet implemented.\nParams: query=${query}`);
+  }
+
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  recordMentionSelection(mention) {
+    // Do nothing
   }
 
   _notifyListeners(mentions) {
@@ -198,6 +198,10 @@ class MentionResource extends AbstractMentionResource {
     }
   }
 
+  recordMentionSelection(mention) {
+    return this._recordSelection(mention).then(() => {}, error => debug(`error recording mention selection: ${error}`, error));
+  }
+
   /**
    * Returns the initial mention display list before a search is performed for the specified
    * container.
@@ -207,23 +211,36 @@ class MentionResource extends AbstractMentionResource {
    */
   _initialState() {
     const secOptions = this._config.securityProvider();
+    const data = {};
     const options = {};
 
     if (this._config.containerId) {
-      options.containerId = this._config.containerId;
+      data.containerId = this._config.containerId;
     }
-    return requestService(this._config.url, 'mentions/bootstrap', options, secOptions);
+    return requestService(this._config.url, 'mentions/bootstrap', data, options, secOptions);
   }
 
   _search(query) {
     const secOptions = this._config.securityProvider();
-    const options = {
+    const data = {
       query,
     };
+    const options = {};
     if (this._config.containerId) {
-      options.containerId = this._config.containerId;
+      data.containerId = this._config.containerId;
     }
-    return requestService(this._config.url, 'mentions/search', options, secOptions);
+    return requestService(this._config.url, 'mentions/search', data, options, secOptions);
+  }
+
+  _recordSelection(mention) {
+    const secOptions = this._config.securityProvider();
+    const data = {
+      selectedUserId: mention.id,
+    };
+    const options = {
+      method: 'POST',
+    };
+    return requestService(this._config.url, 'mentions/record', data, options, secOptions);
   }
 }
 

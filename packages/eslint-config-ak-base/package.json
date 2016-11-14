@@ -1,19 +1,23 @@
 {
   "name": "eslint-config-ak-base",
-  "version": "2.1.0",
+  "version": "4.0.6",
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {
     "babel-runtime": "^6.11.6",
     "eslint": "^3.7.1",
-    "eslint-config-airbnb": "^12.0.0",
-    "eslint-plugin-import": "^1.16.0",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.4.1"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

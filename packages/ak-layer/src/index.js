@@ -72,15 +72,6 @@ export default define('ak-layer', {
       set: reCreateAlignmentIfNeeded,
     },
     /**
-     * @description Callback function that is called whenever layer is rendered.
-     * The Layer element will be passed in as an argument.
-     * @memberof Layer
-     * @instance
-     * @type function
-     * @example @js layer.onRender = (elem) => { console.log(elem); };
-     */
-    onRender: {},
-    /**
      * @description Element to act as a boundary for the Layer.
      * The Layer will not sit outside this element if it can help it.
      * If, through it's normal positoning, it would end up outside the boundary the layer
@@ -180,10 +171,6 @@ export default define('ak-layer', {
     }
   },
   render(elem) {
-    if (elem.onRender) {
-      elem.onRender(elem);
-    }
-
     return (
       <div ref={el => (elem.positionedDOM = el)}>
         <slot />

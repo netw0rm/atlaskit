@@ -220,6 +220,13 @@ export default define('ak-navigation', {
         if (!elem.collapsible) {
           return;
         }
+        if (event.metaKey || event.shiftKey || event.altKey || event.ctrlKey) {
+          return;
+        }
+        const target = event.target;
+        if ((target && target.tagName) && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+          return;
+        }
         if (event.keyCode === keycode('[')) {
           elem.open = !elem.open;
         }

@@ -53,6 +53,11 @@ class MentionResource extends AbstractMentionResource {
       });
     }, waitTime + 1);
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  recordMentionSelection(mention) {
+    debug(`Record mention selection ${mention.id}`);
+  }
 }
 
 export default MentionResource;

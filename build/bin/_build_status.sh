@@ -14,7 +14,7 @@ function build_status() {
       URL_PARAM="--url $BUILD_URL"
     fi
 
-    CHALK="`npm bin`/chalk"
+    CHALK="`yarn bin`/chalk"
     $CHALK --no-stdin -t "{blue Post build in '$STATE' status}"
 
     bbuild \
@@ -27,7 +27,7 @@ function build_status() {
     --name "$BUILD_NAME" \
     --description "$BUILD_DESCRIPTION" \
     $URL_PARAM \
-    --state "$STATE"
+    --state "$STATE" 1> /dev/null
 
     if [[ "$STATE" == "FAILED" ]]; then
       exit 1

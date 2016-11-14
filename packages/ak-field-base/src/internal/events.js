@@ -1,40 +1,40 @@
 /**
- * This event gets emitted when a field is about to switch away from it's `viewmode` view.
+ * This event gets emitted before a field-base changes it's own `focused` prop.
+ * (e.g. when a child element receives focus, field-base will set it's own focused prop).
  *
- * You might choose to use this event to update your editmode content to be in sync with your
- * viewmode, fetch data for your editmode or even cancel the event to prevent the change completely.
+ * It is cancelable. If it gets cancelled, the change is aborted.
  *
- * @event FieldBase#exitViewingView
+ * It will not get called if the prop change came from somewhere else.
+ *
+ * @event FieldBase#beforeFocusedChange
+ * @example @html <ak-field-base
+ *   onBeforeFocusedChange={(e) => console.log('Just about to start the remove animation')}
+ * ></ak-tag>
  * @example @js import { events } from 'ak-field-base';
  *
- * field.addEventListener(events.exitViewingView, (e) => {
- *   // perform your tasks here
- *   // e.preventDefault(); will prevent the switch
+ * field.addEventListener(events.beforeFocusedChange, (e) => {
+ *   console.log('Just about to apply focused=' + e.detail.focused);
+ *   // e.preventDefault(); // this would stop change
  * });
  */
-export const exitViewingView = 'exitViewingView';
+const beforeFocusedChange = 'beforeFocusedChange'; // eslint-disable-line import/prefer-default-export, max-len
+
 /**
- * This event gets emitted when a field is about to switch away from it's `editmode` view.
+ * This event gets emitted when the field-base label is clicked.
  *
- * Here you could choose to update your viewmode content to match the users input or reset the value
- * shown in the `editmode` if the user hit cancel for example.
- *
- * You might also choose to perform validation of the users value, this might involve cancelling
- * the event to prevent the switch.
- *
- * You can check if the user clicked the cancel button through the `e.detail.cancelButtonPressed`
- * value.
- *
- * @event FieldBase#exitEditingView
+ * @event FieldBase#labelClick
+ * @example @html <ak-field-base
+ *   onLabelClick={(e) => console.log('The label was clicked.')}
+ * ></ak-tag>
  * @example @js import { events } from 'ak-field-base';
  *
- * field.addEventListener(events.exitEditingView, (e) => {
- *   if (e.detail.cancelButtonPressed) {
- *     // the user hit cancel
- *   } else {
- *    // the user hit confirm: perform validation, update view mode, etc
- *    // e.preventDefault(); will cancel the switch and keep us in editmode
- *   }
+ * field.addEventListener(events.labelClick, (e) => {
+ *   console.log('The label was clicked.');
  * });
  */
-export const exitEditingView = 'exitEditingView';
+const labelClick = 'labelClick';
+
+export {
+  beforeFocusedChange,
+  labelClick,
+};

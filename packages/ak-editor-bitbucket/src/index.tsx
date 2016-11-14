@@ -5,7 +5,6 @@ import { define, prop, emit, Component } from 'skatejs';
 import { ProseMirror, Schema } from 'ak-editor-prosemirror';
 import 'style!./host.less';
 import cx from 'classnames';
-import maybe from './maybe';
 import shadowStyles from './shadow.less';
 import Content from 'ak-editor-content';
 import Footer from 'ak-editor-footer';
@@ -15,7 +14,7 @@ import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
-import schema from 'ak-editor-schema';
+import schema from './schema';
 import { buildKeymap } from './keymap';
 import markdownSerializer from './markdown-serializer';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
@@ -29,11 +28,9 @@ import {
 import MarkdownInputRulesPlugin from 'ak-editor-plugin-markdown-inputrules';
 import {
   default as HyperlinkPlugin,
-  DISABLED_GROUP as HyperlinkPluginDisabledGroup
 } from 'ak-editor-plugin-hyperlink';
 import {
   default as ImageUploadPlugin,
-  DISABLED_GROUP as ImageUploadPluginDisabledGroup,
   ImageUploadOptions
 } from 'ak-editor-plugin-image-upload';
 import {
@@ -84,9 +81,9 @@ class AkEditorBitbucket extends Component {
   placeholder: string;
   imageUploader: Function;
   context: string;
-  expanded: boolean;
 
   // private state
+  _expanded: boolean;
   _focused: boolean;
   _canChangeBlockType: boolean;
   _strongActive: boolean;
@@ -107,7 +104,7 @@ class AkEditorBitbucket extends Component {
   // internal
   _blockTypes: blockTypeType[];
   _justToggledExpansion: boolean;
-  _pm: ProseMirror | null = null;
+  _pm?: ProseMirror;
   _ready: boolean;
   _wrapper: HTMLElement;
 
@@ -150,14 +147,6 @@ class AkEditorBitbucket extends Component {
     };
   }
 
-  static created(elem: AkEditorBitbucket) : void {
-    if (blockTypes[elem.context]) {
-      elem._blockTypes = blockTypes[elem.context];
-    } else {
-      elem._blockTypes = blockTypes._defaultContext;
-    }
-  }
-
   static rendered(elem: AkEditorBitbucket) : void {
     if (elem.expanded && !elem._pm) {
       elem._initEditor();
@@ -168,7 +157,7 @@ class AkEditorBitbucket extends Component {
 
       elem.focus();
     } else if (!elem.expanded) {
-      elem._pm = null;
+      elem._pm = undefined;
     }
   }
 
@@ -186,10 +175,16 @@ class AkEditorBitbucket extends Component {
   }
 
   static render(elem: AkEditorBitbucket) {
-    let fakeInputClassNames = shadowStyles.locals.fakeInput;
+    let fakeInputClassNames = shadowStyles.locals['fakeInput'];
 
     if (elem.context === 'comment') {
-      fakeInputClassNames += ` ${shadowStyles.locals.comment}`;
+      fakeInputClassNames += ` ${shadowStyles.locals['comment']}`;
+    }
+
+    if (elem.context && blockTypes[elem.context]) {
+      elem._blockTypes = blockTypes[elem.context];
+    } else {
+      elem._blockTypes = blockTypes._defaultContext;
     }
 
     const fullEditor: any = (<div>
@@ -227,7 +222,7 @@ class AkEditorBitbucket extends Component {
         />
       </Toolbar>
       <Content
-        className={shadowStyles.locals.content}
+        className={shadowStyles.locals['content']}
         onclick={elem._onContentClick}
         ref={(wrapper: HTMLElement) => { elem._wrapper = wrapper; }}
         openTop
@@ -246,8 +241,7 @@ class AkEditorBitbucket extends Component {
       }
       <Footer
         openTop
-        onSave={elem._collapse}
-        onCancel={elem._collapse}
+        hide-buttons={elem.context === 'pr'}
         onInsertimage={elem._insertImage}
       />
     </div>);
@@ -255,8 +249,8 @@ class AkEditorBitbucket extends Component {
     return (
       <div
         className={
-          cx(shadowStyles.locals.root, {
-            [shadowStyles.locals.focused]: elem._focused,
+          cx(shadowStyles.locals['root'], {
+            [shadowStyles.locals['focused']]: elem._focused,
           })
         }
       >
@@ -278,8 +272,10 @@ class AkEditorBitbucket extends Component {
    * Focus the content region of the editor.
    */
   focus(): void {
-    for (const pm of maybe(this._pm)) {
-      pm.focus();
+    this._focused = true;
+
+    if (this._pm) {
+      this._pm.focus();
     }
   }
 
@@ -287,8 +283,8 @@ class AkEditorBitbucket extends Component {
    * Clear the content of the editor, making it an empty document.
    */
   clear(): void {
-    for (const pm of maybe(this._pm)) {
-      pm.tr.delete(0, pm.doc.content.size).apply();
+    if (this._pm) {
+      this._pm.tr.delete(0, this._pm.doc.content.size).apply();
     }
   }
 
@@ -297,8 +293,8 @@ class AkEditorBitbucket extends Component {
    * @returns {string}
    */
   get value(): string {
-    for (const pm of maybe(this._pm)) {
-      return markdownSerializer.serialize(pm.doc);
+    if (this._pm) {
+      return markdownSerializer.serialize(this._pm.doc);
     }
     return this.defaultValue;
   }
@@ -309,6 +305,18 @@ class AkEditorBitbucket extends Component {
    */
   get ready(): boolean {
     return this._ready || false;
+  }
+
+  set expanded(isExpanded: boolean) {
+    this._expanded = isExpanded;
+
+    if (!isExpanded) {
+      this._focused = false;
+    }
+  }
+
+  get expanded(): boolean {
+    return this._expanded;
   }
 
   /**
@@ -352,63 +360,61 @@ class AkEditorBitbucket extends Component {
     const schemaName = blockType.schemaName;
     const level = blockType.level;
 
-    for (const pm of maybe(this._pm)) {
-      BlockTypePlugin.get(pm).changeBlockType(schemaName, { level });
+    if (this._pm) {
+      BlockTypePlugin.get(this._pm).changeBlockType(schemaName, { level });
     }
   }
 
   _toggleMark(event: CustomEvent): void {
     const mark: MarkType = formattingToProseMirrorMark[event.detail.mark];
 
-    for (const pm of maybe(this._pm)) {
-      TextFormattingPlugin.get(pm).toggleMark(mark);
+    if (this._pm) {
+      TextFormattingPlugin.get(this._pm).toggleMark(mark);
     }
   }
 
   _toggleList(name: ListType): void {
-    for (const pm of maybe(this._pm)) {
-      ListsPlugin.get(pm).toggleList(name);
+    if (this._pm) {
+      ListsPlugin.get(this._pm).toggleList(name);
     }
   }
 
   _addHyperLink(event: CustomEvent): void {
     const href = event.detail.value;
-    for (const pm of maybe(this._pm)) {
-      HyperlinkPlugin.get(pm).addLink({ href });
+
+    if (this._pm) {
+      HyperlinkPlugin.get(this._pm).addLink({ href });
     }
   }
 
   _insertImage(): void {
-    for (const pm of maybe(this._pm)) {
-      this.imageUploader(false, (attr: ImageUploadOptions) =>
-        ImageUploadPlugin.get(pm).addImage(attr));
-    }
+    this.imageUploader(false, (attr: ImageUploadOptions) => {
+      if (this._pm) {
+        ImageUploadPlugin.get(this._pm).addImage(attr);
+      }
+    });
   }
 
   _unlink(): void {
-    for (const pm of maybe(this._pm)) {
-      HyperlinkPlugin.get(pm).removeLink();
+    if (this._pm) {
+      HyperlinkPlugin.get(this._pm).removeLink();
     }
   }
 
   _changeHyperLinkValue(event: Event) {
     const newLink = (event.target as any).value;
-    if (newLink) {
-      for (const pm of maybe(this._pm)) {
-        HyperlinkPlugin.get(pm).updateLink({
-          href: newLink,
-          text: newLink,
-        });
-      }
+
+    if (this._pm) {
+      HyperlinkPlugin.get(this._pm).updateLink({
+        href: newLink,
+        text: newLink,
+      });
     }
   }
 
   _initEditor() {
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
-
-    schema.nodes.code_block.group += ` ${HyperlinkPluginDisabledGroup}`;
-    schema.nodes.code_block.group += ` ${ImageUploadPluginDisabledGroup}`;
 
     const pm = new ProseMirror({
       place: this._wrapper,
@@ -481,6 +487,11 @@ class AkEditorBitbucket extends Component {
 
     // 'change' event is public API
     pm.on.change.add(() => emit(this, 'change'));
+
+    // Focus on the PM content area if necessary
+    if (this._focused) {
+      pm.focus();
+    }
 
     this._pm = pm;
   }

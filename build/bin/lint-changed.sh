@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
+
 CHALK="`yarn bin`/chalk"
+BASEDIR=$(dirname $0)
 
 function lint () {
     $CHALK --no-stdin -t "{blue Gathering files to lint...}"
-    diff=$(git diff --cached --name-only --diff-filter=ACM | grep -E '(\.jsx?)$')
+    diff=$($BASEDIR/_get_changed.sh)
     if [ "" == "$diff" ]; then
         $CHALK --no-stdin -t "{blue ...no JS changes found. Done.}"
         exit 0

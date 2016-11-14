@@ -83,9 +83,9 @@ RUN echo "Installing yarn" \
 RUN echo "Installing AtlasKit tools" \
 && export PATH="$HOME/.yarn/bin:$PATH" \
 && yarn global add \
-  cloudfront-invalidate-cli@1.0.3 \
+  cloudfront-invalidate-cli@1.2.0 \
   marky-markdown@8.1.0 \
-  bitbucket-build-status@1.0.1 \
+  bitbucket-build-status@1.0.2 \
   npm-run-all@3.1.1 \
   lerna@"${LERNA_VERSION}" \
   lerna-semantic-release@8.0.2 \

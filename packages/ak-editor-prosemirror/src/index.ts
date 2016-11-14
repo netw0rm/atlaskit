@@ -13,10 +13,15 @@ export {
   NodeType,
   MarkType,
   ResolvedPos,
+  NodeRange,
   Slice,
   Schema,
   Text,
 } from 'prosemirror/dist/model';
+
+export {
+  TextNode
+} from 'prosemirror/dist/model/node';
 
 export {
   commands,
@@ -27,6 +32,10 @@ export {
   Selection,
   TextSelection,
 } from 'prosemirror/dist/edit';
+
+export {
+  EditorTransform
+} from 'prosemirror/dist/edit/transform';
 
 export {
   DOMFromPos
@@ -40,10 +49,17 @@ export {
   inputRules,
   InputRule,
   allInputRules,
+  headingRule,
+  bulletListRule,
+  blockQuoteRule,
+  codeBlockRule,
+  wrappingInputRule
 } from 'prosemirror/dist/inputrules';
 
 export {
   Transform,
+  liftTarget,
+  joinPoint
 } from 'prosemirror/dist/transform';
 
 export {

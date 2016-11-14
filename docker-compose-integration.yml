@@ -32,7 +32,7 @@ services:
       SCOPE:
     command: 'bash -c
             "
-              npm run storybook/single \"$SCOPE\"
+              yarn run storybook/single \"$SCOPE\"
             "'
   cucumber:
     build: .
@@ -55,5 +55,5 @@ services:
               && echo \"waiting for dev\"
               && `yarn bin`/wait-on -d 20000 -i 500 http-get://dev:9001/
               && echo \"running tests\"
-              && npm run test/single/integration \"$SCOPE\"
+              && yarn run test/single/integration \"$SCOPE\"
              "'

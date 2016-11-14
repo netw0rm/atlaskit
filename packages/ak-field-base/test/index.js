@@ -7,6 +7,7 @@ import { Component } from 'skatejs';
 
 import FieldBase, { events } from '../src';
 import shadowStyles from '../src/shadow.less';
+import { insertLightDomInput } from './_helpers';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -32,22 +33,15 @@ describe('ak-field-base', () => {
   let shadowRoot;
 
   const {
-    editModeWrapper: editModeWrapperClass,
-    viewModeWrapper: viewModeWrapperClass,
-    editConfirm: confirmButtonClass,
-    editCancel: cancelButtonClass,
     label: labelClass,
     labelText: labelTextClass,
+    compact: compactClass,
+    subtle: subtleClass,
+    disabled: disabledClass,
+    focused: focusedClass,
     hidden: hiddenClass,
-    editButtonFocused: editmodeFocusClass,
-    focused: viewmodeFocusClass,
-    waitingSpinner: spinnerClass,
     invalid: invalidClass,
-    editButton: editButtonClass,
   } = shadowStyles.locals;
-
-  const inEditmodeView = () => (shadowRoot.querySelector(`.${editModeWrapperClass}`) !== null);
-  const inViewmodeView = () => (shadowRoot.querySelector(`.${viewModeWrapperClass}`) !== null);
 
   beforeEach(() => setupComponent().then((newComponent) => {
     component = newComponent;
@@ -59,13 +53,11 @@ describe('ak-field-base', () => {
     it('should export a base component', () => {
       (new FieldBase()).should.be.an.instanceof(Component);
     });
-
-    it('should have an events export with defined events', () => {
-      events.should.be.defined;
-      Object.keys(events).should.be.deep.equal([
-        'exitViewingView',
-        'exitEditingView',
-      ]);
+    it('should export a beforeFocusedChange event', () => {
+      expect(events.beforeFocusedChange).to.be.defined;
+    });
+    it('should export a labelClick event', () => {
+      expect(events.labelClick).to.be.defined;
     });
   });
 
@@ -83,42 +75,6 @@ describe('ak-field-base', () => {
     });
   });
 
-  describe('editing prop', () => {
-    it('should be reflected', () => {
-      const newEditingValue = true; // false by default
-      // check the negative case first
-      expect(inViewmodeView()).to.be.true;
-      expect(inEditmodeView()).to.be.false;
-
-      component.editing = newEditingValue;
-
-      return waitUntil(inEditmodeView)
-        .then(() => {
-          expect(inViewmodeView()).to.be.false;
-        }).should.be.fulfilled;
-    });
-  });
-
-  describe('focused prop', () => {
-    it('should be reflected whilst in viewmode', () => {
-      const focusReflected = () => (shadowRoot.querySelector(`.${viewmodeFocusClass}`) !== null);
-      expect(focusReflected()).to.be.false;
-
-      component.focused = true;
-      return waitUntil(focusReflected).should.be.fulfilled;
-    });
-
-    it('should be reflected whilst in editmode', () => {
-      // we don't actually have to worry about putting the component in editmode as we no longer
-      // selectively render the two views, we just hide them.
-      const focusReflected = () => (shadowRoot.querySelector(`.${editmodeFocusClass}`) !== null);
-      expect(focusReflected()).to.be.false;
-
-      component.focused = true;
-      return waitUntil(focusReflected).should.be.fulfilled;
-    });
-  });
-
   describe('hideLabel prop', () => {
     it('should be reflected', () => {
       const hiddenLabelTextSelector = `.${labelTextClass}.${hiddenClass}`;
@@ -127,16 +83,6 @@ describe('ak-field-base', () => {
 
       component.hideLabel = true;
       return waitUntil(hideLabelReflected).should.be.fulfilled;
-    });
-  });
-
-  describe('waiting prop', () => {
-    it('should be reflected', () => {
-      const waitingReflected = () => (shadowRoot.querySelector(`.${spinnerClass}`) !== null);
-      expect(waitingReflected()).to.be.false;
-
-      component.waiting = true;
-      return waitUntil(waitingReflected).should.be.fulfilled;
     });
   });
 
@@ -150,117 +96,155 @@ describe('ak-field-base', () => {
     });
   });
 
-  describe('viewmode editButton', () => {
-    let editButton;
+  describe('disabled prop', () => {
+    it('should be reflected', () => {
+      const disabledReflected = () => (shadowRoot.querySelector(`.${disabledClass}`) !== null);
+      expect(disabledReflected()).to.be.false;
+
+      component.disabled = true;
+      return waitUntil(disabledReflected).should.be.fulfilled;
+    });
+  });
+
+  describe('appearance prop', () => {
+    describe('with value of compact', () => {
+      it('should be reflected', () => {
+        const compactReflected = () => (shadowRoot.querySelector(`.${compactClass}`) !== null);
+        expect(compactReflected()).to.be.false;
+
+        component.appearance = 'compact';
+        return waitUntil(compactReflected).should.be.fulfilled;
+      });
+    });
+
+    describe('with value of subtle', () => {
+      it('should be reflected', () => {
+        const subtleReflected = () => (shadowRoot.querySelector(`.${subtleClass}`) !== null);
+        expect(subtleReflected()).to.be.false;
+
+        component.appearance = 'subtle';
+        return waitUntil(subtleReflected).should.be.fulfilled;
+      });
+    });
+  });
+
+  describe('focus behaviour without override', () => {
+    let inputChild;
+    const focusEvent = new CustomEvent('focus');
 
     beforeEach(() => {
-      editButton = shadowRoot.querySelector(`.${editButtonClass}`);
+      inputChild = insertLightDomInput(component);
+    });
+    afterEach(() => {
+      component.removeChild(inputChild);
     });
 
-    it('should fire the exitViewingView event when clicked', () => {
-      const callbackSpy = sinon.spy();
-      const clickEvent = new CustomEvent('click', { bubbles: true });
+    it('should apply focus styles when slotted child is focused', () => {
+      const focusApplied = () => (shadowRoot.querySelector(`.${focusedClass}`) !== null);
 
-      document.body.addEventListener(events.exitViewingView, callbackSpy);
-      editButton.dispatchEvent(clickEvent);
-      expect(callbackSpy).to.be.calledOnce;
-      document.body.removeEventListener(events.exitViewingView, callbackSpy);
+      expect(focusApplied()).to.be.false;
+      inputChild.dispatchEvent(focusEvent);
+
+      return waitUntil(focusApplied).should.be.fulfilled;
     });
 
-    it('should switch to editmode if not cancelled', () => {
-      const clickEvent = new CustomEvent('click', { bubbles: true });
-      expect(inEditmodeView()).to.be.false;
+    it('should remove focus styles when slotted child is blurred', () => {
+      const focusApplied = () => (shadowRoot.querySelector(`.${focusedClass}`) !== null);
+      const blurEvent = new CustomEvent('blur');
 
-      editButton.dispatchEvent(clickEvent);
+      // focus first so that we can blur
+      inputChild.dispatchEvent(focusEvent);
 
-      return waitUntil(inEditmodeView).should.be.fulfilled;
-    });
+      return waitUntil(focusApplied).then(() => {
+        inputChild.dispatchEvent(blurEvent);
 
-    it('should not switch to editmode if cancelled', () => {
-      const clickEvent = new CustomEvent('click', { bubbles: true });
-      const preventDefault = e => (e.preventDefault());
-
-      document.body.addEventListener(events.exitViewingView, preventDefault);
-      editButton.dispatchEvent(clickEvent);
-      document.body.removeEventListener(events.exitViewingView, preventDefault);
-
-      // we'll wait to check if the editing mode becomes visible
-      let timeIsUp = false;
-      setTimeout(() => (timeIsUp = true), 100);
-
-      return waitUntil(() => timeIsUp).then(() => {
-        // now make sure we arent in viewmode
-        expect(inEditmodeView()).to.be.false;
+        return waitUntil(() => !focusApplied());
       }).should.be.fulfilled;
     });
   });
 
-  const editModeButtons = {
-    confirm: confirmButtonClass,
-    cancel: cancelButtonClass,
-  };
-  Object.keys(editModeButtons).forEach((button) => {
-    describe(`${button} button`, () => {
-      let firingButton;
-      const firingButtonClass = editModeButtons[button];
-      const shouldPassCancelledFlag = button === 'cancel';
+  describe('focus behaviour with override set', () => {
+    let inputChild;
+    const focusEvent = new CustomEvent('focus');
 
-      beforeEach(() => {
-        // set up some references
-        firingButton = shadowRoot.querySelector(`.${firingButtonClass}`);
-        // now set up the component (need to be in editing mode to click confirm button)
-        component.editing = true;
-        return waitUntil(inEditmodeView);
+    beforeEach(() => {
+      inputChild = insertLightDomInput(component);
+      component.override = { focused: false };
+    });
+    afterEach(() => {
+      component.removeChild(inputChild);
+    });
+
+    it('should NOT apply focus styles when slotted child is focused', () => {
+      const focusApplied = () => (shadowRoot.querySelector(`.${focusedClass}`) !== null);
+      let timerExpired = false;
+      // checks if the timer is finished
+      const checkTimer = () => (timerExpired);
+
+      expect(focusApplied()).to.be.false;
+      inputChild.dispatchEvent(focusEvent);
+      setTimeout(() => {
+        timerExpired = true;
+      }, 10);
+
+      // wait 10ms then check if the focus styles are applied
+      return waitUntil(checkTimer).then(() => {
+        expect(focusApplied()).to.be.false;
+      }).should.be.fulfilled;
+    });
+  });
+
+  describe('beforeFocusedChange event', () => {
+    let inputChild;
+    const spy = sinon.spy();
+    const focusEvent = new CustomEvent('focus');
+    const blurEvent = new CustomEvent('blur');
+
+    beforeEach(() => {
+      inputChild = insertLightDomInput(component);
+      component.addEventListener(events.beforeFocusedChange, spy);
+    });
+    afterEach(() => {
+      component.removeChild(inputChild);
+      component.removeEventListener(events.beforeFocusedChange, spy);
+      spy.reset();
+    });
+
+    it('should fire when input receives focus and blur events', () => {
+      const focusApplied = () => (shadowRoot.querySelector(`.${focusedClass}`) !== null);
+
+      inputChild.dispatchEvent(focusEvent);
+
+      return waitUntil(focusApplied).then(() => {
+        spy.should.have.been.calledOnce;
+        // check that the call had the correct focused value passed in too.
+        expect(spy.args[0][0].detail.focused).to.be.true;
+
+        // now fire the blur event
+        inputChild.dispatchEvent(blurEvent);
+
+        return waitUntil(() => !focusApplied());
+      }).then(() => {
+        spy.should.have.been.calledTwice;
+        expect(spy.args[1][0].detail.focused).to.be.false;
+      }).should.be.fulfilled;
+    });
+  });
+
+  describe('labelClick event', () => {
+    it('should fire labelClick when the label span is clicked', () => {
+      let eventFired = false;
+      component.addEventListener(events.labelClick, () => {
+        eventFired = true;
       });
 
-      it('should fire exitEditingView when clicked', () => {
-        const callbackSpy = sinon.spy();
-        const clickEvent = new CustomEvent('click');
+      const labelClickEventFired = () => eventFired;
+      expect(labelClickEventFired()).to.be.false;
 
-        document.body.addEventListener(events.exitEditingView, callbackSpy);
-        firingButton.dispatchEvent(clickEvent);
-        expect(callbackSpy).to.be.calledOnce;
-        document.body.removeEventListener(events.exitEditingView, callbackSpy);
-      });
+      const span = shadowRoot.querySelector('label span');
+      span.click();
 
-      it(`should ${shouldPassCancelledFlag ? '' : ' not '} pass cancelled when clicked`, () => {
-        const clickEvent = new CustomEvent('click');
-        const callback = (e) => {
-          expect(!!e.detail.cancelButtonPressed).to.equal(shouldPassCancelledFlag);
-        };
-        const callbackSpy = sinon.spy(callback);
-
-        document.body.addEventListener(events.exitEditingView, callbackSpy);
-        firingButton.dispatchEvent(clickEvent);
-        expect(callbackSpy).to.be.calledOnce;
-        document.body.removeEventListener(events.exitEditingView, callbackSpy);
-      });
-
-      it('should switch to viewing mode if not cancelled', () => {
-        const clickEvent = new CustomEvent('click');
-        firingButton.dispatchEvent(clickEvent);
-
-        return waitUntil(inViewmodeView).should.be.fulfilled;
-      });
-
-      it('should not switch to viewing mode if cancelled', () => {
-        const clickEvent = new CustomEvent('click');
-        // cancels any event passed to it
-        const preventDefault = e => (e.preventDefault());
-
-        document.body.addEventListener(events.exitEditingView, preventDefault);
-        firingButton.dispatchEvent(clickEvent);
-        document.body.removeEventListener(events.exitEditingView, preventDefault);
-
-        // we'll wait to check if the viewing mode becomes visible
-        let timeIsUp = false;
-        setTimeout(() => (timeIsUp = true), 100);
-
-        return waitUntil(() => timeIsUp).then(() => {
-          // now make sure we arent in viewmode
-          expect(inViewmodeView()).to.be.false;
-        }).should.be.fulfilled;
-      });
+      return waitUntil(labelClickEventFired).should.be.fulfilled;
     });
   });
 });

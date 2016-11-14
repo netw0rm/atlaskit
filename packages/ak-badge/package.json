@@ -1,6 +1,6 @@
 {
   "name": "ak-badge",
-  "version": "0.5.0",
+  "version": "1.0.2",
   "description": "ak-badge webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -12,20 +12,24 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^2.0.0",
-    "akutil-shared-styles": "^34.0.1",
+    "akutil-common": "^5.0.0",
+    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "skatejs": "^3.0.0"
+    "skatejs": "^4.0.6"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "^3.0.0",
-    "akutil-react": "^1.0.0"
+    "akutil-common-test": "*",
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

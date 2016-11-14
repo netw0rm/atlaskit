@@ -5,7 +5,7 @@ services:
   atlaskit-unit-tests:
     build:
       context: .
-    image: atlassianlabs/atlaskit:2016-10-20-yarn # You can disable this, to use the local docker file
+    image: atlassianlabs/atlaskit:2016-11-14-yarn # You can disable this, to use the local docker file
     volumes:
       - .:/usr/src/app/
-    command: 'bash -c "npm run postinstall && npm test"' # npm run postinstall is needed to set up the symlinks between packages correctly in docker
+    command: 'bash -c "yarn run postinstall && yarn test"' # yarn run postinstall is needed to set up the symlinks between packages correctly in docker

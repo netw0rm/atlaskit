@@ -1,4 +1,3 @@
-import 'custom-event-polyfill';
 import { vdom, define } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -6,8 +5,8 @@ import {
   createTemporaryComponent as createTemporary,
   tearDownComponent,
   getShadowRoot,
+  waitUntil,
 } from 'akutil-common-test';
-
 
 import Label from '../src/Label';
 import { createDefinition } from './_helpers';
@@ -56,26 +55,39 @@ describe('ak-field-base', () => {
       });
     });
 
-    describe('switchToEditingCallback prop', () => {
-      const callbackSpy = sinon.spy();
-      const tmpDefinition = (<Label switchToEditingCallback={callbackSpy} />);
+    describe('required prop', () => {
+      const tmpDefinition = (<Label label="This is a label" required />);
 
       beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
         .then(setupLocalVariables));
-      afterEach(() => {
-        callbackSpy.reset();
-      });
 
-      it('should be called if inner span is clicked', () => {
-        const innerSpan = shadowRoot.querySelector('div span');
-        const clickEvent = new CustomEvent('click', {});
-        innerSpan.dispatchEvent(clickEvent);
-
-        expect(callbackSpy).to.have.been.calledOnce;
+      it('should append an asterisk to the content', () => {
+        const label = shadowRoot.querySelector('label');
+        expect(label.textContent).to.match(/^This is a label/);
+        expect(label.textContent).to.match(/\*$/);
       });
     });
 
-    describe('.chidren', () => {
+    describe('onLabelClick prop', () => {
+      let handlerFired = false;
+      const handler = () => (handlerFired = true);
+      const tmpDefinition = (<Label onLabelClick={handler} />);
+
+      beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
+        .then(setupLocalVariables));
+
+      it('should fire handler when the span is clicked', () => {
+        const handlerWasFired = () => handlerFired;
+        expect(handlerWasFired()).to.be.false;
+
+        const span = shadowRoot.querySelector('span');
+        span.click();
+
+        return waitUntil(handlerWasFired).should.be.fulfilled;
+      });
+    });
+
+    describe('.children', () => {
       const tmpDefinition = (<Label>
         <div className="foo">Here is some child content!</div>
       </Label>);

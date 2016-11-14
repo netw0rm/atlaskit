@@ -9,7 +9,7 @@ PKG=$($BASEDIR/_get_package_name.sh)
 
 if [ -d "./stats" ]; then
   cd ./stats
-  TARGET_DIR="../../../$OUTDIR/$PKG"
+  TARGET_DIR="$OUTDIR/$PKG"
   mkdir -p $TARGET_DIR
   find ./ -name '*.html' -exec cp -prv '{}' "$TARGET_DIR" ';'
 fi

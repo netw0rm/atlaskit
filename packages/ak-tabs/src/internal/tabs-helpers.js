@@ -129,7 +129,11 @@ function showVisibleTabs(tabsEl) {
   // Truncate the label if there is only a single tab
   if (visibleTabs.length) {
     const isSingleTab = visibleTabs.length === 1;
-    visibleTabs[0][tabLabel].classList.toggle(shadowStyles.locals.akTabLabelSingle, isSingleTab);
+    if (isSingleTab) {
+      visibleTabs[0][tabLabel].classList.add(shadowStyles.locals.akTabLabelSingle);
+    } else {
+      visibleTabs[0][tabLabel].classList.remove(shadowStyles.locals.akTabLabelSingle);
+    }
   }
 }
 

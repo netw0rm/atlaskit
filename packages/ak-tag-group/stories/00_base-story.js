@@ -17,9 +17,9 @@ const Tag = reactify(AkTagWebComponent);
 storiesOf(name, module)
   .add('a simple ak-tag-group', () => (
     <Group className={styles.locals.akTagGroup}>
-      <Tag text="Cupcake" className={tagStyles.locals.akTag} />
-      <Tag text="Wagon Wheel" className={tagStyles.locals.akTag} />
-      <Tag text="Jelly beans" className={tagStyles.locals.akTag} />
-      <Tag text="Chocolate" className={tagStyles.locals.akTag} />
+      <Tag text="Cupcake" />
+      <Tag text="Wagon Wheel" />
+      <Tag text="Jelly beans" />
+      <Tag text="Chocolate" />
     </Group>
   ));

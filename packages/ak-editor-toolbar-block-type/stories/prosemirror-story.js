@@ -44,12 +44,12 @@ storiesOf('ak-editor-toolbar-block-type', module)
             schema.text('Title')
           ),
 
-          schema.node('paragraph',
+            schema.node('paragraph',
             null,
             schema.text('Normal text')
           ),
 
-          schema.node('code_block',
+            schema.node('code_block',
             null,
             schema.text('var a = 1;')
           )]

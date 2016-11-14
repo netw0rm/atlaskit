@@ -50,12 +50,10 @@ function waitUntil(fn, timeout = 2000, step = 1) {
           setTimeout(testFn, step);
         } else {
           reject('timeout');
-          return;
         }
       })());
     } catch (e) {
       reject(e);
-      return;
     }
   });
 }

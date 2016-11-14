@@ -2,8 +2,6 @@ import React from 'react';
 import reactify from 'akutil-react';
 import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
 
-import tagStyles from 'style!./tagStyles.less';
-
 import groupStyles from '../src/shadow.less';
 import WebComponent from '../src';
 
@@ -66,7 +64,6 @@ class EventedGroup extends React.Component {
           {this.state.tags.map(text => (<Tag
             text={text}
             key={text}
-            className={tagStyles.locals.akTag}
             remove-button-text="Remove me"
           />))}
         </Group>

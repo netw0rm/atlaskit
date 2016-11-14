@@ -3,6 +3,7 @@ import {
   MarkdownSerializerState as PMMarkdownSerializerState,
   Node
 } from 'ak-editor-prosemirror';
+import { isCodeBlockNode } from 'ak-editor-schema';
 import {Mark} from "prosemirror/dist/model/mark";
 
 /**
@@ -145,10 +146,10 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
   renderContent(parent: Node) : void {
     parent.forEach((child: Node) => {
       if (
-        // If child is an empty Textblock we need to insert a zwnj-character in order to preserve that line in markdown  
+        // If child is an empty Textblock we need to insert a zwnj-character in order to preserve that line in markdown
         (child.isTextblock && !child.textContent) &&
-        // If child is a Codeblock we need to handle this seperately as we want to preserve empty code blocks 
-        !child.type.isCode
+        // If child is a Codeblock we need to handle this seperately as we want to preserve empty code blocks
+        !isCodeBlockNode(child)
       ) {
         return nodes.empty_line(this, child);
       }

@@ -2,12 +2,11 @@ import chai from 'chai';
 import { tearDownComponent } from 'akutil-common-test';
 
 import { name } from '../package.json';
-import AkButton, { themes } from '../src';
+import AkButton from '../src';
 import { getShadowButtonElem, setup } from './_helpers';
 
 
 const expect = chai.expect;
-const Adg2Theme = themes.adg2;
 
 describe('sanity-check', () => {
   let component;
@@ -24,11 +23,5 @@ describe('sanity-check', () => {
       expect(getShadowButtonElem(component)).to.be.defined;
       expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
     });
-  });
-
-  describe('ak-button/adg2-theme-sanity-check', () => {
-    it('should be possible to create a component', () =>
-      expect(() => (new Adg2Theme())).to.not.throw(Error)
-    );
   });
 });

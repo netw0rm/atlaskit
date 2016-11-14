@@ -1,17 +1,13 @@
 import { vdom, define, prop, props } from 'skatejs';
-import { themeable } from 'ak-theme';
-import { style } from 'akutil-common';
-import { appearance, type } from './enumeratedProperties';
+import { appearance, type, spacing } from './internal/enumerated-properties';
 import Slot from './Slot';
 import Button from './Button';
-import createStyles from './styles';
-import adg2 from './themes/adg2';
 
 const APPEARANCE = appearance.values;
 const TYPE = type.values;
+const SPACING = spacing.values;
 
-export { APPEARANCE, TYPE };
-export const themes = { adg2 };
+export { APPEARANCE, TYPE, SPACING };
 
 /**
  * @description Creates instances of ak-button programmatically, or using markup.
@@ -69,14 +65,15 @@ const definition = {
      */
     disabled: prop.boolean({ attribute: true }),
     /**
-     * @description Option to make a button compact
+     * @description Option to change button's padding. One of:
+     * 'none', 'compact'
      * @memberof Button
-     * @default false
-     * @type {boolean}
-     * @example @html <ak-button compact></ak-button>
-     * @example @js button.compact = true;
+     * @default 'normal'
+     * @type {string}
+     * @example @html <ak-button spacing="compact"></ak-button>
+     * @example @js button.spacing = 'none';
      */
-    compact: prop.boolean({ attribute: true }),
+    spacing: spacing.enumeration,
     /**
      * @description Option to make a button selected
      * @memberof Button
@@ -88,16 +85,15 @@ const definition = {
     selected: prop.boolean({ attribute: true }),
   },
   render(elem) {
-    const styles = style(vdom, createStyles(elem.themeProps));
     return (
-      <Button {...props(elem)} styles={styles}>
-        <Slot styles={styles} name="before" />
-        <Slot styles={styles} />
-        <Slot styles={styles} name="after" />
+      <Button {...props(elem)} >
+        <Slot name="before" />
+        <Slot />
+        <Slot name="after" />
       </Button>
     );
   },
 };
 
-const AkButton = define('ak-button', themeable(definition));
+const AkButton = define('ak-button', definition);
 export default AkButton;

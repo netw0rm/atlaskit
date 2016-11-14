@@ -9,10 +9,7 @@ import {
 } from 'akutil-common-test';
 
 import Label from '../src/Label';
-import { events } from '../src';
 import { createDefinition } from './_helpers';
-
-const { labelClick } = events;
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -72,24 +69,21 @@ describe('ak-field-base', () => {
     });
 
     describe('onLabelClick prop', () => {
-      const tmpDefinition = (<Label />);
+      let handlerFired = false;
+      const handler = () => (handlerFired = true);
+      const tmpDefinition = (<Label onLabelClick={handler} />);
 
       beforeEach(() => createTemporary(define, createDefinition(tmpDefinition))
         .then(setupLocalVariables));
 
-      it('should fire labelClick when the span is clicked', () => {
-        let eventFired = false;
-        component.addEventListener(labelClick, () => {
-          eventFired = true;
-        });
-
-        const labelClickEventFired = () => eventFired;
-        expect(labelClickEventFired()).to.be.false;
+      it('should fire handler when the span is clicked', () => {
+        const handlerWasFired = () => handlerFired;
+        expect(handlerWasFired()).to.be.false;
 
         const span = shadowRoot.querySelector('span');
         span.click();
 
-        return waitUntil(labelClickEventFired).should.be.fulfilled;
+        return waitUntil(handlerWasFired).should.be.fulfilled;
       });
     });
 

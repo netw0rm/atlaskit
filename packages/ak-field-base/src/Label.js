@@ -1,11 +1,6 @@
-import { emit, vdom } from 'skatejs';
+import { vdom } from 'skatejs';
 import classNames from 'classnames';
 import shadowStyles from './shadow.less';
-import { labelClick } from './internal/events';
-
-function emitLabelClickEvent(clickEvent) {
-  emit(clickEvent.target, labelClick);
-}
 
 /*
   eslint-disable react/prop-types, jsx-a11y/label-has-for, jsx-a11y/no-static-element-interactions
@@ -20,7 +15,7 @@ export default (props, children) => {
   return (
     <label className={shadowStyles.locals.label}>
       <div className={labelClasses}>
-        <span onClick={emitLabelClickEvent}>{props.label}</span>
+        <span onClick={props.onLabelClick}>{props.label}</span>
         {props.required ? <span class={shadowStyles.locals.required}>*</span> : null}
       </div>
       {children()}

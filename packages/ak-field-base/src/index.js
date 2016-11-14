@@ -1,5 +1,5 @@
+import { vdom, define, emit, prop, Component } from 'skatejs';
 import base from 'ak-component-base';
-import { vdom, define, prop, Component } from 'skatejs';
 
 import Label from './Label';
 import Root from './Root';
@@ -8,7 +8,7 @@ import Dialog from './Dialog';
 import shadowStyles from './shadow.less';
 
 import { standard as standardAppearance } from './internal/appearance';
-import { beforeFocusedChange } from './internal/events';
+import { beforeFocusedChange, labelClick } from './internal/events';
 import safeProps from './internal/safeProps';
 import {
   inputSlot,
@@ -39,6 +39,11 @@ function performValidation(elem) {
   elem[errorDialog].reposition(); // Ensure that the dialog is correctly positioned.
 }
 
+// Emit the label click event
+function emitLabelClickEvent(elem) {
+  return () => (emit(elem, labelClick));
+}
+
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class FieldBase
@@ -58,6 +63,7 @@ export default define('ak-field-base', Base.extend({
           label={elem.label}
           hideLabel={elem.hideLabel}
           required={elem.required}
+          onLabelClick={emitLabelClickEvent(elem)}
         >
           <Content
             appearance={elem.appearance}
@@ -200,4 +206,4 @@ export default define('ak-field-base', Base.extend({
   }, Base.props),
 }));
 
-export const events = { beforeFocusedChange };
+export const events = { beforeFocusedChange, labelClick };

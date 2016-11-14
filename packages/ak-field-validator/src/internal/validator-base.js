@@ -8,14 +8,14 @@ import { vdom, prop, Component } from 'skatejs';
 function generateStyles(tagName) {
   return `
     ${tagName.toLowerCase()} {
-      display: list-item;
+      display: block;
     }
     ${tagName.toLowerCase()}:not([defined]),
     ${tagName.toLowerCase()}:not([invalid]) {
       display: none;
     }
     :host {
-      display: list-item;
+      display: block;
     }
     :host(:not([defined])),
     :host(:not([invalid])) {

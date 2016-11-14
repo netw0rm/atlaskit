@@ -1,6 +1,10 @@
 @import '~akutil-shared-styles/src/grid.less';
 @grid: @ak-grid-size / 2; // evaluates to 4px
 
+// NOTE: this will be replaced with responsive breakpoints in a later ticket related to
+// a 'width' prop/attribute.
+@temporaryFixedModalWidth: 600px;
+
 // we define a class here in order to re-use it in the storybook
 // (because in storybook the component name is randomly generated)
 .ak-modal-dialog,
@@ -42,7 +46,7 @@ ak-modal-dialog {
   max-height: ~"calc(100% - (2 * @{verticalMargin}))";
   padding-top: @verticalMargin;
   position: relative;
-  width: 600px;
+  width: @temporaryFixedModalWidth;
 
   // 3 direct flex children (header + content + footer slot areas)
   & > * {

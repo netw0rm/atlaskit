@@ -7,7 +7,6 @@ import shadowStyles from '../shadow.less';
 export default (props, children) => (
   <DropdownTrigger slot="trigger" style={{ width: '100%' }}>
     <div
-      {...props}
       className={shadowStyles.locals.trigger}
     >
       <style>{shadowStyles.toString()}</style>

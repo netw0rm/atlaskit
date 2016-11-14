@@ -58,7 +58,7 @@ export default define('ak-modal-dialog', {
     // We receive the 'activate' event from the blanket click and transform it into a blanketClicked
     // event because the name 'activate' could be confusing for modal dialog consumers.
     elem.addEventListener(blanketEvents.activate, (e) => {
-      e.preventDefault();
+      e.stopPropagation();
       emit(elem, events.blanketClicked);
     });
   },

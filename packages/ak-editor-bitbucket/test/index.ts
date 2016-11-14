@@ -16,8 +16,6 @@ const { expect, assert } = chai;
 
 const fixture = fixtures();
 
-debugger;
-
 function activateEditor(editor: typeof AkEditorBitbucket) : void {
   const inputEl = getShadowRoot(editor).querySelector('input');
   expect(inputEl).to.not.be.null;

@@ -44,9 +44,9 @@ export default define('pf-mention-picker', {
       this._visible = true;
     },
 
-    _updateDialogPosition() {
-      if (this._dialog && this._dialog.reposition) {
-        this._dialog.reposition();
+    _updateDialogPosition(event) {
+      if (event.target._dialog && event.target._dialog.reposition) {
+        event.target._dialog.reposition();
       }
     },
   },
@@ -55,7 +55,6 @@ export default define('pf-mention-picker', {
     elem._subscriberKey = uniqueId('pf-mention-picker');
     elem._filterChange = elem._filterChange.bind(elem);
     elem._filterError = elem._filterError.bind(elem);
-    elem._updateDialogPosition = elem._updateDialogPosition.bind(elem);
   },
 
   attached(elem) {

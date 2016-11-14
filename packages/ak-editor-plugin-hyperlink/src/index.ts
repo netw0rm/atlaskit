@@ -70,13 +70,28 @@ function isNodeLinkable(pm: ProseMirror, node: Node): boolean {
 }
 
 function isCursorOnLink(
-  proseMirrorInstance: ProseMirror,
-  pos: number
-) : Mark {
-  // why - 1?
-  // because of `exclusiveRight`, we need to get the node "left to"
-  // the current cursor
-  const marks = proseMirrorInstance.doc.nodeAt(pos - 1).marks;
+  pm: ProseMirror,
+  pos: number,
+  empty: boolean
+) : Mark | null {
+  let marks;
+  if (!empty) {
+    // because of `exclusiveRight`, we need to get the node "left to"
+    // the current cursor
+    marks = pm.doc.nodeAt(pos - 1).marks;
+  } else {
+    const node = pm.doc.nodeAt(pos);
+    const preNode = pm.doc.nodeAt(pos - 1);
+
+    // in the beginning of a potential hyperlink node
+    // or at the end of the editor
+    if (node !== preNode || !node) {
+      return null;
+    }
+
+    marks = node.marks;
+  }
+
   return marks.reduce(
     (found: boolean, m: Mark) => found || (m.type.name === 'link' && m),
     null
@@ -152,7 +167,7 @@ class HyperlinkPlugin {
     // because of `exclusiveRight`, we need to get the node "left to"
     // the current cursor
     const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
-    const isLink = isCursorOnLink(pm, $resolvedPos.pos);
+    const isLink = isCursorOnLink(pm, $resolvedPos.pos, empty);
 
     if (isLink && activeNode) {
       this.setState(isLink.attrs, {
@@ -198,7 +213,7 @@ class HyperlinkPlugin {
 
     const $resolvedPos: ResolvedPos = $head || $to;
 
-    const isLink = isCursorOnLink(pm, $resolvedPos.pos);
+    const isLink = isCursorOnLink(pm, $resolvedPos.pos, empty);
 
     const { enabled } = this.getState();
 
@@ -222,8 +237,9 @@ class HyperlinkPlugin {
     const selection = pm.selection;
     const {
       $head,
+      empty
     } = selection;
-    const isLink = isCursorOnLink(pm, $head.pos);
+    const isLink = isCursorOnLink(pm, $head.pos, empty);
 
     if (!isLink) {
       return false;

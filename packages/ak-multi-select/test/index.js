@@ -17,7 +17,7 @@ const expect = chai.expect;
 describe('ak-multi-select', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      (new MyComponent).should.be.an.instanceof(Component);
+      (new MyComponent()).should.be.an.instanceof(Component);
     });
 
     it('should have an events export with defined events', () => {
@@ -32,7 +32,7 @@ describe('ak-multi-select', () => {
     let component;
     let shadowRoot;
 
-    beforeEach(() => setupComponent(MyComponent).then(newComponent => {
+    beforeEach(() => setupComponent(MyComponent).then((newComponent) => {
       component = newComponent;
       shadowRoot = getShadowRoot(component);
     }));

@@ -33,15 +33,15 @@ function triggerSubmit(elem, targetFormId) {
  * </ak-modal-dialog>
  */
 export default define('ak-modal-dialog', {
-  /**
-   * @description Whether the modal dialog is open/visible
-   * @memberof ModalDialog
-   * @instance
-   * @type {Boolean}
-   * @default false
-   * @example @html <ak-modal-dialog open></ak-modal-dialog>
-   */
   props: {
+    /**
+    * @description Whether the modal dialog is open/visible
+    * @memberof ModalDialog
+    * @instance
+    * @type {Boolean}
+    * @default false
+    * @example @html <ak-modal-dialog open></ak-modal-dialog>
+    */
     open: prop.boolean({
       attribute: true,
     }),

@@ -1,5 +1,7 @@
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/borders.less';
+@import 'theme-default.less';
+@import 'theme-dark.less';
 
 @em: 14;
 @grid: 8;
@@ -21,7 +23,6 @@
 
 // Disabled button Colors
 @disabledColor: @ak-color-N40A;
-
 
 .ak-button,
 ak-button {
@@ -166,191 +167,10 @@ ak-button {
   }
 }
 
-.button-style (@bg; @color; @hoverBg; @activeBg; @activeColor; @hoverTextDecoration: none; @hoverColor: @color) {
-  background: @bg;
-  color: @color;
-  text-decoration: none;
-
-  &:hover {
-    background: @hoverBg;
-    color: @hoverColor;
-    text-decoration: @hoverTextDecoration;
-  }
-
-  &:active {
-    background: @activeBg;
-    color: @activeColor;
-  }
-
-  &:focus {
-    box-shadow: 0 0 0 2px @ak-color-B200A;
-  }
-}
-
 .theme-default {
-  &.appearance-default {
-    .button-style(
-      @bg: @ak-color-N20A;
-      @color: @ak-color-N400;
-      @hoverBg: @ak-color-N30A;
-      @activeBg: @ak-color-B75A;
-      @activeColor: @ak-color-B400;
-    )
-  }
-
-  &.appearance-subtle {
-    .button-style(
-      @bg: none;
-      @color: @ak-color-N400;
-      @hoverBg: @ak-color-N30A;
-      @activeBg: @ak-color-B75A;
-      @activeColor: @ak-color-B400;
-    )
-  }
-
-  &.appearance-primary {
-    .button-style(
-      @bg: @ak-color-B400;
-      @color: @ak-color-N0;
-      @hoverBg: @ak-color-B500;
-      @activeBg: @ak-color-B300;
-      @activeColor: @ak-color-N0;
-    );
-
-    &.disabled {
-      .button-style(
-        @bg: @ak-color-B400;
-        @color: fade(@ak-color-N0, 50%);
-        @hoverBg: @ak-color-B400;
-        @activeBg: @ak-color-B400;
-        @activeColor: fade(@ak-color-N0, 50%);
-      )
-    }
-  }
-
-  &.disabled {
-    .button-style(
-      @bg: @ak-color-N20A;
-      @color: @ak-color-N70;
-      @hoverBg: @ak-color-N20A;
-      @activeBg: @ak-color-N20A;
-      @activeColor: @ak-color-N70;
-    )
-  }
-
-  &.selected {
-    .button-style(
-      @bg: @ak-color-N700;
-      @color: @ak-color-N20;
-      @hoverBg: @ak-color-N700;
-      @activeBg: @ak-color-N700;
-      @activeColor: @ak-color-N20;
-    );
-  }
-
-  &.appearance-link {
-    .button-style(
-      @bg: none;
-      @color: @ak-color-B400;
-      @hoverBg: none;
-      @hoverColor: @ak-color-B300;
-      @activeBg: none;
-      @activeColor: @ak-color-B500;
-      @hoverTextDecoration: underline;
-    );
-
-    &.disabled {
-      .button-style(
-        @bg: none;
-        @color: @ak-color-N70;
-        @hoverBg: none;
-        @activeBg: none;
-        @activeColor: @ak-color-N70;
-      );
-    }
-  }
+  .default-theme-styles();
 }
 
 .theme-dark {
-  &.appearance-default {
-    .button-style(
-      @bg: fade(@ak-color-N0, 8%);
-      @color: @ak-color-N0;
-      @hoverBg: fade(@ak-color-N0, 12%);
-      @activeBg: @ak-color-B100A;
-      @activeColor: @ak-color-N0;
-    )
-  }
-
-  &.appearance-subtle {
-    .button-style(
-      @bg: none;
-      @color: @ak-color-N0;
-      @hoverBg: fade(@ak-color-N0, 12%);
-      @activeBg: @ak-color-B100A;
-      @activeColor: @ak-color-N0;
-    )
-  }
-
-  &.appearance-primary {
-    .button-style(
-      @bg: @ak-color-B200;
-      @color: @ak-color-N0;
-      @hoverBg: @ak-color-B100;
-      @activeBg: @ak-color-B300;
-      @activeColor: @ak-color-N0;
-    );
-
-    &.disabled {
-      .button-style(
-        @bg: @ak-color-B400;
-        @color: fade(@ak-color-N0, 50%);
-        @hoverBg: @ak-color-B400;
-        @activeBg: @ak-color-B400;
-        @activeColor: fade(@ak-color-N0, 50%);
-      )
-    }
-  }
-
-  &.disabled {
-    .button-style(
-      @bg: fade(@ak-color-N0, 4%);
-      @color: @ak-color-N100;
-      @hoverBg: fade(@ak-color-N0, 4%);
-      @activeBg: fade(@ak-color-N0, 4%);
-      @activeColor: @ak-color-N100;
-    )
-  }
-
-  &.selected {
-    .button-style (
-      @bg: @ak-color-N20;
-      @color: @ak-color-N700;
-      @hoverBg: @ak-color-N20;
-      @activeBg: @ak-color-N20;
-      @activeColor: @ak-color-N700;
-    )
-  }
-
-  &.appearance-link {
-    .button-style(
-      @bg: none;
-      @color: @ak-color-B75;
-      @hoverBg: none;
-      @hoverColor: @ak-color-B75;
-      @activeBg: none;
-      @activeColor: @ak-color-B75;
-      @hoverTextDecoration: underline;
-    );
-
-    &.disabled {
-      .button-style(
-        @bg: none;
-        @color: @ak-color-N100;
-        @hoverBg: none;
-        @activeBg: none;
-        @activeColor: @ak-color-N100;
-      );
-    }
-  }
+  .dark-theme-styles();
 }

@@ -3,8 +3,6 @@ import reactify from 'akutil-react';
 import AkTagWebComponent from 'ak-tag';
 import React from 'react';
 
-import tagStyles from 'style!./tagStyles.less';
-
 import WebComponent from '../src';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';

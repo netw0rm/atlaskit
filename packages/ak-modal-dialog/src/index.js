@@ -49,7 +49,7 @@ export default define('ak-modal-dialog', {
   attached(elem) {
     // AK-841: need to manually trigger submit until ak-button triggers native submit via form="..."
     elem.addEventListener('click', (e) => {
-      const targetFormId = e.target.getAttribute('form');
+      const targetFormId = e.target.getAttribute && e.target.getAttribute('form');
       if (targetFormId) {
         triggerSubmit(elem, targetFormId);
       }

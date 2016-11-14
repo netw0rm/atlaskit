@@ -1,7 +1,7 @@
 module.exports = {
   presets: [
     'es2015',
-    'react', // required by react-storybook
+    'react',
     'stage-0',
   ],
   plugins: [

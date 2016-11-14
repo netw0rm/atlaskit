@@ -6,7 +6,7 @@ const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
 const moduleBabelQuery = require('./babel.query.module');
-const storybookBabelQuery = require('./babel.query.storybook');
+const reactBabelQuery = require('./babel.query.react');
 const loaderChain = require('./loader-chain').encode;
 
 
@@ -68,7 +68,7 @@ const standardConfig = {
         {
           test: /\/stories\/.*\.tsx?$/,
           loader: loaderChain({
-            'babel-loader': storybookBabelQuery,
+            'babel-loader': reactBabelQuery,
             'ts-loader': {},
           }),
         },
@@ -84,15 +84,24 @@ const standardConfig = {
           }),
         },
         //
-        // JAVASCRIPT
+        // JAVASCRIPT (React components)
         // Support react/jsx in stories, react/ directory, or react-*.js files
         //
         {
           loader: 'babel-loader',
-          test: /\.jsx?$/,
+          test: /\.jsx$/,
+          query: reactBabelQuery,
+        },
+        //
+        // JAVASCRIPT (Web components)
+        // Support react/jsx in stories, react/ directory, or react-*.js files
+        //
+        {
+          loader: 'babel-loader',
+          test: /\.js$/,
           include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
           exclude: /stories\/skate\/.*\.js/,
-          query: storybookBabelQuery,
+          query: reactBabelQuery,
         },
         //
         // JAVASCRIPT

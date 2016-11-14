@@ -82,8 +82,13 @@ const definition = {
      * @example @html <ak-button selected></ak-button>
      * @example @js button.selected = true;
      */
-    form: prop.string({ attribute: true }),
     selected: prop.boolean({ attribute: true }),
+    /**
+     * NOTE: This 'form' prop + attr is required so that the attribute is not removed in storybooks.
+     * https://ecosystem.atlassian.net/browse/AK-841 will extend on this prop to actually apply
+     * it to the internal <button> element. At that time this comment will be replaced with JSDoc.
+     */
+    form: prop.string({ attribute: true }),
   },
   render(elem) {
     return (

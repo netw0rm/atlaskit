@@ -16,7 +16,7 @@
     "babel-runtime": "^6.11.6",
     "skatejs": "^4.0.6",
     "ak-dropdown": "^10.0.2",
-    "ak-tag": "^4.0.4",
+    "ak-tag": "^4.0.3",
     "ak-tag-group": "^4.0.4"
   },
   "peerDependencies": {

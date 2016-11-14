@@ -69,7 +69,7 @@ function isNodeLinkable(pm: ProseMirror, node: Node): boolean {
   return group ? group.split(' ').indexOf(DISABLED_GROUP) === -1 : true;
 }
 
-function getLinkAtCursor(
+function getHyperlinkAtCursor(
   pm: ProseMirror,
   pos: number,
   empty: boolean
@@ -167,10 +167,10 @@ class HyperlinkPlugin {
     // because of `exclusiveRight`, we need to get the node "left to"
     // the current cursor
     const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
-    const linkAtCursor = getLinkAtCursor(pm, $resolvedPos.pos, empty);
+    const hyperlinkAtCursor = getHyperlinkAtCursor(pm, $resolvedPos.pos, empty);
 
-    if (linkAtCursor && activeNode) {
-      this.setState(linkAtCursor.attrs, {
+    if (hyperlinkAtCursor && activeNode) {
+      this.setState(hyperlinkAtCursor.attrs, {
         active: true,
         element: getDomElement(pm, getBoundariesWithin($head)),
         text: activeNode.textContent,
@@ -213,11 +213,11 @@ class HyperlinkPlugin {
 
     const $resolvedPos: ResolvedPos = $head || $to;
 
-    const linkAtCursor = getLinkAtCursor(pm, $resolvedPos.pos, empty);
+    const hyperlinkAtCursor = getHyperlinkAtCursor(pm, $resolvedPos.pos, empty);
 
     const { enabled } = this.getState();
 
-    if (!enabled || empty || linkAtCursor || !options || !(options.href as String).trim()) {
+    if (!enabled || empty || hyperlinkAtCursor || !options || !(options.href as String).trim()) {
       return false;
     }
 
@@ -239,9 +239,9 @@ class HyperlinkPlugin {
       $head,
       empty
     } = selection;
-    const linkAtCursor = getLinkAtCursor(pm, $head.pos, empty);
+    const hyperlinkAtCursor = getHyperlinkAtCursor(pm, $head.pos, empty);
 
-    if (!linkAtCursor) {
+    if (!hyperlinkAtCursor) {
       return false;
     }
 
@@ -266,7 +266,7 @@ class HyperlinkPlugin {
     const markerFrom = currentNodeOffset;
     const markerTo = markerFrom + node.nodeSize;
 
-    pm.tr.removeMark(markerFrom, markerTo, linkAtCursor).apply();
+    pm.tr.removeMark(markerFrom, markerTo, hyperlinkAtCursor).apply();
 
     if (forceTextSelection) {
       pm.setTextSelection(markerFrom, markerTo);

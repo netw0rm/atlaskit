@@ -2,7 +2,7 @@ import React from 'react';
 import reactify from 'akutil-react';
 import AkButton from 'ak-button';
 import Lorem from 'react-lorem-component';
-import { default as WebComponent, events } from '../src';
+import WebComponent, { events } from '../src';
 
 const ReactModal = reactify(WebComponent);
 const ReactButton = reactify(AkButton);

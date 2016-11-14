@@ -1,7 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import WebComponent, { MultiItem, MultiGroup } from '../src';
 import React from 'react';
+
+import WebComponent, { Item as MultiItem, Group as MultiGroup } from '../src';
 import { name } from '../package.json';
 
 const MultiSelect = reactify(WebComponent);

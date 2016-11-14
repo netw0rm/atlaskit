@@ -65,19 +65,11 @@ describe('ak-editor-cq encode-cxml:', () => {
     });
 
     describe('breaks:', () => {
-      check('a non-self-closing break',
-        '<br>',
-        doc(p(br)));
-
-      check('a non-self-closing break in a paragraph',
-        '<p><br></p>',
-        doc(p(br)));
-
-      check('a XML style self-closing break',
+      check('a self-closing break',
         '<br />',
         doc(p(br)));
 
-      check('a XML style self-closing break in a paragraph',
+      check('a self-closing break in a paragraph',
         '<p><br /></p>',
         doc(p(br)));
     });
@@ -249,21 +241,22 @@ describe('ak-editor-cq encode-cxml:', () => {
     });
 
     describe('horizontal rule', () => {
-      check('<hr /> XML style',
+      check('<hr />',
         '<hr />',
         doc(hr()));
 
-      check('<hr> HTML style',
-        '<hr>',
-        doc(hr()));
+      // The XHTML parser chokes parsing these, since technically <p> only permits
+      // phrasing content, and <hr /> is not that (it's flow content). If we determine
+      // that we want to support HTML-ish content (where a <hr /> would split a <p />)
+      // we should uncomment these.
 
-      check('<p><hr></p> nesting splits the paragraph',
-        '<p><hr></p>',
-        doc(p(), hr(), p()));
+      // check('<p><hr /></p> nesting splits the paragraph',
+      //   '<p><hr /></p>',
+      //   doc(p(), hr(), p()));
 
-      check('<p><hr><hr></p> nesting splits the paragraph once',
-        '<p><hr><hr></p>',
-        doc(p(), hr(), hr(), p()));
+      // check('<p><hr /><hr /></p> nesting splits the paragraph once',
+      //   '<p><hr /><hr /></p>',
+      //   doc(p(), hr(), hr(), p()));
     });
 
     describe('lists', () => {

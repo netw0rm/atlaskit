@@ -1,5 +1,5 @@
 import schema from '../schema';
-import parseHtml from './parse-html';
+import parseHtml from './parse-xhtml';
 import { Fragment, MarkType, Mark, Node as PMNode, TextNode } from 'ak-editor-prosemirror';
 
 
@@ -10,7 +10,7 @@ export interface Converter {
 }
 
 export default function(cxhtml: string) {
-  const dom = parseHtml(cxhtml).body;
+  const dom = parseHtml(cxhtml).querySelector('body')!;
   const nodes = bfsOrder(dom)
 
   // Process through nodes in reverse (so deepest child elements are first).
@@ -158,7 +158,8 @@ const converters = <Converter[]> [
   },
 	function marksAndNodes(content, node) {
     if (node instanceof HTMLElement) {
-      switch (node.tagName) {
+      const tag = node.tagName.toUpperCase();
+      switch (tag) {
         // Marks
         case 'DEL':
         case 'S':
@@ -173,7 +174,7 @@ const converters = <Converter[]> [
           return content ? addMarks(content, [schema.marks.code.create()]) : null;
         case 'SUB':
         case 'SUP':
-          const type = node.tagName === 'SUB' ? 'sub' : 'sup';
+          const type = tag === 'SUB' ? 'sub' : 'sup';
           return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
         case 'U':
           return content ? addMarks(content, [schema.marks.u.create()]) : null;
@@ -186,7 +187,7 @@ const converters = <Converter[]> [
         case 'H4':
         case 'H5':
         case 'H6':
-          const level = Number(node.tagName.charAt(1));
+          const level = Number(tag.charAt(1));
           return schema.nodes.heading.createChecked({ level }, content);
         case 'BR':
           return schema.nodes.hard_break.createChecked();
@@ -203,7 +204,6 @@ const converters = <Converter[]> [
           return schema.nodes.list_item.createChecked({}, compatibleContent);
         case 'P':
           return schema.nodes.paragraph.createChecked({}, content);
-
       }
     }
 	},

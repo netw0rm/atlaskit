@@ -1,9 +1,9 @@
 /// <reference path="./collapse-whitespace.d.ts" />
 import collapse from 'collapse-whitespace';
 
-export default function(html: string): Document {
-  const nsHtml = `<html xmlns:ac="http://example.com/ac" xmlns:ri="http://example.com/ri"><body>${stripCDATA(html)}</body></html>`;
-  const tree = new DOMParser().parseFromString(nsHtml, 'text/html')
+export default function(xhtml: string): Document {
+  const nsHtml = `<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ac="http://example.com/ac" xmlns:ri="http://example.com/ri"><body>${stripCDATA(xhtml)}</body></html>`;
+  const tree = new DOMParser().parseFromString(nsHtml, 'application/xhtml+xml')
   collapse(tree.documentElement, isBlock)
   return tree
 }
@@ -11,7 +11,7 @@ export default function(html: string): Document {
 function isBlock(node: Node) {
   // these blocks are mainly used to collapse whitespace between the blocks
   // (preventing spurious text nodes of ' ')
-  switch (node.nodeName) {
+  switch (node.nodeName.toUpperCase()) {
     case "ADDRESS":
     case "ARTICLE":
     case "ASIDE":

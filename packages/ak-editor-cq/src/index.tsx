@@ -309,8 +309,7 @@ export default class Editor extends Component {
    */
   get value() {
     if (this._pm) {
-      return encode(this._pm.doc)
-        .replace(/ ?xmlns="[^"]+"/g, '');
+      return encode(this._pm.doc);
     }
     return this.defaultValue;
   }

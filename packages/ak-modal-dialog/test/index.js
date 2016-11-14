@@ -1,11 +1,15 @@
-import { waitUntil, getShadowRoot } from 'akutil-common-test';
+import {
+  waitUntil,
+  getShadowRoot,
+  tearDownComponent,
+} from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import { Component } from 'skatejs';
 
 import ModalDialog, { events } from '../src';
-import { setupComponent, tearDownComponent } from './_helpers';
+import { setupComponent } from './_helpers';
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -20,7 +24,7 @@ describe('ak-modal-dialog', () => {
     it('should have an events export with defined events', () => {
       events.should.be.defined;
       Object.keys(events).should.be.deep.equal([
-        'willClose',
+        'blanketClicked',
       ]);
     });
   });

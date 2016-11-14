@@ -1,5 +1,5 @@
 import { vdom, define, prop, emit } from 'skatejs';
-import AkBlanket from 'ak-blanket';
+import AkBlanket, { events as blanketEvents } from 'ak-blanket';
 import shadowStyles from './shadow.less';
 import * as events from './internal/events';
 
@@ -54,21 +54,25 @@ export default define('ak-modal-dialog', {
         triggerSubmit(elem, targetFormId);
       }
     });
+
+    // We receive the 'activate' event from the blanket click and transform it into a blanketClicked
+    // event because the name 'activate' could be confusing for modal dialog consumers.
+    elem.addEventListener(blanketEvents.activate, (e) => {
+      e.preventDefault();
+      emit(elem, events.blanketClicked);
+    });
   },
   render(elem) {
     // don't render anything if open = false
-    if (!elem.open) return () => null;
+    if (!elem.open) return null;
 
     return (
       <div className={shadowStyles.locals.blanketPositioner}>
         <style>{shadowStyles.toString()}</style>
         <AkBlanket
           tinted
+          clickable
           open
-          onClick={(e) => {
-            e.preventDefault();
-            emit(elem, events.blanketClicked);
-          }}
         />
         <div className={shadowStyles.locals.modalPositioner}>
           <div className={shadowStyles.locals.headerFlex}>

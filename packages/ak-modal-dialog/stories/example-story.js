@@ -76,4 +76,7 @@ storiesOf(name, module)
         <Lorem count="15" />
       </div>
     </ReactModal>
+  ))
+  .add('without "open" attr', () => (
+    <ReactModal>Hello</ReactModal>
   ));

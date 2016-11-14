@@ -21,11 +21,11 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-button": "^3.0.3",
-    "ak-field-text": "^5.0.4",
-    "akutil-common-test": "^7.0.3",
-    "akutil-react": "^3.0.1",
-    "react-lorem-component": "^0.11.0"
+    "ak-button": "*",
+    "ak-field-text": "*",
+    "akutil-common-test": "*",
+    "akutil-react": "*",
+    "react-lorem-component": "*"
   },
   "repository": {
     "type": "git",

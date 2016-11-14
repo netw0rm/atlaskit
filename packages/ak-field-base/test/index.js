@@ -56,6 +56,9 @@ describe('ak-field-base', () => {
     it('should export a beforeFocusedChange event', () => {
       expect(events.beforeFocusedChange).to.be.defined;
     });
+    it('should export a labelClick event', () => {
+      expect(events.labelClick).to.be.defined;
+    });
   });
 
   describe('label prop', () => {
@@ -225,6 +228,23 @@ describe('ak-field-base', () => {
         spy.should.have.been.calledTwice;
         expect(spy.args[1][0].detail.focused).to.be.false;
       }).should.be.fulfilled;
+    });
+  });
+
+  describe('labelClick event', () => {
+    it('should fire labelClick when the label span is clicked', () => {
+      let eventFired = false;
+      component.addEventListener(events.labelClick, () => {
+        eventFired = true;
+      });
+
+      const labelClickEventFired = () => eventFired;
+      expect(labelClickEventFired()).to.be.false;
+
+      const span = shadowRoot.querySelector('label span');
+      span.click();
+
+      return waitUntil(labelClickEventFired).should.be.fulfilled;
     });
   });
 });

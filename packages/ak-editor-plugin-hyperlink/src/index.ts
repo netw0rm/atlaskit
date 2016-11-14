@@ -81,11 +81,11 @@ function getHyperlinkAtCursor(
     marks = pm.doc.nodeAt(pos - 1).marks;
   } else {
     const node = pm.doc.nodeAt(pos);
-    const preNode = pm.doc.nodeAt(pos - 1);
+    const previousNode = pm.doc.nodeAt(pos - 1);
 
     // in the beginning of a potential hyperlink node
     // or at the end of the editor
-    if (node !== preNode || !node) {
+    if (node !== previousNode || !node) {
       return null;
     }
 

@@ -24,7 +24,7 @@ describe('ak-field-base', () => {
       expect(numTimesValidated).to.equal(validators.length);
     });
 
-    it('validates valid input correctly', () => {
+    it('passes validation for valid input', () => {
       const validValue = 'valid';
       const TestValidator = createTestValidator('test-validator-valid', value => (value === validValue));
       const validators = [new TestValidator()];
@@ -33,7 +33,7 @@ describe('ak-field-base', () => {
       expect(isValid).to.equal(true);
     });
 
-    it('validates invalid input correctly', () => {
+    it('fails validation for invalid input', () => {
       const validValue = 'valid';
       const TestValidator = createTestValidator('test-validator-valid', value => (value === validValue));
       const validators = [new TestValidator()];
@@ -42,13 +42,31 @@ describe('ak-field-base', () => {
       expect(isValid).to.equal(false);
     });
 
-    it('fails validation if at least one validator fails', () => {
+    describe('with multiple validators', () => {
       const TestValidatorValid = createTestValidator('test-validator-valid', () => true);
       const TestValidatorInvalid = createTestValidator('test-validator-invalid', () => false);
-      const validators = [new TestValidatorValid(), new TestValidatorInvalid()];
 
-      const isValid = validate('some value', validators);
-      expect(isValid).to.equal(false);
+      it('passes validation if all validators pass', () => {
+        const validators = [
+          new TestValidatorValid(),
+          new TestValidatorValid(),
+          new TestValidatorValid(),
+        ];
+
+        const isValid = validate('some value', validators);
+        expect(isValid).to.equal(true);
+      });
+
+      it('fails validation if at least one validator fails', () => {
+        const validators = [
+          new TestValidatorValid(),
+          new TestValidatorInvalid(),
+          new TestValidatorValid(),
+        ];
+
+        const isValid = validate('some value', validators);
+        expect(isValid).to.equal(false);
+      });
     });
   });
 });

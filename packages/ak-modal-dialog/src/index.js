@@ -3,6 +3,18 @@ import AkBlanket from 'ak-blanket';
 import shadowStyles from './shadow.less';
 import * as events from './internal/events';
 
+function triggerSubmit(elem, targetFormId) {
+  if (elem.formSlot) {
+    const formSlotAssigned = elem.formSlot.assignedNodes();
+    if (formSlotAssigned && formSlotAssigned.length) {
+      const formEl = formSlotAssigned[0];
+      if (formEl.id === targetFormId) {
+        formEl.submit();
+      }
+    }
+  }
+}
+
 /**
  * @description A modal dialog which blankets the page
  * @class ModalDialog
@@ -12,11 +24,11 @@ import * as events from './internal/events';
  *   <div slot="header">
  *     My modal header
  *   </div>
- *   <form>
+ *   <form id="my-form">
  *     My form content
  *   </form>
  *   <div slot="footer">
- *     <ak-button appearance="primary">Create issue</ak-button>
+ *     <ak-button appearance="primary" form="my-form">Create issue</ak-button>
  *   </div>
  * </ak-modal-dialog>
  */
@@ -35,46 +47,38 @@ export default define('ak-modal-dialog', {
     }),
   },
   attached(elem) {
+    // AK-841: need to manually trigger submit until ak-button triggers native submit via form="..."
     elem.addEventListener('click', (e) => {
-      const isButton = e.target.hasAttribute('appearance') || e.target.tagName.toLowerCase() === 'button';
-      if (elem.formSlot && isButton) {
-        const formSlotAssigned = elem.formSlot.assignedNodes();
-        if (formSlotAssigned && formSlotAssigned.length) {
-          formSlotAssigned[0].submit();
-        }
+      const targetFormId = e.target.getAttribute('form');
+      if (targetFormId) {
+        triggerSubmit(elem, targetFormId);
       }
     });
   },
   render(elem) {
-    // only render if open
+    // don't render anything if open = false
     if (!elem.open) return () => null;
 
     return (
-      <div className={shadowStyles.locals.positioner}>
+      <div className={shadowStyles.locals.blanketPositioner}>
         <style>{shadowStyles.toString()}</style>
         <AkBlanket
           tinted
           open
           onClick={(e) => {
             e.preventDefault();
-            emit(elem, events.willClose);
+            emit(elem, events.blanketClicked);
           }}
         />
-        <div className={shadowStyles.locals.area}>
+        <div className={shadowStyles.locals.modalPositioner}>
           <div className={shadowStyles.locals.headerFlex}>
-            <div className={shadowStyles.locals.headerSlot}>
-              <slot name="header" />
-            </div>
+            <slot name="header" />
           </div>
           <div className={shadowStyles.locals.contentFlex}>
-            <div className={shadowStyles.locals.contentSlot}>
-              <slot ref={(formSlot) => { elem.formSlot = formSlot; }} />
-            </div>
+            <slot ref={(formSlot) => { elem.formSlot = formSlot; }} />
           </div>
           <div className={shadowStyles.locals.footerFlex}>
-            <div className={shadowStyles.locals.footerSlot}>
-              <slot name="footer" />
-            </div>
+            <slot name="footer" />
           </div>
         </div>
       </div>

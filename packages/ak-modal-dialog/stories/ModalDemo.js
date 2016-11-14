@@ -2,7 +2,7 @@ import React from 'react';
 import reactify from 'akutil-react';
 import AkButton from 'ak-button';
 import Lorem from 'react-lorem-component';
-import WebComponent from '../src';
+import { default as WebComponent, events } from '../src';
 
 const ReactModal = reactify(WebComponent);
 const ReactButton = reactify(AkButton);
@@ -14,7 +14,7 @@ export default class ModalDemo extends React.Component {
   }
 
   componentDidMount() {
-    this.outerEl.addEventListener('ak-modal-dialog-close', () => {
+    this.outerEl.addEventListener(events.blanketClicked, () => {
       this.setState({ isOpen: false });
     });
   }

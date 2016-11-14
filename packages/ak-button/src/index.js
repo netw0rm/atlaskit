@@ -82,6 +82,7 @@ const definition = {
      * @example @html <ak-button selected></ak-button>
      * @example @js button.selected = true;
      */
+    form: prop.string({ attribute: true }),
     selected: prop.boolean({ attribute: true }),
   },
   render(elem) {

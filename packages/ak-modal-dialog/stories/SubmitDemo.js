@@ -8,6 +8,8 @@ const ReactModal = reactify(WebComponent);
 const ReactButton = reactify(AkButton);
 const ReactFieldText = reactify(AkFieldText);
 
+const testFormId = 'test-form';
+
 export default function () {
   return (
     <div>
@@ -16,7 +18,7 @@ export default function () {
         <form
           action="https://httpbin.org/post"
           target="submit-frame"
-          id="test-form"
+          id={testFormId}
           method="post"
         >
           <p>Enter some text and then try submitting with enter + click.</p>
@@ -32,7 +34,10 @@ export default function () {
           />
         </form>
         <div is slot="footer">
-          <ReactButton form="test-form" appearance="primary">Create issue</ReactButton>
+          <ReactButton
+            form={testFormId}
+            appearance="primary"
+          >Create issue</ReactButton>
         </div>
       </ReactModal>
       <iframe title="Form POST test" name="submit-frame" />

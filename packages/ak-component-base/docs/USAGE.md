@@ -1,14 +1,16 @@
 # ComponentBase
 
-`ak-component-base` is just a simple base component to build other components on top of. The only
-feature it provides is an `override` prop which can be used by a consumer to prevent a component
-from managing it's own state.
+The `ak-component-base` is a simple base component used to build other components on top of. The only
+feature it provides is an `override` prop, which can be used by a consumer to prevent a component from managing it's own state.
 
 An example of this might be a popup component that has an `open` prop that can be set.
-If you were tracking this state somewhere (in a Redux store for example) but the component was able to modify it's own open state (i.e responding to a mouseclick)
-your state could become out of sync and cause issues. By setting the `open` prop via `override` instead a component will be prevented from ever modifying that prop.
+If you were tracking this state somewhere (in a Redux store for example) but the component was able to modify it's own open state (e.g responding to a mouseclick), 
+your state could become out of sync and cause issues. 
+By setting the `open` prop via `override` instead, a component will be prevented from ever modifying that prop.
 
 **Note:** This means you'll usually need to hook into emitted events to update the state as required.
+
+![Example componentbase](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-component-base/docs/componentbase.gif)
 
 ## Try it out
 
@@ -22,7 +24,9 @@ npm install ak-component-base
 
 ## Using the component
 
-This component is meant as a base for other components to extend. To build the base component, you will need to inject the `Component` and `prop` dependencies like so:
+This component is used as a base for other components that need to be extended. To build the base component, you will need to inject the `Component` and `prop` dependencies.
+
+Example:
 
 ```
 import { Component, prop } from 'skatejs';
@@ -31,11 +35,11 @@ import base from 'ak-component-base';
 const Base = base({ Component, prop });
 ```
 
-Now you can extend `Base`.
+Once you've build the base component you can extend `Base`.
 
 #### Counter Component
 
-This component simply keeps track of two numbers (both exposed as props) and increments them itself.
+This component keeps track of two numbers (both exposed as props) and increments them itself.
 
 ```js
 import { define, vdom, Component, prop } from 'skatejs';
@@ -102,3 +106,6 @@ const App = define('x-app', class extends Component {
 
 You'll notice that App keeps track of the `count1` state itself (in its `count` prop) but instead of passing it into the `count1` prop of Counter, it is passed in via `override`.
 Had it passed it in via `count1` the Counter would have continued to increment it every millisecond.
+
+### React
+This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).

@@ -10,8 +10,4 @@ function setupComponent(Component) {
   return waitUntil(componentHasShadowRoot).then(() => component);
 }
 
-function tearDownComponent(component) {
-  document.body.removeChild(component);
-}
-
-export { setupComponent, tearDownComponent };
+export { setupComponent }; // eslint-disable-line import/prefer-default-export

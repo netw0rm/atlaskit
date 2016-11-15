@@ -151,7 +151,6 @@ export class BlockTypeState {
     }
 
     const block = pm.selection.$from.node(1);
-    debugger;
     if (isHeadingNode(block)) {
       switch (block.attrs.level) {
         case 1:

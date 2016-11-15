@@ -1,5 +1,5 @@
 import { vdom, define, prop, props } from 'skatejs';
-import { appearance, type, spacing } from './internal/enumerated-properties';
+import { appearance, type, spacing, theme } from './internal/enumerated-properties';
 import Slot from './Slot';
 import Button from './Button';
 
@@ -83,6 +83,15 @@ const definition = {
      * @example @js button.selected = true;
      */
     selected: prop.boolean({ attribute: true }),
+    /**
+     * @description Option to make have a dark look and feel of a button.
+     * @memberof Button
+     * @default false
+     * @type {boolean}
+     * @example @html <ak-button dark></ak-button>
+     * @example @js button.dark = true;
+     */
+    theme: theme.enumeration,
   },
   render(elem) {
     return (

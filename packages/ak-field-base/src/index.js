@@ -1,11 +1,11 @@
-import { vdom, define, prop, Component } from 'skatejs';
+import { vdom, define, emit, prop, Component } from 'skatejs';
 import base from 'ak-component-base';
 import Label from './Label';
 import Root from './Root';
 import Content from './Content';
 import { standard as standardAppearance } from './internal/appearance';
 import safeProps from './internal/safeProps';
-import { beforeFocusedChange } from './internal/events';
+import { beforeFocusedChange, labelClick } from './internal/events';
 
 // need to inject Component and prop to create the base Component;
 const Base = base({ Component, prop });
@@ -14,6 +14,11 @@ const Base = base({ Component, prop });
 // [focused] prop.
 function setFocused(elem, focus) {
   safeProps(elem, { focused: focus });
+}
+
+// Emit the label click event
+function emitLabelClickEvent(elem) {
+  return () => (emit(elem, labelClick));
 }
 
 /**
@@ -35,6 +40,7 @@ export default define('ak-field-base', Base.extend({
           label={elem.label}
           hideLabel={elem.hideLabel}
           required={elem.required}
+          onLabelClick={emitLabelClickEvent(elem)}
         >
           <Content
             setFocused={focus => setFocused(elem, focus)}
@@ -150,4 +156,4 @@ export default define('ak-field-base', Base.extend({
   }, Base.props),
 }));
 
-export const events = { beforeFocusedChange };
+export const events = { beforeFocusedChange, labelClick };

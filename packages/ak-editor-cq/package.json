@@ -1,0 +1,42 @@
+{
+  "name": "ak-editor-cq",
+  "version": "1.0.0",
+  "description": "Atlassian Editor component for Confluence Questions",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-cq"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "Apache-2.0",
+  "author": "Atlassian Pty Ltd",
+  "dependencies": {
+    "ak-editor-plugin-block-type": "^5.0.0",
+    "ak-editor-plugin-lists": "^5.0.0",
+    "ak-editor-plugin-text-formatting": "^5.0.0",
+    "ak-editor-prosemirror": "^4.0.0",
+    "ak-editor-schema": "^4.1.0",
+    "ak-editor-shared-styles": "^3.0.0",
+    "ak-editor-ui": "^1.0.0",
+    "akutil-shared-styles": "^37.0.1",
+    "autobind-decorator": "^1.3.4",
+    "babel-runtime": "^6.11.6",
+    "browserkeymap": "^2.0.1",
+    "collapse-whitespace": "^1.1.2",
+    "skatejs": "^4.0.6"
+  },
+  "devDependencies": {
+    "ak-editor-test": "*",
+    "akutil-common-test": "*",
+    "akutil-react": "*",
+    "react-dom": "^15.3.2",
+    "ak-tabs": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

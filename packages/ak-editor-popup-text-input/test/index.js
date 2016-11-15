@@ -51,4 +51,18 @@ describe(name, () => {
         expect(spy).to.have.callCount(1);
       })
   );
+
+  it('should not emit enterKeyup event on other keyup', () =>
+     spyOnKeyup(10, 'enterKeyup')
+      .then((spy) => {
+        expect(spy).to.have.callCount(0);
+      })
+  );
+
+  it('should not emit escKeyup event on other keyup', () =>
+     spyOnKeyup(20, 'escKeyup')
+      .then((spy) => {
+        expect(spy).to.have.callCount(0);
+      })
+  );
 });

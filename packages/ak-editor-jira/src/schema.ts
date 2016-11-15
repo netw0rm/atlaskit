@@ -40,9 +40,9 @@ export default new Schema({
     subsup: SubSupMarkType,
     u: UnderlineMarkType,
   },
-}) as CQSchema;
+}) as JIRASchema;
 
-interface CQSchema extends Schema {
+interface JIRASchema extends Schema {
   nodes: {
     doc: DocNodeType;
     paragraph: ParagraphNodeType;

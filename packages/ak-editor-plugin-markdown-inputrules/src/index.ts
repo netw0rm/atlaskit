@@ -18,7 +18,7 @@ import {
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in
 // markdown (where a ordered list will always start on 1). This is a slightly modified
-// version of that input rule. 
+// version of that input rule.
 function orderedListRule(nodeType: NodeType): InputRule {
   return wrappingInputRule(/^(\d+)\. $/, " ", nodeType, (match: RegExpMatchArray) => ({}),
                            (match: RegExpMatchArray, node: Node) => node.childCount);
@@ -184,7 +184,7 @@ const hrRule2 = new InputRule(/^\-\-\-$/, '-', (
   pos: number
 ) => replaceWithNode(pm, match, pos, pm.schema.nodes.horizontal_rule.create()));
 
-export default new Plugin(class MarkdownInputRulesPlugin {
+class MarkdownInputRulesPlugin {
   inputRules: InputRule[];
 
   constructor(pm: ProseMirror) {
@@ -212,4 +212,9 @@ export default new Plugin(class MarkdownInputRulesPlugin {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
-});
+}
+
+// IE11 + multiple prosemirror fix.
+Object.defineProperty(MarkdownInputRulesPlugin, 'name', { value: 'MarkdownInputRulesPlugin' });
+
+export default new Plugin(MarkdownInputRulesPlugin);

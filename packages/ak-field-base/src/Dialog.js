@@ -12,8 +12,8 @@ export default (props, children) => (
     position="right middle"
     {...props}
   >
-    <ul class={shadowStyles.locals.errorList}>
+    <div class={shadowStyles.locals.errorContainer}>
       {children()}
-    </ul>
+    </div>
   </InlineDialog>
 );

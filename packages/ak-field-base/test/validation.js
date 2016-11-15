@@ -42,8 +42,8 @@ describe('ak-field-base', () => {
 
       it('validates valid input correctly', () => {
         const validValue = 'valid';
-        const TestValidator = defineTestValidator('test-validator-valid', value => (value === validValue));
-        const validators = [new TestValidator()];
+        const TestValidatorValid = defineTestValidator('test-validator-valid', value => (value === validValue));
+        const validators = [new TestValidatorValid()];
 
         const isValid = validate(validValue, validators);
         expect(isValid).to.equal(true);
@@ -51,20 +51,39 @@ describe('ak-field-base', () => {
 
       it('validates invalid input correctly', () => {
         const validValue = 'valid';
-        const TestValidator = defineTestValidator('test-validator-valid', value => (value === validValue));
-        const validators = [new TestValidator()];
+        const TestValidatorInvalid = defineTestValidator('test-validator-valid', value => (value === validValue));
+        const validators = [new TestValidatorInvalid()];
+
 
         const isValid = validate(`not ${validValue}`, validators);
         expect(isValid).to.equal(false);
       });
 
-      it('fails validation if at least one validator fails', () => {
+      describe('with multiple validators', () => {
         const TestValidatorValid = defineTestValidator('test-validator-valid', () => true);
         const TestValidatorInvalid = defineTestValidator('test-validator-invalid', () => false);
-        const validators = [new TestValidatorValid(), new TestValidatorInvalid()];
 
-        const isValid = validate('some value', validators);
-        expect(isValid).to.equal(false);
+        it('passes validation if all validators pass', () => {
+          const validators = [
+            new TestValidatorValid(),
+            new TestValidatorValid(),
+            new TestValidatorValid(),
+          ];
+
+          const isValid = validate('some value', validators);
+          expect(isValid).to.equal(true);
+        });
+
+        it('fails validation if at least one validator fails', () => {
+          const validators = [
+            new TestValidatorValid(),
+            new TestValidatorInvalid(),
+            new TestValidatorValid(),
+          ];
+
+          const isValid = validate('some value', validators);
+          expect(isValid).to.equal(false);
+        });
       });
     });
 
@@ -87,7 +106,7 @@ describe('ak-field-base', () => {
         expect(component.getAttribute('validate-on')).to.equal('eventA eventB');
       });
 
-      describe('validation', () => {
+      describe('behaviour', () => {
         let inputChild;
         let validator;
         const TestValidator = defineTestValidator('test-validator', () => false);
@@ -102,7 +121,7 @@ describe('ak-field-base', () => {
           component.removeChild(validator);
         });
 
-        it('is triggered on blur event by default', () => {
+        it('is triggered by blur event by default', () => {
           const myEvent = new CustomEvent('blur');
 
           const validationWasRun = () => component.invalid;

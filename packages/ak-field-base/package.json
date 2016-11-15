@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "ak-component-base": "^1.0.0",
-    "ak-inline-dialog": "^71.2.1",
+    "ak-inline-dialog": "^73.0.3",
     "akutil-shared-styles": "^37.0.0",
     "akutil-common": "^5.0.0",
     "babel-runtime": "^6.11.6",

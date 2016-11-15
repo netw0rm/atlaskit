@@ -1,4 +1,5 @@
 import { waitUntil, getShadowRoot, locateWebComponent } from 'akutil-common-test';
+import { props } from 'skatejs';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -82,7 +83,7 @@ describe('ak-field-text', () => {
       // check the negative case first
       expect(reflected()).to.be.false;
 
-      component.name = newValue;
+      props(component, { name: newValue });
 
       return waitUntil(reflected).should.be.fulfilled;
     });

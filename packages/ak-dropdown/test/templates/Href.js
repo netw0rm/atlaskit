@@ -10,7 +10,7 @@ import Href from '../../src/templates/Href';
 chai.use(chaiAsPromised);
 chai.should();
 
-describe(name, () => {
+describe.skip(name, () => {
   describe('Href', () => {
     let component;
     let rootNode;

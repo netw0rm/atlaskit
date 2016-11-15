@@ -24,7 +24,7 @@ function getDay(elem, num) {
 
 const now = new Date();
 
-describe('ak-calendar', () => {
+describe.skip('ak-calendar', () => {
   let component;
 
   beforeEach((done) => {

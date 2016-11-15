@@ -8,7 +8,7 @@ import { getShadowButtonElem, setup } from './_helpers';
 
 const expect = chai.expect;
 
-describe('sanity-check', () => {
+describe.skip('sanity-check', () => {
   let component;
 
   describe('ak-button/component', () => {

@@ -14,7 +14,7 @@ chai.should();
 const expect = chai.expect;
 
 
-describe('ak-tag', () => {
+describe.skip('ak-tag', () => {
   describe('Chrome', () => {
     let component;
     let rootNode;

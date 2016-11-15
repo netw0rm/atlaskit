@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
 chai.should();
 
 
-describe(name, () => {
+describe.skip(name, () => {
   describe('childrenHaveSlot', () => {
     let component;
     let rootNode;

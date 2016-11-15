@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
 chai.should();
 
 
-describe('ak-tag', () => {
+describe.skip('ak-tag', () => {
   describe('AnimationWrapper', () => {
     let component;
 

@@ -30,7 +30,7 @@ function tearDownComponent(component) {
   document.body.removeChild(component);
 }
 
-describe(name, () => {
+describe.skip(name, () => {
   describe('general behavior', () => {
     let component;
 

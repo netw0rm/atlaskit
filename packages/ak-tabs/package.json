@@ -1,15 +1,17 @@
 {
   "name": "ak-tabs",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Tabs web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-tabs"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

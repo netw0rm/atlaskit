@@ -83,18 +83,15 @@ function getHyperlinkAtCursor(
     const node = pm.doc.nodeAt(pos);
     const previousNode = pm.doc.nodeAt(pos - 1);
 
-    // in the beginning of a potential hyperlink node
-    // or at the end of the editor
-    if (node !== previousNode || !node) {
+    if (node !== previousNode) {
       return null;
     }
 
     marks = node.marks;
   }
 
-  return marks.reduce(
-    (found: boolean, m: Mark) => found || (m.type.name === 'link' && m),
-    null
+  return marks.find(
+    (mark: Mark) => mark.type.name === 'link'
   );
 }
 
@@ -169,25 +166,16 @@ class HyperlinkPlugin {
     const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
     const hyperlinkAtCursor = getHyperlinkAtCursor(pm, $resolvedPos.pos, empty);
 
-    if (hyperlinkAtCursor && activeNode) {
+    if (hyperlinkAtCursor) {
       this.setState(hyperlinkAtCursor.attrs, {
         active: true,
         element: getDomElement(pm, getBoundariesWithin($head)),
         text: activeNode.textContent,
         enabled: true,
       });
-    } else if (
-      empty ||
-      !(activeNode ? isNodeLinkable(pm, activeNode) : oldState.enabled)
-    ) {
-      this.setState(
-        {
-          enabled: false,
-        }
-      );
     } else {
       this.setState({
-        enabled: true,
+        enabled: !empty && isNodeLinkable(pm, activeNode),
       });
     }
 

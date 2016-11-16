@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom } from 'skatejs';
 import { getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';

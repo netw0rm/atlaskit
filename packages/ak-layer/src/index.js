@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, prop } from 'skatejs';
 import { enumeration } from 'akutil-common';
 import { flippedSymbol } from './internal/symbols';

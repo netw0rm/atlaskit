@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import classNames from 'classnames';
 import { emit, vdom, define } from 'skatejs';
 

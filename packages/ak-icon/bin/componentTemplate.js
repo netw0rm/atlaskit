@@ -18,6 +18,8 @@ module.exports = ({
 
   /* eslint-disable max-len */
   return `
+/** @jsx vdom */
+
 import { define, vdom } from 'skatejs';
 import Icon from '${relativePathToSrc}/Icon';
 

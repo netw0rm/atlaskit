@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { Calendar } from 'calendar-base';
 import { define, emit, prop, vdom } from 'skatejs';
 import classnames from 'classnames';

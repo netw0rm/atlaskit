@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define } from 'skatejs';
 
 

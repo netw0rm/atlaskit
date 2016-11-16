@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { define, vdom, prop, Component } from 'skatejs';
 import shadowStyles from './shadow.less';
 

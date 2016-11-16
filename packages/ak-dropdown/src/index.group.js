@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, prop, define } from 'skatejs';
 
 import shadowGroupStyles from './less/shadow-group.less';

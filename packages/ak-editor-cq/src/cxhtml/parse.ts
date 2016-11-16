@@ -156,7 +156,7 @@ const converters = <Converter[]> [
       return text ? schema.text(text) : null;
     }
   },
-	function marksAndNodes(content, node) {
+  function marksAndNodes(content, node) {
     if (node instanceof HTMLElement) {
       const tag = node.tagName.toUpperCase();
       switch (tag) {
@@ -206,8 +206,8 @@ const converters = <Converter[]> [
           return schema.nodes.paragraph.createChecked({}, content);
       }
     }
-	},
-	function debugFallback(content, node) {
+  },
+  function debugFallback(content, node) {
     let repr = node.toString();
 
     if (node instanceof HTMLElement) {

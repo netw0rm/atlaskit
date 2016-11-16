@@ -1,19 +1,19 @@
 import schema from '../schema';
 import {
-	Fragment,
-	Node as PMNode,
-	TextNode
+  Fragment,
+  Node as PMNode,
+  TextNode
 } from 'ak-editor-prosemirror';
 
 import {
-	BulletListNode,
-	DocNode,
-	HardBreakNode,
-	HeadingNode,
+  BulletListNode,
+  DocNode,
+  HardBreakNode,
+  HeadingNode,
   HorizontalRuleNode,
-	ListItemNode,
-	OrderedListNode,
-	ParagraphNode,
+  ListItemNode,
+  OrderedListNode,
+  ParagraphNode,
   isBulletListNode,
   isDocNode,
   isHardBreakNode,

@@ -112,8 +112,7 @@ const standardConfig = {
     autoprefixer({
       // have a look here: https://confluence.atlassian.com/display/Cloud/Supported+browsers
       // "not Opera" w/o version qualifier is not valid, so I chose a really high version number
-      // TODO: Remove IE10 once Confluence stop supporting it (IE 10 is not tested in CI) https://ecosystem.atlassian.net/browse/AK-542
-      browsers: 'last 1 version, ie 10, Android > 4, not Opera < 1000',
+      browsers: 'last 1 version, ie 11, Android > 4, not Opera < 1000',
     }),
   ],
   plugins: [],

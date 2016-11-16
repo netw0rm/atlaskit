@@ -2340,9 +2340,9 @@
       "resolved": "https://registry.npmjs.org/eslint-config-airbnb-base/-/eslint-config-airbnb-base-10.0.1.tgz"
     },
     "eslint-config-ak-base": {
-      "version": "4.0.6",
-      "from": "eslint-config-ak-base@>=4.0.6 <5.0.0",
-      "resolved": "https://registry.npmjs.org/eslint-config-ak-base/-/eslint-config-ak-base-4.0.6.tgz"
+      "version": "5.0.0",
+      "from": "eslint-config-ak-base@>=5.0.0 <6.0.0",
+      "resolved": "https://registry.npmjs.org/eslint-config-ak-base/-/eslint-config-ak-base-5.0.0.tgz"
     },
     "eslint-config-ak-cucumber": {
       "version": "4.0.0",

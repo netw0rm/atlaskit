@@ -24,7 +24,7 @@ npm install ak-component-base
 
 ## Using the component
 
-This component is used as a base for other components that need to be extended. To build the base component, you will need to inject the `Component` and `prop` dependencies.
+This component is used as a base for other components to extend. To build the base component, you will need to inject the `Component` and `prop` dependencies.
 
 Example:
 
@@ -35,7 +35,7 @@ import base from 'ak-component-base';
 const Base = base({ Component, prop });
 ```
 
-Once you've build the base component you can extend `Base`.
+Once you've built the base component you can extend `Base`.
 
 #### Counter Component
 
@@ -104,8 +104,6 @@ const App = define('x-app', class extends Component {
 });
 ```
 
-You'll notice that App keeps track of the `count1` state itself (in its `count` prop) but instead of passing it into the `count1` prop of Counter, it is passed in via `override`.
-Had it passed it in via `count1` the Counter would have continued to increment it every millisecond.
+You'll notice that App keeps track of the `count1` state in its `count` prop, but instead of passing it into the `count1` prop of Counter, it's passed in via `override`.
+Had it passed it in via `count1` the counter would have continued to increment every millisecond.
 
-### React
-This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).

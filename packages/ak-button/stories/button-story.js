@@ -7,6 +7,7 @@ import QuestionIcon from 'ak-icon/glyph/question';
 import ExpandIcon from 'ak-icon/glyph/expand';
 import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import OpenIcon from 'ak-icon/glyph/editor/open';
+import { akColorN20, akColorN700 } from 'akutil-shared-styles';
 import { name } from '../package.json';
 
 import AkButtonTemplate, { APPEARANCE, SPACING } from '../src';
@@ -37,10 +38,155 @@ const css = `
   }
 `;
 
+/* eslint-disable react/prop-types */
+const buildBackgroundStory = () => {
+  const createSample = ({ backgroundColor, extraProps = { onClick: action('clicking the WebComponent') } }) => (
+    <div style={{ 'margin-bottom': '30px' }}>
+      <style>{'ak-button { margin: 5px }'}</style>
+      <div className="sample" style={{ 'background-color': backgroundColor }}>
+        <div>
+          <AkButton {...extraProps}>
+            Default
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.PRIMARY}>
+            Primary
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.LINK}>
+            Link
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.SUBTLE} >
+            Subtle
+          </AkButton>
+          <AkButton {...extraProps} selected>
+            Selected
+          </AkButton>
+        </div>
+        <span> Normal States </span>
+      </div>
+      <div className="sample" style={{ 'background-color': backgroundColor }}>
+        <div>
+          <AkButton {...extraProps}>
+            Default
+            <Question slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.PRIMARY}>
+            Primary
+            <Calendar slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.LINK}>
+            Link
+            <Page slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.SUBTLE} >
+            Subtle
+            <Expand slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} selected>
+            Selected
+            <Open slot="after" />
+          </AkButton>
+        </div>
+        <span> Normal States + icons</span>
+      </div>
+      <div className="sample" style={{ 'background-color': backgroundColor }}>
+        <div>
+          <AkButton {...extraProps} disabled>
+            Default Disabled
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.PRIMARY} disabled>
+            Primary Disabled
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.LINK} disabled>
+            Link Disabled
+          </AkButton>
+        </div>
+        <span> Disabled variations </span>
+      </div>
+      <div className="sample" style={{ 'background-color': backgroundColor }}>
+        <div>
+          <AkButton {...extraProps} disabled>
+            Default Disabled
+            <Page slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.PRIMARY} disabled>
+            Primary Disabled
+            <Question slot="after" />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.LINK} disabled>
+            Link Disabled
+            <Calendar slot="after" />
+          </AkButton>
+        </div>
+        <span> Disabled variations + icons</span>
+      </div>
+      <div className="sample" style={{ 'background-color': backgroundColor }}>
+        <div>
+          <AkButton {...extraProps} spacing={SPACING.NONE}>
+            <Unlink />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} selected>
+            <Unlink />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} appearance={APPEARANCE.PRIMARY}>
+            <Unlink />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} disabled>
+            <Unlink />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.SUBTLE} spacing={SPACING.NONE}>
+            <Unlink />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE}>
+            <Open />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} selected>
+            <Open />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} appearance={APPEARANCE.PRIMARY}>
+            <Open />
+          </AkButton>
+          <AkButton {...extraProps} spacing={SPACING.NONE} disabled>
+            <Open />
+          </AkButton>
+          <AkButton {...extraProps} appearance={APPEARANCE.SUBTLE} spacing={SPACING.NONE}>
+            <Open />
+          </AkButton>
+        </div>
+        <span> No spacing buttons with only icons </span>
+      </div>
+    </div>
+  );
+
+  return (
+    <div>
+      <style>{css}</style>
+      <div className="container" style={{ width: '100%' }}>
+        {
+          createSample({
+            backgroundColor: 'white',
+          })
+        }
+        {
+          createSample({
+            backgroundColor: akColorN20,
+          })
+        }
+        {
+          createSample({
+            backgroundColor: akColorN700,
+            extraProps: { theme: 'dark', onClick: action('clicking the WebComponent') },
+          })
+        }
+      </div>
+    </div>
+  );
+};
+
 const buildStory = props => (
   () => (
     <div>
       <style>{css}</style>
+      <style>{'ak-button { background-color: white }'}</style>
       <div className="container">
         <div className="sample">
           <AkButton {...props}>
@@ -223,6 +369,7 @@ storiesOf(name, module)
     .add('primary ak-button states', buildStory({ appearance: APPEARANCE.PRIMARY }))
     .add('subtle ak-button states', buildStory({ appearance: APPEARANCE.SUBTLE }))
     .add('link ak-button states', buildStory({ appearance: APPEARANCE.LINK }))
+    .add('different backgrounds', buildBackgroundStory)
     .add('button builder example', () =>
       <ButtonBuilderExample icons={[() => null].concat([Page, Question, Calendar, Expand])} />
     );

@@ -8,6 +8,7 @@
     "react"
   ],
   "rules": {
+    "import/no-webpack-loader-syntax": 0,
     "no-plusplus": 0,
     "no-param-reassign": ["error", { "props": false }],
     "react/no-unknown-property": [0],
@@ -17,11 +18,13 @@
       "jsx": "never",
       "ts": "never",
       "tsx": "never"
+    }],
+    "comma-dangle": ["error", {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "ignore"
     }]
-  },
-  "settings": {
-    "react": {
-      "pragma": "vdom"
-    }
   }
 }

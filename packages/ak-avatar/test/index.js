@@ -49,7 +49,7 @@ function tearDownAvatar(component) {
   document.body.removeChild(component);
 }
 
-describe('ak-avatar', () => {
+describe.skip('ak-avatar', () => {
   let component;
 
   beforeEach(() => setupAvatar().then(newComponent => (component = newComponent)));

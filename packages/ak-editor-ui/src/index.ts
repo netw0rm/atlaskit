@@ -1,5 +1,6 @@
 export { default as Button } from './Button';
 export { default as ButtonLink } from './ButtonLink';
+export { default as Content } from './Content';
 export { default as Footer } from './Footer';
 export { default as Popup } from './Popup';
 export { default as PopupTextInput } from './PopupTextInput';

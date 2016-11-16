@@ -1,5 +1,5 @@
 import { vdom } from 'skatejs';
-import shadowStyles from './shadow.less';
+import shadowStyles from './less/shadow.less';
 
 /* eslint-disable react/prop-types */
 const getSlotName = side => side || 'default';

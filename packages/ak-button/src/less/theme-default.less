@@ -1,0 +1,116 @@
+.default-rulesets {
+  @default: {
+    .default-styles {
+      background: @ak-color-N20A;
+      color: @ak-color-N400;
+    }
+    .hover-styles {
+      background: @ak-color-N30A;
+    }
+    .active-styles {
+      background: @ak-color-B75A;
+      color: @ak-color-B400;
+    }
+  };
+
+  @subtle: {
+    .default-styles {
+      background: none;
+      color: @ak-color-N400;
+    }
+    .hover-styles {
+      background: @ak-color-N30A;
+    }
+    .active-styles {
+      background: @ak-color-B75A;
+      color: @ak-color-B400;
+    }
+  };
+
+  @primary: {
+    .default-styles {
+      background: @ak-color-B400;
+      color: @ak-color-N0;
+    }
+    .hover-styles {
+      background: @ak-color-B500;
+    }
+    .active-styles {
+      background: @ak-color-B300;
+      color: @ak-color-N0;
+    }
+  };
+
+  @primary-disabled: {
+    .default-styles {
+      background: @ak-color-B400;
+      color: fade(@ak-color-N0, 50%);
+    }
+    .hover-styles {
+      background: @ak-color-B400;
+    }
+    .active-styles {
+      background: @ak-color-B400;
+      color: fade(@ak-color-N0, 50%);
+    }
+  };
+
+  @disabled: {
+    .default-styles {
+      background: @ak-color-N20A;
+      color: @ak-color-N70;
+    }
+    .hover-styles {
+      background: @ak-color-N20A;
+    }
+    .active-styles {
+      background: @ak-color-N20A;
+      color: @ak-color-N70;
+    }
+  };
+
+  @selected: {
+    .default-styles {
+      background: @ak-color-N700;
+      color: @ak-color-N20;
+    }
+    .hover-styles {
+      background: @ak-color-N700;
+    }
+    .active-styles {
+      background: @ak-color-N700;
+      color: @ak-color-N20;
+    }
+  };
+
+  @link: {
+    .default-styles {
+      background: none;
+      color: @ak-color-B400;
+    }
+    .hover-styles {
+      background: none;
+      color: @ak-color-B300;
+      text-decoration: underline;
+    }
+    .active-styles {
+      text-decoration: none;
+      background: none;
+      color: @ak-color-B500;
+    }
+  };
+
+  @link-disabled: {
+    .default-styles {
+      background: none;
+      color: @ak-color-N70;
+    }
+    .hover-styles {
+      background: none;
+    }
+    .active-styles {
+      background: none;
+      color: @ak-color-N70;
+    }
+  };
+};

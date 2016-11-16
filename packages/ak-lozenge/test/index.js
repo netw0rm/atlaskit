@@ -11,7 +11,7 @@ chai.should();
 
 const expect = chai.expect;
 
-describe('ak-lozenge', () => {
+describe.skip('ak-lozenge', () => {
   let component;
   const lozengeSelector = `.${styles.locals.lozenge}`;
   const lozengeDiv = () => getShadowRoot(component).querySelector(lozengeSelector);

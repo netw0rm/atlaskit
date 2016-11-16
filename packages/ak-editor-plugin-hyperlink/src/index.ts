@@ -2,10 +2,10 @@ import {
   Plugin, ProseMirror, ResolvedPos, Node, Mark, inputRules, InputRule,
   allInputRules, DOMFromPos as getDomElementFromPosition
 } from 'ak-editor-prosemirror';
-import hyperLinkRule from './input-rule';
+import hyperlinkRule from './input-rule';
 import pasteTransformer from './paste-transformer';
 
-export interface HyperLinkOptions {
+export interface HyperlinkOptions {
   href?: string;
   rel?: string;
   target?: '_self' | '_blank' | '_parent' | '_top' | '';
@@ -13,17 +13,17 @@ export interface HyperLinkOptions {
   title?: string;
 }
 
-export interface HyperLinkState extends HyperLinkOptions {
+export interface HyperlinkState extends HyperlinkOptions {
   active?: boolean;
   enabled?: boolean;
   element?: HTMLElement | null;
 }
 
-export type StateChangeHandler = (state: HyperLinkState) => any;
+export type StateChangeHandler = (state: HyperlinkState) => any;
 
 export const DISABLED_GROUP = 'unlinkable';
 
-const DEFAULT_STATE: HyperLinkState = {
+const DEFAULT_STATE: HyperlinkState = {
   active: false,
   enabled: false,
   element: null,
@@ -69,32 +69,44 @@ function isNodeLinkable(pm: ProseMirror, node: Node): boolean {
   return group ? group.split(' ').indexOf(DISABLED_GROUP) === -1 : true;
 }
 
-function isCursorOnLink(
-  proseMirrorInstance: ProseMirror,
-  pos: number
-) : Mark {
-  // why - 1?
-  // because of `exclusiveRight`, we need to get the node "left to"
-  // the current cursor
-  const marks = proseMirrorInstance.doc.nodeAt(pos - 1).marks;
-  return marks.reduce(
-    (found: boolean, m: Mark) => found || (m.type.name === 'link' && m),
-    null
+function getHyperlinkAtCursor(
+  pm: ProseMirror,
+  pos: number,
+  empty: boolean
+) : Mark | null {
+  let marks;
+  if (!empty) {
+    // because of `exclusiveRight`, we need to get the node "left to"
+    // the current cursor
+    marks = pm.doc.nodeAt(pos - 1).marks;
+  } else {
+    const node = pm.doc.nodeAt(pos);
+    const previousNode = pm.doc.nodeAt(pos - 1);
+
+    if (node !== previousNode) {
+      return null;
+    }
+
+    marks = node.marks;
+  }
+
+  return marks.find(
+    (mark: Mark) => mark.type.name === 'link'
   );
 }
 
 function isShallowObjectEqual(
-  oldObject: HyperLinkState,
-  newObject: HyperLinkState
+  oldObject: HyperlinkState,
+  newObject: HyperlinkState
 ) : boolean {
   return JSON.stringify(oldObject) === JSON.stringify(newObject);
 }
 
-export default new Plugin(class HyperlinkPlugin {
+class HyperlinkPlugin {
   changeHandlers: StateChangeHandler[];
   inputRules: InputRule[];
   pm: ProseMirror;
-  state: HyperLinkState;
+  state: HyperlinkState;
 
   constructor(pm: ProseMirror) {
     this.pm = pm;
@@ -105,7 +117,7 @@ export default new Plugin(class HyperlinkPlugin {
     pm.on.transformPasted.add(pasteTransformer.bind(pasteTransformer, pm));
 
     this.inputRules = [
-      hyperLinkRule,
+      hyperlinkRule,
     ].concat(allInputRules);
 
     const rules = inputRules.ensure(pm);
@@ -120,13 +132,13 @@ export default new Plugin(class HyperlinkPlugin {
 
   // When typescript spread operator is implemented we can remove this boiler
   // plate in favour of spread assignment
-  getState(): HyperLinkState {
+  getState(): HyperlinkState {
     return Object.assign({}, this.state);
   }
 
   // When typescript spread operator is implemented we can remove this boiler
   // plate in favour of spread assignment
-  setState(...newState: HyperLinkState[]) : HyperLinkState {
+  setState(...newState: HyperlinkState[]) : HyperlinkState {
     this.state = Object.assign.apply(
       Object,
       [
@@ -152,27 +164,18 @@ export default new Plugin(class HyperlinkPlugin {
     // because of `exclusiveRight`, we need to get the node "left to"
     // the current cursor
     const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
-    const isLink = isCursorOnLink(pm, $resolvedPos.pos);
+    const hyperlinkAtCursor = getHyperlinkAtCursor(pm, $resolvedPos.pos, empty);
 
-    if (isLink && activeNode) {
-      this.setState(isLink.attrs, {
+    if (hyperlinkAtCursor) {
+      this.setState(hyperlinkAtCursor.attrs, {
         active: true,
         element: getDomElement(pm, getBoundariesWithin($head)),
         text: activeNode.textContent,
         enabled: true,
       });
-    } else if (
-      empty ||
-      !(activeNode ? isNodeLinkable(pm, activeNode) : oldState.enabled)
-    ) {
-      this.setState(
-        {
-          enabled: false,
-        }
-      );
     } else {
       this.setState({
-        enabled: true,
+        enabled: !empty && isNodeLinkable(pm, activeNode),
       });
     }
 
@@ -186,7 +189,7 @@ export default new Plugin(class HyperlinkPlugin {
     cb(this.getState());
   }
 
-  addLink(options: HyperLinkOptions) : boolean {
+  addLink(options: HyperlinkOptions) : boolean {
     const pm = this.pm;
     const selection = pm.selection;
     const {
@@ -198,11 +201,11 @@ export default new Plugin(class HyperlinkPlugin {
 
     const $resolvedPos: ResolvedPos = $head || $to;
 
-    const isLink = isCursorOnLink(pm, $resolvedPos.pos);
+    const hyperlinkAtCursor = getHyperlinkAtCursor(pm, $resolvedPos.pos, empty);
 
     const { enabled } = this.getState();
 
-    if (!enabled || empty || isLink || !options || !(options.href as String).trim()) {
+    if (!enabled || empty || hyperlinkAtCursor || !options || !(options.href as String).trim()) {
       return false;
     }
 
@@ -222,10 +225,11 @@ export default new Plugin(class HyperlinkPlugin {
     const selection = pm.selection;
     const {
       $head,
+      empty
     } = selection;
-    const isLink = isCursorOnLink(pm, $head.pos);
+    const hyperlinkAtCursor = getHyperlinkAtCursor(pm, $head.pos, empty);
 
-    if (!isLink) {
+    if (!hyperlinkAtCursor) {
       return false;
     }
 
@@ -250,7 +254,7 @@ export default new Plugin(class HyperlinkPlugin {
     const markerFrom = currentNodeOffset;
     const markerTo = markerFrom + node.nodeSize;
 
-    pm.tr.removeMark(markerFrom, markerTo, isLink).apply();
+    pm.tr.removeMark(markerFrom, markerTo, hyperlinkAtCursor).apply();
 
     if (forceTextSelection) {
       pm.setTextSelection(markerFrom, markerTo);
@@ -260,7 +264,7 @@ export default new Plugin(class HyperlinkPlugin {
     return true;
   }
 
-  updateLink(options?: HyperLinkOptions) : boolean {
+  updateLink(options?: HyperlinkOptions) : boolean {
     if (!options || !(options.href as String).trim() || !this.removeLink(true)) {
       return false;
     }
@@ -272,4 +276,9 @@ export default new Plugin(class HyperlinkPlugin {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
-});
+}
+
+// IE11 + multiple prosemirror fix.
+Object.defineProperty(HyperlinkPlugin, 'name', { value: 'HyperlinkPlugin' });
+
+export default new Plugin(HyperlinkPlugin);

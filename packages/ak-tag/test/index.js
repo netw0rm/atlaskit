@@ -17,7 +17,7 @@ chai.use(sinonChai);
 chai.should();
 
 
-describe('ak-tag', () => {
+describe.skip('ak-tag', () => {
   let component;
   let rootNode;
 

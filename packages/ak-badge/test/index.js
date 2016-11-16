@@ -16,7 +16,7 @@ const fixture = document.createElement('div');
 let component;
 const value = () => getShadowRoot(component).querySelector(valueSelector);
 
-describe('ak-badge', () => {
+describe.skip('ak-badge', () => {
   beforeEach(() => {
     document.body.appendChild(fixture);
     component = new AkBadge();

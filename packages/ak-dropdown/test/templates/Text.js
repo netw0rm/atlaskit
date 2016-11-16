@@ -10,7 +10,7 @@ import Text from '../../src/templates/Text';
 chai.use(chaiAsPromised);
 chai.should();
 
-describe(name, () => {
+describe.skip(name, () => {
   describe('Text', () => {
     let component;
     let rootNode;

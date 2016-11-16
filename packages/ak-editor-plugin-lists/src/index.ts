@@ -57,7 +57,7 @@ function isListNode(node: Node) {
   return isBulletListNode(node) || isOrderedListNode(node);
 }
 
-export default new Plugin(class ListsPlugin {
+class ListsPlugin {
   changeHandlers: StateChangeHandler[];
   pm: ProseMirror;
   state: ListsState;
@@ -356,4 +356,9 @@ export default new Plugin(class ListsPlugin {
     this.changeHandlers.push(cb);
     cb(this.getState());
   }
-});
+}
+
+// IE11 + multiple prosemirror fix.
+Object.defineProperty(ListsPlugin, 'name', { value: 'ListsPlugin' });
+
+export default new Plugin(ListsPlugin);

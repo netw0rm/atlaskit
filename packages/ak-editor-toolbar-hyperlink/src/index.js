@@ -23,9 +23,10 @@ function isDescendantOf(child, parent) {
 
 export default define('ak-editor-toolbar-hyperlink', {
   created(elem) {
-    elem.toggleHyperlink = elem.toggleHyperlink.bind(elem);
-    elem.onKeyup = elem.onKeyup.bind(elem);
-    elem.openHyperlink = elem.openHyperlink.bind(elem);
+    elem.openHyperlinkPanel = elem.openHyperlinkPanel.bind(elem);
+    elem.closeHyperlinkPanel = elem.closeHyperlinkPanel.bind(elem);
+    elem.toggleHyperlinkPanel = elem.toggleHyperlinkPanel.bind(elem);
+    elem.addHyperlink = elem.addHyperlink.bind(elem);
     elem.handleClickOutside = elem.handleClickOutside.bind(elem);
   },
   attached(elem) {
@@ -40,7 +41,7 @@ export default define('ak-editor-toolbar-hyperlink', {
     const LinkButton = (
       <EditorButton
         className="link-button"
-        onClick={elem.toggleHyperlink}
+        onClick={elem.toggleHyperlinkPanel}
         active={active}
         disabled={elem.disabled}
       >
@@ -53,9 +54,7 @@ export default define('ak-editor-toolbar-hyperlink', {
     /* eslint-disable no-return-assign  */
     /* eslint-disable new-cap  */
     return (
-      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-        onKeyup={elem.onKeyup}
-      >
+      <div>
         <style>{shadowStyles.toString()}</style>
 
         {linkButton = LinkButton()}
@@ -64,9 +63,14 @@ export default define('ak-editor-toolbar-hyperlink', {
           class="popup"
           target={linkButton}
           open={elem.open}
-          on-activate={elem.openHyperlink}
+          on-activate={elem.openHyperlinkPanel}
         >
-          <TextInput className="text-input" placeholder="Paste link" />
+          <TextInput
+            className="text-input"
+            placeholder="Paste link"
+            onEnterKeyup={elem.addHyperlink}
+            onEscKeyup={elem.closeHyperlinkPanel}
+          />
         </Popup>
       </div>
     );
@@ -85,25 +89,14 @@ export default define('ak-editor-toolbar-hyperlink', {
     }
   },
   prototype: {
-    openHyperlink() {
+    openHyperlinkPanel() {
       this.open = true;
       this.justOpenedHyperlink = true;
     },
-    addHyperlink() {
-      const textInput = this.shadowRoot.querySelector('.text-input');
+    closeHyperlinkPanel() {
       this.open = false;
-      emit(this, 'addHyperlink', { detail: { value: textInput.value } });
-      textInput.value = '';
     },
-    handleClickOutside(e) {
-      // todo: we will use a common helper function when it's ready.
-      // https://ecosystem.atlassian.net/browse/AK-513
-      if (this.open && e.target !== this && !isDescendantOf(e.target, this) &&
-        !(e.path && e.path.indexOf(this) > -1)) {
-        this.open = false;
-      }
-    },
-    toggleHyperlink() {
+    toggleHyperlinkPanel() {
       if (this.disabled) {
         return;
       }
@@ -111,13 +104,20 @@ export default define('ak-editor-toolbar-hyperlink', {
       if (this.open) {
         this.open = false;
       } else {
-        this.openHyperlink();
+        this.openHyperlinkPanel();
       }
     },
-    onKeyup(event) {
-      if (event.keyCode === 13) {
-        this.addHyperlink();
-      } else if (event.keyCode === 27) {
+    addHyperlink(event) {
+      const textInput = this.shadowRoot.querySelector('.text-input');
+      textInput.value = '';
+      emit(this, 'addHyperlink', event);
+      this.closeHyperlinkPanel();
+    },
+    handleClickOutside(e) {
+      // todo: we will use a common helper function when it's ready.
+      // https://ecosystem.atlassian.net/browse/AK-513
+      if (this.open && e.target !== this && !isDescendantOf(e.target, this) &&
+        !(e.path && e.path.indexOf(this) > -1)) {
         this.open = false;
       }
     },

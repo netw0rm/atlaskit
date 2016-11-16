@@ -1,6 +1,5 @@
 import { define, vdom, prop, emit } from 'skatejs';
-import Button from 'ak-editor-button';
-import ButtonLink from 'ak-editor-button-link';
+import Button from 'ak-button';
 import OpenIcon from 'ak-icon/glyph/editor/open';
 import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import Popup from 'ak-editor-popup';
@@ -27,16 +26,27 @@ export default define('ak-editor-hyperlink-edit', {
 
         <Popup target={elem.attachTo} open>
           <If condition={showOpenButton}>
-            <ButtonLink
+            <Button
+              appearance="subtle"
+              spacing="none"
+              theme="dark"
               className={shadowStyles.locals.button}
               href={elem.href}
-            ><OpenIcon style={{ color: 'white' }} /></ButtonLink>
+              target="_blank"
+            >
+              <OpenIcon style={{ color: 'white' }} />
+            </Button>
           </If>
           <If condition={showUnlinkButton}>
             <Button
+              appearance="subtle"
+              spacing="none"
+              theme="dark"
               className={shadowStyles.locals.button}
               onclick={() => emit(elem, 'unlink')}
-            ><UnlinkIcon style={{ color: 'white' }} /></Button>
+            >
+              <UnlinkIcon style={{ color: 'white' }} />
+            </Button>
           </If>
           <If condition={showSeparator}>
             <span className={shadowStyles.locals.separator} />

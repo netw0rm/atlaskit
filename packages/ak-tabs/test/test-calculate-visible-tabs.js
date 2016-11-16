@@ -10,7 +10,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-tabs calculate visible tabs -', () => {
+describe.skip('ak-tabs calculate visible tabs -', () => {
   function setUpTest(labelWidth, opts = {}) {
     return setupTabs(opts).then((fixtures) => {
       const children = Array.from(fixtures.el[labelsContainer].children);

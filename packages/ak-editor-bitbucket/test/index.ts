@@ -163,15 +163,13 @@ describe('ak-editor-bitbucket', () => {
       const editor = fixture().appendChild(new AkEditorBitbucket()) as any;
 
       editor.defaultValue = content;
+      editor.expanded = true;
 
-      afterMutations(
-        () => { editor.expanded = true; },
-        () => {
-          const opts = spy.firstCall.args[0];
-          expect(opts.doc).has.property('textContent', content);
-        },
-        done
-      );
+      afterMutations(() => {
+        const opts = spy.firstCall.args[0];
+        expect(opts.doc).has.property('textContent', content);
+        done();
+      });
     });
 
     it('should be converted to a proper Prosemirror document after rendering', () => {
@@ -200,24 +198,40 @@ describe('ak-editor-bitbucket', () => {
       expect(editor.expanded).to.be.false;
     });
 
+    it('should be focused even if not yet rendered', () => {
+      expect(editor._focused).to.be.false;
+      editor.focus();
+      expect(editor._focused).to.be.true;
+    });
+
     it('should expand after clicking the input element', () => {
       activateEditor(editor);
       expect(editor.expanded).to.be.true;
+    });
+
+    it('should stop being focused after collapsing', (done) => {
+      activateEditor(editor);
+      afterMutations(
+        () => {
+          expect(editor._focused).to.be.true;
+          expect(editor.expanded).to.be.true;
+          editor.expanded = false;
+          expect(editor.expanded).to.be.false;
+          done();
+        }
+      );
     });
   });
 
   describe('editor toolbar', () => {
     it('should have all default elements', () => {
       return buildExpandedEditor(fixture()).then((editor) => {
-        [
-          'ak-editor-toolbar',
-          'ak-editor-toolbar-block-type',
-          'ak-editor-toolbar-lists',
-          'ak-editor-toolbar-hyperlink',
-          'ak-editor-toolbar-text-formatting'
-        ].forEach((selector) => {
-          expect(getShadowRoot(editor).querySelector(selector)).to.not.be.null;
-        });
+        const editorShadowRoot = getShadowRoot(editor);
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-block-type')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-text-formatting')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-hyperlink')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-lists')).to.be.ok;
       });
     });
 
@@ -333,7 +347,7 @@ describe('ak-editor-bitbucket', () => {
   it('should create a newline in code block when there is paragraph and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<p>text</p><pre>var code;</pre>');
-      editor._pm.setTextSelection(7)
+      editor._pm.setTextSelection(7);
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
@@ -347,7 +361,7 @@ describe('ak-editor-bitbucket', () => {
   it('should create a newline in code block when in the middle of code block and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
-      editor._pm.setTextSelection(5)
+      editor._pm.setTextSelection(5);
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
@@ -361,7 +375,7 @@ describe('ak-editor-bitbucket', () => {
   it('should create a newline in code block when in the end of code block and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
-      editor._pm.setTextSelection(10)
+      editor._pm.setTextSelection(10);
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();

@@ -137,6 +137,7 @@ class ButtonBuilderExample extends React.Component {
           Baseline alignment check
           <AkButton
             {...props}
+            style={{ 'background-color': 'white' }}
           >
             {this.createIcon('before')}
             {this.createIcon('after')}

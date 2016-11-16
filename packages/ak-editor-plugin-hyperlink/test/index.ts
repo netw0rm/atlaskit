@@ -110,6 +110,48 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(spy).to.have.been.callCount(2);
     });
 
+    it('should treat it as a link when selecting the whole link', () => {
+      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'))));
+      const spy = sinon.spy();
+      const { pos1, pos2 } = pm.doc.refs;
+      plugin.subscribe(spy);
+
+      pm.setTextSelection(pos1, pos2);
+
+      expect(spy).to.have.been.callCount(2);
+    });
+
+    it('should treat it as a link when selecting part of the link', () => {
+      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'))));
+      const spy = sinon.spy();
+      const { pos1, pos2 } = pm.doc.refs;
+      plugin.subscribe(spy);
+
+      pm.setTextSelection(pos1, pos2);
+
+      expect(spy).to.have.been.callCount(2);
+    });
+
+    it('should not treat it as a link when cursor is at the beginning of the link', () => {
+      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{pos}text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+
+      pm.setTextSelection(pm.doc.refs.pos);
+
+      expect(spy).to.have.been.callCount(1);
+    });
+
+    it('should not treat it as a link when cursor is at the end of the link', () => {
+      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('text{pos}'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+
+      pm.setTextSelection(pm.doc.refs.pos);
+
+      expect(spy).to.have.been.callCount(1);
+    });
+
     it('does not emit `change` multiple times when the selection moves within a link', () => {
       const { pm, plugin } = editor(doc(p('{<>}text', a({ href: 'http://www.atlassian.com' })('l{pos1}i{pos2}nk'))));
       const spy = sinon.spy();

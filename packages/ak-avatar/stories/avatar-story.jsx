@@ -11,7 +11,7 @@ const avatarClass = styles.locals.root;
 const transparentAvatarUrl = require('url-loader!./face-w-transparency.png');
 const tickUrl = require('url-loader!./tick.svg');
 const tickWithBackgroundUrl = require('url-loader!./tick.png');
-//
+
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 const storybookExampleClass = avatarStoryStyles.example;
 

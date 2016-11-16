@@ -1,4 +1,5 @@
 module.exports = {
+  babelrc: false,
   presets: [
     'es2015',
     'stage-0',

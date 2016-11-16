@@ -6,7 +6,6 @@ const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
 const moduleBabelQuery = require('./babel.query.module');
-const storybookBabelQuery = require('./babel.query.storybook');
 const loaderChain = require('./loader-chain').encode;
 
 
@@ -68,7 +67,7 @@ const standardConfig = {
         {
           test: /\/stories\/.*\.tsx?$/,
           loader: loaderChain({
-            'babel-loader': storybookBabelQuery,
+            'babel-loader': {},
             'ts-loader': {},
           }),
         },
@@ -82,28 +81,39 @@ const standardConfig = {
             'babel-loader': moduleBabelQuery,
             'ts-loader': {},
           }),
+          exclude: /node_modules/,
         },
         //
-        // JAVASCRIPT
-        // Support react/jsx in stories, react/ directory, or react-*.js files
+        // JAVASCRIPT (React components)
         //
         {
+          test: /\.jsx$/,
           loader: 'babel-loader',
-          test: /\.jsx?$/,
+          exclude: /node_modules/,
+        },
+        //
+        // JAVASCRIPT (Web components)
+        // Support react/jsx in stories, react/ directory, or react-*.js files
+        //
+        // TODO: remove this once we don't have WC any more
+        {
+          test: /\.js$/,
+          loader: 'babel-loader',
           include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
+          // TODO: Remove next line once ak-component-base and ak-tooltip are migrated
           exclude: /stories\/skate\/.*\.js/,
-          query: storybookBabelQuery,
         },
         //
         // JAVASCRIPT
         // Support jsx to incremental dom in non-react locations (above).
         // Make sure vdom is imported from skatejs where jsx is used
         //
+        // TODO: remove this once we don't have WC any more
         {
+          test: /\.js$/,
           loader: 'babel-loader',
-          test: /\.jsx?$/,
-          exclude: /node_modules|bower_components/,
           query: moduleBabelQuery,
+          exclude: /node_modules/,
         },
       ],
     ],

@@ -6,7 +6,9 @@ const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
 const moduleBabelQuery = require('./babel.query.module');
-const reactBabelQuery = require('./babel.query.react');
+
+// FIXME: This can probably be removed completely (the babel loader should pick up the .babelrc)
+const reactBabelQuery = require('../../.babelrc');
 const loaderChain = require('./loader-chain').encode;
 
 
@@ -85,17 +87,18 @@ const standardConfig = {
         },
         //
         // JAVASCRIPT (React components)
-        // Support react/jsx in stories, react/ directory, or react-*.js files
         //
         {
           loader: 'babel-loader',
           test: /\.jsx$/,
+          exclude: /node_modules|bower_components/,
           query: reactBabelQuery,
         },
         //
         // JAVASCRIPT (Web components)
         // Support react/jsx in stories, react/ directory, or react-*.js files
         //
+        // TODO: remove this once we don't have WC any more
         {
           loader: 'babel-loader',
           test: /\.js$/,

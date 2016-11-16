@@ -18,7 +18,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-tabs behaviour -', () => {
+describe.skip('ak-tabs behaviour -', () => {
   let fixtures;
 
   function setUpTest(opts = {}) {

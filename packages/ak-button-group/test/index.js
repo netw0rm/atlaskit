@@ -10,7 +10,7 @@ import ButtonGroup from '../src';
 chai.use(chaiAsPromised);
 chai.should();
 
-describe('ak-button-group', () => {
+describe.skip('ak-button-group', () => {
   let container;
   let btnGroup;
 

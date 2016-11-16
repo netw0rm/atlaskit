@@ -20,7 +20,7 @@ chai.should();
 
 const components = getGlyphs();
 
-describe(name, () => {
+describe.skip(name, () => {
   describe('exports', () => {
     it('are properly defined for atomic ones', () => {
       // NOTE Please remember:

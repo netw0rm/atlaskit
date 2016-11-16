@@ -1,6 +1,6 @@
 import Alignment from '../src/internal/Alignment';
 
-describe('alignment', () => {
+describe.skip('alignment', () => {
   it('should be possible to create a new instance', () => {
     expect(() => (new Alignment({}))).not.to.throw(Error);
   });

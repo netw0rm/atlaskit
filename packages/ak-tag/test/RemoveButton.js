@@ -15,7 +15,7 @@ chai.should();
 const expect = chai.expect;
 
 
-describe('ak-tag', () => {
+describe.skip('ak-tag', () => {
   describe('RemoveButton', () => {
     let component;
     let rootNode;

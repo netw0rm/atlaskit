@@ -21,7 +21,7 @@ function createDefinition(presence) {
 }
 
 
-describe('ak-avatar', () => {
+describe.skip('ak-avatar', () => {
   describe('Presence', () => {
     let component;
 

@@ -16,7 +16,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-inline-dialog', () => {
+describe.skip('ak-inline-dialog', () => {
   describe('exports', () => {
     it('should export a base component', () => {
       (new AkInlineDialog()).should.be.an.instanceof(Component);

@@ -16,7 +16,7 @@ chai.use(sinonChai);
 const expect = chai.expect;
 
 
-describe('ak-button/default-behaviour', () => {
+describe.skip('ak-button/default-behaviour', () => {
   let component;
   beforeEach(() => setup().then(c => (component = c)));
 

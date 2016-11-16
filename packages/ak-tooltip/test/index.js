@@ -27,7 +27,7 @@ function tearDownComponent(component) {
   document.body.removeChild(component);
 }
 
-describe('ak-tooltip', () => {
+describe.skip('ak-tooltip', () => {
   let component;
   let shadowRoot;
   let tooltip;

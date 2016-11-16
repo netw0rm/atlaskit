@@ -20,9 +20,6 @@ module.exports = ({
 import Icon from '${relativePathToSrc}/Icon';
 
 class ${componentName} extends Icon {
-  constructor() {
-    super();
-  }
   getGlyphTemplate() {
     return (props) => {
       const { label: title } = props;

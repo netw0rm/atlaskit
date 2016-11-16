@@ -1,4 +1,4 @@
-image: atlassianlabs/atlaskit:2016-10-27
+image: atlassianlabs/atlaskit:2016-11-16
 pipelines:
   branches:
     master:

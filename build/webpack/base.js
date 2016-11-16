@@ -99,6 +99,7 @@ const standardConfig = {
           loader: 'babel-loader',
           test: /\.js$/,
           include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
+          // TODO: Remove next line once ak-component-base and ak-tooltip are migrated
           exclude: /stories\/skate\/.*\.js/,
         },
         //

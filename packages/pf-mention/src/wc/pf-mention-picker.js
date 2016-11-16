@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { define, vdom, prop } from 'skatejs';
 import InlineDialog from 'ak-inline-dialog';
 

@@ -43,7 +43,7 @@ export default new Schema({
     image: { type: ImageNodeType, group: 'inline' },
     hard_break: { type: HardBreakNodeType, group: 'inline' },
 
-    code_block: { type: CodeBlockNodeType, content: 'inline*', group: `block ${HyperlinkPluginDisabledGroup} ${ImageUploadPluginDisabledGroup}` },
+    code_block: { type: CodeBlockNodeType, content: '(text | hard_break)*', group: `block ${HyperlinkPluginDisabledGroup} ${ImageUploadPluginDisabledGroup}` },
     mention: { type: MentionNodeType, group: 'inline' },
     emoji: { type: EmojiNodeType, group: 'inline' },
   },

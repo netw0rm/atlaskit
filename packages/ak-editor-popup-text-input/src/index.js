@@ -1,4 +1,4 @@
-import { define, vdom, prop } from 'skatejs';
+import { define, vdom, prop, emit } from 'skatejs';
 import 'style!./host.less';
 import shadowStyles from './shadow.less';
 
@@ -16,6 +16,7 @@ export default define('ak-editor-popup-text-input', {
           placeholder={elem.placeholder}
           value={elem.value}
           onInput={elem.handleInput}
+          onKeyup={elem.onKeyup}
         />
       </div>
     );
@@ -24,8 +25,15 @@ export default define('ak-editor-popup-text-input', {
     focus() {
       this.shadowRoot.querySelector(`.${shadowStyles.locals.textInput}`).focus();
     },
-    handleInput(e) {
-      this.value = e.target.value;
+    handleInput(event) {
+      this.value = event.target.value;
+    },
+    onKeyup(event) {
+      if (event.keyCode === 13) {
+        emit(this, 'enterKeyup', { detail: { value: event.target.value } });
+      } else if (event.keyCode === 27) {
+        emit(this, 'escKeyup');
+      }
     },
   },
   props: {

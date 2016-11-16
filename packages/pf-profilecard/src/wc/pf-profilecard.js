@@ -1,3 +1,4 @@
+/** @jsx vdom */
 import { emit, vdom, define, prop } from 'skatejs';
 import { enumeration } from 'akutil-common';
 import AkAvatar from 'ak-avatar';

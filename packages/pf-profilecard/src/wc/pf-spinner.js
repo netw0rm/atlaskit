@@ -1,3 +1,4 @@
+/** @jsx vdom */
 import { vdom } from 'skatejs';
 import classNames from 'classnames';
 

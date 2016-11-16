@@ -1,6 +1,6 @@
 import { vdom } from 'skatejs';
 import classNames from 'classnames';
-import shadowStyles from './shadow.less';
+import shadowStyles from './less/shadow.less';
 import getClasses from './internal/get-button-classes';
 
 /* eslint-disable react/prop-types */

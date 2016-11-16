@@ -75,6 +75,9 @@ storiesOf(name, module)
   .add('disabled ak-field-text with placeholder', () => (
     generateFormWithInput({ disabled: true, placeholder: 'Such input, very uneditable' })
   ))
+  .add('ak-field-text with value prop', () => (
+    generateFormWithInput({ value: 'No placeholder, such value' })
+  ))
   .add('compact ak-field-text', () => (
     generateFormWithInput({ compact: true, placeholder: 'Oh wow, such input' })
   ))

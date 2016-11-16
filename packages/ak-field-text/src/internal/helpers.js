@@ -30,4 +30,4 @@ function updateInput(elem) {
   input.slot = 'input-slot';
 }
 
-export { updateInput }; // eslint-disable-line import/prefer-default-export
+export { updateInput, getInput }; // eslint-disable-line import/prefer-default-export

@@ -145,5 +145,21 @@ describe('ak-field-text', () => {
       input.value = newValue;
       return waitUntil(getsInternalValue).should.be.fulfilled;
     });
+
+    // introduced as we had a bug where it wasnt being reflected before
+    it('should set the value when set before the initial render', () => {
+      const newValue = 'foo';
+      const newFieldText = new FieldText();
+      let lightDomInput;
+      const componentHasShadowRoot = () => getShadowRoot(newFieldText);
+
+      newFieldText.value = newValue;
+      document.body.appendChild(newFieldText);
+
+      return waitUntil(componentHasShadowRoot).then(() => {
+        lightDomInput = getInput(newFieldText);
+        expect(lightDomInput.value).to.equal(newValue);
+      }).should.be.fulfilled;
+    });
   });
 });

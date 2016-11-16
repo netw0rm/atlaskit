@@ -8,7 +8,7 @@ chai.should();
 const expect = chai.expect;
 const getSlots = component => getShadowRoot(component).querySelectorAll('slot,content');
 
-describe('ak-comment', () => {
+describe.skip('ak-comment', () => {
   let component;
 
   beforeEach((done) => {

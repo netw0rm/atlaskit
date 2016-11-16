@@ -15,7 +15,7 @@ chai.use(sinonChai);
 const expect = chai.expect;
 
 
-describe('ak-button/link-behaviour', () => {
+describe.skip('ak-button/link-behaviour', () => {
   let component;
   const href = 'http://www.atlassian.com/';
   beforeEach(() => setup().then((c) => {

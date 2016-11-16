@@ -34,7 +34,7 @@ const expectKeys = (classes, expectedCount, ...expectedClasses) => {
     .and.to.include.members(expectedClasses);
 };
 
-describe('ak-button/get-button-classes', () => {
+describe.skip('ak-button/get-button-classes', () => {
   describe('appearance', () => {
     it('button should only have default classes', () =>
       expectKeys(

@@ -27,7 +27,7 @@ function createDefinition(props) {
 }
 
 
-describe('ak-avatar', () => {
+describe.skip('ak-avatar', () => {
   describe('Image', () => {
     let component;
 

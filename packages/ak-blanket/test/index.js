@@ -10,7 +10,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-blanket', () => {
+describe.skip('ak-blanket', () => {
   describe('exports', () => {
     it('should export a base component', () => {
       (new AkBlanket()).should.be.an.instanceof(Component);

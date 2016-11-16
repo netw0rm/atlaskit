@@ -7,7 +7,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-layer helpers', () => {
+describe.skip('ak-layer helpers', () => {
   // We'll just use an object to represent the element as it should access it the same way as
   // the component.
   let fakeElem;

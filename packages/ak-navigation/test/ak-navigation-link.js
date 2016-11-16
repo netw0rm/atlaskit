@@ -21,12 +21,12 @@ function tearDownComponent(component) {
   document.body.removeChild(component);
 }
 
-describe('exports', () => {
+describe.skip('exports', () => {
   it('should export a base component', () => {
     (new AkNavigationLink()).should.be.an.instanceof(Component);
   });
 });
-describe('ak-navigation-link', () => {
+describe.skip('ak-navigation-link', () => {
   let component;
   let shadowRoot;
   beforeEach(() => setupComponent().then((newComponent) => {

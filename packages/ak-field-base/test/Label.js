@@ -15,7 +15,7 @@ chai.use(chaiAsPromised);
 chai.should();
 
 
-describe('ak-field-base', () => {
+describe.skip('ak-field-base', () => {
   describe('Label', () => {
     let component;
     let shadowRoot;

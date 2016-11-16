@@ -13,7 +13,7 @@ import Icon, { NotImplementedError } from '../src/Icon';
 chai.use(chaiAsPromised);
 chai.should();
 
-describe(name, () => {
+describe.skip(name, () => {
   let component;
 
   afterEach(() => tearDownComponent(component));

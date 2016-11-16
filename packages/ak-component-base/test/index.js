@@ -46,7 +46,7 @@ const Controller = define('x-controller', class extends Component {
   }
 });
 
-describe('ak-component-base', () => {
+describe.skip('ak-component-base', () => {
   describe('exports', () => {
     it('should export a base component', () => {
       // cant instantiate this class, so we'll check its prototype

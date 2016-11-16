@@ -11,7 +11,7 @@ import shadowItemStyles from '../../src/less/shadow-item.less';
 chai.use(chaiAsPromised);
 chai.should();
 
-describe(name, () => {
+describe.skip(name, () => {
   describe('LeftSlotContainer', () => {
     let component;
     let rootNode;

@@ -1,9 +1,8 @@
-import { Component, vdom } from 'skatejs';
-import { enumeration } from 'akutil-common';
-
-import * as exceptions from './internal/exceptions';
-import Root from './Root';
+/** @jsx React.createElement */
+import React, { PropTypes, Component } from 'react';
 import Content from './Content';
+import Root from './Root';
+import * as exceptions from './internal/exceptions';
 
 
 /**
@@ -23,20 +22,12 @@ const size = {
   xlarge: 'xlarge',
 };
 
-const SIZE_ATTRIBUTE_ENUM = {
-  attribute: 'size',
-  values: [size.small, size.medium, size.large, size.xlarge],
-  missingDefault: '',
-  invalidDefault: '',
-};
-
 /**
  * @description Icon interface. All icons follow this structure.
  * @class Icon
  */
 class Icon extends Component {
-
-  static get props() {
+  static get propTypes() {
     return {
       /**
        * @description (Required) The icon label
@@ -54,43 +45,30 @@ class Icon extends Component {
        * icon.label = 'Accessible description of the icon';
        * document.body.appendChild(icon);
        */
-      label: {
-        attribute: true,
-      },
-
+      label: PropTypes.string.isRequired,
       /**
-       * @description (Optional) An icon size.
-       *
-       * Defaults to an empty string (which means it uses the default size).
-       *
-       * @memberof Icon
-       * @instance
-       * @type {size}
-       * @default small
-       * @example @html <ak-icon-* size="medium">
-       * @example @js import SomeIcon from 'ak-icon/glyph/some';
-       * const icon = new SomeIcon();
-       * icon.size = 'medium';
-       * document.body.appendChild(icon);
-       */
-      size: enumeration(SIZE_ATTRIBUTE_ENUM)({
-        attribute: true,
-      }),
-
+         * @description (Optional) An icon size.
+         *
+         * Defaults to an empty string (which means it uses the default size).
+         *
+         * @memberof Icon
+         * @instance
+         * @type {size}
+         * @default small
+         * @example @html <ak-icon-* size="medium">
+         * @example @js import SomeIcon from 'ak-icon/glyph/some';
+         * const icon = new SomeIcon();
+         * icon.size = 'medium';
+         * document.body.appendChild(icon);
+         */
+      size: PropTypes.oneOf([size.small, size.medium, size.large, size.xlarge]),
     };
   }
 
-  static render(elem) {
-    const { label, getGlyphTemplate } = elem;
-    const Glyph = getGlyphTemplate();
-
-    return (
-      <Root size={elem.size}>
-        <Content>
-          <Glyph role="img" label={label} />
-        </Content>
-      </Root>
-    );
+  static get defaultProps() {
+    return {
+      size: size.small,
+    };
   }
 
   /**
@@ -104,6 +82,17 @@ class Icon extends Component {
   // eslint-disable-next-line class-methods-use-this
   getGlyphTemplate() {
     throw new exceptions.NotImplementedError('Subclasses need to provide an implementation');
+  }
+
+  render() {
+    const Glyph = this.getGlyphTemplate();
+    return (
+      <Root size={this.props.size}>
+        <Content>
+          <Glyph role="img" label={this.props.label} />
+        </Content>
+      </Root>
+    );
   }
 }
 

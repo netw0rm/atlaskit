@@ -23,29 +23,24 @@ const AkButton = reactify(AkButtonWc);
 const twoColorIcons = ['checkbox', 'radio'];
 
 const components = getGlyphs();
-const reactifiedComponents = Object.entries(components).reduce((prev, [key, Icon]) => {
-  const ReactIcon = reactify(Icon);
-  prev[key] = ReactIcon;
-  return prev;
-}, {});
 
 const sampleIconName = 'atlassian';
-const AtlassianIcon = reactifiedComponents[sampleIconName];
+const AtlassianIcon = components[sampleIconName];
 if (!AtlassianIcon) {
   throw new Error('Atlassian icon was removed, but is needed to display stories properly');
 }
 
 
 const toggleableIcons = Object
-  .keys(reactifiedComponents)
+  .keys(components)
   .filter(key => twoColorIcons.indexOf(key) !== -1)
-  .map(key => [key, reactifiedComponents[key]]);
+  .map(key => [key, components[key]]);
 
 const AllIcons = props => (
   // eslint-disable-next-line react/prop-types
   <div {...props} className={classnames(styles.container, props.className)}>
     {Object
-      .entries(reactifiedComponents)
+      .entries(components)
       .map(([key, Icon]) =>
         <Icon
           className={componentStyles.akIcon}
@@ -68,7 +63,7 @@ const AllIconsSizeChecked = props => (
   // eslint-disable-next-line react/prop-types
   <div {...props} className={classnames(styles.container, props.className)}>
     {Object
-      .entries(reactifiedComponents)
+      .entries(components)
       .map(([key, Icon]) =>
         <div className={styles.compareIconContainer}>
           <Icon
@@ -88,6 +83,13 @@ const AllIconsSizeChecked = props => (
 );
 
 storiesOf('ak-icon', module)
+  .add('Single icon', () => (
+    <AtlassianIcon
+      className={componentStyles.akIcon}
+      label="My label"
+      size="medium"
+    />
+  ))
   .add('All icons', () => <AllIcons />)
   .add('All icons (usage)', () => (
     <table>
@@ -100,7 +102,7 @@ storiesOf('ak-icon', module)
       </thead>
       <tbody>
         {Object
-          .entries(reactifiedComponents)
+          .entries(components)
           .map(([key, Icon]) => {
             const importName = `${name}/glyph/${key}`;
             const tagName = `${name}-${pathToDashed(key)}`;
@@ -138,7 +140,7 @@ storiesOf('ak-icon', module)
 
   ))
   .add('Two-color icons', () => <ToggleIcons icons={toggleableIcons} />)
-  .add('Animated', () => <AnimationDemo components={reactifiedComponents} />)
+  .add('Animated', () => <AnimationDemo components={components} />)
   .addBaselineAligned('baseline alignment', () => (
     <AtlassianIcon className={componentStyles.akIcon} />
   ))

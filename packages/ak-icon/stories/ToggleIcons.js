@@ -23,6 +23,7 @@ class ToggleIcons extends React.Component {
           {this.props.icons.map(([id, Icon]) => (
             <Icon
               key={id}
+              label="Icon which checks and unchecks itself"
               className={this.state.toggleColor ? styles.iconChecked : styles.iconUnchecked}
               onClick={() => {
                 this.setState({ toggleColor: !this.state.toggleColor });
@@ -37,6 +38,7 @@ class ToggleIcons extends React.Component {
           {this.props.icons.map(([id, Icon]) => (
             <Icon
               key={id}
+              label="Icon which reverses itself while staying checked"
               className={this.state.toggleFill ? styles.iconReverse : styles.iconChecked}
               onClick={() => {
                 this.setState({ toggleFill: !this.state.toggleFill });

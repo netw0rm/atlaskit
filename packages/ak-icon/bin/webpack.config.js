@@ -19,7 +19,7 @@ module.exports = (tmpFolder, entry) => ({
   }, entry),
   output: {
     path: tmpFolder,
-    filename: '[name].js',
+    filename: '[name].jsx',
     libraryTarget: 'commonjs2',
   },
   externals: [
@@ -27,7 +27,7 @@ module.exports = (tmpFolder, entry) => ({
       const offset = request.indexOf(relativePathToIcon);
       if (offset !== -1) {
         const foldersUp = request.substring(0, offset);
-        const relativePathToBaseIcon = path.join(foldersUp, `${baseIconChunkName}.js`);
+        const relativePathToBaseIcon = path.join(foldersUp, `${baseIconChunkName}.jsx`);
         callback(null, `./${relativePathToBaseIcon}`);
         return;
       }
@@ -43,19 +43,13 @@ module.exports = (tmpFolder, entry) => ({
       },
       {
         loader: 'babel',
-        test: /\.js$/,
+        test: /\.jsx?$/,
         query: {
           babelrc: false,
           presets: [
             'es2015',
+            'react',
             'stage-0',
-          ],
-          plugins: [
-            ['incremental-dom', {
-              components: true,
-              hoist: true,
-              prefix: 'vdom',
-            }],
           ],
         },
       },
@@ -64,4 +58,7 @@ module.exports = (tmpFolder, entry) => ({
   plugins: [
     new webpack.optimize.UglifyJsPlugin(),
   ],
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
+  },
 });

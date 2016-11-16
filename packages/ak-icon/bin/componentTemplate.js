@@ -5,7 +5,6 @@ const { tmpFolderName } = require('./constants');
 
 
 module.exports = ({
-  iconName,
   svgData,
   unprefixedIconName,
   iconRelativePathToSrc,
@@ -17,15 +16,16 @@ module.exports = ({
   const relativePathToSrc = path.relative(currentJsPath, srcPath);
 
   /* eslint-disable max-len */
-  return `
-import { define, vdom } from 'skatejs';
+  return `import React from 'react';
 import Icon from '${relativePathToSrc}/Icon';
 
 class ${componentName} extends Icon {
+  constructor() {
+    super();
+  }
   getGlyphTemplate() {
     return (props) => {
       const { label: title } = props;
-      delete props.label;
 
       // eslint-disable-next-line max-len, react/jsx-space-before-closing
       return (${svgData});
@@ -33,7 +33,7 @@ class ${componentName} extends Icon {
   }
 }
 
-export default define('${iconName}', ${componentName});
+export default ${componentName};
 `;
 /* eslint-enable max-len */
 };

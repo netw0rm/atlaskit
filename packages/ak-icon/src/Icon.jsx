@@ -1,5 +1,6 @@
 /** @jsx React.createElement */
 import React, { PropTypes, Component } from 'react';
+
 import Content from './Content';
 import Root from './Root';
 import * as exceptions from './internal/exceptions';

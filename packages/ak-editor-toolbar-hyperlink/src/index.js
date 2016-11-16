@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, prop, emit } from 'skatejs';
 import EditorButton from 'ak-editor-button';
 import LinkIcon from 'ak-icon/glyph/editor/link';

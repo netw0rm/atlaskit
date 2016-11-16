@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, prop } from 'skatejs';
 import cx from 'classnames';
 import styles from './index.less';

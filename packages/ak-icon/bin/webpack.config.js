@@ -45,6 +45,7 @@ module.exports = (tmpFolder, entry) => ({
         loader: 'babel',
         test: /\.js$/,
         query: {
+          babelrc: false,
           presets: [
             'es2015',
             'stage-0',

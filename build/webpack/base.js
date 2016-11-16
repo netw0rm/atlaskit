@@ -81,14 +81,15 @@ const standardConfig = {
             'babel-loader': moduleBabelQuery,
             'ts-loader': {},
           }),
+          exclude: /node_modules/,
         },
         //
         // JAVASCRIPT (React components)
         //
         {
-          loader: 'babel-loader',
           test: /\.jsx$/,
-          exclude: /node_modules|bower_components/,
+          loader: 'babel-loader',
+          exclude: /node_modules/,
         },
         //
         // JAVASCRIPT (Web components)
@@ -96,8 +97,8 @@ const standardConfig = {
         //
         // TODO: remove this once we don't have WC any more
         {
-          loader: 'babel-loader',
           test: /\.js$/,
+          loader: 'babel-loader',
           include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
           // TODO: Remove next line once ak-component-base and ak-tooltip are migrated
           exclude: /stories\/skate\/.*\.js/,
@@ -107,11 +108,12 @@ const standardConfig = {
         // Support jsx to incremental dom in non-react locations (above).
         // Make sure vdom is imported from skatejs where jsx is used
         //
+        // TODO: remove this once we don't have WC any more
         {
+          test: /\.js$/,
           loader: 'babel-loader',
-          test: /\.jsx?$/,
-          exclude: /node_modules|bower_components/,
           query: moduleBabelQuery,
+          exclude: /node_modules/,
         },
       ],
     ],

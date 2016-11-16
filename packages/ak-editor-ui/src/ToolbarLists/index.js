@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { define, vdom, prop, emit, Component } from 'skatejs';
 import NumberListIcon from 'ak-icon/glyph/editor/list/number';
 import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';

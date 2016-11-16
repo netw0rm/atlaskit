@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import {
   createTemporaryComponent,
   tearDownComponent,

@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { define, vdom, prop, emit, Component } from 'skatejs';
 import BoldIcon from 'ak-icon/glyph/editor/bold';
 import ItalicIcon from 'ak-icon/glyph/editor/italic';

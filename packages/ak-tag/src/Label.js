@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom } from 'skatejs';
 
 import Text from './Text';

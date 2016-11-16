@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { define, vdom, prop, emit, Component } from 'skatejs';
 import AkButton, { APPEARANCE } from 'ak-button';
 import AkButtonGroup from 'ak-button-group';

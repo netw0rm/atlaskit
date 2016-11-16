@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, Component } from 'skatejs';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';

@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import classNames from 'classnames';
 import debounce from 'debounce';
 import { vdom, define, prop } from 'skatejs';

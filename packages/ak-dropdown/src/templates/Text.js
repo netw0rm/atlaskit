@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom } from 'skatejs';
 
 export default (props, children) => (

@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, prop } from 'skatejs';
 import classNames from 'classnames';
 import shadowStyles from './ak-navigation-drag.less';

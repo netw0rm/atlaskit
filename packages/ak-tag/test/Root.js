@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';

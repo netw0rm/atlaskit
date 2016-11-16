@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { waitUntil, getShadowRoot, tearDownComponent } from 'akutil-common-test';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';

@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, prop, emit } from 'skatejs';
 import classnames from 'classnames';
 import styles from './option.less';

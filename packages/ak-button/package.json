@@ -1,10 +1,10 @@
 {
   "name": "ak-button",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "ak-button webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-button"
   },
@@ -12,21 +12,23 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^5.0.0",
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5",
-    "skatejs": "^4.0.6"
+    "classnames": "^2.2.5"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
     "akutil-common-test": "*",
     "akutil-react": "*",
-    "custom-event-polyfill": "^0.3.0",
     "object-assign": "^4.1.0",
     "ak-icon": "^10.0.0",
     "uid": "^0.0.2"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "akutil-common-test": "*",
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",

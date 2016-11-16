@@ -1,12 +1,9 @@
 import React from 'react';
-import reactify from 'akutil-react';
 import { action } from '@kadira/storybook';
 import uid from 'uid';
 
-import AkButtonTemplate, { APPEARANCE, SPACING } from '../src';
+import AkButton from '../src';
 
-
-const AkButton = reactify(AkButtonTemplate);
 
 class ButtonBuilderExample extends React.Component {
   constructor(props) {
@@ -14,8 +11,8 @@ class ButtonBuilderExample extends React.Component {
     this.state = {
       disabled: false,
       selected: false,
-      spacing: SPACING.NORMAL,
-      appearance: APPEARANCE.STANDARD,
+      spacing: 'default',
+      appearance: 'default',
       href: undefined,
       target: undefined,
       before: false,
@@ -64,7 +61,7 @@ class ButtonBuilderExample extends React.Component {
 
   createIcon(side) {
     const Icon = this.state[side] || (() => null);
-    return (<Icon slot={side} />);
+    return (<Icon />);
   }
 
   render() {
@@ -96,7 +93,7 @@ class ButtonBuilderExample extends React.Component {
         <form>
           <strong>Spacing Attribute</strong>
           <br />
-          {this.createRadioAttribute('spacing', 'normal')}
+          {this.createRadioAttribute('spacing', 'default')}
           {this.createRadioAttribute('spacing', 'none')}
           {this.createRadioAttribute('spacing', 'compact')}
         </form>
@@ -111,10 +108,10 @@ class ButtonBuilderExample extends React.Component {
         <form>
           <strong>Appearances</strong>
           <br />
-          {this.createRadioAttribute('appearance', APPEARANCE.STANDARD)}
-          {this.createRadioAttribute('appearance', APPEARANCE.PRIMARY)}
-          {this.createRadioAttribute('appearance', APPEARANCE.SUBTLE)}
-          {this.createRadioAttribute('appearance', APPEARANCE.LINK)}
+          {this.createRadioAttribute('appearance', 'default')}
+          {this.createRadioAttribute('appearance', 'primary')}
+          {this.createRadioAttribute('appearance', 'subtle')}
+          {this.createRadioAttribute('appearance', 'link')}
         </form>
         <br />
         <form>
@@ -138,9 +135,9 @@ class ButtonBuilderExample extends React.Component {
           <AkButton
             {...props}
             style={{ 'background-color': 'white' }}
+            iconBefore={this.createIcon('before')}
+            iconAfter={this.createIcon('after')}
           >
-            {this.createIcon('before')}
-            {this.createIcon('after')}
             Button
           </AkButton>
         </p>

@@ -5,7 +5,6 @@ import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
 import AKAvatar from '../src';
 import shadowStyles from '../src/shadow.less';
-import { loading } from '../src/internal/symbols';
 
 chai.use(chaiAsPromised);
 chai.should();
@@ -215,7 +214,7 @@ describe.skip('ak-avatar', () => {
 
       expect(loadedClassApplied()).to.be.true;
       // this would normally be a hidden/internal prop but we can access it here for unit testing
-      component[loading] = true;
+      component.loading = true;
       return waitUntil(() => !loadedClassApplied()).should.be.fulfilled;
     });
 
@@ -225,10 +224,10 @@ describe.skip('ak-avatar', () => {
       // we'll set up the negative case by copying the previous test
       expect(loadedClassApplied()).to.be.true;
       // this would normally be a hidden/internal prop but we can access it here for unit testing
-      component[loading] = true;
+      component.loading = true;
       return waitUntil(() => !loadedClassApplied())
         .then(() => {
-          component[loading] = false;
+          component.loading = false;
 
           return waitUntil(loadedClassApplied);
         }).should.be.fulfilled;

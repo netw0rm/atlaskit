@@ -41,7 +41,7 @@ class DialogWithInput extends Component {
           </p><p>
           &gt; Hint: If you have problems starting the
           cucumber setup locally, try re-generating the docker images via:
-          `npm run cucumber/single my-component -- --force-recreate`
+          `npm run test/integration/single/local my-component -- --force-recreate`
           </p>
         </div>
         <input

@@ -5,7 +5,6 @@ import reactify from 'akutil-react';
 import classnames from 'classnames';
 import AkButtonWc from 'ak-button';
 
-import componentStyles from 'style!../src/shadow.less';
 import styles from 'style!./styles.less';
 
 import AnimationDemo from './AnimationDemo';
@@ -43,7 +42,6 @@ const AllIcons = props => (
       .entries(components)
       .map(([key, Icon]) =>
         <Icon
-          className={componentStyles.akIcon}
           label={`${key} icon`}
           title={`${key}.svg`}
           key={key}
@@ -67,16 +65,14 @@ const AllIconsSizeChecked = props => (
       .map(([key, Icon]) =>
         <div className={styles.compareIconContainer}>
           <Icon
-            className={classnames(componentStyles.akIcon, styles.original)}
             label={`${key} icon`}
             title={`${key}.svg`}
             key={`${key}-original`}
           />
           <Icon
-            className={classnames(componentStyles.akIcon, styles.constrained)}
             label={`${key} icon`}
             title={`${key}.svg`}
-            key={`${key}-costrained`}
+            key={`${key}-constrained`}
           />
         </div>)}
   </div>
@@ -85,8 +81,7 @@ const AllIconsSizeChecked = props => (
 storiesOf('ak-icon', module)
   .add('Single icon', () => (
     <AtlassianIcon
-      className={componentStyles.akIcon}
-      label="My label"
+      label="Atlassian icon"
       size="medium"
     />
   ))
@@ -108,7 +103,7 @@ storiesOf('ak-icon', module)
             const tagName = `${name}-${pathToDashed(key)}`;
             return (
               <tr key={key}>
-                <td><Icon /></td>
+                <td><Icon label={`${key} icon`} /></td>
                 <td><pre>import &#39;{importName}&#39;;</pre></td>
                 <td><pre>&lt;{tagName} /&gt;</pre></td>
               </tr>
@@ -142,11 +137,11 @@ storiesOf('ak-icon', module)
   .add('Two-color icons', () => <ToggleIcons icons={toggleableIcons} />)
   .add('Animated', () => <AnimationDemo components={components} />)
   .addBaselineAligned('baseline alignment', () => (
-    <AtlassianIcon className={componentStyles.akIcon} />
+    <AtlassianIcon label="Baseline aligned icon" />
   ))
   .add('Inside a button', () => (
     <AkButton>
-      <AtlassianIcon className={componentStyles.akIcon} slot="before" />
+      <AtlassianIcon label="Icon inside a button" slot="before" />
       Button
     </AkButton>
   ))
@@ -162,7 +157,10 @@ storiesOf('ak-icon', module)
         {iconSizes.map(s => (
           <tr key={s}>
             <td><pre>&lt;ak-icon-{sampleIconName} size=&quot;{s}&quot; /&gt;</pre></td>
-            <td><AtlassianIcon className={componentStyles.akIcon} size={s} /></td>
+            <td><AtlassianIcon
+              size={s}
+              label={`Atlassian icon with size ${s}`}
+            /></td>
           </tr>
       ))}
       </tbody>

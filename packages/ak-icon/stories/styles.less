@@ -33,16 +33,20 @@
   position: relative;
   padding: 0 @size-default @size-default 0;
 
-  .original {
-    position: absolute;
-    color: @ak-color-R500;
+  // Show the red underlay icon if the icon is larger than the default size
+  & > * {
+    &:first-child {
+      position: absolute;
+      color: @ak-color-R500;
+    }
+
+    &:nth-child(2) {
+      position: absolute;
+      width: @size-default;
+      height: @size-default;
+      background: white;
+      overflow: hidden;
+    }
   }
 
-  .constrained {
-    position: absolute;
-    width: @size-default;
-    height: @size-default;
-    background: white;
-    overflow: hidden;
-  }
 }

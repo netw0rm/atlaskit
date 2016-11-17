@@ -87,6 +87,7 @@ class Icon extends Component {
 
   render() {
     const Glyph = this.getGlyphTemplate();
+
     return (
       <Root size={this.props.size}>
         <Content>

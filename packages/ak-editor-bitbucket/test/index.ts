@@ -80,7 +80,7 @@ describe('ak-editor-bitbucket', () => {
               // IE 11 needs one more tick to render
             },
             () => {
-              emit(document, 'addHyperlink', { detail: { value } });
+              emit(document, 'addHyperlink', { detail: { value: href } });
               expect(editor._pm.doc).to.deep.equal(doc(p(a({ href })('foo'))));
             },
             done

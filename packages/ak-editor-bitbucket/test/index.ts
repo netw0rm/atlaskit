@@ -68,6 +68,27 @@ function waitUntilPMReady(editor: typeof AkEditorBitbucket) : Promise<HTMLElemen
 describe('ak-editor-bitbucket', () => {
   const rewireSpy = RewireSpy();
 
+  it.skip('should add a href on enter', (done) => {
+    const href = 'https://www.atlassian.com';
+    buildExpandedEditor(fixture(), `<p>foo</p>`)
+      .then((editor) => {
+        editor._pm.setTextSelection(1, 4);
+
+        return waitUntilPMReady(editor).then(() => {
+          afterMutations(
+            () => {
+              // IE 11 needs one more tick to render
+            },
+            () => {
+              emit(document, 'addHyperlink', { detail: { value } });
+              expect(editor._pm.doc).to.deep.equal(doc(p(a({ href })('foo'))));
+            },
+            done
+          );
+        });
+      });
+  });
+
   it('is possible to create a component', () => {
     let editor: any;
     expect(() => {

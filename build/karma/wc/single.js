@@ -8,7 +8,4 @@ const exclude = `${base}/_*.+(js|ts|tsx)`;
 module.exports = (config) => {
   allConf(config);
   assignPattern(config, files, exclude);
-  config.set({
-    singleRun: true,
-  });
 };

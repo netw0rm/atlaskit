@@ -7,7 +7,4 @@ const files = `${base}/**/*Spec.jsx`;
 module.exports = (config) => {
   allConf(config);
   assignPattern(config, files);
-  config.set({
-    singleRun: true,
-  });
 };

@@ -38,8 +38,6 @@ module.exports = (config) => {
     },
     captureTimeout: 120000,
     reporters: ['mocha', 'BrowserStack'],
-    singleRun: true,
-    autoWatch: false,
     concurrency: 5,
     browserDisconnectTolerance: 5,
     client: {},

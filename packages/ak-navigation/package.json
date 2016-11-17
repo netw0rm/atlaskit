@@ -17,9 +17,10 @@
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "custom-event-polyfill": "^0.3.0",
-    "keycode": "^2.1.2",
-    "skatejs": "^4.0.6"
+    "keycode": "^2.1.2"
+  },
+  "peerDependencies": {
+    "react": "15.x"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

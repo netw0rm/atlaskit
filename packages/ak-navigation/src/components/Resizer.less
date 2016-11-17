@@ -1,0 +1,19 @@
+@import '~akutil-shared-styles/src/colors.less';
+
+.resizer {
+  height: 100%;
+  width: 12px;
+  position: relative;
+  left: -6px;
+  cursor: col-resize;
+  &:hover:before {
+    background: @ak-color-B200;
+  }
+  &:before {
+    content: '';
+    width: 2px;
+    height: 100%;
+    position: absolute;
+    left: 5px;
+  }
+}

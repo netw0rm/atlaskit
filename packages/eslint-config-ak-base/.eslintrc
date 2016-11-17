@@ -8,23 +8,24 @@
     "react"
   ],
   "rules": {
-    "import/no-webpack-loader-syntax": 0,
-    "no-plusplus": 0,
-    "no-param-reassign": ["error", { "props": false }],
-    "react/no-unknown-property": [0],
-    "react/jsx-filename-extension": 0,
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "ignore"
+    }],
     "import/extensions": ["error", "always", {
       "js": "never",
       "jsx": "never",
       "ts": "never",
       "tsx": "never"
     }],
-    "comma-dangle": ["error", {
-        "arrays": "always-multiline",
-        "objects": "always-multiline",
-        "imports": "always-multiline",
-        "exports": "always-multiline",
-        "functions": "ignore"
-    }]
+    "import/no-webpack-loader-syntax": 0,
+    "no-plusplus": 0,
+    "no-param-reassign": ["error", { "props": false }],
+    "react/jsx-filename-extension": 0,
+    "react/no-unknown-property": [0],
+    "react/no-unused-prop-types": ["error", { "skipShapeProps": true }]
   }
 }

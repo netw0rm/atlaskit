@@ -2,9 +2,8 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { afterMutations, getShadowRoot } from 'akutil-common-test';
 
+import styles from '../src/style.less';
 import AkBadge, { events } from '../src';
-import styles from '../src/shadow.less';
-
 
 const { change: changeEvent } = events;
 
@@ -27,7 +26,7 @@ describe.skip('ak-badge', () => {
     component = null;
     document.body.removeChild(fixture);
   });
-  describe('value property', () => {
+  describe.skip('value property', () => {
     it('should be visibly displayed', (done) => {
       afterMutations(
           () => (component.value = 5),
@@ -77,7 +76,7 @@ describe.skip('ak-badge', () => {
       );
     });
   });
-  describe('max property', () => {
+  describe.skip('max property', () => {
     it('should constrain to 99+ when not specified', (done) => {
       afterMutations(
           () => (component.value = 101),
@@ -121,7 +120,7 @@ describe.skip('ak-badge', () => {
       );
     });
   });
-  describe('appearance property', () => {
+  describe.skip('appearance property', () => {
     it('should be "default" when not set', (done) => {
       afterMutations(
           () => (component.value = 20),

@@ -57,14 +57,17 @@ class Badge extends Component {
     return {
       value: 0,
       max: 99,
-      appearance: 'default',
+      appearance: APPEARANCE_ENUM.missingDefault,
     };
   }
 
   // triggered on prop/state change, but not on first render
   componentWillUpdate(nextProps) {
     if (this.props.onValueUpdated && nextProps.value !== this.props.value) {
-      this.props.onValueUpdated(nextProps.value);
+      this.props.onValueUpdated({
+        oldValue: this.props.value,
+        newValue: nextProps.value,
+      });
     }
   }
 
@@ -82,13 +85,20 @@ class Badge extends Component {
     return value;
   }
 
+  // returns the assigned appearance if valid, falling back to the default otherwise
+  validAppearance() {
+    const { appearance } = this.props;
+    const { values, invalidDefault } = APPEARANCE_ENUM;
+    return values.indexOf(appearance) >= 0 ? appearance : invalidDefault;
+  }
+
   render() {
     return (
       <span className={styles.locals.root}>
         <style>{styles.toString()}</style>
         <span
           className={classNames(
-            [styles.locals.value, styles.locals[this.props.appearance]]
+            [styles.locals.value, styles.locals[this.validAppearance()]]
           )}
         >{this.displayValue()}</span>
       </span>
@@ -98,4 +108,3 @@ class Badge extends Component {
 }
 
 export default Badge;
-export const allowedAppearances = APPEARANCE_ENUM.values;

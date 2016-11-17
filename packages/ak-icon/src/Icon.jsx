@@ -3,25 +3,9 @@ import React, { PropTypes, Component } from 'react';
 
 import Content from './Content';
 import Root from './Root';
-import * as exceptions from './internal/exceptions';
+import { NotImplementedError } from './internal/exceptions';
+import size from './internal/size';
 
-
-/**
- * Icon size values.
- *
- * @exports size
- * @enum {string}
- */
-const size = {
-  /** small icon */
-  small: 'small',
-  /** medium icon */
-  medium: 'medium',
-  /** large icon */
-  large: 'large',
-  /** xlarge icon */
-  xlarge: 'xlarge',
-};
 
 /**
  * @description Icon interface. All icons follow this structure.
@@ -82,7 +66,7 @@ class Icon extends Component {
   */
   // eslint-disable-next-line class-methods-use-this
   getGlyphTemplate() {
-    throw new exceptions.NotImplementedError('Subclasses need to provide an implementation');
+    throw new NotImplementedError('Subclasses need to provide an implementation');
   }
 
   render() {
@@ -99,5 +83,4 @@ class Icon extends Component {
 }
 
 export default Icon;
-export const NotImplementedError = exceptions.NotImplementedError;
-export { size };
+export { NotImplementedError, size };

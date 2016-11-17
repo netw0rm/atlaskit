@@ -2,17 +2,17 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import shadowStyles from './shadow.less';
+import styles from './styles.less';
 
 /* eslint-disable react/prop-types */
 export default (props) => {
   const classes = {
-    [shadowStyles.locals.icon]: true,
-    [shadowStyles.locals[props.size]]: !!props.size,
+    [styles.locals.icon]: true,
+    [styles.locals[props.size]]: !!props.size,
   };
   return (
     <div className={classnames(classes)}>
-      <style>{shadowStyles.toString()}</style>
+      <style>{styles.toString()}</style>
       {props.children}
     </div>
   );

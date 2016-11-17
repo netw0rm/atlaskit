@@ -1,9 +1,9 @@
 /** @jsx React.createElement */
 import React from 'react';
-import shadowStyles from './shadow.less';
+import styles from './styles.less';
 
 const Content = props => (
-  <span className={shadowStyles.locals.content}>
+  <span className={styles.locals.content}>
     {props.children}
   </span>
 );

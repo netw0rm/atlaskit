@@ -253,7 +253,7 @@ describe('ak-editor-bitbucket', () => {
     });
   });
 
-  describe('editor hyperlink popup panel', () => {
+  describe.skip('editor hyperlink popup panel', () => {
     function getHyperlinkTextInput(editor: typeof AkEditorBitbucket) {
       const edit = locateWebComponent('ak-editor-hyperlink-edit', editor.shadowRoot)[0];
 

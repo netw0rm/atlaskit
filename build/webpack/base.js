@@ -22,6 +22,7 @@ const css = {
   importLoaders: 1,
   mergeRules: false,
   modules: true,
+  localIdentName: '[local]_[hash:base64:5]',
 };
 
 if (isDevelopment) {
@@ -31,7 +32,7 @@ if (isDevelopment) {
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': `./${pkg['ak:webpack:raw']}`,
+    'dist/bundle.js': [`./${pkg['ak:webpack:raw']}`],
   },
   output: {
     path: './',
@@ -62,10 +63,10 @@ const standardConfig = {
       [ // exclusive configs for babel (first one that matches will be used)
         //
         // TYPESCRIPT
-        // Storybook only -- uses React rather than Incremental DOM
+        // React based code.
         //
         {
-          test: /\/stories\/.*\.tsx?$/,
+          test: /\/(stories|react)\/.*\.tsx?$/,
           loader: loaderChain({
             'babel-loader': {},
             'ts-loader': {},
@@ -73,7 +74,7 @@ const standardConfig = {
         },
         //
         // TYPESCRIPT
-        // Package code -- uses Incremental DOM rather than React
+        // Skate based code.
         //
         {
           test: /\.tsx?$/,

@@ -150,7 +150,7 @@ Browserstack is a tool that lets you run your unit tests in a larger set of brow
 To run the Browserstack tests for a single component:
 
 ```
-BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... npm run test/single/browserstack my-component
+BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... npm run test/wc/single/browserstack my-component
 ```
 
 You can also run all the Browserstack tests with Docker (as they are run in the CI):
@@ -163,13 +163,13 @@ BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... docker-compose -f docker-compose-
 
 > Hint: [docker-compose](https://docs.docker.com/compose/) is needed for this.
 
-Run the integration ([cucumber](https://github.com/cucumber/cucumber-js)) tests for a single component: `npm run cucumber/single my-component`
+Run the integration ([cucumber](https://github.com/cucumber/cucumber-js)) tests for a single component: `npm run test/integration/single/local my-component`
 
 You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` in `docker-compose-browserstack.yml` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
 
 > Hint: Whilst cucumber is running (or after a test failed), you can access the [Storybook](http://0.0.0.0:9001/) instance that the tests were run against.
 
-> Hint: If you have problems starting the cucumber setup locally, try re-generating the docker images via: `npm run cucumber/single my-component -- --force-recreate`
+> Hint: If you have problems starting the cucumber setup locally, try re-generating the docker images via: `npm run test/integration/single/local my-component -- --force-recreate`
 
 > Hint: You can (re-)start the Chrome within the VNC container via: Right click > Applications > Shells > Bash > $ x-www-browser --user-data-dir=. and then opening http://dev:9001
 

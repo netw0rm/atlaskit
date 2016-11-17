@@ -18,11 +18,13 @@ function stats_build_status() {
 }
 
 function print_coverage() {
-  $CHALK --no-stdin -t "{blue Coverage statistics for this PR:}"
-  cat ./coverage/coverage.txt
+  $CHALK --no-stdin -t "{blue Coverage statistics for this PR (Webcomponents):}"
+  cat ./coverage/wc/coverage.txt
+  $CHALK --no-stdin -t "{blue Coverage statistics for this PR (React):}"
+  cat ./coverage/react/coverage.txt
 }
 
 stats_build_status "INPROGRESS"
 print_coverage
-cdn_publish_folder "./coverage/html" "$BUILD_SPECIFIC_URL_PART"
+cdn_publish_folder "./coverage" "$BUILD_SPECIFIC_URL_PART"
 stats_build_status "SUCCESSFUL"

@@ -189,10 +189,10 @@ export interface BlockType {
 
 interface S extends Schema {
   nodes: {
-    blockquote?: BlockQuoteNodeType;
-    code_block?: CodeBlockNodeType;
-    heading?: HeadingNodeType;
-    paragraph?: ParagraphNodeType;
+    blockquote: BlockQuoteNodeType;
+    code_block: CodeBlockNodeType;
+    heading: HeadingNodeType;
+    paragraph: ParagraphNodeType;
   }
 }
 

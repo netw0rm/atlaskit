@@ -1,5 +1,7 @@
 import { Calendar } from 'calendar-base';
+import { ArrowleftIcon, ArrowrightIcon } from 'ak-icon';
 import keycode from 'keycode';
+import reactify from 'akutil-react';
 import React, { Component, PropTypes } from 'react';
 
 import {
@@ -16,6 +18,9 @@ const arrowKeys = [keycode('down'), keycode('left'), keycode('right'), keycode('
 const css = styles();
 const daysPerWeek = 7;
 const monthsPerYear = 12;
+
+const ReactArrowleftIcon = reactify(ArrowleftIcon);
+const ReactArrowrightIcon = reactify(ArrowrightIcon);
 
 export default class extends Component {
   static get propTypes() {
@@ -196,7 +201,7 @@ export default class extends Component {
           <caption>
             <div {...css.heading}>
               <button {...css.btn} {...css.btnPrev} onClick={() => this.prev()}>
-                &prev;
+                <ReactArrowleftIcon />
               </button>
               <div {...css.monthAndYear}>
                 <span>{getMonthName(month)}</span>
@@ -204,7 +209,7 @@ export default class extends Component {
                 <span>{year}</span>
               </div>
               <button {...css.btn} {...css.btnNext} onClick={() => this.next()}>
-                &next;
+                <ReactArrowrightIcon />
               </button>
             </div>
           </caption>

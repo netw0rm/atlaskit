@@ -11,7 +11,8 @@ export default (props) => {
     [styles.locals[props.size]]: !!props.size,
   };
   return (
-    <div className={classnames(classes)}>
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    <div className={classnames(classes)} onClick={props.onClick}>
       <style>{styles.toString()}</style>
       {props.children}
     </div>

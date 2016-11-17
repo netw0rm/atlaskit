@@ -1,5 +1,4 @@
 import { storiesOf } from '@kadira/storybook';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import React from 'react';
 import reactify from 'akutil-react';
 import classnames from 'classnames';

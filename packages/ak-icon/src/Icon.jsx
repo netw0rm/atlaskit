@@ -47,12 +47,14 @@ class Icon extends Component {
          * document.body.appendChild(icon);
          */
       size: PropTypes.oneOf([size.small, size.medium, size.large, size.xlarge]),
+      onClick: PropTypes.func,
     };
   }
 
   static get defaultProps() {
     return {
       size: size.small,
+      onClick() {},
     };
   }
 
@@ -71,11 +73,12 @@ class Icon extends Component {
 
   render() {
     const Glyph = this.getGlyphTemplate();
+    const { label, size: iconSize, onClick } = this.props;
 
     return (
-      <Root size={this.props.size}>
+      <Root size={iconSize} onClick={onClick}>
         <Content>
-          <Glyph role="img" label={this.props.label} />
+          <Glyph role="img" label={label} />
         </Content>
       </Root>
     );

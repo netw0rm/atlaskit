@@ -20,7 +20,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
   "peerDependencies": {
-    "react": "*"
+    "react": "^15.3.2"
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",

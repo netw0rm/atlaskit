@@ -8,18 +8,18 @@ export default class extends Component {
       day: PropTypes.number,
       // TODO remove when https://bitbucket.org/atlassian/atlaskit/pull-requests/958/fix-fix-proptypes-validation-in-our-eslint/diff is merged.
       // eslint-disable-next-line react/no-unused-prop-types
-      disabled: PropTypes.boolean,
+      disabled: PropTypes.bool,
       // TODO remove when https://bitbucket.org/atlassian/atlaskit/pull-requests/958/fix-fix-proptypes-validation-in-our-eslint/diff is merged.
       // eslint-disable-next-line react/no-unused-prop-types
-      focused: PropTypes.boolean,
+      focused: PropTypes.bool,
       month: PropTypes.number,
-      now: PropTypes.string,
+      now: PropTypes.any,
       // TODO remove when https://bitbucket.org/atlassian/atlaskit/pull-requests/958/fix-fix-proptypes-validation-in-our-eslint/diff is merged.
       // eslint-disable-next-line react/no-unused-prop-types
-      previouslySelected: PropTypes.boolean,
+      previouslySelected: PropTypes.bool,
       // TODO remove when https://bitbucket.org/atlassian/atlaskit/pull-requests/958/fix-fix-proptypes-validation-in-our-eslint/diff is merged.
       // eslint-disable-next-line react/no-unused-prop-types
-      sibling: PropTypes.boolean,
+      sibling: PropTypes.bool,
       year: PropTypes.number,
     };
   }

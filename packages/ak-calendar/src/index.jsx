@@ -24,10 +24,10 @@ export default class extends Component {
       disabled: PropTypes.array,
       focused: PropTypes.number,
       month: PropTypes.number,
-      onBlur: PropTypes.any,
-      onChange: PropTypes.any,
-      onFocus: PropTypes.any,
-      onSelect: PropTypes.any,
+      onBlur: PropTypes.func,
+      onChange: PropTypes.func,
+      onFocus: PropTypes.func,
+      onSelect: PropTypes.func,
       previouslySelected: PropTypes.array,
       selected: PropTypes.array,
       year: PropTypes.number,
@@ -167,14 +167,14 @@ export default class extends Component {
       week.push(
         <DateFn
           aria-live={isFocused ? 'polite' : ''}
+          day={date.day}
           disabled={isDisabled}
           focused={isFocused}
           key={dateAsString}
+          onClick={() => this.props.onSelect({ day: date.day, month, year })}
           previouslySelected={isPreviouslySelected}
           selected={isSelected}
           sibling={isSiblingMonth}
-          day={date.day.toString()}
-          onClick={() => this.props.onSelect({ day: date.day, month, year })}
         />
       );
     });

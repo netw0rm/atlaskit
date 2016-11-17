@@ -6,7 +6,7 @@ import {
   akColorN600,
   akColorN700,
   akColorN900,
-} from './util.colors';
+} from 'akutil-shared-styles';
 
 const akColorTransparent = 'transparent';
 const akColorWhite = '#fff';

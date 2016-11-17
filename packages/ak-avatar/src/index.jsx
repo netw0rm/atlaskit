@@ -4,14 +4,6 @@ import styles from './styles.less';
 import Presence from './Presence';
 import Image from './Image';
 
-/**
- * @description Avatar component.
- * @class Avatar
- * @example @html <ak-avatar src="my/avatar/src/doge.png"></ak-avatar>
- * @example @js import Avatar from 'ak-avatar';
- * const myAvatar = new Avatar();
- *
- */
 class Avatar extends Component {
   static get propTypes() {
     return {
@@ -22,8 +14,6 @@ class Avatar extends Component {
        * @instance
        * @default none
        * @type {string}
-       * @example @html <ak-avatar presence="online"></ak-avatar>
-       * @example @js avatar.presence = 'online';
        */
       presence: React.PropTypes.oneOf(['none', 'online', 'busy', 'offline']),
       /**
@@ -33,8 +23,6 @@ class Avatar extends Component {
        * @instance
        * @default medium
        * @type {string}
-       * @example @html <ak-avatar size="large"></ak-avatar>
-       * @example @js avatar.size = 'large';
        */
       size: React.PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
       /**
@@ -42,8 +30,6 @@ class Avatar extends Component {
        * @memberof Avatar
        * @instance
        * @type {string}
-       * @example @html <ak-avatar src="my/avatar/src.png"></ak-avatar>
-       * @example @js avatar.src = 'my/avatar/src.png';
        */
       src: React.PropTypes.string,
       /**
@@ -52,8 +38,6 @@ class Avatar extends Component {
        * @memberof Avatar
        * @instance
        * @type {string}
-       * @example @html <ak-avatar label="Avatar for Jon Snow" src="my/avatar/src.png"></ak-avatar>
-       * @example @js avatar.label = 'Avatar for Jon Snow';
        */
       label: React.PropTypes.string,
       children: React.PropTypes.element,

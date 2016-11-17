@@ -98,14 +98,14 @@ storiesOf(name, module)
   .add('Avatars with custom presence', () => (
     <div>
       <div>As well as the presence attribute, avatars can also display custom content on their badge
-        by slotting it inside the element. <br />
-        No styling is applied to slotted content by default and it is up the consumer to make the
+        by composing them inside. <br />
+        No styling is applied to custom content by default and it is up the consumer to make the
         content fit (height and width of 100% and a background color
         are a good start)
       </div>
       <div className={storybookExampleClass} >
         <div>
-          These avatars have an image in their default slot and have been styled
+          These avatars have an image as their default content and have been styled
           with &quot;height: 100%; width: 100%;&quot;
         </div>
         <AllAvatarSizes>
@@ -118,7 +118,7 @@ storiesOf(name, module)
       </div>
       <div className={storybookExampleClass} >
         <div>
-          These avatars show the behaviour of transparent images in slots.
+          These avatars show the behaviour of transparent nested images.
           Note there is no added background color
         </div>
         <AllAvatarSizes>
@@ -131,7 +131,7 @@ storiesOf(name, module)
       </div>
       <div className={storybookExampleClass} >
         <div>
-          These avatars have presence AND an image in the slot. The expected behaviour is that the
+          These avatars have presence AND an image as a child. The expected behaviour is that the
           images will take precedence.
         </div>
         <AllAvatarSizes presence="online">

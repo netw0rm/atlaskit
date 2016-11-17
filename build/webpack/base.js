@@ -62,7 +62,7 @@ const standardConfig = {
       [ // exclusive configs for babel (first one that matches will be used)
         //
         // TYPESCRIPT
-        // Storybook only -- uses React rather than Incremental DOM
+        // React based code.
         //
         {
           test: /\/(stories|react)\/.*\.tsx?$/,
@@ -73,7 +73,7 @@ const standardConfig = {
         },
         //
         // TYPESCRIPT
-        // Package code -- uses Incremental DOM rather than React
+        // Skate based code.
         //
         {
           test: /\.tsx?$/,

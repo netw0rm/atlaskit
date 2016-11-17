@@ -23,6 +23,7 @@ const css = {
   importLoaders: 1,
   mergeRules: false,
   modules: true,
+  localIdentName: '[local]_[hash:base64:5]',
 };
 
 if (isDevelopment) {

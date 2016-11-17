@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import keyCode from 'keycode';
 
 import { emit, vdom, prop, define, props } from 'skatejs';

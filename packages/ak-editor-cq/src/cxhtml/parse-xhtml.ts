@@ -89,23 +89,21 @@ function isBlock(node: Node) {
  * Inline CDATA sections by HTML encoding them.
  */
 function stripCDATA(content: string): string {
-	var contentFragments = content.split(/(<!\[CDATA\[(.*?)\]\]>)/g);
-	if (contentFragments.length <= 1) { // no CDATA, no need to fix
-		return content;
-	}
+  const contentFragments = content.split(/(<!\[CDATA\[(.*?)\]\]>)/g);
+  if (contentFragments.length <= 1) { // no CDATA, no need to fix
+    return content;
+  }
 
-	var fixed = '';
-	for (var i = 0; i < contentFragments.length; i++) {
-		var fragment = contentFragments[i];
-		if (fragment.substring(0, 9) === '<![CDATA[') {
-			i++;
-			fixed += htmlEscape(contentFragments[i]); // the next fragment is the one we want now
-			continue;
-		}
-		fixed += fragment;
-	}
+  let fixed = '';
+  for (const fragment of contentFragments) {
+    if (fragment.substring(0, 9) === '<![CDATA[') {
+      fixed += htmlEscape(fragment);
+    } else {
+      fixed += fragment;
+    }
+  }
 
-	return fixed;
+  return fixed;
 }
 
 function htmlEscape(string: string): string {

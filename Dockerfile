@@ -60,7 +60,7 @@ RUN bundle config build.nokogiri --use-system-libraries
 # Copied from https://github.com/matriphe/docker-alpine-node/blob/master/Dockerfile
 ENV TIMEZONE Australia/Sydney
 
-ENV NODE_VERSION 6.2.0-r0
+ENV NODE_VERSION 6.7.0-r0
 # TODO: We can't use 3.10.8 yet: https://github.com/npm/npm/issues/14042
 # Update 2016-10-27: still broken in 3.10.9 and won't be fixed in 3.x at all as 3.x was put in maintenance
 # TODO: Update to npm v4: https://ecosystem.atlassian.net/browse/AK-706

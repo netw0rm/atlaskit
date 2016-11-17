@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom } from 'skatejs';
 
 // eslint-disable-next-line max-len
@@ -15,4 +17,3 @@ export default (props) => {
   // img tags should either have an alt or role="presentation"
   return (<img alt={props.alt} {...props} />);
 };
-

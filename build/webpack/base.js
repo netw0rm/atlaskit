@@ -65,7 +65,7 @@ const standardConfig = {
         // Storybook only -- uses React rather than Incremental DOM
         //
         {
-          test: /\/stories\/.*\.tsx?$/,
+          test: /\/(stories|react)\/.*\.tsx?$/,
           loader: loaderChain({
             'babel-loader': {},
             'ts-loader': {},

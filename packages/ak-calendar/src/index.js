@@ -1,5 +1,4 @@
 import { Calendar } from 'calendar-base';
-import { style } from 'glamor';
 import keycode from 'keycode';
 import React, { Component, PropTypes } from 'react';
 
@@ -9,54 +8,14 @@ import {
   getMonthName,
   makeArrayFromNumber,
 } from './util';
-import {
-  n80,
-  n700,
-  transparent,
-  white,
-} from './util.colors';
 import AnnouncerFn from './index.Announcer';
 import DateFn from './index.Date';
+import styles from './index.style';
 
 const arrowKeys = [keycode('down'), keycode('left'), keycode('right'), keycode('up')];
+const css = styles();
 const daysPerWeek = 7;
 const monthsPerYear = 12;
-const cssPadding = '5px 0 10px 0';
-const css = {
-  btn: style({
-    backgroundColor: transparent,
-    border: 'none',
-    color: n80,
-    padding: cssPadding,
-  }),
-  btnNext: style({
-    float: 'right',
-  }),
-  btnPrev: style({
-    float: 'left',
-  }),
-  calendar: style({
-    backgroundColor: n700,
-    color: white,
-    display: 'inline-block',
-    padding: 10,
-    textAlign: 'center',
-  }),
-  dayOfWeek: style({
-    color: n80,
-    fontSize: 8,
-    textTransform: 'uppercase',
-  }),
-  heading: style({
-    display: 'flex',
-  }),
-  monthAndYear: style({
-    color: white,
-    flexBasis: '100%',
-    fontSize: 14,
-    padding: cssPadding,
-  }),
-};
 
 export default class extends Component {
   static get propTypes() {
@@ -152,22 +111,26 @@ export default class extends Component {
   }
   next() {
     let { month, year } = this.props;
+
     if (month === monthsPerYear) {
       month = 1;
       year++;
     } else {
       month++;
     }
+
     this.props.onChange({ month, year });
   }
   prev() {
     let { month, year } = this.props;
+
     if (month === 1) {
       month = monthsPerYear;
       year--;
     } else {
       month--;
     }
+
     this.props.onChange({ month, year });
   }
   render() {
@@ -179,6 +142,7 @@ export default class extends Component {
     if (shouldDisplaySixthWeek) {
       const lastDayIsSibling = calendar[calendar.length - 1].siblingMonth;
       const sliceStart = lastDayIsSibling ? daysPerWeek : 0;
+
       calendar.push(
         ...this.props.calendar.getCalendar(year, month)
           .slice(sliceStart, sliceStart + daysPerWeek)

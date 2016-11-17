@@ -1,26 +1,19 @@
-/* eslint-disable */
 import React, { Component, PropTypes } from 'react';
 import { appearance, type, spacing, theme } from './internal/enumerated-properties';
 import Button from './Button';
 import Icon from './Icon';
 import styles from './less/styles.less';
 
-const TYPE = type.values;
-const SPACING = spacing.values;
-
-export { TYPE, SPACING };
-
+/* eslint-disable react/no-unused-prop-types */
 export default class AkButton extends Component {
   static get propTypes() {
     return {
       /**
        * @description Predefined appearances of an ak-button. One of:
-       * 'primary', 'standard', 'subtle', 'compact'
+       * 'primary', 'default', 'subtle', 'compact'
        * @memberof Button
        * @default 'standard'
        * @type {string}
-       * @example @html <ak-button appearance="primary"></ak-button>
-       * @example @js button.appearance = 'primary';
        */
       appearance: PropTypes.oneOf(appearance),
       /**
@@ -29,8 +22,6 @@ export default class AkButton extends Component {
        * @memberof Button
        * @default button
        * @type {string}
-       * @example @html <ak-button type="submit"></ak-button>
-       * @example @js button.type = 'submit';
        */
       type: PropTypes.oneOf(type),
       /**
@@ -39,16 +30,12 @@ export default class AkButton extends Component {
        * @memberof Button
        * @default button
        * @type {string}
-       * @example @html <ak-button href="www.atlassian.com"></ak-button>
-       * @example @js button.href = 'www.atlassian.com';
        */
       href: PropTypes.string,
       /**
        * @description Standard target attribute for hyperlinks
        * @memberof Button
        * @type {string}
-       * @example @html <ak-button target="_blank"></ak-button>
-       * @example @js button.target = '_blank';
        */
       target: PropTypes.string,
       /**
@@ -56,18 +43,14 @@ export default class AkButton extends Component {
        * @memberof Button
        * @default false
        * @type {boolean}
-       * @example @html <ak-button disabled></ak-button>
-       * @example @js button.disabled = true;
        */
       disabled: PropTypes.bool,
       /**
        * @description Option to change button's padding. One of:
-       * 'none', 'compact'
+       * 'none', 'compact', 'default'
        * @memberof Button
-       * @default 'normal'
+       * @default 'default'
        * @type {string}
-       * @example @html <ak-button spacing="compact"></ak-button>
-       * @example @js button.spacing = 'none';
        */
       spacing: PropTypes.oneOf(spacing),
       /**
@@ -75,8 +58,6 @@ export default class AkButton extends Component {
        * @memberof Button
        * @default false
        * @type {boolean}
-       * @example @html <ak-button selected></ak-button>
-       * @example @js button.selected = true;
        */
       selected: PropTypes.bool,
       /**
@@ -84,27 +65,21 @@ export default class AkButton extends Component {
        * @memberof Button
        * @default false
        * @type {boolean}
-       * @example @html <ak-button dark></ak-button>
-       * @example @js button.dark = true;
        */
       theme: PropTypes.oneOf(theme),
       /**
        * @description iconBefore
        * @memberof Button
-       * @type {boolean}
-       * @example @html <ak-button dark></ak-button>
-       * @example @js button.dark = true;
+       * @type {element}
        */
       iconBefore: PropTypes.element,
       /**
        * @description iconAfter
        * @memberof Button
-       * @type {boolean}
-       * @example @html <ak-button dark></ak-button>
-       * @example @js button.dark = true;
+       * @type {element}
        */
       iconAfter: PropTypes.element,
-    }
+    };
   }
 
   static get defaultProps() {
@@ -115,7 +90,7 @@ export default class AkButton extends Component {
       spacing: 'default',
       selected: false,
       theme: 'default',
-    }
+    };
   }
 
   render() {
@@ -128,6 +103,6 @@ export default class AkButton extends Component {
         <span className={styles.locals.buttonContent}>{props.children}</span>
         <Icon source={props.iconAfter} />
       </Button>
-    )
+    );
   }
 }

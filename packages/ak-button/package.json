@@ -26,7 +26,7 @@
     "uid": "^0.0.2"
   },
   "peerDependencies": {
-    "react": "*",
+    "react": "^15.3.2",
     "akutil-common-test": "*",
     "akutil-react": "*"
   },

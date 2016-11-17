@@ -40,9 +40,9 @@ const css = `
 const buildBackgroundStory = () => {
   const createSample = ({ backgroundColor, extraProps = { onClick: action('clicking the WebComponent') } }) => (
     <div style={{ 'margin-bottom': '30px' }}>
-      <style>{'ak-button { margin: 5px }'}</style>
+      <style>{'.buttonContainer > * { margin: 5px }'}</style>
       <div className="sample" style={{ 'background-color': backgroundColor }}>
-        <div>
+        <div className="buttonContainer">
           <AkButton {...extraProps}>
             Default
           </AkButton>
@@ -62,7 +62,7 @@ const buildBackgroundStory = () => {
         <span> Normal States </span>
       </div>
       <div className="sample" style={{ 'background-color': backgroundColor }}>
-        <div>
+        <div className="buttonContainer">
           <AkButton {...extraProps} iconAfter={<Question />}>
             Default
           </AkButton>
@@ -82,7 +82,7 @@ const buildBackgroundStory = () => {
         <span> Normal States + icons</span>
       </div>
       <div className="sample" style={{ 'background-color': backgroundColor }}>
-        <div>
+        <div className="buttonContainer">
           <AkButton {...extraProps} disabled>
             Default Disabled
           </AkButton>
@@ -96,7 +96,7 @@ const buildBackgroundStory = () => {
         <span> Disabled variations </span>
       </div>
       <div className="sample" style={{ 'background-color': backgroundColor }}>
-        <div>
+        <div className="buttonContainer">
           <AkButton {...extraProps} disabled iconAfter={<Page />}>
             Default Disabled
           </AkButton>
@@ -110,7 +110,7 @@ const buildBackgroundStory = () => {
         <span> Disabled variations + icons</span>
       </div>
       <div className="sample" style={{ 'background-color': backgroundColor }}>
-        <div>
+        <div className="buttonContainer">
           <AkButton {...extraProps} spacing="none">
             <Unlink />
           </AkButton>
@@ -176,7 +176,7 @@ const buildStory = props => (
   () => (
     <div>
       <style>{css}</style>
-      <style>{'ak-button { background-color: white }'}</style>
+      <style>{'.sample { background-color: white }'}</style>
       <div className="container">
         <div className="sample">
           <AkButton {...props}>
@@ -274,9 +274,11 @@ const buildStory = props => (
         </div>
 
         <div className="sample">
-          <AkButton {...props} href="http://www.atlassian.com">
-            <Page label="page icon" />
-          </AkButton>
+          <AkButton
+            {...props}
+            href="http://www.atlassian.com"
+            iconBefore={<Page label="page icon" />}
+          />
           <span>button with Page icon + href</span>
         </div>
 
@@ -306,8 +308,8 @@ const buildStory = props => (
         </div>
 
         <div className="sample">
-          <div>
-            <style>{'ak-button { margin-right: 5px }'}</style>
+          <div className="ButtonContainer">
+            <style>{'.ButtonContainer > a, .ButtonContainer > button, .sample > a, .sample > button { margin-right: 5px }'}</style>
             <AkButton {...props} spacing="none">
               <Unlink>unlink</Unlink>
             </AkButton>

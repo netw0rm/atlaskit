@@ -32,7 +32,7 @@ if (isDevelopment) {
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': `./${pkg['ak:webpack:raw']}`,
+    'dist/bundle.js': [`./${pkg['ak:webpack:raw']}`],
   },
   output: {
     path: './',

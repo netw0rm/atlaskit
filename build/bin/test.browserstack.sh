@@ -20,5 +20,5 @@ do
   --retries=$MAX_RETRIES \
   -- \
   karma start \
-  ./build/karma/browserstack.js
+  ./build/karma/wc/browserstack.js
 done

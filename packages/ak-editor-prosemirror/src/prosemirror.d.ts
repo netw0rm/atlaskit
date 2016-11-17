@@ -789,7 +789,7 @@ declare module 'prosemirror/dist/model/schema' {
     export class Block extends NodeType {
         isBlock: boolean;
         isTextblock: any;
-        contentExpr: any;
+        contentExpr?: any;
     }
     export class Inline extends NodeType {
         isInline: boolean;

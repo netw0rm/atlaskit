@@ -1,7 +1,8 @@
-import { ProseMirror, ReplaceStep, Slice, RemoveMarkStep } from 'ak-editor-prosemirror';
+import { ProseMirror, ReplaceStep, Slice, RemoveMarkStep, EditorTransform } from 'ak-editor-prosemirror';
+import { CodeBlockNodeType } from 'ak-editor-schema';
 
 // copied from prosemirror/src/commands/index.js
-export default function(nodeType: any, pm: ProseMirror) {
+export default function(nodeType: CodeBlockNodeType, pm: ProseMirror) {
   let {$from, $to, node} = pm.selection;
   let depth;
   if (node) {
@@ -29,7 +30,7 @@ export default function(nodeType: any, pm: ProseMirror) {
 }
 
 // copied from prosemirror/src/transform/mark.js
-function clearMarkupFor(tr: any, pos: any, newType: any) {
+function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNodeType) {
   const node = tr.doc.nodeAt(pos);
   let match = newType.contentExpr.start();
   const delSteps = [];

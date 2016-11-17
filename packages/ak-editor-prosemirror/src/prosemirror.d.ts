@@ -789,6 +789,7 @@ declare module 'prosemirror/dist/model/schema' {
     export class Block extends NodeType {
         isBlock: boolean;
         isTextblock: any;
+        contentExpr: any;
     }
     export class Inline extends NodeType {
         isInline: boolean;
@@ -1035,8 +1036,9 @@ declare module 'prosemirror/dist/transform/transform' {
     import { Node } from 'prosemirror/dist/model/node';
     import { Mark } from 'prosemirror/dist/model/mark';
     import { Slice } from 'prosemirror/dist/model/replace';
-    import { MarkType } from 'prosemirror/dist/model/schema';
+    import { MarkType, NodeType } from 'prosemirror/dist/model/schema';
     import { NodeRange } from 'prosemirror/dist/model/resolvedpos';
+    import { Step } from 'prosemirror/dist/transform/step';
     export class Transform {
       constructor(doc: Node)
       addMark(from: number, to: number, mark: Mark|MarkType): this;
@@ -1050,6 +1052,8 @@ declare module 'prosemirror/dist/transform/transform' {
       doc: Node;
       lift(range: NodeRange, target: number): this;
       map(pos: number, bias?: number): number;
+      setNodeType(pos: number, type?: NodeType, attrs?: Object): this;
+      step(step: Step): this;
     }
     export interface TransformError {}
 }

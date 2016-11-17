@@ -11,6 +11,7 @@ export default function () {
       backgroundColor: akColorTransparent,
       border: 'none',
       color: akColorN80,
+      cursor: 'pointer',
       padding: cssPadding,
     }),
     btnNext: style({

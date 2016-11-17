@@ -71,7 +71,6 @@ export default class extends Component {
       onSelect: PropTypes.any,
       previouslySelected: PropTypes.array,
       selected: PropTypes.array,
-      title: PropTypes.string,
       year: PropTypes.number,
     };
   }
@@ -88,7 +87,6 @@ export default class extends Component {
       onSelect: () => {},
       previouslySelected: [],
       selected: [],
-      title: 'Calendar',
       year: now.getFullYear(),
     };
   }
@@ -219,12 +217,14 @@ export default class extends Component {
 
     return (
       // There's no interactive element to trap keyboard events on so we must trap them here so
-      // that we can navigate the keyboard for them.
+      // that we can navigate the keyboard for them. The aria role of "grid" here will hint to
+      // screen readers that it can be navigated with the keyboard, but the linter still fails.
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
-        aria-label={this.props.title}
+        aria-label="calendar"
         onBlur={() => this.props.onBlur()}
         onKeyDown={e => this.navigateWithKeyboard(e)}
+        role="grid"
         tabIndex={0}
       >
         <AnnouncerFn>{new Date(year, month, focused).toString()}</AnnouncerFn>

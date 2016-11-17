@@ -1,13 +1,28 @@
-import React, { vdom, Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from './GlobalNavigation.less';
+import { globalOpenWidth } from '../utils/style-variables';
+import Spacer from './Spacer';
 
 export default class GlobalNavigation extends Component {
+  getTranslate() {
+    return Math.min(0, this.props.width - globalOpenWidth);
+  }
   render() {
     return (
-      <div className={classNames(styles.locals.globalNavigation)}>
-        <style>{styles.toString()}</style>
-        G
+      <div>
+        <Spacer width={this.props.width} />
+        <div className={classNames(styles.locals.globalNavigation)}>
+          <style>{styles.toString()}</style>
+          <style>
+            {`
+              .${styles.locals.globalNavigation} {
+                transform: translateX(${this.getTranslate()}px);
+              }
+            `}
+          </style>
+          G
+        </div>
       </div>
     );
   }
@@ -18,5 +33,5 @@ GlobalNavigation.propTypes = {
 };
 
 GlobalNavigation.defaultProps = {
-  width: 64,
+  width: globalOpenWidth,
 };

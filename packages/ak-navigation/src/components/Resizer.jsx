@@ -1,4 +1,4 @@
-import React, { vdom, Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from './Resizer.less';
 
@@ -19,6 +19,7 @@ export default class Resizer extends Component {
     this.setState({ startScreenX: e.screenX });
     document.addEventListener('mousemove', this.mouseMoveHandler);
     document.addEventListener('mouseup', this.mouseUpHandler);
+    e.preventDefault();
   }
 
   mouseUpHandler(e) {

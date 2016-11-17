@@ -1,7 +1,13 @@
 @import '~akutil-shared-styles/src/colors.less';
 
-.container-navigation {
-  background: @ak-color-N20;
+.container-navigation-outer {
   height: 100%;
-  width: 220px;
+  overflow: hidden;
+  position: fixed;
+}
+
+.container-navigation-inner {
+  background: @ak-color-N20;
+  width: 100%;
+  height: 100%;
 }

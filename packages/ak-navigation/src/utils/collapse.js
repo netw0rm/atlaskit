@@ -13,7 +13,7 @@ export function getContainerWidth(navigationWidth) {
     return navigationWidth - globalOpenWidth;
   }
 
-  return containerClosedWidth;
+  return Math.max(0, containerClosedWidth);
 }
 
 export function getGlobalWidth(navigationWidth) {
@@ -21,7 +21,7 @@ export function getGlobalWidth(navigationWidth) {
     return globalOpenWidth;
   }
 
-  return navigationWidth - containerClosedWidth;
+  return Math.max(0, navigationWidth - containerClosedWidth);
 }
 
 export function getContainerPadding(navigationWidth) {

@@ -5,7 +5,13 @@ import AkNavigation from '../src';
 
 storiesOf(name, module)
   .add('empty ak-navigation', () => (
-    <AkNavigation />
+    <div style={{ display: 'flex' }}>
+      <style>{'body { margin: 0 }'}</style>
+      <AkNavigation />
+      <div>
+        <Lorem count="30" />
+      </div>
+    </div>
   ))
   .add('empty ak-navigation that is open and not collapsible', () => (
     <AkNavigation open />

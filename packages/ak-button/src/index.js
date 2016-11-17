@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, prop, props } from 'skatejs';
 import { appearance, type, spacing, theme } from './internal/enumerated-properties';
 import Slot from './Slot';

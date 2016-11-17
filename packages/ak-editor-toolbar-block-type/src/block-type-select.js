@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, prop, emit } from 'skatejs';
 import Button from 'ak-editor-button';
 

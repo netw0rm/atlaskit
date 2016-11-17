@@ -1,3 +1,4 @@
+/** @jsx vdom */
 import { vdom } from 'skatejs';
 
 // TODO move this into ak-icon

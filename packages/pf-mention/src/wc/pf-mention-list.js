@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { define, emit, prop, props, vdom } from 'skatejs';
 
 import 'style!../host.less';

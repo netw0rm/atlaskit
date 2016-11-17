@@ -1,5 +1,6 @@
-import { define, vdom, prop, Component } from 'skatejs'; // eslint-disable-line no-unused-vars
-import React from 'react';
+/** @jsx vdom */
+
+import { define, vdom, prop, Component } from 'skatejs';
 
 import Counter from './counter';
 

@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import debounce from 'debounce';
 import { vdom, define } from 'skatejs';
 import { handleMouseEnter, handleMouseLeave } from './internal/event-handlers';

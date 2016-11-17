@@ -1,4 +1,5 @@
 /** @jsx vdom */
+
 import { vdom, define, prop, props, ready } from 'skatejs';
 import keyCode from 'keycode';
 import Layer from 'ak-layer';

@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, prop, emit, Component } from 'skatejs';
 import LinkIcon from 'ak-icon/glyph/editor/link';
 import 'style!./host.less';

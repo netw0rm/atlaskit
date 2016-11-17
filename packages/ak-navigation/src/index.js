@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { emit, prop, vdom, define } from 'skatejs';
 import Blanket from 'ak-blanket';
 import classNames from 'classnames';

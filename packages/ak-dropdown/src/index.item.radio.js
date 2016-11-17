@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, props, prop } from 'skatejs';
 import Radio from 'ak-icon/glyph/radio';
 

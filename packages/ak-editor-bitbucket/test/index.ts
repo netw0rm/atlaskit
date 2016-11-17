@@ -221,15 +221,12 @@ describe('ak-editor-bitbucket', () => {
   describe('editor toolbar', () => {
     it('should have all default elements', () => {
       return buildExpandedEditor(fixture()).then((editor) => {
-        [
-          'ak-editor-toolbar',
-          'ak-editor-toolbar-block-type',
-          'ak-editor-toolbar-lists',
-          'ak-editor-toolbar-hyperlink',
-          'ak-editor-toolbar-text-formatting'
-        ].forEach((selector) => {
-          expect(getShadowRoot(editor).querySelector(selector)).to.not.be.null;
-        });
+        const editorShadowRoot = getShadowRoot(editor);
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-block-type')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-text-formatting')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-hyperlink')).to.be.ok;
+        expect(editorShadowRoot.querySelector('ak-editor-toolbar-lists')).to.be.ok;
       });
     });
 
@@ -345,7 +342,7 @@ describe('ak-editor-bitbucket', () => {
   it('should create a newline in code block when there is paragraph and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<p>text</p><pre>var code;</pre>');
-      editor._pm.setTextSelection(7)
+      editor._pm.setTextSelection(7);
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
@@ -359,7 +356,7 @@ describe('ak-editor-bitbucket', () => {
   it('should create a newline in code block when in the middle of code block and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
-      editor._pm.setTextSelection(5)
+      editor._pm.setTextSelection(5);
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();
@@ -373,7 +370,7 @@ describe('ak-editor-bitbucket', () => {
   it('should create a newline in code block when in the end of code block and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
-      editor._pm.setTextSelection(10)
+      editor._pm.setTextSelection(10);
 
       return waitUntilPMReady(editor).then((PMContainer) => {
         PMContainer.focus();

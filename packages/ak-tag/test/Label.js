@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import 'custom-event-polyfill';
 import { vdom } from 'skatejs';
 import chai from 'chai';

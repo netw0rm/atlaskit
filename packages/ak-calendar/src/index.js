@@ -71,7 +71,6 @@ export default class extends Component {
       onSelect: PropTypes.any,
       previouslySelected: PropTypes.array,
       selected: PropTypes.array,
-      tabIndex: PropTypes.number,
       title: PropTypes.string,
       year: PropTypes.number,
     };
@@ -89,7 +88,6 @@ export default class extends Component {
       onSelect: () => {},
       previouslySelected: [],
       selected: [],
-      tabIndex: 0,
       title: 'Calendar',
       year: now.getFullYear(),
     };
@@ -227,7 +225,7 @@ export default class extends Component {
         aria-label={this.props.title}
         onBlur={() => this.props.onBlur()}
         onKeyDown={e => this.navigateWithKeyboard(e)}
-        tabIndex={this.props.tabIndex}
+        tabIndex={0}
       >
         <AnnouncerFn>{new Date(year, month, focused).toString()}</AnnouncerFn>
         <table {...css.calendar}>

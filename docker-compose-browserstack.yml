@@ -10,4 +10,4 @@ services:
       CHROME_BIN: '/usr/bin/xvfb-chrome'
       BROWSERSTACK_KEY:
       BROWSERSTACK_USERNAME:
-    command: 'npm run test/browserstack/ci'
+    command: 'npm run test/wc/browserstack/ci'

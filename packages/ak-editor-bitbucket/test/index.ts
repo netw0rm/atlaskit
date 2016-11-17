@@ -274,6 +274,90 @@ describe('ak-editor-bitbucket', () => {
     });
   });
 
+  describe.skip('editor hyperlink popup panel', () => {
+    function getHyperlinkTextInput(editor: typeof AkEditorBitbucket) {
+      const edit = locateWebComponent('ak-editor-hyperlink-edit', editor.shadowRoot)[0];
+
+      if (!edit) {
+        return null;
+      }
+
+      const textInput = locateWebComponent('ak-editor-popup-text-input', edit.shadowRoot)[0]
+      return textInput.shadowRoot.querySelector('input');
+    }
+
+    it('should contain the right href value', (done) => {
+      const href = 'https://www.atlassian.com';
+      buildExpandedEditor(fixture(), `<p>foo <a href="${href}">bar</a></p>`)
+        .then((editor) => {
+          editor._pm.setTextSelection(7);
+
+          return waitUntilPMReady(editor).then(() => {
+            afterMutations(
+              () => {
+                // IE 11 needs one more tick to render
+              },
+              () => {
+                const input = getHyperlinkTextInput(editor);
+                expect(input.value).to.equal(href);
+              },
+              done
+            );
+          });
+        });
+    });
+
+    it('should change the href on enter', (done) => {
+      const href = 'https://www.atlassian.com';
+      const bitbucket = 'https://bitbucket.org';
+      buildExpandedEditor(fixture(), `<p>foo <a href="${href}">bar</a></p>`)
+        .then((editor) => {
+          editor._pm.setTextSelection(7);
+
+          return waitUntilPMReady(editor).then(() => {
+            afterMutations(
+              () => {
+                // IE 11 needs one more tick to render
+              },
+              () => {
+                const input = getHyperlinkTextInput(editor);
+                emit(input, 'enterKeyup', { detail: { value: bitbucket } });
+                expect(editor._pm.doc).to.deep.equal(doc(p('foo ', a({ href: bitbucket })('bar'))));
+              },
+              done
+            );
+          });
+        });
+    });
+
+    it('should dismiss the hyperlink edit panel on ESC', (done) => {
+      const href = 'https://www.atlassian.com';
+      const bitbucket = 'https://bitbucket.org';
+      buildExpandedEditor(fixture(), `<p>foo <a href="${href}">bar</a></p>`)
+        .then((editor) => {
+          editor._pm.setTextSelection(7);
+
+          return waitUntilPMReady(editor).then(() => {
+            afterMutations(
+              () => {
+                // IE 11 needs one more tick to render
+              },
+              () => {
+                const input = getHyperlinkTextInput(editor);
+                emit(input, 'escKeyup');
+                expect(editor._pm.doc).to.deep.equal(doc(p('foo ', a({ href })('bar'))));
+              },
+              () => {
+                const input = getHyperlinkTextInput(editor);
+                expect(input).to.be.null;
+              },
+              done
+            );
+          });
+        });
+    });
+  });
+
   describe('setting from html', () => {
     it('should accept empty strings', () => {
       return buildExpandedEditor(fixture()).then((editor) => {

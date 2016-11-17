@@ -33,6 +33,7 @@
 
 .IconWrapper {
   line-height: 0;
+  font-size: 0;
   margin: 0 unit(@grid/2, px);
   display: flex;
   align-self: center;
@@ -50,12 +51,11 @@
 }
 
 .button {
-  vertical-aling: middle;
   align-items: baseline;
   box-sizing: border-box;
   border-width: 0;
   border-radius: @ak-border-radius;
-  display: inline-block;
+  display: inline-flex;
   font-style: normal;
   font-size: inherit;
   height: @buttonHeight;
@@ -66,6 +66,7 @@
   text-align: center;
   transition: background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
   user-select: none;
+  vertical-align: middle;
   white-space: nowrap;
 
   &.spacing-compact {

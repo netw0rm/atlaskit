@@ -283,18 +283,19 @@ const buildStory = props => (
         </div>
 
         <div className="sample">
-          <AkButton {...props} href="http://www.atlassian.com" target="_blank">
-            <Expand label="expand icon" />
-          </AkButton>
+          <AkButton
+            {...props}
+            href="http://www.atlassian.com"
+            target="_blank"
+            iconBefore={<Expand label="expand icon" />}
+          />
           <span>button with icons + href + target</span>
         </div>
 
         <div className="sample">
           <span>
             text
-            <AkButton {...props}>
-              <Calendar label="calendar icon" />
-            </AkButton>
+            <AkButton {...props} iconBefore={<Calendar label="calendar icon" />} />
             text
           </span>
           <span>button with Calendar icon + text alignment check</span>

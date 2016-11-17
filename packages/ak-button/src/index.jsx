@@ -100,7 +100,9 @@ export default class AkButton extends Component {
       <Button {...props}>
         <style>{styles.toString()}</style>
         <Icon source={props.iconBefore} />
-        <span className={styles.locals.buttonContent}>{props.children}</span>
+        {props.children ?
+          <span className={styles.locals.buttonContent}>{props.children}</span> : null
+        }
         <Icon source={props.iconAfter} />
       </Button>
     );

@@ -610,6 +610,7 @@ declare module 'prosemirror/dist/model/replace' {
         openLeft: number;
         openRight: number;
         possibleParent: any;
+        static empty: boolean;
     }
 }
 
@@ -1102,7 +1103,7 @@ declare module 'prosemirror/dist/transform/replace_step' {
     import { Step, StepResult } from 'prosemirror/dist/transform/step';
     import { PosMap } from 'prosemirror/dist/transform/map';
     export class ReplaceStep extends Step {
-        constructor(from: number, to: number, slice: any, structure: any);
+        constructor(from: number, to: number, slice: any, structure?: any);
         apply(doc: any): StepResult;
         posMap(): PosMap;
         invert(doc: any): any;

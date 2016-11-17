@@ -74,7 +74,7 @@ export const schema = new Schema({
     image: { type: ImageNodeType, group: 'inline' },
     hard_break: { type: HardBreakNodeType, group: 'inline' },
 
-    code_block: { type: CodeBlockNodeType, content: '(text | hard_break)*', group: 'block' },
+    code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
     mention: { type: Mention, group: 'inline' },
     emoji: { type: Emoji, group: 'inline' },
   },

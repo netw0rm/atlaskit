@@ -64,7 +64,7 @@ describe('ak-editor-plugin-block-type', () => {
     const { pm, plugin } = editor(doc(p(text('line1{<>}'), br, text('line2'))));
 
     plugin.changeBlockType('code');
-    expect(pm.doc).to.deep.equal(doc(code_block()(text('line1'), br, text('line2'))));
+    expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
   });
 
   it('should be able to identify normal', () => {

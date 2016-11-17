@@ -23,40 +23,11 @@ npm install ak-badge
 
 ### HTML
 
-The `ak-badge` package exports the AkBadge [Skate](https://github.com/skatejs/skatejs) component.
+The `ak-badge` package exports the AkBadge [Skate](https://github.com/skatejs/skatejs) React component.
 
-Import the component in your JS resource as follows:
-
-#### bundle.js
+Import the component in your React app as follows:
 
 ```javascript
 import AkBadge from 'ak-badge';
-```
-
-Now we can use the defined tag in our HTML markup:
-
-#### index.html
-
-```html
-<html>
-<head>
-  <script src="bundle.js"></script>
-</head>
-<body>
-  <!-- ... -->
-  <ak-badge value="256" appearance="added"></ak-badge>
-</body>
-```
-
-### React
-
-This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
-
-```
-import AkBadge from 'ak-badge';
-import reactify from 'skatejs-react-integration';
-
-const ReactComponent = reactify(AkBadge, {});
-
 ReactDOM.render(<ReactComponent />, container);
 ```

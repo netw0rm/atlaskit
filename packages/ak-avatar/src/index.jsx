@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { Component } from 'react';
-import shadowStyles from './shadow.less';
+import styles from './styles.less';
 import Presence from './Presence';
 import Image from './Image';
 
@@ -100,26 +100,26 @@ class Avatar extends Component {
   render() {
     const { presence, size, src, label, children } = this.props;
     const sizeClasses = classNames([
-      shadowStyles.locals[size],
-      shadowStyles.locals.size,
+      styles.locals[size],
+      styles.locals.size,
     ]);
     const imgWrapperClasses = classNames({
-      [shadowStyles.locals.loaded]: !this.state.loading,
-    }, shadowStyles.locals.imgWrapper);
+      [styles.locals.loaded]: !this.state.loading,
+    }, styles.locals.imgWrapper);
     const presenceWrapperClasses = classNames({
       // hide the presence if presence prop is set to none and no custom presence is passed in
-      [shadowStyles.locals.hidden]: presence === 'none' && !children,
-      [shadowStyles.locals.presenceWrapper]: true,
+      [styles.locals.hidden]: presence === 'none' && !children,
+      [styles.locals.presenceWrapper]: true,
     });
     return (
-      <div className={shadowStyles.locals.root}>
-        <style>{shadowStyles.toString()}</style>
+      <div className={styles.locals.root}>
+        <style>{styles.toString()}</style>
         <div className={sizeClasses}>
           <div className={imgWrapperClasses} aria-label={label}>
             <Image
               alt={label}
               src={src}
-              className={shadowStyles.locals.img}
+              className={styles.locals.img}
               onLoad={this.imageLoadedHandler}
               onError={this.imageErrorHandler}
               error={this.state.error}
@@ -130,7 +130,7 @@ class Avatar extends Component {
           <div className={presenceWrapperClasses}>
             <Presence
               presence={presence}
-              className={shadowStyles.locals.presence}
+              className={styles.locals.presence}
             >
               {children}
             </Presence>

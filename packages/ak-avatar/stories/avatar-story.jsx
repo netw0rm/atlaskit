@@ -1,13 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-
 import avatarStoryStyles from 'style!./stories.less';
-
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
 import Avatar from '../src';
 
-const avatarClass = styles.locals.root;
 const transparentAvatarUrl = require('url-loader!./face-w-transparency.png');
 const tickUrl = require('url-loader!./tick.svg');
 const tickWithBackgroundUrl = require('url-loader!./tick.png');
@@ -17,11 +13,7 @@ const storybookExampleClass = avatarStoryStyles.example;
 
 const DefaultAvatar = props => (
   <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-    <Avatar
-      style={{ marginLeft: '10px' }}
-      className={avatarClass}
-      {...props}
-    />
+    <Avatar {...props} />
   </div>
 );
 
@@ -44,9 +36,6 @@ storiesOf(name, module)
       <DefaultAvatar />
     </div>
   ))
-  // .add('An avatar with an incorrectly defined size (falls back to default)', () => (
-  //   <DefaultAvatar />
-  // ))
   .add('Avatars on colored background', () => {
     const rainbowStyle = {
       background: 'linear-gradient(red, orange, yellow, green, blue, indigo, violet)',

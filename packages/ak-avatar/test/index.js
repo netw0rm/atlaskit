@@ -4,7 +4,7 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
 import AKAvatar from '../src';
-import shadowStyles from '../src/shadow.less';
+import shadowStyles from '../src/styles.less';
 
 chai.use(chaiAsPromised);
 chai.should();

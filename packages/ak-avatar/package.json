@@ -14,7 +14,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "*"
+    "react": "^15.3.2"
   },
   "dependencies": {
     "akutil-common": "^5.0.0",

@@ -1,0 +1,9 @@
+export const b75 = '#B3D4FF';
+export const b100 = '#4C9AFF';
+export const n80 = '#97A0AF';
+export const n400 = '#505F79';
+export const n600 = '#344563';
+export const n700 = '#253858';
+export const n900 = '#091E42';
+export const transparent = 'transparent';
+export const white = '#fff';

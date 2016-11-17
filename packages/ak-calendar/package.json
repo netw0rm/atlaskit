@@ -13,20 +13,18 @@
   ],
   "dependencies": {
     "ak-icon": "^8.1.2",
-    "akutil-common": "^2.6.0",
-    "akutil-shared-styles": "^34.2.2",
     "babel-runtime": "^6.11.6",
     "calendar-base": "^0.3.0",
-    "classnames": "^2.2.5",
-    "skatejs": "^4.0.4"
+    "keycode": "^2.1.7",
+    "glamor": "^2.17.14"
+  },
+  "devDependencies": {},
+  "peerDependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
-  "devDependencies": {
-    "akutil-common-test": "^3.2.0",
-    "akutil-react": "^1.0.0",
-    "custom-event-polyfill": "^0.3.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"

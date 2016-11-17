@@ -1,189 +1,182 @@
-/** @jsx vdom */
-
 import { Calendar } from 'calendar-base';
-import { define, emit, prop, vdom } from 'skatejs';
-import classnames from 'classnames';
-import AkIconArrowLeft from 'ak-icon/glyph/arrowleft';
-import AkIconArrowRight from 'ak-icon/glyph/arrowright';
+import { style } from 'glamor';
+import keycode from 'keycode';
+import React, { Component, PropTypes } from 'react';
 
-import { dateToString, getDayName, getMonthName, makeArrayFromNumber, makeEventDetail } from './util';
-import * as events from './index.events';
-import * as keys from './keys';
-import css from './index.less';
-import DateComponent from './internal/date';
 import {
-  $a11y,
-  $calendars,
-  $next,
-  $now,
-  $prev,
-  $selectDay,
-} from './index.symbols';
+  dateToString,
+  getDayName,
+  getMonthName,
+  makeArrayFromNumber,
+} from './util';
+import {
+  n80,
+  n700,
+  transparent,
+  white,
+} from './util.colors';
+import AnnouncerFn from './index.Announcer';
+import DateFn from './index.Date';
 
-const { locals } = css;
+const arrowKeys = [keycode('down'), keycode('left'), keycode('right'), keycode('up')];
 const daysPerWeek = 7;
 const monthsPerYear = 12;
+const cssPadding = '5px 0 10px 0';
+const css = {
+  btn: style({
+    backgroundColor: transparent,
+    border: 'none',
+    color: n80,
+    padding: cssPadding,
+  }),
+  btnNext: style({
+    float: 'right',
+  }),
+  btnPrev: style({
+    float: 'left',
+  }),
+  calendar: style({
+    backgroundColor: n700,
+    color: white,
+    display: 'inline-block',
+    padding: 10,
+    textAlign: 'center',
+  }),
+  dayOfWeek: style({
+    color: n80,
+    fontSize: 8,
+    textTransform: 'uppercase',
+  }),
+  heading: style({
+    display: 'flex',
+  }),
+  monthAndYear: style({
+    color: white,
+    flexBasis: '100%',
+    fontSize: 14,
+    padding: cssPadding,
+  }),
+};
 
-// TODO formalize this helper.
-const attr = Object.keys(prop).reduce((prev, curr) => {
-  prev[curr] = prop[curr].bind(null, { attribute: true });
-  return prev;
-}, {});
+export default class extends Component {
+  static get propTypes() {
+    return {
+      calendar: PropTypes.any,
+      disabled: PropTypes.array,
+      focused: PropTypes.number,
+      month: PropTypes.number,
+      onBlur: PropTypes.any,
+      onChange: PropTypes.any,
+      onFocus: PropTypes.any,
+      onSelect: PropTypes.any,
+      previouslySelected: PropTypes.array,
+      selected: PropTypes.array,
+      tabIndex: PropTypes.number,
+      title: PropTypes.string,
+      year: PropTypes.number,
+    };
+  }
+  static get defaultProps() {
+    const now = new Date();
+    return {
+      calendar: new Calendar({ siblingMonths: true, weekNumbers: true }),
+      disabled: [],
+      focused: 0,
+      month: now.getMonth() + 1,
+      onBlur: () => {},
+      onChange: () => {},
+      onFocus: () => {},
+      onSelect: () => {},
+      previouslySelected: [],
+      selected: [],
+      tabIndex: 0,
+      title: 'Calendar',
+      year: now.getFullYear(),
+    };
+  }
+  navigateWithKeyboard(e) {
+    let { focused } = this.props;
+    const { month, year } = this.props;
+    const key = e.keyCode;
+    const isArrowKey = arrowKeys.indexOf(key) > -1;
+    const isInitialArrowKeyPress = !focused && isArrowKey;
 
-// TODO this doesn't seem to be announcing right now. Needs fixing.
-// TODO find out if there is a better way. If not formalise this.
-const Announcer = () => (
-  <div
-    ref={(e) => {
-      e.setAttribute('aria-live', 'assertive');
-      e.setAttribute('aria-relevant', 'text');
-      Object.assign(e.style, {
-        border: '0',
-        clip: 'rect(0 0 0 0)',
-        height: '1px',
-        margin: '-1px',
-        overflow: 'hidden',
-        padding: '0',
-        position: 'absolute',
-        width: '1px',
-      });
-    }}
-  />
-);
-
-/**
- * @description Create instances of the component programmatically, or using markup.
- * @class Calendar
- * @example @js import Calendar from 'ak-calendar';
- * const component = new Calendar();
- */
-export default define('ak-calendar', {
-  props: {
-    [$now]: { default: new Date() },
-    [$a11y]: prop.string(),
-    disabled: attr.array(),
-    focused: attr.number({ default: 0 }),
-    previouslySelected: attr.array(),
-    selected: attr.array(),
-    month: attr.number({ default: new Date().getMonth() + 1 }),
-    year: attr.number({ default: new Date().getFullYear() }),
-  },
-  prototype: {
-    loseFocus() {
-      this.focused = 0;
-    },
-    navigateWithKeyboard(e) {
-      const key = e.keyCode;
-      const focused = this.focused;
-      const isArrowKey = [keys.down, keys.left, keys.right, keys.up].indexOf(key) > -1;
-      const isInitialArrowKeyPress = !focused && isArrowKey;
-
-      if (isInitialArrowKeyPress) {
-        this.focused = 1;
-        return;
-      }
-
-      // TODO break this down into separate functions.
-      if (key === keys.down) {
-        const next = focused + daysPerWeek;
-        const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
-
-        if (next > daysInMonth) {
-          this[$next]();
-          this.focused = next - daysInMonth;
-        } else {
-          this.focused = next;
-        }
-      } else if (key === keys.left) {
-        const next = focused - 1;
-
-        if (next < 1) {
-          this[$prev]();
-          this.focused = Calendar.daysInMonth(this.year, this.month - 1);
-        } else {
-          this.focused = next;
-        }
-      } else if (key === keys.right) {
-        const next = focused + 1;
-        const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
-
-        if (next > daysInMonth) {
-          this[$next]();
-          this.focused = 1;
-        } else {
-          this.focused = next;
-        }
-      } else if (key === keys.up) {
-        const next = focused - daysPerWeek;
-        if (next < 1) {
-          this[$prev]();
-          this.focused = Calendar.daysInMonth(this.year, this.month - 1) + next;
-        } else {
-          this.focused = next;
-        }
-      } else if (key === keys.escape) {
-        this.focused = 0;
-      } else if (key === keys.enter || key === keys.space) {
-        emit(this, events.select, {
-          detail: makeEventDetail({
-            year: this.year,
-            month: this.month,
-            day: this.focused,
-          }),
-        });
-      }
-    },
-    next() {
-      if (this.month === monthsPerYear) {
-        this.month = 1;
-        this.year++;
-      } else {
-        this.month++;
-      }
-    },
-    prev() {
-      if (this.month === 1) {
-        this.month = monthsPerYear;
-        this.year--;
-      } else {
-        this.month--;
-      }
-    },
-    selectDay(e) {
-      emit(this, events.select, {
-        detail: makeEventDetail({
-          year: e.currentTarget.getAttribute('year'),
-          month: e.currentTarget.getAttribute('month'),
-          day: e.currentTarget.getAttribute('day'),
-        }),
-      });
-    },
-  },
-  created(elem) {
-    elem[$calendars] = new Calendar({
-      siblingMonths: true,
-      weekNumbers: true,
-    });
-
-    elem.addEventListener('blur', elem.loseFocus);
-    elem.addEventListener('keydown', elem.navigateWithKeyboard);
-
-    elem[$next] = elem.next.bind(elem);
-    elem[$prev] = elem.prev.bind(elem);
-    elem[$selectDay] = elem.selectDay.bind(elem);
-  },
-  attached(elem) {
-    if (!elem.hasAttribute('tabindex')) {
-      elem.setAttribute('tabindex', 0);
+    if (isInitialArrowKeyPress) {
+      this.props.onFocus({ day: 1, month, year });
+      return;
     }
 
-    if (!elem.hasAttribute('aria-label')) {
-      elem.setAttribute('aria-label', elem.getAttribute('title') || 'Calendar');
+    // TODO break this down into separate functions.
+    if (key === keycode('down')) {
+      const next = focused + daysPerWeek;
+      const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
+
+      if (next > daysInMonth) {
+        this.next();
+        focused = next - daysInMonth;
+      } else {
+        focused = next;
+      }
+    } else if (key === keycode('left')) {
+      const next = focused - 1;
+
+      if (next < 1) {
+        this.prev();
+        focused = Calendar.daysInMonth(this.year, this.month - 1);
+      } else {
+        focused = next;
+      }
+    } else if (key === keycode('right')) {
+      const next = focused + 1;
+      const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
+
+      if (next > daysInMonth) {
+        this.next();
+        focused = 1;
+      } else {
+        focused = next;
+      }
+    } else if (key === keycode('up')) {
+      const next = focused - daysPerWeek;
+
+      if (next < 1) {
+        this.prev();
+        focused = Calendar.daysInMonth(this.year, this.month - 1) + next;
+      } else {
+        focused = next;
+      }
+    } else if (key === keycode('enter') || key === keycode('space')) {
+      this.props.onSelect({ day: focused, month, year });
+      return;
+    } else {
+      return;
     }
-  },
-  render(elem) {
-    const calendar = elem[$calendars].getCalendar(elem.year, elem.month - 1);
-    const now = elem[$now];
+
+    this.props.onFocus({ day: focused, month, year });
+  }
+  next() {
+    let { month, year } = this.props;
+    if (month === monthsPerYear) {
+      month = 1;
+      year++;
+    } else {
+      month++;
+    }
+    this.props.onChange({ month, year });
+  }
+  prev() {
+    let { month, year } = this.props;
+    if (month === 1) {
+      month = monthsPerYear;
+      year--;
+    } else {
+      month--;
+    }
+    this.props.onChange({ month, year });
+  }
+  render() {
+    const { disabled, focused, month, previouslySelected, selected, year } = this.props;
+    const calendar = this.props.calendar.getCalendar(year, month - 1);
     const weeks = [];
     const shouldDisplaySixthWeek = calendar.length % 6;
 
@@ -191,7 +184,7 @@ export default define('ak-calendar', {
       const lastDayIsSibling = calendar[calendar.length - 1].siblingMonth;
       const sliceStart = lastDayIsSibling ? daysPerWeek : 0;
       calendar.push(
-        ...elem[$calendars].getCalendar(elem.year, elem.month)
+        ...this.props.calendar.getCalendar(year, month)
           .slice(sliceStart, sliceStart + daysPerWeek)
           .map(e => Object.assign({}, e, { siblingMonth: true }))
       );
@@ -205,64 +198,66 @@ export default define('ak-calendar', {
         weeks.push(week);
       }
 
-      const isDisabled = elem.disabled.indexOf(dateAsString) > -1;
-      const isFocused = elem.focused === date.day && !date.siblingMonth;
-      const isPreviouslySelected = elem.previouslySelected.indexOf(dateAsString) > -1;
-      const isSelected = elem.selected.indexOf(dateAsString) > -1;
+      const isDisabled = disabled.indexOf(dateAsString) > -1;
+      const isFocused = focused === date.day && !date.siblingMonth;
+      const isPreviouslySelected = previouslySelected.indexOf(dateAsString) > -1;
+      const isSelected = selected.indexOf(dateAsString) > -1;
       const isSiblingMonth = date.siblingMonth;
-      const isToday = date.day === now.getDate() &&
-        date.month === now.getMonth() &&
-        date.year === now.getFullYear();
 
       week.push(
-        <DateComponent
+        <DateFn
           aria-live={isFocused ? 'polite' : ''}
           disabled={isDisabled}
           focused={isFocused}
+          key={dateAsString}
           previouslySelected={isPreviouslySelected}
           selected={isSelected}
           sibling={isSiblingMonth}
-          today={isToday}
           day={date.day.toString()}
-          month={(date.month + 1).toString()}
-          year={date.year.toString()}
-          onClick={elem[$selectDay]}
+          onClick={() => this.props.onSelect({ day: date.day, month, year })}
         />
       );
     });
 
-    return [
-      <style>{css.toString()}</style>,
-      <Announcer>{new Date(elem.year, elem.month, elem.focused).toString()}</Announcer>,
-      <table className={locals.calendar}>
-        <caption>
-          <div className={locals.heading}>
-            <button className={classnames(locals.btn, locals.btnPrev)} onClick={elem[$prev]}>
-              <AkIconArrowLeft />
-            </button>
-            <div className={locals.monthAndYear}>
-              <span>{getMonthName(elem, elem.month)}</span>
-              {' '}
-              <span>{elem.year}</span>
+    return (
+      // There's no interactive element to trap keyboard events on so we must trap them here so
+      // that we can navigate the keyboard for them.
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div
+        aria-label={this.props.title}
+        onBlur={() => this.props.onBlur()}
+        onKeyDown={e => this.navigateWithKeyboard(e)}
+        tabIndex={this.props.tabIndex}
+      >
+        <AnnouncerFn>{new Date(year, month, focused).toString()}</AnnouncerFn>
+        <table {...css.calendar}>
+          <caption>
+            <div {...css.heading}>
+              <button {...css.btn} {...css.btnPrev} onClick={() => this.prev()}>
+                &prev;
+              </button>
+              <div {...css.monthAndYear}>
+                <span>{getMonthName(month)}</span>
+                {' '}
+                <span>{year}</span>
+              </div>
+              <button {...css.btn} {...css.btnNext} onClick={() => this.next()}>
+                &next;
+              </button>
             </div>
-            <button className={classnames(locals.btn, locals.btnNext)} onClick={elem[$next]}>
-              <AkIconArrowRight />
-            </button>
-          </div>
-        </caption>
-        <thead>
-          <tr>
-            {makeArrayFromNumber(daysPerWeek).map(i =>
-              <th className={locals.dayOfWeek}>{getDayName(elem, i)}</th>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {weeks.map(week => <tr>{week}</tr>)}
-        </tbody>
-      </table>,
-    ];
-  },
-});
-
-export { events };
+          </caption>
+          <thead>
+            <tr>
+              {makeArrayFromNumber(daysPerWeek).map(i =>
+                <th {...css.dayOfWeek} key={i}>{getDayName(i)}</th>
+              )}
+            </tr>
+          </thead>
+          <tbody>
+            {weeks.map((week, i) => <tr key={i}>{week}</tr>)}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}

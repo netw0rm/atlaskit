@@ -1,12 +1,10 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow } from 'enzyme';
 import React from 'react';
 
 import AkBadge from '../src';
 import styles from '../src/style.less';
 
-chai.use(chaiEnzyme);
 chai.should();
 
 describe('ak-badge', () => {

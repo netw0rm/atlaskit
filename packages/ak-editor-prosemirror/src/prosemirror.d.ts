@@ -785,11 +785,11 @@ declare module 'prosemirror/dist/model/schema' {
         static compile(nodes: any, schema: any): any;
         toDOM(node?: Node): any[];
         get matchDOMTag(): any;
+        contentExpr: any;
     }
     export class Block extends NodeType {
         isBlock: boolean;
         isTextblock: any;
-        contentExpr: any;
     }
     export class Inline extends NodeType {
         isInline: boolean;

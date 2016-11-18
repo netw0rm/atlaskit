@@ -23,11 +23,11 @@ npm install ak-badge
 
 ### HTML
 
-The `ak-badge` package exports the AkBadge [Skate](https://github.com/skatejs/skatejs) React component.
+The `ak-badge` package exports the Badge React component.
 
 Import the component in your React app as follows:
 
 ```javascript
-import AkBadge from 'ak-badge';
-ReactDOM.render(<ReactComponent />, container);
+import Badge from 'ak-badge';
+ReactDOM.render(<Badge />, container);
 ```

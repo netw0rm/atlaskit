@@ -56,6 +56,9 @@ export default class Alignment {
       };
     }
 
+    /* eslint-disable no-console */
+    console.log('new Popper(', popperOptions);
+
     this.popper = new Popper(
       getElement(opts.target),
       getElement(opts.elem),

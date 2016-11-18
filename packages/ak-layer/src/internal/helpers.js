@@ -46,6 +46,12 @@ function createNewAlignment(elem) {
 }
 
 function reCreateAlignmentIfNeeded(elem, data) {
+  /* eslint-disable no-console */
+  console.log(
+    'ak-layer.reCreateAlignmentIfNeeded()',
+    'enableFlip:', elem.enableFlip,
+    'boundariesElement:', elem.boundariesElement
+  );
   if (elem.alignment) {
     if (data.newValue !== data.oldValue) {
       elem.alignment.destroy();

@@ -178,6 +178,12 @@ export default define('ak-layer', {
     );
   },
   rendered(elem) {
+    /* eslint-disable no-console */
+    console.log(
+      'ak-layer rendered',
+      'flip:', elem.enableFlip,
+      'boundariesElement', elem.boundariesElement
+    );
     if (elem.alignment) {
       elem.alignment.reposition();
     } else {

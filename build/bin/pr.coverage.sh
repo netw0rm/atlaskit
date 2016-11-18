@@ -27,7 +27,7 @@ function print_coverage() {
 
 function create_coverage_index() {
   $CHALK --no-stdin -t "{blue Generating coverage index...}"
-  echo "<html><head><title>Coverage</title></head><body><a href=\"./react/html\">React coverage</a><br /><a href=\"./wc/html\">WC coverage</a></body></html>" > ./coverage/index.html
+  echo "<html><head><title>Coverage</title></head><body><a href=\"./react/html/\">React coverage</a><br /><a href=\"./wc/html/\">WC coverage</a></body></html>" > ./coverage/index.html
 }
 
 stats_build_status "INPROGRESS"

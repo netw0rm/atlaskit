@@ -46,7 +46,7 @@ class Icon extends Component {
          * icon.size = 'medium';
          * document.body.appendChild(icon);
          */
-      size: PropTypes.oneOf([size.small, size.medium, size.large, size.xlarge]),
+      size: PropTypes.oneOf(Object.values(size)),
       onClick: PropTypes.func,
     };
   }

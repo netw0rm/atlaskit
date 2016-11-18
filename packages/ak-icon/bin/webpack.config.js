@@ -42,16 +42,9 @@ module.exports = (tmpFolder, entry) => ({
         loader: `css${cssOptions}!less`,
       },
       {
-        loader: 'babel',
         test: /\.jsx?$/,
-        query: {
-          babelrc: false,
-          presets: [
-            'es2015',
-            'react',
-            'stage-0',
-          ],
-        },
+        loader: 'babel-loader',
+        exclude: /node_modules/,
       },
     ],
   },

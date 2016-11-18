@@ -1,11 +1,11 @@
 /** @jsx React.createElement */
-import React from 'react';
+import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 
 import styles from './styles.less';
+import size from './internal/size';
 
-/* eslint-disable react/prop-types */
-export default (props) => {
+const Root = (props) => {
   const classes = {
     [styles.locals.icon]: true,
     [styles.locals[props.size]]: !!props.size,
@@ -18,3 +18,11 @@ export default (props) => {
     </div>
   );
 };
+
+Root.propTypes = {
+  size: PropTypes.oneOf(Object.values(size)),
+  onClick: PropTypes.func,
+  children: PropTypes.node,
+};
+
+export default Root;

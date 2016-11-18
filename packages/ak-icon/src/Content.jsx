@@ -1,5 +1,5 @@
 /** @jsx React.createElement */
-import React from 'react';
+import React, { PropTypes } from 'react';
 import styles from './styles.less';
 
 const Content = props => (
@@ -7,6 +7,6 @@ const Content = props => (
     {props.children}
   </span>
 );
-Content.propTypes = { children: React.PropTypes.node };
+Content.propTypes = { children: PropTypes.node };
 
 export default Content;

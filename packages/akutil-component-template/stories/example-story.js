@@ -1,13 +1,9 @@
-import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
-import reactify from 'akutil-react';
+import { storiesOf } from '@kadira/storybook';
 
-import WebComponent, { events } from '../src';
+import Component from '../src';
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
 
-
-const Component = reactify(WebComponent);
 
 storiesOf(name, module)
   .add('a simple akutil-component-template', () => (
@@ -16,20 +12,9 @@ storiesOf(name, module)
   .add('a simple akutil-component-template with a name', () => (
     <Component name="MyComponent" />
   ))
-  .add('a simple akutil-component-template that uses an emitted event', () => (
-    <Component
-      name="MyComponent"
-      onClick={function onClick() { this.announce(); }}
-      onAnnounce-name={action(events.announceName)}
-    />
-  ))
-  .add('an akutil-component-template that emits an action when it is clicked', () => (
-    <Component id="myComponent" onClick={action('clicking the WebComponent')} />
-  ))
   .add('an akutil-component-template that removes itself when being clicked', () => {
     const removeMe = e => e.currentTarget.parentNode.removeChild(e.currentTarget);
-    const cls = styles.locals.akutilComponentTemplate;
-    return (<Component id="myComponent" className={cls} onClick={removeMe} />);
+    return (<Component id="myComponent" onClick={removeMe} />);
   })
   .addMonkeyTest('a akutil-component-template with monkey testing', () => (
     // Use this to add a story that has fuzzy testing attached.

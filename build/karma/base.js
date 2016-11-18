@@ -1,6 +1,4 @@
-const webpackConfig = require('../webpack/karma.js');
-const addPolyFills = require('./addPolyFills.js');
-const FailPlugin = require('./FailPlugin');
+const webpackConfig = require('../webpack/karma');
 
 module.exports = (config) => {
   Object.assign(config, {
@@ -29,13 +27,13 @@ module.exports = (config) => {
     // possible values: LOG_DISABLE, LOG_ERROR, LOG_WARN, LOG_INFO, LOG_DEBUG
     logLevel: config.LOG_INFO,
 
-    autoWatch: true,
+    autoWatch: false,
 
     browsers: ['Chrome', 'Firefox'],
 
     reportSlowerThan: 500, // default animation duration is 250ms
 
-    singleRun: false,
+    singleRun: true,
 
     concurrency: Infinity,
 
@@ -43,11 +41,6 @@ module.exports = (config) => {
       showDiff: true,
     },
   });
-
-  config.webpack.plugins.push(new FailPlugin(config));
-
-  // add the polyfill file to the test run
-  addPolyFills(config);
 
   config.set({
     client: {

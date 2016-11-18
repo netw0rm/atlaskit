@@ -4,30 +4,30 @@ import {
   br, code, doc, em, h1, h2, h3, h4, h5, h6, hr,
   li, ol, p, strike, strong, sub, sup, u, ul
 } from './_schema-builder';
-import { Node } from 'ak-editor-prosemirror';
+import { DocNode } from 'ak-editor-schema';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import schema from '../src/schema';
 
 chai.use(chaiPlugin);
 
-const checkBuilder = (fn: any, description: string, cxhtml: string, node: Node) => {
+const checkBuilder = (fn: any, description: string, cxhtml: string, doc: DocNode) => {
   fn(`parses CXHTML: ${description}`, () => {
     const actual = parse(cxhtml);
-    expect(actual).to.deep.equal(node);
+    expect(actual).to.deep.equal(doc);
   });
 
   fn(`round-trips CXHTML: ${description}`, () => {
-    const roundTripped = parse(encode(node))
-    expect(roundTripped).to.deep.equal(node);
+    const roundTripped = parse(encode(doc))
+    expect(roundTripped).to.deep.equal(doc);
   });
 }
 
-const check = (description: string, cxhtml: string, node: Node) =>
-  checkBuilder(it, description, cxhtml, node);
+const check = (description: string, cxhtml: string, doc: DocNode) =>
+  checkBuilder(it, description, cxhtml, doc);
 
-const checkOnly = (description: string, cxhtml: string, node: Node) =>
-  checkBuilder(it.only, description, cxhtml, node)
+const checkOnly = (description: string, cxhtml: string, doc: DocNode) =>
+  checkBuilder(it.only, description, cxhtml, doc)
 
 describe('ak-editor-cq encode-cxml:', () => {
   describe('basic formatting:', () => {

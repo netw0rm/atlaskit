@@ -3,5 +3,5 @@ set -e
 
 karma \
 start \
-./build/karma/react/all.js \
+./build/karma/wc/coverage.js \
 $@

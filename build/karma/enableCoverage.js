@@ -1,26 +1,22 @@
-const karmaConf = require('./all.js');
-const moduleBabelQuery = require('../webpack/babel.query.module');
-
-module.exports = (config) => {
+module.exports = (config, subDir, babelQuery = {}) => {
   Object.assign(config, {
     browserNoActivityTimeout: 120000,
     coverageReporter: {
       type: 'html',
-      dir: 'coverage/',
+      dir: `coverage/${subDir}/`,
       reporters: [
         { type: 'html', subdir: 'html' },
         { type: 'text', subdir: '.', file: 'coverage.txt' },
       ],
     },
   });
-  karmaConf(config);
 
   Object.assign(config.webpack, {
     isparta: {
       embedSource: true,
       noAutoWrap: true,
       // these babel options will be passed only to isparta and not to babel-loader
-      babel: moduleBabelQuery,
+      babel: babelQuery,
     },
   });
   // transpile and instrument only testing sources with isparta

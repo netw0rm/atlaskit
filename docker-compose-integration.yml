@@ -55,5 +55,5 @@ services:
               && echo \"waiting for dev\"
               && `npm bin`/wait-on -d 20000 -i 500 http-get://dev:9001/
               && echo \"running tests\"
-              && npm run test/single/integration \"$SCOPE\"
+              && npm run test/wc/single/integration \"$SCOPE\"
              "'

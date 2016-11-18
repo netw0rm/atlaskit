@@ -11,23 +11,23 @@ import schema from '../src/schema';
 
 chai.use(chaiPlugin);
 
-const checkBuilder = (fn: any, description: string, cxhtml: string, node: DocNode) => {
+const checkBuilder = (fn: any, description: string, cxhtml: string, doc: DocNode) => {
   fn(`parses CXHTML: ${description}`, () => {
     const actual = parse(cxhtml);
-    expect(actual).to.deep.equal(node);
+    expect(actual).to.deep.equal(doc);
   });
 
   fn(`round-trips CXHTML: ${description}`, () => {
-    const roundTripped = parse(encode(node))
-    expect(roundTripped).to.deep.equal(node);
+    const roundTripped = parse(encode(doc))
+    expect(roundTripped).to.deep.equal(doc);
   });
 }
 
-const check = (description: string, cxhtml: string, node: DocNode) =>
-  checkBuilder(it, description, cxhtml, node);
+const check = (description: string, cxhtml: string, doc: DocNode) =>
+  checkBuilder(it, description, cxhtml, doc);
 
-const checkOnly = (description: string, cxhtml: string, node: DocNode) =>
-  checkBuilder(it.only, description, cxhtml, node)
+const checkOnly = (description: string, cxhtml: string, doc: DocNode) =>
+  checkBuilder(it.only, description, cxhtml, doc)
 
 describe('ak-editor-cq encode-cxml:', () => {
   describe('basic formatting:', () => {

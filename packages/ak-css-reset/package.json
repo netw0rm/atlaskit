@@ -10,12 +10,11 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^35.0.1"
+    "akutil-shared-styles": "^37.0.3"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "*",
     "less": "^2.7.1"
   },
   "repository": {

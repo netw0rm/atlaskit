@@ -1,15 +1,18 @@
 {
   "name": "ak-editor-jira",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Atlassian Editor component for JIRA",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.tsx",
+  "types": "src/index.tsx",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-jira"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",

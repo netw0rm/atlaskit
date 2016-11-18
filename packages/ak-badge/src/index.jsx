@@ -89,7 +89,7 @@ class Badge extends Component {
   validAppearance() {
     const { appearance } = this.props;
     const { values, invalidDefault } = APPEARANCE_ENUM;
-    return values.indexOf(appearance) >= 0 ? appearance : invalidDefault;
+    return values.indexOf(appearance) === -1 ? appearance : invalidDefault;
   }
 
   render() {

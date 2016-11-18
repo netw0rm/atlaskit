@@ -1,40 +1,4 @@
-// These styles will be inserted into a style tag inside
-// the shadow dom of each instance of the component
-
-// Only do class selectors in here, anything else leaks to the rest of the page in
-// browsers that do not support shadow DOM
 @import 'shared-variables.less';
-
-// Because of the shadow DOM boundries we can not style the host element the usual way
-// To do this the ':host' pseudo-class should be used
-// Also we should style the tag name with the same styles because of the browsers
-// that do not support shadow DOM
-.host-styles() {
-  display: inline-flex;
-}
-
-// we define a class here in order to re-use it in the storybook
-// (because in storybook the component name is randomly generated)
-.ak-lozenge,
-ak-lozenge {
-  .host-styles();
-
-  > _shadow_root_ {
-    display: inline-flex;
-  }
-
-  &:not([defined]) {
-    display: none;
-  }
-}
-
-:host {
-  .host-styles();
-
-  &(:not([defined])) {
-    display: none;
-  }
-}
 
 .lozenge {
   border-radius: @ak-border-radius;
@@ -69,7 +33,7 @@ ak-lozenge {
   background: @success-bg;
   color: @success-text;
 
-  &[bold] {
+  &[data-bold] {
     background: @success-bold-bg;
     color: @success-bold-text;
   }
@@ -78,7 +42,7 @@ ak-lozenge {
   background: @removed-bg;
   color: @removed-text;
 
-  &[bold] {
+  &[data-bold] {
     background: @removed-bold-bg;
     color: @removed-bold-text;
   }
@@ -87,7 +51,7 @@ ak-lozenge {
   background: @inprogress-bg;
   color: @inprogress-text;
 
-  &[bold] {
+  &[data-bold] {
     background: @inprogress-bold-bg;
     color: @inprogress-bold-text;
   }
@@ -96,7 +60,7 @@ ak-lozenge {
   background: @new-bg;
   color: @new-text;
 
-  &[bold] {
+  &[data-bold] {
     background: @new-bold-bg;
     color: @new-bold-text;
   }
@@ -105,7 +69,7 @@ ak-lozenge {
   background: @moved-bg;
   color: @moved-text;
 
-  &[bold] {
+  &[data-bold] {
     background: @moved-bold-bg;
     color: @moved-bold-text;
   }

@@ -3,6 +3,7 @@ import React from 'react';
 
 import Badge from '../src';
 import { name } from '../package.json';
+import OnValueUpdatedDemo from './on-value-updated-demo';
 
 storiesOf(name, module)
   .add('with a value', () => (
@@ -28,4 +29,7 @@ storiesOf(name, module)
   ))
   .add('with value === max value', () => (
     <Badge value="99" max="99" />
+  ))
+  .add('onValueUpdated handler prop', () => (
+    <OnValueUpdatedDemo />
   ));

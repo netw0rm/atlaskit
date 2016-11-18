@@ -1,9 +1,6 @@
 # CssReset
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
-
-
-![Example ak-css-reset](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-css-reset/docs/screencast.gif)
+This package exports a CSS file which provides a minimal reset along with base styles for many HTML elements. It is meant to be used as a basis for all styling to be built upon.
 
 ## Try it out
 
@@ -17,52 +14,27 @@ npm install ak-css-reset
 
 ## Using the component
 
-### HTML
+### Importing
 
-The `ak-css-reset` package exports the CssReset [Skate](https://github.com/skatejs/skatejs) component.
+The `ak-css-reset` package can be consumed via the dist, or in Webpack.
 
-Import the component in your JS resource:
-
-#### bundle.js
+#### Importing in Webpack
 
 ```js
 import 'ak-css-reset';
 ```
 
-Now you can use the defined tag in your HTML markup:
+The Webpack style loader should then place the CSS within the HEAD of your HTML element.
 
-#### index.html
+#### Importing in HTML
 
 ```html
 <html>
   <head>
-    <script src="bundle.js"></script>
+    <link rel="stylesheet" href="dist/bundle.css" />
   </head>
   <body>
     <!-- ... -->
-    <ak-css-reset></ak-css-reset>
   </body>
 </html>
-```
-
-You can also use it from within another JavaScript resource:
-
-```js
-import CssReset from 'ak-css-reset';
-
-const component = new CssReset();
-document.body.appendChild(component);
-```
-
-### React
-
-This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
-
-```js
-import CssReset from 'ak-css-reset';
-import reactify from 'skatejs-react-integration';
-
-const ReactComponent = reactify(CssReset, {});
-
-ReactDOM.render(<ReactComponent />, container);
 ```

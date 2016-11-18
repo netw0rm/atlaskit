@@ -107,11 +107,9 @@
     transition-duration: 0s, 0.2s;
   }
 
-  &[disabled] {
-    pointer-events: none;
-  }
-
+  &[disabled],
   &.disabled {
+    pointer-events: none;
     cursor: not-allowed;
   }
 }

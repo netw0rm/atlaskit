@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import styles from 'style!./less/styles.less';
+
 import { appearance, type, spacing, theme } from './internal/enumerated-properties';
 import Button from './Button';
 import Icon from './Icon';
-import styles from './less/styles.less';
 
 /* eslint-disable react/no-unused-prop-types */
 export default class AkButton extends Component {
@@ -98,10 +99,9 @@ export default class AkButton extends Component {
 
     return (
       <Button {...props}>
-        <style>{styles.toString()}</style>
         <Icon source={props.iconBefore} />
         {props.children ?
-          <span className={styles.locals.buttonContent}>{props.children}</span> : null
+          <span className={styles.buttonContent}>{props.children}</span> : null
         }
         <Icon source={props.iconAfter} />
       </Button>

@@ -1,11 +1,11 @@
 import React from 'react';
-import shadowStyles from './less/styles.less';
+import styles from './less/styles.less';
 import Element from './Element';
 
 /* eslint-disable react/prop-types */
 export default props =>
   <Element {...props}>
-    <span className={shadowStyles.locals.buttonWrapper}>
+    <span className={styles.locals.buttonWrapper}>
       {props.children}
     </span>
   </Element>;

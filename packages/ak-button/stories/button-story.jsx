@@ -302,9 +302,11 @@ const buildStory = props => (
         </div>
 
         <div className="sample">
-          <AkButton {...props} selected>
-            <Question label="question icon">Question</Question>
-          </AkButton>
+          <AkButton
+            {...props}
+            selected
+            iconBefore={<Question label="question icon">Question</Question>}
+          />
           <span>button with Question icon + selected</span>
         </div>
 

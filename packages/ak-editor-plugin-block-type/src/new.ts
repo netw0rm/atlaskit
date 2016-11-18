@@ -89,37 +89,38 @@ export class BlockTypeState {
     if (canChange) {
       // clear blockquote
       commands.lift(pm);
+      const nodes = pm.schema.nodes;
 
       switch (name) {
         case 'normal':
-          if (pm.schema.nodes.paragraph) {
-            commands.setBlockType(pm.schema.nodes.paragraph)(pm);
+          if (nodes.paragraph) {
+            commands.setBlockType(nodes.paragraph)(pm);
           }
           break;
         case 'heading1':
-          if (pm.schema.nodes.heading) {
-            commands.setBlockType(pm.schema.nodes.heading, { level: 1 })(pm);
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 1 })(pm);
           }
           break;
         case 'heading2':
-          if (pm.schema.nodes.heading) {
-            commands.setBlockType(pm.schema.nodes.heading, { level: 2 })(pm);
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 2 })(pm);
           }
           break;
         case 'heading3':
-          if (pm.schema.nodes.heading) {
-            commands.setBlockType(pm.schema.nodes.heading, { level: 3 })(pm);
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 3 })(pm);
           }
           break;
         case 'quote':
-          if (pm.schema.nodes.paragraph) {
-            commands.setBlockType(pm.schema.nodes.paragraph)(pm);
+          if (nodes.paragraph && nodes.blockquote) {
+            commands.setBlockType(nodes.paragraph)(pm);
+            commands.wrapIn(nodes.blockquote)(pm);
           }
-          commands.wrapIn(pm.schema.nodes.blockquote)(pm);
           break;
         case 'code':
-          if (pm.schema.nodes.code_block) {
-            commands.setBlockType(pm.schema.nodes.code_block)(pm);
+          if (nodes.code_block) {
+            commands.setBlockType(nodes.code_block)(pm);
           }
           break;
       }

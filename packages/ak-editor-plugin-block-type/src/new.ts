@@ -92,23 +92,35 @@ export class BlockTypeState {
 
       switch (name) {
         case 'normal':
-          commands.setBlockType(pm.schema.nodes.paragraph)(pm);
+          if (pm.schema.nodes.paragraph) {
+            commands.setBlockType(pm.schema.nodes.paragraph)(pm);
+          }
           break;
         case 'heading1':
-          commands.setBlockType(pm.schema.nodes.heading, { level: 1 })(pm);
+          if (pm.schema.nodes.heading) {
+            commands.setBlockType(pm.schema.nodes.heading, { level: 1 })(pm);
+          }
           break;
         case 'heading2':
-          commands.setBlockType(pm.schema.nodes.heading, { level: 2 })(pm);
+          if (pm.schema.nodes.heading) {
+            commands.setBlockType(pm.schema.nodes.heading, { level: 2 })(pm);
+          }
           break;
         case 'heading3':
-          commands.setBlockType(pm.schema.nodes.heading, { level: 3 })(pm);
+          if (pm.schema.nodes.heading) {
+            commands.setBlockType(pm.schema.nodes.heading, { level: 3 })(pm);
+          }
           break;
         case 'quote':
-          commands.setBlockType(pm.schema.nodes.paragraph)(pm);
+          if (pm.schema.nodes.paragraph) {
+            commands.setBlockType(pm.schema.nodes.paragraph)(pm);
+          }
           commands.wrapIn(pm.schema.nodes.blockquote)(pm);
           break;
         case 'code':
-          commands.setBlockType(pm.schema.nodes.code_block)(pm);
+          if (pm.schema.nodes.code_block) {
+            commands.setBlockType(pm.schema.nodes.code_block)(pm);
+          }
           break;
       }
     }

@@ -7,11 +7,11 @@ import styles from '../src/styles.less';
 import Avatar from '../src';
 import Image from '../src/Image';
 import Presence from '../src/Presence';
+import sizes from '../src/internal/sizes';
 
 const { expect } = chai;
 chai.use(chaiEnzyme());
 
-const avatarSizes = ['small', 'medium', 'large', 'xlarge'];
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 
 describe('ak-avatar', () => {
@@ -23,7 +23,7 @@ describe('ak-avatar', () => {
   });
 
   describe('size property', () => {
-    avatarSizes.forEach((size) => {
+    sizes.forEach((size) => {
       describe(`when is set to ${size}`, () =>
         it(`should have class ${size}`, () => {
           const wrapper = shallow(<Avatar size={size} />);

@@ -4,6 +4,9 @@ import styles from './styles.less';
 import Presence from './Presence';
 import Image from './Image';
 
+import sizes from './internal/sizes';
+import presences from './internal/presences';
+
 class Avatar extends Component {
   static get propTypes() {
     return {
@@ -15,7 +18,7 @@ class Avatar extends Component {
        * @default none
        * @type {string}
        */
-      presence: React.PropTypes.oneOf(['none', 'online', 'busy', 'offline']),
+      presence: React.PropTypes.oneOf(presences),
       /**
        * @description Defines the size of the avatar.
        * Allowed values: 'small', 'medium', 'large', 'xlarge'.
@@ -24,7 +27,7 @@ class Avatar extends Component {
        * @default medium
        * @type {string}
        */
-      size: React.PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
+      size: React.PropTypes.oneOf(sizes),
       /**
        * @description The source URL.
        * @memberof Avatar

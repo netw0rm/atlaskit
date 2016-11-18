@@ -20,7 +20,9 @@
     "glamor": "^2.17.14",
     "keycode": "^2.1.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "akutil-polyfills": "^5.0.1"
+  },
   "peerDependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2"

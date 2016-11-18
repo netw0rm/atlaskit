@@ -9,6 +9,8 @@ import { name } from '../package.json';
 chai.use(chaiAsPromised);
 chai.use(chaiEnzyme());
 
+const { expect } = chai;
+
 const Component = () => <div className="test">test</div>;
 
 describe(name, () => {

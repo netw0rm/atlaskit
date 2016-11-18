@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { Component } from 'react';
-import styles from './style.less';
+import styles from 'style!./style.less';
 
 const APPEARANCE_ENUM = {
   values: ['default', 'primary', 'important', 'added', 'removed'],
@@ -89,16 +89,15 @@ class Badge extends Component {
   validAppearance() {
     const { appearance } = this.props;
     const { values, invalidDefault } = APPEARANCE_ENUM;
-    return values.indexOf(appearance) === -1 ? appearance : invalidDefault;
+    return values.indexOf(appearance) !== -1 ? appearance : invalidDefault;
   }
 
   render() {
     return (
-      <span className={styles.locals.root}>
-        <style>{styles.toString()}</style>
+      <span className={styles.root}>
         <span
           className={classNames(
-            [styles.locals.value, styles.locals[this.validAppearance()]]
+            [styles.value, styles[this.validAppearance()]]
           )}
         >{this.displayValue()}</span>
       </span>

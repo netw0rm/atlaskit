@@ -38,6 +38,7 @@ describe('ak-badge', () => {
     });
     it('should constrain the value when set', () => {
       shallow(<AkBadge value={200} max={100} />).find('span > span').text().should.equal('100+');
+      shallow(<AkBadge value={Number.MAX_VALUE} />).find('span > span').text().should.equal('99+');
     });
     it('should not constrain if equal to value', () => {
       shallow(<AkBadge value={200} max={200} />).find('span > span').text().should.equal('200');

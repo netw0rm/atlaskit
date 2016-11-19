@@ -21,7 +21,6 @@
   "devDependencies": {
     "akutil-common-test": "*",
     "akutil-react": "*",
-    "object-assign": "^4.1.0",
     "ak-icon": "^10.0.0",
     "uid": "^0.0.2"
   },

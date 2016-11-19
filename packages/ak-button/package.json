@@ -19,7 +19,6 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "*",
     "akutil-react": "*",
     "ak-icon": "^10.0.0",
     "uid": "^0.0.2"

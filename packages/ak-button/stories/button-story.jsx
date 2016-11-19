@@ -196,7 +196,7 @@ const buildStory = props => (
           <AkButton {...props} href="http://www.atlassian.com">
             Create Issue
           </AkButton>
-          <span>with href attribute + target blank</span>
+          <span>with href attribute + no target</span>
         </div>
 
         <div className="sample">

@@ -61,7 +61,7 @@ class ButtonBuilderExample extends React.Component {
 
   createIcon(side) {
     const Icon = this.state[side];
-    return (<Icon />);
+    return this.state[side] ? <Icon /> : null;
   }
 
   render() {
@@ -135,8 +135,8 @@ class ButtonBuilderExample extends React.Component {
           <AkButton
             {...props}
             style={{ 'background-color': 'white' }}
-            iconBefore={this.state.before ? this.createIcon('before') : undefined}
-            iconAfter={this.state.after ? this.createIcon('after') : undefined}
+            iconBefore={this.createIcon('before')}
+            iconAfter={this.createIcon('after')}
           >
             Button
           </AkButton>

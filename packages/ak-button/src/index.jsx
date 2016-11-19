@@ -1,9 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import styles from 'style!./less/styles.less';
+import classNames from 'classnames';
 
 import { appearance, type, spacing, theme } from './internal/enumerated-properties';
+import getClasses from './internal/get-button-classes';
+import Span from './Span';
 import Button from './Button';
-import Icon from './Icon';
+import Link from './Link';
 
 /* eslint-disable react/no-unused-prop-types */
 export default class AkButton extends Component {
@@ -16,7 +19,7 @@ export default class AkButton extends Component {
        * @default 'standard'
        * @type {string}
        */
-      appearance: PropTypes.oneOf(appearance),
+      appearance: PropTypes.oneOf(appearance.values),
       /**
        * @description Type of the ak-button. One of:
        * 'button', 'submit'.
@@ -24,7 +27,7 @@ export default class AkButton extends Component {
        * @default button
        * @type {string}
        */
-      type: PropTypes.oneOf(type),
+      type: PropTypes.oneOf(type.values),
       /**
        * @description href of the ak-button.
        * If href is set, button will redirect to href url when clicked.
@@ -53,7 +56,7 @@ export default class AkButton extends Component {
        * @default 'default'
        * @type {string}
        */
-      spacing: PropTypes.oneOf(spacing),
+      spacing: PropTypes.oneOf(spacing.values),
       /**
        * @description Option to make a button selected
        * @memberof Button
@@ -67,7 +70,7 @@ export default class AkButton extends Component {
        * @default false
        * @type {boolean}
        */
-      theme: PropTypes.oneOf(theme),
+      theme: PropTypes.oneOf(theme.values),
       /**
        * @description iconBefore
        * @memberof Button
@@ -85,26 +88,38 @@ export default class AkButton extends Component {
 
   static get defaultProps() {
     return {
-      appearance: 'default',
-      type: 'button',
+      appearance: appearance.default,
+      type: type.default,
       disabled: false,
-      spacing: 'default',
+      spacing: spacing.default,
       selected: false,
-      theme: 'default',
+      theme: theme.default,
     };
   }
 
   render() {
     const { props } = this;
+    const Icon = p => (<span className={styles.IconWrapper}>{p.source}</span>);
+    const Content = p => <span className={styles.buttonContent}>{p.children}</span>;
+    const Element = (p) => {
+      if (p.href) {
+        if (p.disabled) {
+          return (<Span {...p}>{p.children}</Span>);
+        }
+        return (<Link {...p}>{p.children}</Link>);
+      }
+      return (<Button {...p}>{p.children}</Button>);
+    };
 
     return (
-      <Button {...props}>
-        <Icon source={props.iconBefore} />
-        {props.children ?
-          <span className={styles.buttonContent}>{props.children}</span> : null
-        }
-        <Icon source={props.iconAfter} />
-      </Button>
+      <Element
+        {...props}
+        className={classNames(getClasses(styles, props))}
+      >
+        {props.iconBefore ? <Icon source={props.iconBefore} /> : null}
+        {props.children ? <Content>{props.children}</Content> : null}
+        {props.iconAfter ? <Icon source={props.iconAfter} /> : null}
+      </Element>
     );
   }
 }

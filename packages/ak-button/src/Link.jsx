@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 
-import { type } from './internal/enumerated-properties';
-
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
 export default class AkButton extends Component {
   static get propTypes() {
     return {
-      type: PropTypes.oneOf(type.values),
+      href: PropTypes.string,
+      target: PropTypes.string,
       disabled: PropTypes.bool,
       className: PropTypes.string,
     };
@@ -16,14 +15,15 @@ export default class AkButton extends Component {
     const { props } = this;
 
     return (
-      <button
-        type={props.type}
+      <a
+        href={props.href}
+        target={props.target}
         disabled={props.disabled}
         className={props.className}
         onMouseDown={e => e.preventDefault()}
       >
         {props.children}
-      </button>
+      </a>
     );
   }
 }

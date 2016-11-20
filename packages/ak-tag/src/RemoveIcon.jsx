@@ -1,7 +1,4 @@
-/** @jsx vdom */
-
-import { vdom } from 'skatejs';
-
+import React from 'react';
 /* eslint-disable max-len, react/prop-types */
 export default () => (
   <svg width="5px" height="5px" viewBox="288 109 5 5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">

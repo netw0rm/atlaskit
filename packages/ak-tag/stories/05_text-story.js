@@ -1,13 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import reactify from 'akutil-react';
 
-import TagWc from '../src/index';
+import Tag from '../src/index';
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
-
-
-const Tag = reactify(TagWc);
+import styles from '../src/styles.less';
 
 const MyTag = props => (
   <Tag
@@ -47,7 +43,7 @@ storiesOf(name, module)
           <td>
             <MyTag
               text={cupcakeipsum}
-              remove-button-text="No sweets for you!"
+              removeButtonText="No sweets for you!"
             />
           </td>
         </tr>
@@ -56,7 +52,7 @@ storiesOf(name, module)
           <td>
             <MyTag
               text={cupcakeipsum}
-              remove-button-text="No sweets for you!"
+              removeButtonText="No sweets for you!"
               href="http://www.cupcakeipsum.com/"
             />
           </td>
@@ -67,7 +63,7 @@ storiesOf(name, module)
   .addBaselineAligned('baseline alignment', () => (
     <MyTag
       text={cupcakeipsum}
-      remove-button-text="No sweets for you!"
+      removeButtonText="No sweets for you!"
       href="http://www.cupcakeipsum.com/"
     />
   ));

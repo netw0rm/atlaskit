@@ -1,13 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import reactify from 'akutil-react';
 
-import Tag from '../src/index';
+import Component from '../src/index';
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
-
-
-const Component = reactify(Tag);
+import styles from '../src/styles.less';
 
 storiesOf(name, module)
   .add('overview', () => (
@@ -24,13 +20,13 @@ storiesOf(name, module)
       <Component
         className={styles.locals.akTag}
         text="Removable"
-        remove-button-text="Remove me"
+        removeButtonText="Remove me"
       />
       <Component
         className={styles.locals.akTag}
         href="https://some.link"
         text="Removable & linked"
-        remove-button-text="Remove me"
+        removeButtonText="Remove me"
       />
       <Component
         className={styles.locals.akTag}
@@ -39,7 +35,7 @@ storiesOf(name, module)
       <Component
         className={styles.locals.akTag}
         text="Text with button that will be cut off"
-        remove-button-text="Remove me"
+        removeButtonText="Remove me"
       />
     </div>
   ));

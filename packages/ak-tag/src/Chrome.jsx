@@ -1,10 +1,8 @@
-/** @jsx vdom */
-
-import { vdom } from 'skatejs';
+import React from 'react';
 import classnames from 'classnames';
 
 import keyHandler from './internal/keyHandler';
-import shadowStyles from './shadow.less';
+import styles from './styles.less';
 
 const attachKeyHandlers = (elem) => {
   const followLink = () => {
@@ -14,11 +12,11 @@ const attachKeyHandlers = (elem) => {
 };
 
 /* eslint-disable react/prop-types */
-export default (props, children) => {
+export default (props) => {
   const classNames = classnames({
-    [shadowStyles.locals.chrome]: true,
-    [shadowStyles.locals.markedForRemoval]: props.markedForRemoval,
-    [shadowStyles.locals.isRemovable]: props.isRemovable,
+    [styles.locals.chrome]: true,
+    [styles.locals.markedForRemoval]: props.markedForRemoval,
+    [styles.locals.isRemovable]: props.isRemovable,
   });
 
   const targetProps = {};
@@ -31,11 +29,11 @@ export default (props, children) => {
     <span
       {...props}
       {...targetProps}
-      tabindex={props.isLinked ? 0 : -1}
+      tabIndex={props.isLinked ? 0 : -1}
       className={classNames}
-      onmousedown={e => (e.preventDefault())}
+      onMouseDown={e => (e.preventDefault())}
     >
-      {children()}
+      {props.children}
     </span>
   );
 };

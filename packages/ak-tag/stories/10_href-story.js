@@ -1,13 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import reactify from 'akutil-react';
 
-import Tag from '../src';
+import Component from '../src';
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
-
-
-const Component = reactify(Tag);
+import styles from '../src/styles.less';
 
 storiesOf(name, module)
   .add('href: custom link', () => (

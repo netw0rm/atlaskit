@@ -1,20 +1,16 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import reactify from 'akutil-react';
 
-import Tag from '../src';
+import Component from '../src';
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
-
-
-const Component = reactify(Tag);
+import styles from '../src/styles.less';
 
 storiesOf(name, module)
   .add('remove-button: simple', () => (
     <Component
       className={styles.locals.akTag}
       text="Liquorice"
-      remove-button-text="Remove me"
+      removeButtonText="Remove me"
     />
   ))
   .add('remove-button: with href', () => (
@@ -22,7 +18,7 @@ storiesOf(name, module)
       className={styles.locals.akTag}
       href="http://www.atlassian.com"
       text="Gingerbread"
-      remove-button-text="Nibble, nibble, gnaw who is nibbling at my little house?"
+      removeButtonText="Nibble, nibble, gnaw who is nibbling at my little house?"
     />
   ))
   .add('remove-button: hover unlinked vs. linked', () => (
@@ -32,13 +28,13 @@ storiesOf(name, module)
       <Component
         className={styles.locals.akTag}
         text="Fruitcake"
-        remove-button-text="Brush your teeth!"
+        removeButtonText="Brush your teeth!"
       />
       <Component
         className={styles.locals.akTag}
         href="http://www.cupcakeipsum.com"
         text="Chupa chups"
-        remove-button-text="Brush your teeth!"
+        removeButtonText="Brush your teeth!"
       />
     </div>
   ));

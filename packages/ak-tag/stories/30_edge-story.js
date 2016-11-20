@@ -19,7 +19,7 @@ storiesOf(name, module)
     />
   ));
   // TODO : is this story valid ? unless we are doing dangerouslySetInnerHTML within ?
-  /* 
+  /*
   .add('edge case: special characters, programmatically (must not alert)', () => {
     const attachTag = (e) => {
       if (!e) {

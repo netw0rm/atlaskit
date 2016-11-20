@@ -11,7 +11,7 @@ import logger from './internal/logger';
 
 const { NotRemovableError } = exceptions;
 // TODO: Implement this the react way
-//const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
+// const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
 /* eslint-disable react/sort-comp */
 // TODO: Remove this linting rule after first review feedback, easy to git diff without sorting
 /**

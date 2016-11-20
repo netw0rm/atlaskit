@@ -116,9 +116,11 @@ export default class AkButton extends Component {
         {...props}
         className={classNames(getClasses(styles, props))}
       >
-        {props.iconBefore ? <Icon source={props.iconBefore} /> : null}
-        {props.children ? <Content>{props.children}</Content> : null}
-        {props.iconAfter ? <Icon source={props.iconAfter} /> : null}
+        <span className={styles.buttonWrapper}>
+          {props.iconBefore ? <Icon source={props.iconBefore} /> : null}
+          {props.children ? <Content>{props.children}</Content> : null}
+          {props.iconAfter ? <Icon source={props.iconAfter} /> : null}
+        </span>
       </Element>
     );
   }

@@ -31,7 +31,7 @@ The Webpack style loader should then place the CSS within the HEAD of your HTML 
 ```html
 <html>
   <head>
-    <link rel="stylesheet" href="dist/bundle.css" />
+    <link rel="stylesheet" href="node_modules/ak-css-reset/dist/bundle.css" />
   </head>
   <body>
     <!-- ... -->

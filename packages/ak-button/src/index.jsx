@@ -100,7 +100,7 @@ export default class AkButton extends Component {
   render() {
     const { props } = this;
     const Icon = p => (<span className={styles.IconWrapper}>{p.source}</span>);
-    const Content = p => <span className={styles.buttonContent}>{p.children}</span>;
+    const Content = p => (<span className={styles.buttonContent}>{p.children}</span>);
     const Element = (p) => {
       if (p.href) {
         if (p.disabled) {

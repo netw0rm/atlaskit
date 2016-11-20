@@ -24,37 +24,37 @@
 @disabledColor: @ak-color-N40A;
 
 .buttonContent {
+  align-items: center;
+  align-self: center;
   display: flex;
   pointer-events: none;
   margin: 0 unit(@grid/2, px);
-  align-self: center;
-  align-items: center;
 }
 
 .IconWrapper {
+  align-self: center;
+  display: flex;
   line-height: 0;
   font-size: 0;
   margin: 0 unit(@grid/2, px);
-  display: flex;
-  align-self: center;
 
   & + .buttonContent {
-    align-self: baseline;
     align-items: baseline;
+    align-self: baseline;
   }
 }
 
 .buttonWrapper {
-  display: inline-flex;
   align-self: center;
+  display: inline-flex;
   flex-wrap: nowrap;
 }
 
 .button {
   align-items: baseline;
   box-sizing: border-box;
-  border-width: 0;
   border-radius: @ak-border-radius;
+  border-width: 0;
   display: inline-flex;
   font-style: normal;
   font-size: inherit;
@@ -89,9 +89,9 @@
   }
 
   &::-moz-focus-inner {
+    border: 0;
     margin: 0;
     padding: 0;
-    border: 0;
   }
 
   &:hover {

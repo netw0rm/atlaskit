@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { type } from './internal/enumerated-properties';
 
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
-export default class AkButton extends Component {
+export default class Button extends Component {
   static get propTypes() {
     return {
       type: PropTypes.oneOf(type.values),

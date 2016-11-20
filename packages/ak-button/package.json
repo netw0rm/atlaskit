@@ -24,9 +24,7 @@
     "uid": "^0.0.2"
   },
   "peerDependencies": {
-    "react": "^15.3.2",
-    "akutil-common-test": "*",
-    "akutil-react": "*"
+    "react": "^15.3.2"
   },
   "repository": {
     "type": "git",

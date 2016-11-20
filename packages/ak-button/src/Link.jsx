@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
-export default class AkButton extends Component {
+export default class Link extends Component {
   static get propTypes() {
     return {
       href: PropTypes.string,

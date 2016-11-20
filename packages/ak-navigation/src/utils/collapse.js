@@ -2,10 +2,8 @@ import {
   globalOpenWidth,
   containerClosedWidth,
   collapseBreakpoint,
-  containerOpenPadding,
-  containerClosedPadding,
   containerPaddingCollapseHorizon,
-} from './style-variables';
+} from '../shared-variables';
 
 
 export function getContainerWidth(navigationWidth) {
@@ -24,10 +22,10 @@ export function getGlobalWidth(navigationWidth) {
   return Math.max(0, navigationWidth - containerClosedWidth);
 }
 
-export function getContainerPadding(navigationWidth) {
-  const paddingDelta = containerOpenPadding - containerClosedPadding;
+export function getContainerPadding(containerWidth, openPadding, closedPadding) {
+  const paddingDelta = openPadding - closedPadding;
   const gradient = paddingDelta / containerPaddingCollapseHorizon;
-  const padding = (gradient * navigationWidth) + (paddingDelta - (gradient * collapseBreakpoint));
+  const padding = (gradient * containerWidth) + (paddingDelta - (gradient * containerClosedWidth));
 
-  return Math.min(containerOpenPadding, Math.max(containerClosedPadding, padding));
+  return Math.min(openPadding, Math.max(closedPadding, padding));
 }

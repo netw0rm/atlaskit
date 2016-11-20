@@ -1,0 +1,18 @@
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/grid.less';
+@import '../../shared-variables.less';
+
+.global-navigation {
+  background: @ak-color-B400;
+  height: 100%;
+  width: @ak-grid-size * 8;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: @ak-grid-size * 2 0;
+  .should-animate & {
+    transition: transform @resize-animation-time;
+  }
+}
+

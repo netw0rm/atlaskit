@@ -1,8 +1,22 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from './Resizer.less';
+import styles from '../less/Resizer.less';
 
 export default class Resizer extends Component {
+  static get propTypes() {
+    return {
+      startResizeHandler: PropTypes.func,
+      resizeHandler: PropTypes.func,
+      endResizeHandler: PropTypes.func,
+    };
+  }
+  static get defaultProps() {
+    return {
+      startResizeHandler: () => {},
+      resizeHandler: () => {},
+      endResizeHandler: () => {},
+    };
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -13,7 +27,6 @@ export default class Resizer extends Component {
     this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
     this.mouseUpHandler = this.mouseUpHandler.bind(this);
   }
-
   mouseDownHandler(e) {
     this.props.startResizeHandler();
     this.setState({ startScreenX: e.screenX });
@@ -43,15 +56,3 @@ export default class Resizer extends Component {
     );
   }
 }
-
-Resizer.propTypes = {
-  startResizeHandler: PropTypes.func,
-  resizeHandler: PropTypes.func,
-  endResizeHandler: PropTypes.func,
-};
-
-Resizer.defaultProps = {
-  startResizeHandler: () => {},
-  resizeHandler: () => {},
-  endResizeHandler: () => {},
-};

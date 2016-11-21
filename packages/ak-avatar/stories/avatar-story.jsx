@@ -1,17 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import reactify from 'akutil-react';
-
 import avatarStoryStyles from 'style!./stories.less';
-
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
-import AkAvatar from '../src';
+import Avatar from '../src';
 
-
-const Avatar = reactify(AkAvatar);
-
-const avatarClass = styles.locals.akAvatar;
 const transparentAvatarUrl = require('url-loader!./face-w-transparency.png');
 const tickUrl = require('url-loader!./tick.svg');
 const tickWithBackgroundUrl = require('url-loader!./tick.png');
@@ -19,18 +11,20 @@ const tickWithBackgroundUrl = require('url-loader!./tick.png');
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 const storybookExampleClass = avatarStoryStyles.example;
 
-const DefaultAvatar = props => <Avatar
-  style={{ marginLeft: '10px' }}
-  className={avatarClass}
-  {...props}
-/>;
+const DefaultAvatar = props => (
+  <div style={{ display: 'inline-block', marginLeft: '10px' }}>
+    <Avatar {...props} />
+  </div>
+);
 
-const AllAvatarSizes = props => <div className={avatarRowClass}>
-  <DefaultAvatar size="small" {...props} />
-  <DefaultAvatar size="medium" {...props} />
-  <DefaultAvatar size="large" {...props} />
-  <DefaultAvatar size="xlarge" {...props} />
-</div>;
+const AllAvatarSizes = props => (
+  <div className={avatarRowClass}>
+    <DefaultAvatar size="small" {...props} />
+    <DefaultAvatar size="medium" {...props} />
+    <DefaultAvatar size="large" {...props} />
+    <DefaultAvatar size="xlarge" {...props} />
+  </div>
+);
 
 
 storiesOf(name, module)
@@ -41,9 +35,6 @@ storiesOf(name, module)
       </div>
       <DefaultAvatar />
     </div>
-  ))
-  .add('An avatar with an incorrectly defined size (falls back to default)', () => (
-    <DefaultAvatar size="megalarge" />
   ))
   .add('Avatars on colored background', () => {
     const rainbowStyle = {
@@ -102,19 +93,19 @@ storiesOf(name, module)
       <DefaultAvatar size="large" presence="online" />
       <DefaultAvatar size="large" presence="busy" />
       <DefaultAvatar size="large" presence="offline" />
-    </div>)
-  )
-  .add('Avatars with images in the slot', () => (
+    </div>
+  ))
+  .add('Avatars with custom presence', () => (
     <div>
       <div>As well as the presence attribute, avatars can also display custom content on their badge
-        by slotting it inside the element. <br />
-        No styling is applied to slotted content by default and it is up the consumer to make the
+        by composing them inside. <br />
+        No styling is applied to custom content by default and it is up the consumer to make the
         content fit (height and width of 100% and a background color
         are a good start)
       </div>
       <div className={storybookExampleClass} >
         <div>
-          These avatars have an image in their default slot and have been styled
+          These avatars have an image as their default content and have been styled
           with &quot;height: 100%; width: 100%;&quot;
         </div>
         <AllAvatarSizes>
@@ -127,7 +118,7 @@ storiesOf(name, module)
       </div>
       <div className={storybookExampleClass} >
         <div>
-          These avatars show the behaviour of transparent images in slots.
+          These avatars show the behaviour of transparent nested images.
           Note there is no added background color
         </div>
         <AllAvatarSizes>
@@ -140,7 +131,7 @@ storiesOf(name, module)
       </div>
       <div className={storybookExampleClass} >
         <div>
-          These avatars have presence AND an image in the slot. The expected behaviour is that the
+          These avatars have presence AND an image as a child. The expected behaviour is that the
           images will take precedence.
         </div>
         <AllAvatarSizes presence="online">
@@ -202,35 +193,51 @@ storiesOf(name, module)
     </div>
   ))
   .add('Avatar loaded from external source', () => {
-    const inputStyles = {
-      marginTop: '10px',
-    };
-    const loadImage = () => {
-      const url = document.querySelector('input[type=text]').value;
-      if (url) {
-        // we'll append a random string to the end of the url to make sure we dont cache
-        document.querySelector('#customAvatar').src = '';
-        document.querySelector('#customAvatar').src = `${url}?at=${+(new Date())}`;
+    class ExternalSrcAvatar extends React.Component {
+      constructor(props) {
+        super(props);
+        this.changeUrl = this.changeUrl.bind(this);
+        this.loadImage = this.loadImage.bind(this);
+        this.state = {
+          url: 'https://bytebucket.org/atlassian/atlaskit/raw/8d45a00c570fa08e54ab2ef3610fa5d794479ece/packages/ak-icon/src/icons/atlassian.svg',
+          avatar: <DefaultAvatar size="xlarge" label="This is an avatar!" />,
+        };
       }
-    };
+      loadImage() {
+        this.setState({
+          avatar: <DefaultAvatar size="xlarge" label="This is an avatar!" src={this.state.url} />,
+        });
+      }
+      changeUrl(event) {
+        this.setState({ url: event.target.value });
+      }
+      render() {
+        return (
+          <div>
+            <div>
+              <label htmlFor="avatarUrl">
+                <span>URL:</span>
+                <input
+                  type="text"
+                  style={{ marginTop: '10px' }}
+                  defaultValue={this.state.url}
+                  onChange={this.changeUrl}
+                />
+                <input type="button" value="Load Image" onClick={this.loadImage} />
+              </label>
+            </div>
+            {this.state.avatar}
+          </div>
+        );
+      }
+    }
+
     return (
       <div className={avatarRowClass}>
         <div>
           Try loading an image from an external source to see the loading behaviour.
         </div>
-        <div>
-          <label htmlFor="avatarUrl">
-            <span>URL:</span>
-            <input
-              type="text"
-              id="avatarUrl"
-              style={inputStyles}
-              defaultValue="https://bytebucket.org/atlassian/atlaskit/raw/8d45a00c570fa08e54ab2ef3610fa5d794479ece/packages/ak-icon/src/icons/atlassian.svg"
-            />
-            <input type="button" value="Load Image" onClick={loadImage} />
-          </label>
-        </div>
-        <DefaultAvatar size="xlarge" label="This is an avatar!" id="customAvatar" />
+        <ExternalSrcAvatar />
       </div>
     );
   })

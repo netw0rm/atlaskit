@@ -1,6 +1,7 @@
 import { hover, merge, style } from 'glamor';
 import {
   akColorB75,
+  akColorN0,
   akColorN80,
   akColorN400,
   akColorN600,
@@ -8,24 +9,21 @@ import {
   akColorN900,
 } from 'akutil-shared-styles';
 
-const akColorTransparent = 'transparent';
-const akColorWhite = '#fff';
-
 function getBackgroundColor({ selected, previouslySelected }) {
   if (selected) {
-    return akColorWhite;
+    return akColorN0;
   }
   if (previouslySelected) {
     return akColorB75;
   }
-  return akColorTransparent;
+  return 'transparent';
 }
 
 function getBorderColor({ focused }) {
   if (focused) {
     return akColorB75;
   }
-  return akColorTransparent;
+  return 'transparent';
 }
 
 function getColor({ disabled, previouslySelected, selected, sibling, today }) {
@@ -44,7 +42,7 @@ function getColor({ disabled, previouslySelected, selected, sibling, today }) {
   if (sibling) {
     return akColorN80;
   }
-  return akColorWhite;
+  return akColorN0;
 }
 
 function getCursor({ disabled }) {
@@ -53,7 +51,7 @@ function getCursor({ disabled }) {
 
 function getHoverBackgroundColor({ previouslySelected, selected }) {
   if (selected) {
-    return akColorWhite;
+    return akColorN0;
   }
   if (previouslySelected) {
     return akColorB75;
@@ -65,7 +63,7 @@ function getHoverColor({ previouslySelected, selected }) {
   if (selected || previouslySelected) {
     return akColorN600;
   }
-  return akColorWhite;
+  return akColorN0;
 }
 
 export default function (props) {

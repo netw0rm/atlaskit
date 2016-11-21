@@ -1,14 +1,12 @@
 import { style } from 'glamor';
-import { akColorN80, akColorN700 } from 'akutil-shared-styles';
+import { akColorN0, akColorN80, akColorN700 } from 'akutil-shared-styles';
 
-const akColorTransparent = 'transparent';
-const akColorWhite = '#fff';
 const cssPadding = '5px 0 10px 0';
 
 export default function () {
   return {
     btn: style({
-      backgroundColor: akColorTransparent,
+      backgroundColor: 'transparent',
       border: 'none',
       color: akColorN80,
       cursor: 'pointer',
@@ -22,7 +20,7 @@ export default function () {
     }),
     calendar: style({
       backgroundColor: akColorN700,
-      color: akColorWhite,
+      color: akColorN0,
       display: 'inline-block',
       padding: 10,
       textAlign: 'center',
@@ -36,7 +34,7 @@ export default function () {
       display: 'flex',
     }),
     monthAndYear: style({
-      color: akColorWhite,
+      color: akColorN0,
       flexBasis: '100%',
       fontSize: 14,
       padding: cssPadding,

@@ -496,7 +496,7 @@ describe('ak-editor-bitbucket', () => {
         keydown('enter', { target: PMContainer });
         keydown('enter', { target: PMContainer });
 
-        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;'), p('\n')));
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;'), p()));
       });
     });
   });

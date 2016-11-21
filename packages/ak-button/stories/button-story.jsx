@@ -36,7 +36,7 @@ const css = `
   }
 `;
 
-/* eslint-disable react/prop-types */
+/* eslint-disable react/prop-types,max-len */
 const buildBackgroundStory = () => {
   const createSample = ({ backgroundColor, extraProps = { onClick: action('clicking the WebComponent') } }) => (
     <div style={{ 'margin-bottom': '30px' }}>
@@ -111,36 +111,16 @@ const buildBackgroundStory = () => {
       </div>
       <div className="sample" style={{ 'background-color': backgroundColor }}>
         <div className="buttonContainer">
-          <AkButton {...extraProps} spacing="none">
-            <Unlink />
-          </AkButton>
-          <AkButton {...extraProps} spacing="none" selected>
-            <Unlink />
-          </AkButton>
-          <AkButton {...extraProps} spacing="none" appearance="primary">
-            <Unlink />
-          </AkButton>
-          <AkButton {...extraProps} spacing="none" disabled>
-            <Unlink />
-          </AkButton>
-          <AkButton {...extraProps} appearance="subtle" spacing="none">
-            <Unlink />
-          </AkButton>
-          <AkButton {...extraProps} spacing="none">
-            <Open />
-          </AkButton>
-          <AkButton {...extraProps} spacing="none" selected>
-            <Open />
-          </AkButton>
-          <AkButton {...extraProps} spacing="none" appearance="primary">
-            <Open />
-          </AkButton>
-          <AkButton {...extraProps} spacing="none" disabled>
-            <Open />
-          </AkButton>
-          <AkButton {...extraProps} appearance="subtle" spacing="none">
-            <Open />
-          </AkButton>
+          <AkButton {...extraProps} spacing="none" iconBefore={<Unlink />} />
+          <AkButton {...extraProps} spacing="none" selected iconBefore={<Unlink />} />
+          <AkButton {...extraProps} spacing="none" appearance="primary" iconBefore={<Unlink />} />
+          <AkButton {...extraProps} spacing="none" disabled iconBefore={<Unlink />} />
+          <AkButton {...extraProps} appearance="subtle" spacing="none" iconBefore={<Unlink />} />
+          <AkButton {...extraProps} spacing="none" iconBefore={<Open />} />
+          <AkButton {...extraProps} spacing="none" selected iconBefore={<Open />} />
+          <AkButton {...extraProps} spacing="none" appearance="primary" iconBefore={<Open />} />
+          <AkButton {...extraProps} spacing="none" disabled iconBefore={<Open />} />
+          <AkButton {...extraProps} appearance="subtle" spacing="none" iconBefore={<Open />} />
         </div>
         <span> No spacing buttons with only icons </span>
       </div>
@@ -313,18 +293,10 @@ const buildStory = props => (
         <div className="sample">
           <div className="ButtonContainer">
             <style>{'.ButtonContainer > a, .ButtonContainer > button, .sample > a, .sample > button { margin-right: 5px }'}</style>
-            <AkButton {...props} spacing="none">
-              <Unlink>unlink</Unlink>
-            </AkButton>
-            <AkButton {...props} spacing="none" selected>
-              <Unlink>unlink selected</Unlink>
-            </AkButton>
-            <AkButton {...props} spacing="none">
-              <Open>open</Open>
-            </AkButton>
-            <AkButton {...props} spacing="none" selected>
-              <Open>open selected</Open>
-            </AkButton>
+            <AkButton {...props} spacing="none" iconBefore={<Unlink>unlink</Unlink>} />
+            <AkButton {...props} spacing="none" selected iconBefore={<Unlink>unlink selected</Unlink>} />
+            <AkButton {...props} spacing="none" iconBefore={<Open>open</Open>} />
+            <AkButton {...props} spacing="none" selected iconBefore={<Open>open selected</Open>} />
           </div>
           <span>button with icons, no spacing & selected</span>
         </div>

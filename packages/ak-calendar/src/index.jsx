@@ -27,15 +27,15 @@ export default class extends Component {
     return {
       calendar: PropTypes.any,
       day: PropTypes.number,
-      disabled: PropTypes.array,
+      disabled: PropTypes.arrayOf(PropTypes.string),
       focused: PropTypes.number,
       month: PropTypes.number,
       onBlur: PropTypes.func,
       onChange: PropTypes.func,
       onFocus: PropTypes.func,
       onSelect: PropTypes.func,
-      previouslySelected: PropTypes.array,
-      selected: PropTypes.array,
+      previouslySelected: PropTypes.arrayOf(PropTypes.string),
+      selected: PropTypes.array(PropTypes.string),
       year: PropTypes.number,
     };
   }

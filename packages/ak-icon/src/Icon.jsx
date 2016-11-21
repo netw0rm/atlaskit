@@ -11,7 +11,7 @@ import size from './internal/size';
  * @description Icon interface. All icons follow this structure.
  * @class Icon
  */
-class Icon extends Component {
+export default class Icon extends Component {
   static get propTypes() {
     return {
       /**
@@ -85,5 +85,4 @@ class Icon extends Component {
   }
 }
 
-export default Icon;
 export { NotImplementedError, size };

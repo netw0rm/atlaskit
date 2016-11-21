@@ -1,28 +1,37 @@
 /** @jsx React.createElement */
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 
 import styles from './styles.less';
 import size from './internal/size';
 
-const Root = (props) => {
-  const classes = {
-    [styles.locals.icon]: true,
-    [styles.locals[props.size]]: !!props.size,
-  };
-  return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <div className={classnames(classes)} onClick={props.onClick}>
-      <style>{styles.toString()}</style>
-      {props.children}
-    </div>
-  );
-};
+export default class Root extends Component {
+  static get propTypes() {
+    return {
+      size: PropTypes.oneOf(Object.values(size)),
+      onClick: PropTypes.func,
+      children: PropTypes.node,
+    };
+  }
 
-Root.propTypes = {
-  size: PropTypes.oneOf(Object.values(size)),
-  onClick: PropTypes.func,
-  children: PropTypes.node,
-};
+  static get defaultProps() {
+    return {
+      size: size.small,
+      onClick() {},
+    };
+  }
 
-export default Root;
+  render() {
+    const classes = {
+      [styles.locals.icon]: true,
+      [styles.locals[this.props.size]]: !!this.props.size,
+    };
+    return (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div className={classnames(classes)} onClick={this.props.onClick}>
+        <style>{styles.toString()}</style>
+        {this.props.children}
+      </div>
+    );
+  }
+}

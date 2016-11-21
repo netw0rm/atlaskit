@@ -1,6 +1,6 @@
 /** @jsx vdom */
 
-import { vdom, define, prop, emit } from 'skatejs';
+import { vdom, define, prop } from 'skatejs';
 import EditorButton from 'ak-editor-button';
 import Icon from 'ak-icon/glyph/feedback';
 
@@ -90,12 +90,6 @@ export default define('ak-editor-toolbar-feedback', {
       } else {
         this.openFeedbackPanel();
       }
-    },
-    addFeedback(event) {
-      const textInput = this.shadowRoot.querySelector('.text-input');
-      textInput.value = '';
-      emit(this, 'addFeedback', event);
-      this.closeFeedbackPanel();
     },
     handleClickOutside(e) {
       // TODO: Refactor after React migration

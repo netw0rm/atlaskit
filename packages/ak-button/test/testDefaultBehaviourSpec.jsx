@@ -41,33 +41,33 @@ describe('ak-button/default-behaviour', () => {
   it('should render icon if the prop iconBefore is set', () => {
     const Icon = <div id="icon" />;
     const wrapper = mount(<Button href="test" iconBefore={Icon} />);
-    expect(wrapper.contains(Icon)).to.equal.true;
+    expect(wrapper).to.contain(Icon);
   });
 
   it('should render iconBefore before children', () => {
     const Icon = <div id="icon">icon</div>;
     const wrapper = mount(<Button href="test" iconBefore={Icon}>button</Button>);
-    expect(wrapper.text()).to.equal('iconbutton');
+    expect(wrapper).to.have.text('iconbutton');
   });
 
   it('should render icon if the prop iconAfter is set', () => {
     const Icon = <div id="icon" />;
-    const wrapper = mount(<Button href="test" iconBefore={Icon} />);
-    expect(wrapper.contains(Icon)).to.equal.true;
+    const wrapper = mount(<Button href="test" iconAfter={Icon} />);
+    expect(wrapper).to.contain(Icon);
   });
 
   it('should render iconAfter after children', () => {
     const Icon = <div id="icon">icon</div>;
     const wrapper = mount(<Button href="test" iconAfter={Icon}>button</Button>);
-    expect(wrapper.text()).to.equal('buttonicon');
+    expect(wrapper).to.have.text('buttonicon');
   });
 
   it('should be able to render both of the icons', () => {
     const Icon1 = <div id="icon">icon1</div>;
     const Icon2 = <div id="icon">icon2</div>;
     const wrapper = mount(<Button href="test" iconBefore={Icon1} iconAfter={Icon2}>button</Button>);
-    expect(wrapper.contains(Icon1)).to.equal.true;
-    expect(wrapper.contains(Icon2)).to.equal.true;
-    expect(wrapper.text()).to.equal('icon1buttonicon2');
+    expect(wrapper).to.contain(Icon1);
+    expect(wrapper).to.contain(Icon2);
+    expect(wrapper).to.have.text('icon1buttonicon2');
   });
 });

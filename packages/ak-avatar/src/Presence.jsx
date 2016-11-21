@@ -1,5 +1,5 @@
 import React from 'react';
-import presences from './internal/presence-icons';
+import presences from './internal/icons';
 
 /* eslint-disable react/prop-types */
 export default (props) => {

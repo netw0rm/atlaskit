@@ -1,12 +1,18 @@
 /** @jsx React.createElement */
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import styles from './styles.less';
 
-const Content = props => (
-  <span className={styles.locals.content}>
-    {props.children}
-  </span>
-);
-Content.propTypes = { children: PropTypes.node };
+// eslint-disable-next-line react/prefer-stateless-function
+export default class Content extends Component {
+  static get propTypes() {
+    return { children: PropTypes.node };
+  }
 
-export default Content;
+  render() {
+    return (
+      <span className={styles.locals.content}>
+        {this.props.children}
+      </span>
+    );
+  }
+}

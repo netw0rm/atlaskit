@@ -36,7 +36,7 @@ module.exports = (fillCallback, styleCallback) => {
     plugins: [
       { convertAttributesToCamelcase },
       { addAttributesToSVGElement: {
-        attributes: ['{...props}'],
+        attributes: ['{...iconProps}'],
       } },
       { addPresentationAttribute },
       { callbackOnDefinedFillPlugin },

@@ -25,23 +25,72 @@ const ReactArrowrightIcon = reactify(ArrowrightIcon);
 export default class extends Component {
   static get propTypes() {
     return {
-      calendar: PropTypes.any,
+      /**
+       * @description The day to highlight as today.
+       * @default current day of month
+       * @type {number}
+       */
       day: PropTypes.number,
+      /**
+       * @description The ISO dates that are disabled.
+       * @default []
+       * @type {array.<string>}
+       */
       disabled: PropTypes.arrayOf(PropTypes.string),
+      /**
+       * @description The day number that is currently focused.
+       * @default 0
+       * @type {number}
+       */
       focused: PropTypes.number,
+      /**
+       * @description The month to display (1 - 12).
+       * @default current month
+       * @type {number}
+       */
       month: PropTypes.number,
+      /**
+       * @description Function called when the calendar is un-focused.
+       * @default function(){}
+       * @type {func}
+       */
       onBlur: PropTypes.func,
+      /**
+       * @description Function called when the focused date changes.
+       * @default function(){}
+       * @type {func}
+       */
       onChange: PropTypes.func,
+      /**
+       * @description Function called when a date on the calendar is selected via the keyboard or
+       *   mouse.
+       * @default function(){}
+       * @type {func}
+       */
       onSelect: PropTypes.func,
+      /**
+       * @description The ISO dates that were previously selected.
+       * @default []
+       * @type {array.<string>}
+       */
       previouslySelected: PropTypes.arrayOf(PropTypes.string),
+      /**
+       * @description The ISO dates that currently selected.
+       * @default []
+       * @type {array.<string>}
+       */
       selected: PropTypes.array(PropTypes.string),
+      /**
+       * @description The full year to display.
+       * @default current year
+       * @type {number}
+       */
       year: PropTypes.number,
     };
   }
   static get defaultProps() {
     const now = new Date();
     return {
-      calendar: new Calendar({ siblingMonths: true, weekNumbers: true }),
       day: now.getDate(),
       disabled: [],
       focused: 0,
@@ -53,6 +102,13 @@ export default class extends Component {
       selected: [],
       year: now.getFullYear(),
     };
+  }
+  constructor() {
+    super();
+    this.calendar = new Calendar({
+      siblingMonths: true,
+      weekNumbers: true,
+    });
   }
   navigateWithKeyboard(e) {
     let { focused } = this.props;
@@ -142,7 +198,7 @@ export default class extends Component {
   }
   render() {
     const { disabled, focused, month, previouslySelected, selected, year } = this.props;
-    const calendar = this.props.calendar.getCalendar(year, month - 1);
+    const calendar = this.calendar.getCalendar(year, month - 1);
     const weeks = [];
     const shouldDisplaySixthWeek = calendar.length % 6;
 
@@ -151,7 +207,7 @@ export default class extends Component {
       const sliceStart = lastDayIsSibling ? daysPerWeek : 0;
 
       calendar.push(
-        ...this.props.calendar.getCalendar(year, month)
+        ...this.calendar.getCalendar(year, month)
           .slice(sliceStart, sliceStart + daysPerWeek)
           .map(e => Object.assign({}, e, { siblingMonth: true }))
       );

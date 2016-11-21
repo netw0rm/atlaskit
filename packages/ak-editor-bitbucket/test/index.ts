@@ -265,6 +265,27 @@ describe('ak-editor-bitbucket', () => {
       return textInput.shadowRoot.querySelector('input');
     }
 
+    it('should add a href on enter', (done) => {
+      const href = 'https://www.atlassian.com';
+      buildExpandedEditor(fixture(), `<p>foo</p>`)
+        .then((editor) => {
+          editor._pm.setTextSelection(1, 4);
+
+          return waitUntilPMReady(editor).then(() => {
+            afterMutations(
+              () => {
+                // IE 11 needs one more tick to render
+              },
+              () => {
+                emit(document, 'addHyperlink', { detail: { value: href } });
+                expect(editor._pm.doc).to.deep.equal(doc(p(a({ href })('foo'))));
+              },
+              done
+            );
+          });
+        });
+    });
+
     it('should contain the right href value', (done) => {
       const href = 'https://www.atlassian.com';
       buildExpandedEditor(fixture(), `<p>foo <a href="${href}">bar</a></p>`)

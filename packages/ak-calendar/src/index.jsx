@@ -10,9 +10,9 @@ import {
   getMonthName,
   makeArrayFromNumber,
 } from './util';
-import AnnouncerFn from './index.Announcer';
-import DateFn from './index.Date';
-import styles from './index.style';
+import AnnouncerFn from './Announcer';
+import DateFn from './Date';
+import styles from './style';
 
 const arrowKeys = [keycode('down'), keycode('left'), keycode('right'), keycode('up')];
 const css = styles();

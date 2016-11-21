@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import styles, { underline } from './index.Date.style';
+import styles, { underline } from './Date.style';
 
 export default class extends Component {
   static get propTypes() {

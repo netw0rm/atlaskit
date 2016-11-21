@@ -6,8 +6,8 @@ import { shallow } from 'enzyme';
 import { getMonthName } from '../src/util';
 
 import Calendar from '../src';
-import Announcer from '../src/index.Announcer';
-import DateComponent from '../src/index.Date';
+import Announcer from '../src/Announcer';
+import DateComponent from '../src/Date';
 
 chai.use(chaiEnzyme());
 

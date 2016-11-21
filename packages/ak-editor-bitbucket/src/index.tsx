@@ -384,7 +384,10 @@ class AkEditorBitbucket extends Component {
     const href = event.detail.value;
 
     if (this._pm) {
-      HyperlinkPlugin.get(this._pm).addLink({ href });
+      const pm = this._pm;
+      HyperlinkPlugin.get(pm).addLink({ href });
+      pm.setTextSelection(pm.selection.$to.pos);
+      pm.focus();
     }
   }
 

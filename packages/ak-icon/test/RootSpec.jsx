@@ -14,15 +14,15 @@ chai.use(chaiEnzyme());
 describe(name, () => {
   describe('Root', () => {
     it('should be able to create a component', () => {
-      const root = shallow(<Root />);
-      expect(root).to.be.defined;
+      const wrapper = shallow(<Root />);
+      expect(wrapper).to.be.defined;
     });
 
     describe('size property', () => {
       Object.values(size).forEach((s) => {
         it(`with value ${s}`, () => {
-          const root = shallow(<Root size={s} />);
-          expect(root.find(`.${styles.locals.icon}`)).to.have.className(styles.locals[s]);
+          const wrapper = shallow(<Root size={s} />);
+          expect(wrapper.find(`.${styles.locals.icon}`)).to.have.className(styles.locals[s]);
         });
       });
     });
@@ -32,10 +32,10 @@ describe(name, () => {
         let handlerFired = false;
         const handler = () => (handlerFired = true);
 
-        const root = shallow(<Root onClick={handler} />);
-        expect(root.prop('onClick')).to.equal(handler);
+        const wrapper = shallow(<Root onClick={handler} />);
+        expect(wrapper.prop('onClick')).to.equal(handler);
 
-        root.simulate('click');
+        wrapper.simulate('click');
         expect(handlerFired).to.equal(true);
       });
     });

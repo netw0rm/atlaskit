@@ -21,6 +21,18 @@ describe(name, () => {
       }
     }
 
+    describe('exports', () => {
+      it('exports the React component, NotImplementedError, and size', () => {
+        expect(Icon).to.not.be.undefined;
+        expect(NotImplementedError).to.not.be.undefined;
+        expect(size).to.not.be.undefined;
+
+        expect(Icon).to.be.a.function;
+        expect(NotImplementedError).to.be.an.error;
+        expect(Object.values(size)).to.deep.equal(['small', 'medium', 'large', 'xlarge']);
+      });
+    });
+
     it('throws an error if getGlyphTemplate is not overriden', () => {
       let error;
       try {
@@ -38,10 +50,10 @@ describe(name, () => {
     });
 
     it('should be able to create a component', () => {
-      const icon = shallow(<MyIcon label="My icon" />);
-      expect(icon).to.be.defined;
-      expect(icon.find(Root)).to.have.lengthOf(1);
-      expect(icon.find(Content)).to.have.lengthOf(1);
+      const wrapper = shallow(<MyIcon label="My icon" />);
+      expect(wrapper).to.be.defined;
+      expect(wrapper.find(Root)).to.have.lengthOf(1);
+      expect(wrapper.find(Content)).to.have.lengthOf(1);
     });
 
     describe('label property', () => {
@@ -54,24 +66,24 @@ describe(name, () => {
           }
         }
         const labelContent = 'label content';
-        const icon = shallow(<LabelIcon label={labelContent} />);
-        expect(icon).to.have.html().match(new RegExp(labelContent));
+        const wrapper = shallow(<LabelIcon label={labelContent} />);
+        expect(wrapper).to.have.html().match(new RegExp(labelContent));
       });
     });
 
     describe('size property', () => {
       it('is reflected to the Root', () => {
         const iconSize = size.small;
-        const icon = shallow(<MyIcon label="My icon" size={iconSize} />);
-        expect(icon.find(Root)).prop('size').to.equal(iconSize);
+        const wrapper = shallow(<MyIcon label="My icon" size={iconSize} />);
+        expect(wrapper.find(Root)).prop('size').to.equal(iconSize);
       });
     });
 
     describe('onClick property', () => {
       it('is reflected to the Root', () => {
         const clickHandler = () => {};
-        const icon = shallow(<MyIcon label="My icon" onClick={clickHandler} />);
-        expect(icon.find(Root)).prop('onClick').to.equal(clickHandler);
+        const wrapper = shallow(<MyIcon label="My icon" onClick={clickHandler} />);
+        expect(wrapper.find(Root)).prop('onClick').to.equal(clickHandler);
       });
     });
   });

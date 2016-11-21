@@ -13,11 +13,12 @@ export default class ContainerHeader extends Component {
 
   render() {
     const link = this.props.link;
+    const logo = link ? <link.type {...link.props}>{this.props.logo}</link.type> : this.props.logo;
     return (
       <div className={classNames(styles.locals.containerHeader)}>
         <style>{styles.toString()}</style>
         <div className={classNames(styles.locals.logo)}>
-          <link.type {...link.props}>{this.props.logo}</link.type>
+          {logo}
         </div>
         <div className={classNames(styles.locals.link)}> {this.props.link} </div>
       </div>

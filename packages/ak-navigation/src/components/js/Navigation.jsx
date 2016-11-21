@@ -19,12 +19,12 @@ export default class Navigation extends Component {
   static get propTypes() {
     return {
       searchDrawerContent: PropTypes.node,
+      createDrawerContent: PropTypes.node,
       containerHeader: PropTypes.node,
       children: PropTypes.node,
-      createDrawerContent: PropTypes.node,
       width: PropTypes.number,
       open: PropTypes.bool,
-      resizeHandler: PropTypes.func,
+      onResize: PropTypes.func,
     };
   }
 
@@ -32,7 +32,7 @@ export default class Navigation extends Component {
     return {
       width: navigationOpenWidth,
       open: true,
-      resizeHandler: () => {},
+      onResize: () => {},
     };
   }
 
@@ -67,7 +67,7 @@ export default class Navigation extends Component {
     if (width > resizeExpandedBreakpoint) {
       resizeState.width = width;
     }
-    this.props.resizeHandler(resizeState);
+    this.props.onResize(resizeState);
     this.setState({
       resizeDelta: 0,
     });
@@ -89,8 +89,8 @@ export default class Navigation extends Component {
               width={getGlobalWidth(this.getRenderedWidth())}
             >
               <GlobalItem>P</GlobalItem>
-              <GlobalItem activateHandler={() => this.searchActivated()}>S</GlobalItem>
-              <GlobalItem activateHandler={() => this.createActivated()}>C</GlobalItem>
+              <GlobalItem onActivate={() => this.searchActivated()}>S</GlobalItem>
+              <GlobalItem onActivate={() => this.createActivated()}>C</GlobalItem>
             </GlobalNavigation>
           </div>
           <div style={{ zIndex: 1 }}>
@@ -107,8 +107,8 @@ export default class Navigation extends Component {
             </ContainerNavigation>
           </div>
           <Resizer
-            resizeHandler={(resizeDelta) => { this.setState({ resizeDelta }); }}
-            endResizeHandler={() => { this.triggerResizeHandler(); }}
+            onResize={(resizeDelta) => { this.setState({ resizeDelta }); }}
+            onResizeEnd={() => { this.triggerResizeHandler(); }}
           />
         </div>
       </div>

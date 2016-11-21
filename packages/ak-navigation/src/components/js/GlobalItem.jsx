@@ -6,19 +6,19 @@ export default class GlobalItem extends Component {
   static get propTypes() {
     return {
       children: PropTypes.node,
-      activateHandler: PropTypes.func,
+      onActivate: PropTypes.func,
     };
   }
   static get defaultProps() {
     return {
-      activateHandler: () => {},
+      onActivate: () => {},
     };
   }
 
   render() {
     return (
       <button
-        onClick={() => this.props.activateHandler()}
+        onClick={() => this.props.onActivate()}
         onMouseDown={e => e.preventDefault()}
         tabIndex="0"
         className={classNames(styles.locals.globalItem)}

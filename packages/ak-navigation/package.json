@@ -31,8 +31,11 @@
     "ak-page": "^7.0.0",
     "akutil-common-test": "*",
     "akutil-react": "*",
+    "karma-sinon-chai": "^1.2.4",
     "react-lorem-component": "^0.11.0",
-    "react-router": "^3.0.0"
+    "react-router": "^3.0.0",
+    "sinon": "^1.17.6",
+    "sinon-chai": "^2.8.0"
   },
   "repository": {
     "type": "git",

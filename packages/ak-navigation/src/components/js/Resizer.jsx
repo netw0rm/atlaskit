@@ -5,9 +5,9 @@ import styles from '../less/Resizer.less';
 export default class Resizer extends Component {
   static get propTypes() {
     return {
-      startResizeHandler: PropTypes.func,
-      resizeHandler: PropTypes.func,
-      endResizeHandler: PropTypes.func,
+      onResizeStart: PropTypes.func,
+      onResize: PropTypes.func,
+      onResizeEnd: PropTypes.func,
     };
   }
   static get defaultProps() {
@@ -28,7 +28,7 @@ export default class Resizer extends Component {
     this.mouseUpHandler = this.mouseUpHandler.bind(this);
   }
   mouseDownHandler(e) {
-    this.props.startResizeHandler();
+    this.props.onResizeStart();
     this.setState({ startScreenX: e.screenX });
     document.addEventListener('mousemove', this.mouseMoveHandler);
     document.addEventListener('mouseup', this.mouseUpHandler);
@@ -36,13 +36,13 @@ export default class Resizer extends Component {
   }
 
   mouseUpHandler(e) {
-    this.props.endResizeHandler(e.screenX - this.state.startScreenX);
+    this.props.onResizeEnd(e.screenX - this.state.startScreenX);
     document.removeEventListener('mousemove', this.mouseMoveHandler);
     document.removeEventListener('mouseup', this.mouseUpHandler);
   }
 
   mouseMoveHandler(e) {
-    this.props.resizeHandler(e.screenX - this.state.startScreenX);
+    this.props.onResize(e.screenX - this.state.startScreenX);
   }
 
   render() {

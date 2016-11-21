@@ -33,9 +33,6 @@ storiesOf('Events', module)
   .add('onChange', () => (
     <Component onChange={action('change')} />
   ))
-  .add('onFocus', () => (
-    <Component onFocus={action('focus')} />
-  ))
   .add('onSelect', () => (
     <Component onSelect={action('select')} />
   ));

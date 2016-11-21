@@ -32,7 +32,6 @@ export default class extends Component {
       month: PropTypes.number,
       onBlur: PropTypes.func,
       onChange: PropTypes.func,
-      onFocus: PropTypes.func,
       onSelect: PropTypes.func,
       previouslySelected: PropTypes.arrayOf(PropTypes.string),
       selected: PropTypes.array(PropTypes.string),
@@ -49,7 +48,6 @@ export default class extends Component {
       month: now.getMonth() + 1,
       onBlur() {},
       onChange() {},
-      onFocus() {},
       onSelect() {},
       previouslySelected: [],
       selected: [],
@@ -64,7 +62,7 @@ export default class extends Component {
     const isInitialArrowKeyPress = !focused && isArrowKey;
 
     if (isInitialArrowKeyPress) {
-      this.props.onFocus({ day: 1, month, year });
+      this.props.onChange({ day: 1, month, year });
       return;
     }
 
@@ -114,9 +112,10 @@ export default class extends Component {
       return;
     }
 
-    this.props.onFocus({ day: focused, month, year });
+    this.props.onChange({ day: focused, month, year });
   }
   next() {
+    const { focused } = this.props;
     let { month, year } = this.props;
 
     if (month === monthsPerYear) {
@@ -126,9 +125,10 @@ export default class extends Component {
       month++;
     }
 
-    this.props.onChange({ month, year });
+    this.props.onChange({ day: focused, month, year });
   }
   prev() {
+    const { focused } = this.props;
     let { month, year } = this.props;
 
     if (month === 1) {
@@ -138,7 +138,7 @@ export default class extends Component {
       month--;
     }
 
-    this.props.onChange({ month, year });
+    this.props.onChange({ day: focused, month, year });
   }
   render() {
     const { disabled, focused, month, previouslySelected, selected, year } = this.props;

@@ -24,8 +24,7 @@
     "akutil-polyfills": "^5.0.1"
   },
   "peerDependencies": {
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

@@ -12,9 +12,9 @@ export default class Resizer extends Component {
   }
   static get defaultProps() {
     return {
-      startResizeHandler: () => {},
-      resizeHandler: () => {},
-      endResizeHandler: () => {},
+      onResizeStart: () => {},
+      onResize: () => {},
+      onResizeEnd: () => {},
     };
   }
   constructor(props) {

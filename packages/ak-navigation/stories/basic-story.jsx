@@ -11,7 +11,8 @@ const manyContainerItems = () => {
     items.push(
       <ContainerItem
         key={i}
-        link={<a href="#1">Test page</a>}
+        text={'Test page'}
+        url={'#1'}
       />
     );
   }
@@ -23,7 +24,8 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation>
         <ContainerItem
-          link={<a href="#1">Test page</a>}
+          text={'Test page'}
+          url={'#1'}
         />
       </BasicNavigation>
       <div>

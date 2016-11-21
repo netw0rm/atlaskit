@@ -6,21 +6,32 @@ import styles from '../less/ContainerHeader.less';
 export default class ContainerHeader extends Component {
   static get propTypes() {
     return {
-      link: PropTypes.element,
+      text: PropTypes.string,
+      url: PropTypes.string,
       logo: PropTypes.element,
+      linkComponent: PropTypes.func,
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      linkComponent: (url, children) => <a href={url}>{children}</a>,
     };
   }
 
   render() {
-    const link = this.props.link;
-    const logo = link ? <link.type {...link.props}>{this.props.logo}</link.type> : this.props.logo;
+    const Link = p => this.props.linkComponent(p.url, p.children);
     return (
-      <div className={classNames(styles.locals.containerHeader)}>
-        <style>{styles.toString()}</style>
-        <div className={classNames(styles.locals.logo)}>
-          {logo}
-        </div>
-        <div className={classNames(styles.locals.link)}> {this.props.link} </div>
+      <div className={classNames(styles.locals.containerHeaderWrapper)}>
+        <Link url={this.props.url}>
+          <div className={classNames(styles.locals.containerHeader)}>
+            <style>{styles.toString()}</style>
+            <div className={classNames(styles.locals.logo)}>
+              {this.props.logo}
+            </div>
+            <div className={classNames(styles.locals.text)}> {this.props.text} </div>
+          </div>
+        </Link>
       </div>
     );
   }

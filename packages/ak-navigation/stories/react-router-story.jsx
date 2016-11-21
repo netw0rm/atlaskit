@@ -6,20 +6,28 @@ import Navigation, { ContainerHeader, ContainerItem } from '../src/index';
 import Page from './components/Page';
 import nucleusLogo from './nucleus.png';
 
+const reactRouterLinkComponent = (url, children) => <Link to={url}>{children}</Link>;
+
 const PageNavigation = () => (
   <Navigation
     containerHeader={
       <ContainerHeader
-        link={<Link to="/iframe.html">Honey Badger Systems™</Link>}
-        logo={<img alt="cat" src={nucleusLogo} />}
+        text={'AtlasCat'}
+        url={'/iframe.html'}
+        logo={<img alt="nucleus" src={nucleusLogo} />}
+        linkComponent={reactRouterLinkComponent}
       />
     }
   >
     <ContainerItem
-      link={<Link to="/page1">Page 1</Link>}
+      text={'Page 1'}
+      url={'/page1'}
+      linkComponent={reactRouterLinkComponent}
     />
     <ContainerItem
-      link={<Link to="/page2">Page 2</Link>}
+      text={'Page 2'}
+      url={'/page2'}
+      linkComponent={reactRouterLinkComponent}
     />
   </Navigation>
 );

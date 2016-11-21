@@ -17,8 +17,9 @@ export default class BasicNavigation extends Component {
         resizeHandler={action('resize')}
         containerHeader={
           <ContainerHeader
-            link={<a href="#foo">AtlasCat</a>}
-            logo={<img alt="cat" src={nucleusLogo} />}
+            text={'AtlasCat'}
+            url={'#foo'}
+            logo={<img alt="nucleus" src={nucleusLogo} />}
           />
         }
         {...this.props}

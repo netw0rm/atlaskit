@@ -1,7 +1,7 @@
 {
   "name": "ak-avatar",
   "version": "5.0.0",
-  "description": "Avatar web component",
+  "description": "Avatar component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",

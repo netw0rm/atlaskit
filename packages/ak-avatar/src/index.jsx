@@ -7,7 +7,7 @@ import Image from './Image';
 import sizes from './internal/sizes';
 import presences from './internal/presences';
 
-class Avatar extends Component {
+export default class Avatar extends Component {
   static get propTypes() {
     return {
       /**
@@ -127,5 +127,3 @@ class Avatar extends Component {
     );
   }
 }
-
-export default Avatar;

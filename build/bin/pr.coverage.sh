@@ -19,10 +19,19 @@ function stats_build_status() {
 
 function print_coverage() {
   $CHALK --no-stdin -t "{blue Coverage statistics for this PR:}"
-  cat ./coverage/coverage.txt
+  $CHALK --no-stdin -t "{blue Webcomponents:}"
+  cat ./coverage/wc/coverage.txt
+  $CHALK --no-stdin -t "{blue React:}"
+  cat ./coverage/react/coverage.txt
+}
+
+function create_coverage_index() {
+  $CHALK --no-stdin -t "{blue Generating coverage index...}"
+  echo "<html><head><title>Coverage</title></head><body><a href=\"./react/html/\">React coverage</a><br /><a href=\"./wc/html/\">WC coverage</a></body></html>" > ./coverage/index.html
 }
 
 stats_build_status "INPROGRESS"
 print_coverage
-cdn_publish_folder "./coverage/html" "$BUILD_SPECIFIC_URL_PART"
+create_coverage_index
+cdn_publish_folder "./coverage" "$BUILD_SPECIFIC_URL_PART"
 stats_build_status "SUCCESSFUL"

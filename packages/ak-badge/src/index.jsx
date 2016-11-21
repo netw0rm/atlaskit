@@ -11,7 +11,7 @@ const APPEARANCE_ENUM = {
  * @description Return React class reference for the Badge component.
  * @class AkBadge
  * @example @js import AkBadge from 'ak-badge';
- * ReactDOM.render(<ReactComponent />, container);
+ * ReactDOM.render(<AkBadge />, container);
  */
 class Badge extends Component {
   static get propTypes() {

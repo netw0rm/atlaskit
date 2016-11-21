@@ -209,9 +209,7 @@ export default class extends Component {
                 <ReactArrowleftIcon />
               </button>
               <div {...css.monthAndYear}>
-                <span>{getMonthName(month)}</span>
-                {' '}
-                <span>{year}</span>
+                {`${getMonthName(month)} ${year}`}
               </div>
               <button {...css.btn} {...css.btnNext} onClick={() => this.next()}>
                 <ReactArrowrightIcon />

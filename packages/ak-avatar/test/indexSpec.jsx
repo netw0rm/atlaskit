@@ -8,6 +8,9 @@ import Avatar from '../src';
 import Image from '../src/Image';
 import Presence from '../src/Presence';
 import sizes from '../src/internal/sizes';
+import presences from '../src/internal/presences';
+
+const [none, online, offline, busy] = presences;
 
 const { expect } = chai;
 chai.use(chaiEnzyme());
@@ -51,13 +54,13 @@ describe('ak-avatar', () => {
 
   describe('presence property', () => {
     it('should not be visible when set to "none"', () => {
-      const wrapper = mount(<Avatar presence="none" />);
+      const wrapper = mount(<Avatar presence={none} />);
       expect(wrapper.find(`.${styles.locals.presenceWrapper}`))
         .to.have.className(styles.locals.hidden);
       expect(wrapper.find(Presence)).to.not.have.descendants('svg');
     });
 
-    ['online', 'busy', 'offline'].forEach((presence) => {
+    [online, busy, offline].forEach((presence) => {
       describe(`when presence is set to '${presence}'`, () => {
         let wrapper;
         beforeEach(() => (wrapper = mount(<Avatar presence={presence} />)));

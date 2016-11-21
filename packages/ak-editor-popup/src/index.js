@@ -28,10 +28,7 @@ export default define('ak-editor-popup', {
           target={elem.target}
         >
           <style>{shadowStyles.toString()}</style>
-          <div
-            className={shadowStyles.locals.popup}
-            style={(elem.height ? { height: `${parseInt(elem.height, 10)}px` } : {})}
-          >
+          <div className={shadowStyles.locals.popup}>
             <slot style={{ display: 'flex' }} />
           </div>
         </Layer>
@@ -50,15 +47,6 @@ export default define('ak-editor-popup', {
      * @example @js dialog.open = true;
      */
     open: prop.boolean({ attribute: true }),
-    /**
-     * @description Controls static, pixel height of the popup
-     * @memberof Popup
-     * @instance
-     * @default undefined
-     * @type Number
-     * @example @html <ak-editor-popup height="400"></ak-editor-popup>
-     */
-    height: prop.number({ attribute: true }),
     /**
      * @description Target of an -popup.
      * Selector or element on a page relative to which -popup should be positioned

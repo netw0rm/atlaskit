@@ -458,7 +458,7 @@ describe('ak-editor-bitbucket', () => {
     });
   });
 
-  it('should create a newline in code block when in the middle of code block and enter is pressed', () => {
+  it('should create a newline in code block when cursor is in the middle of code block and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
       editor._pm.setTextSelection(5);
@@ -472,7 +472,7 @@ describe('ak-editor-bitbucket', () => {
     });
   });
 
-  it('should create a newline in code block when in the end of code block and enter is pressed', () => {
+  it('should create a newline in code block when cursor is at the end of code block and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
       editor._pm.setTextSelection(10);
@@ -482,6 +482,21 @@ describe('ak-editor-bitbucket', () => {
         keydown('enter', { target: PMContainer });
 
         expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;\n')));
+      });
+    });
+  });
+
+  it('should create a paragraph after code block when cursor is at the end of code block and double enter is pressed', () => {
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+      editor._pm.setTextSelection(10);
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', { target: PMContainer });
+        keydown('enter', { target: PMContainer });
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;'), p('\n')));
       });
     });
   });

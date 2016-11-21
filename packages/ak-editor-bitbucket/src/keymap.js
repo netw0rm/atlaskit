@@ -112,6 +112,11 @@ export function buildKeymap(schema, mapKeys) {
         }
 
         if (apply !== false) {
+          if (pm.selection.$head.parent.textContent.slice(-1) === "\n") {
+            commands.deleteCharBefore(pm);
+            return false;
+          }
+
           pm.tr.typeText("\n").applyAndScroll();
         }
 

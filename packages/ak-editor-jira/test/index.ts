@@ -9,7 +9,7 @@ import { doc, p } from './_schema-builder'
 chai.use(chaiPlugin);
 const { expect } = chai;
 
-describe('ak-editor-jira', () => {
+describe.skip('ak-editor-jira', () => {
   const fixture = fixtures();
   const connect = <E extends HTMLElement>(elem: E) => fixture().appendChild(elem) as E;
 

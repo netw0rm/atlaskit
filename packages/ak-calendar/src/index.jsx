@@ -26,6 +26,7 @@ export default class extends Component {
   static get propTypes() {
     return {
       calendar: PropTypes.any,
+      day: PropTypes.number,
       disabled: PropTypes.array,
       focused: PropTypes.number,
       month: PropTypes.number,
@@ -42,6 +43,7 @@ export default class extends Component {
     const now = new Date();
     return {
       calendar: new Calendar({ siblingMonths: true, weekNumbers: true }),
+      day: now.getDate(),
       disabled: [],
       focused: 0,
       month: now.getMonth() + 1,
@@ -168,11 +170,13 @@ export default class extends Component {
       const isPreviouslySelected = previouslySelected.indexOf(dateAsString) > -1;
       const isSelected = selected.indexOf(dateAsString) > -1;
       const isSiblingMonth = date.siblingMonth;
+      const isToday = date.day === this.props.day &&
+        date.month === this.props.month &&
+        date.year === this.props.year;
 
       week.push(
         <DateFn
           aria-live={isFocused ? 'polite' : ''}
-          day={date.day}
           disabled={isDisabled}
           focused={isFocused}
           key={dateAsString}
@@ -180,7 +184,8 @@ export default class extends Component {
           previouslySelected={isPreviouslySelected}
           selected={isSelected}
           sibling={isSiblingMonth}
-        />
+          today={isToday}
+        >{date.day}</DateFn>
       );
     });
 

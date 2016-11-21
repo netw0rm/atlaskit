@@ -9,7 +9,7 @@ storiesOf(name, module)
   .add('with a value', () => (
     <div>
       <Badge value="5" />
-      <Badge appearance="primary" value="-5" />
+      <Badge appearance="primary" value={-5} />
       <Badge appearance="important" value="25" />
       <Badge appearance="added" value="3000" max="99" />
       <Badge appearance="removed" />

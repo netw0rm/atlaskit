@@ -1,11 +1,10 @@
 import classNames from 'classnames';
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import styles from 'style!./style.less';
 
 const APPEARANCE_ENUM = {
   values: ['default', 'primary', 'important', 'added', 'removed'],
-  missingDefault: 'default',
-  invalidDefault: 'default',
+  defaultValue: 'default',
 };
 
 /**
@@ -24,7 +23,7 @@ class Badge extends Component {
        * @type {number}
        * @default 0
        */
-      value: React.PropTypes.number,
+      value: PropTypes.number,
       /**
        * @description The max value to display.
        * If value is 100, and max is 50, "50+" will be displayed
@@ -33,7 +32,7 @@ class Badge extends Component {
        * @type {number}
        * @default 99
        */
-      max: React.PropTypes.number,
+      max: PropTypes.number,
       /**
        * @description Affects the visual style of the badge.
        * Allowed values are: 'default', 'primary', 'important', 'added', 'removed'.
@@ -42,14 +41,14 @@ class Badge extends Component {
        * @type {string}
        * @default default
        */
-      appearance: React.PropTypes.oneOf(APPEARANCE_ENUM.values),
+      appearance: PropTypes.oneOf(APPEARANCE_ENUM.values),
       /**
        * @description Handler function to be called when the 'updated' prop is changed.
        * @memberof AkBadge
        * @instance
        * @type {function}
        */
-      onValueUpdated: React.PropTypes.func,
+      onValueUpdated: PropTypes.func,
     };
   }
 
@@ -57,17 +56,16 @@ class Badge extends Component {
     return {
       value: 0,
       max: 99,
-      appearance: APPEARANCE_ENUM.missingDefault,
+      appearance: APPEARANCE_ENUM.defaultValue,
     };
   }
 
   // triggered on prop/state change, but not on first render
   componentWillUpdate(nextProps) {
-    if (this.props.onValueUpdated && nextProps.value !== this.props.value) {
-      this.props.onValueUpdated({
-        oldValue: this.props.value,
-        newValue: nextProps.value,
-      });
+    const { onValueUpdated, value: oldValue } = this.props;
+    const { value: newValue } = nextProps;
+    if (onValueUpdated && newValue !== oldValue) {
+      onValueUpdated({ oldValue, newValue });
     }
   }
 
@@ -80,7 +78,7 @@ class Badge extends Component {
       return `${max}+`;
     }
     if (value === Infinity) {
-      return '\u221E';
+      return '\u221E'; // ∞ inifinity character
     }
     return value;
   }
@@ -88,8 +86,8 @@ class Badge extends Component {
   // returns the assigned appearance if valid, falling back to the default otherwise
   validAppearance() {
     const { appearance } = this.props;
-    const { values, invalidDefault } = APPEARANCE_ENUM;
-    return values.indexOf(appearance) !== -1 ? appearance : invalidDefault;
+    const { values, defaultValue } = APPEARANCE_ENUM;
+    return values.indexOf(appearance) !== -1 ? appearance : defaultValue;
   }
 
   render() {
@@ -99,7 +97,7 @@ class Badge extends Component {
           className={classNames(
             [styles.value, styles[this.validAppearance()]]
           )}
-        >{this.displayValue()}</span>
+        >{this.displayValue().toString()}</span>
       </span>
     );
   }

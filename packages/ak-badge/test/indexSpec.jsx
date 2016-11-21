@@ -19,7 +19,7 @@ describe('ak-badge', () => {
     it('should only accept positive numbers', () => {
       valueSpan(shallow(<AkBadge value={-5} />)).text().should.equal('0');
     });
-    it('should show show Infinity as the ∞ character', () => {
+    it('should show Infinity as the ∞ character', () => {
       valueSpan(shallow(<AkBadge value={Infinity} max={Infinity} />)).text().should.equal('∞');
     });
     it('should trigger onValueUpdated when value prop changed with a number', (done) => {

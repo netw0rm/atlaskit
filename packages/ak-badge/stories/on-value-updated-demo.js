@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { action } from '@kadira/storybook';
 
 import Badge from '../src';
 
@@ -11,10 +12,10 @@ export default class OnValueUpdatedDemo extends Component {
   render() {
     return (
       <div>
-        <p>Open your browser console and then click the increment button</p>
         <Badge
           value={this.state.value}
           onValueUpdated={(detail) => {
+            action(`onValueUpdated called with oldValue ${detail.oldValue}, newValue ${detail.newValue}`)();
             console.log('onValueUpdated called with:', detail);
           }}
         />

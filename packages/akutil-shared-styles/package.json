@@ -1,6 +1,6 @@
 {
   "name": "akutil-shared-styles",
-  "version": "37.0.3",
+  "version": "37.1.0",
   "description": "Shared styles for AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

@@ -18,7 +18,7 @@
     "skatejs": "^4.0.6"
   },
   "peerDependencies": {
-    "ak-navigation": ">=11.x"
+    "ak-navigation": "<=13.0.x"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

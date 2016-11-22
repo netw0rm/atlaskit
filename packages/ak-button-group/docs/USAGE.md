@@ -16,6 +16,13 @@ Import the component in your React app as follows:
 
 ```
 import ButtonGroup from 'ak-button-group';
+import Button from 'ak-button';
 
-ReactDOM.render(<ButtonGroup />, container);
+ReactDOM.render((
+  <ButtonGroup>
+    <Button>One</Button>
+    <Button>Two</Button>
+    <Button>Three</Button>
+  </ButtonGroup>
+), container)
 ```

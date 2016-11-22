@@ -7,7 +7,7 @@ export default class ContainerHeader extends Component {
   static get propTypes() {
     return {
       text: PropTypes.string,
-      logo: PropTypes.element,
+      icon: PropTypes.node,
     };
   }
 
@@ -16,8 +16,8 @@ export default class ContainerHeader extends Component {
       <div className={classNames(styles.locals.containerHeaderWrapper)}>
         <div className={classNames(styles.locals.containerHeader)}>
           <style>{styles.toString()}</style>
-          <div className={classNames(styles.locals.logo)}>
-            {this.props.logo}
+          <div className={classNames(styles.locals.icon)}>
+            {this.props.icon}
           </div>
           <div className={classNames(styles.locals.text)}> {this.props.text} </div>
         </div>

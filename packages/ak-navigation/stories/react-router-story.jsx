@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 import { Router, Route, Link, browserHistory } from 'react-router';
-import Navigation, { ContainerHeader, ContainerItem } from '../src/index';
+import Navigation, { AkContainerHeader, AkContainerItem } from '../src/index';
 import Page from './components/Page';
 import nucleusLogo from './nucleus.png';
 
@@ -14,7 +14,7 @@ const PageNavigation = () => (
       <Link
         to={'/iframe.html'}
       >
-        <ContainerHeader
+        <AkContainerHeader
           text={'AtlasCat'}
           url={'/iframe.html'}
           logo={<img alt="nucleus" src={nucleusLogo} />}
@@ -24,13 +24,13 @@ const PageNavigation = () => (
     }
   >
     <Link to={'/page1'}>
-      <ContainerItem
+      <AkContainerItem
         text={'Page 1'}
         linkComponent={reactRouterLinkComponent}
       />
     </Link>
     <Link to={'/page2'}>
-      <ContainerItem
+      <AkContainerItem
         text={'Page 2'}
         linkComponent={reactRouterLinkComponent}
       />

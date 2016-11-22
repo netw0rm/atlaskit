@@ -13,7 +13,7 @@ const expect = chai.expect; // eslint-disable-line no-unused-vars
 describe('<ContainerHeader />', () => {
   describe('props', () => {
     it('logo should render an image', () => {
-      expect(shallow(<ContainerHeader logo={<img alt="foo" />} />).find('img')).to.have.length(1);
+      expect(shallow(<ContainerHeader icon={<img alt="foo" />} />).find('img')).to.have.length(1);
     });
   });
 });

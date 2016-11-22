@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { action } from '@kadira/storybook';
-import Navigation, { ContainerHeader } from '../../src/index';
+import Navigation, { AkContainerHeader } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -17,7 +17,7 @@ export default class BasicNavigation extends Component {
         resizeHandler={action('resize')}
         containerHeader={
           <a href="#foo">
-            <ContainerHeader
+            <AkContainerHeader
               text={'AtlasCat'}
               logo={<img alt="nucleus" src={nucleusLogo} />}
             />

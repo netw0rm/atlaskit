@@ -16,7 +16,9 @@ export default class ContainerItem extends Component {
       <div>
         <style>{styles.toString()}</style>
         <div className={classNames(styles.locals.containerItem)}>
-          {this.props.icon} {this.props.text}
+          {this.props.icon ?
+            <div className={classNames(styles.locals.icon)}>{this.props.icon}</div> : null}
+          {this.props.text}
         </div>
       </div>
     );

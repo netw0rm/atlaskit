@@ -1,16 +1,17 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
-import { ContainerItem } from '../src/index';
+import { AkContainerItem } from '../src/index';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
+import nucleus from './nucleus.png';
 
 const manyContainerItems = () => {
   const items = [];
   for (let i = 0; i < 20; i++) {
     items.push(
       <a href="#1" key={i}>
-        <ContainerItem
+        <AkContainerItem
           text={'Test page'}
         />
       </a>
@@ -24,8 +25,14 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation>
         <a href="#1">
-          <ContainerItem
+          <AkContainerItem
             text={'Test page'}
+          />
+        </a>
+        <a href="#2">
+          <AkContainerItem
+            icon={<img src={nucleus} alt="icon" />}
+            text={'Item with an icon'}
           />
         </a>
       </BasicNavigation>

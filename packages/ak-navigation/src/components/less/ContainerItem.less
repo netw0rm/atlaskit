@@ -7,8 +7,16 @@
   padding: @ak-grid-size;
   box-sizing: border-box;
   border-radius: 3px;
+  display: flex;
   &:hover {
     background: @ak-color-N20A;
   }
-  
+}
+
+.icon {
+  padding: 0 @ak-grid-size * 3 0 @ak-grid-size * 2;
+  & > * {
+    width: @ak-grid-size * 2.5;
+    height: @ak-grid-size * 2.5;
+  }
 }

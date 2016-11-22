@@ -1,16 +1,13 @@
 import { storiesOf } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import AkButton from 'ak-button';
+import ReactAkButton from 'ak-button';
 import Dropdown from 'ak-dropdown';
 import CharlieIcon from 'ak-icon/glyph/atlassian';
 import React from 'react';
 
-import AkButtonGroup from '../src';
+import ReactAkButtonGroup from '../src';
 import { name } from '../package.json';
 
-
-const ReactAkButtonGroup = reactify(AkButtonGroup);
-const ReactAkButton = reactify(AkButton);
 const ReactIcon = reactify(CharlieIcon);
 const ReactDropdown = reactify(Dropdown);
 

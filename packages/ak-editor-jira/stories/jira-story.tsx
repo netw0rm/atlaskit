@@ -14,18 +14,18 @@ storiesOf('ak-editor-jira', module)
   .add('Empty', () => (
     <Editor expanded />
   ))
-  .add('JSON preview', () => {
+  .add('HTML preview', () => {
     type Props = {};
-    type State = { json: string | null };
+    type State = { html: string | null };
     class Demo extends Component<Props, State> {
       constructor() {
         super();
-        this.state = { json: null };
-        this.updateJSON = this.updateJSON.bind(this);
+        this.state = { html: null };
+        this.updateHTML = this.updateHTML.bind(this);
       }
 
-      updateJSON(e: any) {
-        this.setState({ json: e.target.value });
+      updateHTML(e: any) {
+        this.setState({ html: e.target.value });
       }
 
       render() {
@@ -33,14 +33,14 @@ storiesOf('ak-editor-jira', module)
           <div ref="root">
             <Editor
               expanded
-              onChange={this.updateJSON}
-              onReady={this.updateJSON}
+              onChange={this.updateHTML}
+              onReady={this.updateHTML}
               onSave={action('save')}
               onCancel={action('cancel')}
             />
             <fieldset style={{ marginTop: 20 }}>
-              <legend>JSON</legend>
-              <pre>{this.state.json ? JSON.stringify(this.state.json, null, 2) : null}</pre>
+              <legend>HTML</legend>
+              <pre>{this.state.html}</pre>
             </fieldset>
           </div>
         );

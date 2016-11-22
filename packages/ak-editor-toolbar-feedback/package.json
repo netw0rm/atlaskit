@@ -1,20 +1,22 @@
 {
-  "name": "ak-editor-popup",
-  "version": "4.1.0",
-  "description": "ak-editor-popup webcomponent",
+  "name": "ak-editor-toolbar-feedback",
+  "version": "1.0.0",
+  "description": "ak-editor-toolbar-feedback webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-popup"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-toolbar-feedback"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "ak-blanket": "^4.0.0",
+    "ak-editor-button": "^4.0.0",
+    "ak-editor-popup": "^4.0.1",
     "ak-editor-shared-styles": "^3.0.0",
-    "ak-layer": "^60.0.0",
+    "ak-editor-toolbar": "^4.0.0",
+    "ak-icon": "^10.0.0",
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "skatejs": "^4.0.6"
@@ -22,10 +24,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "*",
-    "ak-icon": "*",
-    "ak-editor-button": "*",
-    "ak-editor-toolbar": "*"
+    "akutil-react": "*"
   },
   "repository": {
     "type": "git",

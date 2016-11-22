@@ -24,3 +24,5 @@ export { ParagraphNode, ParagraphNodeType, isParagraphNode } from './nodes/parag
 
 export { Entity, Mention, Emoji } from './entity';
 export { schema as default } from './schema';
+
+export { MentionQueryMark, MentionQueryMarkType } from './marks/mention-query';

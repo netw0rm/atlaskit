@@ -610,6 +610,7 @@ declare module 'prosemirror/dist/model/replace' {
         openLeft: number;
         openRight: number;
         possibleParent: any;
+        static empty: boolean;
     }
 }
 
@@ -784,6 +785,7 @@ declare module 'prosemirror/dist/model/schema' {
         static compile(nodes: any, schema: any): any;
         toDOM(node?: Node): any[];
         get matchDOMTag(): any;
+        contentExpr: any;
     }
     export class Block extends NodeType {
         isBlock: boolean;
@@ -1034,8 +1036,9 @@ declare module 'prosemirror/dist/transform/transform' {
     import { Node } from 'prosemirror/dist/model/node';
     import { Mark } from 'prosemirror/dist/model/mark';
     import { Slice } from 'prosemirror/dist/model/replace';
-    import { MarkType } from 'prosemirror/dist/model/schema';
+    import { MarkType, NodeType } from 'prosemirror/dist/model/schema';
     import { NodeRange } from 'prosemirror/dist/model/resolvedpos';
+    import { Step } from 'prosemirror/dist/transform/step';
     export class Transform {
       constructor(doc: Node)
       addMark(from: number, to: number, mark: Mark|MarkType): this;
@@ -1049,6 +1052,8 @@ declare module 'prosemirror/dist/transform/transform' {
       doc: Node;
       lift(range: NodeRange, target: number): this;
       map(pos: number, bias?: number): number;
+      setNodeType(pos: number, type?: NodeType, attrs?: Object): this;
+      step(step: Step): this;
     }
     export interface TransformError {}
 }
@@ -1102,7 +1107,7 @@ declare module 'prosemirror/dist/transform/replace_step' {
     import { Step, StepResult } from 'prosemirror/dist/transform/step';
     import { PosMap } from 'prosemirror/dist/transform/map';
     export class ReplaceStep extends Step {
-        constructor(from: number, to: number, slice: any, structure: any);
+        constructor(from: number, to: number, slice: any, structure?: any);
         apply(doc: any): StepResult;
         posMap(): PosMap;
         invert(doc: any): any;

@@ -129,10 +129,15 @@ storiesOf('ak-icon', module)
     <AtlassianIcon label="Baseline aligned icon" />
   ))
   .add('Inside a button', () => (
-    <AkButton>
-      <AtlassianIcon label="Icon inside a button" slot="before" />
-      Button
-    </AkButton>
+    <div>
+      <div><AkButton iconBefore={<AtlassianIcon label="Icon before button" />}>
+        Button
+      </AkButton></div>
+      <div><AkButton iconAfter={<AtlassianIcon label="Icon after button" />}>
+        Button
+      </AkButton></div>
+    </div>
+
   ))
   .add('Different sizes', () => (
     <table>

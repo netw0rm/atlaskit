@@ -487,10 +487,9 @@ describe('ak-editor-bitbucket', () => {
     });
   });
 
-  it('should create a paragraph after code block when cursor is at the end of code block and double enter is pressed', () => {
+  it('should create a paragraph after code block when cursor is at the end of code block and double enter is pressed', function() {
     if (browser.ios) {
-      console.log('iOS virtual keyboard does not work with deleting a character');
-      return;
+      this.skip('iOS virtual keyboard does not work with deleting a character');
     }
 
     return buildExpandedEditor(fixture()).then((editor) => {

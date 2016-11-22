@@ -25,6 +25,7 @@ export default class Navigation extends Component {
       width: PropTypes.number,
       open: PropTypes.bool,
       onResize: PropTypes.func,
+      globalNavigation: PropTypes.node,
     };
   }
 
@@ -84,14 +85,20 @@ export default class Navigation extends Component {
         <style>{styles.toString()}</style>
         <div className={classNames(styles.locals.navigationInner)}>
           <div style={{ zIndex: 2 }}>
-            <GlobalNavigation
-              shouldAnimate={shouldAnimate}
-              width={getGlobalWidth(this.getRenderedWidth())}
-            >
-              <GlobalItem>P</GlobalItem>
-              <GlobalItem onActivate={() => this.searchActivated()}>S</GlobalItem>
-              <GlobalItem onActivate={() => this.createActivated()}>C</GlobalItem>
-            </GlobalNavigation>
+            {
+              this.props.globalNavigation
+                ? this.props.globalNavigation
+                : (
+                  <GlobalNavigation
+                    shouldAnimate={shouldAnimate}
+                    width={getGlobalWidth(this.getRenderedWidth())}
+                  >
+                    <GlobalItem>P</GlobalItem>
+                    <GlobalItem onActivate={() => this.searchActivated()}>S</GlobalItem>
+                    <GlobalItem onActivate={() => this.createActivated()}>C</GlobalItem>
+                  </GlobalNavigation>
+                )
+            }
           </div>
           <div style={{ zIndex: 1 }}>
             <Drawer open={this.state.searchOpen} wide>{this.props.searchDrawerContent}</Drawer>

@@ -35,7 +35,7 @@ export default class DropdownExample extends Component { // eslint-disable-line 
             />
           </DropdownTriggerReact>
         ) : (
-        <DropdownTriggerButtonReact slot="trigger" tab-index="1">
+          <DropdownTriggerButtonReact slot="trigger" tab-index="1">
             Dropdown
           </DropdownTriggerButtonReact>
           )

@@ -4,3 +4,4 @@ dist
 /build/typings
 packages/ak-icon/glyph
 packages/ak-icon/src/tmp
+/coverage

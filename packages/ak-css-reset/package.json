@@ -1,0 +1,28 @@
+{
+  "name": "ak-css-reset",
+  "version": "1.1.0",
+  "description": "ak-css-reset webcomponent",
+  "main": "dist/bundle.css",
+  "scripts": {
+    "prepublish": "lessc src/index.less dist/bundle.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "akutil-shared-styles": "^37.1.0"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "less": "^2.7.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
+}

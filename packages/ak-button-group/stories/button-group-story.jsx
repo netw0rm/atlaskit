@@ -7,7 +7,7 @@ import React from 'react';
 
 import ReactAkButtonGroup from '../src';
 import { name } from '../package.json';
-//
+
 const ReactIcon = reactify(CharlieIcon);
 const ReactDropdown = reactify(Dropdown);
 

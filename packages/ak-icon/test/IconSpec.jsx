@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import { mount, shallow } from 'enzyme';
 
 import { name } from '../package.json';
 import Icon, { size, NotImplementedError } from '../src/Icon';
-import Content from '../src/Content';
-import Root from '../src/Root';
+import styles from '../src/styles.less';
 
 const { expect } = chai;
 chai.use(chaiEnzyme());
@@ -52,8 +51,7 @@ describe(name, () => {
     it('should be able to create a component', () => {
       const wrapper = shallow(<MyIcon label="My icon" />);
       expect(wrapper).to.be.defined;
-      expect(wrapper.find(Root)).to.have.lengthOf(1);
-      expect(wrapper.find(Content)).to.have.lengthOf(1);
+      expect(wrapper.instance()).to.be.instanceOf(PureComponent);
     });
 
     describe('label property', () => {
@@ -72,18 +70,24 @@ describe(name, () => {
     });
 
     describe('size property', () => {
-      it('is reflected to the Root', () => {
-        const iconSize = size.small;
-        const wrapper = shallow(<MyIcon label="My icon" size={iconSize} />);
-        expect(wrapper.find(Root)).prop('size').to.equal(iconSize);
+      Object.values(size).forEach((s) => {
+        it(`with value ${s}`, () => {
+          const wrapper = shallow(<MyIcon label="My icon" size={s} />);
+          expect(wrapper).to.have.className(styles.locals[s]);
+        });
       });
     });
 
     describe('onClick property', () => {
-      it('is reflected to the Root', () => {
-        const clickHandler = () => {};
-        const wrapper = shallow(<MyIcon label="My icon" onClick={clickHandler} />);
-        expect(wrapper.find(Root)).prop('onClick').to.equal(clickHandler);
+      it('should set a click handler', () => {
+        let handlerFired = false;
+        const handler = () => (handlerFired = true);
+
+        const wrapper = shallow(<MyIcon label="My icon" onClick={handler} />);
+        expect(wrapper.prop('onClick')).to.equal(handler);
+
+        wrapper.simulate('click');
+        expect(handlerFired).to.equal(true);
       });
     });
   });

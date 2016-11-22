@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import iconNameToComponentName from '../bin/iconNameToComponentName';
 import { name } from '../package.json';
@@ -130,24 +130,26 @@ describe(name, () => {
     });
   });
 
-  it('should be possible to create the components', () => {
-    Object.values(components).forEach((Icon) => {
-      const wrapper = mount(<Icon label="My icon" />);
-      expect(wrapper).to.be.defined;
-      expect(wrapper.find('svg')).to.have.lengthOf(1);
-    });
-  });
-
   describe('component structure', () => {
-    const { AtlassianIcon } = bundle;
-
     it('should have role="img"', () => {
+      const { AtlassianIcon } = bundle;
       const wrapper = mount(<AtlassianIcon label="My label" />);
       expect(wrapper.find('svg')).to.have.attr('role', 'img');
     });
 
-    describe('label attribute', () => {
+    it('should be possible to create the components', () => {
+      Object.values(components).forEach((Icon) => {
+        const wrapper = shallow(<Icon label="My icon" />);
+        expect(wrapper).to.be.defined;
+        expect(wrapper.instance()).to.be.instanceOf(PureComponent);
+      });
+    });
+  });
+
+  describe('props', () => {
+    describe('label property', () => {
       it('should accept a label', () => {
+        const { AtlassianIcon } = bundle;
         const label = 'my label';
         const wrapper = mount(<AtlassianIcon label={label} />);
         const svgWrapper = wrapper.find('svg').first();

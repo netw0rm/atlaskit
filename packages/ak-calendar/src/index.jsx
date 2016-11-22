@@ -2,7 +2,7 @@ import { Calendar } from 'calendar-base';
 import { ArrowleftIcon, ArrowrightIcon } from 'ak-icon';
 import keycode from 'keycode';
 import reactify from 'akutil-react';
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 
 import {
   dateToString,
@@ -22,7 +22,7 @@ const monthsPerYear = 12;
 const ReactArrowleftIcon = reactify(ArrowleftIcon);
 const ReactArrowrightIcon = reactify(ArrowrightIcon);
 
-export default class extends Component {
+export default class extends PureComponent {
   static get propTypes() {
     return {
       /**

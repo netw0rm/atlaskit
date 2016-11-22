@@ -5,6 +5,7 @@ import chaiEnzyme from 'chai-enzyme';
 import { shallow } from 'enzyme';
 import { getMonthName } from '../src/util';
 
+import { name } from '../package.json';
 import Calendar from '../src';
 import Announcer from '../src/Announcer';
 import DateComponent from '../src/Date';
@@ -38,7 +39,7 @@ describe(name, () => {
         done();
       }}
     />);
-    wrapper.find({ day: 5, sibling: false }).simulate('click');
+    wrapper.find({ children: 5, sibling: false }).simulate('click');
   });
 
   it('selected days should have selected class', () => {
@@ -49,7 +50,7 @@ describe(name, () => {
     />);
 
     const selected = wrapper.find({
-      day: 1,
+      children: 1,
       selected: true,
       sibling: false,
     });

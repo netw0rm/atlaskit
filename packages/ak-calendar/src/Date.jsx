@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 
 import styles, { underline } from './Date.style';
 
-export default class extends Component {
+export default class extends PureComponent {
   static get propTypes() {
     return {
-      children: PropTypes.string.isRequired,
+      children: PropTypes.number.isRequired,
       // TODO remove when https://bitbucket.org/atlassian/atlaskit/pull-requests/958/fix-fix-proptypes-validation-in-our-eslint/diff is merged.
       // eslint-disable-next-line react/no-unused-prop-types
       disabled: PropTypes.bool,

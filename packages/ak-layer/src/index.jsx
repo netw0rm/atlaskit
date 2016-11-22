@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PureComponent, PropTypes } from 'react';
 import Popper from 'popper.js';
 
 import {
@@ -10,7 +10,7 @@ import {
 /* eslint-disable react/no-unused-prop-types */
 
 
-export default class extends Component {
+export default class extends PureComponent {
   static get propTypes() {
     return {
       position: PropTypes.oneOf(POSITION_ATTRIBUTE_ENUM.values),
@@ -37,21 +37,29 @@ export default class extends Component {
     };
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      position: null,
+      transform: null
+    };
+  }
+
   componentDidMount() {
-    this.applyPopper();
+    this.applyPopper(this.props);
   }
 
-  componentDidUpdate() {
-    this.applyPopper();
+  componentWillReceiveProps(nextProps) {
+    this.applyPopper(nextProps);
   }
 
-  applyPopper() {
+  applyPopper(props) {
     if (this.popper) {
       this.popper.destroy();
     }
 
     this.popper = new Popper(this.refs.targetRef, this.refs.contentRef, {
-      placement: positionPropToPopperPosition(this.props.position),
+      placement: positionPropToPopperPosition(props.position),
       modifiers: {
         applyStyle: {
           enabled: false
@@ -59,24 +67,20 @@ export default class extends Component {
       },
     });
 
-    const applyStyle = (state) => {
-      if (!state) {
-        return {};
+    const extractStyles = (state) => {
+      if (state) {
+        const left = Math.round(state.offsets.popper.left);
+        const top = Math.round(state.offsets.popper.top);
+
+        this.setState({
+          position: state.offsets.popper.position,
+          transform: `translate3d(${left}px, ${top}px, 0px)`,
+        });
       }
-
-      const left = Math.round(state.offsets.popper.left);
-      const top = Math.round(state.offsets.popper.top);
-
-      Object.assign(this.refs.contentRef.style, {
-        position: state.offsets.popper.position,
-        transform: `translate3d(${left}px, ${top}px, 0px)`,
-        top: 0,
-        left: 0,
-      });
     };
 
-    this.popper.onCreate(applyStyle);
-    this.popper.onUpdate(applyStyle);
+    this.popper.onCreate(extractStyles);
+    this.popper.onUpdate(extractStyles);
   }
 
   componentWillUnmount() {
@@ -86,12 +90,13 @@ export default class extends Component {
   }
 
   render() {
+    const { position, transform } = this.state;
     return (
       <div>
         <div ref='targetRef'>
           {this.props.children[0]}
         </div>
-        <div ref='contentRef'>
+        <div ref='contentRef' style={{ top: 0, left: 0, position, transform }}>
           {this.props.children[1]}
         </div>
       </div>
@@ -182,7 +187,7 @@ export default class extends Component {
  * @memberof Layer
  * @instance
  * @type function
- * @example @js layer.onUpdate = (data) => { console.log(data.isFlipped); };
+
  */
 
 /**

@@ -10,7 +10,9 @@
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-schema"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

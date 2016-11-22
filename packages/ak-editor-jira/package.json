@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-jira",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Atlassian Editor component for JIRA",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -21,7 +21,7 @@
     "ak-editor-plugin-lists": "^5.0.0",
     "ak-editor-plugin-text-formatting": "^5.0.0",
     "ak-editor-prosemirror": "^4.0.0",
-    "ak-editor-schema": "^4.1.0",
+    "ak-editor-schema": "^4.3.0",
     "ak-editor-shared-styles": "^3.0.0",
     "ak-editor-ui": "^1.0.0",
     "akutil-shared-styles": "^37.0.1",

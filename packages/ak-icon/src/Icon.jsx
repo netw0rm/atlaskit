@@ -1,5 +1,5 @@
 /** @jsx React.createElement */
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
 import classnames from 'classnames';
 
 import styles from 'style!./styles.less';
@@ -11,7 +11,7 @@ import size from './internal/size';
  * @description Icon interface. All icons follow this structure.
  * @class Icon
  */
-export default class Icon extends Component {
+export default class Icon extends PureComponent {
   static get propTypes() {
     return {
       /**

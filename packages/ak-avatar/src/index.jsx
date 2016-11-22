@@ -7,6 +7,10 @@ import Image from './Image';
 import sizes from './internal/sizes';
 import presences from './internal/presences';
 
+/**
+ * @description Create instances of the Avatar component in a React context.
+ * @class Avatar
+ */
 export default class Avatar extends Component {
   static get propTypes() {
     return {

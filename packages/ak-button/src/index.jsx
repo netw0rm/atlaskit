@@ -9,6 +9,10 @@ import Button from './Button';
 import Link from './Link';
 
 /* eslint-disable react/no-unused-prop-types */
+/**
+ * @description Create instances of the Button component in a React context.
+ * @class Button
+ */
 export default class AkButton extends Component {
   static get propTypes() {
     return {

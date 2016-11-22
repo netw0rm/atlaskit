@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import styles from './shadow.less';
+import styles from './styles.less';
 
 /*
   eslint-disable react/prop-types, jsx-a11y/label-has-for, jsx-a11y/no-static-element-interactions
@@ -9,7 +9,6 @@ export default (props) => {
   const labelClasses = classNames(styles.locals.labelText, {
     [styles.locals.hidden]: props.hideLabel,
   });
-  const children = props.children;
   // we render the label in a span that is in a div so that the label itself will be display: block
   // but we can put the click handler on the span so that clicking white space after the label
   // doesnt call anything
@@ -17,9 +16,9 @@ export default (props) => {
     <label className={styles.locals.label}>
       <div className={labelClasses}>
         <span onClick={props.onLabelClick}>{props.label}</span>
-        {props.required ? <span class={styles.locals.required}>*</span> : null}
+        {props.required ? <span className={styles.locals.required}>*</span> : null}
       </div>
-      {children ? children() : null}
+      {props.children}
     </label>
   );
 };

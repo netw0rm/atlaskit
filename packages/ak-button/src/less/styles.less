@@ -1,0 +1,125 @@
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/borders.less';
+@import 'theme-default.less';
+@import 'theme-dark.less';
+@import 'button-mixin.less';
+
+@em: 14;
+@grid: 8;
+
+@buttonHeight: unit(@grid * 4 / @em, em);
+@compactButtonHeight: unit(@grid * 3 / @em, em);
+
+@ak-color-B75A: fade(@ak-color-B75, 60%);
+@ak-color-B200A: fade(@ak-color-B200, 60%);
+@ak-color-B100A: fade(@ak-color-B100, 32%);
+
+
+// Link Button Colors
+@linkColor: @ak-color-B400;
+@linkColorHover: @ak-color-B300;
+@linkColorActive: @linkColorHover;
+
+// Disabled button Colors
+@disabledColor: @ak-color-N40A;
+
+.buttonContent {
+  align-items: center;
+  align-self: center;
+  display: flex;
+  pointer-events: none;
+  margin: 0 unit(@grid/2, px);
+}
+
+.IconWrapper {
+  align-self: center;
+  display: flex;
+  line-height: 0;
+  font-size: 0;
+  margin: 0 unit(@grid/2, px);
+
+  & + .buttonContent {
+    align-items: baseline;
+    align-self: baseline;
+  }
+}
+
+.buttonWrapper {
+  align-self: center;
+  display: inline-flex;
+  flex-wrap: nowrap;
+}
+
+.button {
+  align-items: baseline;
+  box-sizing: border-box;
+  border-radius: @ak-border-radius;
+  border-width: 0;
+  display: inline-flex;
+  font-style: normal;
+  font-size: inherit;
+  height: @buttonHeight;
+  line-height: @buttonHeight;
+  margin: 0;
+  outline: none;
+  padding: 0 unit(@grid, px);
+  text-align: center;
+  transition: background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  &.spacing-compact {
+    height: @compactButtonHeight;
+    line-height: @compactButtonHeight;
+  }
+
+  &.spacing-none {
+    height: auto;
+    line-height: normal;
+    padding: 0;
+
+    .buttonContent {
+      margin: 0;
+    }
+
+    .IconWrapper {
+      margin: 0;
+    }
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  &:hover {
+    cursor: pointer;
+    transition: background 0s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+  }
+
+  &:active {
+    transition-duration: 0s;
+  }
+
+  &:focus {
+    transition-duration: 0s, 0.2s;
+  }
+
+  &[disabled],
+  &.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+}
+
+.theme-default {
+  .default-rulesets();
+  .button-mixin();
+}
+
+.theme-dark {
+  .dark-rulesets();
+  .button-mixin();
+}

@@ -1,0 +1,39 @@
+@import '../node_modules/akutil-shared-styles/src/grid.less';
+
+@import 'mixins';
+
+@grid: @ak-grid-size;
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead,
+tbody,
+tfoot {
+  border-bottom: 2px solid #ccc;
+}
+td,
+th {
+  border: none;
+  padding: (@grid / 2) @grid;
+  text-align: left;
+}
+th {
+  vertical-align: top;
+}
+td:first-child,
+th:first-child {
+  padding-left: 0;
+}
+td:last-child,
+th:last-child {
+  padding-right: 0;
+}
+caption {
+  .h600();
+
+  margin-bottom: @grid;
+  text-align: left;
+}

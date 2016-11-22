@@ -1,0 +1,146 @@
+@import '~akutil-shared-styles/src/colors.less';
+
+// Size of the entire component, not including the borders
+@img-size-small: 20px;
+@img-size-medium: 30px;
+@img-size-large: 50px;
+@img-size-xlarge: 100px;
+
+// Size of the presence icon, not including the borders
+@presence-size-small: 8px;
+@presence-size-medium: 8px;
+@presence-size-large: 12px;
+@presence-size-xlarge: 22px;
+
+// The top and left offset for where the presence icon should be positioned
+@presence-offset-small: 12px;
+@presence-offset-medium: 20px;
+@presence-offset-large: 35px;
+@presence-offset-xlarge: 72px;
+
+// The color shown behind the avatar whilst it is still loading
+@ak-avatar-background: @ak-color-N40;
+
+// Default presence colors
+@ak-avatar-presence-color-online: @ak-color-G300;
+@ak-avatar-presence-color-busy: @ak-color-Y500;
+@ak-avatar-presence-color-offline: @ak-color-N40;
+
+// Presence icon styles
+@ak-avatar-presence-border-width: 2px;
+@ak-avatar-presence-border-color: white;
+
+
+.root {
+  display: inline-block;
+  position: relative;
+}
+
+.small {
+  .sizeMixin(small);
+}
+.medium {
+  .sizeMixin(medium);
+}
+.large {
+  .sizeMixin(large);
+}
+.xlarge {
+  .sizeMixin(xlarge);
+}
+
+.presence-wrapper {
+  align-content: center;
+  border: @ak-avatar-presence-border-width solid @ak-avatar-presence-border-color;
+  border-radius: 100%;
+  align-items: middle;
+  display: flex;
+  overflow: hidden;
+  position: absolute;
+}
+
+.imgWrapper {
+  align-content: center;
+  align-items: middle;
+  background-color: @ak-avatar-background;
+  border-radius: 100%;
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  // need to transformZ to lift it into a GPU layer so that the img
+  // doesnt ignore overflow:hidden when animating the opacity
+  transform: translateZ(0);
+
+  img {
+    height: 100%;
+    width: 100%;
+    display: none;
+  }
+  // Avatars will have a background color present until the image is loaded
+  &.loaded {
+    background-color: transparent;
+
+    img {
+      display: inline-block;
+    }
+  }
+}
+
+.presence {
+  height: 100%;
+  width: 100%;
+
+  &.none {
+    display: none;
+  }
+
+  &.online {
+    background: @ak-avatar-presence-color-online;
+  }
+
+  &.busy {
+    background: @ak-avatar-presence-color-busy;
+  }
+
+  &.offline {
+    background: @ak-avatar-presence-color-offline;
+
+    // Adds the dot inside the offline presence indicator
+    &:before {
+      @middle-bubble-size: 50%;
+
+      background-color: white;
+      border-radius: 100%;
+      content: '';
+      height: @middle-bubble-size;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: @middle-bubble-size;
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.sizeMixin(@size) {
+  // We build the names of the variables we will use for size and offsets
+  @height: "img-size-@{size}";
+  @width: "img-size-@{size}";
+  @presenceSize: "presence-size-@{size}";
+  @presenceOffset: "presence-offset-@{size}";
+
+  height: @@height;
+  width: @@width;
+
+  .presence-wrapper {
+    left: @@presenceOffset;
+    height: @@presenceSize;
+    top: @@presenceOffset;
+    width: @@presenceSize;
+  }
+}

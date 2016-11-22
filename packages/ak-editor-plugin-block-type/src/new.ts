@@ -17,6 +17,7 @@ import {
   isParagraphNode
 } from 'ak-editor-schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
+import transformToCodeBlock from './transform-to-code-block';
 
 // The names of the blocks don't map precisely to schema nodes, because
 // of concepts like "paragraph" <-> "Normal text" and "Unknown".
@@ -89,26 +90,39 @@ export class BlockTypeState {
     if (canChange) {
       // clear blockquote
       commands.lift(pm);
+      const nodes = pm.schema.nodes;
 
       switch (name) {
         case 'normal':
-          commands.setBlockType(pm.schema.nodes.paragraph)(pm);
+          if (nodes.paragraph) {
+            commands.setBlockType(nodes.paragraph)(pm);
+          }
           break;
         case 'heading1':
-          commands.setBlockType(pm.schema.nodes.heading, { level: 1 })(pm);
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 1 })(pm);
+          }
           break;
         case 'heading2':
-          commands.setBlockType(pm.schema.nodes.heading, { level: 2 })(pm);
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 2 })(pm);
+          }
           break;
         case 'heading3':
-          commands.setBlockType(pm.schema.nodes.heading, { level: 3 })(pm);
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 3 })(pm);
+          }
           break;
         case 'quote':
-          commands.setBlockType(pm.schema.nodes.paragraph)(pm);
-          commands.wrapIn(pm.schema.nodes.blockquote)(pm);
+          if (nodes.paragraph && nodes.blockquote) {
+            commands.setBlockType(nodes.paragraph)(pm);
+            commands.wrapIn(nodes.blockquote)(pm);
+          }
           break;
         case 'code':
-          commands.setBlockType(pm.schema.nodes.code_block)(pm);
+          if (nodes.code_block) {
+            transformToCodeBlock(nodes.code_block, pm);
+          }
           break;
       }
     }
@@ -151,7 +165,6 @@ export class BlockTypeState {
     }
 
     const block = pm.selection.$from.node(1);
-    debugger;
     if (isHeadingNode(block)) {
       switch (block.attrs.level) {
         case 1:

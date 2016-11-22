@@ -17,6 +17,7 @@ import {
   isParagraphNode
 } from 'ak-editor-schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
+import transformToCodeBlock from './transform-to-code-block';
 
 // The names of the blocks don't map precisely to schema nodes, because
 // of concepts like "paragraph" <-> "Normal text" and "Unknown".
@@ -134,7 +135,7 @@ export class BlockTypeState {
           break;
         case 'code':
           if (nodes.code_block) {
-            commands.setBlockType(nodes.code_block)(pm);
+            transformToCodeBlock(nodes.code_block, pm);
           }
           break;
       }
@@ -178,7 +179,6 @@ export class BlockTypeState {
     }
 
     const block = pm.selection.$from.node(1);
-    debugger;
     if (isHeadingNode(block)) {
       switch (block.attrs.level) {
         case 1:

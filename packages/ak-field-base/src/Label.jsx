@@ -4,7 +4,7 @@ import styles from './styles.less';
 
 /*
   eslint-disable react/prop-types, jsx-a11y/label-has-for, jsx-a11y/no-static-element-interactions
- */
+*/
 export default (props) => {
   const labelClasses = classNames(styles.locals.labelText, {
     [styles.locals.hidden]: props.hideLabel,

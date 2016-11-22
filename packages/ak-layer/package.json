@@ -25,7 +25,9 @@
     "akutil-common-test": "*"
   },
   "peerDependencies": {
-    "core-js": "*"
+    "core-js": "*",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "repository": {
     "type": "git",

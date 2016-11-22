@@ -68,7 +68,7 @@ async.waterfall([
     log.debug('"Writing TypeScript definitions');
 
     const contents = `
-import { Component } from 'skatejs';
+import { Component } from 'react';
 export default class extends Component {}
 `;
     const tasks = Object

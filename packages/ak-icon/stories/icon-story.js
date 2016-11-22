@@ -1,33 +1,25 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import reactify from 'akutil-react';
 import classnames from 'classnames';
-import AkButtonWc from 'ak-button';
+import AkButton from 'ak-button';
 
 import styles from 'style!./styles.less';
 
 import AnimationDemo from './AnimationDemo';
 import { name } from '../package.json';
 import ToggleIcons from './ToggleIcons';
-import pathToDashed from '../bin/pathToDashed';
 import { getGlyphs } from '../test/_helpers';
 import { size } from '../src/Icon';
 
 
 const iconSizes = Object.values(size);
-
-const AkButton = reactify(AkButtonWc);
-
 const twoColorIcons = ['checkbox', 'radio'];
-
 const components = getGlyphs();
-
 const sampleIconName = 'atlassian';
 const AtlassianIcon = components[sampleIconName];
 if (!AtlassianIcon) {
   throw new Error('Atlassian icon was removed, but is needed to display stories properly');
 }
-
 
 const toggleableIcons = Object
   .keys(components)
@@ -99,12 +91,10 @@ storiesOf('ak-icon', module)
           .entries(components)
           .map(([key, Icon]) => {
             const importName = `${name}/glyph/${key}`;
-            const tagName = `${name}-${pathToDashed(key)}`;
             return (
               <tr key={key}>
                 <td><Icon label={`${key} icon`} /></td>
                 <td><pre>import &#39;{importName}&#39;;</pre></td>
-                <td><pre>&lt;{tagName} /&gt;</pre></td>
               </tr>
             );
           })

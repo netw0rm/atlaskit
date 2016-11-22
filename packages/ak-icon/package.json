@@ -28,9 +28,8 @@
     "create-error": "^0.3.1"
   },
   "devDependencies": {
-    "ak-button": "^3.0.0",
+    "ak-button": "^4.0.1",
     "akutil-common-test": "*",
-    "akutil-react": "*",
     "akutil-shared-styles": "^37.0.0",
     "async": "^2.0.1",
     "camelcase": "^3.0.0",

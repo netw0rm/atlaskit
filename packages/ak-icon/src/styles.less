@@ -6,12 +6,12 @@
 
   .@{size} {
     .icon, .content {
-      width: @@width;
       height: @@height;
+      width: @@width;
 
       & > svg when not(@size=small) {
-        width: @@width;
         height: @@height;
+        width: @@width;
       }
     }
   }
@@ -34,8 +34,8 @@
 .onlySize(xlarge);
 
 .content {
-  margin: auto;
   display: inline-block;
+  margin: auto;
 
   & > svg {
     vertical-align: bottom;

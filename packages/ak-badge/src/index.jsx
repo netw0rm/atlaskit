@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
 import styles from 'style!./style.less';
 
 const APPEARANCE_ENUM = {
@@ -13,7 +13,7 @@ const APPEARANCE_ENUM = {
  * @example @js import AkBadge from 'ak-badge';
  * ReactDOM.render(<AkBadge />, container);
  */
-class Badge extends Component {
+class Badge extends PureComponent {
   static get propTypes() {
     return {
       /**

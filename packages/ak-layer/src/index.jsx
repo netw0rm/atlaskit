@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from 'react';
+import Popper from 'popper.js';
 
 import {
   POSITION_ATTRIBUTE_ENUM,
   createNewPopper,
+  positionPropToPopperPosition
 } from './internal/helpers';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -35,29 +37,46 @@ export default class extends Component {
     };
   }
 
-  constructor(props) {
-    super(props);
-    this.state = { popperState: null };
-
-    this.getPopperStyle = this.getPopperStyle.bind(this);
-    this.update = this.update.bind(this);
-  }
-
-
   componentDidMount() {
-    const popper = createNewPopper(this);
-    // we don't store this reference as state as it doesnt directly change the output of render
-    // (until the update callback is called)
-    this.popper = popper;
-    this.update();
+    this.applyPopper();
   }
 
   componentDidUpdate() {
+    this.applyPopper();
+  }
+
+  applyPopper() {
     if (this.popper) {
       this.popper.destroy();
     }
-    this.popper = createNewPopper(this);
-    // this.update();
+
+    this.popper = new Popper(this.refs.targetRef, this.refs.contentRef, {
+      placement: positionPropToPopperPosition(this.props.position),
+      modifiers: {
+        applyStyle: {
+          enabled: false
+        }
+      },
+    });
+
+    const applyStyle = (state) => {
+      if (!state) {
+        return {};
+      }
+
+      const left = Math.round(state.offsets.popper.left);
+      const top = Math.round(state.offsets.popper.top);
+
+      Object.assign(this.refs.contentRef.style, {
+        position: state.offsets.popper.position,
+        transform: `translate3d(${left}px, ${top}px, 0px)`,
+        top: 0,
+        left: 0,
+      });
+    };
+
+    this.popper.onCreate(applyStyle);
+    this.popper.onUpdate(applyStyle);
   }
 
   componentWillUnmount() {
@@ -65,41 +84,14 @@ export default class extends Component {
       this.popper.destroy();
     }
   }
-  // Since we are not allowing popper to apply styles (modifiersIngored: ['applyStyle'] in
-  // componentDidMount) we pull the styles we need out of popper and apply them ourselves
-  // getPopperStyle() returns the current popper styles
-  getPopperStyle() {
-    const state = this.state.popperState;
-    if (!state) {
-      return {};
-    }
-    const left = Math.round(state.offsets.popper.left);
-    const top = Math.round(state.offsets.popper.top);
-    const transform = `translate3d(${left}px, ${top}px, 0px)`;
-    // position here refers to fixed, absolute, etc (not popper position)
-    const position = state.offsets.popper.position;
-
-    return {
-      position,
-      transform,
-      top: 0,
-      left: 0,
-    };
-  }
-
-  update() {
-    if (this.popper) {
-      this.popper.update();
-    }
-  }
 
   render() {
     return (
       <div>
-        <div ref={ref => (this.targetRef = ref)}>
+        <div ref='targetRef'>
           {this.props.children[0]}
         </div>
-        <div ref={ref => (this.contentRef = ref)} style={this.getPopperStyle()}>
+        <div ref='contentRef'>
           {this.props.children[1]}
         </div>
       </div>

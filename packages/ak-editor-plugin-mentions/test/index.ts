@@ -1,18 +1,22 @@
 import { default as plugin } from '../src';
-import { Mention } from 'ak-editor-schema';
+import { MentionQueryMarkType, Mention } from 'ak-editor-schema';
 import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import sinonChai from 'sinon-chai';
 import { chaiPlugin, fixtures } from 'ak-editor-test';
 
 chai.use(chaiPlugin);
+chai.use(sinonChai);
 
 const schema: Schema = new Schema({
   nodes: schemaBasic.nodeSpec.append({
     mention: { type: Mention, group: 'inline' }
   }),
-  marks: schemaBasic.markSpec
+  marks: {
+    mention_query: MentionQueryMarkType
+  }
 });
 
 const makeEditor = (container: Node) => {
@@ -30,104 +34,76 @@ describe('ak-editor-plugin-mentions', () => {
     const Plugin = plugin as any; // .State is not public API.
     expect(Plugin.State.name).is.be.a('string');
   });
-});
 
-describe('ak-editor-plugin-mentions - on flush', () => {
-  it('should hydrate nodes', () => {
-    const pm = makeEditor(container());
-    const pluginInstance = plugin.get(pm);
-    const hydrateNodes = sinon.spy(pluginInstance, "hydrateNodes");
+  describe('keymap when mention query is active', () => {
+    let pm: ProseMirror, pluginInstance: any;
 
-    pm.tr.typeText("foo").apply();
-    pm.flush();
+    beforeEach(() => {
+      pm = makeEditor(container());
+      pluginInstance = plugin.get(pm);
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+    });
 
-    expect(hydrateNodes.called).to.be.true;
-  });
-});
+    it('should trigger "onSelectPrevious" when "Up"-key is pressed', () => {
+      const spy = sinon.spy();
+      pluginInstance.onSelectPrevious = spy;
+      const keyDownEvent = new CustomEvent('keydown');
+      (keyDownEvent as any).keyCode = 38;
+    
+      pm.input.dispatchKey('Up', keyDownEvent);
+      expect(spy).to.have.been.called;
+    });
 
-describe('ak-editor-plugin-mentions - when entity id is not set on mention nodes', () => {
-  it('should call the auto-complete handler', () => {
-    const pm = makeEditor(container());
-    const mockRenderHandler = sinon.spy();
-    const mockAutocompleteHandler = sinon.spy();
-    plugin.get(pm).renderHandler = mockRenderHandler;
-    plugin.get(pm).autocompleteHandler = mockAutocompleteHandler;
+    it('should trigger "onSelectNext" when "Down"-key is pressed', () => {
+      const spy = sinon.spy();
+      pluginInstance.onSelectNext = spy;
+      const keyDownEvent = new CustomEvent('keydown');
+      (keyDownEvent as any).keyCode = 40;
+    
+      pm.input.dispatchKey('Down', keyDownEvent);
+      expect(spy).to.have.been.called;
+    });
 
-    // insert a mention node
-    const m = pm.schema.nodes.mention.create({ id: '' });
-    pm.tr.insert(0, m).apply();
-    pm.flush();
+    it('should trigger "onSelectCurrent" when "Enter"-key is pressed', () => {
+      const spy = sinon.spy();
+      pluginInstance.onSelectCurrent = spy;
+      const keyDownEvent = new CustomEvent('keydown');
+      (keyDownEvent as any).keyCode = 13;
+    
+      pm.input.dispatchKey('Enter', keyDownEvent);
+      expect(spy).to.have.been.called;
+    });
 
-    expect(mockRenderHandler.called).not.to.be.true;
+    it('should trigger "dismiss" when "Esc"-key is pressed', () => {
+      const spy = sinon.spy(pluginInstance, 'dismiss');
+      const keyDownEvent = new CustomEvent('keydown');
+      (keyDownEvent as any).keyCode = 27;
+    
+      pm.input.dispatchKey('Esc', keyDownEvent);
+      expect(spy).to.have.been.called;
+    });
 
-    expect(mockAutocompleteHandler.calledWith(
-      sinon.match.instanceOf(HTMLElement),
-      sinon.match.instanceOf(ProseMirror)
-    )).to.be.true;
-  });
-});
-
-describe('ak-editor-plugin-mentions - when theres data set on mention nodes', () => {
-  it('should call the render handler', () => {
-    const pm = makeEditor(container());
-    const mockRenderHandler = sinon.spy();
-    const mockAutocompleteHandler = sinon.spy();
-    plugin.get(pm).renderHandler = mockRenderHandler;
-    plugin.get(pm).autocompleteHandler = mockAutocompleteHandler;
-
-    // insert a mention node
-    const m = pm.schema.nodes.mention.create({ id: '@foo' });
-    pm.tr.insert(0, m).apply();
-    pm.flush();
-
-    expect(mockAutocompleteHandler.called).not.to.be.true;
-
-    expect(mockRenderHandler.calledWith(
-      sinon.match.instanceOf(HTMLElement),
-      sinon.match.instanceOf(ProseMirror)
-    )).to.be.true;
   });
 
-  it('should call the render handler for every node', () => {
-    const pm = makeEditor(container());
-    const mockRenderHandler = sinon.spy();
-    const mockAutocompleteHandler = sinon.spy();
-    plugin.get(pm).renderHandler = mockRenderHandler;
-    plugin.get(pm).autocompleteHandler = mockAutocompleteHandler;
+  describe('handleSelectedMention', () => {
 
-    // insert a mention node
-    const m = pm.schema.nodes.mention.create({ id: '@foo' });
-    pm.tr.insert(0, m).apply();
-    pm.tr.insert(0, m).apply();
-    pm.flush();
+    it('should replace mention-query-mark with mention-node', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = plugin.get(pm);
 
-    expect(mockAutocompleteHandler.called).not.to.be.true;
-    expect(mockRenderHandler.callCount).to.equal(2);
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+      pm.tr.typeText('oscar').apply();
+
+      pluginInstance.handleSelectedMention({
+        detail: 'Oscar Wallhult',
+        mentionName: '@oscar'
+      });
+
+      expect(pm.doc.nodeAt(1)).to.be.of.nodeType(Mention);
+    });
+
   });
-});
 
-describe('ak-editor-plugin-mentions - when DOM contains hydrated nodes', () => {
-  it('should not call handlers on already hydratd nodes', () => {
-    const pm = makeEditor(container());
-    const mockRenderHandler = sinon.spy();
-    const mockAutocompleteHandler = sinon.spy();
-    plugin.get(pm).renderHandler = mockRenderHandler;
-    plugin.get(pm).autocompleteHandler = mockAutocompleteHandler;
-
-    // insert the first mention node
-    const m1 = pm.schema.nodes.mention.create({ id: '' });
-    pm.tr.insert(0, m1).apply();
-    pm.flush();
-
-    expect(mockAutocompleteHandler.called).to.be.true;
-    expect(mockAutocompleteHandler.callCount).to.equal(1);
-
-    // insert another mention node
-    const m2 = pm.schema.nodes.mention.create({ id: '' });
-    pm.tr.insert(0, m2).apply();
-    pm.flush();
-
-    expect(mockAutocompleteHandler.called).to.be.true;
-    expect(mockAutocompleteHandler.callCount).to.equal(2);
-  });
 });

@@ -1,5 +1,5 @@
 import { default as plugin } from '../src';
-import { Mention } from 'ak-editor-schema';
+import { MentionQueryMarkType, Mention } from 'ak-editor-schema';
 import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';
 import * as chai from 'chai';
@@ -12,7 +12,9 @@ const schema: Schema = new Schema({
   nodes: schemaBasic.nodeSpec.append({
     mention: { type: Mention, group: 'inline' }
   }),
-  marks: schemaBasic.markSpec
+  marks: {
+    mention_query: MentionQueryMarkType
+  }
 });
 
 const makeEditor = () => new ProseMirror({
@@ -21,35 +23,35 @@ const makeEditor = () => new ProseMirror({
 });
 
 describe('ak-editor-plugin-mentions - input rules', () => {
-  it('should replace a standalone "@" with mention node', () => {
+  it('should replace a standalone "@" with mention-query-mark', () => {
     const pm = makeEditor();
     pm.input.insertText(0, 0,'foo @');
 
-    const cursorFocus: ResolvedPos = pm.selection.$to;
-    expect(cursorFocus.nodeBefore).to.be.of.nodeType(Mention);
+    const cursorFocus = pm.selection.$to;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore.marks)).not.to.be.undefined;
   });
 
   it('should not replace a "@" thats part of a word', () => {
     const pm = makeEditor();
     pm.input.insertText(0, 0, 'foo@');
 
-    const cursorFocus: ResolvedPos = pm.selection.$to;
-    expect(cursorFocus.nodeBefore).not.to.be.of.nodeType(Mention);
+    const cursorFocus = pm.selection.$to;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore.marks)).to.be.undefined;
   });
 
   it('should replace "@" at the start of the content', () => {
     const pm = makeEditor();
     pm.input.insertText(0, 0, '@');
 
-    const cursorFocus: ResolvedPos = pm.selection.$to;
-    expect(cursorFocus.nodeBefore).to.be.of.nodeType(Mention);
+    const cursorFocus = pm.selection.$to;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore.marks)).not.to.be.undefined;
   });
 
   it('should replace "@" if there are multiple spaces infront of it', () => {
     const pm = makeEditor();
     pm.input.insertText(0, 0, '  @');
 
-    const cursorFocus: ResolvedPos = pm.selection.$to;
-    expect(cursorFocus.nodeBefore).to.be.of.nodeType(Mention);
+    const cursorFocus = pm.selection.$to;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore.marks)).not.to.be.undefined;
   });
 });

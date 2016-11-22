@@ -6,28 +6,19 @@ import styles from '../less/ContainerItem.less';
 export default class ContainerItem extends Component {
   static get propTypes() {
     return {
-      text: PropTypes.string,
+      text: PropTypes.node,
       icon: PropTypes.node,
-      url: PropTypes.string,
-      linkComponent: PropTypes.func,
-    };
-  }
-
-  static get defaultProps() {
-    return {
-      linkComponent: (url, children) => <a href={url}>{children}</a>,
     };
   }
 
   render() {
-    const Link = p => this.props.linkComponent(p.url, p.children);
     return (
-      <Link url={this.props.url}>
+      <div>
         <style>{styles.toString()}</style>
         <div className={classNames(styles.locals.containerItem)}>
           {this.props.icon} {this.props.text}
         </div>
-      </Link>
+      </div>
     );
   }
 }

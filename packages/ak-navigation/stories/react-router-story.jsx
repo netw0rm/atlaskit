@@ -11,24 +11,30 @@ const reactRouterLinkComponent = (url, children) => <Link to={url}>{children}</L
 const PageNavigation = () => (
   <Navigation
     containerHeader={
-      <ContainerHeader
-        text={'AtlasCat'}
-        url={'/iframe.html'}
-        logo={<img alt="nucleus" src={nucleusLogo} />}
-        linkComponent={reactRouterLinkComponent}
-      />
+      <Link
+        to={'/iframe.html'}
+      >
+        <ContainerHeader
+          text={'AtlasCat'}
+          url={'/iframe.html'}
+          logo={<img alt="nucleus" src={nucleusLogo} />}
+          linkComponent={reactRouterLinkComponent}
+        />
+      </Link>
     }
   >
-    <ContainerItem
-      text={'Page 1'}
-      url={'/page1'}
-      linkComponent={reactRouterLinkComponent}
-    />
-    <ContainerItem
-      text={'Page 2'}
-      url={'/page2'}
-      linkComponent={reactRouterLinkComponent}
-    />
+    <Link to={'/page1'}>
+      <ContainerItem
+        text={'Page 1'}
+        linkComponent={reactRouterLinkComponent}
+      />
+    </Link>
+    <Link to={'/page2'}>
+      <ContainerItem
+        text={'Page 2'}
+        linkComponent={reactRouterLinkComponent}
+      />
+    </Link>
   </Navigation>
 );
 const Page1 = () => (

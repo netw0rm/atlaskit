@@ -9,11 +9,11 @@ const manyContainerItems = () => {
   const items = [];
   for (let i = 0; i < 20; i++) {
     items.push(
-      <ContainerItem
-        key={i}
-        text={'Test page'}
-        url={'#1'}
-      />
+      <a href="#1" key={i}>
+        <ContainerItem
+          text={'Test page'}
+        />
+      </a>
     );
   }
   return items;
@@ -23,10 +23,11 @@ storiesOf(name, module)
   .add('with a simple container item', () => (
     <Page>
       <BasicNavigation>
-        <ContainerItem
-          text={'Test page'}
-          url={'#1'}
-        />
+        <a href="#1">
+          <ContainerItem
+            text={'Test page'}
+          />
+        </a>
       </BasicNavigation>
       <div>
         <Lorem count="30" />

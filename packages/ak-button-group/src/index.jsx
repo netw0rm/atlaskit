@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from 'style!./shadow.less';
+import styles from 'style!./styles.less';
 
 /* eslint-disable react/prefer-stateless-function */
 /**

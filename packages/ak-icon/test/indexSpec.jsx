@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import { mount, shallow } from 'enzyme';
@@ -109,8 +109,7 @@ describe(name, () => {
 
       it('exports the React component', () => {
         const { AtlassianIcon } = bundle;
-        expect(AtlassianIcon).to.be.a.function;
-        // TODO: Can we properly check that this is a React component?
+        expect(new AtlassianIcon({ label: 'My icon' })).to.be.instanceOf(Component);
       });
 
       it('icons are properly defined in bundle', () => {
@@ -141,7 +140,7 @@ describe(name, () => {
       Object.values(components).forEach((Icon) => {
         const wrapper = shallow(<Icon label="My icon" />);
         expect(wrapper).to.be.defined;
-        expect(wrapper.instance()).to.be.instanceOf(PureComponent);
+        expect(wrapper.instance()).to.be.instanceOf(Component);
       });
     });
   });

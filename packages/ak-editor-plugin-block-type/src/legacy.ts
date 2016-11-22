@@ -1,5 +1,6 @@
 import { commands, Plugin, ProseMirror, Selection, UpdateScheduler } from 'ak-editor-prosemirror';
 import CodeBlockPasteListener from './code-block-paste-listener';
+import transformToCodeBlock from './transform-to-code-block';
 
 export interface BlockTypeState {
   selectedBlockType?: string;
@@ -91,6 +92,10 @@ class BlockTypePlugin {
       // change it back to paragraph
       commands.setBlockType(pm.schema.nodes.paragraph as Node)(pm);
       return commands.wrapIn(pm.schema.nodes[blockType] as Node)(pm);
+    }
+
+    if (blockType === 'code_block') {
+      return transformToCodeBlock(pm.schema.nodes[blockType], pm);
     }
 
     return commands.setBlockType(

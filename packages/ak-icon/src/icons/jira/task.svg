@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 41.1 (35376) - http://www.bohemiancoding.com/sketch -->
     <title>Task</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="JIRA" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="JIRA" stroke="none" stroke-width="1" fill="currentColor" fill-rule="evenodd">
         <g id="create-6a-copy" transform="translate(-93.000000, -133.000000)">
             <g id="CREATE-PANE" transform="translate(60.000000, 0.000000)">
                 <g id="CONTENT">

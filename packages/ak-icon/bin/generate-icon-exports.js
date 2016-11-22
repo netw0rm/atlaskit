@@ -68,8 +68,16 @@ async.waterfall([
     log.debug('"Writing TypeScript definitions');
 
     const contents = `
-import { PureComponent } from 'react';
-export default class extends PureComponent {}
+import { Component } from 'react';
+
+type State = {};
+type Props = {
+  label: string;
+  size?: 'small' | 'medium' | 'large' | 'xlarge';
+  onClick?: (e: MouseEvent) => void;
+};
+
+export default class extends Component<Props, State> {}
 `;
     const tasks = Object
       .keys(entry)

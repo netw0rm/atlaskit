@@ -1,7 +1,6 @@
 @import '../node_modules/akutil-shared-styles/src/colors.less';
 @import '../node_modules/akutil-shared-styles/src/grid.less';
-
-@import 'mixins';
+@import '../node_modules/akutil-shared-styles/src/mixins/headings.less';
 
 @grid: @ak-grid-size;
 @defaultFont: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Oxygen', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -46,22 +45,22 @@ table {
 
 // Headings
 h1 {
-  .h800();
+  .adg-typography-h800();
 }
 h2 {
-  .h700();
+  .adg-typography-h700();
 }
 h3 {
-  .h600();
+  .adg-typography-h600();
 }
 h4 {
-  .h500();
+  .adg-typography-h500();
 }
 h5 {
-  .h400();
+  .adg-typography-h400();
 }
 h6 {
-  .h300();
+  .adg-typography-h300();
 }
 
 
@@ -129,7 +128,7 @@ blockquote > :last-child {
 
 // Other typographical elements
 small {
-.h200();
+  .adg-typography-h200();
 }
 code,
 kbd {

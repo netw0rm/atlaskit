@@ -23,7 +23,7 @@ class ${componentName} extends Icon {
   getGlyphTemplate() {
     return (props) => {
       const { label: title } = props;
-      const iconProps = Object.assign({}, props);
+      const iconProps = {...props};
       delete iconProps.label;
 
       // eslint-disable-next-line max-len, react/jsx-space-before-closing

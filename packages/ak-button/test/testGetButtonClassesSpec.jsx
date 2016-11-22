@@ -1,6 +1,4 @@
-import assign from 'object-assign';
-
-import { APPEARANCE, SPACING } from '../src';
+import { appearance, spacing } from '../src/internal/enumerated-properties';
 import getClasses from '../src/internal/get-button-classes';
 
 
@@ -34,11 +32,11 @@ const expectKeys = (classes, expectedCount, ...expectedClasses) => {
     .and.to.include.members(expectedClasses);
 };
 
-describe.skip('ak-button/get-button-classes', () => {
+describe('ak-button/get-button-classes', () => {
   describe('appearance', () => {
     it('button should only have default classes', () =>
       expectKeys(
-        getClasses(classKeys, { appearance: APPEARANCE.DEFAULT }),
+        getClasses(classKeys, { appearance: appearance.default }),
         2,
         classKeys.button,
         classKeys.appearanceDefault
@@ -46,16 +44,17 @@ describe.skip('ak-button/get-button-classes', () => {
     );
 
     [
-      APPEARANCE.PRIMARY,
-      APPEARANCE.SUBTLE,
-      APPEARANCE.LINK,
+      'primary',
+      'subtle',
+      'link',
     ].forEach((appearanceName) => {
       describe(appearanceName, () => {
         let classes;
         beforeEach(() => (classes = getClasses(classKeys, { appearance: appearanceName })));
 
         it(`button should have ${appearanceName} class`, () =>
-          expectKeys(classes, 2, classKeys.button, classKeys[`appearance${capitalize(appearanceName)}`])
+          expectKeys(classes, 2, classKeys.button,
+classKeys[`appearance${capitalize(appearanceName)}`])
         );
       });
     });
@@ -65,14 +64,14 @@ describe.skip('ak-button/get-button-classes', () => {
     let classes;
 
     describe('normal', () => {
-      beforeEach(() => (classes = getClasses(classKeys, { spacing: SPACING.DEFAULT })));
+      beforeEach(() => (classes = getClasses(classKeys, { spacing: spacing.default })));
 
       it('should not set any class', () =>
         expectKeys(classes, 1, classKeys.button)
       );
     });
 
-    [SPACING.COMPACT, SPACING.NONE].forEach((name) => {
+    ['compact', 'none'].forEach((name) => {
       describe(name, () => {
         beforeEach(() => (classes = getClasses(classKeys, { spacing: name })));
 
@@ -91,17 +90,17 @@ describe.skip('ak-button/get-button-classes', () => {
               expectedClass: 'selected',
             },
             {
-              setup: { appearance: APPEARANCE.PRIMARY },
+              setup: { appearance: 'primary' },
               expectedClass: 'appearancePrimary',
             },
             {
-              setup: { appearance: APPEARANCE.SUBTLE },
+              setup: { appearance: 'subtle' },
               expectedClass: 'appearanceSubtle',
             },
           ].forEach((testCase) => {
             describe(`and also ${JSON.stringify(testCase.setup)} is set`, () => {
               beforeEach(() => (
-                classes = getClasses(classKeys, assign({ spacing: name }, testCase.setup))
+                classes = getClasses(classKeys, Object.assign({ spacing: name }, testCase.setup))
               ));
               it(`should also contain ${testCase.expectedClass} class`, () =>
                 expectKeys(classes, 3,
@@ -126,7 +125,7 @@ describe.skip('ak-button/get-button-classes', () => {
     );
 
     it('selected attribute should override any appearance', () => {
-      classes = getClasses(classKeys, { appearance: APPEARANCE.PRIMARY, selected: true });
+      classes = getClasses(classKeys, { appearance: 'primary', selected: true });
       expectKeys(classes, 2, classKeys.button, classKeys.selected);
     });
   });
@@ -142,10 +141,11 @@ describe.skip('ak-button/get-button-classes', () => {
     [
       { selected: true },
       { href: 'www.atlassian.com' },
-      { appearance: APPEARANCE.SUBTLE },
+      { appearance: 'subtle' },
     ].forEach(setup =>
       describe(`when also ${setup} is set`, () => {
-        beforeEach(() => (classes = getClasses(classKeys, assign(setup, { disabled: true }))));
+        beforeEach(() =>
+          (classes = getClasses(classKeys, Object.assign(setup, { disabled: true }))));
 
         it('disabled attribute should discard any other class', () =>
           expectKeys(classes, 2, classKeys.button, classKeys.disabled)
@@ -154,19 +154,19 @@ describe.skip('ak-button/get-button-classes', () => {
     );
 
     [
-      APPEARANCE.LINK,
-      APPEARANCE.PRIMARY,
-    ].forEach(appearance =>
-      describe(`when attribute appearance ${appearance} is also set`, () => {
+      'link',
+      'primary',
+    ].forEach(a =>
+      describe(`when attribute appearance ${a} is also set`, () => {
         beforeEach(() => (
-          classes = getClasses(classKeys, { appearance, disabled: true })
+          classes = getClasses(classKeys, { appearance: a, disabled: true })
         ));
 
         it('should have both disabled and link classes', () =>
           expectKeys(classes, 3,
             classKeys.button,
             classKeys.disabled,
-            classKeys[`appearance${capitalize(appearance)}`])
+            classKeys[`appearance${capitalize(a)}`])
         );
       })
     );

@@ -1,8 +1,8 @@
 /** @jsx React.createElement */
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
+import classnames from 'classnames';
 
-import Content from './Content';
-import Root from './Root';
+import styles from 'style!./styles.less';
 import { NotImplementedError } from './internal/exceptions';
 import size from './internal/size';
 
@@ -11,7 +11,7 @@ import size from './internal/size';
  * @description Icon interface. All icons follow this structure.
  * @class Icon
  */
-export default class Icon extends Component {
+export default class Icon extends PureComponent {
   static get propTypes() {
     return {
       /**
@@ -24,11 +24,6 @@ export default class Icon extends Component {
        * @memberof Icon
        * @instance
        * @type {string}
-       * @example @html <ak-icon-* label="Accessible description of the icon" />
-       * @example @js import SomeIcon from 'ak-icon/glyph/some';
-       * const icon = new SomeIcon();
-       * icon.label = 'Accessible description of the icon';
-       * document.body.appendChild(icon);
        */
       label: PropTypes.string.isRequired,
       /**
@@ -40,13 +35,17 @@ export default class Icon extends Component {
          * @instance
          * @type {size}
          * @default small
-         * @example @html <ak-icon-* size="medium">
-         * @example @js import SomeIcon from 'ak-icon/glyph/some';
-         * const icon = new SomeIcon();
-         * icon.size = 'medium';
-         * document.body.appendChild(icon);
          */
       size: PropTypes.oneOf(Object.values(size)),
+      /**
+         * @description (Optional) A handler to execute when the icon is clicked.
+         *
+         * Defaults to a noop.
+         *
+         * @memberof Icon
+         * @instance
+         * @type {function}
+         */
       onClick: PropTypes.func,
     };
   }
@@ -76,11 +75,12 @@ export default class Icon extends Component {
     const { label, size: iconSize, onClick } = this.props;
 
     return (
-      <Root size={iconSize} onClick={onClick}>
-        <Content>
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div className={classnames([styles.icon, styles[iconSize]])} onClick={onClick}>
+        <span className={styles.content}>
           <Glyph role="img" label={label} />
-        </Content>
-      </Root>
+        </span>
+      </div>
     );
   }
 }

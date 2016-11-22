@@ -1,6 +1,6 @@
 {
   "name": "ak-css-reset",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "ak-css-reset webcomponent",
   "main": "dist/bundle.css",
   "scripts": {
@@ -10,7 +10,7 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.0.3"
+    "akutil-shared-styles": "^37.1.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

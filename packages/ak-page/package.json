@@ -24,7 +24,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-icon": "^10.0.0",
-    "ak-navigation": ">=11.x",
+    "ak-navigation": "<=13.0.x",
     "akutil-common-test": "*",
     "akutil-react": "*",
     "react-lorem-component": "^0.11.0"

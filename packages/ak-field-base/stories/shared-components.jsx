@@ -1,13 +1,9 @@
 import React from 'react';
-import reactify from 'akutil-react';
-
-import FieldBaseWC from '../src';
-import styles from '../src/shadow.less';
-
-const FieldBase = reactify(FieldBaseWC);
+import FieldBase from '../src';
+import styles from '../src/styles.less';
 
 
-const slottedInputStyle = {
+const inputStyle = {
   border: '0px',
   background: 'transparent',
   color: 'inherit',
@@ -23,11 +19,9 @@ const InputFieldBase = props => (<FieldBase
   {...props}
 >
   <input
-    is
-    slot="input-slot"
     type="text"
-    style={slottedInputStyle}
-    defaultValue={props.text || 'A slotted input'}
+    style={inputStyle}
+    defaultValue={props.text || 'A children input'}
     disabled={props.disabled}
   />
 </FieldBase>);
@@ -37,7 +31,7 @@ const DivFieldBase = props => (<FieldBase
   label="Label for FieldBase"
   {...props}
 >
-  <div is slot="input-slot">{props.text || 'This content is in the input-slot'}</div>
+  <div>{props.text || 'This is inside content'}</div>
 </FieldBase>);
 
 InputFieldBase.propTypes = {

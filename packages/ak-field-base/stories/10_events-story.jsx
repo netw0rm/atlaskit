@@ -1,7 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-
-
 import { name } from '../package.json';
 import { InputFieldBase } from './shared-components';
 
@@ -13,6 +11,7 @@ const formStyle = {
   width: '500px',
 };
 
+// TODO: Fix Story
 storiesOf(name, module)
   .add('fieldbase with cancellable events', () => {
     // we'll use this reference so that we can remove the event handler when required

@@ -2,6 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import styles from './styles.less';
 
+
+// TODO convert this to a class and extend from PureComponent
 /*
   eslint-disable react/prop-types, jsx-a11y/label-has-for, jsx-a11y/no-static-element-interactions
 */

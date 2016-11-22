@@ -11,11 +11,12 @@ import {
 // pass to ref is the same each time (and our event handlers only get applied once).
 // This is only required because we need to set the useCapture flag on the event handlers, otherwise
 // we'd simply use the onFocus and onBlur props
-// function addEventHandlers(ref) {
-//   ref.addEventListener('focus', () => ref.setFocused(true), true);
-//   ref.addEventListener('blur', () => ref.setFocused(false), true);
+// function addEventHandlers(ref, props) {
+//   ref.addEventListener('focus', props.onFocusCallback, true);
+//   ref.addEventListener('blur', props.onBlurCallback, true);
 // }
 
+// TODO convert this to a class and extend from PureComponent
 /* eslint-disable react/prop-types */
 export default (props) => {
   const contentClasses = classNames(shadowStyles.locals.content, {
@@ -26,7 +27,11 @@ export default (props) => {
     [shadowStyles.locals.invalid]: props.invalid && !props.focused,
   });
   return (
-    <div className={contentClasses}>
+    <div
+      className={contentClasses}
+      onFocusCapture={props.onFocusCallback}
+      onBlurCapture={props.onBlurCallback}
+    >
       {props.children}
     </div>
   );

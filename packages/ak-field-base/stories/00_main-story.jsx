@@ -1,12 +1,9 @@
-import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import reactify from 'akutil-react';
+import { storiesOf } from '@kadira/storybook';
 
 import { name } from '../package.json';
-import FieldBaseWC from '../src';
+import FieldBase from '../src';
 import { InputFieldBase, DivFieldBase } from './shared-components';
-
-const FieldBase = reactify(FieldBaseWC);
 
 const formStyle = {
   padding: '20px',
@@ -28,8 +25,8 @@ storiesOf(name, module)
             <li>invalid (true or false)</li>
           </ul>
         </div>
-        <DivFieldBase label="Slotted div" />
-        <InputFieldBase label="Slotted input" />
+        <DivFieldBase label="Child div" />
+        <InputFieldBase label="Child input" />
       </form>
     </div>
   ))
@@ -71,7 +68,7 @@ storiesOf(name, module)
           <DivFieldBase text={''} label="No content" />
 
           <FieldBase label="Small non-textual content (5x5 div)">
-            <div is slot="input-slot"><div style={smallBoxStyles} /></div>
+            <div><div style={smallBoxStyles} /></div>
           </FieldBase>
           <InputFieldBase
             label="With a max-width css style"
@@ -85,7 +82,7 @@ storiesOf(name, module)
     <div>
       <form action="" style={formStyle}>
         <h2>My Label-less Form</h2>
-        <InputFieldBase label="Slotted input" hideLabel text="A slotted input with no label" />
+        <InputFieldBase label="Child input" hideLabel text="An input child with no label" />
       </form>
     </div>
   ));

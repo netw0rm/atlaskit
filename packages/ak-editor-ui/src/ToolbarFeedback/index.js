@@ -94,11 +94,7 @@ export default define('ak-editor-ui-toolbar-hyperlink', class extends Component 
   }
 
   toggleFeedbackPanel() {
-    if (this.open) {
-      this.closeFeedbackPanel();
-    } else {
-      this.openFeedbackPanel();
-    }
+    this.open = !this.open;
   }
 
   handleClickOutside(e) {

@@ -85,15 +85,15 @@ export default define('ak-editor-ui-toolbar-hyperlink', class extends Component 
     );
   }
 
-  static openFeedbackPanel() {
+  openFeedbackPanel() {
     this.open = true;
   }
 
-  static closeFeedbackPanel() {
+  closeFeedbackPanel() {
     this.open = false;
   }
 
-  static toggleFeedbackPanel() {
+  toggleFeedbackPanel() {
     if (this.open) {
       this.closeFeedbackPanel();
     } else {
@@ -101,7 +101,7 @@ export default define('ak-editor-ui-toolbar-hyperlink', class extends Component 
     }
   }
 
-  static handleClickOutside(e) {
+  handleClickOutside(e) {
     // TODO: Refactor after React migration
     if (this.open && e.target !== this && !isDescendantOf(e.target, this) &&
       !(e.path && e.path.indexOf(this) > -1)) {

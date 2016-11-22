@@ -27,6 +27,8 @@ const NormalText = makeBlockType('normal', 'Normal text');
 const Heading1 = makeBlockType('heading1', 'Heading 1');
 const Heading2 = makeBlockType('heading2', 'Heading 2');
 const Heading3 = makeBlockType('heading3', 'Heading 3');
+const Heading4 = makeBlockType('heading4', 'Heading 4');
+const Heading5 = makeBlockType('heading5', 'Heading 5');
 const Quote = makeBlockType('quote', 'Block quote');
 const Code = makeBlockType('code', 'Code block');
 const Other = makeBlockType('other', 'Other…');
@@ -52,6 +54,8 @@ export class BlockTypeState {
       this.availableBlockTypes.push(Heading1);
       this.availableBlockTypes.push(Heading2);
       this.availableBlockTypes.push(Heading3);
+      this.availableBlockTypes.push(Heading4);
+      this.availableBlockTypes.push(Heading5);
     }
 
     if (pm.schema.nodes.blockquote) {
@@ -110,6 +114,16 @@ export class BlockTypeState {
         case 'heading3':
           if (nodes.heading) {
             commands.setBlockType(nodes.heading, { level: 3 })(pm);
+          }
+          break;
+        case 'heading4':
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 4 })(pm);
+          }
+          break;
+        case 'heading5':
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 5 })(pm);
           }
           break;
         case 'quote':
@@ -171,8 +185,12 @@ export class BlockTypeState {
           return Heading1;
         case 2:
           return Heading2;
-        default:
+        case 3:
           return Heading3;
+        case 4:
+          return Heading4;
+        default:
+          return Heading5;
       }
     } else if (isCodeBlockNode(block)) {
       return Code;
@@ -193,7 +211,7 @@ export default new Plugin(BlockTypeState);
 
 export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
 
-export type BlockTypeName = 'normal' | 'heading1' | 'heading2' | 'heading3' | 'quote' | 'code' | 'other';
+export type BlockTypeName = 'normal' | 'heading1' | 'heading2' | 'heading3' | 'heading4' | 'heading5' | 'quote' | 'code' | 'other';
 
 export interface BlockType {
   name: BlockTypeName;

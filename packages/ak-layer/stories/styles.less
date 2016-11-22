@@ -1,0 +1,48 @@
+html,
+body,
+// need to make the ract root height: 100% aswell, but we cant use the id.
+body > div {
+  height: 100%;
+}
+
+// use flex to create multiple rows of flex rows
+.story-root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+}
+
+.flex-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.fixed-parent {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+}
+
+.absolute-parent {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+}
+
+.alignment-container {
+  height: 100px;
+  width: 100px;
+  background-color: #eee;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.aligned-box {
+  height: 50px;
+  width: 50px;
+  border: 1px solid;
+}

@@ -27,7 +27,7 @@ const Avatar = reactify(AvatarWc);
 storiesOf(`${name} component`, module)
   .add('simple dropdown', () => (
     <div style={{ padding: '40px' }}>
-      <DropdownReactComponent open className={dropdownClass}>
+      <DropdownReactComponent open className={dropdownClass} position="right middle">
         <DropdownTriggerButtonReact slot="trigger" tab-index="1">
           Dropdown-button
         </DropdownTriggerButtonReact>

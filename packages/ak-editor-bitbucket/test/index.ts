@@ -3,11 +3,12 @@ import AkEditorBitbucket from '../src';
 import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress, locateWebComponent } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy, chaiPlugin } from 'ak-editor-test';
+import { browser } from 'ak-editor-prosemirror';
+import sinonChai from 'sinon-chai';
+
 import { doc, code, strong, a,
   h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
   emoji, code_block } from './_schema-builder';
-import sinonChai from 'sinon-chai';
-
 import shadowStyles from './shadow.less';
 
 chai.use(chaiPlugin);
@@ -487,6 +488,11 @@ describe('ak-editor-bitbucket', () => {
   });
 
   it('should create a paragraph after code block when cursor is at the end of code block and double enter is pressed', () => {
+    if (browser.ios) {
+      console.log('iOS virtual keyboard does not work with deleting a character');
+      return;
+    }
+
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
       editor._pm.setTextSelection(10);

@@ -2,7 +2,6 @@ import React, { PureComponent, PropTypes } from 'react';
 
 import { type as buttonTypes } from './internal/enumerated-properties';
 
-/* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
 export default class Button extends PureComponent {
   static propTypes = {
     type: PropTypes.oneOf(buttonTypes.values),

@@ -14,18 +14,10 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "akutil-common": "^5.0.0",
-    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
-    "object-assign": "^4.1.0",
-    "popper.js": "1.0.0-alpha.3",
-    "skatejs": "^4.0.6"
-  },
-  "devDependencies": {
-    "akutil-common-test": "*"
+    "popper.js": "1.0.0-alpha.3"
   },
   "peerDependencies": {
-    "core-js": "*",
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
   },

@@ -74,17 +74,18 @@ export default class Navigation extends Component {
 
   render() {
     const shouldAnimate = this.state.resizeDelta === 0;
+    const renderedWidth = this.getRenderedWidth();
     return (
       <div className={styles.navigation}>
         <Spacer
           shouldAnimate={shouldAnimate}
-          width={this.getRenderedWidth()}
+          width={renderedWidth}
         />
         <div className={styles.navigationInner}>
           <div style={{ zIndex: 2 }}>
             <GlobalNavigation
               shouldAnimate={shouldAnimate}
-              width={getGlobalWidth(this.getRenderedWidth())}
+              width={getGlobalWidth(renderedWidth)}
             >
               <GlobalItem>P</GlobalItem>
               <GlobalItem onActivate={() => this.searchActivated()}>S</GlobalItem>
@@ -98,7 +99,7 @@ export default class Navigation extends Component {
           <div>
             <ContainerNavigation
               shouldAnimate={shouldAnimate}
-              width={getContainerWidth(this.getRenderedWidth())}
+              width={getContainerWidth(renderedWidth)}
               header={this.props.containerHeader}
             >
               {this.props.children}

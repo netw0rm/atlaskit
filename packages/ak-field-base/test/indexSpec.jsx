@@ -72,24 +72,6 @@ describe('ak-field-base', () => {
     });
   });
 
-  // TODO: reintroduce override prop
-  describe.skip('focus behaviour with override set', () => {
-    let wrapper;
-    let content;
-    const Input = () => <input type="text" />;
-
-    beforeEach(() => {
-      wrapper = mount(<FieldBase><Input /></FieldBase>);
-      content = wrapper.find(Content);
-    });
-
-    it('should NOT apply focus styles when slotted child is focused', () => {
-      content.find(Input).simulate('focus');
-      expect(wrapper).to.have.state('focused', false);
-      expect(content).to.have.prop('focused', false);
-    });
-  });
-
   describe('labelClick event', () =>
     it('should call labelClick callback when the label span is clicked', () => {
       const spy = sinon.spy();

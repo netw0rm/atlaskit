@@ -10,8 +10,9 @@ import { standard as standardAppearance } from './internal/appearance';
  * @extends ComponentBase
  * @example <ak-field-base label="Email" />
  */
+ /* eslint-disable react/no-unused-prop-types */
 export default class FieldBase extends PureComponent {
-  static get typeProps() {
+  static get propTypes() {
     return {
       /**
        * @description The appearance of the field.
@@ -51,7 +52,7 @@ export default class FieldBase extends PureComponent {
        * @type {boolean}
        * @example <ak-field-base label="First Name" hideLabel></ak-field-base>
        */
-      hideLabel: PropTypes.boolean,
+      hideLabel: PropTypes.bool,
       /**
        * @description Whether or not a field should show a validation error.
        *
@@ -63,15 +64,12 @@ export default class FieldBase extends PureComponent {
        * @default false
        * @example <ak-field-base invalid></ak-field-base>
        */
-      invalid: PropTypes.boolean,
+      invalid: PropTypes.bool,
       /**
-       * @description Whether or not a field should show it's focused styles.
+       * @description Whether or not a field should show it's focused styles by default.
        *
        * By default, this component will automatically add and remove this prop if itself
-       * or any child of it receives focus or blur events. You can override this behaviour
-       * by using the override prop.
-       *
-       * See [Override behaviour](#override-behaviour) for more information.
+       * or any child of it receives focus or blur events.
        *
        * @memberof FieldBase
        * @instance
@@ -80,7 +78,7 @@ export default class FieldBase extends PureComponent {
        * @example @html <ak-field-base invalid></ak-field-base>
        * @example @js field.invalid = true;
        */
-      focused: PropTypes.boolean,
+      focused: PropTypes.bool,
       /**
        * @description Whether or not the field is required.
        *
@@ -91,7 +89,7 @@ export default class FieldBase extends PureComponent {
        * @default false
        * @example <ak-field-base label="First Name" required"></ak-field-base>
        */
-      required: PropTypes.boolean,
+      required: PropTypes.bool,
       /**
        * @description Whether or not a field is disabled.
        *
@@ -102,7 +100,7 @@ export default class FieldBase extends PureComponent {
        * @default false
        * @example <ak-field-base disabled></ak-field-base>
        */
-      disabled: PropTypes.boolean,
+      disabled: PropTypes.bool,
       /**
        * @description Callback that is called whenever the Label is clicked
        *
@@ -126,9 +124,7 @@ export default class FieldBase extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      // TODO: fix linting error
-      // focused: props.focused,
-      focused: false,
+      focused: props.focused,
     };
   }
 

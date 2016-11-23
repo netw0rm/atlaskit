@@ -4,7 +4,6 @@ const async = require('async');
 const mkdirp = require('mkdirp');
 
 const componentTemplate = require('./componentTemplate');
-const { name } = require('../package.json');
 const defaultSvgo = require('./svgo/transformations/default');
 const customSvgo = require('./svgo/transformations/custom');
 const { maxWidth, maxHeight, fileEnding } = require('./constants');
@@ -66,9 +65,7 @@ function workOnIcons(iconPaths, finishIconWork) {
         log.debug(`"${iconRelativePathToSrc}": generating export`);
 
         const iconRelativePathDashed = iconRelativePathToSrcNoExt.split(path.sep).join('-');
-        const iconName = `${name}-${iconRelativePathDashed}`;
         const template = componentTemplate({
-          iconName,
           unprefixedIconName: iconRelativePathDashed,
           svgData,
           iconRelativePathToSrc,
@@ -79,7 +76,7 @@ function workOnIcons(iconPaths, finishIconWork) {
       function createDirs(contents, cb) {
         log.debug(`"${iconRelativePathToSrc}": creating intermediate directories`);
 
-        const targetFile = path.join(tmpFolder, `${iconRelativePathToSrcNoExt}.js`);
+        const targetFile = path.join(tmpFolder, `${iconRelativePathToSrcNoExt}.jsx`);
         mkdirp(path.dirname(targetFile), err => cb(err, {
           targetFile,
           contents,

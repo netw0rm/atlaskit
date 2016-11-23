@@ -1,12 +1,16 @@
 import classNames from 'classnames';
+import styles from 'style!./styles.less';
 import React, { Component } from 'react';
-import styles from './styles.less';
 import Presence from './Presence';
 import Image from './Image';
 
 import sizes from './internal/sizes';
 import presences from './internal/presences';
 
+/**
+ * @description Create instances of the Avatar component in a React context.
+ * @class Avatar
+ */
 export default class Avatar extends Component {
   static get propTypes() {
     return {
@@ -87,26 +91,25 @@ export default class Avatar extends Component {
   render() {
     const { presence, size, src, label, children } = this.props;
     const sizeClasses = classNames([
-      styles.locals[size],
-      styles.locals.size,
+      styles[size],
+      styles.size,
     ]);
     const imgWrapperClasses = classNames({
-      [styles.locals.loaded]: !this.state.loading,
-    }, styles.locals.imgWrapper);
+      [styles.loaded]: !this.state.loading,
+    }, styles.imgWrapper);
     const presenceWrapperClasses = classNames({
       // hide the presence if presence prop is set to none and no custom presence is passed in
-      [styles.locals.hidden]: presence === 'none' && !children,
-      [styles.locals.presenceWrapper]: true,
+      [styles.hidden]: presence === 'none' && !children,
+      [styles.presenceWrapper]: true,
     });
     return (
-      <div className={styles.locals.root}>
-        <style>{styles.toString()}</style>
+      <div className={styles.root}>
         <div className={sizeClasses}>
           <div className={imgWrapperClasses} aria-label={label}>
             <Image
               alt={label}
               src={src}
-              className={styles.locals.img}
+              className={styles.img}
               onLoad={this.imageLoadedHandler}
               onError={this.imageErrorHandler}
               error={this.state.error}
@@ -117,7 +120,7 @@ export default class Avatar extends Component {
           <div className={presenceWrapperClasses}>
             <Presence
               presence={presence}
-              className={styles.locals.presence}
+              className={styles.presence}
             >
               {children}
             </Presence>

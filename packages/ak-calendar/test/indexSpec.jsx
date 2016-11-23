@@ -26,7 +26,7 @@ describe(name, () => {
 
   it('should highlight current date', () => {
     const wrapper = shallow(<Calendar />);
-    expect(wrapper.find('caption div').at(1))
+    expect(wrapper.find('div[aria-label="calendar"]').at(0))
       .to.include.text(`${getMonthName(nowMonth)} ${nowYear}`);
   });
 

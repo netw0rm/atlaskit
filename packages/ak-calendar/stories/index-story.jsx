@@ -1,6 +1,7 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 
+import { name } from '../package.json';
 import { pad } from '../src/util';
 import Component from '../src';
 
@@ -21,12 +22,10 @@ function getDates() {
   return [getDate(), getDate(3), getDate(20)];
 }
 
-storiesOf('Basic', module)
+storiesOf(name, module)
   .add('empty', () => (
     <Component />
-  ));
-
-storiesOf('Events', module)
+  ))
   .add('onBlur', () => (
     <Component onBlur={action('blur')} />
   ))
@@ -35,9 +34,7 @@ storiesOf('Events', module)
   ))
   .add('onSelect', () => (
     <Component onSelect={action('select')} />
-  ));
-
-storiesOf('Props', module)
+  ))
   .add('disabled', () => (
     <Component disabled={getDates()} />
   ))

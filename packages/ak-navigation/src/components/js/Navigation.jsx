@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import classNames from 'classnames';
+import styles from 'style!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
 import GlobalItem from './GlobalItem';
 import ContainerNavigation from './ContainerNavigation';
 import Drawer from './Drawer';
 import Resizer from './Resizer';
 import Spacer from './Spacer';
-import styles from '../less/Navigation.less';
 import {
   navigationOpenWidth,
   containerClosedWidth,
@@ -76,13 +75,13 @@ export default class Navigation extends Component {
   render() {
     const shouldAnimate = this.state.resizeDelta === 0;
     return (
-      <div className={classNames(styles.locals.navigation)}>
+      <div className={styles.navigation}>
         <Spacer
           shouldAnimate={shouldAnimate}
           width={this.getRenderedWidth()}
         />
         <style>{styles.toString()}</style>
-        <div className={classNames(styles.locals.navigationInner)}>
+        <div className={styles.navigationInner}>
           <div style={{ zIndex: 2 }}>
             <GlobalNavigation
               shouldAnimate={shouldAnimate}

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from '../less/Spacer.less';
+import styles from 'style!../less/Spacer.less';
 
 export default class Spacer extends Component {
   static get propTypes() {

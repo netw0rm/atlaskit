@@ -1,8 +1,6 @@
-import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
-import styles from '../less/ContainerHeader.less';
+import styles from 'style!../less/ContainerHeader.less';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class ContainerHeader extends Component {
   static get propTypes() {
     return {
@@ -13,13 +11,13 @@ export default class ContainerHeader extends Component {
 
   render() {
     return (
-      <div className={classNames(styles.locals.containerHeaderWrapper)}>
-        <div className={classNames(styles.locals.containerHeader)}>
+      <div className={styles.containerHeaderWrapper}>
+        <div className={styles.containerHeader}>
           <style>{styles.toString()}</style>
-          <div className={classNames(styles.locals.icon)}>
+          <div className={styles.icon}>
             {this.props.icon}
           </div>
-          <div className={classNames(styles.locals.text)}> {this.props.text} </div>
+          <div className={styles.text}> {this.props.text} </div>
         </div>
       </div>
     );

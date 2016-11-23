@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
-import styles from '../less/Drawer.less';
+import styles from 'style!../less/Drawer.less';
 
 export default class Drawer extends Component {
   static get propTypes() {

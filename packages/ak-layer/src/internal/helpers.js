@@ -13,29 +13,23 @@ const positionMap = {
   'left bottom': { position: 'left-end', animation: 'left' },
 };
 
-export const POSITION_ATTRIBUTE_ENUM = {
-  attribute: 'position',
+const POSITION_ATTRIBUTE_ENUM = {
   values: [
     'top left', 'top center', 'top right', 'right top', 'right middle', 'right bottom',
     'bottom left', 'bottom center', 'bottom right', 'left top', 'left middle', 'left bottom',
   ],
-  missingDefault: 'right middle',
-  invalidDefault: 'right middle',
-};
-
-export const CONSTRAIN_ATTRIBUTE_ENUM = {
-  attribute: 'constrain',
-  values: [
-    'window', 'scrollParent',
-  ],
-  missingDefault: 'window',
-  invalidDefault: 'window',
+  default: 'right middle',
 };
 
 function positionPropToPopperPosition(position) {
-  return positionMap[position].position;
+  if (positionMap[position]) {
+    return positionMap[position].position;
+  }
+
+  return positionMap[POSITION_ATTRIBUTE_ENUM.default].position;
 }
 
 export {
   positionPropToPopperPosition,
+  POSITION_ATTRIBUTE_ENUM,
 };

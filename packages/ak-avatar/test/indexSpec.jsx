@@ -16,6 +16,7 @@ const { expect } = chai;
 chai.use(chaiEnzyme());
 
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+const oneByOnePixelBlack = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 describe('ak-avatar', () => {
   it('should be possible to create a component', () => {
@@ -85,6 +86,30 @@ describe('ak-avatar', () => {
     it('should render an img tag when src is set', () =>
       expect(wrapper.find(Image)).to.have.descendants('img')
     );
+
+    it('should set loading=false when a same src is provided', () => {
+      wrapper.setProps({ src: oneByOnePixel });
+      expect(wrapper).to.have.state('loading', false);
+      expect(wrapper).to.have.state('error', false);
+    });
+
+    it('should set loading=true when a new src is provided', () => {
+      wrapper.setProps({ src: oneByOnePixelBlack });
+      expect(wrapper).to.have.state('loading', true);
+      expect(wrapper).to.have.state('error', false);
+    });
+
+    it('should set loading=false & error=false when src is loaded without errors', () => {
+      wrapper.find(Image).find('img').simulate('load');
+      expect(wrapper).to.have.state('loading', false);
+      expect(wrapper).to.have.state('error', false);
+    });
+
+    it('should set loading=false & error=true when a new invalid src is provided', () => {
+      wrapper.find(Image).find('img').simulate('error');
+      expect(wrapper).to.have.state('loading', false);
+      expect(wrapper).to.have.state('error', true);
+    });
 
     it('should not render an img tag when src is not set', () => {
       wrapper = mount(<Avatar />);

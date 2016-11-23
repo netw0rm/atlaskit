@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -10,7 +12,7 @@ import Text from '../../src/templates/Text';
 chai.use(chaiAsPromised);
 chai.should();
 
-describe(name, () => {
+describe.skip(name, () => {
   describe('Text', () => {
     let component;
     let rootNode;

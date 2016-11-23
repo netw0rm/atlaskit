@@ -33,6 +33,8 @@ export default class ToolbarBlockType extends Component {
   _active: boolean;
   _dirty: number;
 
+  _bound = false;
+
   static get props() {
     return {
       // JSX
@@ -41,6 +43,8 @@ export default class ToolbarBlockType extends Component {
           newValue?: BlockTypeState,
           oldValue?: BlockTypeState
         }) => {
+          elem.ensureBound();
+
           const oldPlugin = data.oldValue;
 
           if (oldPlugin) {
@@ -62,10 +66,7 @@ export default class ToolbarBlockType extends Component {
   }
 
   static created(elem: ToolbarBlockType) {
-    elem.onChange = elem.onChange.bind(elem);
-    elem.onSelect = elem.onSelect.bind(elem);
-    elem.handleClickOutside = elem.handleClickOutside.bind(elem);
-    elem.toggleDropdown = elem.toggleDropdown.bind(elem);
+    elem.ensureBound();
   }
 
   static attached(elem: ToolbarBlockType) {
@@ -133,6 +134,16 @@ export default class ToolbarBlockType extends Component {
   toggleDropdown() {
     if (this.plugin.canChange) {
       this._active = !this._active;
+    }
+  }
+
+  private ensureBound() {
+    if (!this._bound) {
+      this.onChange = this.onChange.bind(this);
+      this.onSelect = this.onSelect.bind(this);
+      this.handleClickOutside = this.handleClickOutside.bind(this);
+      this.toggleDropdown = this.toggleDropdown.bind(this);
+      this._bound = true;
     }
   }
 }

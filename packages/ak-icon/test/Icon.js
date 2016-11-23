@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { define, vdom, Component } from 'skatejs';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
@@ -13,7 +15,7 @@ import Icon, { NotImplementedError } from '../src/Icon';
 chai.use(chaiAsPromised);
 chai.should();
 
-describe(name, () => {
+describe.skip(name, () => {
   let component;
 
   afterEach(() => tearDownComponent(component));

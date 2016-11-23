@@ -23,7 +23,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-tabs initialisation -', () => {
+describe.skip('ak-tabs initialisation -', () => {
   let fixtures;
 
   function setUpTest(opts = {}) {

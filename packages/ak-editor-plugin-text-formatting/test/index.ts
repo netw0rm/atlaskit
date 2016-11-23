@@ -15,7 +15,7 @@ describe('ak-editor-plugin-text-formatting', () => {
     expect(Plugin.State.name).is.be.a('string');
   });
 
-  describe('em button', () => {
+  describe('em', () => {
     it('should be able to toggle em', () => {
       const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
 
@@ -34,7 +34,7 @@ describe('ak-editor-plugin-text-formatting', () => {
     });
   });
 
-  describe('strong button', () => {
+  describe('strong', () => {
     it('should be able to toggle strong', () => {
       const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
 
@@ -53,7 +53,7 @@ describe('ak-editor-plugin-text-formatting', () => {
     });
   });
 
-  describe('code button', () => {
+  describe('code', () => {
     it('should be able to toggle code', () => {
       const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
 
@@ -69,6 +69,33 @@ describe('ak-editor-plugin-text-formatting', () => {
       expect(plugin.getState().codeActive).to.be.false;
       expect(plugin.toggleMark('code')).to.be.true;
       expect(plugin.getState().codeActive).to.be.true;
+    });
+
+    it('should not be a part of the code when typing before it', () => {
+      const { pm, plugin } = editor(doc(p('a{<}text{>}')));
+
+      expect(plugin.toggleMark('code')).to.be.true;
+      pm.tr.insertText(2, 'foo').apply();
+
+      expect(pm.doc).to.deep.equal(doc(p('afoo', code('text'))));
+    });
+
+    it('should be a part of the code when typing on it', () => {
+      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+
+      expect(plugin.toggleMark('code')).to.be.true;
+      pm.tr.insertText(3, 'aa').apply();
+
+      expect(pm.doc).to.deep.equal(doc(p(code('teaaxt'))));
+    });
+
+    it('should not be a part of the code when typing after it', () => {
+      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+
+      expect(plugin.toggleMark('code')).to.be.true;
+      pm.tr.insertText(5, 'foo').apply();
+
+      expect(pm.doc).to.deep.equal(doc(p(code('text'), 'foo')));
     });
   });
 

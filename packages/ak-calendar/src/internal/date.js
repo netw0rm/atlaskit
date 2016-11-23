@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 /* eslint-disable react/prop-types */
 
 import { vdom } from 'skatejs';

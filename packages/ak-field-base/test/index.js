@@ -28,7 +28,7 @@ function tearDownComponent(component) {
   document.body.removeChild(component);
 }
 
-describe('ak-field-base', () => {
+describe.skip('ak-field-base', () => {
   let component;
   let shadowRoot;
 

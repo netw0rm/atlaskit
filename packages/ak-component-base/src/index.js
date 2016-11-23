@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 /**
  * @description returns the ComponentBase class built using the injected `Component` and `prop`
  * dependencies.

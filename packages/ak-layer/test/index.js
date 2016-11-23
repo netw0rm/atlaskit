@@ -10,7 +10,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe('ak-layer: logic', () => {
+describe.skip('ak-layer: logic', () => {
   let fixture;
   let container;
   let target;

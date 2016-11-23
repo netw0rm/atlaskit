@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { Component, vdom } from 'skatejs';
 import { enumeration } from 'akutil-common';
 

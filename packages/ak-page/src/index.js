@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { prop, props, vdom, define } from 'skatejs';
 import classNames from 'classnames';
 import { events as navigationEvents } from 'ak-navigation';

@@ -1,0 +1,53 @@
+.button-mixin() {
+  .button-style (@rulesets) {
+    @rulesets();
+
+    .default-styles();
+    text-decoration: none;
+
+    &:hover {
+      .hover-styles();
+    }
+
+    &:active {
+      .active-styles();
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px @ak-color-B200A;
+    }
+  };
+
+  &.appearance-default {
+    .button-style(@default)
+  }
+
+  &.appearance-subtle {
+    .button-style(@subtle)
+  }
+
+  &.appearance-primary {
+    .button-style(@primary);
+
+    &.disabled {
+      .button-style(@primary-disabled);
+    }
+  }
+
+  &.disabled {
+    .button-style(@disabled)
+  }
+
+  &.selected {
+    .button-style(@selected);
+
+  }
+
+  &.appearance-link {
+    .button-style(@link);
+
+    &.disabled {
+      .button-style(@link-disabled);
+    }
+  }
+}

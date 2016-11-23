@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, emit, prop, Component } from 'skatejs';
 import base from 'ak-component-base';
 import Label from './Label';

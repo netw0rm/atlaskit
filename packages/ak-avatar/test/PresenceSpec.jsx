@@ -12,15 +12,6 @@ chai.use(chaiEnzyme());
 
 describe('ak-avatar', () => {
   describe('Presence', () => {
-    // each of these should cause no presence to be rendered
-    [null, 'none', 'spooky'].forEach(presence =>
-      describe(`when presence is ${presence}`, () =>
-        it('should not render content', () =>
-          expect(shallow(<Presence presence={presence} />).type(icons.none))
-        )
-      )
-    );
-
     presences.forEach(presence =>
       describe(`when presence is ${presence}`, () =>
         it('should render content', () =>

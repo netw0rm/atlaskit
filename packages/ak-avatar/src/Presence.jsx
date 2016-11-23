@@ -9,11 +9,15 @@ export default class Presence extends PureComponent {
     presence: PropTypes.oneOf(values),
   }
 
-  render = () => {
+  static defaultProps = {
+    presence: presences.none,
+  }
+
+  render() {
     if (this.props.children) {
       return this.props.children;
     }
-    const PresenceToDisplay = presences[this.props.presence] || presences.none;
+    const PresenceToDisplay = presences[this.props.presence];
     return (<PresenceToDisplay />);
   }
 }

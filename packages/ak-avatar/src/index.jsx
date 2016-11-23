@@ -82,7 +82,7 @@ export default class Avatar extends PureComponent {
     });
   }
 
-  render = () => {
+  render() {
     const { presence, size, src, label, children } = this.props;
     const sizeClasses = classNames([
       styles[size],

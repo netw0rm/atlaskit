@@ -1,4 +1,3 @@
-/** @jsx React.createElement */
 import React, { PropTypes, PureComponent } from 'react';
 import classnames from 'classnames';
 
@@ -12,49 +11,45 @@ import size from './internal/size';
  * @class Icon
  */
 export default class Icon extends PureComponent {
-  static get propTypes() {
-    return {
-      /**
-       * @description (Required) The icon label
-       *              This is a required attribute.
-       *              Omitting it will make the icon inaccessible for screen readers, etc..
-       *              The text passed will be sanitized, e.g. passed HTML will be represented
-       *              as plain text.
+  static propTypes = {
+    /**
+     * @description (Required) The icon label
+     *              This is a required attribute.
+     *              Omitting it will make the icon inaccessible for screen readers, etc..
+     *              The text passed will be sanitized, e.g. passed HTML will be represented
+     *              as plain text.
+     *
+     * @memberof Icon
+     * @instance
+     * @type {string}
+     */
+    label: PropTypes.string.isRequired,
+    /**
+       * @description (Optional) An icon size.
+       *
+       * Defaults to an empty string (which means it uses the default size).
        *
        * @memberof Icon
        * @instance
-       * @type {string}
+       * @type {size}
+       * @default small
        */
-      label: PropTypes.string.isRequired,
-      /**
-         * @description (Optional) An icon size.
-         *
-         * Defaults to an empty string (which means it uses the default size).
-         *
-         * @memberof Icon
-         * @instance
-         * @type {size}
-         * @default small
-         */
-      size: PropTypes.oneOf(Object.values(size)),
-      /**
-         * @description (Optional) A handler to execute when the icon is clicked.
-         *
-         * Defaults to a noop.
-         *
-         * @memberof Icon
-         * @instance
-         * @type {function}
-         */
-      onClick: PropTypes.func,
-    };
+    size: PropTypes.oneOf(Object.values(size)),
+    /**
+       * @description (Optional) A handler to execute when the icon is clicked.
+       *
+       * Defaults to a noop.
+       *
+       * @memberof Icon
+       * @instance
+       * @type {function}
+       */
+    onClick: PropTypes.func,
   }
 
-  static get defaultProps() {
-    return {
-      size: size.small,
-      onClick() {},
-    };
+  static defaultProps = {
+    size: size.small,
+    onClick() {},
   }
 
   /**
@@ -72,13 +67,14 @@ export default class Icon extends PureComponent {
 
   render() {
     const Glyph = this.getGlyphTemplate();
-    const { label, size: iconSize, onClick } = this.props;
-
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div className={classnames([styles.icon, styles[iconSize]])} onClick={onClick}>
+      <div
+        className={classnames([styles.icon, styles[this.props.size]])}
+        onClick={this.props.onClick}
+      >
         <span className={styles.content}>
-          <Glyph role="img" label={label} />
+          <Glyph role="img" label={this.props.label} />
         </span>
       </div>
     );

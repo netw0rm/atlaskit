@@ -57,28 +57,28 @@ export default class Avatar extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
-      error: false,
+      isLoading: false,
+      hasError: false,
     };
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps(nextProps) {
     if (this.props.src !== nextProps.src) {
-      this.setState({ loading: true });
+      this.setState({ isLoading: true });
     }
   }
 
   imageLoadedHandler = () => {
     this.setState({
-      loading: false,
-      error: false,
+      isLoading: false,
+      hasError: false,
     });
   }
 
   imageErrorHandler = () => {
     this.setState({
-      error: true,
-      loading: false,
+      hasError: true,
+      isLoading: false,
     });
   }
 
@@ -89,7 +89,7 @@ export default class Avatar extends PureComponent {
       styles.size,
     ]);
     const imgWrapperClasses = classNames({
-      [styles.loaded]: !this.state.loading,
+      [styles.loaded]: !this.state.isLoading,
     }, styles.imgWrapper);
     const presenceWrapperClasses = classNames({
       // hide the presence if presence prop is set to none and no custom presence is passed in
@@ -106,8 +106,8 @@ export default class Avatar extends PureComponent {
               className={styles.img}
               onLoad={this.imageLoadedHandler}
               onError={this.imageErrorHandler}
-              hasError={this.state.error}
-              isLoading={this.state.loading}
+              hasError={this.state.hasError}
+              isLoading={this.state.isLoading}
             />
           </div>
 

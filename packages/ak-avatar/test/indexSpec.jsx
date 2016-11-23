@@ -87,28 +87,28 @@ describe('ak-avatar', () => {
       expect(wrapper.find(Image)).to.have.descendants('img')
     );
 
-    it('should set loading=false when a same src is provided', () => {
+    it('should set isLoading=false when a same src is provided', () => {
       wrapper.setProps({ src: oneByOnePixel });
-      expect(wrapper).to.have.state('loading', false);
-      expect(wrapper).to.have.state('error', false);
+      expect(wrapper).to.have.state('isLoading', false);
+      expect(wrapper).to.have.state('hasError', false);
     });
 
-    it('should set loading=true when a new src is provided', () => {
+    it('should set isLoading=true when a new src is provided', () => {
       wrapper.setProps({ src: oneByOnePixelBlack });
-      expect(wrapper).to.have.state('loading', true);
-      expect(wrapper).to.have.state('error', false);
+      expect(wrapper).to.have.state('isLoading', true);
+      expect(wrapper).to.have.state('hasError', false);
     });
 
-    it('should set loading=false & error=false when src is loaded without errors', () => {
+    it('should set isLoading=false & hasError=false when src is loaded without errors', () => {
       wrapper.find(Image).find('img').simulate('load');
-      expect(wrapper).to.have.state('loading', false);
-      expect(wrapper).to.have.state('error', false);
+      expect(wrapper).to.have.state('isLoading', false);
+      expect(wrapper).to.have.state('hasError', false);
     });
 
-    it('should set loading=false & error=true when a new invalid src is provided', () => {
+    it('should set isLoading=false & hasError=true when a new invalid src is provided', () => {
       wrapper.find(Image).find('img').simulate('error');
-      expect(wrapper).to.have.state('loading', false);
-      expect(wrapper).to.have.state('error', true);
+      expect(wrapper).to.have.state('isLoading', false);
+      expect(wrapper).to.have.state('hasError', true);
     });
 
     it('should not render an img tag when src is not set', () => {
@@ -120,14 +120,14 @@ describe('ak-avatar', () => {
   describe('loading behaviour', () => {
     it('should not apply the .loaded class when loading', () => {
       const wrapper = mount(<Avatar />);
-      wrapper.setState({ loading: true });
+      wrapper.setState({ isLoading: true });
       expect(wrapper.find(`.${styles.locals.imgWrapper}`))
         .to.not.have.className(styles.locals.loaded);
     });
 
     it('should apply the .loaded class when not loading', () => {
       const wrapper = mount(<Avatar />);
-      wrapper.setState({ loading: false });
+      wrapper.setState({ isLoading: false });
       expect(wrapper.find(`.${styles.locals.imgWrapper}`))
         .to.have.className(styles.locals.loaded);
     });

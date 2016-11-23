@@ -45,10 +45,22 @@ describe('ak-editor-plugin-mentions', () => {
       pm.flush();
     });
 
-    it('should have default methods for onSelectNext, onSelectPrevious and onSelectCurrent', () => {
-      expect(pluginInstance.onSelectNext).not.to.be.undefined;
-      expect(pluginInstance.onSelectPrevious).not.to.be.undefined;
-      expect(pluginInstance.onSelectCurrent).not.to.be.undefined;
+    it('should ignore "Up"-key if no "onSelectPrevious" is attached', () => {
+      const keyDownEvent = new CustomEvent('keydown');
+      (keyDownEvent as any).keyCode = 38;
+      pm.input.dispatchKey('Up', keyDownEvent);
+    });
+
+    it('should ignore "Down"-key if no "onSelectNext" is attached', () => {
+      const keyDownEvent = new CustomEvent('keydown');
+      (keyDownEvent as any).keyCode = 40;
+      pm.input.dispatchKey('Down', keyDownEvent);
+    });
+
+    it('should ignore "Enter"-key if no "onSelectCurrent" is attached', () => {
+      const keyDownEvent = new CustomEvent('keydown');
+      (keyDownEvent as any).keyCode = 13;
+      pm.input.dispatchKey('Enter', keyDownEvent);
     });
 
     it('should trigger "onSelectPrevious" when "Up"-key is pressed', () => {

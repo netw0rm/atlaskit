@@ -55,7 +55,7 @@ function tearDownCard(component) {
   document.body.removeChild(component);
 }
 
-describe('pf-profilecard', () => {
+describe.skip('pf-profilecard', () => {
   let component;
 
   beforeEach(() => setupCard().then(newComponent => (component = newComponent)));

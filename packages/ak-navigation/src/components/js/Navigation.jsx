@@ -80,7 +80,6 @@ export default class Navigation extends Component {
           shouldAnimate={shouldAnimate}
           width={this.getRenderedWidth()}
         />
-        <style>{styles.toString()}</style>
         <div className={styles.navigationInner}>
           <div style={{ zIndex: 2 }}>
             <GlobalNavigation

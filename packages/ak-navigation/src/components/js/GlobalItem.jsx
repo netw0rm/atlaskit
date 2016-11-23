@@ -22,7 +22,6 @@ export default class GlobalItem extends Component {
         tabIndex="0"
         className={styles.globalItem}
       >
-        <style>{styles.toString()}</style>
         {this.props.children}
       </button>
     );

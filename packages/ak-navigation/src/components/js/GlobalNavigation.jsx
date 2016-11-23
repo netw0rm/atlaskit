@@ -25,7 +25,7 @@ export default class GlobalNavigation extends Component {
     return (
       <div
         className={classNames({
-          [styles.locals.shouldAnimate]: this.props.shouldAnimate,
+          [styles.shouldAnimate]: this.props.shouldAnimate,
         })}
       >
         <Spacer

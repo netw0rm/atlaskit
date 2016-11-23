@@ -65,7 +65,6 @@ export default class ContainerNavigation extends Component {
           [styles.locals.shouldAnimate]: this.props.shouldAnimate,
         })}
       >
-        <style>{styles.toString()}</style>
         <Spacer
           width={this.props.width}
           shouldAnimate={this.props.shouldAnimate}

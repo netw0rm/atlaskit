@@ -13,7 +13,6 @@ export default class ContainerHeader extends Component {
     return (
       <div className={styles.containerHeaderWrapper}>
         <div className={styles.containerHeader}>
-          <style>{styles.toString()}</style>
           <div className={styles.icon}>
             {this.props.icon}
           </div>

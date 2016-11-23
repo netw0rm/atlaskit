@@ -49,9 +49,7 @@ export default class Resizer extends Component {
       <div
         onMouseDown={this.mouseDownHandler}
         className={styles.resizer}
-      >
-        <style>{styles.toString()}</style>
-      </div>
+      />
     );
   }
 }

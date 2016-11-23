@@ -16,9 +16,9 @@ export class MentionsPluginState {
   keymap: Keymap;
   hasKeymap = false;
 
-  onSelectPrevious: () => void;
-  onSelectNext: () => void;
-  onSelectCurrent: () => void;
+  onSelectPrevious = () => {};
+  onSelectNext =  () => {};
+  onSelectCurrent = () => {};
 
   private changeHandlers: MentionsPluginStateSubscriber[] = [];
 

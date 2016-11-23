@@ -45,6 +45,12 @@ describe('ak-editor-plugin-mentions', () => {
       pm.flush();
     });
 
+    it('should have default methods for onSelectNext, onSelectPrevious and onSelectCurrent', () => {
+      expect(pluginInstance.onSelectNext).not.to.be.undefined;
+      expect(pluginInstance.onSelectPrevious).not.to.be.undefined;
+      expect(pluginInstance.onSelectCurrent).not.to.be.undefined;
+    });
+
     it('should trigger "onSelectPrevious" when "Up"-key is pressed', () => {
       const spy = sinon.spy();
       pluginInstance.onSelectPrevious = spy;

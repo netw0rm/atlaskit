@@ -9,8 +9,8 @@ class ButtonBuilderExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      disabled: false,
-      selected: false,
+      isDisabled: false,
+      isSelected: false,
       spacing: 'default',
       appearance: 'default',
       href: undefined,
@@ -66,8 +66,8 @@ class ButtonBuilderExample extends React.Component {
 
   render() {
     const props = {
-      disabled: this.state.disabled,
-      selected: this.state.selected,
+      isDisabled: this.state.isDisabled,
+      isSelected: this.state.isSelected,
       appearance: this.state.appearance,
       onclick: action('clicking the WebComponent'),
       spacing: this.state.spacing,
@@ -101,8 +101,8 @@ class ButtonBuilderExample extends React.Component {
         <form>
           <strong>Boolean Attributes</strong>
           <br />
-          {this.createBooleanCheckboxAttribute('disabled')}
-          {this.createBooleanCheckboxAttribute('selected')}
+          {this.createBooleanCheckboxAttribute('isDisabled')}
+          {this.createBooleanCheckboxAttribute('isSelected')}
         </form>
         <br />
         <form>

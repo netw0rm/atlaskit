@@ -39,9 +39,9 @@ const css = `
 /* eslint-disable react/prop-types,max-len */
 const buildBackgroundStory = () => {
   const createSample = ({ backgroundColor, extraProps = { onClick: action('clicking the WebComponent') } }) => (
-    <div style={{ 'margin-bottom': '30px' }}>
+    <div style={{ marginBottom: '30px' }}>
       <style>{'.buttonContainer > * { margin: 5px }'}</style>
-      <div className="sample" style={{ 'background-color': backgroundColor }}>
+      <div className="sample" style={{ backgroundColor }}>
         <div className="buttonContainer">
           <AkButton {...extraProps}>
             Default
@@ -55,13 +55,13 @@ const buildBackgroundStory = () => {
           <AkButton {...extraProps} appearance="subtle" >
             Subtle
           </AkButton>
-          <AkButton {...extraProps} selected>
+          <AkButton {...extraProps} isSelected>
             Selected
           </AkButton>
         </div>
         <span> Normal States </span>
       </div>
-      <div className="sample" style={{ 'background-color': backgroundColor }}>
+      <div className="sample" style={{ backgroundColor }}>
         <div className="buttonContainer">
           <AkButton {...extraProps} iconAfter={<Question />}>
             Default
@@ -75,49 +75,49 @@ const buildBackgroundStory = () => {
           <AkButton {...extraProps} appearance="subtle" iconAfter={<Expand />}>
             Subtle
           </AkButton>
-          <AkButton {...extraProps} selected iconAfter={<Open />}>
+          <AkButton {...extraProps} isSelected iconAfter={<Open />}>
             Selected
           </AkButton>
         </div>
         <span> Normal States + icons</span>
       </div>
-      <div className="sample" style={{ 'background-color': backgroundColor }}>
+      <div className="sample" style={{ backgroundColor }}>
         <div className="buttonContainer">
-          <AkButton {...extraProps} disabled>
+          <AkButton {...extraProps} isDisabled>
             Default Disabled
           </AkButton>
-          <AkButton {...extraProps} appearance="primary" disabled>
+          <AkButton {...extraProps} appearance="primary" isDisabled>
             Primary Disabled
           </AkButton>
-          <AkButton {...extraProps} appearance="link" disabled>
+          <AkButton {...extraProps} appearance="link" isDisabled>
             Link Disabled
           </AkButton>
         </div>
         <span> Disabled variations </span>
       </div>
-      <div className="sample" style={{ 'background-color': backgroundColor }}>
+      <div className="sample" style={{ backgroundColor }}>
         <div className="buttonContainer">
-          <AkButton {...extraProps} disabled iconAfter={<Page />}>
+          <AkButton {...extraProps} isDisabled iconAfter={<Page />}>
             Default Disabled
           </AkButton>
-          <AkButton {...extraProps} appearance="primary" disabled iconAfter={<Question />}>
+          <AkButton {...extraProps} appearance="primary" isDisabled iconAfter={<Question />}>
             Primary Disabled
           </AkButton>
-          <AkButton {...extraProps} appearance="link" disabled iconAfter={<Calendar />}>
+          <AkButton {...extraProps} appearance="link" isDisabled iconAfter={<Calendar />}>
             Link Disabled
           </AkButton>
         </div>
         <span> Disabled variations + icons</span>
       </div>
-      <div className="sample" style={{ 'background-color': backgroundColor }}>
+      <div className="sample" style={{ backgroundColor }}>
         <div className="buttonContainer">
           <AkButton {...extraProps} spacing="none" iconBefore={<Unlink />} />
-          <AkButton {...extraProps} spacing="none" selected iconBefore={<Unlink />} />
+          <AkButton {...extraProps} spacing="none" isSelected iconBefore={<Unlink />} />
           <AkButton {...extraProps} spacing="none" appearance="primary" iconBefore={<Unlink />} />
-          <AkButton {...extraProps} spacing="none" disabled iconBefore={<Unlink />} />
+          <AkButton {...extraProps} spacing="none" isDisabled iconBefore={<Unlink />} />
           <AkButton {...extraProps} appearance="subtle" spacing="none" iconBefore={<Unlink />} />
           <AkButton {...extraProps} spacing="none" iconBefore={<Open />} />
-          <AkButton {...extraProps} spacing="none" selected iconBefore={<Open />} />
+          <AkButton {...extraProps} spacing="none" isSelected iconBefore={<Open />} />
           <AkButton {...extraProps} spacing="none" appearance="primary" iconBefore={<Open />} />
           <AkButton {...extraProps} spacing="none" disabled iconBefore={<Open />} />
           <AkButton {...extraProps} appearance="subtle" spacing="none" iconBefore={<Open />} />
@@ -191,30 +191,30 @@ const buildStory = props => (
         </div>
 
         <div className="sample">
-          <AkButton {...props} disabled onClick={action('clicking the WebComponent')}>
+          <AkButton {...props} isDisabled onClick={action('clicking the WebComponent')}>
             Disabled Option
           </AkButton>
-          <span>disabled</span>
+          <span>isDisabled</span>
         </div>
 
         <div className="sample">
           <AkButton
             {...props}
-            disabled
+            isDisabled
             onClick={action('clicking the WebComponent')}
             href="http://www.atlassian.com"
             target="_blank"
           >
             Go to Site
           </AkButton>
-          <span>disabled + href + target</span>
+          <span>isDisabled + href + target</span>
         </div>
 
         <div className="sample">
-          <AkButton {...props} selected>
+          <AkButton {...props} isSelected>
             Selected
           </AkButton>
-          <span>selected</span>
+          <span>isSelected</span>
         </div>
 
         <div className="sample">
@@ -238,7 +238,7 @@ const buildStory = props => (
         <div className="sample">
           <span>
             text
-            <AkButton {...props} selected iconAfter={<Calendar label="calendar icon" />}>
+            <AkButton {...props} isSelected iconAfter={<Calendar label="calendar icon" />}>
               Pick Date
             </AkButton>
             text
@@ -284,7 +284,7 @@ const buildStory = props => (
         <div className="sample">
           <AkButton
             {...props}
-            selected
+            isSelected
             iconBefore={<Question label="question icon">Question</Question>}
           />
           <span>button with Question icon + selected</span>
@@ -294,9 +294,9 @@ const buildStory = props => (
           <div className="ButtonContainer">
             <style>{'.ButtonContainer > a, .ButtonContainer > button, .sample > a, .sample > button { margin-right: 5px }'}</style>
             <AkButton {...props} spacing="none" iconBefore={<Unlink>unlink</Unlink>} />
-            <AkButton {...props} spacing="none" selected iconBefore={<Unlink>unlink selected</Unlink>} />
+            <AkButton {...props} spacing="none" isSelected iconBefore={<Unlink>unlink selected</Unlink>} />
             <AkButton {...props} spacing="none" iconBefore={<Open>open</Open>} />
-            <AkButton {...props} spacing="none" selected iconBefore={<Open>open selected</Open>} />
+            <AkButton {...props} spacing="none" isSelected iconBefore={<Open>open selected</Open>} />
           </div>
           <span>button with icons, no spacing & selected</span>
         </div>
@@ -309,14 +309,14 @@ const buildStory = props => (
         </div>
 
         <div className="sample">
-          <AkButton {...props} onClick={action('clicking the WebComponent')} spacing="compact" disabled>
+          <AkButton {...props} onClick={action('clicking the WebComponent')} spacing="compact" isDisabled>
             Disabled Option
           </AkButton>
-          <span>compact + disabled</span>
+          <span>compact + isDisabled</span>
         </div>
 
         <div className="sample">
-          <AkButton {...props} spacing="compact" selected>
+          <AkButton {...props} spacing="compact" isSelected>
             Selected Option
           </AkButton>
           <span>compact + selected</span>

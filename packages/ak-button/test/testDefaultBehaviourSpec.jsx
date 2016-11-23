@@ -33,7 +33,7 @@ describe('ak-button/default-behaviour', () => {
   });
 
   it('should render span when the button is disabled', () => {
-    expect(shallow(<Button disabled />).find(`span.${styles.locals.button}`)).to.be.defined;
+    expect(shallow(<Button isDisabled />).find(`span.${styles.locals.button}`)).to.be.defined;
     expect(shallow(<Button target="something" />).find('button')).not.to.be.defined;
     expect(shallow(<Button target="something" />).find('a')).not.to.be.defined;
   });

@@ -1,29 +1,32 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
-export default class Link extends Component {
-  static get propTypes() {
-    return {
-      href: PropTypes.string,
-      target: PropTypes.string,
-      disabled: PropTypes.bool,
-      className: PropTypes.string,
-    };
+export default class Link extends PureComponent {
+  static propTypes = {
+    href: PropTypes.string,
+    target: PropTypes.string,
+    isDisabled: PropTypes.bool,
+    className: PropTypes.string,
+    children: PropTypes.node,
   }
 
-  render() {
-    const { props } = this;
+  static defaultProps = {
+    isDisabled: false,
+  }
 
-    return (
-      <a
-        href={props.href}
-        target={props.target}
-        disabled={props.disabled}
-        className={props.className}
-        onMouseDown={e => e.preventDefault()}
-      >
-        {props.children}
-      </a>
+  onMouseDown = (e) => {
+    e.preventDefault();
+  }
+
+  render = () => (
+    <a
+      href={this.props.href}
+      target={this.props.target}
+      disabled={this.props.isDisabled}
+      className={this.props.className}
+      onMouseDown={this.onMouseDown}
+    >
+      {this.props.children}
+    </a>
     );
-  }
 }

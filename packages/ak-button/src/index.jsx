@@ -48,7 +48,7 @@ export default class AkButton extends Component {
        * @default false
        * @type {boolean}
        */
-      disabled: PropTypes.bool,
+      isDisabled: PropTypes.bool,
       /**
        * @description Option to change button's padding. One of:
        * 'none', 'compact', 'default'
@@ -63,7 +63,7 @@ export default class AkButton extends Component {
        * @default false
        * @type {boolean}
        */
-      selected: PropTypes.bool,
+      isSelected: PropTypes.bool,
       /**
        * @description Option to make have a dark look and feel of a button.
        * @memberof Button
@@ -86,15 +86,13 @@ export default class AkButton extends Component {
     };
   }
 
-  static get defaultProps() {
-    return {
-      appearance: appearance.default,
-      type: type.default,
-      disabled: false,
-      spacing: spacing.default,
-      selected: false,
-      theme: theme.default,
-    };
+  static defaultProps = {
+    appearance: appearance.default,
+    type: type.default,
+    spacing: spacing.default,
+    isDisabled: false,
+    isSelected: false,
+    theme: theme.default,
   }
 
   render() {
@@ -103,7 +101,7 @@ export default class AkButton extends Component {
     const Content = p => (<span className={styles.buttonContent}>{p.children}</span>);
     const Element = (p) => {
       if (p.href) {
-        if (p.disabled) {
+        if (p.isDisabled) {
           return (<Span {...p}>{p.children}</Span>);
         }
         return (<Link {...p}>{p.children}</Link>);

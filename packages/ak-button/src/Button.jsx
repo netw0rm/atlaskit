@@ -1,29 +1,33 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 
-import { type } from './internal/enumerated-properties';
+import { type as buttonTypes } from './internal/enumerated-properties';
 
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
-export default class Button extends Component {
-  static get propTypes() {
-    return {
-      type: PropTypes.oneOf(type.values),
-      disabled: PropTypes.bool,
-      className: PropTypes.string,
-    };
+export default class Button extends PureComponent {
+  static propTypes = {
+    type: PropTypes.oneOf(buttonTypes.values),
+    isDisabled: PropTypes.bool,
+    className: PropTypes.string,
+    children: PropTypes.node,
   }
 
-  render() {
-    const { props } = this;
-
-    return (
-      <button
-        type={props.type}
-        disabled={props.disabled}
-        className={props.className}
-        onMouseDown={e => e.preventDefault()}
-      >
-        {props.children}
-      </button>
-    );
+  static defaultProps = {
+    isDisabled: false,
+    type: buttonTypes.default,
   }
+
+  onMouseDown = (e) => {
+    e.preventDefault();
+  }
+
+  render = () => (
+    <button
+      type={this.props.type}
+      disabled={this.props.isDisabled}
+      className={this.props.className}
+      onMouseDown={this.onMouseDown}
+    >
+      {this.props.children}
+    </button>
+  )
 }

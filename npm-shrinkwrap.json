@@ -168,6 +168,11 @@
       "from": "ajv-keywords@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/ajv-keywords/-/ajv-keywords-1.1.1.tgz"
     },
+    "ak-css-reset": {
+      "version": "1.1.0",
+      "from": "ak-css-reset@>=1.1.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/ak-css-reset/-/ak-css-reset-1.1.0.tgz"
+    },
     "akutil-common-test": {
       "version": "7.0.3",
       "from": "akutil-common-test@>=7.0.0 <8.0.0",

@@ -5,21 +5,6 @@
 // a 'width' prop/attribute.
 @temporaryFixedModalWidth: 600px;
 
-// we define a class here in order to re-use it in the storybook
-// (because in storybook the component name is randomly generated)
-.ak-modal-dialog,
-ak-modal-dialog {
-  &:not([defined]) {
-    display: none;
-  }
-}
-
-:host {
-  &(:not([defined])) {
-    display: none;
-  }
-}
-
 .panel-background (@topBorderRadius: 0, @bottomBorderRadius: 0) {
   background-color: white;
   border-top-left-radius: @topBorderRadius;

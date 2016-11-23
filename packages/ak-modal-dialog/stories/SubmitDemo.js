@@ -1,11 +1,9 @@
 import React from 'react';
 import reactify from 'akutil-react';
-import AkButton from 'ak-button';
+import Button from 'ak-button';
 import AkFieldText from 'ak-field-text';
-import WebComponent from '../src';
+import ModalDialog from '../src';
 
-const ReactModal = reactify(WebComponent);
-const ReactButton = reactify(AkButton);
 const ReactFieldText = reactify(AkFieldText);
 
 const testFormId = 'test-form';
@@ -13,8 +11,19 @@ const testFormId = 'test-form';
 export default function () {
   return (
     <div>
-      <ReactModal open>
-        <div is slot="header">Submit demo</div>
+      <ModalDialog
+        isOpen
+        header={
+          <span>Submit demo</span>
+        }
+        footer={
+          <Button
+            form={testFormId}
+            appearance="primary"
+            type="submit"
+          >Create issue</Button>
+        }
+      >
         <form
           action="https://httpbin.org/post"
           target="submit-frame"
@@ -33,13 +42,8 @@ export default function () {
             placeholder="gbelson@hooli.com"
           />
         </form>
-        <div is slot="footer">
-          <ReactButton
-            form={testFormId}
-            appearance="primary"
-          >Create issue</ReactButton>
-        </div>
-      </ReactModal>
+      </ModalDialog>
+
       <iframe title="Form POST test" name="submit-frame" />
     </div>
   );

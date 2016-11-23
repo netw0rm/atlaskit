@@ -35,7 +35,7 @@ describe(name, () => {
     it('throws an error if getGlyphTemplate is not overriden', () => {
       let error;
       try {
-        mount(<Icon label="My icon" />);
+        shallow(<Icon label="My icon" />);
       } catch (e) {
         error = e;
       }
@@ -45,7 +45,7 @@ describe(name, () => {
 
     it('should be possible to create an Icon via a subclass', () => {
       const myIcon = mount(<MyIcon label="My icon" />);
-      expect(myIcon).to.have.html().match(new RegExp(secretContent));
+      expect(myIcon).to.have.text(secretContent);
     });
 
     it('should be able to create a component', () => {
@@ -64,8 +64,8 @@ describe(name, () => {
           }
         }
         const labelContent = 'label content';
-        const wrapper = shallow(<LabelIcon label={labelContent} />);
-        expect(wrapper).to.have.html().match(new RegExp(labelContent));
+        const wrapper = mount(<LabelIcon label={labelContent} />);
+        expect(wrapper).to.have.text(labelContent);
       });
     });
 
@@ -80,14 +80,13 @@ describe(name, () => {
 
     describe('onClick property', () => {
       it('should set a click handler', () => {
-        let handlerFired = false;
-        const handler = () => (handlerFired = true);
+        const handler = sinon.spy();
 
         const wrapper = shallow(<MyIcon label="My icon" onClick={handler} />);
         expect(wrapper.prop('onClick')).to.equal(handler);
 
-        wrapper.simulate('click');
-        expect(handlerFired).to.equal(true);
+        wrapper.find('div').simulate('click');
+        expect(handler).to.have.been.calledOnce;
       });
     });
   });

@@ -36,34 +36,45 @@ describe('ak-editor-plugin-mentions', () => {
   });
 
   describe('keymap when mention query is active', () => {
-    let pm: ProseMirror, pluginInstance: any;
-
-    beforeEach(() => {
-      pm = makeEditor(container());
-      pluginInstance = plugin.get(pm);
+    it('should ignore "Up"-key if no "onSelectPrevious" is attached', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = plugin.get(pm);
       pm.input.insertText(0, 0, '@');
       pm.flush();
-    });
 
-    it('should ignore "Up"-key if no "onSelectPrevious" is attached', () => {
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 38;
       pm.input.dispatchKey('Up', keyDownEvent);
     });
 
     it('should ignore "Down"-key if no "onSelectNext" is attached', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = plugin.get(pm);
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 40;
       pm.input.dispatchKey('Down', keyDownEvent);
     });
 
     it('should ignore "Enter"-key if no "onSelectCurrent" is attached', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = plugin.get(pm);
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 13;
       pm.input.dispatchKey('Enter', keyDownEvent);
     });
 
     it('should trigger "onSelectPrevious" when "Up"-key is pressed', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = plugin.get(pm);
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+
       const spy = sinon.spy();
       pluginInstance.onSelectPrevious = spy;
       const keyDownEvent = new CustomEvent('keydown');
@@ -74,6 +85,11 @@ describe('ak-editor-plugin-mentions', () => {
     });
 
     it('should trigger "onSelectNext" when "Down"-key is pressed', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = plugin.get(pm);
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+
       const spy = sinon.spy();
       pluginInstance.onSelectNext = spy;
       const keyDownEvent = new CustomEvent('keydown');
@@ -84,6 +100,11 @@ describe('ak-editor-plugin-mentions', () => {
     });
 
     it('should trigger "onSelectCurrent" when "Enter"-key is pressed', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = plugin.get(pm);
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+
       const spy = sinon.spy();
       pluginInstance.onSelectCurrent = spy;
       const keyDownEvent = new CustomEvent('keydown');
@@ -94,6 +115,11 @@ describe('ak-editor-plugin-mentions', () => {
     });
 
     it('should trigger "dismiss" when "Esc"-key is pressed', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = plugin.get(pm);
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+
       const spy = sinon.spy(pluginInstance, 'dismiss');
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 27;

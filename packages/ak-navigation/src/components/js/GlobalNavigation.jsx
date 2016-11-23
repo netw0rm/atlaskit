@@ -32,15 +32,12 @@ export default class GlobalNavigation extends Component {
           width={this.props.width}
           shouldAnimate={this.props.shouldAnimate}
         />
-        <div className={styles.globalNavigation}>
-          <style>{styles.toString()}</style>
-          <style>
-            {`
-              .${styles.locals.globalNavigation} {
-                transform: translateX(${this.getTranslate()}px);
-              }
-            `}
-          </style>
+        <div
+          className={styles.globalNavigation}
+          style={{
+            transform: `translateX(${this.getTranslate()}px)`,
+          }}
+        >
           {this.props.children}
         </div>
       </div>

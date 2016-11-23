@@ -65,7 +65,7 @@ function waitUntilPMReady(editor: typeof AkEditorBitbucket) : Promise<HTMLElemen
   });
 }
 
-describe('ak-editor-bitbucket', () => {
+describe.skip('ak-editor-bitbucket', () => {
   const rewireSpy = RewireSpy();
 
   it('is possible to create a component', () => {
@@ -151,7 +151,7 @@ describe('ak-editor-bitbucket', () => {
     });
   });
 
-  describe.skip('default value', () => {
+  describe('default value', () => {
     it('should initialize Prosemirror with correct value', (done) => {
       const content = 'foo';
       const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
@@ -175,7 +175,7 @@ describe('ak-editor-bitbucket', () => {
     });
   });
 
-  describe.skip('collapsed editor', () => {
+  describe('collapsed editor', () => {
     let tmpContainer: any;
     let editor: any;
 

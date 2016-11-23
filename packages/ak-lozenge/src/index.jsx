@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
-import styles from '../src/style.less';
+import styles from 'style!../src/style.less';
 
 const APPEARANCE_ENUM = {
   values: ['default', 'success', 'removed', 'inprogress', 'new', 'moved'],
@@ -59,12 +59,11 @@ class Lozenge extends Component {
 
   render() {
     const { isBold, children } = this.props;
-    const classes = classNames([styles.locals.lozenge, styles.locals[this.validAppearance()]]);
+    const classes = classNames([styles.lozenge, styles[this.validAppearance()]]);
     const dataBold = isBold ? { 'data-bold': '' } : {};
     return (
       <span className={classes} {...dataBold}>
-        <style>{styles.toString()}</style>
-        <span className={styles.locals.content}>{children}</span>
+        <span className={styles.content}>{children}</span>
       </span>
     );
   }

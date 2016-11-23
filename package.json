@@ -20,6 +20,7 @@
     "babel-loader": "^6.2.5",
     "babel-plugin-incremental-dom": "^3.4.0",
     "babel-plugin-rewire": "^1.0.0",
+    "babel-plugin-transform-class-properties": "^6.19.0",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
@@ -34,7 +35,7 @@
     "cz-lerna-changelog": "0.3.0",
     "enzyme": "^2.6.0",
     "eslint": "^3.7.1",
-    "eslint-config-ak-base": "^5.0.0",
+    "eslint-config-ak-base": "^5.1.1",
     "eslint-config-ak-cucumber": "^4.0.0",
     "eslint-config-ak-stories": "^5.0.0",
     "eslint-config-ak-tests": "^4.0.0",
@@ -172,5 +173,6 @@
     "validate/lint-changed": "./build/bin/lint-changed.sh",
     "validate/lint-changed/fix": "./build/bin/lint-changed-fix.sh",
     "validate/package.json": "pjv -q && ./node_modules/.bin/lerna exec -- pjv -q"
-  }
+  },
+  "devDependencies": {}
 }

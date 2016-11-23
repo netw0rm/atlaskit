@@ -13,11 +13,11 @@ describe.skip('ak-editor-jira', () => {
   const fixture = fixtures();
   const connect = <E extends HTMLElement>(elem: E) => fixture().appendChild(elem) as E;
 
-  describe('setting from JSON', () => {
+  describe('setting from HTML', () => {
     it('honors the initial value', (done) => {
       const editor = new AkEditorJira();
       editor.expanded = true;
-      editor.defaultValue = JSON.stringify(doc(p('foo')).toJSON());
+      editor.defaultValue = '<p>foo</p>';
 
       afterMutations(
         () => connect(editor),
@@ -35,7 +35,7 @@ describe.skip('ak-editor-jira', () => {
       connect(editor);
 
       afterMutations(
-        () => editor.defaultValue = JSON.stringify(doc(p('foo')).toJSON()),
+        () => editor.defaultValue = '<p>bar</p>',
         () => {
           const pm = editor._pm as ProseMirror;
           expect(pm.doc).to.deep.equal(doc(p()));

@@ -28,5 +28,5 @@ export default class Link extends PureComponent {
     >
       {this.props.children}
     </a>
-    );
+  );
 }

@@ -1,11 +1,7 @@
-import { Component } from 'skatejs';
+import React, { Component } from 'react';
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import {
-  tearDownComponent,
-  getRootNode,
-  afterMutations,
-} from 'akutil-common-test';
+import chaiEnzyme from 'chai-enzyme';
+import { mount, shallow } from 'enzyme';
 
 import iconNameToComponentName from '../bin/iconNameToComponentName';
 import { name } from '../package.json';
@@ -15,12 +11,13 @@ import { size } from '../src/Icon';
 import { getGlyphs } from './_helpers';
 
 
-chai.use(chaiAsPromised);
+const { expect } = chai;
+chai.use(chaiEnzyme());
 chai.should();
 
 const components = getGlyphs();
 
-describe.skip(name, () => {
+describe(name, () => {
   describe('exports', () => {
     it('are properly defined for atomic ones', () => {
       // NOTE Please remember:
@@ -110,9 +107,9 @@ describe.skip(name, () => {
     describe('bundle', () => {
       it('has size export', () => bundle.size.should.be.deep.equal(size));
 
-      it('exports the component constructors', () => {
+      it('exports the React component', () => {
         const { AtlassianIcon } = bundle;
-        (new AtlassianIcon()).should.be.instanceof(Component);
+        expect(new AtlassianIcon({ label: 'My icon' })).to.be.instanceOf(Component);
       });
 
       it('icons are properly defined in bundle', () => {
@@ -125,91 +122,48 @@ describe.skip(name, () => {
               .map(pathToDashed)
               .map(x => iconNameToComponentName(x)));
 
-        bundleKeys.forEach(key => (new (bundle[key])()).should.be.instanceof(Component));
+        bundleKeys.forEach((key) => {
+          expect(bundle[key]).to.be.a.function;
+        });
       });
-    });
-  });
-
-  it('should be possible to create the components', () => {
-    Object.entries(components).forEach(([scope, Icon]) => {
-      const iconName = pathToDashed(scope);
-      const component = new Icon();
-
-      component.should.be.instanceof(Component);
-      component.tagName.should.match(new RegExp(`^${name}-${iconName}`, 'i'));
     });
   });
 
   describe('component structure', () => {
-    const { AtlassianIcon } = bundle;
-    let component;
-
-    afterEach(() => tearDownComponent(component));
-
-    it('should have role="img"', (done) => {
-      component = new AtlassianIcon();
-      document.body.appendChild(component);
-      afterMutations(
-        () => getRootNode(component),
-        rootNode => rootNode.querySelector('[role="img"]').tagName.should.match(/svg/i),
-        done
-      );
+    it('should have role="img"', () => {
+      const { AtlassianIcon } = bundle;
+      const wrapper = mount(<AtlassianIcon label="My label" />);
+      expect(wrapper.find('svg')).to.have.attr('role', 'img');
     });
 
-    describe('label attribute', () => {
-      it('should accept a label', (done) => {
-        const label = '123abc';
-        component = new AtlassianIcon();
-        component.label = label;
-        document.body.appendChild(component);
-        afterMutations(
-          () => getRootNode(component),
-          rootNode => rootNode.querySelector('svg'),
-          (svg) => {
-            svg.hasAttribute('aria-labelledby').should.be.true;
-            const labelledBy = svg.getAttribute('aria-labelledby');
-            const ids = labelledBy.split(/\s+/);
-            ids.length.should.be.at.least(1, 'The labelled-by attribute must reference some node');
-            const labels = ids.map(id => svg.getElementById(id).textContent);
-            labels.should.contain(label);
-          },
-          done
-        );
+    it('should be possible to create the components', () => {
+      Object.values(components).forEach((Icon) => {
+        const wrapper = shallow(<Icon label="My icon" />);
+        expect(wrapper).to.be.defined;
+        expect(wrapper.instance()).to.be.instanceOf(Component);
       });
     });
+  });
 
-    describe('size attribute', () => {
-      const labelToDimensionFixture = {
-        [size.small]: 20,
-        [size.medium]: 30,
-        [size.large]: 50,
-        [size.xlarge]: 100,
-      };
+  describe('props', () => {
+    describe('label property', () => {
+      it('should accept a label', () => {
+        const { AtlassianIcon } = bundle;
+        const label = 'my label';
+        const wrapper = mount(<AtlassianIcon label={label} />);
+        const svgWrapper = wrapper.find('svg').first();
 
-      before(() => Object.keys(labelToDimensionFixture).should.be.deep.equal(
-        Object.keys(size),
-        'Update the label -> dimension fixture if you add/remove size labels'
-      ));
+        expect(svgWrapper).to.have.attr('aria-labelledby');
 
-      it('should have a predefined set of sizes', () =>
-        Object.values(size).should.deep.equal(['small', 'medium', 'large', 'xlarge'])
-      );
+        const svg = svgWrapper.get(0);
+        const labelledBy = svg.getAttribute('aria-labelledby');
+        const ids = labelledBy.split(/\s+/);
+        expect(ids.length).to.be.at.least(1, 'The labelled-by attribute must reference some node');
 
-      Object.entries(labelToDimensionFixture).forEach(([sizeLabel, expectedSize]) => {
-        it(`should accept size="${sizeLabel}"`, (done) => {
-          component = new AtlassianIcon();
-          component.size = sizeLabel;
-          document.body.appendChild(component);
-          afterMutations(
-            () => getRootNode(component),
-            rootNode => rootNode.getBoundingClientRect(),
-            ({ width, height }) => {
-              Math.round(width).should.be.equal(expectedSize);
-              Math.round(height).should.be.equal(expectedSize);
-            },
-            done
-          );
-        });
+        // The SVG should contain the provided label
+        expect(svgWrapper.containsAnyMatchingElements(
+          ids.map(id => <title id={id}>{label}</title>)
+        )).to.equal(true);
       });
     });
   });

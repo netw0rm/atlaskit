@@ -1,86 +1,84 @@
 import classNames from 'classnames';
 import styles from 'style!./styles.less';
-import React, { Component } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import Presence from './Presence';
 import Image from './Image';
 
 import sizes from './internal/sizes';
 import presences from './internal/presences';
 
-export default class Avatar extends Component {
-  static get propTypes() {
-    return {
-      /**
-       * @description Indicates a user's online status by showing a small icon on the avatar itself.
-       * Allowed values: 'online', 'offline', 'busy' or 'none'
-       * @memberof Avatar
-       * @instance
-       * @default none
-       * @type {string}
-       */
-      presence: React.PropTypes.oneOf(presences),
-      /**
-       * @description Defines the size of the avatar.
-       * Allowed values: 'small', 'medium', 'large', 'xlarge'.
-       * @memberof Avatar
-       * @instance
-       * @default medium
-       * @type {string}
-       */
-      size: React.PropTypes.oneOf(sizes),
-      /**
-       * @description The source URL.
-       * @memberof Avatar
-       * @instance
-       * @type {string}
-       */
-      src: React.PropTypes.string,
-      /**
-       * @description Defines the label for the Avatar used by screen readers as fallback content
-       * if the image fails to load.
-       * @memberof Avatar
-       * @instance
-       * @type {string}
-       */
-      label: React.PropTypes.string,
-      children: React.PropTypes.element,
-    };
+/**
+ * @description Create instances of the Avatar component in a React context.
+ * @class Avatar
+ */
+export default class Avatar extends PureComponent {
+  static propTypes = {
+    /**
+     * @description Indicates a user's online status by showing a small icon on the avatar itself.
+     * Allowed values: 'online', 'offline', 'busy' or 'none'
+     * @memberof Avatar
+     * @instance
+     * @default none
+     * @type {string}
+     */
+    presence: PropTypes.oneOf(presences),
+    /**
+     * @description Defines the size of the avatar.
+     * Allowed values: 'small', 'medium', 'large', 'xlarge'.
+     * @memberof Avatar
+     * @instance
+     * @default medium
+     * @type {string}
+     */
+    size: PropTypes.oneOf(sizes),
+    /**
+     * @description The source URL.
+     * @memberof Avatar
+     * @instance
+     * @type {string}
+     */
+    src: PropTypes.string,
+    /**
+     * @description Defines the label for the Avatar used by screen readers as fallback content
+     * if the image fails to load.
+     * @memberof Avatar
+     * @instance
+     * @type {string}
+     */
+    label: PropTypes.string,
+    children: PropTypes.element,
   }
 
-  static get defaultProps() {
-    return {
-      presence: 'none',
-      size: 'medium',
-    };
+  static defaultProps = {
+    presence: 'none',
+    size: 'medium',
   }
 
   constructor(props) {
     super(props);
-    this.imageLoadedHandler = this.imageLoadedHandler.bind(this);
-    this.imageErrorHandler = this.imageErrorHandler.bind(this);
     this.state = {
-      loading: false,
-      error: false,
+      isLoading: false,
+      hasError: false,
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.src !== nextProps.src) {
-      this.setState({ loading: true });
+      this.setState({ isLoading: true });
     }
   }
 
-  imageLoadedHandler() {
+  imageLoadedHandler = () => {
     this.setState({
-      loading: false,
-      error: false,
+      isLoading: false,
+      hasError: false,
     });
   }
 
-  imageErrorHandler() {
+  imageErrorHandler = () => {
     this.setState({
-      error: true,
-      loading: false,
+      hasError: true,
+      isLoading: false,
     });
   }
 
@@ -91,7 +89,7 @@ export default class Avatar extends Component {
       styles.size,
     ]);
     const imgWrapperClasses = classNames({
-      [styles.loaded]: !this.state.loading,
+      [styles.loaded]: !this.state.isLoading,
     }, styles.imgWrapper);
     const presenceWrapperClasses = classNames({
       // hide the presence if presence prop is set to none and no custom presence is passed in
@@ -108,8 +106,8 @@ export default class Avatar extends Component {
               className={styles.img}
               onLoad={this.imageLoadedHandler}
               onError={this.imageErrorHandler}
-              error={this.state.error}
-              loading={this.state.loading}
+              hasError={this.state.hasError}
+              isLoading={this.state.isLoading}
             />
           </div>
 

@@ -27,19 +27,19 @@ describe('ak-avatar', () =>
         );
 
         it('when there is an error', () =>
-          expect(shallow(<Image error="something" />))
+          expect(shallow(<Image hasError />))
             .to.have.exactly(1).descendants(DefaultAvatar)
         );
 
         it('when src is set and there is an error', () =>
-          expect(shallow(<Image src={src} error="something" />))
+          expect(shallow(<Image src={src} hasError />))
             .to.have.exactly(1).descendants(DefaultAvatar)
         );
       });
 
       describe('should not render default avatar', () => {
         it('when loading=true and no src', () =>
-          expect(shallow(<Image loading />)).to.not.have.descendants(DefaultAvatar)
+          expect(shallow(<Image isLoading />)).to.not.have.descendants(DefaultAvatar)
         );
 
         it('when src is set', () =>

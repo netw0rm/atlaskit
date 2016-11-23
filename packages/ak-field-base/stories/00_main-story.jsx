@@ -4,6 +4,9 @@ import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
 import FieldBase from '../src';
 import { InputFieldBase, DivFieldBase } from './shared-components';
+import appearances from '../src/internal/appearances';
+
+const [, compact, subtle] = appearances;
 
 const formStyle = {
   padding: '20px',
@@ -38,8 +41,8 @@ storiesOf(name, module)
         <InputFieldBase label="Focused state" focused />
         <InputFieldBase label="Required state" required />
         <InputFieldBase label="Disabled state" disabled />
-        <InputFieldBase label="Compact state" appearance="compact" />
-        <InputFieldBase label="Subtle state" appearance="subtle" />
+        <InputFieldBase label="Compact state" appearance={compact} />
+        <InputFieldBase label="Subtle state" appearance={subtle} />
       </form>
     </div>
   ))

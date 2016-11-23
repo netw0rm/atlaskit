@@ -8,6 +8,9 @@ import FieldBase from '../src';
 import Content from '../src/Content';
 import Label from '../src/Label';
 import styles from '../src/styles.less';
+import appearances from '../src/internal/appearances';
+
+const [, compact, subtle] = appearances;
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -30,8 +33,8 @@ describe('ak-field-base', () => {
       { prop: 'invalid', value: true, element: Content },
       { prop: 'disabled', value: true, element: Content },
       { prop: 'required', value: true, element: Label },
-      { prop: 'appearance', value: 'compact', element: Content },
-      { prop: 'appearance', value: 'subtle', element: Content },
+      { prop: 'appearance', value: compact, element: Content },
+      { prop: 'appearance', value: subtle, element: Content },
     ].forEach(setup =>
       describe(`${setup.prop} prop`, () =>
         it('should be reflected', () => {

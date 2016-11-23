@@ -6,6 +6,9 @@ import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import Content from '../src/Content';
 import styles from '../src/styles.less';
+import appearances from '../src/internal/appearances';
+
+const [, compact, subtle] = appearances;
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -46,7 +49,7 @@ describe('ak-field-base', () => {
     );
 
     describe('appearance', () => {
-      ['compact', 'subtle'].forEach(appearance =>
+      [compact, subtle].forEach(appearance =>
         describe(appearance, () =>
           it(`should render the content with the .${appearance} class`, () =>
             expect(shallow(<Content appearance={appearance} />)).to.have.descendants(`.${styles.locals[appearance]}`)

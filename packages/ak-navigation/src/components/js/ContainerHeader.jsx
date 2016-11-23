@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import styles from 'style!../less/ContainerHeader.less';
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class ContainerHeader extends Component {
   static get propTypes() {
     return {

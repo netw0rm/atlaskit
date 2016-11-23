@@ -1,9 +1,9 @@
 import { action, storiesOf } from '@kadira/storybook';
-import React from 'react';
+import React, { Component } from 'react';
 
 import { name } from '../package.json';
 import { pad } from '../src/util';
-import Component from '../src';
+import Calendar from '../src';
 
 const now = new Date();
 const today = now.getDate();
@@ -22,37 +22,55 @@ function getDates() {
   return [getDate(), getDate(3), getDate(20)];
 }
 
+class Smart extends Component {
+  state = {
+    focused: 0,
+    month: 4,
+    year: 2018,
+  }
+  handleChange = (data) => {
+    this.setState({
+      focused: data.day,
+      month: data.month,
+      year: data.year,
+    });
+  }
+  render() {
+    return <Calendar onChange={this.handleChange} {...this.state} />;
+  }
+}
+
 storiesOf(name, module)
-  .add('empty', () => (
-    <Component />
+  .add('smart', () => (
+    <Smart />
   ))
   .add('onBlur', () => (
-    <Component onBlur={action('blur')} />
+    <Calendar onBlur={action('blur')} />
   ))
   .add('onChange', () => (
-    <Component onChange={action('change')} />
+    <Calendar onChange={action('change')} />
   ))
   .add('onSelect', () => (
-    <Component onSelect={action('select')} />
+    <Calendar onSelect={action('select')} />
   ))
   .add('disabled', () => (
-    <Component disabled={getDates()} />
+    <Calendar disabled={getDates()} />
   ))
   .add('focused (today)', () => (
-    <Component focused={today} />
+    <Calendar focused={today} />
   ))
   .add('focused (not today)', () => (
-    <Component focused={notToday} />
+    <Calendar focused={notToday} />
   ))
   .add('month', () => (
-    <Component month={notThisMonth} />
+    <Calendar month={notThisMonth} />
   ))
   .add('previouslySelected', () => (
-    <Component previouslySelected={getDates()} />
+    <Calendar previouslySelected={getDates()} />
   ))
   .add('selected', () => (
-    <Component selected={getDates()} />
+    <Calendar selected={getDates()} />
   ))
   .add('year', () => (
-    <Component year={notThisYear} />
+    <Calendar year={notThisYear} />
   ));

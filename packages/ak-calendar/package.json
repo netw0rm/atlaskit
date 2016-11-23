@@ -12,6 +12,7 @@
     "dist"
   ],
   "dependencies": {
+    "ak-button": "^4.0.2",
     "ak-icon": "^8.1.2",
     "akutil-react": "^3.0.1",
     "akutil-shared-styles": "^37.0.3",

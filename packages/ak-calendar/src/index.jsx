@@ -11,6 +11,7 @@ import {
   makeArrayFromNumber,
 } from './util';
 import AnnouncerFn from './Announcer';
+import Btn from './Btn';
 import DateFn from './Date';
 import styles from './style';
 
@@ -23,71 +24,79 @@ const ReactArrowleftIcon = reactify(ArrowleftIcon);
 const ReactArrowrightIcon = reactify(ArrowrightIcon);
 
 export default class extends PureComponent {
-  static get propTypes() {
-    return {
-      /**
-       * @description The day to highlight as today.
-       * @default current day of month
-       * @type {number}
-       */
-      day: PropTypes.number,
-      /**
-       * @description The ISO dates that are disabled.
-       * @default []
-       * @type {array.<string>}
-       */
-      disabled: PropTypes.arrayOf(PropTypes.string),
-      /**
-       * @description The day number that is currently focused.
-       * @default 0
-       * @type {number}
-       */
-      focused: PropTypes.number,
-      /**
-       * @description The month to display (1 - 12).
-       * @default current month
-       * @type {number}
-       */
-      month: PropTypes.number,
-      /**
-       * @description Function called when the calendar is un-focused.
-       * @default function(){}
-       * @type {func}
-       */
-      onBlur: PropTypes.func,
-      /**
-       * @description Function called when the focused date changes.
-       * @default function(){}
-       * @type {func}
-       */
-      onChange: PropTypes.func,
-      /**
-       * @description Function called when a date on the calendar is selected via the keyboard or
-       *   mouse.
-       * @default function(){}
-       * @type {func}
-       */
-      onSelect: PropTypes.func,
-      /**
-       * @description The ISO dates that were previously selected.
-       * @default []
-       * @type {array.<string>}
-       */
-      previouslySelected: PropTypes.arrayOf(PropTypes.string),
-      /**
-       * @description The ISO dates that currently selected.
-       * @default []
-       * @type {array.<string>}
-       */
-      selected: PropTypes.array(PropTypes.string),
-      /**
-       * @description The full year to display.
-       * @default current year
-       * @type {number}
-       */
-      year: PropTypes.number,
-    };
+  static propTypes = {
+    /**
+     * @description The day to highlight as today.
+     * @default current day of month
+     * @type {number}
+     */
+    day: PropTypes.number,
+
+    /**
+     * @description The ISO dates that are disabled.
+     * @default []
+     * @type {array.<string>}
+     */
+    disabled: PropTypes.arrayOf(PropTypes.string),
+
+    /**
+     * @description The day number that is currently focused.
+     * @default 0
+     * @type {number}
+     */
+    focused: PropTypes.number,
+
+    /**
+     * @description The month to display (1 - 12).
+     * @default current month
+     * @type {number}
+     */
+    month: PropTypes.number,
+
+    /**
+     * @description Function called when the calendar is un-focused.
+     * @default function(){}
+     * @type {func}
+     */
+    onBlur: PropTypes.func,
+
+    /**
+     * @description Function called when the focused date changes.
+     * @default function(){}
+     * @type {func}
+     */
+    onChange: PropTypes.func,
+
+    /**
+     * @description Function called when a date on the calendar is selected via the keyboard or
+     *   mouse.
+     * @default function(){}
+     * @type {func}
+     */
+    onSelect: PropTypes.func,
+
+    /**
+     * @description The ISO dates that were previously selected.
+     * @default []
+     * @type {array.<string>}
+     */
+    previouslySelected: PropTypes.arrayOf(PropTypes.string),
+
+    /**
+     * @description The ISO dates that currently selected.
+     * @default []
+     * @type {array.<string>}
+     */
+    selected: PropTypes.arrayOf(PropTypes.string),
+
+    /**
+     * @description The full year to display.
+     * @default current year
+     * @type {number}
+     */
+    year: PropTypes.number,
   }
+
   static get defaultProps() {
     const now = new Date();
     return {
@@ -103,75 +112,84 @@ export default class extends PureComponent {
       year: now.getFullYear(),
     };
   }
-  constructor() {
-    super();
+
+  constructor(props) {
+    super(props);
     this.calendar = new Calendar({
       siblingMonths: true,
       weekNumbers: true,
     });
   }
-  navigateWithKeyboard(e) {
-    let { focused } = this.props;
-    const { month, year } = this.props;
+
+  handleKeyDown = (e) => {
+    const { focused, month, onChange, onSelect, year } = this.props;
     const key = e.keyCode;
     const isArrowKey = arrowKeys.indexOf(key) > -1;
     const isInitialArrowKeyPress = !focused && isArrowKey;
 
     if (isInitialArrowKeyPress) {
-      this.props.onChange({ day: 1, month, year });
+      onChange({ day: 1, month, year });
       return;
     }
 
     // TODO break this down into separate functions.
     if (key === keycode('down')) {
       const next = focused + daysPerWeek;
-      const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
+      const daysInMonth = Calendar.daysInMonth(year, month - 1);
 
       if (next > daysInMonth) {
-        this.next();
-        focused = next - daysInMonth;
+        const { month: nextMonth, year: nextYear } = this.nextMonth();
+        onChange({ day: next - daysInMonth, month: nextMonth, year: nextYear });
       } else {
-        focused = next;
+        onChange({ day: next, month, year });
       }
     } else if (key === keycode('left')) {
-      const next = focused - 1;
+      const prev = focused - 1;
 
-      if (next < 1) {
-        this.prev();
-        focused = Calendar.daysInMonth(this.year, this.month - 1);
+      if (prev < 1) {
+        const { month: prevMonth, year: prevYear } = this.prevMonth();
+        const prevDay = Calendar.daysInMonth(prevYear, prevMonth - 1);
+        onChange({ day: prevDay, month: prevMonth, year: prevYear });
       } else {
-        focused = next;
+        onChange({ day: prev, month, year });
       }
     } else if (key === keycode('right')) {
       const next = focused + 1;
-      const daysInMonth = Calendar.daysInMonth(this.year, this.month - 1);
+      const daysInMonth = Calendar.daysInMonth(year, month - 1);
 
       if (next > daysInMonth) {
-        this.next();
-        focused = 1;
+        const { month: nextMonth, year: nextYear } = this.nextMonth();
+        onChange({ day: 1, month: nextMonth, year: nextYear });
       } else {
-        focused = next;
+        onChange({ day: next, month, year });
       }
     } else if (key === keycode('up')) {
-      const next = focused - daysPerWeek;
+      const prev = focused - daysPerWeek;
 
-      if (next < 1) {
-        this.prev();
-        focused = Calendar.daysInMonth(this.year, this.month - 1) + next;
+      if (prev < 1) {
+        const { month: prevMonth, year: prevYear } = this.prevMonth();
+        const prevDay = Calendar.daysInMonth(prevYear, prevMonth - 1) + prev;
+        onChange({ day: prevDay, month: prevMonth, year: prevYear });
       } else {
-        focused = next;
+        onChange({ day: prev, month, year });
       }
     } else if (key === keycode('enter') || key === keycode('space')) {
-      this.props.onSelect({ day: focused, month, year });
-      return;
-    } else {
-      return;
+      const { focused: selectFocused, month: selectMonth, year: selectYear } = this.props;
+      onSelect({ day: selectFocused, month: selectMonth, year: selectYear });
     }
-
-    this.props.onChange({ day: focused, month, year });
   }
-  next() {
-    const { focused } = this.props;
+
+  handleClickNext = () => {
+    const { focused: day, month, year } = { ...this.props, ...this.nextMonth() };
+    this.props.onChange({ day, month, year });
+  }
+
+  handleClickPrev = () => {
+    const { focused: day, month, year } = { ...this.props, ...this.prevMonth() };
+    this.props.onChange({ day, month, year });
+  }
+
+  nextMonth() {
     let { month, year } = this.props;
 
     if (month === monthsPerYear) {
@@ -181,10 +199,10 @@ export default class extends PureComponent {
       month++;
     }
 
-    this.props.onChange({ day: focused, month, year });
+    return { month, year };
   }
-  prev() {
-    const { focused } = this.props;
+
+  prevMonth() {
     let { month, year } = this.props;
 
     if (month === 1) {
@@ -194,8 +212,9 @@ export default class extends PureComponent {
       month--;
     }
 
-    this.props.onChange({ day: focused, month, year });
+    return { month, year };
   }
+
   render() {
     const { disabled, focused, month, previouslySelected, selected, year } = this.props;
     const calendar = this.calendar.getCalendar(year, month - 1);
@@ -251,38 +270,44 @@ export default class extends PureComponent {
       // screen readers that it can be navigated with the keyboard, but the linter still fails.
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
-        aria-label="calendar"
-        onBlur={() => this.props.onBlur()}
-        onKeyDown={e => this.navigateWithKeyboard(e)}
-        role="grid"
-        tabIndex={0}
+        onBlur={this.props.onBlur}
+        onKeyDown={this.handleKeyDown}
       >
         <AnnouncerFn>{new Date(year, month, focused).toString()}</AnnouncerFn>
-        <table {...css.calendar}>
-          <caption>
-            <div {...css.heading}>
-              <button {...css.btn} {...css.btnPrev} onClick={() => this.prev()}>
+        <div
+          aria-label="calendar"
+          role="grid"
+          tabIndex={0}
+          {...css.wrapper}
+        >
+          <div {...css.heading}>
+            <div onClick={this.handleClickPrev} aria-hidden="true">
+              <Btn>
                 <ReactArrowleftIcon />
-              </button>
-              <div {...css.monthAndYear}>
-                {`${getMonthName(month)} ${year}`}
-              </div>
-              <button {...css.btn} {...css.btnNext} onClick={() => this.next()}>
-                <ReactArrowrightIcon />
-              </button>
+              </Btn>
             </div>
-          </caption>
-          <thead>
-            <tr>
-              {makeArrayFromNumber(daysPerWeek).map(i =>
-                <th {...css.dayOfWeek} key={i}>{getDayName(i)}</th>
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {weeks.map((week, i) => <tr key={i}>{week}</tr>)}
-          </tbody>
-        </table>
+            <div {...css.monthAndYear}>
+              {`${getMonthName(month)} ${year}`}
+            </div>
+            <div onClick={this.handleClickNext} aria-hidden="true">
+              <Btn>
+                <ReactArrowrightIcon />
+              </Btn>
+            </div>
+          </div>
+          <table {...css.calendar} role="presentation">
+            <thead>
+              <tr>
+                {makeArrayFromNumber(daysPerWeek).map(i =>
+                  <th {...css.dayOfWeek} key={i}>{getDayName(i)}</th>
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              {weeks.map((week, i) => <tr key={i}>{week}</tr>)}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }

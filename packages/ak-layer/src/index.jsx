@@ -43,7 +43,7 @@ export default class Layer extends PureComponent {
      * @instance
      * @default "viewport"
      * @type HTMLElement | String
-     * @example @html <Layer enableFlip boundariesElement={this.boundaryElemRef}></Layer>
+     * @example @html <Layer shouldFlip boundariesElement={this.boundaryElemRef}></Layer>
      */
     boundariesElement: PropTypes.node,
     /**
@@ -55,9 +55,9 @@ export default class Layer extends PureComponent {
      * @memberof Layer
      * @instance
      * @type Boolean
-     * @example @html <Layer enableFlip></Layer>
+     * @example @html <Layer shouldFlip></Layer>
     */
-    enableFlip: PropTypes.bool,
+    shouldFlip: PropTypes.bool,
     /**
      * @description A string representing the offsets from the target element in the format
      * "[x-offset] [y-offset]", measured in pixels.
@@ -74,10 +74,9 @@ export default class Layer extends PureComponent {
   }
 
   static defaultProps = {
-    position: POSITION_ATTRIBUTE_ENUM.missingDefault,
-    target: '',
-    boundariesElement: null,
-    enableFlip: true,
+    position: POSITION_ATTRIBUTE_ENUM.default,
+    boundariesElement: 'viewport',
+    shouldFlip: true,
     offset: '',
     children: null,
   }
@@ -115,9 +114,22 @@ export default class Layer extends PureComponent {
 
     this.popper = new Popper(this.targetRef, this.contentRef, {
       placement: positionPropToPopperPosition(props.position),
+      boundariesElement: this.props.boundariesElement,
       modifiers: {
         applyStyle: {
           enabled: false,
+        },
+        offset: {
+          enabled: true,
+          offset: this.props.offset,
+        },
+        flip: {
+          enabled: this.props.shouldFlip,
+          flipVariations: true,
+        },
+        preventOverflow: {
+          enabled: this.props.shouldFlip,
+          moveWithTarget: true,
         },
       },
     });
@@ -152,3 +164,5 @@ export default class Layer extends PureComponent {
     );
   }
 }
+
+/* eslint-enable react/no-unused-prop-types */

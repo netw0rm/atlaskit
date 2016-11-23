@@ -5890,14 +5890,14 @@
       }
     },
     "react": {
-      "version": "15.4.0",
+      "version": "15.4.1",
       "from": "react@>=15.3.2 <16.0.0",
-      "resolved": "https://registry.npmjs.org/react/-/react-15.4.0.tgz"
+      "resolved": "https://registry.npmjs.org/react/-/react-15.4.1.tgz"
     },
     "react-addons-test-utils": {
-      "version": "15.4.0",
+      "version": "15.4.1",
       "from": "react-addons-test-utils@>=15.4.0 <16.0.0",
-      "resolved": "https://registry.npmjs.org/react-addons-test-utils/-/react-addons-test-utils-15.4.0.tgz"
+      "resolved": "https://registry.npmjs.org/react-addons-test-utils/-/react-addons-test-utils-15.4.1.tgz"
     },
     "react-docgen": {
       "version": "2.12.1",
@@ -5912,9 +5912,9 @@
       }
     },
     "react-dom": {
-      "version": "15.4.0",
+      "version": "15.4.1",
       "from": "react-dom@>=15.3.2 <16.0.0",
-      "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-15.4.0.tgz"
+      "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-15.4.1.tgz"
     },
     "react-element-to-jsx-string": {
       "version": "5.0.2",

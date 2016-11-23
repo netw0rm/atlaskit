@@ -8,6 +8,7 @@ import shadowStyles from './shadow.less';
 import { Content, Footer, Toolbar, ToolbarBlockType, ToolbarLists,
   ToolbarTextFormatting } from 'ak-editor-ui';
 import schema from './schema';
+import { encode, parse } from './html';
 import { buildKeymap } from './keymap';
 import { BlockTypePlugin } from 'ak-editor-plugin-block-type';
 import ListsPlugin from 'ak-editor-plugin-lists';
@@ -260,10 +261,9 @@ export default class Editor extends Component {
     this.addEventListener('blur', () => { this._focused = false; });
     this.addEventListener('focus', () => { this._focused = true; });
 
-    const doc = this.defaultValue ? schema.nodeFromJSON(JSON.parse(this.defaultValue)) : schema.nodes.doc.create({}, [schema.nodes.paragraph.create()]);
     const pm = new ProseMirror({
       place: this._wrapper,
-      doc: doc,
+      doc: parse(this.defaultValue),
       plugins: [
         BlockTypePlugin,
         ListsPlugin,
@@ -309,7 +309,7 @@ export default class Editor extends Component {
    */
   get value() {
     if (this._pm) {
-      return this._pm.doc.toJSON();
+      return encode(this._pm.doc);
     }
     return this.defaultValue;
   }

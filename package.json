@@ -35,7 +35,7 @@
     "cz-lerna-changelog": "0.3.0",
     "enzyme": "^2.6.0",
     "eslint": "^3.7.1",
-    "eslint-config-ak-base": "^5.0.0",
+    "eslint-config-ak-base": "^5.1.1",
     "eslint-config-ak-cucumber": "^4.0.0",
     "eslint-config-ak-stories": "^5.0.0",
     "eslint-config-ak-tests": "^4.0.0",

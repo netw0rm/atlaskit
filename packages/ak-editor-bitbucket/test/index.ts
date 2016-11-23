@@ -151,7 +151,7 @@ describe.skip('ak-editor-bitbucket', () => {
     });
   });
 
-  describe('default value', () => {
+  describe.skip('default value', () => {
     it('should initialize Prosemirror with correct value', (done) => {
       const content = 'foo';
       const spy = rewireSpy(AkEditorBitbucket, 'ProseMirror');
@@ -175,7 +175,7 @@ describe.skip('ak-editor-bitbucket', () => {
     });
   });
 
-  describe('collapsed editor', () => {
+  describe.skip('collapsed editor', () => {
     let tmpContainer: any;
     let editor: any;
 

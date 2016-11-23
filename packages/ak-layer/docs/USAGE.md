@@ -4,6 +4,7 @@ The layer is responsible for the positioning of an element on a page. For exampl
 
 If you use a layer with a component that could be opened or closed, you have to make sure you re-render the layer the first time you open the component, otherwise it will end up with a wrong position.
 
+![Example Layer Components](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-layer/docs/Layer.png)
 
 ## Try it out
 
@@ -32,5 +33,6 @@ ReactDOM.render(<Layer position="right middle">
 </Layer>, container);
 ```
 
+The first child will be the element you are aligning to and the second is the content you want to align.
 
 

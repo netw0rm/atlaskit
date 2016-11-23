@@ -62,7 +62,7 @@ export default class ContainerNavigation extends Component {
     return (
       <div
         className={classNames({
-          [styles.locals.shouldAnimate]: this.props.shouldAnimate,
+          [styles.shouldAnimate]: this.props.shouldAnimate,
         })}
       >
         <Spacer

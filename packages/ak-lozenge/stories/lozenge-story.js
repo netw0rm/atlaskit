@@ -15,16 +15,16 @@ storiesOf(name, module)
       <p><Lozenge appearance="new">new</Lozenge></p>
       <p><Lozenge appearance="moved">moved</Lozenge></p>
       <h2>Bold lozenges</h2>
-      <p><Lozenge bold>Default</Lozenge></p>
-      <p><Lozenge bold appearance="success">Success</Lozenge></p>
-      <p><Lozenge bold appearance="removed">removed</Lozenge></p>
-      <p><Lozenge bold appearance="inprogress">in progress</Lozenge></p>
-      <p><Lozenge bold appearance="new">new</Lozenge></p>
-      <p><Lozenge bold appearance="moved">moved</Lozenge></p>
+      <p><Lozenge isBold>Default</Lozenge></p>
+      <p><Lozenge isBold appearance="success">Success</Lozenge></p>
+      <p><Lozenge isBold appearance="removed">removed</Lozenge></p>
+      <p><Lozenge isBold appearance="inprogress">in progress</Lozenge></p>
+      <p><Lozenge isBold appearance="new">new</Lozenge></p>
+      <p><Lozenge isBold appearance="moved">moved</Lozenge></p>
     </div>
   ))
   .addBaselineAligned('baseline alignment', () => (
-    <Lozenge bold appearance="new">lozenge</Lozenge>
+    <Lozenge isBold appearance="new">lozenge</Lozenge>
   ))
   .add('truncation when too wide', () => (
     <div>
@@ -34,7 +34,7 @@ storiesOf(name, module)
         </Lozenge>
       </p>
       <p>
-        <Lozenge appearance="success" bold>
+        <Lozenge appearance="success" isBold>
           very very very wide text which truncates
         </Lozenge>
       </p>

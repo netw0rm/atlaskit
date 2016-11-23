@@ -1,12 +1,12 @@
 import classNames from 'classnames';
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import styles from '../src/style.less';
 
 const APPEARANCE_ENUM = {
   values: ['default', 'success', 'removed', 'inprogress', 'new', 'moved'],
-  missingDefault: 'default',
-  invalidDefault: 'default',
+  defaultValue: 'default',
 };
+
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class Lozenge
@@ -18,49 +18,49 @@ class Lozenge extends Component {
     return {
       /**
        * @description Toggles the bolder appearance.
-       * @memberof AkLozenge
+       * @memberof Lozenge
        * @instance
        * @type {boolean}
        * @default false
        */
-      bold: React.PropTypes.bool,
+      isBold: PropTypes.bool,
       /**
        * @description Affects the visual style of the badge.
        * Allowed values are: 'default', 'success', 'removed', 'inprogress', 'new', 'moved'.
-       * @memberof AkLozenge
+       * @memberof Lozenge
        * @instance
        * @type {string}
        * @default default
        */
-      appearance: React.PropTypes.oneOf(APPEARANCE_ENUM.values),
+      appearance: PropTypes.oneOf(APPEARANCE_ENUM.values),
       /**
        * @description The content passed to the lozenge
-       * @memberof AkLozenge
+       * @memberof Lozenge
        * @instance
        * @type {element}
        */
-      children: React.PropTypes.element,
+      children: PropTypes.element,
     };
   }
 
   static get defaultProps() {
     return {
-      bold: false,
-      appearance: APPEARANCE_ENUM.missingDefault,
+      isBold: false,
+      appearance: APPEARANCE_ENUM.defaultValue,
     };
   }
 
   // returns the assigned appearance if valid, falling back to the default otherwise
   validAppearance() {
     const { appearance } = this.props;
-    const { values, invalidDefault } = APPEARANCE_ENUM;
-    return values.indexOf(appearance) !== -1 ? appearance : invalidDefault;
+    const { values, defaultValue } = APPEARANCE_ENUM;
+    return values.indexOf(appearance) !== -1 ? appearance : defaultValue;
   }
 
   render() {
-    const { bold, children } = this.props;
+    const { isBold, children } = this.props;
     const classes = classNames([styles.locals.lozenge, styles.locals[this.validAppearance()]]);
-    const dataBold = bold ? { 'data-bold': '' } : {};
+    const dataBold = isBold ? { 'data-bold': '' } : {};
     return (
       <span className={classes} {...dataBold}>
         <style>{styles.toString()}</style>

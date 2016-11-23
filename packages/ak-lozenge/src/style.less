@@ -20,57 +20,27 @@
   text-overflow: ellipsis;
 }
 
-.default {
-  background: @default-bg;
-  color: @default-text;
+// Helper function for definining normal and bold styles
+.lozengeAppearance(@name) {
+  @normal-bg: "@{name}-bg";
+  @normal-text: "@{name}-text";
+  @bold-bg: "@{name}-bold-bg";
+  @bold-text: "@{name}-bold-text";
 
-  &[bold] {
-    background: @default-bold-bg;
-    color: @default-bold-text;
+  .@{name} {
+    background:  @@normal-bg;
+    color:  @@normal-text;
+
+    &[data-bold] {
+      background:  @@bold-bg;
+      color:  @@bold-text;
+    }
   }
 }
-.success {
-  background: @success-bg;
-  color: @success-text;
 
-  &[data-bold] {
-    background: @success-bold-bg;
-    color: @success-bold-text;
-  }
-}
-.removed {
-  background: @removed-bg;
-  color: @removed-text;
-
-  &[data-bold] {
-    background: @removed-bold-bg;
-    color: @removed-bold-text;
-  }
-}
-.inprogress {
-  background: @inprogress-bg;
-  color: @inprogress-text;
-
-  &[data-bold] {
-    background: @inprogress-bold-bg;
-    color: @inprogress-bold-text;
-  }
-}
-.new {
-  background: @new-bg;
-  color: @new-text;
-
-  &[data-bold] {
-    background: @new-bold-bg;
-    color: @new-bold-text;
-  }
-}
-.moved {
-  background: @moved-bg;
-  color: @moved-text;
-
-  &[data-bold] {
-    background: @moved-bold-bg;
-    color: @moved-bold-text;
-  }
-}
+.lozengeAppearance(default);
+.lozengeAppearance(success);
+.lozengeAppearance(removed);
+.lozengeAppearance(inprogress);
+.lozengeAppearance(new);
+.lozengeAppearance(moved);

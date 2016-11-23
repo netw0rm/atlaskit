@@ -8,7 +8,7 @@ import styles from '../src/style.less';
 chai.should();
 
 describe('ak-lozenge', () => {
-  describe('bold property', () => {
+  describe('isBold property', () => {
     function isBold(wrapper) {
       return wrapper.find('span[data-bold]').length === 1;
     }
@@ -17,7 +17,7 @@ describe('ak-lozenge', () => {
     });
     it('should change when toggled', () => {
       const wrapper = shallow(<Lozenge />);
-      wrapper.setProps({ bold: true });
+      wrapper.setProps({ isBold: true });
       isBold(wrapper).should.equal(true);
     });
   });

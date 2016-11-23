@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const { expect } = chai;
 
-describe('ak-editor-ui Footer', () => {
+describe.skip('ak-editor-ui Footer', () => {
   let component;
 
   beforeEach(() => {

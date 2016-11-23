@@ -1,0 +1,105 @@
+@import 'variables.less';
+
+.dropdownContainer {
+  background:#ff0000;
+  display: inline-block;
+}
+
+/* item styles */
+.item {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  padding: 0 unit(@grid * 2, px);
+  text-decoration: none;
+
+  &:not(.disabled) {
+    color: @ak-dropdown-font-main-color;
+    cursor: pointer;
+
+    &:hover {
+      background-color: @ak-dropdown-background-hover-color;
+
+      .elemBefore {
+        color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+        fill: transparent;
+      }
+
+      &.activeWithIcon {
+        .elemBefore {
+          color: @ak-color-B50;
+          fill: @ak-color-N700;
+        }
+      }
+    }
+
+    &:active {
+      background-color: @ak-dropdown-background-active-color;
+      color: @ak-dropdown-font-active-color;
+
+      .elemBefore {
+        color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+        fill: transparent;
+      }
+
+      &.activeWithIcon {
+        .elemBefore {
+          color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+          fill: @ak-color-N700;
+        }
+      }
+    }
+
+    .elemBefore {
+      color: @ak-color-N400;
+      fill: @ak-color-N400;
+    }
+
+    &.activeWithIcon {
+      .elemBefore {
+        color: @ak-color-B50;
+        fill: @ak-color-N700;
+      }
+    }
+  }
+
+  &.hidden {
+    display: none;
+  }
+
+  &.active {
+    background-color: @ak-dropdown-background-selected-color;
+    color: @ak-dropdown-font-main-color;
+  }
+
+  &.activeWithIcon {
+    background: none;
+  }
+
+
+  &.disabled {
+    background-color: @ak-dropdown-background-disabled-color;
+    color: @ak-dropdown-font-disabled-color;
+    cursor: not-allowed;
+  }
+}
+
+.elemBefore,
+.elemAfter {
+  margin: 0 unit(@grid, px);
+  min-width: unit(@grid * 5, px);
+  display: flex;
+}
+
+.content {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: unit(@grid, px);
+  padding:3px 0;
+}

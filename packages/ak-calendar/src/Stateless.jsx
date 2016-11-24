@@ -313,14 +313,18 @@ export default class extends PureComponent {
             </div>
           </div>
           <table {...css.calendar} role="presentation">
-            <thead>
+            <thead style={{ border: 0 }}>
               <tr>
                 {makeArrayFromNumber(daysPerWeek).map(i =>
-                  <th {...css.dayOfWeek} key={i}>{getDayName(i)}</th>
+                  <th
+                    {...css.dayOfWeek}
+                    key={i}
+                    style={{ border: 0, padding: '2px 5px' }}
+                  >{getDayName(i)}</th>
                 )}
               </tr>
             </thead>
-            <tbody>
+            <tbody style={{ border: 0 }}>
               {weeks.map((week, i) => <tr key={i}>{week}</tr>)}
             </tbody>
           </table>

@@ -5,6 +5,7 @@ export default function () {
   return {
     calendar: style({
       display: 'inline-block',
+      margin: 0,
       textAlign: 'center',
     }),
     dayOfWeek: style({

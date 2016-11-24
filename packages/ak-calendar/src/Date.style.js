@@ -1,4 +1,4 @@
-import { hover, merge, style } from 'glamor';
+import { after, hover, merge, style } from 'glamor';
 import {
   akColorB75,
   akColorN0,
@@ -73,22 +73,23 @@ export default props => merge(
     borderRadius: 4,
     color: getColor(props),
     cursor: getCursor(props),
-    display: 'table-cell',
     fontSize: 12,
     fontWeight: 'lighter',
     padding: '2px 5px',
     position: 'relative',
+    textAlign: 'center',
   }),
   hover({
     backgroundColor: getHoverBackgroundColor(props),
     color: getHoverColor(props),
-  })
+  }),
+  props.isToday ? after({
+    content: '""',
+    position: 'absolute',
+    bottom: 1,
+    left: 2,
+    right: 2,
+    background: props.selected ? akColorN700 : akColorB75,
+    height: 1,
+  }) : null
 );
-
-export const underline = ({ disabled }) => style({
-  borderBottom: `1px solid ${disabled ? akColorN400 : akColorB75}`,
-  bottom: -2,
-  left: '12.5%',
-  position: 'absolute',
-  width: '75%',
-});

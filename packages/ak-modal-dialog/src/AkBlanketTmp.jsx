@@ -5,21 +5,16 @@ import { akColorN900 } from 'akutil-shared-styles';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class AkBlanketTmp extends PureComponent {
-  static get propTypes() {
-    return {
-      children: PropTypes.element,
-      onBlanketClicked: PropTypes.func,
-    };
-  }
+  static propTypes = {
+    onBlanketClicked: PropTypes.func,
+  };
 
-  static defaultProps() {
-    return {
-      onBlanketClicked: () => {},
-    };
-  }
+  static defaultProps = {
+    onBlanketClicked: () => {},
+  };
 
   render() {
-    const { onBlanketClicked, children } = this.props;
+    const { onBlanketClicked } = this.props;
 
     return (
       // eslint-disable-next-line
@@ -35,9 +30,7 @@ export default class AkBlanketTmp extends PureComponent {
           cursor: 'pointer',
         }}
         onClick={onBlanketClicked}
-      >
-        {children}
-      </div>
+      />
     );
   }
 }

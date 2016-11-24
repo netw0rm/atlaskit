@@ -1,6 +1,6 @@
 import mocha from 'mocha';
 import { default as plugin } from '../src';
-import { MentionQueryMarkType, Mention } from 'ak-editor-schema';
+import { MentionQueryMarkType, MentionNodeType } from 'ak-editor-schema';
 import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';
 import { default as chai, expect } from 'chai';
@@ -10,7 +10,7 @@ chai.use(chaiPlugin);
 
 const schema: Schema = new Schema({
   nodes: schemaBasic.nodeSpec.append({
-    mention: { type: Mention, group: 'inline' }
+    mention: { type: MentionNodeType, group: 'inline' }
   }),
   marks: {
     mention_query: MentionQueryMarkType

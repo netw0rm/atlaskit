@@ -14,41 +14,37 @@ const APPEARANCE_ENUM = {
  * const component = new Lozenge();
  */
 class Lozenge extends Component {
-  static get propTypes() {
-    return {
-      /**
-       * @description Toggles the bolder appearance.
-       * @memberof Lozenge
-       * @instance
-       * @type {boolean}
-       * @default false
-       */
-      isBold: PropTypes.bool,
-      /**
-       * @description Affects the visual style of the badge.
-       * Allowed values are: 'default', 'success', 'removed', 'inprogress', 'new', 'moved'.
-       * @memberof Lozenge
-       * @instance
-       * @type {string}
-       * @default default
-       */
-      appearance: PropTypes.oneOf(APPEARANCE_ENUM.values),
-      /**
-       * @description The content passed to the lozenge
-       * @memberof Lozenge
-       * @instance
-       * @type {element}
-       */
-      children: PropTypes.element,
-    };
-  }
+  static propTypes = {
+    /**
+     * @description Toggles the bolder appearance.
+     * @memberof Lozenge
+     * @instance
+     * @type {boolean}
+     * @default false
+     */
+    isBold: PropTypes.bool,
+    /**
+     * @description Affects the visual style of the badge.
+     * Allowed values are: 'default', 'success', 'removed', 'inprogress', 'new', 'moved'.
+     * @memberof Lozenge
+     * @instance
+     * @type {string}
+     * @default default
+     */
+    appearance: PropTypes.oneOf(APPEARANCE_ENUM.values),
+    /**
+     * @description The content passed to the lozenge
+     * @memberof Lozenge
+     * @instance
+     * @type {element}
+     */
+    children: PropTypes.element,
+  };
 
-  static get defaultProps() {
-    return {
-      isBold: false,
-      appearance: APPEARANCE_ENUM.defaultValue,
-    };
-  }
+  static defaultProps = {
+    isBold: false,
+    appearance: APPEARANCE_ENUM.defaultValue,
+  };
 
   // returns the assigned appearance if valid, falling back to the default otherwise
   validAppearance() {

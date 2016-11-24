@@ -1,12 +1,12 @@
 {
   "name": "ak-icon",
-  "version": "10.1.0",
-  "description": "Icon web components",
+  "version": "11.0.0",
+  "description": "Icon React components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.js",
+    "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.jsx",
     "generate-icon-exports": "node ./bin/generate-icon-exports.js",
     "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
     "gen-icons-md": "node ./bin/generate-icons-md.js > ./docs/Icons.md",
@@ -19,19 +19,20 @@
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
+  "peerDependencies": {
+    "react": "^15.3.2"
+  },
   "dependencies": {
-    "akutil-common": "^5.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "create-error": "^0.3.1",
-    "skatejs": "^4.0.6"
+    "create-error": "^0.3.1"
   },
   "devDependencies": {
-    "ak-button": "^3.0.0",
+    "ak-button": "^4.0.1",
     "akutil-common-test": "*",
-    "akutil-react": "*",
     "akutil-shared-styles": "^37.0.0",
     "async": "^2.0.1",
+    "camelcase": "^3.0.0",
     "glob": "^7.0.5",
     "lodash.sample": "^4.2.1",
     "mkdirp": "^0.5.1",

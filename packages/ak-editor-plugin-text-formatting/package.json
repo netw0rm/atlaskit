@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-text-formatting",
-  "version": "5.0.3",
+  "version": "5.1.0",
   "description": "A text formatting plugin for ProseMirror",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

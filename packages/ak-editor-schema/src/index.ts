@@ -9,6 +9,7 @@ export { StrikeMark, StrikeMarkType, isStrikeMark } from './marks/strike';
 export { StrongMark, StrongMarkType, isStrongMark } from './marks/strong';
 export { SubSupMark, SubSupMarkType, isSubSupMark } from './marks/subsup';
 export { UnderlineMark, UnderlineMarkType, isUnderlineMark } from './marks/underline';
+export { MentionQueryMark, MentionQueryMarkType } from './marks/mention-query';
 
 export { BlockQuoteNode, BlockQuoteNodeType, isBlockQuoteNode } from './nodes/blockquote';
 export { BulletListNode, BulletListNodeType, isBulletListNode } from './nodes/bullet-list';
@@ -21,8 +22,8 @@ export { ImageNode, ImageNodeType, isImageNode } from './nodes/image';
 export { ListItemNode, ListItemNodeType, isListItemNode } from './nodes/list-item';
 export { OrderedListNode, OrderedListNodeType, isOrderedListNode } from './nodes/ordered-list';
 export { ParagraphNode, ParagraphNodeType, isParagraphNode } from './nodes/paragraph';
+export { EntityNodeType } from './nodes/entity';
+export { MentionNodeType } from './nodes/mention';
+export { EmojiNodeType } from './nodes/emoji';
 
-export { Entity, Mention, Emoji } from './entity';
 export { schema as default } from './schema';
-
-export { MentionQueryMark, MentionQueryMarkType } from './marks/mention-query';

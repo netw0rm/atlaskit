@@ -1,5 +1,5 @@
 import BlockTypePlugin from '../src/new';
-import { chaiPlugin, makeEditor, doc, p, text, h1, h2, h3, blockquote, code_block } from 'ak-editor-test';
+import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import sinonChai from 'sinon-chai';
@@ -46,6 +46,20 @@ describe('ak-editor-plugin-block-type', () => {
     expect(pm.doc).to.deep.equal(doc(h3('text')));
   });
 
+  it('should be able to change to heading4', () => {
+    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+
+    plugin.changeBlockType('heading4');
+    expect(pm.doc).to.deep.equal(doc(h4('text')));
+  });
+
+  it('should be able to change to heading5', () => {
+    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+
+    plugin.changeBlockType('heading5');
+    expect(pm.doc).to.deep.equal(doc(h5('text')));
+  });
+
   it('should be able to change to block quote', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
@@ -58,6 +72,13 @@ describe('ak-editor-plugin-block-type', () => {
 
     plugin.changeBlockType('code');
     expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+  });
+
+  it('should be able to change to code block with multilines', () => {
+    const { pm, plugin } = editor(doc(p('line1{<>}', br, 'line2')));
+
+    plugin.changeBlockType('code');
+    expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
   });
 
   it('should be able to identify normal', () => {

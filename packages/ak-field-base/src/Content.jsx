@@ -13,7 +13,7 @@ export default class Content extends PureComponent {
     invalid: PropTypes.bool,
     onFocusCallback: PropTypes.func,
     onBlurCallback: PropTypes.func,
-    children: PropTypes.element,
+    children: PropTypes.node,
   }
   render() {
     const contentClasses = classNames(styles.locals.content, {

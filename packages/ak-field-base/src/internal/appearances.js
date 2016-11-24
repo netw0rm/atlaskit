@@ -3,7 +3,7 @@ export const compact = 'compact';
 export const subtle = 'subtle';
 
 /**
- * FildBase appearances values.
+ * FieldBase appearances values.
  *
  * @enum {string}
  */

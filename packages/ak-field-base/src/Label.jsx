@@ -14,7 +14,7 @@ export default class Label extends PureComponent {
     label: PropTypes.string,
     onLabelClick: PropTypes.func,
     required: PropTypes.bool,
-    children: PropTypes.element,
+    children: PropTypes.node,
   }
 
   render() {

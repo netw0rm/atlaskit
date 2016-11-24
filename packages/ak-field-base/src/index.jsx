@@ -7,7 +7,6 @@ import appearances, { standard } from './internal/appearances';
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class FieldBase
- * @extends ComponentBase
  * @example <FieldBase label="Email" />
  */
  /* eslint-disable react/no-unused-prop-types */
@@ -110,6 +109,7 @@ export default class FieldBase extends PureComponent {
      * @example <FieldBase onLabelClick={() => alert('label click!')} />
      */
     onLabelClick: PropTypes.func,
+    children: PropTypes.node,
   }
 
   static defaultProps = {
@@ -125,24 +125,23 @@ export default class FieldBase extends PureComponent {
   }
 
   render() {
-    const { props } = this;
     return (
       <div className={styles.root}>
         <Label
-          label={props.label}
-          hideLabel={props.hideLabel}
-          required={props.required}
-          onLabelClick={props.onLabelClick}
+          label={this.props.label}
+          hideLabel={this.props.hideLabel}
+          required={this.props.required}
+          onLabelClick={this.props.onLabelClick}
         >
           <Content
             onFocusCallback={() => this.setState({ focused: true })}
             onBlurCallback={() => this.setState({ focused: false })}
-            appearance={props.appearance}
-            disabled={props.disabled}
-            invalid={props.invalid}
+            appearance={this.props.appearance}
+            disabled={this.props.disabled}
+            invalid={this.props.invalid}
             focused={this.state.focused}
           >
-            {props.children}
+            {this.props.children}
           </Content>
         </Label>
       </div>

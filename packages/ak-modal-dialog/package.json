@@ -22,7 +22,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-button": ">=4.x",
-    "ak-field-text": "*",
+    "ak-field-text": "<=5.x",
     "akutil-react": "*",
     "react-lorem-component": "*"
   },

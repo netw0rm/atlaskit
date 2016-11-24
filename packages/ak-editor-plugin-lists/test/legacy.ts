@@ -7,7 +7,7 @@ import sinonChai from 'sinon-chai';
 chai.use(chaiPlugin);
 chai.use(sinonChai);
 
-describe('ak-editor-plugin-lists', () => {
+describe('ak-editor-plugin-lists legacy', () => {
   const editor = (doc: any) => makeEditor({ doc: doc, plugin: ListsPlugin });
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {

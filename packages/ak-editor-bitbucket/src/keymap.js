@@ -4,6 +4,8 @@ import { browser, commands, Keymap } from  "ak-editor-prosemirror";
 const { wrapIn, setBlockType, wrapInList, splitListItem, liftListItem,
   sinkListItem, chainCommands, newlineInCode, toggleMark } = commands;
 
+const isMac = browser.mac;
+
 // Note: This is a copy pasta from prosemirror's example setup.
 // Modified to match custom nodes and markers.
 
@@ -65,15 +67,19 @@ export function buildKeymap(schema, mapKeys) {
     let node = schema.nodes[name];
 
     if (name === "bullet_list") {
-      bind("Shift-Ctrl-8", wrapInList(node));
+      bind("Shift-Ctrl-B", wrapInList(node));
     }
 
     if (name === "ordered_list") {
-      bind("Shift-Ctrl-9", wrapInList(node));
+      bind("Shift-Ctrl-N", wrapInList(node));
     }
 
     if (name === "blockquote") {
-      bind("Shift-Ctrl-.", wrapIn(node));
+      if (isMac) {
+        bind("Cmd-Alt-8", wrapIn(node));
+      } else {
+        bind("Ctrl-8", wrapIn(node));
+      }
     }
 
     if (name === "hard_break") {
@@ -83,7 +89,7 @@ export function buildKeymap(schema, mapKeys) {
       );
       bind("Mod-Enter", cmd);
       bind("Shift-Enter", cmd);
-      if (browser.mac) {
+      if (isMac) {
         bind("Ctrl-Enter", cmd);
       }
     }
@@ -95,11 +101,19 @@ export function buildKeymap(schema, mapKeys) {
     }
 
     if (name === "paragraph") {
-      bind("Shift-Ctrl-0", setBlockType(node));
+      if (isMac) {
+        bind("Cmd-Alt-0", setBlockType(node));
+      } else {
+        bind("Ctrl-0", setBlockType(node));
+      }
     }
 
     if (name === "code_block") {
-      bind("Shift-Ctrl-\\", setBlockType(node));
+      if (isMac) {
+        bind("Cmd-Alt-7", setBlockType(node));
+      } else {
+        bind("Ctrl-7", setBlockType(node));
+      }
       // https://github.com/ProseMirror/prosemirror/issues/419
       bind("Enter", (pm, apply) => {
         let {$from, $to, node} = pm.selection;
@@ -120,8 +134,12 @@ export function buildKeymap(schema, mapKeys) {
     }
 
     if (name === "heading") {
-      for (let i = 1; i <= 6; i++) {
-        bind("Shift-Ctrl-" + i, setBlockType(node, {level: i}));
+      for (let i = 1; i <= 5; i++) {
+        if (isMac) {
+          bind("Cmd-Alt-" + i, setBlockType(node, {level: i}));
+        } else {
+          bind("Ctrl-" + i, setBlockType(node, {level: i}));
+        }
       }
     }
 

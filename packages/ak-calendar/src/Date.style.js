@@ -26,7 +26,7 @@ function getBorderColor({ focused }) {
   return 'transparent';
 }
 
-function getColor({ disabled, previouslySelected, selected, sibling, today }) {
+function getColor({ disabled, isToday, previouslySelected, selected, sibling }) {
   if (selected) {
     return akColorN700;
   }
@@ -36,7 +36,7 @@ function getColor({ disabled, previouslySelected, selected, sibling, today }) {
   if (previouslySelected) {
     return akColorN600;
   }
-  if (today) {
+  if (isToday) {
     return akColorB75;
   }
   if (sibling) {

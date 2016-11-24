@@ -4,13 +4,15 @@ import styles, { underline } from './Date.style';
 
 export default class extends PureComponent {
   static propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.number.isRequired,
     // TODO remove when https://bitbucket.org/atlassian/atlaskit/pull-requests/958/fix-fix-proptypes-validation-in-our-eslint/diff is merged.
     // eslint-disable-next-line react/no-unused-prop-types
     disabled: PropTypes.bool,
     // TODO remove when https://bitbucket.org/atlassian/atlaskit/pull-requests/958/fix-fix-proptypes-validation-in-our-eslint/diff is merged.
     // eslint-disable-next-line react/no-unused-prop-types
     focused: PropTypes.bool,
+    isToday: PropTypes.bool,
+    month: PropTypes.number.isRequired,
     onClick: PropTypes.func,
     // TODO remove when https://bitbucket.org/atlassian/atlaskit/pull-requests/958/fix-fix-proptypes-validation-in-our-eslint/diff is merged.
     // eslint-disable-next-line react/no-unused-prop-types
@@ -19,7 +21,7 @@ export default class extends PureComponent {
     // TODO remove when https://bitbucket.org/atlassian/atlaskit/pull-requests/958/fix-fix-proptypes-validation-in-our-eslint/diff is merged.
     // eslint-disable-next-line react/no-unused-prop-types
     sibling: PropTypes.bool,
-    today: PropTypes.bool,
+    year: PropTypes.number.isRequired,
   }
   static defaultProps = {
     disabled: false,
@@ -27,17 +29,26 @@ export default class extends PureComponent {
     onClick() {},
     previouslySelected: false,
     sibling: false,
-    today: false,
+    today: '',
+  }
+  handleClick = () => {
+    const { children: day, month, onClick, year } = this.props;
+    onClick({ year, month, day });
   }
   render() {
-    const css = styles(this.props);
-    const cssUnderline = underline(this.props);
+    const { children, focused, selected, isToday } = this.props;
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <td {...css} onClick={this.props.onClick} role="gridcell" aria-selected={this.props.selected ? 'true' : 'false'}>
-        {this.props.children}
-        {this.props.today ? <div {...cssUnderline} /> : ''}
+      <td
+        {...styles(this.props)}
+        onClick={this.handleClick}
+        role="gridcell"
+        aria-live={focused ? 'polite' : ''}
+        aria-selected={selected ? 'true' : 'false'}
+      >
+        {children}
+        {isToday ? <div {...underline(this.props)} /> : ''}
       </td>
     );
   }

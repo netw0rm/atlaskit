@@ -30,7 +30,7 @@ function getI18n() {
   return i18n['en-au'];
 }
 
-export function pad(num) {
+function pad(num) {
   return num < 10 ? `0${num}` : num;
 }
 
@@ -44,6 +44,10 @@ export function getMonthName(i) {
 
 export function dateToString(date, { fixMonth } = {}) {
   return date ? `${date.year}-${pad(date.month + (fixMonth ? 1 : 0))}-${pad(date.day)}` : '';
+}
+
+export function toIso(year, month, day) {
+  return `${year}-${pad(month)}-${pad(day)}`;
 }
 
 export function makeArrayFromNumber(i) {

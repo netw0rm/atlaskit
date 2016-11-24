@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-ui",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Atlassian Editor UI",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

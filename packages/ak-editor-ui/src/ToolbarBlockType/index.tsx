@@ -7,6 +7,8 @@ import styles from './index.less';
 import Select from './Select';
 import Option from './Option';
 
+declare var require: any;
+
 // typescript removes unused var if we import it :(
 const { vdom } = require('skatejs');
 

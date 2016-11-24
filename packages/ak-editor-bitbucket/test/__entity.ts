@@ -1,7 +1,7 @@
 import schema from '../src/schema';
+import 'mocha';
 import { ProseMirror, Node } from 'ak-editor-prosemirror';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { default as chai, expect } from 'chai';
 import { fromHTML, toHTML } from 'ak-editor-test';
 
 describe('Mention node - parsing from DOM', () => {

@@ -1,7 +1,7 @@
 import ListsPlugin from '../src';
 import { chaiPlugin, makeEditor, doc, p, text, ol, ul, li, h1 } from 'ak-editor-test';
-import * as chai from 'chai';
-const { expect } = chai;
+import { default as chai, expect } from 'chai';
+import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
@@ -178,7 +178,7 @@ describe('ak-editor-plugin-lists', () => {
       it('should allow converting part of a list based on selection that starts at the end of previous line', () => {
         const expectedOutput = doc(ol(li(p('One'))),ul(li(p('Two')),li(p('Three'))),ol((li(p('Four')))));
         const { pm, plugin } = editor(doc(ol(li(p('One{<}')),li(p('Two')),li(p('Three{>}')),li(p('Four'))))); // When selection starts on previous (empty) node
- 
+
         plugin.toggleList('bullet_list');
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
@@ -186,7 +186,7 @@ describe('ak-editor-plugin-lists', () => {
       it('should convert selection to a list when the selection starts with a paragraph and ends inside a list', () => {
         const expectedOutput = doc(ol(li(p('One')),li(p('Two')),li(p('Three')),li(p('Four'))));
         const { pm, plugin } = editor(doc(p('{<}One'),ol(li(p('Two{>}')),li(p('Three')),li(p('Four')))));
-        
+
         plugin.toggleList('ordered_list');
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
@@ -194,7 +194,7 @@ describe('ak-editor-plugin-lists', () => {
       it('should convert selection to a list when the selection contains a list but starts and end with paragraphs', () => {
         const expectedOutput = doc(ol(li(p('One')),li(p('Two')),li(p('Three')),li(p('Four'))));
         const { pm, plugin } = editor(doc(p('{<}One'),ol(li(p('Two')),li(p('Three'))),p('Four{>}')));
-        
+
         plugin.toggleList('ordered_list');
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
@@ -202,7 +202,7 @@ describe('ak-editor-plugin-lists', () => {
       it('should convert selection to a list when the selection starts inside a list and ends with a paragraph', () => {
         const expectedOutput = doc(ol(li(p('One')),li(p('Two')),li(p('Three')),li(p('Four'))));
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('{<}Two')),li(p('Three'))),(p('Four{>}'))));
-        
+
         plugin.toggleList('ordered_list');
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
@@ -230,7 +230,7 @@ describe('ak-editor-plugin-lists', () => {
 
       it('should join with previous list if it\'s of the same type and selection starts at the end of previous line', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two')),li(p('Three{<}'))),p('Four'),p('Five{>}'),p('Six'))); // When selection starts on previous (empty) node
-        
+
         plugin.toggleList('ordered_list');
         expect(pm.doc).to.deep.equal(expectedOutputForPreviousList);
       });
@@ -260,7 +260,7 @@ describe('ak-editor-plugin-lists', () => {
 
       it('should join with next list if it\'s of the same type and selection starts at the end of previous line', () => {
         const { pm, plugin } = editor(doc(p('One{<}'),p('Two'),p('Three{>}'),ol(li(p('Four')),li(p('Five')),li(p('Six')))));
-        
+
         plugin.toggleList('ordered_list');
         expect(pm.doc).to.deep.equal(expectedOutputForNextList);
       });
@@ -290,7 +290,7 @@ describe('ak-editor-plugin-lists', () => {
 
       it('should join with previous and next list if they\'re of the same type and selection starts at the end of previous line', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two{<}'))),p('Three'),p('Four{>}'),ol(li(p('Five')),li(p('Six')))));
-        
+
         plugin.toggleList('ordered_list');
         expect(pm.doc).to.deep.equal(expectedOutputForPreviousAndNextList);
       });

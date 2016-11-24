@@ -1,4 +1,4 @@
-import { Plugin, ProseMirror } from 'ak-editor-prosemirror';
+import { Plugin, ProseMirror, Schema } from 'ak-editor-prosemirror';
 import SyncPlugin from './sync-plugin';
 import { RefsNode } from './schema-builder';
 import schema from 'ak-editor-schema';
@@ -7,6 +7,7 @@ interface Options {
   doc: RefsNode;
   plugin: Plugin<any>;
   place?: HTMLElement;
+  schema?: Schema
 }
 
 /**
@@ -21,7 +22,7 @@ export default (options: Options) => {
   const pm = new ProseMirror({
     doc: options.doc,
     place: options.place,
-    schema: schema,
+    schema: options.schema || schema,
     plugins: [
       options.plugin,
       SyncPlugin,

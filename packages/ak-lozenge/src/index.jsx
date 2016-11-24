@@ -59,10 +59,13 @@ class Lozenge extends Component {
 
   render() {
     const { isBold, children } = this.props;
-    const classes = classNames([styles.lozenge, styles[this.validAppearance()]]);
-    const dataBold = isBold ? { 'data-bold': '' } : {};
+    const classes = classNames([
+      { [styles.bold]: isBold },
+      styles.lozenge,
+      styles[this.validAppearance()],
+    ]);
     return (
-      <span className={classes} {...dataBold}>
+      <span className={classes}>
         <span className={styles.content}>{children}</span>
       </span>
     );

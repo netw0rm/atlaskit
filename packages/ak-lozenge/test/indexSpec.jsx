@@ -8,10 +8,13 @@ import styles from '../src/style.less';
 chai.should();
 
 describe('ak-lozenge', () => {
+  const { locals: style } = styles;
+
   describe('isBold property', () => {
     function isBold(wrapper) {
-      return wrapper.find('span[data-bold]').length === 1;
+      return wrapper.find(`.${style.bold}`).length === 1;
     }
+
     it('should not be the default', () => {
       isBold(shallow(<Lozenge />)).should.equal(false);
     });
@@ -27,17 +30,17 @@ describe('ak-lozenge', () => {
     }
 
     it('should be "default" when not set', () => {
-      hasClass(shallow(<Lozenge />), styles.locals.default).should.equal(true);
+      hasClass(shallow(<Lozenge />), style.default).should.equal(true);
     });
     it('should change when set to an approved value', () => {
       const lozenge = shallow(<Lozenge />);
       lozenge.setProps({ appearance: 'success' });
-      hasClass(lozenge, styles.locals.success).should.equal(true);
+      hasClass(lozenge, style.success).should.equal(true);
     });
     it('should revert to "default" when set to an invalid value', () => {
       const lozenge = shallow(<Lozenge />);
       lozenge.setProps({ appearance: 'foo' });
-      hasClass(lozenge, styles.locals.default).should.equal(true);
+      hasClass(lozenge, style.default).should.equal(true);
     });
   });
 });

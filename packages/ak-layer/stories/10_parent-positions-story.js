@@ -21,7 +21,7 @@ storiesOf(name, module)
     <div style={{ height: '100%' }}>
       <div className={styles.storyRoot}>
         <div className={styles.fixedParent}>
-          <ExampleAlignment position="bottom center" content="Target is position: fixed" />
+          <ExampleAlignment position="bottom center" content="Parent is position: fixed" />
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@ storiesOf(name, module)
     <div style={{ height: '100%' }}>
       <div className={styles.storyRoot}>
         <div className={styles.absoluteParent}>
-          <ExampleAlignment position="bottom center" content="Target is position: absolute" />
+          <ExampleAlignment position="bottom center" content="Parent is position: absolute" />
         </div>
       </div>
     </div>
@@ -38,8 +38,9 @@ storiesOf(name, module)
   .add('Parent position: relative', () => (
     <div style={{ height: '100%' }}>
       <div className={styles.storyRoot}>
+        <div>This story has a known defect</div>
         <div className={styles.relativeParent}>
-          <ExampleAlignment position="bottom center" content="Target is position: relative" />
+          <ExampleAlignment position="bottom center" content="Parent is position: relative" />
         </div>
       </div>
     </div>

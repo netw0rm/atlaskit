@@ -18,6 +18,9 @@ const AllAlignments = props => (<div className={styles.storyRoot}>
     <ExampleAlignment {...props} position="left top" />
     <ExampleAlignment {...props} position="left middle" />
     <ExampleAlignment {...props} position="left bottom" />
+  </div>
+
+  <div className={styles.flexRow}>
     <ExampleAlignment {...props} position="right top" />
     <ExampleAlignment {...props} position="right middle" />
     <ExampleAlignment {...props} position="right bottom" />
@@ -27,6 +30,9 @@ const AllAlignments = props => (<div className={styles.storyRoot}>
     <ExampleAlignment {...props} position="top left" />
     <ExampleAlignment {...props} position="top center" />
     <ExampleAlignment {...props} position="top right" />
+  </div>
+
+  <div className={styles.flexRow}>
     <ExampleAlignment {...props} position="bottom left" />
     <ExampleAlignment {...props} position="bottom center" />
     <ExampleAlignment {...props} position="bottom right" />

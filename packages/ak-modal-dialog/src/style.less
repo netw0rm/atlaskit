@@ -28,7 +28,7 @@
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  max-height: ~"calc(100% - (2 * @{verticalMargin}))";
+  height: ~"calc(100% - (2 * @{verticalMargin}))"; // can't use max-height here because of IE11 bug
   padding-top: @verticalMargin;
   position: relative;
   width: @temporaryFixedModalWidth;

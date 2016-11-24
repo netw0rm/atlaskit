@@ -21,8 +21,8 @@ console.log("import { size } from './Icon';");
 allIconPaths.forEach((file) => {
   const componentName = pathToExport(file);
   const tmpComponentName = `tmp${componentName}`;
-  const fileWithoutJs = file.substring(0, file.length - 3);
-  console.log(`import ${tmpComponentName} from '${fileWithoutJs}';`);
+  const fileWithoutJsx = file.substring(0, file.length - 4);
+  console.log(`import ${tmpComponentName} from '${fileWithoutJsx}';`);
 });
 
 console.log();

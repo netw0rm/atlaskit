@@ -1,54 +1,38 @@
 import { storiesOf } from '@kadira/storybook';
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import React from 'react';
-import reactify from 'akutil-react';
 import classnames from 'classnames';
-import AkButtonWc from 'ak-button';
+import AkButton from 'ak-button';
 
-import componentStyles from 'style!../src/shadow.less';
 import styles from 'style!./styles.less';
 
 import AnimationDemo from './AnimationDemo';
 import { name } from '../package.json';
 import ToggleIcons from './ToggleIcons';
-import pathToDashed from '../bin/pathToDashed';
 import { getGlyphs } from '../test/_helpers';
 import { size } from '../src/Icon';
 
 
 const iconSizes = Object.values(size);
-
-const AkButton = reactify(AkButtonWc);
-
 const twoColorIcons = ['checkbox', 'radio'];
-
 const components = getGlyphs();
-const reactifiedComponents = Object.entries(components).reduce((prev, [key, Icon]) => {
-  const ReactIcon = reactify(Icon);
-  prev[key] = ReactIcon;
-  return prev;
-}, {});
-
 const sampleIconName = 'atlassian';
-const AtlassianIcon = reactifiedComponents[sampleIconName];
+const AtlassianIcon = components[sampleIconName];
 if (!AtlassianIcon) {
   throw new Error('Atlassian icon was removed, but is needed to display stories properly');
 }
 
-
 const toggleableIcons = Object
-  .keys(reactifiedComponents)
+  .keys(components)
   .filter(key => twoColorIcons.indexOf(key) !== -1)
-  .map(key => [key, reactifiedComponents[key]]);
+  .map(key => [key, components[key]]);
 
 const AllIcons = props => (
   // eslint-disable-next-line react/prop-types
   <div {...props} className={classnames(styles.container, props.className)}>
     {Object
-      .entries(reactifiedComponents)
+      .entries(components)
       .map(([key, Icon]) =>
         <Icon
-          className={componentStyles.akIcon}
           label={`${key} icon`}
           title={`${key}.svg`}
           key={key}
@@ -68,26 +52,30 @@ const AllIconsSizeChecked = props => (
   // eslint-disable-next-line react/prop-types
   <div {...props} className={classnames(styles.container, props.className)}>
     {Object
-      .entries(reactifiedComponents)
+      .entries(components)
       .map(([key, Icon]) =>
         <div className={styles.compareIconContainer}>
           <Icon
-            className={classnames(componentStyles.akIcon, styles.original)}
             label={`${key} icon`}
             title={`${key}.svg`}
             key={`${key}-original`}
           />
           <Icon
-            className={classnames(componentStyles.akIcon, styles.constrained)}
             label={`${key} icon`}
             title={`${key}.svg`}
-            key={`${key}-costrained`}
+            key={`${key}-constrained`}
           />
         </div>)}
   </div>
 );
 
 storiesOf('ak-icon', module)
+  .add('Single icon', () => (
+    <AtlassianIcon
+      label="Atlassian icon"
+      size="medium"
+    />
+  ))
   .add('All icons', () => <AllIcons />)
   .add('All icons (usage)', () => (
     <table>
@@ -100,15 +88,13 @@ storiesOf('ak-icon', module)
       </thead>
       <tbody>
         {Object
-          .entries(reactifiedComponents)
+          .entries(components)
           .map(([key, Icon]) => {
             const importName = `${name}/glyph/${key}`;
-            const tagName = `${name}-${pathToDashed(key)}`;
             return (
               <tr key={key}>
-                <td><Icon /></td>
+                <td><Icon label={`${key} icon`} /></td>
                 <td><pre>import &#39;{importName}&#39;;</pre></td>
-                <td><pre>&lt;{tagName} /&gt;</pre></td>
               </tr>
             );
           })
@@ -138,15 +124,20 @@ storiesOf('ak-icon', module)
 
   ))
   .add('Two-color icons', () => <ToggleIcons icons={toggleableIcons} />)
-  .add('Animated', () => <AnimationDemo components={reactifiedComponents} />)
+  .add('Animated', () => <AnimationDemo components={components} />)
   .addBaselineAligned('baseline alignment', () => (
-    <AtlassianIcon className={componentStyles.akIcon} />
+    <AtlassianIcon label="Baseline aligned icon" />
   ))
   .add('Inside a button', () => (
-    <AkButton>
-      <AtlassianIcon className={componentStyles.akIcon} slot="before" />
-      Button
-    </AkButton>
+    <div>
+      <div><AkButton iconBefore={<AtlassianIcon label="Icon before button" />}>
+        Button
+      </AkButton></div>
+      <div><AkButton iconAfter={<AtlassianIcon label="Icon after button" />}>
+        Button
+      </AkButton></div>
+    </div>
+
   ))
   .add('Different sizes', () => (
     <table>
@@ -160,7 +151,10 @@ storiesOf('ak-icon', module)
         {iconSizes.map(s => (
           <tr key={s}>
             <td><pre>&lt;ak-icon-{sampleIconName} size=&quot;{s}&quot; /&gt;</pre></td>
-            <td><AtlassianIcon className={componentStyles.akIcon} size={s} /></td>
+            <td><AtlassianIcon
+              size={s}
+              label={`Atlassian icon with size ${s}`}
+            /></td>
           </tr>
       ))}
       </tbody>

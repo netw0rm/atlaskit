@@ -7,5 +7,6 @@ declare namespace JSX {
     legend: any;
     pre: any;
     slot: any;
+    spacer: any;
   }
 }

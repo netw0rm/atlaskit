@@ -47,6 +47,12 @@ export default class AkButton extends Component {
        */
       target: PropTypes.string,
       /**
+       * @description Standard HTML5 form attribute for buttons
+       * @memberof Button
+       * @type {string}
+       */
+      form: PropTypes.string,
+      /**
        * @description Option to disable button and every click event
        * @memberof Button
        * @default false

@@ -820,7 +820,7 @@ declare module 'prosemirror/dist/model/schema' {
     }
     export class Schema {
         constructor(spec: any, data?: any);
-        marks: {[type: string]: MarkType};
+        marks: any;
         nodes: any;
         nodeSpec: OrderedMap;
         markSpec: OrderedMap;

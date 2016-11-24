@@ -63,6 +63,7 @@ if [[ -z `find ./src -name "*.js*" -print || true` ]]; then
 else
   set +e
   DOCS="$($JSDOC2MD_LOC \
+    --configure "../../build/docs/jsdoc.json" \
     --files "src/**/*.js*" \
     --plugin akutil-dmd-plugin \
     --member-index-format list)"

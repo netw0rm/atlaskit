@@ -1,13 +1,14 @@
+import * as mocha from 'mocha';
 import TextFormattingPlugin from '../src';
 import { doc, p, em, strong, code, chaiPlugin, makeEditor } from 'ak-editor-test';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { default as chai, expect } from 'chai';
+import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);
 
-describe('ak-editor-plugin-text-formatting', () => {
+describe('ak-editor-plugin-text-formatting legacy', () => {
   const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin });
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {

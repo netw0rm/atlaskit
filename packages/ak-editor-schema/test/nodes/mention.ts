@@ -18,22 +18,20 @@ describe('ak-editor-schema mention node', () => {
     }).to.throw(Error);
   });
 
-  it('should have entity type mention when serializing to DOM', () => {
+  it('should have mention id and display name when serializing to DOM', () => {
     const html = toHTML(schema.nodes.mention.create({ id: '@bar', displayName: 'foo bar' }));
-    expect(html).to.have.string('editor-entity-type="mention"');
-    expect(html).to.have.string('editor-entity-id="@bar"');
+    expect(html).to.have.string('mention-id="@bar"');
     expect(html).to.have.string('contenteditable="false"');
     expect(html).to.have.string('foo bar');
   });
 
-  it('should extract the correct values of entity type and entity id', () => {
+  it('should extract the correct values of mention id and display name', () => {
     const doc = fromHTML(`
-      <p><span editor-entity-type='mention' editor-entity-id='@user-1'>foo bar</span></p>
+      <p><span mention-id='@user-1'>foo bar</span></p>
     `);
 
     const node = doc.firstChild.firstChild;
     expect(node.type.name).to.equal('mention');
-    expect(node.attrs.entityType).to.equal('mention');
     expect(node.attrs.id).to.equal('@user-1');
     expect(node.attrs.displayName).to.equal('foo bar');
   });

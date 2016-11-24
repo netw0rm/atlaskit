@@ -1,7 +1,19 @@
 import { Inline, Attribute, Node, Schema } from 'ak-editor-prosemirror';
-import { EntityAttributes, EntityNode, EntityNodeType, ParseSpec, DOMAttributes } from './entity';
 
-export class MentionNodeType extends EntityNodeType {
+export interface MentionAttributes {
+  id: any;
+  displayName: any;
+}
+
+interface ParseSpec {
+  [index: string]: (dom: Element) => MentionAttributes;
+}
+
+interface DOMAttributes {
+  [propName: string]: string;
+}
+
+export class MentionNodeType extends Inline {
   constructor(name: string, schema: Schema) {
     super(name, schema);
     if (name !== 'mention') {
@@ -9,20 +21,18 @@ export class MentionNodeType extends EntityNodeType {
     }
   }
 
-  get attrs() {
+  get attrs(): MentionAttributes {
     return {
       id: new Attribute({ default: '' }),
-      entityType: new Attribute({ default: 'mention' }),
       displayName: new Attribute({ default: '' })
     };
   }
 
-  get matchDOMTag(): any {
+  get matchDOMTag(): ParseSpec {
     return {
-      'span[editor-entity-type=mention]': (dom: Element) => {
+      'span[mention-id]': (dom: Element) => {
         return {
-          id: dom.getAttribute('editor-entity-id'),
-          entityType: dom.getAttribute('editor-entity-type'),
+          id: dom.getAttribute('mention-id'),
           displayName: dom.textContent
         };
       }
@@ -32,19 +42,17 @@ export class MentionNodeType extends EntityNodeType {
   toDOM(node: MentionNode): [string, DOMAttributes] {
     let attrs: DOMAttributes = {
       'class': 'editor-entity-mention',
-      'editor-entity-type': node.attrs.entityType,
-      'editor-entity-id': node.attrs.id,
+      'mention-id': node.attrs.id,
       'contenteditable': 'false',
     };
     return ['span', attrs, node.attrs.displayName];
   }
 }
 
-export interface MentionNode extends EntityNode {
+export interface MentionNode extends Node {
   type: MentionNodeType;
   attrs: {
     id: string;
-    entityType: string;
     displayName: string;
   };
 }

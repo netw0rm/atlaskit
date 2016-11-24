@@ -1,7 +1,18 @@
 import { Inline, Attribute, Node, Schema } from 'ak-editor-prosemirror';
-import { EntityAttributes, EntityNode, EntityNodeType, ParseSpec } from './entity';
 
-export class EmojiNodeType extends EntityNodeType {
+export interface EmojiAttributes {
+  id: any;
+}
+
+interface ParseSpec {
+  [index: string]: (dom: Element) => EmojiAttributes;
+}
+
+interface DOMAttributes {
+  [propName: string]: string;
+}
+
+export class EmojiNodeType extends Inline {
   constructor(name: string, schema: Schema) {
     super(name, schema);
     if (name !== 'emoji') {
@@ -9,25 +20,26 @@ export class EmojiNodeType extends EntityNodeType {
     }
   }
 
-  get attrs(): EntityAttributes {
+  get attrs(): EmojiAttributes {
     return {
       id: new Attribute({ default: '' }),
-      entityType: new Attribute({ default: 'emoji' }),
     };
   }
 
   get matchDOMTag(): ParseSpec {
     return {
-      'span[editor-entity-type=emoji]': (dom: Element): EntityAttributes => {
+      'span[emoji-id]': (dom: Element) => {
         return {
-          id: dom.getAttribute('editor-entity-id'),
-          entityType: dom.getAttribute('editor-entity-type'),
+          id: dom.getAttribute('emoji-id')
         };
       }
     };
   }
 }
 
-export interface EmojiNode extends EntityNode {
+export interface EmojiNode extends Node {
   type: EmojiNodeType;
+  attrs: {
+    id: string;
+  }
 }

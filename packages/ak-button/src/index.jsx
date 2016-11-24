@@ -9,6 +9,10 @@ import Button from './Button';
 import Link from './Link';
 
 /* eslint-disable react/no-unused-prop-types */
+/**
+ * @description Create instances of the Button component in a React context.
+ * @class Button
+ */
 export default class AkButton extends Component {
   static get propTypes() {
     return {
@@ -42,6 +46,12 @@ export default class AkButton extends Component {
        * @type {string}
        */
       target: PropTypes.string,
+      /**
+       * @description Standard HTML5 form attribute for buttons
+       * @memberof Button
+       * @type {string}
+       */
+      form: PropTypes.string,
       /**
        * @description Option to disable button and every click event
        * @memberof Button

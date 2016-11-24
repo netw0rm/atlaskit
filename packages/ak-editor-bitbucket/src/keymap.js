@@ -102,16 +102,23 @@ export function buildKeymap(schema, mapKeys) {
       bind("Shift-Ctrl-\\", setBlockType(node));
       // https://github.com/ProseMirror/prosemirror/issues/419
       bind("Enter", (pm, apply) => {
-        let {$from, $to, node} = pm.selection;
-        if (node) {
-          return false;
-        }
+        let {$from, $head, empty} = pm.selection;
 
         if (!$from.parent.type.isCode) {
           return false;
         }
 
         if (apply !== false) {
+          if (
+            $head.parent.textContent.slice(-1) === "\n"
+            && empty
+            // nodeSize includes newlines
+            && $head.parentOffset === $head.parent.nodeSize - 2
+          ) {
+            commands.deleteCharBefore(pm);
+            return false;
+          }
+
           pm.tr.typeText("\n").applyAndScroll();
         }
 

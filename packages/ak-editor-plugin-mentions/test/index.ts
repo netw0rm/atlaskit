@@ -2,8 +2,8 @@ import { default as plugin } from '../src';
 import { MentionQueryMarkType, Mention } from 'ak-editor-schema';
 import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { default as chai, expect } from 'chai';
+import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { chaiPlugin, fixtures } from 'ak-editor-test';
 
@@ -79,7 +79,7 @@ describe('ak-editor-plugin-mentions', () => {
       pluginInstance.onSelectPrevious = spy;
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 38;
-    
+
       pm.input.dispatchKey('Up', keyDownEvent);
       expect(spy).to.have.been.called;
     });
@@ -94,7 +94,7 @@ describe('ak-editor-plugin-mentions', () => {
       pluginInstance.onSelectNext = spy;
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 40;
-    
+
       pm.input.dispatchKey('Down', keyDownEvent);
       expect(spy).to.have.been.called;
     });
@@ -109,7 +109,7 @@ describe('ak-editor-plugin-mentions', () => {
       pluginInstance.onSelectCurrent = spy;
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 13;
-    
+
       pm.input.dispatchKey('Enter', keyDownEvent);
       expect(spy).to.have.been.called;
     });
@@ -123,7 +123,7 @@ describe('ak-editor-plugin-mentions', () => {
       const spy = sinon.spy(pluginInstance, 'dismiss');
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 27;
-    
+
       pm.input.dispatchKey('Esc', keyDownEvent);
       expect(spy).to.have.been.called;
     });

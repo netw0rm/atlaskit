@@ -1,5 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
-import BoldEditorIcon from 'ak-icon/glyph/editor/bold';
+import BoldIconComponent from 'ak-icon/glyph/editor/bold';
+import AtlassianIconComponent from 'ak-icon/glyph/atlassian';
+import ArrowLeftIconComponent from 'ak-icon/glyph/arrowleft';
+import ArrowRightIconComponent from 'ak-icon/glyph/arrowright';
 import React from 'react';
 import reactify from 'akutil-react';
 import { ProseMirror, commands, schema } from 'ak-editor-prosemirror';
@@ -10,23 +13,63 @@ import TextFormattingComponent from '../src/ToolbarTextFormatting';
 
 const Toolbar = reactify(ToolbarComponent);
 const Button = reactify(ButtonComponent);
-const BoldIcon = reactify(BoldEditorIcon);
+const BoldIcon = reactify(BoldIconComponent);
+const ArrowLeftIcon = reactify(ArrowLeftIconComponent);
+const ArrowRightIcon = reactify(ArrowRightIconComponent);
+const AtlassianIcon = reactify(AtlassianIconComponent);
 const TextFormatting = reactify(TextFormattingComponent);
 const Content = reactify(ContentComponent);
 
 storiesOf('ak-editor-ui Toolbar', module)
-  .add('Empty', () => (
-    <Toolbar />
-  ))
-  .add('Single button', () => (
-    <Toolbar>
-      <Button><BoldIcon /></Button>
-    </Toolbar>
-  ))
-  .add('Text formatting', () => (
-    <Toolbar>
-      <TextFormatting />
-    </Toolbar>
+  .add('Button alignment', () => (
+    <div style={{ 'max-width': '500px' }}>
+      <style>{' p { text-align: center} '}</style>
+      <p>Left (default)</p>
+      <Toolbar>
+        <Button><AtlassianIcon /></Button>
+        <Button><ArrowLeftIcon /></Button>
+        <Button><ArrowLeftIcon /></Button>
+      </Toolbar>
+      <p>Right (&lt;spacer&gt; at the beginning)</p>
+      <Toolbar>
+        <spacer />
+        <Button><ArrowRightIcon /></Button>
+        <Button><ArrowRightIcon /></Button>
+        <Button><AtlassianIcon /></Button>
+      </Toolbar>
+      <p>Center (&lt;spacer&gt; on each side)</p>
+      <Toolbar>
+        <spacer />
+        <Button><ArrowRightIcon /></Button>
+        <Button><AtlassianIcon /></Button>
+        <Button><ArrowLeftIcon /></Button>
+        <spacer />
+      </Toolbar>
+      <p>Left and right (&lt;spacer&gt; between)</p>
+      <Toolbar>
+        <Button><AtlassianIcon /></Button>
+        <Button><ArrowLeftIcon /></Button>
+        <Button><ArrowLeftIcon /></Button>
+        <spacer />
+        <Button><ArrowRightIcon /></Button>
+        <Button><ArrowRightIcon /></Button>
+        <Button><AtlassianIcon /></Button>
+      </Toolbar>
+      <p>Left, right and center (2 spacers)</p>
+      <Toolbar>
+        <Button><AtlassianIcon /></Button>
+        <Button><ArrowLeftIcon /></Button>
+        <Button><ArrowLeftIcon /></Button>
+        <spacer />
+        <Button><ArrowRightIcon /></Button>
+        <Button><AtlassianIcon /></Button>
+        <Button><ArrowLeftIcon /></Button>
+        <spacer />
+        <Button><ArrowRightIcon /></Button>
+        <Button><ArrowRightIcon /></Button>
+        <Button><AtlassianIcon /></Button>
+      </Toolbar>
+    </div>
   ))
   .add('ProseMirror', () => {
     const markActive = (pm, type) => {
@@ -91,4 +134,18 @@ storiesOf('ak-editor-ui Toolbar', module)
     }
 
     return <Demo />;
-  });
+  })
+  .add('Text formatting buttons', () => (
+    <Toolbar>
+      <TextFormatting />
+    </Toolbar>
+  ))
+  .add('Empty toolbar', () => (
+    <Toolbar />
+  ))
+  .add('Single button', () => (
+    <Toolbar>
+      <Button><BoldIcon /></Button>
+    </Toolbar>
+  ))
+;

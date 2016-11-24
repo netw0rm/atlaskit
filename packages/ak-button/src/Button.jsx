@@ -9,6 +9,7 @@ export default class Button extends Component {
       type: PropTypes.oneOf(type.values),
       disabled: PropTypes.bool,
       className: PropTypes.string,
+      form: PropTypes.string,
     };
   }
 
@@ -20,6 +21,7 @@ export default class Button extends Component {
         type={props.type}
         disabled={props.disabled}
         className={props.className}
+        form={props.form}
         onMouseDown={e => e.preventDefault()}
       >
         {props.children}

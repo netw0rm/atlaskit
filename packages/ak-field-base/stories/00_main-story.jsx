@@ -4,9 +4,7 @@ import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
 import FieldBase from '../src';
 import { InputFieldBase, DivFieldBase } from './shared-components';
-import appearances from '../src/internal/appearances';
-
-const [, compact, subtle] = appearances;
+import { compact, subtle } from '../src/internal/appearances';
 
 const formStyle = {
   padding: '20px',

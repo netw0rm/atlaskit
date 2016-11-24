@@ -2,15 +2,13 @@ import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 import Label from './Label';
 import Content from './Content';
-import validAppearances from './internal/appearances';
-
-const [standard] = validAppearances;
+import appearances, { standard } from './internal/appearances';
 
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class FieldBase
  * @extends ComponentBase
- * @example <ak-field-base label="Email" />
+ * @example <FieldBase label="Email" />
  */
  /* eslint-disable react/no-unused-prop-types */
 export default class FieldBase extends PureComponent {
@@ -26,9 +24,9 @@ export default class FieldBase extends PureComponent {
      * @instance
      * @type {string}
      * @default standard
-     * @example <ak-field-base appearance="compact"></ak-field-base>
+     * @example <FieldBase appearance="compact"></FieldBase>
      */
-    appearance: PropTypes.oneOf(validAppearances),
+    appearance: PropTypes.oneOf(Object.keys(appearances)),
     /**
      * @description The label to be rendered above the form field.
      *
@@ -51,7 +49,7 @@ export default class FieldBase extends PureComponent {
      * @memberof FieldBase
      * @instance
      * @type {boolean}
-     * @example <ak-field-base label="First Name" hideLabel></ak-field-base>
+     * @example <FieldBase label="First Name" hideLabel></FieldBase>
      */
     hideLabel: PropTypes.bool,
     /**
@@ -63,7 +61,7 @@ export default class FieldBase extends PureComponent {
      * @instance
      * @type {boolean}
      * @default false
-     * @example <ak-field-base invalid></ak-field-base>
+     * @example <FieldBase invalid></FieldBase>
      */
     invalid: PropTypes.bool,
     /**
@@ -76,7 +74,7 @@ export default class FieldBase extends PureComponent {
      * @instance
      * @type {boolean}
      * @default false
-     * @example @html <ak-field-base invalid></ak-field-base>
+     * @example @html <FieldBase invalid></FieldBase>
      * @example @js field.invalid = true;
      */
     focused: PropTypes.bool,
@@ -88,7 +86,7 @@ export default class FieldBase extends PureComponent {
      * @instance
      * @type {boolean}
      * @default false
-     * @example <ak-field-base label="First Name" required"></ak-field-base>
+     * @example <FieldBase label="First Name" required"></FieldBase>
      */
     required: PropTypes.bool,
     /**
@@ -99,7 +97,7 @@ export default class FieldBase extends PureComponent {
      * @instance
      * @type {boolean}
      * @default false
-     * @example <ak-field-base disabled></ak-field-base>
+     * @example <FieldBase disabled></FieldBase>
      */
     disabled: PropTypes.bool,
     /**
@@ -109,7 +107,7 @@ export default class FieldBase extends PureComponent {
      * @instance
      * @type {Function}
      * @default () => void
-     * @example <ak-field-base onLabelClick={() => alert('label click!')} />
+     * @example <FieldBase onLabelClick={() => alert('label click!')} />
      */
     onLabelClick: PropTypes.func,
   }

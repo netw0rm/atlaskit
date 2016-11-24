@@ -8,9 +8,7 @@ import FieldBase from '../src';
 import Content from '../src/Content';
 import Label from '../src/Label';
 import styles from '../src/styles.less';
-import appearances from '../src/internal/appearances';
-
-const [, compact, subtle] = appearances;
+import { compact, subtle } from '../src/internal/appearances';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

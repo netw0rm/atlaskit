@@ -6,9 +6,7 @@ import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import Content from '../src/Content';
 import styles from '../src/styles.less';
-import appearances from '../src/internal/appearances';
-
-const [, compact, subtle] = appearances;
+import { compact, subtle } from '../src/internal/appearances';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

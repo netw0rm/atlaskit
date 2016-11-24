@@ -1,29 +1,27 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 
-import shadowStyles from './styles.less';
-import validAppearances from './internal/appearances';
-
-const [, compact, subtle] = validAppearances;
+import styles from './styles.less';
+import appearances, { compact, subtle } from './internal/appearances';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class Content extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(validAppearances),
+    appearance: PropTypes.oneOf(Object.keys(appearances)),
     disabled: PropTypes.bool,
     focused: PropTypes.bool,
-    invalid: PropTypes.invalid,
+    invalid: PropTypes.bool,
     onFocusCallback: PropTypes.func,
     onBlurCallback: PropTypes.func,
     children: PropTypes.element,
   }
   render() {
-    const contentClasses = classNames(shadowStyles.locals.content, {
-      [shadowStyles.locals.compact]: this.props.appearance === compact,
-      [shadowStyles.locals.subtle]: this.props.appearance === subtle,
-      [shadowStyles.locals.disabled]: this.props.disabled,
-      [shadowStyles.locals.focused]: this.props.focused,
-      [shadowStyles.locals.invalid]: this.props.invalid && !this.props.focused,
+    const contentClasses = classNames(styles.locals.content, {
+      [styles.locals.compact]: this.props.appearance === compact,
+      [styles.locals.subtle]: this.props.appearance === subtle,
+      [styles.locals.disabled]: this.props.disabled,
+      [styles.locals.focused]: this.props.focused,
+      [styles.locals.invalid]: this.props.invalid && !this.props.focused,
     });
     return (
       <div

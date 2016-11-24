@@ -6,7 +6,7 @@ import ToolbarBlockTypeSelect from '../src/ToolbarBlockType/Select';
 
 const { expect } = chai;
 
-describe('ak-editor-ui ToolbarBlockType', () => {
+describe.skip('ak-editor-ui ToolbarBlockType', () => {
   const fixture = fixtures();
 
   it('should be possible to create a component', () => {

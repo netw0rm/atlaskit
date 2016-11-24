@@ -4,6 +4,7 @@ const addPresentationAttribute = require('../plugins/addPresentationAttribute');
 const callbackOnDefinedFill = require('../plugins/callbackOnDefinedFill');
 const callbackOnStyleElement = require('../plugins/callbackOnStyleElement');
 const addAriaLabels = require('../plugins/addAriaLabels');
+const convertAttributesToCamelcase = require('../plugins/convertAttributesToCamelcase');
 
 
 const addAriaLabelsPlugin = Object.assign({}, addAriaLabels, {
@@ -33,26 +34,15 @@ module.exports = (fillCallback, styleCallback) => {
   const svgo = new SVGO({
     full: true,
     plugins: [
-      {
-        addAttributesToSVGElement: {
-          attributes: ['{...props}'],
-        },
-      },
-      {
-        addPresentationAttribute,
-      },
-      {
-        callbackOnDefinedFillPlugin,
-      },
-      {
-        callbackOnStyleElementPlugin,
-      },
-      {
-        removeStyleElement: true,
-      },
-      {
-        addAriaLabelsPlugin,
-      },
+      { convertAttributesToCamelcase },
+      { addAttributesToSVGElement: {
+        attributes: ['{...iconProps}'],
+      } },
+      { addPresentationAttribute },
+      { callbackOnDefinedFillPlugin },
+      { callbackOnStyleElementPlugin },
+      { removeStyleElement: true },
+      { addAriaLabelsPlugin },
     ],
   });
   return svgo;

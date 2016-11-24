@@ -10,6 +10,7 @@
   "dependencies": {
     "@atlassian/gremlins.js": "^0.1.0",
     "@kadira/storybook": "^2.24.0",
+    "ak-css-reset": "^1.1.0",
     "akutil-common-test": "^7.0.0",
     "akutil-cucumber": "^3.0.0",
     "akutil-dmd-plugin": "^4.0.0",

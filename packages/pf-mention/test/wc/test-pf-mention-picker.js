@@ -41,7 +41,7 @@ function newMouseDownEvent() {
   }
 }
 
-describe('pf-mention-picker', () => {
+describe.skip('pf-mention-picker', () => {
   let component;
 
   beforeEach(() => setupPicker().then(newComponent => (component = newComponent)));

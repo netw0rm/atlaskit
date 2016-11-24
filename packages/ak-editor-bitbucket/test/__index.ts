@@ -3,11 +3,12 @@ import AkEditorBitbucket from '../src';
 import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress, locateWebComponent } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy, chaiPlugin } from 'ak-editor-test';
+import { browser } from 'ak-editor-prosemirror';
+import sinonChai from 'sinon-chai';
+
 import { doc, code, strong, a,
   h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
   emoji, code_block } from './_schema-builder';
-import sinonChai from 'sinon-chai';
-
 import shadowStyles from './shadow.less';
 
 chai.use(chaiPlugin);
@@ -457,7 +458,7 @@ describe.skip('ak-editor-bitbucket', () => {
     });
   });
 
-  it('should create a newline in code block when in the middle of code block and enter is pressed', () => {
+  it('should create a newline in code block when cursor is in the middle of code block and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
       editor._pm.setTextSelection(5);
@@ -471,7 +472,7 @@ describe.skip('ak-editor-bitbucket', () => {
     });
   });
 
-  it('should create a newline in code block when in the end of code block and enter is pressed', () => {
+  it('should create a newline in code block when cursor is at the end of code block and enter is pressed', () => {
     return buildExpandedEditor(fixture()).then((editor) => {
       editor.setFromHtml('<pre>var code;</pre>');
       editor._pm.setTextSelection(10);
@@ -481,6 +482,25 @@ describe.skip('ak-editor-bitbucket', () => {
         keydown('enter', { target: PMContainer });
 
         expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;\n')));
+      });
+    });
+  });
+
+  it('should create a paragraph after code block when cursor is at the end of code block and double enter is pressed', function() {
+    if (browser.ios) {
+      this.skip('iOS virtual keyboard does not work with deleting a character');
+    }
+
+    return buildExpandedEditor(fixture()).then((editor) => {
+      editor.setFromHtml('<pre>var code;</pre>');
+      editor._pm.setTextSelection(10);
+
+      return waitUntilPMReady(editor).then((PMContainer) => {
+        PMContainer.focus();
+        keydown('enter', { target: PMContainer });
+        keydown('enter', { target: PMContainer });
+
+        expect(editor._pm.doc).to.deep.equal(doc(code_block()('var code;'), p()));
       });
     });
   });

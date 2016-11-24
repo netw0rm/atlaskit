@@ -1,8 +1,9 @@
+@import '../node_modules/akutil-shared-styles/src/colors.less';
 @import '../node_modules/akutil-shared-styles/src/grid.less';
+@import '../node_modules/akutil-shared-styles/src/mixins/headings.less';
 
-@import 'mixins';
+@table-border-width: 2px;
 
-@grid: @ak-grid-size;
 
 table {
   border-collapse: collapse;
@@ -12,12 +13,12 @@ table {
 thead,
 tbody,
 tfoot {
-  border-bottom: 2px solid #ccc;
+  border-bottom: @table-border-width solid @ak-color-N40;
 }
 td,
 th {
   border: none;
-  padding: (@grid / 2) @grid;
+  padding: (@ak-grid-size / 2) @ak-grid-size;
   text-align: left;
 }
 th {
@@ -32,8 +33,8 @@ th:last-child {
   padding-right: 0;
 }
 caption {
-  .h600();
+  .adg-typography-h600();
 
-  margin-bottom: @grid;
+  margin-bottom: @ak-grid-size;
   text-align: left;
 }

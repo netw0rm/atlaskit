@@ -1,7 +1,8 @@
+import mocha from 'mocha';
 import HyperlinkPlugin from '../src';
 import { chaiPlugin, makeEditor, doc, a, p, text, insert } from 'ak-editor-test';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { default as chai, expect } from 'chai';
+import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);

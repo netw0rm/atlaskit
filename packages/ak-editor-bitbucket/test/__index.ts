@@ -1,4 +1,4 @@
-import * as chai from 'chai';
+import { default as chai, expect } from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress, locateWebComponent } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
@@ -12,7 +12,6 @@ import shadowStyles from './shadow.less';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);
-const { expect, assert } = chai;
 
 const fixture = fixtures();
 

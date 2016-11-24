@@ -48,7 +48,7 @@ storiesOf('ak-editor-ui Popup', module)
     </Popup>
   ))
   .add('a "real" editor popup targeting to link button', () => {
-    class LinkButtonInToolbar extends React.Component {
+    class LinkButtonInToolbar extends React.PureComponent {
       constructor(props) {
         super(props);
         this.state = {

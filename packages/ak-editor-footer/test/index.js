@@ -8,7 +8,6 @@ import { name } from '../package.json';
 import Component from '../src';
 import shadowStyles from '../src/shadow.less';
 
-
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();

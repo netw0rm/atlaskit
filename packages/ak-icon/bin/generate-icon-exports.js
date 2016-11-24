@@ -12,7 +12,6 @@ const webpackConf = require('./webpack.config.js');
 const { glyphFolderName, tmpFolderName, fileEnding } = require('./constants');
 const workOnIcons = require('./workOnIcons');
 
-
 const log = minilog('ak-icon/gen-js');
 
 if (process.env.CLI) {

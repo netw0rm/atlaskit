@@ -4,7 +4,6 @@ import reactify from 'akutil-react';
 
 import TextFormattingComponent from '../src';
 
-
 const TextFormatting = reactify(TextFormattingComponent);
 
 storiesOf('ak-editor-toolbar-text-formatting', module)
@@ -12,7 +11,7 @@ storiesOf('ak-editor-toolbar-text-formatting', module)
     <TextFormatting />
   ))
   .add('Basic (interactive)', () => {
-    class Demo extends React.Component {
+    class Demo extends React.PureComponent {
       constructor(props) {
         super(props);
         this.state = {

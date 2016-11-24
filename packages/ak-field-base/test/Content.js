@@ -9,14 +9,12 @@ import {
   getShadowRoot,
 } from 'akutil-common-test';
 
-
 import Content from '../src/Content';
 import shadowStyles from '../src/shadow.less';
 import { createDefinition } from './_helpers';
 
 chai.use(chaiAsPromised);
 chai.should();
-
 
 describe.skip('ak-field-base', () => {
   describe('Content', () => {

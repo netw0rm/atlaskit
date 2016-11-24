@@ -10,7 +10,6 @@ import 'style!./host.less';
 
 import shadowStyles from './shadow.less';
 
-
 const icons = {
   mention: MentionIcon,
   image: ImageIcon,
@@ -21,7 +20,7 @@ function insert() {
     .map(([iconName, Icon]) => (
       <button
         className={shadowStyles.locals.iconButton}
-        onclick={event => emit(event.currentTarget, `insert${iconName}`)}
+        onClick={event => emit(event.currentTarget, `insert${iconName}`)}
       >
         <Icon />
       </button>

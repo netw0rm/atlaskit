@@ -4,7 +4,6 @@ import { action } from '@kadira/storybook';
 
 import akNavigation from '../src';
 
-
 const AkNavigation = reactify(akNavigation);
 
 const childProperty = React.PropTypes.oneOfType([

@@ -102,7 +102,6 @@ export default define('ak-editor-ui-toolbar-hyperlink', class extends Component 
     }
   }
 
-
   openHyperlink() {
     this.open = true;
     this.justOpenedHyperlink = true;

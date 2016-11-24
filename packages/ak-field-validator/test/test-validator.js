@@ -14,7 +14,6 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
 
-
 describe.skip('ak-field-validator', () => {
   describe('exports', () => {
     it('should export the ValidatorBase base class', () => {

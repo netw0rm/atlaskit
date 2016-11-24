@@ -8,7 +8,6 @@ import { name } from '../package.json';
 import Group from '../src/index.group';
 import shadowGroupStyles from '../src/less/shadow-group.less';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;

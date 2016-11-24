@@ -6,7 +6,6 @@ import styles from '../src/shadow.less';
 
 const FieldBase = reactify(FieldBaseWC);
 
-
 const slottedInputStyle = {
   border: '0px',
   background: 'transparent',

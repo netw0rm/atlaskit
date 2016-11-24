@@ -55,7 +55,7 @@ export default define('ak-field-base', Base.extend({
       </Root>
     );
   },
-  props: Object.assign({}, {
+  props: {
     /**
      * @description The appearance of the field.
      *
@@ -155,7 +155,8 @@ export default define('ak-field-base', Base.extend({
      * @example @js field.disabled = true;
      */
     disabled: prop.boolean({ attribute: true }),
-  }, Base.props),
+    ...Base.props,
+  },
 }));
 
 export const events = { beforeFocusedChange, labelClick };

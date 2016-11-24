@@ -4,8 +4,7 @@ import uid from 'uid';
 
 import AkButton from '../src';
 
-
-class ButtonBuilderExample extends React.Component {
+class ButtonBuilderExample extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {

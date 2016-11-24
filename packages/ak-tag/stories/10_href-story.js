@@ -6,7 +6,6 @@ import Tag from '../src';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
 
-
 const Component = reactify(Tag);
 
 storiesOf(name, module)

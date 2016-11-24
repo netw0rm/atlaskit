@@ -7,7 +7,6 @@ import reactify from 'akutil-react';
 
 import ToolbarComponent from '../src';
 
-
 const Toolbar = reactify(ToolbarComponent);
 const ToolbarButton = reactify(ToolbarButtonComponent);
 const BoldIcon = reactify(BoldEditorIcon);

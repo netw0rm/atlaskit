@@ -15,7 +15,6 @@ chai.use(sinonChai);
 chai.should();
 const expect = chai.expect;
 
-
 describe.skip('ak-tag', () => {
   describe('Chrome', () => {
     let component;

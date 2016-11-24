@@ -9,12 +9,10 @@ import {
   getShadowRoot,
 } from 'akutil-common-test';
 
-
 import Root from '../src/Root';
 
 chai.use(chaiAsPromised);
 chai.should();
-
 
 describe.skip('ak-field-base', () => {
   describe('Root', () => {

@@ -15,7 +15,6 @@ import * as i18n from './internal/i18n';
 import Tab from './index.tab';
 import { buttonContainer, labelsContainer, labelProp, selectedProp } from './internal/symbols';
 
-
 const { tabChange: tabChangeEvent } = events;
 const resizeListener = Symbol('resizeListener');
 
@@ -72,9 +71,9 @@ export default define('ak-tabs', {
                 <li // eslint-disable-line jsx-a11y/role-supports-aria-props, jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions, max-len
                   className={classes}
                   tabIndex={tabIndex}
-                  onkeydown={handlers.labelKeydownHandler(elem, tab)}
-                  onmousedown={handlers.labelMouseDownHandler}
-                  onclick={handlers.labelSelectedHandler(tab)}
+                  onKeyDown={handlers.labelKeydownHandler(elem, tab)}
+                  onMouseDown={handlers.labelMouseDownHandler}
+                  onClick={handlers.labelSelectedHandler(tab)}
                   aria-selected={ariaSelected}
                   aria-setsize={allTabs.length}
                   aria-posinset={pos}

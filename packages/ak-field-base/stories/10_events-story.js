@@ -1,7 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-
 import { name } from '../package.json';
 import { InputFieldBase } from './shared-components';
 

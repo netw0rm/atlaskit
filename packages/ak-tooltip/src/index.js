@@ -10,7 +10,6 @@ import { flippedSymbol } from './internal/symbols';
 
 const defaultTooltipPosition = 'bottom';
 
-
 function positionToPopperPosition(position) {
   const allowedPositions = {
     top: 'top center',

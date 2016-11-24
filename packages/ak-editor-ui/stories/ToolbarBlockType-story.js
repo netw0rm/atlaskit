@@ -35,7 +35,7 @@ storiesOf('ak-editor-ui ToolbarBlockType', module)
     </Toolbar>
   ))
   .add('in ProseMirror', () => {
-    class Demo extends React.Component {
+    class Demo extends React.PureComponent {
       constructor(props) {
         super(props);
         this.state = {

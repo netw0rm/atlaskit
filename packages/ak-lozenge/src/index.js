@@ -6,7 +6,6 @@ import { enumeration } from 'akutil-common';
 
 import shadowStyles from './shadow.less';
 
-
 const APPEARANCE_ENUM = {
   values: ['default', 'success', 'removed', 'inprogress', 'new', 'moved'],
   missingDefault: 'default',
@@ -22,7 +21,7 @@ const definition = {
   render(elem) {
     const classes = classNames([shadowStyles.locals.lozenge, shadowStyles.locals[elem.appearance]]);
     return (
-      <span class={classes} bold={elem.bold}>
+      <span className={classes} bold={elem.bold}>
         <style>{shadowStyles.toString()}</style>
         <span className={shadowStyles.locals.content}><slot /></span>
       </span>

@@ -1,13 +1,10 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import storyStyles from './animation-story.less';
 
-
-const { Component } = React;
-
 /* This is a simple component used to consume an animation from shared-styles */
-class AnimatedBox extends Component {
+class AnimatedBox extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

@@ -4,7 +4,6 @@ import reactify from 'akutil-react';
 
 import ContentComponent from '../src';
 
-
 const Content = reactify(ContentComponent);
 
 /* eslint-disable react/no-danger */

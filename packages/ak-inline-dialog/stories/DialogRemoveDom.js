@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 
 import AkInlineDialog from '../src';
 
-
 const Dialog = reactify(AkInlineDialog);
 
 class ToggleDemo extends Component {
@@ -40,7 +39,6 @@ class ToggleDemo extends Component {
         </Dialog>
       );
     }
-
 
     return (
       <div>

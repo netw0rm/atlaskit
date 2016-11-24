@@ -4,7 +4,7 @@ import Lorem from 'react-lorem-component';
 import ModalDialog from '../src';
 
 // eslint-disable-next-line react/prefer-stateless-function
-export default class ModalDemo extends React.Component {
+export default class ModalDemo extends React.PureComponent {
   static get propTypes() {
     return {
       header: PropTypes.element,

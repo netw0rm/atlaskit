@@ -5,7 +5,6 @@ import {
   expandedWidth,
 } from '../shared-variables';
 
-
 const {
   resizeStart: resizeStartEvent,
   resizeEnd: resizeEndEvent,

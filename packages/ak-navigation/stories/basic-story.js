@@ -11,7 +11,6 @@ import icons from './icons';
 import TogglingSidebar from './TogglingSidebar';
 import { name } from '../package.json';
 
-
 const AkNavigation = reactify(akNavigation);
 const AkPage = reactify(akPage);
 const {

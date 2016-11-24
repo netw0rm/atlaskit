@@ -3,7 +3,6 @@ import reactify from 'akutil-react';
 
 import TooltipTriggerWC from '../src/index.tooltip-trigger';
 
-
 const TooltipTrigger = reactify(TooltipTriggerWC);
 
 const buttonStyles = {

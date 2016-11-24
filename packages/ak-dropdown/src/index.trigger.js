@@ -8,7 +8,6 @@ import keyCode from 'keycode';
 import { trigger as triggerEvents } from './internal/events';
 import shadowTriggerStyles from './less/shadow-trigger.less';
 
-
 function handleKeyDown(elem) {
   return (e) => {
     if (!elem.disabled && [
@@ -36,8 +35,8 @@ export const DropdownTrigger = define('ak-dropdown-trigger', {
   render(elem) {
     return (
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-        onclick={handleClick(elem)}
-        onkeydown={handleKeyDown(elem)}
+        onClick={handleClick(elem)}
+        onKeyDown={handleKeyDown(elem)}
         className={shadowTriggerStyles.locals.triggerContainer}
       >
         <style>{shadowTriggerStyles.toString()}</style>
@@ -102,7 +101,6 @@ export const DropdownTriggerButton = define('ak-dropdown-trigger-button',
       },
     },
   }));
-
 
 export const DropdownTriggerArrow = define('ak-dropdown-trigger-arrow',
   DropdownTriggerButton.extend({

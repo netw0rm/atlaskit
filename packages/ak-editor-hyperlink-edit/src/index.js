@@ -11,7 +11,6 @@ import 'style!./host.less';
 
 import shadowStyles from './shadow.less';
 
-
 const onUnlinkSymbol = '__onUnlink__';
 function If(props, chren) {
   return props.condition ? chren() : null;

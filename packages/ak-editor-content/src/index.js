@@ -6,7 +6,6 @@ import 'style!./host.less';
 
 import shadowStyles from './shadow.less';
 
-
 export default define('ak-editor-content', {
   render: (elem) => {
     const classLists = [

@@ -8,7 +8,6 @@ import AlignedStory from './AlignedStory';
 import tagNames from './tagNames';
 import { alignment } from '../src';
 
-
 const { start, end } = alignment;
 
 const tags = ['Candy canes', 'Tiramisu', 'Gummi bears', 'Wagon Wheels', 'Chupa Chups'];

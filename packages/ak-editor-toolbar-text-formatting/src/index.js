@@ -11,7 +11,6 @@ import 'style!./host.less';
 
 import shadowStyles from './shadow.less';
 
-
 const FORMATTING_BOLD = 'bold';
 const FORMATTING_ITALIC = 'italic';
 const FORMATTING_UNDERLINE = 'underline';

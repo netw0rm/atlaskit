@@ -6,7 +6,6 @@ import { flippedSymbol } from './internal/symbols';
 
 import { reCreateAlignmentIfNeeded, createNewAlignment } from './internal/helpers';
 
-
 export const POSITION_ATTRIBUTE_ENUM = {
   attribute: 'position',
   values: [

@@ -187,7 +187,7 @@ export default define('pf-mention-list', {
     if (showError) {
       // TODO add warning icon
       errorSection = (
-        <div class={styles.mentionError}>
+        <div className={styles.mentionError}>
           <p><img src={whoopsUri} alt="whoops" /></p>
           <p>Something went wrong</p>
         </div>

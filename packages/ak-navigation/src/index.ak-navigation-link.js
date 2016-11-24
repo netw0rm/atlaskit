@@ -7,7 +7,6 @@ import keycode from 'keycode';
 import shadowStyles from './index.ak-navigation-link.less';
 import { linkSelected as linkSelectedEvent } from './internal/index.events';
 
-
 function select(elem) {
   emit(elem, linkSelectedEvent);
 }
@@ -41,8 +40,8 @@ export default define('ak-navigation-link', {
         <a
           className={classNames(shadowStyles.locals.link, shadowStyles.locals.iconSlotWrapper)}
           href={elem.href || false}
-          onmousedown={e => e.preventDefault()}
-          tabindex="0"
+          onMouseDown={e => e.preventDefault()}
+          tabIndex="0"
         >
           <slot
             name="icon"

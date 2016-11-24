@@ -6,7 +6,6 @@ import AkLozenge from '../src';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
 
-
 const Lozenge = reactify(AkLozenge);
 const lozengeClass = styles.locals.akLozenge;
 

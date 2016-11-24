@@ -5,7 +5,6 @@ import 'style-loader!../src/index.less';
 
 import { name } from '../package.json';
 
-
 /* eslint-disable quotes, max-len,  */
 
 storiesOf(name, module)
@@ -216,7 +215,7 @@ storiesOf(name, module)
   .add('Misc elements', () => (
     <div>
       <h2>{`<time>`}</h2>
-      <p>Can you move that meeting on <time datetime="2022-01-01 10:00">May 15</time> to the pub?</p>
+      <p>Can you move that meeting on <time dateTime="2022-01-01 10:00">May 15</time> to the pub?</p>
       <h2>{`<dfn>`} and {`<abbr>`}</h2>
       <p><dfn>Recursion</dfn>: the repeated application of a recursive procedure or definition. See also: recursion.</p>
       <p>The <abbr title="AtlasKit">AK</abbr> library provides a typography component &mdash; make sure you put a title (or AkTooltip) on your {`<abbr>`} elements.</p>

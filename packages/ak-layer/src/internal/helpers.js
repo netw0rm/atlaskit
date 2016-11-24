@@ -4,7 +4,6 @@ import { flippedSymbol } from './symbols';
 
 import Alignment from './Alignment';
 
-
 function popperPositionToAlignmentPosition(position) {
   const positionMap = Alignment.attachmentMap;
   const alignmentPosition = Object.keys(positionMap)

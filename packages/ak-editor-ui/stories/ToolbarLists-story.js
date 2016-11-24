@@ -10,7 +10,7 @@ storiesOf('ak-editor-ui ToolbarLists', module)
     <Lists />
   ))
   .add('Basic (interactive)', () => {
-    class Demo extends React.Component {
+    class Demo extends React.PureComponent {
       constructor(props) {
         super(props);
         this.state = {

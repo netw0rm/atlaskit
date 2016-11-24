@@ -31,9 +31,9 @@ export default (props, children) => {
     <span
       {...props}
       {...targetProps}
-      tabindex={props.isLinked ? 0 : -1}
+      tabIndex={props.isLinked ? 0 : -1}
       className={classNames}
-      onmousedown={e => (e.preventDefault())}
+      onMouseDown={e => (e.preventDefault())}
     >
       {children()}
     </span>

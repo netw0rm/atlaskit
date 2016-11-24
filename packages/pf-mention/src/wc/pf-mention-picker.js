@@ -104,7 +104,7 @@ export default define('pf-mention-picker', {
       );
     } else {
       content = (
-        <div class={styles.noDialogContainer}>
+        <div className={styles.noDialogContainer}>
           {resourceMentionList}
         </div>
       );

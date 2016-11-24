@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const path = require('path');
 const baseIconChunkName = require('./constants').baseIconChunkName;
 
-
 const relativePathToIcon = path.join('..', 'src', 'Icon');
 const pathToIcon = path.join(__dirname, relativePathToIcon);
 
@@ -12,8 +11,8 @@ if (isDevelopment) {
   cssOptions += '&-minimize';
 }
 
-
 module.exports = (tmpFolder, entry) => ({
+  // eslint-disable-next-line prefer-object-spread/prefer-object-spread
   entry: Object.assign({
     [baseIconChunkName]: [pathToIcon],
   }, entry),

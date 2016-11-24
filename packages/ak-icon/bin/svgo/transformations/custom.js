@@ -1,11 +1,12 @@
 const SVGO = require('svgo');
 
+/* eslint-disable prefer-object-spread/prefer-object-spread */
+
 const addPresentationAttribute = require('../plugins/addPresentationAttribute');
 const callbackOnDefinedFill = require('../plugins/callbackOnDefinedFill');
 const callbackOnStyleElement = require('../plugins/callbackOnStyleElement');
 const addAriaLabels = require('../plugins/addAriaLabels');
 const convertAttributesToCamelcase = require('../plugins/convertAttributesToCamelcase');
-
 
 const addAriaLabelsPlugin = Object.assign({}, addAriaLabels, {
   params: {

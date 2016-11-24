@@ -6,7 +6,6 @@ import TagWc from '../src/index';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
 
-
 const Tag = reactify(TagWc);
 
 const MyTag = props => (

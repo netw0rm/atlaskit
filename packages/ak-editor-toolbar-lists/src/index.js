@@ -9,7 +9,6 @@ import 'style!./host.less';
 
 import shadowStyles from './shadow.less';
 
-
 const LIST_NUMBER = 'number-list';
 const LIST_BULLET = 'bullet-list';
 

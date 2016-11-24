@@ -6,13 +6,12 @@ import React from 'react';
 import WebComponent from '../src';
 import { name } from '../package.json';
 
-
 const ReactField = reactify(WebComponent);
 const ReactButton = reactify(ButtonWC);
 const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
 
 function generateInput(opts) {
-  const props = Object.assign({ label: 'Example label' }, opts);
+  const props = { label: 'Example label', ...opts };
   return (
     <ReactField {...props} />
   );

@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import AkInlineDialog from '../src/index';
 import styles from '../src/shadow.less';
 
-
 const Dialog = reactify(AkInlineDialog);
 
 class DialogWithButton extends Component {

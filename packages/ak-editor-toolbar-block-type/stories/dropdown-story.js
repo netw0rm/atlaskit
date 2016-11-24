@@ -6,7 +6,6 @@ import ToolbarComponent from 'ak-editor-toolbar';
 import BlockType from '../src';
 import { name } from '../package.json';
 
-
 const Component = reactify(BlockType);
 const Toolbar = reactify(ToolbarComponent);
 

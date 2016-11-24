@@ -2,7 +2,7 @@ import React from 'react';
 import Stats from 'stats.js';
 
 const { requestAnimationFrame, cancelAnimationFrame } = window;
-class MonitoredStory extends React.Component {
+class MonitoredStory extends React.PureComponent {
   constructor(...args) {
     super(...args);
     this.rafFn = () => null; // noop

@@ -12,7 +12,6 @@ import 'style!./../src/host.less';
 import Popup from '../src';
 import { name } from '../package.json';
 
-
 const Component = reactify(Popup);
 
 const EditorButton = reactify(EditorButtonComponent);
@@ -56,7 +55,7 @@ storiesOf(name, module)
     </Component>
   ))
   .add('a "real" editor popup targeting to link button', () => {
-    class LinkButtonInToolbar extends React.Component {
+    class LinkButtonInToolbar extends React.PureComponent {
       constructor(props) {
         super(props);
         this.state = {

@@ -10,7 +10,6 @@ import 'style!./host.less';
 
 import shadowStyles from './shadow.less';
 
-
 // todo: we will use a common helper function when it's ready.
 // https://ecosystem.atlassian.net/browse/AK-513
 function isDescendantOf(child, parent) {

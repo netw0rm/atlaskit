@@ -109,7 +109,12 @@ export function buildKeymap(schema, mapKeys) {
         }
 
         if (apply !== false) {
-          if (pm.selection.$head.parent.textContent.slice(-1) === "\n") {
+          if (
+            pm.selection.$head.parent.textContent.slice(-1) === "\n"
+            && pm.selection.empty
+            // nodeSize includes newlines
+            && pm.selection.$head.parentOffset === pm.selection.$head.parent.nodeSize - 2
+          ) {
             commands.deleteCharBefore(pm);
             return false;
           }

@@ -1,7 +1,7 @@
 import TextFormattingPlugin from '../src';
 import { doc, p, em, strong, code, chaiPlugin, makeEditor } from 'ak-editor-test';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { default as chai, expect } from 'chai';
+import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);

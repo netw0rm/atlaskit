@@ -1,9 +1,9 @@
+import mocha from 'mocha';
 import { default as plugin } from '../src';
 import { MentionQueryMarkType, Mention } from 'ak-editor-schema';
 import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { default as chai, expect } from 'chai';
 import { chaiPlugin } from 'ak-editor-test';
 
 chai.use(chaiPlugin);

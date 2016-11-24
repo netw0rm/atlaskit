@@ -1,5 +1,5 @@
 declare module 'prosemirror/dist/collab' {
-    export import { rebaseSteps } from 'prosemirror/dist/collab/rebase';
+    export { rebaseSteps } from 'prosemirror/dist/collab/rebase';
     export const collabEditing: any;
 }
 
@@ -14,10 +14,11 @@ declare module 'prosemirror/dist/collab/rebase' {
 
 declare module 'prosemirror/dist/commands-list' {
     import { ProseMirror } from 'prosemirror/dist/edit';
-    export function wrapInList(nodeType: any, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
-    export function splitListItem(nodeType: any): (pm: ProseMirror) => boolean;
-    export function liftListItem(nodeType: any): (pm: ProseMirror, apply: any) => boolean;
-    export function sinkListItem(nodeType: any): (pm: ProseMirror, apply: any) => boolean;
+    import { NodeType } from 'prosemirror/dist/model/schema';
+    export function wrapInList(nodeType: NodeType, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
+    export function splitListItem(nodeType: NodeType): (pm: ProseMirror) => boolean;
+    export function liftListItem(nodeType: NodeType): (pm: ProseMirror, apply: any) => boolean;
+    export function sinkListItem(nodeType: NodeType): (pm: ProseMirror, apply: any) => boolean;
 }
 
 declare module 'prosemirror/dist/commands-table' {
@@ -34,6 +35,7 @@ declare module 'prosemirror/dist/commands-table' {
 
 declare module 'prosemirror/dist/edit/commands' {
     import { ProseMirror } from 'prosemirror/dist/edit';
+    import { NodeType } from 'prosemirror/dist/model/schema';
     export namespace commands {
       export * from 'prosemirror/dist/commands-list';
       export * from 'prosemirror/dist/commands-table';
@@ -53,11 +55,11 @@ declare module 'prosemirror/dist/edit/commands' {
       export function newlineInCode(pm: ProseMirror, apply: any): boolean;
       export function redo(pm: ProseMirror, apply: any): boolean;
       export function selectParentNode(pm: ProseMirror, apply: any): boolean;
-      export function setBlockType(nodeType: any, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
+      export function setBlockType(nodeType: NodeType, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
       export function splitBlock(pm: ProseMirror, apply: any): boolean;
       export function toggleMark(markType: any, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
       export function undo(pm: ProseMirror, apply: any): boolean;
-      export function wrapIn(nodeType: any, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
+      export function wrapIn(nodeType: NodeType, attrs?: any): (pm: ProseMirror, apply?: any) => boolean;
       export let baseKeymap: any;
     }
 }
@@ -391,13 +393,14 @@ declare module 'prosemirror/dist/inputrules/rules' {
 
 declare module 'prosemirror/dist/inputrules/util' {
     import { InputRule } from 'prosemirror/dist/inputrules/inputrules';
-    export function wrappingInputRule(regexp: any, filter: any, nodeType: any, getAttrs: any, joinPredicate: any): InputRule;
-    export function textblockTypeInputRule(regexp: any, filter: any, nodeType: any, getAttrs: any): InputRule;
-    export function blockQuoteRule(nodeType: any): any;
-    export function orderedListRule(nodeType: any): InputRule;
-    export function bulletListRule(nodeType: any): any;
-    export function codeBlockRule(nodeType: any): any;
-    export function headingRule(nodeType: any, maxLevel: any): InputRule;
+    import { NodeType } from 'prosemirror/dist/model/schema';
+    export function wrappingInputRule(regexp: any, filter: any, nodeType: NodeType, getAttrs: any, joinPredicate: any): InputRule;
+    export function textblockTypeInputRule(regexp: any, filter: any, nodeType: NodeType, getAttrs: any): InputRule;
+    export function blockQuoteRule(nodeType: NodeType): any;
+    export function orderedListRule(nodeType: NodeType): InputRule;
+    export function bulletListRule(nodeType: NodeType): any;
+    export function codeBlockRule(nodeType: NodeType): any;
+    export function headingRule(nodeType: NodeType, maxLevel: any): InputRule;
 }
 
 declare module 'prosemirror/dist/markdown/from_markdown' {
@@ -475,6 +478,7 @@ declare module 'prosemirror/dist/menu/menu' {
         constructor(content: any, options: any);
         render(pm: ProseMirror): HTMLAnchorElement;
     }
+    import { NodeType } from 'prosemirror/dist/model/schema';
     export function renderGrouped(pm: ProseMirror, content: any): DocumentFragment;
     export const icons: {
         join: {
@@ -543,9 +547,9 @@ declare module 'prosemirror/dist/menu/menu' {
     export const undoItem: MenuItem;
     export const redoItem: MenuItem;
     export function toggleMarkItem(markType: any, options: any): MenuItem;
-    export function insertItem(nodeType: any, options: any): MenuItem;
-    export function wrapItem(nodeType: any, options: any): MenuItem;
-    export export function blockTypeItem(nodeType: any, options: any): MenuItem;
+    export function insertItem(nodeType: NodeType, options: any): MenuItem;
+    export function wrapItem(nodeType: NodeType, options: any): MenuItem;
+    export function blockTypeItem(nodeType: NodeType, options: any): MenuItem;
 }
 
 declare module 'prosemirror/dist/menu/menubar' {
@@ -1149,12 +1153,13 @@ declare module 'prosemirror/dist/transform/step' {
 }
 
 declare module 'prosemirror/dist/transform/structure' {
+    import { NodeType } from 'prosemirror/dist/model/schema';
     export function liftTarget(range: any): any;
-    export function findWrapping(range: any, nodeType: any, attrs: any, innerRange?: any): any;
+    export function findWrapping(range: any, nodeType: NodeType, attrs: any, innerRange?: any): any;
     export function canSplit(doc: any, pos: any, depth: number, typeAfter: any, attrsAfter: any): any;
     export function joinable(doc: any, pos: any): any;
     export function joinPoint(doc: any, pos: any, dir?: number): any;
-    export function insertPoint(doc: any, pos: any, nodeType: any, attrs: any): any;
+    export function insertPoint(doc: any, pos: any, nodeType: NodeType, attrs: any): any;
 }
 
 declare module 'prosemirror/dist/util/browser' {

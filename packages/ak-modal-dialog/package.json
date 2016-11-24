@@ -21,9 +21,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-button": "*",
+    "ak-button": ">=4.x",
     "ak-field-text": "*",
-    "akutil-common-test": "*",
     "akutil-react": "*",
     "react-lorem-component": "*"
   },

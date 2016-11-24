@@ -16,7 +16,7 @@
 @verticalMargin: @grid * 15;
 
 // Fixed container to avoid position clashing with other elements
-.blanket-positioner {
+.modal-wrapper {
   height: 100%;
   left: 0;
   position: fixed;
@@ -34,7 +34,7 @@
   width: @temporaryFixedModalWidth;
 
   // 3 direct flex children (header + content + footer slot areas)
-  & > * {
+  .header-flex, .content-flex, .footer-flex {
     flex: 1 1 auto;
     padding: @grid * 4;
   }

@@ -1,11 +1,13 @@
 import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import chaiEnzyme from 'chai-enzyme';
 
 import ModalDialog from '../src';
 import styles from '../src/style.less';
 
 chai.should();
+chai.use(chaiEnzyme());
 
 describe('ak-modal-dialog', () => {
   describe('exports', () => {
@@ -38,7 +40,7 @@ describe('ak-modal-dialog', () => {
               <span>My header</span>
             }
           />
-        ).find(`.${styles.locals.headerFlex}`).text().should.equal('My header');
+        ).should.contain(<span>My header</span>);
       });
     });
 
@@ -51,7 +53,7 @@ describe('ak-modal-dialog', () => {
               <span>My footer</span>
             }
           />
-        ).find(`.${styles.locals.footerFlex}`).text().should.equal('My footer');
+        ).should.contain(<span>My footer</span>);
       });
     });
 
@@ -61,14 +63,14 @@ describe('ak-modal-dialog', () => {
           <ModalDialog isOpen>
             <form>This is <strong>my</strong> form</form>
           </ModalDialog>
-        ).find(`.${styles.locals.contentFlex}`).text().should.equal('This is my form');
+        ).should.contain(<form>This is <strong>my</strong> form</form>);
       });
     });
 
     describe('onBlanketClicked', () => {
       it('should trigger when blanket clicked', (done) => {
         const wrapper = mount(<ModalDialog isOpen onBlanketClicked={() => done()} />);
-        wrapper.find(`.${styles.locals.blanketPositioner}`).children().first().simulate('click');
+        wrapper.find(`.${styles.locals.modalWrapper}`).children().first().simulate('click');
       });
     });
   });

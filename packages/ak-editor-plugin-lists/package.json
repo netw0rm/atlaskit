@@ -13,14 +13,15 @@
     "dist",
     "src/**/*.ts"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "ak-editor-prosemirror": "^4.0.0",
-    "ak-editor-schema": "^4.1.0",
-    "browserkeymap": "^2.0.1"
+    "ak-editor-schema": "^4.1.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
+    "ak-editor-prosemirror": "*",
+    "ak-editor-schema": "*",
     "ak-editor-test": "*"
   },
   "repository": {

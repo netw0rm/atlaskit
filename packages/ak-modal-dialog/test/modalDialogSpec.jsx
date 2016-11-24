@@ -19,15 +19,15 @@ describe('ak-modal-dialog', () => {
   describe('props', () => {
     describe('isOpen', () => {
       it('should be hidden by default', () => {
-        shallow(<ModalDialog />).text().should.equal('');
+        shallow(<ModalDialog />).should.have.text('');
       });
       it('should be visible when open = true', () => {
-        shallow(<ModalDialog isOpen />).text().should.not.equal('');
+        shallow(<ModalDialog isOpen />).should.not.have.text('');
       });
       it('should become hidden when open changed from true -> false', () => {
         const wrapper = shallow(<ModalDialog isOpen />);
         wrapper.setProps({ isOpen: false });
-        wrapper.text().should.equal('');
+        wrapper.should.have.text('');
       });
     });
 
@@ -68,9 +68,11 @@ describe('ak-modal-dialog', () => {
     });
 
     describe('onBlanketClicked', () => {
-      it('should trigger when blanket clicked', (done) => {
-        const wrapper = mount(<ModalDialog isOpen onBlanketClicked={() => done()} />);
+      it('should trigger when blanket clicked', () => {
+        const spy = sinon.spy();
+        const wrapper = mount(<ModalDialog isOpen onBlanketClicked={spy} />);
         wrapper.find(`.${styles.locals.modalWrapper}`).children().first().simulate('click');
+        expect(spy).to.have.been.calledOnce;
       });
     });
   });

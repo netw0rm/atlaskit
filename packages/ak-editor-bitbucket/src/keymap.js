@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { browser, commands, Keymap } from  "ak-editor-prosemirror";
 
-const { wrapIn, setBlockType, wrapInList, splitListItem, liftListItem,
+const { wrapIn, setBlockType, wrapInList, splitListItem, lift, liftListItem,
   sinkListItem, chainCommands, newlineInCode, toggleMark } = commands;
 
 const isMac = browser.mac;
@@ -48,6 +48,14 @@ export function buildKeymap(schema, mapKeys) {
     keys[key] = cmd;
   }
 
+  function clearAndApply(cmd) {
+    return function(pm, apply) {
+      lift(pm, apply);
+      setBlockType(schema.nodes.paragraph)(pm, apply);
+      cmd(pm, apply);
+    }
+  }
+
   for (let name in schema.marks) {
     let mark = schema.marks[name];
 
@@ -63,22 +71,23 @@ export function buildKeymap(schema, mapKeys) {
       bind("Mod-`", toggleMark(mark));
     }
   }
+
   for (let name in schema.nodes) {
     let node = schema.nodes[name];
 
     if (name === "bullet_list") {
-      bind("Shift-Ctrl-B", wrapInList(node));
+      bind("Shift-Ctrl-B", clearAndApply(wrapInList(node)));
     }
 
     if (name === "ordered_list") {
-      bind("Shift-Ctrl-N", wrapInList(node));
+      bind("Shift-Ctrl-N", clearAndApply(wrapInList(node)));
     }
 
     if (name === "blockquote") {
       if (isMac) {
-        bind("Cmd-Alt-8", wrapIn(node));
+        bind("Cmd-Alt-8", clearAndApply(wrapIn(node)));
       } else {
-        bind("Ctrl-8", wrapIn(node));
+        bind("Ctrl-8", clearAndApply(wrapIn(node)));
       }
     }
 
@@ -102,17 +111,17 @@ export function buildKeymap(schema, mapKeys) {
 
     if (name === "paragraph") {
       if (isMac) {
-        bind("Cmd-Alt-0", setBlockType(node));
+        bind("Cmd-Alt-0", clearAndApply(setBlockType(node)));
       } else {
-        bind("Ctrl-0", setBlockType(node));
+        bind("Ctrl-0", clearAndApply(setBlockType(node)));
       }
     }
 
     if (name === "code_block") {
       if (isMac) {
-        bind("Cmd-Alt-7", setBlockType(node));
+        bind("Cmd-Alt-7", clearAndApply(setBlockType(node)));
       } else {
-        bind("Ctrl-7", setBlockType(node));
+        bind("Ctrl-7", clearAndApply(setBlockType(node)));
       }
       // https://github.com/ProseMirror/prosemirror/issues/419
       bind("Enter", (pm, apply) => {
@@ -143,9 +152,9 @@ export function buildKeymap(schema, mapKeys) {
     if (name === "heading") {
       for (let i = 1; i <= 5; i++) {
         if (isMac) {
-          bind("Cmd-Alt-" + i, setBlockType(node, {level: i}));
+          bind("Cmd-Alt-" + i, clearAndApply(setBlockType(node, {level: i})));
         } else {
-          bind("Ctrl-" + i, setBlockType(node, {level: i}));
+          bind("Ctrl-" + i, clearAndApply(setBlockType(node, {level: i})));
         }
       }
     }

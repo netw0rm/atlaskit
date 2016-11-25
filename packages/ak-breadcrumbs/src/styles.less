@@ -5,12 +5,16 @@
   display: flex;
   flex-wrap: wrap;
 
-  // Override link color
-  & > .item > a {
+  // Override link button color and adding
+  .item > a {
     color: @ak-color-N300;
+    padding: 0;
   }
 
-  & > .item + .item::before {
+  .item + .item::before {
     content: '/';
+    display: inline-block;
+    min-width: 24px;
+    text-align: center;
   }
 }

@@ -19,7 +19,7 @@ export default class FieldText extends PureComponent {
      * @instance
      * @type {Boolean}
      * @default false
-     * @example @html <ak-field-text compact></ak-field-text>
+     * @example @html <FieldText compact></FieldText>
      */
     compact: PropTypes.bool,
     /**
@@ -28,7 +28,7 @@ export default class FieldText extends PureComponent {
      * @instance
      * @type {string}
      * @default text
-     * @example @html <ak-field-text type="password"></ak-field-text>
+     * @example @html <FieldText type="password"></FieldText>
      */
     // TODO: Document valid values for this prop
     type: PropTypes.string,
@@ -38,7 +38,7 @@ export default class FieldText extends PureComponent {
      * @instance
      * @type {Boolean}
      * @default false
-     * @example @html <ak-field-text disabled></ak-field-text>
+     * @example @html <FieldText disabled></FieldText>
      */
     disabled: PropTypes.bool,
     /**
@@ -47,7 +47,7 @@ export default class FieldText extends PureComponent {
      * @instance
      * @type {Boolean}
      * @default false
-     * @example @html <ak-field-text required></ak-field-text>
+     * @example @html <FieldText required></FieldText>
      */
     required: PropTypes.bool,
     /**
@@ -55,7 +55,7 @@ export default class FieldText extends PureComponent {
      * @memberof TextField
      * @instance
      * @type {string}
-     * @example @html <ak-field-text label="First name"></ak-field-text>
+     * @example @html <FieldText label="First name"></FieldText>
      */
     label: PropTypes.string,
     /**
@@ -63,7 +63,7 @@ export default class FieldText extends PureComponent {
      * @memberof TextField
      * @instance
      * @type {string}
-     * @example @html <ak-field-text name="fname"></ak-field-text>
+     * @example @html <FieldText name="fname"></FieldText>
      */
     name: PropTypes.string,
     /**
@@ -71,7 +71,7 @@ export default class FieldText extends PureComponent {
      * @memberof TextField
      * @instance
      * @type {string}
-     * @example @html <ak-field-text placeholder="e.g. Your name"></ak-field-text>
+     * @example @html <FieldText placeholder="e.g. Your name"></FieldText>
      */
     placeholder: PropTypes.string,
     /**
@@ -79,7 +79,6 @@ export default class FieldText extends PureComponent {
      * @memberof TextField
      * @instance
      * @type {string}
-     * @example @js field.value = 'My new text field value';
      */
     defaultValue: PropTypes.string,
   }

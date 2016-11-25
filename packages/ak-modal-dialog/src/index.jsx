@@ -63,27 +63,21 @@ export default class ModalDialog extends PureComponent {
   static defaultProps = {
     isOpen: false,
     onBlanketClicked: () => {},
+    width: WIDTH_ENUM.defaultValue,
   };
-
-  // returns the assigned appearance if valid, falling back to the default otherwise
-  validWidth() {
-    const { width } = this.props;
-    const { values, defaultValue } = WIDTH_ENUM;
-    return values.indexOf(width) !== -1 ? width : defaultValue;
-  }
 
   render() {
     // don't render anything if open = false
     if (!this.props.isOpen) return null;
 
-    const { onBlanketClicked, header, children, footer } = this.props;
+    const { onBlanketClicked, header, children, footer, width } = this.props;
     return (
       <div className={styles.modalWrapper}>
         <Blanket onBlanketClicked={onBlanketClicked} />
         <div
           className={classNames([
             styles.modalPositioner,
-            styles[this.validWidth()],
+            styles[width],
           ])}
         >
           <div className={styles.headerFlex}>

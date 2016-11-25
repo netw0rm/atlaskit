@@ -155,10 +155,10 @@ export class BlockTypeState {
     // we can get away by not checking all the types since the dropdown get
     // enabled as a group instead of per option
     const newEnabled = pm.selection && (
-      commands.setBlockType(pm.schema.nodes.paragraph)(pm, false) ||
-      commands.setBlockType(pm.schema.nodes.heading)(pm, false) ||
-      commands.setBlockType(pm.schema.nodes.code_block)(pm, false) ||
-      commands.setBlockType(pm.schema.nodes.blockquote)(pm, false)
+      commands.setBlockType(pm.schema.nodes.paragraph!)(pm, false) ||
+      commands.setBlockType(pm.schema.nodes.heading!)(pm, false) ||
+      commands.setBlockType(pm.schema.nodes.code_block!)(pm, false) ||
+      commands.setBlockType(pm.schema.nodes.blockquote!)(pm, false)
     );
     if (newEnabled !== this.canChange) {
       this.canChange = newEnabled;

@@ -1,8 +1,9 @@
-import BlockTypePlugin from '../src';
+import mocha from 'mocha';
 import { chaiPlugin, makeEditor, doc, p, h1, blockquote, code_block, br } from 'ak-editor-test';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { default as chai, expect } from 'chai';
+import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import BlockTypePlugin from '../src';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);

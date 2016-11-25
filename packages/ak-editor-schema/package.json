@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-schema",
-  "version": "4.4.1",
+  "version": "4.6.0",
   "description": "A common schema to be used in Atlassian Editor.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

@@ -15,7 +15,7 @@
     "react": "^15.3.2"
   },
   "dependencies": {
-    "ak-field-base": "^4.2.1",
+    "ak-field-base": "^5.0.1",
     "babel-runtime": "^6.11.6"
   },
   "author": "Atlassian Pty Ltd",

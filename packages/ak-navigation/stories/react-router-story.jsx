@@ -5,6 +5,7 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 import Navigation, { AkContainerHeader, AkContainerItem } from '../src/index';
 import Page from './components/Page';
 import nucleusLogo from './nucleus.png';
+import { name } from '../package.json';
 
 const reactRouterLinkComponent = (url, children) => <Link to={url}>{children}</Link>;
 

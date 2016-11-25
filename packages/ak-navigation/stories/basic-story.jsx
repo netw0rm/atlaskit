@@ -5,6 +5,7 @@ import { AkContainerItem } from '../src/index';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
 import nucleus from './nucleus.png';
+import { name } from '../package.json';
 
 const manyContainerItems = () => {
   const items = [];

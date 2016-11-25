@@ -67,10 +67,16 @@ export default class Layer extends PureComponent {
      * @example @html <Layer offset="0 2"></Layer>
     */
     offset: PropTypes.string,
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.node),
-      PropTypes.node,
-    ]),
+    /**
+     * @description Target of a layer.
+     * Element on a page relative to which layer should be positioned.
+     * @memberof Layer
+     * @instance
+     * @type String
+     * @example @html <Layer target={this.targetRef}></Layer>
+     */
+    target: PropTypes.node,
+    children: PropTypes.node.isRequired,
   }
 
   static defaultProps = {
@@ -78,6 +84,7 @@ export default class Layer extends PureComponent {
     boundariesElement: 'viewport',
     shouldFlip: true,
     offset: '',
+    target: null,
     children: null,
   }
 
@@ -155,10 +162,10 @@ export default class Layer extends PureComponent {
     return (
       <div>
         <div ref={ref => (this.targetRef = ref)}>
-          {this.props.children[0]}
+          {this.props.target}
         </div>
         <div ref={ref => (this.contentRef = ref)} style={{ top: 0, left: 0, position, transform }}>
-          {this.props.children[1]}
+          {this.props.children}
         </div>
       </div>
     );

@@ -2,19 +2,8 @@ import { storiesOf } from '@kadira/storybook'; // eslint-disable-line import/no-
 import React from 'react';
 
 import styles from 'style!./styles.less';
-import AKLayer from '../src/index';
 import { name } from '../package.json';
-
-const ExampleAlignment = props => (
-  <AKLayer position={props.position}>
-    <div className={styles.alignmentContainer}>{props.content || ''}</div>
-    <div>{props.position}</div>
-  </AKLayer>
-);
-ExampleAlignment.propTypes = {
-  position: React.PropTypes.string,
-  content: React.PropTypes.string,
-};
+import ExampleAlignment from './ExampleAlignment';
 
 storiesOf(name, module)
   .add('Parent position: fixed', () => (

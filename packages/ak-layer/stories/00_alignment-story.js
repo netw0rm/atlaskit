@@ -2,16 +2,9 @@ import { storiesOf } from '@kadira/storybook'; // eslint-disable-line import/no-
 import React from 'react';
 
 import styles from 'style!./styles.less';
-import AKLayer from '../src/index';
 import { name } from '../package.json';
+import ExampleAlignment from './ExampleAlignment';
 
-const ExampleAlignment = props => (
-  <AKLayer {...props}>
-    <div className={styles.alignmentContainer} />
-    <div>{props.position}</div>
-  </AKLayer>
-);
-ExampleAlignment.propTypes = { position: React.PropTypes.string };
 
 const AllAlignments = props => (<div className={styles.storyRoot}>
   <div className={styles.flexRow}>

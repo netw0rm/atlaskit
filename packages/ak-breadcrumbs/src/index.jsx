@@ -13,17 +13,19 @@ import BreadcrumbsItem from './BreadcrumbsItem';
 /* eslint-disable react/prefer-stateless-function */
 export default class Breadcrumbs extends PureComponent {
   static propTypes = {
-    children: PropTypes.oneOf([
+    children: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),
     ]),
   }
 
-  render = () => (
-    <div className={styles.container}>
-      {this.props.children}
-    </div>
-  );
+  render() {
+    return (
+      <div className={styles.container}>
+        {this.props.children}
+      </div>
+    );
+  }
 }
 
 export { BreadcrumbsItem as AkBreadcrumbsItem };

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
 import Breadcrumbs, { AkBreadcrumbsItem as Item } from '../src/';
+import styles from '../src/styles.less';
 import { name } from '../package.json';
 
 const { expect } = chai;
@@ -19,9 +20,25 @@ describe(name, () => {
       expect(new Item()).to.be.instanceOf(Component);
     });
   });
-  it('should be able to create a component', () => {
-    const wrapper = shallow(<Breadcrumbs />);
-    expect(wrapper).to.be.defined;
-    expect(wrapper.instance()).to.be.instanceOf(Component);
+
+  describe('construction', () => {
+    it('should be able to create a component', () => {
+      const wrapper = shallow(<Breadcrumbs />);
+      expect(wrapper).to.be.defined;
+      expect(wrapper.instance()).to.be.instanceOf(Component);
+    });
+
+    it('should render all children inside a container div', () => {
+      const wrapper = shallow(
+        <Breadcrumbs>
+          <Item />
+          <Item />
+          <Item />
+        </Breadcrumbs>
+      );
+      const containerDiv = wrapper.find(`.${styles.locals.container}`);
+      expect(containerDiv).to.have.lengthOf(1);
+      expect(containerDiv).find(Item).to.have.lengthOf(3);
+    });
   });
 });

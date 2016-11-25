@@ -12,6 +12,7 @@
     "dist"
   ],
   "dependencies": {
+    "ak-button": "^4.0.3",
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"

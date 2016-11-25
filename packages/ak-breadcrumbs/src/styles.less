@@ -1,7 +1,16 @@
+@import '~akutil-shared-styles/src/colors.less';
+
 .container {
+  color: @ak-color-N300;
   display: flex;
   flex-wrap: wrap;
-}
 
-.item {
+  // Override link color
+  & > .item > a {
+    color: @ak-color-N300;
+  }
+
+  & > .item + .item::before {
+    content: '/';
+  }
 }

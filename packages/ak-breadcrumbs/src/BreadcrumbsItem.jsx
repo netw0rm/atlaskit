@@ -1,18 +1,26 @@
 import React, { PureComponent, PropTypes } from 'react';
+import Button from 'ak-button';
+
 import styles from './styles.less';
 
 
 /**
- * @description Breadcrumbs React component.
- * @class Breadcrumbs
- * @example @js import Breadcrumbs from 'ak-breadcrumbs';
- * ReactDOM.render(<BreadCrumbs />);
+ * @description BreadcrumbsItem React component.
+ * @class BreadcrumbsItem
+ * @example @js import { AkBreadcrumbsItem } from 'ak-breadcrumbs';
+ * ReactDOM.render(<AkBreadcrumbsItem />);
  */
 /* eslint-disable-next-line react/prefer-stateless-function */
 export default class BreadcrumbsItem extends PureComponent {
   static propTypes = {
+    /**
+     * @description The target URL.
+     * @memberof BreadcrumbsItem
+     * @instance
+     * @type {string}
+     */
     href: PropTypes.string,
-    children: PropTypes.oneOf([
+    children: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),
     ]),
@@ -20,11 +28,13 @@ export default class BreadcrumbsItem extends PureComponent {
   static defaultProps = {
     href: '#',
   }
-  render = () => (
-    <div className={styles.item}>
-      <a href={this.props.href}>
-        {this.props.children}
-      </a>
-    </div>
-  );
+  render() {
+    return (
+      <div className={styles.locals.item}>
+        <Button appearance="link" href={this.props.href}>
+          {this.props.children}
+        </Button>
+      </div>
+    );
+  }
 }

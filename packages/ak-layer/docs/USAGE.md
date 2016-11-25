@@ -27,8 +27,9 @@ Import the component in your React app as follows:
 ```js
 import Layer from 'ak-layer';
 
-ReactDOM.render(<Layer position="right middle">
-  <div>Some content</div>
+const myTarget = (<div>Some content</div>);
+
+ReactDOM.render(<Layer position="right middle" target={myTarget}>
   <div>I'm going to be aligned to the right!</div>
 </Layer>, container);
 ```

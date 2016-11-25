@@ -1,4 +1,5 @@
 @import '~akutil-shared-styles/src/grid.less';
+@import '~akutil-shared-styles/src/colors.less';
 @grid: @ak-grid-size / 2; // evaluates to 4px
 
 @width-small: 400px;
@@ -50,6 +51,7 @@
 
   // 3 direct flex children (header + content + footer slot areas)
   .header-flex, .content-flex, .footer-flex {
+    box-shadow: 0 @ak-grid-size (2 * @ak-grid-size) (@ak-grid-size * -0.5) fade(@ak-color-N900, 28%);
     padding: @grid * 4;
   }
 

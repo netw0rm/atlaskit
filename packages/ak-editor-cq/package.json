@@ -23,7 +23,7 @@
     "ak-editor-prosemirror": "^4.0.0",
     "ak-editor-schema": "^4.1.0",
     "ak-editor-shared-styles": "^3.0.0",
-    "ak-editor-ui": "^1.0.0",
+    "ak-editor-ui": "^1.3.0",
     "akutil-shared-styles": "^37.0.1",
     "autobind-decorator": "^1.3.4",
     "babel-runtime": "^6.11.6",

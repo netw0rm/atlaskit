@@ -14,6 +14,7 @@ import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
+import ToolbarFeedback from 'ak-editor-toolbar-feedback';
 import schema from './schema';
 import { buildKeymap } from './keymap';
 import markdownSerializer from './markdown-serializer';
@@ -216,6 +217,10 @@ class AkEditorBitbucket extends Component {
           numberlistActive={elem._numberListActive}
           on-toggle-number-list={() => elem._toggleList('ordered_list')}
           on-toggle-bullet-list={() => elem._toggleList('bullet_list')}
+        />
+        <spacer />
+        <ToolbarFeedback
+          feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
         />
       </Toolbar>
       <Content

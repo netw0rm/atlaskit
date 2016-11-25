@@ -1,19 +1,22 @@
 @import '~akutil-shared-styles/src/colors.less';
 
+@resizer-clickable-width: 12px;
+@resizer-visible-width: 2px; 
+
 .resizer {
   height: 100%;
-  width: 12px;
+  width: @resizer-clickable-width;
   position: relative;
-  left: -6px;
+  left: -@resizer-clickable-width / 2;
   cursor: col-resize;
   &:hover:before {
     background: @ak-color-B200;
   }
   &:before {
     content: '';
-    width: 2px;
+    width: @resizer-visible-width;
     height: 100%;
     position: absolute;
-    left: 5px;
+    left: (@resizer-clickable-width - @resizer-visible-width) / 2;
   }
 }

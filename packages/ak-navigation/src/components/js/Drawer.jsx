@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
-import styles from '../less/Drawer.less';
+import styles from 'style!../less/Drawer.less';
 
 export default class Drawer extends Component {
   static get propTypes() {
@@ -20,12 +20,11 @@ export default class Drawer extends Component {
   render() {
     return (
       <div
-        className={classNames(styles.locals.drawer, {
-          [styles.locals.open]: this.props.open,
-          [styles.locals.wide]: this.props.wide,
+        className={classNames(styles.drawer, {
+          [styles.open]: this.props.open,
+          [styles.wide]: this.props.wide,
         })}
       >
-        <style>{styles.toString()}</style>
         {this.props.children}
       </div>
     );

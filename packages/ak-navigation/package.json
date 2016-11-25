@@ -1,6 +1,6 @@
 {
   "name": "ak-navigation",
-  "version": "14.0.0",
+  "version": "13.1.0",
   "description": "ak-navigation webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -20,7 +20,7 @@
     "keycode": "^2.1.2"
   },
   "peerDependencies": {
-    "react": "15.x"
+    "react": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

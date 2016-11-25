@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from '../less/ContainerItem.less';
+import styles from 'style!../less/ContainerItem.less';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class ContainerItem extends Component {
@@ -14,11 +13,10 @@ export default class ContainerItem extends Component {
   render() {
     return (
       <div>
-        <style>{styles.toString()}</style>
-        <div className={classNames(styles.locals.containerItem)}>
+        <div className={styles.containerItem}>
           {this.props.icon ?
-            <div className={classNames(styles.locals.icon)}>{this.props.icon}</div> : null}
-          {this.props.text}
+            <div className={styles.icon}>{this.props.icon}</div> : null}
+          <div className={styles.text}>{this.props.text}</div>
         </div>
       </div>
     );

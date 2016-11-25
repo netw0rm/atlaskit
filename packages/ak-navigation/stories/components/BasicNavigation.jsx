@@ -19,7 +19,7 @@ export default class BasicNavigation extends Component {
           <a href="#foo">
             <AkContainerHeader
               text={'AtlasCat'}
-              logo={<img alt="nucleus" src={nucleusLogo} />}
+              icon={<img alt="nucleus" src={nucleusLogo} />}
             />
           </a>
         }

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from '../less/Spacer.less';
+import styles from 'style!../less/Spacer.less';
 
 export default class Spacer extends Component {
   static get propTypes() {
@@ -18,15 +18,13 @@ export default class Spacer extends Component {
   render() {
     return (
       <div
-        className={classNames(styles.locals.spacer, {
-          [styles.locals.shouldAnimate]: this.props.shouldAnimate,
+        className={classNames(styles.spacer, {
+          [styles.shouldAnimate]: this.props.shouldAnimate,
         })}
         style={{
           width: this.props.width,
         }}
-      >
-        <style>{styles.toString()}</style>
-      </div>
+      />
     );
   }
 }

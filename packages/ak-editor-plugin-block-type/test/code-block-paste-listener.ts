@@ -7,7 +7,7 @@ import { PasteContent } from 'ak-editor-test/src/dispatch-paste-event';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-plugin-block-type paste listener', () => {
+describe.skip('ak-editor-plugin-block-type paste listener', () => {
   const fixture = fixtures();
   const editor = (code: string = '') => makeEditor({
     doc: doc(code_block()(code)),

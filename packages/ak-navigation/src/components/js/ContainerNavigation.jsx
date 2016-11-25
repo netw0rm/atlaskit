@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from '../less/ContainerNavigation.less';
+import styles from 'style!../less/ContainerNavigation.less';
 import {
   containerOpenWidth,
   containerBodyOpenPadding,
@@ -62,20 +62,19 @@ export default class ContainerNavigation extends Component {
     return (
       <div
         className={classNames({
-          [styles.locals.shouldAnimate]: this.props.shouldAnimate,
+          [styles.shouldAnimate]: this.props.shouldAnimate,
         })}
       >
-        <style>{styles.toString()}</style>
         <Spacer
           width={this.props.width}
           shouldAnimate={this.props.shouldAnimate}
         />
         <div
           style={this.getOuterStyles()}
-          className={classNames(styles.locals.containerNavigationOuter)}
+          className={styles.containerNavigationOuter}
         >
           <div
-            className={classNames(styles.locals.containerNavigationInner)}
+            className={styles.containerNavigationInner}
           >
             <div style={this.getHeaderStyles()}>
               {this.props.header}

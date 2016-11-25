@@ -1,5 +1,5 @@
 import BlockTypePlugin from '../src';
-import { chaiPlugin, makeEditor, doc, p, text, h1, blockquote } from 'ak-editor-test';
+import { chaiPlugin, makeEditor, doc, p, h1, blockquote, code_block, br } from 'ak-editor-test';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import sinonChai from 'sinon-chai';
@@ -30,6 +30,20 @@ describe('ak-editor-plugin-block-type (legacy)', () => {
 
     expect(plugin.changeBlockType('blockquote')).to.be.true;
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
+  });
+
+  it('should be able to change to code block', () => {
+    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+
+    expect(plugin.changeBlockType('code_block')).to.be.true;
+    expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+  });
+
+  it('should be able to change to code block with multilines', () => {
+    const { pm, plugin } = editor(doc(p('line1{<>}', br, 'line2')));
+
+    expect(plugin.changeBlockType('code_block')).to.be.true;
+    expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
   });
 
   it('should be able to change to back to paragraph and then change to blockquote', () => {

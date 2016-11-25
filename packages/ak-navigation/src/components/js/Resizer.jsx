@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from '../less/Resizer.less';
+import styles from 'style!../less/Resizer.less';
 
 export default class Resizer extends Component {
   static get propTypes() {
@@ -49,10 +48,8 @@ export default class Resizer extends Component {
     return (
       <div
         onMouseDown={this.mouseDownHandler}
-        className={classNames(styles.locals.resizer)}
-      >
-        <style>{styles.toString()}</style>
-      </div>
+        className={styles.resizer}
+      />
     );
   }
 }

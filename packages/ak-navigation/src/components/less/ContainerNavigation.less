@@ -2,7 +2,7 @@
 @import '~akutil-shared-styles/src/grid.less';
 @import '../../shared-variables.less';
 
-.container-navigation-outer {
+.containerNavigationOuter {
   height: 100%;
   position: fixed;
   .should-animate & {
@@ -10,12 +10,21 @@
   }
 }
 
-.container-navigation-inner {
+.containerNavigationInner {
   box-sizing: border-box;
   background: @ak-color-N20;
   color: @ak-color-N500;
   width: 100%;
   height: 100vh;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

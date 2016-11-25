@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from '../less/GlobalItem.less';
+import styles from 'style!../less/GlobalItem.less';
 
 export default class GlobalItem extends Component {
   static get propTypes() {
@@ -21,9 +20,8 @@ export default class GlobalItem extends Component {
         onClick={() => this.props.onActivate()}
         onMouseDown={e => e.preventDefault()}
         tabIndex="0"
-        className={classNames(styles.locals.globalItem)}
+        className={styles.globalItem}
       >
-        <style>{styles.toString()}</style>
         {this.props.children}
       </button>
     );

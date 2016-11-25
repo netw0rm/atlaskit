@@ -35,6 +35,12 @@ storiesOf(name, module)
             text={'Item with an icon'}
           />
         </a>
+        <a href="#3">
+          <AkContainerItem
+            icon={<img src={nucleus} alt="icon" />}
+            text={'A really, really, quite long, actually super long container name'}
+          />
+        </a>
       </BasicNavigation>
       <div>
         <Lorem count="30" />

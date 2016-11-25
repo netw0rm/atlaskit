@@ -65,7 +65,7 @@ function waitUntilPMReady(editor: typeof AkEditorBitbucket) : Promise<HTMLElemen
   });
 }
 
-describe('ak-editor-bitbucket', () => {
+describe.skip('ak-editor-bitbucket', () => {
   const rewireSpy = RewireSpy();
 
   it('is possible to create a component', () => {
@@ -175,7 +175,7 @@ describe('ak-editor-bitbucket', () => {
     });
   });
 
-  describe('collapsed editor', () => {
+  describe.skip('collapsed editor', () => {
     let tmpContainer: any;
     let editor: any;
 

@@ -31,14 +31,14 @@ describe(name, () => {
     it('should render all children inside a container div', () => {
       const wrapper = shallow(
         <Breadcrumbs>
-          <Item />
-          <Item />
-          <Item />
+          <Item>item</Item>
+          <Item>item</Item>
+          <Item>item</Item>
         </Breadcrumbs>
       );
       const containerDiv = wrapper.find(`.${styles.locals.container}`);
       expect(containerDiv).to.have.lengthOf(1);
-      expect(containerDiv).find(Item).to.have.lengthOf(3);
+      expect(containerDiv.find(Item)).to.have.lengthOf(3);
     });
   });
 });

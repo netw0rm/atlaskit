@@ -155,7 +155,7 @@ class HyperlinkPlugin {
       $head,
       $to,
       empty
-    } = pm.selection;
+    } = pm.selection as any;
     const oldState = this.getState();
 
     const $resolvedPos: ResolvedPos = $head || $to;
@@ -197,7 +197,7 @@ class HyperlinkPlugin {
       $from,
       $to,
       $head,
-    } = selection;
+    } = selection as any;
 
     const $resolvedPos: ResolvedPos = $head || $to;
 
@@ -226,7 +226,7 @@ class HyperlinkPlugin {
     const {
       $head,
       empty
-    } = selection;
+    } = selection as any;
     const hyperlinkAtCursor = getHyperlinkAtCursor(pm, $head.pos, empty);
 
     if (!hyperlinkAtCursor) {

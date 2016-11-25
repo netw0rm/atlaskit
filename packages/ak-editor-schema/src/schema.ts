@@ -14,12 +14,13 @@ import { ImageNodeType } from './nodes/image';
 import { ListItemNodeType } from './nodes/list-item';
 import { OrderedListNodeType } from './nodes/ordered-list';
 import { ParagraphNodeType } from './nodes/paragraph';
+import { MentionNodeType } from './nodes/mention';
+import { EmojiNodeType } from './nodes/emoji';
 
 import { CodeMarkType } from './marks/code';
 import { DelMarkType } from './marks/del';
 import { EmMarkType } from './marks/em';
 import { LinkMarkType } from './marks/link';
-import { Mention, Emoji } from './entity';
 import { StrongMarkType } from './marks/strong';
 
 interface AtlassianEditorSchema extends Schema {
@@ -42,8 +43,8 @@ interface AtlassianEditorSchema extends Schema {
     hard_break: HardBreakNodeType;
 
     code_block: CodeBlockNodeType;
-    mention: Mention;
-    emoji: Emoji;
+    mention: MentionNodeType;
+    emoji: EmojiNodeType;
   }
 
   marks: {
@@ -75,8 +76,8 @@ export const schema = new Schema({
     hard_break: { type: HardBreakNodeType, group: 'inline' },
 
     code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
-    mention: { type: Mention, group: 'inline' },
-    emoji: { type: Emoji, group: 'inline' },
+    mention: { type: MentionNodeType, group: 'inline' },
+    emoji: { type: EmojiNodeType, group: 'inline' },
   },
 
   // Note: Marks are applied in the order they are defined.

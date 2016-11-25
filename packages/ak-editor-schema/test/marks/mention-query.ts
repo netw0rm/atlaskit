@@ -26,8 +26,8 @@ describe('ak-editor-schema mention-query mark', () => {
     const schema = makeSchema();
     const node = schema.text('foo', [ schema.marks.mention_query.create() ] );
     const html = toHTML(node);
-    expect(html).to.contain('data-mention-query="true"');
-    expect(html).to.contain('style="color: rgb(22, 94, 204);"');
+    expect(html).to.have.string('data-mention-query="true"');
+    expect(html).to.have.string('class="editor-mention-query-mark');
   });
 
 });

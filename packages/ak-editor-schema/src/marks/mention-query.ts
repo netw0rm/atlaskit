@@ -12,7 +12,7 @@ export class MentionQueryMarkType extends MarkType {
     return true;
   }
 
-  toDOM() { return ['span', { 'data-mention-query': true, 'style': 'color: rgb(22, 94, 204)' }]; }
+  toDOM() { return ['span', { 'data-mention-query': true, 'class': 'editor-mention-query-mark' }]; }
 }
 
 export interface MentionQueryMark extends Mark {

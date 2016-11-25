@@ -1,7 +1,7 @@
 {
   "name": "ak-field-text",
-  "version": "5.0.4",
-  "description": "ak-field-text webcomponent",
+  "version": "6.0.0",
+  "description": "ak-field-text component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
@@ -11,18 +11,17 @@
   "files": [
     "dist"
   ],
+  "peerDependencies": {
+    "react": "^15.3.2"
+  },
   "dependencies": {
-    "ak-field-base": "^4.0.0",
-    "akutil-shared-styles": "^37.0.0",
-    "babel-runtime": "^6.11.6",
-    "skatejs": "^4.0.6"
+    "ak-field-base": "^4.2.1",
+    "babel-runtime": "^6.11.6"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "*",
-    "akutil-react": "*",
-    "ak-button": "^3.0.0"
+    "ak-button": "^4.0.3"
   },
   "repository": {
     "type": "git",

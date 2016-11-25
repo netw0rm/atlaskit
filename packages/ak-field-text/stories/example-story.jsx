@@ -1,20 +1,16 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import ButtonWC from 'ak-button';
+import Button from 'ak-button';
 import React from 'react';
 
-import WebComponent from '../src';
+import FieldText from '../src';
 import { name } from '../package.json';
 
-
-const ReactField = reactify(WebComponent);
-const ReactButton = reactify(ButtonWC);
 const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
 
 function generateInput(opts) {
   const props = Object.assign({ label: 'Example label' }, opts);
   return (
-    <ReactField {...props} />
+    <FieldText {...props} />
   );
 }
 
@@ -22,7 +18,7 @@ function generateFormWithInput(opts) {
   return (
     <form
       action={formTestUrl}
-      method="post"
+      method="get"
       style={{
         backgroundColor: 'white',
         padding: '40px',
@@ -30,9 +26,9 @@ function generateFormWithInput(opts) {
       }}
     >
       <h2>AtlasKit form</h2>
-      {generateInput(opts)}
+      {generateInput(Object.assign(opts, { name: 'value' }))}
       <p>
-        <ReactButton type="submit" appearance="primary">Submit</ReactButton>
+        <Button type="submit" appearance="primary">Submit</Button>
       </p>
     </form>
   );
@@ -40,7 +36,7 @@ function generateFormWithInput(opts) {
 
 function submitTestForm(useNativeSubmitBtn) {
   const submitBtn = useNativeSubmitBtn ? <input type="submit" /> : (
-    <ReactButton type="submit" appearance="primary">Submit</ReactButton>
+    <Button type="submit" appearance="primary">Submit</Button>
   );
   return (
     <div>
@@ -102,7 +98,7 @@ storiesOf(name, module)
   .add('ak-field-text for autofill test', () => (
     <form
       action={formTestUrl}
-      method="post"
+      method="get"
       style={{
         backgroundColor: 'white',
         padding: '40px',
@@ -114,7 +110,7 @@ storiesOf(name, module)
       {generateInput({ type: 'email', label: 'Email', name: 'email' })}
       {generateInput({ label: 'Full name', name: 'name' })}
       <p>
-        <ReactButton type="submit" appearance="primary">Submit</ReactButton>
+        <Button type="submit" appearance="primary">Submit</Button>
       </p>
     </form>
   ))

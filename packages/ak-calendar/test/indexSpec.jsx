@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 import { getMonthName } from '../src/util';
 
 import { name } from '../package.json';
-import Calendar from '../src';
+import { AkCalendar } from '../src';
 import Announcer from '../src/Announcer';
 import DateComponent from '../src/Date';
 
@@ -18,42 +18,54 @@ const nowYear = now.getFullYear();
 
 describe(name, () => {
   it('should render the component', () => {
-    const wrapper = shallow(<Calendar />);
+    const wrapper = shallow(<AkCalendar />);
     expect(wrapper).to.be.present();
     expect(wrapper.find(Announcer)).to.have.lengthOf(1);
     expect(wrapper.find(DateComponent)).to.be.present();
   });
 
   it('should highlight current date', () => {
-    const wrapper = shallow(<Calendar />);
+    const wrapper = shallow(<AkCalendar />);
     expect(wrapper.find('div[aria-label="calendar"]').at(0))
       .to.include.text(`${getMonthName(nowMonth)} ${nowYear}`);
   });
 
   it('should call onSelect', (done) => {
-    const wrapper = shallow(<Calendar
-      onSelect={({ day, month, year }) => {
-        expect(day).to.equal(5);
-        expect(month).to.equal(nowMonth);
-        expect(year).to.equal(nowYear);
+    const wrapper = shallow(<AkCalendar
+      month={1}
+      year={2016}
+      onSelect={({ day, month, year, iso }) => {
+        expect(day).to.equal(1);
+        expect(month).to.equal(1);
+        expect(year).to.equal(2016);
+        expect(iso).to.equal('2016-01-01');
         done();
       }}
     />);
-    wrapper.find({ children: 5, sibling: false }).simulate('click');
+    wrapper.find({ children: 1, sibling: false }).simulate('click', {
+      day: 1,
+      month: 1,
+      year: 2016,
+    });
   });
 
-  it('selected days should have selected class', () => {
-    const wrapper = shallow(<Calendar
+  it('specifying selected days should selecte the specified days', () => {
+    const wrapper = shallow(<AkCalendar
       month={1}
       year={2016}
-      selected={['2016-01-01']}
+      selected={['2016-01-01', '2016-01-02']}
     />);
 
-    const selected = wrapper.find({
+    expect(wrapper.find({
       children: 1,
       selected: true,
       sibling: false,
-    });
-    expect(selected).to.have.lengthOf(1);
+    })).to.have.lengthOf(1);
+
+    expect(wrapper.find({
+      children: 2,
+      selected: true,
+      sibling: false,
+    })).to.have.lengthOf(1);
   });
 });

@@ -182,8 +182,7 @@ export default class extends PureComponent {
     }
   }
 
-  handleClickDay = (data) => {
-    const { year, month, day } = data;
+  handleClickDay = ({ year, month, day }) => {
     this.triggerOnSelect(year, month, day);
   }
 

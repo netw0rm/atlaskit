@@ -19,50 +19,9 @@ npm install ak-lozenge
 
 ## Using the component
 
-### HTML
-
-The `ak-lozenge` package exports the Lozenge [Skate](https://github.com/skatejs/skatejs) component.
-
-Import the component in your JS resource:
-
-#### bundle.js
-
-```js
-import 'ak-lozenge';
-```
-
-Now you can use the defined tag in your HTML markup, for example
-#### index.html
-
-```html
-<html>
-<head>
-  <script src="bundle.js"></script>
-</head>
-<body>
-  <!-- ... -->
-  <ak-lozenge appearance="moved" bold>Moved</ak-lozenge>
-</body>
-```
-
-or from within another JavaScript resource:
+Import the component in your React app as follows:
 
 ```js
 import Lozenge from 'ak-lozenge';
-
-const component = new Lozenge();
-document.body.appendChild(component);
-```
-
-### React
-
-This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
-
-```js
-import Lozenge from 'ak-lozenge';
-import reactify from 'skatejs-react-integration';
-
-const ReactComponent = reactify(Lozenge, {});
-
-ReactDOM.render(<ReactComponent />, container);
+ReactDOM.render(<Lozenge />, container);
 ```

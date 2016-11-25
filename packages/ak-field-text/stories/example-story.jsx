@@ -8,7 +8,7 @@ import { name } from '../package.json';
 const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
 
 function generateInput(opts) {
-  const props = Object.assign({ label: 'Example label' }, opts);
+  const props = { label: 'Example label', ...opts };
   return (
     <FieldText {...props} />
   );
@@ -26,7 +26,7 @@ function generateFormWithInput(opts) {
       }}
     >
       <h2>AtlasKit form</h2>
-      {generateInput(Object.assign(opts, { name: 'value' }))}
+      {generateInput({ name: 'value', ...opts })}
       <p>
         <Button type="submit" appearance="primary">Submit</Button>
       </p>

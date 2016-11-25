@@ -4,7 +4,6 @@ import reactify from 'akutil-react';
 
 import FooterComponent from '../src';
 
-
 const Footer = reactify(FooterComponent);
 const footerAction = action('footer');
 

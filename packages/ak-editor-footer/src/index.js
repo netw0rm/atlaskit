@@ -10,7 +10,6 @@ import 'style!./host.less';
 
 import shadowStyles from './shadow.less';
 
-
 const icons = {
   mention: MentionIcon,
   image: ImageIcon,

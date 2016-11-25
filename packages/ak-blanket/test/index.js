@@ -5,7 +5,6 @@ import chaiAsPromised from 'chai-as-promised';
 import AkBlanket, { events } from '../src';
 import { name } from '../package.json';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;

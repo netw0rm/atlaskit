@@ -7,7 +7,6 @@ import { name } from '../package.json';
 import AkEditorButton from '../src';
 import shadowStyles from '../src/shadow.less';
 
-
 const classKeys = shadowStyles.locals;
 
 chai.use(chaiAsPromised);

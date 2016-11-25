@@ -7,7 +7,6 @@ import { name } from '../package.json';
 import Component from '../src';
 import BlockTypeSelect from '../src/block-type-select';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;

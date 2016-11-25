@@ -2,7 +2,6 @@ import React from 'react';
 import FieldBase from '../src';
 import styles from '../src/styles.less';
 
-
 const inputStyle = {
   border: '0px',
   background: 'transparent',

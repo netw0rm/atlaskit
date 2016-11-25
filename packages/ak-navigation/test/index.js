@@ -9,7 +9,6 @@ import AkNavigation, {
   events as navigationEvents,
 } from '../src';
 
-
 const {
   open: navigationOpenEvent,
   close: navigationCloseEvent,

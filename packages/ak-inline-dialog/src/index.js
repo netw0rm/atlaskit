@@ -8,7 +8,6 @@ import Blanket from 'ak-blanket';
 import shadowStyles from './shadow.less';
 import * as events from './internal/events';
 
-
 const closeHandlerSymbol = Symbol('closeHandlerSymbol');
 const keyPressHandlerSymbol = Symbol('keyPressHandlerSymbol');
 

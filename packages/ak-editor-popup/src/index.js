@@ -6,7 +6,6 @@ import Layer from 'ak-layer';
 import hostStyle from './host.less';
 import shadowStyles from './shadow.less';
 
-
 /**
  * @description The definition for the Popup component.
  * @class Popup

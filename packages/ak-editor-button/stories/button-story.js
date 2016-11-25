@@ -5,7 +5,6 @@ import React from 'react';
 
 import ButtonComponent from '../src';
 
-
 const Button = reactify(ButtonComponent);
 const BoldIcon = reactify(EditorBoldIcon);
 

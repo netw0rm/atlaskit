@@ -5,7 +5,6 @@ import styles from 'style!./styles.less';
 import { NotImplementedError } from './internal/exceptions';
 import size from './internal/size';
 
-
 /**
  * @description Icon interface. All icons follow this structure.
  * @class Icon

@@ -5,7 +5,6 @@ import { labelsContainer } from '../src/internal/symbols';
 import { calculateVisibleTabs } from '../src/internal/tabs-helpers';
 import { setupTabs, cleanupTabs, getElementWidth } from './_helpers';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;

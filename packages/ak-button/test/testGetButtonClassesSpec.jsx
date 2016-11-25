@@ -1,7 +1,6 @@
 import { appearance, spacing } from '../src/internal/enumerated-properties';
 import getClasses from '../src/internal/get-button-classes';
 
-
 const classKeys = {
   button: 'button',
   appearanceDefault: 'appearanceDefault',
@@ -100,7 +99,7 @@ classKeys[`appearance${capitalize(appearanceName)}`])
           ].forEach((testCase) => {
             describe(`and also ${JSON.stringify(testCase.setup)} is set`, () => {
               beforeEach(() => (
-                classes = getClasses(classKeys, Object.assign({ spacing: name }, testCase.setup))
+                classes = getClasses(classKeys, { spacing: name, ...testCase.setup })
               ));
               it(`should also contain ${testCase.expectedClass} class`, () =>
                 expectKeys(classes, 3,

@@ -35,7 +35,7 @@ storiesOf('ak-editor-schema', module)
       isValid: boolean;
     }
 
-    class Story extends React.Component<{}, State> {
+    class Story extends React.PureComponent<{}, State> {
       container?: HTMLDivElement;
       editor?: Element;
 

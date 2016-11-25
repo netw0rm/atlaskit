@@ -5,14 +5,13 @@ import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
 import groupStyles from '../src/shadow.less';
 import WebComponent from '../src';
 
-
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = tagEvents;
 
 const Group = reactify(WebComponent);
 
 const Tag = reactify(AkTagWebComponent);
 
-class EventedGroup extends React.Component {
+class EventedGroup extends React.PureComponent {
 
   constructor(props, context) {
     super(props, context);

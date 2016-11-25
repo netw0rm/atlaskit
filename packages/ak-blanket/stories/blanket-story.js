@@ -5,7 +5,6 @@ import React from 'react';
 import Blanket, { events as blanketEvents } from '../src';
 import { name } from '../package.json';
 
-
 const Component = reactify(Blanket);
 
 function doSomethingOnClick() {

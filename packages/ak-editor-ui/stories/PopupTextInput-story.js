@@ -28,7 +28,7 @@ storiesOf('ak-editor-ui PopupTextInput', module)
     </Container>
   ))
   .add(':focus', () => {
-    class Demo extends React.Component {
+    class Demo extends React.PureComponent {
       componentDidMount() {
         if (this.component) {
           this.container.focus();

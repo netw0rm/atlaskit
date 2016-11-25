@@ -12,7 +12,6 @@ import AnimationWrapper from '../src/AnimationWrapper';
 chai.use(chaiAsPromised);
 chai.should();
 
-
 describe.skip('ak-tag', () => {
   describe('AnimationWrapper', () => {
     let component;

@@ -78,7 +78,7 @@ storiesOf('ak-editor-ui Toolbar', module)
       return pm.doc.rangeHasMark(from, to, type);
     };
 
-    class Demo extends React.Component {
+    class Demo extends React.PureComponent {
       constructor(props) {
         super(props);
         this.state = {

@@ -19,7 +19,6 @@ import {
 } from './internal/collapse';
 import * as events from './internal/index.events';
 
-
 const {
   linkSelected: linkSelectedEvent,
   createDrawerSelected: createDrawerSelectedEvent,

@@ -9,7 +9,6 @@ import AkNavigation from 'ak-navigation';
 import webComponent from '../src';
 import { name } from '../package.json';
 
-
 const Component = reactify(webComponent);
 const Navigation = reactify(AkNavigation);
 

@@ -8,11 +8,10 @@ import { ProseMirror, DOMFromPos, schema } from 'ak-editor-prosemirror';
 import HyperlinkEdit from '../src';
 import styles from './styles.less';
 
-
 const Content = reactify(ContentComponent);
 
 /* eslint-disable react/prop-types */
-class PoppedDemo extends React.Component {
+class PoppedDemo extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = { unlinked: false };
@@ -58,7 +57,7 @@ PoppedDemo.defaultProps = {
 
 storiesOf('ak-editor-hyperlink-edit', module)
   .add('Default', () => {
-    class Demo extends React.Component { // eslint-disable-line react/no-multi-comp
+    class Demo extends React.PureComponent { // eslint-disable-line react/no-multi-comp
       editLink(target) {
         this.hyperlinkEdit = new HyperlinkEdit();
         this.hyperlinkEdit.href = 'https://example.com';
@@ -93,7 +92,7 @@ storiesOf('ak-editor-hyperlink-edit', module)
       return nodeFactory.childNodes[offset];
     };
 
-    class Demo extends React.Component { // eslint-disable-line react/no-multi-comp
+    class Demo extends React.PureComponent { // eslint-disable-line react/no-multi-comp
 
       componentDidMount() {
         const doc = schema.node('doc', null,

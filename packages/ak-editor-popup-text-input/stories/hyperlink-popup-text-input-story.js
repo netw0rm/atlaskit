@@ -5,7 +5,6 @@ import reactify from 'akutil-react';
 
 import TextInputComponent from '../src';
 
-
 const TextInput = reactify(TextInputComponent);
 const Container = props => (
   <div style={{ backgroundColor: '#545454', padding: '5px 10px' }}>
@@ -30,7 +29,7 @@ storiesOf('ak-editor-popup-text-input', module)
     </Container>
   ))
   .add(':focus', () => {
-    class Demo extends React.Component {
+    class Demo extends React.PureComponent {
       componentDidMount() {
         if (this.component) {
           this.container.focus();

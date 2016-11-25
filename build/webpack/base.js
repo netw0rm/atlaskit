@@ -8,7 +8,6 @@ const webpack = require('webpack');
 const moduleBabelQuery = require('./babel.query.module');
 const loaderChain = require('./loader-chain').encode;
 
-
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 function defaultPackageMains() {
@@ -28,7 +27,6 @@ if (isDevelopment) {
   css['-minimize'] = true;
   css.localIdentName = '[local]_[hash:base64:5]';
 }
-
 
 const standardConfig = {
   entry: {

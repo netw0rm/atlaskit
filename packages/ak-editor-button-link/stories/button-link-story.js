@@ -5,7 +5,6 @@ import React from 'react';
 
 import LinkComponent from '../src';
 
-
 const Link = reactify(LinkComponent);
 const Icon = reactify(EditorBoldIcon);
 

@@ -9,7 +9,6 @@ import BlockTypePlugin from 'ak-editor-plugin-block-type';
 
 import BlockTypeComponent from '../src';
 
-
 const Toolbar = reactify(ToolbarComponent);
 const BlockType = reactify(BlockTypeComponent);
 const Content = reactify(ContentComponent);
@@ -28,7 +27,7 @@ const toolbarToProsemirrorMap = invert(prosemirrorBlockToToolbarMap);
 
 storiesOf('ak-editor-toolbar-block-type', module)
   .add('ProseMirror', () => {
-    class Demo extends React.Component {
+    class Demo extends React.PureComponent {
       constructor(props) {
         super(props);
         this.state = {

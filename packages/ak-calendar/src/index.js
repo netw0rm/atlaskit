@@ -193,7 +193,7 @@ export default define('ak-calendar', {
       calendar.push(
         ...elem[$calendars].getCalendar(elem.year, elem.month)
           .slice(sliceStart, sliceStart + daysPerWeek)
-          .map(e => Object.assign({}, e, { siblingMonth: true }))
+          .map(e => ({ ...e, siblingMonth: true }))
       );
     }
 

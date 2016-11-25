@@ -9,12 +9,10 @@ import chaiAsPromised from 'chai-as-promised';
 import { createTemporary, removeTemporary, getRootNode } from './_helpers';
 import Label from '../src/Label';
 
-
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 chai.should();
 const expect = chai.expect;
-
 
 describe.skip('ak-tag', () => {
   describe('Label', () => {

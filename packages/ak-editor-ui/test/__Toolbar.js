@@ -2,7 +2,6 @@ import * as chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import Component from '../src/Toolbar';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 const { expect } = chai;

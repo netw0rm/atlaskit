@@ -8,7 +8,6 @@ import 'style!./../src/host.less';
 import EditorkitLinkButton from '../src';
 import { name } from '../package.json';
 
-
 const Component = reactify(EditorkitLinkButton);
 
 const Toolbar = reactify(ToolbarComponent);

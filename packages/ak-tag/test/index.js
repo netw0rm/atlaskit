@@ -8,14 +8,12 @@ import Tag, { exceptions, events } from '../src';
 import shadowStyles from '../src/shadow.less';
 import { getRootNode } from './_helpers';
 
-
 const { NotRemovableError } = exceptions;
 const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = events;
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 chai.should();
-
 
 describe.skip('ak-tag', () => {
   let component;

@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import shadowStyles from './shadow.less';
 import * as events from './internal/index.events';
 
-
 function handleActivation(elem) {
   return () => {
     if (elem.clickable) {

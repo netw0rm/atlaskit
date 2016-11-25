@@ -5,7 +5,6 @@ import { waitUntil, getShadowRoot } from 'akutil-common-test';
 import LayerWC from '../src';
 import { handlePopperUpdate } from '../src/internal/helpers';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
@@ -52,7 +51,6 @@ describe.skip('ak-layer: logic', () => {
     expect(div.getAttribute('x-placement')).to.equal('right');
     expect(window.getComputedStyle(div).position).to.equal('fixed');
   });
-
 
   describe('.isFlipped getter', () => {
     it('should be true if the layer does not have enough space', () => {

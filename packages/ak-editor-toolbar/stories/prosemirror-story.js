@@ -7,7 +7,6 @@ import { ProseMirror, commands, schema } from 'ak-editor-prosemirror';
 
 import ToolbarComponent from '../src';
 
-
 const Toolbar = reactify(ToolbarComponent);
 const TextFormatting = reactify(TextFormattingComponent);
 const Content = reactify(ContentComponent);
@@ -20,7 +19,7 @@ storiesOf('ak-editor-toolbar', module)
       return pm.doc.rangeHasMark(from, to, type);
     };
 
-    class Demo extends React.Component {
+    class Demo extends React.PureComponent {
       constructor(props) {
         super(props);
         this.state = {

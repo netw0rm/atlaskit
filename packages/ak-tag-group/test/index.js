@@ -7,7 +7,6 @@ import Tag from 'ak-tag';
 
 import TagGroup, { alignment } from '../src';
 
-
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 chai.should();

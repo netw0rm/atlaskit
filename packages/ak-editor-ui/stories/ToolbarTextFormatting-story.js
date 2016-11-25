@@ -10,7 +10,7 @@ storiesOf('ak-editor-ui ToolbarTextFormatting', module)
     <TextFormatting />
   ))
   .add('Basic (interactive)', () => {
-    class Demo extends React.Component {
+    class Demo extends React.PureComponent {
       constructor(props) {
         super(props);
         this.state = {

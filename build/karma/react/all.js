@@ -3,7 +3,6 @@ const path = require('path');
 const karmaConf = require('../base');
 const assignPattern = require('../assignPattern');
 
-
 module.exports = (config) => {
   karmaConf(config);
   assignPattern(config, path.join(__dirname, 'all.entry.js'));

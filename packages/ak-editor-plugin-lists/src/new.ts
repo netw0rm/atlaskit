@@ -11,6 +11,7 @@ import {
   NodeType,
   ResolvedPos,
   Schema,
+  Selection,
   TextSelection,
   UpdateScheduler
 } from 'ak-editor-prosemirror';
@@ -165,21 +166,17 @@ export class ListsState {
   private update() {
     const { pm } = this;
     const { bullet_list, ordered_list } = pm.schema.nodes;
-
-    // resolvedPos.pos creates an extra offset
-    const { $head, $from, $to } = pm.selection;
-    const activeNode: Node = pm.doc.nodeAt(($head || $to).pos - 1);
-    const rootNode: Node = $from.node(1);
+    const rootNode = pm.selection.$from.node(1);
 
     let dirty = false;
 
-    const newBulletListActive = isBulletListNode(rootNode) && !!activeNode;
+    const newBulletListActive = isBulletListNode(rootNode);
     if (newBulletListActive !== this.bulletListActive) {
       this.bulletListActive = newBulletListActive;
       dirty = true;
     }
 
-    const newOrderedListActive = isOrderedListNode(rootNode) && !!activeNode;
+    const newOrderedListActive = isOrderedListNode(rootNode);
     if (newOrderedListActive !== this.orderedListActive) {
       this.orderedListActive = newOrderedListActive;
       dirty = true;
@@ -273,7 +270,7 @@ export class ListsState {
    * Determines if content inside a selection can be joined with the previous block.
    * We need this check since the built-in method for "joinUp" will join a ordered_list with bullet_list.
    */
-  private shouldJoinUp(selection: TextSelection, doc: any, nodeType: NodeType): boolean {
+  private shouldJoinUp(selection: Selection, doc: any, nodeType: NodeType): boolean {
     const res = doc.resolve(selection.$from.before(1));
     return res.nodeBefore && res.nodeBefore.type === nodeType;
   }
@@ -282,7 +279,7 @@ export class ListsState {
    * Determines if content inside a selection can be joined with the next block.
    * We need this check since the built-in method for "joinDown" will join a ordered_list with bullet_list.
    */
-  private shouldJoinDown(selection: TextSelection, doc: any, nodeType: NodeType): boolean {
+  private shouldJoinDown(selection: Selection, doc: any, nodeType: NodeType): boolean {
     const res = doc.resolve(selection.$to.after(1));
     return res.nodeAfter && res.nodeAfter.type === nodeType;
   }
@@ -293,7 +290,7 @@ export class ListsState {
    * a line. This isn't obvious by looking at the editor and it's likely not what the
    * user intended - so we need to adjust the seletion a bit in scenarios like that.
    */
-  private adjustSelection(selection: TextSelection): TextSelection {
+  private adjustSelection(selection: Selection): Selection {
     let { $from, $to } = selection;
 
     const isSameLine = $from.pos === $to.pos;

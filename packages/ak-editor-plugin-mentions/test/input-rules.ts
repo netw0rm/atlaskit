@@ -28,7 +28,7 @@ describe('ak-editor-plugin-mentions - input rules', () => {
     pm.input.insertText(0, 0,'foo @');
 
     const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore.marks)).not.to.be.undefined;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).not.to.be.undefined;
   });
 
   it('should not replace a "@" thats part of a word', () => {
@@ -36,7 +36,7 @@ describe('ak-editor-plugin-mentions - input rules', () => {
     pm.input.insertText(0, 0, 'foo@');
 
     const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore.marks)).to.be.undefined;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.be.undefined;
   });
 
   it('should replace "@" at the start of the content', () => {
@@ -44,7 +44,7 @@ describe('ak-editor-plugin-mentions - input rules', () => {
     pm.input.insertText(0, 0, '@');
 
     const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore.marks)).not.to.be.undefined;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).not.to.be.undefined;
   });
 
   it('should replace "@" if there are multiple spaces infront of it', () => {
@@ -52,6 +52,6 @@ describe('ak-editor-plugin-mentions - input rules', () => {
     pm.input.insertText(0, 0, '  @');
 
     const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore.marks)).not.to.be.undefined;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).not.to.be.undefined;
   });
 });

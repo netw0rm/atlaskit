@@ -130,7 +130,7 @@ class ImageUploadPlugin {
       $from,
       $to,
       node,
-    } = pm.selection;
+    } = pm.selection as any;
     const oldState = this.getState();
 
     const $resolvedPos: ResolvedPos = $head || $to;
@@ -173,7 +173,7 @@ class ImageUploadPlugin {
       $to,
       $head,
       node,
-    } = selection;
+    } = selection as any;
     const $resolvedPos = $head || $to;
     const isImage: Node = node && node.type.name === 'image' ? node : null;
     const {
@@ -199,7 +199,7 @@ class ImageUploadPlugin {
       $from,
       $to,
       node,
-    } = selection;
+    } = selection as any;
 
     const isImage = node && node.type.name === 'image' ? node : null;
 

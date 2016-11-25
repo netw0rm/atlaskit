@@ -21,10 +21,7 @@ import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 import parseHtml from './parse-html';
 
-import {
-  default as ListsPlugin,
-  ListType,
-} from 'ak-editor-plugin-lists';
+import { default as ListsPlugin } from 'ak-editor-plugin-lists';
 import MarkdownInputRulesPlugin from 'ak-editor-plugin-markdown-inputrules';
 import {
   default as HyperlinkPlugin,
@@ -33,11 +30,11 @@ import {
   default as ImageUploadPlugin,
   ImageUploadOptions
 } from 'ak-editor-plugin-image-upload';
-import {
-  default as TextFormattingPlugin,
-  MarkType,
-} from 'ak-editor-plugin-text-formatting';
+import { default as TextFormattingPlugin } from 'ak-editor-plugin-text-formatting';
 import MentionsPlugin from 'ak-editor-plugin-mentions';
+
+type ListType = 'bullet_list' | 'ordered_list';
+declare var require: any;
 
 // typescript removes unused var if we import it :(
 const { vdom } = require('skatejs');
@@ -65,7 +62,7 @@ function stopEventPropagation(event: Event) : void {
 }
 
 interface formattingMap {
-  [propName: string]: MarkType;
+  [propName: string]: any;
 }
 
 const formattingToProseMirrorMark: formattingMap = {
@@ -261,7 +258,7 @@ class AkEditorBitbucket extends Component {
           :
           <input
             placeholder={elem.placeholder}
-            onfocus={elem._expand}
+            onFocus={elem._expand}
             className={fakeInputClassNames}
           />
         }
@@ -367,7 +364,7 @@ class AkEditorBitbucket extends Component {
   }
 
   _toggleMark(event: CustomEvent): void {
-    const mark: MarkType = formattingToProseMirrorMark[event.detail.mark];
+    const mark: any = formattingToProseMirrorMark[event.detail.mark];
 
     if (this._pm) {
       TextFormattingPlugin.get(this._pm).toggleMark(mark);

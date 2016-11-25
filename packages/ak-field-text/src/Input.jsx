@@ -29,15 +29,17 @@ export default class Input extends PureComponent {
   handleChange = e => this.setState({ value: e.target.value })
 
   render() {
-    return (<input
-      className={styles.locals.input}
-      disabled={this.props.disabled}
-      type={this.props.type}
-      required={this.props.required}
-      name={this.props.name}
-      placeholder={this.props.placeholder}
-      value={this.state.value}
-      onChange={this.handleChange}
-    />);
+    return (
+      <input
+        className={styles.locals.input}
+        disabled={this.props.disabled}
+        type={this.props.type}
+        required={this.props.required}
+        name={this.props.name}
+        placeholder={this.props.placeholder}
+        value={this.state.value}
+        onChange={this.handleChange}
+      />
+    );
   }
 }

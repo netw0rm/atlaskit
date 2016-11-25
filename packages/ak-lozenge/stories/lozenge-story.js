@@ -1,46 +1,40 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import reactify from 'akutil-react';
 
-import AkLozenge from '../src';
+import Lozenge from '../src';
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
-
-
-const Lozenge = reactify(AkLozenge);
-const lozengeClass = styles.locals.akLozenge;
 
 storiesOf(name, module)
   .add('standard and bold lozenges', () => (
     <div>
       <h2>Standard lozenges</h2>
-      <p><Lozenge className={lozengeClass}>Default</Lozenge></p>
-      <p><Lozenge className={lozengeClass} appearance="success">Success</Lozenge></p>
-      <p><Lozenge className={lozengeClass} appearance="removed">removed</Lozenge></p>
-      <p><Lozenge className={lozengeClass} appearance="inprogress">in progress</Lozenge></p>
-      <p><Lozenge className={lozengeClass} appearance="new">new</Lozenge></p>
-      <p><Lozenge className={lozengeClass} appearance="moved">moved</Lozenge></p>
+      <p><Lozenge>Default</Lozenge></p>
+      <p><Lozenge appearance="success">Success</Lozenge></p>
+      <p><Lozenge appearance="removed">removed</Lozenge></p>
+      <p><Lozenge appearance="inprogress">in progress</Lozenge></p>
+      <p><Lozenge appearance="new">new</Lozenge></p>
+      <p><Lozenge appearance="moved">moved</Lozenge></p>
       <h2>Bold lozenges</h2>
-      <p><Lozenge className={lozengeClass} bold>Default</Lozenge></p>
-      <p><Lozenge className={lozengeClass} bold appearance="success">Success</Lozenge></p>
-      <p><Lozenge className={lozengeClass} bold appearance="removed">removed</Lozenge></p>
-      <p><Lozenge className={lozengeClass} bold appearance="inprogress">in progress</Lozenge></p>
-      <p><Lozenge className={lozengeClass} bold appearance="new">new</Lozenge></p>
-      <p><Lozenge className={lozengeClass} bold appearance="moved">moved</Lozenge></p>
+      <p><Lozenge isBold>Default</Lozenge></p>
+      <p><Lozenge isBold appearance="success">Success</Lozenge></p>
+      <p><Lozenge isBold appearance="removed">removed</Lozenge></p>
+      <p><Lozenge isBold appearance="inprogress">in progress</Lozenge></p>
+      <p><Lozenge isBold appearance="new">new</Lozenge></p>
+      <p><Lozenge isBold appearance="moved">moved</Lozenge></p>
     </div>
   ))
   .addBaselineAligned('baseline alignment', () => (
-    <Lozenge className={lozengeClass} bold appearance="new">lozenge</Lozenge>
+    <Lozenge isBold appearance="new">lozenge</Lozenge>
   ))
   .add('truncation when too wide', () => (
     <div>
       <p>
-        <Lozenge className={lozengeClass} appearance="success">
+        <Lozenge appearance="success">
           very very very wide text which truncates
         </Lozenge>
       </p>
       <p>
-        <Lozenge className={lozengeClass} appearance="success" bold>
+        <Lozenge appearance="success" isBold>
           very very very wide text which truncates
         </Lozenge>
       </p>

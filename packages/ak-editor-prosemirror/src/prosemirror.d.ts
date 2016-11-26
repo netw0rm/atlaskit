@@ -113,15 +113,15 @@ declare module 'prosemirror/dist/edit/draw' {
 }
 
 declare module 'prosemirror/dist/edit/selection' {
-  import {
-    ResolvedPos
-  } from 'prosemirror/dist/model/resolvedpos';
+  import { ResolvedPos } from 'prosemirror/dist/model/resolvedpos';
+  import { Node } from 'prosemirror/dist/model';
 
   export class Selection {
     $from : ResolvedPos;
     $to: ResolvedPos;
     from: number;
     to: number;
+    empty: boolean;
   }
   export class TextSelection extends Selection {
       constructor($anchor: ResolvedPos, $head?: ResolvedPos);
@@ -130,6 +130,7 @@ declare module 'prosemirror/dist/edit/selection' {
   }
   export class NodeSelection extends Selection {
       constructor($from: ResolvedPos)
+      node: Node;
   }
 }
 
@@ -164,7 +165,7 @@ declare module 'prosemirror/dist/edit/main' {
     import { EditorTransform } from 'prosemirror/dist/edit/transform';
     import { UpdateScheduler } from 'prosemirror/dist/edit/update';
     import { Schema } from 'prosemirror/dist/model/schema';
-    import { Selection } from 'prosemirror/dist/edit/selection';
+    import { TextSelection, NodeSelection } from 'prosemirror/dist/edit';
     import { Slice } from 'prosemirror/dist/model';
 
     interface Subscription<Handler> {
@@ -219,7 +220,7 @@ declare module 'prosemirror/dist/edit/main' {
         root: HTMLElement;
         wrapper: HTMLElement;
         getOption(name: any): any;
-        selection: any;
+        selection: TextSelection | NodeSelection;
         setTextSelection(anchor: any, head?: any): void;
         setNodeSelection(pos: any): void;
         setSelection(selection: any): void;
@@ -668,7 +669,7 @@ declare module 'prosemirror/dist/model/node' {
         lastChild: any;
         eq(other: any): boolean;
         sameMarkup(other: any): boolean;
-        hasMarkup(type: any, attrs: any, marks: any): boolean;
+        hasMarkup(type: any, attrs?: any, marks?: any): boolean;
         copy(content?: any): any;
         mark(marks: Mark[]): this;
         cut(from: number, to: number): any;
@@ -703,7 +704,7 @@ declare module 'prosemirror/dist/model/node' {
         text?: string;
         contentMatchAt(index: any): any;
         canReplace(from: number, to: number, replacement: any, start: any, end: any): any;
-        canReplaceWith(from: number, to: number, type: any, attrs: any, marks: any): any;
+        canReplaceWith(from: number, to: number, type: any, attrs?: any, marks?: any): any;
         canAppend(other: any): any;
         defaultContentType(at: any): any;
         toJSON(): {
@@ -735,7 +736,7 @@ declare module 'prosemirror/dist/model/resolvedpos' {
         pos: number;
         parentOffset: number;
         resolveDepth(val: any): any;
-        parent: any;
+        parent: Node;
         node(depth: number): Node;
         index(depth?: number): number;
         indexAfter(depth?: number): number;

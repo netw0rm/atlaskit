@@ -1,5 +1,5 @@
 import '../types';
-import * as chai from 'chai';
+import chai from 'chai';
 import schema from '../src';
 import jsonSchema from '../src/json-schema';
 import Ajv from 'ajv';

@@ -1,7 +1,7 @@
 # Tag
 
 
-This component is displayed as a tag with an optional link and/or button to remove it.
+This component is displayed as a accessible tag with an optional link and/or button to remove it.
 
 ![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-tag/docs/overview.png)
 
@@ -16,14 +16,14 @@ Interact with a [live demo of the ak-tag component](https://aui-cdn.atlassian.co
 ## Installation
 
 ```sh
-npm install ak-tag
+npm install ak-tag --save
 ```
 
 ## Using the component
 
 ### HTML
 
-The `ak-tag` package exports the Tag [Skate](https://github.com/skatejs/skatejs) component. It automatically registers the respective `<ak-tag>` web component upon import.
+The `ak-tag` package exports the Tag [React](https://facebook.github.io/react/) component.
 
 Import the component in your JS resource:
 
@@ -39,11 +39,18 @@ Now you can use the defined tag in your HTML markup:
 ```html
 <html>
   <head>
+    <script src="react.js"></script>
+    <script src="react-dom.js"></script>
     <script src="bundle.js"></script>
   </head>
   <body>
-    <!-- ... -->
-    <ak-tag text="Jelly bean"></ak-tag>
+    <div id="root"></div>
+    <script>
+      ReactDOM.render(
+        <Tag text="Jelly bean"/>,
+        document.getElementById('root')
+      );
+    </script>
   </body>
 </html>
 ```
@@ -52,23 +59,19 @@ You can also use it within another JS resource:
 
 #### index.js
 ```javascript
+import React, { PureComponent, PropTypes } from 'react';
 import Tag from 'ak-tag';
 
-const tag = new Tag();
-tag.text = 'Jelly bean';
+export default class MyComponent extends PureComponent {
+  static propTypes = {
+    children: PropTypes.element.isRequired,
+  }
 
-document.body.appendChild(tag);
-```
-
-### React
-
-This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
-
-```javascript
-import Tag from 'ak-tag';
-import reactify from 'skatejs-react-integration';
-
-const ReactComponent = reactify(Tag, {});
-
-ReactDOM.render(<ReactComponent text="Jelly bean" />, container);
+  render = () => (<div>
+    <Tag href="http://atlassian.com/careers/"
+         text="Atlassian"
+         removeButtonText="Come join us !"
+      />
+  </div>)
+}
 ```

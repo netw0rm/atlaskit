@@ -31,7 +31,7 @@ export default class BreadcrumbsItem extends PureComponent {
   render() {
     return (
       <div className={styles.locals.item}>
-        <Button appearance="link" href={this.props.href}>
+        <Button appearance="link" spacing="compact" href={this.props.href}>
           {this.props.children}
         </Button>
       </div>

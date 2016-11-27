@@ -1,20 +1,34 @@
 @import '~akutil-shared-styles/src/colors.less';
 
+@breadcrumbs-padding: 24px;
+
 .container {
   color: @ak-color-N300;
   display: flex;
   flex-wrap: wrap;
 
-  // Override link button color and adding
-  .item > a {
-    color: @ak-color-N300;
-    padding: 0;
-  }
-
-  .item + .item::before {
-    content: '/';
+  .item {
     display: inline-block;
-    min-width: 24px;
-    text-align: center;
+
+    // Override link button color and padding
+    & > a {
+      color: @ak-color-N300;
+      padding: 0;
+    }
+
+    & + .item {
+      padding-left: @breadcrumbs-padding;
+    }
+
+    & + .item::before {
+      content: '/';
+      float: left;
+      margin-left: -@breadcrumbs-padding;
+      padding: 2px 0; // To match compact button height of 24px
+      position: absolute;
+      text-align: center;
+      vertical-align: middle;
+      width: @breadcrumbs-padding;
+    }
   }
 }

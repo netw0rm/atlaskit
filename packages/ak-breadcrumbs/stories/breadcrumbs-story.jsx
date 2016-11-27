@@ -32,27 +32,34 @@ storiesOf(name, module)
     </AkBreadcrumbs>
   ))
   .add('ak-breadcrumbs with many items', () => (
-    <AkBreadcrumbs>
-      <AkBreadcrumbsItem href="/item">Item 1</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">Item 2</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">Item 3</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">Item 4</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">Item 5</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">Item 6</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">Item 7</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">Item 8</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">Item 9</AkBreadcrumbsItem>
+    <AkBreadcrumbs >
+      <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">A fourth item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">Yet another item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">An item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">The next item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">The item after the next item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">The ninth item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">Item ten</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">The last item</AkBreadcrumbsItem>
     </AkBreadcrumbs>
   ))
   .add('ak-breadcrumbs with many items, inside small container', () => (
     <div style={{ maxWidth: '500px', border: '1px solid black' }}>
       <AkBreadcrumbs >
-        <AkBreadcrumbsItem href="/pages">Pages</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/pages/home">Home</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/pages/adg3">ADG 3 - New site</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/pages/daccontent">design.atlassian.com content</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/pages/product-design">Product design (draft)</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/pages/patternsdesign">Patterns design (draft)</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">A fourth item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">Yet another item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">An item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">The next item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">The item after the next item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">The ninth item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">Item ten</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">The last item</AkBreadcrumbsItem>
       </AkBreadcrumbs>
     </div>
   ));

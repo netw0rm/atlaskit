@@ -56,9 +56,9 @@ export default class Layer extends PureComponent {
      * @memberof Layer
      * @instance
      * @type Boolean
-     * @example @html <Layer shouldFlip></Layer>
+     * @example @html <Layer autoPosition></Layer>
     */
-    shouldFlip: PropTypes.bool,
+    autoPosition: PropTypes.bool,
     /**
      * @description A string representing the offsets from the target element in the format
      * "[x-offset] [y-offset]", measured in pixels.
@@ -76,14 +76,14 @@ export default class Layer extends PureComponent {
      * @type String
      * @example @html <Layer target={this.targetRef}></Layer>
      */
-    target: PropTypes.node,
+    target: PropTypes.node.isRequired,
     children: PropTypes.node.isRequired,
   }
 
   static defaultProps = {
     position: POSITION_ATTRIBUTE_ENUM.default,
     boundariesElement: 'viewport',
-    shouldFlip: true,
+    autoPosition: true,
     offset: '',
     target: null,
     children: null,
@@ -101,15 +101,14 @@ export default class Layer extends PureComponent {
     this.applyPopper(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.applyPopper(nextProps);
-  }
-
-
   componentWillUnmount() {
     if (this.popper) {
       this.popper.destroy();
     }
+  }
+
+  componentWillRecieveProps(nextProps) {
+    this.applyPopper(nextProps);
   }
 
   applyPopper(props) {
@@ -132,11 +131,11 @@ export default class Layer extends PureComponent {
           offset: this.props.offset,
         },
         flip: {
-          enabled: this.props.shouldFlip,
+          enabled: this.props.autoPosition,
           flipVariations: true,
         },
         preventOverflow: {
-          enabled: this.props.shouldFlip,
+          enabled: this.props.autoPosition,
           moveWithTarget: true,
         },
       },

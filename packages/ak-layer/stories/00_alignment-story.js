@@ -39,6 +39,6 @@ storiesOf(name, module)
     </div>
   )).add('Alignments flipping disabled', () => (
     <div style={{ height: '100%' }}>
-      <AllAlignments shouldFlip={false} />
+      <AllAlignments autoPosition={false} />
     </div>
   ));

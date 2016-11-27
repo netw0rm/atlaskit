@@ -21,6 +21,7 @@ body {
   line-height: 1.42857142857143;
   letter-spacing: -0.005em;
   -ms-overflow-style: -ms-autohiding-scrollbar;
+  text-decoration-skip: ink;
 }
 
 
@@ -40,6 +41,24 @@ pre,
 form,
 table {
   margin: (@ak-grid-size * 1.5) 0 0 0;
+}
+
+
+// Links
+a {
+  color: @ak-color-B400;
+  text-decoration: none;
+}
+a:hover {
+  color: @ak-color-B300;
+  text-decoration: underline;
+}
+a:active {
+  color: @ak-color-B500;
+}
+a:focus {
+  outline: 2px solid @ak-color-B100;
+  outline-offset: 2px;
 }
 
 
@@ -66,6 +85,16 @@ h6 {
 
 
 // Lists
+ul,
+ol,
+dl {
+  padding-left: (@ak-grid-size * 5);
+
+  [dir="rtl"]& {
+    padding-left: 0;
+    padding-right: (@ak-grid-size * 5);
+  }
+}
 dd,
 dd + dt,
 li + li {
@@ -108,7 +137,12 @@ q {
 }
 blockquote {
   border: none;
-  padding-left: 16px;
+  padding-left: (@ak-grid-size * 5);
+
+  [dir="rtl"] & {
+    padding-left: 0;
+    padding-right: (@ak-grid-size * 5);
+  }
 }
 blockquote::before,
 q:before {
@@ -120,6 +154,15 @@ q::after {
 }
 blockquote::before {
   float: left; // to keep the quotes left of any child elements like blockquote > p
+  margin-left: -1em;
+  text-align: right;
+  width: 1em;
+
+  [dir="rtl"] & {
+    float: right;
+    margin-right: -1em;
+    text-align: left;
+  }
 }
 blockquote > :last-child {
   display: inline-block; // so the quotes added via pseudos follow it immediately.
@@ -128,7 +171,7 @@ blockquote > :last-child {
 
 // Other typographical elements
 small {
-  .adg-typography-h200();
+  .adg-typography-h100();
 }
 code,
 kbd {

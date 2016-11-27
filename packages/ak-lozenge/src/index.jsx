@@ -36,7 +36,7 @@ export default class Lozenge extends PureComponent {
      * @description The content passed to the lozenge
      * @memberof Lozenge
      * @instance
-     * @type {element}
+     * @type {node}
      */
     children: PropTypes.node,
   };

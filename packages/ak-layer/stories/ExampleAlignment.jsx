@@ -27,7 +27,7 @@ export default class ExampleAlignment extends PureComponent {
     return (
       <div>
         <AKLayer {...this.props} target={content}>
-          <div>{this.props.position}</div>
+          <div style={{ background: '#fca' }}>{this.props.position}</div>
         </AKLayer>
       </div>
     );

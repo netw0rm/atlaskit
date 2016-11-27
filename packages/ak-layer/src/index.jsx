@@ -161,7 +161,7 @@ export default class Layer extends PureComponent {
     const { position, transform } = this.state;
     return (
       <div>
-        <div ref={ref => (this.targetRef = ref)}>
+        <div ref={ref => (this.targetRef = ref)} style={{ display: 'inline-block' }}>
           {this.props.target}
         </div>
         <div ref={ref => (this.contentRef = ref)} style={{ top: 0, left: 0, position, transform }}>

@@ -28,7 +28,7 @@ export default class Layer extends PureComponent {
      * @memberof Layer
      * @instance
      * @default "right middle"
-     * @type {string}
+     * @type String
      * @example @html <Layer position="top left"></Layer>
      */
     position: PropTypes.oneOf(POSITION_ATTRIBUTE_ENUM.values),
@@ -37,15 +37,16 @@ export default class Layer extends PureComponent {
      * The Layer will not sit outside this element if it can help it.
      * If, through it's normal positoning, it would end up outside the boundary the layer
      * will flip positions if the enable-flip prop is set.
-     * Can either be an element or a selector of an element.
+     *
+     * Valid values are "window" and "viewport"
      * If not set the boundary will be the current viewport.
      * @memberof Layer
      * @instance
      * @default "viewport"
-     * @type HTMLElement | String
-     * @example @html <Layer shouldFlip boundariesElement={this.boundaryElemRef}></Layer>
+     * @type String
+     * @example @html <Layer shouldFlip boundariesElement="window"></Layer>
      */
-    boundariesElement: PropTypes.node,
+    boundariesElement: PropTypes.oneOf(['viewport', 'window']),
     /**
      * @description Sets whether a Layer will flip it's position if there is not enough space in
      * the requested position.

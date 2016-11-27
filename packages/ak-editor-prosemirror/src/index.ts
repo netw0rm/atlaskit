@@ -34,8 +34,13 @@ export {
 } from 'prosemirror/dist/edit';
 
 export {
-  EditorTransform
+  EditorTransform,
 } from 'prosemirror/dist/edit/transform';
+
+export {
+  RemoveMarkStep,
+  ReplaceStep
+} from 'prosemirror/dist/transform';
 
 export {
   DOMFromPos
@@ -52,6 +57,7 @@ export {
   headingRule,
   bulletListRule,
   blockQuoteRule,
+  codeBlockRule,
   wrappingInputRule
 } from 'prosemirror/dist/inputrules';
 

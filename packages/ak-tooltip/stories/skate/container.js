@@ -1,5 +1,6 @@
-import { define, vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
-import React from 'react';
+/** @jsx vdom */
+
+import { define, vdom } from 'skatejs';
 
 import AKTrigger from '../../src/index.tooltip-trigger';
 

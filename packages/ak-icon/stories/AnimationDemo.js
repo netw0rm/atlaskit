@@ -3,7 +3,6 @@ import sample from 'lodash.sample';
 import React from 'react';
 
 import styles from './styles.less';
-import componentStyles from '../src/shadow.less';
 
 
 class AnimationDemo extends React.Component {
@@ -23,7 +22,7 @@ class AnimationDemo extends React.Component {
 
   randomIcon() {
     const Icon = sample(this.props.components);
-    return <Icon className={componentStyles.locals.akIcon} />;
+    return <Icon label="Random icon" />;
   }
 
   startAnimating() {
@@ -68,6 +67,6 @@ class AnimationDemo extends React.Component {
 }
 AnimationDemo.displayName = 'AnimationDemo';
 AnimationDemo.propTypes = {
-  components: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  components: React.PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 export default AnimationDemo;

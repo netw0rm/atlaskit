@@ -1,25 +1,29 @@
 {
   "name": "ak-editor-plugin-text-formatting",
-  "version": "5.0.0",
+  "version": "5.2.1",
   "description": "A text formatting plugin for ProseMirror",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.ts",
-  "typings": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-plugin-text-formatting"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.ts"
   ],
-  "dependencies": {
-    "ak-editor-prosemirror": "^4.0.0"
+  "peerDependencies": {
+    "ak-editor-prosemirror": "^4.0.0",
+    "ak-editor-schema": "^4.4.1"
+  },
+  "devDependencies": {
+    "ak-editor-prosemirror": "*",
+    "ak-editor-schema": "*",
+    "ak-editor-test": "*"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
-  "devDependencies": {
-    "ak-editor-test": "*"
-  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"

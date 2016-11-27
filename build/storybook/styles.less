@@ -1,28 +1,15 @@
 @import '~akutil-shared-styles/src/colors.less';
-@import '~akutil-shared-styles/src/fonts.less';
 @import '~akutil-shared-styles/src/grid.less';
 
-html {
-  font-family: @ak-font-family;
-  font-size: @ak-font-size-default;
-  // height: 100% is required so that the html actually has a height
-  height: 100%;
-}
 
 @grid-line-size: 1px;
 @grid-minus-one: @ak-grid-size - @grid-line-size;
 @grid-line-opacity: 0.1;
 @grid-color: @ak-color-N40;
-@margin: @ak-grid-size * 2;
-
 
 body {
-  background-color: white;
   // creates the hatched grid pattern in storybook
   background-image: repeating-linear-gradient(0deg, white, white 7px, transparent 7px, transparent),
                     repeating-linear-gradient(90deg, @grid-color, @grid-color 1px, white 1px, white);
   background-size: @ak-grid-size @ak-grid-size;
-  // height: 100% is required so that the body actually has a height
-  height: ~"calc(100% - @{margin}*2)";
-  margin: @margin;
 }

@@ -1,8 +1,7 @@
 import MarkdownInputRulesPlugin from '../src';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { default as chai, expect } from 'chai';
 import {
-  chaiPlugin, makeEditor, doc, a, p, em, strong, code, 
+  chaiPlugin, makeEditor, doc, a, p, em, strong, code,
   hr,img, h1, h2, h3, ul, ol, li, blockquote, code_block
 } from 'ak-editor-test';
 
@@ -13,6 +12,11 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
     const { pm, plugin } = makeEditor({ doc, plugin: MarkdownInputRulesPlugin });
     return { pm, plugin, sel: pm.doc.refs['<>'] };
   }
+
+  it('defines a name for use by the ProseMirror plugin registry ', () => {
+    const Plugin = MarkdownInputRulesPlugin as any; // .State is not public API.
+    expect(Plugin.State.name).is.be.a('string');
+  });
 
   describe('strong rule', () => {
     it('should convert "**text**" to strong', () => {
@@ -57,7 +61,7 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
       const { pm, sel } = editor(doc(p(strong('This is bold {<>}'))));
 
       pm.input.insertText(sel, sel, '*italic*');
-      expect(pm.doc).to.deep.equal(doc(p(strong('This is bold '), em(strong('italic')))));    
+      expect(pm.doc).to.deep.equal(doc(p(strong('This is bold '), em(strong('italic')))));
     });
   });
 
@@ -226,6 +230,45 @@ describe('ak-editor-plugin-markdown-inputrules', () => {
 
       pm.input.insertText(sel, sel, '1. ');
       expect(pm.doc).to.deep.equal(doc(code_block()('1. ')));
+    });
+  });
+
+  describe('blockquote rule', () => {
+    it('should convert "> " to a blockquote', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '> ');
+      expect(pm.doc).to.deep.equal(doc(blockquote(p())));
+    });
+
+    it('should convert "> " to a blockquote when inside another blockquote (nesting)', () => {
+      const { pm, sel } = editor(doc(blockquote(p('{<>}'))));
+
+      pm.input.insertText(sel, sel, '> ');
+      expect(pm.doc).to.deep.equal(doc(blockquote(blockquote(p()))));
+    });
+
+    it('should not convert "> " to a blockquote when inside a list', () => {
+      const { pm, sel } = editor(doc(ul(li(p('{<>}')))));
+
+      pm.input.insertText(sel, sel, '> ');
+      expect(pm.doc).to.deep.equal(doc(ul(li(p('> ')))));
+    });
+  });
+
+  describe('codeblock rule', () => {
+    it('should convert "```" to a code block', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '```');
+      expect(pm.doc).to.deep.equal(doc(code_block()()));
+    });
+
+    it('should not convert "```" to a code block when inside a list', () => {
+      const { pm, sel } = editor(doc(ul(li(p('{<>}')))));
+
+      pm.input.insertText(sel, sel, '```');
+      expect(pm.doc).to.deep.equal(doc(ul(li(p('```')))));
     });
   });
 });

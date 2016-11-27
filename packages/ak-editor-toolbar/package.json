@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-toolbar",
-  "version": "4.0.1",
+  "version": "4.2.0",
   "description": "Editor Toolbar web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -15,15 +15,15 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-prosemirror": "^4.0.0",
-    "ak-editor-shared-styles": "^1.0.3",
-    "akutil-shared-styles": "^35.0.1",
+    "ak-editor-shared-styles": "^3.0.0",
+    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
-    "skatejs": "^4.0.4"
+    "skatejs": "^4.0.6"
   },
   "devDependencies": {
     "akutil-react": "*",
     "ak-editor-button": "*",
-    "ak-editor-content": "^2.0.0",
+    "ak-editor-content": "^4.0.0",
     "ak-icon": "^10.0.0",
     "ak-editor-toolbar-text-formatting": "*"
   },

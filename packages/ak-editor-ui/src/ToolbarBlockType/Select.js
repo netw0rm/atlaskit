@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, prop, emit, Component } from 'skatejs';
 import Button from '../Button';
 import styles from './Select.less';

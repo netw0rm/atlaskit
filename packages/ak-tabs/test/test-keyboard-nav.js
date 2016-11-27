@@ -14,7 +14,7 @@ import {
 chai.use(chaiAsPromised);
 chai.should();
 
-describe('ak-tabs keyboard nav -', () => {
+describe.skip('ak-tabs keyboard nav -', () => {
   let fixtures;
 
   function setUpTest(opts = {}) {

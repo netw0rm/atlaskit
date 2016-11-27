@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { define, emit, prop, props, vdom } from 'skatejs';
 
 import 'style!../host.less';
@@ -152,6 +154,10 @@ export default define('pf-mention-list', {
 
   created(elem) {
     elem._items = {};
+    // Bind methods so that they're usable from a reactified version.
+    elem.selectNext = elem.selectNext.bind(elem);
+    elem.selectPrevious = elem.selectPrevious.bind(elem);
+    elem.chooseCurrentSelection = elem.chooseCurrentSelection.bind(elem);
   },
 
   render(elem) {

@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { emit, vdom, prop, define } from 'skatejs';
 import 'ak-button';
 import 'ak-icon/glyph/expand';

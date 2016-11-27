@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom } from 'skatejs';
 
 /* eslint-disable max-len, react/prop-types */

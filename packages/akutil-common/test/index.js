@@ -19,7 +19,6 @@ describe(name, () => {
     expect(exports.enumeration).to.be.a('function', 'enumeration');
     expect(exports.keyCode).to.be.an('function', 'keyCode');
     expect(exports.KeyPressHandler).to.be.a('function', 'KeyPressHandler');
-    expect(exports.style).to.be.a('function', 'style');
   });
 
   describe('aui/internal/attributes', () => {

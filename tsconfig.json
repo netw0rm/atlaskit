@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": false,
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "jsx": "preserve",
     "moduleResolution": "node",
@@ -8,9 +9,16 @@
     "noImplicitAny": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
-    "target": "es2015"
+    "target": "es2015",
+    "types": [
+      "chai",
+      "react",
+      "sinon",
+      "sinon-chai"
+    ]
   },
   "files": [
-    "build/typings/index.d.ts"
+    "build/types/jsx.d.ts",
+    "build/types/shadow-dom.d.ts"
   ]
 }

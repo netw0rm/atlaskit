@@ -14,7 +14,7 @@ chai.should();
 
 const getSlots = component => getShadowRoot(component).querySelectorAll('slot,content');
 
-describe('ak-tag-group', () => {
+describe.skip('ak-tag-group', () => {
   let component;
 
   beforeEach(() => {

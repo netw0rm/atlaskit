@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, prop } from 'skatejs';
 import FieldBase from 'ak-field-base';
 

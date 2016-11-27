@@ -1,0 +1,36 @@
+{
+  "name": "ak-calendar",
+  "version": "2.0.0",
+  "description": "ak-calendar webcomponent",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-calendar"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "ak-button": "^4.0.2",
+    "ak-icon": "^8.1.2",
+    "akutil-react": "^3.0.1",
+    "akutil-shared-styles": "^37.0.3",
+    "babel-runtime": "^6.11.6",
+    "calendar-base": "^0.3.0",
+    "glamor": "^2.17.14",
+    "keycode": "^2.1.7"
+  },
+  "devDependencies": {
+    "akutil-polyfills": "^5.0.1"
+  },
+  "peerDependencies": {
+    "react": "^15.3.2"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

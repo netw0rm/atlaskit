@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom } from 'skatejs';
 import { getShadowRoot } from 'akutil-common-test';
 import chai from 'chai';
@@ -11,7 +13,7 @@ chai.use(chaiAsPromised);
 chai.should();
 
 
-describe('ak-tag', () => {
+describe.skip('ak-tag', () => {
   describe('AnimationWrapper', () => {
     let component;
 

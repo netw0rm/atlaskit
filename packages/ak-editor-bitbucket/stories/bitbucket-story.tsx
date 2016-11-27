@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import AkTabs from 'ak-tabs';
 import { Tab as AkTab} from 'ak-tabs';
 import BitbucketComponent from '../src';
-
+import FacadeInput from '../src/hacks/facade-input';
 
 const Tabs = reactify(AkTabs);
 const Tab = reactify(AkTab);
@@ -27,6 +27,8 @@ const imageUploader = (e: any, fn: any) => {
     });
   }
 };
+
+declare var module: any;
 
 storiesOf('ak-editor-bitbucket', module)
   .add('Empty', () => (
@@ -191,7 +193,29 @@ storiesOf('ak-editor-bitbucket', module)
     }
 
     return <Demo />;
+  })
+  .add('Facade Input', () => {
+    type Props = {};
+    type State = {};
+    class FacadeInputField extends Component<Props, State> {
+      render() {
+        return (
+          <div>Hello</div>
+        );
+      }
+
+      componentDidMount() {
+        const elem = ReactDOM.findDOMNode(this) as HTMLElement;
+        const facadeInput = new FacadeInput(elem, {
+          initialValue: elem.innerText,
+          classList: []
+        });
+
+        facadeInput.onSync = (val: any) => {
+          action(`value synced ${val}`)();
+        }
+      }
+    }
+
+    return <FacadeInputField />
   });
-
-;
-

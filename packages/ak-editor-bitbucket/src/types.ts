@@ -22,5 +22,6 @@ declare module "ak-editor-toolbar-block-type";
 declare module "ak-editor-toolbar-hyperlink";
 declare module "ak-editor-toolbar-lists";
 declare module "ak-editor-toolbar-text-formatting";
+declare module "ak-editor-toolbar-feedback";
 declare module "akutil-common-test";
 declare module "autobind-decorator";

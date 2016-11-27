@@ -34,16 +34,20 @@ function pad(num) {
   return num < 10 ? `0${num}` : num;
 }
 
-export function getDayName(elem, i) {
+export function getDayName(i) {
   return getI18n().weekdays[i].substring(0, 3);
 }
 
-export function getMonthName(elem, i) {
+export function getMonthName(i) {
   return getI18n().months[i - 1];
 }
 
 export function dateToString(date, { fixMonth } = {}) {
   return date ? `${date.year}-${pad(date.month + (fixMonth ? 1 : 0))}-${pad(date.day)}` : '';
+}
+
+export function toIso(year, month, day) {
+  return `${year}-${pad(month)}-${pad(day)}`;
 }
 
 export function makeArrayFromNumber(i) {
@@ -53,14 +57,4 @@ export function makeArrayFromNumber(i) {
     arr.push(a);
   }
   return arr;
-}
-
-export function makeEventDetail(date) {
-  const detail = {
-    day: Number(date.day),
-    month: Number(date.month),
-    year: Number(date.year),
-  };
-  detail.date = dateToString(detail);
-  return detail;
 }

@@ -1,0 +1,63 @@
+@import '~akutil-shared-styles/src/grid.less';
+@import '~akutil-shared-styles/src/colors.less';
+@grid: @ak-grid-size / 2; // evaluates to 4px
+
+// NOTE: this will be replaced with responsive breakpoints in a later ticket related to
+// a 'width' prop/attribute.
+@temporaryFixedModalWidth: 600px;
+
+.panel-background (@topBorderRadius: 0, @bottomBorderRadius: 0) {
+  background-color: white;
+  border-top-left-radius: @topBorderRadius;
+  border-top-right-radius: @topBorderRadius;
+  border-bottom-left-radius: @bottomBorderRadius;
+  border-bottom-right-radius: @bottomBorderRadius;
+}
+
+@verticalMargin: @grid * 15;
+
+// Fixed container to avoid position clashing with other elements
+.modal-wrapper {
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.modal-positioner {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  height: ~"calc(100% - (2 * @{verticalMargin}))"; // can't use max-height here because of IE11 bug
+  padding-top: @verticalMargin;
+  position: relative;
+  width: @temporaryFixedModalWidth;
+
+  // 3 direct flex children (header + content + footer slot areas)
+  .header-flex, .content-flex, .footer-flex {
+    box-shadow: 0 @ak-grid-size (2 * @ak-grid-size) (@ak-grid-size * -0.5) fade(@ak-color-N900, 28%);
+    padding: @grid * 4;
+  }
+
+  // Background and corners for header
+  .header-flex {
+    flex: 0 0 auto;
+    .panel-background(@grid, 0);
+    border-bottom: 1px solid #DDD; // AK-704: animated keylines
+  }
+
+  // Background for middle content
+  .content-flex {
+    flex: 0 1 auto;
+    .panel-background();
+    overflow: auto;
+  }
+
+  // Background and corners for footer
+  .footer-flex {
+    flex: 0 0 auto;
+    .panel-background(0, @grid);
+    border-top: 1px solid #DDD; // AK-704: animated keylines
+  }
+}

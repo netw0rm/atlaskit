@@ -45,7 +45,13 @@ const standardConfig = {
   resolve: {
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.jsx'],
     packageMains: ['ak:webpack:raw', ...defaultPackageMains()],
+    alias: {
+      sinon: 'sinon/pkg/sinon',
+    },
   },
+  noParse: [
+    /sinon/,
+  ],
   module: {
     loaders: [
       {
@@ -85,6 +91,13 @@ const standardConfig = {
           exclude: /node_modules/,
         },
         //
+        // Images (for storybook)
+        //
+        {
+          test: /\.png$/,
+          loader: 'url-loader',
+        },
+        //
         // JAVASCRIPT (React components)
         //
         {
@@ -117,6 +130,10 @@ const standardConfig = {
           exclude: /node_modules/,
         },
       ],
+      {
+        test: /sinon\/pkg\/sinon/,
+        loader: 'imports?define=>false,require=>false',
+      },
     ],
   },
   postcss: () => [

@@ -1,0 +1,43 @@
+@import 'shared-variables.less';
+
+.onlySize(@size) {
+  @height: "size-@{size}";
+  @width: "size-@{size}";
+
+  .@{size} {
+    .icon, .content {
+      height: @@height;
+      width: @@width;
+
+      & > svg when not(@size=small) {
+        height: @@height;
+        width: @@width;
+      }
+    }
+  }
+}
+
+.root {
+  display: inline-flex;
+}
+
+.icon {
+  box-sizing: border-box;
+  display: inline-flex;
+  line-height: 1;
+  vertical-align: baseline;
+}
+
+.onlySize(small);
+.onlySize(medium);
+.onlySize(large);
+.onlySize(xlarge);
+
+.content {
+  display: inline-block;
+  margin: auto;
+
+  & > svg {
+    vertical-align: bottom;
+  }
+}

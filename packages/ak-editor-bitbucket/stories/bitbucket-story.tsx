@@ -28,6 +28,8 @@ const imageUploader = (e: any, fn: any) => {
   }
 };
 
+declare var module: any;
+
 storiesOf('ak-editor-bitbucket', module)
   .add('Empty', () => (
     <Bitbucket />
@@ -203,7 +205,7 @@ storiesOf('ak-editor-bitbucket', module)
       }
 
       componentDidMount() {
-        const elem = ReactDOM.findDOMNode(this);
+        const elem = ReactDOM.findDOMNode(this) as HTMLElement;
         const facadeInput = new FacadeInput(elem, {
           initialValue: elem.innerText,
           classList: []
@@ -217,5 +219,3 @@ storiesOf('ak-editor-bitbucket', module)
 
     return <FacadeInputField />
   });
-
-;

@@ -27,6 +27,7 @@
     "no-param-reassign": ["error", { "props": false }],
     "react/jsx-filename-extension": 0,
     "react/no-unknown-property": [0],
-    "react/no-unused-prop-types": ["error", { "skipShapeProps": true }]
+    "react/no-unused-prop-types": ["error", { "skipShapeProps": true }],
+    "react/prefer-stateless-function": 0
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "ak-css-reset",
-  "version": "1.1.0",
+  "version": "1.3.0",
   "description": "ak-css-reset webcomponent",
   "main": "dist/bundle.css",
   "scripts": {

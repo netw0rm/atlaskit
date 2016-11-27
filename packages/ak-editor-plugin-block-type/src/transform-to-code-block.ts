@@ -1,9 +1,10 @@
-import { ProseMirror, ReplaceStep, Slice, RemoveMarkStep, EditorTransform } from 'ak-editor-prosemirror';
+import { ProseMirror, ReplaceStep, Slice, RemoveMarkStep, EditorTransform, NodeSelection } from 'ak-editor-prosemirror';
 import { CodeBlockNodeType } from 'ak-editor-schema';
 
 // copied from prosemirror/src/commands/index.js
 export default function(nodeType: CodeBlockNodeType, pm: ProseMirror) {
-  let {$from, $to, node} = pm.selection;
+  let node = pm.selection instanceof NodeSelection ? pm.selection.node : null;
+  let { $from, $to } = pm.selection;
   let depth;
   if (node) {
     depth = $from.depth;

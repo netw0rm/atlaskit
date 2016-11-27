@@ -107,7 +107,7 @@ class ListsPlugin {
 
   update() {
     const pm = this.pm;
-    const { $head, $from, $to } = pm.selection;
+    const { $head, $from, $to } = pm.selection as any;
     const oldState = this.getState();
 
     const $resolvedPos: ResolvedPos = $head || $to;
@@ -293,7 +293,7 @@ class ListsPlugin {
   toggleList(type: ListType): boolean {
     const pm = this.pm;
     let { $from, $to } = pm.selection;
-    const adjustedSelection = this.adjustSelection(pm.selection);
+    const adjustedSelection = this.adjustSelection(pm.selection as any);
 
     if ($from === $to) {
       pm.setSelection(adjustedSelection);
@@ -302,7 +302,7 @@ class ListsPlugin {
     }
 
     const rootNode = $from.node(1);
-    const isList = this.listTypes.indexOf(rootNode.type.name) !== -1;
+    const isList = this.listTypes.indexOf(rootNode.type.name as ListType) !== -1;
     const isRangeOfType = this.isRangeOfType(adjustedSelection.$from, adjustedSelection.$to, type);
     const shouldUntoggle = isRangeOfType;
     const rangeContainsList = this.rangeContainsList($from, $to);
@@ -321,25 +321,25 @@ class ListsPlugin {
       pm.setSelection(tr.selection);
       commands.wrapInList(tr.pm.schema.nodes[type as string] as NodeType)(tr.pm);
 
-      if (this.shouldJoinUp(pm.selection, pm.doc, type)) {
+      if (this.shouldJoinUp(pm.selection as any, pm.doc, type)) {
         commands.joinUp(pm, true);
       }
 
-      if (this.shouldJoinDown(pm.selection, pm.doc, type)) {
+      if (this.shouldJoinDown(pm.selection as any, pm.doc, type)) {
         commands.joinDown(pm, true);
       }
 
       this.resetSelection();
       return true;
     } else {
-      pm.setSelection(this.adjustSelection(pm.selection));
+      pm.setSelection(this.adjustSelection(pm.selection as any));
       commands.wrapInList(pm.schema.nodes[type as string] as NodeType)(pm);
 
-      if (this.shouldJoinUp(pm.selection, pm.doc, type)) {
+      if (this.shouldJoinUp(pm.selection as any, pm.doc, type)) {
         commands.joinUp(pm, true);
       }
 
-      if (this.shouldJoinDown(pm.selection, pm.doc, type)) {
+      if (this.shouldJoinDown(pm.selection as any, pm.doc, type)) {
         /*
          * joinDown expects the selection to be from the end of our last node to
          * the beginning of the next. So we need to adjust our selection a bit.

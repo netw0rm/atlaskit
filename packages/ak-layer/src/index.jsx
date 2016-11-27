@@ -56,7 +56,7 @@ export default class Layer extends PureComponent {
      * @memberof Layer
      * @instance
      * @type Boolean
-     * @example @html <Layer autoPosition></Layer>
+     * @example @html <Layer autoPosition={true}></Layer>
     */
     autoPosition: PropTypes.bool,
     /**
@@ -73,8 +73,13 @@ export default class Layer extends PureComponent {
      * Element on a page relative to which layer should be positioned.
      * @memberof Layer
      * @instance
-     * @type String
-     * @example @html <Layer target={this.targetRef}></Layer>
+     * @type ReactElement
+     * @example @html
+     * const myTarget = (<div>Some content</div>);
+     *
+     * ReactDOM.render(<Layer position="right middle" target={myTarget}>
+     *   <div>I'm going to be aligned to the right!</div>
+     * </Layer>, container);
      */
     target: PropTypes.node.isRequired,
     children: PropTypes.node.isRequired,

@@ -1,4 +1,4 @@
-import { commands, Plugin, ProseMirror, Selection, UpdateScheduler } from 'ak-editor-prosemirror';
+import { commands, NodeType, Plugin, ProseMirror, Selection, UpdateScheduler } from 'ak-editor-prosemirror';
 import CodeBlockPasteListener from './code-block-paste-listener';
 import transformToCodeBlock from './transform-to-code-block';
 
@@ -90,8 +90,8 @@ class BlockTypePlugin {
 
     if (blockType === 'blockquote') {
       // change it back to paragraph
-      commands.setBlockType(pm.schema.nodes.paragraph as Node)(pm);
-      return commands.wrapIn(pm.schema.nodes[blockType] as Node)(pm);
+      commands.setBlockType(pm.schema.nodes.paragraph as NodeType)(pm);
+      return commands.wrapIn(pm.schema.nodes[blockType] as NodeType)(pm);
     }
 
     if (blockType === 'code_block') {

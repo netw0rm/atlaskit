@@ -13,6 +13,7 @@
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.33",
     "@types/react": "^0.14.50",
+    "@types/react-dom": "^0.14.19",
     "@types/sinon": "^1.16.32",
     "@types/sinon-chai": "^2.7.27",
     "ak-css-reset": "^1.1.0",

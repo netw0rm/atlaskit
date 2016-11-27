@@ -53,6 +53,14 @@ describe('ak-editor-plugin-text-formatting', () => {
       expect(plugin.toggleEm());
       expect(plugin.emActive).to.be.true;
     });
+
+    it('should expose whether em is disabled', () => {
+      const { plugin } = editor(doc(p('te{a}xt')));
+
+      expect(plugin.emDisabled).to.be.false;
+      expect(plugin.toggleEm());
+      expect(plugin.emDisabled).to.be.false;
+    });
   });
 
   describe('strong', () => {
@@ -72,6 +80,14 @@ describe('ak-editor-plugin-text-formatting', () => {
       expect(plugin.toggleStrong());
       expect(plugin.strongActive).to.be.true;
     });
+
+    it('should expose whether strong is disabled', () => {
+      const { plugin } = editor(doc(p('te{a}xt')));
+
+      expect(plugin.strongDisabled).to.be.false;
+      expect(plugin.toggleStrong());
+      expect(plugin.strongDisabled).to.be.false;
+    });
   });
 
   describe('underline', () => {
@@ -90,6 +106,14 @@ describe('ak-editor-plugin-text-formatting', () => {
       expect(plugin.underlineActive).to.be.false;
       expect(plugin.toggleUnderline());
       expect(plugin.underlineActive).to.be.true;
+    });
+
+    it('should expose whether underline is disabled', () => {
+      const { plugin } = editor(doc(p('te{a}xt')));
+
+      expect(plugin.underlineDisabled).to.be.false;
+      expect(plugin.toggleUnderline());
+      expect(plugin.underlineDisabled).to.be.false;
     });
   });
 });

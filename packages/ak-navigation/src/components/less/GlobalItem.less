@@ -1,0 +1,26 @@
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/grid.less';
+
+.globalItem {
+  width: @ak-grid-size * 5;
+  height: @ak-grid-size * 5;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin: @ak-grid-size 0;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: white;
+
+  &:hover, &:focus {
+    background-color: @ak-color-N900;
+  }
+
+  &:active {
+    background-color: @ak-color-B200;
+  }
+}

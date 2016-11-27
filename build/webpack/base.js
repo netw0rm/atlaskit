@@ -58,21 +58,32 @@ const standardConfig = {
         test: /\.json$/,
         loader: 'json-loader',
       },
-      {
-        test: /\.less$/,
-        loader: loaderChain({
-          'css-loader': css,
-          'postcss-loader': {},
-          'less-loader': {},
-        }),
-      },
+      [
+        {
+          test: /\.global\.less$/,
+          loader: loaderChain({
+            'style-loader': {},
+            'css-loader': css,
+            'postcss-loader': {},
+            'less-loader': {},
+          }),
+        },
+        {
+          test: /\.less$/,
+          loader: loaderChain({
+            'css-loader': css,
+            'postcss-loader': {},
+            'less-loader': {},
+          }),
+        },
+      ],
       [ // exclusive configs for babel (first one that matches will be used)
         //
         // TYPESCRIPT
         // React based code.
         //
         {
-          test: /\/(stories|react)\/.*\.tsx?$/,
+          test: /\/(stories|react)\/.*\.tsx?|\.react\.tsx?$/,
           loader: loaderChain({
             'babel-loader': {},
             'ts-loader': {},

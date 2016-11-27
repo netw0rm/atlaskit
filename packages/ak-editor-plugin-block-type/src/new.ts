@@ -30,42 +30,25 @@ const Heading2 = makeBlockType('heading2', 'Heading 2');
 const Heading3 = makeBlockType('heading3', 'Heading 3');
 const Heading4 = makeBlockType('heading4', 'Heading 4');
 const Heading5 = makeBlockType('heading5', 'Heading 5');
+const Heading6 = makeBlockType('heading6', 'Heading 6');
 const Quote = makeBlockType('quote', 'Block quote');
 const Code = makeBlockType('code', 'Code block');
 const Other = makeBlockType('other', 'Other…');
 
+type ContextName = 'default' | 'comment' | 'pr';
+
 export class BlockTypeState {
   private changeHandlers: BlockTypeStateSubscriber[] = [];
   private pm: PM;
-  private schema: S;
 
   // public state
   currentBlockType: BlockType = NormalText;
   canChange: boolean = true;
   availableBlockTypes: BlockType[] = [];
+  context?: ContextName;
 
   constructor(pm: PM) {
     this.pm = pm;
-
-    if (pm.schema.nodes.paragraph) {
-      this.availableBlockTypes.push(NormalText);
-    }
-
-    if (pm.schema.nodes.heading) {
-      this.availableBlockTypes.push(Heading1);
-      this.availableBlockTypes.push(Heading2);
-      this.availableBlockTypes.push(Heading3);
-      this.availableBlockTypes.push(Heading4);
-      this.availableBlockTypes.push(Heading5);
-    }
-
-    if (pm.schema.nodes.blockquote) {
-      this.availableBlockTypes.push(Quote);
-    }
-
-    if (pm.schema.nodes.code_block) {
-      this.availableBlockTypes.push(Code);
-    }
 
     // add paste listener to overwrite the prosemirror's
     // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers
@@ -76,6 +59,7 @@ export class BlockTypeState {
       pm.on.change,
     ], () => this.update());
 
+    this.changeContext('default');
     this.update();
   }
 
@@ -86,6 +70,47 @@ export class BlockTypeState {
 
   unsubscribe(cb: BlockTypeStateSubscriber) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
+  changeContext(name: ContextName): void {
+    if (name !== this.context) {
+      const preferredBlockTypes = (() => {
+        switch (name) {
+          case 'pr':
+            return [
+              NormalText,
+              Heading1,
+              Heading2,
+              Heading3,
+              Quote,
+              Code
+            ];
+          case 'comment':
+            return [
+              NormalText,
+              Quote,
+              Code
+            ];
+          default:
+            return [
+              NormalText,
+              Heading1,
+              Heading2,
+              Heading3,
+              Heading4,
+              Heading5,
+              Heading6,
+              Quote,
+              Code,
+            ];
+        }
+      })();
+
+      this.context = name;
+      this.availableBlockTypes = preferredBlockTypes
+        .filter(this.isBlockTypeSchemaSupported);
+      this.update(true);
+    }
   }
 
   changeBlockType(name: BlockTypeName): void {
@@ -127,6 +152,11 @@ export class BlockTypeState {
             commands.setBlockType(nodes.heading, { level: 5 })(pm);
           }
           break;
+        case 'heading6':
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 6 })(pm);
+          }
+          break;
         case 'quote':
           if (nodes.paragraph && nodes.blockquote) {
             commands.setBlockType(nodes.paragraph)(pm);
@@ -142,9 +172,8 @@ export class BlockTypeState {
     }
   }
 
-  private update() {
+  private update(dirty = false) {
     const { pm } = this;
-    let dirty = false;
 
     const newBlockType = this.detectBlockType();
     if (newBlockType !== this.currentBlockType) {
@@ -202,6 +231,25 @@ export class BlockTypeState {
       return Other;
     }
   }
+
+  private isBlockTypeSchemaSupported = (blockType: BlockType) => {
+    const { pm } = this;
+    switch (blockType) {
+      case NormalText:
+        return !!pm.schema.nodes.paragraph;
+      case Heading1:
+      case Heading2:
+      case Heading3:
+      case Heading4:
+      case Heading5:
+      case Heading6:
+        return !!pm.schema.nodes.heading;
+      case Quote:
+        return !!pm.schema.nodes.blockquote;
+      case Code:
+        return !!pm.schema.nodes.code_block;
+    }
+  }
 }
 
 // IE11 + multiple prosemirror fix.
@@ -211,7 +259,17 @@ export default new Plugin(BlockTypeState);
 
 export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
 
-export type BlockTypeName = 'normal' | 'heading1' | 'heading2' | 'heading3' | 'heading4' | 'heading5' | 'quote' | 'code' | 'other';
+export type BlockTypeName =
+  'normal' |
+  'heading1' |
+  'heading2' |
+  'heading3' |
+  'heading4' |
+  'heading5' |
+  'heading6' |
+  'quote' |
+  'code' |
+  'other';
 
 export interface BlockType {
   name: BlockTypeName;

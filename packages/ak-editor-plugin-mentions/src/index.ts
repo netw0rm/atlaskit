@@ -26,15 +26,17 @@ export class MentionsPluginState {
     this.pm = pm;
 
     // add the input rules to insert mentions and emoticons
-    if (this.pm.schema.nodes.mention) {
+    if (pm.schema.nodes.mention) {
       inputRules.ensure(pm).addRule(mentionQueryRule);
     }
 
-    pm.updateScheduler([
-      pm.on.selectionChange,
-      pm.on.change,
-      pm.on.activeMarkChange,
-    ], () => this.update());
+    if (pm.schema.nodes.mention_query) {
+      pm.updateScheduler([
+        pm.on.selectionChange,
+        pm.on.change,
+        pm.on.activeMarkChange,
+      ], () => this.update());
+    }
 
     this.buildKeymap();
   }
@@ -79,9 +81,9 @@ export class MentionsPluginState {
 
       const newQuery = (nodeBefore ? nodeBefore.textContent : '' ).substr(1) + (nodeAfter && this.pm.schema.marks[mentionQueryMarkName].isInSet(nodeAfter.marks) ? nodeAfter.textContent : '');
       if (this.query !== newQuery) {
-        dirty = true; 
+        dirty = true;
         this.query = newQuery;
-        
+
       }
     } else if (this.queryActive) {
       dirty = true;
@@ -146,7 +148,7 @@ export class MentionsPluginState {
     if (!e.detail) {
       return;
     }
-    
+
     if (this.pm.schema.nodes[mentionNodeName]) {
       const { start, end } = this.findMentionQueryMark();
       const node = this.pm.schema.nodes[mentionNodeName as any].create({ displayName: e.detail.name, id: `@${e.detail.mentionName}` });

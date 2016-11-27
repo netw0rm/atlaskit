@@ -77,6 +77,10 @@ export class ListsState {
     cb(this);
   }
 
+  unsubscribe(cb: StateChangeHandler) {
+    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
   toggleOrderedList(): void {
     const { ordered_list } = this.pm.schema.nodes;
     if (ordered_list) {

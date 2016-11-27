@@ -71,6 +71,10 @@ export class TextFormattingState {
     cb(this);
   }
 
+  unsubscribe(cb: StateChangeHandler) {
+    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
   private update() {
     const { pm } = this;
     const { em, strong, u } = pm.schema.marks;

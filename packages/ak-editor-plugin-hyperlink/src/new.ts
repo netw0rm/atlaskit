@@ -28,7 +28,7 @@ export class HyperlinkState {
   href?: string;
   text?: string;
   active = false;
-  enabled = false;
+  disabled = false;
   element?: HTMLElement;
 
   constructor(pm: PM) {
@@ -85,11 +85,11 @@ export class HyperlinkState {
       dirty = true;
     }
 
-    const newEnabled = activeLink
-      ? true
-      : !this.pm.selection.empty && this.isActiveNodeLinkable();
-    if (newEnabled !== this.enabled) {
-      this.enabled = newEnabled;
+    const newDisabled = activeLink
+      ? false
+      : this.pm.selection.empty || this.isActiveNodeLinkable();
+    if (newDisabled !== this.disabled) {
+      this.disabled = newDisabled;
       dirty = true;
     }
 
@@ -103,13 +103,17 @@ export class HyperlinkState {
     cb(this);
   }
 
+  unsubscribe(cb: StateChangeHandler) {
+    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
   addLink(options: HyperlinkOptions) {
     const { pm } = this;
     const { empty, $from, $to, } = pm.selection;
     const activeLink = this.getActiveLink();
     const { href } = options;
 
-    if (this.enabled && !empty && !activeLink) {
+    if (this.disabled && !empty && !activeLink) {
       const mark: Mark = pm.schema.mark('link', { href });
 
       if (options.text) {

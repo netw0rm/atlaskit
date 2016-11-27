@@ -1,70 +1,84 @@
 import { storiesOf, action } from '@kadira/storybook';
+import React, { PureComponent } from 'react';
 import reactify from 'akutil-react';
-import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import AkTabs from 'ak-tabs';
-import { Tab as AkTab} from 'ak-tabs';
-import EditorComponent from '../src';
+import { Tab as AkTab } from 'ak-tabs';
+import Editor from '../src/index.react';
 
 const Tabs = reactify(AkTabs);
 const Tab = reactify(AkTab);
-const Editor = reactify(EditorComponent);
+const CancelAction = () => action('Cancel')();
+const SaveAction = () => action('Save')();
+
+declare var module: any;
 
 storiesOf('ak-editor-cq', module)
-  .add('Empty', () => (
-    <Editor expanded />
-  ))
+  .add('Empty', () =>
+    <div style={{ padding: 20 }}>
+      <Editor
+        defaultExpanded
+        onCancel={CancelAction}
+        onSave={SaveAction}
+      />
+    </div>
+  )
   .add('CXHTML preview', () => {
     type Props = {};
-    type State = { cxhtml: string };
-    class Demo extends Component<Props, State> {
-      constructor() {
-        super();
-        this.state = { cxhtml: '' };
-        this.updateCxhtml = this.updateCxhtml.bind(this);
-      }
+    type State = { cxhtml?: string };
+    class Demo extends PureComponent<Props, State> {
+      state = { cxhtml: '' };
 
-      updateCxhtml(e: any) {
-        this.setState({ cxhtml: e.target.value });
+      handleChange = (editor: Editor) => {
+        this.setState({ cxhtml: editor.value });
       }
 
       render() {
         return (
           <div ref="root">
             <Editor
-              expanded
-              onChange={this.updateCxhtml}
-              onReady={this.updateCxhtml}
-              onSave={action('save')}
-              onCancel={action('cancel')}
+              defaultExpanded
+              onCancel={CancelAction}
+              onChange={this.handleChange}
+              onSave={SaveAction}
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>CXHTML</legend>
-              <pre>{this.state.cxhtml}</pre>
+              <pre>{this.state.cxhtml || ''}</pre>
             </fieldset>
           </div>
         );
       }
     }
 
-    return <Demo />;
+    return (
+      <div style={{ padding: 20 }}>
+        <Demo />
+      </div>
+    );
   })
   .add('Contexts', () => {
     type Props = {};
     type State = {};
-    class Demo extends Component<Props, State> {
+    class Demo extends PureComponent<Props, State> {
       render() {
         return (
           <div ref="root">
             <Tabs>
               <Tab selected label="(default)">
-                <Editor expanded />
-              </Tab>
-              <Tab selected label="(default) no-actions">
-                <Editor expanded noActions/>
+                <Editor
+                  defaultExpanded
+                  onCancel={CancelAction}
+                  onSave={SaveAction}
+                />
               </Tab>
               <Tab selected label="comment">
-                <Editor expanded context="comment"/>
+                <Editor
+                  context='comment'
+                  defaultExpanded
+                  onCancel={CancelAction}
+                  onSave={SaveAction}
+                />
               </Tab>
             </Tabs>
           </div>
@@ -72,5 +86,9 @@ storiesOf('ak-editor-cq', module)
       }
     }
 
-    return <Demo />;
+    return (
+      <div style={{ padding: 20 }}>
+        <Demo />
+      </div>
+    );
   });

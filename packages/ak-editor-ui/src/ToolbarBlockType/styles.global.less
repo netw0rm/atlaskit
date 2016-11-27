@@ -1,0 +1,70 @@
+@import '~ak-editor-shared-styles/src/index';
+
+.buttonContent {
+  width: 80px;
+}
+
+.container {
+  position: relative;
+}
+
+.dropdown {
+  list-style-type: none;
+  padding: 0;
+  border-radius: 0 @ak-border-radius @ak-border-radius @ak-border-radius;
+  box-shadow: 0 0 0 0.5px rgba(0,0,0,0.05), 0 3px 10px -4px rgba(0,0,0,0.4);
+  left: 0;
+  margin: 0;
+  overflow: hidden;
+  position: absolute;
+  top: ~"calc(100% - 3px)";
+  width: 170px;
+
+  & > li {
+    margin: 0;
+  }
+
+  [block-type-name=normal-text] {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+  }
+
+  [block-type-name=heading1] {
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  [block-type-name=heading2] {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 20px;
+  }
+
+  [block-type-name=heading3] {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+  }
+
+  [block-type-name=code] {
+    font-family: Consolas, Menlo, "Liberation Mono", Courier, monospace;
+  }
+}
+
+.selectOptions {
+  background: @ak-editor-active-background;
+  color: @ak-editor-active-foreground;
+  width: 100%;
+  display: block;
+  cursor: pointer;
+  padding: 5px 70px 5px 10px;
+  user-select: none;
+
+  &.active, &:hover {
+    background: @ak-editor-dropdown-active-background;
+    color: @ak-editor-active-foreground;
+  }
+}

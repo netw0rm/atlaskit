@@ -1,6 +1,17 @@
 import {
-  commands, Plugin, ProseMirror, ResolvedPos, Node, Mark, Schema, inputRules, InputRule,
-  allInputRules, DOMFromPos as getDomElementFromPosition
+  allInputRules,
+  commands,
+  DOMFromPos,
+  inputRules,
+  InputRule,
+  NodeSelection,
+  Plugin,
+  ProseMirror,
+  ResolvedPos,
+  Mark,
+  Node,
+  Schema,
+  TextSelection
 } from 'ak-editor-prosemirror';
 import { LinkMarkType } from 'ak-editor-schema';
 import hyperlinkRule from './input-rule';
@@ -76,7 +87,7 @@ export class HyperlinkState {
 
     const newEnabled = activeLink
       ? true
-      : !this.pm.selection.empty && this.isNodeLinkable(activeNode);
+      : !this.pm.selection.empty && this.isActiveNodeLinkable();
     if (newEnabled !== this.enabled) {
       this.enabled = newEnabled;
       dirty = true;
@@ -111,10 +122,11 @@ export class HyperlinkState {
 
   removeLink(forceTextSelection = false) {
     const { pm } = this;
-    const { $head, empty } = pm.selection;
     const activeLink = this.getActiveLink();
 
-    if (activeLink) {
+    if (activeLink && pm.selection instanceof TextSelection) {
+      const { $head, empty } = pm.selection;
+
       // why - 1?
       // because of `exclusiveRight`, we need to get the node "left to"
       // the current cursor
@@ -158,42 +170,46 @@ export class HyperlinkState {
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
 
-  private getDomElement(): HTMLElement {
-    const { $head } = this.pm.selection;
-    const pos = getBoundariesWithin($head);
-    const { node, offset } = getDomElementFromPosition(this.pm, pos, true);
+  private getDomElement(): HTMLElement | undefined {
+    if (this.pm.selection instanceof TextSelection) {
+      const { $head } = this.pm.selection;
+      const pos = getBoundariesWithin($head);
+      const { node, offset } = DOMFromPos(this.pm, pos, true);
 
-    if (node.childNodes.length === 0) {
-      return node.parentNode;
+      if (node.childNodes.length === 0) {
+        return node.parentNode;
+      }
+
+      return node.childNodes[offset];
     }
-
-    return node.childNodes[offset];
   }
 
-  private isNodeLinkable(node: Node): boolean {
-    const nodeType = node.type.name;
-    const nodes = this.pm.schema.nodes;
-    const group = nodes[nodeType].group;
-
+  private isActiveNodeLinkable(): boolean {
     const { link } = this.pm.schema.marks;
-
     return !!link && commands.toggleMark(link)(this.pm, false);
   }
 
   private getActiveNode(): Node {
     const { pm } = this;
-    const { $head, $to } = pm.selection;
-
-    // why - 1?
-    // because of `exclusiveRight`, we need to get the node "left to"
-    // the current cursor
-    return pm.doc.nodeAt(($head || $to).pos - 1);
+    if (pm.selection instanceof NodeSelection) {
+      return pm.selection.node;
+    } else {
+      // why - 1?
+      // because of `exclusiveRight`, we need to get the node "left to"
+      // the current cursor
+      return pm.doc.nodeAt(pm.selection.$head.pos - 1);
+    }
   }
 
   private getActiveLink(): Mark | null {
     const { pm } = this;
-    const { $head, $to, empty } = pm.selection;
-    const pos = ($head || $to).pos;
+
+    if (!(pm.selection instanceof TextSelection)) {
+      return null;
+    }
+
+    const { $head, empty } = pm.selection;
+    const pos = $head.pos;
 
     let marks;
     if (!empty) {

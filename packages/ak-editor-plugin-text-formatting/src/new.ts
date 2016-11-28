@@ -83,7 +83,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newEmDisabled = commands.toggleMark(em)(this.pm, false);
+      const newEmDisabled = !commands.toggleMark(em)(this.pm, false);
       if (newEmDisabled !== this.emDisabled) {
         this.emDisabled = newEmDisabled;
         dirty = true;
@@ -97,7 +97,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newStrongDisabled = commands.toggleMark(strong)(this.pm, false);
+      const newStrongDisabled = !commands.toggleMark(strong)(this.pm, false);
       if (newStrongDisabled !== this.strongDisabled) {
         this.strongDisabled = newStrongDisabled;
         dirty = true;
@@ -111,7 +111,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newUnderlineDisabled = commands.toggleMark(u)(this.pm, false);
+      const newUnderlineDisabled = !commands.toggleMark(u)(this.pm, false);
       if (newUnderlineDisabled !== this.underlineDisabled) {
         this.underlineDisabled = newUnderlineDisabled;
         dirty = true;

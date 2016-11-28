@@ -60,15 +60,27 @@ export function buildKeymap(schema, mapKeys) {
     let mark = schema.marks[name];
 
     if (name === "strong") {
-      bind("Mod-B", toggleMark(mark));
+      if (isMac) {
+        bind("Cmd-B", toggleMark(mark));
+      } else {
+        bind("Ctrl-B", toggleMark(mark));
+      }
     }
 
     if (name === "em") {
-      bind("Mod-I", toggleMark(mark));
+      if (isMac) {
+        bind("Cmd-I", toggleMark(mark));
+      } else {
+        bind("Ctrl-I", toggleMark(mark));
+      }
     }
 
     if (name === "code") {
-      bind("Mod-`", toggleMark(mark));
+      if (isMac) {
+        bind("Shift-Cmd-M", toggleMark(mark));
+      } else {
+        bind("Shift-Ctrl-M", toggleMark(mark));
+      }
     }
   }
 
@@ -76,11 +88,19 @@ export function buildKeymap(schema, mapKeys) {
     let node = schema.nodes[name];
 
     if (name === "bullet_list") {
-      bind("Shift-Ctrl-B", clearAndApply(wrapInList(node)));
+      if (isMac) {
+        bind("Shift-Cmd-B", clearAndApply(wrapInList(node)));
+      } else {
+        bind("Shift-Ctrl-B", clearAndApply(wrapInList(node)));
+      }
     }
 
     if (name === "ordered_list") {
-      bind("Shift-Ctrl-N", clearAndApply(wrapInList(node)));
+      if (isMac) {
+        bind("Shift-Cmd-L", clearAndApply(wrapInList(node)));
+      } else {
+        bind("Shift-Ctrl-L", clearAndApply(wrapInList(node)));
+      }
     }
 
     if (name === "blockquote") {
@@ -160,7 +180,11 @@ export function buildKeymap(schema, mapKeys) {
     }
 
     if (name === "horizontal_rule") {
-      bind("Mod-Shift--", pm => pm.tr.replaceSelection(node.create()).applyAndScroll());
+      if (isMac) {
+        bind("Shift-Cmd--", pm => pm.tr.replaceSelection(node.create()).applyAndScroll());
+      } else {
+        bind("Shift-Ctrl--", pm => pm.tr.replaceSelection(node.create()).applyAndScroll());
+      }
     }
   }
   return new Keymap(keys);

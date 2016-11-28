@@ -48,7 +48,7 @@ export function buildKeymap(schema, mapKeys) {
     keys[key] = cmd;
   }
 
-  var lastCmd;
+  let lastCmd;
 
   function clearAndApply(cmd) {
     let isReset = false;

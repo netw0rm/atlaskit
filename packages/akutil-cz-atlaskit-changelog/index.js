@@ -36,7 +36,7 @@ module.exports = {
         questions: {
           scope: {
             message:
-              `Denote the scope of this change (build, bump, component, package, docs, story, etc.):\n`, //eslint-disable-line max-len
+              'Denote the scope of this change (build, bump, component, package, docs, story, etc.):\n', //eslint-disable-line max-len
           },
         },
       }, commit);

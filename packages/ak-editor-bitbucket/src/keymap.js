@@ -76,11 +76,19 @@ export function buildKeymap(schema, mapKeys) {
     let node = schema.nodes[name];
 
     if (name === "bullet_list") {
-      bind("Shift-Ctrl-B", clearAndApply(wrapInList(node)));
+      if (isMac) {
+        bind("Shift-Cmd-B", clearAndApply(wrapInList(node)));
+      } else {
+        bind("Shift-Ctrl-B", clearAndApply(wrapInList(node)));
+      }
     }
 
     if (name === "ordered_list") {
-      bind("Shift-Ctrl-N", clearAndApply(wrapInList(node)));
+      if (isMac) {
+        bind("Shift-Cmd-L", clearAndApply(wrapInList(node)));
+      } else {
+        bind("Shift-Ctrl-L", clearAndApply(wrapInList(node)));
+      }
     }
 
     if (name === "blockquote") {

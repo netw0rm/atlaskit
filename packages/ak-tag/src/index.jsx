@@ -180,13 +180,17 @@ export default class Tag extends PureComponent {
     } else {
       this.setState({ isRemoving: true, isRemoved: false });
     }
-    if (this.props.onAfterRemoveAction) {
-      this.props.onAfterRemoveAction();
-    }
   }
 
   handleHoverChange = (hoverState) => {
     this.setState({ markedForRemoval: hoverState });
+  }
+
+  handleRemovalCompletion = () => {
+    this.setState({ isRemoving: false, isRemoved: true });
+    if (this.props.onAfterRemoveAction) {
+      this.props.onAfterRemoveAction();
+    }
   }
 
   render() {
@@ -201,6 +205,7 @@ export default class Tag extends PureComponent {
       <AnimationWrapper
         isRemoving={this.state.isRemoving}
         isRemoved={this.state.isRemoved}
+        onRemovalCompletion={this.handleRemovalCompletion}
       >
         <Chrome
           isLink={!!this.props.href}

@@ -10,7 +10,7 @@ export default class Chrome extends PureComponent {
     isLink: PropTypes.bool.isRequired,
     markedForRemoval: PropTypes.bool.isRequired,
     isRemovable: PropTypes.bool.isRequired,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.arrayOf(PropTypes.element).isRequired,
   }
 
   componentDidMount= () => {

@@ -1,10 +1,10 @@
 {
   "name": "ak-layer",
-  "version": "60.0.3",
+  "version": "62.0.0",
   "description": "A layer component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-layer"
   },
@@ -14,18 +14,11 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "akutil-common": "^5.0.0",
-    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
-    "object-assign": "^4.1.0",
-    "popper.js": "1.0.0-alpha.3",
-    "skatejs": "^4.0.6"
-  },
-  "devDependencies": {
-    "akutil-common-test": "*"
+    "popper.js": "git://github.com/lukebatchelor/popper.js#854d0a2fcab27f69d6f324ce5760fd99fcebea3d"
   },
   "peerDependencies": {
-    "core-js": "*"
+    "react": "^15.3.2"
   },
   "repository": {
     "type": "git",

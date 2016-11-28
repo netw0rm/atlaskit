@@ -17,11 +17,10 @@ import {
   ParagraphNodeType,
   Schema,
   StrongMarkType,
-  Text
+  Text,
+  MentionNodeType,
+  EmojiNodeType
 } from 'ak-editor-schema';
-
-import { MentionNodeType } from './nodes/mention';
-import { EmojiNodeType } from './nodes/emoji';
 
 export default new Schema({
   nodes: {

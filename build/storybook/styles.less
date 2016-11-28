@@ -7,16 +7,12 @@
 @grid-line-opacity: 0.1;
 @grid-color: @ak-color-N40;
 
-html {
-  height: 100%;
-}
 
 body {
   // creates the hatched grid pattern in storybook
   background-image: repeating-linear-gradient(0deg, white, white 7px, transparent 7px, transparent),
                     repeating-linear-gradient(90deg, @grid-color, @grid-color 1px, white 1px, white);
   background-size: @ak-grid-size @ak-grid-size;
-  height: 100%;
 
   [id=root] {
     height: 100%;

@@ -36,9 +36,9 @@ class Lozenge extends Component {
      * @description The content passed to the lozenge
      * @memberof Lozenge
      * @instance
-     * @type {element}
+     * @type {node}
      */
-    children: PropTypes.element,
+    children: PropTypes.node,
   };
 
   static defaultProps = {

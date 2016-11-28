@@ -48,11 +48,27 @@ export function buildKeymap(schema, mapKeys) {
     keys[key] = cmd;
   }
 
+  let lastCmd;
+
   function clearAndApply(cmd) {
-    return function(pm, apply) {
+    let isReset = false;
+
+    return (pm, apply) => {
       lift(pm, apply);
       setBlockType(schema.nodes.paragraph)(pm, apply);
-      cmd(pm, apply);
+
+      if (lastCmd !== cmd) {
+        isReset = false;
+        lastCmd = cmd;
+      }
+
+      if (!isReset) {
+        cmd(pm, apply);
+      }
+
+      isReset = !isReset;
+
+      return true;
     }
   }
 

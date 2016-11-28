@@ -37,6 +37,14 @@ describe.skip('ak-editor-bitbucket keymap', () => {
 
     it('should change to paragraph first when changing h1 to blockquote', () => {
     });
+
+    it('should toggle h1 with paragraph', () => {
+    });
+
+    it('should not toggle h1 with paragraph if just switching from h2', () => {
+    });
+
+    it('should not do anything when changing paragraph to paragraph', () => {
   });
 
   describe('marks', () => {

@@ -11,7 +11,7 @@ import Input from './Input';
  *   <FieldText label="My form field"></FieldText>
  * </form>
  */
-export default class FieldText extends PureComponent {
+export class FieldText extends PureComponent {
   static propTypes = {
     /**
      * @description Whether to use compact sizing for the field.
@@ -80,7 +80,14 @@ export default class FieldText extends PureComponent {
      * @instance
      * @type {string}
      */
-    defaultValue: PropTypes.string,
+    value: PropTypes.string,
+    /**
+     * @description Callback to update input value
+     * @memberof TextField
+     * @instance
+     * @type {Function}
+     */
+    onInputChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -103,10 +110,30 @@ export default class FieldText extends PureComponent {
           disabled={this.props.disabled}
           name={this.props.name}
           placeholder={this.props.placeholder}
-          value={this.props.defaultValue}
+          value={this.props.value}
           required={this.props.required}
+          onChange={this.props.onInputChange}
         />
       </FieldBase>
+    );
+  }
+}
+
+/* eslint-disable react/prop-types, react/no-multi-comp */
+export default class extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: props.value,
+    };
+  }
+  render() {
+    return (
+      <FieldText
+        {...this.props}
+        value={this.state.value}
+        onInputChange={e => this.setState({ value: e.target.value })}
+      />
     );
   }
 }

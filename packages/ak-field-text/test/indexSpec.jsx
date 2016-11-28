@@ -1,13 +1,15 @@
 import chai, { expect } from 'chai';
 import chaiEnzyme from 'chai-enzyme';
+import sinonChai from 'sinon-chai';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import FieldBase from 'ak-field-base';
 
-import FieldText from '../src';
+import { FieldText } from '../src';
 import Input from '../src/Input';
 
 chai.use(chaiEnzyme());
+chai.use(sinonChai);
 
 describe('ak-field-text', () => {
   it('defaults', () => {
@@ -49,8 +51,15 @@ describe('ak-field-text', () => {
     );
 
     it('Input should have value="something"', () =>
-      expect(shallow(<FieldText defaultValue="something" />).find(Input))
+      expect(shallow(<FieldText value="something" />).find(Input))
         .to.have.prop('value', 'something')
     );
+
+    it('onInputChange should be called when input value changes', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<FieldText onInputChange={spy} />);
+      wrapper.find(Input).find('input').simulate('change');
+      expect(spy).to.be.calledOnce;
+    });
   });
 });

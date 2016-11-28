@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import styles from './styles.less';
 
-/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable react/prefer-stateless-function, react/no-multi-comp */
 export default class Input extends PureComponent {
   static propTypes = {
     disabled: PropTypes.bool,
@@ -10,23 +10,14 @@ export default class Input extends PureComponent {
     name: PropTypes.string,
     placeholder: PropTypes.string,
     value: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
     disabled: false,
     required: false,
     type: 'text',
-    value: '',
   }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: this.props.value,
-    };
-  }
-
-  handleChange = e => this.setState({ value: e.target.value })
 
   render() {
     return (
@@ -37,8 +28,8 @@ export default class Input extends PureComponent {
         required={this.props.required}
         name={this.props.name}
         placeholder={this.props.placeholder}
-        value={this.state.value}
-        onChange={this.handleChange}
+        value={this.props.value}
+        onChange={this.props.onChange}
       />
     );
   }

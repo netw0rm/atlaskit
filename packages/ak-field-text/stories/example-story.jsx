@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import Button from 'ak-button';
 import React from 'react';
 
-import FieldText from '../src';
+import AkFieldText from '../src';
 import { name } from '../package.json';
 
 const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
@@ -10,7 +10,7 @@ const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
 function generateInput(opts) {
   const props = { label: 'Example label', ...opts };
   return (
-    <FieldText {...props} />
+    <AkFieldText {...props} />
   );
 }
 

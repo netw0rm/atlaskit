@@ -29,7 +29,7 @@ describe(name, () => {
     it('should render a link Button containing the content', () => {
       const children = <span>children</span>;
       const wrapper = shallow(<Item>{children}</Item>);
-      expect(wrapper.containsMatchingElement(<Button appearance="link">{children}</Button>)).to.equal(true);
+      expect(wrapper.find(Button).contains(children)).to.equal(true);
     });
   });
 

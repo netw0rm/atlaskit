@@ -13,7 +13,7 @@ import { POSITION_ATTRIBUTE_ENUM, positionPropToPopperPosition } from './interna
 export default class Layer extends PureComponent {
   static propTypes = {
     /**
-     * @description Position of a layer relative to it's target.
+     * @description Position of a layer relative to its target.
      * The position attribute takes two positional arguments in the
      * format `position="edge edge-position"`, where `edge` specifies what edge to align the layer
      * to, and `edge-position` specifies where on that edge the layer should appear.

@@ -41,9 +41,9 @@
 .right-gutter {
   display: inline-flex;
   padding-left: @editmode-gutter-left-padding;
+  align-self: center;
 
-  // matching either the confirm/cancel buttons or the spinner
-  > * {
+  & > * {
     align-self: center;
   }
 }
@@ -65,24 +65,4 @@
   line-height: @editmode-button-icon-size;
   text-align: center;
   vertical-align: middle;
-}
-
-// TODO: Replace this with an actual spinner (AK-604)
-.waiting-spinner {
-  // placeholder styles so we wont worry about these magic numbers
-  color: @ak-color-B400;
-  // extra 4 pixels is for the left margin
-  transform-origin: ~"calc(50% + 4px) 50%";
-  animation: spin 1s Infinite linear;
-  height: 20px;
-  width: 20px;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

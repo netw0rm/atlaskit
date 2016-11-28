@@ -29,6 +29,11 @@
 
 .view-mode-slotted-content-wrapper {
   display: inline-flex;
+
+  // & * > {
+  //   padding-right: 10px;
+  //   box-sizing: border-box;
+  // }
 }
 
 .edit-button-focused {
@@ -65,12 +70,4 @@
 
 .editIcon {
   color: @ak-color-N500;
-}
-
-::slotted([slot=viewmode]:empty) {
-  display: none;
-}
-::slotted([slot=viewmode]) {
-  padding-right: 10px;
-  box-sizing: border-box;
 }

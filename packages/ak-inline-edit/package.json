@@ -4,19 +4,21 @@
   "description": "A base component used to build inline-editable components that match the Atlassian Design Guidelines",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-inline-edit"
   },
   "files": [
     "dist"
   ],
+  "peerDependencies": {
+    "react": "^15.3.2"
+  },
   "dependencies": {
     "akutil-shared-styles": "^34.0.1",
-    "akutil-common": "^2.0.0",
-    "ak-button": "^1.4.0",
-    "ak-icon": "^7.3.0",
-    "ak-field-base": "^4.0.0",
+    "ak-button": "^4.1.1",
+    "ak-icon": "^11.0.1",
+    "ak-field-base": "^5.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "skatejs": "^3.0.0"
@@ -24,7 +26,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-field-text": "^5.0.0",
+    "ak-field-text": "^6.0.1",
     "akutil-common-test": "^4.0.0",
     "akutil-react": "^1.0.0",
     "custom-event-polyfill": "^0.3.0",

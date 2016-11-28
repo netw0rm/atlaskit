@@ -1,15 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
-import React from 'react';
-import reactify from 'akutil-react';
-import FieldTextWC from 'ak-field-text';
+import React, { PureComponent } from 'react';
+import { FieldText } from 'ak-field-text';
 
 
-import InlineEditWC from '../src';
+import InlineEdit from '../src';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
-
-const InlineEdit = reactify(InlineEditWC);
-const FieldText = reactify(FieldTextWC);
 
 const formStyle = {
   padding: '20px',
@@ -17,34 +13,55 @@ const formStyle = {
   width: '500px',
 };
 
-const GenericInlineEdit = (props) => {
-  const label = props.label || (props.hideLabel ? null : 'label for field-base');
-  const value = props.value || 'Your content here!';
-  return (
-    <InlineEdit
-      className={styles.locals.akFieldBase}
-      label={label}
-      hideLabel={props.hideLabel}
-      focused={props.focused}
-      invalid={props.invalid}
-      editing={props.editing}
-      waiting={props.waiting}
-    >
-      <div is slot="editmode">
+class GenericInlineEdit extends PureComponent {
+  static propTypes = {
+    label: React.PropTypes.string,
+    value: React.PropTypes.string,
+    focused: React.PropTypes.bool,
+  }
+
+  static defaultProps = {
+    label: 'label for field-base',
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      viewValue: props.value || 'Your content here!',
+      editValue: props.value || 'Your content here!',
+    };
+  }
+
+  onCancel = () => this.setState({
+    editValue: this.state.viewValue,
+  });
+  onConfirm = () => this.setState({
+    viewValue: this.state.editValue,
+  })
+  onChange = e => this.setState({
+    editValue: e.target.value,
+  })
+
+  render() {
+    return (
+      <InlineEdit
+        className={styles.locals.akFieldBase}
+        label={this.props.label}
+        focused={this.props.focused}
+        onCancelEdit={this.onCancel}
+        onConfirmEdit={this.onConfirm}
+        view={this.state.viewValue}
+      >
         <FieldText
-          label={label}
-          hideLabel={props.hideLabel}
-          focused={props.focused}
-          invalid={props.invalid}
-          value={value}
+          label={this.props.label}
+          focused={this.props.focused}
+          value={this.state.editValue}
+          onChange={this.onChange}
         />
-      </div>
-      <div is slot="viewmode">
-        {value}
-      </div>
-    </InlineEdit>
-  );
-};
+      </InlineEdit>
+    );
+  }
+}
 
 storiesOf(name, module)
   .add('a simple ak-field-base', () => (
@@ -56,31 +73,8 @@ storiesOf(name, module)
             and viewmode. Hovering over the field whilst in view mode should show the edit icon and
             clicking should enter edit mode. Edit mode will display whatever content is in.
           </p>
-          <p>
-            Feel free to use your browsers inspector to modify different properties to see how they
-            work.
-          </p>
-          <ul>
-            <li>label (any string)</li>
-            <li>editing (true or false)</li>
-            <li>focused (true or false)</li>
-            <li>waiting (true or false)</li>
-            <li>invalid (true or false)</li>
-            <li>hideLabel (true or false)</li>
-          </ul>
         </div>
         <GenericInlineEdit />
       </form>
     </div>
-  ))
-  ;
-
-GenericInlineEdit.propTypes = {
-  label: React.PropTypes.string,
-  value: React.PropTypes.string,
-  hideLabel: React.PropTypes.bool,
-  focused: React.PropTypes.bool,
-  invalid: React.PropTypes.bool,
-  waiting: React.PropTypes.bool,
-  editing: React.PropTypes.bool,
-};
+  ));

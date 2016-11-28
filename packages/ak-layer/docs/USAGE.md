@@ -34,6 +34,4 @@ ReactDOM.render(<Layer position="right middle" target={myTarget}>
 </Layer>, container);
 ```
 
-The first child will be the element you are aligning to and the second is the content you want to align.
-
-
+The `target` prop is a React element you want to align some content around and the content within Layer is what will be aligned.

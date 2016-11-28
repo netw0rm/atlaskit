@@ -1,0 +1,34 @@
+// For styles that are shared between shadow and host (variable definitions ONLY)
+
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/fonts.less';
+@import '~akutil-shared-styles/src/borders.less';
+@import '~akutil-shared-styles/src/grid.less';
+
+@grid: @ak-grid-size/2;
+
+@ak-dropdown-border-radius: @ak-border-radius;
+@ak-dropdown-background-main-color: @ak-color-N700;
+@ak-dropdown-background-active-color: @ak-color-B50;
+@ak-dropdown-background-selected-color: @ak-color-N900;
+@ak-dropdown-background-hover-color: @ak-color-N900;
+@ak-dropdown-background-disabled-color: @ak-color-N700;
+
+@ak-dropdown-focused-outline-color: @ak-color-B200;
+
+@ak-dropdown-font-main-color: #fff;
+@ak-dropdown-font-disabled-color: @ak-color-N80;
+@ak-dropdown-font-active-color: @ak-color-N800;
+@ak-dropdown-font-heading-color: @ak-color-N50;
+
+@ak-dropdown-icon-color: @ak-color-N400;
+@ak-dropdown-icon-reverse-color: @ak-color-B50;
+
+@ak-dropdown-font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+
+
+.flex() {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+}

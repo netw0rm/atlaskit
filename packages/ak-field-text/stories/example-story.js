@@ -94,7 +94,7 @@ storiesOf(name, module)
     generateFormWithInput({ label: 'Example label with a realllly reallly reallly reallly reallly long label that goes past the edge of the input!' }) // eslint-disable-line max-len
   ))
   .add('ak-field-text with multiline label string', () => (
-    generateFormWithInput({ label: `Example\nlabel` })
+    generateFormWithInput({ label: 'Example\nlabel' })
   ))
   .add('ak-field-text with label string containing HTML', () => (
     generateFormWithInput({ label: 'Example <marquee>label</marquee>' })

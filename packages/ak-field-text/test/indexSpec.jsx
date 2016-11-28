@@ -6,7 +6,6 @@ import { shallow, mount } from 'enzyme';
 import FieldBase from 'ak-field-base';
 
 import { FieldText } from '../src';
-import Input from '../src/Input';
 
 chai.use(chaiEnzyme());
 chai.use(sinonChai);
@@ -15,7 +14,7 @@ describe('ak-field-text', () => {
   it('defaults', () => {
     const wrapper = shallow(<FieldText />);
     expect(wrapper).to.have.exactly(1).descendants(FieldBase);
-    expect(wrapper).to.have.exactly(1).descendants(Input);
+    expect(wrapper).to.have.exactly(1).descendants('input');
   });
 
   describe('properties', () => {
@@ -45,20 +44,20 @@ describe('ak-field-text', () => {
     ].forEach(prop =>
       describe(JSON.stringify(prop), () =>
         it('Input should have attribute defined', () =>
-          expect(shallow(<FieldText {...prop} />).find(Input)).to.have.props(prop)
+          expect(shallow(<FieldText {...prop} />).find('input')).to.have.props(prop)
         )
       )
     );
 
     it('Input should have value="something"', () =>
-      expect(shallow(<FieldText value="something" />).find(Input))
+      expect(shallow(<FieldText value="something" />).find('input'))
         .to.have.prop('value', 'something')
     );
 
-    it('onInputChange should be called when input value changes', () => {
+    it('onChange should be called when input value changes', () => {
       const spy = sinon.spy();
-      const wrapper = mount(<FieldText onInputChange={spy} />);
-      wrapper.find(Input).find('input').simulate('change');
+      const wrapper = mount(<FieldText onChange={spy} />);
+      wrapper.find('input').simulate('change');
       expect(spy).to.be.calledOnce;
     });
   });

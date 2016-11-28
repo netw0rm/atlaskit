@@ -31,6 +31,12 @@ describe.skip('ak-editor-bitbucket keymap', () => {
   it('should change h1 to ordered_list', () => {
   });
 
+  it('should toggle h1 with paragraph', () => {
+  });
+
+  it('should not toggle h1 with paragraph if just switching from h2', () => {
+  });
+
   it('should not do anything when changing paragraph to paragraph', () => {
   });
 

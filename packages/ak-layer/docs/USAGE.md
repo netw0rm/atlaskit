@@ -4,6 +4,7 @@ The layer is responsible for the positioning of an element on a page. For exampl
 
 If you use a layer with a component that could be opened or closed, you have to make sure you re-render the layer the first time you open the component, otherwise it will end up with a wrong position.
 
+![Example Layer Components](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-layer/docs/Layer.png)
 
 ## Try it out
 
@@ -19,45 +20,18 @@ npm install ak-layer
 
 ### HTML
 
-The `ak-layer` package exports the Layer [skate](https://github.com/skatejs/skatejs) component:
+This package exports the ak-layer React component.
 
-Import the component in your JS resource:
- 
-#### bundle.js
+Import the component in your React app as follows:
 
-```javascript
+```js
 import Layer from 'ak-layer';
 
-const myLayer = new Layer();
-```
-Now you can use the defined layer in your HTML markup:
+const myContent = (<div>I'm going to be aligned to the right!</div>);
 
-#### index.html
-
-```html
-<html>
-<head>
-  <script src="bundle.js"></script>
-</head>
-<body>
-  <!-- ... -->
-  <ak-layer></ak-layer>
-</body>
-```
-### React
-
-This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
-
-
-```
-import Layer from 'ak-layer';
-import reactify from 'skatejs-react-integration';
-
-const ReactComponent = reactify(Layer, {});
-
-ReactDOM.render(<ReactComponent />, container);
+ReactDOM.render(<Layer position="right middle" content={myContent}>
+  <div>Some content</div>
+</Layer>, container);
 ```
 
-
-
-
+Any content that is passed to Layer as children will always be rendered and any content passed throught the `content` prop will be rendered aligned to the internal content.

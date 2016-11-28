@@ -13,7 +13,7 @@ export default class Chrome extends PureComponent {
     children: PropTypes.arrayOf(PropTypes.element).isRequired,
   }
 
-  componentDidMount= () => {
+  componentDidMount() {
     if (this.props.isLink) {
       // When the component is mounted, grab a reference and add a DOM listener;
       this.attachKeyHandlers(this.chromeLink);
@@ -32,7 +32,11 @@ export default class Chrome extends PureComponent {
         .click();
     };
     keyHandler(elem, followLink);
-  };
+  }
+
+  refLinkTag = (linkTag) => {
+    this.chromeLink = linkTag;
+  }
 
   render() {
     const chromeClassNames = classNames({
@@ -50,7 +54,7 @@ export default class Chrome extends PureComponent {
     }
     return (<span
       {...chromeProps}
-      ref={(linkTag) => { this.chromeLink = linkTag; }}
+      ref={this.refLinkTag}
       className={chromeClassNames}
     >
       {this.props.children}

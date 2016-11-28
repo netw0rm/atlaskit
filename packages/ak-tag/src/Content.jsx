@@ -10,7 +10,7 @@ export default class Content extends PureComponent {
     children: PropTypes.node.isRequired,
   }
 
-  getContent = () => {
+  render = () => {
     if (this.props.href) {
       return (<Link
         href={this.props.href}
@@ -20,6 +20,4 @@ export default class Content extends PureComponent {
     }
     return <Text>{this.props.children}</Text>;
   }
-
-  render = () => this.getContent()
 }

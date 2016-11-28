@@ -15,9 +15,6 @@ export default class Button extends PureComponent {
     className={styles.button} aria-label={this.props.removeText}
     onMouseOver={() => this.props.onHoverChange(true)}
     onMouseOut={() => this.props.onHoverChange(false)}
-        // ref={el => (keyHandler(el, this.removeAction))}
-        // TODO : handle SPACE and ENTER key to call onClick action
-        // onKeypress={() => this.handleRemoveButtonKeypress()}
     onClick={this.props.onRemoveAction}
   >
     <RemoveIcon />

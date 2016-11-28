@@ -29,7 +29,7 @@ describe('<Tag/> component tests', () => {
     expect(wrapper.props().href).to.equal(bitbucketUrl);
   });
   it('Tag full rendering - with link', () => {
-    const wrapper = mount(<Tag text={atlassianlinkText} href={atlassianUrl} />);
+    const wrapper = mount(<div><Tag text={atlassianlinkText} href={atlassianUrl} /></div>);
     const renderedHtml =
     `<div class="${styles.rootWrapper}">` +
       `<div class="${styles.animationWrapper}">` +
@@ -40,11 +40,11 @@ describe('<Tag/> component tests', () => {
         '</span>' +
       '</div>' +
     '</div>';
-    expect(wrapper.html()).to.equal(renderedHtml);
+    expect(wrapper.find('Tag').html()).to.equal(renderedHtml);
   });
 
   it('Tag full rendering - with text', () => {
-    const wrapper = mount(<Tag text={atlassianlinkText} />);
+    const wrapper = mount(<div><Tag text={atlassianlinkText} /></div>);
     const renderedHtml =
     `<div class="${styles.rootWrapper}">` +
       `<div class="${styles.animationWrapper}">` +
@@ -53,7 +53,7 @@ describe('<Tag/> component tests', () => {
         '</span>' +
       '</div>' +
     '</div>';
-    expect(wrapper.html()).to.equal(renderedHtml);
+    expect(wrapper.find('Tag').html()).to.equal(renderedHtml);
   });
   it('Check if link tag has uses the passed href', () => {
     const wrapper = mount(<Tag {...testProps} />);

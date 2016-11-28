@@ -1,0 +1,72 @@
+@import './shared-variables.less';
+
+@viewmode-border-width: 0;
+
+// EXTERNAL CONSTANTS
+// These are values that should be pulled in from ak-button but we are repeating them here for now
+// TODO: pull this from ak-button (AK-640)
+@ak-icon-size-small: 20px;
+
+// the maximum width the slot wrapper can take up. Parents width - iconSize
+@viewmode-slot-wrapper-max-width: ~"calc(100% - @{ak-icon-size-small})";
+
+.view-mode-wrapper {
+  // .borders-and-padding(@viewmode-border-width, @base-horizontal-padding, @base-height);
+
+  display: inline-flex;
+  max-width: ~"calc(100% - 2 * @{base-horizontal-padding}px)";
+
+  &:hover .edit-button{
+    opacity: 1;
+  }
+}
+
+.view-mode-slot-wrapper {
+  min-height: unit(@base-inner-height, px);
+  word-wrap: break-word;
+  max-width: @viewmode-slot-wrapper-max-width;
+}
+
+.view-mode-content-wrapper {
+  display: inline-flex;
+  width: 100%;
+}
+
+.edit-button-focused {
+  .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
+  border-color: @base-border-color-focused;
+  background-color: @base-background-color-focused;
+  border-style: solid;
+}
+
+// the vendor prefixes here are deliberate. 'appearance' does not seem to get picked up by postcss,
+// eslint or even Chrome for some reason. :/
+.edit-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  outline: 0;
+  opacity: 0;
+  width: 100%;
+  display: inline-flex;
+  flex-direction: row-reverse;
+
+   &:focus {
+    opacity: 1;
+  }
+
+  &::-moz-focus-inner {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+}
+
+.editIcon {
+  color: @ak-color-N500;
+}

@@ -36,7 +36,4 @@ describe.skip('ak-editor-bitbucket keymap', () => {
 
   it('should change to paragraph first when changing h1 to blockquote', () => {
   });
-
-  it('should not contain any nested blockquote', () => {
-  });
 });

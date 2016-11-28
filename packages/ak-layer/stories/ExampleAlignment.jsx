@@ -3,31 +3,22 @@ import styles from './styles.less';
 
 import AKLayer from '../src';
 
-
+// eslint-disable-next-line  react/prefer-stateless-function
 export default class ExampleAlignment extends PureComponent {
   static propTypes = {
     position: PropTypes.string,
-    content: PropTypes.string,
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      target: null,
-    };
+    targetContent: PropTypes.string,
   }
 
   render() {
-    const content = (
-      <div className={styles.locals.alignmentContainer}>
-        {this.props.content}
-      </div>
-    );
+    const popperContent = (<div style={{ background: '#fca' }}>{this.props.position}</div>);
 
     return (
       <div>
-        <AKLayer {...this.props} target={content}>
-          <div style={{ background: '#fca' }}>{this.props.position}</div>
+        <AKLayer {...this.props} content={popperContent}>
+          <div className={styles.locals.alignmentContainer}>
+            {this.props.targetContent}
+          </div>
         </AKLayer>
       </div>
     );

@@ -27,11 +27,11 @@ Import the component in your React app as follows:
 ```js
 import Layer from 'ak-layer';
 
-const myTarget = (<div>Some content</div>);
+const myContent = (<div>I'm going to be aligned to the right!</div>);
 
-ReactDOM.render(<Layer position="right middle" target={myTarget}>
-  <div>I'm going to be aligned to the right!</div>
+ReactDOM.render(<Layer position="right middle" content={myContent}>
+  <div>Some content</div>
 </Layer>, container);
 ```
 
-The `target` prop is a React element you want to align some content around and the content within Layer is what will be aligned.
+Any content that is passed to Layer as children will always be rendered and any content passed throught the `content` prop will be rendered aligned to the internal content.

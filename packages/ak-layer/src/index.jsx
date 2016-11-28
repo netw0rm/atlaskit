@@ -69,19 +69,19 @@ export default class Layer extends PureComponent {
     */
     offset: PropTypes.string,
     /**
-     * @description Target of a layer.
-     * Element on a page relative to which layer should be positioned.
+     * @description HTML content to display in the layer. Will be aligned to the target according to
+     * the `position` prop.
      * @memberof Layer
      * @instance
      * @type ReactElement
      * @example @html
-     * const myTarget = (<div>Some content</div>);
+     * const myContent = (<div>Some content</div>);
      *
-     * ReactDOM.render(<Layer position="right middle" target={myTarget}>
-     *   <div>I'm going to be aligned to the right!</div>
+     * ReactDOM.render(<Layer position="right middle" content={myContent}>
+     *   <div>I'm the target!</div>
      * </Layer>, container);
      */
-    target: PropTypes.node.isRequired,
+    content: PropTypes.node.isRequired,
     children: PropTypes.node.isRequired,
   }
 
@@ -89,7 +89,7 @@ export default class Layer extends PureComponent {
     position: POSITION_ATTRIBUTE_ENUM.default,
     boundariesElement: 'viewport',
     autoPosition: true,
-    offset: '',
+    offset: '0 0',
     target: null,
     children: null,
   }
@@ -167,10 +167,10 @@ export default class Layer extends PureComponent {
     return (
       <div>
         <div ref={ref => (this.targetRef = ref)} style={{ display: 'inline-block' }}>
-          {this.props.target}
+          {this.props.children}
         </div>
         <div ref={ref => (this.contentRef = ref)} style={{ top: 0, left: 0, position, transform }}>
-          {this.props.children}
+          {this.props.content}
         </div>
       </div>
     );

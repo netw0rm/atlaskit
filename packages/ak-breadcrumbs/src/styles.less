@@ -1,6 +1,7 @@
 @import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/grid.less';
 
-@breadcrumbs-padding: 16px;
+@breadcrumbs-padding: @ak-grid-size * 2;
 
 .container {
   color: @ak-color-N300;
@@ -18,6 +19,11 @@
 
     & + .item {
       padding-left: @breadcrumbs-padding;
+
+      [dir="rtl"] & {
+        padding-left: 0;
+        padding-right: @breadcrumbs-padding;
+      }
     }
 
     & + .item::before {
@@ -29,6 +35,12 @@
       text-align: center;
       vertical-align: middle;
       width: @breadcrumbs-padding;
+
+      [dir="rtl"] & {
+        float: right;
+        margin-left: 0;
+        margin-right: -@breadcrumbs-padding;
+      }
     }
   }
 }

@@ -1,0 +1,30 @@
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/grid.less';
+
+.containerItem {
+  width: 100%;
+  height: @ak-grid-size * 5;
+  padding: @ak-grid-size;
+  box-sizing: border-box;
+  border-radius: 3px;
+  display: flex;
+  text-overflow: ellipsis;
+  &:hover {
+    background: @ak-color-N20A;
+  }
+}
+
+.icon {
+  padding: 0 @ak-grid-size * 3 0 @ak-grid-size * 2;
+  & > * {
+    width: @ak-grid-size * 2.5;
+    height: @ak-grid-size * 2.5;
+  }
+}
+
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+}

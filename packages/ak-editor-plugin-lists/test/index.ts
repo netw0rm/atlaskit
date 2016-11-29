@@ -1,14 +1,15 @@
-import ListsPlugin from '../src';
-import { chaiPlugin, makeEditor, doc, p, text, ol, ul, li, h1 } from 'ak-editor-test';
+import { chaiPlugin, makeEditor } from 'ak-editor-test';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import ListsPlugin from '../src';
+import { doc, h1, li, ol, p, ul, schema } from './_schema-builder';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);
 
-describe('ak-editor-plugin-lists legacy', () => {
-  const editor = (doc: any) => makeEditor({ doc: doc, plugin: ListsPlugin });
+describe('ak-editor-plugin-lists', () => {
+  const editor = (doc: any) => makeEditor({ doc: doc, plugin: ListsPlugin, schema });
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const Plugin = ListsPlugin as any; // .State is not public API.
@@ -19,13 +20,10 @@ describe('ak-editor-plugin-lists legacy', () => {
     it('should allow a change handler to be attached', () => {
       const { plugin } = editor(doc(p()));
       const spy = sinon.spy()
+
       plugin.subscribe(spy);
 
-      expect(spy).to.have.been.calledWith({
-        active: false,
-        enabled: true,
-        type: null
-      });
+      expect(spy).to.have.been.calledOnce;
     });
 
     it('should emit a change when the selected node becomes an ordered list', () => {
@@ -33,15 +31,15 @@ describe('ak-editor-plugin-lists legacy', () => {
       const spy = sinon.spy()
       plugin.subscribe(spy);
 
-      plugin.toggleList('ordered_list');
+      plugin.toggleOrderedList();
 
       expect(spy).to.have.been.callCount(2);
-
-      expect(spy).to.have.been.calledWith({
-        active: true,
-        enabled: true,
-        type: "ordered_list"
-      });
+      expect(plugin).to.have.property('orderedListActive', true);
+      expect(plugin).to.have.property('orderedListDisabled', false);
+      expect(plugin).to.have.property('orderedListHidden', false);
+      expect(plugin).to.have.property('bulletListActive', false);
+      expect(plugin).to.have.property('bulletListDisabled', false);
+      expect(plugin).to.have.property('bulletListHidden', false);
     });
 
     it('should not emit extra change events when moving within an ordered list', () => {
@@ -71,10 +69,10 @@ describe('ak-editor-plugin-lists legacy', () => {
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      plugin.toggleList('ordered_list');
-      plugin.toggleList('ordered_list');
-      plugin.toggleList('bullet_list');
-      plugin.toggleList('bullet_list');
+      plugin.toggleOrderedList();
+      plugin.toggleOrderedList();
+      plugin.toggleBulletList();
+      plugin.toggleBulletList();
 
       expect(spy).to.have.been.callCount(5);
     });
@@ -84,10 +82,10 @@ describe('ak-editor-plugin-lists legacy', () => {
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      plugin.toggleList('ordered_list');
-      plugin.toggleList('ordered_list');
-      plugin.toggleList('bullet_list');
-      plugin.toggleList('bullet_list');
+      plugin.toggleOrderedList();
+      plugin.toggleOrderedList();
+      plugin.toggleBulletList();
+      plugin.toggleBulletList();
 
       expect(spy).to.have.been.callCount(5);
     });
@@ -95,50 +93,50 @@ describe('ak-editor-plugin-lists legacy', () => {
     it('should allow toggling between normal text and ordered list', () => {
       const { pm, plugin } = editor(doc(p('t{a}ex{b}t')));
 
-      plugin.toggleList('ordered_list');
+      plugin.toggleOrderedList();
       expect(pm.doc).to.deep.equal(doc(ol(li(p('text')))));
-      plugin.toggleList('ordered_list');
+      plugin.toggleOrderedList();
       expect(pm.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should allow toggling between normal text and bullet list', () => {
       const { pm, plugin } = editor(doc(p('t{<}ex{>}t')));
 
-      plugin.toggleList('bullet_list');
+      plugin.toggleBulletList();
       expect(pm.doc).to.deep.equal(doc(ul(li(p('text')))));
-      plugin.toggleList('bullet_list');
+      plugin.toggleBulletList();
       expect(pm.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should allow toggling between ordered and bullet list', () => {
       const { pm, plugin } = editor(doc(ol(li(p('t{<}ex{>}t')))));
 
-      plugin.toggleList('bullet_list');
+      plugin.toggleBulletList();
       expect(pm.doc).to.deep.equal(doc(ul(li(p('text')))));
-      plugin.toggleList('bullet_list');
+      plugin.toggleBulletList();
       expect(pm.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should make sure that it is enabled when selecting ordered list', () => {
       const { pm, plugin } = editor(doc(ol(li(p('te{<>}xt')))));
-      const state = plugin.getState();
 
-      expect(state).to.eql({
-        active: true,
-        enabled: true,
-        type: "ordered_list"
-      });
+      expect(plugin).to.have.property('orderedListActive', true);
+      expect(plugin).to.have.property('orderedListDisabled', false);
+      expect(plugin).to.have.property('orderedListHidden', false);
+      expect(plugin).to.have.property('bulletListActive', false);
+      expect(plugin).to.have.property('bulletListDisabled', false);
+      expect(plugin).to.have.property('bulletListHidden', false);
     });
 
     it('should be disabled when selecting h1', () => {
       const { pm, plugin } = editor(doc(h1('te{<>}xt')));
-      const state = plugin.getState();
 
-      expect(state).to.eql({
-        active: false,
-        enabled: false,
-        type: null
-      });
+      expect(plugin).to.have.property('orderedListActive', false);
+      expect(plugin).to.have.property('orderedListDisabled', true);
+      expect(plugin).to.have.property('orderedListHidden', false);
+      expect(plugin).to.have.property('bulletListActive', false);
+      expect(plugin).to.have.property('bulletListDisabled', true);
+      expect(plugin).to.have.property('bulletListHidden', false);
     });
 
     describe('untoggling a list', () => {
@@ -147,21 +145,21 @@ describe('ak-editor-plugin-lists legacy', () => {
       it('should allow untoggling part of a list based on selection', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('{<}Two')),li(p('Three{>}')),li(p('Four')))));
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
 
       it('should allow untoggling part of a list based on selection that starts at the end of previous line', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One{<}')),li(p('Two')),li(p('Three{>}')),li(p('Four'))))); // When selection starts on previous (empty) node
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
 
       it('should untoggle empty paragraphs in a list', () => {
         const { pm, plugin } = editor(doc(ol(li(p('{<}One')),li(p('Two')),li(p()),li(p('Three{>}')))));
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(doc(p('One'),p('Two'),p(),p('Three')));
       });
     });
@@ -171,7 +169,7 @@ describe('ak-editor-plugin-lists legacy', () => {
         const expectedOutput = doc(ol(li(p('One'))),ul(li(p('Two')),li(p('Three'))),ol((li(p('Four')))));
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('{<}Two')),li(p('Three{>}')),li(p('Four')))));
 
-        plugin.toggleList('bullet_list');
+        plugin.toggleBulletList();
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
 
@@ -179,7 +177,7 @@ describe('ak-editor-plugin-lists legacy', () => {
         const expectedOutput = doc(ol(li(p('One'))),ul(li(p('Two')),li(p('Three'))),ol((li(p('Four')))));
         const { pm, plugin } = editor(doc(ol(li(p('One{<}')),li(p('Two')),li(p('Three{>}')),li(p('Four'))))); // When selection starts on previous (empty) node
 
-        plugin.toggleList('bullet_list');
+        plugin.toggleBulletList();
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
 
@@ -187,7 +185,7 @@ describe('ak-editor-plugin-lists legacy', () => {
         const expectedOutput = doc(ol(li(p('One')),li(p('Two')),li(p('Three')),li(p('Four'))));
         const { pm, plugin } = editor(doc(p('{<}One'),ol(li(p('Two{>}')),li(p('Three')),li(p('Four')))));
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
 
@@ -195,7 +193,7 @@ describe('ak-editor-plugin-lists legacy', () => {
         const expectedOutput = doc(ol(li(p('One')),li(p('Two')),li(p('Three')),li(p('Four'))));
         const { pm, plugin } = editor(doc(p('{<}One'),ol(li(p('Two')),li(p('Three'))),p('Four{>}')));
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
 
@@ -203,7 +201,7 @@ describe('ak-editor-plugin-lists legacy', () => {
         const expectedOutput = doc(ol(li(p('One')),li(p('Two')),li(p('Three')),li(p('Four'))));
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('{<}Two')),li(p('Three'))),(p('Four{>}'))));
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
 
@@ -211,7 +209,7 @@ describe('ak-editor-plugin-lists legacy', () => {
         const expectedOutput = doc(ul(li(p('One')),li(p('Two')),li(p()),li(p('Three'))));
         const { pm, plugin } = editor(doc(ol(li(p('{<}One')),li(p('Two')),li(p()),li(p('Three{>}')))));
 
-        plugin.toggleList('bullet_list');
+        plugin.toggleBulletList();
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
     });
@@ -224,21 +222,21 @@ describe('ak-editor-plugin-lists legacy', () => {
       it('should join with previous list if it\'s of the same type', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two')),li(p('Three'))),p('{<}Four'),p('Five{>}'),p('Six')));
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(expectedOutputForPreviousList);
       });
 
       it('should join with previous list if it\'s of the same type and selection starts at the end of previous line', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two')),li(p('Three{<}'))),p('Four'),p('Five{>}'),p('Six'))); // When selection starts on previous (empty) node
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(expectedOutputForPreviousList);
       });
 
       it('should not join with previous list if it\'s not of the same type', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two')),li(p('Three'))),p('{<}Four'),p('Five{>}'),p('Six')));
 
-        plugin.toggleList('bullet_list');
+        plugin.toggleBulletList();
         expect(pm.doc).not.to.deep.equal(expectedOutputForPreviousList);
         expect(pm.doc).to.deep.equal(doc(ol(li(p('One')),li(p('Two')),li(p('Three'))),ul(li(p('{<}Four')),li(p('Five'))),p('Six')));
       });
@@ -246,7 +244,7 @@ describe('ak-editor-plugin-lists legacy', () => {
       it('should not join with previous list if it\'s not of the same type and selection starts at the end of previous line', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two')),li(p('Three{<}'))),p('Four'),p('Five{>}'),p('Six'))); // When selection starts on previous (empty) node
 
-        plugin.toggleList('bullet_list');
+        plugin.toggleBulletList();
         expect(pm.doc).not.to.deep.equal(expectedOutputForPreviousList);
         expect(pm.doc).to.deep.equal(doc(ol(li(p('One')),li(p('Two')),li(p('Three'))),ul(li(p('{<}Four')),li(p('Five'))),p('Six')));
       });
@@ -254,21 +252,21 @@ describe('ak-editor-plugin-lists legacy', () => {
       it('should join with next list if it\'s of the same type', () => {
         const { pm, plugin } = editor(doc(p('One'),p('{<}Two'),p('Three{>}'),ol(li(p('Four')),li(p('Five')),li(p('Six')))));
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(expectedOutputForNextList);
       });
 
       it('should join with next list if it\'s of the same type and selection starts at the end of previous line', () => {
         const { pm, plugin } = editor(doc(p('One{<}'),p('Two'),p('Three{>}'),ol(li(p('Four')),li(p('Five')),li(p('Six')))));
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(expectedOutputForNextList);
       });
 
       it('should not join with next list if it isn\'t of the same type', () => {
         const { pm, plugin } = editor(doc(p('One'),p('{<}Two'),p('Three{>}'),ol(li(p('Four')),li(p('Five')),li(p('Six')))));
 
-        plugin.toggleList('bullet_list');
+        plugin.toggleBulletList();
         expect(pm.doc).not.to.deep.equal(expectedOutputForNextList);
         expect(pm.doc).to.deep.equal(doc(p('One'), ul(li(p('Two')), li(p('Three'))), ol(li(p('Four')), li(p('Five')), li(p('Six')))));
       });
@@ -276,7 +274,7 @@ describe('ak-editor-plugin-lists legacy', () => {
       it('should not join with next list if it isn\'t of the same type and selection starts at the end of previous line', () => {
         const { pm, plugin } = editor(doc(p('One{<}'),p('Two'),p('Three{>}'),ol(li(p('Four')),li(p('Five')),li(p('Six')))));
 
-        plugin.toggleList('bullet_list');
+        plugin.toggleBulletList();
         expect(pm.doc).not.to.deep.equal(expectedOutputForNextList);
         expect(pm.doc).to.deep.equal(doc(p('One'), ul(li(p('Two')), li(p('Three'))), ol(li(p('Four')), li(p('Five')), li(p('Six')))));
       });
@@ -284,21 +282,21 @@ describe('ak-editor-plugin-lists legacy', () => {
       it('should join with previous and next list if they\'re of the same type', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two'))),p('{<}Three'),p('Four{>}'),ol(li(p('Five')),li(p('Six')))));
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(expectedOutputForPreviousAndNextList);
       });
 
       it('should join with previous and next list if they\'re of the same type and selection starts at the end of previous line', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two{<}'))),p('Three'),p('Four{>}'),ol(li(p('Five')),li(p('Six')))));
 
-        plugin.toggleList('ordered_list');
+        plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(expectedOutputForPreviousAndNextList);
       });
 
       it('should not join with previous and next list if they\'re not of the same type', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two'))),p('{<}Three'),p('Four{>}'),ol(li(p('Five')),li(p('Six')))));
 
-        plugin.toggleList('bullet_list');
+        plugin.toggleBulletList();
         expect(pm.doc).not.to.deep.equal(expectedOutputForPreviousAndNextList);
         expect(pm.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two'))), ul(li(p('Three')), li(p('Four'))), ol(li(p('Five')), li(p('Six')))))
       });
@@ -306,11 +304,10 @@ describe('ak-editor-plugin-lists legacy', () => {
       it('should not join with previous and next list if they\'re not of the same type and selectoin starts at the end of previous line', () => {
         const { pm, plugin } = editor(doc(ol(li(p('One')),li(p('Two{<}'))),p('Three'),p('Four{>}'),ol(li(p('Five')),li(p('Six')))));
 
-        plugin.toggleList('bullet_list');
+        plugin.toggleBulletList();
         expect(pm.doc).not.to.deep.equal(expectedOutputForPreviousAndNextList);
         expect(pm.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two'))), ul(li(p('Three')), li(p('Four'))), ol(li(p('Five')), li(p('Six')))))
       });
     });
-
   });
 });

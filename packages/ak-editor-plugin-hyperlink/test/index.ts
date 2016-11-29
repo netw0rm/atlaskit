@@ -2,7 +2,7 @@ import mocha from 'mocha';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import { HyperlinkPlugin } from '../src';
+import HyperlinkPlugin from '../src';
 import { chaiPlugin, makeEditor, insert } from 'ak-editor-test';
 import { doc, link, linkable, schema, unlinkable } from './_schema-builder';
 
@@ -101,10 +101,10 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(spy).to.have.been.callCount(2);
     });
 
-    it('sets enabled to false when in a context where links are not supported by the schema', () => {
+    it('sets canAddLink to false when in a context where links are not supported by the schema', () => {
       const { pm, plugin } = editor(doc(unlinkable('{<}text{>}')));
 
-      expect(plugin.enabled).to.be.false;
+      expect(plugin.canAddLink).to.be.false;
     });
 
     it('should treat it as a link when selecting the whole link', () => {
@@ -174,12 +174,13 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(spy).to.have.been.callCount(2);
     });
 
-    it('does not permit adding a link to a collapsed selection', () => {
+    it('permits adding a link to an empty selection using the href', () => {
       const { pm, plugin } = editor(doc(linkable('{<>}')));
+      const href = 'http://www.atlassian.com';
 
-      plugin.addLink({ href: 'http://www.atlassian.com' });
+      plugin.addLink({ href });
 
-      expect(pm.doc).to.deep.equal(doc(linkable()));
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href })(href))));
     });
 
     it('does not permit adding a link to an existing link', () => {
@@ -198,7 +199,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(pm.doc).to.deep.equal(doc(unlinkable('text')));
     });
 
-    it('allows options when adding a link', () => {
+    it('requires href when adding a link', () => {
       const { pm, plugin } = editor(doc(linkable('{<}text{>}')));
 
       plugin.addLink({ href: 'http://example.com' });
@@ -206,56 +207,43 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('text'))));
     });
 
-    it('should be able to create a link with new text', () => {
-      const { pm, plugin } = editor(doc(linkable('{<}text{>}')));
-      const href = 'http://example.com';
-      const text = 'foo';
-
-      plugin.addLink({ href, text });
-
-      expect(pm.doc).to.deep.equal(doc(linkable(link({ href })(text))));
-    });
-
     it('should not be a part of the link when typing before it', () => {
-      const { pm, plugin } = editor(doc(linkable('a{<}text{>}')));
+      const { pm, plugin } = editor(doc(linkable('a{before}{<}text{>}')));
+      const { before } = pm.doc.refs;
       const href = 'http://example.com';
-      const text = 'foo';
-      const bar = 'bar';
 
-      plugin.addLink({ href, text });
-      pm.tr.insertText(2, bar).apply();
+      plugin.addLink({ href });
+      pm.tr.insertText(before, 'bar').apply();
 
-      expect(pm.doc).to.deep.equal(doc(linkable(`a${bar}`, link({ href })(text))));
+      expect(pm.doc).to.deep.equal(doc(linkable(`abar`, link({ href })('text'))));
     });
 
-    it('should be a part of the link when typing on it', () => {
-      const { pm, plugin } = editor(doc(linkable('{<}text{>}')));
+    it('should be a part of the link when typing in it', () => {
+      const { pm, plugin } = editor(doc(linkable('{<}te{middle}xt{>}')));
+      const { middle } = pm.doc.refs;
       const href = 'http://example.com';
-      const text = 'for';
-      const bar = 'oba';
 
-      plugin.addLink({ href, text });
-      pm.tr.insertText(3, bar).apply();
+      plugin.addLink({ href });
+      pm.tr.insertText(middle, 'bar').apply();
 
-      expect(pm.doc).to.deep.equal(doc(linkable(link({ href })('foobar'))));
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href })('tebarxt'))));
     });
 
     it('should not be a part of the link when typing after it', () => {
-      const { pm, plugin } = editor(doc(linkable('{<}text{>}')));
+      const { pm, plugin } = editor(doc(linkable('{<}text{>}{end}')));
+      const { end } = pm.doc.refs;
       const href = 'http://example.com';
-      const text = 'foo';
-      const bar = 'bar';
 
-      plugin.addLink({ href, text });
-      pm.tr.insertText(4, bar).apply();
+      plugin.addLink({ href });
+      pm.tr.insertText(end, 'bar').apply();
 
-      expect(pm.doc).to.deep.equal(doc(linkable(link({ href })(text), bar)));
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href })('text'), 'bar')));
     });
 
-    it('should not be able to link if selection is empty', () => {
+    it('should allow links to be added when the selection is empty', () => {
       const { pm, plugin } = editor(doc(linkable('{<>}text')));
 
-      expect(plugin.enabled).to.be.false;
+      expect(plugin.canAddLink).to.be.true;
     });
 
     it('should not be able to unlink a node that has no link', () => {
@@ -274,26 +262,26 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(pm.doc).to.deep.equal(doc(linkable('text')));
     });
 
-    it('should be able to update existing links with HyperLinkOptions', () => {
+    it('should be able to update existing links with href', () => {
       const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
 
-      plugin.updateLink({ href: 'http://example.com', text: 'foo' });
+      plugin.updateLink({ href: 'http://example.com' });
 
-      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('foo'))));
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('text'))));
     });
 
     it('should allow updating a link if new href is empty', () => {
       const { pm, plugin } = editor(doc(linkable(link({ href: 'http://example.com' })('{<}text{>}'))));
 
-      plugin.updateLink({ href: '', text: 'example/foo' });
+      plugin.updateLink({ href: '' });
 
-      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: '' })('example/foo'))));
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: '' })('text'))));
     });
 
     it('should not be able to update when not in a link', () => {
       const { pm, plugin } = editor(doc(linkable('{<}text{>}')));
 
-      plugin.updateLink({ href: 'http://example.com/foo', text: 'example/foo' });
+      plugin.updateLink({ href: 'http://example.com/foo' });
 
       expect(pm.doc).to.deep.equal(doc(linkable('text')));
     });

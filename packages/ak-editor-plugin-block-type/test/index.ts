@@ -3,7 +3,7 @@ import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_bl
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import BlockTypePlugin from '../src/new';
+import BlockTypePlugin from '../src';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);

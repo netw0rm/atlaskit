@@ -1,4 +1,4 @@
-import { TextFormattingPlugin } from '../src';
+import TextFormattingPlugin from '../src';
 import { chaiPlugin, makeEditor } from 'ak-editor-test';
 import { doc, p, em, strong, u, schema } from './_schema-builder';
 import { default as chai, expect } from 'chai';

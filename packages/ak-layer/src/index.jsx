@@ -36,7 +36,7 @@ export default class Layer extends PureComponent {
      * @description Element to act as a boundary for the Layer.
      * The Layer will not sit outside this element if it can help it.
      * If, through it's normal positoning, it would end up outside the boundary the layer
-     * will flip positions if the enable-flip prop is set.
+     * will flip positions if the autoPosition prop is set.
      *
      * Valid values are "window" and "viewport"
      * If not set the boundary will be the current viewport.
@@ -44,7 +44,7 @@ export default class Layer extends PureComponent {
      * @instance
      * @default "viewport"
      * @type String
-     * @example @html <Layer shouldFlip boundariesElement="window"></Layer>
+     * @example @html <Layer autoPosition boundariesElement="window"></Layer>
      */
     boundariesElement: PropTypes.oneOf(['viewport', 'window']),
     /**

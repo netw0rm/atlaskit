@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, prop, props, emit } from 'skatejs';
 
 import Chrome from './Chrome';

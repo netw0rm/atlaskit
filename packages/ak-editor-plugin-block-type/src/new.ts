@@ -17,6 +17,7 @@ import {
   isParagraphNode
 } from 'ak-editor-schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
+import transformToCodeBlock from './transform-to-code-block';
 
 // The names of the blocks don't map precisely to schema nodes, because
 // of concepts like "paragraph" <-> "Normal text" and "Unknown".
@@ -27,6 +28,8 @@ const NormalText = makeBlockType('normal', 'Normal text');
 const Heading1 = makeBlockType('heading1', 'Heading 1');
 const Heading2 = makeBlockType('heading2', 'Heading 2');
 const Heading3 = makeBlockType('heading3', 'Heading 3');
+const Heading4 = makeBlockType('heading4', 'Heading 4');
+const Heading5 = makeBlockType('heading5', 'Heading 5');
 const Quote = makeBlockType('quote', 'Block quote');
 const Code = makeBlockType('code', 'Code block');
 const Other = makeBlockType('other', 'Other…');
@@ -52,6 +55,8 @@ export class BlockTypeState {
       this.availableBlockTypes.push(Heading1);
       this.availableBlockTypes.push(Heading2);
       this.availableBlockTypes.push(Heading3);
+      this.availableBlockTypes.push(Heading4);
+      this.availableBlockTypes.push(Heading5);
     }
 
     if (pm.schema.nodes.blockquote) {
@@ -89,26 +94,49 @@ export class BlockTypeState {
     if (canChange) {
       // clear blockquote
       commands.lift(pm);
+      const nodes = pm.schema.nodes;
 
       switch (name) {
         case 'normal':
-          commands.setBlockType(pm.schema.nodes.paragraph)(pm);
+          if (nodes.paragraph) {
+            commands.setBlockType(nodes.paragraph)(pm);
+          }
           break;
         case 'heading1':
-          commands.setBlockType(pm.schema.nodes.heading, { level: 1 })(pm);
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 1 })(pm);
+          }
           break;
         case 'heading2':
-          commands.setBlockType(pm.schema.nodes.heading, { level: 2 })(pm);
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 2 })(pm);
+          }
           break;
         case 'heading3':
-          commands.setBlockType(pm.schema.nodes.heading, { level: 3 })(pm);
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 3 })(pm);
+          }
+          break;
+        case 'heading4':
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 4 })(pm);
+          }
+          break;
+        case 'heading5':
+          if (nodes.heading) {
+            commands.setBlockType(nodes.heading, { level: 5 })(pm);
+          }
           break;
         case 'quote':
-          commands.setBlockType(pm.schema.nodes.paragraph)(pm);
-          commands.wrapIn(pm.schema.nodes.blockquote)(pm);
+          if (nodes.paragraph && nodes.blockquote) {
+            commands.setBlockType(nodes.paragraph)(pm);
+            commands.wrapIn(nodes.blockquote)(pm);
+          }
           break;
         case 'code':
-          commands.setBlockType(pm.schema.nodes.code_block)(pm);
+          if (nodes.code_block) {
+            transformToCodeBlock(nodes.code_block, pm);
+          }
           break;
       }
     }
@@ -127,10 +155,10 @@ export class BlockTypeState {
     // we can get away by not checking all the types since the dropdown get
     // enabled as a group instead of per option
     const newEnabled = pm.selection && (
-      commands.setBlockType(pm.schema.nodes.paragraph)(pm, false) ||
-      commands.setBlockType(pm.schema.nodes.heading)(pm, false) ||
-      commands.setBlockType(pm.schema.nodes.code_block)(pm, false) ||
-      commands.setBlockType(pm.schema.nodes.blockquote)(pm, false)
+      commands.setBlockType(pm.schema.nodes.paragraph!)(pm, false) ||
+      commands.setBlockType(pm.schema.nodes.heading!)(pm, false) ||
+      commands.setBlockType(pm.schema.nodes.code_block!)(pm, false) ||
+      commands.setBlockType(pm.schema.nodes.blockquote!)(pm, false)
     );
     if (newEnabled !== this.canChange) {
       this.canChange = newEnabled;
@@ -151,15 +179,18 @@ export class BlockTypeState {
     }
 
     const block = pm.selection.$from.node(1);
-    debugger;
     if (isHeadingNode(block)) {
       switch (block.attrs.level) {
         case 1:
           return Heading1;
         case 2:
           return Heading2;
-        default:
+        case 3:
           return Heading3;
+        case 4:
+          return Heading4;
+        default:
+          return Heading5;
       }
     } else if (isCodeBlockNode(block)) {
       return Code;
@@ -180,7 +211,7 @@ export default new Plugin(BlockTypeState);
 
 export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
 
-export type BlockTypeName = 'normal' | 'heading1' | 'heading2' | 'heading3' | 'quote' | 'code' | 'other';
+export type BlockTypeName = 'normal' | 'heading1' | 'heading2' | 'heading3' | 'heading4' | 'heading5' | 'quote' | 'code' | 'other';
 
 export interface BlockType {
   name: BlockTypeName;

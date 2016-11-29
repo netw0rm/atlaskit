@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import { vdom, define, props, prop } from 'skatejs';
 import Checkbox from 'ak-icon/glyph/checkbox';
 

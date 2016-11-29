@@ -15,7 +15,7 @@ chai.should();
 const { expect } = chai;
 
 
-describe(name, () => {
+describe.skip(name, () => {
   describe('exports', () => {
     it('should export a base component', () => {
       (new MyComponent()).should.be.an.instanceof(Component);

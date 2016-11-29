@@ -28,7 +28,7 @@ function generateBunchOfItems(num) {
   return res;
 }
 
-describe(name, () => {
+describe.skip(name, () => {
   describe('sizes, paddings and margins', () => {
     describe('dropdown item', () => {
       let component;

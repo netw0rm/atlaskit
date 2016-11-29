@@ -1,0 +1,52 @@
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/grid.less';
+@import '../../shared-variables.less';
+
+@icon-size: @ak-grid-size * 2.5;
+@icon-open-padding: 0 (@ak-grid-size * 3) 0 (@ak-grid-size * 1.5);
+@icon-closed-padding: (@container-closed-width - @ak-grid-size * 4 - @icon-size) / 2;
+
+.containerItem {
+  width: 100%;
+  height: @ak-grid-size * 5;
+  padding: @ak-grid-size;
+  box-sizing: border-box;
+  border-radius: 3px;
+  display: flex;
+  text-overflow: ellipsis;
+  &:hover {
+    background: @ak-color-N20A;
+  }
+}
+
+.icon {
+  transition: padding 200ms;
+  padding: @icon-open-padding;
+  & > * {
+    width: @icon-size;
+    height: @icon-size;
+  }
+}
+
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+// Container queries
+.open {
+  .icon {
+    padding: 0 @icon-open-padding 0 @icon-open-padding;
+  }
+}
+.closed {
+  .icon {
+    padding: 0 @icon-closed-padding 0 @icon-closed-padding;
+  }
+
+  .text {
+    display: none;
+  }
+}

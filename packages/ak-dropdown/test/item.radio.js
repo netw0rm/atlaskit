@@ -19,7 +19,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
-describe(name, () => {
+describe.skip(name, () => {
   describe('ak-dropdown-item-radio', () => {
     let itemContainer;
 

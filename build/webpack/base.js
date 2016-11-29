@@ -6,7 +6,6 @@ const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
 const moduleBabelQuery = require('./babel.query.module');
-const storybookBabelQuery = require('./babel.query.storybook');
 const loaderChain = require('./loader-chain').encode;
 
 
@@ -27,12 +26,13 @@ const css = {
 
 if (isDevelopment) {
   css['-minimize'] = true;
+  css.localIdentName = '[local]_[hash:base64:5]';
 }
 
 
 const standardConfig = {
   entry: {
-    'dist/bundle.js': `./${pkg['ak:webpack:raw']}`,
+    'dist/bundle.js': [`./${pkg['ak:webpack:raw']}`],
   },
   output: {
     path: './',
@@ -45,7 +45,13 @@ const standardConfig = {
   resolve: {
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.jsx'],
     packageMains: ['ak:webpack:raw', ...defaultPackageMains()],
+    alias: {
+      sinon: 'sinon/pkg/sinon',
+    },
   },
+  noParse: [
+    /sinon/,
+  ],
   module: {
     loaders: [
       {
@@ -63,18 +69,18 @@ const standardConfig = {
       [ // exclusive configs for babel (first one that matches will be used)
         //
         // TYPESCRIPT
-        // Storybook only -- uses React rather than Incremental DOM
+        // React based code.
         //
         {
-          test: /\/stories\/.*\.tsx?$/,
+          test: /\/(stories|react)\/.*\.tsx?$/,
           loader: loaderChain({
-            'babel-loader': storybookBabelQuery,
+            'babel-loader': {},
             'ts-loader': {},
           }),
         },
         //
         // TYPESCRIPT
-        // Package code -- uses Incremental DOM rather than React
+        // Skate based code.
         //
         {
           test: /\.tsx?$/,
@@ -82,38 +88,59 @@ const standardConfig = {
             'babel-loader': moduleBabelQuery,
             'ts-loader': {},
           }),
+          exclude: /node_modules/,
         },
         //
-        // JAVASCRIPT
-        // Support react/jsx in stories, react/ directory, or react-*.js files
+        // Images (for storybook)
         //
         {
+          test: /\.png$/,
+          loader: 'url-loader',
+        },
+        //
+        // JAVASCRIPT (React components)
+        //
+        {
+          test: /\.jsx$/,
           loader: 'babel-loader',
-          test: /\.jsx?$/,
+          exclude: /node_modules/,
+        },
+        //
+        // JAVASCRIPT (Web components)
+        // Support react/jsx in stories, react/ directory, or react-*.js files
+        //
+        // TODO: remove this once we don't have WC any more
+        {
+          test: /\.js$/,
+          loader: 'babel-loader',
           include: /stories\/.*\.jsx?|build\/storybook\/.+\.jsx?$/,
+          // TODO: Remove next line once ak-component-base and ak-tooltip are migrated
           exclude: /stories\/skate\/.*\.js/,
-          query: storybookBabelQuery,
         },
         //
         // JAVASCRIPT
         // Support jsx to incremental dom in non-react locations (above).
         // Make sure vdom is imported from skatejs where jsx is used
         //
+        // TODO: remove this once we don't have WC any more
         {
+          test: /\.js$/,
           loader: 'babel-loader',
-          test: /\.jsx?$/,
-          exclude: /node_modules|bower_components/,
           query: moduleBabelQuery,
+          exclude: /node_modules/,
         },
       ],
+      {
+        test: /sinon\/pkg\/sinon/,
+        loader: 'imports?define=>false,require=>false',
+      },
     ],
   },
   postcss: () => [
     autoprefixer({
       // have a look here: https://confluence.atlassian.com/display/Cloud/Supported+browsers
       // "not Opera" w/o version qualifier is not valid, so I chose a really high version number
-      // TODO: Remove IE10 once Confluence stop supporting it (IE 10 is not tested in CI) https://ecosystem.atlassian.net/browse/AK-542
-      browsers: 'last 1 version, ie 10, Android > 4, not Opera < 1000',
+      browsers: 'last 1 version, ie 11, Android > 4, not Opera < 1000',
     }),
   ],
   plugins: [],

@@ -1,8 +1,10 @@
 /* eslint-disable */
 import { browser, commands, Keymap } from  "ak-editor-prosemirror";
 
-const { wrapIn, setBlockType, wrapInList, splitListItem, liftListItem,
+const { wrapIn, setBlockType, wrapInList, splitListItem, lift, liftListItem,
   sinkListItem, chainCommands, newlineInCode, toggleMark } = commands;
+
+const isMac = browser.mac;
 
 // Note: This is a copy pasta from prosemirror's example setup.
 // Modified to match custom nodes and markers.
@@ -46,6 +48,30 @@ export function buildKeymap(schema, mapKeys) {
     keys[key] = cmd;
   }
 
+  let lastCmd;
+
+  function clearAndApply(cmd) {
+    let isReset = false;
+
+    return (pm, apply) => {
+      lift(pm, apply);
+      setBlockType(schema.nodes.paragraph)(pm, apply);
+
+      if (lastCmd !== cmd) {
+        isReset = false;
+        lastCmd = cmd;
+      }
+
+      if (!isReset) {
+        cmd(pm, apply);
+      }
+
+      isReset = !isReset;
+
+      return true;
+    }
+  }
+
   for (let name in schema.marks) {
     let mark = schema.marks[name];
 
@@ -61,19 +87,32 @@ export function buildKeymap(schema, mapKeys) {
       bind("Mod-`", toggleMark(mark));
     }
   }
+
   for (let name in schema.nodes) {
     let node = schema.nodes[name];
 
     if (name === "bullet_list") {
-      bind("Shift-Ctrl-8", wrapInList(node));
+      if (isMac) {
+        bind("Shift-Cmd-B", clearAndApply(wrapInList(node)));
+      } else {
+        bind("Shift-Ctrl-B", clearAndApply(wrapInList(node)));
+      }
     }
 
     if (name === "ordered_list") {
-      bind("Shift-Ctrl-9", wrapInList(node));
+      if (isMac) {
+        bind("Shift-Cmd-L", clearAndApply(wrapInList(node)));
+      } else {
+        bind("Shift-Ctrl-L", clearAndApply(wrapInList(node)));
+      }
     }
 
     if (name === "blockquote") {
-      bind("Shift-Ctrl-.", wrapIn(node));
+      if (isMac) {
+        bind("Cmd-Alt-8", clearAndApply(wrapIn(node)));
+      } else {
+        bind("Ctrl-8", clearAndApply(wrapIn(node)));
+      }
     }
 
     if (name === "hard_break") {
@@ -83,7 +122,7 @@ export function buildKeymap(schema, mapKeys) {
       );
       bind("Mod-Enter", cmd);
       bind("Shift-Enter", cmd);
-      if (browser.mac) {
+      if (isMac) {
         bind("Ctrl-Enter", cmd);
       }
     }
@@ -95,23 +134,38 @@ export function buildKeymap(schema, mapKeys) {
     }
 
     if (name === "paragraph") {
-      bind("Shift-Ctrl-0", setBlockType(node));
+      if (isMac) {
+        bind("Cmd-Alt-0", clearAndApply(setBlockType(node)));
+      } else {
+        bind("Ctrl-0", clearAndApply(setBlockType(node)));
+      }
     }
 
     if (name === "code_block") {
-      bind("Shift-Ctrl-\\", setBlockType(node));
+      if (isMac) {
+        bind("Cmd-Alt-7", clearAndApply(setBlockType(node)));
+      } else {
+        bind("Ctrl-7", clearAndApply(setBlockType(node)));
+      }
       // https://github.com/ProseMirror/prosemirror/issues/419
       bind("Enter", (pm, apply) => {
-        let {$from, $to, node} = pm.selection;
-        if (node) {
-          return false;
-        }
+        let {$from, $head, empty} = pm.selection;
 
         if (!$from.parent.type.isCode) {
           return false;
         }
 
         if (apply !== false) {
+          if (
+            $head.parent.textContent.slice(-1) === "\n"
+            && empty
+            // nodeSize includes newlines
+            && $head.parentOffset === $head.parent.nodeSize - 2
+          ) {
+            commands.deleteCharBefore(pm);
+            return false;
+          }
+
           pm.tr.typeText("\n").applyAndScroll();
         }
 
@@ -120,8 +174,12 @@ export function buildKeymap(schema, mapKeys) {
     }
 
     if (name === "heading") {
-      for (let i = 1; i <= 6; i++) {
-        bind("Shift-Ctrl-" + i, setBlockType(node, {level: i}));
+      for (let i = 1; i <= 5; i++) {
+        if (isMac) {
+          bind("Cmd-Alt-" + i, clearAndApply(setBlockType(node, {level: i})));
+        } else {
+          bind("Ctrl-" + i, clearAndApply(setBlockType(node, {level: i})));
+        }
       }
     }
 

@@ -9,3 +9,5 @@ export { default as ToolbarBlockType } from './ToolbarBlockType';
 export { default as ToolbarHyperlink } from './ToolbarHyperlink';
 export { default as ToolbarLists } from './ToolbarLists';
 export { default as ToolbarTextFormatting } from './ToolbarTextFormatting';
+export { default as ToolbarFeedback } from './ToolbarFeedback';
+export { default as MentionPicker } from './MentionPicker';

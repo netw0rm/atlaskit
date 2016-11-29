@@ -1,3 +1,5 @@
+/** @jsx vdom */
+
 import classNames from 'classnames';
 import { vdom, define, prop, props } from 'skatejs';
 import Layer from 'ak-layer';

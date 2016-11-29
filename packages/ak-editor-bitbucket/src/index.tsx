@@ -9,11 +9,12 @@ import shadowStyles from './shadow.less';
 import Content from 'ak-editor-content';
 import Footer from 'ak-editor-footer';
 import Toolbar from 'ak-editor-toolbar';
-import HyperLink from 'ak-editor-hyperlink-edit';
+import HyperlinkEdit from 'ak-editor-hyperlink-edit';
 import ToolbarBlockType from 'ak-editor-toolbar-block-type';
 import ToolbarLists from 'ak-editor-toolbar-lists';
 import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
+import ToolbarFeedback from 'ak-editor-toolbar-feedback';
 import schema from './schema';
 import { buildKeymap } from './keymap';
 import markdownSerializer from './markdown-serializer';
@@ -21,10 +22,7 @@ import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 import parseHtml from './parse-html';
 
-import {
-  default as ListsPlugin,
-  ListType,
-} from 'ak-editor-plugin-lists';
+import { default as ListsPlugin } from 'ak-editor-plugin-lists';
 import MarkdownInputRulesPlugin from 'ak-editor-plugin-markdown-inputrules';
 import {
   default as HyperlinkPlugin,
@@ -33,11 +31,11 @@ import {
   default as ImageUploadPlugin,
   ImageUploadOptions
 } from 'ak-editor-plugin-image-upload';
-import {
-  default as TextFormattingPlugin,
-  MarkType,
-} from 'ak-editor-plugin-text-formatting';
+import { default as TextFormattingPlugin } from 'ak-editor-plugin-text-formatting';
 import MentionsPlugin from 'ak-editor-plugin-mentions';
+
+type ListType = 'bullet_list' | 'ordered_list';
+declare var require: any;
 
 // typescript removes unused var if we import it :(
 const { vdom } = require('skatejs');
@@ -65,7 +63,7 @@ function stopEventPropagation(event: Event) : void {
 }
 
 interface formattingMap {
-  [propName: string]: MarkType;
+  [propName: string]: any;
 }
 
 const formattingToProseMirrorMark: formattingMap = {
@@ -91,10 +89,10 @@ class AkEditorBitbucket extends Component {
   _underlineActive: boolean;
   _codeActive: boolean;
   _canChangeTextFormatting: boolean;
-  _hyperLinkHref: string;
+  _hyperlinkHref: string;
   _selectedBlockType: any;
-  _hyperLinkElement: HTMLElement | undefined;
-  _hyperLinkActive: boolean;
+  _hyperlinkElement: HTMLElement | undefined;
+  _hyperlinkActive: boolean;
   _canLinkHyperlink: boolean;
   _bulletlistDisabled: boolean;
   _numberlistDisabled: boolean;
@@ -135,10 +133,10 @@ class AkEditorBitbucket extends Component {
       _underlineActive: prop.boolean(),
       _codeActive: prop.boolean(),
       _canChangeTextFormatting: prop.boolean(),
-      _hyperLinkHref: prop.string(),
+      _hyperlinkHref: prop.string(),
       _selectedBlockType: {},
-      _hyperLinkElement: {},
-      _hyperLinkActive: prop.boolean(),
+      _hyperlinkElement: {},
+      _hyperlinkActive: prop.boolean(),
       _canLinkHyperlink: prop.boolean(),
       _bulletlistDisabled: prop.boolean(),
       _numberlistDisabled: prop.boolean(),
@@ -208,9 +206,9 @@ class AkEditorBitbucket extends Component {
           onToggletextformatting={elem._toggleMark}
         />
         <ToolbarHyperlink
-          active={elem._hyperLinkActive}
+          active={elem._hyperlinkActive}
           disabled={!elem._canLinkHyperlink}
-          onAddHyperlink={elem._addHyperLink}
+          onAddHyperlink={elem._addHyperlink}
         />
         <ToolbarLists
           bulletlistDisabled={elem._bulletlistDisabled}
@@ -219,6 +217,10 @@ class AkEditorBitbucket extends Component {
           numberlistActive={elem._numberListActive}
           on-toggle-number-list={() => elem._toggleList('ordered_list')}
           on-toggle-bullet-list={() => elem._toggleList('bullet_list')}
+        />
+        <spacer />
+        <ToolbarFeedback
+          feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
         />
       </Toolbar>
       <Content
@@ -229,13 +231,14 @@ class AkEditorBitbucket extends Component {
         openBottom
         skip
       />
-      {elem._hyperLinkActive ?
-        <HyperLink
-          href={elem._hyperLinkHref}
-          textInputValue={elem._hyperLinkHref}
-          attachTo={elem._hyperLinkElement}
+      {elem._hyperlinkActive ?
+        <HyperlinkEdit
+          href={elem._hyperlinkHref}
+          textInputValue={elem._hyperlinkHref}
+          attachTo={elem._hyperlinkElement}
           onUnlink={elem._unlink}
-          onchange={elem._changeHyperLinkValue}
+          onEnterKeyup={elem._handleEnterKeyup}
+          onEscKeyup={elem._handleEscKeyup}
         />
         : null
       }
@@ -260,7 +263,7 @@ class AkEditorBitbucket extends Component {
           :
           <input
             placeholder={elem.placeholder}
-            onfocus={elem._expand}
+            onFocus={elem._expand}
             className={fakeInputClassNames}
           />
         }
@@ -366,7 +369,7 @@ class AkEditorBitbucket extends Component {
   }
 
   _toggleMark(event: CustomEvent): void {
-    const mark: MarkType = formattingToProseMirrorMark[event.detail.mark];
+    const mark: any = formattingToProseMirrorMark[event.detail.mark];
 
     if (this._pm) {
       TextFormattingPlugin.get(this._pm).toggleMark(mark);
@@ -379,11 +382,14 @@ class AkEditorBitbucket extends Component {
     }
   }
 
-  _addHyperLink(event: CustomEvent): void {
+  _addHyperlink(event: CustomEvent): void {
     const href = event.detail.value;
 
     if (this._pm) {
-      HyperlinkPlugin.get(this._pm).addLink({ href });
+      const pm = this._pm;
+      HyperlinkPlugin.get(pm).addLink({ href });
+      pm.setTextSelection(pm.selection.$to.pos);
+      pm.focus();
     }
   }
 
@@ -401,14 +407,30 @@ class AkEditorBitbucket extends Component {
     }
   }
 
-  _changeHyperLinkValue(event: Event) {
-    const newLink = (event.target as any).value;
+  _handleEnterKeyup(event: CustomEvent) {
+    this._updateHyperlinkValue(event);
+    this._closeHyperlinkPanel();
+  }
+
+  _handleEscKeyup() {
+    this._closeHyperlinkPanel();
+  }
+
+  _updateHyperlinkValue(event: CustomEvent) {
+    const newLink = event.detail.value;
 
     if (this._pm) {
       HyperlinkPlugin.get(this._pm).updateLink({
         href: newLink,
-        text: newLink,
       });
+    }
+  }
+
+  _closeHyperlinkPanel() {
+    if (this._pm) {
+      const pm = this._pm;
+      this._hyperlinkActive = false;
+      pm.setTextSelection(pm.selection.$to.pos);
     }
   }
 
@@ -433,9 +455,9 @@ class AkEditorBitbucket extends Component {
     // Hyperlink plugin wiring
     HyperlinkPlugin.get(pm).subscribe(state => {
       this._canLinkHyperlink = state.enabled as boolean;
-      this._hyperLinkActive = state.active as boolean;
-      this._hyperLinkElement = state.element as HTMLElement;
-      this._hyperLinkHref = state.href as string;
+      this._hyperlinkActive = state.active as boolean;
+      this._hyperlinkElement = state.element as HTMLElement;
+      this._hyperlinkHref = state.href as string;
     });
 
     // Image upload plugin wiring

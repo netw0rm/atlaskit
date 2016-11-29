@@ -38,7 +38,7 @@ function tearDownComponent(tooltip, trigger) {
   document.body.removeChild(trigger);
 }
 
-describe('ak-tooltip-trigger', () => {
+describe.skip('ak-tooltip-trigger', () => {
   let tooltip;
   let trigger;
 

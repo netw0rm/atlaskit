@@ -59,7 +59,7 @@ describe('ak-layer', () => {
     const content = (<div id="content">Some Content</div>);
 
     it('should be relfected on the popper div', () => {
-      const wrapper = shallow(<Layer content={content} >
+      const wrapper = shallow(<Layer content={content}>
         <div>Something to align to</div>
       </Layer>);
 

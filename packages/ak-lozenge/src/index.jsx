@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!../src/style.less';
 
 const APPEARANCE_ENUM = {
@@ -13,7 +13,7 @@ const APPEARANCE_ENUM = {
  * @example @js import Lozenge from 'ak-lozenge';
  * const component = new Lozenge();
  */
-class Lozenge extends Component {
+export default class Lozenge extends PureComponent {
   static propTypes = {
     /**
      * @description Toggles the bolder appearance.
@@ -36,9 +36,9 @@ class Lozenge extends Component {
      * @description The content passed to the lozenge
      * @memberof Lozenge
      * @instance
-     * @type {element}
+     * @type {node}
      */
-    children: PropTypes.element,
+    children: PropTypes.node,
   };
 
   static defaultProps = {
@@ -67,5 +67,3 @@ class Lozenge extends Component {
     );
   }
 }
-
-export default Lozenge;

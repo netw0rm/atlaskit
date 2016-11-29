@@ -31,18 +31,19 @@ export default function(html: string): Node {
   //   <a href="/abodera/" rel="nofollow" title="@abodera" class="mention mention-me">Artur Bodera</a>
   Array.from(el.querySelectorAll('a.mention')).forEach((a: HTMLLinkElement) => {
     const span = document.createElement('span');
+    span.setAttribute('class', 'editor-entity-mention');
     span.setAttribute('contenteditable', 'false');
-    span.setAttribute('editor-mention-display-name', a.textContent ? a.textContent : '');
-    span.setAttribute('editor-entity-type', 'mention');
 
     const title = a.getAttribute('title') || '';
     if (title) {
       const usernameMatch = title.match(/^@(.*?)$/);
       if (usernameMatch) {
         const username = usernameMatch[1];
-        span.setAttribute('editor-entity-id', username);
+        span.setAttribute('mention-id', username);
       }
     }
+
+    span.textContent = a.textContent;
 
     a.parentNode!.insertBefore(span, a);
     a.parentNode!.removeChild(a);
@@ -91,8 +92,7 @@ export default function(html: string): Node {
 
     if (idMatch) {
       const span = document.createElement('span');
-      span.setAttribute('editor-entity-type', 'emoji');
-      span.setAttribute('editor-entity-id', idMatch[1]);
+      span.setAttribute('emoji-id', idMatch[1]);
       span.setAttribute('contenteditable', 'false');
       img.parentNode!.insertBefore(span, img);
     }

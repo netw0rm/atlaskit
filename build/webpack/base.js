@@ -89,6 +89,13 @@ const standardConfig = {
           exclude: /node_modules/,
         },
         //
+        // Images (for storybook)
+        //
+        {
+          test: /\.png$/,
+          loader: 'url-loader',
+        },
+        //
         // JAVASCRIPT (React components)
         //
         {

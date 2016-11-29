@@ -6,7 +6,7 @@ import 'style!./host.less';
 import cx from 'classnames';
 import shadowStyles from './shadow.less';
 import { Content, Footer, Toolbar, ToolbarBlockType, ToolbarLists,
-  ToolbarTextFormatting } from 'ak-editor-ui';
+  ToolbarTextFormatting, ToolbarFeedback } from 'ak-editor-ui';
 import schema from './schema';
 import { parse, encode } from './cxhtml';
 import { buildKeymap } from './keymap';
@@ -158,6 +158,10 @@ export default class Editor extends Component {
           numberlistActive={elem._numberListActive}
           on-toggle-number-list={() => elem._toggleList('ordered_list')}
           on-toggle-bullet-list={() => elem._toggleList('bullet_list')}
+        />
+        <spacer />
+        <ToolbarFeedback
+          feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
         />
       </Toolbar>
       <Content

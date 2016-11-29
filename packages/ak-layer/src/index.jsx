@@ -123,12 +123,18 @@ export default class Layer extends PureComponent {
     if (this.popper) {
       this.popper.destroy();
     }
+    // we wrap our target is a div so that we can safely get a reference to it, but we pass the
+    // actual target to popper
+    const actualTarget = this.targetRef.firstChild;
 
-    this.popper = new Popper(this.targetRef, this.contentRef, {
+    this.popper = new Popper(actualTarget, this.contentRef, {
       placement: positionPropToPopperPosition(props.position),
       boundariesElement: this.props.boundariesElement,
       modifiers: {
         applyStyle: {
+          enabled: false,
+        },
+        hide: {
           enabled: false,
         },
         offset: {
@@ -166,7 +172,7 @@ export default class Layer extends PureComponent {
     const { position, transform } = this.state;
     return (
       <div>
-        <div ref={ref => (this.targetRef = ref)} style={{ display: 'inline-block' }}>
+        <div ref={ref => (this.targetRef = ref)}>
           {this.props.children}
         </div>
         <div ref={ref => (this.contentRef = ref)} style={{ top: 0, left: 0, position, transform }}>

@@ -2,6 +2,7 @@
 @import '~akutil-shared-styles/src/grid.less';
 
 @breadcrumbs-padding: @ak-grid-size * 2;
+@breadcrumbs-item-max-width: @ak-grid-size * 25;
 
 .container {
   color: @ak-color-N300;
@@ -41,4 +42,8 @@
       }
     }
   }
+}
+
+.item-button {
+  max-width: @breadcrumbs-item-max-width;
 }

@@ -1,12 +1,14 @@
-@input-font-size: 14;
-
 .input {
   background: transparent;
   border: 0;
   box-sizing: border-box;
   color: inherit;
   cursor: inherit;
-  font-size: unit(@input-font-size, px);
+  font-size: 14px;
   outline: none;
   width: 100%;
+
+  &:invalid {
+    box-shadow: none;
+  }
 }

@@ -1,5 +1,10 @@
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/grid.less';
+@import '../../shared-variables.less';
+
+@icon-size: @ak-grid-size * 5;
+@padding-open: (@ak-grid-size * 3) (@ak-grid-size * 1.75) 0 (@ak-grid-size * 1.5);
+@padding-closed: (@ak-grid-size * 3) (@ak-grid-size * 2.5) 0 (@ak-grid-size * 0.5);
 
 .containerHeader {
   display: flex;
@@ -8,7 +13,8 @@
 }
 
 .containerHeaderWrapper {
-  padding-top: @ak-grid-size * 3;
+  transition: padding 200ms;
+  padding: @padding-open;
   margin-bottom: @ak-grid-size * 2;
   & > a {
     color: inherit;
@@ -20,11 +26,23 @@
 }
 
 .icon > * {
-  width: @ak-grid-size * 5;
-  height: @ak-grid-size * 5;
+  width: @icon-size;
+  height: @icon-size;
   border-radius: 4px;
 }
 
 .text {
   margin-left: @ak-grid-size * 2;
+}
+
+// Container queries
+.open {
+  .containerHeaderWrapper {
+    padding: @padding-open;
+  }
+}
+.closed {
+  .containerHeaderWrapper {
+    padding: @padding-closed;
+  }
 }

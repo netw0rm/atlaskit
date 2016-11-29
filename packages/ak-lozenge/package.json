@@ -1,6 +1,6 @@
 {
   "name": "ak-lozenge",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "ak-lozenge webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -12,7 +12,6 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-common": "^5.0.0",
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
@@ -22,9 +21,6 @@
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
-  "devDependencies": {
-    "akutil-common-test": "*"
-  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"

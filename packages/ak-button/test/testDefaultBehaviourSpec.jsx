@@ -1,5 +1,5 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+import sinonChai from 'sinon-chai';
 import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
@@ -7,8 +7,8 @@ import React from 'react';
 import Button from '../src/index';
 import styles from '../src/less/styles.less';
 
-chai.use(chaiAsPromised);
 chai.use(chaiEnzyme());
+chai.use(sinonChai);
 
 const expect = chai.expect;
 
@@ -69,5 +69,12 @@ describe('ak-button/default-behaviour', () => {
     expect(wrapper).to.contain(Icon1);
     expect(wrapper).to.contain(Icon2);
     expect(wrapper).to.have.text('icon1buttonicon2');
+  });
+
+  it('should call onClick handler when button is clicked', () => {
+    const spy = sinon.spy();
+    const wrapper = mount(<Button onClick={spy}>button</Button>);
+    wrapper.find('button').simulate('click');
+    expect(spy).to.have.been.calledOnce;
   });
 });

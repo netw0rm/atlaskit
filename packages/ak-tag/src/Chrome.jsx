@@ -1,10 +1,8 @@
 import classNames from 'classnames';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
-import keyHandler from './internal/keyHandler';
 
-
-/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable react/prefer-stateless-function,jsx-a11y/no-static-element-interactions */
 export default class Chrome extends PureComponent {
   static propTypes = {
     isLink: PropTypes.bool.isRequired,
@@ -13,29 +11,17 @@ export default class Chrome extends PureComponent {
     children: PropTypes.arrayOf(PropTypes.element).isRequired,
   }
 
-  componentDidMount() {
-    if (this.props.isLink) {
-      // When the component is mounted, grab a reference and add a DOM listener;
-      this.attachKeyHandlers(this.chromeLink);
-    }
-  }
-
-  componentWillUnmount() {
-    // Make sure to remove the DOM listener when the component is unmounted
-    // TODO : remove event handler !
-  }
-
-  attachKeyHandlers = (elem) => { // TODO : fix attachKeyHandlers
-    const followLink = () => {
-      elem
-        .querySelector('a')
-        .click();
-    };
-    keyHandler(elem, followLink);
-  }
-
   refLinkTag = (linkTag) => {
     this.chromeLink = linkTag;
+  }
+
+  handleKeyPress = (e) => {
+    if (e.charCode === 32 || e.charCode === 13) {
+      if (this.chromeLink) {
+        this.chromeLink.querySelector('a')
+        .click();
+      }
+    }
   }
 
   render() {
@@ -56,6 +42,7 @@ export default class Chrome extends PureComponent {
       {...chromeProps}
       ref={this.refLinkTag}
       className={chromeClassNames}
+      onKeyPress={this.handleKeyPress}
     >
       {this.props.children}
     </span>);

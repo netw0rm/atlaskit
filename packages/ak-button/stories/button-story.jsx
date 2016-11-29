@@ -34,6 +34,15 @@ const css = `
     padding-bottom: 10px;
     padding-top: 10px;
   }
+  .purple-border {
+    border: 1px solid purple;
+  }
+  .pink-bg {
+    background-color: pink !important;
+  }
+  .truncated {
+    max-width: 100px;
+  }
 `;
 
 /* eslint-disable react/prop-types,max-len */
@@ -208,6 +217,20 @@ const buildStory = props => (
             Go to Site
           </AkButton>
           <span>disabled + href + target</span>
+        </div>
+
+        <div className="sample">
+          <AkButton {...props} className="purple-border pink-bg">
+            Custom classes with crazy colors
+          </AkButton>
+          <span>custom classes</span>
+        </div>
+
+        <div className="sample">
+          <AkButton {...props} className="truncated">
+            Truncated text which is very long and has many words to demonstrate truncation
+          </AkButton>
+          <span>truncated</span>
         </div>
 
         <div className="sample">

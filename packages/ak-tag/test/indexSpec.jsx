@@ -8,6 +8,7 @@ import { mount } from 'enzyme';
 
 import Tag from '../src/index';
 import RemoveButton from '../src/RemoveButton';
+import Chrome from '../src/Chrome';
 
 chai.use(chaiEnzyme());
 
@@ -15,8 +16,62 @@ describe('<Tag/> component tests', () => {
   const atlassianUrl = 'https://www.atlassian.com/';
   const bitbucketUrl = 'https://bitbucket.org/';
   const atlassianlinkText = 'Atlassian';
+  const bitbucketLinkText = 'Bitbucket';
   const REMOVE_BUTTON_TEXT = 'Click to remove this tag !';
-  const testProps = { text: 'Hi', href: 'some link', removeButtonText: REMOVE_BUTTON_TEXT };
+  const testProps = {
+    text: atlassianlinkText,
+    href: atlassianUrl,
+    removeButtonText: REMOVE_BUTTON_TEXT,
+  };
+
+  it('Test Tag with removable link', () => {
+    const wrapper = mount(<Tag {...testProps} />);
+    expect(wrapper.props().href).to.equal(atlassianUrl);
+    expect(wrapper.find('a').text()).to.equal(atlassianlinkText);
+    wrapper.setProps({ href: bitbucketLinkText });
+    expect(wrapper.props().href).to.equal(bitbucketLinkText);
+    expect(wrapper.find(Chrome)).to.have.className(styles.isRemovable);
+  });
+
+  it('Test isRemovable() api contract', () => {
+    const wrapper = mount(<Tag {...testProps} />);
+    expect(wrapper.instance().isRemovable()).to.be.equal(true);
+    expect(wrapper.find(Chrome)).to.have.className(styles.isRemovable);
+    wrapper.setProps({ removeButtonText: null });
+    expect(wrapper.instance().isRemovable()).to.be.equal(false);
+    expect(wrapper.find(Chrome)).to.not.have.className(styles.isRemovable);
+  });
+
+  it('Test isLinked() api contract', () => {
+    const wrapper = mount(<Tag {...testProps} />);
+    expect(wrapper.instance().isLinked()).to.be.equal(true);
+    wrapper.setProps({ href: null });
+    expect(wrapper.instance().isLinked()).to.be.equal(false);
+  });
+
+  it('Test onBeforeRemoveAction callback contract', () => {
+    const onBeforeRemoveAction = sinon.spy();
+    const wrapper = mount(<Tag {...testProps} onBeforeRemoveAction={onBeforeRemoveAction} />);
+    wrapper.find(RemoveButton).find('button').simulate('click');
+    expect(onBeforeRemoveAction.calledOnce).to.equal(true);
+  });
+
+  it('Test mouse over and out over remove button', () => {
+    const wrapper = mount(<Tag {...testProps} />);
+    wrapper.find(RemoveButton).find('button').simulate('mouseover');
+    expect(wrapper.find(Chrome)).to.have.className(styles.markedForRemoval);
+    wrapper.find(RemoveButton).find('button').simulate('mouseout');
+    expect(wrapper.find(Chrome)).to.not.have.className(styles.markedForRemoval);
+  });
+
+  /* TODO: figure out why this is not working
+
+  it('Test keyboard actions over remove button', () => {
+    const wrapper = mount(<Tag {...testProps}/>);
+    wrapper.find(RemoveButton).find('button').simulate('keyPress', {keyCode: 13});
+    wrapper.find(RemoveButton).find('button').simulate('keyPress', {keyCode: 32});
+    expect(wrapper.find(Chrome)).to.have.className(styles.isRemoving);
+  });*/
 
   it('Tag allows us to set props', () => {
     const wrapper = mount(<Tag text={atlassianlinkText} href={atlassianUrl} />);
@@ -55,34 +110,7 @@ describe('<Tag/> component tests', () => {
     '</div>';
     expect(wrapper.find('Tag').html()).to.equal(renderedHtml);
   });
-  it('Check if link tag has uses the passed href', () => {
-    const wrapper = mount(<Tag {...testProps} />);
-    expect(wrapper.props().href).to.equal('some link');
-    expect(wrapper.find('a').text()).to.equal('Hi');
-    wrapper.setProps({ href: 'another link' });
-    expect(wrapper.props().href).to.equal('another link');
-  });
 
-  it('Test isRemovable() api contract', () => {
-    const wrapper = mount(<Tag {...testProps} />);
-    expect(wrapper.instance().isRemovable()).to.be.equal(true);
-    wrapper.setProps({ removeButtonText: null });
-    expect(wrapper.instance().isRemovable()).to.be.equal(false);
-  });
-
-  it('Test isLinked() api contract', () => {
-    const wrapper = mount(<Tag {...testProps} />);
-    expect(wrapper.instance().isLinked()).to.be.equal(true);
-    wrapper.setProps({ href: null });
-    expect(wrapper.instance().isLinked()).to.be.equal(false);
-  });
-
-  it('Test onBeforeRemoveAction callback contract', () => {
-    const onBeforeRemoveAction = sinon.spy();
-    const wrapper = mount(<Tag {...testProps} onBeforeRemoveAction={onBeforeRemoveAction} />);
-    wrapper.find(RemoveButton).find('button').simulate('click');
-    expect(onBeforeRemoveAction.calledOnce).to.equal(true);
-  });
 
   /*
   1. <Tag text="hello"/>

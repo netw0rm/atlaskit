@@ -26,9 +26,12 @@
 .buttonContent {
   align-items: center;
   align-self: center;
-  display: flex;
   pointer-events: none;
   margin: 0 unit(@grid/2, px);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .IconWrapper {
@@ -48,6 +51,7 @@
   align-self: center;
   display: inline-flex;
   flex-wrap: nowrap;
+  max-width: 100%;
 }
 
 .button {

@@ -1,6 +1,6 @@
 {
   "name": "ak-field-text",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "ak-field-text component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

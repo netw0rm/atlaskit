@@ -8,37 +8,30 @@ import ExampleAlignment from './ExampleAlignment';
 storiesOf(name, module)
   .add('Parent position: fixed', () => (
     <div style={{ height: '100%' }}>
-      <div className={styles.storyRoot}>
-        <div className={styles.fixedParent}>
-          <ExampleAlignment position="bottom center" content="Parent is position: fixed" />
-        </div>
+      <div className={styles.fixedParent}>
+        <ExampleAlignment position="bottom center" content="Parent is position: fixed" />
       </div>
     </div>
   ))
   .add('Parent position: absolute', () => (
     <div style={{ height: '100%' }}>
-      <div className={styles.storyRoot}>
-        <div className={styles.absoluteParent}>
-          <ExampleAlignment position="bottom center" content="Parent is position: absolute" />
-        </div>
+      <div className={styles.absoluteParent}>
+        <ExampleAlignment position="bottom center" content="Parent is position: absolute" />
       </div>
     </div>
   ))
   .add('Parent position: relative', () => (
     <div style={{ height: '100%' }}>
-      <div className={styles.storyRoot}>
-        <div className={styles.relativeParent}>
-          <ExampleAlignment position="bottom center" content="Parent is position: relative" />
-        </div>
+      <div className={styles.relativeParent} style={{ marginTop: '40px' }}>
+        <ExampleAlignment position="top center" content="Parent is position: relative" />
       </div>
     </div>
   ))
   .add('Parent position: static', () => (
     <div style={{ height: '100%' }}>
-      <div className={styles.storyRoot}>
-        <div className={styles.staticParent}>
-          <ExampleAlignment position="bottom center" content="Parent is position: static" />
-        </div>
+      <div className={styles.staticParent} style={{ marginTop: '40px' }}>
+        <ExampleAlignment position="top center" content="Parent is position: static" />
       </div>
     </div>
-  ));
+  ))
+  ;

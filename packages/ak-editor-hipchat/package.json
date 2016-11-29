@@ -1,25 +1,25 @@
 {
   "name": "ak-editor-hipchat",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Atlassian Editor component for HipChat",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/react/index.tsx",
-  "types": "src/react/index.tsx",
+  "ak:webpack:raw": "src/index.tsx",
+  "types": "src/index.tsx",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-hipchat"
   },
   "files": [
     "dist",
-    "src"
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-prosemirror": "^4.0.0",
     "ak-editor-schema": "^4.1.0",
-    "babel-runtime": "^6.11.6",
-    "browserkeymap": "^2.0.1"
+    "babel-runtime": "^6.11.6"
   },
   "peerDependencies": {
     "react": "^15.3.2"

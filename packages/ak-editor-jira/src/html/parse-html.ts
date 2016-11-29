@@ -1,4 +1,3 @@
-/// <reference path="./collapse-whitespace.d.ts" />
 import collapse from 'collapse-whitespace';
 
 export default function(fragment: string): Document {

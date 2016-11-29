@@ -1,16 +1,16 @@
+import React, { PureComponent } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-test';
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import AkTabs from 'ak-tabs';
-import { Tab as AkTab} from 'ak-tabs';
-import BitbucketComponent from '../src';
+import { default as AkTabs, Tab as AkTab} from 'ak-tabs';
+import Editor from '../src/index.react';
 import FacadeInput from '../src/hacks/facade-input';
 
 const Tabs = reactify(AkTabs);
 const Tab = reactify(AkTab);
-const Bitbucket = reactify(BitbucketComponent);
+const CancelAction = () => action('Cancel')();
+const ChangeAction = () => action('Change')();
+const SaveAction = () => action('Save')();
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
@@ -32,131 +32,51 @@ declare var module: any;
 
 storiesOf('ak-editor-bitbucket', module)
   .add('Empty', () => (
-    <Bitbucket />
+    <div style={{ padding: 20 }}>
+      <Editor
+        onCancel={CancelAction}
+        onChange={ChangeAction}
+        onSave={SaveAction}
+      />
+    </div>
   ))
-  .add('With default value', () => (
-    <Bitbucket defaultValue="What do you want to say?" />
-  ))
-  .add('with imageUploader', () => (
-    <Bitbucket
-      imageUploader={imageUploader}
-    />
-  ))
-  .add('Mentions (insert dummy when typed @)', () => {
-    type Props = {};
-    type State = {};
-    class EditorWithMentions extends Component<Props, State> {
-      constructor() {
-        super();
-        this.renderer = this.renderer.bind(this);
-        this.autocompleter = this.autocompleter.bind(this);
-      }
-
-      renderer(e: any) {
-        const { pm, el } = e.detail;
-
-        el.innerText = el.getAttribute('editor-entity-id');
-        el.style.border = "1px solid #000";
-        el.style.backgroundColor = "#ccc";
-        el.style.padding = "2px";
-      }
-
-      autocompleter(e: any) {
-        const { pm, el } = e.detail;
-
-        const m = pm.schema.nodes.mention.create({ id: '@foo' });
-        const cursor = pm.selection.to;
-        pm.tr.replaceWith(cursor-1, cursor, m).apply();
-      }
-
-      render() {
-        return (
-          <Bitbucket
-            onMentionRender={this.renderer}
-            onMentionAutocomplete={this.autocompleter}
-          />
-        )
-      }
-    }
-
-    return <EditorWithMentions />;
-  })
-  .add('Events', () => (
-    <Bitbucket
-      onChange={action('change')}
-      onReady={action('ready')}
-      onSave={action('save')}
-      onCancel={action('cancel')}
-    />
-  ))
-  .add('Event Bubbling', () => {
-    type Props = {};
-    type State = {};
-    class EditorInContainers extends Component<Props, State> {
-      componentDidMount() {
-        const outerContainer = ReactDOM.findDOMNode(this);
-        const innerContainer = outerContainer.lastChild;
-
-        [
-          'ready', 'keydown', 'keyup', 'keypress', 'click', 'touchstart', 'touchend'
-        ].forEach(eventName => {
-          outerContainer.addEventListener(eventName, (e: any) => {
-            action(`Outer container received "${eventName}" event`)(e);
-            console.log('outer container event', e);
-          });
-
-          innerContainer.addEventListener(eventName, (e: any) => {
-            action(`Inner container received "${eventName}" event`)(e);
-            console.log('inner container event', e);
-          });
-        });
-      }
-
-      render() {
-        const outerStyle = { padding: 25, background: '#6C64A6' };
-        const innerStyle = { padding: 25, background: '#48CC8C' };
-        const pStyle = { color: 'white', fontWeight: 600 };
-        const taStyle = { width: '100%', height: 30, fontSize: 15, padding: 10 };
-
-        action('⚠ Try clicking inside editor container and using your keyboard.')();
-
-        return (
-          <div style={ outerStyle }>
-            <p style={ pStyle }>Outer container</p>
-            <div style={ innerStyle }>
-              <p style={ pStyle }>Inner container</p>
-              <Bitbucket expanded />
-              <hr />
-              <textarea style={ taStyle } placeholder="ordinary textarea"></textarea>
-            </div>
-          </div>
-        )
-      }
-    }
-
-    return <EditorInContainers />;
-  })
+  .add('With placeholder', () =>
+    <div style={{ padding: 20 }}>
+      <Editor
+        placeholder="What do you want to say?"
+        onCancel={CancelAction}
+        onChange={ChangeAction}
+        onSave={SaveAction}
+      />
+    </div>
+  )
+  .add('with imageUploader', () =>
+    <div style={{ padding: 20 }}>
+      <Editor
+        imageUploader={imageUploader}
+        onCancel={CancelAction}
+        onChange={ChangeAction}
+        onSave={SaveAction}
+      />
+    </div>
+  )
   .add('Markdown preview', () => {
     type Props = {};
-    type State = { markdown: string };
-    class Demo extends Component<Props, State> {
-      constructor() {
-        super();
-        this.state = { markdown: '' };
-        this.updateMarkdown = this.updateMarkdown.bind(this);
-      }
+    type State = { markdown?: string };
+    class Demo extends PureComponent<Props, State> {
+      state: State = { markdown: '' };
 
-      updateMarkdown(e: any) {
-        this.setState({ markdown: e.target.value });
+      handleChange = (editor: Editor) => {
+        this.setState({ markdown: editor.value });
       }
 
       render() {
         return (
           <div ref="root">
-            <Bitbucket
-              placeholder="What do you want to say?"
-              onChange={this.updateMarkdown}
-              onReady={this.updateMarkdown}
+            <Editor
+              onCancel={CancelAction}
+              onChange={this.handleChange}
+              onSave={SaveAction}
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>Markdown</legend>
@@ -167,24 +87,45 @@ storiesOf('ak-editor-bitbucket', module)
       }
     }
 
-    return <Demo />;
+    return (
+      <div style={{ padding: 20 }}>
+        <Demo />
+      </div>
+    );
   })
   .add('Contexts', () => {
     type Props = {};
     type State = {};
-    class Demo extends Component<Props, State> {
+    class Demo extends PureComponent<Props, State> {
       render() {
         return (
-          <div ref="root">
+          <div>
             <Tabs>
               <Tab selected label="(default)">
-                <Bitbucket expanded/>
+                <Editor
+                  defaultExpanded
+                  onCancel={CancelAction}
+                  onChange={ChangeAction}
+                  onSave={SaveAction}
+                />
               </Tab>
               <Tab selected label="comment">
-                <Bitbucket expanded context="comment"/>
+                <Editor
+                  defaultExpanded
+                  context="comment"
+                  onCancel={CancelAction}
+                  onChange={ChangeAction}
+                  onSave={SaveAction}
+                />
               </Tab>
               <Tab selected label="pr">
-                <Bitbucket expanded context="pr"/>
+                <Editor
+                  defaultExpanded
+                  context="pr"
+                  onCancel={CancelAction}
+                  onChange={ChangeAction}
+                  onSave={SaveAction}
+                />
               </Tab>
             </Tabs>
           </div>
@@ -192,30 +133,9 @@ storiesOf('ak-editor-bitbucket', module)
       }
     }
 
-    return <Demo />;
-  })
-  .add('Facade Input', () => {
-    type Props = {};
-    type State = {};
-    class FacadeInputField extends Component<Props, State> {
-      render() {
-        return (
-          <div>Hello</div>
-        );
-      }
-
-      componentDidMount() {
-        const elem = ReactDOM.findDOMNode(this) as HTMLElement;
-        const facadeInput = new FacadeInput(elem, {
-          initialValue: elem.innerText,
-          classList: []
-        });
-
-        facadeInput.onSync = (val: any) => {
-          action(`value synced ${val}`)();
-        }
-      }
-    }
-
-    return <FacadeInputField />
+    return (
+      <div style={{ padding: 20 }}>
+        <Demo />
+      </div>
+    );
   });

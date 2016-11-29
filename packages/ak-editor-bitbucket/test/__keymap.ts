@@ -45,6 +45,7 @@ describe.skip('ak-editor-bitbucket keymap', () => {
     });
 
     it('should not do anything when changing paragraph to paragraph', () => {
+    });
   });
 
   describe('marks', () => {

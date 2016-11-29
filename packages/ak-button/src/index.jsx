@@ -93,6 +93,18 @@ export default class AkButton extends Component {
        * @type {element}
        */
       iconAfter: PropTypes.element,
+      /**
+       * @description Any additional classes to apply to the wrapper element.
+       * @memberof Button
+       * @type {string}
+       */
+      className: PropTypes.string,
+      /**
+       * @description Generic onClick button handler
+       * @memberof Button
+       * @type {Function}
+       */
+      onClick: PropTypes.func,
     };
   }
 

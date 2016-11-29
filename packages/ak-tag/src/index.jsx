@@ -107,6 +107,11 @@ export default class Tag extends PureComponent {
     onAfterRemoveAction: PropTypes.func,
   }
 
+  static defaultProps = {
+    onAfterRemoveAction: () => {},
+    onBeforeRemoveAction: () => true,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -173,11 +178,7 @@ export default class Tag extends PureComponent {
   }
 
   handleRemoveAction = () => {
-    if (this.props.onBeforeRemoveAction) {
-      if (this.props.onBeforeRemoveAction()) {
-        this.setState({ isRemoving: true, isRemoved: false });
-      }
-    } else {
+    if (this.props.onBeforeRemoveAction()) {
       this.setState({ isRemoving: true, isRemoved: false });
     }
   }
@@ -188,9 +189,7 @@ export default class Tag extends PureComponent {
 
   handleRemovalCompletion = () => {
     this.setState({ isRemoving: false, isRemoved: true });
-    if (this.props.onAfterRemoveAction) {
-      this.props.onAfterRemoveAction();
-    }
+    this.props.onAfterRemoveAction();
   }
 
   render() {

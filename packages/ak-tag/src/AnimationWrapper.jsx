@@ -12,8 +12,14 @@ export default class AnimationWrapper extends PureComponent {
     onRemovalCompletion: PropTypes.func,
   }
 
+  static defaultProps = {
+    onRemovalCompletion: () => {},
+    isRemoving: false,
+    isRemoved: false,
+  }
+
   handleAnimationEnd = (e) => {
-    if (e.animationName === styles.removeAnimation && this.props.onRemovalCompletion) {
+    if (e.animationName === styles.removeAnimation) {
       this.props.onRemovalCompletion();
     }
   }

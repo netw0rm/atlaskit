@@ -81,8 +81,8 @@ export default class Layer extends PureComponent {
      *   <div>I'm the target!</div>
      * </Layer>, container);
      */
-    content: PropTypes.node.isRequired,
-    children: PropTypes.node.isRequired,
+    content: PropTypes.node,
+    children: PropTypes.node,
   }
 
   static defaultProps = {
@@ -90,7 +90,7 @@ export default class Layer extends PureComponent {
     boundariesElement: 'viewport',
     autoPosition: true,
     offset: '0 0',
-    target: null,
+    content: null,
     children: null,
   }
 
@@ -106,14 +106,14 @@ export default class Layer extends PureComponent {
     this.applyPopper(this.props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.applyPopper(nextProps);
+  }
+
   componentWillUnmount() {
     if (this.popper) {
       this.popper.destroy();
     }
-  }
-
-  componentWillRecieveProps(nextProps) {
-    this.applyPopper(nextProps);
   }
 
   applyPopper(props) {

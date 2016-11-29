@@ -12,11 +12,13 @@ export default class Content extends PureComponent {
 
   render = () => {
     if (this.props.href) {
-      return (<Link
-        href={this.props.href}
-      >
-        {this.props.children}
-      </Link>);
+      return (
+        <Link
+          href={this.props.href}
+        >
+          {this.props.children}
+        </Link>
+      );
     }
     return <Text>{this.props.children}</Text>;
   }

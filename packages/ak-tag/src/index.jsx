@@ -194,30 +194,33 @@ export default class Tag extends PureComponent {
   }
 
   render() {
-    const newButton = this.props.removeButtonText ? (<Button
-      removeText={this.props.removeButtonText}
-      onHoverChange={this.handleHoverChange}
-      onRemoveAction={this.handleRemoveAction}
-    />)
-            : null;
+    const newButton = this.props.removeButtonText ? (
+      <Button
+        removeText={this.props.removeButtonText}
+        onHoverChange={this.handleHoverChange}
+        onRemoveAction={this.handleRemoveAction}
+      />
+    ) : null;
 
-    return (<Root>
-      <AnimationWrapper
-        isRemoving={this.state.isRemoving}
-        isRemoved={this.state.isRemoved}
-        onRemovalCompletion={this.handleRemovalCompletion}
-      >
-        <Chrome
-          isLink={!!this.props.href}
-          markedForRemoval={this.state.markedForRemoval}
-          isRemovable={!!this.props.removeButtonText}
+    return (
+      <Root>
+        <AnimationWrapper
+          isRemoving={this.state.isRemoving}
+          isRemoved={this.state.isRemoved}
+          onRemovalCompletion={this.handleRemovalCompletion}
         >
-          <Content href={this.props.href}>
-            {this.props.text}
-          </Content>
-          {newButton}
-        </Chrome>
-      </AnimationWrapper>
-    </Root>);
+          <Chrome
+            isLink={!!this.props.href}
+            markedForRemoval={this.state.markedForRemoval}
+            isRemovable={!!this.props.removeButtonText}
+          >
+            <Content href={this.props.href}>
+              {this.props.text}
+            </Content>
+            {newButton}
+          </Chrome>
+        </AnimationWrapper>
+      </Root>
+    );
   }
 }

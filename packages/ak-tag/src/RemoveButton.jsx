@@ -18,13 +18,15 @@ export default class RemoveButton extends PureComponent {
     }
   }
 
-  render = () => (<button
-    className={styles.button} aria-label={this.props.removeText}
-    onMouseOver={() => this.props.onHoverChange(true)}
-    onMouseOut={() => this.props.onHoverChange(false)}
-    onClick={this.props.onRemoveAction}
-    onKeyPress={this.handleKeyPress}
-  >
-    <RemoveIcon />
-  </button>)
+  render = () => (
+    <button
+      className={styles.button} aria-label={this.props.removeText}
+      onMouseOver={() => this.props.onHoverChange(true)}
+      onMouseOut={() => this.props.onHoverChange(false)}
+      onClick={this.props.onRemoveAction}
+      onKeyPress={this.handleKeyPress}
+    >
+      <RemoveIcon />
+    </button>
+  )
 }

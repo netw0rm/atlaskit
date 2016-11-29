@@ -7,7 +7,9 @@ export default class Text extends PureComponent {
     children: PropTypes.node.isRequired,
   }
 
-  render = () => (<span className={styles.text}>
-    {this.props.children}
-  </span>)
+  render = () => (
+    <span className={styles.text}>
+      {this.props.children}
+    </span>
+  )
 }

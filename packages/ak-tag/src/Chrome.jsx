@@ -38,13 +38,15 @@ export default class Chrome extends PureComponent {
     } else {
       chromeProps.tabIndex = -1;
     }
-    return (<span
-      {...chromeProps}
-      ref={this.refLinkTag}
-      className={chromeClassNames}
-      onKeyPress={this.handleKeyPress}
-    >
-      {this.props.children}
-    </span>);
+    return (
+      <span
+        {...chromeProps}
+        ref={this.refLinkTag}
+        className={chromeClassNames}
+        onKeyPress={this.handleKeyPress}
+      >
+        {this.props.children}
+      </span>
+    );
   }
 }

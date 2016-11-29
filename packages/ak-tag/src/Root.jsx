@@ -7,7 +7,9 @@ export default class Root extends PureComponent {
     children: PropTypes.element.isRequired,
   }
 
-  render = () => (<div className={styles.rootWrapper}>
-    {this.props.children}
-  </div>)
+  render = () => (
+    <div className={styles.rootWrapper}>
+      {this.props.children}
+    </div>
+  )
 }

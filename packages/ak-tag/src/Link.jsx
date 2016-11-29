@@ -8,11 +8,13 @@ export default class Href extends PureComponent {
     children: PropTypes.node.isRequired,
   }
 
-  render = () => (<a
-    tabIndex="-1"
-    className={styles.href}
-    href={this.props.href}
-  >
-    {this.props.children}
-  </a>)
+  render = () => (
+    <a
+      tabIndex="-1"
+      className={styles.href}
+      href={this.props.href}
+    >
+      {this.props.children}
+    </a>
+  )
 }

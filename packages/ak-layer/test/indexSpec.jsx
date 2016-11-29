@@ -38,12 +38,6 @@ describe('ak-layer', () => {
     it('should be rendered by Layer', () => {
       expect(wrapper).to.have.exactly(1).descendants('#target');
     });
-
-    // rendering a target with display block can lead to positioning issues
-    it('should be rendered inside an inline-block parent', () => {
-      const target = wrapper.find('#target').first();
-      expect(target.parent()).to.have.style('display', 'inline-block');
-    });
   });
 
   describe('content prop', () => {

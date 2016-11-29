@@ -17,17 +17,10 @@
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "create-error": "^0.3.1",
-    "debug": "^2.2.0",
-    "skatejs": "^4.0.6"
+    "debug": "^2.2.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
-  "devDependencies": {
-    "akutil-common-test": "*",
-    "akutil-react": "*",
-    "custom-event-polyfill": "^0.3.0",
-    "keycode": "^2.1.4"
-  },
   "peerDependencies": {
     "react": "^15.3.2"
   },
@@ -37,6 +30,9 @@
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "ui",
+    "tag",
+    "react",
+    "ak-tag"
   ]
 }

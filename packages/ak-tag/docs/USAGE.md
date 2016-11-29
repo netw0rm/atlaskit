@@ -1,7 +1,7 @@
 # Tag
 
 
-This component is displayed as a accessible tag with an optional link and/or button to remove it.
+This component is displayed as an accessible tag with an optional link and/or button to remove it.
 
 ![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-tag/docs/overview.png)
 
@@ -30,7 +30,12 @@ Import the component in your JS resource:
 #### bundle.js
 
 ```javascript
-import 'ak-tag';
+import ReactDOM from 'react-dom'
+import Tag from 'ak-tag';
+ReactDOM.render(
+  <Tag text="Jelly bean"/>,
+  document.getElementById('root')
+);
 ```
 
 Now you can use the defined tag in your HTML markup:
@@ -39,18 +44,10 @@ Now you can use the defined tag in your HTML markup:
 ```html
 <html>
   <head>
-    <script src="react.js"></script>
-    <script src="react-dom.js"></script>
     <script src="bundle.js"></script>
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      ReactDOM.render(
-        <Tag text="Jelly bean"/>,
-        document.getElementById('root')
-      );
-    </script>
   </body>
 </html>
 ```
@@ -59,19 +56,17 @@ You can also use it within another JS resource:
 
 #### index.js
 ```javascript
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
 import Tag from 'ak-tag';
 
 export default class MyComponent extends PureComponent {
-  static propTypes = {
-    children: PropTypes.element.isRequired,
-  }
-
-  render = () => (<div>
-    <Tag href="http://atlassian.com/careers/"
-         text="Atlassian"
-         removeButtonText="Come join us !"
-      />
-  </div>)
+  render = () => (
+    <div>
+      <Tag href="http://atlassian.com/careers/"
+          text="Atlassian"
+          removeButtonText="Come join us !"
+        />
+    </div>
+  )
 }
 ```

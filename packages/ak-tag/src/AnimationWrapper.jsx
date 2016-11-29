@@ -12,16 +12,10 @@ export default class AnimationWrapper extends PureComponent {
     onRemovalCompletion: PropTypes.func,
   }
 
-  state = {
-    isRemoving: false,
-    isRemoved: false,
-  }
-
   handleAnimationEnd = (e) => {
-    if (e.animationName === styles.removeAnimation) {
-      this.setState({ isRemoving: false, isRemoved: true });
+    if (e.animationName === styles.removeAnimation && this.props.onRemovalCompletion) {
+      this.props.onRemovalCompletion();
     }
-    if (this.props.onRemovalCompletion) this.props.onRemovalCompletion();
   }
 
   render() {
@@ -35,7 +29,7 @@ export default class AnimationWrapper extends PureComponent {
     return (
       <div
         className={animationWrapperClasses}
-        onAnimationEnd={e => this.handleAnimationEnd(e)}
+        onAnimationEnd={this.handleAnimationEnd}
       >
         {this.props.children}
       </div>

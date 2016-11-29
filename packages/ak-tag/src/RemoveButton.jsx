@@ -4,7 +4,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import RemoveIcon from './RemoveIcon';
 
 /* eslint-disable react/prefer-stateless-function */
-export default class Button extends PureComponent {
+export default class RemoveButton extends PureComponent {
   static propTypes = {
     removeText: PropTypes.string.isRequired,
     onHoverChange: PropTypes.func,

@@ -32,12 +32,6 @@ describe.skip('ak-editor-bitbucket keymap', () => {
     it('should change h1 to ordered_list', () => {
     });
 
-    it('should not do anything when changing paragraph to paragraph', () => {
-    });
-
-    it('should change to paragraph first when changing h1 to blockquote', () => {
-    });
-
     it('should toggle h1 with paragraph', () => {
     });
 
@@ -45,6 +39,9 @@ describe.skip('ak-editor-bitbucket keymap', () => {
     });
 
     it('should not do anything when changing paragraph to paragraph', () => {
+    });
+
+    it('should change to paragraph first when changing h1 to blockquote', () => {
     });
   });
 

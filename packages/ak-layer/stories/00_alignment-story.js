@@ -40,9 +40,11 @@ storiesOf(name, module)
   .add('Alignments', () => (
     <div style={{ height: '100%' }}>
       <AllAlignments />
+      <div>Foo</div>
     </div>
   )).add('Alignments flipping disabled', () => (
     <div style={{ height: '100%' }}>
       <AllAlignments autoPosition={false} />
+      <div>Foo</div>
     </div>
   ));

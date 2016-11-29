@@ -27,9 +27,17 @@ storiesOf(name, module)
   .add('Parent position: relative', () => (
     <div style={{ height: '100%' }}>
       <div className={styles.storyRoot}>
-        <div>This story has a known defect</div>
         <div className={styles.relativeParent}>
           <ExampleAlignment position="bottom center" content="Parent is position: relative" />
+        </div>
+      </div>
+    </div>
+  ))
+  .add('Parent position: static', () => (
+    <div style={{ height: '100%' }}>
+      <div className={styles.storyRoot}>
+        <div className={styles.staticParent}>
+          <ExampleAlignment position="bottom center" content="Parent is position: static" />
         </div>
       </div>
     </div>

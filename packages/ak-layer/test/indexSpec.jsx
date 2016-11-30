@@ -1,10 +1,9 @@
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import Layer from '../src';
-import { POSITION_ATTRIBUTE_ENUM } from '../src/internal/helpers';
 
 
 const { expect } = chai;
@@ -17,23 +16,8 @@ describe('ak-layer', () => {
     expect(wrapper).to.be.defined;
   });
 
-  describe('props', () => {
-    it('should expose all the expected default props', () => {
-      const wrapper = mount(<Layer />);
-
-      expect(wrapper).to.have.props({ position: POSITION_ATTRIBUTE_ENUM.default });
-      expect(wrapper).to.have.props({ boundariesElement: 'viewport' });
-      expect(wrapper).to.have.props({ autoPosition: true });
-      expect(wrapper).to.have.props({ offset: '0 0' });
-      expect(wrapper).to.have.props({ content: null });
-      expect(wrapper).to.have.props({ children: null });
-    });
-  });
-
   describe('children', () => {
-    let wrapper;
-
-    beforeEach(() => (wrapper = shallow(<Layer><div id="target">Target</div></Layer>)));
+    const wrapper = shallow(<Layer><div id="target">Target</div></Layer>);
 
     it('should be rendered by Layer', () => {
       expect(wrapper).to.have.exactly(1).descendants('#target');

@@ -31,6 +31,16 @@ storiesOf(name, module)
       </AkBreadcrumbsItem>
     </AkBreadcrumbs>
   ))
+  .add('ak-breadcrumbs with long and short items', () => (
+    <AkBreadcrumbs>
+      <AkBreadcrumbsItem href="/long">Supercalifragilisticexpialidocious</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/short">Item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/short">Another item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/long">Long item name which should be truncated</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/long">Another long item name which should be truncated</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/short">Short item</AkBreadcrumbsItem>
+    </AkBreadcrumbs>
+  ))
   .add('ak-breadcrumbs with many items', () => (
     <AkBreadcrumbs >
       <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>

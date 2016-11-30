@@ -11,7 +11,7 @@
 
   .item {
     // Override link button color and padding
-    & > .item-button {
+    & .item-button {
       color: @ak-color-N300;
       padding: 0;
     }
@@ -46,4 +46,15 @@
 
 .item-button {
   max-width: @breadcrumbs-item-max-width;
+}
+
+.tooltip-wrapper {
+  z-index: 1;    // Tooltip should be above the '/' seperator on the next line
+  float: left;   // Ensure that the tooltip doesn't take up space
+  display: none; // Hide the tooltip when the item is not truncated
+}
+
+.truncated .tooltip-wrapper {
+  position: absolute;
+  display: inherit;
 }

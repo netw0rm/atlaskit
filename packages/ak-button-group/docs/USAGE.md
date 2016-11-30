@@ -2,7 +2,7 @@
 
 A button group provides a visual grouping for related Button (`<ak-button>`) elements. You can use this component whenever you have multiple buttons with related actions, such as as the pull requests Approve and Decline buttons.
 
-![Example buttons](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-button-group/docs/button_group.png)
+![Example button group](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-button-group/docs/button_group.png)
 
 ## Try it out
 

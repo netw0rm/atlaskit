@@ -1,3 +1,4 @@
+import 'akutil-polyfills';
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
@@ -27,7 +28,7 @@ describe(name, () => {
     });
 
     it('should render a link Button containing the content', () => {
-      const children = <span>children</span>;
+      const children = 'children';
       const wrapper = shallow(<Item>{children}</Item>);
       expect(wrapper.find(Button).contains(children)).to.equal(true);
     });

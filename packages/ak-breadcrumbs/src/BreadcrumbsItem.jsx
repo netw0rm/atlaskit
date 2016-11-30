@@ -1,8 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Button from 'ak-button';
 import Tooltip, { TooltipTrigger } from 'ak-tooltip';
-import ContainerQuery from 'react-container-query';
 import reactify from 'akutil-react';
+import ContainerQuery from 'react-container-query';
 import uuid from 'uuid';
 
 import styles from './styles.less';
@@ -16,7 +16,7 @@ const truncateWidth = 200; // Duplicated in styles.less
  * @description BreadcrumbsItem React component.
  * @class BreadcrumbsItem
  * @example @js import { AkBreadcrumbsItem } from 'ak-breadcrumbs';
- * ReactDOM.render(<AkBreadcrumbsItem />);
+ * ReactDOM.render(<AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem);
  */
 /* eslint-disable-next-line react/prefer-stateless-function */
 export default class BreadcrumbsItem extends PureComponent {
@@ -28,6 +28,14 @@ export default class BreadcrumbsItem extends PureComponent {
      * @type {string}
      */
     href: PropTypes.string,
+    /**
+     * @description The content to display in the breadcrumbs item.
+     *
+     * *** Note: *** This must be a single string node.
+     * @memberof BreadcrumbsItem
+     * @instance
+     * @type {string}
+     */
     children: PropTypes.string,
   }
 
@@ -48,14 +56,12 @@ export default class BreadcrumbsItem extends PureComponent {
     };
     return (
       <ContainerQuery className={styles.locals.item} query={query}>
-        <div className={styles.locals.tooltipWrapper}>
-          <ReactTooltip id={this.state.id} />
-        </div>
+        <ReactTooltip className={styles.locals.tooltip} id={this.state.id} />
         <ReactTrigger description={this.props.children}>
           <span aria-describedby={this.state.id}>
             <Button
-              appearance="link"
               className={styles.locals.itemButton}
+              appearance="link"
               spacing="compact"
               href={this.props.href}
             >

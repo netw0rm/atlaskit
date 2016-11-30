@@ -166,7 +166,7 @@ declare module 'prosemirror/dist/edit/main' {
     import { UpdateScheduler } from 'prosemirror/dist/edit/update';
     import { Schema } from 'prosemirror/dist/model/schema';
     import { TextSelection, NodeSelection } from 'prosemirror/dist/edit';
-    import { Slice } from 'prosemirror/dist/model';
+    import { Node, Slice } from 'prosemirror/dist/model';
 
     interface Subscription<Handler> {
       add(handler: Handler): void;
@@ -225,7 +225,7 @@ declare module 'prosemirror/dist/edit/main' {
         setNodeSelection(pos: any): void;
         setSelection(selection: any): void;
         setDocInner(doc: any): void;
-        setDoc(doc: any, sel: any): void;
+        setDoc(doc: Node, sel?: any): void;
         updateDoc(doc: any, mapping: any, selection: any): void;
         tr: EditorTransform;
         apply(transform: any, options?: {}): any;
@@ -737,7 +737,7 @@ declare module 'prosemirror/dist/model/resolvedpos' {
         parentOffset: number;
         resolveDepth(val: any): any;
         parent: Node;
-        node(depth: number): Node;
+        node(depth: number): Node | undefined;
         index(depth?: number): number;
         indexAfter(depth?: number): number;
         start(depth?: number): number;
@@ -832,7 +832,7 @@ declare module 'prosemirror/dist/model/schema' {
         markSpec: OrderedMap;
         node(type: any, attrs?: any, content?: any, marks?: any): any;
         text(text: string, marks?: any): TextNode;
-        mark(name: string, attrs?: any): any;
+        mark(name: string, attrs?: any): Mark;
         nodeFromJSON(json: any): any;
         markFromJSON(json: any): any;
         nodeType(name: string): any;

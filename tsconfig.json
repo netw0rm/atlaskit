@@ -19,6 +19,7 @@
   },
   "files": [
     "build/types/jsx.d.ts",
+    "build/types/popper.d.ts",
     "build/types/shadow-dom.d.ts"
   ]
 }

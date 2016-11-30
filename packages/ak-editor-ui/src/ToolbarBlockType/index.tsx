@@ -1,153 +1,115 @@
-import '../types';
-import { define, prop } from 'skatejs';
+import React, { PureComponent } from 'react';
+import AkButton from 'ak-button';
 import { BlockType, BlockTypeState } from 'ak-editor-plugin-block-type';
-import cx from 'classnames';
-import Component from '../component';
-import styles from './index.less';
-import Select from './Select';
-import Option from './Option';
+import DismissBlanket from '../DismissBlanket';
+import Panel from '../Panel';
+import styles from './styles.global.less';
 
-declare var require: any;
-
-// typescript removes unused var if we import it :(
-const { vdom } = require('skatejs');
-
-// todo: we will use a common helper function when it's ready.
-// https://ecosystem.atlassian.net/browse/AK-513
-function isDescendantOf(child: Node, parent: Node): boolean {
-  if (child.parentNode === parent) {
-    return true;
-  } else if (child.parentNode === null) {
-    return false;
-  }
-
-  return isDescendantOf(child.parentNode, parent);
+interface Props {
+  pluginState: BlockTypeState;
 }
 
-export default class ToolbarBlockType extends Component {
-  // Declare JSX interface
-  props: {
-    plugin: BlockTypeState;
-  };
+interface State {
+  active: boolean;
+  availableBlockTypes: BlockType[];
+  canChange: boolean;
+  currentBlockType: BlockType;
+}
 
-  // Mirror Skate props
-  plugin: BlockTypeState;
-  _active: boolean;
-  _dirty: number;
+export default class ToolbarBlockType extends PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    const { pluginState } = props;
 
-  _bound = false;
-
-  static get props() {
-    return {
-      // JSX
-      plugin: {
-        set: (elem: ToolbarBlockType, data: {
-          newValue?: BlockTypeState,
-          oldValue?: BlockTypeState
-        }) => {
-          elem.ensureBound();
-
-          const oldPlugin = data.oldValue;
-
-          if (oldPlugin) {
-            oldPlugin.unsubscribe(elem.onChange);
-          }
-
-          const newPlugin = data.newValue;
-
-          if (newPlugin) {
-            newPlugin.subscribe(elem.onChange);
-          }
-        }
-      },
-
-      // Private
-      _active: {},
-      _dirty: {}
+    this.state = {
+      active: false,
+      availableBlockTypes: pluginState.availableBlockTypes,
+      canChange: false,
+      currentBlockType: pluginState.currentBlockType,
     };
   }
 
-  static created(elem: ToolbarBlockType) {
-    elem.ensureBound();
+  componentDidMount() {
+    this.props.pluginState.subscribe(this.handlePluginStateChange);
   }
 
-  static attached(elem: ToolbarBlockType) {
-    document.addEventListener('click', elem.handleClickOutside);
+  componentWillUnmount() {
+    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  static detached(elem: ToolbarBlockType) {
-    document.removeEventListener('click', elem.handleClickOutside);
-  }
-
-  static render(elem: ToolbarBlockType) {
-    const {
-      currentBlockType,
-      canChange,
-      availableBlockTypes
-    } = elem.plugin;
+  render() {
+    const { active, currentBlockType, canChange, availableBlockTypes } = this.state;
 
     return (
-      <div>
-        <style>{styles.toString()}</style>
-        <Select
+      <span onClick={this.handleToggleDropdown} className={styles.container}>
+        <AkButton
           disabled={!canChange}
-          className={styles.locals.blockTypeSelect}
-          selectedReadableName={currentBlockType.title}
-          onToggleDropdown={elem.toggleDropdown}
-          onSelectBlockType={elem.onSelect}
-          active={elem._active}
-          >
-          <ul
-            className={cx(styles.locals.dropdownContent, {
-              [styles.locals.dropdownOpen]: elem._active,
-            })}
-            >
-            {availableBlockTypes.map(blockType => (
-              <li><Option
-                blockType={blockType}
-                blockTypeName={blockType.name}
-                active={currentBlockType === blockType}
-                >{blockType.title}</Option></li>
-            ))}
-          </ul>
-        </Select>
-      </div>
+          selected={active}
+          appearance='subtle'
+          spacing='compact'
+        >
+          <span className={styles.buttonContent}>{currentBlockType.title}</span>
+        </AkButton>
+        {!active ? null :
+        <DismissBlanket onDismiss={this.handleToggleDropdown}>
+          <Panel align='left' spacing='none'>
+            <ul className={styles.dropdown}>
+              {availableBlockTypes.map(blockType => (
+              <li key={blockType.name}>
+                <a
+                  onClick={() => this.handleSelectBlockType(blockType)}
+                  className={`${styles.blockType} ${this.blockTypeItemClass(blockType)} ${currentBlockType === blockType ? styles.active : ''}`}
+                ><span>{blockType.title}</span></a>
+              </li>
+              ))}
+            </ul>
+          </Panel>
+        </DismissBlanket>
+        }
+      </span>
     );
   }
 
-  private onChange(state: BlockTypeState) {
-    this._dirty++;
+  private handlePluginStateChange = (pluginState: BlockTypeState) => {
+    this.setState({
+      active: this.state.active,
+      availableBlockTypes: pluginState.availableBlockTypes,
+      canChange: pluginState.canChange,
+      currentBlockType: pluginState.currentBlockType,
+    });
   }
 
-  private onSelect(event: any) {
-    this.plugin.changeBlockType(event.detail.blockType.name);
-    this._active = false;
+  private handleSelectBlockType = (blockType: BlockType) => {
+    const { availableBlockTypes, canChange, currentBlockType } = this.state;
+    this.props.pluginState.changeBlockType(blockType.name);
+    this.setState({
+      active: false,
+      availableBlockTypes,
+      canChange,
+      currentBlockType
+    });
   }
 
-  private handleClickOutside(e: any) {
-    // todo: we will use a common helper function when it's ready.
-    // https://ecosystem.atlassian.net/browse/AK-513
-    if (this._active && e.target !== this && !isDescendantOf(e.target, this) &&
-      !(e.path && e.path.indexOf(this) > -1)) {
-      this._active = false;
+  private handleToggleDropdown = () => {
+    if (this.props.pluginState.canChange) {
+      const { availableBlockTypes, canChange, currentBlockType } = this.state;
+      this.setState({
+        active: !this.state.active,
+        availableBlockTypes,
+        canChange,
+        currentBlockType
+      });
     }
   }
 
-  toggleDropdown() {
-    if (this.plugin.canChange) {
-      this._active = !this._active;
-    }
-  }
-
-  private ensureBound() {
-    if (!this._bound) {
-      this.onChange = this.onChange.bind(this);
-      this.onSelect = this.onSelect.bind(this);
-      this.handleClickOutside = this.handleClickOutside.bind(this);
-      this.toggleDropdown = this.toggleDropdown.bind(this);
-      this._bound = true;
+  private blockTypeItemClass(blockType: BlockType): string | undefined {
+    switch (blockType.name) {
+      case 'normal': return styles.blockTypeNormal;
+      case 'heading1': return styles.blockTypeHeading1;
+      case 'heading2': return styles.blockTypeHeading2;
+      case 'heading3': return styles.blockTypeHeading3;
+      case 'code': return styles.blockTypeCode;
+      case 'quote': return styles.blockTypeQuote;
     }
   }
 }
-
-define('ak-editor-ui-toolbar-block-type', ToolbarBlockType);

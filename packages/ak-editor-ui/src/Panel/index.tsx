@@ -1,11 +1,13 @@
 import React, { FormEvent, PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import * as styles from './styles.global.less';
+import OutsideClickable from '../OutsideClickable';
 import Popper from 'popper.js';
 
 interface Props {
   autoPosition?: boolean;
   align?: 'left' | 'center' | 'right';
+  onOutsideClick?: () => void;
   target?: HTMLElement;
   spacing?: 'none';
 }
@@ -93,13 +95,15 @@ export default class Panel extends PureComponent<Props, State> {
       : undefined;
 
     return (
-      <div
-        ref='content'
-        style={{ top: 0, left: 0, position, transform, padding }}
-        className={styles.container}
-      >
-        {this.props.children}
-      </div>
+      <OutsideClickable onClick={this.props.onOutsideClick}>
+        <div
+          ref='content'
+          style={{ top: 0, left: 0, position, transform, padding }}
+          className={styles.container}
+        >
+          {this.props.children}
+        </div>
+      </OutsideClickable>
     );
   }
 

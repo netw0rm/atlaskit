@@ -1,7 +1,7 @@
 # Tag
 
 
-This component is displayed as a tag with an optional link and/or button to remove it.
+This component is displayed as an accessible tag with an optional link and/or button to remove it.
 
 ![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-tag/docs/overview.png)
 
@@ -16,21 +16,26 @@ Interact with a [live demo of the ak-tag component](https://aui-cdn.atlassian.co
 ## Installation
 
 ```sh
-npm install ak-tag
+npm install ak-tag --save
 ```
 
 ## Using the component
 
 ### HTML
 
-The `ak-tag` package exports the Tag [Skate](https://github.com/skatejs/skatejs) component. It automatically registers the respective `<ak-tag>` web component upon import.
+The `ak-tag` package exports the Tag [React](https://facebook.github.io/react/) component.
 
 Import the component in your JS resource:
 
 #### bundle.js
 
 ```javascript
-import 'ak-tag';
+import ReactDOM from 'react-dom'
+import Tag from 'ak-tag';
+ReactDOM.render(
+  <Tag text="Jelly bean"/>,
+  document.getElementById('root')
+);
 ```
 
 Now you can use the defined tag in your HTML markup:
@@ -42,8 +47,7 @@ Now you can use the defined tag in your HTML markup:
     <script src="bundle.js"></script>
   </head>
   <body>
-    <!-- ... -->
-    <ak-tag text="Jelly bean"></ak-tag>
+    <div id="root"></div>
   </body>
 </html>
 ```
@@ -52,23 +56,17 @@ You can also use it within another JS resource:
 
 #### index.js
 ```javascript
+import React, { PureComponent } from 'react';
 import Tag from 'ak-tag';
 
-const tag = new Tag();
-tag.text = 'Jelly bean';
-
-document.body.appendChild(tag);
-```
-
-### React
-
-This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
-
-```javascript
-import Tag from 'ak-tag';
-import reactify from 'skatejs-react-integration';
-
-const ReactComponent = reactify(Tag, {});
-
-ReactDOM.render(<ReactComponent text="Jelly bean" />, container);
+export default class MyComponent extends PureComponent {
+  render = () => (
+    <div>
+      <Tag href="http://atlassian.com/careers/"
+          text="Atlassian"
+          removeButtonText="Come join us !"
+        />
+    </div>
+  )
+}
 ```

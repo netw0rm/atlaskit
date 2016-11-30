@@ -1,5 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import styles from 'style!../less/ContainerItem.less';
+import ContainerQuery from 'react-container-query';
+import {
+  containerOpenWidth,
+  containerClosedWidth,
+} from '../../shared-variables';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class ContainerItem extends Component {
@@ -12,13 +17,24 @@ export default class ContainerItem extends Component {
 
   render() {
     return (
-      <div>
-        <div className={styles.containerItem}>
-          {this.props.icon ?
-            <div className={styles.icon}>{this.props.icon}</div> : null}
-          <div className={styles.text}>{this.props.text}</div>
+      <ContainerQuery
+        query={{
+          [styles.open]: {
+            minWidth: containerOpenWidth,
+          },
+          [styles.closed]: {
+            maxWidth: containerClosedWidth,
+          },
+        }}
+      >
+        <div>
+          <div className={styles.containerItem}>
+            {this.props.icon ?
+              <div className={styles.icon}>{this.props.icon}</div> : null}
+            <div className={styles.text}>{this.props.text}</div>
+          </div>
         </div>
-      </div>
+      </ContainerQuery>
     );
   }
 }

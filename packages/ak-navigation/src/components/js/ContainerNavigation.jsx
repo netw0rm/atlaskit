@@ -3,13 +3,8 @@ import classNames from 'classnames';
 import styles from 'style!../less/ContainerNavigation.less';
 import {
   containerOpenWidth,
-  containerBodyOpenPadding,
-  containerBodyClosedPadding,
-  containerHeaderOpenPadding,
-  containerHeaderClosedPadding,
 } from '../../shared-variables';
 import Spacer from './Spacer';
-import { getContainerPadding } from '../../utils/collapse';
 
 export default class ContainerNavigation extends Component {
   static get propTypes() {
@@ -34,30 +29,6 @@ export default class ContainerNavigation extends Component {
     };
   }
 
-  getHeaderStyles() {
-    const padding = getContainerPadding(
-      this.props.width,
-      containerHeaderOpenPadding,
-      containerHeaderClosedPadding,
-    );
-    return {
-      paddingLeft: padding,
-      paddingRight: padding,
-    };
-  }
-
-  getBodyStyles() {
-    const padding = getContainerPadding(
-      this.props.width,
-      containerBodyOpenPadding,
-      containerBodyClosedPadding,
-    );
-    return {
-      paddingLeft: padding,
-      paddingRight: padding,
-    };
-  }
-
   render() {
     return (
       <div
@@ -76,10 +47,10 @@ export default class ContainerNavigation extends Component {
           <div
             className={styles.containerNavigationInner}
           >
-            <div style={this.getHeaderStyles()}>
+            <div>
               {this.props.header}
             </div>
-            <div style={this.getBodyStyles()}>
+            <div>
               {this.props.children}
             </div>
           </div>

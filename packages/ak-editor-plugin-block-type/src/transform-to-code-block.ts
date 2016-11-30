@@ -19,7 +19,7 @@ export default function(nodeType: CodeBlockNodeType, pm: ProseMirror) {
     return false;
   }
   const index = $from.index(depth);
-  if (!$from.node(depth).canReplaceWith(index, index + 1, nodeType)) {
+  if (!$from.node(depth)!.canReplaceWith(index, index + 1, nodeType)) {
     return false;
   }
 

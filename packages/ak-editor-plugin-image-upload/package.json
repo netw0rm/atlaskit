@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-image-upload",
-  "version": "5.1.0",
+  "version": "6.1.0",
   "description": "An image upload plugin for ProseMirror",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

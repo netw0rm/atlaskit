@@ -6,11 +6,12 @@ import { mount, shallow } from 'enzyme';
 import Button from 'ak-button';
 
 import Item from '../src/BreadcrumbsItem';
+import styles from '../src/styles.less';
 import { name } from '../package.json';
+
 
 const { expect } = chai;
 chai.use(chaiEnzyme());
-
 
 describe(name, () => {
   describe('exports', () => {
@@ -31,6 +32,13 @@ describe(name, () => {
       const children = 'children';
       const wrapper = shallow(<Item>{children}</Item>);
       expect(wrapper.find(Button).contains(children)).to.equal(true);
+    });
+
+    it('should render a Tooltip with the item content', () => {
+      const children = 'children';
+      const wrapper = shallow(<Item>{children}</Item>);
+      expect(wrapper.find(`.${styles.locals.tooltip}`)).to.have.lengthOf(1);
+      expect(wrapper.find(`[description="${children}"]`)).to.have.lengthOf(1);
     });
   });
 

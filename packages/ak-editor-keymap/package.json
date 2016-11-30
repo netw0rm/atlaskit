@@ -16,8 +16,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "prosemirror": "0.10.1",
-    "ak-editor-schema": "4.6.1"
+    "ak-editor-prosemirror": "^4.3.7",
+    "ak-editor-schema": "^4.6.1"
   },
   "peerDependencies": {
     "browserkeymap": "*"

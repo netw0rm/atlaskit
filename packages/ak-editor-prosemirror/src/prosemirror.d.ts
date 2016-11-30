@@ -42,7 +42,7 @@ declare module 'prosemirror/dist/edit/commands' {
       export function chainCommands(...commands: any[]): (pm: ProseMirror, apply: any) => any;
       export function createParagraphNear(pm: ProseMirror, apply: any): boolean;
       export function deleteCharAfter(pm: ProseMirror, apply: any): boolean;
-      export function deleteCharBefore(pm: ProseMirror, apply: any): boolean;
+      export function deleteCharBefore(pm: ProseMirror, apply?: any): boolean;
       export function deleteSelection(pm: ProseMirror, apply: any): boolean;
       export function deleteWordAfter(pm: ProseMirror, apply: any): boolean;
       export function deleteWordBefore(pm: ProseMirror, apply: any): boolean;
@@ -119,6 +119,7 @@ declare module 'prosemirror/dist/edit/selection' {
   export class Selection {
     $from : ResolvedPos;
     $to: ResolvedPos;
+    $head: ResolvedPos;
     from: number;
     to: number;
     empty: boolean;

@@ -3,7 +3,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-test';
 import { default as AkTabs, Tab as AkTab} from 'ak-tabs';
-import Editor from '../src/index.react';
+import Editor from '../src';
 import FacadeInput from '../src/hacks/facade-input';
 
 const Tabs = reactify(AkTabs);

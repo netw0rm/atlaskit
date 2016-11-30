@@ -4,7 +4,7 @@ import reactify from 'akutil-react';
 import ReactDOM from 'react-dom';
 import AkTabs from 'ak-tabs';
 import { Tab as AkTab } from 'ak-tabs';
-import Editor from '../src/index.react';
+import Editor from '../src';
 
 const Tabs = reactify(AkTabs);
 const Tab = reactify(AkTab);

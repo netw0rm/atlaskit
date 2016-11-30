@@ -76,7 +76,7 @@ type Props = {
   onClick?: (e: MouseEvent) => void;
 };
 
-export default class extends Component<Props, State> {}
+export default class extends PureComponent<Props, State> {}
 `;
     const tasks = Object
       .keys(entry)

@@ -1,107 +1,87 @@
-import '../types';
-import { define, prop } from 'skatejs';
-import { MentionPicker as PfMentionPicker, AbstractMentionResource } from 'pf-mention';
+import React, { PureComponent } from 'react';
+// import { MentionPicker as MentionPickerComponent, AbstractMentionResource } from 'pf-mention';
 import MentionsPlugin, { MentionsPluginState } from 'ak-editor-plugin-mentions';
 
-import Component from '../component';
+interface Props {
+  pluginState: MentionsPluginState;
+  resourceProvider: any;//AbstractMentionResource;
+}
 
-// typescript removes unused var if we import it :(
-const { vdom } = require('skatejs');
+interface State {
+  query?: string;
+  anchorElement?: HTMLElement;
+}
 
-export default class MentionPicker extends Component {
+export default class MentionPicker extends PureComponent<Props, State> {
+  state: State = {};
 
-  // Declare JSX interface
-  props: {
-    plugin: MentionsPluginState
-    resourceProvider: AbstractMentionResource
-  };
-
-  // Mirror Skate props
-  plugin: MentionsPluginState;
-  resourceProvider: AbstractMentionResource;
-  _dirty: number;
-  _mentionPicker: any;
-
-  static get props() {
-    return {
-      // JSX
-      plugin: {
-        set: (elem: MentionPicker, data: {
-          newValue?: MentionsPluginState,
-          oldValue?: MentionsPluginState
-        }) => {
-          const oldPlugin = data.oldValue;
-
-          if (oldPlugin) {
-            oldPlugin.unsubscribe(elem.onChange);
-          }
-
-          const newPlugin = data.newValue;
-        
-          if (newPlugin) {
-            newPlugin.subscribe((state: MentionsPluginState) => elem.onChange(state));
-          }
-        }
-      },
-
-      resourceProvider: {},
-
-      // Private
-      _dirty: {}
-    };
+  componentDidMount() {
+    this.props.pluginState.subscribe(this.handlePluginStateChange);
+    this.props.pluginState.onSelectPrevious = this.handleSelectPrevious;
   }
 
-  private onChange(state: MentionsPluginState) {
-    this._dirty++;
+  componentWillUmount() {
+    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  static render(elem: MentionPicker) {
-    const {
-      query,
-      anchorElement,
-    } = elem.plugin;
+  private handlePluginStateChange = (state: MentionsPluginState) => {
+    const { anchorElement, query } = state;
+    this.setState({ anchorElement, query });
+  }
 
-    if (!query) {
+  render() {
+    const { anchorElement, query } = this.state;
+
+    if (anchorElement && query) {
+      const rect = anchorElement.getBoundingClientRect();
+      const style = {
+        display: 'block',
+        position: 'absolute',
+        left: rect.left - 17,
+        top: rect.top,
+      };
+      const picker = (
+        <p>Picker</p>
+        // <MentionPicker
+        //   resourceProvider={this.props.resourceProvider}
+        //   onSelected={this.handleSelectedMention}
+        //   query={query}
+        //   ref='picker'
+        // />
+      );
+      return (
+        <div style={style}>
+          {picker}
+        </div>
+      );
+
+    } else {
       return null;
     }
-
-    return (
-      <PfMentionPicker
-          resourceProvider={elem.resourceProvider}
-          onSelected={(e: any) => elem._handleSelectedMention(e)}
-          query={query}
-          ref={(ref: HTMLElement) => { elem._mentionPicker = ref; }}
-          style={elem._getMentionPickerPosition(anchorElement)}
-        />
-    )
   }
 
-  _getMentionPickerPosition(anchorElement: HTMLElement | null): string {
-    if (anchorElement) {
-      const rect = anchorElement.getBoundingClientRect();
-      return `display: block; position: absolute; left: ${rect.left - 17}px; top: ${rect.top}px;`;
+  private handleSelectedMention = (e: Event) => {
+    this.props.pluginState.handleSelectedMention(e);
+  }
+
+  private handleSelectPrevious = () => {
+    const { picker } = this.refs;
+    if (picker) {
+      (picker as any).selectPrevious();
     }
-
-    return 'display: none';
   }
 
-  _handleSelectedMention(e: Event) {
-    this.plugin.handleSelectedMention(e);
+  private handleSelectNext = () => {
+    const { picker } = this.refs;
+    if (picker) {
+      (picker as any).selectNext();
+    }
   }
 
-  static rendered(elem: MentionPicker) {
-    elem.plugin.onSelectPrevious = () => {
-      elem._mentionPicker.selectPrevious();
-    };
-
-    elem.plugin.onSelectNext = () => {
-      elem._mentionPicker.selectNext();
-    };
-
-    elem.plugin.onSelectCurrent = () => {
-      elem._mentionPicker.chooseCurrentSelection();
+  private handleSelectCurrent = () => {
+    const { picker } = this.refs;
+    if (picker) {
+      (picker as any).chooseCurrentSelection();
     }
   }
 }
-
-define('ak-editor-ui-mention-picker', MentionPicker);

@@ -1,7 +1,7 @@
 {
   "name": "ak-droplist-item",
   "version": "1.0.0",
-  "description": "ak-droplist-item webcomponent",
+  "description": "ak-droplist-item Component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",

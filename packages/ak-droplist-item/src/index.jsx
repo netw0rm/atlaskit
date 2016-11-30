@@ -100,7 +100,6 @@ export default class Item extends PureComponent {
      */
     elemBefore: PropTypes.node,
     children: PropTypes.node,
-    className: PropTypes.string,
   }
 
   static defaultProps = {
@@ -117,7 +116,6 @@ export default class Item extends PureComponent {
     onEscapeFrom: () => {},
     elemBefore: null,
     children: null,
-    className: '',
   }
 
   getElement = (props) => {
@@ -140,13 +138,13 @@ export default class Item extends PureComponent {
     }
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return p => (
-      <span
+      <div
         className={getClasses(props)}
         tabIndex="0"
         role={ariaRoles[type]}
         onKeyDown={handleKeyDown}
         onClick={handleClick}
-      >{p.children}</span>
+      >{p.children}</div>
     );
     /* eslint-enable jsx-a11y/no-static-element-interactions */
   }
@@ -157,7 +155,7 @@ export default class Item extends PureComponent {
       [styles.active]: props.type === 'link' && props.isActive,
       [styles.checked]: (['checkbox', 'radio'].indexOf(props.type) > -1) && props.isChecked,
       [styles.hidden]: props.isHidden,
-    }, props.className]
+    }]
   )
 
   handleKeyDown = (event) => {
@@ -199,20 +197,20 @@ export default class Item extends PureComponent {
       <Element>
         {
           props.type === 'checkbox'
-          ? <span className={styles.checkradio}><Checkbox label="test" /></span>
+          ? <div className={styles.checkradio}><Checkbox label="test" /></div>
           : null
         }
         {
           props.type === 'radio'
-          ? <span className={styles.checkradio}><Radio label="test" /></span>
+          ? <div className={styles.checkradio}><Radio label="test" /></div>
           : null
         }
         {
           props.elemBefore && props.type === 'link'
-          ? <span className={styles.elemBefore}>{ props.elemBefore }</span>
+          ? <div className={styles.elemBefore}>{ props.elemBefore }</div>
           : null
         }
-        <span className={styles.content}>{ props.children }</span>
+        <div className={styles.content}>{ props.children }</div>
       </Element>
     );
   }

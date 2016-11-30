@@ -58,6 +58,20 @@ storiesOf(name, module)
       </div>
     </Page>
   ))
+  .add('with a selected item', () => (
+    <Page>
+      <BasicNavigation>
+        <AkContainerItem
+          icon={<img src={nucleus} alt="icon" />}
+          text={'Nucleus'}
+          isSelected
+        />
+      </BasicNavigation>
+      <div>
+        <Lorem count="30" />
+      </div>
+    </Page>
+  ))
   .add('that starts closed', () => (
     <Page>
       <BasicNavigation open={false}>

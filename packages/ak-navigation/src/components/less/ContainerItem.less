@@ -14,9 +14,14 @@
   border-radius: 3px;
   display: flex;
   text-overflow: ellipsis;
-  &:hover {
+  margin: @ak-grid-size * 0.5 0;
+  &:hover, &.isSelected {
     background: @ak-color-N20A;
   }
+}
+
+.isSelected {
+  color: @ak-color-B400;
 }
 
 .icon {

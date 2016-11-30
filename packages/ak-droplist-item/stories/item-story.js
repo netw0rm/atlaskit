@@ -3,7 +3,6 @@ import React from 'react';
 import styles from 'style!./story-styles.less';
 import Question from 'ak-icon/glyph/question';
 import Avatar from 'ak-avatar';
-import avatarUrl from 'url!./doge.jpg';
 
 import Item from '../src';
 import { name } from '../package.json';
@@ -12,7 +11,7 @@ import { name } from '../package.json';
 const ItemsWrapper = props => <div className={styles.storyesContainer}>{props.children}</div>;
 const DropImitation = props => <div className={styles.itemsContainer}>{props.children}</div>;
 const Icon = () => <Question label="test question" />;
-const DogeAvatar = () => <Avatar src={avatarUrl} size="small" />;
+const DogeAvatar = () => <Avatar size="small" />;
 /* eslint-enable react/prop-types */
 
 storiesOf(name, module)

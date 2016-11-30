@@ -30,7 +30,7 @@ export default class Item extends PureComponent {
      */
     isHidden: PropTypes.bool,
     /**
-     * @description Highlights the Item when set to 'true'. Only applicable to the 'menu' type.
+     * @description Highlights the Item when set to 'true'. Only applicable to the 'link' type.
      * Use it when you want to highlight the active route in the navigation menu for example.
      * @memberof Item
      * @default false
@@ -45,21 +45,21 @@ export default class Item extends PureComponent {
      */
     isChecked: PropTypes.bool,
     /**
-     * @description Link's 'href' attribute. Only applicable to the 'menu' type of items.
+     * @description Link's 'href' attribute. Only applicable to the 'link' type of items.
      * @memberof Item
      * @type {String}
      */
     href: PropTypes.string,
     /**
-     * @description Link's 'target' attribute. Only applicable to the 'menu' type of items.
+     * @description Link's 'target' attribute. Only applicable to the 'link' type of items.
      * @memberof Item
      * @type {String}
      */
     target: PropTypes.string,
     /**
-     * @description The item's type. Available values: 'menu', 'checkbox', 'radio'
+     * @description The item's type. Available values: 'link', 'checkbox', 'radio'
      * @memberof Item
-     * @default menu
+     * @default link
      * @type {String}
      */
     type: PropTypes.oneOf(baseTypes.values),
@@ -93,7 +93,7 @@ export default class Item extends PureComponent {
     onEscapeFrom: PropTypes.func,
     /**
      * @description HTML content to display before item's main content. Only applicable to the
-     * 'menu' item.
+     * 'link' item.
      * @memberof Item
      * @default false
      * @type {ReactElement}
@@ -130,7 +130,7 @@ export default class Item extends PureComponent {
           className={getClasses(props)}
           href={href}
           target={target}
-          role={ariaRoles.menu}
+          role={ariaRoles.link}
           onKeyDown={handleKeyDown}
           onClick={handleClick}
         >
@@ -154,7 +154,7 @@ export default class Item extends PureComponent {
   getClasses = props => classNames(
     [styles.item, {
       [styles.disabled]: props.isDisabled,
-      [styles.active]: props.type === 'menu' && props.isActive,
+      [styles.active]: props.type === 'link' && props.isActive,
       [styles.checked]: (['checkbox', 'radio'].indexOf(props.type) > -1) && props.isChecked,
       [styles.hidden]: props.isHidden,
     }, props.className]
@@ -208,7 +208,7 @@ export default class Item extends PureComponent {
           : null
         }
         {
-          props.elemBefore && props.type === 'menu'
+          props.elemBefore && props.type === 'link'
           ? <span className={styles.elemBefore}>{ props.elemBefore }</span>
           : null
         }

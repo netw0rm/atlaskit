@@ -21,7 +21,7 @@ describe(name, () => {
     expect(shallow(<Item />)).to.be.defined;
   });
 
-  it('should be "menu" item by default', () => {
+  it('should be "link" item by default', () => {
     expect(shallow(<Item />).instance().props.type).to.equal('menu');
   });
 
@@ -30,12 +30,12 @@ describe(name, () => {
       expect(mount(<Item>sample</Item>)).to.have.text('sample');
     });
 
-    it('should render elemBefore for the menu item', () => {
+    it('should render elemBefore for the link item', () => {
       const Icon = (<div id="icon">icon</div>);
       expect(mount(<Item elemBefore={Icon}>sample</Item>)).to.contain(Icon);
     });
 
-    it('should NOT render elemBefore for anything other than the menu item', () => {
+    it('should NOT render elemBefore for anything other than the link item', () => {
       const Icon = <div id="icon">icon</div>;
       expect(mount(<Item type="checkbox" elemBefore={Icon}>sample</Item>)).to.not.contain(Icon);
       expect(mount(<Item type="radio" elemBefore={Icon}>sample</Item>)).to.not.contain(Icon);
@@ -46,26 +46,26 @@ describe(name, () => {
       expect(mount(<Item type="checkbox" />)).to.have.descendants(`.${styles.locals.checkradio}`);
     });
 
-    it('should NOT render icon for the menu element', () => {
-      expect(mount(<Item type="menu" />)).to.not.have.descendants(`.${styles.locals.checkradio}`);
+    it('should NOT render icon for the link element', () => {
+      expect(mount(<Item type="link" />)).to.not.have.descendants(`.${styles.locals.checkradio}`);
     });
   });
 
   describe('all about classes', () => {
     it('should have "item" class by default', () => {
-      expect(mount(<Item type="menu" />)).to.have.className(styles.locals.item);
+      expect(mount(<Item type="link" />)).to.have.className(styles.locals.item);
       expect(mount(<Item type="checkbox" />)).to.have.className(styles.locals.item);
       expect(mount(<Item type="radio" />)).to.have.className(styles.locals.item);
     });
 
     it('should have "disabled" class when disabled', () => {
-      expect(mount(<Item type="menu" isDisabled />)).to.have.className(styles.locals.disabled);
+      expect(mount(<Item type="link" isDisabled />)).to.have.className(styles.locals.disabled);
       expect(mount(<Item type="radio" isDisabled />)).to.have.className(styles.locals.disabled);
       expect(mount(<Item type="checkbox" isDisabled />)).to.have.className(styles.locals.disabled);
     });
 
-    it('should have "active" class when menu item is active', () => {
-      expect(mount(<Item type="menu" isActive />)).to.have.className(styles.locals.active);
+    it('should have "active" class when link item is active', () => {
+      expect(mount(<Item type="link" isActive />)).to.have.className(styles.locals.active);
     });
 
     it('should NOT have "active" class for any other item types', () => {
@@ -79,11 +79,11 @@ describe(name, () => {
     });
 
     it('should NOT have "checked" class for any other items', () => {
-      expect(mount(<Item type="menu" isChecked />)).to.not.have.className(styles.locals.checked);
+      expect(mount(<Item type="link" isChecked />)).to.not.have.className(styles.locals.checked);
     });
 
     it('should have "hidden" class when item is hidden', () => {
-      expect(mount(<Item type="menu" isHidden />)).to.have.className(styles.locals.hidden);
+      expect(mount(<Item type="link" isHidden />)).to.have.className(styles.locals.hidden);
       expect(mount(<Item type="checkbox" isHidden />)).to.have.className(styles.locals.hidden);
       expect(mount(<Item type="radio" isHidden />)).to.have.className(styles.locals.hidden);
     });

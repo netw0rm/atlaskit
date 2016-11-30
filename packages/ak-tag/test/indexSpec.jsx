@@ -9,6 +9,7 @@ import { mount } from 'enzyme';
 import Tag from '../src/index';
 import RemoveButton from '../src/RemoveButton';
 import Chrome from '../src/Chrome';
+import AnimationWrapper from '../src/AnimationWrapper';
 
 chai.use(chaiEnzyme());
 
@@ -33,27 +34,18 @@ describe('<Tag/> component tests', () => {
     expect(wrapper.find(Chrome)).to.have.className(styles.isRemovable);
   });
 
-  it('Test isRemovable() api contract', () => {
-    const wrapper = mount(<Tag {...testProps} />);
-    expect(wrapper.instance().isRemovable()).to.be.equal(true);
-    expect(wrapper.find(Chrome)).to.have.className(styles.isRemovable);
-    wrapper.setProps({ removeButtonText: null });
-    expect(wrapper.instance().isRemovable()).to.be.equal(false);
-    expect(wrapper.find(Chrome)).to.not.have.className(styles.isRemovable);
-  });
-
-  it('Test isLinked() api contract', () => {
-    const wrapper = mount(<Tag {...testProps} />);
-    expect(wrapper.instance().isLinked()).to.be.equal(true);
-    wrapper.setProps({ href: null });
-    expect(wrapper.instance().isLinked()).to.be.equal(false);
-  });
-
   it('Test onBeforeRemoveAction callback contract', () => {
     const onBeforeRemoveAction = sinon.spy();
     const wrapper = mount(<Tag {...testProps} onBeforeRemoveAction={onBeforeRemoveAction} />);
     wrapper.find(RemoveButton).find('button').simulate('click');
     expect(onBeforeRemoveAction.calledOnce).to.equal(true);
+  });
+
+  it('Test onAfterRemoveAction callback contract', () => {
+    const onAfterRemoveAction = sinon.spy();
+    const wrapper = mount(<Tag {...testProps} onAfterRemoveAction={onAfterRemoveAction} />);
+    wrapper.find(AnimationWrapper).props().onRemovalCompletion();
+    expect(onAfterRemoveAction.calledOnce).to.equal(true);
   });
 
   it('Test mouse over and out over remove button', () => {
@@ -83,6 +75,7 @@ describe('<Tag/> component tests', () => {
     wrapper.setProps({ href: bitbucketUrl });
     expect(wrapper.props().href).to.equal(bitbucketUrl);
   });
+
   it('Tag full rendering - with link', () => {
     const wrapper = mount(<div><Tag text={atlassianlinkText} href={atlassianUrl} /></div>);
     const renderedHtml =

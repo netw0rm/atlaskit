@@ -121,62 +121,6 @@ export default class Tag extends PureComponent {
     };
   }
 
-  /**
-   * @description Getter to find out whether the tag is linked.
-   *              This is implicitly controlled by the {@link Tag#href} attribute.
-   *
-   * @memberof Tag
-   * @function
-   * @instance
-   * @return {boolean} Whether the tag is linked or not
-   * @example @js tag.isLinked(); // Returns true if the tag is linked.
-   */
-  isLinked = () => !!this.props.href
-  /**
-   * @description Getter to find out whether the tag is removable.
-   *              This is implicitly controlled by the {@link Tag#removeButtonText} attribute.
-   *
-   * @memberof Tag
-   * @function
-   * @instance
-   * @return {boolean} Whether the tag is removable or not
-   * @example @js tag.isRemovable(); // Returns true if the tag is removable.
-   */
-  isRemovable = () => !!this.props.removeButtonText
-  /**
-   * @description Allows to programmatically start the tag removal
-   *              (same as if the user activated the remove button)
-   *              The removal can be prevented by preventing the {@link Tag#onBeforeRemoveAction}
-   *              event. The {@link Tag#onAfterRemoveAction} event is fired upon completion.
-   *              Please note that the tag is not actually unmounted. It is up to the
-   *              consumer to remove it
-   *
-   * @memberof Tag
-   * @function
-   * @instance
-   * @callback Tag#onBeforeRemoveAction
-   * @callback Tag#onAfterRemoveAction
-   * @example @js import Tag from 'ak-tag';
-   *
-   * const tag = new Tag();
-   * tag.text = 'Cupcake';
-   * tag.removeButtonText = 'Too much food';
-   *
-   * const onBeforeRemoveAction =  (e) => {
-   *   console.log('Just about to start the remove animation');
-   *   // e.preventDefault(); // this would stop the removal process
-   * }
-   * const onAfterRemoveAction = () => {
-   *   console.log('Remove animation finished');
-   * }
-   *
-   * document.body.appendChild(tag);
-
-   */
-  remove = () => {
-    this.handleRemoveAction();
-  }
-
   handleRemoveAction = () => {
     if (this.props.onBeforeRemoveAction()) {
       this.setState({ isRemoving: true, isRemoved: false });

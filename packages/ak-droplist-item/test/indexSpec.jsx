@@ -22,7 +22,7 @@ describe(name, () => {
   });
 
   it('should be "link" item by default', () => {
-    expect(shallow(<Item />).instance().props.type).to.equal('menu');
+    expect(shallow(<Item />).instance().props.type).to.equal('link');
   });
 
   describe('all about rendering', () => {

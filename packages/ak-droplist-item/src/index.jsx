@@ -3,9 +3,10 @@ import classNames from 'classnames';
 import keyCode from 'keycode';
 import Radio from 'ak-icon/glyph/radio';
 import Checkbox from 'ak-icon/glyph/checkbox';
-
 import styles from 'style!./styles.less';
-import { ariaRoles, baseTypes } from './internal/constants';
+
+import Element from './internal/Element';
+import { baseTypes } from './internal/constants';
 
 /* eslint-disable react/no-unused-prop-types */
 /**
@@ -118,37 +119,6 @@ export default class Item extends PureComponent {
     children: null,
   }
 
-  getElement = (props) => {
-    const { href, target, type, isDisabled } = props;
-    const { getClasses, handleKeyDown, handleClick } = this;
-
-    if (href && !isDisabled) {
-      return p => (
-        <a
-          className={getClasses(props)}
-          href={href}
-          target={target}
-          role={ariaRoles.link}
-          onKeyDown={handleKeyDown}
-          onClick={handleClick}
-        >
-          {p.children}
-        </a>
-      );
-    }
-    /* eslint-disable jsx-a11y/no-static-element-interactions */
-    return p => (
-      <div
-        className={getClasses(props)}
-        tabIndex="0"
-        role={ariaRoles[type]}
-        onKeyDown={handleKeyDown}
-        onClick={handleClick}
-      >{p.children}</div>
-    );
-    /* eslint-enable jsx-a11y/no-static-element-interactions */
-  }
-
   getClasses = props => classNames(
     [styles.item, {
       [styles.disabled]: props.isDisabled,
@@ -190,11 +160,18 @@ export default class Item extends PureComponent {
   }
 
   render = () => {
-    const { getElement, props } = this;
-    const Element = getElement(props);
+    const { props } = this;
 
     return (
-      <Element>
+      <Element
+        isDisabled={props.isDisabled}
+        href={props.href}
+        target={props.target}
+        type={props.type}
+        handleClick={this.handleClick}
+        handleKeyDown={this.handleKeyDown}
+        className={this.getClasses(props)}
+      >
         {
           props.type === 'checkbox'
           ? <div className={styles.checkradio}><Checkbox label="test" /></div>

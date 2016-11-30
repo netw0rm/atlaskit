@@ -1,7 +1,7 @@
 import { Keymap, ProseMirror } from 'ak-editor-prosemirror';
 import React, { Component } from 'react';
 import schema from './schema';
-import { buildKeymap } from 'ak-editor-keymap';
+import buildKeymap from 'ak-editor-keymap';
 
 type Doc = {
   type: 'doc',

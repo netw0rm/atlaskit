@@ -7,9 +7,13 @@ const { wrapIn, setBlockType, wrapInList, splitListItem, lift, liftListItem,
 
 const isMac = browser.mac;
 
-export function buildKeymap(schema: Schema, mapKeys?: any) {
+interface Command {
+  (pm: ProseMirror, apply: boolean): boolean;
+}
+
+export default (schema: Schema, mapKeys?: any) => {
   let keys: any = {};
-  function bind(key: string, cmd: Function) {
+  function bind(key: string, cmd: Command) {
     if (mapKeys) {
       let mapped = mapKeys[key];
       if (mapped === false) {
@@ -23,9 +27,9 @@ export function buildKeymap(schema: Schema, mapKeys?: any) {
     keys[key] = cmd;
   }
 
-  let lastCmd: Function;
+  let lastCmd: Command;
 
-  function clearAndApply(cmd: Function) {
+  function clearAndApply(cmd: Command) {
     let isReset = false;
 
     return (pm: ProseMirror, apply: boolean) => {

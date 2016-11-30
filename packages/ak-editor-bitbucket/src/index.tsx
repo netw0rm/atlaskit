@@ -9,7 +9,7 @@ import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
 import MentionsPlugin from 'ak-editor-plugin-mentions';
 import { Chrome } from 'ak-editor-ui';
 import schema from './schema';
-import { buildKeymap } from 'ak-editor-keymap';
+import buildKeymap from 'ak-editor-keymap';
 import markdownSerializer from './markdown-serializer';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 import parseHtml from './parse-html';

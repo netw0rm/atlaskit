@@ -6,7 +6,7 @@ import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
 import { Chrome } from 'ak-editor-ui';
 import schema from './schema';
 import { parse, encode } from './cxhtml';
-import { buildKeymap } from 'ak-editor-keymap';
+import buildKeymap from 'ak-editor-keymap';
 
 interface Props {
   context?: 'default' | 'comment';

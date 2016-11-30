@@ -1,0 +1,68 @@
+@import '~ak-editor-shared-styles/src/index';
+
+.buttonContent {
+  width: 80px;
+}
+
+.container {
+  position: relative;
+}
+
+.dropdown {
+  list-style-type: none;
+  padding: 4px 0;
+  box-shadow: 0 0 0 0.5px rgba(0,0,0,0.05), 0 3px 10px -4px rgba(0,0,0,0.4);
+  width: 170px;
+
+  & > li {
+    margin: 0;
+  }
+}
+
+.blockTypeNormal {
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 20px;
+}
+
+.blockTypeHeading1 {
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+}
+
+.blockTypeHeading2 {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 20px;
+}
+
+.blockTypeHeading3 {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 20px;
+}
+
+.blockTypeCode {
+  font-family: Consolas, Menlo, "Liberation Mono", Courier, monospace;
+}
+
+.blockTypeQuote span {
+  border-left: 1px solid @ak-editor-active-foreground;
+  padding-left: 10px;
+}
+
+.blockType {
+  color: @ak-editor-active-foreground;
+  display: block;
+  cursor: pointer;
+  padding: 5px 16px;
+  user-select: none;
+
+  &.active, &:hover {
+    background: @ak-editor-dropdown-active-background;
+    color: @ak-editor-active-foreground;
+    text-decoration: none;
+  }
+}

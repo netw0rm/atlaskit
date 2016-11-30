@@ -1,10 +1,11 @@
 {
   "name": "ak-button",
-  "version": "4.1.0",
+  "version": "4.1.2",
   "description": "ak-button webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-button"
   },

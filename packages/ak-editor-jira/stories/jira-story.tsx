@@ -1,42 +1,40 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import AkTabs from 'ak-tabs';
 import { Tab as AkTab} from 'ak-tabs';
-import EditorComponent from '../src';
+import Editor from '../src';
 
 const Tabs = reactify(AkTabs);
 const Tab = reactify(AkTab);
-const Editor = reactify(EditorComponent);
+const CancelAction = () => action('Cancel')();
+const SaveAction = () => action('Save')();
+
+declare var module: any;
 
 storiesOf('ak-editor-jira', module)
-  .add('Empty', () => (
-    <Editor expanded />
-  ))
+  .add('Empty', () =>
+    <div style={{ padding: 20 }}>
+      <Editor
+        onCancel={CancelAction}
+        onSave={SaveAction}
+      />
+    </div>
+  )
   .add('HTML preview', () => {
     type Props = {};
-    type State = { html: string | null };
-    class Demo extends Component<Props, State> {
-      constructor() {
-        super();
-        this.state = { html: null };
-        this.updateHTML = this.updateHTML.bind(this);
-      }
-
-      updateHTML(e: any) {
-        this.setState({ html: e.target.value });
-      }
+    type State = { html?: string };
+    class Demo extends PureComponent<Props, State> {
+      state = {} as State;
 
       render() {
         return (
-          <div ref="root">
+          <div>
             <Editor
-              expanded
+              onCancel={CancelAction}
               onChange={this.updateHTML}
-              onReady={this.updateHTML}
-              onSave={action('save')}
-              onCancel={action('cancel')}
+              onSave={SaveAction}
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>HTML</legend>
@@ -45,26 +43,38 @@ storiesOf('ak-editor-jira', module)
           </div>
         );
       }
+
+      updateHTML = (editor: Editor) => {
+        this.setState({ html: editor.value });
+      }
     }
 
-    return <Demo />;
+    return (
+      <div style={{ padding: 20 }}>
+        <Demo />
+      </div>
+    );
   })
   .add('Contexts', () => {
     type Props = {};
     type State = {};
-    class Demo extends Component<Props, State> {
+    class Demo extends PureComponent<Props, State> {
       render() {
         return (
           <div ref="root">
             <Tabs>
               <Tab selected label="(default)">
-                <Editor expanded />
-              </Tab>
-              <Tab selected label="(default) no-actions">
-                <Editor expanded noActions/>
+                <Editor
+                  onCancel={CancelAction}
+                  onSave={SaveAction}
+                />
               </Tab>
               <Tab selected label="comment">
-                <Editor expanded context="comment"/>
+                <Editor
+                  context="comment"
+                  onCancel={CancelAction}
+                  onSave={SaveAction}
+                />
               </Tab>
             </Tabs>
           </div>
@@ -72,5 +82,9 @@ storiesOf('ak-editor-jira', module)
       }
     }
 
-    return <Demo />;
+    return (
+      <div style={{ padding: 20 }}>
+        <Demo />
+      </div>
+    );
   });

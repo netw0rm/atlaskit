@@ -16,7 +16,7 @@ import ToolbarTextFormatting from 'ak-editor-toolbar-text-formatting';
 import ToolbarHyperlink from 'ak-editor-toolbar-hyperlink';
 import ToolbarFeedback from 'ak-editor-toolbar-feedback';
 import schema from './schema';
-import { buildKeymap } from './keymap';
+import { buildKeymap } from 'ak-editor-keymap';
 import markdownSerializer from './markdown-serializer';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';

@@ -19,6 +19,7 @@
     "ak-editor-content": "^4.0.0",
     "ak-editor-footer": "^3.0.0",
     "ak-editor-hyperlink-edit": "^16.0.0",
+    "ak-editor-keymap": "^1.0.0",
     "ak-editor-plugin-block-type": "^5.0.0",
     "ak-editor-plugin-hyperlink": "^5.0.0",
     "ak-editor-plugin-image-upload": "^5.0.0",

@@ -1,0 +1,33 @@
+{
+  "name": "ak-editor-keymap",
+  "version": "1.0.0",
+  "description": "Shared ProseMirror keymap in atlaskit",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-keymap"
+  },
+  "files": [
+    "dist",
+    "src/**/*.ts"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "prosemirror": "0.10.1",
+    "ak-editor-schema": "4.6.1"
+  },
+  "peerDependencies": {
+    "browserkeymap": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
+}

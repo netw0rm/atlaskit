@@ -777,6 +777,7 @@ declare module 'prosemirror/dist/model/schema' {
         isTextblock: boolean;
         isInline: boolean;
         isText: boolean;
+        isCode: boolean;
         isLeaf: any;
         selectable: boolean;
         draggable: boolean;

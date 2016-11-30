@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { browser, commands, Keymap } from  "ak-editor-prosemirror";
+import { ProseMirror, browser, commands, Keymap } from  'ak-editor-prosemirror';
 import { Schema } from 'ak-editor-schema';
 
 const { wrapIn, setBlockType, wrapInList, splitListItem, lift, liftListItem,
@@ -7,9 +7,9 @@ const { wrapIn, setBlockType, wrapInList, splitListItem, lift, liftListItem,
 
 const isMac = browser.mac;
 
-export function buildKeymap(schema: Schema, mapKeys: Object) {
-  let keys = {};
-  function bind(key, cmd) {
+export function buildKeymap(schema: Schema, mapKeys?: any) {
+  let keys: any = {};
+  function bind(key: string, cmd: Function) {
     if (mapKeys) {
       let mapped = mapKeys[key];
       if (mapped === false) {
@@ -23,12 +23,12 @@ export function buildKeymap(schema: Schema, mapKeys: Object) {
     keys[key] = cmd;
   }
 
-  let lastCmd;
+  let lastCmd: Function;
 
-  function clearAndApply(cmd) {
+  function clearAndApply(cmd: Function) {
     let isReset = false;
 
-    return (pm, apply) => {
+    return (pm: ProseMirror, apply: boolean) => {
       lift(pm, apply);
       setBlockType(schema.nodes.paragraph)(pm, apply);
 
@@ -50,80 +50,80 @@ export function buildKeymap(schema: Schema, mapKeys: Object) {
   for (let name in schema.marks) {
     let mark = schema.marks[name];
 
-    if (name === "strong") {
-      bind("Mod-B", toggleMark(mark));
+    if (name === 'strong') {
+      bind('Mod-B', toggleMark(mark));
     }
 
-    if (name === "em") {
-      bind("Mod-I", toggleMark(mark));
+    if (name === 'em') {
+      bind('Mod-I', toggleMark(mark));
     }
 
-    if (name === "code") {
-      bind("Mod-`", toggleMark(mark));
+    if (name === 'code') {
+      bind('Mod-`', toggleMark(mark));
     }
   }
 
   for (let name in schema.nodes) {
     let node = schema.nodes[name];
 
-    if (name === "bullet_list") {
+    if (name === 'bullet_list') {
       if (isMac) {
-        bind("Shift-Cmd-B", clearAndApply(wrapInList(node)));
+        bind('Shift-Cmd-B', clearAndApply(wrapInList(node)));
       } else {
-        bind("Shift-Ctrl-B", clearAndApply(wrapInList(node)));
+        bind('Shift-Ctrl-B', clearAndApply(wrapInList(node)));
       }
     }
 
-    if (name === "ordered_list") {
+    if (name === 'ordered_list') {
       if (isMac) {
-        bind("Shift-Cmd-L", clearAndApply(wrapInList(node)));
+        bind('Shift-Cmd-L', clearAndApply(wrapInList(node)));
       } else {
-        bind("Shift-Ctrl-L", clearAndApply(wrapInList(node)));
+        bind('Shift-Ctrl-L', clearAndApply(wrapInList(node)));
       }
     }
 
-    if (name === "blockquote") {
+    if (name === 'blockquote') {
       if (isMac) {
-        bind("Cmd-Alt-8", clearAndApply(wrapIn(node)));
+        bind('Cmd-Alt-8', clearAndApply(wrapIn(node)));
       } else {
-        bind("Ctrl-8", clearAndApply(wrapIn(node)));
+        bind('Ctrl-8', clearAndApply(wrapIn(node)));
       }
     }
 
-    if (name === "hard_break") {
+    if (name === 'hard_break') {
       let cmd = chainCommands(
         newlineInCode,
-        pm => pm.tr.replaceSelection(node.create()).applyAndScroll()
+        (pm: ProseMirror) => pm.tr.replaceSelection(node.create()).applyAndScroll()
       );
-      bind("Mod-Enter", cmd);
-      bind("Shift-Enter", cmd);
+      bind('Mod-Enter', cmd);
+      bind('Shift-Enter', cmd);
       if (isMac) {
-        bind("Ctrl-Enter", cmd);
+        bind('Ctrl-Enter', cmd);
       }
     }
 
-    if (name === "list_item") {
-      bind("Enter", splitListItem(node));
-      bind("Mod-[", liftListItem(node));
-      bind("Mod-]", sinkListItem(node));
+    if (name === 'list_item') {
+      bind('Enter', splitListItem(node));
+      bind('Mod-[', liftListItem(node));
+      bind('Mod-]', sinkListItem(node));
     }
 
-    if (name === "paragraph") {
+    if (name === 'paragraph') {
       if (isMac) {
-        bind("Cmd-Alt-0", clearAndApply(setBlockType(node)));
+        bind('Cmd-Alt-0', clearAndApply(setBlockType(node)));
       } else {
-        bind("Ctrl-0", clearAndApply(setBlockType(node)));
+        bind('Ctrl-0', clearAndApply(setBlockType(node)));
       }
     }
 
-    if (name === "code_block") {
+    if (name === 'code_block') {
       if (isMac) {
-        bind("Cmd-Alt-7", clearAndApply(setBlockType(node)));
+        bind('Cmd-Alt-7', clearAndApply(setBlockType(node)));
       } else {
-        bind("Ctrl-7", clearAndApply(setBlockType(node)));
+        bind('Ctrl-7', clearAndApply(setBlockType(node)));
       }
       // https://github.com/ProseMirror/prosemirror/issues/419
-      bind("Enter", (pm, apply) => {
+      bind('Enter', (pm: ProseMirror, apply: boolean) => {
         let {$from, $head, empty} = pm.selection;
 
         if (!$from.parent.type.isCode) {
@@ -132,7 +132,7 @@ export function buildKeymap(schema: Schema, mapKeys: Object) {
 
         if (apply !== false) {
           if (
-            $head.parent.textContent.slice(-1) === "\n"
+            $head.parent.textContent.slice(-1) === '\n'
             && empty
             // nodeSize includes newlines
             && $head.parentOffset === $head.parent.nodeSize - 2
@@ -141,25 +141,25 @@ export function buildKeymap(schema: Schema, mapKeys: Object) {
             return false;
           }
 
-          pm.tr.typeText("\n").applyAndScroll();
+          pm.tr.typeText('\n').applyAndScroll();
         }
 
         return true;
       });
     }
 
-    if (name === "heading") {
+    if (name === 'heading') {
       for (let i = 1; i <= 5; i++) {
         if (isMac) {
-          bind("Cmd-Alt-" + i, clearAndApply(setBlockType(node, {level: i})));
+          bind('Cmd-Alt-' + i, clearAndApply(setBlockType(node, {level: i})));
         } else {
-          bind("Ctrl-" + i, clearAndApply(setBlockType(node, {level: i})));
+          bind('Ctrl-' + i, clearAndApply(setBlockType(node, {level: i})));
         }
       }
     }
 
-    if (name === "horizontal_rule") {
-      bind("Mod-Shift--", pm => pm.tr.replaceSelection(node.create()).applyAndScroll());
+    if (name === 'horizontal_rule') {
+      bind('Mod-Shift--', (pm: ProseMirror) => pm.tr.replaceSelection(node.create()).applyAndScroll());
     }
   }
   return new Keymap(keys);

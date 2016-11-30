@@ -49,12 +49,11 @@
 }
 
 .tooltip-wrapper {
-  z-index: 1;    // Tooltip should be above the '/' seperator on the next line
-  float: left;   // Ensure that the tooltip doesn't take up space
   display: none; // Hide the tooltip when the item is not truncated
 }
 
 .truncated .tooltip-wrapper {
-  position: absolute;
   display: inherit;
+  position: absolute;
+  z-index: 1;    // Tooltip should be above any overlapping breadcrumb items
 }

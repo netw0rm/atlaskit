@@ -18,7 +18,8 @@
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "react-container-query": "^0.7.0"
+    "react-container-query": "^0.7.0",
+    "uuid": "^3.0.0"
   },
   "devDependencies": {
     "ak-icon": "^11.1.0"

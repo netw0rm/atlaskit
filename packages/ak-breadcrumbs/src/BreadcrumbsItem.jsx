@@ -3,6 +3,7 @@ import Button from 'ak-button';
 import Tooltip, { TooltipTrigger } from 'ak-tooltip';
 import ContainerQuery from 'react-container-query';
 import reactify from 'akutil-react';
+import uuid from 'uuid';
 
 import styles from './styles.less';
 
@@ -29,30 +30,40 @@ export default class BreadcrumbsItem extends PureComponent {
     href: PropTypes.string,
     children: PropTypes.string,
   }
+
   static defaultProps = {
     href: '#',
   }
+
+  constructor() {
+    super();
+    this.state = {
+      id: uuid(),
+    };
+  }
+
   render() {
+    const query = {
+      [styles.locals.truncated]: { minWidth: truncateWidth },
+    };
     return (
-      <div className={styles.locals.item}>
-        <ContainerQuery query={{ [styles.locals.truncated]: { minWidth: truncateWidth } }}>
-          <div className={styles.locals.tooltipWrapper}>
-            <ReactTooltip id="my-tooltip" />
-          </div>
-          <ReactTrigger description={this.props.children}>
-            <span aria-describedby="my-tooltip">
-              <Button
-                appearance="link"
-                className={styles.locals.itemButton}
-                spacing="compact"
-                href={this.props.href}
-              >
-                {this.props.children}
-              </Button>
-            </span>
-          </ReactTrigger>
-        </ContainerQuery>
-      </div>
+      <ContainerQuery className={styles.locals.item} query={query}>
+        <div className={styles.locals.tooltipWrapper}>
+          <ReactTooltip id={this.state.id} />
+        </div>
+        <ReactTrigger description={this.props.children}>
+          <span aria-describedby={this.state.id}>
+            <Button
+              appearance="link"
+              className={styles.locals.itemButton}
+              spacing="compact"
+              href={this.props.href}
+            >
+              {this.props.children}
+            </Button>
+          </span>
+        </ReactTrigger>
+      </ContainerQuery>
     );
   }
 }

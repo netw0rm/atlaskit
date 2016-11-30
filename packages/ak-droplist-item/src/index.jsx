@@ -8,19 +8,96 @@ import styles from 'style!./styles.less';
 import { ariaRoles, baseTypes } from './internal/constants';
 
 /* eslint-disable react/no-unused-prop-types */
-export default class AkItem extends PureComponent {
+/**
+ * @description This is a basic building block of a dropdown's list.
+ * @class Item
+ */
+export default class Item extends PureComponent {
   static propTypes = {
+    /**
+     * @description Disabled state of an item
+     * @memberof Item
+     * @default false
+     * @type {Boolean}
+     */
     isDisabled: PropTypes.bool,
+    /**
+     * @description Hidden state of an item. This is achieved via 'display:none' style,
+     * which means that the item is still rendered, only invisible
+     * @memberof Item
+     * @default false
+     * @type {Boolean}
+     */
     isHidden: PropTypes.bool,
+    /**
+     * @description Highlights the Item when set to 'true'. Only applicable to the 'menu' type.
+     * Use it when you want to highlight the active route in the navigation menu for example.
+     * @memberof Item
+     * @default false
+     * @type {Boolean}
+     */
     isActive: PropTypes.bool,
+    /**
+     * @description Controls the 'checked' state of the 'checkbox' and 'radio' type of items.
+     * @memberof Item
+     * @default false
+     * @type {Boolean}
+     */
     isChecked: PropTypes.bool,
+    /**
+     * @description Link's 'href' attribute. Only applicable to the 'menu' type of items.
+     * @memberof Item
+     * @type {String}
+     */
     href: PropTypes.string,
+    /**
+     * @description Link's 'target' attribute. Only applicable to the 'menu' type of items.
+     * @memberof Item
+     * @type {String}
+     */
     target: PropTypes.string,
+    /**
+     * @description The item's type. Available values: 'menu', 'checkbox', 'radio'
+     * @memberof Item
+     * @default menu
+     * @type {String}
+     */
     type: PropTypes.oneOf(baseTypes.values),
+    /**
+     * @description Handler function to be called when the item is activated.
+     * It will happen when the item was clicked, or 'space'/'enter' keys were pressed.
+     * @memberof Item
+     * @type {function}
+     */
     onActivate: PropTypes.func,
+    /**
+     * @description Handler function to be called when the focus should be moved to the previous
+     * item. It happens when the 'up' key is pressed.
+     * @memberof Item
+     * @type {function}
+     */
     onFocusPrev: PropTypes.func,
+    /**
+     * @description Handler function to be called when the focus should be moved to the previou item
+     * It happens when the 'down' key is pressed.
+     * @memberof Item
+     * @type {function}
+     */
     onFocusNext: PropTypes.func,
+    /**
+     * @description Handler function to be called when the focus should be moved outside of the item
+     * It happens when the 'tab' key is pressed.
+     * @memberof Item
+     * @type {function}
+     */
     onEscapeFrom: PropTypes.func,
+    /**
+     * @description HTML content to display before item's main content. Only applicable to the
+     * 'menu' item.
+     * @memberof Item
+     * @default false
+     * @type {ReactElement}
+     */
     elemBefore: PropTypes.node,
     children: PropTypes.node,
     className: PropTypes.string,

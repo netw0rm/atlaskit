@@ -1,7 +1,7 @@
 import { Keymap, ProseMirror } from 'ak-editor-prosemirror';
 import React, { Component } from 'react';
 import schema from './schema';
-import keymap from './keymap';
+import { buildKeymap } from 'ak-editor-keymap';
 
 type Doc = {
   type: 'doc',
@@ -29,7 +29,7 @@ export default class extends Component<Props, State> {
       plugins: [],
     });
 
-    pm.addKeymap(keymap);
+    pm.addKeymap(buildKeymap(pm.schema));
     pm.addKeymap(new Keymap({
       'Enter': () => {
         if (this.props.onSubmit) {

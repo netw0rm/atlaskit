@@ -1,0 +1,44 @@
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/grid.less';
+
+@breadcrumbs-padding: @ak-grid-size * 2;
+
+.container {
+  color: @ak-color-N300;
+  display: flex;
+  flex-wrap: wrap;
+
+  .item {
+    // Override link button color and padding
+    & > .item-button {
+      color: @ak-color-N300;
+      padding: 0;
+    }
+
+    & + .item {
+      padding-left: @breadcrumbs-padding;
+
+      [dir="rtl"] & {
+        padding-left: 0;
+        padding-right: @breadcrumbs-padding;
+      }
+    }
+
+    & + .item::before {
+      content: '/';
+      float: left;
+      margin-left: -@breadcrumbs-padding;
+      padding: 2px 0; // To match compact button height of 24px
+      position: absolute;
+      text-align: center;
+      vertical-align: middle;
+      width: @breadcrumbs-padding;
+
+      [dir="rtl"] & {
+        float: right;
+        margin-left: 0;
+        margin-right: -@breadcrumbs-padding;
+      }
+    }
+  }
+}

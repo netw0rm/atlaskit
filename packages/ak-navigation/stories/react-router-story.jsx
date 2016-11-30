@@ -1,70 +1,115 @@
 import { storiesOf } from '@kadira/storybook';
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Lorem from 'react-lorem-component';
-import { Router, Route, Link, browserHistory } from 'react-router';
+import { Router, Route, Link, browserHistory, routerShape } from 'react-router';
 import Navigation, { AkContainerHeader, AkContainerItem } from '../src/index';
 import Page from './components/Page';
 import nucleusLogo from './nucleus.png';
 import { name } from '../package.json';
 
-const reactRouterLinkComponent = (url, children) => <Link to={url}>{children}</Link>;
+const RouterLink = (props, context) => (
+  <Link
+    to={props.to}
+  >
+    <AkContainerItem
+      text={props.text}
+      isSelected={context.router.isActive(props.to, true)}
+    />
+  </Link>
+);
 
-const PageNavigation = () => (
+RouterLink.propTypes = {
+  to: PropTypes.string,
+  text: PropTypes.string,
+};
+
+RouterLink.contextTypes = {
+  router: routerShape,
+};
+
+const RouterHeader = props => (
+  <Link
+    to={props.to}
+  >
+    <AkContainerHeader
+      text={'AtlasCat'}
+      icon={<img alt="nucleus" src={nucleusLogo} />}
+    />
+  </Link>
+);
+
+RouterHeader.propTypes = {
+  to: PropTypes.string,
+};
+
+RouterLink.contextTypes = {
+  router: routerShape,
+};
+
+const PageNavigation = props => (
   <Navigation
     containerHeader={
-      <Link
+      <RouterHeader
         to={'/iframe.html'}
-      >
-        <AkContainerHeader
-          text={'AtlasCat'}
-          url={'/iframe.html'}
-          logo={<img alt="nucleus" src={nucleusLogo} />}
-          linkComponent={reactRouterLinkComponent}
-        />
-      </Link>
+        activeRoute={props.route}
+      />
     }
   >
-    <Link to={'/page1'}>
-      <AkContainerItem
-        text={'Page 1'}
-        linkComponent={reactRouterLinkComponent}
-      />
-    </Link>
-    <Link to={'/page2'}>
-      <AkContainerItem
-        text={'Page 2'}
-        linkComponent={reactRouterLinkComponent}
-      />
-    </Link>
+    <RouterLink
+      to={'/page1'}
+      text={'Page 1'}
+    />
+    <RouterLink
+      to={'/page2'}
+      text={'Page 2'}
+    />
   </Navigation>
 );
-const Page1 = () => (
+
+PageNavigation.propTypes = {
+  route: routerShape,
+};
+
+const Page1 = props => (
   <Page>
-    <PageNavigation />
+    <PageNavigation route={props.route} />
     <div>
       <h1>Page 1</h1>
       <Lorem count="30" />
     </div>
   </Page>
 );
-const Page2 = () => (
+
+Page1.propTypes = {
+  route: routerShape,
+};
+
+const Page2 = props => (
   <Page>
-    <PageNavigation />
+    <PageNavigation route={props.route} />
     <div>
       <h1>Page 2</h1>
       <Lorem count="30" />
     </div>
   </Page>
 );
-const ContainerHome = () => (
+
+Page2.propTypes = {
+  route: routerShape,
+};
+const ContainerHome = props => (
   <Page>
-    <PageNavigation />
+    <PageNavigation route={props.route} />
     <div>
       <h1>Container home</h1>
       <Lorem count="30" />
     </div>
   </Page>
 );
+
+ContainerHome.propTypes = {
+  route: routerShape,
+};
 
 storiesOf(name, module)
   .add('with react-router', () => (

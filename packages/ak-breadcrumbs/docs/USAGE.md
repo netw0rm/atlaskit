@@ -2,6 +2,8 @@
 
 Breadcrumbs help users visualize their current location in relation to the rest of the website or application by showing the hierarchy of pages.
 
+![Example buttons](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-breadcrumbs/docs/)
+
 ## Try it out
 
 Interact with a [live demo of the ak-breadcrumbs component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-breadcrumbs/@VERSION@/).

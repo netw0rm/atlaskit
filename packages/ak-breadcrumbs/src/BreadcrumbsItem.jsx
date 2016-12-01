@@ -2,15 +2,16 @@ import React, { PureComponent, PropTypes } from 'react';
 import Button from 'ak-button';
 import Tooltip, { TooltipTrigger } from 'ak-tooltip';
 import reactify from 'akutil-react';
+import classnames from 'classnames';
 import ContainerQuery from 'react-container-query';
 import uuid from 'uuid';
 
 import styles from './styles.less';
+import { itemTruncateWidth } from './internal/constants';
+
 
 const ReactTooltip = reactify(Tooltip);
 const ReactTrigger = reactify(TooltipTrigger);
-
-const truncateWidth = 200; // Duplicated in styles.less
 
 /**
  * @description BreadcrumbsItem React component.
@@ -52,10 +53,13 @@ export default class BreadcrumbsItem extends PureComponent {
 
   render() {
     const query = {
-      [styles.locals.truncated]: { minWidth: truncateWidth },
+      [styles.locals.truncated]: { minWidth: itemTruncateWidth },
     };
     return (
-      <ContainerQuery className={styles.locals.item} query={query}>
+      <ContainerQuery
+        className={classnames(styles.locals.item, styles.locals.collapsibleItem)}
+        query={query}
+      >
         <ReactTooltip className={styles.locals.tooltip} id={this.state.id} />
         <ReactTrigger description={this.props.children}>
           <span aria-describedby={this.state.id}>

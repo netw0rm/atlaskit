@@ -42,6 +42,23 @@
       }
     }
   }
+
+  &.collapsed {
+    .collapsible-item {
+      display: none;
+    }
+
+    .collapsible-item:first-of-type,
+    .collapsible-item:last-of-type {
+      display: inherit;
+    }
+  }
+
+  &:not(.collapsed) {
+    .ellipsis-item {
+      display: none;
+    }
+  }
 }
 
 .item-button {

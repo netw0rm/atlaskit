@@ -22,10 +22,10 @@ This is a standard React component.
 import AkBreadcrumbs, { AkBreadcrumbsItem } from 'ak-breadcrumbs';
 
 ReactDOM.render(
-  <AkBreadcrumbs>
+  <AkBreadcrumbs items={[
     <AkBreadcrumbsItem href="/home">Home</AkBreadcrumbsItem>
     <AkBreadcrumbsItem href="/home/item">Item</AkBreadcrumbsItem>
-  </AkBreadcrumbs>,
+  ]} />,
   container
 );
 ```

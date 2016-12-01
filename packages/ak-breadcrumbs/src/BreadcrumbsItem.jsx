@@ -1,10 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
+<<<<<<< HEAD
 import ContainerQuery from 'react-container-query';
 import Button from 'ak-button';
 import { locals } from './styles.less';
+import { itemTruncateWidth } from './internal/constants';
 
 const { item, itemButton, tooltip, tooltipTrigger, truncated } = locals;
-const truncateWidth = 200; // Duplicated in styles.less
 
 /**
  * @description BreadcrumbsItem React component.
@@ -34,7 +35,7 @@ export default class BreadcrumbsItem extends PureComponent {
 
   render() {
     const query = {
-      [truncated]: { minWidth: truncateWidth },
+      [truncated]: { minWidth: itemTruncateWidth },
     };
     return (
       <ContainerQuery className={item} query={query}>

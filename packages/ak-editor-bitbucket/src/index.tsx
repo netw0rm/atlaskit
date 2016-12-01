@@ -13,6 +13,7 @@ import { buildKeymap } from './keymap';
 import markdownSerializer from './markdown-serializer';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 import parseHtml from './parse-html';
+import { analyticsHandler } from 'ak-editor-analytics';
 
 interface Props {
   context?: 'comment' | 'pr',
@@ -23,6 +24,7 @@ interface Props {
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
   imageUploader?: Function;
+  analyticsHandler?: analyticsHandler;
 }
 
 interface State {

@@ -1,0 +1,29 @@
+{
+  "name": "ak-editor-analytics",
+  "version": "1.0.0",
+  "description": "Atlassian Editor Analytics",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-analytics"
+  },
+  "files": [
+    "dist",
+    "src/**/*.ts"
+  ],
+  "license": "Apache-2.0",
+  "author": "Atlassian Pty Ltd",
+  "dependencies": {
+    "babel-runtime": "^6.11.6"
+  },
+  "peerDependencies": {},
+  "devDependencies": {  
+    "ak-editor-test": "*"  
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

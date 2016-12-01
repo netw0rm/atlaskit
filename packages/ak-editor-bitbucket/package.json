@@ -17,6 +17,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
+    "ak-editor-analytics": "^1.0.0",
     "ak-editor-plugin-block-type": "^6.0.0",
     "ak-editor-plugin-hyperlink": "^6.0.0",
     "ak-editor-plugin-image-upload": "^6.0.0",

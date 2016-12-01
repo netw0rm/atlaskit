@@ -13,6 +13,7 @@ declare module "*.less" {
 declare module "lodash.invert";
 declare module "classnames";
 declare module 'ak-tabs';
+declare module "ak-editor-analytics";
 declare module "ak-editor-content";
 declare module "ak-editor-footer";
 declare module "ak-editor-hyperlink-edit";

@@ -15,6 +15,7 @@ export default class Page extends Component {
           display: 'flex',
           height: '100vh',
           overflowY: 'scroll',
+          padding: 32,
         }}
       >
         <style>{'body { margin: 0 }'}</style>

@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React, { PropTypes } from 'react';
 import Lorem from 'react-lorem-component';
-import { Router, Route, Link, browserHistory, routerShape } from 'react-router';
+import { Router, Route, Link, browserHistory } from 'react-router';
 import Navigation, { AkContainerHeader, AkContainerItem } from '../src/index';
 import Page from './components/Page';
 import nucleusLogo from './nucleus.png';
@@ -24,7 +24,7 @@ RouterLink.propTypes = {
 };
 
 RouterLink.contextTypes = {
-  router: routerShape,
+  router: PropTypes.object,
 };
 
 const RouterHeader = props => (
@@ -42,16 +42,11 @@ RouterHeader.propTypes = {
   to: PropTypes.string,
 };
 
-RouterLink.contextTypes = {
-  router: routerShape,
-};
-
-const PageNavigation = props => (
+const PageNavigation = () => (
   <Navigation
     containerHeader={
       <RouterHeader
         to={'/iframe.html'}
-        activeRoute={props.route}
       />
     }
   >
@@ -63,60 +58,43 @@ const PageNavigation = props => (
       to={'/page2'}
       text={'Page 2'}
     />
+    <RouterLink
+      to={'/page3'}
+      text={'Page 3'}
+    />
+    <RouterLink
+      to={'/page4'}
+      text={'Page 4'}
+    />
   </Navigation>
 );
 
-PageNavigation.propTypes = {
-  route: routerShape,
-};
-
-const Page1 = props => (
+const TitledPage = props => (
   <Page>
-    <PageNavigation route={props.route} />
+    <PageNavigation />
     <div>
-      <h1>Page 1</h1>
+      <h1>{props.title}</h1>
       <Lorem count="30" />
     </div>
   </Page>
 );
 
-Page1.propTypes = {
-  route: routerShape,
+TitledPage.propTypes = {
+  title: PropTypes.string,
 };
 
-const Page2 = props => (
-  <Page>
-    <PageNavigation route={props.route} />
-    <div>
-      <h1>Page 2</h1>
-      <Lorem count="30" />
-    </div>
-  </Page>
-);
-
-Page2.propTypes = {
-  route: routerShape,
-};
-const ContainerHome = props => (
-  <Page>
-    <PageNavigation route={props.route} />
-    <div>
-      <h1>Container home</h1>
-      <Lorem count="30" />
-    </div>
-  </Page>
-);
-
-ContainerHome.propTypes = {
-  route: routerShape,
-};
+function makePage(title) {
+  return () => <TitledPage title={title} />;
+}
 
 storiesOf(name, module)
   .add('with react-router', () => (
     <Router history={browserHistory}>
-      <Route path="/iframe.html" component={ContainerHome} />
-      <Route path="/page1" component={Page1} />
-      <Route path="/page2" component={Page2} />
+      <Route path="/iframe.html" component={makePage('Container home')} />
+      <Route path="/page1" component={makePage('Page 1')} />
+      <Route path="/page2" component={makePage('Page 2')} />
+      <Route path="/page3" component={makePage('Page 3')} />
+      <Route path="/page4" component={makePage('Page 4')} />
     </Router>
   )
 );

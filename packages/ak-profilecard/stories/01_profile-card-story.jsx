@@ -1,8 +1,12 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
+import { name } from '../package.json';
 import { ProfileCard } from '../src/';
+import interActiveCard from './profile-interactive';
 import profiles from './profile-data';
+
+const InteractiveCard = interActiveCard({ React, ProfileCard });
 
 const handleActionClick = title => action(`${title} button clicked`);
 
@@ -36,7 +40,7 @@ const fakeData = data => Object.assign(
 // have some more space around the profilecard
 const canvasStyle = { padding: '30px' };
 
-storiesOf('Profile Card', module)
+storiesOf(`${name}`, module)
 .add('worst case card', () => {
   const data = fakeData({
     avatarUrl: null,
@@ -95,4 +99,9 @@ storiesOf('Profile Card', module)
       <ProfileCard {...data} />
     </div>
   );
-});
+})
+.add('interactive playground', () => (
+  <div style={canvasStyle}>
+    <InteractiveCard />
+  </div>
+));

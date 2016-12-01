@@ -1,6 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
 
+import { name } from '../package.json';
 import { ProfileCardResourced } from '../src';
 import mockClient from './story-data';
 
@@ -54,7 +55,7 @@ class ProfileCardRandomById extends PureComponent {
   }
 }
 
-storiesOf('Profile Card Resourced', module)
+storiesOf(`${name} resourced`, module)
   .add('mock api w/ random data', () => (
     <div style={canvasStyle}>
       <ProfileCardRandomById />

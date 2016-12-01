@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { ProseMirror, Schema } from 'ak-editor-prosemirror';
+import { ProseMirror, Schema, Node } from 'ak-editor-prosemirror';
 import ListsPlugin from 'ak-editor-plugin-lists';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import MarkdownInputRulesPlugin from 'ak-editor-plugin-markdown-inputrules';
@@ -71,6 +71,16 @@ export default class Editor extends PureComponent<Props, State> {
     return pm
       ? markdownSerializer.serialize(pm.doc)
       : this.props.defaultValue;
+  }
+
+  /**
+   * Return the current ProseMirror doc value from the editor;
+   */
+  get doc(): Node | undefined {
+    const { pm } = this.state;
+    return pm
+      ? pm.doc
+      : undefined;
   }
 
   render() {

@@ -6,7 +6,7 @@
 .group {
   box-sizing: border-box;
   display: block;
-  margin-top: unit(@grid * 2, px);
+  margin-top: @grid * 2;
 
   &:first-child {
     margin-top: 0;
@@ -19,6 +19,6 @@
   font-size: 13px;
   line-height: 1;
   margin: 0;
-  padding:unit(@grid * 2, px) unit(@grid * 3, px);
+  padding: @grid * 2 @grid * 3;
   text-transform: uppercase;
 }

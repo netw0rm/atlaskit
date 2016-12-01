@@ -4,22 +4,22 @@ import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 
 import { InlineEdit } from '../src';
-import EditingView from '../src/Editing';
-import ViewingView from '../src/Viewing';
+import EditView from '../src/Edit';
+import ReadView from '../src/Read';
 
 chai.use(chaiEnzyme());
 
 describe('ak-inline-edit', () => {
   describe('properties', () => {
     describe('editing', () => {
-      it('should render Editing view when set', () =>
+      it('should render Edit view when set', () =>
         expect(shallow(<InlineEdit isEditing />))
-          .to.have.descendants(EditingView)
+          .to.have.descendants(EditView)
       );
 
-      it('should render ViewingView view when not set', () =>
+      it('should render Read view when not set', () =>
         expect(shallow(<InlineEdit />))
-          .to.have.descendants(ViewingView)
+          .to.have.descendants(ReadView)
       );
     });
   });

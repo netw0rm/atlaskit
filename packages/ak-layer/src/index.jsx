@@ -123,7 +123,7 @@ export default class Layer extends PureComponent {
     if (this.popper) {
       this.popper.destroy();
     }
-    // we wrap our target is a div so that we can safely get a reference to it, but we pass the
+    // we wrap our target in a div so that we can safely get a reference to it, but we pass the
     // actual target to popper
     const actualTarget = this.targetRef.firstChild;
 

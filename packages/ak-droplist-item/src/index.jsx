@@ -174,12 +174,12 @@ export default class Item extends PureComponent {
       >
         {
           props.type === 'checkbox'
-          ? <div className={styles.checkradio}><Checkbox label="test" /></div>
+          ? <div className={styles.checkradio}><Checkbox label=" " /></div>
           : null
         }
         {
           props.type === 'radio'
-          ? <div className={styles.checkradio}><Radio label="test" /></div>
+          ? <div className={styles.checkradio}><Radio label=" " /></div>
           : null
         }
         {

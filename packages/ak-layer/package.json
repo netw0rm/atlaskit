@@ -15,7 +15,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "popper.js": "git://github.com/lukebatchelor/popper.js#854d0a2fcab27f69d6f324ce5760fd99fcebea3d"
+    "popper.js": "git://github.com/lukebatchelor/popper.js#fixing-from-alpha-3-release"
   },
   "peerDependencies": {
     "react": "^15.3.2"

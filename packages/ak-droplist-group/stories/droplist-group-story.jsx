@@ -7,13 +7,13 @@ import Group from '../src';
 import { name } from '../package.json';
 
 /* eslint-disable react/prop-types */
-const GropsWrapper = props => <div className={styles.storyesContainer}>{props.children}</div>;
+const GroupsWrapper = props => <div className={styles.storyesContainer}>{props.children}</div>;
 const DropImitation = props => <div className={styles.itemsContainer}>{props.children}</div>;
 /* eslint-enable react/prop-types */
 
 storiesOf(name, module)
   .add('simple groups with headings', () => (
-    <GropsWrapper>
+    <GroupsWrapper>
       <DropImitation>
         <Group heading="Australia">
           <Item>Sydney</Item>
@@ -29,10 +29,10 @@ storiesOf(name, module)
           <Item>Aberdeen</Item>
         </Group>
       </DropImitation>
-    </GropsWrapper>
+    </GroupsWrapper>
   ))
   .add('simple groups without headings', () => (
-    <GropsWrapper>
+    <GroupsWrapper>
       <DropImitation>
         <Group>
           <Item>Sydney</Item>
@@ -48,5 +48,5 @@ storiesOf(name, module)
           <Item>Aberdeen</Item>
         </Group>
       </DropImitation>
-    </GropsWrapper>
+    </GroupsWrapper>
   ));

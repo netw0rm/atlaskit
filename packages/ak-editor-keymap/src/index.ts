@@ -11,8 +11,12 @@ interface Command {
   (pm: ProseMirror, apply: boolean): boolean;
 }
 
-export default (schema: Schema, mapKeys?: any) => {
-  let keys: any = {};
+interface AnyObject {
+  [key: string]: any
+}
+
+export default (schema: Schema, mapKeys?: AnyObject) => {
+  let keys: AnyObject = {};
   function bind(key: string, cmd: Command) {
     if (mapKeys) {
       let mapped = mapKeys[key];

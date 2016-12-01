@@ -1,6 +1,12 @@
 import React, { PropTypes, PureComponent } from 'react';
+import classNames from 'classnames';
 import styles from 'style!./style.less';
 import Blanket from './AkBlanketTmp';
+
+const WIDTH_ENUM = {
+  values: ['small', 'medium', 'large', 'x-large'],
+  defaultValue: 'medium',
+};
 
 /**
  * @description A modal dialog which blankets the page
@@ -37,6 +43,15 @@ export default class ModalDialog extends PureComponent {
      */
     footer: PropTypes.node,
     /**
+     * @description The maximum width tier of the dialog
+     * Allowed values are: 'small' (400px), 'medium' (600px), 'large' (800px), 'x-large' (968px).
+     * @memberof ModalDialog
+     * @instance
+     * @type {string}
+     * @default default
+     */
+    width: PropTypes.oneOf(WIDTH_ENUM.values),
+    /**
      * @description Handler function to be called when the blanket is clicked
      * @memberof ModalDialog
      * @instance
@@ -48,17 +63,23 @@ export default class ModalDialog extends PureComponent {
   static defaultProps = {
     isOpen: false,
     onBlanketClicked: () => {},
+    width: WIDTH_ENUM.defaultValue,
   };
 
   render() {
     // don't render anything if open = false
     if (!this.props.isOpen) return null;
 
-    const { onBlanketClicked, header, children, footer } = this.props;
+    const { onBlanketClicked, header, children, footer, width } = this.props;
     return (
       <div className={styles.modalWrapper}>
         <Blanket onBlanketClicked={onBlanketClicked} />
-        <div className={styles.modalPositioner}>
+        <div
+          className={classNames([
+            styles.modalPositioner,
+            styles[width],
+          ])}
+        >
           <div className={styles.headerFlex}>
             {header}
           </div>

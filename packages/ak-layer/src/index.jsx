@@ -36,7 +36,7 @@ export default class Layer extends PureComponent {
      * @description Element to act as a boundary for the Layer.
      * The Layer will not sit outside this element if it can help it.
      * If, through it's normal positoning, it would end up outside the boundary the layer
-     * will flip positions if the enable-flip prop is set.
+     * will flip positions if the autoPosition prop is set.
      *
      * Valid values are "window" and "viewport"
      * If not set the boundary will be the current viewport.
@@ -44,7 +44,7 @@ export default class Layer extends PureComponent {
      * @instance
      * @default "viewport"
      * @type String
-     * @example @html <Layer shouldFlip boundariesElement="window"></Layer>
+     * @example @html <Layer autoPosition boundariesElement="window"></Layer>
      */
     boundariesElement: PropTypes.oneOf(['viewport', 'window']),
     /**
@@ -81,8 +81,8 @@ export default class Layer extends PureComponent {
      *   <div>I'm the target!</div>
      * </Layer>, container);
      */
-    content: PropTypes.node.isRequired,
-    children: PropTypes.node.isRequired,
+    content: PropTypes.node,
+    children: PropTypes.node,
   }
 
   static defaultProps = {
@@ -90,7 +90,7 @@ export default class Layer extends PureComponent {
     boundariesElement: 'viewport',
     autoPosition: true,
     offset: '0 0',
-    target: null,
+    content: null,
     children: null,
   }
 
@@ -106,14 +106,14 @@ export default class Layer extends PureComponent {
     this.applyPopper(this.props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.applyPopper(nextProps);
+  }
+
   componentWillUnmount() {
     if (this.popper) {
       this.popper.destroy();
     }
-  }
-
-  componentWillRecieveProps(nextProps) {
-    this.applyPopper(nextProps);
   }
 
   applyPopper(props) {
@@ -123,12 +123,18 @@ export default class Layer extends PureComponent {
     if (this.popper) {
       this.popper.destroy();
     }
+    // we wrap our target in a div so that we can safely get a reference to it, but we pass the
+    // actual target to popper
+    const actualTarget = this.targetRef.firstChild;
 
-    this.popper = new Popper(this.targetRef, this.contentRef, {
+    this.popper = new Popper(actualTarget, this.contentRef, {
       placement: positionPropToPopperPosition(props.position),
       boundariesElement: this.props.boundariesElement,
       modifiers: {
         applyStyle: {
+          enabled: false,
+        },
+        hide: {
           enabled: false,
         },
         offset: {
@@ -166,7 +172,7 @@ export default class Layer extends PureComponent {
     const { position, transform } = this.state;
     return (
       <div>
-        <div ref={ref => (this.targetRef = ref)} style={{ display: 'inline-block' }}>
+        <div ref={ref => (this.targetRef = ref)}>
           {this.props.children}
         </div>
         <div ref={ref => (this.contentRef = ref)} style={{ top: 0, left: 0, position, transform }}>

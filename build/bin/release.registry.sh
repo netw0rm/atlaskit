@@ -28,7 +28,7 @@ function install_registry_pkg() {
   npm set loglevel warn
   npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
   npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
-  npm install @atlassian/atlaskit-registry@^1.3.1
+  npm install @atlassian/atlaskit-registry@^2.0.2
   mv ._npmrc .npmrc
 }
 
@@ -42,8 +42,8 @@ function build_registry() {
   $CHALK --no-stdin -t "{blue Building registry}"
   pushd $REGISTRY_PATH > /dev/null
   BITBUCKET_PASS=$BITBUCKET_PW_READONLY \
-  $REGISTRY_BIN \
-  --destination $TARGET_PATH
+  AK_REG_BUILD_DIR=$TARGET_PATH \
+  $REGISTRY_BIN
   popd > /dev/null
 }
 

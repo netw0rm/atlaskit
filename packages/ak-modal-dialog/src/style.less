@@ -2,10 +2,12 @@
 @import '~akutil-shared-styles/src/colors.less';
 @grid: @ak-grid-size / 2; // evaluates to 4px
 
-// NOTE: this will be replaced with responsive breakpoints in a later ticket related to
-// a 'width' prop/attribute.
-@temporaryFixedModalWidth: 600px;
+@width-small: 400px;
+@width-medium: 600px;
+@width-large: 800px;
+@width-x-large: 968px;
 
+// Helper function for generating header/content/footer styles
 .panel-background (@topBorderRadius: 0, @bottomBorderRadius: 0) {
   background-color: white;
   border-top-left-radius: @topBorderRadius;
@@ -14,7 +16,15 @@
   border-bottom-right-radius: @bottomBorderRadius;
 }
 
-@verticalMargin: @grid * 15;
+// Helper function for defining width tiers
+.widthTier(@name) {
+  @width-tier: "width-@{name}";
+  &.@{name} {
+    width:  @@width-tier;
+  }
+}
+
+@viewportMargin: @grid * 15;
 
 // Fixed container to avoid position clashing with other elements
 .modal-wrapper {
@@ -28,11 +38,16 @@
 .modal-positioner {
   display: flex;
   flex-direction: column;
+  max-width: ~"calc(100% - (2 * @{viewportMargin}))"; // can't use max-height here because of IE11 bug
   margin: 0 auto;
-  height: ~"calc(100% - (2 * @{verticalMargin}))"; // can't use max-height here because of IE11 bug
-  padding-top: @verticalMargin;
+  height: ~"calc(100% - (2 * @{viewportMargin}))"; // can't use max-height here because of IE11 bug
+  padding-top: @viewportMargin;
   position: relative;
-  width: @temporaryFixedModalWidth;
+
+  .widthTier(small);
+  .widthTier(medium);
+  .widthTier(large);
+  .widthTier(x-large);
 
   // 3 direct flex children (header + content + footer slot areas)
   .header-flex, .content-flex, .footer-flex {

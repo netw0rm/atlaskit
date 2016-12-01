@@ -1,7 +1,7 @@
 {
   "name": "ak-lozenge",
   "version": "5.0.1",
-  "description": "A React component that highlights statss for quick recognition ",
+  "description": "A React component that highlights status for quick recognition ",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",

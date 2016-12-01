@@ -35,7 +35,7 @@ export default class ContainerItem extends Component {
           })}
         >
           <div
-            className={className(styles.containerItemInner)}
+            className={styles.containerItemInner}
           >
             {this.props.icon ?
               <div className={styles.icon}>{this.props.icon}</div> : null}

@@ -13,7 +13,7 @@ const manyContainerItems = () => {
     items.push(
       <a href="#1" key={i}>
         <AkContainerItem
-          text={'Test page'}
+          text="Test page"
         />
       </a>
     );
@@ -27,19 +27,19 @@ storiesOf(name, module)
       <BasicNavigation>
         <a href="#1">
           <AkContainerItem
-            text={'Test page'}
+            text="Test page"
           />
         </a>
         <a href="#2">
           <AkContainerItem
             icon={<img src={nucleus} alt="icon" />}
-            text={'Item with an icon'}
+            text="Item with an icon"
           />
         </a>
         <a href="#3">
           <AkContainerItem
             icon={<img src={nucleus} alt="icon" />}
-            text={'A really, really, quite long, actually super long container name'}
+            text="A really, really, quite long, actually super long container name"
           />
         </a>
       </BasicNavigation>
@@ -63,7 +63,7 @@ storiesOf(name, module)
       <BasicNavigation>
         <AkContainerItem
           icon={<img src={nucleus} alt="icon" />}
-          text={'Nucleus'}
+          text="Nucleus"
           isSelected
         />
       </BasicNavigation>

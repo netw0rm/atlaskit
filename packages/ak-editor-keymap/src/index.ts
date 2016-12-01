@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { ProseMirror, browser, commands, Keymap } from  'ak-editor-prosemirror';
+import { ProseMirror, browser, commands, Keymap, TextSelection } from  'ak-editor-prosemirror';
 import { Schema } from 'ak-editor-schema';
 
 const { wrapIn, setBlockType, wrapInList, splitListItem, lift, liftListItem,
@@ -132,7 +132,7 @@ export default (schema: Schema, mapKeys?: AnyObject) => {
       }
       // https://github.com/ProseMirror/prosemirror/issues/419
       bind('Enter', (pm: ProseMirror, apply: boolean) => {
-        let {$from, $head, empty} = pm.selection;
+        let {$from, $head, empty} = pm.selection as TextSelection;
 
         if (!$from.parent.type.isCode) {
           return false;

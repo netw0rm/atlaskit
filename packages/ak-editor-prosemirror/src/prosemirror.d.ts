@@ -119,7 +119,6 @@ declare module 'prosemirror/dist/edit/selection' {
   export class Selection {
     $from : ResolvedPos;
     $to: ResolvedPos;
-    $head: ResolvedPos;
     from: number;
     to: number;
     empty: boolean;

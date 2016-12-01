@@ -30,7 +30,6 @@ const Heading2 = makeBlockType('heading2', 'Heading 2');
 const Heading3 = makeBlockType('heading3', 'Heading 3');
 const Heading4 = makeBlockType('heading4', 'Heading 4');
 const Heading5 = makeBlockType('heading5', 'Heading 5');
-const Heading6 = makeBlockType('heading6', 'Heading 6');
 const Quote = makeBlockType('quote', 'Block quote');
 const Code = makeBlockType('code', 'Code block');
 const Other = makeBlockType('other', 'Other…');
@@ -99,7 +98,6 @@ export class BlockTypeState {
               Heading3,
               Heading4,
               Heading5,
-              Heading6,
               Quote,
               Code,
             ];
@@ -150,11 +148,6 @@ export class BlockTypeState {
         case 'heading5':
           if (nodes.heading) {
             commands.setBlockType(nodes.heading, { level: 5 })(pm);
-          }
-          break;
-        case 'heading6':
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 6 })(pm);
           }
           break;
         case 'quote':
@@ -210,8 +203,6 @@ export class BlockTypeState {
             return Heading4;
           case 5:
             return Heading5;
-          case 6:
-            return Heading6;
         }
       } else if (isCodeBlockNode(block)) {
         return Code;
@@ -235,7 +226,6 @@ export class BlockTypeState {
       case Heading3:
       case Heading4:
       case Heading5:
-      case Heading6:
         return !!pm.schema.nodes.heading;
       case Quote:
         return !!pm.schema.nodes.blockquote;
@@ -259,7 +249,6 @@ export type BlockTypeName =
   'heading3' |
   'heading4' |
   'heading5' |
-  'heading6' |
   'quote' |
   'code' |
   'other';

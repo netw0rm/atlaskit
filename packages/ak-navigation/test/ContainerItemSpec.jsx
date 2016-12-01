@@ -7,20 +7,20 @@ import styles from 'style!../src/components/less/ContainerItem.less';
 import ContainerItem from '../src/components/js/ContainerItem';
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme);
+chai.use(chaiEnzyme());
 chai.should();
-const expect = chai.expect; // eslint-disable-line no-unused-vars
+const expect = chai.expect;
 
 describe('<ContainerItem />', () => {
   describe('props', () => {
     it('icon should render an image', () => {
-      expect(shallow(<ContainerItem icon={<img alt="foo" />} />).find('img')).to.have.length(1);
+      expect(shallow(<ContainerItem icon={<img alt="foo" />} />)).to.have.exactly(1).descendants('img');
     });
     it('isSelected=true should render with the isSelected class', () => {
-      expect(shallow(<ContainerItem isSelected />).find(`.${styles.isSelected}`)).to.have.length(1);
+      expect(shallow(<ContainerItem isSelected />).find(`.${styles.containerItemOuter}`)).to.have.className(styles.isSelected);
     });
     it('isSelected=false should not render with the isSelected class', () => {
-      expect(shallow(<ContainerItem />).find(`.${styles.isSelected}`)).to.have.length(0);
+      expect(shallow(<ContainerItem />).find(`.${styles.containerItemOuter}`)).to.not.have.className(styles.isSelected);
     });
   });
 });

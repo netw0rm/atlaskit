@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from 'style!./styles.less';
+
 /* eslint-disable react/prefer-stateless-function */
 /**
  * @description Create instances of the component programmatically, or using markup.
@@ -12,6 +13,7 @@ export default class AkButtonGroup extends Component {
       children: React.PropTypes.node,
     };
   }
+  
   render() {
     return (
       <div className={styles.wrapper}>

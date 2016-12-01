@@ -51,6 +51,11 @@ storiesOf(name, module)
   .add('with many container items', () => (
     <Page>
       <BasicNavigation>
+        <AkContainerItem
+          icon={<img src={nucleus} alt="icon" />}
+          text="This one is selected"
+          isSelected
+        />
         {manyContainerItems()}
       </BasicNavigation>
       <div>
@@ -75,7 +80,15 @@ storiesOf(name, module)
   .add('that starts closed', () => (
     <Page>
       <BasicNavigation open={false}>
-        I should start closed
+        <AkContainerItem
+          icon={<img src={nucleus} alt="icon" />}
+          text="This one is selected"
+          isSelected
+        />
+        <AkContainerItem
+          icon={<img src={nucleus} alt="icon" />}
+          text="This one is not selected"
+        />
       </BasicNavigation>
       <div>
         <Lorem count="30" />

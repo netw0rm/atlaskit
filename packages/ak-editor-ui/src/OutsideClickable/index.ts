@@ -2,12 +2,12 @@ import React, { PureComponent, ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 
 interface Props {
-  onDismiss: () => void;
+  onClick?: () => void;
 }
 
 interface State {}
 
-export default class DismissBlanket extends PureComponent<Props, State> {
+export default class OutsideClickable extends PureComponent<Props, State> {
   componentDidMount() {
     document.addEventListener('click', this.handleClickOutside, true);
   }
@@ -26,7 +26,9 @@ export default class DismissBlanket extends PureComponent<Props, State> {
   private handleClickOutside = (e: MouseEvent) => {
     const domNode = ReactDOM.findDOMNode(this);
     if (!domNode || (e.target instanceof Node && !domNode.contains(e.target))) {
-      this.props.onDismiss();
+      if (this.props.onClick) {
+        this.props.onClick();
+      }
     }
   }
 }

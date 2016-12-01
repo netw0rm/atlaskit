@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import AkButton from 'ak-button';
 import { BlockType, BlockTypeState } from 'ak-editor-plugin-block-type';
-import DismissBlanket from '../DismissBlanket';
 import Panel from '../Panel';
 import styles from './styles.global.less';
 
@@ -51,20 +50,18 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
           <span className={styles.buttonContent}>{currentBlockType.title}</span>
         </AkButton>
         {!active ? null :
-        <DismissBlanket onDismiss={this.handleToggleDropdown}>
-          <Panel align='left' spacing='none'>
-            <ul className={styles.dropdown}>
-              {availableBlockTypes.map(blockType => (
-              <li key={blockType.name}>
-                <a
-                  onClick={() => this.handleSelectBlockType(blockType)}
-                  className={`${styles.blockType} ${this.blockTypeItemClass(blockType)} ${currentBlockType === blockType ? styles.active : ''}`}
-                ><span>{blockType.title}</span></a>
-              </li>
-              ))}
-            </ul>
-          </Panel>
-        </DismissBlanket>
+        <Panel align='left' spacing='none' onOutsideClick={this.handleToggleDropdown}>
+          <ul className={styles.dropdown}>
+            {availableBlockTypes.map(blockType => (
+            <li key={blockType.name}>
+              <a
+                onClick={() => this.handleSelectBlockType(blockType)}
+                className={`${styles.blockType} ${this.blockTypeItemClass(blockType)} ${currentBlockType === blockType ? styles.active : ''}`}
+              ><span>{blockType.title}</span></a>
+            </li>
+            ))}
+          </ul>
+        </Panel>
         }
       </span>
     );

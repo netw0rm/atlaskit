@@ -1,10 +1,10 @@
 {
   "name": "ak-tooltip",
-  "version": "5.0.4",
+  "version": "6.0.4",
   "description": "This component is used to display extra information to a user about an element by displaying a floating description.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-tooltip"
   },
@@ -16,14 +16,13 @@
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "debounce": "^1.0.0",
-    "ak-layer": "^60.0.0",
+    "ak-layer": "^62.0.0",
     "skatejs": "^4.0.6"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
-  "devDependencies": {
-    "akutil-common-test": "*",
-    "akutil-react": "*"
+  "peerDependencies": {
+    "react": "^15.3.2"
   },
   "repository": {
     "type": "git",

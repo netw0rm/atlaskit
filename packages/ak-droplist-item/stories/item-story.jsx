@@ -8,7 +8,7 @@ import Item from '../src';
 import { name } from '../package.json';
 
 /* eslint-disable react/prop-types */
-const ItemsWrapper = props => <div className={styles.storyesContainer}>{props.children}</div>;
+const ItemsWrapper = props => <div className={styles.storiesContainer}>{props.children}</div>;
 const DropImitation = props => <div className={styles.itemsContainer}>{props.children}</div>;
 const Icon = () => <Question label="test question" />;
 const DogeAvatar = () => <Avatar size="small" />;

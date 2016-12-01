@@ -40,6 +40,13 @@ describe(name, () => {
       expect(wrapper.find(`.${styles.locals.tooltip}`)).to.have.lengthOf(1);
       expect(wrapper.find(`[description="${children}"]`)).to.have.lengthOf(1);
     });
+
+    it('should be a collapsible item', () => {
+      const children = 'children';
+      const wrapper = shallow(<Item>{children}</Item>);
+      expect(wrapper.find(`.${styles.locals.item}`).hasClass(styles.locals.collapsibleItem))
+        .to.equal(true);
+    });
   });
 
   describe('props', () => {

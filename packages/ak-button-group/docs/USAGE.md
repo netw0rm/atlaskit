@@ -6,7 +6,7 @@ A button group provides a visual grouping for related Button (`<ak-button>`) ele
 
 ## Try it out
 
-Interact with a [live demo of the ak-button component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-button-group/@VERSION@/).
+Interact with a [live demo of the ak-button-group](https://aui-cdn.atlassian.com/atlaskit/stories/ak-button-group/@VERSION@/).
 
 ## Setup and install
 

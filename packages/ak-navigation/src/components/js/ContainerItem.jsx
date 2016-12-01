@@ -29,11 +29,13 @@ export default class ContainerItem extends Component {
           },
         }}
       >
-        <div>
+        <div
+          className={className(styles.containerItemOuter, {
+            [styles.isSelected]: this.props.isSelected,
+          })}
+        >
           <div
-            className={className(styles.containerItem, {
-              [styles.isSelected]: this.props.isSelected,
-            })}
+            className={className(styles.containerItemInner)}
           >
             {this.props.icon ?
               <div className={styles.icon}>{this.props.icon}</div> : null}

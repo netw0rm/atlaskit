@@ -6,16 +6,39 @@
 @icon-open-padding: 0 (@ak-grid-size * 3) 0 (@ak-grid-size * 1.5);
 @icon-closed-padding: (@container-closed-width - @ak-grid-size * 4 - @icon-size) / 2;
 
-.containerItem {
+.containerItemOuter {
   width: 100%;
   height: @ak-grid-size * 5;
-  padding: @ak-grid-size;
   box-sizing: border-box;
+  text-overflow: ellipsis;
+
+  .isSelected {
+    padding: 0;
+  }
+
+  &:hover {
+    padding: @ak-grid-size/4 0;
+
+    &.isSelected {
+      padding: 0;
+    }
+  }
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.containerItemInner {
+  height: 100%;
+  width: 100%;
   border-radius: 3px;
   display: flex;
-  text-overflow: ellipsis;
-  margin: @ak-grid-size * 0.5 0;
-  &:hover, &.isSelected {
+  align-items: center;
+  padding: 0 @ak-grid-size;
+  box-sizing: border-box;
+
+  &:hover, .isSelected & {
     background: @ak-color-N20A;
   }
 }

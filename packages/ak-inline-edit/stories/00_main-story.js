@@ -27,16 +27,23 @@ class TextInlineEdit extends PureComponent {
 
   state = {
     editValue: this.props.initialValue,
+    isFocused: false,
   }
 
   onChange = e =>
     this.setState({ editValue: e.target.value })
+
+  onEditEntered = () => {
+    action('onEditEntered');
+    this.textInput.focus();
+  }
 
   renderInput = () =>
     <input
       onChange={this.onChange}
       value={this.state.editValue}
       style={inputStyle}
+      ref={(textInput) => { this.textInput = textInput; }}
     />
 
   render = () =>
@@ -45,9 +52,8 @@ class TextInlineEdit extends PureComponent {
       label={this.props.label}
       editView={this.renderInput()}
       readView={this.props.initialValue}
-      onEditRequested={action('onEditRequested')}
-      onEditConfirmed={action('onEditConfirmed')}
-      onEditCancelled={action('onEditCancelled')}
+      isFocused={this.state.isFocused}
+      onEditEntered={this.onEditEntered}
     />
 }
 

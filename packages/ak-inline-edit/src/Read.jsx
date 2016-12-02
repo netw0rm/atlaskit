@@ -8,9 +8,13 @@ export default class ReadView extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
     isFocused: PropTypes.bool.isRequired,
-    shouldHideLabel: PropTypes.bool.isRequired,
+    shouldHideLabel: PropTypes.bool,
     onEditRequested: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
+  }
+
+  static defaultProps = {
+    shouldHideLabel: false,
   }
 
   getWrapperClasses = () =>
@@ -32,7 +36,6 @@ export default class ReadView extends PureComponent {
   )
 
   render = () => (
-    // There's something dodgy going on with the editButtonFocused styling.
     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
       className={this.getWrapperClasses()}
       onClick={this.props.onEditRequested}

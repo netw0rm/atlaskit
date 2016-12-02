@@ -1,30 +1,15 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
 import InlineEdit from './InlineEdit';
 
 export { InlineEdit };
 
 export default class extends PureComponent {
-  static propTypes = {
-    onEditConfirmed: PropTypes.func.isRequired,
-    onEditCancelled: PropTypes.func.isRequired,
-  }
-
   state = {
     isEditing: false,
   }
 
   onEditRequested = () => {
     this.setEditing(true);
-  }
-
-  onEditConfirmed = () => {
-    this.setEditing(false);
-    this.props.onEditConfirmed();
-  }
-
-  onEditCancelled = () => {
-    this.setEditing(false);
-    this.props.onEditCancelled();
   }
 
   setEditing = (isEditing) => {
@@ -36,8 +21,6 @@ export default class extends PureComponent {
       {...this.props}
       isEditing={this.state.isEditing}
       onEditRequested={this.onEditRequested}
-      onEditConfirmed={this.onEditConfirmed}
-      onEditCancelled={this.onEditCancelled}
     />
   )
 }

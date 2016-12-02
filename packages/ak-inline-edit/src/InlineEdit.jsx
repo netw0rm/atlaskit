@@ -12,13 +12,11 @@ export default class InlineEdit extends PureComponent {
     isFocused: PropTypes.bool.isRequired,
     shouldHideLabel: PropTypes.bool,
     onEditRequested: PropTypes.func.isRequired,
-    onEditConfirmed: PropTypes.func.isRequired,
-    onEditCancelled: PropTypes.func.isRequired,
+    onEditEntered: PropTypes.func,
   }
 
   static defaultProps = {
     isFocused: false,
-    shouldHideLabel: false,
   }
 
   renderReadView = () => (
@@ -37,8 +35,7 @@ export default class InlineEdit extends PureComponent {
       label={this.props.label}
       isFocused={this.props.isFocused}
       shouldHideLabel={this.props.shouldHideLabel}
-      onEditConfirmed={this.props.onEditConfirmed}
-      onEditCancelled={this.props.onEditCancelled}
+      onEditEntered={this.props.onEditEntered}
     >
       {this.props.editView}
     </EditView>

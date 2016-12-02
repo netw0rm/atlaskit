@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import styles from 'style!../less/ContainerItem.less';
+import className from 'classnames';
 import ContainerQuery from 'react-container-query';
 import {
-  containerOpenWidth,
   containerClosedWidth,
 } from '../../shared-variables';
 
@@ -12,6 +12,7 @@ export default class ContainerItem extends Component {
     return {
       text: PropTypes.node,
       icon: PropTypes.node,
+      isSelected: PropTypes.bool,
     };
   }
 
@@ -19,16 +20,19 @@ export default class ContainerItem extends Component {
     return (
       <ContainerQuery
         query={{
-          [styles.open]: {
-            minWidth: containerOpenWidth,
-          },
           [styles.closed]: {
             maxWidth: containerClosedWidth,
           },
         }}
       >
-        <div>
-          <div className={styles.containerItem}>
+        <div
+          className={className(styles.containerItemOuter, {
+            [styles.isSelected]: this.props.isSelected,
+          })}
+        >
+          <div
+            className={styles.containerItemInner}
+          >
             {this.props.icon ?
               <div className={styles.icon}>{this.props.icon}</div> : null}
             <div className={styles.text}>{this.props.text}</div>

@@ -7,10 +7,10 @@ import sinonChai from 'sinon-chai';
 import GlobalItem from '../src/components/js/GlobalItem';
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme);
+chai.use(chaiEnzyme());
 chai.use(sinonChai);
 chai.should();
-const expect = chai.expect; // eslint-disable-line no-unused-vars
+const expect = chai.expect;
 
 describe('<GlobalItem />', () => {
   describe('interacting', () => {

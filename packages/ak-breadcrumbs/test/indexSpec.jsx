@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
 import Breadcrumbs, { AkBreadcrumbsItem as Item } from '../src/';
-import styles from '../src/styles.less';
+import { locals } from '../src/styles.less';
 import EllipsisItem from '../src/internal/EllipsisItem';
 import { name } from '../package.json';
 
@@ -36,7 +36,7 @@ describe(name, () => {
           <Item>item</Item>
         </Breadcrumbs>
       );
-      const containerDiv = wrapper.find(`.${styles.locals.container}`);
+      const containerDiv = wrapper.find(`.${locals.container}`);
       expect(containerDiv).to.have.lengthOf(1);
       expect(containerDiv.find(Item)).to.have.lengthOf(1);
     });
@@ -49,7 +49,7 @@ describe(name, () => {
           <Item>item</Item>
         </Breadcrumbs>
       );
-      const containerDiv = wrapper.find(`.${styles.locals.container}`);
+      const containerDiv = wrapper.find(`.${locals.container}`);
       expect(containerDiv).to.have.lengthOf(1);
       expect(containerDiv.find(Item)).to.have.lengthOf(3);
     });
@@ -90,7 +90,13 @@ describe(name, () => {
       });
 
       it('applies the collapsed class', () => {
-        expect(wrapper.find(`.${styles.locals.collapsed}`)).to.have.lengthOf(1);
+        expect(wrapper.find(`.${locals.collapsed}`)).to.have.lengthOf(1);
+      });
+
+      it('does not apply the collapsed class when expanded', () => {
+        const ellipsisItem = wrapper.find(EllipsisItem);
+        ellipsisItem.simulate('click');
+        expect(wrapper).to.not.have.descendants(`.${locals.collapsed}`);
       });
     });
   });

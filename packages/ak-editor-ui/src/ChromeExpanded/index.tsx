@@ -41,15 +41,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
-  componentWillUnmount() {
-    const { container } = this.refs;
-    if (container instanceof HTMLElement) {
-      container.removeEventListener('keydown', this.stopPropagation);
-      container.removeEventListener('keyup', this.stopPropagation);
-      container.removeEventListener('keypress', this.stopPropagation);
-    }
-  }
-
   render() {
     const { props } = this;
     const { pm } = props;

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import styles from 'style!../less/Navigation.less';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import styles from 'isomorphic-style-loader!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
 import GlobalItem from './GlobalItem';
 import ContainerNavigation from './ContainerNavigation';
@@ -14,7 +15,7 @@ import {
 } from '../../shared-variables';
 import { getGlobalWidth, getContainerWidth } from '../../utils/collapse';
 
-export default class Navigation extends Component {
+class Navigation extends Component {
   static get propTypes() {
     return {
       searchDrawerContent: PropTypes.node,
@@ -143,3 +144,5 @@ export default class Navigation extends Component {
     );
   }
 }
+
+export default withStyles(styles)(Navigation);

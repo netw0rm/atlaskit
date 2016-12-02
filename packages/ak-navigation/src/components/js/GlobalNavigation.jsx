@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from 'style!../less/GlobalNavigation.less';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import styles from 'isomorphic-style-loader!../less/GlobalNavigation.less';
 import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
 
-export default class GlobalNavigation extends Component {
+class GlobalNavigation extends Component {
   static get propTypes() {
     return {
       children: PropTypes.node,
@@ -44,3 +45,5 @@ export default class GlobalNavigation extends Component {
     );
   }
 }
+
+export default withStyles(styles)(GlobalNavigation);

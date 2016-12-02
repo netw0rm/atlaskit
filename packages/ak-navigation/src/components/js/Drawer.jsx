@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
-import styles from 'style!../less/Drawer.less';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import styles from 'isomorphic-style-loader!../less/Drawer.less';
 
-export default class Drawer extends Component {
+class Drawer extends Component {
   static get propTypes() {
     return {
       open: PropTypes.bool,
@@ -31,3 +32,4 @@ export default class Drawer extends Component {
   }
 }
 
+export default withStyles(styles)(Drawer);

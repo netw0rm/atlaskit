@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import styles from 'style!../less/ContainerItem.less';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import styles from 'isomorphic-style-loader!../less/ContainerItem.less';
 import className from 'classnames';
 import ContainerQuery from 'react-container-query';
 import {
@@ -7,7 +8,7 @@ import {
 } from '../../shared-variables';
 
 // eslint-disable-next-line react/prefer-stateless-function
-export default class ContainerItem extends Component {
+class ContainerItem extends Component {
   static get propTypes() {
     return {
       text: PropTypes.node,
@@ -42,3 +43,5 @@ export default class ContainerItem extends Component {
     );
   }
 }
+
+export default withStyles(styles)(ContainerItem);

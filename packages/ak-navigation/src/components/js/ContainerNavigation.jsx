@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from 'style!../less/ContainerNavigation.less';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import styles from 'isomorphic-style-loader!../less/ContainerNavigation.less';
 import {
   containerOpenWidth,
 } from '../../shared-variables';
 import Spacer from './Spacer';
 
-export default class ContainerNavigation extends Component {
+class ContainerNavigation extends Component {
   static get propTypes() {
     return {
       children: PropTypes.node,
@@ -59,3 +60,5 @@ export default class ContainerNavigation extends Component {
     );
   }
 }
+
+export default withStyles(styles)(ContainerNavigation);

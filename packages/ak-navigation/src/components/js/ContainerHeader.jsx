@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import styles from 'style!../less/ContainerHeader.less';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import styles from 'isomorphic-style-loader!../less/ContainerHeader.less';
 import ContainerQuery from 'react-container-query';
 import {
   containerOpenWidth,
@@ -7,7 +8,7 @@ import {
 } from '../../shared-variables';
 
 // eslint-disable-next-line react/prefer-stateless-function
-export default class ContainerHeader extends Component {
+class ContainerHeader extends Component {
   static get propTypes() {
     return {
       text: PropTypes.string,
@@ -40,3 +41,4 @@ export default class ContainerHeader extends Component {
   }
 }
 
+export default withStyles(styles)(ContainerHeader);

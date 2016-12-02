@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import styles from 'style!../less/Resizer.less';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import styles from 'isomorphic-style-loader!../less/Resizer.less';
 
-export default class Resizer extends Component {
+class Resizer extends Component {
   static get propTypes() {
     return {
       onResizeStart: PropTypes.func,
@@ -53,3 +54,5 @@ export default class Resizer extends Component {
     );
   }
 }
+
+export default withStyles(styles)(Resizer);

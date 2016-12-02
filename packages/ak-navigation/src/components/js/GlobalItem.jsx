@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import styles from 'style!../less/GlobalItem.less';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import styles from 'isomorphic-style-loader!../less/GlobalItem.less';
 
-export default class GlobalItem extends Component {
+class GlobalItem extends Component {
   static get propTypes() {
     return {
       children: PropTypes.node,
@@ -27,3 +28,5 @@ export default class GlobalItem extends Component {
     );
   }
 }
+
+export default withStyles(styles)(GlobalItem);

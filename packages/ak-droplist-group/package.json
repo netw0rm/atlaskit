@@ -1,6 +1,6 @@
 {
   "name": "ak-droplist-group",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "ak-droplist-group component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

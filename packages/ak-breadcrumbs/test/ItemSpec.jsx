@@ -1,4 +1,3 @@
-import 'akutil-polyfills';
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
@@ -35,10 +34,11 @@ describe(name, () => {
     });
 
     it('should render a Tooltip with the item content', () => {
-      const children = 'children';
+      const children = (<span>content</span>);
       const wrapper = shallow(<Item>{children}</Item>);
-      expect(wrapper.find(`.${styles.locals.tooltip}`)).to.have.lengthOf(1);
-      expect(wrapper.find(`[description="${children}"]`)).to.have.lengthOf(1);
+      const tooltip = wrapper.find(`.${styles.locals.tooltip}`);
+      expect(tooltip).to.have.lengthOf(1);
+      expect(tooltip.contains(children)).to.equal(true);
     });
   });
 

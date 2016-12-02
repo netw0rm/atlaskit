@@ -31,6 +31,14 @@ storiesOf(name, module)
       </AkBreadcrumbsItem>
     </AkBreadcrumbs>
   ))
+  .add('ak-breadcrumbs with markup in item content', () => (
+    <AkBreadcrumbs>
+      <AkBreadcrumbsItem href="/page"><b>Page</b></AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/page">
+        <span>Long page name with</span> <b>markup</b> <i>(should be truncated)</i>
+      </AkBreadcrumbsItem>
+    </AkBreadcrumbs>
+  ))
   .add('ak-breadcrumbs with long and short items', () => (
     <AkBreadcrumbs>
       <AkBreadcrumbsItem href="/long">Supercalifragilisticexpialidocious</AkBreadcrumbsItem>

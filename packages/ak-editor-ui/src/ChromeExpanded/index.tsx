@@ -60,7 +60,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     const textFormattingPluginState = pm ? TextFormattingPlugin.get(pm) : null;
 
     return (
-      <div className={styles.container} data-editor-chrome>
+      <div className={styles.container} data-editor-chrome ref='container'>
         <div className={styles.toolbar}>
           {blockTypePluginState ? <ToolbarBlockType pluginState={blockTypePluginState} /> : null}
           {textFormattingPluginState ? <ToolbarTextFormatting pluginState={textFormattingPluginState} /> : null}

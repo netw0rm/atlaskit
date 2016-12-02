@@ -1,9 +1,9 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import chaiEnzyme from 'chai-enzyme';
-import { shallow } from 'enzyme';
 import React from 'react';
 import sinonChai from 'sinon-chai';
+import { mountWithContext } from './utils';
 import GlobalItem from '../src/components/js/GlobalItem';
 
 chai.use(chaiAsPromised);
@@ -16,7 +16,7 @@ describe('<GlobalItem />', () => {
   describe('interacting', () => {
     it('click should call the onActivate handler', () => {
       const spy = sinon.spy();
-      shallow(<GlobalItem onActivate={spy} />).find('button').simulate('click');
+      mountWithContext(<GlobalItem onActivate={spy} />).find('button').simulate('click');
       expect(spy.called).to.equal(true);
     });
   });

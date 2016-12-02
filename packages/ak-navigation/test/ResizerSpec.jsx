@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import chaiEnzyme from 'chai-enzyme';
-import { shallow } from 'enzyme';
 import React from 'react';
+import { mountWithContext } from './utils';
 import Resizer from '../src/components/js/Resizer';
 
 
@@ -22,7 +22,7 @@ describe('<Resizer />', () => {
       resizeSpy = sinon.spy();
       resizeEndSpy = sinon.spy();
 
-      resizer = shallow(<Resizer
+      resizer = mountWithContext(<Resizer
         onResizeStart={resizeStartSpy}
         onResize={resizeSpy}
         onResizeEnd={resizeEndSpy}

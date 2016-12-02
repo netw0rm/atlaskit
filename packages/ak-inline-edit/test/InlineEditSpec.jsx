@@ -9,16 +9,28 @@ import ReadView from '../src/Read';
 
 chai.use(chaiEnzyme());
 
+const noop = () => {};
+
+const defaultProps = {
+  label: 'test',
+  shouldHideLabel: true,
+  isEditing: false,
+  isFocused: false,
+  onEditRequested: noop,
+  readView: 'test',
+  editView: 'test',
+};
+
 describe('ak-inline-edit', () => {
   describe('properties', () => {
-    describe('editing', () => {
+    describe('isEditing', () => {
       it('should render Edit view when set', () =>
-        expect(shallow(<InlineEdit isEditing />))
+        expect(shallow(<InlineEdit {...defaultProps} isEditing />))
           .to.have.descendants(EditView)
       );
 
       it('should render Read view when not set', () =>
-        expect(shallow(<InlineEdit />))
+        expect(shallow(<InlineEdit {...defaultProps} />))
           .to.have.descendants(ReadView)
       );
     });

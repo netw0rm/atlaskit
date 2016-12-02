@@ -1,6 +1,49 @@
-@import './styles/shared-variables.less';
-@import './styles/Read.less';
+@import '~akutil-shared-styles/src/colors.less';
 
 .root {
   display: block;
+}
+
+.read-view-wrapper {
+
+  display: inline-flex;
+
+  &:hover .edit-button {
+    opacity: 1;
+  }
+}
+
+.read-view-content-wrapper {
+  display: inline-flex;
+  width: 100%;
+}
+
+// the vendor prefixes here are deliberate. 'appearance' does not seem to get picked up by postcss,
+// eslint or even Chrome for some reason. :/
+.edit-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  padding-left: 10px;
+  line-height: 1;
+  outline: 0;
+  opacity: 0;
+  width: 100%;
+  display: inline-flex;
+  flex-direction: row-reverse;
+  color: @ak-color-N500;
+
+  &:focus {
+    opacity: 1;
+  }
+
+  &::-moz-focus-inner {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
 }

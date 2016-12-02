@@ -4,14 +4,75 @@ import EditView from './Edit';
 import ReadView from './Read';
 
 export default class InlineEdit extends PureComponent {
+
   static propTypes = {
+    /**
+     * @description The label to be rendered above the inline edit.
+     *
+     * This prop is still required, even if the hideLabel prop is set as the label is also used to
+     * make the field accessible for screen readers.
+     * @memberof InlineEdit
+     * @type {string}
+     */
     label: PropTypes.string.isRequired,
+    /**
+     * @description The read value/element/component to be displayed in Read mode.
+     *
+     * This value can be anything and should be customized to work well as FieldBase child
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     */
     readView: PropTypes.node.isRequired,
+    /**
+     * @description The element/component responsable to edit what's displayed in Read mode.
+     *
+     * This value can be anything and should be customized to work well as FieldBase child
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     */
     editView: PropTypes.node.isRequired,
+    /**
+     * @description Whether InlineEdit is on Edit mode or Read mode.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     */
     isEditing: PropTypes.bool.isRequired,
+    /**
+     * @description Whether the field should show it's focus ring.
+     *
+     * This would usually be controlled by a component extending InlineEdit and setting this when
+     * needed.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     */
     isFocused: PropTypes.bool.isRequired,
+    /**
+     * @description Weather InlineEdit should display its label.
+     *
+     * Defaults to false
+     * @memberof InlineEdit
+     * @type {string}
+     */
     shouldHideLabel: PropTypes.bool,
+    /**
+     * @description Callback function to be called when a request to edit mode have been made.
+     *
+     * This will be called before edit mode is mounted.
+     * @memberof InlineEdit
+     * @type {Function}
+     */
     onEditRequested: PropTypes.func.isRequired,
+    /**
+     * @description Callback function to be called when switched to edit mode.
+     *
+     * This will be called after edit mode is mounted.
+     * @memberof InlineEdit
+     * @type {Function}
+     */
     onEditEntered: PropTypes.func,
   }
 

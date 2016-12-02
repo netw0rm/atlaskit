@@ -27,7 +27,6 @@ class TextInlineEdit extends PureComponent {
 
   state = {
     editValue: this.props.initialValue,
-    isFocused: false,
   }
 
   onChange = e =>
@@ -52,18 +51,17 @@ class TextInlineEdit extends PureComponent {
       label={this.props.label}
       editView={this.renderInput()}
       readView={this.props.initialValue}
-      isFocused={this.state.isFocused}
       onEditEntered={this.onEditEntered}
     />
 }
 
 storiesOf(name, module)
-  .add('text inline edit with label', () => (
+  .add('with label', () => (
     <div style={containerStyle}>
       <TextInlineEdit />
     </div>
   ))
-  .add('text inline edit with label hidden', () => (
+  .add('with label hidden', () => (
     <div style={containerStyle}>
       <TextInlineEdit shouldHideLabel />
     </div>

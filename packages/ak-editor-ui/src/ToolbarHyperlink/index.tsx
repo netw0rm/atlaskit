@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import LinkIcon from 'ak-icon/glyph/editor/link';
 import { HyperlinkState } from 'ak-editor-plugin-hyperlink';
 import Panel from '../Panel';
-import DismissBlanket from '../DismissBlanket';
 import TextInput from '../PanelTextInput';
 import IconButton from '../ToolbarIconButton';
 
@@ -39,16 +38,14 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           icon={<LinkIcon label='Link' />}
         />
         {!adding ? null :
-        <DismissBlanket onDismiss={this.closeLinkPanel}>
-          <Panel align='center'>
-            <TextInput
-              autoFocus
-              placeholder="Paste link"
-              onSubmit={this.handleSubmit}
-              onCancel={this.closeLinkPanel}
-            />
-          </Panel>
-        </DismissBlanket>
+        <Panel align='center' onOutsideClick={this.closeLinkPanel}>
+          <TextInput
+            autoFocus
+            placeholder="Paste link"
+            onSubmit={this.handleSubmit}
+            onCancel={this.closeLinkPanel}
+          />
+        </Panel>
         }
       </span>
     );

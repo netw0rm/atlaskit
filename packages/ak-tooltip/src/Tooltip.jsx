@@ -27,7 +27,7 @@ function positionToPopperPosition(position) {
  * const tooltip = new Tooltip();
  * tooltip.id = 'myTooltip';
  */
-export default class Tooltip extends PureComponent {
+export default class StatelessTooltip extends PureComponent {
   static propTypes = {
     /**
      * @description The location of where the tooltip will appear, relative to the component it

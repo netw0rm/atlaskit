@@ -24,10 +24,12 @@ export default class Tooltip extends PureComponent {
     };
   }
 
-  setVisible = (visible) => {
-    this.setState({
-      visible,
-    });
+  hideTooltip = () => {
+    this.setState({ visible: false });
+  }
+
+  showTooltip = () => {
+    this.setState({ visible: true });
   }
 
   render() {
@@ -37,8 +39,8 @@ export default class Tooltip extends PureComponent {
       visible={this.state.visible}
       description={props.description}
       position={props.position}
-      onMouseOver={() => this.setVisible(true)}
-      onMouseOut={() => this.setVisible(false)}
+      onMouseOver={this.showTooltip}
+      onMouseOut={this.hideTooltip}
     >
       {props.children}
     </StatelessTooltip>);

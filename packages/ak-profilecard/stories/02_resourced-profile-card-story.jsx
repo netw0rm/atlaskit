@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
 
 import { name } from '../package.json';
-import { ProfileCardResourced } from '../src';
+import { ProfilecardResourced } from '../src';
 import mockClient from './story-data';
 
 function randomNumber() {
@@ -41,7 +41,7 @@ class ProfileCardRandomById extends PureComponent {
   render() {
     return (
       <div>
-        <ProfileCardResourced
+        <ProfilecardResourced
           userId={this.state.userId}
           cloudId="bogus-because-required"
           apiEndpoint="bogus-because-required"
@@ -63,16 +63,18 @@ storiesOf(`${name} resourced`, module)
   ))
   .add('mock api w/o user-id', () => (
     <div style={canvasStyle}>
-      <ProfileCardResourced
+      <ProfilecardResourced
+        apiEndpoint="bogus-because-required"
         resourceClient={mockClient}
       />
     </div>
   ))
   .add('mock api w/ error response', () => (
     <div style={canvasStyle}>
-      <ProfileCardResourced
+      <ProfilecardResourced
         userId="404"
         cloudId="bogus-cloud-id"
+        apiEndpoint="bogus-because-required"
         resourceClient={mockClient}
       />
     </div>

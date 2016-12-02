@@ -1,9 +1,9 @@
-import ProfileCard from './profilecard';
-import ProfileCardResourced from './profilecard-resourced';
+import Profilecard from './profilecard';
+import ProfilecardResourced from './profilecard-resourced';
 
 export {
-  ProfileCard,
-  ProfileCardResourced,
+  Profilecard,
+  ProfilecardResourced,
 };
 
-export default ProfileCard;
+export default Profilecard;

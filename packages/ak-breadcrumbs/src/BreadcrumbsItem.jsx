@@ -5,7 +5,6 @@ import { locals } from './styles.less';
 import { itemTruncateWidth } from './internal/constants';
 
 const { item, itemButton, tooltip, tooltipTrigger, truncated } = locals;
-const truncateWidth = 200; // Duplicated in styles.less
 
 /**
  * @description BreadcrumbsItem React component.

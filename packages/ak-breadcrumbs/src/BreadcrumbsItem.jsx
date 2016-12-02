@@ -1,17 +1,10 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Button from 'ak-button';
-import Tooltip, { TooltipTrigger } from 'ak-tooltip';
-import reactify from 'akutil-react';
-import classnames from 'classnames';
 import ContainerQuery from 'react-container-query';
-import uuid from 'uuid';
-
+import Button from 'ak-button';
+import classnames from 'classnames';
 import styles from './styles.less';
 import { itemTruncateWidth } from './internal/constants';
 
-
-const ReactTooltip = reactify(Tooltip);
-const ReactTrigger = reactify(TooltipTrigger);
 
 /**
  * @description BreadcrumbsItem React component.
@@ -29,26 +22,14 @@ export default class BreadcrumbsItem extends PureComponent {
      * @type {string}
      */
     href: PropTypes.string,
-    /**
-     * @description The content to display in the breadcrumbs item.
-     *
-     * *** Note: *** This must be a single string node.
-     * @memberof BreadcrumbsItem
-     * @instance
-     * @type {string}
-     */
-    children: PropTypes.string,
+    children: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.arrayOf(PropTypes.node),
+    ]),
   }
 
   static defaultProps = {
     href: '#',
-  }
-
-  constructor() {
-    super();
-    this.state = {
-      id: uuid(),
-    };
   }
 
   render() {
@@ -60,19 +41,19 @@ export default class BreadcrumbsItem extends PureComponent {
         className={classnames(styles.locals.item, styles.locals.collapsibleItem)}
         query={query}
       >
-        <ReactTooltip className={styles.locals.tooltip} id={this.state.id} />
-        <ReactTrigger description={this.props.children}>
-          <span aria-describedby={this.state.id}>
-            <Button
-              className={styles.locals.itemButton}
-              appearance="link"
-              spacing="compact"
-              href={this.props.href}
-            >
-              {this.props.children}
-            </Button>
-          </span>
-        </ReactTrigger>
+        <span className={styles.locals.tooltipTrigger}>
+          <div className={styles.locals.tooltip}>
+            {this.props.children}
+          </div>
+          <Button
+            className={styles.locals.itemButton}
+            appearance="link"
+            spacing="compact"
+            href={this.props.href}
+          >
+            {this.props.children}
+          </Button>
+        </span>
       </ContainerQuery>
     );
   }

@@ -65,12 +65,22 @@
   max-width: @breadcrumbs-item-max-width;
 }
 
+/* Tooltip styles. Remove when ak-tooltip is a react component: AK-1025 */
 .tooltip {
-  display: none; // Hide the tooltip when the item is not truncated
+  background-color: @ak-color-N900;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: white;
+  opacity: 0;
+  max-width: unit(50 * @ak-grid-size, px);
+  padding: unit(@ak-grid-size / 4, px) unit(@ak-grid-size, px);
+  pointer-events: none;
+  position: absolute;
+  top: unit(3 * @ak-grid-size, px);
+  transition: opacity 0.25s ease-in-out;
+  z-index: 1;
 }
 
-.truncated .tooltip {
-  display: inherit;
-  position: absolute;
-  z-index: 1;    // Tooltip should be above any overlapping breadcrumb items
+.truncated .tooltip-trigger:hover .tooltip {
+  opacity: 1;
 }

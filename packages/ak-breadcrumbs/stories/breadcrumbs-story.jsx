@@ -1,5 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+import AtlassianIcon from 'ak-icon/glyph/atlassian';
 
 import AkBreadcrumbs, { AkBreadcrumbsItem } from '../src';
 import { name } from '../package.json';
@@ -32,6 +33,18 @@ storiesOf(name, module)
       </AkBreadcrumbsItem>
     }
     />
+  ))
+  .add('ak-breadcrumbs with markup in item content', () => (
+    <AkBreadcrumbs>
+      <AkBreadcrumbsItem href="/page"><b>Page</b></AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/page">
+        With icon <AtlassianIcon label="Atlassian icon" />
+      </AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/page">
+        <span>Long page name with <b>markup</b> <i>(should be truncated)</i></span>
+        <span> and icon <AtlassianIcon label="Atlassian icon" /></span>
+      </AkBreadcrumbsItem>
+    </AkBreadcrumbs>
   ))
   .add('ak-breadcrumbs with long and short items', () => (
     <AkBreadcrumbs

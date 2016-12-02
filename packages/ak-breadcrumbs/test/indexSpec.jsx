@@ -1,4 +1,3 @@
-import 'akutil-polyfills';
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';

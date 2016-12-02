@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 
 import Breadcrumbs, { AkBreadcrumbsItem as Item } from '../src/';
 import styles from '../src/styles.less';
-import { EllipsisItem } from '../src/internal/helpers';
+import EllipsisItem from '../src/internal/EllipsisItem';
 import { name } from '../package.json';
 
 const { expect } = chai;
@@ -27,12 +27,14 @@ describe(name, () => {
       const wrapper = shallow(<Breadcrumbs />);
       expect(wrapper).to.be.defined;
       expect(wrapper.instance()).to.be.instanceOf(Component);
-      expect(wrapper.state().expanded).to.equal(false);
+      expect(wrapper.state().isExpanded).to.equal(false);
     });
 
     it('should be able to render a single child', () => {
       const wrapper = shallow(
-        <Breadcrumbs items={<Item>item</Item>} />
+        <Breadcrumbs>
+          <Item>item</Item>
+        </Breadcrumbs>
       );
       const containerDiv = wrapper.find(`.${styles.locals.container}`);
       expect(containerDiv).to.have.lengthOf(1);
@@ -41,56 +43,53 @@ describe(name, () => {
 
     it('should render all children inside a container div', () => {
       const wrapper = shallow(
-        <Breadcrumbs
-          items={[
-            <Item>item</Item>,
-            <Item>item</Item>,
-            <Item>item</Item>,
-          ]}
-        />
+        <Breadcrumbs>
+          <Item>item</Item>
+          <Item>item</Item>
+          <Item>item</Item>
+        </Breadcrumbs>
       );
       const containerDiv = wrapper.find(`.${styles.locals.container}`);
       expect(containerDiv).to.have.lengthOf(1);
       expect(containerDiv.find(Item)).to.have.lengthOf(3);
     });
 
-    describe('renders an ellipsis item', () => {
+    describe('with more than 8 items', () => {
+      const firstItem = <Item>item1</Item>;
+      const lastItem = <Item>item2</Item>;
       let wrapper;
+
       beforeEach(() => {
         wrapper = shallow(
-          <Breadcrumbs
-            items={[
-              <Item>item</Item>,
-              <Item>item</Item>,
-              <Item>item</Item>,
-            ]}
-          />
+          <Breadcrumbs>
+            {firstItem}
+            <Item>item2</Item>
+            <Item>item3</Item>
+            <Item>item4</Item>
+            <Item>item5</Item>
+            <Item>item6</Item>
+            <Item>item7</Item>
+            <Item>item8</Item>
+            {lastItem}
+          </Breadcrumbs>
         );
       });
 
-      it('when there are more than two items', () => {
+      it('renders only the first and last items, and an ellipsis item', () => {
+        expect(wrapper.find(Item)).to.have.lengthOf(2);
+        expect(wrapper.contains(firstItem)).to.equal(true);
+        expect(wrapper.contains(lastItem)).to.equal(true);
         expect(wrapper.find(EllipsisItem)).to.have.lengthOf(1);
       });
 
-      it('which updates the expanded state when clicked', () => {
+      it('updates the expanded state when the ellipsis is clicked', () => {
         const ellipsisItem = wrapper.find(EllipsisItem);
-        expect(wrapper.state().expanded).to.equal(false);
+        expect(wrapper.state().isExpanded).to.equal(false);
         ellipsisItem.simulate('click');
-        expect(wrapper.state().expanded).to.equal(true);
+        expect(wrapper.state().isExpanded).to.equal(true);
       });
-    });
 
-    describe('with more than 8 items', () => {
       it('applies the collapsed class', () => {
-        const wrapper = shallow(
-          <Breadcrumbs
-            items={[
-              <Item>item</Item>, <Item>item</Item>, <Item>item</Item>,
-              <Item>item</Item>, <Item>item</Item>, <Item>item</Item>,
-              <Item>item</Item>, <Item>item</Item>, <Item>item</Item>,
-            ]}
-          />
-        );
         expect(wrapper.find(`.${styles.locals.collapsed}`)).to.have.lengthOf(1);
       });
     });

@@ -1,6 +1,6 @@
 {
   "name": "ak-breadcrumbs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A React component that allows users to know their location",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

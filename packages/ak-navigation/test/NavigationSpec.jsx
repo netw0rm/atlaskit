@@ -45,6 +45,10 @@ describe('<Navigation />', () => {
       expect(shallow(<Navigation open={false} width={200} />)
         .find('Spacer').props().width).to.equal(containerClosedWidth);
     });
+    it('isResizeable=false does not render a <Resizer />', () => {
+      expect(shallow(<Navigation isResizeable={false} />))
+      .to.not.have.descendants('Resizer');
+    });
     it('can pass in an element for the container header', () => {
       const header = <div>foo</div>;
       expect(shallow(<Navigation containerHeader={header} />)

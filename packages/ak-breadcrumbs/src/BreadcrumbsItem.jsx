@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-<<<<<<< HEAD
 import ContainerQuery from 'react-container-query';
 import Button from 'ak-button';
 import { locals } from './styles.less';

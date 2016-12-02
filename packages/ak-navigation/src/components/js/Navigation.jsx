@@ -78,6 +78,8 @@ export default class Navigation extends Component {
   render() {
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();
+    const onResize = (resizeDelta) => { this.setState({ resizeDelta }); };
+    const onResizeEnd = () => { this.triggerResizeHandler(); };
     return (
       <div className={styles.navigation}>
         <Spacer
@@ -117,8 +119,8 @@ export default class Navigation extends Component {
           {
             this.props.isResizeable
             ? <Resizer
-              onResize={(resizeDelta) => { this.setState({ resizeDelta }); }}
-              onResizeEnd={() => { this.triggerResizeHandler(); }}
+              onResize={onResize}
+              onResizeEnd={onResizeEnd}
             />
             : null
           }

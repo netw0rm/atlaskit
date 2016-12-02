@@ -28,7 +28,7 @@ function install_registry_pkg() {
   npm set loglevel warn
   npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
   npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
-  npm install @atlassian/atlaskit-registry@^2.0.2
+  npm install @atlassian/atlaskit-registry@^3.0.1
   mv ._npmrc .npmrc
 }
 

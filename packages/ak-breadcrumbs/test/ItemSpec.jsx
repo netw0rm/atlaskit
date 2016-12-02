@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme';
 import Button from 'ak-button';
 
 import Item from '../src/BreadcrumbsItem';
-import styles from '../src/styles.less';
+import { locals } from '../src/styles.less';
 import { name } from '../package.json';
 
 
@@ -36,7 +36,7 @@ describe(name, () => {
     it('should render a Tooltip with the item content', () => {
       const children = (<span>content</span>);
       const wrapper = shallow(<Item>{children}</Item>);
-      const tooltip = wrapper.find(`.${styles.locals.tooltip}`);
+      const tooltip = wrapper.find(`.${locals.tooltip}`);
       expect(tooltip).to.have.lengthOf(1);
       expect(tooltip.contains(children)).to.equal(true);
     });

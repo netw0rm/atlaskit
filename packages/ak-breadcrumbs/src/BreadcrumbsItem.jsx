@@ -1,7 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Button from 'ak-button';
 import ContainerQuery from 'react-container-query';
-
+import Button from 'ak-button';
 import styles from './styles.less';
 import { itemTruncateWidth } from './internal/constants';
 
@@ -37,8 +36,8 @@ export default class BreadcrumbsItem extends PureComponent {
       [styles.locals.truncated]: { minWidth: itemTruncateWidth },
     };
     return (
-      <ContainerQuery className={classnames(styles.locals.item, styles.locals.collapsibleItem)} query={query}>
-        <span className={styles.locals.buttonWrapper}>
+      <ContainerQuery className={styles.locals.item} query={query}>
+        <span className={styles.locals.tooltipTrigger}>
           <div className={styles.locals.tooltip}>
             {this.props.children}
           </div>

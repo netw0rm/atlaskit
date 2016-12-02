@@ -57,7 +57,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     const { props } = this;
 
     return (
-      <div className={styles.container} data-editor-chrome>
+      <div className={styles.container} data-editor-chrome ref='container'>
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}

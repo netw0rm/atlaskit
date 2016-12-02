@@ -3,7 +3,6 @@ import styles from 'style!../less/ContainerItem.less';
 import className from 'classnames';
 import ContainerQuery from 'react-container-query';
 import {
-  containerOpenWidth,
   containerClosedWidth,
 } from '../../shared-variables';
 
@@ -21,9 +20,6 @@ export default class ContainerItem extends Component {
     return (
       <ContainerQuery
         query={{
-          [styles.open]: {
-            minWidth: containerOpenWidth,
-          },
           [styles.closed]: {
             maxWidth: containerClosedWidth,
           },

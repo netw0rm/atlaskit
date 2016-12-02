@@ -1,12 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ContainerQuery from 'react-container-query';
 import Button from 'ak-button';
-import classnames from 'classnames';
 import { locals } from './styles.less';
 import { itemTruncateWidth } from './internal/constants';
 
 
-const { collapsibleItem, item, itemButton, tooltip, tooltipTrigger, truncated } = locals;
+const { item, itemButton, tooltip, tooltipTrigger, truncated } = locals;
 
 /**
  * @description BreadcrumbsItem React component.
@@ -39,7 +38,7 @@ export default class BreadcrumbsItem extends PureComponent {
       [truncated]: { minWidth: itemTruncateWidth },
     };
     return (
-      <ContainerQuery className={classnames(item, collapsibleItem)} query={query}>
+      <ContainerQuery className={item} query={query}>
         <span className={tooltipTrigger}>
           <div className={tooltip}>
             {this.props.children}

@@ -1,15 +1,11 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { Children, PureComponent, PropTypes } from 'react';
 import classnames from 'classnames';
-
 import styles from 'style!./styles.less';
 import BreadcrumbsItem from './BreadcrumbsItem';
-import {
-  countItems,
-  renderItems,
-  EllipsisItem,
-} from './internal/helpers';
+import EllipsisItem from './internal/EllipsisItem';
 import { numItemsToTruncate } from './internal/constants';
 
+const { count, toArray } = Children;
 
 /**
  * @description Breadcrumbs React component.
@@ -30,32 +26,41 @@ export default class Breadcrumbs extends PureComponent {
      * first and last items. Clicking the ellipsis separator item will display all items.
      * @memberof Breadcrumbs
      * @instance
-     * @type {BreadcrumbsItem|BreadcrumbsItem[]}
+     * @type {node|node[]}
      */
-    items: PropTypes.oneOfType([
-      PropTypes.shape({ type: PropTypes.oneOf([BreadcrumbsItem]) }),
-      PropTypes.arrayOf(PropTypes.shape({ type: PropTypes.oneOf([BreadcrumbsItem]) })),
+    children: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.arrayOf(PropTypes.node),
     ]),
-  }
-
-  static defaultProps = {
-    items: [],
   }
 
   constructor() {
     super();
-    this.state = { expanded: false };
+    this.state = { isExpanded: false };
+  }
+
+  renderAllItems() {
+    return this.props.children;
+  }
+
+  renderFirstAndLast() {
+    const itemsToRender = toArray(this.props.children);
+    return [
+      itemsToRender[0],
+      <EllipsisItem key="ellipsis" onClick={() => this.setState({ isExpanded: true })} />,
+      itemsToRender[itemsToRender.length - 1],
+    ];
   }
 
   render() {
-    const isExpanded = this.state.expanded || countItems(this) < numItemsToTruncate;
     const classes = classnames(styles.container, {
-      [styles.collapsed]: !isExpanded,
+      [styles.collapsed]: !this.state.isExpanded,
     });
     return (
       <div className={classes}>
-        {renderItems(this.props.items,
-          <EllipsisItem key="ellipsis" onClick={() => this.setState({ expanded: true })} />)
+        {(this.state.isExpanded || count(this.props.children) < numItemsToTruncate)
+          ? this.renderAllItems()
+          : this.renderFirstAndLast()
         }
       </div>
     );

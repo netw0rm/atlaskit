@@ -1,12 +1,5 @@
-import Promise from 'babel-runtime/core-js/promise';
-// 'whatwg-fetch' needs a Promise polyfill
-/* eslint-disable import/first */
-if (!window.Promise) {
-  window.Promise = Promise;
-}
+import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
-/* eslint-enable import/first */
-
 
 /**
  * Transform response from GraphQL

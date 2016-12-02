@@ -1,4 +1,3 @@
-import Promise from 'babel-runtime/core-js/promise';
 import profiles from './profile-data';
 import { modifyResponse } from '../src/api/profile-client';
 import { random, getWeekday, getTimeString } from './util';
@@ -13,7 +12,8 @@ const requestService = (fail) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (fail) {
-        return reject(new Error('mock request failed'));
+        reject(new Error('Not Found'));
+        return;
       }
 
       const id = random(10);
@@ -25,7 +25,7 @@ const requestService = (fail) => {
       data.remoteWeekdayIndex = weekday.index;
       data.remoteWeekdayString = weekday.string;
 
-      return resolve(modifyResponse(data));
+      resolve(modifyResponse(data));
     }, timeout);
   });
 };

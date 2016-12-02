@@ -5,7 +5,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import styles from '../src/styles/profilecard.less';
 
-import { ProfileCard } from '../src';
+import { Profilecard } from '../src';
 import presences from '../src/internal/presences';
 
 const { expect } = chai;
@@ -13,15 +13,15 @@ chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
 describe('ak-profilecard', () => {
-  describe('ProfileCard', () => {
+  describe('Profilecard', () => {
     it('should be possible to create a component', () => {
-      const card = shallow(<ProfileCard />);
+      const card = shallow(<Profilecard />);
       expect(card).to.be.defined;
     });
 
     describe('fullName property', () => {
       const fullName = 'This is an avatar!';
-      const card = shallow(<ProfileCard fullName={fullName} />);
+      const card = shallow(<Profilecard fullName={fullName} />);
 
       it('should show the full name on the card if property is set', () => {
         const el = card.find(`.${styles.locals.detailsFullname}`);
@@ -41,7 +41,7 @@ describe('ak-profilecard', () => {
 
         presenceWithoutNone.forEach((presence) => {
           it(`should render label with content ${presence}`, () => {
-            const card = mount(<ProfileCard presence={presence} />);
+            const card = mount(<Profilecard presence={presence} />);
             const el = card.find(`.${styles.locals.presence}`);
             expect(el).to.be.present();
             expect(el).to.have.text(presences[presence]);
@@ -50,7 +50,7 @@ describe('ak-profilecard', () => {
       });
 
       it('should not render a presence label if property is not set', () => {
-        const card = mount(<ProfileCard />);
+        const card = mount(<Profilecard />);
         const el = card.find(`.${styles.locals.presence}`);
         expect(el).to.not.be.present();
       });
@@ -68,7 +68,7 @@ describe('ak-profilecard', () => {
           label: 'three',
         },
       ];
-      const card = shallow(<ProfileCard actions={actions} />);
+      const card = shallow(<Profilecard actions={actions} />);
 
       it('should render an action button for every item in actions property', () => {
         const actionsWrapper = card.find(`.${styles.locals.actionsWrapper}`);

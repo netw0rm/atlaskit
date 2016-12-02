@@ -1,6 +1,6 @@
 {
   "name": "ak-inline-edit",
-  "version": "0.0.0",
+  "version": "1.0.0-0",
   "description": "A base component used to build inline-editable components that match the Atlassian Design Guidelines",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

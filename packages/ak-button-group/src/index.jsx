@@ -13,7 +13,7 @@ export default class AkButtonGroup extends Component {
       children: React.PropTypes.node,
     };
   }
-  
+
   render() {
     return (
       <div className={styles.wrapper}>

@@ -1,7 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Button from 'ak-button';
 import ContainerQuery from 'react-container-query';
-
+import Button from 'ak-button';
 import styles from './styles.less';
 
 
@@ -39,7 +38,7 @@ export default class BreadcrumbsItem extends PureComponent {
     };
     return (
       <ContainerQuery className={styles.locals.item} query={query}>
-        <span className={styles.locals.buttonWrapper}>
+        <span className={styles.locals.tooltipTrigger}>
           <div className={styles.locals.tooltip}>
             {this.props.children}
           </div>

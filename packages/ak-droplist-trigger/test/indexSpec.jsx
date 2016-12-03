@@ -9,7 +9,6 @@ import { name } from '../package.json';
 import styles from '../src/styles.less';
 
 import Trigger from '../src';
-import { baseTypes } from '../src/internal/constants';
 
 chai.use(chaiAsPromised);
 chai.use(chaiEnzyme());
@@ -61,7 +60,7 @@ describe(name, () => {
       onActivate.reset();
     });
 
-    baseTypes.values.forEach((type) => {
+    ['default', 'button'].forEach((type) => {
       describe(`onActivate, type: ${type}`, () => {
         let wrapper;
         beforeEach(() => {

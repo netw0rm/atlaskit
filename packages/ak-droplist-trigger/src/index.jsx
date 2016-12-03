@@ -5,9 +5,11 @@ import Button from 'ak-button';
 import ExpandIcon from 'ak-icon/glyph/expand';
 import classNames from 'classnames';
 
-import { baseTypes } from './internal/constants';
-
 const Icon = <ExpandIcon label="trigger button" />;
+const baseTypes = {
+  values: ['default', 'button'],
+  default: 'default',
+};
 
 /* eslint-disable react/no-unused-prop-types */
 /**

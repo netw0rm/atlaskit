@@ -3,6 +3,7 @@ import keyCode from 'keycode';
 import styles from 'style!./styles.less';
 import Button from 'ak-button';
 import ExpandIcon from 'ak-icon/glyph/expand';
+import classNames from 'classnames';
 
 import { baseTypes } from './internal/constants';
 
@@ -45,6 +46,8 @@ export default class Trigger extends PureComponent {
      */
     onActivate: PropTypes.func,
     children: PropTypes.node,
+    style: PropTypes.string,
+    className: PropTypes.string,
   }
 
   static defaultProps = {
@@ -90,7 +93,8 @@ export default class Trigger extends PureComponent {
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
         onMouseDown={this.handleMouseDown}
-        className={styles.triggerContainer}
+        className={classNames(styles.triggerContainer, props.className)}
+        style={props.style}
         role="button"
         aria-haspopup="true"
       >

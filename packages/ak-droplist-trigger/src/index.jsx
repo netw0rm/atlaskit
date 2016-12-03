@@ -2,8 +2,11 @@ import React, { PureComponent, PropTypes } from 'react';
 import keyCode from 'keycode';
 import styles from 'style!./styles.less';
 import Button from 'ak-button';
+import ExpandIcon from 'ak-icon/glyph/expand';
 
 import { baseTypes } from './internal/constants';
+
+const Icon = <ExpandIcon label="trigger button" />;
 
 /* eslint-disable react/no-unused-prop-types */
 /**
@@ -95,6 +98,7 @@ export default class Trigger extends PureComponent {
           (<Button
             selected={props.isOpened}
             disabled={props.isDisabled}
+            iconAfter={Icon}
           >{props.children}</Button>) :
           (<div
             tabIndex={props.isDisabled ? null : 0}

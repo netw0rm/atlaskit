@@ -28,17 +28,19 @@ describe(name, () => {
 
   describe('all about render', () => {
     it('should render default trigger', () => {
-      const wrapper = shallow(<Trigger>trigger</Trigger>);
+      const TriggerSample = <div id="#test">test</div>;
+      const wrapper = shallow(<Trigger>{TriggerSample}</Trigger>);
       expect(wrapper).to.have.descendants(`.${styles.locals.triggerContainer}`);
       expect(wrapper).to.have.descendants(`.${styles.locals.trigger}`);
-      expect(wrapper.find(`.${styles.locals.trigger}`)).to.have.text('trigger');
+      expect(wrapper).to.contain(TriggerSample);
     });
 
     it('should render button when type is set to "button"', () => {
-      const wrapper = mount(<Trigger type="button">trigger</Trigger>);
+      const TriggerSample = <div id="#test">test</div>;
+      const wrapper = mount(<Trigger type="button" isOpened>{TriggerSample}</Trigger>);
       expect(wrapper).to.have.descendants(`.${styles.locals.triggerContainer}`);
       expect(wrapper).to.not.have.descendants(`.${styles.locals.trigger}`);
-      expect(wrapper.find('button')).to.have.text('trigger');
+      expect(wrapper).to.contain(TriggerSample);
     });
   });
 

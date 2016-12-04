@@ -39,6 +39,11 @@ export default class Breadcrumbs extends PureComponent {
     this.state = { isExpanded: false };
   }
 
+  setExpanded(val) {
+    this.setState({ isExpanded: !!val });
+    return val;
+  }
+
   renderAllItems() {
     return this.props.children;
   }
@@ -47,17 +52,17 @@ export default class Breadcrumbs extends PureComponent {
     const itemsToRender = toArray(this.props.children);
     return [
       itemsToRender[0],
-      <EllipsisItem key="ellipsis" onClick={() => this.setState({ isExpanded: true })} />,
+      <EllipsisItem key="ellipsis" onClick={() => this.setExpanded(true)} />,
       itemsToRender[itemsToRender.length - 1],
     ];
   }
 
   render() {
-    const classes = classnames(styles.container, {
+    const containerClasses = classnames(styles.container, {
       [styles.collapsed]: !this.state.isExpanded,
     });
     return (
-      <div className={classes}>
+      <div className={containerClasses}>
         {(this.state.isExpanded || count(this.props.children) < numItemsToTruncate)
           ? this.renderAllItems()
           : this.renderFirstAndLast()

@@ -50,8 +50,8 @@ describe(name, () => {
         </Breadcrumbs>
       );
       const containerDiv = wrapper.find(`.${locals.container}`);
-      expect(containerDiv).to.have.lengthOf(1);
-      expect(containerDiv.find(Item)).to.have.lengthOf(3);
+      expect(containerDiv).to.exist;
+      expect(containerDiv).to.have.exactly(3).descendants(Item);
     });
 
     describe('with more than 8 items', () => {
@@ -76,10 +76,10 @@ describe(name, () => {
       });
 
       it('renders only the first and last items, and an ellipsis item', () => {
-        expect(wrapper.find(Item)).to.have.lengthOf(2);
-        expect(wrapper.contains(firstItem)).to.equal(true);
-        expect(wrapper.contains(lastItem)).to.equal(true);
-        expect(wrapper.find(EllipsisItem)).to.have.lengthOf(1);
+        expect(wrapper).to.have.exactly(2).descendants(Item);
+        expect(wrapper).to.contain(firstItem);
+        expect(wrapper).to.contain(lastItem);
+        expect(wrapper).to.have.exactly(1).descendants(EllipsisItem);
       });
 
       it('updates the expanded state when the ellipsis is clicked', () => {
@@ -90,7 +90,7 @@ describe(name, () => {
       });
 
       it('applies the collapsed class', () => {
-        expect(wrapper.find(`.${locals.collapsed}`)).to.have.lengthOf(1);
+        expect(wrapper).to.have.exactly(1).descendants(`.${locals.collapsed}`);
       });
 
       it('does not apply the collapsed class when expanded', () => {

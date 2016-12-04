@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
 import Button from 'ak-button';
 import { locals } from '../styles.less';
 
@@ -9,9 +9,14 @@ import { locals } from '../styles.less';
  */
 /* eslint-disable react/prefer-stateless-function */
 export default class EllipsisItem extends PureComponent {
+  static propTypes = {
+    onClick: PropTypes.func,
+  }
+
   render() {
     return (
-      <div className={locals.item} {...this.props}>
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div className={locals.item} onClick={this.props.onClick}>
         <Button
           className={locals.itemButton}
           appearance="link"

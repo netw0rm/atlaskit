@@ -37,7 +37,7 @@ describe(name, () => {
       const children = (<span>content</span>);
       const wrapper = shallow(<Item>{children}</Item>);
       const tooltip = wrapper.find(`.${locals.tooltip}`);
-      expect(tooltip).to.have.lengthOf(1);
+      expect(tooltip).to.exist;
       expect(tooltip.contains(children)).to.equal(true);
     });
   });

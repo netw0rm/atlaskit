@@ -28,7 +28,7 @@
   "devDependencies": {
     "ak-avatar": "^4.0.0",
     "ak-dropdown": "^10.0.0",
-    "ak-icon": "^10.0.0",
+    "ak-icon": "^11.1.4",
     "ak-page": "^7.0.0",
     "akutil-common-test": "*",
     "karma-sinon-chai": "^1.2.4",

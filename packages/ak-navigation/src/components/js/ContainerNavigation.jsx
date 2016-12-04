@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from 'isomorphic-style-loader!../less/ContainerNavigation.less';
 import {
   containerOpenWidth,
 } from '../../shared-variables';
 import Spacer from './Spacer';
+import withStyles from '../../utils/withStyles';
 
 class ContainerNavigation extends Component {
   static get propTypes() {

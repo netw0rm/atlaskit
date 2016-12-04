@@ -46,7 +46,7 @@ describe('<Navigation />', () => {
         .find('Spacer').at(0).props().width).to.equal(containerClosedWidth);
     });
     it('isResizeable=false does not render a <Resizer />', () => {
-      expect(shallow(<Navigation isResizeable={false} />))
+      expect(mountWithContext(<Navigation isResizeable={false} />))
       .to.not.have.descendants('Resizer');
     });
     it('can pass in an element for the container header', () => {
@@ -56,17 +56,17 @@ describe('<Navigation />', () => {
     });
     describe('globalPrimaryIcon', () => {
       it('should insert primary icon into navigation', () => {
-        expect(shallow(<Navigation globalPrimaryIcon={<span className="PRIMARY_ICON" />} />)).to.have.exactly(1).descendants('.PRIMARY_ICON');
+        expect(mountWithContext(<Navigation globalPrimaryIcon={<span className="PRIMARY_ICON" />} />)).to.have.exactly(1).descendants('.PRIMARY_ICON');
       });
     });
     describe('globalSearchIcon', () => {
       it('should insert search icon into navigation', () => {
-        expect(shallow(<Navigation globalSearchIcon={<span className="SEARCH_ICON" />} />)).to.have.exactly(1).descendants('.SEARCH_ICON');
+        expect(mountWithContext(<Navigation globalSearchIcon={<span className="SEARCH_ICON" />} />)).to.have.exactly(1).descendants('.SEARCH_ICON');
       });
     });
     describe('globalCreateIcon', () => {
       it('should insert create icon into navigation', () => {
-        expect(shallow(<Navigation globalCreateIcon={<span className="CREATE_ICON" />} />)).to.have.exactly(1).descendants('.CREATE_ICON');
+        expect(mountWithContext(<Navigation globalCreateIcon={<span className="CREATE_ICON" />} />)).to.have.exactly(1).descendants('.CREATE_ICON');
       });
     });
   });

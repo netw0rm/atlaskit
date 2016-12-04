@@ -12,7 +12,7 @@ const expect = chai.expect;
 
 describe('<ContainerHeader />', () => {
   describe('props', () => {
-    it('logo should render an image', () => {
+    it('icon should render an image', () => {
       expect(mountWithContext(<ContainerHeader icon={<img alt="foo" />} />)
         .find('img')).to.have.length(1);
     });

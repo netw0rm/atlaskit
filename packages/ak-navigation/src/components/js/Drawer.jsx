@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from 'isomorphic-style-loader!../less/Drawer.less';
+import withStyles from '../../utils/withStyles';
 
 class Drawer extends Component {
   static get propTypes() {

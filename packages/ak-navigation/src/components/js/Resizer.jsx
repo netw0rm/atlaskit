@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from 'isomorphic-style-loader!../less/Resizer.less';
+import withStyles from '../../utils/withStyles';
 
 class Resizer extends Component {
   static get propTypes() {

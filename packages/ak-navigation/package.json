@@ -17,7 +17,7 @@
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "isomorphic-style-loader": "^1.1.0",
+    "hoist-non-react-statics": "^1.2.0",
     "keycode": "^2.1.2",
     "react-container-query": "^0.7.0"
   },

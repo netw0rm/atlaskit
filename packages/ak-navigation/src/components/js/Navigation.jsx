@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from 'isomorphic-style-loader!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
 import GlobalItem from './GlobalItem';
@@ -14,6 +13,7 @@ import {
   resizeClosedBreakpoint,
 } from '../../shared-variables';
 import { getGlobalWidth, getContainerWidth } from '../../utils/collapse';
+import withStyles from '../../utils/withStyles';
 
 class Navigation extends Component {
   static get propTypes() {

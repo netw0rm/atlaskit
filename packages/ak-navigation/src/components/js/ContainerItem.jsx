@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from 'isomorphic-style-loader!../less/ContainerItem.less';
 import className from 'classnames';
 import ContainerQuery from 'react-container-query';
 import {
   containerClosedWidth,
 } from '../../shared-variables';
+import withStyles from '../../utils/withStyles';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class ContainerItem extends Component {

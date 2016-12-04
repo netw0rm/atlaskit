@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from 'isomorphic-style-loader!../less/GlobalNavigation.less';
 import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
+import withStyles from '../../utils/withStyles';
 
 class GlobalNavigation extends Component {
   static get propTypes() {

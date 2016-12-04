@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from 'isomorphic-style-loader!../less/Spacer.less';
+import withStyles from '../../utils/withStyles';
 
 class Spacer extends Component {
   static get propTypes() {

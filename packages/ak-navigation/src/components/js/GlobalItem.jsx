@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from 'isomorphic-style-loader!../less/GlobalItem.less';
+import withStyles from '../../utils/withStyles';
 
 class GlobalItem extends Component {
   static get propTypes() {

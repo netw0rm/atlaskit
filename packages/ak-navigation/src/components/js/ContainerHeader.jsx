@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import styles from 'isomorphic-style-loader!../less/ContainerHeader.less';
 import ContainerQuery from 'react-container-query';
 import {
   containerOpenWidth,
   containerClosedWidth,
 } from '../../shared-variables';
+import withStyles from '../../utils/withStyles';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class ContainerHeader extends Component {

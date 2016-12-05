@@ -5,7 +5,6 @@ import FieldBase from 'ak-field-base';
 export default class EditView extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
-    isFocusedInitially: PropTypes.bool.isRequired,
     isLabelHidden: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
   }
@@ -14,7 +13,6 @@ export default class EditView extends PureComponent {
     <div>
       <FieldBase
         label={this.props.label}
-        focused={this.props.isFocusedInitially}
         hideLabel={this.props.isLabelHidden}
       >
         {this.props.children}

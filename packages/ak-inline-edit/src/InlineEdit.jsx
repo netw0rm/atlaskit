@@ -49,16 +49,6 @@ export default class InlineEdit extends PureComponent {
      */
     isLabelHidden: PropTypes.bool,
     /**
-     * @description Whether the field should initially show its focus ring.
-     *
-     * If the field should be focused when it first appears on the page.
-     *
-     * @memberof InlineEdit
-     * @type {boolean}
-     * @default false
-     */
-    isFocusedInitially: PropTypes.bool,
-    /**
      * @description Called when the user requests that edit mode be entered
      *
      * For example, will be called when the user clicks on the input.
@@ -74,13 +64,11 @@ export default class InlineEdit extends PureComponent {
 
   static defaultProps = {
     isLabelHidden: false,
-    isFocusedInitially: false,
   }
 
   renderReadView = () => (
     <ReadView
       label={this.props.label}
-      isFocusedInitially={this.props.isFocusedInitially}
       isLabelHidden={this.props.isLabelHidden}
       onEditRequested={this.props.onEditRequested}
     >
@@ -91,7 +79,6 @@ export default class InlineEdit extends PureComponent {
   renderEditView = () => (
     <EditView
       label={this.props.label}
-      isFocusedInitially={this.props.isFocusedInitially}
       isLabelHidden={this.props.isLabelHidden}
     >
       {this.props.editView}

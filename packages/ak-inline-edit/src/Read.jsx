@@ -7,7 +7,6 @@ import styles from './styles.less';
 export default class ReadView extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
-    isFocusedInitially: PropTypes.bool.isRequired,
     isLabelHidden: PropTypes.bool.isRequired,
     onEditRequested: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
@@ -21,7 +20,6 @@ export default class ReadView extends PureComponent {
       <FieldBase
         label={this.props.label}
         hideLabel={this.props.isLabelHidden}
-        focused={this.props.isFocusedInitially}
       >
         <div className={styles.locals.readViewContentWrapper}>
           {this.props.children}

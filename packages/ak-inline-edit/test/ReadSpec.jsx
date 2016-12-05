@@ -16,7 +16,6 @@ const noop = () => {};
 
 const defaultProps = {
   label: 'test',
-  isFocusedInitially: false,
   onEditRequested: noop,
   children: 'test value',
 };

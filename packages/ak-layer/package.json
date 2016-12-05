@@ -1,7 +1,7 @@
 {
   "name": "ak-layer",
   "version": "62.0.2",
-  "description": "A layer component",
+  "description": "A React layer component responsible for the position of an element on a page",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",

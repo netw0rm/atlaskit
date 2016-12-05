@@ -16,7 +16,6 @@ const { count, toArray } = Children;
  * @example @js import Breadcrumbs from 'ak-breadcrumbs';
  * ReactDOM.render(<Breadcrumbs />);
  */
-/* eslint-disable react/prefer-stateless-function */
 export default class Breadcrumbs extends PureComponent {
   static propTypes = {
     /**
@@ -37,11 +36,11 @@ export default class Breadcrumbs extends PureComponent {
   constructor() {
     super();
     this.state = { isExpanded: false };
+    this.expand = this.expand.bind(this);
   }
 
-  setExpanded(val) {
-    this.setState({ isExpanded: !!val });
-    return val;
+  expand() {
+    this.setState({ isExpanded: true });
   }
 
   renderAllItems() {
@@ -52,7 +51,7 @@ export default class Breadcrumbs extends PureComponent {
     const itemsToRender = toArray(this.props.children);
     return [
       itemsToRender[0],
-      <EllipsisItem key="ellipsis" onClick={() => this.setExpanded(true)} />,
+      <EllipsisItem key="ellipsis" onClick={this.expand} />,
       itemsToRender[itemsToRender.length - 1],
     ];
   }

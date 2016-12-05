@@ -12,7 +12,6 @@ const { item, itemButton, tooltip, tooltipTrigger, truncated } = locals;
  * @example @js import { AkBreadcrumbsItem } from 'ak-breadcrumbs';
  * ReactDOM.render(<AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem);
  */
-/* eslint-disable-next-line react/prefer-stateless-function */
 export default class BreadcrumbsItem extends PureComponent {
   static propTypes = {
     /**

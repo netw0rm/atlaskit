@@ -14,8 +14,8 @@ chai.use(chaiEnzyme());
 
 const {
   content: contentClass,
-  invalid: invalidClass,
-  focused: focusedClass,
+  invalid: isInvalidClass,
+  focused: isFocusedClass,
 } = styles.locals;
 
 describe('ak-field-base', () => {
@@ -26,23 +26,23 @@ describe('ak-field-base', () => {
       )
     );
 
-    describe('focused prop = true', () => {
-      it('should render the slotwrapper with the .focused class', () =>
-        expect(shallow(<Content focused />)).to.have.descendants(`.${focusedClass}`)
+    describe('isFocused prop = true', () => {
+      it('should render the slotwrapper with the .isFocused class', () =>
+        expect(shallow(<Content isFocused />)).to.have.descendants(`.${isFocusedClass}`)
       );
     });
 
-    describe('invalid prop = true', () =>
-      it('should render with the focused styles and not the invalid styles', () =>
-        expect(shallow(<Content invalid />)).to.have.descendants(`.${invalidClass}`)
+    describe('isInvalid prop = true', () =>
+      it('should render with the isFocused styles and not the isInvalid styles', () =>
+        expect(shallow(<Content isInvalid />)).to.have.descendants(`.${isInvalidClass}`)
       )
     );
 
-    describe('focused prop = true AND invalid prop = true', () =>
-      it('should render with the focused styles and not the invalid styles', () => {
-        const wrapper = shallow(<Content focused invalid />);
-        expect(wrapper).to.have.descendants(`.${focusedClass}`);
-        expect(wrapper).to.not.have.descendants(`.${invalidClass}`);
+    describe('isFocused prop = true AND isInvalid prop = true', () =>
+      it('should render with the isFocused styles and not the isInvalid styles', () => {
+        const wrapper = shallow(<Content isFocused isInvalid />);
+        expect(wrapper).to.have.descendants(`.${isFocusedClass}`);
+        expect(wrapper).to.not.have.descendants(`.${isInvalidClass}`);
       })
     );
 

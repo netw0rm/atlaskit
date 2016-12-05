@@ -9,6 +9,8 @@ FieldBase provides an Atlassian Design Guidelines compatible implementation for:
 
 FieldBase's *will* work by themselves but are really meant to be extended into a full field component.
 
+![Example Fieldbase](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-field-base/docs/fieldbase.png)
+
 ## Try it out
 
 Interact with a [live demo of the ak-field-base component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-field-base/@VERSION@/).

@@ -10,7 +10,7 @@ export default class Presence extends PureComponent {
   }
 
   static defaultProps = {
-    presence: presences.none,
+    presence: 'none',
   }
 
   render() {

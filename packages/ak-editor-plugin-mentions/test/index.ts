@@ -1,4 +1,4 @@
-import { default as plugin } from '../src';
+import MentionsPlugin from '../src';
 import { MentionQueryMarkType, MentionNodeType } from 'ak-editor-schema';
 import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';
@@ -22,7 +22,7 @@ const schema: Schema = new Schema({
 const makeEditor = (container: Node) => {
   return new ProseMirror({
     schema: schema,
-    plugins: [ plugin ],
+    plugins: [ MentionsPlugin ],
     place: container
   });
 }
@@ -31,14 +31,13 @@ const container = fixtures();
 
 describe('ak-editor-plugin-mentions', () => {
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = plugin as any; // .State is not public API.
+    const Plugin = MentionsPlugin as any; // .State is not public API.
     expect(Plugin.State.name).is.be.a('string');
   });
 
   describe('keymap when mention query is active', () => {
     it('should ignore "Up"-key if no "onSelectPrevious" is attached', () => {
       const pm = makeEditor(container());
-      const pluginInstance = plugin.get(pm);
       pm.input.insertText(0, 0, '@');
       pm.flush();
 
@@ -49,7 +48,6 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should ignore "Down"-key if no "onSelectNext" is attached', () => {
       const pm = makeEditor(container());
-      const pluginInstance = plugin.get(pm);
       pm.input.insertText(0, 0, '@');
       pm.flush();
 
@@ -60,7 +58,6 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should ignore "Enter"-key if no "onSelectCurrent" is attached', () => {
       const pm = makeEditor(container());
-      const pluginInstance = plugin.get(pm);
       pm.input.insertText(0, 0, '@');
       pm.flush();
 
@@ -71,12 +68,12 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should trigger "onSelectPrevious" when "Up"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginInstance = plugin.get(pm);
+      const pluginState = MentionsPlugin.get(pm)!;
       pm.input.insertText(0, 0, '@');
       pm.flush();
 
       const spy = sinon.spy();
-      pluginInstance.onSelectPrevious = spy;
+      pluginState.onSelectPrevious = spy;
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 38;
 
@@ -86,12 +83,12 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should trigger "onSelectNext" when "Down"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginInstance = plugin.get(pm);
+      const pluginState = MentionsPlugin.get(pm)!;
       pm.input.insertText(0, 0, '@');
       pm.flush();
 
       const spy = sinon.spy();
-      pluginInstance.onSelectNext = spy;
+      pluginState.onSelectNext = spy;
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 40;
 
@@ -101,12 +98,12 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should trigger "onSelectCurrent" when "Enter"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginInstance = plugin.get(pm);
+      const pluginState = MentionsPlugin.get(pm)!;
       pm.input.insertText(0, 0, '@');
       pm.flush();
 
       const spy = sinon.spy();
-      pluginInstance.onSelectCurrent = spy;
+      pluginState.onSelectCurrent = spy;
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 13;
 
@@ -116,11 +113,11 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should trigger "dismiss" when "Esc"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginInstance = plugin.get(pm);
+      const pluginState = MentionsPlugin.get(pm)!;
       pm.input.insertText(0, 0, '@');
       pm.flush();
 
-      const spy = sinon.spy(pluginInstance, 'dismiss');
+      const spy = sinon.spy(pluginState, 'dismiss');
       const keyDownEvent = new CustomEvent('keydown');
       (keyDownEvent as any).keyCode = 27;
 
@@ -134,7 +131,7 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should replace mention-query-mark with mention-node', () => {
       const pm = makeEditor(container());
-      const pluginInstance = plugin.get(pm);
+      const pluginInstance = MentionsPlugin.get(pm)!;
 
       pm.input.insertText(0, 0, '@');
       pm.flush();

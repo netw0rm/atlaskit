@@ -19,7 +19,7 @@ module.exports = (tmpFolder, entry) => ({
   }, entry),
   output: {
     path: tmpFolder,
-    filename: '[name].jsx',
+    filename: '[name].js',
     libraryTarget: 'commonjs2',
   },
   externals: [

@@ -43,7 +43,7 @@ describe(name, () => {
     });
   });
 
-  describe('all about props', () => {
+  describe('props', () => {
     it('if the trigger is disabled, the button also should be disabled', () => {
       const wrapper = mount(<Trigger type="button" isDisabled>trigger</Trigger>);
       expect(wrapper.find('button').props().disabled).to.be.true;

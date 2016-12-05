@@ -1,0 +1,49 @@
+@import '~akutil-shared-styles/src/colors.less';
+
+.root {
+  display: block;
+}
+
+.read-view-wrapper {
+
+  display: inline-flex;
+
+  &:hover .edit-button {
+    opacity: 1;
+  }
+}
+
+.read-view-content-wrapper {
+  display: inline-flex;
+  width: 100%;
+}
+
+// the vendor prefixes here are deliberate. 'appearance' does not seem to get picked up by postcss,
+// eslint or even Chrome for some reason. :/
+.edit-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: @ak-color-N500;
+  display: inline-flex;
+  flex-direction: row-reverse;
+  line-height: 1;
+  margin: 0;
+  opacity: 0;
+  outline: 0;
+  padding-left: 10px;
+  padding: 0;
+  width: 100%;
+
+  &:focus {
+    opacity: 1;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+}

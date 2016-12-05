@@ -1,5 +1,5 @@
 import React from 'react';
-import FieldBase from '../src';
+import AkFieldBase from '../src';
 import styles from '../src/styles.less';
 
 
@@ -13,7 +13,7 @@ const inputStyle = {
   width: '100%',
 };
 
-const InputFieldBase = props => (<FieldBase
+const InputFieldBase = props => (<AkFieldBase
   className={styles.locals.akFieldBase}
   label="Label for FieldBase"
   {...props}
@@ -22,21 +22,21 @@ const InputFieldBase = props => (<FieldBase
     type="text"
     style={inputStyle}
     defaultValue={props.text || 'A children input'}
-    disabled={props.disabled}
+    disabled={props.isDisabled}
   />
-</FieldBase>);
+</AkFieldBase>);
 
-const DivFieldBase = props => (<FieldBase
+const DivFieldBase = props => (<AkFieldBase
   className={styles.locals.akFieldBase}
   label="Label for FieldBase"
   {...props}
 >
   <div>{props.text || 'This is inside content'}</div>
-</FieldBase>);
+</AkFieldBase>);
 
 InputFieldBase.propTypes = {
   text: React.PropTypes.string,
-  disabled: React.PropTypes.bool,
+  isDisabled: React.PropTypes.bool,
 };
 
 DivFieldBase.propTypes = {

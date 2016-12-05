@@ -10,16 +10,16 @@ import styles from './styles.less';
 */
 export default class Label extends PureComponent {
   static propTypes = {
-    hideLabel: PropTypes.bool,
+    shouldHideLabel: PropTypes.bool,
     label: PropTypes.string,
     onLabelClick: PropTypes.func,
-    required: PropTypes.bool,
+    isRequired: PropTypes.bool,
     children: PropTypes.node,
   }
 
   render() {
     const labelClasses = classNames(styles.locals.labelText, {
-      [styles.locals.hidden]: this.props.hideLabel,
+      [styles.locals.hidden]: this.props.shouldHideLabel,
     });
     // we render the label in a span that is in a div so that the label itself will be
     // display: block but we can put the click handler on the span so that clicking
@@ -28,7 +28,7 @@ export default class Label extends PureComponent {
       <label className={styles.locals.label}>
         <div className={labelClasses}>
           <span onClick={this.props.onLabelClick}>{this.props.label}</span>
-          {this.props.required ? <span className={styles.locals.required}>*</span> : null}
+          {this.props.isRequired ? <span className={styles.locals.required}>*</span> : null}
         </div>
         {this.props.children}
       </label>

@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
-import FieldBase from '../src';
+import { FieldBase } from '../src';
 import Content from '../src/Content';
 import Label from '../src/Label';
 import styles from '../src/styles.less';
@@ -27,10 +27,11 @@ describe('ak-field-base', () => {
   describe('properties', () => {
     [
       { prop: 'label', value: 'new label', element: Label },
-      { prop: 'hideLabel', value: true, element: Label },
-      { prop: 'invalid', value: true, element: Content },
-      { prop: 'disabled', value: true, element: Content },
-      { prop: 'required', value: true, element: Label },
+      { prop: 'shouldHideLabel', value: true, element: Label },
+      { prop: 'isInvalid', value: true, element: Content },
+      { prop: 'isDisabled', value: true, element: Content },
+      { prop: 'isRequired', value: true, element: Label },
+      { prop: 'isFocused', value: true, element: Content },
       { prop: 'appearance', value: compact, element: Content },
       { prop: 'appearance', value: subtle, element: Content },
     ].forEach(setup =>
@@ -51,7 +52,7 @@ describe('ak-field-base', () => {
     });
   });
 
-  describe('focus behaviour without override', () => {
+  describe('focus behaviour', () => {
     let wrapper;
     let content;
 
@@ -61,15 +62,28 @@ describe('ak-field-base', () => {
       content.find(`.${styles.locals.content}`).simulate('focus');
     });
 
-    it('should apply focus styles when Content is focused', () => {
-      expect(wrapper).to.have.state('focused', true);
-      expect(content).to.have.prop('focused', true);
+    it('should call onFocusCallback', () => {
+      const spy = sinon.spy();
+      wrapper = mount(<FieldBase onFocusCallback={spy} />);
+      content = wrapper.find(Content);
+      content.find(`.${styles.locals.content}`).simulate('focus');
+      expect(spy).to.have.been.calledOnce;
     });
 
-    it('should remove focus styles when slotted child is blurred', () => {
+    it('should call onFocusCallback', () => {
+      const spy = sinon.spy();
+      wrapper = mount(<FieldBase onFocusCallback={spy} />);
+      content = wrapper.find(Content);
+      content.find(`.${styles.locals.content}`).simulate('focus');
+      expect(spy).to.have.been.calledOnce;
+    });
+
+    it('should call onBlurCallback', () => {
+      const spy = sinon.spy();
+      wrapper = mount(<FieldBase onBlurCallback={spy} />);
+      content = wrapper.find(Content);
       content.find(`.${styles.locals.content}`).simulate('blur');
-      expect(wrapper).to.have.state('focused', false);
-      expect(content).to.have.prop('focused', false);
+      expect(spy).to.have.been.calledOnce;
     });
   });
 

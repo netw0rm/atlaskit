@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
 import { name } from '../package.json';
-import FieldBase from '../src';
+import AkFieldBase from '../src';
 import { InputFieldBase, DivFieldBase } from './shared-components';
 import { compact, subtle } from '../src/internal/appearances';
 
@@ -35,10 +35,10 @@ storiesOf(name, module)
     <div>
       <form action="" style={formStyle}>
         <InputFieldBase label="A default field-base" />
-        <InputFieldBase label="Invalid state" invalid />
-        <InputFieldBase label="Focused state" focused />
-        <InputFieldBase label="Required state" required />
-        <InputFieldBase label="Disabled state" disabled />
+        <InputFieldBase label="Invalid state" isInvalid />
+        <InputFieldBase label="Focused state" isFocused />
+        <InputFieldBase label="Required state" isRequired />
+        <InputFieldBase label="Disabled state" isDisabled />
         <InputFieldBase label="Compact state" appearance={compact} />
         <InputFieldBase label="Subtle state" appearance={subtle} />
       </form>
@@ -67,9 +67,9 @@ storiesOf(name, module)
           <DivFieldBase text={longTextNoSpaces} label="Lots of text (no whitespace)" />
           <DivFieldBase text={''} label="No content" />
 
-          <FieldBase label="Small non-textual content (5x5 div)">
+          <AkFieldBase label="Small non-textual content (5x5 div)">
             <div><div style={smallBoxStyles} /></div>
-          </FieldBase>
+          </AkFieldBase>
           <InputFieldBase
             label="With a max-width css style"
             style={{ maxWidth: '200em' }}
@@ -82,7 +82,7 @@ storiesOf(name, module)
     <div>
       <form action="" style={formStyle}>
         <h2>My Label-less Form</h2>
-        <InputFieldBase label="Child input" hideLabel text="An input child with no label" />
+        <InputFieldBase label="Child input" shouldHideLabel text="An input child with no label" />
       </form>
     </div>
   ));

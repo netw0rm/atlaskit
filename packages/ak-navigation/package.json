@@ -1,6 +1,6 @@
 {
   "name": "ak-navigation",
-  "version": "14.0.0",
+  "version": "15.2.0",
   "description": "ak-navigation webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -17,7 +17,8 @@
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "keycode": "^2.1.2"
+    "keycode": "^2.1.2",
+    "react-container-query": "^0.7.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

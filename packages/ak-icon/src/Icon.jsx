@@ -72,7 +72,7 @@ export default class Icon extends PureComponent {
         className={classnames([styles.icon, styles[this.props.size]])}
         onClick={this.props.onClick}
       >
-        <span className={styles.content}>
+        <span className={styles.iconContent}>
           <Glyph role="img" label={this.props.label} />
         </span>
       </div>

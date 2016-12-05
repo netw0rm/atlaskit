@@ -25,6 +25,7 @@ export default class ModalDemo extends React.PureComponent {
         footer={
           footer || <Button appearance="primary">Create issue</Button>
         }
+        {...this.props}
       >
         {children || <Lorem count="1" />}
       </ModalDialog>

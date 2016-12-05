@@ -7,61 +7,42 @@ const mentionQueryMarkName = 'mention_query';
 const mentionNodeName = 'mention';
 
 export class MentionsPluginState {
-  pm: ProseMirror;
+  private pm: ProseMirror;
+  private hasKeymap = false;
+  private changeHandlers: MentionsPluginStateSubscriber[] = [];
+
   renderHandler: (el: HTMLElement, pm: ProseMirror) => void;
   autocompleteHandler: (el: HTMLElement, pm: ProseMirror) => void;
-  query: string | null = null;
+  query?: string;
   queryActive = false;
-  anchorElement: HTMLElement | null = null;
+  anchorElement?: HTMLElement;
   keymap: Keymap;
-  hasKeymap = false;
-
   onSelectPrevious = () => {};
   onSelectNext =  () => {};
   onSelectCurrent = () => {};
 
-  private changeHandlers: MentionsPluginStateSubscriber[] = [];
-
   constructor(pm: ProseMirror) {
     this.pm = pm;
 
+    this.keymap = new Keymap({
+      Up: () => this.onSelectPrevious(),
+      Down: () => this.onSelectNext(),
+      Enter: () => this.onSelectCurrent(),
+      Esc: () => this.dismiss(),
+    });
+
     // add the input rules to insert mentions and emoticons
-    if (this.pm.schema.nodes.mention) {
+    if (pm.schema.nodes.mention) {
       inputRules.ensure(pm).addRule(mentionQueryRule);
     }
 
-    pm.updateScheduler([
-      pm.on.selectionChange,
-      pm.on.change,
-      pm.on.activeMarkChange,
-    ], () => this.update());
-
-    this.buildKeymap();
-  }
-
-  buildKeymap() {
-    let keys: any = {};
-    function bind(key: string, cmd: Function) {
-      keys[key] = cmd;
+    if (pm.schema.marks.mention_query) {
+      pm.updateScheduler([
+        pm.on.selectionChange,
+        pm.on.change,
+        pm.on.activeMarkChange,
+      ], () => this.update());
     }
-
-    bind('Up', () => {
-      this.onSelectPrevious();
-    });
-
-    bind('Down', () => {
-      this.onSelectNext();
-    });
-
-    bind('Enter', () => {
-      this.onSelectCurrent();
-    });
-
-    bind('Esc', () => {
-      this.dismiss();
-    });
-
-    this.keymap = new Keymap(keys);
   }
 
   private update(): void {
@@ -79,9 +60,9 @@ export class MentionsPluginState {
 
       const newQuery = (nodeBefore ? nodeBefore.textContent : '' ).substr(1) + (nodeAfter && this.pm.schema.marks[mentionQueryMarkName].isInSet(nodeAfter.marks) ? nodeAfter.textContent : '');
       if (this.query !== newQuery) {
-        dirty = true; 
+        dirty = true;
         this.query = newQuery;
-        
+
       }
     } else if (this.queryActive) {
       dirty = true;
@@ -112,7 +93,7 @@ export class MentionsPluginState {
   dismiss() {
     let sel = this.pm.selection;
     this.queryActive = false;
-    this.query = null;
+    this.query = undefined;
 
     this.pm.tr.removeMark(0, this.pm.doc.content.size, this.pm.schema.marks[mentionQueryMarkName]).applyAndScroll();
 
@@ -146,7 +127,7 @@ export class MentionsPluginState {
     if (!e.detail) {
       return;
     }
-    
+
     if (this.pm.schema.nodes[mentionNodeName]) {
       const { start, end } = this.findMentionQueryMark();
       const node = this.pm.schema.nodes[mentionNodeName as any].create({ displayName: e.detail.name, id: `@${e.detail.mentionName}` });

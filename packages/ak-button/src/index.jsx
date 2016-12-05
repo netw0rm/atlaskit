@@ -99,6 +99,12 @@ export default class AkButton extends Component {
        * @type {string}
        */
       className: PropTypes.string,
+      /**
+       * @description Generic onClick button handler
+       * @memberof Button
+       * @type {Function}
+       */
+      onClick: PropTypes.func,
     };
   }
 

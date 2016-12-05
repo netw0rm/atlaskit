@@ -1,6 +1,6 @@
 import mocha from 'mocha';
 import AtlassianIcon from '../glyph/atlassian';
-import { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { name } from '../package.json';
 
 describe(name, () => {

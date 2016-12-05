@@ -2,18 +2,17 @@ import '../types';
 import { storiesOf } from '@kadira/storybook';
 import makeJsonSchema from '../src/json-schema';
 import schema from '../src';
-import React from 'react';
-import * as ReactDOM from 'react-dom';
+import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
 import { OrderedMap } from 'ak-editor-prosemirror';
 import { highlightBlock } from 'highlight.js';
 import { ProseMirror } from 'ak-editor-prosemirror';
 import reactify from 'akutil-react';
-import AkEditorBitbucketComponent from 'ak-editor-bitbucket';
+import Editor from 'ak-editor-bitbucket';
 import Ajv from 'ajv';
 import 'style!css!highlight.js/styles/tomorrow.css';
 import TabsComponent, { Tab as TabComponent } from 'ak-tabs';
 
-const AkEditorBitbucket = reactify(AkEditorBitbucketComponent);
 const Tabs = reactify(TabsComponent);
 const Tab = reactify(TabComponent);
 const jsonSchema = makeJsonSchema(schema);
@@ -31,62 +30,32 @@ const jsonPretty = (obj: any) => JSON.stringify(obj, null, 2);
 storiesOf('ak-editor-schema', module)
   .add('JSON Schema', () => {
     interface State {
-      editorState: any;
+      docJson?: any;
       isValid: boolean;
     }
 
     class Story extends React.PureComponent<{}, State> {
+      state: State = { isValid: true };
       container?: HTMLDivElement;
       editor?: Element;
 
-      constructor() {
-        super();
-        this.state = {
-          editorState: null,
-          isValid: true
-        };
-        this.onEditorChange = this.onEditorChange.bind(this);
-      }
-
       componentDidMount() {
-        if (this.container) {
-          const container = this.container;
+        const { container } = this.refs;
+        if (container instanceof HTMLElement) {
           for (const code of container.querySelectorAll('code')) {
             highlightBlock(code);
           }
         }
-        if (this.editor) {
-          this.fetchEditorState(this.editor);
-        }
-      }
-
-      onEditorChange(e: Event) {
-        const editor = e.target;
-        this.fetchEditorState(editor);
-      }
-
-      fetchEditorState(editor: any) {
-        const pm = editor._pm as ProseMirror | undefined;
-        if (pm) {
-          const editorState = pm.doc.toJSON();
-          this.setState({
-            editorState: editorState,
-            isValid: validate(editorState),
-          });
-        }
+        this.fetchEditorState();
       }
 
       render() {
         return (
-          <div
-            style={{ display: 'flex', flexDirection: 'column' }}
-            ref={(elem: any) => { this.container = elem; }}
-          >
-
-            <AkEditorBitbucket
-              onChange={this.onEditorChange}
-              ref={(c: any) => { this.editor = ReactDOM.findDOMNode(c); }}
-              expanded />
+          <div style={{ display: 'flex', flexDirection: 'column' }} ref='container'>
+            <Editor
+              onChange={this.fetchEditorState}
+              ref='editor'
+              defaultExpanded />
 
             <Tabs style={{ backgroundColor: 'white' }}>
               <Tab label="ProseMirror schema">
@@ -103,8 +72,8 @@ storiesOf('ak-editor-schema', module)
                 <pre><code className='json'>{jsonPretty(jsonSchema)}</code></pre>
               </Tab>
               <Tab label="JSON" selected>
-                {this.state.editorState === null ? null :
-                  <pre><code className='json'>{jsonPretty(this.state.editorState)}</code></pre>
+                {this.state.docJson === null ? null :
+                  <pre><code className='json'>{jsonPretty(this.state.docJson)}</code></pre>
                 }
                 {this.state.isValid ? null :
                   <fieldset>
@@ -117,7 +86,25 @@ storiesOf('ak-editor-schema', module)
           </div>
         );
       }
+
+      private fetchEditorState = () => {
+        const { editor } = this.refs;
+        if (editor instanceof Editor) {
+          const { doc } = editor;
+          if (doc) {
+            const docJson = doc.toJSON();
+            this.setState({
+              docJson,
+              isValid: validate(docJson),
+            });
+          }
+        }
+      }
     }
 
-    return <Story />
+    return (
+      <div style={{ padding: 20 }}>
+        <Story />
+      </div>
+    );
   });

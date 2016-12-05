@@ -1,6 +1,6 @@
 {
   "name": "ak-navigation",
-  "version": "15.0.0",
+  "version": "15.2.0",
   "description": "ak-navigation webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "ak-avatar": "^4.0.0",
     "ak-dropdown": "^10.0.0",
-    "ak-icon": "^10.0.0",
+    "ak-icon": "^11.1.4",
     "ak-page": "^7.0.0",
     "akutil-common-test": "*",
     "karma-sinon-chai": "^1.2.4",

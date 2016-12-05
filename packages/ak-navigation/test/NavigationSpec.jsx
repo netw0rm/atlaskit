@@ -50,5 +50,20 @@ describe('<Navigation />', () => {
       expect(shallow(<Navigation containerHeader={header} />)
         .find('ContainerNavigation').props().header).to.equal(header);
     });
+    describe('globalPrimaryIcon', () => {
+      it('should insert primary icon into navigation', () => {
+        expect(shallow(<Navigation globalPrimaryIcon={<span className="PRIMARY_ICON" />} />)).to.have.exactly(1).descendants('.PRIMARY_ICON');
+      });
+    });
+    describe('globalSearchIcon', () => {
+      it('should insert search icon into navigation', () => {
+        expect(shallow(<Navigation globalSearchIcon={<span className="SEARCH_ICON" />} />)).to.have.exactly(1).descendants('.SEARCH_ICON');
+      });
+    });
+    describe('globalCreateIcon', () => {
+      it('should insert create icon into navigation', () => {
+        expect(shallow(<Navigation globalCreateIcon={<span className="CREATE_ICON" />} />)).to.have.exactly(1).descendants('.CREATE_ICON');
+      });
+    });
   });
 });

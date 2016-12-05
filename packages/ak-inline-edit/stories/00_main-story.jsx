@@ -74,4 +74,21 @@ storiesOf(name, module)
     <div style={containerStyle}>
       <TextInlineEdit isLabelHidden />
     </div>
+  ))
+  .add('with no edit view', () => (
+    <div style={containerStyle}>
+      <AkInlineEdit
+        label="Read-only"
+        readView="Can't touch this"
+      />
+    </div>
+  ))
+  .add('with no edit view and label hidden', () => (
+    <div style={containerStyle}>
+      <AkInlineEdit
+        label="Read-only"
+        readView="Can't touch this"
+        isLabelHidden
+      />
+    </div>
   ));

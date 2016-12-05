@@ -2,6 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!./styles.less';
 import EditView from './Edit';
 import ReadView from './Read';
+import ReadOnlyView from './ReadOnly';
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -32,7 +33,7 @@ export default class InlineEdit extends PureComponent {
      * @memberof InlineEdit
      * @type {ReactNode}
      */
-    editView: PropTypes.node.isRequired,
+    editView: PropTypes.node,
     /**
      * @description Whether InlineEdit is on Edit mode or Read mode.
      *
@@ -85,9 +86,22 @@ export default class InlineEdit extends PureComponent {
     </EditView>
   )
 
+  renderEditableView = () => (
+    this.props.isEditing ? this.renderEditView() : this.renderReadView()
+  )
+
+  renderReadOnlyView = () => (
+    <ReadOnlyView
+      label={this.props.label}
+      isLabelHidden={this.props.isLabelHidden}
+    >
+      {this.props.readView}
+    </ReadOnlyView>
+  )
+
   render = () => (
     <div className={styles.root}>
-      {this.props.isEditing ? this.renderEditView() : this.renderReadView()}
+      {this.props.editView ? this.renderEditableView() : this.renderReadOnlyView()}
     </div>
   )
 }

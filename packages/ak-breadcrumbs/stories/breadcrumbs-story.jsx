@@ -1,5 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+import AtlassianIcon from 'ak-icon/glyph/atlassian';
 
 import AkBreadcrumbs, { AkBreadcrumbsItem } from '../src';
 import { name } from '../package.json';
@@ -29,6 +30,28 @@ storiesOf(name, module)
       <AkBreadcrumbsItem href="/supercalifragilisticexpialidocious">
         Supercalifragilisticexpialidocious
       </AkBreadcrumbsItem>
+    </AkBreadcrumbs>
+  ))
+  .add('ak-breadcrumbs with markup in item content', () => (
+    <AkBreadcrumbs>
+      <AkBreadcrumbsItem href="/page"><b>Page</b></AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/page">
+        With icon <AtlassianIcon label="Atlassian icon" />
+      </AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/page">
+        <span>Long page name with <b>markup</b> <i>(should be truncated)</i></span>
+        <span> and icon <AtlassianIcon label="Atlassian icon" /></span>
+      </AkBreadcrumbsItem>
+    </AkBreadcrumbs>
+  ))
+  .add('ak-breadcrumbs with long and short items', () => (
+    <AkBreadcrumbs>
+      <AkBreadcrumbsItem href="/long">Supercalifragilisticexpialidocious</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/short">Item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/short">Another item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/long">Long item name which should be truncated</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/long">Another long item name which should be truncated</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/short">Short item</AkBreadcrumbsItem>
     </AkBreadcrumbs>
   ))
   .add('ak-breadcrumbs with many items', () => (

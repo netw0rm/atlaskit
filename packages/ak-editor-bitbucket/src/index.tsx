@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { ProseMirror, Schema } from 'ak-editor-prosemirror';
+import { ProseMirror, Schema, Node } from 'ak-editor-prosemirror';
 import ListsPlugin from 'ak-editor-plugin-lists';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import MarkdownInputRulesPlugin from 'ak-editor-plugin-markdown-inputrules';
@@ -73,9 +73,20 @@ export default class Editor extends PureComponent<Props, State> {
       : this.props.defaultValue;
   }
 
+  /**
+   * Return the current ProseMirror doc value from the editor;
+   */
+  get doc(): Node | undefined {
+    const { pm } = this.state;
+    return pm
+      ? pm.doc
+      : undefined;
+  }
+
   render() {
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
+    const { pm } = this.state;
 
     return (
       <Chrome
@@ -85,7 +96,10 @@ export default class Editor extends PureComponent<Props, State> {
         onCancel={handleCancel}
         onSave={handleSave}
         placeholder={this.props.placeholder}
-        pm={this.state.pm}
+        pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
+        pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
+        pluginStateLists={pm && ListsPlugin.get(pm)}
+        pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
       />
     );
   }
@@ -129,7 +143,7 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       if (context) {
-        BlockTypePlugin.get(pm).changeContext(context);
+        BlockTypePlugin.get(pm)!.changeContext(context);
       }
 
       pm.addKeymap(buildKeymap(pm.schema));

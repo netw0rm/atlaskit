@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { action } from '@kadira/storybook';
+import { AtlassianIcon, SearchIcon, CreateIcon } from 'ak-icon';
 import Navigation, { AkContainerHeader } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 
@@ -23,6 +24,9 @@ export default class BasicNavigation extends Component {
             />
           </a>
         }
+        globalPrimaryIcon={<AtlassianIcon />}
+        globalSearchIcon={<SearchIcon />}
+        globalCreateIcon={<CreateIcon />}
         {...this.props}
       >
         {this.props.children}
@@ -30,4 +34,3 @@ export default class BasicNavigation extends Component {
     );
   }
 }
-

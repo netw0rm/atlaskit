@@ -276,10 +276,10 @@ declare module 'prosemirror/dist/edit/plugin' {
 
     export class Plugin<S> {
         constructor(state: PluginStateCtor<S>, options?: any, prop?: any);
-        get(pm: ProseMirror): S;
+        get(pm: ProseMirror): S | undefined;
         attach(pm: ProseMirror): any;
         detach(pm: ProseMirror): void;
-        ensure(pm: ProseMirror): any;
+        ensure(pm: ProseMirror): S;
         config(options: any): this;
     }
 }

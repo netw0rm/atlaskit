@@ -15,7 +15,7 @@ const defaultProps = {
   label: 'test',
   isLabelHidden: true,
   isEditing: false,
-  isFocused: false,
+  isFocusedInitially: false,
   onEditRequested: noop,
   readView: 'test',
   editView: 'test',

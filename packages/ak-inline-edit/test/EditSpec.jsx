@@ -14,7 +14,7 @@ chai.use(sinonChai);
 
 const defaultProps = {
   label: 'test',
-  isFocused: false,
+  isFocusedInitially: false,
   children: <Input value="test" />,
 };
 

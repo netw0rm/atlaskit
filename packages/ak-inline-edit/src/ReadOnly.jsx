@@ -3,7 +3,7 @@ import { FieldBase } from 'ak-field-base';
 import { locals } from './styles.less';
 
 /* eslint-disable react/prefer-stateless-function */
-export default class ReadView extends PureComponent {
+export default class ReadOnlyView extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
     isLabelHidden: PropTypes.bool.isRequired,

@@ -11,8 +11,6 @@ const Tab = reactify(AkTab);
 const CancelAction = () => action('Cancel')();
 const SaveAction = () => action('Save')();
 
-declare var module: any;
-
 storiesOf('ak-editor-jira', module)
   .add('Empty', () =>
     <div style={{ padding: 20 }}>

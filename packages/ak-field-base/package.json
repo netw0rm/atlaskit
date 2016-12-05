@@ -19,6 +19,10 @@
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },
+  "devDependencies": {
+    "ak-button": "^4.1.4",
+    "ak-icon": "^11.1.5"
+  },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "repository": {

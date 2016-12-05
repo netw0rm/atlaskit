@@ -120,6 +120,7 @@ export default class FieldBase extends PureComponent {
      * @example <FieldBase onBlur={() => alert('content blured!')} />
      */
     onBlur: PropTypes.func.isRequired,
+    rightGutter: PropTypes.node,
     /**
      * @description The content that will be displayed within the field
      *
@@ -154,6 +155,7 @@ export default class FieldBase extends PureComponent {
           isDisabled={this.props.isDisabled}
           isInvalid={this.props.isInvalid}
           isFocused={this.props.isFocused}
+          rightGutter={this.props.rightGutter}
         >
           {this.props.children}
         </Content>

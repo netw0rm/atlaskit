@@ -1,0 +1,19 @@
+@import '~akutil-shared-styles/src/colors.less';
+
+.triggerContainer {
+  display: inline-flex;
+}
+
+.trigger {
+  display: flex;
+  width: 100%;
+  transition: box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+  transition-duration: 0.2s;
+  cursor: pointer;
+
+  &:focus {
+    box-shadow: 0 0 0 2px @ak-color-B200;
+    outline: none;
+    outline-offset: 0;
+  }
+}

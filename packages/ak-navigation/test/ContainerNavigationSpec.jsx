@@ -7,9 +7,9 @@ import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import Spacer from '../src/components/js/Spacer';
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme);
+chai.use(chaiEnzyme());
 chai.should();
-const expect = chai.expect; // eslint-disable-line no-unused-vars
+const expect = chai.expect;
 
 describe('<ContainerNavigation />', () => {
   describe('children', () => {

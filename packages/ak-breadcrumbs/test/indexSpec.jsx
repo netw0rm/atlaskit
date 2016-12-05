@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
 import Breadcrumbs, { AkBreadcrumbsItem as Item } from '../src/';
-import styles from '../src/styles.less';
+import { locals } from '../src/styles.less';
+import EllipsisItem from '../src/internal/EllipsisItem';
 import { name } from '../package.json';
 
 const { expect } = chai;
@@ -26,6 +27,18 @@ describe(name, () => {
       const wrapper = shallow(<Breadcrumbs />);
       expect(wrapper).to.be.defined;
       expect(wrapper.instance()).to.be.instanceOf(Component);
+      expect(wrapper.state().isExpanded).to.equal(false);
+    });
+
+    it('should be able to render a single child', () => {
+      const wrapper = shallow(
+        <Breadcrumbs>
+          <Item>item</Item>
+        </Breadcrumbs>
+      );
+      const containerDiv = wrapper.find(`.${locals.container}`);
+      expect(containerDiv).to.have.lengthOf(1);
+      expect(containerDiv.find(Item)).to.have.lengthOf(1);
     });
 
     it('should render all children inside a container div', () => {
@@ -36,9 +49,55 @@ describe(name, () => {
           <Item>item</Item>
         </Breadcrumbs>
       );
-      const containerDiv = wrapper.find(`.${styles.locals.container}`);
-      expect(containerDiv).to.have.lengthOf(1);
-      expect(containerDiv.find(Item)).to.have.lengthOf(3);
+      const containerDiv = wrapper.find(`.${locals.container}`);
+      expect(containerDiv).to.exist;
+      expect(containerDiv).to.have.exactly(3).descendants(Item);
+    });
+
+    describe('with more than 8 items', () => {
+      const firstItem = <Item>item1</Item>;
+      const lastItem = <Item>item2</Item>;
+      let wrapper;
+
+      beforeEach(() => {
+        wrapper = shallow(
+          <Breadcrumbs>
+            {firstItem}
+            <Item>item2</Item>
+            <Item>item3</Item>
+            <Item>item4</Item>
+            <Item>item5</Item>
+            <Item>item6</Item>
+            <Item>item7</Item>
+            <Item>item8</Item>
+            {lastItem}
+          </Breadcrumbs>
+        );
+      });
+
+      it('renders only the first and last items, and an ellipsis item', () => {
+        expect(wrapper).to.have.exactly(2).descendants(Item);
+        expect(wrapper).to.contain(firstItem);
+        expect(wrapper).to.contain(lastItem);
+        expect(wrapper).to.have.exactly(1).descendants(EllipsisItem);
+      });
+
+      it('updates the expanded state when the ellipsis is clicked', () => {
+        const ellipsisItem = wrapper.find(EllipsisItem);
+        expect(wrapper.state().isExpanded).to.equal(false);
+        ellipsisItem.simulate('click');
+        expect(wrapper.state().isExpanded).to.equal(true);
+      });
+
+      it('applies the collapsed class', () => {
+        expect(wrapper).to.have.exactly(1).descendants(`.${locals.collapsed}`);
+      });
+
+      it('does not apply the collapsed class when expanded', () => {
+        const ellipsisItem = wrapper.find(EllipsisItem);
+        ellipsisItem.simulate('click');
+        expect(wrapper).to.not.have.descendants(`.${locals.collapsed}`);
+      });
     });
   });
 });

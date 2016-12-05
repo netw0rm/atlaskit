@@ -21,13 +21,13 @@ export default class ToolbarIconButton extends PureComponent<Props, {}> {
         onMouseDown={this.handleMouseDown}
       >
         <AkButton
-          selected={this.props.selected}
+          isDisabled={this.props.disabled}
+          isSelected={this.props.selected}
           spacing='none'
           appearance='subtle'
           href={this.props.href}
           target={this.props.target}
           theme={this.props.theme}
-          disabled={this.props.disabled}
         >
           {this.props.icon}
         </AkButton>

@@ -16,6 +16,20 @@ describe('ak-editor-plugin-lists', () => {
     expect(Plugin.State.name).is.be.a('string');
   });
 
+  describe('keymap', () => {
+    context('when on mac', () => {
+      context('when selection is bullet list items', () => {
+        context('when hit enter in the middle of list item', () => {
+          it('should split list item', () => {
+            const { pm } = editor(doc(ul(li(p('text')))));
+            pm.input.dispatchKey("Enter");
+            expect(pm.doc).to.deep.equal(doc(ul(li(p('')), li(p('text')))));
+          });
+        })
+      });
+    });
+  });
+
   describe('API', () => {
     it('should allow a change handler to be attached', () => {
       const { plugin } = editor(doc(p()));
@@ -205,7 +219,7 @@ describe('ak-editor-plugin-lists', () => {
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
 
-      it('shoould convert selection to a list and keep empty paragraphs', () => {
+      it('should convert selection to a list and keep empty paragraphs', () => {
         const expectedOutput = doc(ul(li(p('One')),li(p('Two')),li(p()),li(p('Three'))));
         const { pm, plugin } = editor(doc(ol(li(p('{<}One')),li(p('Two')),li(p()),li(p('Three{>}')))));
 

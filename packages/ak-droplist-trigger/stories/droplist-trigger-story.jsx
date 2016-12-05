@@ -66,5 +66,32 @@ storiesOf(name, module)
           >Simple button trigger</Trigger>
         </div>
       </div>
+      <p>You can style trigger if you want - with inline styles and/or classNames</p>
+      <div className={styles.triggersContainer}>
+        <div>
+          <Trigger
+            style={{ border: '1px solid black' }}
+            onActivate={(e) => {
+              action(`trigger was activated via ${e.source}`)();
+            }}
+          >Simple empty trigger</Trigger>
+        </div>
+        <div>
+          <Trigger
+            className={styles.triggerRestyled}
+            onActivate={(e) => {
+              action(`trigger was activated via ${e.source}`)();
+            }}
+          ><Avatar /></Trigger>
+        </div>
+        <div>
+          <Trigger
+            onActivate={(e) => {
+              action(`trigger was activated via ${e.source}`)();
+            }}
+            type="button"
+          >Simple button trigger</Trigger>
+        </div>
+      </div>
     </div>
   ));

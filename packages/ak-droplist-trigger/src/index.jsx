@@ -48,7 +48,7 @@ export default class Trigger extends PureComponent {
      */
     onActivate: PropTypes.func,
     children: PropTypes.node,
-    style: PropTypes.string,
+    style: PropTypes.object,  // eslint-disable-line react/forbid-prop-types
     className: PropTypes.string,
   }
 

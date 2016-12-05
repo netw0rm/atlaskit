@@ -2,9 +2,9 @@ import React, { PureComponent, PropTypes } from 'react';
 import ContainerQuery from 'react-container-query';
 import Button from 'ak-button';
 import { locals } from './styles.less';
+import { itemTruncateWidth } from './internal/constants';
 
 const { item, itemButton, tooltip, tooltipTrigger, truncated } = locals;
-const truncateWidth = 200; // Duplicated in styles.less
 
 /**
  * @description BreadcrumbsItem React component.
@@ -12,7 +12,6 @@ const truncateWidth = 200; // Duplicated in styles.less
  * @example @js import { AkBreadcrumbsItem } from 'ak-breadcrumbs';
  * ReactDOM.render(<AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem);
  */
-/* eslint-disable-next-line react/prefer-stateless-function */
 export default class BreadcrumbsItem extends PureComponent {
   static propTypes = {
     /**
@@ -34,7 +33,7 @@ export default class BreadcrumbsItem extends PureComponent {
 
   render() {
     const query = {
-      [truncated]: { minWidth: truncateWidth },
+      [truncated]: { minWidth: itemTruncateWidth },
     };
     return (
       <ContainerQuery className={item} query={query}>

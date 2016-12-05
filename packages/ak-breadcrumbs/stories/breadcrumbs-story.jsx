@@ -55,11 +55,11 @@ storiesOf(name, module)
     </AkBreadcrumbs>
   ))
   .add('ak-breadcrumbs with many items', () => (
-    <AkBreadcrumbs >
+    <AkBreadcrumbs>
       <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">A fourth item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">A fourth item with a very long name</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">Yet another item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">An item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">The next item</AkBreadcrumbsItem>
@@ -71,11 +71,11 @@ storiesOf(name, module)
   ))
   .add('ak-breadcrumbs with many items, inside small container', () => (
     <div style={{ maxWidth: '500px', border: '1px solid black' }}>
-      <AkBreadcrumbs >
+      <AkBreadcrumbs>
         <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">A fourth item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">A fourth item with a very long name</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">Yet another item</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">An item</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">The next item</AkBreadcrumbsItem>

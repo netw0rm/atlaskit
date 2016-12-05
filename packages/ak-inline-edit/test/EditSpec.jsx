@@ -4,7 +4,6 @@ import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import FieldBase from 'ak-field-base';
-
 import EditView from '../src/Edit';
 
 const Input = props => <input {...props} />;

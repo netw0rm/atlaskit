@@ -2,7 +2,6 @@ import chai, { expect } from 'chai';
 import React from 'react';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
-
 import { InlineEdit } from '../src';
 import EditView from '../src/Edit';
 import ReadView from '../src/Read';

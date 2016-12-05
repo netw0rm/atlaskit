@@ -6,7 +6,6 @@ import sinonChai from 'sinon-chai';
 import FieldBase from 'ak-field-base';
 import Icon from 'ak-icon/glyph/edit';
 import { locals as classes } from '../src/styles.less';
-
 import ReadView from '../src/Read';
 
 chai.use(chaiEnzyme());
@@ -61,11 +60,11 @@ describe('ak-inline-edit', () => {
     );
 
     describe('isLabelHidden', () =>
-      it('should set both hideLabel and label parameter into FieldBase', () => {
+      it('should set both isLabelHidden and label parameter into FieldBase', () => {
         const wrapper = shallow(<ReadView {...defaultProps} label="test" isLabelHidden />);
         const fieldBase = wrapper.find(FieldBase);
         expect(fieldBase).to.have.prop('label', 'test');
-        expect(fieldBase).to.have.prop('hideLabel', true);
+        expect(fieldBase).to.have.prop('isLabelHidden', true);
       })
     );
 

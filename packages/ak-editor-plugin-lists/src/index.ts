@@ -62,9 +62,13 @@ export class ListsState {
 
     const { list_item } = pm.schema.nodes;
 
-    pm.addKeymap(new Keymap({
+    let keymap = new Keymap({
       'Enter': () => commands.splitListItem(list_item)(pm),
-    }));
+      'Shift-Cmd-L': () => this.toggleOrderedList(),
+      'Shift-Cmd-B': () => this.toggleBulletList(),
+    })
+
+    pm.addKeymap(keymap);
 
     pm.updateScheduler([
       pm.on.selectionChange,

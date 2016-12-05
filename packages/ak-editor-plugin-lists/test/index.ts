@@ -18,14 +18,56 @@ describe('ak-editor-plugin-lists', () => {
 
   describe('keymap', () => {
     context('when on mac', () => {
-      context('when selection is bullet list items', () => {
-        context('when hit enter in the middle of list item', () => {
+      context('when selection within bullet list items', () => {
+        context('when hit enter', () => {
           it('should split list item', () => {
             const { pm } = editor(doc(ul(li(p('text')))));
             pm.input.dispatchKey("Enter");
             expect(pm.doc).to.deep.equal(doc(ul(li(p('')), li(p('text')))));
           });
-        })
+        });
+
+        context('when hit Shift-Cmd-L', () => {
+          it('should convert to ordered list', () => {
+            const { pm } = editor(doc(ul(li(p('text')))));
+            pm.input.dispatchKey("Shift-Cmd-L");
+            expect(pm.doc).to.deep.equal(doc(ol(li(p('text')))));
+          })
+        });
+
+        context('when hit Shift-Cmd-B', () => {
+          it('should toggle off bullet list', () => {
+            const { pm } = editor(doc(ul(li(p('text')))));
+            pm.input.dispatchKey("Shift-Cmd-B");
+            expect(pm.doc).to.deep.equal(doc(p('text')));
+          })
+        });
+      });
+
+      context('when selection within ordered list items', () => {
+        context('when hit enter', () => {
+          it('should split list item', () => {
+            const { pm } = editor(doc(ol(li(p('text')))));
+            pm.input.dispatchKey("Enter");
+            expect(pm.doc).to.deep.equal(doc(ol(li(p('')), li(p('text')))));
+          });
+        });
+
+        context('when hit Shift-Cmd-L', () => {
+          it('should toggle off ordered list', () => {
+            const { pm } = editor(doc(ol(li(p('text')))));
+            pm.input.dispatchKey("Shift-Cmd-L");
+            expect(pm.doc).to.deep.equal(doc(p('text')));
+          })
+        });
+
+        context('when hit Shift-Cmd-B', () => {
+          it('should convert to bullet list', () => {
+            const { pm } = editor(doc(ol(li(p('text')))));
+            pm.input.dispatchKey("Shift-Cmd-B");
+            expect(pm.doc).to.deep.equal(doc(ul(li(p('text')))));
+          })
+        });
       });
     });
   });

@@ -45,19 +45,17 @@ export default class InlineEdit extends PureComponent {
      *
      * If the field should be focused when it first appears on the page.
      *
-     * Defaults to false.
-     *
      * @memberof InlineEdit
      * @type {boolean}
+     * @default false
      */
     isFocusedInitially: PropTypes.bool,
     /**
-     * @description Weather InlineEdit should display its label.
-     *
-     * Defaults to false.
+     * @description Whether InlineEdit should display its label.
      *
      * @memberof InlineEdit
      * @type {string}
+     * @default false
      */
     isLabelHidden: PropTypes.bool,
     /**

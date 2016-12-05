@@ -26,9 +26,11 @@ export default class InlineEdit extends PureComponent {
      */
     readView: PropTypes.node.isRequired,
     /**
-     * @description The element or component to be displayed in edit mode.
+     * @description The element or component to be displayed in edit mode (optional).
      *
      * This node should allow the user to edit the value of the field.
+     *
+     * If this node is not supplied, the component will display in read-only mode.
      *
      * @memberof InlineEdit
      * @type {ReactNode}

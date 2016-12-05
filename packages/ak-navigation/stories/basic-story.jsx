@@ -22,7 +22,7 @@ const manyContainerItems = () => {
 };
 
 storiesOf(name, module)
-  .add('with a simple container item', () => (
+  .add('with a few container items', () => (
     <Page>
       <BasicNavigation>
         <a href="#1">
@@ -72,6 +72,14 @@ storiesOf(name, module)
           isSelected
         />
       </BasicNavigation>
+      <div>
+        <Lorem count="30" />
+      </div>
+    </Page>
+  ))
+  .add('that is not resizeable', () => (
+    <Page>
+      <BasicNavigation isResizeable={false} />
       <div>
         <Lorem count="30" />
       </div>

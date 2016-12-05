@@ -1,6 +1,6 @@
 {
   "name": "ak-field-base",
-  "version": "5.0.3",
+  "version": "6.0.0",
   "description": "A React presentational component that wraps fields and provides styles for focus/hover states",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -17,8 +17,7 @@
   "dependencies": {
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5",
-    "camelcase": "^3.0.0"
+    "classnames": "^2.2.5"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

@@ -25,6 +25,7 @@ export default class Navigation extends Component {
       open: PropTypes.bool,
       onResize: PropTypes.func,
       globalNavigation: PropTypes.node,
+      isResizeable: PropTypes.bool,
       globalPrimaryIcon: PropTypes.node,
       globalSearchIcon: PropTypes.node,
       globalCreateIcon: PropTypes.node,
@@ -35,6 +36,7 @@ export default class Navigation extends Component {
     return {
       width: navigationOpenWidth,
       open: true,
+      isResizeable: true,
       onResize: () => {},
     };
   }
@@ -48,6 +50,9 @@ export default class Navigation extends Component {
     };
   }
 
+  onResize(resizeDelta) {
+    this.setState({ resizeDelta });
+  }
 
   getRenderedWidth() {
     const baselineWidth = this.props.open ? this.props.width : containerClosedWidth;
@@ -75,6 +80,7 @@ export default class Navigation extends Component {
       resizeDelta: 0,
     });
   }
+
 
   render() {
     const globalItemIfPropSet = (prop, onActivate) => {
@@ -124,10 +130,14 @@ export default class Navigation extends Component {
               {this.props.children}
             </ContainerNavigation>
           </div>
-          <Resizer
-            onResize={(resizeDelta) => { this.setState({ resizeDelta }); }}
-            onResizeEnd={() => { this.triggerResizeHandler(); }}
-          />
+          {
+            this.props.isResizeable
+            ? <Resizer
+              onResize={this.onResize}
+              onResizeEnd={this.triggerResizeHandler}
+            />
+            : null
+          }
         </div>
       </div>
     );

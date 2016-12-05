@@ -46,13 +46,17 @@ describe('ak-field-base', () => {
       })
     );
 
-    describe('rightGutter prop', () =>
+    describe('rightGutter prop', () => {
       it('should render properly', () => {
         const div = <div id="right">test</div>;
         const wrapper = shallow(<Content rightGutter={div} />);
         expect(wrapper.find(`.${locals.rightGutterWrapper}`)).to.contain(div);
-      })
-    );
+      });
+
+      it('should not render rightGutterWrapper when prop is not set', () =>
+        expect(shallow(<Content />)).to.not.have.descendants(`.${locals.rightGutterWrapper}`)
+      );
+    });
 
     describe('appearance', () => {
       [compact, subtle].forEach(appearance =>

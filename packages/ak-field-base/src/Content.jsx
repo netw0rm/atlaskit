@@ -17,6 +17,17 @@ export default class Content extends PureComponent {
     rightGutter: PropTypes.node,
   }
 
+  static defaultProps = {
+    rightGutter: false,
+  }
+
+  rightGutterWrapper = () => {
+    const container = (<div className={locals.rightGutterWrapper}>
+      {this.props.rightGutter}
+    </div>);
+    return this.props.rightGutter ? container : null;
+  }
+
   render() {
     const contentClasses = classNames(locals.content, {
       [locals.compact]: this.props.appearance === compact,
@@ -25,6 +36,7 @@ export default class Content extends PureComponent {
       [locals.focused]: this.props.isFocused,
       [locals.invalid]: this.props.isInvalid && !this.props.isFocused,
     });
+
     return (
       <div className={locals.contentWrapper}>
         <div
@@ -34,9 +46,7 @@ export default class Content extends PureComponent {
         >
           {this.props.children}
         </div>
-        <div className={locals.rightGutterWrapper}>
-          {this.props.rightGutter}
-        </div>
+        {this.rightGutterWrapper()}
       </div>
     );
   }

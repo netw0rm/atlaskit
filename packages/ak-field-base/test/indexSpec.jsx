@@ -27,7 +27,7 @@ describe('ak-field-base', () => {
   describe('properties', () => {
     [
       { prop: 'label', value: 'new label', element: Label },
-      { prop: 'shouldHideLabel', value: true, element: Label },
+      { prop: 'isLabelHidden', value: true, element: Label },
       { prop: 'isInvalid', value: true, element: Content },
       { prop: 'isDisabled', value: true, element: Content },
       { prop: 'isRequired', value: true, element: Label },
@@ -62,25 +62,17 @@ describe('ak-field-base', () => {
       content.find(`.${styles.locals.content}`).simulate('focus');
     });
 
-    it('should call onFocusCallback', () => {
+    it('should call onFocus', () => {
       const spy = sinon.spy();
-      wrapper = mount(<FieldBase onFocusCallback={spy} />);
+      wrapper = mount(<FieldBase onFocus={spy} />);
       content = wrapper.find(Content);
       content.find(`.${styles.locals.content}`).simulate('focus');
       expect(spy).to.have.been.calledOnce;
     });
 
-    it('should call onFocusCallback', () => {
+    it('should call onBlur', () => {
       const spy = sinon.spy();
-      wrapper = mount(<FieldBase onFocusCallback={spy} />);
-      content = wrapper.find(Content);
-      content.find(`.${styles.locals.content}`).simulate('focus');
-      expect(spy).to.have.been.calledOnce;
-    });
-
-    it('should call onBlurCallback', () => {
-      const spy = sinon.spy();
-      wrapper = mount(<FieldBase onBlurCallback={spy} />);
+      wrapper = mount(<FieldBase onBlur={spy} />);
       content = wrapper.find(Content);
       content.find(`.${styles.locals.content}`).simulate('blur');
       expect(spy).to.have.been.calledOnce;

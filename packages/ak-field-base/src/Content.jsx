@@ -8,17 +8,12 @@ import appearances, { compact, subtle } from './internal/appearances';
 export default class Content extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(Object.keys(appearances)),
-    isDisabled: PropTypes.bool,
-    isFocused: PropTypes.bool,
-    isInvalid: PropTypes.bool,
-    onFocusCallback: PropTypes.func,
-    onBlurCallback: PropTypes.func,
+    isDisabled: PropTypes.bool.isRequired,
+    isFocused: PropTypes.bool.isRequired,
+    isInvalid: PropTypes.bool.isRequired,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
     children: PropTypes.node,
-  }
-
-  static defaultProps = {
-    isDisabled: false,
-    isInvalid: false,
   }
 
   render() {
@@ -32,8 +27,8 @@ export default class Content extends PureComponent {
     return (
       <div
         className={contentClasses}
-        onFocusCapture={this.props.onFocusCallback}
-        onBlurCapture={this.props.onBlurCallback}
+        onFocusCapture={this.props.onFocus}
+        onBlurCapture={this.props.onBlur}
       >
         {this.props.children}
       </div>

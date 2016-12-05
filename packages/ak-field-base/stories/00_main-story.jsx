@@ -82,7 +82,7 @@ storiesOf(name, module)
     <div>
       <form action="" style={formStyle}>
         <h2>My Label-less Form</h2>
-        <InputFieldBase label="Child input" shouldHideLabel text="An input child with no label" />
+        <InputFieldBase label="Child input" isLabelHidden text="An input child with no label" />
       </form>
     </div>
   ));

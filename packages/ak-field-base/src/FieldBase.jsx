@@ -5,7 +5,7 @@ import Content from './Content';
 import appearances, { standard } from './internal/appearances';
 
 /**
- * @description Create instances of the component programmatically, or using markup.
+ * @description Create instances of the FieldBase.
  * @class FieldBase
  * @example <FieldBase label="Email" />
  */
@@ -20,7 +20,6 @@ export default class FieldBase extends PureComponent {
      * Compact will make the field have less padding and subtle will remove the background/border
      * until a user hovers over it.
      * @memberof FieldBase
-     * @instance
      * @type {string}
      * @default standard
      * @example <FieldBase appearance="compact" />
@@ -32,7 +31,6 @@ export default class FieldBase extends PureComponent {
      * This prop is still required, even if the hideLabel prop is set as the label is also used to
      * make the field accessible for screen readers.
      * @memberof FieldBase
-     * @instance
      * @type {string}
      * @example <FieldBase label="Email" />
      */
@@ -47,31 +45,29 @@ export default class FieldBase extends PureComponent {
      *
      * Defaults to false.
      * @memberof FieldBase
-     * @instance
      * @type {boolean}
+     * @default false
      * @example <FieldBase label="First Name" shouldHideLabel />
      */
-    shouldHideLabel: PropTypes.bool,
+    isLabelHidden: PropTypes.bool,
     /**
      * @description Whether or not a field should show a validation error.
      *
      * This is shown to the user through a red border currently but will also
      * include error messages in a future release.
      * @memberof FieldBase
-     * @instance
      * @type {boolean}
      * @default false
      * @example <FieldBase isInvalid />
      */
     isInvalid: PropTypes.bool,
     /**
-     * @description Whether or not a field should show it's focused styles by default.
+     * @description Whether or not a field should show its focused styles by default.
      *
      * By default, this component will automatically add and remove this prop if itself
      * or any child of it receives focus or blur events.
      *
      * @memberof FieldBase
-     * @instance
      * @type {boolean}
      * @default false
      * @example @html <FieldBase isFocused />
@@ -82,7 +78,6 @@ export default class FieldBase extends PureComponent {
      *
      * If set to true, an asterisk will be appended to the label text.
      * @memberof FieldBase
-     * @instance
      * @type {boolean}
      * @default false
      * @example <FieldBase label="First Name" isRequired" />
@@ -93,7 +88,6 @@ export default class FieldBase extends PureComponent {
      *
      * This is shown to the user through a disabled cursor icon when hovering over the field.
      * @memberof FieldBase
-     * @instance
      * @type {boolean}
      * @default false
      * @example <FieldBase isDisabled />
@@ -103,7 +97,6 @@ export default class FieldBase extends PureComponent {
      * @description Callback that is called whenever the Label is clicked
      *
      * @memberof FieldBase
-     * @instance
      * @type {Function}
      * @default () => void
      * @example <FieldBase onLabelClick={() => alert('label click!')} />
@@ -113,51 +106,55 @@ export default class FieldBase extends PureComponent {
      * @description Callback that is called whenever the Content is focused
      *
      * @memberof FieldBase
-     * @instance
      * @type {Function}
      * @default () => void
-     * @example <FieldBase onFocusCallback={() => alert('content focused!')} />
+     * @example <FieldBase onFocus={() => alert('content focused!')} />
      */
-    onFocusCallback: PropTypes.func.isRequired,
+    onFocus: PropTypes.func.isRequired,
     /**
      * @description Callback that is called whenever the Content is blured
      *
      * @memberof FieldBase
-     * @instance
      * @type {Function}
      * @default () => void
-     * @example <FieldBase onBlurCallback={() => alert('content blured!')} />
+     * @example <FieldBase onBlur={() => alert('content blured!')} />
      */
-    onBlurCallback: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
+    /**
+     * @description The content that will be displayed within the field
+     *
+     * @memberof FieldBase
+     * @type {ReactNode}
+     * @example <FieldBase><div>Hi!</div></FieldBase>
+     */
     children: PropTypes.node,
   }
 
   static defaultProps = {
     appearance: standard,
     isFocused: false,
+    isDisabled: false,
+    isRequired: false,
   }
 
-  render() {
-    return (
-      <div className={styles.root}>
-        <Label
-          label={this.props.label}
-          shouldHideLabel={this.props.shouldHideLabel}
-          isRequired={this.props.isRequired}
-          onLabelClick={this.props.onLabelClick}
+  render = () =>
+    <div className={styles.root}>
+      <Label
+        label={this.props.label}
+        isLabelHidden={this.props.isLabelHidden}
+        isRequired={this.props.isRequired}
+        onLabelClick={this.props.onLabelClick}
+      >
+        <Content
+          onFocus={this.props.onFocus}
+          onBlur={this.props.onBlur}
+          appearance={this.props.appearance}
+          isDisabled={this.props.isDisabled}
+          isInvalid={this.props.isInvalid}
+          isFocused={this.props.isFocused}
         >
-          <Content
-            onFocusCallback={this.props.onFocusCallback}
-            onBlurCallback={this.props.onBlurCallback}
-            appearance={this.props.appearance}
-            isDisabled={this.props.isDisabled}
-            isInvalid={this.props.isInvalid}
-            isFocused={this.props.isFocused}
-          >
-            {this.props.children}
-          </Content>
-        </Label>
-      </div>
-    );
-  }
+          {this.props.children}
+        </Content>
+      </Label>
+    </div>
 }

@@ -16,14 +16,14 @@ export default class extends PureComponent {
     isFocused: this.props.isFocused,
   }
 
-  render() {
-    return (
-      <FieldBase
-        {...this.props}
-        isFocused={this.state.isFocused}
-        onFocusCallback={() => this.setState({ isFocused: true })}
-        onBlurCallback={() => this.setState({ isFocused: false })}
-      />
-    );
-  }
+  onFocus = () => this.setState({ isFocused: true })
+  onBlur = () => this.setState({ isFocused: false })
+
+  render = () =>
+    <FieldBase
+      {...this.props}
+      isFocused={this.state.isFocused}
+      onFocus={this.onFocus}
+      onBlur={this.onBlur}
+    />
 }

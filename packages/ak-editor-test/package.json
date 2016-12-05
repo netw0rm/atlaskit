@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-test",
-  "version": "5.3.1",
+  "version": "5.4.0",
   "description": "Editor Test web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

@@ -4,7 +4,7 @@
   "description": "ak-droplist-trigger react component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-droplist-trigger"
   },

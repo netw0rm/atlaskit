@@ -1,30 +1,12 @@
-/** @jsx vdom */
-
+import React, { PureComponent, PropTypes } from 'react';
 import classnames from 'classnames';
-import { vdom, define } from 'skatejs';
-import { enumeration } from 'akutil-common';
 
-import shadowStyles from './shadow.less';
-
-
-/**
- * Group alignment values. Based on the text-direction.
- *
- * @exports alignment
- * @enum {string}
- */
-const alignment = {
-  /** text-start alignment */
-  start: 'start',
-  /** text-end alignment */
-  end: 'end',
-};
+import styles from 'style!./styles.less';
 
 const ALIGNMENT_ATTRIBUTE_ENUM = {
   attribute: 'alignment',
-  values: Object.values(alignment),
-  missingDefault: '',
-  invalidDefault: '',
+  values: ['', 'start', 'end'],
+  defaultValue: '',
 };
 
 /**
@@ -40,24 +22,8 @@ const ALIGNMENT_ATTRIBUTE_ENUM = {
  *
  * document.body.appendChild(tagGroup); // show the tag group with the tags
  */
-export default define('ak-tag-group', {
-  render(elem) {
-    const isEndAligned = elem.alignment === alignment.end;
-    const slotClasses = classnames({
-      [shadowStyles.locals.slot]: true,
-      [shadowStyles.locals.endAligned]: isEndAligned,
-    });
-
-    return (
-      <div className={shadowStyles.locals.rootNode}>
-        <style>{shadowStyles.toString()}</style>
-        <div className={shadowStyles.locals.slotWrapper}>
-          <slot className={slotClasses} />
-        </div>
-      </div>
-    );
-  },
-  props: {
+export default class TagGroup extends PureComponent {
+  static propTypes = {
     /**
      * @description (Optional) A group alignment.
      *
@@ -94,10 +60,29 @@ export default define('ak-tag-group', {
      *
      * document.body.appendChild(tagGroup); // show the tag group with the tags
      */
-    alignment: enumeration(ALIGNMENT_ATTRIBUTE_ENUM)({
-      attribute: true,
-    }),
-  },
-});
+    alignment: PropTypes.oneOf(ALIGNMENT_ATTRIBUTE_ENUM.values),
+    children: PropTypes.node.isRequired,
+  }
 
-export { alignment };
+  static defaultProps = {
+    alignment: ALIGNMENT_ATTRIBUTE_ENUM.defaultValue,
+  }
+
+  render() {
+    const isEndAligned = this.props.alignment === 'end';
+    const slotClasses = classnames({
+      [styles.slot]: true,
+      [styles.endAligned]: isEndAligned,
+    });
+
+    return (
+      <div className={styles.rootNode}>
+        <div className={styles.slotWrapper}>
+          <div className={slotClasses}>
+            {this.props.children}
+          </div>
+        </div>
+      </div>
+    );
+  }
+}

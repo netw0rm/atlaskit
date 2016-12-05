@@ -36,10 +36,9 @@ export default class Breadcrumbs extends PureComponent {
   constructor() {
     super();
     this.state = { isExpanded: false };
-    this.expand = this.expand.bind(this);
   }
 
-  expand() {
+  expand = () => {
     this.setState({ isExpanded: true });
   }
 

@@ -120,6 +120,14 @@ export default class FieldBase extends PureComponent {
      * @example <FieldBase onBlur={() => alert('content blured!')} />
      */
     onBlur: PropTypes.func.isRequired,
+    /**
+     * @description Allows abitrary content to be displayed to the right of the field
+     *
+     * The content will be horizontally aligned with the field itself (excluding the label)
+     * @memberof FieldBase
+     * @type {ReactNode}
+     * @example <FieldBase rightGutter={<div>Hi!</div>}></FieldBase>
+     */
     rightGutter: PropTypes.node,
     /**
      * @description The content that will be displayed within the field

@@ -86,7 +86,7 @@ export default class Trigger extends PureComponent {
     e.preventDefault();
   }
 
-  render = () => {
+  render() {
     const { props } = this;
 
     /* eslint-disable jsx-a11y/no-static-element-interactions */

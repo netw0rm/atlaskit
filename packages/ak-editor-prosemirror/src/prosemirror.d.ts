@@ -818,7 +818,7 @@ declare module 'prosemirror/dist/model/schema' {
         create(attrs?: { [name: string]: any }): Mark;
         static compile(marks: any, schema: any): any;
         removeFromSet(set: any): any;
-        isInSet(set: this[]): this | undefined;
+        isInSet(set: Mark[]): Mark | undefined;
         toDOM(_: any): void;
         matchDOMTag: any;
         matchDOMStyle: any;

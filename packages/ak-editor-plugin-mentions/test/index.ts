@@ -68,7 +68,7 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should trigger "onSelectPrevious" when "Up"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginState = MentionsPlugin.get(pm);
+      const pluginState = MentionsPlugin.get(pm)!;
       pm.input.insertText(0, 0, '@');
       pm.flush();
 
@@ -83,7 +83,7 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should trigger "onSelectNext" when "Down"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginState = MentionsPlugin.get(pm);
+      const pluginState = MentionsPlugin.get(pm)!;
       pm.input.insertText(0, 0, '@');
       pm.flush();
 
@@ -98,7 +98,7 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should trigger "onSelectCurrent" when "Enter"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginState = MentionsPlugin.get(pm);
+      const pluginState = MentionsPlugin.get(pm)!;
       pm.input.insertText(0, 0, '@');
       pm.flush();
 
@@ -113,7 +113,7 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should trigger "dismiss" when "Esc"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginState = MentionsPlugin.get(pm);
+      const pluginState = MentionsPlugin.get(pm)!;
       pm.input.insertText(0, 0, '@');
       pm.flush();
 
@@ -131,7 +131,7 @@ describe('ak-editor-plugin-mentions', () => {
 
     it('should replace mention-query-mark with mention-node', () => {
       const pm = makeEditor(container());
-      const pluginInstance = MentionsPlugin.get(pm);
+      const pluginInstance = MentionsPlugin.get(pm)!;
 
       pm.input.insertText(0, 0, '@');
       pm.flush();

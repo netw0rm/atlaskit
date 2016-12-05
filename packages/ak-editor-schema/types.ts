@@ -1,5 +1,3 @@
-declare module 'akutil-react';
-declare module 'react-dom';
 declare module 'ajv' {
   interface Validator {
     (object: Object): boolean;
@@ -11,5 +9,3 @@ declare module 'ajv' {
   }
 }
 declare module 'highlight.js';
-declare module 'ak-editor-bitbucket';
-declare module 'ak-tabs';

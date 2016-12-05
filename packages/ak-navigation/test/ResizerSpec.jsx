@@ -7,9 +7,9 @@ import Resizer from '../src/components/js/Resizer';
 
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme);
+chai.use(chaiEnzyme());
 chai.should();
-const expect = chai.expect; // eslint-disable-line no-unused-vars
+const expect = chai.expect;
 
 describe('<Resizer />', () => {
   describe('interacting', () => {

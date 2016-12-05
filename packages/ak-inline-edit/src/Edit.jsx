@@ -13,7 +13,7 @@ export default class EditView extends PureComponent {
     <div>
       <FieldBase
         label={this.props.label}
-        hideLabel={this.props.isLabelHidden}
+        isLabelHidden={this.props.isLabelHidden}
       >
         {this.props.children}
       </FieldBase>

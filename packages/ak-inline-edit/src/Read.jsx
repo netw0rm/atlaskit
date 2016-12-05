@@ -19,7 +19,7 @@ export default class ReadView extends PureComponent {
     >
       <FieldBase
         label={this.props.label}
-        hideLabel={this.props.isLabelHidden}
+        isLabelHidden={this.props.isLabelHidden}
       >
         <div className={locals.readViewContentWrapper}>
           {this.props.children}

@@ -242,6 +242,9 @@ export class TextFormattingState {
     }
   }
 
+  /**
+   * Determine if a mark of a specific type exists anywhere in the selection.
+   */
   private anyMarkActive(markType: MarkType): boolean {
     const { pm } = this;
     const { from, to, empty } = pm.selection;
@@ -252,21 +255,18 @@ export class TextFormattingState {
   }
 
   /**
-   * Determine a single variant (i.e. having the same attributes) of a mark exists across the
-   * entire selection.
-   *
-   * If it does, return an instance of it.
+   * Determine if a mark (with specific attribute values) exists anywhere in the selection.
    */
   private markActive(mark: Mark): boolean {
     const { pm } = this;
     const { from, to, empty } = pm.selection;
 
-    // When the selection is empty, we just want to look at the active marks.
+    // When the selection is empty, only the active marks apply.
     if (empty) {
       return !!mark.isInSet(pm.activeMarks());
     }
 
-    // For a non-collapsed selection, we care about the marks on the nodes in the selection.
+    // For a non-collapsed selection, the marks on the nodes matter.
     let found = false;
     pm.doc.nodesBetween(from, to, node => {
       found = found || mark.isInSet(node.marks);

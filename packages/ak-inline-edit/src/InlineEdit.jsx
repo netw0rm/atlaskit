@@ -16,18 +16,18 @@ export default class InlineEdit extends PureComponent {
      */
     label: PropTypes.string.isRequired,
     /**
-     * @description The value/element/component to be displayed in Read mode.
+     * @description The value, element or component to be displayed in read mode.
      *
-     * This value can be anything and should be customized to work well as FieldBase child
+     * This node should display the value of the field when the user is not editing it.
      *
      * @memberof InlineEdit
      * @type {ReactNode}
      */
     readView: PropTypes.node.isRequired,
     /**
-     * @description The element/component responsable to edit what's displayed in Read mode.
+     * @description The element or component to be displayed in edit mode.
      *
-     * This value can be anything and should be customized to work well as FieldBase child
+     * This node should allow the user to edit the value of the field.
      *
      * @memberof InlineEdit
      * @type {ReactNode}

@@ -16,6 +16,7 @@ const noop = () => {};
 
 const defaultProps = {
   label: 'test',
+  isLabelHidden: true,
   onEditRequested: noop,
   children: 'test value',
 };

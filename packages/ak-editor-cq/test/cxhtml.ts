@@ -1,12 +1,11 @@
 import { parse, encode } from '../src/cxhtml';
 import { chaiPlugin } from 'ak-editor-test';
 import {
-  br, code, doc, em, h1, h2, h3, h4, h5, h6, hr,
+  blockquote, br, code, doc, em, h1, h2, h3, h4, h5, h6, hr,
   li, ol, p, strike, strong, sub, sup, u, ul
 } from './_schema-builder';
 import { DocNode } from 'ak-editor-schema';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
 import schema from '../src/schema';
 
 chai.use(chaiPlugin);
@@ -294,6 +293,24 @@ describe('ak-editor-cq encode-cxml:', () => {
           )
         ));
     });
+
+    describe('blockquote', () => {
+      check('with text',
+        '<blockquote>Elementary my dear Watson</blockquote>',
+        doc(blockquote(p('Elementary my dear Watson'))));
+
+      check('with partially strong text',
+        '<blockquote>Elementary my <strong>dear</strong> Watson</blockquote>',
+        doc(blockquote(p('Elementary my ', strong('dear'), ' Watson'))));
+
+      check('with a paragraph',
+        '<blockquote><p>Elementary my dear Watson</p></blockquote>',
+        doc(blockquote(p('Elementary my dear Watson'))));
+
+      check('with nested blockquote',
+        '<blockquote><blockquote>Elementary my dear Watson</blockquote></blockquote>',
+        doc(blockquote(blockquote(p('Elementary my dear Watson')))));
+    });
   });
 
 // Color text span
@@ -343,14 +360,7 @@ describe('ak-editor-cq encode-cxml:', () => {
 
 
 // ## Other Blocks
-// ```````````````````````````````` xample
-// <blockquote>Elementary my dear Watson</blockquote>
-// .
-// {"type":"doc","content":[
-// 	{"type":"blockquote", "content":[
-// 			{"type":"text","text":"Elementary my dear Watson"}
-// 	]}
-// ]}
+
 // ````````````````````````````````
 // Pre
 // ```````````````````````````````` xample

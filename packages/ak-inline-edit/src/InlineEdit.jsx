@@ -4,24 +4,24 @@ import EditView from './Edit';
 import ReadView from './Read';
 
 export default class InlineEdit extends PureComponent {
-
   static propTypes = {
     /**
      * @description The label to be rendered above the inline edit.
      *
      * This prop is still required, even if the hideLabel prop is set as the label is also used to
      * make the field accessible for screen readers.
+     *
      * @memberof InlineEdit
      * @type {string}
      */
     label: PropTypes.string.isRequired,
     /**
-     * @description The read value/element/component to be displayed in Read mode.
+     * @description The value/element/component to be displayed in Read mode.
      *
      * This value can be anything and should be customized to work well as FieldBase child
      *
      * @memberof InlineEdit
-     * @type {boolean}
+     * @type {ReactNode}
      */
     readView: PropTypes.node.isRequired,
     /**
@@ -30,7 +30,7 @@ export default class InlineEdit extends PureComponent {
      * This value can be anything and should be customized to work well as FieldBase child
      *
      * @memberof InlineEdit
-     * @type {boolean}
+     * @type {ReactNode}
      */
     editView: PropTypes.node.isRequired,
     /**
@@ -41,10 +41,10 @@ export default class InlineEdit extends PureComponent {
      */
     isEditing: PropTypes.bool.isRequired,
     /**
-     * @description Whether the field should show it's focus ring.
+     * @description Whether the field should show its focus ring.
      *
-     * This would usually be controlled by a component extending InlineEdit and setting this when
-     * needed.
+     * This would usually be set by the parent component when the edit view
+     * receives/loses focus.
      *
      * @memberof InlineEdit
      * @type {boolean}
@@ -53,38 +53,36 @@ export default class InlineEdit extends PureComponent {
     /**
      * @description Weather InlineEdit should display its label.
      *
-     * Defaults to false
+     * Defaults to false.
+     *
      * @memberof InlineEdit
      * @type {string}
      */
-    shouldHideLabel: PropTypes.bool,
+    isLabelHidden: PropTypes.bool,
     /**
-     * @description Callback function to be called when a request to edit mode have been made.
+     * @description Called when the user requests that edit mode be entered
      *
-     * This will be called before edit mode is mounted.
+     * For example, will be called when the user clicks on the input.
+     *
+     * The parent component would typically set the InlineEdit's isEditing
+     * prop true in response to this.
+     *
      * @memberof InlineEdit
      * @type {Function}
      */
     onEditRequested: PropTypes.func.isRequired,
-    /**
-     * @description Callback function to be called when switched to edit mode.
-     *
-     * This will be called after edit mode is mounted.
-     * @memberof InlineEdit
-     * @type {Function}
-     */
-    onEditEntered: PropTypes.func,
   }
 
   static defaultProps = {
     isFocused: false,
+    isLabelHidden: false,
   }
 
   renderReadView = () => (
     <ReadView
       label={this.props.label}
       isFocused={this.props.isFocused}
-      shouldHideLabel={this.props.shouldHideLabel}
+      isLabelHidden={this.props.isLabelHidden}
       onEditRequested={this.props.onEditRequested}
     >
       {this.props.readView}
@@ -95,8 +93,7 @@ export default class InlineEdit extends PureComponent {
     <EditView
       label={this.props.label}
       isFocused={this.props.isFocused}
-      shouldHideLabel={this.props.shouldHideLabel}
-      onEditEntered={this.props.onEditEntered}
+      isLabelHidden={this.props.isLabelHidden}
     >
       {this.props.editView}
     </EditView>

@@ -1,6 +1,6 @@
 import chai, { expect } from 'chai';
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import FieldBase from 'ak-field-base';
@@ -27,19 +27,6 @@ describe('ak-inline-edit', () => {
         const fieldBase = wrapper.find(FieldBase);
         expect(fieldBase).to.have.exactly(1).descendants(Input);
         expect(fieldBase.find(Input)).to.have.prop('value', 'test');
-      })
-    );
-
-    describe('onEditEntered', () =>
-      it('should be called when edit is rendered', () => {
-        const spy = sinon.spy();
-        mount(
-          <EditView
-            {...defaultProps}
-            onEditEntered={spy}
-          />
-        );
-        expect(spy).to.have.been.calledOnce;
       })
     );
   });

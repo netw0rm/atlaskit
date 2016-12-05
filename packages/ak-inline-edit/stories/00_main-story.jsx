@@ -1,4 +1,4 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
 import AkInlineEdit from '../src';
 import { name } from '../package.json';
@@ -19,9 +19,24 @@ const inputStyle = {
 };
 
 /* eslint-disable react/prop-types */
+class TextInput extends PureComponent {
+  componentDidMount = () =>
+    this.textInput.focus()
+
+  render = () => (
+    <input
+      value={this.props.value}
+      style={inputStyle}
+      onChange={this.props.onChange}
+      ref={(textInput) => { this.textInput = textInput; }}
+    />
+  )
+}
+
+/* eslint-disable react/prop-types, react/no-multi-comp */
 class TextInlineEdit extends PureComponent {
   static defaultProps = {
-    initialValue: 'test',
+    initialValue: 'Text',
     label: 'Inline Edit',
   }
 
@@ -32,27 +47,21 @@ class TextInlineEdit extends PureComponent {
   onChange = e =>
     this.setState({ editValue: e.target.value })
 
-  onEditEntered = () => {
-    action('onEditEntered');
-    this.textInput.focus();
-  }
-
-  renderInput = () =>
-    <input
-      onChange={this.onChange}
+  renderInput = () => (
+    <TextInput
       value={this.state.editValue}
-      style={inputStyle}
-      ref={(textInput) => { this.textInput = textInput; }}
+      onChange={this.onChange}
     />
+  )
 
-  render = () =>
+  render = () => (
     <AkInlineEdit
       {...this.props}
       label={this.props.label}
       editView={this.renderInput()}
       readView={this.props.initialValue}
-      onEditEntered={this.onEditEntered}
     />
+  )
 }
 
 storiesOf(name, module)
@@ -63,6 +72,6 @@ storiesOf(name, module)
   ))
   .add('with label hidden', () => (
     <div style={containerStyle}>
-      <TextInlineEdit shouldHideLabel />
+      <TextInlineEdit isLabelHidden />
     </div>
   ));

@@ -13,7 +13,7 @@ const noop = () => {};
 
 const defaultProps = {
   label: 'test',
-  shouldHideLabel: true,
+  isLabelHidden: true,
   isEditing: false,
   isFocused: false,
   onEditRequested: noop,

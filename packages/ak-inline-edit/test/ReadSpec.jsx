@@ -60,9 +60,9 @@ describe('ak-inline-edit', () => {
       )
     );
 
-    describe('shouldHideLabel', () =>
+    describe('isLabelHidden', () =>
       it('should set both hideLabel and label parameter into FieldBase', () => {
-        const wrapper = shallow(<ReadView {...defaultProps} label="test" shouldHideLabel />);
+        const wrapper = shallow(<ReadView {...defaultProps} label="test" isLabelHidden />);
         const fieldBase = wrapper.find(FieldBase);
         expect(fieldBase).to.have.prop('label', 'test');
         expect(fieldBase).to.have.prop('hideLabel', true);

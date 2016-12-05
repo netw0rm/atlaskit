@@ -7,13 +7,13 @@ export default class ReadView extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
     isFocused: PropTypes.bool.isRequired,
-    shouldHideLabel: PropTypes.bool,
+    isLabelHidden: PropTypes.bool,
     onEditRequested: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
   }
 
   static defaultProps = {
-    shouldHideLabel: false,
+    isLabelHidden: false,
   }
 
   render() {
@@ -24,7 +24,7 @@ export default class ReadView extends PureComponent {
       >
         <FieldBase
           label={this.props.label}
-          hideLabel={this.props.shouldHideLabel}
+          hideLabel={this.props.isLabelHidden}
           focused={this.props.isFocused}
         >
           <div className={styles.locals.readViewContentWrapper}>

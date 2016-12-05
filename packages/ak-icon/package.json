@@ -1,6 +1,6 @@
 {
   "name": "ak-icon",
-  "version": "11.1.5",
+  "version": "11.1.6",
   "description": "Icon React components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

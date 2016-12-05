@@ -10,94 +10,7 @@ import MentionPropTypes from '../internal/ak-mention-prop-types';
 import debug from '../util/logger';
 import { mouseLocation, actualMouseMove } from '../util/mouse';
 
-function revealItem(component, key) {
-  const item = component._items[key];
-  if (item && component._scrollable) {
-    component._scrollable.reveal(item);
-  }
-}
-
-function selectIndexNewMentions(component, index, mentions) {
-  const key = mentions && mentions[index] && mentions[index].id;
-  component.setState({
-    selectedIndex: index,
-    selectedKey: key,
-  });
-}
-
-function selectIndex(component, index, callback) {
-  const mentions = component.props.mentions;
-  const key = mentions && mentions[index] && mentions[index].id;
-  component.setState({
-    selectedIndex: index,
-    selectedKey: key,
-  }, callback);
-}
-
-function selectIndexOnHover(mouseEvent, component, index) {
-  const mousePosition = mouseLocation(mouseEvent);
-  if (actualMouseMove(component._lastMousePosition, mousePosition)) {
-    selectIndex(component, index);
-  }
-  component._lastMousePosition = mousePosition;
-}
-
-function renderItems(component) {
-  let idx = 0;
-
-  const { mentions } = component.props;
-  const { selectedKey } = component.state;
-
-  if (mentions.length) {
-    component._items = {};
-
-    return (
-      <div>
-        {mentions.map((mention) => {
-          const selected = selectedKey === mention.id;
-          const currentIdx = idx;
-          const key = mention.id;
-          const { status, time } = mention.presence || {};
-          const item = (
-            <Item
-              {...mention}
-              avatarUrl={mention.avatarUrl}
-              key={key}
-              idx={idx}
-              selected={selected}
-              status={status}
-              time={time}
-              onMouseMove={(mouseEvent) => {
-                selectIndexOnHover(mouseEvent, component, currentIdx);
-              }}
-              /* Cannot use onclick, as onblur will close the element, and prevent
-               * onClick from firing.
-               */
-              onSelection={() => {
-                selectIndex(component, currentIdx, () => {
-                  component.chooseCurrentSelection();
-                });
-              }}
-              ref={(ref) => {
-                if (ref) {
-                  component._items[key] = ref;
-                } else {
-                  delete component._items[key];
-                }
-              }}
-            />
-          );
-          idx++;
-          return item;
-        })}
-      </div>
-    );
-  }
-  return null;
-}
-
-function wrapIndex(component, index) {
-  const { mentions } = component.props;
+function wrapIndex(mentions, index) {
   const len = mentions.length;
   let newIndex = index;
   while (newIndex < 0 && len > 0) {
@@ -133,7 +46,7 @@ export default class MentionList extends Component {
     const { mentions } = nextProps;
     const { selectedKey } = this.state;
     if (!selectedKey) {
-      selectIndexNewMentions(this, 0, mentions);
+      this._selectIndexNewMentions(0, mentions);
       return;
     }
     for (let i = 0; i < mentions.length; i++) {
@@ -145,14 +58,14 @@ export default class MentionList extends Component {
       }
     }
     // existing selection not in results, pick first
-    selectIndexNewMentions(this, 0, mentions);
+    this._selectIndexNewMentions(0, mentions);
   }
 
   componentDidUpdate() {
     const { mentions } = this.props;
     const { selectedIndex } = this.state;
     if (mentions && mentions[selectedIndex]) {
-      revealItem(this, mentions[selectedIndex].id);
+      this._revealItem(this, mentions[selectedIndex].id);
     }
     // FIXME - a React version of this _may_ be required for Confluence
     // integration tests. Will remove / fix once known
@@ -160,13 +73,13 @@ export default class MentionList extends Component {
   }
 
   selectNext() {
-    const newIndex = wrapIndex(this, this.state.selectedIndex + 1);
-    selectIndex(this, newIndex);
+    const newIndex = wrapIndex(this.props.mentions, this.state.selectedIndex + 1);
+    this._selectIndex(newIndex);
   }
 
   selectPrevious() {
-    const newIndex = wrapIndex(this, this.state.selectedIndex - 1);
-    selectIndex(this, newIndex);
+    const newIndex = wrapIndex(this.props.mentions, this.state.selectedIndex - 1);
+    this._selectIndex(newIndex);
   }
 
   chooseCurrentSelection() {
@@ -177,6 +90,92 @@ export default class MentionList extends Component {
     if (onSelection) {
       onSelection(selectedMention);
     }
+  }
+
+  _revealItem(key) {
+    const item = this._items[key];
+    if (item && this._scrollable) {
+      this._scrollable.reveal(item);
+    }
+  }
+
+  _selectIndexNewMentions(index, mentions) {
+    const key = mentions && mentions[index] && mentions[index].id;
+    this.setState({
+      selectedIndex: index,
+      selectedKey: key,
+    });
+  }
+
+  _selectIndex(index, callback) {
+    const { mentions } = this.props;
+    const key = mentions && mentions[index] && mentions[index].id;
+    this.setState({
+      selectedIndex: index,
+      selectedKey: key,
+    }, callback);
+  }
+
+  _selectIndexOnHover(mouseEvent, index) {
+    const mousePosition = mouseLocation(mouseEvent);
+    if (actualMouseMove(this._lastMousePosition, mousePosition)) {
+      this._selectIndex(index);
+    }
+    this._lastMousePosition = mousePosition;
+  }
+
+  _renderItems() {
+    let idx = 0;
+
+    const { mentions } = this.props;
+    const { selectedKey } = this.state;
+
+    if (mentions.length) {
+      this._items = {};
+
+      return (
+        <div>
+          {mentions.map((mention) => {
+            const selected = selectedKey === mention.id;
+            const currentIdx = idx;
+            const key = mention.id;
+            const { status, time } = mention.presence || {};
+            const item = (
+              <Item
+                {...mention}
+                avatarUrl={mention.avatarUrl}
+                key={key}
+                idx={idx}
+                selected={selected}
+                status={status}
+                time={time}
+                onMouseMove={(mouseEvent) => {
+                  this._selectIndexOnHover(mouseEvent, currentIdx);
+                }}
+                /* Cannot use onclick, as onblur will close the element, and prevent
+                 * onClick from firing.
+                 */
+                onSelection={() => {
+                  this._selectIndex(currentIdx, () => {
+                    this.chooseCurrentSelection();
+                  });
+                }}
+                ref={(ref) => {
+                  if (ref) {
+                    this._items[key] = ref;
+                  } else {
+                    delete this._items[key];
+                  }
+                }}
+              />
+            );
+            idx++;
+            return item;
+          })}
+        </div>
+      );
+    }
+    return null;
   }
 
   render() {
@@ -211,7 +210,7 @@ export default class MentionList extends Component {
         <Scrollable
           ref={(ref) => { this._scrollable = ref; }}
         >
-          {renderItems(this)}
+          {this._renderItems()}
         </Scrollable>
       );
     }

@@ -1,10 +1,10 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
+import { assert } from 'chai';
 
 import MentionResource from '../../src/api/ak-mention-resource';
 import { resultC, resultCraig } from '../_mention-data';
-
 
 const baseUrl = 'https://bogus/';
 
@@ -50,12 +50,12 @@ fetchMock
     body: '',
   }, { name: 'record' });
 
-describe('MentionResource', function () {
+describe('MentionResource', () => {
   const defaultFetch = global.fetch;
   const delayMatch = /\/mentions\/search\?.*query=delay(&|$)/;
 
-  before(function () {
-    global.fetch = function (input, init) {
+  before(() => {
+    global.fetch = (input, init) => {
       let url = input;
       if (typeof url === 'object') {
         // Request object, not url string
@@ -75,31 +75,31 @@ describe('MentionResource', function () {
     };
   });
 
-  after(function () {
+  after(() => {
     global.fetch = defaultFetch;
   });
 
-  describe('#subscribe', function () {
-    it('subscribe should receive updates', function (done) {
+  describe('#subscribe', () => {
+    it('subscribe should receive updates', (done) => {
       const resource = new MentionResource(apiConfig);
-      resource.subscribe('test1', function (mentions) {
+      resource.subscribe('test1', (mentions) => {
         expect(mentions.length).to.equal(resultCraig.length);
         done();
       });
       resource.filter('craig');
     });
 
-    it('multiple subscriptions should receive updates', function (done) {
+    it('multiple subscriptions should receive updates', (done) => {
       const resource = new MentionResource(apiConfig);
       let count = 0;
-      resource.subscribe('test1', function (mentions) {
+      resource.subscribe('test1', (mentions) => {
         expect(mentions.length).to.equal(resultCraig.length);
         count++;
         if (count === 2) {
           done();
         }
       });
-      resource.subscribe('test2', function (mentions) {
+      resource.subscribe('test2', (mentions) => {
         expect(mentions.length).to.equal(resultCraig.length);
         count++;
         if (count === 2) {
@@ -110,27 +110,27 @@ describe('MentionResource', function () {
     });
   });
 
-  describe('#unsubscribe', function () {
-    it('subscriber should no longer called', function (done) {
+  describe('#unsubscribe', () => {
+    it('subscriber should no longer called', (done) => {
       const resource = new MentionResource(apiConfig);
       const listener = sinon.spy();
       resource.subscribe('test1', listener);
       resource.unsubscribe('test1');
       resource.filter('craig');
       // Not desirable...
-      setTimeout(function () {
+      setTimeout(() => {
         expect(listener).to.not.be.called;
         done();
       }, 50);
     });
   });
 
-  describe('#filter', function () {
-    it('in order responses', function (done) {
+  describe('#filter', () => {
+    it('in order responses', (done) => {
       const resource = new MentionResource(apiConfig);
       const results = [];
       const expected = [resultC, resultCraig];
-      resource.subscribe('test1', function (mentions) {
+      resource.subscribe('test1', (mentions) => {
         results.push(mentions);
         if (results.length === 2) {
           checkOrder(expected, results);
@@ -143,11 +143,11 @@ describe('MentionResource', function () {
       }, 10);
     });
 
-    it('out of order responses', function (done) {
+    it('out of order responses', (done) => {
       const resource = new MentionResource(apiConfig);
       const results = [];
       const expected = [resultCraig];
-      resource.subscribe('test1', function (mentions) {
+      resource.subscribe('test1', (mentions) => {
         results.push(mentions);
         if (results.length === 1) {
           checkOrder(expected, results);
@@ -163,24 +163,24 @@ describe('MentionResource', function () {
       }, 5);
     });
 
-    it('error response', function (done) {
+    it('error response', (done) => {
       const resource = new MentionResource(apiConfig);
-      resource.subscribe('test1', function () {
+      resource.subscribe('test1', () => {
         assert.fail('Should not be called');
-      }, function () {
+      }, () => {
         done();
       });
       resource.filter('broken');
     });
   });
 
-  describe('#recordMentionSelection', function () {
-    it('should call record endpoint', function (done) {
+  describe('#recordMentionSelection', () => {
+    it('should call record endpoint', (done) => {
       const resource = new MentionResource(apiConfig);
 
       resource.recordMentionSelection({
         id: 666,
-      }).then(function () {
+      }).then(() => {
         expect(fetchMock.called('record')).to.be.true;
         done();
       });

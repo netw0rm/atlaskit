@@ -1,8 +1,6 @@
 {
   "extends": "ak-stories",
   "rules": {
-    "max-len": 0,
-    "react/prefer-es6-class": 0,
-    "no-underscore-dangle": 0
+    'no-underscore-dangle': ['error', { allowAfterThis: true }]
   }
 }

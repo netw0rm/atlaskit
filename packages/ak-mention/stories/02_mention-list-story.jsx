@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
 import MentionList from '../src/components/ak-mention-list';
@@ -8,33 +8,38 @@ function randomMentions() {
   return mentions.filter(() => Math.random() < 0.7);
 }
 
-const RefreshableMentionList = React.createClass({
-  displayName: 'RefreshableMentionList',
+class RefreshableMentionList extends Component {
+  static propTypes = {
+  }
 
-  getInitialState() {
-    return {
+  constructor(props) {
+    super(props);
+    this._updateData = this._updateData.bind(this);
+    this._moveUp = this._moveUp.bind(this);
+    this._moveDown = this._moveDown.bind(this);
+    this.state = {
       mentions: randomMentions(),
     };
-  },
+  }
 
   _updateData() {
     this.setState({
       mentions: randomMentions(),
     });
-  },
+  }
 
   _moveUp() {
     if (this._mentionList) {
       // FIXME reactify should expose prototype methods from a wc
       this._mentionList.selectPrevious();
     }
-  },
+  }
 
   _moveDown() {
     if (this._mentionList) {
       this._mentionList.selectNext();
     }
-  },
+  }
 
   render() {
     const mentionList = (
@@ -55,9 +60,8 @@ const RefreshableMentionList = React.createClass({
         {mentionList}
       </div>
     );
-  },
-});
-
+  }
+}
 
 storiesOf('Mention List', module)
   .add('simple mention list', () => <RefreshableMentionList />)

@@ -93,7 +93,7 @@ describe('MentionPicker', () => {
     });
   });
 
-  it('should change selection when navigating next', function () {
+  it('should change selection when navigating next', () => {
     // FIXME check if still an issue in React
     // Issues under IE in browserstack
     // this.skip();
@@ -112,7 +112,7 @@ describe('MentionPicker', () => {
     });
   });
 
-  it('should change selection when navigating previous', function () {
+  it('should change selection when navigating previous', () => {
     // FIXME check if still an issue in React
     // Issues under IE in browserstack
     // this.skip();
@@ -132,7 +132,7 @@ describe('MentionPicker', () => {
     });
   });
 
-  it('should choose current selection when chooseCurrentSelection called', function () {
+  it('should choose current selection when chooseCurrentSelection called', () => {
     // FIXME check if still an issue in React
     // Issues under IE in browserstack
     // this.skip();
@@ -158,7 +158,7 @@ describe('MentionPicker', () => {
     });
   });
 
-  it('should choose clicked selection when item clicked', function () {
+  it('should choose clicked selection when item clicked', () => {
     // FIXME check if still an issue in React
     // Issues under IE in browserstack
     // this.skip();

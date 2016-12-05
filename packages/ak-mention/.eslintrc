@@ -1,16 +1,6 @@
 {
+  "extends": "ak-base",
   "rules": {
-    "no-underscore-dangle": 0,
-    "no-param-reassign": 0,
-  },
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
-    }
-  },
-  "globals": {
-    "assert": false,  //will be defined globally, false prevents overriding them
-    "done": false
+    'no-underscore-dangle': ['error', { allowAfterThis: true }]
   }
 }

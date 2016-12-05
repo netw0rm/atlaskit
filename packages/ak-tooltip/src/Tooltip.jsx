@@ -2,20 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import Layer from 'ak-layer';
 
 import styles from 'style!./styles.less';
-
-
-function positionToPopperPosition(position) {
-  const allowedPositions = {
-    top: 'top center',
-    bottom: 'bottom center',
-    left: 'left middle',
-    right: 'right middle',
-  };
-  if (allowedPositions[position]) {
-    return allowedPositions[position];
-  }
-  return allowedPositions.bottom;
-}
+import { positionToPopperPosition } from './internal/helpers';
 
 /* eslint-disable react/no-unused-prop-types */
 
@@ -79,7 +66,7 @@ export default class StatelessTooltip extends PureComponent {
       null;
 
     return (
-      <div onMouseOver={props.onMouseOver} onMouseOut={props.onMouseOut} data-foo="f">
+      <div onMouseOver={props.onMouseOver} onMouseOut={props.onMouseOut}>
         <Layer
           position={positionToPopperPosition(props.position)}
           autoPosition

@@ -6,15 +6,11 @@ export default class EditView extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
     isFocusedInitially: PropTypes.bool.isRequired,
-    isLabelHidden: PropTypes.bool,
+    isLabelHidden: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
   }
 
-  static defaultProps = {
-    isLabelHidden: false,
-  }
-
-  render = () =>
+  render = () => (
     <div>
       <FieldBase
         label={this.props.label}
@@ -24,4 +20,5 @@ export default class EditView extends PureComponent {
         {this.props.children}
       </FieldBase>
     </div>
+  )
 }

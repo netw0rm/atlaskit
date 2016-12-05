@@ -1,7 +1,7 @@
 {
   "name": "ak-avatar",
   "version": "5.0.5",
-  "description": "Avatar component",
+  "description": "A React component that represents users within the same application",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",

@@ -25,7 +25,7 @@ describe(name, () => {
     expect(shallow(<Trigger>trigger</Trigger>).instance().props.type).to.equal('default');
   });
 
-  describe('all about render', () => {
+  describe('render', () => {
     it('should render default trigger', () => {
       const TriggerSample = <div id="#test">test</div>;
       const wrapper = shallow(<Trigger>{TriggerSample}</Trigger>);
@@ -50,7 +50,7 @@ describe(name, () => {
     });
   });
 
-  describe('all about events', () => {
+  describe('events', () => {
     let onActivate;
 
     beforeEach(() => {

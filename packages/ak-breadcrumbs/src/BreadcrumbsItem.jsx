@@ -36,7 +36,7 @@ export default class BreadcrumbsItem extends PureComponent {
   constructor() {
     super();
     this.state = {
-      overflow: false,
+      hasOverflow: false,
     };
   }
 
@@ -46,7 +46,7 @@ export default class BreadcrumbsItem extends PureComponent {
 
   componentWillReceiveProps() {
     // Reset the state
-    this.setState({ overflow: false });
+    this.setState({ hasOverflow: false });
   }
 
   componentDidUpdate() {
@@ -58,15 +58,15 @@ export default class BreadcrumbsItem extends PureComponent {
       // We need to find the DOM node for the button component in order to measure its size.
       const el = ReactDOM.findDOMNode(this.button); // eslint-disable-line react/no-find-dom-node
       const overflow = el.clientWidth >= itemTruncateWidth;
-      if (overflow !== this.state.overflow) {
-        this.setState({ overflow });
+      if (overflow !== this.state.hasOverflow) {
+        this.setState({ hasOverflow: overflow });
       }
     }
   }
 
   render() {
     const itemClasses = classnames(item, {
-      [truncated]: this.state.overflow,
+      [truncated]: this.state.hasOverflow,
     });
     return (
       <div className={itemClasses}>

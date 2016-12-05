@@ -27,6 +27,11 @@ describe(name, () => {
       expect(wrapper.instance()).to.be.instanceOf(Component);
     });
 
+    it('should set the initial state correctly', () => {
+      const wrapper = shallow(<Item />);
+      expect(wrapper.state().hasOverflow).to.equal(false);
+    });
+
     it('should render a link Button containing the content', () => {
       const children = 'children';
       const wrapper = shallow(<Item>{children}</Item>);

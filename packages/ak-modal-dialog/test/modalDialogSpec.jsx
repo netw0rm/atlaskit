@@ -31,6 +31,27 @@ describe('ak-modal-dialog', () => {
       });
     });
 
+    describe('width', () => {
+      const { locals, locals: { modalPositioner, medium } } = styles;
+      const allowedWidths = ['small', 'medium', 'large', 'x-large'];
+      const hasClass = (wrapper, className) => wrapper.find(`.${modalPositioner}`).hasClass(className);
+
+      it('should be "medium" by default', () => {
+        hasClass(shallow(<ModalDialog isOpen />), medium).should.equal(true);
+      });
+
+      allowedWidths.forEach((width) => {
+        it(`width = "${width}" is applied uniquely`, () => {
+          hasClass(shallow(<ModalDialog isOpen width={width} />), locals[width]).should.equal(true);
+
+          // Check that other widths aren't applied
+          allowedWidths.filter(w => w !== width).forEach((otherWidth) => {
+            hasClass(shallow(<ModalDialog isOpen width={width} />), otherWidth).should.equal(false);
+          });
+        });
+      });
+    });
+
     describe('header', () => {
       it('should render when set', () => {
         shallow(

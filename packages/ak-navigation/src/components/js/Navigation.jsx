@@ -25,6 +25,10 @@ export default class Navigation extends Component {
       open: PropTypes.bool,
       onResize: PropTypes.func,
       globalNavigation: PropTypes.node,
+      isResizeable: PropTypes.bool,
+      globalPrimaryIcon: PropTypes.node,
+      globalSearchIcon: PropTypes.node,
+      globalCreateIcon: PropTypes.node,
     };
   }
 
@@ -32,6 +36,7 @@ export default class Navigation extends Component {
     return {
       width: navigationOpenWidth,
       open: true,
+      isResizeable: true,
       onResize: () => {},
     };
   }
@@ -45,17 +50,20 @@ export default class Navigation extends Component {
     };
   }
 
+  onResize(resizeDelta) {
+    this.setState({ resizeDelta });
+  }
 
   getRenderedWidth() {
     const baselineWidth = this.props.open ? this.props.width : containerClosedWidth;
     return Math.max(containerClosedWidth, baselineWidth + this.state.resizeDelta);
   }
 
-  searchActivated() {
+  searchActivated =() => {
     this.setState({ createOpen: false, searchOpen: !this.state.searchOpen });
   }
 
-  createActivated() {
+  createActivated =() => {
     this.setState({ createOpen: !this.state.createOpen, searchOpen: false });
   }
 
@@ -73,7 +81,17 @@ export default class Navigation extends Component {
     });
   }
 
+
   render() {
+    const globalItemIfPropSet = (prop, onActivate) => {
+      if (!prop) return null;
+      return (
+        <GlobalItem onActivate={onActivate}>
+          {prop}
+        </GlobalItem>
+      );
+    };
+
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();
     return (
@@ -92,9 +110,9 @@ export default class Navigation extends Component {
                     shouldAnimate={shouldAnimate}
                     width={getGlobalWidth(this.getRenderedWidth())}
                   >
-                    <GlobalItem>P</GlobalItem>
-                    <GlobalItem onActivate={() => this.searchActivated()}>S</GlobalItem>
-                    <GlobalItem onActivate={() => this.createActivated()}>C</GlobalItem>
+                    {globalItemIfPropSet(this.props.globalPrimaryIcon)}
+                    {globalItemIfPropSet(this.props.globalSearchIcon, this.searchActivated)}
+                    {globalItemIfPropSet(this.props.globalCreateIcon, this.createActivated)}
                   </GlobalNavigation>
                 )
             }
@@ -112,10 +130,14 @@ export default class Navigation extends Component {
               {this.props.children}
             </ContainerNavigation>
           </div>
-          <Resizer
-            onResize={(resizeDelta) => { this.setState({ resizeDelta }); }}
-            onResizeEnd={() => { this.triggerResizeHandler(); }}
-          />
+          {
+            this.props.isResizeable
+            ? <Resizer
+              onResize={this.onResize}
+              onResizeEnd={this.triggerResizeHandler}
+            />
+            : null
+          }
         </div>
       </div>
     );

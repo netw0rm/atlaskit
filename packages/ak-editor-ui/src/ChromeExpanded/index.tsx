@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 import AkButton from 'ak-button';
 import AkButtonGroup from 'ak-button-group';
 import { ProseMirror } from 'ak-editor-prosemirror';
-import BlockTypePlugin from 'ak-editor-plugin-block-type';
-import HyperlinkPlugin from 'ak-editor-plugin-hyperlink';
-import ListsPlugin from 'ak-editor-plugin-lists';
-import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
+import { BlockTypeState } from 'ak-editor-plugin-block-type';
+import { HyperlinkState } from 'ak-editor-plugin-hyperlink';
+import { ListsState } from 'ak-editor-plugin-lists';
+import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
 import MentionIcon from 'ak-icon/glyph/editor/mention';
 import ImageIcon from 'ak-icon/glyph/editor/image';
 import * as styles from './styles.global.less';
@@ -23,41 +23,43 @@ interface Props {
   onInsertMention?: () => void;
   onInsertImage?: () => void;
   onSave?: () => void;
-  pm?: ProseMirror;
+  pluginStateBlockType?: BlockTypeState;
+  pluginStateHyperlink?: HyperlinkState;
+  pluginStateLists?: ListsState;
+  pluginStateTextFormatting?: TextFormattingState;
 }
 
 interface State {}
 
 export default class ChromeExpanded extends PureComponent<Props, State> {
+  componentDidMount() {
+    const { container } = this.refs;
+    if (container instanceof HTMLElement) {
+      // Prevent any keyboard events from bubbling outside of the editor chrome.
+      // This can't be done using React's onFoo props because those use delegation,
+      // which will be "too late" to be able to effectively stop propagation.
+      container.addEventListener('keydown', this.stopPropagation);
+      container.addEventListener('keyup', this.stopPropagation);
+      container.addEventListener('keypress', this.stopPropagation);
+    }
+  }
+
   render() {
     const { props } = this;
-    const { pm } = props;
-
-    const blockTypePluginState = pm ? BlockTypePlugin.get(pm) : null;
-    const hyperlinkPluginState = pm ? HyperlinkPlugin.get(pm): null;
-    const listsPluginState = pm ? ListsPlugin.get(pm) : null;
-    const textFormattingPluginState = pm ? TextFormattingPlugin.get(pm) : null;
 
     return (
-      <div
-        className={styles.container}
-        // Prevent any keyboard events from bubbling outside of the editor chrome
-        onKeyDown={this.handleKeyEvent}
-        onKeyUp={this.handleKeyEvent}
-        onKeyPress={this.handleKeyEvent}
-        data-editor-chrome
-      >
+      <div className={styles.container} data-editor-chrome ref='container'>
         <div className={styles.toolbar}>
-          {blockTypePluginState ? <ToolbarBlockType pluginState={blockTypePluginState} /> : null}
-          {textFormattingPluginState ? <ToolbarTextFormatting pluginState={textFormattingPluginState} /> : null}
-          {hyperlinkPluginState ? <ToolbarHyperlink pluginState={hyperlinkPluginState} /> : null}
-          {listsPluginState ? <ToolbarLists pluginState={listsPluginState} /> : null}
+          {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} /> : null}
+          {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
+          {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
+          {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} /> : null}
           <span style={{ flexGrow: 1 }} />
           {props.feedbackFormUrl ? <ToolbarFeedback feedbackFormUrl={props.feedbackFormUrl} /> : null}
         </div>
         <div className={styles.content}>
-          {this.props.children}
-          {hyperlinkPluginState ? <HyperlinkEdit pluginState={hyperlinkPluginState} /> : null}
+          {props.children}
+          {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
         </div>
         <div className={styles.footer}>
           <div className={styles.footerActions}>
@@ -121,7 +123,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
-  private handleKeyEvent(event: KeyboardEvent) {
+  private stopPropagation(event: KeyboardEvent) {
     event.stopPropagation();
   }
 };

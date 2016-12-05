@@ -39,6 +39,7 @@ storiesOf(name, module)
         <InputFieldBase label="Focused state" isFocused />
         <InputFieldBase label="Required state" isRequired />
         <InputFieldBase label="Disabled state" isDisabled />
+        <DivFieldBase label="Read-only state" isReadOnly />
         <InputFieldBase label="Compact state" appearance={compact} />
         <InputFieldBase label="Subtle state" appearance={subtle} />
       </form>

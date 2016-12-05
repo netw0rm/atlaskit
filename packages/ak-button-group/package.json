@@ -20,7 +20,7 @@
   "devDependencies": {
     "akutil-react": "*",
     "ak-button": "^4.0.1",
-    "ak-icon": "^10.0.0",
+    "ak-icon": "^11.1.6",
     "ak-dropdown": "^10.0.0"
   },
   "peerDependencies": {

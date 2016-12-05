@@ -18,7 +18,7 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-blanket": "^4.0.1",
-    "ak-button": "^4.0.2",
+    "ak-button": "^5.0.0",
     "ak-button-group": "^3.0.2",
     "ak-editor-shared-styles": "^3.0.0",
     "ak-icon": "^11.1.3",

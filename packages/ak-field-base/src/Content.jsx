@@ -21,12 +21,10 @@ export default class Content extends PureComponent {
     rightGutter: false,
   }
 
-  rightGutterWrapper = () => {
-    const container = (<div className={locals.rightGutterWrapper}>
+  renderRightGutter = () =>
+    <div className={locals.rightGutterWrapper}>
       {this.props.rightGutter}
-    </div>);
-    return this.props.rightGutter ? container : null;
-  }
+    </div>
 
   render() {
     const contentClasses = classNames(locals.content, {
@@ -46,7 +44,7 @@ export default class Content extends PureComponent {
         >
           {this.props.children}
         </div>
-        {this.rightGutterWrapper()}
+        {this.rightGutter ? this.renderRightGutter() : null}
       </div>
     );
   }

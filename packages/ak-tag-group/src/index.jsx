@@ -13,14 +13,14 @@ const ALIGNMENT_ATTRIBUTE_ENUM = {
  * @description Create instances of the component programmatically, or using markup.
  * @class TagGroup
  * @example @js import TagGroup from 'ak-tag-group';
+ * import TagGroup from 'ak-tag-group';
  * import Tag from 'ak-tag';
  *
- * const tagGroup = new TagGroup();
- * const chocolateTag = new Tag();
- * chocolateTag.text = 'Chocolate';
- * tagGroup.appendChild(chocolateTag);
+ * ReactDOM.render(
+ *   <TagGroup>
+ *     <Tag text="Cupcake" href="http://www.cupcakeipsum.com/" />
+ *   </TagGroup>, container);
  *
- * document.body.appendChild(tagGroup); // show the tag group with the tags
  */
 export default class TagGroup extends PureComponent {
   static propTypes = {
@@ -41,24 +41,11 @@ export default class TagGroup extends PureComponent {
      * @type {alignment}
      * @default start
      * @example @html <ak-tag-group alignment="end">
-     *   <ak-tag text="Cupcake"/ >
-     *   <ak-tag text="Cheesecake"/ >
-     *   <ak-tag text="Chocolate"/ >
-     * </ak-tag-group>
-     * @example @js import TagGroup, { alignment } from 'ak-tag-group';
-     * import Tag from 'ak-tag';
-     *
-     * const tagGroup = new TagGroup();
-     * const tags = ['Cupcake', 'Cheesecake', 'Chocolate'].map((text) => {
-     *   const tag = new Tag();
-     *   tag.text = text;
-     *   return tag;
-     * });
-     * tags.forEach((tag) => tagGroup.appendChild(tag));
-     *
-     * tagGroup.alignment = alignment.end; // Is aligned at text-end of the current text direction
-     *
-     * document.body.appendChild(tagGroup); // show the tag group with the tags
+     * ReactDOM.render(
+     *   <TagGroup alignment="end">
+     *     <Tag text="Cupcake" />
+     *     <Tag text="Chocolate" />
+     *   </TagGroup>, container);
      */
     alignment: PropTypes.oneOf(ALIGNMENT_ATTRIBUTE_ENUM.values),
     children: PropTypes.node.isRequired,

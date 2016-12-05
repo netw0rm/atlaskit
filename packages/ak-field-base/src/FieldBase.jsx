@@ -132,6 +132,8 @@ export default class FieldBase extends PureComponent {
 
   static defaultProps = {
     appearance: standard,
+    isLabelHidden: false,
+    isInvalid: false,
     isFocused: false,
     isDisabled: false,
     isRequired: false,

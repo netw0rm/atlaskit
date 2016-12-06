@@ -1,13 +1,15 @@
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
+import sinonChai from 'sinon-chai';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import Layer from '../src';
 
 
 const { expect } = chai;
 chai.use(chaiEnzyme());
+chai.use(sinonChai);
 
 
 describe('ak-layer', () => {
@@ -36,17 +38,29 @@ describe('ak-layer', () => {
   describe('state', () => {
     const content = (<div id="content">Some Content</div>);
 
-    it('should be reflected on the popper div', () => {
+    it('CssPosition and transform should be reflected on the popper div', () => {
       const wrapper = shallow(<Layer content={content}>
         <div>Something to align to</div>
       </Layer>);
 
-      wrapper.setState({ position: 'fixed', transform: 'translate3d(13px, 13px, 0px)' });
+      wrapper.setState({ CssPosition: 'fixed', transform: 'translate3d(13px, 13px, 0px)' });
 
       const contentParent = wrapper.find('#content').parent();
 
       expect(contentParent).to.have.style('position', 'fixed');
       expect(contentParent).to.have.style('transform', 'translate3d(13px, 13px, 0px)');
+    });
+
+    it('flipped should cause onFlippedChange callback to be called', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<Layer onFlippedChange={spy} content={content}><div>Foo</div></Layer>);
+      const state = { flipped: true, actualPosition: 'top left', originalPosition: 'bottom left' };
+
+      expect(wrapper.state('flipped')).to.be.false;
+      wrapper.setState(state);
+
+      expect(spy).to.have.been.calledOnce;
+      expect(spy).to.have.been.calledWith(state);
     });
   });
 });

@@ -8,10 +8,8 @@ import styles from 'style!./styles.less';
  * @example @js import ButtonGroup from 'ak-button-group';
  */
 export default class AkButtonGroup extends PureComponent {
-  static get propTypes() {
-    return {
-      children: React.PropTypes.node,
-    };
+  static propTypes = {
+    children: React.PropTypes.node,
   }
 
   render() {

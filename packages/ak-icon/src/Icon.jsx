@@ -69,7 +69,7 @@ export default class Icon extends PureComponent {
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
-        className={classnames([styles.icon, styles[this.props.size]])}
+        className={classnames([styles.iconBody, styles[this.props.size]])}
         onClick={this.props.onClick}
       >
         <span className={styles.iconContent}>

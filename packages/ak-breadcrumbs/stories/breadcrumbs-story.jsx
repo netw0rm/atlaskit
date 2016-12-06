@@ -1,5 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+import AtlassianIcon from 'ak-icon/glyph/atlassian';
 
 import AkBreadcrumbs, { AkBreadcrumbsItem } from '../src';
 import { name } from '../package.json';
@@ -31,12 +32,65 @@ storiesOf(name, module)
       </AkBreadcrumbsItem>
     </AkBreadcrumbs>
   ))
+  .add('ak-breadcrumbs with icons', () => {
+    const TestIcon = <AtlassianIcon label="Test icon" />;
+    return (
+      <div>
+        <p>Using itemBefore and itemAfter API</p>
+        <AkBreadcrumbs>
+          <AkBreadcrumbsItem href="/item">No icon</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon}>Before</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item" iconAfter={TestIcon}>After</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon} iconAfter={TestIcon}>
+            Before and after
+          </AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon} iconAfter={TestIcon}>
+            Long content, icons before and after
+          </AkBreadcrumbsItem>
+        </AkBreadcrumbs>
+        <p>With icons in the content</p>
+        <AkBreadcrumbs>
+          <AkBreadcrumbsItem href="/item">No icon</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">{TestIcon} Before</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">After {TestIcon}</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">
+            {TestIcon} Before and after {TestIcon}
+          </AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">
+            {TestIcon} Long content, icons before and after {TestIcon}
+          </AkBreadcrumbsItem>
+        </AkBreadcrumbs>
+      </div>
+    );
+  })
+  .add('ak-breadcrumbs with markup in item content', () => (
+    <AkBreadcrumbs>
+      <AkBreadcrumbsItem href="/page"><b>Page</b></AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/page">
+        With icon <AtlassianIcon label="Atlassian icon" />
+      </AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/page">
+        <span>Long page name with <b>markup</b> <i>(should be truncated)</i></span>
+        <span> and icon <AtlassianIcon label="Atlassian icon" /></span>
+      </AkBreadcrumbsItem>
+    </AkBreadcrumbs>
+  ))
+  .add('ak-breadcrumbs with long and short items', () => (
+    <AkBreadcrumbs>
+      <AkBreadcrumbsItem href="/long">Supercalifragilisticexpialidocious</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/short">Item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/short">Another item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/long">Long item name which should be truncated</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/long">Another long item name which should be truncated</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/short">Short item</AkBreadcrumbsItem>
+    </AkBreadcrumbs>
+  ))
   .add('ak-breadcrumbs with many items', () => (
-    <AkBreadcrumbs >
+    <AkBreadcrumbs>
       <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">A fourth item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item">A fourth item with a very long name</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">Yet another item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">An item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">The next item</AkBreadcrumbsItem>
@@ -48,11 +102,11 @@ storiesOf(name, module)
   ))
   .add('ak-breadcrumbs with many items, inside small container', () => (
     <div style={{ maxWidth: '500px', border: '1px solid black' }}>
-      <AkBreadcrumbs >
+      <AkBreadcrumbs>
         <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">A fourth item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item">A fourth item with a very long name</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">Yet another item</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">An item</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">The next item</AkBreadcrumbsItem>

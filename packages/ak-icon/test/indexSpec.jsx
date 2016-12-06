@@ -52,7 +52,9 @@ describe(name, () => {
           'bitbucket/teams',
           'bitbucket/wiki',
 
+          'cancel',
           'checkbox',
+          'confirm',
 
           'confluence/calendar',
           'confluence/canvas',

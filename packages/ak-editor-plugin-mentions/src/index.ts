@@ -95,7 +95,7 @@ export class MentionsPluginState {
     this.queryActive = false;
     this.query = undefined;
 
-    this.pm.tr.removeMark(0, this.pm.doc.content.size, this.pm.schema.marks[mentionQueryMarkName]).applyAndScroll();
+    this.pm.tr.removeMark(0, this.pm.doc.nodeSize - 2, this.pm.schema.marks[mentionQueryMarkName]).applyAndScroll();
 
     if (this.hasKeymap) {
       this.pm.removeKeymap(this.keymap);

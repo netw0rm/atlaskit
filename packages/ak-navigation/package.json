@@ -1,7 +1,7 @@
 {
   "name": "ak-navigation",
-  "version": "15.2.0",
-  "description": "ak-navigation webcomponent",
+  "version": "15.4.2",
+  "description": "A React component used as a sidebar",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "ak-avatar": "^4.0.0",
     "ak-dropdown": "^10.0.0",
-    "ak-icon": "^10.0.0",
+    "ak-icon": "^11.1.4",
     "ak-page": "^7.0.0",
     "akutil-common-test": "*",
     "karma-sinon-chai": "^1.2.4",

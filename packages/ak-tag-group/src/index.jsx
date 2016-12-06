@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import styles from 'style!./styles.less';
 
 const ALIGNMENT_ATTRIBUTE_ENUM = {
-  attribute: 'alignment',
   values: ['', 'start', 'end'],
   defaultValue: '',
 };
@@ -13,7 +12,6 @@ const ALIGNMENT_ATTRIBUTE_ENUM = {
  * @description Create instances of the component programmatically, or using markup.
  * @class TagGroup
  * @example @js import TagGroup from 'ak-tag-group';
- * import TagGroup from 'ak-tag-group';
  * import Tag from 'ak-tag';
  *
  * ReactDOM.render(
@@ -40,7 +38,8 @@ export default class TagGroup extends PureComponent {
      * @instance
      * @type {alignment}
      * @default start
-     * @example @html <ak-tag-group alignment="end">
+     * @example @js import TagGroup from 'ak-tag-group';
+     * import Tag from 'ak-tag';
      * ReactDOM.render(
      *   <TagGroup alignment="end">
      *     <Tag text="Cupcake" />
@@ -56,19 +55,14 @@ export default class TagGroup extends PureComponent {
   }
 
   render() {
-    const isEndAligned = this.props.alignment === 'end';
-    const slotClasses = classnames({
-      [styles.slot]: true,
-      [styles.endAligned]: isEndAligned,
-    });
-
     return (
-      <div className={styles.rootNode}>
-        <div className={styles.slotWrapper}>
-          <div className={slotClasses}>
-            {this.props.children}
-          </div>
-        </div>
+      <div
+        className={classnames({
+          [styles.rootNode]: true,
+          [styles.endAligned]: this.props.alignment === 'end',
+        })}
+      >
+        {this.props.children}
       </div>
     );
   }

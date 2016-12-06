@@ -84,6 +84,19 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   /**
+   * Set value from HTML string
+   */
+  setFromHtml(html: string): void {
+    const { pm } = this.state;
+    
+    if (!pm || !pm.doc) {
+      throw new Error('Unable to set from HTML before the editor is initialized');
+    }
+
+    pm.setDoc(parseHtml(html.trim()), null);
+  }
+
+  /**
    * Return the current python-markdown value from the editor.
    */
   get value(): string | undefined {

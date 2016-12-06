@@ -11,7 +11,7 @@ const { expect } = chai;
 chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
-describe('pf-profilecard', () => {
+describe('ak-profilecard', () => {
   describe('IconLabel', () => {
     it('should render no label when not children are present', () => {
       const wrapper = shallow(<IconLabel />);

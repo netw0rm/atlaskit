@@ -8,7 +8,7 @@ const { expect } = chai;
 chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
-describe('pf-profilecard', () => {
+describe('ak-profilecard', () => {
   describe('profile-client', () => {
     describe('#modifyResponse', () => {
       it('should remove certain properties from the data object', () => {

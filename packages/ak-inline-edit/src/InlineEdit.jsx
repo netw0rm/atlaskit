@@ -53,7 +53,7 @@ export default class InlineEdit extends PureComponent {
      *
      * For example, will be called when the user clicks on the input.
      *
-     * The parent component would typically set the InlineEdit's isEditing
+     * The parent component would typically set the InlineEdit's 'isEditing'
      * prop true in response to this.
      *
      * @memberof InlineEdit
@@ -64,7 +64,7 @@ export default class InlineEdit extends PureComponent {
      * @description Called when the user confirms a new value
      *
      * The typical response would be to check if the editing value is valid,
-     * and if so, save it and switch isEditing to false.
+     * and if so, save it and switch 'isEditing' to false.
      *
      * @memberof InlineEdit
      * @type {Function}
@@ -74,7 +74,7 @@ export default class InlineEdit extends PureComponent {
      * @description Called when the user cancels an edit
      *
      * The typical response would be to discard the current editing value and switch
-     * isEditing to false.
+     * 'isEditing' to false.
      *
      * @memberof InlineEdit
      * @type {Function}

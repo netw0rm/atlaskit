@@ -1,32 +1,30 @@
 import React, { PureComponent, PropTypes } from 'react';
-import FieldBase from 'ak-field-base';
-import Icon from 'ak-icon/glyph/edit';
+import { FieldBase } from 'ak-field-base';
 import { locals } from './styles.less';
 
 /* eslint-disable react/prefer-stateless-function */
-export default class ReadView extends PureComponent {
+export default class ReadOnlyView extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
     isLabelHidden: PropTypes.bool.isRequired,
-    onEditRequested: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
   }
 
   render = () => (
-    <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+    <div
       className={locals.readViewWrapper}
-      onClick={this.props.onEditRequested}
     >
       <FieldBase
         label={this.props.label}
         isLabelHidden={this.props.isLabelHidden}
+        isFocused={false}
+        isReadOnly
         appearance="subtle"
+        onFocus={() => {}}
+        onBlur={() => {}}
       >
         <div className={locals.readViewContentWrapper}>
           {this.props.children}
-          <button className={locals.editButton}>
-            <Icon label="Edit" size="small" />
-          </button>
         </div>
       </FieldBase>
     </div>

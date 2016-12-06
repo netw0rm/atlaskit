@@ -44,7 +44,7 @@ describe('ak-tooltip', () => {
       const layer = wrapper.find('Layer');
       expect(layer).to.exist;
 
-      expect(layer.prop('content')).to.not.exist;
+      expect(layer).to.not.have.prop('content');
     });
   });
 

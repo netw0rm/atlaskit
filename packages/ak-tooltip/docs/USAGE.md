@@ -12,7 +12,7 @@ npm install ak-tooltip
 
 ## Using the component
 
-`ak-tooltip` exports two tooltip components, one "smart" and one "dumb". The smart component allows you to simply place the tooltip around and element and all the state handling will
+`ak-tooltip` exports two tooltip components, one "smart" and one "dumb". The smart component allows you to simply place the tooltip around an element and all the state handling will
 be handled for you. The dumb one on the other hand allows you to hook into events and to manage the state yourself.
 
 ### Smart Component
@@ -65,4 +65,4 @@ function renderButtonInContainer() {
 
 This is a contrived example to show the usage of `onMouseOver` and `onMouseOut` as a way of controlling your own state.
 
-Obviously your state would normally be stored in component or a value store.
+Obviously your state would normally be stored in a component or value store.

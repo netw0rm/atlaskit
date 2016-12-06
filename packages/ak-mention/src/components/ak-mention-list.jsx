@@ -1,7 +1,7 @@
 import styles from 'style!./ak-mention-list.less';
 
 import classNames from 'classnames';
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
 
 import Error from './ak-mention-list-error';
 import Item from './ak-mention-item';
@@ -20,7 +20,7 @@ function wrapIndex(mentions, index) {
   return newIndex % len;
 }
 
-export default class MentionList extends Component {
+export default class MentionList extends PureComponent {
   static propTypes = {
     mentions: PropTypes.arrayOf(MentionPropTypes.mention),
     showError: PropTypes.bool,

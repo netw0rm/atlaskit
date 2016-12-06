@@ -5,7 +5,7 @@ import sinonChai from 'sinon-chai';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import Content from '../src/Content';
-import styles from '../src/styles.less';
+import { locals } from '../src/styles.less';
 import { compact, subtle } from '../src/internal/appearances';
 
 chai.use(chaiAsPromised);
@@ -16,7 +16,7 @@ const {
   content: contentClass,
   invalid: isInvalidClass,
   focused: isFocusedClass,
-} = styles.locals;
+} = locals;
 
 describe('ak-field-base', () => {
   describe('Content', () => {
@@ -46,11 +46,23 @@ describe('ak-field-base', () => {
       })
     );
 
+    describe('rightGutter prop', () => {
+      it('should render properly', () => {
+        const div = <div id="right">test</div>;
+        const wrapper = shallow(<Content rightGutter={div} />);
+        expect(wrapper.find(`.${locals.rightGutterWrapper}`)).to.contain(div);
+      });
+
+      it('should not render rightGutterWrapper when prop is not set', () =>
+        expect(shallow(<Content />)).to.not.have.descendants(`.${locals.rightGutterWrapper}`)
+      );
+    });
+
     describe('appearance', () => {
       [compact, subtle].forEach(appearance =>
         describe(appearance, () =>
           it(`should render the content with the .${appearance} class`, () =>
-            expect(shallow(<Content appearance={appearance} />)).to.have.descendants(`.${styles.locals[appearance]}`)
+            expect(shallow(<Content appearance={appearance} />)).to.have.descendants(`.${locals[appearance]}`)
           )
         )
       );

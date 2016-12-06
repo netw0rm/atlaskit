@@ -4,7 +4,7 @@ The layer is responsible for the positioning of an element on a page. For exampl
 
 If you use a layer with a component that could be opened or closed, you have to make sure you re-render the layer the first time you open the component, otherwise it will end up with a wrong position.
 
-![Example Layer Components](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-layer/docs/Layer.png)
+![Example of Layer](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-layer/docs/layer.png)
 
 ## Try it out
 

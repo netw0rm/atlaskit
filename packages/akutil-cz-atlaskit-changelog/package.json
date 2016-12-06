@@ -1,6 +1,6 @@
 {
   "name": "akutil-cz-atlaskit-changelog",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A utility for managing the changelog of atlaskit",
   "main": "index.js",
   "author": "Atlassian Pty Ltd",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "cz-lerna-changelog": "^0.3.0",
+    "cz-lerna-changelog": "^0.3.1",
     "lerna": "*"
   },
   "repository": {

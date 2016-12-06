@@ -16,6 +16,7 @@ const {
   content: contentClass,
   invalid: isInvalidClass,
   focused: isFocusedClass,
+  readOnly: isReadOnlyClass,
 } = locals;
 
 describe('ak-field-base', () => {
@@ -23,6 +24,12 @@ describe('ak-field-base', () => {
     describe('by default', () =>
       it('should render a content', () =>
         expect(shallow(<Content />)).to.have.descendants(`.${contentClass}`)
+      )
+    );
+
+    describe('isReadOnly prop = true', () =>
+      it('should render with the .isReadOnly class', () =>
+        expect(shallow(<Content isReadOnly />)).to.have.descendants(`.${isReadOnlyClass}`)
       )
     );
 

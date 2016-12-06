@@ -23,6 +23,20 @@ export default class BreadcrumbsItem extends PureComponent {
      * @type {string}
      */
     href: PropTypes.string,
+    /**
+     * @description The icon to display before the item content.
+     * Icons specified in this way will always be displayed, even when the content is truncated.
+     * @memberof BreadcrumbsItem
+     * @type {element}
+     */
+    iconBefore: PropTypes.element,
+    /**
+     * @description The icon to display after the item content.
+     * Icons specified in this way will always be displayed, even when the content is truncated.
+     * @memberof BreadcrumbsItem
+     * @type {element}
+     */
+    iconAfter: PropTypes.element,
     children: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),
@@ -82,6 +96,8 @@ export default class BreadcrumbsItem extends PureComponent {
           <Button
             className={itemButton}
             appearance="link"
+            iconAfter={this.props.iconAfter}
+            iconBefore={this.props.iconBefore}
             spacing="compact"
             href={this.props.href}
             ref={el => (this.button = el)}

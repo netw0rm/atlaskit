@@ -32,6 +32,37 @@ storiesOf(name, module)
       </AkBreadcrumbsItem>
     </AkBreadcrumbs>
   ))
+  .add('ak-breadcrumbs with icons', () => {
+    const TestIcon = <AtlassianIcon label="Test icon" />;
+    return (
+      <div>
+        <p>Using itemBefore and itemAfter API</p>
+        <AkBreadcrumbs>
+          <AkBreadcrumbsItem href="/item">No icon</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon}>Before</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item" iconAfter={TestIcon}>After</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon} iconAfter={TestIcon}>
+            Before and after
+          </AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon} iconAfter={TestIcon}>
+            Long content, icons before and after
+          </AkBreadcrumbsItem>
+        </AkBreadcrumbs>
+        <p>With icons in the content</p>
+        <AkBreadcrumbs>
+          <AkBreadcrumbsItem href="/item">No icon</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">{TestIcon} Before</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">After {TestIcon}</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">
+            {TestIcon} Before and after {TestIcon}
+          </AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">
+            {TestIcon} Long content, icons before and after {TestIcon}
+          </AkBreadcrumbsItem>
+        </AkBreadcrumbs>
+      </div>
+    );
+  })
   .add('ak-breadcrumbs with markup in item content', () => (
     <AkBreadcrumbs>
       <AkBreadcrumbsItem href="/page"><b>Page</b></AkBreadcrumbsItem>

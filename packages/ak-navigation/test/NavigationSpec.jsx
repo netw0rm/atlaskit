@@ -1,6 +1,6 @@
 import chai, { expect } from 'chai';
 import chaiEnzyme from 'chai-enzyme';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import React from 'react';
 import Navigation from '../src/components/js/Navigation';
 import {
@@ -56,17 +56,25 @@ describe('<Navigation />', () => {
     });
     describe('globalPrimaryIcon', () => {
       it('should insert primary icon into navigation', () => {
-        expect(shallow(<Navigation globalPrimaryIcon={<span className="PRIMARY_ICON" />} />)).to.have.exactly(1).descendants('.PRIMARY_ICON');
+        expect(mount(<Navigation globalPrimaryIcon={<span className="PRIMARY_ICON" />} />)).to.have.exactly(1).descendants('.PRIMARY_ICON');
       });
     });
     describe('globalSearchIcon', () => {
       it('should insert search icon into navigation', () => {
-        expect(shallow(<Navigation globalSearchIcon={<span className="SEARCH_ICON" />} />)).to.have.exactly(1).descendants('.SEARCH_ICON');
+        expect(mount(<Navigation globalSearchIcon={<span className="SEARCH_ICON" />} />)).to.have.exactly(1).descendants('.SEARCH_ICON');
       });
     });
     describe('globalCreateIcon', () => {
       it('should insert create icon into navigation', () => {
-        expect(shallow(<Navigation globalCreateIcon={<span className="CREATE_ICON" />} />)).to.have.exactly(1).descendants('.CREATE_ICON');
+        expect(mount(<Navigation globalCreateIcon={<span className="CREATE_ICON" />} />)).to.have.exactly(1).descendants('.CREATE_ICON');
+      });
+    });
+
+    describe('interaction', () => {
+      it('resize changes internal resize state', () => {
+        const navigation = shallow(<Navigation />);
+        navigation.find('Resizer').simulate('resize', 50);
+        expect(navigation.state().resizeDelta).to.equal(50);
       });
     });
   });

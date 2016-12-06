@@ -56,13 +56,33 @@ export default class InlineEdit extends PureComponent {
      *
      * For example, will be called when the user clicks on the input.
      *
-     * The parent component would typically set the InlineEdit's isEditing
+     * The parent component would typically set the InlineEdit's 'isEditing'
      * prop true in response to this.
      *
      * @memberof InlineEdit
      * @type {Function}
      */
     onEditRequested: PropTypes.func.isRequired,
+    /**
+     * @description Called when the user confirms a new value
+     *
+     * The typical response would be to check if the editing value is valid,
+     * and if so, save it and switch 'isEditing' to false.
+     *
+     * @memberof InlineEdit
+     * @type {Function}
+     */
+    onConfirm: PropTypes.func.isRequired,
+    /**
+     * @description Called when the user cancels an edit
+     *
+     * The typical response would be to discard the current editing value and switch
+     * 'isEditing' to false.
+     *
+     * @memberof InlineEdit
+     * @type {Function}
+     */
+    onCancel: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -83,6 +103,8 @@ export default class InlineEdit extends PureComponent {
     <EditView
       label={this.props.label}
       isLabelHidden={this.props.isLabelHidden}
+      onConfirm={this.props.onConfirm}
+      onCancel={this.props.onCancel}
     >
       {this.props.editView}
     </EditView>

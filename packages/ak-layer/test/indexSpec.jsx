@@ -11,6 +11,13 @@ const { expect } = chai;
 chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
+/* There is a lot in Layer that can not be tested easily in JSDom. Most of it should already be
+   tested in Popper itself, but we should really have some sort of sanity checks for things like
+   flipping behaviour.
+
+   This file simply unit tests everything that can be unit tested. Browser and sanity checking will
+   be done as a part of AK-1098 */
+
 
 describe('ak-layer', () => {
   it('should be possible to create a component', () => {

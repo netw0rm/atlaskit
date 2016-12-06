@@ -22,5 +22,8 @@ describe('<GlobalNavigation />', () => {
       expect(shallow(<GlobalNavigation width={500} />).find(Spacer).props().width).to.equal(500);
       expect(shallow(<GlobalNavigation width={200} />).find(Spacer).props().width).to.equal(200);
     });
+    it('primaryIcon prop is rendered', () => {
+      expect(shallow(<GlobalNavigation primaryIcon={<img className="PRIMARY_ICON" alt="foo" />} />)).to.have.descendants('.PRIMARY_ICON');
+    });
   });
 });

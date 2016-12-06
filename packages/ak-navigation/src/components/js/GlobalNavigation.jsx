@@ -17,6 +17,7 @@ export default class GlobalNavigation extends Component {
     return {
       width: globalOpenWidth,
       shouldAnimate: false,
+      primaryIcon: null,
     };
   }
   getTranslate() {

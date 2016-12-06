@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import Layer from 'ak-layer';
 
 import styles from 'style!./styles.less';
-import { positionToPopperPosition } from './internal/helpers';
+import { positionToPopperPosition, getAnimationClass } from './internal/helpers';
 
 /* eslint-disable react/no-unused-prop-types */
 
@@ -59,10 +59,20 @@ export default class StatelessTooltip extends PureComponent {
     children: null,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = { isFlipped: false };
+  }
+
+  handleLayerFlipChange = ({ flipped }) => {
+    this.setState({ isFlipped: flipped });
+  }
+
   render() {
     const props = this.props;
+    const animationClass = getAnimationClass(props.position, this.state.isFlipped);
     const content = props.visible ?
-      (<div className={styles.tooltip}>{props.description}</div>) :
+      (<div className={`${styles.tooltip} ${animationClass}`}>{props.description}</div>) :
       null;
 
     return (
@@ -71,6 +81,7 @@ export default class StatelessTooltip extends PureComponent {
           position={positionToPopperPosition(props.position)}
           autoPosition
           content={content}
+          onFlippedChange={this.handleLayerFlipChange}
         >
           {this.props.children}
         </Layer>

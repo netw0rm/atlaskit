@@ -34,6 +34,7 @@ describe('ak-field-base', () => {
       { prop: 'isFocused', value: true, element: Content },
       { prop: 'appearance', value: compact, element: Content },
       { prop: 'appearance', value: subtle, element: Content },
+      { prop: 'rightGutter', value: 'test', element: Content },
     ].forEach(setup =>
       describe(`${setup.prop} prop`, () =>
         it('should be reflected', () => {

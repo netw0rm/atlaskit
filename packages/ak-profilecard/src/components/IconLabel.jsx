@@ -10,7 +10,7 @@ export default class IconLabel extends PureComponent {
     icon: PropTypes.string,
     children: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.element,
+      PropTypes.node,
     ]),
   }
 

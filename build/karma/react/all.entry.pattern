@@ -1,1 +1,1 @@
-../../../packages/*/test/**/*Spec.jsx
+../../../packages/*/test/**/*Spec.+(jsx|tsx)

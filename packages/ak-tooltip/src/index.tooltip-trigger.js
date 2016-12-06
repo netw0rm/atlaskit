@@ -4,7 +4,6 @@ import debounce from 'debounce';
 import { vdom, define } from 'skatejs';
 import { handleMouseEnter, handleMouseLeave } from './internal/event-handlers';
 
-
 /**
  * @description Create instances of a tooltip-trigger programmatically, or using markup.
  * @class TooltipTrigger

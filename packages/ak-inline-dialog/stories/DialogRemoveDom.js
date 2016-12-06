@@ -1,12 +1,11 @@
 import reactify from 'akutil-react';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import AkInlineDialog from '../src';
 
-
 const Dialog = reactify(AkInlineDialog);
 
-class ToggleDemo extends Component {
+class ToggleDemo extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,7 +39,6 @@ class ToggleDemo extends Component {
         </Dialog>
       );
     }
-
 
     return (
       <div>

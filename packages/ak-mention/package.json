@@ -1,10 +1,11 @@
 {
   "name": "ak-mention",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "ak-mention component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-mention"
   },

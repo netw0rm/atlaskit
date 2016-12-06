@@ -14,7 +14,6 @@ chai.should();
 
 const { expect } = chai;
 
-
 describe.skip(name, () => {
   describe('exports', () => {
     it('should export a base component', () => {

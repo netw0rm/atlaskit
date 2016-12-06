@@ -2,7 +2,6 @@ import React from 'react';
 
 import EventedGroup from './EventedGroup';
 
-
 const AlignedStory = props => (<EventedGroup
   alignment={props.alignment}
   initialTags={props.initialTags}

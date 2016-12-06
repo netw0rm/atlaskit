@@ -8,7 +8,6 @@ import { name } from '../package.json';
 import styles from '../src/shadow.less';
 import tagNames from './tagNames';
 
-
 const Group = reactify(WebComponent);
 const Tag = reactify(AkTagWebComponent);
 

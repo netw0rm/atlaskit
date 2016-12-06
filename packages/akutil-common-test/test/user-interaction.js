@@ -4,7 +4,6 @@ import keyCode from 'keycode';
 
 import { keydown, keyup, keypress } from '../src';
 
-
 chai.should();
 chai.use(sinonChai);
 

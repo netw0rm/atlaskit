@@ -6,7 +6,6 @@ import { enumeration } from 'akutil-common';
 
 import shadowStyles from './shadow.less';
 
-
 /**
  * Group alignment values. Based on the text-direction.
  *

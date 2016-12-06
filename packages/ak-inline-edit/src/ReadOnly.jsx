@@ -18,6 +18,7 @@ export default class ReadOnlyView extends PureComponent {
         label={this.props.label}
         isLabelHidden={this.props.isLabelHidden}
         isFocused={false}
+        isReadOnly
         appearance="subtle"
         onFocus={() => {}}
         onBlur={() => {}}

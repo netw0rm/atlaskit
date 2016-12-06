@@ -8,7 +8,7 @@ import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
 interface Props {
-  defaultExpanded?: boolean;
+  expanded?: boolean;
   placeholder?: string;
   onCancel?: () => void;
   onSave?: () => void;
@@ -18,6 +18,7 @@ interface Props {
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
+  onCollapsedChromeFocus: () => void;
 }
 
 interface State {
@@ -27,7 +28,11 @@ interface State {
 export default class Chrome extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { expanded: props.defaultExpanded || false };
+    this.state = { expanded: !!props.expanded };
+  }
+  
+  componentWillReceiveProps(props: Props) {
+    this.setState({ expanded: !!props.expanded });
   }
 
   render() {
@@ -46,16 +51,8 @@ export default class Chrome extends PureComponent<Props, State> {
           {props.children}
         </ChromeExpanded>
       : <ChromeCollapsed
-          onFocus={this.handleChromeCollapsedFocus}
+          onFocus={this.props.onCollapsedChromeFocus}
           text={props.placeholder}
         />;
-  }
-
-  collapse() {
-    this.setState({ expanded: false });
-  }
-
-  private handleChromeCollapsedFocus = () => {
-    this.setState({ expanded: true });
   }
 };

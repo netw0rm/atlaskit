@@ -27,10 +27,16 @@ interface Props {
 
 interface State {
   pm?: ProseMirror;
+  expanded?: boolean;
 }
 
 export default class Editor extends PureComponent<Props, State> {
-  state: State = {};
+  state: State;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = { expanded: props.defaultExpanded };
+  }
 
   /**
    * Focus the content region of the editor.
@@ -43,12 +49,26 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   /**
+   * Expand the editor chrome
+   */
+  expand = () => {
+    this.setState({ expanded: true });
+  }
+
+  /**
+   * Collapse the editor chrome
+   */
+  collapse = () => {
+    this.setState({ expanded: false });
+  }
+
+  /**
    * Clear the content of the editor, making it an empty document.
    */
   clear(): void {
     const { pm } = this.state;
     if (pm) {
-      pm.tr.delete(0, pm.doc.content.size).apply();
+      pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
     }
   }
 
@@ -86,16 +106,17 @@ export default class Editor extends PureComponent<Props, State> {
   render() {
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
-    const { pm } = this.state;
+    const { pm, expanded } = this.state;
 
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
-        defaultExpanded={this.props.defaultExpanded}
+        expanded={expanded}
         feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
         onCancel={handleCancel}
         onSave={handleSave}
         placeholder={this.props.placeholder}
+        onCollapsedChromeFocus={this.expand}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}

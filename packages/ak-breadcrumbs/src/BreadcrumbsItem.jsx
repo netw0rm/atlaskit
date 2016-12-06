@@ -53,15 +53,20 @@ export default class BreadcrumbsItem extends PureComponent {
     this.updateOverflow();
   }
 
+  /**
+   * @description Update the overflow state.
+   * Returns true if overflow is detected, false otherwise.
+   * @private
+   */
   updateOverflow() {
-    if (this.button) {
-      // We need to find the DOM node for the button component in order to measure its size.
-      const el = ReactDOM.findDOMNode(this.button); // eslint-disable-line react/no-find-dom-node
-      const overflow = el.clientWidth >= itemTruncateWidth;
-      if (overflow !== this.state.hasOverflow) {
-        this.setState({ hasOverflow: overflow });
-      }
+    if (!this.button) return false;
+    // We need to find the DOM node for the button component in order to measure its size.
+    const el = ReactDOM.findDOMNode(this.button); // eslint-disable-line react/no-find-dom-node
+    const overflow = el.clientWidth >= itemTruncateWidth;
+    if (overflow !== this.state.hasOverflow) {
+      this.setState({ hasOverflow: overflow });
     }
+    return overflow;
   }
 
   render() {

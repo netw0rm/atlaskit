@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import Tooltip, { Tooltip as DumbTooltip } from '../src/index';
+import AKTooltip, { Tooltip as DumbTooltip } from '../src/index';
 import FourDirectionTooltip from './FourDirectionTooltip';
 import { name } from '../package.json';
 
@@ -40,9 +40,9 @@ storiesOf(name, module)
   .add('a smart tooltip', () => (
     <div>
       <div style={containerStyle}>
-        <Tooltip position="top" description="This is a tooltip with position = top">
+        <AKTooltip position="top" description="This is a tooltip with position = top">
           <span style={buttonStyles}>Hover over me</span>
-        </Tooltip>
+        </AKTooltip>
       </div>
     </div>
   ))

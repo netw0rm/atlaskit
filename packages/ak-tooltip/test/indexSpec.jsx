@@ -4,7 +4,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 // Testing the dumb component
-import { StatelessTooltip as Tooltip } from '../src';
+import { Tooltip } from '../src';
 
 
 const { expect } = chai;

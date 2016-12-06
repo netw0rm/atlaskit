@@ -1,10 +1,10 @@
 import React, { PureComponent, PropTypes } from 'react';
-import StatelessTooltip from './Tooltip';
+import Tooltip from './Tooltip';
 
 /* eslint-disable react/no-unused-prop-types */
 /* export the smart (useful) component by default. Class name doesnt matter as user's will name it
    at import time */
-export default class Tooltip extends PureComponent {
+export default class AKTooltip extends PureComponent {
   static propTypes = {
     description: PropTypes.string,
     position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
@@ -35,7 +35,7 @@ export default class Tooltip extends PureComponent {
   render() {
     const props = this.props;
 
-    return (<StatelessTooltip
+    return (<Tooltip
       visible={this.state.visible}
       description={props.description}
       position={props.position}
@@ -43,11 +43,11 @@ export default class Tooltip extends PureComponent {
       onMouseOut={this.hideTooltip}
     >
       {props.children}
-    </StatelessTooltip>);
+    </Tooltip>);
   }
 }
 
-export { StatelessTooltip };
+export { Tooltip };
 
 /* eslint-enable react/no-unused-prop-types */
 

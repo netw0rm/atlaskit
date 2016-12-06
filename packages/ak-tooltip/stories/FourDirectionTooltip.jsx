@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 // import the smart tooltip component
-import Tooltip from '../src/';
+import AKTooltip from '../src/';
 
 const positions = ['bottom', 'left', 'top', 'right'];
 
@@ -34,12 +34,12 @@ export default class FourWayTooltip extends PureComponent {
 
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     return (<div onClick={this.changeDirection}>
-      <Tooltip
+      <AKTooltip
         description={position}
         position={position}
       >
         <div style={buttonStyles}>Click Me!</div>
-      </Tooltip>
+      </AKTooltip>
     </div>);
   }
 }

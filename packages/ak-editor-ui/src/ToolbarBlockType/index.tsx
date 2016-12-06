@@ -42,8 +42,8 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     return (
       <span onClick={this.handleToggleDropdown} className={styles.container}>
         <AkButton
-          disabled={!canChange}
-          selected={active}
+          isDisabled={!canChange}
+          isSelected={active}
           appearance='subtle'
           spacing='compact'
         >

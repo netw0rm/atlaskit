@@ -5,7 +5,7 @@ import sinonChai from 'sinon-chai';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import Content from '../src/Content';
-import styles from '../src/styles.less';
+import { locals } from '../src/styles.less';
 import { compact, subtle } from '../src/internal/appearances';
 
 chai.use(chaiAsPromised);
@@ -14,9 +14,9 @@ chai.use(chaiEnzyme());
 
 const {
   content: contentClass,
-  invalid: invalidClass,
-  focused: focusedClass,
-} = styles.locals;
+  invalid: isInvalidClass,
+  focused: isFocusedClass,
+} = locals;
 
 describe('ak-field-base', () => {
   describe('Content', () => {
@@ -26,31 +26,43 @@ describe('ak-field-base', () => {
       )
     );
 
-    describe('focused prop = true', () => {
-      it('should render the slotwrapper with the .focused class', () =>
-        expect(shallow(<Content focused />)).to.have.descendants(`.${focusedClass}`)
+    describe('isFocused prop = true', () => {
+      it('should render the slotwrapper with the .isFocused class', () =>
+        expect(shallow(<Content isFocused />)).to.have.descendants(`.${isFocusedClass}`)
       );
     });
 
-    describe('invalid prop = true', () =>
-      it('should render with the focused styles and not the invalid styles', () =>
-        expect(shallow(<Content invalid />)).to.have.descendants(`.${invalidClass}`)
+    describe('isInvalid prop = true', () =>
+      it('should render with the isFocused styles and not the isInvalid styles', () =>
+        expect(shallow(<Content isInvalid />)).to.have.descendants(`.${isInvalidClass}`)
       )
     );
 
-    describe('focused prop = true AND invalid prop = true', () =>
-      it('should render with the focused styles and not the invalid styles', () => {
-        const wrapper = shallow(<Content focused invalid />);
-        expect(wrapper).to.have.descendants(`.${focusedClass}`);
-        expect(wrapper).to.not.have.descendants(`.${invalidClass}`);
+    describe('isFocused prop = true AND isInvalid prop = true', () =>
+      it('should render with the isFocused styles and not the isInvalid styles', () => {
+        const wrapper = shallow(<Content isFocused isInvalid />);
+        expect(wrapper).to.have.descendants(`.${isFocusedClass}`);
+        expect(wrapper).to.not.have.descendants(`.${isInvalidClass}`);
       })
     );
+
+    describe('rightGutter prop', () => {
+      it('should render properly', () => {
+        const div = <div id="right">test</div>;
+        const wrapper = shallow(<Content rightGutter={div} />);
+        expect(wrapper.find(`.${locals.rightGutterWrapper}`)).to.contain(div);
+      });
+
+      it('should not render rightGutterWrapper when prop is not set', () =>
+        expect(shallow(<Content />)).to.not.have.descendants(`.${locals.rightGutterWrapper}`)
+      );
+    });
 
     describe('appearance', () => {
       [compact, subtle].forEach(appearance =>
         describe(appearance, () =>
           it(`should render the content with the .${appearance} class`, () =>
-            expect(shallow(<Content appearance={appearance} />)).to.have.descendants(`.${styles.locals[appearance]}`)
+            expect(shallow(<Content appearance={appearance} />)).to.have.descendants(`.${locals[appearance]}`)
           )
         )
       );

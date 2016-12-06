@@ -1,6 +1,6 @@
 {
   "name": "ak-button",
-  "version": "4.1.4",
+  "version": "5.0.0",
   "description": "ak-button webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

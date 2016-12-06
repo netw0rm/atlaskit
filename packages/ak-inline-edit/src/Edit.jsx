@@ -18,12 +18,12 @@ export default class EditView extends PureComponent {
     <div>
       <Button
         appearance="subtle"
-        iconBefore={<ConfirmIcon />}
+        iconBefore={<ConfirmIcon label="confirm" />}
         onClick={this.props.onConfirm}
       />
       <Button
         appearance="subtle"
-        iconBefore={<CancelIcon />}
+        iconBefore={<CancelIcon label="cancel" />}
         onClick={this.props.onCancel}
       />
     </div>

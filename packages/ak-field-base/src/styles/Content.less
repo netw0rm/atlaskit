@@ -63,7 +63,7 @@
     background-color: @base-background-color-subtle;
   }
 
-  &:hover {
+  &:hover:not(.read-only) {
     background-color: @base-background-color-hover;
     border-color: @base-border-color-hover;
   }
@@ -76,7 +76,7 @@
   }
 
   // note: .focused not :focus as CSS wont know that slotted content is focused
-  &.focused {
+  &.focused:not(.read-only) {
     .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
     border-color: @base-border-color-focused;
     background-color: @base-background-color-focused;

@@ -7,7 +7,6 @@ import chaiAsPromised from 'chai-as-promised';
 import Tooltip, { TooltipTrigger } from '../src';
 import { handleMouseEnter, handleMouseLeave } from '../src/internal/event-handlers';
 
-
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
@@ -76,7 +75,6 @@ describe.skip('ak-tooltip-trigger', () => {
       }).should.be.fulfilled;
     });
   });
-
 
   describe('handleMouseEnter event handler', () => {
     it('should open a tooltip', () => {

@@ -12,11 +12,12 @@ export default (props, children) => {
   const Item = props.href || props.target ? Href : Text;
 
   const classes = classNames(
-    [shadowItemStyles.locals.item, Object.assign({
+    [shadowItemStyles.locals.item, {
       [shadowItemStyles.locals.disabled]: props.disabled,
       [shadowItemStyles.locals.active]: props.active,
       [shadowItemStyles.locals.hidden]: props.hidden,
-    }), props.classes]
+      ...props.classes,
+    }]
   );
 
   return (

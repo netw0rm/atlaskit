@@ -17,7 +17,6 @@ import {
 } from '../internal/symbols';
 import shadowStyles from './pf-profilecard-resourced-shadow.less';
 
-
 const styles = shadowStyles.locals;
 
 /**

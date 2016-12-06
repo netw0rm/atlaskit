@@ -3,6 +3,7 @@ import Button from 'ak-button';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
 import FieldBase from 'ak-field-base';
+import { locals } from './styles.less';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class EditView extends PureComponent {
@@ -15,7 +16,7 @@ export default class EditView extends PureComponent {
   }
 
   renderActionButtons = () => (
-    <div>
+    <div className={locals.buttonsWrapper}>
       <Button
         appearance="subtle"
         iconBefore={<ConfirmIcon label="confirm" />}

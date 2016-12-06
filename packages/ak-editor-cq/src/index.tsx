@@ -41,7 +41,7 @@ export default class Editor extends PureComponent<Props, State> {
   clear(): void {
     const { pm } = this.state;
     if (pm) {
-      pm.tr.delete(0, pm.doc.content.size).apply();
+      pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
     }
   }
 

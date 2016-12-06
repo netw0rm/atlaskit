@@ -7,18 +7,15 @@ import { positionToPopperPosition, getAnimationClass } from './internal/helpers'
 /* eslint-disable react/no-unused-prop-types */
 
 /**
- * @description Create instances of the component programmatically, or using markup.
+ * @description React component used to display floating tooltips next to a component.
  * @class Tooltip
- * @example @html <ak-tooltip id='myTooltip'></ak-tooltip>
- * @example @js import Tooltip from 'ak-tooltip';
- * const tooltip = new Tooltip();
- * tooltip.id = 'myTooltip';
+ * @example @html <AKTooltip description="Foo!" position="right"><div>Foo</div></AKTooltip>
  */
 export default class StatelessTooltip extends PureComponent {
   static propTypes = {
     /**
      * @description The location of where the tooltip will appear, relative to the component it
-     * is bound to. This is usually set by an ak-tooltip-trigger.
+     * is bound to.
      * Allowed values: top, bottom, left and right.
      * @memberof Tooltip
      * @instance
@@ -29,20 +26,18 @@ export default class StatelessTooltip extends PureComponent {
     /**
      * @description The text to display in the tooltip when a user hovers or focuses on the
      * wrapped element.
-     * This is normally set by an ak-tooltip-trigger.
      * @memberof Tooltip
      * @instance
      * @type {string}
-     * @default none
+     * @default ''
     */
     description: PropTypes.string,
     /**
      * @description Whether or not the tooltip is open and visible on the page.
-     * This is normally set by an ak-tooltip-trigger.
      * @memberof Tooltip
      * @instance
      * @type {boolean}
-     * @default none
+     * @default false
     */
     visible: PropTypes.bool,
     onMouseOver: PropTypes.func,

@@ -109,8 +109,8 @@ export default class Navigation extends Component {
                   <GlobalNavigation
                     shouldAnimate={shouldAnimate}
                     width={getGlobalWidth(this.getRenderedWidth())}
+                    primaryIcon={globalItemIfPropSet(this.props.globalPrimaryIcon)}
                   >
-                    {globalItemIfPropSet(this.props.globalPrimaryIcon)}
                     {globalItemIfPropSet(this.props.globalSearchIcon, this.searchActivated)}
                     {globalItemIfPropSet(this.props.globalCreateIcon, this.createActivated)}
                   </GlobalNavigation>

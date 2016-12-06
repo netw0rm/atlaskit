@@ -6,7 +6,9 @@ import Button from 'ak-button';
 
 import Item from '../src/BreadcrumbsItem';
 import { locals } from '../src/styles.less';
+import { itemTruncateWidth } from '../src/internal/constants';
 import { name } from '../package.json';
+import { setItemWidth } from './_helpers';
 
 
 const { expect } = chai;
@@ -54,6 +56,25 @@ describe(name, () => {
         const wrapper = mount(<Item href={href}>content</Item>);
         expect(wrapper.find(Button)).to.have.attr('href', href);
       });
+    });
+  });
+
+  describe('overflow calculation', () => {
+    let item;
+
+    beforeEach(() => {
+      const wrapper = mount(<Item>content</Item>);
+      item = wrapper.instance();
+    });
+
+    it('for an item which is truncated', () => {
+      setItemWidth(item, itemTruncateWidth);
+      expect(item.updateOverflow()).to.equal(true);
+    });
+
+    it('for an item which is not truncated', () => {
+      setItemWidth(item, itemTruncateWidth - 1);
+      expect(item.updateOverflow()).to.equal(false);
     });
   });
 });

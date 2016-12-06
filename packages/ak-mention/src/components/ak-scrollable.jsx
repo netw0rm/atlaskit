@@ -1,9 +1,9 @@
 import styles from 'style!./ak-scrollable.less';
 
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
 import { findDOMNode } from 'react-dom';
 
-export default class Scrollable extends Component {
+export default class Scrollable extends PureComponent {
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.node,
@@ -11,7 +11,8 @@ export default class Scrollable extends Component {
     ]),
   }
 
-  reveal(child) {
+  // API
+  reveal = (child) => {
     if (child && this._scrollableDiv) {
       const childNode = findDOMNode(child);
       // Not using Element.scrollIntoView as it scrolls even to top/bottom of view even if

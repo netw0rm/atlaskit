@@ -1,17 +1,19 @@
 import styles from 'style!./ak-resourced-mention-list.less';
 
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
 
 import MentionList from './ak-mention-list';
 import MentionPropTypes from '../internal/ak-mention-prop-types';
 import debug from '../util/logger';
-import hasChanges from '../util/has-changes';
 import uniqueId from '../util/id';
 
 function applyPresence(mentions, presences) {
   const updatedMentions = [];
   for (let i = 0; i < mentions.length; i++) {
-    const mention = Object.assign({}, mentions[i]);
+    // Shallow copy
+    const mention = {
+      ...mentions[i],
+    };
     const presence = presences[mention.id];
     if (presence) {
       mention.presence = presence;
@@ -32,7 +34,7 @@ function extractPresences(mentions) {
   return presences;
 }
 
-export default class ResourcedMentionList extends Component {
+export default class ResourcedMentionList extends PureComponent {
 
   static propTypes = {
     resourceProvider: MentionPropTypes.resourceProvider,
@@ -46,10 +48,6 @@ export default class ResourcedMentionList extends Component {
   constructor(props) {
     super(props);
     this._subscriberKey = uniqueId('ak-resourced-mention-list');
-    this._filterChange = this._filterChange.bind(this);
-    this._filterError = this._filterError.bind(this);
-    this._presenceUpdate = this._presenceUpdate.bind(this);
-    this._notifySelection = this._notifySelection.bind(this);
     this.state = {
       showError: false,
       mentions: [],
@@ -67,28 +65,25 @@ export default class ResourcedMentionList extends Component {
     this._applyPropChanges(this.props, nextProps);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return hasChanges(this.props, nextProps) || hasChanges(this.state, nextState);
-  }
-
   componentWillUnmount() {
     this._unsubscribeResourceProvider(this.props.resourceProvider);
     this._unsubscribePresenceProvider(this.props.presenceProvider);
   }
 
-  selectNext() {
+  // API
+  selectNext = () => {
     if (this._mentionListRef) {
       this._mentionListRef.selectNext();
     }
   }
 
-  selectPrevious() {
+  selectPrevious = () => {
     if (this._mentionListRef) {
       this._mentionListRef.selectPrevious();
     }
   }
 
-  chooseCurrentSelection() {
+  chooseCurrentSelection = () => {
     if (this._mentionListRef) {
       this._mentionListRef.chooseCurrentSelection();
     }
@@ -150,7 +145,15 @@ export default class ResourcedMentionList extends Component {
     }
   }
 
-  _filterChange(mentions) {
+  _refreshPresences(mentions) {
+    if (this.props.presenceProvider) {
+      const ids = mentions.map(mention => mention.id);
+      this.props.presenceProvider.refreshPresence(ids);
+    }
+  }
+
+  // internal, used for callbacks
+  _filterChange = (mentions) => {
     // Retain known presence
     const currentPresences = extractPresences(this.state.mentions);
     this.setState({
@@ -160,27 +163,20 @@ export default class ResourcedMentionList extends Component {
     this._refreshPresences(mentions);
   }
 
-  _filterError(error) {
+  _filterError = (error) => {
     debug('ak-resourced-mentions-list._filterError', error);
     this.setState({
       showError: true,
     });
   }
 
-  _presenceUpdate(presences) {
+  _presenceUpdate = (presences) => {
     this.setState({
       mentions: applyPresence(this.state.mentions, presences),
     });
   }
 
-  _refreshPresences(mentions) {
-    if (this.props.presenceProvider) {
-      const ids = mentions.map(mention => mention.id);
-      this.props.presenceProvider.refreshPresence(ids);
-    }
-  }
-
-  _notifySelection(mention) {
+  _notifySelection = (mention) => {
     this.props.resourceProvider.recordMentionSelection(mention);
     if (this.props.onSelection) {
       this.props.onSelection(mention);

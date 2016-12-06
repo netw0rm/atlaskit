@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
 import ReactDOM, { findDOMNode } from 'react-dom';
 
 /*
  * Simple implementation of popup while waiting for ak-inline-dialog
  */
-export default class Popup extends Component {
+export default class Popup extends PureComponent {
   static propTypes = {
     attachTo: PropTypes.element.isRequired,
     relativePosition: PropTypes.oneOf(['above', 'below', 'auto']),

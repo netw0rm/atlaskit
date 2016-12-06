@@ -59,7 +59,10 @@ const buildHeaders = (secOptions) => {
 const requestService = (baseUrl, path, data, opts, secOptions) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
-  const options = Object.assign({}, opts, { headers });
+  const options = {
+    ...opts,
+    ...{ headers },
+  };
   return fetch(new Request(url, options))
     .then((response) => {
       if (response.ok) {

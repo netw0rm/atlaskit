@@ -29,10 +29,6 @@ export default class MentionList extends Component {
 
   constructor(props) {
     super(props);
-    // Bind methods so that they're usable from a reactified version.
-    this.selectNext = this.selectNext.bind(this);
-    this.selectPrevious = this.selectPrevious.bind(this);
-    this.chooseCurrentSelection = this.chooseCurrentSelection.bind(this);
 
     this.state = {
       selectedKey: null,
@@ -73,17 +69,18 @@ export default class MentionList extends Component {
     // emit(elem, mentionListRenderedEvent);
   }
 
-  selectNext() {
+  // API
+  selectNext = () => {
     const newIndex = wrapIndex(this.props.mentions, this.state.selectedIndex + 1);
     this._selectIndex(newIndex);
   }
 
-  selectPrevious() {
+  selectPrevious = () => {
     const newIndex = wrapIndex(this.props.mentions, this.state.selectedIndex - 1);
     this._selectIndex(newIndex);
   }
 
-  chooseCurrentSelection() {
+  chooseCurrentSelection = () => {
     const { mentions, onSelection } = this.props;
     const { selectedIndex } = this.state;
     const selectedMention = mentions[selectedIndex];
@@ -93,6 +90,7 @@ export default class MentionList extends Component {
     }
   }
 
+  // Internal
   _revealItem(key) {
     const item = this._items[key];
     if (item && this._scrollable) {

@@ -1,18 +1,17 @@
 import styles from 'style!./ak-mention-picker.less';
 
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 
 import ResourcedMentionList from './ak-resourced-mention-list';
 import Popup from './ak-popup';
 import MentionPropTypes from '../internal/ak-mention-prop-types';
 import debug from '../util/logger';
-import hasChanges from '../util/has-changes';
 import uniqueId from '../util/id';
 
 /**
 * @class MentionPicker
 */
-export default class MentionPicker extends Component {
+export default class MentionPicker extends PureComponent {
 
   static propTypes = {
     // ak-resourced-mention-list
@@ -29,8 +28,6 @@ export default class MentionPicker extends Component {
   constructor(props) {
     super(props);
     this._subscriberKey = uniqueId('ak-mention-picker');
-    this._filterChange = this._filterChange.bind(this);
-    this._filterError = this._filterError.bind(this);
     this.state = {
       visible: false,
     };
@@ -45,10 +42,6 @@ export default class MentionPicker extends Component {
     this._applyPropChanges(this.props, nextProps);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return hasChanges(this.props, nextProps) || hasChanges(this.state, nextState);
-  }
-
   componentWillUnmount() {
     if (this.resourceProvider) {
       this.resourceProvider.unsubscribe(this._subscriberKey);
@@ -56,19 +49,19 @@ export default class MentionPicker extends Component {
     this._unsubscribeResourceProvider(this.props.resourceProvider);
   }
 
-  selectNext() {
+  selectNext = () => {
     if (this._mentionListRef) {
       this._mentionListRef.selectNext();
     }
   }
 
-  selectPrevious() {
+  selectPrevious = () => {
     if (this._mentionListRef) {
       this._mentionListRef.selectPrevious();
     }
   }
 
-  chooseCurrentSelection() {
+  chooseCurrentSelection = () => {
     if (this._mentionListRef) {
       this._mentionListRef.chooseCurrentSelection();
     }
@@ -100,14 +93,15 @@ export default class MentionPicker extends Component {
     }
   }
 
-  _filterChange(mentions) {
+  // internal, used for callbacks
+  _filterChange = (mentions) => {
     debug('ak-mention-picker._filterChange', mentions.length);
     this.setState({
       visible: mentions.length > 0,
     });
   }
 
-  _filterError(error) {
+  _filterError = (error) => {
     debug('ak-mention-picker._filterError', error);
     this.setState({
       visible: true,

@@ -66,24 +66,20 @@ function renderTime(time) {
 }
 
 export default class MentionItem extends PureComponent {
-  static propTypes = Object.assign({
+  static propTypes = {
     onMouseMove: PropTypes.func,
     onSelection: PropTypes.func,
-  }, MentionPropTypes.mentionPropType);
+    ...MentionPropTypes.mentionPropType,
+  };
 
-  constructor(props) {
-    super(props);
-    this._onMentionSelected = this._onMentionSelected.bind(this);
-    this._onMentionMenuItemMouseMove = this._onMentionMenuItemMouseMove.bind(this);
-  }
-
-  _onMentionSelected(event) {
+  // internal, used for callbacks
+  _onMentionSelected = (event) => {
     if (leftClick(event) && this.props.onSelection) {
       this.props.onSelection(this.props);
     }
   }
 
-  _onMentionMenuItemMouseMove(event) {
+  _onMentionMenuItemMouseMove = (event) => {
     if (this.props.onMouseMove) {
       this.props.onMouseMove(event);
     }

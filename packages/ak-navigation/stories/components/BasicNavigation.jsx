@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { action } from '@kadira/storybook';
-import { AtlassianIcon, SearchIcon, CreateIcon } from 'ak-icon';
+import { AtlassianIcon, SearchIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
 import Navigation, { AkContainerHeader, AkContainerItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 
@@ -16,15 +16,15 @@ export default class BasicNavigation extends Component {
     return {
       children: <div>
         <AkContainerItem
-          icon={<img src={nucleusLogo} alt="icon" />}
+          icon={<DashboardIcon />}
           text="Item A"
         />
         <AkContainerItem
-          icon={<img src={nucleusLogo} alt="icon" />}
+          icon={<SettingsIcon />}
           text="Item B"
         />
         <AkContainerItem
-          icon={<img src={nucleusLogo} alt="icon" />}
+          icon={<ProjectsIcon />}
           text="Item C"
         />
       </div>,
@@ -43,7 +43,7 @@ export default class BasicNavigation extends Component {
             />
           </a>
         }
-        globalPrimaryIcon={<AtlassianIcon />}
+        globalPrimaryIcon={<AtlassianIcon size="medium" />}
         globalSearchIcon={<SearchIcon />}
         globalCreateIcon={<CreateIcon />}
         {...this.props}

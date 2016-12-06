@@ -69,5 +69,13 @@ describe('<Navigation />', () => {
         expect(shallow(<Navigation globalCreateIcon={<span className="CREATE_ICON" />} />)).to.have.exactly(1).descendants('.CREATE_ICON');
       });
     });
+
+    describe('interaction', () => {
+      it('resize changes internal resize state', () => {
+        const navigation = shallow(<Navigation />);
+        navigation.find('Resizer').simulate('resize', 50);
+        expect(navigation.state().resizeDelta).to.equal(50);
+      });
+    });
   });
 });

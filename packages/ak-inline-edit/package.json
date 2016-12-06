@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "akutil-shared-styles": "^34.0.1",
-    "ak-button": "^5.0.0",
+    "ak-button": "^5.0.1",
     "ak-field-base": "^6.0.1",
     "ak-icon": "^11.2.2",
     "babel-runtime": "^6.11.6"

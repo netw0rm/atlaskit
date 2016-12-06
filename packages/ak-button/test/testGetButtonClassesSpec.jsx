@@ -1,7 +1,6 @@
 import { appearance, spacing } from '../src/internal/enumerated-properties';
 import getClasses from '../src/internal/get-button-classes';
 
-
 const classKeys = {
   button: 'button',
   appearanceDefault: 'appearanceDefault',
@@ -82,11 +81,11 @@ classKeys[`appearance${capitalize(appearanceName)}`])
         describe(`when spacing=${name} attribute is set`, () => {
           [
             {
-              setup: { disabled: true },
+              setup: { isDisabled: true },
               expectedClass: 'disabled',
             },
             {
-              setup: { selected: true },
+              setup: { isSelected: true },
               expectedClass: 'selected',
             },
             {
@@ -100,7 +99,7 @@ classKeys[`appearance${capitalize(appearanceName)}`])
           ].forEach((testCase) => {
             describe(`and also ${JSON.stringify(testCase.setup)} is set`, () => {
               beforeEach(() => (
-                classes = getClasses(classKeys, Object.assign({ spacing: name }, testCase.setup))
+                classes = getClasses(classKeys, { spacing: name, ...testCase.setup })
               ));
               it(`should also contain ${testCase.expectedClass} class`, () =>
                 expectKeys(classes, 3,
@@ -118,34 +117,34 @@ classKeys[`appearance${capitalize(appearanceName)}`])
 
   describe('selected', () => {
     let classes;
-    beforeEach(() => (classes = getClasses(classKeys, { selected: true })));
+    beforeEach(() => (classes = getClasses(classKeys, { isSelected: true })));
 
     it('classes should include selected', () =>
       expectKeys(classes, 2, classKeys.button, classKeys.selected)
     );
 
     it('selected attribute should override any appearance', () => {
-      classes = getClasses(classKeys, { appearance: 'primary', selected: true });
+      classes = getClasses(classKeys, { appearance: 'primary', isSelected: true });
       expectKeys(classes, 2, classKeys.button, classKeys.selected);
     });
   });
 
   describe('disabled', () => {
     let classes;
-    beforeEach(() => (classes = getClasses(classKeys, { disabled: true })));
+    beforeEach(() => (classes = getClasses(classKeys, { isDisabled: true })));
 
     it('classes should include disabled', () =>
       expectKeys(classes, 2, classKeys.button, classKeys.disabled)
     );
 
     [
-      { selected: true },
+      { isSelected: true },
       { href: 'www.atlassian.com' },
       { appearance: 'subtle' },
     ].forEach(setup =>
       describe(`when also ${setup} is set`, () => {
         beforeEach(() =>
-          (classes = getClasses(classKeys, Object.assign(setup, { disabled: true }))));
+          (classes = getClasses(classKeys, Object.assign(setup, { isDisabled: true }))));
 
         it('disabled attribute should discard any other class', () =>
           expectKeys(classes, 2, classKeys.button, classKeys.disabled)
@@ -159,7 +158,7 @@ classKeys[`appearance${capitalize(appearanceName)}`])
     ].forEach(a =>
       describe(`when attribute appearance ${a} is also set`, () => {
         beforeEach(() => (
-          classes = getClasses(classKeys, { appearance: a, disabled: true })
+          classes = getClasses(classKeys, { appearance: a, isDisabled: true })
         ));
 
         it('should have both disabled and link classes', () =>

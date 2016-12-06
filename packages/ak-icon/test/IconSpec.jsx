@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import { mount, shallow } from 'enzyme';
@@ -26,7 +26,7 @@ describe(name, () => {
         expect(NotImplementedError).to.not.be.undefined;
         expect(size).to.not.be.undefined;
 
-        expect(new Icon({ label: 'My icon' })).to.be.instanceOf(Component);
+        expect(new Icon({ label: 'My icon' })).to.be.instanceOf(PureComponent);
         expect(NotImplementedError).to.be.an.error;
         expect(Object.values(size)).to.deep.equal(['small', 'medium', 'large', 'xlarge']);
       });
@@ -51,7 +51,7 @@ describe(name, () => {
     it('should be able to create a component', () => {
       const wrapper = shallow(<MyIcon label="My icon" />);
       expect(wrapper).to.be.defined;
-      expect(wrapper.instance()).to.be.instanceOf(Component);
+      expect(wrapper.instance()).to.be.instanceOf(PureComponent);
     });
 
     describe('label property', () => {

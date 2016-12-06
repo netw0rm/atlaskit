@@ -10,7 +10,6 @@ import * as bundle from '../src';
 import { size } from '../src/Icon';
 import { getGlyphs } from './_helpers';
 
-
 const { expect } = chai;
 chai.use(chaiEnzyme());
 chai.should();
@@ -53,7 +52,9 @@ describe(name, () => {
           'bitbucket/teams',
           'bitbucket/wiki',
 
+          'cancel',
           'checkbox',
+          'confirm',
 
           'confluence/calendar',
           'confluence/canvas',

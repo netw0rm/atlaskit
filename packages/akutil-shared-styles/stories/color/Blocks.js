@@ -15,7 +15,6 @@ import Prism, {
   tintRgx,
 } from '../../test/_Prism';
 
-
 const {
   akColorN0: alternateTextColor,
   akColorN800: defaultTextColor,

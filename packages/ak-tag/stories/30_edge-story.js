@@ -4,7 +4,6 @@ import React from 'react';
 import Component from '../src';
 import { name } from '../package.json';
 
-
 storiesOf(name, module)
   .add('edge case: a simple ak-tag (should warn that no text was given in dev)', () => (
     <Component />

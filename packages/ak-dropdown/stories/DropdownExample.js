@@ -5,7 +5,6 @@ import AvatarWc from 'ak-avatar';
 import Dropdown, { DropdownTrigger, DropdownTriggerButton, Group, Item } from '../src';
 import styles from '../src/less/shadow-list.less';
 
-
 const dropdownClass = styles.locals.akDropdown;
 const DropdownReactComponent = reactify(Dropdown);
 const Avatar = reactify(AvatarWc);

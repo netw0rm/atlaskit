@@ -19,6 +19,7 @@ export default class FieldBase extends PureComponent {
      *
      * Compact will make the field have less padding and subtle will remove the background/border
      * until a user hovers over it.
+     *
      * @memberof FieldBase
      * @type {string}
      * @default standard
@@ -30,6 +31,7 @@ export default class FieldBase extends PureComponent {
      *
      * This prop is still required, even if the hideLabel prop is set as the label is also used to
      * make the field accessible for screen readers.
+     *
      * @memberof FieldBase
      * @type {string}
      * @example <FieldBase label="Email" />
@@ -43,7 +45,6 @@ export default class FieldBase extends PureComponent {
      * **Note**: You must still provide a label for the component regardless of this prop.
      * The label is also used to make the field accessible to screen readers.
      *
-     * Defaults to false.
      * @memberof FieldBase
      * @type {boolean}
      * @default false
@@ -55,6 +56,7 @@ export default class FieldBase extends PureComponent {
      *
      * This is shown to the user through a red border currently but will also
      * include error messages in a future release.
+     *
      * @memberof FieldBase
      * @type {boolean}
      * @default false
@@ -77,6 +79,7 @@ export default class FieldBase extends PureComponent {
      * @description Whether or not the field is required.
      *
      * If set to true, an asterisk will be appended to the label text.
+     *
      * @memberof FieldBase
      * @type {boolean}
      * @default false
@@ -87,12 +90,24 @@ export default class FieldBase extends PureComponent {
      * @description Whether or not a field is disabled.
      *
      * This is shown to the user through a disabled cursor icon when hovering over the field.
+     *
      * @memberof FieldBase
      * @type {boolean}
      * @default false
      * @example <FieldBase isDisabled />
      */
     isDisabled: PropTypes.bool,
+    /**
+     * @description Whether or not the field is in read-only mode.
+     *
+     * Disables the field's hover effect to indicate that it is not editable.
+     *
+     * @memberof FieldBase
+     * @type {boolean}
+     * @default false
+     * @example <FieldBase isReadOnly />
+     */
+    isReadOnly: PropTypes.bool,
     /**
      * @description Callback that is called whenever the Label is clicked
      *
@@ -121,6 +136,15 @@ export default class FieldBase extends PureComponent {
      */
     onBlur: PropTypes.func.isRequired,
     /**
+     * @description Allows abitrary content to be displayed to the right of the field
+     *
+     * The content will be horizontally aligned with the field itself (excluding the label)
+     * @memberof FieldBase
+     * @type {ReactNode}
+     * @example <FieldBase rightGutter={<div>Hi!</div>}></FieldBase>
+     */
+    rightGutter: PropTypes.node,
+    /**
      * @description The content that will be displayed within the field
      *
      * @memberof FieldBase
@@ -136,6 +160,7 @@ export default class FieldBase extends PureComponent {
     isInvalid: false,
     isFocused: false,
     isDisabled: false,
+    isReadOnly: false,
     isRequired: false,
   }
 
@@ -154,6 +179,8 @@ export default class FieldBase extends PureComponent {
           isDisabled={this.props.isDisabled}
           isInvalid={this.props.isInvalid}
           isFocused={this.props.isFocused}
+          isReadOnly={this.props.isReadOnly}
+          rightGutter={this.props.rightGutter}
         >
           {this.props.children}
         </Content>

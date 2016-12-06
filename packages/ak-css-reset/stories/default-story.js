@@ -5,7 +5,6 @@ import 'style-loader!../src/index.less';
 
 import { name } from '../package.json';
 
-
 /* eslint-disable quotes, max-len,  */
 
 storiesOf(name, module)

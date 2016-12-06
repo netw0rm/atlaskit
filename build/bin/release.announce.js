@@ -3,7 +3,6 @@ const fs = require('fs');
 const minilog = require('minilog');
 const HipChatNotifier = require('hipchat-msg').HipChatNotifier;
 
-
 const log = minilog('release/announce');
 minilog.enable();
 
@@ -24,7 +23,6 @@ if (!AUTH_TOKEN || !ROOM_ID || !CDN_URL_SCOPE || !CDN_URL_BASE) {
   log.error('env variables missing!');
   process.exit(1);
 }
-
 
 /**
 * Generates a URL to a package in the registry, such as:

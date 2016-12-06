@@ -3,7 +3,6 @@ const path = require('path');
 const iconNameToComponentName = require('../bin/iconNameToComponentName');
 const { tmpFolderName } = require('./constants');
 
-
 module.exports = ({
   svgData,
   unprefixedIconName,

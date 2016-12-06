@@ -9,7 +9,6 @@ import { name } from '../../package.json';
 import DefaultSlotContainer from '../../src/templates/DefaultSlotContainer';
 import shadowItemStyles from '../../src/less/shadow-item.less';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 

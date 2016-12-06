@@ -45,12 +45,12 @@ describe('ak-layer', () => {
   describe('state', () => {
     const content = (<div id="content">Some Content</div>);
 
-    it('CssPosition and transform should be reflected on the popper div', () => {
+    it('cssPosition and transform should be reflected on the popper div', () => {
       const wrapper = shallow(<Layer content={content}>
         <div>Something to align to</div>
       </Layer>);
 
-      wrapper.setState({ CssPosition: 'fixed', transform: 'translate3d(13px, 13px, 0px)' });
+      wrapper.setState({ cssPosition: 'fixed', transform: 'translate3d(13px, 13px, 0px)' });
 
       const contentParent = wrapper.find('#content').parent();
 

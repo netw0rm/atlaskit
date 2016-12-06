@@ -196,7 +196,7 @@ export default class Layer extends PureComponent {
 
         this.setState({
           // position: fixed or absolute
-          CssPosition: state.offsets.popper.position,
+          cssPosition: state.offsets.popper.position,
           transform: `translate3d(${left}px, ${top}px, 0px)`,
           // state.flipped is either true or undefined
           flipped: !!state.flipped,
@@ -211,7 +211,7 @@ export default class Layer extends PureComponent {
   }
 
   render() {
-    const { CssPosition, transform } = this.state;
+    const { cssPosition, transform } = this.state;
     return (
       <div>
         <div ref={ref => (this.targetRef = ref)}>
@@ -219,7 +219,7 @@ export default class Layer extends PureComponent {
         </div>
         <div
           ref={ref => (this.contentRef = ref)}
-          style={{ top: 0, left: 0, position: CssPosition, transform }}
+          style={{ top: 0, left: 0, position: cssPosition, transform }}
         >
           {this.props.content}
         </div>

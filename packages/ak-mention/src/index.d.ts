@@ -41,30 +41,46 @@ declare class MentionPicker extends PureComponent<{
     onSelection?: Function;
     target?: Node
     position?: string;
-  }, {}> {}
+  }, {}> {
+  selectNext(): void;
+  selectPrevious(): void;
+  chooseCurrentSelection(): void;
+}
 
 declare class AbstractResource {}
+
 declare class AbstractMentionResource extends AbstractResource {
   filter(query: string): void;
   recordMentionSelection(mention: Mention): void;
   _notifyListeners(mentions: Mention[]): void;
   _notifyErrorListeners(error: any): void;
 }
+
 declare class AbstractPresenceResource extends AbstractResource {
   _notifyListeners(precenses: any);
 }
 declare class MentionResource extends AbstractMentionResource {}
+
 declare class MentionList extends PureComponent<{
   mentions?: Mention[];
   showError?: boolean;
   onSelection?: Function;
-}, {}> {}
+}, {}> {
+  selectNext(): void;
+  selectPrevious(): void;
+  chooseCurrentSelection(): void;
+}
+
 declare class ResourcedMentionList extends PureComponent<{
   resourceProvider?: ResourceProvider,
   presenceProvider?: PresenceProvider,
   query?: string,
   onSelection?: Function
-}, {}> {}
+}, {}> {
+  selectNext(): void;
+  selectPrevious(): void;
+  chooseCurrentSelection(): void;
+}
 
 export {
   MentionResource,

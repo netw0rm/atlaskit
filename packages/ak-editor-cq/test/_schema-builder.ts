@@ -5,6 +5,7 @@ import schema from '../src/schema';
 export const ul = nodeFactory(schema.nodes.bullet_list);
 export const doc = nodeFactory(schema.nodes.doc);
 export const p = nodeFactory(schema.nodes.paragraph);
+export const blockquote = nodeFactory(schema.nodes.blockquote);
 export const br = schema.node(schema.nodes.hard_break);
 export const h1 = nodeFactory(schema.nodes.heading, { level: 1 });
 export const h2 = nodeFactory(schema.nodes.heading, { level: 2 });

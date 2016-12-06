@@ -44,7 +44,7 @@ export default class Content extends PureComponent {
         >
           {this.props.children}
         </div>
-        {this.rightGutter ? this.renderRightGutter() : null}
+        {this.props.rightGutter ? this.renderRightGutter() : null}
       </div>
     );
   }

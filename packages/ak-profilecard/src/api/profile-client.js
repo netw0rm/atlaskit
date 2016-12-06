@@ -60,7 +60,7 @@ const buildQueryString = (userId, cloudId, timeformat = 'h:MMa') => {
 
   const presence = [
     'state',
-    'message',
+    'type',
     'date',
   ];
 

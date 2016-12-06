@@ -3,6 +3,7 @@ import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Button from 'ak-button';
+import AtlassianIcon from 'ak-icon/glyph/atlassian';
 
 import Item from '../src/BreadcrumbsItem';
 import { locals } from '../src/styles.less';
@@ -54,7 +55,21 @@ describe(name, () => {
       it('should be reflected to the Button', () => {
         const href = '/my/href/';
         const wrapper = mount(<Item href={href}>content</Item>);
-        expect(wrapper.find(Button)).to.have.attr('href', href);
+        expect(wrapper.find(Button)).to.have.prop('href', href);
+      });
+    });
+    describe('iconAfter prop', () => {
+      it('should be reflected to the Button', () => {
+        const icon = <AtlassianIcon label="icon" />;
+        const wrapper = shallow(<Item iconAfter={icon} />);
+        expect(wrapper.find(Button)).to.have.prop('iconAfter', icon);
+      });
+    });
+    describe('iconBefore prop', () => {
+      it('should be reflected to the Button', () => {
+        const icon = <AtlassianIcon label="icon" />;
+        const wrapper = shallow(<Item iconBefore={icon} />);
+        expect(wrapper.find(Button)).to.have.prop('iconBefore', icon);
       });
     });
   });

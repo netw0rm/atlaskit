@@ -1,4 +1,5 @@
 import {
+  BlockQuoteNodeType,
   BulletListNodeType,
   CodeMarkType,
   DelMarkType,
@@ -20,6 +21,7 @@ import {
 
 export default new Schema({
   nodes: {
+    blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     doc: { type: DocNodeType, content: 'block+' },
     paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
@@ -44,6 +46,7 @@ export default new Schema({
 
 interface CQSchema extends Schema {
   nodes: {
+    blockquote: BlockQuoteNodeType;
     doc: DocNodeType;
     paragraph: ParagraphNodeType;
     ordered_list: OrderedListNodeType;

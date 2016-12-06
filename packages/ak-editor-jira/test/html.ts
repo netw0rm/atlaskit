@@ -5,7 +5,7 @@ import {
   li, mono, ol, p, strike, strong, sub, sup, u, ul
 } from './_schema-builder';
 import { Node } from 'ak-editor-prosemirror';
-import { default as chai, expect } from 'chai';
+import chai, { expect } from 'chai';
 import schema from '../src/schema';
 
 chai.use(chaiPlugin);
@@ -22,7 +22,7 @@ const checkParse = (description: string, htmls: string[], node: Node) => {
 const checkEncode = (description: string, node: Node, html: string) => {
   it(`encodes HTML: ${description}`, () => {
     const encoded = encode(node);
-    expect(html).to.deep.equal(encoded);
+    expect(encoded).to.deep.equal(html);
   });
 };
 
@@ -68,7 +68,7 @@ describe('ak-editor-jira html:', () => {
         ));
 
       check('a paragraph with a hard break in it',
-        '<p>Text on two<br>lines.</p>',
+        '<p>Text on two<br />lines.</p>',
         doc(
           p('Text on two', br, 'lines.'),
         ));
@@ -76,7 +76,7 @@ describe('ak-editor-jira html:', () => {
 
     describe('breaks:', () => {
       check('a hard break in a paragraph',
-        '<p>one<br>two</p>',
+        '<p>one<br />two</p>',
         doc(p('one', br, 'two')));
     });
 
@@ -116,14 +116,6 @@ describe('ak-editor-jira html:', () => {
           '.'
         )));
 
-    //   check('<b> tag',
-    //     '<p>Text with <b>bold words</b>.</p>',
-    //     doc(p(
-    //       'Text with ',
-    //       strong('bold words'),
-    //       '.'
-    //     )));
-
       check('<em> tag',
         '<p>Text with <em>emphasised words</em>.</p>',
         doc(p(
@@ -162,14 +154,6 @@ describe('ak-editor-jira html:', () => {
       check('<del>',
         '<p><del>struck</del></p>',
         doc(p(strike('struck'))));
-
-    //   check('<code>',
-    //     '<p>Text with <code>function bar() { return foo; }</code>.</p>',
-    //     doc(p(
-    //       'Text with ',
-    //       code('function bar() { return foo; }'),
-    //       '.'
-    //     )));
 
       check('<sub>',
         '<p>Text with <sub>subscript emphasised words</sub>.</p>',
@@ -224,18 +208,7 @@ describe('ak-editor-jira html:', () => {
           em(sup('subscript emphasised words')),
           '.'
         )));
-
-    //   check('<i><code> nesting',
-    //     '<p>Text <i>in italics <code>AND SOME CODE</code> and others italics</i> and plain.</p>',
-    //     doc(p(
-    //       'Text ',
-    //       em(
-    //         'in italics ',
-    //         code('AND SOME CODE'),
-    //         ' and others italics'
-    //       ),
-    //       ' and plain.'
-    //     )));
+      });
     });
 
     describe('heading:', () => {
@@ -285,22 +258,9 @@ describe('ak-editor-jira html:', () => {
     });
 
     describe('horizontal rule', () => {
-      check('<hr>',
-        '<hr>',
+      check('<hr />',
+        '<hr />',
         doc(hr()));
-
-    //   // The XHTML parser chokes parsing these, since technically <p> only permits
-    //   // phrasing content, and <hr /> is not that (it's flow content). If we determine
-    //   // that we want to support HTML-ish content (where a <hr /> would split a <p />)
-    //   // we should uncomment these.
-
-    //   // check('<p><hr /></p> nesting splits the paragraph',
-    //   //   '<p><hr /></p>',
-    //   //   doc(p(), hr(), p()));
-
-    //   // check('<p><hr /><hr /></p> nesting splits the paragraph once',
-    //   //   '<p><hr /><hr /></p>',
-    //   //   doc(p(), hr(), hr(), p()));
     });
 
     describe('lists', () => {

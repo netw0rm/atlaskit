@@ -35,9 +35,12 @@ export default function encode(node: DocNode) {
     return '&nbsp;';
   }
 
+  // Normalise to XHTML style self closing tags.
   return html
-    .replace('<br></br>', '<br>')
-    .replace('<hr></hr>', '<hr>');
+    .replace('<br></br>', '<br />')
+    .replace('<br>', '<br />')
+    .replace('<hr></hr>', '<hr />')
+    .replace('<hr>', '<hr />');
 
   function encodeNode(node: PMNode) {
     if (isBulletListNode(node)) {
@@ -93,7 +96,7 @@ export default function encode(node: DocNode) {
 
   function encodeParagraph(node: ParagraphNode) {
     const elem = doc.createElement('p');
-    elem.appendChild(encodeFragment(node.content))
+    elem.appendChild(encodeFragment(node.content));
     return elem;
   }
 

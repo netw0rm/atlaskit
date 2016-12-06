@@ -82,6 +82,29 @@ export default class Layer extends PureComponent {
      * </Layer>, container);
      */
     content: PropTypes.node,
+    /**
+     * @description Callback that is used to know when the `flipped` state of Layer changes. This
+     * occurs when placing a Layered element in the requested position would cause Layer to be
+     * rendered outside of the boundariesElement (usually viewport).
+     *
+     * The callback will be passed an object with the following properties:
+     * | Key       | Type    | Description                                                      |
+     * | --------- | ------- | ---------------------------------------------------------------- |
+     * | flipped   | boolean | whether the Layer has been moved away from its original position |
+     * | actualPosition      | string  | the current position of the Layer ("top left", etc)    |
+     * | originalPosition    | string | the position that Layer originally tried to position to |
+     *
+     * @memberof Layer
+     * @instance
+     * @type Function
+     * @example @html
+     * const handleFlipChange = ({ flipped, actualPosition, originalPosition }) => { ... };
+     *
+     * ReactDOM.render(<Layer position="right middle" onFlippedChange={handleFlipChange}>
+     *   <div>I'm the target!</div>
+     * </Layer>, container);
+     */
+    onFlippedChange: PropTypes.func,
     children: PropTypes.node,
   }
 
@@ -91,6 +114,7 @@ export default class Layer extends PureComponent {
     autoPosition: true,
     offset: '0 0',
     content: null,
+    onFlippedChange: () => {},
     children: null,
   }
 
@@ -99,6 +123,9 @@ export default class Layer extends PureComponent {
     this.state = {
       position: null,
       transform: null,
+      flipped: false,
+      actualPosition: null,
+      originalPosition: null,
     };
   }
 
@@ -108,6 +135,16 @@ export default class Layer extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     this.applyPopper(nextProps);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.flipped !== this.state.flipped) {
+      this.props.onFlippedChange({
+        flipped: this.state.flipped,
+        actualPosition: this.state.actualPosition,
+        originalPosition: this.state.originalPosition,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -158,8 +195,13 @@ export default class Layer extends PureComponent {
         const top = Math.round(state.offsets.popper.top);
 
         this.setState({
-          position: state.offsets.popper.position,
+          // position: fixed or absolute
+          CssPosition: state.offsets.popper.position,
           transform: `translate3d(${left}px, ${top}px, 0px)`,
+          // state.flipped is either true or undefined
+          flipped: !!state.flipped,
+          actualPosition: state.position,
+          originalPosition: state.originalPosition,
         });
       }
     };
@@ -169,13 +211,16 @@ export default class Layer extends PureComponent {
   }
 
   render() {
-    const { position, transform } = this.state;
+    const { CssPosition, transform } = this.state;
     return (
       <div>
         <div ref={ref => (this.targetRef = ref)}>
           {this.props.children}
         </div>
-        <div ref={ref => (this.contentRef = ref)} style={{ top: 0, left: 0, position, transform }}>
+        <div
+          ref={ref => (this.contentRef = ref)}
+          style={{ top: 0, left: 0, position: CssPosition, transform }}
+        >
           {this.props.content}
         </div>
       </div>

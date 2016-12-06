@@ -15,6 +15,8 @@ const defaultProps = {
   isLabelHidden: true,
   isEditing: false,
   onEditRequested: noop,
+  onConfirm: noop,
+  onCancel: noop,
   readView: 'test',
   editView: 'test',
 };

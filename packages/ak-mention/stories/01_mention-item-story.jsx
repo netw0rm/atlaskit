@@ -1,6 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
+import { name } from '../package.json';
 import MentionItem from '../src/components/ak-mention-item';
 
 function renderSingleMention(mention) {
@@ -13,7 +14,7 @@ function renderSingleMention(mention) {
   );
 }
 
-storiesOf('Mention Item', module)
+storiesOf(`${name}/MentionItem`, module)
   .add('simple mention', () => {
     const mention = {
       avatarUrl: 'https://secure.gravatar.com/avatar/0eda4b603469d402e11e89a1dff51834?s=64',

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
+import { name } from '../package.json';
 import ResourcedMentionList from '../src/components/ak-resourced-mention-list';
 import SearchTextInput from './demo-search-text-input';
 import { resourceProvider } from './story-data';
@@ -47,5 +48,5 @@ class ResourcedMentionListStoryDemo extends Component {
 
 }
 
-storiesOf('Resourced Mention List', module)
+storiesOf(`${name}/ResourcedMentionList`, module)
   .add('Input field mention list.  Real API. Key binding', () => <ResourcedMentionListStoryDemo />);

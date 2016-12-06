@@ -1,6 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
+import { name } from '../package.json';
 import MentionTextInput from './demo-mention-text-input';
 import { resourceProvider, slowResourceProvider, MockPresenceProvider } from './story-data';
 
@@ -18,7 +19,7 @@ const downPage = {
   top: '400px',
 };
 
-storiesOf('Mention List Picker', module)
+storiesOf(`${name}/MentionPicker`, module)
   .add('Input field mention list. Mock API. Key binding', () => (
     <MentionTextInput
       label="User search"

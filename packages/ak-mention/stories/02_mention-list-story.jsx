@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
+import { name } from '../package.json';
 import MentionList from '../src/components/ak-mention-list';
 import { mentions } from './story-data';
 
@@ -63,7 +64,7 @@ class RefreshableMentionList extends Component {
   }
 }
 
-storiesOf('Mention List', module)
+storiesOf(`${name}/MentionList`, module)
   .add('simple mention list', () => <RefreshableMentionList />)
   .add('error mention list', () => (
     <div style={{ padding: '10px' }} >

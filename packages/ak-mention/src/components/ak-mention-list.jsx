@@ -1,5 +1,6 @@
 import styles from 'style!./ak-mention-list.less';
 
+import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
 
 import Error from './ak-mention-list-error';
@@ -125,8 +126,6 @@ export default class MentionList extends Component {
   }
 
   _renderItems() {
-    let idx = 0;
-
     const { mentions } = this.props;
     const { selectedKey } = this.state;
 
@@ -135,9 +134,8 @@ export default class MentionList extends Component {
 
       return (
         <div>
-          {mentions.map((mention) => {
+          {mentions.map((mention, idx) => {
             const selected = selectedKey === mention.id;
-            const currentIdx = idx;
             const key = mention.id;
             const { status, time } = mention.presence || {};
             const item = (
@@ -150,13 +148,13 @@ export default class MentionList extends Component {
                 status={status}
                 time={time}
                 onMouseMove={(mouseEvent) => {
-                  this._selectIndexOnHover(mouseEvent, currentIdx);
+                  this._selectIndexOnHover(mouseEvent, idx);
                 }}
                 /* Cannot use onclick, as onblur will close the element, and prevent
                  * onClick from firing.
                  */
                 onSelection={() => {
-                  this._selectIndex(currentIdx, () => {
+                  this._selectIndex(idx, () => {
                     this.chooseCurrentSelection();
                   });
                 }}
@@ -169,7 +167,6 @@ export default class MentionList extends Component {
                 }}
               />
             );
-            idx++;
             return item;
           })}
         </div>
@@ -181,31 +178,22 @@ export default class MentionList extends Component {
   render() {
     const { mentions, showError } = this.props;
 
-    const classes = [
-      styles.list,
-    ];
-    const scollableClasses = [
-      styles.scrollable,
-    ];
-
     const hasMentions = mentions && mentions.length;
+
     // If we get an error, but existing mentions are displayed, lets
     // just continue to show the existing mentions we have
     const mustShowError = showError && !hasMentions;
 
-    if (!mentions.length && !showError) {
-      classes.push(styles.empty);
-    }
-
-    if (!mentions.length) {
-      scollableClasses.push(styles.empty);
-    }
+    const classes = classNames({
+      [styles.list]: true,
+      [styles.empty]: !hasMentions && !showError,
+    });
 
     let errorSection = null;
     let resultSection = null;
     if (mustShowError) {
       errorSection = (<Error />);
-    } else {
+    } else if (hasMentions) {
       resultSection = (
         <Scrollable
           ref={(ref) => { this._scrollable = ref; }}
@@ -217,7 +205,7 @@ export default class MentionList extends Component {
 
     return (
       <div className={styles.akMentionList}>
-        <div className={classes.join(' ')}>
+        <div className={classes}>
           {errorSection}
           {resultSection}
         </div>

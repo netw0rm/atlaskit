@@ -158,15 +158,6 @@ class AbstractMentionResource extends AbstractResource {
  */
 class MentionResource extends AbstractMentionResource {
 
-  /*
-   * FIXME: Issues:
-   * - can organisationId be inferred from the securityProvider (on the service side)? Currently
-   *   assuming it's just returned.
-   * - parameter terminology - using
-   *   https://extranet.atlassian.com/display/PRODUCT/Product+Fabric+Terminology - do we need to
-   *   fix mentions service?
-   */
-
   /**
    *
    * @param {Object} config = {

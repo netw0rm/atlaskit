@@ -60,17 +60,15 @@ describe('MentionPicker', () => {
     const noMentionItemsShown = () => component.find(MentionItem).length === 0;
     const mentionErrorShown = () => component.find(MentionListError).length > 0;
 
-    return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+      .then(() => {
         component.setProps({ query: 'nothing' });
-        waitUntil(noMentionItemsShown).should.be.fulfilled.then(() => {
-          component.setProps({ query: 'error' });
-          waitUntil(mentionErrorShown).should.be.fulfilled.then(() => {
-            resolve();
-          }, reason => reject(reason));
-        }, reason => reject(reason));
-      }, reason => reject(reason));
-    });
+        return waitUntil(noMentionItemsShown).should.be.fulfilled;
+      })
+      .then(() => {
+        component.setProps({ query: 'error' });
+        return waitUntil(mentionErrorShown).should.be.fulfilled;
+      });
   });
 
   it('should display previous mention if error straight after', () => {
@@ -81,61 +79,40 @@ describe('MentionPicker', () => {
       return mentionList.prop('showError');
     };
 
-    return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+      .then(() => {
         component.setProps({ query: 'error' });
-        waitUntil(mentionErrorProcessed).should.be.fulfilled.then(() => {
-          waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
-            resolve();
-          }, reason => reject(reason));
-        }, reason => reject(reason));
-      }, reason => reject(reason));
-    });
+        return waitUntil(mentionErrorProcessed).should.be.fulfilled;
+      })
+      .then(() => waitUntil(defaultMentionItemsShow).should.be.fulfilled);
   });
 
   it('should change selection when navigating next', () => {
-    // FIXME check if still an issue in React
-    // Issues under IE in browserstack
-    // this.skip();
-
     const component = setupPicker();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const secondItemSelected = () => isMentionItemSelected(component, mentions[1].id);
 
-    return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+      .then(() => {
         component.instance().selectNext();
-        waitUntil(secondItemSelected).should.be.fulfilled.then(() => {
-          resolve();
-        }, reason => reject(reason));
-      }, reason => reject(reason));
-    });
+        return waitUntil(secondItemSelected).should.be.fulfilled;
+      });
   });
 
   it('should change selection when navigating previous', () => {
-    // FIXME check if still an issue in React
-    // Issues under IE in browserstack
-    // this.skip();
-
     const component = setupPicker();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const lastItemSelected = () =>
       isMentionItemSelected(component, mentions[mentions.length - 1].id);
 
-    return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+      .then(() => {
         component.instance().selectPrevious();
-        waitUntil(lastItemSelected).should.be.fulfilled.then(() => {
-          resolve();
-        }, reason => reject(reason));
-      }, reason => reject(reason));
-    });
+        return waitUntil(lastItemSelected).should.be.fulfilled;
+      });
   });
 
   it('should choose current selection when chooseCurrentSelection called', () => {
-    // FIXME check if still an issue in React
-    // Issues under IE in browserstack
-    // this.skip();
     let chosenMention = null;
 
     const component = setupPicker({
@@ -145,23 +122,18 @@ describe('MentionPicker', () => {
     const secondItemSelected = () => isMentionItemSelected(component, mentions[1].id);
     const chooseSecondItem = () => (chosenMention && chosenMention.id === mentions[1].id);
 
-    return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+      .then(() => {
         component.instance().selectNext();
-        waitUntil(secondItemSelected).should.be.fulfilled.then(() => {
-          component.instance().chooseCurrentSelection();
-          waitUntil(chooseSecondItem).should.be.fulfilled.then(() => {
-            resolve();
-          }, reason => reject(reason));
-        }, reason => reject(reason));
-      }, reason => reject(reason));
-    });
+        return waitUntil(secondItemSelected).should.be.fulfilled;
+      })
+      .then(() => {
+        component.instance().chooseCurrentSelection();
+        return waitUntil(chooseSecondItem).should.be.fulfilled;
+      });
   });
 
   it('should choose clicked selection when item clicked', () => {
-    // FIXME check if still an issue in React
-    // Issues under IE in browserstack
-    // this.skip();
     let chosenMention = null;
 
     const component = setupPicker({
@@ -172,14 +144,11 @@ describe('MentionPicker', () => {
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const chooseThirdItem = () => (chosenMention && chosenMention.id === mentions[2].id);
 
-    return new Promise((resolve, reject) => {
-      waitUntil(defaultMentionItemsShow).should.be.fulfilled.then(() => {
+    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+      .then(() => {
         const item = getMentionItemById(component, mentions[2].id);
         item.simulate('mousedown', leftClick);
-        waitUntil(chooseThirdItem).should.be.fulfilled.then(() => {
-          resolve();
-        }, reason => reject(reason));
-      }, reason => reject(reason));
-    });
+        return waitUntil(chooseThirdItem).should.be.fulfilled;
+      });
   });
 });

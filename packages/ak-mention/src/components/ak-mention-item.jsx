@@ -1,5 +1,6 @@
 import styles from 'style!./ak-mention-item.less';
 
+import classNames from 'classnames';
 import React, { PropTypes, PureComponent } from 'react';
 
 import Avatar from 'ak-avatar';
@@ -90,13 +91,10 @@ export default class MentionItem extends PureComponent {
 
   render() {
     const { selected, highlight, avatarUrl, status, time, name, mentionName } = this.props;
-    const classes = [
-      styles.item,
-    ];
-
-    if (selected) {
-      classes.push(styles.selected);
-    }
+    const classes = classNames({
+      [styles.item]: true,
+      [styles.selected]: selected,
+    });
 
     const nameHighlights = highlight && highlight.name;
     const mentionHighlights = highlight && highlight.mentionName;
@@ -108,7 +106,7 @@ export default class MentionItem extends PureComponent {
         onMouseMove={this._onMentionMenuItemMouseMove}
         data-mention-id={this.props.id}
       >
-        <div className={classes.join(' ')}>
+        <div className={classes}>
           <div className={styles.row}>
             <Avatar src={avatarUrl} size="medium" presence={status} />
             <div className={styles.nameSection}>

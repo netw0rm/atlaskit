@@ -74,7 +74,7 @@ export default class Editor extends PureComponent<Props, State> {
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
-        defaultExpanded={this.props.defaultExpanded}
+        expanded={this.props.defaultExpanded}
         feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
         onCancel={handleCancel}
         onSave={handleSave}

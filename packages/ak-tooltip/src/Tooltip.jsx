@@ -24,8 +24,7 @@ export default class StatelessTooltip extends PureComponent {
     */
     position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
     /**
-     * @description The text to display in the tooltip when a user hovers or focuses on the
-     * wrapped element.
+     * @description The text to display in the tooltip when a user hovers over the element.
      * @memberof Tooltip
      * @instance
      * @type {string}
@@ -86,4 +85,3 @@ export default class StatelessTooltip extends PureComponent {
 }
 
 /* eslint-enable react/no-unused-prop-types */
-

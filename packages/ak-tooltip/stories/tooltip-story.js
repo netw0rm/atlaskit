@@ -24,7 +24,6 @@ const relativePosition = {
   width: '100px',
   marginLeft: '50vw',
   marginTop: '50vh',
-  backgroundColor: 'blue',
 };
 
 storiesOf(name, module)
@@ -53,7 +52,7 @@ storiesOf(name, module)
       </div>
     </div>
   ))
-  .add('a smart tooltip in a relatively positon parent', () => (
+  .add('a smart tooltip in a relatively positioned parent', () => (
     <div>
       <div style={relativePosition}>
         <FourDirectionTooltip />

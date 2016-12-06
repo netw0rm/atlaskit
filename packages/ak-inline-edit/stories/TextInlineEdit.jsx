@@ -34,11 +34,22 @@ export default class extends PureComponent {
   }
 
   state = {
+    readValue: this.props.initialValue,
     editValue: this.props.initialValue,
   }
 
   onChange = e =>
     this.setState({ editValue: e.target.value })
+
+  onConfirm = () => {
+    action('onConfirm')();
+    this.setState(state => ({ readValue: state.editValue }));
+  }
+
+  onCancel = () => {
+    action('onCancel')();
+    this.setState(state => ({ editValue: state.readValue }));
+  }
 
   renderInput = () => (
     <TextInput
@@ -51,8 +62,9 @@ export default class extends PureComponent {
     <AkInlineEdit
       label={this.props.label}
       editView={this.renderInput()}
-      readView={this.props.initialValue}
-      onConfirm={action('onConfirm')}
+      readView={this.state.readValue}
+      onConfirm={this.onConfirm}
+      onCancel={this.onCancel}
       {...this.props}
     />
   )

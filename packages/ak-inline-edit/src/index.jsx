@@ -18,6 +18,13 @@ export default class extends PureComponent {
      * @type {Function}
      */
     onConfirm: PropTypes.func.isRequired,
+    /**
+     * @description Called when the user cancels an edit
+     *
+     * @memberof InlineEdit
+     * @type {Function}
+     */
+    onCancel: PropTypes.func.isRequired,
   }
 
   state = {
@@ -26,7 +33,13 @@ export default class extends PureComponent {
 
   onConfirm = () => {
     this.exitEditingMode();
-    this.props.onConfirm(this.enterEditingMode);
+    const cancelConfirmation = this.enterEditingMode;
+    this.props.onConfirm(cancelConfirmation);
+  }
+
+  onCancel = () => {
+    this.exitEditingMode();
+    this.props.onCancel();
   }
 
   enterEditingMode = () =>
@@ -41,7 +54,7 @@ export default class extends PureComponent {
       isEditing={this.state.isEditing}
       onEditRequested={this.enterEditingMode}
       onConfirm={this.onConfirm}
-      onCancel={this.exitEditingMode}
+      onCancel={this.onCancel}
     />
   )
 }

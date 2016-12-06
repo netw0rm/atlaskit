@@ -1,6 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
-import TextInlineEdit from './components';
+import TextInlineEdit from './TextInlineEdit';
 import { name } from '../package.json';
 
 const containerStyle = {

@@ -55,9 +55,9 @@ export default class InlineEdit extends PureComponent {
      * @description Allows disabling the default confirm-on-blur behaviour.
      *
      * By default, the 'onConfirm' callback will be called when focus moves
-     * outside of the inline edit component. This prop allows disabling this
-     * behaviour, meaning 'onConfirm' will only be called when the user explicitly
-     * clicks on the confirm button.
+     * outside the inline edit component. This prop allows disabling this
+     * behaviour. If this prop is set to 'true', 'onConfirm' will only be
+     * called if the user explicitly clicks on the confirm button.
      *
      * @memberof InlineEdit
      * @type {boolean}

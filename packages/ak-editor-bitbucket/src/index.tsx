@@ -173,11 +173,21 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           TextFormattingPlugin,
           MentionsPlugin,
+          ...( this.props.imageUpload ? [ this.props.imageUpload ] : [] )
         ],
       });
 
       if (context) {
         BlockTypePlugin.get(pm)!.changeContext(context);
+      }
+
+      if (this.props.imageUploader) {
+        const imageUploadState = ImageUploadPlugin.get(pm); 
+        
+        const insertImage = (attr: ImageUploadOptions) => imageUploadState.addImage(attr);
+        const handler = (_: any, e: any) => this.props.imageUploader(e, insertImage);
+        imageUploadState.dropAdapter.add(handler);
+        imageUploadState.pasteAdapter.add(handler);
       }
 
       pm.addKeymap(buildKeymap(pm.schema));

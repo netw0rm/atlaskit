@@ -9,7 +9,6 @@ import DialogWithButton from './DialogWithButton';
 import DialogWithBlanket from './DialogWithBlanket';
 import ToggleDemo from './DialogRemoveDom';
 
-
 const Dialog = reactify(AkInlineDialog);
 
 storiesOf(name, module)

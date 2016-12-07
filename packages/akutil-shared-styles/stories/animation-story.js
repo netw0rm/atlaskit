@@ -7,7 +7,6 @@ import { name } from '../package.json';
 import AnimatedBox from './animation/AnimatedBox';
 import AnimatedBoxGroup from './animation/AnimatedBoxGroup';
 
-
 const containerClass = classNames(storyStyles.container);
 
 storiesOf(name, module)

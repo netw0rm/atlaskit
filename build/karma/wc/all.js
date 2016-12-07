@@ -5,7 +5,6 @@ const addPolyFills = require('../addPolyFills');
 const assignPattern = require('../assignPattern');
 const FailPlugin = require('../FailPlugin');
 
-
 module.exports = (config) => {
   karmaConf(config);
 

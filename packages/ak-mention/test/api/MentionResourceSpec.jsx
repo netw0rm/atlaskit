@@ -1,0 +1,189 @@
+import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
+import 'whatwg-fetch';
+import fetchMock from 'fetch-mock';
+import { assert } from 'chai';
+
+import MentionResource from '../../src/api/ak-mention-resource';
+import { resultC, resultCraig } from '../_mention-data';
+
+const baseUrl = 'https://bogus/';
+
+const apiConfig = {
+  url: baseUrl,
+  securityProvider() {
+    return 10804;
+  },
+  // containerId: 2595975,
+};
+
+function checkOrder(expected, actual) {
+  expect(actual.length, 'Number of responses').to.equal(expected.length);
+  for (let i = 0; i < expected.length; i++) {
+    expect(actual[i].length, `Mentions in response #${i}`).to.equal(expected[i].length);
+    if (expected[i].length) {
+      for (let j = 0; j < expected[i].length; j++) {
+        expect(actual[i][j].id, `Mentions #${j} in response #${i}`).to.equal(expected[i][j].id);
+      }
+    }
+  }
+}
+
+fetchMock
+  .mock(/\/mentions\/search\?.*query=craig(&|$)/, {
+    body: JSON.stringify({
+      mentions: resultCraig,
+    }),
+  })
+  .mock(/\/mentions\/search\?.*query=c(&|$)/, {
+    body: JSON.stringify({
+      mentions: resultC,
+    }),
+  })
+  .mock(/\/mentions\/search\?.*query=delay(&|$)/, {
+    // "delay" is like "c", but delayed
+    body: JSON.stringify({
+      mentions: resultC,
+    }),
+  })
+  .mock(/\/mentions\/search\?.*query=broken(&|$)/, 500)
+  .mock(/\/mentions\/record\?selectedUserId=\d+$/, {
+    body: '',
+  }, { name: 'record' });
+
+describe('MentionResource', () => {
+  const defaultFetch = global.fetch;
+  const delayMatch = /\/mentions\/search\?.*query=delay(&|$)/;
+
+  before(() => {
+    global.fetch = (input, init) => {
+      let url = input;
+      if (typeof url === 'object') {
+        // Request object, not url string
+        url = url.url;
+      }
+      if (delayMatch.test(url)) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            defaultFetch(input, init).then(
+              (response) => { resolve(response); },
+              (reason) => { reject(reason); }
+            );
+          }, 100);
+        });
+      }
+      return defaultFetch(input, init);
+    };
+  });
+
+  after(() => {
+    global.fetch = defaultFetch;
+  });
+
+  describe('#subscribe', () => {
+    it('subscribe should receive updates', (done) => {
+      const resource = new MentionResource(apiConfig);
+      resource.subscribe('test1', (mentions) => {
+        expect(mentions.length).to.equal(resultCraig.length);
+        done();
+      });
+      resource.filter('craig');
+    });
+
+    it('multiple subscriptions should receive updates', (done) => {
+      const resource = new MentionResource(apiConfig);
+      let count = 0;
+      resource.subscribe('test1', (mentions) => {
+        expect(mentions.length).to.equal(resultCraig.length);
+        count++;
+        if (count === 2) {
+          done();
+        }
+      });
+      resource.subscribe('test2', (mentions) => {
+        expect(mentions.length).to.equal(resultCraig.length);
+        count++;
+        if (count === 2) {
+          done();
+        }
+      });
+      resource.filter('craig');
+    });
+  });
+
+  describe('#unsubscribe', () => {
+    it('subscriber should no longer called', (done) => {
+      const resource = new MentionResource(apiConfig);
+      const listener = sinon.spy();
+      resource.subscribe('test1', listener);
+      resource.unsubscribe('test1');
+      resource.filter('craig');
+      // Not desirable...
+      setTimeout(() => {
+        expect(listener).to.not.be.called;
+        done();
+      }, 50);
+    });
+  });
+
+  describe('#filter', () => {
+    it('in order responses', (done) => {
+      const resource = new MentionResource(apiConfig);
+      const results = [];
+      const expected = [resultC, resultCraig];
+      resource.subscribe('test1', (mentions) => {
+        results.push(mentions);
+        if (results.length === 2) {
+          checkOrder(expected, results);
+          done();
+        }
+      });
+      resource.filter('c');
+      setTimeout(() => {
+        resource.filter('craig');
+      }, 10);
+    });
+
+    it('out of order responses', (done) => {
+      const resource = new MentionResource(apiConfig);
+      const results = [];
+      const expected = [resultCraig];
+      resource.subscribe('test1', (mentions) => {
+        results.push(mentions);
+        if (results.length === 1) {
+          checkOrder(expected, results);
+          done();
+        }
+        if (results.length > 1) {
+          assert.fail('More than one response was unexpected.');
+        }
+      });
+      resource.filter('delay');
+      setTimeout(() => {
+        resource.filter('craig');
+      }, 5);
+    });
+
+    it('error response', (done) => {
+      const resource = new MentionResource(apiConfig);
+      resource.subscribe('test1', () => {
+        assert.fail('Should not be called');
+      }, () => {
+        done();
+      });
+      resource.filter('broken');
+    });
+  });
+
+  describe('#recordMentionSelection', () => {
+    it('should call record endpoint', (done) => {
+      const resource = new MentionResource(apiConfig);
+
+      resource.recordMentionSelection({
+        id: 666,
+      }).then(() => {
+        expect(fetchMock.called('record')).to.be.true;
+        done();
+      });
+    });
+  });
+});

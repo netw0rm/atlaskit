@@ -30,7 +30,7 @@ describe('ak-field-base', () =>
     describe('hideLabel prop', () => {
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
-        const wrapper = shallow(<Label label={label} hideLabel />);
+        const wrapper = shallow(<Label label={label} isLabelHidden />);
         expect(wrapper.find(`.${styles.locals.labelText}`))
           .to.have.className(styles.locals.hidden);
       });
@@ -38,7 +38,7 @@ describe('ak-field-base', () =>
 
     describe('required prop', () => {
       it('should append an asterisk to the content', () =>
-        expect(shallow(<Label required />).find(`.${styles.locals.required}`)).to.have.text('*')
+        expect(shallow(<Label isRequired />).find(`.${styles.locals.required}`)).to.have.text('*')
       );
 
       it('should not append an asterisk to the content if required is not set', () => {

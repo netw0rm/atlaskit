@@ -214,7 +214,7 @@ declare module 'prosemirror/dist/edit/main' {
         schema: Schema;
         nodes: any;
         input: any;
-        doc: any;
+        doc: Node;
         sel: any;
         content: HTMLElement;
         root: HTMLElement;
@@ -686,7 +686,7 @@ declare module 'prosemirror/dist/model/node' {
             index: any;
             offset: any;
         };
-        nodesBetween(from: number, to: number, f: any, pos?: number): void;
+        nodesBetween(from: number, to: number, f: (node: Node, pos: number) => void, pos?: number): void;
         descendants(f: any): void;
         resolve(pos: any): any;
         resolveNoCache(pos: any): ResolvedPos;
@@ -819,7 +819,7 @@ declare module 'prosemirror/dist/model/schema' {
         create(attrs?: { [name: string]: any }): Mark;
         static compile(marks: any, schema: any): any;
         removeFromSet(set: any): any;
-        isInSet(set: this[]): this | undefined;
+        isInSet(set: Mark[]): Mark | undefined;
         toDOM(_: any): void;
         matchDOMTag: any;
         matchDOMStyle: any;

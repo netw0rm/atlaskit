@@ -4,7 +4,6 @@ import chaiAsPromised from 'chai-as-promised';
 import { name } from '../package.json';
 import Component from '../src';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;

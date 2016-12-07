@@ -7,7 +7,6 @@ import chaiAsPromised from 'chai-as-promised';
 
 import { createTemporaryComponent, tearDownComponent, getShadowRoot, getRootNode } from '../src';
 
-
 chai.should();
 chai.use(sinonChai);
 chai.use(chaiAsPromised);

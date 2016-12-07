@@ -222,7 +222,7 @@ export class ListsState {
       nodes.push(current.node(1));
 
       let next: ResolvedPos = this.pm.doc.resolve(current.after(1));
-      if (next.start(1) > this.pm.doc.content.size) {
+      if (next.start(1) > this.pm.doc.nodeSize - 2) {
         break;
       }
 
@@ -256,7 +256,7 @@ export class ListsState {
     let startPos = $from.start($from.depth);
     let endPos = $to.end($to.depth);
 
-    tr.doc.nodesBetween(startPos, endPos, (node: Node, pos: number) => {
+    tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
       if (
         node.isText ||                          // Text node
         (node.isTextblock && !node.textContent) // Empty paragraph
@@ -313,7 +313,7 @@ export class ListsState {
     let startPos = $from.pos;
     let endPos = $to.pos;
 
-    if (isSameLine && startPos === this.pm.doc.content.size - 1) { // Line is empty, don't do anything
+    if (isSameLine && startPos === this.pm.doc.nodeSize - 3) { // Line is empty, don't do anything
       return selection;
     }
 

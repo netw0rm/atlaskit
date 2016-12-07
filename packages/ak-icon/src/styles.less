@@ -8,6 +8,9 @@
     .icon, .iconContent {
       height: @@height;
       width: @@width;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       & > svg when not(@size=small) {
         height: @@height;
@@ -17,11 +20,7 @@
   }
 }
 
-.root {
-  display: inline-flex;
-}
-
-.icon {
+.iconBody {
   box-sizing: border-box;
   display: inline-flex;
   line-height: 1;

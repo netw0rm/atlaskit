@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "5.2.0",
+  "version": "5.2.2",
   "description": "Editor web component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -28,7 +28,7 @@
     "ak-editor-prosemirror": "^4.0.0",
     "ak-editor-schema": "^4.0.0",
     "ak-editor-shared-styles": "^3.0.0",
-    "ak-editor-ui": "^2.0.0",
+    "ak-editor-ui": "^2.1.4",
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6"
   },

@@ -1,7 +1,8 @@
+/* eslint-disable prefer-object-spread/prefer-object-spread */
+
 const webpack = require('webpack');
 const path = require('path');
 const baseIconChunkName = require('./constants').baseIconChunkName;
-
 
 const relativePathToIcon = path.join('..', 'src', 'Icon');
 const pathToIcon = path.join(__dirname, relativePathToIcon);
@@ -11,7 +12,6 @@ let cssOptions = '?camelCase=true&modules=true&mergeRules=false';
 if (isDevelopment) {
   cssOptions += '&-minimize';
 }
-
 
 module.exports = (tmpFolder, entry) => ({
   entry: Object.assign({

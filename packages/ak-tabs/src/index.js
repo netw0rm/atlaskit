@@ -15,7 +15,6 @@ import * as i18n from './internal/i18n';
 import Tab from './index.tab';
 import { buttonContainer, labelsContainer, labelProp, selectedProp } from './internal/symbols';
 
-
 const { tabChange: tabChangeEvent } = events;
 const resizeListener = Symbol('resizeListener');
 

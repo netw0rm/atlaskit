@@ -440,18 +440,31 @@ describe('ak-editor-plugin-block-type', () => {
 
       describe('blockquote', () => {
         context('when selection is not a blockquote', () => {
-          it('transforms to a blockquote', () => {
-            const { pm, plugin } = editor(doc(p('te{<>}xt')));
-            pm.input.dispatchKey("Ctrl-7");
-            expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
+          context('when inside blockquote is a h1', () => {
+            it('converts h1 to paragraph and wraps in a blockquote', () => {
+              const { pm, plugin } = editor(doc(h1('te{<>}xt')));
+              pm.input.dispatchKey("Ctrl-7");
+              expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
+            });
+          });
+          
+          context('when inside blockquote is a paragraph', () => {
+            it('wraps paragraph in a blockquote', () => {
+              const { pm, plugin } = editor(doc(p('te{<>}xt')));
+              pm.input.dispatchKey("Ctrl-7");
+              expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
+            });
           });
         });
 
         context('when selection is a blockquote', () => {
-          it('tranforms back to a paragraph', () => {
-            const { pm, plugin } = editor(doc(blockquote(p('te{<>}xt'))));
+          it('removes blockquote', () => {
+            const { pm, plugin } = editor(doc(blockquote(h1('te{h1Pos}xt'), p('he{pPos}llo'))));
+            const { h1Pos, pPos } = pm.doc.refs;
+
+            pm.setTextSelection(h1Pos, pPos);
             pm.input.dispatchKey("Ctrl-7");
-            expect(pm.doc).to.deep.equal(doc(p('text')));
+            expect(pm.doc).to.deep.equal(doc(h1('text'), p('hello')));
           });
         });
 

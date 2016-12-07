@@ -182,19 +182,20 @@ export class BlockTypeState {
   }
 
   private toggleBlockType(name: BlockTypeName): void {
+    debugger;
     const blockNodes = this.blockNodesBetweenSelection();
 
     const nodeThatDoesNotMatchTargetBlockType = blockNodes.find((node) => {
       return this.nodeBlockType(node).name !== name
     });
 
-    blockNodes.forEach((node) => {
-      if(nodeThatDoesNotMatchTargetBlockType) {
-        this.changeBlockType(name);
-      } else {
-        this.changeBlockType(NormalText.name);
-      }
-    });
+    if(this.nodeBlockType(blockNodes[0]).name !== name) {
+      this.changeBlockType(name);
+    } else if(name !== Quote.name){
+      this.changeBlockType(NormalText.name);
+    } else {
+      commands.lift(this.pm);
+    }
   }
 
   private blockNodesBetweenSelection(): Node[] {

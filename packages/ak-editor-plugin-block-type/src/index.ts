@@ -45,7 +45,6 @@ export class BlockTypeState {
 
   // public state
   currentBlockType: BlockType = NormalText;
-  canChange: boolean = true;
   availableBlockTypes: BlockType[] = [];
   context?: ContextName;
 
@@ -117,56 +116,54 @@ export class BlockTypeState {
   }
 
   changeBlockType(name: BlockTypeName): void {
-    const { canChange, pm } = this;
+    const { pm } = this;
 
-    if (canChange) {
-      // clear blockquote
-      commands.lift(pm);
-      const nodes = pm.schema.nodes;
+    // clear blockquote
+    commands.lift(pm);
+    const nodes = pm.schema.nodes;
 
-      switch (name) {
-        case NormalText.name:
-          if (nodes.paragraph) {
-            commands.setBlockType(nodes.paragraph)(pm);
-          }
-          break;
-        case Heading1.name:
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 1 })(pm);
-          }
-          break;
-        case Heading2.name:
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 2 })(pm);
-          }
-          break;
-        case Heading3.name:
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 3 })(pm);
-          }
-          break;
-        case Heading4.name:
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 4 })(pm);
-          }
-          break;
-        case Heading5.name:
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 5 })(pm);
-          }
-          break;
-        case Quote.name:
-          if (nodes.paragraph && nodes.blockquote) {
-            commands.setBlockType(nodes.paragraph)(pm);
-            commands.wrapIn(nodes.blockquote)(pm);
-          }
-          break;
-        case Code.name:
-          if (nodes.code_block) {
-            transformToCodeBlock(nodes.code_block, pm);
-          }
-          break;
-      }
+    switch (name) {
+      case NormalText.name:
+        if (nodes.paragraph) {
+          commands.setBlockType(nodes.paragraph)(pm);
+        }
+        break;
+      case Heading1.name:
+        if (nodes.heading) {
+          commands.setBlockType(nodes.heading, { level: 1 })(pm);
+        }
+        break;
+      case Heading2.name:
+        if (nodes.heading) {
+          commands.setBlockType(nodes.heading, { level: 2 })(pm);
+        }
+        break;
+      case Heading3.name:
+        if (nodes.heading) {
+          commands.setBlockType(nodes.heading, { level: 3 })(pm);
+        }
+        break;
+      case Heading4.name:
+        if (nodes.heading) {
+          commands.setBlockType(nodes.heading, { level: 4 })(pm);
+        }
+        break;
+      case Heading5.name:
+        if (nodes.heading) {
+          commands.setBlockType(nodes.heading, { level: 5 })(pm);
+        }
+        break;
+      case Quote.name:
+        if (nodes.paragraph && nodes.blockquote) {
+          commands.setBlockType(nodes.paragraph)(pm);
+          commands.wrapIn(nodes.blockquote)(pm);
+        }
+        break;
+      case Code.name:
+        if (nodes.code_block) {
+          transformToCodeBlock(nodes.code_block, pm);
+        }
+        break;
     }
   }
 

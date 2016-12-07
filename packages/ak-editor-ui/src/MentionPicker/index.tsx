@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-// import { MentionPicker as MentionPickerComponent, AbstractMentionResource } from 'pf-mention';
 import MentionsPlugin, { MentionsPluginState } from 'ak-editor-plugin-mentions';
+import { MentionPicker as PfMentionPicker } from 'ak-mention';
 
 interface Props {
   pluginState: MentionsPluginState;
@@ -18,6 +18,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
     this.props.pluginState.onSelectPrevious = this.handleSelectPrevious;
+    this.props.pluginState.onSelectNext = this.handleSelectNext;
+    this.props.pluginState.onSelectCurrent = this.handleSelectCurrent;
   }
 
   componentWillUmount() {
@@ -34,20 +36,20 @@ export default class MentionPicker extends PureComponent<Props, State> {
 
     if (anchorElement && query) {
       const rect = anchorElement.getBoundingClientRect();
+      const parentRect = anchorElement.offsetParent.getBoundingClientRect();
       const style = {
         display: 'block',
         position: 'absolute',
-        left: rect.left - 17,
-        top: rect.top,
+        left: (rect.left - parentRect.left),
+        top: (rect.top - parentRect.top) + rect.height,
       };
       const picker = (
-        <p>Picker</p>
-        // <MentionPicker
-        //   resourceProvider={this.props.resourceProvider}
-        //   onSelected={this.handleSelectedMention}
-        //   query={query}
-        //   ref='picker'
-        // />
+        <PfMentionPicker
+          resourceProvider={this.props.resourceProvider}
+          onSelection={this.handleSelectedMention}
+          query={query}
+          ref='picker'
+        />
       );
       return (
         <div style={style}>
@@ -60,28 +62,28 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
   }
 
-  private handleSelectedMention = (e: Event) => {
-    this.props.pluginState.handleSelectedMention(e);
+  private handleSelectedMention = (mention: any) => {
+    this.props.pluginState.insertMention(mention);
   }
 
   private handleSelectPrevious = () => {
     const { picker } = this.refs;
     if (picker) {
-      (picker as any).selectPrevious();
+      (picker as PfMentionPicker).selectPrevious();
     }
   }
 
   private handleSelectNext = () => {
     const { picker } = this.refs;
     if (picker) {
-      (picker as any).selectNext();
+      (picker as PfMentionPicker).selectNext();
     }
   }
 
   private handleSelectCurrent = () => {
     const { picker } = this.refs;
     if (picker) {
-      (picker as any).chooseCurrentSelection();
+      (picker as PfMentionPicker).chooseCurrentSelection();
     }
   }
 }

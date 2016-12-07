@@ -160,7 +160,7 @@ describe('ak-editor-plugin-mentions', () => {
 
       pluginInstance.insertMention({
         name: 'Oscar Wallhult',
-        mentionName: '@oscar'
+        mentionName: 'oscar'
       });
 
       expect(pm.doc.nodeAt(1)).to.be.of.nodeType(MentionNodeType);

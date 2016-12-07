@@ -120,43 +120,43 @@ export class BlockTypeState {
       const nodes = pm.schema.nodes;
 
       switch (name) {
-        case 'normal':
+        case NormalText.name:
           if (nodes.paragraph) {
             commands.setBlockType(nodes.paragraph)(pm);
           }
           break;
-        case 'heading1':
+        case Heading1.name:
           if (nodes.heading) {
             commands.setBlockType(nodes.heading, { level: 1 })(pm);
           }
           break;
-        case 'heading2':
+        case Heading2.name:
           if (nodes.heading) {
             commands.setBlockType(nodes.heading, { level: 2 })(pm);
           }
           break;
-        case 'heading3':
+        case Heading3.name:
           if (nodes.heading) {
             commands.setBlockType(nodes.heading, { level: 3 })(pm);
           }
           break;
-        case 'heading4':
+        case Heading4.name:
           if (nodes.heading) {
             commands.setBlockType(nodes.heading, { level: 4 })(pm);
           }
           break;
-        case 'heading5':
+        case Heading5.name:
           if (nodes.heading) {
             commands.setBlockType(nodes.heading, { level: 5 })(pm);
           }
           break;
-        case 'quote':
+        case Quote.name:
           if (nodes.paragraph && nodes.blockquote) {
             commands.setBlockType(nodes.paragraph)(pm);
             commands.wrapIn(nodes.blockquote)(pm);
           }
           break;
-        case 'code':
+        case Code.name:
           if (nodes.code_block) {
             transformToCodeBlock(nodes.code_block, pm);
           }
@@ -272,5 +272,5 @@ interface PM extends ProseMirror {
 }
 
 function makeBlockType(name: BlockTypeName, title: string): BlockType {
-  return { name, title };
+  return { name: name, title: title };
 }

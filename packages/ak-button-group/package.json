@@ -10,7 +10,8 @@
     "prepublish": "cd ../.. && npm run prepublish/single ak-button-group"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "dependencies": {
     "akutil-shared-styles": "^37.0.0"

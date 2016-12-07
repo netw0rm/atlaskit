@@ -10,7 +10,8 @@
     "prepublish": "cd ../.. && npm run prepublish/single ak-mention"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "dependencies": {
     "ak-avatar": "^5.0.0",

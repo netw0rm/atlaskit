@@ -1,5 +1,6 @@
 import styles from 'style!./ak-mention-picker.less';
 
+import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 
 import ResourcedMentionList from './ak-resourced-mention-list';
@@ -115,6 +116,11 @@ export default class MentionPicker extends PureComponent {
       display: visible ? 'block' : 'none',
     };
 
+    const classes = classNames([
+      'ak-mention-picker',
+      styles.akMentionPicker,
+    ]);
+
     const resourceMentionList = (
       <ResourcedMentionList
         resourceProvider={resourceProvider}
@@ -152,7 +158,7 @@ export default class MentionPicker extends PureComponent {
     }
 
     return (
-      <div style={style} className={styles.akMentionPicker}>
+      <div style={style} className={classes}>
         {content}
       </div>
     );

@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 
-import Profilecard from './profilecard';
+import AkProfilecardStatic from './profilecard';
 import LoadingMessage from './components/LoadingMessage';
 import ErrorMessage from './components/ErrorMessage';
 import ProfileClient from './api/profile-client';
@@ -123,7 +123,7 @@ export default class ProfilecardResourced extends PureComponent {
     }
 
     return (
-      <Profilecard {...this.state.data} actions={this.props.actions} />
+      <AkProfilecardStatic {...this.state.data} actions={this.props.actions} />
     );
   }
 }

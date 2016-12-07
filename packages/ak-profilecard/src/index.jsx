@@ -1,9 +1,6 @@
 import Profilecard from './profilecard';
 import ProfilecardResourced from './profilecard-resourced';
 
-export {
-  Profilecard,
-  ProfilecardResourced,
-};
+export const AkProfilecard = Profilecard;
 
-export default Profilecard;
+export default ProfilecardResourced;

@@ -18,7 +18,7 @@ const getTimeString = (showWeekday) => {
 };
 
 export default function interActiveCard(dependencies) {
-  const { React, Profilecard } = dependencies;
+  const { React, AkProfilecard } = dependencies;
 
   class ProfilecardInteractive extends React.PureComponent {
     state = {
@@ -100,7 +100,7 @@ export default function interActiveCard(dependencies) {
         <div>
           <style>{'label {margin-right: 10px; -webkit-user-select: none;} legend {margin: 5px 0;}'}</style>
 
-          <Profilecard
+          <AkProfilecard
             avatarUrl={this.state.hasAvatar ? this.state.avatarUrl : ''}
             email={this.state.email}
             fullName={this.state.hasLongName ? `${this.state.fullName} Hathaway ${this.state.fullName}` : this.state.fullName}

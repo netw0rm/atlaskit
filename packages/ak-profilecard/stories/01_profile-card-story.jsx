@@ -2,11 +2,11 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
 import { name } from '../package.json';
-import { Profilecard } from '../src/';
+import { AkProfilecard } from '../src/';
 import interActiveCard from './profile-interactive';
 import profiles from './profile-data';
 
-const InteractiveCard = interActiveCard({ React, Profilecard });
+const InteractiveCard = interActiveCard({ React, AkProfilecard });
 
 const handleActionClick = title => action(`${title} button clicked`);
 
@@ -48,7 +48,7 @@ storiesOf(`${name}`, module)
 
   return (
     <div style={canvasStyle}>
-      <Profilecard
+      <AkProfilecard
         fullName={data.fullName}
         presence={data.presence}
         actions={data.actions}
@@ -60,7 +60,7 @@ storiesOf(`${name}`, module)
   const data = fakeData({ avatarUrl: 'http://localhost:404/no-avatar' });
   return (
     <div style={canvasStyle}>
-      <Profilecard {...data} />
+      <AkProfilecard {...data} />
     </div>
   );
 })
@@ -70,7 +70,7 @@ storiesOf(`${name}`, module)
 
   return (
     <div style={canvasStyle}>
-      <Profilecard {...data} />
+      <AkProfilecard {...data} />
     </div>
   );
 })
@@ -78,7 +78,7 @@ storiesOf(`${name}`, module)
   const data = fakeData({ actions: null });
   return (
     <div style={canvasStyle}>
-      <Profilecard {...data} />
+      <AkProfilecard {...data} />
     </div>
   );
 })
@@ -96,7 +96,7 @@ storiesOf(`${name}`, module)
   const data = fakeData({ actions });
   return (
     <div style={canvasStyle}>
-      <Profilecard {...data} />
+      <AkProfilecard {...data} />
     </div>
   );
 })

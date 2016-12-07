@@ -200,7 +200,7 @@ Changes to the ESLint rules should be treated like any other package:
 - If you change / remove a rule, it should be considered breaking
 
 ## Commit changes
-To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Running commitizen is as simple as running `npm run commut` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
+To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Running commitizen is as simple as running `npm run commit` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
 
 ```
 npm run commit -- -a

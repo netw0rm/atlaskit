@@ -70,6 +70,30 @@ describe('<Navigation />', () => {
       });
     });
 
+    describe('when isSearchDrawerOpen=true', () => {
+      it('should set open=true on the SearchDrawer', () => {
+        expect(mount(<Navigation isSearchDrawerOpen />).find('Drawer').at(0).props().open).to.equal(true);
+      });
+    });
+
+    describe('when isSearchDrawerOpen=false', () => {
+      it('should set open=false on the SearchDrawer', () => {
+        expect(mount(<Navigation isSearchDrawerOpen={false} />).find('Drawer').at(0).props().open).to.equal(false);
+      });
+    });
+
+    describe('when isCreateDrawerOpen=true', () => {
+      it('should set open=true on the CreateDrawer', () => {
+        expect(mount(<Navigation isCreateDrawerOpen />).find('Drawer').at(1).props().open).to.equal(true);
+      });
+    });
+
+    describe('when isCreateDrawerOpen=true', () => {
+      it('should set open=true on the CreateDrawer', () => {
+        expect(mount(<Navigation isCreateDrawerOpen={false} />).find('Drawer').at(1).props().open).to.equal(false);
+      });
+    });
+
     describe('interaction', () => {
       it('resize changes internal resize state', () => {
         const navigation = shallow(<Navigation />);

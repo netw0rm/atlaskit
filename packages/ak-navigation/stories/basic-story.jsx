@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 import { AkContainerItem } from '../src/index';
@@ -101,5 +101,13 @@ storiesOf(name, module)
       <div>
         <Lorem count="30" />
       </div>
+    </Page>
+  ))
+  .add('with controllable drawers', () => (
+    <Page>
+      <BasicNavigation
+        onSearchDrawerActivated={action('search-activated')}
+        onCreateDrawerActivated={action('create-activated')}
+      />
     </Page>
   ));

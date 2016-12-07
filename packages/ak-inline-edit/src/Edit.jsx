@@ -18,7 +18,17 @@ export default class EditView extends PureComponent {
   }
 
   onBlur = (event) => {
-    if (!this.props.isConfirmOnBlurDisabled && this.didFocusLeaveInlineEdit(event.relatedTarget)) {
+    if (this.props.isConfirmOnBlurDisabled) {
+      return;
+    }
+
+    const domNodeReceivingFocus = event.relatedTarget;
+
+    // We receive 'blur' events even when focus moves from one
+    // inline edit subcomponent to another, so we must ensure
+    // that focus has entirely left the component before we
+    // trigger 'onConfirm'.
+    if (this.didFocusLeaveInlineEdit(domNodeReceivingFocus)) {
       this.props.onConfirm();
     }
   }

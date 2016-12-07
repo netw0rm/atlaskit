@@ -18,7 +18,7 @@ chai.use(chaiEnzyme());
 describe(name, () => {
   describe('exports', () => {
     it('the BreadcrumbsItem component', () => {
-      expect(Item).to.not.be.undefined;
+      expect(Item).to.exist;
       expect(new Item()).to.be.instanceOf(Component);
     });
   });

@@ -4,7 +4,10 @@ import {
   ProseMirror,
   Schema,
   Selection,
-  UpdateScheduler
+  UpdateScheduler,
+  Keymap,
+  browser,
+  Node
 } from 'ak-editor-prosemirror';
 import {
   BlockQuoteNodeType,
@@ -24,15 +27,15 @@ import transformToCodeBlock from './transform-to-code-block';
 //
 // Rather than half-match half-not, this plugin introduces its own
 // nomenclature for what 'block type' is active.
-const NormalText = makeBlockType('normal', 'Normal text');
-const Heading1 = makeBlockType('heading1', 'Heading 1');
-const Heading2 = makeBlockType('heading2', 'Heading 2');
-const Heading3 = makeBlockType('heading3', 'Heading 3');
-const Heading4 = makeBlockType('heading4', 'Heading 4');
-const Heading5 = makeBlockType('heading5', 'Heading 5');
-const Quote = makeBlockType('quote', 'Block quote');
-const Code = makeBlockType('code', 'Code block');
-const Other = makeBlockType('other', 'Other…');
+const NormalText = makeBlockType('normal', 'Normal text', '0');
+const Heading1 = makeBlockType('heading1', 'Heading 1', '1');
+const Heading2 = makeBlockType('heading2', 'Heading 2', '2');
+const Heading3 = makeBlockType('heading3', 'Heading 3', '3');
+const Heading4 = makeBlockType('heading4', 'Heading 4', '4');
+const Heading5 = makeBlockType('heading5', 'Heading 5', '5');
+const Quote = makeBlockType('quote', 'Block quote', '7');
+const Code = makeBlockType('code', 'Code block', '8');
+const Other = makeBlockType('other', 'Other…', 'N/A');
 
 type ContextName = 'default' | 'comment' | 'pr';
 
@@ -60,6 +63,8 @@ export class BlockTypeState {
 
     this.changeContext('default');
     this.update();
+
+    this.addKeymap();
   }
 
   subscribe(cb: BlockTypeStateSubscriber) {
@@ -165,6 +170,49 @@ export class BlockTypeState {
     }
   }
 
+  private addKeymap(): void {
+    const assistKey = browser.mac ? 'Cmd-Alt-' : 'Ctrl-'; 
+
+    const bindings = this.availableBlockTypes.reduce((bindings, blockType) => {
+      const binding = {[assistKey + blockType.key]: () => this.toggleBlockType(blockType.name)};
+      return Object.assign({}, bindings, binding);
+    }, {});
+
+    this.pm.addKeymap(new Keymap(bindings));
+  }
+
+  private toggleBlockType(name: BlockTypeName): void {
+    const blockNodes = this.blockNodesBetweenSelection();
+
+    const nodeThatDoesNotMatchTargetBlockType = blockNodes.find((node) => {
+      return this.nodeBlockType(node).name !== name
+    });
+
+    debugger;
+
+    blockNodes.forEach((node) => {
+      if(nodeThatDoesNotMatchTargetBlockType) {
+        this.changeBlockType(name);
+      } else {
+        this.changeBlockType(NormalText.name);
+      }
+    });
+  }
+
+  private blockNodesBetweenSelection(): Node[] {
+    const { pm } = this;
+    const {$from, $to} = pm.selection;
+    let blockNodes: Node[] = [];
+
+    pm.doc.nodesBetween($from.pos, $to.pos, (node) => {
+      if(node.isBlock) {
+        blockNodes.push(node);
+      }
+    });
+
+    return blockNodes;
+  }
+
   private update(dirty = false) {
     const { pm } = this;
 
@@ -191,8 +239,18 @@ export class BlockTypeState {
 
     for (let depth = 0; depth <= $from.depth; depth++) {
       const block = $from.node(depth)!;
-      if (isHeadingNode(block)) {
-        switch (block.attrs.level) {
+      let blocktype = this.nodeBlockType(block);
+      if (blocktype !== Other) {
+        return blocktype;
+      }
+    }
+
+    return Other;
+  }
+
+  private nodeBlockType(node: Node): BlockType {
+    if (isHeadingNode(node)) {
+        switch (node.attrs.level) {
           case 1:
             return Heading1;
           case 2:
@@ -203,14 +261,13 @@ export class BlockTypeState {
             return Heading4;
           case 5:
             return Heading5;
-        }
-      } else if (isCodeBlockNode(block)) {
-        return Code;
-      } else if (isBlockQuoteNode(block)) {
-        return Quote;
-      } else if (isParagraphNode(block)) {
-        return NormalText;
       }
+    } else if (isCodeBlockNode(node)) {
+      return Code;
+    } else if (isBlockQuoteNode(node)) {
+      return Quote;
+    } else if (isParagraphNode(node)) {
+      return NormalText;
     }
 
     return Other;
@@ -256,6 +313,7 @@ export type BlockTypeName =
 export interface BlockType {
   name: BlockTypeName;
   title: string;
+  key: string;
 }
 
 interface S extends Schema {
@@ -271,6 +329,6 @@ interface PM extends ProseMirror {
   schema: S;
 }
 
-function makeBlockType(name: BlockTypeName, title: string): BlockType {
-  return { name: name, title: title };
+function makeBlockType(name: BlockTypeName, title: string, key: string): BlockType {
+  return { name: name, title: title, key: key };
 }

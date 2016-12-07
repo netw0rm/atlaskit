@@ -74,30 +74,6 @@ export default (schema: Schema, mapKeys?: AnyObject) => {
   for (let name in schema.nodes) {
     let node = schema.nodes[name];
 
-    if (name === 'bullet_list') {
-      if (isMac) {
-        bind('Shift-Cmd-B', clearAndApply(wrapInList(node)));
-      } else {
-        bind('Shift-Ctrl-B', clearAndApply(wrapInList(node)));
-      }
-    }
-
-    if (name === 'ordered_list') {
-      if (isMac) {
-        bind('Shift-Cmd-L', clearAndApply(wrapInList(node)));
-      } else {
-        bind('Shift-Ctrl-L', clearAndApply(wrapInList(node)));
-      }
-    }
-
-    if (name === 'blockquote') {
-      if (isMac) {
-        bind('Cmd-Alt-8', clearAndApply(wrapIn(node)));
-      } else {
-        bind('Ctrl-8', clearAndApply(wrapIn(node)));
-      }
-    }
-
     if (name === 'hard_break') {
       let cmd = chainCommands(
         newlineInCode,
@@ -110,26 +86,7 @@ export default (schema: Schema, mapKeys?: AnyObject) => {
       }
     }
 
-    if (name === 'list_item') {
-      bind('Enter', splitListItem(node));
-      bind('Mod-[', liftListItem(node));
-      bind('Mod-]', sinkListItem(node));
-    }
-
-    if (name === 'paragraph') {
-      if (isMac) {
-        bind('Cmd-Alt-0', clearAndApply(setBlockType(node)));
-      } else {
-        bind('Ctrl-0', clearAndApply(setBlockType(node)));
-      }
-    }
-
     if (name === 'code_block') {
-      if (isMac) {
-        bind('Cmd-Alt-7', clearAndApply(setBlockType(node)));
-      } else {
-        bind('Ctrl-7', clearAndApply(setBlockType(node)));
-      }
       // https://github.com/ProseMirror/prosemirror/issues/419
       bind('Enter', (pm: ProseMirror, apply: boolean) => {
         let {$from, $head, empty} = pm.selection as TextSelection;
@@ -154,16 +111,6 @@ export default (schema: Schema, mapKeys?: AnyObject) => {
 
         return true;
       });
-    }
-
-    if (name === 'heading') {
-      for (let i = 1; i <= 5; i++) {
-        if (isMac) {
-          bind('Cmd-Alt-' + i, clearAndApply(setBlockType(node, {level: i})));
-        } else {
-          bind('Ctrl-' + i, clearAndApply(setBlockType(node, {level: i})));
-        }
-      }
     }
 
     if (name === 'horizontal_rule') {

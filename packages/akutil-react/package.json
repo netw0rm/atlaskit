@@ -10,7 +10,8 @@
     "prepublish": "cd ../.. && npm run prepublish/single akutil-react"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/index.ts"
   ],
   "dependencies": {
     "babel-runtime": "^6.11.6",

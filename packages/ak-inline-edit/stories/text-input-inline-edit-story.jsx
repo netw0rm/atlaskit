@@ -10,7 +10,7 @@ const containerStyle = {
   width: 500,
 };
 
-storiesOf(name, module)
+storiesOf(`${name} (text input)`, module)
   .add('with label', () => (
     <div style={containerStyle}>
       <TextInlineEdit />

@@ -21,6 +21,10 @@
     "ak-icon": "^11.2.2",
     "babel-runtime": "^6.11.6"
   },
+  "devDependencies": {
+    "ak-dropdown": "^10.0.2",
+    "akutil-react": "^3.0.1"
+  },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "repository": {

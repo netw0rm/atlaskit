@@ -30,7 +30,7 @@ const defaultProps = {
 describe('ak-inline-edit', () => {
   describe('Edit View', () => {
     describe('defaults', () =>
-      it('should render contentc inside FieldBase', () => {
+      it('should render content inside FieldBase', () => {
         const wrapper = shallow(<EditView {...defaultProps} />);
         expect(wrapper).to.have.exactly(1).descendants(FieldBase);
         const fieldBase = wrapper.find(FieldBase);

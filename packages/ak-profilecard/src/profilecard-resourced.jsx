@@ -71,7 +71,7 @@ export default class ProfilecardResourced extends PureComponent {
   componentDidUpdate(prevProps) {
     if (
       this.props.userId !== prevProps.userId ||
-      this.props.userId !== prevProps.userId
+      this.props.cloudId !== prevProps.cloudId
     ) {
       this.clientFetchProfile();
     }
@@ -114,20 +114,16 @@ export default class ProfilecardResourced extends PureComponent {
   }
 
   render() {
-    const Element = () => {
-      if (this.state.hasError) {
-        return (<ErrorMessage />);
-      }
+    if (this.state.hasError) {
+      return (<ErrorMessage />);
+    }
 
-      if (this.state.isLoading) {
-        return (<LoadingMessage />);
-      }
+    if (this.state.isLoading) {
+      return (<LoadingMessage />);
+    }
 
-      return (
-        <Profilecard {...this.state.data} actions={this.props.actions} />
-      );
-    };
-
-    return (<Element />);
+    return (
+      <Profilecard {...this.state.data} actions={this.props.actions} />
+    );
   }
 }

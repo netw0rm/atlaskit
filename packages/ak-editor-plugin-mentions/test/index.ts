@@ -35,7 +35,26 @@ describe('ak-editor-plugin-mentions', () => {
     expect(Plugin.State.name).is.be.a('string');
   });
 
-  describe('keymap when mention query is active', () => {
+  describe('keymap', () => {
+    it('should bind keymap when query is active', () => {
+      const pm = makeEditor(container());
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+      expect(pm.input.keymaps.filter((k:any) => k.map.options.name === 'mentions-plugin-keymap').length).to.equal(1);
+    });
+
+    it('should unbind keymap when dismissed', () => {
+      const pm = makeEditor(container());
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+
+      const keyDownEvent = new CustomEvent('keydown');
+      (keyDownEvent as any).keyCode = 27;
+
+      pm.input.dispatchKey('Esc', keyDownEvent);
+      expect(pm.input.keymaps.filter((k:any) => k.map.options.name === 'mentions-plugin-keymap').length).to.equal(0);
+    });
+
     it('should ignore "Up"-key if no "onSelectPrevious" is attached', () => {
       const pm = makeEditor(container());
       pm.input.insertText(0, 0, '@');
@@ -123,11 +142,13 @@ describe('ak-editor-plugin-mentions', () => {
 
       pm.input.dispatchKey('Esc', keyDownEvent);
       expect(spy).to.have.been.called;
+
+      expect(pm.input.keymaps.filter((m:any) => m.map.options.name === 'mentions-plugin-keymap').length).to.equal(0);
     });
 
   });
 
-  describe('handleSelectedMention', () => {
+  describe('insertMention', () => {
 
     it('should replace mention-query-mark with mention-node', () => {
       const pm = makeEditor(container());
@@ -137,8 +158,8 @@ describe('ak-editor-plugin-mentions', () => {
       pm.flush();
       pm.tr.typeText('oscar').apply();
 
-      pluginInstance.handleSelectedMention({
-        detail: 'Oscar Wallhult',
+      pluginInstance.insertMention({
+        name: 'Oscar Wallhult',
         mentionName: '@oscar'
       });
 

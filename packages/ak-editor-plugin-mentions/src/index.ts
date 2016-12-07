@@ -6,10 +6,12 @@ import { MentionQueryMarkType } from 'ak-editor-schema';
 const mentionQueryMarkName = 'mention_query';
 const mentionNodeName = 'mention';
 
+export type StateChangeHandler = (state: MentionsPluginState) => any;
+
 export class MentionsPluginState {
   private pm: ProseMirror;
   private hasKeymap = false;
-  private changeHandlers: MentionsPluginStateSubscriber[] = [];
+  private changeHandlers: StateChangeHandler[] = [];
 
   renderHandler: (el: HTMLElement, pm: ProseMirror) => void;
   autocompleteHandler: (el: HTMLElement, pm: ProseMirror) => void;
@@ -29,6 +31,8 @@ export class MentionsPluginState {
       Down: () => this.onSelectNext(),
       Enter: () => this.onSelectCurrent(),
       Esc: () => this.dismiss(),
+    }, {
+      name: 'mentions-plugin-keymap'
     });
 
     // add the input rules to insert mentions and emoticons
@@ -83,8 +87,10 @@ export class MentionsPluginState {
           this.hasKeymap = true;
         }
       } else {
-        this.pm.removeKeymap(this.keymap);
-        this.hasKeymap = false;
+        if (this.hasKeymap) {
+          this.pm.removeKeymap(this.keymap);
+          this.hasKeymap = false;
+        }
       }
       this.changeHandlers.forEach(cb => cb(this));
     }
@@ -123,26 +129,26 @@ export class MentionsPluginState {
     return { start, end };
   }
 
-  handleSelectedMention(e: any) {
-    if (!e.detail) {
+  insertMention(mention: Mention) {
+    if (!mention) {
       return;
     }
 
     if (this.pm.schema.nodes[mentionNodeName]) {
       const { start, end } = this.findMentionQueryMark();
-      const node = this.pm.schema.nodes[mentionNodeName as any].create({ displayName: e.detail.name, id: `@${e.detail.mentionName}` });
+      const node = this.pm.schema.nodes[mentionNodeName as any].create({ displayName: `@${mention.name}`, id: `@${mention.mentionName}` });
       this.pm.tr.delete(start, end).insert(start, node).apply();
     } else {
       this.dismiss();
     }
   }
 
-  subscribe(cb: MentionsPluginStateSubscriber) {
+  subscribe(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
     cb(this);
   }
 
-  unsubscribe(cb: MentionsPluginStateSubscriber) {
+  unsubscribe(cb: StateChangeHandler) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 }
@@ -152,4 +158,7 @@ Object.defineProperty(MentionsPluginState, 'name', { value: 'MentionsPluginState
 
 export default new Plugin(MentionsPluginState);
 
-export type MentionsPluginStateSubscriber = (state: MentionsPluginState) => any;
+interface Mention {
+  name: string;
+  mentionName: string;
+}

@@ -51,7 +51,7 @@ describe('ak-editor-bitbucket/setFromHtml', () => {
   let editor: Editor;
 
   beforeEach(() => {
-    editor = mount(<Editor defaultExpanded />).get(0) as any;
+    editor = mount(<Editor isExpandedByDefault />).get(0) as any;
   });
 
   it('should accept empty strings', () => {

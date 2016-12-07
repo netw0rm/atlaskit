@@ -14,7 +14,9 @@
       "chai",
       "react",
       "sinon",
-      "sinon-chai"
+      "sinon-chai",
+      "chai-enzyme",
+      "enzyme"
     ]
   },
   "files": [

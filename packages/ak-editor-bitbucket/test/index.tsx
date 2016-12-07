@@ -16,34 +16,34 @@ const expect = chai.expect;
 
 describe('ak-editor-bitbucket/expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
-    expect(shallow(<Editor />).find('ChromeCollapsed')).to.be.defined;
-    expect(shallow(<Editor />).find('input[placeholder]')).to.be.defined;
-    expect(shallow(<Editor />).find('ChromeExpanded')).to.not.be.defined;
+    expect(mount(<Editor />).find('ChromeCollapsed')).to.exist;
+    expect(mount(<Editor />).find('input[placeholder]')).to.exist;
+    expect(mount(<Editor />).find('ChromeExpanded')).not.to.exist;
   });
 
   it('should respect defaultExpanded property', () => {
-    expect(shallow(<Editor isExpandedByDefault />).find('ChromeCollapsed')).to.not.be.defined;
-    expect(shallow(<Editor isExpandedByDefault />).find('ChromeExpanded')).to.be.defined;
+    expect(mount(<Editor isExpandedByDefault />).find('ChromeCollapsed')).not.to.exist;
+    expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded')).to.exist;
   });
 
   it('.expand() method should expand the editor chrome', () => {
     const editorWrapper = mount(<Editor />);
-    const editor = editorWrapper.get(0);
+    const editor: Editor = editorWrapper.get(0) as any;
 
     editor.expand();
 
-    expect(editorWrapper.find('ChromeCollapsed')).to.not.be.defined;
-    expect(editorWrapper.find('ChromeExpanded')).to.be.defined;
+    expect(editorWrapper.find('ChromeCollapsed')).not.to.exist;
+    expect(editorWrapper.find('ChromeExpanded')).to.exist;
   });
 
   it('.collapse() method should collapse the editor chrome', () => {
     const editorWrapper = mount(<Editor isExpandedByDefault />);
-    const editor = editorWrapper.get(0);
+    const editor: Editor = editorWrapper.get(0) as any;
 
     editor.collapse();
 
-    expect(editorWrapper.find('ChromeCollapsed')).to.be.defined;
-    expect(editorWrapper.find('ChromeExpanded')).to.not.be.defined;
+    expect(editorWrapper.find('ChromeCollapsed')).to.exist;
+    expect(editorWrapper.find('ChromeExpanded')).not.to.exist;
   });
 });
 
@@ -51,7 +51,7 @@ describe('ak-editor-bitbucket/setFromHtml', () => {
   let editor: Editor;
 
   beforeEach(() => {
-    editor = mount(<Editor defaultExpanded />).get(0);
+    editor = mount(<Editor defaultExpanded />).get(0) as any;
   });
 
   it('should accept empty strings', () => {

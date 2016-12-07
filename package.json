@@ -11,6 +11,8 @@
     "@atlassian/gremlins.js": "^0.1.0",
     "@kadira/storybook": "^2.24.0",
     "@types/chai": "^3.4.34",
+    "@types/chai-enzyme": "^0.5.5",
+    "@types/enzyme": "https://registry.npmjs.org/@types/enzyme/-/enzyme-2.5.39.tgz",
     "@types/mocha": "^2.2.33",
     "@types/react": "^0.14.50",
     "@types/react-dom": "^0.14.19",

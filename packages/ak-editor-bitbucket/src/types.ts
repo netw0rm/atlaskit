@@ -25,5 +25,3 @@ declare module "ak-editor-toolbar-text-formatting";
 declare module "ak-editor-toolbar-feedback";
 declare module "akutil-common-test";
 declare module "autobind-decorator";
-declare module "enzyme";
-declare module "chai-enzyme";

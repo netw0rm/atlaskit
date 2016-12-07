@@ -183,6 +183,7 @@ export default class MentionList extends PureComponent {
     const mustShowError = showError && !hasMentions;
 
     const classes = classNames({
+      'ak-mention-list': true,
       [styles.list]: true,
       [styles.empty]: !hasMentions && !showError,
     });

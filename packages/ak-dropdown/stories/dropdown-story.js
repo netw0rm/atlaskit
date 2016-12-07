@@ -12,7 +12,6 @@ import Dropdown, {
 import { name } from '../package.json';
 import styles from '../src/less/shadow-list.less';
 
-
 const dropdownClass = styles.locals.akDropdown;
 const DropdownReactComponent = reactify(Dropdown);
 const DropdownTriggerReact = reactify(DropdownTrigger);

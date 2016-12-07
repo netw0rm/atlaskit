@@ -1,6 +1,6 @@
 {
   "name": "ak-button",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "ak-button webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "akutil-react": "*",
-    "ak-icon": "^10.0.0",
+    "ak-icon": "^11.2.2",
     "uid": "^0.0.2"
   },
   "peerDependencies": {

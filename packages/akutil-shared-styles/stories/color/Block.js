@@ -6,10 +6,9 @@ import { action } from '@kadira/storybook';
 
 import { locals as styles } from './styles.less';
 
-
 const AkTooltipTrigger = reactify(TooltipTrigger);
 
-class Block extends React.Component {
+class Block extends React.PureComponent {
   componentDidMount() {
     if (this.block) {
       this.clipboard = new Clipboard(this.block);

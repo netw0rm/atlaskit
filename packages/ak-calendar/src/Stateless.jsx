@@ -245,7 +245,7 @@ export default class extends PureComponent {
       calendar.push(
         ...this.calendar.getCalendar(year, month)
           .slice(sliceStart, sliceStart + daysPerWeek)
-          .map(e => Object.assign({}, e, { siblingMonth: true }))
+          .map(e => ({ ...e, siblingMonth: true }))
       );
     }
 

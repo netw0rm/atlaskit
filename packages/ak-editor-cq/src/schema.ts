@@ -21,9 +21,9 @@ import {
 
 export default new Schema({
   nodes: {
-    blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     doc: { type: DocNodeType, content: 'block+' },
     paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },
+    blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
     bullet_list: { type: BulletListNodeType, content: 'list_item+', group: 'block' },
     heading: { type: HeadingNodeType, content: 'inline<_>*', group: 'block' },
@@ -46,9 +46,9 @@ export default new Schema({
 
 interface CQSchema extends Schema {
   nodes: {
-    blockquote: BlockQuoteNodeType;
     doc: DocNodeType;
     paragraph: ParagraphNodeType;
+    blockquote: BlockQuoteNodeType;
     ordered_list: OrderedListNodeType;
     bullet_list: BulletListNodeType;
     heading: HeadingNodeType;

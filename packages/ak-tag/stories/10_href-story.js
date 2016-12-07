@@ -4,7 +4,6 @@ import React from 'react';
 import Tag from '../src';
 import { name } from '../package.json';
 
-
 const Component = (Tag);
 
 storiesOf(name, module)

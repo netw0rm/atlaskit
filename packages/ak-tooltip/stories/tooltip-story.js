@@ -9,7 +9,6 @@ import FourDirectionTooltipTrigger from './four-direction-tooltip-trigger';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
 
-
 const Tooltip = reactify(TooltipWC);
 
 const TooltipTrigger = reactify(TooltipTriggerWC);

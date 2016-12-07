@@ -4,7 +4,6 @@ import { define, vdom } from 'skatejs';
 
 import AKTrigger from '../../src/index.tooltip-trigger';
 
-
 /*
    This is a simple container element to show that we can bind a tooltip to an element in the
    shadowDOM.

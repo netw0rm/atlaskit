@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import reactify from 'akutil-react';
 
 import TooltipTriggerWC from '../src/index.tooltip-trigger';
-
 
 const TooltipTrigger = reactify(TooltipTriggerWC);
 
@@ -11,7 +10,7 @@ const buttonStyles = {
   padding: '5px',
 };
 
-class FourDirectionTooltipTrigger extends Component {
+class FourDirectionTooltipTrigger extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

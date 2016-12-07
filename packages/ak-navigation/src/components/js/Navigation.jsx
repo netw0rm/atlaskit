@@ -50,24 +50,24 @@ export default class Navigation extends Component {
     };
   }
 
-  onResize(resizeDelta) {
+  onResize = (resizeDelta) => {
     this.setState({ resizeDelta });
   }
 
-  getRenderedWidth() {
+  getRenderedWidth = () => {
     const baselineWidth = this.props.open ? this.props.width : containerClosedWidth;
     return Math.max(containerClosedWidth, baselineWidth + this.state.resizeDelta);
   }
 
-  searchActivated =() => {
+  searchActivated = () => {
     this.setState({ createOpen: false, searchOpen: !this.state.searchOpen });
   }
 
-  createActivated =() => {
+  createActivated = () => {
     this.setState({ createOpen: !this.state.createOpen, searchOpen: false });
   }
 
-  triggerResizeHandler() {
+  triggerResizeHandler = () => {
     const width = this.getRenderedWidth();
     const resizeState = {
       open: (width > resizeClosedBreakpoint),
@@ -109,8 +109,8 @@ export default class Navigation extends Component {
                   <GlobalNavigation
                     shouldAnimate={shouldAnimate}
                     width={getGlobalWidth(this.getRenderedWidth())}
+                    primaryIcon={globalItemIfPropSet(this.props.globalPrimaryIcon)}
                   >
-                    {globalItemIfPropSet(this.props.globalPrimaryIcon)}
                     {globalItemIfPropSet(this.props.globalSearchIcon, this.searchActivated)}
                     {globalItemIfPropSet(this.props.globalCreateIcon, this.createActivated)}
                   </GlobalNavigation>

@@ -8,7 +8,6 @@ import Prism, {
   InvalidColorError,
 } from './_Prism';
 
-
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();

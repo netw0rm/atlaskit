@@ -39,7 +39,6 @@ function computeEnumValue(enumOptions, value) {
   return enumOptions.values.length ? enumOptions.values.filter(matchesEnumValue)[0] : null;
 }
 
-
 function setEnumAttribute(el, enumOptions, newValue) {
   el.setAttribute(enumOptions.attribute, newValue);
 }

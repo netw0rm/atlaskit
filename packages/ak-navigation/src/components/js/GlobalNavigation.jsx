@@ -8,6 +8,7 @@ export default class GlobalNavigation extends Component {
   static get propTypes() {
     return {
       children: PropTypes.node,
+      primaryIcon: PropTypes.node,
       width: PropTypes.number,
       shouldAnimate: PropTypes.bool,
     };
@@ -16,6 +17,7 @@ export default class GlobalNavigation extends Component {
     return {
       width: globalOpenWidth,
       shouldAnimate: false,
+      primaryIcon: null,
     };
   }
   getTranslate() {
@@ -38,6 +40,9 @@ export default class GlobalNavigation extends Component {
             transform: `translateX(${this.getTranslate()}px)`,
           }}
         >
+          <div className={styles.primaryIcon}>
+            {this.props.primaryIcon}
+          </div>
           {this.props.children}
         </div>
       </div>

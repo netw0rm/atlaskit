@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "profilecard component",
   "main": "dist/bundle.js",
-  "webpack": "src/index.jsx",
+  "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-profilecard"
@@ -37,7 +37,9 @@
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "ui",
+    "profilecard",
+    "fabric"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0"

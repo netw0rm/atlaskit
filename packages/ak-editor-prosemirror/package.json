@@ -16,7 +16,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "browserkeymap": "^2.0.1",
+    "browserkeymap": "^1.0.1",
     "prosemirror": "0.10.1"
   },
   "repository": {

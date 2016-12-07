@@ -15,38 +15,40 @@ import {
 import { getGlobalWidth, getContainerWidth } from '../../utils/collapse';
 
 export default class Navigation extends Component {
-  static get propTypes() {
-    return {
-      searchDrawerContent: PropTypes.node,
-      createDrawerContent: PropTypes.node,
-      containerHeader: PropTypes.node,
-      children: PropTypes.node,
-      width: PropTypes.number,
-      open: PropTypes.bool,
-      onResize: PropTypes.func,
-      globalNavigation: PropTypes.node,
-      isResizeable: PropTypes.bool,
-      globalPrimaryIcon: PropTypes.node,
-      globalSearchIcon: PropTypes.node,
-      globalCreateIcon: PropTypes.node,
-    };
-  }
+  static propTypes = {
+    searchDrawerContent: PropTypes.node,
+    isSearchDrawerOpen: PropTypes.bool,
+    onSearchDrawerActivated: PropTypes.func,
+    createDrawerContent: PropTypes.node,
+    isCreateDrawerOpen: PropTypes.bool,
+    onCreateDrawerActivated: PropTypes.func,
+    containerHeader: PropTypes.node,
+    children: PropTypes.node,
+    width: PropTypes.number,
+    open: PropTypes.bool,
+    onResize: PropTypes.func,
+    globalNavigation: PropTypes.node,
+    isResizeable: PropTypes.bool,
+    globalPrimaryIcon: PropTypes.node,
+    globalSearchIcon: PropTypes.node,
+    globalCreateIcon: PropTypes.node,
+  };
 
-  static get defaultProps() {
-    return {
-      width: navigationOpenWidth,
-      open: true,
-      isResizeable: true,
-      onResize: () => {},
-    };
-  }
+  static defaultProps = {
+    width: navigationOpenWidth,
+    open: true,
+    isResizeable: true,
+    onResize: () => {},
+    isSearchDrawerOpen: false,
+    isCreateDrawerOpen: false,
+    onSearchDrawerActivated: () => {},
+    onCreateDrawerActivated: () => {},
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       resizeDelta: 0,
-      searchOpen: false,
-      createOpen: false,
     };
   }
 
@@ -57,14 +59,6 @@ export default class Navigation extends Component {
   getRenderedWidth = () => {
     const baselineWidth = this.props.open ? this.props.width : containerClosedWidth;
     return Math.max(containerClosedWidth, baselineWidth + this.state.resizeDelta);
-  }
-
-  searchActivated = () => {
-    this.setState({ createOpen: false, searchOpen: !this.state.searchOpen });
-  }
-
-  createActivated = () => {
-    this.setState({ createOpen: !this.state.createOpen, searchOpen: false });
   }
 
   triggerResizeHandler = () => {
@@ -92,6 +86,10 @@ export default class Navigation extends Component {
       );
     };
 
+    const { onSearchDrawerActivated, onCreateDrawerActivated, globalSearchIcon, globalCreateIcon,
+      searchDrawerContent, createDrawerContent, containerHeader, children, isResizeable,
+      globalNavigation, globalPrimaryIcon, isSearchDrawerOpen, isCreateDrawerOpen } = this.props;
+
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();
     return (
@@ -103,35 +101,33 @@ export default class Navigation extends Component {
         <div className={styles.navigationInner}>
           <div style={{ zIndex: 2 }}>
             {
-              this.props.globalNavigation
-                ? this.props.globalNavigation
-                : (
-                  <GlobalNavigation
-                    shouldAnimate={shouldAnimate}
-                    width={getGlobalWidth(this.getRenderedWidth())}
-                    primaryIcon={globalItemIfPropSet(this.props.globalPrimaryIcon)}
-                  >
-                    {globalItemIfPropSet(this.props.globalSearchIcon, this.searchActivated)}
-                    {globalItemIfPropSet(this.props.globalCreateIcon, this.createActivated)}
-                  </GlobalNavigation>
-                )
+              globalNavigation || (
+                <GlobalNavigation
+                  shouldAnimate={shouldAnimate}
+                  width={getGlobalWidth(this.getRenderedWidth())}
+                  primaryIcon={globalItemIfPropSet(globalPrimaryIcon)}
+                >
+                  {globalItemIfPropSet(globalSearchIcon, onSearchDrawerActivated)}
+                  {globalItemIfPropSet(globalCreateIcon, onCreateDrawerActivated)}
+                </GlobalNavigation>
+              )
             }
           </div>
           <div style={{ zIndex: 1 }}>
-            <Drawer open={this.state.searchOpen} wide>{this.props.searchDrawerContent}</Drawer>
-            <Drawer open={this.state.createOpen}>{this.props.createDrawerContent}</Drawer>
+            <Drawer open={isSearchDrawerOpen} wide>{searchDrawerContent}</Drawer>
+            <Drawer open={isCreateDrawerOpen}>{createDrawerContent}</Drawer>
           </div>
           <div>
             <ContainerNavigation
               shouldAnimate={shouldAnimate}
               width={getContainerWidth(renderedWidth)}
-              header={this.props.containerHeader}
+              header={containerHeader}
             >
-              {this.props.children}
+              {children}
             </ContainerNavigation>
           </div>
           {
-            this.props.isResizeable
+            isResizeable
             ? <Resizer
               onResize={this.onResize}
               onResizeEnd={this.triggerResizeHandler}

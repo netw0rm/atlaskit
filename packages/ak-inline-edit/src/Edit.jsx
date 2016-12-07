@@ -66,11 +66,9 @@ export default class EditView extends PureComponent {
         isLabelHidden={this.props.isLabelHidden}
         rightGutter={this.renderActionButtons()}
       >
-        <div>
-          {React.cloneElement(this.props.content,
-            { ref: (contentRef) => { this.contentRef = contentRef; } }
-          )}
-        </div>
+        {React.cloneElement(this.props.content,
+          { ref: (contentRef) => { this.contentRef = contentRef; } }
+        )}
       </FieldBase>
     </div>
   )

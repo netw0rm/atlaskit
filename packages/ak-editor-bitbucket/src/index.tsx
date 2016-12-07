@@ -16,7 +16,7 @@ import parseHtml from './parse-html';
 
 interface Props {
   context?: 'comment' | 'pr',
-  defaultExpanded?: boolean,
+  isExpandedByDefault?: boolean,
   defaultValue?: string,
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
@@ -27,7 +27,7 @@ interface Props {
 
 interface State {
   pm?: ProseMirror;
-  expanded?: boolean;
+  isExpanded?: boolean;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -35,7 +35,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { expanded: props.defaultExpanded };
+    this.state = { isExpanded: props.isExpandedByDefault };
   }
 
   /**
@@ -52,14 +52,14 @@ export default class Editor extends PureComponent<Props, State> {
    * Expand the editor chrome
    */
   expand = () => {
-    this.setState({ expanded: true });
+    this.setState({ isExpanded: true });
   }
 
   /**
    * Collapse the editor chrome
    */
   collapse = () => {
-    this.setState({ expanded: false });
+    this.setState({ isExpanded: false });
   }
 
   /**
@@ -106,12 +106,12 @@ export default class Editor extends PureComponent<Props, State> {
   render() {
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
-    const { pm, expanded } = this.state;
+    const { pm, isExpanded } = this.state;
 
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
-        expanded={expanded}
+        isExpanded={isExpanded}
         feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
         onCancel={handleCancel}
         onSave={handleSave}

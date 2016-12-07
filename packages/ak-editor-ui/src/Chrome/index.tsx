@@ -8,7 +8,7 @@ import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
 interface Props {
-  expanded?: boolean;
+  isExpanded?: boolean;
   placeholder?: string;
   onCancel?: () => void;
   onSave?: () => void;
@@ -22,23 +22,23 @@ interface Props {
 }
 
 interface State {
-  expanded: boolean;
+  isExpanded: boolean;
 }
 
 export default class Chrome extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { expanded: !!props.expanded };
+    this.state = { isExpanded: !!props.isExpanded };
   }
   
   componentWillReceiveProps(props: Props) {
-    this.setState({ expanded: !!props.expanded });
+    this.setState({ isExpanded: !!props.isExpanded });
   }
 
   render() {
     const { props, state } = this;
 
-    return state.expanded
+    return state.isExpanded
       ? <ChromeExpanded
           onCancel={props.onCancel}
           onSave={props.onSave}

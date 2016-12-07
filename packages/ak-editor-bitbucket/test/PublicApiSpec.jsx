@@ -19,8 +19,8 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
   });
 
   it('should respect defaultExpanded property', () => {
-    expect(shallow(<Editor defaultExpanded />).find('ChromeCollapsed')).to.not.be.defined;
-    expect(shallow(<Editor defaultExpanded />).find('ChromeExpanded')).to.be.defined;
+    expect(shallow(<Editor isExpandedByDefault />).find('ChromeCollapsed')).to.not.be.defined;
+    expect(shallow(<Editor isExpandedByDefault />).find('ChromeExpanded')).to.be.defined;
   });
 
   it('.expand() method should expand the editor chrome', () => {
@@ -34,7 +34,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
   });
 
   it('.collapse() method should collapse the editor chrome', () => {
-    const editorWrapper = mount(<Editor defaultExpanded />);
+    const editorWrapper = mount(<Editor isExpandedByDefault />);
     const editor = editorWrapper.get(0);
 
     editor.collapse();

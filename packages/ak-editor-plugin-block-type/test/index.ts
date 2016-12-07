@@ -454,6 +454,14 @@ describe('ak-editor-plugin-block-type', () => {
             expect(pm.doc).to.deep.equal(doc(p('text')));
           });
         });
+
+        context('when selection is a nested blockquotes', () => {
+          it('tranforms outer blockquotes back to a paragraph', () => {
+            const { pm, plugin } = editor(doc(blockquote(blockquote(p('te{<>}xt')))));
+            pm.input.dispatchKey("Ctrl-7");
+            expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
+          });
+        });
       });
 
       describe('code_block', () => {

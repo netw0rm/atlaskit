@@ -188,8 +188,6 @@ export class BlockTypeState {
       return this.nodeBlockType(node).name !== name
     });
 
-    debugger;
-
     blockNodes.forEach((node) => {
       if(nodeThatDoesNotMatchTargetBlockType) {
         this.changeBlockType(name);

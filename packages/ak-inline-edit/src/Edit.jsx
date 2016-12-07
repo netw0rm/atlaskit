@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import Button from 'ak-button';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
@@ -10,10 +11,26 @@ export default class EditView extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
     isLabelHidden: PropTypes.bool.isRequired,
+    isConfirmOnBlurDisabled: PropTypes.bool.isRequired,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    children: PropTypes.node.isRequired,
+    content: PropTypes.node.isRequired,
   }
+
+  onBlur = (event) => {
+    if (!this.props.isConfirmOnBlurDisabled && this.didFocusLeaveInlineEdit(event.relatedTarget)) {
+      this.props.onConfirm();
+    }
+  }
+
+  getDOMNode = ref =>
+    // eslint-disable-next-line react/no-find-dom-node
+    ReactDOM.findDOMNode(ref)
+
+  didFocusLeaveInlineEdit = domNodeReceivingFocus =>
+    domNodeReceivingFocus !== this.getDOMNode(this.confirmButtonRef) &&
+    domNodeReceivingFocus !== this.getDOMNode(this.cancelButtonRef) &&
+    domNodeReceivingFocus !== this.getDOMNode(this.contentRef)
 
   renderActionButtons = () => (
     <div className={locals.buttonsWrapper}>
@@ -21,23 +38,29 @@ export default class EditView extends PureComponent {
         appearance="subtle"
         iconBefore={<ConfirmIcon label="confirm" />}
         onClick={this.props.onConfirm}
+        ref={(confirmButtonRef) => { this.confirmButtonRef = confirmButtonRef; }}
       />
       <Button
         appearance="subtle"
         iconBefore={<CancelIcon label="cancel" />}
         onClick={this.props.onCancel}
+        ref={(cancelButtonRef) => { this.cancelButtonRef = cancelButtonRef; }}
       />
     </div>
   )
 
   render = () => (
-    <div>
+    <div onBlur={this.onBlur}>
       <FieldBase
         label={this.props.label}
         isLabelHidden={this.props.isLabelHidden}
         rightGutter={this.renderActionButtons()}
       >
-        {this.props.children}
+        <div>
+          {React.cloneElement(this.props.content,
+            { ref: (contentRef) => { this.contentRef = contentRef; } }
+          )}
+        </div>
       </FieldBase>
     </div>
   )

@@ -47,10 +47,23 @@ export default class InlineEdit extends PureComponent {
      * @description Whether InlineEdit should display its label.
      *
      * @memberof InlineEdit
-     * @type {string}
+     * @type {boolean}
      * @default false
      */
     isLabelHidden: PropTypes.bool,
+    /**
+     * @description Allows disabling the default confirm-on-blur behaviour.
+     *
+     * By default, the 'onConfirm' callback will be called when focus moves
+     * outside of the inline edit component. This prop allows disabling this
+     * behaviour, meaning 'onConfirm' will only be called when the user explicitly
+     * clicks on the confirm button.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    isConfirmOnBlurDisabled: PropTypes.bool,
     /**
      * @description Called when the user requests that edit mode be entered
      *
@@ -87,6 +100,7 @@ export default class InlineEdit extends PureComponent {
 
   static defaultProps = {
     isLabelHidden: false,
+    isConfirmOnBlurDisabled: false,
   }
 
   renderReadView = () => (
@@ -103,11 +117,11 @@ export default class InlineEdit extends PureComponent {
     <EditView
       label={this.props.label}
       isLabelHidden={this.props.isLabelHidden}
+      isConfirmOnBlurDisabled={this.props.isConfirmOnBlurDisabled}
       onConfirm={this.props.onConfirm}
       onCancel={this.props.onCancel}
-    >
-      {this.props.editView}
-    </EditView>
+      content={this.props.editView}
+    />
   )
 
   renderEditableView = () => (

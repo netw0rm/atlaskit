@@ -47,4 +47,11 @@ storiesOf(name, module)
         isLabelHidden
       />
     </div>
+  ))
+  .add('with confirm on blur disabled', () => (
+    <div style={containerStyle}>
+      <TextInlineEdit
+        isConfirmOnBlurDisabled
+      />
+    </div>
   ));

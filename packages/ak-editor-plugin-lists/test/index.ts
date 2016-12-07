@@ -1,4 +1,4 @@
-import { chaiPlugin, makeEditor } from 'ak-editor-test';
+import { chaiPlugin, makeEditor, RewireMock } from 'ak-editor-test';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -10,6 +10,7 @@ chai.use(sinonChai);
 
 describe('ak-editor-plugin-lists', () => {
   const editor = (doc: any) => makeEditor({ doc: doc, plugin: ListsPlugin, schema });
+  const rewireMock = RewireMock();
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const Plugin = ListsPlugin as any; // .State is not public API.
@@ -17,7 +18,11 @@ describe('ak-editor-plugin-lists', () => {
   });
 
   describe('keymap', () => {
-    context('when on mac', () => {
+    context('when on a Mac', () => {
+      beforeEach(() => {
+        rewireMock(ListsPlugin, 'browser', {mac: true});
+      });
+
       context('when selection within bullet list items', () => {
         context('when hit enter', () => {
           it('should split list item', () => {
@@ -65,6 +70,64 @@ describe('ak-editor-plugin-lists', () => {
           it('should convert to bullet list', () => {
             const { pm } = editor(doc(ol(li(p('text')))));
             pm.input.dispatchKey("Shift-Cmd-B");
+            expect(pm.doc).to.deep.equal(doc(ul(li(p('text')))));
+          })
+        });
+      });
+    });
+
+    context('when not on a Mac', () => {
+      beforeEach(() => {
+        rewireMock(ListsPlugin, 'browser', {mac: false});
+      });
+      
+      context('when selection within bullet list items', () => {
+        context('when hit enter', () => {
+          it('should split list item', () => {
+            const { pm } = editor(doc(ul(li(p('text')))));
+            pm.input.dispatchKey("Enter");
+            expect(pm.doc).to.deep.equal(doc(ul(li(p('')), li(p('text')))));
+          });
+        });
+
+        context('when hit Shift-Ctrl-L', () => {
+          it('should convert to ordered list', () => {
+            const { pm } = editor(doc(ul(li(p('text')))));
+            pm.input.dispatchKey("Shift-Ctrl-L");
+            expect(pm.doc).to.deep.equal(doc(ol(li(p('text')))));
+          })
+        });
+
+        context('when hit Shift-Ctrl-B', () => {
+          it('should toggle off bullet list', () => {
+            const { pm } = editor(doc(ul(li(p('text')))));
+            pm.input.dispatchKey("Shift-Ctrl-B");
+            expect(pm.doc).to.deep.equal(doc(p('text')));
+          })
+        });
+      });
+
+      context('when selection within ordered list items', () => {
+        context('when hit enter', () => {
+          it('should split list item', () => {
+            const { pm } = editor(doc(ol(li(p('text')))));
+            pm.input.dispatchKey("Enter");
+            expect(pm.doc).to.deep.equal(doc(ol(li(p('')), li(p('text')))));
+          });
+        });
+
+        context('when hit Shift-Ctrl-L', () => {
+          it('should toggle off ordered list', () => {
+            const { pm } = editor(doc(ol(li(p('text')))));
+            pm.input.dispatchKey("Shift-Ctrl-L");
+            expect(pm.doc).to.deep.equal(doc(p('text')));
+          })
+        });
+
+        context('when hit Shift-Ctrl-B', () => {
+          it('should convert to bullet list', () => {
+            const { pm } = editor(doc(ol(li(p('text')))));
+            pm.input.dispatchKey("Shift-Ctrl-B");
             expect(pm.doc).to.deep.equal(doc(ul(li(p('text')))));
           })
         });

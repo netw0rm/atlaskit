@@ -13,7 +13,8 @@ import {
   Schema,
   Selection,
   TextSelection,
-  UpdateScheduler
+  UpdateScheduler,
+  browser
 } from 'ak-editor-prosemirror';
 
 import {
@@ -60,15 +61,7 @@ export class ListsState {
     this.wrapInBulletList = !!bullet_list ? commands.wrapInList(bullet_list) : noop;
     this.wrapInOrderedList = !!ordered_list ? commands.wrapInList(ordered_list) : noop;
 
-    const { list_item } = pm.schema.nodes;
-
-    let keymap = new Keymap({
-      'Enter': () => commands.splitListItem(list_item)(pm),
-      'Shift-Cmd-L': () => this.toggleOrderedList(),
-      'Shift-Cmd-B': () => this.toggleBulletList(),
-    })
-
-    pm.addKeymap(keymap);
+    this.addKeymap(pm);
 
     pm.updateScheduler([
       pm.on.selectionChange,
@@ -97,6 +90,31 @@ export class ListsState {
     if (bullet_list) {
       this.toggleList(bullet_list);
     }
+  }
+
+  private addKeymap(pm: PM): void {
+    const { list_item } = pm.schema.nodes;
+    let bindings;
+
+    const commonBindings = {
+      'Enter': () => commands.splitListItem(list_item)(pm)
+    };
+    const macBindings = {
+      'Shift-Cmd-L': () => this.toggleOrderedList(),
+      'Shift-Cmd-B': () => this.toggleBulletList(),
+    };
+    const nonMacBindings = {
+      'Shift-Ctrl-L': () => this.toggleOrderedList(),
+      'Shift-Ctrl-B': () => this.toggleBulletList(),
+    };
+
+    if(browser.mac) {
+      bindings = Object.assign({}, commonBindings, macBindings);
+    } else {
+      bindings = Object.assign({}, commonBindings, nonMacBindings);
+    }
+
+    pm.addKeymap(new Keymap(bindings));
   }
 
   /**

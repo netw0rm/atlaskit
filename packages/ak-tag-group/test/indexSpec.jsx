@@ -4,15 +4,14 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Tag from 'ak-tag';
 import TagGroup from '../src';
+import styles from '../src/styles.less';
 
 chai.should();
 chai.use(chaiEnzyme());
 
 describe('ak-tag-group', () => {
-  describe('exports', () => {
-    it('should export a base component', () => {
-      shallow(<TagGroup><Tag text="test" /></TagGroup>).should.be.an.instanceof(Object);
-    });
+  it('should export a base component', () => {
+    shallow(<TagGroup><Tag text="test" /></TagGroup>).should.be.an.instanceof(Object);
   });
 
   it('should render supplied tags', () => {
@@ -29,5 +28,10 @@ describe('ak-tag-group', () => {
     tags.forEach((tagName) => {
       wrapper.html().should.contain(tagName);
     });
+  });
+
+  it('should apply the .endAligned class when aligment prop is set to end', () => {
+    shallow(<TagGroup><Tag text="test" /></TagGroup>).hasClass(styles.locals.endAligned).should.equal(false);
+    shallow(<TagGroup alignment="end"><Tag text="test" /></TagGroup>).hasClass(styles.locals.endAligned).should.equal(true);
   });
 });

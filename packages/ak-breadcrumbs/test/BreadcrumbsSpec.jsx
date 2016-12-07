@@ -18,7 +18,7 @@ chai.use(chaiEnzyme());
 
 
 describe(name, () => {
-  describe('Breadcrumbs', () => {
+  describe('AkBreadcrumbs', () => {
     describe('exports', () => {
       it('the React component, and the Item component', () => {
         expect(Breadcrumbs).to.exist;

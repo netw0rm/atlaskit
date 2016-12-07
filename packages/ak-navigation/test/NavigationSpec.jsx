@@ -18,14 +18,6 @@ describe('<Navigation />', () => {
     it('should render a <GlobalNavigation />', () => {
       expect(shallow(<Navigation />)).to.have.exactly(1).descendants('GlobalNavigation');
     });
-    it('should not render a <GlobalNavigation /> if the "globalNavigation" prop is provided', () => {
-      const mockNavigation = <div id="mock-navigation">test</div>;
-      expect(shallow(<Navigation globalNavigation={mockNavigation} />)).to.not.have.descendants('GlobalNavigation');
-    });
-    it('should render the provided "globalNavigation"', () => {
-      const mockNavigation = <div id="mock-navigation">test</div>;
-      expect(shallow(<Navigation globalNavigation={mockNavigation} />)).to.have.descendants('#mock-navigation');
-    });
     it('should render a <Resizer />', () => {
       expect(shallow(<Navigation />)).to.have.exactly(1).descendants('Resizer');
     });

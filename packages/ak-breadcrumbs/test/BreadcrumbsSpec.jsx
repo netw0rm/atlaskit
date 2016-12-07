@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import Breadcrumbs, { AkBreadcrumbsItem as Item } from '../src/';
 import { locals } from '../src/styles.less';
@@ -31,7 +31,7 @@ describe(name, () => {
     });
 
     it('should be able to render a single child', () => {
-      const wrapper = shallow(
+      const wrapper = mount(
         <Breadcrumbs>
           <Item>item</Item>
         </Breadcrumbs>
@@ -42,7 +42,7 @@ describe(name, () => {
     });
 
     it('should render all children inside a container div', () => {
-      const wrapper = shallow(
+      const wrapper = mount(
         <Breadcrumbs>
           <Item>item</Item>
           <Item>item</Item>
@@ -60,7 +60,7 @@ describe(name, () => {
       let wrapper;
 
       beforeEach(() => {
-        wrapper = shallow(
+        wrapper = mount(
           <Breadcrumbs>
             {firstItem}
             <Item>item2</Item>
@@ -87,16 +87,6 @@ describe(name, () => {
         expect(wrapper.state().isExpanded).to.equal(false);
         ellipsisItem.simulate('click');
         expect(wrapper.state().isExpanded).to.equal(true);
-      });
-
-      it('applies the collapsed class', () => {
-        expect(wrapper).to.have.exactly(1).descendants(`.${locals.collapsed}`);
-      });
-
-      it('does not apply the collapsed class when expanded', () => {
-        const ellipsisItem = wrapper.find(EllipsisItem);
-        ellipsisItem.simulate('click');
-        expect(wrapper).to.not.have.descendants(`.${locals.collapsed}`);
       });
     });
   });

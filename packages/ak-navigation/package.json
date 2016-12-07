@@ -1,6 +1,6 @@
 {
   "name": "ak-navigation",
-  "version": "15.5.0",
+  "version": "15.6.0",
   "description": "A React component used as a sidebar",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

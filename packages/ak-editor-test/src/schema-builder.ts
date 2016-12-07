@@ -1,5 +1,5 @@
 import { Fragment, Node, Slice, Schema, MarkType, NodeType } from 'ak-editor-prosemirror';
-import schema from 'ak-editor-schema';
+import schema from './schema';
 import matches from './matches';
 
 /**

@@ -13,6 +13,7 @@ export { default as makeEditor } from './make-editor';
 export { default as fixtures } from './fixtures';
 export { default as RewireMock } from './rewire-mock';
 export { default as RewireSpy } from './rewire-spy';
+export { default as schema } from './schema';
 export { default as isBrokenEnvironment } from './broken-environment';
 export {
   doc, p, blockquote, code_block,

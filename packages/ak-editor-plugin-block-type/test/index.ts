@@ -297,7 +297,7 @@ describe('ak-editor-plugin-block-type', () => {
           });
         });
 
-        context.skip('when selection is a blockquote', () => {
+        context('when selection is a blockquote', () => {
           it('tranforms back to a paragraph', () => {
             const { pm, plugin } = editor(doc(blockquote(p('te{<>}xt'))));
             pm.input.dispatchKey("Cmd-Alt-7");
@@ -447,7 +447,7 @@ describe('ak-editor-plugin-block-type', () => {
           });
         });
 
-        context.skip('when selection is a blockquote', () => {
+        context('when selection is a blockquote', () => {
           it('tranforms back to a paragraph', () => {
             const { pm, plugin } = editor(doc(blockquote(p('te{<>}xt'))));
             pm.input.dispatchKey("Ctrl-7");

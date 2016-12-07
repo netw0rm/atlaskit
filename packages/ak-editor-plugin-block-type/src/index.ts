@@ -208,6 +208,7 @@ export class BlockTypeState {
       if(node.isBlock) {
         blockNodes.push(node);
       }
+      return false;
     });
 
     return blockNodes;

@@ -10,7 +10,6 @@ import * as bundle from '../src';
 import { size } from '../src/Icon';
 import { getGlyphs } from './_helpers';
 
-
 const { expect } = chai;
 chai.use(chaiEnzyme());
 chai.should();

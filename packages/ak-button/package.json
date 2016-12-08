@@ -1,6 +1,6 @@
 {
   "name": "ak-button",
-  "version": "5.0.0",
+  "version": "5.0.2",
   "description": "ak-button webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -10,7 +10,8 @@
     "prepublish": "cd ../.. && npm run prepublish/single ak-button"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "dependencies": {
     "akutil-shared-styles": "^37.0.0",
@@ -21,7 +22,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "akutil-react": "*",
-    "ak-icon": "^10.0.0",
+    "ak-icon": "^11.2.2",
     "uid": "^0.0.2"
   },
   "peerDependencies": {

@@ -11,7 +11,6 @@ import MonitoredStory from './MonitoredStory';
 import MonkeyTestStory from './MonkeyTestStory';
 import BaselineAlignmentStory from './BaselineAlignmentStory';
 
-
 function loadStories() {
   // Use a webpack loader to dynamically require stories.
   //

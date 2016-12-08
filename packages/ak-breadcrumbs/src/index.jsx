@@ -1,32 +1,13 @@
-import React, { Children, PureComponent, PropTypes } from 'react';
-import classnames from 'classnames';
-import styles from 'style!./styles.less';
-import BreadcrumbsItem from './BreadcrumbsItem';
-import EllipsisItem from './internal/EllipsisItem';
-import { numItemsToTruncate } from './internal/constants';
+import React, { PropTypes, PureComponent } from 'react';
+import Breadcrumbs, { BreadcrumbsItem } from './Breadcrumbs';
 
-const { count, toArray } = Children;
+export {
+  Breadcrumbs as AkBreadcrumbs,
+  BreadcrumbsItem as AkBreadcrumbsItem,
+};
 
-/**
- * @description Breadcrumbs React component.
- *
- * The Breadcrumbs component will render a list of slash-separated breadcrumb items, and will
- * automatically truncate the list if there are more than 8 items.
- * @class Breadcrumbs
- * @example @js import Breadcrumbs from 'ak-breadcrumbs';
- * ReactDOM.render(<Breadcrumbs />);
- */
-export default class Breadcrumbs extends PureComponent {
+export default class extends PureComponent {
   static propTypes = {
-    /**
-     * @description The items to display.
-     *
-     * If there are 9 or more items, the list will automatically be truncated to display only the
-     * first and last items. Clicking the ellipsis separator item will display all items.
-     * @memberof Breadcrumbs
-     * @instance
-     * @type {node|node[]}
-     */
     children: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),
@@ -35,39 +16,20 @@ export default class Breadcrumbs extends PureComponent {
 
   constructor() {
     super();
-    this.state = { isExpanded: false };
+    this.state = {
+      isExpanded: false,
+    };
   }
 
-  expand = () => {
-    this.setState({ isExpanded: true });
-  }
+  expand = () => this.setState({ isExpanded: true });
 
-  renderAllItems() {
-    return this.props.children;
-  }
-
-  renderFirstAndLast() {
-    const itemsToRender = toArray(this.props.children);
-    return [
-      itemsToRender[0],
-      <EllipsisItem key="ellipsis" onClick={this.expand} />,
-      itemsToRender[itemsToRender.length - 1],
-    ];
-  }
-
-  render() {
-    const containerClasses = classnames(styles.container, {
-      [styles.collapsed]: !this.state.isExpanded,
-    });
-    return (
-      <div className={containerClasses}>
-        {(this.state.isExpanded || count(this.props.children) < numItemsToTruncate)
-          ? this.renderAllItems()
-          : this.renderFirstAndLast()
-        }
-      </div>
-    );
-  }
+  render = () => (
+    <Breadcrumbs
+      {...this.props}
+      isExpanded={this.state.isExpanded}
+      onExpand={this.expand}
+    >
+      {this.props.children}
+    </Breadcrumbs>
+  );
 }
-
-export { BreadcrumbsItem as AkBreadcrumbsItem };

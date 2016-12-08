@@ -11,7 +11,6 @@ import ToggleIcons from './ToggleIcons';
 import { getGlyphs } from '../test/_helpers';
 import { size } from '../src/Icon';
 
-
 const iconSizes = Object.values(size);
 const twoColorIcons = ['checkbox', 'radio'];
 const components = getGlyphs();
@@ -44,7 +43,7 @@ const AbsoluteAllIcons = props => (
   <AllIcons
     {...props}
     // eslint-disable-next-line react/prop-types
-    style={Object.assign({ position: 'absolute' }, props.style || {})}
+    style={{ position: 'absolute', ...(props.style || {}) }}
   />
 );
 

@@ -5,7 +5,6 @@ import fetchMock from 'fetch-mock';
 import MentionResource from '../../src/api/pf-mention-resource';
 import { resultC, resultCraig } from '../_mention-data';
 
-
 const baseUrl = 'https://bogus/';
 
 const apiConfig = {

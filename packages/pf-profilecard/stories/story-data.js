@@ -10,10 +10,11 @@ const requestService = (fail) => {
       }
 
       const id = Math.floor(Math.random() * 10);
-      const data = Object.assign({}, profiles[id], {
+      const data = {
+        ...profiles[id],
         accountId: '00665c7e-ec7e-466f-9165-ef05e9970be7',
         cloudId: '749a3acb-3eb9-4957-9c36-784af09aed0b',
-      });
+      };
       const result = {
         debugMeta: {
           count: 1,

@@ -6,7 +6,6 @@ const setUpEnzyme = require('../setUpEnzyme');
 const assignPattern = require('../assignPattern');
 const FailPlugin = require('../FailPlugin');
 
-
 module.exports = (config) => {
   karmaConf(config);
 

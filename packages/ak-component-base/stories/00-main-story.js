@@ -6,7 +6,6 @@ import CounterWC from './skate/counter';
 import AppWC from './skate/app';
 import { name } from '../package.json';
 
-
 const App = reactify(AppWC);
 const Counter = reactify(CounterWC);
 

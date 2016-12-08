@@ -32,23 +32,11 @@ interface Props {
 interface State {}
 
 export default class ChromeExpanded extends PureComponent<Props, State> {
-  componentDidMount() {
-    const { container } = this.refs;
-    if (container instanceof HTMLElement) {
-      // Prevent any keyboard events from bubbling outside of the editor chrome.
-      // This can't be done using React's onFoo props because those use delegation,
-      // which will be "too late" to be able to effectively stop propagation.
-      container.addEventListener('keydown', this.stopPropagation);
-      container.addEventListener('keyup', this.stopPropagation);
-      container.addEventListener('keypress', this.stopPropagation);
-    }
-  }
-
   render() {
     const { props } = this;
 
     return (
-      <div className={styles.container} data-editor-chrome ref='container'>
+      <div className={styles.container} data-editor-chrome>
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
@@ -121,9 +109,5 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     if (onSave) {
       onSave();
     }
-  }
-
-  private stopPropagation(event: KeyboardEvent) {
-    event.stopPropagation();
   }
 };

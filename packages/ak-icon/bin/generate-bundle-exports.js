@@ -10,7 +10,6 @@ const tempFolder = `../src/${tmpFolderName}/`;
 
 const pathToExport = p => iconNameToComponentName(pathToDashed(fileToScope(p, tempFolder)));
 
-
 const allIconPaths = getAllIconsPaths();
 /* eslint-disable no-console */
 console.log('// NOTE: This file is generated from the glyphs found inside this Component');

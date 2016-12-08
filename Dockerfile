@@ -41,21 +41,6 @@ RUN wget -q https://www.browserstack.com/browserstack-local/BrowserStackLocal-li
 &&  rm BrowserStackLocal-linux-x64.zip
 #### </browserstack>
 
-#### <ruby>
-# Copied from https://github.com/andrius/alpine-ruby/blob/master/Dockerfile
-# required until we switch atlaskit-registry from jekyll to metalsmith
-RUN echo "Installing Ruby & bundler" \
-&& apk --no-cache add \
-  ruby \
-  ruby-dev \
-  ruby-bundler \
-  libffi-dev \
-&& gem install ffi --no-document
-
-ENV NOKOGIRI_USE_SYSTEM_LIBRARIES=1
-RUN bundle config build.nokogiri --use-system-libraries
-#### </ruby>
-
 #### <node>
 # Copied from https://github.com/matriphe/docker-alpine-node/blob/master/Dockerfile
 ENV TIMEZONE Australia/Sydney

@@ -4,7 +4,6 @@ const karmaConf = require('../base');
 const assignPattern = require('../assignPattern');
 const setUpEnzyme = require('../setUpEnzyme');
 
-
 module.exports = (config) => {
   karmaConf(config);
   setUpEnzyme(config);

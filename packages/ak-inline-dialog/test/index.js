@@ -9,7 +9,6 @@ import { Component } from 'skatejs';
 import AkInlineDialog, { events } from '../src';
 import { name } from '../package.json';
 
-
 const { activate: activateBlanketEvent } = blanketEvents;
 const { afterOpen: afterOpenEvent, afterClose: afterCloseEvent } = events;
 chai.use(chaiAsPromised);

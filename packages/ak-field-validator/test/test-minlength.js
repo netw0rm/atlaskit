@@ -10,7 +10,6 @@ chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();
 
-
 describe.skip('ak-field-validator-minlength', () => {
   describe('exports', () => {
     it('should export a base component', () => {

@@ -51,8 +51,7 @@ setAddon({
     ));
   },
 
-  addCodeExampleStory(storyName, storyFn, options) {
-    console.log('options.scripts', options.scripts);
+  addCodeExampleStory(storyName, storyFn, options = {}) {
     this.add(storyName, context => (
       <CodeExampleStory
         scripts={options.scripts}

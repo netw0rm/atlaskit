@@ -34,8 +34,7 @@
   "devDependencies": {
     "ak-editor-test": "*",
     "ak-tabs": "*",
-    "akutil-common-test": "*",
-    "akutil-react": "*"
+    "akutil-common-test": "*"
   },
   "repository": {
     "type": "git",

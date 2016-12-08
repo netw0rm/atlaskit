@@ -24,7 +24,6 @@
     "ak-editor-bitbucket": "*",
     "ak-editor-test": "*",
     "ak-tabs": "*",
-    "akutil-react": "*",
     "highlight.js": "^9.6.0"
   },
   "repository": {

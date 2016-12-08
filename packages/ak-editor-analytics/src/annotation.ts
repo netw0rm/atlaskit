@@ -38,7 +38,6 @@ export default function analytics(name: string){
     }
 
     return {
-      // TS 2.1.3 fixes "error TS1136: Property assignment expected" with spread
       ...descriptor,
       
       value() {

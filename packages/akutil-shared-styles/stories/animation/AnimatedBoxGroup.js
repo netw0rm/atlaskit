@@ -1,14 +1,11 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import storyStyles from './animation-story.less';
 import AnimatedBox from './AnimatedBox';
 
-
-const { Component } = React;
-
 /* This component simply renders three AnimatedBoxes with a button underneath
    to run the animationClass of each at the same time */
-class AnimatedBoxGroup extends Component {
+class AnimatedBoxGroup extends PureComponent {
   constructor(props) {
     super(props);
     this.clickAll = this.clickAll.bind(this);

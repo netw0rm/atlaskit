@@ -10,7 +10,6 @@ import events from '../internal/events';
 import { getTimeLabel } from '../util/datetime';
 import shadowStyles from './pf-profilecard-shadow.less';
 
-
 const styles = shadowStyles.locals;
 
 const PRESENCE_ATTRIBUTE_ENUM = {

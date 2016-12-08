@@ -29,7 +29,7 @@ export default function interActiveCard(dependencies) {
     Sydney: 'Sydney, Australia',
   };
 
-  class ProfileCardInteractive extends React.Component {
+  class ProfileCardInteractive extends React.PureComponent {
     constructor(props) {
       super(props);
       this.state = {

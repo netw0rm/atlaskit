@@ -4,7 +4,6 @@ import chaiAsPromised from 'chai-as-promised';
 
 import * as lessVars from '../src';
 
-
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.should();

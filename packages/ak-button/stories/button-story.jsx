@@ -1,24 +1,17 @@
 import { storiesOf, action } from '@kadira/storybook';
-import reactify from 'akutil-react';
+
 import React from 'react';
-import CalendarIcon from 'ak-icon/glyph/confluence/calendar';
-import PageIcon from 'ak-icon/glyph/confluence/page';
-import QuestionIcon from 'ak-icon/glyph/question';
-import ExpandIcon from 'ak-icon/glyph/expand';
-import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
-import OpenIcon from 'ak-icon/glyph/editor/open';
+import Calendar from 'ak-icon/glyph/confluence/calendar';
+import Page from 'ak-icon/glyph/confluence/page';
+import Question from 'ak-icon/glyph/question';
+import Expand from 'ak-icon/glyph/expand';
+import Unlink from 'ak-icon/glyph/editor/unlink';
+import Open from 'ak-icon/glyph/editor/open';
 import { akColorN20, akColorN700 } from 'akutil-shared-styles';
 import { name } from '../package.json';
 
 import AkButton from '../src';
 import ButtonBuilderExample from './button-builder-example';
-
-const Calendar = reactify(CalendarIcon);
-const Question = reactify(QuestionIcon);
-const Page = reactify(PageIcon);
-const Expand = reactify(ExpandIcon);
-const Unlink = reactify(UnlinkIcon);
-const Open = reactify(OpenIcon);
 
 const css = `
   .container {
@@ -163,7 +156,7 @@ const buildBackgroundStory = () => {
 
 const buildStory = props => (
   () => (
-    <div>
+    <div style={{ padding: '10px' }}>
       <style>{css}</style>
       <style>{'.sample { background-color: white }'}</style>
       <div className="container">

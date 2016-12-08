@@ -1,6 +1,6 @@
 {
   "name": "ak-button-group",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "A React component that groups related buttons",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

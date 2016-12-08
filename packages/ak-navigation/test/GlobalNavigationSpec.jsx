@@ -7,9 +7,9 @@ import GlobalNavigation from '../src/components/js/GlobalNavigation';
 import Spacer from '../src/components/js/Spacer';
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme);
+chai.use(chaiEnzyme());
 chai.should();
-const expect = chai.expect; // eslint-disable-line no-unused-vars
+const expect = chai.expect;
 
 describe('<GlobalNavigation />', () => {
   describe('children', () => {
@@ -21,6 +21,9 @@ describe('<GlobalNavigation />', () => {
     it('width prop is reflected directly on <Spacer />', () => {
       expect(shallow(<GlobalNavigation width={500} />).find(Spacer).props().width).to.equal(500);
       expect(shallow(<GlobalNavigation width={200} />).find(Spacer).props().width).to.equal(200);
+    });
+    it('primaryIcon prop is rendered', () => {
+      expect(shallow(<GlobalNavigation primaryIcon={<img className="PRIMARY_ICON" alt="foo" />} />)).to.have.descendants('.PRIMARY_ICON');
     });
   });
 });

@@ -1,14 +1,12 @@
 import reactify from 'akutil-react';
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import AkInlineDialog from '../src/index';
 import styles from '../src/shadow.less';
 
-
-const { Component } = React;
 const Dialog = reactify(AkInlineDialog);
 
-class DialogWithInput extends Component {
+class DialogWithInput extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

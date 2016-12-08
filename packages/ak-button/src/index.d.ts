@@ -5,9 +5,9 @@ interface Props {
   type?: 'button' | 'submit';
   href?: string;
   target?: string;
-  disabled?: boolean;
+  isDisabled?: boolean;
   spacing?: 'default' | 'compact' | 'none';
-  selected?: boolean;
+  isSelected?: boolean;
   theme?: 'default' | 'dark';
   iconBefore?: ReactElement<any>;
   iconAfter?: ReactElement<any>;

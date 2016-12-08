@@ -9,7 +9,6 @@ import { name } from '../package.json';
 import { events as dropdownEvents } from '../src';
 import Item from '../src/index.item';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;

@@ -41,7 +41,7 @@ export default class Editor extends PureComponent<Props, State> {
   clear(): void {
     const { pm } = this.state;
     if (pm) {
-      pm.tr.delete(0, pm.doc.content.size).apply();
+      pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
     }
   }
 
@@ -67,6 +67,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
+    const { pm } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
 
@@ -78,7 +79,9 @@ export default class Editor extends PureComponent<Props, State> {
         onCancel={handleCancel}
         onSave={handleSave}
         placeholder={this.props.placeholder}
-        pm={this.state.pm}
+        pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
+        pluginStateLists={pm && ListsPlugin.get(pm)}
+        pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
       />
     );
   }
@@ -118,7 +121,7 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       if (context) {
-        BlockTypePlugin.get(pm).changeContext(context);
+        BlockTypePlugin.get(pm)!.changeContext(context);
       }
 
       pm.addKeymap(buildKeymap(pm.schema));

@@ -10,10 +10,9 @@ import IconContainer from './templates/LeftSlotContainer';
 import DefaultItemContainer from './templates/DefaultSlotContainer';
 import supportsVoiceOver from './internal/supportsVoiceOver';
 
-
 export default define('ak-dropdown-item-radio',
   DefaultItem.extend({
-    props: Object.assign({
+    props: {
       /**
        * @description checked state of the item.
        * @memberof Dropdown
@@ -27,7 +26,8 @@ export default define('ak-dropdown-item-radio',
       checked: prop.boolean({
         attribute: true,
       }),
-    }, BaseProps),
+      ...BaseProps,
+    },
     render(elem) {
       const classes = { [shadowItemStyles.locals.activeWithIcon]: elem.checked };
       return (

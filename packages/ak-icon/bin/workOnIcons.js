@@ -8,7 +8,6 @@ const defaultSvgo = require('./svgo/transformations/default');
 const customSvgo = require('./svgo/transformations/custom');
 const { maxWidth, maxHeight, fileEnding } = require('./constants');
 
-
 /**
 * Generates a method that processes list of icons
 *

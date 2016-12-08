@@ -96,7 +96,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      pm.setTextSelection(pm.doc.refs.pos);
+      pm.setTextSelection(pm.doc.refs['pos']);
 
       expect(spy).to.have.been.callCount(2);
     });
@@ -134,7 +134,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      pm.setTextSelection(pm.doc.refs.start);
+      pm.setTextSelection(pm.doc.refs['start']);
 
       expect(spy).to.have.been.callCount(1);
     });
@@ -144,7 +144,7 @@ describe('ak-editor-plugin-hyperlink', () => {
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      pm.setTextSelection(pm.doc.refs.end);
+      pm.setTextSelection(pm.doc.refs['end']);
 
       expect(spy).to.have.been.callCount(1);
     });

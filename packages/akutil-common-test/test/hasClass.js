@@ -3,7 +3,6 @@ import sinonChai from 'sinon-chai';
 
 import { hasClass } from '../src';
 
-
 chai.should();
 chai.use(sinonChai);
 

@@ -2,7 +2,6 @@ import schema from '../schema';
 import parseHtml from './parse-xhtml';
 import { Fragment, MarkType, Mark, Node as PMNode, TextNode } from 'ak-editor-prosemirror';
 
-
 const convertedNodes = new WeakMap();
 
 export interface Converter {
@@ -179,6 +178,12 @@ const converters = <Converter[]> [
         case 'U':
           return content ? addMarks(content, [schema.marks.u.create()]) : null;
         // Nodes
+        case 'BLOCKQUOTE':
+          return schema.nodes.blockquote.createChecked({},
+            schema.nodes.blockquote.validContent(content)
+              ? content
+              : ensureBlocks(content)
+          );
         case 'SPAN':
           return addMarks(content, marksFromStyle(node.style));
         case 'H1':
@@ -198,10 +203,11 @@ const converters = <Converter[]> [
         case 'OL':
           return schema.nodes.ordered_list.createChecked({}, content);
         case 'LI':
-          const compatibleContent = schema.nodes.list_item.validContent(content)
-            ? content
-            : ensureBlocks(content);
-          return schema.nodes.list_item.createChecked({}, compatibleContent);
+          return schema.nodes.list_item.createChecked({},
+            schema.nodes.list_item.validContent(content)
+              ? content
+              : ensureBlocks(content)
+          );
         case 'P':
           return schema.nodes.paragraph.createChecked({}, content);
       }

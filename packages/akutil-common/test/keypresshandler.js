@@ -6,7 +6,6 @@ import { name } from '../package.json';
 import KeyPressHandler,
       { KeyInvalidError, CallbackInvalidError } from '../src/index.KeyPressHandler';
 
-
 describe(name, () => {
   describe('KeyPressHandler', () => {
     let keyPressEvent;

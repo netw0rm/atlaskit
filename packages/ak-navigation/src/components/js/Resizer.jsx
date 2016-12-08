@@ -21,12 +21,8 @@ export default class Resizer extends Component {
     this.state = {
       startScreenX: 0,
     };
-
-    this.mouseDownHandler = this.mouseDownHandler.bind(this);
-    this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
-    this.mouseUpHandler = this.mouseUpHandler.bind(this);
   }
-  mouseDownHandler(e) {
+  mouseDownHandler = (e) => {
     this.props.onResizeStart();
     this.setState({ startScreenX: e.screenX });
     document.addEventListener('mousemove', this.mouseMoveHandler);
@@ -34,13 +30,13 @@ export default class Resizer extends Component {
     e.preventDefault();
   }
 
-  mouseUpHandler(e) {
+  mouseUpHandler = (e) => {
     this.props.onResizeEnd(e.screenX - this.state.startScreenX);
     document.removeEventListener('mousemove', this.mouseMoveHandler);
     document.removeEventListener('mouseup', this.mouseUpHandler);
   }
 
-  mouseMoveHandler(e) {
+  mouseMoveHandler = (e) => {
     this.props.onResize(e.screenX - this.state.startScreenX);
   }
 

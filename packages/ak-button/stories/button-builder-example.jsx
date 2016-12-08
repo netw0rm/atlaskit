@@ -4,13 +4,12 @@ import uid from 'uid';
 
 import AkButton from '../src';
 
-
-class ButtonBuilderExample extends React.Component {
+class ButtonBuilderExample extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      disabled: false,
-      selected: false,
+      isDisabled: false,
+      isSelected: false,
       spacing: 'default',
       appearance: 'default',
       href: undefined,
@@ -66,10 +65,10 @@ class ButtonBuilderExample extends React.Component {
 
   render() {
     const props = {
-      disabled: this.state.disabled,
-      selected: this.state.selected,
+      isDisabled: this.state.isDisabled,
+      isSelected: this.state.isSelected,
       appearance: this.state.appearance,
-      onclick: action('clicking the WebComponent'),
+      onClick: action('clicking the Component'),
       spacing: this.state.spacing,
       href: this.state.href,
       target: this.state.target,
@@ -101,8 +100,8 @@ class ButtonBuilderExample extends React.Component {
         <form>
           <strong>Boolean Attributes</strong>
           <br />
-          {this.createBooleanCheckboxAttribute('disabled')}
-          {this.createBooleanCheckboxAttribute('selected')}
+          {this.createBooleanCheckboxAttribute('isDisabled')}
+          {this.createBooleanCheckboxAttribute('isSelected')}
         </form>
         <br />
         <form>

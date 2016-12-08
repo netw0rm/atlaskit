@@ -4,7 +4,6 @@ import classNames from 'classnames';
 
 import shadowStyles from './slot-component.less';
 
-
 export default define('x-slot-component', {
   render() {
     return (<div>

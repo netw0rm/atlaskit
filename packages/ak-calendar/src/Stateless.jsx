@@ -1,7 +1,7 @@
 import { Calendar } from 'calendar-base';
-import { ArrowleftIcon, ArrowrightIcon } from 'ak-icon';
+import ArrowleftIcon from 'ak-icon/glyph/arrowleft';
+import ArrowrightIcon from 'ak-icon/glyph/arrowright';
 import keycode from 'keycode';
-import reactify from 'akutil-react';
 import React, { PureComponent, PropTypes } from 'react';
 
 import {
@@ -19,9 +19,6 @@ const arrowKeys = [keycode('down'), keycode('left'), keycode('right'), keycode('
 const css = styles();
 const daysPerWeek = 7;
 const monthsPerYear = 12;
-
-const ReactArrowleftIcon = reactify(ArrowleftIcon);
-const ReactArrowrightIcon = reactify(ArrowrightIcon);
 
 export default class extends PureComponent {
   static propTypes = {
@@ -245,7 +242,7 @@ export default class extends PureComponent {
       calendar.push(
         ...this.calendar.getCalendar(year, month)
           .slice(sliceStart, sliceStart + daysPerWeek)
-          .map(e => Object.assign({}, e, { siblingMonth: true }))
+          .map(e => ({ ...e, siblingMonth: true }))
       );
     }
 
@@ -299,7 +296,7 @@ export default class extends PureComponent {
           <div {...css.heading}>
             <div onClick={this.handleClickPrev} aria-hidden="true">
               <Btn>
-                <ReactArrowleftIcon />
+                <ArrowleftIcon />
               </Btn>
             </div>
             <div {...css.monthAndYear}>
@@ -307,7 +304,7 @@ export default class extends PureComponent {
             </div>
             <div onClick={this.handleClickNext} aria-hidden="true">
               <Btn>
-                <ReactArrowrightIcon />
+                <ArrowrightIcon />
               </Btn>
             </div>
           </div>

@@ -5,7 +5,6 @@ import styles from 'style!./styles.less';
 import { NotImplementedError } from './internal/exceptions';
 import size from './internal/size';
 
-
 /**
  * @description Icon interface. All icons follow this structure.
  * @class Icon
@@ -70,10 +69,10 @@ export default class Icon extends PureComponent {
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
-        className={classnames([styles.icon, styles[this.props.size]])}
+        className={classnames([styles.iconBody, styles[this.props.size]])}
         onClick={this.props.onClick}
       >
-        <span className={styles.content}>
+        <span className={styles.iconContent}>
           <Glyph role="img" label={this.props.label} />
         </span>
       </div>

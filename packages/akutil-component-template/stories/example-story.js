@@ -6,7 +6,6 @@ import WebComponent, { events } from '../src';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
 
-
 const Component = reactify(WebComponent);
 
 storiesOf(name, module)

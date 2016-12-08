@@ -4,10 +4,8 @@ import sinonChai from 'sinon-chai';
 
 import { getShadowRoot, waitUntil } from '../src';
 
-
 chai.should();
 chai.use(sinonChai);
-
 
 describe.skip('getShadowRoot', () => {
   let component;

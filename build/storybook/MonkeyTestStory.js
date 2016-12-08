@@ -1,7 +1,7 @@
 import React from 'react';
 import gremlins from '@atlassian/gremlins.js/src/main';
 
-class MonkeyTestStory extends React.Component {
+class MonkeyTestStory extends React.PureComponent {
   componentDidMount() {
     this.horde = gremlins.createHorde();
     this.horde.unleash();

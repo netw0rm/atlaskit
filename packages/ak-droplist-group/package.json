@@ -1,0 +1,35 @@
+{
+  "name": "ak-droplist-group",
+  "version": "1.0.2",
+  "description": "ak-droplist-group component",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.jsx",
+  "scripts": {
+    "prepublish": "cd ../.. && npm run prepublish/single ak-droplist-group"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "akutil-shared-styles": "^37.0.0",
+    "babel-runtime": "^6.11.6",
+    "classnames": "^2.2.5"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "ak-droplist-item": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^15.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
+}

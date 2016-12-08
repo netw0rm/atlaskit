@@ -3,25 +3,52 @@
 @import '../../shared-variables.less';
 
 @icon-size: @ak-grid-size * 2.5;
-@icon-open-padding: 0 (@ak-grid-size * 3) 0 (@ak-grid-size * 1.5);
-@icon-closed-padding: (@container-closed-width - @ak-grid-size * 4 - @icon-size) / 2;
+@icon-offset-left: @ak-grid-size * 3.75;
+@icon-open-padding: 0 (@ak-grid-size * 3) 0 (@icon-offset-left - @ak-grid-size * 2);
+@icon-closed-horizontal-padding: (@container-closed-width - @ak-grid-size * 4 - @icon-size) / 2;
+@icon-closed-padding: 0 @icon-closed-horizontal-padding 0 @icon-closed-horizontal-padding;
 
-.containerItem {
+.containerItemOuter {
   width: 100%;
   height: @ak-grid-size * 5;
-  padding: @ak-grid-size;
   box-sizing: border-box;
+  text-overflow: ellipsis;
+
+  .isSelected {
+    padding: 0;
+  }
+
+  &:hover {
+    padding: @ak-grid-size/4 0;
+
+    &.isSelected {
+      padding: 0;
+    }
+  }
+}
+
+.containerItemInner {
+  height: 100%;
+  width: 100%;
   border-radius: 3px;
   display: flex;
-  text-overflow: ellipsis;
-  &:hover {
+  align-items: center;
+  padding: 0 @ak-grid-size;
+  box-sizing: border-box;
+
+  &:hover, .isSelected & {
     background: @ak-color-N20A;
   }
+}
+
+.isSelected {
+  color: @ak-color-B400;
 }
 
 .icon {
   transition: padding 200ms;
   padding: @icon-open-padding;
+  display: flex;
   & > * {
     width: @icon-size;
     height: @icon-size;
@@ -36,14 +63,9 @@
 }
 
 // Container queries
-.open {
-  .icon {
-    padding: 0 @icon-open-padding 0 @icon-open-padding;
-  }
-}
 .closed {
   .icon {
-    padding: 0 @icon-closed-padding 0 @icon-closed-padding;
+    padding: @icon-closed-padding;
   }
 
   .text {

@@ -6,7 +6,6 @@ import { events as navigationEvents } from 'ak-navigation';
 
 import shadowStyles from './shadow.less';
 
-
 const {
   resizeStart: resizeStartEvent,
   resizeEnd: resizeEndEvent,

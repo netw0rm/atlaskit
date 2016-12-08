@@ -27,17 +27,23 @@ export default (options: Options) => {
       options.plugin,
       SyncPlugin,
     ]
-  });
+  }) as ProseMirrorWithRefs;
+
+  const { refs } = pm.doc;
 
   // Collapsed selection.
-  if ('<>' in pm.doc.refs) {
-    pm.setTextSelection(pm.doc.refs['<>']);
+  if ('<>' in refs) {
+    pm.setTextSelection(refs['<>']);
   // Expanded selection
-  } else if ('<' in pm.doc.refs || '>' in pm.doc.refs) {
-    if ('<' in pm.doc.refs === false) throw new Error('A `<` ref must complement a `>` ref.')
-    if ('>' in pm.doc.refs === false) throw new Error('A `>` ref must complement a `<` ref.')
-    pm.setTextSelection(pm.doc.refs['<'], pm.doc.refs['>'])
+  } else if ('<' in refs || '>' in refs) {
+    if ('<' in refs === false) throw new Error('A `<` ref must complement a `>` ref.')
+    if ('>' in refs === false) throw new Error('A `>` ref must complement a `<` ref.')
+    pm.setTextSelection(refs['<'], refs['>'])
   }
 
   return { pm, plugin: options.plugin.get(pm) };
 };
+
+interface ProseMirrorWithRefs extends ProseMirror {
+  doc: RefsNode;
+}

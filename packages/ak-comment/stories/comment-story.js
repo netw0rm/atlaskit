@@ -14,7 +14,6 @@ import AkComment from '../src/index';
 import { name } from '../package.json';
 import styles from '../src/shadow.less';
 
-
 const Comment = reactify(AkComment);
 const Avatar = reactify(AkAvatar);
 const Button = reactify(AkButton);

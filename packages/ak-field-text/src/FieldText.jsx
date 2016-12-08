@@ -86,7 +86,7 @@ export default class FieldText extends PureComponent {
      * @instance
      * @type {Function}
      */
-    onChange: PropTypes.func.required,
+    onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {

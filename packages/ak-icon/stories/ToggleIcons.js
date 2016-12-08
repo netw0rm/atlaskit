@@ -4,8 +4,7 @@ import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 
 import styles from 'style!./styles.less';
 
-
-class ToggleIcons extends React.Component {
+class ToggleIcons extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {

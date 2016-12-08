@@ -8,7 +8,6 @@ import React from 'react';
 import ReactAkButtonGroup from '../src';
 import { name } from '../package.json';
 
-const ReactIcon = reactify(CharlieIcon);
 const ReactDropdown = reactify(Dropdown);
 
 storiesOf(name, module)
@@ -71,7 +70,7 @@ storiesOf(name, module)
     <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
       <ReactAkButton>Edit</ReactAkButton>
       <ReactAkButton>
-        <ReactIcon />
+        <CharlieIcon label="button with icon" />
       </ReactAkButton>
     </ReactAkButtonGroup>
   ))

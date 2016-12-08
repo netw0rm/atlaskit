@@ -12,7 +12,6 @@ import {
   events as dropdownEvents,
 } from '../src';
 
-
 const { trigger: triggerEvents } = dropdownEvents;
 
 chai.use(chaiAsPromised);

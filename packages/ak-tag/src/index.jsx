@@ -133,7 +133,7 @@ export default class Tag extends PureComponent {
 
   handleRemovalCompletion = () => {
     this.setState({ isRemoving: false, isRemoved: true });
-    this.props.onAfterRemoveAction();
+    this.props.onAfterRemoveAction(this.props.text);
   }
 
   render() {

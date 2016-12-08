@@ -1,17 +1,12 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
+import Breadcrumbs, { BreadcrumbsItem } from './Breadcrumbs';
 
-import styles from 'style!./styles.less';
-import BreadcrumbsItem from './BreadcrumbsItem';
+export {
+  Breadcrumbs as AkBreadcrumbs,
+  BreadcrumbsItem as AkBreadcrumbsItem,
+};
 
-
-/**
- * @description Breadcrumbs React component.
- * @class Breadcrumbs
- * @example @js import Breadcrumbs from 'ak-breadcrumbs';
- * ReactDOM.render(<Breadcrumbs />);
- */
-/* eslint-disable react/prefer-stateless-function */
-export default class Breadcrumbs extends PureComponent {
+export default class extends PureComponent {
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.node,
@@ -19,13 +14,22 @@ export default class Breadcrumbs extends PureComponent {
     ]),
   }
 
-  render() {
-    return (
-      <div className={styles.container}>
-        {this.props.children}
-      </div>
-    );
+  constructor() {
+    super();
+    this.state = {
+      isExpanded: false,
+    };
   }
-}
 
-export { BreadcrumbsItem as AkBreadcrumbsItem };
+  expand = () => this.setState({ isExpanded: true });
+
+  render = () => (
+    <Breadcrumbs
+      {...this.props}
+      isExpanded={this.state.isExpanded}
+      onExpand={this.expand}
+    >
+      {this.props.children}
+    </Breadcrumbs>
+  );
+}

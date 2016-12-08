@@ -4,8 +4,7 @@ import React from 'react';
 
 import styles from './styles.less';
 
-
-class AnimationDemo extends React.Component {
+class AnimationDemo extends React.PureComponent {
   constructor(props) {
     super(props);
     this.toggleAnimation = this.toggleAnimation.bind(this);

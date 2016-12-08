@@ -1,10 +1,10 @@
 {
   "name": "ak-tag-group",
-  "version": "4.0.4",
+  "version": "5.0.0",
   "description": "ak-tag-group webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-tag-group"
   },
@@ -13,22 +13,18 @@
   ],
   "dependencies": {
     "akutil-common": "^5.0.0",
-    "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5",
-    "skatejs": "^4.0.6"
+    "classnames": "^2.2.5"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-tag": "^4.0.0",
-    "akutil-common-test": "*",
-    "akutil-react": "*",
-    "lodash.sample": "^4.2.1",
+    "ak-tag": "^6.0.1",
     "lodash.uniq": "^4.5.0"
   },
   "peerDependencies": {
-    "ak-tag": ">=2.x"
+    "ak-tag": "^6.0.1",
+    "react": "^15.3.2"
   },
   "repository": {
     "type": "git",

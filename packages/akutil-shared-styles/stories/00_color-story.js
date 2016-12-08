@@ -16,7 +16,6 @@ import Prism, {
 } from '../test/_Prism';
 import Blocks from './color/Blocks';
 
-
 const prism = new Prism(lessVars);
 const neutrals = Object.entries(prism.getColorsBySwatch(SWATCH_NEUTRAL));
 const tintFilter = ([colorName]) => Prism.isTint(colorName);

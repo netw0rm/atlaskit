@@ -17,19 +17,19 @@ const ReactValidatorRequired = reactify(ValidatorRequired);
 // Custom validator
 const ValidatorStartsWith = define('x-validator-starts-with', class extends ValidatorBase {
   static get props() {
-    return Object.assign({}, super.props, {
+    return {
+      ...super.props,
       start: {
         attribute: true,
         default: '',
       },
-    });
+    };
   }
   validatorFunction(value) {
     return value.startsWith(this.start);
   }
 });
 const ReactValidatorStartsWith = reactify(ValidatorStartsWith);
-
 
 storiesOf(name, module)
   .add('pre-defined validators (invalid)', () => (

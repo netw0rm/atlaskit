@@ -1,12 +1,19 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
-export default class Span extends Component {
-  static get propTypes() {
-    return {
-      disabled: PropTypes.bool,
-      className: PropTypes.string,
-    };
+export default class Span extends PureComponent {
+  static propTypes = {
+    isDisabled: PropTypes.bool,
+    className: PropTypes.string,
+    children: PropTypes.node,
+  }
+
+  static defaultProps = {
+    isDisabled: false,
+  }
+
+  onMouseDown = (e) => {
+    e.preventDefault();
   }
 
   render() {
@@ -14,9 +21,9 @@ export default class Span extends Component {
 
     return (
       <span
-        disabled={props.disabled}
+        disabled={props.isDisabled}
         className={props.className}
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={this.onMouseDown}
       >
         {props.children}
       </span>

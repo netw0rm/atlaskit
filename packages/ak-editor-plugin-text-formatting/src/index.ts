@@ -1,5 +1,6 @@
 import {
   commands,
+  Mark,
   MarkType,
   Plugin,
   ProseMirror,
@@ -8,7 +9,10 @@ import {
 } from 'ak-editor-prosemirror';
 import {
   EmMarkType,
+  MonoMarkType,
+  StrikeMarkType,
   StrongMarkType,
+  SubSupMarkType,
   UnderlineMarkType
 } from 'ak-editor-schema';
 
@@ -24,12 +28,24 @@ export class TextFormattingState {
   emActive = false;
   emDisabled = false;
   emHidden = false;
-  strongActive = false;
-  strongDisabled = false;
-  strongHidden = false;
+  monoActive = false;
+  monoDisabled = false;
+  monoHidden = false;
   underlineActive = false;
   underlineDisabled = false;
   underlineHidden = false;
+  strikeActive = false;
+  strikeDisabled = false;
+  strikeHidden = false;
+  strongActive = false;
+  strongDisabled = false;
+  strongHidden = false;
+  superscriptActive = false;
+  superscriptDisabled = false;
+  superscriptHidden = false;
+  subscriptActive = false;
+  subscriptDisabled = false;
+  subscriptHidden = false;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -37,6 +53,10 @@ export class TextFormattingState {
     this.emHidden = !pm.schema.marks.em;
     this.strongHidden = !pm.schema.marks.strong;
     this.underlineHidden = !pm.schema.marks.u;
+    this.monoHidden = !pm.schema.marks.mono;
+    this.superscriptHidden = !pm.schema.marks.subsup;
+    this.subscriptHidden = !pm.schema.marks.subsup;
+    this.strikeHidden = !pm.schema.marks.strike;
 
     pm.updateScheduler([
       pm.on.selectionChange,
@@ -52,10 +72,48 @@ export class TextFormattingState {
     }
   }
 
+  toggleMono() {
+    const { mono } = this.pm.schema.marks;
+    if (mono) {
+      this.toggleMark(mono);
+    }
+  }
+
+  toggleStrike() {
+    const { strike } = this.pm.schema.marks;
+    if (strike) {
+      this.toggleMark(strike);
+    }
+  }
+
   toggleStrong() {
     const { strong } = this.pm.schema.marks;
     if (strong) {
       this.toggleMark(strong);
+    }
+  }
+
+  toggleSuperscript() {
+    const { subsup } = this.pm.schema.marks;
+    if (subsup) {
+      if (this.subscriptActive) {
+        // If subscript is enabled, turn it off first.
+        this.toggleMark(subsup);
+      }
+
+      this.toggleMark(subsup, { type: 'sup' });
+    }
+  }
+
+  toggleSubscript() {
+    const { subsup } = this.pm.schema.marks;
+    if (subsup) {
+      if (this.superscriptActive) {
+        // If superscript is enabled, turn it off first.
+        this.toggleMark(subsup);
+      }
+
+      this.toggleMark(subsup, { type: 'sub' });
     }
   }
 
@@ -77,11 +135,11 @@ export class TextFormattingState {
 
   private update() {
     const { pm } = this;
-    const { em, strong, u } = pm.schema.marks;
+    const { em, mono, strike, strong, subsup, u } = pm.schema.marks;
     let dirty = false;
 
     if (em) {
-      const newEmActive = this.markActive(em);
+      const newEmActive = this.anyMarkActive(em);
       if (newEmActive !== this.emActive) {
         this.emActive = newEmActive;
         dirty = true;
@@ -94,8 +152,36 @@ export class TextFormattingState {
       }
     }
 
+    if (mono) {
+      const newMonoActive = this.anyMarkActive(mono);
+      if (newMonoActive !== this.monoActive) {
+        this.monoActive = newMonoActive;
+        dirty = true;
+      }
+
+      const newMonoDisabled = !commands.toggleMark(mono)(this.pm, false);
+      if (newMonoDisabled !== this.monoDisabled) {
+        this.monoDisabled = newMonoDisabled;
+        dirty = true;
+      }
+    }
+
+    if (strike) {
+      const newStrikeActive = this.anyMarkActive(strike);
+      if (newStrikeActive !== this.strikeActive) {
+        this.strikeActive = newStrikeActive;
+        dirty = true;
+      }
+
+      const newStrikeDisabled = !commands.toggleMark(strike)(this.pm, false);
+      if (newStrikeDisabled !== this.strikeDisabled) {
+        this.strikeDisabled = newStrikeDisabled;
+        dirty = true;
+      }
+    }
+
     if (strong) {
-      const newStrongActive = this.markActive(strong);
+      const newStrongActive = this.anyMarkActive(strong);
       if (newStrongActive !== this.strongActive) {
         this.strongActive = newStrongActive;
         dirty = true;
@@ -108,8 +194,37 @@ export class TextFormattingState {
       }
     }
 
+    if (subsup) {
+      const subMark = subsup.create({ type: 'sub' });
+      const supMark = subsup.create({ type: 'sup' });
+
+      const newSubscriptActive = this.markActive(subMark);
+      if (newSubscriptActive !== this.subscriptActive) {
+        this.subscriptActive = newSubscriptActive;
+        dirty = true;
+      }
+
+      const newSubscriptDisabled = !commands.toggleMark(subsup, { type: 'sub' })(this.pm, false);
+      if (newSubscriptDisabled !== this.subscriptDisabled) {
+        this.subscriptDisabled = newSubscriptDisabled;
+        dirty = true;
+      }
+
+      const newSuperscriptActive = this.markActive(supMark);
+      if (newSuperscriptActive !== this.superscriptActive) {
+        this.superscriptActive = newSuperscriptActive;
+        dirty = true;
+      }
+
+      const newSuperscriptDisabled = !commands.toggleMark(subsup, { type: 'sup' })(this.pm, false);
+      if (newSuperscriptDisabled !== this.superscriptDisabled) {
+        this.superscriptDisabled = newSuperscriptDisabled;
+        dirty = true;
+      }
+    }
+
     if (u) {
-      const newUnderlineActive = this.markActive(u);
+      const newUnderlineActive = this.anyMarkActive(u);
       if (newUnderlineActive !== this.underlineActive) {
         this.underlineActive = newUnderlineActive;
         dirty = true;
@@ -127,18 +242,42 @@ export class TextFormattingState {
     }
   }
 
-  private markActive(markType: MarkType): boolean {
+  /**
+   * Determine if a mark of a specific type exists anywhere in the selection.
+   */
+  private anyMarkActive(markType: MarkType): boolean {
     const { pm } = this;
     const { from, to, empty } = pm.selection;
     if (empty) {
-      return Boolean(markType.isInSet(pm.activeMarks()));
+      return !!markType.isInSet(pm.activeMarks());
     }
     return pm.doc.rangeHasMark(from, to, markType);
   }
 
-  private toggleMark(markType: MarkType) {
+  /**
+   * Determine if a mark (with specific attribute values) exists anywhere in the selection.
+   */
+  private markActive(mark: Mark): boolean {
+    const { pm } = this;
+    const { from, to, empty } = pm.selection;
+
+    // When the selection is empty, only the active marks apply.
+    if (empty) {
+      return !!mark.isInSet(pm.activeMarks());
+    }
+
+    // For a non-collapsed selection, the marks on the nodes matter.
+    let found = false;
+    pm.doc.nodesBetween(from, to, node => {
+      found = found || mark.isInSet(node.marks);
+    });
+
+    return found;
+  }
+
+  private toggleMark(markType: MarkType, attrs?: any) {
     this.pm.on.interaction.dispatch();
-    commands.toggleMark(markType)(this.pm);
+    commands.toggleMark(markType, attrs)(this.pm);
   }
 }
 
@@ -149,8 +288,11 @@ export default new Plugin(TextFormattingState);
 
 interface S extends Schema {
   marks: {
-    strong?: StrongMarkType;
     em?: EmMarkType;
+    mono?: MonoMarkType;
+    strike?: StrikeMarkType;
+    strong?: StrongMarkType;
+    subsup?: SubSupMarkType;
     u?: UnderlineMarkType;
   }
 }

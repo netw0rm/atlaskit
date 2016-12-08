@@ -4,7 +4,6 @@ import classNames from 'classnames';
 
 import shadowStyles from './pf-profilecard-shadow.less';
 
-
 const styles = shadowStyles.locals;
 
 // TODO move this into ak-icon

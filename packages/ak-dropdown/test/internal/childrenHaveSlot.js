@@ -8,10 +8,8 @@ import { createTemporaryComponent, tearDownComponent } from 'akutil-common-test'
 import { name } from '../../package.json';
 import childrenHaveSlot from '../../src/internal/childrenHaveSlot';
 
-
 chai.use(chaiAsPromised);
 chai.should();
-
 
 describe.skip(name, () => {
   describe('childrenHaveSlot', () => {

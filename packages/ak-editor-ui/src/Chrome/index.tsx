@@ -1,6 +1,9 @@
 import React, { PureComponent, ReactElement } from 'react';
 import { ProseMirror } from 'ak-editor-prosemirror';
-import BlockTypePlugin from 'ak-editor-plugin-block-type';
+import { BlockTypeState } from 'ak-editor-plugin-block-type';
+import { HyperlinkState } from 'ak-editor-plugin-hyperlink';
+import { ListsState } from 'ak-editor-plugin-lists';
+import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
@@ -11,6 +14,10 @@ interface Props {
   onSave?: () => void;
   pm?: ProseMirror;
   feedbackFormUrl?: string;
+  pluginStateBlockType?: BlockTypeState;
+  pluginStateHyperlink?: HyperlinkState;
+  pluginStateLists?: ListsState;
+  pluginStateTextFormatting?: TextFormattingState;
 }
 
 interface State {
@@ -30,8 +37,11 @@ export default class Chrome extends PureComponent<Props, State> {
       ? <ChromeExpanded
           onCancel={props.onCancel}
           onSave={props.onSave}
-          pm={props.pm}
           feedbackFormUrl={props.feedbackFormUrl}
+          pluginStateBlockType={props.pluginStateBlockType}
+          pluginStateHyperlink={props.pluginStateHyperlink}
+          pluginStateLists={props.pluginStateLists}
+          pluginStateTextFormatting={props.pluginStateTextFormatting}
         >
           {props.children}
         </ChromeExpanded>

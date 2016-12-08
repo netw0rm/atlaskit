@@ -26,7 +26,6 @@ const AllAvatarSizes = props => (
   </div>
 );
 
-
 storiesOf(name, module)
   .add('A default avatar', () => (
     <div>
@@ -193,7 +192,7 @@ storiesOf(name, module)
     </div>
   ))
   .add('Avatar loaded from external source', () => {
-    class ExternalSrcAvatar extends React.Component {
+    class ExternalSrcAvatar extends React.PureComponent {
       constructor(props) {
         super(props);
         this.changeUrl = this.changeUrl.bind(this);

@@ -1816,9 +1816,9 @@
       "resolved": "https://registry.npmjs.org/cz-conventional-changelog/-/cz-conventional-changelog-1.2.0.tgz"
     },
     "cz-lerna-changelog": {
-      "version": "0.3.0",
-      "from": "cz-lerna-changelog@0.3.0",
-      "resolved": "https://registry.npmjs.org/cz-lerna-changelog/-/cz-lerna-changelog-0.3.0.tgz",
+      "version": "0.3.1",
+      "from": "cz-lerna-changelog@0.3.1",
+      "resolved": "https://registry.npmjs.org/cz-lerna-changelog/-/cz-lerna-changelog-0.3.1.tgz",
       "dependencies": {
         "cz-conventional-changelog": {
           "version": "0.0.0-semantically-released.0",

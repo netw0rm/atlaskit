@@ -66,6 +66,5 @@ const RefreshableMentionList = React.createClass({
   },
 });
 
-
 storiesOf('Mention List', module)
   .add('simple mention list', () => <RefreshableMentionList />);

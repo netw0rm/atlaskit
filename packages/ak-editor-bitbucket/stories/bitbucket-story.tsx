@@ -28,8 +28,6 @@ const imageUploader = (e: any, fn: any) => {
   }
 };
 
-declare var module: any;
-
 storiesOf('ak-editor-bitbucket', module)
   .add('Empty', () => (
     <div style={{ padding: 20 }}>

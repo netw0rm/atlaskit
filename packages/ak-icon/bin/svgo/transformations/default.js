@@ -2,7 +2,6 @@ const SVGO = require('svgo');
 
 const removeNamespacedAttributes = require('../plugins/removeNamespacedAttributes');
 
-
 module.exports = new SVGO({
   multipass: true,
   plugins: [

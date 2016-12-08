@@ -39,7 +39,8 @@ export {
 
 export {
   RemoveMarkStep,
-  ReplaceStep
+  ReplaceStep,
+  Step
 } from 'prosemirror/dist/transform';
 
 export {

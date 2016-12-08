@@ -12,7 +12,7 @@ import uniqueId from '../util/id';
 function applyPresence(mentions, presences) {
   const updatedMentions = [];
   for (let i = 0; i < mentions.length; i++) {
-    const mention = Object.assign({}, mentions[i]);
+    const mention = { ...mentions[i] };
     const presence = presences[mention.id];
     if (presence) {
       mention.presence = presence;

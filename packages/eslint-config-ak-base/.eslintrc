@@ -6,9 +6,12 @@
     "browser": true
   },
   "plugins": [
-    "react"
+    "react",
+    "prefer-object-spread"
   ],
   "rules": {
+    // http://eslint.org/docs/rules/comma-dangle
+    // Custom rules for when trailing comma's are required
     "comma-dangle": ["error", {
       "arrays": "always-multiline",
       "objects": "always-multiline",
@@ -16,18 +19,62 @@
       "exports": "always-multiline",
       "functions": "ignore"
     }],
+
+    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/extensions.md
+    // When importing files you do not need to add file extensions for the following extensions
     "import/extensions": ["error", "always", {
       "js": "never",
       "jsx": "never",
       "ts": "never",
       "tsx": "never"
     }],
-    "import/no-webpack-loader-syntax": 0,
-    "no-plusplus": 0,
+
+    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-webpack-loader-syntax.md
+    // Allow webpack loader syntax in imports.
+    "import/no-webpack-loader-syntax": "off",
+
+    // http://eslint.org/docs/rules/no-plusplus
+    // Allowing ++ on numbers
+    "no-plusplus": "off",
+
+    // http://eslint.org/docs/rules/no-param-reassign
+    // Cannot reassign function parameters but allowing modification
     "no-param-reassign": ["error", { "props": false }],
-    "react/jsx-filename-extension": 0,
-    "react/no-unknown-property": [0],
+
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-filename-extension.md
+    // Allowing jsx in files with any file extension (old components have jsx but not the extension)
+    "react/jsx-filename-extension": "off",
+
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-unknown-property.md
+    // This was turned off for wc - but should be re-enabled eventually
+    "react/no-unknown-property": ["off"],
+
+    // http://eslint.org/docs/rules/no-multiple-empty-lines
+    // Disallow more than 1 empty lines
+    "no-multiple-empty-lines": ["error", {"max": 1}],
+
+    // http://eslint.org/docs/rules/padded-blocks
+    // Enforce no padding within blocks
+    "padded-blocks": ["error", "never"],
+
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-unused-prop-types.md
+    // Adding 'skipShapeProps' as the rule has issues with correctly handling PropTypes.shape
     "react/no-unused-prop-types": ["error", { "skipShapeProps": true }],
-    "react/prefer-stateless-function": 0
+
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md
+    // Opt out of preferring stateless functions
+    "react/prefer-stateless-function": "off",
+
+    // https://github.com/bryanrsmith/eslint-plugin-prefer-object-spread
+    // Prefer spread {...} over Object.assign except for object modifications
+    "prefer-object-spread/prefer-object-spread": "error",
+
+    // http://eslint.org/docs/rules/no-restricted-properties
+    // Disabling the use of React.Component
+    "no-restricted-properties": ["error", {
+        "object": "React",
+        "property": "Component",
+        "message": "Please use PureComponent instead."
+    }]
   }
 }

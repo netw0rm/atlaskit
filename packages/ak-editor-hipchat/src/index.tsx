@@ -5,29 +5,31 @@ import keymap from './keymap';
 
 type Doc = {
   type: 'doc',
-  content: any[]
+  content?: any[]
 }
 
 interface Props {
   onSubmit?: (doc: Doc) => void
 }
 
-interface State {
-  id: string
-}
+interface State {}
 
-export default class extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { id: `ak-editor-hipchat-${instanceCount++}` };
-  }
-
+export default class Editor extends Component<Props, State> {
   componentDidMount() {
     const pm = new ProseMirror({
       place: this.refs['container'],
       doc: schema.nodes.doc.createAndFill(),
       plugins: [],
     });
+
+    const container = this.refs['container'];
+    if (container instanceof HTMLElement) {
+      const content = container.querySelector('[contenteditable]');
+      if (content instanceof HTMLElement) {
+        content.style.outline = 'none';
+        content.style.whiteSpace = 'pre-wrap';
+      }
+    }
 
     pm.addKeymap(keymap);
     pm.addKeymap(new Keymap({
@@ -40,19 +42,6 @@ export default class extends Component<Props, State> {
   }
 
   render() {
-    return <div id={this.state.id} >
-        <Styles containerId={this.state.id} />
-        <div ref="container" />
-      </div>;
+    return <div ref="container" />;
   }
 }
-
-let instanceCount = 0;
-
-const Styles = ({ containerId }: { containerId: string }) => (
-  <style>{`
-  #${containerId} [contenteditable] {
-    outline: none;
-    white-space: pre-wrap;
-  }
-  `}</style>);

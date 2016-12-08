@@ -41,6 +41,13 @@
   font-size: 0;
   margin: 0 unit(@grid/2, px);
 
+   
+  // This rule aims to remove any margin when there is only 1 icon inside the Button.
+  // To achieve that, we check if the first child and the last child are the same. 
+  &:first-child:nth-last-child(1) {
+    margin:0;
+  }
+
   & + .buttonContent {
     align-items: baseline;
     align-self: baseline;

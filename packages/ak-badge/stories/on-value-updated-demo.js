@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 
 import Badge from '../src';
 
-export default class OnValueUpdatedDemo extends Component {
+export default class OnValueUpdatedDemo extends PureComponent {
   constructor() {
     super();
     this.state = { value: 1 };

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styles from 'style!./styles.less';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -7,11 +7,9 @@ import styles from 'style!./styles.less';
  * @class ButtonGroup
  * @example @js import ButtonGroup from 'ak-button-group';
  */
-export default class AkButtonGroup extends Component {
-  static get propTypes() {
-    return {
-      children: React.PropTypes.node,
-    };
+export default class AkButtonGroup extends PureComponent {
+  static propTypes = {
+    children: React.PropTypes.node,
   }
 
   render() {

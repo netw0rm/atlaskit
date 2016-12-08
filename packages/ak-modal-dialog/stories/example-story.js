@@ -48,4 +48,16 @@ storiesOf(name, module)
         <Lorem count="15" />
       </div>
     </ModalDemo>
+  ))
+  .add('width="small"', () => (
+    <ModalDemo width="small" />
+  ))
+  .add('width="medium"', () => (
+    <ModalDemo width="medium" />
+  ))
+  .add('width="large"', () => (
+    <ModalDemo width="large" />
+  ))
+  .add('width="x-large"', () => (
+    <ModalDemo width="x-large" />
   ));

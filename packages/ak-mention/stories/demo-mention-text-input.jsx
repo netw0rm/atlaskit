@@ -59,6 +59,7 @@ class MentionTextInput extends Component {
     const position = (relativePosition === 'above') ? 'top left' : 'bottom left';
     const searchInput = (
       <SearchTextInput
+        inputId="demo-input"
         label={label}
         onChange={query => this._updateSearch(query)}
         onUp={() => this._mentionListRef.selectPrevious()}
@@ -67,16 +68,15 @@ class MentionTextInput extends Component {
         onEscape={this._hideMentionPopup}
         onFocus={this._showMentionPopup}
         onBlur={this._hideMentionPopup}
-        inputRef={(ref) => { this._inputRef = ref; }}
       />
     );
 
     let mentionPicker = null;
 
-    if (this.state.active && this._inputRef) {
+    if (this.state.active) {
       mentionPicker = (
         <MentionPicker
-          target={this._inputRef}
+          target="demo-input"
           position={position}
           resourceProvider={resourceProvider}
           presenceProvider={presenceProvider}

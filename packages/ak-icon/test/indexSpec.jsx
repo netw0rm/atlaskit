@@ -85,6 +85,7 @@ describe(name, () => {
           'help',
           'home',
           'jira/logo',
+          'location',
           'moreoptions',
           'projects',
           'question',
@@ -92,6 +93,7 @@ describe(name, () => {
           'search',
           'settings',
           'success',
+          'time',
           'warning',
         ]);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in

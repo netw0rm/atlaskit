@@ -2,6 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!./styles.less';
 import EditView from './Edit';
 import ReadView from './Read';
+import ReadOnlyView from './ReadOnly';
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -25,14 +26,16 @@ export default class InlineEdit extends PureComponent {
      */
     readView: PropTypes.node.isRequired,
     /**
-     * @description The element or component to be displayed in edit mode.
+     * @description The element or component to be displayed in edit mode (optional).
      *
      * This node should allow the user to edit the value of the field.
+     *
+     * If this node is not supplied, the component will display in read-only mode.
      *
      * @memberof InlineEdit
      * @type {ReactNode}
      */
-    editView: PropTypes.node.isRequired,
+    editView: PropTypes.node,
     /**
      * @description Whether InlineEdit is on Edit mode or Read mode.
      *
@@ -53,13 +56,33 @@ export default class InlineEdit extends PureComponent {
      *
      * For example, will be called when the user clicks on the input.
      *
-     * The parent component would typically set the InlineEdit's isEditing
+     * The parent component would typically set the InlineEdit's 'isEditing'
      * prop true in response to this.
      *
      * @memberof InlineEdit
      * @type {Function}
      */
     onEditRequested: PropTypes.func.isRequired,
+    /**
+     * @description Called when the user confirms a new value
+     *
+     * The typical response would be to check if the editing value is valid,
+     * and if so, save it and switch 'isEditing' to false.
+     *
+     * @memberof InlineEdit
+     * @type {Function}
+     */
+    onConfirm: PropTypes.func.isRequired,
+    /**
+     * @description Called when the user cancels an edit
+     *
+     * The typical response would be to discard the current editing value and switch
+     * 'isEditing' to false.
+     *
+     * @memberof InlineEdit
+     * @type {Function}
+     */
+    onCancel: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -80,14 +103,29 @@ export default class InlineEdit extends PureComponent {
     <EditView
       label={this.props.label}
       isLabelHidden={this.props.isLabelHidden}
+      onConfirm={this.props.onConfirm}
+      onCancel={this.props.onCancel}
     >
       {this.props.editView}
     </EditView>
   )
 
+  renderEditableView = () => (
+    this.props.isEditing ? this.renderEditView() : this.renderReadView()
+  )
+
+  renderReadOnlyView = () => (
+    <ReadOnlyView
+      label={this.props.label}
+      isLabelHidden={this.props.isLabelHidden}
+    >
+      {this.props.readView}
+    </ReadOnlyView>
+  )
+
   render = () => (
     <div className={styles.root}>
-      {this.props.isEditing ? this.renderEditView() : this.renderReadView()}
+      {this.props.editView ? this.renderEditableView() : this.renderReadOnlyView()}
     </div>
   )
 }

@@ -3,7 +3,6 @@ import sinonChai from 'sinon-chai';
 
 import { checkVisibility, checkInvisibility } from '../src';
 
-
 chai.should();
 chai.use(sinonChai);
 

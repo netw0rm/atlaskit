@@ -4,15 +4,15 @@ import { define, vdom, prop, Component } from 'skatejs';
 
 import base from '../../src';
 
-
 const Base = base({ Component, prop });
 
 class XCounter extends Base {
   static get props() {
-    return Object.assign({}, {
+    return {
       count1: prop.number({ default: 1 }),
       count2: prop.number({ default: 2 }),
-    }, super.props);
+      ...super.props,
+    };
   }
 
   static attached(elem) {

@@ -3,7 +3,6 @@ const chaiAsPromised = require('chai-as-promised');
 
 const constructStorybookUrl = require('./constructStorybookUrl.js');
 
-
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 

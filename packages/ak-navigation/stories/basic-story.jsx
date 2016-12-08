@@ -1,6 +1,8 @@
-import { storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
+import AkAvatar from 'ak-avatar';
+import { HelpIcon } from 'ak-icon';
 import { AkContainerItem } from '../src/index';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
@@ -101,5 +103,23 @@ storiesOf(name, module)
       <div>
         <Lorem count="30" />
       </div>
+    </Page>
+  ))
+  .add('with controllable drawers', () => (
+    <Page>
+      <BasicNavigation
+        onSearchDrawerActivated={action('search-activated')}
+        onCreateDrawerActivated={action('create-activated')}
+      />
+    </Page>
+  ))
+  .add('with small avatar', () => (
+    <Page>
+      <BasicNavigation
+        globalHelpIcon={<HelpIcon />}
+        onHelpClicked={action('help-clicked')}
+        globalAccountIcon={<AkAvatar size="small" />}
+        onAccountClicked={action('account-clicked')}
+      />
     </Page>
   ));

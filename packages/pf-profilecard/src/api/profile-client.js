@@ -4,7 +4,6 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 
-
 const buildUrl = (baseUrl, path, data, secOptions) => {
   const searchParam = new URLSearchParams();
   // remove undefined keys from data object

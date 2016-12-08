@@ -1,7 +1,11 @@
 @import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/grid.less';
+
+@grid: 4;
 
 .root {
   display: block;
+  margin-left: -@ak-grid-size;
 }
 
 .read-view-wrapper {
@@ -16,6 +20,14 @@
 .read-view-content-wrapper {
   display: inline-flex;
   width: 100%;
+}
+
+.buttons-wrapper {
+  margin-left: unit(@grid, px);
+
+  button:last-child {
+    margin-left: unit(@grid, px);
+  }
 }
 
 // the vendor prefixes here are deliberate. 'appearance' does not seem to get picked up by postcss,
@@ -33,8 +45,7 @@
   margin: 0;
   opacity: 0;
   outline: 0;
-  padding-left: 10px;
-  padding: 0;
+  padding: 0 0 0 unit(@grid * 2, px);
   width: 100%;
 
   &:focus {

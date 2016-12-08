@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-ui",
-  "version": "2.1.3",
+  "version": "2.2.1",
   "description": "Atlassian Editor UI",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -22,11 +22,11 @@
     "ak-button-group": "^3.0.2",
     "ak-editor-shared-styles": "^3.0.0",
     "ak-icon": "^11.1.3",
+    "ak-mention": "^1.0.0",
     "akutil-shared-styles": "^37.0.2",
     "babel-runtime": "^6.11.6",
     "browserkeymap": "^2.0.1",
     "classnames": "^2.2.5",
-    "pf-mention": "^4.0.4",
     "popper.js": "git://github.com/lukebatchelor/popper.js#fixes-from-v1-dev"
   },
   "devDependencies": {

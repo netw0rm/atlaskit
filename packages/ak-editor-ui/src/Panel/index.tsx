@@ -38,7 +38,7 @@ export default class Panel extends PureComponent<Props, State> {
 
   private applyPopper(props: Props): void {
     const { content } = this.refs;
-    const target = props.target || ReactDOM.findDOMNode(this).parentElement;
+    const target = props.target || ReactDOM.findDOMNode(this).parentElement!;
     const boundary = this.findBoundary(target);
 
     if (target && boundary && content instanceof HTMLElement) {

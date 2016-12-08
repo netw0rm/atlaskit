@@ -55,22 +55,6 @@ export default (schema: Schema, mapKeys?: AnyObject) => {
     }
   }
 
-  for (let name in schema.marks) {
-    let mark = schema.marks[name];
-
-    if (name === 'strong') {
-      bind('Mod-B', toggleMark(mark));
-    }
-
-    if (name === 'em') {
-      bind('Mod-I', toggleMark(mark));
-    }
-
-    if (name === 'code') {
-      bind('Mod-`', toggleMark(mark));
-    }
-  }
-
   for (let name in schema.nodes) {
     let node = schema.nodes[name];
 

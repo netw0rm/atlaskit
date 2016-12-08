@@ -6,6 +6,7 @@ import { BlockTypeState } from 'ak-editor-plugin-block-type';
 import { HyperlinkState } from 'ak-editor-plugin-hyperlink';
 import { ListsState } from 'ak-editor-plugin-lists';
 import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
+import { ImageUploadState } from 'ak-editor-plugin-image-upload';
 import MentionIcon from 'ak-icon/glyph/editor/mention';
 import ImageIcon from 'ak-icon/glyph/editor/image';
 import * as styles from './styles.global.less';
@@ -27,6 +28,7 @@ interface Props {
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
+  pluginStateImageUpload?: ImageUploadState;
 }
 
 interface State {}
@@ -71,7 +73,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               icon={<MentionIcon label='Mention' />}
             />
             }
-            {!props.onInsertImage ? null :
+            {!props.pluginStateImageUpload ? null :
             <ToolbarIconButton
               onClick={this.handleInsertImage}
               icon={<ImageIcon label='Image' />}
@@ -91,9 +93,10 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
   }
 
   private handleInsertImage = () => {
-    const { onInsertImage } = this.props;
-    if (onInsertImage) {
-      onInsertImage();
+    const { pluginStateImageUpload } = this.props;
+    
+    if (pluginStateImageUpload) {
+      pluginStateImageUpload.handleImageUpload();
     }
   }
 

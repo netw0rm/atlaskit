@@ -148,12 +148,7 @@ export default class Editor extends PureComponent<Props, State> {
       }
 
       if (this.props.imageUploadHandler) {
-        ImageUploadPlugin.get(pm)!.uploadHandler = this.props.imageUploadHandler; 
-        
-        // const insertImage = (attr: ImageUploadOptions) => imageUploadState.addImage(attr);
-        // const handler = (_: any, e: any) => this.props.imageUploader(e, insertImage);
-        // imageUploadState.dropAdapter.add(handler);
-        // imageUploadState.pasteAdapter.add(handler);
+        ImageUploadPlugin.get(pm)!.uploadHandler = this.props.imageUploadHandler;
       }
 
       pm.addKeymap(buildKeymap(pm.schema));

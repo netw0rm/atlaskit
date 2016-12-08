@@ -37,7 +37,7 @@ export default class CodeExampleStory extends Component {
               <div className={styles.jsx}>
                 <Highlight className="HTML">
                   {jsxToString(this.props.children, {
-                    detectFunctions: !this.props.overrides,
+                    detectFunctions: true,
                     keyValueOverride: { ...this.props.overrides },
                   })}
                 </Highlight>

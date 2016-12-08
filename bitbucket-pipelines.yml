@@ -28,7 +28,8 @@ pipelines:
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - time ./build/bin/setup.sh
           - npm install yarn
-          - time ./node_modules/yarn/bin/yarn install
+          - time ./node_modules/yarn/bin/yarn install --ignore-scripts
+          - time ./node_modules/yar/bin/yarn run postinstall
           # - time npm run browserstack/tunnel/start
           # - time run-p -ln "validate/package.json" "lint" "test/coverage" "test/base" "test/wc/browserstack/pr" "pr/artifacts"
           # AK-628 - npm run test/integration/pr

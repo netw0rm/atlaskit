@@ -1,7 +1,7 @@
 import Highlight from 'react-highlight';
 import React, { Component } from 'react';
 import jsxToString from 'jsx-to-string';
-import SplitPane from 'react-split-pane';
+import SplitPane from '@kadira/react-split-pane';
 
 import { locals as styles } from './styles.less';
 

@@ -9,7 +9,7 @@
     },
     "@kadira/react-split-pane": {
       "version": "1.4.7",
-      "from": "@kadira/react-split-pane@>=1.4.0 <2.0.0",
+      "from": "@kadira/react-split-pane@>=1.4.7 <2.0.0",
       "resolved": "https://registry.npmjs.org/@kadira/react-split-pane/-/react-split-pane-1.4.7.tgz"
     },
     "@kadira/storybook": {
@@ -1068,11 +1068,6 @@
       "version": "2.10.1",
       "from": "boom@>=2.0.0 <3.0.0",
       "resolved": "https://registry.npmjs.org/boom/-/boom-2.10.1.tgz"
-    },
-    "bowser": {
-      "version": "1.6.0",
-      "from": "bowser@>=1.0.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/bowser/-/bowser-1.6.0.tgz"
     },
     "brace-expansion": {
       "version": "1.1.6",
@@ -3660,11 +3655,6 @@
       "from": "hawk@>=3.1.3 <3.2.0",
       "resolved": "https://registry.npmjs.org/hawk/-/hawk-3.1.3.tgz"
     },
-    "he": {
-      "version": "1.1.0",
-      "from": "he@>=1.1.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/he/-/he-1.1.0.tgz"
-    },
     "highlight.js": {
       "version": "9.8.0",
       "from": "highlight.js@>=9.6.0 <10.0.0",
@@ -3772,11 +3762,6 @@
       "from": "https-proxy-agent@1.0.0",
       "resolved": "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-1.0.0.tgz"
     },
-    "hyphenate-style-name": {
-      "version": "1.0.2",
-      "from": "hyphenate-style-name@>=1.0.1 <2.0.0",
-      "resolved": "https://registry.npmjs.org/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz"
-    },
     "iconv-lite": {
       "version": "0.4.13",
       "from": "iconv-lite@0.4.13",
@@ -3863,11 +3848,6 @@
       "version": "1.3.4",
       "from": "ini@>=1.3.4 <2.0.0",
       "resolved": "https://registry.npmjs.org/ini/-/ini-1.3.4.tgz"
-    },
-    "inline-style-prefixer": {
-      "version": "2.0.5",
-      "from": "inline-style-prefixer@>=2.0.4 <3.0.0",
-      "resolved": "https://registry.npmjs.org/inline-style-prefixer/-/inline-style-prefixer-2.0.5.tgz"
     },
     "inquirer": {
       "version": "1.1.2",
@@ -4850,11 +4830,6 @@
       "version": "1.0.1",
       "from": "map-obj@>=1.0.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/map-obj/-/map-obj-1.0.1.tgz"
-    },
-    "markdown-to-react-components": {
-      "version": "0.2.2",
-      "from": "markdown-to-react-components@>=0.2.1 <0.3.0",
-      "resolved": "https://registry.npmjs.org/markdown-to-react-components/-/markdown-to-react-components-0.2.2.tgz"
     },
     "marked": {
       "version": "0.3.6",
@@ -5863,11 +5838,6 @@
       "from": "react@>=15.3.2 <16.0.0",
       "resolved": "https://registry.npmjs.org/react/-/react-15.4.1.tgz"
     },
-    "react-addons-create-fragment": {
-      "version": "15.4.1",
-      "from": "react-addons-create-fragment@>=15.3.2 <16.0.0",
-      "resolved": "https://registry.npmjs.org/react-addons-create-fragment/-/react-addons-create-fragment-15.4.1.tgz"
-    },
     "react-addons-test-utils": {
       "version": "15.4.1",
       "from": "react-addons-test-utils@>=15.4.0 <16.0.0",
@@ -5930,20 +5900,10 @@
       "from": "react-simple-di@>=1.2.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/react-simple-di/-/react-simple-di-1.2.0.tgz"
     },
-    "react-split-pane": {
-      "version": "0.1.57",
-      "from": "react-split-pane@latest",
-      "resolved": "https://registry.npmjs.org/react-split-pane/-/react-split-pane-0.1.57.tgz"
-    },
     "react-stubber": {
       "version": "1.0.0",
       "from": "react-stubber@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/react-stubber/-/react-stubber-1.0.0.tgz"
-    },
-    "react-style-proptype": {
-      "version": "1.4.0",
-      "from": "react-style-proptype@>=1.4.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/react-style-proptype/-/react-style-proptype-1.4.0.tgz"
     },
     "react-toggle-button": {
       "version": "2.1.0",

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@atlassian/gremlins.js": "^0.1.0",
+    "@kadira/react-split-pane": "^1.4.7",
     "@kadira/storybook": "^2.24.0",
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.33",
@@ -86,7 +87,6 @@
     "react-addons-test-utils": "^15.4.0",
     "react-dom": "^15.3.2",
     "react-highlight": "^0.9.0",
-    "react-split-pane": "^0.1.57",
     "retry-cli": "^0.4.0",
     "skatejs": "^4.0.4",
     "stats.js": "^0.17.0",
@@ -185,7 +185,5 @@
     "validate/lint-changed/fix": "./build/bin/lint-changed-fix.sh",
     "validate/package.json": "pjv -q && ./node_modules/.bin/lerna exec -- pjv -q"
   },
-  "devDependencies": {
-    "@kadira/react-storybook-addon-info": "^3.3.0"
-  }
+  "devDependencies": {}
 }

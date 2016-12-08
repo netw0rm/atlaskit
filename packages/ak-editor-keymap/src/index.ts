@@ -33,28 +33,6 @@ export default (schema: Schema, mapKeys?: AnyObject) => {
 
   let lastCmd: Command;
 
-  function clearAndApply(cmd: Command) {
-    let isReset = false;
-
-    return (pm: ProseMirror, apply: boolean) => {
-      lift(pm, apply);
-      setBlockType(schema.nodes.paragraph)(pm, apply);
-
-      if (lastCmd !== cmd) {
-        isReset = false;
-        lastCmd = cmd;
-      }
-
-      if (!isReset) {
-        cmd(pm, apply);
-      }
-
-      isReset = !isReset;
-
-      return true;
-    }
-  }
-
   for (let name in schema.nodes) {
     let node = schema.nodes[name];
 
@@ -68,33 +46,6 @@ export default (schema: Schema, mapKeys?: AnyObject) => {
       if (isMac) {
         bind('Ctrl-Enter', cmd);
       }
-    }
-
-    if (name === 'code_block') {
-      // https://github.com/ProseMirror/prosemirror/issues/419
-      bind('Enter', (pm: ProseMirror, apply: boolean) => {
-        let {$from, $head, empty} = pm.selection as TextSelection;
-
-        if (!$from.parent.type.isCode) {
-          return false;
-        }
-
-        if (apply !== false) {
-          if (
-            $head.parent.textContent.slice(-1) === '\n'
-            && empty
-            // nodeSize includes newlines
-            && $head.parentOffset === $head.parent.nodeSize - 2
-          ) {
-            commands.deleteCharBefore(pm);
-            return false;
-          }
-
-          pm.tr.typeText('\n').applyAndScroll();
-        }
-
-        return true;
-      });
     }
 
     if (name === 'horizontal_rule') {

@@ -27,7 +27,8 @@ pipelines:
           - export FORCE_COLOR=1
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - ./build/bin/setup.sh
-          - npm install
+          - time npm install --no-scripts
+          - time npm run postinstall
           - npm run browserstack/tunnel/start
           - run-p -ln "validate/package.json" "lint" "test/coverage" "test/base" "test/wc/browserstack/pr" "pr/artifacts"
           # AK-628 - npm run test/integration/pr

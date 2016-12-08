@@ -32,7 +32,7 @@ export default class CodeExampleStory extends Component {
             {this.props.children}
           </div>
           <div className={styles.storiesWithCodeExamples}>
-            <SplitPane split="horizontal" defaultSize={'90%'} primary="first">
+            <SplitPane split="horizontal" defaultSize={'80%'} primary="first">
               <div className={styles.jsx}>
                 <Highlight className="HTML">
                   {jsxToString(this.props.children, {

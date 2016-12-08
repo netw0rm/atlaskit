@@ -176,7 +176,8 @@ export class BlockTypeState {
     }, {});
 
     bindings = Object.assign({}, bindings, {
-      'Enter': () => this.splitBlock()
+      'Enter': () => this.splitBlock(),
+      'Shift-Enter': () => this.newLineInCode()
     });
 
     this.pm.addKeymap(new Keymap(bindings));
@@ -197,6 +198,19 @@ export class BlockTypeState {
     }
     return false;
   }
+
+  private newLineInCode(): boolean {
+    const { pm } = this;
+    const { $from } = pm.selection;
+    const node = $from.parent;
+
+    if(isCodeBlockNode(node)) {
+      pm.tr.typeText('\n').applyAndScroll();
+      return true;
+    }
+
+    return false;
+  }
   
   private lastCharIsNewline(node: Node): boolean {
     return node.textContent.slice(-1) === '\n'
@@ -208,7 +222,6 @@ export class BlockTypeState {
   }
 
   private toggleBlockType(name: BlockTypeName): void {
-    debugger;
     const blockNodes = this.blockNodesBetweenSelection();
 
     if(this.nodeBlockType(blockNodes[0]).name !== name) {

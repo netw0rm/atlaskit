@@ -52,10 +52,11 @@ setAddon({
   },
 
   addCodeExampleStory(storyName, storyFn, options = {}) {
-    this.add(storyName, context => (
+    this.add(`${storyName} (Code Examples)`, context => (
       <CodeExampleStory
         scripts={options.scripts}
         imports={options.imports}
+        overrides={options.overrides}
       >
         {storyFn(context)}
       </CodeExampleStory>

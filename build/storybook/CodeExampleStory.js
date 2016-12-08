@@ -16,6 +16,7 @@ export default class CodeExampleStory extends Component {
     children: React.PropTypes.node.isRequired,
     scripts: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
     imports: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    overrides: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
@@ -36,7 +37,8 @@ export default class CodeExampleStory extends Component {
               <div className={styles.jsx}>
                 <Highlight className="HTML">
                   {jsxToString(this.props.children, {
-                    detectFunctions: true,
+                    detectFunctions: !this.props.overrides,
+                    keyValueOverride: { ...this.props.overrides },
                   })}
                 </Highlight>
               </div>

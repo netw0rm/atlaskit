@@ -4,12 +4,15 @@ import React from 'react';
 import 'storybook-addon-i18n-tools';
 import { checkA11y } from 'storybook-addon-a11y/dist';
 import 'style-loader!css-loader!ak-css-reset/dist/bundle.css';
+import 'style-loader!css-loader!highlight.js/styles/github.css';
+import 'style-loader!css-loader!./panels.css';
 
 import 'style!./styles.less';
 
 import MonitoredStory from './MonitoredStory';
 import MonkeyTestStory from './MonkeyTestStory';
 import BaselineAlignmentStory from './BaselineAlignmentStory';
+import CodeExampleStory from './CodeExampleStory';
 
 function loadStories() {
   // Use a webpack loader to dynamically require stories.
@@ -45,6 +48,17 @@ setAddon({
       <BaselineAlignmentStory>
         {storyFn(context)}
       </BaselineAlignmentStory>
+    ));
+  },
+
+  addCodeExampleStory(storyName, storyFn, options) {
+    console.log('options.scripts', options.scripts);
+    this.add(storyName, context => (
+      <CodeExampleStory
+        scripts={options.scripts}
+      >
+        {storyFn(context)}
+      </CodeExampleStory>
     ));
   },
 });

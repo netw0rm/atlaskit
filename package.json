@@ -58,6 +58,7 @@
     "jsdoc-babel": "^0.2.1",
     "jsdoc-to-markdown": "^2.0.0",
     "json-loader": "^0.5.4",
+    "jsx-to-string": "https://github.com/nadiam84/jsx-to-string.git#308771ab44aadecf422880f6a56727ba53a2bb6d",
     "karma": "^1.3.0",
     "karma-browserstack-launcher": "^1.1.1",
     "karma-chai-plugins": "^0.8.0",
@@ -84,6 +85,8 @@
     "react": "^15.3.2",
     "react-addons-test-utils": "^15.4.0",
     "react-dom": "^15.3.2",
+    "react-highlight": "^0.9.0",
+    "react-split-pane": "^0.1.57",
     "retry-cli": "^0.4.0",
     "skatejs": "^4.0.4",
     "stats.js": "^0.17.0",
@@ -182,5 +185,7 @@
     "validate/lint-changed/fix": "./build/bin/lint-changed-fix.sh",
     "validate/package.json": "pjv -q && ./node_modules/.bin/lerna exec -- pjv -q"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@kadira/react-storybook-addon-info": "^3.3.0"
+  }
 }

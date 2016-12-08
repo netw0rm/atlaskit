@@ -22,7 +22,7 @@ chai.use(sinonChai);
 describe('ak-layer', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Layer />);
-    expect(wrapper).to.be.defined;
+    expect(wrapper).to.exist;
   });
 
   describe('children', () => {

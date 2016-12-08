@@ -31,7 +31,7 @@ describe.skip('ak-tag', () => {
           return getShadowRoot(component);
         })
         .then((shadowRoot) => {
-          shadowRoot.should.be.defined;
+          shadowRoot.should.exist;
         }).should.be.fulfilled;
     });
 

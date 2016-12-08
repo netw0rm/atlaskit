@@ -27,7 +27,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Item />);
-        expect(wrapper).to.be.defined;
+        expect(wrapper).to.exist;
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 

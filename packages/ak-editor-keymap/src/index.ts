@@ -1,46 +1,23 @@
 /* eslint-disable */
-import { ProseMirror, browser, commands, Keymap, TextSelection } from  'ak-editor-prosemirror';
+import { ProseMirror, browser, Keymap} from  'ak-editor-prosemirror';
 import { Schema } from 'ak-editor-schema';
 
-const { wrapIn, setBlockType, wrapInList, splitListItem, lift, liftListItem,
-  sinkListItem, chainCommands, newlineInCode, toggleMark } = commands;
+export default (schema: Schema) => {
+  let bindings: {[key: string]: any} = {};
 
-const isMac = browser.mac;
-
-interface Command {
-  (pm: ProseMirror, apply: boolean): boolean;
-}
-
-interface AnyObject {
-  [key: string]: any
-}
-
-export default (schema: Schema, mapKeys?: AnyObject) => {
-  let keys: AnyObject = {};
-  function bind(key: string, cmd: Command) {
-    if (mapKeys) {
-      let mapped = mapKeys[key];
-      if (mapped === false) {
-        return;
-      }
-
-      if (mapped) {
-        key = mapped;
-      }
-    }
-    keys[key] = cmd;
+  const bind = (key: string, action: any): void => {
+    bindings = Object.assign({}, bindings, {[key]: action});
   }
 
-  for (let name in schema.nodes) {
-    let node = schema.nodes[name];
+  const {hard_break, horizontal_rule} = schema.nodes;
 
-    if (name === 'hard_break') {
-      bind('Shift-Enter', (pm: ProseMirror) => pm.tr.replaceSelection(node.create()).applyAndScroll());
-    }
-
-    if (name === 'horizontal_rule') {
-      bind('Mod-Shift--', (pm: ProseMirror) => pm.tr.replaceSelection(node.create()).applyAndScroll());
-    }
+  if(hard_break) {
+    bind('Shift-Enter', (pm: ProseMirror) => pm.tr.replaceSelection(hard_break.create()).applyAndScroll());
   }
-  return new Keymap(keys);
+
+  if(horizontal_rule) {
+    bind('Mod-Shift--', (pm: ProseMirror) => pm.tr.replaceSelection(horizontal_rule.create()).applyAndScroll());
+  } 
+
+  return new Keymap(bindings);
 }

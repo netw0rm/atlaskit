@@ -31,21 +31,11 @@ export default (schema: Schema, mapKeys?: AnyObject) => {
     keys[key] = cmd;
   }
 
-  let lastCmd: Command;
-
   for (let name in schema.nodes) {
     let node = schema.nodes[name];
 
     if (name === 'hard_break') {
-      let cmd = chainCommands(
-        newlineInCode,
-        (pm: ProseMirror) => pm.tr.replaceSelection(node.create()).applyAndScroll()
-      );
-      bind('Mod-Enter', cmd);
-      bind('Shift-Enter', cmd);
-      if (isMac) {
-        bind('Ctrl-Enter', cmd);
-      }
+      bind('Shift-Enter', (pm: ProseMirror) => pm.tr.replaceSelection(node.create()).applyAndScroll());
     }
 
     if (name === 'horizontal_rule') {

@@ -22,8 +22,15 @@ export default class MentionPicker extends PureComponent {
     onSelection: PropTypes.func,
 
     // ak-inline-dialog
-    target: PropTypes.node,
+    /**
+     * id of element to target the picker against.
+     * if not specified the picker is rendered inline.
+     */
+    target: PropTypes.string,
     position: PropTypes.string,
+    zIndex: PropTypes.number,
+    offsetX: PropTypes.number,
+    offsetY: PropTypes.number,
   }
 
   constructor(props) {
@@ -110,7 +117,8 @@ export default class MentionPicker extends PureComponent {
   }
 
   render() {
-    const { resourceProvider, presenceProvider, onSelection, query, target, position } = this.props;
+    const { resourceProvider, presenceProvider, onSelection, query,
+      target, position, zIndex, offsetX, offsetY } = this.props;
     const { visible } = this.state;
     const style = {
       display: visible ? 'block' : 'none',
@@ -138,8 +146,11 @@ export default class MentionPicker extends PureComponent {
       if (target) {
         content = (
           <Popup
-            attachTo={target}
+            target={target}
             position={position}
+            zIndex={zIndex}
+            offsetX={offsetX}
+            offsetY={offsetY}
             ref={(ref) => { this._dialog = ref; }}
           >
             {resourceMentionList}

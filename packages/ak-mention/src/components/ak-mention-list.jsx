@@ -62,7 +62,7 @@ export default class MentionList extends PureComponent {
     const { mentions } = this.props;
     const { selectedIndex } = this.state;
     if (mentions && mentions[selectedIndex]) {
-      this._revealItem(this, mentions[selectedIndex].id);
+      this._revealItem(mentions[selectedIndex].id);
     }
     // FIXME - a React version of this _may_ be required for Confluence
     // integration tests. Will remove / fix once known

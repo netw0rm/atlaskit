@@ -208,7 +208,6 @@ describe('ak-editor-jira html:', () => {
           em(sup('subscript emphasised words')),
           '.'
         )));
-      });
     });
 
     describe('heading:', () => {

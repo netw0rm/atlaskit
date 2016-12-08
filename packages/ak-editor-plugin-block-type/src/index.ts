@@ -211,10 +211,6 @@ export class BlockTypeState {
     debugger;
     const blockNodes = this.blockNodesBetweenSelection();
 
-    const nodeThatDoesNotMatchTargetBlockType = blockNodes.find((node) => {
-      return this.nodeBlockType(node).name !== name
-    });
-
     if(this.nodeBlockType(blockNodes[0]).name !== name) {
       this.changeBlockType(name);
     } else if(name !== Quote.name){

@@ -55,6 +55,7 @@ setAddon({
     this.add(storyName, context => (
       <CodeExampleStory
         scripts={options.scripts}
+        imports={options.imports}
       >
         {storyFn(context)}
       </CodeExampleStory>

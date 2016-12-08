@@ -7,17 +7,21 @@ import { locals as styles } from './styles.less';
 
 const transformScripts = scripts => scripts.map(scr => scr.toString()).join('\n\n');
 
+// eslint-disable-next-line prefer-template
+const transformImports = imports => imports.map(imp => `import ${imp[0]} from ${imp[1]};`).join('\n') + '\n\n';
+
 // eslint-disable-next-line react/prefer-stateless-function
 export default class CodeExampleStory extends Component {
   static propTypes = {
     children: React.PropTypes.node.isRequired,
     scripts: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    imports: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
     language: 'HTML',
     scripts: [],
-    overrides: {},
+    imports: [],
   }
 
   render() {
@@ -36,11 +40,12 @@ export default class CodeExampleStory extends Component {
                   })}
                 </Highlight>
               </div>
-              <div className={styles.js}>
+              {this.props.scripts || this.props.imports ? <div className={styles.js}>
                 <Highlight className="JavaScript">
+                  {transformImports(this.props.imports)}
                   {transformScripts(this.props.scripts)}
                 </Highlight>
-              </div>
+              </div> : null}
             </SplitPane>
           </div>
         </SplitPane>

@@ -58,9 +58,9 @@ class SearchTextInput extends Component {
 
   render() {
     /* eslint no-unused-vars: 0 */
-    const { onUp, onDown, onEnter, onEscape, label, inputRef, ...other } = this.props;
+    const { onUp, onDown, onEnter, onEscape, label, inputRef, inputId, ...other } = this.props;
     let labelComponent;
-    const id = this.props.inputId || uid();
+    const id = inputId || uid();
     if (label) {
       labelComponent = <label htmlFor={id}>{label}</label>;
     }

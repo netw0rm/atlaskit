@@ -198,7 +198,8 @@ describe('ak-editor-plugin-block-type', () => {
           });
         });
       });
-       describe('h1', () => {
+
+      describe('h1', () => {
         context('when selection is not a h1', () => {
           it('transforms to a h1', () => {
             const { pm, plugin } = editor(doc(p('te{<>}xt')));
@@ -478,21 +479,127 @@ describe('ak-editor-plugin-block-type', () => {
       });
 
       describe('code_block', () => {
-        context('when selection is not a code_block', () => {
-          it('transforms to a code_block', () => {
-            const { pm, plugin } = editor(doc(p('te{<>}xt')));
-            pm.input.dispatchKey("Ctrl-8");
-            expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+        context('when hits Ctrl-8', () => {
+          context('when selection is not a code_block', () => {
+            it('transforms to a code_block', () => {
+              const { pm, plugin } = editor(doc(p('te{<>}xt')));
+              pm.input.dispatchKey("Ctrl-8");
+              expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+            });
+          });
+
+          context('when selection is a code_block', () => {
+            it('tranforms back to a paragraph', () => {
+              const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
+              pm.input.dispatchKey("Ctrl-8");
+              expect(pm.doc).to.deep.equal(doc(p('text')));
+            });
           });
         });
 
-        context('when selection is a code_block', () => {
-          it('tranforms back to a paragraph', () => {
-            const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
-            pm.input.dispatchKey("Ctrl-8");
-            expect(pm.doc).to.deep.equal(doc(p('text')));
+        context('when hits double enter', () => {
+          context('when cursor is at the end of code block', () => {
+            
+          });
+
+          context('when cursor is in the middle of code block', () => {
+            it('does not exit code block', () => {
+              const { pm, plugin } = editor(doc(code_block()('te{middlePos}xt')));
+              const { middlePos } = pm.doc.refs;
+
+              pm.setTextSelection(middlePos);
+
+              pm.input.dispatchKey("Enter");
+              pm.input.dispatchKey("Enter");
+
+              expect(pm.doc).to.deep.equal(doc(code_block()('te\n\nxt')));
+            });
           });
         });
+
+        context('when hits enter', () => {
+          context('when at the end is a new line', () => {
+            context('when cursor is at the end', () => {
+              it('exits code block', () => {
+                const { pm, plugin } = editor(doc(code_block()('text\n{endPos}')));
+                const { endPos } = pm.doc.refs;
+
+                pm.setTextSelection(endPos);
+
+                pm.input.dispatchKey("Enter");
+
+                expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
+              });
+            });
+
+            context('when selection is in the middle', () => {
+              it('inserts a new line', () => {
+                const { pm, plugin } = editor(doc(code_block()('te{middlePos}xt\n')));
+                const { middlePos } = pm.doc.refs;
+
+                pm.setTextSelection(middlePos);
+
+                pm.input.dispatchKey("Enter");
+
+                expect(pm.doc).to.deep.equal(doc(code_block()('te\nxt\n')));
+              });
+            });
+
+            context('when selection is not empty', () => {
+              it('inserts a new line', () => {
+                const { pm, plugin } = editor(doc(code_block()('text\nY{endPos}')));
+                const { endPos } = pm.doc.refs;
+
+                pm.setTextSelection(endPos-1, endPos);
+
+                pm.input.dispatchKey("Enter");
+
+                expect(pm.doc).to.deep.equal(doc(code_block()('text\n\n')));
+              });
+            });
+          });
+
+          context('when at the end is not a new line', ()=> {
+            context('when cursor is at the end', () => {
+              it('inserts a new line', () => {
+                const { pm, plugin } = editor(doc(code_block()('text{endPos}')));
+                const { endPos } = pm.doc.refs;
+
+                pm.setTextSelection(endPos);
+
+                pm.input.dispatchKey("Enter");
+
+                expect(pm.doc).to.deep.equal(doc(code_block()('text\n')));
+              });
+            });
+
+            context('when selection is in the middle', () => {
+              it('inserts a new line', () => {
+                const { pm, plugin } = editor(doc(code_block()('te{middlePos}xt')));
+                const { middlePos } = pm.doc.refs;
+
+                pm.setTextSelection(middlePos);
+
+                pm.input.dispatchKey("Enter");
+
+                expect(pm.doc).to.deep.equal(doc(code_block()('te\nxt')));
+              });
+            });
+
+            context('when selection is not empty', () => {
+              it('inserts a new line', () => {
+                const { pm, plugin } = editor(doc(code_block()('textY{endPos}')));
+                const { endPos } = pm.doc.refs;
+
+                pm.setTextSelection(endPos-1, endPos);
+
+                pm.input.dispatchKey("Enter");
+
+                expect(pm.doc).to.deep.equal(doc(code_block()('text\n')));
+              });
+            });
+          });
+        })
       });
     });
   });

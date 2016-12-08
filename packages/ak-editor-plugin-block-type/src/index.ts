@@ -170,12 +170,41 @@ export class BlockTypeState {
   private addKeymap(): void {
     const assistKey = browser.mac ? 'Cmd-Alt-' : 'Ctrl-'; 
 
-    const bindings = this.availableBlockTypes.reduce((bindings, blockType) => {
+    let bindings = this.availableBlockTypes.reduce((bindings, blockType) => {
       const binding = {[assistKey + blockType.key]: () => this.toggleBlockType(blockType.name)};
       return Object.assign({}, bindings, binding);
     }, {});
 
+    bindings = Object.assign({}, bindings, {
+      'Enter': () => this.splitBlock()
+    });
+
     this.pm.addKeymap(new Keymap(bindings));
+  }
+
+  private splitBlock(): boolean {
+    const { pm } = this;
+    const { $from } = pm.selection;
+    const node = $from.parent;
+
+    if(isCodeBlockNode(node)) {
+      if( !this.lastCharIsNewline(node) || !this.cursorIsAtTheEndOfLine() ) {
+        pm.tr.typeText('\n').applyAndScroll();
+        return true;
+      } else {
+        commands.deleteCharBefore(pm);
+      }
+    }
+    return false;
+  }
+  
+  private lastCharIsNewline(node: Node): boolean {
+    return node.textContent.slice(-1) === '\n'
+  }
+
+  private cursorIsAtTheEndOfLine() {
+    const { $from, empty } = this.pm.selection;
+    return empty && $from.end() === $from.pos;
   }
 
   private toggleBlockType(name: BlockTypeName): void {

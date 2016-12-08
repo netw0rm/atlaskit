@@ -1,12 +1,12 @@
 import React, { PropTypes, PureComponent } from 'react';
-import ReactDOM, { findDOMNode } from 'react-dom';
+import ReactDOM from 'react-dom';
 
 /*
  * Simple implementation of popup while waiting for ak-inline-dialog
  */
 export default class Popup extends PureComponent {
   static propTypes = {
-    attachTo: PropTypes.element.isRequired,
+    target: PropTypes.string.isRequired,
     relativePosition: PropTypes.oneOf(['above', 'below', 'auto']),
     offsetX: PropTypes.number,
     offsetY: PropTypes.number,
@@ -42,8 +42,8 @@ export default class Popup extends PureComponent {
   }
 
   _applyBelowPosition() {
-    const attachToNode = findDOMNode(this.props.attachTo);
-    const box = attachToNode.getBoundingClientRect();
+    const targetNode = document.getElementById(this.props.target);
+    const box = targetNode.getBoundingClientRect();
     const top = box.bottom + this.props.offsetY;
     const left = box.left + this.props.offsetX;
     this.popup.style.top = `${top}px`;
@@ -52,8 +52,8 @@ export default class Popup extends PureComponent {
   }
 
   _applyAbovePosition() {
-    const attachToNode = findDOMNode(this.props.attachTo);
-    const box = attachToNode.getBoundingClientRect();
+    const targetNode = document.getElementById(this.props.target);
+    const box = targetNode.getBoundingClientRect();
     const bottom = (window.innerHeight - box.top) + this.props.offsetY;
     const left = box.left + this.props.offsetX;
     this.popup.style.top = '';
@@ -67,8 +67,8 @@ export default class Popup extends PureComponent {
     } else if (this.props.relativePosition === 'below') {
       this._applyBelowPosition();
     } else {
-      const attachToNode = findDOMNode(this.props.attachTo);
-      const box = attachToNode.getBoundingClientRect();
+      const targetNode = document.getElementById(this.props.target);
+      const box = targetNode.getBoundingClientRect();
       const viewPortHeight = window.innerHeight;
       if (box.top < viewPortHeight / 2) {
         this._applyBelowPosition();

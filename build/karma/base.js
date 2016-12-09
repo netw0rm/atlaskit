@@ -10,12 +10,6 @@ module.exports = (config) => {
 
     webpack: webpackConfig,
 
-    webpackMiddleware: {
-      stats: {
-        chunks: false,
-      },
-    },
-
     reporters: ['progress'],
 
     port: 9876,

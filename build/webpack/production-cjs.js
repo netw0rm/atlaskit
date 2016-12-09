@@ -1,6 +1,3 @@
-const path = require('path');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
 const productionConfig = require('./production.js');
 
 productionConfig.entry = {
@@ -10,13 +7,5 @@ productionConfig.entry = {
 
 productionConfig.output.libraryTarget = 'commonjs2';
 
-if (process.env.BITBUCKET_COMMIT) {
-  // only generate stats when we are in CI
-  productionConfig.plugins.push(new BundleAnalyzerPlugin({
-    analyzerMode: 'static',
-    reportFilename: path.resolve('./stats/cjs.html'),
-    openAnalyzer: false,
-  }));
-}
 
 module.exports = productionConfig;

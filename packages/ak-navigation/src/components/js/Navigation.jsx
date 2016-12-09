@@ -78,7 +78,6 @@ export default class Navigation extends Component {
     });
   }
 
-
   render() {
     const { onSearchDrawerActivated, onCreateDrawerActivated, globalSearchIcon, globalCreateIcon,
       searchDrawerContent, createDrawerContent, containerHeader, children, isResizeable,

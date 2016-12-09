@@ -6,10 +6,8 @@ import { shallow } from 'enzyme';
 // Testing the dumb component
 import { Tooltip } from '../src';
 
-
 const { expect } = chai;
 chai.use(chaiEnzyme());
-
 
 describe('ak-tooltip', () => {
   it('should be possible to create a component', () => {

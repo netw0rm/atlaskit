@@ -5,7 +5,6 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import Spacer from '../src/components/js/Spacer';
 
-
 chai.use(chaiAsPromised);
 chai.use(chaiEnzyme());
 chai.should();

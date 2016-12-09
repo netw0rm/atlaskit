@@ -1,7 +1,6 @@
 import { getShadowRoot } from 'akutil-common-test';
 import mentionListShadowStyles from '../src/wc/pf-mention-list-shadow.less';
 
-
 /* WC structure:
   pf-mention-picker
    > ak-inline-dialog (optional)

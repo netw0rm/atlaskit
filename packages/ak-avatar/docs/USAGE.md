@@ -16,40 +16,9 @@ npm install ak-avatar
 
 ## Using the component
 
-### HTML
+Import the component in your React app as follows:
 
-The `ak-avatar` package exports the Avatar [skate](https://github.com/skatejs/skatejs) component.
-
-#### bundle.js
-
-```javascript
+```
 import Avatar from 'ak-avatar';
-
-const myAvatar = new Avatar();
-```
-Now you can use the defined tag in your HTML markup:
-
-#### index.html
-
-```html
-<html>
-<head>
-  <script src="bundle.js"></script>
-</head>
-<body>
-  <!-- ... -->
-  <ak-avatar></ak-avatar>
-</body>
-```
-### React
-
-This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
-
-```
-import AkAvatar from 'ak-avatar';
-import reactify from 'skatejs-react-integration';
-
-const ReactComponent = reactify(AkAvatar, {});
-
-ReactDOM.render(<ReactComponent />, container);
+ReactDOM.render(<Avatar />, container);
 ```

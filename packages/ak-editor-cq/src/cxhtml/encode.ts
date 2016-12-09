@@ -6,6 +6,7 @@ import {
 } from 'ak-editor-prosemirror';
 
 import {
+  BlockQuoteNode,
   BulletListNode,
   DocNode,
   HardBreakNode,
@@ -14,6 +15,7 @@ import {
   ListItemNode,
   OrderedListNode,
   ParagraphNode,
+  isBlockQuoteNode,
   isBulletListNode,
   isDocNode,
   isHardBreakNode,
@@ -31,7 +33,9 @@ export default function encode(node: DocNode) {
   return doc.body.innerHTML;
 
   function encodeNode(node: PMNode) {
-    if (isBulletListNode(node)) {
+    if (isBlockQuoteNode(node)) {
+      return encodeBlockquote(node);
+    } else if (isBulletListNode(node)) {
       return encodeBulletList(node);
     } else if (isHeadingNode(node)) {
       return encodeHeading(node);
@@ -58,6 +62,12 @@ export default function encode(node: DocNode) {
     doc.body = doc.createElement('body');
     doc.documentElement.appendChild(doc.body);
     return doc;
+  }
+
+  function encodeBlockquote(node: BlockQuoteNode) {
+    const elem = doc.createElement('blockquote');
+    elem.appendChild(encodeFragment(node.content));
+    return elem;
   }
 
   function encodeFragment(fragment: Fragment) {

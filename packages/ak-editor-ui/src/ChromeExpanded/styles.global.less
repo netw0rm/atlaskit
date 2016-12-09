@@ -1,0 +1,93 @@
+@import '~ak-editor-shared-styles/src/index';
+
+.actions {
+
+}
+
+.container {
+  background-color: white;
+  border: 1px solid @ak-editor-subtle-accent;
+  box-sizing: border-box;
+  border-radius: @ak-border-radius;
+
+  // Create a stacking context, so that the toolbar can be placed above the content.
+  position: relative;
+}
+
+.content {
+  // Place the editor content beneath the toolbar.
+  position: relative;
+  z-index: 1;
+
+  :global(.ProseMirror-content) {
+    outline: none;
+    white-space: pre-wrap;
+    padding: 20px;
+
+    blockquote {
+      padding-left: 1em;
+      border-left: 3px solid @ak-color-N40;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    code {
+      font-family: @ak-editor-code-font-family;
+      background: @ak-editor-code-background;
+      padding: @ak-editor-code-inline-padding;
+      border-radius: @ak-border-radius;
+    }
+
+    pre {
+      font-family: @ak-editor-code-font-family;
+      background: @ak-editor-code-background;
+      padding: @ak-editor-code-block-padding;
+      border-radius: @ak-border-radius;
+    }
+  }
+}
+
+.footer {
+  font-size: 14px;
+  padding: 20px;
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.footerActions {
+  display: flex;
+  flex-grow: 1;
+}
+
+.iconButton {
+  cursor: pointer;
+  font-size: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.toolbar {
+  align-items: center;
+  display: flex;
+  height: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  // Place toolbar content above the content.
+  position: relative;
+  z-index: 2;
+
+  & > * {
+    align-items: center;
+    display: flex;
+    margin-left: 10px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}

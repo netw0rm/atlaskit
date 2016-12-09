@@ -1,3 +1,4 @@
+import mocha from 'mocha';
 import { URL } from '../src/regex';
 import { expect } from 'chai';
 

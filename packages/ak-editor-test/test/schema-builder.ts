@@ -1,3 +1,4 @@
+import mocha from 'mocha';
 import { p, text, nodeFactory, markFactory, sequence, RefsTracker } from '../src/schema-builder';
 import schema from 'ak-editor-schema';
 import { expect } from 'chai';

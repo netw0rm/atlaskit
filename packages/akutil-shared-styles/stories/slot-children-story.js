@@ -5,7 +5,6 @@ import reactify from 'akutil-react';
 import { name } from '../package.json';
 import slotComponent from './slot-children/slot-component';
 
-
 const SlotComponent = reactify(slotComponent, {});
 
 storiesOf(name, module)

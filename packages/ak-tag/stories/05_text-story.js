@@ -1,17 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
+import styles from 'style!./styles.less';
 import React from 'react';
-import reactify from 'akutil-react';
 
-import TagWc from '../src/index';
+import Tag from '../src/index';
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
-
-
-const Tag = reactify(TagWc);
 
 const MyTag = props => (
   <Tag
-    className={styles.locals.akTag}
     {...props}
   />
 );
@@ -24,17 +19,17 @@ storiesOf(name, module)
     <table>
       <tbody>
         <tr>
-          <th>Full text</th>
+          <th className={styles.headers}>Full text</th>
           <td>{cupcakeipsum}</td>
         </tr>
         <tr>
-          <th>Text</th>
+          <th className={styles.headers}>Text</th>
           <td>
             <MyTag text={cupcakeipsum} />
           </td>
         </tr>
         <tr>
-          <th>Linked</th>
+          <th className={styles.headers}>Linked</th>
           <td>
             <MyTag
               text={cupcakeipsum}
@@ -43,20 +38,20 @@ storiesOf(name, module)
           </td>
         </tr>
         <tr>
-          <th>Removable</th>
+          <th className={styles.headers}>Removable</th>
           <td>
             <MyTag
               text={cupcakeipsum}
-              remove-button-text="No sweets for you!"
+              removeButtonText="No sweets for you!"
             />
           </td>
         </tr>
         <tr>
-          <th>Removable & linked</th>
+          <th className={styles.headers}>Removable & linked</th>
           <td>
             <MyTag
               text={cupcakeipsum}
-              remove-button-text="No sweets for you!"
+              removeButtonText="No sweets for you!"
               href="http://www.cupcakeipsum.com/"
             />
           </td>
@@ -67,7 +62,7 @@ storiesOf(name, module)
   .addBaselineAligned('baseline alignment', () => (
     <MyTag
       text={cupcakeipsum}
-      remove-button-text="No sweets for you!"
+      removeButtonText="No sweets for you!"
       href="http://www.cupcakeipsum.com/"
     />
   ));

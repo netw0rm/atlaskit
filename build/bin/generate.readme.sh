@@ -57,13 +57,14 @@ else
 fi
 
 # Generate API docs
-if [[ -z `find ./src -name "*.js" -print || true` ]]; then
+if [[ -z `find ./src -name "*.js*" -print || true` ]]; then
   API=""
   $CHALK --no-stdin -t "{blue $PREFIX Nothing found that can be documented.}"
 else
   set +e
   DOCS="$($JSDOC2MD_LOC \
-    --files "src/**/*.js" \
+    --configure "../../build/docs/jsdoc.json" \
+    --files "src/**/*.js*" \
     --plugin akutil-dmd-plugin \
     --member-index-format list)"
   FAILED=$? # Order is important here, this needs to come right after the jsdoc2m sub command

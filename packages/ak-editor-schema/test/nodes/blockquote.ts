@@ -1,6 +1,5 @@
 import { Schema, Text } from 'ak-editor-prosemirror';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { default as chai, expect } from 'chai';
 import { DocNodeType, BlockQuoteNodeType } from '../../src';
 
 describe('ak-editor-schema blockquote node', () => {

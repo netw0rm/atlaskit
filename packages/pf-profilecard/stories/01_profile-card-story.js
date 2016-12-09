@@ -5,7 +5,6 @@ import reactify from 'akutil-react';
 import pfProfileCard from '../src/wc/pf-profilecard';
 import profiles from './profile-data';
 
-
 const ProfileCard = reactify(pfProfileCard);
 
 const fakeProfileData = {
@@ -29,14 +28,11 @@ const fakeProfileData = {
   ],
 };
 
-const fakeData = data => Object.assign(
-  {},
-  fakeProfileData,
-  {
-    timestamp: Math.floor(new Date().getTime() / 1000),
-  },
-  data || {}
-);
+const fakeData = data => ({
+  ...fakeProfileData,
+  timestamp: Math.floor(new Date().getTime() / 1000),
+  ...(data || {}),
+});
 
 // have some more space around the profilecard
 const canvasStyle = { margin: '30px' };

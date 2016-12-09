@@ -1,11 +1,14 @@
 import { ProseMirror, TextSelection } from 'ak-editor-prosemirror';
+import { isCodeBlockNode } from 'ak-editor-schema';
 
 class CodeBlockPasteListener {
   constructor(pm: ProseMirror) {
     return (event: ClipboardEvent) => {
-      const sel = pm.selection;
-      if (sel.$head.parent.type.name !== 'code_block') {
-        return;
+      const { $from, $to } = pm.selection;
+
+      if (!isCodeBlockNode(pm.selection.$from.parent) ||
+        !isCodeBlockNode(pm.selection.$to.parent)) {
+          return;
       }
 
       const text = event.clipboardData.getData('text/plain');

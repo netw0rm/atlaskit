@@ -4,7 +4,6 @@ import { storiesOf } from '@kadira/storybook';
 import Component from '../src';
 import { name } from '../package.json';
 
-
 storiesOf(name, module)
   .add('a simple akutil-component-template', () => (
     <Component />

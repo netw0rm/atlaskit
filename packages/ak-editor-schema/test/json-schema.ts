@@ -1,4 +1,4 @@
-import * as chai from 'chai';
+import chai from 'chai';
 import jsonSchema from '../src/json-schema';
 import { Schema, Block, Text, Inline, Attribute, EmMark, MarkType } from 'ak-editor-prosemirror';
 

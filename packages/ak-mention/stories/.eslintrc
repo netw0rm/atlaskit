@@ -1,0 +1,6 @@
+{
+  "extends": "ak-stories",
+  "rules": {
+    'no-underscore-dangle': ['error', { allowAfterThis: true }]
+  }
+}

@@ -1,6 +1,3 @@
-import { DISABLED_GROUP as HyperlinkPluginDisabledGroup } from 'ak-editor-plugin-hyperlink';
-import { DISABLED_GROUP as ImageUploadPluginDisabledGroup } from 'ak-editor-plugin-image-upload';
-
 import {
   Block,
   BlockQuoteNodeType,
@@ -20,11 +17,10 @@ import {
   ParagraphNodeType,
   Schema,
   StrongMarkType,
-  Text
+  Text,
+  MentionNodeType,
+  EmojiNodeType
 } from 'ak-editor-schema';
-
-import { MentionNodeType } from './nodes/mention';
-import { EmojiNodeType } from './nodes/emoji';
 
 export default new Schema({
   nodes: {
@@ -43,7 +39,7 @@ export default new Schema({
     image: { type: ImageNodeType, group: 'inline' },
     hard_break: { type: HardBreakNodeType, group: 'inline' },
 
-    code_block: { type: CodeBlockNodeType, content: 'text*', group: `block ${HyperlinkPluginDisabledGroup} ${ImageUploadPluginDisabledGroup}` },
+    code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
     mention: { type: MentionNodeType, group: 'inline' },
     emoji: { type: EmojiNodeType, group: 'inline' },
   },

@@ -9,9 +9,17 @@
     "noImplicitAny": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
-    "target": "es2015"
+    "target": "es2015",
+    "types": [
+      "chai",
+      "react",
+      "sinon",
+      "sinon-chai"
+    ]
   },
   "files": [
-    "build/typings/index.d.ts"
+    "build/types/node.d.ts",
+    "build/types/popper.d.ts",
+    "build/types/shadow-dom.d.ts"
   ]
 }

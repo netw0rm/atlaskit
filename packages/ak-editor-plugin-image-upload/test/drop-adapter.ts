@@ -1,6 +1,7 @@
 import DropAdapter from '../src/drop-adapter';
 import { ProseMirror } from 'ak-editor-prosemirror';
 import { expect } from 'chai';
+import sinon from 'sinon';
 
 describe('ak-editor-plugin-image-upload DropAdapter', () => {
   const mockEditor = (): ProseMirror => {

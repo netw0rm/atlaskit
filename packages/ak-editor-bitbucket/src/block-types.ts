@@ -35,6 +35,16 @@ export const blockTypes : any = {
     schemaName: 'heading',
     level     : 3,
   }, {
+    name      : 'heading4',
+    display   : 'Heading 4',
+    schemaName: 'heading',
+    level     : 4,
+  }, {
+    name      : 'heading5',
+    display   : 'Heading 5',
+    schemaName: 'heading',
+    level     : 5,
+  }, {
     name      : 'blockQuote',
     display   : 'Block quote',
     schemaName: 'blockquote',
@@ -43,7 +53,6 @@ export const blockTypes : any = {
     display   : 'Code block',
     schemaName: 'code_block',
   }],
-
 
   "comment": [{
     name      : 'normalText',

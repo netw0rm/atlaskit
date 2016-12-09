@@ -10,7 +10,6 @@ import {
   keyboardNavRight,
 } from './_helpers';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 

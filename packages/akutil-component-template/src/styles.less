@@ -1,9 +1,7 @@
-// These styles will be inserted into a style tag inside
-// the shadow dom of each instance of the component
+// These styles will be inserted into the head using the style-loader (assuming you have that in
+// your index.jsx file (import styles from 'style!./styles.less';)
 
-// Only do class selectors in here, anything else leaks to the rest of the page in
-// browsers that do not support shadow DOM
-@import 'shared-variables.less';
+@ak-example-variable: blue;
 
 .my-class-name {
   color: @ak-example-variable;

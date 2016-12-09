@@ -1,70 +1,78 @@
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import AkTabs from 'ak-tabs';
 import { Tab as AkTab} from 'ak-tabs';
-import EditorComponent from '../src';
+import Editor from '../src';
 
 const Tabs = reactify(AkTabs);
 const Tab = reactify(AkTab);
-const Editor = reactify(EditorComponent);
+const CancelAction = () => action('Cancel')();
+const SaveAction = () => action('Save')();
 
 storiesOf('ak-editor-jira', module)
-  .add('Empty', () => (
-    <Editor expanded />
-  ))
-  .add('JSON preview', () => {
+  .add('Empty', () =>
+    <div style={{ padding: 20 }}>
+      <Editor
+        onCancel={CancelAction}
+        onSave={SaveAction}
+      />
+    </div>
+  )
+  .add('HTML preview', () => {
     type Props = {};
-    type State = { json: string | null };
-    class Demo extends Component<Props, State> {
-      constructor() {
-        super();
-        this.state = { json: null };
-        this.updateJSON = this.updateJSON.bind(this);
-      }
-
-      updateJSON(e: any) {
-        this.setState({ json: e.target.value });
-      }
+    type State = { html?: string };
+    class Demo extends PureComponent<Props, State> {
+      state = {} as State;
 
       render() {
         return (
-          <div ref="root">
+          <div>
             <Editor
-              expanded
-              onChange={this.updateJSON}
-              onReady={this.updateJSON}
-              onSave={action('save')}
-              onCancel={action('cancel')}
+              onCancel={CancelAction}
+              onChange={this.updateHTML}
+              onSave={SaveAction}
             />
             <fieldset style={{ marginTop: 20 }}>
-              <legend>JSON</legend>
-              <pre>{this.state.json ? JSON.stringify(this.state.json, null, 2) : null}</pre>
+              <legend>HTML</legend>
+              <pre>{this.state.html}</pre>
             </fieldset>
           </div>
         );
       }
+
+      updateHTML = (editor: Editor) => {
+        this.setState({ html: editor.value });
+      }
     }
 
-    return <Demo />;
+    return (
+      <div style={{ padding: 20 }}>
+        <Demo />
+      </div>
+    );
   })
   .add('Contexts', () => {
     type Props = {};
     type State = {};
-    class Demo extends Component<Props, State> {
+    class Demo extends PureComponent<Props, State> {
       render() {
         return (
           <div ref="root">
             <Tabs>
               <Tab selected label="(default)">
-                <Editor expanded />
-              </Tab>
-              <Tab selected label="(default) no-actions">
-                <Editor expanded noActions/>
+                <Editor
+                  onCancel={CancelAction}
+                  onSave={SaveAction}
+                />
               </Tab>
               <Tab selected label="comment">
-                <Editor expanded context="comment"/>
+                <Editor
+                  context="comment"
+                  onCancel={CancelAction}
+                  onSave={SaveAction}
+                />
               </Tab>
             </Tabs>
           </div>
@@ -72,5 +80,9 @@ storiesOf('ak-editor-jira', module)
       }
     }
 
-    return <Demo />;
+    return (
+      <div style={{ padding: 20 }}>
+        <Demo />
+      </div>
+    );
   });

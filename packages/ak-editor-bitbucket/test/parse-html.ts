@@ -5,8 +5,7 @@ import {
   a, blockquote, code, code_block, doc, emoji, strong,
   h1, h2, h3, h4, h5, h6, hr, img, ul, ol, li, p, mention
 } from './_schema-builder';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { default as chai, expect } from 'chai';;
 import schema from '../src/schema';
 
 chai.use(chaiPlugin);

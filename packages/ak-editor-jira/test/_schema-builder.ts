@@ -17,9 +17,9 @@ export const li = nodeFactory(schema.nodes.list_item);
 export const ol = nodeFactory(schema.nodes.ordered_list);
 
 // Marks
-export const code = markFactory(schema.marks.code);
-export const strike = markFactory(schema.marks.strike);
 export const em = markFactory(schema.marks.em);
+export const mono = markFactory(schema.marks.mono);
+export const strike = markFactory(schema.marks.strike);
 export const strong = markFactory(schema.marks.strong);
 export const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 export const sup = markFactory(schema.marks.subsup, { type: 'sup' });

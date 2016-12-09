@@ -20,10 +20,11 @@ const Base = base({ Component, prop });
 // function to simulate a component attempting to update it's own props
 const Extended = define('x-extended', class extends Base {
   static get props() {
-    return Object.assign({}, {
+    return {
       value1: prop.number({ default: 1 }),
       value2: prop.number({ default: 1 }),
-    }, super.props);
+      ...super.props,
+    };
   }
   static attached(elem) {
     elem.increment = () => {

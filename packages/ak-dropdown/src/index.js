@@ -41,7 +41,6 @@ import {
   dropList,
 } from './internal/symbols';
 
-
 function openDialog(elem) {
   sendCancellableEvents(
     events.openBefore,

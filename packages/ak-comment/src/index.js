@@ -2,7 +2,6 @@
 
 import { vdom, define } from 'skatejs';
 
-
 // component parts
 import Root from './Root';
 import Content from './Content';

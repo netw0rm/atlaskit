@@ -8,7 +8,6 @@ import { getRootNode, createTemporaryComponent, tearDownComponent } from 'akutil
 import { name } from '../../package.json';
 import Href from '../../src/templates/Href';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 

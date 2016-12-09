@@ -1,0 +1,114 @@
+@import 'variables.less';
+
+.item {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  padding: 0 unit(@grid * 2, px);
+  text-decoration: none;
+  color: @ak-dropdown-font-main-color;
+  cursor: pointer;
+
+  &:focus {
+    box-shadow: 0 0 0 2px @ak-dropdown-focused-outline-color;
+    outline: none;
+    outline-offset: 0;
+    position: relative; // prevents bgcolor of a hovered element from obfuscating focus ring of a focused sibling element
+  }
+
+  &:hover {
+    background-color: @ak-dropdown-background-hover-color;
+    text-decoration: none;
+    color: @ak-dropdown-font-main-color;
+
+    .checkradio {
+      color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+      fill: transparent;
+    }
+
+    &.checked {
+      .checkradio {
+        color: @ak-color-B50;
+        fill: @ak-color-N700;
+      }
+    }
+  }
+
+  &:active {
+    background-color: @ak-dropdown-background-active-color;
+    color: @ak-dropdown-font-active-color;
+
+    .checkradio {
+      color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+      fill: transparent;
+    }
+
+    &.checked {
+      .checkradio {
+        color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+        fill: @ak-color-N700;
+      }
+    }
+  }
+
+  &.hidden {
+    display: none;
+  }
+
+  &.checked {
+    .checkradio {
+      color: @ak-color-B50;
+      fill: @ak-color-N700;
+    }
+  }
+
+  &.active {
+    background-color: @ak-dropdown-background-selected-color;
+    color: @ak-dropdown-font-main-color;
+  }
+
+  &.disabled {
+    background-color: @ak-dropdown-background-disabled-color;
+    color: @ak-dropdown-font-disabled-color;
+    cursor: not-allowed;
+
+    .checkradio {
+      color: @ak-color-N600;
+      fill: transparent;
+    }
+
+    &.checked {
+      .checkradio {
+        color: @ak-color-N600;
+        fill: @ak-color-N700;
+      }
+    }
+  }
+}
+
+.elemBefore {
+  margin: 0 unit(@grid, px);
+  min-width: unit(@grid * 5, px);
+  display: flex;
+}
+
+.checkradio {
+  margin: 0 unit(@grid, px);
+  min-width: unit(@grid * 5, px);
+  display: flex;
+  color: @ak-color-N400;
+  fill: @ak-color-N400;
+}
+
+.content {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: unit(@grid, px);
+  padding:3px 0;
+}

@@ -11,6 +11,7 @@ export { default as dispatchPasteEvent } from './dispatch-paste-event';
 export { default as SyncPlugin } from './sync-plugin';
 export { default as makeEditor } from './make-editor';
 export { default as fixtures } from './fixtures';
+export { default as RewireMock } from './rewire-mock';
 export { default as RewireSpy } from './rewire-spy';
 export { default as isBrokenEnvironment } from './broken-environment';
 export {

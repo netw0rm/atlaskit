@@ -7,7 +7,6 @@ import tabStyles from 'style!../src/tab-shadow.less';
 import AkTabs, { events, Tab as AkTabsTab } from '../src';
 import { buttonContainer, labelsContainer, tabLabel } from '../src/internal/symbols';
 
-
 const { tabChange: tabChangeEvent } = events;
 const defaultLabel = 'Default tab label';
 const defaultContent = '<p>Default tab content</p>';

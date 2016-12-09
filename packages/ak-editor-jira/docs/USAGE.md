@@ -40,8 +40,7 @@ Now you can use the defined editor in your HTML markup:
   </head>
   <body>
     <!-- ... -->
-    <ak-editor-jira default-value="{&quot;type&quot;: &quot;doc&quot;,&quot;content&quot;: [{&quot;type&quot;: &quot;paragraph&quot;,&quot;content&quot;: [{&quot;type&quot;: &quot;text&quot;,&quot;text&quot;: &quot;Hello world!&quot;}]}]
-}"></ak-editor-jira>
+    <ak-editor-jira default-value="&lt;h1&gt;&lt;a name=&quot;Here%27ssomething%21&quot;&gt;&lt;/a&gt;Here's something!&lt;/h1&gt;&lt;p&gt;&lt;b&gt;&lt;em&gt;Another thing.&lt;/em&gt;&lt;/b&gt;&lt;/p&gt;"></ak-editor-jira>
   </body>
 </html>
 ```
@@ -53,20 +52,7 @@ You can also use it within another JS resource:
 import AkEditorJira from 'ak-editor-jira';
 
 const editor = new AkEditorJira();
-editor.defaultValue = `{
-  "type": "doc",
-  "content": [
-    {
-      "type": "paragraph",
-      "content": [
-        {
-          "type": "text",
-          "text": "Hello world!"
-        }
-      ]
-    }
-  ]
-}`;
+editor.defaultValue = `<h1><a name="Here%27ssomething%21"></a>Here's something!</h1><p><b><em>Another thing.</em></b></p>`;
 
 document.body.appendChild(editor);
 ```
@@ -82,19 +68,6 @@ import reactify from 'skatejs-react-integration';
 const AkEditorJira = reactify(AkEditorJiraWebComponent, {});
 
 ReactDOM.render(<AkEditorJira
-  defaultValue={`{
-    "type": "doc",
-    "content": [
-      {
-        "type": "paragraph",
-        "content": [
-          {
-            "type": "text",
-            "text": "Hello world!"
-          }
-        ]
-      }
-    ]
-  }`}
-  onChange={(e) => console.log(JSON.stringify(e.target.value))} />, container);
+  defaultValue={`<h1><a name="Here%27ssomething%21"></a>Here's something!</h1><p><b><em>Another thing.</em></b></p>`}
+  onChange={(e) => console.log(e.target.value)} />, container);
 ```

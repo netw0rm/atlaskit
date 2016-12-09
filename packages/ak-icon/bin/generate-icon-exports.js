@@ -12,7 +12,6 @@ const webpackConf = require('./webpack.config.js');
 const { glyphFolderName, tmpFolderName, fileEnding } = require('./constants');
 const workOnIcons = require('./workOnIcons');
 
-
 const log = minilog('ak-icon/gen-js');
 
 if (process.env.CLI) {
@@ -68,8 +67,16 @@ async.waterfall([
     log.debug('"Writing TypeScript definitions');
 
     const contents = `
-import { Component } from 'skatejs';
-export default class extends Component {}
+import { PureComponent } from 'react';
+
+type State = {};
+type Props = {
+  label: string;
+  size?: 'small' | 'medium' | 'large' | 'xlarge';
+  onClick?: (e: MouseEvent) => void;
+};
+
+export default class extends PureComponent<Props, State> {}
 `;
     const tasks = Object
       .keys(entry)

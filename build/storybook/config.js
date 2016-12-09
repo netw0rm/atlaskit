@@ -3,13 +3,13 @@ import 'akutil-polyfills';
 import React from 'react';
 import 'storybook-addon-i18n-tools';
 import { checkA11y } from 'storybook-addon-a11y/dist';
+import 'style-loader!css-loader!ak-css-reset/dist/bundle.css';
 
 import 'style!./styles.less';
 
 import MonitoredStory from './MonitoredStory';
 import MonkeyTestStory from './MonkeyTestStory';
 import BaselineAlignmentStory from './BaselineAlignmentStory';
-
 
 function loadStories() {
   // Use a webpack loader to dynamically require stories.

@@ -1,7 +1,6 @@
 import { schema } from '../src/schema';
 import { Fragment, Node } from 'ak-editor-prosemirror';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { default as chai, expect } from 'chai';
 import { chaiPlugin } from 'ak-editor-test';
 import { fromHTML, toHTML } from 'ak-editor-test';
 

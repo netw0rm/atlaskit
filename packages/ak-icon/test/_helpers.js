@@ -11,6 +11,7 @@ export const getGlyphs = () => req.keys().reduce((prev, file) => {
     // ignore our base chunk
     return prev;
   }
+
   prev[fileToScope(file)] = req(file).default;
   return prev;
 }, {});

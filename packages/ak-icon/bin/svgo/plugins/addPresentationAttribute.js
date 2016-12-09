@@ -2,7 +2,7 @@ exports.type = 'perItem';
 
 exports.active = true;
 
-exports.description = 'adds role="presentation" to circe, path and rect elements';
+exports.description = 'adds role="presentation" to circle, path and rect elements';
 
 exports.params = {
   tags: ['circle', 'path', 'rect'],

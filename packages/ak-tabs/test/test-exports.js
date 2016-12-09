@@ -4,7 +4,6 @@ import { Component } from 'skatejs';
 
 import Tabs, * as exports from '../src';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 

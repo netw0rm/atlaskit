@@ -1,6 +1,8 @@
 # Calendar
 
-The `ak-calendar` component is a generic calendar that can be used standalone or composed with a form field to make a datepicker.
+The `ak-calendar` component is a generic calendar that can be used standalone or together with a form field to make a datepicker.
+
+![Example buttons](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-calendar/docs/calendar.gif)
 
 ## Try it out
 

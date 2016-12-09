@@ -1,18 +1,16 @@
-import React from 'react';
-import reactify from 'akutil-react';
-import AkTagWebComponent, { events as tagEvents } from 'ak-tag';
+import React, { PureComponent } from 'react';
+import Tag from 'ak-tag';
 
-import groupStyles from '../src/shadow.less';
-import WebComponent from '../src';
+import groupStyles from '../src/styles.less';
+import Group from '../src';
 
+export default class EventedGroup extends PureComponent {
 
-const { beforeRemove: beforeRemoveEvent, afterRemove: afterRemoveEvent } = tagEvents;
-
-const Group = reactify(WebComponent);
-
-const Tag = reactify(AkTagWebComponent);
-
-class EventedGroup extends React.Component {
+  static propTypes = {
+    alignment: React.PropTypes.string,
+    initialTags: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    onRemove: React.PropTypes.func,
+  }
 
   constructor(props, context) {
     super(props, context);
@@ -22,30 +20,14 @@ class EventedGroup extends React.Component {
       allowRemoval: true,
       alignment: this.props.alignment,
     };
-    this.boundBeforeRemoveCallback = this.beforeRemoveCallback.bind(this);
-    this.boundAfterRemoveCallback = this.afterRemoveCallback.bind(this);
     this.onRemove = this.props.onRemove || (() => null);
   }
 
-  componentDidMount() {
-    this.group.addEventListener(beforeRemoveEvent, this.boundBeforeRemoveCallback);
-    this.group.addEventListener(afterRemoveEvent, this.boundAfterRemoveCallback);
-  }
+  beforeRemoveCallback = () => !!this.state.allowRemoval;
 
-  componentWillUnmount() {
-    this.group.removeEventListener(beforeRemoveEvent, this.boundBeforeRemoveCallback);
-    this.group.removeEventListener(afterRemoveEvent, this.boundAfterRemoveCallback);
-  }
-
-  beforeRemoveCallback(e) {
-    if (!this.state.allowRemoval) {
-      e.preventDefault();
-    }
-  }
-
-  afterRemoveCallback(e) {
-    this.onRemove(e.target.text);
-    const tags = this.state.tags.filter(text => text !== e.target.text);
+  afterRemoveCallback = (removedTagText) => {
+    this.onRemove(removedTagText);
+    const tags = this.state.tags.filter(text => text !== removedTagText);
     this.setState({ tags });
   }
 
@@ -61,22 +43,19 @@ class EventedGroup extends React.Component {
         <label htmlFor="allow-remove">Allow tag removal</label>
         <hr />
         <Group className={groupStyles.locals.akTagGroup} alignment={this.state.alignment}>
-          {this.state.tags.map(text => (<Tag
-            text={text}
-            key={text}
-            remove-button-text="Remove me"
-          />))}
+          {
+            this.state.tags.map(text => (
+              <Tag
+                text={text}
+                key={text}
+                removeButtonText="Remove me"
+                onBeforeRemoveAction={this.beforeRemoveCallback}
+                onAfterRemoveAction={this.afterRemoveCallback}
+              />
+            ))
+          }
         </Group>
       </div>
     );
   }
 }
-
-EventedGroup.displayName = 'EventedGroup';
-EventedGroup.propTypes = {
-  alignment: React.PropTypes.string,
-  initialTags: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  onRemove: React.PropTypes.func,
-};
-
-export default EventedGroup;

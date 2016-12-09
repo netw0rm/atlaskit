@@ -3,7 +3,6 @@ import uid from 'uid';
 import waitUntil from './waitUntil';
 import getShadowRoot from './getShadowRoot';
 
-
 /**
 * Creates a temporary component from a SkateJS module definition
 *

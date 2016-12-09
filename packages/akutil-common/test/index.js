@@ -95,7 +95,6 @@ describe(name, () => {
       itSetsTheAttributeToEmptyWhenPropertySetToTruthy();
     });
 
-
     describe('setBooleanAttribute for attr present and empty', () => {
       beforeEach(() => {
         el.setAttribute(ATTRIBUTE, '');
@@ -121,7 +120,6 @@ describe(name, () => {
         });
       });
     });
-
 
     function computeEnumValueMatchesValuesCaseInsensitive(enumOptions) {
       it('matches values case-insensitive', () => {

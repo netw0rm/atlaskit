@@ -1,15 +1,17 @@
-import HyperlinkPlugin from '../src';
-import { chaiPlugin, makeEditor, doc, a, p, text, insert } from 'ak-editor-test';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import mocha from 'mocha';
+import { default as chai, expect } from 'chai';
+import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import HyperlinkPlugin from '../src';
+import { chaiPlugin, makeEditor, insert } from 'ak-editor-test';
+import { doc, link, linkable, schema, unlinkable } from './_schema-builder';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);
 
 describe('ak-editor-plugin-hyperlink', () => {
   const editor = (doc: any) => {
-    const { pm, plugin } = makeEditor({ doc, plugin: HyperlinkPlugin });
+    const { pm, plugin } = makeEditor({ doc, plugin: HyperlinkPlugin, schema });
     return { pm, plugin, sel: pm.doc.refs['<>'] };
   };
 
@@ -20,98 +22,93 @@ describe('ak-editor-plugin-hyperlink', () => {
 
   describe('input rules', () => {
     it('should convert "www.atlassian.com " to hyperlink', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
+      const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'www.atlassian.com ');
 
-      const link = a({ href: 'http://www.atlassian.com' })('www.atlassian.com')
-      expect(pm.doc).to.deep.equal(doc(p(link, ' ')));
+      const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com')
+      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 
     it('should convert "www.atlassian.com/ " to hyperlink', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
+      const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'www.atlassian.com/ ');
 
-      const link = a({ href: 'http://www.atlassian.com/' })('www.atlassian.com/')
-      expect(pm.doc).to.deep.equal(doc(p(link, ' ')));
+      const a = link({ href: 'http://www.atlassian.com/' })('www.atlassian.com/')
+      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 
     it('should convert "http://www.atlassian.com/ " to hyperlink', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
+      const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'http://www.atlassian.com/ ');
 
-      const link = a({ href: 'http://www.atlassian.com/' })('http://www.atlassian.com/')
-      expect(pm.doc).to.deep.equal(doc(p(link, ' ')));
+      const a = link({ href: 'http://www.atlassian.com/' })('http://www.atlassian.com/')
+      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 
     it('should convert "http://www.atlassian.com " to hyperlink', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
+      const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'http://www.atlassian.com ');
 
-      const link = a({ href: 'http://www.atlassian.com' })('http://www.atlassian.com')
-      expect(pm.doc).to.deep.equal(doc(p(link, ' ')));
+      const a = link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com')
+      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 
     it('should convert "https://www.atlassian.com/ " to hyperlink', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
+      const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'https://www.atlassian.com/ ');
 
-      const link = a({ href: 'https://www.atlassian.com/' })('https://www.atlassian.com/')
-      expect(pm.doc).to.deep.equal(doc(p(link, ' ')));
+      const a = link({ href: 'https://www.atlassian.com/' })('https://www.atlassian.com/')
+      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 
     it('should convert "https://www.atlassian.com " to hyperlink', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
+      const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'https://www.atlassian.com ');
 
-      const link = a({ href: 'https://www.atlassian.com' })('https://www.atlassian.com')
-      expect(pm.doc).to.deep.equal(doc(p(link, ' ')));
+      const a = link({ href: 'https://www.atlassian.com' })('https://www.atlassian.com')
+      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 
     it('should not convert "javascript://alert(1); " to hyperlink', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
+      const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'javascript://alert(1); ');
-      expect(pm.doc).to.deep.equal(doc(p('javascript://alert(1); ')));
+      expect(pm.doc).to.deep.equal(doc(linkable('javascript://alert(1); ')));
     });
   });
 
   describe('API', () => {
     it('should allow a change handler to be registered', () => {
-      const { plugin } = editor(doc(p('')));
+      const { plugin } = editor(doc(linkable('')));
 
       plugin.subscribe(sinon.spy());
     });
 
     it('should get current state immediately once subscribed', () => {
-      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+      const { pm, plugin } = editor(doc(linkable('{<}text{>}')));
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
       expect(spy).to.have.been.callCount(1);
-
-      expect(spy).to.have.been.calledWith({
-        active: false,
-        element: null,
-        enabled: true,
-        href: '',
-        rel: '',
-        target: '',
-        text: '',
-        title: '',
-      });
     });
 
     it('should be able to register handlers for state change events', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('te{pos}xt'))));
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{pos}xt'))));
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      pm.setTextSelection(pm.doc.refs.pos);
+      pm.setTextSelection(pm.doc.refs['pos']);
 
       expect(spy).to.have.been.callCount(2);
     });
 
+    it('sets canAddLink to false when in a context where links are not supported by the schema', () => {
+      const { pm, plugin } = editor(doc(unlinkable('{<}text{>}')));
+
+      expect(plugin.canAddLink).to.be.false;
+    });
+
     it('should treat it as a link when selecting the whole link', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'))));
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'))));
       const spy = sinon.spy();
       const { pos1, pos2 } = pm.doc.refs;
       plugin.subscribe(spy);
@@ -122,7 +119,7 @@ describe('ak-editor-plugin-hyperlink', () => {
     });
 
     it('should treat it as a link when selecting part of the link', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'))));
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'))));
       const spy = sinon.spy();
       const { pos1, pos2 } = pm.doc.refs;
       plugin.subscribe(spy);
@@ -133,27 +130,27 @@ describe('ak-editor-plugin-hyperlink', () => {
     });
 
     it('should not treat it as a link when cursor is at the beginning of the link', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{pos}text'))));
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{start}text'))));
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      pm.setTextSelection(pm.doc.refs.pos);
+      pm.setTextSelection(pm.doc.refs['start']);
 
       expect(spy).to.have.been.callCount(1);
     });
 
     it('should not treat it as a link when cursor is at the end of the link', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('text{pos}'))));
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('text{end}'))));
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      pm.setTextSelection(pm.doc.refs.pos);
+      pm.setTextSelection(pm.doc.refs['end']);
 
       expect(spy).to.have.been.callCount(1);
     });
 
     it('does not emit `change` multiple times when the selection moves within a link', () => {
-      const { pm, plugin } = editor(doc(p('{<>}text', a({ href: 'http://www.atlassian.com' })('l{pos1}i{pos2}nk'))));
+      const { pm, plugin } = editor(doc(linkable('{<>}text', link({ href: 'http://www.atlassian.com' })('l{pos1}i{pos2}nk'))));
       const spy = sinon.spy();
       const { pos1, pos2 } = pm.doc.refs;
       plugin.subscribe(spy);
@@ -165,10 +162,10 @@ describe('ak-editor-plugin-hyperlink', () => {
     });
 
     it('emits change when the selection leaves a link', () => {
-      const { pm, plugin } = editor(doc(p('te{textPos}xt {<>}')));
+      const { pm, plugin } = editor(doc(linkable('te{textPos}xt {<>}')));
       const { textPos } = pm.doc.refs;
       const spy = sinon.spy();
-      const { linkPos } = insert(pm, a({ href: 'http://www.atlassian.com' })('li{linkPos}nk'));
+      const { linkPos } = insert(pm, link({ href: 'http://www.atlassian.com' })('li{linkPos}nk'));
       pm.setTextSelection(linkPos);
 
       plugin.subscribe(spy);
@@ -177,163 +174,116 @@ describe('ak-editor-plugin-hyperlink', () => {
       expect(spy).to.have.been.callCount(2);
     });
 
-    it('does not permit adding a link to a collapsed selection', () => {
-      const { pm, plugin } = editor(doc(p('{<>}')));
+    it('permits adding a link to an empty selection using the href', () => {
+      const { pm, plugin } = editor(doc(linkable('{<>}')));
+      const href = 'http://www.atlassian.com';
 
-      expect(plugin.addLink({ href: 'http://www.atlassian.com' })).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p()));
+      plugin.addLink({ href });
+
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href })(href))));
     });
 
     it('does not permit adding a link to an existing link', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{<}link{>}'))));
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}link{>}'))));
 
-      expect(plugin.addLink({ href: 'http://www.example.com' })).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://www.atlassian.com' })('link'))));
+      plugin.addLink({ href: 'http://www.example.com' });
+
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://www.atlassian.com' })('link'))));
     });
 
-    it('does not permit adding a link when in the disabled state', () => {
-      const { pm, plugin } = editor(doc(p('{<}text{>}')));
-      plugin.setState({ enabled: false });
+    it('does not permit adding a link when not supported by the schema', () => {
+      const { pm, plugin } = editor(doc(unlinkable('{<}text{>}')));
 
-      expect(plugin.addLink({ href: 'http://www.atlassian.com' })).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p('text')));
+      plugin.addLink({ href: 'http://www.atlassian.com' });
+
+      expect(pm.doc).to.deep.equal(doc(unlinkable('text')));
     });
 
-    it('allows options when adding a link', () => {
-      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+    it('requires href when adding a link', () => {
+      const { pm, plugin } = editor(doc(linkable('{<}text{>}')));
 
-      expect(plugin.addLink({ href: 'http://example.com' })).to.be.true;
-      expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://example.com' })('text'))));
-    });
+      plugin.addLink({ href: 'http://example.com' });
 
-    it('should be able to create a link with new text', () => {
-      const { pm, plugin } = editor(doc(p('{<}text{>}')));
-      const href = 'http://example.com';
-      const text = 'foo';
-
-      expect(plugin.addLink({ href, text })).to.be.true;
-      expect(pm.doc).to.deep.equal(doc(p(a({ href })(text))));
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('text'))));
     });
 
     it('should not be a part of the link when typing before it', () => {
-      const { pm, plugin } = editor(doc(p('a{<}text{>}')));
+      const { pm, plugin } = editor(doc(linkable('a{before}{<}text{>}')));
+      const { before } = pm.doc.refs;
       const href = 'http://example.com';
-      const text = 'foo';
-      const bar = 'bar';
 
-      plugin.addLink({ href, text });
-      pm.tr.insertText(2, bar).apply();
+      plugin.addLink({ href });
+      pm.tr.insertText(before, 'bar').apply();
 
-      expect(pm.doc).to.deep.equal(doc(p(`a${bar}`, a({ href })(text))));
+      expect(pm.doc).to.deep.equal(doc(linkable(`abar`, link({ href })('text'))));
     });
 
-    it('should be a part of the link when typing on it', () => {
-      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+    it('should be a part of the link when typing in it', () => {
+      const { pm, plugin } = editor(doc(linkable('{<}te{middle}xt{>}')));
+      const { middle } = pm.doc.refs;
       const href = 'http://example.com';
-      const text = 'for';
-      const bar = 'oba';
 
-      plugin.addLink({ href, text });
-      pm.tr.insertText(3, bar).apply();
+      plugin.addLink({ href });
+      pm.tr.insertText(middle, 'bar').apply();
 
-      expect(pm.doc).to.deep.equal(doc(p(a({ href })('foobar'))));
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href })('tebarxt'))));
     });
 
     it('should not be a part of the link when typing after it', () => {
-      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+      const { pm, plugin } = editor(doc(linkable('{<}text{>}{end}')));
+      const { end } = pm.doc.refs;
       const href = 'http://example.com';
-      const text = 'foo';
-      const bar = 'bar';
 
-      plugin.addLink({ href, text });
-      pm.tr.insertText(4, bar).apply();
+      plugin.addLink({ href });
+      pm.tr.insertText(end, 'bar').apply();
 
-      expect(pm.doc).to.deep.equal(doc(p(a({ href })(text), bar)));
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href })('text'), 'bar')));
     });
 
-    it('should not allow creating a link if href is empty', () => {
-      const { pm, plugin } = editor(doc(p('{<}text{>}')));
-      const href = '';
+    it('should allow links to be added when the selection is empty', () => {
+      const { pm, plugin } = editor(doc(linkable('{<>}text')));
 
-      expect(plugin.addLink({ href })).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p('text')));
-    });
-
-    it('should not allow creating a link if href is whitespaces only', () => {
-      const { pm, plugin } = editor(doc(p('{<}text{>}')));
-      const href = ' \t';
-
-      expect(plugin.addLink({ href })).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p('text')));
-    });
-
-    it('should not be able to link if selection is empty', () => {
-      const { pm, plugin } = editor(doc(p('{<}text{>}')));
-      pm.setTextSelection(1);
-      const { enabled } = plugin.getState();
-
-      expect(enabled).to.be.false;
+      expect(plugin.canAddLink).to.be.true;
     });
 
     it('should not be able to unlink a node that has no link', () => {
-      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+      const { pm, plugin } = editor(doc(linkable('{<}text{>}')));
 
-      expect(plugin.removeLink()).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p('text')));
+      plugin.removeLink();
+
+      expect(pm.doc).to.deep.equal(doc(linkable('text')));
     });
 
     it('should be able to unlink an existing link', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
 
-      expect(plugin.removeLink()).to.be.true;
-      expect(pm.doc).to.deep.equal(doc(p('text')));
+      plugin.removeLink();
+
+      expect(pm.doc).to.deep.equal(doc(linkable('text')));
     });
 
-    it('should be able to update existing links with HyperLinkOptions', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
+    it('should be able to update existing links with href', () => {
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
 
-      expect(plugin.updateLink({
-        href: 'http://example.com',
-        text: 'foo'
-      })).to.be.true;
-      expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://example.com' })('foo'))));
+      plugin.updateLink({ href: 'http://example.com' });
+
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('text'))));
     });
 
-    it('should not allow updating a link if new href is empty', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: 'http://example.com' })('{<}text{>}'))));
+    it('should allow updating a link if new href is empty', () => {
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://example.com' })('{<}text{>}'))));
 
-      expect(plugin.updateLink({
-        href: '',
-        text: 'example/foo'
-      })).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://example.com' })('text'))));
-    });
+      plugin.updateLink({ href: '' });
 
-    it('should not allow updating a link if new href is whitespaces only', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: 'http://example.com' })('{<}text{>}'))));
-
-      expect(plugin.updateLink({
-        href: ' \n',
-        text: 'example/foo'
-      })).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://example.com' })('text'))));
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: '' })('text'))));
     });
 
     it('should not be able to update when not in a link', () => {
-      const { pm, plugin } = editor(doc(p('{<}text{>}')));
+      const { pm, plugin } = editor(doc(linkable('{<}text{>}')));
 
-      expect(plugin.updateLink({
-        href: 'http://example.com/foo',
-        text: 'example/foo'
-      })).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p('text')));
-    });
+      plugin.updateLink({ href: 'http://example.com/foo' });
 
-    it('requires options when updating a link', () => {
-      const { pm, plugin } = editor(doc(p(a({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
-
-      expect(plugin.updateLink()).to.be.false;
-      expect(pm.doc).to.deep.equal(doc(p(a({ href: 'http://www.atlassian.com' })('text'))));
+      expect(pm.doc).to.deep.equal(doc(linkable('text')));
     });
   });
 });

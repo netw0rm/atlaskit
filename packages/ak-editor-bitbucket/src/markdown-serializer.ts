@@ -115,6 +115,9 @@ const nodes = {
   empty_line(state: MarkdownSerializerState, node: Node) {
     state.write('\u200c'); // zero-width-non-joiner
     state.closeBlock(node);
+  },
+  mention(state: MarkdownSerializerState, node: Node) {
+    state.write(`@${node.attrs.id}`);
   }
 };
 
@@ -149,7 +152,8 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
         // If child is an empty Textblock we need to insert a zwnj-character in order to preserve that line in markdown
         (child.isTextblock && !child.textContent) &&
         // If child is a Codeblock we need to handle this seperately as we want to preserve empty code blocks
-        !isCodeBlockNode(child)
+        !isCodeBlockNode(child) &&
+        !(child.content && (child.content as any).size > 0)
       ) {
         return nodes.empty_line(this, child);
       }

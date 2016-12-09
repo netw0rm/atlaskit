@@ -10,7 +10,6 @@ import Root from '../src/Root';
 chai.use(chaiAsPromised);
 chai.should();
 
-
 describe.skip('ak-tag', () => {
   describe('Root', () => {
     let component;

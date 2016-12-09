@@ -5,7 +5,6 @@ import reactify from 'akutil-react';
 import AkTabs, { events, Tab as AkTab } from '../src';
 import { name } from '../package.json';
 
-
 const { tabChange: tabChangeEvent } = events;
 const Component = reactify(AkTabs);
 

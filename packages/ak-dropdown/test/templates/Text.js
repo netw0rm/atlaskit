@@ -8,7 +8,6 @@ import { getRootNode, createTemporaryComponent, tearDownComponent } from 'akutil
 import { name } from '../../package.json';
 import Text from '../../src/templates/Text';
 
-
 chai.use(chaiAsPromised);
 chai.should();
 

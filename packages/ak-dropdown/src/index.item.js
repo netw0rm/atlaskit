@@ -10,7 +10,6 @@ import IconContainer from './templates/LeftSlotContainer';
 import DefaultSlotContainer from './templates/DefaultSlotContainer';
 import childrenHaveSlot from './internal/childrenHaveSlot';
 
-
 export const elemDom = Symbol('elemDom');
 export const BaseProps = {
   /**
@@ -141,7 +140,7 @@ export default define('ak-dropdown-item', {
       };
     },
   },
-  props: Object.assign({
+  props: {
     /**
      * @description href for a dropdown item's link'
      * @memberof Dropdown
@@ -182,5 +181,6 @@ export default define('ak-dropdown-item', {
     active: prop.boolean({
       attribute: true,
     }),
-  }, BaseProps),
+    ...BaseProps,
+  },
 });

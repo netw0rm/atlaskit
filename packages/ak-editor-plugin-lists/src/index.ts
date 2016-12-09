@@ -1,19 +1,25 @@
 import {
+  commands,
+  EditorTransform,
   Keymap,
+  liftTarget,
   Plugin,
   ProseMirror,
-  ResolvedPos,
   Node,
   NodeRange,
-  UpdateScheduler,
-  commands,
-  TextSelection,
   NodeSelection,
-  liftTarget,
-  EditorTransform
+  NodeType,
+  ResolvedPos,
+  Schema,
+  Selection,
+  TextSelection,
+  UpdateScheduler
 } from 'ak-editor-prosemirror';
 
 import {
+  BulletListNodeType,
+  ListItemNodeType,
+  OrderedListNodeType,
   isBulletListNode,
   isOrderedListNode
 } from 'ak-editor-schema'
@@ -24,119 +30,187 @@ export interface ListsOptions {
   type?: ListType;
 }
 
-export interface ListsState extends ListsOptions {
-  active?: boolean;
-  enabled?: boolean;
-}
-
 export type StateChangeHandler = (state: ListsState) => any;
 
-const DISABLED_GROUP = 'unlistable';
+export class ListsState {
+  private changeHandlers: StateChangeHandler[] = [];
+  private pm: PM;
+  private wrapInBulletList: (pm: PM, apply?: boolean) => any;
+  private wrapInOrderedList: (pm: PM, apply?: boolean) => any;
 
-const DEFAULT_STATE: ListsState = {
-  active: false,
-  enabled: true,
-  type: null,
-};
+  // public state
+  bulletListActive = false;
+  bulletListDisabled = false;
+  bulletListHidden = false;
+  orderedListActive = false;
+  orderedListDisabled = false;
+  orderedListHidden = false;
 
-function canChangeToList(pm: ProseMirror, listsTypes: ListType[]): boolean {
-  return listsTypes.some((type) => commands.wrapInList(pm.schema.nodes[type as string])(pm, false));
-}
+  active = false;
+  enabled = true;
+  type?: ListType;
 
-function isNodeListable(proseMirrorInstance: ProseMirror, node: Node): boolean {
-  const nodeType = node.type.name;
-  const nodeSpecOrderedMap = proseMirrorInstance.schema.nodeSpec;
-  return nodeSpecOrderedMap.get(nodeType).group.split(' ').indexOf(DISABLED_GROUP) === -1;
-}
-
-function isShallowObjectEqual(oldObject: ListsState, newObject: ListsState): boolean {
-  return JSON.stringify(oldObject) === JSON.stringify(newObject);
-}
-
-function isListNode(node: Node) {
-  return isBulletListNode(node) || isOrderedListNode(node);
-}
-
-class ListsPlugin {
-  changeHandlers: StateChangeHandler[];
-  pm: ProseMirror;
-  state: ListsState;
-  updater: UpdateScheduler;
-  listTypes: ListType[];
-
-  constructor(pm: ProseMirror) {
+  constructor(pm: PM) {
     this.pm = pm;
-    this.state = DEFAULT_STATE;
     this.changeHandlers = [];
-    this.listTypes = [
-      'bullet_list',
-      'ordered_list',
-    ];
+    const { bullet_list, ordered_list } = pm.schema.nodes;
 
-    const listItem = pm.schema.nodes['list_item'];
+    this.bulletListHidden = !bullet_list;
+    this.orderedListHidden = !ordered_list;
+    this.wrapInBulletList = !!bullet_list ? commands.wrapInList(bullet_list) : noop;
+    this.wrapInOrderedList = !!ordered_list ? commands.wrapInList(ordered_list) : noop;
+
+    const { list_item } = pm.schema.nodes;
 
     pm.addKeymap(new Keymap({
-      'Enter': () => commands.splitListItem(listItem)(pm),
+      'Enter': () => commands.splitListItem(list_item)(pm),
     }));
 
-    this.updater = pm.updateScheduler([
+    pm.updateScheduler([
       pm.on.selectionChange,
       pm.on.change,
     ], () => this.update());
   }
 
-  // When typescript spread operator is implemented we can remove this boiler
-  // plate in favour of spread assignment
-  getState(): ListsState {
-    return Object.assign({}, this.state);
+  subscribe(cb: StateChangeHandler) {
+    this.changeHandlers.push(cb);
+    cb(this);
   }
 
-  // When typescript spread operator is implemented we can remove this boiler
-  // plate in favour of spread assignment
-  setState(...newState: ListsState[]): ListsState {
-    this.state = Object.assign.apply(
-      Object,
-      [
-        {},
-        DEFAULT_STATE,
-      ].concat(newState)
-    );
-    return this.state;
+  unsubscribe(cb: StateChangeHandler) {
+    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  update() {
+  toggleOrderedList(): void {
+    const { ordered_list } = this.pm.schema.nodes;
+    if (ordered_list) {
+      this.toggleList(ordered_list);
+    }
+  }
+
+  toggleBulletList(): void {
+    const { bullet_list } = this.pm.schema.nodes;
+    if (bullet_list) {
+      this.toggleList(bullet_list);
+    }
+  }
+
+  /**
+   * If the current selection is a list or part of a list, this method will untoggle
+   * the list type for that selection.
+   * In any other case it will try to apply the specified list type to the seletion,
+   * either by converting existing lists to the new type or just apply the list type
+   * if there's no list in the selection.
+   */
+  private toggleList(nodeType: BulletListNodeType | OrderedListNodeType): void {
     const pm = this.pm;
-    const { $head, $from, $to } = pm.selection;
-    const oldState = this.getState();
+    let { $from, $to } = pm.selection;
+    const adjustedSelection = this.adjustSelection(pm.selection);
 
-    const $resolvedPos: ResolvedPos = $head || $to;
+    const wrapInList = nodeType === pm.schema.nodes.bullet_list
+      ? this.wrapInBulletList
+      : this.wrapInOrderedList;
 
-    // resolvedPos.pos creates an extra offset
-    const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
-
-    const rootNode: Node = $from.node(1);
-    const isListable = activeNode ? isNodeListable(pm, activeNode) : oldState.enabled;
-    const canChange = canChangeToList(pm, this.listTypes);
-
-    if (isListNode(rootNode) && activeNode) {
-      this.setState({
-        active: true,
-        type: rootNode.type.name as ListType,
-        enabled: true
-      });
-    } else if (!isListable || !canChange) {
-      this.setState({ enabled: false });
-    } else {
-      this.setState();
+    if ($from === $to) {
+      pm.setSelection(adjustedSelection);
+      $from = pm.selection.$from;
+      $to = pm.selection.$to;
     }
 
-    if (!isShallowObjectEqual(oldState, this.state)) {
-      this.changeHandlers.every(cb => cb(this.getState()));
+    const rootNode = $from.node(1)!;
+    const isList = isOrderedListNode(rootNode) || isBulletListNode(rootNode);
+    const isRangeOfType = this.isRangeOfType(adjustedSelection.$from, adjustedSelection.$to, nodeType);
+    const shouldUntoggle = isRangeOfType;
+    const rangeContainsList = this.rangeContainsList($from, $to);
+    const shouldConvertToType = !isRangeOfType && (isList || rangeContainsList);
+
+    if (shouldUntoggle) {
+      if ($from.parent === $to.parent) {
+        commands.lift(pm, true);
+        return;
+      }
+
+      this.liftSelection(adjustedSelection.$from, adjustedSelection.$to).applyAndScroll();
+      this.resetSelection();
+    } else if (shouldConvertToType) {
+      const tr = this.liftSelection(adjustedSelection.$from, adjustedSelection.$to).applyAndScroll();
+      pm.setSelection(tr.selection);
+      commands.wrapInList(nodeType)(tr.pm);
+
+      if (this.shouldJoinUp(pm.selection, pm.doc, nodeType)) {
+        commands.joinUp(pm, true);
+      }
+
+      if (this.shouldJoinDown(pm.selection, pm.doc, nodeType)) {
+        commands.joinDown(pm, true);
+      }
+
+      this.resetSelection();
+    } else {
+      pm.setSelection(this.adjustSelection(pm.selection));
+      commands.wrapInList(nodeType)(pm);
+
+      if (this.shouldJoinUp(pm.selection, pm.doc, nodeType)) {
+        commands.joinUp(pm, true);
+      }
+
+      if (this.shouldJoinDown(pm.selection, pm.doc, nodeType)) {
+        /*
+         * joinDown expects the selection to be from the end of our last node to
+         * the beginning of the next. So we need to adjust our selection a bit.
+         * */
+        pm.setSelection(new TextSelection(pm.selection.$to, pm.doc.resolve(pm.selection.$to.after(1))));
+        commands.joinDown(pm, true);
+      }
+
+      this.resetSelection();
     }
   }
 
-  // Returns all block-nodes between $from and $to
-  blockNodesBetween($from: ResolvedPos, $to: ResolvedPos): Node[] {
+  private update() {
+    const { pm } = this;
+    const { bullet_list, ordered_list } = pm.schema.nodes;
+    const rootNode = pm.selection instanceof NodeSelection
+      ? pm.selection.node
+      : pm.selection.$from.node(1)!;
+
+    let dirty = false;
+
+    const newBulletListActive = isBulletListNode(rootNode);
+    if (newBulletListActive !== this.bulletListActive) {
+      this.bulletListActive = newBulletListActive;
+      dirty = true;
+    }
+
+    const newOrderedListActive = isOrderedListNode(rootNode);
+    if (newOrderedListActive !== this.orderedListActive) {
+      this.orderedListActive = newOrderedListActive;
+      dirty = true;
+    }
+
+    const anyListActive = newBulletListActive || newOrderedListActive;
+
+    const newBulletListDisabled = !(anyListActive || this.wrapInBulletList(pm, false));
+    if (newBulletListDisabled !== this.bulletListDisabled) {
+      this.bulletListDisabled = newBulletListDisabled;
+      dirty = true;
+    }
+
+    const newOrderedListDisabled = !(anyListActive || this.wrapInOrderedList(pm, false));
+    if (newOrderedListDisabled !== this.orderedListDisabled) {
+      this.orderedListDisabled = newOrderedListDisabled;
+      dirty = true;
+    }
+
+    if (dirty) {
+      this.changeHandlers.forEach(cb => cb(this));
+    }
+  }
+
+  /**
+   * Returns all block-nodes between $from and $to
+   */
+  private blockNodesBetween($from: ResolvedPos, $to: ResolvedPos): Node[] {
     let current = this.pm.doc.resolve($from.start(1));
     let nodes = Array<Node>();
 
@@ -144,7 +218,7 @@ class ListsPlugin {
       nodes.push(current.node(1));
 
       let next: ResolvedPos = this.pm.doc.resolve(current.after(1));
-      if (next.start(1) > this.pm.doc.content.size) {
+      if (next.start(1) > this.pm.doc.nodeSize - 2) {
         break;
       }
 
@@ -154,25 +228,31 @@ class ListsPlugin {
     return nodes;
   }
 
-  // Step through block-nodes between $from and $to and returns false if a node is
-  // found that isn't of the specified type
-  isRangeOfType($from: ResolvedPos, $to: ResolvedPos, type: ListType): boolean {
-    return this.blockNodesBetween($from, $to).filter(node => node.type.name !== type).length === 0;
+  /**
+   * Step through block-nodes between $from and $to and returns false if a node is
+   * found that isn't of the specified type
+   */
+  private isRangeOfType($from: ResolvedPos, $to: ResolvedPos, nodeType: NodeType): boolean {
+    return this.blockNodesBetween($from, $to).filter(node => node.type !== nodeType).length === 0;
   }
 
-  // Step through block-nodes between $from and $to and return true if a node is a
-  // bullet_list or ordered_list
-  rangeContainsList($from: ResolvedPos, $to: ResolvedPos): boolean {
+  /**
+   * Step through block-nodes between $from and $to and return true if a node is a
+   * bullet_list or ordered_list
+   */
+  private rangeContainsList($from: ResolvedPos, $to: ResolvedPos): boolean {
     return this.blockNodesBetween($from, $to).some(isListNode);
   }
 
-  // Takes a selection $from and $to and lift all text nodes from their parents to document-level
-  liftSelection($from: ResolvedPos, $to: ResolvedPos): EditorTransform {
+  /**
+   * Takes a selection $from and $to and lift all text nodes from their parents to document-level
+   */
+  private liftSelection($from: ResolvedPos, $to: ResolvedPos): EditorTransform {
     const tr = this.pm.tr;
     let startPos = $from.start($from.depth);
     let endPos = $to.end($to.depth);
 
-    tr.doc.nodesBetween(startPos, endPos, (node: Node, pos: number) => {
+    tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
       if (
         node.isText ||                          // Text node
         (node.isTextblock && !node.textContent) // Empty paragraph
@@ -192,25 +272,31 @@ class ListsPlugin {
     return tr;
   }
 
-  // Determines if content inside a selection can be joined with the previous block.
-  // We need this check since the built-in method for "joinUp" will join a ordered_list with bullet_list.
-  shouldJoinUp(selection: TextSelection, doc: any, type: ListType): boolean {
+  /**
+   * Determines if content inside a selection can be joined with the previous block.
+   * We need this check since the built-in method for "joinUp" will join a ordered_list with bullet_list.
+   */
+  private shouldJoinUp(selection: Selection, doc: any, nodeType: NodeType): boolean {
     const res = doc.resolve(selection.$from.before(1));
-    return res.nodeBefore && res.nodeBefore.type.name === type;
+    return res.nodeBefore && res.nodeBefore.type === nodeType;
   }
 
-  // Determines if content inside a selection can be joined with the next block.
-  // We need this check since the built-in method for "joinDown" will join a ordered_list with bullet_list.
-  shouldJoinDown(selection: TextSelection, doc: any, type: ListType): boolean {
+  /**
+   * Determines if content inside a selection can be joined with the next block.
+   * We need this check since the built-in method for "joinDown" will join a ordered_list with bullet_list.
+   */
+  private shouldJoinDown(selection: Selection, doc: any, nodeType: NodeType): boolean {
     const res = doc.resolve(selection.$to.after(1));
-    return res.nodeAfter && res.nodeAfter.type.name === type;
+    return res.nodeAfter && res.nodeAfter.type === nodeType;
   }
 
-  // Sometimes a selection in the editor can be slightly offset, for example:
-  // it's possible for a selection to start or end at an empty node at the very end of
-  // a line. This isn't obvious by looking at the editor and it's likely not what the
-  // user intended - so we need to adjust the seletion a bit in scenarios like that.
-  adjustSelection(selection: TextSelection): TextSelection {
+  /**
+   * Sometimes a selection in the editor can be slightly offset, for example:
+   * it's possible for a selection to start or end at an empty node at the very end of
+   * a line. This isn't obvious by looking at the editor and it's likely not what the
+   * user intended - so we need to adjust the seletion a bit in scenarios like that.
+   */
+  private adjustSelection(selection: Selection): Selection {
     let { $from, $to } = selection;
 
     const isSameLine = $from.pos === $to.pos;
@@ -223,7 +309,7 @@ class ListsPlugin {
     let startPos = $from.pos;
     let endPos = $to.pos;
 
-    if (isSameLine && startPos === this.pm.doc.content.size - 1) { // Line is empty, don't do anything
+    if (isSameLine && startPos === this.pm.doc.nodeSize - 3) { // Line is empty, don't do anything
       return selection;
     }
 
@@ -279,86 +365,31 @@ class ListsPlugin {
     return new TextSelection(this.pm.doc.resolve(startPos), this.pm.doc.resolve(endPos));
   }
 
-  resetSelection(): void {
+  private resetSelection(): void {
     const newSelection: TextSelection = new TextSelection(this.pm.selection.$to);
     this.pm.setSelection(newSelection);
-  }
-
-  // If the current selection is a list or part of a list, this method will untoggle
-  // the list type for that selection.
-  // In any other case it will try to apply the specified list type to the seletion,
-  // either by converting existing lists to the new type or just apply the list type
-  // if there's no list in the selection.
-  toggleList(type: ListType): boolean {
-    const pm = this.pm;
-    let { $from, $to } = pm.selection;
-    const adjustedSelection = this.adjustSelection(pm.selection);
-
-    if ($from === $to) {
-      pm.setSelection(adjustedSelection);
-      $from = pm.selection.$from;
-      $to = pm.selection.$to;
-    }
-
-    const rootNode = $from.node(1);
-    const isList = this.listTypes.indexOf(rootNode.type.name) !== -1;
-    const isRangeOfType = this.isRangeOfType(adjustedSelection.$from, adjustedSelection.$to, type);
-    const shouldUntoggle = isRangeOfType;
-    const rangeContainsList = this.rangeContainsList($from, $to);
-    const shouldConvertToType = !isRangeOfType && (isList || rangeContainsList);
-
-    if (shouldUntoggle) {
-      if ($from.parent === $to.parent) {
-        return commands.lift(pm, true);
-      }
-
-      this.liftSelection(adjustedSelection.$from, adjustedSelection.$to).applyAndScroll();
-      this.resetSelection();
-      return true;
-    } else if (shouldConvertToType) {
-      const tr = this.liftSelection(adjustedSelection.$from, adjustedSelection.$to).applyAndScroll();
-      pm.setSelection(tr.selection);
-      commands.wrapInList(tr.pm.schema.nodes[type as string] as Node)(tr.pm);
-
-      if (this.shouldJoinUp(pm.selection, pm.doc, type)) {
-        commands.joinUp(pm, true);
-      }
-
-      if (this.shouldJoinDown(pm.selection, pm.doc, type)) {
-        commands.joinDown(pm, true);
-      }
-
-      this.resetSelection();
-      return true;
-    } else {
-      pm.setSelection(this.adjustSelection(pm.selection));
-      commands.wrapInList(pm.schema.nodes[type as string] as Node)(pm);
-
-      if (this.shouldJoinUp(pm.selection, pm.doc, type)) {
-        commands.joinUp(pm, true);
-      }
-
-      if (this.shouldJoinDown(pm.selection, pm.doc, type)) {
-        /*
-         * joinDown expects the selection to be from the end of our last node to
-         * the beginning of the next. So we need to adjust our selection a bit.
-         * */
-        pm.setSelection(new TextSelection(pm.selection.$to, pm.doc.resolve(pm.selection.$to.after(1))));
-        commands.joinDown(pm, true);
-      }
-
-      this.resetSelection();
-      return true;
-    }
-  }
-
-  subscribe(cb: StateChangeHandler) {
-    this.changeHandlers.push(cb);
-    cb(this.getState());
   }
 }
 
 // IE11 + multiple prosemirror fix.
-Object.defineProperty(ListsPlugin, 'name', { value: 'ListsPlugin' });
+Object.defineProperty(ListsState, 'name', { value: 'ListsState' });
 
-export default new Plugin(ListsPlugin);
+export default new Plugin(ListsState);
+
+interface S extends Schema {
+  nodes: {
+    bullet_list?: BulletListNodeType,
+    list_item:  ListItemNodeType,
+    ordered_list?: OrderedListNodeType
+  }
+}
+
+interface PM extends ProseMirror {
+  schema: S;
+}
+
+function isListNode(node: Node) {
+  return isBulletListNode(node) || isOrderedListNode(node);
+}
+
+const noop = (...args: any[]) => {};

@@ -1,6 +1,7 @@
 import PasteAdapter from '../src/paste-adapter';
 import { expect } from 'chai';
 import { ProseMirror } from 'ak-editor-prosemirror';
+import sinon from 'sinon';
 
 describe('ak-editor-plugin-image-upload PasteAdapter', () => {
   const mockEditor = (): ProseMirror => {

@@ -10,12 +10,10 @@ import keyCode from 'keycode';
 import { createTemporary, removeTemporary, getRootNode } from './_helpers';
 import RemoveButton from '../src/RemoveButton';
 
-
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 chai.should();
 const expect = chai.expect;
-
 
 describe.skip('ak-tag', () => {
   describe('RemoveButton', () => {

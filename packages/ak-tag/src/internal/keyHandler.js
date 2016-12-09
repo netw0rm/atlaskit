@@ -1,6 +1,5 @@
 import { KeyPressHandler } from 'akutil-common';
 
-
 const handledKeys = ['ENTER', 'SPACE'];
 
 export default (elem, cb) => {

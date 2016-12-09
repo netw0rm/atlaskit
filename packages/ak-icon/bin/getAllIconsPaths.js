@@ -7,7 +7,7 @@ const tempFolder = `../src/${tmpFolderName}/`;
 const sourceFolder = path.join(__dirname, '..', 'src');
 
 module.exports = () => {
-  const filesToExport = glob.sync(`${tempFolder}**/*.js`, {
+  const filesToExport = glob.sync(`${tempFolder}**/*.jsx`, {
     cwd: sourceFolder,
   });
   return filesToExport;

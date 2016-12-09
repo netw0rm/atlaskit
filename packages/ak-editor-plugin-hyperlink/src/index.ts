@@ -1,119 +1,39 @@
 import {
-  Plugin, ProseMirror, ResolvedPos, Node, Mark, inputRules, InputRule,
-  allInputRules, DOMFromPos as getDomElementFromPosition
+  allInputRules,
+  commands,
+  DOMFromPos,
+  inputRules,
+  InputRule,
+  NodeSelection,
+  Plugin,
+  ProseMirror,
+  ResolvedPos,
+  Mark,
+  Node,
+  Schema,
+  TextSelection
 } from 'ak-editor-prosemirror';
+import { LinkMarkType } from 'ak-editor-schema';
 import hyperlinkRule from './input-rule';
 import pasteTransformer from './paste-transformer';
 
-export interface HyperlinkOptions {
+export type StateChangeHandler = (state: HyperlinkState) => void;
+
+export class HyperlinkState {
+  private changeHandlers: StateChangeHandler[] = [];
+  private inputRules: InputRule[] = [];
+  private pm: PM;
+
+  // public state
   href?: string;
-  rel?: string;
-  target?: '_self' | '_blank' | '_parent' | '_top' | '';
   text?: string;
-  title?: string;
-}
+  active = false;
+  canAddLink = false;
+  element?: HTMLElement;
 
-export interface HyperlinkState extends HyperlinkOptions {
-  active?: boolean;
-  enabled?: boolean;
-  element?: HTMLElement | null;
-}
-
-export type StateChangeHandler = (state: HyperlinkState) => any;
-
-export const DISABLED_GROUP = 'unlinkable';
-
-const DEFAULT_STATE: HyperlinkState = {
-  active: false,
-  enabled: false,
-  element: null,
-  href: '',
-  rel: '',
-  target: '',
-  text: '',
-  title: '',
-};
-
-// We want to get the postion of the DOM element,
-// when we are at the end of the Node we are no longer on the DOM element boundaries
-// so we need to subtract 1
-// when the parentOffset is 0 we dont need to subtract 1 since we are on the first element
-// returns the position to be used on 'getDomElement' to get the corrent DOM node
-function getBoundariesWithin(
-  $head: ResolvedPos
-) : number {
-  return $head.parentOffset === 0 ? $head.pos : $head.pos -1;
-}
-
-function getDomElement(
-  pm: ProseMirror,
-  pos: number
-) : HTMLElement {
-  const {
-    node,
-    offset,
-  } = getDomElementFromPosition(pm, pos, true);
-
-  if (node.childNodes.length === 0) {
-    return node.parentNode;
-  }
-
-  return node.childNodes[offset];
-}
-
-function isNodeLinkable(pm: ProseMirror, node: Node): boolean {
-  const nodeType = node.type.name;
-  const nodes = pm.schema.nodes;
-  const group = nodes[nodeType].group;
-
-  return group ? group.split(' ').indexOf(DISABLED_GROUP) === -1 : true;
-}
-
-function getHyperlinkAtCursor(
-  pm: ProseMirror,
-  pos: number,
-  empty: boolean
-) : Mark | null {
-  let marks;
-  if (!empty) {
-    // because of `exclusiveRight`, we need to get the node "left to"
-    // the current cursor
-    marks = pm.doc.nodeAt(pos - 1).marks;
-  } else {
-    const node = pm.doc.nodeAt(pos);
-    const previousNode = pm.doc.nodeAt(pos - 1);
-
-    if (node !== previousNode) {
-      return null;
-    }
-
-    marks = node.marks;
-  }
-
-  return marks.find(
-    (mark: Mark) => mark.type.name === 'link'
-  );
-}
-
-function isShallowObjectEqual(
-  oldObject: HyperlinkState,
-  newObject: HyperlinkState
-) : boolean {
-  return JSON.stringify(oldObject) === JSON.stringify(newObject);
-}
-
-class HyperlinkPlugin {
-  changeHandlers: StateChangeHandler[];
-  inputRules: InputRule[];
-  pm: ProseMirror;
-  state: HyperlinkState;
-
-  constructor(pm: ProseMirror) {
+  constructor(pm: PM) {
     this.pm = pm;
-    this.state = DEFAULT_STATE;
-    this.changeHandlers = [];
 
-    // add paste handler
     pm.on.transformPasted.add(pasteTransformer.bind(pasteTransformer, pm));
 
     this.inputRules = [
@@ -127,158 +47,242 @@ class HyperlinkPlugin {
       pm.on.selectionChange,
       pm.on.change,
       pm.on.activeMarkChange,
-    ], () => this.__update__());
+    ], () => this.update());
+
+    this.update();
   }
 
-  // When typescript spread operator is implemented we can remove this boiler
-  // plate in favour of spread assignment
-  getState(): HyperlinkState {
-    return Object.assign({}, this.state);
-  }
+  private updateElement() {
+    const activeLink = this.getActiveLink();
+    let dirty = false;
 
-  // When typescript spread operator is implemented we can remove this boiler
-  // plate in favour of spread assignment
-  setState(...newState: HyperlinkState[]) : HyperlinkState {
-    this.state = Object.assign.apply(
-      Object,
-      [
-        {},
-        DEFAULT_STATE,
-      ].concat(newState)
-    );
-    return this.state;
-  }
-
-  __update__() {
-    const pm = this.pm;
-    const {
-      $head,
-      $to,
-      empty
-    } = pm.selection;
-    const oldState = this.getState();
-
-    const $resolvedPos: ResolvedPos = $head || $to;
-
-    // why - 1?
-    // because of `exclusiveRight`, we need to get the node "left to"
-    // the current cursor
-    const activeNode: Node = pm.doc.nodeAt($resolvedPos.pos - 1);
-    const hyperlinkAtCursor = getHyperlinkAtCursor(pm, $resolvedPos.pos, empty);
-
-    if (hyperlinkAtCursor) {
-      this.setState(hyperlinkAtCursor.attrs, {
-        active: true,
-        element: getDomElement(pm, getBoundariesWithin($head)),
-        text: activeNode.textContent,
-        enabled: true,
-      });
-    } else {
-      this.setState({
-        enabled: !empty && isNodeLinkable(pm, activeNode),
-      });
+    const newElement = activeLink
+      ? this.getDomElement()
+      : undefined;
+    if (newElement !== this.element) {
+      this.element = newElement;
+      dirty = true;
     }
 
-    if (!isShallowObjectEqual(oldState, this.state)) {
-      this.changeHandlers.every(cb => cb(this.getState()));
+    if (dirty) {
+      this.changeHandlers.forEach(cb => cb(this));
+    }
+  }
+
+  private update() {
+    const activeNode = this.getActiveNode();
+    const activeLink = this.getActiveLink();
+    let dirty = false;
+
+    const newHref = activeLink
+      ? activeLink.attrs.href
+      : undefined;
+    if (newHref !== this.href) {
+      this.href = newHref;
+      dirty = true;
+    }
+
+    const newText = activeLink
+      ? activeNode.textContent
+      : undefined;
+    if (newText !== this.text) {
+      this.text = newText;
+      dirty = true;
+    }
+
+    const newElement = activeLink
+      ? this.getDomElement()
+      : undefined;
+    if (newElement !== this.element) {
+      this.element = newElement;
+      dirty = true;
+    }
+
+    const newActive = !!activeLink;
+    if (newActive !== this.active) {
+      this.active = newActive;
+      dirty = true;
+    }
+
+    const newCanAddLink = !activeLink && this.isActiveNodeLinkable();
+    if (newCanAddLink !== this.canAddLink) {
+      this.canAddLink = newCanAddLink;
+      dirty = true;
+    }
+
+    if (dirty) {
+      this.changeHandlers.forEach(cb => cb(this));
     }
   }
 
   subscribe(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
-    cb(this.getState());
+    cb(this);
   }
 
-  addLink(options: HyperlinkOptions) : boolean {
-    const pm = this.pm;
-    const selection = pm.selection;
-    const {
-      empty,
-      $from,
-      $to,
-      $head,
-    } = selection;
-
-    const $resolvedPos: ResolvedPos = $head || $to;
-
-    const hyperlinkAtCursor = getHyperlinkAtCursor(pm, $resolvedPos.pos, empty);
-
-    const { enabled } = this.getState();
-
-    if (!enabled || empty || hyperlinkAtCursor || !options || !(options.href as String).trim()) {
-      return false;
-    }
-
-    const mark: Mark = pm.schema.mark('link', options);
-
-    if (options.text) {
-      pm.tr.replaceWith($from.pos, $to.pos, pm.schema.text(options.text, mark)).apply();
-    } else {
-      pm.tr.addMark($from.pos, $to.pos, mark).apply();
-    }
-
-    return true;
+  unsubscribe(cb: StateChangeHandler) {
+    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  removeLink(forceTextSelection = false) : boolean {
-    const pm = this.pm;
-    const selection = pm.selection;
-    const {
-      $head,
-      empty
-    } = selection;
-    const hyperlinkAtCursor = getHyperlinkAtCursor(pm, $head.pos, empty);
+  addLink(options: HyperlinkOptions) {
+    if (this.canAddLink) {
+      const { pm } = this;
+      const { href } = options;
+      const { empty, $from, $to } = pm.selection;
+      const mark = pm.schema.mark('link', { href });
+      const tr = empty
+        ? pm.tr.replaceWith($from.pos, $to.pos, pm.schema.text(href, mark))
+        : pm.tr.addMark($from.pos, $to.pos, mark);
 
-    if (!hyperlinkAtCursor) {
-      return false;
+      tr.apply();
     }
-
-    // why - 1?
-    // because of `exclusiveRight`, we need to get the node "left to"
-    // the current cursor
-    const node = pm.doc.nodeAt($head.pos - 1);
-
-    // start captures the start of the node position based on depth
-    // why - 1 ?
-    // we want to capture the start of the node instead of the inside of the node
-    const path = pm.doc.resolve($head.pos - 1).path;
-
-    // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
-    // depth positions are based on the parent not the node itself so we
-    // need to go inside one level deeper
-    const depth = $head.resolveDepth($head.depth + 1);
-
-    // See `ResolvedPos.prototype.start` method prosemirror/src/model/resolvedpos
-    const currentNodeOffset = depth == 0 ? 0 : path[depth * 3 - 1];
-
-    const markerFrom = currentNodeOffset;
-    const markerTo = markerFrom + node.nodeSize;
-
-    pm.tr.removeMark(markerFrom, markerTo, hyperlinkAtCursor).apply();
-
-    if (forceTextSelection) {
-      pm.setTextSelection(markerFrom, markerTo);
-      pm.focus();
-    }
-
-    return true;
   }
 
-  updateLink(options?: HyperlinkOptions) : boolean {
-    if (!options || !(options.href as String).trim() || !this.removeLink(true)) {
-      return false;
-    }
+  removeLink(forceTextSelection = false) {
+    const { pm } = this;
+    const activeLink = this.getActiveLink();
 
-    return this.addLink(options);
+    if (activeLink && pm.selection instanceof TextSelection) {
+      const { $head, empty } = pm.selection;
+
+      // why - 1?
+      // because of `exclusiveRight`, we need to get the node "left to"
+      // the current cursor
+      const node = pm.doc.nodeAt($head.pos - 1);
+
+      // start captures the start of the node position based on depth
+      // why - 1 ?
+      // we want to capture the start of the node instead of the inside of the node
+      const path = pm.doc.resolve($head.pos - 1).path;
+
+      // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
+      // depth positions are based on the parent not the node itself so we
+      // need to go inside one level deeper
+      const depth = $head.resolveDepth($head.depth + 1);
+
+      // See `ResolvedPos.prototype.start` method prosemirror/src/model/resolvedpos
+      const currentNodeOffset = depth == 0 ? 0 : path[depth * 3 - 1];
+
+      const markerFrom = currentNodeOffset;
+      const markerTo = markerFrom + node.nodeSize;
+
+      pm.tr.removeMark(markerFrom, markerTo, activeLink).apply();
+
+      if (forceTextSelection) {
+        pm.setTextSelection(markerFrom, markerTo);
+        pm.focus();
+      }
+    }
+  }
+
+  updateLink(options: HyperlinkOptions) {
+    const activeLink = this.getActiveLink();
+    if (activeLink) {
+      const { pm } = this;
+      if (pm.selection instanceof TextSelection) {
+        const { $head } = pm.selection;
+        const from = $head.start($head.depth);
+        const to = $head.end($head.depth);
+        pm.tr
+          .removeMark(from, to, activeLink)
+          .addMark(from, to, pm.schema.mark('link', { href: options.href }))
+          .apply();
+      }
+    }
   }
 
   detach(pm: ProseMirror) {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
+
+  private getDomElement(): HTMLElement | undefined {
+    if (this.pm.selection instanceof TextSelection) {
+      const { $head } = this.pm.selection;
+      const pos = getBoundariesWithin($head);
+      const { node, offset } = DOMFromPos(this.pm, pos, true);
+
+      if (node.childNodes.length === 0) {
+        return node.parentNode;
+      }
+
+      return node.childNodes[offset];
+    }
+  }
+
+  private isActiveNodeLinkable(): boolean {
+    const { link } = this.pm.schema.marks;
+    return !!link && commands.toggleMark(link)(this.pm, false);
+  }
+
+  private getActiveNode(): Node {
+    const { pm } = this;
+    if (pm.selection instanceof NodeSelection) {
+      return pm.selection.node;
+    } else {
+      // why - 1?
+      // because of `exclusiveRight`, we need to get the node "left to"
+      // the current cursor
+      return pm.doc.nodeAt(pm.selection.$head.pos - 1);
+    }
+  }
+
+  private getActiveLink(): Mark | null {
+    const { pm } = this;
+
+    if (!(pm.selection instanceof TextSelection)) {
+      return null;
+    }
+
+    const { $head, empty } = pm.selection;
+    const pos = $head.pos;
+
+    let marks;
+    if (!empty) {
+      // because of `exclusiveRight`, we need to get the node "left to"
+      // the current cursor
+      marks = pm.doc.nodeAt(pos - 1).marks;
+    } else {
+      const node = pm.doc.nodeAt(pos);
+      const previousNode = pm.doc.nodeAt(pos - 1);
+
+      if (node !== previousNode) {
+        return null;
+      }
+
+      marks = node.marks;
+    }
+
+    return marks.find((mark: Mark) => mark.type.name === 'link');
+  }
 }
 
 // IE11 + multiple prosemirror fix.
-Object.defineProperty(HyperlinkPlugin, 'name', { value: 'HyperlinkPlugin' });
+Object.defineProperty(HyperlinkState, 'name', { value: 'HyperlinkState' });
 
-export default new Plugin(HyperlinkPlugin);
+export default new Plugin(HyperlinkState);
+
+interface S extends Schema {
+  marks: {
+    link?: LinkMarkType;
+  }
+}
+
+interface PM extends ProseMirror {
+  schema: S;
+}
+
+export interface HyperlinkOptions {
+  href: string;
+}
+
+// We want to get the postion of the DOM element,
+// when we are at the end of the Node we are no longer on the DOM element boundaries
+// so we need to subtract 1
+// when the parentOffset is 0 we dont need to subtract 1 since we are on the first element
+// returns the position to be used on 'getDomElement' to get the corrent DOM node
+function getBoundariesWithin(
+  $head: ResolvedPos
+) : number {
+  return $head.parentOffset === 0 ? $head.pos : $head.pos -1;
+}

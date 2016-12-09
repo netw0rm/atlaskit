@@ -42,7 +42,6 @@ type ContextName = 'default' | 'comment' | 'pr';
 export class BlockTypeState {
   private changeHandlers: BlockTypeStateSubscriber[] = [];
   private pm: PM;
-  private bindings: {[key: string]: any};
 
   // public state
   currentBlockType: BlockType = NormalText;
@@ -51,7 +50,6 @@ export class BlockTypeState {
 
   constructor(pm: PM) {
     this.pm = pm;
-    this.bindings = {};
 
     // add paste listener to overwrite the prosemirror's
     // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers

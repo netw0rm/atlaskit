@@ -42,6 +42,7 @@ type ContextName = 'default' | 'comment' | 'pr';
 export class BlockTypeState {
   private changeHandlers: BlockTypeStateSubscriber[] = [];
   private pm: PM;
+  private bindings: {[key: string]: any};
 
   // public state
   currentBlockType: BlockType = NormalText;
@@ -50,6 +51,7 @@ export class BlockTypeState {
 
   constructor(pm: PM) {
     this.pm = pm;
+    this.bindings = {};
 
     // add paste listener to overwrite the prosemirror's
     // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers
@@ -169,16 +171,18 @@ export class BlockTypeState {
 
   private addKeymap(): void {
     const assistKey = browser.mac ? 'Cmd-Alt-' : 'Ctrl-'; 
+    let bindings: {[key: string]: any} = {};
 
-    let bindings = this.availableBlockTypes.reduce((bindings, blockType) => {
-      const binding = {[assistKey + blockType.key]: () => this.toggleBlockType(blockType.name)};
-      return Object.assign({}, bindings, binding);
-    }, {});
+    const bind = (key: string, action: any): void => {
+      bindings = Object.assign({}, bindings, {[key]: action});
+    }
 
-    bindings = Object.assign({}, bindings, {
-      'Enter': () => this.splitBlock(),
-      'Shift-Enter': () => this.newLineInCode()
+    this.availableBlockTypes.forEach((blockType) => {
+      bind(assistKey + blockType.key, () => this.toggleBlockType(blockType.name))
     });
+
+    bind('Enter', () => this.splitBlock());
+    bind('Shift-Enter', () => this.newLineInCode());
 
     this.pm.addKeymap(new Keymap(bindings));
   }

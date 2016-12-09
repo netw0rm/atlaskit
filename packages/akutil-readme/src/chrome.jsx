@@ -1,0 +1,26 @@
+import React, { PropTypes, PureComponent } from 'react';
+import Heading from './heading';
+
+const style = {
+  chrome: {
+    padding: 20,
+  },
+};
+
+// eslint-disable-next-line react/prefer-stateless-function
+export default class extends PureComponent {
+  static displayName = 'Chrome'
+  static propTypes = {
+    children: PropTypes.node,
+    title: PropTypes.string,
+  }
+  render() {
+    const { children, title } = this.props;
+    return (
+      <div style={style.chrome}>
+        {title ? <Heading>{title}</Heading> : ''}
+        {children}
+      </div>
+    );
+  }
+}

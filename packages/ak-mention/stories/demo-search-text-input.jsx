@@ -8,6 +8,7 @@ function noModifiers(event) {
 
 class SearchTextInput extends Component {
   static propTypes = {
+    inputId: PropTypes.string,
     onUp: PropTypes.func,
     onDown: PropTypes.func,
     onEnter: PropTypes.func,
@@ -56,9 +57,9 @@ class SearchTextInput extends Component {
 
   render() {
     /* eslint no-unused-vars: 0 */
-    const { onUp, onDown, onEnter, onEscape, label, inputRef, ...other } = this.props;
+    const { onUp, onDown, onEnter, onEscape, label, inputRef, inputId, ...other } = this.props;
     let labelComponent;
-    const id = uid();
+    const id = inputId || uid();
     if (label) {
       labelComponent = <label htmlFor={id}>{label}</label>;
     }

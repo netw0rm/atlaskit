@@ -33,7 +33,7 @@ export default class CodeExampleStory extends Component {
             {this.props.children}
           </div>
           <div className={styles.storiesWithCodeExamples}>
-            {this.props.scripts || this.props.imports ? <div className={styles.js}>
+            {this.props.scripts.length || this.props.imports.length ? <div className={styles.js}>
               <Highlight className="js">
                 {transformImports(this.props.imports)}
                 {transformScripts(this.props.scripts)}

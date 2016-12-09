@@ -1,6 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import TextInlineEdit from './TextInlineEdit';
+import DropdownInlineEdit from './DropdownInlineEdit';
 import AkInlineEdit from '../src';
 import { name } from '../package.json';
 
@@ -46,5 +47,10 @@ storiesOf(name, module)
         readView="Can't touch this"
         isLabelHidden
       />
+    </div>
+  ))
+  .add('with dropdown', () => (
+    <div style={containerStyle}>
+      <DropdownInlineEdit label="With dropdown!" />
     </div>
   ));

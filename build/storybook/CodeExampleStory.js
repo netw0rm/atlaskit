@@ -33,22 +33,20 @@ export default class CodeExampleStory extends Component {
             {this.props.children}
           </div>
           <div className={styles.storiesWithCodeExamples}>
-            <SplitPane split="horizontal" defaultSize={'80%'} primary="first">
-              <div className={styles.jsx}>
-                <Highlight className="HTML">
-                  {jsxToString(this.props.children, {
-                    detectFunctions: true,
-                    keyValueOverride: { ...this.props.overrides },
-                  })}
-                </Highlight>
-              </div>
-              {this.props.scripts || this.props.imports ? <div className={styles.js}>
-                <Highlight className="JavaScript">
-                  {transformImports(this.props.imports)}
-                  {transformScripts(this.props.scripts)}
-                </Highlight>
-              </div> : null}
-            </SplitPane>
+            {this.props.scripts || this.props.imports ? <div className={styles.js}>
+              <Highlight className="js">
+                {transformImports(this.props.imports)}
+                {transformScripts(this.props.scripts)}
+              </Highlight>
+            </div> : null}
+            <div className={styles.jsx}>
+              <Highlight className="HTML">
+                {jsxToString(this.props.children, {
+                  detectFunctions: true,
+                  keyValueOverride: { ...this.props.overrides },
+                })}
+              </Highlight>
+            </div>
           </div>
         </SplitPane>
       </div>

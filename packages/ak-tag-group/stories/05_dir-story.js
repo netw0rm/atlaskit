@@ -6,23 +6,21 @@ import Group from '../src';
 import { name } from '../package.json';
 import styles from '../src/styles.less';
 
-const RemovableComponent = props => (
-  <Tag
-    {...props}
-    href="http://www.cupcakeipsum.com/"
-    removeButtonText="No sweets for you!"
-  />
-);
+const imports = [
+  ['React', 'react'],
+  ['TagGroup', 'ak-tag-group'],
+  ['Tag', 'ak-tag'],
+];
 
 storiesOf(name, module)
-  .add('text direction', () => (
+  .addCodeExampleStory('text direction', () => (
     <div>
       Try tabbing :)
       <hr />
       <Group className={styles.locals.akTagGroup}>
-        <RemovableComponent text="Danish chocolate" />
-        <RemovableComponent text="Jelly beans" />
-        <RemovableComponent text="Cheesecake" />
+        <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Danish chocolate" />
+        <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Jelly beans" />
+        <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Cheesecake" />
       </Group>
     </div>
-  ));
+  ), { imports });

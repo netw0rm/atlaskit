@@ -75,6 +75,7 @@ export default class MentionItem extends PureComponent {
   // internal, used for callbacks
   _onMentionSelected = (event) => {
     if (leftClick(event) && this.props.onSelection) {
+      event.preventDefault();
       this.props.onSelection(this.props);
     }
   }

@@ -5,7 +5,6 @@ import AtlassianIcon from 'ak-icon/glyph/atlassian';
 import AkBreadcrumbs, { AkBreadcrumbsItem } from '../src';
 import { name } from '../package.json';
 
-
 storiesOf(name, module)
   .add('simple ak-breadcrumbs', () => (
     <AkBreadcrumbs>

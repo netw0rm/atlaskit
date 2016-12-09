@@ -11,7 +11,6 @@ import { name } from '../package.json';
 const { expect } = chai;
 chai.use(chaiEnzyme());
 
-
 describe(name, () => {
   describe('exports', () => {
     it('the React component, and the Item component', () => {

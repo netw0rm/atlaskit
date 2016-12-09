@@ -18,14 +18,6 @@ describe('<Navigation />', () => {
     it('should render a <GlobalNavigation />', () => {
       expect(shallow(<Navigation />)).to.have.exactly(1).descendants('GlobalNavigation');
     });
-    it('should not render a <GlobalNavigation /> if the "globalNavigation" prop is provided', () => {
-      const mockNavigation = <div id="mock-navigation">test</div>;
-      expect(shallow(<Navigation globalNavigation={mockNavigation} />)).to.not.have.descendants('GlobalNavigation');
-    });
-    it('should render the provided "globalNavigation"', () => {
-      const mockNavigation = <div id="mock-navigation">test</div>;
-      expect(shallow(<Navigation globalNavigation={mockNavigation} />)).to.have.descendants('#mock-navigation');
-    });
     it('should render a <Resizer />', () => {
       expect(shallow(<Navigation />)).to.have.exactly(1).descendants('Resizer');
     });
@@ -67,6 +59,30 @@ describe('<Navigation />', () => {
     describe('globalCreateIcon', () => {
       it('should insert create icon into navigation', () => {
         expect(mount(<Navigation globalCreateIcon={<span className="CREATE_ICON" />} />)).to.have.exactly(1).descendants('.CREATE_ICON');
+      });
+    });
+
+    describe('when isSearchDrawerOpen=true', () => {
+      it('should set open=true on the SearchDrawer', () => {
+        expect(mount(<Navigation isSearchDrawerOpen />).find('Drawer').at(0).props().open).to.equal(true);
+      });
+    });
+
+    describe('when isSearchDrawerOpen=false', () => {
+      it('should set open=false on the SearchDrawer', () => {
+        expect(mount(<Navigation isSearchDrawerOpen={false} />).find('Drawer').at(0).props().open).to.equal(false);
+      });
+    });
+
+    describe('when isCreateDrawerOpen=true', () => {
+      it('should set open=true on the CreateDrawer', () => {
+        expect(mount(<Navigation isCreateDrawerOpen />).find('Drawer').at(1).props().open).to.equal(true);
+      });
+    });
+
+    describe('when isCreateDrawerOpen=true', () => {
+      it('should set open=true on the CreateDrawer', () => {
+        expect(mount(<Navigation isCreateDrawerOpen={false} />).find('Drawer').at(1).props().open).to.equal(false);
       });
     });
 

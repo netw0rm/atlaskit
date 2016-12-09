@@ -5,21 +5,19 @@ import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
 
 export default class GlobalNavigation extends Component {
-  static get propTypes() {
-    return {
-      children: PropTypes.node,
-      primaryIcon: PropTypes.node,
-      width: PropTypes.number,
-      shouldAnimate: PropTypes.bool,
-    };
-  }
-  static get defaultProps() {
-    return {
-      width: globalOpenWidth,
-      shouldAnimate: false,
-      primaryIcon: null,
-    };
-  }
+  static propTypes = {
+    children: PropTypes.node,
+    primaryIcon: PropTypes.node,
+    width: PropTypes.number,
+    shouldAnimate: PropTypes.bool,
+    helpIcon: PropTypes.node,
+    accountIcon: PropTypes.node,
+  };
+  static defaultProps = {
+    width: globalOpenWidth,
+    shouldAnimate: false,
+    primaryIcon: null,
+  };
   getTranslate() {
     return Math.min(0, this.props.width - globalOpenWidth);
   }
@@ -43,7 +41,13 @@ export default class GlobalNavigation extends Component {
           <div className={styles.primaryIcon}>
             {this.props.primaryIcon}
           </div>
-          {this.props.children}
+          <div className={styles.primaryContainer}>
+            {this.props.children}
+          </div>
+          <div className={styles.secondaryContainer}>
+            {this.props.helpIcon}
+            {this.props.accountIcon}
+          </div>
         </div>
       </div>
     );

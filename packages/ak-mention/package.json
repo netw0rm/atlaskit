@@ -1,6 +1,6 @@
 {
   "name": "ak-mention",
-  "version": "1.1.0",
+  "version": "1.3.0",
   "description": "ak-mention component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -10,7 +10,8 @@
     "prepublish": "cd ../.. && npm run prepublish/single ak-mention"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "dependencies": {
     "ak-avatar": "^5.0.0",

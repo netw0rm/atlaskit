@@ -2,42 +2,42 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import AtlassianIcon from 'ak-icon/glyph/atlassian';
 
-import AkBreadcrumbs, { AkBreadcrumbsItem } from '../src';
+import Breadcrumbs, { AkBreadcrumbsItem } from '../src';
 import { name } from '../package.json';
 
 
 storiesOf(name, module)
   .add('simple ak-breadcrumbs', () => (
-    <AkBreadcrumbs>
+    <Breadcrumbs>
       <AkBreadcrumbsItem href="/pages">Pages</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/pages/home">Home</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/pages/adg3">ADG 3 - New site</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/pages/daccontent">design.atlassian.com content</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/pages/product-design">Product design (draft)</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/pages/patternsdesign">Patterns design (draft)</AkBreadcrumbsItem>
-    </AkBreadcrumbs>
+    </Breadcrumbs>
   ))
   .add('ak-breadcrumbs with no items', () => (
-    <AkBreadcrumbs />
+    <Breadcrumbs />
   ))
   .add('ak-breadcrumbs with one item', () => (
-    <AkBreadcrumbs>
+    <Breadcrumbs>
       <AkBreadcrumbsItem href="/page">Page</AkBreadcrumbsItem>
-    </AkBreadcrumbs>
+    </Breadcrumbs>
   ))
   .add('ak-breadcrumbs with one item with very long text', () => (
-    <AkBreadcrumbs>
+    <Breadcrumbs>
       <AkBreadcrumbsItem href="/supercalifragilisticexpialidocious">
         Supercalifragilisticexpialidocious
       </AkBreadcrumbsItem>
-    </AkBreadcrumbs>
+    </Breadcrumbs>
   ))
   .add('ak-breadcrumbs with icons', () => {
     const TestIcon = <AtlassianIcon label="Test icon" />;
     return (
       <div>
         <p>Using itemBefore and itemAfter API</p>
-        <AkBreadcrumbs>
+        <Breadcrumbs>
           <AkBreadcrumbsItem href="/item">No icon</AkBreadcrumbsItem>
           <AkBreadcrumbsItem href="/item" iconBefore={TestIcon}>Before</AkBreadcrumbsItem>
           <AkBreadcrumbsItem href="/item" iconAfter={TestIcon}>After</AkBreadcrumbsItem>
@@ -47,9 +47,9 @@ storiesOf(name, module)
           <AkBreadcrumbsItem href="/item" iconBefore={TestIcon} iconAfter={TestIcon}>
             Long content, icons before and after
           </AkBreadcrumbsItem>
-        </AkBreadcrumbs>
+        </Breadcrumbs>
         <p>With icons in the content</p>
-        <AkBreadcrumbs>
+        <Breadcrumbs>
           <AkBreadcrumbsItem href="/item">No icon</AkBreadcrumbsItem>
           <AkBreadcrumbsItem href="/item">{TestIcon} Before</AkBreadcrumbsItem>
           <AkBreadcrumbsItem href="/item">After {TestIcon}</AkBreadcrumbsItem>
@@ -59,12 +59,12 @@ storiesOf(name, module)
           <AkBreadcrumbsItem href="/item">
             {TestIcon} Long content, icons before and after {TestIcon}
           </AkBreadcrumbsItem>
-        </AkBreadcrumbs>
+        </Breadcrumbs>
       </div>
     );
   })
   .add('ak-breadcrumbs with markup in item content', () => (
-    <AkBreadcrumbs>
+    <Breadcrumbs>
       <AkBreadcrumbsItem href="/page"><b>Page</b></AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/page">
         With icon <AtlassianIcon label="Atlassian icon" />
@@ -73,20 +73,20 @@ storiesOf(name, module)
         <span>Long page name with <b>markup</b> <i>(should be truncated)</i></span>
         <span> and icon <AtlassianIcon label="Atlassian icon" /></span>
       </AkBreadcrumbsItem>
-    </AkBreadcrumbs>
+    </Breadcrumbs>
   ))
   .add('ak-breadcrumbs with long and short items', () => (
-    <AkBreadcrumbs>
+    <Breadcrumbs>
       <AkBreadcrumbsItem href="/long">Supercalifragilisticexpialidocious</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/short">Item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/short">Another item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/long">Long item name which should be truncated</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/long">Another long item name which should be truncated</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/short">Short item</AkBreadcrumbsItem>
-    </AkBreadcrumbs>
+    </Breadcrumbs>
   ))
   .add('ak-breadcrumbs with many items', () => (
-    <AkBreadcrumbs>
+    <Breadcrumbs>
       <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
@@ -98,11 +98,11 @@ storiesOf(name, module)
       <AkBreadcrumbsItem href="/item">The ninth item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">Item ten</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">The last item</AkBreadcrumbsItem>
-    </AkBreadcrumbs>
+    </Breadcrumbs>
   ))
   .add('ak-breadcrumbs with many items, inside small container', () => (
     <div style={{ maxWidth: '500px', border: '1px solid black' }}>
-      <AkBreadcrumbs>
+      <Breadcrumbs>
         <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
@@ -114,6 +114,6 @@ storiesOf(name, module)
         <AkBreadcrumbsItem href="/item">The ninth item</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">Item ten</AkBreadcrumbsItem>
         <AkBreadcrumbsItem href="/item">The last item</AkBreadcrumbsItem>
-      </AkBreadcrumbs>
+      </Breadcrumbs>
     </div>
   ));

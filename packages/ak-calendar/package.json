@@ -1,6 +1,6 @@
 {
   "name": "ak-calendar",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "A React component that is a generic calendar",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "ak-button": "^4.0.2",
-    "ak-icon": "^8.1.2",
+    "ak-icon": "^11.2.2",
     "akutil-react": "^3.0.1",
     "akutil-shared-styles": "^37.0.3",
     "babel-runtime": "^6.11.6",

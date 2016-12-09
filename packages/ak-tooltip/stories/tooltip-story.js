@@ -1,23 +1,10 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
 import React from 'react';
 
-import TooltipWC from '../src/index';
-import TooltipTriggerWC from '../src/index.tooltip-trigger';
-import ContainerWC from './skate/container';
-import FourDirectionTooltipTrigger from './four-direction-tooltip-trigger';
+import AKTooltip, { Tooltip as DumbTooltip } from '../src/index';
+import FourDirectionTooltip from './FourDirectionTooltip';
 import { name } from '../package.json';
-import styles from '../src/shadow.less';
 
-const Tooltip = reactify(TooltipWC);
-
-const TooltipTrigger = reactify(TooltipTriggerWC);
-
-const Container = reactify(ContainerWC);
-
-const tooltipClass = styles.locals.akTooltip;
-
-const DefaultTooltip = props => <Tooltip className={tooltipClass} {...props} />;
 
 const buttonStyles = {
   backgroundColor: 'orange',
@@ -31,138 +18,44 @@ const containerStyle = {
   justifyContent: 'center',
 };
 
+const relativePosition = {
+  position: 'relative',
+  height: '100px',
+  width: '100px',
+  marginLeft: '50vw',
+  marginTop: '50vh',
+};
+
 storiesOf(name, module)
-  .add('a simple ak-tooltip with ak-tooltip-trigger', () => (
+  .add('a dumb ak-tooltip', () => (
     <div>
       <div style={containerStyle}>
-        <TooltipTrigger position="top" description="This is a tooltip">
-          <span style={buttonStyles} aria-describedby="ak-tooltip">Hover over me</span>
-        </TooltipTrigger>
-
+        <DumbTooltip position="top" description="This is a tooltip with position = top" visible>
+          <span style={buttonStyles}>Tooltips are great!</span>
+        </DumbTooltip>
       </div>
-
-      <DefaultTooltip id="ak-tooltip" />
     </div>
   ))
-  .add('a tooltip with a really long description', () => (
+  .add('a smart tooltip', () => (
     <div>
       <div style={containerStyle}>
-        <TooltipTrigger
-          position="top"
-          description={`This message is very long and spans multiple lines because it has a lot of
-            important information for the user. It might be a stacktrace, maybe longwinded
-            explanation about how stock derivatives work, or maybe just a haiku. In either case,
-            tooltips should reach their max width and then start wrapping text.`}
-        >
-          <span style={buttonStyles} aria-describedby="ak-tooltip">Hover over me</span>
-        </TooltipTrigger>
+        <AKTooltip position="top" description="This is a tooltip with position = top">
+          <span style={buttonStyles}>Hover over me</span>
+        </AKTooltip>
       </div>
-
-      <DefaultTooltip id="ak-tooltip" />
     </div>
   ))
-  .add('a tooltip with all directions', () => (
+  .add('a smart tooltip that changes position', () => (
     <div>
       <div style={containerStyle}>
-        <FourDirectionTooltipTrigger description="Tooltip!" />
+        <FourDirectionTooltip />
       </div>
-
-      <DefaultTooltip id="ak-tooltip" />
     </div>
   ))
-  .add('a tooltip binding to elements in shadowDOM', () => (
+  .add('a smart tooltip in a relatively positioned parent', () => (
     <div>
-      <div>
-        We can bind tooltips to items in the shadowDOM easily as we don&#39;t rely on looking
-        elements up by ID.
-        <br />
-        (This funcitonality broke in Chrome 53 and will be investigated)
+      <div style={relativePosition}>
+        <FourDirectionTooltip />
       </div>
-      <div style={containerStyle}>
-        <Container />
-      </div>
-
-      <DefaultTooltip id="ak-tooltip" />
     </div>
-  ))
-  .add('a tooltip in a scrollable parent', () => {
-    const simpleButtonStyles = {
-      backgroundColor: 'orange',
-      padding: '5px',
-      position: 'relative',
-      top: '100px',
-      left: '100px',
-    };
-    const scrollableStyles = {
-      border: '1px solid',
-      height: '300px',
-      width: '300px',
-      'overflow-y': 'scroll',
-    };
-    const bottomInfoText = {
-      position: 'relative',
-      top: '350px',
-      'text-align': 'center',
-    };
-    const topInfoText = {
-      'text-align': 'center',
-      'margin-top': '5px',
-    };
-    return (
-      <div>
-        <div>
-          Hint: Drag the Action Logger up to make the height small enough that the container
-          is near the top of the page, then scroll the button to the top and watch the tooltip flip
-          once it doesnt have enough space
-        </div>
-        <div style={containerStyle}>
-          <div style={scrollableStyles}>
-            <div style={topInfoText}>Try scrolling this box</div>
-            <TooltipTrigger position="top" description="This is a tooltip">
-              <span style={simpleButtonStyles} aria-describedby="ak-tooltip">Hover over me</span>
-            </TooltipTrigger>
-            <div style={bottomInfoText}>This content is to create scrolling</div>
-          </div>
-        </div>
-
-        <DefaultTooltip id="ak-tooltip" />
-      </div>
-    );
-  })
-  .add('a tooltip around a focusable element', () => (
-    <div>
-      <div style={containerStyle}>
-        <TooltipTrigger position="bottom" description="I am describing a focusable element!">
-          <button style={buttonStyles} aria-describedby="ak-tooltip">Focus on me!</button>
-        </TooltipTrigger>
-      </div>
-
-      <DefaultTooltip id="ak-tooltip" />
-    </div>
-  ))
-  .add('a tooltip with multiple triggers', () => {
-    const triggerStyles = {
-      margin: '0 1em',
-    };
-    return (
-      <div>
-        <div style={containerStyle}>
-          <TooltipTrigger style={triggerStyles} position="top" description="This is a tooltip">
-            <span style={buttonStyles} aria-describedby="ak-tooltip">Button 1</span>
-          </TooltipTrigger>
-          <TooltipTrigger style={triggerStyles} position="top" description="This is a tooltip">
-            <span style={buttonStyles} aria-describedby="ak-tooltip">Button 2</span>
-          </TooltipTrigger>
-          <TooltipTrigger style={triggerStyles} position="top" description="This is a tooltip">
-            <span style={buttonStyles} aria-describedby="ak-tooltip">Button 3</span>
-          </TooltipTrigger>
-          <TooltipTrigger style={triggerStyles} position="top" description="This is a tooltip">
-            <span style={buttonStyles} aria-describedby="ak-tooltip">Button 4</span>
-          </TooltipTrigger>
-
-        </div>
-
-        <DefaultTooltip id="ak-tooltip" />
-      </div>
-    );
-  });
+  ));

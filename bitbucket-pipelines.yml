@@ -7,16 +7,16 @@ pipelines:
             - export FORCE_COLOR=1
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
-            - npm install
-            - npm run browserstack/tunnel/start
+            - yarn install
+            - yarn run browserstack/tunnel/start
             - run-p -ln "validate/package.json" "lint" "test" "test/base" "test/wc/browserstack"
-            # AK-628 - npm run test/integration
-            - npm run browserstack/tunnel/stop
-            - npm run release/check/is-workspace-clean --silent
-            - npm run release/check/can-ff --silent || exit 0
-            - npm run release
+            # AK-628 - yarn run test/integration
+            - yarn run browserstack/tunnel/stop
+            - yarn run release/check/is-workspace-clean --silent
+            - yarn run release/check/can-ff --silent || exit 0
+            - yarn run release
             - run-p -ln "release/registry" "release/storybooks"
-            - npm run release/announce
+            - yarn run release/announce
     invalidate-atlaskit-cache:
       - step:
           script:
@@ -26,10 +26,9 @@ pipelines:
         script:
           - export FORCE_COLOR=1
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
-          - time ./build/bin/setup.sh
-          - time yarn install --ignore-scripts
-          - time yarn run postinstall
-          # - time npm run browserstack/tunnel/start
-          # - time run-p -ln "validate/package.json" "lint" "test/coverage" "test/base" "test/wc/browserstack/pr" "pr/artifacts"
+          - ./build/bin/setup.sh
+          - yarn install
+          - npm run browserstack/tunnel/start
+          - run-p -ln "validate/package.json" "lint" "test/coverage" "test/base" "test/wc/browserstack/pr" "pr/artifacts"
           # AK-628 - npm run test/integration/pr
-          # - time npm run browserstack/tunnel/stop
+          - npm run browserstack/tunnel/stop

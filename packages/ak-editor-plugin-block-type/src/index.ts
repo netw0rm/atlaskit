@@ -168,7 +168,7 @@ export class BlockTypeState {
     }
   }
 
-  splitBlock(): boolean {
+  splitCodeBlock(): boolean {
     const { pm } = this;
     const { $from } = pm.selection;
     const node = $from.parent;
@@ -201,6 +201,19 @@ export class BlockTypeState {
     return false;
   }
 
+
+  toggleBlockType(name: BlockTypeName): void {
+    const blockNodes = this.blockNodesBetweenSelection();
+
+    if(this.nodeBlockType(blockNodes[0]).name !== name) {
+      this.changeBlockType(name);
+    } else if(name !== Quote.name){
+      this.changeBlockType(NormalText.name);
+    } else {
+      commands.lift(this.pm);
+    }
+  }
+
   private addKeymap(): void {
     const assistKey = browser.mac ? 'Cmd-Alt-' : 'Ctrl-'; 
     let bindings: {[key: string]: any} = {};
@@ -213,7 +226,7 @@ export class BlockTypeState {
       bind(assistKey + blockType.key, () => this.toggleBlockType(blockType.name))
     });
 
-    bind('Enter', () => this.splitBlock());
+    bind('Enter', () => this.splitCodeBlock());
     bind('Shift-Enter', () => this.insertNewLine());
 
     this.pm.addKeymap(new Keymap(bindings));
@@ -226,18 +239,6 @@ export class BlockTypeState {
   private cursorIsAtTheEndOfLine() {
     const { $from, empty } = this.pm.selection;
     return empty && $from.end() === $from.pos;
-  }
-
-  private toggleBlockType(name: BlockTypeName): void {
-    const blockNodes = this.blockNodesBetweenSelection();
-
-    if(this.nodeBlockType(blockNodes[0]).name !== name) {
-      this.changeBlockType(name);
-    } else if(name !== Quote.name){
-      this.changeBlockType(NormalText.name);
-    } else {
-      commands.lift(this.pm);
-    }
   }
 
   private blockNodesBetweenSelection(): Node[] {

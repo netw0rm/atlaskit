@@ -1,4 +1,5 @@
 import { chaiPlugin, makeEditor, RewireMock } from 'ak-editor-test';
+import { commands } from 'ak-editor-prosemirror';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -23,56 +24,37 @@ describe('ak-editor-plugin-lists', () => {
         rewireMock(ListsPlugin, 'browser', {mac: true});
       });
 
-      context('when selection within bullet list items', () => {
-        context('when hit enter', () => {
-          it('should split list item', () => {
-            const { pm } = editor(doc(ul(li(p('text')))));
-            pm.input.dispatchKey("Enter");
-            expect(pm.doc).to.deep.equal(doc(ul(li(p('')), li(p('text')))));
-          });
-        });
+      context('when hit enter', () => {
+        it('should split list item', () => {
+          const { pm } = editor(doc(ul(li(p('text')))));
+          const splitListItem = sinon.spy(commands, 'splitListItem');
 
-        context('when hit Shift-Cmd-L', () => {
-          it('should convert to ordered list', () => {
-            const { pm } = editor(doc(ul(li(p('text')))));
-            pm.input.dispatchKey("Shift-Cmd-L");
-            expect(pm.doc).to.deep.equal(doc(ol(li(p('text')))));
-          })
-        });
+          pm.input.dispatchKey("Enter");
 
-        context('when hit Shift-Cmd-B', () => {
-          it('should toggle off bullet list', () => {
-            const { pm } = editor(doc(ul(li(p('text')))));
-            pm.input.dispatchKey("Shift-Cmd-B");
-            expect(pm.doc).to.deep.equal(doc(p('text')));
-          })
+          expect(splitListItem).to.have.been.callCount(1);
         });
       });
 
-      context('when selection within ordered list items', () => {
-        context('when hit enter', () => {
-          it('should split list item', () => {
-            const { pm } = editor(doc(ol(li(p('text')))));
-            pm.input.dispatchKey("Enter");
-            expect(pm.doc).to.deep.equal(doc(ol(li(p('')), li(p('text')))));
-          });
-        });
+      context('when hit Shift-Cmd-L', () => {
+        it('should toggle ordered list', () => {
+          const { pm, plugin } = editor(doc(ul(li(p('text')))));
+          const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
 
-        context('when hit Shift-Cmd-L', () => {
-          it('should toggle off ordered list', () => {
-            const { pm } = editor(doc(ol(li(p('text')))));
-            pm.input.dispatchKey("Shift-Cmd-L");
-            expect(pm.doc).to.deep.equal(doc(p('text')));
-          })
-        });
+          pm.input.dispatchKey("Shift-Cmd-L");
 
-        context('when hit Shift-Cmd-B', () => {
-          it('should convert to bullet list', () => {
-            const { pm } = editor(doc(ol(li(p('text')))));
-            pm.input.dispatchKey("Shift-Cmd-B");
-            expect(pm.doc).to.deep.equal(doc(ul(li(p('text')))));
-          })
+          expect(toggleOrderedList).to.have.been.callCount(1);
         });
+      });
+
+      context('when hit Shift-Cmd-B', () => {
+        it('should toggle bullet list', () => {
+          const { pm, plugin } = editor(doc(ul(li(p('text')))));
+          const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
+
+          pm.input.dispatchKey("Shift-Cmd-B");
+
+          expect(toggleBulletList).to.have.been.callCount(1);
+        })
       });
     });
 
@@ -80,57 +62,27 @@ describe('ak-editor-plugin-lists', () => {
       beforeEach(() => {
         rewireMock(ListsPlugin, 'browser', {mac: false});
       });
-      
-      context('when selection within bullet list items', () => {
-        context('when hit enter', () => {
-          it('should split list item', () => {
-            const { pm } = editor(doc(ul(li(p('text')))));
-            pm.input.dispatchKey("Enter");
-            expect(pm.doc).to.deep.equal(doc(ul(li(p('')), li(p('text')))));
-          });
-        });
 
-        context('when hit Shift-Ctrl-L', () => {
-          it('should convert to ordered list', () => {
-            const { pm } = editor(doc(ul(li(p('text')))));
-            pm.input.dispatchKey("Shift-Ctrl-L");
-            expect(pm.doc).to.deep.equal(doc(ol(li(p('text')))));
-          })
-        });
+      context('when hit Shift-Ctrl-L', () => {
+        it('should toggle ordered list', () => {
+          const { pm, plugin } = editor(doc(ul(li(p('text')))));
+          const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
 
-        context('when hit Shift-Ctrl-B', () => {
-          it('should toggle off bullet list', () => {
-            const { pm } = editor(doc(ul(li(p('text')))));
-            pm.input.dispatchKey("Shift-Ctrl-B");
-            expect(pm.doc).to.deep.equal(doc(p('text')));
-          })
+          pm.input.dispatchKey("Shift-Ctrl-L");
+
+          expect(toggleOrderedList).to.have.been.callCount(1);
         });
       });
 
-      context('when selection within ordered list items', () => {
-        context('when hit enter', () => {
-          it('should split list item', () => {
-            const { pm } = editor(doc(ol(li(p('text')))));
-            pm.input.dispatchKey("Enter");
-            expect(pm.doc).to.deep.equal(doc(ol(li(p('')), li(p('text')))));
-          });
-        });
+      context('when hit Shift-Ctrl-B', () => {
+        it('should toggle bullet list', () => {
+          const { pm, plugin } = editor(doc(ul(li(p('text')))));
+          const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
 
-        context('when hit Shift-Ctrl-L', () => {
-          it('should toggle off ordered list', () => {
-            const { pm } = editor(doc(ol(li(p('text')))));
-            pm.input.dispatchKey("Shift-Ctrl-L");
-            expect(pm.doc).to.deep.equal(doc(p('text')));
-          })
-        });
+          pm.input.dispatchKey("Shift-Ctrl-B");
 
-        context('when hit Shift-Ctrl-B', () => {
-          it('should convert to bullet list', () => {
-            const { pm } = editor(doc(ol(li(p('text')))));
-            pm.input.dispatchKey("Shift-Ctrl-B");
-            expect(pm.doc).to.deep.equal(doc(ul(li(p('text')))));
-          })
-        });
+          expect(toggleBulletList).to.have.been.callCount(1);
+        })
       });
     });
   });

@@ -7,5 +7,4 @@ productionConfig.entry = {
 
 productionConfig.output.libraryTarget = 'commonjs2';
 
-
 module.exports = productionConfig;

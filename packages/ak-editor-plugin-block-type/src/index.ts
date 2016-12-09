@@ -178,7 +178,7 @@ export class BlockTypeState {
         pm.tr.typeText('\n').applyAndScroll();
         return true;
       } else {
-        commands.deleteCharBefore(pm);
+        commands.deleteCharBefore(pm, true);
       }
     }
     return false;

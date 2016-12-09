@@ -11,7 +11,6 @@ interface Props {
 interface State {
   active: boolean;
   availableBlockTypes: BlockType[];
-  canChange: boolean;
   currentBlockType: BlockType;
 }
 
@@ -23,7 +22,6 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     this.state = {
       active: false,
       availableBlockTypes: pluginState.availableBlockTypes,
-      canChange: false,
       currentBlockType: pluginState.currentBlockType,
     };
   }
@@ -37,12 +35,12 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   }
 
   render() {
-    const { active, currentBlockType, canChange, availableBlockTypes } = this.state;
+    const { active, currentBlockType, availableBlockTypes } = this.state;
 
     return (
       <span onClick={this.handleToggleDropdown} className={styles.container}>
         <AkButton
-          isDisabled={!canChange}
+          isDisabled={false}
           isSelected={active}
           appearance='subtle'
           spacing='compact'
@@ -71,32 +69,27 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     this.setState({
       active: this.state.active,
       availableBlockTypes: pluginState.availableBlockTypes,
-      canChange: pluginState.canChange,
       currentBlockType: pluginState.currentBlockType,
     });
   }
 
   private handleSelectBlockType = (blockType: BlockType) => {
-    const { availableBlockTypes, canChange, currentBlockType } = this.state;
+    const { availableBlockTypes, currentBlockType } = this.state;
     this.props.pluginState.changeBlockType(blockType.name);
     this.setState({
       active: false,
       availableBlockTypes,
-      canChange,
       currentBlockType
     });
   }
 
   private handleToggleDropdown = () => {
-    if (this.props.pluginState.canChange) {
-      const { availableBlockTypes, canChange, currentBlockType } = this.state;
-      this.setState({
-        active: !this.state.active,
-        availableBlockTypes,
-        canChange,
-        currentBlockType
-      });
-    }
+    const { availableBlockTypes, currentBlockType } = this.state;
+    this.setState({
+      active: !this.state.active,
+      availableBlockTypes,
+      currentBlockType
+    });
   }
 
   private blockTypeItemClass(blockType: BlockType): string | undefined {

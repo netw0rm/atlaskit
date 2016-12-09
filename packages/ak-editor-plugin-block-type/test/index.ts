@@ -611,7 +611,7 @@ describe('ak-editor-plugin-block-type', () => {
         });
 
         context('when cursor is within a heading', () => {
-          it('does nothing', () => {
+          it('inserts a hard break', () => {
             const { pm, plugin } = editor(doc(h1('text{endPos}')));
               const { endPos } = pm.doc.refs;
 
@@ -619,12 +619,12 @@ describe('ak-editor-plugin-block-type', () => {
 
               pm.input.dispatchKey("Shift-Enter");
 
-              expect(pm.doc).to.deep.equal(doc(h1('text')));
+              expect(pm.doc).to.deep.equal(doc(h1('text', br)));
           });
         });
 
         context('when cursor is within a paragraph', () => {
-          it('does nothing', () => {
+          it('inserts a hard break', () => {
             const { pm, plugin } = editor(doc(p('text{endPos}')));
               const { endPos } = pm.doc.refs;
 
@@ -632,12 +632,12 @@ describe('ak-editor-plugin-block-type', () => {
 
               pm.input.dispatchKey("Shift-Enter");
 
-              expect(pm.doc).to.deep.equal(doc(p('text')));
+              expect(pm.doc).to.deep.equal(doc(p('text', br)));
           });
         });
 
         context('when cursor is within a blockquote', () => {
-          it('does nothing', () => {
+          it('inserts a hard break', () => {
             const { pm, plugin } = editor(doc(blockquote(p('text{endPos}'))));
               const { endPos } = pm.doc.refs;
 
@@ -645,7 +645,7 @@ describe('ak-editor-plugin-block-type', () => {
 
               pm.input.dispatchKey("Shift-Enter");
 
-              expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
+              expect(pm.doc).to.deep.equal(doc(blockquote(p('text', br))));
           });
         });
       })

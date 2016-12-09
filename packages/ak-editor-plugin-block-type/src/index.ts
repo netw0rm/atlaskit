@@ -14,6 +14,7 @@ import {
   CodeBlockNodeType,
   HeadingNodeType,
   ParagraphNodeType,
+  HardBreakNodeType,
   isBlockQuoteNode,
   isCodeBlockNode,
   isHeadingNode,
@@ -167,25 +168,7 @@ export class BlockTypeState {
     }
   }
 
-  private addKeymap(): void {
-    const assistKey = browser.mac ? 'Cmd-Alt-' : 'Ctrl-'; 
-    let bindings: {[key: string]: any} = {};
-
-    const bind = (key: string, action: any): void => {
-      bindings = Object.assign({}, bindings, {[key]: action});
-    }
-
-    this.availableBlockTypes.forEach((blockType) => {
-      bind(assistKey + blockType.key, () => this.toggleBlockType(blockType.name))
-    });
-
-    bind('Enter', () => this.splitBlock());
-    bind('Shift-Enter', () => this.newLineInCode());
-
-    this.pm.addKeymap(new Keymap(bindings));
-  }
-
-  private splitBlock(): boolean {
+  splitBlock(): boolean {
     const { pm } = this;
     const { $from } = pm.selection;
     const node = $from.parent;
@@ -201,17 +184,39 @@ export class BlockTypeState {
     return false;
   }
 
-  private newLineInCode(): boolean {
+  insertNewLine(): boolean {
     const { pm } = this;
     const { $from } = pm.selection;
     const node = $from.parent;
+    const { hard_break } = pm.schema.nodes;
 
     if(isCodeBlockNode(node)) {
       pm.tr.typeText('\n').applyAndScroll();
       return true;
+    } else if(hard_break) {
+      pm.tr.replaceSelection(hard_break.create()).applyAndScroll()
+      return true;
     }
 
     return false;
+  }
+
+  private addKeymap(): void {
+    const assistKey = browser.mac ? 'Cmd-Alt-' : 'Ctrl-'; 
+    let bindings: {[key: string]: any} = {};
+
+    const bind = (key: string, action: any): void => {
+      bindings = Object.assign({}, bindings, {[key]: action});
+    }
+
+    this.availableBlockTypes.forEach((blockType) => {
+      bind(assistKey + blockType.key, () => this.toggleBlockType(blockType.name))
+    });
+
+    bind('Enter', () => this.splitBlock());
+    bind('Shift-Enter', () => this.insertNewLine());
+
+    this.pm.addKeymap(new Keymap(bindings));
   }
   
   private lastCharIsNewline(node: Node): boolean {
@@ -359,6 +364,7 @@ interface S extends Schema {
     code_block?: CodeBlockNodeType;
     heading?: HeadingNodeType;
     paragraph?: ParagraphNodeType;
+    hard_break?: HardBreakNodeType;
   }
 }
 

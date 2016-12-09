@@ -7,7 +7,7 @@ import { name } from '../package.json';
 
 const imports = [
   ['React', 'react'],
-  ['AkBreadcrumbs, { AkBreadcrumbsItem }', 'ak-breadcrumbs'],
+  ['Breadcrumbs, { AkBreadcrumbsItem }', 'ak-breadcrumbs'],
 ];
 storiesOf(name, module)
   .addCodeExampleStory('simple ak-breadcrumbs', () => (

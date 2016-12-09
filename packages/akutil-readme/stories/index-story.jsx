@@ -96,7 +96,7 @@ storiesOf(name)
   ))
   .add('Chrome', () => (
     <Chrome title="Chrome">
-      <Description>Displays and syntax highlights the string you pass as children.</Description>
+      <Description>Displays a title and content inside of a padded wrapper.</Description>
       <Code>{`
         import { Chrome } from 'akutil-readme';
 

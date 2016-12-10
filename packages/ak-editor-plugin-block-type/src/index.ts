@@ -178,7 +178,7 @@ export class BlockTypeState {
         pm.tr.typeText('\n').applyAndScroll();
         return true;
       } else {
-        commands.deleteCharBefore(pm, true);
+        this.deleteCharBefore();
       }
     }
     return false;
@@ -212,6 +212,13 @@ export class BlockTypeState {
     } else {
       commands.lift(this.pm);
     }
+  }
+
+  // Replaced the one from prosemirror. Because it was not working with IOS.
+  private deleteCharBefore() {
+    const { pm } = this;
+    const { $from } = pm.selection;
+    pm.tr.delete($from.pos-1, $from.pos).applyAndScroll();
   }
 
   private addKeymap(): void {

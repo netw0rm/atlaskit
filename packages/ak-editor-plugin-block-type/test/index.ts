@@ -360,7 +360,7 @@ describe('ak-editor-plugin-block-type', () => {
       });
 
       context('when hits double enter', () => {
-        it.skip('exits code block', ()=> {
+        it('exits code block', ()=> {
           const { pm, plugin } = editor(doc(code_block()('text{endPos}')));
           const { endPos } = pm.doc.refs;
           pm.setTextSelection(endPos);
@@ -389,7 +389,7 @@ describe('ak-editor-plugin-block-type', () => {
     context('when it is a code block', () => {
       context('when last char is a new line', () => {
         context('when cursor is at the end of code block', () => {
-          it.skip('removes the last new line char in code block', () => {
+          it('removes the last new line char in code block', () => {
             const { pm, plugin } = editor(doc(code_block()('text\n{endPos}')));
             const { endPos } = pm.doc.refs;
             pm.setTextSelection(endPos);

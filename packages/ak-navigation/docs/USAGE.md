@@ -2,7 +2,7 @@
 
 This component is displayed as a sidebar and it contains two sections: "global" and "container". Both sections are used for navigating through different views and containers in a product.
 
-![Example navigation](http://i.imgur.com/G3SusxW.gif)
+![Example navigation](https://i.imgur.com/G3SusxW.gif)
 
 Note: the previously-recommended [ak-page](https://www.npmjs.com/package/ak-page) component is no longer used alongside `ak-navigation`. See below for how to use `ak-navigation` in your application.
 

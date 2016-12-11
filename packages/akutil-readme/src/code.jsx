@@ -40,7 +40,11 @@ export default class extends PureComponent {
     const { code: customStyle, codeExample } = style;
     return (
       <div>
-        <SyntaxHighlighter customStyle={customStyle} language={language || 'jsx'} style={docco}>{formatCode(code || children)}</SyntaxHighlighter>
+        <SyntaxHighlighter
+          customStyle={customStyle}
+          language={language || 'jsx'}
+          style={docco}
+        >{formatCode(code || children)}</SyntaxHighlighter>
         {code ? <div style={{ ...codeExample, ...customStyle }}>{children}</div> : ''}
       </div>
     );

@@ -17,7 +17,7 @@ export { BreadcrumbsItem };
  * @example @js import Breadcrumbs from 'ak-breadcrumbs';
  * ReactDOM.render(<Breadcrumbs />);
  */
-export default class Breadcrumbs extends PureComponent {
+export default class BreadcrumbsStateless extends PureComponent {
   static propTypes = {
     /**
      * @description Whether the breadcrumbs should be expanded when there are 9 or more items.

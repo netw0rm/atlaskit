@@ -7,7 +7,7 @@ import Heading from './heading';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class extends PureComponent {
-  static displayName = 'Readme'
+  static displayName = 'AkutilReadme'
   static propTypes = {
     children: PropTypes.node,
     component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,

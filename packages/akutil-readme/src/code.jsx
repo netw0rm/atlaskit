@@ -30,6 +30,7 @@ function formatCode(code) {
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class extends PureComponent {
+  static displayName = 'AkutilReadmeCode'
   static propTypes = {
     children: PropTypes.node.isRequired,
     code: PropTypes.string,

@@ -26,6 +26,7 @@ const style = {
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class extends PureComponent {
+  static displayName = 'AkutilReadmeHeading'
   static propTypes = {
     children: PropTypes.node.isRequired,
     type: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

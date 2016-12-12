@@ -14,7 +14,7 @@ export default class GlobalItem extends Component {
   };
 
   render() {
-    if (this.props.children === null) return null;
+    if (!this.props.children) return null;
     return (
       <button
         onClick={() => this.props.onActivate()}

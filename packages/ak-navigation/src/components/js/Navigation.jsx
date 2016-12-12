@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import AkBlanket from 'ak-blanket';
 import styles from 'style!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
 import GlobalItem from './GlobalItem';
@@ -35,6 +36,8 @@ export default class Navigation extends Component {
     globalAccountIcon: PropTypes.node,
     onHelpClicked: PropTypes.func,
     onAccountClicked: PropTypes.func,
+    onBlanketClicked: PropTypes.func,
+    hasBlanket: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -46,6 +49,7 @@ export default class Navigation extends Component {
     isCreateDrawerOpen: false,
     onSearchDrawerActivated: () => {},
     onCreateDrawerActivated: () => {},
+    onBlanketClicked: () => {},
   };
 
   constructor(props) {
@@ -83,12 +87,20 @@ export default class Navigation extends Component {
     const { onSearchDrawerActivated, onCreateDrawerActivated, globalSearchIcon, globalCreateIcon,
       searchDrawerContent, createDrawerContent, containerHeader, children, isResizeable,
       globalPrimaryIcon, isSearchDrawerOpen, isCreateDrawerOpen,
-      onHelpClicked, onAccountClicked, globalAccountIcon, globalHelpIcon } = this.props;
+      onHelpClicked, onAccountClicked, globalAccountIcon, globalHelpIcon,
+      onBlanketClicked, hasBlanket } = this.props;
 
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();
     return (
       <div className={styles.navigation}>
+        {
+          hasBlanket && (isSearchDrawerOpen || isCreateDrawerOpen) ?
+          (
+            <AkBlanket isTinted onBlanketClicked={onBlanketClicked} />
+          )
+          : null
+        }
         <Spacer
           shouldAnimate={shouldAnimate}
           width={renderedWidth}

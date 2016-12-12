@@ -94,12 +94,12 @@ export class ListsState {
 
   private addKeymap(pm: PM): void {
     const { list_item } = pm.schema.nodes;
+    const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd' : 'Ctrl'}-${key}`;
 
-    const assistKey = browser.mac ? 'Cmd-' : 'Ctrl-'; 
     let bindings = {
       'Enter': () => commands.splitListItem(list_item)(pm),
-      [assistKey + 'Shift-L']: () => this.toggleOrderedList(),
-      [assistKey + 'Shift-B']: () => this.toggleBulletList()
+      [withSpecialKey('Shift-L')]: () => this.toggleOrderedList(),
+      [withSpecialKey('Shift-B')]: () => this.toggleBulletList()
     }
 
     pm.addKeymap(new Keymap(bindings));

@@ -7,7 +7,7 @@ import { name } from '../package.json';
 const containerStyle = {
   padding: 20,
   backgroundColor: 'white',
-  width: 500,
+  width: 400,
 };
 
 storiesOf(name, module)
@@ -19,6 +19,16 @@ storiesOf(name, module)
   .add('with label hidden', () => (
     <div style={containerStyle}>
       <TextInlineEdit isLabelHidden />
+    </div>
+  ))
+  .add('with invalid input', () => (
+    <div style={containerStyle}>
+      <TextInlineEdit isInvalid />
+    </div>
+  ))
+  .add('with lots of text', () => (
+    <div style={containerStyle}>
+      <TextInlineEdit initialValue="Banana banana banana banana banana banana banana banana banana banana banana" />
     </div>
   ))
   .add('with confirmation cancellation', () => (

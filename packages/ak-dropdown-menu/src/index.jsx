@@ -72,8 +72,9 @@ export default class DropdownMenu extends Component {
   }
 
   toggle = () => {
-    this.setState({ isOpen: !this.state.isOpen });
-    this.props.onOpenChange(this.state.isOpen);
+    const isOpen = !this.state.isOpen;
+    this.setState({ isOpen });
+    this.props.onOpenChange(isOpen);
   }
 
   renderTrigger = (trigger) => {

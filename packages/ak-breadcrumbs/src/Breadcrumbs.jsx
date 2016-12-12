@@ -2,7 +2,7 @@ import React, { Children, PureComponent, PropTypes } from 'react';
 import styles from 'style!./styles.less';
 import BreadcrumbsItem from './BreadcrumbsItem';
 import EllipsisItem from './internal/EllipsisItem';
-import { numItemsToTruncate } from './internal/constants';
+import { defaultItemsToCollapse } from './internal/constants';
 
 const { count, toArray } = Children;
 
@@ -30,6 +30,16 @@ export default class Breadcrumbs extends PureComponent {
      */
     isExpanded: PropTypes.bool,
     /**
+     * @description The number of items to display before automatically collapsing the
+     * list of breadcrumbs.
+     *
+     * @memberof Breadcrumbs
+     * @instance
+     * @type {number}
+     * @default 9
+     */
+    itemsToCollapse: PropTypes.number,
+    /**
      * @description Callback that is called when the ellipsis expander item is selected.
      * @memberof Breadcrumbs
      * @instance
@@ -40,8 +50,9 @@ export default class Breadcrumbs extends PureComponent {
     /**
      * @description The items to display.
      *
-     * If there are 9 or more items, the list will automatically be truncated to display only the
-     * first and last items. Clicking the ellipsis separator item will display all items.
+     * If there are more than the number of items specified by `itemsToCollapse`, the list will
+     * automatically be truncated to display only the first and last items. Clicking the ellipsis
+     * separator item will display all the items.
      * @memberof Breadcrumbs
      * @instance
      * @type {node|node[]}
@@ -54,6 +65,7 @@ export default class Breadcrumbs extends PureComponent {
 
   static defaultProps = {
     isExpanded: false,
+    itemsToCollapse: defaultItemsToCollapse,
   }
 
   renderAllItems() {
@@ -72,7 +84,7 @@ export default class Breadcrumbs extends PureComponent {
   render() {
     return (
       <div className={styles.container}>
-        {(this.props.isExpanded || count(this.props.children) < numItemsToTruncate)
+        {(this.props.isExpanded || count(this.props.children) < this.props.itemsToCollapse)
           ? this.renderAllItems()
           : this.renderFirstAndLast()
         }

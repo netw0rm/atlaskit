@@ -116,4 +116,30 @@ storiesOf(name, module)
         <AkBreadcrumbsItem href="/item">The last item</AkBreadcrumbsItem>
       </Breadcrumbs>
     </div>
+  ))
+  .add('ak-breadcrumbs with many items, inside small container, collapsing at 5 items', () => (
+    <div>
+      <p>Should automatically collapse if there are 6 or more items</p>
+      <div style={{ maxWidth: '500px', border: '1px solid black' }}>
+        <p>Exactly 5 items</p>
+        <Breadcrumbs itemsToCollapse={6}>
+          <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">A fourth item with a very long name</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">Item 5</AkBreadcrumbsItem>
+        </Breadcrumbs>
+      </div>
+      <div style={{ maxWidth: '500px', border: '1px solid black' }}>
+        <p>6 items</p>
+        <Breadcrumbs itemsToCollapse={6}>
+          <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">A fourth item with a very long name</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">Item 5</AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item">A sixth item</AkBreadcrumbsItem>
+        </Breadcrumbs>
+      </div>
+    </div>
   ));

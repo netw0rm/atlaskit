@@ -20,7 +20,7 @@ const css = styles();
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
-export default class extends PureComponent {
+export default class StatelessCalendar extends PureComponent {
   static propTypes = {
     /**
      * @description The ISO date that represents today.

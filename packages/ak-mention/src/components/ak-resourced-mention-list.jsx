@@ -1,5 +1,6 @@
 import styles from 'style!./ak-resourced-mention-list.less';
 
+import classNames from 'classnames';
 import React, { PropTypes, PureComponent } from 'react';
 
 import MentionList from './ak-mention-list';
@@ -186,8 +187,13 @@ export default class ResourcedMentionList extends PureComponent {
   render() {
     const { mentions, showError } = this.state;
 
+    const classes = classNames([
+      'ak-resourced-mention-list',
+      styles.akResourcedMentionList,
+    ]);
+
     return (
-      <div className={styles.akResourcedMentionList}>
+      <div className={classes}>
         <MentionList
           mentions={mentions}
           showError={showError}

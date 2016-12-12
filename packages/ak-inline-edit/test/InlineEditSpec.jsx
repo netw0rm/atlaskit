@@ -15,6 +15,7 @@ const defaultProps = {
   label: 'test',
   isLabelHidden: true,
   isEditing: false,
+  isConfirmOnBlurDisabled: false,
   onEditRequested: noop,
   onConfirm: noop,
   onCancel: noop,

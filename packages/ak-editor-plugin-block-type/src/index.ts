@@ -36,7 +36,7 @@ const Heading4 = makeBlockType('heading4', 'Heading 4', '4');
 const Heading5 = makeBlockType('heading5', 'Heading 5', '5');
 const Quote = makeBlockType('quote', 'Block quote', '7');
 const Code = makeBlockType('code', 'Code block', '8');
-const Other = makeBlockType('other', 'Other…', 'N/A');
+const Other = makeBlockType('other', 'Other…');
 
 type ContextName = 'default' | 'comment' | 'pr';
 
@@ -222,7 +222,7 @@ export class BlockTypeState {
   }
 
   private addKeymap(): void {
-    const assistKey = browser.mac ? 'Cmd-Alt-' : 'Ctrl-'; 
+    const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd-Alt' : 'Ctrl'}-${key}`;
     let bindings: {[key: string]: any} = {};
 
     const bind = (key: string, action: any): void => {
@@ -230,7 +230,9 @@ export class BlockTypeState {
     }
 
     this.availableBlockTypes.forEach((blockType) => {
-      bind(assistKey + blockType.key, () => this.toggleBlockType(blockType.name))
+      if(blockType.shortcut) {
+        bind(withSpecialKey(blockType.shortcut), () => this.toggleBlockType(blockType.name))
+      }
     });
 
     bind('Enter', () => this.splitCodeBlock());
@@ -363,7 +365,7 @@ export type BlockTypeName =
 export interface BlockType {
   name: BlockTypeName;
   title: string;
-  key: string;
+  shortcut?: string;
 }
 
 interface S extends Schema {
@@ -380,6 +382,6 @@ interface PM extends ProseMirror {
   schema: S;
 }
 
-function makeBlockType(name: BlockTypeName, title: string, key: string): BlockType {
-  return { name: name, title: title, key: key };
+function makeBlockType(name: BlockTypeName, title: string, shortcut?: string): BlockType {
+  return { name: name, title: title, shortcut: shortcut };
 }

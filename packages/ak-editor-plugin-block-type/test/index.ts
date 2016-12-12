@@ -361,9 +361,7 @@ describe('ak-editor-plugin-block-type', () => {
 
       context('when hits double enter', () => {
         it('exits code block', ()=> {
-          const { pm, plugin } = editor(doc(code_block()('text{endPos}')));
-          const { endPos } = pm.doc.refs;
-          pm.setTextSelection(endPos);
+          const { pm, plugin } = editor(doc(code_block()('text{<>}')));
 
           pm.input.dispatchKey("Enter");
           pm.input.dispatchKey("Enter");
@@ -390,9 +388,7 @@ describe('ak-editor-plugin-block-type', () => {
       context('when last char is a new line', () => {
         context('when cursor is at the end of code block', () => {
           it('removes the last new line char in code block', () => {
-            const { pm, plugin } = editor(doc(code_block()('text\n{endPos}')));
-            const { endPos } = pm.doc.refs;
-            pm.setTextSelection(endPos);
+            const { pm, plugin } = editor(doc(code_block()('text\n{<>}')));
 
             plugin.splitCodeBlock();
 
@@ -400,9 +396,7 @@ describe('ak-editor-plugin-block-type', () => {
           });
 
           it('returns false', () => {
-            const { pm, plugin } = editor(doc(code_block()('text\n{endPos}')));
-            const { endPos } = pm.doc.refs;
-            pm.setTextSelection(endPos);
+            const { pm, plugin } = editor(doc(code_block()('text\n{<>}')));
 
             expect(plugin.splitCodeBlock()).to.be.false;
           });
@@ -410,9 +404,7 @@ describe('ak-editor-plugin-block-type', () => {
 
         context('when cursor is in the middle of code block', () => {
           it('inserts a new line', () => {
-            const { pm, plugin } = editor(doc(code_block()('te{midPos}xt\n')));
-            const { midPos } = pm.doc.refs;
-            pm.setTextSelection(midPos);
+            const { pm, plugin } = editor(doc(code_block()('te{<>}xt\n')));
 
             plugin.splitCodeBlock();
 
@@ -420,9 +412,7 @@ describe('ak-editor-plugin-block-type', () => {
           });
           
           it('returns true', () => {
-            const { pm, plugin } = editor(doc(code_block()('te{midPos}xt\n')));
-            const { midPos } = pm.doc.refs;
-            pm.setTextSelection(midPos);
+            const { pm, plugin } = editor(doc(code_block()('te{<>}xt\n')));
 
             expect(plugin.splitCodeBlock()).to.be.true;
           });
@@ -432,9 +422,7 @@ describe('ak-editor-plugin-block-type', () => {
       context('when last char is not a new line', () => {
         context('when cursor is at the end of code block', () => {
           it('inserts a new line', () => {
-            const { pm, plugin } = editor(doc(code_block()('text{endPos}')));
-            const { endPos } = pm.doc.refs;
-            pm.setTextSelection(endPos);
+            const { pm, plugin } = editor(doc(code_block()('text{<>}')));
 
             plugin.splitCodeBlock();
 
@@ -442,9 +430,7 @@ describe('ak-editor-plugin-block-type', () => {
           });
           
           it('returns true', () => {
-            const { pm, plugin } = editor(doc(code_block()('text{endPos}')));
-            const { endPos } = pm.doc.refs;
-            pm.setTextSelection(endPos);
+            const { pm, plugin } = editor(doc(code_block()('text{<>}')));
 
             expect(plugin.splitCodeBlock()).to.be.true;
           });
@@ -452,9 +438,7 @@ describe('ak-editor-plugin-block-type', () => {
 
         context('when cursor is in the middle of code block', () => {
           it('inserts a new line', () => {
-            const { pm, plugin } = editor(doc(code_block()('te{midPos}xt')));
-            const { midPos } = pm.doc.refs;
-            pm.setTextSelection(midPos);
+            const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
 
             plugin.splitCodeBlock();
 
@@ -462,9 +446,7 @@ describe('ak-editor-plugin-block-type', () => {
           });
 
           it('returns true', () => {
-            const { pm, plugin } = editor(doc(code_block()('te{midPos}xt')));
-            const { midPos } = pm.doc.refs;
-            pm.setTextSelection(midPos);
+            const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
 
             expect(plugin.splitCodeBlock()).to.be.true;
           });
@@ -474,9 +456,7 @@ describe('ak-editor-plugin-block-type', () => {
 
     context('when it is not a code block', () => {
       it('returns false', () => {
-        const { pm, plugin } = editor(doc(p('text{endPos}')));
-        const { endPos } = pm.doc.refs;
-        pm.setTextSelection(endPos);
+        const { pm, plugin } = editor(doc(p('text{<>}')));
 
         expect(plugin.splitCodeBlock()).to.be.false;
       });

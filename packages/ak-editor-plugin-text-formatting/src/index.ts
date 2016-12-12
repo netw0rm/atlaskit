@@ -247,14 +247,14 @@ export class TextFormattingState {
   }
 
   private addKeymap(): void {
-    const assistKey = browser.mac ? 'Cmd-' : 'Ctrl-'; 
+    const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd' : 'Ctrl'}-${key}`;
 
     const bindings = {
-      [assistKey + 'B']: ()=> this.toggleStrong(),
-      [assistKey + 'I']: ()=> this.toggleEm(),
-      [assistKey + 'U']: ()=> this.toggleUnderline(),
-      [assistKey + 'Shift-S']: ()=> this.toggleStrike(),
-      [assistKey + 'Shift-M']: ()=> this.toggleMono(),
+      [withSpecialKey('B')]: ()=> this.toggleStrong(),
+      [withSpecialKey('I')]: ()=> this.toggleEm(),
+      [withSpecialKey('U')]: ()=> this.toggleUnderline(),
+      [withSpecialKey('Shift-S')]: ()=> this.toggleStrike(),
+      [withSpecialKey('Shift-M')]: ()=> this.toggleMono(),
     };
 
     this.pm.addKeymap(new Keymap(bindings));

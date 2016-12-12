@@ -4,9 +4,9 @@ import classNames from 'classnames';
 
 import { appearance, type, spacing, theme } from './internal/enumerated-properties';
 import getClasses from './internal/get-button-classes';
-import Span from './Span';
-import Button from './Button';
-import Link from './Link';
+import Content from './Content';
+import Element from './Element';
+import Icon from './Icon';
 
 /* eslint-disable react/no-unused-prop-types */
 /**
@@ -117,17 +117,6 @@ export default class AkButton extends Component {
 
   render() {
     const { props } = this;
-    const Icon = p => (<span className={styles.IconWrapper}>{p.source}</span>);
-    const Content = p => (<span className={styles.buttonContent}>{p.children}</span>);
-    const Element = (p) => {
-      if (p.href) {
-        if (p.isDisabled) {
-          return (<Span {...p}>{p.children}</Span>);
-        }
-        return (<Link {...p}>{p.children}</Link>);
-      }
-      return (<Button {...p}>{p.children}</Button>);
-    };
 
     return (
       <Element

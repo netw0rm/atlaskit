@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Stateless from './Stateless';
 
-export default class extends PureComponent {
+export default class Calendar extends PureComponent {
   constructor(props) {
     super(props);
     const now = new Date();

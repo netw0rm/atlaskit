@@ -5,9 +5,12 @@ import AtlassianIcon from 'ak-icon/glyph/atlassian';
 import Breadcrumbs, { AkBreadcrumbsItem } from '../src';
 import { name } from '../package.json';
 
-
+const imports = [
+  ['React', 'react'],
+  ['Breadcrumbs, { AkBreadcrumbsItem }', 'ak-breadcrumbs'],
+];
 storiesOf(name, module)
-  .add('simple ak-breadcrumbs', () => (
+  .addCodeExampleStory('simple ak-breadcrumbs', () => (
     <Breadcrumbs>
       <AkBreadcrumbsItem href="/pages">Pages</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/pages/home">Home</AkBreadcrumbsItem>
@@ -16,23 +19,23 @@ storiesOf(name, module)
       <AkBreadcrumbsItem href="/pages/product-design">Product design (draft)</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/pages/patternsdesign">Patterns design (draft)</AkBreadcrumbsItem>
     </Breadcrumbs>
-  ))
-  .add('ak-breadcrumbs with no items', () => (
+  ), { imports })
+  .addCodeExampleStory('ak-breadcrumbs with no items', () => (
     <Breadcrumbs />
-  ))
-  .add('ak-breadcrumbs with one item', () => (
+  ), { imports })
+  .addCodeExampleStory('ak-breadcrumbs with one item', () => (
     <Breadcrumbs>
       <AkBreadcrumbsItem href="/page">Page</AkBreadcrumbsItem>
     </Breadcrumbs>
-  ))
-  .add('ak-breadcrumbs with one item with very long text', () => (
+  ), { imports })
+  .addCodeExampleStory('ak-breadcrumbs with one item with very long text', () => (
     <Breadcrumbs>
       <AkBreadcrumbsItem href="/supercalifragilisticexpialidocious">
         Supercalifragilisticexpialidocious
       </AkBreadcrumbsItem>
     </Breadcrumbs>
-  ))
-  .add('ak-breadcrumbs with icons', () => {
+  ), { imports })
+  .addCodeExampleStory('ak-breadcrumbs with icons', () => {
     const TestIcon = <AtlassianIcon label="Test icon" />;
     return (
       <div>
@@ -62,8 +65,14 @@ storiesOf(name, module)
         </Breadcrumbs>
       </div>
     );
+  }, {
+    imports: [...imports, ['AtlassianIcon', 'ak-icon/glyph/atlassian']],
+    overrides: {
+      iconBefore: '<AtlassianIcon label="Test icon" />',
+      iconAfter: '<AtlassianIcon label="Test icon" />',
+    },
   })
-  .add('ak-breadcrumbs with markup in item content', () => (
+  .addCodeExampleStory('ak-breadcrumbs with markup in item content', () => (
     <Breadcrumbs>
       <AkBreadcrumbsItem href="/page"><b>Page</b></AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/page">
@@ -74,8 +83,8 @@ storiesOf(name, module)
         <span> and icon <AtlassianIcon label="Atlassian icon" /></span>
       </AkBreadcrumbsItem>
     </Breadcrumbs>
-  ))
-  .add('ak-breadcrumbs with long and short items', () => (
+  ), { imports })
+  .addCodeExampleStory('ak-breadcrumbs with long and short items', () => (
     <Breadcrumbs>
       <AkBreadcrumbsItem href="/long">Supercalifragilisticexpialidocious</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/short">Item</AkBreadcrumbsItem>
@@ -84,8 +93,8 @@ storiesOf(name, module)
       <AkBreadcrumbsItem href="/long">Another long item name which should be truncated</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/short">Short item</AkBreadcrumbsItem>
     </Breadcrumbs>
-  ))
-  .add('ak-breadcrumbs with many items', () => (
+  ), { imports })
+  .addCodeExampleStory('ak-breadcrumbs with many items', () => (
     <Breadcrumbs>
       <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
@@ -99,8 +108,8 @@ storiesOf(name, module)
       <AkBreadcrumbsItem href="/item">Item ten</AkBreadcrumbsItem>
       <AkBreadcrumbsItem href="/item">The last item</AkBreadcrumbsItem>
     </Breadcrumbs>
-  ))
-  .add('ak-breadcrumbs with many items, inside small container', () => (
+  ), { imports })
+  .addCodeExampleStory('ak-breadcrumbs with many items, inside small container', () => (
     <div style={{ maxWidth: '500px', border: '1px solid black' }}>
       <Breadcrumbs>
         <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
@@ -116,4 +125,4 @@ storiesOf(name, module)
         <AkBreadcrumbsItem href="/item">The last item</AkBreadcrumbsItem>
       </Breadcrumbs>
     </div>
-  ));
+  ), { imports });

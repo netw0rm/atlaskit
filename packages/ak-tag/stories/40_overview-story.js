@@ -4,8 +4,13 @@ import React from 'react';
 import Component from '../src/index';
 import { name } from '../package.json';
 
+const imports = [
+  ['React', 'react'],
+  ['Tag', 'ak-tag'],
+];
+
 storiesOf(name, module)
-  .add('overview', () => (
+  .addCodeExampleStory('overview', () => (
     <div>
       <Component
         text="Text only"
@@ -31,4 +36,4 @@ storiesOf(name, module)
         removeButtonText="Remove me"
       />
     </div>
-  ));
+  ), { imports });

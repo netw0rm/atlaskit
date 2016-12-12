@@ -22,37 +22,39 @@ function getDates() {
   return [getDate(), getDate(3), getDate(20)];
 }
 
+const imports = [['React', 'react'], ['Calendar, { StatelessCalendar }', 'ak-calendar']];
+
 storiesOf(name, module)
-  .add('smart', () => (
+  .addCodeExampleStory('smart', () => (
     <AkCalendarSmart />
-  ))
-  .add('onBlur', () => (
+  ), { imports })
+  .addCodeExampleStory('onBlur', () => (
     <AkCalendar onBlur={action('blur')} />
-  ))
-  .add('onChange', () => (
+  ), { imports, overrides: { onBlur: "action('blur')" } })
+  .addCodeExampleStory('onChange', () => (
     <AkCalendar onChange={action('change')} />
-  ))
-  .add('onSelect', () => (
+  ), { imports, overrides: { onChange: "action('change')" } })
+  .addCodeExampleStory('onSelect', () => (
     <AkCalendar onSelect={action('select')} />
-  ))
-  .add('disabled', () => (
+  ), { imports, overrides: { onSelect: "action('select')" } })
+  .addCodeExampleStory('disabled', () => (
     <AkCalendar disabled={getDates()} />
-  ))
-  .add('focused (today)', () => (
+  ), { imports })
+  .addCodeExampleStory('focused (today)', () => (
     <AkCalendar focused={today} />
-  ))
-  .add('focused (not today)', () => (
+  ), { imports })
+  .addCodeExampleStory('focused (not today)', () => (
     <AkCalendar focused={notToday} />
-  ))
-  .add('month', () => (
+  ), { imports })
+  .addCodeExampleStory('month', () => (
     <AkCalendar month={notThisMonth} />
-  ))
-  .add('previouslySelected', () => (
+  ), { imports })
+  .addCodeExampleStory('previouslySelected', () => (
     <AkCalendar previouslySelected={getDates()} />
-  ))
-  .add('selected', () => (
+  ), { imports })
+  .addCodeExampleStory('selected', () => (
     <AkCalendar selected={getDates()} />
-  ))
-  .add('year', () => (
+  ), { imports })
+  .addCodeExampleStory('year', () => (
     <AkCalendar year={notThisYear} />
-  ));
+  ), { imports });

@@ -41,8 +41,9 @@ const Other = makeBlockType('other', 'Other…');
 type ContextName = 'default' | 'comment' | 'pr';
 
 export class BlockTypeState {
-  private changeHandlers: BlockTypeStateSubscriber[] = [];
   private pm: PM;
+  private changeHandlers: BlockTypeStateSubscriber[] = [];
+  private availableContext: Context[] = [];
 
   // public state
   currentBlockType: BlockType = NormalText;
@@ -61,10 +62,14 @@ export class BlockTypeState {
       pm.on.change,
     ], () => this.update());
 
-    this.changeContext('default');
-    this.update();
+    this.addBasicKeymap();
 
-    this.addKeymap();
+    this.addAvailableContext('pr', [NormalText, Heading1, Heading2, Heading3, Quote, Code]);
+    this.addAvailableContext('comment', [NormalText, Quote, Code]);
+    this.addAvailableContext('default', [NormalText, Heading1, Heading2, Heading3, Heading4, Heading5, Quote, Code]);
+    this.changeContext('default');
+
+    this.update();
   }
 
   subscribe(cb: BlockTypeStateSubscriber) {
@@ -77,41 +82,14 @@ export class BlockTypeState {
   }
 
   changeContext(name: ContextName): void {
-    if (name !== this.context) {
-      const preferredBlockTypes = (() => {
-        switch (name) {
-          case 'pr':
-            return [
-              NormalText,
-              Heading1,
-              Heading2,
-              Heading3,
-              Quote,
-              Code
-            ];
-          case 'comment':
-            return [
-              NormalText,
-              Quote,
-              Code
-            ];
-          default:
-            return [
-              NormalText,
-              Heading1,
-              Heading2,
-              Heading3,
-              Heading4,
-              Heading5,
-              Quote,
-              Code,
-            ];
-        }
-      })();
+    const context = this.findContext(name);
+    
+    if (name !== this.context && context) {
+      this.updateBlockTypeKeymap(context);
 
-      this.context = name;
-      this.availableBlockTypes = preferredBlockTypes
-        .filter(this.isBlockTypeSchemaSupported);
+      this.context = context.name;
+      this.availableBlockTypes = context.blockTypes;
+
       this.update(true);
     }
   }
@@ -221,24 +199,40 @@ export class BlockTypeState {
     pm.tr.delete($from.pos-1, $from.pos).applyAndScroll();
   }
 
-  private addKeymap(): void {
+  private updateBlockTypeKeymap(context: Context) {
+    const { pm } = this;
+    if(this.context) {
+      const previousContext = this.findContext(this.context);
+      if(previousContext) {
+        pm.removeKeymap(previousContext.keymap);
+      }
+    } 
+
+    pm.addKeymap(context.keymap);
+  }
+
+  private keymapForBlockTypes(blockTypes: BlockType[]) {
     const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd-Alt' : 'Ctrl'}-${key}`;
     let bindings: {[key: string]: any} = {};
 
     const bind = (key: string, action: any): void => {
       bindings = Object.assign({}, bindings, {[key]: action});
     }
-
-    this.availableBlockTypes.forEach((blockType) => {
+    
+    blockTypes.forEach((blockType) => {
       if(blockType.shortcut) {
-        bind(withSpecialKey(blockType.shortcut), () => this.toggleBlockType(blockType.name))
+        bind(withSpecialKey(blockType.shortcut), () => this.toggleBlockType(blockType.name));
       }
     });
 
-    bind('Enter', () => this.splitCodeBlock());
-    bind('Shift-Enter', () => this.insertNewLine());
+    return new Keymap(bindings);
+  }
 
-    this.pm.addKeymap(new Keymap(bindings));
+  private addBasicKeymap(): void {
+    this.pm.addKeymap(new Keymap({
+      'Enter': () => this.splitCodeBlock(),
+      'Shift-Enter': () => this.insertNewLine()
+    }));
   }
   
   private lastCharIsNewline(node: Node): boolean {
@@ -324,6 +318,19 @@ export class BlockTypeState {
     return Other;
   }
 
+  private addAvailableContext(name: ContextName, preferredBlockTypes: BlockType[]): void {
+    let context = this.makeContext(name, preferredBlockTypes.filter(this.isBlockTypeSchemaSupported));
+    this.availableContext.push(context);
+  }
+
+  private makeContext(name: ContextName, blockTypes: BlockType[]): Context{
+    return {name: name, blockTypes: blockTypes, keymap: this.keymapForBlockTypes(blockTypes)};
+  }
+
+  private findContext(name: ContextName): Context | undefined {
+    return this.availableContext.find((context) => context.name === name);
+  }
+
   private isBlockTypeSchemaSupported = (blockType: BlockType) => {
     const { pm } = this;
     switch (blockType) {
@@ -365,6 +372,13 @@ export interface BlockType {
   name: BlockTypeName;
   title: string;
   shortcut?: string;
+}
+
+
+interface Context {
+  name: ContextName,
+  blockTypes: BlockType[],
+  keymap: Keymap
 }
 
 interface S extends Schema {

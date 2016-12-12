@@ -261,6 +261,26 @@ describe('ak-editor-plugin-block-type', () => {
           expect(toggleBlockType).to.have.been.calledWith('code');
         });
       });
+
+      context('when context changed', () => {
+        it('does not dispatch keymap function that does not exist under new context', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+          plugin.changeContext('comment');
+
+          pm.input.dispatchKey("Cmd-Alt-1");
+          expect(toggleBlockType).to.not.have.been.called;
+        });
+
+        it('dispatches keymap function that exists under new context', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+          plugin.changeContext('pr');
+
+          pm.input.dispatchKey("Cmd-Alt-1");
+          expect(toggleBlockType).to.have.been.calledWith('heading1');
+        });
+      });
     });
 
     context('when not on a Mac', () => {

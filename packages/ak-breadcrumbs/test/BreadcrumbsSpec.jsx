@@ -68,7 +68,7 @@ describe(name, () => {
         describe('and not expanded', () => {
           beforeEach(() => {
             wrapper = mount(
-              <Breadcrumbs itemsToCollapse={5} onExpand={expandSpy}>
+              <Breadcrumbs maxItems={4} onExpand={expandSpy}>
                 {firstItem}
                 <Item>item2</Item>
                 <Item>item3</Item>
@@ -95,7 +95,7 @@ describe(name, () => {
         describe('and expanded', () => {
           beforeEach(() => {
             wrapper = mount(
-              <Breadcrumbs itemsToCollapse={5} isExpanded>
+              <Breadcrumbs maxItems={4} isExpanded>
                 <Item>item1</Item>
                 <Item>item2</Item>
                 <Item>item3</Item>

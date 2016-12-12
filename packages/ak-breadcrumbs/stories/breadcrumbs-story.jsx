@@ -85,7 +85,7 @@ storiesOf(name, module)
       <AkBreadcrumbsItem href="/item" text="The last item" />
     </Breadcrumbs>
   ), { imports })
-  .addCodeExampleStory('ak-breadcrumbs with many items, inside small container', () => (
+  .addCodeExampleStory('ak-breadcrumbs with many items, inside container', () => (
     <div style={{ maxWidth: '500px', border: '1px solid black' }}>
       <Breadcrumbs>
         <AkBreadcrumbsItem href="/item" text="Item" />
@@ -102,12 +102,12 @@ storiesOf(name, module)
       </Breadcrumbs>
     </div>
   ), { imports })
-  .addCodeExampleStory('ak-breadcrumbs with many items, inside small container, collapsing at 5 items', () => (
+  .addCodeExampleStory('ak-breadcrumbs with many items, with maximum 5 items', () => (
     <div>
-      <p>Should automatically collapse if there are 6 or more items</p>
+      <p>Should automatically collapse if there are more than 5 items</p>
       <div style={{ maxWidth: '500px', border: '1px solid black' }}>
         <p>Exactly 5 items</p>
-        <Breadcrumbs itemsToCollapse={6}>
+        <Breadcrumbs maxItems={5}>
           <AkBreadcrumbsItem href="/item" text="Item" />
           <AkBreadcrumbsItem href="/item" text="Another item" />
           <AkBreadcrumbsItem href="/item" text="A third item" />
@@ -117,7 +117,7 @@ storiesOf(name, module)
       </div>
       <div style={{ maxWidth: '500px', border: '1px solid black' }}>
         <p>6 items</p>
-        <Breadcrumbs itemsToCollapse={6}>
+        <Breadcrumbs maxItems={5}>
           <AkBreadcrumbsItem href="/item" text="Item" />
           <AkBreadcrumbsItem href="/item" text="Another item" />
           <AkBreadcrumbsItem href="/item" text="A third item" />

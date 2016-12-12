@@ -1,6 +1,6 @@
 # Mention
 
-The main purpose of the blanket component is to provide the overlay layer for components such as a modal dialog or a tooltip.
+The mention picker is used to select people for mentioning in other components such as input fields or editors
 
 ![Example mention](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-mention/docs/mention.png)
 

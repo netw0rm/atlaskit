@@ -9,12 +9,12 @@ import { name } from '../package.json';
 storiesOf(name, module)
   .add('simple ak-breadcrumbs', () => (
     <AkBreadcrumbs>
-      <AkBreadcrumbsItem href="/pages">Pages</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/pages/home">Home</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/pages/adg3">ADG 3 - New site</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/pages/daccontent">design.atlassian.com content</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/pages/product-design">Product design (draft)</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/pages/patternsdesign">Patterns design (draft)</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/pages" text="Pages" />
+      <AkBreadcrumbsItem href="/pages/home" text="Home" />
+      <AkBreadcrumbsItem href="/pages/adg3" text="ADG 3 - New site" />
+      <AkBreadcrumbsItem href="/pages/daccontent" text="design.atlassian.com content" />
+      <AkBreadcrumbsItem href="/pages/product-design" text="Product design (draft)" />
+      <AkBreadcrumbsItem href="/pages/patternsdesign" text="Patterns design (draft)" />
     </AkBreadcrumbs>
   ))
   .add('ak-breadcrumbs with no items', () => (
@@ -22,14 +22,12 @@ storiesOf(name, module)
   ))
   .add('ak-breadcrumbs with one item', () => (
     <AkBreadcrumbs>
-      <AkBreadcrumbsItem href="/page">Page</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/page" text="Page" />
     </AkBreadcrumbs>
   ))
   .add('ak-breadcrumbs with one item with very long text', () => (
     <AkBreadcrumbs>
-      <AkBreadcrumbsItem href="/supercalifragilisticexpialidocious">
-        Supercalifragilisticexpialidocious
-      </AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/supercalifragilisticexpialidocious" text="Supercalifragilisticexpialidocious" />
     </AkBreadcrumbs>
   ))
   .add('ak-breadcrumbs with icons', () => {
@@ -38,82 +36,60 @@ storiesOf(name, module)
       <div>
         <p>Using itemBefore and itemAfter API</p>
         <AkBreadcrumbs>
-          <AkBreadcrumbsItem href="/item">No icon</AkBreadcrumbsItem>
-          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon}>Before</AkBreadcrumbsItem>
-          <AkBreadcrumbsItem href="/item" iconAfter={TestIcon}>After</AkBreadcrumbsItem>
-          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon} iconAfter={TestIcon}>
-            Before and after
-          </AkBreadcrumbsItem>
-          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon} iconAfter={TestIcon}>
-            Long content, icons before and after
-          </AkBreadcrumbsItem>
-        </AkBreadcrumbs>
-        <p>With icons in the content</p>
-        <AkBreadcrumbs>
-          <AkBreadcrumbsItem href="/item">No icon</AkBreadcrumbsItem>
-          <AkBreadcrumbsItem href="/item">{TestIcon} Before</AkBreadcrumbsItem>
-          <AkBreadcrumbsItem href="/item">After {TestIcon}</AkBreadcrumbsItem>
-          <AkBreadcrumbsItem href="/item">
-            {TestIcon} Before and after {TestIcon}
-          </AkBreadcrumbsItem>
-          <AkBreadcrumbsItem href="/item">
-            {TestIcon} Long content, icons before and after {TestIcon}
-          </AkBreadcrumbsItem>
+          <AkBreadcrumbsItem href="/item" text="No icon" />
+          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon} text="Before" />
+          <AkBreadcrumbsItem href="/item" iconAfter={TestIcon} text="After" />
+          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon} iconAfter={TestIcon} text="Before and after" />
+          <AkBreadcrumbsItem href="/item" iconBefore={TestIcon} iconAfter={TestIcon} text="Long content, icons before and after" />
         </AkBreadcrumbs>
       </div>
     );
   })
   .add('ak-breadcrumbs with markup in item content', () => (
     <AkBreadcrumbs>
-      <AkBreadcrumbsItem href="/page"><b>Page</b></AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/page">
-        With icon <AtlassianIcon label="Atlassian icon" />
-      </AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/page">
-        <span>Long page name with <b>markup</b> <i>(should be truncated)</i></span>
-        <span> and icon <AtlassianIcon label="Atlassian icon" /></span>
-      </AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/page" text="<b>Page</b>" />
+      <AkBreadcrumbsItem href="/page" text="<script>alert();</script>" />
     </AkBreadcrumbs>
   ))
   .add('ak-breadcrumbs with long and short items', () => (
     <AkBreadcrumbs>
-      <AkBreadcrumbsItem href="/long">Supercalifragilisticexpialidocious</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/short">Item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/short">Another item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/long">Long item name which should be truncated</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/long">Another long item name which should be truncated</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/short">Short item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/long" text="Supercalifragilisticexpialidocious" />
+      <AkBreadcrumbsItem href="/short" text="Item" />
+      <AkBreadcrumbsItem href="/short" text="Another item" />
+      <AkBreadcrumbsItem href="/long" text="Long item name which should be truncated" />
+      <AkBreadcrumbsItem href="/long" text="Another long item name which should be truncated" />
+      <AkBreadcrumbsItem href="/short" text="Short item" />
     </AkBreadcrumbs>
   ))
   .add('ak-breadcrumbs with many items', () => (
     <AkBreadcrumbs>
-      <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">A fourth item with a very long name</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">Yet another item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">An item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">The next item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">The item after the next item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">The ninth item</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">Item ten</AkBreadcrumbsItem>
-      <AkBreadcrumbsItem href="/item">The last item</AkBreadcrumbsItem>
+      <AkBreadcrumbsItem href="/item" text="Item" />
+      <AkBreadcrumbsItem href="/item" text="Another item" />
+      <AkBreadcrumbsItem href="/item" text="A third item" />
+      <AkBreadcrumbsItem href="/item" text="A fourth item with a very long name" />
+      <AkBreadcrumbsItem href="/item" text="Yet another item" />
+      <AkBreadcrumbsItem href="/item" text="An item" />
+      <AkBreadcrumbsItem href="/item" text="The next item" />
+      <AkBreadcrumbsItem href="/item" text="The item after the next item" />
+      <AkBreadcrumbsItem href="/item" text="The ninth item" />
+      <AkBreadcrumbsItem href="/item" text="Item ten" />
+      <AkBreadcrumbsItem href="/item" text="The last item" />
     </AkBreadcrumbs>
   ))
   .add('ak-breadcrumbs with many items, inside small container', () => (
     <div style={{ maxWidth: '500px', border: '1px solid black' }}>
       <AkBreadcrumbs>
-        <AkBreadcrumbsItem href="/item">Item</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">Another item</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">A third item</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">A fourth item with a very long name</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">Yet another item</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">An item</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">The next item</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">The item after the next item</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">The ninth item</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">Item ten</AkBreadcrumbsItem>
-        <AkBreadcrumbsItem href="/item">The last item</AkBreadcrumbsItem>
+        <AkBreadcrumbsItem href="/item" text="Item" />
+        <AkBreadcrumbsItem href="/item" text="Another item" />
+        <AkBreadcrumbsItem href="/item" text="A third item" />
+        <AkBreadcrumbsItem href="/item" text="A fourth item with a very long name" />
+        <AkBreadcrumbsItem href="/item" text="Yet another item" />
+        <AkBreadcrumbsItem href="/item" text="An item" />
+        <AkBreadcrumbsItem href="/item" text="The next item" />
+        <AkBreadcrumbsItem href="/item" text="The item after the next item" />
+        <AkBreadcrumbsItem href="/item" text="The ninth item" />
+        <AkBreadcrumbsItem href="/item" text="Item ten" />
+        <AkBreadcrumbsItem href="/item" text="The last item" />
       </AkBreadcrumbs>
     </div>
   ));

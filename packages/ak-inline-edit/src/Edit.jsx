@@ -10,6 +10,7 @@ import { locals } from './styles.less';
 export default class EditView extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
+    isInvalid: PropTypes.bool.isRequired,
     isLabelHidden: PropTypes.bool.isRequired,
     isConfirmOnBlurDisabled: PropTypes.bool.isRequired,
     onConfirm: PropTypes.func.isRequired,
@@ -63,6 +64,7 @@ export default class EditView extends PureComponent {
     <div onBlur={this.onBlur}>
       <FieldBase
         label={this.props.label}
+        isInvalid={this.props.isInvalid}
         isLabelHidden={this.props.isLabelHidden}
         rightGutter={this.renderActionButtons()}
       >

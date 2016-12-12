@@ -7,6 +7,7 @@ import { locals } from './styles.less';
 export default class ReadView extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
+    isInvalid: PropTypes.bool.isRequired,
     isLabelHidden: PropTypes.bool.isRequired,
     onEditRequested: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
@@ -19,6 +20,7 @@ export default class ReadView extends PureComponent {
     >
       <FieldBase
         label={this.props.label}
+        isInvalid={this.props.isInvalid}
         isLabelHidden={this.props.isLabelHidden}
         appearance="subtle"
       >

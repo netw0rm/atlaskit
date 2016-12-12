@@ -75,6 +75,7 @@ export default class MentionItem extends PureComponent {
   // internal, used for callbacks
   _onMentionSelected = (event) => {
     if (leftClick(event) && this.props.onSelection) {
+      event.preventDefault();
       this.props.onSelection(this.props);
     }
   }
@@ -88,7 +89,8 @@ export default class MentionItem extends PureComponent {
   render() {
     const { selected, highlight, avatarUrl, status, time, name, mentionName } = this.props;
     const classes = classNames({
-      [styles.item]: true,
+      'ak-mention-item': true,
+      [styles.akMentionItem]: true,
       [styles.selected]: selected,
     });
 
@@ -97,20 +99,19 @@ export default class MentionItem extends PureComponent {
 
     return (
       <div
-        className={styles.akMentionItem}
+        className={classes}
         onMouseDown={this._onMentionSelected}
         onMouseMove={this._onMentionMenuItemMouseMove}
         data-mention-id={this.props.id}
+        data-mention-name={this.props.mentionName}
       >
-        <div className={classes}>
-          <div className={styles.row}>
-            <Avatar src={avatarUrl} size="medium" presence={status} />
-            <div className={styles.nameSection}>
-              {renderHighlight(styles.fullName, name, nameHighlights)}
-              {renderHighlight(styles.mentionName, mentionName, mentionHighlights, '@')}
-            </div>
-            {renderTime(time)}
+        <div className={styles.row}>
+          <Avatar src={avatarUrl} size="medium" presence={status} />
+          <div className={styles.nameSection}>
+            {renderHighlight(styles.fullName, name, nameHighlights)}
+            {renderHighlight(styles.mentionName, mentionName, mentionHighlights, '@')}
           </div>
+          {renderTime(time)}
         </div>
       </div>
     );

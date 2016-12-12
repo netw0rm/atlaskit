@@ -8,7 +8,6 @@ import { itemTruncateWidth } from './internal/constants';
 
 const { item, itemButton, truncated } = locals;
 
-
 /**
  * @description BreadcrumbsItem React component.
  * @class BreadcrumbsItem

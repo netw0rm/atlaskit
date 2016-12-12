@@ -27,11 +27,14 @@ export default class Navigation extends Component {
     width: PropTypes.number,
     open: PropTypes.bool,
     onResize: PropTypes.func,
-    globalNavigation: PropTypes.node,
     isResizeable: PropTypes.bool,
     globalPrimaryIcon: PropTypes.node,
     globalSearchIcon: PropTypes.node,
     globalCreateIcon: PropTypes.node,
+    globalHelpIcon: PropTypes.node,
+    globalAccountIcon: PropTypes.node,
+    onHelpClicked: PropTypes.func,
+    onAccountClicked: PropTypes.func,
   };
 
   static defaultProps = {
@@ -77,18 +80,10 @@ export default class Navigation extends Component {
 
 
   render() {
-    const globalItemIfPropSet = (prop, onActivate) => {
-      if (!prop) return null;
-      return (
-        <GlobalItem onActivate={onActivate}>
-          {prop}
-        </GlobalItem>
-      );
-    };
-
     const { onSearchDrawerActivated, onCreateDrawerActivated, globalSearchIcon, globalCreateIcon,
       searchDrawerContent, createDrawerContent, containerHeader, children, isResizeable,
-      globalNavigation, globalPrimaryIcon, isSearchDrawerOpen, isCreateDrawerOpen } = this.props;
+      globalPrimaryIcon, isSearchDrawerOpen, isCreateDrawerOpen,
+      onHelpClicked, onAccountClicked, globalAccountIcon, globalHelpIcon } = this.props;
 
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();
@@ -100,18 +95,28 @@ export default class Navigation extends Component {
         />
         <div className={styles.navigationInner}>
           <div style={{ zIndex: 2 }}>
-            {
-              globalNavigation || (
-                <GlobalNavigation
-                  shouldAnimate={shouldAnimate}
-                  width={getGlobalWidth(this.getRenderedWidth())}
-                  primaryIcon={globalItemIfPropSet(globalPrimaryIcon)}
-                >
-                  {globalItemIfPropSet(globalSearchIcon, onSearchDrawerActivated)}
-                  {globalItemIfPropSet(globalCreateIcon, onCreateDrawerActivated)}
-                </GlobalNavigation>
-              )
-            }
+            <GlobalNavigation
+              shouldAnimate={shouldAnimate}
+              width={getGlobalWidth(this.getRenderedWidth())}
+              primaryIcon={<GlobalItem size="large">{globalPrimaryIcon}</GlobalItem>}
+              helpIcon={
+                <GlobalItem size="small" onActivate={onHelpClicked}>
+                  {globalHelpIcon}
+                </GlobalItem>
+              }
+              accountIcon={
+                <GlobalItem size="small" onActivate={onAccountClicked}>
+                  {globalAccountIcon}
+                </GlobalItem>
+              }
+            >
+              <GlobalItem onActivate={onSearchDrawerActivated}>
+                {globalSearchIcon}
+              </GlobalItem>
+              <GlobalItem onActivate={onCreateDrawerActivated}>
+                {globalCreateIcon}
+              </GlobalItem>
+            </GlobalNavigation>
           </div>
           <div style={{ zIndex: 1 }}>
             <Drawer open={isSearchDrawerOpen} wide>{searchDrawerContent}</Drawer>

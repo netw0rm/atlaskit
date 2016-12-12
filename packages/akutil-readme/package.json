@@ -1,20 +1,20 @@
 {
-  "name": "ak-lozenge",
-  "version": "5.0.3",
-  "description": "A React component that highlights status for quick recognition ",
+  "name": "akutil-readme",
+  "version": "1.0.0",
+  "description": "A suite of components for building readme-style docs into your stories.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-lozenge"
+    "prepublish": "cd ../.. && npm run prepublish/single akutil-readme"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.0.0",
-    "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5"
+    "component-playground": "^1.3.1",
+    "decamelize": "^1.2.0",
+    "react-syntax-highlighter": "^3.0.2"
   },
   "peerDependencies": {
     "react": "^15.3.2"
@@ -24,9 +24,5 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  },
-  "keywords": [
-    "atlaskit",
-    "ui"
-  ]
+  }
 }

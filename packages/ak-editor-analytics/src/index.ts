@@ -1,3 +1,9 @@
-export * from './service';
-export * from './handler';
-export * from './annotation';
+export { default as service } from './service';
+export { 
+    analyticsHandler, 
+    analyticsProperties, 
+    detectHandler, 
+    hermentHandler,
+    debugHandler 
+} from './handler';
+export { default as decorator } from './decorator';

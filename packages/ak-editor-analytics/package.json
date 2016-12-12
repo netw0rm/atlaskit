@@ -11,7 +11,8 @@
   },
   "files": [
     "dist",
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
@@ -19,8 +20,8 @@
     "babel-runtime": "^6.11.6"
   },
   "peerDependencies": {},
-  "devDependencies": {  
-    "ak-editor-test": "*"  
+  "devDependencies": {
+    "ak-editor-test": "*"
   },
   "repository": {
     "type": "git",

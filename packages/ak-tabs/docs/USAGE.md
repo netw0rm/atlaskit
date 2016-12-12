@@ -6,7 +6,7 @@ A tab is a simple graphical element that allows to contain multiple panels withi
 
 ## Try it out
 
-Interact with a [live demo of the ak-tabs component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tabs/@VERSION@/).
+Interact with a [live demo of the ak-tabs](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tabs/@VERSION@/).
 
 
 ## Installation

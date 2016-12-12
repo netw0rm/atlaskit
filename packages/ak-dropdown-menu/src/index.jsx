@@ -27,6 +27,7 @@ export default class DropdownMenu extends Component {
   static defaultProps = {
     position: 'bottom left',
     onItemActivated: () => {},
+    onOpenChange: () => {},
     isOpenInitially: false,
   }
 
@@ -62,17 +63,17 @@ export default class DropdownMenu extends Component {
 
   open = () => {
     this.setState({ isOpen: true });
-    this.onOpenChange(true);
+    this.props.onOpenChange(true);
   }
 
   close = () => {
     this.setState({ isOpen: false });
-    this.onOpenChange(false);
+    this.props.onOpenChange(false);
   }
 
   toggle = () => {
     this.setState({ isOpen: !this.state.isOpen });
-    this.onOpenChange(this.state.isOpen);
+    this.props.onOpenChange(this.state.isOpen);
   }
 
   renderTrigger = (trigger) => {

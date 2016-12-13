@@ -19,9 +19,9 @@ Expose a `RadioGroup` component, which wraps a set of related `Radio` items.
     selectedValue={"cat"}
     onRadioSelect={handler}
   >
-    <Radio name="animal" value="dog" text="Dog" />
-    <Radio name="animal" value="cat" text="Cat" />
-    <Radio name="animal" value="hippo" text="Hippo" />
+    <Radio name="animal" value="dog">Dog</Radio>
+    <Radio name="animal" value="cat">Cat</Radio>
+    <Radio name="animal" value="hippo">Hippo</Radio>
   </RadioGroup>
 </form>
 ```
@@ -36,7 +36,6 @@ Expose a `RadioGroup` component, which wraps a set of related `Radio` items.
 
 * `name`: String - The name which is submitted with the data
 * `value`: String - The value of the radio input
-* `text`: String - Renders a label for the item
 
 ### Smart component
 

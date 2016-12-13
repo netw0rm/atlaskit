@@ -6,7 +6,6 @@ function noModifiers(event) {
   return !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey;
 }
 
-
 class SearchTextInput extends Component {
   static propTypes = {
     inputId: PropTypes.string,

@@ -4,8 +4,13 @@ import React from 'react';
 import Lozenge from '../src';
 import { name } from '../package.json';
 
+const imports = [
+  ['React', 'react'],
+  ['Lozenge', 'ak-lozenge'],
+];
+
 storiesOf(name, module)
-  .add('standard and bold lozenges', () => (
+  .addCodeExampleStory('standard and bold lozenges', () => (
     <div>
       <h2>Standard lozenges</h2>
       <p><Lozenge>Default</Lozenge></p>
@@ -22,11 +27,8 @@ storiesOf(name, module)
       <p><Lozenge isBold appearance="new">new</Lozenge></p>
       <p><Lozenge isBold appearance="moved">moved</Lozenge></p>
     </div>
-  ))
-  .addBaselineAligned('baseline alignment', () => (
-    <Lozenge isBold appearance="new">lozenge</Lozenge>
-  ))
-  .add('truncation when too wide', () => (
+  ), { imports })
+  .addCodeExampleStory('truncation when too wide', () => (
     <div>
       <p>
         <Lozenge appearance="success">
@@ -39,4 +41,7 @@ storiesOf(name, module)
         </Lozenge>
       </p>
     </div>
+  ), { imports })
+  .addBaselineAligned('baseline alignment', () => (
+    <Lozenge isBold appearance="new">lozenge</Lozenge>
   ));

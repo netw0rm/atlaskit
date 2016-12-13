@@ -12,10 +12,14 @@ const MyTag = props => (
 );
 
 const cupcakeipsum = 'Croissant topping tiramisu gummi bears. Bonbon chocolate bar danish soufflé';
+const imports = [
+  ['React', 'react'],
+  ['Tag', 'ak-tag'],
+];
 
 storiesOf(name, module)
-  .add('text: simple', () => <MyTag text="Marshmallow" />)
-  .add('text: maximum length (ellipsis)', () => (
+  .addCodeExampleStory('text: simple', () => <MyTag text="Marshmallow" />, { imports })
+  .addCodeExampleStory('text: maximum length (ellipsis)', () => (
     <table>
       <tbody>
         <tr>
@@ -58,11 +62,11 @@ storiesOf(name, module)
         </tr>
       </tbody>
     </table>
-  ))
+  ), { imports })
   .addBaselineAligned('baseline alignment', () => (
     <MyTag
       text={cupcakeipsum}
       removeButtonText="No sweets for you!"
       href="http://www.cupcakeipsum.com/"
     />
-  ));
+  ), { imports });

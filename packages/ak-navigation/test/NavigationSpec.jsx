@@ -7,7 +7,6 @@ import {
   containerClosedWidth,
 } from '../src/shared-variables';
 
-
 chai.use(chaiEnzyme());
 
 describe('<Navigation />', () => {

@@ -44,13 +44,49 @@ export default class InlineEdit extends PureComponent {
      */
     isEditing: PropTypes.bool.isRequired,
     /**
+     * @description Whether or not a validation error should be displayed.
+     *
+     * Displays a warning icon and highlights the the input with an orange border.
+     * A future release will also allow a custom error message to be displayed.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    isInvalid: PropTypes.bool,
+    /**
      * @description Whether InlineEdit should display its label.
      *
      * @memberof InlineEdit
-     * @type {string}
+     * @type {boolean}
      * @default false
      */
     isLabelHidden: PropTypes.bool,
+    /**
+     * @description Whether the confirm/cancel buttons are hidden when in edit mode.
+     *
+     * The confirm/cancel buttons should typically be hidden when an inline dialog
+     * (dropdown, calendar, etc) is being displayed in edit mode. The buttons should
+     * only be made visible once the user has selected an option from the inline dialog.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    areActionButtonsHidden: PropTypes.bool,
+    /**
+     * @description Allows disabling the default confirm-on-blur behaviour.
+     *
+     * By default, the 'onConfirm' callback will be called when focus moves
+     * outside the inline edit component. This prop allows disabling this
+     * behaviour. If this prop is set to 'true', 'onConfirm' will only be
+     * called if the user explicitly clicks on the confirm button.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    isConfirmOnBlurDisabled: PropTypes.bool,
     /**
      * @description Called when the user requests that edit mode be entered
      *
@@ -86,12 +122,16 @@ export default class InlineEdit extends PureComponent {
   }
 
   static defaultProps = {
+    isInvalid: false,
     isLabelHidden: false,
+    areActionButtonsHidden: false,
+    isConfirmOnBlurDisabled: false,
   }
 
   renderReadView = () => (
     <ReadView
       label={this.props.label}
+      isInvalid={this.props.isInvalid}
       isLabelHidden={this.props.isLabelHidden}
       onEditRequested={this.props.onEditRequested}
     >
@@ -102,12 +142,14 @@ export default class InlineEdit extends PureComponent {
   renderEditView = () => (
     <EditView
       label={this.props.label}
+      isInvalid={this.props.isInvalid}
       isLabelHidden={this.props.isLabelHidden}
+      areActionButtonsHidden={this.props.areActionButtonsHidden}
+      isConfirmOnBlurDisabled={this.props.isConfirmOnBlurDisabled}
       onConfirm={this.props.onConfirm}
       onCancel={this.props.onCancel}
-    >
-      {this.props.editView}
-    </EditView>
+      content={this.props.editView}
+    />
   )
 
   renderEditableView = () => (

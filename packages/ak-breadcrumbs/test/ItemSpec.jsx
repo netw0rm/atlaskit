@@ -6,11 +6,9 @@ import Button from 'ak-button';
 import AtlassianIcon from 'ak-icon/glyph/atlassian';
 
 import Item from '../src/BreadcrumbsItem';
-import { locals } from '../src/styles.less';
 import { itemTruncateWidth } from '../src/internal/constants';
 import { name } from '../package.json';
 import { setItemWidth } from './_helpers';
-
 
 const { expect } = chai;
 chai.use(chaiEnzyme());
@@ -27,7 +25,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Item />);
-        expect(wrapper).to.be.defined;
+        expect(wrapper).to.exist;
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
@@ -37,40 +35,39 @@ describe(name, () => {
       });
 
       it('should render a link Button containing the content', () => {
-        const children = 'children';
-        const wrapper = shallow(<Item>{children}</Item>);
-        expect(wrapper.find(Button).contains(children)).to.equal(true);
-      });
-
-      it('should render a Tooltip with the item content', () => {
-        const children = (<span>content</span>);
-        const wrapper = shallow(<Item>{children}</Item>);
-        const tooltip = wrapper.find(`.${locals.tooltip}`);
-        expect(tooltip).to.exist;
-        expect(tooltip.contains(children)).to.equal(true);
+        const text = 'text';
+        const wrapper = mount(<Item text={text} />);
+        expect(wrapper.find(Button)).to.have.text(text);
       });
     });
 
     describe('props', () => {
+      describe('item prop', () => {
+        it('should be reflected to the Button content', () => {
+          const text = 'text';
+          const wrapper = mount(<Item text={text} />);
+          expect(wrapper.find(Button)).to.have.text(text);
+        });
+      });
       describe('href prop', () => {
         it('should be reflected to the Button', () => {
           const href = '/my/href/';
-          const wrapper = mount(<Item href={href}>content</Item>);
+          const wrapper = mount(<Item href={href} />);
           expect(wrapper.find(Button)).to.have.prop('href', href);
         });
-      });
-      describe('iconAfter prop', () => {
-        it('should be reflected to the Button', () => {
-          const icon = <AtlassianIcon label="icon" />;
-          const wrapper = shallow(<Item iconAfter={icon} />);
-          expect(wrapper.find(Button)).to.have.prop('iconAfter', icon);
+        describe('iconAfter prop', () => {
+          it('should be reflected to the Button', () => {
+            const icon = <AtlassianIcon label="icon" />;
+            const wrapper = shallow(<Item iconAfter={icon} />);
+            expect(wrapper.find(Button)).to.have.prop('iconAfter', icon);
+          });
         });
-      });
-      describe('iconBefore prop', () => {
-        it('should be reflected to the Button', () => {
-          const icon = <AtlassianIcon label="icon" />;
-          const wrapper = shallow(<Item iconBefore={icon} />);
-          expect(wrapper.find(Button)).to.have.prop('iconBefore', icon);
+        describe('iconBefore prop', () => {
+          it('should be reflected to the Button', () => {
+            const icon = <AtlassianIcon label="icon" />;
+            const wrapper = shallow(<Item iconBefore={icon} />);
+            expect(wrapper.find(Button)).to.have.prop('iconBefore', icon);
+          });
         });
       });
     });

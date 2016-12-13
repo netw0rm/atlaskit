@@ -27,7 +27,7 @@ describe.skip(name, () => {
     });
 
     it('should have an events export with defined events', () => {
-      exports.events.should.be.defined;
+      exports.events.should.exist;
       Object.keys(exports.events).should.be.deep.equal(['tabChange']);
     });
   });

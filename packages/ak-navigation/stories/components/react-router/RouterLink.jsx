@@ -2,18 +2,13 @@ import React, { PropTypes, PureComponent } from 'react';
 import { Link } from 'react-router';
 import { AkContainerItem } from '../../../src/index';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class RouterLink extends PureComponent {
-  static get propTypes() {
-    return {
-      to: PropTypes.string,
-      text: PropTypes.string,
-    };
+  static propTypes = {
+    to: PropTypes.string,
+    text: PropTypes.string,
   }
-  static get contextTypes() {
-    return {
-      router: PropTypes.object,
-    };
+  static contextTypes = {
+    router: PropTypes.object,
   }
 
   render() {

@@ -11,6 +11,10 @@ const inputStyle = {
   width: '100%',
 };
 
+const textStyle = {
+  overflow: 'hidden',
+};
+
 /* eslint-disable react/prop-types */
 export const InputFieldBase = props =>
   <AkFieldBase
@@ -30,5 +34,7 @@ export const DivFieldBase = props =>
     label="Label for FieldBase"
     {...props}
   >
-    <div>{props.text || 'This is inside content'}</div>
+    <div style={textStyle}>
+      {props.text || 'This is inside content'}
+    </div>
   </AkFieldBase>;

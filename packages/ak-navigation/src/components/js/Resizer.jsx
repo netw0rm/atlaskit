@@ -2,19 +2,15 @@ import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!../less/Resizer.less';
 
 export default class Resizer extends PureComponent {
-  static get propTypes() {
-    return {
-      onResizeStart: PropTypes.func,
-      onResize: PropTypes.func,
-      onResizeEnd: PropTypes.func,
-    };
+  static propTypes = {
+    onResizeStart: PropTypes.func,
+    onResize: PropTypes.func,
+    onResizeEnd: PropTypes.func,
   }
-  static get defaultProps() {
-    return {
-      onResizeStart: () => {},
-      onResize: () => {},
-      onResizeEnd: () => {},
-    };
+  static defaultProps = {
+    onResizeStart: () => {},
+    onResize: () => {},
+    onResizeEnd: () => {},
   }
   constructor(props) {
     super(props);

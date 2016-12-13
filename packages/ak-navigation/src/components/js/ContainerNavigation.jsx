@@ -7,13 +7,11 @@ import {
 import Spacer from './Spacer';
 
 export default class ContainerNavigation extends PureComponent {
-  static get propTypes() {
-    return {
-      children: PropTypes.node,
-      header: PropTypes.node,
-      width: PropTypes.number,
-      shouldAnimate: PropTypes.bool,
-    };
+  static propTypes = {
+    children: PropTypes.node,
+    header: PropTypes.node,
+    width: PropTypes.number,
+    shouldAnimate: PropTypes.bool,
   }
 
   static get defaultProps() {

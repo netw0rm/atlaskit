@@ -3,17 +3,13 @@ import classNames from 'classnames';
 import styles from 'style!../less/Spacer.less';
 
 export default class Spacer extends PureComponent {
-  static get propTypes() {
-    return {
-      width: PropTypes.number,
-      shouldAnimate: PropTypes.bool,
-    };
+  static propTypes = {
+    width: PropTypes.number,
+    shouldAnimate: PropTypes.bool,
   }
-  static get defaultProps() {
-    return {
-      width: 0,
-      shouldAnimate: false,
-    };
+  static defaultProps = {
+    width: 0,
+    shouldAnimate: false,
   }
   render() {
     return (

@@ -5,29 +5,25 @@ import Navigation, { AkContainerHeader, AkContainerItem } from '../../src/index'
 import nucleusLogo from '../nucleus.png';
 
 export default class BasicNavigation extends PureComponent {
-  static get propTypes() {
-    return {
-      children: PropTypes.node,
-    };
+  static propTypes = {
+    children: PropTypes.node,
   }
 
-  static get defaultProps() {
-    return {
-      children: <div>
-        <AkContainerItem
-          icon={<DashboardIcon />}
-          text="Item A"
-        />
-        <AkContainerItem
-          icon={<SettingsIcon />}
-          text="Item B"
-        />
-        <AkContainerItem
-          icon={<ProjectsIcon />}
-          text="Item C"
-        />
-      </div>,
-    };
+  static defaultProps = {
+    children: <div>
+      <AkContainerItem
+        icon={<DashboardIcon />}
+        text="Item A"
+      />
+      <AkContainerItem
+        icon={<SettingsIcon />}
+        text="Item B"
+      />
+      <AkContainerItem
+        icon={<ProjectsIcon />}
+        text="Item C"
+      />
+    </div>,
   }
 
   constructor(...args) {

@@ -7,11 +7,9 @@ import {
 } from '../../shared-variables';
 
 export default class ContainerHeader extends PureComponent {
-  static get propTypes() {
-    return {
-      text: PropTypes.string,
-      icon: PropTypes.node,
-    };
+  static propTypes = {
+    text: PropTypes.string,
+    icon: PropTypes.node,
   }
 
   render() {

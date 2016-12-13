@@ -3,16 +3,12 @@ import { Link } from 'react-router';
 import { AkContainerItem } from '../../../src/index';
 
 export default class RouterLink extends PureComponent {
-  static get propTypes() {
-    return {
-      to: PropTypes.string,
-      text: PropTypes.string,
-    };
+  static propTypes = {
+    to: PropTypes.string,
+    text: PropTypes.string,
   }
-  static get contextTypes() {
-    return {
-      router: PropTypes.object,
-    };
+  static contextTypes = {
+    router: PropTypes.object,
   }
 
   render() {

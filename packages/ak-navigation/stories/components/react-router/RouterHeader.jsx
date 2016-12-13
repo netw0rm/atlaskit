@@ -4,10 +4,8 @@ import { AkContainerHeader } from '../../../src/index';
 import nucleusLogo from '../../nucleus.png';
 
 export default class RouterHeader extends PureComponent {
-  static get propTypes() {
-    return {
-      to: PropTypes.string,
-    };
+  static propTypes = {
+    to: PropTypes.string,
   }
 
   render() {

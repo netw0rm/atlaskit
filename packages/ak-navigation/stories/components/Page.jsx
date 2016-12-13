@@ -1,10 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
 
 export default class Page extends PureComponent {
-  static get propTypes() {
-    return {
-      children: PropTypes.node,
-    };
+  static propTypes = {
+    children: PropTypes.node,
   }
 
   render() {

@@ -7,12 +7,10 @@ import {
 } from '../../shared-variables';
 
 export default class ContainerItem extends PureComponent {
-  static get propTypes() {
-    return {
-      text: PropTypes.node,
-      icon: PropTypes.node,
-      isSelected: PropTypes.bool,
-    };
+  static propTypes = {
+    text: PropTypes.node,
+    icon: PropTypes.node,
+    isSelected: PropTypes.bool,
   }
 
   render() {

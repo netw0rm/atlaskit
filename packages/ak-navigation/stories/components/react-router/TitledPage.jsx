@@ -4,10 +4,8 @@ import PageNavigation from './PageNavigation';
 import Page from '../Page';
 
 export default class TitledPage extends PureComponent {
-  static get propTypes() {
-    return {
-      title: PropTypes.string,
-    };
+  static propTypes = {
+    title: PropTypes.string,
   }
 
   render() {

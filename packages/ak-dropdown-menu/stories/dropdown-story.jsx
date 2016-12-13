@@ -5,7 +5,12 @@ import Question from 'ak-icon/glyph/question';
 
 import DropdownMenu, { Trigger } from '../src';
 import { name } from '../package.json';
-import DropdownWithButtonExample from './DropdownWithButtonExample';
+import DropdownWithButtonExample from './DropdownWithButtonExample'; // eslint-disable-line
+
+/* eslint-disable import/first, import/no-duplicates */
+import DropdownWithButtonExampleRaw from '!raw!./DropdownWithButtonExample';
+/* eslint-enable import/first, import/no-duplicates */
+
 import {
   simpleDropdownItems,
   simpleDropdownItemsWithAvatars,
@@ -96,30 +101,8 @@ storiesOf(name, module)
   .addCodeExampleStory('Basic Dropdown menu with a custom button', () => (
     <DropdownWithButtonExample />
   ),
-  { imports,
+  {
     scripts: [
-      itemsOverride,
-      `export default class DropWithBut extends Component {
-    constructor(props) {
-      super(props);
-  
-      this.state = {
-        isDropdownOpen: false,
-      };
-    }
-  
-    render() {
-      return (
-        <DropdownMenu
-          items={simpleDropdownItems}
-          onOpenChange={(isOpen) => {
-            this.setState({ isDropdownOpen: isOpen });
-          }}
-        >
-          <Button isSelected={this.state.isDropdownOpen}>Click me, I&#39;m just a button</Button>
-        </DropdownMenu>
-      );
-    };
-  };`,
+      DropdownWithButtonExampleRaw,
     ],
   });

@@ -2,6 +2,7 @@
 
 const SVGO = require('svgo');
 
+const preventFocusing = require('../plugins/preventFocusing');
 const addPresentationAttribute = require('../plugins/addPresentationAttribute');
 const callbackOnDefinedFill = require('../plugins/callbackOnDefinedFill');
 const callbackOnStyleElement = require('../plugins/callbackOnStyleElement');
@@ -35,6 +36,7 @@ module.exports = (fillCallback, styleCallback) => {
   const svgo = new SVGO({
     full: true,
     plugins: [
+      { preventFocusing },
       { convertAttributesToCamelcase },
       { addAttributesToSVGElement: {
         attributes: ['{...iconProps}'],

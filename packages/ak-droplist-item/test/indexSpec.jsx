@@ -17,7 +17,7 @@ const { expect } = chai;
 
 describe(name, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Item />)).to.be.defined;
+    expect(shallow(<Item />)).to.exist;
   });
 
   it('should be "link" item by default', () => {

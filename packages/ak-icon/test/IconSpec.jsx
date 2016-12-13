@@ -50,7 +50,7 @@ describe(name, () => {
 
     it('should be able to create a component', () => {
       const wrapper = shallow(<MyIcon label="My icon" />);
-      expect(wrapper).to.be.defined;
+      expect(wrapper).to.exist;
       expect(wrapper.instance()).to.be.instanceOf(PureComponent);
     });
 

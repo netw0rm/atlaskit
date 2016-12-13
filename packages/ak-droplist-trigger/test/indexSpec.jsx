@@ -17,7 +17,7 @@ const { expect } = chai;
 
 describe(name, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Trigger />)).to.be.defined;
+    expect(shallow(<Trigger />)).to.exist;
   });
 
   it('should have type "default" by default', () => {

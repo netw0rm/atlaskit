@@ -4,9 +4,11 @@ import classNames from 'classnames';
 
 import { appearance, type, spacing, theme } from './internal/enumerated-properties';
 import getClasses from './internal/get-button-classes';
+import Content from './Content';
+import Icon from './Icon';
 import Span from './Span';
-import Button from './Button';
 import Link from './Link';
+import Button from './Button';
 
 /* eslint-disable react/no-unused-prop-types */
 /**
@@ -115,31 +117,29 @@ export default class AkButton extends Component {
     theme: theme.default,
   }
 
-  render() {
+  renderContent = () => {
     const { props } = this;
-    const Icon = p => (<span className={styles.IconWrapper}>{p.source}</span>);
-    const Content = p => (<span className={styles.buttonContent}>{p.children}</span>);
-    const Element = (p) => {
-      if (p.href) {
-        if (p.isDisabled) {
-          return (<Span {...p}>{p.children}</Span>);
-        }
-        return (<Link {...p}>{p.children}</Link>);
-      }
-      return (<Button {...p}>{p.children}</Button>);
-    };
 
-    return (
-      <Element
-        {...props}
-        className={classNames(getClasses(styles, props))}
-      >
-        <span className={styles.buttonWrapper}>
-          {props.iconBefore ? <Icon source={props.iconBefore} /> : null}
-          {props.children ? <Content>{props.children}</Content> : null}
-          {props.iconAfter ? <Icon source={props.iconAfter} /> : null}
-        </span>
-      </Element>
-    );
+    return (<span className={styles.buttonWrapper}>
+      {props.iconBefore ? <Icon source={props.iconBefore} /> : null}
+      {props.children ? <Content>{props.children}</Content> : null}
+      {props.iconAfter ? <Icon source={props.iconAfter} /> : null}
+    </span>);
+  }
+
+  render() {
+    // we remove className here so it doesnt get passed in with the rest of the props
+    const { className, ...props } = this.props; // eslint-disable-line no-unused-vars
+    // this will produce the real set of classNames. Note we are passing this.props and not props as
+    // we want props.className to be in here as well (see get-button-classes.jsx)
+    const classes = classNames(getClasses(styles, this.props));
+
+    if (props.href) {
+      if (props.isDisabled) {
+        return (<Span {...props} className={classes}>{this.renderContent()}</Span>);
+      }
+      return (<Link {...props} className={classes}>{this.renderContent()}</Link>);
+    }
+    return (<Button {...props} className={classes}>{this.renderContent()}</Button>);
   }
 }

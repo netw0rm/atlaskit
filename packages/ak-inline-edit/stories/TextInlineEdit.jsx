@@ -12,21 +12,6 @@ const inputStyle = {
 };
 
 /* eslint-disable react/prop-types */
-class TextInput extends PureComponent {
-  componentDidMount = () =>
-    this.textInput.focus()
-
-  render = () => (
-    <input
-      value={this.props.value}
-      style={inputStyle}
-      onChange={this.props.onChange}
-      ref={(textInput) => { this.textInput = textInput; }}
-    />
-  )
-}
-
-/* eslint-disable react/prop-types, react/no-multi-comp */
 export default class extends PureComponent {
   static defaultProps = {
     initialValue: 'Text',
@@ -52,9 +37,12 @@ export default class extends PureComponent {
   }
 
   renderInput = () => (
-    <TextInput
+    <input
+      autoFocus
       value={this.state.editValue}
+      style={inputStyle}
       onChange={this.onChange}
+      ref={(textInput) => { this.textInput = textInput; }}
     />
   )
 

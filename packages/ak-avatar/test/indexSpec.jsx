@@ -21,7 +21,7 @@ const oneByOnePixelBlack = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BA
 describe('ak-avatar', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Avatar />);
-    expect(wrapper).to.be.defined;
+    expect(wrapper).to.exist;
     expect(wrapper.find(Image)).to.have.lengthOf(1);
     expect(wrapper.find(Presence)).to.have.lengthOf(1);
   });

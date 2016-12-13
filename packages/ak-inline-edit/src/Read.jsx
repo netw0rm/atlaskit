@@ -7,10 +7,19 @@ import { locals } from './styles.less';
 export default class ReadView extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
+    isInvalid: PropTypes.bool.isRequired,
     isLabelHidden: PropTypes.bool.isRequired,
     onEditRequested: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
   }
+
+  renderEditIcon = () => (
+    <div className={locals.editButtonWrapper}>
+      <button className={locals.editButton}>
+        <Icon label="Edit" size="small" />
+      </button>
+    </div>
+  )
 
   render = () => (
     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
@@ -19,14 +28,13 @@ export default class ReadView extends PureComponent {
     >
       <FieldBase
         label={this.props.label}
+        isInvalid={this.props.isInvalid}
         isLabelHidden={this.props.isLabelHidden}
         appearance="subtle"
       >
         <div className={locals.readViewContentWrapper}>
           {this.props.children}
-          <button className={locals.editButton}>
-            <Icon label="Edit" size="small" />
-          </button>
+          {this.props.isInvalid ? null : this.renderEditIcon()}
         </div>
       </FieldBase>
     </div>

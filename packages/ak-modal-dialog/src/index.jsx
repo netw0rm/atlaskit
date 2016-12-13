@@ -1,7 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
 import classNames from 'classnames';
 import styles from 'style!./style.less';
-import Blanket from './AkBlanketTmp';
+import Blanket from 'ak-blanket';
 
 const WIDTH_ENUM = {
   values: ['small', 'medium', 'large', 'x-large'],
@@ -73,7 +73,7 @@ export default class ModalDialog extends PureComponent {
     const { onBlanketClicked, header, children, footer, width } = this.props;
     return (
       <div className={styles.modalWrapper}>
-        <Blanket onBlanketClicked={onBlanketClicked} />
+        <Blanket isTinted onBlanketClicked={onBlanketClicked} />
         <div
           className={classNames([
             styles.modalPositioner,

@@ -26,9 +26,11 @@ export default class ReadView extends PureComponent {
       >
         <div className={locals.readViewContentWrapper}>
           {this.props.children}
-          <button className={locals.editButton}>
-            <Icon label="Edit" size="small" />
-          </button>
+          <div className={locals.editButtonWrapper}>
+            <button className={locals.editButton}>
+              <Icon label="Edit" size="small" />
+            </button>
+          </div>
         </div>
       </FieldBase>
     </div>

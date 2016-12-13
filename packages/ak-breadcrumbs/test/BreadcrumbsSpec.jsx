@@ -16,7 +16,6 @@ const { expect } = chai;
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-
 describe(name, () => {
   describe('AkBreadcrumbs', () => {
     describe('exports', () => {

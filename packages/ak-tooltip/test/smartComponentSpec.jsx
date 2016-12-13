@@ -6,10 +6,8 @@ import { mount, shallow } from 'enzyme';
 // Testing the smart component
 import AKTooltip from '../src';
 
-
 const { expect } = chai;
 chai.use(chaiEnzyme());
-
 
 describe('ak-tooltip (smart)', () => {
   it('should be possible to create a component', () => {

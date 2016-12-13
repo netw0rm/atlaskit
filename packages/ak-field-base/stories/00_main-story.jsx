@@ -3,6 +3,7 @@ import { storiesOf } from '@kadira/storybook';
 import Button from 'ak-button';
 import ErrorIcon from 'ak-icon/glyph/error';
 import HelpIcon from 'ak-icon/glyph/help';
+import ExpandIcon from 'ak-icon/glyph/expand';
 
 import { name } from '../package.json';
 import AkFieldBase from '../src';
@@ -32,6 +33,26 @@ storiesOf(name, module)
       <DivFieldBase label="Read-only state" isReadOnly />
       <InputFieldBase label="Compact state" appearance={compact} />
       <InputFieldBase label="Subtle state" appearance={subtle} />
+    </div>
+  ))
+  .add('with button + no padding', () => (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'white',
+        display: 'inline-block',
+      }}
+    >
+      <AkFieldBase
+        label="Label for FieldBase"
+        isContentPaddingDisabled
+      >
+        <Button
+          iconAfter={<ExpandIcon />}
+        >
+          Imagine a Dropdown
+        </Button>
+      </AkFieldBase>
     </div>
   ))
   .add('with different content', () => {

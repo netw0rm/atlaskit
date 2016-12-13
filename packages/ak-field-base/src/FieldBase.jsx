@@ -98,6 +98,17 @@ export default class FieldBase extends PureComponent {
      */
     isDisabled: PropTypes.bool,
     /**
+     * @description Whether or not the field should have padding.
+     *
+     * Disables the field's padding css property.
+     *
+     * @memberof FieldBase
+     * @type {boolean}
+     * @default false
+     * @example <FieldBase isContentPaddingDisabled />
+     */
+    isContentPaddingDisabled: PropTypes.bool,
+    /**
      * @description Whether or not the field is in read-only mode.
      *
      * Disables the field's hover effect to indicate that it is not editable.
@@ -157,6 +168,7 @@ export default class FieldBase extends PureComponent {
   static defaultProps = {
     appearance: standard,
     isLabelHidden: false,
+    isContentPaddingDisabled: false,
     isInvalid: false,
     isFocused: false,
     isDisabled: false,
@@ -177,6 +189,7 @@ export default class FieldBase extends PureComponent {
           onBlur={this.props.onBlur}
           appearance={this.props.appearance}
           isDisabled={this.props.isDisabled}
+          isPaddingDisabled={this.props.isContentPaddingDisabled}
           isInvalid={this.props.isInvalid}
           isFocused={this.props.isFocused}
           isReadOnly={this.props.isReadOnly}

@@ -12,6 +12,7 @@ export default class Content extends PureComponent {
     isFocused: PropTypes.bool.isRequired,
     isInvalid: PropTypes.bool.isRequired,
     isReadOnly: PropTypes.bool.isRequired,
+    isPaddingDisabled: PropTypes.bool.isRequired,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     children: PropTypes.node,
@@ -33,6 +34,7 @@ export default class Content extends PureComponent {
       [locals.subtle]: this.props.appearance === subtle,
       [locals.disabled]: this.props.isDisabled,
       [locals.readOnly]: this.props.isReadOnly,
+      [locals.paddingDisabled]: this.props.isPaddingDisabled,
       [locals.focused]: this.props.isFocused,
       [locals.invalid]: this.props.isInvalid && !this.props.isFocused,
     });

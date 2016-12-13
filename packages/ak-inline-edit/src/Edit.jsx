@@ -12,6 +12,7 @@ export default class EditView extends PureComponent {
     label: PropTypes.string.isRequired,
     isInvalid: PropTypes.bool.isRequired,
     isLabelHidden: PropTypes.bool.isRequired,
+    areActionButtonsHidden: PropTypes.bool.isRequired,
     isConfirmOnBlurDisabled: PropTypes.bool.isRequired,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
@@ -66,7 +67,7 @@ export default class EditView extends PureComponent {
         label={this.props.label}
         isInvalid={this.props.isInvalid}
         isLabelHidden={this.props.isLabelHidden}
-        rightGutter={this.renderActionButtons()}
+        rightGutter={this.props.areActionButtonsHidden ? null : this.renderActionButtons()}
       >
         {React.cloneElement(this.props.content,
           { ref: (contentRef) => { this.contentRef = contentRef; } }

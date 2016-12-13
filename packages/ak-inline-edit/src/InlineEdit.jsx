@@ -44,6 +44,17 @@ export default class InlineEdit extends PureComponent {
      */
     isEditing: PropTypes.bool.isRequired,
     /**
+     * @description Whether or not a validation error should be displayed.
+     *
+     * Displays a warning icon and highlights the the input with an orange border.
+     * A future release will also allow a custom error message to be displayed.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    isInvalid: PropTypes.bool,
+    /**
      * @description Whether InlineEdit should display its label.
      *
      * @memberof InlineEdit
@@ -99,6 +110,7 @@ export default class InlineEdit extends PureComponent {
   }
 
   static defaultProps = {
+    isInvalid: false,
     isLabelHidden: false,
     isConfirmOnBlurDisabled: false,
   }
@@ -106,6 +118,7 @@ export default class InlineEdit extends PureComponent {
   renderReadView = () => (
     <ReadView
       label={this.props.label}
+      isInvalid={this.props.isInvalid}
       isLabelHidden={this.props.isLabelHidden}
       onEditRequested={this.props.onEditRequested}
     >
@@ -116,6 +129,7 @@ export default class InlineEdit extends PureComponent {
   renderEditView = () => (
     <EditView
       label={this.props.label}
+      isInvalid={this.props.isInvalid}
       isLabelHidden={this.props.isLabelHidden}
       isConfirmOnBlurDisabled={this.props.isConfirmOnBlurDisabled}
       onConfirm={this.props.onConfirm}

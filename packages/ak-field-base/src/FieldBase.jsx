@@ -54,8 +54,8 @@ export default class FieldBase extends PureComponent {
     /**
      * @description Whether or not a field should show a validation error.
      *
-     * This is shown to the user through a red border currently but will also
-     * include error messages in a future release.
+     * This is shown to the user through a warning icon and an orange border.
+     * A future release will allow a custom error message to be displayed.
      *
      * @memberof FieldBase
      * @type {boolean}

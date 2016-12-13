@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-
+import WarningIcon from 'ak-icon/glyph/warning';
 import { locals } from './styles.less';
 import appearances, { compact, subtle } from './internal/appearances';
 
@@ -23,10 +23,17 @@ export default class Content extends PureComponent {
     rightGutter: false,
   }
 
-  renderRightGutter = () =>
+  renderRightGutter = () => (
     <div className={locals.rightGutterWrapper}>
       {this.props.rightGutter}
     </div>
+  )
+
+  renderWarningIcon = () => (
+    <div className={locals.warningIconWrapper}>
+      <WarningIcon label="warning" />
+    </div>
+  )
 
   render() {
     const contentClasses = classNames(locals.content, {
@@ -47,6 +54,7 @@ export default class Content extends PureComponent {
           onBlurCapture={this.props.onBlur}
         >
           {this.props.children}
+          {this.props.isInvalid ? this.renderWarningIcon() : null}
         </div>
         {this.props.rightGutter ? this.renderRightGutter() : null}
       </div>

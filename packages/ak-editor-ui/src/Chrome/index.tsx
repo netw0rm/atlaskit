@@ -21,24 +21,13 @@ interface Props {
   onCollapsedChromeFocus: () => void;
 }
 
-interface State {
-  isExpanded: boolean;
-}
+interface State {}
 
 export default class Chrome extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { isExpanded: !!props.isExpanded };
-  }
-  
-  componentWillReceiveProps(props: Props) {
-    this.setState({ isExpanded: !!props.isExpanded });
-  }
-
   render() {
-    const { props, state } = this;
+    const { props } = this;
 
-    return state.isExpanded
+    return props.isExpanded
       ? <ChromeExpanded
           onCancel={props.onCancel}
           onSave={props.onSave}

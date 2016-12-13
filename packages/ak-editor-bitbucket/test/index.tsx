@@ -2,7 +2,7 @@ import chai from 'chai';
 import { chaiPlugin } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 import chaiEnzyme from 'chai-enzyme';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
 import { doc, strong, h1, p } from './_schema-builder';
 

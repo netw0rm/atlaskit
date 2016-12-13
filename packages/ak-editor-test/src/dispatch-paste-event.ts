@@ -50,7 +50,6 @@ export default (pm: ProseMirror, content: PasteContent) => {
 
   // ProseMirror must be focused, else it does not attempt to handle pasted content.
   focusAndSelect(pm.content);
-
   pm.content.dispatchEvent(event);
   return true;
 }

@@ -31,8 +31,8 @@ const Heading3 = makeBlockType('heading3', 'Heading 3');
 const Heading4 = makeBlockType('heading4', 'Heading 4');
 const Heading5 = makeBlockType('heading5', 'Heading 5');
 const Heading6 = makeBlockType('heading6', 'Heading 6');
-const Quote = makeBlockType('quote', 'Block quote');
-const Code = makeBlockType('code', 'Code block');
+const Quote = makeBlockType('blockquote', 'Block quote');
+const Code = makeBlockType('codeblock', 'Code block');
 const Other = makeBlockType('other', 'Other…');
 
 type ContextName = 'default' | 'comment' | 'pr';
@@ -157,13 +157,13 @@ export class BlockTypeState {
             commands.setBlockType(nodes.heading, { level: 6 })(pm);
           }
           break;
-        case 'quote':
+        case 'blockquote':
           if (nodes.paragraph && nodes.blockquote) {
             commands.setBlockType(nodes.paragraph)(pm);
             commands.wrapIn(nodes.blockquote)(pm);
           }
           break;
-        case 'code':
+        case 'codeblock':
           if (nodes.code_block) {
             transformToCodeBlock(nodes.code_block, pm);
           }
@@ -260,8 +260,8 @@ export type BlockTypeName =
   'heading4' |
   'heading5' |
   'heading6' |
-  'quote' |
-  'code' |
+  'blockquote' |
+  'codeblock' |
   'other';
 
 export interface BlockType {

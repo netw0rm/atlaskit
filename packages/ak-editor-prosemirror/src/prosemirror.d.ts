@@ -192,6 +192,7 @@ declare module 'prosemirror/dist/edit/main' {
       blur: AnySubscription;
       click: AnySubscription;
       clickOn: AnySubscription;
+      domPaste: AnySubscription;
       doubleClick: AnySubscription;
       doubleClickOn: AnySubscription;
       contextMenu: AnySubscription;

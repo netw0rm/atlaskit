@@ -3,6 +3,7 @@ import AkButton from 'ak-button';
 import { BlockType, BlockTypeState } from 'ak-editor-plugin-block-type';
 import Panel from '../Panel';
 import styles from './styles.global.less';
+import { service as analytics } from 'ak-editor-analytics';
 
 interface Props {
   pluginState: BlockTypeState;
@@ -76,7 +77,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     });
   }
 
-  private handleSelectBlockType = (blockType: BlockType) => {
+  private handleSelectBlockType = (blockType: BlockType) => {    
     const { availableBlockTypes, canChange, currentBlockType } = this.state;
     this.props.pluginState.changeBlockType(blockType.name);
     this.setState({
@@ -85,6 +86,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       canChange,
       currentBlockType
     });
+    analytics.trackEvent(`atlassian.editor.format.${blockType.name}.button`);
   }
 
   private handleToggleDropdown = () => {
@@ -105,8 +107,8 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       case 'heading1': return styles.blockTypeHeading1;
       case 'heading2': return styles.blockTypeHeading2;
       case 'heading3': return styles.blockTypeHeading3;
-      case 'code': return styles.blockTypeCode;
-      case 'quote': return styles.blockTypeQuote;
+      case 'codeblock': return styles.blockTypeCode;
+      case 'blockquote': return styles.blockTypeQuote;
     }
   }
 }

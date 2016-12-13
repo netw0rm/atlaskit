@@ -71,14 +71,14 @@ describe('ak-editor-plugin-block-type', () => {
   it('should be able to change to code block', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
-    plugin.changeBlockType('code');
+    plugin.changeBlockType('codeblock');
     expect(pm.doc).to.deep.equal(doc(code_block()('text')));
   });
 
   it('should be able to change to code block with multilines', () => {
     const { pm, plugin } = editor(doc(p('line1{<>}', br, 'line2')));
 
-    plugin.changeBlockType('code');
+    plugin.changeBlockType('codeblock');
     expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
   });
 
@@ -104,7 +104,7 @@ describe('ak-editor-plugin-block-type', () => {
 
   it('should be able to identify block quote', () => {
     const { pm, plugin } = editor(doc(blockquote(p('te{<>}xt'))));
-    expect(plugin.currentBlockType.name).to.equal('quote');
+    expect(plugin.currentBlockType.name).to.equal('blockquote');
   });
 
   it('should be able to identify code block', () => {
@@ -116,15 +116,15 @@ describe('ak-editor-plugin-block-type', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
     plugin.changeBlockType('heading1');
-    plugin.changeBlockType('quote');
+    plugin.changeBlockType('blockquote');
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
   it('should be not able to nest blockquote', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
-    plugin.changeBlockType('quote');
-    plugin.changeBlockType('quote');
+    plugin.changeBlockType('blockquote');
+    plugin.changeBlockType('blockquote');
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 

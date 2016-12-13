@@ -59,6 +59,16 @@
       "from": "@types/chai@>=3.4.34 <4.0.0",
       "resolved": "https://registry.npmjs.org/@types/chai/-/chai-3.4.34.tgz"
     },
+    "@types/chai-enzyme": {
+      "version": "0.5.5",
+      "from": "@types/chai-enzyme@latest",
+      "resolved": "https://registry.npmjs.org/@types/chai-enzyme/-/chai-enzyme-0.5.5.tgz"
+    },
+    "@types/enzyme": {
+      "version": "2.5.39",
+      "from": "@types/enzyme@latest",
+      "resolved": "https://registry.npmjs.org/@types/enzyme/-/enzyme-2.5.39.tgz"
+    },
     "@types/form-data": {
       "version": "0.0.33",
       "from": "@types/form-data@>=0.0.0 <0.1.0",

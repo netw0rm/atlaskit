@@ -4,6 +4,7 @@ import { HyperlinkState } from 'ak-editor-plugin-hyperlink';
 import Panel from '../Panel';
 import TextInput from '../PanelTextInput';
 import IconButton from '../ToolbarIconButton';
+import { decorator as analytics } from 'ak-editor-analytics';
 
 interface Props {
   pluginState: HyperlinkState;
@@ -66,6 +67,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     });
   }
 
+  @analytics('atlassian.editor.format.hyperlink.button')
   private handleSubmit = (value: string) => {
     this.props.pluginState.addLink({ href: value });
     this.closeLinkPanel();

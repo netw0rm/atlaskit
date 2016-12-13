@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { browser, commands, Keymap } from  "ak-editor-prosemirror";
+import { service as analyticsService } from "ak-editor-analytics";
 
 const { wrapIn, setBlockType, wrapInList, splitListItem, lift, liftListItem,
   sinkListItem, chainCommands, newlineInCode, toggleMark } = commands;
@@ -50,7 +51,7 @@ export function buildKeymap(schema, mapKeys) {
 
   let lastCmd;
 
-  function clearAndApply(cmd) {
+  function clearAndApply(cmd, analyticsEventName) {
     let isReset = false;
 
     return (pm, apply) => {
@@ -68,7 +69,20 @@ export function buildKeymap(schema, mapKeys) {
 
       isReset = !isReset;
 
+      if (analyticsEventName) {
+        analyticsService.trackEvent(analyticsEventName);
+      }
+      
       return true;
+    }
+  }
+
+  function trackAndToggleMark(mark, analyticsEventName) {
+    const toggleFn = toggleMark(mark);
+    
+    return (...args) => {
+      analyticsService.trackEvent(analyticsEventName);
+      return toggleFn(...args);
     }
   }
 
@@ -76,15 +90,16 @@ export function buildKeymap(schema, mapKeys) {
     let mark = schema.marks[name];
 
     if (name === "strong") {
-      bind("Mod-B", toggleMark(mark));
+      bind("Mod-B", trackAndToggleMark(mark, 'atlassian.editor.format.bold.keyboard'));
+      // bind("Mod-B", toggleMark(mark, 'atlassian.editor.format.bold.keyboard'));
     }
 
     if (name === "em") {
-      bind("Mod-I", toggleMark(mark));
+      bind("Mod-I", trackAndToggleMark(mark, 'atlassian.editor.format.italic.keyboard'));
     }
 
     if (name === "code") {
-      bind("Mod-`", toggleMark(mark));
+      bind("Mod-`", trackAndToggleMark(mark, 'atlassian.editor.format.monospace.keyboard'));
     }
   }
 
@@ -93,25 +108,25 @@ export function buildKeymap(schema, mapKeys) {
 
     if (name === "bullet_list") {
       if (isMac) {
-        bind("Shift-Cmd-B", clearAndApply(wrapInList(node)));
+        bind("Shift-Cmd-B", clearAndApply(wrapInList(node), 'atlassian.editor.format.list.bullet.keyboard'));
       } else {
-        bind("Shift-Ctrl-B", clearAndApply(wrapInList(node)));
+        bind("Shift-Ctrl-B", clearAndApply(wrapInList(node), 'atlassian.editor.format.list.bullet.keyboard'));
       }
     }
 
     if (name === "ordered_list") {
       if (isMac) {
-        bind("Shift-Cmd-L", clearAndApply(wrapInList(node)));
+        bind("Shift-Cmd-L", clearAndApply(wrapInList(node), 'atlassian.editor.format.list.numbered.keyboard'));
       } else {
-        bind("Shift-Ctrl-L", clearAndApply(wrapInList(node)));
+        bind("Shift-Ctrl-L", clearAndApply(wrapInList(node), 'atlassian.editor.format.list.numbered.keyboard'));
       }
     }
 
     if (name === "blockquote") {
       if (isMac) {
-        bind("Cmd-Alt-8", clearAndApply(wrapIn(node)));
+        bind("Cmd-Alt-8", clearAndApply(wrapIn(node), 'atlassian.editor.format.blockquote.keyboard'));
       } else {
-        bind("Ctrl-8", clearAndApply(wrapIn(node)));
+        bind("Ctrl-8", clearAndApply(wrapIn(node), 'atlassian.editor.format.blockquote.keyboard'));
       }
     }
 
@@ -143,9 +158,9 @@ export function buildKeymap(schema, mapKeys) {
 
     if (name === "code_block") {
       if (isMac) {
-        bind("Cmd-Alt-7", clearAndApply(setBlockType(node)));
+        bind("Cmd-Alt-7", clearAndApply(setBlockType(node), 'atlassian.editor.format.codeblock.keyboard'));
       } else {
-        bind("Ctrl-7", clearAndApply(setBlockType(node)));
+        bind("Ctrl-7", clearAndApply(setBlockType(node), 'atlassian.editor.format.codeblock.keyboard'));
       }
       // https://github.com/ProseMirror/prosemirror/issues/419
       bind("Enter", (pm, apply) => {
@@ -176,9 +191,9 @@ export function buildKeymap(schema, mapKeys) {
     if (name === "heading") {
       for (let i = 1; i <= 5; i++) {
         if (isMac) {
-          bind("Cmd-Alt-" + i, clearAndApply(setBlockType(node, {level: i})));
+          bind("Cmd-Alt-" + i, clearAndApply(setBlockType(node, {level: i}), `atlassian.editor.format.heading${i}.keyboard`));
         } else {
-          bind("Ctrl-" + i, clearAndApply(setBlockType(node, {level: i})));
+          bind("Ctrl-" + i, clearAndApply(setBlockType(node, {level: i}), `atlassian.editor.format.heading${i}.keyboard`));
         }
       }
     }

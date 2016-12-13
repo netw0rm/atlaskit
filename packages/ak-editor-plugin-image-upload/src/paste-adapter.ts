@@ -5,7 +5,7 @@ export type ImageUploadPasteHandler = (pm: ProseMirror, e: ClipboardEvent) => bo
 function isPastedFile(
   e: ClipboardEvent
 ) : boolean {
-  return Array.prototype.slice.call(e.clipboardData.types).indexOf('Files') !== -1;
+  return Array.prototype.slice.call(e.clipboardData ? e.clipboardData.types : []).indexOf('Files') !== -1;
 }
 
 export default class PasteAdapter {

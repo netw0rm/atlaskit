@@ -38,6 +38,7 @@
   "devDependencies": {
     "ak-editor-test": "*",
     "ak-tabs": "*",
+    "ak-icon": "*",
     "akutil-common-test": "*",
     "akutil-react": "*"
   },

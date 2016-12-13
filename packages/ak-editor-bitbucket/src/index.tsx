@@ -13,7 +13,11 @@ import { buildKeymap } from './keymap';
 import markdownSerializer from './markdown-serializer';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 import parseHtml from './parse-html';
-import { analyticsHandler } from 'ak-editor-analytics';
+import { 
+  analyticsHandler, 
+  decorator as analytics,
+  service as analyticsService
+} from 'ak-editor-analytics';
 
 interface Props {
   context?: 'comment' | 'pr',
@@ -127,6 +131,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.start')
   private handleRef = (place: Element | null) => {
     if (place) {
       const { context, onChange } = this.props;
@@ -147,6 +152,10 @@ export default class Editor extends PureComponent<Props, State> {
       if (context) {
         BlockTypePlugin.get(pm)!.changeContext(context);
       }
+
+      pm.on.domPaste.add(() => {
+        analyticsService.trackEvent('atlassian.editor.paste');
+      });
 
       pm.addKeymap(buildKeymap(pm.schema));
       pm.on.change.add(this.handleChange);

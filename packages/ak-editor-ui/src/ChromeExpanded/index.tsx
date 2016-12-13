@@ -16,6 +16,7 @@ import ToolbarLists from '../ToolbarLists';
 import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarFeedback from '../ToolbarFeedback';
+import { decorator as analytics } from 'ak-editor-analytics';
 
 interface Props {
   feedbackFormUrl?: string;
@@ -83,6 +84,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     );
   }
 
+  @analytics('atlassian.editor.stop.cancel')
   private handleCancel = () => {
     const { onCancel } = this.props;
     if (onCancel) {
@@ -90,6 +92,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.image.button')
   private handleInsertImage = () => {
     const { onInsertImage } = this.props;
     if (onInsertImage) {
@@ -104,6 +107,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.stop.save')
   private handleSave = () => {
     const { onSave } = this.props;
     if (onSave) {

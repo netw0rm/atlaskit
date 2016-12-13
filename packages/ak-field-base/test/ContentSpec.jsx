@@ -17,6 +17,7 @@ const {
   invalid: isInvalidClass,
   focused: isFocusedClass,
   readOnly: isReadOnlyClass,
+  paddingDisabled: isPaddingDisabled,
 } = locals;
 
 describe('ak-field-base', () => {
@@ -34,8 +35,14 @@ describe('ak-field-base', () => {
     );
 
     describe('isFocused prop = true', () => {
-      it('should render the slotwrapper with the .isFocused class', () =>
+      it('should render the content with the .isFocused class', () =>
         expect(shallow(<Content isFocused />)).to.have.descendants(`.${isFocusedClass}`)
+      );
+    });
+
+    describe('isPaddingDisabled prop = true', () => {
+      it('should render the content with the .paddingDisabled class', () =>
+        expect(shallow(<Content isPaddingDisabled />)).to.have.descendants(`.${isPaddingDisabled}`)
       );
     });
 

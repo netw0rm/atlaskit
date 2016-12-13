@@ -13,6 +13,12 @@ export default class ReadView extends PureComponent {
     children: PropTypes.node.isRequired,
   }
 
+  renderEditIcon = () => (
+    <button className={locals.editButton}>
+      <Icon label="Edit" size="small" />
+    </button>
+  )
+
   render = () => (
     <div // eslint-disable-line jsx-a11y/no-static-element-interactions
       className={locals.readViewWrapper}
@@ -26,9 +32,7 @@ export default class ReadView extends PureComponent {
       >
         <div className={locals.readViewContentWrapper}>
           {this.props.children}
-          <button className={locals.editButton}>
-            <Icon label="Edit" size="small" />
-          </button>
+          {this.props.isInvalid ? null : this.renderEditIcon()}
         </div>
       </FieldBase>
     </div>

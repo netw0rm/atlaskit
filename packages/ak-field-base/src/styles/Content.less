@@ -33,6 +33,9 @@
 .borders-and-padding (@border, @x-spacing, @height) {
   border-width: unit(@border, px);
   padding: unit((@height - (2 * @border) - @base-inner-height) / 2, px) unit((@x-spacing - @border), px);
+  &.paddingDisabled {
+    padding: 0;
+  }
 }
 
 .content {

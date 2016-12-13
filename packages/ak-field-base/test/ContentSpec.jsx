@@ -18,6 +18,7 @@ const {
   invalid: isInvalidClass,
   focused: isFocusedClass,
   readOnly: isReadOnlyClass,
+  paddingDisabled: isPaddingDisabled,
 } = locals;
 
 const defaultProps = {
@@ -25,6 +26,7 @@ const defaultProps = {
   isFocused: false,
   isInvalid: false,
   isReadOnly: false,
+  isPaddingDisabled: false,
 };
 
 describe('ak-field-base', () => {
@@ -42,13 +44,19 @@ describe('ak-field-base', () => {
     );
 
     describe('isFocused prop = true', () => {
-      it('should render the slotwrapper with the .isFocused class', () =>
+      it('should render the content with the .isFocused class', () =>
         expect(shallow(<Content {...defaultProps} isFocused />)).to.have.descendants(`.${isFocusedClass}`)
       );
     });
 
+    describe('isPaddingDisabled prop = true', () => {
+      it('should render the content with the .paddingDisabled class', () =>
+        expect(shallow(<Content {...defaultProps} isPaddingDisabled />)).to.have.descendants(`.${isPaddingDisabled}`)
+      );
+    });
+
     describe('isInvalid prop = true', () => {
-      it('should render with the isInvalid styles', () =>
+      it('should render with the isFocused styles and not the isInvalid styles', () =>
         expect(shallow(<Content {...defaultProps} isInvalid />)).to.have.descendants(`.${isInvalidClass}`)
       );
 

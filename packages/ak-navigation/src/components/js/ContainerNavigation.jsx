@@ -14,11 +14,9 @@ export default class ContainerNavigation extends PureComponent {
     shouldAnimate: PropTypes.bool,
   }
 
-  static get defaultProps() {
-    return {
-      width: containerOpenWidth,
-      shouldAnimate: false,
-    };
+  static defaultProps = {
+    width: containerOpenWidth,
+    shouldAnimate: false,
   }
 
   getOuterStyles() {

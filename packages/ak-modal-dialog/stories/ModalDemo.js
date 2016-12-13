@@ -9,12 +9,10 @@ function doSomethingOnClick() {
 }
 
 export default class ModalDemo extends React.PureComponent {
-  static get propTypes() {
-    return {
-      header: PropTypes.element,
-      children: PropTypes.element,
-      footer: PropTypes.element,
-    };
+  static propTypes = {
+    header: PropTypes.element,
+    children: PropTypes.element,
+    footer: PropTypes.element,
   }
 
   render() {

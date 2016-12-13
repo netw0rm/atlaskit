@@ -21,6 +21,8 @@ const Input = props =>
 const defaultProps = {
   label: 'test',
   isLabelHidden: false,
+  isInvalid: false,
+  areActionButtonsHidden: false,
   isConfirmOnBlurDisabled: false,
   onConfirm: noop,
   onCancel: noop,

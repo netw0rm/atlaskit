@@ -15,6 +15,7 @@ export default class Button extends Component {
   static defaultProps = {
     isDisabled: false,
     type: buttonTypes.default,
+    onClick: () => {},
   }
 
   onMouseDown = (e) => {

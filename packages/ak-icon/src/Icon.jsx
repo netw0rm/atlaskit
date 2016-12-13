@@ -33,7 +33,7 @@ export default class Icon extends PureComponent {
        * @type {size}
        * @default small
        */
-    size: PropTypes.oneOf(Object.values(size)),
+    size: PropTypes.oneOf(Object.keys(size).map(k => size[k])),
     /**
        * @description (Optional) A handler to execute when the icon is clicked.
        *

@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import Button from 'ak-button';
+import Avatar from 'ak-avatar';
 import ErrorIcon from 'ak-icon/glyph/error';
 import HelpIcon from 'ak-icon/glyph/help';
 import ExpandIcon from 'ak-icon/glyph/expand';
@@ -52,6 +53,25 @@ storiesOf(name, module)
         >
           Imagine a Dropdown
         </Button>
+      </AkFieldBase>
+    </div>
+  ))
+  .add('with avatar + text', () => (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'white',
+        display: 'inline-block',
+      }}
+    >
+      <AkFieldBase
+        label="Label for FieldBase"
+      >
+        <Avatar
+          src="https://cdn-img.fimfiction.net/user/xb2v-1431833233-195398-64"
+          size="small"
+        />
+        <span style={{ marginLeft: 8 }}>Jack Sparrow</span>
       </AkFieldBase>
     </div>
   ))

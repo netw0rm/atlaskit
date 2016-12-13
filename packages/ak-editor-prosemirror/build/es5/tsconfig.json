@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
-    "outDir": "../../lib/es5",
+    "outDir": "../../dist/es5",
     "target": "es5"
   }
 }

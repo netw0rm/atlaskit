@@ -33,13 +33,20 @@
   background-size: 22px 22px;
   background-repeat: no-repeat;
   background-position: 50%;
-  border-radius: 5px;
-  border: 0;
   cursor: pointer;
 
   &.selected {
     background-color: @ak-emoji-selected-background-color;
   }
+}
+
+.emoji-button {
+  background-color: transparent;
+  border-radius: 5px;
+  border: 0;
+  cursor: pointer;
+  padding: 4px;
+  margin: 0;
 }
 
 .emoji-grid {
@@ -58,7 +65,7 @@
 }
 
 .emoji-list {
-  height: 230px;
+  height: @emoji-list-height;
 
   .search {
     padding: 10px 8px;
@@ -71,6 +78,7 @@
   }
 
   .category-title {
+    font-size: 14px;
     color: @ak-color-N900;
     text-transform: lowercase;
 
@@ -82,6 +90,11 @@
     text-transform: uppercase;
   }
 
+  .search-icon {
+    opacity: .5;
+    padding-top: 2px;
+  }
+
   .input {
     background: transparent;
     border: 0;
@@ -91,6 +104,7 @@
     font-size: 14px;
     outline: none;
     width: 100%;
+    padding: 0 0 0 12px;
 
     &:invalid {
       box-shadow: none;
@@ -101,8 +115,13 @@
 }
 
 .emojiPicker {
-  height: 258px;
-  width: 355px;
+  height: @emoji-picker-height;
+  width: @emoji-picker-width;
+
+  background: white;
+  border: @emoji-picker-border-color 1px solid;
+  border-radius: @ak-border-radius;
+  box-shadow: @emoji-picker-box-shadow;
 
   .emoji-picker-footer {
     border-top: 2px solid @ak-color-N30A;
@@ -112,7 +131,7 @@
 .emoji-picker-footer {
   display: flex;
   padding: 10px;
-
+  box-shadow: @emoji-footer-box-shadow;
 
   .preview {
     display: flex;
@@ -137,15 +156,22 @@
     .preview-text {
       flex: 1;
       margin-left: 10px;
+      max-width: 255px;
 
       .name {
         color: @ak-color-N900;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
 
       .shortname {
         font-size: 12px;
         line-height: 1;
         color: @ak-color-N200;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
 
       &:first-letter {
@@ -185,7 +211,7 @@
   .category {
     background-color: transparent;
     border: 0;
-    margin: 0 5px;
+    margin: 0 3px 0 4px;
     cursor: pointer;
     padding: 0;
     color: @ak-color-N100A;

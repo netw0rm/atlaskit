@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!./style.less';
+import EmojiService from './api/EmojiService';
 import EmojiList from './EmojiList';
 import EmojiPickerFooter from './EmojiPickerFooter';
 import CategorySelector from './CategorySelector';
@@ -17,6 +18,8 @@ export default class extends PureComponent {
       categories[emoji.category] = true;
       return categories;
     }, {});
+
+    this.emojiService = new EmojiService(props.emojis);
 
     this.state = {
       selectedEmoji: null,
@@ -53,23 +56,17 @@ export default class extends PureComponent {
   };
 
   onSearch = (query) => {
-    function matchQuery(emoji) {
-      return (emoji.name && emoji.name.indexOf(query) > 0) ||
-        (emoji.shortcut && emoji.shortcut.indexOf(query) > 0);
-    }
+    const searchResults = this.emojiService.search(query);
 
-    const filteredEmojis = query ? this.props.emojis.filter(matchQuery) : this.props.emojis;
-
-    const availableCategories = filteredEmojis.reduce((categories, emoji) => {
-      categories[emoji.category] = true;
-      return categories;
-    }, {});
+    const filteredEmojis = searchResults.emojis;
+    const firstResult = filteredEmojis[0];
+    const availableCategories = searchResults.categories;
 
     let selectedEmoji;
     let activeCategory;
-    if (filteredEmojis[0]) {
-      selectedEmoji = filteredEmojis[0];
-      activeCategory = filteredEmojis[0].category;
+    if (firstResult) {
+      selectedEmoji = firstResult;
+      activeCategory = firstResult.category;
     }
 
     this.setState({

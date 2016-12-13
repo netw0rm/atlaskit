@@ -1,10 +1,14 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 import FieldBase from 'ak-field-base';
+import { SearchIcon } from 'ak-icon';
 import { List } from 'react-virtualized';
 import styles from 'style!./style.less';
 import EmojiPropTypes from './internal/ak-emoji-prop-types';
-import Emoji from './Emoji';
+import EmojiButton from './EmojiButton';
+import { emojiListWidth, emojiListHeight } from './shared-variables';
+
+const emojiPerRow = 8;
 
 export default class extends PureComponent {
   static propTypes = {
@@ -109,9 +113,9 @@ export default class extends PureComponent {
   getItemSize = ({ index }) => {
     const item = this.groupedItems[index];
     if (item.type === 'emoji') {
-      return 32;
-    } else if (item.type === 'search') {
       return 40;
+    } else if (item.type === 'search') {
+      return 50;
     } else if (item.type === 'category') {
       return 25;
     }
@@ -130,9 +134,10 @@ export default class extends PureComponent {
       let emoji = emojis[i];
 
       if (emoji.skinVariations.length && selectedTone) {
-        emoji = Object.assign({}, emoji, {
+        emoji = {
+          ...emoji,
           representation: emoji.skinVariations[selectedTone - 1],
-        });
+        };
       }
 
       if (currentCategory !== emoji.category) {
@@ -155,7 +160,7 @@ export default class extends PureComponent {
         currentCategory = emoji.category;
       }
 
-      if (currentGroup.emojis.length === 10) {
+      if (currentGroup.emojis.length === emojiPerRow) {
         if (currentGroup) {
           list.push(currentGroup);
         }
@@ -199,7 +204,7 @@ export default class extends PureComponent {
                 key={emoji.shortcut}
               >
 
-                <Emoji
+                <EmojiButton
                   {...emoji}
                   selected={selected}
                 />
@@ -221,14 +226,19 @@ export default class extends PureComponent {
         <div className={styles.search} style={style} key={key}>
           <FieldBase
             appearance="compact"
-            hideLabel
+            label="Search"
+            isLabelHidden
+            isFitContainerWidthEnabled
           >
+            <span className={styles.searchIcon} >
+              <SearchIcon label="Search" />
+            </span>
             <input
               className={styles.input}
               type="text"
               disabled={false}
               name="search"
-              placeholder="Search"
+              placeholder="Search..."
               required={false}
               onChange={this.onSearch}
               value={this.state.query}
@@ -254,8 +264,8 @@ export default class extends PureComponent {
           rowRenderer={this.renderItem}
           rowCount={this.groupedItems.length}
           rowHeight={this.getItemSize}
-          width={355}
-          height={230}
+          width={emojiListWidth}
+          height={emojiListHeight}
           onRowsRendered={this.onRowsRendered}
           scrollToIndex={this.state.initialListIndex}
           scrollToAlignment="start"

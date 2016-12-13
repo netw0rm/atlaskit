@@ -58,9 +58,10 @@ export default class extends PureComponent {
 
     let emoji = filteredEmojis[0];
     if (this.props.selectedTone) {
-      emoji = Object.assign({}, emoji, {
+      emoji = {
+        ...emoji,
         representation: emoji.skinVariations[this.props.selectedTone - 1],
-      });
+      };
     }
 
     return (

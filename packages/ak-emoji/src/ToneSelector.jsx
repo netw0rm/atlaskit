@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!./style.less';
-import Emoji from './Emoji';
+import EmojiButton from './EmojiButton';
 import EmojiPropTypes from './internal/ak-emoji-prop-types';
 import { toneEmojiShortName } from './internal/constants';
 
@@ -16,7 +16,8 @@ export default class extends PureComponent {
     const toneEmoji = this.props.emojis.filter(emoji => emoji.shortcut === toneEmojiShortName);
 
     const variations = toneEmoji[0].skinVariations;
-    const toneEmojis = variations.map((skinVariation, i) => Object.assign({}, toneEmoji[0], {
+    const toneEmojis = variations.map((skinVariation, i) => ({
+      ...toneEmoji[0],
       shortcut: `${toneEmoji[0].shortcut}_tone${i + 1}`,
       representation: skinVariation,
     }));
@@ -27,7 +28,7 @@ export default class extends PureComponent {
     return (
       <div className={classNames(classes)}>
         {
-          toneEmojis.map((emoji, i) => <Emoji
+          toneEmojis.map((emoji, i) => <EmojiButton
             key={emoji.shortcut}
             onClick={() => this.props.onToneSelected(i)}
             {...emoji}

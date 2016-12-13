@@ -110,7 +110,9 @@ export default class extends PureComponent {
                 className={classNames(categoryClasses)}
                 onClick={() => this.onClick(category.id)}
               >
-                <Icon />
+                <Icon
+                  label={category.name}
+                />
               </button>
             );
           })}

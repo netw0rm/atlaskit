@@ -4,12 +4,12 @@ Use emoji....
 
 ## Try it out
 
-Interact with a [live demo of the ak-emoji component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-emoji/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-emoji
+npm install @NAME@
 ```
 
 ## Using the component

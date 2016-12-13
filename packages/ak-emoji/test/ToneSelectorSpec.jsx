@@ -3,10 +3,10 @@ import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
 import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import React from 'react';
 import ToneSelector from '../src/ToneSelector';
-import Emoji from '../src/Emoji';
+import EmojiButton from '../src/EmojiButton';
 
 chai.use(chaiAsPromised);
 chai.use(chaiEnzyme());
@@ -48,17 +48,17 @@ describe('<ToneSelector />', () => {
       onToneSelected={onToneSelectedSpy}
     />);
 
-    expect(wrapper.find(Emoji)).to.have.length(6);
+    expect(wrapper.find(EmojiButton)).to.have.length(6);
   });
 
   it('should call onToneSelected on click', () => {
     const onToneSelectedSpy = sinon.spy();
-    const wrapper = shallow(<ToneSelector
+    const wrapper = mount(<ToneSelector
       emojis={handEmojis}
       onToneSelected={onToneSelectedSpy}
     />);
 
-    wrapper.find(Emoji).first().simulate('click');
+    wrapper.find(EmojiButton).first().simulate('mousedown', { button: 0 });
     expect(onToneSelectedSpy).to.have.been.calledWith(0);
   });
 });

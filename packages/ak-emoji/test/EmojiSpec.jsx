@@ -1,6 +1,5 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import sinon from 'sinon';
 import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import { shallow } from 'enzyme';
@@ -27,7 +26,6 @@ describe('<Emoji />', () => {
           },
         }}
       />);
-
 
       const sprite = wrapper.find(`.${styles.emojiSprite}`);
       expect(sprite).to.have.style('background-image', 'url(https://path-to-spritesheet.png)');
@@ -86,26 +84,6 @@ describe('<Emoji />', () => {
 
       expect(wrapper.find(`.${styles.emojiContainer}`)).to.have.className(styles.selected);
     });
-
-    it('should call onClick on click', () => {
-      const onClickSpy = sinon.spy();
-      const wrapper = shallow(<Emoji
-        shortcut=":grimacing:"
-        representation={{
-          sprite: {
-            imagePath: 'https://path-to-spritesheet.png',
-            row: 6,
-            column: 6,
-          },
-          xIndex: 1,
-          yIndex: 1,
-        }}
-        onClick={onClickSpy}
-      />);
-
-      wrapper.find(`.${styles.emojiSprite}`).simulate('click');
-      expect(onClickSpy).to.have.been.called;
-    });
   });
 
   describe('as image', () => {
@@ -136,22 +114,6 @@ describe('<Emoji />', () => {
 
       const sprite = wrapper.find(`.${styles.emoji}`);
       expect(sprite).to.have.className(styles.selected);
-    });
-
-    it('should call onClick on click', () => {
-      const onClickSpy = sinon.spy();
-      const wrapper = shallow(<Emoji
-        shortcut=":grimacing:"
-        representation={{
-          imagePath: 'https://path-to-image.png',
-          width: 24,
-          height: 24,
-        }}
-        onClick={onClickSpy}
-      />);
-
-      wrapper.find(`.${styles.emoji}`).simulate('click');
-      expect(onClickSpy).to.have.been.called;
     });
   });
 });

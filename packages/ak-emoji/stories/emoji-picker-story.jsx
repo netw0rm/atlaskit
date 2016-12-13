@@ -5,10 +5,10 @@ import EmojiPicker from '../src/EmojiPicker';
 import EmojiPickerFooter from '../src/EmojiPickerFooter';
 import CategorySelector from '../src/CategorySelector';
 import ToneSelector from '../src/ToneSelector';
-import { emojiData } from './story-data';
+import emojiData from './story-data.json';
 
 const transformedEmojis = emojiData.emojis.map((emoji) => {
-  const newEmoji = Object.assign({}, emoji);
+  const newEmoji = { ...emoji };
   if (emoji.representation.spriteRef) {
     newEmoji.representation.sprite = emojiData.meta.sprites[emoji.representation.spriteRef];
   }
@@ -16,9 +16,10 @@ const transformedEmojis = emojiData.emojis.map((emoji) => {
   if (emoji.skinVariations) {
     newEmoji.skinVariations = emoji.skinVariations.map((skinVariation) => {
       if (skinVariation.spriteRef) {
-        return Object.assign({}, skinVariation, {
+        return {
+          ...skinVariation,
           sprite: emojiData.meta.sprites[emoji.representation.spriteRef],
-        });
+        };
       }
 
       return skinVariation;
@@ -50,5 +51,7 @@ storiesOf('Emoji Picker', module)
     <ToneSelector emojis={transformedEmojis} />
     ))
   .add('picker', () => (
-    <EmojiPicker emojis={transformedEmojis} />
+    <div style={{ padding: '10px' }} >
+      <EmojiPicker emojis={transformedEmojis} />
+    </div>
     ));

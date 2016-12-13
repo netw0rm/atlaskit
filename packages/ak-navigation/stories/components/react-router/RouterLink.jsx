@@ -2,7 +2,6 @@ import React, { PropTypes, PureComponent } from 'react';
 import { Link } from 'react-router';
 import { AkContainerItem } from '../../../src/index';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class RouterLink extends PureComponent {
   static get propTypes() {
     return {

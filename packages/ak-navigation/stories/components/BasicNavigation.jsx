@@ -1,11 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { action } from '@kadira/storybook';
 import { AtlassianIcon, SearchIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
 import Navigation, { AkContainerHeader, AkContainerItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 
-// eslint-disable-next-line react/prefer-stateless-function
-export default class BasicNavigation extends Component {
+export default class BasicNavigation extends PureComponent {
   static get propTypes() {
     return {
       children: PropTypes.node,

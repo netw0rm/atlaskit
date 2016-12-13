@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/ContainerNavigation.less';
 import {
@@ -6,7 +6,7 @@ import {
 } from '../../shared-variables';
 import Spacer from './Spacer';
 
-export default class ContainerNavigation extends Component {
+export default class ContainerNavigation extends PureComponent {
   static get propTypes() {
     return {
       children: PropTypes.node,

@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/Spacer.less';
 
-export default class Spacer extends Component {
+export default class Spacer extends PureComponent {
   static get propTypes() {
     return {
       width: PropTypes.number,

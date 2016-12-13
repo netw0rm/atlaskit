@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!../less/ContainerHeader.less';
 import ContainerQuery from 'react-container-query';
 import {
@@ -6,8 +6,7 @@ import {
   containerClosedWidth,
 } from '../../shared-variables';
 
-// eslint-disable-next-line react/prefer-stateless-function
-export default class ContainerHeader extends Component {
+export default class ContainerHeader extends PureComponent {
   static get propTypes() {
     return {
       text: PropTypes.string,

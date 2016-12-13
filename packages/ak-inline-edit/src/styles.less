@@ -30,6 +30,12 @@
   }
 }
 
+.edit-button-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 // the vendor prefixes here are deliberate. 'appearance' does not seem to get picked up by postcss,
 // eslint or even Chrome for some reason. :/
 .edit-button {
@@ -46,7 +52,6 @@
   opacity: 0;
   outline: 0;
   padding: 0 0 0 unit(@grid * 2, px);
-  width: 100%;
 
   &:focus {
     opacity: 1;

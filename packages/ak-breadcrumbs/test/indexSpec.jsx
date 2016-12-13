@@ -13,7 +13,6 @@ import { name } from '../package.json';
 const { expect } = chai;
 chai.use(chaiEnzyme());
 
-
 describe(name, () => {
   describe('Breadcrumbs', () => {
     describe('exports', () => {

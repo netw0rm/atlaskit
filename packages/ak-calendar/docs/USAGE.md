@@ -6,7 +6,7 @@ The `ak-calendar` component is a generic calendar that can be used standalone or
 
 ## Try it out
 
-Interact with a [live demo of the ak-calendar component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-calendar/@VERSION@/).
+Interact with a [live demo of the ak-calendar component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/ak-calendar/@VERSION@/).
 
 ## Installation
 

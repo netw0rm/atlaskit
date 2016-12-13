@@ -118,8 +118,8 @@ describe.skip(name, () => {
           // testing to see that skate did its job as expected
           // (in case some breaking changes in it that affect rendering)
           setTimeout(() => {
-            expect(getShadowRoot(component)).to.be.defined;
-            expect(getShadowRoot(component).firstChild).to.be.defined;
+            expect(getShadowRoot(component)).to.exist;
+            expect(getShadowRoot(component).firstChild).to.exist;
           });
           setTimeout(done);
         });

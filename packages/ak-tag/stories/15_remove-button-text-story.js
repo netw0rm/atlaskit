@@ -13,14 +13,19 @@ function handleAfterRemoveAction() {
   console.log('My last words!');
 }
 
+const imports = [
+  ['React', 'react'],
+  ['Tag', 'ak-tag'],
+];
+
 storiesOf(name, module)
-  .add('remove-button: simple', () => (
+  .addCodeExampleStory('remove-button: simple', () => (
     <Component
       text="Liquorice"
       removeButtonText="Remove me"
     />
-  ))
-  .add('remove-button: with href', () => (
+  ), { imports })
+  .addCodeExampleStory('remove-button: with href', () => (
     <div>
       Our Events are handled ! Check da console
       <hr />
@@ -37,8 +42,8 @@ storiesOf(name, module)
         onBeforeRemoveAction={handleRemoveAction}
       />
     </div>
-  ))
-  .add('remove-button: hover unlinked vs. linked', () => (
+  ), { imports, scripts: [handleAfterRemoveAction, handleRemoveAction] })
+  .addCodeExampleStory('remove-button: hover unlinked vs. linked', () => (
     <div>
       Hover over our remove buttons
       <hr />
@@ -52,4 +57,4 @@ storiesOf(name, module)
         removeButtonText="Floss your teeth!"
       />
     </div>
-  ));
+  ), { imports });

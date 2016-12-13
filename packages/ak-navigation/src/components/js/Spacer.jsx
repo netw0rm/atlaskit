@@ -1,19 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/Spacer.less';
 
-export default class Spacer extends Component {
-  static get propTypes() {
-    return {
-      width: PropTypes.number,
-      shouldAnimate: PropTypes.bool,
-    };
+export default class Spacer extends PureComponent {
+  static propTypes = {
+    width: PropTypes.number,
+    shouldAnimate: PropTypes.bool,
   }
-  static get defaultProps() {
-    return {
-      width: 0,
-      shouldAnimate: false,
-    };
+  static defaultProps = {
+    width: 0,
+    shouldAnimate: false,
   }
   render() {
     return (

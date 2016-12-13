@@ -60,6 +60,7 @@ export default class BasicNavigation extends PureComponent {
         isCreateDrawerOpen={this.state.openDrawer === 'create'}
         isSearchDrawerOpen={this.state.openDrawer === 'search'}
         onBlanketClicked={action('blanket clicked')}
+        onResize={action('resized')}
         hasBlanket
         {...this.props}
       >

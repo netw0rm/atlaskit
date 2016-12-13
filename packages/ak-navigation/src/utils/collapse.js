@@ -4,7 +4,6 @@ import {
   collapseBreakpoint,
 } from '../shared-variables';
 
-
 export function getContainerWidth(navigationWidth) {
   if (navigationWidth > collapseBreakpoint) {
     return navigationWidth - globalOpenWidth;

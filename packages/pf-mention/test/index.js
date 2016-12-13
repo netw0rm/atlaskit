@@ -14,7 +14,7 @@ describe(name, () => {
     });
 
     it('should have an events export with defined events', () => {
-      other.events.should.be.defined;
+      other.events.should.exist;
       Object.keys(other.events).should.be.deep.equal(['selected', 'mentionListRendered']);
     });
 

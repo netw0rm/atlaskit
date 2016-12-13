@@ -5,7 +5,6 @@ import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { mount } from 'enzyme';
 
-
 import Tag from '../src/index';
 import RemoveButton from '../src/RemoveButton';
 import Chrome from '../src/Chrome';
@@ -103,7 +102,6 @@ describe('<Tag/> component tests', () => {
     '</div>';
     expect(wrapper.find('Tag').html()).to.equal(renderedHtml);
   });
-
 
   /*
   1. <Tag text="hello"/>

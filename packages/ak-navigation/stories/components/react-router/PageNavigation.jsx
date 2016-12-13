@@ -3,8 +3,6 @@ import Navigation from '../../../src/index';
 import RouterHeader from './RouterHeader';
 import RouterLink from './RouterLink';
 
-
-// eslint-disable-next-line react/prefer-stateless-function
 export default class PageNavigation extends PureComponent {
   render() {
     return (

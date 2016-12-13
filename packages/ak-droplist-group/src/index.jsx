@@ -1,7 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!./styles.less';
 
-
 /* eslint-disable react/no-unused-prop-types */
 /**
  * @description Group related items together under one heading

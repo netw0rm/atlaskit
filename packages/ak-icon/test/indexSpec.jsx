@@ -144,7 +144,7 @@ describe(name, () => {
     it('should be possible to create the components', () => {
       Object.values(components).forEach((Icon) => {
         const wrapper = shallow(<Icon label="My icon" />);
-        expect(wrapper).to.be.defined;
+        expect(wrapper).to.exist;
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
     });

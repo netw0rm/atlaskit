@@ -1,15 +1,15 @@
 @import './styles.less';
 
-@ERROR_COLOR: @ak-color-N800;
-@ERROR_SUB_COLOR: @ak-color-N90;
+@error-color: @ak-color-N800;
+@error-sub-color: @ak-color-N90;
 
 .profilecard-resourced {
   .font-smoothing;
   font-family: @ak-font-family;
   width: 360px;
   height: 185px;
-  background: @CARD_BG;
-  box-shadow: @CARD_SHADOW;
+  background: @card-bg;
+  box-shadow: @card-shadow;
   border-radius: @ak-border-radius;
   overflow: hidden;
 }
@@ -26,7 +26,7 @@
   min-height: 185px;
 
   p {
-    color: @ERROR_COLOR;
+    color: @error-color;
     text-align: center;
     line-height: 1.5em;
 
@@ -37,7 +37,7 @@
     }
 
     span {
-      color: @ERROR_SUB_COLOR;
+      color: @error-sub-color;
     }
   }
 }

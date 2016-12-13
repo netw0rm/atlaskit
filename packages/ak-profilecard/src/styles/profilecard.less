@@ -1,19 +1,12 @@
 @import './styles.less';
 
-@CARD_TOP_COLOR: @ak-color-B500;
+@card-top-color: @ak-color-B500;
 
-@OFFLINE: @ak-color-N80;
-@ONLINE: @ak-color-G300;
-@BUSY: @ak-color-Y500;
+@details-name-color: #FFFFFF;
+@details-meta-color: #88A8D6;
 
-@DETAILS_NAME_COLOR: #FFFFFF;
-@DETAILS_META_COLOR: #88A8D6;
-
-@ICON_FILL: @ak-color-N40;
-@DETAILS_TEXT: @ak-color-N800;
-
-@ACTION_COLOR: @ak-color-B400;
-@ACTION_HOVER_COLOR: @ak-color-N800;
+@icon-fill: @ak-color-N40;
+@details-text: @ak-color-N800;
 
 .profilecard {
   .font-smoothing;
@@ -22,9 +15,9 @@
   min-width: 360px;
   min-height: 185px;
   border-radius: @ak-border-radius;
-  box-shadow: @CARD_SHADOW;
+  box-shadow: @card-shadow;
   padding: 0;
-  background-color: @CARD_BG;
+  background-color: @card-bg;
   overflow: hidden;
 
   position: relative;
@@ -32,10 +25,10 @@
   min-height: 185px;
   background: linear-gradient(
     to bottom,
-    @CARD_TOP_COLOR 0%,
-    @CARD_TOP_COLOR 90px,
-    @CARD_BG 90px,
-    @CARD_BG 100%
+    @card-top-color 0%,
+    @card-top-color 90px,
+    @card-bg 90px,
+    @card-bg 100%
   );
 }
 
@@ -62,7 +55,7 @@
   white-space: nowrap;
 
   font-size: 18px;
-  color: @DETAILS_NAME_COLOR;
+  color: @details-name-color;
   margin: 0;
   line-height: 21px;
   height: 25px;
@@ -75,7 +68,7 @@
   white-space: nowrap;
 
   font-size: 14px;
-  color: @DETAILS_META_COLOR;
+  color: @details-meta-color;
   margin: 0;
   line-height: 20px;
   height: 35px;
@@ -92,7 +85,7 @@
 
   .detailsLabelIcon {
     display: inline-block;
-    color: @ICON_FILL;
+    color: @icon-fill;
     width: 20px;
     height: 20px;
     vertical-align: top;
@@ -117,8 +110,8 @@
     }
   }
 
-  span {
-    color: @DETAILS_TEXT;
+  span.label {
+    color: @details-text;
     padding-left: 5px;
   }
 }

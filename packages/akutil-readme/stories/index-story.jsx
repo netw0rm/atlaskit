@@ -71,7 +71,6 @@ storiesOf(name)
         `}
       >
         {(() => {
-          // eslint-disable-next-line react/prefer-stateless-function
           class MyComponent extends PureComponent {
             static displayName = 'MyComponent'
           }

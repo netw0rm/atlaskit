@@ -5,7 +5,6 @@ import Code from './code';
 import Description from './description';
 import Heading from './heading';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class extends PureComponent {
   static displayName = 'Readme'
   static propTypes = {

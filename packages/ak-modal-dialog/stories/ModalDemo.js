@@ -8,7 +8,6 @@ function doSomethingOnClick() {
   action('the "onBlanketClicked" handler is fired')();
 }
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class ModalDemo extends React.PureComponent {
   static get propTypes() {
     return {

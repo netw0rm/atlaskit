@@ -2362,9 +2362,9 @@
       "resolved": "https://registry.npmjs.org/eslint-config-airbnb-base/-/eslint-config-airbnb-base-10.0.1.tgz"
     },
     "eslint-config-ak-base": {
-      "version": "5.1.1",
+      "version": "5.2.0",
       "from": "eslint-config-ak-base@>=5.1.1 <6.0.0",
-      "resolved": "https://registry.npmjs.org/eslint-config-ak-base/-/eslint-config-ak-base-5.1.1.tgz"
+      "resolved": "https://registry.npmjs.org/eslint-config-ak-base/-/eslint-config-ak-base-5.2.0.tgz"
     },
     "eslint-config-ak-cucumber": {
       "version": "4.0.0",
@@ -2483,6 +2483,11 @@
       "version": "4.7.0",
       "from": "eslint-plugin-mocha@>=4.6.0 <5.0.0",
       "resolved": "https://registry.npmjs.org/eslint-plugin-mocha/-/eslint-plugin-mocha-4.7.0.tgz"
+    },
+    "eslint-plugin-prefer-object-spread": {
+      "version": "1.1.0",
+      "from": "eslint-plugin-prefer-object-spread@>=1.1.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/eslint-plugin-prefer-object-spread/-/eslint-plugin-prefer-object-spread-1.1.0.tgz"
     },
     "eslint-plugin-protractor": {
       "version": "1.29.1",

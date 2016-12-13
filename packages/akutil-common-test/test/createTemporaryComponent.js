@@ -42,7 +42,6 @@ describe('createTemporaryComponent', () => {
   );
 
   it('should be possible to create a component from a class', () => {
-    // eslint-disable-next-line react/prefer-stateless-function
     class MyComponent extends Component {
       static render() {
         return (<div />);

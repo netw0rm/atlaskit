@@ -10,7 +10,6 @@ import { itemTruncateWidth } from '../src/internal/constants';
 import { name } from '../package.json';
 import { setItemWidth } from './_helpers';
 
-
 const { expect } = chai;
 chai.use(chaiEnzyme());
 

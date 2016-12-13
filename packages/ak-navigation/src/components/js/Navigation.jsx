@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import AkBlanket from 'ak-blanket';
 import styles from 'style!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
@@ -15,7 +15,7 @@ import {
 } from '../../shared-variables';
 import { getGlobalWidth, getContainerWidth } from '../../utils/collapse';
 
-export default class Navigation extends Component {
+export default class Navigation extends PureComponent {
   static propTypes = {
     searchDrawerContent: PropTypes.node,
     isSearchDrawerOpen: PropTypes.bool,
@@ -81,7 +81,6 @@ export default class Navigation extends Component {
       resizeDelta: 0,
     });
   }
-
 
   render() {
     const { onSearchDrawerActivated, onCreateDrawerActivated, globalSearchIcon, globalCreateIcon,

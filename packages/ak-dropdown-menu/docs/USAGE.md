@@ -14,4 +14,4 @@ npm install ak-dropdown-menu --save
 
 ## Using the component
 
-See examples of usage and detailed documentation [live demo of the component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-dropdown-menu/@VERSION@/).
+See examples of usage and detailed documentation in the [live demo of the component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-dropdown-menu/@VERSION@/).

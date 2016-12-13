@@ -14,9 +14,11 @@ export default class ReadView extends PureComponent {
   }
 
   renderEditIcon = () => (
-    <button className={locals.editButton}>
-      <Icon label="Edit" size="small" />
-    </button>
+    <div className={locals.editButtonWrapper}>
+      <button className={locals.editButton}>
+        <Icon label="Edit" size="small" />
+      </button>
+    </div>
   )
 
   render = () => (

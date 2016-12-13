@@ -40,10 +40,10 @@ const buildHeaders = () => {
  * Build query string for GraphQL
  * @ignore
  * @param  {string} userId
- * @param  {string} [timeformat='h:MMa']
+ * @param  {string} [timeformat='h:mma']
  * @return {string}
  */
-const buildQueryString = (userId, cloudId, timeformat = 'h:MMa') => {
+const buildQueryString = (userId, cloudId, timeformat = 'h:mma') => {
   const fields = [
     'id',
     'fullName',

@@ -1,18 +1,23 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
+import StatefulSpinner from './StatefulSpinner'; // eslint-disable-line import/no-duplicates
 import { name } from '../package.json';
 import Spinner from '../src';
-import StatefulSpinner from './StatefulSpinner';
-import ButtonSpinner from './ButtonSpinner';
+import ButtonSpinner from './ButtonSpinner'; // eslint-disable-line import/no-duplicates
+
+/* eslint-disable  import/no-duplicates, import/first  */
+import statefulSpinnerRaw from '!raw!./StatefulSpinner';
+import ButtonSpinnerRaw from '!raw!./ButtonSpinner';
+/* eslint-enable  import/no-duplicates, import/first  */
 
 storiesOf(name, module)
-  .add('A default spinner', () => (
+  .addCodeExampleStory('A default spinner', () => (
     <div>
       <Spinner />
     </div>
   ))
-  .add('Baseline alignment', () => (
+  .addCodeExampleStory('Baseline alignment', () => (
     <div>
       <div>
         <h1>This &lt;h1&gt; element <Spinner /> is using h800</h1>
@@ -24,14 +29,14 @@ storiesOf(name, module)
       </div>
     </div>
   ))
-  .add('Stateful spinner', () => (
+  .addCodeExampleStory('Stateful spinner', () => (
     <div style={{ padding: '10px' }}>
       <StatefulSpinner />
     </div>
-  ))
-  .add('Spinner in a button', () => (
+  ), { scripts: [statefulSpinnerRaw] })
+  .addCodeExampleStory('Spinner in a button', () => (
     <div style={{ padding: '10px' }}>
       <ButtonSpinner />
     </div>
-  ))
+  ), { scripts: [ButtonSpinnerRaw] })
   ;

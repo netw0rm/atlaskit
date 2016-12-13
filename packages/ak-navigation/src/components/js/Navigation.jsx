@@ -29,6 +29,7 @@ export default class Navigation extends PureComponent {
     open: PropTypes.bool,
     onResize: PropTypes.func,
     isResizeable: PropTypes.bool,
+    isCollapsible: PropTypes.bool,
     globalPrimaryIcon: PropTypes.node,
     globalSearchIcon: PropTypes.node,
     globalCreateIcon: PropTypes.node,
@@ -43,6 +44,7 @@ export default class Navigation extends PureComponent {
   static defaultProps = {
     width: navigationOpenWidth,
     open: true,
+    isCollapsible: true,
     isResizeable: true,
     onResize: () => {},
     isSearchDrawerOpen: false,
@@ -65,7 +67,11 @@ export default class Navigation extends PureComponent {
 
   getRenderedWidth = () => {
     const baselineWidth = this.props.open ? this.props.width : containerClosedWidth;
-    return Math.max(containerClosedWidth, baselineWidth + this.state.resizeDelta);
+    const minWidth = this.props.isCollapsible ? containerClosedWidth : navigationOpenWidth;
+    return Math.max(
+      minWidth,
+      baselineWidth + this.state.resizeDelta
+    );
   }
 
   triggerResizeHandler = () => {

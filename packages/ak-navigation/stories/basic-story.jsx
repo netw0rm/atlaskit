@@ -87,6 +87,14 @@ storiesOf(name, module)
       </div>
     </Page>
   ))
+  .add('with isCollapsible=false', () => (
+    <Page>
+      <BasicNavigation isCollapsible={false} />
+      <div>
+        <Lorem count="30" />
+      </div>
+    </Page>
+  ))
   .add('that starts closed', () => (
     <Page>
       <BasicNavigation open={false}>

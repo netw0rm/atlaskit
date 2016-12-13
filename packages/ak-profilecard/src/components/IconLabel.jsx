@@ -1,8 +1,18 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
+import { LocationIcon, TimeIcon, EditorMentionIcon } from 'ak-icon';
 
 import styles from 'style!../styles/profilecard.less';
-import icons from '../internal/icons';
+import { available, unavailable, busy } from '../internal/presence_icons';
+
+const icons = {
+  location: LocationIcon,
+  time: TimeIcon,
+  mention: EditorMentionIcon,
+  available,
+  unavailable,
+  busy,
+};
 
 export default class IconLabel extends PureComponent {
   static propTypes = {
@@ -18,7 +28,7 @@ export default class IconLabel extends PureComponent {
     if (!this.props.children) { return null; }
 
     const IconElement = icons[this.props.icon];
-    const displayIcon = IconElement ? <IconElement /> : null;
+    const displayIcon = IconElement ? <IconElement label={`icon ${this.props.icon}`} /> : null;
 
     const classes = classNames({
       [styles.detailsLabel]: true,
@@ -30,7 +40,7 @@ export default class IconLabel extends PureComponent {
         <div className={styles.detailsLabelIcon}>
           {displayIcon}
         </div>
-        <span>{this.props.children}</span>
+        <span className={styles.label}>{this.props.children}</span>
       </div>
     );
   }

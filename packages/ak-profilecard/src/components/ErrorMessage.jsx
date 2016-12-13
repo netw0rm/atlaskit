@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
+import { ErrorIcon } from 'ak-icon';
+
 import styles from 'style!../styles/profilecard-resourced.less';
-
-import icons from '../internal/icons';
-
-const WarningIcon = icons.warning;
 
 export default class ErrorMessage extends PureComponent {
   static propTypes = {};
@@ -14,7 +12,7 @@ export default class ErrorMessage extends PureComponent {
       <div className={styles.profilecardResourced}>
         <div className={styles.errorMessage}>
           <p>
-            <WarningIcon />
+            <ErrorIcon label="icon error" size="large" />
             <br />
             Something went wrong
             <br />

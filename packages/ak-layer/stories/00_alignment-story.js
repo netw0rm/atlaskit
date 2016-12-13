@@ -5,7 +5,6 @@ import styles from 'style!./styles.less';
 import { name } from '../package.json';
 import ExampleAlignment from './ExampleAlignment';
 
-
 const AllAlignments = props => (<div className={styles.storyRoot}>
   <div style={{ width: '200vw', border: '1px solid' }}>
     This div is here to give us horizontal scrolling

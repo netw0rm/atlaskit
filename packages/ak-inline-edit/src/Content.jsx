@@ -54,7 +54,7 @@ export default class Content extends PureComponent {
   getActionButtonClasses = () =>
     classNames({
       [locals.buttonsWrapper]: true,
-      [locals.buttonWrapperHidden]: !this.props.isEditing,
+      [locals.buttonWrapperHidden]: !this.props.isEditing || this.props.areActionButtonsHidden,
     })
 
   getDOMNode = ref =>
@@ -123,7 +123,7 @@ export default class Content extends PureComponent {
         isLabelHidden={this.props.isLabelHidden}
         isReadOnly={this.isReadOnly()}
         appearance={this.props.isEditing ? 'standard' : 'subtle'}
-        rightGutter={this.props.areActionButtonsHidden ? null : this.renderActionButtons()}
+        rightGutter={this.renderActionButtons()}
       >
         {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
       </FieldBase>

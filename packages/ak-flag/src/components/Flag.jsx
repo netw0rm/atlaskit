@@ -10,12 +10,22 @@ import CancelIcon from 'ak-icon/glyph/cancel';
 export default class Flag extends PureComponent {
   static propTypes = {
     /**
+     * @description A unique identifer used for rendering and onDismissed callbacks
+     * @memberof Flag
+     * @instance
+     * @type {string}
+     */
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    /**
      * @description The icon displayed in the top-left of the flag.
      * @memberof Flag
      * @instance
      * @type {element}
      */
-    icon: PropTypes.element,
+    icon: PropTypes.element.isRequired,
     /**
      * @description The bold text shown at the top of the flag.
      * @memberof Flag
@@ -30,7 +40,22 @@ export default class Flag extends PureComponent {
      * @type {string}
      */
     description: PropTypes.string,
+    /**
+     * @description Function to be called when the flag is dismissed by the user
+     * @memberof Flag
+     * @instance
+     * @type {function}
+     */
+    onDismissed: PropTypes.func,
   };
+
+  static defaultProps = {
+    onDismissed: () => {},
+  }
+
+  flagDismissed = () => {
+    this.props.onDismissed(this.props.id);
+  }
 
   render() {
     return (
@@ -39,13 +64,16 @@ export default class Flag extends PureComponent {
           {this.props.icon}
         </div>
         <div className={styles.textContent}>
-          <div className={styles.titleAndCancel}>
+          <div className={styles.titleAndDismiss}>
             <span className={styles.title}>
               {this.props.title}
             </span>
-            <div className={styles.cancelIcon}>
+            <button
+              className={styles.dismissIconButton}
+              onClick={this.flagDismissed}
+            >
               <CancelIcon label="Close flag" />
-            </div>
+            </button>
           </div>
           {
             this.props.description ? (

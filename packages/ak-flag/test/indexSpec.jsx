@@ -58,6 +58,19 @@ describe(name, () => {
           ).find(`.${flagLocals.description}`).should.have.text('Oh hi!')
         );
       });
+
+      it('onDismissed should be called with flag id as param when dismiss icon clicked', () => {
+        const spy = sinon.spy();
+        const wrapper = mount(
+          <Flag
+            id="a"
+            onDismissed={spy}
+          />
+        );
+        wrapper.find(`.${flagLocals.dismissIconButton}`).simulate('click');
+        expect(spy).to.have.been.calledOnce;
+        expect(spy).to.have.been.calledWith('a');
+      });
     });
   });
 

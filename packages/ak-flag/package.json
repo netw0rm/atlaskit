@@ -20,7 +20,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-navigation": "^16.1.0"
+    "ak-navigation": "^16.1.0",
+    "ak-button": "^5.0.3"
   },
   "peerDependencies": {
     "react": "^15.3.2"

@@ -4,12 +4,15 @@ import React from 'react';
 import { AkRadio } from '../src';
 import { name } from '../package.json';
 
+function changeHandler(event) {
+  console.log(`Radio button "${event.target.name}" was selected.`);
+}
 
 storiesOf(name, module)
   .add('Radio items', () => ([
-    <AkRadio name="item1" value="not-selected">Not selected</AkRadio>,
-    <AkRadio name="item2" value="selected" selected>Selected</AkRadio>,
-    <AkRadio name="item3" value="disabled" disabled>Disabled</AkRadio>,
-    <AkRadio name="item4" value="selected-disabled" selected disabled>Selected + disabled</AkRadio>,
-    <AkRadio name="item5" value="markup-content"><b>Markup</b> in the <a href="/link">content</a></AkRadio>,
+    <AkRadio name="not-selected" value="true" onChange={changeHandler}>Not selected</AkRadio>,
+    <AkRadio name="selected" value="true" onChange={changeHandler} selected>Selected</AkRadio>,
+    <AkRadio name="disabled" value="true" onChange={changeHandler} disabled>Disabled</AkRadio>,
+    <AkRadio name="selected-disabled" value="true" onChange={changeHandler} selected disabled>Selected + disabled</AkRadio>,
+    <AkRadio name="markup-content" value="true" onChange={changeHandler}><b>Markup</b> in the <a href="/link">content</a></AkRadio>,
   ]));

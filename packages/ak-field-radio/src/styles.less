@@ -59,13 +59,16 @@
   border-radius: 50%;
   border: unit(@border-width, px) solid @border-color;
   box-sizing: border-box;
-  cursor: pointer;
   display: inline-block;
   height: @full-height;
   margin: 2px;
   position: relative;
   vertical-align: middle;
   width: @full-width;
+}
+
+.input:not(:disabled) + .radio-icon {
+  cursor: pointer;
 }
 
 // Hover state
@@ -81,7 +84,13 @@
   box-sizing: content-box;
   border-width: unit(@border-width-focus, px);
   margin: 0;
+
+  &:hover {
+    // Focus state should not override hover state background-color
+    background-color: @background-color-hover;
+  }
 }
+
 
 // Selected state
 .input:checked {

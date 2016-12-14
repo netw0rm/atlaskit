@@ -8,6 +8,7 @@ export default class Radio extends PureComponent {
   static propTypes = {
     disabled: PropTypes.bool,
     name: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
     selected: PropTypes.bool,
     value: PropTypes.string,
     children: PropTypes.oneOfType([
@@ -30,6 +31,7 @@ export default class Radio extends PureComponent {
             checked={this.props.selected}
             disabled={this.props.disabled}
             name={this.props.name}
+            onChange={this.props.onChange}
             value={this.props.value}
             type="radio"
           />

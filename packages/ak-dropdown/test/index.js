@@ -32,7 +32,7 @@ describe.skip(name, () => {
 
     it('should have an events export with defined events', () => {
       const evArr = ['changeBefore', 'changeAfter', 'openBefore', 'openAfter', 'closeBefore', 'closeAfter', 'item', 'trigger'];
-      exports.events.should.be.defined;
+      exports.events.should.exist;
       Object.keys(exports.events).should.be.deep.equal(evArr);
       Object.keys(exports.events.item).should.be.deep.equal(['up', 'down', 'tab', 'activated']);
       Object.keys(exports.events.trigger).should.be.deep.equal(['activated']);
@@ -47,8 +47,8 @@ describe.skip(name, () => {
       // testing to see that skate did its job as expected
       // (in case some breaking changes in it that affect rendering)
       expect(component.tagName).to.match(new RegExp(`^${name}`, 'i'));
-      expect(component.shadowRoot).to.be.defined;
-      expect(component.shadowRoot.firstChild).to.be.defined;
+      expect(component.shadowRoot).to.exist;
+      expect(component.shadowRoot.firstChild).to.exist;
       tearDownComponent(component);
     }));
   });

@@ -3,12 +3,9 @@ import { Link } from 'react-router';
 import { AkContainerHeader } from '../../../src/index';
 import nucleusLogo from '../../nucleus.png';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class RouterHeader extends PureComponent {
-  static get propTypes() {
-    return {
-      to: PropTypes.string,
-    };
+  static propTypes = {
+    to: PropTypes.string,
   }
 
   render() {

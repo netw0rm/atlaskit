@@ -14,10 +14,16 @@ chai.use(chaiAsPromised);
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
+const defaultProps = {
+  label: 'Label',
+  onFocus: () => {},
+  onBlur: () => {},
+};
+
 describe('ak-field-base', () => {
   describe('by default', () =>
     it('should render a field base', () => {
-      const wrapper = shallow(<FieldBase />);
+      const wrapper = shallow(<FieldBase {...defaultProps} />);
       expect(wrapper).to.have.exactly(1).descendants(Label);
       expect(wrapper).to.have.exactly(1).descendants(Content);
       expect(wrapper.find(`.${styles.locals.root}`)).to.be.present();
@@ -38,7 +44,9 @@ describe('ak-field-base', () => {
     ].forEach(setup =>
       describe(`${setup.prop} prop`, () =>
         it('should be reflected', () => {
-          const wrapper = shallow(<FieldBase {...{ [setup.prop]: setup.value }} />);
+          const wrapper = shallow(
+            <FieldBase {...defaultProps} {...{ [setup.prop]: setup.value }} />
+          );
           expect(wrapper.find(setup.element)).to.have.prop(setup.prop, setup.value);
         })
       )
@@ -47,7 +55,7 @@ describe('ak-field-base', () => {
 
   describe('children', () => {
     it('should render children inside Content', () => {
-      const wrapper = shallow(<FieldBase><div id="child">test</div></FieldBase>);
+      const wrapper = shallow(<FieldBase {...defaultProps}><div id="child">test</div></FieldBase>);
       const content = wrapper.find(Content);
       expect(content).to.have.exactly(1).descendants('#child');
     });
@@ -58,14 +66,14 @@ describe('ak-field-base', () => {
     let content;
 
     beforeEach(() => {
-      wrapper = mount(<FieldBase />);
+      wrapper = mount(<FieldBase {...defaultProps} />);
       content = wrapper.find(Content);
       content.find(`.${styles.locals.content}`).simulate('focus');
     });
 
     it('should call onFocus', () => {
       const spy = sinon.spy();
-      wrapper = mount(<FieldBase onFocus={spy} />);
+      wrapper = mount(<FieldBase {...defaultProps} onFocus={spy} />);
       content = wrapper.find(Content);
       content.find(`.${styles.locals.content}`).simulate('focus');
       expect(spy).to.have.been.calledOnce;
@@ -73,7 +81,7 @@ describe('ak-field-base', () => {
 
     it('should call onBlur', () => {
       const spy = sinon.spy();
-      wrapper = mount(<FieldBase onBlur={spy} />);
+      wrapper = mount(<FieldBase {...defaultProps} onBlur={spy} />);
       content = wrapper.find(Content);
       content.find(`.${styles.locals.content}`).simulate('blur');
       expect(spy).to.have.been.calledOnce;
@@ -83,7 +91,7 @@ describe('ak-field-base', () => {
   describe('labelClick event', () =>
     it('should call labelClick callback when the label span is clicked', () => {
       const spy = sinon.spy();
-      const wrapper = mount(<FieldBase label="test" onLabelClick={spy} />);
+      const wrapper = mount(<FieldBase {...defaultProps} label="test" onLabelClick={spy} />);
       const label = wrapper.find(Label);
       label.find('span').simulate('click');
       expect(spy).to.have.been.calledOnce;

@@ -1,6 +1,8 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
+import MentionInlineEdit from './MentionInlineEdit';
 import TextInlineEdit from './TextInlineEdit';
+import exampleMentions from './example-mentions';
 import AkInlineEdit from '../src';
 import { name } from '../package.json';
 
@@ -62,6 +64,14 @@ storiesOf(name, module)
     <div style={containerStyle}>
       <TextInlineEdit
         isConfirmOnBlurDisabled
+      />
+    </div>
+  ))
+  .add('with mention list', () => (
+    <div style={containerStyle}>
+      <MentionInlineEdit
+        label="User picker"
+        mentions={exampleMentions}
       />
     </div>
   ));

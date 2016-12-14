@@ -7,7 +7,6 @@ const style = {
   },
 };
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class extends PureComponent {
   static displayName = 'Chrome'
   static propTypes = {

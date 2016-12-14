@@ -6,7 +6,6 @@ import { shallow, mount } from 'enzyme';
 
 import Layer from '../src';
 
-
 const { expect } = chai;
 chai.use(chaiEnzyme());
 chai.use(sinonChai);
@@ -18,11 +17,10 @@ chai.use(sinonChai);
    This file simply unit tests everything that can be unit tested. Browser and sanity checking will
    be done as a part of AK-1098 */
 
-
 describe('ak-layer', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Layer />);
-    expect(wrapper).to.be.defined;
+    expect(wrapper).to.exist;
   });
 
   describe('children', () => {

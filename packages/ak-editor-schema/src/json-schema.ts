@@ -211,18 +211,25 @@ function createNodeDef(schema: Schema, name: string) {
 }
 
 export default function(schema: Schema) {
+  const nodeDefs: AnyObject = Object.keys(schema.nodes)
+    .reduce((prev, name) => ({
+      ...prev,
+      [`${name}_node`]: createNodeDef(schema, name)
+    }), {});
+
+  const markDefs: AnyObject = Object.keys(schema.marks)
+    .reduce((prev, name) => ({
+      ...prev,
+      [`${name}_mark`]: createMarkDef(schema, name)
+    }), {});
+
   return {
     '$schema': 'http://json-schema.org/draft-04/schema#',
     'description': 'Schema for Atlassian Editor documents.',
     '$ref': '#/definitions/doc_node',
-    'definitions': Object.assign(
-      {},
-      ...Object.keys(schema.nodes).map(name => (
-        { [`${name}_node`]: createNodeDef(schema, name) }
-      )),
-      ...Object.keys(schema.marks).map(name => (
-        { [`${name}_mark`]: createMarkDef(schema, name) }
-      )),
-    ),
+    'definitions': {
+      ...nodeDefs,
+      ...markDefs
+    } as any
   };
 }

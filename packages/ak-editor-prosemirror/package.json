@@ -1,18 +1,18 @@
 {
   "name": "ak-editor-prosemirror",
-  "version": "4.3.13",
+  "version": "4.4.0",
   "description": "A proxy for ProseMirror, a peerDependencies compatible approach for Lerna.",
   "jsnext:main": "dist/es2015/index.js",
   "webpack": "dist/es5/index.js",
   "ak:webpack:raw": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/tsc -p build/es5 && ../../node_modules/.bin/tsc -p build/es2015"
+    "prepublish": "../../node_modules/.bin/in-publish && { ../../node_modules/.bin/tsc -p build/es5 && ../../node_modules/.bin/tsc -p build/es2015; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist",
     "types",
-    "index.d.ts"
+    "**.d.ts"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

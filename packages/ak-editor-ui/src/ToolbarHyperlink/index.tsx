@@ -5,11 +5,11 @@ import Panel from '../Panel';
 import TextInput from '../PanelTextInput';
 import IconButton from '../ToolbarIconButton';
 
-interface Props {
+export interface Props {
   pluginState: HyperlinkState;
 }
 
-interface State {
+export interface State {
   active?: boolean;
   adding?: boolean;
   disabled?: boolean;

@@ -60,11 +60,7 @@ export class ListsState {
     this.wrapInBulletList = !!bullet_list ? commands.wrapInList(bullet_list) : noop;
     this.wrapInOrderedList = !!ordered_list ? commands.wrapInList(ordered_list) : noop;
 
-    const { list_item } = pm.schema.nodes;
-
-    pm.addKeymap(new Keymap({
-      'Enter': () => commands.splitListItem(list_item)(pm),
-    }));
+    this.addKeymap(pm);
 
     pm.updateScheduler([
       pm.on.selectionChange,
@@ -93,6 +89,16 @@ export class ListsState {
     if (bullet_list) {
       this.toggleList(bullet_list);
     }
+  }
+
+  private addKeymap(pm: PM): void {
+    const { list_item } = pm.schema.nodes;
+
+    pm.addKeymap(new Keymap({
+      'Enter': () => commands.splitListItem(list_item)(pm),
+      'Mod-Shift-L': () => this.toggleOrderedList(),
+      'Mod-Shift-B': () => this.toggleBulletList()
+    }));
   }
 
   /**
@@ -226,7 +232,7 @@ export class ListsState {
       groups.push({ $from, $to });
     } else {
       let current = $from;
-      
+
       while(current.pos <= $to.pos) {
         let ancestorPos = this.findAncestorPosition(current);
         while (ancestorPos.depth > 1) {
@@ -469,7 +475,7 @@ Object.defineProperty(ListsState, 'name', { value: 'ListsState' });
 
 export default new Plugin(ListsState);
 
-interface S extends Schema {
+export interface S extends Schema {
   nodes: {
     bullet_list?: BulletListNodeType,
     list_item:  ListItemNodeType,
@@ -477,7 +483,7 @@ interface S extends Schema {
   }
 }
 
-interface PM extends ProseMirror {
+export interface PM extends ProseMirror {
   schema: S;
 }
 

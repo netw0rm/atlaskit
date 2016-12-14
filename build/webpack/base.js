@@ -84,7 +84,9 @@ const standardConfig = {
           test: /.tsx?$/,
           loader: loaderChain({
             'babel-loader': {},
-            'ts-loader': {},
+            'ts-loader': {
+              configFileName: 'tsconfig.webpack.json',
+            },
           }),
           exclude: /node_modules/,
         },

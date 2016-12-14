@@ -44,7 +44,7 @@ export default new Schema({
   },
 }) as CQSchema;
 
-interface CQSchema extends Schema {
+export interface CQSchema extends Schema {
   nodes: {
     doc: DocNodeType;
     paragraph: ParagraphNodeType;

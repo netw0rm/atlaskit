@@ -1,6 +1,6 @@
 # Dropdown menu
 
-This is a Dropdown menu component. It creates a dropdown menu with groups, checkbox/radio items, disabled, hidden items.
+This is a Dropdown menu component which creates a menu with groups and items within groups.
 
 ## Try it out
 

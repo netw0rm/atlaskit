@@ -4,11 +4,11 @@ import Panel from '../Panel';
 import * as styles from './styles.global.less';
 import IconButton from '../ToolbarIconButton';
 
-interface Props {
+export interface Props {
   feedbackFormUrl: string;
 }
 
-interface State {
+export interface State {
   active: boolean;
 }
 

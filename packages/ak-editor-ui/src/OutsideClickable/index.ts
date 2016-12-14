@@ -1,11 +1,11 @@
 import React, { PureComponent, ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 
-interface Props {
+export interface Props {
   onClick?: () => void;
 }
 
-interface State {}
+export interface State {}
 
 export default class OutsideClickable extends PureComponent<Props, State> {
   componentDidMount() {

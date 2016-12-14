@@ -1,6 +1,5 @@
 const allConfig = require('./all');
 const enableCoverage = require('../enableCoverage');
-const moduleBabelQuery = require('../../webpack/babel.query.module');
 const stage1 = require('./browserstack.browsers.stage.1');
 const stage2 = require('./browserstack.browsers.stage.2');
 const stage3 = require('./browserstack.browsers.stage.3');
@@ -45,6 +44,6 @@ module.exports = (config) => {
     browsers,
   });
   if (isCoverage) {
-    enableCoverage(config, 'wc', moduleBabelQuery);
+    enableCoverage(config, 'wc');
   }
 };

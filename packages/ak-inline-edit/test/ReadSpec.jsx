@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import FieldBase from 'ak-field-base';
-import Icon from 'ak-icon/glyph/edit';
+import EditIcon from 'ak-icon/glyph/edit';
 import { locals as classes } from '../src/styles.less';
 import ReadView from '../src/Read';
 
@@ -16,6 +16,7 @@ const noop = () => {};
 const defaultProps = {
   label: 'test',
   isLabelHidden: true,
+  isInvalid: false,
   onEditRequested: noop,
   children: 'test value',
 };
@@ -23,19 +24,25 @@ const defaultProps = {
 describe('ak-inline-edit', () => {
   describe('Read View', () => {
     describe('defaults', () =>
-      it('should render FieldBase and Icon', () => {
+      it('should render FieldBase and EditIcon', () => {
         const wrapper = shallow(<ReadView {...defaultProps} />);
         expect(wrapper).to.have.exactly(1).descendants(FieldBase);
         const fieldBase = wrapper.find(FieldBase);
-        expect(fieldBase).to.have.exactly(1).descendants(Icon);
+        expect(fieldBase).to.have.exactly(1).descendants(EditIcon);
       })
     );
 
-    describe('Icon', () => {
+    describe('EditIcon', () => {
       it('should be rendered properly', () => {
         const wrapper = shallow(<ReadView {...defaultProps} />);
         expect(wrapper.find(FieldBase).find(`.${classes.editButton}`))
-          .to.have.descendants(Icon);
+          .to.have.descendants(EditIcon);
+      });
+
+      it('should not be rendered when field is invalid', () => {
+        const wrapper = shallow(<ReadView {...defaultProps} isInvalid />);
+        expect(wrapper.find(FieldBase).find(`.${classes.editButton}`))
+          .to.not.have.descendants(EditIcon);
       });
     });
 

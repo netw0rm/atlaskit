@@ -24,6 +24,6 @@ describe.skip('getShadowRoot', () => {
 
   it('should return undefined for component without shadowroot', () => {
     const elem = document.body.appendChild(document.createElement('div'));
-    expect(getShadowRoot(elem)).to.not.be.defined;
+    expect(getShadowRoot(elem)).to.not.exist;
   });
 });

@@ -21,15 +21,18 @@ const Input = props =>
 const defaultProps = {
   label: 'test',
   isLabelHidden: false,
+  isInvalid: false,
+  areActionButtonsHidden: false,
+  isConfirmOnBlurDisabled: false,
   onConfirm: noop,
   onCancel: noop,
-  children: <Input value="test" />,
+  content: <Input value="test" />,
 };
 
 describe('ak-inline-edit', () => {
   describe('Edit View', () => {
     describe('defaults', () =>
-      it('should render children inside FieldBase', () => {
+      it('should render content inside FieldBase', () => {
         const wrapper = shallow(<EditView {...defaultProps} />);
         expect(wrapper).to.have.exactly(1).descendants(FieldBase);
         const fieldBase = wrapper.find(FieldBase);

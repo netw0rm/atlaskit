@@ -5,7 +5,6 @@ import AKTooltip, { Tooltip as DumbTooltip } from '../src/index';
 import FourDirectionTooltip from './FourDirectionTooltip';
 import { name } from '../package.json';
 
-
 const buttonStyles = {
   backgroundColor: 'orange',
   padding: '5px',

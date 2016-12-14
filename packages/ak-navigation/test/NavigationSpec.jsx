@@ -5,8 +5,8 @@ import React from 'react';
 import Navigation from '../src/components/js/Navigation';
 import {
   containerClosedWidth,
+  navigationOpenWidth,
 } from '../src/shared-variables';
-
 
 chai.use(chaiEnzyme());
 
@@ -40,6 +40,10 @@ describe('<Navigation />', () => {
     it('isResizeable=false does not render a <Resizer />', () => {
       expect(shallow(<Navigation isResizeable={false} />))
       .to.not.have.descendants('Resizer');
+    });
+    it('isCollapsible=false does render a <Resizer />', () => {
+      expect(shallow(<Navigation isCollapsible={false} />))
+      .to.have.descendants('Resizer');
     });
     it('can pass in an element for the container header', () => {
       const header = <div>foo</div>;
@@ -91,6 +95,16 @@ describe('<Navigation />', () => {
         const navigation = shallow(<Navigation />);
         navigation.find('Resizer').simulate('resize', 50);
         expect(navigation.state().resizeDelta).to.equal(50);
+      });
+      it('rendered width is never less than the container width', () => {
+        const navigation = shallow(<Navigation />);
+        navigation.find('Resizer').simulate('resize', -300);
+        expect(navigation.find('Spacer').props().width).to.be.at.least(containerClosedWidth);
+      });
+      it('with isCollapsible=false, rendered width is never less than the navigation open width', () => {
+        const navigation = shallow(<Navigation isCollapsible={false} />);
+        navigation.find('Resizer').simulate('resize', -300);
+        expect(navigation.find('Spacer').props().width).to.be.at.least(navigationOpenWidth);
       });
     });
   });

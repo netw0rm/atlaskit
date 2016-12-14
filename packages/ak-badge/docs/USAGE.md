@@ -11,7 +11,7 @@ They must be used singly after a single item name, and have only numbers.
 
 ## Try it out
 
-Interact with a [live demo of the ak-badge component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-badge/@VERSION@/).
+Interact with a [live demo of the ak-badge component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/ak-badge/@VERSION@/).
 
 ## Installation
 

@@ -85,6 +85,7 @@ describe(name, () => {
           'help',
           'home',
           'jira/logo',
+          'location',
           'moreoptions',
           'projects',
           'question',
@@ -92,6 +93,8 @@ describe(name, () => {
           'search',
           'settings',
           'success',
+          'time',
+          'warning',
         ]);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in
         // mind that tests are supposed to tell you when a piece of software breaks.
@@ -141,7 +144,7 @@ describe(name, () => {
     it('should be possible to create the components', () => {
       Object.values(components).forEach((Icon) => {
         const wrapper = shallow(<Icon label="My icon" />);
-        expect(wrapper).to.be.defined;
+        expect(wrapper).to.exist;
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
     });

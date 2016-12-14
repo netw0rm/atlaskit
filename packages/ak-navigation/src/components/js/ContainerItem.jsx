@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!../less/ContainerItem.less';
 import className from 'classnames';
 import ContainerQuery from 'react-container-query';
@@ -6,14 +6,11 @@ import {
   containerClosedWidth,
 } from '../../shared-variables';
 
-// eslint-disable-next-line react/prefer-stateless-function
-export default class ContainerItem extends Component {
-  static get propTypes() {
-    return {
-      text: PropTypes.node,
-      icon: PropTypes.node,
-      isSelected: PropTypes.bool,
-    };
+export default class ContainerItem extends PureComponent {
+  static propTypes = {
+    text: PropTypes.node,
+    icon: PropTypes.node,
+    isSelected: PropTypes.bool,
   }
 
   render() {

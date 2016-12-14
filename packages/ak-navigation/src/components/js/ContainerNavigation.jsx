@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/ContainerNavigation.less';
 import {
@@ -6,21 +6,17 @@ import {
 } from '../../shared-variables';
 import Spacer from './Spacer';
 
-export default class ContainerNavigation extends Component {
-  static get propTypes() {
-    return {
-      children: PropTypes.node,
-      header: PropTypes.node,
-      width: PropTypes.number,
-      shouldAnimate: PropTypes.bool,
-    };
+export default class ContainerNavigation extends PureComponent {
+  static propTypes = {
+    children: PropTypes.node,
+    header: PropTypes.node,
+    width: PropTypes.number,
+    shouldAnimate: PropTypes.bool,
   }
 
-  static get defaultProps() {
-    return {
-      width: containerOpenWidth,
-      shouldAnimate: false,
-    };
+  static defaultProps = {
+    width: containerOpenWidth,
+    shouldAnimate: false,
   }
 
   getOuterStyles() {

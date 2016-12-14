@@ -10,4 +10,17 @@
   padding-left: 20px;
   padding-right: 20px;
   width: 100%;
+
+  &::placeholder {
+    color: @ak-color-N100;  
+  }
+
+  &:hover {
+    border-color: @ak-color-N50;
+    cursor: pointer;
+
+    &::placeholder {
+      color: @ak-color-N400;  
+    }
+  }
 }

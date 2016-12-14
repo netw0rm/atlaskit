@@ -44,7 +44,7 @@ type ContextName = 'default' | 'comment' | 'pr';
 export class BlockTypeState {
   private pm: PM;
   private changeHandlers: BlockTypeStateSubscriber[] = [];
-  private availableContext: Context[] = [];
+  private availableContexts: Context[] = [];
 
   // public state
   currentBlockType: BlockType = NormalText;
@@ -323,7 +323,7 @@ export class BlockTypeState {
 
   private addAvailableContext(name: ContextName, preferredBlockTypes: BlockType[]): void {
     let context = this.makeContext(name, preferredBlockTypes.filter(this.isBlockTypeSchemaSupported));
-    this.availableContext.push(context);
+    this.availableContexts.push(context);
   }
 
   private makeContext(name: ContextName, blockTypes: BlockType[]): Context{
@@ -331,7 +331,7 @@ export class BlockTypeState {
   }
 
   private findContext(name: ContextName): Context | undefined {
-    return this.availableContext.find((context) => context.name === name);
+    return this.availableContexts.find((context) => context.name === name);
   }
 
   private isBlockTypeSchemaSupported = (blockType: BlockType) => {

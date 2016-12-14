@@ -6,7 +6,6 @@ import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
 import { Chrome } from 'ak-editor-ui';
 import schema from './schema';
 import { parse, encode } from './cxhtml';
-import { buildKeymap } from './keymap';
 
 interface Props {
   context?: 'default' | 'comment';
@@ -124,7 +123,6 @@ export default class Editor extends PureComponent<Props, State> {
         BlockTypePlugin.get(pm)!.changeContext(context);
       }
 
-      pm.addKeymap(buildKeymap(pm.schema));
       pm.on.change.add(this.handleChange);
       pm.focus();
 

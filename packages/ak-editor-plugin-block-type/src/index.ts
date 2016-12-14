@@ -4,13 +4,17 @@ import {
   ProseMirror,
   Schema,
   Selection,
-  UpdateScheduler
+  UpdateScheduler,
+  Keymap,
+  browser,
+  Node
 } from 'ak-editor-prosemirror';
 import {
   BlockQuoteNodeType,
   CodeBlockNodeType,
   HeadingNodeType,
   ParagraphNodeType,
+  HardBreakNodeType,
   isBlockQuoteNode,
   isCodeBlockNode,
   isHeadingNode,
@@ -24,26 +28,25 @@ import transformToCodeBlock from './transform-to-code-block';
 //
 // Rather than half-match half-not, this plugin introduces its own
 // nomenclature for what 'block type' is active.
-const NormalText = makeBlockType('normal', 'Normal text');
-const Heading1 = makeBlockType('heading1', 'Heading 1');
-const Heading2 = makeBlockType('heading2', 'Heading 2');
-const Heading3 = makeBlockType('heading3', 'Heading 3');
-const Heading4 = makeBlockType('heading4', 'Heading 4');
-const Heading5 = makeBlockType('heading5', 'Heading 5');
-const Heading6 = makeBlockType('heading6', 'Heading 6');
-const Quote = makeBlockType('quote', 'Block quote');
-const Code = makeBlockType('code', 'Code block');
+const NormalText = makeBlockType('normal', 'Normal text', '0');
+const Heading1 = makeBlockType('heading1', 'Heading 1', '1');
+const Heading2 = makeBlockType('heading2', 'Heading 2', '2');
+const Heading3 = makeBlockType('heading3', 'Heading 3', '3');
+const Heading4 = makeBlockType('heading4', 'Heading 4', '4');
+const Heading5 = makeBlockType('heading5', 'Heading 5', '5');
+const Quote = makeBlockType('quote', 'Block quote', '7');
+const Code = makeBlockType('code', 'Code block', '8');
 const Other = makeBlockType('other', 'Other…');
 
 type ContextName = 'default' | 'comment' | 'pr';
 
 export class BlockTypeState {
-  private changeHandlers: BlockTypeStateSubscriber[] = [];
   private pm: PM;
+  private changeHandlers: BlockTypeStateSubscriber[] = [];
+  private availableContext: Context[] = [];
 
   // public state
   currentBlockType: BlockType = NormalText;
-  canChange: boolean = true;
   availableBlockTypes: BlockType[] = [];
   context?: ContextName;
 
@@ -59,7 +62,13 @@ export class BlockTypeState {
       pm.on.change,
     ], () => this.update());
 
+    this.addBasicKeymap();
+
+    this.addAvailableContext('pr', [NormalText, Heading1, Heading2, Heading3, Quote, Code]);
+    this.addAvailableContext('comment', [NormalText, Quote, Code]);
+    this.addAvailableContext('default', [NormalText, Heading1, Heading2, Heading3, Heading4, Heading5, Quote, Code]);
     this.changeContext('default');
+
     this.update();
   }
 
@@ -73,103 +82,180 @@ export class BlockTypeState {
   }
 
   changeContext(name: ContextName): void {
-    if (name !== this.context) {
-      const preferredBlockTypes = (() => {
-        switch (name) {
-          case 'pr':
-            return [
-              NormalText,
-              Heading1,
-              Heading2,
-              Heading3,
-              Quote,
-              Code
-            ];
-          case 'comment':
-            return [
-              NormalText,
-              Quote,
-              Code
-            ];
-          default:
-            return [
-              NormalText,
-              Heading1,
-              Heading2,
-              Heading3,
-              Heading4,
-              Heading5,
-              Heading6,
-              Quote,
-              Code,
-            ];
-        }
-      })();
+    const context = this.findContext(name);
+    
+    if (name !== this.context && context) {
+      this.updateBlockTypeKeymap(context);
 
-      this.context = name;
-      this.availableBlockTypes = preferredBlockTypes
-        .filter(this.isBlockTypeSchemaSupported);
+      this.context = context.name;
+      this.availableBlockTypes = context.blockTypes;
+
       this.update(true);
     }
   }
 
   changeBlockType(name: BlockTypeName): void {
-    const { canChange, pm } = this;
+    const { pm } = this;
 
-    if (canChange) {
-      // clear blockquote
-      commands.lift(pm);
-      const nodes = pm.schema.nodes;
+    // clear blockquote
+    commands.lift(pm);
+    const nodes = pm.schema.nodes;
 
-      switch (name) {
-        case 'normal':
-          if (nodes.paragraph) {
-            commands.setBlockType(nodes.paragraph)(pm);
-          }
-          break;
-        case 'heading1':
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 1 })(pm);
-          }
-          break;
-        case 'heading2':
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 2 })(pm);
-          }
-          break;
-        case 'heading3':
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 3 })(pm);
-          }
-          break;
-        case 'heading4':
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 4 })(pm);
-          }
-          break;
-        case 'heading5':
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 5 })(pm);
-          }
-          break;
-        case 'heading6':
-          if (nodes.heading) {
-            commands.setBlockType(nodes.heading, { level: 6 })(pm);
-          }
-          break;
-        case 'quote':
-          if (nodes.paragraph && nodes.blockquote) {
-            commands.setBlockType(nodes.paragraph)(pm);
-            commands.wrapIn(nodes.blockquote)(pm);
-          }
-          break;
-        case 'code':
-          if (nodes.code_block) {
-            transformToCodeBlock(nodes.code_block, pm);
-          }
-          break;
+    switch (name) {
+      case NormalText.name:
+        if (nodes.paragraph) {
+          commands.setBlockType(nodes.paragraph)(pm);
+        }
+        break;
+      case Heading1.name:
+        if (nodes.heading) {
+          commands.setBlockType(nodes.heading, { level: 1 })(pm);
+        }
+        break;
+      case Heading2.name:
+        if (nodes.heading) {
+          commands.setBlockType(nodes.heading, { level: 2 })(pm);
+        }
+        break;
+      case Heading3.name:
+        if (nodes.heading) {
+          commands.setBlockType(nodes.heading, { level: 3 })(pm);
+        }
+        break;
+      case Heading4.name:
+        if (nodes.heading) {
+          commands.setBlockType(nodes.heading, { level: 4 })(pm);
+        }
+        break;
+      case Heading5.name:
+        if (nodes.heading) {
+          commands.setBlockType(nodes.heading, { level: 5 })(pm);
+        }
+        break;
+      case Quote.name:
+        if (nodes.paragraph && nodes.blockquote) {
+          commands.setBlockType(nodes.paragraph)(pm);
+          commands.wrapIn(nodes.blockquote)(pm);
+        }
+        break;
+      case Code.name:
+        if (nodes.code_block) {
+          transformToCodeBlock(nodes.code_block, pm);
+        }
+        break;
+    }
+  }
+
+  splitCodeBlock(): boolean {
+    const { pm } = this;
+    const { $from } = pm.selection;
+    const node = $from.parent;
+
+    if(isCodeBlockNode(node)) {
+      if( !this.lastCharIsNewline(node) || !this.cursorIsAtTheEndOfLine() ) {
+        pm.tr.typeText('\n').applyAndScroll();
+        return true;
+      } else {
+        this.deleteCharBefore();
       }
     }
+    return false;
+  }
+
+  insertNewLine(): boolean {
+    const { pm } = this;
+    const { $from } = pm.selection;
+    const node = $from.parent;
+    const { hard_break } = pm.schema.nodes;
+
+    if(isCodeBlockNode(node)) {
+      pm.tr.typeText('\n').applyAndScroll();
+      return true;
+    } else if(hard_break) {
+      pm.tr.replaceSelection(hard_break.create()).applyAndScroll()
+      return true;
+    }
+
+    return false;
+  }
+
+
+  toggleBlockType(name: BlockTypeName): void {
+    const blockNodes = this.blockNodesBetweenSelection();
+
+    if(this.nodeBlockType(blockNodes[0]).name !== name) {
+      this.changeBlockType(name);
+    } else if(name !== Quote.name){
+      this.changeBlockType(NormalText.name);
+    } else {
+      commands.lift(this.pm);
+    }
+  }
+
+  // Replaced the one from prosemirror. Because it was not working with IOS.
+  private deleteCharBefore() {
+    const { pm } = this;
+    const { $from } = pm.selection;
+    pm.tr.delete($from.pos-1, $from.pos).applyAndScroll();
+  }
+
+  private updateBlockTypeKeymap(context: Context) {
+    const { pm } = this;
+    if(this.context) {
+      const previousContext = this.findContext(this.context);
+      if(previousContext) {
+        pm.removeKeymap(previousContext.keymap);
+      }
+    } 
+
+    pm.addKeymap(context.keymap);
+  }
+
+  private keymapForBlockTypes(blockTypes: BlockType[]) {
+    const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd-Alt' : 'Ctrl'}-${key}`;
+    let bindings: {[key: string]: any} = {};
+
+    const bind = (key: string, action: any): void => {
+      bindings = Object.assign({}, bindings, {[key]: action});
+    }
+    
+    blockTypes.forEach((blockType) => {
+      if(blockType.shortcut) {
+        bind(withSpecialKey(blockType.shortcut), () => this.toggleBlockType(blockType.name));
+      }
+    });
+
+    return new Keymap(bindings);
+  }
+
+  private addBasicKeymap(): void {
+    this.pm.addKeymap(new Keymap({
+      'Enter': () => this.splitCodeBlock(),
+      'Shift-Enter': () => this.insertNewLine()
+    }));
+  }
+  
+  private lastCharIsNewline(node: Node): boolean {
+    return node.textContent.slice(-1) === '\n'
+  }
+
+  private cursorIsAtTheEndOfLine() {
+    const { $from, empty } = this.pm.selection;
+    return empty && $from.end() === $from.pos;
+  }
+
+  private blockNodesBetweenSelection(): Node[] {
+    const { pm } = this;
+    const {$from, $to} = pm.selection;
+    let blockNodes: Node[] = [];
+
+    pm.doc.nodesBetween($from.pos, $to.pos, (node) => {
+      if(node.isBlock) {
+        blockNodes.push(node);
+      }
+    });
+
+    return blockNodes;
   }
 
   private update(dirty = false) {
@@ -197,9 +283,19 @@ export class BlockTypeState {
     const { $from } = pm.selection;
 
     for (let depth = 0; depth <= $from.depth; depth++) {
-      const block = $from.node(depth)!;
-      if (isHeadingNode(block)) {
-        switch (block.attrs.level) {
+      const node = $from.node(depth)!;
+      let blocktype = this.nodeBlockType(node);
+      if (blocktype !== Other) {
+        return blocktype;
+      }
+    }
+
+    return Other;
+  }
+
+  private nodeBlockType(node: Node): BlockType {
+    if (isHeadingNode(node)) {
+        switch (node.attrs.level) {
           case 1:
             return Heading1;
           case 2:
@@ -210,19 +306,29 @@ export class BlockTypeState {
             return Heading4;
           case 5:
             return Heading5;
-          case 6:
-            return Heading6;
-        }
-      } else if (isCodeBlockNode(block)) {
-        return Code;
-      } else if (isBlockQuoteNode(block)) {
-        return Quote;
-      } else if (isParagraphNode(block)) {
-        return NormalText;
       }
+    } else if (isCodeBlockNode(node)) {
+      return Code;
+    } else if (isBlockQuoteNode(node)) {
+      return Quote;
+    } else if (isParagraphNode(node)) {
+      return NormalText;
     }
 
     return Other;
+  }
+
+  private addAvailableContext(name: ContextName, preferredBlockTypes: BlockType[]): void {
+    let context = this.makeContext(name, preferredBlockTypes.filter(this.isBlockTypeSchemaSupported));
+    this.availableContext.push(context);
+  }
+
+  private makeContext(name: ContextName, blockTypes: BlockType[]): Context{
+    return {name: name, blockTypes: blockTypes, keymap: this.keymapForBlockTypes(blockTypes)};
+  }
+
+  private findContext(name: ContextName): Context | undefined {
+    return this.availableContext.find((context) => context.name === name);
   }
 
   private isBlockTypeSchemaSupported = (blockType: BlockType) => {
@@ -235,7 +341,6 @@ export class BlockTypeState {
       case Heading3:
       case Heading4:
       case Heading5:
-      case Heading6:
         return !!pm.schema.nodes.heading;
       case Quote:
         return !!pm.schema.nodes.blockquote;
@@ -259,7 +364,6 @@ export type BlockTypeName =
   'heading3' |
   'heading4' |
   'heading5' |
-  'heading6' |
   'quote' |
   'code' |
   'other';
@@ -267,6 +371,14 @@ export type BlockTypeName =
 export interface BlockType {
   name: BlockTypeName;
   title: string;
+  shortcut?: string;
+}
+
+
+interface Context {
+  name: ContextName,
+  blockTypes: BlockType[],
+  keymap: Keymap
 }
 
 interface S extends Schema {
@@ -275,6 +387,7 @@ interface S extends Schema {
     code_block?: CodeBlockNodeType;
     heading?: HeadingNodeType;
     paragraph?: ParagraphNodeType;
+    hard_break?: HardBreakNodeType;
   }
 }
 
@@ -282,6 +395,6 @@ interface PM extends ProseMirror {
   schema: S;
 }
 
-function makeBlockType(name: BlockTypeName, title: string): BlockType {
-  return { name, title };
+function makeBlockType(name: BlockTypeName, title: string, shortcut?: string): BlockType {
+  return { name: name, title: title, shortcut: shortcut };
 }

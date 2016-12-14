@@ -13,7 +13,8 @@ import {
   Schema,
   Selection,
   TextSelection,
-  UpdateScheduler
+  UpdateScheduler,
+  browser
 } from 'ak-editor-prosemirror';
 
 import {
@@ -60,11 +61,7 @@ export class ListsState {
     this.wrapInBulletList = !!bullet_list ? commands.wrapInList(bullet_list) : noop;
     this.wrapInOrderedList = !!ordered_list ? commands.wrapInList(ordered_list) : noop;
 
-    const { list_item } = pm.schema.nodes;
-
-    pm.addKeymap(new Keymap({
-      'Enter': () => commands.splitListItem(list_item)(pm),
-    }));
+    this.addKeymap(pm);
 
     pm.updateScheduler([
       pm.on.selectionChange,
@@ -93,6 +90,19 @@ export class ListsState {
     if (bullet_list) {
       this.toggleList(bullet_list);
     }
+  }
+
+  private addKeymap(pm: PM): void {
+    const { list_item } = pm.schema.nodes;
+    const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd' : 'Ctrl'}-${key}`;
+
+    let bindings = {
+      'Enter': () => commands.splitListItem(list_item)(pm),
+      [withSpecialKey('Shift-L')]: () => this.toggleOrderedList(),
+      [withSpecialKey('Shift-B')]: () => this.toggleBulletList()
+    }
+
+    pm.addKeymap(new Keymap(bindings));
   }
 
   /**

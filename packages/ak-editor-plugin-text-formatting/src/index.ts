@@ -5,7 +5,9 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  UpdateScheduler
+  UpdateScheduler,
+  Keymap,
+  browser
 } from 'ak-editor-prosemirror';
 import {
   EmMarkType,
@@ -63,6 +65,8 @@ export class TextFormattingState {
       pm.on.change,
       pm.on.activeMarkChange,
     ], () => this.update());
+
+    this.addKeymap();
   }
 
   toggleEm() {
@@ -240,6 +244,20 @@ export class TextFormattingState {
     if (dirty) {
       this.changeHandlers.forEach(cb => cb(this));
     }
+  }
+
+  private addKeymap(): void {
+    const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd' : 'Ctrl'}-${key}`;
+
+    const bindings = {
+      [withSpecialKey('B')]: ()=> this.toggleStrong(),
+      [withSpecialKey('I')]: ()=> this.toggleEm(),
+      [withSpecialKey('U')]: ()=> this.toggleUnderline(),
+      [withSpecialKey('Shift-S')]: ()=> this.toggleStrike(),
+      [withSpecialKey('Shift-M')]: ()=> this.toggleMono(),
+    };
+
+    this.pm.addKeymap(new Keymap(bindings));
   }
 
   /**

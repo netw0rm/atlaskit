@@ -5,9 +5,8 @@
   "jsnext:main": "dist/es2015/index.js",
   "main": "dist/es5/index.js",
   "ak:webpack:raw": "src/index.ts",
-  "types": "src/index.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/tsc -p build/es5 && ../../node_modules/.bin/tsc -p build/es2015"
+    "prepublish": "../../node_modules/.bin/in-publish && { ../../node_modules/.bin/tsc -p build/es5 && ../../node_modules/.bin/tsc -p build/es2015; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist",

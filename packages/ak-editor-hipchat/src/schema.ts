@@ -16,7 +16,7 @@ export default new Schema({
   marks: {},
 }) as HipChatSchema;
 
-interface HipChatSchema extends Schema {
+export interface HipChatSchema extends Schema {
   nodes: {
     doc: DocNodeType;
     paragraph: ParagraphNodeType;

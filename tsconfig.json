@@ -3,11 +3,13 @@
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
+    "importHelpers": true,
     "jsx": "preserve",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
+    "sourceMap": true,
     "strictNullChecks": true,
     "target": "es2015",
     "types": [

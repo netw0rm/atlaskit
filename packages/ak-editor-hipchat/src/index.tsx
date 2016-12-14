@@ -3,16 +3,16 @@ import React, { Component } from 'react';
 import schema from './schema';
 import keymap from './keymap';
 
-type Doc = {
+export type Doc = {
   type: 'doc',
   content?: any[]
 }
 
-interface Props {
+export interface Props {
   onSubmit?: (doc: Doc) => void
 }
 
-interface State {}
+export interface State {}
 
 export default class Editor extends Component<Props, State> {
   componentDidMount() {

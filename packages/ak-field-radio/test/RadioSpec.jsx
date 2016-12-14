@@ -29,14 +29,14 @@ describe(name, () => {
       it('should render an input and the content', () => {
         const content = 'content';
         const wrapper = mount(<Radio>{content}</Radio>);
-        expect(wrapper).to.have.exactly(1).descendants;
+        expect(wrapper).to.have.exactly(1).descendants('input');
         expect(wrapper).to.have.text(content);
       });
 
       it('should render content with markup correctly', () => {
         const content = (<div>content</div>);
         const wrapper = mount(<Radio>{content}</Radio>);
-        expect(wrapper).to.have.exactly(1).descendants;
+        expect(wrapper).to.have.exactly(1).descendants('input');
         expect(wrapper).to.contain(content);
       });
     });

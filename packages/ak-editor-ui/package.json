@@ -17,7 +17,6 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-blanket": "^4.0.1",
     "ak-button": "^5.0.0",
     "ak-button-group": "^3.0.2",
     "ak-editor-shared-styles": "^3.0.0",
@@ -25,8 +24,6 @@
     "ak-mention": "^1.0.0",
     "akutil-shared-styles": "^37.0.2",
     "babel-runtime": "^6.11.6",
-    "browserkeymap": "^2.0.1",
-    "classnames": "^2.2.5",
     "popper.js": "git://github.com/lukebatchelor/popper.js#fixes-from-v1-dev"
   },
   "devDependencies": {
@@ -35,12 +32,7 @@
     "ak-editor-plugin-lists": "*",
     "ak-editor-plugin-mentions": "*",
     "ak-editor-plugin-text-formatting": "*",
-    "ak-editor-prosemirror": "*",
-    "ak-editor-test": "*",
-    "ak-tabs": "*",
-    "akutil-common-test": "*",
-    "akutil-react": "*",
-    "lodash.invert": "^4.3.0"
+    "ak-editor-prosemirror": "*"
   },
   "repository": {
     "type": "git",

@@ -4,6 +4,8 @@ Flags are used for confirmations, alerts, and acknowledgments that require minim
 
 Multiple flags can be shown at the same time. The top-most flag is always visible, with remaining flags stacked vertically underneath.
 
+![ak-flag demo](https://i.imgur.com/bwe40hc.gif)
+
 ## Try it out
 
 Interact with a [live demo of the ak-flag component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/ak-flag/@VERSION@/).

@@ -95,17 +95,22 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 
-  it('should invoke upload handler after pasting an image', () => {
+  it('should invoke upload handler after pasting an image', function() {
     const contentArea: HTMLElement = (editor.get(0) as any).state.pm.content;
     const event = createEvent('paste');
     
-    Object.defineProperties(event, {
-      clipboardData: {
-        value: {
-          types: ['Files']
+    try {
+      Object.defineProperties(event, {
+        clipboardData: {
+          value: {
+            types: ['Files']
+          }
         }
-      }
-    });
+      });
+    } catch (e) {
+      console.warn('Exception when trying to create mock paste event.', e);
+      return this.skip('This environment does not allow mocking paste events - ' + e);
+    }
     
     contentArea.dispatchEvent(event);
 
@@ -114,17 +119,22 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 
-  it('should invoke upload handler after dropping an image', () => {
+  it('should invoke upload handler after dropping an image', function(){
     const contentArea: HTMLElement = (editor.get(0) as any).state.pm.content;
     const event = createEvent('drop');
     
-    Object.defineProperties(event, {
-      dataTransfer: {
-        value: {
-          types: ['Files']
+    try {
+      Object.defineProperties(event, {
+        dataTransfer: {
+          value: {
+            types: ['Files']
+          }
         }
-      }
-    });
+      });
+    } catch (e) {
+      console.warn('Exception when trying to create mock drop event.', e);
+      return this.skip('This environment does not allow mocking drop events - ' + e);
+    }
     
     contentArea.dispatchEvent(event);
     

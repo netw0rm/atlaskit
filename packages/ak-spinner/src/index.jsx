@@ -24,7 +24,7 @@ export default class Spinner extends PureComponent {
     // sets isCompleting="false" in which case onComplete will not be called, which is expected
     // behaviour (the transition did not complete).
     if (e.propertyName === 'stroke-dashoffset' && this.props.isCompleting) {
-      this.props.onComplete(this);
+      this.props.onComplete();
     }
   }
 

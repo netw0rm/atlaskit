@@ -1,6 +1,6 @@
 import { Attribute, Mark, MarkType, Schema } from 'ak-editor-prosemirror';
 
-type TypeAttr = 'sub' | 'sup'
+export type TypeAttr = 'sub' | 'sup'
 
 export class SubSupMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {

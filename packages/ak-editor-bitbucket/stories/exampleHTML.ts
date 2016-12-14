@@ -1,7 +1,7 @@
-export default 
-`<p>Regular, 
-  <strong>Strong</strong>, 
-  <em>Italic</em>, 
+const html =
+`<p>Regular,
+  <strong>Strong</strong>,
+  <em>Italic</em>,
   <em><strong>Strong Italic</strong></em>
 </p>
 
@@ -39,9 +39,9 @@ export default
 
 <blockquote>
   <p>Block quote first paragraph</p>
-  <p>Regular, 
-    <strong>Strong</strong>, 
-    <em>Italic</em>, 
+  <p>Regular,
+    <strong>Strong</strong>,
+    <em>Italic</em>,
     <em><strong>Strong Italic</strong></em>
   </p>
   <ul>
@@ -63,3 +63,5 @@ export default
 <h5>Heading 5</h5>
 <h6>Heading 6</h6>
 `;
+
+export default html;

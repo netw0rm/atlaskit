@@ -10,7 +10,7 @@ import { ProseMirror } from 'ak-editor-prosemirror';
 import reactify from 'akutil-react';
 import Editor from 'ak-editor-bitbucket';
 import Ajv from 'ajv';
-import 'style!css!highlight.js/styles/tomorrow.css';
+// import 'style!css!highlight.js/styles/tomorrow.css';
 import TabsComponent, { Tab as TabComponent } from 'ak-tabs';
 
 const Tabs = reactify(TabsComponent);
@@ -55,7 +55,7 @@ storiesOf('ak-editor-schema', module)
             <Editor
               onChange={this.fetchEditorState}
               ref='editor'
-              defaultExpanded />
+              isExpandedByDefault />
 
             <Tabs style={{ backgroundColor: 'white' }}>
               <Tab label="ProseMirror schema">

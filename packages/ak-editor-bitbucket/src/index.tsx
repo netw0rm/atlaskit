@@ -9,12 +9,11 @@ import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
 import MentionsPlugin from 'ak-editor-plugin-mentions';
 import { Chrome } from 'ak-editor-ui';
 import schema from './schema';
-import { buildKeymap } from './keymap';
 import markdownSerializer from './markdown-serializer';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 import parseHtml from './parse-html';
 
-interface Props {
+export interface Props {
   context?: 'comment' | 'pr',
   isExpandedByDefault?: boolean,
   defaultValue?: string,
@@ -25,7 +24,7 @@ interface Props {
   imageUploader?: Function;
 }
 
-interface State {
+export interface State {
   pm?: ProseMirror;
   isExpanded?: boolean;
 }
@@ -88,7 +87,7 @@ export default class Editor extends PureComponent<Props, State> {
    */
   setFromHtml(html: string): void {
     const { pm } = this.state;
-    
+
     if (!pm || !pm.doc) {
       throw new Error('Unable to set from HTML before the editor is initialized');
     }
@@ -180,7 +179,6 @@ export default class Editor extends PureComponent<Props, State> {
         BlockTypePlugin.get(pm)!.changeContext(context);
       }
 
-      pm.addKeymap(buildKeymap(pm.schema));
       pm.on.change.add(this.handleChange);
       pm.focus();
 

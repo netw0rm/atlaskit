@@ -5,11 +5,11 @@ export interface MentionAttributes {
   displayName: any;
 }
 
-interface ParseSpec {
+export interface ParseSpec {
   [index: string]: (dom: Element) => MentionAttributes;
 }
 
-interface DOMAttributes {
+export interface DOMAttributes {
   [propName: string]: string;
 }
 

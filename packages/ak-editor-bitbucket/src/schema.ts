@@ -54,7 +54,7 @@ export default new Schema({
   },
 }) as BitbucketSchema;
 
-interface BitbucketSchema extends Schema {
+export interface BitbucketSchema extends Schema {
   nodes: {
     doc: DocNodeType;
 

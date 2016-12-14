@@ -17,7 +17,7 @@ import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarFeedback from '../ToolbarFeedback';
 
-interface Props {
+export interface Props {
   feedbackFormUrl?: string;
   onCancel?: () => void;
   onInsertMention?: () => void;
@@ -29,7 +29,7 @@ interface Props {
   pluginStateTextFormatting?: TextFormattingState;
 }
 
-interface State {}
+export interface State {}
 
 export default class ChromeExpanded extends PureComponent<Props, State> {
   render() {

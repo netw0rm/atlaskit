@@ -102,6 +102,11 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler).to.have.been.calledWith('atlassian.editor.format.bold.keyboard');
   });
 
+  it('atlassian.editor.format.bold.autoformatting', () => {
+    pm.input.insertText(0, 0, '**text**');
+    expect(handler).to.have.been.calledWith('atlassian.editor.format.bold.autoformatting');
+  });
+
   it('atlassian.editor.format.italic.button', () => {
     editor
       .find('ToolbarTextFormatting')
@@ -110,6 +115,11 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
       .simulate('click');
 
     expect(handler).to.have.been.calledWith('atlassian.editor.format.bold.button');
+  });
+
+  it('atlassian.editor.format.italic.autoformatting', () => {
+    pm.input.insertText(0, 0, '_text_');
+    expect(handler).to.have.been.calledWith('atlassian.editor.format.italic.autoformatting');
   });
 
   it('atlassian.editor.format.italic.keyboard', () => {
@@ -121,6 +131,11 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it.skip('atlassian.editor.format.monospace.keyboard', () => {
     sendKeyToPm(pm, 'Mod-`');
     expect(handler).to.have.been.calledWith('atlassian.editor.format.monospace.keyboard');
+  });
+
+  it('atlassian.editor.format.monospace.autoformatting', () => {
+    pm.input.insertText(0, 0, '`text`');
+    expect(handler).to.have.been.calledWith('atlassian.editor.format.monospace.autoformatting');
   });
 
   it('atlassian.editor.format.list.numbered.button', () => {
@@ -138,6 +153,11 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler).to.have.been.calledWith('atlassian.editor.format.list.numbered.keyboard');
   });
 
+  it('atlassian.editor.format.list.numbered.autoformatting', () => {
+    pm.input.insertText(0, 0, '1. ');
+    expect(handler).to.have.been.calledWith('atlassian.editor.format.list.numbered.autoformatting');
+  });  
+
   it('atlassian.editor.format.list.bullet.button', () => {
     editor
       .find('ToolbarLists')
@@ -152,6 +172,11 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     sendKeyToPm(pm, 'Shift-Mod-B');
     expect(handler).to.have.been.calledWith('atlassian.editor.format.list.bullet.keyboard');
   });
+
+  it('atlassian.editor.format.list.bullet.autoformatting', () => {
+    pm.input.insertText(0, 0, '* ');
+    expect(handler).to.have.been.calledWith('atlassian.editor.format.list.bullet.autoformatting');
+  });  
 
   it('atlassian.editor.feedback.button', () => {
     editor
@@ -242,15 +267,31 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     });
   });
 
+  // NOTE: Heading level 3 is currently the highest supported level
+  for (let level = 1; level <= 3; level++) {
+    it(`atlassian.editor.format.heading${level}.autoformatting`, () => {
+      pm.input.insertText(0, 0, '#'.repeat(level) + ' ');
+      expect(handler).to.have.been.calledWith(`atlassian.editor.format.heading${level}.autoformatting`);
+    });
+  }
+
   it('atlassian.editor.format.blockquote.keyboard', () => {
     sendKeyToPm(pm, isMac ? 'Cmd-Alt-8' : 'Ctrl-8');
     expect(handler).to.have.been.calledWith('atlassian.editor.format.blockquote.keyboard');
   });
+
+  it('atlassian.editor.format.blockquote.autoformatting', () => {
+    pm.input.insertText(0, 0, '> ');
+    expect(handler).to.have.been.calledWith('atlassian.editor.format.blockquote.autoformatting');
+  });  
 
   it('atlassian.editor.format.codeblock.keyboard', () => {
     sendKeyToPm(pm, isMac ? 'Cmd-Alt-7' : 'Ctrl-7');
     expect(handler).to.have.been.calledWith('atlassian.editor.format.codeblock.keyboard');
   });
 
-
+  it('atlassian.editor.format.codeblock.autoformatting', () => {
+    pm.input.insertText(0, 0, '```');
+    expect(handler).to.have.been.calledWith('atlassian.editor.format.codeblock.autoformatting');
+  });  
 });

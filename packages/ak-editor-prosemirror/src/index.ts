@@ -59,7 +59,8 @@ export {
   bulletListRule,
   blockQuoteRule,
   codeBlockRule,
-  wrappingInputRule
+  wrappingInputRule,
+  textblockTypeInputRule
 } from 'prosemirror/dist/inputrules';
 
 export {

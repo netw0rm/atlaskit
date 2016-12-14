@@ -369,6 +369,7 @@ declare module 'prosemirror/dist/inputrules/inputrules' {
     import { ProseMirror } from 'prosemirror/dist/edit';
     export class InputRule {
         constructor(match: any, filter: any, handler: any);
+        handler: () => any
     }
     export class InputRules {
         constructor(pm: ProseMirror, options: any);

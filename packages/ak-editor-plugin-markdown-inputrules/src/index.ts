@@ -6,7 +6,7 @@ import {
   InputRule,
   inputRules,
   allInputRules,
-  headingRule,
+  textblockTypeInputRule,
   bulletListRule,
   blockQuoteRule,
   codeBlockRule,
@@ -14,6 +14,16 @@ import {
   NodeType,
   Node
 } from 'ak-editor-prosemirror';
+import { service as analyticsService, trackAndInvoke } from 'ak-editor-analytics';
+
+function createTrackedInputRule(analyticsEventName: string, rule: InputRule) : InputRule {
+  if (typeof(rule.handler) !== 'function') {
+    throw new SyntaxError('The provided cannot be tracked because it does not provide a callable handler');
+  }
+  
+  rule.handler = trackAndInvoke(analyticsEventName, rule.handler);
+  return rule;
+}
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in
@@ -24,6 +34,18 @@ function orderedListRule(nodeType: NodeType): InputRule {
                            (match: RegExpMatchArray, node: Node) => node.childCount);
 }
 
+function headingRule(nodeType: NodeType, maxLevel: Number) {
+  return textblockTypeInputRule(
+    new RegExp("^(#{1," + maxLevel + "}) $"), 
+    " ",
+    nodeType, 
+    (match: string[]) => {
+      const level = match[1].length;
+      analyticsService.trackEvent(`atlassian.editor.format.heading${level}.autoformatting`);
+      return ({ level });
+    }
+  );
+}
 const buildBlockRules = (schema: Schema): Array<InputRule> => {
   const rules = Array<InputRule>();
 
@@ -32,19 +54,19 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
   }
 
   if (schema.nodes.bullet_list) {
-    rules.push(bulletListRule(schema.nodes.bullet_list));
+    rules.push(createTrackedInputRule('atlassian.editor.format.list.bullet.autoformatting', bulletListRule(schema.nodes.bullet_list)));
   }
 
   if (schema.nodes.ordered_list) {
-    rules.push(orderedListRule(schema.nodes.ordered_list));
+    rules.push(createTrackedInputRule('atlassian.editor.format.list.numbered.autoformatting', orderedListRule(schema.nodes.ordered_list)));
   }
 
   if (schema.nodes.blockquote) {
-    rules.push(blockQuoteRule(schema.nodes.blockquote));
+    rules.push(createTrackedInputRule('atlassian.editor.format.blockquote.autoformatting', blockQuoteRule(schema.nodes.blockquote)));
   }
 
   if (schema.nodes.code_block) {
-    rules.push(codeBlockRule(schema.nodes.code_block));
+    rules.push(createTrackedInputRule('atlassian.editor.format.codeblock.autoformatting', codeBlockRule(schema.nodes.code_block)));
   }
 
   return rules;
@@ -68,7 +90,8 @@ function replaceWithMark(
   pm: ProseMirror,
   match: Array<string>,
   pos: number,
-  mark: string
+  mark: string,
+  analyticsEventName?: string
 ) : boolean {
   const schema: Schema= pm.schema;
   const to = pos;
@@ -87,6 +110,9 @@ function replaceWithMark(
 
   pm.removeActiveMark(markType);
 
+  if (analyticsEventName) {
+    analyticsService.trackEvent(analyticsEventName);
+  }
   return true;
 }
 
@@ -142,34 +168,34 @@ const strongRule1 = new InputRule(/(\*\*([^\*]+)\*\*)$/, '*', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match, pos, 'strong'));
+) => replaceWithMark(pm, match, pos, 'strong', 'atlassian.editor.format.bold.autoformatting'));
 
 // __string__ should bold the text
 const strongRule2 = new InputRule(/(__([^_]+)__)$/, '_', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match, pos, 'strong'));
+) => replaceWithMark(pm, match, pos, 'strong', 'atlassian.editor.format.bold.autoformatting'));
 
 // _string_ or *string* should change the text to italic
 const emRule1 = new InputRule(/(?:[^\*]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, '*', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
+) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em', 'atlassian.editor.format.italic.autoformatting'));
 
 const emRule2 = new InputRule(/(?:[^_]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
+) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em', 'atlassian.editor.format.italic.autoformatting'));
 
 // `string` should change the current text to inline code block
 const inlineCodeRule = new InputRule(/(`([^`]+)`)$/, '`', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match, pos, 'code'));
+) => replaceWithMark(pm, match, pos, 'code', 'atlassian.editor.format.monospace.autoformatting'));
 
 // --- or *** should add a horizontal line
 const hrRule1 = new InputRule(/^\*\*\*$/, '*', (

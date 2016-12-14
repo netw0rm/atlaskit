@@ -40,9 +40,7 @@ export default class Radio extends PureComponent {
             })}
           />
         </label>
-        <span>
-          {this.props.children}
-        </span>
+        {this.props.children}
       </div>
     );
   }

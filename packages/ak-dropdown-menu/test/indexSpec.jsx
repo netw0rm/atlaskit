@@ -61,7 +61,7 @@ describe(name, () => {
       expect(layer).to.have.prop('content');
     });
 
-    it('should render groups from the fist-level children', () => {
+    it('should render groups from the first-level children', () => {
       const content = wrapper.find(`.${styles.dropContent}`);
       expect(content.children().nodes[0] instanceof Group).to.be.true;
       expect(content.children().nodes[1] instanceof Group).to.be.true;
@@ -82,8 +82,8 @@ describe(name, () => {
     });
 
     it('should support external trigger rendering', () => {
-      wrapper = mount(<Menu items={itemsList} defaultOpen><Trigger>text</Trigger></Menu>);
-      const triggerWrapper = wrapper.find(`.${styles.dropTrigger}`);
+      const wrapper2 = mount(<Menu items={itemsList} defaultOpen><Trigger>text</Trigger></Menu>);
+      const triggerWrapper = wrapper2.find(`.${styles.dropTrigger}`);
       const trigger = triggerWrapper.children().nodes[0];
 
       expect(trigger instanceof Trigger).to.be.true;

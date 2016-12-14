@@ -70,7 +70,7 @@ storiesOf(name, module)
   .add('with narrow maximum width', () => {
     const narrowContainerStyle = {
       ...containerStyle,
-      width: 80,
+      width: 250,
     };
 
     return (

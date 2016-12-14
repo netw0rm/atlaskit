@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import HyperlinkPlugin from '../../src/ak-editor-plugin-hyperlink';
 import { chaiPlugin, makeEditor, insert } from 'ak-editor-test';
-import { doc, link, linkable, schema, unlinkable } from './_schema_builder';
+import { doc, link, linkable, schema, unlinkable } from '../_schema_builder';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);

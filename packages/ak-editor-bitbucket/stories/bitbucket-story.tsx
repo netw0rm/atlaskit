@@ -52,7 +52,7 @@ storiesOf('ak-editor-bitbucket', module)
   .add('with imageUploadHandler', () =>
     <div style={{ padding: 20 }}>
       <Editor
-        defaultExpanded
+        isExpandedByDefault
         imageUploadHandler={imageUploadHandler}
         onCancel={CancelAction}
         onChange={ChangeAction}

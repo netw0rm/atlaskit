@@ -2,22 +2,22 @@
   "name": "ak-editor-schema",
   "version": "4.6.2",
   "description": "A common schema to be used in Atlassian Editor.",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es2015/index.js",
+  "main": "dist/es5/index.js",
   "ak:webpack:raw": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-schema"
+    "prepublish": "../../node_modules/.bin/tsc -p build/es5 && ../../node_modules/.bin/tsc -p build/es2015"
   },
   "files": [
     "dist",
-    "src/**/*.ts",
-    "src/**/*.tsx"
+    "**/*.d.ts"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "ak-editor-prosemirror": "^4.0.0"
+    "ak-editor-prosemirror": "^4.0.0",
+    "tslib": "^1.2.0"
   },
   "devDependencies": {
     "ajv": "^4.7.2",

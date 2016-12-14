@@ -215,14 +215,13 @@ export default function(schema: Schema) {
     '$schema': 'http://json-schema.org/draft-04/schema#',
     'description': 'Schema for Atlassian Editor documents.',
     '$ref': '#/definitions/doc_node',
-    'definitions': Object.assign(
-      {},
+    'definitions': {
       ...Object.keys(schema.nodes).map(name => (
         { [`${name}_node`]: createNodeDef(schema, name) }
       )),
       ...Object.keys(schema.marks).map(name => (
         { [`${name}_mark`]: createMarkDef(schema, name) }
-      )),
-    ),
+      ))
+    },
   };
 }

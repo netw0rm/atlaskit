@@ -13,6 +13,7 @@ export default class Page extends PureComponent {
           height: '100vh',
           overflowY: 'scroll',
           padding: 32,
+          boxSizing: 'border-box',
         }}
       >
         <style>{'body { margin: 0 }'}</style>

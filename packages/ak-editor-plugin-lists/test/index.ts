@@ -4,7 +4,7 @@ import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import ListsPlugin from '../src';
-import { doc, h1, li, ol, p, ul, schema } from './_schema-builder';
+import { doc, h1, li, ol, p, ul, blockquote, schema } from './_schema-builder';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);
@@ -226,6 +226,20 @@ describe('ak-editor-plugin-lists', () => {
         plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(doc(p('One'),p('Two'),p(),p('Three')));
       });
+
+      it('should untoggle list item inside a blockquote', () => {
+        const { pm, plugin } = editor(doc(blockquote(ol(li(p('One')),li(p('{<>}Two')),li(p('Three'))))));
+
+        plugin.toggleOrderedList();
+        expect(pm.doc).to.deep.equal(doc(blockquote(ol(li(p('One'))),p('Two'),ol(li(p('Three'))))));
+      });
+
+      it('should untoggle all list items with different ancestors in selection', () => {
+        const { pm, plugin } = editor(doc(blockquote(ol(li(p('One')),li(p('{<}Two')),li(p('Three')))),ol(li(p('One{>}')),li(p('Two')))));
+
+        plugin.toggleOrderedList();
+        expect(pm.doc).to.deep.equal(doc(blockquote(ol(li(p('One'))),p('Two'),p('Three')),p('One'),ol(li(p('Two')))));
+      });
     });
 
     describe('converting a list', () => {
@@ -275,6 +289,20 @@ describe('ak-editor-plugin-lists', () => {
 
         plugin.toggleBulletList();
         expect(pm.doc).to.deep.equal(expectedOutput);
+      });
+
+      it('should convert selection to list when selection is inside blockquote', () => {
+        const { pm, plugin } = editor(doc(blockquote(p('{<}One'),p('Two'),p('Three{>}'))));
+
+        plugin.toggleBulletList();
+        expect(pm.doc).to.deep.equal(doc(blockquote(ul(li(p('One')),li(p('Two')),li(p('Three'))))));
+      });
+
+      it('should convert selection to multiple lists when selection starts and ends at different ancestor blocks', () => {
+        const { pm, plugin } = editor(doc(blockquote(p('{<}One'),p('Two'),p('Three')),p('Four'),p('Five'),blockquote(p('Six{>}'))));
+
+        plugin.toggleBulletList();
+        expect(pm.doc).to.deep.equal(doc(blockquote(ul(li(p('One')),li(p('Two')),li(p('Three')))),ul(li(p('Four')),li(p('Five'))),blockquote(ul(li(p('Six'))))));
       });
     });
 

@@ -40,3 +40,9 @@
     vertical-align: bottom;
   }
 }
+
+// Fixes https://ecosystem.atlassian.net/browse/AK-1176
+// svg paths wider than the viewbox or size mess with flexbox paints
+.svg {
+  overflow: hidden;
+}

@@ -1,8 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!./styles.less';
-import EditView from './Edit';
-import ReadView from './Read';
-import ReadOnlyView from './ReadOnly';
+import Content from './Content';
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -128,46 +126,25 @@ export default class InlineEdit extends PureComponent {
     isConfirmOnBlurDisabled: false,
   }
 
-  renderReadView = () => (
-    <ReadView
+  renderEditableView = () => (
+    <Content
       label={this.props.label}
-      isInvalid={this.props.isInvalid}
-      isLabelHidden={this.props.isLabelHidden}
-      onEditRequested={this.props.onEditRequested}
-    >
-      {this.props.readView}
-    </ReadView>
-  )
-
-  renderEditView = () => (
-    <EditView
-      label={this.props.label}
+      isEditing={this.props.isEditing}
       isInvalid={this.props.isInvalid}
       isLabelHidden={this.props.isLabelHidden}
       areActionButtonsHidden={this.props.areActionButtonsHidden}
       isConfirmOnBlurDisabled={this.props.isConfirmOnBlurDisabled}
       onConfirm={this.props.onConfirm}
       onCancel={this.props.onCancel}
-      content={this.props.editView}
+      onEditRequested={this.props.onEditRequested}
+      readView={this.props.readView}
+      editView={this.props.editView}
     />
-  )
-
-  renderEditableView = () => (
-    this.props.isEditing ? this.renderEditView() : this.renderReadView()
-  )
-
-  renderReadOnlyView = () => (
-    <ReadOnlyView
-      label={this.props.label}
-      isLabelHidden={this.props.isLabelHidden}
-    >
-      {this.props.readView}
-    </ReadOnlyView>
   )
 
   render = () => (
     <div className={styles.root}>
-      {this.props.editView ? this.renderEditableView() : this.renderReadOnlyView()}
+      {this.renderEditableView()}
     </div>
   )
 }

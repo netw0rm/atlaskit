@@ -20,7 +20,8 @@
     "ak-button": "^5.0.1",
     "ak-field-base": "^6.0.1",
     "ak-icon": "^11.2.2",
-    "babel-runtime": "^6.11.6"
+    "babel-runtime": "^6.11.6",
+    "classnames": "^2.2.5"
   },
   "devDependencies": {
     "ak-avatar": "^5.0.6",

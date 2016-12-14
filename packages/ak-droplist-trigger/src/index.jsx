@@ -102,8 +102,8 @@ export default class Trigger extends PureComponent {
       >
         { props.type === 'button' ?
           (<Button
-            selected={props.isOpened}
-            disabled={props.isDisabled}
+            isSelected={props.isOpened}
+            isDisabled={props.isDisabled}
             iconAfter={Icon}
           >{props.children}</Button>) :
           (<div

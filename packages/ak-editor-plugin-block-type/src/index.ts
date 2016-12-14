@@ -24,20 +24,23 @@ import {
 import CodeBlockPasteListener from './code-block-paste-listener';
 import transformToCodeBlock from './transform-to-code-block';
 
+const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd-Alt' : 'Ctrl'}-${key}`;
+
 // The names of the blocks don't map precisely to schema nodes, because
 // of concepts like "paragraph" <-> "Normal text" and "Unknown".
 //
 // Rather than half-match half-not, this plugin introduces its own
 // nomenclature for what 'block type' is active.
-const NormalText = makeBlockType('normal', 'Normal text', '0');
-const Heading1 = makeBlockType('heading1', 'Heading 1', '1');
-const Heading2 = makeBlockType('heading2', 'Heading 2', '2');
-const Heading3 = makeBlockType('heading3', 'Heading 3', '3');
-const Heading4 = makeBlockType('heading4', 'Heading 4', '4');
-const Heading5 = makeBlockType('heading5', 'Heading 5', '5');
-const Quote = makeBlockType('quote', 'Block quote', '7');
-const Code = makeBlockType('code', 'Code block', '8');
+const NormalText = makeBlockType('normal', 'Normal text', withSpecialKey('0'));
+const Heading1 = makeBlockType('heading1', 'Heading 1', withSpecialKey('1'));
+const Heading2 = makeBlockType('heading2', 'Heading 2', withSpecialKey('2'));
+const Heading3 = makeBlockType('heading3', 'Heading 3', withSpecialKey('3'));
+const Heading4 = makeBlockType('heading4', 'Heading 4', withSpecialKey('4'));
+const Heading5 = makeBlockType('heading5', 'Heading 5', withSpecialKey('5'));
+const Quote = makeBlockType('quote', 'Block quote', withSpecialKey('7'));
+const Code = makeBlockType('code', 'Code block', withSpecialKey('8'));
 const Other = makeBlockType('other', 'Other…');
+
 
 type ContextName = 'default' | 'comment' | 'pr';
 
@@ -209,13 +212,12 @@ export class BlockTypeState {
       if(previousContext) {
         pm.removeKeymap(previousContext.keymap);
       }
-    } 
+    }
 
     pm.addKeymap(context.keymap);
   }
 
   private keymapForBlockTypes(blockTypes: BlockType[]) {
-    const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd-Alt' : 'Ctrl'}-${key}`;
     let bindings: {[key: string]: any} = {};
 
     const bind = (key: string, action: any): void => {
@@ -224,7 +226,7 @@ export class BlockTypeState {
     
     blockTypes.forEach((blockType) => {
       if(blockType.shortcut) {
-        bind(withSpecialKey(blockType.shortcut), () => this.toggleBlockType(blockType.name));
+        bind(blockType.shortcut, () => this.toggleBlockType(blockType.name));
       }
     });
 

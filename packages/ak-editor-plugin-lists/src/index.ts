@@ -94,8 +94,6 @@ export class ListsState {
   private addKeymap(pm: PM): void {
     const { list_item } = pm.schema.nodes;
 
-    navigator
-    debugger;
     pm.addKeymap(new Keymap({
       'Enter': () => commands.splitListItem(list_item)(pm),
       'Mod-Shift-L': () => this.toggleOrderedList(),

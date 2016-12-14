@@ -18,7 +18,8 @@
     "ak-layer": "^62.0.2",
     "ak-droplist-group": "^1.0.0",
     "ak-droplist-item": "^1.0.0",
-    "ak-droplist-trigger": "^1.0.0"
+    "ak-droplist-trigger": "^1.0.0",
+    "keycode": "^2.1.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

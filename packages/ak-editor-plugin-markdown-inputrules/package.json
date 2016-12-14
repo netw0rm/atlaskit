@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-markdown-inputrules",
-  "version": "5.4.1",
+  "version": "5.5.0",
   "description": "A markdown inputrules plugin for ProseMirror",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

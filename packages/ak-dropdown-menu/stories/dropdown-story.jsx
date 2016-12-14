@@ -3,7 +3,7 @@ import React from 'react';
 import Avatar from 'ak-avatar';
 import Question from 'ak-icon/glyph/question';
 
-import DropdownMenu, { Trigger } from '../src';
+import DropdownMenu from '../src';
 import { name } from '../package.json';
 import DropdownWithButtonExample from './DropdownWithButtonExample'; // eslint-disable-line
 
@@ -26,26 +26,45 @@ const imports = [
 storiesOf(name, module)
   .addCodeExampleStory('Basic Dropdown menu with a button', () => (
     <div style={{ padding: '40px' }}>
-      <p>This is an example of a basic dropdown menu with the button component as a trigger.
-        Don&#39;t forget to import trigger and set its type to &#39;button&#39;.</p>
+      <p>This is an example of a basic dropdown menu with the build-in trigger which looks like a
+        button with the `expand` icon.</p>
       <div
         style={{
           padding: '20px 0',
         }}
       >
         <DropdownMenu
-          isOpenInitially
+          triggerType="button"
           items={simpleDropdownItems}
         >
-          <Trigger type="button">Test</Trigger>
+          Test
         </DropdownMenu>
       </div>
+      <p>Empty button is also possible</p>
+      <div
+        style={{
+          padding: '20px 0',
+        }}
+      >
+        <DropdownMenu
+          triggerType="button"
+          items={simpleDropdownItems}
+        />
+      </div>
     </div>
-  ), { imports: [...imports, ['{ Trigger }', 'ak-dropdown-menu']] })
+  ), {
+    imports,
+    overrides: {
+      items: 'simpleDropdownItems',
+    },
+    scripts: [
+      itemsOverride,
+    ],
+  })
   .addCodeExampleStory('Basic Dropdown menu avatars/icons', () => (
     <div style={{ padding: '40px' }}>
-      <p>This is an example of a basic dropdown menu with the button component as a trigger.
-        Don&#39;t forget to import trigger and set its type to &#39;button&#39;.</p>
+      <p>This is an example of a basic dropdown menu with the build-in trigger which looks like a
+        button with the `expand` icon.</p>
       <div
         style={{
           padding: '20px 0',
@@ -53,13 +72,14 @@ storiesOf(name, module)
       >
         <DropdownMenu
           isOpenInitially
+          triggerType="button"
           items={simpleDropdownItemsWithAvatars}
         >
-          <Trigger type="button">Drop menu</Trigger>
+          Drop menu
         </DropdownMenu>
       </div>
     </div>
-  ), { imports: [...imports, ['{ Trigger }', 'ak-dropdown-menu']] })
+  ), { imports })
   .addCodeExampleStory('Basic Dropdown menu with anything as a trigger', () => (
     <div style={{ padding: '40px' }} >
       <p>Anything can be a trigger for the dropdown menu.</p>

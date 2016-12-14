@@ -6,8 +6,6 @@ import Group from 'ak-droplist-group';
 import Trigger from 'ak-droplist-trigger';
 import Item from 'ak-droplist-item';
 
-export { Trigger };
-
 /* eslint-disable react/no-unused-prop-types */
 /**
  * @description This is a basic building block of a dropdown's list.
@@ -15,20 +13,60 @@ export { Trigger };
  */
 export default class DropdownMenu extends Component {
   static propTypes = {
+    /**
+     * @description Position of the menu. See the documentation of ak-layer for more details.
+     * @memberof DropdownMenu
+     * @default bottom left
+     */
     position: PropTypes.string,
-    trigger: PropTypes.node,
-    items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    /**
+     * @description Types of the menu's built-in trigger. Available types: 'default', 'button'.
+     * @memberof DropdownMenu
+     * @default bottom left
+     */
+    triggerType: PropTypes.oneOf(['default', 'button']),
+    /**
+     * @description List of menu items. Should be an array of groups (see the documentation for
+     * ak-droplist-group for available props). Every group should contain array of items
+     * (see the documentation for ak-droplist-item for available props).
+     * @memberof DropdownMenu
+     * @example @js [
+     *    {
+     *        heading: 'Title of a group',
+     *        items: [
+     *          { content: 'First item in the group' },
+     *          { content: 'Second item in the group' }
+     *        ]
+     *    }
+     * ]
+     */
+    items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    /**
+     * @description Whether the dropdown should be open by default
+     * @memberof DropdownMenu
+     * @default []
+     */
     isOpenInitially: PropTypes.bool,
+    /**
+     * @description  Handler function to be called when the item is activated.
+     * @memberof DropdownMenu
+     */
     onItemActivated: PropTypes.func,
+    /**
+     * @description  Handler function to be called when the menu is opened/closed.
+     * @memberof DropdownMenu
+     */
     onOpenChange: PropTypes.func,
     children: PropTypes.node,
   }
 
   static defaultProps = {
     position: 'bottom left',
+    triggerType: 'default',
+    items: [],
+    isOpenInitially: false,
     onItemActivated: () => {},
     onOpenChange: () => {},
-    isOpenInitially: false,
   }
 
   state = {
@@ -56,42 +94,25 @@ export default class DropdownMenu extends Component {
 
   handleItemActivation = (item) => { // eslint-disable-line arrow-body-style
     return () => {
-      this.props.onItemActivated(item);
+      this.props.onItemActivated({ item });
       this.close();
     };
   }
 
   open = () => {
     this.setState({ isOpen: true });
-    this.props.onOpenChange(true);
+    this.props.onOpenChange({ isOpen: true });
   }
 
   close = () => {
     this.setState({ isOpen: false });
-    this.props.onOpenChange(false);
+    this.props.onOpenChange({ isOpen: false });
   }
 
   toggle = () => {
     const isOpen = !this.state.isOpen;
     this.setState({ isOpen });
-    this.props.onOpenChange(isOpen);
-  }
-
-  renderTrigger = (trigger) => {
-    if (trigger.type !== Trigger) {
-      return <Trigger onActivate={this.handleTriggerActivation}>{trigger}</Trigger>;
-    }
-
-    return (
-      <Trigger
-        {...trigger.props}
-        isOpened={this.state.isOpen}
-        onActivate={() => {
-          trigger.props.onActivate();
-          this.handleTriggerActivation();
-        }}
-      >{trigger.props.children}</Trigger>
-    );
+    this.props.onOpenChange({ isOpen });
   }
 
   renderSubComponents = (groups) => { // eslint-disable-line arrow-body-style
@@ -131,7 +152,15 @@ export default class DropdownMenu extends Component {
             null
           }
         >
-          <div className={styles.dropTrigger}>{this.renderTrigger(props.children)}</div>
+          <div className={styles.dropTrigger}>
+            <Trigger
+              type={this.props.triggerType}
+              isOpened={this.state.isOpen}
+              onActivate={() => {
+                this.handleTriggerActivation();
+              }}
+            >{props.children}</Trigger>
+          </div>
         </Layer>
       </div>
     );

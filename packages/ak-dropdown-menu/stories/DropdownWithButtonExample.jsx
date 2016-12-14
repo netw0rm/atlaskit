@@ -17,16 +17,16 @@ export default class DropWithBut extends Component {
     return (<div style={{ padding: '40px' }}>
       <p>When you want to use your own button as a trigger don&#39;t forget to set
         &#39;isSelected&#39; property to it when the dropdown is open</p>
-      <p>
+      <div style={{ padding: '20px 0' }}>
         <DropdownMenu
           items={simpleDropdownItems}
-          onOpenChange={(isOpen) => {
-            this.setState({ isDropdownOpen: isOpen });
+          onOpenChange={(attrs) => {
+            this.setState({ isDropdownOpen: attrs.isOpen });
           }}
         >
           <Button isSelected={this.state.isDropdownOpen}>Click me, I&#39;m just a button</Button>
         </DropdownMenu>
-      </p>
+      </div>
     </div>);
   }
 }

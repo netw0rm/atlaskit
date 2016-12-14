@@ -127,7 +127,12 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
       Object.defineProperties(event, {
         dataTransfer: {
           value: {
-            types: ['Files']
+            getData: (type: string) => '',
+            setData: () => {},
+            clearData: () => {},
+            types: ['Files'],
+            files: [],
+            items: [],
           }
         }
       });

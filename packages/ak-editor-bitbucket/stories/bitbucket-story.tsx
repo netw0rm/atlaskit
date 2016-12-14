@@ -101,7 +101,7 @@ storiesOf('ak-editor-bitbucket', module)
             <Tabs>
               <Tab selected label="(default)">
                 <Editor
-                  defaultExpanded
+                  isExpandedByDefault
                   onCancel={CancelAction}
                   onChange={ChangeAction}
                   onSave={SaveAction}
@@ -109,7 +109,7 @@ storiesOf('ak-editor-bitbucket', module)
               </Tab>
               <Tab selected label="comment">
                 <Editor
-                  defaultExpanded
+                  isExpandedByDefault
                   context="comment"
                   onCancel={CancelAction}
                   onChange={ChangeAction}
@@ -118,7 +118,7 @@ storiesOf('ak-editor-bitbucket', module)
               </Tab>
               <Tab selected label="pr">
                 <Editor
-                  defaultExpanded
+                  isExpandedByDefault
                   context="pr"
                   onCancel={CancelAction}
                   onChange={ChangeAction}

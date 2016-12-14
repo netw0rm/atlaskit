@@ -10,7 +10,7 @@ import { buildKeymap } from './keymap';
 
 interface Props {
   context?: 'default' | 'comment';
-  defaultExpanded?: boolean;
+  isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
@@ -20,10 +20,16 @@ interface Props {
 
 interface State {
   pm?: ProseMirror;
+  isExpanded?: boolean;
 }
 
 export default class Editor extends PureComponent<Props, State> {
-  state: State = {};
+  state: State;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = { isExpanded: props.isExpandedByDefault };
+  }
 
   /**
    * Focus the content region of the editor.
@@ -67,17 +73,18 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { pm } = this.state;
+    const { pm, isExpanded } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
 
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
-        defaultExpanded={this.props.defaultExpanded}
+        isExpanded={isExpanded}
         feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
         onCancel={handleCancel}
         onSave={handleSave}
+        onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
         placeholder={this.props.placeholder}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}

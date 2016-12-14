@@ -1,5 +1,6 @@
 import {
   commands,
+  Fragment,
   Plugin,
   ProseMirror,
   Schema,
@@ -168,15 +169,17 @@ export class BlockTypeState {
     const node = $from.parent;
     const { hard_break } = pm.schema.nodes;
 
-    if(isCodeBlockNode(node)) {
-      pm.tr.typeText('\n').applyAndScroll();
-      return true;
-    } else if(hard_break) {
-      pm.tr.replaceSelection(hard_break.create()).applyAndScroll()
-      return true;
+    if(hard_break) {
+      const hardBreakNode = hard_break.create();
+
+      if(node.type.validContent(Fragment.from(hardBreakNode))) {
+        pm.tr.replaceSelection(hard_break.create()).applyAndScroll();
+        return true;
+      }
     }
 
-    return false;
+    pm.tr.typeText('\n').applyAndScroll();
+    return true;
   }
 
 

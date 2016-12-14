@@ -262,13 +262,13 @@ Object.defineProperty(HyperlinkState, 'name', { value: 'HyperlinkState' });
 
 export default new Plugin(HyperlinkState);
 
-interface S extends Schema {
+export interface S extends Schema {
   marks: {
     link?: LinkMarkType;
   }
 }
 
-interface PM extends ProseMirror {
+export interface PM extends ProseMirror {
   schema: S;
 }
 

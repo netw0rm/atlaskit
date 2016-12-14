@@ -7,7 +7,7 @@ import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
-interface Props {
+export interface Props {
   isExpanded?: boolean;
   placeholder?: string;
   onCancel?: () => void;
@@ -21,7 +21,7 @@ interface Props {
   onCollapsedChromeFocus: () => void;
 }
 
-interface State {}
+export interface State {}
 
 export default class Chrome extends PureComponent<Props, State> {
   render() {

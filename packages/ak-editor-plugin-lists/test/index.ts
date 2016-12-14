@@ -1,4 +1,5 @@
 import { chaiPlugin, makeEditor } from 'ak-editor-test';
+import { commands, browser } from 'ak-editor-prosemirror';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -14,6 +15,69 @@ describe('ak-editor-plugin-lists', () => {
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const Plugin = ListsPlugin as any; // .State is not public API.
     expect(Plugin.State.name).is.be.a('string');
+  });
+
+  describe('keymap', () => {
+    context('when hit enter', () => {
+      it('should split list item', () => {
+        const { pm } = editor(doc(ul(li(p('text')))));
+        const splitListItem = sinon.spy(commands, 'splitListItem');
+
+        pm.input.dispatchKey("Enter");
+
+        expect(splitListItem).to.have.been.callCount(1);
+      });
+    });
+
+    if(browser.mac) {
+      context('when on a mac', () => {
+        context('when hit Shift-Cmd-L', () => {
+          it('should toggle ordered list', () => {
+            const { pm, plugin } = editor(doc(ul(li(p('text')))));
+            const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
+
+            pm.input.dispatchKey("Shift-Cmd-L");
+
+            expect(toggleOrderedList).to.have.been.callCount(1);
+          });
+        });
+
+        context('when hit Shift-Cmd-B', () => {
+          it('should toggle bullet list', () => {
+            const { pm, plugin } = editor(doc(ul(li(p('text')))));
+            const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
+
+            pm.input.dispatchKey("Shift-Cmd-B");
+
+            expect(toggleBulletList).to.have.been.callCount(1);
+          })
+        });
+      });
+    } else {
+      context('when not on a mac', () => {
+        context('when hit Shift-Ctrl-L', () => {
+          it('should toggle ordered list', () => {
+            const { pm, plugin } = editor(doc(ul(li(p('text')))));
+            const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
+
+            pm.input.dispatchKey("Shift-Ctrl-L");
+
+            expect(toggleOrderedList).to.have.been.callCount(1);
+          });
+        });
+
+        context('when hit Shift-Ctrl-B', () => {
+          it('should toggle bullet list', () => {
+            const { pm, plugin } = editor(doc(ul(li(p('text')))));
+            const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
+
+            pm.input.dispatchKey("Shift-Ctrl-B");
+
+            expect(toggleBulletList).to.have.been.callCount(1);
+          });
+        });
+      });
+    }
   });
 
   describe('API', () => {

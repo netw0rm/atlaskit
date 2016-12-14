@@ -53,7 +53,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     service.handler = handler;
 
     editor = mount(
-      <Editor defaultExpanded onCancel={noop} onSave={noop} />,
+      <Editor isExpandedByDefault onCancel={noop} onSave={noop} />,
       
       // We need to attach the editor to DOM because ProseMirror depends on having
       // focus on the content area (detached DOM elements can not receive focus)

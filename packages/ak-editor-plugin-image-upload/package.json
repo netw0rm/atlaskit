@@ -13,8 +13,10 @@
     "dist",
     "src/**/*.ts"
   ],
+  "dependencies": {
+    "ak-editor-analytics": "^1.0.0"
+  },
   "peerDependencies": {
-    "ak-editor-analytics": "^1.0.0",
     "ak-editor-prosemirror": "^4.0.0",
     "ak-editor-schema": "^4.1.0"
   },

@@ -1,10 +1,11 @@
 # Trigger
 
-This is one of the building blocks of dropdowns. Click or press on it activates it.
+This is one of the building blocks of dropdowns and it gets activated by clicking or pressing it.
 
+![Example trigger](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-droplist-trigger/docs/trigger.gif)
 ## Try it out
 
-Interact with a [live demo of the ak-droplist-trigger component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-droplist-trigger/@VERSION@/).
+Interact with a [live demo of the ak-droplist-trigger](https://aui-cdn.atlassian.com/atlaskit/stories/ak-droplist-trigger/@VERSION@/).
 
 ## Installation
 

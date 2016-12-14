@@ -6,6 +6,10 @@ import {
   ParagraphNodeType,
   Text,
   LinkMarkType,
+  BulletListNodeType,
+  HeadingNodeType,
+  ListItemNodeType,
+  OrderedListNodeType,
 } from 'ak-editor-schema';
 import { Schema } from 'ak-editor-prosemirror';
 
@@ -15,9 +19,14 @@ export const schema = new Schema({
     unlinkable: { type: ParagraphNodeType, content: 'text*', group: 'block' },
     linkable: { type: ParagraphNodeType, content: 'text<link>*', group: 'block' },
     text: { type: Text },
-    blockquote: { type: BlockQuoteNodeType, content: 'text*', group: 'block' },
     images: { type: ParagraphNodeType, content: '(text | image)*', group: 'block' },
     image: { type: ImageNodeType },
+    bullet_list: { type: BulletListNodeType, content: 'list_item+', group: 'block' },
+    heading: { type: HeadingNodeType, content: 'text<_>*', group: 'block' },
+    list_item: { type: ListItemNodeType, content: 'paragraph+' },
+    ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
+    paragraph: { type: ParagraphNodeType, content: 'text*', group: 'block' },
+    blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
   },
   
   marks: {
@@ -31,6 +40,13 @@ export const unlinkable = nodeFactory(schema.nodes.unlinkable);
 export const linkable = nodeFactory(schema.nodes.linkable);
 export const link = (attrs: { href: string }) => markFactory(schema.marks.link, attrs);
 
-export const noimages = nodeFactory(schema.nodes.blockquote);
+export const noimages = nodeFactory(schema.nodes.paragraph);
 export const images = nodeFactory(schema.nodes.images);
 export const image = (attrs: { src: string }) => nodeFactory(schema.nodes.image, attrs)();
+
+export const h1 = nodeFactory(schema.nodes.heading, { level: 1 });
+export const li = nodeFactory(schema.nodes.list_item);
+export const ol = nodeFactory(schema.nodes.ordered_list);
+export const p = nodeFactory(schema.nodes.paragraph);
+export const ul = nodeFactory(schema.nodes.bullet_list);
+export const blockquote = nodeFactory(schema.nodes.blockquote);

@@ -12,9 +12,9 @@ export default class FlagGroup extends PureComponent {
      * @description The Flag components to display inside the FlagGroup.
      * @memberof FlagGroup
      * @instance
-     * @type {}
+     * @type {element}
      */
-    children: PropTypes.string.node,
+    children: PropTypes.node,
   };
 
   render() {

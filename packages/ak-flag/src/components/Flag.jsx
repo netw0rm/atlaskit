@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
 import styles from 'style!../less/Flag.less';
-import { CancelIcon } from 'ak-icon';
+import CancelIcon from 'ak-icon/glyph/cancel';
 
 /**
  * @description Return React Flag component.
@@ -29,25 +29,31 @@ export default class Flag extends PureComponent {
      * @instance
      * @type {string}
      */
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
   };
 
   render() {
     return (
       <div className={styles.root}>
-        <div className={styles.titleRow}>
-          <div className={styles.primaryIcon}>
-            {this.props.icon}
-          </div>
-          <span className={styles.title}>
-            {this.props.title}
-          </span>
-          <div className={styles.cancelIcon}>
-            <CancelIcon label="Close flag" />
-          </div>
+        <div className={styles.primaryIcon}>
+          {this.props.icon}
         </div>
-        <div className={styles.description}>
-          {this.props.description}
+        <div className={styles.textContent}>
+          <div className={styles.titleAndCancel}>
+            <span className={styles.title}>
+              {this.props.title}
+            </span>
+            <div className={styles.cancelIcon}>
+              <CancelIcon label="Close flag" />
+            </div>
+          </div>
+          {
+            this.props.description ? (
+              <div className={styles.description}>
+                {this.props.description}
+              </div>
+            ) : null
+          }
         </div>
       </div>
     );

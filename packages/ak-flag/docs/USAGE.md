@@ -6,7 +6,7 @@ Multiple flags can be shown at the same time. The top-most flag is always visibl
 
 ## Try it out
 
-Interact with a [live demo of the ak-flag component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-flag/@VERSION@/).
+Interact with a [live demo of the ak-flag component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/ak-flag/@VERSION@/).
 
 ## Installation
 

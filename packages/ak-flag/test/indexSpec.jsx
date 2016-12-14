@@ -36,14 +36,28 @@ describe(name, () => {
       it('title prop text should be rendered to correct location', () =>
         shallow(
           <Flag title="Oh hi!" />
-        ).find(`.${flagLocals.title}`).text().should.equal('Oh hi!')
+        ).find(`.${flagLocals.title}`).should.have.text('Oh hi!')
       );
 
-      it('description prop text should be rendered to correct location', () =>
-        shallow(
-          <Flag description="Oh hi!" />
-        ).find(`.${flagLocals.description}`).text().should.equal('Oh hi!')
-      );
+      describe('description prop', () => {
+        it('description element should not be rendered if description prop is empty', () =>
+          shallow(
+            <Flag description="" />
+          ).find(`.${flagLocals.description}`).should.not.exist
+        );
+
+        it('description element should not be rendered if description prop not passed', () =>
+          shallow(
+            <Flag />
+          ).find(`.${flagLocals.description}`).should.not.exist
+        );
+
+        it('description prop text should be rendered to correct location', () =>
+          shallow(
+            <Flag description="Oh hi!" />
+          ).find(`.${flagLocals.description}`).should.have.text('Oh hi!')
+        );
+      });
     });
   });
 
@@ -61,7 +75,7 @@ describe(name, () => {
           <Flag />
           <Flag />
         </FlagGroup>
-      ).find(`.${flagLocals.root}`).length.should.equal(3)
+      ).should.have.exactly(3).descendants(`.${flagLocals.root}`)
     );
   });
 });

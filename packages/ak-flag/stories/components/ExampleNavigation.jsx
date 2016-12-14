@@ -15,13 +15,13 @@ export default class Flag extends PureComponent {
     return (
       <div
         style={{
+          boxSizing: 'border-box',
           display: 'flex',
           height: '100vh',
           overflowY: 'auto',
           padding: 32,
         }}
       >
-        <style>{'body { margin: 0 }'}</style>
         <Navigation
           containerHeader={
             <a href="#foo">

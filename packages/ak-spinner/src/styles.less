@@ -1,22 +1,24 @@
 .spinner {
   animation: spinnerLoad 0.53s ease-in-out;
   animation-fill-mode: forwards;
-}
-.spinner svg circle {
-  animation: spinnerSpin 0.86s infinite;
-  animation-timing-function: cubic-bezier(0.4, 0.15, 0.6, 0.85);
-  transition: stroke-dashoffset 0.8s ease-in-out, opacity 0.2s ease-in-out 0.45s;
-  opacity: 0;
-  transform-origin: center;
-  stroke: #42526e;
-}
-.spinner.active {
-  animation: spinnerLoad2 1s ease-in-out;
-  animation-fill-mode: forwards;
-}
-.spinner.active svg circle {
-  opacity: 1;
-  transition: stroke-dashoffset 0.8s ease-in-out, opacity 0.2s ease-in-out;
+
+  svg circle {
+    animation: spinnerSpin 0.86s infinite;
+    animation-timing-function: cubic-bezier(0.4, 0.15, 0.6, 0.85);
+    transition: stroke-dashoffset 0.8s ease-in-out, opacity 0.2s ease-in-out 0.45s;
+    opacity: 0;
+    transform-origin: center;
+    stroke: #42526e;
+  }
+
+  &.active {
+    animation: spinnerLoad2 1s ease-in-out forwards;
+
+    svg circle {
+      opacity: 1;
+      transition: stroke-dashoffset 0.8s ease-in-out, opacity 0.2s ease-in-out;
+    }
+  }
 }
 
 @keyframes spinnerSpin {

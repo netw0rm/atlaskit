@@ -1,8 +1,5 @@
 @import '~ak-editor-shared-styles/src/index';
-
-.actions {
-
-}
+@import '~akutil-shared-styles/src/grid.less';
 
 .container {
   background-color: white;
@@ -22,13 +19,18 @@
   :global(.ProseMirror-content) {
     outline: none;
     white-space: pre-wrap;
-    padding: 20px;
+    padding: 12px 20px;
 
+    // This needs to be removed once we update specs in ak-style-reset
     blockquote {
-      padding-left: 1em;
-      border-left: 3px solid @ak-color-N40;
+      padding-left: 16px;
+      border-left: 4px solid @ak-color-N40;
       margin-left: 0;
       margin-right: 0;
+      color: @ak-color-N300;
+      &::before, &::after {
+        content: '';
+      }
     }
 
     code {
@@ -75,8 +77,8 @@
   align-items: center;
   display: flex;
   height: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: @ak-grid-size;
+  padding-right: @ak-grid-size;
   // Place toolbar content above the content.
   position: relative;
   z-index: 2;

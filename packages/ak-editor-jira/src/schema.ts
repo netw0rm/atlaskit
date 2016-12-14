@@ -42,7 +42,7 @@ export default new Schema({
   },
 }) as JIRASchema;
 
-interface JIRASchema extends Schema {
+export interface JIRASchema extends Schema {
   nodes: {
     doc: DocNodeType;
     paragraph: ParagraphNodeType;

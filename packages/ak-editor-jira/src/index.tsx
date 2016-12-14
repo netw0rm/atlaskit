@@ -6,9 +6,8 @@ import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
 import { Chrome } from 'ak-editor-ui';
 import schema from './schema';
 import { encode, parse } from './html';
-import { buildKeymap } from './keymap';
 
-interface Props {
+export interface Props {
   context?: 'default' | 'comment';
   isExpandedByDefault?: boolean;
   defaultValue?: string;
@@ -18,7 +17,7 @@ interface Props {
   placeholder?: string;
 }
 
-interface State {
+export interface State {
   pm?: ProseMirror;
   isExpanded?: boolean;
 }
@@ -131,7 +130,6 @@ export default class Editor extends PureComponent<Props, State> {
         BlockTypePlugin.get(pm)!.changeContext(context);
       }
 
-      pm.addKeymap(buildKeymap(pm.schema));
       pm.on.change.add(this.handleChange);
       pm.focus();
 

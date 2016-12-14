@@ -5,7 +5,8 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  UpdateScheduler
+  UpdateScheduler,
+  Keymap
 } from 'ak-editor-prosemirror';
 import {
   EmMarkType,
@@ -63,6 +64,8 @@ export class TextFormattingState {
       pm.on.change,
       pm.on.activeMarkChange,
     ], () => this.update());
+
+    this.addKeymap();
   }
 
   toggleEm() {
@@ -242,6 +245,16 @@ export class TextFormattingState {
     }
   }
 
+  private addKeymap(): void {
+    this.pm.addKeymap(new Keymap({
+      'Mod-B': ()=> this.toggleStrong(),
+      'Mod-I': ()=> this.toggleEm(),
+      'Mod-U': ()=> this.toggleUnderline(),
+      'Mod-Shift-S': ()=> this.toggleStrike(),
+      'Mod-Shift-M': ()=> this.toggleMono(),
+    }));
+  }
+
   /**
    * Determine if a mark of a specific type exists anywhere in the selection.
    */
@@ -286,7 +299,7 @@ Object.defineProperty(TextFormattingState, 'name', { value: 'TextFormattingState
 
 export default new Plugin(TextFormattingState);
 
-interface S extends Schema {
+export interface S extends Schema {
   marks: {
     em?: EmMarkType;
     mono?: MonoMarkType;
@@ -297,6 +310,6 @@ interface S extends Schema {
   }
 }
 
-interface PM extends ProseMirror {
+export interface PM extends ProseMirror {
   schema: S;
 }

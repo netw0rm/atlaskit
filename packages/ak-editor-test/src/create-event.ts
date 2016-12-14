@@ -14,7 +14,7 @@ const supportsEvent = ((TheEvent) => {
   return true;
 })(Event);
 
-interface Options {
+export interface Options {
   bubbles?: boolean;
   cancelable?: boolean;
   composed?: boolean;

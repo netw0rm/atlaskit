@@ -157,12 +157,12 @@ Object.defineProperty(MentionsPluginState, 'name', { value: 'MentionsPluginState
 
 export default new Plugin(MentionsPluginState);
 
-interface Mention {
+export interface Mention {
   name: string;
   mentionName: string;
 }
 
-interface S extends Schema {
+export interface S extends Schema {
   nodes: {
     mention?: MentionNodeType
   },
@@ -172,6 +172,6 @@ interface S extends Schema {
   }
 }
 
-interface PM extends ProseMirror {
+export interface PM extends ProseMirror {
   schema: S;
 }

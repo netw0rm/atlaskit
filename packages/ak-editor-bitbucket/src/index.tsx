@@ -21,7 +21,7 @@ import {
 
 interface Props {
   context?: 'comment' | 'pr',
-  defaultExpanded?: boolean,
+  isExpandedByDefault?: boolean,
   defaultValue?: string,
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
@@ -33,10 +33,16 @@ interface Props {
 
 interface State {
   pm?: ProseMirror;
+  isExpanded?: boolean;
 }
 
 export default class Editor extends PureComponent<Props, State> {
-  state: State = {};
+  state: State;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = { isExpanded: props.isExpandedByDefault };
+  }
 
   /**
    * Focus the content region of the editor.
@@ -46,6 +52,20 @@ export default class Editor extends PureComponent<Props, State> {
     if (pm) {
       pm.focus();
     }
+  }
+
+  /**
+   * Expand the editor chrome
+   */
+  expand = () => {
+    this.setState({ isExpanded: true });
+  }
+
+  /**
+   * Collapse the editor chrome
+   */
+  collapse = () => {
+    this.setState({ isExpanded: false });
   }
 
   /**
@@ -67,6 +87,19 @@ export default class Editor extends PureComponent<Props, State> {
     return pm && pm.doc
       ? !!pm.doc.textContent
       : false;
+  }
+
+  /**
+   * Set value from HTML string
+   */
+  setFromHtml(html: string): void {
+    const { pm } = this.state;
+    
+    if (!pm || !pm.doc) {
+      throw new Error('Unable to set from HTML before the editor is initialized');
+    }
+
+    pm.setDoc(parseHtml(html.trim()), null);
   }
 
   /**
@@ -92,16 +125,17 @@ export default class Editor extends PureComponent<Props, State> {
   render() {
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
-    const { pm } = this.state;
+    const { pm, isExpanded } = this.state;
 
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
-        defaultExpanded={this.props.defaultExpanded}
+        isExpanded={isExpanded}
         feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
         onCancel={handleCancel}
         onSave={handleSave}
         placeholder={this.props.placeholder}
+        onCollapsedChromeFocus={this.expand}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}

@@ -769,7 +769,7 @@ declare module 'prosemirror/dist/model/resolvedpos' {
 declare module 'prosemirror/dist/model/schema' {
     import { Node, TextNode } from 'prosemirror/dist/model/node';
     import { OrderedMap } from 'prosemirror/dist/util/orderedmap';
-    import { Mark, Schema } from 'prosemirror/dist/model';
+    import { Mark, Fragment, Schema } from 'prosemirror/dist/model';
     export class NodeType {
         constructor(name: string, schema: Schema);
         name: string;
@@ -787,7 +787,7 @@ declare module 'prosemirror/dist/model/schema' {
         create(attrs?: any, content?: any, marks?: any): Node;
         createChecked(attrs?: any, content?: any, marks?: any): Node;
         createAndFill(attrs?: any, content?: any, marks?: any): Node;
-        validContent(content: any, attrs?: any): boolean;
+        validContent(content: Fragment, attrs?: any): boolean;
         static compile(nodes: any, schema: any): any;
         toDOM(node?: Node): any[];
         get matchDOMTag(): any;

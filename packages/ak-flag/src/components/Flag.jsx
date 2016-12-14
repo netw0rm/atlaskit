@@ -10,7 +10,7 @@ import CancelIcon from 'ak-icon/glyph/cancel';
 export default class Flag extends PureComponent {
   static propTypes = {
     /**
-     * @description A unique identifer used for rendering and onDismissed callbacks
+     * @description A unique identifier used for rendering and onDismissed callbacks
      * @memberof Flag
      * @instance
      * @type {string}

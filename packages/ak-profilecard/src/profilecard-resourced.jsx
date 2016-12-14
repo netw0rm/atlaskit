@@ -42,7 +42,7 @@ export default class ProfilecardResourced extends PureComponent {
      * @instance
      * @type {string}
      */
-    apiEndpoint: React.PropTypes.string.isRequired,
+    apiEndpoint: React.PropTypes.string,
 
     resourceClient: React.PropTypes.shape({
       fetch: React.PropTypes.func,

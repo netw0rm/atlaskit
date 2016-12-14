@@ -44,7 +44,6 @@ class AkProfileCardRandomById extends PureComponent {
         <AkProfileCardResourced
           userId={this.state.userId}
           cloudId="bogus-because-required"
-          apiEndpoint="bogus-because-required"
           resourceClient={mockClient}
           actions={actions}
         />
@@ -64,7 +63,6 @@ storiesOf(`${name} resourced`, module)
   .add('mock api w/o user-id', () => (
     <div style={canvasStyle}>
       <AkProfileCardResourced
-        apiEndpoint="bogus-because-required"
         resourceClient={mockClient}
       />
     </div>
@@ -74,7 +72,6 @@ storiesOf(`${name} resourced`, module)
       <AkProfileCardResourced
         userId="404"
         cloudId="bogus-cloud-id"
-        apiEndpoint="bogus-because-required"
         resourceClient={mockClient}
       />
     </div>

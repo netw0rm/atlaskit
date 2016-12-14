@@ -35,7 +35,7 @@ const Quote = makeBlockType('quote', 'Block quote');
 const Code = makeBlockType('code', 'Code block');
 const Other = makeBlockType('other', 'Other…');
 
-type ContextName = 'default' | 'comment' | 'pr';
+export type ContextName = 'default' | 'comment' | 'pr';
 
 export class BlockTypeState {
   private changeHandlers: BlockTypeStateSubscriber[] = [];
@@ -269,7 +269,7 @@ export interface BlockType {
   title: string;
 }
 
-interface S extends Schema {
+export interface S extends Schema {
   nodes: {
     blockquote?: BlockQuoteNodeType;
     code_block?: CodeBlockNodeType;
@@ -278,7 +278,7 @@ interface S extends Schema {
   }
 }
 
-interface PM extends ProseMirror {
+export interface PM extends ProseMirror {
   schema: S;
 }
 

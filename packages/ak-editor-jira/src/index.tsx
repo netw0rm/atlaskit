@@ -8,7 +8,7 @@ import schema from './schema';
 import { encode, parse } from './html';
 import { buildKeymap } from './keymap';
 
-interface Props {
+export interface Props {
   context?: 'default' | 'comment';
   isExpandedByDefault?: boolean;
   defaultValue?: string;
@@ -18,7 +18,7 @@ interface Props {
   placeholder?: string;
 }
 
-interface State {
+export interface State {
   pm?: ProseMirror;
   isExpanded?: boolean;
 }

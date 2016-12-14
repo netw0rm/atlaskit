@@ -226,7 +226,7 @@ export class ListsState {
       groups.push({ $from, $to });
     } else {
       let current = $from;
-      
+
       while(current.pos <= $to.pos) {
         let ancestorPos = this.findAncestorPosition(current);
         while (ancestorPos.depth > 1) {
@@ -469,7 +469,7 @@ Object.defineProperty(ListsState, 'name', { value: 'ListsState' });
 
 export default new Plugin(ListsState);
 
-interface S extends Schema {
+export interface S extends Schema {
   nodes: {
     bullet_list?: BulletListNodeType,
     list_item:  ListItemNodeType,
@@ -477,7 +477,7 @@ interface S extends Schema {
   }
 }
 
-interface PM extends ProseMirror {
+export interface PM extends ProseMirror {
   schema: S;
 }
 

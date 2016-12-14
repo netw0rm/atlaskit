@@ -45,7 +45,9 @@ function bfsOrder(root: Node) {
   let elem;
   while (elem = inqueue.shift()) {
     outqueue.push(elem);
-    for (const child of elem.childNodes) {
+    let childIndex;
+    for (childIndex = 0; childIndex < elem.childNodes.length; childIndex++) {
+      const child = elem.childNodes[childIndex];
       switch (child.nodeType) {
         case Node.ELEMENT_NODE:
         case Node.TEXT_NODE:
@@ -65,7 +67,9 @@ function bfsOrder(root: Node) {
  */
 function getContent(node: Node): Fragment {
   let fragment = Fragment.fromArray([]);
-  for (const child of node.childNodes) {
+  let childIndex;
+    for (childIndex = 0; childIndex < node.childNodes.length; childIndex++) {
+      const child = node.childNodes[childIndex];
     const thing = convertedNodes.get(child);
     if (thing instanceof Fragment) {
       fragment = fragment.append(thing);

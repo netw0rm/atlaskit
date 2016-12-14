@@ -4,7 +4,6 @@ import 'whatwg-fetch';
 
 import debug from '../util/logger';
 
-
 const buildUrl = (baseUrl, path, data, secOptions) => {
   const searchParam = new URLSearchParams();
   for (const key in data) { // eslint-disable-line no-restricted-syntax
@@ -152,7 +151,6 @@ class AbstractMentionResource extends AbstractResource {
       }
     });
   }
-
 
 }
 

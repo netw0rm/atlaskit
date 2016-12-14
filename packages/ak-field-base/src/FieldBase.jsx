@@ -54,8 +54,8 @@ export default class FieldBase extends PureComponent {
     /**
      * @description Whether or not a field should show a validation error.
      *
-     * This is shown to the user through a red border currently but will also
-     * include error messages in a future release.
+     * This is shown to the user through a warning icon and an orange border.
+     * A future release will allow a custom error message to be displayed.
      *
      * @memberof FieldBase
      * @type {boolean}
@@ -97,6 +97,17 @@ export default class FieldBase extends PureComponent {
      * @example <FieldBase isDisabled />
      */
     isDisabled: PropTypes.bool,
+    /**
+     * @description Whether or not the field should have padding.
+     *
+     * Disables the field's padding css property.
+     *
+     * @memberof FieldBase
+     * @type {boolean}
+     * @default false
+     * @example <FieldBase isContentPaddingDisabled />
+     */
+    isContentPaddingDisabled: PropTypes.bool,
     /**
      * @description Whether or not the field is in read-only mode.
      *
@@ -157,6 +168,7 @@ export default class FieldBase extends PureComponent {
   static defaultProps = {
     appearance: standard,
     isLabelHidden: false,
+    isContentPaddingDisabled: false,
     isInvalid: false,
     isFocused: false,
     isDisabled: false,
@@ -177,6 +189,7 @@ export default class FieldBase extends PureComponent {
           onBlur={this.props.onBlur}
           appearance={this.props.appearance}
           isDisabled={this.props.isDisabled}
+          isPaddingDisabled={this.props.isContentPaddingDisabled}
           isInvalid={this.props.isInvalid}
           isFocused={this.props.isFocused}
           isReadOnly={this.props.isReadOnly}

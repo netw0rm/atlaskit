@@ -63,6 +63,18 @@ export default class InlineEdit extends PureComponent {
      */
     isLabelHidden: PropTypes.bool,
     /**
+     * @description Whether the confirm/cancel buttons are hidden when in edit mode.
+     *
+     * The confirm/cancel buttons should typically be hidden when an inline dialog
+     * (dropdown, calendar, etc) is being displayed in edit mode. The buttons should
+     * only be made visible once the user has selected an option from the inline dialog.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    areActionButtonsHidden: PropTypes.bool,
+    /**
      * @description Allows disabling the default confirm-on-blur behaviour.
      *
      * By default, the 'onConfirm' callback will be called when focus moves
@@ -112,6 +124,7 @@ export default class InlineEdit extends PureComponent {
   static defaultProps = {
     isInvalid: false,
     isLabelHidden: false,
+    areActionButtonsHidden: false,
     isConfirmOnBlurDisabled: false,
   }
 
@@ -131,6 +144,7 @@ export default class InlineEdit extends PureComponent {
       label={this.props.label}
       isInvalid={this.props.isInvalid}
       isLabelHidden={this.props.isLabelHidden}
+      areActionButtonsHidden={this.props.areActionButtonsHidden}
       isConfirmOnBlurDisabled={this.props.isConfirmOnBlurDisabled}
       onConfirm={this.props.onConfirm}
       onCancel={this.props.onCancel}

@@ -1,34 +1,29 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { action } from '@kadira/storybook';
 import { AtlassianIcon, SearchIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
 import Navigation, { AkContainerHeader, AkContainerItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 
-// eslint-disable-next-line react/prefer-stateless-function
-export default class BasicNavigation extends Component {
-  static get propTypes() {
-    return {
-      children: PropTypes.node,
-    };
+export default class BasicNavigation extends PureComponent {
+  static propTypes = {
+    children: PropTypes.node,
   }
 
-  static get defaultProps() {
-    return {
-      children: <div>
-        <AkContainerItem
-          icon={<DashboardIcon />}
-          text="Item A"
-        />
-        <AkContainerItem
-          icon={<SettingsIcon />}
-          text="Item B"
-        />
-        <AkContainerItem
-          icon={<ProjectsIcon />}
-          text="Item C"
-        />
-      </div>,
-    };
+  static defaultProps = {
+    children: <div>
+      <AkContainerItem
+        icon={<DashboardIcon />}
+        text="Item A"
+      />
+      <AkContainerItem
+        icon={<SettingsIcon />}
+        text="Item B"
+      />
+      <AkContainerItem
+        icon={<ProjectsIcon />}
+        text="Item C"
+      />
+    </div>,
   }
 
   constructor(...args) {
@@ -65,6 +60,7 @@ export default class BasicNavigation extends Component {
         isCreateDrawerOpen={this.state.openDrawer === 'create'}
         isSearchDrawerOpen={this.state.openDrawer === 'search'}
         onBlanketClicked={action('blanket clicked')}
+        onResize={action('resized')}
         hasBlanket
         {...this.props}
       >

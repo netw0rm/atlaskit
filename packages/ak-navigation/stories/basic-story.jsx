@@ -53,11 +53,13 @@ storiesOf(name, module)
   .add('with many container items', () => (
     <Page>
       <BasicNavigation>
-        <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
-          text="This one is selected"
-          isSelected
-        />
+        <a href="#1">
+          <AkContainerItem
+            icon={<img src={nucleus} alt="icon" />}
+            text="This one is selected"
+            isSelected
+          />
+        </a>
         {manyContainerItems()}
       </BasicNavigation>
       <div>
@@ -68,11 +70,13 @@ storiesOf(name, module)
   .add('with a selected item', () => (
     <Page>
       <BasicNavigation>
-        <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
-          text="Nucleus"
-          isSelected
-        />
+        <a href="#1">
+          <AkContainerItem
+            icon={<img src={nucleus} alt="icon" />}
+            text="Nucleus"
+            isSelected
+          />
+        </a>
       </BasicNavigation>
       <div>
         <Lorem count="30" />
@@ -82,6 +86,14 @@ storiesOf(name, module)
   .add('that is not resizeable', () => (
     <Page>
       <BasicNavigation isResizeable={false} />
+      <div>
+        <Lorem count="30" />
+      </div>
+    </Page>
+  ))
+  .add('with isCollapsible=false', () => (
+    <Page>
+      <BasicNavigation isCollapsible={false} />
       <div>
         <Lorem count="30" />
       </div>

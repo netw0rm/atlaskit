@@ -37,6 +37,7 @@ import nucleusLogo from '../nucleus.png';
     height: '100vh',
     overflowY: 'auto',
     padding: 32,
+    boxSizing: 'border-box',
   }}
 >
   <style>{'body { margin: 0 }'}</style>

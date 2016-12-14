@@ -1,11 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 
-// eslint-disable-next-line react/prefer-stateless-function
-export default class Page extends Component {
-  static get propTypes() {
-    return {
-      children: PropTypes.node,
-    };
+export default class Page extends PureComponent {
+  static propTypes = {
+    children: PropTypes.node,
   }
 
   render() {
@@ -16,6 +13,7 @@ export default class Page extends Component {
           height: '100vh',
           overflowY: 'scroll',
           padding: 32,
+          boxSizing: 'border-box',
         }}
       >
         <style>{'body { margin: 0 }'}</style>

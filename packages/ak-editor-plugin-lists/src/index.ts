@@ -13,8 +13,7 @@ import {
   Schema,
   Selection,
   TextSelection,
-  UpdateScheduler,
-  browser
+  UpdateScheduler
 } from 'ak-editor-prosemirror';
 
 import {
@@ -94,15 +93,14 @@ export class ListsState {
 
   private addKeymap(pm: PM): void {
     const { list_item } = pm.schema.nodes;
-    const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd' : 'Ctrl'}-${key}`;
 
-    let bindings = {
+    navigator
+    debugger;
+    pm.addKeymap(new Keymap({
       'Enter': () => commands.splitListItem(list_item)(pm),
-      [withSpecialKey('Shift-L')]: () => this.toggleOrderedList(),
-      [withSpecialKey('Shift-B')]: () => this.toggleBulletList()
-    }
-
-    pm.addKeymap(new Keymap(bindings));
+      'Mod-Shift-L': () => this.toggleOrderedList(),
+      'Mod-Shift-B': () => this.toggleBulletList()
+    }));
   }
 
   /**

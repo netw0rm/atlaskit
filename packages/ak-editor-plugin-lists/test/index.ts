@@ -1,4 +1,4 @@
-import { chaiPlugin, makeEditor, RewireMock } from 'ak-editor-test';
+import { chaiPlugin, makeEditor } from 'ak-editor-test';
 import { commands } from 'ak-editor-prosemirror';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
@@ -11,7 +11,6 @@ chai.use(sinonChai);
 
 describe('ak-editor-plugin-lists', () => {
   const editor = (doc: any) => makeEditor({ doc: doc, plugin: ListsPlugin, schema });
-  const rewireMock = RewireMock();
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const Plugin = ListsPlugin as any; // .State is not public API.
@@ -19,71 +18,37 @@ describe('ak-editor-plugin-lists', () => {
   });
 
   describe('keymap', () => {
-    context('when on a Mac', () => {
-      beforeEach(() => {
-        rewireMock(ListsPlugin, 'browser', {mac: true});
-      });
+    context('when hit enter', () => {
+      it('should split list item', () => {
+        const { pm } = editor(doc(ul(li(p('text')))));
+        const splitListItem = sinon.spy(commands, 'splitListItem');
 
-      context('when hit enter', () => {
-        it('should split list item', () => {
-          const { pm } = editor(doc(ul(li(p('text')))));
-          const splitListItem = sinon.spy(commands, 'splitListItem');
+        pm.input.dispatchKey("Enter");
 
-          pm.input.dispatchKey("Enter");
-
-          expect(splitListItem).to.have.been.callCount(1);
-        });
-      });
-
-      context('when hit Shift-Cmd-L', () => {
-        it('should toggle ordered list', () => {
-          const { pm, plugin } = editor(doc(ul(li(p('text')))));
-          const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
-
-          pm.input.dispatchKey("Shift-Cmd-L");
-
-          expect(toggleOrderedList).to.have.been.callCount(1);
-        });
-      });
-
-      context('when hit Shift-Cmd-B', () => {
-        it('should toggle bullet list', () => {
-          const { pm, plugin } = editor(doc(ul(li(p('text')))));
-          const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
-
-          pm.input.dispatchKey("Shift-Cmd-B");
-
-          expect(toggleBulletList).to.have.been.callCount(1);
-        })
+        expect(splitListItem).to.have.been.callCount(1);
       });
     });
 
-    context('when not on a Mac', () => {
-      beforeEach(() => {
-        rewireMock(ListsPlugin, 'browser', {mac: false});
+    context('when hit Shift-Cmd-L', () => {
+      it('should toggle ordered list', () => {
+        const { pm, plugin } = editor(doc(ul(li(p('text')))));
+        const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
+
+        pm.input.dispatchKey("Shift-Cmd-L");
+
+        expect(toggleOrderedList).to.have.been.callCount(1);
       });
+    });
 
-      context('when hit Shift-Ctrl-L', () => {
-        it('should toggle ordered list', () => {
-          const { pm, plugin } = editor(doc(ul(li(p('text')))));
-          const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
+    context('when hit Shift-Cmd-B', () => {
+      it('should toggle bullet list', () => {
+        const { pm, plugin } = editor(doc(ul(li(p('text')))));
+        const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
 
-          pm.input.dispatchKey("Shift-Ctrl-L");
+        pm.input.dispatchKey("Shift-Cmd-B");
 
-          expect(toggleOrderedList).to.have.been.callCount(1);
-        });
-      });
-
-      context('when hit Shift-Ctrl-B', () => {
-        it('should toggle bullet list', () => {
-          const { pm, plugin } = editor(doc(ul(li(p('text')))));
-          const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
-
-          pm.input.dispatchKey("Shift-Ctrl-B");
-
-          expect(toggleBulletList).to.have.been.callCount(1);
-        })
-      });
+        expect(toggleBulletList).to.have.been.callCount(1);
+      })
     });
   });
 

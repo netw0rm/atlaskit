@@ -1,5 +1,5 @@
 import TextFormattingPlugin from '../src';
-import { chaiPlugin, makeEditor, RewireMock } from 'ak-editor-test';
+import { chaiPlugin, makeEditor } from 'ak-editor-test';
 import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from './_schema-builder';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
@@ -12,131 +12,62 @@ describe('ak-editor-plugin-text-formatting', () => {
   const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin, schema });
 
   describe('keymap', () => {
-    const rewireMock = RewireMock();
+    context('when hits Cmd-B', () => {
+      it('toggles bold mark', () => {
+        const { pm, plugin } = editor(doc(p('text')));
+        const toggleStrong = sinon.spy(plugin, 'toggleStrong');
 
-    context('when on a mac', () => {
-      beforeEach(() => {
-        rewireMock(TextFormattingPlugin, 'browser', {mac: true});
-      });
+        pm.input.dispatchKey("Cmd-B");
 
-      context('when hits Cmd-B', () => {
-        it('toggles bold mark', () => {
-          const { pm, plugin } = editor(doc(p('text')));
-          const toggleStrong = sinon.spy(plugin, 'toggleStrong');
-
-          pm.input.dispatchKey("Cmd-B");
-
-          expect(toggleStrong).to.have.been.callCount(1);
-        });
-      });
-
-      context('when hits Cmd-B', () => {
-        it('toggles italic mark', () => {
-          const { pm, plugin } = editor(doc(p('text')));
-          const toggleEm = sinon.spy(plugin, 'toggleEm');
-
-          pm.input.dispatchKey("Cmd-I");
-
-          expect(toggleEm).to.have.been.callCount(1);
-        });
-      })
-
-      context('when hits Cmd-B', () => {
-        it('toggles underline mark', () => {
-          const { pm, plugin } = editor(doc(p('text')));
-          const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
-
-          pm.input.dispatchKey("Cmd-U");
-
-          expect(toggleUnderline).to.have.been.callCount(1);
-        });
-      })
-
-      /* 
-        Node: Here dispatch key 'Shift-Cmd-S' instead of 'Cmd-Shift-S',
-              Because after key binding, it was normalized.
-      */
-      context('when hits Shift-Cmd-S', () => {
-        it('toggles strikethrough mark', () => {
-          const { pm, plugin } = editor(doc(p('text')));
-          const toggleStrike = sinon.spy(plugin, 'toggleStrike');
-
-          pm.input.dispatchKey("Shift-Cmd-S");
-
-          expect(toggleStrike).to.have.been.callCount(1);
-        });
-      });
-
-      context('when hits Shift-Cmd-M', () => {
-        it('toggles monospace mark', () => {
-          const { pm, plugin } = editor(doc(p('text')));
-          const toggleMono = sinon.spy(plugin, 'toggleMono');
-
-          pm.input.dispatchKey("Shift-Cmd-M");
-
-          expect(toggleMono).to.have.been.callCount(1);
-        });
+        expect(toggleStrong).to.have.been.callCount(1);
       });
     });
 
-    context('when on a mac', () => {
-      beforeEach(() => {
-        rewireMock(TextFormattingPlugin, 'browser', {mac: false});
+    context('when hits Cmd-B', () => {
+      it('toggles italic mark', () => {
+        const { pm, plugin } = editor(doc(p('text')));
+        const toggleEm = sinon.spy(plugin, 'toggleEm');
+
+        pm.input.dispatchKey("Cmd-I");
+
+        expect(toggleEm).to.have.been.callCount(1);
       });
+    })
 
-      context('when hits Ctrl-B', () => {
-        it('toggles bold mark', () => {
-          const { pm, plugin } = editor(doc(p('text')));
-          const toggleStrong = sinon.spy(plugin, 'toggleStrong');
+    context('when hits Cmd-B', () => {
+      it('toggles underline mark', () => {
+        const { pm, plugin } = editor(doc(p('text')));
+        const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
 
-          pm.input.dispatchKey("Ctrl-B");
+        pm.input.dispatchKey("Cmd-U");
 
-          expect(toggleStrong).to.have.been.callCount(1);
-        });
+        expect(toggleUnderline).to.have.been.callCount(1);
       });
+    })
 
-      context('when hits Ctrl-B', () => {
-        it('toggles italic mark', () => {
-          const { pm, plugin } = editor(doc(p('text')));
-          const toggleEm = sinon.spy(plugin, 'toggleEm');
+    /* 
+      Node: Here dispatch key 'Shift-Cmd-S' instead of 'Cmd-Shift-S',
+            Because after key binding, it was normalized.
+    */
+    context('when hits Shift-Cmd-S', () => {
+      it('toggles strikethrough mark', () => {
+        const { pm, plugin } = editor(doc(p('text')));
+        const toggleStrike = sinon.spy(plugin, 'toggleStrike');
 
-          pm.input.dispatchKey("Ctrl-I");
+        pm.input.dispatchKey("Shift-Cmd-S");
 
-          expect(toggleEm).to.have.been.callCount(1);
-        });
-      })
-
-      context('when hits Ctrl-B', () => {
-        it('toggles underline mark', () => {
-          const { pm, plugin } = editor(doc(p('text')));
-          const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
-
-          pm.input.dispatchKey("Ctrl-U");
-
-          expect(toggleUnderline).to.have.been.callCount(1);
-        });
-      })
-
-      context('when hits Ctrl-Shift-S', () => {
-        it('toggles strikethrough mark', () => {
-          const { pm, plugin } = editor(doc(p('text')));
-          const toggleStrike = sinon.spy(plugin, 'toggleStrike');
-
-          pm.input.dispatchKey("Shift-Ctrl-S");
-
-          expect(toggleStrike).to.have.been.callCount(1);
-        });
+        expect(toggleStrike).to.have.been.callCount(1);
       });
+    });
 
-      context('when hits Ctrl-Shift-M', () => {
-        it('toggles monospace mark', () => {
-          const { pm, plugin } = editor(doc(p('text')));
-          const toggleMono = sinon.spy(plugin, 'toggleMono');
+    context('when hits Shift-Cmd-M', () => {
+      it('toggles monospace mark', () => {
+        const { pm, plugin } = editor(doc(p('text')));
+        const toggleMono = sinon.spy(plugin, 'toggleMono');
 
-          pm.input.dispatchKey("Shift-Ctrl-M");
+        pm.input.dispatchKey("Shift-Cmd-M");
 
-          expect(toggleMono).to.have.been.callCount(1);
-        });
+        expect(toggleMono).to.have.been.callCount(1);
       });
     });
   });

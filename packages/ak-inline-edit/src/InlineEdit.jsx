@@ -154,6 +154,11 @@ export default class InlineEdit extends PureComponent {
     }
   }
 
+  onConfirmClick = () => {
+    this.getDOMNode(this.confirmButtonRef).focus();
+    this.props.onConfirm();
+  }
+
   getWrapperClasses = () =>
     classNames({
       [styles.readViewWrapper]: !this.props.isEditing,
@@ -185,7 +190,7 @@ export default class InlineEdit extends PureComponent {
       <Button
         appearance="subtle"
         iconBefore={<ConfirmIcon label="confirm" />}
-        onClick={this.props.onConfirm}
+        onClick={this.onConfirmClick}
         ref={(confirmButtonRef) => { this.confirmButtonRef = confirmButtonRef; }}
       />
       <Button

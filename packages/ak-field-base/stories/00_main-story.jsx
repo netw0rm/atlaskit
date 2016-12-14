@@ -117,8 +117,9 @@ storiesOf(name, module)
         label="Button on the right"
         rightGutter={<Button appearance="subtle">Cancel</Button>}
       />
-      <InputFieldBase
+      <DivFieldBase
         label="Button + icon on the right"
+        text="Banana Banana Banana Banana Banana Banana Banana Banana Banana Banana"
         rightGutter={<Button iconBefore={<HelpIcon />} />}
       />
       <InputFieldBase

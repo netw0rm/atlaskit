@@ -67,6 +67,20 @@ storiesOf(name, module)
       />
     </div>
   ))
+  .add('with narrow maximum width', () => {
+    const narrowContainerStyle = {
+      ...containerStyle,
+      width: 250,
+    };
+
+    return (
+      <div style={narrowContainerStyle}>
+        <TextInlineEdit
+          isConfirmOnBlurDisabled
+        />
+      </div>
+    );
+  })
   .add('with mention list', () => (
     <div style={containerStyle}>
       <MentionInlineEdit

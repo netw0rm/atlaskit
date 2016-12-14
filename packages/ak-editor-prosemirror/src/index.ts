@@ -1,5 +1,5 @@
-/// <reference path="./prosemirror.d.ts" />
-/// <reference path="./browserkeymap.d.ts" />
+/// <reference path="../types/prosemirror.d.ts" />
+/// <reference path="../types/browserkeymap.d.ts" />
 
 export { default as Keymap } from 'browserkeymap';
 

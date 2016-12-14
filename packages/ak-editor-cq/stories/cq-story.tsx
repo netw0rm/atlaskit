@@ -15,7 +15,7 @@ storiesOf('ak-editor-cq', module)
   .add('Empty', () =>
     <div style={{ padding: 20 }}>
       <Editor
-        defaultExpanded
+        isExpandedByDefault
         onCancel={CancelAction}
         onSave={SaveAction}
       />
@@ -35,7 +35,7 @@ storiesOf('ak-editor-cq', module)
         return (
           <div ref="root">
             <Editor
-              defaultExpanded
+              isExpandedByDefault
               onCancel={CancelAction}
               onChange={this.handleChange}
               onSave={SaveAction}
@@ -65,7 +65,7 @@ storiesOf('ak-editor-cq', module)
             <Tabs>
               <Tab selected label="(default)">
                 <Editor
-                  defaultExpanded
+                  isExpandedByDefault
                   onCancel={CancelAction}
                   onSave={SaveAction}
                 />
@@ -73,7 +73,7 @@ storiesOf('ak-editor-cq', module)
               <Tab selected label="comment">
                 <Editor
                   context='comment'
-                  defaultExpanded
+                  isExpandedByDefault
                   onCancel={CancelAction}
                   onSave={SaveAction}
                 />

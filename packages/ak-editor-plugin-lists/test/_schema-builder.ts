@@ -6,7 +6,8 @@ import {
   ListItemNodeType,
   OrderedListNodeType,
   ParagraphNodeType,
-  Text
+  Text,
+  BlockQuoteNodeType
 } from 'ak-editor-schema';
 import { Schema } from 'ak-editor-prosemirror';
 
@@ -19,6 +20,7 @@ export const schema = new Schema({
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
     paragraph: { type: ParagraphNodeType, content: 'text*', group: 'block' },
     text: { type: Text },
+    blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
   }
 });
 
@@ -28,3 +30,4 @@ export const li = nodeFactory(schema.nodes.list_item);
 export const ol = nodeFactory(schema.nodes.ordered_list);
 export const p = nodeFactory(schema.nodes.paragraph);
 export const ul = nodeFactory(schema.nodes.bullet_list);
+export const blockquote = nodeFactory(schema.nodes.blockquote);

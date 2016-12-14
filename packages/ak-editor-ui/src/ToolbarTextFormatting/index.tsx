@@ -6,11 +6,11 @@ import CodeIcon from 'ak-icon/glyph/editor/code';
 import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
 import IconButton from '../ToolbarIconButton';
 
-interface Props {
+export interface Props {
   pluginState: TextFormattingState;
 }
 
-interface State {
+export interface State {
   boldActive?: boolean;
   boldDisabled?: boolean;
   boldHidden?: boolean;

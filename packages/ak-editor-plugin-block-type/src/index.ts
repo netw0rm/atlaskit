@@ -41,8 +41,7 @@ const Quote = makeBlockType('quote', 'Block quote', withSpecialKey('7'));
 const Code = makeBlockType('code', 'Code block', withSpecialKey('8'));
 const Other = makeBlockType('other', 'Other…');
 
-
-type ContextName = 'default' | 'comment' | 'pr';
+export type ContextName = 'default' | 'comment' | 'pr';
 
 export class BlockTypeState {
   private pm: PM;
@@ -87,7 +86,7 @@ export class BlockTypeState {
 
   changeContext(name: ContextName): void {
     const context = this.findContext(name);
-    
+
     if (name !== this.context && context) {
       this.updateBlockTypeKeymap(context);
 
@@ -223,7 +222,7 @@ export class BlockTypeState {
     const bind = (key: string, action: any): void => {
       bindings = Object.assign({}, bindings, {[key]: action});
     }
-    
+
     blockTypes.forEach((blockType) => {
       if(blockType.shortcut) {
         bind(blockType.shortcut, () => this.toggleBlockType(blockType.name));
@@ -239,7 +238,7 @@ export class BlockTypeState {
       'Shift-Enter': () => this.insertNewLine()
     }));
   }
-  
+
   private lastCharIsNewline(node: Node): boolean {
     return node.textContent.slice(-1) === '\n'
   }
@@ -386,7 +385,7 @@ interface Context {
   keymap: Keymap
 }
 
-interface S extends Schema {
+export interface S extends Schema {
   nodes: {
     blockquote?: BlockQuoteNodeType;
     code_block?: CodeBlockNodeType;
@@ -396,7 +395,7 @@ interface S extends Schema {
   }
 }
 
-interface PM extends ProseMirror {
+export interface PM extends ProseMirror {
   schema: S;
 }
 

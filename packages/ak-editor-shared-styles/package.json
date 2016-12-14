@@ -2,8 +2,8 @@
   "name": "ak-editor-shared-styles",
   "version": "3.0.1",
   "description": "Shared styles for Atlassian Editor components",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single ak-editor-shared-styles"
@@ -26,7 +26,6 @@
     "less-vars-loader": "^1.0.2"
   },
   "dependencies": {
-    "babel-runtime": "^6.11.6"
   },
   "peerDependencies": {
     "akutil-shared-styles": "*"

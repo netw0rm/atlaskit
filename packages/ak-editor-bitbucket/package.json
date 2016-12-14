@@ -1,18 +1,17 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "5.3.0",
+  "version": "5.3.1",
   "description": "Editor web component",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
+  "main": "dist/es5/index.jsx",
+  "jsnext:main": "dist/es2015/index.jsx",
   "ak:webpack:raw": "src/index.tsx",
   "types": "src/index.tsx",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-editor-bitbucket"
+    "prepublish": "../../node_modules/.bin/in-publish && { ../../node_modules/.bin/tsc -p build/es5 && ../../node_modules/.bin/tsc -p build/es2015; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist",
-    "src/**/*.ts",
-    "src/**/*.tsx"
+    "**/*.d.ts"
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
@@ -29,7 +28,7 @@
     "ak-editor-shared-styles": "^3.0.0",
     "ak-editor-ui": "^3.0.0",
     "akutil-shared-styles": "^37.0.0",
-    "babel-runtime": "^6.11.6"
+    "tslib": "^1.2.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

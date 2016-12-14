@@ -6,11 +6,11 @@ import IconButton from '../ToolbarIconButton';
 import Panel from '../Panel';
 import PanelTextInput from '../PanelTextInput';
 
-interface Props {
+export interface Props {
   pluginState: HyperlinkState;
 }
 
-interface State {
+export interface State {
   target?: HTMLElement;
   // URL of the hyperlink. The presence of this attribute causes an "open"
   // hyperlink to be rendered in the popup.

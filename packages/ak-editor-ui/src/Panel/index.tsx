@@ -4,7 +4,7 @@ import * as styles from './styles.global.less';
 import OutsideClickable from '../OutsideClickable';
 import Popper from 'popper.js';
 
-interface Props {
+export interface Props {
   autoPosition?: boolean;
   align?: 'left' | 'center' | 'right';
   onOutsideClick?: () => void;
@@ -12,7 +12,7 @@ interface Props {
   spacing?: 'none';
 }
 
-interface State {
+export interface State {
   position?: string;
   transform?: string;
 }

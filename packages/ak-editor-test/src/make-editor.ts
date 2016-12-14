@@ -3,7 +3,7 @@ import SyncPlugin from './sync-plugin';
 import { RefsNode } from './schema-builder';
 import schema from 'ak-editor-schema';
 
-interface Options {
+export interface Options {
   doc: RefsNode;
   plugin: Plugin<any>;
   place?: HTMLElement;
@@ -44,6 +44,6 @@ export default (options: Options) => {
   return { pm, plugin: options.plugin.get(pm) };
 };
 
-interface ProseMirrorWithRefs extends ProseMirror {
+export interface ProseMirrorWithRefs extends ProseMirror {
   doc: RefsNode;
 }

@@ -7,7 +7,7 @@ import { Chrome } from 'ak-editor-ui';
 import schema from './schema';
 import { parse, encode } from './cxhtml';
 
-interface Props {
+export interface Props {
   context?: 'default' | 'comment';
   isExpandedByDefault?: boolean;
   defaultValue?: string;
@@ -17,7 +17,7 @@ interface Props {
   placeholder?: string;
 }
 
-interface State {
+export interface State {
   pm?: ProseMirror;
   isExpanded?: boolean;
 }

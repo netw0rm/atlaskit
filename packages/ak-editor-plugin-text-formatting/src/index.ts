@@ -299,7 +299,7 @@ Object.defineProperty(TextFormattingState, 'name', { value: 'TextFormattingState
 
 export default new Plugin(TextFormattingState);
 
-interface S extends Schema {
+export interface S extends Schema {
   marks: {
     em?: EmMarkType;
     mono?: MonoMarkType;
@@ -310,6 +310,6 @@ interface S extends Schema {
   }
 }
 
-interface PM extends ProseMirror {
+export interface PM extends ProseMirror {
   schema: S;
 }

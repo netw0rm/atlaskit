@@ -6,6 +6,8 @@ import React, { PureComponent, PropTypes } from 'react';
 const SPINNER_SIZE = 20;
 
 export default class Spinner extends PureComponent {
+  static displayName = 'AkSpinner';
+
   static propTypes = {
     onComplete: PropTypes.func,
     isCompleting: PropTypes.bool,
@@ -35,8 +37,8 @@ export default class Spinner extends PureComponent {
     const strokeRadius = (SPINNER_SIZE / 2) - (strokeWidth / 2);
     const circumference = Math.PI * strokeRadius * 2;
     const dashStyles = {
-      'stroke-dashoffset': this.props.isCompleting ? circumference : 0.8 * circumference,
-      'stroke-dasharray': circumference,
+      strokeDashoffset: this.props.isCompleting ? circumference : 0.8 * circumference,
+      strokeDasharray: circumference,
     };
     return (
       <div style={{ display: 'inline-flex' }}>

@@ -21,7 +21,8 @@
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "ak-button": "^5.0.2"
+    "ak-button": "^5.0.2",
+    "akutil-readme": "^1.0.0"
   },
   "repository": {
     "type": "git",

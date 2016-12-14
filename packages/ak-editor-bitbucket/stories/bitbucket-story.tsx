@@ -4,7 +4,6 @@ import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-test';
 import { default as AkTabs, Tab as AkTab} from 'ak-tabs';
 import Editor from '../src';
-import FacadeInput from '../src/hacks/facade-input';
 import exampleHTML from './exampleHTML';
 
 const Tabs = reactify(AkTabs);
@@ -148,7 +147,7 @@ storiesOf('ak-editor-bitbucket', module)
 
       setEditorContentFromHtml = () => {
         const { textarea, editor } = this;
-        
+
         if (!textarea || !editor) {
           return;
         }
@@ -191,17 +190,17 @@ storiesOf('ak-editor-bitbucket', module)
         return (
           <div ref="root" style={{ display: 'flex', alignItems: 'stretch', minHeight: '100%' }}>
             <div style={{ flex: 3, display: 'flex', alignItems: 'stretch' }}>
-              <textarea 
-                style={{ 
-                  flex: 1, 
-                  fontFamily: 'monospace', 
-                  fontSize: '90%', 
-                  outline: 'none', 
-                  border: '0 none', 
-                  padding: '5px 10px', 
+              <textarea
+                style={{
+                  flex: 1,
+                  fontFamily: 'monospace',
+                  fontSize: '90%',
+                  outline: 'none',
+                  border: '0 none',
+                  padding: '5px 10px',
                   borderRight: '10px solid rgb(247, 247, 247)',
                   background: this.state.hasError ? 'red' : 'white'
-                }} 
+                }}
                 ref={this.handleTextareaRef}
                 onKeyUp={this.setEditorContentFromHtml}
               />

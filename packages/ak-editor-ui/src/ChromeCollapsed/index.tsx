@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import * as styles from './styles.global.less';
 
-interface Props {
+export interface Props {
   text?: string;
   onFocus?: () => void;
 }
 
-interface State {}
+export interface State {}
 
 export default class ChromeCollapsed extends PureComponent<Props, State> {
   render() {

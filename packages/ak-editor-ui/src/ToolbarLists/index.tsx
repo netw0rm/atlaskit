@@ -4,11 +4,11 @@ import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
 import IconButton from '../ToolbarIconButton';
 import { ListsState } from 'ak-editor-plugin-lists';
 
-interface Props {
+export interface Props {
   pluginState: ListsState;
 }
 
-interface State {
+export interface State {
   bulletListActive: boolean;
   bulletListDisabled: boolean;
   bulletListHidden: boolean;

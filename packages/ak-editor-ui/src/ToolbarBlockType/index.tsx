@@ -4,11 +4,11 @@ import { BlockType, BlockTypeState } from 'ak-editor-plugin-block-type';
 import Panel from '../Panel';
 import styles from './styles.global.less';
 
-interface Props {
+export interface Props {
   pluginState: BlockTypeState;
 }
 
-interface State {
+export interface State {
   active: boolean;
   availableBlockTypes: BlockType[];
   currentBlockType: BlockType;

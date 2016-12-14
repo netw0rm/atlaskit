@@ -22,7 +22,7 @@ export default class DropdownMenu extends Component {
     /**
      * @description Types of the menu's built-in trigger. Available types: 'default', 'button'.
      * @memberof DropdownMenu
-     * @default bottom left
+     * @default default
      */
     triggerType: PropTypes.oneOf(['default', 'button']),
     /**
@@ -46,7 +46,7 @@ export default class DropdownMenu extends Component {
      * @memberof DropdownMenu
      * @default []
      */
-    isOpenInitially: PropTypes.bool,
+    defaultOpen: PropTypes.bool,
     /**
      * @description  Handler function to be called when the item is activated.
      * @memberof DropdownMenu
@@ -64,13 +64,13 @@ export default class DropdownMenu extends Component {
     position: 'bottom left',
     triggerType: 'default',
     items: [],
-    isOpenInitially: false,
+    defaultOpen: false,
     onItemActivated: () => {},
     onOpenChange: () => {},
   }
 
   state = {
-    isOpen: this.props.isOpenInitially,
+    isOpen: this.props.defaultOpen,
   }
 
   componentDidMount() {
@@ -156,9 +156,7 @@ export default class DropdownMenu extends Component {
             <Trigger
               type={this.props.triggerType}
               isOpened={this.state.isOpen}
-              onActivate={() => {
-                this.handleTriggerActivation();
-              }}
+              onActivate={this.handleTriggerActivation}
             >{props.children}</Trigger>
           </div>
         </Layer>

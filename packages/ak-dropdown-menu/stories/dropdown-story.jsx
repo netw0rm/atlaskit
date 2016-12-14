@@ -71,7 +71,7 @@ storiesOf(name, module)
         }}
       >
         <DropdownMenu
-          isOpenInitially
+          defaultOpen
           triggerType="button"
           items={simpleDropdownItemsWithAvatars}
         >

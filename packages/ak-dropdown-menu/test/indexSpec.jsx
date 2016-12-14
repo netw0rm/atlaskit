@@ -42,7 +42,7 @@ describe(name, () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = mount(<Menu items={itemsList} isOpenInitially>text</Menu>);
+      wrapper = mount(<Menu items={itemsList} defaultOpen>text</Menu>);
     });
 
     it('should render Layer component', () => {
@@ -82,7 +82,7 @@ describe(name, () => {
     });
 
     it('should support external trigger rendering', () => {
-      wrapper = mount(<Menu items={itemsList} isOpenInitially><Trigger>text</Trigger></Menu>);
+      wrapper = mount(<Menu items={itemsList} defaultOpen><Trigger>text</Trigger></Menu>);
       const triggerWrapper = wrapper.find(`.${styles.dropTrigger}`);
       const trigger = triggerWrapper.children().nodes[0];
 
@@ -92,8 +92,8 @@ describe(name, () => {
   });
 
   describe('show/hide logic', () => {
-    it('should be open when the isOpenInitially property set to true', () => {
-      expect(shallow(<Menu items={[]} isOpenInitially>text</Menu>).state().isOpen).to.be.true;
+    it('should be open when the defaultOpen property set to true', () => {
+      expect(shallow(<Menu items={[]} defaultOpen>text</Menu>).state().isOpen).to.be.true;
     });
 
     it('interacting with trigger should open the dropdown', () => {
@@ -105,14 +105,14 @@ describe(name, () => {
     });
 
     it('click outside should close the dropdown', () => {
-      const wrapper = mount(<Menu items={itemsList} isOpenInitially><Trigger>text</Trigger></Menu>);
+      const wrapper = mount(<Menu items={itemsList} defaultOpen><Trigger>text</Trigger></Menu>);
       expect(wrapper.state().isOpen).to.be.true;
       document.body.click();
       expect(wrapper.state().isOpen).to.be.false;
     });
 
     it('interacting with an item should close the dropdown', () => {
-      const wrapper = mount(<Menu items={itemsList} isOpenInitially><Trigger>text</Trigger></Menu>);
+      const wrapper = mount(<Menu items={itemsList} defaultOpen><Trigger>text</Trigger></Menu>);
       const item = mount(wrapper.children().props().content.props.children[0].props.children[0]);
       expect(wrapper.state().isOpen).to.be.true;
       item.simulate('click');

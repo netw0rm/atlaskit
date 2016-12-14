@@ -18,8 +18,6 @@ npm install ak-flag
 
 ## Using the component
 
-### HTML
-
 The `ak-flag` package exports the `Flag` React component as the default export. A named `FlagGroup` export is also provided.
 
 To ensure placement and correct animation, `Flag` components must always be placed inside a `FlagGroup`.

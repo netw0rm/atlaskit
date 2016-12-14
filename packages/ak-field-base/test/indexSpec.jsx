@@ -20,7 +20,6 @@ const defaultProps = {
   onBlur: () => {},
 };
 
-
 describe('ak-field-base', () => {
   describe('by default', () =>
     it('should render a field base', () => {

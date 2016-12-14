@@ -7,6 +7,7 @@ import Group from 'ak-droplist-group';
 import Trigger from 'ak-droplist-trigger';
 import Item from 'ak-droplist-item';
 import Layer from 'ak-layer';
+import keyCode from 'keycode';
 
 import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
@@ -108,6 +109,20 @@ describe(name, () => {
       const wrapper = mount(<Menu items={itemsList} defaultOpen><Trigger>text</Trigger></Menu>);
       expect(wrapper.state().isOpen).to.be.true;
       document.body.click();
+      expect(wrapper.state().isOpen).to.be.false;
+    });
+
+    it('pressing the esc button should close the dropdown', () => {
+      const wrapper = mount(<Menu items={itemsList} defaultOpen><Trigger>text</Trigger></Menu>);
+      expect(wrapper.state().isOpen).to.be.true;
+
+      const keyPressEvent = new CustomEvent('keydown', {
+        bubbles: true,
+        cancelable: true,
+      });
+      keyPressEvent.keyCode = keyCode('ESCAPE');
+      document.dispatchEvent(keyPressEvent);
+
       expect(wrapper.state().isOpen).to.be.false;
     });
 

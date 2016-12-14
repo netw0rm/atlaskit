@@ -5,6 +5,7 @@ import Layer from 'ak-layer';
 import Group from 'ak-droplist-group';
 import Trigger from 'ak-droplist-trigger';
 import Item from 'ak-droplist-item';
+import keyCode from 'keycode';
 
 /* eslint-disable react/no-unused-prop-types */
 /**
@@ -75,10 +76,18 @@ export default class DropdownMenu extends Component {
 
   componentDidMount() {
     document.addEventListener('click', this.handleClickOutside, true);
+    document.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClickOutside, true);
+    document.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = (e) => {
+    if (e.keyCode === keyCode('escape')) {
+      this.close();
+    }
   }
 
   handleClickOutside = (e) => {

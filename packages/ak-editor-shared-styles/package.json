@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-shared-styles",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "Shared styles for Atlassian Editor components",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
@@ -25,8 +25,7 @@
     "akutil-shared-styles": "^37.0.0",
     "less-vars-loader": "^1.0.2"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "peerDependencies": {
     "akutil-shared-styles": "*"
   },

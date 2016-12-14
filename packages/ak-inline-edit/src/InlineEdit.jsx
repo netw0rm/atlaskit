@@ -1,6 +1,12 @@
 import React, { PureComponent, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
-import Content from './Content';
+import classNames from 'classnames';
+import Button from 'ak-button';
+import ConfirmIcon from 'ak-icon/glyph/confirm';
+import CancelIcon from 'ak-icon/glyph/cancel';
+import EditIcon from 'ak-icon/glyph/edit';
+import FieldBase from 'ak-field-base';
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -126,21 +132,111 @@ export default class InlineEdit extends PureComponent {
     isConfirmOnBlurDisabled: false,
   }
 
+  onWrapperClick = () => {
+    if (!this.isReadOnly() && !this.props.isEditing) {
+      this.props.onEditRequested();
+    }
+  }
+
+  onWrapperBlur = (event) => {
+    if (this.isReadOnly() || !this.props.isEditing || this.props.isConfirmOnBlurDisabled) {
+      return;
+    }
+
+    const domNodeReceivingFocus = event.relatedTarget;
+
+    // We receive 'blur' events even when focus moves from one
+    // inline edit subcomponent to another, so we must ensure
+    // that focus has entirely left the component before we
+    // trigger 'onConfirm'.
+    if (this.didFocusLeaveInlineEdit(domNodeReceivingFocus)) {
+      this.props.onConfirm();
+    }
+  }
+
+  getWrapperClasses = () =>
+    classNames({
+      [styles.readViewWrapper]: !this.props.isEditing,
+    })
+
+  getActionButtonClasses = () =>
+    classNames({
+      [styles.buttonsWrapper]: true,
+      [styles.buttonWrapperHidden]: !this.props.isEditing || this.props.areActionButtonsHidden,
+    })
+
+  getDOMNode = ref =>
+    // eslint-disable-next-line react/no-find-dom-node
+    ReactDOM.findDOMNode(ref)
+
+  didFocusLeaveInlineEdit = domNodeReceivingFocus =>
+    domNodeReceivingFocus !== this.getDOMNode(this.confirmButtonRef) &&
+    domNodeReceivingFocus !== this.getDOMNode(this.cancelButtonRef) &&
+    domNodeReceivingFocus !== this.getDOMNode(this.editViewRef)
+
+  isReadOnly = () =>
+    typeof this.props.editView === 'undefined'
+
+  shouldShowEditView = () =>
+    this.props.isEditing && !this.isReadOnly()
+
+  renderActionButtons = () => (
+    <div className={this.getActionButtonClasses()}>
+      <Button
+        appearance="subtle"
+        iconBefore={<ConfirmIcon label="confirm" />}
+        onClick={this.props.onConfirm}
+        ref={(confirmButtonRef) => { this.confirmButtonRef = confirmButtonRef; }}
+      />
+      <Button
+        appearance="subtle"
+        iconBefore={<CancelIcon label="cancel" />}
+        onClick={this.props.onCancel}
+        ref={(cancelButtonRef) => { this.cancelButtonRef = cancelButtonRef; }}
+      />
+    </div>
+  )
+
+  renderEditIcon = () => (
+    <div className={styles.editButtonWrapper}>
+      <button className={styles.editButton}>
+        <EditIcon label="Edit" size="small" />
+      </button>
+    </div>
+  )
+
+  renderReadView = () => (
+    <div className={styles.readViewContentWrapper}>
+      {this.props.readView}
+      {(this.isReadOnly() || this.props.isInvalid) ? null : this.renderEditIcon()}
+    </div>
+  )
+
+  renderEditView = () => (
+    React.cloneElement(this.props.editView,
+        { ref: (editViewRef) => { this.editViewRef = editViewRef; } }
+    )
+  )
+
   render = () => (
     <div className={styles.root}>
-      <Content
-        label={this.props.label}
-        isEditing={this.props.isEditing}
-        isInvalid={this.props.isInvalid}
-        isLabelHidden={this.props.isLabelHidden}
-        areActionButtonsHidden={this.props.areActionButtonsHidden}
-        isConfirmOnBlurDisabled={this.props.isConfirmOnBlurDisabled}
-        onConfirm={this.props.onConfirm}
-        onCancel={this.props.onCancel}
-        onEditRequested={this.props.onEditRequested}
-        readView={this.props.readView}
-        editView={this.props.editView}
-      />
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+        onClick={this.onWrapperClick}
+        onBlur={this.onWrapperBlur}
+        className={this.getWrapperClasses()}
+      >
+        <FieldBase
+          label={this.props.label}
+          isInvalid={this.props.isInvalid}
+          isFocused={this.isReadOnly() ? false : undefined}
+          isLabelHidden={this.props.isLabelHidden}
+          isReadOnly={this.isReadOnly()}
+          appearance={this.props.isEditing ? 'standard' : 'subtle'}
+          rightGutter={this.renderActionButtons()}
+        >
+          {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
+        </FieldBase>
+      </div>
     </div>
   )
 }

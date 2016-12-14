@@ -42,6 +42,10 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
+
+    if (typeof props.analyticsHandler === 'function') {
+      analyticsService.handler = props.analyticsHandler;
+    }
   }
 
   /**

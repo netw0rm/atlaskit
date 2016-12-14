@@ -7,6 +7,12 @@ import { Chrome } from 'ak-editor-ui';
 import schema from './schema';
 import { parse, encode } from './cxhtml';
 import { buildKeymap } from './keymap';
+import { 
+  analyticsHandler, 
+  decorator as analytics,
+  service as analyticsService
+} from 'ak-editor-analytics';
+
 
 interface Props {
   context?: 'default' | 'comment';
@@ -16,6 +22,7 @@ interface Props {
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
+  analyticsHandler?: analyticsHandler;
 }
 
 interface State {
@@ -29,6 +36,10 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
+
+    if (typeof props.analyticsHandler === 'function') {
+      analyticsService.handler = props.analyticsHandler;
+    }
   }
 
   /**
@@ -114,6 +125,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.start')
   private handleRef = (place: Element | null) => {
     if (place) {
       const { context, onChange } = this.props;

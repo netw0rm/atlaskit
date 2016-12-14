@@ -8,7 +8,6 @@ import React from 'react';
 import { doc, strong, h1, p } from './_schema-builder';
 
 import { ProseMirror } from 'ak-editor-prosemirror';
-// import { keyup } from 'akutil-common-test';
 import Editor from '../src/index';
 import { service, analyticsHandler, debugHandler } from 'ak-editor-analytics';
 import { ToolbarTextFormatting } from 'ak-editor-ui';
@@ -31,6 +30,18 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
     service.handler = handler;
 
     mount(<Editor />);
+    expect(handler).to.not.have.been.called;
+
+    mount(<Editor />).find('ChromeCollapsed').simulate('focus');
+    expect(handler).to.have.been.calledOnce;
+    expect(handler).to.have.been.calledWith('atlassian.editor.start');
+  });
+});
+
+describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
+  it('updates analytics handler when provided via property', () => {
+    let handler = sinon.spy() as analyticsHandler;
+    mount(<Editor analyticsHandler={handler} />);
     expect(handler).to.not.have.been.called;
 
     mount(<Editor />).find('ChromeCollapsed').simulate('focus');

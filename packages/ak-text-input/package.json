@@ -1,6 +1,6 @@
 {
   "name": "ak-text-input",
-  "version": "6.0.3",
+  "version": "1.0.0",
   "description": "ak-text-input component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -17,7 +17,7 @@
   "dependencies": {
     "akutil-shared-styles": "^37.2.0",
     "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5"
+    "glamor": "^2.17.14"
   },
   "devDependencies": {
     "ak-inline-edit": "1.0.2"

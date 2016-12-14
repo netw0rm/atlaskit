@@ -33,6 +33,11 @@ storiesOf(name, module)
       {createTextInput({ isEditing: true })}
     </div>
   ))
+  .add('with auto focus', () => (
+    <div style={containerStyle}>
+      {createTextInput({ isEditing: true, hasAutoFocus: true })}
+    </div>
+  ))
   .add('with custom font size', () => (
     <div style={containerStyle}>
       {createTextInput({ style: customTextStyle })}

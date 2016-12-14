@@ -1,6 +1,25 @@
 import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from 'style!./styles.less';
+import { style } from 'glamor';
+import { akFontSizeDefault } from 'akutil-shared-styles';
+
+const css = {
+  font: style({
+    color: 'inherit',
+    fontSize: akFontSizeDefault,
+  }),
+  input: style({
+    background: 'transparent',
+    border: 0,
+    padding: 0,
+    boxSizing: 'border-box',
+    cursor: 'inherit',
+    outline: 'none',
+    width: '100%',
+    ':invalid': {
+      boxShadow: 'none',
+    },
+  }),
+};
 
 export default class TextInput extends PureComponent {
   static propTypes = {
@@ -32,27 +51,32 @@ export default class TextInput extends PureComponent {
      * @type {Function}
      */
     onChange: PropTypes.func.isRequired,
+    /**
+     * @description Whether the component has autoFocus in edit mode.
+     * @memberof TextInput
+     * @type {boolean}
+     */
+    hasAutoFocus: PropTypes.bool,
   }
 
   static defaultProps = {
     style: {},
     isEditing: false,
+    hasAutoFocus: false,
   }
 
   renderEditView = () => (
     <input
-      className={classNames(styles.input, styles.font)}
-      style={this.props.style}
-      autoFocus
+      {...style(css.input, css.font, this.props.style)}
+      autoFocus={this.props.hasAutoFocus}
       type="text"
       value={this.props.value}
       onChange={this.props.onChange}
-      ref={(textInput) => { this.textInput = textInput; }}
     />
   )
 
   renderReadView = () => (
-    <span className={styles.font} style={this.props.style}>
+    <span {...style(css.font, this.props.style)}>
       {this.props.value}
     </span>
   )

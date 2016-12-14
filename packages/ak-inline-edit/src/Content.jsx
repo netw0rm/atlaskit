@@ -121,7 +121,7 @@ export default class Content extends PureComponent {
         isInvalid={this.props.isInvalid}
         isFocused={this.isReadOnly() ? false : undefined}
         isLabelHidden={this.props.isLabelHidden}
-        isReadOnly={typeof this.props.editView === 'undefined'}
+        isReadOnly={this.isReadOnly()}
         appearance={this.props.isEditing ? 'standard' : 'subtle'}
         rightGutter={this.props.areActionButtonsHidden ? null : this.renderActionButtons()}
       >

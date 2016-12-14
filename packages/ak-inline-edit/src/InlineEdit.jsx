@@ -126,25 +126,21 @@ export default class InlineEdit extends PureComponent {
     isConfirmOnBlurDisabled: false,
   }
 
-  renderEditableView = () => (
-    <Content
-      label={this.props.label}
-      isEditing={this.props.isEditing}
-      isInvalid={this.props.isInvalid}
-      isLabelHidden={this.props.isLabelHidden}
-      areActionButtonsHidden={this.props.areActionButtonsHidden}
-      isConfirmOnBlurDisabled={this.props.isConfirmOnBlurDisabled}
-      onConfirm={this.props.onConfirm}
-      onCancel={this.props.onCancel}
-      onEditRequested={this.props.onEditRequested}
-      readView={this.props.readView}
-      editView={this.props.editView}
-    />
-  )
-
   render = () => (
     <div className={styles.root}>
-      {this.renderEditableView()}
+      <Content
+        label={this.props.label}
+        isEditing={this.props.isEditing}
+        isInvalid={this.props.isInvalid}
+        isLabelHidden={this.props.isLabelHidden}
+        areActionButtonsHidden={this.props.areActionButtonsHidden}
+        isConfirmOnBlurDisabled={this.props.isConfirmOnBlurDisabled}
+        onConfirm={this.props.onConfirm}
+        onCancel={this.props.onCancel}
+        onEditRequested={this.props.onEditRequested}
+        readView={this.props.readView}
+        editView={this.props.editView}
+      />
     </div>
   )
 }

@@ -6,7 +6,6 @@ import { mount, shallow } from 'enzyme';
 import Radio from '../src/Radio';
 import { name } from '../package.json';
 
-
 const { expect } = chai;
 chai.use(chaiEnzyme());
 

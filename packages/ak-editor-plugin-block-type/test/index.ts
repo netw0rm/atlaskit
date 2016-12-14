@@ -178,191 +178,189 @@ describe('ak-editor-plugin-block-type', () => {
   });
 
   describe('keymap', () => {
-    if(browser.mac) {
-      context('when on a Mac', () => {
-        context('when hits Cmd-Alt-0', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+    (browser.mac ? context: context.skip)('when on a Mac', () => {
+      context('when hits Cmd-Alt-0', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Cmd-Alt-0");
-            expect(toggleBlockType).to.have.been.calledWith('normal');
-          });
-        });
-
-        context('when hits Cmd-Alt-1', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Cmd-Alt-1");
-            expect(toggleBlockType).to.have.been.calledWith('heading1');
-          });
-        });
-
-        context('when hits Cmd-Alt-2', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Cmd-Alt-2");
-            expect(toggleBlockType).to.have.been.calledWith('heading2');
-          });
-        });
-
-        context('when hits Cmd-Alt-3', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Cmd-Alt-3");
-            expect(toggleBlockType).to.have.been.calledWith('heading3');
-          });
-        });
-
-        context('when hits Cmd-Alt-4', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Cmd-Alt-4");
-            expect(toggleBlockType).to.have.been.calledWith('heading4');
-          });
-        });
-
-        context('when hits Cmd-Alt-5', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Cmd-Alt-5");
-            expect(toggleBlockType).to.have.been.calledWith('heading5');
-          });
-        });
-
-        context('when hits Cmd-Alt-7', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Cmd-Alt-7");
-            expect(toggleBlockType).to.have.been.calledWith('quote');
-          });
-        });
-
-        context('when hits Cmd-Alt-8', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Cmd-Alt-8");
-            expect(toggleBlockType).to.have.been.calledWith('code');
-          });
-        });
-
-        context('when context changed', () => {
-          it('does not dispatch keymap function that does not exist under new context', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-            plugin.changeContext('comment');
-
-            pm.input.dispatchKey("Cmd-Alt-1");
-            expect(toggleBlockType).to.not.have.been.called;
-          });
-
-          it('dispatches keymap function that exists under new context', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-            plugin.changeContext('pr');
-
-            pm.input.dispatchKey("Cmd-Alt-1");
-            expect(toggleBlockType).to.have.been.calledWith('heading1');
-          });
+          pm.input.dispatchKey("Cmd-Alt-0");
+          expect(toggleBlockType).to.have.been.calledWith('normal');
         });
       });
-    } else {
-      context('when not on a Mac', () => {
-        context('when hits Ctrl-0', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Ctrl-0");
-            expect(toggleBlockType).to.have.been.calledWith('normal');
-          });
-        });
+      context('when hits Cmd-Alt-1', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-        context('when hits Ctrl-1', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Ctrl-1");
-            expect(toggleBlockType).to.have.been.calledWith('heading1');
-          });
-        });
-
-        context('when hits Ctrl-2', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Ctrl-2");
-            expect(toggleBlockType).to.have.been.calledWith('heading2');
-          });
-        });
-
-        context('when hits Ctrl-3', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Ctrl-3");
-            expect(toggleBlockType).to.have.been.calledWith('heading3');
-          });
-        });
-
-        context('when hits Ctrl-4', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Ctrl-4");
-            expect(toggleBlockType).to.have.been.calledWith('heading4');
-          });
-        });
-
-        context('when hits Ctrl-5', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Ctrl-5");
-            expect(toggleBlockType).to.have.been.calledWith('heading5');
-          });
-        });
-
-        context('when hits Ctrl-7', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Ctrl-7");
-            expect(toggleBlockType).to.have.been.calledWith('quote');
-          });
-        });
-
-        context('when hits Ctrl-8', () => {
-          it('toggles paragraph', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-
-            pm.input.dispatchKey("Ctrl-8");
-            expect(toggleBlockType).to.have.been.calledWith('code');
-          });
+          pm.input.dispatchKey("Cmd-Alt-1");
+          expect(toggleBlockType).to.have.been.calledWith('heading1');
         });
       });
-    }
+
+      context('when hits Cmd-Alt-2', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Cmd-Alt-2");
+          expect(toggleBlockType).to.have.been.calledWith('heading2');
+        });
+      });
+
+      context('when hits Cmd-Alt-3', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Cmd-Alt-3");
+          expect(toggleBlockType).to.have.been.calledWith('heading3');
+        });
+      });
+
+      context('when hits Cmd-Alt-4', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Cmd-Alt-4");
+          expect(toggleBlockType).to.have.been.calledWith('heading4');
+        });
+      });
+
+      context('when hits Cmd-Alt-5', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Cmd-Alt-5");
+          expect(toggleBlockType).to.have.been.calledWith('heading5');
+        });
+      });
+
+      context('when hits Cmd-Alt-7', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Cmd-Alt-7");
+          expect(toggleBlockType).to.have.been.calledWith('quote');
+        });
+      });
+
+      context('when hits Cmd-Alt-8', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Cmd-Alt-8");
+          expect(toggleBlockType).to.have.been.calledWith('code');
+        });
+      });
+
+      context('when context changed', () => {
+        it('does not dispatch keymap function that does not exist under new context', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+          plugin.changeContext('comment');
+
+          pm.input.dispatchKey("Cmd-Alt-1");
+          expect(toggleBlockType).to.not.have.been.called;
+        });
+
+        it('dispatches keymap function that exists under new context', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+          plugin.changeContext('pr');
+
+          pm.input.dispatchKey("Cmd-Alt-1");
+          expect(toggleBlockType).to.have.been.calledWith('heading1');
+        });
+      });
+    });
+    
+    (browser.mac ? context.skip: context)('when not on a Mac', () => {
+      context('when hits Ctrl-0', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Ctrl-0");
+          expect(toggleBlockType).to.have.been.calledWith('normal');
+        });
+      });
+
+      context('when hits Ctrl-1', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Ctrl-1");
+          expect(toggleBlockType).to.have.been.calledWith('heading1');
+        });
+      });
+
+      context('when hits Ctrl-2', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Ctrl-2");
+          expect(toggleBlockType).to.have.been.calledWith('heading2');
+        });
+      });
+
+      context('when hits Ctrl-3', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Ctrl-3");
+          expect(toggleBlockType).to.have.been.calledWith('heading3');
+        });
+      });
+
+      context('when hits Ctrl-4', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Ctrl-4");
+          expect(toggleBlockType).to.have.been.calledWith('heading4');
+        });
+      });
+
+      context('when hits Ctrl-5', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Ctrl-5");
+          expect(toggleBlockType).to.have.been.calledWith('heading5');
+        });
+      });
+
+      context('when hits Ctrl-7', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Ctrl-7");
+          expect(toggleBlockType).to.have.been.calledWith('quote');
+        });
+      });
+
+      context('when hits Ctrl-8', () => {
+        it('toggles paragraph', () => {
+          const { pm, plugin } = editor(doc(p('text')));
+          const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
+
+          pm.input.dispatchKey("Ctrl-8");
+          expect(toggleBlockType).to.have.been.calledWith('code');
+        });
+      });
+    });
 
     context('when hits enter', () => {
       it('calls splitCodeBlock', () => {

@@ -29,55 +29,53 @@ describe('ak-editor-plugin-lists', () => {
       });
     });
 
-    if(browser.mac) {
-      context('when on a mac', () => {
-        context('when hit Shift-Cmd-L', () => {
-          it('should toggle ordered list', () => {
-            const { pm, plugin } = editor(doc(ul(li(p('text')))));
-            const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
+    (browser.mac ? context: context.skip)('when on a mac', () => {
+      context('when hit Shift-Cmd-L', () => {
+        it('should toggle ordered list', () => {
+          const { pm, plugin } = editor(doc(ul(li(p('text')))));
+          const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
 
-            pm.input.dispatchKey("Shift-Cmd-L");
+          pm.input.dispatchKey("Shift-Cmd-L");
 
-            expect(toggleOrderedList).to.have.been.callCount(1);
-          });
-        });
-
-        context('when hit Shift-Cmd-B', () => {
-          it('should toggle bullet list', () => {
-            const { pm, plugin } = editor(doc(ul(li(p('text')))));
-            const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
-
-            pm.input.dispatchKey("Shift-Cmd-B");
-
-            expect(toggleBulletList).to.have.been.callCount(1);
-          })
+          expect(toggleOrderedList).to.have.been.callCount(1);
         });
       });
-    } else {
-      context('when not on a mac', () => {
-        context('when hit Shift-Ctrl-L', () => {
-          it('should toggle ordered list', () => {
-            const { pm, plugin } = editor(doc(ul(li(p('text')))));
-            const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
 
-            pm.input.dispatchKey("Shift-Ctrl-L");
+      context('when hit Shift-Cmd-B', () => {
+        it('should toggle bullet list', () => {
+          const { pm, plugin } = editor(doc(ul(li(p('text')))));
+          const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
 
-            expect(toggleOrderedList).to.have.been.callCount(1);
-          });
-        });
+          pm.input.dispatchKey("Shift-Cmd-B");
 
-        context('when hit Shift-Ctrl-B', () => {
-          it('should toggle bullet list', () => {
-            const { pm, plugin } = editor(doc(ul(li(p('text')))));
-            const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
+          expect(toggleBulletList).to.have.been.callCount(1);
+        })
+      });
+    });
 
-            pm.input.dispatchKey("Shift-Ctrl-B");
+    (browser.mac ? context.skip: context)('when not on a mac', () => {
+      context('when hit Shift-Ctrl-L', () => {
+        it('should toggle ordered list', () => {
+          const { pm, plugin } = editor(doc(ul(li(p('text')))));
+          const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
 
-            expect(toggleBulletList).to.have.been.callCount(1);
-          });
+          pm.input.dispatchKey("Shift-Ctrl-L");
+
+          expect(toggleOrderedList).to.have.been.callCount(1);
         });
       });
-    }
+
+      context('when hit Shift-Ctrl-B', () => {
+        it('should toggle bullet list', () => {
+          const { pm, plugin } = editor(doc(ul(li(p('text')))));
+          const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
+
+          pm.input.dispatchKey("Shift-Ctrl-B");
+
+          expect(toggleBulletList).to.have.been.callCount(1);
+        });
+      });
+    });
   });
 
   describe('API', () => {

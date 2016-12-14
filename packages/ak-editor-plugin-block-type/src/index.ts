@@ -173,7 +173,7 @@ export class BlockTypeState {
       const hardBreakNode = hard_break.create();
 
       if(node.type.validContent(Fragment.from(hardBreakNode))) {
-        pm.tr.replaceSelection(hard_break.create()).applyAndScroll();
+        pm.tr.replaceSelection(hardBreakNode).applyAndScroll();
         return true;
       }
     }

@@ -36,8 +36,12 @@ Expose a `RadioGroup` component, which wraps a set of related `Radio` items.
 
 * `name`: String - The name which is submitted with the data
 * `value`: String - The value of the radio input
+* `disabled`: Boolean - Whether the radio input is disabled
+* `selected`: Boolean - Whether the radio input is checked
 
 ### Smart component
+
+#### RadioGroup
 
 * The smart component will automatically set up the `onRadioSelect` handler to update the `selectedValue` property.
 * This may need to expose a `defaultSelectedValue` property to allow the initial value to be set up.

@@ -2,6 +2,9 @@ import classNames from 'classnames';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 
+// This is hard codes to 20 pixels for now but if we end up doing t-shirt sizing AK-1153
+const SPINNER_SIZE = 20;
+
 export default class Spinner extends PureComponent {
   static propTypes = {
     onComplete: PropTypes.func,
@@ -28,11 +31,38 @@ export default class Spinner extends PureComponent {
       [styles.spinner]: true,
       [styles.active]: !this.props.isCompleting,
     };
+    const strokeWidth = Math.round(SPINNER_SIZE / 10);
+    const strokeRadius = (SPINNER_SIZE / 2) - (strokeWidth / 2);
+    const circumference = Math.PI * strokeRadius * 2;
+    const dashStyles = {
+      'stroke-dashoffset': this.props.isCompleting ? circumference : 0.8 * circumference,
+      'stroke-dasharray': circumference,
+    };
     return (
       <div style={{ display: 'inline-flex' }}>
-        <div className={classNames(spinnerStyles)} onTransitionEnd={this.handleTransitionEnd}>
-          <svg width="32px" height="32px" xmlns="http://www.w3.org/2000/svg">
-            <circle fill="none" strokeWidth="3" strokeLinecap="round" cx="16" cy="16" r="14" />
+        <div
+          className={classNames(spinnerStyles)}
+          onTransitionEnd={this.handleTransitionEnd}
+          style={{
+            height: `${SPINNER_SIZE}px`,
+            width: `${SPINNER_SIZE}px`,
+          }}
+        >
+          <svg
+            height={SPINNER_SIZE}
+            width={SPINNER_SIZE}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox={`0 0 ${SPINNER_SIZE} ${SPINNER_SIZE}`}
+          >
+            <circle
+              fill="none"
+              strokeWidth={strokeWidth}
+              strokeLinecap="round"
+              cx={SPINNER_SIZE / 2}
+              cy={SPINNER_SIZE / 2}
+              r={strokeRadius}
+              style={dashStyles}
+            />
           </svg>
         </div>
       </div>

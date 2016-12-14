@@ -1,0 +1,30 @@
+{
+  "name": "ak-editor-core",
+  "version": "0.0.0",
+  "description": "A package contains Atlassian editor core functionality",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
+  "ak:webpack:raw": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "prepublish": "../../node_modules/.bin/in-publish && { ../../node_modules/.bin/tsc -p build/es5 && ../../node_modules/.bin/tsc -p build/es2015; } || ../../node_modules/.bin/not-in-publish"
+  },
+  "files": [
+    "dist",
+    "**/*.d.ts"
+  ],
+  "license": "Apache-2.0",
+  "author": "Atlassian Pty Ltd",
+  "dependencies": {
+    "ak-editor-prosemirror": "^4.3.14",
+    "ak-editor-schema": "^4.1.0",
+    "tslib": "^1.2.0"
+  },
+  "devDependencies": {
+    "ak-editor-test": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  }
+}

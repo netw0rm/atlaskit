@@ -11,7 +11,8 @@
   },
   "files": [
     "dist",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "**/**/*.d.ts"
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",

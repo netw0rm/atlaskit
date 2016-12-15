@@ -50,7 +50,7 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
   const rules = Array<InputRule>();
 
   if (schema.nodes.heading) {
-    rules.push(headingRule(schema.nodes.heading, 3));
+    rules.push(headingRule(schema.nodes.heading, 6));
   }
 
   if (schema.nodes.bullet_list) {

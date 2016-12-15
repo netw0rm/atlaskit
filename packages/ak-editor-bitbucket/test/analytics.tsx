@@ -278,8 +278,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     });
   });
 
-  // NOTE: Heading level 3 is currently the highest supported level
-  for (let level = 1; level <= 3; level++) {
+  for (let level = 1; level <= 6; level++) {
     it(`atlassian.editor.format.heading${level}.autoformatting`, () => {
       pm.input.insertText(0, 0, '#'.repeat(level) + ' ');
       expect(handler).to.have.been.calledWith(`atlassian.editor.format.heading${level}.autoformatting`);

@@ -296,7 +296,7 @@ export default class StatelessCalendar extends PureComponent {
           <div {...css.heading}>
             <div onClick={this.handleClickPrev} aria-hidden="true">
               <Btn>
-                <ArrowleftIcon />
+                <ArrowleftIcon label="Last month" />
               </Btn>
             </div>
             <div {...css.monthAndYear}>
@@ -304,7 +304,7 @@ export default class StatelessCalendar extends PureComponent {
             </div>
             <div onClick={this.handleClickNext} aria-hidden="true">
               <Btn>
-                <ArrowrightIcon />
+                <ArrowrightIcon label="Next month" />
               </Btn>
             </div>
           </div>

@@ -125,10 +125,10 @@ export default class Item extends PureComponent {
     }
   }
 
-  handleClick = () => {
+  handleClick = (event) => {
     // disabled item can't be activated
     if (!this.props.isDisabled) {
-      this.props.onActivate({ item: this });
+      this.props.onActivate({ item: this, event });
     }
   }
 

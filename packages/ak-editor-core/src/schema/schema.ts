@@ -1,7 +1,7 @@
 //
 // THIS FILE IS DEPRECATED AND WILL BE REMOVED IN THE FUTURE.
 //
-import { Block, Text, Schema, NodeType, MarkType } from 'ak-editor-prosemirror';
+import { Block, Text, Schema, NodeType, MarkType } from '../prosemirror';
 
 import { BlockQuoteNodeType } from './nodes/blockquote';
 import { BulletListNodeType } from './nodes/bullet-list';

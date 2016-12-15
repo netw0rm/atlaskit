@@ -1,8 +1,8 @@
-import { Schema, Text } from 'ak-editor-prosemirror';
+import { Schema, Text } from '../../../src/prosemirror';
 import { default as chai, expect } from 'chai';
 import { DocNodeType } from '../../../src/schema';
 
-describe('ak-editor-schema doc node', () => {
+describe('ak-editor-core/schema doc node', () => {
   it('throws an error if it is not named "doc"', () => {
     expect(() => {
       new Schema({

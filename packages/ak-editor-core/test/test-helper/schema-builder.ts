@@ -3,7 +3,7 @@ import { p, text, nodeFactory, markFactory, sequence, RefsTracker } from '../../
 import schema from '../../src/schema';
 import { expect } from 'chai';
 
-describe('ak-editor-test schema-builder', () => {
+describe('test-helper schema-builder', () => {
   const clone = (object = {}) => Object.assign({}, object);
 
   describe('text', () => {

@@ -1,4 +1,4 @@
-import { ProseMirror, TextSelection } from 'ak-editor-prosemirror';
+import { ProseMirror, TextSelection } from '../../prosemirror';
 import { isCodeBlockNode } from '../../schema';
 
 class CodeBlockPasteListener {

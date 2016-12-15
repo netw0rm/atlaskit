@@ -1,9 +1,9 @@
 import React, { PureComponent, ReactElement } from 'react';
-import { ProseMirror } from 'ak-editor-prosemirror';
-import { BlockTypeState } from 'ak-editor-plugin-block-type';
-import { HyperlinkState } from 'ak-editor-plugin-hyperlink';
-import { ListsState } from 'ak-editor-plugin-lists';
-import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
+import { ProseMirror } from '../../prosemirror';
+import { BlockTypeState } from '../../plugins/block-type';
+import { HyperlinkState } from '../../plugins/hyperlink';
+import { ListsState } from '../../plugins/lists';
+import { TextFormattingState } from '../../plugins/text-formatting';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 

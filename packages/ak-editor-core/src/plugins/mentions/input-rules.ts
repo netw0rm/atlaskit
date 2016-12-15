@@ -1,4 +1,4 @@
-import { ProseMirror, InputRule, Schema, Mark } from 'ak-editor-prosemirror';
+import { ProseMirror, InputRule, Schema, Mark } from '../../prosemirror';
 
 function replaceWithMark(
   pm: ProseMirror,

@@ -1,4 +1,4 @@
-import { Node, Schema, Text } from 'ak-editor-prosemirror';
+import { Node, Schema, Text } from '../../../src/prosemirror';
 import { default as chai, expect } from 'chai';
 import { chaiPlugin } from '../../../src/test-helper';
 import { toHTML } from '../../../src/test-helper';
@@ -6,7 +6,7 @@ import { DocNodeType, MentionQueryMarkType } from '../../../src/schema';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-schema mention-query mark', () => {
+describe('ak-editor-core/schema mention-query mark', () => {
 
   it('throws an error if it is not named "mention_query"', () => {
     expect(() => {

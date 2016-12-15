@@ -1,4 +1,4 @@
-import { Paragraph as ParagraphNodeType, Node } from 'ak-editor-prosemirror';
+import { Paragraph as ParagraphNodeType, Node } from '../../prosemirror';
 
 export { ParagraphNodeType };
 

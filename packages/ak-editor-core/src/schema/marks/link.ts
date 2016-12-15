@@ -1,4 +1,4 @@
-import { LinkMark as BaseLinkMark, Mark } from 'ak-editor-prosemirror';
+import { LinkMark as BaseLinkMark, Mark } from '../../prosemirror';
 
 export class LinkMarkType extends BaseLinkMark {
   get inclusiveRight() {

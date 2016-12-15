@@ -1,4 +1,4 @@
-import { Heading as HeadingNodeType, Node } from 'ak-editor-prosemirror';
+import { Heading as HeadingNodeType, Node } from '../../prosemirror';
 
 export { HeadingNodeType };
 

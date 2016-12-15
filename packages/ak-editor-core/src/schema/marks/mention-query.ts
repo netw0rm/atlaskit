@@ -1,4 +1,4 @@
-import { Mark, MarkType, Schema } from 'ak-editor-prosemirror';
+import { Mark, MarkType, Schema } from '../../prosemirror';
 
 export class MentionQueryMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {

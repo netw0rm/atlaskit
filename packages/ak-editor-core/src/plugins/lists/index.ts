@@ -14,7 +14,7 @@ import {
   Selection,
   TextSelection,
   UpdateScheduler
-} from 'ak-editor-prosemirror';
+} from '../../prosemirror';
 
 import {
   BulletListNodeType,

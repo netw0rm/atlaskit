@@ -9,7 +9,7 @@ import {
   Keymap,
   browser,
   Node
-} from 'ak-editor-prosemirror';
+} from '../../prosemirror';
 import {
   BlockQuoteNodeType,
   CodeBlockNodeType,

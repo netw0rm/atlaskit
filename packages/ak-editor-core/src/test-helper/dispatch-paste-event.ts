@@ -1,4 +1,4 @@
-import { ProseMirror } from 'ak-editor-prosemirror';
+import { ProseMirror } from '../prosemirror';
 import createEvent from './create-event';
 
 function focusAndSelect(element: HTMLElement) {

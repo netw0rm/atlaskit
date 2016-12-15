@@ -1,11 +1,11 @@
-import { Schema, Text } from 'ak-editor-prosemirror';
+import { Schema, Text } from '../../../src/prosemirror';
 import { default as chai, expect } from 'chai';
 import { toHTML, fromHTML } from '../../../src/test-helper';
 import { DocNodeType, MentionNodeType } from '../../../src/schema';
 
 const schema = makeSchema();
 
-describe('ak-editor-schema mention node', () => {
+describe('ak-editor-core/schema mention node', () => {
   it('throws an error if it is not named "mention"', () => {
     expect(() => {
       new Schema({

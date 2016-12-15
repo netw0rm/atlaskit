@@ -8,7 +8,7 @@ const { expect } = chai;
 const ajv = new Ajv();
 const validate = ajv.compile(jsonSchema(schema));
 
-describe('ak-editor-bitbucket: schema as JSON Schema', () => {
+describe('ak-editor-core: schema as JSON Schema', () => {
   it('permits a paragraph with text', () => {
     expect(validate({
       "type": "doc",

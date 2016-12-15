@@ -1,4 +1,4 @@
-import { Node, Schema, Text } from 'ak-editor-prosemirror';
+import { Node, Schema, Text } from '../../../src/prosemirror';
 import { default as chai, expect } from 'chai';
 import { chaiPlugin } from '../../../src/test-helper';
 import { fromHTML, toHTML } from '../../../src/test-helper';
@@ -6,7 +6,7 @@ import { DocNodeType, MonoMarkType } from '../../../src/schema';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-schema mono mark', () => {
+describe('ak-editor-core/schema mono mark', () => {
   it('throws an error if it is not named "mono"', () => {
     expect(() => {
       new Schema({

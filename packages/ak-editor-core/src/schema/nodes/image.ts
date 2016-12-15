@@ -1,4 +1,4 @@
-import { Attribute, Inline, Node, Schema } from 'ak-editor-prosemirror';
+import { Attribute, Inline, Node, Schema } from '../../prosemirror';
 
 export class ImageNodeType extends Inline {
   constructor(name: string, schema: Schema) {

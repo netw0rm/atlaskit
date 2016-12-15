@@ -1,7 +1,7 @@
 import MentionsPlugin from '../../../src/plugins/mentions';
 import { MentionQueryMarkType, MentionNodeType } from '../../../src/schema';
 import { ProseMirror, Schema, ResolvedPos,
-         schema as schemaBasic } from 'ak-editor-prosemirror';
+         schema as schemaBasic } from '../../../src/prosemirror';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';

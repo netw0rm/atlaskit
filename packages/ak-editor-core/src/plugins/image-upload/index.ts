@@ -8,7 +8,7 @@ import {
   NodeSelection,
   Schema,
   TextSelection
-} from 'ak-editor-prosemirror';
+} from '../../prosemirror';
 import { ImageNodeType } from '../../schema';
 import PasteAdapter from './paste-adapter';
 import DropAdapter from './drop-adapter';

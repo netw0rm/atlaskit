@@ -1,8 +1,8 @@
-import { Schema, Text } from 'ak-editor-prosemirror';
+import { Schema, Text } from '../../../src/prosemirror';
 import { default as chai, expect } from 'chai';
 import { DocNodeType, ImageNodeType } from '../../../src/schema';
 
-describe('ak-editor-schema image node', () => {
+describe('ak-editor-core/schema image node', () => {
   it('throws an error if it is not named "image"', () => {
     expect(() => {
       new Schema({

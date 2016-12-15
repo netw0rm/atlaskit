@@ -1,4 +1,4 @@
-import { Inline, Attribute, Node, Schema } from 'ak-editor-prosemirror';
+import { Inline, Attribute, Node, Schema } from '../../prosemirror';
 
 export interface MentionAttributes {
   id: any;

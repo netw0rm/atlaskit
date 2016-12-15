@@ -12,7 +12,7 @@ import {
   Node,
   Schema,
   TextSelection
-} from 'ak-editor-prosemirror';
+} from '../../prosemirror';
 import { LinkMarkType } from '../../schema';
 import hyperlinkRule from './input-rule';
 import pasteTransformer from './paste-transformer';

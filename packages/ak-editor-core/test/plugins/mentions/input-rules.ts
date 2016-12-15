@@ -2,7 +2,7 @@ import mocha from 'mocha';
 import { default as plugin } from '../../../src/plugins/mentions';
 import { MentionQueryMarkType, MentionNodeType } from '../../../src/schema';
 import { ProseMirror, Schema, ResolvedPos,
-         schema as schemaBasic } from 'ak-editor-prosemirror';
+         schema as schemaBasic } from '../../../src/prosemirror';
 import { default as chai, expect } from 'chai';
 import { chaiPlugin } from '../../../src/test-helper';
 

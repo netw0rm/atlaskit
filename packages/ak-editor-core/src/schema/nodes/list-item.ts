@@ -1,4 +1,4 @@
-import { ListItem as ListItemNodeType, Node } from 'ak-editor-prosemirror';
+import { ListItem as ListItemNodeType, Node } from '../../prosemirror';
 
 export { ListItemNodeType };
 

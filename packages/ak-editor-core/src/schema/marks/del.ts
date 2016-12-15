@@ -1,4 +1,4 @@
-import { MarkType, Mark } from 'ak-editor-prosemirror';
+import { MarkType, Mark } from '../../prosemirror';
 
 export class DelMarkType extends MarkType {
   get matchDOMTag() {

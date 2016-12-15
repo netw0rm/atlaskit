@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import NumberListIcon from 'ak-icon/glyph/editor/list/number';
 import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
 import IconButton from '../ToolbarIconButton';
-import { ListsState } from 'ak-editor-plugin-lists';
+import { ListsState } from '../../../src/plugins/lists';
 
 export interface Props {
   pluginState: ListsState;

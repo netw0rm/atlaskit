@@ -1,4 +1,4 @@
-import { HorizontalRule as HorizontalRuleNodeType, Node } from 'ak-editor-prosemirror';
+import { HorizontalRule as HorizontalRuleNodeType, Node } from '../../prosemirror';
 
 export { HorizontalRuleNodeType };
 

@@ -1,7 +1,7 @@
-import { Plugin, ProseMirror, Schema } from 'ak-editor-prosemirror';
+import { Plugin, ProseMirror, Schema } from '../prosemirror';
 import SyncPlugin from './sync-plugin';
 import { RefsNode } from './schema-builder';
-import schema from 'ak-editor-schema';
+import schema from '../schema';
 
 export interface Options {
   doc: RefsNode;

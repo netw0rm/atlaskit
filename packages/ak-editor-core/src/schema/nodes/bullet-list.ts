@@ -1,4 +1,4 @@
-import { BulletList as BulletListNodeType, Node } from 'ak-editor-prosemirror';
+import { BulletList as BulletListNodeType, Node } from '../../prosemirror';
 
 export { BulletListNodeType };
 

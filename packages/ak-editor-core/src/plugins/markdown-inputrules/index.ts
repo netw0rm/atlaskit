@@ -13,7 +13,7 @@ import {
   wrappingInputRule,
   NodeType,
   Node
-} from 'ak-editor-prosemirror';
+} from '../../prosemirror';
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in

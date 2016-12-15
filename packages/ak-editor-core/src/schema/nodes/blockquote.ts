@@ -1,4 +1,4 @@
-import { Block, Node, Schema } from 'ak-editor-prosemirror';
+import { Block, Node, Schema } from '../../prosemirror';
 
 export class BlockQuoteNodeType extends Block {
   constructor(name: string, schema: Schema) {

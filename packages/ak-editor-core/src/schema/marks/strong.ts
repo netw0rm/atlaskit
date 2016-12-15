@@ -1,4 +1,4 @@
-import { StrongMark as StrongMarkType, Mark } from 'ak-editor-prosemirror';
+import { StrongMark as StrongMarkType, Mark } from '../../prosemirror';
 
 export { StrongMarkType };
 

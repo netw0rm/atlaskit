@@ -1,4 +1,4 @@
-import { Plugin, ProseMirror, Slice } from 'ak-editor-prosemirror';
+import { Plugin, ProseMirror, Slice } from '../prosemirror';
 
 export class SyncPlugin {
   constructor(pm: ProseMirror) {

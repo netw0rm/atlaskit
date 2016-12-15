@@ -1,4 +1,4 @@
-import { Attribute, Mark, MarkType, Schema } from 'ak-editor-prosemirror';
+import { Attribute, Mark, MarkType, Schema } from '../../prosemirror';
 
 export type TypeAttr = 'sub' | 'sup'
 

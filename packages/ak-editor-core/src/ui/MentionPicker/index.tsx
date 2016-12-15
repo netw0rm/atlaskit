@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import MentionsPlugin, { MentionsPluginState } from 'ak-editor-plugin-mentions';
+import MentionsPlugin, { MentionsPluginState } from '../../../src/plugins/mentions';
 import { MentionPicker as PfMentionPicker } from 'ak-mention';
 
 export interface Props {

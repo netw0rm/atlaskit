@@ -1,4 +1,4 @@
-import { Node, Schema, Text } from 'ak-editor-prosemirror';
+import { Node, Schema, Text } from '../../../src/prosemirror';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { chaiPlugin } from '../../../src/test-helper';
@@ -7,7 +7,7 @@ import { DocNodeType, SubSupMarkType } from '../../../src/schema';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-schema subsup mark', () => {
+describe('ak-editor-core/schema subsup mark', () => {
   it('throws an error if it is not named "subsup"', () => {
     expect(() => {
       new Schema({

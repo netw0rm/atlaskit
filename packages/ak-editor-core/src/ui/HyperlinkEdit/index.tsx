@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { HyperlinkState } from 'ak-editor-plugin-hyperlink'
+import { HyperlinkState } from '../../../src/plugins/hyperlink'
 import OpenIcon from 'ak-icon/glyph/editor/open';
 import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import IconButton from '../ToolbarIconButton';

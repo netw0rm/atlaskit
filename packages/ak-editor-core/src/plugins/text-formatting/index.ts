@@ -7,7 +7,7 @@ import {
   Schema,
   UpdateScheduler,
   Keymap
-} from 'ak-editor-prosemirror';
+} from '../../prosemirror';
 import {
   EmMarkType,
   MonoMarkType,

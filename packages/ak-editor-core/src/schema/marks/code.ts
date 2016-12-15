@@ -1,4 +1,4 @@
-import { CodeMark as BaseCodeMark, Mark } from 'ak-editor-prosemirror';
+import { CodeMark as BaseCodeMark, Mark } from '../../prosemirror';
 
 export class CodeMarkType extends BaseCodeMark {
   get inclusiveRight() {

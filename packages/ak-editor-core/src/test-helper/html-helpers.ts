@@ -1,5 +1,5 @@
-import schema from 'ak-editor-schema';
-import { Node, Schema } from 'ak-editor-prosemirror';
+import schema from '../schema';
+import { Node, Schema } from '../prosemirror';
 
 export const fromHTML = (html: string, schema_: Schema = schema): Node => {
   const el = document.createElement('div');

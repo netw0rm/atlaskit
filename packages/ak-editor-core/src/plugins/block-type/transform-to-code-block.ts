@@ -1,4 +1,4 @@
-import { ProseMirror, ReplaceStep, Slice, Step, RemoveMarkStep, EditorTransform, NodeSelection } from 'ak-editor-prosemirror';
+import { ProseMirror, ReplaceStep, Slice, Step, RemoveMarkStep, EditorTransform, NodeSelection } from '../../prosemirror';
 import { CodeBlockNodeType } from '../../schema';
 
 // copied from prosemirror/src/commands/index.js

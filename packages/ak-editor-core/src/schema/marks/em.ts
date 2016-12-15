@@ -1,4 +1,4 @@
-import { EmMark as EmMarkType, Mark } from 'ak-editor-prosemirror';
+import { EmMark as EmMarkType, Mark } from '../../prosemirror';
 
 export { EmMarkType };
 

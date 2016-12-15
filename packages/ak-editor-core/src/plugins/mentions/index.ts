@@ -1,4 +1,4 @@
-import { Plugin, ProseMirror, inputRules, TextSelection, Keymap, Schema } from 'ak-editor-prosemirror';
+import { Plugin, ProseMirror, inputRules, TextSelection, Keymap, Schema } from '../../prosemirror';
 
 import {
   MentionNodeType,

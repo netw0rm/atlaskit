@@ -1,9 +1,9 @@
-import { Schema, Text } from 'ak-editor-prosemirror';
+import { Schema, Text } from '../../../src/prosemirror';
 import { default as chai, expect } from 'chai';
 import { toHTML, fromHTML } from '../../../src/test-helper';
 import { DocNodeType, EmojiNodeType } from '../../../src/schema';
 
-describe('ak-editor-schema emoji node', () => {
+describe('ak-editor-core/schema emoji node', () => {
   it('throws an error if it is not named "emoji"', () => {
     expect(() => {
       new Schema({

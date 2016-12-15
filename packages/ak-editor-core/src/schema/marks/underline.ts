@@ -1,4 +1,4 @@
-import { MarkType, Mark, Schema } from 'ak-editor-prosemirror';
+import { MarkType, Mark, Schema } from '../../prosemirror';
 
 export class UnderlineMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {

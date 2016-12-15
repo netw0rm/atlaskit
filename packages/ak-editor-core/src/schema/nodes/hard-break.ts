@@ -1,4 +1,4 @@
-import { HardBreak as HardBreakNodeType, Node } from 'ak-editor-prosemirror';
+import { HardBreak as HardBreakNodeType, Node } from '../../prosemirror';
 
 export { HardBreakNodeType };
 

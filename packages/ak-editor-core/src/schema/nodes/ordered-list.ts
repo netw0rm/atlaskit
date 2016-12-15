@@ -1,4 +1,4 @@
-import { OrderedList as OrderedListNodeType, Node } from 'ak-editor-prosemirror';
+import { OrderedList as OrderedListNodeType, Node } from '../../prosemirror';
 
 export { OrderedListNodeType };
 

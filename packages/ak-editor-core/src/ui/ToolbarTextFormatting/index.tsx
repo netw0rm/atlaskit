@@ -3,7 +3,7 @@ import BoldIcon from 'ak-icon/glyph/editor/bold';
 import ItalicIcon from 'ak-icon/glyph/editor/italic';
 import UnderlineIcon from 'ak-icon/glyph/editor/underline';
 import CodeIcon from 'ak-icon/glyph/editor/code';
-import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
+import { TextFormattingState } from '../../../src/plugins/text-formatting';
 import IconButton from '../ToolbarIconButton';
 
 export interface Props {

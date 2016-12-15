@@ -1,4 +1,4 @@
-import { ProseMirror } from 'ak-editor-prosemirror';
+import { ProseMirror } from '../../prosemirror';
 
 export type ImageUploadPasteHandler = (pm: ProseMirror, e: ClipboardEvent) => boolean;
 

@@ -121,22 +121,12 @@ describe(name, () => {
       });
     });
 
-    it('should call onFocusPrev when the up key is pressed', () => {
-      const wrapper = mount(<Item onFocusPrev={onActivate} />);
+    it('should call onKeyDown when a key other than space and enter is pressed', () => {
+      const wrapper = mount(<Item onKeyDown={onActivate} />);
       wrapper.simulate('keyDown', { keyCode: keyCode('up') });
-      expect(onActivate.calledOnce).to.be.true;
-    });
-
-    it('should call onFocusNext when the down key is pressed', () => {
-      const wrapper = mount(<Item onFocusNext={onActivate} />);
       wrapper.simulate('keyDown', { keyCode: keyCode('down') });
-      expect(onActivate.calledOnce).to.be.true;
-    });
-
-    it('should call onEscapeFrom when the tab key is pressed', () => {
-      const wrapper = mount(<Item onEscapeFrom={onActivate} />);
       wrapper.simulate('keyDown', { keyCode: keyCode('tab') });
-      expect(onActivate.calledOnce).to.be.true;
+      expect(onActivate.calledThrice).to.be.true;
     });
   });
 });

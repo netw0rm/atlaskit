@@ -3,11 +3,16 @@ import { style } from 'glamor';
 import { akFontSizeDefault } from 'akutil-shared-styles';
 
 const css = {
-  font: style({
+  common: style({
     color: 'inherit',
     fontSize: akFontSizeDefault,
   }),
-  input: style({
+  readView: style({
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+  }),
+  editView: style({
     background: 'transparent',
     border: 0,
     padding: 0,
@@ -67,7 +72,7 @@ export default class SingleLineTextInput extends PureComponent {
 
   renderEditView = () => (
     <input
-      {...style(css.input, css.font, this.props.style)}
+      {...style(css.common, css.editView, this.props.style)}
       autoFocus={this.props.hasAutoFocus}
       type="text"
       value={this.props.value}
@@ -76,9 +81,9 @@ export default class SingleLineTextInput extends PureComponent {
   )
 
   renderReadView = () => (
-    <span {...style(css.font, this.props.style)}>
+    <div {...style(css.common, css.readView, this.props.style)}>
       {this.props.value}
-    </span>
+    </div>
   )
 
   render = () => (

@@ -6,7 +6,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-droplist-group"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single ak-droplist-group; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist"

@@ -9,7 +9,7 @@ chai.use(chaiPlugin);
 describe('Del mark - parsing from DOM', () => {
   const del = schema.marks.del.create();
 
-  it.only('supports <del> tag', () => {
+  it('supports <del> tag', () => {
     const doc = fromHTML(`
       <p><del>text</del></p>
     `);

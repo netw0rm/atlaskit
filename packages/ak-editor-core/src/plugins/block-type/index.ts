@@ -20,7 +20,7 @@ import {
   isCodeBlockNode,
   isHeadingNode,
   isParagraphNode
-} from 'ak-editor-schema';
+} from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 import transformToCodeBlock from './transform-to-code-block';
 

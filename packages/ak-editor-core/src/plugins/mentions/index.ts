@@ -3,7 +3,7 @@ import { Plugin, ProseMirror, inputRules, TextSelection, Keymap, Schema } from '
 import {
   MentionNodeType,
   MentionQueryMarkType
-} from 'ak-editor-schema'
+} from '../../schema'
 
 import { mentionQueryRule } from './input-rules';
 

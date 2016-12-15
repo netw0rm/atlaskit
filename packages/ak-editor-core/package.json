@@ -17,7 +17,6 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-prosemirror": "^4.3.14",
-    "ak-editor-schema": "^4.1.0",
     "tslib": "^1.2.0"
   },
   "devDependencies": {

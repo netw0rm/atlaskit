@@ -15,7 +15,7 @@ import {
   StrongMarkType,
   SubSupMarkType,
   UnderlineMarkType
-} from 'ak-editor-schema';
+} from '../../schema';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 

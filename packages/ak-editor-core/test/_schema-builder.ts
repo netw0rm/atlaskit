@@ -16,7 +16,7 @@ import {
   StrongMarkType,
   SubSupMarkType,
   UnderlineMarkType
-} from 'ak-editor-schema';
+} from '../src/schema';
 import { Schema } from 'ak-editor-prosemirror';
 
 export const schema = new Schema({

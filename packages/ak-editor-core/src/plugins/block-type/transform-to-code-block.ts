@@ -1,5 +1,5 @@
 import { ProseMirror, ReplaceStep, Slice, Step, RemoveMarkStep, EditorTransform, NodeSelection } from 'ak-editor-prosemirror';
-import { CodeBlockNodeType } from 'ak-editor-schema';
+import { CodeBlockNodeType } from '../../schema';
 
 // copied from prosemirror/src/commands/index.js
 export default function(nodeType: CodeBlockNodeType, pm: ProseMirror) {

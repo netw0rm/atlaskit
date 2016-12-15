@@ -13,7 +13,7 @@ import {
   Schema,
   TextSelection
 } from 'ak-editor-prosemirror';
-import { LinkMarkType } from 'ak-editor-schema';
+import { LinkMarkType } from '../../schema';
 import hyperlinkRule from './input-rule';
 import pasteTransformer from './paste-transformer';
 

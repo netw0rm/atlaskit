@@ -1,5 +1,5 @@
 import MentionsPlugin from '../../../src/plugins/mentions';
-import { MentionQueryMarkType, MentionNodeType } from 'ak-editor-schema';
+import { MentionQueryMarkType, MentionNodeType } from '../../../src/schema';
 import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';
 import { default as chai, expect } from 'chai';

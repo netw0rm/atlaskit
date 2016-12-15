@@ -22,7 +22,7 @@ import {
   OrderedListNodeType,
   isBulletListNode,
   isOrderedListNode
-} from 'ak-editor-schema'
+} from '../../schema'
 
 export type ListType = 'bullet_list' | 'ordered_list' | null;
 

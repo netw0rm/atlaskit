@@ -1,15 +1,15 @@
 import chai from 'chai';
-import { chaiPlugin } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 import chaiEnzyme from 'chai-enzyme';
 import { mount, ReactWrapper } from 'enzyme';
 import { default as sinon, SinonSpy } from 'sinon';
 import React from 'react';
 import { doc, strong, h1, p } from './_schema-builder';
+import { browser } from 'ak-editor-prosemirror';
 
 import Editor from '../src/index';
 import ImageIcon from 'ak-icon/glyph/editor/image';
-import { createEvent } from 'ak-editor-test';
+import { chaiPlugin, createEvent } from 'ak-editor-test';
 
 chai.use(chaiPlugin);
 chai.use(chaiEnzyme());
@@ -108,7 +108,6 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
         }
       });
     } catch (e) {
-      console.warn('Exception when trying to create mock paste event.', e);
       return this.skip('This environment does not allow mocking paste events - ' + e);
     }
     
@@ -120,26 +119,27 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
   });
 
   it('should invoke upload handler after dropping an image', function(){
+    if (browser.ios) {
+      // Even though Safari supports "drop" DOM event, it doesn't propagate correctly 
+      // causing this test to fail: http://go.atlassian.com/ios-drag-drop
+      return this.skip(`iOS doesn't support drag an drop events.`);
+    }
+
     const contentArea: HTMLElement = (editor.get(0) as any).state.pm.content;
     const event = createEvent('drop');
     
-    try {
-      Object.defineProperties(event, {
-        dataTransfer: {
-          value: {
-            getData: (type: string) => '',
-            setData: () => {},
-            clearData: () => {},
-            types: ['Files'],
-            files: [],
-            items: [],
-          }
+    Object.defineProperties(event, {
+      dataTransfer: {
+        value: {
+          getData: (type: string) => '',
+          setData: () => {},
+          clearData: () => {},
+          types: ['Files'],
+          files: [],
+          items: [],
         }
-      });
-    } catch (e) {
-      console.warn('Exception when trying to create mock drop event.', e);
-      return this.skip('This environment does not allow mocking drop events - ' + e);
-    }
+      }
+    });
     
     contentArea.dispatchEvent(event);
     

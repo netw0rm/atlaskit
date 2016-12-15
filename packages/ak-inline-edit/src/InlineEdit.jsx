@@ -132,31 +132,42 @@ export default class InlineEdit extends PureComponent {
     isConfirmOnBlurDisabled: false,
   }
 
+  state = {
+    wasFocusReceivedSinceLastBlur: false,
+  }
+
   onWrapperClick = () => {
     if (!this.isReadOnly() && !this.props.isEditing) {
       this.props.onEditRequested();
     }
   }
 
-  onWrapperBlur = (event) => {
+  onWrapperBlur = () => {
     if (this.isReadOnly() || !this.props.isEditing || this.props.isConfirmOnBlurDisabled) {
       return;
     }
-
-    const domNodeReceivingFocus = event.relatedTarget;
-
-    // We receive 'blur' events even when focus moves from one
-    // inline edit subcomponent to another, so we must ensure
-    // that focus has entirely left the component before we
-    // trigger 'onConfirm'.
-    if (this.didFocusLeaveInlineEdit(domNodeReceivingFocus)) {
-      this.props.onConfirm();
-    }
+    this.setState({ wasFocusReceivedSinceLastBlur: false });
+    setTimeout(this.confirmIfUnfocused, 10);
   }
 
-  onConfirmClick = () => {
-    this.getDOMNode(this.confirmButtonRef).focus();
+  onWrapperFocus = () => {
+    this.setState({ wasFocusReceivedSinceLastBlur: true });
+  }
+
+  onConfirmClick = (event) => {
+    // eslint-disable-next-line react/no-find-dom-node
+    ReactDOM.findDOMNode(this.confirmButtonRef).focus();
+
+    event.preventDefault();
     this.props.onConfirm();
+  }
+
+  onCancelClick = (event) => {
+    // eslint-disable-next-line react/no-find-dom-node
+    ReactDOM.findDOMNode(this.cancelButtonRef).focus();
+
+    event.preventDefault();
+    this.props.onCancel();
   }
 
   getWrapperClasses = () =>
@@ -170,14 +181,11 @@ export default class InlineEdit extends PureComponent {
       [styles.buttonWrapperHidden]: !this.props.isEditing || this.props.areActionButtonsHidden,
     })
 
-  getDOMNode = ref =>
-    // eslint-disable-next-line react/no-find-dom-node
-    ReactDOM.findDOMNode(ref)
-
-  didFocusLeaveInlineEdit = domNodeReceivingFocus =>
-    domNodeReceivingFocus !== this.getDOMNode(this.confirmButtonRef) &&
-    domNodeReceivingFocus !== this.getDOMNode(this.cancelButtonRef) &&
-    domNodeReceivingFocus !== this.getDOMNode(this.editViewRef)
+  confirmIfUnfocused = () => {
+    if (!this.state.wasFocusReceivedSinceLastBlur) {
+      this.props.onConfirm();
+    }
+  }
 
   isReadOnly = () =>
     typeof this.props.editView === 'undefined'
@@ -191,13 +199,13 @@ export default class InlineEdit extends PureComponent {
         appearance="subtle"
         iconBefore={<ConfirmIcon label="confirm" />}
         onClick={this.onConfirmClick}
-        ref={(confirmButtonRef) => { this.confirmButtonRef = confirmButtonRef; }}
+        ref={(ref) => { this.confirmButtonRef = ref; }}
       />
       <Button
         appearance="subtle"
         iconBefore={<CancelIcon label="cancel" />}
-        onClick={this.props.onCancel}
-        ref={(cancelButtonRef) => { this.cancelButtonRef = cancelButtonRef; }}
+        onClick={this.onCancelClick}
+        ref={(ref) => { this.cancelButtonRef = ref; }}
       />
     </div>
   )
@@ -217,17 +225,12 @@ export default class InlineEdit extends PureComponent {
     </div>
   )
 
-  renderEditView = () => (
-    React.cloneElement(this.props.editView,
-        { ref: (editViewRef) => { this.editViewRef = editViewRef; } }
-    )
-  )
-
   render = () => (
     <div className={styles.root}>
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
         onClick={this.onWrapperClick}
         onBlur={this.onWrapperBlur}
+        onFocus={this.onWrapperFocus}
         className={this.getWrapperClasses()}
       >
         <FieldBase
@@ -239,7 +242,7 @@ export default class InlineEdit extends PureComponent {
           appearance={this.props.isEditing ? 'standard' : 'subtle'}
           rightGutter={this.renderActionButtons()}
         >
-          {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
+          {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
         </FieldBase>
       </div>
     </div>

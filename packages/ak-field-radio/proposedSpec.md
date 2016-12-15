@@ -1,4 +1,4 @@
-# ak-radio
+# ak-field-radio
 
 Radio form fields component used to select a single option out of a list.
 
@@ -8,53 +8,60 @@ Radio form fields component used to select a single option out of a list.
 
 ### API:
 
-Expose a `Radio` component, which simply wraps an `<input type="radio">` element.
-
-Expose a `RadioGroup` component, which wraps a set of related `Radio` items.
+Expose a `RadioGroup` component, which generates radio items from data provided as a property.
 
 ```
 <form>
   <RadioGroup
     label="Pick an animal:"
-    selectedValue={"cat"}
-    onRadioSelect={handler}
-  >
-    <Radio name="animal" value="dog">Dog</Radio>
-    <Radio name="animal" value="cat">Cat</Radio>
-    <Radio name="animal" value="hippo">Hippo</Radio>
-  </RadioGroup>
+    value={"cat"}
+    onRadioChange={handler}
+    items={[
+      { name: 'animal', value: 'dog', label: 'Dog' },
+      { name: 'animal', value: 'cat', label: (<b>Cat</b>) },
+      { name: 'animal', value: 'hippo', disabled: true, label: 'Hippo' },
+    ]}
+  />
 </form>
 ```
 
 #### RadioGroup
 
 * `label`: String - Renders a label for the group
-* `selectedValue`: String - the value of the currently selected `Radio` item
-* `onRadioSelect`: Function - called when a radio item is selected
+* `value`: String - the value of the currently selected item. Mimics the `<select` tag in React, which uses a `value` attribute on the root `select` tag.
+* `onRadioChange`: Function - called when a radio item is selected
+* `items`: Array - An array of objects containing the data of the items.
 
-#### Radio
+Each object in the `items` array should contain:
 
-* `name`: String - The name which is submitted with the data
-* `value`: String - The value of the radio input
+* `name`: String - The `name` property of the input
+* `value`: String - The `value` property of the input
 * `disabled`: Boolean - Whether the radio input is disabled
-* `selected`: Boolean - Whether the radio input is checked
+* `label`: React node - The content to display in the label to the right of the
 
 ### Smart component
 
 #### RadioGroup
 
-* The smart component will automatically set up the `onRadioSelect` handler to update the `selectedValue` property.
-* This may need to expose a `defaultSelectedValue` property to allow the initial value to be set up.
+* The smart component will automatically set up the `onRadioChange` handler to update the `value` property.
+* This may need to expose a `defaultValue` property to allow the initial value to be set up.
+
+```
+<form>
+  <RadioGroup
+    label="Pick an animal:"
+    defaultValue={"cat"}
+    items={[
+      { name: 'animal', value: 'dog', label: 'Dog' },
+      { name: 'animal', value: 'cat', label: (<b>Cat</b>) },
+      { name: 'animal', value: 'hippo', disabled: true, label: 'Hippo' },
+    ]}
+  />
+</form>
+```
 
 ## Notes and questions
 
-* Is it best to use a `selectedValue` prop on the `RadioGroup` wrapper, or should we expose a `selected`/`checked` property on the `Radio` items, which would more closely mirror the HTML spec?
-   * Having `selectedValue` will be useful for form validation, so we can simply check the value instead of searching through the children.
-* It would be useful to be able to float repetitive properties up to the wrapper element - e.g. `name`:
-
-```
-<RadioGroup name="animal">
-  <Radio value="dog" />
-  <Radio value="cat" />
-</RadioGroup>
-```
+* Is it best to use a `value` prop on the `RadioGroup` wrapper (ala React `select`), or should we expect a `selected`/`checked` property in the `items` prop, which would more closely mirror the HTML spec?
+   * Having `value` will be useful for form validation, so we can simply check the value instead of searching through the children.
+* It would be useful to be able to float repetitive properties up to the wrapper element - e.g. `name`, so that it doesn't need to be specified for each item in the `items` array.

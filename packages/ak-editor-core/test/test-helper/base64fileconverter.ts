@@ -4,7 +4,7 @@ import {
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-describe('ak-editor-test base64fileconverter', () => {
+describe('../../../src/test-helper base64fileconverter', () => {
   let savedFileReader: any;
 
   beforeEach(() => {

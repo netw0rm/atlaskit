@@ -1,6 +1,6 @@
 import { Schema, Text } from 'ak-editor-prosemirror';
 import { default as chai, expect } from 'chai';
-import { toHTML, fromHTML } from 'ak-editor-test';
+import { toHTML, fromHTML } from '../../../src/test-helper';
 import { DocNodeType, EmojiNodeType } from '../../../src/schema';
 
 describe('ak-editor-schema emoji node', () => {

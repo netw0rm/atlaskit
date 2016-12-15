@@ -1,4 +1,4 @@
-import { chaiPlugin, makeEditor } from 'ak-editor-test';
+import { chaiPlugin, makeEditor } from '../../../src/test-helper';
 import { commands, browser } from 'ak-editor-prosemirror';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';

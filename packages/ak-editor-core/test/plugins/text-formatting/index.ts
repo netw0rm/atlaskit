@@ -1,5 +1,5 @@
 import { TextFormattingPlugin } from '../../../src/plugins';
-import { chaiPlugin, makeEditor } from 'ak-editor-test';
+import { chaiPlugin, makeEditor } from '../../../src/test-helper';
 import { browser } from 'ak-editor-prosemirror';
 import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
 import { default as chai, expect } from 'chai';

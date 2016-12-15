@@ -5,7 +5,7 @@ import { ProseMirror, Schema, ResolvedPos,
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import { chaiPlugin, fixtures } from 'ak-editor-test';
+import { chaiPlugin, fixtures } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);

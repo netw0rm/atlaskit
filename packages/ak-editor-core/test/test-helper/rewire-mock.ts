@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import b, { aVarValue } from '../_rewire-mock-b';
 import { RewireMock } from '../../src/test-helper';
 
-describe('ak-editor-test rewire-mock', () => {
+describe('../../../src/test-helper rewire-mock', () => {
   const rewireMock = RewireMock();
 
   it('allows aVar in module a to be mocked', () => {

@@ -1,8 +1,8 @@
 import { schema } from '../../src/schema/schema';
 import { Fragment, Node } from 'ak-editor-prosemirror';
 import { default as chai, expect } from 'chai';
-import { chaiPlugin } from 'ak-editor-test';
-import { fromHTML, toHTML } from 'ak-editor-test';
+import { chaiPlugin } from '../../src/test-helper';
+import { fromHTML, toHTML } from '../../src/test-helper';
 
 chai.use(chaiPlugin);
 

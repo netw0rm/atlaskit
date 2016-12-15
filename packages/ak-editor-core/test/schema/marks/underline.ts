@@ -1,8 +1,8 @@
 import { Node, Schema, Text } from 'ak-editor-prosemirror';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { chaiPlugin } from 'ak-editor-test';
-import { fromHTML, toHTML } from 'ak-editor-test';
+import { chaiPlugin } from '../../../src/test-helper';
+import { fromHTML, toHTML } from '../../../src/test-helper';
 import { DocNodeType, UnderlineMarkType } from '../../../src/schema';
 
 chai.use(chaiPlugin);

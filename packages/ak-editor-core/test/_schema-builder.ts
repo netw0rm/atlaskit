@@ -1,4 +1,4 @@
-import { nodeFactory, markFactory } from 'ak-editor-test';
+import { nodeFactory, markFactory } from '../src/test-helper';
 import {
   DocNodeType,
   BlockQuoteNodeType,

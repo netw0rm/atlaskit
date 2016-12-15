@@ -1,8 +1,8 @@
 import mocha from 'mocha';
 import { ProseMirror } from 'ak-editor-prosemirror';
-import { chaiPlugin, code_block, fixtures, makeEditor, blockquote, p, doc, dispatchPasteEvent } from 'ak-editor-test';
+import { chaiPlugin, code_block, fixtures, makeEditor, blockquote, p, doc, dispatchPasteEvent } from '../../../src/test-helper';
 import { default as chai, expect } from 'chai';
-import { PasteContent } from 'ak-editor-test/src/dispatch-paste-event';
+import { PasteContent } from '../../../src/test-helper/dispatch-paste-event';
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
 chai.use(chaiPlugin);

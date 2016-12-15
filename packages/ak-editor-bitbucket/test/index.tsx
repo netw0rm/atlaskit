@@ -5,7 +5,6 @@ import { mount, ReactWrapper } from 'enzyme';
 import { default as sinon, SinonSpy } from 'sinon';
 import React from 'react';
 import { doc, strong, h1, p } from './_schema-builder';
-import { browser } from 'ak-editor-prosemirror';
 
 import Editor from '../src/index';
 import ImageIcon from 'ak-icon/glyph/editor/image';
@@ -119,13 +118,9 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
   });
 
   it('should invoke upload handler after dropping an image', function(){
-    if (browser.ios) {
-      // Even though Safari supports "drop" DOM event, it doesn't propagate correctly 
-      // causing this test to fail: http://go.atlassian.com/ios-drag-drop
-      return this.skip(`iOS doesn't support drag an drop events.`);
-    }
-
-    const contentArea: HTMLElement = (editor.get(0) as any).state.pm.content;
+    // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop' 
+    //       so we must dispatch the event directly on the event which has listener attached.
+    const dropElement: HTMLElement = (editor.get(0) as any).state.pm.content.parentNode;
     const event = createEvent('drop');
     
     Object.defineProperties(event, {
@@ -140,8 +135,8 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
         }
       }
     });
-    
-    contentArea.dispatchEvent(event);
+
+    dropElement.dispatchEvent(event);
     
     expect(spy).to.have.been.calledOnce;
     expect(spy).to.have.been.calledWith(event);

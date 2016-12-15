@@ -1,5 +1,5 @@
 declare namespace Chai {
-  import { NodeType, Mark } from '../prosemirror';
+  import { NodeType, Mark } from 'prosemirror/dist/model';
   type NodeTypeCtor = new (...args: any[]) => NodeType;
 
   interface Assertion {

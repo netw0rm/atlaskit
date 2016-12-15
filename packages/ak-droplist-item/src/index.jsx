@@ -72,26 +72,12 @@ export default class Item extends PureComponent {
      */
     onActivate: PropTypes.func,
     /**
-     * @description Handler function to be called when the focus should be moved to the previous
-     * item. It happens when the 'up' key is pressed.
+     * @description Handler function to be called when any key except for 'space'/'enter'
+     * was pressed on an item.
      * @memberof Item
      * @type {function}
      */
-    onFocusPrev: PropTypes.func,
-    /**
-     * @description Handler function to be called when the focus should be moved to the previou item
-     * It happens when the 'down' key is pressed.
-     * @memberof Item
-     * @type {function}
-     */
-    onFocusNext: PropTypes.func,
-    /**
-     * @description Handler function to be called when the focus should be moved outside of the item
-     * It happens when the 'tab' key is pressed.
-     * @memberof Item
-     * @type {function}
-     */
-    onEscapeFrom: PropTypes.func,
+    onKeyDown: PropTypes.func,
     /**
      * @description HTML content to display before item's main content. Only applicable to the
      * 'link' item.
@@ -112,9 +98,7 @@ export default class Item extends PureComponent {
     target: null,
     type: baseTypes.default,
     onActivate: () => {},
-    onFocusPrev: () => {},
-    onFocusNext: () => {},
-    onEscapeFrom: () => {},
+    onKeyDown: () => {},
     elemBefore: null,
     children: null,
   }
@@ -131,31 +115,20 @@ export default class Item extends PureComponent {
   handleKeyDown = (event) => {
     const { props } = this;
     switch (event.keyCode) {
-      case keyCode('up'):
-        event.preventDefault();
-        props.onFocusPrev();
-        break;
-      case keyCode('down'):
-        event.preventDefault();
-        props.onFocusNext();
-        break;
-      case keyCode('tab'):
-        event.preventDefault();
-        props.onEscapeFrom();
-        break;
       case keyCode('space'):
       case keyCode('enter'):
-        props.onActivate();
+        props.onActivate({ item: this, event });
         break;
       default:
+        props.onKeyDown({ item: this, event });
         break;
     }
   }
 
-  handleClick = () => {
+  handleClick = (event) => {
     // disabled item can't be activated
     if (!this.props.isDisabled) {
-      this.props.onActivate();
+      this.props.onActivate({ item: this, event });
     }
   }
 

@@ -49,6 +49,11 @@
   transition: padding 200ms;
   padding: @icon-open-padding;
   display: flex;
+  
+  [data-__ak-navigation-container-closed="true"] & {
+    padding: @icon-closed-padding;
+  }
+  
   & > * {
     width: @icon-size;
     height: @icon-size;
@@ -60,15 +65,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   display: inline-block;
-}
 
-// Container queries
-.closed {
-  .icon {
-    padding: @icon-closed-padding;
-  }
-
-  .text {
-    display: none;
+  [data-__ak-navigation-container-closed="true"] & {
+    opacity: 0;
   }
 }

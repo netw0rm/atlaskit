@@ -1,10 +1,12 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/ContainerItem.less';
-import className from 'classnames';
-import ContainerQuery from 'react-container-query';
 import {
-  containerClosedWidth,
-} from '../../shared-variables';
+  isSelected,
+  containerItemOuter,
+  containerItemInner,
+  icon,
+  text,
+} from 'style!../less/ContainerItem.less';
+import className from 'classnames';
 
 export default class ContainerItem extends PureComponent {
   static propTypes = {
@@ -15,27 +17,19 @@ export default class ContainerItem extends PureComponent {
 
   render() {
     return (
-      <ContainerQuery
-        query={{
-          [styles.closed]: {
-            maxWidth: containerClosedWidth,
-          },
-        }}
+      <div
+        className={className(containerItemOuter, {
+          [isSelected]: this.props.isSelected,
+        })}
       >
         <div
-          className={className(styles.containerItemOuter, {
-            [styles.isSelected]: this.props.isSelected,
-          })}
+          className={containerItemInner}
         >
-          <div
-            className={styles.containerItemInner}
-          >
-            {this.props.icon ?
-              <div className={styles.icon}>{this.props.icon}</div> : null}
-            <div className={styles.text}>{this.props.text}</div>
-          </div>
+          {this.props.icon ?
+            <div className={icon}>{this.props.icon}</div> : null}
+          <div className={text}>{this.props.text}</div>
         </div>
-      </ContainerQuery>
+      </div>
     );
   }
 }

@@ -14,6 +14,10 @@ export default class Element extends PureComponent {
     isDisabled: PropTypes.bool,
   }
 
+  handleMouseDown = (e) => {
+    e.preventDefault();
+  }
+
   render = () => {
     const { props } = this;
     const { href, target, type, isDisabled, handleKeyDown, handleClick, className } = props;
@@ -27,6 +31,7 @@ export default class Element extends PureComponent {
           role={ariaRoles.link}
           onKeyDown={handleKeyDown}
           onClick={handleClick}
+          onMouseDown={this.handleMouseDown}
         >
           {props.children}
         </a>
@@ -40,6 +45,7 @@ export default class Element extends PureComponent {
         role={ariaRoles[type]}
         onKeyDown={handleKeyDown}
         onClick={handleClick}
+        onMouseDown={this.handleMouseDown}
       >{props.children}</div>
     );
     /* eslint-enable jsx-a11y/no-static-element-interactions */

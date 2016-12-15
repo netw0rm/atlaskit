@@ -10,6 +10,12 @@ import {
   HeadingNodeType,
   ListItemNodeType,
   OrderedListNodeType,
+  EmMarkType,
+  MonoMarkType,
+  StrikeMarkType,
+  StrongMarkType,
+  SubSupMarkType,
+  UnderlineMarkType
 } from 'ak-editor-schema';
 import { Schema } from 'ak-editor-prosemirror';
 
@@ -27,10 +33,17 @@ export const schema = new Schema({
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
     paragraph: { type: ParagraphNodeType, content: 'text*', group: 'block' },
     blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
+    plain: { type: ParagraphNodeType, content: 'text' },
   },
   
   marks: {
     link: LinkMarkType,
+    em: EmMarkType,
+    mono: MonoMarkType,
+    strike: StrikeMarkType,
+    strong: StrongMarkType,
+    subsup: SubSupMarkType,
+    u: UnderlineMarkType,
   },
 });
 
@@ -50,3 +63,12 @@ export const ol = nodeFactory(schema.nodes.ordered_list);
 export const p = nodeFactory(schema.nodes.paragraph);
 export const ul = nodeFactory(schema.nodes.bullet_list);
 export const blockquote = nodeFactory(schema.nodes.blockquote);
+
+export const plain = nodeFactory(schema.nodes.plain);
+export const em = markFactory(schema.marks.em);
+export const mono = markFactory(schema.marks.mono);
+export const strike = markFactory(schema.marks.strike);
+export const strong = markFactory(schema.marks.strong);
+export const sub = markFactory(schema.marks.subsup, { type: 'sub' });
+export const sup = markFactory(schema.marks.subsup, { type: 'sup' });
+export const u = markFactory(schema.marks.u);

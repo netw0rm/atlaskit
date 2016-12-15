@@ -15,12 +15,12 @@ describe('ak-profilecard', () => {
   describe('IconLabel', () => {
     it('should render no label when not children are present', () => {
       const wrapper = shallow(<IconLabel />);
-      expect(wrapper).to.not.be.defined;
+      expect(wrapper).to.be.blank();
     });
 
     it('should render LabelIcon without icon when icon property is not set', () => {
       const wrapper = shallow(<IconLabel>Labeltext</IconLabel>);
-      expect(wrapper).to.be.defined;
+      expect(wrapper).to.be.present();
       expect(wrapper.find('span')).to.have.text('Labeltext');
 
       const icon = wrapper.find(`.${styles.locals.detailsLabelIcon}`);
@@ -29,7 +29,7 @@ describe('ak-profilecard', () => {
 
     it('should render LabelIcon without icon when icon property is an available icon', () => {
       const wrapper = shallow(<IconLabel icon="foobar">Labeltext</IconLabel>);
-      expect(wrapper).to.be.defined;
+      expect(wrapper).to.be.present();
       expect(wrapper.find('span')).to.have.text('Labeltext');
 
       const icon = wrapper.find(`.${styles.locals['pf-icon']}`);
@@ -38,7 +38,7 @@ describe('ak-profilecard', () => {
 
     it('should render LabelIcon with icon', () => {
       const wrapper = shallow(<IconLabel icon="time">Labeltext</IconLabel>);
-      expect(wrapper).to.be.defined;
+      expect(wrapper).to.be.present();
       expect(wrapper.find('span')).to.have.text('Labeltext');
 
       const icon = wrapper.find(`.${styles.locals.detailsLabelIcon}`);

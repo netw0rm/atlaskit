@@ -16,7 +16,7 @@ describe('ak-profilecard', () => {
   describe('AkProfilecard', () => {
     it('should be possible to create a component', () => {
       const card = shallow(<AkProfilecard />);
-      expect(card).to.exist;
+      expect(card).to.be.present();
     });
 
     describe('fullName property', () => {

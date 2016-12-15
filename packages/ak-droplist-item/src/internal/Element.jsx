@@ -14,6 +14,8 @@ export default class Element extends PureComponent {
     isDisabled: PropTypes.bool,
   }
 
+  // this prevents the focus ring from appearing when the element is clicked.
+  // It doesn't interfere with the onClick handler
   handleMouseDown = (e) => {
     e.preventDefault();
   }

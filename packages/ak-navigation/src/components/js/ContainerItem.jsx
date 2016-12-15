@@ -1,5 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/ContainerItem.less';
+import {
+  isSelected,
+  containerItemOuter,
+  containerItemInner,
+  icon,
+  text,
+} from 'style!../less/ContainerItem.less';
 import className from 'classnames';
 
 export default class ContainerItem extends PureComponent {
@@ -12,16 +18,16 @@ export default class ContainerItem extends PureComponent {
   render() {
     return (
       <div
-        className={className(styles.containerItemOuter, {
-          [styles.isSelected]: this.props.isSelected,
+        className={className(containerItemOuter, {
+          [isSelected]: this.props.isSelected,
         })}
       >
         <div
-          className={styles.containerItemInner}
+          className={containerItemInner}
         >
           {this.props.icon ?
-            <div className={styles.icon}>{this.props.icon}</div> : null}
-          <div className={styles.text}>{this.props.text}</div>
+            <div className={icon}>{this.props.icon}</div> : null}
+          <div className={text}>{this.props.text}</div>
         </div>
       </div>
     );

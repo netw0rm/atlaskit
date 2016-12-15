@@ -7,6 +7,10 @@ import Trigger from 'ak-droplist-trigger';
 import Item from 'ak-droplist-item';
 import keyCode from 'keycode';
 
+const halfGrid = 4;
+const itemHeight = halfGrid * 7;
+const dropdownMaxHeight = (itemHeight * 9.5) + (halfGrid * 2); // ( item height * 9.5 items)
+
 /* eslint-disable react/no-unused-prop-types */
 /**
  * @description This is a basic building block of a dropdown's list.
@@ -14,6 +18,14 @@ import keyCode from 'keycode';
  */
 export default class DropdownMenu extends Component {
   static propTypes = {
+    /**
+     * @description Controls the appearance of the dropdown. Available types: 'default', 'tall'.
+     * Default dropdown has scroll after its height exceeds the pre-defined amount. Tall dropdown
+     * has no restrictions.
+     * @memberof DropdownMenu
+     * @default default
+     */
+    appearance: PropTypes.oneOf(['default', 'tall']),
     /**
      * @description Position of the menu. See the documentation of ak-layer for more details.
      * @memberof DropdownMenu
@@ -62,6 +74,7 @@ export default class DropdownMenu extends Component {
   }
 
   static defaultProps = {
+    appearance: 'default',
     position: 'bottom left',
     triggerType: 'default',
     items: [],
@@ -82,6 +95,13 @@ export default class DropdownMenu extends Component {
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClickOutside, true);
     document.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  setMaxHeight = (dropDomRef) => {
+    if (dropDomRef) {
+      const { appearance } = this.props;
+      dropDomRef.style.maxHeight = appearance !== 'tall' ? `${dropdownMaxHeight}px` : 'none';
+    }
   }
 
   handleKeyDown = (e) => {
@@ -157,7 +177,12 @@ export default class DropdownMenu extends Component {
           position={props.position}
           offset="0 4"
           content={state.isOpen ?
-            <div className={styles.dropContent}>{this.renderSubComponents(props.items)}</div> :
+            <div
+              className={styles.dropContent}
+              ref={ref => (this.setMaxHeight(ref))}
+            >
+              {this.renderSubComponents(props.items)}
+            </div> :
             null
           }
         >

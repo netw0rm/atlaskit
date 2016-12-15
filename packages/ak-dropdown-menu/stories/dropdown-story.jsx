@@ -14,6 +14,7 @@ import DropdownWithButtonExampleRaw from '!raw!./DropdownWithButtonExample';
 import {
   simpleDropdownItems,
   simpleDropdownItemsWithAvatars,
+  lotsOfItems,
 } from './DropdownsData';
 
 const itemsOverride = `const simpleDropdownItems = ${JSON.stringify(simpleDropdownItems, null, 2)}`;
@@ -28,28 +29,14 @@ storiesOf(name, module)
     <div style={{ padding: '40px' }}>
       <p>This is an example of a basic dropdown menu with the build-in trigger which looks like a
         button with the `expand` icon.</p>
-      <div
-        style={{
-          padding: '20px 0',
-        }}
-      >
-        <DropdownMenu
-          triggerType="button"
-          items={simpleDropdownItems}
-        >
+      <div style={{ padding: '20px 0' }}>
+        <DropdownMenu triggerType="button" items={simpleDropdownItems}>
           Test
         </DropdownMenu>
       </div>
       <p>Empty button is also possible</p>
-      <div
-        style={{
-          padding: '20px 0',
-        }}
-      >
-        <DropdownMenu
-          triggerType="button"
-          items={simpleDropdownItems}
-        />
+      <div style={{ padding: '20px 0' }}>
+        <DropdownMenu triggerType="button" items={simpleDropdownItems} />
       </div>
     </div>
   ), {
@@ -65,11 +52,7 @@ storiesOf(name, module)
     <div style={{ padding: '40px' }}>
       <p>This is an example of a basic dropdown menu with the build-in trigger which looks like a
         button with the `expand` icon.</p>
-      <div
-        style={{
-          padding: '20px 0',
-        }}
-      >
+      <div style={{ padding: '20px 0' }}>
         <DropdownMenu
           defaultOpen
           triggerType="button"
@@ -92,19 +75,13 @@ storiesOf(name, module)
           padding: '20px 0',
         }}
       >
-        <DropdownMenu
-          items={simpleDropdownItems}
-        >
+        <DropdownMenu items={simpleDropdownItems}>
           click me
         </DropdownMenu>
-        <DropdownMenu
-          items={simpleDropdownItems}
-        >
+        <DropdownMenu items={simpleDropdownItems}>
           <Avatar />
         </DropdownMenu>
-        <DropdownMenu
-          items={simpleDropdownItems}
-        >
+        <DropdownMenu items={simpleDropdownItems}>
           <Question label="dropdown`s trigger" />
         </DropdownMenu>
       </div>
@@ -125,4 +102,27 @@ storiesOf(name, module)
     scripts: [
       DropdownWithButtonExampleRaw,
     ],
+  })
+  .addCodeExampleStory('Different appearances of the dropdown menu: default, tall', () => (
+    <div style={{ padding: '40px' }}>
+      <p>This is an example of a default dropdown with lots of items. If there are
+      more items than it can handle then the scroll appears.</p>
+      <div style={{ padding: '20px 0' }}>
+        <DropdownMenu triggerType="button" items={lotsOfItems}>
+          Drop it!
+        </DropdownMenu>
+      </div>
+      <p>This is an example of a tall dropdown with lots of items. It will never have scroll, so
+      use it with caution.</p>
+      <div style={{ padding: '20px 0' }}>
+        <DropdownMenu triggerType="button" items={lotsOfItems} appearance="tall">
+          Drop it!
+        </DropdownMenu>
+      </div>
+    </div>
+  ), {
+    imports,
+    overrides: {
+      items: 'lotsOfItems',
+    },
   });

@@ -8,4 +8,3 @@ declare module 'ajv' {
     compile(schema: Object): Validator;
   }
 }
-declare module 'highlight.js';

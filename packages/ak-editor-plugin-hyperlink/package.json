@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-hyperlink",
-  "version": "6.3.0",
+  "version": "6.4.0",
   "description": "A hyperlink plugin for ProseMirror",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

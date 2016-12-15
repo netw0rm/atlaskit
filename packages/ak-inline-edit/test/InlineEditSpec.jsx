@@ -5,7 +5,7 @@ import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
-import FieldBase from 'ak-field-base';
+import FieldBase from 'ak-field-base'; // eslint-disable-line
 import InlineEdit from '../src/InlineEdit';
 
 chai.use(chaiEnzyme());

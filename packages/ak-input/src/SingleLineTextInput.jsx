@@ -55,12 +55,15 @@ export default class SingleLineTextInput extends PureComponent {
     style: {},
   }
 
-  getInputProps = () => ({
-    ...this.props,
-    type: 'text',
-    style: undefined,
-    isEditing: undefined,
-  })
+  getInputProps = () => {
+    const inputProps = {
+      ...this.props,
+      type: 'text',
+    };
+    delete inputProps.style;
+    delete inputProps.isEditing;
+    return inputProps;
+  }
 
   renderEditView = () => (
     <input

@@ -6,7 +6,7 @@ import { commands, browser } from 'ak-editor-prosemirror';
 import mocha from 'mocha';
 import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from 'ak-editor-test';
 
-import BlockTypePlugin from '../../src/ak-editor-plugin-block-type';
+import BlockTypePlugin from '../../../src/plugins/ak-editor-plugin-block-type';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);

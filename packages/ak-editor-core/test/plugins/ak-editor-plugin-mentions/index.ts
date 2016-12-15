@@ -1,4 +1,4 @@
-import MentionsPlugin from '../../src/ak-editor-plugin-mentions';
+import MentionsPlugin from '../../../src/plugins/ak-editor-plugin-mentions';
 import { MentionQueryMarkType, MentionNodeType } from 'ak-editor-schema';
 import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';

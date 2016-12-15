@@ -1,4 +1,4 @@
-import DropAdapter from '../../src/ak-editor-plugin-image-upload/drop-adapter';
+import DropAdapter from '../../../src/plugins/ak-editor-plugin-image-upload/drop-adapter';
 import { ProseMirror } from 'ak-editor-prosemirror';
 import { expect } from 'chai';
 import sinon from 'sinon';

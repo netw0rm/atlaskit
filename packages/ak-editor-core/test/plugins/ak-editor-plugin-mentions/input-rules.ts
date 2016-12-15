@@ -1,5 +1,5 @@
 import mocha from 'mocha';
-import { default as plugin } from '../../src/ak-editor-plugin-mentions';
+import { default as plugin } from '../../../src/plugins/ak-editor-plugin-mentions';
 import { MentionQueryMarkType, MentionNodeType } from 'ak-editor-schema';
 import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';

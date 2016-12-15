@@ -1,4 +1,4 @@
-import PasteAdapter from '../../src/ak-editor-plugin-image-upload/paste-adapter';
+import PasteAdapter from '../../../src/plugins/ak-editor-plugin-image-upload/paste-adapter';
 import { expect } from 'chai';
 import { ProseMirror } from 'ak-editor-prosemirror';
 import sinon from 'sinon';

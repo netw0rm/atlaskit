@@ -1,5 +1,5 @@
 import mocha from 'mocha';
-import { URL } from '../../src/ak-editor-plugin-hyperlink/regex';
+import { URL } from '../../../src/plugins/ak-editor-plugin-hyperlink/regex';
 import { expect } from 'chai';
 
 describe('ak-editor-plugin-hyperlink regex', () => {

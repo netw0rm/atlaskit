@@ -1,5 +1,5 @@
 import mocha from 'mocha';
-import HyperlinkPlugin from '../../src/ak-editor-plugin-hyperlink';
+import HyperlinkPlugin from '../../../src/plugins/ak-editor-plugin-hyperlink';
 import { Slice, ProseMirror } from 'ak-editor-prosemirror';
 import { chaiPlugin, code_block, makeEditor, a, code, doc, p, slice, text } from 'ak-editor-test';
 import { default as chai, expect } from 'chai';

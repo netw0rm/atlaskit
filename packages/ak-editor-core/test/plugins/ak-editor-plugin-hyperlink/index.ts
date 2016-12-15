@@ -2,9 +2,9 @@ import mocha from 'mocha';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import HyperlinkPlugin from '../../src/ak-editor-plugin-hyperlink';
+import HyperlinkPlugin from '../../../src/plugins/ak-editor-plugin-hyperlink';
 import { chaiPlugin, makeEditor, insert } from 'ak-editor-test';
-import { doc, link, linkable, schema, unlinkable } from '../_schema-builder';
+import { doc, link, linkable, schema, unlinkable } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);

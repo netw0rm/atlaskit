@@ -31,7 +31,7 @@ export const schema = new Schema({
     heading: { type: HeadingNodeType, content: 'text<_>*', group: 'block' },
     list_item: { type: ListItemNodeType, content: 'paragraph+' },
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
-    paragraph: { type: ParagraphNodeType, content: 'text*', group: 'block' },
+    paragraph: { type: ParagraphNodeType, content: 'text<_>*', group: 'block' },
     blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     plain: { type: ParagraphNodeType, content: 'text' },
   },

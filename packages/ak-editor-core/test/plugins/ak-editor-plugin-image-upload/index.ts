@@ -1,9 +1,9 @@
-import ImageUploadPlugin from '../../src/ak-editor-plugin-image-upload';
+import ImageUploadPlugin from '../../../src/plugins/ak-editor-plugin-image-upload';
 import { chaiPlugin, makeEditor } from 'ak-editor-test';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import { doc, noimages, images, image, schema } from '../_schema-builder';
+import { doc, noimages, images, image, schema } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);

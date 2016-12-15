@@ -1,7 +1,7 @@
-import TextFormattingPlugin from '../../src/ak-editor-plugin-text-formatting';
+import { TextFormattingPlugin } from '../../../src/plugins';
 import { chaiPlugin, makeEditor } from 'ak-editor-test';
 import { browser } from 'ak-editor-prosemirror';
-import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from '../_schema-builder';
+import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';

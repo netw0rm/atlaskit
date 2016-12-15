@@ -69,6 +69,7 @@ export class TextFormattingState {
   }
 
   toggleEm() {
+    debugger;
     const { em } = this.pm.schema.marks;
     if (em) {
       this.toggleMark(em);

@@ -6,12 +6,12 @@ import { commands, browser } from 'ak-editor-prosemirror';
 import mocha from 'mocha';
 import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from 'ak-editor-test';
 
-import BlockTypePlugin from '../../../src/plugins/ak-editor-plugin-block-type';
+import BlockTypePlugin from '../../../src/plugins/block-type';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);
 
-describe('ak-editor-plugin-block-type', () => {
+describe('block-type', () => {
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: BlockTypePlugin });
     return { pm, plugin, sel: pm.doc.refs['<>'] };

@@ -1,4 +1,4 @@
-import MarkdownInputRulesPlugin from '../../../src/plugins/ak-editor-plugin-markdown-inputrules';
+import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
 import { default as chai, expect } from 'chai';
 import {
   chaiPlugin, makeEditor, doc, a, p, em, strong, code,
@@ -7,7 +7,7 @@ import {
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-plugin-markdown-inputrules', () => {
+describe('markdown-inputrules', () => {
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: MarkdownInputRulesPlugin });
     return { pm, plugin, sel: pm.doc.refs['<>'] };

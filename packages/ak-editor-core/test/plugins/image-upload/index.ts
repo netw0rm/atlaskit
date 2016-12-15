@@ -1,4 +1,4 @@
-import ImageUploadPlugin from '../../../src/plugins/ak-editor-plugin-image-upload';
+import ImageUploadPlugin from '../../../src/plugins/image-upload';
 import { chaiPlugin, makeEditor } from 'ak-editor-test';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
@@ -8,7 +8,7 @@ import { doc, noimages, images, image, schema } from '../../_schema-builder';
 chai.use(chaiPlugin);
 chai.use(sinonChai);
 
-describe('ak-editor-plugin-image-upload', () => {
+describe('image-upload', () => {
   const testImgSrc = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
   const testImg = () => image({ src: testImgSrc });
   const editor = (doc: any) => {

@@ -1,8 +1,8 @@
 import mocha from 'mocha';
-import { URL } from '../../../src/plugins/ak-editor-plugin-hyperlink/regex';
+import { URL } from '../../../src/plugins/hyperlink/regex';
 import { expect } from 'chai';
 
-describe('ak-editor-plugin-hyperlink regex', () => {
+describe('hyperlink regex', () => {
   it('should match web URLs', () => {
     expect('http://localhost:1988').to.match(URL);
     expect('http://www.atlassian.com').to.match(URL);

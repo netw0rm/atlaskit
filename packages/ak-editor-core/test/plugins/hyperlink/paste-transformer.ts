@@ -1,12 +1,12 @@
 import mocha from 'mocha';
-import HyperlinkPlugin from '../../../src/plugins/ak-editor-plugin-hyperlink';
+import HyperlinkPlugin from '../../../src/plugins/hyperlink';
 import { Slice, ProseMirror } from 'ak-editor-prosemirror';
 import { chaiPlugin, code_block, makeEditor, a, code, doc, p, slice, text } from 'ak-editor-test';
 import { default as chai, expect } from 'chai';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-plugin-hyperlink paste transformer', () => {
+describe('hyperlink paste transformer', () => {
   const pre = code_block();
   const editor = () => makeEditor({
     doc: doc(p()),

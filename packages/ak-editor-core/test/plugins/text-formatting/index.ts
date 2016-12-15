@@ -9,7 +9,7 @@ import sinonChai from 'sinon-chai';
 chai.use(chaiPlugin);
 chai.use(sinonChai);
 
-describe('ak-editor-plugin-text-formatting', () => {
+describe('text-formatting', () => {
   const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin, schema });
 
   describe('keymap', () => {

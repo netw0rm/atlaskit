@@ -1,4 +1,4 @@
-import MentionsPlugin from '../../../src/plugins/ak-editor-plugin-mentions';
+import MentionsPlugin from '../../../src/plugins/mentions';
 import { MentionQueryMarkType, MentionNodeType } from 'ak-editor-schema';
 import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';
@@ -29,7 +29,7 @@ const makeEditor = (container: Node) => {
 
 const container = fixtures();
 
-describe('ak-editor-plugin-mentions', () => {
+describe('mentions', () => {
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const Plugin = MentionsPlugin as any; // .State is not public API.
     expect(Plugin.State.name).is.be.a('string');

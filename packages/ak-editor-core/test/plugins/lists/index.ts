@@ -3,13 +3,13 @@ import { commands, browser } from 'ak-editor-prosemirror';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import ListsPlugin from '../../../src/plugins/ak-editor-plugin-lists';
+import ListsPlugin from '../../../src/plugins/lists';
 import { doc, h1, li, ol, p, ul, blockquote, schema } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);
 
-describe('ak-editor-plugin-lists', () => {
+describe('lists', () => {
   const editor = (doc: any) => makeEditor({ doc: doc, plugin: ListsPlugin, schema });
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {

@@ -1,5 +1,5 @@
 import mocha from 'mocha';
-import { default as plugin } from '../../../src/plugins/ak-editor-plugin-mentions';
+import { default as plugin } from '../../../src/plugins/mentions';
 import { MentionQueryMarkType, MentionNodeType } from 'ak-editor-schema';
 import { ProseMirror, Schema, ResolvedPos,
          schema as schemaBasic } from 'ak-editor-prosemirror';
@@ -22,7 +22,7 @@ const makeEditor = () => new ProseMirror({
   plugins: [ plugin ],
 });
 
-describe('ak-editor-plugin-mentions - input rules', () => {
+describe('mentions - input rules', () => {
   it('should replace a standalone "@" with mention-query-mark', () => {
     const pm = makeEditor();
     pm.input.insertText(0, 0,'foo @');

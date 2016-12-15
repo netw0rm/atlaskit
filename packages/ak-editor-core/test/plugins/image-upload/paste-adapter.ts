@@ -1,9 +1,9 @@
-import PasteAdapter from '../../../src/plugins/ak-editor-plugin-image-upload/paste-adapter';
+import PasteAdapter from '../../../src/plugins/image-upload/paste-adapter';
 import { expect } from 'chai';
 import { ProseMirror } from 'ak-editor-prosemirror';
 import sinon from 'sinon';
 
-describe('ak-editor-plugin-image-upload PasteAdapter', () => {
+describe('image-upload PasteAdapter', () => {
   const mockEditor = (): ProseMirror => {
     const wrapper = document.createElement('div');
     return {

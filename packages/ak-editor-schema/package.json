@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-schema",
-  "version": "4.7.1",
+  "version": "4.7.2",
   "description": "A common schema to be used in Atlassian Editor.",
   "jsnext:main": "dist/es2015/index.js",
   "main": "dist/es5/index.js",

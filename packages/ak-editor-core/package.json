@@ -17,7 +17,9 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "ak-editor-prosemirror": "^4.3.14",
-    "tslib": "^1.2.0"
+    "tslib": "^1.2.0",
+    "browserkeymap": "git://github.com/bradleyayers/browserkeymap#es6-modules-compat",
+    "prosemirror": "0.10.1"
   },
   "devDependencies": {
     "ajv": "^4.7.2",

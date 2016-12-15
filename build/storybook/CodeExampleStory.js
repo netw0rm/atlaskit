@@ -27,8 +27,8 @@ export default class CodeExampleStory extends Component {
 
   render() {
     return (
-      <div>
-        <SplitPane split="vertical" defaultSize={'50%'} primary="second">
+      <div style={{ height: '100%' }}>
+        <SplitPane split="vertical" defaultSize={'50%'} primary="second" className={styles.splitP}>
           <div>
             {this.props.children}
           </div>

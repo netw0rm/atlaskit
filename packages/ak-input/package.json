@@ -20,7 +20,6 @@
     "glamor": "^2.17.14"
   },
   "devDependencies": {
-    "ak-inline-edit": "^1.3.2",
     "ak-field-base": "^6.3.2"
   },
   "author": "Atlassian Pty Ltd",

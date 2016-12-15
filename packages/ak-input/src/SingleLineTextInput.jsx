@@ -49,34 +49,23 @@ export default class SingleLineTextInput extends PureComponent {
      * @type {boolean}
      */
     isEditing: PropTypes.bool.isRequired,
-    /**
-     * @description Callback to update input value.
-     * @memberof SingleLineTextInput
-     * @instance
-     * @type {Function}
-     */
-    onChange: PropTypes.func.isRequired,
-    /**
-     * @description Whether the component has autoFocus in edit mode.
-     * @memberof SingleLineTextInput
-     * @type {boolean}
-     */
-    hasAutoFocus: PropTypes.bool,
   }
 
   static defaultProps = {
     style: {},
-    isEditing: false,
-    hasAutoFocus: false,
   }
+
+  getInputProps = () => ({
+    ...this.props,
+    type: 'text',
+    style: undefined,
+    isEditing: undefined,
+  })
 
   renderEditView = () => (
     <input
       {...style(css.common, css.editView, this.props.style)}
-      autoFocus={this.props.hasAutoFocus}
-      type="text"
-      value={this.props.value}
-      onChange={this.props.onChange}
+      {...this.getInputProps()}
     />
   )
 

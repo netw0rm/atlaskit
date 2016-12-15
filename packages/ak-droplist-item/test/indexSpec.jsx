@@ -128,5 +128,12 @@ describe(name, () => {
       wrapper.simulate('keyDown', { keyCode: keyCode('tab') });
       expect(onActivate.calledThrice).to.be.true;
     });
+
+    it('should not call onKeyDown when space and enter is pressed', () => {
+      const wrapper = mount(<Item onKeyDown={onActivate} />);
+      wrapper.simulate('keyDown', { keyCode: keyCode('space') });
+      wrapper.simulate('keyDown', { keyCode: keyCode('enter') });
+      expect(onActivate.called).to.be.false;
+    });
   });
 });

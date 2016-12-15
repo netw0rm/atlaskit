@@ -6,7 +6,7 @@ import Button from 'ak-button';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
 import EditIcon from 'ak-icon/glyph/edit';
-import FieldBase from 'ak-field-base';
+import FieldBase from 'ak-field-base'; // eslint-disable-line
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {

@@ -31,11 +31,10 @@ const fakeProfileData = {
   ],
 };
 
-const fakeData = data => Object.assign(
-  {},
-  fakeProfileData,
-  data || {},
-);
+const fakeData = data => ({
+  ...fakeProfileData,
+  ...data,
+});
 
 // have some more space around the profilecard
 const canvasStyle = { padding: '30px' };

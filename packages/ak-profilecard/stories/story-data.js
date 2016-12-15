@@ -19,7 +19,7 @@ const requestService = (fail) => {
       const id = random(10);
       const weekday = getWeekday();
 
-      const data = Object.assign({}, profiles[id]);
+      const data = { ...profiles[id] };
 
       data.remoteTimeString = getTimeString();
       data.remoteWeekdayIndex = weekday.index;

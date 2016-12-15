@@ -6,6 +6,8 @@ import { default as AkTabs, Tab as AkTab} from 'ak-tabs';
 import Editor from '../src';
 import FacadeInput from '../src/hacks/facade-input';
 import exampleHTML from './exampleHTML';
+import Badge from 'ak-badge';
+import Lozenge from 'ak-lozenge';
 
 const Tabs = reactify(AkTabs);
 const Tab = reactify(AkTab);
@@ -59,6 +61,19 @@ storiesOf('ak-editor-bitbucket', module)
       />
     </div>
   )
+  .add('Analytics events', () => {
+    return (
+      <div style={{ padding: 20 }}>
+        <h5 style={{ marginBottom: 20 }}>Interact with the editor and observe analytics events in the Action Logger below</h5>
+        <Editor
+          analyticsHandler={(actionName, props) => action(actionName)(props)}
+          onSave={() => {}}
+          onCancel={() => {}}
+          isExpandedByDefault
+        />
+      </div>
+    );     
+  })
   .add('Markdown preview', () => {
     type Props = {};
     type State = { markdown?: string };

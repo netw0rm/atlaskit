@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import Button from 'ak-button';
+import Avatar from 'ak-avatar';
 import ErrorIcon from 'ak-icon/glyph/error';
 import HelpIcon from 'ak-icon/glyph/help';
 import ExpandIcon from 'ak-icon/glyph/expand';
@@ -55,6 +56,25 @@ storiesOf(name, module)
       </AkFieldBase>
     </div>
   ))
+  .add('with avatar + text', () => (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'white',
+        display: 'inline-block',
+      }}
+    >
+      <AkFieldBase
+        label="Label for FieldBase"
+      >
+        <Avatar
+          src="https://cdn-img.fimfiction.net/user/xb2v-1431833233-195398-64"
+          size="small"
+        />
+        <span style={{ marginLeft: 8 }}>Jack Sparrow</span>
+      </AkFieldBase>
+    </div>
+  ))
   .add('with different content', () => {
     const longTextWithSpaces = `According to all known laws of aviation, there is no way a bee
       should be able to fly. Its wings are too small to get its fat little body off the ground.
@@ -97,8 +117,9 @@ storiesOf(name, module)
         label="Button on the right"
         rightGutter={<Button appearance="subtle">Cancel</Button>}
       />
-      <InputFieldBase
+      <DivFieldBase
         label="Button + icon on the right"
+        text="Banana Banana Banana Banana Banana Banana Banana Banana Banana Banana"
         rightGutter={<Button iconBefore={<HelpIcon />} />}
       />
       <InputFieldBase

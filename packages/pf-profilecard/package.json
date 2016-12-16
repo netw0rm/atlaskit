@@ -6,7 +6,7 @@
   "webpack": "src/index.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single pf-profilecard"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single pf-profilecard; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist"

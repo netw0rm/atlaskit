@@ -29,6 +29,7 @@ function formatCode(code) {
 }
 
 export default class extends PureComponent {
+  static displayName = 'AkutilReadmeCode'
   static propTypes = {
     children: PropTypes.node.isRequired,
     code: PropTypes.string,

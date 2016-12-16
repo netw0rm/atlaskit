@@ -144,7 +144,7 @@
     "postinstall": "./build/bin/postinstall.sh",
     "docs/all": "./node_modules/.bin/lerna exec -- ../../build/bin/generate.readme.sh",
     "docs/single": "./build/bin/docs.single.sh",
-    "pr/artifacts": "run-p -ln 'pr/docs' 'pr/storybook' 'pr/stats'",
+    "pr/artifacts": "run-p -ln 'pr/docs' 'pr/storybook'",
     "pr/coverage": "./build/bin/pr.coverage.sh",
     "pr/docs": "npm run docs/all && ./build/bin/generate.readme.html.pr.sh",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",

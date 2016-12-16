@@ -20,19 +20,29 @@ npm install ak-flag
 
 The `ak-flag` package exports the `Flag` React component as the default export. A named `FlagGroup` export is also provided.
 
-To ensure placement and correct animation, `Flag` components must always be placed inside a `FlagGroup`.
+To ensure placement and correct animation, `Flag` components must always have a unique `key` attribute and must be placed inside a `FlagGroup`.
 
 ```js
 import Flag, { FlagGroup } from 'ak-flag';
-import { WarningIcon } from 'ak-icon';
+import { WarningIcon, SuccessIcon } from 'ak-icon';
 ReactDOM.render((
   <FlagGroup>
     <Flag
+      id="internet-full"
+      key="flag-1"
       icon={
         <WarningIcon label="Warning" />
       }
       title="The Internet seems to be full"
       description="Somebody forgot to upgrade the storage on the information superhighway."
+    />
+    <Flag
+      icon={
+        <SuccessIcon label="Success" />
+      }
+      key="flag-2"
+      title="Calculation finished"
+      description="It took a while, but the answer is 42."
     />
   </FlagGroup>
 ), container);

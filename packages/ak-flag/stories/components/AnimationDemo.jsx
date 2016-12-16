@@ -30,8 +30,6 @@ export default class AnimationDemo extends PureComponent {
         now: Date.now(),
       });
     }, 1000);
-
-    this.addFlagInterval = setInterval(this.addFlag, 10000);
   }
 
   componentWillUnmount() {
@@ -80,8 +78,7 @@ export default class AnimationDemo extends PureComponent {
           }
         </FlagGroup>
         <p>
-          A new flag will be added every 10 seconds.
-          Try clicking the <em>dismiss</em> icon on a flag to remove it.
+          Add some flags then try clicking the <em>dismiss</em> icon.
         </p>
         <div>
           <Button

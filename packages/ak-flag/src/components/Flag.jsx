@@ -48,6 +48,7 @@ export default class Flag extends PureComponent {
      * @type {function}
      */
     onDismissed: PropTypes.func,
+    onAnimationFinished: PropTypes.func,
     isDismissAllowed: PropTypes.bool,
     isEntering: PropTypes.bool,
     isExiting: PropTypes.bool,
@@ -55,6 +56,7 @@ export default class Flag extends PureComponent {
 
   static defaultProps = {
     onDismissed: () => {},
+    onAnimationFinished: () => {},
     isDismissAllowed: false,
     isEntering: false,
     isExiting: false,
@@ -68,7 +70,7 @@ export default class Flag extends PureComponent {
   }
 
   componentDidUpdate() {
-    // eslint-disable-next-line
+    // eslint-disable-next-line react/no-did-update-set-state
     this.setState({
       hasAnimatedIn: true,
     });
@@ -90,6 +92,11 @@ export default class Flag extends PureComponent {
           ),
           [styles.exiting]: this.props.isExiting,
         })}
+        onAnimationEnd={() => {
+          if (this.props.isExiting) {
+            this.props.onAnimationFinished(this.props.id);
+          }
+        }}
       >
         <div className={styles.primaryIcon}>
           {this.props.icon}
@@ -105,7 +112,7 @@ export default class Flag extends PureComponent {
                   className={styles.dismissIconButton}
                   onClick={this.flagDismissed}
                 >
-                  <CancelIcon label="Close flag" />
+                  <CancelIcon label="Dismiss flag" />
                 </button>
               ) : null
             }

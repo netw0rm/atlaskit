@@ -1,7 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/FlagGroup.less';
-// import FlagAnimationWrapper from './FlagAnimationWrapper';
 
 /**
  * @description Return React FlagGroup component.
@@ -38,22 +37,13 @@ export default class FlagGroup extends PureComponent {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.children.length < this.props.children.length) {
-      // this.childFlagHeights = this.childFlagHeights.slice(1);
-      this.setState({
-        isAnimatingOut: false,
-      });
-    }
+  onFlagDismissRequested = () => {
+    this.setState({ isAnimatingOut: true });
   }
 
-  onFlagDismissed = () => {
-    // need this to trigger render
-    this.setState({ isAnimatingOut: true });
-    setTimeout(() => {
-      this.setState({ isAnimatingOut: false });
-      this.props.onDismissed();
-    }, 250);
+  onFlagDismissFinished = () => {
+    this.setState({ isAnimatingOut: false });
+    this.props.onDismissed();
   }
 
   render() {
@@ -70,7 +60,8 @@ export default class FlagGroup extends PureComponent {
           {
             this.props.children.map((childFlag, flagIndex) => (
               React.cloneElement(childFlag, {
-                onDismissed: this.onFlagDismissed,
+                onDismissed: this.onFlagDismissRequested,
+                onAnimationFinished: this.onFlagDismissFinished,
                 isDismissAllowed: flagIndex === 0,
                 isEntering: flagIndex === 0,
                 isExiting: flagIndex === 0 && this.state.isAnimatingOut,

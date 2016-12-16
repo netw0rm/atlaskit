@@ -41,6 +41,11 @@ storiesOf(storyName, module)
       {createSingleLineTextInput({ isEditing: true, autoFocus: true })}
     </div>
   ))
+  .add('with auto selection', () => (
+    <div style={containerStyle}>
+      {createSingleLineTextInput({ isEditing: true, isInitiallySelected: true })}
+    </div>
+  ))
   .add('with custom font size', () => (
     <div style={containerStyle}>
       {createSingleLineTextInput({ style: customTextStyle })}

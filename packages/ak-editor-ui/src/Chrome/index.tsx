@@ -4,6 +4,7 @@ import { BlockTypeState } from 'ak-editor-plugin-block-type';
 import { HyperlinkState } from 'ak-editor-plugin-hyperlink';
 import { ListsState } from 'ak-editor-plugin-lists';
 import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
+import { MentionsPluginState } from 'ak-editor-plugin-mentions';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
@@ -18,6 +19,8 @@ export interface Props {
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
+  pluginStateMentions?: MentionsPluginState;
+  mentionsResourceProvider?: any; // AbstractMentionResource
   onCollapsedChromeFocus: () => void;
 }
 
@@ -36,6 +39,8 @@ export default class Chrome extends PureComponent<Props, State> {
           pluginStateHyperlink={props.pluginStateHyperlink}
           pluginStateLists={props.pluginStateLists}
           pluginStateTextFormatting={props.pluginStateTextFormatting}
+          pluginStateMentions={props.pluginStateMentions}
+          mentionsResourceProvider={props.mentionsResourceProvider}
         >
           {props.children}
         </ChromeExpanded>

@@ -4,7 +4,7 @@ import { Schema, Block, Text, Inline, Attribute, EmMark, MarkType } from '../../
 
 const { expect } = chai;
 
-describe('ak-editor-bitbucket: json-schema', () => {
+describe('ak-editor-core: json-schema', () => {
   class Image extends Inline {
     get attrs() {
       return {

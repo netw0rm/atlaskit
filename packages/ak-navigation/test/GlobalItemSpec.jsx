@@ -17,19 +17,19 @@ describe('<GlobalItem />', () => {
   describe('interacting', () => {
     it('click should call the onActivate handler', () => {
       const spy = sinon.spy();
-      shallow(<GlobalItem onActivate={spy} />).find('button').simulate('click');
+      shallow(<GlobalItem onActivate={spy} />).find('[role="button"]').simulate('click');
       expect(spy.called).to.equal(true);
     });
   });
   describe('props', () => {
-    it('small prop is renders small global item', () => {
-      expect(shallow(<GlobalItem size="small" />).find('button')).to.have.className(styles.smallGlobalItem);
+    it('small prop renders small global item', () => {
+      expect(shallow(<GlobalItem size="small" />).find('[role="button"]')).to.have.className(styles.smallGlobalItem);
     });
-    it('medium prop is renders small global item', () => {
-      expect(shallow(<GlobalItem size="medium" />).find('button')).to.have.className(styles.mediumGlobalItem);
+    it('medium prop renders medium global item', () => {
+      expect(shallow(<GlobalItem size="medium" />).find('[role="button"]')).to.have.className(styles.mediumGlobalItem);
     });
-    it('large prop is renders small global item', () => {
-      expect(shallow(<GlobalItem size="large" />).find('button')).to.have.className(styles.largeGlobalItem);
+    it('large prop renders large global item', () => {
+      expect(shallow(<GlobalItem size="large" />).find('[role="button"]')).to.have.className(styles.largeGlobalItem);
     });
   });
 });

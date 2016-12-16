@@ -1,4 +1,5 @@
-import { Fragment, Node, Mark, Text, Slice, NodeType } from 'ak-editor-prosemirror';
+/// <reference path="./chai.d.ts"/>
+import { Fragment, Node, Mark, Text, Slice, NodeType } from '../prosemirror';
 
 function isNodeOrFragment(thing: any): thing is Node | Fragment {
   // Using a simple `instanceof` check is intentionally avoided here to make

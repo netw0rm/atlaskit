@@ -167,7 +167,7 @@
     "test/wc": "./build/bin/test.sh",
     "test/wc/coverage": "./build/bin/test.coverage.sh",
     "test/wc/browserstack": "./build/bin/test.browserstack.sh",
-    "test/wc/browserstack/pr": "run-s -ln 'test/wc/browserstack' 'pr/coverage'",
+    "test/wc/browserstack/pr": "run-s -ln 'test/wc/browserstack'",
     "test/wc/single": "./build/bin/test.single.sh",
     "test/wc/single/integration": "./build/bin/test.single.integration.sh",
     "test/wc/single/integration/browserstack": "./build/bin/test.single.integration.browserstack.sh",

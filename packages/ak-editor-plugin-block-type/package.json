@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-block-type",
-  "version": "6.2.0",
+  "version": "6.5.0",
   "description": "A block type plugin for ProseMirror",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
@@ -14,7 +14,7 @@
     "**/*.d.ts"
   ],
   "dependencies": {
-    "ak-editor-prosemirror": "^4.0.0",
+    "ak-editor-prosemirror": "^4.3.14",
     "ak-editor-schema": "^4.1.0",
     "tslib": "^1.2.0"
   },

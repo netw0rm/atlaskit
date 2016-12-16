@@ -120,6 +120,18 @@ export default class FieldBase extends PureComponent {
      */
     isReadOnly: PropTypes.bool,
     /**
+     * @description Whether or not the field should fill the width of its container.
+     *
+     * If enabled, the field will fit the width of its container even
+     * when the field content is not that wide.
+     *
+     * @memberof FieldBase
+     * @type {boolean}
+     * @default false
+     * @example <FieldBase isFitContainerWidthEnabled />
+     */
+    isFitContainerWidthEnabled: PropTypes.bool,
+    /**
      * @description Callback that is called whenever the Label is clicked
      *
      * @memberof FieldBase
@@ -174,6 +186,7 @@ export default class FieldBase extends PureComponent {
     isDisabled: false,
     isReadOnly: false,
     isRequired: false,
+    isFitContainerWidthEnabled: false,
   }
 
   render = () =>
@@ -193,6 +206,7 @@ export default class FieldBase extends PureComponent {
           isInvalid={this.props.isInvalid}
           isFocused={this.props.isFocused}
           isReadOnly={this.props.isReadOnly}
+          isFitContainerWidthEnabled={this.props.isFitContainerWidthEnabled}
           rightGutter={this.props.rightGutter}
         >
           {this.props.children}

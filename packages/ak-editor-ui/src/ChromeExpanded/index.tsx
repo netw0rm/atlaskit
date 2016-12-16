@@ -7,6 +7,7 @@ import { HyperlinkState } from 'ak-editor-plugin-hyperlink';
 import { ListsState } from 'ak-editor-plugin-lists';
 import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
 import { ImageUploadState } from 'ak-editor-plugin-image-upload';
+import { MentionsPluginState } from 'ak-editor-plugin-mentions';
 import MentionIcon from 'ak-icon/glyph/editor/mention';
 import ImageIcon from 'ak-icon/glyph/editor/image';
 import * as styles from './styles.global.less';
@@ -17,6 +18,7 @@ import ToolbarLists from '../ToolbarLists';
 import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarFeedback from '../ToolbarFeedback';
+import MentionPicker from '../MentionPicker';
 
 export interface Props {
   feedbackFormUrl?: string;
@@ -29,6 +31,8 @@ export interface Props {
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
   pluginStateImageUpload?: ImageUploadState;
+  pluginStateMentions?: MentionsPluginState;
+  mentionsResourceProvider?: any; // AbstractMentionResource
 }
 
 export interface State {}
@@ -50,6 +54,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         <div className={styles.content}>
           {props.children}
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
+          {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} /> : null}
         </div>
         <div className={styles.footer}>
           <div className={styles.footerActions}>

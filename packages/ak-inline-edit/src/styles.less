@@ -9,8 +9,7 @@
 }
 
 .read-view-wrapper {
-
-  display: inline-flex;
+  max-width: 100%;
 
   &:hover .edit-button {
     opacity: 1;
@@ -19,7 +18,7 @@
 
 .read-view-content-wrapper {
   display: inline-flex;
-  width: 100%;
+  max-width: 100%;
 }
 
 .buttons-wrapper {
@@ -29,6 +28,10 @@
   button:last-child {
     margin-left: unit(@grid, px);
   }
+}
+
+.button-wrapper-hidden {
+  visibility: hidden;
 }
 
 .edit-button-wrapper {

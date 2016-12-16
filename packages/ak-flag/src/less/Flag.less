@@ -2,7 +2,7 @@
 @import '~akutil-shared-styles/src/grid.less';
 @import '~akutil-shared-styles/src/colors.less';
 
-@cancel-icon-width: @ak-grid-size * 4;
+@dismiss-icon-width: @ak-grid-size * 4;
 
 .root {
   background-color: @ak-color-N0;
@@ -13,39 +13,49 @@
   display: flex;
   margin-bottom: @ak-grid-size * 2.5;
   padding: @ak-grid-size * 2;
+}
 
-  .primary-icon {
-    flex: 0 0 auto;
-    width: (@ak-grid-size * 4);
+.primary-icon {
+  flex: 0 0 auto;
+  width: (@ak-grid-size * 4);
+}
+
+.text-content {
+  flex: 1 1 auto;
+}
+
+.title-and-dismiss {
+  display: flex;
+}
+
+.title {
+  font-weight: 600;
+  flex: 1 0 auto;
+  max-width: @flag-width - (@ak-grid-size * 12);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dismiss-icon-button {
+  appearance: none;
+  background: none;
+  border: none;
+  color: @ak-color-N500;
+  cursor: pointer;
+  display: flex;
+  flex: 0 1 auto;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+  width: @dismiss-icon-width;
+
+  &:hover {
+    color: @ak-color-N900;
   }
+}
 
-  .text-content {
-    flex: 1 1 auto;
-
-    .title-and-cancel {
-      display: flex;
-
-      .title {
-        font-weight: 600;
-        flex: 1 0 auto;
-        max-width: @flag-width - (@ak-grid-size * 12);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .cancel-icon {
-        color: @ak-color-N500;
-        display: flex;
-        justify-content: flex-end;
-        flex: 0 1 auto;
-        width: @cancel-icon-width;
-      }
-    }
-
-    .description {
-      color: @ak-color-N500;
-      margin-top: @ak-grid-size;
-    }
-  }
+.description {
+  color: @ak-color-N500;
+  margin-top: @ak-grid-size;
 }

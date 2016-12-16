@@ -104,13 +104,6 @@ describe(name, () => {
       expect(wrapper.state().isOpen).to.be.true;
     });
 
-    it('click outside should close the dropdown', () => {
-      const wrapper = mount(<Menu items={itemsList} defaultOpen><Trigger>text</Trigger></Menu>);
-      expect(wrapper.state().isOpen).to.be.true;
-      document.body.click();
-      expect(wrapper.state().isOpen).to.be.false;
-    });
-
     it('interacting with an item should close the dropdown', () => {
       const wrapper = mount(<Menu items={itemsList} defaultOpen><Trigger>text</Trigger></Menu>);
       const item = mount(wrapper.children().props().content.props.children[0].props.children[0]);

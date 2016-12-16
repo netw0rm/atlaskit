@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import Button from 'ak-button';
-import Tooltip from 'ak-tooltip';
+import Tooltip from 'ak-tooltip'; // eslint-disable-line
 import classnames from 'classnames';
 import { locals } from './styles.less';
 import { itemTruncateWidth } from './internal/constants';

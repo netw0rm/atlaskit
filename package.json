@@ -138,7 +138,7 @@
     "browserstack/tunnel/start": "./build/bin/browserstack.tunnel.start.sh",
     "browserstack/tunnel/stop": "./build/bin/browserstack.tunnel.stop.sh",
     "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",
-    "commit": "git-cz -n",
+    "commit": "./build/bin/commit.sh",
     "create": "./build/bin/create.new.component.sh",
     "lint": "./build/bin/lint.sh",
     "postinstall": "./build/bin/postinstall.sh",

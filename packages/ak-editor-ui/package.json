@@ -31,6 +31,7 @@
     "ak-editor-plugin-lists": "*",
     "ak-editor-plugin-mentions": "*",
     "ak-editor-plugin-text-formatting": "*",
+    "ak-editor-plugin-image-upload": "*",
     "ak-editor-prosemirror": "*"
   },
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-lists",
-  "version": "6.2.0",
+  "version": "6.5.0",
   "description": "A lists plugin for ProseMirror",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
@@ -14,7 +14,7 @@
     "**/*.d.ts"
   ],
   "peerDependencies": {
-    "ak-editor-prosemirror": "^4.0.0",
+    "ak-editor-prosemirror": "^4.3.14",
     "ak-editor-schema": "^4.1.0"
   },
   "author": "Atlassian Pty Ltd",

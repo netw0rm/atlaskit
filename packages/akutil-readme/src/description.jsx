@@ -8,6 +8,7 @@ const style = {
 };
 
 export default class extends PureComponent {
+  static displayName = 'AkutilReadmeDescription'
   static propTypes = {
     children: PropTypes.node.isRequired,
   }

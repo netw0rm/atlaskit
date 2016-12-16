@@ -25,24 +25,28 @@ export default class Radio extends PureComponent {
   render() {
     return (
       <div className={styles.container}>
-        <label className={styles.inputWrapper}>
-          <input
-            className={styles.input}
-            checked={this.props.selected}
-            disabled={this.props.disabled}
-            name={this.props.name}
-            onChange={this.props.onChange}
-            value={this.props.value}
-            type="radio"
-          />
-          <span
-            className={classnames(styles.radioIcon, {
-              [styles.disabled]: this.props.disabled,
-              [styles.selected]: this.props.selected,
-            })}
-          />
+        <label>
+          <span className={styles.inputWrapper}>
+            <input
+              className={styles.input}
+              checked={this.props.selected}
+              disabled={this.props.disabled}
+              name={this.props.name}
+              onChange={this.props.onChange}
+              value={this.props.value}
+              type="radio"
+            />
+            <span
+              className={classnames(styles.radioIcon, {
+                [styles.disabled]: this.props.disabled,
+                [styles.selected]: this.props.selected,
+              })}
+            />
+          </span>
+          <span>
+            {this.props.children}
+          </span>
         </label>
-        {this.props.children}
       </div>
     );
   }

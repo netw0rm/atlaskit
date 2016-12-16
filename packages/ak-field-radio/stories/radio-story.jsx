@@ -1,0 +1,18 @@
+import { storiesOf } from '@kadira/storybook';
+import React from 'react';
+
+import { AkRadio } from '../src';
+import { name } from '../package.json';
+
+function changeHandler(event) {
+  console.log(`Radio button "${event.target.name}" was selected.`);
+}
+
+storiesOf(name, module)
+  .add('Radio items', () => ([
+    <AkRadio name="not-selected" value="true" onChange={changeHandler}>Not selected</AkRadio>,
+    <AkRadio name="selected" value="true" onChange={changeHandler} selected>Selected</AkRadio>,
+    <AkRadio name="disabled" value="true" onChange={changeHandler} disabled>Disabled</AkRadio>,
+    <AkRadio name="selected-disabled" value="true" onChange={changeHandler} selected disabled>Selected + disabled</AkRadio>,
+    <AkRadio name="markup-content" value="true" onChange={changeHandler}><b>Markup</b> in the <a href="/link">content</a></AkRadio>,
+  ]));

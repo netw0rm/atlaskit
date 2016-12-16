@@ -24,7 +24,7 @@ export default class Radio extends PureComponent {
 
   render() {
     return (
-      <div className={styles.container}>
+      <div>
         <label>
           <span className={styles.inputWrapper}>
             <input

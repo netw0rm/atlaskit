@@ -13,10 +13,14 @@ export default class RadioGroup extends PureComponent {
     defaultValue: PropTypes.string,
   }
 
+  static defaultProps = {
+    defaultValue: null,
+  }
+
   constructor(props) {
     super();
     this.state = {
-      value: props.defaultValue,
+      value: props && props.defaultValue,
     };
   }
 

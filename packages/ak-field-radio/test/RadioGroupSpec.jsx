@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
 import Radio from '../src/Radio';
-import RadioGroup from '../src/RadioGroup';
+import AkRadioGroup from '../src/RadioGroup';
 import { name } from '../package.json';
 
 const { expect } = chai;
@@ -13,7 +13,7 @@ chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
 describe(name, () => {
-  describe('RadioGroup', () => {
+  describe('AkRadioGroup', () => {
     const sampleItems = [
       { name: 'test', value: '1', label: 'one' },
       { name: 'test', value: '2', label: 'two' },
@@ -21,21 +21,21 @@ describe(name, () => {
     ];
 
     describe('exports', () => {
-      it('the RadioGroup component', () => {
-        expect(RadioGroup).to.exist;
-        expect(new RadioGroup()).to.be.instanceOf(Component);
+      it('the AkRadioGroup component', () => {
+        expect(AkRadioGroup).to.exist;
+        expect(new AkRadioGroup()).to.be.instanceOf(Component);
       });
     });
 
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<RadioGroup />);
+        const wrapper = shallow(<AkRadioGroup />);
         expect(wrapper).to.exist;
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
       it('should render a Radio for each item', () => {
-        const wrapper = mount(<RadioGroup items={sampleItems} />);
+        const wrapper = mount(<AkRadioGroup items={sampleItems} />);
         expect(wrapper).to.have.exactly(3).descendants(Radio);
       });
     });
@@ -43,7 +43,7 @@ describe(name, () => {
     describe('props', () => {
       describe('items prop', () => {
         it('renders a Radio with correct props for each item in the array', () => {
-          const wrapper = shallow(<RadioGroup items={sampleItems} />);
+          const wrapper = shallow(<AkRadioGroup items={sampleItems} />);
           expect(wrapper).to.have.exactly(sampleItems.length).descendants(Radio);
 
           const radios = wrapper.find(Radio);
@@ -62,12 +62,12 @@ describe(name, () => {
       describe('label prop', () => {
         it('renders label containing string', () => {
           const label = 'string label content';
-          const wrapper = shallow(<RadioGroup label={label} />);
+          const wrapper = shallow(<AkRadioGroup label={label} />);
           expect(wrapper.contains(label)).to.equal(true);
         });
         it('renders label with node', () => {
           const label = (<p>label content</p>);
-          const wrapper = shallow(<RadioGroup label={label} />);
+          const wrapper = shallow(<AkRadioGroup label={label} />);
           expect(wrapper.contains(label)).to.equal(true);
         });
       });
@@ -75,8 +75,8 @@ describe(name, () => {
       describe('onRadioChange prop', () => {
         it('is called when a radio item is changed', () => {
           const spy = sinon.spy();
-          const wrapper = shallow(<RadioGroup onRadioChange={spy} items={sampleItems} />);
-          wrapper.find(Radio).first().simulate('change');
+          const wrapper = mount(<AkRadioGroup onRadioChange={spy} items={sampleItems} />);
+          wrapper.find(Radio).first().find('input').simulate('change');
           expect(spy).to.have.been.calledOnce;
         });
       });
@@ -91,19 +91,23 @@ describe(name, () => {
         }
 
         it('selects the radio with matching value', () => {
-          const wrapper = shallow(<RadioGroup value={sampleItems[0].value} items={sampleItems} />);
+          const wrapper = shallow(
+            <AkRadioGroup value={sampleItems[0].value} items={sampleItems} />
+          );
           expectRadioSelected(wrapper, 0);
         });
         it('does not select an item if not specified', () => {
-          const wrapper = shallow(<RadioGroup items={sampleItems} />);
+          const wrapper = shallow(<AkRadioGroup items={sampleItems} />);
           expectNoRadioSelected(wrapper);
         });
         it('does not select an item if value does not match a radio item', () => {
-          const wrapper = shallow(<RadioGroup value="non-existent value" items={sampleItems} />);
+          const wrapper = shallow(<AkRadioGroup value="non-existent value" items={sampleItems} />);
           expectNoRadioSelected(wrapper);
         });
         it('can select a radio which is disabled', () => {
-          const wrapper = shallow(<RadioGroup value={sampleItems[2].value} items={sampleItems} />);
+          const wrapper = shallow(
+            <AkRadioGroup value={sampleItems[2].value} items={sampleItems} />
+          );
           expectRadioSelected(wrapper, 2);
         });
       });

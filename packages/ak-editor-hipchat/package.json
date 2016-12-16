@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-hipchat",
-  "version": "2.2.0",
+  "version": "2.5.0",
   "description": "Atlassian Editor component for HipChat",
   "main": "dist/es5/index.jsx",
   "jsnext:main": "dist/es2015/index.jsx",
@@ -16,7 +16,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-prosemirror": "^4.0.0",
+    "ak-editor-prosemirror": "^4.3.14",
     "ak-editor-schema": "^4.1.0",
     "tslib": "^1.2.0"
   },

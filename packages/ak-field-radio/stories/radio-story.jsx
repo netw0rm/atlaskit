@@ -5,7 +5,7 @@ import { AkRadio } from '../src';
 import { name } from '../package.json';
 
 function changeHandler(event) {
-  console.log(`Radio button "${event.target.name}" was selected.`);
+  console.log(`Radio item for "${event.target.name}" was selected.`);
 }
 
 storiesOf(name, module)

@@ -1,3 +1,36 @@
-import Radio from './Radio';
+import React, { PropTypes, PureComponent } from 'react';
 
-export { Radio as AkRadio }; // eslint-disable-line import/prefer-default-export
+import AkRadioGroup from './RadioGroup';
+import AkRadio from './Radio';
+
+export {
+  AkRadioGroup,
+  AkRadio,
+};
+
+export default class RadioGroup extends PureComponent {
+  static propTypes = {
+    defaultValue: PropTypes.string,
+  }
+
+  constructor(props) {
+    super();
+    this.state = {
+      value: props.defaultValue,
+    };
+  }
+
+  changeHandler = (event) => {
+    this.setState({ value: event.target.value });
+  }
+
+  render() {
+    return (
+      <AkRadioGroup
+        {...this.props}
+        onRadioChange={this.changeHandler}
+        value={this.state.value}
+      />
+    );
+  }
+}

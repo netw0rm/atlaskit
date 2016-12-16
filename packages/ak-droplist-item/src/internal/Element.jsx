@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import { ariaRoles, baseTypes } from './constants';
 
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
@@ -12,6 +13,21 @@ export default class Element extends PureComponent {
     children: PropTypes.node,
     className: PropTypes.string,
     isDisabled: PropTypes.bool,
+    isFocused: PropTypes.bool,
+  }
+
+  componentDidMount = () => {
+    this.setFocus();
+  }
+
+  componentDidUpdate = () => {
+    this.setFocus();
+  }
+
+  setFocus = () => {
+    if (this.props.isFocused) {
+      ReactDOM.findDOMNode(this.ref).focus(); // eslint-disable-line react/no-find-dom-node
+    }
   }
 
   // this prevents the focus ring from appearing when the element is clicked.
@@ -34,6 +50,7 @@ export default class Element extends PureComponent {
           onKeyDown={handleKeyDown}
           onClick={handleClick}
           onMouseDown={this.handleMouseDown}
+          ref={ref => (this.ref = ref)}
         >
           {props.children}
         </a>
@@ -48,6 +65,7 @@ export default class Element extends PureComponent {
         onKeyDown={handleKeyDown}
         onClick={handleClick}
         onMouseDown={this.handleMouseDown}
+        ref={ref => (this.ref = ref)}
       >{props.children}</div>
     );
     /* eslint-enable jsx-a11y/no-static-element-interactions */

@@ -44,6 +44,13 @@ export default class SingleLineTextInput extends PureComponent {
      */
     style: PropTypes.shape({}),
     /**
+     * @description Whether the input text will initially be selected/highlighted
+     * @memberof SingleLineTextInput
+     * @type {boolean}
+     * @default false
+     */
+    isInitiallySelected: PropTypes.bool,
+    /**
      * @description Whether the component is in edit mode or read mode.
      * @memberof SingleLineTextInput
      * @type {boolean}
@@ -53,6 +60,15 @@ export default class SingleLineTextInput extends PureComponent {
 
   static defaultProps = {
     style: {},
+    isInitiallySelected: false,
+  }
+
+  componentDidMount() {
+    this.selectInputIfNecessary();
+  }
+
+  componentDidUpdate() {
+    this.selectInputIfNecessary();
   }
 
   getInputProps = () => {
@@ -62,13 +78,21 @@ export default class SingleLineTextInput extends PureComponent {
     };
     delete inputProps.style;
     delete inputProps.isEditing;
+    delete inputProps.isInitiallySelected;
     return inputProps;
+  }
+
+  selectInputIfNecessary() {
+    if (this.props.isEditing && this.props.isInitiallySelected) {
+      this.inputRef.select();
+    }
   }
 
   renderEditView = () => (
     <input
       {...style(css.common, css.editView, this.props.style)}
       {...this.getInputProps()}
+      ref={(ref) => { this.inputRef = ref; }}
     />
   )
 

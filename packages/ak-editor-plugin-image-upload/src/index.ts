@@ -20,6 +20,8 @@ export interface ImageUploadPluginOptions {
   maxFileSizeInBytes: number;
 }
 
+export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
+
 const DEFAULT_OPTIONS: ImageUploadPluginOptions = {
   maxFileSizeInBytes: 10000000,
   supportedImageTypes: [
@@ -42,6 +44,7 @@ export class ImageUploadState {
   active = false;
   enabled = false;
   hidden = false;
+  uploadHandler?: ImageUploadHandler;
   src?: string = undefined;
   element?: HTMLElement = undefined;
 
@@ -59,7 +62,6 @@ export class ImageUploadState {
       pm.on.activeMarkChange,
     ], () => this.update());
 
-    // Analytics
     this.pasteAdapter.add(() => {
       analyticsService.trackEvent('atlassian.editor.image.paste');
       return true;
@@ -69,9 +71,23 @@ export class ImageUploadState {
       analyticsService.trackEvent('atlassian.editor.image.drop');
       return true;
     });
+    this.dropAdapter.add(this.handleImageUpload);
+    this.pasteAdapter.add(this.handleImageUpload);
   }
 
-  subscribe(cb: StateChangeHandler): void {
+  handleImageUpload = (_?: any, e?: any) : boolean => {
+    const { uploadHandler } = this;
+    
+    if (!uploadHandler) {
+      return false;
+    }
+
+    uploadHandler(e, this.addImage);
+
+    return true;
+  }
+
+  subscribe = (cb: StateChangeHandler): void => {
     this.changeHandlers.push(cb);
     cb(this);
   }
@@ -79,7 +95,7 @@ export class ImageUploadState {
   /**
    * Insert an image at the current selection.
    */
-  addImage(options: { src?: string }): void {
+  addImage = (options: { src?: string }): void => {
     const { pm } = this;
     const { image } = pm.schema.nodes;
     if (this.enabled && image && pm.selection instanceof TextSelection) {

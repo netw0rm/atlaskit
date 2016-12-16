@@ -16,7 +16,7 @@ const SaveAction = () => action('Save')();
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
-const imageUploader = (e: any, fn: any) => {
+const imageUploadHandler = (e: any, fn: any) => {
   if (e instanceof ClipboardEvent) {
     pasteHandler(converter, e, fn);
   } else if (e instanceof DragEvent) {
@@ -50,10 +50,11 @@ storiesOf('ak-editor-bitbucket', module)
       />
     </div>
   )
-  .add('with imageUploader', () =>
+  .add('with imageUploadHandler', () =>
     <div style={{ padding: 20 }}>
       <Editor
-        imageUploader={imageUploader}
+        isExpandedByDefault
+        imageUploadHandler={imageUploadHandler}
         onCancel={CancelAction}
         onChange={ChangeAction}
         onSave={SaveAction}

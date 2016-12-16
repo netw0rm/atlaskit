@@ -1,12 +1,14 @@
 import chai from 'chai';
-import { chaiPlugin } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 import chaiEnzyme from 'chai-enzyme';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
+import { default as sinon, SinonSpy } from 'sinon';
 import React from 'react';
 import { doc, strong, h1, p } from './_schema-builder';
 
 import Editor from '../src/index';
+import ImageIcon from 'ak-icon/glyph/editor/image';
+import { chaiPlugin, createEvent } from 'ak-editor-test';
 
 chai.use(chaiPlugin);
 chai.use(chaiEnzyme());
@@ -68,5 +70,76 @@ describe('ak-editor-bitbucket/setFromHtml', () => {
 
     editor.setFromHtml('<p>foo <strong>bar</strong></p>');
     expect(editor.doc).to.deep.equal(doc(p('foo ', strong('bar'))));
+  });
+});
+
+describe('ak-editor-bitbucket/imageUploadHandler', () => {
+  let editor: ReactWrapper<any, any>;
+  let spy: SinonSpy;
+
+  beforeEach(() => {
+    spy = sinon.spy();
+    editor = mount(<Editor isExpandedByDefault imageUploadHandler={spy} />);
+  });
+
+  it('should invoke upload handler after clicking image icon', () => {
+    editor
+      .find('ChromeExpanded')
+      .find(ImageIcon)
+      .parent()
+      .simulate('click');
+    
+    expect(spy).to.have.been.calledOnce;
+    expect(spy).to.have.been.calledWith(undefined);
+    expect(spy.getCall(0).args[1]).to.be.a('function');
+  });
+
+  it('should invoke upload handler after pasting an image', function() {
+    const contentArea: HTMLElement = (editor.get(0) as any).state.pm.content;
+    const event = createEvent('paste');
+    
+    try {
+      Object.defineProperties(event, {
+        clipboardData: {
+          value: {
+            types: ['Files']
+          }
+        }
+      });
+    } catch (e) {
+      return this.skip('This environment does not allow mocking paste events - ' + e);
+    }
+    
+    contentArea.dispatchEvent(event);
+
+    expect(spy).to.have.been.calledOnce;
+    expect(spy).to.have.been.calledWith(event);
+    expect(spy.getCall(0).args[1]).to.be.a('function');
+  });
+
+  it('should invoke upload handler after dropping an image', function(){
+    // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop' 
+    //       so we must dispatch the event directly on the event which has listener attached.
+    const dropElement: HTMLElement = (editor.get(0) as any).state.pm.content.parentNode;
+    const event = createEvent('drop');
+    
+    Object.defineProperties(event, {
+      dataTransfer: {
+        value: {
+          getData: (type: string) => '',
+          setData: () => {},
+          clearData: () => {},
+          types: ['Files'],
+          files: [],
+          items: [],
+        }
+      }
+    });
+
+    dropElement.dispatchEvent(event);
+    
+    expect(spy).to.have.been.calledOnce;
+    expect(spy).to.have.been.calledWith(event);
+    expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 });

@@ -44,3 +44,44 @@ export const simpleDropdownItemsWithAvatars = [
     ],
   },
 ];
+
+export const lotsOfItems = [
+  {
+    heading: '',
+    items: [
+      {
+        content: 'Some text',
+      },
+      {
+        content: 'Some text 2',
+      },
+      {
+        content: 'Some text 3',
+      },
+      {
+        content: 'Some text 4',
+      },
+      {
+        content: 'Some text 5',
+      },
+      {
+        content: 'Some text 6',
+      },
+      {
+        content: 'Some text 7',
+      },
+      {
+        content: 'Some text 8',
+      },
+      {
+        content: 'Some text 9',
+      },
+      {
+        content: 'Some text 10',
+      },
+      {
+        content: 'Some text 11',
+      },
+    ],
+  },
+];

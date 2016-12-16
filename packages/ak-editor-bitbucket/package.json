@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "5.7.1",
+  "version": "5.9.0",
   "description": "Editor web component",
   "main": "dist/es5/index.jsx",
   "jsnext:main": "dist/es2015/index.jsx",
@@ -36,6 +36,7 @@
   "devDependencies": {
     "ak-editor-test": "*",
     "ak-tabs": "*",
+    "ak-icon": "*",
     "akutil-react": "*",
     "akutil-common-test": "*"
   },

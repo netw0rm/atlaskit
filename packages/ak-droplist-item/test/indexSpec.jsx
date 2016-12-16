@@ -24,7 +24,7 @@ describe(name, () => {
     expect(shallow(<Item />).instance().props.type).to.equal('link');
   });
 
-  describe('all about rendering', () => {
+  describe('rendering', () => {
     it('should render content that is passed to the item', () => {
       expect(mount(<Item>sample</Item>)).to.have.text('sample');
     });
@@ -50,7 +50,7 @@ describe(name, () => {
     });
   });
 
-  describe('all about classes', () => {
+  describe('classes', () => {
     it('should have "item" class by default', () => {
       expect(mount(<Item type="link" />)).to.have.className(styles.locals.item);
       expect(mount(<Item type="checkbox" />)).to.have.className(styles.locals.item);
@@ -88,7 +88,7 @@ describe(name, () => {
     });
   });
 
-  describe('all about events', () => {
+  describe('events', () => {
     let onActivate;
 
     beforeEach(() => {
@@ -135,5 +135,10 @@ describe(name, () => {
       wrapper.simulate('keyDown', { keyCode: keyCode('enter') });
       expect(onActivate.called).to.be.false;
     });
+  });
+
+  it('should focus itself when the isFocused property is set to true', () => {
+    const wrapper = mount(<Item isFocused />);
+    expect(wrapper.find(`.${styles.locals.item}`).node).to.equal(document.activeElement);
   });
 });

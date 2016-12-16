@@ -19,7 +19,7 @@ storiesOf(name, module)
         <Item href="http://atlassian.com">This link will reload this window</Item>
         <Item isActive>This is just a highlighted item</Item>
         <Item href="http://atlassian.com" target="_blank">This link will open in another tab</Item>
-        <Item>This item has a handler on activation</Item>
+        <Item isFocused>Focused item</Item>
       </div>
     </div>
   ), { imports })
@@ -27,7 +27,7 @@ storiesOf(name, module)
     <div className={styles.storiesContainer}>
       <p>This is an example of droplist items with checkboxes</p>
       <div className={styles.itemsContainer}>
-        <Item type="checkbox">first item with onActivate handler</Item>
+        <Item type="checkbox" isFocused>Focused item</Item>
         <Item type="checkbox" isChecked>checked item</Item>
         <Item type="checkbox">third item</Item>
       </div>
@@ -37,7 +37,7 @@ storiesOf(name, module)
     <div className={styles.storiesContainer}>
       <p>This is an example of radio droplist items</p>
       <div className={styles.itemsContainer}>
-        <Item type="radio">first item with onActivate handler</Item>
+        <Item type="radio" isFocused>focused Item</Item>
         <Item type="radio" isChecked>checked item</Item>
         <Item type="radio">third item</Item>
       </div>

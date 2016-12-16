@@ -54,6 +54,11 @@
       "from": "@kadira/storybook-ui@>=3.10.0 <4.0.0",
       "resolved": "https://registry.npmjs.org/@kadira/storybook-ui/-/storybook-ui-3.10.1.tgz"
     },
+    "@types/ajv": {
+      "version": "0.0.5",
+      "from": "@types/ajv@latest",
+      "resolved": "https://registry.npmjs.org/@types/ajv/-/ajv-0.0.5.tgz"
+    },
     "@types/chai": {
       "version": "3.4.34",
       "from": "@types/chai@>=3.4.34 <4.0.0",
@@ -73,6 +78,11 @@
       "version": "0.0.33",
       "from": "@types/form-data@>=0.0.0 <0.1.0",
       "resolved": "https://registry.npmjs.org/@types/form-data/-/form-data-0.0.33.tgz"
+    },
+    "@types/highlight.js": {
+      "version": "9.1.8",
+      "from": "@types/highlight.js@latest",
+      "resolved": "https://registry.npmjs.org/@types/highlight.js/-/highlight.js-9.1.8.tgz"
     },
     "@types/jasmine": {
       "version": "2.5.38",

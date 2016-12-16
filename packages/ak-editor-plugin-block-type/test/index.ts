@@ -67,7 +67,7 @@ describe('ak-editor-plugin-block-type', () => {
   it('should be able to change to block quote', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
-    plugin.changeBlockType('quote');
+    plugin.changeBlockType('blockquote');
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
@@ -112,7 +112,7 @@ describe('ak-editor-plugin-block-type', () => {
 
   it('should be able to identify code block', () => {
     const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
-    expect(plugin.currentBlockType.name).to.equal('code');
+    expect(plugin.currentBlockType.name).to.equal('codeblock');
   });
 
   it('should be able to change to back to paragraph and then change to blockquote', () => {
@@ -246,7 +246,7 @@ describe('ak-editor-plugin-block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey("Cmd-Alt-7");
-            expect(toggleBlockType).to.have.been.calledWith('quote');
+            expect(toggleBlockType).to.have.been.calledWith('blockquote');
           });
         });
 
@@ -256,7 +256,7 @@ describe('ak-editor-plugin-block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey("Cmd-Alt-8");
-            expect(toggleBlockType).to.have.been.calledWith('code');
+            expect(toggleBlockType).to.have.been.calledWith('codeblock');
           });
         });
 
@@ -348,7 +348,7 @@ describe('ak-editor-plugin-block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey("Ctrl-7");
-            expect(toggleBlockType).to.have.been.calledWith('quote');
+            expect(toggleBlockType).to.have.been.calledWith('blockquote');
           });
         });
 
@@ -358,7 +358,7 @@ describe('ak-editor-plugin-block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey("Ctrl-8");
-            expect(toggleBlockType).to.have.been.calledWith('code');
+            expect(toggleBlockType).to.have.been.calledWith('codeblock');
           });
         });
       });

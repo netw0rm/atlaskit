@@ -16,7 +16,7 @@ describe.skip('ak-blanket', () => {
     });
 
     it('should have an events export with defined events', () => {
-      events.should.be.defined;
+      events.should.exist;
       Object.keys(events).should.be.deep.equal([
         'activate',
       ]);

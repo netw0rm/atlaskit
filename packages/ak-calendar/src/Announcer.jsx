@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,

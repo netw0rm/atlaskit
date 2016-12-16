@@ -4,7 +4,7 @@ Breadcrumbs help users visualize their current location in relation to the rest 
 
 ## Try it out
 
-Interact with a [live demo of the ak-breadcrumbs component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-breadcrumbs/@VERSION@/).
+Interact with a [live demo of the ak-breadcrumbs component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/ak-breadcrumbs/@VERSION@/).
 
 ## Installation
 
@@ -23,8 +23,8 @@ import AkBreadcrumbs, { AkBreadcrumbsItem } from 'ak-breadcrumbs';
 
 ReactDOM.render(
   <AkBreadcrumbs>
-    <AkBreadcrumbsItem href="/home">Home</AkBreadcrumbsItem>
-    <AkBreadcrumbsItem href="/home/item">Item</AkBreadcrumbsItem>
+    <AkBreadcrumbsItem href="/home" text="Home" />
+    <AkBreadcrumbsItem href="/home/item" text="Item" />
   </AkBreadcrumbs>,
   container
 );

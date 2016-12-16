@@ -1,7 +1,7 @@
 import React, { FormEvent, KeyboardEvent, PureComponent } from 'react';
 import * as styles from './styles.global.less';
 
-interface Props {
+export interface Props {
   autoFocus?: boolean;
   defaultValue?: string;
   onChange?: (value: string) => void;
@@ -10,7 +10,7 @@ interface Props {
   placeholder?: string;
 }
 
-interface State {}
+export interface State {}
 
 export default class PanelTextInput extends PureComponent<Props, State> {
   state: State = {};

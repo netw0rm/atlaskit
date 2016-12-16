@@ -16,7 +16,6 @@ const { expect } = chai;
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
-
 describe(name, () => {
   describe('AkBreadcrumbs', () => {
     describe('exports', () => {
@@ -31,7 +30,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Breadcrumbs />);
-        expect(wrapper).to.be.defined;
+        expect(wrapper).to.exist;
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
@@ -59,7 +58,7 @@ describe(name, () => {
         expect(containerDiv).to.have.exactly(3).descendants(Item);
       });
 
-      describe('with more than 8 items', () => {
+      describe('with enough items to collapse', () => {
         const firstItem = <Item>item1</Item>;
         const lastItem = <Item>item2</Item>;
         const expandSpy = sinon.spy();
@@ -68,15 +67,11 @@ describe(name, () => {
         describe('and not expanded', () => {
           beforeEach(() => {
             wrapper = mount(
-              <Breadcrumbs onExpand={expandSpy}>
+              <Breadcrumbs maxItems={4} onExpand={expandSpy}>
                 {firstItem}
                 <Item>item2</Item>
                 <Item>item3</Item>
                 <Item>item4</Item>
-                <Item>item5</Item>
-                <Item>item6</Item>
-                <Item>item7</Item>
-                <Item>item8</Item>
                 {lastItem}
               </Breadcrumbs>
             );
@@ -99,23 +94,18 @@ describe(name, () => {
         describe('and expanded', () => {
           beforeEach(() => {
             wrapper = mount(
-              <Breadcrumbs isExpanded>
+              <Breadcrumbs maxItems={4} isExpanded>
                 <Item>item1</Item>
                 <Item>item2</Item>
                 <Item>item3</Item>
                 <Item>item4</Item>
-                <Item>item5</Item>
-                <Item>item6</Item>
-                <Item>item7</Item>
-                <Item>item8</Item>
-                <Item>item9</Item>
               </Breadcrumbs>
             );
           });
 
           it('renders all the items', () => {
             expect(wrapper.props().isExpanded).to.equal(true);
-            expect(wrapper).to.have.exactly(9).descendants(Item);
+            expect(wrapper).to.have.exactly(4).descendants(Item);
             expect(wrapper).to.not.have.descendants(EllipsisItem);
           });
         });

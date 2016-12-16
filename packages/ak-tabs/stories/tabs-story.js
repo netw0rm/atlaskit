@@ -12,8 +12,28 @@ function changeHandler(e) {
   action(`The "${e.target.label}" tab was changed. selected: ${e.target.selected}`)();
 }
 
+const imports = [
+  ['React', 'react'],
+  ['reactify', 'akutil-react'],
+  ['Tabs, { events }', 'ak-tabs'],
+];
+
+const scripts = [
+  'const AkTabs = reactify(Tabs);',
+];
+
+let tabsCounter = 1;
+
+function addTab() {
+  const newTab = new AkTab();
+  newTab.label = `New tab ${tabsCounter}`;
+  newTab.innerHTML = `<p>New tab content ${tabsCounter}</p>`;
+  document.getElementById('my-tabs').appendChild(newTab);
+  tabsCounter++;
+}
+
 storiesOf(name, module)
-  .add('simple ak-tabs', () => (
+  .addCodeExampleStory('simple ak-tabs', () => (
     <Component>
       <ak-tabs-tab selected label="Details">
         <p>
@@ -62,8 +82,8 @@ storiesOf(name, module)
         </p>
       </ak-tabs-tab>
     </Component>
-  ))
-  .add('simple ak-tabs with surrounding content', () => (
+  ), { imports, scripts })
+  .addCodeExampleStory('simple ak-tabs with surrounding content', () => (
     <div>
       <h1>Content before tabs</h1>
       <p>
@@ -139,7 +159,7 @@ storiesOf(name, module)
         ut feugiat sodales.
       </p>
     </div>
-  ))
+  ), { imports, scripts })
   .add('ak-tabs with many items', () => (
     <Component>
       <ak-tabs-tab selected label="1 Tab">Tab 1 content</ak-tabs-tab>
@@ -164,7 +184,7 @@ storiesOf(name, module)
       <ak-tabs-tab label="20 Tab">Tab content</ak-tabs-tab>
     </Component>
   ))
-  .add('simple ak-tabs inside a container', () => (
+  .addCodeExampleStory('simple ak-tabs inside a container', () => (
     <div style={{ width: '300px', border: '1px solid black' }}>
       <Component>
         <ak-tabs-tab selected label="Details">Details content</ak-tabs-tab>
@@ -173,8 +193,8 @@ storiesOf(name, module)
         <ak-tabs-tab label="Pipeline">Pipeline content</ak-tabs-tab>
       </Component>
     </div>
-  ))
-  .add('ak-tabs inside a container with last tab selected', () => (
+  ), { imports, scripts })
+  .addCodeExampleStory('ak-tabs inside a container with last tab selected', () => (
     <div style={{ width: '300px', border: '1px solid black' }}>
       <Component>
         <ak-tabs-tab label="Details">Details content</ak-tabs-tab>
@@ -183,8 +203,8 @@ storiesOf(name, module)
         <ak-tabs-tab selected label="Pipeline">Pipeline content</ak-tabs-tab>
       </Component>
     </div>
-  ))
-  .add('ak-tabs with many items inside a container', () => (
+  ), { imports, scripts })
+  .addCodeExampleStory('ak-tabs with many items inside a container', () => (
     <div style={{ width: '300px', border: '1px solid black' }}>
       <Component>
         <ak-tabs-tab selected label="Tab 1">Tab 1 content</ak-tabs-tab>
@@ -199,18 +219,18 @@ storiesOf(name, module)
         <ak-tabs-tab label="Long tab name 10">Tab 10 content</ak-tabs-tab>
       </Component>
     </div>
-  ))
-  .add('ak-tabs with no children', () => (
+  ), { imports, scripts })
+  .addCodeExampleStory('ak-tabs with no children', () => (
     <Component />
-  ))
-  .add('ak-tabs with multiple tabs with selected attribute', () => (
+  ), { imports, scripts })
+  .addCodeExampleStory('ak-tabs with multiple tabs with selected attribute', () => (
     <Component>
       <ak-tabs-tab selected label="Tab 1">Tab 1 has selected attribute</ak-tabs-tab>
       <ak-tabs-tab selected label="Tab 2">Tab 2 has selected attribute</ak-tabs-tab>
       <ak-tabs-tab selected label="Tab 3">Tab 3 has selected attribute</ak-tabs-tab>
     </Component>
-  ))
-  .add('ak-tabs with tabbable content', () => (
+  ), { imports, scripts })
+  .addCodeExampleStory('ak-tabs with tabbable content', () => (
     <Component>
       <ak-tabs-tab selected label="Tab 1">
         <h1>Tab 1</h1>
@@ -222,7 +242,7 @@ storiesOf(name, module)
         <p>Another <a href="http://www.atlassian.com">link</a>.</p>
       </ak-tabs-tab>
     </Component>
-  ))
+  ), { imports, scripts })
   .add('ak-tabs with a very long label', () => (
     <Component>
       <ak-tabs-tab
@@ -260,7 +280,7 @@ storiesOf(name, module)
       </ak-tabs-tab>
     </Component>
   ))
-  .add('ak-tabs with event listeners', () => {
+  .addCodeExampleStory('ak-tabs with event listeners', () => {
     // TODO bind via JSX attribute 'onTabChange={() => ...}'
     window.removeEventListener(tabChangeEvent, changeHandler);
     window.addEventListener(tabChangeEvent, changeHandler);
@@ -277,22 +297,23 @@ storiesOf(name, module)
         </ak-tabs-tab>
       </Component>
     );
+  }, {
+    imports,
+    scripts: [
+      [...scripts],
+      'window.removeEventListener(tabChangeEvent, changeHandler)',
+      'window.addEventListener(tabChangeEvent, changeHandler)',
+      changeHandler,
+    ],
   })
-  .add('ak-tabs added programatically', () => {
-    let i = 1;
-
-    function addTab() {
-      const newTab = new AkTab();
-      newTab.label = `New tab ${i}`;
-      newTab.innerHTML = `<p>New tab content ${i}</p>`;
-      document.getElementById('my-tabs').appendChild(newTab);
-      i++;
-    }
-
-    return (
-      <div>
-        <Component id="my-tabs" />
-        <button onClick={addTab}>Add tab</button>
-      </div>
-    );
+  .addCodeExampleStory('ak-tabs added programatically', () => (
+    <div>
+      <Component id="my-tabs" />
+      <button onClick={addTab}>Add tab</button>
+    </div>
+  ), { imports,
+    scripts: [
+      [...scripts],
+      addTab,
+    ],
   });

@@ -1,16 +1,18 @@
 import React, { PropTypes } from 'react';
 import Button from 'ak-button';
 import Lorem from 'react-lorem-component';
+import { action } from '@kadira/storybook';
 import ModalDialog from '../src';
 
-// eslint-disable-next-line react/prefer-stateless-function
+function doSomethingOnClick() {
+  action('the "onBlanketClicked" handler is fired')();
+}
+
 export default class ModalDemo extends React.PureComponent {
-  static get propTypes() {
-    return {
-      header: PropTypes.element,
-      children: PropTypes.element,
-      footer: PropTypes.element,
-    };
+  static propTypes = {
+    header: PropTypes.element,
+    children: PropTypes.element,
+    footer: PropTypes.element,
   }
 
   render() {
@@ -25,6 +27,7 @@ export default class ModalDemo extends React.PureComponent {
         footer={
           footer || <Button appearance="primary">Create issue</Button>
         }
+        onBlanketClicked={doSomethingOnClick}
         {...this.props}
       >
         {children || <Lorem count="1" />}

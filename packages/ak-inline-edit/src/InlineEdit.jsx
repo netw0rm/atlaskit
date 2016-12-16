@@ -1,8 +1,12 @@
 import React, { PureComponent, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
-import EditView from './Edit';
-import ReadView from './Read';
-import ReadOnlyView from './ReadOnly';
+import classNames from 'classnames';
+import Button from 'ak-button';
+import ConfirmIcon from 'ak-icon/glyph/confirm';
+import CancelIcon from 'ak-icon/glyph/cancel';
+import EditIcon from 'ak-icon/glyph/edit';
+import FieldBase from 'ak-field-base'; // eslint-disable-line
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -44,13 +48,49 @@ export default class InlineEdit extends PureComponent {
      */
     isEditing: PropTypes.bool.isRequired,
     /**
+     * @description Whether or not a validation error should be displayed.
+     *
+     * Displays a warning icon and highlights the the input with an orange border.
+     * A future release will also allow a custom error message to be displayed.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    isInvalid: PropTypes.bool,
+    /**
      * @description Whether InlineEdit should display its label.
      *
      * @memberof InlineEdit
-     * @type {string}
+     * @type {boolean}
      * @default false
      */
     isLabelHidden: PropTypes.bool,
+    /**
+     * @description Whether the confirm/cancel buttons are hidden when in edit mode.
+     *
+     * The confirm/cancel buttons should typically be hidden when an inline dialog
+     * (dropdown, calendar, etc) is being displayed in edit mode. The buttons should
+     * only be made visible once the user has selected an option from the inline dialog.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    areActionButtonsHidden: PropTypes.bool,
+    /**
+     * @description Allows disabling the default confirm-on-blur behaviour.
+     *
+     * By default, the 'onConfirm' callback will be called when focus moves
+     * outside the inline edit component. This prop allows disabling this
+     * behaviour. If this prop is set to 'true', 'onConfirm' will only be
+     * called if the user explicitly clicks on the confirm button.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    isConfirmOnBlurDisabled: PropTypes.bool,
     /**
      * @description Called when the user requests that edit mode be entered
      *
@@ -86,46 +126,125 @@ export default class InlineEdit extends PureComponent {
   }
 
   static defaultProps = {
+    isInvalid: false,
     isLabelHidden: false,
+    areActionButtonsHidden: false,
+    isConfirmOnBlurDisabled: false,
   }
 
+  state = {
+    wasFocusReceivedSinceLastBlur: false,
+  }
+
+  onWrapperClick = () => {
+    if (!this.isReadOnly() && !this.props.isEditing) {
+      this.props.onEditRequested();
+    }
+  }
+
+  onWrapperBlur = () => {
+    if (this.isReadOnly() || !this.props.isEditing || this.props.isConfirmOnBlurDisabled) {
+      return;
+    }
+    this.setState({ wasFocusReceivedSinceLastBlur: false });
+    setTimeout(this.confirmIfUnfocused, 10);
+  }
+
+  onWrapperFocus = () => {
+    this.setState({ wasFocusReceivedSinceLastBlur: true });
+  }
+
+  onConfirmClick = (event) => {
+    // eslint-disable-next-line react/no-find-dom-node
+    ReactDOM.findDOMNode(this.confirmButtonRef).focus();
+
+    event.preventDefault();
+    this.props.onConfirm();
+  }
+
+  onCancelClick = (event) => {
+    // eslint-disable-next-line react/no-find-dom-node
+    ReactDOM.findDOMNode(this.cancelButtonRef).focus();
+
+    event.preventDefault();
+    this.props.onCancel();
+  }
+
+  getWrapperClasses = () =>
+    classNames({
+      [styles.readViewWrapper]: !this.props.isEditing,
+    })
+
+  getActionButtonClasses = () =>
+    classNames({
+      [styles.buttonsWrapper]: true,
+      [styles.buttonWrapperHidden]: !this.props.isEditing || this.props.areActionButtonsHidden,
+    })
+
+  confirmIfUnfocused = () => {
+    if (!this.state.wasFocusReceivedSinceLastBlur) {
+      this.props.onConfirm();
+    }
+  }
+
+  isReadOnly = () =>
+    typeof this.props.editView === 'undefined'
+
+  shouldShowEditView = () =>
+    this.props.isEditing && !this.isReadOnly()
+
+  renderActionButtons = () => (
+    <div className={this.getActionButtonClasses()}>
+      <Button
+        appearance="subtle"
+        iconBefore={<ConfirmIcon label="confirm" />}
+        onClick={this.onConfirmClick}
+        ref={(ref) => { this.confirmButtonRef = ref; }}
+      />
+      <Button
+        appearance="subtle"
+        iconBefore={<CancelIcon label="cancel" />}
+        onClick={this.onCancelClick}
+        ref={(ref) => { this.cancelButtonRef = ref; }}
+      />
+    </div>
+  )
+
+  renderEditIcon = () => (
+    <div className={styles.editButtonWrapper}>
+      <button className={styles.editButton}>
+        <EditIcon label="Edit" size="small" />
+      </button>
+    </div>
+  )
+
   renderReadView = () => (
-    <ReadView
-      label={this.props.label}
-      isLabelHidden={this.props.isLabelHidden}
-      onEditRequested={this.props.onEditRequested}
-    >
+    <div className={styles.readViewContentWrapper}>
       {this.props.readView}
-    </ReadView>
-  )
-
-  renderEditView = () => (
-    <EditView
-      label={this.props.label}
-      isLabelHidden={this.props.isLabelHidden}
-      onConfirm={this.props.onConfirm}
-      onCancel={this.props.onCancel}
-    >
-      {this.props.editView}
-    </EditView>
-  )
-
-  renderEditableView = () => (
-    this.props.isEditing ? this.renderEditView() : this.renderReadView()
-  )
-
-  renderReadOnlyView = () => (
-    <ReadOnlyView
-      label={this.props.label}
-      isLabelHidden={this.props.isLabelHidden}
-    >
-      {this.props.readView}
-    </ReadOnlyView>
+      {(this.isReadOnly() || this.props.isInvalid) ? null : this.renderEditIcon()}
+    </div>
   )
 
   render = () => (
     <div className={styles.root}>
-      {this.props.editView ? this.renderEditableView() : this.renderReadOnlyView()}
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+        onClick={this.onWrapperClick}
+        onBlur={this.onWrapperBlur}
+        onFocus={this.onWrapperFocus}
+        className={this.getWrapperClasses()}
+      >
+        <FieldBase
+          label={this.props.label}
+          isInvalid={this.props.isInvalid}
+          isFocused={this.isReadOnly() ? false : undefined}
+          isLabelHidden={this.props.isLabelHidden}
+          isReadOnly={this.isReadOnly()}
+          appearance={this.props.isEditing ? 'standard' : 'subtle'}
+          rightGutter={this.renderActionButtons()}
+        >
+          {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
+        </FieldBase>
+      </div>
     </div>
   )
 }

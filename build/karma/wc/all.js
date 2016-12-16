@@ -2,6 +2,7 @@ const path = require('path');
 
 const karmaConf = require('../base');
 const addPolyFills = require('../addPolyFills');
+const setUpEnzyme = require('../setUpEnzyme');
 const assignPattern = require('../assignPattern');
 const FailPlugin = require('../FailPlugin');
 
@@ -14,4 +15,6 @@ module.exports = (config) => {
 
   // add the polyfill file to the test run
   addPolyFills(config);
+
+  setUpEnzyme(config);
 };

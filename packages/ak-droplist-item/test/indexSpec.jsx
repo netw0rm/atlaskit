@@ -15,10 +15,9 @@ chai.use(chaiEnzyme());
 
 const { expect } = chai;
 
-
 describe(name, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Item />)).to.be.defined;
+    expect(shallow(<Item />)).to.exist;
   });
 
   it('should be "link" item by default', () => {
@@ -122,22 +121,19 @@ describe(name, () => {
       });
     });
 
-    it('should call onFocusPrev when the up key is pressed', () => {
-      const wrapper = mount(<Item onFocusPrev={onActivate} />);
+    it('should call onKeyDown when a key other than space and enter is pressed', () => {
+      const wrapper = mount(<Item onKeyDown={onActivate} />);
       wrapper.simulate('keyDown', { keyCode: keyCode('up') });
-      expect(onActivate.calledOnce).to.be.true;
-    });
-
-    it('should call onFocusNext when the down key is pressed', () => {
-      const wrapper = mount(<Item onFocusNext={onActivate} />);
       wrapper.simulate('keyDown', { keyCode: keyCode('down') });
-      expect(onActivate.calledOnce).to.be.true;
+      wrapper.simulate('keyDown', { keyCode: keyCode('tab') });
+      expect(onActivate.calledThrice).to.be.true;
     });
 
-    it('should call onEscapeFrom when the tab key is pressed', () => {
-      const wrapper = mount(<Item onEscapeFrom={onActivate} />);
-      wrapper.simulate('keyDown', { keyCode: keyCode('tab') });
-      expect(onActivate.calledOnce).to.be.true;
+    it('should not call onKeyDown when space and enter is pressed', () => {
+      const wrapper = mount(<Item onKeyDown={onActivate} />);
+      wrapper.simulate('keyDown', { keyCode: keyCode('space') });
+      wrapper.simulate('keyDown', { keyCode: keyCode('enter') });
+      expect(onActivate.called).to.be.false;
     });
   });
 });

@@ -47,10 +47,12 @@ export default class Flag extends PureComponent {
      * @type {function}
      */
     onDismissed: PropTypes.func,
+    isDismissAllowed: PropTypes.bool,
   };
 
   static defaultProps = {
     onDismissed: () => {},
+    isDismissAllowed: false,
   }
 
   flagDismissed = () => {
@@ -68,12 +70,16 @@ export default class Flag extends PureComponent {
             <span className={styles.title}>
               {this.props.title}
             </span>
-            <button
-              className={styles.dismissIconButton}
-              onClick={this.flagDismissed}
-            >
-              <CancelIcon label="Close flag" />
-            </button>
+            {
+              this.props.isDismissAllowed ? (
+                <button
+                  className={styles.dismissIconButton}
+                  onClick={this.flagDismissed}
+                >
+                  <CancelIcon label="Close flag" />
+                </button>
+              ) : null
+            }
           </div>
           {
             this.props.description ? (

@@ -5,46 +5,71 @@ import Flag, { FlagGroup } from '../../src';
 import ExampleNavigation from './ExampleNavigation';
 import GreenSuccessIcon from './GreenSuccessIcon';
 
+const descriptions = [
+  'Marzipan croissant pie. Jelly beans gingerbread caramels brownie icing.',
+  'Fruitcake topping wafer pie candy dragée sesame snaps cake. Cake cake cheesecake. Pie tiramisu carrot cake tart tart dessert cookie. Lemon drops cookie tootsie roll marzipan liquorice cotton candy brownie halvah.',
+];
+
 // eslint-disable-next-line react/prefer-stateless-function
 export default class AnimationDemo extends PureComponent {
   constructor() {
     super();
     this.state = {
-      flags: [],
+      flags: [
+        this.newFlag(),
+        this.newFlag(5),
+      ],
+      now: Date.now(),
     };
   }
 
+  componentDidMount() {
+    this.nowInterval = setInterval(() => {
+      this.setState({
+        now: Date.now(),
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.nowInterval);
+  }
+
+  randomDescription = () => descriptions[Math.floor(Math.random() * descriptions.length)];
+
+  newFlag = (timeOffset = 0) => ({
+    title: 'Whoa a new flag',
+    description: this.randomDescription(),
+    created: Date.now() - (timeOffset * 1000),
+  })
+
   addFlag = () => {
     const flags = this.state.flags.slice();
-    flags.push({
-      id: Date.now(),
-      title: 'Whoa a new flag',
-      description: 'Check it out it is a flag that flies in from the left!',
-    });
+    flags.splice(0, 0, this.newFlag());
 
     this.setState({ flags });
   }
 
-  flagDismissed = (removedFlagId) => {
-    action(`Flag.onDismissed fired for Flag.id '${removedFlagId}'`)();
+  flagDismissed = () => {
+    action('Flag.onDismissed fired for first Flag')();
     this.setState({
-      flags: this.state.flags.filter(flag => flag.id !== removedFlagId),
+      flags: this.state.flags.slice(1),
     });
   }
 
   render() {
+    const { now } = this.state;
     return (
       <ExampleNavigation>
-        <FlagGroup>
+        <FlagGroup onDismissed={this.flagDismissed}>
           {
-            this.state.flags.map(flag => (
+            this.state.flags.map((flag, idx) => (
               <Flag
-                id={flag.id}
-                key={flag.id}
+                id={flag.created}
+                key={idx}
                 icon={<GreenSuccessIcon />}
                 title={flag.title}
-                description={flag.description}
-                onDismissed={this.flagDismissed}
+                description={`Created ${Math.ceil((now - flag.created) / 1000)} seconds ago. ${flag.description}`}
               />
             ))
           }

@@ -1,8 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { action } from '@kadira/storybook';
-import { AtlassianIcon, SearchIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
+import { AtlassianIcon, SearchIcon, HelpIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
+import AkDropdownMenu from 'ak-dropdown-menu';
+import AkAvatar from 'ak-avatar';
 import Navigation, { AkContainerHeader, AkContainerItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
+import emmaAvatar from '../emma.png';
 
 export default class BasicNavigation extends PureComponent {
   static propTypes = {
@@ -55,6 +58,65 @@ export default class BasicNavigation extends PureComponent {
         globalPrimaryIcon={<AtlassianIcon size="medium" />}
         globalSearchIcon={<SearchIcon />}
         globalCreateIcon={<CreateIcon />}
+        globalHelpIcon={<HelpIcon />}
+        globalHelpDropdownComponent={({ children }) =>
+          <AkDropdownMenu
+            position="right bottom"
+            items={[
+              {
+                heading: 'Help',
+                items: [
+                  { content: 'Documentation' },
+                  { content: 'Learn Git' },
+                  { content: 'Keyboard shortcuts' },
+                  { content: 'Bitbucket tutorials' },
+                  { content: 'API' },
+                  { content: 'Support' },
+                ],
+              },
+              {
+                heading: 'Information',
+                items: [
+                  { content: 'Latest features' },
+                  { content: 'Blog' },
+                  { content: 'Plans & pricing' },
+                  { content: 'Site status' },
+                  { content: 'Version info' },
+                ],
+              },
+              {
+                heading: 'Legal',
+                items: [
+                  { content: 'Terms of service' },
+                  { content: 'Privacy policy' },
+                ],
+              },
+            ]}
+          >
+            {children}
+          </AkDropdownMenu>
+        }
+        globalAccountIcon={<AkAvatar src={emmaAvatar} size="small" />}
+        globalAccountDropdownComponent={({ children }) =>
+          <AkDropdownMenu
+            position="right bottom"
+            items={[
+              {
+                heading: 'Joshua Nelson',
+                items: [
+                  { content: 'View profile' },
+                  { content: 'Manage Atlassian account' },
+                  { content: 'Bitbucket settings' },
+                  { content: 'Integrations' },
+                  { content: 'Bitbucket labs' },
+                  { content: 'Log out' },
+                ],
+              },
+            ]}
+          >
+            {children}
+          </AkDropdownMenu>
+        }
         onSearchDrawerActivated={this.activate('search')}
         onCreateDrawerActivated={this.activate('create')}
         isCreateDrawerOpen={this.state.openDrawer === 'create'}

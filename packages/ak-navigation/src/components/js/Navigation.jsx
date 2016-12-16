@@ -35,6 +35,8 @@ export default class Navigation extends PureComponent {
     globalCreateIcon: PropTypes.node,
     globalHelpIcon: PropTypes.node,
     globalAccountIcon: PropTypes.node,
+    globalHelpDropdownComponent: PropTypes.func,
+    globalAccountDropdownComponent: PropTypes.func,
     onHelpClicked: PropTypes.func,
     onAccountClicked: PropTypes.func,
     onBlanketClicked: PropTypes.func,
@@ -52,6 +54,8 @@ export default class Navigation extends PureComponent {
     onSearchDrawerActivated: () => {},
     onCreateDrawerActivated: () => {},
     onBlanketClicked: () => {},
+    globalHelpDropdownComponent: ({ children }) => children,
+    globalAccountDropdownComponent: ({ children }) => children,
   };
 
   constructor(props) {
@@ -95,6 +99,9 @@ export default class Navigation extends PureComponent {
       onHelpClicked, onAccountClicked, globalAccountIcon, globalHelpIcon,
       onBlanketClicked, hasBlanket } = this.props;
 
+    const GlobalHelpDropdownComponent = this.props.globalHelpDropdownComponent;
+    const GlobalAccountDropdownComponent = this.props.globalAccountDropdownComponent;
+
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();
     return (
@@ -117,14 +124,18 @@ export default class Navigation extends PureComponent {
               width={getGlobalWidth(this.getRenderedWidth())}
               primaryIcon={<GlobalItem size="large">{globalPrimaryIcon}</GlobalItem>}
               helpIcon={
-                <GlobalItem size="small" onActivate={onHelpClicked}>
-                  {globalHelpIcon}
-                </GlobalItem>
+                <GlobalHelpDropdownComponent>
+                  <GlobalItem size="small" onActivate={onHelpClicked}>
+                    {globalHelpIcon}
+                  </GlobalItem>
+                </GlobalHelpDropdownComponent>
               }
               accountIcon={
-                <GlobalItem size="small" onActivate={onAccountClicked}>
-                  {globalAccountIcon}
-                </GlobalItem>
+                <GlobalAccountDropdownComponent>
+                  <GlobalItem size="small" onActivate={onAccountClicked}>
+                    {globalAccountIcon}
+                  </GlobalItem>
+                </GlobalAccountDropdownComponent>
               }
             >
               <GlobalItem onActivate={onSearchDrawerActivated}>

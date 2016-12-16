@@ -23,8 +23,8 @@ import AkBreadcrumbs, { AkBreadcrumbsItem } from 'ak-breadcrumbs';
 
 ReactDOM.render(
   <AkBreadcrumbs>
-    <AkBreadcrumbsItem href="/home">Home</AkBreadcrumbsItem>
-    <AkBreadcrumbsItem href="/home/item">Item</AkBreadcrumbsItem>
+    <AkBreadcrumbsItem href="/home" text="Home" />
+    <AkBreadcrumbsItem href="/home/item" text="Item" />
   </AkBreadcrumbs>,
   container
 );

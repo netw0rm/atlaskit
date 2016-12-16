@@ -32,6 +32,7 @@ export default class extends PureComponent {
     <SingleLineTextInput
       autoFocus
       isEditing={isEditing}
+      isInitiallySelected
       value={this.state.editValue}
       onChange={this.onChange}
     />

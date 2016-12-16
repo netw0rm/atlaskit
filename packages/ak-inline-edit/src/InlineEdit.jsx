@@ -193,6 +193,8 @@ export default class InlineEdit extends PureComponent {
   shouldShowEditView = () =>
     this.props.isEditing && !this.isReadOnly()
 
+  shouldRenderEditIcon = () => !this.isReadOnly() && !this.props.isInvalid;
+
   renderActionButtons = () => (
     <div className={this.getActionButtonClasses()}>
       <Button
@@ -213,7 +215,7 @@ export default class InlineEdit extends PureComponent {
   renderEditIcon = () => (
     <div className={styles.editButtonWrapper}>
       <button className={styles.editButton}>
-        <EditIcon label="Edit" size="small" />
+        {this.shouldRenderEditIcon() ? <EditIcon label="Edit" size="small" /> : null }
       </button>
     </div>
   )
@@ -221,7 +223,7 @@ export default class InlineEdit extends PureComponent {
   renderReadView = () => (
     <div className={styles.readViewContentWrapper}>
       {this.props.readView}
-      {(this.isReadOnly() || this.props.isInvalid) ? null : this.renderEditIcon()}
+      {this.renderEditIcon()}
     </div>
   )
 

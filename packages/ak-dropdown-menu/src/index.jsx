@@ -179,7 +179,7 @@ export default class DropdownMenu extends Component {
           content={state.isOpen ?
             <div
               className={styles.dropContent}
-              ref={ref => (this.setMaxHeight(ref))}
+              ref={this.setMaxHeight}
             >
               {this.renderSubComponents(props.items)}
             </div> :

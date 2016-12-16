@@ -3,17 +3,72 @@
 @import '~akutil-shared-styles/src/colors.less';
 
 @dismiss-icon-width: @ak-grid-size * 4;
+@flag-animation-duration: 0.4s;
+
+@keyframes enter {
+    from {
+      opacity: 0;
+      transform: translate(-300px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+}
+
+@keyframes exit {
+  from {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-300px, 0);
+  }
+}
 
 .root {
   background-color: @ak-color-N0;
   border: 1px solid @ak-color-N30;
   border-radius: @ak-grid-size * 0.5;
+  box-sizing: border-box;
   box-shadow: 0 (@ak-grid-size * 2.5) (@ak-grid-size * 4) (@ak-grid-size * -1) fade(@ak-color-N900, 24%),
               0 0 1px fade(@ak-color-N900, 3%);
   display: flex;
   margin-bottom: @ak-grid-size * 2.5;
   padding: @ak-grid-size * 2;
+  width: 100%;
+
+  // NEW
+  position: absolute;
+  bottom: 0;
+  transition: transform @flag-animation-duration;
+
+  &.entering:first-child {
+    animation-name: enter;
+    animation-duration: @flag-animation-duration;
+    animation-fill-mode: forwards;
+  }
+
+  &.exiting:first-child {
+    animation-name: exit;
+    animation-duration: @flag-animation-duration;
+    animation-fill-mode: forwards;
+  }
+
+  &:first-child {
+    transform: translate(0, 0);
+  }
+
+  &:nth-child(2) {
+    transform: translate(0, calc(100% + (@ak-grid-size * 2)));
+  }
+
+  &:nth-child(1) { z-index: 5; }
+  &:nth-child(2) { z-index: 4; }
+  &:nth-child(n+3) { display: none; }
 }
+
 
 .primary-icon {
   flex: 0 0 auto;

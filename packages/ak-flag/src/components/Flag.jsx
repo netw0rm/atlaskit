@@ -1,4 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
+import classNames from 'classnames';
 import styles from 'style!../less/Flag.less';
 import CancelIcon from 'ak-icon/glyph/cancel';
 
@@ -48,11 +49,29 @@ export default class Flag extends PureComponent {
      */
     onDismissed: PropTypes.func,
     isDismissAllowed: PropTypes.bool,
+    isEntering: PropTypes.bool,
+    isExiting: PropTypes.bool,
   };
 
   static defaultProps = {
     onDismissed: () => {},
     isDismissAllowed: false,
+    isEntering: false,
+    isExiting: false,
+  }
+
+  constructor() {
+    super();
+    this.state = {
+      hasAnimatedIn: false,
+    };
+  }
+
+  componentDidUpdate() {
+    // eslint-disable-next-line
+    this.setState({
+      hasAnimatedIn: true,
+    });
   }
 
   flagDismissed = () => {
@@ -61,7 +80,17 @@ export default class Flag extends PureComponent {
 
   render() {
     return (
-      <div className={styles.root}>
+      <div
+        className={classNames({
+          [styles.root]: true,
+          [styles.entering]: (
+            !this.state.hasAnimatedIn &&
+            !this.props.isExiting &&
+            this.props.isEntering
+          ),
+          [styles.exiting]: this.props.isExiting,
+        })}
+      >
         <div className={styles.primaryIcon}>
           {this.props.icon}
         </div>

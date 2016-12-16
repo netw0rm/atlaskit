@@ -1,7 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/FlagGroup.less';
-import FlagAnimationWrapper from './FlagAnimationWrapper';
+// import FlagAnimationWrapper from './FlagAnimationWrapper';
 
 /**
  * @description Return React FlagGroup component.
@@ -34,7 +34,6 @@ export default class FlagGroup extends PureComponent {
     super();
     this.childFlagHeights = {};
     this.state = {
-      detectedCount: 0,
       isAnimatingOut: false,
     };
   }
@@ -44,7 +43,6 @@ export default class FlagGroup extends PureComponent {
       // this.childFlagHeights = this.childFlagHeights.slice(1);
       this.setState({
         isAnimatingOut: false,
-        detectedCount: this.state.detectedCount - 1,
       });
     }
   }
@@ -58,75 +56,28 @@ export default class FlagGroup extends PureComponent {
     }, 250);
   }
 
-  topOffsetHeights = () => {
-    if (this.props.children.length > 0) {
-      const effectiveFirstFlagIndex = this.state.isAnimatingOut ? 1 : 0;
-      const firstOffset = 0;
-      const offsetHeights = [];
-      this.props.children.reduce((accumulator, flag, i) => {
-        const loopOffset = accumulator + (
-          i <= effectiveFirstFlagIndex ? 0 : this.detectedHeightForFlagId(flag.props.id)
-        );
-        offsetHeights.push(loopOffset);
-        return loopOffset;
-      }, firstOffset);
-      return offsetHeights;
-    }
-    return [];
-  }
-
-  detectedHeightForFlagId = (wantedId) => {
-    const { childFlagHeights } = this;
-    if (wantedId in childFlagHeights) {
-      return childFlagHeights[wantedId];
-    }
-    return 0;
-  }
-
-  heightDetected = (childFlagId, height) => {
-    this.childFlagHeights[childFlagId] = height;
-
-    // need this to trigger render
-    this.setState({ detectedCount: this.state.detectedCount + 1 });
-  }
-
   render() {
-    const topOffsetHeights = this.topOffsetHeights();
-
-    const effectiveFlagCount = this.props.children.length - (this.state.isAnimatingOut ? 1 : 0);
-
     return (
       <div
         className={classNames([
           styles.root,
           {
-            [styles.multipleFlags]: effectiveFlagCount > 1,
+            [styles.multipleFlags]: this.props.children.length > 1,
           },
         ])}
       >
-        {
-          this.props.children.map((childFlag, flagIndex) => (
-            <FlagAnimationWrapper
-              id={childFlag.props.id}
-              key={childFlag.props.id}
-              onHeightDetected={this.heightDetected}
-              isVisible={
-                flagIndex === 0 ? (
-                  !this.state.isAnimatingOut &&
-                  this.detectedHeightForFlagId(childFlag.props.id) !== 0
-                ) : true
-              }
-              verticalOffset={topOffsetHeights[flagIndex]}
-            >
-              {
-                React.cloneElement(childFlag, {
-                  onDismissed: this.onFlagDismissed,
-                  isDismissAllowed: flagIndex === 0,
-                })
-              }
-            </FlagAnimationWrapper>
-          ))
-        }
+        <div className={styles.groupInner}>
+          {
+            this.props.children.map((childFlag, flagIndex) => (
+              React.cloneElement(childFlag, {
+                onDismissed: this.onFlagDismissed,
+                isDismissAllowed: flagIndex === 0,
+                isEntering: flagIndex === 0,
+                isExiting: flagIndex === 0 && this.state.isAnimatingOut,
+              })
+            ))
+          }
+        </div>
       </div>
     );
   }

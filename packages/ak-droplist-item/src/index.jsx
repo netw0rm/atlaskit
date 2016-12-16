@@ -46,6 +46,13 @@ export default class Item extends PureComponent {
      */
     isChecked: PropTypes.bool,
     /**
+     * @description When this property is set to true the item should apply focus to itself
+     * @memberof Item
+     * @default false
+     * @type {Boolean}
+     */
+    isFocused: PropTypes.bool,
+    /**
      * @description Link's 'href' attribute. Only applicable to the 'link' type of items.
      * @memberof Item
      * @type {String}
@@ -94,6 +101,7 @@ export default class Item extends PureComponent {
     isHidden: false,
     isActive: false,
     isChecked: false,
+    isFocused: false,
     href: null,
     target: null,
     type: baseTypes.default,
@@ -134,10 +142,10 @@ export default class Item extends PureComponent {
 
   render = () => {
     const { props } = this;
-
     return (
       <Element
         isDisabled={props.isDisabled}
+        isFocused={props.isFocused}
         href={props.href}
         target={props.target}
         type={props.type}

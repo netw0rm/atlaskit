@@ -40,7 +40,6 @@
 
 .content {
   .borders-and-padding(@base-border-width, @base-horizontal-padding, @base-height);
-  flex: 1 1 auto;
   box-sizing: border-box;
   overflow: hidden;
 
@@ -60,6 +59,12 @@
   min-height: unit(@base-inner-height, px);
   max-width: 100%;
   word-wrap: break-word;
+
+  flex: 0 1 auto;
+
+  &.fit-container-width {
+    flex: 1 1 auto;
+  }
 
   &.compact {
     .borders-and-padding(@base-border-width, @base-horizontal-padding, @base-height-compact);

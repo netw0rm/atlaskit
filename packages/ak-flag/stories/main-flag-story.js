@@ -4,6 +4,7 @@ import React from 'react';
 import Flag, { FlagGroup } from '../src';
 import ExampleNavigation from './components/ExampleNavigation';
 import GreenSuccessIcon from './components/GreenSuccessIcon';
+import AnimationDemo from './components/AnimationDemo';
 import { name } from '../package.json';
 
 storiesOf(name, module)
@@ -31,4 +32,7 @@ storiesOf(name, module)
         />
       </FlagGroup>
     </ExampleNavigation>
+  ))
+  .add('animated ak-flag entry', () => (
+    <AnimationDemo />
   ));

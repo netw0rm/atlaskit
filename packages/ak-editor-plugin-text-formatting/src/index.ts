@@ -5,7 +5,8 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  UpdateScheduler
+  UpdateScheduler,
+  Keymap
 } from 'ak-editor-prosemirror';
 import {
   EmMarkType,
@@ -15,6 +16,8 @@ import {
   SubSupMarkType,
   UnderlineMarkType
 } from 'ak-editor-schema';
+import { trackAndInvoke } from "ak-editor-analytics";
+
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
@@ -63,6 +66,8 @@ export class TextFormattingState {
       pm.on.change,
       pm.on.activeMarkChange,
     ], () => this.update());
+
+    this.addKeymap();
   }
 
   toggleEm() {
@@ -242,6 +247,16 @@ export class TextFormattingState {
     }
   }
 
+  private addKeymap(): void {
+    this.pm.addKeymap(new Keymap({
+      'Mod-B': trackAndInvoke('atlassian.editor.format.bold.keyboard', () => this.toggleStrong()),
+      'Mod-I': trackAndInvoke('atlassian.editor.format.italic.keyboard', () => this.toggleEm()),
+      'Mod-U': trackAndInvoke('atlassian.editor.format.underline.keyboard', () => this.toggleUnderline()),
+      'Mod-Shift-S': trackAndInvoke('atlassian.editor.format.strikethrough.keyboard', () => this.toggleStrike()),
+      'Mod-Shift-M': trackAndInvoke('atlassian.editor.format.monospace.keyboard', () => this.toggleMono()),
+    }));
+  }
+
   /**
    * Determine if a mark of a specific type exists anywhere in the selection.
    */
@@ -286,7 +301,7 @@ Object.defineProperty(TextFormattingState, 'name', { value: 'TextFormattingState
 
 export default new Plugin(TextFormattingState);
 
-interface S extends Schema {
+export interface S extends Schema {
   marks: {
     em?: EmMarkType;
     mono?: MonoMarkType;
@@ -297,6 +312,6 @@ interface S extends Schema {
   }
 }
 
-interface PM extends ProseMirror {
+export interface PM extends ProseMirror {
   schema: S;
 }

@@ -5,11 +5,11 @@ import Panel from '../Panel';
 import styles from './styles.global.less';
 import { service as analytics } from 'ak-editor-analytics';
 
-interface Props {
+export interface Props {
   pluginState: BlockTypeState;
 }
 
-interface State {
+export interface State {
   active: boolean;
   availableBlockTypes: BlockType[];
   currentBlockType: BlockType;

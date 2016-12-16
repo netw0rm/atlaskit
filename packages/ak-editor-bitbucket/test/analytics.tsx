@@ -1,13 +1,13 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm, isMac } from 'ak-editor-test';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-test';
 import sinonChai from 'sinon-chai';
 import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 import { doc, strong, h1, p } from './_schema-builder';
 
-import { ProseMirror } from 'ak-editor-prosemirror';
+import { ProseMirror, browser } from 'ak-editor-prosemirror';
 import Editor from '../src/index';
 import { service, analyticsHandler, debugHandler } from 'ak-editor-analytics';
 import { ToolbarTextFormatting } from 'ak-editor-ui';
@@ -263,7 +263,6 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     'heading3',
     'heading4',
     'heading5',
-    'heading6',
   ].forEach(blockTypeName => {
     it(`atlassian.editor.format.${blockTypeName}.button`, () => {
       editor.find('ToolbarBlockType').find('AkButton').simulate('click');
@@ -285,8 +284,15 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     });
   }
 
+  for (let level = 1; level <= 5; level++) {
+    it(`atlassian.editor.format.heading${level}.keyboard`, () => {
+      sendKeyToPm(pm, browser.mac ? `Cmd-Alt-${level}` : `Ctrl-${level}`);
+      expect(handler).to.have.been.calledWith(`atlassian.editor.format.heading${level}.keyboard`);
+    });
+  }
+
   it('atlassian.editor.format.blockquote.keyboard', () => {
-    sendKeyToPm(pm, isMac ? 'Cmd-Alt-8' : 'Ctrl-8');
+    sendKeyToPm(pm, browser.mac ? 'Cmd-Alt-7' : 'Ctrl-7');
     expect(handler).to.have.been.calledWith('atlassian.editor.format.blockquote.keyboard');
   });
 
@@ -296,7 +302,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });  
 
   it('atlassian.editor.format.codeblock.keyboard', () => {
-    sendKeyToPm(pm, isMac ? 'Cmd-Alt-7' : 'Ctrl-7');
+    sendKeyToPm(pm, browser.mac ? 'Cmd-Alt-8' : 'Ctrl-8');
     expect(handler).to.have.been.calledWith('atlassian.editor.format.codeblock.keyboard');
   });
 
@@ -304,4 +310,15 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     pm.input.insertText(0, 0, '```');
     expect(handler).to.have.been.calledWith('atlassian.editor.format.codeblock.autoformatting');
   });  
+
+  it('atlassian.editor.hardbreak.keyboard', () => {
+    sendKeyToPm(pm, 'Shift-Enter');
+    expect(handler).to.have.been.calledWith('atlassian.editor.hardbreak.keyboard');
+  });
+
+  // TODO: Re-enable once the feature has been reimplemented
+  it.skip('atlassian.editor.horizontalrule.keyboard', () => {
+    sendKeyToPm(pm, 'Mod-Shift-minus');
+    expect(handler).to.have.been.calledWith('atlassian.editor.format.horizontalrule.keyboard');
+  });
 });

@@ -49,7 +49,7 @@ export class ImageUploadState {
     this.pm = pm;
     this.pasteAdapter = new PasteAdapter(pm);
     this.dropAdapter = new DropAdapter(pm);
-    this.config = Object.assign({}, DEFAULT_OPTIONS, options);
+    this.config = {...DEFAULT_OPTIONS, ...options};
     this.hidden = !pm.schema.nodes.image;
     this.enabled = this.canInsertImage();
 
@@ -172,13 +172,13 @@ Object.defineProperty(ImageUploadState, 'name', { value: 'ImageUploadState' });
 
 export default new Plugin(ImageUploadState);
 
-interface S extends Schema {
+export interface S extends Schema {
   nodes: {
     image?: ImageNodeType
   }
 }
 
-interface PM extends ProseMirror {
+export interface PM extends ProseMirror {
   schema: S;
 }
 

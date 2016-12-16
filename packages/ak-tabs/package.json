@@ -7,7 +7,7 @@
   "ak:webpack:raw": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-tabs"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single ak-tabs; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist",

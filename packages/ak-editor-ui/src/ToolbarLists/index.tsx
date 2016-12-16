@@ -5,11 +5,11 @@ import IconButton from '../ToolbarIconButton';
 import { ListsState } from 'ak-editor-plugin-lists';
 import { decorator as analytics } from 'ak-editor-analytics';
 
-interface Props {
+export interface Props {
   pluginState: ListsState;
 }
 
-interface State {
+export interface State {
   bulletListActive: boolean;
   bulletListDisabled: boolean;
   bulletListHidden: boolean;

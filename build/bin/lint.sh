@@ -24,6 +24,7 @@ set +e
   --format \
   "$NODE_MODULES/eslint-friendly-formatter" \
   . \
-  --ext .js,.jsx $@\
+  --ext .js,.jsx\
+&& tslint --project tsconfig.json --format stylish\
 && lint_build_status "SUCCESSFUL") \
 || lint_build_status "FAILED"

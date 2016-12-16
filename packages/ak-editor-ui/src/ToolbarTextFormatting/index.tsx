@@ -7,11 +7,11 @@ import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
 import IconButton from '../ToolbarIconButton';
 import { decorator as analytics } from 'ak-editor-analytics';
 
-interface Props {
+export interface Props {
   pluginState: TextFormattingState;
 }
 
-interface State {
+export interface State {
   boldActive?: boolean;
   boldDisabled?: boolean;
   boldHidden?: boolean;

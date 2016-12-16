@@ -6,11 +6,11 @@ import TextInput from '../PanelTextInput';
 import IconButton from '../ToolbarIconButton';
 import { decorator as analytics } from 'ak-editor-analytics';
 
-interface Props {
+export interface Props {
   pluginState: HyperlinkState;
 }
 
-interface State {
+export interface State {
   active?: boolean;
   adding?: boolean;
   disabled?: boolean;

@@ -10,7 +10,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single akutil-polyfills"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single akutil-polyfills; } || ../../node_modules/.bin/not-in-publish"
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",

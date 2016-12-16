@@ -3,6 +3,10 @@ import createEvent from './create-event';
 
 export const isMac = /Mac/.test(window.navigator.platform);
 
+const dictionary : { [key:string] : number } = {
+  'Enter' : 13
+};
+
 /**
  * Sends a key to ProseMirror content area, simulating user key press.
  * Accepts key descriptions similar to Keymap, i.e. "Shift-Ctrl-L"
@@ -15,7 +19,7 @@ export default function sendKeyToPm(pm: ProseMirror, keys: string) {
   let shiftKey = parts.indexOf('Shift') !== -1;
   let altKey = parts.indexOf('Alt') !== -1;
   let key = parts[parts.length - 1];
-  let code = key.charCodeAt(0);
+  let code = dictionary[key] ? dictionary[key] : key.charCodeAt(0);
 
   const event = new CustomEvent('keydown', {
     bubbles: true,

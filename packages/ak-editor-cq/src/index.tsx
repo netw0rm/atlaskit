@@ -6,15 +6,13 @@ import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
 import { Chrome } from 'ak-editor-ui';
 import schema from './schema';
 import { parse, encode } from './cxhtml';
-import { buildKeymap } from './keymap';
 import { 
   analyticsHandler, 
   decorator as analytics,
   service as analyticsService
 } from 'ak-editor-analytics';
 
-
-interface Props {
+export interface Props {
   context?: 'default' | 'comment';
   isExpandedByDefault?: boolean;
   defaultValue?: string;
@@ -25,7 +23,7 @@ interface Props {
   analyticsHandler?: analyticsHandler;
 }
 
-interface State {
+export interface State {
   pm?: ProseMirror;
   isExpanded?: boolean;
 }
@@ -143,7 +141,6 @@ export default class Editor extends PureComponent<Props, State> {
         BlockTypePlugin.get(pm)!.changeContext(context);
       }
 
-      pm.addKeymap(buildKeymap(pm.schema));
       pm.on.change.add(this.handleChange);
       pm.focus();
 

@@ -5,11 +5,11 @@ import * as styles from './styles.global.less';
 import IconButton from '../ToolbarIconButton';
 import { decorator as analytics } from 'ak-editor-analytics';
 
-interface Props {
+export interface Props {
   feedbackFormUrl: string;
 }
 
-interface State {
+export interface State {
   active: boolean;
 }
 

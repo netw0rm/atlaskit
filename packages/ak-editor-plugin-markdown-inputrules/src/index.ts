@@ -210,7 +210,7 @@ const hrRule2 = new InputRule(/^\-\-\-$/, '-', (
   pos: number
 ) => replaceWithNode(pm, match, pos, pm.schema.nodes.horizontal_rule.create()));
 
-class MarkdownInputRulesPlugin {
+export class MarkdownInputRulesPlugin {
   inputRules: InputRule[];
 
   constructor(pm: ProseMirror) {

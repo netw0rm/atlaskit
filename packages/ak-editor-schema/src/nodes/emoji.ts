@@ -4,11 +4,11 @@ export interface EmojiAttributes {
   id: any;
 }
 
-interface ParseSpec {
+export interface ParseSpec {
   [index: string]: (dom: Element) => EmojiAttributes;
 }
 
-interface DOMAttributes {
+export interface DOMAttributes {
   [propName: string]: string;
 }
 

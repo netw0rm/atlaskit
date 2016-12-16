@@ -7,7 +7,7 @@
     "jsx": "preserve",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,

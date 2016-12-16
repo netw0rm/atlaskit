@@ -1,4 +1,3 @@
-import '../../src/schema/types';
 import chai from 'chai';
 import schema from '../../src/schema';
 import jsonSchema from '../../src/schema/json-schema';

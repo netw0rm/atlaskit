@@ -25,6 +25,32 @@ export const simpleDropdownItems = [
   },
 ];
 
+export const dropdownItemsWithGroups = [
+  {
+    heading: 'The first group',
+    items: [
+      {
+        content: 'Some text 1',
+      },
+      {
+        content: 'Some text 2',
+        isDisabled: true,
+      },
+    ],
+  },
+  {
+    heading: 'Second group',
+    items: [
+      {
+        content: 'Some text 3',
+      },
+      {
+        content: 'Some text 4',
+      },
+    ],
+  },
+];
+
 export const simpleDropdownItemsWithAvatars = [
   {
     heading: '',

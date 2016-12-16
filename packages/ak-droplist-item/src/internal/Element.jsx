@@ -13,6 +13,8 @@ export default class Element extends PureComponent {
     className: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFocused: PropTypes.bool,
+    isHidden: PropTypes.bool,
+    isChecked: PropTypes.bool,
   }
 
   componentDidMount = () => {
@@ -37,7 +39,8 @@ export default class Element extends PureComponent {
 
   render = () => {
     const { props } = this;
-    const { href, target, type, isDisabled, handleKeyDown, handleClick, className } = props;
+    const { href, target, type, isDisabled, isHidden, isChecked,
+      handleKeyDown, handleClick, className } = props;
 
     if (href && !isDisabled) {
       return (
@@ -60,11 +63,14 @@ export default class Element extends PureComponent {
       <div
         className={className}
         tabIndex="0"
-        role={ariaRoles[type]}
         onKeyDown={handleKeyDown}
         onClick={handleClick}
         onMouseDown={this.handleMouseDown}
         ref={ref => (this.ref = ref)}
+        role={ariaRoles[type]}
+        aria-disabled={isDisabled}
+        aria-hidden={isHidden}
+        aria-checked={isChecked}
       >{props.children}</div>
     );
     /* eslint-enable jsx-a11y/no-static-element-interactions */

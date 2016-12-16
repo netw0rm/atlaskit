@@ -7,9 +7,15 @@ import Trigger from 'ak-droplist-trigger';
 import Item from 'ak-droplist-item';
 import keyCode from 'keycode';
 
+import getAvailablePreviousItem from './internal/getAvailablePreviousItem';
+import getAvailableNextItem from './internal/getAvailableNextItem';
+
 const halfGrid = 4;
 const itemHeight = halfGrid * 7;
 const dropdownMaxHeight = (itemHeight * 9.5) + (halfGrid * 2); // ( item height * 9.5 items)
+
+const getCurrentlyFocusedItem = (items, currentFocus) =>
+  items[currentFocus.group].items[currentFocus.item];
 
 /* eslint-disable react/no-unused-prop-types */
 /**
@@ -85,6 +91,7 @@ export default class DropdownMenu extends Component {
 
   state = {
     isOpen: this.props.defaultOpen,
+    items: this.props.items,
   }
 
   componentDidMount() {
@@ -117,15 +124,87 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  handleTriggerActivation = () => {
+  handleTriggerActivation = (e) => {
+    if (e.source === 'keypress') {
+      this.focusFirstItem();
+    }
     this.toggle();
   }
 
-  handleItemActivation = (item) => { // eslint-disable-line arrow-body-style
-    return () => {
-      this.props.onItemActivated({ item });
-      this.close();
-    };
+  focusFirstItem = () => {
+    this.setState({
+      isTriggerFocused: false,
+    });
+
+    this.changeFocus(getAvailableNextItem(this.state.items, this.currentFocus));
+  }
+
+  removeFocusFromItems = () => {
+    if (this.currentFocus) {
+      const items = [...this.state.items];
+      const item = getCurrentlyFocusedItem(items, this.currentFocus);
+      item.isFocused = false;
+      this.setState({ items });
+    }
+  }
+
+  handleItemActivation = (attrs) => {
+    this.props.onItemActivated({ item: attrs.item });
+    this.close();
+  }
+
+  handleAccessibility = (attrs) => {
+    const event = attrs.event;
+    event.preventDefault();
+
+    switch (event.keyCode) {
+      case keyCode('up'):
+        this.focusPreviousItem();
+        break;
+      case keyCode('down'):
+        this.focusNextItem();
+        break;
+      case keyCode('tab'):
+        this.returnFocusToTrigger();
+        break;
+      default:
+        break;
+    }
+  }
+
+  returnFocusToTrigger = () => {
+    this.currentFocus = null;
+    this.setState({
+      isTriggerFocused: true,
+    });
+    this.close();
+  }
+
+  focusPreviousItem = () => {
+    if (this.currentFocus) {
+      this.changeFocus(getAvailablePreviousItem(this.state.items, this.currentFocus));
+    }
+  }
+
+  focusNextItem = () => {
+    if (this.currentFocus) {
+      this.changeFocus(getAvailableNextItem(this.state.items, this.currentFocus));
+    }
+  }
+
+  changeFocus = (newFocusData) => {
+    const { group: newGroupFocus, item: newItemFocus } = newFocusData;
+    const items = [...this.state.items];
+
+    // if we have a previously focused item, then it should be un-focused
+    if (this.currentFocus) {
+      const item = getCurrentlyFocusedItem(items, this.currentFocus);
+      item.isFocused = false;
+    }
+
+    items[newGroupFocus].items[newItemFocus].isFocused = true;
+    this.currentFocus = { group: newGroupFocus, item: newItemFocus };
+    this.setState({ items });
   }
 
   open = () => {
@@ -136,6 +215,7 @@ export default class DropdownMenu extends Component {
   close = () => {
     this.setState({ isOpen: false });
     this.props.onOpenChange({ isOpen: false });
+    this.removeFocusFromItems();
   }
 
   toggle = () => {
@@ -155,10 +235,12 @@ export default class DropdownMenu extends Component {
             type={item.type}
             isActive={item.isActive}
             isDisabled={item.isDisabled}
+            isFocused={item.isFocused}
             isHidden={item.isHidden}
             isChecked={item.isChecked}
             elemBefore={item.elemBefore}
-            onActivate={this.handleItemActivation(item)}
+            onActivate={this.handleItemActivation}
+            onKeyDown={this.handleAccessibility}
           >
             {item.content}
           </Item>
@@ -170,7 +252,6 @@ export default class DropdownMenu extends Component {
 
   render = () => {
     const { props, state } = this;
-
     return (
       <div className={styles.dropWrapper}>
         <Layer
@@ -180,6 +261,7 @@ export default class DropdownMenu extends Component {
             <div
               className={styles.dropContent}
               ref={this.setMaxHeight}
+              role="menu"
             >
               {this.renderSubComponents(props.items)}
             </div> :
@@ -188,9 +270,10 @@ export default class DropdownMenu extends Component {
         >
           <div className={styles.dropTrigger}>
             <Trigger
-              type={this.props.triggerType}
-              isOpened={this.state.isOpen}
+              type={props.triggerType}
+              isOpened={state.isOpen}
               onActivate={this.handleTriggerActivation}
+              isFocused={this.state.isTriggerFocused}
             >{props.children}</Trigger>
           </div>
         </Layer>

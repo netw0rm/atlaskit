@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import { ariaRoles, baseTypes } from './constants';
 
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
@@ -26,7 +25,7 @@ export default class Element extends PureComponent {
 
   setFocus = () => {
     if (this.props.isFocused) {
-      ReactDOM.findDOMNode(this.ref).focus(); // eslint-disable-line react/no-find-dom-node
+      this.ref.focus(); // eslint-disable-line react/no-find-dom-node
     }
   }
 

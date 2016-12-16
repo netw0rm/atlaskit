@@ -64,7 +64,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     service.handler = handler;
 
     editor = mount(
-      <Editor isExpandedByDefault onCancel={noop} onSave={noop} />,
+      <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} />,
       
       // We need to attach the editor to DOM because ProseMirror depends on having
       // focus on the content area (detached DOM elements can not receive focus)
@@ -224,8 +224,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler).to.have.been.calledWith('atlassian.editor.paste');
   });
 
-  // TODO: refactor and re-enable after https://bitbucket.org/atlassian/atlaskit/pull-requests/1157
-  it.skip('atlassian.editor.image.button', () => {
+  it('atlassian.editor.image.button', () => {
     editor
       .find('ToolbarIconButton')
       .find(ImageIcon)
@@ -235,23 +234,49 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler).to.have.been.calledWith('atlassian.editor.image.button');
   });
 
-  // TODO: refactor and re-enable after https://bitbucket.org/atlassian/atlaskit/pull-requests/1157
-  it.skip('atlassian.editor.image.paste', function() {
-    const editorAPI:Editor = editor.get(0) as any;
-    const { pm } = editorAPI.state;
-
-    // ...
-   
+  it('atlassian.editor.image.paste', function() {
+    const contentArea: HTMLElement = (editor.get(0) as any).state.pm.content;
+    const event = createEvent('paste');
+    
+    try {
+      Object.defineProperties(event, {
+        clipboardData: {
+          value: {
+            types: ['Files']
+          }
+        }
+      });
+    } catch (e) {
+      return this.skip('This environment does not allow mocking paste events - ' + e);
+    }
+    
+    contentArea.dispatchEvent(event);
     expect(handler).to.have.been.calledWith('atlassian.editor.image.paste');
   });
 
-  // TODO: refactor and re-enable after https://bitbucket.org/atlassian/atlaskit/pull-requests/1157
-  it.skip('atlassian.editor.image.drop', function() {
+  it('atlassian.editor.image.drop', () => {
     const editorAPI:Editor = editor.get(0) as any;
     const { pm } = editorAPI.state;
 
-    // ...
-   
+    // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop' 
+    //       so we must dispatch the event directly on the event which has listener attached.
+    const dropElement: HTMLElement = (editor.get(0) as any).state.pm.content.parentNode;
+    const event = createEvent('drop');
+    
+    Object.defineProperties(event, {
+      dataTransfer: {
+        value: {
+          getData: (type: string) => '',
+          setData: () => {},
+          clearData: () => {},
+          types: ['Files'],
+          files: [],
+          items: [],
+        }
+      }
+    });
+
+    dropElement.dispatchEvent(event);
     expect(handler).to.have.been.calledWith('atlassian.editor.image.drop');
   });
 

@@ -1,6 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
-import FieldBase from 'ak-field-base';
+import SmartFieldBase from 'ak-field-base';
 import SingleLineTextInput from '../src';
 import { name } from '../package.json';
 
@@ -41,6 +41,11 @@ storiesOf(storyName, module)
       {createSingleLineTextInput({ isEditing: true, autoFocus: true })}
     </div>
   ))
+  .add('with auto selection', () => (
+    <div style={containerStyle}>
+      {createSingleLineTextInput({ isEditing: true, isInitiallySelected: true })}
+    </div>
+  ))
   .add('with custom font size', () => (
     <div style={containerStyle}>
       {createSingleLineTextInput({ style: customTextStyle })}
@@ -63,7 +68,7 @@ storiesOf(storyName, module)
   ))
   .add('with field base', () => (
     <div style={containerStyle}>
-      <FieldBase
+      <SmartFieldBase
         label="Inside a FieldBase"
       >
         {createSingleLineTextInput({
@@ -71,6 +76,6 @@ storiesOf(storyName, module)
           autoFocus: true,
           isEditing: false,
         })}
-      </FieldBase>
+      </SmartFieldBase>
     </div>
   ));

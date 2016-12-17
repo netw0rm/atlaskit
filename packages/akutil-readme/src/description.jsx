@@ -1,9 +1,8 @@
-import React, { Children, PropTypes, PureComponent } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
 
 const style = {
   p: {
-    marginBottom: 10,
-    marginTop: 10,
+    margin: '12px 0',
   },
 };
 
@@ -12,7 +11,14 @@ export default class extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
   }
+
   render() {
-    return <div>{Children.map(this.props.children, p => <p style={style.p}>{p}</p>)}</div>;
+    return (
+      <div>{
+        typeof this.props.children === 'string' ?
+          (<p style={style.p}>{this.props.children}</p>) :
+          (<div style={style.p}>{this.props.children}</div>)
+      }</div>
+    );
   }
 }

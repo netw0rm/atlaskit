@@ -9,7 +9,8 @@ import ReadmeExample1 from './examples/readme1'; // eslint-disable-line
 import ReadmeExample2 from './examples/readme2'; // eslint-disable-line
 import ChromeExample from './examples/chrome'; // eslint-disable-line
 import CodeExample from './examples/code'; // eslint-disable-line
-import DescriptionExample from './examples/description'; // eslint-disable-line
+import DescriptionExample1 from './examples/description1'; // eslint-disable-line
+import DescriptionExample2 from './examples/description2'; // eslint-disable-line
 import HeadingExample1 from './examples/heading1'; // eslint-disable-line
 import HeadingExample2 from './examples/heading2'; // eslint-disable-line
 import PropsExample from './examples/props'; // eslint-disable-line
@@ -20,7 +21,8 @@ import ReadmeExampleRaw1 from '!raw!./examples/readme1';
 import ReadmeExampleRaw2 from '!raw!./examples/readme2';
 import ChromeExampleRaw from '!raw!./examples/chrome';
 import CodeExampleRaw from '!raw!./examples/code';
-import DescriptionExampleRaw from '!raw!./examples/description';
+import DescriptionExampleRaw1 from '!raw!./examples/description1';
+import DescriptionExampleRaw2 from '!raw!./examples/description2';
 import HeadingExampleRaw1 from '!raw!./examples/heading1';
 import HeadingExampleRaw2 from '!raw!./examples/heading2';
 import PropsExampleRaw from '!raw!./examples/props';
@@ -95,7 +97,8 @@ storiesOf(name)
   .add('Description', () => (
     <Chrome title="Description">
       <Description>Displays pharagraphs of content.</Description>
-      <Code code={DescriptionExampleRaw}>{DescriptionExample}</Code>
+      <Code code={DescriptionExampleRaw1}>{DescriptionExample1}</Code>
+      <Code code={DescriptionExampleRaw2}>{DescriptionExample2}</Code>
       <Props component={Description} />
     </Chrome>
   ))

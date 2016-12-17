@@ -28,11 +28,21 @@ export default class CodeExampleStory extends Component {
     imports: [],
   }
 
+  onResize = (size) => {
+    localStorage.setItem('codeExampleWidth', Math.round(Math.max(size, 1)));
+  }
+
   render() {
-    const defaultSize = Math.round(document.documentElement.clientWidth / 2);
+    const savedSize = 1 * localStorage.getItem('codeExampleWidth');
+    const defaultSize = savedSize || Math.round(document.documentElement.clientWidth / 2);
     return (
       <div>
-        <SplitPane split="vertical" defaultSize={defaultSize} primary="second">
+        <SplitPane
+          split="vertical"
+          defaultSize={defaultSize}
+          primary="second"
+          onChange={this.onResize}
+        >
           <div className={styles.storiesSource}>
             {this.props.children}
           </div>

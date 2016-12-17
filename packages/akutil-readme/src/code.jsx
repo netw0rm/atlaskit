@@ -5,10 +5,11 @@ import docco from 'react-syntax-highlighter/dist/styles/docco';
 const style = {
   code: {
     backgroundColor: '#f5f6f6',
+    boxShadow: '0 3px 4px 0 rgba(0, 0, 0, 0.09)',
     padding: 10,
   },
   codeExample: {
-    borderTop: '1px solid #ddd',
+    backgroundColor: '#fff',
   },
 };
 
@@ -45,7 +46,7 @@ export default class extends PureComponent {
           language={language || 'jsx'}
           style={docco}
         >{formatCode(code || children)}</SyntaxHighlighter>
-        {code ? <div style={{ ...codeExample, ...customStyle }}>{children}</div> : ''}
+        {code ? <div style={{ ...customStyle, ...codeExample }}><h6 style={{ marginBottom: 5 }}>Code example: result</h6>{children}</div> : ''}
       </div>
     );
   }

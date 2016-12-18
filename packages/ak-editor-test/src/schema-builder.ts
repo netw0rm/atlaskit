@@ -5,7 +5,7 @@ import matches from './matches';
 /**
  * Represents a ProseMirror "position" in a document.
  */
-type position = number;
+export type position = number;
 
 /**
  * A useful feature of the builder is being able to declaratively mark positions
@@ -19,7 +19,7 @@ export type Refs = { [name: string]: position };
 /**
  * Content that contains refs information.
  */
-type RefsContentItem = RefsNode | RefsTracker;
+export type RefsContentItem = RefsNode | RefsTracker;
 
 /**
  * Content node or mark builders can consume, e.g.

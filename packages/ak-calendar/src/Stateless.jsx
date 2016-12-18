@@ -20,7 +20,7 @@ const css = styles();
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
-export default class extends PureComponent {
+export default class StatelessCalendar extends PureComponent {
   static propTypes = {
     /**
      * @description The ISO date that represents today.
@@ -296,7 +296,7 @@ export default class extends PureComponent {
           <div {...css.heading}>
             <div onClick={this.handleClickPrev} aria-hidden="true">
               <Btn>
-                <ArrowleftIcon />
+                <ArrowleftIcon label="Last month" />
               </Btn>
             </div>
             <div {...css.monthAndYear}>
@@ -304,7 +304,7 @@ export default class extends PureComponent {
             </div>
             <div onClick={this.handleClickNext} aria-hidden="true">
               <Btn>
-                <ArrowrightIcon />
+                <ArrowrightIcon label="Next month" />
               </Btn>
             </div>
           </div>

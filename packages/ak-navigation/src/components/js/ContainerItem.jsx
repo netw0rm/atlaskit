@@ -1,44 +1,35 @@
-import React, { Component, PropTypes } from 'react';
-import styles from 'style!../less/ContainerItem.less';
-import className from 'classnames';
-import ContainerQuery from 'react-container-query';
+import React, { PureComponent, PropTypes } from 'react';
 import {
-  containerClosedWidth,
-} from '../../shared-variables';
+  isSelected,
+  containerItemOuter,
+  containerItemInner,
+  icon,
+  text,
+} from 'style!../less/ContainerItem.less';
+import className from 'classnames';
 
-// eslint-disable-next-line react/prefer-stateless-function
-export default class ContainerItem extends Component {
-  static get propTypes() {
-    return {
-      text: PropTypes.node,
-      icon: PropTypes.node,
-      isSelected: PropTypes.bool,
-    };
+export default class ContainerItem extends PureComponent {
+  static propTypes = {
+    text: PropTypes.node,
+    icon: PropTypes.node,
+    isSelected: PropTypes.bool,
   }
 
   render() {
     return (
-      <ContainerQuery
-        query={{
-          [styles.closed]: {
-            maxWidth: containerClosedWidth,
-          },
-        }}
+      <div
+        className={className(containerItemOuter, {
+          [isSelected]: this.props.isSelected,
+        })}
       >
         <div
-          className={className(styles.containerItemOuter, {
-            [styles.isSelected]: this.props.isSelected,
-          })}
+          className={containerItemInner}
         >
-          <div
-            className={styles.containerItemInner}
-          >
-            {this.props.icon ?
-              <div className={styles.icon}>{this.props.icon}</div> : null}
-            <div className={styles.text}>{this.props.text}</div>
-          </div>
+          {this.props.icon ?
+            <div className={icon}>{this.props.icon}</div> : null}
+          <div className={text}>{this.props.text}</div>
         </div>
-      </ContainerQuery>
+      </div>
     );
   }
 }

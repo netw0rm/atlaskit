@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/GlobalNavigation.less';
 import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
 
-export default class GlobalNavigation extends Component {
+export default class GlobalNavigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     primaryIcon: PropTypes.node,

@@ -1,6 +1,6 @@
 import { Plugin, ProseMirror, Slice } from 'ak-editor-prosemirror';
 
-export default new Plugin(class SyncPlugin {
+export class SyncPlugin {
   constructor(pm: ProseMirror) {
     // Poke inside the trigger all update schedulers. Normally it would be
     // done on a timeout if the editor is in the DOM, but for tests we want to
@@ -34,4 +34,6 @@ export default new Plugin(class SyncPlugin {
         (pm.on as any)[name].add(handler);
       });
   }
-});
+};
+
+export default new Plugin(SyncPlugin);

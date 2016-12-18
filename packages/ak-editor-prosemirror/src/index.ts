@@ -1,6 +1,3 @@
-/// <reference path="./prosemirror.d.ts" />
-/// <reference path="./browserkeymap.d.ts" />
-
 export { default as Keymap } from 'browserkeymap';
 
 export {

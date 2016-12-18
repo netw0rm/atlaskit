@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!../less/GlobalItem.less';
 import classNames from 'classnames';
 
-export default class GlobalItem extends Component {
+export default class GlobalItem extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     onActivate: PropTypes.func,

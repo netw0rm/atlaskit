@@ -44,8 +44,8 @@ describe.skip(name, () => {
       it('should be possible to create a component', () => {
         // testing to see that skate did its job as expected
         // (in case some breaking changes in it affect rendering)
-        expect(getShadowRoot(component)).to.be.defined;
-        expect(getShadowRoot(component).firstChild).to.be.defined;
+        expect(getShadowRoot(component)).to.exist;
+        expect(getShadowRoot(component).firstChild).to.exist;
       });
 
       it('should be an instance of the dropdown-item component', () => {

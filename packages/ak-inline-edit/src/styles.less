@@ -9,8 +9,7 @@
 }
 
 .read-view-wrapper {
-
-  display: inline-flex;
+  max-width: 100%;
 
   &:hover .edit-button {
     opacity: 1;
@@ -19,15 +18,26 @@
 
 .read-view-content-wrapper {
   display: inline-flex;
-  width: 100%;
+  max-width: 100%;
 }
 
 .buttons-wrapper {
+  display: flex;
   margin-left: unit(@grid, px);
 
   button:last-child {
     margin-left: unit(@grid, px);
   }
+}
+
+.button-wrapper-hidden {
+  visibility: hidden;
+}
+
+.edit-button-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 // the vendor prefixes here are deliberate. 'appearance' does not seem to get picked up by postcss,
@@ -46,7 +56,6 @@
   opacity: 0;
   outline: 0;
   padding: 0 0 0 unit(@grid * 2, px);
-  width: 100%;
 
   &:focus {
     opacity: 1;

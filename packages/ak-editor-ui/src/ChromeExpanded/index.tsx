@@ -6,6 +6,8 @@ import { BlockTypeState } from 'ak-editor-plugin-block-type';
 import { HyperlinkState } from 'ak-editor-plugin-hyperlink';
 import { ListsState } from 'ak-editor-plugin-lists';
 import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
+import { ImageUploadState } from 'ak-editor-plugin-image-upload';
+import { MentionsPluginState } from 'ak-editor-plugin-mentions';
 import MentionIcon from 'ak-icon/glyph/editor/mention';
 import ImageIcon from 'ak-icon/glyph/editor/image';
 import * as styles from './styles.global.less';
@@ -16,8 +18,9 @@ import ToolbarLists from '../ToolbarLists';
 import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarFeedback from '../ToolbarFeedback';
+import MentionPicker from '../MentionPicker';
 
-interface Props {
+export interface Props {
   feedbackFormUrl?: string;
   onCancel?: () => void;
   onInsertMention?: () => void;
@@ -27,9 +30,12 @@ interface Props {
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
+  pluginStateImageUpload?: ImageUploadState;
+  pluginStateMentions?: MentionsPluginState;
+  mentionsResourceProvider?: any; // AbstractMentionResource
 }
 
-interface State {}
+export interface State {}
 
 export default class ChromeExpanded extends PureComponent<Props, State> {
   render() {
@@ -40,14 +46,15 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
-          {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} /> : null}
+          {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
           <span style={{ flexGrow: 1 }} />
           {props.feedbackFormUrl ? <ToolbarFeedback feedbackFormUrl={props.feedbackFormUrl} /> : null}
         </div>
         <div className={styles.content}>
           {props.children}
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
+          {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} /> : null}
         </div>
         <div className={styles.footer}>
           <div className={styles.footerActions}>
@@ -71,7 +78,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               icon={<MentionIcon label='Mention' />}
             />
             }
-            {!props.onInsertImage ? null :
+            {!props.pluginStateImageUpload ? null :
             <ToolbarIconButton
               onClick={this.handleInsertImage}
               icon={<ImageIcon label='Image' />}
@@ -91,9 +98,10 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
   }
 
   private handleInsertImage = () => {
-    const { onInsertImage } = this.props;
-    if (onInsertImage) {
-      onInsertImage();
+    const { pluginStateImageUpload } = this.props;
+    
+    if (pluginStateImageUpload) {
+      pluginStateImageUpload.handleImageUpload();
     }
   }
 

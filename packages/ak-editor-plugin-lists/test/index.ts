@@ -1,9 +1,10 @@
 import { chaiPlugin, makeEditor } from 'ak-editor-test';
+import { commands, browser } from 'ak-editor-prosemirror';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import ListsPlugin from '../src';
-import { doc, h1, li, ol, p, ul, schema } from './_schema-builder';
+import { doc, h1, li, ol, p, ul, blockquote, schema } from './_schema-builder';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);
@@ -14,6 +15,69 @@ describe('ak-editor-plugin-lists', () => {
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const Plugin = ListsPlugin as any; // .State is not public API.
     expect(Plugin.State.name).is.be.a('string');
+  });
+
+  describe('keymap', () => {
+    context('when hit enter', () => {
+      it('should split list item', () => {
+        const { pm } = editor(doc(ul(li(p('text')))));
+        const splitListItem = sinon.spy(commands, 'splitListItem');
+
+        pm.input.dispatchKey("Enter");
+
+        expect(splitListItem).to.have.been.callCount(1);
+      });
+    });
+
+    if(browser.mac) {
+      context('when on a mac', () => {
+        context('when hit Shift-Cmd-L', () => {
+          it('should toggle ordered list', () => {
+            const { pm, plugin } = editor(doc(ul(li(p('text')))));
+            const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
+
+            pm.input.dispatchKey("Shift-Cmd-L");
+
+            expect(toggleOrderedList).to.have.been.callCount(1);
+          });
+        });
+
+        context('when hit Shift-Cmd-B', () => {
+          it('should toggle bullet list', () => {
+            const { pm, plugin } = editor(doc(ul(li(p('text')))));
+            const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
+
+            pm.input.dispatchKey("Shift-Cmd-B");
+
+            expect(toggleBulletList).to.have.been.callCount(1);
+          })
+        });
+      });
+    } else {
+      context('when not on a mac', () => {
+        context('when hit Shift-Ctrl-L', () => {
+          it('should toggle ordered list', () => {
+            const { pm, plugin } = editor(doc(ul(li(p('text')))));
+            const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
+
+            pm.input.dispatchKey("Shift-Ctrl-L");
+
+            expect(toggleOrderedList).to.have.been.callCount(1);
+          });
+        });
+
+        context('when hit Shift-Ctrl-B', () => {
+          it('should toggle bullet list', () => {
+            const { pm, plugin } = editor(doc(ul(li(p('text')))));
+            const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
+
+            pm.input.dispatchKey("Shift-Ctrl-B");
+
+            expect(toggleBulletList).to.have.been.callCount(1);
+          });
+        });
+      });
+    }
   });
 
   describe('API', () => {
@@ -162,6 +226,20 @@ describe('ak-editor-plugin-lists', () => {
         plugin.toggleOrderedList();
         expect(pm.doc).to.deep.equal(doc(p('One'),p('Two'),p(),p('Three')));
       });
+
+      it('should untoggle list item inside a blockquote', () => {
+        const { pm, plugin } = editor(doc(blockquote(ol(li(p('One')),li(p('{<>}Two')),li(p('Three'))))));
+
+        plugin.toggleOrderedList();
+        expect(pm.doc).to.deep.equal(doc(blockquote(ol(li(p('One'))),p('Two'),ol(li(p('Three'))))));
+      });
+
+      it('should untoggle all list items with different ancestors in selection', () => {
+        const { pm, plugin } = editor(doc(blockquote(ol(li(p('One')),li(p('{<}Two')),li(p('Three')))),ol(li(p('One{>}')),li(p('Two')))));
+
+        plugin.toggleOrderedList();
+        expect(pm.doc).to.deep.equal(doc(blockquote(ol(li(p('One'))),p('Two'),p('Three')),p('One'),ol(li(p('Two')))));
+      });
     });
 
     describe('converting a list', () => {
@@ -205,12 +283,26 @@ describe('ak-editor-plugin-lists', () => {
         expect(pm.doc).to.deep.equal(expectedOutput);
       });
 
-      it('shoould convert selection to a list and keep empty paragraphs', () => {
+      it('should convert selection to a list and keep empty paragraphs', () => {
         const expectedOutput = doc(ul(li(p('One')),li(p('Two')),li(p()),li(p('Three'))));
         const { pm, plugin } = editor(doc(ol(li(p('{<}One')),li(p('Two')),li(p()),li(p('Three{>}')))));
 
         plugin.toggleBulletList();
         expect(pm.doc).to.deep.equal(expectedOutput);
+      });
+
+      it('should convert selection to list when selection is inside blockquote', () => {
+        const { pm, plugin } = editor(doc(blockquote(p('{<}One'),p('Two'),p('Three{>}'))));
+
+        plugin.toggleBulletList();
+        expect(pm.doc).to.deep.equal(doc(blockquote(ul(li(p('One')),li(p('Two')),li(p('Three'))))));
+      });
+
+      it('should convert selection to multiple lists when selection starts and ends at different ancestor blocks', () => {
+        const { pm, plugin } = editor(doc(blockquote(p('{<}One'),p('Two'),p('Three')),p('Four'),p('Five'),blockquote(p('Six{>}'))));
+
+        plugin.toggleBulletList();
+        expect(pm.doc).to.deep.equal(doc(blockquote(ul(li(p('One')),li(p('Two')),li(p('Three')))),ul(li(p('Four')),li(p('Five'))),blockquote(ul(li(p('Six'))))));
       });
     });
 

@@ -1,6 +1,6 @@
 import { Attribute, Block, Node, Schema } from 'ak-editor-prosemirror';
 
-interface EntityAttributes {
+export interface EntityAttributes {
   params: Attribute
 }
 

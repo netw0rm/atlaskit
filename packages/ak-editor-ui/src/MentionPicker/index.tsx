@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import MentionsPlugin, { MentionsPluginState } from 'ak-editor-plugin-mentions';
 import { MentionPicker as PfMentionPicker } from 'ak-mention';
 
-interface Props {
+export interface Props {
   pluginState: MentionsPluginState;
   resourceProvider: any;//AbstractMentionResource;
 }
 
-interface State {
+export interface State {
   query?: string;
   anchorElement?: HTMLElement;
 }

@@ -4,11 +4,13 @@ import { BlockTypeState } from 'ak-editor-plugin-block-type';
 import { HyperlinkState } from 'ak-editor-plugin-hyperlink';
 import { ListsState } from 'ak-editor-plugin-lists';
 import { TextFormattingState } from 'ak-editor-plugin-text-formatting';
+import { ImageUploadState } from 'ak-editor-plugin-image-upload';
+import { MentionsPluginState } from 'ak-editor-plugin-mentions';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
-interface Props {
-  defaultExpanded?: boolean;
+export interface Props {
+  isExpanded?: boolean;
   placeholder?: string;
   onCancel?: () => void;
   onSave?: () => void;
@@ -18,22 +20,19 @@ interface Props {
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
+  pluginStateImageUpload?: ImageUploadState;
+  pluginStateMentions?: MentionsPluginState;
+  mentionsResourceProvider?: any; // AbstractMentionResource
+  onCollapsedChromeFocus: () => void;
 }
 
-interface State {
-  expanded: boolean;
-}
+export interface State {}
 
 export default class Chrome extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { expanded: props.defaultExpanded || false };
-  }
-
   render() {
-    const { props, state } = this;
+    const { props } = this;
 
-    return state.expanded
+    return props.isExpanded
       ? <ChromeExpanded
           onCancel={props.onCancel}
           onSave={props.onSave}
@@ -42,20 +41,15 @@ export default class Chrome extends PureComponent<Props, State> {
           pluginStateHyperlink={props.pluginStateHyperlink}
           pluginStateLists={props.pluginStateLists}
           pluginStateTextFormatting={props.pluginStateTextFormatting}
+          pluginStateImageUpload={props.pluginStateImageUpload}
+          pluginStateMentions={props.pluginStateMentions}
+          mentionsResourceProvider={props.mentionsResourceProvider}
         >
           {props.children}
         </ChromeExpanded>
       : <ChromeCollapsed
-          onFocus={this.handleChromeCollapsedFocus}
+          onFocus={this.props.onCollapsedChromeFocus}
           text={props.placeholder}
         />;
-  }
-
-  collapse() {
-    this.setState({ expanded: false });
-  }
-
-  private handleChromeCollapsedFocus = () => {
-    this.setState({ expanded: true });
   }
 };

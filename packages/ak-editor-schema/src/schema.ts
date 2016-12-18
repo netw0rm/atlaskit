@@ -23,7 +23,7 @@ import { EmMarkType } from './marks/em';
 import { LinkMarkType } from './marks/link';
 import { StrongMarkType } from './marks/strong';
 
-interface AtlassianEditorSchema extends Schema {
+export interface AtlassianEditorSchema extends Schema {
   nodes: {
     [name: string]: NodeType;
 

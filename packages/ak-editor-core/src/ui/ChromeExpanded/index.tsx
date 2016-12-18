@@ -8,7 +8,7 @@ import { ListsState } from '../../plugins/lists';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import MentionIcon from 'ak-icon/glyph/editor/mention';
 import ImageIcon from 'ak-icon/glyph/editor/image';
-import * as styles from './styles.global.less';
+import * as styles from './styles';
 import HyperlinkEdit from '../HyperlinkEdit';
 import ToolbarIconButton from '../ToolbarIconButton';
 import ToolbarBlockType from '../ToolbarBlockType';

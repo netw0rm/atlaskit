@@ -11,8 +11,10 @@ function lint () {
         exit 0
     fi
     $CHALK --no-stdin -t "{blue linting...}"
-    eslint --format 'node_modules/eslint-friendly-formatter' --no-ignore $diff
-    tslint --project tsconfig.json --format stylish $tsdiff
+    {
+      eslint --format 'node_modules/eslint-friendly-formatter' --no-ignore $diff &&
+      tslint --project tsconfig.json --format stylish $tsdiff;
+    }
     exit $?
 }
 lint

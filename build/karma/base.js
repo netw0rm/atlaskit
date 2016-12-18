@@ -10,6 +10,10 @@ module.exports = (config) => {
 
     webpack: webpackConfig,
 
+    mime: {
+      'application/javascript': ['ts', 'tsx'],
+    },
+
     reporters: ['progress'],
 
     port: 9876,

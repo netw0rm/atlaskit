@@ -65,15 +65,11 @@ export default class Icon extends PureComponent {
 
   render() {
     const Glyph = this.getGlyphTemplate();
+    const iconBodyClasses = classnames([styles.iconBody, styles[this.props.size]]);
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <span
-        className={classnames([styles.iconBody, styles[this.props.size]])}
-        onClick={this.props.onClick}
-      >
-        <span className={styles.iconContent}>
-          <Glyph role="img" label={this.props.label} className={styles.svg} />
-        </span>
+      <span className={iconBodyClasses} onClick={this.props.onClick}>
+        <Glyph className={styles.svg} label={this.props.label} role="img" />
       </span>
     );
   }

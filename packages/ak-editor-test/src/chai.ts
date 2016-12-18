@@ -1,4 +1,3 @@
-/// <reference path="./chai.d.ts"/>
 import { Fragment, Node, Mark, Text, Slice, NodeType } from 'ak-editor-prosemirror';
 
 function isNodeOrFragment(thing: any): thing is Node | Fragment {

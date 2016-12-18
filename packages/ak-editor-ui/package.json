@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-ui",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "Atlassian Editor UI",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

@@ -4,7 +4,7 @@ import ListsPlugin from 'ak-editor-plugin-lists';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';
 import MarkdownInputRulesPlugin from 'ak-editor-plugin-markdown-inputrules';
 import HyperlinkPlugin from 'ak-editor-plugin-hyperlink';
-import ImageUploadPlugin from 'ak-editor-plugin-image-upload';
+import { default as ImageUploadPlugin, ImageUploadHandler } from 'ak-editor-plugin-image-upload';
 import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
 import MentionsPlugin from 'ak-editor-plugin-mentions';
 import { Chrome } from 'ak-editor-ui';
@@ -21,7 +21,7 @@ export interface Props {
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
-  imageUploader?: Function;
+  imageUploadHandler?: ImageUploadHandler;
 }
 
 export interface State {
@@ -133,6 +133,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
       />
     );
   }
@@ -167,16 +168,20 @@ export default class Editor extends PureComponent<Props, State> {
         plugins: [
           MarkdownInputRulesPlugin,
           HyperlinkPlugin,
-          ImageUploadPlugin,
           BlockTypePlugin,
           ListsPlugin,
           TextFormattingPlugin,
           MentionsPlugin,
+          ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
         ],
       });
 
       if (context) {
         BlockTypePlugin.get(pm)!.changeContext(context);
+      }
+
+      if (this.props.imageUploadHandler) {
+        ImageUploadPlugin.get(pm)!.uploadHandler = this.props.imageUploadHandler;
       }
 
       pm.on.change.add(this.handleChange);

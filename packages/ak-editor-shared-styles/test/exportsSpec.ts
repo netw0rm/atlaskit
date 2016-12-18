@@ -1,12 +1,7 @@
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiAsPromised from 'chai-as-promised';
-
+import mocha from 'mocha';
+import { expect } from 'chai';
 import * as lessVars from '../src';
 
-chai.use(sinonChai);
-chai.use(chaiAsPromised);
-chai.should();
 
 describe('LESS module exports', () => {
   // If you find yourself here and wonder why this list is not auto-generated, then bear in
@@ -22,7 +17,7 @@ describe('LESS module exports', () => {
   // break any tests and thus not hint the developer at what kind of change he/she is making
 
   it('should have well-defined exports', () => {
-    Object.keys(lessVars).should.be.deep.equal([
+    expect(Object.keys(lessVars)).to.include.members([
       'akEditorCodeFontFamily',
       'akEditorInactiveForeground',
       'akEditorFocus',

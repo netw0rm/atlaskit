@@ -1,6 +1,6 @@
 import React, { FormEvent, PureComponent } from 'react';
 import ReactDOM from 'react-dom';
-import * as styles from './styles.global.less';
+import * as styles from './styles';
 import OutsideClickable from '../OutsideClickable';
 import Popper from 'popper.js';
 

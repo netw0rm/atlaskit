@@ -1,9 +1,9 @@
 import {
-  ProseMirror, Schema
+  ProseMirror, Schema, Plugin, Keymap
 } from '../../prosemirror';
 
 import {
-  HorizontalRuleNodeType,
+  HorizontalRuleNodeType
 } from '../../schema';
 
 export type StateChangeHandler = (state: HorizontalRuleState) => any;
@@ -17,30 +17,19 @@ export class HorizontalRuleState {
     this.changeHandlers = [];
 
     this.addKeymap(pm);
-
-    pm.updateScheduler([
-      pm.on.selectionChange,
-      pm.on.change,
-    ], () => this.update());
   }
 
   addKeymap(pm) {
-    
-  }
-
-  update() {
-
-  }
-
-  subscribe(cb: StateChangeHandler) {
-    this.changeHandlers.push(cb);
-    cb(this);
-  }
-
-  unsubscribe(cb: StateChangeHandler) {
-    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+    const {horizontal_rule} = pm.nodes;
+    if(horizontal_rule) {
+      pm.addKeyMap(new Keymap({
+        'Mod-Shift--': () => pm.tr.replaceSelection(horizontal_rule.create()).applyAndScroll()
+      }));
+    }
   }
 }
+
+export default new Plugin(HorizontalRuleState);
 
 export interface PM extends ProseMirror {
   schema: S;

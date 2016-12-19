@@ -1,6 +1,6 @@
 # Flag
 
-Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction. They are event-driven messages that appear over screen content at the bottom left of the screen emerging from the navigation.
+Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction. They are event-driven messages that appear over screen content at the bottom left of the screen, emerging from the navigation.
 
 Multiple flags can be shown at the same time. The top-most flag is always visible, with remaining flags stacked vertically underneath.
 
@@ -20,7 +20,7 @@ npm install ak-flag
 
 The `ak-flag` package exports the `Flag` React component as the default export. A named `FlagGroup` export is also provided.
 
-To ensure placement and correct animation, `Flag` components must always have a unique `key` attribute and must be placed inside a `FlagGroup`.
+To ensure correct Flag placement and animation, each `Flag` component must have a unique `id` prop. The same unique value can be used for the React `key` prop.
 
 ```js
 import Flag, { FlagGroup } from 'ak-flag';
@@ -28,7 +28,7 @@ import { WarningIcon, SuccessIcon } from 'ak-icon';
 ReactDOM.render((
   <FlagGroup>
     <Flag
-      id="internet-full"
+      id="flag-1"
       key="flag-1"
       icon={
         <WarningIcon label="Warning" />
@@ -37,10 +37,11 @@ ReactDOM.render((
       description="Somebody forgot to upgrade the storage on the information superhighway."
     />
     <Flag
+      id="flag-2"
+      key="flag-2"
       icon={
         <SuccessIcon label="Success" />
       }
-      key="flag-2"
       title="Calculation finished"
       description="It took a while, but the answer is 42."
     />

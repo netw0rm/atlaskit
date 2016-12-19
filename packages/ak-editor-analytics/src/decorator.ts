@@ -1,7 +1,7 @@
 import service from './service';
 
 /**
- * Annotation for automatically tracking analytics event whenever a function is invoked.?
+ * Annotation for automatically tracking analytics event whenever a function is invoked.
  *
  * The @analytics annotation can only be used on methods and functions. It requires a single
  * argument with the event name. It will relay the event via analytics/service and requires

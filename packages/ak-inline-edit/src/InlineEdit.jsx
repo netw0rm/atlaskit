@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import Button from 'ak-button';
+import Spinner from 'ak-spinner';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
 import EditIcon from 'ak-icon/glyph/edit';
@@ -47,6 +48,16 @@ export default class InlineEdit extends PureComponent {
      * @type {boolean}
      */
     isEditing: PropTypes.bool.isRequired,
+    /**
+     * @description Whether or not inline edit is in loading state.
+     *
+     * Displays an ak-spinner component to show that is actively waiting for feedback.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    isLoading: PropTypes.bool,
     /**
      * @description Whether or not a validation error should be displayed.
      *
@@ -127,6 +138,7 @@ export default class InlineEdit extends PureComponent {
 
   static defaultProps = {
     isInvalid: false,
+    isLoading: false,
     isLabelHidden: false,
     areActionButtonsHidden: false,
     isConfirmOnBlurDisabled: false,
@@ -195,6 +207,8 @@ export default class InlineEdit extends PureComponent {
 
   shouldRenderEditIcon = () => !this.isReadOnly() && !this.props.isInvalid;
 
+  shouldRenderSpinner = () => this.props.isLoading && this.props.isEditing;
+
   renderActionButtons = () => (
     <div className={this.getActionButtonClasses()}>
       <Button
@@ -232,6 +246,12 @@ export default class InlineEdit extends PureComponent {
     </div>
   )
 
+  renderSpinner = () => (
+    <div className={styles.spinnerWrapper}>
+      <Spinner />
+    </div>
+  )
+
   render = () => (
     <div className={styles.root}>
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
@@ -248,7 +268,10 @@ export default class InlineEdit extends PureComponent {
           isReadOnly={this.isReadOnly()}
           isFitContainerWidthEnabled={this.props.isEditing}
           appearance={this.props.isEditing ? 'standard' : 'subtle'}
-          rightGutter={this.renderActionButtons()}
+          isDisabled={this.shouldRenderSpinner()}
+          rightGutter={
+            this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()
+          }
         >
           {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
         </FieldBase>

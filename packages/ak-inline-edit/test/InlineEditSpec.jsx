@@ -6,6 +6,7 @@ import sinonChai from 'sinon-chai';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
 import FieldBase from 'ak-field-base'; // eslint-disable-line
+import Spinner from 'ak-spinner';
 import InlineEdit from '../src/InlineEdit';
 
 chai.use(chaiEnzyme());
@@ -127,6 +128,31 @@ describe('ak-inline-edit', () => {
       const fieldBase = wrapper.find(FieldBase);
       expect(fieldBase).to.have.prop('label', 'test');
       expect(fieldBase).to.have.prop('isLabelHidden', true);
+    });
+  });
+
+  describe('isLoading', () => {
+    describe('when isEditing is false', () =>
+      it('should not render Spinner', () => {
+        const fieldBase = mount(<InlineEdit {...defaultProps} isLoading />).find(FieldBase);
+        expect(shallow(fieldBase.prop('rightGutter'))).to.not.contain(<Spinner />);
+      })
+    );
+
+    describe('when isEditing is true', () => {
+      let wrapper;
+
+      beforeEach(() => (
+        wrapper = shallow(<InlineEdit {...defaultProps} isLoading isEditing />)
+      ));
+
+      it('should render Spinner', () =>
+        expect(shallow(wrapper.find(FieldBase).prop('rightGutter'))).to.contain(<Spinner />)
+      );
+
+      it('should disable field base', () =>
+        expect(wrapper.find(FieldBase)).to.have.prop('isDisabled', true)
+      );
     });
   });
 });

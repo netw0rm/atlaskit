@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
-import { ProseMirror } from 'ak-editor-prosemirror';
-import BlockTypePlugin from 'ak-editor-plugin-block-type';
-import ListsPlugin from 'ak-editor-plugin-lists';
-import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
-import { Chrome } from 'ak-editor-ui';
-import schema from './schema';
+import {
+  ProseMirror,
+  BlockTypePlugin,
+  ListsPlugin,
+  TextFormattingPlugin,
+  Chrome,
+  schema
+} from 'ak-editor-core';
 import { encode, parse } from './html';
 
 export interface Props {

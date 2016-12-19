@@ -3,7 +3,7 @@ import {
   Fragment,
   Node as PMNode,
   TextNode
-} from 'ak-editor-prosemirror';
+} from 'ak-editor-core';
 
 import {
   BlockQuoteNode,
@@ -24,7 +24,7 @@ import {
   isListItemNode,
   isOrderedListNode,
   isParagraphNode
-} from 'ak-editor-schema';
+} from 'ak-editor-core';
 
 
 export default function encode(node: DocNode) {

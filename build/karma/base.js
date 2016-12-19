@@ -11,7 +11,7 @@ module.exports = (config) => {
     webpack: webpackConfig,
 
     mime: {
-      'text/x-typescript': ['ts', 'tsx'],
+      'application/javascript': ['ts', 'tsx'],
     },
 
     reporters: ['progress'],

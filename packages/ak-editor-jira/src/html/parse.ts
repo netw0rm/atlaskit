@@ -204,7 +204,7 @@ const converters = <Converter[]> [
         case 'BR':
           return schema.nodes.hard_break.createChecked();
         case 'HR':
-          return schema.nodes.hr.createChecked();
+          return schema.nodes.horizontal_rule.createChecked();
         case 'UL':
           return schema.nodes.bullet_list.createChecked({}, content);
         case 'OL':

@@ -241,6 +241,7 @@ export default class InlineEdit extends PureComponent {
           isFocused={this.isReadOnly() ? false : undefined}
           isLabelHidden={this.props.isLabelHidden}
           isReadOnly={this.isReadOnly()}
+          isFitContainerWidthEnabled={this.props.isEditing}
           appearance={this.props.isEditing ? 'standard' : 'subtle'}
           rightGutter={this.renderActionButtons()}
         >

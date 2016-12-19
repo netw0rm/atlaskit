@@ -70,6 +70,7 @@ export default class MentionItem extends PureComponent {
     onMouseMove: PropTypes.func,
     onSelection: PropTypes.func,
     ...MentionPropTypes.mentionPropType,
+    itemId: PropTypes.string,
   };
 
   // internal, used for callbacks
@@ -87,7 +88,8 @@ export default class MentionItem extends PureComponent {
   }
 
   render() {
-    const { selected, highlight, avatarUrl, status, time, name, mentionName } = this.props;
+    const { selected, highlight, avatarUrl, status, time, name, mentionName, id,
+      itemId } = this.props;
     const classes = classNames({
       'ak-mention-item': true,
       [styles.akMentionItem]: true,
@@ -102,8 +104,10 @@ export default class MentionItem extends PureComponent {
         className={classes}
         onMouseDown={this._onMentionSelected}
         onMouseMove={this._onMentionMenuItemMouseMove}
-        data-mention-id={this.props.id}
-        data-mention-name={this.props.mentionName}
+        data-mention-id={id}
+        data-mention-name={mentionName}
+        role="option"
+        id={itemId}
       >
         <div className={styles.row}>
           <Avatar src={avatarUrl} size="medium" presence={status} />

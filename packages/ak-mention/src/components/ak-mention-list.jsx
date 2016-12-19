@@ -8,6 +8,7 @@ import Item from './ak-mention-item';
 import Scrollable from './ak-scrollable';
 
 import MentionPropTypes from '../internal/ak-mention-prop-types';
+import uniqueId from '../util/id';
 import debug from '../util/logger';
 import { mouseLocation, actualMouseMove } from '../util/mouse';
 
@@ -34,6 +35,8 @@ export default class MentionList extends PureComponent {
       selectedKey: null,
       selectedIndex: 0,
     };
+
+    this.id = uniqueId('mentionlist');
 
     this._lastMousePosition = null;
   }
@@ -123,6 +126,10 @@ export default class MentionList extends PureComponent {
     this._lastMousePosition = mousePosition;
   }
 
+  _getItemId(key) {
+    return key ? `${this.id}-${key}` : null;
+  }
+
   _renderItems() {
     const { mentions } = this.props;
     const { selectedKey } = this.state;
@@ -139,6 +146,7 @@ export default class MentionList extends PureComponent {
             const item = (
               <Item
                 {...mention}
+                itemId={this._getItemId(key)}
                 avatarUrl={mention.avatarUrl}
                 key={key}
                 idx={idx}
@@ -202,8 +210,10 @@ export default class MentionList extends PureComponent {
       );
     }
 
+    const selectedId = this._getItemId(this.state.selectedKey);
+
     return (
-      <div className={styles.akMentionList}>
+      <div id={this.id} className={styles.akMentionList} aria-activedescendant={selectedId}>
         <div className={classes}>
           {errorSection}
           {resultSection}

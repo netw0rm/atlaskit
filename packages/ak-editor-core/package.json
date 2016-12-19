@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-core",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A package contains Atlassian editor core functionality",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

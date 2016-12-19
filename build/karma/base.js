@@ -16,6 +16,10 @@ module.exports = (config) => {
       },
     },
 
+    mime: {
+      'text/x-typescript': ['ts', 'tsx'],
+    },
+
     reporters: ['progress'],
 
     port: 9876,

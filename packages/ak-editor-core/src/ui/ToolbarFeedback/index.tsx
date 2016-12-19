@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import FeedbackIcon from 'ak-icon/glyph/feedback';
 import Panel from '../Panel';
-import * as styles from './styles.global.less';
+import * as styles from './styles';
 import IconButton from '../ToolbarIconButton';
 
 export interface Props {

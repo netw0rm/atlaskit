@@ -1,3 +1,4 @@
+import { action } from '@kadira/storybook';
 import React, { Component, PropTypes } from 'react';
 
 import MentionPicker from '../src/components/ak-mention-picker';
@@ -81,6 +82,8 @@ class MentionTextInput extends Component {
           resourceProvider={resourceProvider}
           presenceProvider={presenceProvider}
           onSelection={(event) => { this._handleSelection(event); }}
+          onOpen={action('picker opened')}
+          onClose={action('picker closed')}
           ref={(ref) => { this._mentionListRef = ref; }}
           query={this.state.query}
         />

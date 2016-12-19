@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import BoldIcon from 'ak-icon/glyph/editor/bold';
 import ItalicIcon from 'ak-icon/glyph/editor/italic';
 import UnderlineIcon from 'ak-icon/glyph/editor/underline';

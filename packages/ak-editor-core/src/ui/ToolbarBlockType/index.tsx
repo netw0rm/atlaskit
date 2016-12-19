@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import AkButton from 'ak-button';
 import { BlockType, BlockTypeState } from '../../../src/plugins/block-type';
 import Panel from '../Panel';

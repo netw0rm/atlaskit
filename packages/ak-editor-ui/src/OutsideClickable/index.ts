@@ -1,5 +1,6 @@
-import React, { PureComponent, ReactElement } from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import { PureComponent, ReactElement } from 'react';
+import * as ReactDOM from 'react-dom';
 
 export interface Props {
   onClick?: () => void;

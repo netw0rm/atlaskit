@@ -1,10 +1,11 @@
-import { default as chai, expect } from 'chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
 import AkEditorBitbucket from '../src';
 import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress, locateWebComponent } from 'akutil-common-test';
 import { symbols, emit } from 'skatejs';
 import { fixtures, RewireSpy, chaiPlugin } from 'ak-editor-test';
 import { browser } from 'ak-editor-prosemirror';
-import sinonChai from 'sinon-chai';
+import * as sinonChai from 'sinon-chai';
 
 import { doc, code, strong, a,
   h1, h2, h3, h4, h5, h6, hr, img, blockquote, ul, ol, li, p, mention,
@@ -12,7 +13,7 @@ import { doc, code, strong, a,
 import shadowStyles from './shadow.less';
 
 chai.use(chaiPlugin);
-chai.use(sinonChai);
+chai.use((sinonChai as any).default || sinonChai);
 
 const fixture = fixtures();
 

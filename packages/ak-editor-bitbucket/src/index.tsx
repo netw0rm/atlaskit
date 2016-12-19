@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { ProseMirror, Schema, Node } from 'ak-editor-prosemirror';
 import ListsPlugin from 'ak-editor-plugin-lists';
 import BlockTypePlugin from 'ak-editor-plugin-block-type';

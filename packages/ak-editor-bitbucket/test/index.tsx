@@ -1,9 +1,10 @@
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiEnzyme from 'chai-enzyme';
+import * as chai from 'chai';
+import * as sinonChai from 'sinon-chai';
+import * as chaiEnzyme from 'chai-enzyme';
 import { mount, ReactWrapper } from 'enzyme';
-import { default as sinon, SinonSpy } from 'sinon';
-import React from 'react';
+import * as sinon from 'sinon';
+import { SinonSpy } from 'sinon';
+import * as React from 'react';
 import { doc, strong, h1, p } from './_schema-builder';
 
 import Editor from '../src/index';
@@ -11,8 +12,8 @@ import ImageIcon from 'ak-icon/glyph/editor/image';
 import { chaiPlugin, createEvent } from 'ak-editor-test';
 
 chai.use(chaiPlugin);
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
+chai.use(((chaiEnzyme as any).default || chaiEnzyme)());
+chai.use((sinonChai as any).default || sinonChai);
 
 const expect = chai.expect;
 
@@ -88,7 +89,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
       .find(ImageIcon)
       .parent()
       .simulate('click');
-    
+
     expect(spy).to.have.been.calledOnce;
     expect(spy).to.have.been.calledWith(undefined);
     expect(spy.getCall(0).args[1]).to.be.a('function');
@@ -97,7 +98,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
   it('should invoke upload handler after pasting an image', function() {
     const contentArea: HTMLElement = (editor.get(0) as any).state.pm.content;
     const event = createEvent('paste');
-    
+
     try {
       Object.defineProperties(event, {
         clipboardData: {
@@ -109,7 +110,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
     } catch (e) {
       return this.skip('This environment does not allow mocking paste events - ' + e);
     }
-    
+
     contentArea.dispatchEvent(event);
 
     expect(spy).to.have.been.calledOnce;
@@ -118,11 +119,11 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
   });
 
   it('should invoke upload handler after dropping an image', function(){
-    // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop' 
+    // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'
     //       so we must dispatch the event directly on the event which has listener attached.
     const dropElement: HTMLElement = (editor.get(0) as any).state.pm.content.parentNode;
     const event = createEvent('drop');
-    
+
     Object.defineProperties(event, {
       dataTransfer: {
         value: {
@@ -137,7 +138,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
     });
 
     dropElement.dispatchEvent(event);
-    
+
     expect(spy).to.have.been.calledOnce;
     expect(spy).to.have.been.calledWith(event);
     expect(spy.getCall(0).args[1]).to.be.a('function');

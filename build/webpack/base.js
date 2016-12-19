@@ -85,10 +85,8 @@ const standardConfig = {
           loader: loaderChain({
             'babel-loader': {
               babelrc: false,
-              presets: [
-                'es2015',
-                'stage-0',
-              ],
+              presets: ['es2015'],
+              plugins: [],
             },
             'ts-loader': {
               configFileName: 'tsconfig.webpack.json',

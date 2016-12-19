@@ -3,47 +3,40 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 import mocha from 'mocha';
-import HorizontalPlugin from '../../../src/plugins/horizontal-rule';
-import { commands, browser, chaiPlugin, makeEditor, hr, doc, p } from '../../../src';
+import { commands, browser, chaiPlugin, makeEditor, doc, p, hr, schema as schemaBasic, Schema } from '../../../src';
+
+import HorizontalRulePlugin from '../../../src/plugins/horizontal-rule';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);
 
-describe('horizontal-rule', () => {
+describe('horizontal_rule', () => {
   const editor = (doc: any) => {
-    const { pm, plugin } = makeEditor({ doc, plugin: HorizontalPlugin });
+    const { pm, plugin } = makeEditor({ doc, plugin: HorizontalRulePlugin });
     return { pm, plugin, sel: pm.doc.refs['<>'] };
   };
 
   describe('keymap', () => {
     if(browser.mac) {
-      context('when hits Cmd-Shift--', () => {
-        const { pm, plugin } = editor(p('text<>'));
+      context('when hits Shift-Cmd--', () => {
+        it('calls splitCodeBlock', () => {
+          const { pm, plugin } = editor(doc(p('text{<>}')));
 
-        pm.input.dispatchKey('Cmd-Shift--');
+          pm.input.dispatchKey("Shift-Cmd--");
 
-        expect(pm.doc).to.deep.equal(doc(p('text'), hr));
+          expect(pm.doc).to.deep.equal(doc(p('text'), hr));
+        });
       });
     } else {
-      context('when hits Ctrl-Shift--', () => {
-        const { pm, plugin } = editor(p('text<>'));
+      context('when hits Shift-Ctrl--', () => {
+        it('calls splitCodeBlock', () => {
+          const { pm, plugin } = editor(doc(p('text{<>}')));
 
-        pm.input.dispatchKey('Ctrl-Shift--');
+          pm.input.dispatchKey("Shift-Ctrl--");
 
-        expect(pm.doc).to.deep.equal(doc(p('text'), hr));
+          expect(pm.doc).to.deep.equal(doc(p('text'), hr));
+        });
       });
     }
   });
-
-  
-
-  it('calls subscriber immediately when it subscribes', () => {
-    const { pm, plugin } = editor(doc(hr));
-    const spy = sinon.spy();
-
-    plugin.subscribe(spy);
-
-    expect(spy).to.have.been.calledWith(plugin);
-  });
 });
-

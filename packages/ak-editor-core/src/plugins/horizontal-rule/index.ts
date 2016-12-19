@@ -20,9 +20,9 @@ export class HorizontalRuleState {
   }
 
   addKeymap(pm) {
-    const {horizontal_rule} = pm.nodes;
+    const {horizontal_rule} = pm.schema.nodes;
     if(horizontal_rule) {
-      pm.addKeyMap(new Keymap({
+      pm.addKeymap(new Keymap({
         'Mod-Shift--': () => pm.tr.replaceSelection(horizontal_rule.create()).applyAndScroll()
       }));
     }

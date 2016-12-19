@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import jsxToString from 'jsx-to-string';
 import SplitPane from '@kadira/react-split-pane';
 
+// need non-uglified css here in order to override the default styles of the react-split-pane
+import 'style-loader!css-loader!./PanelOverride.css';
+
 import { locals as styles } from './styles.less';
 
 const transformScripts = scripts => scripts.map(scr => scr.toString()).join('\n\n');
@@ -25,11 +28,22 @@ export default class CodeExampleStory extends Component {
     imports: [],
   }
 
+  onResize = (size) => {
+    localStorage.setItem('codeExampleWidth', Math.round(Math.max(size, 1)));
+  }
+
   render() {
+    const savedSize = 1 * localStorage.getItem('codeExampleWidth');
+    const defaultSize = savedSize || Math.round(document.documentElement.clientWidth / 2);
     return (
       <div>
-        <SplitPane split="vertical" defaultSize={'50%'} primary="second">
-          <div>
+        <SplitPane
+          split="vertical"
+          defaultSize={defaultSize}
+          primary="second"
+          onChange={this.onResize}
+        >
+          <div className={styles.storiesSource}>
             {this.props.children}
           </div>
           <div className={styles.storiesWithCodeExamples}>

@@ -1,4 +1,5 @@
-import { EmMark as EmMarkType, Mark } from '../../prosemirror';
+import { EmMark as EmMarkType } from 'prosemirror/dist/schema-basic';
+import { Mark } from '../../prosemirror';
 
 export { EmMarkType };
 

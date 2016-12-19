@@ -1,6 +1,5 @@
 import mocha from 'mocha';
-import { ProseMirror } from '../../../src/prosemirror';
-import { chaiPlugin, code_block, fixtures, makeEditor, blockquote, p, doc, dispatchPasteEvent } from '../../../src/test-helper';
+import { ProseMirror, chaiPlugin, code_block, fixtures, makeEditor, blockquote, p, doc, dispatchPasteEvent } from '../../../src';
 import { default as chai, expect } from 'chai';
 import { PasteContent } from '../../../src/test-helper/dispatch-paste-event';
 import BlockTypePlugin from '../../../src/plugins/block-type';

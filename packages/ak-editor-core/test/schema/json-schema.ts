@@ -1,6 +1,6 @@
 import chai from 'chai';
 import jsonSchema from '../../src/schema/json-schema';
-import { Schema, Block, Text, Inline, Attribute, EmMark, MarkType } from '../../src/prosemirror';
+import { Schema, Block, Text, Inline, Attribute, EmMarkType, MarkType } from '../../src';
 
 const { expect } = chai;
 
@@ -428,8 +428,8 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text},
       },
       marks: {
-        a: EmMark,
-        b: EmMark,
+        a: EmMarkType,
+        b: EmMarkType,
       }
     });
     const { a_mark, b_mark } = jsonSchema(schema)['definitions'];
@@ -532,7 +532,7 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text},
       },
       marks: {
-        em: EmMark,
+        em: EmMarkType,
       }
     });
     const { text_node } = jsonSchema(schema)['definitions'];
@@ -549,8 +549,8 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text},
       },
       marks: {
-        a: EmMark,
-        b: EmMark,
+        a: EmMarkType,
+        b: EmMarkType,
       }
     });
     const { doc_node } = jsonSchema(schema).definitions;
@@ -582,8 +582,8 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text},
       },
       marks: {
-        a: EmMark,
-        b: EmMark,
+        a: EmMarkType,
+        b: EmMarkType,
       }
     });
     const { doc_node } = jsonSchema(schema)['definitions'];

@@ -67,8 +67,10 @@ export default class SingleLineTextInput extends PureComponent {
     this.selectInputIfNecessary();
   }
 
-  componentDidUpdate() {
-    this.selectInputIfNecessary();
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isEditing) {
+      this.selectInputIfNecessary();
+    }
   }
 
   getInputProps = () => {

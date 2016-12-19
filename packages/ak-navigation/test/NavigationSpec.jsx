@@ -50,9 +50,6 @@ describe('<Navigation />', () => {
       expect(shallow(<Navigation containerHeader={header} />)
         .find('ContainerNavigation').props().header).to.equal(header);
     });
-    it('globalPrimaryIcon should insert primary icon into navigation', () => {
-      expect(mount(<Navigation globalPrimaryIcon={<span className="PRIMARY_ICON" />} />)).to.have.exactly(1).descendants('.PRIMARY_ICON');
-    });
     it('globalSearchIcon should insert search icon into navigation', () => {
       expect(mount(<Navigation globalSearchIcon={<span className="SEARCH_ICON" />} />)).to.have.exactly(1).descendants('.SEARCH_ICON');
     });
@@ -71,19 +68,26 @@ describe('<Navigation />', () => {
     it('when isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
       expect(mount(<Navigation isCreateDrawerOpen={false} />).find('Drawer').at(1).props().open).to.equal(false);
     });
-    it('globalHelpDropdownComponent should wrap the globalHelpIcon', () => {
+    it('globalPrimaryItem should map to global navigation\'s primaryItem', () => {
+      const primaryItem = <span className="PRIMARY_ITEM" />;
       expect(mount(
         <Navigation
-          globalHelpIcon={<span className="HELP_ICON" />}
-          globalHelpDropdownComponent={({ children }) => <span className="WRAPPER" >{children}</span>}
-        />).find('.WRAPPER')).to.have.exactly(1).descendants('.HELP_ICON');
+          globalPrimaryItem={primaryItem}
+        />).find('GlobalNavigation').props().primaryItem).to.equal(primaryItem);
     });
-    it('globalAccountDropdownComponent should wrap the globalAccountIcon', () => {
+    it('globalHelpItem should map to global navigation\'s helpItem', () => {
+      const helpItem = <span className="HELP_ITEM" />;
       expect(mount(
         <Navigation
-          globalAccountIcon={<span className="ACCOUNT_ICON" />}
-          globalAccountDropdownComponent={({ children }) => <span className="WRAPPER" >{children}</span>}
-        />).find('.WRAPPER')).to.have.exactly(1).descendants('.ACCOUNT_ICON');
+          globalHelpItem={helpItem}
+        />).find('GlobalNavigation').props().helpItem).to.equal(helpItem);
+    });
+    it('globalAccountItem should map to global navigation\'s accountItem', () => {
+      const accountItem = <span className="ACCOUNT_ITEM" />;
+      expect(mount(
+        <Navigation
+          globalAccountItem={accountItem}
+        />).find('GlobalNavigation').props().accountItem).to.equal(accountItem);
     });
   });
 

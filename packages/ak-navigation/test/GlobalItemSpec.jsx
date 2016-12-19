@@ -14,22 +14,21 @@ chai.should();
 const expect = chai.expect;
 
 describe('<GlobalItem />', () => {
-  describe('interacting', () => {
-    it('click should call the onActivate handler', () => {
-      const spy = sinon.spy();
-      shallow(<GlobalItem onActivate={spy} />).find('[role="button"]').simulate('click');
-      expect(spy.called).to.equal(true);
-    });
-  });
   describe('props', () => {
-    it('small prop renders small global item', () => {
-      expect(shallow(<GlobalItem size="small" />).find('[role="button"]')).to.have.className(styles.smallGlobalItem);
+    it('default size prop is small', () => {
+      expect(shallow(<GlobalItem />).find(`.${styles.globalItem}`)).to.have.className(styles.smallGlobalItem);
     });
-    it('medium prop renders medium global item', () => {
-      expect(shallow(<GlobalItem size="medium" />).find('[role="button"]')).to.have.className(styles.mediumGlobalItem);
+    it('small size prop renders small global item', () => {
+      expect(shallow(<GlobalItem size="small" />).find(`.${styles.globalItem}`)).to.have.className(styles.smallGlobalItem);
     });
-    it('large prop renders large global item', () => {
-      expect(shallow(<GlobalItem size="large" />).find('[role="button"]')).to.have.className(styles.largeGlobalItem);
+    it('medium size prop renders medium global item', () => {
+      expect(shallow(<GlobalItem size="medium" />).find(`.${styles.globalItem}`)).to.have.className(styles.mediumGlobalItem);
+    });
+    it('large size prop renders large global item', () => {
+      expect(shallow(<GlobalItem size="large" />).find(`.${styles.globalItem}`)).to.have.className(styles.largeGlobalItem);
+    });
+    it('isSelected renders with the isSelected class', () => {
+      expect(shallow(<GlobalItem isSelected />).find(`.${styles.globalItem}`)).to.have.className(styles.isSelected);
     });
   });
 });

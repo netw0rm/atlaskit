@@ -5,6 +5,7 @@ import GlobalNavigation from './GlobalNavigation';
 import GlobalItem from './GlobalItem';
 import ContainerNavigation from './ContainerNavigation';
 import Drawer from './Drawer';
+import DrawerTrigger from './DrawerTrigger';
 import Resizer from './Resizer';
 import Spacer from './Spacer';
 import {
@@ -30,15 +31,11 @@ export default class Navigation extends PureComponent {
     onResize: PropTypes.func,
     isResizeable: PropTypes.bool,
     isCollapsible: PropTypes.bool,
-    globalPrimaryIcon: PropTypes.node,
     globalSearchIcon: PropTypes.node,
     globalCreateIcon: PropTypes.node,
-    globalHelpIcon: PropTypes.node,
-    globalAccountIcon: PropTypes.node,
-    globalHelpDropdownComponent: PropTypes.func,
-    globalAccountDropdownComponent: PropTypes.func,
-    onHelpClicked: PropTypes.func,
-    onAccountClicked: PropTypes.func,
+    globalPrimaryItem: PropTypes.node,
+    globalHelpItem: PropTypes.node,
+    globalAccountItem: PropTypes.node,
     onBlanketClicked: PropTypes.func,
     hasBlanket: PropTypes.bool,
   };
@@ -95,12 +92,8 @@ export default class Navigation extends PureComponent {
   render() {
     const { onSearchDrawerActivated, onCreateDrawerActivated, globalSearchIcon, globalCreateIcon,
       searchDrawerContent, createDrawerContent, containerHeader, children, isResizeable,
-      globalPrimaryIcon, isSearchDrawerOpen, isCreateDrawerOpen,
-      onHelpClicked, onAccountClicked, globalAccountIcon, globalHelpIcon,
+      globalPrimaryItem, isSearchDrawerOpen, isCreateDrawerOpen, globalAccountItem, globalHelpItem,
       onBlanketClicked, hasBlanket } = this.props;
-
-    const GlobalHelpDropdownComponent = this.props.globalHelpDropdownComponent;
-    const GlobalAccountDropdownComponent = this.props.globalAccountDropdownComponent;
 
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();
@@ -122,28 +115,20 @@ export default class Navigation extends PureComponent {
             <GlobalNavigation
               shouldAnimate={shouldAnimate}
               width={getGlobalWidth(this.getRenderedWidth())}
-              primaryIcon={<GlobalItem size="large">{globalPrimaryIcon}</GlobalItem>}
-              helpIcon={
-                <GlobalHelpDropdownComponent>
-                  <GlobalItem size="small" onActivate={onHelpClicked}>
-                    {globalHelpIcon}
-                  </GlobalItem>
-                </GlobalHelpDropdownComponent>
-              }
-              accountIcon={
-                <GlobalAccountDropdownComponent>
-                  <GlobalItem size="small" onActivate={onAccountClicked}>
-                    {globalAccountIcon}
-                  </GlobalItem>
-                </GlobalAccountDropdownComponent>
-              }
+              primaryItem={globalPrimaryItem}
+              helpItem={globalHelpItem}
+              accountItem={globalAccountItem}
             >
-              <GlobalItem onActivate={onSearchDrawerActivated}>
-                {globalSearchIcon}
-              </GlobalItem>
-              <GlobalItem onActivate={onCreateDrawerActivated}>
-                {globalCreateIcon}
-              </GlobalItem>
+              <DrawerTrigger onActivate={onSearchDrawerActivated}>
+                <GlobalItem isSelected={isSearchDrawerOpen} size="medium">
+                  {globalSearchIcon}
+                </GlobalItem>
+              </DrawerTrigger>
+              <DrawerTrigger onActivate={onCreateDrawerActivated}>
+                <GlobalItem isSelected={isCreateDrawerOpen} size="medium">
+                  {globalCreateIcon}
+                </GlobalItem>
+              </DrawerTrigger>
             </GlobalNavigation>
           </div>
           <div style={{ zIndex: 1 }}>

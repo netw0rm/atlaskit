@@ -3,7 +3,7 @@ import { action } from '@kadira/storybook';
 import { AtlassianIcon, SearchIcon, HelpIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
 import AkDropdownMenu from 'ak-dropdown-menu';
 import AkAvatar from 'ak-avatar';
-import Navigation, { AkContainerHeader, AkContainerItem } from '../../src/index';
+import Navigation, { AkContainerHeader, AkContainerItem, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 
@@ -55,11 +55,14 @@ export default class BasicNavigation extends PureComponent {
             />
           </a>
         }
-        globalPrimaryIcon={<AtlassianIcon size="medium" />}
         globalSearchIcon={<SearchIcon />}
         globalCreateIcon={<CreateIcon />}
-        globalHelpIcon={<HelpIcon />}
-        globalHelpDropdownComponent={({ children }) =>
+        globalPrimaryItem={
+          <AkGlobalItem size="large">
+            <AtlassianIcon size="medium" />
+          </AkGlobalItem>
+        }
+        globalHelpItem={
           <AkDropdownMenu
             position="right bottom"
             items={[
@@ -93,11 +96,12 @@ export default class BasicNavigation extends PureComponent {
               },
             ]}
           >
-            {children}
+            <AkGlobalItem>
+              <HelpIcon />
+            </AkGlobalItem>
           </AkDropdownMenu>
         }
-        globalAccountIcon={<AkAvatar src={emmaAvatar} size="small" />}
-        globalAccountDropdownComponent={({ children }) =>
+        globalAccountItem={
           <AkDropdownMenu
             position="right bottom"
             items={[
@@ -114,7 +118,9 @@ export default class BasicNavigation extends PureComponent {
               },
             ]}
           >
-            {children}
+            <AkGlobalItem>
+              <AkAvatar src={emmaAvatar} size="small" />
+            </AkGlobalItem>
           </AkDropdownMenu>
         }
         onSearchDrawerActivated={this.activate('search')}

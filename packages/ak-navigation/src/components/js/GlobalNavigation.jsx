@@ -7,16 +7,18 @@ import Spacer from './Spacer';
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    primaryIcon: PropTypes.node,
     width: PropTypes.number,
     shouldAnimate: PropTypes.bool,
-    helpIcon: PropTypes.node,
-    accountIcon: PropTypes.node,
+    primaryItem: PropTypes.node,
+    helpItem: PropTypes.node,
+    accountItem: PropTypes.node,
   };
   static defaultProps = {
     width: globalOpenWidth,
     shouldAnimate: false,
-    primaryIcon: null,
+    primaryItem: null,
+    helpItem: null,
+    accountItem: null,
   };
   getTranslate() {
     return Math.min(0, this.props.width - globalOpenWidth);
@@ -39,14 +41,14 @@ export default class GlobalNavigation extends PureComponent {
           }}
         >
           <div className={styles.primaryIcon}>
-            {this.props.primaryIcon}
+            {this.props.primaryItem}
           </div>
           <div className={styles.primaryContainer}>
             {this.props.children}
           </div>
           <div className={styles.secondaryContainer}>
-            {this.props.helpIcon}
-            {this.props.accountIcon}
+            {this.props.helpItem}
+            {this.props.accountItem}
           </div>
         </div>
       </div>

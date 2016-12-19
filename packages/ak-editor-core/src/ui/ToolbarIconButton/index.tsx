@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactElement, MouseEvent } from 'react';
 import AkButton from 'ak-button';
-import * as styles from './styles.global.less';
+import * as styles from './styles';
 
 export interface Props {
   selected?: boolean;

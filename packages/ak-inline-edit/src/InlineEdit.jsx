@@ -213,9 +213,14 @@ export default class InlineEdit extends PureComponent {
   )
 
   renderEditIcon = () => (
-    <div className={styles.editButtonWrapper}>
+    <div
+      className={classNames({
+        [styles.editButtonWrapper]: true,
+        [styles.hidden]: !this.shouldRenderEditIcon(),
+      })}
+    >
       <button className={styles.editButton}>
-        {this.shouldRenderEditIcon() ? <EditIcon label="Edit" size="small" /> : null }
+        <EditIcon label="Edit" size="small" />
       </button>
     </div>
   )
@@ -241,6 +246,7 @@ export default class InlineEdit extends PureComponent {
           isFocused={this.isReadOnly() ? false : undefined}
           isLabelHidden={this.props.isLabelHidden}
           isReadOnly={this.isReadOnly()}
+          isFitContainerWidthEnabled={this.props.isEditing}
           appearance={this.props.isEditing ? 'standard' : 'subtle'}
           rightGutter={this.renderActionButtons()}
         >

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import * as styles from './styles.global.less';
+import * as styles from './styles';
 
 export interface Props {
   text?: string;

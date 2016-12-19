@@ -1,8 +1,5 @@
-import { Node, Schema, Text } from '../../../src';
 import { default as chai, expect } from 'chai';
-import { chaiPlugin } from '../../../src';
-import { toHTML } from '../../../src';
-import { DocNodeType, MentionQueryMarkType } from '../../../src';
+import { Node, Schema, DocNodeType, MentionQueryMarkType, Text, chaiPlugin, toHTML } from '../../../src';
 
 chai.use(chaiPlugin);
 

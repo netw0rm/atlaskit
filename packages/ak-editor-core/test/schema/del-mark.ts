@@ -1,8 +1,6 @@
 import { schema } from '../_schema-builder';
-import { Fragment, Node } from '../../src';
+import { Fragment, Node, chaiPlugin, fromHTML as fromHTML_, toHTML } from '../../src';
 import { default as chai, expect } from 'chai';
-import { chaiPlugin } from '../../src';
-import { fromHTML as fromHTML_, toHTML } from '../../src';
 
 chai.use(chaiPlugin);
 

@@ -1,9 +1,6 @@
-import { Node, Schema, Text } from '../../../src';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { chaiPlugin } from '../../../src';
-import { fromHTML, toHTML } from '../../../src';
-import { DocNodeType, SubSupMarkType } from '../../../src';
+import { Node, Schema, Text, fromHTML, toHTML, DocNodeType, SubSupMarkType, chaiPlugin } from '../../../src';
 
 chai.use(chaiPlugin);
 

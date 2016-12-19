@@ -16,9 +16,9 @@ import {
   StrikeMarkType,
   StrongMarkType,
   SubSupMarkType,
-  UnderlineMarkType
+  UnderlineMarkType,
+  Schema
 } from '../src';
-import { Schema } from '../src';
 
 export const schema = new Schema({
   nodes: {

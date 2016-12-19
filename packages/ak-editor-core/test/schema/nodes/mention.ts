@@ -1,7 +1,5 @@
-import { Schema, Text } from '../../../src';
 import { default as chai, expect } from 'chai';
-import { toHTML, fromHTML as fromHTML_ } from '../../../src';
-import { DocNodeType, MentionNodeType } from '../../../src';
+import { Schema, Text, toHTML, fromHTML as fromHTML_, DocNodeType, MentionNodeType } from '../../../src';
 
 const schema = makeSchema();
 const fromHTML = (html: string) => fromHTML_(html, schema);

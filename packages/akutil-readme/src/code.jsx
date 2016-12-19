@@ -1,15 +1,17 @@
 import React, { PropTypes, PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import docco from 'react-syntax-highlighter/dist/styles/docco';
+import { akColorN0, akColorN20, akColorN30A } from 'akutil-shared-styles';
 
+const halfGrid = 4;
 const style = {
   code: {
-    backgroundColor: '#f5f6f6',
-    boxShadow: '0 3px 4px 0 rgba(0, 0, 0, 0.09)',
-    padding: 10,
+    backgroundColor: akColorN20,
+    boxShadow: `0 3px 4px 0 ${akColorN30A}`,
+    padding: 3 * halfGrid,
   },
   codeExample: {
-    backgroundColor: '#fff',
+    backgroundColor: akColorN0,
   },
 };
 
@@ -40,13 +42,13 @@ export default class extends PureComponent {
     const { children, code, language } = this.props;
     const { code: customStyle, codeExample } = style;
     return (
-      <div>
+      <div style={{ marginTop: 3 * halfGrid }}>
         <SyntaxHighlighter
           customStyle={customStyle}
           language={language || 'jsx'}
           style={docco}
         >{formatCode(code || children)}</SyntaxHighlighter>
-        {code ? <div style={{ ...customStyle, ...codeExample }}><h6 style={{ marginBottom: 5 }}>Code example: result</h6>{children}</div> : ''}
+        {code ? <div style={{ ...customStyle, ...codeExample }}><h6 style={{ marginBottom: halfGrid }}>Code example: result</h6>{children}</div> : ''}
       </div>
     );
   }

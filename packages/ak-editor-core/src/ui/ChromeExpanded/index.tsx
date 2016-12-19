@@ -6,6 +6,8 @@ import { BlockTypeState } from '../../plugins/block-type';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ListsState } from '../../plugins/lists';
 import { TextFormattingState } from '../../plugins/text-formatting';
+import { ImageUploadState } from '../../plugins/image-upload'
+import { MentionsPluginState } from '../../plugins/mentions';
 import MentionIcon from 'ak-icon/glyph/editor/mention';
 import ImageIcon from 'ak-icon/glyph/editor/image';
 import * as styles from './styles';
@@ -16,6 +18,7 @@ import ToolbarLists from '../ToolbarLists';
 import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarFeedback from '../ToolbarFeedback';
+import MentionPicker from '../MentionPicker';
 
 export interface Props {
   feedbackFormUrl?: string;
@@ -27,6 +30,9 @@ export interface Props {
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
+  pluginStateImageUpload?: ImageUploadState;
+  pluginStateMentions?: MentionsPluginState;
+  mentionsResourceProvider?: any; // AbstractMentionResource
 }
 
 export interface State {}
@@ -48,6 +54,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         <div className={styles.content}>
           {props.children}
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
+          {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} /> : null}
         </div>
         <div className={styles.footer}>
           <div className={styles.footerActions}>
@@ -71,7 +78,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               icon={<MentionIcon label='Mention' />}
             />
             }
-            {!props.onInsertImage ? null :
+            {!props.pluginStateImageUpload ? null :
             <ToolbarIconButton
               onClick={this.handleInsertImage}
               icon={<ImageIcon label='Image' />}
@@ -91,9 +98,10 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
   }
 
   private handleInsertImage = () => {
-    const { onInsertImage } = this.props;
-    if (onInsertImage) {
-      onInsertImage();
+    const { pluginStateImageUpload } = this.props;
+
+    if (pluginStateImageUpload) {
+      pluginStateImageUpload.handleImageUpload();
     }
   }
 

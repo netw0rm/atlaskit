@@ -1,4 +1,5 @@
-import { CodeMark as BaseCodeMark, Mark } from '../../prosemirror';
+import { CodeMark as BaseCodeMark } from 'prosemirror/dist/schema-basic';
+import { Mark } from '../../prosemirror';
 
 export class CodeMarkType extends BaseCodeMark {
   get inclusiveRight() {

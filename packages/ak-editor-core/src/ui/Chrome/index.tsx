@@ -4,6 +4,8 @@ import { BlockTypeState } from '../../plugins/block-type';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ListsState } from '../../plugins/lists';
 import { TextFormattingState } from '../../plugins/text-formatting';
+import { MentionsPluginState } from '../../plugins/mentions';
+import { ImageUploadState } from '../../plugins/image-upload';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
@@ -18,6 +20,9 @@ export interface Props {
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
+  pluginStateImageUpload?: ImageUploadState
+  pluginStateMentions?: MentionsPluginState;
+  mentionsResourceProvider?: any; // AbstractMentionResource
   onCollapsedChromeFocus: () => void;
 }
 
@@ -36,6 +41,9 @@ export default class Chrome extends PureComponent<Props, State> {
           pluginStateHyperlink={props.pluginStateHyperlink}
           pluginStateLists={props.pluginStateLists}
           pluginStateTextFormatting={props.pluginStateTextFormatting}
+          pluginStateImageUpload={props.pluginStateImageUpload}
+          pluginStateMentions={props.pluginStateMentions}
+          mentionsResourceProvider={props.mentionsResourceProvider}
         >
           {props.children}
         </ChromeExpanded>

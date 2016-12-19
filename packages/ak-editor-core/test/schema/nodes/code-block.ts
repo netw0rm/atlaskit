@@ -1,6 +1,5 @@
-import { Schema, Text } from '../../../src/prosemirror';
 import { default as chai, expect } from 'chai';
-import { DocNodeType, CodeBlockNodeType } from '../../../src/schema';
+import { Schema, Text, DocNodeType, CodeBlockNodeType } from '../../../src';
 
 describe('ak-editor-core/schema code_block node', () => {
   it('throws an error if it is not named "code_block"', () => {

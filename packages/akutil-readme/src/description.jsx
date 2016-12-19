@@ -1,18 +1,16 @@
-import React, { Children, PropTypes, PureComponent } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
 
-const style = {
-  p: {
-    marginBottom: 10,
-    marginTop: 10,
-  },
-};
+const halfGrid = 4;
 
 export default class extends PureComponent {
   static displayName = 'AkutilReadmeDescription'
   static propTypes = {
     children: PropTypes.node.isRequired,
   }
+
   render() {
-    return <div>{Children.map(this.props.children, p => <p style={style.p}>{p}</p>)}</div>;
+    return typeof this.props.children === 'string' ?
+      <p>{this.props.children}</p> :
+      <div style={{ marginTop: 3 * halfGrid }}>{this.props.children}</div>;
   }
 }

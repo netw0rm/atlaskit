@@ -2,8 +2,8 @@
   "name": "ak-editor-bitbucket",
   "version": "5.9.0",
   "description": "Editor web component",
-  "main": "dist/es5/index.jsx",
-  "jsnext:main": "dist/es2015/index.jsx",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
   "ak:webpack:raw": "src/index.tsx",
   "types": "src/index.tsx",
   "scripts": {

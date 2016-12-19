@@ -16,7 +16,7 @@ import {
   SubSupMarkType,
   UnderlineMarkType,
   Text
-} from 'ak-editor-schema';
+} from 'ak-editor-core';
 
 export default new Schema({
   nodes: {

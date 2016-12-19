@@ -17,9 +17,9 @@ export default class AnimationDemo extends PureComponent {
     this.createdFlagCount = 0;
     this.state = {
       flags: [
-        this.newFlag(5),
         this.newFlag(),
-      ].reverse(),
+        this.newFlag(5),
+      ],
     };
   }
 

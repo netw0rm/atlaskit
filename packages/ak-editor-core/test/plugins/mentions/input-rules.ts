@@ -1,10 +1,10 @@
 import mocha from 'mocha';
-import { default as plugin } from '../../../src/plugins/mentions';
-import { MentionQueryMarkType, MentionNodeType } from '../../../src/schema';
+import { MentionsPlugin } from '../../../src';
+import { MentionQueryMarkType, MentionNodeType } from '../../../src';
 import { ProseMirror, Schema, ResolvedPos,
-         schema as schemaBasic } from '../../../src/prosemirror';
+         schema as schemaBasic } from '../../../src';
 import { default as chai, expect } from 'chai';
-import { chaiPlugin } from '../../../src/test-helper';
+import { chaiPlugin } from '../../../src';
 
 chai.use(chaiPlugin);
 
@@ -19,7 +19,7 @@ const schema: Schema = new Schema({
 
 const makeEditor = () => new ProseMirror({
   schema: schema,
-  plugins: [ plugin ],
+  plugins: [ MentionsPlugin ],
 });
 
 describe('mentions - input rules', () => {

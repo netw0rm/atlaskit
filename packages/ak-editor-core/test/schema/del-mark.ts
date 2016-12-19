@@ -1,10 +1,12 @@
-import { schema } from '../../src/schema/schema';
-import { Fragment, Node } from '../../src/prosemirror';
+import { schema } from '../_schema-builder';
+import { Fragment, Node } from '../../src';
 import { default as chai, expect } from 'chai';
-import { chaiPlugin } from '../../src/test-helper';
-import { fromHTML, toHTML } from '../../src/test-helper';
+import { chaiPlugin } from '../../src';
+import { fromHTML as fromHTML_, toHTML } from '../../src';
 
 chai.use(chaiPlugin);
+
+const fromHTML = (html: string) => fromHTML_(html, schema);
 
 describe('Del mark - parsing from DOM', () => {
   const del = schema.marks.del.create();
@@ -14,7 +16,6 @@ describe('Del mark - parsing from DOM', () => {
       <p><del>text</del></p>
     `);
 
-    debugger;
     expect(doc).to.have.textWithMarks('text', [ del ]);
   });
 

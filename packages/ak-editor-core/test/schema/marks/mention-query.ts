@@ -1,8 +1,8 @@
-import { Node, Schema, Text } from '../../../src/prosemirror';
+import { Node, Schema, Text } from '../../../src';
 import { default as chai, expect } from 'chai';
-import { chaiPlugin } from '../../../src/test-helper';
-import { toHTML } from '../../../src/test-helper';
-import { DocNodeType, MentionQueryMarkType } from '../../../src/schema';
+import { chaiPlugin } from '../../../src';
+import { toHTML } from '../../../src';
+import { DocNodeType, MentionQueryMarkType } from '../../../src';
 
 chai.use(chaiPlugin);
 

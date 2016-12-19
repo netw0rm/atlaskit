@@ -1,5 +1,5 @@
 import DropAdapter from '../../../src/plugins/image-upload/drop-adapter';
-import { ProseMirror } from '../../../src/prosemirror';
+import { ProseMirror } from '../../../src';
 import { expect } from 'chai';
 import sinon from 'sinon';
 

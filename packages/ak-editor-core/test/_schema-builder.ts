@@ -1,5 +1,6 @@
-import { nodeFactory, markFactory } from '../src/test-helper';
+import { nodeFactory, markFactory } from '../src';
 import {
+  DelMarkType,
   DocNodeType,
   BlockQuoteNodeType,
   ImageNodeType,
@@ -16,12 +17,13 @@ import {
   StrongMarkType,
   SubSupMarkType,
   UnderlineMarkType
-} from '../src/schema';
-import { Schema } from '../src/prosemirror';
+} from '../src';
+import { Schema } from '../src';
 
 export const schema = new Schema({
   nodes: {
     doc: { type: DocNodeType, content: 'block+' },
+    paragraph: { type: ParagraphNodeType, content: 'text<_>*', group: 'block' },
     unlinkable: { type: ParagraphNodeType, content: 'text*', group: 'block' },
     linkable: { type: ParagraphNodeType, content: 'text<link>*', group: 'block' },
     text: { type: Text },
@@ -31,13 +33,13 @@ export const schema = new Schema({
     heading: { type: HeadingNodeType, content: 'text<_>*', group: 'block' },
     list_item: { type: ListItemNodeType, content: 'paragraph+' },
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
-    paragraph: { type: ParagraphNodeType, content: 'text<_>*', group: 'block' },
     blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     plain: { type: ParagraphNodeType, content: 'text' },
   },
-  
+
   marks: {
     link: LinkMarkType,
+    del: DelMarkType,
     em: EmMarkType,
     mono: MonoMarkType,
     strike: StrikeMarkType,

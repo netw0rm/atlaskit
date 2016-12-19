@@ -1,11 +1,11 @@
 import MentionsPlugin from '../../../src/plugins/mentions';
-import { MentionQueryMarkType, MentionNodeType } from '../../../src/schema';
+import { MentionQueryMarkType, MentionNodeType } from '../../../src';
 import { ProseMirror, Schema, ResolvedPos,
-         schema as schemaBasic } from '../../../src/prosemirror';
+         schema as schemaBasic } from '../../../src';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import { chaiPlugin, fixtures } from '../../../src/test-helper';
+import { chaiPlugin, fixtures } from '../../../src';
 
 chai.use(chaiPlugin);
 chai.use(sinonChai);

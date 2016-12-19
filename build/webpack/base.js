@@ -83,7 +83,13 @@ const standardConfig = {
         {
           test: /.tsx?$/,
           loader: loaderChain({
-            'babel-loader': {},
+            'babel-loader': {
+              babelrc: false,
+              presets: [
+                'es2015',
+                'stage-0',
+              ],
+            },
             'ts-loader': {
               configFileName: 'tsconfig.webpack.json',
             },

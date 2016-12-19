@@ -2,9 +2,9 @@ import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
-import { commands, browser } from '../../../src/prosemirror';
+import { commands, browser } from '../../../src';
 import mocha from 'mocha';
-import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from '../../../src/test-helper';
+import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from '../../../src';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 

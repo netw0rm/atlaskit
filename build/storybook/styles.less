@@ -20,9 +20,11 @@ body {
 
 .storiesWithCodeExamples {
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   min-height: 300px;
   background:#f8f8f8;
+  display: flex;
+  flex-direction: column;
 
   pre, code {
     background:#f8f8f8;
@@ -30,6 +32,7 @@ body {
 
   .jsx, .js {
     position:relative;
+    overflow-y: auto;
 
     &:after {
       position: absolute;

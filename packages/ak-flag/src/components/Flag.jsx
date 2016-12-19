@@ -49,16 +49,20 @@ export default class Flag extends PureComponent {
      */
     onDismissed: PropTypes.func,
     onAnimationFinished: PropTypes.func,
+    isActiveFlag: PropTypes.bool,
     isDismissAllowed: PropTypes.bool,
     isEntering: PropTypes.bool,
+    isMovingToPrimary: PropTypes.bool,
     isExiting: PropTypes.bool,
   };
 
   static defaultProps = {
     onDismissed: () => {},
     onAnimationFinished: () => {},
+    isActiveFlag: false,
     isDismissAllowed: false,
     isEntering: false,
+    isMovingToPrimary: false,
     isExiting: false,
   }
 
@@ -83,6 +87,8 @@ export default class Flag extends PureComponent {
   render() {
     return (
       <div
+        role="alert"
+        aria-hidden={!this.props.isActiveFlag}
         className={classNames({
           [styles.root]: true,
           [styles.entering]: (
@@ -90,6 +96,7 @@ export default class Flag extends PureComponent {
             !this.props.isExiting &&
             this.props.isEntering
           ),
+          [styles.movingToPrimary]: this.props.isMovingToPrimary,
           [styles.exiting]: this.props.isExiting,
         })}
         onAnimationEnd={() => {

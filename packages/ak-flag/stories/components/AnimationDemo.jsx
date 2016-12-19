@@ -20,21 +20,7 @@ export default class AnimationDemo extends PureComponent {
         this.newFlag(5),
         this.newFlag(),
       ].reverse(),
-      now: Date.now(),
     };
-  }
-
-  componentDidMount() {
-    this.nowInterval = setInterval(() => {
-      this.setState({
-        now: Date.now(),
-      });
-    }, 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.nowInterval);
-    clearInterval(this.addFlagInterval);
   }
 
   randomDescription = () => descriptions[Math.floor(Math.random() * descriptions.length)];
@@ -53,40 +39,40 @@ export default class AnimationDemo extends PureComponent {
     this.setState({ flags });
   }
 
-  flagDismissed = () => {
-    action('Flag.onDismissed fired for first Flag')();
+  flagDismissed = (flagId) => {
+    action(`Flag.onDismissed fired for first Flag id "${flagId}"`)();
     this.setState({
       flags: this.state.flags.slice(1),
     });
   }
 
   render() {
-    const { now } = this.state;
     return (
       <ExampleNavigation>
         <FlagGroup onDismissed={this.flagDismissed}>
           {
             this.state.flags.map(flag => (
               <Flag
-                id={flag.created}
+                id={flag.key}
                 key={flag.key}
                 icon={<GreenSuccessIcon />}
                 title={`${flag.key}: ${flag.title}`}
-                description={`Created ${Math.ceil((now - flag.created) / 1000)} seconds ago. ${flag.description}`}
+                description={flag.description}
               />
             ))
           }
         </FlagGroup>
-        <p>
-          Add some flags then try clicking the <em>dismiss</em> icon.
-        </p>
         <div>
-          <Button
-            appearance="primary"
-            onClick={this.addFlag}
-          >
-            Add another flag
-          </Button>
+          <p>Add some flags then try clicking the <em>Dismiss</em> icon.</p>
+          <p>When a flag is dismissed, an event should be shown in the action logger panel.</p>
+          <p>
+            <Button
+              appearance="primary"
+              onClick={this.addFlag}
+            >
+              Add another flag
+            </Button>
+          </p>
         </div>
       </ExampleNavigation>
     );

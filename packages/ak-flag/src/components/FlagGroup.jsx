@@ -1,4 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
+import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import styles from 'style!../less/FlagGroup.less';
 
@@ -37,18 +38,27 @@ export default class FlagGroup extends PureComponent {
     };
   }
 
+  componentDidUpdate() {
+    if (this.firstFlag) {
+      // eslint doesn't like using findDOMNode, but we need to use it here because the
+      // this.firstFlag ref is a React component instance not a DOM node.
+      // eslint-disable-next-line react/no-find-dom-node
+      ReactDOM.findDOMNode(this.firstFlag).focus();
+    }
+  }
+
   onFlagDismissRequested = () => {
     this.setState({ isAnimatingOut: true });
   }
 
-  onFlagDismissFinished = () => {
+  onFlagDismissFinished = (dismissedFlagId) => {
     this.setState({ isAnimatingOut: false });
-    this.props.onDismissed();
+    this.props.onDismissed(dismissedFlagId);
   }
 
   render() {
     return (
-      <div
+      <section
         className={classNames([
           styles.root,
           {
@@ -62,14 +72,21 @@ export default class FlagGroup extends PureComponent {
               React.cloneElement(childFlag, {
                 onDismissed: this.onFlagDismissRequested,
                 onAnimationFinished: this.onFlagDismissFinished,
+                isActiveFlag: flagIndex === 0,
                 isDismissAllowed: flagIndex === 0,
                 isEntering: flagIndex === 0,
                 isExiting: flagIndex === 0 && this.state.isAnimatingOut,
+                isMovingToPrimary: flagIndex === 1 && this.state.isAnimatingOut,
+                ref: (flagEl) => {
+                  if (flagIndex === 0) {
+                    this.firstFlag = flagEl;
+                  }
+                },
               })
             ))
           }
         </div>
-      </div>
+      </section>
     );
   }
 }

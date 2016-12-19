@@ -2,8 +2,10 @@
 @import '~akutil-shared-styles/src/grid.less';
 @import '~akutil-shared-styles/src/colors.less';
 
-@dismiss-icon-width: @ak-grid-size * 4;
 @flag-animation-duration: .4s;
+
+// This is the translateX position that we target
+// when animating a card out towards the left of screen.
 @exit-x-position: -0.5 * @flag-width;
 
 @keyframes enter {
@@ -46,20 +48,21 @@
   &.entering:first-child {
     animation-name: enter;
     animation-duration: @flag-animation-duration;
-    // animation-fill-mode: forwards;
   }
 
   &.exiting:first-child {
     animation-name: exit;
     animation-duration: @flag-animation-duration;
-    // animation-fill-mode: forwards;
   }
 
-  &:first-child {
+  // The first flag should be placed at 0,0 position. Also applies to
+  // the 2nd flag when the 1st flag is animating out.
+  &.moving-to-primary:nth-child(2)
+  {
     transform: translate(0, 0);
   }
 
-  &:nth-child(2) {
+  &:nth-child(n+2) {
     transform: translate(0, calc(100% + (@ak-grid-size * 2)));
   }
 
@@ -67,8 +70,10 @@
   &:nth-child(1) { z-index: 5; }
   &:nth-child(2) { z-index: 4; }
 
-  // Only show 1st and 2nd flags
-  &:nth-child(n+3) { display: none; }
+  // Only show primary flag and 2 secondary flags
+  &:nth-child(n+4) {
+    display: none;
+  }
 }
 
 .primary-icon {
@@ -104,7 +109,7 @@
   justify-content: flex-end;
   margin: 0;
   padding: 0;
-  width: @dismiss-icon-width;
+  width: @ak-grid-size * 4;
 
   &:hover {
     color: @ak-color-N900;

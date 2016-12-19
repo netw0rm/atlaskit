@@ -55,10 +55,8 @@
     animation-duration: @flag-animation-duration;
   }
 
-  // The first flag should be placed at 0,0 position. Also applies to
-  // the 2nd flag when the 1st flag is animating out.
-  &.moving-to-primary:nth-child(2)
-  {
+  // The 2nd flag should be placed at 0,0 position when the 1st flag is animating out.
+  &.moving-to-primary:nth-child(2) {
     transform: translate(0, 0);
   }
 
@@ -70,7 +68,7 @@
   &:nth-child(1) { z-index: 5; }
   &:nth-child(2) { z-index: 4; }
 
-  // Only show primary flag and 2 secondary flags
+  // Only show primary flag + 2 secondary flags
   &:nth-child(n+4) {
     display: none;
   }

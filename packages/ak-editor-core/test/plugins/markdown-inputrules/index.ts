@@ -3,7 +3,7 @@ import { default as chai, expect } from 'chai';
 import {
   chaiPlugin, makeEditor, doc, a, p, em, strong, code,
   hr,img, h1, h2, h3, ul, ol, li, blockquote, code_block
-} from '../../../src/test-helper';
+} from '../../../src';
 
 chai.use(chaiPlugin);
 

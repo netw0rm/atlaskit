@@ -1,6 +1,6 @@
 import PasteAdapter from '../../../src/plugins/image-upload/paste-adapter';
 import { expect } from 'chai';
-import { ProseMirror } from '../../../src/prosemirror';
+import { ProseMirror } from '../../../src';
 import sinon from 'sinon';
 
 describe('image-upload PasteAdapter', () => {

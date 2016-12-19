@@ -1,4 +1,5 @@
-import { StrongMark as StrongMarkType, Mark } from '../../prosemirror';
+import { StrongMark as StrongMarkType } from 'prosemirror/dist/schema-basic';
+import { Mark } from '../../prosemirror';
 
 export { StrongMarkType };
 

@@ -1,5 +1,5 @@
 import ImageUploadPlugin from '../../../src/plugins/image-upload';
-import { chaiPlugin, makeEditor } from '../../../src/test-helper';
+import { chaiPlugin, makeEditor } from '../../../src';
 import { default as chai, expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';

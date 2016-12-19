@@ -7,7 +7,7 @@ import chaiEnzyme from 'chai-enzyme';
 import WarningIcon from 'ak-icon/glyph/warning';
 import Content from '../src/Content';
 import { locals } from '../src/styles.less';
-import { compact, subtle } from '../src/internal/appearances';
+import { compact, none, subtle } from '../src/internal/appearances';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -86,7 +86,7 @@ describe('ak-field-base', () => {
     });
 
     describe('appearance', () => {
-      [compact, subtle].forEach(appearance =>
+      [compact, none, subtle].forEach(appearance =>
         describe(appearance, () =>
           it(`should render the content with the .${appearance} class`, () =>
             expect(shallow(<Content {...defaultProps} appearance={appearance} />)).to.have.descendants(`.${locals[appearance]}`)

@@ -1,9 +1,8 @@
 import * as chai from 'chai';
-import { ProseMirror } from 'ak-editor-prosemirror';
+import { ProseMirror, fixtures, chaiPlugin } from 'ak-editor-core';
 import AkEditorCq from '../src';
 import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } from 'akutil-common-test';
 import { emit } from 'skatejs';
-import { fixtures, chaiPlugin } from 'ak-editor-test';
 import { doc, p } from './_schema-builder'
 
 chai.use(chaiPlugin);

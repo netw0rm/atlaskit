@@ -1,9 +1,4 @@
 import schema from '../schema';
-import {
-  Fragment,
-  Node as PMNode,
-  TextNode
-} from 'ak-editor-prosemirror';
 
 import {
   BlockQuoteNode,
@@ -23,8 +18,11 @@ import {
   isHorizontalRuleNode,
   isListItemNode,
   isOrderedListNode,
-  isParagraphNode
-} from 'ak-editor-schema';
+  isParagraphNode,
+  Fragment,
+  Node as PMNode,
+  TextNode
+} from 'ak-editor-core';
 
 
 export default function encode(node: DocNode) {

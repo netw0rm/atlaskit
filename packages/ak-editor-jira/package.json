@@ -16,13 +16,8 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-plugin-block-type": "^6.0.0",
-    "ak-editor-plugin-lists": "^6.0.0",
-    "ak-editor-plugin-text-formatting": "^6.0.0",
-    "ak-editor-prosemirror": "^4.3.14",
-    "ak-editor-schema": "^4.3.0",
+    "ak-editor-core": "^0.1.0",
     "ak-editor-shared-styles": "^3.0.0",
-    "ak-editor-ui": "^3.0.0",
     "akutil-shared-styles": "^37.0.1",
     "collapse-whitespace": "^1.1.4",
     "tslib": "^1.2.0"

@@ -112,24 +112,29 @@ export default class extends PureComponent {
   isMentionsListVisible = () =>
     this.state.isFocused && this.state.query != null
 
+  renderInput = ({ isEditing }) => (
+    <SingleLineTextInput
+      value={isEditing ? this.getNameForEditView() : this.getNameForReadView()}
+      autoFocus
+      isEditing={isEditing}
+      onChange={this.onInputChange}
+      onKeyDown={this.onKeyDown}
+      onFocus={this.focus}
+      onBlur={this.blur}
+    />
+  )
+
   renderReadView = () => (
     <div style={mentionWrapperStyle}>
       {this.state.confirmedMention && this.renderAvatar(this.state.confirmedMention)}
-      <span>{this.getNameForReadView()}</span>
+      {this.renderInput({ isEditing: false })}
     </div>
   )
 
   renderEditView = () => (
     <div style={mentionWrapperStyle}>
       {this.state.selectedMention && this.renderAvatar(this.state.selectedMention)}
-      <SingleLineTextInput
-        value={this.getNameForEditView()}
-        autoFocus
-        onChange={this.onInputChange}
-        onKeyDown={this.onKeyDown}
-        onFocus={this.focus}
-        onBlur={this.blur}
-      />
+      {this.renderInput({ isEditing: true })}
     </div>
   )
 

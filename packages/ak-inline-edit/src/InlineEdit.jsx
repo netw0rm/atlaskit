@@ -213,9 +213,14 @@ export default class InlineEdit extends PureComponent {
   )
 
   renderEditIcon = () => (
-    <div className={styles.editButtonWrapper}>
+    <div
+      className={classNames({
+        [styles.editButtonWrapper]: true,
+        [styles.hidden]: !this.shouldRenderEditIcon(),
+      })}
+    >
       <button className={styles.editButton}>
-        {this.shouldRenderEditIcon() ? <EditIcon label="Edit" size="small" /> : null }
+        <EditIcon label="Edit" size="small" />
       </button>
     </div>
   )

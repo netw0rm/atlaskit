@@ -20,7 +20,7 @@ import markdownSerializer from './markdown-serializer';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 import parseHtml from './parse-html';
 
-type ImageUploadHandler = (e: any, insertImageFn: any) => void;
+export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
   context?: 'comment' | 'pr',

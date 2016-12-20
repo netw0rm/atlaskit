@@ -2,9 +2,9 @@ import * as mocha from 'mocha';
 import { expect } from 'chai';
 import * as b from '../_rewire-mock-b';
 import { aVarValue } from '../_rewire-mock-b';
-import { RewireMock } from '../../src';
+import { RewireMock } from '../../test-helper';
 
-describe('../../../src/test-helper rewire-mock', () => {
+describe('ak-editor-core/test-helper rewire-mock', () => {
   const rewireMock = RewireMock();
 
   it('allows aVar in module a to be mocked', () => {

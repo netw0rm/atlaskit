@@ -1,5 +1,6 @@
-import { TextFormattingPlugin, chaiPlugin, makeEditor, browser } from '../../../src';
+import { TextFormattingPlugin, browser } from '../../../src';
 import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
+import { chaiPlugin, makeEditor } from '../../../test-helper';
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';

@@ -1,4 +1,4 @@
-import { nodeFactory } from 'ak-editor-core';
+import { nodeFactory } from 'ak-editor-core/test-helper';
 import schema from '../src/schema';
 
 export const doc = nodeFactory(schema.nodes.doc);

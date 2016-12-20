@@ -7,7 +7,7 @@ import Trigger from '../src';
 import { name } from '../package.json';
 
 storiesOf(name, module)
-  .add('simple trigger story', () => (
+  .addCodeExampleStory('simple trigger story', () => (
     <div className={styles.storiesContainer}>
       <h2>Triggers for droplist</h2>
       <p>Can be activated via click or via pressing
@@ -89,6 +89,25 @@ storiesOf(name, module)
             onActivate={(e) => {
               action(`trigger was activated via ${e.source}`)();
             }}
+            type="button"
+          >Simple button trigger</Trigger>
+        </div>
+      </div>
+      <p>You can also disable tabbable behavior</p>
+      <div className={styles.triggersContainer}>
+        <div>
+          <Trigger
+            isNotTabbable
+          >Simple empty trigger</Trigger>
+        </div>
+        <div>
+          <Trigger
+            isNotTabbable
+          ><Avatar /></Trigger>
+        </div>
+        <div>
+          <Trigger
+            isNotTabbable
             type="button"
           >Simple button trigger</Trigger>
         </div>

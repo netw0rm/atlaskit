@@ -33,6 +33,11 @@ storiesOf(name, module)
       <TextInlineEdit initialValue="Banana banana banana banana banana banana banana banana banana banana banana" />
     </div>
   ))
+  .add('with lots of text and no spaces', () => (
+    <div style={containerStyle}>
+      <TextInlineEdit initialValue="BananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBanana" />
+    </div>
+  ))
   .add('with confirmation cancellation', () => (
     <div style={containerStyle}>
       <TextInlineEdit

@@ -1,8 +1,9 @@
-import mocha from 'mocha';
-import { MentionsPlugin, MentionQueryMarkType, MentionNodeType, 
+import * as mocha from 'mocha';
+import { MentionsPlugin, MentionQueryMarkType, MentionNodeType,
           ProseMirror, Schema, ResolvedPos, chaiPlugin,
           schema as schemaBasic } from '../../../src';
-import { default as chai, expect } from 'chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
 
 chai.use(chaiPlugin);
 

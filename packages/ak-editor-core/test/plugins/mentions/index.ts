@@ -1,12 +1,13 @@
 import MentionsPlugin from '../../../src/plugins/mentions';
 import { MentionQueryMarkType, MentionNodeType, ProseMirror, Schema, ResolvedPos, chaiPlugin, fixtures,
          schema as schemaBasic } from '../../../src';
-import { default as chai, expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
-chai.use(sinonChai);
+chai.use((sinonChai as any).default || sinonChai);
 
 const schema: Schema = new Schema({
   nodes: schemaBasic.nodeSpec.append({

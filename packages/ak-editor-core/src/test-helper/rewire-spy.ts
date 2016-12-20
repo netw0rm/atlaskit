@@ -1,5 +1,5 @@
-import mocha from 'mocha';
-import sinon from 'sinon';
+import * as mocha from 'mocha';
+import * as sinon from 'sinon';
 
 export default () => {
   const resetAfter: any[] = [];

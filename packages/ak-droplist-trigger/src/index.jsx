@@ -47,6 +47,13 @@ export default class Trigger extends PureComponent {
      * @type {function}
      */
     onActivate: PropTypes.func,
+    /**
+     * @description  When this property is set to true the trigger should focus itself
+     * @memberof Trigger
+     * @default false
+     * @type {Boolean}
+     */
+    isFocused: PropTypes.bool,
     children: PropTypes.node,
     style: PropTypes.object,  // eslint-disable-line react/forbid-prop-types
     className: PropTypes.string,
@@ -58,6 +65,21 @@ export default class Trigger extends PureComponent {
     type: baseTypes.default,
     children: null,
     onActivate: () => {},
+    isFocused: false,
+  }
+
+  componentDidMount = () => {
+    this.setFocus();
+  }
+
+  componentDidUpdate = () => {
+    this.setFocus();
+  }
+
+  setFocus = () => {
+    if (this.props.isFocused) {
+      this.ref.firstChild.focus();
+    }
   }
 
   handleKeyDown = (event) => {
@@ -99,6 +121,7 @@ export default class Trigger extends PureComponent {
         style={props.style}
         role="button"
         aria-haspopup="true"
+        ref={ref => (this.ref = ref)}
       >
         { props.type === 'button' ?
           (<Button

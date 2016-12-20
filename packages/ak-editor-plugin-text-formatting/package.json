@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-text-formatting",
-  "version": "6.6.0",
+  "version": "6.6.1",
   "description": "A text formatting plugin for ProseMirror",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

@@ -6,19 +6,19 @@ import Spacer from './Spacer';
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
-    children: PropTypes.node,
-    width: PropTypes.number,
-    shouldAnimate: PropTypes.bool,
-    primaryItem: PropTypes.node,
-    helpItem: PropTypes.node,
     accountItem: PropTypes.node,
+    children: PropTypes.node,
+    helpItem: PropTypes.node,
+    primaryItem: PropTypes.node,
+    shouldAnimate: PropTypes.bool,
+    width: PropTypes.number,
   };
   static defaultProps = {
-    width: globalOpenWidth,
-    shouldAnimate: false,
-    primaryItem: null,
-    helpItem: null,
     accountItem: null,
+    helpItem: null,
+    primaryItem: null,
+    shouldAnimate: false,
+    width: globalOpenWidth,
   };
   getTranslate() {
     return Math.min(0, this.props.width - globalOpenWidth);

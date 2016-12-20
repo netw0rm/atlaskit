@@ -5,8 +5,8 @@ import classNames from 'classnames';
 export default class GlobalItem extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    size: PropTypes.oneOf(['small', 'medium', 'large']),
     isSelected: PropTypes.bool,
+    size: PropTypes.oneOf(['small', 'medium', 'large']),
   };
   static defaultProps = {
     size: 'small',

@@ -101,7 +101,7 @@ storiesOf(name, module)
   ))
   .add('that starts closed', () => (
     <Page>
-      <BasicNavigation open={false}>
+      <BasicNavigation isOpen={false}>
         <AkContainerItem
           icon={<img src={nucleus} alt="icon" />}
           text="This one is selected"

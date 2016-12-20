@@ -119,6 +119,14 @@ describe(name, () => {
         wrapper.simulate('click');
         expect(onActivate.calledOnce).to.be.true;
       });
+
+      it('should not be activated when disabled', () => {
+        const disabledWrapper = mount(<Item onActivate={onActivate} isDisabled />);
+        disabledWrapper.simulate('click');
+        disabledWrapper.simulate('keyDown', { keyCode: keyCode('enter') });
+        disabledWrapper.simulate('keyDown', { keyCode: keyCode('space') });
+        expect(onActivate.called).to.be.false;
+      });
     });
 
     it('should call onKeyDown when a key other than space and enter is pressed', () => {

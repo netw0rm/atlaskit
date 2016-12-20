@@ -5,29 +5,26 @@ import classNames from 'classnames';
 export default class GlobalItem extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    onActivate: PropTypes.func,
+    isSelected: PropTypes.bool,
     size: PropTypes.oneOf(['small', 'medium', 'large']),
   };
   static defaultProps = {
-    onActivate: () => {},
-    size: 'medium',
+    size: 'small',
   };
 
   render() {
     if (this.props.children === null) return null;
     return (
-      <button
-        onClick={() => this.props.onActivate()}
-        onMouseDown={e => e.preventDefault()}
-        tabIndex="0"
+      <div
         className={classNames(styles.globalItem, {
           [styles.smallGlobalItem]: this.props.size === 'small',
           [styles.mediumGlobalItem]: this.props.size === 'medium',
           [styles.largeGlobalItem]: this.props.size === 'large',
+          [styles.isSelected]: this.props.isSelected,
         })}
       >
         {this.props.children}
-      </button>
+      </div>
     );
   }
 }

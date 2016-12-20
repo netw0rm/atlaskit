@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import chaiEnzyme from 'chai-enzyme';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import React from 'react';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
 import Spacer from '../src/components/js/Spacer';
@@ -22,8 +22,22 @@ describe('<GlobalNavigation />', () => {
       expect(shallow(<GlobalNavigation width={500} />).find(Spacer).props().width).to.equal(500);
       expect(shallow(<GlobalNavigation width={200} />).find(Spacer).props().width).to.equal(200);
     });
-    it('primaryIcon prop is rendered', () => {
-      expect(shallow(<GlobalNavigation primaryIcon={<img className="PRIMARY_ICON" alt="foo" />} />)).to.have.descendants('.PRIMARY_ICON');
+    it('primaryItem prop is rendered', () => {
+      expect(shallow(<GlobalNavigation primaryItem={<img className="PRIMARY_ITEM" alt="foo" />} />)).to.have.descendants('.PRIMARY_ITEM');
+    });
+    it('helpItem should render in the global navigation', () => {
+      const helpItem = <span className="HELP_ITEM" />;
+      expect(mount(
+        <GlobalNavigation
+          helpItem={helpItem}
+        />)).to.have.exactly(1).descendants('.HELP_ITEM');
+    });
+    it('accountItem should render in the global navigation', () => {
+      const accountItem = <span className="ACCOUNT_ITEM" />;
+      expect(mount(
+        <GlobalNavigation
+          accountItem={accountItem}
+        />)).to.have.exactly(1).descendants('.ACCOUNT_ITEM');
     });
   });
 });

@@ -83,10 +83,7 @@ export default class Avatar extends PureComponent {
           </div>
 
           <div className={presenceWrapperClasses}>
-            <Presence
-              presence={presence}
-              className={styles.presence}
-            >
+            <Presence presence={presence}>
               {children}
             </Presence>
           </div>

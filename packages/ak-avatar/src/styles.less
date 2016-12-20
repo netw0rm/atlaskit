@@ -49,16 +49,6 @@
   .sizeMixin(xlarge);
 }
 
-.presence-wrapper {
-  align-content: center;
-  border: @ak-avatar-presence-border-width solid @ak-avatar-presence-border-color;
-  border-radius: 100%;
-  align-items: middle;
-  display: flex;
-  overflow: hidden;
-  position: absolute;
-}
-
 .imgWrapper {
   align-content: center;
   align-items: middle;
@@ -87,39 +77,20 @@
   }
 }
 
+.presence-wrapper {
+  position: absolute;
+}
+
 .presence {
-  height: 100%;
-  width: 100%;
+  border: @ak-avatar-presence-border-width solid @ak-avatar-presence-border-color;
+  align-content: center;
+  border-radius: 100%;
+  align-items: middle;
+  display: flex;
+  overflow: hidden;
 
-  &.none {
+  &:empty {
     display: none;
-  }
-
-  &.online {
-    background: @ak-avatar-presence-color-online;
-  }
-
-  &.busy {
-    background: @ak-avatar-presence-color-busy;
-  }
-
-  &.offline {
-    background: @ak-avatar-presence-color-offline;
-
-    // Adds the dot inside the offline presence indicator
-    &:before {
-      @middle-bubble-size: 50%;
-
-      background-color: white;
-      border-radius: 100%;
-      content: '';
-      height: @middle-bubble-size;
-      left: 50%;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: @middle-bubble-size;
-    }
   }
 }
 

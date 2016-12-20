@@ -32,7 +32,11 @@ export default class RadioGroup extends PureComponent {
 
   render() {
     return (
-      <div className={styles.radioGroup}>
+      <div
+        aria-label={this.props.label}
+        className={styles.radioGroup}
+        role="group"
+      >
         {this.props.label ? <div>{this.props.label}</div> : null}
         {this.renderItems()}
       </div>

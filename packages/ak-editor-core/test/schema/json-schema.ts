@@ -1,4 +1,4 @@
-import chai from 'chai';
+import * as chai from 'chai';
 import jsonSchema from '../../src/schema/json-schema';
 import { Schema, Block, Text, Inline, Attribute, EmMarkType, MarkType } from '../../src';
 

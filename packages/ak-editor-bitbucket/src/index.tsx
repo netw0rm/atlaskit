@@ -1,18 +1,24 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { ProseMirror, Schema, Node } from 'ak-editor-prosemirror';
-import ListsPlugin from 'ak-editor-plugin-lists';
-import BlockTypePlugin from 'ak-editor-plugin-block-type';
-import MarkdownInputRulesPlugin from 'ak-editor-plugin-markdown-inputrules';
-import HyperlinkPlugin from 'ak-editor-plugin-hyperlink';
-import { default as ImageUploadPlugin, ImageUploadHandler } from 'ak-editor-plugin-image-upload';
-import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
-import MentionsPlugin from 'ak-editor-plugin-mentions';
-import { Chrome } from 'ak-editor-ui';
+import {
+  ProseMirror,
+  Schema,
+  Node,
+  ListsPlugin,
+  BlockTypePlugin,
+  MarkdownInputRulesPlugin,
+  HyperlinkPlugin,
+  TextFormattingPlugin,
+  MentionsPlugin,
+  ImageUploadPlugin,
+  Chrome
+} from 'ak-editor-core';
 import schema from './schema';
 import markdownSerializer from './markdown-serializer';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 import parseHtml from './parse-html';
+
+type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
   context?: 'comment' | 'pr',

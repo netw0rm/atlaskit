@@ -1,4 +1,4 @@
-import { Keymap, ProseMirror } from 'ak-editor-prosemirror';
+import { Keymap, ProseMirror } from 'ak-editor-core';
 import * as React from 'react';
 import { Component } from 'react';
 import schema from './schema';

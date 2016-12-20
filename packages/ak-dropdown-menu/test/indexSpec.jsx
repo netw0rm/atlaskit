@@ -12,6 +12,8 @@ import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
 
 import Menu from '../src';
+import getAvailableNextItem from '../src/internal/getAvailableNextItem';
+import getAvailablePreviousItem from '../src/internal/getAvailablePreviousItem';
 
 chai.use(chaiAsPromised);
 chai.use(chaiEnzyme());
@@ -110,6 +112,76 @@ describe(name, () => {
       expect(wrapper.state().isOpen).to.be.true;
       item.simulate('click');
       expect(wrapper.state().isOpen).to.be.false;
+    });
+  });
+
+  describe('getAvailableNextItem', () => {
+    const items = [{
+      heading: 'first group',
+      items: [
+        { content: 'item 1' },
+        { content: 'item 2' },
+        { content: 'item 3' },
+      ],
+    }, {
+      heading: 'second group',
+      items: [
+        { content: 'item 4' },
+        { content: 'item 5' },
+        { content: 'item 6' },
+      ],
+    }];
+
+    it('should return first item if there is no currentFocus', () => {
+      expect(getAvailableNextItem(items, undefined)).to.deep.equal({ item: 0, group: 0 });
+    });
+
+    it('should return next item in list', () => {
+      expect(getAvailableNextItem(items,
+        { item: 0, group: 0 })).to.deep.equal({ item: 1, group: 0 });
+    });
+
+    it('should go from group to group', () => {
+      expect(getAvailableNextItem(items,
+        { item: 2, group: 0 })).to.deep.equal({ item: 0, group: 1 });
+    });
+
+    it('should stay on the latest item if there are no items left', () => {
+      expect(getAvailableNextItem(items,
+        { item: 2, group: 1 })).to.deep.equal({ item: 2, group: 1 });
+    });
+  });
+
+  describe('getAvailablePreviousItem', () => {
+    const items = [{
+      heading: 'first group',
+      items: [
+        { content: 'item 1' },
+        { content: 'item 2' },
+        { content: 'item 3' },
+      ],
+    }, {
+      heading: 'second group',
+      items: [
+        { content: 'item 4' },
+        { content: 'item 5' },
+        { content: 'item 6' },
+      ],
+    }];
+
+    it('should return previous item in list', () => {
+      expect(getAvailablePreviousItem(items,
+        { item: 1, group: 0 })).to.deep.equal({ item: 0, group: 0 });
+    });
+
+    it('should go from group to group', () => {
+      expect(getAvailablePreviousItem(items,
+        { item: 0, group: 1 })).to.deep.equal({ item: 2, group: 0 });
+    });
+
+    it('should stay on the first item if there are no items left', () => {
+      expect(getAvailablePreviousItem(items,
+        { item: 0, group: 0 })).to.deep.equal({ item: 0, group: 0 });
     });
   });
 });

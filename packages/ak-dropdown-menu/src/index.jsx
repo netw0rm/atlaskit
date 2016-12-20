@@ -7,9 +7,15 @@ import Trigger from 'ak-droplist-trigger';
 import Item from 'ak-droplist-item';
 import keyCode from 'keycode';
 
+import getAvailablePreviousItem from './internal/getAvailablePreviousItem';
+import getAvailableNextItem from './internal/getAvailableNextItem';
+
 const halfGrid = 4;
 const itemHeight = halfGrid * 7;
 const dropdownMaxHeight = (itemHeight * 9.5) + (halfGrid * 2); // ( item height * 9.5 items)
+
+const getCurrentlyFocusedItem = (items, currentFocus) =>
+  items[currentFocus.group].items[currentFocus.item];
 
 /* eslint-disable react/no-unused-prop-types */
 /**
@@ -85,6 +91,7 @@ export default class DropdownMenu extends Component {
 
   state = {
     isOpen: this.props.defaultOpen,
+    items: this.props.items,
   }
 
   componentDidMount() {
@@ -106,42 +113,123 @@ export default class DropdownMenu extends Component {
 
   handleKeyDown = (e) => {
     if (e.keyCode === keyCode('escape')) {
-      this.close();
+      this.close({ source: 'keydown' });
     }
   }
 
   handleClickOutside = (e) => {
-    const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
-    if (!domNode || (e.target instanceof Node && !domNode.contains(e.target))) {
-      this.close();
+    if (this.state.isOpen) {
+      const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
+      if (!domNode || (e.target instanceof Node && !domNode.contains(e.target))) {
+        this.close({ source: 'click' });
+      }
     }
   }
 
-  handleTriggerActivation = () => {
-    this.toggle();
+  handleTriggerActivation = (e) => {
+    this.toggle({ source: e.source });
   }
 
-  handleItemActivation = (item) => { // eslint-disable-line arrow-body-style
-    return () => {
-      this.props.onItemActivated({ item });
-      this.close();
-    };
+  focusFirstItem = () => {
+    this.setState({
+      isTriggerFocused: false,
+    });
+
+    this.changeFocus(getAvailableNextItem(this.state.items));
   }
 
-  open = () => {
+  removeFocusFromItems = () => {
+    if (this.currentFocus) {
+      const items = [...this.state.items];
+      const item = getCurrentlyFocusedItem(items, this.currentFocus);
+      item.isFocused = false;
+      this.setState({ items });
+      this.currentFocus = null;
+    }
+  }
+
+  handleItemActivation = (attrs) => {
+    this.props.onItemActivated({ item: attrs.item });
+    this.close({ source: attrs.event.type });
+  }
+
+  handleAccessibility = (attrs) => {
+    const event = attrs.event;
+    event.preventDefault();
+
+    switch (event.keyCode) {
+      case keyCode('up'):
+        this.focusPreviousItem();
+        break;
+      case keyCode('down'):
+        this.focusNextItem();
+        break;
+      case keyCode('tab'):
+        this.close({ source: 'keydown' });
+        break;
+      default:
+        break;
+    }
+  }
+
+  focusPreviousItem = () => {
+    if (this.currentFocus) {
+      this.changeFocus(getAvailablePreviousItem(this.state.items, this.currentFocus));
+    }
+  }
+
+  focusNextItem = () => {
+    if (this.currentFocus) {
+      this.changeFocus(getAvailableNextItem(this.state.items, this.currentFocus));
+    }
+  }
+
+  changeFocus = (newFocusData) => {
+    const { group: newGroupFocus, item: newItemFocus } = newFocusData;
+    const items = [...this.state.items];
+
+    // if we have a previously focused item, then it should be un-focused
+    if (this.currentFocus) {
+      const item = getCurrentlyFocusedItem(items, this.currentFocus);
+      item.isFocused = false;
+    }
+
+    items[newGroupFocus].items[newItemFocus].isFocused = true;
+    this.currentFocus = { group: newGroupFocus, item: newItemFocus };
+    this.setState({ items });
+  }
+
+  open = (attrs) => {
+    if (attrs.source === 'keydown') {
+      this.focusFirstItem();
+    }
+    if (this.state.isTriggerFocused) {
+      this.setState({
+        isTriggerFocused: false,
+      });
+    }
     this.setState({ isOpen: true });
     this.props.onOpenChange({ isOpen: true });
   }
 
-  close = () => {
+  close = (attrs) => {
     this.setState({ isOpen: false });
     this.props.onOpenChange({ isOpen: false });
+
+    if (attrs.source && attrs.source === 'keydown') {
+      this.setState({
+        isTriggerFocused: true,
+      });
+      this.removeFocusFromItems();
+    }
   }
 
-  toggle = () => {
-    const isOpen = !this.state.isOpen;
-    this.setState({ isOpen });
-    this.props.onOpenChange({ isOpen });
+  toggle = (attrs) => {
+    if (this.state.isOpen) {
+      this.close(attrs);
+    } else {
+      this.open(attrs);
+    }
   }
 
   renderSubComponents = (groups) => { // eslint-disable-line arrow-body-style
@@ -155,10 +243,12 @@ export default class DropdownMenu extends Component {
             type={item.type}
             isActive={item.isActive}
             isDisabled={item.isDisabled}
+            isFocused={item.isFocused}
             isHidden={item.isHidden}
             isChecked={item.isChecked}
             elemBefore={item.elemBefore}
-            onActivate={this.handleItemActivation(item)}
+            onActivate={this.handleItemActivation}
+            onKeyDown={this.handleAccessibility}
           >
             {item.content}
           </Item>
@@ -170,7 +260,6 @@ export default class DropdownMenu extends Component {
 
   render = () => {
     const { props, state } = this;
-
     return (
       <div className={styles.dropWrapper}>
         <Layer
@@ -180,6 +269,7 @@ export default class DropdownMenu extends Component {
             <div
               className={styles.dropContent}
               ref={this.setMaxHeight}
+              role="menu"
             >
               {this.renderSubComponents(props.items)}
             </div> :
@@ -188,9 +278,10 @@ export default class DropdownMenu extends Component {
         >
           <div className={styles.dropTrigger}>
             <Trigger
-              type={this.props.triggerType}
-              isOpened={this.state.isOpen}
+              type={props.triggerType}
+              isOpened={state.isOpen}
               onActivate={this.handleTriggerActivation}
+              isFocused={this.state.isTriggerFocused}
             >{props.children}</Trigger>
           </div>
         </Layer>

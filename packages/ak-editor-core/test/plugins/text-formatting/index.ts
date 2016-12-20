@@ -24,7 +24,7 @@ describe('text-formatting', () => {
           });
         });
 
-        context('when hits Cmd-B', () => {
+        context('when hits Cmd-I', () => {
           it('toggles italic mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleEm = sinon.spy(plugin, 'toggleEm');
@@ -33,9 +33,9 @@ describe('text-formatting', () => {
 
             expect(toggleEm).to.have.been.callCount(1);
           });
-        })
+        });
 
-        context('when hits Cmd-B', () => {
+        context('when hits Cmd-U', () => {
           it('toggles underline mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
@@ -44,7 +44,7 @@ describe('text-formatting', () => {
 
             expect(toggleUnderline).to.have.been.callCount(1);
           });
-        })
+        });
 
         /* 
           Node: Here dispatch key 'Shift-Cmd-S' instead of 'Cmd-Shift-S',
@@ -67,6 +67,17 @@ describe('text-formatting', () => {
             const toggleMono = sinon.spy(plugin, 'toggleMono');
 
             pm.input.dispatchKey("Shift-Cmd-M");
+
+            expect(toggleMono).to.have.been.callCount(1);
+          });
+        });
+
+        context('when hits Shift-Cmd-`', () => {
+          it('toggles monospace mark', () => {
+            const { pm, plugin } = editor(doc(p('text')));
+            const toggleMono = sinon.spy(plugin, 'toggleMono');
+
+            pm.input.dispatchKey("Shift-Cmd-`");
 
             expect(toggleMono).to.have.been.callCount(1);
           });
@@ -128,6 +139,17 @@ describe('text-formatting', () => {
             const toggleMono = sinon.spy(plugin, 'toggleMono');
 
             pm.input.dispatchKey("Shift-Ctrl-M");
+
+            expect(toggleMono).to.have.been.callCount(1);
+          });
+        });
+
+        context('when hits Shift-Ctrl-`', () => {
+          it('toggles monospace mark', () => {
+            const { pm, plugin } = editor(doc(p('text')));
+            const toggleMono = sinon.spy(plugin, 'toggleMono');
+
+            pm.input.dispatchKey("Shift-Ctrl-`");
 
             expect(toggleMono).to.have.been.callCount(1);
           });

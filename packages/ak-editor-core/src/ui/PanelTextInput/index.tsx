@@ -1,4 +1,5 @@
-import React, { FormEvent, KeyboardEvent, PureComponent } from 'react';
+import * as React from 'react';
+import { FormEvent, KeyboardEvent, PureComponent } from 'react';
 import * as styles from './styles';
 
 export interface Props {

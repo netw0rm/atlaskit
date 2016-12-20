@@ -27,7 +27,7 @@ export default class Element extends PureComponent {
 
   setFocus = () => {
     if (this.props.isFocused) {
-      this.ref.focus(); // eslint-disable-line react/no-find-dom-node
+      this.ref.focus();
     }
   }
 

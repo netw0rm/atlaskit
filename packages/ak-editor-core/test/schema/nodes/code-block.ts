@@ -1,4 +1,5 @@
-import { default as chai, expect } from 'chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
 import { Schema, Text, DocNodeType, CodeBlockNodeType } from '../../../src';
 
 describe('ak-editor-core/schema code_block node', () => {

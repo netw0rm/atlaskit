@@ -11,10 +11,11 @@ function fix () {
         exit 0
     fi
     $CHALK --no-stdin -t "{blue fixing...}"
-    {
-      eslint --fix --no-ignore $jsdiff &&
-      tslint --project tsconfig.json --fix $tsdiff;
-    }
+    [ ! "" == "$jsdiff" ] && eslint --fix --no-ignore $jsdiff || [ "" == "$jsdiff" ]
+    jsfixresult=$?
+    [ ! "" == "$tsdiff" ] && tslint --project tsconfig.json --fix $tsdiff || [ "" == "$tsdiff" ]
+    tsfixresult=$?
+    [ "$jsfixresult" == "0" ] && [ "$tsfixresult" == "0" ]
     exit $?
 }
 fix

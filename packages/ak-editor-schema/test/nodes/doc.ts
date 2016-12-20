@@ -1,5 +1,6 @@
 import { Schema, Text } from 'ak-editor-prosemirror';
-import { default as chai, expect } from 'chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
 import { DocNodeType } from '../../src';
 
 describe('ak-editor-schema doc node', () => {

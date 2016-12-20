@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import LinkIcon from 'ak-icon/glyph/editor/link';
 import { HyperlinkState } from '../../../src/plugins/hyperlink';
 import Panel from '../Panel';

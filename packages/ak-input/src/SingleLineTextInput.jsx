@@ -6,6 +6,8 @@ const css = {
   common: style({
     color: 'inherit',
     fontSize: akFontSizeDefault,
+    lineHeight: 'normal',
+    letterSpacing: 'normal',
   }),
   readView: style({
     overflow: 'hidden',
@@ -15,6 +17,7 @@ const css = {
   editView: style({
     background: 'transparent',
     border: 0,
+    margin: 0,
     padding: 0,
     boxSizing: 'border-box',
     cursor: 'inherit',

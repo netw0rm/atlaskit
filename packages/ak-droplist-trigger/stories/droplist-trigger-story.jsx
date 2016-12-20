@@ -19,7 +19,8 @@ storiesOf(name, module)
             onActivate={(e) => {
               action(`trigger was activated via ${e.source}`)();
             }}
-          >Simple empty trigger</Trigger>
+            isFocused
+          >Simple empty focused trigger</Trigger>
         </div>
         <div>
           <Trigger

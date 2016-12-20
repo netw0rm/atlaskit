@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import FeedbackIcon from 'ak-icon/glyph/feedback';
 import Panel from '../Panel';
 import * as styles from './styles.global.less';

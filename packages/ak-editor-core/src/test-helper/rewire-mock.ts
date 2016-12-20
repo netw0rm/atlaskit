@@ -1,4 +1,4 @@
-import mocha from 'mocha';
+import * as mocha from 'mocha';
 
 /**
  * Example:
@@ -13,7 +13,8 @@ import mocha from 'mocha';
  *     }
  *
  *     // tests/index.js
- *     import module, { assertMac } from '../src';
+ *     import * as module from '../src';
+ *     import { assertMac } from '../src';
  *
  *     describe('a suite', () => {
  *       const rewireMock = RewireMock();
@@ -31,10 +32,13 @@ import mocha from 'mocha';
 export default () => {
   const resetAfter: any[] = [];
 
-  afterEach(() => resetAfter.map(({ module, name }) => module.__ResetDependency__(name)));
+  afterEach(() => resetAfter.map(({ module, name }) => module.default.__ResetDependency__(name)));
 
   return (module: any, name: string, mock: any): void => {
-    module.__Rewire__(name, mock);
+    if (!module.default || !module.default.__Rewire__) {
+      throw new Error('Unable to find the __Rewire__ API on the provided module.');
+    }
+    module.default.__Rewire__(name, mock);
     resetAfter.push({ module, name });
   };
 };

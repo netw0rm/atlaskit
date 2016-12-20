@@ -1,13 +1,14 @@
 import { chaiPlugin, makeEditor } from 'ak-editor-test';
 import { commands, browser } from 'ak-editor-prosemirror';
-import { default as chai, expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
 import ListsPlugin from '../src';
 import { doc, h1, li, ol, p, ul, blockquote, schema } from './_schema-builder';
 
 chai.use(chaiPlugin);
-chai.use(sinonChai);
+chai.use((sinonChai as any).default || sinonChai);
 
 describe('ak-editor-plugin-lists', () => {
   const editor = (doc: any) => makeEditor({ doc: doc, plugin: ListsPlugin, schema });

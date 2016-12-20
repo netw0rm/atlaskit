@@ -67,6 +67,11 @@ describe(name, () => {
       const wrapper = mount(<Trigger type="button" isDisabled>trigger</Trigger>);
       expect(wrapper.find('button').props().disabled).to.be.true;
     });
+
+    it('should focus trigger when isFocused prop is set to true', () => {
+      const wrapper = mount(<Trigger isFocused>trigger</Trigger>);
+      expect(document.activeElement).to.equal(wrapper.children().first().node);
+    });
   });
 
   describe('events', () => {

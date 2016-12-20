@@ -48,6 +48,13 @@ export default class Trigger extends PureComponent {
      */
     onActivate: PropTypes.func,
     /**
+     * @description  When this property is set to true the trigger should focus itself
+     * @memberof Trigger
+     * @default false
+     * @type {Boolean}
+     */
+    isFocused: PropTypes.bool,
+    /**
      * @description controls whether the trigger is tabbable
      * @memberof Trigger
      * @default false
@@ -65,6 +72,21 @@ export default class Trigger extends PureComponent {
     type: baseTypes.default,
     children: null,
     onActivate: () => {},
+    isFocused: false,
+  }
+
+  componentDidMount = () => {
+    this.setFocus();
+  }
+
+  componentDidUpdate = () => {
+    this.setFocus();
+  }
+
+  setFocus = () => {
+    if (this.props.isFocused) {
+      this.ref.firstChild.focus();
+    }
   }
 
   handleKeyDown = (event) => {
@@ -106,6 +128,7 @@ export default class Trigger extends PureComponent {
         style={props.style}
         role="button"
         aria-haspopup="true"
+        ref={ref => (this.ref = ref)}
       >
         { props.type === 'button' ?
           (<Button

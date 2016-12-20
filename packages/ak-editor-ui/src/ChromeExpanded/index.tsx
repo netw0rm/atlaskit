@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import AkButton from 'ak-button';
 import AkButtonGroup from 'ak-button-group';
 import { ProseMirror } from 'ak-editor-prosemirror';
@@ -99,7 +100,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
 
   private handleInsertImage = () => {
     const { pluginStateImageUpload } = this.props;
-    
+
     if (pluginStateImageUpload) {
       pluginStateImageUpload.handleImageUpload();
     }

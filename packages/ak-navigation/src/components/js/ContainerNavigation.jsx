@@ -11,13 +11,13 @@ export default class ContainerNavigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     header: PropTypes.node,
-    width: PropTypes.number,
     shouldAnimate: PropTypes.bool,
+    width: PropTypes.number,
   }
 
   static defaultProps = {
-    width: containerOpenWidth,
     shouldAnimate: false,
+    width: containerOpenWidth,
   }
 
   getOuterStyles() {

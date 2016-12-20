@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-plugin-image-upload",
-  "version": "6.6.0",
+  "version": "6.6.3",
   "description": "An image upload plugin for ProseMirror",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

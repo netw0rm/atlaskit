@@ -1,5 +1,4 @@
-/// <reference path="./types/prosemirror.d.ts" />
-/// <reference path="./types/browserkeymap.d.ts" />
+
 
 export { default as Keymap } from 'browserkeymap';
 
@@ -79,11 +78,7 @@ export {
   Heading,
   Paragraph,
   Image,
-  HardBreak,
-  EmMark,
-  StrongMark,
-  LinkMark,
-  CodeMark,
+  HardBreak
 } from 'prosemirror/dist/schema-basic';
 
 export {

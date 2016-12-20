@@ -2,7 +2,7 @@ import React, { PropTypes, PureComponent } from 'react';
 import { Link } from 'react-router';
 import { AkContainerItem } from '../../../src/index';
 
-export default class RouterLink extends PureComponent {
+export default class RouterLinkItem extends PureComponent {
   static propTypes = {
     to: PropTypes.string,
     text: PropTypes.string,

@@ -10,6 +10,7 @@ export default class Button extends Component {
     className: PropTypes.string,
     form: PropTypes.string,
     onClick: PropTypes.func,
+    tabIndex: PropTypes.number,
   }
 
   static defaultProps = {
@@ -33,6 +34,7 @@ export default class Button extends Component {
         form={props.form}
         onClick={props.onClick}
         onMouseDown={this.onMouseDown}
+        tabIndex={props.tabIndex}
       >
         {props.children}
       </button>

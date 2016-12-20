@@ -6,6 +6,7 @@ export default class Span extends PureComponent {
     isDisabled: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.node,
+    tabIndex: PropTypes.number,
   }
 
   static defaultProps = {
@@ -24,6 +25,7 @@ export default class Span extends PureComponent {
         disabled={props.isDisabled}
         className={props.className}
         onMouseDown={this.onMouseDown}
+        tabIndex={props.tabIndex}
       >
         {props.children}
       </span>

@@ -1,5 +1,6 @@
 import { Node, Schema, Text } from 'ak-editor-prosemirror';
-import { default as chai, expect } from 'chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
 import { chaiPlugin } from 'ak-editor-test';
 import { toHTML } from 'ak-editor-test';
 import { DocNodeType, MentionQueryMarkType } from '../../src';

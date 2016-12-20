@@ -4,14 +4,18 @@ BASEDIR=$(dirname $0)
 
 function fix () {
     $CHALK --no-stdin -t "{blue Gathering files to fix...}"
-    diff=$($BASEDIR/_get_changed.sh)
-    if [ "" == "$diff" ]; then
+    jsdiff=$($BASEDIR/_get_changed_js.sh)
+    tsdiff=$($BASEDIR/_get_changed_ts.sh)
+    if [ "" == "$jsdiff" ] && [ "" == "$tsdiff" ]; then
         $CHALK --no-stdin -t "{blue ...no changes found. Done.}"
         exit 0
     fi
     $CHALK --no-stdin -t "{blue fixing...}"
-    eslint --fix --no-ignore $diff
-    tslint --project tsconfig.json --fix $diff
+    [ ! "" == "$jsdiff" ] && eslint --fix --no-ignore $jsdiff || [ "" == "$jsdiff" ]
+    jsfixresult=$?
+    [ ! "" == "$tsdiff" ] && tslint --project tsconfig.json --fix $tsdiff || [ "" == "$tsdiff" ]
+    tsfixresult=$?
+    [ "$jsfixresult" == "0" ] && [ "$tsfixresult" == "0" ]
     exit $?
 }
 fix

@@ -1,9 +1,9 @@
-import { Schema, Text } from '../../../src/prosemirror';
-import { default as chai, expect } from 'chai';
-import { toHTML, fromHTML } from '../../../src/test-helper';
-import { DocNodeType, MentionNodeType } from '../../../src/schema';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import { Schema, Text, toHTML, fromHTML as fromHTML_, DocNodeType, MentionNodeType } from '../../../src';
 
 const schema = makeSchema();
+const fromHTML = (html: string) => fromHTML_(html, schema);
 
 describe('ak-editor-core/schema mention node', () => {
   it('throws an error if it is not named "mention"', () => {
@@ -26,14 +26,12 @@ describe('ak-editor-core/schema mention node', () => {
   });
 
   it('should extract the correct values of mention id and display name', () => {
-    const doc = fromHTML(`
-      <p><span mention-id='@user-1'>foo bar</span></p>
-    `);
+    const doc = fromHTML('<span mention-id=\'@user-1\'>foo bar</span>');
 
-    const node = doc.firstChild.firstChild;
-    expect(node.type.name).to.equal('mention');
-    expect(node.attrs.id).to.equal('@user-1');
-    expect(node.attrs.displayName).to.equal('foo bar');
+    const mention = doc.firstChild;
+    expect(mention.type.name).to.equal('mention');
+    expect(mention.attrs.id).to.equal('@user-1');
+    expect(mention.attrs.displayName).to.equal('foo bar');
   });
 });
 
@@ -48,7 +46,7 @@ function makeSchema() {
 
   return new Schema({
     nodes: {
-      doc: { type: DocNodeType, content: 'text<_>*' },
+      doc: { type: DocNodeType, content: 'inline<_>*' },
       mention: { type: MentionNodeType, group: 'inline' },
       text: { type: Text }
     }

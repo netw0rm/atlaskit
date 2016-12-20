@@ -1,12 +1,13 @@
 import ImageUploadPlugin from '../../../src/plugins/image-upload';
-import { chaiPlugin, makeEditor } from '../../../src/test-helper';
-import { default as chai, expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+import { chaiPlugin, makeEditor } from '../../../src';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
 import { doc, noimages, images, image, schema } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
-chai.use(sinonChai);
+chai.use((sinonChai as any).default || sinonChai);
 
 describe('image-upload', () => {
   const testImgSrc = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';

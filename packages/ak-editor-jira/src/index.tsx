@@ -5,6 +5,7 @@ import {
   BlockTypePlugin,
   ListsPlugin,
   TextFormattingPlugin,
+  HorizontalRulePlugin,
   Chrome,
   schema
 } from 'ak-editor-core';
@@ -126,6 +127,7 @@ export default class Editor extends PureComponent<Props, State> {
           BlockTypePlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          HorizontalRulePlugin
         ],
       });
 

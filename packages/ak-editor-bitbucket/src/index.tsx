@@ -9,6 +9,7 @@ import {
   MarkdownInputRulesPlugin,
   HyperlinkPlugin,
   TextFormattingPlugin,
+  HorizontalRulePlugin,
   MentionsPlugin,
   ImageUploadPlugin,
   Chrome
@@ -179,6 +180,7 @@ export default class Editor extends PureComponent<Props, State> {
           BlockTypePlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          HorizontalRulePlugin,
           MentionsPlugin,
           ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
         ],

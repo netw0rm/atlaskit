@@ -148,8 +148,8 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  handleItemActivation = (attrs) => {
-    this.props.onItemActivated({ item: attrs.item });
+  handleItemActivation = (attrs, item) => {
+    this.props.onItemActivated({ item });
     this.close({ source: attrs.event.type });
   }
 
@@ -247,7 +247,9 @@ export default class DropdownMenu extends Component {
             isHidden={item.isHidden}
             isChecked={item.isChecked}
             elemBefore={item.elemBefore}
-            onActivate={this.handleItemActivation}
+            onActivate={(attrs) => {
+              this.handleItemActivation(attrs, item);
+            }}
             onKeyDown={this.handleAccessibility}
           >
             {item.content}

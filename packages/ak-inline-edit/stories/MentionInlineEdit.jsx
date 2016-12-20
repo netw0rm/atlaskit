@@ -115,7 +115,7 @@ export default class extends PureComponent {
   renderInput = ({ isEditing }) => (
     <SingleLineTextInput
       value={isEditing ? this.getNameForEditView() : this.getNameForReadView()}
-      autoFocus
+      isInitiallySelected
       isEditing={isEditing}
       onChange={this.onInputChange}
       onKeyDown={this.onKeyDown}

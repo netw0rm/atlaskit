@@ -202,7 +202,8 @@ export default class DropdownMenu extends Component {
   open = (attrs) => {
     if (attrs.source === 'keydown') {
       this.focusFirstItem();
-    } else {
+    }
+    if (this.state.isTriggerFocused) {
       this.setState({
         isTriggerFocused: false,
       });

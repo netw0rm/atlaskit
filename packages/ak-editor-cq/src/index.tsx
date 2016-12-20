@@ -6,6 +6,7 @@ import {
   ListsPlugin,
   TextFormattingPlugin,
   HorizontalRulePlugin,
+  MarkdownInputRulesPlugin,
   Chrome
 } from 'ak-editor-core';
 import schema from './schema';
@@ -125,6 +126,7 @@ export default class Editor extends PureComponent<Props, State> {
         doc: parse(this.props.defaultValue || ''),
         plugins: [
           BlockTypePlugin,
+          MarkdownInputRulesPlugin,
           ListsPlugin,
           TextFormattingPlugin,
           HorizontalRulePlugin

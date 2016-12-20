@@ -90,7 +90,7 @@ export default class Trigger extends PureComponent {
         case keyCode('space'):
         case keyCode('enter'):
           event.preventDefault();
-          props.onActivate({ source: 'keypress' });
+          props.onActivate({ source: 'keydown' });
           break;
         default:
           break;

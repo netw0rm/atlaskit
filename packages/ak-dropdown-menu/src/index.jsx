@@ -113,22 +113,21 @@ export default class DropdownMenu extends Component {
 
   handleKeyDown = (e) => {
     if (e.keyCode === keyCode('escape')) {
-      this.close();
+      this.close({ source: 'keydown' });
     }
   }
 
   handleClickOutside = (e) => {
-    const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
-    if (!domNode || (e.target instanceof Node && !domNode.contains(e.target))) {
-      this.close();
+    if (this.state.isOpen) {
+      const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
+      if (!domNode || (e.target instanceof Node && !domNode.contains(e.target))) {
+        this.close({ source: 'click' });
+      }
     }
   }
 
   handleTriggerActivation = (e) => {
-    if (e.source === 'keypress') {
-      this.focusFirstItem();
-    }
-    this.toggle();
+    this.toggle({ source: e.source });
   }
 
   focusFirstItem = () => {
@@ -136,7 +135,7 @@ export default class DropdownMenu extends Component {
       isTriggerFocused: false,
     });
 
-    this.changeFocus(getAvailableNextItem(this.state.items, this.currentFocus));
+    this.changeFocus(getAvailableNextItem(this.state.items));
   }
 
   removeFocusFromItems = () => {
@@ -145,12 +144,13 @@ export default class DropdownMenu extends Component {
       const item = getCurrentlyFocusedItem(items, this.currentFocus);
       item.isFocused = false;
       this.setState({ items });
+      this.currentFocus = null;
     }
   }
 
   handleItemActivation = (attrs) => {
     this.props.onItemActivated({ item: attrs.item });
-    this.close();
+    this.close({ source: attrs.event.type });
   }
 
   handleAccessibility = (attrs) => {
@@ -165,19 +165,11 @@ export default class DropdownMenu extends Component {
         this.focusNextItem();
         break;
       case keyCode('tab'):
-        this.returnFocusToTrigger();
+        this.close({ source: 'keydown' });
         break;
       default:
         break;
     }
-  }
-
-  returnFocusToTrigger = () => {
-    this.currentFocus = null;
-    this.setState({
-      isTriggerFocused: true,
-    });
-    this.close();
   }
 
   focusPreviousItem = () => {
@@ -207,21 +199,36 @@ export default class DropdownMenu extends Component {
     this.setState({ items });
   }
 
-  open = () => {
+  open = (attrs) => {
+    if (attrs.source === 'keydown') {
+      this.focusFirstItem();
+    } else {
+      this.setState({
+        isTriggerFocused: false,
+      });
+    }
     this.setState({ isOpen: true });
     this.props.onOpenChange({ isOpen: true });
   }
 
-  close = () => {
+  close = (attrs) => {
     this.setState({ isOpen: false });
     this.props.onOpenChange({ isOpen: false });
-    this.removeFocusFromItems();
+
+    if (attrs.source && attrs.source === 'keydown') {
+      this.setState({
+        isTriggerFocused: true,
+      });
+      this.removeFocusFromItems();
+    }
   }
 
-  toggle = () => {
-    const isOpen = !this.state.isOpen;
-    this.setState({ isOpen });
-    this.props.onOpenChange({ isOpen });
+  toggle = (attrs) => {
+    if (this.state.isOpen) {
+      this.close(attrs);
+    } else {
+      this.open(attrs);
+    }
   }
 
   renderSubComponents = (groups) => { // eslint-disable-line arrow-body-style

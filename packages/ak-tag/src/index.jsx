@@ -46,7 +46,6 @@ export default class Tag extends PureComponent {
      * @memberof Tag
      * @instance
      * @type {string}
-     * @example @html <ak-tag text="Cupcake" href="http://www.cupcakeipsum.com/"></ak-tag>
      * @example @js import Tag from 'ak-tag';
      * // Shows a tag with the text 'Cupcake'
      * // and a link to cupcakeipsum.com
@@ -68,41 +67,38 @@ export default class Tag extends PureComponent {
      */
     removeButtonText: PropTypes.string,
     /**
-     * This event gets emitted before a tag gets removed
-     * (e.g. before the remove animation starts).
-     * It is cancelable. If it gets cancelled, the removal is aborted.
-     *
-     * @event Tag#onBeforeRemoveAction
-     * @example @html <ak-tag
-     *   text="Cupcake"
-     *   remove-button-text="No more"
-     *   onBeforeRemove={(e) => console.log('Just about to start the remove animation')}
-     * ></ak-tag>
-     * @example @js import { events } from 'ak-tag';
-     *
-     * tag.addEventListener(events.onBeforeRemoveAction, (e) => {
-     *   console.log('Just about to start the remove animation');
-     *   // e.preventDefault(); // this would stop the removal process
-     * });
+     * @description This handler is called before a Tag gets removed
+     *              (e.g. before the remove animation starts).
+     *              It is cancelable by returning boolean `false`.
+     * @memberof Tag
+     * @instance
+     * @name onBeforeRemoveAction
+     * @type {function}
+     * @example @js
+     * ReactDOM.render(
+     *   <Tag
+     *     text="Cupcake"
+     *     onBeforeRemoveAction={(e) => false}
+     *   />,
+     * container);
+     * // the Tag won't be removed \o/
      */
     onBeforeRemoveAction: PropTypes.func,
     /**
-     * This event gets emitted after a tag has been removed
-     * (e.g. after the remove animation finished).
-     * It is not cancelable.
-     *
-     * @event Tag#onAfterRemoveAction
-     * @example @html <ak-tag
-     *   text="Cupcake"
-     *   remove-button-text="No more"
-     *   onAfterRemove={(e) => console.log('Finished the remove animation')}
-     * ></ak-tag>
-     * @example @js import { events } from 'ak-tag';
-     *
-     * tag.addEventListener(events.onAfterRemoveAction, () => {
-     *   console.log('Finished the remove animation');
-     *   document.body.removeChild(tag);
-     * });
+     * @description This handler is called after a Tag has been removed
+     *              (e.g. after the remove animation finishes).
+     *              It is not cancelable.
+     * @memberof Tag
+     * @instance
+     * @name onAfterRemoveAction
+     * @type {function}
+     * @example @js
+     * ReactDOM.render(
+     *   <Tag
+     *     text="Cupcake"
+     *     onAfterRemoveAction={(e) => { console.log('Tag removed!'); }}
+     *   />,
+     * container);
      */
     onAfterRemoveAction: PropTypes.func,
   }

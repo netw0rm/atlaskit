@@ -1,4 +1,5 @@
-import { chaiPlugin, makeEditor, commands, browser } from '../../../src';
+import { commands, browser } from '../../../src';
+import { chaiPlugin, makeEditor } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';

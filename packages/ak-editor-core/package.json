@@ -33,6 +33,7 @@
     "ak-tabs": "4.0.6",
     "akutil-react": "^3.0.1",
     "highlight.js": "^9.6.0",
+    "sinon": "^1.17.6",
     "string.prototype.repeat": "^0.2.0",
     "thenable": "^1.0.0"
   },

@@ -1,5 +1,5 @@
-import { Fragment, Node, Slice, Schema, MarkType, NodeType } from '../prosemirror';
-import schema from '../schema';
+import { Fragment, Node, Slice, Schema, MarkType, NodeType } from '../';
+import { schema } from './schema';
 import matches from './matches';
 
 /**

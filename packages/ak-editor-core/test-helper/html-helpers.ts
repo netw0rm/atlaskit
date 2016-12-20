@@ -1,4 +1,4 @@
-import { Node, Schema } from '../prosemirror';
+import { Node, Schema } from '../';
 
 export const fromHTML = (html: string, schema_: Schema): Node => {
   const el = document.createElement('div');

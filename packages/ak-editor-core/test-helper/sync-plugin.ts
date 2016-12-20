@@ -1,4 +1,4 @@
-import { Plugin, ProseMirror, Slice } from '../prosemirror';
+import { Plugin, ProseMirror, Slice } from '../';
 
 export class SyncPlugin {
   constructor(pm: ProseMirror) {

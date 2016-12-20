@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { chaiPlugin, makeEditor, insert } from '../../../src';
+import { chaiPlugin, makeEditor, insert } from '../../../test-helper';
 import { doc, link, linkable, schema, unlinkable } from '../../_schema-builder';
 
 chai.use(chaiPlugin);

@@ -1,27 +1,27 @@
 //
 // THIS FILE IS DEPRECATED AND WILL BE REMOVED IN THE FUTURE.
 //
-import { Block, Text, Schema, NodeType, MarkType } from '../prosemirror';
-
-import { BlockQuoteNodeType } from './nodes/blockquote';
-import { BulletListNodeType } from './nodes/bullet-list';
-import { CodeBlockNodeType } from './nodes/code-block';
-import { DocNodeType } from './nodes/doc';
-import { HardBreakNodeType } from './nodes/hard-break';
-import { HeadingNodeType } from './nodes/heading';
-import { HorizontalRuleNodeType } from './nodes/horizontal-rule';
-import { ImageNodeType } from './nodes/image';
-import { ListItemNodeType } from './nodes/list-item';
-import { OrderedListNodeType } from './nodes/ordered-list';
-import { ParagraphNodeType } from './nodes/paragraph';
-import { MentionNodeType } from './nodes/mention';
-import { EmojiNodeType } from './nodes/emoji';
-
-import { CodeMarkType } from './marks/code';
-import { DelMarkType } from './marks/del';
-import { EmMarkType } from './marks/em';
-import { LinkMarkType } from './marks/link';
-import { StrongMarkType } from './marks/strong';
+import {
+  Block, Text, Schema, NodeType, MarkType,
+  BlockQuoteNodeType,
+  BulletListNodeType,
+  CodeBlockNodeType,
+  DocNodeType,
+  HardBreakNodeType,
+  HeadingNodeType,
+  HorizontalRuleNodeType,
+  ImageNodeType,
+  ListItemNodeType,
+  OrderedListNodeType,
+  ParagraphNodeType,
+  MentionNodeType,
+  EmojiNodeType,
+  CodeMarkType,
+  DelMarkType,
+  EmMarkType,
+  LinkMarkType,
+  StrongMarkType
+} from '../';
 
 export interface AtlassianEditorSchema extends Schema {
   nodes: {

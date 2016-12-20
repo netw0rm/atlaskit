@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { akColorPrimary3 } from 'akutil-shared-styles';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 import Presence from './Presence';
@@ -22,7 +23,7 @@ export default class Avatar extends PureComponent {
   }
 
   static defaultProps = {
-    presenceBorderColor: 'white',
+    presenceBorderColor: akColorPrimary3, // white
     presence: 'none',
     size: 'medium',
   }

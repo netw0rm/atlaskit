@@ -1,5 +1,6 @@
 import { Schema, Text } from 'ak-editor-prosemirror';
-import { default as chai, expect } from 'chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
 import { toHTML, fromHTML } from 'ak-editor-test';
 import { DocNodeType, EmojiNodeType } from '../../src';
 

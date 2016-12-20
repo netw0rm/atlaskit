@@ -1,8 +1,9 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import AkButton from 'ak-button';
 import { BlockType, BlockTypeState } from 'ak-editor-plugin-block-type';
 import Panel from '../Panel';
-import styles from './styles.global.less';
+import * as styles from './styles.global.less';
 
 export interface Props {
   pluginState: BlockTypeState;

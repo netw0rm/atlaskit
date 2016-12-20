@@ -248,4 +248,10 @@ storiesOf(name, module)
       </div>
       <a href="http://www.atlassian.com"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
     </div>
+  ))
+  .addCodeExampleStory('Avatar with a custom border', () => (
+    <div style={{ padding: '20px', backgroundColor: '#3a77d8' }}>
+      <DefaultAvatar size="xlarge" presence="online" presenceBorderColor="#3a77d8" />
+      <DefaultAvatar size="xlarge" presence="offline" presenceBorderColor="#3a77d8" />
+    </div>
   ));

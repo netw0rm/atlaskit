@@ -14,6 +14,7 @@ import { name, description } from '../package.json';
 import Avatar, { Presence } from '../src';
 
 const avatarPropDescriptions = {
+  presenceBorderColor: 'Used to override the default border color of the presence indicator. Accepts any color argument that the border-color CSS property accepts.',
   presence: 'Indicates a user\'s online status by showing a small icon on the avatar itself. Allowed values: \'online\', \'offline\', \'busy\' or \'none\'',
   size: 'Defines the size of the avatar. Allowed values: \'small\', \'medium\', \'large\', \'xlarge\'.',
   src: 'A url to load an image from (this can also be a base64 encoded image)',

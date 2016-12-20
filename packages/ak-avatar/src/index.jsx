@@ -13,6 +13,7 @@ export { Presence };
 export default class Avatar extends PureComponent {
   static displayName = 'AkAvatar';
   static propTypes = {
+    presenceBorderColor: PropTypes.string,
     presence: PropTypes.oneOf(presences),
     size: PropTypes.oneOf(sizes),
     src: PropTypes.string,
@@ -21,6 +22,7 @@ export default class Avatar extends PureComponent {
   }
 
   static defaultProps = {
+    presenceBorderColor: 'white',
     presence: 'none',
     size: 'medium',
   }
@@ -54,7 +56,7 @@ export default class Avatar extends PureComponent {
   }
 
   render() {
-    const { presence, size, src, label, children } = this.props;
+    const { presenceBorderColor, presence, size, src, label, children } = this.props;
     const sizeClasses = classNames([
       styles[size],
       styles.size,
@@ -83,7 +85,7 @@ export default class Avatar extends PureComponent {
           </div>
 
           <div className={presenceWrapperClasses}>
-            <Presence presence={presence}>
+            <Presence presence={presence} borderColor={presenceBorderColor}>
               {children}
             </Presence>
           </div>

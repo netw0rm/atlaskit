@@ -17,7 +17,8 @@ storiesOf(name, module)
   .addCodeExampleStory('Presence: default', () => (
     <div style={{ padding: '20px' }}>
       <p>
-        By default presences will stretch to fill their parents (assuming they have fixed sizes).
+        By default presences will stretch to fill their parents (Try resizing the code window on the
+         right).
       </p>
       <p>
         Therefore it is reccomended to always have a wrapping div around presences when consuming
@@ -54,7 +55,7 @@ storiesOf(name, module)
 
     </div>
   </div>
-    ))
+  ))
   .addCodeExampleStory('Presence: borderColors', () => (
     <div style={{ padding: '20px' }}>
       <p>

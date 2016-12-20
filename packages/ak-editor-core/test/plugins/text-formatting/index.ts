@@ -1,13 +1,13 @@
-import { TextFormattingPlugin } from '../../../src/plugins';
-import { chaiPlugin, makeEditor } from '../../../src/test-helper';
-import { browser } from '../../../src/prosemirror';
+import { TextFormattingPlugin, browser } from '../../../src';
 import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
-import { default as chai, expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+import { chaiPlugin, makeEditor } from '../../../test-helper';
+import { expect } from 'chai';
+import * as chai from 'chai';
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
-chai.use(sinonChai);
+chai.use((sinonChai as any).default || sinonChai);
 
 describe('text-formatting', () => {
   const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin, schema });
@@ -48,7 +48,7 @@ describe('text-formatting', () => {
           });
         })
 
-        /* 
+        /*
           Node: Here dispatch key 'Shift-Cmd-S' instead of 'Cmd-Shift-S',
                 Because after key binding, it was normalized.
         */
@@ -109,7 +109,7 @@ describe('text-formatting', () => {
           });
         })
 
-        /* 
+        /*
           Node: Here dispatch key 'Shift-Ctrl-S' instead of 'Ctrl-Shift-S',
                 Because after key binding, it was normalized.
         */
@@ -136,7 +136,7 @@ describe('text-formatting', () => {
         });
       });
     }
-    
+
   });
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {

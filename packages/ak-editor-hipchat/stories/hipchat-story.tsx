@@ -1,5 +1,5 @@
 import { storiesOf, action } from '@kadira/storybook';
-import React from 'react';
+import * as React from 'react';
 import Editor from '../src';
 
 storiesOf('ak-editor-hipchat', module)

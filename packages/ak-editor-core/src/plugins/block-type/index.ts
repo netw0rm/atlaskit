@@ -220,7 +220,7 @@ export class BlockTypeState {
     let bindings: {[key: string]: any} = {};
 
     const bind = (key: string, action: any): void => {
-      bindings = Object.assign({}, bindings, {[key]: action});
+      bindings = {...bindings, ...{[key]: action}};
     }
 
     blockTypes.forEach((blockType) => {
@@ -332,7 +332,12 @@ export class BlockTypeState {
   }
 
   private findContext(name: ContextName): Context | undefined {
-    return this.availableContexts.find((context) => context.name === name);
+    for (let i = 0; i < this.availableContexts.length; i++) {
+      const context = this.availableContexts[i];
+      if (context.name === name) {
+        return context;
+      }
+    }
   }
 
   private isBlockTypeSchemaSupported = (blockType: BlockType) => {

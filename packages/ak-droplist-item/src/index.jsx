@@ -125,7 +125,9 @@ export default class Item extends PureComponent {
     switch (event.keyCode) {
       case keyCode('space'):
       case keyCode('enter'):
-        props.onActivate({ item: this, event });
+        if (!props.isDisabled) {
+          props.onActivate({ item: this, event });
+        }
         break;
       default:
         props.onKeyDown({ item: this, event });

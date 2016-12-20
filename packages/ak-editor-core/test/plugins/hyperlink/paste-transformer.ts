@@ -1,8 +1,9 @@
-import mocha from 'mocha';
+import * as mocha from 'mocha';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { Slice, ProseMirror } from '../../../src/prosemirror';
-import { chaiPlugin, code_block, makeEditor, a, code, doc, p, slice, text } from '../../../src/test-helper';
-import { default as chai, expect } from 'chai';
+import { Slice, ProseMirror } from '../../../src';
+import { chaiPlugin, code_block, makeEditor, a, code, doc, p, slice, text } from '../../../test-helper';
+import * as chai from 'chai';
+import { expect } from 'chai';
 
 chai.use(chaiPlugin);
 

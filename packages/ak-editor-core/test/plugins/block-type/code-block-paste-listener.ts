@@ -1,8 +1,9 @@
-import mocha from 'mocha';
-import { ProseMirror } from '../../../src/prosemirror';
-import { chaiPlugin, code_block, fixtures, makeEditor, blockquote, p, doc, dispatchPasteEvent } from '../../../src/test-helper';
-import { default as chai, expect } from 'chai';
-import { PasteContent } from '../../../src/test-helper/dispatch-paste-event';
+import * as mocha from 'mocha';
+import { ProseMirror } from '../../../src';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import { chaiPlugin, fixtures, makeEditor, dispatchPasteEvent, code_block, blockquote, p, doc } from '../../../test-helper';
+import { PasteContent } from '../../../test-helper/dispatch-paste-event';
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
 chai.use(chaiPlugin);

@@ -1,10 +1,10 @@
-import mocha from 'mocha';
-import { p, text, nodeFactory, markFactory, sequence, RefsTracker } from '../../src/test-helper/schema-builder';
-import schema from '../../src/schema';
+import * as mocha from 'mocha';
+import { p, text, nodeFactory, markFactory, sequence, RefsTracker } from '../../test-helper/schema-builder';
+import { schema } from '../../test-helper/schema';
 import { expect } from 'chai';
 
-describe('test-helper schema-builder', () => {
-  const clone = (object = {}) => Object.assign({}, object);
+describe('ak-editore-core/test-helper/schema-builder', () => {
+  const clone = (object = {}) => ({...object});
 
   describe('text', () => {
     it('returns a refs tracking node for an empty string', () => {

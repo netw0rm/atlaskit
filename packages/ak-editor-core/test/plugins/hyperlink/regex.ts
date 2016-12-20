@@ -1,4 +1,4 @@
-import mocha from 'mocha';
+import * as mocha from 'mocha';
 import { URL } from '../../../src/plugins/hyperlink/regex';
 import { expect } from 'chai';
 

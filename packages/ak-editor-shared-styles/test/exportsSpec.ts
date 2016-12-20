@@ -1,4 +1,4 @@
-import mocha from 'mocha';
+import * as mocha from 'mocha';
 import { expect } from 'chai';
 import * as lessVars from '../src';
 
@@ -31,7 +31,6 @@ describe('LESS module exports', () => {
       'akEditorCodeBackground',
       'akEditorCodeBlockPadding',
       'akEditorCodeInlinePadding',
-      'default',
     ]);
   });
 });

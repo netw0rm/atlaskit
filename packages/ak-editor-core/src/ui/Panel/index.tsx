@@ -1,8 +1,9 @@
-import React, { FormEvent, PureComponent } from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import { FormEvent, PureComponent } from 'react';
+import * as ReactDOM from 'react-dom';
 import * as styles from './styles';
 import OutsideClickable from '../OutsideClickable';
-import Popper from 'popper.js';
+import Popper, { IPopper } from './popper';
 
 export interface Props {
   autoPosition?: boolean;
@@ -19,7 +20,7 @@ export interface State {
 
 export default class Panel extends PureComponent<Props, State> {
   state: State = {};
-  popper?: Popper;
+  popper?: IPopper;
 
   componentDidMount() {
     this.applyPopper(this.props);

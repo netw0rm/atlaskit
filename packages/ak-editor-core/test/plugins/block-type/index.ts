@@ -1,15 +1,16 @@
-import { default as chai, expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
 
-import { commands, browser } from '../../../src/prosemirror';
-import mocha from 'mocha';
-import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from '../../../src/test-helper';
+import * as mocha from 'mocha';
+import { commands, browser } from '../../../src';
+import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from '../../../test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
 chai.use(chaiPlugin);
-chai.use(sinonChai);
+chai.use((sinonChai as any).default || sinonChai);
 
 describe('block-type', () => {
   const editor = (doc: any) => {
@@ -425,7 +426,7 @@ describe('block-type', () => {
 
             expect(pm.doc).to.deep.equal(doc(code_block()('te\nxt\n')));
           });
-          
+
           it('returns true', () => {
             const { pm, plugin } = editor(doc(code_block()('te{<>}xt\n')));
 
@@ -443,7 +444,7 @@ describe('block-type', () => {
 
             expect(pm.doc).to.deep.equal(doc(code_block()('text\n')));
           });
-          
+
           it('returns true', () => {
             const { pm, plugin } = editor(doc(code_block()('text{<>}')));
 

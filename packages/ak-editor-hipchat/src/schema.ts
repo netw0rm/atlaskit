@@ -4,7 +4,7 @@ import {
   ParagraphNodeType,
   Schema,
   Text
-} from 'ak-editor-schema';
+} from 'ak-editor-core';
 
 export default new Schema({
   nodes: {

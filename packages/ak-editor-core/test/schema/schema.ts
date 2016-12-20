@@ -1,9 +1,10 @@
-import chai from 'chai';
-import schema from '../../src/schema';
+import * as chai from 'chai';
+import { schema } from '../../test-helper/schema';
 import jsonSchema from '../../src/schema/json-schema';
-import Ajv from 'ajv';
+import * as ajvModule from 'ajv';
 
 const { expect } = chai;
+const Ajv = ((ajvModule as any).default || ajvModule);
 const ajv = new Ajv();
 const validate = ajv.compile(jsonSchema(schema));
 

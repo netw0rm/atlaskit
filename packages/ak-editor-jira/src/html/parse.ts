@@ -1,7 +1,7 @@
 import schema from '../schema';
 import parseHtml from './parse-html';
-import { Fragment, MarkType, Mark, Node as PMNode, TextNode } from 'ak-editor-prosemirror';
-
+import { Fragment, MarkType, Mark, Node as PMNode, TextNode } from 'ak-editor-core';
+import WeakMap from './weak-map';
 
 const convertedNodes = new WeakMap();
 

@@ -1,13 +1,14 @@
-import { chaiPlugin, makeEditor } from '../../../src/test-helper';
-import { commands, browser } from '../../../src/prosemirror';
-import { default as chai, expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+import { commands, browser } from '../../../src';
+import { chaiPlugin, makeEditor } from '../../../test-helper';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
 import ListsPlugin from '../../../src/plugins/lists';
 import { doc, h1, li, ol, p, ul, blockquote, schema } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
-chai.use(sinonChai);
+chai.use((sinonChai as any).default || sinonChai);
 
 describe('lists', () => {
   const editor = (doc: any) => makeEditor({ doc: doc, plugin: ListsPlugin, schema });

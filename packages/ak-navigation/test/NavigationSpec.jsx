@@ -32,9 +32,9 @@ describe('<Navigation />', () => {
       expect(shallow(<Navigation width={200} />).find('Spacer').props().width).to.equal(200);
     });
     it('open=false overrides width prop on <Spacer />', () => {
-      expect(shallow(<Navigation open={false} width={500} />)
+      expect(shallow(<Navigation isOpen={false} width={500} />)
         .find('Spacer').props().width).to.equal(containerClosedWidth);
-      expect(shallow(<Navigation open={false} width={200} />)
+      expect(shallow(<Navigation isOpen={false} width={200} />)
         .find('Spacer').props().width).to.equal(containerClosedWidth);
     });
     it('isResizeable=false does not render a <Resizer />', () => {
@@ -57,16 +57,16 @@ describe('<Navigation />', () => {
       expect(mount(<Navigation globalCreateIcon={<span className="CREATE_ICON" />} />)).to.have.exactly(1).descendants('.CREATE_ICON');
     });
     it('when isSearchDrawerOpen=true should set open=true on the SearchDrawer', () => {
-      expect(mount(<Navigation isSearchDrawerOpen />).find('Drawer').at(0).props().open).to.equal(true);
+      expect(mount(<Navigation isSearchDrawerOpen />).find('Drawer').at(0).props().isOpen).to.equal(true);
     });
     it('when isSearchDrawerOpen=false should set open=false on the SearchDrawer', () => {
-      expect(mount(<Navigation isSearchDrawerOpen={false} />).find('Drawer').at(0).props().open).to.equal(false);
+      expect(mount(<Navigation isSearchDrawerOpen={false} />).find('Drawer').at(0).props().isOpen).to.equal(false);
     });
     it('when isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
-      expect(mount(<Navigation isCreateDrawerOpen />).find('Drawer').at(1).props().open).to.equal(true);
+      expect(mount(<Navigation isCreateDrawerOpen />).find('Drawer').at(1).props().isOpen).to.equal(true);
     });
     it('when isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
-      expect(mount(<Navigation isCreateDrawerOpen={false} />).find('Drawer').at(1).props().open).to.equal(false);
+      expect(mount(<Navigation isCreateDrawerOpen={false} />).find('Drawer').at(1).props().isOpen).to.equal(false);
     });
     it('globalPrimaryItem should map to global navigation\'s primaryItem', () => {
       const primaryItem = <span className="PRIMARY_ITEM" />;

@@ -1,5 +1,5 @@
 import schema from './schema';
-import { Node } from 'ak-editor-prosemirror';
+import { Node } from 'ak-editor-core';
 
 /**
  * This function reads markup rendered by Bitbucket server and converts it into markup that

@@ -8,7 +8,7 @@ import { doc, strong, h1, p } from './_schema-builder';
 
 import Editor from '../src/index';
 import ImageIcon from 'ak-icon/glyph/editor/image';
-import { chaiPlugin, createEvent } from 'ak-editor-test';
+import { chaiPlugin, createEvent } from 'ak-editor-core';
 
 chai.use(chaiPlugin);
 chai.use(chaiEnzyme());

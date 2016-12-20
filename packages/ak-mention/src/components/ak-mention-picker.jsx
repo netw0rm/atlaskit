@@ -20,6 +20,8 @@ export default class MentionPicker extends PureComponent {
     presenceProvider: MentionPropTypes.presenceProvider,
     query: PropTypes.string,
     onSelection: PropTypes.func,
+    onOpen: PropTypes.func,
+    onClose: PropTypes.func,
 
     // ak-inline-dialog
     /**
@@ -31,6 +33,12 @@ export default class MentionPicker extends PureComponent {
     zIndex: PropTypes.number,
     offsetX: PropTypes.number,
     offsetY: PropTypes.number,
+  }
+
+  static defaultProps = {
+    onSelection: () => {},
+    onOpen: () => {},
+    onClose: () => {},
   }
 
   constructor(props) {
@@ -104,9 +112,18 @@ export default class MentionPicker extends PureComponent {
   // internal, used for callbacks
   _filterChange = (mentions) => {
     debug('ak-mention-picker._filterChange', mentions.length);
+    const wasVisible = this.state.visible;
+    const visible = mentions.length > 0;
     this.setState({
-      visible: mentions.length > 0,
+      visible,
     });
+    if (wasVisible !== visible) {
+      if (visible) {
+        this.props.onOpen();
+      } else {
+        this.props.onClose();
+      }
+    }
   }
 
   _filterError = (error) => {

@@ -1,6 +1,6 @@
-import { Schema, Text } from '../../../src/prosemirror';
+import { Schema, Text } from '../../../src';
 import { default as chai, expect } from 'chai';
-import { DocNodeType, BlockQuoteNodeType } from '../../../src/schema';
+import { DocNodeType, BlockQuoteNodeType } from '../../../src';
 
 describe('ak-editor-core/schema blockquote node', () => {
   it('throws an error if it is not named "blockquote"', () => {

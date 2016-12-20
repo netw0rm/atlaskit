@@ -1,7 +1,7 @@
 import mocha from 'mocha';
 import { expect } from 'chai';
 import b, { aVarValue } from '../_rewire-mock-b';
-import { RewireMock } from '../../src/test-helper';
+import { RewireMock } from '../../src';
 
 describe('../../../src/test-helper rewire-mock', () => {
   const rewireMock = RewireMock();

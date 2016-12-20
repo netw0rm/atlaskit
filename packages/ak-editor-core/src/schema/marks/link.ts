@@ -1,4 +1,5 @@
-import { LinkMark as BaseLinkMark, Mark } from '../../prosemirror';
+import { LinkMark as BaseLinkMark } from 'prosemirror/dist/schema-basic';
+import { Mark } from '../../prosemirror';
 
 export class LinkMarkType extends BaseLinkMark {
   get inclusiveRight() {

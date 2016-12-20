@@ -10,10 +10,8 @@ module.exports = (config) => {
 
     webpack: webpackConfig,
 
-    webpackMiddleware: {
-      stats: {
-        chunks: false,
-      },
+    mime: {
+      'application/javascript': ['ts', 'tsx'],
     },
 
     reporters: ['progress'],

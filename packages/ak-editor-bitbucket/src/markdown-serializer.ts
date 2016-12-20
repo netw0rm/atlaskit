@@ -1,10 +1,10 @@
 import {
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
-  Node
-} from 'ak-editor-prosemirror';
-import { isCodeBlockNode } from 'ak-editor-schema';
-import {Mark} from "prosemirror/dist/model/mark";
+  Node,
+  isCodeBlockNode,
+  Mark
+} from 'ak-editor-core';
 
 /**
  * This function escapes all plain-text sequences that might get converted into markdown

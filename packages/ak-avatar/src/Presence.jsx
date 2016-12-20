@@ -23,12 +23,14 @@ export default class Presence extends PureComponent {
     };
     const PresenceToDisplay = presences[this.props.presence] || null;
 
-    return (<div className={styles.locals.presence} style={wrapperStyles}>
-      {
-        this.props.children ?
-          this.props.children :
-          <PresenceToDisplay />
-      }
-    </div>);
+    return (
+      <div className={styles.locals.presence} style={wrapperStyles}>
+        {
+          this.props.children ?
+            this.props.children :
+            <PresenceToDisplay />
+        }
+      </div>
+    );
   }
 }

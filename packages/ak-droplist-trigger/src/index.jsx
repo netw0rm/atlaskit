@@ -78,7 +78,7 @@ export default class Trigger extends PureComponent {
 
   setFocus = () => {
     if (this.props.isFocused) {
-      this.ref.firstChild.focus(); // eslint-disable-line react/no-find-dom-node
+      this.ref.firstChild.focus();
     }
   }
 

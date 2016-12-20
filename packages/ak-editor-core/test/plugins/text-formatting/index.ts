@@ -71,17 +71,6 @@ describe('text-formatting', () => {
             expect(toggleMono).to.have.been.callCount(1);
           });
         });
-
-        context('when hits Shift-Cmd-`', () => {
-          it('toggles monospace mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleMono = sinon.spy(plugin, 'toggleMono');
-
-            pm.input.dispatchKey("Shift-Cmd-`");
-
-            expect(toggleMono).to.have.been.callCount(1);
-          });
-        });
       });
     } else {
       context('when not on a mac', () => {
@@ -139,17 +128,6 @@ describe('text-formatting', () => {
             const toggleMono = sinon.spy(plugin, 'toggleMono');
 
             pm.input.dispatchKey("Shift-Ctrl-M");
-
-            expect(toggleMono).to.have.been.callCount(1);
-          });
-        });
-
-        context('when hits Shift-Ctrl-`', () => {
-          it('toggles monospace mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleMono = sinon.spy(plugin, 'toggleMono');
-
-            pm.input.dispatchKey("Shift-Ctrl-`");
 
             expect(toggleMono).to.have.been.callCount(1);
           });

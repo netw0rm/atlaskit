@@ -1,5 +1,6 @@
 import parse from '../src/parse-html';
-import { Schema, chaiPlugin } from 'ak-editor-core';
+import { Schema } from 'ak-editor-core';
+import { chaiPlugin } from 'ak-editor-core/test-helper';
 import {
   a, blockquote, code, code_block, doc, emoji, strong,
   h1, h2, h3, h4, h5, h6, hr, img, ul, ol, li, p, mention

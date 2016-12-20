@@ -9,7 +9,7 @@ import { doc, strong, h1, p } from './_schema-builder';
 
 import Editor from '../src/index';
 import ImageIcon from 'ak-icon/glyph/editor/image';
-import { chaiPlugin, createEvent } from 'ak-editor-core';
+import { chaiPlugin, createEvent } from 'ak-editor-core/test-helper';
 
 chai.use(chaiPlugin);
 chai.use(((chaiEnzyme as any).default || chaiEnzyme)());

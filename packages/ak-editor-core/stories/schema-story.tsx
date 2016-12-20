@@ -1,13 +1,13 @@
 import { storiesOf } from '@kadira/storybook';
 import makeJsonSchema from '../src/schema/json-schema';
-import schema from '../src/schema';
-import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
+import { schema } from '../test-helper/schema';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { ProseMirror, OrderedMap } from '../src/prosemirror';
 import { highlightBlock } from 'highlight.js';
 import reactify from 'akutil-react';
 import Editor from './editor';
-import Ajv from 'ajv';
+import * as ajvModule from 'ajv';
 import Thenable from 'thenable';
 
 // import 'style!css!highlight.js/styles/tomorrow.css';
@@ -16,6 +16,7 @@ import TabsComponent, { Tab as TabComponent } from 'ak-tabs';
 const Tabs = reactify(TabsComponent);
 const Tab = reactify(TabComponent);
 const jsonSchema = makeJsonSchema(schema);
+const Ajv = ((ajvModule as any).default || ajvModule);
 const ajv = new Ajv();
 const validate = ajv.compile(jsonSchema);
 
@@ -42,8 +43,9 @@ storiesOf('ak-editor-core', module)
       componentDidMount() {
         const { container } = this.refs;
         if (container instanceof HTMLElement) {
-          for (const code of container.querySelectorAll('code')) {
-            highlightBlock(code);
+          const codes = container.querySelectorAll('code');
+          for (let i = 0; i < codes.length; i++) {
+            highlightBlock(codes[i]);
           }
         }
         this.fetchEditorState();

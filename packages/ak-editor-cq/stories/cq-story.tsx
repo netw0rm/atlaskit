@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import reactify from 'akutil-react';
-import ReactDOM from 'react-dom';
 import AkTabs from 'ak-tabs';
 import { Tab as AkTab } from 'ak-tabs';
 import Editor from '../src';

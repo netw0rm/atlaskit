@@ -4,7 +4,7 @@ import { schema } from '../../test-helper/schema';
 import { expect } from 'chai';
 
 describe('ak-editore-core/test-helper/schema-builder', () => {
-  const clone = (object = {}) => Object.assign({}, object);
+  const clone = (object = {}) => ({...object});
 
   describe('text', () => {
     it('returns a refs tracking node for an empty string', () => {

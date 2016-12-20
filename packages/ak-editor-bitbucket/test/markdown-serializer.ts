@@ -1,9 +1,11 @@
+import * as mocha from 'mocha';
 import markdownSerializer from '../src/markdown-serializer';
 import {
   code_block, doc, p, img, code, strong, blockquote, hr,
   h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, del, mention
 } from './_schema-builder';
 import { expect } from 'chai';
+import stringRepeat from '../src/util/string-repeat';
 
 describe('Bitbucket markdown serializer: ', () => {
   const pre = code_block();
@@ -15,7 +17,7 @@ describe('Bitbucket markdown serializer: ', () => {
       p('bar'),
     ))).to.eq('foo\n\nbar');
 
-    const longText = 'foo '.repeat(100);
+    const longText = stringRepeat('foo ', 100);
     expect(markdownSerializer.serialize(doc(
       p(longText),
       p(longText)

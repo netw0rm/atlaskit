@@ -9,6 +9,8 @@ import keyCode from 'keycode';
 
 import getAvailablePreviousItem from './internal/getAvailablePreviousItem';
 import getAvailableNextItem from './internal/getAvailableNextItem';
+import findItem from './internal/findItem';
+import findGroup from './internal/findGroup';
 
 const halfGrid = 4;
 const itemHeight = halfGrid * 7;
@@ -148,11 +150,28 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  handleItemActivation = (attrs, item) => {
-    if (attrs.item.props.type !== 'link') {
-      this.props.onItemActivated({ item });
-      this.close({ source: attrs.event.type });
+  handleItemActivation = (activatedAttrs, group, item) => {
+    const items = [...this.state.items];
+    const activatedGroup = findGroup(items, group);
+    const activatedItem = findItem(activatedGroup, item);
+
+    if (activatedAttrs.item.props.type === 'checkbox') {
+      activatedItem.isChecked = !activatedItem.isChecked;
+      this.setState({ items });
+    } else if (activatedAttrs.item.props.type === 'radio') {
+      activatedGroup.items.forEach((i) => {
+        if (i === activatedItem) {
+          i.isChecked = true;
+        } else {
+          i.isChecked = false;
+        }
+      });
+      this.setState({ items });
+    } else {
+      this.close({ source: activatedAttrs.event.type });
     }
+
+    this.props.onItemActivated(activatedItem);
   }
 
   handleAccessibility = (attrs) => {
@@ -249,8 +268,8 @@ export default class DropdownMenu extends Component {
             isHidden={item.isHidden}
             isChecked={item.isChecked}
             elemBefore={item.elemBefore}
-            onActivate={(attrs) => {
-              this.handleItemActivation(attrs, item);
+            onActivate={(activatedAttrs) => {
+              this.handleItemActivation(activatedAttrs, group, item);
             }}
             onKeyDown={this.handleAccessibility}
           >

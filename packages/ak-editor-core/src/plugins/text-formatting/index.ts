@@ -251,7 +251,8 @@ export class TextFormattingState {
       'Mod-I': ()=> this.toggleEm(),
       'Mod-U': ()=> this.toggleUnderline(),
       'Mod-Shift-S': ()=> this.toggleStrike(),
-      'Mod-Shift-M': ()=> this.toggleMono(),
+      'Mod-Shift-`': ()=> this.toggleMono(),
+      'Mod-Shift-M': ()=> this.toggleMono()
     }));
   }
 

@@ -1,7 +1,7 @@
 import {
   BlockQuoteNodeType,
   BulletListNodeType,
-  CodeMarkType,
+  MonoMarkType,
   DelMarkType,
   DocNodeType,
   EmMarkType,
@@ -35,7 +35,7 @@ export default new Schema({
 
   // Note: Marks are applied in the order they are defined.
   marks: {
-    code: CodeMarkType,
+    mono: MonoMarkType,
     em: EmMarkType,
     strike: StrikeMarkType,
     strong: StrongMarkType,
@@ -59,7 +59,7 @@ export interface CQSchema extends Schema {
   }
 
   marks: {
-    code: CodeMarkType;
+    mono: MonoMarkType;
     em: EmMarkType;
     strike: StrikeMarkType;
     strong: StrongMarkType;

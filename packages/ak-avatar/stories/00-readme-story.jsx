@@ -19,7 +19,7 @@ const avatarPropDescriptions = {
   size: 'Defines the size of the avatar. Allowed values: \'small\', \'medium\', \'large\', \'xlarge\'.',
   src: 'A url to load an image from (this can also be a base64 encoded image)',
   label: 'Defines the label for the Avatar used by screen readers as fallback content if the image fails to load.',
-  children: 'Content to use as a custom presence indicator. Accepts any html content. For best results, it is reccomended to use square content with height and width of 100%',
+  children: 'Content to use as a custom presence indicator. Accepts any html content. For best results, it is recommended to use square content with height and width of 100%',
 };
 
 const presencePropDescriptions = {

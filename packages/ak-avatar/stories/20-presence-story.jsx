@@ -21,7 +21,7 @@ storiesOf(name, module)
          right).
       </p>
       <p>
-        Therefore it is reccomended to always have a wrapping div around presences when consuming
+        Therefore it is recommended to always have a wrapping div around presences when consuming
         them separately to Avatars.
       </p>
       <div>
@@ -35,7 +35,7 @@ storiesOf(name, module)
       arbitrary HTML to the Presence component. This could be anything from an image, an svg or
       even simply a styled div.
     </p>
-    <p>For best results it is reccomended that whatever you pass in is square and has it&#39;s
+    <p>For best results it is recommended that whatever you pass in is square and has it&#39;s
       height and width set to 100%</p>
     <div style={containerStyles}>
 

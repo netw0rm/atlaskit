@@ -1,8 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import makeJsonSchema from '../src/schema/json-schema';
 import schema from '../src/schema';
-import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
+import { PureComponent } from 'react';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { ProseMirror, OrderedMap } from '../src/prosemirror';
 import { highlightBlock } from 'highlight.js';
 import reactify from 'akutil-react';

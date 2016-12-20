@@ -1,8 +1,9 @@
-import { default as chai, expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
 
-import mocha from 'mocha';
+import * as mocha from 'mocha';
 import { commands, browser, chaiPlugin, makeEditor, doc, p, hr, schema as schemaBasic, Schema } from '../../../src';
 
 import HorizontalRulePlugin from '../../../src/plugins/horizontal-rule';

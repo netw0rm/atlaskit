@@ -3,7 +3,7 @@
 
 This component is displayed as an accessible tag with an optional link and/or button to remove it.
 
-![Example tags](http://i.imgur.com/UPtxaIM.png)
+![Example tags](https://i.imgur.com/UPtxaIM.png)
 
 Although the `ak-tag` component can be used by itself, it works best in conjunction with the
 [`ak-tag-group`](https://www.npmjs.com/package/ak-tag-group) component.

@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import { akColorPrimary3 } from 'akutil-shared-styles';
 import presences from './internal/icons';
 import values from './internal/presences';
 import styles from './styles.less';
@@ -12,7 +13,7 @@ export default class Presence extends PureComponent {
   }
 
   static defaultProps = {
-    borderColor: 'white',
+    borderColor: akColorPrimary3, // white
     presence: 'none',
   }
 

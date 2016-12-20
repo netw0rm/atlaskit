@@ -28,7 +28,7 @@
 
 // Presence icon styles
 @ak-avatar-presence-border-width: 2px;
-@ak-avatar-presence-border-color: white;
+@ak-avatar-presence-border-color: @ak-color-primary3;
 
 
 .root {
@@ -84,6 +84,8 @@
 .presence {
   align-content: center;
   align-items: middle;
+  // we repeat the border color here as fallback in case the user passes an invalid color:
+  // to borderColor
   border: @ak-avatar-presence-border-width solid @ak-avatar-presence-border-color;
   border-radius: 100%;
   box-sizing: border-box;

@@ -216,7 +216,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
         if (!code || !node.isText) {
           this.render(node);
         } else if (node.text) {
-          // Generate valid inline code, fenced with series of backticks longer that backtick series inside it.
+          // Generate valid monospace, fenced with series of backticks longer that backtick series inside it.
           let text = node.text;
           const backticks = generateOuterBacktickChain(node.text as string, 1);
 

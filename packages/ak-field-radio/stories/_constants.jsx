@@ -8,12 +8,12 @@ function copyItems(items) {
 const sampleItems = [
   { name: 'animal', value: 'dog', label: 'Dog' },
   { name: 'animal', value: 'cat', label: 'Cat' },
-  { name: 'animal', value: 'hippo', label: (<span>Hippo <i>(disabled)</i></span>), disabled: true },
+  { name: 'animal', value: 'hippo', label: (<span>Hippo <i>(disabled)</i></span>), isDisabled: true },
   { name: 'animal', value: 'bald-eagle', label: (<span><BoldIcon label="B" />ald eagle</span>) },
 ];
 
 const sampleItemsWithSelection = copyItems(sampleItems);
-sampleItemsWithSelection[1].selected = true;
+sampleItemsWithSelection[1].isSelected = true;
 
 const sampleItemsWithDefault = copyItems(sampleItems);
 sampleItemsWithDefault[1].defaultSelected = true;

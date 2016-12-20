@@ -19,10 +19,10 @@ export default class RadioGroup extends PureComponent {
     this.props.items.map((item, index) => (
       <Radio
         key={index}
-        disabled={item.disabled}
+        isDisabled={item.isDisabled}
+        isSelected={item.isSelected}
         name={item.name}
         onChange={this.props.onRadioChange}
-        selected={item.selected}
         value={item.value}
       >
         {item.label}

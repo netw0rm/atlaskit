@@ -30,7 +30,7 @@ export default class RadioGroup extends PureComponent {
     if (this.state.selectedValue) {
       return this.props.items.map(item => (
         item.value === this.state.selectedValue
-          ? { ...item, ...{ selected: true } }
+          ? { ...item, ...{ isSelected: true } }
           : item
       ));
     }
@@ -40,7 +40,7 @@ export default class RadioGroup extends PureComponent {
     if (hasDefaultSelected) {
       return this.props.items.map(item => (
         item.defaultSelected
-          ? { ...item, ...{ selected: true } }
+          ? { ...item, ...{ isSelected: true } }
           : item
       ));
     }

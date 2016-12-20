@@ -16,8 +16,8 @@ describe(name, () => {
   describe('AkRadioGroup', () => {
     const sampleItems = [
       { name: 'test', value: '1', label: 'one' },
-      { name: 'test', value: '2', label: 'two', selected: true },
-      { name: 'test', value: '3', label: <i>three</i>, disabled: true },
+      { name: 'test', value: '2', label: 'two', isSelected: true },
+      { name: 'test', value: '3', label: <i>three</i>, isDisabled: true },
     ];
 
     describe('exports', () => {
@@ -53,8 +53,8 @@ describe(name, () => {
             expect(radio.prop('name')).to.equal(item.name);
             expect(radio.prop('value')).to.equal(item.value);
             expect(radio.prop('children')).to.equal(item.label);
-            expect(radio.prop('disabled')).to.equal(!!item.disabled);
-            expect(radio.prop('selected')).to.equal(!!item.selected);
+            expect(radio.prop('isDisabled')).to.equal(!!item.isDisabled);
+            expect(radio.prop('isSelected')).to.equal(!!item.isSelected);
           }
         });
       });
@@ -86,7 +86,7 @@ describe(name, () => {
       function expectRadioSelected(wrapper, index) {
         const radios = wrapper.find(Radio);
         for (let i = 0; i < radios.length; i++) {
-          expect(radios.at(i).prop('selected')).to.equal(index === i);
+          expect(radios.at(i).prop('isSelected')).to.equal(index === i);
         }
       }
 
@@ -94,11 +94,11 @@ describe(name, () => {
         return expectRadioSelected(wrapper, -1);
       }
 
-      it('selects the radio with selected key', () => {
+      it('selects the radio with isSelected key', () => {
         const items = [
           { name: 'n', value: '0' },
           { name: 'n', value: '1' },
-          { name: 'n', value: '2', selected: true },
+          { name: 'n', value: '2', isSelected: true },
         ];
         const wrapper = shallow(<AkRadioGroup items={items} />);
         expectRadioSelected(wrapper, 2);
@@ -116,7 +116,7 @@ describe(name, () => {
         const items = [
           { name: 'n', value: '0' },
           { name: 'n', value: '1' },
-          { name: 'n', value: '2', selected: true, disabled: true },
+          { name: 'n', value: '2', isSelected: true, isDisabled: true },
         ];
         const wrapper = shallow(<AkRadioGroup items={items} />);
         expectRadioSelected(wrapper, 2);

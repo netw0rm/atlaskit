@@ -11,8 +11,8 @@ function changeHandler(event) {
 storiesOf(name, module)
   .add('Radio items', () => ([
     <AkRadio name="not-selected" value="true" onChange={changeHandler}>Not selected</AkRadio>,
-    <AkRadio name="selected" value="true" onChange={changeHandler} selected>Selected</AkRadio>,
-    <AkRadio name="disabled" value="true" onChange={changeHandler} disabled>Disabled</AkRadio>,
-    <AkRadio name="selected-disabled" value="true" onChange={changeHandler} selected disabled>Selected + disabled</AkRadio>,
+    <AkRadio name="selected" value="true" onChange={changeHandler} isSelected>Selected</AkRadio>,
+    <AkRadio name="disabled" value="true" onChange={changeHandler} isDisabled>Disabled</AkRadio>,
+    <AkRadio name="selected-disabled" value="true" onChange={changeHandler} isSelected isDisabled>Selected + disabled</AkRadio>,
     <AkRadio name="markup-content" value="true" onChange={changeHandler}><b>Markup</b> in the <a href="/link">content</a></AkRadio>,
   ]));

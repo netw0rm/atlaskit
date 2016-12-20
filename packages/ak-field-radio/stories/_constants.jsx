@@ -1,5 +1,4 @@
 import React from 'react';
-import BoldIcon from 'ak-icon/glyph/editor/bold';
 
 function copyItems(items) {
   return items.map(item => ({ ...item }));
@@ -9,7 +8,6 @@ const sampleItems = [
   { name: 'animal', value: 'dog', label: 'Dog' },
   { name: 'animal', value: 'cat', label: 'Cat' },
   { name: 'animal', value: 'hippo', label: (<span>Hippo <i>(disabled)</i></span>), isDisabled: true },
-  { name: 'animal', value: 'bald-eagle', label: (<span><BoldIcon label="B" />ald eagle</span>) },
 ];
 
 const sampleItemsWithSelection = copyItems(sampleItems);

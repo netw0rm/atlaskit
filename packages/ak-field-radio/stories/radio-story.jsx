@@ -5,14 +5,23 @@ import { AkRadio } from '../src';
 import { name } from '../package.json';
 
 function changeHandler(event) {
-  console.log(`Radio button "${event.target.name}" was selected.`);
+  console.log(`Radio item for "${event.target.name}" was selected.`);
 }
 
+const imports = [
+  ['React', 'react'],
+  ['{ AkRadio }', 'ak-field-radio'],
+];
+
+const scripts = [changeHandler];
+
 storiesOf(name, module)
-  .add('Radio items', () => ([
-    <AkRadio name="not-selected" value="true" onChange={changeHandler}>Not selected</AkRadio>,
-    <AkRadio name="selected" value="true" onChange={changeHandler} selected>Selected</AkRadio>,
-    <AkRadio name="disabled" value="true" onChange={changeHandler} disabled>Disabled</AkRadio>,
-    <AkRadio name="selected-disabled" value="true" onChange={changeHandler} selected disabled>Selected + disabled</AkRadio>,
-    <AkRadio name="markup-content" value="true" onChange={changeHandler}><b>Markup</b> in the <a href="/link">content</a></AkRadio>,
-  ]));
+  .addCodeExampleStory('Radio items', () => (
+    <div>
+      <AkRadio name="not-selected" value="true" onChange={changeHandler}>Not selected</AkRadio>
+      <AkRadio name="selected" value="true" onChange={changeHandler} isSelected>Selected</AkRadio>
+      <AkRadio name="disabled" value="true" onChange={changeHandler} isDisabled>Disabled</AkRadio>
+      <AkRadio name="selected-disabled" value="true" onChange={changeHandler} isSelected isDisabled>Selected + disabled</AkRadio>
+      <AkRadio name="markup-content" value="true" onChange={changeHandler}><b>Markup</b> in the <a href="/link">content</a></AkRadio>
+    </div>
+  ), { imports, scripts });

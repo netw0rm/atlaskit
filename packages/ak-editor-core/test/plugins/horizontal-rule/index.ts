@@ -4,7 +4,8 @@ import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
 import * as mocha from 'mocha';
-import { commands, browser, chaiPlugin, makeEditor, doc, p, hr, schema as schemaBasic, Schema } from '../../../src';
+import { commands, browser, schema as schemaBasic, Schema } from '../../../src';
+import { chaiPlugin, makeEditor, doc, p, hr } from '../../../test-helper';
 
 import HorizontalRulePlugin from '../../../src/plugins/horizontal-rule';
 

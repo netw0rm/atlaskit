@@ -13,12 +13,12 @@ export const h3 = nodeFactory(schema.nodes.heading, { level: 3 });
 export const h4 = nodeFactory(schema.nodes.heading, { level: 4 });
 export const h5 = nodeFactory(schema.nodes.heading, { level: 5 });
 export const h6 = nodeFactory(schema.nodes.heading, { level: 6 });
-export const hr = nodeFactory(schema.nodes.hr);
+export const hr = nodeFactory(schema.nodes.horizontal_rule);
 export const li = nodeFactory(schema.nodes.list_item);
 export const ol = nodeFactory(schema.nodes.ordered_list);
 
 // Marks
-export const code = markFactory(schema.marks.code);
+export const mono = markFactory(schema.marks.mono);
 export const strike = markFactory(schema.marks.strike);
 export const em = markFactory(schema.marks.em);
 export const strong = markFactory(schema.marks.strong);

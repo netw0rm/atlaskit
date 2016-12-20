@@ -34,7 +34,7 @@ export default class InlineEdit extends PureComponent {
      *
      * This node should allow the user to edit the value of the field.
      *
-     * If this node is not supplied, the component will display in read-only mode.
+     * If this node is undefined/null/false, the component will display in read-only mode.
      *
      * @memberof InlineEdit
      * @type {ReactNode}
@@ -188,7 +188,7 @@ export default class InlineEdit extends PureComponent {
   }
 
   isReadOnly = () =>
-    typeof this.props.editView === 'undefined'
+    !this.props.editView
 
   shouldShowEditView = () =>
     this.props.isEditing && !this.isReadOnly()

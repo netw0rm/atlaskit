@@ -1,4 +1,5 @@
-import React, { PureComponent, ReactElement } from 'react';
+import * as React from 'react';
+import { PureComponent, ReactElement } from 'react';
 import { ProseMirror } from 'ak-editor-prosemirror';
 import { BlockTypeState } from 'ak-editor-plugin-block-type';
 import { HyperlinkState } from 'ak-editor-plugin-hyperlink';

@@ -8,12 +8,23 @@ import { resultC, resultCraig } from '../_mention-data';
 
 const baseUrl = 'https://bogus/';
 
+const defaultSecurityHeader = 'X-Bogus';
+
+const header = code => ({
+  headers: {
+    [defaultSecurityHeader]: code,
+  },
+});
+
+const getSecurityHeader = call => call[0].headers.get(defaultSecurityHeader);
+
+const defaultSecurityCode = '10804';
+
 const apiConfig = {
   url: baseUrl,
   securityProvider() {
-    return 10804;
+    return header(defaultSecurityCode);
   },
-  // containerId: 2595975,
 };
 
 function checkOrder(expected, actual) {
@@ -28,55 +39,37 @@ function checkOrder(expected, actual) {
   }
 }
 
-fetchMock
-  .mock(/\/mentions\/search\?.*query=craig(&|$)/, {
-    body: JSON.stringify({
-      mentions: resultCraig,
-    }),
-  })
-  .mock(/\/mentions\/search\?.*query=c(&|$)/, {
-    body: JSON.stringify({
-      mentions: resultC,
-    }),
-  })
-  .mock(/\/mentions\/search\?.*query=delay(&|$)/, {
-    // "delay" is like "c", but delayed
-    body: JSON.stringify({
-      mentions: resultC,
-    }),
-  })
-  .mock(/\/mentions\/search\?.*query=broken(&|$)/, 500)
-  .mock(/\/mentions\/record\?selectedUserId=\d+$/, {
-    body: '',
-  }, { name: 'record' });
-
 describe('MentionResource', () => {
-  const defaultFetch = global.fetch;
-  const delayMatch = /\/mentions\/search\?.*query=delay(&|$)/;
-
-  before(() => {
-    global.fetch = (input, init) => {
-      let url = input;
-      if (typeof url === 'object') {
-        // Request object, not url string
-        url = url.url;
-      }
-      if (delayMatch.test(url)) {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            defaultFetch(input, init).then(
-              (response) => { resolve(response); },
-              (reason) => { reject(reason); }
-            );
-          }, 100);
-        });
-      }
-      return defaultFetch(input, init);
-    };
+  beforeEach(() => {
+    fetchMock
+      .mock(/\/mentions\/search\?.*query=craig(&|$)/, {
+        body: {
+          mentions: resultCraig,
+        },
+      })
+      .mock(/\/mentions\/search\?.*query=c(&|$)/, {
+        body: {
+          mentions: resultC,
+        },
+      })
+      .mock(/\/mentions\/search\?.*query=delay(&|$)/, new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            // "delay" is like "c", but delayed
+            body: {
+              mentions: resultC,
+            },
+          });
+        }, 100);
+      }))
+      .mock(/\/mentions\/search\?.*query=broken(&|$)/, 500)
+      .mock(/\/mentions\/record\?selectedUserId=\d+$/, {
+        body: '',
+      }, { name: 'record' });
   });
 
-  after(() => {
-    global.fetch = defaultFetch;
+  afterEach(() => {
+    fetchMock.restore();
   });
 
   describe('#subscribe', () => {
@@ -154,7 +147,7 @@ describe('MentionResource', () => {
           done();
         }
         if (results.length > 1) {
-          assert.fail('More than one response was unexpected.');
+          assert.fail(results.length, 1, 'More than one response was unexpected.');
         }
       });
       resource.filter('delay');
@@ -166,11 +159,93 @@ describe('MentionResource', () => {
     it('error response', (done) => {
       const resource = new MentionResource(apiConfig);
       resource.subscribe('test1', () => {
-        assert.fail('Should not be called');
+        assert.fail('listener called', 'listener not called');
       }, () => {
         done();
       });
       resource.filter('broken');
+    });
+  });
+
+  describe('#filter auth issues', () => {
+    it('401 error once retry', (done) => {
+      const authUrl = 'https://authbogus/';
+      const matcher = {
+        name: 'authonce',
+        matcher: `begin:${authUrl}`,
+      };
+
+      fetchMock.mock({ ...matcher, response: 401, times: 1 })
+      .mock({ ...matcher,
+        response: {
+          body: {
+            mentions: resultCraig,
+          },
+        },
+        times: 1,
+      });
+
+      const refreshedSecurityProvider = sinon.stub();
+      refreshedSecurityProvider.returns(Promise.resolve(header('666')));
+
+      const retryConfig = {
+        ...apiConfig,
+        url: authUrl,
+        refreshedSecurityProvider,
+      };
+      const resource = new MentionResource(retryConfig);
+      resource.subscribe('test1', () => {
+        try {
+          expect(refreshedSecurityProvider.callCount, 'refreshedSecurityProvider called once').to.equal(1);
+          const calls = fetchMock.calls(matcher.name);
+          expect(calls.length, 'number of calls to fetch').to.equal(2);
+          expect(getSecurityHeader(calls[0]), 'first call').to.equal(defaultSecurityCode);
+          expect(getSecurityHeader(calls[1]), 'forced refresh call').to.equal('666');
+          done();
+        } catch (ex) {
+          done(ex);
+        }
+      }, (err) => {
+        assert.fail('listener error called', 'listener error not called');
+        done(err);
+      });
+      resource.filter('test');
+    });
+
+    it('401 error twice retry', (done) => {
+      const authUrl = 'https://authbogus/';
+      const matcher = {
+        name: 'authtwice',
+        matcher: `begin:${authUrl}`,
+      };
+
+      fetchMock.mock({ ...matcher, response: 401 });
+
+      const refreshedSecurityProvider = sinon.stub();
+      refreshedSecurityProvider.returns(Promise.resolve(header(666)));
+
+      const retryConfig = {
+        ...apiConfig,
+        url: authUrl,
+        refreshedSecurityProvider,
+      };
+      const resource = new MentionResource(retryConfig);
+      resource.subscribe('test1', () => {
+        assert.fail('listener called', 'listener not called');
+      }, (err) => {
+        try {
+          expect(refreshedSecurityProvider.callCount, 'refreshedSecurityProvider called once').to.equal(1);
+          expect(err.code, 'response code').to.be.equal(401);
+          const calls = fetchMock.calls(matcher.name);
+          expect(calls.length, 'number of calls to fetch').to.equal(2);
+          expect(getSecurityHeader(calls[0]), 'first call').to.equal(defaultSecurityCode);
+          expect(getSecurityHeader(calls[1]), 'forced refresh call').to.equal('666');
+          done();
+        } catch (ex) {
+          done(ex);
+        }
+      });
+      resource.filter('test');
     });
   });
 

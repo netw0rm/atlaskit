@@ -1,5 +1,6 @@
 import { Schema, Text } from '../../../src';
-import { default as chai, expect } from 'chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
 import { toHTML, fromHTML } from '../../../src';
 import { DocNodeType, EmojiNodeType } from '../../../src';
 

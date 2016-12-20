@@ -1,6 +1,8 @@
 # Mention
 
-The main purpose of the blanket component is to provide the overlay layer for components such as a modal dialog or a tooltip.
+The main purpose of the mention component is to provide a mention picker for choosing users to mention within a text field or editor.
+
+It includes support for rest based searching and custom search implementations.
 
 ![Example mention](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-mention/docs/mention.png)
 
@@ -11,7 +13,7 @@ Interact with a [live demo of the ak-mention](https://aui-cdn.atlassian.com/atla
 ## Installation
 
 ```sh
-npm install ak-blanket
+npm install ak-mention
 ```
 
 ## Using the component

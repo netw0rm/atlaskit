@@ -49,6 +49,7 @@ const standardConfig = {
   },
   noParse: [
     /sinon/,
+    /ajv\.bundle\.js/,
   ],
   module: {
     loaders: [

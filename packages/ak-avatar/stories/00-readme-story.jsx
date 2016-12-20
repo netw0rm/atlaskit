@@ -23,7 +23,8 @@ const avatarPropDescriptions = {
 
 const presencePropDescriptions = {
   presence: 'Indicates a user\'s online status by showing a small icon on the avatar itself. Allowed values: \'online\', \'offline\', \'busy\' or \'none\'',
-  children: 'Content to use as a custom presence indicator (usually not required if consuming Presence separate to Avatar)',
+  borderColor: 'Used to override the default border color of the presence indicator. Accepts any color argument that the border-color CSS property accepts.',
+  children: 'Content to use as a custom presence indicator (usually not required if consuming Presence separate to Avatar).',
 };
 
 storiesOf(name, module)

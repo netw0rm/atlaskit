@@ -21,6 +21,10 @@
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },
+  "devDependencies": {
+    "ak-avatar": "*",
+    "akutil-readme": "^1.1.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"

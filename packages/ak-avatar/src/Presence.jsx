@@ -2,8 +2,8 @@ import React, { PureComponent, PropTypes } from 'react';
 import presences from './internal/icons';
 import values from './internal/presences';
 
-/* eslint-disable react/prefer-stateless-function */
 export default class Presence extends PureComponent {
+  static displayName = 'Presence';
   static propTypes = {
     children: PropTypes.element,
     presence: PropTypes.oneOf(values),

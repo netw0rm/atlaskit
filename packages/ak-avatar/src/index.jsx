@@ -7,44 +7,15 @@ import Image from './Image';
 import sizes from './internal/sizes';
 import presences from './internal/presences';
 
-/**
- * @description Create instances of the Avatar component in a React context.
- * @class Avatar
- */
+// we export the presence component to so that it can be consumed separately
+export { Presence };
+
 export default class Avatar extends PureComponent {
+  static displayName = 'AkAvatar';
   static propTypes = {
-    /**
-     * @description Indicates a user's online status by showing a small icon on the avatar itself.
-     * Allowed values: 'online', 'offline', 'busy' or 'none'
-     * @memberof Avatar
-     * @instance
-     * @default none
-     * @type {string}
-     */
     presence: PropTypes.oneOf(presences),
-    /**
-     * @description Defines the size of the avatar.
-     * Allowed values: 'small', 'medium', 'large', 'xlarge'.
-     * @memberof Avatar
-     * @instance
-     * @default medium
-     * @type {string}
-     */
     size: PropTypes.oneOf(sizes),
-    /**
-     * @description The source URL.
-     * @memberof Avatar
-     * @instance
-     * @type {string}
-     */
     src: PropTypes.string,
-    /**
-     * @description Defines the label for the Avatar used by screen readers as fallback content
-     * if the image fails to load.
-     * @memberof Avatar
-     * @instance
-     * @type {string}
-     */
     label: PropTypes.string,
     children: PropTypes.element,
   }

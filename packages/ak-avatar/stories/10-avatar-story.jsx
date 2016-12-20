@@ -198,7 +198,7 @@ storiesOf(name, module)
         this.changeUrl = this.changeUrl.bind(this);
         this.loadImage = this.loadImage.bind(this);
         this.state = {
-          url: 'https://bytebucket.org/atlassian/atlaskit/raw/8d45a00c570fa08e54ab2ef3610fa5d794479ece/packages/ak-icon/src/icons/atlassian.svg',
+          url: 'https://design.atlassian.com/images/avatars/project-128.png',
           avatar: <DefaultAvatar size="xlarge" label="This is an avatar!" />,
         };
       }

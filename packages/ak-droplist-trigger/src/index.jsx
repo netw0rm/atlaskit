@@ -54,6 +54,13 @@ export default class Trigger extends PureComponent {
      * @type {Boolean}
      */
     isFocused: PropTypes.bool,
+    /**
+     * @description controls whether the trigger is tabbable
+     * @memberof Trigger
+     * @default false
+     * @type {Boolean}
+     */
+    isNotTabbable: PropTypes.bool,
     children: PropTypes.node,
     style: PropTypes.object,  // eslint-disable-line react/forbid-prop-types
     className: PropTypes.string,
@@ -128,9 +135,10 @@ export default class Trigger extends PureComponent {
             isSelected={props.isOpened}
             isDisabled={props.isDisabled}
             iconAfter={Icon}
+            tabIndex={props.isDisabled || props.isNotTabbable ? -1 : 0}
           >{props.children}</Button>) :
           (<div
-            tabIndex={props.isDisabled ? null : 0}
+            tabIndex={props.isDisabled || props.isNotTabbable ? -1 : 0}
             className={styles.trigger}
           >{props.children}</div>)
         }

@@ -40,6 +40,26 @@ describe(name, () => {
       expect(wrapper).to.not.have.descendants(`.${styles.locals.trigger}`);
       expect(wrapper).to.contain(TriggerSample);
     });
+
+    it('should render tabIndex attribute', () => {
+      let wrapper = mount(<Trigger />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '0');
+
+      wrapper = mount(<Trigger type="button" />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '0');
+
+      wrapper = mount(<Trigger isDisabled />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
+
+      wrapper = mount(<Trigger type="button" isDisabled />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
+
+      wrapper = mount(<Trigger isNotTabbable />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
+
+      wrapper = mount(<Trigger type="button" isNotTabbable />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
+    });
   });
 
   describe('props', () => {

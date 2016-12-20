@@ -1,6 +1,6 @@
 import * as mocha from 'mocha';
 import { p, text, nodeFactory, markFactory, sequence, RefsTracker } from '../src/schema-builder';
-import schema from 'ak-editor-schema';
+import { schema } from 'ak-editor-core';
 import { expect } from 'chai';
 
 describe('ak-editor-test schema-builder', () => {

@@ -1,4 +1,4 @@
-import { Fragment, Node, Mark, Text, Slice, NodeType } from 'ak-editor-prosemirror';
+import { Fragment, Node, Mark, Text, Slice, NodeType } from 'ak-editor-core';
 
 function isNodeOrFragment(thing: any): thing is Node | Fragment {
   // Using a simple `instanceof` check is intentionally avoided here to make

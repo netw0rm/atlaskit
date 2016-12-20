@@ -3,8 +3,8 @@ import styles from 'style!../less/ContainerHeader.less';
 
 export default class ContainerHeader extends PureComponent {
   static propTypes = {
-    text: PropTypes.string,
     icon: PropTypes.node,
+    text: PropTypes.string,
   }
 
   render() {

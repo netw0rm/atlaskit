@@ -4,21 +4,21 @@ import styles from 'style!../less/Drawer.less';
 
 export default class Drawer extends PureComponent {
   static propTypes = {
-    open: PropTypes.bool,
-    wide: PropTypes.bool,
     children: PropTypes.element,
+    isOpen: PropTypes.bool,
+    isWide: PropTypes.bool,
   }
   static defaultProps = {
-    wide: false,
-    open: false,
+    isOpen: false,
+    isWide: false,
   }
 
   render() {
     return (
       <div
         className={classNames(styles.drawer, {
-          [styles.open]: this.props.open,
-          [styles.wide]: this.props.wide,
+          [styles.open]: this.props.isOpen,
+          [styles.wide]: this.props.isWide,
         })}
       >
         {this.props.children}

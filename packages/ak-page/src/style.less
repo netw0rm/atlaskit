@@ -1,0 +1,14 @@
+@import '~akutil-shared-styles/src/grid.less';
+
+.page-root {
+  // box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-main-content {
+  display: flex;
+  flex: 1 1 auto;
+  padding: @ak-grid-size * 4;
+  position: relative; // required so navigation can pin itself so it renders below ak-banner
+}

@@ -1,0 +1,47 @@
+// Helper function for generating colour variants
+.bannerVariant(@name, @bg, @color) {
+  &.@{name} {
+    .banner-fixed {
+      background-color: @bg;
+      color: rgba(255, 255, 255, 0);
+    }
+  }
+
+  &.open.@{name} .banner-fixed {
+    color: @color;
+  }
+}
+
+.banner {
+  flex: 1 1 auto;
+  overflow: hidden;
+
+  .banner-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 10;
+  }
+
+  // By default the spacer + fixed element are closed
+  .banner-spacer, .banner-fixed {
+    transition: height 0.15s ease-in-out,
+                color 0.15s ease-in-out;
+    height: 0px;
+  }
+
+  // When banner has open class, spacer + fixed element are open
+  &.open .banner-spacer, &.open .banner-fixed {
+    height: 48px;
+  }
+
+  .banner-content {
+    padding: 16px;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .bannerVariant(warning, #FFC400, #172B4D);
+  .bannerVariant(error, #DE350B, #FFFFFF);
+}

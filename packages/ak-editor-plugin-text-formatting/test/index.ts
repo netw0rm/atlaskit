@@ -2,12 +2,13 @@ import TextFormattingPlugin from '../src';
 import { chaiPlugin, makeEditor } from 'ak-editor-test';
 import { browser } from 'ak-editor-prosemirror';
 import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from './_schema-builder';
-import { default as chai, expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
 
 chai.use(chaiPlugin);
-chai.use(sinonChai);
+chai.use((sinonChai as any).default || sinonChai);
 
 describe('ak-editor-plugin-text-formatting', () => {
   const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin, schema });
@@ -48,7 +49,7 @@ describe('ak-editor-plugin-text-formatting', () => {
           });
         })
 
-        /* 
+        /*
           Node: Here dispatch key 'Shift-Cmd-S' instead of 'Cmd-Shift-S',
                 Because after key binding, it was normalized.
         */
@@ -109,7 +110,7 @@ describe('ak-editor-plugin-text-formatting', () => {
           });
         })
 
-        /* 
+        /*
           Node: Here dispatch key 'Shift-Ctrl-S' instead of 'Ctrl-Shift-S',
                 Because after key binding, it was normalized.
         */
@@ -136,7 +137,7 @@ describe('ak-editor-plugin-text-formatting', () => {
         });
       });
     }
-    
+
   });
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {

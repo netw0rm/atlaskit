@@ -1,13 +1,14 @@
-import mocha from 'mocha';
-import { default as chai, expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+import * as mocha from 'mocha';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
 import HyperlinkPlugin from '../src';
 import { chaiPlugin, makeEditor, insert } from 'ak-editor-test';
 import { doc, link, linkable, schema, unlinkable } from './_schema-builder';
 
 chai.use(chaiPlugin);
-chai.use(sinonChai);
+chai.use((sinonChai as any).default || sinonChai);
 
 describe('ak-editor-plugin-hyperlink', () => {
   const editor = (doc: any) => {

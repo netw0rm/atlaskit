@@ -47,7 +47,6 @@ export default class Icon extends PureComponent {
   }
 
   static defaultProps = {
-    size: size.small,
     onClick() {},
   }
 

@@ -47,7 +47,7 @@ describe(name, () => {
       });
 
       it('should set up the initial state', () => {
-        expect(wrapper.state('value')).to.not.exist;
+        expect(wrapper.state('selectedValue')).to.not.exist;
       });
     });
 
@@ -70,24 +70,34 @@ describe(name, () => {
         });
       });
 
-      describe('props', () => {
-        describe('defaultValue prop', () => {
-          it('sets the initial value state', () => {
-            const wrapper = mount(
-              <RadioGroup items={sampleItems} defaultValue={sampleItems[0].value} />
-            );
-            expect(wrapper.state('value')).to.equal(sampleItems[0].value);
-            expect(wrapper.find(AkRadio).first()).prop('selected').to.equal(true);
-          });
+      describe('items prop with defaultValue', () => {
+        const sampleItemsWithDefault = sampleItems.map(item => ({ ...item }));
+        sampleItemsWithDefault[2].defaultSelected = true;
+
+        it('selects the item by default', () => {
+          const wrapper = mount(<RadioGroup items={sampleItemsWithDefault} />);
+          expect(wrapper.find(AkRadio).at(2)).prop('selected').to.equal(true);
+        });
+
+        it('is overridden when an item is selected', () => {
+          const wrapper = mount(<RadioGroup items={sampleItemsWithDefault} />);
+
+          const radios = wrapper.find(AkRadio);
+          radios.at(0).find('input').simulate('change');
+
+          expect(wrapper.state('selectedValue')).to.equal(sampleItemsWithDefault[0].value);
+          expect(radios.at(0)).prop('selected').to.equal(true);
+          expect(radios.at(1)).prop('selected').to.equal(false);
+          expect(radios.at(2)).prop('selected').to.equal(false);
         });
       });
 
       describe('behaviour', () => {
         it('updates the value state when a radio is changed', () => {
           const wrapper = mount(<RadioGroup items={sampleItems} />);
-          expect(wrapper.state('value')).to.not.exist;
+          expect(wrapper.state('selectedValue')).to.not.exist;
           wrapper.find(AkRadio).first().find('input').simulate('change');
-          expect(wrapper.state('value')).to.equal(sampleItems[0].value);
+          expect(wrapper.state('selectedValue')).to.equal(sampleItems[0].value);
         });
       });
     });

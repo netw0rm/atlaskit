@@ -20,6 +20,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-button": "^5.0.2",
+    "ak-icon": "^11.6.0",
     "akutil-common-test": "*",
     "akutil-react": "*"
   },

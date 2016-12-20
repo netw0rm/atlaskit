@@ -1,7 +1,8 @@
-import React, { PropTypes, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 
 import AkRadioGroup from './RadioGroup';
 import AkRadio from './Radio';
+import { itemsDefault, itemsPropTypeSmart } from './internal/constants';
 
 export {
   AkRadioGroup,
@@ -10,22 +11,44 @@ export {
 
 export default class RadioGroup extends PureComponent {
   static propTypes = {
-    defaultValue: PropTypes.string,
+    items: itemsPropTypeSmart,
   }
 
   static defaultProps = {
-    defaultValue: null,
+    items: itemsDefault,
   }
 
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
-      value: props && props.defaultValue,
+      selectedValue: null, // Overrides default once user selects a value.
     };
   }
 
+  getItems = () => {
+    // If there is a user-selected value, then select that item
+    if (this.state.selectedValue) {
+      return this.props.items.map(item => (
+        item.value === this.state.selectedValue
+          ? { ...item, ...{ selected: true } }
+          : item
+      ));
+    }
+
+    // Otherwise, look for a defaultSelected item and select that item
+    const hasDefaultSelected = this.props.items.some(item => item.defaultSelected);
+    if (hasDefaultSelected) {
+      return this.props.items.map(item => (
+        item.defaultSelected
+          ? { ...item, ...{ selected: true } }
+          : item
+      ));
+    }
+    return this.props.items;
+  }
+
   changeHandler = (event) => {
-    this.setState({ value: event.target.value });
+    this.setState({ selectedValue: event.target.value });
   }
 
   render() {
@@ -33,7 +56,7 @@ export default class RadioGroup extends PureComponent {
       <AkRadioGroup
         {...this.props}
         onRadioChange={this.changeHandler}
-        value={this.state.value}
+        items={this.getItems()}
       />
     );
   }

@@ -1,5 +1,6 @@
 import * as chai from 'chai';
 import * as sinonChai from 'sinon-chai';
+import * as mocha from 'mocha';
 import * as chaiEnzyme from 'chai-enzyme';
 import { mount, ReactWrapper } from 'enzyme';
 import * as sinon from 'sinon';

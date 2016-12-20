@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import {
   ProseMirror,
+  Keymap,
   BlockTypePlugin,
   ListsPlugin,
   TextFormattingPlugin,
@@ -133,6 +134,10 @@ export default class Editor extends PureComponent<Props, State> {
       if (context) {
         BlockTypePlugin.get(pm)!.changeContext(context);
       }
+
+      pm.addKeymap(new Keymap({
+        'Mod-Enter': this.handleSave
+      }));
 
       pm.on.change.add(this.handleChange);
       pm.focus();

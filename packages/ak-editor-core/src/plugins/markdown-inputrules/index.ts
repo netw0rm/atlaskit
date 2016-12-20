@@ -165,11 +165,11 @@ const emRule2 = new InputRule(/(?:[^_]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
 ) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
 
 // `string` should change the current text to inline code block
-const inlineCodeRule = new InputRule(/(`([^`]+)`)$/, '`', (
+const monoRule = new InputRule(/(`([^`]+)`)$/, '`', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match, pos, 'code'));
+) => replaceWithMark(pm, match, pos, 'mono'));
 
 // --- or *** should add a horizontal line
 const hrRule1 = new InputRule(/^\*\*\*$/, '*', (
@@ -195,7 +195,7 @@ export class MarkdownInputRulesPlugin {
       strongRule2,
       emRule1,
       emRule2,
-      inlineCodeRule,
+      monoRule,
       imgRule,
       linkRule,
       hrRule1,

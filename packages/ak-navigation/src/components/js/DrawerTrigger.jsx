@@ -15,7 +15,7 @@ export default class DrawerTrigger extends PureComponent {
     return (
       <button
         aria-haspopup="true"
-        onClick={() => this.props.onActivate()}
+        onClick={this.props.onActivate}
         onMouseDown={e => e.preventDefault()}
         className={styles.drawerTrigger}
       >

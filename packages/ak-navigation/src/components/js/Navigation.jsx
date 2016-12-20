@@ -90,10 +90,24 @@ export default class Navigation extends PureComponent {
   }
 
   render() {
-    const { onSearchDrawerActivated, onCreateDrawerActivated, globalSearchIcon, globalCreateIcon,
-      searchDrawerContent, createDrawerContent, containerHeader, children, isResizeable,
-      globalPrimaryItem, isSearchDrawerOpen, isCreateDrawerOpen, globalAccountItem, globalHelpItem,
-      onBlanketClicked, hasBlanket } = this.props;
+    const {
+      children,
+      containerHeader,
+      createDrawerContent,
+      globalAccountItem,
+      globalCreateIcon,
+      globalHelpItem,
+      globalPrimaryItem,
+      globalSearchIcon,
+      hasBlanket,
+      isCreateDrawerOpen,
+      isResizeable,
+      isSearchDrawerOpen,
+      onBlanketClicked,
+      onCreateDrawerActivated,
+      onSearchDrawerActivated,
+      searchDrawerContent,
+    } = this.props;
 
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();

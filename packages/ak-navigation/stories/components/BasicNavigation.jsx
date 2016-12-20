@@ -55,16 +55,17 @@ export default class BasicNavigation extends PureComponent {
             />
           </a>
         }
-        globalSearchIcon={<SearchIcon />}
-        globalCreateIcon={<CreateIcon />}
+        globalSearchIcon={<SearchIcon label="Search icon" />}
+        globalCreateIcon={<CreateIcon label="Create icon" />}
         globalPrimaryItem={
           <AkGlobalItem size="large">
-            <AtlassianIcon size="medium" />
+            <AtlassianIcon label="Atlassian icon" size="medium" />
           </AkGlobalItem>
         }
         globalHelpItem={
           <AkDropdownMenu
             position="right bottom"
+            appearance="tall"
             items={[
               {
                 heading: 'Help',
@@ -97,13 +98,14 @@ export default class BasicNavigation extends PureComponent {
             ]}
           >
             <AkGlobalItem>
-              <HelpIcon />
+              <HelpIcon label="Help icon" />
             </AkGlobalItem>
           </AkDropdownMenu>
         }
         globalAccountItem={
           <AkDropdownMenu
             position="right bottom"
+            appearance="tall"
             items={[
               {
                 heading: 'Joshua Nelson',

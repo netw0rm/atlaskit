@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-test",
-  "version": "5.5.20",
+  "version": "5.5.21",
   "description": "Editor Test web component",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

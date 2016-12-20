@@ -55,7 +55,7 @@ const buildHeaders = (secOptions) => {
 /**
  * @returns Promise containing the json response
  */
-const requestService = (baseUrl, path, data, opts, secOptions) => {
+const requestService = (baseUrl, path, data, opts, secOptions, refreshedSecurityProvider) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
   const options = {
@@ -66,6 +66,12 @@ const requestService = (baseUrl, path, data, opts, secOptions) => {
     .then((response) => {
       if (response.ok) {
         return response.json();
+      } else if (response.status === 401 && refreshedSecurityProvider) {
+        // auth issue - try once
+        debug('401 attempting a forced refresh from securityProvider');
+        return refreshedSecurityProvider().then(newSecOptions => (
+          requestService(baseUrl, path, data, opts, newSecOptions)
+        ));
       }
       return Promise.reject({
         code: response.status,
@@ -175,6 +181,10 @@ class MentionResource extends AbstractMentionResource {
    *        }
    *      }
    *   containerId: string (optional)
+   *   refreshedSecurityProvider: a function returning a promise to a
+   *     securityProvider that has just been forcibly refreshed with a
+   *     new token. Will be used for single retry per request if a 401
+   *     is returned. (optional)
    * }
    *
    */
@@ -224,17 +234,19 @@ class MentionResource extends AbstractMentionResource {
    */
   _initialState() {
     const secOptions = this._config.securityProvider();
+    const refreshedSecurityProvider = this._config.refreshedSecurityProvider;
     const data = {};
     const options = {};
 
     if (this._config.containerId) {
       data.containerId = this._config.containerId;
     }
-    return requestService(this._config.url, 'mentions/bootstrap', data, options, secOptions);
+    return requestService(this._config.url, 'mentions/bootstrap', data, options, secOptions, refreshedSecurityProvider);
   }
 
   _search(query) {
     const secOptions = this._config.securityProvider();
+    const refreshedSecurityProvider = this._config.refreshedSecurityProvider;
     const data = {
       query,
     };
@@ -242,18 +254,19 @@ class MentionResource extends AbstractMentionResource {
     if (this._config.containerId) {
       data.containerId = this._config.containerId;
     }
-    return requestService(this._config.url, 'mentions/search', data, options, secOptions);
+    return requestService(this._config.url, 'mentions/search', data, options, secOptions, refreshedSecurityProvider);
   }
 
   _recordSelection(mention) {
     const secOptions = this._config.securityProvider();
+    const refreshedSecurityProvider = this._config.refreshedSecurityProvider;
     const data = {
       selectedUserId: mention.id,
     };
     const options = {
       method: 'POST',
     };
-    return requestService(this._config.url, 'mentions/record', data, options, secOptions);
+    return requestService(this._config.url, 'mentions/record', data, options, secOptions, refreshedSecurityProvider);
   }
 }
 

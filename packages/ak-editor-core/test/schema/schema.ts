@@ -1,4 +1,4 @@
-import chai from 'chai';
+import * as chai from 'chai';
 import schema from '../../src/schema';
 import jsonSchema from '../../src/schema/json-schema';
 import Ajv from 'ajv';

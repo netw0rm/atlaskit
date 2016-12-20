@@ -1,4 +1,5 @@
-import { default as chai, expect } from 'chai';
+import * as chai from 'chai';
+import { expect } from 'chai';
 import { Node, Schema, DocNodeType, MonoMarkType, Text, fromHTML, toHTML, chaiPlugin } from '../../../src';
 
 chai.use(chaiPlugin);

@@ -1,7 +1,8 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import {
   ProseMirror,
-  Schema, 
+  Schema,
   Node,
   Keymap,
   ListsPlugin,
@@ -14,7 +15,6 @@ import {
   ImageUploadPlugin,
   Chrome
 } from 'ak-editor-core';
-
 import schema from './schema';
 import markdownSerializer from './markdown-serializer';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';

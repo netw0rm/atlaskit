@@ -18,9 +18,9 @@ export default class extends PureComponent {
 
   onConfirm = () => {
     action('onConfirm slow')();
-    this.setState({ isLoading: true, isEditing: true });
+    this.setState({ isWaiting: true, isEditing: true });
     setTimeout(() => {
-      this.setState({ isLoading: false, isEditing: false });
+      this.setState({ isWaiting: false, isEditing: false });
     }, 3000);
   }
 
@@ -42,13 +42,13 @@ export default class extends PureComponent {
   render() {
     return (
       <InlineEdit
-        editView={this.renderInput({ isEditing: !this.state.isLoading })}
+        editView={this.renderInput({ isEditing: !this.state.isWaiting })}
         readView={this.renderInput({ isEditing: false })}
         isEditing={this.state.isEditing}
         onEditRequested={() => this.setState({ isEditing: true })}
         onConfirm={this.onConfirm}
         onCancel={this.onCancel}
-        isLoading={this.state.isLoading}
+        isWaiting={this.state.isWaiting}
         isConfirmOnBlurDisabled
         {...this.props}
       />

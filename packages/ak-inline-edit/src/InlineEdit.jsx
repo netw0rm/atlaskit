@@ -49,15 +49,16 @@ export default class InlineEdit extends PureComponent {
      */
     isEditing: PropTypes.bool.isRequired,
     /**
-     * @description Whether or not inline edit is in loading state.
+     * @description Whether or not inline edit is on waiting mode.
      *
-     * Displays an ak-spinner component to show that is actively waiting for feedback.
+     * Displays a spinner to the right of the field to indicate that the value
+     * is currently being saved/validated.
      *
      * @memberof InlineEdit
      * @type {boolean}
      * @default false
      */
-    isLoading: PropTypes.bool,
+    isWaiting: PropTypes.bool,
     /**
      * @description Whether or not a validation error should be displayed.
      *
@@ -138,7 +139,7 @@ export default class InlineEdit extends PureComponent {
 
   static defaultProps = {
     isInvalid: false,
-    isLoading: false,
+    isWaiting: false,
     isLabelHidden: false,
     areActionButtonsHidden: false,
     isConfirmOnBlurDisabled: false,
@@ -207,7 +208,7 @@ export default class InlineEdit extends PureComponent {
 
   shouldRenderEditIcon = () => !this.isReadOnly() && !this.props.isInvalid;
 
-  shouldRenderSpinner = () => this.props.isLoading && this.props.isEditing;
+  shouldRenderSpinner = () => this.props.isWaiting && this.props.isEditing;
 
   renderActionButtons = () => (
     <div className={this.getActionButtonClasses()}>

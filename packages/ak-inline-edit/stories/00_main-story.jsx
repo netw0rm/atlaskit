@@ -93,7 +93,7 @@ storiesOf(name, module)
         label="Not able to edit"
         readView="Can't touch this"
         isEditing
-        isLoading
+        isWaiting
       />
     </div>
   ))

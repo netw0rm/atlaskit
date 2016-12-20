@@ -131,10 +131,10 @@ describe('ak-inline-edit', () => {
     });
   });
 
-  describe('isLoading', () => {
+  describe('isWaiting', () => {
     describe('when isEditing is false', () =>
       it('should not render Spinner', () => {
-        const fieldBase = mount(<InlineEdit {...defaultProps} isLoading />).find(FieldBase);
+        const fieldBase = mount(<InlineEdit {...defaultProps} isWaiting />).find(FieldBase);
         expect(shallow(fieldBase.prop('rightGutter'))).to.not.contain(<Spinner />);
       })
     );
@@ -143,7 +143,7 @@ describe('ak-inline-edit', () => {
       let wrapper;
 
       beforeEach(() => (
-        wrapper = shallow(<InlineEdit {...defaultProps} isLoading isEditing />)
+        wrapper = shallow(<InlineEdit {...defaultProps} isWaiting isEditing />)
       ));
 
       it('should render Spinner', () =>

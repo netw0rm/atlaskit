@@ -145,7 +145,7 @@ export default class Item extends PureComponent {
   render = () => {
     const { props } = this;
     return (
-      <span role="presentation" className={styles.wrapper}>
+      <span role="presentation">
         <Element
           isDisabled={props.isDisabled}
           isFocused={props.isFocused}

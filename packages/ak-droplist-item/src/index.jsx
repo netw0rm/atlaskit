@@ -149,6 +149,8 @@ export default class Item extends PureComponent {
         <Element
           isDisabled={props.isDisabled}
           isFocused={props.isFocused}
+          isChecked={props.isChecked}
+          isHidden={props.isHidden}
           href={props.href}
           target={props.target}
           type={props.type}

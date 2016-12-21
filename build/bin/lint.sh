@@ -40,7 +40,7 @@ eslint_jsx_exit=$?
 wait $tslint_pid
 tslint_exit=$?
 
-if [ eslint_js_exit == 0 ] && [ eslint_jsx_exit == 0 ] && [ tslint_exit == 0 ]; then
+if [ "$eslint_js_exit" == "0" ] && [ "$eslint_jsx_exit" == "0" ] && [ "$tslint_exit" == "0" ]; then
   lint_build_status "SUCCESSFUL"
 else
   lint_build_status "FAILED"

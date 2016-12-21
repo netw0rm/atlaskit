@@ -18,10 +18,10 @@ const scripts = [changeHandler];
 storiesOf(name, module)
   .addCodeExampleStory('Radio items', () => (
     <div>
-      <AkRadio name="not-selected" value="true" onChange={changeHandler}>Not selected</AkRadio>
-      <AkRadio name="selected" value="true" onChange={changeHandler} isSelected>Selected</AkRadio>
-      <AkRadio name="disabled" value="true" onChange={changeHandler} isDisabled>Disabled</AkRadio>
-      <AkRadio name="selected-disabled" value="true" onChange={changeHandler} isSelected isDisabled>Selected + disabled</AkRadio>
-      <AkRadio name="markup-content" value="true" onChange={changeHandler}><b>Markup</b> in the <a href="/link">content</a></AkRadio>
+      <AkRadio key={1} name="not-selected" value="true" onChange={changeHandler}>Not selected</AkRadio>
+      <AkRadio key={2} name="selected" value="true" onChange={changeHandler} isSelected>Selected</AkRadio>
+      <AkRadio key={3} name="disabled" value="true" onChange={changeHandler} isDisabled>Disabled</AkRadio>
+      <AkRadio key={4} name="selected-disabled" value="true" onChange={changeHandler} isSelected isDisabled>Selected + disabled</AkRadio>
+      <AkRadio key={5} name="markup-content" value="true" onChange={changeHandler}><b>Markup</b> in the <a href="/link">content</a></AkRadio>
     </div>
   ), { imports, scripts });

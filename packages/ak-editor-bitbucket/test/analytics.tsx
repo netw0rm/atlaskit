@@ -328,6 +328,11 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler).to.have.been.calledWith('atlassian.editor.format.codeblock.autoformatting');
   });
 
+  it('atlassian.editor.newline.keyboard', () => {
+    sendKeyToPm(pm, 'Shift-Enter');
+    expect(handler).to.have.been.calledWith('atlassian.editor.newline.keyboard');
+  });
+
   it('atlassian.editor.horizontalrule.keyboard', () => {
     sendKeyToPm(pm, 'Mod-Shift-minus');
     expect(handler).to.have.been.calledWith('atlassian.editor.format.horizontalrule.keyboard');

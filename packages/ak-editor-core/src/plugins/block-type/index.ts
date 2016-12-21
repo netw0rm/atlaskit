@@ -237,7 +237,7 @@ export class BlockTypeState {
   private addBasicKeymap(): void {
     this.pm.addKeymap(new Keymap({
       'Enter': () => this.splitCodeBlock(),
-      'Shift-Enter': () => this.insertNewLine()
+      'Shift-Enter': trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine())
     }));
   }
 

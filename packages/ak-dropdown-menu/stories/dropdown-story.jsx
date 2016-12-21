@@ -15,9 +15,12 @@ import {
   simpleDropdownItems,
   simpleDropdownItemsWithAvatars,
   lotsOfItems,
+  dropdownItemsWithGroups,
 } from './DropdownsData';
 
 const itemsOverride = `const simpleDropdownItems = ${JSON.stringify(simpleDropdownItems, null, 2)}`;
+const dropdownItemsWithGroupsOverride =
+  `const dropdownItemsWithGroups = ${JSON.stringify(dropdownItemsWithGroups, null, 2)}`;
 
 const imports = [
   ['React', 'react'],
@@ -125,4 +128,20 @@ storiesOf(name, module)
     overrides: {
       items: 'lotsOfItems',
     },
+  })
+  .addCodeExampleStory('Dropdown menu with a few groups', () => (
+    <div style={{ padding: '40px' }}>
+      <p>If the dropdown menu has more than one group, then all the groups should have headings.</p>
+      <div style={{ padding: '20px 0' }}>
+        <DropdownMenu triggerType="button" items={dropdownItemsWithGroups}>
+          Test
+        </DropdownMenu>
+      </div>
+    </div>
+  ), {
+    imports,
+    overrides: {
+      items: 'dropdownItemsWithGroups',
+    },
+    scripts: [dropdownItemsWithGroupsOverride],
   });

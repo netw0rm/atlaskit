@@ -145,33 +145,35 @@ export default class Item extends PureComponent {
   render = () => {
     const { props } = this;
     return (
-      <Element
-        isDisabled={props.isDisabled}
-        isFocused={props.isFocused}
-        href={props.href}
-        target={props.target}
-        type={props.type}
-        handleClick={this.handleClick}
-        handleKeyDown={this.handleKeyDown}
-        className={this.getClasses(props)}
-      >
-        {
-          props.type === 'checkbox'
-          ? <div className={styles.checkradio}><Checkbox label=" " /></div>
-          : null
-        }
-        {
-          props.type === 'radio'
-          ? <div className={styles.checkradio}><Radio label=" " /></div>
-          : null
-        }
-        {
-          props.elemBefore && props.type === 'link'
-          ? <div className={styles.elemBefore}>{ props.elemBefore }</div>
-          : null
-        }
-        <div className={styles.content}>{ props.children }</div>
-      </Element>
+      <span role="presentation">
+        <Element
+          isDisabled={props.isDisabled}
+          isFocused={props.isFocused}
+          href={props.href}
+          target={props.target}
+          type={props.type}
+          handleClick={this.handleClick}
+          handleKeyDown={this.handleKeyDown}
+          className={this.getClasses(props)}
+        >
+          {
+            props.type === 'checkbox'
+            ? <span className={styles.checkradio}><Checkbox label=" " /></span>
+            : null
+          }
+          {
+            props.type === 'radio'
+            ? <span className={styles.checkradio}><Radio label=" " /></span>
+            : null
+          }
+          {
+            props.elemBefore && props.type === 'link'
+            ? <span className={styles.elemBefore}>{ props.elemBefore }</span>
+            : null
+          }
+          <span className={styles.content}>{ props.children }</span>
+        </Element>
+      </span>
     );
   }
 }

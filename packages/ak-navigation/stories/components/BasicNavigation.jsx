@@ -33,6 +33,8 @@ export default class BasicNavigation extends PureComponent {
     super(...args);
     this.state = {
       openDrawer: null,
+      isOpen: true,
+      width: 0,
     };
   }
 
@@ -40,6 +42,13 @@ export default class BasicNavigation extends PureComponent {
     () => this.setState({
       openDrawer: this.state.openDrawer === name ? null : name,
     });
+
+  resize = (resizeState) => {
+    this.setState({
+      isOpen: resizeState.isOpen,
+      width: resizeState.width,
+    });
+  }
 
   render() {
     return (
@@ -130,8 +139,10 @@ export default class BasicNavigation extends PureComponent {
         isCreateDrawerOpen={this.state.openDrawer === 'create'}
         isSearchDrawerOpen={this.state.openDrawer === 'search'}
         onBlanketClicked={action('blanket clicked')}
-        onResize={action('resized')}
+        onResize={this.resize}
         hasBlanket
+        isOpen={this.state.isOpen}
+        width={this.state.width}
         {...this.props}
       >
         {this.props.children}

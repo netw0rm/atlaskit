@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-jira",
-  "version": "3.7.5",
+  "version": "3.7.6",
   "description": "Atlassian Editor component for JIRA",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

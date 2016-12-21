@@ -74,7 +74,7 @@ describe('ak-editor-cq encode-cxml:', () => {
         doc(p(br)));
     });
 
-    describe.only('marks formatting:', () => {
+    describe('marks formatting:', () => {
       check('<u> tag',
         '<p>Text with <u>underline words</u>.</p>',
         doc(p(

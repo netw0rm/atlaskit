@@ -102,7 +102,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
 
   @analytics('atlassian.editor.image.button')
   private handleInsertImage = () => {
-    debugger;
     const { pluginStateImageUpload } = this.props;
 
     if (pluginStateImageUpload) {

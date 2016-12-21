@@ -21,6 +21,7 @@ import {
   isHeadingNode,
   isParagraphNode
 } from '../../schema';
+import { trackAndInvoke } from '../../analytics';
 import CodeBlockPasteListener from './code-block-paste-listener';
 import transformToCodeBlock from './transform-to-code-block';
 
@@ -37,8 +38,8 @@ const Heading2 = makeBlockType('heading2', 'Heading 2', withSpecialKey('2'));
 const Heading3 = makeBlockType('heading3', 'Heading 3', withSpecialKey('3'));
 const Heading4 = makeBlockType('heading4', 'Heading 4', withSpecialKey('4'));
 const Heading5 = makeBlockType('heading5', 'Heading 5', withSpecialKey('5'));
-const Quote = makeBlockType('quote', 'Block quote', withSpecialKey('7'));
-const Code = makeBlockType('code', 'Code block', withSpecialKey('8'));
+const BlockQuote = makeBlockType('blockquote', 'Block quote', withSpecialKey('7'));
+const CodeBlock = makeBlockType('codeblock', 'Code block', withSpecialKey('8'));
 const Other = makeBlockType('other', 'Other…');
 
 export type ContextName = 'default' | 'comment' | 'pr';
@@ -67,9 +68,9 @@ export class BlockTypeState {
 
     this.addBasicKeymap();
 
-    this.addAvailableContext('pr', [NormalText, Heading1, Heading2, Heading3, Quote, Code]);
-    this.addAvailableContext('comment', [NormalText, Quote, Code]);
-    this.addAvailableContext('default', [NormalText, Heading1, Heading2, Heading3, Heading4, Heading5, Quote, Code]);
+    this.addAvailableContext('pr', [NormalText, Heading1, Heading2, Heading3, BlockQuote, CodeBlock]);
+    this.addAvailableContext('comment', [NormalText, BlockQuote, CodeBlock]);
+    this.addAvailableContext('default', [NormalText, Heading1, Heading2, Heading3, Heading4, Heading5, BlockQuote, CodeBlock]);
     this.changeContext('default');
 
     this.update();
@@ -135,13 +136,13 @@ export class BlockTypeState {
           commands.setBlockType(nodes.heading, { level: 5 })(pm);
         }
         break;
-      case Quote.name:
+      case BlockQuote.name:
         if (nodes.paragraph && nodes.blockquote) {
           commands.setBlockType(nodes.paragraph)(pm);
           commands.wrapIn(nodes.blockquote)(pm);
         }
         break;
-      case Code.name:
+      case CodeBlock.name:
         if (nodes.code_block) {
           transformToCodeBlock(nodes.code_block, pm);
         }
@@ -190,7 +191,7 @@ export class BlockTypeState {
 
     if(this.nodeBlockType(blockNodes[0]).name !== name) {
       this.changeBlockType(name);
-    } else if(name !== Quote.name){
+    } else if(name !== BlockQuote.name){
       this.changeBlockType(NormalText.name);
     } else {
       commands.lift(this.pm);
@@ -225,7 +226,8 @@ export class BlockTypeState {
 
     blockTypes.forEach((blockType) => {
       if(blockType.shortcut) {
-        bind(blockType.shortcut, () => this.toggleBlockType(blockType.name));
+        const eventName = this.analyticsEventName('keyboard', blockType.name);
+        bind(blockType.shortcut, trackAndInvoke(eventName, () => this.toggleBlockType(blockType.name)));
       }
     });
 
@@ -312,15 +314,19 @@ export class BlockTypeState {
             return Heading5;
       }
     } else if (isCodeBlockNode(node)) {
-      return Code;
+      return CodeBlock;
     } else if (isBlockQuoteNode(node)) {
-      return Quote;
+      return BlockQuote;
     } else if (isParagraphNode(node)) {
       return NormalText;
     }
 
     return Other;
   }
+
+  private analyticsEventName(eventSource: string, blockTypeName: string): string {
+    return `atlassian.editor.format.${blockTypeName}.${eventSource}`;
+  } 
 
   private addAvailableContext(name: ContextName, preferredBlockTypes: BlockType[]): void {
     let context = this.makeContext(name, preferredBlockTypes.filter(this.isBlockTypeSchemaSupported));
@@ -351,9 +357,9 @@ export class BlockTypeState {
       case Heading4:
       case Heading5:
         return !!pm.schema.nodes.heading;
-      case Quote:
+      case BlockQuote:
         return !!pm.schema.nodes.blockquote;
-      case Code:
+      case CodeBlock:
         return !!pm.schema.nodes.code_block;
     }
   }
@@ -373,8 +379,8 @@ export type BlockTypeName =
   'heading3' |
   'heading4' |
   'heading5' |
-  'quote' |
-  'code' |
+  'blockquote' |
+  'codeblock' |
   'other';
 
 export interface BlockType {

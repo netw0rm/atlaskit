@@ -115,7 +115,7 @@ export function offsetRefs(refs: Refs, offset: number): Refs {
  */
 export function sequence(...content: RefsContentItem[]) {
   let position = 0;
-  const refs = {} as Refs;
+  let refs = {} as Refs;
   const nodes = [] as RefsNode[];
 
   // It's bizarre that this is necessary. An if/else in the for...of should have
@@ -125,11 +125,11 @@ export function sequence(...content: RefsContentItem[]) {
 
   for (const node of content) {
     if (isRefsTracker(node)) {
-      Object.assign(refs, offsetRefs(node.refs, position));
+      refs = {...refs, ...offsetRefs(node.refs, position)};
     }
     if (isRefsNode(node)) {
       const thickness = node.isText ? 0 : 1;
-      Object.assign(refs, offsetRefs(node.refs, position + thickness));
+      refs = {...refs, ...offsetRefs(node.refs, position + thickness)};
       position += node.nodeSize;
       nodes.push(node as RefsNode);
     }

@@ -47,6 +47,19 @@ describe('<Tag/> component tests', () => {
     expect(onAfterRemoveAction.calledOnce).to.equal(true);
   });
 
+  it('onAfterRemoveAction should not be called if onBeforeRemoveAction returns false', () => {
+    const onAfterRemoveAction = sinon.spy();
+    const wrapper = mount(
+      <Tag
+        {...testProps}
+        onBeforeRemoveAction={() => false}
+        onAfterRemoveAction={onAfterRemoveAction}
+      />
+    );
+    wrapper.find(RemoveButton).find('button').simulate('click');
+    expect(onAfterRemoveAction.calledOnce).to.equal(false);
+  });
+
   it('Test mouse over and out over remove button', () => {
     const wrapper = mount(<Tag {...testProps} />);
     wrapper.find(RemoveButton).find('button').simulate('mouseover');

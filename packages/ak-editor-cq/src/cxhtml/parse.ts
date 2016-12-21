@@ -1,5 +1,6 @@
 import schema from '../schema';
 import parseHtml from './parse-xhtml';
+import WeakMap from './weak-map';
 import { Fragment, MarkType, Mark, Node as PMNode, TextNode } from 'ak-editor-core';
 
 const convertedNodes = new WeakMap();

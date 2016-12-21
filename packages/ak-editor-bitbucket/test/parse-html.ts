@@ -1,3 +1,4 @@
+import * as mocha from 'mocha';
 import parse from '../src/parse-html';
 import { Schema } from 'ak-editor-core';
 import { chaiPlugin } from 'ak-editor-core/test-helper';

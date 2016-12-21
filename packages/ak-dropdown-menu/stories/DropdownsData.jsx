@@ -71,6 +71,55 @@ export const simpleDropdownItemsWithAvatars = [
   },
 ];
 
+export const simpleDropdownItemsWithCheckboxes = [
+  {
+    heading: 'Languages ',
+    items: [
+      {
+        content: 'Javascript',
+        type: 'checkbox',
+      },
+      {
+        content: 'Java',
+        type: 'checkbox',
+      },
+      {
+        content: 'Ruby',
+        type: 'checkbox',
+      },
+    ],
+  },
+];
+
+export const simpleDropdownItemsWithRadio = [
+  {
+    heading: 'Languages ',
+    items: [
+      {
+        content: 'Javascript',
+        type: 'radio',
+      },
+      {
+        content: 'Java',
+        type: 'radio',
+      },
+    ],
+  },
+  {
+    heading: 'Platforms ',
+    items: [
+      {
+        content: 'Windows',
+        type: 'radio',
+      },
+      {
+        content: 'Mac',
+        type: 'radio',
+      },
+    ],
+  },
+];
+
 export const lotsOfItems = [
   {
     heading: '',

@@ -9,6 +9,8 @@ import keyCode from 'keycode';
 
 import getAvailablePreviousItem from './internal/getAvailablePreviousItem';
 import getAvailableNextItem from './internal/getAvailableNextItem';
+import findItem from './internal/findItem';
+import findGroup from './internal/findGroup';
 
 const halfGrid = 4;
 const itemHeight = halfGrid * 7;
@@ -148,10 +150,37 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  handleItemActivation = (attrs, item) => {
-    if (attrs.item.props.type !== 'link') {
-      this.props.onItemActivated({ item });
-      this.close({ source: attrs.event.type });
+  handleItemActivation = (activatedAttrs, group, item) => {
+    const items = [...this.state.items];
+    const activatedGroup = findGroup(items, group);
+    const activatedItem = findItem(activatedGroup, item);
+
+    switch (activatedAttrs.item.props.type) {
+      case 'checkbox':
+        activatedItem.isChecked = !activatedItem.isChecked;
+        this.props.onItemActivated(activatedItem);
+        this.setState({ items });
+        break;
+      case 'radio':
+        activatedGroup.items.forEach((i) => {
+          if (i === activatedItem) {
+            i.isChecked = true;
+          } else {
+            i.isChecked = false;
+          }
+        });
+        this.props.onItemActivated(activatedItem);
+        this.setState({ items });
+        break;
+      case 'link':
+        if (!activatedItem.href) {
+          this.props.onItemActivated(activatedItem);
+        }
+        this.close({ source: activatedAttrs.event.type });
+        break;
+      default:
+        this.close({ source: activatedAttrs.event.type });
+        break;
     }
   }
 
@@ -249,8 +278,8 @@ export default class DropdownMenu extends Component {
             isHidden={item.isHidden}
             isChecked={item.isChecked}
             elemBefore={item.elemBefore}
-            onActivate={(attrs) => {
-              this.handleItemActivation(attrs, item);
+            onActivate={(activatedAttrs) => {
+              this.handleItemActivation(activatedAttrs, group, item);
             }}
             onKeyDown={this.handleAccessibility}
           >

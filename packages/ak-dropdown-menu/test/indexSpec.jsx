@@ -105,6 +105,140 @@ describe(name, () => {
       trigger.simulate('click');
       expect(wrapper.state().isOpen).to.be.true;
     });
+
+    it('interacting with link item should close the dropdown', () => {
+      const items = [{
+        heading: 'group',
+        items: [
+          { content: 'item 1', href: '#' },
+        ],
+      }];
+      const wrapper = mount(<Menu items={items} defaultOpen><Trigger>text</Trigger></Menu>);
+      const item = wrapper.find('[role="menuitem"]');
+      expect(wrapper.state().isOpen).to.be.true;
+      item.simulate('click');
+      expect(wrapper.state().isOpen).to.be.false;
+    });
+
+    it('interacting with checkbox item should not close the menu', () => {
+      const items = [{
+        heading: 'group',
+        items: [
+          { content: 'item 1', type: 'checkbox' },
+        ],
+      }];
+      const wrapper = mount(<Menu items={items} defaultOpen><Trigger>text</Trigger></Menu>);
+      const item = wrapper.find('[role="menuitemcheckbox"]');
+      expect(wrapper.state().isOpen).to.be.true;
+      item.simulate('click');
+      expect(wrapper.state().isOpen).to.be.true;
+    });
+
+    it('interacting with radio item should not close the menu', () => {
+      const items = [{
+        heading: 'group',
+        items: [
+          { content: 'item 1', type: 'radio' },
+        ],
+      }];
+      const wrapper = mount(<Menu items={items} defaultOpen><Trigger>text</Trigger></Menu>);
+      const item = wrapper.find('[role="menuitemradio"]');
+      expect(wrapper.state().isOpen).to.be.true;
+      item.simulate('click');
+      expect(wrapper.state().isOpen).to.be.true;
+    });
+  });
+
+  describe('handleItemActivation', () => {
+    describe('radio', () => {
+      const attrs = { item: { props: { type: 'radio' } }, event: { type: 'click' } };
+      const item1 = { content: 'item 1', type: 'radio' };
+      const item2 = { content: 'item 2', type: 'radio' };
+      const group = {
+        heading: 'group',
+        items: [item1, item2],
+      };
+      const items = [group];
+      let wrapper;
+      let handler;
+
+      beforeEach(() => {
+        wrapper = mount(<Menu items={items} defaultOpen><Trigger>text</Trigger></Menu>);
+        handler = wrapper.instance().handleItemActivation;
+      });
+
+      it('should set `checked` to true when the radio item is activated', () => {
+        handler(attrs, group, item1);
+        const stateItems = wrapper.state('items');
+        expect(stateItems[0].items[0].isChecked).to.be.true;
+      });
+
+      it('should stay `checked` if the item is activated more then once', () => {
+        handler(attrs, group, item1);
+        handler(attrs, group, item1);
+        const stateItems = wrapper.state('items');
+        expect(stateItems[0].items[0].isChecked).to.be.true;
+      });
+
+      it('should switch `checked` item to the new one, only one item can be checked', () => {
+        handler(attrs, group, item1);
+        const stateItems = wrapper.state('items');
+        expect(stateItems[0].items[0].isChecked).to.be.true;
+        expect(stateItems[0].items[1].isChecked).to.be.false;
+        handler(attrs, group, item2);
+        expect(stateItems[0].items[0].isChecked).to.be.false;
+        expect(stateItems[0].items[1].isChecked).to.be.true;
+      });
+    });
+
+    describe('checkbox', () => {
+      let attrs;
+      let item1;
+      let item2;
+      let group = {
+        heading: 'group',
+        items: [item1, item2],
+      };
+      let items = [group];
+      let wrapper;
+      let handler;
+
+      beforeEach(() => {
+        attrs = { item: { props: { type: 'checkbox' } }, event: { type: 'click' } };
+        item1 = { content: 'item 1', type: 'checkbox' };
+        item2 = { content: 'item 2', type: 'checkbox' };
+        group = {
+          heading: 'group',
+          items: [item1, item2],
+        };
+        items = [group];
+        wrapper = shallow(<Menu items={items} defaultOpen><Trigger>text</Trigger></Menu>);
+        handler = wrapper.instance().handleItemActivation;
+      });
+
+      it('should set `checked` to true when the checkbox item is activated', () => {
+        handler(attrs, group, item1);
+        const stateItems = wrapper.state('items');
+        expect(stateItems[0].items[0].isChecked).to.be.true;
+      });
+
+      it('should toggle `checked` if the item is activated more then once', () => {
+        const stateItems = wrapper.state('items');
+        handler(attrs, group, item1);
+        handler(attrs, group, item1);
+        expect(stateItems[0].items[0].isChecked).to.be.false;
+      });
+
+      it('should not affect neighbours', () => {
+        const stateItems = wrapper.state('items');
+        handler(attrs, group, item1);
+        expect(stateItems[0].items[0].isChecked).to.be.true;
+        expect(stateItems[0].items[1].isChecked).to.be.undefined;
+        handler(attrs, group, item2);
+        expect(stateItems[0].items[0].isChecked).to.be.true;
+        expect(stateItems[0].items[1].isChecked).to.be.true;
+      });
+    });
   });
 
   describe('getAvailableNextItem', () => {

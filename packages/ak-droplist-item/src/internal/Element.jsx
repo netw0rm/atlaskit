@@ -41,7 +41,6 @@ export default class Element extends PureComponent {
     const { props } = this;
     const { href, target, type, isDisabled, isHidden, isChecked,
       handleKeyDown, handleClick, className } = props;
-
     if (href && !isDisabled) {
       return (
         <a
@@ -49,6 +48,8 @@ export default class Element extends PureComponent {
           href={href}
           target={target}
           role={ariaRoles.link}
+          aria-disabled={isDisabled}
+          aria-hidden={isHidden}
           onKeyDown={handleKeyDown}
           onClick={handleClick}
           onMouseDown={this.handleMouseDown}

@@ -2,15 +2,14 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
-
 import * as mocha from 'mocha';
+
 import { commands, browser, schema as schemaBasic, Schema } from '../../../src';
 import { chaiPlugin, makeEditor, doc, p, hr } from '../../../test-helper';
-
 import HorizontalRulePlugin from '../../../src/plugins/horizontal-rule';
 
 chai.use(chaiPlugin);
-chai.use(sinonChai);
+chai.use((sinonChai as any).default || sinonChai);
 
 describe('horizontal_rule', () => {
   const editor = (doc: any) => {

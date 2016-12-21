@@ -10,6 +10,14 @@ module.exports = (config) => {
 
     webpack: webpackConfig,
 
+    webpackMiddleware: {
+      // Reduces verbosity significantly by skipping the output of >1000 lines on
+      // the terminal. This is helpful in IDEs that have a constrained console buffer.
+      stats: {
+        chunks: false,
+      },
+    },
+
     mime: {
       'application/javascript': ['ts', 'tsx'],
     },

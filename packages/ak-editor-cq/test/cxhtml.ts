@@ -1,5 +1,6 @@
 import { parse, encode } from '../src/cxhtml';
-import { chaiPlugin, DocNode } from 'ak-editor-core';
+import { DocNode } from 'ak-editor-core';
+import { chaiPlugin } from 'ak-editor-core/test-helper';
 import {
   blockquote, br, code, doc, em, h1, h2, h3, h4, h5, h6, hr,
   li, ol, p, strike, strong, sub, sup, u, ul

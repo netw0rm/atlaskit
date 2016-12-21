@@ -31,7 +31,6 @@ describe('LESS module exports', () => {
       'akEditorCodeBackground',
       'akEditorCodeBlockPadding',
       'akEditorCodeInlinePadding',
-      'default',
     ]);
   });
 });

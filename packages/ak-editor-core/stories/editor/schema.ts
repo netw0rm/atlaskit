@@ -20,7 +20,7 @@ import {
   Text,
   MentionNodeType,
   EmojiNodeType
-} from '../../src/schema';
+} from '../../';
 
 export default new Schema({
   nodes: {

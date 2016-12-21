@@ -22,5 +22,3 @@ export { OrderedListNode, OrderedListNodeType, isOrderedListNode } from './nodes
 export { ParagraphNode, ParagraphNodeType, isParagraphNode } from './nodes/paragraph';
 export { MentionNodeType } from './nodes/mention';
 export { EmojiNodeType } from './nodes/emoji';
-
-export { schema as default } from './schema';

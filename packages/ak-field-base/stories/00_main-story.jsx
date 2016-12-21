@@ -9,7 +9,7 @@ import ExpandIcon from 'ak-icon/glyph/expand';
 import { name } from '../package.json';
 import AkFieldBase from '../src';
 import { InputFieldBase, DivFieldBase } from './shared-components';
-import { compact, subtle } from '../src/internal/appearances';
+import { compact, none, subtle } from '../src/internal/appearances';
 
 const formStyle = {
   padding: '20px',
@@ -33,6 +33,7 @@ storiesOf(name, module)
       <InputFieldBase label="Disabled state" isDisabled />
       <DivFieldBase label="Read-only state" isReadOnly />
       <InputFieldBase label="Compact state" appearance={compact} />
+      <InputFieldBase label="None (no appearance modifiers) state" appearance={none} />
       <InputFieldBase label="Subtle state" appearance={subtle} />
     </div>
   ))
@@ -130,5 +131,16 @@ storiesOf(name, module)
         label="Text on the right"
         rightGutter="important"
       />
+    </div>
+  ))
+  .add('with appearance="none"', () => (
+    <div style={formStyle}>
+      <p>Different form states combined with appearance=none</p>
+      <InputFieldBase appearance={none} label="A default field-base" />
+      <InputFieldBase appearance={none} label="Invalid state" isInvalid />
+      <InputFieldBase appearance={none} label="Focused state" isFocused />
+      <InputFieldBase appearance={none} label="Required state" isRequired />
+      <InputFieldBase appearance={none} label="Disabled state" isDisabled />
+      <DivFieldBase appearance={none} label="Read-only state" isReadOnly />
     </div>
   ));

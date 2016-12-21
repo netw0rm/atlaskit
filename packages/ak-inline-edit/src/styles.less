@@ -20,6 +20,14 @@
   display: none !important;
 }
 
+.spinner-wrapper {
+  margin-left: unit(@grid, px);
+  // TODO: Remove this when updated to specs version 1.1
+  // field-base should stay the same width so we need to provide a
+  // min-width to cover action buttons width.
+  min-width: unit(@grid*3 + 32 + 32, px);
+}
+
 .read-view-content-wrapper {
   display: inline-flex;
   max-width: 100%;

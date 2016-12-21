@@ -1,7 +1,0 @@
-{
-  "extends": "ak-base",
-  "rules": {
-    "no-underscore-dangle": 0,
-    "react/prefer-stateless-function": 0
-  }
-}

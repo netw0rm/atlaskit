@@ -60,7 +60,7 @@ export default class Element extends PureComponent {
     }
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
-      <div
+      <span
         className={className}
         tabIndex="0"
         onKeyDown={handleKeyDown}
@@ -71,7 +71,7 @@ export default class Element extends PureComponent {
         aria-disabled={isDisabled}
         aria-hidden={isHidden}
         aria-checked={isChecked}
-      >{props.children}</div>
+      >{props.children}</span>
     );
     /* eslint-enable jsx-a11y/no-static-element-interactions */
   }

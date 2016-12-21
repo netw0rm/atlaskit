@@ -1,10 +1,10 @@
 import {
   convertedHandlerCallback, Converter, dropHandler, pasteHandler
-} from '../../src/test-helper/base64fileconverter';
+} from '../../test-helper/base64fileconverter';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-describe('../../../src/test-helper base64fileconverter', () => {
+describe('ak-editor-core/test-helper base64fileconverter', () => {
   let savedFileReader: any;
 
   beforeEach(() => {

@@ -1,13 +1,24 @@
 const allConf = require('./all.js');
-const assignPattern = require('../assignPattern');
 const addPolyFills = require('../addPolyFills');
-
-const base = 'test';
-const files = `${base}/**/*.+(js|ts|tsx)`;
-const exclude = `${base}/_*.+(js|ts|tsx)`;
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = (config) => {
+  const testDirectory = `${process.cwd()}/test/`;
+  const entry = path.join(__dirname, 'single.entry.js');
+
   allConf(config);
-  assignPattern(config, files, exclude);
+
+  config.set({
+    files: [entry],
+    preprocessors: {
+      [entry]: ['webpack', 'sourcemap'],
+    },
+  });
+
+  config.webpack.plugins.push(new webpack.DefinePlugin({
+    'process.env.TEST_DIRECTORY': JSON.stringify(testDirectory),
+  }));
+
   addPolyFills(config);
 };

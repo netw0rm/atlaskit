@@ -6,7 +6,7 @@ import {
   InputRule,
   inputRules,
   allInputRules,
-  headingRule,
+  textblockTypeInputRule,
   bulletListRule,
   blockQuoteRule,
   codeBlockRule,
@@ -15,36 +15,60 @@ import {
   Node
 } from '../../prosemirror';
 
+import { service as analyticsService, trackAndInvoke } from '../../analytics';
+
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in
 // markdown (where a ordered list will always start on 1). This is a slightly modified
 // version of that input rule.
-function orderedListRule(nodeType: NodeType): InputRule {
+const orderedListRule= (nodeType: NodeType): InputRule => {
   return wrappingInputRule(/^(\d+)\. $/, " ", nodeType, (match: RegExpMatchArray) => ({}),
                            (match: RegExpMatchArray, node: Node) => node.childCount);
+}
+
+const createTrackedInputRule= (analyticsEventName: string, rule: InputRule) : InputRule => {
+  if (typeof(rule.handler) !== 'function') {
+    throw new SyntaxError('The provided cannot be tracked because it does not provide a callable handler');
+  }
+  
+  rule.handler = trackAndInvoke(analyticsEventName, rule.handler);
+  return rule;
+}
+
+const headingRule = (nodeType: NodeType, maxLevel: Number) => {
+  return textblockTypeInputRule(
+    new RegExp("^(#{1," + maxLevel + "}) $"), 
+    " ",
+    nodeType, 
+    (match: string[]) => {
+      const level = match[1].length;
+      analyticsService.trackEvent(`atlassian.editor.format.heading${level}.autoformatting`);
+      return ({ level });
+    }
+  );
 }
 
 const buildBlockRules = (schema: Schema): Array<InputRule> => {
   const rules = Array<InputRule>();
 
   if (schema.nodes.heading) {
-    rules.push(headingRule(schema.nodes.heading, 3));
+    rules.push(headingRule(schema.nodes.heading, 6));
   }
 
   if (schema.nodes.bullet_list) {
-    rules.push(bulletListRule(schema.nodes.bullet_list));
+    rules.push(createTrackedInputRule('atlassian.editor.format.list.bullet.autoformatting', bulletListRule(schema.nodes.bullet_list)));
   }
 
   if (schema.nodes.ordered_list) {
-    rules.push(orderedListRule(schema.nodes.ordered_list));
+    rules.push(createTrackedInputRule('atlassian.editor.format.list.numbered.autoformatting', orderedListRule(schema.nodes.ordered_list)));
   }
 
   if (schema.nodes.blockquote) {
-    rules.push(blockQuoteRule(schema.nodes.blockquote));
+    rules.push(createTrackedInputRule('atlassian.editor.format.blockquote.autoformatting', blockQuoteRule(schema.nodes.blockquote)));
   }
 
   if (schema.nodes.code_block) {
-    rules.push(codeBlockRule(schema.nodes.code_block));
+    rules.push(createTrackedInputRule('atlassian.editor.format.codeblock.autoformatting', codeBlockRule(schema.nodes.code_block)));
   }
 
   return rules;
@@ -84,6 +108,8 @@ function replaceWithMark(
       marks,
     )
   ).apply();
+
+  analyticsService.trackEvent(`atlassian.editor.format.${mark}.autoformatting`);
 
   pm.removeActiveMark(markType);
 

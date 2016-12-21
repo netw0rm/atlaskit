@@ -149,8 +149,10 @@ export default class DropdownMenu extends Component {
   }
 
   handleItemActivation = (attrs, item) => {
-    this.props.onItemActivated({ item });
-    this.close({ source: attrs.event.type });
+    if (attrs.item.props.type !== 'link') {
+      this.props.onItemActivated({ item });
+      this.close({ source: attrs.event.type });
+    }
   }
 
   handleAccessibility = (attrs) => {

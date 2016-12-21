@@ -6,10 +6,10 @@ import styles from 'style!./styles.less';
 /* eslint-disable-next-line react/prefer-stateless-function */
 export default class Radio extends PureComponent {
   static propTypes = {
-    disabled: PropTypes.bool,
+    isDisabled: PropTypes.bool,
+    isSelected: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func.isRequired,
-    selected: PropTypes.bool,
     value: PropTypes.string,
     children: PropTypes.oneOfType([
       PropTypes.node,
@@ -18,8 +18,8 @@ export default class Radio extends PureComponent {
   }
 
   static defaultProps = {
-    disabled: false,
-    selected: false,
+    isDisabled: false,
+    isSelected: false,
   }
 
   render() {
@@ -29,8 +29,8 @@ export default class Radio extends PureComponent {
           <span className={styles.inputWrapper}>
             <input
               className={styles.input}
-              checked={this.props.selected}
-              disabled={this.props.disabled}
+              checked={this.props.isSelected}
+              disabled={this.props.isDisabled}
               name={this.props.name}
               onChange={this.props.onChange}
               value={this.props.value}
@@ -38,8 +38,8 @@ export default class Radio extends PureComponent {
             />
             <span
               className={classnames(styles.radioIcon, {
-                [styles.disabled]: this.props.disabled,
-                [styles.selected]: this.props.selected,
+                [styles.disabled]: this.props.isDisabled,
+                [styles.selected]: this.props.isSelected,
               })}
             />
           </span>

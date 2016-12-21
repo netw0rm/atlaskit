@@ -4,6 +4,12 @@ import Button from 'ak-button';
 
 import RadioGroup, { AkRadioGroup } from '../src';
 import { name } from '../package.json';
+import {
+  sampleItems,
+  sampleItemsWithSelection,
+  sampleItemsWithDefault,
+  longSampleWithDefault,
+} from './_constants';
 
 const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
 
@@ -27,36 +33,56 @@ function radioGroupSubmitStory(content) {
   );
 }
 
-const sampleItems = [
-  { name: 'animal', value: 'dog', label: 'Dog' },
-  { name: 'animal', value: 'cat', label: 'Cat' },
-  { name: 'animal', value: 'hippo', label: (<span>Hippo <i>(disabled)</i></span>), disabled: true },
+function changeHandler(event) {
+  console.log(`Radio item for "${event.target.value}" was selected`);
+}
+
+const imports = [
+  ['React', 'react'],
+  ['{ AkRadioGroup }', 'ak-field-radio'],
+];
+
+const smartImports = [
+  ['React', 'react'],
+  ['RadioGroup', 'ak-field-radio'],
 ];
 
 storiesOf(name, module)
-  .add('Simple radio group (dumb)', () => (
+  .addCodeExampleStory('Simple radio group (dumb)', () => (
     <AkRadioGroup
       items={sampleItems}
       label="Pick your favourite animal:"
-      onRadioChange={e => (console.log(`Radio item for "${e.target.value}" was selected`))}
+      onRadioChange={changeHandler}
+    />
+), { imports, scripts: [changeHandler] })
+  .add('Simple radio group (dumb) with selection', () => (
+    <AkRadioGroup
+      items={sampleItemsWithSelection}
+      label="Pick your favourite animal:"
+      onRadioChange={changeHandler}
     />
   ))
-  .add('Simple radio group', () => (
+  .addCodeExampleStory('Simple radio group', () => (
     <RadioGroup
       items={sampleItems}
       label="Pick your favourite animal:"
     />
-  ))
+  ), { imports: smartImports })
   .add('Simple radio group with submit test', () => radioGroupSubmitStory(
     <RadioGroup
       items={sampleItems}
       label="Pick your favourite animal:"
     />
   ))
-  .add('Radio group with default value', () => (
+  .addCodeExampleStory('Radio group with default value', () => (
     <RadioGroup
-      defaultValue="hippo"
-      items={sampleItems}
+      items={sampleItemsWithDefault}
       label="Pick your favourite animal:"
     />
-  ));
+  ), { imports: smartImports })
+  .add('Radio group with many items and default', () => (
+    <RadioGroup
+      items={longSampleWithDefault}
+      label="Who is your favourite Simpsons character?"
+    />
+));

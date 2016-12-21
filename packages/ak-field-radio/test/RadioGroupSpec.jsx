@@ -16,8 +16,8 @@ describe(name, () => {
   describe('AkRadioGroup', () => {
     const sampleItems = [
       { name: 'test', value: '1', label: 'one' },
-      { name: 'test', value: '2', label: 'two' },
-      { name: 'test', value: '3', label: <i>three</i>, disabled: true },
+      { name: 'test', value: '2', label: 'two', isSelected: true },
+      { name: 'test', value: '3', label: <i>three</i>, isDisabled: true },
     ];
 
     describe('exports', () => {
@@ -53,8 +53,8 @@ describe(name, () => {
             expect(radio.prop('name')).to.equal(item.name);
             expect(radio.prop('value')).to.equal(item.value);
             expect(radio.prop('children')).to.equal(item.label);
-            expect(radio.prop('disabled')).to.equal(!!item.disabled);
-            expect(radio.prop('selected')).to.equal(false);
+            expect(radio.prop('isDisabled')).to.equal(!!item.isDisabled);
+            expect(radio.prop('isSelected')).to.equal(!!item.isSelected);
           }
         });
       });
@@ -80,36 +80,46 @@ describe(name, () => {
           expect(spy).to.have.been.calledOnce;
         });
       });
-      describe('value prop', () => {
-        function expectRadioSelected(wrapper, index) {
-          for (let i = 0; i < sampleItems.length; i++) {
-            expect(wrapper.find(Radio).at(i).prop('selected')).to.equal(index === i);
-          }
-        }
-        function expectNoRadioSelected(wrapper) {
-          return expectRadioSelected(wrapper, -1);
-        }
+    });
 
-        it('selects the radio with matching value', () => {
-          const wrapper = shallow(
-            <AkRadioGroup value={sampleItems[0].value} items={sampleItems} />
-          );
-          expectRadioSelected(wrapper, 0);
-        });
-        it('does not select an item if not specified', () => {
-          const wrapper = shallow(<AkRadioGroup items={sampleItems} />);
-          expectNoRadioSelected(wrapper);
-        });
-        it('does not select an item if value does not match a radio item', () => {
-          const wrapper = shallow(<AkRadioGroup value="non-existent value" items={sampleItems} />);
-          expectNoRadioSelected(wrapper);
-        });
-        it('can select a radio which is disabled', () => {
-          const wrapper = shallow(
-            <AkRadioGroup value={sampleItems[2].value} items={sampleItems} />
-          );
-          expectRadioSelected(wrapper, 2);
-        });
+    describe('selection', () => {
+      function expectRadioSelected(wrapper, index) {
+        const radios = wrapper.find(Radio);
+        for (let i = 0; i < radios.length; i++) {
+          expect(radios.at(i).prop('isSelected')).to.equal(index === i);
+        }
+      }
+
+      function expectNoRadioSelected(wrapper) {
+        return expectRadioSelected(wrapper, -1);
+      }
+
+      it('selects the radio with isSelected key', () => {
+        const items = [
+          { name: 'n', value: '0' },
+          { name: 'n', value: '1' },
+          { name: 'n', value: '2', isSelected: true },
+        ];
+        const wrapper = shallow(<AkRadioGroup items={items} />);
+        expectRadioSelected(wrapper, 2);
+      });
+      it('does not select an item if not specified', () => {
+        const items = [
+          { name: 'n', value: '0' },
+          { name: 'n', value: '1' },
+          { name: 'n', value: '2' },
+        ];
+        const wrapper = shallow(<AkRadioGroup items={items} />);
+        expectNoRadioSelected(wrapper);
+      });
+      it('can select a radio which is disabled', () => {
+        const items = [
+          { name: 'n', value: '0' },
+          { name: 'n', value: '1' },
+          { name: 'n', value: '2', isSelected: true, isDisabled: true },
+        ];
+        const wrapper = shallow(<AkRadioGroup items={items} />);
+        expectRadioSelected(wrapper, 2);
       });
     });
   });

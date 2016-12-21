@@ -42,7 +42,7 @@ const nodes = {
     state.wrapBlock("> ", null, node, () => state.renderContent(node));
   },
   code_block(state: MarkdownSerializerState, node: Node) {
-    if (node.attrs.params == null) {
+    if (node.attrs.params === null) {
       state.wrapBlock("    ", null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
@@ -98,7 +98,7 @@ const nodes = {
       var startOfLine = state.atBlank() || state.closed;
       state.write();
       state.out += escapeMarkdown(lines[i], startOfLine);
-      if (i != lines.length - 1) state.out += "\n"
+      if (i !== lines.length - 1) state.out += "\n"
     }
   },
   empty_line(state: MarkdownSerializerState, node: Node) {

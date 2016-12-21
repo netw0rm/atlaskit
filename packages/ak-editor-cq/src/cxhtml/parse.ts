@@ -145,6 +145,11 @@ function marksFromStyle(style: CSSStyleDeclaration): Mark[] {
             continue styles;
         }
         break;
+      case 'font-family':
+        if(value === 'monospace') {
+          marks = schema.marks.mono.create().addToSet(marks);
+          continue styles;
+        }
     }
 
     throw new Error(`Unable to derive a mark for CSS ${name}: ${value}`);
@@ -174,8 +179,8 @@ const converters = <Converter[]> [
         case 'I':
         case 'EM':
           return content ? addMarks(content, [schema.marks.em.create()]) : null;
-        case 'CODE':
-          return content ? addMarks(content, [schema.marks.code.create()]) : null;
+        case 'MONO':
+          return content ? addMarks(content, [schema.marks.mono.create()]) : null;
         case 'SUB':
         case 'SUP':
           const type = tag === 'SUB' ? 'sub' : 'sup';
@@ -202,7 +207,7 @@ const converters = <Converter[]> [
         case 'BR':
           return schema.nodes.hard_break.createChecked();
         case 'HR':
-          return schema.nodes.hr.createChecked();
+          return schema.nodes.horizontal_rule.createChecked();
         case 'UL':
           return schema.nodes.bullet_list.createChecked({}, content);
         case 'OL':

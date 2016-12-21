@@ -2,9 +2,11 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import {
   ProseMirror,
+  Keymap,
   BlockTypePlugin,
   ListsPlugin,
   TextFormattingPlugin,
+  HorizontalRulePlugin,
   Chrome,
   schema
 } from 'ak-editor-core';
@@ -126,12 +128,17 @@ export default class Editor extends PureComponent<Props, State> {
           BlockTypePlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          HorizontalRulePlugin
         ],
       });
 
       if (context) {
         BlockTypePlugin.get(pm)!.changeContext(context);
       }
+
+      pm.addKeymap(new Keymap({
+        'Mod-Enter': this.handleSave
+      }));
 
       pm.on.change.add(this.handleChange);
       pm.focus();

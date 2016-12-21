@@ -3,7 +3,7 @@ import parse from '../src/parse-html';
 import { Schema } from 'ak-editor-core';
 import { chaiPlugin } from 'ak-editor-core/test-helper';
 import {
-  a, blockquote, code, code_block, doc, emoji, strong,
+  a, blockquote, mono, code_block, doc, emoji, strong,
   h1, h2, h3, h4, h5, h6, hr, img, ul, ol, li, p, mention
 } from './_schema-builder';
 import * as chai from 'chai';
@@ -60,9 +60,9 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
       expect(parse('<p><del>text</del></p>')).to.have.textWithMarks('text', [ del ]);
     });
 
-    it('should support inline preformatted code', () => {
-      const code = schema.marks.code.create();
-      expect(parse('<p><code>text</code></p>')).to.have.textWithMarks('text', [ code ]);
+    it('should support mono', () => {
+      const mono = schema.marks.mono.create();
+      expect(parse('<p><span style="font-family: monospace;">text</span></p>')).to.have.textWithMarks('text', [ mono ]);
     });
 
     it('should support links', () => {
@@ -369,12 +369,13 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
     });
   });
 
-  describe('code', () => {
+  describe('mono', () => {
     it('inline should be parsed', () => {
       expect(parse(
-        '<p>foo <code>bar </code>baz</p>'
+        'foo <span style="font-family: monospace;">bar </span>baz'
+        
       )).to.deep.equal(doc(
-        p('foo ', code('bar '), 'baz')
+        p('foo ', mono('bar '), 'baz')
       ));
     });
 

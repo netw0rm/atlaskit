@@ -105,14 +105,6 @@ describe(name, () => {
       trigger.simulate('click');
       expect(wrapper.state().isOpen).to.be.true;
     });
-
-    it('interacting with an item should close the dropdown', () => {
-      const wrapper = mount(<Menu items={itemsList} defaultOpen><Trigger>text</Trigger></Menu>);
-      const item = mount(wrapper.children().props().content.props.children[0].props.children[0]);
-      expect(wrapper.state().isOpen).to.be.true;
-      item.simulate('click');
-      expect(wrapper.state().isOpen).to.be.false;
-    });
   });
 
   describe('getAvailableNextItem', () => {

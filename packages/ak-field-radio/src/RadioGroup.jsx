@@ -7,7 +7,7 @@ import { itemsDefault, itemsPropType } from './internal/constants';
 export default class RadioGroup extends PureComponent {
   static propTypes = {
     items: itemsPropType,
-    label: PropTypes.node,
+    label: PropTypes.string,
     onRadioChange: PropTypes.func.isRequired,
   }
 

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
 
 import AkRadioGroup from './RadioGroup';
 import AkRadio from './Radio';
@@ -12,6 +12,7 @@ export {
 export default class RadioGroup extends PureComponent {
   static propTypes = {
     items: itemsPropTypeSmart,
+    label: PropTypes.string,
   }
 
   static defaultProps = {
@@ -54,9 +55,9 @@ export default class RadioGroup extends PureComponent {
   render() {
     return (
       <AkRadioGroup
-        {...this.props}
-        onRadioChange={this.changeHandler}
         items={this.getItems()}
+        label={this.props.label}
+        onRadioChange={this.changeHandler}
       />
     );
   }

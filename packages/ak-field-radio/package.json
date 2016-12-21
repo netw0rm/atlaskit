@@ -1,7 +1,7 @@
 {
   "name": "ak-field-radio",
   "version": "1.0.0",
-  "description": "ak-field-radio React component",
+  "description": "ak-field-radio component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
@@ -20,7 +20,9 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-button": "^5.0.2",
+    "ak-field-radio": "*",
     "akutil-common-test": "*",
+    "akutil-readme": "^1.1.0",
     "akutil-react": "*"
   },
   "peerDependencies": {

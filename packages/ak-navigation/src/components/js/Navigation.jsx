@@ -83,10 +83,9 @@ export default class Navigation extends PureComponent {
     if (width > resizeExpandedBreakpoint) {
       resizeState.width = width;
     }
-    this.props.onResize(resizeState);
     this.setState({
       resizeDelta: 0,
-    });
+    }, () => this.props.onResize(resizeState));
   }
 
   render() {

@@ -68,6 +68,16 @@ describe('<Navigation />', () => {
     it('when isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
       expect(mount(<Navigation isCreateDrawerOpen={false} />).find('Drawer').at(1).props().isOpen).to.equal(false);
     });
+    it('onResize is called after the resizeDelta has been reset to 0 (so that animations are enabled again)', (done) => {
+      const navigation = shallow(<Navigation />);
+      navigation.setProps({
+        onResize: () => expect(navigation.state().resizeDelta).to.equal(0),
+      });
+      navigation.find('Resizer').simulate('resizeStart');
+      navigation.find('Resizer').simulate('resize', -300);
+      navigation.find('Resizer').simulate('resizeEnd');
+      done();
+    });
     it('globalPrimaryItem should map to global navigation\'s primaryItem', () => {
       const primaryItem = <span className="PRIMARY_ITEM" />;
       expect(mount(

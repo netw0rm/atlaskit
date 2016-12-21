@@ -145,17 +145,17 @@ export default class Item extends PureComponent {
   render = () => {
     const { props } = this;
     return (
-      <span role="presentation">
-        <Element
-          isDisabled={props.isDisabled}
-          isFocused={props.isFocused}
-          href={props.href}
-          target={props.target}
-          type={props.type}
-          handleClick={this.handleClick}
-          handleKeyDown={this.handleKeyDown}
-          className={this.getClasses(props)}
-        >
+      <Element
+        isDisabled={props.isDisabled}
+        isFocused={props.isFocused}
+        href={props.href}
+        target={props.target}
+        type={props.type}
+        handleClick={this.handleClick}
+        handleKeyDown={this.handleKeyDown}
+        className={this.getClasses(props)}
+      >
+        <span role="presentation">
           {
             props.type === 'checkbox'
             ? <span className={styles.checkradio}><Checkbox label=" " /></span>
@@ -172,8 +172,8 @@ export default class Item extends PureComponent {
             : null
           }
           <span className={styles.content}>{ props.children }</span>
-        </Element>
-      </span>
+        </span>
+      </Element>
     );
   }
 }

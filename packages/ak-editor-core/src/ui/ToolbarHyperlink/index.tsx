@@ -68,7 +68,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     });
   }
 
-  @analytics('atlassian.editor.hyperlink.button')
+  @analytics('atlassian.editor.format.hyperlink.button')
   private handleSubmit = (value: string) => {
     this.props.pluginState.addLink({ href: value });
     this.closeLinkPanel();

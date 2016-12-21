@@ -48,6 +48,7 @@ export default class PasteAdapter {
   }
 
   __onPaste__(e: ClipboardEvent) {
+    debugger;
     if (!isPastedFile(e) || !this.handlers.length) {
       return false;
     }

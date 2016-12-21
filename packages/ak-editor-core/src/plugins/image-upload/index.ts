@@ -71,6 +71,9 @@ export class ImageUploadState {
       analyticsService.trackEvent('atlassian.editor.image.drop');
       return true;
     });
+
+    this.dropAdapter.add(this.handleImageUpload);
+    this.pasteAdapter.add(this.handleImageUpload);
   }
 
   handleImageUpload = (_?: any, e?: any) : boolean => {

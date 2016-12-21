@@ -19,7 +19,7 @@ export interface State {
   orderedListHidden: boolean;
 }
 
-export default class ToolbarTextFormatting extends PureComponent<Props, State> {
+export default class ToolbarLists extends PureComponent<Props, State> {
   state: State = {
     bulletListActive: false,
     bulletListDisabled: false,

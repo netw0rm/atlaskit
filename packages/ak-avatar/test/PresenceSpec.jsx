@@ -1,9 +1,10 @@
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
-import Presence from '../src/Presence';
+// we import from index so we know we are definitely exposing Presence as a separate component
+import { Presence } from '../src/index';
 import icons from '../src/internal/icons';
 import presences from '../src/internal/presences';
 
@@ -29,6 +30,18 @@ describe('ak-avatar', () => {
       expect(wrapper).to.not.have.descendants(Presence);
       expect(wrapper).to.have.exactly(1).descendants('span');
       expect(wrapper.find('span')).to.have.className('child');
+    });
+
+    describe('borderColor prop', () => {
+      it('should be white by default', () => {
+        const wrapper = mount(<Presence presence="online" />);
+        expect(wrapper).to.have.prop('borderColor', '#FFFFFF');
+      });
+
+      it('should reflect the prop as a CSS style property', () => {
+        const wrapper = mount(<Presence presence="online" borderColor="#ff0000" />);
+        expect(wrapper).to.have.style('border-color', '#ff0000');
+      });
     });
   });
 });

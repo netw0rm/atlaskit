@@ -66,8 +66,8 @@ describe('hyperlink paste transformer', () => {
 
   it('Should convert links inside mono marks', () => {
     const { pm } = editor();
-    const content = slice(mono('http://a.com/'));
-    expect(pasted(pm, content)).to.deep.equal(slice(a({ href: 'http://a.com/' })(mono('http://a.com/'))));
+    const content = slice(p(mono('http://a.com/')));
+    expect(pasted(pm, content)).to.deep.equal(slice(p(a({ href: 'http://a.com/' })(mono('http://a.com/')))));
   });
 
   it('Should not convert links inside links', () => {

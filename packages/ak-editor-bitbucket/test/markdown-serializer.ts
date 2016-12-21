@@ -518,7 +518,7 @@ describe('Bitbucket markdown serializer: ', () => {
         )))).to.eq('foo ~~bar bar~~ baz');
       });
 
-      it('should serialize inline code', () => {
+      it('should serialize mono', () => {
         expect(markdownSerializer.serialize(doc(p(mono('foo'))))).to.eq('`foo`');
         expect(markdownSerializer.serialize(doc(p(
           'foo ',
@@ -527,7 +527,7 @@ describe('Bitbucket markdown serializer: ', () => {
         )))).to.eq('foo `bar baz` foo');
       });
 
-      describe('inline code', () => {
+      describe('mono', () => {
         it('containing backticks should be fenced properly', () => {
           expect(markdownSerializer.serialize(doc(p(
             'foo ',

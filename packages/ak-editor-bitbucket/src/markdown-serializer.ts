@@ -21,7 +21,7 @@ function escapeMarkdown(str: string, startOfLine?: boolean) : string {
 /**
  * Look for series of backticks in a string, find length of the longest one, then
  * generate a backtick chain of a length longer by one. This is the only proven way
- * to escape backticks inside code block and inline code (for python-markdown)
+ * to escape backticks inside code block and monospace (for python-markdown)
  */
 const generateOuterBacktickChain: (text: string, minLength?: number) => string = (() => {
   function getMaxLength(text: String): number {

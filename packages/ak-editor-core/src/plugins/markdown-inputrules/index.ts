@@ -164,7 +164,7 @@ const emRule2 = new InputRule(/(?:[^_]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
   pos: number
 ) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
 
-// `string` should change the current text to inline code block
+// `string` should change the current text to monospace
 const monoRule = new InputRule(/(`([^`]+)`)$/, '`', (
   pm: ProseMirror,
   match: Array<string>,

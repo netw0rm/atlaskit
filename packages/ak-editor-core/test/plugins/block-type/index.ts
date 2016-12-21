@@ -4,7 +4,8 @@ import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
 import * as mocha from 'mocha';
-import { commands, browser, chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from '../../../src';
+import { commands, browser } from '../../../src';
+import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from '../../../test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 

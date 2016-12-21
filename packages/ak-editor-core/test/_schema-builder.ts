@@ -1,4 +1,4 @@
-import { nodeFactory, markFactory } from '../src';
+import { nodeFactory, markFactory } from '../test-helper';
 import {
   DelMarkType,
   DocNodeType,

@@ -1,4 +1,4 @@
-import collapse from 'collapse-whitespace';
+import collapse from './collapse-whitespace';
 
 export default function(fragment: string): Document {
   const html = `<!doctype html><html><body>${fragment}</body></html>`;

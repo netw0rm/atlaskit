@@ -155,23 +155,33 @@ export default class DropdownMenu extends Component {
     const activatedGroup = findGroup(items, group);
     const activatedItem = findItem(activatedGroup, item);
 
-    if (activatedAttrs.item.props.type === 'checkbox') {
-      activatedItem.isChecked = !activatedItem.isChecked;
-      this.setState({ items });
-    } else if (activatedAttrs.item.props.type === 'radio') {
-      activatedGroup.items.forEach((i) => {
-        if (i === activatedItem) {
-          i.isChecked = true;
-        } else {
-          i.isChecked = false;
+    switch (activatedAttrs.item.props.type) {
+      case 'checkbox':
+        activatedItem.isChecked = !activatedItem.isChecked;
+        this.props.onItemActivated(activatedItem);
+        this.setState({ items });
+        break;
+      case 'radio':
+        activatedGroup.items.forEach((i) => {
+          if (i === activatedItem) {
+            i.isChecked = true;
+          } else {
+            i.isChecked = false;
+          }
+        });
+        this.props.onItemActivated(activatedItem);
+        this.setState({ items });
+        break;
+      case 'link':
+        if (!activatedItem.href) {
+          this.props.onItemActivated(activatedItem);
         }
-      });
-      this.setState({ items });
-    } else {
-      this.close({ source: activatedAttrs.event.type });
+        this.close({ source: activatedAttrs.event.type });
+        break;
+      default:
+        this.close({ source: activatedAttrs.event.type });
+        break;
     }
-
-    this.props.onItemActivated(activatedItem);
   }
 
   handleAccessibility = (attrs) => {

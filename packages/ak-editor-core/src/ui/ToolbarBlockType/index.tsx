@@ -4,6 +4,7 @@ import AkButton from 'ak-button';
 import { BlockType, BlockTypeState } from '../../../src/plugins/block-type';
 import Panel from '../Panel';
 import * as styles from './styles';
+import { service as analytics } from '../../analytics';
 
 export interface Props {
   pluginState: BlockTypeState;
@@ -81,6 +82,8 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       availableBlockTypes,
       currentBlockType
     });
+
+    analytics.trackEvent(`atlassian.editor.format.${blockType.name}.button`);
   }
 
   private handleToggleDropdown = () => {

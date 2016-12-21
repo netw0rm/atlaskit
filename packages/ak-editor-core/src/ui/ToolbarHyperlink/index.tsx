@@ -5,6 +5,7 @@ import { HyperlinkState } from '../../../src/plugins/hyperlink';
 import Panel from '../Panel';
 import TextInput from '../PanelTextInput';
 import IconButton from '../ToolbarIconButton';
+import { decorator as analytics } from '../../analytics';
 
 export interface Props {
   pluginState: HyperlinkState;
@@ -67,6 +68,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     });
   }
 
+  @analytics('atlassian.editor.hyperlink.button')
   private handleSubmit = (value: string) => {
     this.props.pluginState.addLink({ href: value });
     this.closeLinkPanel();

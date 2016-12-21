@@ -41,19 +41,47 @@ describe(name, () => {
     });
 
     describe('props', () => {
-      describe('name prop', () => {
+      function expectPropReflectedToInput(prop, inputProp, val) {
         it('should be reflected to the input', () => {
-          const val = 'name';
-          const wrapper = mount(<Radio name={val} />);
-          expect(wrapper.find('input')).to.have.prop('name', val);
+          const props = { [prop]: val };
+          const wrapper = mount(<Radio {...props} />);
+          expect(wrapper.find('input')).to.have.prop(inputProp, val);
+        });
+      }
+
+      describe('isDisabled prop', () => {
+        expectPropReflectedToInput('isDisabled', 'disabled', true);
+        expectPropReflectedToInput('isDisabled', 'disabled', false);
+      });
+
+      describe('isRequired prop', () => {
+        expectPropReflectedToInput('isRequired', 'required', true);
+        expectPropReflectedToInput('isRequired', 'required', false);
+      });
+
+      describe('isSelected prop', () => {
+        expectPropReflectedToInput('isSelected', 'checked', true);
+        expectPropReflectedToInput('isSelected', 'checked', false);
+      });
+
+      describe('name prop', () => {
+        expectPropReflectedToInput('name', 'name', 'name-val');
+      });
+
+      describe('onChange prop', () => {
+        const func = () => {};
+        expectPropReflectedToInput('onChange', 'onChange', func);
+
+        it('should be reflected to the input', () => {
+          const spy = sinon.spy();
+          const wrapper = mount(<Radio onChange={spy} />);
+          wrapper.find('input').simulate('change');
+          expect(spy.calledOnce).to.equal(true);
         });
       });
+
       describe('value prop', () => {
-        it('should be reflected to the input', () => {
-          const val = 'value';
-          const wrapper = mount(<Radio value={val} />);
-          expect(wrapper.find('input')).to.have.prop('value', val);
-        });
+        expectPropReflectedToInput('value', 'value', 'value-val');
       });
     });
   });

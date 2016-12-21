@@ -61,11 +61,11 @@ describe(name, () => {
           for (let i = 0; i < sampleItems.length; i++) {
             const radio = radios.at(i);
             const item = sampleItems[i];
-            expect(radio.prop('name')).to.equal(item.name);
-            expect(radio.prop('value')).to.equal(item.value);
-            expect(radio.prop('children')).to.equal(item.label);
-            expect(radio.prop('isDisabled')).to.equal(!!item.isDisabled);
-            expect(radio.prop('isSelected')).to.equal(false);
+            expect(radio).to.have.prop('name', item.name);
+            expect(radio).to.have.prop('value', item.value);
+            expect(radio).to.have.prop('children', item.label);
+            expect(radio).to.have.prop('isDisabled', item.isDisabled);
+            expect(radio).to.have.prop('isSelected', false);
           }
         });
       });

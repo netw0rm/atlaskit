@@ -52,11 +52,11 @@ describe(name, () => {
           for (let i = 0; i < sampleItems.length; i++) {
             const radio = radios.at(i);
             const item = sampleItems[i];
-            expect(radio.prop('name')).to.equal(item.name);
-            expect(radio.prop('value')).to.equal(item.value);
-            expect(radio.prop('children')).to.equal(item.label);
-            expect(radio.prop('isDisabled')).to.equal(!!item.isDisabled);
-            expect(radio.prop('isSelected')).to.equal(!!item.isSelected);
+            expect(radio).to.have.prop('name', item.name);
+            expect(radio).to.have.prop('value', item.value);
+            expect(radio).to.have.prop('children', item.label);
+            expect(radio).to.have.prop('isDisabled', !!item.isDisabled);
+            expect(radio).to.have.prop('isSelected', !!item.isSelected);
           }
         });
       });
@@ -65,7 +65,7 @@ describe(name, () => {
         it('is reflected to the FieldBase', () => {
           const label = 'string label content';
           const wrapper = shallow(<AkRadioGroup label={label} />);
-          expect(wrapper.find(Base).prop('label')).to.equal(label);
+          expect(wrapper.find(Base)).to.have.prop('label', label);
         });
       });
 
@@ -73,7 +73,15 @@ describe(name, () => {
         it('is reflected to the FieldBase', () => {
           const isRequired = true;
           const wrapper = shallow(<AkRadioGroup isRequired={isRequired} />);
-          expect(wrapper.find(Base).prop('isRequired')).to.equal(isRequired);
+          expect(wrapper.find(Base)).to.have.prop('isRequired', isRequired);
+        });
+
+        it('is reflected to each Radio item', () => {
+          const isRequired = true;
+          const wrapper = shallow(<AkRadioGroup isRequired={isRequired} />);
+          wrapper.find(Radio).forEach(radio =>
+            expect(radio).to.have.prop('isRequired', isRequired)
+          );
         });
       });
 
@@ -91,7 +99,7 @@ describe(name, () => {
       function expectRadioSelected(wrapper, index) {
         const radios = wrapper.find(Radio);
         for (let i = 0; i < radios.length; i++) {
-          expect(radios.at(i).prop('isSelected')).to.equal(index === i);
+          expect(radios.at(i)).to.have.prop('isSelected', index === i);
         }
       }
 

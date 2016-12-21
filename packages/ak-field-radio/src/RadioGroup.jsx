@@ -24,6 +24,7 @@ export default class RadioGroup extends PureComponent {
       <Radio
         key={index}
         isDisabled={item.isDisabled}
+        isRequired={this.props.isRequired}
         isSelected={item.isSelected}
         name={item.name}
         onChange={this.props.onRadioChange}

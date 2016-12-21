@@ -78,6 +78,7 @@ storiesOf(name, module)
     <RadioGroup
       items={sampleItemsWithDefault}
       label="Pick your favourite animal:"
+      isRequired
     />
   ), { imports: smartImports })
   .add('Radio group with many items and default', () => (

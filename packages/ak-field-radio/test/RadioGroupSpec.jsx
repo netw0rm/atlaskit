@@ -69,11 +69,11 @@ describe(name, () => {
         });
       });
 
-      describe('required prop', () => {
+      describe('isRequired prop', () => {
         it('is reflected to the FieldBase', () => {
-          const required = true;
-          const wrapper = shallow(<AkRadioGroup required={required} />);
-          expect(wrapper.find(Base).prop('required')).to.equal(required);
+          const isRequired = true;
+          const wrapper = shallow(<AkRadioGroup isRequired={isRequired} />);
+          expect(wrapper.find(Base).prop('isRequired')).to.equal(isRequired);
         });
       });
 

@@ -77,6 +77,7 @@ storiesOf(name, module)
           defaultOpen
           triggerType="button"
           items={simpleDropdownItemsWithCheckboxes}
+          onItemActivated={item => (console.log(item))}
         >
           Drop menu
         </DropdownMenu>
@@ -92,6 +93,7 @@ storiesOf(name, module)
           defaultOpen
           triggerType="button"
           items={simpleDropdownItemsWithRadio}
+          onItemActivated={item => (console.log(item))}
         >
           Drop menu
         </DropdownMenu>

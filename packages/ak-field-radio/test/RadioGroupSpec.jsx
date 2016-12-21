@@ -3,6 +3,7 @@ import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
+import Base from 'ak-field-base';
 
 import Radio from '../src/Radio';
 import AkRadioGroup from '../src/RadioGroup';
@@ -34,9 +35,10 @@ describe(name, () => {
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
-      it('should render a Radio for each item', () => {
+      it('should render a FieldBase containing a Radio for each item', () => {
         const wrapper = mount(<AkRadioGroup items={sampleItems} />);
-        expect(wrapper).to.have.exactly(3).descendants(Radio);
+        expect(wrapper).to.have.exactly(1).descendants(Base);
+        expect(wrapper.find(Base)).to.have.exactly(3).descendants(Radio);
       });
     });
 
@@ -60,15 +62,18 @@ describe(name, () => {
       });
 
       describe('label prop', () => {
-        it('renders label containing string', () => {
+        it('is reflected to the FieldBase', () => {
           const label = 'string label content';
           const wrapper = shallow(<AkRadioGroup label={label} />);
-          expect(wrapper.contains(label)).to.equal(true);
+          expect(wrapper.find(Base).prop('label')).to.equal(label);
         });
-        it('renders label with node', () => {
-          const label = (<p>label content</p>);
-          const wrapper = shallow(<AkRadioGroup label={label} />);
-          expect(wrapper.contains(label)).to.equal(true);
+      });
+
+      describe('required prop', () => {
+        it('is reflected to the FieldBase', () => {
+          const required = true;
+          const wrapper = shallow(<AkRadioGroup required={required} />);
+          expect(wrapper.find(Base).prop('required')).to.equal(required);
         });
       });
 

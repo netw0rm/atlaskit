@@ -7,16 +7,15 @@ import { itemsDefault, itemsPropType } from './internal/constants';
 /* eslint-disable-next-line react/prefer-stateless-function */
 export default class RadioGroup extends PureComponent {
   static propTypes = {
-    disabled: PropTypes.bool,
     items: itemsPropType,
-    label: PropTypes.node,
+    label: PropTypes.string,
     onRadioChange: PropTypes.func.isRequired,
     required: PropTypes.bool,
   }
 
   static defaultProps = {
-    disabled: false,
     items: itemsDefault,
+    label: '',
     required: false,
   }
 
@@ -39,7 +38,6 @@ export default class RadioGroup extends PureComponent {
     return (
       <Base
         appearance="none"
-        disabled={this.props.disabled}
         label={this.props.label}
         required={this.props.required}
       >

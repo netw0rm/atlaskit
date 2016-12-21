@@ -85,7 +85,9 @@ export default class Navigation extends PureComponent {
     }
     this.setState({
       resizeDelta: 0,
-    }, () => this.props.onResize(resizeState));
+    }, function callOnResizeAfterSetState() {
+      this.props.onResize(resizeState);
+    });
   }
 
   render() {

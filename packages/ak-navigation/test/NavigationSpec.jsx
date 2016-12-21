@@ -71,12 +71,14 @@ describe('<Navigation />', () => {
     it('onResize is called after the resizeDelta has been reset to 0 (so that animations are enabled again)', (done) => {
       const navigation = shallow(<Navigation />);
       navigation.setProps({
-        onResize: () => expect(navigation.state().resizeDelta).to.equal(0),
+        onResize: () => {
+          expect(navigation.state().resizeDelta).to.equal(0);
+          done();
+        },
       });
       navigation.find('Resizer').simulate('resizeStart');
       navigation.find('Resizer').simulate('resize', -300);
       navigation.find('Resizer').simulate('resizeEnd');
-      done();
     });
     it('globalPrimaryItem should map to global navigation\'s primaryItem', () => {
       const primaryItem = <span className="PRIMARY_ITEM" />;

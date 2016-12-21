@@ -10,6 +10,8 @@ import emmaAvatar from '../emma.png';
 export default class BasicNavigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
+    isOpen: PropTypes.bool,
+    width: PropTypes.number,
   }
 
   static defaultProps = {
@@ -33,8 +35,8 @@ export default class BasicNavigation extends PureComponent {
     super(...args);
     this.state = {
       openDrawer: null,
-      isOpen: true,
-      width: 0,
+      isOpen: this.props.isOpen,
+      width: this.props.width,
     };
   }
 

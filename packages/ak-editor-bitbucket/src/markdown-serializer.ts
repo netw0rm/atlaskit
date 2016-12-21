@@ -1,10 +1,11 @@
 import {
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
-  Node
-} from 'ak-editor-prosemirror';
-import { isCodeBlockNode } from 'ak-editor-schema';
-import {Mark} from "prosemirror/dist/model/mark";
+  Node,
+  isCodeBlockNode,
+  Mark
+} from 'ak-editor-core';
+import stringRepeat from './util/string-repeat';
 
 /**
  * This function escapes all plain-text sequences that might get converted into markdown
@@ -30,21 +31,9 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
     ;
   }
 
-  if (String.prototype.repeat) {
-    return function (text: String, minLength = 1): string {
-      return '`'.repeat(Math.max(minLength, getMaxLength(text) + 1));
-    }
-  } else {
-    return function (text: String, minLength = 1): string {
-      const length = Math.max(minLength, getMaxLength(text) + 1);
-      let result = '';
-
-      for (let x = 0; x < length; x++) {
-        result += '`';
-      }
-
-      return result;
-    }
+  return function (text: string, minLength = 1): string {
+    const length = Math.max(minLength, getMaxLength(text) + 1);
+    return stringRepeat('`', length);
   }
 })();
 

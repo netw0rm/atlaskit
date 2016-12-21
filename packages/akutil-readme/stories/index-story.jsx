@@ -1,32 +1,40 @@
 import { storiesOf } from '@kadira/storybook';
-import React, { PureComponent } from 'react';
+import React from 'react';
 import Readme, { Chrome, Code, Heading, Description, Props } from '../src';
 
 import { name, description } from '../package.json';
+
+import OverviewExample from './examples/overview'; // eslint-disable-line
+import ReadmeExample1 from './examples/readme1'; // eslint-disable-line
+import ReadmeExample2 from './examples/readme2'; // eslint-disable-line
+import ChromeExample from './examples/chrome'; // eslint-disable-line
+import CodeExample from './examples/code'; // eslint-disable-line
+import DescriptionExample1 from './examples/description1'; // eslint-disable-line
+import DescriptionExample2 from './examples/description2'; // eslint-disable-line
+import HeadingExample1 from './examples/heading1'; // eslint-disable-line
+import HeadingExample2 from './examples/heading2'; // eslint-disable-line
+import PropsExample from './examples/props'; // eslint-disable-line
+
+/* eslint-disable import/first, import/no-duplicates */
+import OverviewExampleRaw from '!raw!./examples/overview';
+import ReadmeExampleRaw1 from '!raw!./examples/readme1';
+import ReadmeExampleRaw2 from '!raw!./examples/readme2';
+import ChromeExampleRaw from '!raw!./examples/chrome';
+import CodeExampleRaw from '!raw!./examples/code';
+import DescriptionExampleRaw1 from '!raw!./examples/description1';
+import DescriptionExampleRaw2 from '!raw!./examples/description2';
+import HeadingExampleRaw1 from '!raw!./examples/heading1';
+import HeadingExampleRaw2 from '!raw!./examples/heading2';
+import PropsExampleRaw from '!raw!./examples/props';
+/* eslint-enable import/first, import/no-duplicates */
 
 storiesOf(name)
   .add('Overview', () => (
     <Readme component={Readme} description={description}>
       <Code
-        code={`
-          import Readme, { Code } from 'akutil-readme';
-
-          export default (
-            <Readme
-              component="ComponentName"
-              description="Short description of the component."
-            >
-              <Code>{'// Code example for your component'}</Code>
-            </Readme>
-          );
-        `}
+        code={OverviewExampleRaw}
       >
-        <Readme
-          component="ComponentName"
-          description="Short description of the component."
-        >
-          <Code>{'// Code example for your component'}</Code>
-        </Readme>
+        {OverviewExample}
       </Code>
     </Readme>
   ))
@@ -38,50 +46,16 @@ storiesOf(name)
         of the component in its most basic form to give the consumer a general overview if its API.
       </Description>
       <Code
-        code={`
-          import Readme from 'akuti-readme';
-
-          export default (
-            <Readme
-              component="MyComponent"
-              description="Short description."
-            />
-          );
-        `}
+        code={ReadmeExampleRaw1}
       >
-        <Readme
-          component="MyComponent"
-          description="Short description."
-        />
+        {ReadmeExample1}
       </Code>
       <Heading type="3">Passing a component class</Heading>
       <Description>You may also pass a component class instead of a string.</Description>
       <Code
-        code={`
-          class MyComponent extends PureComponent {
-            static displayName = 'MyComponent'
-          }
-
-          export default (
-            <Readme
-              component={MyComponent}
-              description="Short description."
-            />
-          );
-        `}
+        code={ReadmeExampleRaw2}
       >
-        {(() => {
-          class MyComponent extends PureComponent {
-            static displayName = 'MyComponent'
-          }
-
-          return (
-            <Readme
-              component={MyComponent}
-              description="Short description."
-            />
-          );
-        })()}
+        {ReadmeExample2}
       </Code>
       <Props
         component={Readme}
@@ -96,26 +70,16 @@ storiesOf(name)
   .add('Chrome', () => (
     <Chrome title="Chrome">
       <Description>Displays a title and content inside of a padded wrapper.</Description>
-      <Code>{`
-        import { Chrome } from 'akutil-readme';
-
-        export default (
-          <Chrome title="My Title">Content in the chromed area.</Chrome>
-        );  
-      `}</Code>
+      <Code code={ChromeExampleRaw}>{ChromeExample}</Code>
       <Props component={Chrome} />
     </Chrome>
   ))
   .add('Code', () => (
     <Chrome title="Code">
       <Description>Displays and syntax highlights the string you pass as children.</Description>
-      <Code>{`
-        import { Code } from 'akutil-readme';
-
-        export default (
-          <Code>{'// A basic single-line example'}</Code>
-        );  
-      `}</Code>
+      <Code
+        code={CodeExampleRaw}
+      >{CodeExample}</Code>
 
       <Heading type="3">Displaying an example</Heading>
       <Description>
@@ -133,32 +97,18 @@ storiesOf(name)
   .add('Description', () => (
     <Chrome title="Description">
       <Description>Displays pharagraphs of content.</Description>
-      <Code>{`
-        import { Description } from 'akutil-readme';
-
-        export default (
-          <div>
-            <Description>Single line</Description>
-            <Description>{['multiple lines', 'of content']}</Description>
-          </div>
-        )'  
-      `}</Code>
+      <Code code={DescriptionExampleRaw1}>{DescriptionExample1}</Code>
+      <Code code={DescriptionExampleRaw2}>{DescriptionExample2}</Code>
       <Props component={Description} />
     </Chrome>
   ))
   .add('Heading', () => (
     <Chrome title="Heading">
       <Description>Displays a heading of a given type. Defaults to H1.</Description>
-      <Code>{`
-        import { Heading } from 'akutil-readme';
-
-        export default (
-          <Heading>My heading</Heading>
-        );  
-      `}</Code>
+      <Code code={HeadingExampleRaw1}>{HeadingExample1}</Code>
 
       <Heading type="2">Changing the type</Heading>
-      <Code>{'<Heading type="2">My second heading</Heading>'}</Code>
+      <Code code={HeadingExampleRaw2}>{HeadingExample2}</Code>
 
       <Props component={Heading} />
     </Chrome>
@@ -168,20 +118,7 @@ storiesOf(name)
       <Description>
         Auto-generates a table or available props and associated information for a givencomponent.
       </Description>
-      <Code>{`
-        import { Props } from 'akutil-readme';
-
-        class MyComponent extends PureComponent {
-          static propTypes = {
-            prop1: PropTypes.string,
-            prop2: PropTypes.number,
-          }
-        }
-
-        export deafult (
-          <Props component={MyComponent} />
-        );  
-      `}</Code>
+      <Code code={PropsExampleRaw}>{PropsExample}</Code>
       <Props component={Props} />
     </Chrome>
   ));

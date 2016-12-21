@@ -1,9 +1,9 @@
 import React, { PureComponent, PropTypes } from 'react';
 import {
-  isSelected,
-  containerItemOuter,
   containerItemInner,
+  containerItemOuter,
   icon,
+  isSelected,
   text,
 } from 'style!../less/ContainerItem.less';
 import className from 'classnames';

@@ -6,6 +6,7 @@ import sinonChai from 'sinon-chai';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
 import FieldBase from 'ak-field-base'; // eslint-disable-line
+import Spinner from 'ak-spinner';
 import InlineEdit from '../src/InlineEdit';
 
 chai.use(chaiEnzyme());
@@ -49,16 +50,45 @@ describe('ak-inline-edit', () => {
     expect(fieldBase).to.contain(editView);
   });
 
-  it('should render read view when in read-only mode', () => {
-    const readView = <span>read</span>;
-    expect(shallow(
-      <InlineEdit
-        {...defaultProps}
-        isEditing
-        readView={readView}
-        editView={undefined}
-      />))
-        .to.contain(readView);
+  describe('read-only mode', () => {
+    it('should render the read view when "false" is supplied as the edit view', () => {
+      const readView = <span>read</span>;
+      const wrapper = shallow(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+          readView={readView}
+          editView={false}
+        />
+      );
+      expect(wrapper).to.contain(readView);
+    });
+
+    it('should render the read view when "null" is supplied as the edit view', () => {
+      const readView = <span>read</span>;
+      const wrapper = shallow(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+          readView={readView}
+          editView={null}
+        />
+      );
+      expect(wrapper).to.contain(readView);
+    });
+
+    it('should render the read view when "undefined" is supplied as the edit view', () => {
+      const readView = <span>read</span>;
+      const wrapper = shallow(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+          readView={readView}
+          editView={undefined}
+        />
+      );
+      expect(wrapper).to.contain(readView);
+    });
   });
 
   describe('onEditRequested', () => {
@@ -127,6 +157,31 @@ describe('ak-inline-edit', () => {
       const fieldBase = wrapper.find(FieldBase);
       expect(fieldBase).to.have.prop('label', 'test');
       expect(fieldBase).to.have.prop('isLabelHidden', true);
+    });
+  });
+
+  describe('isWaiting', () => {
+    describe('when isEditing is false', () =>
+      it('should not render Spinner', () => {
+        const fieldBase = mount(<InlineEdit {...defaultProps} isWaiting />).find(FieldBase);
+        expect(shallow(fieldBase.prop('rightGutter'))).to.not.contain(<Spinner />);
+      })
+    );
+
+    describe('when isEditing is true', () => {
+      let wrapper;
+
+      beforeEach(() => (
+        wrapper = shallow(<InlineEdit {...defaultProps} isWaiting isEditing />)
+      ));
+
+      it('should render Spinner', () =>
+        expect(shallow(wrapper.find(FieldBase).prop('rightGutter'))).to.contain(<Spinner />)
+      );
+
+      it('should disable field base', () =>
+        expect(wrapper.find(FieldBase)).to.have.prop('isDisabled', true)
+      );
     });
   });
 });

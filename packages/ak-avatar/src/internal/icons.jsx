@@ -1,8 +1,6 @@
 import React from 'react';
 
-// TODO add @enum JSDoc here
 export default {
-  // TODO move this to ak-icon
   // eslint-disable-next-line max-len
   online: () => (<svg width="100%" height="100%" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg"><g id="User---presence" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd"><g id="Available" fill="#48CC8C"><circle id="Oval-3-Copy-7" cx="4" cy="4" r="4" /></g></g></svg>),
   // TODO move this to ak-icon

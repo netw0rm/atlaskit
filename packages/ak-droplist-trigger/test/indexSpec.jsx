@@ -40,12 +40,37 @@ describe(name, () => {
       expect(wrapper).to.not.have.descendants(`.${styles.locals.trigger}`);
       expect(wrapper).to.contain(TriggerSample);
     });
+
+    it('should render tabIndex attribute', () => {
+      let wrapper = mount(<Trigger />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '0');
+
+      wrapper = mount(<Trigger type="button" />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '0');
+
+      wrapper = mount(<Trigger isDisabled />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
+
+      wrapper = mount(<Trigger type="button" isDisabled />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
+
+      wrapper = mount(<Trigger isNotTabbable />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
+
+      wrapper = mount(<Trigger type="button" isNotTabbable />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
+    });
   });
 
   describe('props', () => {
     it('if the trigger is disabled, the button also should be disabled', () => {
       const wrapper = mount(<Trigger type="button" isDisabled>trigger</Trigger>);
       expect(wrapper.find('button').props().disabled).to.be.true;
+    });
+
+    it('should focus trigger when isFocused prop is set to true', () => {
+      const wrapper = mount(<Trigger isFocused>trigger</Trigger>);
+      expect(document.activeElement).to.equal(wrapper.children().first().node);
     });
   });
 

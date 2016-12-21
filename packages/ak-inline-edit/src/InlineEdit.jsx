@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import Button from 'ak-button';
+import Spinner from 'ak-spinner';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
 import EditIcon from 'ak-icon/glyph/edit';
@@ -34,7 +35,7 @@ export default class InlineEdit extends PureComponent {
      *
      * This node should allow the user to edit the value of the field.
      *
-     * If this node is not supplied, the component will display in read-only mode.
+     * If this node is undefined/null/false, the component will display in read-only mode.
      *
      * @memberof InlineEdit
      * @type {ReactNode}
@@ -47,6 +48,17 @@ export default class InlineEdit extends PureComponent {
      * @type {boolean}
      */
     isEditing: PropTypes.bool.isRequired,
+    /**
+     * @description Whether or not inline edit is on waiting mode.
+     *
+     * Displays a spinner to the right of the field to indicate that the value
+     * is currently being saved/validated.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    isWaiting: PropTypes.bool,
     /**
      * @description Whether or not a validation error should be displayed.
      *
@@ -127,6 +139,7 @@ export default class InlineEdit extends PureComponent {
 
   static defaultProps = {
     isInvalid: false,
+    isWaiting: false,
     isLabelHidden: false,
     areActionButtonsHidden: false,
     isConfirmOnBlurDisabled: false,
@@ -188,12 +201,14 @@ export default class InlineEdit extends PureComponent {
   }
 
   isReadOnly = () =>
-    typeof this.props.editView === 'undefined'
+    !this.props.editView
 
   shouldShowEditView = () =>
     this.props.isEditing && !this.isReadOnly()
 
   shouldRenderEditIcon = () => !this.isReadOnly() && !this.props.isInvalid;
+
+  shouldRenderSpinner = () => this.props.isWaiting && this.props.isEditing;
 
   renderActionButtons = () => (
     <div className={this.getActionButtonClasses()}>
@@ -213,9 +228,14 @@ export default class InlineEdit extends PureComponent {
   )
 
   renderEditIcon = () => (
-    <div className={styles.editButtonWrapper}>
+    <div
+      className={classNames({
+        [styles.editButtonWrapper]: true,
+        [styles.hidden]: !this.shouldRenderEditIcon(),
+      })}
+    >
       <button className={styles.editButton}>
-        {this.shouldRenderEditIcon() ? <EditIcon label="Edit" size="small" /> : null }
+        <EditIcon label="Edit" size="small" />
       </button>
     </div>
   )
@@ -224,6 +244,12 @@ export default class InlineEdit extends PureComponent {
     <div className={styles.readViewContentWrapper}>
       {this.props.readView}
       {this.renderEditIcon()}
+    </div>
+  )
+
+  renderSpinner = () => (
+    <div className={styles.spinnerWrapper}>
+      <Spinner />
     </div>
   )
 
@@ -241,8 +267,12 @@ export default class InlineEdit extends PureComponent {
           isFocused={this.isReadOnly() ? false : undefined}
           isLabelHidden={this.props.isLabelHidden}
           isReadOnly={this.isReadOnly()}
+          isFitContainerWidthEnabled={this.props.isEditing}
           appearance={this.props.isEditing ? 'standard' : 'subtle'}
-          rightGutter={this.renderActionButtons()}
+          isDisabled={this.shouldRenderSpinner()}
+          rightGutter={
+            this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()
+          }
         >
           {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
         </FieldBase>

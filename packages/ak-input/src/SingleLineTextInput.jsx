@@ -6,6 +6,8 @@ const css = {
   common: style({
     color: 'inherit',
     fontSize: akFontSizeDefault,
+    lineHeight: 'normal',
+    letterSpacing: 'normal',
   }),
   readView: style({
     overflow: 'hidden',
@@ -15,6 +17,7 @@ const css = {
   editView: style({
     background: 'transparent',
     border: 0,
+    margin: 0,
     padding: 0,
     boxSizing: 'border-box',
     cursor: 'inherit',
@@ -26,6 +29,16 @@ const css = {
   }),
 };
 
+/**
+ * @description A text input component with extremely basic styling that supports read/edit modes.
+ *
+ * Designed for use within other components, e.g. for the read/edit views required by
+ * ak-inline-edit, or within table cells.
+ *
+ * Note: In addition the props described below, all other props passed to this
+ * component will be forwarded to the underlying HTML 'input'. This allows change
+ * handlers, placeholders, etc, to be attached to it.
+ */
 export default class SingleLineTextInput extends PureComponent {
   static propTypes = {
     /**
@@ -44,7 +57,7 @@ export default class SingleLineTextInput extends PureComponent {
      */
     style: PropTypes.shape({}),
     /**
-     * @description Whether the input text will initially be selected/highlighted
+     * @description Whether the input text will initially be selected/highlighted.
      * @memberof SingleLineTextInput
      * @type {boolean}
      * @default false
@@ -67,8 +80,10 @@ export default class SingleLineTextInput extends PureComponent {
     this.selectInputIfNecessary();
   }
 
-  componentDidUpdate() {
-    this.selectInputIfNecessary();
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isEditing) {
+      this.selectInputIfNecessary();
+    }
   }
 
   getInputProps = () => {

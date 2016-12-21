@@ -1,7 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import Editor from '../src';
-import mocha from 'mocha';
-import chai from 'chai';
+import * as mocha from 'mocha';
+import * as chai from 'chai';
 
 const { expect } = chai;
 

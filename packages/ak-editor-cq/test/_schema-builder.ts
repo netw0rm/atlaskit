@@ -1,4 +1,4 @@
-import { nodeFactory, markFactory } from 'ak-editor-test';
+import { nodeFactory, markFactory } from 'ak-editor-core/test-helper';
 import schema from '../src/schema';
 
 // Nodes

@@ -2,7 +2,7 @@ import { parse, encode } from '../src/cxhtml';
 import { DocNode } from 'ak-editor-core';
 import { chaiPlugin } from 'ak-editor-core/test-helper';
 import {
-  blockquote, br, code, doc, em, h1, h2, h3, h4, h5, h6, hr,
+  blockquote, br, mono, doc, em, h1, h2, h3, h4, h5, h6, hr,
   li, ol, p, strike, strong, sub, sup, u, ul
 } from './_schema-builder';
 import * as chai from 'chai';
@@ -150,11 +150,11 @@ describe('ak-editor-cq encode-cxml:', () => {
         '<s>struck</s>',
         doc(p(strike('struck'))));
 
-      check('<code>',
-        '<p>Text with <code>function bar() { return foo; }</code>.</p>',
+      check('<mono>',
+        '<p>Text with <span style="font-family: monospace;">function bar() { return foo; }</span>.</p>',
         doc(p(
           'Text with ',
-          code('function bar() { return foo; }'),
+          mono('function bar() { return foo; }'),
           '.'
         )));
 
@@ -190,13 +190,13 @@ describe('ak-editor-cq encode-cxml:', () => {
           '.'
         )));
 
-      check('<i><code> nesting',
-        '<p>Text <i>in italics <code>AND SOME CODE</code> and others italics</i> and plain.</p>',
+      check('<i><mono> nesting',
+        '<p>Text <i>in italics <span style="font-family: monospace;">AND SOME CODE</span> and others italics</i> and plain.</p>',
         doc(p(
           'Text ',
           em(
             'in italics ',
-            code('AND SOME CODE'),
+            mono('AND SOME CODE'),
             ' and others italics'
           ),
           ' and plain.'

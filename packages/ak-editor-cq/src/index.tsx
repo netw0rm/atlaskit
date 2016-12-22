@@ -2,11 +2,15 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import {
   ProseMirror,
+  Keymap,
   BlockTypePlugin,
   ListsPlugin,
   TextFormattingPlugin,
+  HorizontalRulePlugin,
   MarkdownInputRulesPlugin,
-  Chrome
+  Chrome,
+  AnalyticsHandler,
+  service as analyticsService
 } from 'ak-editor-core';
 import schema from './schema';
 import { parse, encode } from './cxhtml';
@@ -19,6 +23,7 @@ export interface Props {
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
+  analyticsHandler?: AnalyticsHandler;
 }
 
 export interface State {
@@ -32,6 +37,8 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
+
+    analyticsService.handler = props.analyticsHandler || ((name) => {});
   }
 
   /**
@@ -128,12 +135,17 @@ export default class Editor extends PureComponent<Props, State> {
           MarkdownInputRulesPlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          HorizontalRulePlugin
         ],
       });
 
       if (context) {
         BlockTypePlugin.get(pm)!.changeContext(context);
       }
+
+      pm.addKeymap(new Keymap({
+        'Mod-Enter': this.handleSave
+      }));
 
       pm.on.change.add(this.handleChange);
       pm.focus();

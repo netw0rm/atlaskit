@@ -1,10 +1,5 @@
-import { ProseMirror, Node, Mark, Slice, Fragment, Transform } from '../../prosemirror';
+import { ProseMirror, Node, Mark, Slice, Fragment, Transform, isCodeBlockNode } from '../../';
 import { URL } from './regex';
-
-// This could be somehow added via schema ?
-const UNSUPPORTED_NODE_TYPES: string[] = [
-  'code',
-];
 
 function applyLinkMarkerToNode(
   pm: ProseMirror,
@@ -23,27 +18,27 @@ function addLinkMarkerToNode(
   const nodeText: string = node.textContent;
 
   let matchIndex: number = 0;
-  let match = nodeText.match(URL);
+  let urlMatches = nodeText.match(URL);
 
-  if (!match || UNSUPPORTED_NODE_TYPES.some((nodeType: string) => node.type.name.indexOf(nodeType) !== -1)) {
+  if (!urlMatches || !node.isBlock || isCodeBlockNode(node)) {
     return node;
   }
 
   const transform: Transform = new Transform(node);
 
-  while (match) {
-    matchIndex += nodeText.slice(matchIndex).indexOf(match[1]);
+  while (urlMatches) {
+    matchIndex += nodeText.slice(matchIndex).indexOf(urlMatches[1]);
 
     applyLinkMarkerToNode(
       pm,
       transform,
-      match[1],
+      urlMatches[1],
       matchIndex
     );
 
-    match = (
+    urlMatches = (
       nodeText
-      .slice(matchIndex + match[1].length)
+      .slice(matchIndex + urlMatches[1].length)
       .match(URL)
     );
   }

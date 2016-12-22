@@ -68,21 +68,21 @@ describe('block-type', () => {
   it('should be able to change to block quote', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
-    plugin.changeBlockType('quote');
+    plugin.changeBlockType('blockquote');
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
   it('should be able to change to code block', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
-    plugin.changeBlockType('code');
+    plugin.changeBlockType('codeblock');
     expect(pm.doc).to.deep.equal(doc(code_block()('text')));
   });
 
   it('should be able to change to code block with multilines', () => {
     const { pm, plugin } = editor(doc(p('line1{<>}', br, 'line2')));
 
-    plugin.changeBlockType('code');
+    plugin.changeBlockType('codeblock');
     expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
   });
 
@@ -108,27 +108,27 @@ describe('block-type', () => {
 
   it('should be able to identify block quote', () => {
     const { pm, plugin } = editor(doc(blockquote(p('te{<>}xt'))));
-    expect(plugin.currentBlockType.name).to.equal('quote');
+    expect(plugin.currentBlockType.name).to.equal('blockquote');
   });
 
   it('should be able to identify code block', () => {
     const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
-    expect(plugin.currentBlockType.name).to.equal('code');
+    expect(plugin.currentBlockType.name).to.equal('codeblock');
   });
 
   it('should be able to change to back to paragraph and then change to blockquote', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
     plugin.changeBlockType('heading1');
-    plugin.changeBlockType('quote');
+    plugin.changeBlockType('blockquote');
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
   it('should be not able to nest blockquote', () => {
     const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
-    plugin.changeBlockType('quote');
-    plugin.changeBlockType('quote');
+    plugin.changeBlockType('blockquote');
+    plugin.changeBlockType('blockquote');
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
@@ -247,7 +247,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey("Cmd-Alt-7");
-            expect(toggleBlockType).to.have.been.calledWith('quote');
+            expect(toggleBlockType).to.have.been.calledWith('blockquote');
           });
         });
 
@@ -257,7 +257,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey("Cmd-Alt-8");
-            expect(toggleBlockType).to.have.been.calledWith('code');
+            expect(toggleBlockType).to.have.been.calledWith('codeblock');
           });
         });
 
@@ -349,7 +349,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey("Ctrl-7");
-            expect(toggleBlockType).to.have.been.calledWith('quote');
+            expect(toggleBlockType).to.have.been.calledWith('blockquote');
           });
         });
 
@@ -359,7 +359,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey("Ctrl-8");
-            expect(toggleBlockType).to.have.been.calledWith('code');
+            expect(toggleBlockType).to.have.been.calledWith('codeblock');
           });
         });
       });

@@ -161,7 +161,7 @@ export class HyperlinkState {
       const depth = $head.resolveDepth($head.depth + 1);
 
       // See `ResolvedPos.prototype.start` method prosemirror/src/model/resolvedpos
-      const currentNodeOffset = depth == 0 ? 0 : path[depth * 3 - 1];
+      const currentNodeOffset = depth === 0 ? 0 : path[depth * 3 - 1];
 
       const markerFrom = currentNodeOffset;
       const markerTo = markerFrom + node.nodeSize;

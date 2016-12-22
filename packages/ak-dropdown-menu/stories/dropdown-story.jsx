@@ -15,9 +15,14 @@ import {
   simpleDropdownItems,
   simpleDropdownItemsWithAvatars,
   lotsOfItems,
+  dropdownItemsWithGroups,
+  simpleDropdownItemsWithCheckboxes,
+  simpleDropdownItemsWithRadio,
 } from './DropdownsData';
 
 const itemsOverride = `const simpleDropdownItems = ${JSON.stringify(simpleDropdownItems, null, 2)}`;
+const dropdownItemsWithGroupsOverride =
+  `const dropdownItemsWithGroups = ${JSON.stringify(dropdownItemsWithGroups, null, 2)}`;
 
 const imports = [
   ['React', 'react'],
@@ -63,6 +68,38 @@ storiesOf(name, module)
       </div>
     </div>
   ), { imports })
+  .addCodeExampleStory('Basic Dropdown menu with checkbox items', () => (
+    <div style={{ padding: '40px' }}>
+      <p>This is an example of a basic dropdown menu with checkbox items.
+        Use it when you want to present options the user can select or enable.</p>
+      <div style={{ padding: '20px 0' }}>
+        <DropdownMenu
+          defaultOpen
+          triggerType="button"
+          items={simpleDropdownItemsWithCheckboxes}
+          onItemActivated={item => (console.log(item))}
+        >
+          Drop menu
+        </DropdownMenu>
+      </div>
+    </div>
+  ), { imports, overrides: { style: '...' } })
+  .addCodeExampleStory('Basic Dropdown menu with radio items', () => (
+    <div style={{ padding: '40px' }}>
+      <p>This is an example of a basic dropdown menu with radio items.
+        Use it when you want to present options the user can select or enable.</p>
+      <div style={{ padding: '20px 0' }}>
+        <DropdownMenu
+          defaultOpen
+          triggerType="button"
+          items={simpleDropdownItemsWithRadio}
+          onItemActivated={item => (console.log(item))}
+        >
+          Drop menu
+        </DropdownMenu>
+      </div>
+    </div>
+  ), { imports, overrides: { style: '...' } })
   .addCodeExampleStory('Basic Dropdown menu with anything as a trigger', () => (
     <div style={{ padding: '40px' }} >
       <p>Anything can be a trigger for the dropdown menu.</p>
@@ -125,4 +162,20 @@ storiesOf(name, module)
     overrides: {
       items: 'lotsOfItems',
     },
+  })
+  .addCodeExampleStory('Dropdown menu with a few groups', () => (
+    <div style={{ padding: '40px' }}>
+      <p>If the dropdown menu has more than one group, then all the groups should have headings.</p>
+      <div style={{ padding: '20px 0' }}>
+        <DropdownMenu triggerType="button" items={dropdownItemsWithGroups}>
+          Test
+        </DropdownMenu>
+      </div>
+    </div>
+  ), {
+    imports,
+    overrides: {
+      items: 'dropdownItemsWithGroups',
+    },
+    scripts: [dropdownItemsWithGroupsOverride],
   });

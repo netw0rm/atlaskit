@@ -30,16 +30,16 @@ const createTrackedInputRule= (analyticsEventName: string, rule: InputRule) : In
   if (typeof(rule.handler) !== 'function') {
     throw new SyntaxError('The provided cannot be tracked because it does not provide a callable handler');
   }
-  
+
   rule.handler = trackAndInvoke(analyticsEventName, rule.handler);
   return rule;
 }
 
 const headingRule = (nodeType: NodeType, maxLevel: Number) => {
   return textblockTypeInputRule(
-    new RegExp("^(#{1," + maxLevel + "}) $"), 
+    new RegExp("^(#{1," + maxLevel + "}) $"),
     " ",
-    nodeType, 
+    nodeType,
     (match: string[]) => {
       const level = match[1].length;
       analyticsService.trackEvent(`atlassian.editor.format.heading${level}.autoformatting`);
@@ -226,7 +226,6 @@ export class MarkdownInputRulesPlugin {
       linkRule,
       hrRule1,
       hrRule2,
-      ...allInputRules,
       ...blockRules
     ];
 

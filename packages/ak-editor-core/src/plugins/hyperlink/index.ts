@@ -1,5 +1,4 @@
 import {
-  allInputRules,
   commands,
   DOMFromPos,
   inputRules,
@@ -36,9 +35,7 @@ export class HyperlinkState {
 
     pm.on.transformPasted.add(pasteTransformer.bind(pasteTransformer, pm));
 
-    this.inputRules = [
-      hyperlinkRule,
-    ].concat(allInputRules);
+    this.inputRules = [hyperlinkRule];
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach(rule => rules.addRule(rule));

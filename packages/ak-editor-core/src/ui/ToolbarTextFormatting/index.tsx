@@ -6,6 +6,7 @@ import UnderlineIcon from 'ak-icon/glyph/editor/underline';
 import CodeIcon from 'ak-icon/glyph/editor/code';
 import { TextFormattingState } from '../../../src/plugins/text-formatting';
 import IconButton from '../ToolbarIconButton';
+import { decorator as analytics } from '../../analytics';
 
 export interface Props {
   pluginState: TextFormattingState;
@@ -81,18 +82,21 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
     });
   }
 
+  @analytics('atlassian.editor.format.strong.button')
   private handleBoldClick = () => {
     if (!this.state.boldDisabled) {
       this.props.pluginState.toggleStrong();
     }
   }
 
+  @analytics('atlassian.editor.format.em.button')
   private handleItalicClick = () => {
     if (!this.state.italicDisabled) {
       this.props.pluginState.toggleEm();
     }
   }
 
+  @analytics('atlassian.editor.format.u.button')
   private handleUnderlineClick = () => {
     if (!this.state.underlineDisabled) {
       this.props.pluginState.toggleUnderline();

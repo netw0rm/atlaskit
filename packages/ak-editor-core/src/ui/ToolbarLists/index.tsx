@@ -4,6 +4,7 @@ import NumberListIcon from 'ak-icon/glyph/editor/list/number';
 import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
 import IconButton from '../ToolbarIconButton';
 import { ListsState } from '../../../src/plugins/lists';
+import { decorator as analytics } from '../../analytics';
 
 export interface Props {
   pluginState: ListsState;
@@ -18,7 +19,7 @@ export interface State {
   orderedListHidden: boolean;
 }
 
-export default class ToolbarTextFormatting extends PureComponent<Props, State> {
+export default class ToolbarLists extends PureComponent<Props, State> {
   state: State = {
     bulletListActive: false,
     bulletListDisabled: false,
@@ -71,12 +72,14 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
     });
   }
 
+  @analytics('atlassian.editor.format.list.bullet.button')
   private handleBulletListClick = () => {
     if (!this.state.bulletListDisabled) {
       this.props.pluginState.toggleBulletList();
     }
   }
 
+  @analytics('atlassian.editor.format.list.numbered.button')
   private handleOrderedListClick = () => {
     if (!this.state.orderedListDisabled) {
       this.props.pluginState.toggleOrderedList();

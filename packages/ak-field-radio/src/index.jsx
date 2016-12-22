@@ -11,11 +11,13 @@ export {
 
 export default class RadioGroup extends PureComponent {
   static propTypes = {
+    isRequired: PropTypes.bool,
     items: itemsPropTypeSmart,
     label: PropTypes.string,
   }
 
   static defaultProps = {
+    isRequired: false,
     items: itemsDefault,
   }
 
@@ -55,6 +57,7 @@ export default class RadioGroup extends PureComponent {
   render() {
     return (
       <AkRadioGroup
+        isRequired={this.props.isRequired}
         items={this.getItems()}
         label={this.props.label}
         onRadioChange={this.changeHandler}

@@ -4,6 +4,7 @@ export const readmeDescription = `${description}. This is the basic (controlled)
 export const readmeDescriptionSmart = `${description}. This is the smart (uncontrolled) version of this component, which handles its own state.`;
 
 export const radioGroupPropDescriptions = {
+  isRequired: 'Whether the user must select a value before submitting the form.',
   items: 'An array of objects describing the radio buttons to render. See below for more details.',
   label: 'The text to display above the radio buttons. Should describes the group of radio buttons and prompt the user action.',
   onRadioChange: 'Function to call when a radio is selected and fires a change event. This should update the items property to select the newly-selected item.',
@@ -16,7 +17,7 @@ export const itemKeys = [
     description: 'Whether the item should be selected by default. This default will be overridden once a user selects another item.',
   },
   {
-    name: 'selected',
+    name: 'isSelected',
     type: 'Boolean',
     description: 'Whether the item is selected (i.e. the radio button is checked).',
   },

@@ -149,6 +149,41 @@ describe(name, () => {
     });
   });
 
+  describe('onItemActivated', () => {
+    it('should be call when an item was activated', () => {
+      const items = [{
+        heading: 'group',
+        items: [
+          { content: 'item 1', type: 'checkbox' },
+        ],
+      }];
+      const spy = sinon.spy();
+      const wrapper = mount(<Menu items={items} defaultOpen onItemActivated={spy}>
+        <Trigger>text</Trigger></Menu>);
+      const item = wrapper.find('[role="menuitemcheckbox"]');
+      item.simulate('click');
+      expect(spy.called).to.equal(true);
+    });
+
+    it('should pass the item when activated', () => {
+      const items = [{
+        heading: 'group',
+        items: [
+          { content: 'item 1', type: 'checkbox' },
+        ],
+      }];
+      let attrs;
+      const wrapper = mount(<Menu items={items} defaultOpen onItemActivated={a => (attrs = a)}>
+        <Trigger>text</Trigger></Menu>);
+      const item = wrapper.find('[role="menuitemcheckbox"]');
+      item.simulate('click');
+      expect(attrs).to.exist;
+      expect(attrs.item).to.exist;
+      expect(attrs.item).to.equal(items[0].items[0]);
+      expect(attrs.item).to.deep.equal({ content: 'item 1', type: 'checkbox', isChecked: true });
+    });
+  });
+
   describe('handleItemActivation', () => {
     describe('radio', () => {
       const attrs = { item: { props: { type: 'radio' } }, event: { type: 'click' } };

@@ -101,6 +101,12 @@ export default class DropdownMenu extends Component {
     document.addEventListener('keydown', this.handleKeyDown);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.items !== this.state.items) {
+      this.setState(nextProps.items);
+    }
+  }
+
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClickOutside, true);
     document.removeEventListener('keydown', this.handleKeyDown);
@@ -158,7 +164,7 @@ export default class DropdownMenu extends Component {
     switch (activatedAttrs.item.props.type) {
       case 'checkbox':
         activatedItem.isChecked = !activatedItem.isChecked;
-        this.props.onItemActivated(activatedItem);
+        this.props.onItemActivated({ item: activatedItem });
         this.setState({ items });
         break;
       case 'radio':
@@ -169,12 +175,12 @@ export default class DropdownMenu extends Component {
             i.isChecked = false;
           }
         });
-        this.props.onItemActivated(activatedItem);
+        this.props.onItemActivated({ item: activatedItem });
         this.setState({ items });
         break;
       case 'link':
         if (!activatedItem.href) {
-          this.props.onItemActivated(activatedItem);
+          this.props.onItemActivated({ item: activatedItem });
         }
         this.close({ source: activatedAttrs.event.type });
         break;
@@ -304,7 +310,7 @@ export default class DropdownMenu extends Component {
               ref={this.setMaxHeight}
               role="menu"
             >
-              {this.renderSubComponents(props.items)}
+              {this.renderSubComponents(state.items)}
             </div> :
             null
           }

@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-core/test-helper';
-import { default as AkTabs, Tab as AkTab} from 'ak-tabs';
+import { default as AkTabs, Tab as AkTab } from 'ak-tabs';
 import Editor from '../src';
 import exampleHTML from './exampleHTML';
 
@@ -72,7 +72,7 @@ storiesOf('ak-editor-bitbucket', module)
           imageUploadHandler={() => {}}
         />
       </div>
-    );     
+    );
   })
   .add('Markdown preview', () => {
     type Props = {};

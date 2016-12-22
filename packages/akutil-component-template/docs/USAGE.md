@@ -2,7 +2,6 @@
 
 This is a template for AtlasKit components. Update this file with usage instructions and examples.
 
-
 ![Example akutil-component-template](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/akutil-component-template/docs/screencast.gif)
 
 ## Try it out
@@ -17,7 +16,7 @@ npm install akutil-component-template
 
 ## Using the component
 
-Import the component in your React app as follows:
+Use the component in your React app as follows:
 
 ```
 import AkUtilComponentTemplate from 'akutil-component-template';

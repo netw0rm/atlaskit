@@ -1,5 +1,12 @@
 {
   "rules": {
+    "curly": true,
+    "eofline": true,
+    "indent": [
+      true,
+      "spaces"
+    ],
+    "no-trailing-whitespace": true,
     "typedef": [true],
     "triple-equals": true
   }

@@ -56,6 +56,7 @@ export {
   allInputRules,
   headingRule,
   bulletListRule,
+  textblockTypeInputRule,
   blockQuoteRule,
   codeBlockRule,
   wrappingInputRule

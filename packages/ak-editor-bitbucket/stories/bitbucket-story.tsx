@@ -60,6 +60,20 @@ storiesOf('ak-editor-bitbucket', module)
       />
     </div>
   )
+  .add('Analytics events', () => {
+    return (
+      <div style={{ padding: 20 }}>
+        <h5 style={{ marginBottom: 20 }}>Interact with the editor and observe analytics events in the Action Logger below</h5>
+        <Editor
+          placeholder="Click me to expand ..."
+          analyticsHandler={(actionName, props) => action(actionName)(props)}
+          onSave={() => {}}
+          onCancel={() => {}}
+          imageUploadHandler={() => {}}
+        />
+      </div>
+    );     
+  })
   .add('Markdown preview', () => {
     type Props = {};
     type State = { markdown?: string };

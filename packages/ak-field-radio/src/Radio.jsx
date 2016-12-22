@@ -7,6 +7,7 @@ import styles from 'style!./styles.less';
 export default class Radio extends PureComponent {
   static propTypes = {
     isDisabled: PropTypes.bool,
+    isRequired: PropTypes.bool,
     isSelected: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func.isRequired,
@@ -33,6 +34,7 @@ export default class Radio extends PureComponent {
               disabled={this.props.isDisabled}
               name={this.props.name}
               onChange={this.props.onChange}
+              required={this.props.isRequired}
               value={this.props.value}
               type="radio"
             />

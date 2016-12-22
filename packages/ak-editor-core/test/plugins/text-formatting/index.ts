@@ -26,7 +26,7 @@ describe('text-formatting', () => {
           });
         });
 
-        context('when hits Cmd-B', () => {
+        context('when hits Cmd-I', () => {
           it('toggles italic mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleEm = sinon.spy(plugin, 'toggleEm');
@@ -35,9 +35,9 @@ describe('text-formatting', () => {
 
             expect(toggleEm).to.have.been.callCount(1);
           });
-        })
+        });
 
-        context('when hits Cmd-B', () => {
+        context('when hits Cmd-U', () => {
           it('toggles underline mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
@@ -46,7 +46,7 @@ describe('text-formatting', () => {
 
             expect(toggleUnderline).to.have.been.callCount(1);
           });
-        })
+        });
 
         /*
           Node: Here dispatch key 'Shift-Cmd-S' instead of 'Cmd-Shift-S',

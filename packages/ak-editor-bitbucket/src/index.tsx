@@ -4,15 +4,21 @@ import {
   ProseMirror,
   Schema,
   Node,
+  Keymap,
   ListsPlugin,
   BlockTypePlugin,
   MarkdownInputRulesPlugin,
   HyperlinkPlugin,
   TextFormattingPlugin,
+  HorizontalRulePlugin,
   MentionsPlugin,
   ImageUploadPlugin,
-  Chrome
+  Chrome,
+  AnalyticsHandler, 
+  decorator as analytics,
+  service as analyticsService
 } from 'ak-editor-core';
+
 import schema from './schema';
 import markdownSerializer from './markdown-serializer';
 import { blockTypes, blockTypeType, blockTypesType } from './block-types';
@@ -28,6 +34,7 @@ export interface Props {
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
+  analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
 }
 
@@ -42,6 +49,8 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
+
+    analyticsService.handler = props.analyticsHandler || ((name) => {});
   }
 
   /**
@@ -166,6 +175,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.start')
   private handleRef = (place: Element | null) => {
     if (place) {
       const { context, onChange } = this.props;
@@ -178,6 +188,7 @@ export default class Editor extends PureComponent<Props, State> {
           BlockTypePlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          HorizontalRulePlugin,
           MentionsPlugin,
           ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
         ],
@@ -190,6 +201,14 @@ export default class Editor extends PureComponent<Props, State> {
       if (this.props.imageUploadHandler) {
         ImageUploadPlugin.get(pm)!.uploadHandler = this.props.imageUploadHandler;
       }
+
+      pm.addKeymap(new Keymap({
+        'Mod-Enter': this.handleSave
+      }));
+
+      pm.on.domPaste.add(() => {
+        analyticsService.trackEvent('atlassian.editor.paste');
+      });
 
       pm.on.change.add(this.handleChange);
       pm.focus();

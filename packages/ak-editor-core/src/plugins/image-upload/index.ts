@@ -12,6 +12,7 @@ import {
 import { ImageNodeType } from '../../schema';
 import PasteAdapter from './paste-adapter';
 import DropAdapter from './drop-adapter';
+import { service as analyticsService } from '../../analytics';
 
 export interface ImageUploadPluginOptions {
   defaultHandlersEnabled?: boolean;
@@ -60,6 +61,16 @@ export class ImageUploadState {
       pm.on.change,
       pm.on.activeMarkChange,
     ], () => this.update());
+
+    this.pasteAdapter.add(() => {
+      analyticsService.trackEvent('atlassian.editor.image.paste');
+      return true;
+    });
+    
+    this.dropAdapter.add(() => {
+      analyticsService.trackEvent('atlassian.editor.image.drop');
+      return true;
+    });
 
     this.dropAdapter.add(this.handleImageUpload);
     this.pasteAdapter.add(this.handleImageUpload);

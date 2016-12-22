@@ -85,7 +85,7 @@ describe(name, () => {
         const wrapper = shallow(<MyIcon label="My icon" onClick={handler} />);
         expect(wrapper.prop('onClick')).to.equal(handler);
 
-        wrapper.find('div').simulate('click');
+        wrapper.find(`.${styles.locals.iconBody}`).simulate('click');
         expect(handler).to.have.been.calledOnce;
       });
     });

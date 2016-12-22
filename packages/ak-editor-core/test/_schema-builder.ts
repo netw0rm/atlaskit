@@ -11,6 +11,7 @@ import {
   HeadingNodeType,
   ListItemNodeType,
   OrderedListNodeType,
+  HorizontalRuleNodeType,
   EmMarkType,
   MonoMarkType,
   StrikeMarkType,
@@ -35,6 +36,7 @@ export const schema = new Schema({
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
     blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     plain: { type: ParagraphNodeType, content: 'text' },
+    horizontal_rule: {type: HorizontalRuleNodeType, group: 'block' }
   },
 
   marks: {
@@ -65,6 +67,8 @@ export const ol = nodeFactory(schema.nodes.ordered_list);
 export const p = nodeFactory(schema.nodes.paragraph);
 export const ul = nodeFactory(schema.nodes.bullet_list);
 export const blockquote = nodeFactory(schema.nodes.blockquote);
+
+export const horizontal_rule = nodeFactory(schema.nodes.horizontal_rule);
 
 export const plain = nodeFactory(schema.nodes.plain);
 export const em = markFactory(schema.marks.em);

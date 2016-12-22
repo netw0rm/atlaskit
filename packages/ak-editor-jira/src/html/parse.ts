@@ -1,7 +1,7 @@
 import schema from '../schema';
 import parseHtml from './parse-html';
 import { Fragment, MarkType, Mark, Node as PMNode, TextNode } from 'ak-editor-core';
-
+import WeakMap from './weak-map';
 
 const convertedNodes = new WeakMap();
 
@@ -204,7 +204,7 @@ const converters = <Converter[]> [
         case 'BR':
           return schema.nodes.hard_break.createChecked();
         case 'HR':
-          return schema.nodes.hr.createChecked();
+          return schema.nodes.horizontal_rule.createChecked();
         case 'UL':
           return schema.nodes.bullet_list.createChecked({}, content);
         case 'OL':

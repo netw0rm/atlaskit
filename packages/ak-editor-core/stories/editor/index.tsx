@@ -1,7 +1,16 @@
-import React, { PureComponent } from 'react';
-import { ProseMirror, Schema, Node } from '../../src/prosemirror';
-import {ListsPlugin, BlockTypePlugin, HyperlinkPlugin, TextFormattingPlugin, MentionsPlugin} from '../../src/plugins';
-import { Chrome } from '../../src/ui';
+import * as React from 'react';
+import { PureComponent } from 'react';
+import {
+  Chrome,
+  ProseMirror,
+  Schema,
+  Node,
+  ListsPlugin,
+  BlockTypePlugin,
+  HyperlinkPlugin,
+  TextFormattingPlugin,
+  MentionsPlugin
+} from '../../';
 import schema from './schema';
 
 export interface Props {

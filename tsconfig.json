@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "es2015",
+    "target": "es5",
     "types": [
       "chai",
       "react",

@@ -104,8 +104,8 @@ export default function encode(node: DocNode) {
           case schema.marks.strike:
             elem = elem.appendChild(doc.createElement('s'));
             break;
-          case schema.marks.code:
-            elem = elem.appendChild(doc.createElement('code'));
+          case schema.marks.mono:
+            elem = elem.appendChild(doc.createElement('mono'));
             break;
           case schema.marks.u:
             elem = elem.appendChild(doc.createElement('u'));

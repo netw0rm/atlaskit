@@ -4,11 +4,13 @@ import {
   ProseMirror,
   Schema,
   Node,
+  Keymap,
   ListsPlugin,
   BlockTypePlugin,
   MarkdownInputRulesPlugin,
   HyperlinkPlugin,
   TextFormattingPlugin,
+  HorizontalRulePlugin,
   MentionsPlugin,
   ImageUploadPlugin,
   Chrome
@@ -178,6 +180,7 @@ export default class Editor extends PureComponent<Props, State> {
           BlockTypePlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          HorizontalRulePlugin,
           MentionsPlugin,
           ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
         ],
@@ -190,6 +193,10 @@ export default class Editor extends PureComponent<Props, State> {
       if (this.props.imageUploadHandler) {
         ImageUploadPlugin.get(pm)!.uploadHandler = this.props.imageUploadHandler;
       }
+
+      pm.addKeymap(new Keymap({
+        'Mod-Enter': this.handleSave
+      }));
 
       pm.on.change.add(this.handleChange);
       pm.focus();

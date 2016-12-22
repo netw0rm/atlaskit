@@ -1,9 +1,11 @@
+import * as mocha from 'mocha';
 import markdownSerializer from '../src/markdown-serializer';
 import {
-  code_block, doc, p, img, code, strong, blockquote, hr,
+  code_block, doc, p, img, mono, strong, blockquote, hr,
   h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, del, mention
 } from './_schema-builder';
 import { expect } from 'chai';
+import stringRepeat from '../src/util/string-repeat';
 
 describe('Bitbucket markdown serializer: ', () => {
   const pre = code_block();
@@ -15,7 +17,7 @@ describe('Bitbucket markdown serializer: ', () => {
       p('bar'),
     ))).to.eq('foo\n\nbar');
 
-    const longText = 'foo '.repeat(100);
+    const longText = stringRepeat('foo ', 100);
     expect(markdownSerializer.serialize(doc(
       p(longText),
       p(longText)
@@ -516,20 +518,20 @@ describe('Bitbucket markdown serializer: ', () => {
         )))).to.eq('foo ~~bar bar~~ baz');
       });
 
-      it('should serialize inline code', () => {
-        expect(markdownSerializer.serialize(doc(p(code('foo'))))).to.eq('`foo`');
+      it('should serialize mono', () => {
+        expect(markdownSerializer.serialize(doc(p(mono('foo'))))).to.eq('`foo`');
         expect(markdownSerializer.serialize(doc(p(
           'foo ',
-          code('bar baz'),
+          mono('bar baz'),
           ' foo',
         )))).to.eq('foo `bar baz` foo');
       });
 
-      describe('inline code', () => {
+      describe('mono', () => {
         it('containing backticks should be fenced properly', () => {
           expect(markdownSerializer.serialize(doc(p(
             'foo ',
-            code('bar ` ` baz'),
+            mono('bar ` ` baz'),
             ' foo',
           )))).to.eq('foo ``bar ` ` baz`` foo');
         });
@@ -537,7 +539,7 @@ describe('Bitbucket markdown serializer: ', () => {
         it('containing backticks on the edges of a fence should be fenced properly', () => {
           expect(markdownSerializer.serialize(doc(p(
             'foo ',
-            code('`bar`  ``baz``'),
+            mono('`bar`  ``baz``'),
             ' foo',
           )))).to.eq('foo ``` `bar`  ``baz`` ``` foo');
         });
@@ -721,11 +723,11 @@ describe('Bitbucket markdown serializer: ', () => {
           )))).to.eq('*~~foo bar~~ baz*');
 
           expect(markdownSerializer.serialize(doc(p(
-            code('**bar baz**'),
+            mono('**bar baz**'),
           )))).to.eq('`**bar baz**`');
 
           expect(markdownSerializer.serialize(doc(p(
-            code('__bar_baz__'),
+            mono('__bar_baz__'),
           )))).to.eq('`__bar_baz__`');
         });
       });

@@ -1,7 +1,7 @@
 import {
   BlockQuoteNodeType,
   BulletListNodeType,
-  CodeMarkType,
+  MonoMarkType,
   DelMarkType,
   DocNodeType,
   EmMarkType,
@@ -30,12 +30,12 @@ export default new Schema({
     list_item: { type: ListItemNodeType, content: 'block+' },
     text: { type: Text, group: 'inline' },
     hard_break: { type: HardBreakNodeType, group: 'inline' },
-    hr: { type: HorizontalRuleNodeType, group: 'block' },
+    horizontal_rule: { type: HorizontalRuleNodeType, group: 'block' }
   },
 
   // Note: Marks are applied in the order they are defined.
   marks: {
-    code: CodeMarkType,
+    mono: MonoMarkType,
     em: EmMarkType,
     strike: StrikeMarkType,
     strong: StrongMarkType,
@@ -55,11 +55,11 @@ export interface CQSchema extends Schema {
     list_item: ListItemNodeType;
     text: Text;
     hard_break: HardBreakNodeType;
-    hr: HorizontalRuleNodeType;
+    horizontal_rule: HorizontalRuleNodeType;
   }
 
   marks: {
-    code: CodeMarkType;
+    mono: MonoMarkType;
     em: EmMarkType;
     strike: StrikeMarkType;
     strong: StrongMarkType;

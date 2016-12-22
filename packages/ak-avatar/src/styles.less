@@ -28,7 +28,7 @@
 
 // Presence icon styles
 @ak-avatar-presence-border-width: 2px;
-@ak-avatar-presence-border-color: white;
+@ak-avatar-presence-border-color: @ak-color-primary3;
 
 
 .root {
@@ -47,16 +47,6 @@
 }
 .xlarge {
   .sizeMixin(xlarge);
-}
-
-.presence-wrapper {
-  align-content: center;
-  border: @ak-avatar-presence-border-width solid @ak-avatar-presence-border-color;
-  border-radius: 100%;
-  align-items: middle;
-  display: flex;
-  overflow: hidden;
-  position: absolute;
 }
 
 .imgWrapper {
@@ -87,39 +77,25 @@
   }
 }
 
+.presence-wrapper {
+  position: absolute;
+}
+
 .presence {
+  align-content: center;
+  align-items: middle;
+  // we repeat the border color here as fallback in case the user passes an invalid color:
+  // to borderColor
+  border: @ak-avatar-presence-border-width solid @ak-avatar-presence-border-color;
+  border-radius: 100%;
+  box-sizing: border-box;
+  display: flex;
   height: 100%;
+  overflow: hidden;
   width: 100%;
 
-  &.none {
+  &:empty {
     display: none;
-  }
-
-  &.online {
-    background: @ak-avatar-presence-color-online;
-  }
-
-  &.busy {
-    background: @ak-avatar-presence-color-busy;
-  }
-
-  &.offline {
-    background: @ak-avatar-presence-color-offline;
-
-    // Adds the dot inside the offline presence indicator
-    &:before {
-      @middle-bubble-size: 50%;
-
-      background-color: white;
-      border-radius: 100%;
-      content: '';
-      height: @middle-bubble-size;
-      left: 50%;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: @middle-bubble-size;
-    }
   }
 }
 

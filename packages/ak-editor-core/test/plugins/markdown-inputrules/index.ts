@@ -2,7 +2,7 @@ import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import {
-  chaiPlugin, makeEditor, doc, a, p, em, strong, code,
+  chaiPlugin, makeEditor, doc, a, p, em, strong, mono,
   hr,img, h1, h2, h3, ul, ol, li, blockquote, code_block
 } from '../../../test-helper';
 
@@ -105,12 +105,12 @@ describe('markdown-inputrules', () => {
     });
   });
 
-  describe('inline code rule', () => {
-    it('should convert "`text`" to inline code', () => {
+  describe('mono rule', () => {
+    it('should convert "`text`" to mono text', () => {
       const { pm, sel } = editor(doc(p('{<>}')));
 
       pm.input.insertText(sel, sel, '`text`');
-      expect(pm.doc).to.deep.equal(doc(p(code('text'))));
+      expect(pm.doc).to.deep.equal(doc(p(mono('text'))));
     });
   });
 

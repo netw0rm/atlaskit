@@ -49,6 +49,7 @@ const standardConfig = {
   },
   noParse: [
     /sinon/,
+    /ajv\.bundle\.js/,
   ],
   module: {
     loaders: [
@@ -83,11 +84,6 @@ const standardConfig = {
         {
           test: /.tsx?$/,
           loader: loaderChain({
-            'babel-loader': {
-              babelrc: false,
-              presets: ['es2015'],
-              plugins: [],
-            },
             'ts-loader': {
               configFileName: 'tsconfig.webpack.json',
             },

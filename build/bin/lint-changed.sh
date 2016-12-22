@@ -11,12 +11,28 @@ function lint () {
         exit 0
     fi
     $CHALK --no-stdin -t "{blue linting...}"
-    [ ! "" == "$jsdiff" ] && eslint --format 'node_modules/eslint-friendly-formatter' --no-ignore $jsdiff || [ "" == "$jsdiff" ]
-    jsdiffresult=$?
-    [ ! "" == "$tsdiff" ] && tslint --project tsconfig.json --format stylish $tsdiff || [ "" == "$tsdiff" ]
-    tsdiffresult=$?
-    [ "$jsdiffresult" == "0" ] && [ "$tsdiffresult" == "0" ]
-    exit $?
+
+    # Run eslint and tslint in parallel for speed!
+
+    if [ ! "" == "$jsdiff" ]; then
+      eslint --format 'node_modules/eslint-friendly-formatter' --no-ignore $jsdiff &
+      eslint_pid=$!
+    fi
+
+    if [ ! "" == "$tsdiff" ]; then
+      tslint --project tsconfig.json --format stylish $tsdiff &
+      tslint_pid=$!
+    fi
+
+    set -e
+
+    if [ ! "" == "$jsdiff" ]; then
+      wait $eslint_pid
+    fi
+
+    if [ ! "" == "$tsdiff" ]; then
+      wait $tslint_pid
+    fi
 }
 lint
 

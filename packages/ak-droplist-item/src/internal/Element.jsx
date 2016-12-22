@@ -13,6 +13,8 @@ export default class Element extends PureComponent {
     className: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFocused: PropTypes.bool,
+    isHidden: PropTypes.bool,
+    isChecked: PropTypes.bool,
   }
 
   componentDidMount = () => {
@@ -37,8 +39,8 @@ export default class Element extends PureComponent {
 
   render = () => {
     const { props } = this;
-    const { href, target, type, isDisabled, handleKeyDown, handleClick, className } = props;
-
+    const { href, target, type, isDisabled, isHidden, isChecked,
+      handleKeyDown, handleClick, className } = props;
     if (href && !isDisabled) {
       return (
         <a
@@ -46,6 +48,8 @@ export default class Element extends PureComponent {
           href={href}
           target={target}
           role={ariaRoles.link}
+          aria-disabled={isDisabled}
+          aria-hidden={isHidden}
           onKeyDown={handleKeyDown}
           onClick={handleClick}
           onMouseDown={this.handleMouseDown}
@@ -57,15 +61,18 @@ export default class Element extends PureComponent {
     }
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
-      <div
+      <span
         className={className}
         tabIndex="0"
-        role={ariaRoles[type]}
         onKeyDown={handleKeyDown}
         onClick={handleClick}
         onMouseDown={this.handleMouseDown}
         ref={ref => (this.ref = ref)}
-      >{props.children}</div>
+        role={ariaRoles[type]}
+        aria-disabled={isDisabled}
+        aria-hidden={isHidden}
+        aria-checked={isChecked}
+      >{props.children}</span>
     );
     /* eslint-enable jsx-a11y/no-static-element-interactions */
   }

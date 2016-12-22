@@ -1,5 +1,6 @@
 {
   "rules": {
-    "typedef": [true]
+    "typedef": [true],
+    "triple-equals": true
   }
 }

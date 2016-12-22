@@ -67,6 +67,7 @@
     flex: 0 1 auto;
     .panel-background();
     overflow: auto;
+    z-index: 5;
   }
 
   // Background and corners for footer
@@ -74,5 +75,6 @@
     flex: 0 0 auto;
     .panel-background(0, @grid);
     border-top: 1px solid #DDD; // AK-704: animated keylines
+    z-index: 6;
   }
 }

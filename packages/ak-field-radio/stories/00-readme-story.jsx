@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Readme, { Code, Props } from 'akutil-readme';
+import Readme, { Code, Description, Heading, Props } from 'akutil-readme';
 
 /* eslint-disable import/first, import/no-duplicates */
 import RadioGroupExample from './readme/RadioGroupOverview';
@@ -16,6 +16,8 @@ import {
   radioGroupPropDescriptions,
   readmeDescription,
   readmeDescriptionSmart,
+  itemsProps,
+  itemsPropsSmart,
 } from './readme/readme-constants';
 
 storiesOf(name, module)
@@ -29,6 +31,18 @@ storiesOf(name, module)
           {RadioGroupSmartExample}
         </Code>
         <Props component={RadioGroup} descriptions={radioGroupPropDescriptions} />
+        <Description>
+          <Heading type="3">Items property</Heading>
+          <p>
+            The items property describes the radio items that should be rendered in the radio group.
+          </p>
+          <p>Each item can contain the follow keys:</p>
+          <ul>
+            {itemsPropsSmart.map(
+              item => (<li><b>{item.name}</b> <i>({item.type})</i>: {item.descripton}</li>)
+            )}
+          </ul>
+        </Description>
       </Readme>
     </div>
   ))
@@ -42,6 +56,18 @@ storiesOf(name, module)
           {RadioGroupExample}
         </Code>
         <Props component={AkRadioGroup} descriptions={radioGroupPropDescriptions} />
+        <Description>
+          <Heading type="3">Items property</Heading>
+          <p>
+            The items property describes the radio items that should be rendered in the radio group.
+          </p>
+          <p>Each item can contain the follow keys:</p>
+          <ul>
+            {itemsProps.map(
+              item => (<li><b>{item.name}</b> <i>({item.type})</i>: {item.descripton}</li>)
+            )}
+          </ul>
+        </Description>
       </Readme>
     </div>
   ));

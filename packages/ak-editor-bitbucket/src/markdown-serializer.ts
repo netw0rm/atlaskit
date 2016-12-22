@@ -14,7 +14,9 @@ import stringRepeat from './util/string-repeat';
  */
 function escapeMarkdown(str: string, startOfLine?: boolean) : string {
   str = str.replace(/[`*\\~+\[\]_]/g, "\\$&");
-  if (startOfLine) str = str.replace(/^[:#-*]/, "\\$&").replace(/^(\d+)\./, "$1\\.");
+  if (startOfLine) {
+    str = str.replace(/^[:#-*]/, "\\$&").replace(/^(\d+)\./, "$1\\.");
+  }
   return str;
 }
 
@@ -98,7 +100,9 @@ const nodes = {
       var startOfLine = state.atBlank() || state.closed;
       state.write();
       state.out += escapeMarkdown(lines[i], startOfLine);
-      if (i !== lines.length - 1) state.out += "\n"
+      if (i !== lines.length - 1) {
+        state.out += "\n"
+      }
     }
   },
   empty_line(state: MarkdownSerializerState, node: Node) {
@@ -172,15 +176,20 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
       // active.
       outer: for (let i = 0; i < len; i++) {
         let mark: Mark = marks[i];
-        if (!this.marks[mark.type.name].mixable) break;
+        if (!this.marks[mark.type.name].mixable) {
+          break;
+        }
         for (let j = 0; j < active.length; j++) {
           let other = active[j];
-          if (!this.marks[other.type.name].mixable) break;
+          if (!this.marks[other.type.name].mixable) {
+            break;
+          }
           if (mark.eq(other)) {
-            if (i > j)
+            if (i > j) {
               marks = marks.slice(0, j).concat(mark).concat(marks.slice(j, i)).concat(marks.slice(i + 1, len));
-            else if (j > i)
+            } else if (j > i) {
               marks = marks.slice(0, i).concat(marks.slice(i + 1, j)).concat(mark).concat(marks.slice(j, len));
+            }
             continue outer;
           }
         }
@@ -188,11 +197,14 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
       // Find the prefix of the mark set that didn't change
       let keep = 0;
-      while (keep < Math.min(active.length, len) && marks[keep].eq(active[keep])) ++keep;
+      while (keep < Math.min(active.length, len) && marks[keep].eq(active[keep])) {
+        ++keep;
+      }
 
       // Close the marks that need to be closed
-      while (keep < active.length)
+      while (keep < active.length) {
         this.text(this.markString(active.pop(), false), false);
+      }
 
       // Open the marks that need to be opened
       while (active.length < len) {

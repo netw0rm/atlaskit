@@ -1,5 +1,11 @@
 {
   "rules": {
+    "curly": true,
+    "eofline": true,
+    "indent": [
+      true,
+      "spaces"
+    ],
     "typedef": [true],
     "triple-equals": true
   }

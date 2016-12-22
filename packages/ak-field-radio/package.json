@@ -22,9 +22,7 @@
   "devDependencies": {
     "ak-button": "^5.0.2",
     "ak-field-radio": "*",
-    "akutil-common-test": "*",
-    "akutil-readme": "^1.1.0",
-    "akutil-react": "*"
+    "akutil-readme": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

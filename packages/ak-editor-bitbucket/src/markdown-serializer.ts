@@ -113,7 +113,7 @@ const nodes = {
 const marks = {
   em: { open: "*", close: "*", mixable: true },
   strong: { open: "**", close: "**", mixable: true },
-  del: { open: "~~", close: "~~", mixable: true },
+  strike: { open: "~~", close: "~~", mixable: true },
   link: {
     open: "[",
     close(state: MarkdownSerializerState, mark: any) {

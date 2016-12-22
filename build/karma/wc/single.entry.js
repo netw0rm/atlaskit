@@ -4,9 +4,7 @@ testsContext.keys().forEach((path) => {
   try {
     testsContext(path);
   } catch (err) {
-    // eslint-disable-next-line
-    console.error('[ERROR] WITH SPEC FILE: ', path);
-    // eslint-disable-next-line
-    console.error(err);
+    console.error(`Running tests in: ${path}`);
+    throw err;
   }
 });

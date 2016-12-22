@@ -45,7 +45,7 @@ The rationale behind using the `content` property is to be able to provide neste
 #### Notes/questions
 
 * How should the date/time be specified? We could use a `Date` object or a string representation here.
-* Do we want to allow users to provide any content for `avatar`, `actions` and `lozenge`, or should we instead always render the same component, and expose props to customize these?
+* Do we want to allow users to provide JSX content for `avatar`, `actions` and `lozenge`, or should we instead always render the component (e.g. an `<Avatar />` with a set size), and expose props to customize these?
 
 ### Comment threads
 
@@ -65,4 +65,4 @@ Comments can be nested by providing additional `Comment` elements as children.
 
 #### Notes/questions
 
-* Does it make sense to provide nested `Comment` elements as `children`, or does it make more sense to provide the content as children instead?
+* Does it make sense to provide nested `Comment` elements as children, or does it make more sense to provide the content as children instead?

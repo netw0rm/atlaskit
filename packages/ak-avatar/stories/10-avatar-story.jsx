@@ -81,7 +81,7 @@ storiesOf(name, module)
   .add('All avatars with online presence', () => (
     <div>
       <div>Presence icons should be allowed to be shown at any size,
-        but are reccomended only for <strong>medium</strong>
+        but are recommended only for <strong>medium</strong>
       </div>
       <AllAvatarSizes presence="online" />
     </div>

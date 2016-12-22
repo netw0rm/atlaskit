@@ -6,9 +6,11 @@ import Question from 'ak-icon/glyph/question';
 import DropdownMenu from '../src';
 import { name } from '../package.json';
 import DropdownWithButtonExample from './DropdownWithButtonExample'; // eslint-disable-line
+import DropdownLoadItemsExample from './DropdownLoadItemsExample'; // eslint-disable-line
 
 /* eslint-disable import/first, import/no-duplicates */
 import DropdownWithButtonExampleRaw from '!raw!./DropdownWithButtonExample';
+import DropdownLoadItemsExampleRaw from '!raw!./DropdownLoadItemsExample';
 /* eslint-enable import/first, import/no-duplicates */
 
 import {
@@ -178,4 +180,11 @@ storiesOf(name, module)
       items: 'dropdownItemsWithGroups',
     },
     scripts: [dropdownItemsWithGroupsOverride],
+  })
+  .addCodeExampleStory('Load more items', () => (
+    <DropdownLoadItemsExample />
+  ), {
+    scripts: [
+      DropdownLoadItemsExampleRaw,
+    ],
   });

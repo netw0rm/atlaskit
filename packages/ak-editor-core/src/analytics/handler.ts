@@ -20,13 +20,14 @@ export function hermentHandler(name: string, properties?: AnalyticsProperties): 
 }
 
 export function debugHandler(name: string, properties?: AnalyticsProperties): void {
+  // tslint:disable-next-line:no-console
   console.info('analytics event: ', name, properties ? properties : '[no properties]');
 }
 
 /**
  * Attempt to detect analytics provider.
  */
-export function detectHandler() : AnalyticsHandler {
+export function detectHandler(): AnalyticsHandler {
   // Check Herment is globally available
   if (
     window.AJS &&
@@ -42,10 +43,11 @@ export function detectHandler() : AnalyticsHandler {
 
 
 // This declaration is needed for TS to allow invoking Herment queue methods
+// tslint:disable-next-line:no-namespace
 declare global {
   interface Window {
     AJS: {
-      EventQueue: { push: (...args:any[]) => any }
+      EventQueue: { push: (...args: any[]) => any }
     }
   }
 }

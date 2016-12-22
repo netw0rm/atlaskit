@@ -480,7 +480,7 @@ export default new Plugin(ListsState);
 export interface S extends Schema {
   nodes: {
     bullet_list?: BulletListNodeType,
-    list_item:  ListItemNodeType,
+    list_item: ListItemNodeType,
     ordered_list?: OrderedListNodeType
   }
 }

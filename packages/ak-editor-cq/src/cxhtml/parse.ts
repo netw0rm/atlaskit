@@ -69,8 +69,8 @@ function bfsOrder(root: Node) {
 function getContent(node: Node): Fragment {
   let fragment = Fragment.fromArray([]);
   let childIndex;
-    for (childIndex = 0; childIndex < node.childNodes.length; childIndex++) {
-      const child = node.childNodes[childIndex];
+  for (childIndex = 0; childIndex < node.childNodes.length; childIndex++) {
+    const child = node.childNodes[childIndex];
     const thing = convertedNodes.get(child);
     if (thing instanceof Fragment) {
       fragment = fragment.append(thing);
@@ -146,7 +146,7 @@ function marksFromStyle(style: CSSStyleDeclaration): Mark[] {
         }
         break;
       case 'font-family':
-        if(value === 'monospace') {
+        if (value === 'monospace') {
           marks = schema.marks.mono.create().addToSet(marks);
           continue styles;
         }

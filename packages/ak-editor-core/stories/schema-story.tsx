@@ -57,8 +57,8 @@ storiesOf('ak-editor-core', module)
             <Editor
               onChange={this.fetchEditorState}
               ref='editor'
-              isExpandedByDefault />
-
+              isExpandedByDefault
+            />
             <Tabs style={{ backgroundColor: 'white' }}>
               <Tab label="ProseMirror schema">
                 <pre><code className='json'>{jsonPretty({

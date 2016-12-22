@@ -97,6 +97,7 @@
     "style-loader": "^0.13.1",
     "ts-loader": "^1.2.2",
     "tslint": "^4.0.2",
+    "tslint-react": "^2.2.0",
     "typescript": "^2.1.4",
     "url-loader": "^0.5.7",
     "validate-commit-message": "^3.0.1",

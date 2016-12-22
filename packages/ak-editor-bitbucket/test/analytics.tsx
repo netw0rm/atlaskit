@@ -247,7 +247,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.image.drop', () => {
-    const editorAPI:Editor = editor.get(0) as any;
+    const editorAPI: Editor = editor.get(0) as any;
     const { pm } = editorAPI.state;
 
     // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'

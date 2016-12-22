@@ -45,12 +45,12 @@ export default class Chrome extends PureComponent<Props, State> {
           pluginStateImageUpload={props.pluginStateImageUpload}
           pluginStateMentions={props.pluginStateMentions}
           mentionsResourceProvider={props.mentionsResourceProvider}
-        >
-          {props.children}
-        </ChromeExpanded>
+      >
+        {props.children}
+      </ChromeExpanded>
       : <ChromeCollapsed
-          onFocus={this.props.onCollapsedChromeFocus}
-          text={props.placeholder}
-        />;
+        onFocus={this.props.onCollapsedChromeFocus}
+        text={props.placeholder}
+      />;
   }
 };

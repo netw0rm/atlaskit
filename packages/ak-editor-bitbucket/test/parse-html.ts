@@ -373,7 +373,6 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
     it('inline should be parsed', () => {
       expect(parse(
         'foo <span style="font-family: monospace;">bar </span>baz'
-        
       )).to.deep.equal(doc(
         p('foo ', mono('bar '), 'baz')
       ));
@@ -405,7 +404,7 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
       )).to.deep.equal(doc(
         p(
           'foo ',
-          mention({displayName: 'Artur Bodera', id: 'abodera'}),
+          mention({ displayName: 'Artur Bodera', id: 'abodera' }),
           ' bar'
         )
       ));

@@ -13,7 +13,7 @@ chai.use((sinonChai as any).default || sinonChai);
 
 describe('analytics decorator', () => {
   let spy: any;
-  
+
   beforeEach(() => {
     spy = sinon.spy();
     service.handler = (spy as AnalyticsHandler);
@@ -46,7 +46,7 @@ describe('analytics decorator', () => {
     class AnnotatedTestClass2 {
       @analytics('test.event.foo')
       foo = () => {}
-      
+
       @analytics('test.event.bar')
       bar = () => {}
     }
@@ -69,7 +69,7 @@ describe('analytics decorator', () => {
       foo = () => {
         this.bar();
       }
-      
+
       @analytics('test.event.bar')
       private bar = () => {}
     }

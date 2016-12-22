@@ -49,7 +49,7 @@ export default new Schema({
     link: LinkMarkType,
     em: EmMarkType,
     strong: StrongMarkType,
-    strke: StrikeMarkType,
+    strike: StrikeMarkType,
     mono: MonoMarkType
   },
 }) as BitbucketSchema;

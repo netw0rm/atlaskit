@@ -103,7 +103,7 @@ export default class DropdownMenu extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.items !== this.state.items) {
-      this.setState(nextProps.items);
+      this.setState({ items: nextProps.items });
     }
   }
 

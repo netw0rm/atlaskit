@@ -38,8 +38,8 @@ storiesOf(name, module)
           </p>
           <p>Each item can contain the follow keys:</p>
           <ul>
-            {itemsPropsSmart.map(
-              item => (<li><b>{item.name}</b> <i>({item.type})</i>: {item.descripton}</li>)
+            {itemsPropsSmart.map((item, index) =>
+              (<li key={index}><b>{item.name}</b> <i>({item.type})</i>: {item.description}</li>)
             )}
           </ul>
         </Description>
@@ -63,8 +63,8 @@ storiesOf(name, module)
           </p>
           <p>Each item can contain the follow keys:</p>
           <ul>
-            {itemsProps.map(
-              item => (<li><b>{item.name}</b> <i>({item.type})</i>: {item.descripton}</li>)
+            {itemsProps.map((item, index) =>
+              (<li key={index}><b>{item.name}</b> <i>({item.type})</i>: {item.description}</li>)
             )}
           </ul>
         </Description>

@@ -20,6 +20,7 @@ import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarFeedback from '../ToolbarFeedback';
 import MentionPicker from '../MentionPicker';
+import { decorator as analytics } from '../../analytics';
 
 export interface Props {
   feedbackFormUrl?: string;
@@ -91,6 +92,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     );
   }
 
+  @analytics('atlassian.editor.stop.cancel')
   private handleCancel = () => {
     const { onCancel } = this.props;
     if (onCancel) {
@@ -98,6 +100,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.image.button')
   private handleInsertImage = () => {
     const { pluginStateImageUpload } = this.props;
 
@@ -106,6 +109,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.mention.button')
   private handleInsertMention = () => {
     const { onInsertMention } = this.props;
     if (onInsertMention) {
@@ -113,6 +117,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.stop.save')
   private handleSave = () => {
     const { onSave } = this.props;
     if (onSave) {

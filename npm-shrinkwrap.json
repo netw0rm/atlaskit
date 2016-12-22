@@ -71,7 +71,7 @@
     },
     "@types/enzyme": {
       "version": "2.5.39",
-      "from": "https://registry.npmjs.org/@types/enzyme/-/enzyme-2.5.39.tgz",
+      "from": "@types/enzyme@latest",
       "resolved": "https://registry.npmjs.org/@types/enzyme/-/enzyme-2.5.39.tgz"
     },
     "@types/form-data": {

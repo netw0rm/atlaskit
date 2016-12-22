@@ -4,6 +4,7 @@ import FeedbackIcon from 'ak-icon/glyph/feedback';
 import Panel from '../Panel';
 import * as styles from './styles';
 import IconButton from '../ToolbarIconButton';
+import { decorator as analytics } from '../../analytics';
 
 export interface Props {
   feedbackFormUrl: string;
@@ -45,6 +46,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
     );
   }
 
+  @analytics('atlassian.editor.feedback.button')
   private openFeedbackPanel = () => {
     this.setState({ active: true });
   }

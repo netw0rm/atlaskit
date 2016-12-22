@@ -8,7 +8,9 @@ import {
   TextFormattingPlugin,
   HorizontalRulePlugin,
   Chrome,
-  schema
+  schema,
+  AnalyticsHandler,
+  service as analyticsService
 } from 'ak-editor-core';
 import { encode, parse } from './html';
 
@@ -20,6 +22,7 @@ export interface Props {
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
+  analyticsHandler?: AnalyticsHandler;
 }
 
 export interface State {
@@ -33,6 +36,8 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
+
+    analyticsService.handler = props.analyticsHandler || ((name) => {});
   }
 
   /**

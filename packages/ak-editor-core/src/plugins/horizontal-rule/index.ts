@@ -6,6 +6,8 @@ import {
   HorizontalRuleNodeType
 } from '../../schema';
 
+import { trackAndInvoke } from '../../analytics';
+
 export type StateChangeHandler = (state: HorizontalRuleState) => any;
 
 export class HorizontalRuleState {
@@ -23,7 +25,7 @@ export class HorizontalRuleState {
     const {horizontal_rule} = pm.schema.nodes;
     if(horizontal_rule) {
       pm.addKeymap(new Keymap({
-        'Mod-Shift--': () => pm.tr.replaceSelection(horizontal_rule.create()).applyAndScroll()
+        'Mod-Shift--': trackAndInvoke('atlassian.editor.format.horizontalrule.keyboard', () => pm.tr.replaceSelection(horizontal_rule.create()).applyAndScroll())
       }));
     }
   }

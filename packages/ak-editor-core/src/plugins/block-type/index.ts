@@ -155,8 +155,8 @@ export class BlockTypeState {
     const { $from } = pm.selection;
     const node = $from.parent;
 
-    if(isCodeBlockNode(node)) {
-      if( !this.lastCharIsNewline(node) || !this.cursorIsAtTheEndOfLine() ) {
+    if (isCodeBlockNode(node)) {
+      if (!this.lastCharIsNewline(node) || !this.cursorIsAtTheEndOfLine()) {
         pm.tr.typeText('\n').applyAndScroll();
         return true;
       } else {
@@ -172,10 +172,10 @@ export class BlockTypeState {
     const node = $from.parent;
     const { hard_break } = pm.schema.nodes;
 
-    if(hard_break) {
+    if (hard_break) {
       const hardBreakNode = hard_break.create();
 
-      if(node.type.validContent(Fragment.from(hardBreakNode))) {
+      if (node.type.validContent(Fragment.from(hardBreakNode))) {
         pm.tr.replaceSelection(hardBreakNode).applyAndScroll();
         return true;
       }
@@ -189,9 +189,9 @@ export class BlockTypeState {
   toggleBlockType(name: BlockTypeName): void {
     const blockNodes = this.blockNodesBetweenSelection();
 
-    if(this.nodeBlockType(blockNodes[0]).name !== name) {
+    if (this.nodeBlockType(blockNodes[0]).name !== name) {
       this.changeBlockType(name);
-    } else if(name !== BlockQuote.name){
+    } else if (name !== BlockQuote.name) {
       this.changeBlockType(NormalText.name);
     } else {
       commands.lift(this.pm);
@@ -202,14 +202,14 @@ export class BlockTypeState {
   private deleteCharBefore() {
     const { pm } = this;
     const { $from } = pm.selection;
-    pm.tr.delete($from.pos-1, $from.pos).applyAndScroll();
+    pm.tr.delete($from.pos - 1, $from.pos).applyAndScroll();
   }
 
   private updateBlockTypeKeymap(context: Context) {
     const { pm } = this;
-    if(this.context) {
+    if (this.context) {
       const previousContext = this.findContext(this.context);
-      if(previousContext) {
+      if (previousContext) {
         pm.removeKeymap(previousContext.keymap);
       }
     }
@@ -218,14 +218,14 @@ export class BlockTypeState {
   }
 
   private keymapForBlockTypes(blockTypes: BlockType[]) {
-    let bindings: {[key: string]: any} = {};
+    let bindings: { [key: string]: any } = {};
 
     const bind = (key: string, action: any): void => {
-      bindings = {...bindings, ...{[key]: action}};
+      bindings = { ...bindings, ...{ [key]: action } };
     }
 
     blockTypes.forEach((blockType) => {
-      if(blockType.shortcut) {
+      if (blockType.shortcut) {
         const eventName = this.analyticsEventName('keyboard', blockType.name);
         bind(blockType.shortcut, trackAndInvoke(eventName, () => this.toggleBlockType(blockType.name)));
       }
@@ -256,7 +256,7 @@ export class BlockTypeState {
     let blockNodes: Node[] = [];
 
     pm.doc.nodesBetween($from.pos, $to.pos, (node) => {
-      if(node.isBlock) {
+      if (node.isBlock) {
         blockNodes.push(node);
       }
     });
@@ -301,17 +301,17 @@ export class BlockTypeState {
 
   private nodeBlockType(node: Node): BlockType {
     if (isHeadingNode(node)) {
-        switch (node.attrs.level) {
-          case 1:
-            return Heading1;
-          case 2:
-            return Heading2;
-          case 3:
-            return Heading3;
-          case 4:
-            return Heading4;
-          case 5:
-            return Heading5;
+      switch (node.attrs.level) {
+        case 1:
+          return Heading1;
+        case 2:
+          return Heading2;
+        case 3:
+          return Heading3;
+        case 4:
+          return Heading4;
+        case 5:
+          return Heading5;
       }
     } else if (isCodeBlockNode(node)) {
       return CodeBlock;
@@ -326,15 +326,15 @@ export class BlockTypeState {
 
   private analyticsEventName(eventSource: string, blockTypeName: string): string {
     return `atlassian.editor.format.${blockTypeName}.${eventSource}`;
-  } 
+  }
 
   private addAvailableContext(name: ContextName, preferredBlockTypes: BlockType[]): void {
     let context = this.makeContext(name, preferredBlockTypes.filter(this.isBlockTypeSchemaSupported));
     this.availableContexts.push(context);
   }
 
-  private makeContext(name: ContextName, blockTypes: BlockType[]): Context{
-    return {name: name, blockTypes: blockTypes, keymap: this.keymapForBlockTypes(blockTypes)};
+  private makeContext(name: ContextName, blockTypes: BlockType[]): Context {
+    return { name: name, blockTypes: blockTypes, keymap: this.keymapForBlockTypes(blockTypes) };
   }
 
   private findContext(name: ContextName): Context | undefined {

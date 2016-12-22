@@ -6,7 +6,7 @@ import { expect } from 'chai';
 chai.use(chaiPlugin);
 
 describe('ak-editor-core/schema underline mark', () => {
-  it('throws an error if it is not named "underline"', () => {
+  it('throws an error if it is not named "u"', () => {
     expect(() => {
       new Schema({
         nodes: {
@@ -18,7 +18,9 @@ describe('ak-editor-core/schema underline mark', () => {
         }
       });
     }).to.throw(Error);
+  });
 
+  it('does not throw an error if it is named "u"', () => {
     expect(() => {
       new Schema({
         nodes: {

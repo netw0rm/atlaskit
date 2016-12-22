@@ -1,6 +1,13 @@
-import { Heading as HeadingNodeType, Node } from '../../prosemirror';
+import { Heading, Node, Schema } from '../../prosemirror';
 
-export { HeadingNodeType };
+export class HeadingNodeType extends Heading {
+  constructor(name: string, schema: Schema) {
+    super(name, schema);
+    if (/^heading[1-5]$/.test(name)) {
+      throw new Error("HeadingNodeType must be named 'heading{1..5}'.");
+    }
+  }
+}
 
 export interface HeadingNode extends Node {
   type: HeadingNodeType;

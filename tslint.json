@@ -6,6 +6,7 @@
       true,
       "spaces"
     ],
+    "no-trailing-whitespace": true,
     "typedef": [true],
     "triple-equals": true
   }

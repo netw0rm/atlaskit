@@ -21,25 +21,25 @@ import { service as analyticsService, trackAndInvoke } from '../../analytics';
 // input rule will allow for a list to start at any given number, which isn't allowed in
 // markdown (where a ordered list will always start on 1). This is a slightly modified
 // version of that input rule.
-const orderedListRule= (nodeType: NodeType): InputRule => {
+const orderedListRule = (nodeType: NodeType): InputRule => {
   return wrappingInputRule(/^(\d+)\. $/, " ", nodeType, (match: RegExpMatchArray) => ({}),
-                           (match: RegExpMatchArray, node: Node) => node.childCount);
+    (match: RegExpMatchArray, node: Node) => node.childCount);
 }
 
-const createTrackedInputRule= (analyticsEventName: string, rule: InputRule) : InputRule => {
-  if (typeof(rule.handler) !== 'function') {
+const createTrackedInputRule = (analyticsEventName: string, rule: InputRule): InputRule => {
+  if (typeof (rule.handler) !== 'function') {
     throw new SyntaxError('The provided cannot be tracked because it does not provide a callable handler');
   }
-  
+
   rule.handler = trackAndInvoke(analyticsEventName, rule.handler);
   return rule;
 }
 
 const headingRule = (nodeType: NodeType, maxLevel: Number) => {
   return textblockTypeInputRule(
-    new RegExp("^(#{1," + maxLevel + "}) $"), 
+    new RegExp("^(#{1," + maxLevel + "}) $"),
     " ",
-    nodeType, 
+    nodeType,
     (match: string[]) => {
       const level = match[1].length;
       analyticsService.trackEvent(`atlassian.editor.format.heading${level}.autoformatting`);
@@ -79,7 +79,7 @@ function replaceWithNode(
   match: Array<string>,
   pos: number,
   node: Node
-) : boolean {
+): boolean {
   const start = pos - match[0].length;
   const end = pos;
 
@@ -93,8 +93,8 @@ function replaceWithMark(
   match: Array<string>,
   pos: number,
   mark: string
-) : boolean {
-  const schema: Schema= pm.schema;
+): boolean {
+  const schema: Schema = pm.schema;
   const to = pos;
   const from = pos - match[1].length;
   const markType: Mark = schema.mark(mark);

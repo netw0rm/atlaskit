@@ -116,7 +116,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       onInsertMention();
     }
   }
-  
+
   @analytics('atlassian.editor.stop.save')
   private handleSave = () => {
     const { onSave } = this.props;

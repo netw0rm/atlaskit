@@ -14,7 +14,7 @@ import {
   MentionsPlugin,
   ImageUploadPlugin,
   Chrome,
-  analyticsHandler, 
+  AnalyticsHandler, 
   decorator as analytics,
   service as analyticsService
 } from 'ak-editor-core';
@@ -34,7 +34,7 @@ export interface Props {
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
-  analyticsHandler?: analyticsHandler;
+  analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
 }
 

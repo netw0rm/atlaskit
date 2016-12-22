@@ -9,7 +9,7 @@ import { doc, strong, h1, p } from './_schema-builder';
 import stringRepeat from '../src/util/string-repeat'
 import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-core/test-helper';
 
-import { ProseMirror, browser, ToolbarTextFormatting, service, AnalyticsHandler, debugHandler  } from 'ak-editor-core';
+import { ProseMirror, browser, ToolbarTextFormatting, service, AnalyticsHandler, debugHandler } from 'ak-editor-core';
 import BoldIcon from 'ak-icon/glyph/editor/bold';
 import ItalicIcon from 'ak-icon/glyph/editor/bold';
 import NumberListIcon from 'ak-icon/glyph/editor/list/number';
@@ -55,7 +55,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   let editor: ReactWrapper<any, any>;
   let editorAPI: Editor | null;
   let pm: ProseMirror;
-  
+
   beforeEach(() => {
     let container = fixture();
     let noop = () => {};
@@ -63,7 +63,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
     editor = mount(
       <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
-      
+
       // We need to attach the editor to DOM because ProseMirror depends on having
       // focus on the content area (detached DOM elements can not receive focus)
       { attachTo: fixture() }
@@ -76,7 +76,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.hyperlink.button', () => {
     let toolbar = editor.find('ToolbarHyperlink');
 
-    toolbar  
+    toolbar
       .find(LinkIcon)
       .parent()
       .simulate('click');
@@ -87,7 +87,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     (input.get(0) as any).value = 'http://atlassian.com';
     input.simulate('change');
     input.simulate('keyup', { which: 'enter', keyCode: 13 });
-    
+
     expect(handler).to.have.been.calledWith('atlassian.editor.format.hyperlink.button');
   });
 
@@ -159,7 +159,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.list.numbered.autoformatting', () => {
     pm.input.insertText(0, 0, '1. ');
     expect(handler).to.have.been.calledWith('atlassian.editor.format.list.numbered.autoformatting');
-  });  
+  });
 
   it('atlassian.editor.format.list.bullet.button', () => {
     editor
@@ -179,7 +179,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.list.bullet.autoformatting', () => {
     pm.input.insertText(0, 0, '* ');
     expect(handler).to.have.been.calledWith('atlassian.editor.format.list.bullet.autoformatting');
-  });  
+  });
 
   it('atlassian.editor.feedback.button', () => {
     editor
@@ -210,7 +210,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.paste', function() {
     if (!dispatchPasteEvent(pm, { plain: 'foo' })) {
       this.skip('This environment does not support artificial paste events');
-      return; 
+      return;
     }
 
     expect(handler).to.have.been.calledWith('atlassian.editor.paste');
@@ -229,7 +229,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.image.paste', function() {
     const contentArea: HTMLElement = (editor.get(0) as any).state.pm.content;
     const event = createEvent('paste');
-    
+
     try {
       Object.defineProperties(event, {
         clipboardData: {
@@ -241,7 +241,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     } catch (e) {
       return this.skip('This environment does not allow mocking paste events - ' + e);
     }
-    
+
     contentArea.dispatchEvent(event);
     expect(handler).to.have.been.calledWith('atlassian.editor.image.paste');
   });
@@ -250,11 +250,11 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     const editorAPI:Editor = editor.get(0) as any;
     const { pm } = editorAPI.state;
 
-    // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop' 
+    // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'
     //       so we must dispatch the event directly on the event which has listener attached.
     const dropElement: HTMLElement = (editor.get(0) as any).state.pm.content.parentNode;
     const event = createEvent('drop');
-    
+
     Object.defineProperties(event, {
       dataTransfer: {
         value: {
@@ -316,7 +316,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.blockquote.autoformatting', () => {
     pm.input.insertText(0, 0, '> ');
     expect(handler).to.have.been.calledWith('atlassian.editor.format.blockquote.autoformatting');
-  });  
+  });
 
   it('atlassian.editor.format.codeblock.keyboard', () => {
     sendKeyToPm(pm, browser.mac ? 'Cmd-Alt-8' : 'Ctrl-8');

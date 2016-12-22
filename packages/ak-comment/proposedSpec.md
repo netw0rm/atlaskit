@@ -23,13 +23,13 @@ A comment can include many elements, including:
 <Comment
   avatar={<Avatar />}
   author="Ben Wong"
-  lozenge={<Lozenge />}
+  lozenge={<Lozenge>Author</Lozenge>}
   datetime={new Date()}
   dateformat="YYYY-MM-DD"
   actions={[
-    <Button appearance="link" compact><TeamsIcon /></Button>,
-    <Button appearance="link" compact><CreateIcon /></Button>,
-    <Button appearance="link" compact><SnippetsIcon /></Button>,
+    <Button appearance="subtle" compact>Reply</Button>,
+    <Button appearance="subtle" compact>Edit</Button>,
+    <Button appearance="subtle" compact>Like</Button>,
   ]}
   content={(
     <div>
@@ -41,6 +41,15 @@ A comment can include many elements, including:
 ```
 
 The rationale behind using the `content` property is to be able to provide nested comments as children, in order to maintain the semantic nesting of `Comments` elements.
+
+For reference, the WC implementation for `ak-comment` had the following slots, which correspond to these props in the proposal:
+
+* Actions => `actions`
+* Author => `author`
+* Avatar => `avatar`
+* Reply => `children` - see below
+* Time => `datetime`, `dateformat`
+* Default (comment content): `content`
 
 #### Notes/questions
 
@@ -65,4 +74,4 @@ Comments can be nested by providing additional `Comment` elements as children.
 
 #### Notes/questions
 
-* Does it make sense to provide nested `Comment` elements as children, or does it make more sense to provide the content as children instead?
+* Does it make sense to provide nested `Comment` elements as `children`, or does it make more sense to provide the content as `children` and expose a `replies`/`nested` property instead?

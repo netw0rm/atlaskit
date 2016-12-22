@@ -3,6 +3,7 @@ import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
+import Base from 'ak-field-base';
 
 import Radio from '../src/Radio';
 import AkRadioGroup from '../src/RadioGroup';
@@ -34,9 +35,10 @@ describe(name, () => {
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
-      it('should render a Radio for each item', () => {
+      it('should render a FieldBase containing a Radio for each item', () => {
         const wrapper = mount(<AkRadioGroup items={sampleItems} />);
-        expect(wrapper).to.have.exactly(3).descendants(Radio);
+        expect(wrapper).to.have.exactly(1).descendants(Base);
+        expect(wrapper.find(Base)).to.have.exactly(3).descendants(Radio);
       });
     });
 
@@ -50,25 +52,36 @@ describe(name, () => {
           for (let i = 0; i < sampleItems.length; i++) {
             const radio = radios.at(i);
             const item = sampleItems[i];
-            expect(radio.prop('name')).to.equal(item.name);
-            expect(radio.prop('value')).to.equal(item.value);
-            expect(radio.prop('children')).to.equal(item.label);
-            expect(radio.prop('isDisabled')).to.equal(!!item.isDisabled);
-            expect(radio.prop('isSelected')).to.equal(!!item.isSelected);
+            expect(radio).to.have.prop('name', item.name);
+            expect(radio).to.have.prop('value', item.value);
+            expect(radio).to.have.prop('children', item.label);
+            expect(radio).to.have.prop('isDisabled', !!item.isDisabled);
+            expect(radio).to.have.prop('isSelected', !!item.isSelected);
           }
         });
       });
 
       describe('label prop', () => {
-        it('renders label containing string', () => {
+        it('is reflected to the FieldBase', () => {
           const label = 'string label content';
           const wrapper = shallow(<AkRadioGroup label={label} />);
-          expect(wrapper.contains(label)).to.equal(true);
+          expect(wrapper.find(Base)).to.have.prop('label', label);
         });
-        it('renders label with node', () => {
-          const label = (<p>label content</p>);
-          const wrapper = shallow(<AkRadioGroup label={label} />);
-          expect(wrapper.contains(label)).to.equal(true);
+      });
+
+      describe('isRequired prop', () => {
+        it('is reflected to the FieldBase', () => {
+          const isRequired = true;
+          const wrapper = shallow(<AkRadioGroup isRequired={isRequired} />);
+          expect(wrapper.find(Base)).to.have.prop('isRequired', isRequired);
+        });
+
+        it('is reflected to each Radio item', () => {
+          const isRequired = true;
+          const wrapper = shallow(<AkRadioGroup isRequired={isRequired} />);
+          wrapper.find(Radio).forEach(radio =>
+            expect(radio).to.have.prop('isRequired', isRequired)
+          );
         });
       });
 
@@ -86,7 +99,7 @@ describe(name, () => {
       function expectRadioSelected(wrapper, index) {
         const radios = wrapper.find(Radio);
         for (let i = 0; i < radios.length; i++) {
-          expect(radios.at(i).prop('isSelected')).to.equal(index === i);
+          expect(radios.at(i)).to.have.prop('isSelected', index === i);
         }
       }
 

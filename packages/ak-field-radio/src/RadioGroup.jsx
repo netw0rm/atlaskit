@@ -1,4 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
+import Base from 'ak-field-base';
 import styles from 'style!./styles.less';
 import Radio from './Radio';
 import { itemsDefault, itemsPropType } from './internal/constants';
@@ -6,13 +7,16 @@ import { itemsDefault, itemsPropType } from './internal/constants';
 /* eslint-disable-next-line react/prefer-stateless-function */
 export default class RadioGroup extends PureComponent {
   static propTypes = {
+    isRequired: PropTypes.bool,
     items: itemsPropType,
-    label: PropTypes.node,
+    label: PropTypes.string,
     onRadioChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
+    isRequired: false,
     items: itemsDefault,
+    label: '',
   }
 
   renderItems = () => (
@@ -20,6 +24,7 @@ export default class RadioGroup extends PureComponent {
       <Radio
         key={index}
         isDisabled={item.isDisabled}
+        isRequired={this.props.isRequired}
         isSelected={item.isSelected}
         name={item.name}
         onChange={this.props.onRadioChange}
@@ -32,14 +37,19 @@ export default class RadioGroup extends PureComponent {
 
   render() {
     return (
-      <div
-        aria-label={this.props.label}
-        className={styles.radioGroup}
-        role="group"
+      <Base
+        appearance="none"
+        isRequired={this.props.isRequired}
+        label={this.props.label}
       >
-        {this.props.label ? <div>{this.props.label}</div> : null}
-        {this.renderItems()}
-      </div>
+        <div
+          aria-label={this.props.label}
+          className={styles.radioGroup}
+          role="group"
+        >
+          {this.renderItems()}
+        </div>
+      </Base>
     );
   }
 }

@@ -72,6 +72,7 @@ storiesOf(name, module)
     <RadioGroup
       items={sampleItems}
       label="Pick your favourite animal:"
+      isRequired
     />
   ))
   .addCodeExampleStory('Radio group with default value', () => (

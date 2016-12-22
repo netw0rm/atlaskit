@@ -8,7 +8,7 @@ import service from './service';
  * that desired provider is set in analytics/service.provider = provider.
  *
  * Usage:
- * 
+ *
  *     import analytics from 'analytics/annotation';
  *
  *     class Component {
@@ -17,7 +17,7 @@ import service from './service';
  *     }
  */
 //: PropertyDecorator | MethodDecorator
-export default function analytics(name: string)  {
+export default function analytics(name: string) {
   return function (
     target: any,
     key: string,
@@ -63,7 +63,7 @@ export default function analytics(name: string)  {
 /**
  * Returns a sequence that will track analytics event before calling the passed function.
  */
-function trackFunction(analyticsEventName:string, trackedFn: Function) {
+function trackFunction(analyticsEventName: string, trackedFn: Function) {
   return (...args: any[]) => {
     try {
       service.trackEvent(analyticsEventName);

@@ -5,8 +5,8 @@ function replaceWithMark(
   match: Array<string>,
   pos: number,
   mark: string
-) : boolean {
-  const schema: Schema= pm.schema;
+): boolean {
+  const schema: Schema = pm.schema;
   const to = pos;
   const from = pos - 1;
   const markType: Mark = schema.mark(mark);
@@ -27,7 +27,7 @@ function replaceWithMark(
 }
 
 export const mentionQueryRule = new InputRule(/(^|\s)@$/, '@', (
-  pm: ProseMirror, 
-  match: Array<string>, 
+  pm: ProseMirror,
+  match: Array<string>,
   pos: number
-  ) => replaceWithMark(pm, match, pos, 'mention_query')); 
+) => replaceWithMark(pm, match, pos, 'mention_query'));

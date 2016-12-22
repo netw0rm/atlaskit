@@ -1,16 +1,16 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import service from '../../src/analytics/service';
-import { 
-  AnalyticsHandler, 
-  AnalyticsProperties, 
+import {
+  AnalyticsHandler,
+  AnalyticsProperties,
   detectHandler,
-  hermentHandler 
+  hermentHandler
 } from '../../src/analytics/handler';
 
 describe('analytics service', () => {
   it('auto-detects Herment', () => {
-    window.AJS = {EventQueue: { push() {} }};
+    window.AJS = { EventQueue: { push() { } } };
     expect(detectHandler()).to.equal(hermentHandler);
     delete window.AJS;
   });
@@ -20,7 +20,7 @@ describe('analytics service', () => {
     const handler: AnalyticsHandler = (name: string, props: AnalyticsProperties) => {
       eventName = name;
     };
-    service.handler = handler; 
+    service.handler = handler;
     service.trackEvent('test.event');
     expect(eventName).to.eq('test.event');
   });
@@ -33,6 +33,6 @@ describe('analytics service', () => {
     service.handler = Handler;
     service.handler = null;
     service.trackEvent('test.event');
-    expect(called).to.be.false; 
+    expect(called).to.be.false;
   });
 });

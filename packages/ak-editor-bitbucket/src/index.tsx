@@ -14,7 +14,7 @@ import {
   MentionsPlugin,
   ImageUploadPlugin,
   Chrome,
-  AnalyticsHandler, 
+  AnalyticsHandler,
   decorator as analytics,
   service as analyticsService
 } from 'ak-editor-core';

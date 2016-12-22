@@ -20,6 +20,20 @@ describe('ak-editor-core/schema strike mark', () => {
     }).to.throw(Error);
   });
 
+  it('does not throw an error if it is named "strike"', () => {
+    expect(() => {
+      new Schema({
+        nodes: {
+          doc: { type: DocNodeType, content: 'text*' },
+          text: { type: Text }
+        },
+        marks: {
+          strike: StrikeMarkType
+        }
+      });
+    }).to.not.throw(Error);
+  });
+
   itMatches('<del>text</del>', 'text');
   itMatches('<s>text</s>', 'text');
   itMatches('<strike>text</strike>', 'text');

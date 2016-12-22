@@ -1,7 +1,13 @@
 import { LinkMark as BaseLinkMark } from 'prosemirror/dist/schema-basic';
-import { Mark } from '../../prosemirror';
+import { Mark, Schema } from '../../prosemirror';
 
 export class LinkMarkType extends BaseLinkMark {
+  constructor(name: string, rank: number, schema: Schema) {
+    if (name !== 'link') {
+      throw new Error("LinkMarkType must be named 'link'.")
+    }
+    super(name, rank, schema);
+  }
   get inclusiveRight() {
     return false;
   }

@@ -21,6 +21,20 @@ describe('ak-editor-core/schema mention-query mark', () => {
     }).to.throw(Error);
   });
 
+  it('does not throw an error if it is named "mention_query"', () => {
+    expect(() => {
+      new Schema({
+        nodes: {
+          doc: { type: DocNodeType, content: 'text*' },
+          text: { type: Text }
+        },
+        marks: {
+          mention_query: MentionQueryMarkType
+        }
+      });
+    }).to.not.throw(Error);
+  });
+
   it('serializes to <span data-mention-query="true" style="color: rgb(22, 94, 204);">', () => {
     const schema = makeSchema();
     const node = schema.text('foo', [ schema.marks.mention_query.create() ] );

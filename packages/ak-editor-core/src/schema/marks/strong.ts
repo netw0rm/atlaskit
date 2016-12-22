@@ -1,7 +1,14 @@
-import { StrongMark as StrongMarkType } from 'prosemirror/dist/schema-basic';
-import { Mark } from '../../prosemirror';
+import { StrongMark as BaseStrongMark } from 'prosemirror/dist/schema-basic';
+import { Mark, Schema } from '../../prosemirror';
 
-export { StrongMarkType };
+export class StrongMarkType extends BaseStrongMark {
+  constructor(name: string, rank: number, schema: Schema) {
+    if (name !== 'strong') {
+      throw new Error("StrongMarkType must be named 'strong'.")
+    }
+    super(name, rank, schema);
+  }
+}
 
 export interface StrongMark extends Mark {
   type: StrongMarkType;

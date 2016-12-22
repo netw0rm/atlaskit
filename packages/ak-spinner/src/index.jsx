@@ -50,22 +50,25 @@ export default class Spinner extends PureComponent {
             width: `${SPINNER_SIZE}px`,
           }}
         >
-          <svg
-            height={SPINNER_SIZE}
-            width={SPINNER_SIZE}
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox={`0 0 ${SPINNER_SIZE} ${SPINNER_SIZE}`}
-          >
-            <circle
-              fill="none"
-              strokeWidth={strokeWidth}
-              strokeLinecap="round"
-              cx={SPINNER_SIZE / 2}
-              cy={SPINNER_SIZE / 2}
-              r={strokeRadius}
-              style={dashStyles}
-            />
-          </svg>
+          <div className={styles.spinnerWrapper}>
+            <svg
+              height={SPINNER_SIZE}
+              width={SPINNER_SIZE}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox={`0 0 ${SPINNER_SIZE} ${SPINNER_SIZE}`}
+            >
+              <circle
+                className={styles.circle}
+                fill="none"
+                strokeWidth={strokeWidth}
+                strokeLinecap="round"
+                cx={SPINNER_SIZE / 2}
+                cy={SPINNER_SIZE / 2}
+                r={strokeRadius}
+                style={dashStyles}
+              />
+            </svg>
+          </div>
         </div>
       </div>
     );

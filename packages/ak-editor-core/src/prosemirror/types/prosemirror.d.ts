@@ -1016,13 +1016,6 @@ declare module 'prosemirror/dist/schema-basic' {
         };
         toDOM(node: any): any[];
     }
-    export class CodeMark extends MarkType {
-        isCode: boolean;
-        matchDOMTag: {
-            'code': any;
-        };
-        toDOM(): string[];
-    }
     export const schema: Schema;
 }
 

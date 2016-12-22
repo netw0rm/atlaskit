@@ -2,7 +2,7 @@ import * as mocha from 'mocha';
 import markdownSerializer from '../src/markdown-serializer';
 import {
   code_block, doc, p, img, mono, strong, blockquote, hr,
-  h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, del, mention
+  h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, mention
 } from './_schema-builder';
 import { expect } from 'chai';
 import stringRepeat from '../src/util/string-repeat';

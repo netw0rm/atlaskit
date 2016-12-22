@@ -2,7 +2,6 @@ import {
   BlockQuoteNodeType,
   BulletListNodeType,
   MonoMarkType,
-  DelMarkType,
   DocNodeType,
   EmMarkType,
   HardBreakNodeType,

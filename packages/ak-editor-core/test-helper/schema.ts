@@ -17,7 +17,7 @@ import {
   MentionNodeType,
   EmojiNodeType,
   MonoMarkType,
-  DelMarkType,
+  StrikeMarkType,
   EmMarkType,
   LinkMarkType,
   StrongMarkType
@@ -54,7 +54,7 @@ export interface AtlassianEditorSchema extends Schema {
     em: EmMarkType;
     strong: StrongMarkType;
     mono: MonoMarkType;
-    del: DelMarkType;
+    strike: StrikeMarkType;
   }
 }
 
@@ -86,6 +86,6 @@ export const schema = new Schema({
     em: EmMarkType,
     strong: StrongMarkType,
     mono: MonoMarkType,
-    del: DelMarkType,
+    strike: StrikeMarkType,
   },
 }) as AtlassianEditorSchema;

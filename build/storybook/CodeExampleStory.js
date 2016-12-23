@@ -11,7 +11,7 @@ import { locals as styles } from './styles.less';
 const transformScripts = scripts => scripts.map(scr => scr.toString()).join('\n\n');
 
 // eslint-disable-next-line prefer-template
-const transformImports = imports => imports.map(imp => `import ${imp[0]} from ${imp[1]};`).join('\n') + '\n\n';
+const transformImports = imports => imports.map(imp => `import ${imp[0]} from '${imp[1]}';`).join('\n') + '\n\n';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class CodeExampleStory extends Component {

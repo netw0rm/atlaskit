@@ -1,4 +1,4 @@
-import { Schema, Text, MarkType, NodeType as _NodeType } from "../prosemirror";
+import { Schema, Text, MarkType, NodeType as _NodeType } from '../prosemirror';
 
 type AnyObject = { [key: string]: any };
 

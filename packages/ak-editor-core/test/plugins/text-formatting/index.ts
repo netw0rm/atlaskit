@@ -20,7 +20,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrong = sinon.spy(plugin, 'toggleStrong');
 
-            pm.input.dispatchKey("Cmd-B");
+            pm.input.dispatchKey('Cmd-B');
 
             expect(toggleStrong).to.have.been.callCount(1);
           });
@@ -31,7 +31,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleEm = sinon.spy(plugin, 'toggleEm');
 
-            pm.input.dispatchKey("Cmd-I");
+            pm.input.dispatchKey('Cmd-I');
 
             expect(toggleEm).to.have.been.callCount(1);
           });
@@ -42,7 +42,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
 
-            pm.input.dispatchKey("Cmd-U");
+            pm.input.dispatchKey('Cmd-U');
 
             expect(toggleUnderline).to.have.been.callCount(1);
           });
@@ -57,7 +57,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrike = sinon.spy(plugin, 'toggleStrike');
 
-            pm.input.dispatchKey("Shift-Cmd-S");
+            pm.input.dispatchKey('Shift-Cmd-S');
 
             expect(toggleStrike).to.have.been.callCount(1);
           });
@@ -68,7 +68,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleMono = sinon.spy(plugin, 'toggleMono');
 
-            pm.input.dispatchKey("Shift-Cmd-M");
+            pm.input.dispatchKey('Shift-Cmd-M');
 
             expect(toggleMono).to.have.been.callCount(1);
           });
@@ -81,7 +81,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrong = sinon.spy(plugin, 'toggleStrong');
 
-            pm.input.dispatchKey("Ctrl-B");
+            pm.input.dispatchKey('Ctrl-B');
 
             expect(toggleStrong).to.have.been.callCount(1);
           });
@@ -92,7 +92,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleEm = sinon.spy(plugin, 'toggleEm');
 
-            pm.input.dispatchKey("Ctrl-I");
+            pm.input.dispatchKey('Ctrl-I');
 
             expect(toggleEm).to.have.been.callCount(1);
           });
@@ -103,7 +103,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
 
-            pm.input.dispatchKey("Ctrl-U");
+            pm.input.dispatchKey('Ctrl-U');
 
             expect(toggleUnderline).to.have.been.callCount(1);
           });
@@ -118,7 +118,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrike = sinon.spy(plugin, 'toggleStrike');
 
-            pm.input.dispatchKey("Shift-Ctrl-S");
+            pm.input.dispatchKey('Shift-Ctrl-S');
 
             expect(toggleStrike).to.have.been.callCount(1);
           });
@@ -129,7 +129,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleMono = sinon.spy(plugin, 'toggleMono');
 
-            pm.input.dispatchKey("Shift-Ctrl-M");
+            pm.input.dispatchKey('Shift-Ctrl-M');
 
             expect(toggleMono).to.have.been.callCount(1);
           });

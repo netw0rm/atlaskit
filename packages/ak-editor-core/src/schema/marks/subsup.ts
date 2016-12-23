@@ -5,7 +5,7 @@ export type TypeAttr = 'sub' | 'sup'
 export class SubSupMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {
     if (name !== 'subsup') {
-      throw new Error("SubSupMarkType must be named 'subsup'.")
+      throw new Error('SubSupMarkType must be named "subsup".')
     }
     super(name, rank, schema);
   }

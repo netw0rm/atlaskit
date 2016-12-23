@@ -49,7 +49,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
           resourceProvider={this.props.resourceProvider}
           onSelection={this.handleSelectedMention}
           query={query}
-          ref='picker'
+          ref="picker"
         />
       );
       return (

@@ -98,7 +98,7 @@ export default class Panel extends PureComponent<Props, State> {
     return (
       <OutsideClickable onClick={this.props.onOutsideClick}>
         <div
-          ref='content'
+          ref="content"
           style={{ top: 0, left: 0, position, transform, padding }}
           className={styles.container}
         >

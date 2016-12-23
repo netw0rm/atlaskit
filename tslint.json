@@ -43,7 +43,11 @@
     "trailing-comma": [],
     "triple-equals": true,
     "variable-name": false,
-    "quotemark": [],
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ],
     "whitespace": []
   }
 }

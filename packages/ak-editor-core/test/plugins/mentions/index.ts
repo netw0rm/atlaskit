@@ -157,7 +157,8 @@ describe('mentions', () => {
 
       pluginInstance.insertMention({
         name: 'Oscar Wallhult',
-        mentionName: 'oscar'
+        mentionName: 'oscar',
+        id: '1234'
       });
 
       expect(pm.doc.nodeAt(1)).to.be.of.nodeType(MentionNodeType);

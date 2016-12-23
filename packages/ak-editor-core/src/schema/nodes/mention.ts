@@ -1,4 +1,25 @@
+import { style } from 'typestyle';
+import {
+  akColorB400,
+  akColorN30,
+  akColorN50,
+} from 'akutil-shared-styles';
 import { Inline, Attribute, Node, Schema } from '../../prosemirror';
+
+const mentionStyle = style({
+  background: akColorN30,
+  borderRadius: '20px',
+  color: akColorB400,
+  padding: '0 4px',
+  userSelect: 'all',
+
+  $nest:{
+    '&.ProseMirror-selectednode': {
+      background: akColorN50,
+      outline: 'none'
+    }
+  }
+});
 
 export interface MentionAttributes {
   id: any;
@@ -41,7 +62,7 @@ export class MentionNodeType extends Inline {
 
   toDOM(node: MentionNode): [string, DOMAttributes] {
     let attrs: DOMAttributes = {
-      'class': 'editor-entity-mention',
+      'class': mentionStyle,
       'mention-id': node.attrs.id,
       'contenteditable': 'false',
     };
@@ -55,4 +76,5 @@ export interface MentionNode extends Node {
     id: string;
     displayName: string;
   };
+  text: string;
 }

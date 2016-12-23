@@ -1,15 +1,15 @@
 import React, { PropTypes, PureComponent } from 'react';
 
-import AkRadioGroup from './RadioGroup';
+import AkFieldRadioGroup from './RadioGroup';
 import AkRadio from './Radio';
 import { itemsDefault, itemsPropTypeSmart } from './internal/constants';
 
 export {
-  AkRadioGroup,
+  AkFieldRadioGroup,
   AkRadio,
 };
 
-export default class RadioGroup extends PureComponent {
+export default class FieldRadioGroup extends PureComponent {
   static propTypes = {
     isRequired: PropTypes.bool,
     items: itemsPropTypeSmart,
@@ -56,7 +56,7 @@ export default class RadioGroup extends PureComponent {
 
   render() {
     return (
-      <AkRadioGroup
+      <AkFieldRadioGroup
         isRequired={this.props.isRequired}
         items={this.getItems()}
         label={this.props.label}

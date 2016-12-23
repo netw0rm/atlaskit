@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import RadioGroup, { AkRadioGroup, AkRadio } from '../src';
+import FieldRadioGroup, { AkFieldRadioGroup, AkRadio } from '../src';
 import { name } from '../package.json';
 
 const { expect } = chai;
@@ -12,7 +12,7 @@ chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
 describe(name, () => {
-  describe('RadioGroup', () => {
+  describe('FieldRadioGroup', () => {
     const sampleItems = [
       { name: 'test', value: '1', label: 'one' },
       { name: 'test', value: '2', label: 'two' },
@@ -20,9 +20,9 @@ describe(name, () => {
     ];
 
     describe('exports', () => {
-      it('the RadioGroup component', () => {
-        expect(RadioGroup).to.exist;
-        expect(new RadioGroup()).to.be.instanceOf(Component);
+      it('the FieldRadioGroup component', () => {
+        expect(FieldRadioGroup).to.exist;
+        expect(new FieldRadioGroup()).to.be.instanceOf(Component);
       });
     });
 
@@ -30,7 +30,7 @@ describe(name, () => {
       let wrapper;
 
       beforeEach(() => {
-        wrapper = shallow(<RadioGroup />);
+        wrapper = shallow(<FieldRadioGroup />);
       });
 
       it('should be able to create a component', () => {
@@ -38,12 +38,12 @@ describe(name, () => {
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
-      it('should render a RadioGroup component', () => {
-        expect(wrapper).to.have.exactly(1).descendants(AkRadioGroup);
+      it('should render a FieldRadioGroup component', () => {
+        expect(wrapper).to.have.exactly(1).descendants(AkFieldRadioGroup);
       });
 
-      it('should set up the onRadioChange prop for the AkRadioGroup', () => {
-        expect(wrapper.find(AkRadioGroup)).prop('onRadioChange').to.be.a.function;
+      it('should set up the onRadioChange prop for the AkFieldRadioGroup', () => {
+        expect(wrapper.find(AkFieldRadioGroup)).prop('onRadioChange').to.be.a.function;
       });
 
       it('should set up the initial state', () => {
@@ -54,7 +54,7 @@ describe(name, () => {
     describe('props', () => {
       describe('defaultValue prop', () => {
         it('renders an AkRadio with correct props for each item in the array', () => {
-          const wrapper = mount(<RadioGroup items={sampleItems} />);
+          const wrapper = mount(<FieldRadioGroup items={sampleItems} />);
           expect(wrapper).to.have.exactly(sampleItems.length).descendants(AkRadio);
 
           const radios = wrapper.find(AkRadio);
@@ -75,12 +75,12 @@ describe(name, () => {
         sampleItemsWithDefault[2].defaultSelected = true;
 
         it('selects the item by default', () => {
-          const wrapper = mount(<RadioGroup items={sampleItemsWithDefault} />);
+          const wrapper = mount(<FieldRadioGroup items={sampleItemsWithDefault} />);
           expect(wrapper.find(AkRadio).at(2)).prop('isSelected').to.equal(true);
         });
 
         it('is overridden when an item is selected', () => {
-          const wrapper = mount(<RadioGroup items={sampleItemsWithDefault} />);
+          const wrapper = mount(<FieldRadioGroup items={sampleItemsWithDefault} />);
 
           const radios = wrapper.find(AkRadio);
           radios.at(0).find('input').simulate('change');
@@ -94,7 +94,7 @@ describe(name, () => {
 
       describe('behaviour', () => {
         it('updates the value state when a radio is changed', () => {
-          const wrapper = mount(<RadioGroup items={sampleItems} />);
+          const wrapper = mount(<FieldRadioGroup items={sampleItems} />);
           expect(wrapper.state('selectedValue')).to.not.exist;
           wrapper.find(AkRadio).first().find('input').simulate('change');
           expect(wrapper.state('selectedValue')).to.equal(sampleItems[0].value);

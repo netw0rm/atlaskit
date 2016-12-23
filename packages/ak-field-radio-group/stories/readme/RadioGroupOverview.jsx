@@ -1,5 +1,5 @@
 import React from 'react';
-import { AkRadioGroup } from 'ak-field-radio';
+import { AkFieldRadioGroup } from 'ak-field-radio-group';
 
 const items = [
   { name: 'color', value: 'red', label: 'Red' },
@@ -13,7 +13,7 @@ const changeHandler = (event) => {
 };
 
 export default (
-  <AkRadioGroup
+  <AkFieldRadioGroup
     items={items}
     label="Pick your favourite color:"
     onRadioChange={changeHandler}

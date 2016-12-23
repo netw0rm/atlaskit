@@ -226,7 +226,6 @@ export class MarkdownInputRulesPlugin {
       linkRule,
       hrRule1,
       hrRule2,
-      ...allInputRules,
       ...blockRules
     ];
 

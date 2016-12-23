@@ -37,10 +37,10 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       text: Text;
-    }
+    };
     marks: {
       strike: StrikeMarkType;
-    }
+    };
   }
 
   return new Schema({

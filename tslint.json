@@ -1,13 +1,53 @@
 {
+  "extends": ["tslint:latest", "tslint-react"],
   "rules": {
+    "array-type": [],
+    "arrow-parens": false,
     "curly": true,
     "eofline": true,
+    "forin": false,
     "indent": [
       true,
       "spaces"
     ],
+    "interface-name": [],
+    "jsx-alignment": true,
+    "jsx-no-lambda": [],
+    "jsx-no-multiline-js": [],
+    "jsx-no-string-ref": [],
+    "jsx-wrap-multiline": [],
+    "max-classes-per-file": [],
+    "max-line-length": [],
+    "member-access": [],
+    "member-ordering": [],
+    "new-parens": false,
+    "no-conditional-assignment": false,
+    "no-consecutive-blank-lines": [],
+    "no-empty": false,
+    "no-reference": false,
+    "no-shadowed-variable": false,
+    "no-string-literal": false,
     "no-trailing-whitespace": true,
+    "no-unused-expression": false,
+    "no-unused-new": false,
+    "object-literal-key-quotes": [],
+    "object-literal-shorthand": false,
+    "object-literal-sort-keys": false,
+    "one-line": [],
+    "only-arrow-functions": [],
+    "ordered-imports": [],
+    "prefer-for-of": false,
+    "semicolon": [true],
+    "switch-default": false,
     "typedef": [true],
-    "triple-equals": true
+    "trailing-comma": [],
+    "triple-equals": true,
+    "variable-name": false,
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ],
+    "whitespace": []
   }
 }

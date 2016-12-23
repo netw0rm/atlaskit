@@ -22,9 +22,9 @@ import { service as analyticsService, trackAndInvoke } from '../../analytics';
 // markdown (where a ordered list will always start on 1). This is a slightly modified
 // version of that input rule.
 const orderedListRule = (nodeType: NodeType): InputRule => {
-  return wrappingInputRule(/^(\d+)\. $/, " ", nodeType, (match: RegExpMatchArray) => ({}),
+  return wrappingInputRule(/^(\d+)\. $/, ' ', nodeType, (match: RegExpMatchArray) => ({}),
     (match: RegExpMatchArray, node: Node) => node.childCount);
-}
+};
 
 const createTrackedInputRule = (analyticsEventName: string, rule: InputRule): InputRule => {
   if (typeof (rule.handler) !== 'function') {
@@ -33,12 +33,12 @@ const createTrackedInputRule = (analyticsEventName: string, rule: InputRule): In
 
   rule.handler = trackAndInvoke(analyticsEventName, rule.handler);
   return rule;
-}
+};
 
 const headingRule = (nodeType: NodeType, maxLevel: Number) => {
   return textblockTypeInputRule(
-    new RegExp("^(#{1," + maxLevel + "}) $"),
-    " ",
+    new RegExp('^(#{1,' + maxLevel + '}) $'),
+    ' ',
     nodeType,
     (match: string[]) => {
       const level = match[1].length;
@@ -46,7 +46,7 @@ const headingRule = (nodeType: NodeType, maxLevel: Number) => {
       return ({ level });
     }
   );
-}
+};
 
 const buildBlockRules = (schema: Schema): Array<InputRule> => {
   const rules = Array<InputRule>();
@@ -72,7 +72,7 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
   }
 
   return rules;
-}
+};
 
 function replaceWithNode(
   pm: ProseMirror,
@@ -226,7 +226,6 @@ export class MarkdownInputRulesPlugin {
       linkRule,
       hrRule1,
       hrRule2,
-      ...allInputRules,
       ...blockRules
     ];
 

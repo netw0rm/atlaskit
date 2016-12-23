@@ -12,4 +12,4 @@ export default new class {
   set handler(handler: AnalyticsHandler | null) {
     this.trackEvent = handler ? handler : () => {};
   }
-}
+};

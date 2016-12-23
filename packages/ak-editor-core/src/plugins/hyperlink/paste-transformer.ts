@@ -6,7 +6,7 @@ function applyLinkMarkerToNode(
   transform: Transform,
   linkText: string,
   from: number
-) : Transform {
+): Transform {
   const mark: Mark = pm.schema.marks['link'].create({ href: linkText });
   return transform.addMark(from, from + linkText.length, mark);
 }
@@ -14,7 +14,7 @@ function applyLinkMarkerToNode(
 function addLinkMarkerToNode(
   pm: ProseMirror,
   node: Node
-) : Node {
+): Node {
   const nodeText: string = node.textContent;
 
   let matchIndex: number = 0;

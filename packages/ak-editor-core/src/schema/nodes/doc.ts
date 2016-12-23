@@ -4,7 +4,7 @@ export class DocNodeType extends Block {
   constructor(name: string, schema: Schema) {
     super(name, schema);
     if (name !== 'doc') {
-      throw new Error("DocNodeType must be named 'doc'.");
+      throw new Error('DocNodeType must be named "doc".');
     }
   }
 

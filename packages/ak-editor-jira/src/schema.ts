@@ -53,7 +53,7 @@ export interface JIRASchema extends Schema {
     text: Text;
     hard_break: HardBreakNodeType;
     horizontal_rule: HorizontalRuleNodeType;
-  }
+  };
 
   marks: {
     strong: StrongMarkType;
@@ -62,5 +62,5 @@ export interface JIRASchema extends Schema {
     subsup: SubSupMarkType;
     u: UnderlineMarkType;
     mono: MonoMarkType;
-  }
+  };
 }

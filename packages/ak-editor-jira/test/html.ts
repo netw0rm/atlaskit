@@ -39,16 +39,16 @@ const checkBuilder = (fn: any, description: string, html: string, node: Node) =>
   });
 
   fn(`round-trips HTML: ${description}`, () => {
-    const roundTripped = parse(encode(node))
+    const roundTripped = parse(encode(node));
     expect(roundTripped).to.deep.equal(node);
   });
-}
+};
 
 const check = (description: string, html: string, node: Node) =>
   checkBuilder(it, description, html, node);
 
 const checkOnly = (description: string, html: string, node: Node) =>
-  checkBuilder(it.only, description, html, node)
+  checkBuilder(it.only, description, html, node);
 
 describe('ak-editor-jira html:', () => {
   describe('basic formatting:', () => {

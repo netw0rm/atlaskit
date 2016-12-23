@@ -53,4 +53,4 @@ export default (pm: ProseMirror, content: PasteContent) => {
 
   pm.content.dispatchEvent(event);
   return true;
-}
+};

@@ -23,16 +23,18 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
         <IconButton
           onClick={this.openFeedbackPanel}
           selected={this.state.active}
-          icon={<FeedbackIcon label='Feedback' />}
+          icon={<FeedbackIcon label="Feedback" />}
         />
         {!this.state.active ? null :
-        <Panel align='right' spacing='none' onOutsideClick={this.closeFeedbackPanel}>
+        <Panel align="right" spacing="none" onOutsideClick={this.closeFeedbackPanel}>
           <div className={styles.popup}>
             <button
               type="button"
               className={styles.close}
               onClick={this.closeFeedbackPanel}
-            >&#10005;</button>
+            >
+            &#10005;
+            </button>
             <iframe
               allowTransparency
               frameBorder="0"

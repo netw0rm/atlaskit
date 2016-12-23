@@ -5,7 +5,7 @@ import { MentionPicker as PfMentionPicker } from 'ak-mention';
 
 export interface Props {
   pluginState: MentionsPluginState;
-  resourceProvider: any;//AbstractMentionResource;
+  resourceProvider: any; // AbstractMentionResource;
 }
 
 export interface State {
@@ -49,7 +49,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
           resourceProvider={this.props.resourceProvider}
           onSelection={this.handleSelectedMention}
           query={query}
-          ref='picker'
+          ref="picker"
         />
       );
       return (

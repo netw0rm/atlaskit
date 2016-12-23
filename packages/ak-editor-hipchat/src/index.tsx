@@ -6,10 +6,10 @@ import schema from './schema';
 export type Doc = {
   type: 'doc',
   content?: any[]
-}
+};
 
 export interface Props {
-  onSubmit?: (doc: Doc) => void
+  onSubmit?: (doc: Doc) => void;
 }
 
 export interface State {}

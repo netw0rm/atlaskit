@@ -34,7 +34,6 @@ describe('ak-editor-core/schema strike mark', () => {
     }).to.not.throw(Error);
   });
 
-  itMatches('<del>text</del>', 'text');
   itMatches('<s>text</s>', 'text');
   itMatches('<strike>text</strike>', 'text');
   itMatches('<span style="text-decoration: line-through">text</span>', 'text');
@@ -51,10 +50,10 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       text: Text;
-    }
+    };
     marks: {
       strike: StrikeMarkType;
-    }
+    };
   }
 
   return new Schema({

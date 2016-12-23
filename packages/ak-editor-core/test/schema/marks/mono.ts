@@ -58,10 +58,10 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       text: Text;
-    }
+    };
     marks: {
       mono: MonoMarkType;
-    }
+    };
   }
 
   return new Schema({

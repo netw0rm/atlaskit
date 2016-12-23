@@ -77,7 +77,7 @@ export interface RefsNode extends Node {
  * position in the resulting node.
  */
 export function text(value: string, _schema: Schema = schema): RefsContentItem {
-  let stripped = "";
+  let stripped = '';
   let textIndex = 0;
   let refs: Refs = {};
 
@@ -85,12 +85,12 @@ export function text(value: string, _schema: Schema = schema): RefsContentItem {
     const [refToken, refName] = match;
     stripped += value.slice(textIndex, match.index);
     refs[refName] = stripped.length;
-    textIndex = match.index + refToken.length
+    textIndex = match.index + refToken.length;
   }
 
   stripped += value.slice(textIndex);
 
-  const node = stripped === ""
+  const node = stripped === ''
     ? new RefsTracker()
     : _schema.text(stripped) as RefsNode;
 

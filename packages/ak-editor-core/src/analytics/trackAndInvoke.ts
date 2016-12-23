@@ -15,5 +15,5 @@ export default function trackAndInvoke(analyticsEventName: string, fn: (...args:
   return (...args: any[]) => {
     service.trackEvent(analyticsEventName);
     return fn(...args);
-  }
+  };
 }

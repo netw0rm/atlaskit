@@ -55,7 +55,7 @@ export interface CQSchema extends Schema {
     text: Text;
     hard_break: HardBreakNodeType;
     horizontal_rule: HorizontalRuleNodeType;
-  }
+  };
 
   marks: {
     mono: MonoMarkType;
@@ -64,5 +64,5 @@ export interface CQSchema extends Schema {
     strong: StrongMarkType;
     subsup: SubSupMarkType;
     u: UnderlineMarkType;
-  }
+  };
 }

@@ -222,7 +222,7 @@ export class BlockTypeState {
 
     const bind = (key: string, action: any): void => {
       bindings = { ...bindings, ...{ [key]: action } };
-    }
+    };
 
     blockTypes.forEach((blockType) => {
       if (blockType.shortcut) {
@@ -242,7 +242,7 @@ export class BlockTypeState {
   }
 
   private lastCharIsNewline(node: Node): boolean {
-    return node.textContent.slice(-1) === '\n'
+    return node.textContent.slice(-1) === '\n';
   }
 
   private cursorIsAtTheEndOfLine() {
@@ -391,9 +391,9 @@ export interface BlockType {
 
 
 interface Context {
-  name: ContextName,
-  blockTypes: BlockType[],
-  keymap: Keymap
+  name: ContextName;
+  blockTypes: BlockType[];
+  keymap: Keymap;
 }
 
 export interface S extends Schema {
@@ -403,7 +403,7 @@ export interface S extends Schema {
     heading?: HeadingNodeType;
     paragraph?: ParagraphNodeType;
     hard_break?: HardBreakNodeType;
-  }
+  };
 }
 
 export interface PM extends ProseMirror {

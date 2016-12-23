@@ -35,14 +35,12 @@ describe('ak-editor-core/schema mention-query mark', () => {
     }).to.not.throw(Error);
   });
 
-  it('serializes to <span data-mention-query="true" style="color: rgb(22, 94, 204);">', () => {
+  it('serializes to <span data-mention-query="true">', () => {
     const schema = makeSchema();
     const node = schema.text('foo', [ schema.marks.mention_query.create() ] );
     const html = toHTML(node);
     expect(html).to.have.string('data-mention-query="true"');
-    expect(html).to.have.string('class="editor-mention-query-mark');
   });
-
 });
 
 function makeSchema() {
@@ -50,10 +48,10 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       text: Text;
-    }
+    };
     marks: {
       mention_query: MentionQueryMarkType;
-    }
+    };
   }
 
   return new Schema({

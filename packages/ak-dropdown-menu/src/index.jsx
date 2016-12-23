@@ -101,6 +101,12 @@ export default class DropdownMenu extends Component {
     document.addEventListener('keydown', this.handleKeyDown);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.items !== this.state.items) {
+      this.setState({ items: nextProps.items });
+    }
+  }
+
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClickOutside, true);
     document.removeEventListener('keydown', this.handleKeyDown);

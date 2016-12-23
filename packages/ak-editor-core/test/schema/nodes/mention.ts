@@ -55,7 +55,7 @@ function makeSchema() {
       doc: DocNodeType;
       mention: MentionNodeType;
       text: Text;
-    }
+    };
   }
 
   return new Schema({

@@ -74,7 +74,7 @@ export interface BitbucketSchema extends Schema {
     code_block: CodeBlockNodeType;
     mention: MentionNodeType;
     emoji: EmojiNodeType;
-  }
+  };
 
   marks: {
     link: LinkMarkType;

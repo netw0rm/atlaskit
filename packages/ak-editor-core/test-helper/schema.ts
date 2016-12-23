@@ -45,7 +45,7 @@ export interface AtlassianEditorSchema extends Schema {
     code_block: CodeBlockNodeType;
     mention: MentionNodeType;
     emoji: EmojiNodeType;
-  }
+  };
 
   marks: {
     [name: string]: MarkType;

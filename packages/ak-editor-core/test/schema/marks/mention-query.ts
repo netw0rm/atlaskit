@@ -36,10 +36,10 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       text: Text;
-    }
+    };
     marks: {
       mention_query: MentionQueryMarkType;
-    }
+    };
   }
 
   return new Schema({

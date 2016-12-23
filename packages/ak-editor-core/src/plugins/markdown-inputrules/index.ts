@@ -24,7 +24,7 @@ import { service as analyticsService, trackAndInvoke } from '../../analytics';
 const orderedListRule = (nodeType: NodeType): InputRule => {
   return wrappingInputRule(/^(\d+)\. $/, ' ', nodeType, (match: RegExpMatchArray) => ({}),
     (match: RegExpMatchArray, node: Node) => node.childCount);
-}
+};
 
 const createTrackedInputRule = (analyticsEventName: string, rule: InputRule): InputRule => {
   if (typeof (rule.handler) !== 'function') {
@@ -33,7 +33,7 @@ const createTrackedInputRule = (analyticsEventName: string, rule: InputRule): In
 
   rule.handler = trackAndInvoke(analyticsEventName, rule.handler);
   return rule;
-}
+};
 
 const headingRule = (nodeType: NodeType, maxLevel: Number) => {
   return textblockTypeInputRule(
@@ -46,7 +46,7 @@ const headingRule = (nodeType: NodeType, maxLevel: Number) => {
       return ({ level });
     }
   );
-}
+};
 
 const buildBlockRules = (schema: Schema): Array<InputRule> => {
   const rules = Array<InputRule>();
@@ -72,7 +72,7 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
   }
 
   return rules;
-}
+};
 
 function replaceWithNode(
   pm: ProseMirror,

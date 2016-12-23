@@ -41,5 +41,5 @@ export interface EmojiNode extends Node {
   type: EmojiNodeType;
   attrs: {
     id: string;
-  }
+  };
 }

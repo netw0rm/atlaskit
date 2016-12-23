@@ -2,9 +2,9 @@ import collapse from './collapse-whitespace';
 
 export default function(xhtml: string): Document {
   const nsHtml = `<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ac="http://example.com/ac" xmlns:ri="http://example.com/ri"><body>${stripCDATA(xhtml)}</body></html>`;
-  const tree = new DOMParser().parseFromString(nsHtml, 'application/xhtml+xml')
-  collapse(tree.documentElement, isBlock)
-  return tree
+  const tree = new DOMParser().parseFromString(nsHtml, 'application/xhtml+xml');
+  collapse(tree.documentElement, isBlock);
+  return tree;
 }
 
 function isBlock(node: Node) {

@@ -3,7 +3,7 @@ import { MarkType, Mark, Schema } from '../../prosemirror';
 export class StrikeMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {
     if (name !== 'strike') {
-      throw new Error('StrikeMarkType must be named "strike".')
+      throw new Error('StrikeMarkType must be named "strike".');
     }
     super(name, rank, schema);
   }
@@ -19,7 +19,7 @@ export class StrikeMarkType extends MarkType {
   get matchDOMStyle() {
     return {
       'text-decoration': (value: string) => value === 'line-through' ? null : false,
-    }
+    };
   }
 
   toDOM() { return ['s']; }

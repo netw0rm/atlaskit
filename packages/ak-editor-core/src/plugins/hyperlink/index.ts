@@ -262,7 +262,7 @@ export default new Plugin(HyperlinkState);
 export interface S extends Schema {
   marks: {
     link?: LinkMarkType;
-  }
+  };
 }
 
 export interface PM extends ProseMirror {

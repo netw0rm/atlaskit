@@ -21,7 +21,7 @@ export interface Props {
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
-  pluginStateImageUpload?: ImageUploadState
+  pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsPluginState;
   mentionsResourceProvider?: any; // AbstractMentionResource
   onCollapsedChromeFocus: () => void;

@@ -33,7 +33,7 @@ export default class ToolbarIconButton extends PureComponent<Props, {}> {
           {this.props.icon}
         </AkButton>
       </span>
-    )
+    );
   }
 
   private handleClick = (e: MouseEvent<any>) => {

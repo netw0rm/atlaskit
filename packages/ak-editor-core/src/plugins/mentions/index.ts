@@ -3,7 +3,7 @@ import { Plugin, ProseMirror, inputRules, TextSelection, Keymap, Schema } from '
 import {
   MentionNodeType,
   MentionQueryMarkType
-} from '../../schema'
+} from '../../schema';
 
 import { mentionQueryRule } from './input-rules';
 
@@ -165,11 +165,11 @@ export interface Mention {
 export interface S extends Schema {
   nodes: {
     mention?: MentionNodeType
-  },
+  };
 
   marks: {
     mention_query: MentionQueryMarkType;
-  }
+  };
 }
 
 export interface PM extends ProseMirror {

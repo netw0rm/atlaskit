@@ -36,7 +36,7 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
   return function (text: string, minLength = 1): string {
     const length = Math.max(minLength, getMaxLength(text) + 1);
     return stringRepeat('`', length);
-  }
+  };
 })();
 
 const nodes = {
@@ -67,7 +67,7 @@ const nodes = {
   },
   bullet_list(state: MarkdownSerializerState, node: Node) {
     node.attrs.tight = true;
-    state.renderList(node, '  ', () => (node.attrs.bullet || '*') + ' ')
+    state.renderList(node, '  ', () => (node.attrs.bullet || '*') + ' ');
   },
   ordered_list(state: MarkdownSerializerState, node: Node) {
     node.attrs.tight = true;
@@ -76,8 +76,8 @@ const nodes = {
     let space = state.repeat(' ', maxW + 2);
     state.renderList(node, space, (i: number) => {
       let nStr = String(start + i);
-      return state.repeat(' ', maxW - nStr.length) + nStr + '. '
-    })
+      return state.repeat(' ', maxW - nStr.length) + nStr + '. ';
+    });
   },
   list_item(state: MarkdownSerializerState, node: Node) {
     state.renderContent(node);
@@ -89,7 +89,7 @@ const nodes = {
   image(state: MarkdownSerializerState, node: Node) {
     // Note: the 'title' is not escaped in this flavor of markdown.
     state.write('![' + state.esc(node.attrs.alt || '') + '](' + state.esc(node.attrs.src) +
-                (node.attrs.title ? ` '${node.attrs.title}'` : '') + ')')
+                (node.attrs.title ? ` '${node.attrs.title}'` : '') + ')');
   },
   hard_break(state: any) {
     state.write('  \n');
@@ -101,7 +101,7 @@ const nodes = {
       state.write();
       state.out += escapeMarkdown(lines[i], startOfLine);
       if (i !== lines.length - 1) {
-        state.out += '\n'
+        state.out += '\n';
       }
     }
   },
@@ -122,7 +122,7 @@ const marks = {
     open: '[',
     close(state: MarkdownSerializerState, mark: any) {
       // Note: the 'title' is not escaped in this flavor of markdown.
-      return '](' + state.esc(mark.attrs.href) + (mark.attrs.title ? ` '${mark.attrs.title}'` : '') + ')'
+      return '](' + state.esc(mark.attrs.href) + (mark.attrs.title ? ` '${mark.attrs.title}'` : '') + ')';
     }
   },
   code: { open: '`', close: '`' }
@@ -210,7 +210,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
       while (active.length < len) {
         let add = marks[active.length];
         active.push(add);
-        this.text(this.markString(add, true), false)
+        this.text(this.markString(add, true), false);
       }
 
       if (node) {

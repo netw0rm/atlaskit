@@ -7,7 +7,7 @@ import { BlockTypeState } from '../../plugins/block-type';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ListsState } from '../../plugins/lists';
 import { TextFormattingState } from '../../plugins/text-formatting';
-import { ImageUploadState } from '../../plugins/image-upload'
+import { ImageUploadState } from '../../plugins/image-upload';
 import { MentionsPluginState } from '../../plugins/mentions';
 import MentionIcon from 'ak-icon/glyph/editor/mention';
 import ImageIcon from 'ak-icon/glyph/editor/image';

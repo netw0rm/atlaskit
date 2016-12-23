@@ -12,7 +12,7 @@ export class DelMarkType extends MarkType {
   get matchDOMStyle() {
     return {
       'text-decoration': (value: string) => value === 'line-through' ? null : false,
-    }
+    };
   }
 
   toDOM() { return ['del']; }

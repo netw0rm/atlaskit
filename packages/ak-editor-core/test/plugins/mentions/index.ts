@@ -24,7 +24,7 @@ const makeEditor = (container: Node) => {
     plugins: [ MentionsPlugin ],
     place: container
   });
-}
+};
 
 const container = fixtures();
 

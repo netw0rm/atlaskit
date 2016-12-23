@@ -96,7 +96,7 @@ describe('text-formatting', () => {
 
             expect(toggleEm).to.have.been.callCount(1);
           });
-        })
+        });
 
         context('when hits Ctrl-B', () => {
           it('toggles underline mark', () => {
@@ -107,7 +107,7 @@ describe('text-formatting', () => {
 
             expect(toggleUnderline).to.have.been.callCount(1);
           });
-        })
+        });
 
         /*
           Node: Here dispatch key 'Shift-Ctrl-S' instead of 'Ctrl-Shift-S',
@@ -146,7 +146,7 @@ describe('text-formatting', () => {
 
   it('should allow a change handler to be attached', () => {
     const { plugin } = editor(doc(p('text')));
-    const spy = sinon.spy()
+    const spy = sinon.spy();
     plugin.subscribe(spy);
 
     expect(spy).to.have.been.callCount(1);
@@ -155,10 +155,10 @@ describe('text-formatting', () => {
 
   it('should call change handlers when em is toggled', () => {
     const { plugin } = editor(doc(p('te{<>}xt')));
-    const spy = sinon.spy()
+    const spy = sinon.spy();
     plugin.subscribe(spy);
 
-    plugin.toggleEm()
+    plugin.toggleEm();
 
     expect(spy).to.have.been.callCount(2);
     expect(spy).to.have.been.calledWith(plugin);

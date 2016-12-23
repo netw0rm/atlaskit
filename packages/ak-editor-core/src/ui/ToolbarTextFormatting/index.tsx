@@ -25,7 +25,7 @@ export interface State {
 }
 
 export default class ToolbarTextFormatting extends PureComponent<Props, State> {
-  state: State = {}
+  state: State = {};
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);

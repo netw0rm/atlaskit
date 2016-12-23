@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Button from 'ak-button';
 
-import RadioGroup, { AkRadioGroup } from '../src';
+import FieldRadioGroup, { AkFieldRadioGroup } from '../src';
 import { name } from '../package.json';
 import {
   sampleItems,
@@ -39,50 +39,50 @@ function changeHandler(event) {
 
 const imports = [
   ['React', 'react'],
-  ['{ AkRadioGroup }', 'ak-field-radio'],
+  ['{ AkFieldRadioGroup }', 'ak-field-radio-group'],
 ];
 
 const smartImports = [
   ['React', 'react'],
-  ['RadioGroup', 'ak-field-radio'],
+  ['FieldRadioGroup', 'ak-field-radio-group'],
 ];
 
 storiesOf(name, module)
   .addCodeExampleStory('Simple radio group (dumb)', () => (
-    <AkRadioGroup
+    <AkFieldRadioGroup
       items={sampleItems}
       label="Pick your favourite animal:"
       onRadioChange={changeHandler}
     />
 ), { imports, scripts: [changeHandler] })
   .add('Simple radio group (dumb) with selection', () => (
-    <AkRadioGroup
+    <AkFieldRadioGroup
       items={sampleItemsWithSelection}
       label="Pick your favourite animal:"
       onRadioChange={changeHandler}
     />
   ))
   .addCodeExampleStory('Simple radio group', () => (
-    <RadioGroup
+    <FieldRadioGroup
       items={sampleItems}
       label="Pick your favourite animal:"
     />
   ), { imports: smartImports })
   .add('Simple radio group with submit test', () => radioGroupSubmitStory(
-    <RadioGroup
+    <FieldRadioGroup
       items={sampleItems}
       label="Pick your favourite animal:"
       isRequired
     />
   ))
   .addCodeExampleStory('Radio group with default value', () => (
-    <RadioGroup
+    <FieldRadioGroup
       items={sampleItemsWithDefault}
       label="Pick your favourite animal:"
     />
   ), { imports: smartImports })
   .add('Radio group with many items and default', () => (
-    <RadioGroup
+    <FieldRadioGroup
       items={longSampleWithDefault}
       label="Who is your favourite Simpsons character?"
     />

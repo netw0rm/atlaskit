@@ -5,7 +5,7 @@ import Radio from './Radio';
 import { itemsDefault, itemsPropType } from './internal/constants';
 
 /* eslint-disable-next-line react/prefer-stateless-function */
-export default class RadioGroup extends PureComponent {
+export default class FieldRadioGroup extends PureComponent {
   static propTypes = {
     isRequired: PropTypes.bool,
     items: itemsPropType,

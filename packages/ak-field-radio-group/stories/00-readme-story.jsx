@@ -11,7 +11,7 @@ import RadioGroupSmartExampleRaw from '!raw!./readme/RadioGroupOverviewSmart';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
-import RadioGroup, { AkRadioGroup } from '../src';
+import FieldRadioGroup, { AkFieldRadioGroup } from '../src';
 import {
   radioGroupPropDescriptions,
   readmeDescription,
@@ -21,7 +21,7 @@ import {
 } from './readme/readme-constants';
 
 storiesOf(name, module)
-  .add('RadioGroup readme (smart)', () => (
+  .add('FieldRadioGroup readme (smart)', () => (
     <div>
       <Readme
         component={name}
@@ -30,7 +30,7 @@ storiesOf(name, module)
         <Code code={RadioGroupSmartExampleRaw}>
           {RadioGroupSmartExample}
         </Code>
-        <Props component={RadioGroup} descriptions={radioGroupPropDescriptions} />
+        <Props component={FieldRadioGroup} descriptions={radioGroupPropDescriptions} />
         <Description>
           <Heading type="3">Items property</Heading>
           <p>
@@ -46,7 +46,7 @@ storiesOf(name, module)
       </Readme>
     </div>
   ))
-  .add('RadioGroup readme (dumb)', () => (
+  .add('FieldRadioGroup readme (dumb)', () => (
     <div>
       <Readme
         component={name}
@@ -55,7 +55,7 @@ storiesOf(name, module)
         <Code code={RadioGroupExampleRaw}>
           {RadioGroupExample}
         </Code>
-        <Props component={AkRadioGroup} descriptions={radioGroupPropDescriptions} />
+        <Props component={AkFieldRadioGroup} descriptions={radioGroupPropDescriptions} />
         <Description>
           <Heading type="3">Items property</Heading>
           <p>

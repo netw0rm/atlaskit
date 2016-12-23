@@ -10,7 +10,7 @@ function changeHandler(event) {
 
 const imports = [
   ['React', 'react'],
-  ['{ AkRadio }', 'ak-field-radio'],
+  ['{ AkRadio }', 'ak-field-radio-group'],
 ];
 
 const scripts = [changeHandler];

@@ -1,5 +1,5 @@
 import React from 'react';
-import RadioGroup from 'ak-field-radio';
+import FieldRadioGroup from 'ak-field-radio-group';
 
 const items = [
   { name: 'color', value: 'red', label: 'Red' },
@@ -8,7 +8,7 @@ const items = [
 ];
 
 export default (
-  <RadioGroup
+  <FieldRadioGroup
     items={items}
     label="Pick your favourite color:"
   />

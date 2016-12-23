@@ -1,12 +1,12 @@
 {
-  "name": "ak-field-radio",
+  "name": "ak-field-radio-group",
   "version": "1.0.0",
-  "description": "ak-field-radio component",
+  "description": "ak-field-radio-group component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-field-radio"
+    "prepublish": "cd ../.. && npm run prepublish/single ak-field-radio-group"
   },
   "files": [
     "dist"
@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-button": "^5.0.2",
-    "ak-field-radio": "*",
+    "ak-field-radio-group": "*",
     "akutil-readme": "^1.1.0"
   },
   "peerDependencies": {

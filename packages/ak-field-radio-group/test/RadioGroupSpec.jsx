@@ -6,7 +6,7 @@ import { mount, shallow } from 'enzyme';
 import Base from 'ak-field-base';
 
 import Radio from '../src/Radio';
-import AkRadioGroup from '../src/RadioGroup';
+import AkFieldRadioGroup from '../src/RadioGroup';
 import { name } from '../package.json';
 
 const { expect } = chai;
@@ -14,7 +14,7 @@ chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
 describe(name, () => {
-  describe('AkRadioGroup', () => {
+  describe('AkFieldRadioGroup', () => {
     const sampleItems = [
       { name: 'test', value: '1', label: 'one' },
       { name: 'test', value: '2', label: 'two', isSelected: true },
@@ -22,21 +22,21 @@ describe(name, () => {
     ];
 
     describe('exports', () => {
-      it('the AkRadioGroup component', () => {
-        expect(AkRadioGroup).to.exist;
-        expect(new AkRadioGroup()).to.be.instanceOf(Component);
+      it('the AkFieldRadioGroup component', () => {
+        expect(AkFieldRadioGroup).to.exist;
+        expect(new AkFieldRadioGroup()).to.be.instanceOf(Component);
       });
     });
 
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<AkRadioGroup />);
+        const wrapper = shallow(<AkFieldRadioGroup />);
         expect(wrapper).to.exist;
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
       it('should render a FieldBase containing a Radio for each item', () => {
-        const wrapper = mount(<AkRadioGroup items={sampleItems} />);
+        const wrapper = mount(<AkFieldRadioGroup items={sampleItems} />);
         expect(wrapper).to.have.exactly(1).descendants(Base);
         expect(wrapper.find(Base)).to.have.exactly(3).descendants(Radio);
       });
@@ -45,7 +45,7 @@ describe(name, () => {
     describe('props', () => {
       describe('items prop', () => {
         it('renders a Radio with correct props for each item in the array', () => {
-          const wrapper = shallow(<AkRadioGroup items={sampleItems} />);
+          const wrapper = shallow(<AkFieldRadioGroup items={sampleItems} />);
           expect(wrapper).to.have.exactly(sampleItems.length).descendants(Radio);
 
           const radios = wrapper.find(Radio);
@@ -64,7 +64,7 @@ describe(name, () => {
       describe('label prop', () => {
         it('is reflected to the FieldBase', () => {
           const label = 'string label content';
-          const wrapper = shallow(<AkRadioGroup label={label} />);
+          const wrapper = shallow(<AkFieldRadioGroup label={label} />);
           expect(wrapper.find(Base)).to.have.prop('label', label);
         });
       });
@@ -72,13 +72,13 @@ describe(name, () => {
       describe('isRequired prop', () => {
         it('is reflected to the FieldBase', () => {
           const isRequired = true;
-          const wrapper = shallow(<AkRadioGroup isRequired={isRequired} />);
+          const wrapper = shallow(<AkFieldRadioGroup isRequired={isRequired} />);
           expect(wrapper.find(Base)).to.have.prop('isRequired', isRequired);
         });
 
         it('is reflected to each Radio item', () => {
           const isRequired = true;
-          const wrapper = shallow(<AkRadioGroup isRequired={isRequired} />);
+          const wrapper = shallow(<AkFieldRadioGroup isRequired={isRequired} />);
           wrapper.find(Radio).forEach(radio =>
             expect(radio).to.have.prop('isRequired', isRequired)
           );
@@ -88,7 +88,7 @@ describe(name, () => {
       describe('onRadioChange prop', () => {
         it('is called when a radio item is changed', () => {
           const spy = sinon.spy();
-          const wrapper = mount(<AkRadioGroup onRadioChange={spy} items={sampleItems} />);
+          const wrapper = mount(<AkFieldRadioGroup onRadioChange={spy} items={sampleItems} />);
           wrapper.find(Radio).first().find('input').simulate('change');
           expect(spy).to.have.been.calledOnce;
         });
@@ -113,7 +113,7 @@ describe(name, () => {
           { name: 'n', value: '1' },
           { name: 'n', value: '2', isSelected: true },
         ];
-        const wrapper = shallow(<AkRadioGroup items={items} />);
+        const wrapper = shallow(<AkFieldRadioGroup items={items} />);
         expectRadioSelected(wrapper, 2);
       });
       it('does not select an item if not specified', () => {
@@ -122,7 +122,7 @@ describe(name, () => {
           { name: 'n', value: '1' },
           { name: 'n', value: '2' },
         ];
-        const wrapper = shallow(<AkRadioGroup items={items} />);
+        const wrapper = shallow(<AkFieldRadioGroup items={items} />);
         expectNoRadioSelected(wrapper);
       });
       it('can select a radio which is disabled', () => {
@@ -131,7 +131,7 @@ describe(name, () => {
           { name: 'n', value: '1' },
           { name: 'n', value: '2', isSelected: true, isDisabled: true },
         ];
-        const wrapper = shallow(<AkRadioGroup items={items} />);
+        const wrapper = shallow(<AkFieldRadioGroup items={items} />);
         expectRadioSelected(wrapper, 2);
       });
     });

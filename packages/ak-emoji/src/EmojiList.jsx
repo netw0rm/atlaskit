@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
-import FieldBase from 'ak-field-base';
+import AkFieldBase from 'ak-field-base';
 import { SearchIcon } from 'ak-icon';
 import { List } from 'react-virtualized';
 import styles from 'style!./style.less';
@@ -224,7 +224,7 @@ export default class extends PureComponent {
     } else if (item.type === 'search') {
       return (
         <div className={styles.search} style={style} key={key}>
-          <FieldBase
+          <AkFieldBase
             appearance="compact"
             label="Search"
             isLabelHidden
@@ -244,7 +244,7 @@ export default class extends PureComponent {
               value={this.state.query}
               ref={input => input && input.focus()}
             />
-          </FieldBase>
+          </AkFieldBase>
         </div>
       );
     }

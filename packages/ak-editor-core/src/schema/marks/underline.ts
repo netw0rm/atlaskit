@@ -3,7 +3,7 @@ import { MarkType, Mark, Schema } from '../../prosemirror';
 export class UnderlineMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {
     if (name !== 'u') {
-      throw new Error('UnderlineMarkType must be named "u".')
+      throw new Error('UnderlineMarkType must be named "u".');
     }
     super(name, rank, schema);
   }

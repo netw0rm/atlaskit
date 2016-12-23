@@ -6,7 +6,7 @@ import * as chaiEnzyme from 'chai-enzyme';
 import { shallow, mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { doc, strong, h1, p } from './_schema-builder';
-import stringRepeat from '../src/util/string-repeat'
+import stringRepeat from '../src/util/string-repeat';
 import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-core/test-helper';
 
 import { ProseMirror, browser, ToolbarTextFormatting, service, AnalyticsHandler, debugHandler } from 'ak-editor-core';

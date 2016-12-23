@@ -44,7 +44,7 @@ export default function analytics(name: string) {
         get: () => {
           return propertyValue;
         }
-      } as PropertyDescriptor
+      } as PropertyDescriptor;
     }
 
     const fn = descriptor.value;
@@ -56,7 +56,7 @@ export default function analytics(name: string) {
     return {
       ...descriptor,
       value: trackFunction(name, fn)
-    }
+    };
   };
 };
 
@@ -72,5 +72,5 @@ function trackFunction(analyticsEventName: string, trackedFn: Function) {
     }
 
     return trackedFn(...args);
-  }
+  };
 }

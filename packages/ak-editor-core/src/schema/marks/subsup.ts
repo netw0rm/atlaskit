@@ -1,11 +1,11 @@
 import { Attribute, Mark, MarkType, Schema } from '../../prosemirror';
 
-export type TypeAttr = 'sub' | 'sup'
+export type TypeAttr = 'sub' | 'sup';
 
 export class SubSupMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {
     if (name !== 'subsup') {
-      throw new Error('SubSupMarkType must be named "subsup".')
+      throw new Error('SubSupMarkType must be named "subsup".');
     }
     super(name, rank, schema);
   }
@@ -24,7 +24,7 @@ export class SubSupMarkType extends MarkType {
     return {
       sub: { type: 'sub' },
       sup: { type: 'sup' }
-    }
+    };
   }
 
   toDOM(mark: SubSupMark) {

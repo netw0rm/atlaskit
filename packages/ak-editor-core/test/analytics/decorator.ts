@@ -45,10 +45,10 @@ describe('analytics decorator', () => {
   it('tracks events after bound method (instance property) is called', () => {
     class AnnotatedTestClass2 {
       @analytics('test.event.foo')
-      foo = () => {}
+      foo = () => {};
 
       @analytics('test.event.bar')
-      bar = () => {}
+      bar = () => {};
     }
 
     let instance = new AnnotatedTestClass2();
@@ -71,7 +71,7 @@ describe('analytics decorator', () => {
       }
 
       @analytics('test.event.bar')
-      private bar = () => {}
+      private bar = () => {};
     }
 
     let instance = new AnnotatedTestClass3();

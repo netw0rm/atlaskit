@@ -1,9 +1,9 @@
 export interface AnalyticsProperties {
-  [key: string]: string | Number
+  [key: string]: string | Number;
 }
 
 export interface AnalyticsHandler {
-  (name: string, properties?: AnalyticsProperties ): any
+  (name: string, properties?: AnalyticsProperties ): any;
 }
 
 /**
@@ -48,6 +48,6 @@ declare global {
   interface Window {
     AJS: {
       EventQueue: { push: (...args: any[]) => any }
-    }
+    };
   }
 }

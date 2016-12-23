@@ -192,7 +192,7 @@ export default new Plugin(ImageUploadState);
 export interface S extends Schema {
   nodes: {
     image?: ImageNodeType
-  }
+  };
 }
 
 export interface PM extends ProseMirror {

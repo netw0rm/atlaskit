@@ -1,7 +1,7 @@
 import { Attribute, Block, Node, Schema } from '../../prosemirror';
 
 export interface EntityAttributes {
-  params: Attribute
+  params: Attribute;
 }
 
 export class CodeBlockNodeType extends Block {

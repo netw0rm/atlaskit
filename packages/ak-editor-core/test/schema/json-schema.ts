@@ -11,7 +11,7 @@ describe('ak-editor-core: json-schema', () => {
         src: new Attribute,
         alt: new Attribute({default: ''}),
         title: new Attribute({default: ''})
-      }
+      };
     }
   }
 
@@ -407,7 +407,7 @@ describe('ak-editor-core: json-schema', () => {
       get attrs() {
         return {
           foo: new Attribute({default: ''}),
-        }
+        };
       }
     }
     const schema = new Schema({
@@ -459,7 +459,7 @@ describe('ak-editor-core: json-schema', () => {
         return {
           href: new Attribute,
           title: new Attribute({default: ''})
-        }
+        };
       }
     }
     const schema = new Schema({

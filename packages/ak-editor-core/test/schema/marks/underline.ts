@@ -47,10 +47,10 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       text: Text;
-    }
+    };
     marks: {
       u: UnderlineMarkType;
-    }
+    };
   }
 
   return new Schema({

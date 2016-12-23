@@ -51,7 +51,7 @@ describe('lists', () => {
             pm.input.dispatchKey('Shift-Cmd-B');
 
             expect(toggleBulletList).to.have.been.callCount(1);
-          })
+          });
         });
       });
     } else {
@@ -84,7 +84,7 @@ describe('lists', () => {
   describe('API', () => {
     it('should allow a change handler to be attached', () => {
       const { plugin } = editor(doc(p()));
-      const spy = sinon.spy()
+      const spy = sinon.spy();
 
       plugin.subscribe(spy);
 
@@ -93,7 +93,7 @@ describe('lists', () => {
 
     it('should emit a change when the selected node becomes an ordered list', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
-      const spy = sinon.spy()
+      const spy = sinon.spy();
       plugin.subscribe(spy);
 
       plugin.toggleOrderedList();
@@ -391,7 +391,7 @@ describe('lists', () => {
 
         plugin.toggleBulletList();
         expect(pm.doc).not.to.deep.equal(expectedOutputForPreviousAndNextList);
-        expect(pm.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two'))), ul(li(p('Three')), li(p('Four'))), ol(li(p('Five')), li(p('Six')))))
+        expect(pm.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two'))), ul(li(p('Three')), li(p('Four'))), ol(li(p('Five')), li(p('Six')))));
       });
 
       it('should not join with previous and next list if they\'re not of the same type and selectoin starts at the end of previous line', () => {
@@ -399,7 +399,7 @@ describe('lists', () => {
 
         plugin.toggleBulletList();
         expect(pm.doc).not.to.deep.equal(expectedOutputForPreviousAndNextList);
-        expect(pm.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two'))), ul(li(p('Three')), li(p('Four'))), ol(li(p('Five')), li(p('Six')))))
+        expect(pm.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two'))), ul(li(p('Three')), li(p('Four'))), ol(li(p('Five')), li(p('Six')))));
       });
     });
   });

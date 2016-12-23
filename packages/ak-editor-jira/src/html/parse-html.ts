@@ -4,7 +4,7 @@ export default function(fragment: string): Document {
   const html = `<!doctype html><html><body>${fragment}</body></html>`;
   const tree = new DOMParser().parseFromString(html, 'text/html');
   collapse(tree.documentElement, isBlock);
-  return tree
+  return tree;
 }
 
 function isBlock(node: Node) {

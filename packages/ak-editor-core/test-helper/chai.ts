@@ -26,7 +26,7 @@ export default (chai: any) => {
           'expected #{exp} to equal #{act}',
           'expected #{exp} to not equal #{act}',
           left.toString(),
-          right.toString())
+          right.toString());
       } else {
         _super.apply(this, arguments);
       }
@@ -88,4 +88,4 @@ export default (chai: any) => {
     }
     return new Assertion(matched).to.be.true;
   });
-}
+};

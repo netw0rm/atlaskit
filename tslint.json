@@ -37,7 +37,7 @@
     "only-arrow-functions": [],
     "ordered-imports": [],
     "prefer-for-of": false,
-    "semicolon": [],
+    "semicolon": [true],
     "switch-default": false,
     "typedef": [true],
     "trailing-comma": [],

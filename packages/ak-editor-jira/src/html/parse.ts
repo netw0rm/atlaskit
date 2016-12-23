@@ -11,7 +11,7 @@ export interface Converter {
 
 export default function(html: string) {
   const dom = parseHtml(html).querySelector('body')!;
-  const nodes = bfsOrder(dom)
+  const nodes = bfsOrder(dom);
 
   // JIRA encodes empty content as a single nbsp
   if (nodes.length === 1 && nodes[0].textContent === '\xa0') {
@@ -45,8 +45,8 @@ export default function(html: string) {
  * Flattens DOM tree into single array
  */
 function bfsOrder(root: Node) {
-  const inqueue = [root]
-  const outqueue = [] as Node[]
+  const inqueue = [root];
+  const outqueue = [] as Node[];
 
   let elem;
   while (elem = inqueue.shift()) {
@@ -57,15 +57,15 @@ function bfsOrder(root: Node) {
       switch (child.nodeType) {
         case Node.ELEMENT_NODE:
         case Node.TEXT_NODE:
-          inqueue.push(child)
+          inqueue.push(child);
           break;
         default:
           console.error(`Not pushing: ${child.nodeType} ${child.nodeName}`);
       }
     }
   }
-  outqueue.shift()
-  return outqueue
+  outqueue.shift();
+  return outqueue;
 }
 
 /*
@@ -95,7 +95,7 @@ function addMarks(fragment: Fragment, marks: Mark[]): Fragment {
     const child = result.child(i);
     let newChild = child;
     for (const mark of marks) {
-      newChild = newChild.mark(mark.addToSet(newChild.marks))
+      newChild = newChild.mark(mark.addToSet(newChild.marks));
     }
     result = result.replaceChild(i, newChild);
   }

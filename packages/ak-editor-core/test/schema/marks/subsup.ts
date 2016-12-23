@@ -53,10 +53,10 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       text: Text;
-    }
+    };
     marks: {
       subsup: SubSupMarkType;
-    }
+    };
   }
 
   return new Schema({

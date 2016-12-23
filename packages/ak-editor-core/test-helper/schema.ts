@@ -45,7 +45,7 @@ export interface AtlassianEditorSchema extends Schema {
     code_block: CodeBlockNodeType;
     mention: MentionNodeType;
     emoji: EmojiNodeType;
-  }
+  };
 
   marks: {
     [name: string]: MarkType;
@@ -55,7 +55,7 @@ export interface AtlassianEditorSchema extends Schema {
     strong: StrongMarkType;
     mono: MonoMarkType;
     del: DelMarkType;
-  }
+  };
 }
 
 export const schema = new Schema({

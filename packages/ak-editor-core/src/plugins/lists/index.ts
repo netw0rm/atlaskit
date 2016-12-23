@@ -482,7 +482,7 @@ export interface S extends Schema {
     bullet_list?: BulletListNodeType,
     list_item: ListItemNodeType,
     ordered_list?: OrderedListNodeType
-  }
+  };
 }
 
 export interface PM extends ProseMirror {

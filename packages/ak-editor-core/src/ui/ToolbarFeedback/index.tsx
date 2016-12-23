@@ -32,7 +32,9 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
               type="button"
               className={styles.close}
               onClick={this.closeFeedbackPanel}
-            >&#10005;</button>
+            >
+            &#10005;
+            </button>
             <iframe
               allowTransparency
               frameBorder="0"

@@ -16,7 +16,7 @@ describe('hyperlink paste transformer', () => {
 
   function pasted(pm: ProseMirror, slice: Slice): Slice {
     return pm.on.transformPasted.dispatch(slice);
-  };
+  }
 
   it('Should convert only the hyperlink and leave pading text intact', () => {
     const { pm } = editor();

@@ -12,7 +12,7 @@ import stringRepeat from './util/string-repeat';
  * formatting by Bitbucket server (via python-markdown).
  * @see MarkdownSerializerState.esc()
  */
-function escapeMarkdown(str: string, startOfLine?: boolean) : string {
+function escapeMarkdown(str: string, startOfLine?: boolean): string {
   str = str.replace(/[`*\\~+\[\]_]/g, "\\$&");
   if (startOfLine) {
     str = str.replace(/^[:#-*]/, "\\$&").replace(/^(\d+)\./, "$1\\.");
@@ -97,7 +97,7 @@ const nodes = {
   text(state: MarkdownSerializerState, node: any) {
     let lines = node.text.split("\n");
     for (let i = 0; i < lines.length; i++) {
-      var startOfLine = state.atBlank() || state.closed;
+      const startOfLine = state.atBlank() || state.closed;
       state.write();
       state.out += escapeMarkdown(lines[i], startOfLine);
       if (i !== lines.length - 1) {
@@ -129,7 +129,7 @@ const marks = {
 };
 
 export class MarkdownSerializer extends PMMarkdownSerializer {
-  serialize(content: any, options?: Object) : string{
+  serialize(content: any, options?: Object): string{
     let state = new MarkdownSerializerState(this.nodes, this.marks, options);
 
     state.renderContent(content);
@@ -139,7 +139,7 @@ export class MarkdownSerializer extends PMMarkdownSerializer {
 
 export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
-  renderContent(parent: Node) : void {
+  renderContent(parent: Node): void {
     parent.forEach((child: Node) => {
       if (
         // If child is an empty Textblock we need to insert a zwnj-character in order to preserve that line in markdown
@@ -162,7 +162,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
    * @see node_modules/prosemirror/src/markdown/to_markdown.js
    * @see MarkdownSerializerState.renderInline()
    */
-  renderInline(parent: Node) : void {
+  renderInline(parent: Node): void {
     let active: Mark[] = [];
 
     let progress = (node: Node | null) => {

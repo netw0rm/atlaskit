@@ -16,7 +16,7 @@ import service from './service';
  *        onClick() { ... }
  *     }
  */
-//: PropertyDecorator | MethodDecorator
+// PropertyDecorator | MethodDecorator
 export default function analytics(name: string) {
   return function (
     target: any,

@@ -5,7 +5,7 @@ import { MentionPicker as PfMentionPicker } from 'ak-mention';
 
 export interface Props {
   pluginState: MentionsPluginState;
-  resourceProvider: any;//AbstractMentionResource;
+  resourceProvider: any; // AbstractMentionResource;
 }
 
 export interface State {

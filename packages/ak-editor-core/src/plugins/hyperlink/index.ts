@@ -280,6 +280,6 @@ export interface HyperlinkOptions {
 // returns the position to be used on 'getDomElement' to get the corrent DOM node
 function getBoundariesWithin(
   $head: ResolvedPos
-) : number {
+): number {
   return $head.parentOffset === 0 ? $head.pos : $head.pos -1;
 }

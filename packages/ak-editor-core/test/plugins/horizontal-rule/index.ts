@@ -23,7 +23,7 @@ describe('horizontal_rule', () => {
         it('calls splitCodeBlock', () => {
           const { pm, plugin } = editor(doc(p('text{<>}')));
 
-          pm.input.dispatchKey("Shift-Cmd--");
+          pm.input.dispatchKey('Shift-Cmd--');
 
           expect(pm.doc).to.deep.equal(doc(p('text'), hr));
         });
@@ -33,7 +33,7 @@ describe('horizontal_rule', () => {
         it('calls splitCodeBlock', () => {
           const { pm, plugin } = editor(doc(p('text{<>}')));
 
-          pm.input.dispatchKey("Shift-Ctrl--");
+          pm.input.dispatchKey('Shift-Ctrl--');
 
           expect(pm.doc).to.deep.equal(doc(p('text'), hr));
         });

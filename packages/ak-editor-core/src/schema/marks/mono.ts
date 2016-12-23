@@ -3,7 +3,7 @@ import { Mark, MarkType, Schema } from '../../prosemirror';
 export class MonoMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {
     if (name !== 'mono') {
-      throw new Error("MonoMarkType must be named 'mono'.")
+      throw new Error('MonoMarkType must be named "mono".')
     }
     super(name, rank, schema);
   }
@@ -27,7 +27,7 @@ export class MonoMarkType extends MarkType {
   }
 
   toDOM() {
-    return ["span", { style: 'font-family: monospace; white-space: pre-wrap;'}];
+    return ['span', { style: 'font-family: monospace; white-space: pre-wrap;'}];
   }
 }
 

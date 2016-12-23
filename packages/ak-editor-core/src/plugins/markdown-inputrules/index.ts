@@ -22,7 +22,7 @@ import { service as analyticsService, trackAndInvoke } from '../../analytics';
 // markdown (where a ordered list will always start on 1). This is a slightly modified
 // version of that input rule.
 const orderedListRule = (nodeType: NodeType): InputRule => {
-  return wrappingInputRule(/^(\d+)\. $/, " ", nodeType, (match: RegExpMatchArray) => ({}),
+  return wrappingInputRule(/^(\d+)\. $/, ' ', nodeType, (match: RegExpMatchArray) => ({}),
     (match: RegExpMatchArray, node: Node) => node.childCount);
 }
 
@@ -37,8 +37,8 @@ const createTrackedInputRule = (analyticsEventName: string, rule: InputRule): In
 
 const headingRule = (nodeType: NodeType, maxLevel: Number) => {
   return textblockTypeInputRule(
-    new RegExp("^(#{1," + maxLevel + "}) $"),
-    " ",
+    new RegExp('^(#{1,' + maxLevel + '}) $'),
+    ' ',
     nodeType,
     (match: string[]) => {
       const level = match[1].length;

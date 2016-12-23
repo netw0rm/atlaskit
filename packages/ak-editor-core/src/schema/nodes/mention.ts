@@ -17,7 +17,7 @@ export class MentionNodeType extends Inline {
   constructor(name: string, schema: Schema) {
     super(name, schema);
     if (name !== 'mention') {
-      throw new Error("MentionNodeType must be named 'mention'.");
+      throw new Error('MentionNodeType must be named "mention".');
     }
   }
 

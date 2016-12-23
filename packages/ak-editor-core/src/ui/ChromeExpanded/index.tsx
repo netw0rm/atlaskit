@@ -63,12 +63,12 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
             <AkButtonGroup>
               {!this.props.onSave ? null :
               <span onClick={this.handleSave}>
-                <AkButton appearance='primary'>Save</AkButton>
+                <AkButton appearance="primary">Save</AkButton>
               </span>
               }
               {!this.props.onCancel ? null :
               <span onClick={this.handleCancel}>
-                <AkButton appearance='subtle'>Cancel</AkButton>
+                <AkButton appearance="subtle">Cancel</AkButton>
               </span>
               }
             </AkButtonGroup>
@@ -77,13 +77,13 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
             {!props.onInsertMention ? null :
             <ToolbarIconButton
               onClick={this.handleInsertMention}
-              icon={<MentionIcon label='Mention' />}
+              icon={<MentionIcon label="Mention" />}
             />
             }
             {!props.pluginStateImageUpload ? null :
             <ToolbarIconButton
               onClick={this.handleInsertImage}
-              icon={<ImageIcon label='Image' />}
+              icon={<ImageIcon label="Image" />}
             />
             }
           </div>

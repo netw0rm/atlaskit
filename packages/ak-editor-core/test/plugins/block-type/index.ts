@@ -186,7 +186,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Cmd-Alt-0");
+            pm.input.dispatchKey('Cmd-Alt-0');
             expect(toggleBlockType).to.have.been.calledWith('normal');
           });
         });
@@ -196,7 +196,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Cmd-Alt-1");
+            pm.input.dispatchKey('Cmd-Alt-1');
             expect(toggleBlockType).to.have.been.calledWith('heading1');
           });
         });
@@ -206,7 +206,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Cmd-Alt-2");
+            pm.input.dispatchKey('Cmd-Alt-2');
             expect(toggleBlockType).to.have.been.calledWith('heading2');
           });
         });
@@ -216,7 +216,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Cmd-Alt-3");
+            pm.input.dispatchKey('Cmd-Alt-3');
             expect(toggleBlockType).to.have.been.calledWith('heading3');
           });
         });
@@ -226,7 +226,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Cmd-Alt-4");
+            pm.input.dispatchKey('Cmd-Alt-4');
             expect(toggleBlockType).to.have.been.calledWith('heading4');
           });
         });
@@ -236,7 +236,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Cmd-Alt-5");
+            pm.input.dispatchKey('Cmd-Alt-5');
             expect(toggleBlockType).to.have.been.calledWith('heading5');
           });
         });
@@ -246,7 +246,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Cmd-Alt-7");
+            pm.input.dispatchKey('Cmd-Alt-7');
             expect(toggleBlockType).to.have.been.calledWith('blockquote');
           });
         });
@@ -256,7 +256,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Cmd-Alt-8");
+            pm.input.dispatchKey('Cmd-Alt-8');
             expect(toggleBlockType).to.have.been.calledWith('codeblock');
           });
         });
@@ -267,7 +267,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
             plugin.changeContext('comment');
 
-            pm.input.dispatchKey("Cmd-Alt-1");
+            pm.input.dispatchKey('Cmd-Alt-1');
             expect(toggleBlockType).to.not.have.been.called;
           });
 
@@ -276,7 +276,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
             plugin.changeContext('pr');
 
-            pm.input.dispatchKey("Cmd-Alt-1");
+            pm.input.dispatchKey('Cmd-Alt-1');
             expect(toggleBlockType).to.have.been.calledWith('heading1');
           });
         });
@@ -288,7 +288,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Ctrl-0");
+            pm.input.dispatchKey('Ctrl-0');
             expect(toggleBlockType).to.have.been.calledWith('normal');
           });
         });
@@ -298,7 +298,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Ctrl-1");
+            pm.input.dispatchKey('Ctrl-1');
             expect(toggleBlockType).to.have.been.calledWith('heading1');
           });
         });
@@ -308,7 +308,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Ctrl-2");
+            pm.input.dispatchKey('Ctrl-2');
             expect(toggleBlockType).to.have.been.calledWith('heading2');
           });
         });
@@ -318,7 +318,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Ctrl-3");
+            pm.input.dispatchKey('Ctrl-3');
             expect(toggleBlockType).to.have.been.calledWith('heading3');
           });
         });
@@ -328,7 +328,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Ctrl-4");
+            pm.input.dispatchKey('Ctrl-4');
             expect(toggleBlockType).to.have.been.calledWith('heading4');
           });
         });
@@ -338,7 +338,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Ctrl-5");
+            pm.input.dispatchKey('Ctrl-5');
             expect(toggleBlockType).to.have.been.calledWith('heading5');
           });
         });
@@ -348,7 +348,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Ctrl-7");
+            pm.input.dispatchKey('Ctrl-7');
             expect(toggleBlockType).to.have.been.calledWith('blockquote');
           });
         });
@@ -358,7 +358,7 @@ describe('block-type', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
-            pm.input.dispatchKey("Ctrl-8");
+            pm.input.dispatchKey('Ctrl-8');
             expect(toggleBlockType).to.have.been.calledWith('codeblock');
           });
         });
@@ -370,7 +370,7 @@ describe('block-type', () => {
         const { pm, plugin } = editor(doc(code_block()('text')));
         const splitCodeBlock = sinon.spy(plugin, 'splitCodeBlock');
 
-        pm.input.dispatchKey("Enter");
+        pm.input.dispatchKey('Enter');
 
         expect(splitCodeBlock).to.have.been.callCount(1);
       });
@@ -380,8 +380,8 @@ describe('block-type', () => {
       it('exits code block', ()=> {
         const { pm, plugin } = editor(doc(code_block()('text{<>}')));
 
-        pm.input.dispatchKey("Enter");
-        pm.input.dispatchKey("Enter");
+        pm.input.dispatchKey('Enter');
+        pm.input.dispatchKey('Enter');
 
         expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
       });
@@ -392,7 +392,7 @@ describe('block-type', () => {
         const { pm, plugin } = editor(doc(code_block()('text')));
         const insertNewLine = sinon.spy(plugin, 'insertNewLine');
 
-        pm.input.dispatchKey("Shift-Enter");
+        pm.input.dispatchKey('Shift-Enter');
 
         expect(insertNewLine).to.have.been.callCount(1);
       });

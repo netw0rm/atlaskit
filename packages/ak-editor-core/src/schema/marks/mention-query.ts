@@ -3,7 +3,7 @@ import { Mark, MarkType, Schema } from '../../prosemirror';
 export class MentionQueryMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {
     if (name !== 'mention_query') {
-      throw new Error("MentionQueryMarkType must be named 'mention_query'.");
+      throw new Error('MentionQueryMarkType must be named "mention_query".');
     }
     super(name, rank, schema);
   }

@@ -3,8 +3,8 @@ import { Heading, Node, Schema } from '../../prosemirror';
 export class HeadingNodeType extends Heading {
   constructor(name: string, schema: Schema) {
     super(name, schema);
-    if (/^heading[1-5]$/.test(name)) {
-      throw new Error("HeadingNodeType must be named 'heading{1..5}'.");
+    if (name !== 'heading') {
+      throw new Error("HeadingNodeType must be named 'heading'.");
     }
   }
 }

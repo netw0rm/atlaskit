@@ -79,6 +79,18 @@ describe(name, () => {
           'editor/underline',
           'editor/unlink',
 
+          'emoji/activity',
+          'emoji/atlassian',
+          'emoji/custom',
+          'emoji/flags',
+          'emoji/food',
+          'emoji/frequent',
+          'emoji/nature',
+          'emoji/objects',
+          'emoji/people',
+          'emoji/symbols',
+          'emoji/travel',
+
           'error',
           'expand',
           'feedback',

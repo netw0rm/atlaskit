@@ -4,7 +4,7 @@ export class OrderedListNodeType extends OrderedList {
   constructor(name: string, schema: Schema) {
     super(name, schema);
     if (name !== 'ordered_list') {
-      throw new Error("OrderedListNodeType must be named 'ordered_list'.");
+      throw new Error('OrderedListNodeType must be named "ordered_list".');
     }
   }
 }

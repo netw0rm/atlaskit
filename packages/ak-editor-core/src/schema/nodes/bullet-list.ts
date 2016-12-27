@@ -4,7 +4,7 @@ export class BulletListNodeType extends BulletList {
   constructor(name: string, schema: Schema) {
     super(name, schema);
     if (name !== 'bullet_list') {
-      throw new Error("BulletListNodeType must be named 'bullet_list'.");
+      throw new Error('BulletListNodeType must be named "bullet_list".');
     }
   }
 }

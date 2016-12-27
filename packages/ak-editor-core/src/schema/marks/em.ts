@@ -4,7 +4,7 @@ import { Mark, Schema } from '../../prosemirror';
 export class EmMarkType extends BaseEmMark {
   constructor(name: string, rank: number, schema: Schema) {
     if (name !== 'em') {
-      throw new Error("EmMarkType must be named 'em'.")
+      throw new Error('EmMarkType must be named "em".');
     }
     super(name, rank, schema);
   }

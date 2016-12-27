@@ -4,7 +4,7 @@ export class HeadingNodeType extends Heading {
   constructor(name: string, schema: Schema) {
     super(name, schema);
     if (name !== 'heading') {
-      throw new Error("HeadingNodeType must be named 'heading'.");
+      throw new Error('HeadingNodeType must be named "heading".');
     }
   }
 }

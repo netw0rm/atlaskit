@@ -4,7 +4,7 @@ import { Mark, Schema } from '../../prosemirror';
 export class LinkMarkType extends BaseLinkMark {
   constructor(name: string, rank: number, schema: Schema) {
     if (name !== 'link') {
-      throw new Error("LinkMarkType must be named 'link'.")
+      throw new Error('LinkMarkType must be named "link".');
     }
     super(name, rank, schema);
   }

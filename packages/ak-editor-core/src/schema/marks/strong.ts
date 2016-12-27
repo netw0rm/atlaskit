@@ -4,7 +4,7 @@ import { Mark, Schema } from '../../prosemirror';
 export class StrongMarkType extends BaseStrongMark {
   constructor(name: string, rank: number, schema: Schema) {
     if (name !== 'strong') {
-      throw new Error("StrongMarkType must be named 'strong'.")
+      throw new Error('StrongMarkType must be named "strong".');
     }
     super(name, rank, schema);
   }

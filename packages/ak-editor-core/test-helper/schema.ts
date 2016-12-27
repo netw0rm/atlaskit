@@ -55,7 +55,7 @@ export interface AtlassianEditorSchema extends Schema {
     strong: StrongMarkType;
     mono: MonoMarkType;
     strike: StrikeMarkType;
-  }
+  };
 }
 
 export const schema = new Schema({

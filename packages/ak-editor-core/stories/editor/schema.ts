@@ -82,5 +82,5 @@ export interface BitbucketSchema extends Schema {
     strong: StrongMarkType;
     mono: MonoMarkType;
     strike: StrikeMarkType;
-  }
+  };
 }

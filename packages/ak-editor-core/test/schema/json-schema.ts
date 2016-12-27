@@ -9,9 +9,9 @@ describe('ak-editor-core: json-schema', () => {
     get attrs() {
       return {
         src: new Attribute,
-        alt: new Attribute({default: ""}),
-        title: new Attribute({default: ""})
-      }
+        alt: new Attribute({default: ''}),
+        title: new Attribute({default: ''})
+      };
     }
   }
 
@@ -406,8 +406,8 @@ describe('ak-editor-core: json-schema', () => {
     class Foo extends Inline {
       get attrs() {
         return {
-          foo: new Attribute({default: ""}),
-        }
+          foo: new Attribute({default: ''}),
+        };
       }
     }
     const schema = new Schema({
@@ -458,8 +458,8 @@ describe('ak-editor-core: json-schema', () => {
       get attrs() {
         return {
           href: new Attribute,
-          title: new Attribute({default: ""})
-        }
+          title: new Attribute({default: ''})
+        };
       }
     }
     const schema = new Schema({

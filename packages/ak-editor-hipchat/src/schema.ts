@@ -22,6 +22,6 @@ export interface HipChatSchema extends Schema {
     paragraph: ParagraphNodeType;
     text: Text;
     hard_break: HardBreakNodeType;
-  }
-  marks: {}
+  };
+  marks: {};
 }

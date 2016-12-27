@@ -4,7 +4,7 @@ export class ImageNodeType extends Inline {
   constructor(name: string, schema: Schema) {
     super(name, schema);
     if (name !== 'image') {
-      throw new Error("ImageNodeType must be named 'image'.");
+      throw new Error('ImageNodeType must be named "image".');
     }
   }
 

@@ -84,7 +84,7 @@ export default function encode(node: DocNode) {
 
   function encodeParagraph(node: ParagraphNode) {
     const elem = doc.createElement('p');
-    elem.appendChild(encodeFragment(node.content))
+    elem.appendChild(encodeFragment(node.content));
     return elem;
   }
 

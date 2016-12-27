@@ -21,15 +21,14 @@ import {
 
 import schema from './schema';
 import markdownSerializer from './markdown-serializer';
-import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 import parseHtml from './parse-html';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
-  context?: 'comment' | 'pr',
-  isExpandedByDefault?: boolean,
-  defaultValue?: string,
+  context?: 'comment' | 'pr';
+  isExpandedByDefault?: boolean;
+  defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
@@ -140,7 +139,7 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
+        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
         onCancel={handleCancel}
         onSave={handleSave}
         placeholder={this.props.placeholder}

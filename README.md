@@ -182,16 +182,9 @@ Eslint will automatically run when attempting to commit, but can also run at any
 
 ### Modifying ESLint rules
 
-In order to modify the ESLint rules, you can add the rules to the `.eslintrc` file in the `eslint-config-ak-base` package. In order for you to use your changes immediately without committing and re-running `npm install`, you'll need to manually link it. This is a two-step process:
+In order to modify the ESLint rules, you can add the rules to the `.eslintrc` file in the `eslint-config-ak-base` package.
 
-1. link `eslint-config-ak-base` so NPM knows where to find it
-2. link it from the root of the repo
-
-One-liner:
-
-```sh
-cd packages/eslint-config-ak-base && npm link && cd ../.. && npm link eslint-config-ak-base
-```
+The packages are linked to the main atlaskit directory so that the new eslint configuration will be effectively immediately.
 
 Changes to the ESLint rules should be treated like any other package:
 

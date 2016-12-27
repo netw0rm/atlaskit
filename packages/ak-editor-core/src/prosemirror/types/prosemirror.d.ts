@@ -117,7 +117,7 @@ declare module 'prosemirror/dist/edit/selection' {
   import { Node } from 'prosemirror/dist/model';
 
   export class Selection {
-    $from : ResolvedPos;
+    $from: ResolvedPos;
     $to: ResolvedPos;
     from: number;
     to: number;
@@ -179,15 +179,11 @@ declare module 'prosemirror/dist/edit/main' {
       transformPasted: Subscription<(slice: Slice) => Slice>;
       flush: AnySubscription;
       change: AnySubscription;
-      activeMarkChange: AnySubscription;
       interaction: AnySubscription;
-      selectionChange: AnySubscription;
-      change: AnySubscription;
       selectionChange: AnySubscription;
       textInput: AnySubscription;
       beforeSetDoc: AnySubscription;
       setDoc: AnySubscription;
-      interaction: AnySubscription;
       focus: AnySubscription;
       blur: AnySubscription;
       click: AnySubscription;
@@ -196,14 +192,12 @@ declare module 'prosemirror/dist/edit/main' {
       doubleClick: AnySubscription;
       doubleClickOn: AnySubscription;
       contextMenu: AnySubscription;
-      transformPasted: AnySubscription;
       transformPastedText: AnySubscription;
       transformPastedHTML: AnySubscription;
       transform: AnySubscription;
       beforeTransform: AnySubscription;
       filterTransform: AnySubscription;
       flushing: AnySubscription;
-      flush: AnySubscription;
       draw: AnySubscription;
       activeMarkChange: AnySubscription;
       domDrop: AnySubscription;
@@ -321,7 +315,7 @@ declare module 'prosemirror/dist/edit/update' {
 declare module 'prosemirror/dist/example-setup' {
     export { buildMenuItems } from 'prosemirror/dist/example-setup/menu';
     export { buildKeymap } from 'prosemirror/dist/example-setup/keymap';
-    export var exampleSetup: any;
+    export let exampleSetup: any;
     export function buildInputRules(schema: any): any[];
 }
 
@@ -369,7 +363,7 @@ declare module 'prosemirror/dist/inputrules/inputrules' {
     import { ProseMirror } from 'prosemirror/dist/edit';
     export class InputRule {
         constructor(match: any, filter: any, handler: any);
-        handler: () => any
+        handler: () => any;
     }
     export class InputRules {
         constructor(pm: ProseMirror, options: any);
@@ -431,7 +425,7 @@ declare module 'prosemirror/dist/markdown/to_markdown' {
       out: string;
       closed: boolean;
       marks: {
-        [markTypeName: string] : {
+        [markTypeName: string]: {
           open: String | Function,
           close: String | Function,
           mixable?: boolean
@@ -1016,6 +1010,13 @@ declare module 'prosemirror/dist/schema-basic' {
         };
         toDOM(node: any): any[];
     }
+    export class CodeMark extends MarkType {
+        isCode: boolean;
+        matchDOMTag: {
+            'code': any;
+        };
+        toDOM(): string[];
+    }
     export const schema: Schema;
 }
 
@@ -1047,8 +1048,8 @@ declare module 'prosemirror/dist/transform/transform' {
       replace(from: number, to: number, slice: Slice): this;
       replaceWith(from: number, to: number, content: any): this;
       insert(pos: number, content: any): this;
-      insertText(pos: number, text: string) : this;
-      insertInline(pos: number, node: Node) : this;
+      insertText(pos: number, text: string): this;
+      insertInline(pos: number, node: Node): this;
       doc: Node;
       lift(range: NodeRange, target: number): this;
       map(pos: number, bias?: number): number;

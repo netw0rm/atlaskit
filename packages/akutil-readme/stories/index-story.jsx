@@ -64,6 +64,10 @@ storiesOf(name)
           component: 'The component you are documenting. Can be a string or class.',
           description: 'A short description of the component. Generally this can be your package.json description.',
         }}
+        types={{
+          component: 'oneOfType([string, func])',
+          description: 'string',
+        }}
       />
     </Chrome>
   ))

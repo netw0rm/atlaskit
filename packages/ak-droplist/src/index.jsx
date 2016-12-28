@@ -37,7 +37,7 @@ export default class DropdownList extends PureComponent {
      * @memberof Droplist
      * @default false
      */
-    isTriggerNotTabble: PropTypes.bool,
+    isTriggerNotTabbable: PropTypes.bool,
     /**
      * @description Whether the dropdown should be open by default
      * @memberof Droplist
@@ -84,7 +84,7 @@ export default class DropdownList extends PureComponent {
     appearance: 'default',
     position: 'bottom left',
     isOpen: false,
-    isTriggerNotTabble: false,
+    isTriggerNotTabbable: false,
     listContext: 'menu',
     onItemActivated: () => {},
     onOpenChange: () => {},
@@ -251,7 +251,7 @@ export default class DropdownList extends PureComponent {
         >
           <div className={styles.dropTrigger}>
             <Trigger
-              isNotTabbable={props.isTriggerNotTabble}
+              isNotTabbable={props.isTriggerNotTabbable}
               isOpened={props.isOpen}
               onActivate={this.handleTriggerActivation}
             >{props.children}</Trigger>

@@ -35,7 +35,7 @@ const DroplistOverview = class extends Component {
       onItemActivated={(attrs) => {
         console.log(attrs.item);
       }}
-      isTriggerNotTabble
+      isTriggerNotTabbable
       appearance="default"
       position="right top"
       listContext="menu"

@@ -23,7 +23,8 @@
   },
   "devDependencies": {
     "ak-droplist": "*",
-    "akutil-readme": "^1.1.0"
+    "akutil-readme": "^1.1.0",
+    "ak-button": "^5.0.2"
   },
   "peerDependencies": {
     "react": "^15.3.2",

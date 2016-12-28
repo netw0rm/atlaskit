@@ -38,7 +38,7 @@ export default class DropdownMenu extends PureComponent {
      * @memberof DropdownMenu
      * @default false
      */
-    triggerIsNotTabbable: PropTypes.bool,
+    isTriggerNotTabble: PropTypes.bool,
     /**
      * @description List of menu items. Should be an array of groups (see the documentation for
      * ak-droplist-group for available props). Every group should contain array of items
@@ -80,7 +80,7 @@ export default class DropdownMenu extends PureComponent {
     triggerType: 'default',
     items: [],
     defaultOpen: false,
-    triggerIsNotTabbable: false,
+    isTriggerNotTabble: false,
     onItemActivated: () => {},
     onOpenChange: () => {},
   }
@@ -149,8 +149,8 @@ export default class DropdownMenu extends PureComponent {
         isOpen={state.isOpen}
         onItemActivated={this.handleItemActivation}
         onOpenChange={this.handleOpenChange}
-        triggerIsNotTabbable={(props.triggerType === 'button') || props.triggerIsNotTabbable}
-        context="menu"
+        isTriggerNotTabble={(props.triggerType === 'button') || props.isTriggerNotTabble}
+        listContext="menu"
         items={state.items}
       >
         {props.triggerType === 'button' ?

@@ -31,7 +31,7 @@ const itemsList = [
 
 describe(name, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Menu items={[]}>test</Menu>)).to.exist;
+    expect(shallow(<Menu>test</Menu>)).to.exist;
   });
 
   describe('render', () => {
@@ -49,8 +49,8 @@ describe(name, () => {
       const droplist = wrapper.find(Droplist);
       expect(droplist).to.have.prop('position', wrapper.props().position);
       expect(droplist).to.have.prop('appearance', wrapper.props().appearance);
-      expect(droplist).to.have.prop('triggerIsNotTabbable', wrapper.props().triggerIsNotTabbable);
-      expect(droplist).to.have.prop('context', 'menu');
+      expect(droplist).to.have.prop('isTriggerNotTabble', wrapper.props().isTriggerNotTabble);
+      expect(droplist).to.have.prop('listContext', 'menu');
       expect(droplist).to.have.prop('items', wrapper.state().items);
       expect(droplist).to.have.prop('isOpen', wrapper.state().isOpen);
     });
@@ -58,7 +58,7 @@ describe(name, () => {
 
   describe('show/hide logic', () => {
     it('should be open when the defaultOpen property set to true', () => {
-      expect(shallow(<Menu items={[]} defaultOpen>text</Menu>).state().isOpen).to.be.true;
+      expect(shallow(<Menu defaultOpen>text</Menu>).state().isOpen).to.be.true;
     });
 
     it('interacting with trigger should open the dropdown', () => {

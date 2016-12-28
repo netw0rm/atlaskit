@@ -3,10 +3,10 @@ import React from 'react';
 
 import emojis from './story-data';
 
-import EmojiPreview from '../src/internal/EmojiPreview';
-import EmojiPickerFooter from '../src/internal/EmojiPickerFooter';
-import CategorySelector from '../src/internal/CategorySelector';
-import ToneSelector from '../src/internal/ToneSelector';
+import CategorySelector from '../src/internal/picker/CategorySelector';
+import EmojiPickerFooter from '../src/internal/picker/EmojiPickerFooter';
+import EmojiPreview from '../src/internal/common/EmojiPreview';
+import ToneSelector from '../src/internal/common/ToneSelector';
 
 import { emojiPickerWidth } from '../src/shared-variables';
 import filters from '../src/internal/filters';

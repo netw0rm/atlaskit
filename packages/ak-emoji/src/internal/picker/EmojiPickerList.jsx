@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 import { List } from 'react-virtualized';
-import styles from 'style!../style.less';
-import EmojiPropTypes from './ak-emoji-prop-types';
-import EmojiListCategory from './EmojiListCategory';
-import EmojiListRow from './EmojiListRow';
-import EmojiListSearch from './EmojiListSearch';
-import { emojiListWidth, emojiListHeight } from '../shared-variables';
+import styles from 'style!../../style.less';
+import EmojiPropTypes from '../ak-emoji-prop-types';
+import EmojiPickerListCategory from './EmojiPickerListCategory';
+import EmojiPickerListRow from './EmojiPickerListRow';
+import EmojiPickerListSearch from './EmojiPickerListSearch';
+import { emojiListWidth, emojiListHeight } from '../../shared-variables';
 
 const emojiPerRow = 8;
 
@@ -184,7 +184,7 @@ export default class extends PureComponent {
     if (item.type === 'emoji') {
       const selectedShortcut = this.state.selectedEmoji && this.state.selectedEmoji.shortcut;
       return (
-        <EmojiListRow
+        <EmojiPickerListRow
           key={key}
           style={style}
           emojis={item.emojis}
@@ -195,7 +195,7 @@ export default class extends PureComponent {
       );
     } else if (item.type === 'category') {
       return (
-        <EmojiListCategory
+        <EmojiPickerListCategory
           key={key}
           style={style}
           title={item.title}
@@ -203,7 +203,7 @@ export default class extends PureComponent {
       );
     } else if (item.type === 'search') {
       return (
-        <EmojiListSearch
+        <EmojiPickerListSearch
           key={key}
           style={style}
           onChange={this.onSearch}

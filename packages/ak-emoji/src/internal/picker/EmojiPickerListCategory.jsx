@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 
-import styles from 'style!../style.less';
+import styles from 'style!../../style.less';
 
 export default class extends PureComponent {
   static propTypes = {

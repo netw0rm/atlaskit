@@ -5,8 +5,8 @@ import sinonChai from 'sinon-chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import styles from 'style!../src/style.less';
-import EmojiPreview from '../src/internal/EmojiPreview';
-import ToneSelector from '../src/internal/ToneSelector';
+import EmojiPreview from '../src/internal/common/EmojiPreview';
+import ToneSelector from '../src/internal/common/ToneSelector';
 import Emoji from '../src/Emoji';
 
 chai.use(chaiAsPromised);

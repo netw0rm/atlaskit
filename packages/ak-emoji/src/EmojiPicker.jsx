@@ -4,7 +4,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!./style.less';
 
 import CategorySelector from './internal/picker/CategorySelector';
-import EmojiList from './internal/picker/EmojiList';
+import EmojiPickerList from './internal/picker/EmojiPickerList';
 import EmojiPickerFooter from './internal/picker/EmojiPickerFooter';
 import EmojiPropTypes from './internal/ak-emoji-prop-types';
 import EmojiService from './api/EmojiService';
@@ -105,7 +105,7 @@ export default class extends PureComponent {
           onCategorySelected={this.onCategorySelected}
           availableCategories={this.state.availableCategories}
         />
-        <EmojiList
+        <EmojiPickerList
           emojis={this.state.filteredEmojis}
           selectedCategory={this.state.selectedCategory}
           onEmojiSelected={this.onEmojiSelected}

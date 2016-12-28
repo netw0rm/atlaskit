@@ -5,8 +5,8 @@ import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import ToneSelector from '../src/internal/ToneSelector';
-import EmojiButton from '../src/internal/EmojiButton';
+import ToneSelector from '../src/internal/common/ToneSelector';
+import EmojiButton from '../src/internal/common/EmojiButton';
 
 chai.use(chaiAsPromised);
 chai.use(chaiEnzyme());

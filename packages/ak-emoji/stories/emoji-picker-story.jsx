@@ -13,4 +13,4 @@ storiesOf('ak-emoji/Emoji Picker', module)
         onEmojiSelected={action('emoji selected')}
       />
     </div>
-    ));
+  ));

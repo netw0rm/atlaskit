@@ -1,8 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
 
-import styles from 'style!../style.less';
-import EmojiPropTypes from './ak-emoji-prop-types';
-import EmojiButton from './EmojiButton';
+import styles from 'style!../../style.less';
+import EmojiPropTypes from '../ak-emoji-prop-types';
+import EmojiButton from '../common/EmojiButton';
 
 export default class extends PureComponent {
   static propTypes = {

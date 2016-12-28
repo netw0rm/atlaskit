@@ -20,6 +20,7 @@ export default class DropWithBut extends Component {
       <div style={{ padding: '20px 0' }}>
         <DropdownMenu
           items={simpleDropdownItems}
+          triggerIsNotTabbable
           onOpenChange={(attrs) => {
             this.setState({ isDropdownOpen: attrs.isOpen });
           }}

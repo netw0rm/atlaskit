@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Readme, { Props } from 'akutil-readme';
 import { name, description } from '../package.json';
-import Toggle from '../src';
+import { Toggle } from '../src';
 
 const togglePropDescriptions = {
   isChecked: 'Weather the toggle is checked or not',

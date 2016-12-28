@@ -20,9 +20,4 @@ storiesOf(name, module)
       <AkToggle isDisabled />
       <AkToggle isDefaultChecked isDisabled />
     </div>
-  )
-  .add('with focus state', () =>
-    <div style={containerStyles}>
-      <AkToggle isDefaultFocused />
-    </div>
   );

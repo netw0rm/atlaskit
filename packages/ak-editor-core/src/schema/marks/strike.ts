@@ -10,7 +10,6 @@ export class StrikeMarkType extends MarkType {
 
   get matchDOMTag() {
     return {
-      del: null,
       s: null,
       strike: null
     };

@@ -216,7 +216,7 @@ export const hr = schema.nodes.horizontal_rule.createChecked();
 export const em = markFactory(schema.marks.em, {});
 export const strong = markFactory(schema.marks.strong, {});
 export const mono = markFactory(schema.marks.mono, {});
-export const del = markFactory(schema.marks.del, {});
+export const strike = markFactory(schema.marks.strike, {});
 export const a = (attrs: { href: string, title?: string }) => markFactory(schema.marks.link, attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(new Fragment(flatten<BuilderContent>(content)), 0, 0);

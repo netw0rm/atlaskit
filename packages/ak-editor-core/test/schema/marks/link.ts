@@ -1,28 +1,34 @@
-import { Schema, Text } from '../../../src';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { DocNodeType, BlockQuoteNodeType } from '../../../src';
+import { Node, Schema, Text, DocNodeType, LinkMarkType } from '../../../src';
+import { fromHTML, toHTML, chaiPlugin } from '../../../test-helper';
 
-describe('ak-editor-core/schema blockquote node', () => {
-  it('throws an error if it is not named "blockquote"', () => {
+chai.use(chaiPlugin);
+
+describe('ak-editor-core/schema link mark', () => {
+  it('throws an error if it is not named "link"', () => {
     expect(() => {
       new Schema({
         nodes: {
           doc: { type: DocNodeType, content: 'text*' },
-          foo: { type: BlockQuoteNodeType, content: 'text*' },
           text: { type: Text }
+        },
+        marks: {
+          foo: LinkMarkType
         }
       });
     }).to.throw(Error);
   });
 
-  it('does not throw an error if it is named "blockquote"', () => {
+  it('does not throw an error if it is named "link"', () => {
     expect(() => {
       new Schema({
         nodes: {
           doc: { type: DocNodeType, content: 'text*' },
-          blockquote: { type: BlockQuoteNodeType, content: 'text*' },
           text: { type: Text }
+        },
+        marks: {
+          link: LinkMarkType
         }
       });
     }).to.not.throw(Error);

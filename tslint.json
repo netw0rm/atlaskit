@@ -43,6 +43,7 @@
     "trailing-comma": [],
     "triple-equals": true,
     "variable-name": false,
+    "no-namespace": [true, "allow-declarations"],
     "quotemark": [
       true,
       "single",

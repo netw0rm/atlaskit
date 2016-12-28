@@ -20,4 +20,32 @@ storiesOf(name, module)
       <AkToggle isDisabled />
       <AkToggle isDefaultChecked isDisabled />
     </div>
+  )
+  .add('with labels', () =>
+    <div style={containerStyles}>
+      <AkToggle
+        labelWhenChecked="turn this off"
+        labelWhenUnchecked="turn this on"
+      />
+    </div>
+  )
+  .add('within a form', () =>
+    <div style={containerStyles}>
+      <form
+        action={'http://www.w3schools.com/html/action_page.php'}
+        method="get"
+        style={{ backgroundColor: 'white', padding: '40px', width: '500px' }}
+        target="myFrame"
+      >
+        <h2>Submit test</h2>
+        <p>Note: Ensure that you are not using HTTPS for this story.</p>
+        <AkToggle name="test1" value="1" />
+        <AkToggle name="test2" value="foo" />
+        <AkToggle isDisabled name="test3" value="123" />
+        <p>
+          <button type="submit">Submit</button>
+        </p>
+      </form>
+      <iframe src="" name="myFrame" style={{ width: '50%', height: '300px' }} />
+    </div>
   );

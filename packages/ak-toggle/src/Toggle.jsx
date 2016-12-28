@@ -13,6 +13,9 @@ export default class Toggle extends PureComponent {
     onChange: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
+    value: PropTypes.string,
+    labelWhenChecked: PropTypes.string,
+    labelWhenUnchecked: PropTypes.string,
   }
 
   static defaultProps = {
@@ -39,6 +42,12 @@ export default class Toggle extends PureComponent {
     [styles.disabled]: this.props.isDisabled,
   });
 
+  renderIcons = () => {
+    if (this.props.isChecked) {
+      return <ConfirmIcon label={this.props.labelWhenChecked} />;
+    }
+    return <CloseIcon label={this.props.labelWhenUnchecked} />;
+  }
 
   render() {
     const id = uid();
@@ -52,6 +61,7 @@ export default class Toggle extends PureComponent {
           ref={el => (this.input = el)}
           className={styles.input}
           id={id}
+          value={this.props.value}
           checked={this.props.isChecked}
           disabled={this.props.isDisabled}
           name={this.props.name}
@@ -63,7 +73,7 @@ export default class Toggle extends PureComponent {
         <div className={styles.toggleSlide}>
           <div className={styles.toggleInner}>
             <div className={styles.iconWrapper}>
-              {this.props.isChecked ? <ConfirmIcon /> : <CloseIcon />}
+              {this.renderIcons()}
             </div>
           </div>
         </div>

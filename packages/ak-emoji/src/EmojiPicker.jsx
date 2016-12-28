@@ -41,7 +41,7 @@ export default class extends PureComponent {
 
   onEmojiSelected = (emoji) => {
     this.props.onSelection(emoji);
-  };
+  }
 
   onEmojiActive = (emoji) => {
     this.setState({
@@ -53,7 +53,7 @@ export default class extends PureComponent {
     this.setState({
       activeCategory: category,
     });
-  };
+  }
 
   onCategorySelected = (categoryId) => {
     const emojisInCategory = this.props.emojis.filter(emoji => emoji.category === categoryId);
@@ -65,7 +65,7 @@ export default class extends PureComponent {
         selectedEmoji: emojisInCategory[0],
       });
     }
-  };
+  }
 
   onSearch = (query) => {
     const searchResults = this.emojiService.search(query);
@@ -93,7 +93,7 @@ export default class extends PureComponent {
     this.setState({
       selectedTone: toneValue,
     });
-  };
+  }
 
   render() {
     const classes = [styles.emojiPicker];

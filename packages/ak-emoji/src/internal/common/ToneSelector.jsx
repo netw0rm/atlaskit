@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!../../style.less';
 import EmojiButton from '../common/EmojiButton';
@@ -21,9 +20,8 @@ export default class extends PureComponent {
 
     toneEmojis.unshift(emoji);
 
-    const classes = [styles.toneSelector];
     return (
-      <div className={classNames(classes)}>
+      <div className={styles.toneSelector}>
         {
           toneEmojis.map((em, i) => (
             <EmojiButton

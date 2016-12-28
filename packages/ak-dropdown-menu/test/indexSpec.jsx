@@ -49,7 +49,7 @@ describe(name, () => {
       const droplist = wrapper.find(Droplist);
       expect(droplist).to.have.prop('position', wrapper.props().position);
       expect(droplist).to.have.prop('appearance', wrapper.props().appearance);
-      expect(droplist).to.have.prop('isTriggerNotTabble', wrapper.props().isTriggerNotTabble);
+      expect(droplist).to.have.prop('isTriggerNotTabbable', wrapper.props().isTriggerNotTabbable);
       expect(droplist).to.have.prop('listContext', 'menu');
       expect(droplist).to.have.prop('items', wrapper.state().items);
       expect(droplist).to.have.prop('isOpen', wrapper.state().isOpen);

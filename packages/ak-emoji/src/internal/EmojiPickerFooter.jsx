@@ -6,7 +6,6 @@ import EmojiPropTypes from './ak-emoji-prop-types';
 
 export default class extends PureComponent {
   static propTypes = {
-    showTone: PropTypes.boolean,
     selectedEmoji: EmojiPropTypes.emoji,
     // eslint-disable-next-line react/no-unused-prop-types
     emojis: PropTypes.arrayOf(EmojiPropTypes.emoji),
@@ -15,7 +14,7 @@ export default class extends PureComponent {
   };
 
   render() {
-    const { selectedEmoji, selectedTone, onToneSelected, showTone } = this.props;
+    const { selectedEmoji, selectedTone, onToneSelected } = this.props;
     // const toneEmoji = filters.toneEmoji(emojis);
 
     return (
@@ -24,7 +23,6 @@ export default class extends PureComponent {
           emoji={selectedEmoji}
           selectedTone={selectedTone}
           onToneSelected={onToneSelected}
-          showTone={showTone}
         />
       </div>
     );

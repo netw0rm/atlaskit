@@ -22,10 +22,23 @@ export default class Toggle extends PureComponent {
     name: '',
   };
 
+  componentDidUpdate() {
+    // TODO: This is a hack. find a way to make it work with preventDefault onMouseDown event
+    if (this.mouseWasDown) {
+      this.input.blur();
+      this.mouseWasDown = false;
+    }
+  }
+
+  onMouseDown = () => (
+    this.mouseWasDown = true
+  )
+
   getToggleClasses = () => classnames({
     [styles.toggle]: true,
     [styles.disabled]: this.props.isDisabled,
   });
+
 
   render() {
     const id = uid();
@@ -33,6 +46,7 @@ export default class Toggle extends PureComponent {
       <label
         htmlFor={id}
         className={this.getToggleClasses()}
+        onMouseDown={this.onMouseDown}
       >
         <input
           ref={el => (this.input = el)}

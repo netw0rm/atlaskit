@@ -2,7 +2,7 @@
   "name": "eslint-config-ak-base",
   "version": "5.2.0",
   "author": "Atlassian Pty Ltd",
-  "description": "The eslint configration for atlaskit components",
+  "description": "The eslint configuration for AtlasKit components",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {

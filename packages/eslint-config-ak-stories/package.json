@@ -2,7 +2,7 @@
   "name": "eslint-config-ak-stories",
   "version": "5.0.0",
   "author": "Atlassian Pty Ltd",
-  "description": "The react-storybook story eslint configration for atlaskit components",
+  "description": "The react-storybook story eslint configuration for AtlasKit components",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {

@@ -184,7 +184,7 @@ Eslint will automatically run when attempting to commit, but can also run at any
 
 In order to modify the ESLint rules, you can add the rules to the `.eslintrc` file in the `eslint-config-ak-base` package.
 
-The packages are linked to the main atlaskit directory so that the new eslint configuration will be effectively immediately.
+The packages are linked to the main atlaskit directory so that the new eslint configuration will be effective immediately.
 
 Changes to the ESLint rules should be treated like any other package:
 

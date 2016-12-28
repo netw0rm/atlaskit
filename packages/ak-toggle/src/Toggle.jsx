@@ -21,8 +21,6 @@ export default class Toggle extends PureComponent {
   static defaultProps = {
     isChecked: false,
     isDisabled: false,
-    isDefaultFocused: false,
-    name: '',
     labelWhenChecked: 'checked',
     labelWhenUnchecked: 'unchecked',
   };

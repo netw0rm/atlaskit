@@ -1,8 +1,3 @@
-import Emoji from './Emoji';
-import EmojiPicker from './EmojiPicker';
-
-export {
-  Emoji,
-};
-
-export default EmojiPicker;
+export Emoji from './Emoji';
+export EmojiPicker from './EmojiPicker';
+export EmojiService from './api/EmojiService';

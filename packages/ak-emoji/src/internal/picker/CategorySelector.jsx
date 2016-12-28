@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!./style.less';
+import styles from 'style!../../style.less';
 import EmojiActivityIcon from 'ak-icon/glyph/emoji/activity';
 import EmojiAtlassianIcon from 'ak-icon/glyph/emoji/atlassian';
 import EmojiCustomIcon from 'ak-icon/glyph/emoji/custom';

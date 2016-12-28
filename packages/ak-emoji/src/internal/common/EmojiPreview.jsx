@@ -1,16 +1,15 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!./style.less';
+import classNames from 'classnames';
+import styles from 'style!../../style.less';
 import AkButton from 'ak-button';
-import Emoji from './Emoji';
+import Emoji from '../../Emoji';
 import ToneSelector from './ToneSelector';
-import EmojiPropTypes from './internal/ak-emoji-prop-types';
-import { toneEmojiShortName } from './internal/constants';
+import EmojiPropTypes from '../ak-emoji-prop-types';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class extends PureComponent {
   static propTypes = {
-    selectedEmoji: EmojiPropTypes.emoji,
-    emojis: PropTypes.arrayOf(EmojiPropTypes.emoji),
+    emoji: EmojiPropTypes.emoji,
+    toneEmoji: EmojiPropTypes.emoji,
     selectedTone: PropTypes.number,
     onToneSelected: PropTypes.func,
   };
@@ -19,7 +18,7 @@ export default class extends PureComponent {
     selectingTone: false,
   };
 
-  onButtonClick = () => {
+  onToneButtonClick = () => {
     this.setState({
       selectingTone: true,
     });
@@ -42,11 +41,16 @@ export default class extends PureComponent {
   };
 
   renderTones = () => {
+    if (!this.props.toneEmoji || !this.props.emoji) {
+      return null;
+    }
+
     if (this.state.selectingTone) {
+      const toneEmoji = this.props.toneEmoji || this.props.emoji;
       return (
         <div className={styles.toneSelectorContainer}>
           <ToneSelector
-            emojis={this.props.emojis}
+            emoji={toneEmoji}
             selectedTone={this.props.selectedTone}
             onToneSelected={this.onToneSelected}
           />
@@ -54,13 +58,11 @@ export default class extends PureComponent {
       );
     }
 
-    const filteredEmojis = this.props.emojis.filter(emoji => emoji.shortcut === toneEmojiShortName);
-
-    let emoji = filteredEmojis[0];
+    let previewEmoji = this.props.toneEmoji;
     if (this.props.selectedTone) {
-      emoji = {
-        ...emoji,
-        representation: emoji.skinVariations[this.props.selectedTone - 1],
+      previewEmoji = {
+        ...previewEmoji,
+        representation: previewEmoji.skinVariations[this.props.selectedTone - 1],
       };
     }
 
@@ -69,8 +71,8 @@ export default class extends PureComponent {
         <AkButton
           id="toneSelectorButton"
           appearance="subtle"
-          iconBefore={<Emoji {...emoji} />}
-          onClick={this.onButtonClick}
+          iconBefore={<Emoji {...previewEmoji} />}
+          onClick={this.onToneButtonClick}
           spacing="none"
         />
       </div>
@@ -78,16 +80,28 @@ export default class extends PureComponent {
   };
 
   renderEmojiPreview = () => {
-    if (!this.props.selectedEmoji) {
+    const emoji = this.props.emoji;
+
+    if (!emoji) {
       return null;
     }
 
+    const previewClasses = classNames({
+      [styles.preview]: true,
+      [styles.withToneSelector]: !!this.props.toneEmoji,
+    });
+
+    const previewTextClasses = classNames({
+      [styles.previewText]: true,
+      [styles.previewSingleLine]: !emoji.name,
+    });
+
     return (
-      <div className={styles.preview}>
-        <Emoji {...this.props.selectedEmoji} />
-        <div className={styles.previewText}>
-          <div className={styles.name}>{this.props.selectedEmoji.name}</div>
-          <div className={styles.shortname}>{`${this.props.selectedEmoji.shortcut}`}</div>
+      <div className={previewClasses}>
+        <Emoji {...emoji} />
+        <div className={previewTextClasses}>
+          <div className={styles.name}>{emoji.name}</div>
+          <div className={styles.shortname}>{emoji.shortcut}</div>
         </div>
       </div>
     );
@@ -96,7 +110,7 @@ export default class extends PureComponent {
   render() {
     return (
       <div
-        className={styles.emojiPickerFooter}
+        className={styles.emojiPreview}
         onMouseLeave={this.onMouseLeave}
       >
         {this.renderEmojiPreview()}

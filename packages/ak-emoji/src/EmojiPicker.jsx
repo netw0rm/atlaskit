@@ -1,15 +1,23 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
+
 import styles from 'style!./style.less';
+
+import CategorySelector from './internal/picker/CategorySelector';
+import EmojiPickerList from './internal/picker/EmojiPickerList';
+import EmojiPickerFooter from './internal/picker/EmojiPickerFooter';
+import EmojiPropTypes from './internal/ak-emoji-prop-types';
 import EmojiService from './api/EmojiService';
-import EmojiList from './EmojiList';
-import EmojiPickerFooter from './EmojiPickerFooter';
-import CategorySelector from './CategorySelector';
 
 export default class extends PureComponent {
   static propTypes = {
-    emojis: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    emojis: PropTypes.arrayOf(EmojiPropTypes.emoji).isRequired,
+    onSelection: PropTypes.func,
   };
+
+  static defaultProps = {
+    onSelection: () => {},
+  }
 
   constructor(props) {
     super(props);
@@ -32,16 +40,20 @@ export default class extends PureComponent {
   }
 
   onEmojiSelected = (emoji) => {
+    this.props.onSelection(emoji);
+  }
+
+  onEmojiActive = (emoji) => {
     this.setState({
       selectedEmoji: emoji,
     });
-  };
+  }
 
   onCategoryActivated = (category) => {
     this.setState({
       activeCategory: category,
     });
-  };
+  }
 
   onCategorySelected = (categoryId) => {
     const emojisInCategory = this.props.emojis.filter(emoji => emoji.category === categoryId);
@@ -53,7 +65,7 @@ export default class extends PureComponent {
         selectedEmoji: emojisInCategory[0],
       });
     }
-  };
+  }
 
   onSearch = (query) => {
     const searchResults = this.emojiService.search(query);
@@ -81,7 +93,7 @@ export default class extends PureComponent {
     this.setState({
       selectedTone: toneValue,
     });
-  };
+  }
 
   render() {
     const classes = [styles.emojiPicker];
@@ -93,10 +105,11 @@ export default class extends PureComponent {
           onCategorySelected={this.onCategorySelected}
           availableCategories={this.state.availableCategories}
         />
-        <EmojiList
+        <EmojiPickerList
           emojis={this.state.filteredEmojis}
           selectedCategory={this.state.selectedCategory}
           onEmojiSelected={this.onEmojiSelected}
+          onEmojiActive={this.onEmojiActive}
           onCategoryActivated={this.onCategoryActivated}
           onSearch={this.onSearch}
           selectedTone={this.state.selectedTone}

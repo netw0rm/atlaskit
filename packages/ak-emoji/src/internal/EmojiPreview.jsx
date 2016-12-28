@@ -1,10 +1,10 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from 'style!./style.less';
+import styles from 'style!../style.less';
 import AkButton from 'ak-button';
-import Emoji from './Emoji';
+import Emoji from '../Emoji';
 import ToneSelector from './ToneSelector';
-import EmojiPropTypes from './internal/ak-emoji-prop-types';
+import EmojiPropTypes from './ak-emoji-prop-types';
 
 export default class extends PureComponent {
   static propTypes = {

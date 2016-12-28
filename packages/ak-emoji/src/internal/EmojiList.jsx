@@ -3,10 +3,10 @@ import React, { PureComponent, PropTypes } from 'react';
 import AkFieldBase from 'ak-field-base';
 import { SearchIcon } from 'ak-icon';
 import { List } from 'react-virtualized';
-import styles from 'style!./style.less';
-import EmojiPropTypes from './internal/ak-emoji-prop-types';
+import styles from 'style!../style.less';
+import EmojiPropTypes from './ak-emoji-prop-types';
 import EmojiButton from './EmojiButton';
-import { emojiListWidth, emojiListHeight } from './shared-variables';
+import { emojiListWidth, emojiListHeight } from '../shared-variables';
 
 const emojiPerRow = 8;
 

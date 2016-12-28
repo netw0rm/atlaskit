@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!./style.less';
-import EmojiPropTypes from './internal/ak-emoji-prop-types';
-import Emoji from './Emoji';
+import styles from 'style!../style.less';
+import EmojiPropTypes from './ak-emoji-prop-types';
+import Emoji from '../Emoji';
 
 const leftClick = event => (
   event.button === 0

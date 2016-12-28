@@ -2,9 +2,9 @@ import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!./style.less';
 import EmojiService from './api/EmojiService';
-import EmojiList from './EmojiList';
-import EmojiPickerFooter from './EmojiPickerFooter';
-import CategorySelector from './CategorySelector';
+import EmojiList from './internal/EmojiList';
+import EmojiPickerFooter from './internal/EmojiPickerFooter';
+import CategorySelector from './internal/CategorySelector';
 
 export default class extends PureComponent {
   static propTypes = {

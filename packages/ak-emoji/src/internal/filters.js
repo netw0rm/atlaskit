@@ -1,4 +1,4 @@
-import { toneEmojiShortName } from './constants';
+const toneEmojiShortName = ':raised_back_of_hand:';
 
 const byShortcut = (emojis, shortcut) => emojis.filter(emoji => emoji.shortcut === shortcut)[0];
 

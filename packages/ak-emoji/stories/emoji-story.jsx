@@ -19,16 +19,16 @@ const emoji = {
   hasSkinVariations: false,
 };
 
-storiesOf('Emoji', module)
+storiesOf('ak-emoji/Emoji', module)
   .add('simple emoji', () => (
     <Emoji {...emoji} />
-    )).add('simple emoji selected', () => {
-      const selectedEmoji = {
-        ...emoji,
-        selected: true,
-      };
+  )).add('simple emoji selected', () => {
+    const selectedEmoji = {
+      ...emoji,
+      selected: true,
+    };
 
-      return (
-        <Emoji {...selectedEmoji} />
-      );
-    });
+    return (
+      <Emoji {...selectedEmoji} />
+    );
+  });

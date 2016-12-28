@@ -9,7 +9,12 @@ import CategorySelector from './CategorySelector';
 export default class extends PureComponent {
   static propTypes = {
     emojis: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    onEmojiSelected: PropTypes.func,
   };
+
+  static defaultProps = {
+    onEmojiSelected: () => {},
+  }
 
   constructor(props) {
     super(props);
@@ -35,6 +40,7 @@ export default class extends PureComponent {
     this.setState({
       selectedEmoji: emoji,
     });
+    this.props.onEmojiSelected(emoji);
   };
 
   onCategoryActivated = (category) => {

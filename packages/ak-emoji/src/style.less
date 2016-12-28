@@ -128,7 +128,7 @@
   }
 }
 
-.emoji-picker-footer {
+.emoji-preview {
   display: flex;
   padding: 10px;
   box-shadow: @emoji-footer-box-shadow;
@@ -156,13 +156,16 @@
     .preview-text {
       flex: 1;
       margin-left: 10px;
-      max-width: 255px;
+      max-width: 285px;
 
       .name {
         color: @ak-color-N900;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        &:first-letter {
+          text-transform: uppercase;
+        }
       }
 
       .shortname {
@@ -173,9 +176,13 @@
         white-space: nowrap;
         overflow: hidden;
       }
+    }
 
-      &:first-letter {
-        text-transform: uppercase;
+    .preview-single-line {
+      padding-top: 10px;
+
+      .name {
+        display: none;
       }
     }
 
@@ -190,6 +197,12 @@
   .tone-selector-container {
     text-align: right;
     flex: 1;
+  }
+
+  .with-tone-selector {
+    .preview-text {
+      max-width: 255px;
+    }
   }
 }
 

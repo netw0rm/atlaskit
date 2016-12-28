@@ -8,6 +8,7 @@ import {
   TextFormattingPlugin,
   HorizontalRulePlugin,
   MarkdownInputRulesPlugin,
+  DefaultInputRulesPlugin,
   Chrome,
   AnalyticsHandler,
   service as analyticsService
@@ -135,7 +136,8 @@ export default class Editor extends PureComponent<Props, State> {
           MarkdownInputRulesPlugin,
           ListsPlugin,
           TextFormattingPlugin,
-          HorizontalRulePlugin
+          HorizontalRulePlugin,
+          DefaultInputRulesPlugin
         ],
       });
 

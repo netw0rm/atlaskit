@@ -1,19 +1,22 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
+
 import styles from 'style!./style.less';
+
+import CategorySelector from './internal/picker/CategorySelector';
+import EmojiList from './internal/picker/EmojiList';
+import EmojiPickerFooter from './internal/picker/EmojiPickerFooter';
+import EmojiPropTypes from './internal/ak-emoji-prop-types';
 import EmojiService from './api/EmojiService';
-import EmojiList from './internal/EmojiList';
-import EmojiPickerFooter from './internal/EmojiPickerFooter';
-import CategorySelector from './internal/CategorySelector';
 
 export default class extends PureComponent {
   static propTypes = {
-    emojis: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-    onEmojiSelected: PropTypes.func,
+    emojis: PropTypes.arrayOf(EmojiPropTypes.emoji).isRequired,
+    onSelection: PropTypes.func,
   };
 
   static defaultProps = {
-    onEmojiSelected: () => {},
+    onSelection: () => {},
   }
 
   constructor(props) {
@@ -37,7 +40,7 @@ export default class extends PureComponent {
   }
 
   onEmojiSelected = (emoji) => {
-    this.props.onEmojiSelected(emoji);
+    this.props.onSelection(emoji);
   };
 
   onEmojiActive = (emoji) => {

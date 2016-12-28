@@ -1,4 +1,4 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import AkToggle from '../src';
 import { name } from '../package.json';
@@ -10,7 +10,12 @@ const containerStyles = {
 };
 
 storiesOf(name, module)
-  .add('with checked state', () =>
+  .add('with no properties', () =>
+    <div style={containerStyles}>
+      <AkToggle />
+    </div>
+  )
+  .add('with checked state by default', () =>
     <div style={containerStyles}>
       <AkToggle isDefaultChecked />
     </div>
@@ -19,14 +24,6 @@ storiesOf(name, module)
     <div style={containerStyles}>
       <AkToggle isDisabled />
       <AkToggle isDefaultChecked isDisabled />
-    </div>
-  )
-  .add('with labels', () =>
-    <div style={containerStyles}>
-      <AkToggle
-        labelWhenChecked="turn this off"
-        labelWhenUnchecked="turn this on"
-      />
     </div>
   )
   .add('within a form', () =>

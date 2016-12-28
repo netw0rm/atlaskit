@@ -23,6 +23,8 @@ export default class Toggle extends PureComponent {
     isDisabled: false,
     isDefaultFocused: false,
     name: '',
+    labelWhenChecked: 'checked',
+    labelWhenUnchecked: 'unchecked',
   };
 
   componentDidUpdate() {

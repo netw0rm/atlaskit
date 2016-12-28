@@ -28,6 +28,17 @@ const droplistPropDescriptions = {
   children: 'Content that will be rendered inside the trigger element. Accepts any html.',
 };
 
+const droplistPropTypes = {
+  appearance: 'oneOf([default, tall])',
+  position: 'string',
+  triggerIsNotTabbable: 'bool',
+  isOpen: 'bool',
+  onItemActivated: 'func',
+  onOpenChange: 'func',
+  context: 'oneOf([menu])',
+  children: 'node',
+};
+
 storiesOf(name, module)
   .add('Droplist overview', () => (
     <div>
@@ -40,7 +51,11 @@ storiesOf(name, module)
         <Code code={DroplistOverviewExampleRaw}>
           {DroplistOverviewExample}
         </Code>
-        <Props component={DropList} descriptions={droplistPropDescriptions} />
+        <Props
+          component={DropList}
+          descriptions={droplistPropDescriptions}
+          types={droplistPropTypes}
+        />
       </Chrome>
     </div>
   ));

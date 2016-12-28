@@ -9,7 +9,7 @@ import keyCode from 'keycode';
 
 const halfGrid = 4;
 const itemHeight = halfGrid * 7;
-const dropdownMaxHeight = (itemHeight * 9.5) + (halfGrid * 2); // ( item height * 9.5 items)
+const dropdownMaxHeight = (itemHeight * 9.5) + (halfGrid * 2);
 
 /* eslint-disable react/no-unused-prop-types */
 /**
@@ -37,7 +37,7 @@ export default class DropdownList extends PureComponent {
      * @memberof Droplist
      * @default false
      */
-    triggerIsNotTabbable: PropTypes.bool,
+    isTriggerNotTabble: PropTypes.bool,
     /**
      * @description Whether the dropdown should be open by default
      * @memberof Droplist
@@ -60,19 +60,36 @@ export default class DropdownList extends PureComponent {
      * @default 'menu'
      * @memberof Droplist
      */
-    context: PropTypes.oneOf(['menu']),
+    listContext: PropTypes.oneOf(['menu']),
     children: PropTypes.node,
+    /**
+     * @description List of items. Should be an array of groups (see the documentation for
+     * ak-droplist-group for available props). Every group should contain array of items
+     * (see the documentation for ak-droplist-item for available props).
+     * @memberof Droplist
+     * @example @js [
+     *    {
+     *        heading: 'Title of a group',
+     *        items: [
+     *          { content: 'First item in the group' },
+     *          { content: 'Second item in the group' }
+     *        ]
+     *    }
+     * ]
+     */
+    items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
     appearance: 'default',
     position: 'bottom left',
     isOpen: false,
-    triggerIsNotTabbable: false,
-    context: 'menu',
+    isTriggerNotTabble: false,
+    listContext: 'menu',
     onItemActivated: () => {},
     onOpenChange: () => {},
     children: null,
+    items: [],
   }
 
   componentDidMount = () => {
@@ -100,7 +117,7 @@ export default class DropdownList extends PureComponent {
   }
 
   focusFirstItem = () => {
-    if (this.isOpenSource === 'keydown') {
+    if (this.sourceOfIsOpen === 'keydown') {
       this.focusItem(0);
     }
   }
@@ -151,7 +168,7 @@ export default class DropdownList extends PureComponent {
     this.props.onItemActivated({ item });
   }
 
-  handleAccessibility = (attrs) => {
+  handlItemKeydown = (attrs) => {
     const event = attrs.event;
     event.preventDefault();
 
@@ -175,12 +192,12 @@ export default class DropdownList extends PureComponent {
   }
 
   open = (attrs) => {
-    this.isOpenSource = attrs.source;
+    this.sourceOfIsOpen = attrs.source;
     this.props.onOpenChange({ isOpen: true });
   }
 
   close = () => {
-    this.isOpenSource = null;
+    this.sourceOfIsOpen = null;
     this.props.onOpenChange({ isOpen: false });
   }
 
@@ -192,21 +209,21 @@ export default class DropdownList extends PureComponent {
     }
   }
 
-  renderItems = group => group.items.map((item, itemIndex) =>
+  renderItems = items => items.map((item, itemIndex) =>
     <Item
       {...item}
       key={itemIndex}
       onActivate={() => {
         this.handleItemActivation(item);
       }}
-      onKeyDown={this.handleAccessibility}
+      onKeyDown={this.handlItemKeydown}
     >
       {item.content}
     </Item>
   )
 
   renderGroups = groups => groups.map((group, groupIndex) =>
-    <Group heading={group.heading} key={groupIndex}>{this.renderItems(group)}</Group>
+    <Group heading={group.heading} key={groupIndex}>{this.renderItems(group.items)}</Group>
   )
 
   render = () => {
@@ -234,7 +251,7 @@ export default class DropdownList extends PureComponent {
         >
           <div className={styles.dropTrigger}>
             <Trigger
-              isNotTabbable={props.triggerIsNotTabbable}
+              isNotTabbable={props.isTriggerNotTabble}
               isOpened={props.isOpen}
               onActivate={this.handleTriggerActivation}
             >{props.children}</Trigger>

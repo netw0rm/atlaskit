@@ -16,27 +16,31 @@ const droplistPropDescriptions = {
   Default dropdown has scroll after its height exceeds the pre-defined amount. Tall dropdown has no
   restrictions.`,
   position: 'Position of the menu. See the documentation of ak-layer for more details.',
-  triggerIsNotTabbable: `Controls whether it is possible to tab to the trigger. This property should
+  isTriggerNotTabble: `Controls whether it is possible to tab to the trigger. This property should
    be set to false if some interactive element is used inside trigger (links, buttons)`,
   isOpen: 'Controls the open state of the dropdown',
   onItemActivated: `This is a handler function which is called when an item is activated. Receives
   an object with the activated item.`,
   onOpenChange: `This is a handler function which is called when the droplist should be open/closed.
   Received an object with isOpen state`,
-  context: `Context in which the droplist is used. This is a very important property from
+  listContext: `Context in which the droplist is used. This is a very important property from
   the accessibility point of view. Only 'menu' value is available at the moment.`,
   children: 'Content that will be rendered inside the trigger element. Accepts any html.',
+  items: `List of items. Should be an array of groups (see the documentation for ak-droplist-group
+  for available props). Every group should contain array of items (see the documentation
+  for ak-droplist-item for available props).`,
 };
 
 const droplistPropTypes = {
   appearance: 'oneOf([default, tall])',
   position: 'string',
-  triggerIsNotTabbable: 'bool',
+  isTriggerNotTabble: 'bool',
   isOpen: 'bool',
   onItemActivated: 'func',
   onOpenChange: 'func',
-  context: 'oneOf([menu])',
+  listContext: 'oneOf([menu])',
   children: 'node',
+  items: 'array',
 };
 
 storiesOf(name, module)

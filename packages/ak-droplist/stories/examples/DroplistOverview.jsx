@@ -35,10 +35,10 @@ const DroplistOverview = class extends Component {
       onItemActivated={(attrs) => {
         console.log(attrs.item);
       }}
-      triggerIsNotTabbable
+      isTriggerNotTabble
       appearance="default"
       position="right top"
-      context="menu"
+      listContext="menu"
     >
       <Button isSelected={this.state.isDropdownOpen}>...</Button>
     </DropdownList>);

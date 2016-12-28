@@ -35,7 +35,7 @@ const itemsList = [
 
 describe(name, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Droplist items={[]}>test</Droplist>)).to.exist;
+    expect(shallow(<Droplist>test</Droplist>)).to.exist;
   });
 
   describe('render', () => {
@@ -80,16 +80,6 @@ describe(name, () => {
       expect(trigger instanceof Trigger).to.be.true;
       expect(triggerWrapper).to.have.text('text');
     });
-
-    it('should support external trigger rendering', () => {
-      const wrapper2 = mount(<Droplist items={itemsList} isOpen>
-        <Trigger>text</Trigger></Droplist>);
-      const triggerWrapper = wrapper2.find(`.${styles.dropTrigger}`);
-      const trigger = triggerWrapper.children().nodes[0];
-
-      expect(trigger instanceof Trigger).to.be.true;
-      expect(triggerWrapper).to.have.text('text');
-    });
   });
 
   describe('onOpenChange', () => {
@@ -100,7 +90,7 @@ describe(name, () => {
 
     it('interacting with trigger should call onOpenChange callback', () => {
       const spy = sinon.spy();
-      const wrapper = mount(<Droplist items={itemsList} onOpenChange={spy}><Trigger /></Droplist>);
+      const wrapper = mount(<Droplist items={itemsList} onOpenChange={spy}>test</Droplist>);
       const trigger = wrapper.find(`.${styles.dropTrigger}`).children().first();
       trigger.simulate('click');
       expect(spy.called).to.equal(true);
@@ -118,7 +108,7 @@ describe(name, () => {
       }];
       const spy = sinon.spy();
       const wrapper = mount(<Droplist items={items} isOpen onItemActivated={spy}>
-        <Trigger>text</Trigger></Droplist>);
+        test</Droplist>);
       const item = wrapper.find('[data-role="droplistItem"]');
       item.simulate('click');
       expect(spy.called).to.equal(true);
@@ -133,7 +123,7 @@ describe(name, () => {
       }];
       let attrs;
       const wrapper = mount(<Droplist items={items} isOpen onItemActivated={a => (attrs = a)}>
-        <Trigger>text</Trigger></Droplist>);
+        test</Droplist>);
       const item = wrapper.find('[data-role="droplistItem"]');
       item.simulate('click');
       expect(attrs).to.exist;

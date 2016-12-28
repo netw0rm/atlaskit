@@ -37,11 +37,14 @@ export default class extends PureComponent {
   }
 
   onEmojiSelected = (emoji) => {
+    this.props.onEmojiSelected(emoji);
+  };
+
+  onEmojiActive = (emoji) => {
     this.setState({
       selectedEmoji: emoji,
     });
-    this.props.onEmojiSelected(emoji);
-  };
+  }
 
   onCategoryActivated = (category) => {
     this.setState({
@@ -103,6 +106,7 @@ export default class extends PureComponent {
           emojis={this.state.filteredEmojis}
           selectedCategory={this.state.selectedCategory}
           onEmojiSelected={this.onEmojiSelected}
+          onEmojiActive={this.onEmojiActive}
           onCategoryActivated={this.onCategoryActivated}
           onSearch={this.onSearch}
           selectedTone={this.state.selectedTone}

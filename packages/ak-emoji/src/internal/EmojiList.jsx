@@ -14,6 +14,7 @@ export default class extends PureComponent {
   static propTypes = {
     emojis: PropTypes.arrayOf(EmojiPropTypes.emoji).isRequired,
     onEmojiSelected: PropTypes.func,
+    onEmojiActive: PropTypes.func,
     onCategoryActivated: PropTypes.func,
     selectedCategory: PropTypes.string,
     selectedTone: PropTypes.string,
@@ -22,6 +23,7 @@ export default class extends PureComponent {
 
   static defaultProps = {
     onEmojiSelected: () => {},
+    onEmojiActive: () => {},
     onCategoryActivated: () => {},
     onSearch: () => {},
   }
@@ -80,6 +82,7 @@ export default class extends PureComponent {
     this.setState({
       selectedEmoji: emoji,
     });
+    this.props.onEmojiActive(emoji);
   };
 
   onRowsRendered = ({ startIndex }) => {
@@ -186,7 +189,7 @@ export default class extends PureComponent {
           style={style}
           emojis={item.emojis}
           selectedEmojiShortcut={selectedShortcut}
-          onEmojiMouseEnter={(emoji, e) => this.onEmojiMouseEnter(emoji, e)}
+          onEmojiMouseEnter={emoji => this.onEmojiMouseEnter(emoji)}
           onEmojiSelected={emoji => this.props.onEmojiSelected(emoji)}
         />
       );

@@ -34,7 +34,7 @@ export default class extends PureComponent {
           return (
             <div
               style={{ display: 'inline-block' }}
-              onMouseOver={e => onEmojiMouseEnter(emoji, e)}
+              onMouseOver={() => onEmojiMouseEnter(emoji)}
               key={emoji.shortcut}
             >
 

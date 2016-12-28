@@ -99,7 +99,7 @@ describe(name, () => {
   });
 
   describe('onItemActivated', () => {
-    it('should be call when an item was activated', () => {
+    it('should be called when an item was activated', () => {
       const items = [{
         heading: 'group',
         items: [

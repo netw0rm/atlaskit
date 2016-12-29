@@ -1,13 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Droplist from 'ak-droplist';
-import Button from 'ak-button';
-import ExpandIcon from 'ak-icon/glyph/expand';
 
-const Icon = <ExpandIcon label="trigger button" />;
+import StatelessDropdownMenu from './StatelessMenu';
 
 /* eslint-disable react/no-unused-prop-types */
 /**
- * @description This is a basic building block of a dropdown's list.
+ * @description Creates a dropdown menu, with optional groups, headings, icons, checkbox items,
+ * radio group items and disabled items.
  * @class DropdownMenu
  */
 export default class DropdownMenu extends PureComponent {
@@ -143,22 +141,20 @@ export default class DropdownMenu extends PureComponent {
   render = () => {
     const { props, state } = this;
     return (
-      <Droplist
+      <StatelessDropdownMenu
         position={props.position}
         appearance={props.appearance}
         isOpen={state.isOpen}
         onItemActivated={this.handleItemActivation}
         onOpenChange={this.handleOpenChange}
-        isTriggerNotTabbable={(props.triggerType === 'button') || props.isTriggerNotTabbable}
-        listContext="menu"
+        isTriggerNotTabbable={props.isTriggerNotTabbable}
+        triggerType={props.triggerType}
         items={state.items}
       >
-        {props.triggerType === 'button' ?
-          (<Button
-            isSelected={state.isOpen}
-            iconAfter={Icon}
-          >{props.children}</Button>) : props.children }
-      </Droplist>
+        { props.children }
+      </StatelessDropdownMenu>
     );
   }
 }
+
+export { StatelessDropdownMenu };

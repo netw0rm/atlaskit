@@ -15,11 +15,11 @@
     "react": "^15.3.2"
   },
   "dependencies": {
+    "ak-icon": "12.1.0",
     "akutil-shared-styles": "^37.2.0",
+    "akutil-readme": "1.1.0",
     "babel-runtime": "^6.11.6",
     "classnames": "2.2.5",
-    "akutil-readme": "1.1.0",
-    "ak-icon": "12.1.0",
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",

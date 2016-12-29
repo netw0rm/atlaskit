@@ -11,6 +11,8 @@ import ToneSelector from '../src/internal/common/ToneSelector';
 import { emojiPickerWidth } from '../src/shared-variables';
 import filters from '../src/internal/filters';
 
+import RefreshableEmojiList from './demo-refreshable-emoji-list';
+
 const emoji = {
   id: '118608',
   name: 'Zoidberg',
@@ -77,7 +79,7 @@ storiesOf('ak-emoji/Internal components', module)
       }}
     />
     ))
-  .add('Picker footer', () => (
+  .add('picker footer', () => (
     <EmojiPickerFooter
       selectedEmoji={emojis[0]}
       emojis={emojis}
@@ -88,4 +90,5 @@ storiesOf('ak-emoji/Internal components', module)
       emoji={toneEmoji}
       onToneSelected={action('tone selected')}
     />
-));
+  ))
+  .add('emoji list', () => <RefreshableEmojiList />);

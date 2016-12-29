@@ -10,6 +10,13 @@ import EmojiPropTypes from './internal/ak-emoji-prop-types';
 
 const defaultListLimit = 50;
 
+function searchEmoji(props) {
+  if (props.emojiService) {
+    return props.emojiService.search(props.query).emojis.slice(0, props.listLimit);
+  }
+  return [];
+}
+
 export default class EmojiTypeAhead extends PureComponent {
 
   static propTypes = {
@@ -46,7 +53,7 @@ export default class EmojiTypeAhead extends PureComponent {
 
   constructor(props) {
     super(props);
-    const emojis = this.searchEmoji(props);
+    const emojis = searchEmoji(props);
     const visible = emojis.length > 0;
     this.state = {
       visible,
@@ -77,16 +84,9 @@ export default class EmojiTypeAhead extends PureComponent {
   }
 
   // Internal
-  searchEmoji(props) {
-    if (props.emojiService) {
-      return props.emojiService.search(this.props.query).emojis.slice(0, props.listLimit);
-    }
-    return [];
-  }
-
   applyPropChanges(prevProps, nextProps) {
     if (prevProps.query !== nextProps.query && nextProps.emojiService) {
-      const emojis = this.searchEmoji(nextProps);
+      const emojis = searchEmoji(nextProps);
       const wasVisible = this.state.visible;
       const visible = emojis.length > 0;
       debug('ak-emoji-typeahead.applyPropChanges', emojis.length, wasVisible, visible);
@@ -124,9 +124,8 @@ export default class EmojiTypeAhead extends PureComponent {
       />
     );
 
-    let content;
+    // let content;
 
-    if (false) {
     // if (position) {
     //   debug('target, position', target, position);
     //   if (target) {
@@ -146,13 +145,13 @@ export default class EmojiTypeAhead extends PureComponent {
     //     // don't show if we have a position, but no target yet
     //     content = null;
     //   }
-    } else {
-      content = (
-        <div className={styles.noDialogContainer}>
-          {resourceMentionList}
-        </div>
-      );
-    }
+    // } else {
+    const content = (
+      <div className={styles.noDialogContainer}>
+        {resourceMentionList}
+      </div>
+    );
+    // }
 
     return (
       <div style={style} className={classes}>

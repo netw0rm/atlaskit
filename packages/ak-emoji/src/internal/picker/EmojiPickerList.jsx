@@ -6,7 +6,7 @@ import EmojiPropTypes from '../ak-emoji-prop-types';
 import EmojiPickerListCategory from './EmojiPickerListCategory';
 import EmojiPickerListRow from './EmojiPickerListRow';
 import EmojiPickerListSearch from './EmojiPickerListSearch';
-import { emojiListWidth, emojiListHeight } from '../../shared-variables';
+import { emojiPickerListWidth, emojiPickerListHeight } from '../../shared-variables';
 
 const emojiPerRow = 8;
 
@@ -216,7 +216,7 @@ export default class EmojiPickerList extends PureComponent {
   };
 
   render() {
-    const classes = [styles.emojiList];
+    const classes = [styles.emojiPickerList];
 
     return (
       <div
@@ -227,8 +227,8 @@ export default class EmojiPickerList extends PureComponent {
           rowRenderer={this.renderItem}
           rowCount={this.groupedItems.length}
           rowHeight={this.getItemSize}
-          width={emojiListWidth}
-          height={emojiListHeight}
+          width={emojiPickerListWidth}
+          height={emojiPickerListHeight}
           onRowsRendered={this.onRowsRendered}
           scrollToIndex={this.state.initialListIndex}
           scrollToAlignment="start"

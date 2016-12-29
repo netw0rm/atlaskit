@@ -7,6 +7,7 @@ import CategorySelector from '../src/internal/picker/CategorySelector';
 import EmojiPickerFooter from '../src/internal/picker/EmojiPickerFooter';
 import EmojiPreview from '../src/internal/common/EmojiPreview';
 import ToneSelector from '../src/internal/common/ToneSelector';
+import EmojiTypeAheadList from '../src/internal/typeahead/EmojiTypeAheadList';
 
 import { emojiPickerWidth } from '../src/shared-variables';
 import filters from '../src/internal/filters';
@@ -91,4 +92,10 @@ storiesOf('ak-emoji/Internal components', module)
       onToneSelected={action('tone selected')}
     />
   ))
-  .add('emoji list', () => <RefreshableEmojiList />);
+  .add('emoji list', () => <RefreshableEmojiList />)
+  .add('emoji list - everything', () => (
+    <EmojiTypeAheadList
+      emojis={emojis}
+      onSelection={action('onSelection')}
+    />
+  ));

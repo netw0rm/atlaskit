@@ -1,8 +1,9 @@
 // FIXME - FAB-1732 looking at making a shared component for this
 
-import styles from 'style!./Scrollable.less';
+import styles from 'style!../../style.less';
 
 import React, { PropTypes, PureComponent } from 'react';
+import classNames from 'classnames';
 import { findDOMNode } from 'react-dom';
 
 export default class Scrollable extends PureComponent {
@@ -30,9 +31,14 @@ export default class Scrollable extends PureComponent {
   }
 
   render() {
+    const scrollableClasses = classNames([
+      'emoji-scrollable',
+      styles.emojiScrollable,
+    ]);
+
     return (
       <div
-        className={styles.akScrollable}
+        className={scrollableClasses}
         ref={(ref) => { this.scrollableDiv = ref; }}
       >
         {this.props.children}

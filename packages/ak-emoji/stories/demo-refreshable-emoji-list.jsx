@@ -18,7 +18,7 @@ export default class RefreshableEmojiList extends Component {
 
   updateData = () => {
     this.setState({
-      mentions: randomEmojis(),
+      emojis: randomEmojis(),
     });
   }
 
@@ -35,9 +35,9 @@ export default class RefreshableEmojiList extends Component {
   }
 
   render() {
-    const mentionList = (
+    const emojiList = (
       <EmojiTypeAheadList
-        emojis={this.state.mentions}
+        emojis={this.state.emojis}
         onSelection={action('onSelection')}
         ref={(ref) => { this.emojiList = ref; }}
       />
@@ -50,7 +50,7 @@ export default class RefreshableEmojiList extends Component {
           <button onClick={this.moveUp} style={{ height: '30px', marginRight: '10px' }}>Up</button>
           <button onClick={this.moveDown} style={{ height: '30px', marginRight: '10px' }}>Down</button>
         </div>
-        {mentionList}
+        {emojiList}
       </div>
     );
   }

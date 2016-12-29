@@ -173,12 +173,12 @@ export default class EmojiTypeAheadList extends PureComponent {
 
     const classes = classNames({
       'ak-emoji-typeahead-list': true,
-      [styles.list]: true,
-      [styles.empty]: !hasEmoji,
+      [styles.typeAheadList]: true,
+      [styles.typeAheadEmpty]: !hasEmoji,
     });
 
     return (
-      <div className={styles.akMentionList}>
+      <div className={styles.typeAheadListContainer}>
         <div className={classes}>
           <Scrollable
             ref={(ref) => { this.scrollable = ref; }}

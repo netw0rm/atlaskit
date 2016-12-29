@@ -33,8 +33,8 @@ export default class EmojiTypeAheadItem extends PureComponent {
     const { selected, emoji } = this.props;
     const classes = classNames({
       'ak-emoji-typeahead-item': true,
-      [styles.akEmojiItem]: true,
-      [styles.selected]: selected,
+      [styles.typeAheadItem]: true,
+      [styles.typeAheadItemSelected]: this.props.selected,
     });
 
     return (
@@ -44,9 +44,10 @@ export default class EmojiTypeAheadItem extends PureComponent {
         onMouseMove={this.onEmojiMenuItemMouseMove}
         data-emoji-id={emoji.shortcut}
       >
-        <div className={styles.row}>
+        <div className={styles.typeAheadItemRow}>
           <EmojiPreview
             emoji={emoji}
+            selected={selected}
           />
         </div>
       </div>

@@ -85,7 +85,7 @@ describe(name, () => {
         it('should be reflected to the Avatar', () => {
           const avatarLabel = 'test-label-string';
           const wrapper = mount(<Comment avatarLabel={avatarLabel} />);
-          expect(wrapper.find(Avatar)).to.have.prop('src', avatarLabel);
+          expect(wrapper.find(Avatar)).to.have.prop('label', avatarLabel);
         });
       });
 

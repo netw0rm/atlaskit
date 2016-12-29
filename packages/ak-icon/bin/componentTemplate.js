@@ -10,13 +10,13 @@ module.exports = ({
 }) => {
   const componentName = iconNameToComponentName(unprefixedIconName);
 
-  const srcPath = path.join(__dirname, '..', 'src');
+  const srcPath = path.join(__dirname, '..', 'src/tmp');
   const currentJsPath = path.join(srcPath, tmpFolderName, path.dirname(iconRelativePathToSrc));
   const relativePathToSrc = path.relative(currentJsPath, srcPath);
 
   /* eslint-disable max-len */
   return `import React from 'react';
-import Icon from '${relativePathToSrc}/Icon';
+import Icon from '${relativePathToSrc}/lib/Icon';
 
 class ${componentName} extends Icon {
   getGlyphTemplate() {
@@ -33,5 +33,5 @@ class ${componentName} extends Icon {
 
 export default ${componentName};
 `;
-/* eslint-enable max-len */
+  /* eslint-enable max-len */
 };

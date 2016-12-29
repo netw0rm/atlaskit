@@ -6,7 +6,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import CloseIcon from 'ak-icon/glyph/cancel';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
-import styles from '../src/styles.less';
 
 import { Toggle } from '../src';
 
@@ -21,7 +20,7 @@ describe('ak-toggle', () => {
     expect(wrapper).to.have.exactly(1).descendants('label');
     const label = wrapper.find('label');
     expect(label).to.have.exactly(1).descendants('input');
-    const iconWrapper = label.find(`.${styles.locals.iconWrapper}`);
+    const iconWrapper = label.find('div').at(2);
     expect(iconWrapper).to.exist;
     expect(iconWrapper)
       .to.have.exactly(1).descendants(CloseIcon);
@@ -31,26 +30,24 @@ describe('ak-toggle', () => {
     it('isChecked=true', () => {
       const wrapper = shallow(<Toggle isChecked />);
       expect(wrapper.find('input')).to.have.prop('checked', true);
-      const iconWrapper = wrapper.find(`.${styles.locals.iconWrapper}`);
+      const iconWrapper = wrapper.find('div').at(2);
       expect(iconWrapper).to.have.descendants(ConfirmIcon);
       expect(iconWrapper).to.not.have.descendants(CloseIcon);
     });
     it('isChecked=false', () => {
       const wrapper = shallow(<Toggle />);
       expect(wrapper.find('input')).to.have.prop('checked', false);
-      const iconWrapper = wrapper.find(`.${styles.locals.iconWrapper}`);
+      const iconWrapper = wrapper.find('div').at(2);
       expect(iconWrapper).to.have.descendants(CloseIcon);
       expect(iconWrapper).to.not.have.descendants(ConfirmIcon);
     });
     it('isDisabled=true', () => {
       const wrapper = shallow(<Toggle isDisabled />);
       expect(wrapper.find('input')).to.have.prop('disabled', true);
-      expect(wrapper.find('label')).to.have.className(styles.locals.disabled);
     });
     it('isDisabled=false', () => {
       const wrapper = shallow(<Toggle />);
       expect(wrapper.find('input')).to.have.prop('disabled', false);
-      expect(wrapper.find('label')).to.not.have.className(styles.locals.disabled);
     });
 
     it('name', () =>

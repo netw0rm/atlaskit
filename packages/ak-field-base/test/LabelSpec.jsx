@@ -47,10 +47,10 @@ describe('ak-field-base', () =>
       });
     });
 
-    describe('onLabelClick prop', () =>
+    describe('onClick prop', () =>
       it('should fire handler when the span is clicked', () => {
         const handler = sinon.spy();
-        const wrapper = shallow(<Label onLabelClick={handler} />);
+        const wrapper = shallow(<Label onClick={handler} />);
         wrapper.find('span').simulate('click');
         expect(handler).to.have.been.calledOnce;
       })

@@ -7,7 +7,7 @@ import HelpIcon from 'ak-icon/glyph/help';
 import ExpandIcon from 'ak-icon/glyph/expand';
 
 import { name } from '../package.json';
-import AkFieldBase from '../src';
+import AkFieldBase, { Label } from '../src';
 import { InputFieldBase, DivFieldBase } from './shared-components';
 import { compact, none, subtle } from '../src/internal/appearances';
 
@@ -15,6 +15,8 @@ const formStyle = {
   padding: '20px',
   backgroundColor: 'white',
   width: '500px',
+  display: 'flex',
+  flexDirection: 'column',
 };
 
 storiesOf(name, module)
@@ -31,7 +33,7 @@ storiesOf(name, module)
       <InputFieldBase label="Focused state" isFocused />
       <InputFieldBase label="Required state" isRequired />
       <InputFieldBase label="Disabled state" isDisabled />
-      <DivFieldBase label="Read-only state" isReadOnly />
+      <InputFieldBase label="Read-only state" isReadOnly />
       <InputFieldBase label="Compact state" appearance={compact} />
       <InputFieldBase label="None (no appearance modifiers) state" appearance={none} />
       <InputFieldBase label="Subtle state" appearance={subtle} />
@@ -45,16 +47,17 @@ storiesOf(name, module)
         display: 'inline-block',
       }}
     >
-      <AkFieldBase
-        label="Label for FieldBase"
-        isContentPaddingDisabled
-      >
-        <Button
-          iconAfter={<ExpandIcon />}
+      <Label label="Label for FieldBase">
+        <AkFieldBase
+          isPaddingDisabled
         >
-          Imagine a Dropdown
-        </Button>
-      </AkFieldBase>
+          <Button
+            iconAfter={<ExpandIcon />}
+          >
+            Imagine a Dropdown
+          </Button>
+        </AkFieldBase>
+      </Label>
     </div>
   ))
   .add('with avatar + text', () => (
@@ -65,15 +68,15 @@ storiesOf(name, module)
         display: 'inline-block',
       }}
     >
-      <AkFieldBase
-        label="Label for FieldBase"
-      >
-        <Avatar
-          src="https://cdn-img.fimfiction.net/user/xb2v-1431833233-195398-64"
-          size="small"
-        />
-        <span style={{ marginLeft: 8 }}>Jack Sparrow</span>
-      </AkFieldBase>
+      <Label label="Label for FieldBase">
+        <AkFieldBase>
+          <Avatar
+            src="https://cdn-img.fimfiction.net/user/xb2v-1431833233-195398-64"
+            size="small"
+          />
+          <span style={{ marginLeft: 8 }}>Jack Sparrow</span>
+        </AkFieldBase>
+      </Label>
     </div>
   ))
   .add('with different content', () => {
@@ -94,12 +97,14 @@ storiesOf(name, module)
         <div>These example all use divs with different kinds of content (no inputs)</div>
 
         <DivFieldBase text={longTextWithSpaces} label="Lots of text (with whitespace)" />
-        <DivFieldBase text={longTextNoSpaces} label="Lots of text (no whitespace)" />
+        <DivFieldBase text={longTextNoSpaces} label="Lots of text (no whitespace)" isFitContainerWidthEnabled />
         <DivFieldBase text={''} label="No content" />
 
-        <AkFieldBase label="Small non-textual content (5x5 div)">
-          <div><div style={smallBoxStyles} /></div>
-        </AkFieldBase>
+        <Label label="Small non-textual content (5x5 div)">
+          <AkFieldBase>
+            <div><div style={smallBoxStyles} /></div>
+          </AkFieldBase>
+        </Label>
         <InputFieldBase
           label="With a max-width css style"
           style={{ maxWidth: '200em' }}
@@ -118,7 +123,7 @@ storiesOf(name, module)
         label="Button on the right"
         rightGutter={<Button appearance="subtle">Cancel</Button>}
       />
-      <DivFieldBase
+      <InputFieldBase
         label="Button + icon on the right"
         text="Banana Banana Banana Banana Banana Banana Banana Banana Banana Banana"
         rightGutter={<Button iconBefore={<HelpIcon />} />}
@@ -141,6 +146,6 @@ storiesOf(name, module)
       <InputFieldBase appearance={none} label="Focused state" isFocused />
       <InputFieldBase appearance={none} label="Required state" isRequired />
       <InputFieldBase appearance={none} label="Disabled state" isDisabled />
-      <DivFieldBase appearance={none} label="Read-only state" isReadOnly />
+      <InputFieldBase appearance={none} label="Read-only state" isReadOnly />
     </div>
   ));

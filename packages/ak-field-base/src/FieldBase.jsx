@@ -1,8 +1,8 @@
 import styles from 'style!./styles.less';
+import classNames from 'classnames';
+import WarningIcon from 'ak-icon/glyph/warning';
 import React, { PureComponent, PropTypes } from 'react';
-import Label from './Label';
-import Content from './Content';
-import appearances, { standard } from './internal/appearances';
+import appearances, { standard, compact, none, subtle } from './internal/appearances';
 
 /**
  * @description Create instances of the FieldBase.
@@ -26,31 +26,6 @@ export default class FieldBase extends PureComponent {
      * @example <FieldBase appearance="compact" />
      */
     appearance: PropTypes.oneOf(Object.keys(appearances)),
-    /**
-     * @description The label to be rendered above the form field.
-     *
-     * This prop is still required, even if the hideLabel prop is set as the label is also used to
-     * make the field accessible for screen readers.
-     *
-     * @memberof FieldBase
-     * @type {string}
-     * @example <FieldBase label="Email" />
-     */
-    label: PropTypes.string.isRequired,
-    /**
-     * @description Whether the field should show a label above it.
-     *
-     * If set to true no label will be shown and no space will be reserved for it.
-     *
-     * **Note**: You must still provide a label for the component regardless of this prop.
-     * The label is also used to make the field accessible to screen readers.
-     *
-     * @memberof FieldBase
-     * @type {boolean}
-     * @default false
-     * @example <FieldBase label="First Name" shouldHideLabel />
-     */
-    isLabelHidden: PropTypes.bool,
     /**
      * @description Whether or not a field should show a validation error.
      *
@@ -105,9 +80,9 @@ export default class FieldBase extends PureComponent {
      * @memberof FieldBase
      * @type {boolean}
      * @default false
-     * @example <FieldBase isContentPaddingDisabled />
+     * @example <FieldBase isPaddingDisabled />
      */
-    isContentPaddingDisabled: PropTypes.bool,
+    isPaddingDisabled: PropTypes.bool,
     /**
      * @description Whether or not the field is in read-only mode.
      *
@@ -132,15 +107,6 @@ export default class FieldBase extends PureComponent {
      */
     isFitContainerWidthEnabled: PropTypes.bool,
     /**
-     * @description Callback that is called whenever the Label is clicked
-     *
-     * @memberof FieldBase
-     * @type {Function}
-     * @default () => void
-     * @example <FieldBase onLabelClick={() => alert('label click!')} />
-     */
-    onLabelClick: PropTypes.func,
-    /**
      * @description Callback that is called whenever the Content is focused
      *
      * @memberof FieldBase
@@ -159,15 +125,6 @@ export default class FieldBase extends PureComponent {
      */
     onBlur: PropTypes.func.isRequired,
     /**
-     * @description Allows abitrary content to be displayed to the right of the field
-     *
-     * The content will be horizontally aligned with the field itself (excluding the label)
-     * @memberof FieldBase
-     * @type {ReactNode}
-     * @example <FieldBase rightGutter={<div>Hi!</div>}></FieldBase>
-     */
-    rightGutter: PropTypes.node,
-    /**
      * @description The content that will be displayed within the field
      *
      * @memberof FieldBase
@@ -180,7 +137,7 @@ export default class FieldBase extends PureComponent {
   static defaultProps = {
     appearance: standard,
     isLabelHidden: false,
-    isContentPaddingDisabled: false,
+    isPaddingDisabled: false,
     isInvalid: false,
     isFocused: false,
     isDisabled: false,
@@ -189,28 +146,36 @@ export default class FieldBase extends PureComponent {
     isFitContainerWidthEnabled: false,
   }
 
-  render = () =>
-    <div className={styles.root}>
-      <Label
-        label={this.props.label}
-        isLabelHidden={this.props.isLabelHidden}
-        isRequired={this.props.isRequired}
-        onLabelClick={this.props.onLabelClick}
-      >
-        <Content
-          onFocus={this.props.onFocus}
-          onBlur={this.props.onBlur}
-          appearance={this.props.appearance}
-          isDisabled={this.props.isDisabled}
-          isPaddingDisabled={this.props.isContentPaddingDisabled}
-          isInvalid={this.props.isInvalid}
-          isFocused={this.props.isFocused}
-          isReadOnly={this.props.isReadOnly}
-          isFitContainerWidthEnabled={this.props.isFitContainerWidthEnabled}
-          rightGutter={this.props.rightGutter}
+  renderWarningIcon = () => (
+    <div className={styles.warningIconWrapper}>
+      <WarningIcon label="warning" />
+    </div>
+  )
+
+  render() {
+    const contentClasses = classNames(styles.content, {
+      [styles.compact]: this.props.appearance === compact,
+      [styles.none]: this.props.appearance === none,
+      [styles.subtle]: this.props.appearance === subtle,
+      [styles.disabled]: this.props.isDisabled,
+      [styles.readOnly]: this.props.isReadOnly,
+      [styles.paddingDisabled]: this.props.isPaddingDisabled,
+      [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
+      [styles.focused]: this.props.isFocused,
+      [styles.invalid]: this.props.isInvalid && !this.props.isFocused,
+    });
+
+    return (
+      <div className={styles.contentWrapper}>
+        <div
+          className={contentClasses}
+          onFocusCapture={this.props.onFocus}
+          onBlurCapture={this.props.onBlur}
         >
           {this.props.children}
-        </Content>
-      </Label>
-    </div>
+          {this.props.isInvalid ? this.renderWarningIcon() : null}
+        </div>
+      </div>
+    );
+  }
 }

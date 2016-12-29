@@ -1,40 +1,66 @@
 import React from 'react';
-import AkFieldBase from '../src';
-
-const inputStyle = {
-  border: '0px',
-  background: 'transparent',
-  color: 'inherit',
-  cursor: 'inherit',
-  fontSize: '14px',
-  outline: 0,
-  width: '100%',
-};
+import Input from 'ak-input';
+import uid from 'uid';
+import AkFieldBase, { Label } from '../src';
 
 const textStyle = {
   overflow: 'hidden',
 };
 
-/* eslint-disable react/prop-types */
-export const InputFieldBase = props =>
-  <AkFieldBase
-    label="Label for FieldBase"
-    {...props}
-  >
-    <input
-      type="text"
-      style={inputStyle}
-      defaultValue={props.text || 'A children input'}
-      disabled={props.isDisabled}
-    />
-  </AkFieldBase>;
+const containerStyles = {
+  display: 'inline-flex',
+  flexDirection: 'column',
+};
 
-export const DivFieldBase = props =>
-  <AkFieldBase
-    label="Label for FieldBase"
-    {...props}
-  >
-    <div style={textStyle}>
-      {props.text || 'This is inside content'}
+const renderRightGutter = gutter =>
+  (gutter ? <div style={{ marginLeft: 4 }}>{gutter}</div> : false);
+
+/* eslint-disable react/prop-types */
+export const InputFieldBase = (props) => {
+  const id = `input-field-base-${uid()}`;
+  return (
+    <div style={containerStyles}>
+      <Label
+        label={props.label}
+        isLabelHidden={props.isLabelHidden}
+        htmlFor={id}
+      />
+      <div style={{ display: (props.rightGutter ? 'inline-flex' : 'block'), alignItems: 'center' }}>
+        <AkFieldBase
+          {...props}
+        >
+          <Input
+            value={props.text || 'A children input'}
+            disabled={props.isDisabled}
+            isEditing={!props.isReadOnly}
+            id={id}
+          />
+        </AkFieldBase>
+        {renderRightGutter(props.rightGutter)}
+      </div>
     </div>
-  </AkFieldBase>;
+  );
+};
+
+export const DivFieldBase = (props) => {
+  const id = `div-field-base-${uid()}`;
+  return (
+    <div style={containerStyles}>
+      <Label
+        label={props.label}
+        isLabelHidden={props.isLabelHidden}
+        htmlFor={id}
+      />
+      <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+        <AkFieldBase
+          {...props}
+        >
+          <div style={textStyle} id={id}>
+            {props.text || 'This is inside content'}
+          </div>
+        </AkFieldBase>
+        {renderRightGutter(props.rightGutter)}
+      </div>
+    </div>
+  );
+};

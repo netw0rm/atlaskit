@@ -1,4 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
+import Avatar from 'ak-avatar';
 import Button from 'ak-button';
 import Lozenge from 'ak-lozenge';
 
@@ -11,7 +12,8 @@ export default class extends PureComponent {
       onClick: PropTypes.func,
     })),
     author: PropTypes.string,
-    avatar: PropTypes.node.isRequired,
+    avatarLabel: PropTypes.string,
+    avatarSrc: PropTypes.string,
     content: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),
@@ -53,7 +55,7 @@ export default class extends PureComponent {
       <div className={styles.container}>
         <div className={styles.leftSection}>
           <div className={styles.avatarContainer}>
-            {this.props.avatar}
+            <Avatar src={this.props.avatarSrc} label={this.props.avatarLabel} />
           </div>
         </div>
         <div className={styles.rightSection}>

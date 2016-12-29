@@ -73,11 +73,19 @@ describe(name, () => {
         });
       });
 
-      describe('avatar prop', () => {
-        it('should render the provided Avatar', () => {
-          const avatar = <Avatar src="" />;
-          const wrapper = mount(<Comment avatar={avatar} />);
-          expect(wrapper).to.contain(avatar);
+      describe('avatarSrc prop', () => {
+        it('should be reflected to the Avatar', () => {
+          const avatarSrc = 'test-src-string';
+          const wrapper = mount(<Comment avatarSrc={avatarSrc} />);
+          expect(wrapper.find(Avatar)).to.have.prop('src', avatarSrc);
+        });
+      });
+
+      describe('avatarLabel prop', () => {
+        it('should be reflected to the Avatar', () => {
+          const avatarLabel = 'test-label-string';
+          const wrapper = mount(<Comment avatarLabel={avatarLabel} />);
+          expect(wrapper.find(Avatar)).to.have.prop('src', avatarLabel);
         });
       });
 

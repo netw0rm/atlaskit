@@ -1,8 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import Avatar from 'ak-avatar';
-
 import Comment from '../src';
 import { name } from '../package.json';
 import { sampleText } from './_constants';
@@ -14,7 +12,8 @@ const clickHandler = (event) => {
 storiesOf(name, module)
   .add('a simple ak-comment', () => (
     <Comment
-      avatar={<Avatar src="" />}
+      avatarLabel="User avatar"
+      avatarSrc=""
       author="John Smith"
       type="Author"
       datetime="30, August 2016"

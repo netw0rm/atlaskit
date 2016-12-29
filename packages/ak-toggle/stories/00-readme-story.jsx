@@ -7,12 +7,11 @@ import { Toggle } from '../src';
 import Example from './ToggleExample'; // eslint-disable-line import/no-duplicates
 
 const togglePropDescriptions = {
-  isChecked: 'Weather the toggle is checked or not',
-  isDisabled: 'Weather the toggle is disabled or not. This will prevent any interaction with the user',
+  isChecked: 'Whether the toggle is checked or not',
+  isDisabled: 'Whether the toggle is disabled or not. This will prevent any interaction with the user',
   name: 'Descriptive name for value property to be submitted in a form',
   value: 'The value to be submitted in a form',
-  labelWhenChecked: 'Label to be set for accessibility when the toggle is checked (on)',
-  labelWhenUnchecked: 'Label to be set for accessibility when the toggle is unchecked (off)',
+  label: 'Label to be set for accessibility',
   onChange: 'Callback to be called when native \'change\' event happens internally. Example: when user clicks on the toggle or focus the toggle and press space bar',
   onFocus: 'Callback to be called when toggle is focused',
   onBlur: 'Callback to be called when toggle is unfocused',

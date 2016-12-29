@@ -27,8 +27,8 @@
 @toggle-icon-close: "\f11b";
 
 .toggle {
-  display: inline-flex;
   align-items: center;
+  display: inline-flex;
   justify-content: center;
   padding: @border-width;
 }
@@ -47,30 +47,28 @@
 
 // Toggle Slide
 .toggle-slide {
-  border-radius: @toggle-height;
-  border: @border-width solid transparent;
-  padding: @border-width;
   background-clip: content-box;
-  display: block;
-  width: @toggle-width;
-  height: @toggle-height;
-  position: relative;
   background-color: @toggle-bg-unchecked;
-  -webkit-transition: @toggle-transition;
+  border: @border-width solid transparent;
+  border-radius: @toggle-height;
+  display: block;
+  height: @toggle-height;
+  padding: @border-width;
+  position: relative;
   transition: @toggle-transition;
+  width: @toggle-width;
 }
 
 .toggle-slide:before {
+  background-color: white;
   border-radius: 50%;
-  position: absolute;
+  bottom: (2 * @toggle-padding);
   content: "";
   height: @toggle-slide-size;
-  width: @toggle-slide-size;
   left: (2 * @toggle-padding);
-  bottom: (2 * @toggle-padding);
-  background-color: white;
-  -webkit-transition: @toggle-transition;
+  position: absolute;
   transition: @toggle-transition;
+  width: @toggle-slide-size;
 }
 
 .input:checked + .toggle-slide {
@@ -78,20 +76,16 @@
 }
 
 .input:checked + .toggle-slide:before {
-  -webkit-transform: translateX(@toggle-slide-translate);
-  -ms-transform: translateX(@toggle-slide-translate);
   transform: translateX(@toggle-slide-translate);
 }
 
 // Icons
 .toggle-inner {
-  display: inline-flex;
   color: @toggle-icon-color;
-  width: 100%;
+  display: inline-flex;
   height: 100%;
-
-  -webkit-transition: @toggle-transition;
   transition: @toggle-transition;
+  width: 100%;
 }
 
 .icon-wrapper {
@@ -112,6 +106,7 @@
 .input:checked ~ .toggle-slide {
   .toggle-inner {
     flex-direction: row;
+
     .icon-wrapper {
       padding-left: @icon-padding;
       padding-right: 0;
@@ -133,11 +128,11 @@
 
 // Disabled
 .toggle.disabled {
-
   // Unchecked
   .toggle-slide {
-    cursor: not-allowed;
     background-color: @toggle-bg-unchecked-disabled;
+    cursor: not-allowed;
+
     .toggle-inner {
       color: @toggle-slide-unchecked-disabled;
     }
@@ -149,6 +144,7 @@
   // Checked
   .input:checked + .toggle-slide {
     background-color: @toggle-bg-checked-disabled;
+
     .toggle-inner {
       color: @toggle-slide-checked-disabled;
     }

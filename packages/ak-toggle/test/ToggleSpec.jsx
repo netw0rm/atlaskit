@@ -31,12 +31,16 @@ describe('ak-toggle', () => {
     it('isChecked=true', () => {
       const wrapper = shallow(<Toggle isChecked />);
       expect(wrapper.find('input')).to.have.prop('checked', true);
-      expect(wrapper.find(`.${styles.locals.iconWrapper}`)).to.have.descendants(ConfirmIcon);
+      const iconWrapper = wrapper.find(`.${styles.locals.iconWrapper}`);
+      expect(iconWrapper).to.have.descendants(ConfirmIcon);
+      expect(iconWrapper).to.not.have.descendants(CloseIcon);
     });
     it('isChecked=false', () => {
       const wrapper = shallow(<Toggle />);
       expect(wrapper.find('input')).to.have.prop('checked', false);
-      expect(wrapper.find(`.${styles.locals.iconWrapper}`)).to.have.descendants(CloseIcon);
+      const iconWrapper = wrapper.find(`.${styles.locals.iconWrapper}`);
+      expect(iconWrapper).to.have.descendants(CloseIcon);
+      expect(iconWrapper).to.not.have.descendants(ConfirmIcon);
     });
     it('isDisabled=true', () => {
       const wrapper = shallow(<Toggle isDisabled />);
@@ -56,14 +60,11 @@ describe('ak-toggle', () => {
       expect(shallow(<Toggle value="test" />).find('input')).to.have.prop('value', 'test')
     );
 
-    it('labelWhenChecked', () => {
-      const wrapper = shallow(<Toggle isChecked labelWhenChecked="test" />);
-      expect(wrapper.find(ConfirmIcon)).to.have.prop('label', 'test');
-    });
-
-    it('labelWhenUnchecked', () => {
-      const wrapper = shallow(<Toggle labelWhenUnchecked="test" />);
-      expect(wrapper.find(CloseIcon)).to.have.prop('label', 'test');
+    it('label', () => {
+      expect(shallow(<Toggle isChecked label="test" />).find(ConfirmIcon))
+        .to.have.prop('label', 'test');
+      expect(shallow(<Toggle label="test" />).find(CloseIcon))
+        .to.have.prop('label', 'test');
     });
 
     describe('input events handlers', () =>

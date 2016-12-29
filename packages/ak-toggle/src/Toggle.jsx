@@ -14,15 +14,12 @@ export default class Toggle extends PureComponent {
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     value: PropTypes.string,
-    labelWhenChecked: PropTypes.string,
-    labelWhenUnchecked: PropTypes.string,
+    label: PropTypes.string,
   }
 
   static defaultProps = {
     isChecked: false,
     isDisabled: false,
-    labelWhenChecked: 'checked',
-    labelWhenUnchecked: 'unchecked',
   };
 
   componentDidUpdate() {
@@ -44,9 +41,9 @@ export default class Toggle extends PureComponent {
 
   renderIcons = () => {
     if (this.props.isChecked) {
-      return <ConfirmIcon label={this.props.labelWhenChecked} />;
+      return <ConfirmIcon label={this.props.label} />;
     }
-    return <CloseIcon label={this.props.labelWhenUnchecked} />;
+    return <CloseIcon label={this.props.label} />;
   }
 
   render() {

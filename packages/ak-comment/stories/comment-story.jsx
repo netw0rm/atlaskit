@@ -18,7 +18,7 @@ storiesOf(name, module)
       author="John Smith"
       type="Author"
       datetime="30, August 2016"
-      content={<p>{sampleText}</p>}
+      content={(<p>{sampleText}</p>)}
       actions={[
         { content: 'Reply', onClick: clickHandler },
         { content: 'Edit', onClick: clickHandler },

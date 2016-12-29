@@ -12,7 +12,7 @@ export default class extends PureComponent {
     })),
     author: PropTypes.string,
     avatar: PropTypes.node,
-    content: PropTypes.oneOf([
+    content: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),
     ]),
@@ -31,12 +31,12 @@ export default class extends PureComponent {
       this.props.datetime || null,
     ])
     .filter(item => !!item)
-    .map(item => <div className={styles.topItem}>{item}</div>)
+    .map((item, index) => <div key={index} className={styles.topItem}>{item}</div>)
   )
 
   renderActions = () => (
-    this.props.actions.map(action => (
-      <div className={styles.actionsItem}>
+    this.props.actions.map((action, index) => (
+      <div key={index} className={styles.actionsItem}>
         <Button
           appearance="subtle"
           onClick={action.onClick}
@@ -60,7 +60,7 @@ export default class extends PureComponent {
           <div className={styles.topContainer}>
             {this.renderTopItems()}
           </div>
-          <div className={styles.content}>
+          <div className={styles.contentContainer}>
             {this.props.content}
           </div>
           <div className={styles.actionsContainer}>

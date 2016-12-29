@@ -21,22 +21,23 @@ A comment can include many elements, including:
 
 ```
 <Comment
-  avatar={<Avatar />}
+  avatarSrc="/path/to/img"
+  avatarLabel="Ben Wong's avatar"
   author="Ben Wong"
-  lozenge={<Lozenge>Author</Lozenge>}
+  type="Author" // Renders a lozenge containing this text
   datetime={new Date()}
   dateformat="YYYY-MM-DD"
-  actions={[
-    <Button appearance="subtle" compact>Reply</Button>,
-    <Button appearance="subtle" compact>Edit</Button>,
-    <Button appearance="subtle" compact>Like</Button>,
-  ]}
   content={(
     <div>
       <p>Content goes here. This can include <a href="/link">links</a> and other content.</p>
       <img src="/my/image" alt="my image"/>
     </div>
   )}
+  actions={[
+    { content: 'Reply', onClick: callbackFunc },
+    { content: 'Edit', onClick: callbackFunc },
+    { content: 'Like', onClick: callbackFunc },
+  ]}
 />
 ```
 
@@ -46,7 +47,7 @@ For reference, the WC implementation for `ak-comment` had the following slots, w
 
 * Actions => `actions`
 * Author => `author`
-* Avatar => `avatar`
+* Avatar => `avatarSrc`, `avatarLabel`
 * Reply => `children` - see below
 * Time => `datetime`, `dateformat`
 * Default (comment content): `content`
@@ -54,7 +55,6 @@ For reference, the WC implementation for `ak-comment` had the following slots, w
 #### Notes/questions
 
 * How should the date/time be specified? We could use a `Date` object or a string representation here.
-* Do we want to allow users to provide JSX content for `avatar`, `actions` and `lozenge`, or should we instead always render the component (e.g. an `<Avatar />` with a set size), and expose props to customize these?
 
 ### Comment threads
 

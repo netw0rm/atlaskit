@@ -24,7 +24,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem {...mention} onHover={action('onHover')} onSelection={action('onSelection')} />
+      <MentionItem {...mention} onSelection={action('onSelection')} />
     );
   })
   .add('simple mention no avatar', () => {
@@ -35,7 +35,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem {...mention} onHover={action('onHover')} onSelection={action('onSelection')} />
+      <MentionItem {...mention} onSelection={action('onSelection')} />
     );
   })
   .add('simple mention selected', () => {
@@ -48,7 +48,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem {...mention} onHover={action('onHover')} onSelection={action('onSelection')} />
+      <MentionItem {...mention} onSelection={action('onSelection')} />
     );
   })
   .add('mention with the lot', () => {
@@ -77,6 +77,6 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem {...mention} onHover={action('onHover')} onSelection={action('onSelection')} />
+      <MentionItem {...mention} onSelection={action('onSelection')} />
     );
   });

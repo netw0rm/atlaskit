@@ -5,95 +5,61 @@ import { name } from '../package.json';
 import EmojiTextInput from './demo-emoji-text-input';
 import emojiService from './story-data';
 
-// const bottomStyle = {
-//   position: 'absolute',
-//   bottom: '30px',
-// };
-//
-// const tallPageStyle = {
-//   height: '2000px',
-// };
-//
-// const downPage = {
-//   position: 'absolute',
-//   top: '400px',
-// };
+const bottomStyle = {
+  position: 'absolute',
+  bottom: '30px',
+};
+
+const tallPageStyle = {
+  height: '2000px',
+};
+
+const downPage = {
+  position: 'absolute',
+  top: '400px',
+};
 
 storiesOf(`${name}/EmojiTypeAhead`, module)
-  .add('Input field emoji list. Key binding. Popup', () => (
+  .add('Input field emoji typeahead. Popup', () => (
     <EmojiTextInput
       label="Emoji search"
       onSelection={action('emoji selected')}
       emojiService={emojiService}
       position="bottom left"
+      afterContent
     />
   ))
-  .add('Input field emoji list. Key binding. Inline', () => (
+  .add('Input field emoji typeahead. Inline', () => (
     <EmojiTextInput
       label="Emoji search"
       onSelection={action('emoji selected')}
       emojiService={emojiService}
+      beforeContent
+      afterContent
     />
+  ))
+  .add('Input field emoji typeahead, above.', () => (
+    <div style={bottomStyle} >
+      <EmojiTextInput
+        label="Emoji search"
+        onSelection={action('emoji selected')}
+        emojiService={emojiService}
+        position="top left"
+        beforeContent
+      />
+    </div>
+  ))
+  .add('Input field emoji typeahead part way down tall page.', () => (
+    <div style={tallPageStyle} >
+      <div style={downPage} >
+        <EmojiTextInput
+          label="Emoji search"
+          onSelection={action('emoji selected')}
+          emojiService={emojiService}
+          position="top left"
+          beforeContent
+          afterContent
+        />
+      </div>
+    </div>
   ));
-  // .add('Input field emoji list. Mock slow API. Key binding', () => (
-  //   <EmojiTextInput
-  //     label="User search"
-  //     onSelection={action('emoji selected')}
-  //     resourceProvider={slowResourceProvider}
-  //   />
-  // ))
-  // .add('Input field at bottom emoji list. Mock API. Key binding', () => (
-  //   <div style={bottomStyle} >
-  //     <EmojiTextInput
-  //       label="User search"
-  //       onSelection={action('emoji selected')}
-  //       resourceProvider={resourceProvider}
-  //       relativePosition="above"
-  //     />
-  //   </div>
-  // ))
-  // .add('Input field at top emoji list. Mock API. Mocked presence', () => (
-  //   <EmojiTextInput
-  //     label="User search"
-  //     onSelection={action('emoji selected')}
-  //     resourceProvider={resourceProvider}
-  //     presenceProvider={new MockPresenceProvider()}
-  //   />
-  // ))
-  // .add('Input field at bottom emoji list. Mock API. Mocked presence', () => (
-  //   <div style={bottomStyle} >
-  //     <EmojiTextInput
-  //       label="User search"
-  //       onSelection={action('emoji selected')}
-  //       resourceProvider={resourceProvider}
-  //       presenceProvider={new MockPresenceProvider()}
-  //       relativePosition="above"
-  //     />
-  //   </div>
-  // ))
-  // .add('Input field at bottom emoji list. Mock API. Mocked presence (slow)', () => (
-  //   <div
-  //     style={bottomStyle}
-  //   >
-  //     <EmojiTextInput
-  //       label="User search"
-  //       onSelection={action('emoji selected')}
-  //       resourceProvider={resourceProvider}
-  //       presenceProvider={new MockPresenceProvider(200, 500)}
-  //       relativePosition="above"
-  //     />
-  //   </div>
-  // ))
-  // .add('Input field at part down tall page. Mock API. Mocked presence', () => (
-  //   <div style={tallPageStyle} >
-  //     <div style={downPage} >
-  //       <EmojiTextInput
-  //         label="User search"
-  //         onSelection={action('emoji selected')}
-  //         resourceProvider={resourceProvider}
-  //         presenceProvider={new MockPresenceProvider()}
-  //         relativePosition="above"
-  //       />
-  //     </div>
-  //   </div>
-  // ));

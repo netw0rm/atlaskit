@@ -13,6 +13,8 @@ class EmojiTextInput extends Component {
     onSelection: PropTypes.func.isRequired,
     emojiService: EmojiPropTypes.emojiService,
     position: PropTypes.string,
+    beforeContent: PropTypes.bool,
+    afterContent: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -53,7 +55,7 @@ class EmojiTextInput extends Component {
   }
 
   render() {
-    const { label, emojiService, position } = this.props;
+    const { label, emojiService, position, beforeContent, afterContent } = this.props;
     debug('demo-emoji-text-input.render', position);
     const target = position ? 'demo-input' : null;
     const searchInput = (
@@ -87,12 +89,21 @@ class EmojiTextInput extends Component {
       );
     }
 
+    const loremContent = (
+      <div>
+        <p style={{ width: '400px' }}>{lorem}</p>
+        <p style={{ width: '400px' }}>{lorem}</p>
+      </div>
+    );
+    const before = beforeContent ? loremContent : null;
+    const after = afterContent ? loremContent : null;
+
     return (
       <div style={{ padding: '10px' }} >
+        {before}
         {searchInput}
         {emojiPicker}
-        <p style={{ width: '400px' }}>{lorem}</p>
-        <p style={{ width: '400px' }}>{lorem}</p>
+        {after}
       </div>
     );
   }

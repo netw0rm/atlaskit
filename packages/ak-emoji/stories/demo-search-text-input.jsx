@@ -55,10 +55,10 @@ class SearchTextInput extends Component {
     let labelComponent;
     const id = inputId || uid();
     if (label) {
-      labelComponent = <label htmlFor={id}>{label}</label>;
+      labelComponent = <label htmlFor={id}><b>{label}</b></label>;
     }
     return (
-      <div id="search-text" className="pf-search-text-input">
+      <div id="search-text" className="ak-search-text-input">
         {labelComponent}
         <input
           {...other}
@@ -68,7 +68,7 @@ class SearchTextInput extends Component {
           ref={ref => this.inputRefUpdate(ref)}
           style={{
             height: '20px',
-            marginLeft: '10px',
+            margin: '10px',
           }}
         />
       </div>

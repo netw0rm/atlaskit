@@ -1,7 +1,7 @@
 import { Attribute, Block, Node, Schema } from '../../prosemirror';
 
 export interface EntityAttributes {
-  params: Attribute;
+  language: Attribute;
 }
 
 export class CodeBlockNodeType extends Block {
@@ -14,7 +14,7 @@ export class CodeBlockNodeType extends Block {
 
   get attrs(): EntityAttributes {
     return {
-      params: new Attribute({ default: null })
+      language: new Attribute({ default: null })
     };
   }
 
@@ -24,7 +24,16 @@ export class CodeBlockNodeType extends Block {
 
   get matchDOMTag() {
     return {
-      pre: [null, { preserveWhitespace: true }]
+      'pre': (dom: Element) => {
+        return [
+          {
+            'language': dom.getAttribute('data-lang'),
+          },
+          {
+            preserveWhitespace: true
+          }
+        ];
+      }
     };
   }
 

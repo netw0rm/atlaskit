@@ -11,7 +11,7 @@ export default class extends PureComponent {
       onClick: PropTypes.func,
     })),
     author: PropTypes.string,
-    avatar: PropTypes.node,
+    avatar: PropTypes.node.isRequired,
     content: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),

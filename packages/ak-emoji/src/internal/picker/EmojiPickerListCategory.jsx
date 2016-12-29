@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 
 import styles from 'style!../../style.less';
 
-export default class extends PureComponent {
+export default class EmojiPikcerListCateogry extends PureComponent {
   static propTypes = {
     title: PropTypes.string.isRequired,
     // eslint-disable-next-line react/forbid-prop-types

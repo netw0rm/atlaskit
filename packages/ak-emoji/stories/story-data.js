@@ -1,6 +1,7 @@
+import EmojiService from '../src/api/EmojiService';
 import emojiData from './story-data.json';
 
-const transformedEmojis = emojiData.emojis.map((emoji) => {
+const emojis = emojiData.emojis.map((emoji) => {
   const newEmoji = { ...emoji };
   if (emoji.representation.spriteRef) {
     newEmoji.representation.sprite = emojiData.meta.sprites[emoji.representation.spriteRef];
@@ -22,4 +23,8 @@ const transformedEmojis = emojiData.emojis.map((emoji) => {
   return newEmoji;
 });
 
-export default transformedEmojis;
+export {
+  emojis,
+};
+
+export default new EmojiService(emojis);

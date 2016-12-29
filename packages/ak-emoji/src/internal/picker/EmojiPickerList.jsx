@@ -10,7 +10,7 @@ import { emojiListWidth, emojiListHeight } from '../../shared-variables';
 
 const emojiPerRow = 8;
 
-export default class extends PureComponent {
+export default class EmojiPickerList extends PureComponent {
   static propTypes = {
     emojis: PropTypes.arrayOf(EmojiPropTypes.emoji).isRequired,
     onEmojiSelected: PropTypes.func,

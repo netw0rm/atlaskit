@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
-import emojis from './story-data';
+import { emojis } from './story-data';
 
 import CategorySelector from '../src/internal/picker/CategorySelector';
 import EmojiPickerFooter from '../src/internal/picker/EmojiPickerFooter';

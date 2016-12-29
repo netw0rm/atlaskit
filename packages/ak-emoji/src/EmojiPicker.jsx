@@ -9,7 +9,7 @@ import EmojiPickerFooter from './internal/picker/EmojiPickerFooter';
 import EmojiPropTypes from './internal/ak-emoji-prop-types';
 import EmojiService from './api/EmojiService';
 
-export default class extends PureComponent {
+export default class EmojiPicker extends PureComponent {
   static propTypes = {
     emojis: PropTypes.arrayOf(EmojiPropTypes.emoji).isRequired,
     onSelection: PropTypes.func,

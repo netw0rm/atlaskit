@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
-import AkFieldBase from 'ak-field-base';
-import { SearchIcon } from 'ak-icon';
 import { List } from 'react-virtualized';
-import styles from 'style!./style.less';
-import EmojiPropTypes from './internal/ak-emoji-prop-types';
-import EmojiButton from './EmojiButton';
-import { emojiListWidth, emojiListHeight } from './shared-variables';
+import styles from 'style!../../style.less';
+import EmojiPropTypes from '../ak-emoji-prop-types';
+import EmojiPickerListCategory from './EmojiPickerListCategory';
+import EmojiPickerListRow from './EmojiPickerListRow';
+import EmojiPickerListSearch from './EmojiPickerListSearch';
+import { emojiListWidth, emojiListHeight } from '../../shared-variables';
 
 const emojiPerRow = 8;
 
@@ -14,11 +14,19 @@ export default class extends PureComponent {
   static propTypes = {
     emojis: PropTypes.arrayOf(EmojiPropTypes.emoji).isRequired,
     onEmojiSelected: PropTypes.func,
+    onEmojiActive: PropTypes.func,
     onCategoryActivated: PropTypes.func,
     selectedCategory: PropTypes.string,
     selectedTone: PropTypes.string,
     onSearch: PropTypes.func,
   };
+
+  static defaultProps = {
+    onEmojiSelected: () => {},
+    onEmojiActive: () => {},
+    onCategoryActivated: () => {},
+    onSearch: () => {},
+  }
 
   constructor(props) {
     super(props);
@@ -74,19 +82,14 @@ export default class extends PureComponent {
     this.setState({
       selectedEmoji: emoji,
     });
-
-    if (this.props.onEmojiSelected) {
-      this.props.onEmojiSelected(emoji);
-    }
+    this.props.onEmojiActive(emoji);
   };
 
   onRowsRendered = ({ startIndex }) => {
     const firstVisibleItem = this.groupedItems[startIndex];
     if (this.activeCategory !== firstVisibleItem.category) {
       this.activeCategory = firstVisibleItem.category;
-      if (this.props.onCategoryActivated) {
-        this.props.onCategoryActivated(this.activeCategory);
-      }
+      this.props.onCategoryActivated(this.activeCategory);
     }
   };
 
@@ -94,10 +97,6 @@ export default class extends PureComponent {
     this.setState({
       selectedEmoji: null,
     });
-
-    if (this.props.onEmojiSelected) {
-      this.props.onEmojiSelected(null);
-    }
   };
 
   onSearch = (e) => {
@@ -105,9 +104,7 @@ export default class extends PureComponent {
       query: e.target.value,
     });
 
-    if (this.props.onSearch) {
-      this.props.onSearch(e.target.value);
-    }
+    this.props.onSearch(e.target.value);
   };
 
   getItemSize = ({ index }) => {
@@ -185,67 +182,33 @@ export default class extends PureComponent {
     const item = this.groupedItems[index];
 
     if (item.type === 'emoji') {
+      const selectedShortcut = this.state.selectedEmoji && this.state.selectedEmoji.shortcut;
       return (
-        <div
+        <EmojiPickerListRow
           key={key}
-          className={styles.emojiRow}
           style={style}
-        >
-          {item.emojis.map((emoji) => {
-            let selected = false;
-            if (this.state.selectedEmoji && emoji.shortcut === this.state.selectedEmoji.shortcut) {
-              selected = true;
-            }
-
-            return (
-              <div
-                style={{ display: 'inline-block' }}
-                onMouseOver={e => this.onEmojiMouseEnter(emoji, e)}
-                key={emoji.shortcut}
-              >
-
-                <EmojiButton
-                  {...emoji}
-                  selected={selected}
-                />
-              </div>
-            );
-          })}
-        </div>);
+          emojis={item.emojis}
+          selectedEmojiShortcut={selectedShortcut}
+          onEmojiMouseEnter={emoji => this.onEmojiMouseEnter(emoji)}
+          onEmojiSelected={emoji => this.props.onEmojiSelected(emoji)}
+        />
+      );
     } else if (item.type === 'category') {
       return (
-        <div
+        <EmojiPickerListCategory
           key={key}
-          className={styles.categoryTitle}
           style={style}
-        >
-          {item.title}
-        </div>);
+          title={item.title}
+        />
+      );
     } else if (item.type === 'search') {
       return (
-        <div className={styles.search} style={style} key={key}>
-          <AkFieldBase
-            appearance="compact"
-            label="Search"
-            isLabelHidden
-            isFitContainerWidthEnabled
-          >
-            <span className={styles.searchIcon} >
-              <SearchIcon label="Search" />
-            </span>
-            <input
-              className={styles.input}
-              type="text"
-              disabled={false}
-              name="search"
-              placeholder="Search..."
-              required={false}
-              onChange={this.onSearch}
-              value={this.state.query}
-              ref={input => input && input.focus()}
-            />
-          </AkFieldBase>
-        </div>
+        <EmojiPickerListSearch
+          key={key}
+          style={style}
+          onChange={this.onSearch}
+          query={this.state.query}
+        />
       );
     }
 

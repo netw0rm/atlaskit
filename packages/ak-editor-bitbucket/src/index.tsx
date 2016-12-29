@@ -7,6 +7,7 @@ import {
   Keymap,
   ListsPlugin,
   BlockTypePlugin,
+  DefaultInputRulesPlugin,
   MarkdownInputRulesPlugin,
   HyperlinkPlugin,
   TextFormattingPlugin,
@@ -189,6 +190,7 @@ export default class Editor extends PureComponent<Props, State> {
           TextFormattingPlugin,
           HorizontalRulePlugin,
           MentionsPlugin,
+          DefaultInputRulesPlugin,
           ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
         ],
       });

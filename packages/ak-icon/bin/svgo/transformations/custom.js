@@ -8,6 +8,7 @@ const callbackOnDefinedFill = require('../plugins/callbackOnDefinedFill');
 const callbackOnStyleElement = require('../plugins/callbackOnStyleElement');
 const addAriaLabels = require('../plugins/addAriaLabels');
 const convertAttributesToCamelcase = require('../plugins/convertAttributesToCamelcase');
+const convertDimensions = require('../plugins/convertDimensions');
 
 const addAriaLabelsPlugin = Object.assign({}, addAriaLabels, {
   params: {
@@ -37,6 +38,7 @@ module.exports = (fillCallback, styleCallback) => {
     full: true,
     plugins: [
       { preventFocusing },
+      { convertDimensions },
       { convertAttributesToCamelcase },
       { addAttributesToSVGElement: {
         attributes: ['{...iconProps}'],

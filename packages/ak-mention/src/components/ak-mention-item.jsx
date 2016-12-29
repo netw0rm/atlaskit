@@ -9,6 +9,10 @@ import MentionPropTypes from '../internal/ak-mention-prop-types';
 import { leftClick } from '../util/mouse';
 
 function renderHighlight(className, value, highlights, prefix) {
+  if (!value) {
+    return null;
+  }
+
   const parts = [];
   const prefixText = prefix || '';
   let lastIndex = 0;

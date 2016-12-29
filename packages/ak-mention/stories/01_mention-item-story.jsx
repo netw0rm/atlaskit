@@ -38,6 +38,16 @@ storiesOf(`${name}/MentionItem`, module)
       <MentionItem {...mention} onSelection={action('onSelection')} />
     );
   })
+  .add('simple mention unassigned user', () => {
+    const mention = {
+      id: 'unassigned',
+      name: 'Unassigned',
+    };
+
+    return renderSingleMention(
+      <MentionItem {...mention} onSelection={action('onSelection')} />
+    );
+  })
   .add('simple mention selected', () => {
     const mention = {
       avatarUrl: 'https://secure.gravatar.com/avatar/0eda4b603469d402e11e89a1dff51834?s=64',

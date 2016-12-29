@@ -3,10 +3,10 @@ import styles from 'style!./style.less';
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 
-// import Popup from './ak-popup';
 import debug from './internal/logger';
 import EmojiList from './internal/typeahead/EmojiTypeAheadList';
 import EmojiPropTypes from './internal/ak-emoji-prop-types';
+import Popup from './internal/common/Popup';
 
 const defaultListLimit = 50;
 
@@ -37,11 +37,11 @@ export default class EmojiTypeAhead extends PureComponent {
      * id of element to target the picker against.
      * if not specified the picker is rendered inline.
      */
-    // target: PropTypes.string,
-    // position: PropTypes.string,
-    // zIndex: PropTypes.number,
-    // offsetX: PropTypes.number,
-    // offsetY: PropTypes.number,
+    target: PropTypes.string,
+    position: PropTypes.string,
+    zIndex: PropTypes.number,
+    offsetX: PropTypes.number,
+    offsetY: PropTypes.number,
   }
 
   static defaultProps = {
@@ -105,7 +105,7 @@ export default class EmojiTypeAhead extends PureComponent {
   }
 
   render() {
-    const { onSelection } = this.props;
+    const { onSelection, target, position, zIndex, offsetX, offsetY } = this.props;
     const { visible, emojis } = this.state;
     const style = {
       display: visible ? 'block' : 'none',
@@ -116,47 +116,40 @@ export default class EmojiTypeAhead extends PureComponent {
       styles.emojiTypeAhead,
     ]);
 
-    const resourceMentionList = (
-      <EmojiList
-        emojis={emojis}
-        onSelection={onSelection}
-        ref={(ref) => { this.emojiListRef = ref; }}
-      />
-    );
-
-    // let content;
-
-    // if (position) {
-    //   debug('target, position', target, position);
-    //   if (target) {
-    //     content = (
-    //       <Popup
-    //         target={target}
-    //         position={position}
-    //         zIndex={zIndex}
-    //         offsetX={offsetX}
-    //         offsetY={offsetY}
-    //         ref={(ref) => { this._dialog = ref; }}
-    //       >
-    //         {resourceMentionList}
-    //       </Popup>
-    //     );
-    //   } else {
-    //     // don't show if we have a position, but no target yet
-    //     content = null;
-    //   }
-    // } else {
-    const content = (
-      <div className={styles.noDialogContainer}>
-        {resourceMentionList}
-      </div>
-    );
-    // }
-
-    return (
+    const typeAhead = (
       <div style={style} className={classes}>
-        {content}
+        <EmojiList
+          emojis={emojis}
+          onSelection={onSelection}
+          ref={(ref) => { this.emojiListRef = ref; }}
+        />
       </div>
     );
+
+    let content;
+
+    if (position) {
+      debug('target, position', target, position);
+      if (target) {
+        content = (
+          <Popup
+            target={target}
+            position={position}
+            zIndex={zIndex}
+            offsetX={offsetX}
+            offsetY={offsetY}
+          >
+            {typeAhead}
+          </Popup>
+        );
+      } else {
+        // don't show if we have a position, but no target yet
+        content = null;
+      }
+    } else {
+      content = typeAhead;
+    }
+
+    return content;
   }
 }

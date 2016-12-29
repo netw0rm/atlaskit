@@ -3,16 +3,29 @@ import React, { PureComponent, PropTypes } from 'react';
 
 import styles from 'style!./style.less';
 
+import debug from './internal/logger';
 import CategorySelector from './internal/picker/CategorySelector';
 import EmojiPickerList from './internal/picker/EmojiPickerList';
 import EmojiPickerFooter from './internal/picker/EmojiPickerFooter';
 import EmojiPropTypes from './internal/ak-emoji-prop-types';
 import EmojiService from './api/EmojiService';
+import Popup from './internal/common/Popup';
 
 export default class EmojiPicker extends PureComponent {
   static propTypes = {
     emojis: PropTypes.arrayOf(EmojiPropTypes.emoji).isRequired,
     onSelection: PropTypes.func,
+
+    // ak-inline-dialog
+    /**
+     * id of element to target the picker against.
+     * if not specified the picker is rendered inline.
+     */
+    target: PropTypes.string,
+    position: PropTypes.string,
+    zIndex: PropTypes.number,
+    offsetX: PropTypes.number,
+    offsetY: PropTypes.number,
   };
 
   static defaultProps = {
@@ -96,9 +109,10 @@ export default class EmojiPicker extends PureComponent {
   }
 
   render() {
+    const { emojis, target, position, zIndex, offsetX, offsetY } = this.props;
     const classes = [styles.emojiPicker];
 
-    return (
+    const picker = (
       <div className={classNames(classes)}>
         <CategorySelector
           activeCategoryId={this.state.activeCategory}
@@ -118,10 +132,36 @@ export default class EmojiPicker extends PureComponent {
         <EmojiPickerFooter
           selectedEmoji={this.state.selectedEmoji}
           selectedTone={this.state.selectedTone}
-          emojis={this.props.emojis}
+          emojis={emojis}
           onToneSelected={this.onToneSelected}
         />
       </div>
     );
+
+    let content;
+
+    if (position) {
+      debug('target, position', target, position);
+      if (target) {
+        content = (
+          <Popup
+            target={target}
+            position={position}
+            zIndex={zIndex}
+            offsetX={offsetX}
+            offsetY={offsetY}
+          >
+            {picker}
+          </Popup>
+        );
+      } else {
+        // don't show if we have a position, but no target yet
+        content = null;
+      }
+    } else {
+      content = picker;
+    }
+
+    return content;
   }
 }

@@ -168,7 +168,6 @@ export default class MentionPicker extends PureComponent {
             zIndex={zIndex}
             offsetX={offsetX}
             offsetY={offsetY}
-            ref={(ref) => { this._dialog = ref; }}
           >
             {resourceMentionList}
           </Popup>

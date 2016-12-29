@@ -20,13 +20,21 @@ import emojiService from './story-data';
 // };
 
 storiesOf(`${name}/EmojiTypeAhead`, module)
-  .add('Input field emoji list. Key binding', () => (
+  .add('Input field emoji list. Key binding. Popup', () => (
+    <EmojiTextInput
+      label="Emoji search"
+      onSelection={action('emoji selected')}
+      emojiService={emojiService}
+      position="bottom left"
+    />
+  ))
+  .add('Input field emoji list. Key binding. Inline', () => (
     <EmojiTextInput
       label="Emoji search"
       onSelection={action('emoji selected')}
       emojiService={emojiService}
     />
-  // ))
+  ));
   // .add('Input field emoji list. Mock slow API. Key binding', () => (
   //   <EmojiTextInput
   //     label="User search"
@@ -88,4 +96,4 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
   //       />
   //     </div>
   //   </div>
-  ));
+  // ));

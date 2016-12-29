@@ -5,12 +5,18 @@ import EmojiPropTypes from '../src/internal/ak-emoji-prop-types';
 import EmojiTypeAhead from '../src/EmojiTypeAhead';
 import debug from '../src/internal/logger';
 import SearchTextInput from './demo-search-text-input';
+import { lorem } from './story-data';
 
 class EmojiTextInput extends Component {
   static propTypes = {
     label: PropTypes.string,
     onSelection: PropTypes.func.isRequired,
     emojiService: EmojiPropTypes.emojiService,
+    position: PropTypes.string,
+  }
+
+  static defaultProps = {
+    onSelection: () => {},
   }
 
   constructor(props) {
@@ -35,9 +41,7 @@ class EmojiTextInput extends Component {
 
   handleSelection = (emoji) => {
     this.hideEmojiPopup();
-    if (this.props.onSelection) {
-      this.props.onSelection(emoji);
-    }
+    this.props.onSelection(emoji);
   }
 
   updateSearch = (event) => {
@@ -49,9 +53,9 @@ class EmojiTextInput extends Component {
   }
 
   render() {
-    debug('demo-emoji-text-input.render');
-    /* eslint no-unused-vars: 0 */
-    const { label, onSelection, emojiService } = this.props;
+    const { label, emojiService, position } = this.props;
+    debug('demo-emoji-text-input.render', position);
+    const target = position ? 'demo-input' : null;
     const searchInput = (
       <SearchTextInput
         inputId="demo-input"
@@ -71,6 +75,8 @@ class EmojiTextInput extends Component {
     if (this.state.active) {
       emojiPicker = (
         <EmojiTypeAhead
+          target={target}
+          position={position}
           onSelection={(event) => { this.handleSelection(event); }}
           onOpen={action('picker opened')}
           onClose={action('picker closed')}
@@ -85,6 +91,8 @@ class EmojiTextInput extends Component {
       <div style={{ padding: '10px' }} >
         {searchInput}
         {emojiPicker}
+        <p style={{ width: '400px' }}>{lorem}</p>
+        <p style={{ width: '400px' }}>{lorem}</p>
       </div>
     );
   }

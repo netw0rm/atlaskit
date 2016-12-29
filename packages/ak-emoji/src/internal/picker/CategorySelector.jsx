@@ -17,7 +17,7 @@ import EmojiTravelIcon from 'ak-icon/glyph/emoji/travel';
 export default class CategorySelector extends PureComponent {
   static propTypes = {
     categories: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-    activeCategoryId: PropTypes.string.isRequired,
+    activeCategoryId: PropTypes.string,
     onCategorySelected: PropTypes.func,
     availableCategories: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   };

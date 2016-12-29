@@ -1,4 +1,4 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent, PropTypes, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
@@ -36,6 +36,8 @@ export default class InlineEdit extends PureComponent {
      * This node should allow the user to edit the value of the field.
      *
      * If this node is undefined/null/false, the component will display in read-only mode.
+     *
+     * This node will be passed the onConfirm callback passed to InlineEdit.
      *
      * @memberof InlineEdit
      * @type {ReactNode}
@@ -247,6 +249,12 @@ export default class InlineEdit extends PureComponent {
     </div>
   )
 
+  renderEditView = () => (
+    cloneElement(this.props.editView, {
+      onConfirm: this.props.onConfirm,
+    })
+  )
+
   renderSpinner = () => (
     <div className={styles.spinnerWrapper}>
       <Spinner />
@@ -274,7 +282,7 @@ export default class InlineEdit extends PureComponent {
             this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()
           }
         >
-          {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
+          {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
         </FieldBase>
       </div>
     </div>

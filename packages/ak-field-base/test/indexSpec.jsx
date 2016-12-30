@@ -69,14 +69,14 @@ describe('ak-field-base', () => {
     beforeEach(() => {
       wrapper = mount(<FieldBase {...defaultProps} />);
       content = wrapper.find(Content);
-      content.find(`.${styles.locals.content}`).simulate('focus');
+      content.find(`.${styles.locals.contentContainer}`).simulate('focus');
     });
 
     it('should call onFocus', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBase {...defaultProps} onFocus={spy} />);
       content = wrapper.find(Content);
-      content.find(`.${styles.locals.content}`).simulate('focus');
+      content.find(`.${styles.locals.contentContainer}`).simulate('focus');
       expect(spy).to.have.been.calledOnce;
     });
 
@@ -84,7 +84,7 @@ describe('ak-field-base', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBase {...defaultProps} onBlur={spy} />);
       content = wrapper.find(Content);
-      content.find(`.${styles.locals.content}`).simulate('blur');
+      content.find(`.${styles.locals.contentContainer}`).simulate('blur');
       expect(spy).to.have.been.calledOnce;
     });
   });

@@ -19,7 +19,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-droplist-item": "^2.0.0"
+    "ak-droplist-item": "^3.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

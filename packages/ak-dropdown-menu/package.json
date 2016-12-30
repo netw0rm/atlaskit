@@ -24,7 +24,9 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-avatar": "^5.0.5"
+    "ak-avatar": "^5.0.5",
+    "akutil-readme": "^1.2.0",
+    "ak-dropdown-menu": "*"
   },
   "peerDependencies": {
     "react": "^15.3.2",

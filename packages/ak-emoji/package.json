@@ -1,6 +1,6 @@
 {
   "name": "ak-emoji",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "ak-emoji webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -24,7 +24,8 @@
     "react-virtualized": "^8.7.1"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

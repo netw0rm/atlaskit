@@ -6,7 +6,7 @@ import Emoji from '../../Emoji';
 import ToneSelector from './ToneSelector';
 import EmojiPropTypes from '../ak-emoji-prop-types';
 
-export default class extends PureComponent {
+export default class EmojiPreview extends PureComponent {
   static propTypes = {
     emoji: EmojiPropTypes.emoji,
     toneEmoji: EmojiPropTypes.emoji,

@@ -1,6 +1,6 @@
 {
   "name": "ak-emoji",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "ak-emoji webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

@@ -87,11 +87,12 @@ const nonRejectingPromise = (promise, rejectValue) => (
   })
 );
 
-const emojiRequest = provider => (
-  nonRejectingPromise(
-    requestService(provider.url, '', null, provider.secOptions, provider.refreshedSecurityProvider),
-  [])
-);
+const emojiRequest = (provider) => {
+  const { url, securityProvider, refreshedSecurityProvider } = provider;
+  const secOptions = securityProvider && securityProvider();
+  const emojiPromise = requestService(url, '', null, null, secOptions, refreshedSecurityProvider);
+  return nonRejectingPromise(emojiPromise, []);
+};
 
 export default class EmojiResource {
 
@@ -145,16 +146,17 @@ export default class EmojiResource {
     this.config.providers.forEach((provider) => {
       emojiPromises.push(emojiRequest(provider));
     });
+    debug('EmojiResource.loadAllEmoji waiting for', emojiPromises.length, 'promises');
     return Promise.all(emojiPromises).then((emojiSets) => {
-      const allEmoji = [];
+      let allEmoji = [];
       emojiSets.forEach((emojis) => {
-        allEmoji.concat(emojis);
+        allEmoji = allEmoji.concat(emojis);
       });
       return Promise.resolve(allEmoji);
     });
   }
 
-  recordUsedEmoji(shortcut) {
+  recordEmojiSelection(shortcut) {
     const secOptions = this.config.securityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {

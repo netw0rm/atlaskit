@@ -3,7 +3,7 @@ import Droplist from 'ak-droplist';
 import Button from 'ak-button';
 import ExpandIcon from 'ak-icon/glyph/expand';
 
-const Icon = <ExpandIcon label="trigger button" />;
+const Icon = <ExpandIcon label="" />;
 
 /* eslint-disable react/no-unused-prop-types */
 /**

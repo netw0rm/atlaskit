@@ -70,7 +70,7 @@ export default class Editor extends PureComponent<Props, State> {
     const pluginStateMentions = props.mentionResourceProvider && pm && MentionsPlugin.get(pm);
 
     return (
-      <div className="ak-editor-hipchat" id={this.props.id ? this.props.id : undefined}>
+      <div className="ak-editor-hipchat" id={this.props.id}>
         <div ref={this.handleRef}>
           {!pluginStateMentions ? null:
             <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reverseMentionPicker} />
@@ -137,7 +137,7 @@ export default class Editor extends PureComponent<Props, State> {
     return pm ? pm.doc.nodeSize : 0;
   }
 
-  get value(): string | undefined {
+  get value(): string {
     const { pm } = this.state;
     return pm
       ? hipchatSerializer(pm.doc.toJSON())

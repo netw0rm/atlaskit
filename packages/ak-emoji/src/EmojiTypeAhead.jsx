@@ -8,7 +8,7 @@ import EmojiList from './internal/typeahead/EmojiTypeAheadList';
 import EmojiPropTypes from './internal/ak-emoji-prop-types';
 import Popup from './internal/common/Popup';
 
-const defaultListLimit = 50;
+export const defaultListLimit = 50;
 
 function searchEmoji(props) {
   if (props.emojiService) {
@@ -59,6 +59,9 @@ export default class EmojiTypeAhead extends PureComponent {
       visible,
       emojis,
     };
+    if (visible) {
+      this.props.onOpen();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -126,12 +129,10 @@ export default class EmojiTypeAhead extends PureComponent {
       </div>
     );
 
-    let content;
-
     if (position) {
       debug('target, position', target, position);
       if (target) {
-        content = (
+        return (
           <Popup
             target={target}
             position={position}
@@ -142,14 +143,11 @@ export default class EmojiTypeAhead extends PureComponent {
             {typeAhead}
           </Popup>
         );
-      } else {
-        // don't show if we have a position, but no target yet
-        content = null;
       }
-    } else {
-      content = typeAhead;
+      // don't show if we have a position, but no target yet
+      return null;
     }
 
-    return content;
+    return typeAhead;
   }
 }

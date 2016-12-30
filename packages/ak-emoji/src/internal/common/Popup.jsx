@@ -15,14 +15,14 @@ export default class Popup extends PureComponent {
       React.PropTypes.arrayOf(React.PropTypes.node),
       React.PropTypes.node,
     ]),
-  }
+  };
 
   static defaultProps = {
     relativePosition: 'auto',
     offsetX: 0,
     offsetY: 0,
     zIndex: 0,
-  }
+  };
 
   componentDidMount() {
     this.popup = document.createElement('div');
@@ -43,7 +43,7 @@ export default class Popup extends PureComponent {
 
   // Internal
   applyBelowPosition() {
-    const targetNode = document.getElementById(this.props.target);
+    const targetNode = document.querySelector(this.props.target);
     const box = targetNode.getBoundingClientRect();
     const top = box.bottom + this.props.offsetY;
     const left = box.left + this.props.offsetX;
@@ -53,7 +53,7 @@ export default class Popup extends PureComponent {
   }
 
   applyAbovePosition() {
-    const targetNode = document.getElementById(this.props.target);
+    const targetNode = document.querySelector(this.props.target);
     const box = targetNode.getBoundingClientRect();
     const bottom = (window.innerHeight - box.top) + this.props.offsetY;
     const left = box.left + this.props.offsetX;
@@ -68,7 +68,7 @@ export default class Popup extends PureComponent {
     } else if (this.props.relativePosition === 'below') {
       this.applyBelowPosition();
     } else {
-      const targetNode = document.getElementById(this.props.target);
+      const targetNode = document.querySelector(this.props.target);
       const box = targetNode.getBoundingClientRect();
       const viewPortHeight = window.innerHeight;
       if (box.top < viewPortHeight / 2) {

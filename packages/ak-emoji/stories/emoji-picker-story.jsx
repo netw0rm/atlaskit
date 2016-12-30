@@ -8,12 +8,18 @@ import EmojiPicker from '../src/EmojiPicker';
 storiesOf('ak-emoji/EmojiPicker', module)
   .add('picker popup', () => (
     <div style={{ padding: '10px' }} >
-      <input id="picker-input" />
+      <input
+        id="picker-input"
+        style={{
+          height: '20px',
+          margin: '10px',
+        }}
+      />
       <p style={{ width: '400px' }}>{lorem}</p>
       <EmojiPicker
         emojis={emojis}
         onSelection={action('emoji selected')}
-        target="picker-input"
+        target="#picker-input"
         position="left bottom"
       />
     </div>

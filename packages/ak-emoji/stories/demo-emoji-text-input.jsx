@@ -57,7 +57,7 @@ class EmojiTextInput extends Component {
   render() {
     const { label, emojiService, position, beforeContent, afterContent } = this.props;
     debug('demo-emoji-text-input.render', position);
-    const target = position ? 'demo-input' : null;
+    const target = position ? '#demo-input' : null;
     const searchInput = (
       <SearchTextInput
         inputId="demo-input"
@@ -68,7 +68,7 @@ class EmojiTextInput extends Component {
         onEnter={() => this.emojiListRef.chooseCurrentSelection()}
         onEscape={this.hideEmojiPopup}
         onFocus={this.showEmojiPopup}
-        xonBlur={this.hideEmojiPopup}
+        onBlur={this.hideEmojiPopup}
       />
     );
 

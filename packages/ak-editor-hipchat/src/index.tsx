@@ -145,7 +145,6 @@ export default class Editor extends PureComponent<Props, State> {
       }
 
       pm.on.change.add(this.handleChange);
-      pm.focus();
 
       this.setState({ pm });
     } else {

@@ -1,4 +1,4 @@
-import { Keymap, ProseMirror, Fragment, MentionsPlugin, MentionPicker, TextSelection, DocNode } from 'ak-editor-core';
+import { Keymap, ProseMirror, Fragment, BlockTypePlugin, MentionsPlugin, MentionPicker, TextSelection, DocNode } from 'ak-editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import schema from './schema';
@@ -63,30 +63,6 @@ export default class Editor extends PureComponent<Props, State> {
     this.state = {};
   }
 
-  private insertNewLine(): boolean {
-    const { pm } = this.state;
-
-    if (!pm) {
-      return false;
-    }
-
-    const { $from } = pm.selection;
-    const node = $from.parent;
-    const { hard_break } = pm.schema.nodes;
-
-    if(hard_break) {
-      const hardBreakNode = hard_break.create();
-
-      if(node.type.validContent(Fragment.from(hardBreakNode))) {
-        pm.tr.replaceSelection(hardBreakNode).applyAndScroll();
-        return true;
-      }
-    }
-
-    pm.tr.typeText('\n').applyAndScroll();
-    return true;
-  }
-
   render() {
     const { props } = this;
     const { pm } = this.state;
@@ -105,73 +81,62 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleRef = (place: Element | null) => {
-    if (place) {
-
-      const { props } = this;
-      const pm = new ProseMirror({
-        place,
-        doc: schema.nodes.doc.createAndFill(),
-        plugins: [
-          ...(this.props.mentionResourceProvider ? [ MentionsPlugin ] : [] )
-        ],
-      });
-
-      if (place instanceof HTMLElement) {
-        const content = place.querySelector('[contenteditable]');
-        if (content instanceof HTMLElement) {
-          content.style.outline = 'none';
-          content.style.whiteSpace = 'pre-wrap';
-        }
-      }
-
-      pm.addKeymap(new Keymap({
-        'Enter': () => {
-          if (this.props.onSubmit) {
-            this.props.onSubmit(hipchatSerializer(pm.doc.toJSON()));
-          }
-        },
-        'Shift-Enter': () => {
-          this.insertNewLine();
-        }
-      }), -10);
-
-      if (props.maxContentSize) {
-        pm.on.transform.add((tr) => {
-          if (tr.doc.nodeSize > props.maxContentSize) {
-            const doc = tr.docs[0] as DocNode;
-            pm.setDoc(doc, new TextSelection(doc.resolve(doc.nodeSize - 3)));
-          }
-        });
-      }
-
-      pm.on.change.add(this.handleChange);
-
-      this.setState({ pm });
-    } else {
-      this.setState({ pm: undefined });
+    if (!place) {
+      return this.setState({ pm: undefined });
     }
+
+    const { props } = this;
+    const pm = new ProseMirror({
+      place,
+      doc: schema.nodes.doc.createAndFill(),
+      plugins: [
+        BlockTypePlugin,
+        ...(this.props.mentionResourceProvider ? [ MentionsPlugin ] : [] )
+      ],
+    });
+
+    if (place instanceof HTMLElement) {
+      const content = place.querySelector('[contenteditable]');
+      if (content instanceof HTMLElement) {
+        content.style.outline = 'none';
+        content.style.whiteSpace = 'pre-wrap';
+      }
+    }
+
+    pm.addKeymap(new Keymap({
+      'Enter': () => {
+        if (this.props.onSubmit) {
+          this.props.onSubmit(hipchatSerializer(pm.doc.toJSON()));
+        }
+      }
+    }), -10);
+
+    if (props.maxContentSize) {
+      pm.on.transform.add((tr) => {
+        if (tr.doc.nodeSize > props.maxContentSize) {
+          const doc = tr.docs[0] as DocNode;
+          pm.setDoc(doc, new TextSelection(doc.resolve(doc.nodeSize - 3)));
+        }
+      });
+    }
+
+    pm.on.change.add(this.handleChange);
+
+    this.setState({ pm });
   }
 
   private handleChange = (evt) => {
-    const { pm } = this.state;
     const { onChange } = this.props;
-
     if (onChange) {
       onChange();
     }
   }
 
-  /** 
-   * Return the current document's node size
-   */
   get documentSize(): number {
     const { pm } = this.state;
     return pm ? pm.doc.nodeSize : 0;
   }
 
-  /**
-   * Return the current hipchat-friendly value from the editor.
-   */
   get value(): string | undefined {
     const { pm } = this.state;
     return pm
@@ -179,9 +144,6 @@ export default class Editor extends PureComponent<Props, State> {
       : '';
   }
 
-  /**
-   * Set value from JSON
-   */
   setFromJson(value: any): void {
     const { pm } = this.state;
     if (pm) {
@@ -200,9 +162,6 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  /**
-   * Clear the content of the editor, making it an empty document.
-   */
   clear(): void {
     const { pm } = this.state;
     if (pm) {
@@ -210,9 +169,6 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  /**
-   * Focus the content region of the editor.
-   */
   focus(): void {
     const { pm } = this.state;
     if (pm) {
@@ -220,9 +176,6 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  /**
-   * Append text
-   */
   appendText(text: string): void {
     const { pm } = this.state;
     if (pm) {

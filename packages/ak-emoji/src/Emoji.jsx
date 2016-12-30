@@ -3,8 +3,7 @@ import React, { PureComponent } from 'react';
 import styles from 'style!./style.less';
 import EmojiPropTypes from './internal/ak-emoji-prop-types';
 
-// eslint-disable-next-line react/prefer-stateless-function
-export default class extends PureComponent {
+export default class Emoji extends PureComponent {
   static propTypes = {
     ...EmojiPropTypes.emojiPropType,
   };

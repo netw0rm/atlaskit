@@ -1,12 +1,12 @@
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/grid.less';
 
-@grid: @ak-grid-size/2;
+@grid: @ak-grid-size;
 
 .group {
   box-sizing: border-box;
   display: block;
-  margin-top: @grid * 2;
+  margin-top: @grid;
 
   &:first-child {
     margin-top: 0;
@@ -14,11 +14,11 @@
 }
 
 .heading {
-  color: @ak-color-N50;
+  color: @ak-color-N300;
   font-weight: normal;
-  font-size: 13px;
+  font-size: 0.750rem;
   line-height: 1;
   margin: 0;
-  padding: @grid * 2 @grid * 3;
+  padding: @grid @grid * 3;
   text-transform: uppercase;
 }

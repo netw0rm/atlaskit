@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { Toggle } from '../src'; // replace with ak-toggle
+import { Toggle } from 'ak-toggle';
 
 class SmartToggle extends PureComponent {
   static propTypes = {

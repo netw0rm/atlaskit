@@ -156,30 +156,34 @@
     .preview-text {
       flex: 1;
       margin-left: 10px;
+      margin-top: -2px;
       max-width: 285px;
 
       .name {
         color: @ak-color-N900;
         text-overflow: ellipsis;
-        white-space: nowrap;
         overflow: hidden;
+        white-space: nowrap;
+
         &:first-letter {
           text-transform: uppercase;
         }
       }
 
       .shortname {
+        color: @ak-color-N200;
         font-size: 12px;
         line-height: 1;
-        color: @ak-color-N200;
+        padding-bottom: 1px;
+        margin-bottom: -1px;
+        overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        overflow: hidden;
       }
     }
 
     .preview-single-line {
-      padding-top: 9px;
+      padding-top: 10px;
 
       .name {
         display: none;

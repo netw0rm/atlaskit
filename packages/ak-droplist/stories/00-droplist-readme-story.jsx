@@ -17,7 +17,7 @@ const droplistPropDescriptions = {
   restrictions.`,
   position: 'Position of the menu. See the documentation of ak-layer for more details.',
   isTriggerNotTabbable: `Controls whether it is possible to tab to the trigger. This property should
-   be set to false if some interactive element is used inside trigger (links, buttons)`,
+   be set to true if some interactive element is used inside trigger (links, buttons)`,
   isOpen: 'Controls the open state of the dropdown',
   onItemActivated: `This is a handler function which is called when an item is activated. Receives
   an object with the activated item.`,
@@ -45,21 +45,19 @@ const droplistPropTypes = {
 
 storiesOf(name, module)
   .add('Droplist overview', () => (
-    <div>
-      <Chrome title={name}>
-        <Description>
-          <p>This is a `base` component on which such components as ak-dropdow-menu,
-            ak-single-select (TBD), ak-multi-select (TBD) are built. They should
-            satisfy most of the requirements and use cases and recommended to use instead.</p>
-        </Description>
-        <Code code={DroplistOverviewExampleRaw}>
-          {DroplistOverviewExample}
-        </Code>
-        <Props
-          component={DropList}
-          descriptions={droplistPropDescriptions}
-          types={droplistPropTypes}
-        />
-      </Chrome>
-    </div>
+    <Chrome title={name}>
+      <Description>
+        <p>This is a `base` component on which such components as ak-dropdow-menu,
+          ak-single-select (TBD), ak-multi-select (TBD) are built. They should
+          satisfy most of the requirements and use cases and recommended to use instead.</p>
+      </Description>
+      <Code code={DroplistOverviewExampleRaw}>
+        {DroplistOverviewExample}
+      </Code>
+      <Props
+        component={DropList}
+        descriptions={droplistPropDescriptions}
+        types={droplistPropTypes}
+      />
+    </Chrome>
   ));

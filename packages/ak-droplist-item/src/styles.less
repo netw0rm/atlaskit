@@ -8,7 +8,7 @@
   font-size: 14px;
   font-weight: normal;
   line-height: 1;
-  padding: 0 unit(@grid * 2, px);
+  padding: 0 (@grid * 3);
   text-decoration: none;
   color: @ak-dropdown-font-main-color;
   cursor: pointer;
@@ -32,9 +32,13 @@
 
     &.checked {
       .checkradio {
-        color: @ak-color-B50;
-        fill: @ak-color-N700;
+        color: @ak-color-B400;
+        fill: @ak-color-N0;
       }
+    }
+
+    &.disabled {
+      background-color: @ak-dropdown-background-main-color;
     }
   }
 
@@ -49,8 +53,8 @@
 
     &.checked {
       .checkradio {
-        color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
-        fill: @ak-color-N700;
+        color: @ak-color-B400;
+        fill: @ak-color-N0;
       }
     }
   }
@@ -61,8 +65,8 @@
 
   &.checked {
     .checkradio {
-      color: @ak-color-B50;
-      fill: @ak-color-N700;
+      color: @ak-color-B400;
+      fill: @ak-color-N0;
     }
   }
 
@@ -72,7 +76,6 @@
   }
 
   &.disabled {
-    background-color: @ak-dropdown-background-disabled-color;
     color: @ak-dropdown-font-disabled-color;
     cursor: not-allowed;
 
@@ -91,17 +94,19 @@
 }
 
 .elemBefore {
-  margin: 0 unit(@grid, px);
-  min-width: unit(@grid * 5, px);
+  margin: 0;
   display: flex;
 }
 
 .checkradio {
-  margin: 0 unit(@grid, px);
-  min-width: unit(@grid * 5, px);
+  margin: 0 @grid;
   display: flex;
-  color: @ak-color-N400;
-  fill: @ak-color-N400;
+  color: @ak-color-N20;
+  fill: @ak-color-N20;
+
+  & + .content {
+    margin: 0;
+  }
 }
 
 .content {
@@ -109,6 +114,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin: unit(@grid, px);
-  padding:3px 0;
+  margin: 0 @grid;
+  padding: 9px 0;
+
+  &:first-child {
+    margin: 0;
+  }
 }

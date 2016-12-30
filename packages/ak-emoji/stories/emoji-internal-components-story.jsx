@@ -1,15 +1,18 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
-import emojis from './story-data';
+import { emojis } from './story-data';
 
 import CategorySelector from '../src/internal/picker/CategorySelector';
 import EmojiPickerFooter from '../src/internal/picker/EmojiPickerFooter';
 import EmojiPreview from '../src/internal/common/EmojiPreview';
 import ToneSelector from '../src/internal/common/ToneSelector';
+import EmojiTypeAheadList from '../src/internal/typeahead/EmojiTypeAheadList';
 
 import { emojiPickerWidth } from '../src/shared-variables';
 import filters from '../src/internal/filters';
+
+import RefreshableEmojiList from './demo-refreshable-emoji-list';
 
 const emoji = {
   id: '118608',
@@ -77,7 +80,7 @@ storiesOf('ak-emoji/Internal components', module)
       }}
     />
     ))
-  .add('Picker footer', () => (
+  .add('picker footer', () => (
     <EmojiPickerFooter
       selectedEmoji={emojis[0]}
       emojis={emojis}
@@ -88,4 +91,11 @@ storiesOf('ak-emoji/Internal components', module)
       emoji={toneEmoji}
       onToneSelected={action('tone selected')}
     />
-));
+  ))
+  .add('emoji list', () => <RefreshableEmojiList />)
+  .add('emoji list - everything', () => (
+    <EmojiTypeAheadList
+      emojis={emojis}
+      onSelection={action('onSelection')}
+    />
+  ));

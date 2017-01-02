@@ -1,5 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Lorem from 'react-lorem-component';
+import { ArrowleftIcon, ArrowrightIcon } from 'ak-icon';
 import { AkContainerNavigationNested, AkContainerItem } from '../../../src/index';
 
 const pageStyle = {
@@ -46,22 +47,32 @@ export default class PagedContainerNavigation extends PureComponent {
           pages={this.props.children}
           selectedIndex={this.state.selectedIndex}
         />
-        <a
-          href="#prev"
-          onClick={() => this.setState({
-            selectedIndex: Math.max(this.state.selectedIndex - 1, 0),
-          })}
-        >
-          <AkContainerItem icon="←" text="Previous" />
-        </a>
-        <a
-          href="#next"
-          onClick={() => this.setState({
-            selectedIndex: Math.min(this.state.selectedIndex + 1, this.props.children.length - 1),
-          })}
-        >
-          <AkContainerItem icon="→" text="Next" />
-        </a>
+        {
+            this.state.selectedIndex > 0 ? (
+              <a
+                href="#prev"
+                onClick={() => this.setState({
+                  selectedIndex: Math.max(this.state.selectedIndex - 1, 0),
+                })}
+              >
+                <AkContainerItem icon={<ArrowleftIcon label="Previous" />} text="Previous" />
+              </a>
+            ) : null
+          }
+        {
+            this.state.selectedIndex < (this.props.children.length - 1) ? (
+              <a
+                href="#next"
+                onClick={() => this.setState({
+                  selectedIndex: Math.min(
+                    this.state.selectedIndex + 1,
+                    this.props.children.length - 1),
+                })}
+              >
+                <AkContainerItem icon={<ArrowrightIcon label="Next" />} text="Next" />
+              </a>
+            ) : null
+          }
       </div>
     );
   }

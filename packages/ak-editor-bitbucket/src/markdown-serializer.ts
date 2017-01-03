@@ -44,12 +44,12 @@ const nodes = {
     state.wrapBlock('> ', null, node, () => state.renderContent(node));
   },
   code_block(state: MarkdownSerializerState, node: Node) {
-    if (node.attrs.params === null) {
+    if (node.attrs.language === null) {
       state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
 
-      state.write(backticks + node.attrs.params + '\n');
+      state.write(backticks + node.attrs.language + '\n');
       state.text(node.textContent ? node.textContent : '\u200c', false);
       state.ensureNewLine();
       state.write(backticks);

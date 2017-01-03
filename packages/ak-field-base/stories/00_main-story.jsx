@@ -1,14 +1,15 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
+import uid from 'uid';
+import Input from 'ak-input';
 import Button from 'ak-button';
 import Avatar from 'ak-avatar';
 import ErrorIcon from 'ak-icon/glyph/error';
 import HelpIcon from 'ak-icon/glyph/help';
 import ExpandIcon from 'ak-icon/glyph/expand';
-
+import FieldBaseExample from './FieldBaseExample';
 import { name } from '../package.json';
 import AkFieldBase, { Label } from '../src';
-import { InputFieldBase, DivFieldBase } from './shared-components';
 import { compact, none, subtle } from '../src/internal/appearances';
 
 const formStyle = {
@@ -20,46 +21,129 @@ const formStyle = {
 };
 
 storiesOf(name, module)
-  .add('basic example', () => (
-    <div style={formStyle}>
-      <DivFieldBase label="Child div" />
-      <InputFieldBase label="Child input" />
-    </div>
-  ))
-  .add('with all states', () => (
-    <div style={formStyle}>
-      <InputFieldBase label="A default field-base" />
-      <InputFieldBase label="Invalid state" isInvalid />
-      <InputFieldBase label="Focused state" isFocused />
-      <InputFieldBase label="Required state" isRequired />
-      <InputFieldBase label="Disabled state" isDisabled />
-      <InputFieldBase label="Read-only state" isReadOnly />
-      <InputFieldBase label="Compact state" appearance={compact} />
-      <InputFieldBase label="None (no appearance modifiers) state" appearance={none} />
-      <InputFieldBase label="Subtle state" appearance={subtle} />
-    </div>
-  ))
-  .add('with button + no padding', () => (
-    <div
-      style={{
-        padding: '20px',
-        backgroundColor: 'white',
-        display: 'inline-block',
-      }}
+  .add('with label', () =>
+    <FieldBaseExample
+      label="basic example"
+      id="fieldbase"
     >
-      <Label label="Label for FieldBase">
-        <AkFieldBase
-          isPaddingDisabled
-        >
-          <Button
-            iconAfter={<ExpandIcon />}
+      <Input
+        value="input children"
+        isEditing
+        id="fieldbase"
+      />
+    </FieldBaseExample>
+  )
+  .add('without label', () => (
+    <FieldBaseExample
+      label="No label example"
+      isLabelHidden
+      id="fieldbase"
+    >
+      <Input
+        value="input children"
+        isEditing
+        id="fieldbase"
+      />
+    </FieldBaseExample>
+  ))
+  .add('with invalid prop', () =>
+    <FieldBaseExample
+      label="Invalid example"
+      id="fieldbase"
+      isInvalid
+    >
+      <Input
+        value="input children"
+        isEditing
+        id="fieldbase"
+      />
+    </FieldBaseExample>
+  )
+  .add('with required prop', () =>
+    <form style={formStyle}>
+      <FieldBaseExample
+        label="Required example"
+        id="fieldbase"
+        isRequired
+      >
+        <Input
+          isEditing
+          id="fieldbase"
+          required
+        />
+      </FieldBaseExample>
+      <div style={{ padding: 20, paddingTop: 0 }}>
+        <button type="submit">submit</button>
+      </div>
+    </form>
+  )
+  .add('with disabled prop', () =>
+    <FieldBaseExample
+      label="Disabled example"
+      id="fieldbase"
+      isDisabled
+    >
+      <Input
+        id="fieldbase"
+        value="input children"
+      />
+    </FieldBaseExample>
+  )
+  .add('with readOnly prop', () =>
+    <FieldBaseExample
+      label="Read Only example"
+      id="fieldbase"
+      isReadOnly
+    >
+      <Input
+        id="fieldbase"
+        value="input children"
+      />
+    </FieldBaseExample>
+  )
+  .add('with different appearances', () =>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {
+        [
+          compact,
+          subtle,
+          none,
+        ].map((appearance) => {
+          const id = uid();
+          return (
+            <FieldBaseExample
+              label={`${appearance} appearance example`}
+              id={id}
+              appearance={appearance}
+            >
+              <Input
+                id={id}
+                isEditing
+                value="input children"
+              />
+            </FieldBaseExample>
+          );
+        })
+      }
+    </div>
+  )
+  .add('with button + no padding', () =>
+    <div style={{ display: 'inline-block', padding: 20 }}>
+      <Label label="Button with no padding example">
+        <div style={{ backgroundColor: 'white' }}>
+          <AkFieldBase
+            isPaddingDisabled
           >
-            Imagine a Dropdown
-          </Button>
-        </AkFieldBase>
+            <Button
+              iconAfter={<ExpandIcon />}
+            >
+              Imagine a Dropdown
+            </Button>
+          </AkFieldBase>
+        </div>
       </Label>
     </div>
-  ))
+  )
   .add('with avatar + text', () => (
     <div
       style={{
@@ -68,14 +152,18 @@ storiesOf(name, module)
         display: 'inline-block',
       }}
     >
-      <Label label="Label for FieldBase">
-        <AkFieldBase>
-          <Avatar
-            src="https://cdn-img.fimfiction.net/user/xb2v-1431833233-195398-64"
-            size="small"
-          />
-          <span style={{ marginLeft: 8 }}>Jack Sparrow</span>
-        </AkFieldBase>
+      <Label
+        label="Avatar example"
+      >
+        <div style={{ backgroundColor: 'white' }}>
+          <AkFieldBase>
+            <Avatar
+              src="https://cdn-img.fimfiction.net/user/xb2v-1431833233-195398-64"
+              size="small"
+            />
+            <span style={{ marginLeft: 8 }}>Jack Sparrow</span>
+          </AkFieldBase>
+        </div>
       </Label>
     </div>
   ))
@@ -94,58 +182,64 @@ storiesOf(name, module)
     };
     return (
       <div style={formStyle}>
-        <div>These example all use divs with different kinds of content (no inputs)</div>
-
-        <DivFieldBase text={longTextWithSpaces} label="Lots of text (with whitespace)" />
-        <DivFieldBase text={longTextNoSpaces} label="Lots of text (no whitespace)" isFitContainerWidthEnabled />
-        <DivFieldBase text={''} label="No content" />
-
+        <Label label="Lots of text (with whitespace)">
+          <AkFieldBase>
+            <div>{longTextWithSpaces}</div>
+          </AkFieldBase>
+        </Label>
+        <Label label="Lots of text (no whitespace)">
+          <AkFieldBase>
+            <div style={{ overflow: 'hidden' }}>
+              {longTextNoSpaces}
+            </div>
+          </AkFieldBase>
+        </Label>
         <Label label="Small non-textual content (5x5 div)">
           <AkFieldBase>
             <div><div style={smallBoxStyles} /></div>
           </AkFieldBase>
         </Label>
-        <InputFieldBase
-          label="With a max-width css style"
-          style={{ maxWidth: '200em' }}
-        />
+        <div style={{ display: 'inline-flex' }}>
+          <Label label="With a max-width">
+            <AkFieldBase>
+              <Input
+                isEditing
+                value="a children input"
+                style={{ maxWidth: '200em' }}
+              />
+            </AkFieldBase>
+          </Label>
+        </div>
       </div>
     );
   })
-  .add('with the label hidden', () => (
-    <div style={formStyle}>
-      <InputFieldBase label="Child input" isLabelHidden text="An input child with no label" />
-    </div>
-  ))
   .add('with elements on the right', () => (
     <div style={formStyle}>
-      <InputFieldBase
-        label="Button on the right"
-        rightGutter={<Button appearance="subtle">Cancel</Button>}
-      />
-      <InputFieldBase
-        label="Button + icon on the right"
-        text="Banana Banana Banana Banana Banana Banana Banana Banana Banana Banana"
-        rightGutter={<Button iconBefore={<HelpIcon />} />}
-      />
-      <InputFieldBase
-        label="Icon + custom color on the right"
-        rightGutter={<div style={{ color: '#bf2600' }}><ErrorIcon /></div>}
-      />
-      <InputFieldBase
-        label="Text on the right"
-        rightGutter="important"
-      />
-    </div>
-  ))
-  .add('with appearance="none"', () => (
-    <div style={formStyle}>
-      <p>Different form states combined with appearance=none</p>
-      <InputFieldBase appearance={none} label="A default field-base" />
-      <InputFieldBase appearance={none} label="Invalid state" isInvalid />
-      <InputFieldBase appearance={none} label="Focused state" isFocused />
-      <InputFieldBase appearance={none} label="Required state" isRequired />
-      <InputFieldBase appearance={none} label="Disabled state" isDisabled />
-      <InputFieldBase appearance={none} label="Read-only state" isReadOnly />
+      {
+        [
+          <Button appearance="subtle">Cancel</Button>,
+          <Button iconBefore={<HelpIcon />} />,
+          <div style={{ color: '#bf2600' }}><ErrorIcon /></div>,
+          'important',
+        ].map((rightGutter) => {
+          const id = uid();
+          return (
+            <div>
+              <Label
+                label="Avatar example"
+                htmlFor={id}
+              />
+              <div style={{ backgroundColor: 'white', display: 'inline-flex', alignItems: 'center' }}>
+                <AkFieldBase>
+                  <Input id={id} value="Input children" isEditing />
+                </AkFieldBase>
+                <div style={{ marginLeft: 4 }}>
+                  {rightGutter}
+                </div>
+              </div>
+            </div>
+          );
+        })
+      }
     </div>
   ));

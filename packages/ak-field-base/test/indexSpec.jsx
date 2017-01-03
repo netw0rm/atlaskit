@@ -30,41 +30,41 @@ describe('ak-field-base', () => {
   describe('properties', () => {
     describe('by default', () =>
       it('should render a content', () =>
-        expect(shallow(<FieldBase />)).to.have.descendants(`.${contentClass}`)
+        expect(shallow(<FieldBase {...defaultProps} />)).to.have.descendants(`.${contentClass}`)
       )
     );
 
     describe('isReadOnly prop = true', () =>
       it('should render with the .isReadOnly class', () =>
-        expect(shallow(<FieldBase isReadOnly />)).to.have.descendants(`.${isReadOnlyClass}`)
+        expect(shallow(<FieldBase {...defaultProps} isReadOnly />)).to.have.descendants(`.${isReadOnlyClass}`)
       )
     );
 
     describe('isFocused prop = true', () => {
       it('should render the content with the .isFocused class', () =>
-        expect(shallow(<FieldBase isFocused />)).to.have.descendants(`.${isFocusedClass}`)
+        expect(shallow(<FieldBase {...defaultProps} isFocused />)).to.have.descendants(`.${isFocusedClass}`)
       );
     });
 
     describe('isPaddingDisabled prop = true', () => {
       it('should render the content with the .paddingDisabled class', () =>
-        expect(shallow(<FieldBase isPaddingDisabled />)).to.have.descendants(`.${isPaddingDisabled}`)
+        expect(shallow(<FieldBase {...defaultProps} isPaddingDisabled />)).to.have.descendants(`.${isPaddingDisabled}`)
       );
     });
 
     describe('isInvalid prop = true', () => {
       it('should render with the isFocused styles and not the isInvalid styles', () =>
-        expect(shallow(<FieldBase isInvalid />)).to.have.descendants(`.${isInvalidClass}`)
+        expect(shallow(<FieldBase {...defaultProps} isInvalid />)).to.have.descendants(`.${isInvalidClass}`)
       );
 
       it('should render the warning icon', () =>
-        expect(shallow(<FieldBase isInvalid />)).to.have.descendants(WarningIcon)
+        expect(shallow(<FieldBase {...defaultProps} isInvalid />)).to.have.descendants(WarningIcon)
       );
     });
 
     describe('isFocused prop = true AND isInvalid prop = true', () =>
       it('should render with the isFocused styles and not the isInvalid styles', () => {
-        const wrapper = shallow(<FieldBase isFocused isInvalid />);
+        const wrapper = shallow(<FieldBase {...defaultProps} isFocused isInvalid />);
         expect(wrapper).to.have.descendants(`.${isFocusedClass}`);
         expect(wrapper).to.not.have.descendants(`.${isInvalidClass}`);
       })
@@ -74,7 +74,8 @@ describe('ak-field-base', () => {
       [compact, none, subtle].forEach(appearance =>
         describe(appearance, () =>
           it(`should render the content with the .${appearance} class`, () =>
-            expect(shallow(<FieldBase appearance={appearance} />)).to.have.descendants(`.${locals[appearance]}`)
+            expect(shallow(<FieldBase {...defaultProps} appearance={appearance} />))
+              .to.have.descendants(`.${locals[appearance]}`)
           )
         )
       );

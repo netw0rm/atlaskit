@@ -2,12 +2,6 @@ import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from 'style!./styles.less';
 
-/*
-  eslint-disable
-    jsx-a11y/label-has-for,
-    jsx-a11y/no-static-element-interactions,
-    react/prefer-stateless-function
-*/
 export default class Label extends PureComponent {
   static propTypes = {
     /**
@@ -44,7 +38,6 @@ export default class Label extends PureComponent {
      * @example <FieldBase onLabelClick={() => alert('label click!')} />
      */
     onClick: PropTypes.func,
-    htmlFor: PropTypes.string,
     /**
      * @description Whether or not the field is required.
      *
@@ -56,16 +49,15 @@ export default class Label extends PureComponent {
      * @example <FieldBase label="First Name" isRequired" />
      */
     isRequired: PropTypes.bool,
+    htmlFor: PropTypes.string,
     children: PropTypes.node,
   }
 
+  /* eslint-disable jsx-a11y/no-static-element-interactions */
   render() {
     const labelClasses = classNames(styles.labelText, {
       [styles.hidden]: this.props.isLabelHidden,
     });
-    // we render the label in a span that is in a div so that the label itself will be
-    // display: block but we can put the click handler on the span so that clicking
-    // white space after the label doesnt call anything
     return (
       <label className={styles.label} htmlFor={this.props.htmlFor}>
         <div className={labelClasses}>

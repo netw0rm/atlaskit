@@ -11,11 +11,16 @@ chai.use(chaiAsPromised);
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
+const defaultProps = {
+  label: 'test',
+  isLabelHidden: true,
+};
+
 describe('ak-field-base', () =>
   describe('Label', () => {
     describe('by default', () =>
       it('should render a label element', () =>
-        expect(shallow(<Label />)).to.have.descendants('label')
+        expect(shallow(<Label {...defaultProps} />)).to.have.descendants('label')
       )
     );
 
@@ -38,19 +43,19 @@ describe('ak-field-base', () =>
 
     describe('required prop', () => {
       it('should append an asterisk to the content', () =>
-        expect(shallow(<Label isRequired />).find(`.${styles.locals.required}`)).to.have.text('*')
+        expect(shallow(<Label {...defaultProps} isRequired />).find(`.${styles.locals.required}`)).to.have.text('*')
       );
 
       it('should not append an asterisk to the content if required is not set', () => {
-        expect(shallow(<Label />)).to.not.have.descendants(`.${styles.locals.required}`);
-        expect(shallow(<Label />)).to.not.have.text('*');
+        expect(shallow(<Label {...defaultProps} />)).to.not.have.descendants(`.${styles.locals.required}`);
+        expect(shallow(<Label {...defaultProps} />)).to.not.have.text('*');
       });
     });
 
     describe('onClick prop', () =>
       it('should fire handler when the span is clicked', () => {
         const handler = sinon.spy();
-        const wrapper = shallow(<Label onClick={handler} />);
+        const wrapper = shallow(<Label {...defaultProps} onClick={handler} />);
         wrapper.find('span').simulate('click');
         expect(handler).to.have.been.calledOnce;
       })
@@ -59,7 +64,7 @@ describe('ak-field-base', () =>
     describe('.children', () =>
       it('should render any children passed to it', () => {
         const wrapper = shallow(
-          <Label>
+          <Label {...defaultProps} >
             <div className="foo">Here is some child content!</div>
           </Label>
         );

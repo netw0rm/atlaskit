@@ -26,18 +26,24 @@ export default class extends PureComponent {
     actions: [],
   }
 
-  renderTopItems = () => (
-    ([
-      this.props.author || null,
-      this.props.type ? <Lozenge>{this.props.type}</Lozenge> : null,
-      this.props.datetime || null,
-    ])
-    .filter(item => !!item)
-    .map((item, index) => <div key={index} className={styles.topItem}>{item}</div>)
-  )
+  renderTopItems = () => {
+    const items = (
+      [
+        this.props.author || null,
+        this.props.type ? <Lozenge>{this.props.type}</Lozenge> : null,
+        this.props.datetime || null,
+      ]
+      .filter(item => !!item)
+      .map((item, index) => <div key={index} className={styles.topItem}>{item}</div>)
+    );
 
-  renderActions = () => (
-    this.props.actions.map((action, index) => (
+    return items.length
+      ? <div className={styles.topContainer}>{items}</div>
+      : null;
+  }
+
+  renderActions = () => {
+    const items = this.props.actions.map((action, index) => (
       <div key={index} className={styles.actionsItem}>
         <Button
           appearance="subtle"
@@ -47,8 +53,12 @@ export default class extends PureComponent {
           {action.content}
         </Button>
       </div>
-    ))
-  )
+    ));
+
+    return (items && items.length)
+      ? <div className={styles.actionsContainer}>{items}</div>
+      : null;
+  }
 
   render() {
     return (
@@ -59,15 +69,11 @@ export default class extends PureComponent {
           </div>
         </div>
         <div className={styles.rightSection}>
-          <div className={styles.topContainer}>
-            {this.renderTopItems()}
-          </div>
+          {this.renderTopItems()}
           <div className={styles.contentContainer}>
             {this.props.content}
           </div>
-          <div className={styles.actionsContainer}>
-            {this.renderActions()}
-          </div>
+          {this.renderActions()}
         </div>
       </div>
     );

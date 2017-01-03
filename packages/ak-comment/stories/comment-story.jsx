@@ -25,4 +25,7 @@ storiesOf(name, module)
         { content: 'Like', onClick: clickHandler },
       ]}
     />
+  ))
+  .add('a simple ak-comment with no top and bottom bars', () => (
+    <Comment content={(<p>{sampleText}</p>)} />
   ));

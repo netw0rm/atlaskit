@@ -176,6 +176,22 @@ export default class DropdownList extends PureComponent {
     if (e.keyCode === keyCode('escape')) {
       this.close();
     }
+
+    if (this.props.isOpen && e.target.getAttribute('data-role') === 'droplistItem') {
+      switch (e.keyCode) {
+        case keyCode('up'):
+          this.focusPreviousItem();
+          break;
+        case keyCode('down'):
+          this.focusNextItem();
+          break;
+        case keyCode('tab'):
+          this.close();
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   handleClickOutside = (e) => {
@@ -189,25 +205,6 @@ export default class DropdownList extends PureComponent {
 
   handleItemActivation = (item) => {
     this.props.onItemActivated({ item });
-  }
-
-  handlItemKeydown = (attrs) => {
-    const event = attrs.event;
-    event.preventDefault();
-
-    switch (event.keyCode) {
-      case keyCode('up'):
-        this.focusPreviousItem();
-        break;
-      case keyCode('down'):
-        this.focusNextItem();
-        break;
-      case keyCode('tab'):
-        this.close();
-        break;
-      default:
-        break;
-    }
   }
 
   handleTriggerActivation = (e) => {
@@ -239,7 +236,6 @@ export default class DropdownList extends PureComponent {
       onActivate={() => {
         this.handleItemActivation(item);
       }}
-      onKeyDown={this.handlItemKeydown}
     >
       {item.content}
     </Item>

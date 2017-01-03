@@ -4,7 +4,7 @@ import styles from 'style!../../style.less';
 import EmojiPropTypes from '../ak-emoji-prop-types';
 import EmojiButton from '../common/EmojiButton';
 
-export default class extends PureComponent {
+export default class EmojiPickerListRow extends PureComponent {
   static propTypes = {
     selectedEmojiShortcut: PropTypes.string,
     // eslint-disable-next-line react/forbid-prop-types

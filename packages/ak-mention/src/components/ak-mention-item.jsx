@@ -9,6 +9,10 @@ import MentionPropTypes from '../internal/ak-mention-prop-types';
 import { leftClick } from '../util/mouse';
 
 function renderHighlight(className, value, highlights, prefix) {
+  if (!value) {
+    return null;
+  }
+
   const parts = [];
   const prefixText = prefix || '';
   let lastIndex = 0;
@@ -20,26 +24,26 @@ function renderHighlight(className, value, highlights, prefix) {
       const end = h.end;
       if (start > lastIndex) {
         parts.push({
-          v: value.substring(lastIndex, start),
-          m: false,
+          value: value.substring(lastIndex, start),
+          matches: false,
         });
       }
       parts.push({
-        v: value.substring(start, end + 1),
-        m: true,
+        value: value.substring(start, end + 1),
+        matches: true,
       });
       lastIndex = end + 1;
     }
     if (lastIndex < value.length) {
       parts.push({
-        v: value.substring(lastIndex, value.length),
-        m: false,
+        value: value.substring(lastIndex, value.length),
+        matches: false,
       });
     }
   } else {
     parts.push({
-      v: value,
-      m: false,
+      value,
+      matches: false,
     });
   }
 
@@ -47,10 +51,10 @@ function renderHighlight(className, value, highlights, prefix) {
     <span className={className}>
       {prefixText}
       {parts.map((part) => {
-        if (part.m) {
-          return <b>{part.v}</b>;
+        if (part.matches) {
+          return <b>{part.value}</b>;
         }
-        return part.v;
+        return part.value;
       })}
     </span>
   );

@@ -14,7 +14,7 @@ chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
 const {
-  content: contentClass,
+  contentContainer: contentClass,
   invalid: isInvalidClass,
   focused: isFocusedClass,
   readOnly: isReadOnlyClass,

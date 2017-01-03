@@ -62,7 +62,17 @@ storiesOf(name, module)
         <Item elemBefore={<Avatar size="small" />}>third item</Item>
       </div>
     </div>
-  ), { imports })
+  ), { imports: [...imports, ['Avatar', 'ak-avatar']] })
+  .addCodeExampleStory('item with avatars and checkboxes', () => (
+    <div className={styles.storiesContainer}>
+      <p>This is an example of droplist items with avatars and checkboxes</p>
+      <div className={styles.itemsContainer}>
+        <Item elemBefore={<Avatar size="small" />} type="checkbox" isFocused>first item</Item>
+        <Item elemBefore={<Avatar size="small" />} type="checkbox" isChecked>second item</Item>
+        <Item elemBefore={<Avatar size="small" />} type="checkbox">third item</Item>
+      </div>
+    </div>
+  ), { imports: [...imports, ['Avatar', 'ak-avatar']] })
   .addCodeExampleStory('disabled items', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of disabled droplist items</p>

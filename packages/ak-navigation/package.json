@@ -25,7 +25,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-avatar": "^5.0.0",
+    "ak-avatar": "^5.1.1",
     "ak-dropdown-menu": "^1.2.0",
     "ak-icon": "^11.1.4",
     "ak-page": "^7.0.0",

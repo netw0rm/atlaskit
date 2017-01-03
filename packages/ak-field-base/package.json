@@ -15,15 +15,14 @@
     "react": "^15.3.2"
   },
   "dependencies": {
-    "ak-icon": "^11.4.1",
+    "ak-icon": "^12.1.2",
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "ak-button": "^4.1.4",
-    "ak-icon": "^11.1.5",
-    "ak-avatar": "^5.0.6"
+    "ak-button": "^5.1.2",
+    "ak-avatar": "^5.1.1"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

@@ -20,7 +20,7 @@
     "glamor": "^2.17.14"
   },
   "devDependencies": {
-    "ak-field-base": "^6.3.2"
+    "ak-field-base": "^6.4.2"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

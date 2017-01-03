@@ -3,7 +3,7 @@ import styles from 'style!../../style.less';
 import EmojiButton from '../common/EmojiButton';
 import EmojiPropTypes from '../ak-emoji-prop-types';
 
-export default class extends PureComponent {
+export default class ToneSelector extends PureComponent {
   static propTypes = {
     emoji: EmojiPropTypes.emoji.isRequired,
     onToneSelected: PropTypes.func.isRequired,

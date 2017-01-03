@@ -13,7 +13,7 @@ const leftClick = event => (
 );
 
 // eslint-disable-next-line react/prefer-stateless-function
-export default class extends PureComponent {
+export default class EmojiButton extends PureComponent {
   static propTypes = {
     ...EmojiPropTypes.emojiPropType,
     onClick: PropTypes.func,

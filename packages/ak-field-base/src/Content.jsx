@@ -37,7 +37,7 @@ export default class Content extends PureComponent {
   )
 
   render() {
-    const contentClasses = classNames(locals.content, {
+    const contentClasses = classNames(locals.contentContainer, {
       [locals.compact]: this.props.appearance === compact,
       [locals.none]: this.props.appearance === none,
       [locals.subtle]: this.props.appearance === subtle,

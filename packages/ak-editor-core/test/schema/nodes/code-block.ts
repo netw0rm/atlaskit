@@ -39,21 +39,28 @@ describe('ak-editor-core/schema code_block node', () => {
 
     context('when language is not set', () => {
       it('converts to block code node', () => {
-        const doc = fromHTML('<pre><span>window.alert("hello");<span></pre>', schema);
+        const doc = fromHTML('<div class="codehilite"><pre><span>window.alert("hello");<span></pre></div>', schema);
 
         expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
+      });
+
+      it('has language attribute as null', () => {
+        const doc = fromHTML('<div class="codehilite"><pre><span>window.alert("hello");<span></pre></div>', schema);
+
+        expect(doc.firstChild.attrs.language).to.eq(null);
       });
     });
 
     context('when language is set', () => {
       it('converts to block code node', () => {
-        const doc = fromHTML('<pre data-lang="javascript"><span>window.alert("hello");<span></pre>', schema);
+        const doc = fromHTML('<div class="codehilite language-javascript"><pre><span>window.alert("hello");<span></pre></div>', schema);
 
         expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
       });
 
       it('extracts language atrribute', () => {
-        const doc = fromHTML('<pre data-lang="javascript"><span>window.alert("hello");<span></pre>', schema);
+        const doc = fromHTML('<div class="codehilite language-javascript"><pre><span>window.alert("hello");<span></pre></div>', schema);
+
         expect(doc.firstChild.attrs.language).to.eq('javascript');
       });
     });

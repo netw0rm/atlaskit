@@ -44,17 +44,11 @@
   line-height: 2; // 2 * 14px font-size = 28px line-height
 }
 
-.actions-item + .actions-item {
-  padding-left: unit(@actions-padding, px);
-
-  &:before {
-    color: @actions-color-separator;
-    content: '.';
-    float: left;
-    margin-left: unit(-@actions-padding, px);
-    position: absolute;
-    text-align: center;
-    vertical-align: middle;
-    width: unit(@actions-padding, px);
-  }
+.actions-item + .actions-item::before {
+  content: "\b7\a0"; // middot character
+  display: inline-block;
+  line-height: 1;
+  text-align: center;
+  vertical-align: middle;
+  width: unit(@actions-padding, px);
 }

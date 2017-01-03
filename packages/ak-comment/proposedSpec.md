@@ -22,9 +22,9 @@ A comment can include many elements, including:
 ```
 <Comment
   avatarSrc="/path/to/img"
-  avatarLabel="Ben Wong's avatar"
-  author="Ben Wong"
-  type="Author" // Renders a lozenge containing this text
+  avatarLabel="Ben Wong's avatar" // Could have a sensible default based on the `commenter` prop?
+  commenter="Ben Wong"
+  role="author" // Renders a lozenge containing this text
   datetime={new Date()}
   dateformat="YYYY-MM-DD"
   content={(

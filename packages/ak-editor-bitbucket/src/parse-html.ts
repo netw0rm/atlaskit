@@ -92,10 +92,8 @@ export default function(html: string): Node {
     const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
 
     if (idMatch) {
-      const span = document.createElement('span');
-      span.setAttribute('emoji-id', idMatch[1]);
-      span.setAttribute('contenteditable', 'false');
-      img.parentNode!.insertBefore(span, img);
+      const emoji = document.createTextNode(`:${decodeURIComponent(idMatch[1])}:`);
+      img.parentNode!.insertBefore(emoji, img);
     }
 
     img.parentNode!.removeChild(img);

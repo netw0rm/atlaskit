@@ -7,7 +7,7 @@ export interface Options {
   doc: RefsNode;
   plugin: Plugin<any>;
   place?: HTMLElement;
-  schema?: Schema
+  schema?: Schema;
 }
 
 /**
@@ -36,9 +36,13 @@ export default (options: Options) => {
     pm.setTextSelection(refs['<>']);
   // Expanded selection
   } else if ('<' in refs || '>' in refs) {
-    if ('<' in refs === false) throw new Error('A `<` ref must complement a `>` ref.')
-    if ('>' in refs === false) throw new Error('A `>` ref must complement a `<` ref.')
-    pm.setTextSelection(refs['<'], refs['>'])
+    if ('<' in refs === false) {
+      throw new Error('A `<` ref must complement a `>` ref.');
+    }
+    if ('>' in refs === false) {
+      throw new Error('A `>` ref must complement a `<` ref.');
+    }
+    pm.setTextSelection(refs['<'], refs['>']);
   }
 
   return { pm, plugin: options.plugin.get(pm) };

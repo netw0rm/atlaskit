@@ -3,7 +3,7 @@ import { Plugin, ProseMirror, inputRules, TextSelection, Keymap, Schema } from '
 import {
   MentionNodeType,
   MentionQueryMarkType
-} from '../../schema'
+} from '../../schema';
 
 import { mentionQueryRule } from './input-rules';
 
@@ -130,12 +130,12 @@ export class MentionsPluginState {
     return { start, end };
   }
 
-  insertMention(mentionData: Mention) {
+  insertMention(mentionData?: Mention) {
     const { mention } = this.pm.schema.nodes;
 
-    if (mention) {
+    if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
-      const node = mention.create({ displayName: `@${mentionData.name}`, id: `@${mentionData.mentionName}` });
+      const node = mention.create({ displayName: `@${mentionData.mentionName}`, id: mentionData.id });
       this.pm.tr.delete(start, end).insert(start, node).apply();
     } else {
       this.dismiss();
@@ -160,16 +160,17 @@ export default new Plugin(MentionsPluginState);
 export interface Mention {
   name: string;
   mentionName: string;
+  id: string;
 }
 
 export interface S extends Schema {
   nodes: {
     mention?: MentionNodeType
-  },
+  };
 
   marks: {
     mention_query: MentionQueryMarkType;
-  }
+  };
 }
 
 export interface PM extends ProseMirror {

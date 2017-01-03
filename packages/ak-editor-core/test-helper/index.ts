@@ -3,6 +3,7 @@ import { offsetRefs, BuilderContent, coerce } from './schema-builder';
 import { ProseMirror } from '../';
 
 export { base64fileconverter };
+export { default as sendKeyToPm } from './send-key-to-pm';
 export { default as chaiPlugin } from './chai';
 export { default as createEvent } from './create-event';
 export { default as dispatchPasteEvent } from './dispatch-paste-event';
@@ -12,7 +13,7 @@ export { default as fixtures } from './fixtures';
 export {
   doc, p, blockquote, code_block,
   h1, h2, h3, h4, h5, h6,
-  li, ul, ol, br, img, hr, em, strong, code, del, a,
+  li, ul, ol, br, img, hr, em, strong, mono, a,
   text, fragment, slice, mention, emoji,
   nodeFactory, markFactory
 } from './schema-builder';

@@ -8,7 +8,7 @@ import { FieldBase } from '../src';
 import Content from '../src/Content';
 import Label from '../src/Label';
 import styles from '../src/styles.less';
-import { compact, subtle } from '../src/internal/appearances';
+import { compact, none, subtle } from '../src/internal/appearances';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -39,6 +39,7 @@ describe('ak-field-base', () => {
       { prop: 'isRequired', value: true, element: Label },
       { prop: 'isFocused', value: true, element: Content },
       { prop: 'appearance', value: compact, element: Content },
+      { prop: 'appearance', value: none, element: Content },
       { prop: 'appearance', value: subtle, element: Content },
       { prop: 'rightGutter', value: 'test', element: Content },
     ].forEach(setup =>
@@ -68,14 +69,14 @@ describe('ak-field-base', () => {
     beforeEach(() => {
       wrapper = mount(<FieldBase {...defaultProps} />);
       content = wrapper.find(Content);
-      content.find(`.${styles.locals.content}`).simulate('focus');
+      content.find(`.${styles.locals.contentContainer}`).simulate('focus');
     });
 
     it('should call onFocus', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBase {...defaultProps} onFocus={spy} />);
       content = wrapper.find(Content);
-      content.find(`.${styles.locals.content}`).simulate('focus');
+      content.find(`.${styles.locals.contentContainer}`).simulate('focus');
       expect(spy).to.have.been.calledOnce;
     });
 
@@ -83,7 +84,7 @@ describe('ak-field-base', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBase {...defaultProps} onBlur={spy} />);
       content = wrapper.find(Content);
-      content.find(`.${styles.locals.content}`).simulate('blur');
+      content.find(`.${styles.locals.contentContainer}`).simulate('blur');
       expect(spy).to.have.been.calledOnce;
     });
   });

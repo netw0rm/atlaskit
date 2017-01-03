@@ -1,6 +1,5 @@
 import {
   BulletListNodeType,
-  DelMarkType,
   DocNodeType,
   EmMarkType,
   HardBreakNodeType,
@@ -28,7 +27,7 @@ export default new Schema({
     list_item: { type: ListItemNodeType, content: 'paragraph' },
     text: { type: Text, group: 'inline' },
     hard_break: { type: HardBreakNodeType, group: 'inline' },
-    hr: { type: HorizontalRuleNodeType, group: 'block' },
+    horizontal_rule: { type: HorizontalRuleNodeType, group: 'block' },
   },
 
   // Note: Marks are applied in the order they are defined.
@@ -52,8 +51,8 @@ export interface JIRASchema extends Schema {
     list_item: ListItemNodeType;
     text: Text;
     hard_break: HardBreakNodeType;
-    hr: HorizontalRuleNodeType;
-  }
+    horizontal_rule: HorizontalRuleNodeType;
+  };
 
   marks: {
     strong: StrongMarkType;
@@ -62,5 +61,5 @@ export interface JIRASchema extends Schema {
     subsup: SubSupMarkType;
     u: UnderlineMarkType;
     mono: MonoMarkType;
-  }
+  };
 }

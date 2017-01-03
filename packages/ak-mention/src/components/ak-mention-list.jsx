@@ -20,6 +20,10 @@ function wrapIndex(mentions, index) {
   return newIndex % len;
 }
 
+function getKey(index, mentions) {
+  return mentions && mentions[index] && mentions[index].id;
+}
+
 export default class MentionList extends PureComponent {
   static propTypes = {
     mentions: PropTypes.arrayOf(MentionPropTypes.mention),
@@ -31,7 +35,7 @@ export default class MentionList extends PureComponent {
     super(props);
 
     this.state = {
-      selectedKey: null,
+      selectedKey: getKey(0, props.mentions),
       selectedIndex: 0,
     };
 
@@ -99,19 +103,17 @@ export default class MentionList extends PureComponent {
   }
 
   _selectIndexNewMentions(index, mentions) {
-    const key = mentions && mentions[index] && mentions[index].id;
     this.setState({
       selectedIndex: index,
-      selectedKey: key,
+      selectedKey: getKey(index, mentions),
     });
   }
 
   _selectIndex(index, callback) {
     const { mentions } = this.props;
-    const key = mentions && mentions[index] && mentions[index].id;
     this.setState({
       selectedIndex: index,
-      selectedKey: key,
+      selectedKey: getKey(index, mentions),
     }, callback);
   }
 

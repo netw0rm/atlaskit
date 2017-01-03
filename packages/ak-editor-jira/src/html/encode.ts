@@ -89,7 +89,7 @@ export default function encode(node: DocNode) {
     const elem = doc.createElement(`h${node.attrs.level}`);
     const anchor = doc.createElement('a');
     anchor.setAttribute('name', anchorNameEncode(node.textContent));
-    elem.appendChild(anchor)
+    elem.appendChild(anchor);
     elem.appendChild(encodeFragment(node.content));
     return elem;
   }

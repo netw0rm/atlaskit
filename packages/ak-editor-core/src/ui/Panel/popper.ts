@@ -1,12 +1,12 @@
 import * as module from 'popper.js';
 
-interface State {
+export interface State {
   offsets: {
     popper: {
       left: number;
       top: number;
     }
-  }
+  };
 }
 
 export interface IPopper {
@@ -15,7 +15,7 @@ export interface IPopper {
   onUpdate(cb: (state: State) => void);
 }
 
-interface IPopperConstructor {
+export interface IPopperConstructor {
   new (reference: HTMLElement, popper: HTMLElement, options: any): IPopper;
 }
 

@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import WarningIcon from 'ak-icon/glyph/warning';
 import { locals } from './styles.less';
-import appearances, { compact, subtle } from './internal/appearances';
+import appearances, { compact, none, subtle } from './internal/appearances';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class Content extends PureComponent {
@@ -37,8 +37,9 @@ export default class Content extends PureComponent {
   )
 
   render() {
-    const contentClasses = classNames(locals.content, {
+    const contentClasses = classNames(locals.contentContainer, {
       [locals.compact]: this.props.appearance === compact,
+      [locals.none]: this.props.appearance === none,
       [locals.subtle]: this.props.appearance === subtle,
       [locals.disabled]: this.props.isDisabled,
       [locals.readOnly]: this.props.isReadOnly,

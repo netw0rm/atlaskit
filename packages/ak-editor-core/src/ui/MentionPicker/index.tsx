@@ -5,7 +5,8 @@ import { MentionPicker as PfMentionPicker } from 'ak-mention';
 
 export interface Props {
   pluginState: MentionsPluginState;
-  resourceProvider: any;//AbstractMentionResource;
+  resourceProvider: any; // AbstractMentionResource;
+  reversePosition?: boolean;
 }
 
 export interface State {
@@ -42,14 +43,16 @@ export default class MentionPicker extends PureComponent<Props, State> {
         display: 'block',
         position: 'absolute',
         left: (rect.left - parentRect.left),
-        top: (rect.top - parentRect.top) + rect.height,
+        top: !this.props.reversePosition ? (rect.top - parentRect.top) + rect.height : null,
+        bottom: this.props.reversePosition ? (window.innerHeight - parentRect.bottom) + 20 : null
       };
+
       const picker = (
         <PfMentionPicker
           resourceProvider={this.props.resourceProvider}
           onSelection={this.handleSelectedMention}
           query={query}
-          ref='picker'
+          ref="picker"
         />
       );
       return (

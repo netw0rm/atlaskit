@@ -2,11 +2,16 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import {
   ProseMirror,
+  Keymap,
   BlockTypePlugin,
   ListsPlugin,
   TextFormattingPlugin,
+  HorizontalRulePlugin,
   MarkdownInputRulesPlugin,
-  Chrome
+  DefaultInputRulesPlugin,
+  Chrome,
+  AnalyticsHandler,
+  service as analyticsService
 } from 'ak-editor-core';
 import schema from './schema';
 import { parse, encode } from './cxhtml';
@@ -19,6 +24,7 @@ export interface Props {
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
+  analyticsHandler?: AnalyticsHandler;
 }
 
 export interface State {
@@ -32,6 +38,8 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
+
+    analyticsService.handler = props.analyticsHandler || ((name) => {});
   }
 
   /**
@@ -84,7 +92,7 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
+        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
         onCancel={handleCancel}
         onSave={handleSave}
         onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
@@ -128,12 +136,18 @@ export default class Editor extends PureComponent<Props, State> {
           MarkdownInputRulesPlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          HorizontalRulePlugin,
+          DefaultInputRulesPlugin
         ],
       });
 
       if (context) {
         BlockTypePlugin.get(pm)!.changeContext(context);
       }
+
+      pm.addKeymap(new Keymap({
+        'Mod-Enter': this.handleSave
+      }));
 
       pm.on.change.add(this.handleChange);
       pm.focus();

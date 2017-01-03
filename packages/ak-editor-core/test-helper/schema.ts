@@ -16,8 +16,8 @@ import {
   ParagraphNodeType,
   MentionNodeType,
   EmojiNodeType,
-  CodeMarkType,
-  DelMarkType,
+  MonoMarkType,
+  StrikeMarkType,
   EmMarkType,
   LinkMarkType,
   StrongMarkType
@@ -45,7 +45,7 @@ export interface AtlassianEditorSchema extends Schema {
     code_block: CodeBlockNodeType;
     mention: MentionNodeType;
     emoji: EmojiNodeType;
-  }
+  };
 
   marks: {
     [name: string]: MarkType;
@@ -53,9 +53,9 @@ export interface AtlassianEditorSchema extends Schema {
     link: LinkMarkType;
     em: EmMarkType;
     strong: StrongMarkType;
-    code: CodeMarkType;
-    del: DelMarkType;
-  }
+    mono: MonoMarkType;
+    strike: StrikeMarkType;
+  };
 }
 
 export const schema = new Schema({
@@ -85,7 +85,7 @@ export const schema = new Schema({
     link: LinkMarkType,
     em: EmMarkType,
     strong: StrongMarkType,
-    code: CodeMarkType,
-    del: DelMarkType,
+    mono: MonoMarkType,
+    strike: StrikeMarkType,
   },
 }) as AtlassianEditorSchema;

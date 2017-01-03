@@ -7,7 +7,7 @@ import { BlockTypeState } from '../../plugins/block-type';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ListsState } from '../../plugins/lists';
 import { TextFormattingState } from '../../plugins/text-formatting';
-import { ImageUploadState } from '../../plugins/image-upload'
+import { ImageUploadState } from '../../plugins/image-upload';
 import { MentionsPluginState } from '../../plugins/mentions';
 import MentionIcon from 'ak-icon/glyph/editor/mention';
 import ImageIcon from 'ak-icon/glyph/editor/image';
@@ -20,6 +20,7 @@ import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarFeedback from '../ToolbarFeedback';
 import MentionPicker from '../MentionPicker';
+import { decorator as analytics } from '../../analytics';
 
 export interface Props {
   feedbackFormUrl?: string;
@@ -62,12 +63,12 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
             <AkButtonGroup>
               {!this.props.onSave ? null :
               <span onClick={this.handleSave}>
-                <AkButton appearance='primary'>Save</AkButton>
+                <AkButton appearance="primary">Save</AkButton>
               </span>
               }
               {!this.props.onCancel ? null :
               <span onClick={this.handleCancel}>
-                <AkButton appearance='subtle'>Cancel</AkButton>
+                <AkButton appearance="subtle">Cancel</AkButton>
               </span>
               }
             </AkButtonGroup>
@@ -76,13 +77,13 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
             {!props.onInsertMention ? null :
             <ToolbarIconButton
               onClick={this.handleInsertMention}
-              icon={<MentionIcon label='Mention' />}
+              icon={<MentionIcon label="Mention" />}
             />
             }
             {!props.pluginStateImageUpload ? null :
             <ToolbarIconButton
               onClick={this.handleInsertImage}
-              icon={<ImageIcon label='Image' />}
+              icon={<ImageIcon label="Image" />}
             />
             }
           </div>
@@ -91,6 +92,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     );
   }
 
+  @analytics('atlassian.editor.stop.cancel')
   private handleCancel = () => {
     const { onCancel } = this.props;
     if (onCancel) {
@@ -98,6 +100,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.image.button')
   private handleInsertImage = () => {
     const { pluginStateImageUpload } = this.props;
 
@@ -106,6 +109,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.mention.button')
   private handleInsertMention = () => {
     const { onInsertMention } = this.props;
     if (onInsertMention) {
@@ -113,6 +117,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.stop.save')
   private handleSave = () => {
     const { onSave } = this.props;
     if (onSave) {

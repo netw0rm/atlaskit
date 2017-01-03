@@ -56,6 +56,7 @@ export {
   allInputRules,
   headingRule,
   bulletListRule,
+  textblockTypeInputRule,
   blockQuoteRule,
   codeBlockRule,
   wrappingInputRule
@@ -87,9 +88,9 @@ export {
   MarkdownSerializerState
 } from 'prosemirror/dist/markdown';
 
-import * as browser from "prosemirror/dist/util/browser";
+import * as browser from 'prosemirror/dist/util/browser';
 export { browser }
 
-export { OrderedMap } from "prosemirror/dist/util/orderedmap";
+export { OrderedMap } from 'prosemirror/dist/util/orderedmap';
 
 export { posFromDOM } from 'prosemirror/dist/edit/dompos';

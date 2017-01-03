@@ -4,7 +4,7 @@ export type ImageUploadDropHandler = (pm: ProseMirror, e: DragEvent) => boolean;
 
 function isDroppedFile(
   e: DragEvent
-) : boolean {
+): boolean {
   return Array.prototype.slice.call(e.dataTransfer.types).indexOf('Files') !== -1;
 }
 

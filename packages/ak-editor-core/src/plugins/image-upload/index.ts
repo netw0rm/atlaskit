@@ -12,6 +12,7 @@ import {
 import { ImageNodeType } from '../../schema';
 import PasteAdapter from './paste-adapter';
 import DropAdapter from './drop-adapter';
+import { service as analyticsService } from '../../analytics';
 
 export interface ImageUploadPluginOptions {
   defaultHandlersEnabled?: boolean;
@@ -51,7 +52,7 @@ export class ImageUploadState {
     this.pm = pm;
     this.pasteAdapter = new PasteAdapter(pm);
     this.dropAdapter = new DropAdapter(pm);
-    this.config = {...DEFAULT_OPTIONS, ...options};
+    this.config = { ...DEFAULT_OPTIONS, ...options };
     this.hidden = !pm.schema.nodes.image;
     this.enabled = this.canInsertImage();
 
@@ -61,13 +62,23 @@ export class ImageUploadState {
       pm.on.activeMarkChange,
     ], () => this.update());
 
+    this.pasteAdapter.add(() => {
+      analyticsService.trackEvent('atlassian.editor.image.paste');
+      return true;
+    });
+
+    this.dropAdapter.add(() => {
+      analyticsService.trackEvent('atlassian.editor.image.drop');
+      return true;
+    });
+
     this.dropAdapter.add(this.handleImageUpload);
     this.pasteAdapter.add(this.handleImageUpload);
   }
 
-  handleImageUpload = (_?: any, e?: any) : boolean => {
+  handleImageUpload = (_?: any, e?: any): boolean => {
     const { uploadHandler } = this;
-    
+
     if (!uploadHandler) {
       return false;
     }
@@ -181,7 +192,7 @@ export default new Plugin(ImageUploadState);
 export interface S extends Schema {
   nodes: {
     image?: ImageNodeType
-  }
+  };
 }
 
 export interface PM extends ProseMirror {

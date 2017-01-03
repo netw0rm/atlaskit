@@ -1,5 +1,4 @@
 import {
-  allInputRules,
   commands,
   DOMFromPos,
   inputRules,
@@ -36,9 +35,7 @@ export class HyperlinkState {
 
     pm.on.transformPasted.add(pasteTransformer.bind(pasteTransformer, pm));
 
-    this.inputRules = [
-      hyperlinkRule,
-    ].concat(allInputRules);
+    this.inputRules = [hyperlinkRule];
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach(rule => rules.addRule(rule));
@@ -161,7 +158,7 @@ export class HyperlinkState {
       const depth = $head.resolveDepth($head.depth + 1);
 
       // See `ResolvedPos.prototype.start` method prosemirror/src/model/resolvedpos
-      const currentNodeOffset = depth == 0 ? 0 : path[depth * 3 - 1];
+      const currentNodeOffset = depth === 0 ? 0 : path[depth * 3 - 1];
 
       const markerFrom = currentNodeOffset;
       const markerTo = markerFrom + node.nodeSize;
@@ -265,7 +262,7 @@ export default new Plugin(HyperlinkState);
 export interface S extends Schema {
   marks: {
     link?: LinkMarkType;
-  }
+  };
 }
 
 export interface PM extends ProseMirror {
@@ -283,6 +280,6 @@ export interface HyperlinkOptions {
 // returns the position to be used on 'getDomElement' to get the corrent DOM node
 function getBoundariesWithin(
   $head: ResolvedPos
-) : number {
+): number {
   return $head.parentOffset === 0 ? $head.pos : $head.pos -1;
 }

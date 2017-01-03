@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { HyperlinkState } from '../../../src/plugins/hyperlink'
+import { HyperlinkState } from '../../../src/plugins/hyperlink';
 import OpenIcon from 'ak-icon/glyph/editor/open';
 import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import IconButton from '../ToolbarIconButton';
@@ -44,31 +44,31 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       const showSeparator = showOpenButton || showUnlinkButton;
 
       return (
-        <Panel target={target} align='left' autoPosition>
+        <Panel target={target} align="left" autoPosition>
           {!showOpenButton ? null :
           <IconButton
             href={href}
-            target='_blank'
-            theme='dark'
-            icon={<OpenIcon label='Open' />}
+            target="_blank"
+            theme="dark"
+            icon={<OpenIcon label="Open" />}
           />
           }
           {!showUnlinkButton ? null :
           <IconButton
-            theme='dark'
+            theme="dark"
             onClick={this.handleUnlink}
-            icon={<UnlinkIcon label='Unlink' />}
+            icon={<UnlinkIcon label="Unlink" />}
           />
           }
           {!showSeparator ? null :
           <span style={{ background: 'grey', width: 1, height: 20, display: 'inline-block', margin: '0 10px' }} />
           }
           <PanelTextInput
-            placeholder='Link address'
+            placeholder="Link address"
             defaultValue={href}
             onSubmit={this.updateHref}
             onChange={this.updateHref}
-            ref='textInput'
+            ref="textInput"
           />
         </Panel>
       );

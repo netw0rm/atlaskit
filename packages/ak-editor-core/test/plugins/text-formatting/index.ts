@@ -20,33 +20,33 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrong = sinon.spy(plugin, 'toggleStrong');
 
-            pm.input.dispatchKey("Cmd-B");
+            pm.input.dispatchKey('Cmd-B');
 
             expect(toggleStrong).to.have.been.callCount(1);
           });
         });
 
-        context('when hits Cmd-B', () => {
+        context('when hits Cmd-I', () => {
           it('toggles italic mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleEm = sinon.spy(plugin, 'toggleEm');
 
-            pm.input.dispatchKey("Cmd-I");
+            pm.input.dispatchKey('Cmd-I');
 
             expect(toggleEm).to.have.been.callCount(1);
           });
-        })
+        });
 
-        context('when hits Cmd-B', () => {
+        context('when hits Cmd-U', () => {
           it('toggles underline mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
 
-            pm.input.dispatchKey("Cmd-U");
+            pm.input.dispatchKey('Cmd-U');
 
             expect(toggleUnderline).to.have.been.callCount(1);
           });
-        })
+        });
 
         /*
           Node: Here dispatch key 'Shift-Cmd-S' instead of 'Cmd-Shift-S',
@@ -57,7 +57,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrike = sinon.spy(plugin, 'toggleStrike');
 
-            pm.input.dispatchKey("Shift-Cmd-S");
+            pm.input.dispatchKey('Shift-Cmd-S');
 
             expect(toggleStrike).to.have.been.callCount(1);
           });
@@ -68,7 +68,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleMono = sinon.spy(plugin, 'toggleMono');
 
-            pm.input.dispatchKey("Shift-Cmd-M");
+            pm.input.dispatchKey('Shift-Cmd-M');
 
             expect(toggleMono).to.have.been.callCount(1);
           });
@@ -81,7 +81,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrong = sinon.spy(plugin, 'toggleStrong');
 
-            pm.input.dispatchKey("Ctrl-B");
+            pm.input.dispatchKey('Ctrl-B');
 
             expect(toggleStrong).to.have.been.callCount(1);
           });
@@ -92,22 +92,22 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleEm = sinon.spy(plugin, 'toggleEm');
 
-            pm.input.dispatchKey("Ctrl-I");
+            pm.input.dispatchKey('Ctrl-I');
 
             expect(toggleEm).to.have.been.callCount(1);
           });
-        })
+        });
 
         context('when hits Ctrl-B', () => {
           it('toggles underline mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
 
-            pm.input.dispatchKey("Ctrl-U");
+            pm.input.dispatchKey('Ctrl-U');
 
             expect(toggleUnderline).to.have.been.callCount(1);
           });
-        })
+        });
 
         /*
           Node: Here dispatch key 'Shift-Ctrl-S' instead of 'Ctrl-Shift-S',
@@ -118,7 +118,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrike = sinon.spy(plugin, 'toggleStrike');
 
-            pm.input.dispatchKey("Shift-Ctrl-S");
+            pm.input.dispatchKey('Shift-Ctrl-S');
 
             expect(toggleStrike).to.have.been.callCount(1);
           });
@@ -129,7 +129,7 @@ describe('text-formatting', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleMono = sinon.spy(plugin, 'toggleMono');
 
-            pm.input.dispatchKey("Shift-Ctrl-M");
+            pm.input.dispatchKey('Shift-Ctrl-M');
 
             expect(toggleMono).to.have.been.callCount(1);
           });
@@ -146,7 +146,7 @@ describe('text-formatting', () => {
 
   it('should allow a change handler to be attached', () => {
     const { plugin } = editor(doc(p('text')));
-    const spy = sinon.spy()
+    const spy = sinon.spy();
     plugin.subscribe(spy);
 
     expect(spy).to.have.been.callCount(1);
@@ -155,10 +155,10 @@ describe('text-formatting', () => {
 
   it('should call change handlers when em is toggled', () => {
     const { plugin } = editor(doc(p('te{<>}xt')));
-    const spy = sinon.spy()
+    const spy = sinon.spy();
     plugin.subscribe(spy);
 
-    plugin.toggleEm()
+    plugin.toggleEm();
 
     expect(spy).to.have.been.callCount(2);
     expect(spy).to.have.been.calledWith(plugin);

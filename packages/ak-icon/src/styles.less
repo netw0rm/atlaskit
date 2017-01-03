@@ -1,42 +1,43 @@
-@import 'shared-variables.less';
+@size-small: 20px;
+@size-medium: 30px;
+@size-large: 50px;
+@size-xlarge: 100px;
+@size-default: @size-small;
 
-.onlySize(@size) {
+.iconBody {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  line-height: 1;
+}
+
+// mixin used to output styles for each size of the icon.
+.size(@size) {
   @height: "size-@{size}";
   @width: "size-@{size}";
 
   .@{size} {
-    .icon, .iconContent {
-      height: @@height;
-      width: @@width;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    height: @@height;
+    width: @@width;
 
-      & > svg when not(@size=small) {
-        height: @@height;
-        width: @@width;
-      }
+    .svg {
+      height: 100%;
+      width: 100%;
     }
   }
 }
 
-.iconBody {
-  box-sizing: border-box;
-  display: inline-flex;
-  line-height: 1;
-  vertical-align: baseline;
-}
+.size(small);
+.size(medium);
+.size(large);
+.size(xlarge);
 
-.onlySize(small);
-.onlySize(medium);
-.onlySize(large);
-.onlySize(xlarge);
-
-.iconContent {
-  display: inline-block;
-  margin: auto;
-
-  & > svg {
-    vertical-align: bottom;
-  }
+.svg {
+  overflow: hidden;
+  // max-height/width values are needed to fix
+  // https://ecosystem.atlassian.net/browse/AK-1176
+  // svg paths wider than the viewBox or size mess with flexbox calcs in IE
+  max-height: 100%;
+  max-width: 100%;
+  vertical-align: bottom;
 }

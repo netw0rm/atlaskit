@@ -116,12 +116,9 @@ export default class DropdownList extends PureComponent {
     dropDomRef.style.maxHeight = appearance !== 'tall' ? `${dropdownMaxHeight}px` : 'none';
   }
 
-  getNextFocusable = (indexItem, latestAvailable) => {
+  getNextFocusable = (indexItem, available) => {
     let currentItem = indexItem === undefined ? -1 : indexItem;
-
-    if (latestAvailable === undefined) {
-      latestAvailable = currentItem; // eslint-disable-line no-param-reassign
-    }
+    const latestAvailable = available || currentItem;
 
     if (currentItem < this.domItemsList.length - 1) {
       currentItem++;
@@ -133,7 +130,7 @@ export default class DropdownList extends PureComponent {
       return this.getNextFocusable(currentItem, latestAvailable);
     }
 
-    return latestAvailable || currentItem;
+    return latestAvailable;
   }
 
   getPrevFocusable = (indexItem, latestAvailable) => {

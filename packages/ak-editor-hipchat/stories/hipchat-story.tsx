@@ -15,4 +15,5 @@ storiesOf('ak-editor-hipchat', module)
     );
   })
   .add('With maxContentSize', () => <Editor maxContentSize={100}/>)
+  .add('With onChange', () => <Editor onChange={action('onChange')} />)
 ;

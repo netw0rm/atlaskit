@@ -26,7 +26,7 @@ export default class Label extends PureComponent {
      * @memberof FieldBase
      * @type {boolean}
      * @default false
-     * @example <FieldBase label="First Name" shouldHideLabel />
+     * @example <FieldBase label="First Name" isLabelHidden />
      */
     isLabelHidden: PropTypes.bool,
     /**
@@ -35,7 +35,7 @@ export default class Label extends PureComponent {
      * @memberof FieldBase
      * @type {Function}
      * @default () => void
-     * @example <FieldBase onLabelClick={() => alert('label click!')} />
+     * @example <FieldBase onClick={() => alert('label click!')} />
      */
     onClick: PropTypes.func,
     /**

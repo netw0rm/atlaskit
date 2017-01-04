@@ -28,7 +28,7 @@
     "ak-avatar": "^5.1.1",
     "ak-button": "^5.1.3",
     "ak-dropdown-menu": "^1.2.0",
-    "ak-icon": "^11.1.4",
+    "ak-icon": "^12.1.3",
     "ak-page": "^7.0.0",
     "akutil-common-test": "*",
     "karma-sinon-chai": "^1.2.4",

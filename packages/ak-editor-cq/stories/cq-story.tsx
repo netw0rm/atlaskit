@@ -72,7 +72,7 @@ storiesOf('ak-editor-cq', module)
               </Tab>
               <Tab selected label="comment">
                 <Editor
-                  context='comment'
+                  context="comment"
                   isExpandedByDefault
                   onCancel={CancelAction}
                   onSave={SaveAction}

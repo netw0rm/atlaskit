@@ -4,7 +4,7 @@ export class BlockQuoteNodeType extends Block {
   constructor(name: string, schema: Schema) {
     super(name, schema);
     if (name !== 'blockquote') {
-      throw new Error("BlockQuoteNodeType must be named 'blockquote'.");
+      throw new Error('BlockQuoteNodeType must be named "blockquote".');
     }
   }
 

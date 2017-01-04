@@ -37,10 +37,10 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           disabled={disabled || active}
           onClick={this.openLinkPanel}
           selected={adding}
-          icon={<LinkIcon label='Link' />}
+          icon={<LinkIcon label="Link" />}
         />
         {!adding ? null :
-        <Panel align='center' onOutsideClick={this.closeLinkPanel}>
+        <Panel align="center" onOutsideClick={this.closeLinkPanel}>
           <TextInput
             autoFocus
             placeholder="Paste link"

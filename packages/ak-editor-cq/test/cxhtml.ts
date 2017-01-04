@@ -18,16 +18,16 @@ const checkBuilder = (fn: any, description: string, cxhtml: string, doc: DocNode
   });
 
   fn(`round-trips CXHTML: ${description}`, () => {
-    const roundTripped = parse(encode(doc))
+    const roundTripped = parse(encode(doc));
     expect(roundTripped).to.deep.equal(doc);
   });
-}
+};
 
 const check = (description: string, cxhtml: string, doc: DocNode) =>
   checkBuilder(it, description, cxhtml, doc);
 
 const checkOnly = (description: string, cxhtml: string, doc: DocNode) =>
-  checkBuilder(it.only, description, cxhtml, doc)
+  checkBuilder(it.only, description, cxhtml, doc);
 
 describe('ak-editor-cq encode-cxml:', () => {
   describe('basic formatting:', () => {

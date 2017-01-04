@@ -18,7 +18,9 @@ describe('ak-editor-core/schema subsup mark', () => {
         }
       });
     }).to.throw(Error);
+  });
 
+  it('does not throw an error if it is named "subsup"', () => {
     expect(() => {
       new Schema({
         nodes: {
@@ -53,10 +55,10 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       text: Text;
-    }
+    };
     marks: {
       subsup: SubSupMarkType;
-    }
+    };
   }
 
   return new Schema({

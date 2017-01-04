@@ -14,7 +14,9 @@ describe('ak-editor-core/schema blockquote node', () => {
         }
       });
     }).to.throw(Error);
+  });
 
+  it('does not throw an error if it is named "blockquote"', () => {
     expect(() => {
       new Schema({
         nodes: {

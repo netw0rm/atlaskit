@@ -1,6 +1,6 @@
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
-import FieldBase from 'ak-field-base';
+import Base from 'ak-field-base';
 
 /**
  * @description A text based form field with an associated label.
@@ -98,7 +98,7 @@ export default class FieldText extends PureComponent {
 
   render() {
     return (
-      <FieldBase
+      <Base
         appearance={this.props.compact ? 'compact' : 'standard'}
         disabled={this.props.disabled}
         label={this.props.label}
@@ -114,7 +114,7 @@ export default class FieldText extends PureComponent {
           required={this.props.required}
           onChange={this.props.onChange}
         />
-      </FieldBase>
+      </Base>
     );
   }
 }

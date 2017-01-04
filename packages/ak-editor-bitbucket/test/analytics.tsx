@@ -6,7 +6,7 @@ import * as chaiEnzyme from 'chai-enzyme';
 import { shallow, mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { doc, strong, h1, p } from './_schema-builder';
-import stringRepeat from '../src/util/string-repeat'
+import stringRepeat from '../src/util/string-repeat';
 import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-core/test-helper';
 
 import { ProseMirror, browser, ToolbarTextFormatting, service, AnalyticsHandler, debugHandler } from 'ak-editor-core';
@@ -247,7 +247,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.image.drop', () => {
-    const editorAPI:Editor = editor.get(0) as any;
+    const editorAPI: Editor = editor.get(0) as any;
     const { pm } = editorAPI.state;
 
     // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'

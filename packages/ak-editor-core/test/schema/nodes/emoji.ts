@@ -9,11 +9,23 @@ describe('ak-editor-core/schema emoji node', () => {
     expect(() => {
       new Schema({
         nodes: {
-          emoji: { type: EmojiNodeType, group: 'inline' },
+          doc: { type: DocNodeType, content: 'inline*' },
           foo: { type: EmojiNodeType, group: 'inline' },
           text: { type: Text }
         }
       });
     }).to.throw(Error);
+  });
+
+  it('does not throw an error if it is named "emoji"', () => {
+    expect(() => {
+      new Schema({
+        nodes: {
+          doc: { type: DocNodeType, content: 'inline*' },
+          emoji: { type: EmojiNodeType, group: 'inline' },
+          text: { type: Text }
+        }
+      });
+    }).to.not.throw(Error);
   });
 });

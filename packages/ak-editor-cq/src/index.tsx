@@ -8,6 +8,7 @@ import {
   TextFormattingPlugin,
   HorizontalRulePlugin,
   MarkdownInputRulesPlugin,
+  DefaultInputRulesPlugin,
   Chrome,
   AnalyticsHandler,
   service as analyticsService
@@ -91,7 +92,7 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
+        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
         onCancel={handleCancel}
         onSave={handleSave}
         onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
@@ -135,7 +136,8 @@ export default class Editor extends PureComponent<Props, State> {
           MarkdownInputRulesPlugin,
           ListsPlugin,
           TextFormattingPlugin,
-          HorizontalRulePlugin
+          HorizontalRulePlugin,
+          DefaultInputRulesPlugin
         ],
       });
 

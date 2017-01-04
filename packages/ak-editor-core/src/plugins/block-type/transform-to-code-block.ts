@@ -37,7 +37,8 @@ function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNode
   const delSteps: Step[] = [];
   const newlinePos: number[] = [];
   for (let i = 0, cur = pos + 1; i < node.childCount; i++) {
-    const child = node.child(i), end = cur + child.nodeSize;
+    const child = node.child(i);
+    const end = cur + child.nodeSize;
 
     if (child.type.name === 'hard_break') {
       newlinePos.push(cur);

@@ -25,7 +25,7 @@ export interface State {
 }
 
 export default class ToolbarTextFormatting extends PureComponent<Props, State> {
-  state: State = {}
+  state: State = {};
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -43,7 +43,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
           onClick={this.handleBoldClick}
           selected={this.state.boldActive}
           disabled={this.state.boldDisabled}
-          icon={<BoldIcon label='Bold' />}
+          icon={<BoldIcon label="Bold" />}
         />
         }
 
@@ -52,7 +52,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
           onClick={this.handleItalicClick}
           selected={this.state.italicActive}
           disabled={this.state.italicDisabled}
-          icon={<ItalicIcon label='Italic' />}
+          icon={<ItalicIcon label="Italic" />}
         />
         }
 
@@ -61,7 +61,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
           onClick={this.handleUnderlineClick}
           selected={this.state.underlineActive}
           disabled={this.state.underlineDisabled}
-          icon={<UnderlineIcon label='Underline' />}
+          icon={<UnderlineIcon label="Underline" />}
         />
         }
       </span>

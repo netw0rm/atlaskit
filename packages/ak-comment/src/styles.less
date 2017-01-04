@@ -14,6 +14,11 @@
 
 .avatar-section {
   padding-right: unit(@grid * 2, px);
+
+  [dir="rtl"] & {
+    padding-left: unit(@grid * 2, px);
+    padding-right: 0;
+  }
 }
 
 .avatar-container {

@@ -126,5 +126,25 @@ describe(name, () => {
         });
       });
     });
+
+    describe('nesting', () => {
+      it('should render a child comments in the correct container', () => {
+        const childComment = <Comment content="child" />;
+        const wrapper = shallow(<Comment content="parent'">{childComment}</Comment>);
+
+        const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
+        expect(commentsContainer).to.have.exactly(1).descendants(Comment);
+        expect(commentsContainer).to.contain(childComment);
+      });
+
+      it('should render multiple adjacent siblings', () => {
+        const childComments = [<Comment content="child1" />, <Comment content="child2" />];
+        const wrapper = shallow(<Comment content="parent'">{childComments}</Comment>);
+
+        const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
+        expect(commentsContainer).to.have.exactly(childComments.length).descendants(Comment);
+        childComments.forEach(childComment => expect(commentsContainer).to.contain(childComment));
+      });
+    });
   });
 });

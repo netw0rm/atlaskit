@@ -57,6 +57,35 @@ storiesOf(name, module)
           { content: 'Delete', onClick: clickHandler },
           { content: 'Like', onClick: clickHandler },
         ]}
+      >
+        <Comment
+          avatarLabel="User avatar"
+          avatarSrc=""
+          author="John Smith"
+          type="Author"
+          datetime="1, September 2016"
+          content="3rd-level child comment"
+          actions={[
+            { content: 'Reply', onClick: clickHandler },
+            { content: 'Edit', onClick: clickHandler },
+            { content: 'Delete', onClick: clickHandler },
+            { content: 'Like', onClick: clickHandler },
+          ]}
+        />
+      </Comment>
+      <Comment
+        avatarLabel="User avatar"
+        avatarSrc=""
+        author="John Smith"
+        type="Author"
+        datetime="31, August 2016"
+        content="Child comment 2"
+        actions={[
+          { content: 'Reply', onClick: clickHandler },
+          { content: 'Edit', onClick: clickHandler },
+          { content: 'Delete', onClick: clickHandler },
+          { content: 'Like', onClick: clickHandler },
+        ]}
       />
     </Comment>
   ));

@@ -66,7 +66,7 @@ export default class extends PureComponent {
 
   renderChildren = () => (
     this.props.children
-      ? <div>{this.props.children}</div>
+      ? <div className={styles.nestedComments}>{this.props.children}</div>
       : null
   )
 

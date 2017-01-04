@@ -13,10 +13,6 @@ export default class ContainerItemGroup extends PureComponent {
     title: PropTypes.string,
   }
 
-  handleActionClick = (e) => {
-    e.target.blur();
-  }
-
   render() {
     return (
       <div>

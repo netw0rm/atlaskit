@@ -6,10 +6,14 @@
 @actions-color: @ak-color-N100;
 @actions-color-separator: @ak-color-N500;
 @actions-padding: @grid * 2;
+@vertical-padding: @grid * 3.5;
 
 .container {
   display: flex;
-  padding: unit(@grid, px) 0;
+
+  & + .container {
+    padding-top: unit(@vertical-padding, px);
+  }
 }
 
 .left-section {
@@ -27,10 +31,10 @@
 .top-container {
   color: @top-color;
   display: flex;
+}
 
-  > .top-item + .top-item {
-    padding-left: unit(@grid, px);
-  }
+.top-item + .top-item {
+  padding-left: unit(@grid, px);
 }
 
 .content-container {
@@ -41,6 +45,10 @@
   color: @actions-color;
   display: flex;
   line-height: 2; // 2 * 14px font-size = 28px line-height
+}
+
+.actions-item {
+  display: flex;
 }
 
 .actions-item + .actions-item::before {
@@ -55,4 +63,5 @@
 .nested-comments {
   display: flex;
   flex-direction: column;
+  padding-top: unit(@vertical-padding, px);
 }

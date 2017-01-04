@@ -5,8 +5,6 @@ import schema from './schema';
 
 let debounced: number | null = null;
 
-// let _debounced: Function | null = null;
-
 const hipchatSerializer = (doc: any) => {
   const root = doc.content[0];
 

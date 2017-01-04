@@ -27,6 +27,11 @@
   }
 }
 
+.isCompact .icon {
+  padding-left: 0;
+  padding-right: @ak-grid-size;
+}
+
 .containerItemInner {
   height: 100%;
   width: 100%;
@@ -53,7 +58,7 @@
   transition: padding 200ms;
   padding: @icon-open-padding;
   display: flex;
-  
+
   [data-__ak-navigation-container-closed="true"] & {
     padding: @icon-closed-padding;
   }

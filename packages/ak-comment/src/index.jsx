@@ -14,6 +14,10 @@ export default class extends PureComponent {
     author: PropTypes.string,
     avatarLabel: PropTypes.string,
     avatarSrc: PropTypes.string,
+    children: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.arrayOf(PropTypes.node),
+    ]),
     content: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),
@@ -60,6 +64,12 @@ export default class extends PureComponent {
       : null;
   }
 
+  renderChildren = () => (
+    this.props.children
+      ? <div>{this.props.children}</div>
+      : null
+  )
+
   render() {
     return (
       <div className={styles.container}>
@@ -74,6 +84,7 @@ export default class extends PureComponent {
             {this.props.content}
           </div>
           {this.renderActions()}
+          {this.renderChildren()}
         </div>
       </div>
     );

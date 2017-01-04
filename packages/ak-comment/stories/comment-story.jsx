@@ -28,4 +28,35 @@ storiesOf(name, module)
   ))
   .add('a simple ak-comment with no top and bottom bars', () => (
     <Comment content={(<p>{sampleText}</p>)} />
+  ))
+  .add('ak-comment with nested comments', () => (
+    <Comment
+      avatarLabel="User avatar"
+      avatarSrc=""
+      author="John Smith"
+      type="Author"
+      datetime="30, August 2016"
+      content="Root-level comment"
+      actions={[
+        { content: 'Reply', onClick: clickHandler },
+        { content: 'Edit', onClick: clickHandler },
+        { content: 'Delete', onClick: clickHandler },
+        { content: 'Like', onClick: clickHandler },
+      ]}
+    >
+      <Comment
+        avatarLabel="User avatar"
+        avatarSrc=""
+        author="John Smith"
+        type="Author"
+        datetime="31, August 2016"
+        content="Child comment"
+        actions={[
+          { content: 'Reply', onClick: clickHandler },
+          { content: 'Edit', onClick: clickHandler },
+          { content: 'Delete', onClick: clickHandler },
+          { content: 'Like', onClick: clickHandler },
+        ]}
+      />
+    </Comment>
   ));

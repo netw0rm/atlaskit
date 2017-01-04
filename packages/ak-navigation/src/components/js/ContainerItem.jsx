@@ -4,15 +4,22 @@ import {
   containerItemOuter,
   icon,
   isSelected,
+  isCompact,
   text,
 } from 'style!../less/ContainerItem.less';
 import className from 'classnames';
 
 export default class ContainerItem extends PureComponent {
   static propTypes = {
-    text: PropTypes.node,
     icon: PropTypes.node,
+    isCompact: PropTypes.bool,
     isSelected: PropTypes.bool,
+    text: PropTypes.node,
+  }
+
+  static defaultProps = {
+    isCompact: false,
+    isSelected: false,
   }
 
   render() {
@@ -20,6 +27,7 @@ export default class ContainerItem extends PureComponent {
       <div
         className={className(containerItemOuter, {
           [isSelected]: this.props.isSelected,
+          [isCompact]: this.props.isCompact,
         })}
       >
         <div

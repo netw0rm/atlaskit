@@ -33,6 +33,7 @@ storiesOf(name, module)
             <AkContainerItem icon={<SettingsIcon label="Settings" />} text="The xx – coexist" />
             <AkContainerItem icon={<SettingsIcon label="Settings" />} text="Alt J – an awesome wave" />
             <AkContainerItem icon={<SettingsIcon label="Settings" />} text="The Beatles – Sgt. Peppers Lonely Hearts Club Band" />
+            <AkContainerItem icon={<SettingsIcon label="Settings" />} text="Tame Impala – Lonerism" />
           </div>
           <div>
             <AkContainerItem icon={<ProjectsIcon label="Projects" />} text="The Lord of the Rings" />

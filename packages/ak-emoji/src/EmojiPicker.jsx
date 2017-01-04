@@ -1,15 +1,36 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!./style.less';
-import EmojiService from './api/EmojiService';
-import EmojiList from './EmojiList';
-import EmojiPickerFooter from './EmojiPickerFooter';
-import CategorySelector from './CategorySelector';
 
-export default class extends PureComponent {
+import styles from 'style!./style.less';
+
+import debug from './internal/logger';
+import CategorySelector from './internal/picker/CategorySelector';
+import EmojiPickerList from './internal/picker/EmojiPickerList';
+import EmojiPickerFooter from './internal/picker/EmojiPickerFooter';
+import EmojiPropTypes from './internal/ak-emoji-prop-types';
+import EmojiService from './api/EmojiService';
+import Popup from './internal/common/Popup';
+
+export default class EmojiPicker extends PureComponent {
   static propTypes = {
-    emojis: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    emojis: PropTypes.arrayOf(EmojiPropTypes.emoji).isRequired,
+    onSelection: PropTypes.func,
+
+    // ak-inline-dialog
+    /**
+     * id of element to target the picker against.
+     * if not specified the picker is rendered inline.
+     */
+    target: PropTypes.string,
+    position: PropTypes.string,
+    zIndex: PropTypes.number,
+    offsetX: PropTypes.number,
+    offsetY: PropTypes.number,
   };
+
+  static defaultProps = {
+    onSelection: () => {},
+  }
 
   constructor(props) {
     super(props);
@@ -32,16 +53,20 @@ export default class extends PureComponent {
   }
 
   onEmojiSelected = (emoji) => {
+    this.props.onSelection(emoji);
+  }
+
+  onEmojiActive = (emoji) => {
     this.setState({
       selectedEmoji: emoji,
     });
-  };
+  }
 
   onCategoryActivated = (category) => {
     this.setState({
       activeCategory: category,
     });
-  };
+  }
 
   onCategorySelected = (categoryId) => {
     const emojisInCategory = this.props.emojis.filter(emoji => emoji.category === categoryId);
@@ -53,7 +78,7 @@ export default class extends PureComponent {
         selectedEmoji: emojisInCategory[0],
       });
     }
-  };
+  }
 
   onSearch = (query) => {
     const searchResults = this.emojiService.search(query);
@@ -81,22 +106,24 @@ export default class extends PureComponent {
     this.setState({
       selectedTone: toneValue,
     });
-  };
+  }
 
   render() {
+    const { emojis, target, position, zIndex, offsetX, offsetY } = this.props;
     const classes = [styles.emojiPicker];
 
-    return (
+    const picker = (
       <div className={classNames(classes)}>
         <CategorySelector
           activeCategoryId={this.state.activeCategory}
           onCategorySelected={this.onCategorySelected}
           availableCategories={this.state.availableCategories}
         />
-        <EmojiList
+        <EmojiPickerList
           emojis={this.state.filteredEmojis}
           selectedCategory={this.state.selectedCategory}
           onEmojiSelected={this.onEmojiSelected}
+          onEmojiActive={this.onEmojiActive}
           onCategoryActivated={this.onCategoryActivated}
           onSearch={this.onSearch}
           selectedTone={this.state.selectedTone}
@@ -105,10 +132,36 @@ export default class extends PureComponent {
         <EmojiPickerFooter
           selectedEmoji={this.state.selectedEmoji}
           selectedTone={this.state.selectedTone}
-          emojis={this.props.emojis}
+          emojis={emojis}
           onToneSelected={this.onToneSelected}
         />
       </div>
     );
+
+    let content;
+
+    if (position) {
+      debug('target, position', target, position);
+      if (target) {
+        content = (
+          <Popup
+            target={target}
+            position={position}
+            zIndex={zIndex}
+            offsetX={offsetX}
+            offsetY={offsetY}
+          >
+            {picker}
+          </Popup>
+        );
+      } else {
+        // don't show if we have a position, but no target yet
+        content = null;
+      }
+    } else {
+      content = picker;
+    }
+
+    return content;
   }
 }

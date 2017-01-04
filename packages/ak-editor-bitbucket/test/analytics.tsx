@@ -35,6 +35,15 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
     expect(handler).to.have.been.calledOnce;
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
+
+  it('editor.start must not be called when unmounting component', () => {
+    let handler = sinon.spy() as AnalyticsHandler;
+    service.handler = handler;
+
+    mount(<Editor analyticsHandler={handler} isExpandedByDefault />).unmount();
+    expect(handler).to.have.been.calledOnce;
+    expect(handler).to.have.been.calledWith('atlassian.editor.start');
+  });
 });
 
 describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {

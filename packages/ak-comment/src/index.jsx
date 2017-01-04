@@ -71,12 +71,12 @@ export default class extends PureComponent {
   render() {
     return (
       <div className={styles.container}>
-        <div className={styles.leftSection}>
+        <div className={styles.avatarSection}>
           <div className={styles.avatarContainer}>
             {this.props.avatar}
           </div>
         </div>
-        <div className={styles.rightSection}>
+        <div className={styles.mainSection}>
           {this.renderTopItems()}
           <div className={styles.contentContainer}>
             {this.props.content}

@@ -3,6 +3,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import schema from './schema';
 
+let debounced: number | null = null;
+
 const hipchatSerializer = (doc: any) => {
   const root = doc.content[0];
 
@@ -128,7 +130,11 @@ export default class Editor extends PureComponent<Props, State> {
   private handleChange = (evt) => {
     const { onChange } = this.props;
     if (onChange) {
-      onChange();
+      if (debounced) {
+        clearTimeout(debounced);
+      }
+
+      debounced = setTimeout(() => { onChange(); }, 200 );
     }
   }
 

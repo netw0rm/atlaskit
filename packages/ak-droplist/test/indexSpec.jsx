@@ -132,4 +132,120 @@ describe(name, () => {
       expect(attrs.item).to.deep.equal({ content: 'item 1' });
     });
   });
+
+  describe('focus', () => {
+    describe('getPrevFocusable', () => {
+      it('should return previous item when passed an item', () => {
+        const items = [{
+          heading: 'group',
+          items: [{ content: '0' }, { content: '1' }, { content: '2' }],
+        }];
+
+        const wrapper = mount(<Droplist items={items} isOpen>test</Droplist>);
+
+        expect(wrapper.instance().getPrevFocusable(1)).to.equal(0);
+      });
+
+      it('should skip hidden items', () => {
+        const items = [{
+          heading: 'group',
+          items: [{ content: '0' }, { content: '1' }, { content: '2', isHidden: true }, { content: '3', isHidden: true }, { content: '4' }],
+        }];
+
+        const wrapper = mount(<Droplist items={items} isOpen>test</Droplist>);
+
+        expect(wrapper.instance().getPrevFocusable(4)).to.equal(1);
+      });
+
+      it('should return the first item if there is nothing before', () => {
+        const items = [{
+          heading: 'group',
+          items: [{ content: '0' }, { content: '1' }, { content: '2' }],
+        }];
+
+        const wrapper = mount(<Droplist items={items} isOpen>test</Droplist>);
+
+        expect(wrapper.instance().getPrevFocusable(0)).to.equal(0);
+      });
+
+      it('should return the first non-hidden item if the first item is hidden', () => {
+        const items = [{
+          heading: 'group',
+          items: [{ content: '0', isHidden: true }, { content: '1', isHidden: true }, { content: '2' }],
+        }];
+
+        const wrapper = mount(<Droplist items={items} isOpen>test</Droplist>);
+
+        expect(wrapper.instance().getPrevFocusable(2)).to.equal(2);
+      });
+    });
+
+    describe('getNextFocusable', () => {
+      it('should return the first item when called without an argument', () => {
+        const items = [{
+          heading: 'group',
+          items: [{ content: '0' }, { content: '1' }],
+        }];
+
+        const wrapper = mount(<Droplist items={items} isOpen>test</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable()).to.equal(0);
+      });
+
+      it('if the first item is hidden it should return next available item', () => {
+        const items = [{
+          heading: 'group',
+          items: [{ content: '0', isHidden: true }, { content: '1', isHidden: true }, { content: '2' }],
+        }];
+
+        const wrapper = mount(<Droplist items={items} isOpen>test</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable()).to.equal(2);
+      });
+
+      it('should return next item when passed an item', () => {
+        const items = [{
+          heading: 'group',
+          items: [{ content: '0' }, { content: '1' }, { content: '2' }],
+        }];
+
+        const wrapper = mount(<Droplist items={items} isOpen>test</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable(1)).to.equal(2);
+      });
+
+      it('should skip hidden items', () => {
+        const items = [{
+          heading: 'group',
+          items: [{ content: '0' }, { content: '1' }, { content: '2', isHidden: true }, { content: '3', isHidden: true }, { content: '4' }],
+        }];
+
+        const wrapper = mount(<Droplist items={items} isOpen>test</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable(1)).to.equal(4);
+      });
+
+      it('should return the latest item if there is nothing beyond', () => {
+        const items = [{
+          heading: 'group',
+          items: [{ content: '0' }, { content: '1' }, { content: '2' }],
+        }];
+
+        const wrapper = mount(<Droplist items={items} isOpen>test</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable(2)).to.equal(2);
+      });
+
+      it('should return the latest non-hidden item if the latest item is hidden', () => {
+        const items = [{
+          heading: 'group',
+          items: [{ content: '0' }, { content: '1' }, { content: '2' }, { content: '3', isHidden: true }, { content: '4', isHidden: true }],
+        }];
+
+        const wrapper = mount(<Droplist items={items} isOpen>test</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable(2)).to.equal(2);
+      });
+    });
+  });
 });

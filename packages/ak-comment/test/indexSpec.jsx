@@ -3,10 +3,10 @@ import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Avatar from 'ak-avatar';
-import Button from 'ak-button';
 import Lozenge from 'ak-lozenge';
 
 import Comment from '../src/';
+import CommentButton from '../src/internal/comment-button';
 import styles from '../src/styles.less';
 import { name } from '../package.json';
 
@@ -46,9 +46,9 @@ describe(name, () => {
 
         it('should render each action item in the correct container', () => {
           const container = wrapper.find(`.${styles.locals.actionsContainer}`);
-          expect(container).to.have.exactly(actions.length).descendants(Button);
+          expect(container).to.have.exactly(actions.length).descendants(CommentButton);
 
-          const items = container.find(Button);
+          const items = container.find(CommentButton);
           items.forEach((item, index) => {
             if (typeof actions[index].content === 'string') {
               expect(item).to.contain.text(actions[index].content);
@@ -68,7 +68,11 @@ describe(name, () => {
           const author = 'Joshua Nelson';
           const wrapper = mount(<Comment author={author} />);
           expect(wrapper.find(`.${styles.locals.topContainer}`)
-            .containsMatchingElement(<div className={styles.locals.topItem}>{author}</div>)
+            .containsMatchingElement(
+              <span className={styles.locals.commenter}>
+                {author}
+              </span>
+            )
           ).to.equal(true);
         });
       });

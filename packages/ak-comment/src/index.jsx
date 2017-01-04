@@ -1,9 +1,9 @@
 import React, { PropTypes, PureComponent } from 'react';
 import Avatar from 'ak-avatar';
-import Button from 'ak-button';
 import Lozenge from 'ak-lozenge';
 
 import styles from 'style!./styles.less';
+import CommentButton from './internal/comment-button';
 
 export default class extends PureComponent {
   static propTypes = {
@@ -33,7 +33,7 @@ export default class extends PureComponent {
   renderTopItems = () => {
     const items = (
       [
-        this.props.author || null,
+        this.props.author ? <span className={styles.commenter}>{this.props.author}</span> : null,
         this.props.type ? <Lozenge>{this.props.type}</Lozenge> : null,
         this.props.datetime || null,
       ]
@@ -49,13 +49,12 @@ export default class extends PureComponent {
   renderActions = () => {
     const items = this.props.actions.map((action, index) => (
       <div key={index} className={styles.actionsItem}>
-        <Button
-          appearance="link"
+        <CommentButton
+          className={styles.actionsItem}
           onClick={action.onClick}
-          spacing="none"
         >
           {action.content}
-        </Button>
+        </CommentButton>
       </div>
     ));
 

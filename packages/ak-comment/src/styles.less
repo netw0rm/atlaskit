@@ -6,10 +6,10 @@
 
 .container {
   display: flex;
+}
 
-  & + .container {
-    padding-top: unit(@vertical-padding, px);
-  }
+.container + .container {
+  padding-top: unit(@vertical-padding, px);
 }
 
 .left-section {
@@ -27,10 +27,14 @@
 .top-container {
   color: @ak-color-N500;
   display: flex;
+}
 
-  .top-item + .top-item {
-    padding-left: unit(@grid, px);
-  }
+.top-item + .top-item {
+  padding-left: unit(@grid, px);
+}
+
+.commenter {
+  font-weight: 500;
 }
 
 .content-container {
@@ -40,23 +44,36 @@
 .actions-container {
   display: flex;
   line-height: 2; // 2 * 14px font-size = 28px line-height
+}
 
-  .actions-item {
-    display: flex;
+.comment-button {
+  background: none;
+  border: 0;
+  color: @ak-color-N100;
+  font-size: inherit;
+  height: auto;
+  margin: 0;
+  outline: none;
+  padding: 0;
+  text-decoration: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
 
-    & > * {
-      color: @ak-color-N100;
-    }
-
-    & + .actions-item::before {
-      color: @ak-color-N500;
-      content: "\b7\a0"; // middot character
-      display: inline-block;
-      text-align: center;
-      vertical-align: middle;
-      width: unit(@actions-padding, px);
-    }
+  &:hover {
+    color: @ak-color-B300;
+    cursor: pointer;
+    text-decoration: underline;
   }
+}
+
+.actions-item + .actions-item::before {
+  color: @ak-color-N500;
+  content: "\b7\a0"; // middot character
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  width: unit(@actions-padding, px);
 }
 
 .nested-comments {

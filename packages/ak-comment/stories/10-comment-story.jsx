@@ -3,11 +3,7 @@ import React from 'react';
 
 import Comment from '../src';
 import { name } from '../package.json';
-import { sampleText } from './_constants';
-
-const clickHandler = (event) => {
-  console.log(`${event.target.textContent} button was clicked.`);
-};
+import { clickHandler, sampleText } from './_constants';
 
 storiesOf(name, module)
   .add('a simple ak-comment', () => (
@@ -17,7 +13,7 @@ storiesOf(name, module)
       author="John Smith"
       type="Author"
       datetime="30, August 2016"
-      content={(<p>{sampleText}</p>)}
+      content={[<p>{sampleText}</p>, <p>{sampleText}</p>]}
       actions={[
         { content: 'Reply', onClick: clickHandler },
         { content: 'Edit', onClick: clickHandler },
@@ -27,5 +23,5 @@ storiesOf(name, module)
     />
   ))
   .add('a simple ak-comment with no top and bottom bars', () => (
-    <Comment content={(<p>{sampleText}</p>)} />
+    <Comment content={<p>{sampleText}</p>} />
   ));

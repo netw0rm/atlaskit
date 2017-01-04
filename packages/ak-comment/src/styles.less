@@ -1,20 +1,19 @@
 @import '~akutil-shared-styles/src/colors.less';
 
 @grid: 8;
-@top-color: @ak-color-N500;
-@content-color: @ak-color-N800;
-@actions-color: @ak-color-N100;
-@actions-color-separator: @ak-color-N500;
 @actions-padding: @grid * 2;
+@vertical-padding: @grid * 3.5;
 
 .container {
   display: flex;
-  padding: unit(@grid, px) 0;
+
+  & + .container {
+    padding-top: unit(@vertical-padding, px);
+  }
 }
 
 .left-section {
   padding-right: unit(@grid * 2, px);
-  width: 30px; // Avatar width
 }
 
 .avatar-container {
@@ -26,29 +25,42 @@
 }
 
 .top-container {
-  color: @top-color;
+  color: @ak-color-N500;
   display: flex;
 
-  > .top-item + .top-item {
+  .top-item + .top-item {
     padding-left: unit(@grid, px);
   }
 }
 
 .content-container {
-  color: @content-color;
+  color: @ak-color-N800;
 }
 
 .actions-container {
-  color: @actions-color;
   display: flex;
   line-height: 2; // 2 * 14px font-size = 28px line-height
+
+  .actions-item {
+    display: flex;
+
+    & > * {
+      color: @ak-color-N100;
+    }
+
+    & + .actions-item::before {
+      color: @ak-color-N500;
+      content: "\b7\a0"; // middot character
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+      width: unit(@actions-padding, px);
+    }
+  }
 }
 
-.actions-item + .actions-item::before {
-  content: "\b7\a0"; // middot character
-  display: inline-block;
-  line-height: 1;
-  text-align: center;
-  vertical-align: middle;
-  width: unit(@actions-padding, px);
+.nested-comments {
+  display: flex;
+  flex-direction: column;
+  padding-top: unit(@vertical-padding, px);
 }

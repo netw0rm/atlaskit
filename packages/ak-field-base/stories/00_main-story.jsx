@@ -7,7 +7,8 @@ import Avatar from 'ak-avatar';
 import ErrorIcon from 'ak-icon/glyph/error';
 import HelpIcon from 'ak-icon/glyph/help';
 import ExpandIcon from 'ak-icon/glyph/expand';
-import FieldBaseExample from './FieldBaseExample';
+import BasicFieldBase from './BasicFieldBase';
+import RightGutterFieldBase from './RightGutterFieldBase';
 import { name } from '../package.json';
 import AkFieldBase, { Label } from '../src';
 import { compact, none, subtle } from '../src/internal/appearances';
@@ -22,7 +23,7 @@ const formStyle = {
 
 storiesOf(name, module)
   .add('with label', () =>
-    <FieldBaseExample
+    <BasicFieldBase
       label="basic example"
       id="fieldbase"
     >
@@ -31,10 +32,10 @@ storiesOf(name, module)
         isEditing
         id="fieldbase"
       />
-    </FieldBaseExample>
+    </BasicFieldBase>
   )
   .add('without label', () => (
-    <FieldBaseExample
+    <BasicFieldBase
       label="No label example"
       isLabelHidden
       id="fieldbase"
@@ -44,10 +45,10 @@ storiesOf(name, module)
         isEditing
         id="fieldbase"
       />
-    </FieldBaseExample>
+    </BasicFieldBase>
   ))
   .add('with invalid prop', () =>
-    <FieldBaseExample
+    <BasicFieldBase
       label="Invalid example"
       id="fieldbase"
       isInvalid
@@ -57,11 +58,11 @@ storiesOf(name, module)
         isEditing
         id="fieldbase"
       />
-    </FieldBaseExample>
+    </BasicFieldBase>
   )
   .add('with required prop', () =>
     <form style={formStyle}>
-      <FieldBaseExample
+      <BasicFieldBase
         label="Required example"
         id="fieldbase"
         isRequired
@@ -71,14 +72,14 @@ storiesOf(name, module)
           id="fieldbase"
           required
         />
-      </FieldBaseExample>
+      </BasicFieldBase>
       <div style={{ padding: 20, paddingTop: 0 }}>
         <button type="submit">submit</button>
       </div>
     </form>
   )
   .add('with disabled prop', () =>
-    <FieldBaseExample
+    <BasicFieldBase
       label="Disabled example"
       id="fieldbase"
       isDisabled
@@ -87,10 +88,10 @@ storiesOf(name, module)
         id="fieldbase"
         value="input children"
       />
-    </FieldBaseExample>
+    </BasicFieldBase>
   )
   .add('with readOnly prop', () =>
-    <FieldBaseExample
+    <BasicFieldBase
       label="Read Only example"
       id="fieldbase"
       isReadOnly
@@ -99,10 +100,10 @@ storiesOf(name, module)
         id="fieldbase"
         value="input children"
       />
-    </FieldBaseExample>
+    </BasicFieldBase>
   )
   .add('with different appearances', () =>
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
       {
         [
           compact,
@@ -111,7 +112,7 @@ storiesOf(name, module)
         ].map((appearance) => {
           const id = uid();
           return (
-            <FieldBaseExample
+            <BasicFieldBase
               label={`${appearance} appearance example`}
               id={id}
               appearance={appearance}
@@ -121,7 +122,7 @@ storiesOf(name, module)
                 isEditing
                 value="input children"
               />
-            </FieldBaseExample>
+            </BasicFieldBase>
           );
         })
       }
@@ -210,36 +211,37 @@ storiesOf(name, module)
             </AkFieldBase>
           </Label>
         </div>
+        <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
+          <Label label="With fit width enabled" htmlFor="fieldbase" />
+          <AkFieldBase isFitContainerWidthEnabled>
+            <Input
+              id="fieldbase"
+              isEditing
+              value="a children input"
+            />
+          </AkFieldBase>
+        </div>
       </div>
     );
   })
-  .add('with elements on the right', () => (
-    <div style={formStyle}>
-      {
-        [
-          <Button appearance="subtle">Cancel</Button>,
-          <Button iconBefore={<HelpIcon />} />,
-          <div style={{ color: '#bf2600' }}><ErrorIcon /></div>,
-          'important',
-        ].map((rightGutter) => {
-          const id = uid();
-          return (
-            <div>
-              <Label
-                label="Avatar example"
-                htmlFor={id}
-              />
-              <div style={{ backgroundColor: 'white', display: 'inline-flex', alignItems: 'center' }}>
-                <AkFieldBase>
-                  <Input id={id} value="Input children" isEditing />
-                </AkFieldBase>
-                <div style={{ marginLeft: 4 }}>
-                  {rightGutter}
-                </div>
-              </div>
-            </div>
-          );
-        })
-      }
+  .add('with right gutter + fit width enabled', () =>
+    <div style={{ ...formStyle, border: '2px solid', padding: 0 }}>
+      <span>500px width container</span>
+      <RightGutterFieldBase
+        label="With subtle button"
+        rightGutter={<Button appearance="subtle">Cancel</Button>}
+      />
+      <RightGutterFieldBase
+        label="With button + icon"
+        rightGutter={<Button iconBefore={<HelpIcon />} />}
+      />
+      <RightGutterFieldBase
+        label="With only icon"
+        rightGutter={<div style={{ color: '#bf2600' }}><ErrorIcon /></div>}
+      />
+      <RightGutterFieldBase
+        label="With only icon"
+        rightGutter="important"
+      />
     </div>
-  ));
+  );

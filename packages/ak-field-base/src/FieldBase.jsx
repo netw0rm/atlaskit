@@ -165,8 +165,12 @@ export default class FieldBase extends PureComponent {
       [styles.invalid]: this.props.isInvalid && !this.props.isFocused,
     });
 
+    const contentWrapperClasses = classNames(styles.contentWrapper, {
+      [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
+    });
+
     return (
-      <div className={styles.contentWrapper}>
+      <div className={contentWrapperClasses}>
         <div
           className={contentClasses}
           onFocusCapture={this.props.onFocus}

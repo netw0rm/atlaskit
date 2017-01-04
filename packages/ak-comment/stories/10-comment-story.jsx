@@ -13,7 +13,7 @@ storiesOf(name, module)
       author="John Smith"
       type="Author"
       datetime="30, August 2016"
-      content={(<p>{sampleText}</p>)}
+      content={[<p>{sampleText}</p>, <p>{sampleText}</p>]}
       actions={[
         { content: 'Reply', onClick: clickHandler },
         { content: 'Edit', onClick: clickHandler },
@@ -23,5 +23,5 @@ storiesOf(name, module)
     />
   ))
   .add('a simple ak-comment with no top and bottom bars', () => (
-    <Comment content={(<p>{sampleText}</p>)} />
+    <Comment content={<p>{sampleText}</p>} />
   ));

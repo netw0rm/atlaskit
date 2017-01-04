@@ -51,8 +51,8 @@ describe(name, () => {
       expect(droplist).to.have.prop('appearance', wrapper.props().appearance);
       expect(droplist).to.have.prop('isTriggerNotTabbable', wrapper.props().isTriggerNotTabbable);
       expect(droplist).to.have.prop('listContext', 'menu');
-      expect(droplist).to.have.prop('items', wrapper.state().items);
       expect(droplist).to.have.prop('isOpen', wrapper.state().isOpen);
+      expect(droplist).to.have.prop('trigger', 'text');
     });
   });
 

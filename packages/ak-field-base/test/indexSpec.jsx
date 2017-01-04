@@ -14,7 +14,7 @@ chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
 const {
-  content: contentClass,
+  contentContainer: contentClass,
   invalid: isInvalidClass,
   focused: isFocusedClass,
   readOnly: isReadOnlyClass,
@@ -87,20 +87,20 @@ describe('ak-field-base', () => {
 
     beforeEach(() => {
       wrapper = mount(<FieldBase {...defaultProps} />);
-      wrapper.find(`.${locals.content}`).simulate('focus');
+      wrapper.find(`.${contentClass}`).simulate('focus');
     });
 
     it('should call onFocus', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBase {...defaultProps} onFocus={spy} />);
-      wrapper.find(`.${locals.content}`).simulate('focus');
+      wrapper.find(`.${contentClass}`).simulate('focus');
       expect(spy).to.have.been.calledOnce;
     });
 
     it('should call onBlur', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBase {...defaultProps} onBlur={spy} />);
-      wrapper.find(`.${locals.content}`).simulate('blur');
+      wrapper.find(`.${contentClass}`).simulate('blur');
       expect(spy).to.have.been.calledOnce;
     });
   });

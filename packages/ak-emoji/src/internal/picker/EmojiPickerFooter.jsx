@@ -4,7 +4,7 @@ import styles from 'style!../../style.less';
 import EmojiPreview from '../common/EmojiPreview';
 import EmojiPropTypes from '../ak-emoji-prop-types';
 
-export default class extends PureComponent {
+export default class EmojiPickerFooter extends PureComponent {
   static propTypes = {
     selectedEmoji: EmojiPropTypes.emoji,
     // eslint-disable-next-line react/no-unused-prop-types

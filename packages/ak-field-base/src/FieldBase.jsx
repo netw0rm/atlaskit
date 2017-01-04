@@ -153,7 +153,7 @@ export default class FieldBase extends PureComponent {
   )
 
   render() {
-    const contentClasses = classNames(styles.content, {
+    const contentClasses = classNames(styles.contentContainer, {
       [styles.compact]: this.props.appearance === compact,
       [styles.none]: this.props.appearance === none,
       [styles.subtle]: this.props.appearance === subtle,

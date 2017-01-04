@@ -25,7 +25,14 @@ const emoji = {
   representation,
 };
 
+const emojiService = {
+  search: PropTypes.func.isRequired,
+  findByShortcut: PropTypes.func.isRequired,
+};
+
 export default {
   emojiPropType: emoji,
   emoji: PropTypes.shape(emoji),
+  emojiServicePropType: emojiService,
+  emojiService: PropTypes.shape(emojiService),
 };

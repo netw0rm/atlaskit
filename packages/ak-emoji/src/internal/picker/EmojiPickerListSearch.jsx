@@ -4,7 +4,7 @@ import { SearchIcon } from 'ak-icon';
 
 import styles from 'style!../../style.less';
 
-export default class extends PureComponent {
+export default class EmojiPickerListSearch extends PureComponent {
   static propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     style: PropTypes.object,

@@ -21,11 +21,10 @@ export default function(html: string): Node {
 
   // Convert "codehilite" containers to <pre>
   arrayFrom(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
-    const parent = div.parentNode as HTMLElement;
     const pre = document.createElement('pre');
     pre.textContent = div.textContent;
-    parent.insertBefore(pre, div);
-    parent.removeChild(div);
+    div.innerHTML = '';
+    div.appendChild(pre);
   });
 
   // Convert mention containers, i.e.:

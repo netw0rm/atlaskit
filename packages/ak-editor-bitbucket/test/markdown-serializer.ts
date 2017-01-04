@@ -119,7 +119,7 @@ describe('Bitbucket markdown serializer: ', () => {
     });
 
     it('via backticks that includes backticks is properly fenced', () => {
-      const css = code_block({ params: 'css' });
+      const css = code_block({ language: 'css' });
 
       expect(markdownSerializer.serialize(doc(
         css('```js\nfoo\n```')

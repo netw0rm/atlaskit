@@ -1,6 +1,6 @@
 {
   "name": "ak-comment",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "ak-comment component",
   "main": "dist/bundle.jsx",
   "webpack": "dist/bundle-cjs.jsx",

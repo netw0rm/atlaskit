@@ -14,6 +14,10 @@ export default class extends PureComponent {
     author: PropTypes.string,
     avatarLabel: PropTypes.string,
     avatarSrc: PropTypes.string,
+    children: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.arrayOf(PropTypes.node),
+    ]),
     content: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),
@@ -46,7 +50,7 @@ export default class extends PureComponent {
     const items = this.props.actions.map((action, index) => (
       <div key={index} className={styles.actionsItem}>
         <Button
-          appearance="subtle"
+          appearance="link"
           onClick={action.onClick}
           spacing="none"
         >
@@ -59,6 +63,12 @@ export default class extends PureComponent {
       ? <div className={styles.actionsContainer}>{items}</div>
       : null;
   }
+
+  renderChildren = () => (
+    this.props.children
+      ? <div className={styles.nestedComments}>{this.props.children}</div>
+      : null
+  )
 
   render() {
     return (
@@ -74,6 +84,7 @@ export default class extends PureComponent {
             {this.props.content}
           </div>
           {this.renderActions()}
+          {this.renderChildren()}
         </div>
       </div>
     );

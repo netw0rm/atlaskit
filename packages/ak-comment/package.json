@@ -12,10 +12,12 @@
     "dist"
   ],
   "dependencies": {
-    "ak-avatar": "^5.1.0",
-    "ak-button": "^5.1.1",
-    "ak-lozenge": "^5.0.3",
+    "ak-button": "^5.1.3",
+    "ak-lozenge": "^5.0.4",
     "akutil-shared-styles": "^37.0.0"
+  },
+  "devDependencies": {
+    "ak-avatar": "^5.1.1"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

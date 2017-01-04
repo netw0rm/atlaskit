@@ -50,7 +50,7 @@ export default class extends PureComponent {
     const items = this.props.actions.map((action, index) => (
       <div key={index} className={styles.actionsItem}>
         <Button
-          appearance="subtle"
+          appearance="link"
           onClick={action.onClick}
           spacing="none"
         >

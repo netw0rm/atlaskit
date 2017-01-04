@@ -1,6 +1,6 @@
 {
   "name": "ak-tag-group",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "ak-tag-group webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -19,11 +19,11 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-tag": "^6.0.1",
+    "ak-tag": "^6.1.3",
     "lodash.uniq": "^4.5.0"
   },
   "peerDependencies": {
-    "ak-tag": "^6.0.1",
+    "ak-tag": "^6.1.3",
     "react": "^15.3.2"
   },
   "repository": {

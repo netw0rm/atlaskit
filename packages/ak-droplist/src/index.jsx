@@ -116,32 +116,52 @@ export default class DropdownList extends PureComponent {
     dropDomRef.style.maxHeight = appearance !== 'tall' ? `${dropdownMaxHeight}px` : 'none';
   }
 
+  getNextFocusable = (indexItem, available) => {
+    let currentItem = indexItem === undefined ? -1 : indexItem;
+    const latestAvailable = available === undefined ? currentItem : available;
+
+    if (currentItem < this.domItemsList.length - 1) {
+      currentItem++;
+
+      if (this.domItemsList[currentItem].getAttribute('aria-hidden') !== 'true') {
+        return currentItem;
+      }
+
+      return this.getNextFocusable(currentItem, latestAvailable);
+    }
+
+    return latestAvailable;
+  }
+
+  getPrevFocusable = (indexItem, available) => {
+    let currentItem = indexItem;
+    const latestAvailable = available === undefined ? currentItem : available;
+
+    if (currentItem > 0) {
+      currentItem--;
+
+      if (this.domItemsList[currentItem].getAttribute('aria-hidden') !== 'true') {
+        return currentItem;
+      }
+
+      return this.getPrevFocusable(currentItem, latestAvailable);
+    }
+
+    return latestAvailable || currentItem;
+  }
+
   focusFirstItem = () => {
     if (this.sourceOfIsOpen === 'keydown') {
-      this.focusItem(0);
+      this.focusItem(this.getNextFocusable());
     }
   }
 
   focusNextItem = () => {
-    let currentItem = this.focusedItem;
-    if (currentItem < this.domItemsList.length - 1) {
-      currentItem++;
-    } else {
-      currentItem = this.domItemsList.length - 1;
-    }
-
-    this.focusItem(currentItem);
+    this.focusItem(this.getNextFocusable(this.focusedItem));
   }
 
   focusPreviousItem = () => {
-    let currentItem = this.focusedItem;
-    if (currentItem > 0) {
-      currentItem--;
-    } else {
-      currentItem = 0;
-    }
-
-    this.focusItem(currentItem);
+    this.focusItem(this.getPrevFocusable(this.focusedItem));
   }
 
   focusItem = (index) => {
@@ -149,9 +169,29 @@ export default class DropdownList extends PureComponent {
     this.domItemsList[this.focusedItem].focus();
   }
 
+  isTargetChildItem = target => target && (target.getAttribute('data-role') === 'droplistItem') &&
+    ReactDOM.findDOMNode(this).contains(target) // eslint-disable-line react/no-find-dom-node
+
   handleKeyDown = (e) => {
     if (e.keyCode === keyCode('escape')) {
       this.close();
+    }
+
+    if (this.props.isOpen && this.isTargetChildItem(e.target)) {
+      e.preventDefault();
+      switch (e.keyCode) {
+        case keyCode('up'):
+          this.focusPreviousItem();
+          break;
+        case keyCode('down'):
+          this.focusNextItem();
+          break;
+        case keyCode('tab'):
+          this.close();
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -166,25 +206,6 @@ export default class DropdownList extends PureComponent {
 
   handleItemActivation = (item) => {
     this.props.onItemActivated({ item });
-  }
-
-  handlItemKeydown = (attrs) => {
-    const event = attrs.event;
-    event.preventDefault();
-
-    switch (event.keyCode) {
-      case keyCode('up'):
-        this.focusPreviousItem();
-        break;
-      case keyCode('down'):
-        this.focusNextItem();
-        break;
-      case keyCode('tab'):
-        this.close();
-        break;
-      default:
-        break;
-    }
   }
 
   handleTriggerActivation = (e) => {
@@ -216,7 +237,6 @@ export default class DropdownList extends PureComponent {
       onActivate={() => {
         this.handleItemActivation(item);
       }}
-      onKeyDown={this.handlItemKeydown}
     >
       {item.content}
     </Item>

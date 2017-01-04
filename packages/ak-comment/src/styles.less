@@ -1,0 +1,54 @@
+@import '~akutil-shared-styles/src/colors.less';
+
+@grid: 8;
+@top-color: @ak-color-N500;
+@content-color: @ak-color-N800;
+@actions-color: @ak-color-N100;
+@actions-color-separator: @ak-color-N500;
+@actions-padding: @grid * 2;
+
+.container {
+  display: flex;
+  padding: unit(@grid, px) 0;
+}
+
+.left-section {
+  padding-right: unit(@grid * 2, px);
+  width: 30px; // Avatar width
+}
+
+.avatar-container {
+  align-self: stretch;
+}
+
+.right-section {
+  width: 100%;
+}
+
+.top-container {
+  color: @top-color;
+  display: flex;
+
+  > .top-item + .top-item {
+    padding-left: unit(@grid, px);
+  }
+}
+
+.content-container {
+  color: @content-color;
+}
+
+.actions-container {
+  color: @actions-color;
+  display: flex;
+  line-height: 2; // 2 * 14px font-size = 28px line-height
+}
+
+.actions-item + .actions-item::before {
+  content: "\b7\a0"; // middot character
+  display: inline-block;
+  line-height: 1;
+  text-align: center;
+  vertical-align: middle;
+  width: unit(@actions-padding, px);
+}

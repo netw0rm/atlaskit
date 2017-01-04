@@ -3,7 +3,7 @@ import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import FieldBase from 'ak-field-base';
+import Base from 'ak-field-base';
 
 import { FieldText } from '../src';
 
@@ -13,7 +13,7 @@ chai.use(sinonChai);
 describe('ak-field-text', () => {
   it('defaults', () => {
     const wrapper = shallow(<FieldText />);
-    expect(wrapper).to.have.exactly(1).descendants(FieldBase);
+    expect(wrapper).to.have.exactly(1).descendants(Base);
     expect(wrapper).to.have.exactly(1).descendants('input');
   });
 
@@ -25,13 +25,13 @@ describe('ak-field-text', () => {
     ].forEach(prop =>
       describe(JSON.stringify(prop), () =>
         it('FieldBase should have attribute defined', () =>
-          expect(shallow(<FieldText {...prop} />).find(FieldBase)).to.have.props(prop)
+          expect(shallow(<FieldText {...prop} />).find(Base)).to.have.props(prop)
         )
       )
     );
 
     it('FieldBase should have appearance="compact"', () =>
-      expect(shallow(<FieldText compact />).find(FieldBase))
+      expect(shallow(<FieldText compact />).find(Base))
         .to.have.prop('appearance', 'compact')
     );
 

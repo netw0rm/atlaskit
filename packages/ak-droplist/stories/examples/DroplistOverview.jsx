@@ -9,6 +9,7 @@ const simpleDropdownItems = [
     items: [
       { content: 'Sydney', href: 'http://atlassian.com', target: '_blank' },
       { content: 'Canberra' },
+      { content: 'Hidden item', isHidden: true },
       { content: 'Melbourne' },
       { content: 'Perth' },
     ],

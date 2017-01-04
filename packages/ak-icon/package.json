@@ -1,6 +1,6 @@
 {
   "name": "ak-icon",
-  "version": "12.1.2",
+  "version": "12.1.3",
   "description": "A react package that contains icons",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -28,7 +28,7 @@
     "create-error": "^0.3.1"
   },
   "devDependencies": {
-    "ak-button": "^5.1.1",
+    "ak-button": "^5.1.2",
     "ak-button-group": "^3.0.7",
     "akutil-common-test": "*",
     "akutil-shared-styles": "^37.0.0",

@@ -169,12 +169,16 @@ export default class DropdownList extends PureComponent {
     this.domItemsList[this.focusedItem].focus();
   }
 
+  isTargetChildItem = target => target && (target.getAttribute('data-role') === 'droplistItem') &&
+    ReactDOM.findDOMNode(this).contains(target) // eslint-disable-line react/no-find-dom-node
+
   handleKeyDown = (e) => {
     if (e.keyCode === keyCode('escape')) {
       this.close();
     }
 
-    if (this.props.isOpen && e.target.getAttribute('data-role') === 'droplistItem') {
+    if (this.props.isOpen && this.isTargetChildItem(e.target)) {
+      e.preventDefault();
       switch (e.keyCode) {
         case keyCode('up'):
           this.focusPreviousItem();

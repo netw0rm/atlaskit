@@ -118,7 +118,7 @@ export default class DropdownList extends PureComponent {
 
   getNextFocusable = (indexItem, available) => {
     let currentItem = indexItem === undefined ? -1 : indexItem;
-    const latestAvailable = available || currentItem;
+    const latestAvailable = available === undefined ? currentItem : available;
 
     if (currentItem < this.domItemsList.length - 1) {
       currentItem++;
@@ -133,12 +133,9 @@ export default class DropdownList extends PureComponent {
     return latestAvailable;
   }
 
-  getPrevFocusable = (indexItem, latestAvailable) => {
+  getPrevFocusable = (indexItem, available) => {
     let currentItem = indexItem;
-
-    if (latestAvailable === undefined) {
-      latestAvailable = currentItem; // eslint-disable-line no-param-reassign
-    }
+    const latestAvailable = available === undefined ? currentItem : available;
 
     if (currentItem > 0) {
       currentItem--;

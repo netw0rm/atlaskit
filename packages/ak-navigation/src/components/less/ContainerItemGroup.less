@@ -3,19 +3,19 @@
 @import '../../shared-variables.less';
 
 .header {
+  display: flex;
+  margin-bottom: @ak-grid-size;
   margin-left: @ak-grid-size;
   margin-top: @ak-grid-size * 2;
-  margin-bottom: @ak-grid-size;
-  display: flex;
 }
 
 .title {
-  text-transform: uppercase;
+  align-self: center;
   color: @ak-color-N90;
+  display: flex;
   flex-grow: 1;
   font-size: 12px;
-  display: flex;
-  align-self: center;
+  text-transform: uppercase;
 }
 
 .action {

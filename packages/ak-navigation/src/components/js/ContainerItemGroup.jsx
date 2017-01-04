@@ -4,7 +4,6 @@ import {
   header,
   title,
 } from 'style!../less/ContainerItemGroup.less';
-// import className from 'classnames';
 
 export default class ContainerItemGroup extends PureComponent {
   static propTypes = {

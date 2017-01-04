@@ -2,9 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 import Layer from 'ak-layer';
-import Group from 'ak-droplist-group';
 import Trigger from 'ak-droplist-trigger';
-import Item from 'ak-droplist-item';
 import keyCode from 'keycode';
 
 const halfGrid = 4;
@@ -18,66 +16,14 @@ const dropdownMaxHeight = (itemHeight * 9.5) + (halfGrid * 2);
  */
 export default class DropdownList extends PureComponent {
   static propTypes = {
-    /**
-     * @description Controls the appearance of the dropdown. Available types: 'default', 'tall'.
-     * Default dropdown has scroll after its height exceeds the pre-defined amount. Tall dropdown
-     * has no restrictions.
-     * @memberof Droplist
-     * @default default
-     */
     appearance: PropTypes.oneOf(['default', 'tall']),
-    /**
-     * @description Position of the menu. See the documentation of ak-layer for more details.
-     * @memberof Droplist
-     * @default bottom left
-     */
-    position: PropTypes.string,
-    /**
-     * @description Controls whether trigger is tabbable
-     * @memberof Droplist
-     * @default false
-     */
-    isTriggerNotTabbable: PropTypes.bool,
-    /**
-     * @description Whether the dropdown should be open by default
-     * @memberof Droplist
-     * @default []
-     */
-    isOpen: PropTypes.bool,
-    /**
-     * @description Handler function to be called when the item is activated.
-     * @memberof Droplist
-     */
-    onItemActivated: PropTypes.func,
-    /**
-     * @description Handler function to be called when the menu is opened/closed.
-     * @memberof Droplist
-     */
-    onOpenChange: PropTypes.func,
-    /**
-     * @description Context in which the droplist is used. This affects accessibility.
-     * Available options: ['menu']
-     * @default 'menu'
-     * @memberof Droplist
-     */
-    listContext: PropTypes.oneOf(['menu']),
     children: PropTypes.node,
-    /**
-     * @description List of items. Should be an array of groups (see the documentation for
-     * ak-droplist-group for available props). Every group should contain array of items
-     * (see the documentation for ak-droplist-item for available props).
-     * @memberof Droplist
-     * @example @js [
-     *    {
-     *        heading: 'Title of a group',
-     *        items: [
-     *          { content: 'First item in the group' },
-     *          { content: 'Second item in the group' }
-     *        ]
-     *    }
-     * ]
-     */
-    items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    isOpen: PropTypes.bool,
+    isTriggerNotTabbable: PropTypes.bool,
+    listContext: PropTypes.oneOf(['menu']),
+    onOpenChange: PropTypes.func,
+    position: PropTypes.string,
+    trigger: PropTypes.node,
   }
 
   static defaultProps = {
@@ -86,10 +32,9 @@ export default class DropdownList extends PureComponent {
     isOpen: false,
     isTriggerNotTabbable: false,
     listContext: 'menu',
-    onItemActivated: () => {},
     onOpenChange: () => {},
     children: null,
-    items: [],
+    trigger: null,
   }
 
   componentDidMount = () => {
@@ -178,6 +123,7 @@ export default class DropdownList extends PureComponent {
     }
 
     if (this.props.isOpen && e.target.getAttribute('data-role') === 'droplistItem') {
+      e.preventDefault();
       switch (e.keyCode) {
         case keyCode('up'):
           this.focusPreviousItem();
@@ -203,10 +149,6 @@ export default class DropdownList extends PureComponent {
     }
   }
 
-  handleItemActivation = (item) => {
-    this.props.onItemActivated({ item });
-  }
-
   handleTriggerActivation = (e) => {
     this.toggle({ source: e.source });
   }
@@ -229,22 +171,6 @@ export default class DropdownList extends PureComponent {
     }
   }
 
-  renderItems = items => items.map((item, itemIndex) =>
-    <Item
-      {...item}
-      key={itemIndex}
-      onActivate={() => {
-        this.handleItemActivation(item);
-      }}
-    >
-      {item.content}
-    </Item>
-  )
-
-  renderGroups = groups => groups.map((group, groupIndex) =>
-    <Group heading={group.heading} key={groupIndex}>{this.renderItems(group.items)}</Group>
-  )
-
   render = () => {
     const { props } = this;
     return (
@@ -263,7 +189,7 @@ export default class DropdownList extends PureComponent {
               }}
               role="menu"
             >
-              {this.renderGroups(props.items)}
+              {props.children}
             </div> :
             null
           }
@@ -273,7 +199,7 @@ export default class DropdownList extends PureComponent {
               isNotTabbable={props.isTriggerNotTabbable}
               isOpened={props.isOpen}
               onActivate={this.handleTriggerActivation}
-            >{props.children}</Trigger>
+            >{props.trigger}</Trigger>
           </div>
         </Layer>
       </div>

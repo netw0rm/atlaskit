@@ -7,7 +7,7 @@ import Spinner from 'ak-spinner';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
 import EditIcon from 'ak-icon/glyph/edit';
-import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
+import FieldBase from 'ak-field-base'; // eslint-disable-line
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -259,27 +259,23 @@ export default class InlineEdit extends PureComponent {
         onClick={this.onWrapperClick}
         onBlur={this.onWrapperBlur}
         onFocus={this.onWrapperFocus}
+        className={this.getWrapperClasses()}
       >
-        <div className={styles.contentWrapper}>
-          <div className={styles.fieldBaseWrapper}>
-            <Label
-              label={this.props.label}
-              isLabelHidden={this.props.isLabelHidden}
-            >
-              <FieldBase
-                isInvalid={this.props.isInvalid}
-                isFocused={this.isReadOnly() ? false : undefined}
-                isReadOnly={this.isReadOnly()}
-                isFitContainerWidthEnabled={this.props.isEditing}
-                appearance={this.props.isEditing ? 'standard' : 'subtle'}
-                isDisabled={this.shouldRenderSpinner()}
-              >
-                {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
-              </FieldBase>
-            </Label>
-          </div>
-          {this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()}
-        </div>
+        <FieldBase
+          label={this.props.label}
+          isInvalid={this.props.isInvalid}
+          isFocused={this.isReadOnly() ? false : undefined}
+          isLabelHidden={this.props.isLabelHidden}
+          isReadOnly={this.isReadOnly()}
+          isFitContainerWidthEnabled={this.props.isEditing}
+          appearance={this.props.isEditing ? 'standard' : 'subtle'}
+          isDisabled={this.shouldRenderSpinner()}
+          rightGutter={
+            this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()
+          }
+        >
+          {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
+        </FieldBase>
       </div>
     </div>
   )

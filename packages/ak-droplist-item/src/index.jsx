@@ -86,17 +86,15 @@ export default class Item extends PureComponent {
      */
     onKeyDown: PropTypes.func,
     /**
-     * @description HTML content to display before item's main content.
+     * @description Content to display before item's main content.
      * @memberof Item
-     * @default false
-     * @type {ReactElement}
+     * @type {Element}
      */
     elemBefore: PropTypes.node,
     /**
-     * @description HTML content to display after item's main content.
+     * @description Content to display after item's main content.
      * @memberof Item
-     * @default false
-     * @type {ReactElement}
+     * @type {Element}
      */
     elemAfter: PropTypes.node,
     children: PropTypes.node,

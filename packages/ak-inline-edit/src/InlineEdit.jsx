@@ -7,7 +7,8 @@ import Spinner from 'ak-spinner';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
 import EditIcon from 'ak-icon/glyph/edit';
-import FieldBase from 'ak-field-base'; // eslint-disable-line
+import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
+import uid from 'uid';
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -183,8 +184,9 @@ export default class InlineEdit extends PureComponent {
     this.props.onCancel();
   }
 
-  getWrapperClasses = () =>
+  getRootClasses = () =>
     classNames({
+      [styles.root]: true,
       [styles.readViewWrapper]: !this.props.isEditing,
     })
 
@@ -253,30 +255,36 @@ export default class InlineEdit extends PureComponent {
     </div>
   )
 
-  render = () => (
-    <div className={styles.root}>
-      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-        onClick={this.onWrapperClick}
-        onBlur={this.onWrapperBlur}
-        onFocus={this.onWrapperFocus}
-        className={this.getWrapperClasses()}
-      >
-        <FieldBase
+  render() {
+    const id = uid();
+    return (
+      <div className={this.getRootClasses()}>
+        <Label
           label={this.props.label}
-          isInvalid={this.props.isInvalid}
-          isFocused={this.isReadOnly() ? false : undefined}
           isLabelHidden={this.props.isLabelHidden}
-          isReadOnly={this.isReadOnly()}
-          isFitContainerWidthEnabled={this.props.isEditing}
-          appearance={this.props.isEditing ? 'standard' : 'subtle'}
-          isDisabled={this.shouldRenderSpinner()}
-          rightGutter={
-            this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()
-          }
-        >
-          {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
-        </FieldBase>
+          htmlFor={id}
+        />
+        <div id={id} style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <div
+            className={styles.fieldBaseWrapper}
+            onClick={this.onWrapperClick}
+            onBlur={this.onWrapperBlur}
+            onFocus={this.onWrapperFocus}
+          >
+            <FieldBase
+              isInvalid={this.props.isInvalid}
+              isFocused={this.isReadOnly() ? false : undefined}
+              isReadOnly={this.isReadOnly()}
+              isFitContainerWidthEnabled={this.props.isEditing}
+              appearance={this.props.isEditing ? 'standard' : 'subtle'}
+              isDisabled={this.shouldRenderSpinner()}
+            >
+              {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
+            </FieldBase>
+          </div>
+          {this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()}
+        </div>
       </div>
-    </div>
-  )
+    );
+  }
 }

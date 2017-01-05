@@ -18,7 +18,6 @@ const flagPropDescriptions = {
 
   onDismissed: '(private)',
   onAnimationFinished: '(private)',
-  isActiveFlag: '(private)',
   isDismissAllowed: '(private)',
   isEntering: '(private)',
   isMovingToPrimary: '(private)',

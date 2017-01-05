@@ -60,7 +60,6 @@ export default class FlagGroup extends PureComponent {
               React.cloneElement(childFlag, {
                 onDismissed: this.onFlagDismissRequested,
                 onAnimationFinished: this.onFlagDismissFinished,
-                isActiveFlag: flagIndex === 0,
                 isDismissAllowed: flagIndex === 0,
                 isEntering: flagIndex === 0,
                 isExiting: flagIndex === 0 && this.state.isAnimatingOut,

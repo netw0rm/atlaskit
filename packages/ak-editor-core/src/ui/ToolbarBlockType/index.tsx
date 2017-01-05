@@ -4,7 +4,7 @@ import AkButton from 'ak-button';
 import { BlockType, BlockTypeState } from '../../../src/plugins/block-type';
 import Panel from '../Panel';
 import * as styles from './styles';
-import { service as analytics } from '../../analytics';
+import { analyticsService as analytics } from '../../analytics';
 
 export interface Props {
   pluginState: BlockTypeState;
@@ -43,20 +43,22 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       <span onClick={this.handleToggleDropdown} className={styles.container}>
         <AkButton
           isSelected={active}
-          appearance='subtle'
-          spacing='compact'
+          appearance="subtle"
+          spacing="compact"
         >
           <span className={styles.buttonContent}>{currentBlockType.title}</span>
         </AkButton>
         {!active ? null :
-        <Panel align='left' spacing='none' onOutsideClick={this.handleToggleDropdown}>
+        <Panel align="left" spacing="none" onOutsideClick={this.handleToggleDropdown}>
           <ul className={styles.dropdown}>
             {availableBlockTypes.map(blockType => (
             <li key={blockType.name}>
               <a
                 onClick={() => this.handleSelectBlockType(blockType)}
                 className={`${styles.blockType} ${this.blockTypeItemClass(blockType)} ${currentBlockType === blockType ? styles.active : ''}`}
-              ><span>{blockType.title}</span></a>
+              >
+                <span>{blockType.title}</span>
+              </a>
             </li>
             ))}
           </ul>

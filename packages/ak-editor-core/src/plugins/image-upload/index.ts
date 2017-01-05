@@ -12,7 +12,7 @@ import {
 import { ImageNodeType } from '../../schema';
 import PasteAdapter from './paste-adapter';
 import DropAdapter from './drop-adapter';
-import { service as analyticsService } from '../../analytics';
+import { analyticsService } from '../../analytics';
 
 export interface ImageUploadPluginOptions {
   defaultHandlersEnabled?: boolean;
@@ -192,7 +192,7 @@ export default new Plugin(ImageUploadState);
 export interface S extends Schema {
   nodes: {
     image?: ImageNodeType
-  }
+  };
 }
 
 export interface PM extends ProseMirror {

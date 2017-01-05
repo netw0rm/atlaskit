@@ -1,6 +1,5 @@
 import { nodeFactory, markFactory } from '../test-helper';
 import {
-  DelMarkType,
   DocNodeType,
   BlockQuoteNodeType,
   ImageNodeType,
@@ -41,7 +40,6 @@ export const schema = new Schema({
 
   marks: {
     link: LinkMarkType,
-    del: DelMarkType,
     em: EmMarkType,
     mono: MonoMarkType,
     strike: StrikeMarkType,

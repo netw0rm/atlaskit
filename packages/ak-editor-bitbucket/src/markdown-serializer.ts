@@ -12,10 +12,10 @@ import stringRepeat from './util/string-repeat';
  * formatting by Bitbucket server (via python-markdown).
  * @see MarkdownSerializerState.esc()
  */
-function escapeMarkdown(str: string, startOfLine?: boolean) : string {
-  str = str.replace(/[`*\\~+\[\]_]/g, "\\$&");
+function escapeMarkdown(str: string, startOfLine?: boolean): string {
+  str = str.replace(/[`*\\~+\[\]_]/g, '\\$&');
   if (startOfLine) {
-    str = str.replace(/^[:#-*]/, "\\$&").replace(/^(\d+)\./, "$1\\.");
+    str = str.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
   }
   return str;
 }
@@ -36,16 +36,16 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
   return function (text: string, minLength = 1): string {
     const length = Math.max(minLength, getMaxLength(text) + 1);
     return stringRepeat('`', length);
-  }
+  };
 })();
 
 const nodes = {
   blockquote(state: MarkdownSerializerState, node: Node) {
-    state.wrapBlock("> ", null, node, () => state.renderContent(node));
+    state.wrapBlock('> ', null, node, () => state.renderContent(node));
   },
   code_block(state: MarkdownSerializerState, node: Node) {
     if (node.attrs.params === null) {
-      state.wrapBlock("    ", null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
+      state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
 
@@ -57,27 +57,27 @@ const nodes = {
     }
   },
   heading(state: MarkdownSerializerState, node: Node) {
-    state.write(state.repeat("#", node.attrs.level) + " ");
+    state.write(state.repeat('#', node.attrs.level) + ' ');
     state.renderInline(node);
     state.closeBlock(node);
   },
   horizontal_rule(state: MarkdownSerializerState, node: Node) {
-    state.write(node.attrs.markup || "---");
+    state.write(node.attrs.markup || '---');
     state.closeBlock(node);
   },
   bullet_list(state: MarkdownSerializerState, node: Node) {
     node.attrs.tight = true;
-    state.renderList(node, "  ", () => (node.attrs.bullet || "*") + " ")
+    state.renderList(node, '  ', () => (node.attrs.bullet || '*') + ' ');
   },
   ordered_list(state: MarkdownSerializerState, node: Node) {
     node.attrs.tight = true;
     let start = node.attrs.order || 1;
     let maxW = String(start + node.childCount - 1).length;
-    let space = state.repeat(" ", maxW + 2);
+    let space = state.repeat(' ', maxW + 2);
     state.renderList(node, space, (i: number) => {
       let nStr = String(start + i);
-      return state.repeat(" ", maxW - nStr.length) + nStr + ". "
-    })
+      return state.repeat(' ', maxW - nStr.length) + nStr + '. ';
+    });
   },
   list_item(state: MarkdownSerializerState, node: Node) {
     state.renderContent(node);
@@ -87,21 +87,21 @@ const nodes = {
     state.closeBlock(node);
   },
   image(state: MarkdownSerializerState, node: Node) {
-    // Note: the "title" is not escaped in this flavor of markdown.
-    state.write("![" + state.esc(node.attrs.alt || "") + "](" + state.esc(node.attrs.src) +
-                (node.attrs.title ? ` "${node.attrs.title}"` : "") + ")")
+    // Note: the 'title' is not escaped in this flavor of markdown.
+    state.write('![' + state.esc(node.attrs.alt || '') + '](' + state.esc(node.attrs.src) +
+                (node.attrs.title ? ` '${node.attrs.title}'` : '') + ')');
   },
   hard_break(state: any) {
-    state.write("  \n");
+    state.write('  \n');
   },
   text(state: MarkdownSerializerState, node: any) {
-    let lines = node.text.split("\n");
+    let lines = node.text.split('\n');
     for (let i = 0; i < lines.length; i++) {
-      var startOfLine = state.atBlank() || state.closed;
+      const startOfLine = state.atBlank() || state.closed;
       state.write();
       state.out += escapeMarkdown(lines[i], startOfLine);
       if (i !== lines.length - 1) {
-        state.out += "\n"
+        state.out += '\n';
       }
     }
   },
@@ -115,21 +115,21 @@ const nodes = {
 };
 
 const marks = {
-  em: { open: "*", close: "*", mixable: true },
-  strong: { open: "**", close: "**", mixable: true },
-  del: { open: "~~", close: "~~", mixable: true },
+  em: { open: '*', close: '*', mixable: true },
+  strong: { open: '**', close: '**', mixable: true },
+  strike: { open: '~~', close: '~~', mixable: true },
   link: {
-    open: "[",
+    open: '[',
     close(state: MarkdownSerializerState, mark: any) {
-      // Note: the "title" is not escaped in this flavor of markdown.
-      return "](" + state.esc(mark.attrs.href) + (mark.attrs.title ? ` "${mark.attrs.title}"` : "") + ")"
+      // Note: the 'title' is not escaped in this flavor of markdown.
+      return '](' + state.esc(mark.attrs.href) + (mark.attrs.title ? ` '${mark.attrs.title}'` : '') + ')';
     }
   },
-  code: { open: "`", close: "`" }
+  code: { open: '`', close: '`' }
 };
 
 export class MarkdownSerializer extends PMMarkdownSerializer {
-  serialize(content: any, options?: Object) : string{
+  serialize(content: any, options?: Object): string{
     let state = new MarkdownSerializerState(this.nodes, this.marks, options);
 
     state.renderContent(content);
@@ -139,7 +139,7 @@ export class MarkdownSerializer extends PMMarkdownSerializer {
 
 export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
-  renderContent(parent: Node) : void {
+  renderContent(parent: Node): void {
     parent.forEach((child: Node) => {
       if (
         // If child is an empty Textblock we need to insert a zwnj-character in order to preserve that line in markdown
@@ -162,7 +162,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
    * @see node_modules/prosemirror/src/markdown/to_markdown.js
    * @see MarkdownSerializerState.renderInline()
    */
-  renderInline(parent: Node) : void {
+  renderInline(parent: Node): void {
     let active: Mark[] = [];
 
     let progress = (node: Node | null) => {
@@ -210,7 +210,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
       while (active.length < len) {
         let add = marks[active.length];
         active.push(add);
-        this.text(this.markString(add, true), false)
+        this.text(this.markString(add, true), false);
       }
 
       if (node) {

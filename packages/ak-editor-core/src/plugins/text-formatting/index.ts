@@ -309,7 +309,7 @@ export interface S extends Schema {
     strong?: StrongMarkType;
     subsup?: SubSupMarkType;
     u?: UnderlineMarkType;
-  }
+  };
 }
 
 export interface PM extends ProseMirror {

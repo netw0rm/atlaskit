@@ -7,6 +7,7 @@ import {
   Keymap,
   ListsPlugin,
   BlockTypePlugin,
+  DefaultInputRulesPlugin,
   MarkdownInputRulesPlugin,
   HyperlinkPlugin,
   TextFormattingPlugin,
@@ -15,21 +16,19 @@ import {
   ImageUploadPlugin,
   Chrome,
   AnalyticsHandler,
-  decorator as analytics,
-  service as analyticsService
+  analyticsService
 } from 'ak-editor-core';
 
 import schema from './schema';
 import markdownSerializer from './markdown-serializer';
-import { blockTypes, blockTypeType, blockTypesType } from './block-types';
 import parseHtml from './parse-html';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
-  context?: 'comment' | 'pr',
-  isExpandedByDefault?: boolean,
-  defaultValue?: string,
+  context?: 'comment' | 'pr';
+  isExpandedByDefault?: boolean;
+  defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
@@ -140,7 +139,7 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
+        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
         onCancel={handleCancel}
         onSave={handleSave}
         placeholder={this.props.placeholder}
@@ -175,7 +174,6 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  @analytics('atlassian.editor.start')
   private handleRef = (place: Element | null) => {
     if (place) {
       const { context, onChange } = this.props;
@@ -190,6 +188,7 @@ export default class Editor extends PureComponent<Props, State> {
           TextFormattingPlugin,
           HorizontalRulePlugin,
           MentionsPlugin,
+          DefaultInputRulesPlugin,
           ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
         ],
       });
@@ -212,6 +211,8 @@ export default class Editor extends PureComponent<Props, State> {
 
       pm.on.change.add(this.handleChange);
       pm.focus();
+
+      analyticsService.trackEvent('atlassian.editor.start');
 
       this.setState({ pm });
     } else {

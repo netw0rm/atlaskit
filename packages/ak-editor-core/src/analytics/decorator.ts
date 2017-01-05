@@ -1,4 +1,4 @@
-import service from './service';
+import analyticsService from './service';
 
 /**
  * Annotation for automatically tracking analytics event whenever a function is invoked.
@@ -16,7 +16,7 @@ import service from './service';
  *        onClick() { ... }
  *     }
  */
-//: PropertyDecorator | MethodDecorator
+// PropertyDecorator | MethodDecorator
 export default function analytics(name: string) {
   return function (
     target: any,
@@ -44,7 +44,7 @@ export default function analytics(name: string) {
         get: () => {
           return propertyValue;
         }
-      } as PropertyDescriptor
+      } as PropertyDescriptor;
     }
 
     const fn = descriptor.value;
@@ -56,7 +56,7 @@ export default function analytics(name: string) {
     return {
       ...descriptor,
       value: trackFunction(name, fn)
-    }
+    };
   };
 };
 
@@ -66,11 +66,11 @@ export default function analytics(name: string) {
 function trackFunction(analyticsEventName: string, trackedFn: Function) {
   return (...args: any[]) => {
     try {
-      service.trackEvent(analyticsEventName);
+      analyticsService.trackEvent(analyticsEventName);
     } catch (e) {
       console.error('An exception has been thrown when trying to track analytics event:', e);
     }
 
     return trackedFn(...args);
-  }
+  };
 }

@@ -1,7 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
 import FieldBase from './FieldBase';
+import Label from './Label';
 
-export { FieldBase };
+export { FieldBase, Label };
 
 export default class extends PureComponent {
   static propTypes = {

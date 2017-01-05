@@ -1,6 +1,6 @@
-import * as module from "collapse-whitespace";
+import * as module from 'collapse-whitespace';
 
-declare module "collapse-whitespace";
+declare module 'collapse-whitespace';
 
 export interface ICollapseWhitespace {
   (node: Node, blockTest?: (node: Node) => boolean): void;

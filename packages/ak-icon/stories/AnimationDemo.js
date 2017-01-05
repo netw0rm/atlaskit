@@ -1,4 +1,3 @@
-import { vdom } from 'skatejs'; // eslint-disable-line no-unused-vars
 import sample from 'lodash.sample';
 import React from 'react';
 

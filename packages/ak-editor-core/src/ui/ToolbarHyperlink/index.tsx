@@ -5,7 +5,7 @@ import { HyperlinkState } from '../../../src/plugins/hyperlink';
 import Panel from '../Panel';
 import TextInput from '../PanelTextInput';
 import IconButton from '../ToolbarIconButton';
-import { decorator as analytics } from '../../analytics';
+import { analyticsDecorator as analytics } from '../../analytics';
 
 export interface Props {
   pluginState: HyperlinkState;
@@ -37,10 +37,10 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           disabled={disabled || active}
           onClick={this.openLinkPanel}
           selected={adding}
-          icon={<LinkIcon label='Link' />}
+          icon={<LinkIcon label="Link" />}
         />
         {!adding ? null :
-        <Panel align='center' onOutsideClick={this.closeLinkPanel}>
+        <Panel align="center" onOutsideClick={this.closeLinkPanel}>
           <TextInput
             autoFocus
             placeholder="Paste link"

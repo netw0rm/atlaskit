@@ -47,4 +47,4 @@ export default (name: string, options: Options = {}) => {
   }
 
   return event;
-}
+};

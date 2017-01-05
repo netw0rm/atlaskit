@@ -3,7 +3,7 @@ import parse from '../src/parse-html';
 import { Schema } from 'ak-editor-core';
 import { chaiPlugin } from 'ak-editor-core/test-helper';
 import {
-  a, blockquote, mono, code_block, doc, emoji, strong,
+  a, blockquote, mono, code_block, doc, strong, strike,
   h1, h2, h3, h4, h5, h6, hr, img, ul, ol, li, p, mention
 } from './_schema-builder';
 import * as chai from 'chai';
@@ -40,7 +40,7 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
 
     it('should support images', () => {
       const parsed = parse('<p><img alt="Alt text" src="http://path/to/image.jpg"></p>');
-      expect(parsed).to.deep.equal(doc(p(img({ src: "http://path/to/image.jpg", alt: "Alt text", title: "" }))));
+      expect(parsed).to.deep.equal(doc(p(img({ src: 'http://path/to/image.jpg', alt: 'Alt text', title: '' }))));
     });
   });
 
@@ -56,8 +56,8 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
     });
 
     it('should support strikethrough', () => {
-      const del = schema.marks.del.create();
-      expect(parse('<p><del>text</del></p>')).to.have.textWithMarks('text', [ del ]);
+      const strike = schema.marks.strike.create();
+      expect(parse('<p><strike>text</strike></p>')).to.have.textWithMarks('text', [ strike ]);
     });
 
     it('should support mono', () => {
@@ -427,7 +427,7 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
         )).to.deep.equal(doc(
           p(
             'foo ',
-            emoji({id: 'diamond_shape_with_a_dot_inside'}),
+            ':diamond_shape_with_a_dot_inside:',
             ' bar'
           )
         ));

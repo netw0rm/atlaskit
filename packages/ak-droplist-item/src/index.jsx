@@ -169,11 +169,11 @@ export default class Item extends PureComponent {
             : null
           }
           {
-            props.elemBefore && props.type === 'link'
+            props.elemBefore
             ? <span className={styles.elemBefore}>{ props.elemBefore }</span>
             : null
           }
-          <span className={styles.content}>{ props.children }</span>
+          <span className={styles.itemContent}>{ props.children }</span>
         </Element>
       </span>
     );

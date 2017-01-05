@@ -130,19 +130,18 @@ storiesOf(name, module)
   )
   .add('with button + no padding', () =>
     <div style={{ display: 'inline-block', padding: 20 }}>
-      <Label label="Button with no padding example">
-        <div style={{ backgroundColor: 'white' }}>
-          <AkFieldBase
-            isPaddingDisabled
+      <Label label="Button with no padding example" />
+      <div style={{ backgroundColor: 'white' }}>
+        <AkFieldBase
+          isPaddingDisabled
+        >
+          <Button
+            iconAfter={<ExpandIcon />}
           >
-            <Button
-              iconAfter={<ExpandIcon />}
-            >
-              Imagine a Dropdown
-            </Button>
-          </AkFieldBase>
-        </div>
-      </Label>
+            Imagine a Dropdown
+          </Button>
+        </AkFieldBase>
+      </div>
     </div>
   )
   .add('with avatar + text', () => (

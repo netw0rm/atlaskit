@@ -16,8 +16,8 @@ import {
   ImageUploadPlugin,
   Chrome,
   AnalyticsHandler,
-  decorator as analytics,
-  service as analyticsService
+  analyticsDecorator as analytics,
+  analyticsService
 } from 'ak-editor-core';
 
 import schema from './schema';

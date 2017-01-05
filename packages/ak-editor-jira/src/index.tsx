@@ -10,7 +10,7 @@ import {
   Chrome,
   schema,
   AnalyticsHandler,
-  service as analyticsService
+  analyticsService
 } from 'ak-editor-core';
 import { encode, parse } from './html';
 

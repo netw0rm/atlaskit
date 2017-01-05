@@ -27,6 +27,7 @@ describe(name, () => {
         .should.be.deep.equal([
           'arrowleft',
           'arrowright',
+          'arrowrightlong',
           'atlassian',
 
           'bitbucket/addons',

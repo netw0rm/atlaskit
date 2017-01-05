@@ -106,6 +106,12 @@ export default class AkButton extends Component {
      * @type {Function}
      */
     onClick: PropTypes.func,
+    /**
+     * @description HTML's attribute tab-index
+     * @memberof Button
+     * @type {number}
+     */
+    tabIndex: PropTypes.number,
   }
 
   static defaultProps = {
@@ -115,6 +121,7 @@ export default class AkButton extends Component {
     spacing: spacing.default,
     isSelected: false,
     theme: theme.default,
+    tabIndex: null,
   }
 
   renderContent = () => {

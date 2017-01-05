@@ -1,11 +1,12 @@
-import { Node, Schema, Text, fromHTML, toHTML, DocNodeType, UnderlineMarkType, chaiPlugin } from '../../../src';
+import { Node, Schema, Text, DocNodeType, UnderlineMarkType } from '../../../src';
+import { fromHTML, toHTML, chaiPlugin } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
 chai.use(chaiPlugin);
 
 describe('ak-editor-core/schema underline mark', () => {
-  it('throws an error if it is not named "underline"', () => {
+  it('throws an error if it is not named "u"', () => {
     expect(() => {
       new Schema({
         nodes: {
@@ -17,7 +18,9 @@ describe('ak-editor-core/schema underline mark', () => {
         }
       });
     }).to.throw(Error);
+  });
 
+  it('does not throw an error if it is named "u"', () => {
     expect(() => {
       new Schema({
         nodes: {
@@ -46,10 +49,10 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       text: Text;
-    }
+    };
     marks: {
       u: UnderlineMarkType;
-    }
+    };
   }
 
   return new Schema({

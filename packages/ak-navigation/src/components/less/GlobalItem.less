@@ -2,19 +2,14 @@
 @import '~akutil-shared-styles/src/grid.less';
 
 .globalItem {
-  display: flex;
   align-items: center;
-  text-align: center;
-  justify-content: center;
-  margin: 0;
   border-radius: 50%;
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
   color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
 
-  &:hover, &:focus {
+  &:hover, &:focus, &.isSelected {
     background-color: @ak-color-N90A;
   }
 
@@ -24,16 +19,17 @@
 }
 
 .smallGlobalItem {
-  width: (@ak-grid-size * 4);
   height: (@ak-grid-size * 4);
+  margin-top: @ak-grid-size;
+  width: (@ak-grid-size * 4);
 }
 
 .mediumGlobalItem {
-  width: @ak-grid-size * 5;
   height: @ak-grid-size * 5;
+  width: @ak-grid-size * 5;
 }
 
 .largeGlobalItem {
-  width: @ak-grid-size * 6;
   height: @ak-grid-size * 6;
+  width: @ak-grid-size * 6;
 }

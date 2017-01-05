@@ -5,6 +5,7 @@ import { HyperlinkState } from '../../../src/plugins/hyperlink';
 import Panel from '../Panel';
 import TextInput from '../PanelTextInput';
 import IconButton from '../ToolbarIconButton';
+import { analyticsDecorator as analytics } from '../../analytics';
 
 export interface Props {
   pluginState: HyperlinkState;
@@ -36,10 +37,10 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           disabled={disabled || active}
           onClick={this.openLinkPanel}
           selected={adding}
-          icon={<LinkIcon label='Link' />}
+          icon={<LinkIcon label="Link" />}
         />
         {!adding ? null :
-        <Panel align='center' onOutsideClick={this.closeLinkPanel}>
+        <Panel align="center" onOutsideClick={this.closeLinkPanel}>
           <TextInput
             autoFocus
             placeholder="Paste link"
@@ -67,6 +68,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     });
   }
 
+  @analytics('atlassian.editor.format.hyperlink.button')
   private handleSubmit = (value: string) => {
     this.props.pluginState.addLink({ href: value });
     this.closeLinkPanel();

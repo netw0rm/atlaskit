@@ -1,1 +1,2 @@
-export { default as default } from 'skatejs-react-integration';
+import reactify from 'skatejs-react-integration';
+export default reactify;

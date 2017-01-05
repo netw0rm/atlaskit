@@ -11,11 +11,27 @@ function fix () {
         exit 0
     fi
     $CHALK --no-stdin -t "{blue fixing...}"
-    [ ! "" == "$jsdiff" ] && eslint --fix --no-ignore $jsdiff || [ "" == "$jsdiff" ]
-    jsfixresult=$?
-    [ ! "" == "$tsdiff" ] && tslint --project tsconfig.json --fix $tsdiff || [ "" == "$tsdiff" ]
-    tsfixresult=$?
-    [ "$jsfixresult" == "0" ] && [ "$tsfixresult" == "0" ]
-    exit $?
+
+    # Run eslint and tslint in parallel for speed!
+
+    if [ ! "" == "$jsdiff" ]; then
+      eslint --fix --no-ignore $jsdiff &
+      eslint_pid=$!
+    fi
+
+    if [ ! "" == "$tsdiff" ]; then
+      tslint --project tsconfig.json --fix $tsdiff &
+      tslint_pid=$!
+    fi
+
+    set -e
+
+    if [ ! "" == "$jsdiff" ]; then
+      wait $eslint_pid
+    fi
+
+    if [ ! "" == "$tsdiff" ]; then
+      wait $tslint_pid
+    fi
 }
 fix

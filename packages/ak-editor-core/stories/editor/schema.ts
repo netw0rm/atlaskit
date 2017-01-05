@@ -3,10 +3,10 @@ import {
   BlockQuoteNodeType,
   BulletListNodeType,
   CodeBlockNodeType,
-  CodeMarkType,
   DocNodeType,
-  DelMarkType,
   EmMarkType,
+  MonoMarkType,
+  StrikeMarkType,
   HardBreakNodeType,
   HeadingNodeType,
   HorizontalRuleNodeType,
@@ -20,7 +20,7 @@ import {
   Text,
   MentionNodeType,
   EmojiNodeType
-} from '../../src/schema';
+} from '../../';
 
 export default new Schema({
   nodes: {
@@ -49,8 +49,8 @@ export default new Schema({
     link: LinkMarkType,
     em: EmMarkType,
     strong: StrongMarkType,
-    code: CodeMarkType,
-    del: DelMarkType,
+    mono: MonoMarkType,
+    strike: StrikeMarkType
   },
 }) as BitbucketSchema;
 
@@ -74,13 +74,13 @@ export interface BitbucketSchema extends Schema {
     code_block: CodeBlockNodeType;
     mention: MentionNodeType;
     emoji: EmojiNodeType;
-  }
+  };
 
   marks: {
     link: LinkMarkType;
     em: EmMarkType;
     strong: StrongMarkType;
-    code: CodeMarkType;
-    del: DelMarkType;
-  }
+    mono: MonoMarkType;
+    strike: StrikeMarkType;
+  };
 }

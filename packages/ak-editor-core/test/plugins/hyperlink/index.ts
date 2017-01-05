@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { chaiPlugin, makeEditor, insert } from '../../../src';
+import { chaiPlugin, makeEditor, insert } from '../../../test-helper';
 import { doc, link, linkable, schema, unlinkable } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
@@ -26,7 +26,7 @@ describe('hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'www.atlassian.com ');
 
-      const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com')
+      const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
       expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 
@@ -34,7 +34,7 @@ describe('hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'www.atlassian.com/ ');
 
-      const a = link({ href: 'http://www.atlassian.com/' })('www.atlassian.com/')
+      const a = link({ href: 'http://www.atlassian.com/' })('www.atlassian.com/');
       expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 
@@ -42,7 +42,7 @@ describe('hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'http://www.atlassian.com/ ');
 
-      const a = link({ href: 'http://www.atlassian.com/' })('http://www.atlassian.com/')
+      const a = link({ href: 'http://www.atlassian.com/' })('http://www.atlassian.com/');
       expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 
@@ -50,7 +50,7 @@ describe('hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'http://www.atlassian.com ');
 
-      const a = link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com')
+      const a = link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com');
       expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 
@@ -58,7 +58,7 @@ describe('hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'https://www.atlassian.com/ ');
 
-      const a = link({ href: 'https://www.atlassian.com/' })('https://www.atlassian.com/')
+      const a = link({ href: 'https://www.atlassian.com/' })('https://www.atlassian.com/');
       expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 
@@ -66,7 +66,7 @@ describe('hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
       pm.input.insertText(sel, sel, 'https://www.atlassian.com ');
 
-      const a = link({ href: 'https://www.atlassian.com' })('https://www.atlassian.com')
+      const a = link({ href: 'https://www.atlassian.com' })('https://www.atlassian.com');
       expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
     });
 

@@ -4,97 +4,104 @@ import chaiAsPromised from 'chai-as-promised';
 import sinonChai from 'sinon-chai';
 import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
+import WarningIcon from 'ak-icon/glyph/warning';
 import { FieldBase } from '../src';
-import Content from '../src/Content';
-import Label from '../src/Label';
-import styles from '../src/styles.less';
-import { compact, subtle } from '../src/internal/appearances';
+import { compact, none, subtle } from '../src/internal/appearances';
+import { locals } from '../src/styles.less';
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 chai.use(chaiEnzyme());
 
+const {
+  contentContainer: contentClass,
+  invalid: isInvalidClass,
+  focused: isFocusedClass,
+  readOnly: isReadOnlyClass,
+  paddingDisabled: isPaddingDisabled,
+} = locals;
+
 const defaultProps = {
-  label: 'Label',
   onFocus: () => {},
   onBlur: () => {},
 };
 
 describe('ak-field-base', () => {
-  describe('by default', () =>
-    it('should render a field base', () => {
-      const wrapper = shallow(<FieldBase {...defaultProps} />);
-      expect(wrapper).to.have.exactly(1).descendants(Label);
-      expect(wrapper).to.have.exactly(1).descendants(Content);
-      expect(wrapper.find(`.${styles.locals.root}`)).to.be.present();
-    })
-  );
-
   describe('properties', () => {
-    [
-      { prop: 'label', value: 'new label', element: Label },
-      { prop: 'isLabelHidden', value: true, element: Label },
-      { prop: 'isInvalid', value: true, element: Content },
-      { prop: 'isDisabled', value: true, element: Content },
-      { prop: 'isRequired', value: true, element: Label },
-      { prop: 'isFocused', value: true, element: Content },
-      { prop: 'appearance', value: compact, element: Content },
-      { prop: 'appearance', value: subtle, element: Content },
-      { prop: 'rightGutter', value: 'test', element: Content },
-    ].forEach(setup =>
-      describe(`${setup.prop} prop`, () =>
-        it('should be reflected', () => {
-          const wrapper = shallow(
-            <FieldBase {...defaultProps} {...{ [setup.prop]: setup.value }} />
-          );
-          expect(wrapper.find(setup.element)).to.have.prop(setup.prop, setup.value);
-        })
+    describe('by default', () =>
+      it('should render a content', () =>
+        expect(shallow(<FieldBase {...defaultProps} />)).to.have.descendants(`.${contentClass}`)
       )
     );
-  });
 
-  describe('children', () => {
-    it('should render children inside Content', () => {
-      const wrapper = shallow(<FieldBase {...defaultProps}><div id="child">test</div></FieldBase>);
-      const content = wrapper.find(Content);
-      expect(content).to.have.exactly(1).descendants('#child');
+    describe('isReadOnly prop = true', () =>
+      it('should render with the .isReadOnly class', () =>
+        expect(shallow(<FieldBase {...defaultProps} isReadOnly />)).to.have.descendants(`.${isReadOnlyClass}`)
+      )
+    );
+
+    describe('isFocused prop = true', () => {
+      it('should render the content with the .isFocused class', () =>
+        expect(shallow(<FieldBase {...defaultProps} isFocused />)).to.have.descendants(`.${isFocusedClass}`)
+      );
+    });
+
+    describe('isPaddingDisabled prop = true', () => {
+      it('should render the content with the .paddingDisabled class', () =>
+        expect(shallow(<FieldBase {...defaultProps} isPaddingDisabled />)).to.have.descendants(`.${isPaddingDisabled}`)
+      );
+    });
+
+    describe('isInvalid prop = true', () => {
+      it('should render with the isFocused styles and not the isInvalid styles', () =>
+        expect(shallow(<FieldBase {...defaultProps} isInvalid />)).to.have.descendants(`.${isInvalidClass}`)
+      );
+
+      it('should render the warning icon', () =>
+        expect(shallow(<FieldBase {...defaultProps} isInvalid />)).to.have.descendants(WarningIcon)
+      );
+    });
+
+    describe('isFocused prop = true AND isInvalid prop = true', () =>
+      it('should render with the isFocused styles and not the isInvalid styles', () => {
+        const wrapper = shallow(<FieldBase {...defaultProps} isFocused isInvalid />);
+        expect(wrapper).to.have.descendants(`.${isFocusedClass}`);
+        expect(wrapper).to.not.have.descendants(`.${isInvalidClass}`);
+      })
+    );
+
+    describe('appearance', () => {
+      [compact, none, subtle].forEach(appearance =>
+        describe(appearance, () =>
+          it(`should render the content with the .${appearance} class`, () =>
+            expect(shallow(<FieldBase {...defaultProps} appearance={appearance} />))
+              .to.have.descendants(`.${locals[appearance]}`)
+          )
+        )
+      );
     });
   });
 
   describe('focus behaviour', () => {
     let wrapper;
-    let content;
 
     beforeEach(() => {
       wrapper = mount(<FieldBase {...defaultProps} />);
-      content = wrapper.find(Content);
-      content.find(`.${styles.locals.content}`).simulate('focus');
+      wrapper.find(`.${contentClass}`).simulate('focus');
     });
 
     it('should call onFocus', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBase {...defaultProps} onFocus={spy} />);
-      content = wrapper.find(Content);
-      content.find(`.${styles.locals.content}`).simulate('focus');
+      wrapper.find(`.${contentClass}`).simulate('focus');
       expect(spy).to.have.been.calledOnce;
     });
 
     it('should call onBlur', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBase {...defaultProps} onBlur={spy} />);
-      content = wrapper.find(Content);
-      content.find(`.${styles.locals.content}`).simulate('blur');
+      wrapper.find(`.${contentClass}`).simulate('blur');
       expect(spy).to.have.been.calledOnce;
     });
   });
-
-  describe('labelClick event', () =>
-    it('should call labelClick callback when the label span is clicked', () => {
-      const spy = sinon.spy();
-      const wrapper = mount(<FieldBase {...defaultProps} label="test" onLabelClick={spy} />);
-      const label = wrapper.find(Label);
-      label.find('span').simulate('click');
-      expect(spy).to.have.been.calledOnce;
-    })
-  );
 });

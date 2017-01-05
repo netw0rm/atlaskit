@@ -2,9 +2,13 @@
   animation: spinnerLoad 0.53s ease-in-out;
   animation-fill-mode: forwards;
 
-  svg circle {
+  &-wrapper {
     animation: spinnerSpin 0.86s infinite;
     animation-timing-function: cubic-bezier(0.4, 0.15, 0.6, 0.85);
+    display: inline-flex;
+  }
+
+  .circle {
     transition: stroke-dashoffset 0.8s ease-in-out, opacity 0.2s ease-in-out 0.45s;
     opacity: 0;
     transform-origin: center;
@@ -14,7 +18,7 @@
   &.active {
     animation: spinnerLoad2 1s ease-in-out forwards;
 
-    svg circle {
+    .circle {
       opacity: 1;
       transition: stroke-dashoffset 0.8s ease-in-out, opacity 0.2s ease-in-out;
     }

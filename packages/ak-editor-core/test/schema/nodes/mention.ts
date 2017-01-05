@@ -1,6 +1,8 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { Schema, Text, toHTML, fromHTML as fromHTML_, DocNodeType, MentionNodeType } from '../../../src';
+import { Schema, Text } from '../../../src';
+import { DocNodeType, MentionNodeType } from '../../../src';
+import { toHTML, fromHTML as fromHTML_ } from '../../../test-helper';
 
 const schema = makeSchema();
 const fromHTML = (html: string) => fromHTML_(html, schema);
@@ -10,12 +12,24 @@ describe('ak-editor-core/schema mention node', () => {
     expect(() => {
       new Schema({
         nodes: {
-          mention: { type: MentionNodeType, group: 'inline' },
+          doc: { type: DocNodeType, content: 'inline*' },
           foo: { type: MentionNodeType, group: 'inline' },
           text: { type: Text }
         }
       });
     }).to.throw(Error);
+  });
+
+  it('does not throw an error if it is named "mention"', () => {
+    expect(() => {
+      new Schema({
+        nodes: {
+          doc: { type: DocNodeType, content: 'inline*' },
+          mention: { type: MentionNodeType, group: 'inline' },
+          text: { type: Text }
+        }
+      });
+    }).to.not.throw(Error);
   });
 
   it('should have mention id and display name when serializing to DOM', () => {
@@ -41,7 +55,7 @@ function makeSchema() {
       doc: DocNodeType;
       mention: MentionNodeType;
       text: Text;
-    }
+    };
   }
 
   return new Schema({

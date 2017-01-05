@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { Node, Schema, DocNodeType, MonoMarkType, Text, fromHTML, toHTML, chaiPlugin } from '../../../src';
+import { Node, Schema, DocNodeType, MonoMarkType, Text } from '../../../src';
+import { fromHTML, toHTML, chaiPlugin } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 
@@ -17,6 +18,20 @@ describe('ak-editor-core/schema mono mark', () => {
         }
       });
     }).to.throw(Error);
+  });
+
+  it('does not throw an error if it is named "mono"', () => {
+    expect(() => {
+      new Schema({
+        nodes: {
+          doc: { type: DocNodeType, content: 'text*' },
+          text: { type: Text }
+        },
+        marks: {
+          mono: MonoMarkType
+        }
+      });
+    }).to.not.throw(Error);
   });
 
   it('declares itself as code', () => {
@@ -43,10 +58,10 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       text: Text;
-    }
+    };
     marks: {
       mono: MonoMarkType;
-    }
+    };
   }
 
   return new Schema({

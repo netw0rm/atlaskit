@@ -1,6 +1,7 @@
 import * as mocha from 'mocha';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { Slice, ProseMirror, chaiPlugin, code_block, makeEditor, a, code, doc, p, slice, text } from '../../../src';
+import { Slice, ProseMirror } from '../../../src';
+import { chaiPlugin, code_block, makeEditor, a, mono, doc, p, slice, text } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 
@@ -15,7 +16,7 @@ describe('hyperlink paste transformer', () => {
 
   function pasted(pm: ProseMirror, slice: Slice): Slice {
     return pm.on.transformPasted.dispatch(slice);
-  };
+  }
 
   it('Should convert only the hyperlink and leave pading text intact', () => {
     const { pm } = editor();
@@ -63,10 +64,10 @@ describe('hyperlink paste transformer', () => {
     expect(actual).to.deep.equal(expected);
   });
 
-  it('Should not convert links inside code marks', () => {
+  it('Should convert links inside mono marks', () => {
     const { pm } = editor();
-    const content = slice(pre(code('http://a.com/')));
-    expect(pasted(pm, content)).to.deep.equal(content);
+    const content = slice(p(mono('http://a.com/')));
+    expect(pasted(pm, content)).to.deep.equal(slice(p(a({ href: 'http://a.com/' })(mono('http://a.com/')))));
   });
 
   it('Should not convert links inside links', () => {

@@ -1,10 +1,10 @@
 import {
   convertedHandlerCallback, Converter, dropHandler, pasteHandler
-} from '../../src/test-helper/base64fileconverter';
+} from '../../test-helper/base64fileconverter';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-describe('../../../src/test-helper base64fileconverter', () => {
+describe('ak-editor-core/test-helper base64fileconverter', () => {
   let savedFileReader: any;
 
   beforeEach(() => {
@@ -13,7 +13,7 @@ describe('../../../src/test-helper base64fileconverter', () => {
 
   afterEach(() => {
     (window as any).FileReader = savedFileReader;
-  })
+  });
 
   const mockFile = (args: { size?: number, type?: string } = {}): File => ({
     size: typeof args.size !== 'undefined' ? args.size : 1,

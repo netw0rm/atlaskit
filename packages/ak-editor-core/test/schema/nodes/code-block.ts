@@ -13,7 +13,9 @@ describe('ak-editor-core/schema code_block node', () => {
         }
       });
     }).to.throw(Error);
+  });
 
+  it('does not throw an error if it is named "code_block"', () => {
     expect(() => {
       new Schema({
         nodes: {

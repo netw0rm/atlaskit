@@ -1,6 +1,6 @@
 import MentionsPlugin from '../../../src/plugins/mentions';
-import { MentionQueryMarkType, MentionNodeType, ProseMirror, Schema, ResolvedPos, chaiPlugin, fixtures,
-         schema as schemaBasic } from '../../../src';
+import { MentionQueryMarkType, MentionNodeType, ProseMirror, Schema, ResolvedPos, schema as schemaBasic } from '../../../src';
+import { chaiPlugin, fixtures } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -24,7 +24,7 @@ const makeEditor = (container: Node) => {
     plugins: [ MentionsPlugin ],
     place: container
   });
-}
+};
 
 const container = fixtures();
 
@@ -39,7 +39,7 @@ describe('mentions', () => {
       const pm = makeEditor(container());
       pm.input.insertText(0, 0, '@');
       pm.flush();
-      expect(pm.input.keymaps.filter((k:any) => k.map.options.name === 'mentions-plugin-keymap').length).to.equal(1);
+      expect(pm.input.keymaps.filter((k: any) => k.map.options.name === 'mentions-plugin-keymap').length).to.equal(1);
     });
 
     xit('should unbind keymap when dismissed', () => {
@@ -51,7 +51,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 27;
 
       pm.input.dispatchKey('Esc', keyDownEvent);
-      expect(pm.input.keymaps.filter((k:any) => k.map.options.name === 'mentions-plugin-keymap').length).to.equal(0);
+      expect(pm.input.keymaps.filter((k: any) => k.map.options.name === 'mentions-plugin-keymap').length).to.equal(0);
     });
 
     it('should ignore "Up"-key if no "onSelectPrevious" is attached', () => {
@@ -157,7 +157,8 @@ describe('mentions', () => {
 
       pluginInstance.insertMention({
         name: 'Oscar Wallhult',
-        mentionName: 'oscar'
+        mentionName: 'oscar',
+        id: '1234'
       });
 
       expect(pm.doc.nodeAt(1)).to.be.of.nodeType(MentionNodeType);

@@ -15,6 +15,9 @@ else
   $LERNA_LOC bootstrap | cat
 fi
 
+$CHALK --no-stdin -t "{blue Linking local eslint-configs...}"
+node $BASEDIR/link.eslint.configs.js
+
 if [[ -z "$BITBUCKET_COMMIT" ]]; then
   $CHALK --no-stdin -t "{blue Installing hooks...}"
   node $BASEDIR/pre-commit.install.js

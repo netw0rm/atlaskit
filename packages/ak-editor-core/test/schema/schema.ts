@@ -1,23 +1,24 @@
 import * as chai from 'chai';
-import schema from '../../src/schema';
+import { schema } from '../../test-helper/schema';
 import jsonSchema from '../../src/schema/json-schema';
-import Ajv from 'ajv';
+import * as ajvModule from 'ajv';
 
 const { expect } = chai;
+const Ajv = ((ajvModule as any).default || ajvModule);
 const ajv = new Ajv();
 const validate = ajv.compile(jsonSchema(schema));
 
 describe('ak-editor-core: schema as JSON Schema', () => {
   it('permits a paragraph with text', () => {
     expect(validate({
-      "type": "doc",
-      "content": [
+      'type': 'doc',
+      'content': [
         {
-          "type": "paragraph",
-          "content": [
+          'type': 'paragraph',
+          'content': [
             {
-              "type": "text",
-              "text": "Foo"
+              'type': 'text',
+              'text': 'Foo'
             }
           ]
         }
@@ -27,10 +28,10 @@ describe('ak-editor-core: schema as JSON Schema', () => {
 
   it('permits a paragraph with no content', () => {
     expect(validate({
-      "type": "doc",
-      "content": [
+      'type': 'doc',
+      'content': [
         {
-          "type": "paragraph",
+          'type': 'paragraph',
         }
       ]
     })).to.be.true;
@@ -38,19 +39,19 @@ describe('ak-editor-core: schema as JSON Schema', () => {
 
   it('permits a paragraph with strong text', () => {
     expect(validate({
-      "type": "doc",
-      "content": [
+      'type': 'doc',
+      'content': [
         {
-          "type": "paragraph",
-          "content": [
+          'type': 'paragraph',
+          'content': [
             {
-              "type": "text",
-              "marks": [
+              'type': 'text',
+              'marks': [
                 {
-                  "_": "strong"
+                  '_': 'strong'
                 }
               ],
-              "text": "foo"
+              'text': 'foo'
             }
           ]
         }
@@ -60,19 +61,19 @@ describe('ak-editor-core: schema as JSON Schema', () => {
 
   it('does not permit a code_block with strong ext', () => {
     expect(validate({
-      "type": "doc",
-      "content": [
+      'type': 'doc',
+      'content': [
         {
-          "type": "code_block",
-          "content": [
+          'type': 'code_block',
+          'content': [
             {
-              "type": "text",
-              "marks": [
+              'type': 'text',
+              'marks': [
                 {
-                  "_": "strong"
+                  '_': 'strong'
                 }
               ],
-              "text": "foo"
+              'text': 'foo'
             }
           ]
         }

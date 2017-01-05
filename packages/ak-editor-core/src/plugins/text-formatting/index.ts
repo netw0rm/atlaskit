@@ -17,6 +17,8 @@ import {
   UnderlineMarkType
 } from '../../schema';
 
+import { trackAndInvoke } from '../../analytics';
+
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
 export type BlockTypeStateSubscriber = (state: TextFormattingState) => void;
@@ -247,11 +249,11 @@ export class TextFormattingState {
 
   private addKeymap(): void {
     this.pm.addKeymap(new Keymap({
-      'Mod-B': ()=> this.toggleStrong(),
-      'Mod-I': ()=> this.toggleEm(),
-      'Mod-U': ()=> this.toggleUnderline(),
-      'Mod-Shift-S': ()=> this.toggleStrike(),
-      'Mod-Shift-M': ()=> this.toggleMono(),
+      'Mod-B': trackAndInvoke('atlassian.editor.format.strong.keyboard', () => this.toggleStrong()),
+      'Mod-I': trackAndInvoke('atlassian.editor.format.em.keyboard', () => this.toggleEm()),
+      'Mod-U': trackAndInvoke('atlassian.editor.format.u.keyboard', () => this.toggleUnderline()),
+      'Mod-Shift-S': trackAndInvoke('atlassian.editor.format.strike.keyboard', () => this.toggleStrike()),
+      'Mod-Shift-M': trackAndInvoke('atlassian.editor.format.mono.keyboard', () => this.toggleMono()),
     }));
   }
 
@@ -307,7 +309,7 @@ export interface S extends Schema {
     strong?: StrongMarkType;
     subsup?: SubSupMarkType;
     u?: UnderlineMarkType;
-  }
+  };
 }
 
 export interface PM extends ProseMirror {

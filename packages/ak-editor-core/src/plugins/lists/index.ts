@@ -22,7 +22,9 @@ import {
   OrderedListNodeType,
   isBulletListNode,
   isOrderedListNode
-} from '../../schema'
+} from '../../schema';
+
+import { trackAndInvoke } from '../../analytics';
 
 export type ListType = 'bullet_list' | 'ordered_list' | null;
 
@@ -96,8 +98,8 @@ export class ListsState {
 
     pm.addKeymap(new Keymap({
       'Enter': () => commands.splitListItem(list_item)(pm),
-      'Mod-Shift-L': () => this.toggleOrderedList(),
-      'Mod-Shift-B': () => this.toggleBulletList()
+      'Mod-Shift-L': trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
+      'Mod-Shift-B': trackAndInvoke('atlassian.editor.format.list.bullet.keyboard',() => this.toggleBulletList())
     }));
   }
 
@@ -233,13 +235,17 @@ export class ListsState {
     } else {
       let current = $from;
 
-      while(current.pos <= $to.pos) {
+      while(current.pos < $to.pos) {
         let ancestorPos = this.findAncestorPosition(current);
         while (ancestorPos.depth > 1) {
           ancestorPos = this.findAncestorPosition(ancestorPos);
         }
 
-        const endPos = this.pm.doc.resolve(Math.min(ancestorPos.end(ancestorPos.depth) - 1, $to.pos));
+        const endPos = this.pm.doc.resolve(Math.min(
+          // should not be smaller then start position in case of an empty paragpraph for example.
+          Math.max(ancestorPos.start(ancestorPos.depth), ancestorPos.end(ancestorPos.depth) - 1),
+          $to.pos
+        ));
 
         groups.push({
           $from: current,
@@ -319,7 +325,11 @@ export class ListsState {
         next = this.pm.doc.resolve(next.pos + 2);
       }
 
-      current = this.pm.doc.resolve(next.start(next.depth));
+      if (next.depth) {
+        current = this.pm.doc.resolve(next.start(next.depth));
+      } else {
+        current = this.pm.doc.resolve(next.end(next.depth));
+      }
     }
 
     return nodes;
@@ -478,9 +488,9 @@ export default new Plugin(ListsState);
 export interface S extends Schema {
   nodes: {
     bullet_list?: BulletListNodeType,
-    list_item:  ListItemNodeType,
+    list_item: ListItemNodeType,
     ordered_list?: OrderedListNodeType
-  }
+  };
 }
 
 export interface PM extends ProseMirror {

@@ -1,14 +1,14 @@
 import { Attribute, Block, Node, Schema } from '../../prosemirror';
 
 export interface EntityAttributes {
-  params: Attribute
+  params: Attribute;
 }
 
 export class CodeBlockNodeType extends Block {
   constructor(name: string, schema: Schema) {
     super(name, schema);
     if (name !== 'code_block') {
-      throw new Error("CodeBlockNodeType must be named 'code_block'.");
+      throw new Error('CodeBlockNodeType must be named "code_block".');
     }
   }
 

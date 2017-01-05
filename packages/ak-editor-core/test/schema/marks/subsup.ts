@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { Node, Schema, Text, fromHTML, toHTML, DocNodeType, SubSupMarkType, chaiPlugin } from '../../../src';
+import { Node, Schema, Text, DocNodeType, SubSupMarkType } from '../../../src';
+import { fromHTML, toHTML, chaiPlugin } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 
@@ -17,7 +18,9 @@ describe('ak-editor-core/schema subsup mark', () => {
         }
       });
     }).to.throw(Error);
+  });
 
+  it('does not throw an error if it is named "subsup"', () => {
     expect(() => {
       new Schema({
         nodes: {
@@ -52,10 +55,10 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       text: Text;
-    }
+    };
     marks: {
       subsup: SubSupMarkType;
-    }
+    };
   }
 
   return new Schema({

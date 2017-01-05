@@ -3,8 +3,8 @@ import { ProseMirror } from 'ak-editor-core';
 import AkEditorJira from '../src';
 import { afterMutations, waitUntil, getShadowRoot, keydown, keyup, keypress } from 'akutil-common-test';
 import { emit } from 'skatejs';
-import { fixtures, chaiPlugin } from 'ak-editor-core';
-import { doc, p } from './_schema-builder'
+import { fixtures, chaiPlugin } from 'ak-editor-core/test-helper';
+import { doc, p } from './_schema-builder';
 
 chai.use(chaiPlugin);
 const { expect } = chai;
